@@ -1,0 +1,266 @@
+{
+  "source": ".local/fortressblue-original/game/tankclient_emsc.eeb2b.wasm",
+  "sourceSHA256": "35974c0d7a06cf86f1f028b0ee1fc46c324921f6d829ce4db684f776199e489d",
+  "derivedSHA256": "7bfac26d68736f5242c7a10b008727f63e9610a0162688e2ced1e0baf64eecb8",
+  "method": "Preserve selected original function bodies byte-for-byte; replace other code bodies with unreachable stubs, retaining types/imports/data. Analysis-only, never executed.",
+  "retainedFunctions": [
+    {
+      "index": 337,
+      "offset": 45331,
+      "bytes": 49,
+      "sha256": "b028cb788fea8167cde53fdef5a825714b80814d36551b215edc27845e956f74"
+    },
+    {
+      "index": 415,
+      "offset": 70685,
+      "bytes": 2633,
+      "sha256": "952a9b67b38654cd5456b6279b4f1ff53c2f18ab24361f215b2507a42b5e38e8"
+    },
+    {
+      "index": 421,
+      "offset": 77268,
+      "bytes": 912,
+      "sha256": "95e478d247e5fb8055759638569251e3602952af6c775ac2869573c3c8f7ff4f"
+    },
+    {
+      "index": 431,
+      "offset": 80707,
+      "bytes": 130,
+      "sha256": "07ef928547c0270b3b16cd25b64febb63c1cefc9ff9878f199dc4a40321e5aa8"
+    },
+    {
+      "index": 441,
+      "offset": 83821,
+      "bytes": 1333,
+      "sha256": "c4119f9850234486b7f04242135ccb3f20d37dcabd935aa5f269d76ac5bee458"
+    },
+    {
+      "index": 442,
+      "offset": 85155,
+      "bytes": 41,
+      "sha256": "450e88aa4d8c1592e04c8309a6dbd99fafd24bac6aaa8f0f56f31d5a558a9e5b"
+    },
+    {
+      "index": 469,
+      "offset": 89860,
+      "bytes": 361,
+      "sha256": "0b0a768152fe68624d555bf852e666c72aa381f74d09bfcb0d410a541ca0075d"
+    },
+    {
+      "index": 585,
+      "offset": 126527,
+      "bytes": 1657,
+      "sha256": "12d9c4874c45810aaf434259ab12228fce4664e8de1759d5f369f1fb0e0208ac"
+    },
+    {
+      "index": 688,
+      "offset": 169472,
+      "bytes": 772,
+      "sha256": "2222dfb64714f627bc91e5499e3b543ac87de44285cd04426b87e8df766467ec"
+    },
+    {
+      "index": 868,
+      "offset": 279871,
+      "bytes": 577,
+      "sha256": "da9e69b29e06284cdb40a01adab349c3ccd71ff75f889901440f6ea6fc4724e8"
+    },
+    {
+      "index": 980,
+      "offset": 342664,
+      "bytes": 181,
+      "sha256": "35c733aab2af65074a6a03bd58a28f3abc61d40c47b4d293ec3df72bf5e86815"
+    },
+    {
+      "index": 998,
+      "offset": 347805,
+      "bytes": 2624,
+      "sha256": "ad7c477a8ee06f9e8c3e2dc85005b0abcc50080cacb3c92971d5133362d0bf34"
+    },
+    {
+      "index": 1496,
+      "offset": 696929,
+      "bytes": 634,
+      "sha256": "b899f13f86a1f80426c0e0d2fe02fe9a41faa1ea101227c703e732a9831c50a7"
+    },
+    {
+      "index": 1530,
+      "offset": 704973,
+      "bytes": 639,
+      "sha256": "99e872af99deb29ff01652c767bbcbe0812912a9c1e10cb5562ae18b58df7347"
+    },
+    {
+      "index": 1537,
+      "offset": 708664,
+      "bytes": 28,
+      "sha256": "f0d280109b9d6cc2d08528d58f99b941dc6ba57c0da9a7778270bb8ac4d1613d"
+    },
+    {
+      "index": 1540,
+      "offset": 708808,
+      "bytes": 28,
+      "sha256": "3cdaf34023519804b7173d79f01659650642090ae6b5e66ba4cdd7331843f1b6"
+    },
+    {
+      "index": 1548,
+      "offset": 709285,
+      "bytes": 2277,
+      "sha256": "f680a1ee046086e79e4223229cf3b9023929e0ec449ae0494e1de392a0f4e639"
+    },
+    {
+      "index": 2413,
+      "offset": 1462951,
+      "bytes": 8268,
+      "sha256": "4b441ca3daf14908a8eed24cdac62aef5e266c1743c6e162219286f18228e47e"
+    },
+    {
+      "index": 2790,
+      "offset": 1701475,
+      "bytes": 862,
+      "sha256": "f178d42ccc93aeba2dfeae5eaa26647f25c9e8563dcae74808546d7ad3050ab7"
+    },
+    {
+      "index": 2873,
+      "offset": 1747593,
+      "bytes": 152,
+      "sha256": "d963fc83b4b9e1749e40abd8522745adbfcc34fef366270a4a74e67426941b36"
+    },
+    {
+      "index": 2881,
+      "offset": 1752486,
+      "bytes": 69,
+      "sha256": "55960644ce69136a411ba4dee4a41ae90290ac5771891cc5d783e7242c9b4b5b"
+    },
+    {
+      "index": 3028,
+      "offset": 1815755,
+      "bytes": 630,
+      "sha256": "9381138652e70161725f9b311d285a346110bf83f00bf5221db9c49cf59baaef"
+    },
+    {
+      "index": 3230,
+      "offset": 1893265,
+      "bytes": 392,
+      "sha256": "c1698d0469c160196bd0782a6f2a94e16ad8949e40d3c86e02c708d4d149bf57"
+    },
+    {
+      "index": 3281,
+      "offset": 1913359,
+      "bytes": 386,
+      "sha256": "23706cec0d9934328ed4922d8761fd8c41f3d8b55b6f473011316996d206a240"
+    },
+    {
+      "index": 3303,
+      "offset": 1916170,
+      "bytes": 17145,
+      "sha256": "eec30e862d55deda89eb9cb2ab63758f5e6dc85c02e12cf53e8f5cac2af3b4e6"
+    },
+    {
+      "index": 3321,
+      "offset": 1944601,
+      "bytes": 5062,
+      "sha256": "ab2f7b5d54bfa80326c10b29d8401d1d13b07237628d9379670fd7783ba142af"
+    }
+  ],
+  "classes": [
+    {
+      "name": "EMeteor",
+      "vtableAddress": 92720,
+      "tableIndices": [
+        239,
+        240,
+        120,
+        241
+      ],
+      "functions": [
+        "f417",
+        "f416",
+        "f1890",
+        "f3028"
+      ],
+      "RTTI": "7EMeteor",
+      "rttiAddress": 92740,
+      "nameAddress": 92752
+    },
+    {
+      "name": "ERain",
+      "vtableAddress": 93312,
+      "tableIndices": [
+        279,
+        280,
+        281,
+        282
+      ],
+      "functions": [
+        "f354",
+        "f320",
+        "f2881",
+        "f2873"
+      ],
+      "RTTI": "5ERain",
+      "rttiAddress": 93332,
+      "nameAddress": 93344
+    },
+    {
+      "name": "ETornado",
+      "vtableAddress": 93756,
+      "tableIndices": [
+        311,
+        312,
+        313,
+        314
+      ],
+      "functions": [
+        "f354",
+        "f320",
+        "f2780",
+        "f2790"
+      ],
+      "RTTI": "8ETornado",
+      "rttiAddress": 93776,
+      "nameAddress": 93788
+    },
+    {
+      "name": "EFire",
+      "vtableAddress": 91764,
+      "tableIndices": [
+        174,
+        175,
+        176,
+        177
+      ],
+      "functions": [
+        "f354",
+        "f320",
+        "f3237",
+        "f3230"
+      ],
+      "RTTI": "5EFire",
+      "rttiAddress": 91784,
+      "nameAddress": 91796
+    },
+    {
+      "name": "EChemistry",
+      "vtableAddress": 91480,
+      "tableIndices": [
+        154,
+        155,
+        156,
+        157
+      ],
+      "functions": [
+        "f354",
+        "f320",
+        "f3284",
+        "f3281"
+      ],
+      "RTTI": "10EChemistry",
+      "rttiAddress": 91500,
+      "nameAddress": 91512
+    }
+  ],
+  "limitations": [
+    "Omitted call targets are unknown in this slice.",
+    "No original server or original gameplay execution observed.",
+    "Original 283 function imports fixed by source digest and original module inventory."
+  ]
+}

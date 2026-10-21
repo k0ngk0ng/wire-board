@@ -21,6 +21,20 @@ func classicLegacy(t *testing.T, m gameapi.Match) gameapi.Match {
 	t.Helper()
 	raw := classicState(t, m)
 	delete(raw, "rulesVersion")
+	// A historical fixture must contain historical player attributes, not the
+	// native profiles now created by Start.
+	var players []bubbleparty.Player
+	if err := json.Unmarshal(raw["players"], &players); err != nil {
+		t.Fatal(err)
+	}
+	for i := range players {
+		players[i].NativeSpeed = 0
+		players[i].SpeedMS = bubbleparty.BaseMoveMS
+		players[i].Mount = ""
+		players[i].MaxBombs = 1
+		players[i].Range = bubbleparty.BaseBombRange
+	}
+	raw["players"], _ = json.Marshal(players)
 	var err error
 	m.Data, err = json.Marshal(raw)
 	if err != nil {
@@ -32,7 +46,7 @@ func classicLegacy(t *testing.T, m gameapi.Match) gameapi.Match {
 func TestClassicNewMatchDoesNotShrink(t *testing.T) {
 	m := refactorStart(t)
 	raw := classicState(t, m)
-	if string(raw["rulesVersion"]) != "2" {
+	if string(raw["rulesVersion"]) != "3" {
 		t.Fatalf("new match missing classic version: %s", raw["rulesVersion"])
 	}
 	start := refactorRead(t, m, 0).StartAt

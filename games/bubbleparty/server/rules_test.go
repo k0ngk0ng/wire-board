@@ -41,7 +41,7 @@ func beginPlaying(t *testing.T, s *State) {
 
 func TestConfigureAndSymmetricMaps(t *testing.T) {
 	for _, players := range []int{2, 4, 6, 8} {
-		for _, id := range mapIDs() {
+		for _, id := range []string{"community10", "waterpark", "forest", "desert"} {
 			if _, err := configure(players, json.RawMessage(`{"map":"`+id+`","roundSeconds":180}`)); err != nil {
 				t.Fatalf("players %d map %s: %v", players, id, err)
 			}
@@ -185,7 +185,8 @@ func TestItemsApplyAndCap(t *testing.T) {
 		s.Items = append(s.Items, Item{ID: 10 + i, X: p.X, Y: p.Y, Type: ItemBomb})
 	}
 	s.pickupItems(s.ServerAt)
-	if p.MaxBombs > MaxBombCapacity || p.Range > MaxBombRange || p.SpeedMS < MinMoveMS {
+	profile, _ := characterProfile(p.Character)
+	if p.MaxBombs > profile.MaximumBombs || p.Range > profile.MaximumRange || p.NativeSpeed > profile.MaximumSpeed {
 		t.Fatalf("item caps violated: %+v", p)
 	}
 }

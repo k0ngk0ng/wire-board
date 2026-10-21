@@ -151,7 +151,7 @@ func TestRefactorBombBlocksAfterOwnerLeaves(t *testing.T) {
 	m := refactorArena(t, nil)
 	at := refactorRead(t, m, 0).ServerAt
 	m = refactorInput(t, m, 0, "right", true)
-	m = refactorTick(t, m, at+100)
+	m = refactorTick(t, m, at+240)
 	v := refactorRead(t, m, 0)
 	if v.Players[0].X != 6 || len(v.Bombs) != 1 {
 		t.Fatalf("placement/escape failed: %+v", v)
@@ -222,7 +222,7 @@ func refactorHit(t *testing.T) gameapi.Match {
 		s.Cells[5*bubbleparty.Cols+6] = bubbleparty.CellBomb
 		s.BombID = 1
 	})
-	m = refactorTick(t, m, refactorRead(t, m, 0).ServerAt+100)
+	m = refactorTick(t, m, refactorRead(t, m, 0).ServerAt+200)
 	v := refactorRead(t, m, 0)
 	if !v.Players[0].Alive || v.Players[0].TrappedUntil <= v.ServerAt {
 		t.Fatalf("water hit must trap before elimination: %+v", v.Players[0])
@@ -245,7 +245,7 @@ func TestRefactorActiveWaterHitsLateEntrant(t *testing.T) {
 				m = refactorTick(t, m, at+400)
 			}
 			m = refactorInput(t, m, 0, "down", false)
-			m = refactorTick(t, m, refactorRead(t, m, 0).ServerAt+100)
+			m = refactorTick(t, m, refactorRead(t, m, 0).ServerAt+200)
 			v := refactorRead(t, m, 0)
 			p := v.Players[0]
 			if !p.Alive || (p.TrappedUntil > v.ServerAt) == expired {
@@ -282,7 +282,7 @@ func TestRefactorTeammateRescuesAfterRestore(t *testing.T) {
 	}
 	m = refactorTick(t, m, before.ServerAt+500)
 	m = refactorInput(t, m, 1, "right", false)
-	m = refactorTick(t, m, refactorRead(t, m, 0).ServerAt+100)
+	m = refactorTick(t, m, refactorRead(t, m, 0).ServerAt+200)
 	v := refactorRead(t, m, 0)
 	if !v.Players[0].Alive || v.Players[0].TrappedUntil > v.ServerAt || v.Players[0].InvulnerableUntil <= v.ServerAt {
 		t.Fatalf("touch rescue did not restore protected control: %+v", v.Players[0])
@@ -311,7 +311,7 @@ func TestRefactorEnemyTouchEliminatesTrappedPlayer(t *testing.T) {
 	m.Data = raw
 	m = refactorTick(t, m, v.ServerAt+500)
 	m = refactorInput(t, m, 2, "down", false)
-	m = refactorTick(t, m, refactorRead(t, m, 0).ServerAt+100)
+	m = refactorTick(t, m, refactorRead(t, m, 0).ServerAt+200)
 	v = refactorRead(t, m, 0)
 	if v.Players[0].Alive || v.Players[2].Eliminations != 1 {
 		t.Fatalf("enemy touch failed: victim=%+v enemy=%+v", v.Players[0], v.Players[2])

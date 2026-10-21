@@ -1,0 +1,135 @@
+{
+  "source": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/fortressblue-original/game/tankclient_emsc.eeb2b.wasm",
+  "sourceSHA256": "35974c0d7a06cf86f1f028b0ee1fc46c324921f6d829ce4db684f776199e489d",
+  "derivedSHA256": "a15e80eb535970bfbec47ab1ad50773377d9491e91b2a5522631ff8f66d84074",
+  "method": "Preserve selected original function bodies byte-for-byte; replace all other code bodies with unreachable stubs, retaining types/imports/data. Analysis-only slice, not executable reconstruction.",
+  "retainedFunctions": [
+    {
+      "index": 585,
+      "offset": 126527,
+      "bytes": 1657,
+      "sha256": "12d9c4874c45810aaf434259ab12228fce4664e8de1759d5f369f1fb0e0208ac"
+    },
+    {
+      "index": 775,
+      "offset": 217397,
+      "bytes": 3404,
+      "sha256": "75c2af8726c7344b124e89446775b23c244ad1e7ebddf783d31e0e956683d231"
+    },
+    {
+      "index": 779,
+      "offset": 223079,
+      "bytes": 160,
+      "sha256": "d3907fe26605fcff2768c477df2588c3611f764460a9c8d17b9cf7e9593a474d"
+    },
+    {
+      "index": 1027,
+      "offset": 367247,
+      "bytes": 43,
+      "sha256": "209fddc9afd29b5afaeec4bd7e69328fbd6b84cb0d50146797ac34b4765727b4"
+    },
+    {
+      "index": 1496,
+      "offset": 696929,
+      "bytes": 634,
+      "sha256": "b899f13f86a1f80426c0e0d2fe02fe9a41faa1ea101227c703e732a9831c50a7"
+    },
+    {
+      "index": 1828,
+      "offset": 872987,
+      "bytes": 525,
+      "sha256": "b2a991385bc72348b5663f4759a4a5c9bb941613507f1cba29f992859bbc8844"
+    },
+    {
+      "index": 2122,
+      "offset": 1187700,
+      "bytes": 942,
+      "sha256": "d233b257b2167b3f871569cb050a446f7114c454f6b663198c8b16bbd13641b5"
+    },
+    {
+      "index": 2478,
+      "offset": 1547982,
+      "bytes": 7786,
+      "sha256": "3683c35b806dd0b2666e8d38598e69d29e7537a713640f212afa8cc076e34fba"
+    },
+    {
+      "index": 2790,
+      "offset": 1701475,
+      "bytes": 862,
+      "sha256": "f178d42ccc93aeba2dfeae5eaa26647f25c9e8563dcae74808546d7ad3050ab7"
+    },
+    {
+      "index": 2900,
+      "offset": 1761030,
+      "bytes": 776,
+      "sha256": "768d2c4b3d8090bce49c3ed34b33b3c978fbe791dfc3cee6886f3dcf548334fd"
+    },
+    {
+      "index": 3078,
+      "offset": 1831838,
+      "bytes": 1274,
+      "sha256": "55d78a7651035c4cd69e9fb3ce9f24d600af49717ecd7eea0ffd5f0992d852bf"
+    },
+    {
+      "index": 3087,
+      "offset": 1838926,
+      "bytes": 429,
+      "sha256": "f6d57d2b9da789c3590ac3a4d334715400aae16bf91ccd78785db485150cfbd8"
+    },
+    {
+      "index": 3101,
+      "offset": 1842190,
+      "bytes": 1359,
+      "sha256": "f5b2f3dd5aad136eab4ae7339c2200096917bbf6a80f2aa5edb3cd2d1a7db762"
+    },
+    {
+      "index": 3107,
+      "offset": 1844352,
+      "bytes": 141,
+      "sha256": "cb66a5a38e01df9714ecc2f307301f5e96b3b58eb2c4732d5ca3e8537678d38a"
+    },
+    {
+      "index": 3265,
+      "offset": 1911602,
+      "bytes": 441,
+      "sha256": "a2f5deab3477392d391a7fadb5cb7411d52149855ab5220890e36cc08290f5a1"
+    },
+    {
+      "index": 3274,
+      "offset": 1912997,
+      "bytes": 146,
+      "sha256": "e19d539c5eb43bc3a9bc5998e6ea5b21d93739b04f3fc21ffe423ddbfa4a2534"
+    }
+  ],
+  "unknowns": [
+    "Call targets outside retained functions are deliberately omitted.",
+    "No original runtime behavior is observed by this slice."
+  ],
+  "evidenceID": "ev_6d00ee9eca22a5f519f105548f88d4b08f88f646955f5b17d5a9336dba35c03c",
+  "observations": {
+    "transport": [
+      "f585",
+      "f1027",
+      "f3078",
+      "f3087"
+    ],
+    "fall_and_land": [
+      "f3265",
+      "f3274"
+    ],
+    "pickup": [
+      "f3101",
+      "f3107",
+      "f1828",
+      "f779"
+    ],
+    "resource_registration": [
+      "f2478"
+    ]
+  },
+  "limitations": [
+    "Static original web-client code, not runtime/Steam/server execution",
+    "Server drop probability, cadence and item pool are not in inspected client",
+    "Platform scheduling, flight milliseconds and unsupported-crate removal are explicit adaptations"
+  ]
+}

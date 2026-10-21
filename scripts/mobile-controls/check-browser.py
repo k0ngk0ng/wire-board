@@ -2,7 +2,7 @@
 """Native touch acceptance; inventory: docs/research/mobile-controls/PLAN.md."""
 import argparse, base64, hashlib, http.cookiejar, json, os, shutil, subprocess, time, traceback, urllib.request, uuid
 from pathlib import Path
-parser=argparse.ArgumentParser();parser.add_argument('--out',required=True);args=parser.parse_args()
+parser=argparse.ArgumentParser();parser.add_argument('--out',required=True);parser.add_argument('--games',default=','.join(['bubbleparty','battlecity','racing','tetris','spf2t','fortressblue']));args=parser.parse_args()
 root=Path(__file__).resolve().parents[2];out=(root/args.out).resolve();assert out.is_relative_to(root) and not out.exists();out.mkdir(parents=True)
 run='touch'+uuid.uuid4().hex[:6];temp=out/'temporary';sockets=root/'.s'/run;env=dict(os.environ)
 for k,v in {'TMPDIR':temp/'tmp','GOTMPDIR':temp/'tmp','GOCACHE':root/'.local/go-build','GOMODCACHE':root/'.local/go-mod','npm_config_cache':root/'.local/npm','AGENT_BROWSER_SOCKET_DIR':sockets,'AGENT_BROWSER_PROFILE':temp/'profile'}.items():v.mkdir(parents=True,exist_ok=True);env[k]=str(v)
@@ -23,6 +23,7 @@ def cmd(kind,**extra):
 def wait(fn,seconds=20):
  end=time.monotonic()+seconds
  while time.monotonic()<end:
+  if server is not None and server.poll() is not None:raise AssertionError('fixture exited; inspect server.log')
   if value:=fn():return value
   time.sleep(.1)
  raise AssertionError('Timed out')
@@ -48,7 +49,9 @@ try{
  await send('Network.enable',{});await send('Emulation.setDeviceMetricsOverride',{width:o.width,height:844,deviceScaleFactor:1,mobile:true});await send('Emulation.setTouchEmulationEnabled',{enabled:true,maxTouchPoints:5});
  const points=await evaluate(`(()=>{const group=document.querySelector(${JSON.stringify(o.group)});group.scrollIntoView({block:'center'});getSelection().removeAllRanges();window.__touchAudit={events:[],selections:[]};for(const name of ['pointerup','pointercancel','contextmenu','selectstart'])group.addEventListener(name,e=>window.__touchAudit.events.push({type:e.type,text:e.target.textContent,prevented:e.defaultPrevented}));document.addEventListener('selectionchange',()=>{const s=getSelection().toString();if(s)window.__touchAudit.selections.push(s)});return ${JSON.stringify(o.keys)}.map(selector=>{const e=document.querySelector(selector);if(!e||e.disabled)throw Error('missing/disabled '+selector);const r=e.getBoundingClientRect();return {x:r.x+r.width*(e.hasAttribute('data-bubbleparty-dpad')?.8:.5),y:r.y+r.height*.5,radiusX:3,radiusY:3,force:1}})})()`);
  if(!points)throw Error('touch target missing');const point=(i,id)=>({...points[i],id});const pause=ms=>new Promise(r=>setTimeout(r,ms));const touch=(type,touchPoints)=>send('Input.dispatchTouchEvent',{type,touchPoints});
- await touch('touchStart',[point(0,1)]);await pause(1200);const held=await evaluate('({selected:getSelection().toString(),scrollY,viewport:innerWidth})');
+ await touch('touchStart',[point(0,1)]);await pause(1200);
+ const menu=await evaluate(`(async()=>{const e=document.querySelector(${JSON.stringify(o.keys[0])}),event=new MouseEvent('contextmenu',{bubbles:true,cancelable:true,composed:true});e.dispatchEvent(event);const s=await(await fetch('/api/state')).json();return {prevented:event.defaultPrevented,trusted:event.isTrusted,applied:s.room?.game?.data?.players?.find(p=>p.seat===s.room.you)?.applied}})()`);
+ const held=await evaluate('({selected:getSelection().toString(),scrollY,viewport:innerWidth})');
  await touch('touchMove',[{...point(0,1),x:points[0].x+18}]);await pause(100);await touch('touchEnd',[]);await pause(250);
  // Browser interruption must release held actions, including charge without firing.
  await touch('touchStart',[point(0,1)]);await pause(100);await touch('touchCancel',[]);await pause(250);
@@ -56,7 +59,7 @@ try{
  else{await touch('touchStart',[point(1,2)]);await pause(150);await touch(o.cancelSecondary?'touchCancel':'touchEnd',[])}
  await pause(650);
  const audit=await evaluate('({...window.__touchAudit,selected:getSelection().toString(),viewport:innerWidth,scrollY})');
- const {data}=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});console.log(JSON.stringify({held,audit,inputs,acks,screenshot:data}));
+ const {data}=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});console.log(JSON.stringify({held,menu,audit,inputs,acks,screenshot:data}));
 }finally{if(sessionId)await call('Target.detachFromTarget',{sessionId});ws.close()}
 '''
 CONFIG={
@@ -76,9 +79,14 @@ try:
   request=urllib.request.Request(base+'/api'+path,data=None if body is None else json.dumps(body).encode(),headers={'Content-Type':'application/json'})
   with opponent.open(request,timeout=10) as response:return json.load(response)
  other('/register',{'name':'触屏按键验收对手','password':'bubbleparty-browser-test-only','invite':'bubbleparty-browser'})
- for kind,(group,keys,multi) in CONFIG.items():
+ selected=args.games.split(',');assert selected and all(kind in CONFIG for kind in selected),selected
+ for kind in selected:
+  group,keys,multi=CONFIG[kind]
   browser('set','viewport','390','844');api('/rooms',{'kind':kind,'name':kind+' 手机长按验收','capacity':2,'options':{}})
   r=room();other('/rooms/'+r['id'],{'type':'join','version':r['version'],'nonce':uuid.uuid4().hex});r=other('/state')['room'];other('/rooms/'+r['id'],{'type':'ready','version':r['version'],'nonce':uuid.uuid4().hex});cmd('ready');cmd('start');browser('wait','.game-layout');time.sleep(3.5)
+  if kind=='bubbleparty' and room()['game']['data']['phase']=='select':
+   browser('wait','[data-bubbleparty-character-confirm]');browser('click','[data-bubbleparty-character-confirm]')
+   r=other('/state')['room'];other('/rooms/'+r['id'],{'type':'action','version':r['version'],'nonce':uuid.uuid4().hex,'action':{'type':'character','epoch':r['game']['data']['epoch'],'character':0,'confirm':True}})
   if kind in ('battlecity','spf2t','fortressblue'):
    attr={'battlecity':'data-battlecity-tank','spf2t':'data-character','fortressblue':'data-fortressblue-tank'}[kind];value=js(f'document.querySelector("[{attr}]").getAttribute("{attr}")');browser('click',f'[{attr}="{value}"]');r=other('/state')['room'];action={'type':'select','epoch':r['game']['data']['epoch'],('character' if kind=='spf2t' else 'tank'):int(value) if kind=='fortressblue' else value};other('/rooms/'+r['id'],{'type':'action','version':r['version'],'nonce':uuid.uuid4().hex,'action':action})
   wait(lambda:room()['game']['data']['phase'] in ('playing','racing','finishing'));wait(lambda:js('!!document.querySelector('+json.dumps(keys[0])+')&&!document.querySelector('+json.dumps(keys[0])+').disabled'))
@@ -87,7 +95,9 @@ try:
    browser('set','viewport',str(width),'844')
    options={'group':group,'keys':keys,'multi':multi,'width':width,'cancelSecondary':kind=='fortressblue'}
    result=subprocess.run(['node','--input-type=module','-',browser('get','cdp-url')['cdpUrl'],base,json.dumps(options)],input=CDP,cwd=root,env=env,text=True,capture_output=True,timeout=30);assert result.returncode==0,result.stdout+result.stderr
-   trace=json.loads(result.stdout);(out/f'{kind}-{width}.png').write_bytes(base64.b64decode(trace.pop('screenshot')));save(f'{kind}-{width}-touch',trace)
+   trace=json.loads(result.stdout);assert trace['menu']['prevented'] and not trace['menu']['trusted'],trace['menu']
+   if kind=='bubbleparty' and width==320:assert trace['menu']['applied']['move']!='none',trace['menu']
+   (out/f'{kind}-{width}.png').write_bytes(base64.b64decode(trace.pop('screenshot')));save(f'{kind}-{width}-touch',trace)
    if width==320:verify_release(trace,kind)  # Later samples may legitimately become trapped/dead after the earlier bomb.
    style=js('(()=>{const group=document.querySelector('+json.dumps(group)+');return [group,...document.querySelectorAll("button,[role=button]"),...group.querySelectorAll("small,span")].filter(e=>e.getClientRects().length).map(e=>({tag:e.tagName,text:e.textContent?.trim().slice(0,50),userSelect:getComputedStyle(e).userSelect,webkitUserSelect:getComputedStyle(e).webkitUserSelect,touchAction:getComputedStyle(e).touchAction}))})()')
    unprotected=[s for s in style if s['userSelect']!='none' or s['webkitUserSelect']!='none'];entry['widths'][width]={'styles':style,'selected':trace['audit']['selected'],'selectionEvents':trace['audit']['selections'],'unprotected':unprotected,'inputs':len(trace['inputs']),'acks':len(trace['acks'])}
@@ -103,6 +113,25 @@ try:
   browser('click','.chat-toggle');browser('fill','textarea','可复制的聊天输入');browser('focus','textarea');browser('press','Shift+ArrowLeft');selection=js('(()=>{const e=document.querySelector("textarea");return {start:e.selectionStart,end:e.selectionEnd,text:e.value,select:getComputedStyle(e).userSelect}})()');assert selection['start']<selection['end']==len(selection['text']) and selection['select']!='none',selection;entry['chatSelection']=selection
   browser('click','.chat-toggle');cmd('close');cmd('leave');r=other('/state').get('room')
   if r:other('/rooms/'+r['id'],{'type':'leave','version':r['version'],'nonce':uuid.uuid4().hex})
+ # Test matching/exception boundaries with real DOM descendants. No game
+ # state or native input stream is replaced by this event-contract probe.
+ boundary=js(r"""(()=>{
+ const container=document.createElement('div');container.hidden=true;
+ container.innerHTML='<button data-probe="button"><span data-probe="button-label">按钮</span><svg><path data-probe="button-svg"></path></svg></button><div role="button" data-probe="role-button"><span data-probe="role-label">自定义</span></div><div data-game-controls data-probe="controller"><span data-probe="controller-label">方向</span><input data-probe="control-input"><textarea data-probe="control-textarea"></textarea><select data-probe="control-select"><option>选项</option></select><div contenteditable="true" data-probe="control-editor"><span data-probe="editor-child">可编辑</span></div></div><input type="button" data-probe="input-button" value="按钮"><input data-probe="input"><textarea data-probe="textarea"></textarea><p data-probe="copy">普通可复制文字</p>';
+ document.body.append(container);
+ const result=[...container.querySelectorAll('[data-probe]')].map(e=>{const event=new MouseEvent('contextmenu',{bubbles:true,cancelable:true,composed:true});e.dispatchEvent(event);return {name:e.dataset.probe,prevented:event.defaultPrevented,userSelect:getComputedStyle(e).userSelect}});
+ container.remove();return result;
+ })()""")
+ protected={'button','button-label','button-svg','role-button','role-label','controller','controller-label','input-button'}
+ for item in boundary:
+  assert item['prevented']==(item['name'] in protected),item
+  if item['name'] in protected:assert item['userSelect']=='none',item
+  else:assert item['userSelect']!='none',item
+ report['contextMenuBoundaries']=boundary
+ save('context-menu-boundaries',boundary)
+ css=(root/'web/src/style.css').read_text()
+ assert '-webkit-touch-callout: none' in css and '-webkit-touch-callout: default' in css
+ report['webkitDeclarationReview']={'source':'web/src/style.css','controls':'none','editableDescendants':'default','physicalIOSVerified':False}
  report['passed']=not report['failures']
 except BaseException:
  report['error']=traceback.format_exc();print(report['error'],flush=True)

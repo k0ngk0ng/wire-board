@@ -1,7 +1,55 @@
 import type { Move } from "./input";
 import type { Player, View } from "./types";
 
+import catalog from "../data/classic-2002.json" with { type: "json" };
 type Point = { x: number; y: number };
+type TerrainView = Pick<
+  View,
+  "mapId" | "nativeObjects" | "boxMotions" | "serverAt"
+>;
+const nativeMaps = new Map(catalog.maps.map((m) => [m.id, m]));
+const nativeTiles = new Map(catalog.tiles.map((t) => [t.id, t]));
+const passesBoxes = (p: Player) =>
+  p.mount === "airship" || p.mount === "airship-broken";
+
+// Predict plain travel only. Special terrain and active pushed bodies use
+// confirmed server positions; guessing their state would invent gate/belt moves.
+export function authoritativeTerrain(
+  view: Partial<TerrainView>,
+  point: Point,
+): boolean {
+  if (
+    (view.boxMotions ?? []).some(
+      (m) =>
+        m.endAt > (view.serverAt ?? 0) &&
+        Math.abs(point.x - (m.fromX + m.x) / 2) < 2.5 &&
+        Math.abs(point.y - (m.fromY + m.y) / 2) < 2.5,
+    )
+  )
+    return true;
+  const map = nativeMaps.get(view.mapId ?? "");
+  if (!map) return false;
+  const ox = Math.floor((15 - map.width) / 2),
+    oy = Math.floor((13 - map.height) / 2);
+  for (let y = Math.floor(point.y) - 2; y <= Math.ceil(point.y) + 2; y++)
+    for (let x = Math.floor(point.x) - 2; x <= Math.ceil(point.x) + 2; x++) {
+      if (x < 0 || x >= 15 || y < 0 || y >= 13) continue;
+      const ground = nativeTiles.get(map.ground[y - oy]?.[x - ox]);
+      if (ground?.category === "ground" && ground.tileInfo.fieldsRaw[3] === 2)
+        return true;
+      const id =
+        view.nativeObjects !== undefined
+          ? view.nativeObjects[y * 15 + x]
+          : map.objects[y - oy]?.[x - ox];
+      const object = nativeTiles.get(id ?? -1);
+      if (
+        object?.category === "passable" &&
+        object.tileInfo.fieldsRaw.slice(1, 5).some((v) => v === 0)
+      )
+        return true;
+    }
+  return false;
+}
 const radius = 0.28;
 const horizon = 250;
 const epsilon = 0.000001;
@@ -14,6 +62,7 @@ function axis(
   target: number,
   horizontal: boolean,
   cells: readonly number[],
+  passBoxes = false,
 ) {
   const old = horizontal ? from.x : from.y;
   const across = horizontal ? from.y : from.x;
@@ -38,7 +87,8 @@ function axis(
   for (let y = minY; y <= maxY; y++)
     for (let x = minX; x <= maxX; x++) {
       const cell = x < 0 || x >= 15 || y < 0 || y >= 13 ? 1 : cells[y * 15 + x];
-      if (cell !== 1 && cell !== 2 && cell !== 3) continue;
+      if (cell !== 1 && cell !== 2 && cell !== 3 && cell !== 4) continue;
+      if (passBoxes && (cell === 2 || cell === 4)) continue;
       const center = horizontal ? x : y,
         cross = horizontal ? y : x;
       if (Math.abs(across - cross) >= 0.5 + radius - epsilon) continue;
@@ -65,9 +115,10 @@ function constrain(
   from: Point,
   target: Point,
   cells: readonly number[],
+  passBoxes = false,
 ): Point {
-  const x = axis(from, target.x, true, cells);
-  return { x, y: axis({ x, y: from.y }, target.y, false, cells) };
+  const x = axis(from, target.x, true, cells, passBoxes);
+  return { x, y: axis({ x, y: from.y }, target.y, false, cells, passBoxes) };
 }
 
 export function predictPlayer(
@@ -76,13 +127,16 @@ export function predictPlayer(
   move: Move,
   cells: readonly number[],
   ms: number,
+  terrain: Partial<TerrainView> = {},
 ): Point {
   const p = { ...from };
   if (!player.alive || player.trappedUntil > 0 || move === "none") return p;
+  const passBoxes = passesBoxes(player);
   const dx = move === "left" ? -1 : move === "right" ? 1 : 0;
   const dy = move === "up" ? -1 : move === "down" ? 1 : 0;
   let remaining = Math.max(0, Math.min(horizon, ms));
   while (remaining > 0) {
+    if (authoritativeTerrain(terrain, p)) break;
     const step = Math.min(20, remaining);
     remaining -= step;
     let distance = step / Math.max(70, player.speedMs ?? 150);
@@ -95,6 +149,7 @@ export function predictPlayer(
           Math.sign(center - p.y) * Math.min(distance, Math.abs(center - p.y)),
         false,
         cells,
+        passBoxes,
       );
       distance -= Math.abs(y - p.y);
       p.y = y;
@@ -108,13 +163,14 @@ export function predictPlayer(
           Math.sign(center - p.x) * Math.min(distance, Math.abs(center - p.x)),
         true,
         cells,
+        passBoxes,
       );
       distance -= Math.abs(x - p.x);
       p.x = x;
       if (Math.abs(p.x - center) > epsilon) distance = 0;
     }
-    if (dx) p.x = axis(p, p.x + dx * distance, true, cells);
-    if (dy) p.y = axis(p, p.y + dy * distance, false, cells);
+    if (dx) p.x = axis(p, p.x + dx * distance, true, cells, passBoxes);
+    if (dy) p.y = axis(p, p.y + dy * distance, false, cells, passBoxes);
   }
   return p;
 }
@@ -128,6 +184,11 @@ export class PlayerMotion {
   private received = 0;
   private at = 0;
   private active = false;
+  private life = "";
+  private policy = "authority";
+  mode() {
+    return this.policy;
+  }
   private authority?: Point;
   private local?: Point;
   private shown?: Point;
@@ -144,16 +205,30 @@ export class PlayerMotion {
       base = position(player);
     const active =
       enabled &&
-      view.rulesVersion === 2 &&
+      (view.rulesVersion ?? 0) >= 2 &&
       view.phase === "playing" &&
       player.alive &&
       !player.trappedUntil;
+    const life = `${player.mount ?? ""}:${player.character ?? ""}:${player.alive}:${player.trappedUntil}`;
+    const authorityOnly =
+      active &&
+      (view.rulesVersion ?? 0) >= 3 &&
+      authoritativeTerrain(view, base);
+    const policy = !active
+      ? "authority"
+      : authorityOnly
+        ? "terrain-authority"
+        : "predicted";
     if (
       !this.local ||
+      life !== this.life ||
+      policy !== this.policy ||
       scope !== this.scope ||
       active !== this.active ||
       !active
     ) {
+      this.life = life;
+      this.policy = policy;
       this.scope = scope;
       this.stamp = view.serverAt;
       this.received = now;
@@ -164,6 +239,23 @@ export class PlayerMotion {
       this.shown = base;
       this.correction = { x: 0, y: 0 };
       return { ...base };
+    }
+    if (authorityOnly) {
+      const elapsed = Math.max(0, now - this.at);
+      this.at = now;
+      const previous = this.shown ?? base;
+      const blend = 1 - Math.exp(-Math.min(100, elapsed) / 35);
+      this.shown =
+        Math.hypot(previous.x - base.x, previous.y - base.y) > 1.5
+          ? base
+          : {
+              x: previous.x + (base.x - previous.x) * blend,
+              y: previous.y + (base.y - previous.y) * blend,
+            };
+      this.authority = base;
+      this.local = base;
+      this.stamp = view.serverAt;
+      return { ...this.shown };
     }
     if (
       this.stamp !== view.serverAt ||
@@ -187,7 +279,14 @@ export class PlayerMotion {
       Math.max(0, this.received + horizon - this.at),
     );
     this.at = now;
-    this.local = predictPlayer(this.local, player, move, view.cells, step);
+    this.local = predictPlayer(
+      this.local,
+      player,
+      move,
+      view.cells,
+      step,
+      view,
+    );
     const blend = Math.exp(-elapsed / 70);
     this.correction.x *= blend;
     this.correction.y *= blend;
@@ -198,6 +297,7 @@ export class PlayerMotion {
         y: this.local.y + this.correction.y,
       },
       view.cells,
+      passesBoxes(player),
     );
     return { ...this.shown };
   }

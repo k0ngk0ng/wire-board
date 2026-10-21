@@ -35,7 +35,7 @@ func TestAllNativeStartsHaveClearSupportedPlayableSpawns(t *testing.T) {
 				t.Run(fmt.Sprintf("%s/%d/tank-%d", stage.ID, players, id), func(t *testing.T) {
 					mod := fb.Module()
 					now := time.Unix(1800000000, 0)
-					opts, _ := json.Marshal(fb.Options{Map: stage.ID, TurnSeconds: 20})
+					opts, _ := json.Marshal(fb.Options{Map: stage.ID, TurnSeconds: 20, BotDifficulty: "hard"})
 					m, e := mod.Start(gameapi.Context{Players: players, Now: now}, opts)
 					if e != nil {
 						t.Fatal(e)
@@ -52,6 +52,12 @@ func TestAllNativeStartsHaveClearSupportedPlayableSpawns(t *testing.T) {
 					half, height := 10.0, 28.0 // actual movement body, not transparent sprite bounds
 					mask := fbmaps.BaseMask(stage)
 					for turn := 0; turn < players; turn++ {
+						// Native spawn geometry remains unchanged; let the real
+						// supply transport finish before testing player input.
+						for len(m.Actors) == 0 && m.SystemDeadline > 0 {
+							now = time.UnixMilli(m.SystemDeadline)
+							m = timerAt(t, mod, m, m.SystemDeadline)
+						}
 						s, _ = timeline(t, m)
 						seat := s.Current
 						tank := s.Tanks[seat]

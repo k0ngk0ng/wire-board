@@ -1,10 +1,23 @@
 import type { Camera, Point } from "./aim";
 const clamp = (v: number, a: number, b: number) => Math.max(a, Math.min(b, v));
+function fittedView(
+  worldViewW: number,
+  worldViewH: number,
+  width: number,
+  height: number,
+) {
+  const scale = Math.min(1, width / worldViewW, height / worldViewH);
+  return { worldViewW: worldViewW * scale, worldViewH: worldViewH * scale };
+}
 export function boundCamera(c: Camera, width: number, height: number): Camera {
+  const view = fittedView(c.worldViewW, c.worldViewH, width, height);
   return {
     ...c,
-    x: clamp(c.x, 0, Math.max(0, width - c.worldViewW)),
-    y: clamp(c.y, -320, Math.max(-320, height - c.worldViewH)),
+    ...view,
+    x: clamp(c.x, 0, Math.max(0, width - view.worldViewW)),
+    // Shells keep their authoritative coordinates above the original image;
+    // the camera stops at its top edge and naturally follows them on return.
+    y: clamp(c.y, 0, Math.max(0, height - view.worldViewH)),
   };
 }
 export function centeredCamera(
@@ -15,13 +28,17 @@ export function centeredCamera(
   width: number,
   height: number,
 ): Camera {
-  const worldViewH = (worldViewW * screenH) / Math.max(1, screenW);
+  const view = fittedView(
+    worldViewW,
+    (worldViewW * screenH) / Math.max(1, screenW),
+    width,
+    height,
+  );
   return boundCamera(
     {
-      x: target.x - worldViewW / 2,
-      y: target.y - worldViewH * 0.62,
-      worldViewW,
-      worldViewH,
+      x: target.x - view.worldViewW / 2,
+      y: target.y - view.worldViewH * 0.62,
+      ...view,
     },
     width,
     height,
@@ -34,7 +51,8 @@ export function zoomAt(
   width: number,
   height: number,
 ): Camera {
-  const w = clamp(c.worldViewW * factor, 240, Math.min(1200, width));
+  const maxWidth = Math.min(1200, width, (height * c.worldViewW) / c.worldViewH);
+  const w = clamp(c.worldViewW * factor, Math.min(240, maxWidth), maxWidth);
   const h = (c.worldViewH * w) / c.worldViewW;
   return boundCamera(
     {
@@ -54,9 +72,5 @@ export function panCamera(
   width: number,
   height: number,
 ): Camera {
-  // Manual vertical panning keeps map bounds; automatic tracking may show sky.
-  return {
-    ...boundCamera({ ...c, x: c.x + dx, y: c.y + dy }, width, height),
-    y: clamp(c.y + dy, 0, Math.max(0, height - c.worldViewH)),
-  };
+  return boundCamera({ ...c, x: c.x + dx, y: c.y + dy }, width, height);
 }

@@ -639,3 +639,69 @@
     bottom: 18px;
   }
 }
+
+/* One selected-map preview, shared by create and waiting options. */
+.bubble-map-preview {
+  margin: 0;
+  padding: 12px;
+  min-width: 0;
+  border: 1px solid #bac9b8;
+  border-radius: 12px;
+  background: #edf2e8;
+  color: #243e32;
+}
+.bubble-map-preview-image {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #d5dfcc;
+  color: #243e32;
+}
+.bubble-map-preview-image img,
+.bubble-map-preview-image svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.bubble-map-preview[data-preview-state="loading"] img {
+  visibility: hidden;
+}
+.bubble-map-preview-status {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.7;
+  background: #d5dfcc;
+  color: #243e32;
+}
+.bubble-map-preview figcaption {
+  display: grid;
+  gap: 4px;
+  margin-top: 10px;
+  overflow-wrap: anywhere;
+}
+.bubble-map-preview figcaption strong {
+  font-size: 14px;
+  color: #243e32;
+}
+.bubble-map-preview figcaption span {
+  font-size: 12px;
+  line-height: 1.7;
+  color: #405a48;
+}
+.bubble-map-preview-random {
+  padding: 20px;
+  text-align: center;
+  font-size: 40px;
+  font-weight: 700;
+  color: #405a48;
+}

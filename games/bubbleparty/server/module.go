@@ -11,12 +11,14 @@ import (
 )
 
 type Action struct {
-	Avatar int    `json:"avatar"`
-	Type   string `json:"type"`
-	Epoch  string `json:"epoch"`
-	Seq    int64  `json:"seq"`
-	Move   string `json:"move"`
-	Bomb   bool   `json:"bomb"`
+	Character int    `json:"character"`
+	Confirm   bool   `json:"confirm"`
+	Avatar    int    `json:"avatar"`
+	Type      string `json:"type"`
+	Epoch     string `json:"epoch"`
+	Seq       int64  `json:"seq"`
+	Move      string `json:"move"`
+	Bomb      bool   `json:"bomb"`
 }
 
 func Module() gameapi.Module {
@@ -58,11 +60,12 @@ func startWithSeed(ctx gameapi.Context, raw json.RawMessage, seed uint64) (gamea
 	}
 	now := ctx.Now.UnixMilli()
 	s := &State{
-		RulesVersion: ClassicRulesVersion, Schema: 1, Options: o, Phase: PhaseCountdown, Epoch: hex.EncodeToString(token[:]),
-		Seed: seed, ServerAt: now, StartAt: now + Countdown, MapID: o.Map,
-		Players: make([]Player, ctx.Players), TeamSize: ctx.Players / 2,
+		RulesVersion: NativeRulesVersion, Schema: 1, Options: o, Phase: PhaseSelect, Epoch: hex.EncodeToString(token[:]),
+		Seed: seed, ServerAt: now, StartAt: now + CharacterSelectMS + Countdown, SelectUntil: now + CharacterSelectMS, MapID: o.Map,
+		NativeObjects: classicObjects(o.Map),
+		Players:       make([]Player, ctx.Players), TeamSize: ctx.Players / 2,
 		Cells: mapCells(o.Map, seed), Events: []Event{}, Bombs: []Bomb{}, Items: []Item{},
-		Log: []string{"3 秒后开始水泡大战"},
+		Log: []string{"请选择角色；全部确认或 20 秒后锁定，再倒计时开战"},
 	}
 	seconds := int64(o.RoundSeconds)
 	if seconds <= 0 {
@@ -86,6 +89,9 @@ func startWithSeed(ctx gameapi.Context, raw json.RawMessage, seed uint64) (gamea
 		}
 	}
 	s.emit("countdown", -1, 0, 0, "", int(Countdown), now)
+	for i := range s.Players {
+		assignCharacter(&s.Players[i], i%RegularCharacterCount)
+	}
 	return s.match()
 }
 
@@ -101,8 +107,18 @@ func validAction(ctx gameapi.Context, s *State, raw json.RawMessage) (Action, er
 		return a, errors.New("当前不能操作角色")
 	}
 	p := &s.Players[ctx.Actor]
+	if a.Type == "character" {
+		if s.RulesVersion < NativeRulesVersion || s.Phase != PhaseSelect || s.Result != nil || ctx.Now.UnixMilli() >= s.SelectUntil || a.Character < 0 || a.Character >= RegularCharacterCount || a.Seq != 0 || a.Avatar != 0 || a.Move != "" || a.Bomb {
+			return a, errors.New("只能在开战前选择有效角色")
+		}
+		return a, nil
+	}
+	if a.Character != 0 || a.Confirm {
+		return a, errors.New("操作包含无效角色设置")
+	}
+
 	if a.Type == "avatar" {
-		if s.Result != nil || !p.Alive || (s.Phase != PhaseCountdown && s.Phase != PhasePlaying) {
+		if s.RulesVersion >= NativeRulesVersion || s.Result != nil || !p.Alive || (s.Phase != PhaseCountdown && s.Phase != PhasePlaying) {
 			return a, errors.New("当前不能更换人物")
 		}
 		if a.Avatar < 0 || a.Avatar >= AvatarCount || a.Seq != 0 || a.Move != "" || a.Bomb {
@@ -137,11 +153,16 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 	if err != nil {
 		return m, err
 	}
+	if a.Type == "character" {
+		s.selectCharacter(ctx.Actor, a.Character, a.Confirm, ctx.Now.UnixMilli())
+		return s.match()
+	}
+
 	if a.Type == "avatar" {
 		s.Players[ctx.Actor].Avatar = a.Avatar
 		return s.match()
 	}
-	if s.RulesVersion == ClassicRulesVersion {
+	if s.RulesVersion >= ClassicRulesVersion {
 		s.advance(ctx.Now.UnixMilli())
 	}
 	p := &s.Players[ctx.Actor]

@@ -58,6 +58,24 @@ function OptionsForm({ value, onChange, disabled }: OptionsProps<Options>) {
           ))}
         </select>
       </label>
+      <label>
+        电脑难度
+        <select
+          aria-label="疯狂坦克电脑难度"
+          disabled={disabled}
+          value={value.botDifficulty ?? "normal"}
+          onChange={(event) =>
+            onChange({
+              ...value,
+              botDifficulty: event.target.value as Options["botDifficulty"],
+            })
+          }
+        >
+          <option value="easy">简单</option>
+          <option value="normal">普通</option>
+          <option value="hard">困难</option>
+        </select>
+      </label>
       <div className={`fb-map-preview ${random ? "random" : ""}`}>
         {random ? (
           <div className="fb-map-collage" aria-hidden="true">
@@ -80,7 +98,7 @@ function OptionsForm({ value, onChange, disabled }: OptionsProps<Options>) {
       </div>
       <p>
         红蓝两队轮流行动。利用角度、力度和风向击中对手；爆炸会永久改变地形，
-        坦克落地后才结算坠落伤害。按住空格或开火键蓄力，松开或满力时发射。
+        坦克落地后才结算坠落伤害。电脑与托管使用所选难度；三档仅改变操作精度。按住空格或开火键蓄力，松开或满力时发射。
       </p>
     </div>
   );
@@ -98,7 +116,7 @@ export default defineGame<View, Options>({
   requiresFullTable: true,
   supportsBots: true,
   ownsSounds: true,
-  defaultOptions: { map: defaultMap, turnSeconds: 30 },
+  defaultOptions: { map: defaultMap, turnSeconds: 30, botDifficulty: "normal" },
   Board,
   Cover,
   Options: OptionsForm,
@@ -108,7 +126,10 @@ export default defineGame<View, Options>({
     const info = tankById.get(tank.tankId);
     const portrait = tankPortraits[String(tank.tankId)];
     const current =
-      data.current === seat && data.phase === "playing" && !data.resolution;
+      data.current === seat &&
+      data.phase === "playing" &&
+      !data.resolution &&
+      data.deadline > 0;
     const pct = Math.max(
       0,
       Math.min(100, (tank.hp / Math.max(1, tank.maxHp)) * 100),

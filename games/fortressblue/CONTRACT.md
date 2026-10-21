@@ -6,7 +6,7 @@
 
 模块 ID 为 `fortressblue`，名称为「疯狂坦克」，非实时，接受 2／4／6／8 人。前一半席位为红队，后一半为蓝队。当前次序为红、蓝席位交错的固定数组，阵亡席位跳过；未实现未经证实的原版 Delay 排序。
 
-设置对象为 `{"map":"stage-16","turnSeconds":30}`。`map` 接受 `maps/catalog.json` 中 17 个 ID 或 `random`；`turnSeconds` 接受 15～40 的整数。未知字段、非法地图、奇数／越界人数和非法时限拒绝。随机地图在开局时解析为具体地图，View 返回具体 `mapId`。创建与等待房间沿用公共框架，等待房间修改设置后须保存才能开始。
+设置对象为 `{"map":"stage-16","turnSeconds":30,"botDifficulty":"normal"}`。`map` 接受 `maps/catalog.json` 中 17 个 ID 或 `random`；`turnSeconds` 接受 15～40 的整数。未知字段、非法地图、奇数／越界人数和非法时限拒绝。随机地图在开局时解析为具体地图，View 返回具体 `mapId`。创建与等待房间沿用公共框架，等待房间修改设置后须保存才能开始。
 
 ## 状态与动作
 
@@ -120,3 +120,8 @@
 - 全电脑／混合／托管／手动接管不能完成对局；恢复后的危险区、发射或落地不能继续；原版媒体与清单不符。
 
 复杂行为按 [BROWSER_REFACTOR_SCENARIOS.md](tests/BROWSER_REFACTOR_SCENARIOS.md) 保存真实 HTTP／SQLite／浏览器证据；规则与完整对局只跑本游戏。服务端阶段记录见 [stage1](../../docs/research/fortressblue-refactor/backend-stage1-verification.md)、[stage2](../../docs/research/fortressblue-refactor/backend-stage2-verification.md)及[出生点／准备取消复核](../../docs/research/fortressblue-refactor/backend-stage3-verification.md)。浏览器输出保留逐帧快照、实际画面、事件时间和可复跑命令，不以输入计数或 DOM 文本存在替代可玩性判断。
+
+
+电脑难度 `botDifficulty` 为 `easy`／`normal`／`hard`，新建默认普通，旧存档缺失按困难保留原策略；真人托管沿用同档。难度只影响搜索和瞄准精度，不修改物理或伤害。
+
+新局第 3 个行动回合开始出现直升机随机补给，其后间隔 2～4 回合。运输期间停止玩家倒计时并禁止行动，落地后给予下一位完整操作时限。服务器保存 `supplies` 的运输／落地／接触确认时间和 `nextSupplyTurn`。两队存活坦克都可接触拾取；库存满 4 格不消耗箱子。箱子落地和 180ms 接触确认结束后才增加库存，使用仍走原 `item` 行动。道具池沿用当前 8 种已实现道具。频率、落点选择和动画时长属于平台适配，原作客户端没有原服务器概率表。详见 `docs/research/fortress-supplies/README.md`。

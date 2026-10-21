@@ -44,8 +44,10 @@ func TestDistrictReferenceLayout(t *testing.T) {
 			switch c {
 			case 'H':
 				want = CellWall
-			case 'R', 'O', 'C':
+			case 'R', 'O':
 				want = CellCrate
+			case 'C':
+				want = CellPushCrate
 			case 'T':
 				if referencePines[[2]int{x, y}] {
 					want = CellWall

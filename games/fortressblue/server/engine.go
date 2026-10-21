@@ -44,11 +44,14 @@ func configure(players int, raw json.RawMessage) (json.RawMessage, error) {
 	if teamSize(players) == 0 {
 		return nil, errors.New("疯狂坦克支持 2、4、6 或 8 人")
 	}
-	o := Options{Map: "stage-1", TurnSeconds: 30}
+	o := Options{Map: "stage-1", TurnSeconds: 30, BotDifficulty: "normal"}
 	if len(raw) > 0 && !bytes.Equal(bytes.TrimSpace(raw), []byte("null")) {
 		if err := strict(raw, &o); err != nil {
 			return nil, errors.New("无效疯狂坦克设置")
 		}
+	}
+	if o.BotDifficulty != "easy" && o.BotDifficulty != "normal" && o.BotDifficulty != "hard" {
+		return nil, errors.New("请选择简单、普通或困难电脑")
 	}
 	if o.Map != "random" {
 		if _, ok := fbmaps.ByID(o.Map); !ok {
@@ -155,6 +158,7 @@ func beginPlaying(s *State, at time.Time) error {
 	s.SuddenAt = s.StartAt + SuddenAfterMS
 	s.MatchEndsAt = s.StartAt + MatchLimitMS
 	s.Turn = 1
+	s.NextSupplyTurn = 3
 	s.Current = s.Order[0]
 	s.Wind = windFor(s.Seed, s.Turn, false)
 	s.Deadline = at.Add(time.Duration(s.Options.TurnSeconds) * time.Second).UnixMilli()
@@ -223,6 +227,10 @@ func advanceTurn(s *State, at time.Time) {
 	s.Deadline = at.Add(time.Duration(s.Options.TurnSeconds) * time.Second).UnixMilli()
 	s.emit("turn", next, -1, 0, 0, 0, "", at.UnixMilli())
 	s.note(fmt.Sprintf("轮到 %d 号位行动", next+1))
+	scheduleSupply(s, at.UnixMilli())
+	if s.supplyInFlight() {
+		s.Deadline = 0
+	}
 }
 
 func decode(m gameapi.Match) (*State, error) {
@@ -232,6 +240,9 @@ func decode(m gameapi.Match) (*State, error) {
 	var s State
 	if err := json.Unmarshal(m.Data, &s); err != nil {
 		return nil, errors.New("无效疯狂坦克存档")
+	}
+	if s.Options.BotDifficulty == "" {
+		s.Options.BotDifficulty = "hard"
 	}
 	players := len(s.Tanks)
 	if teamSize(players) == 0 || len(s.DamageTotal) != players || s.Epoch == "" || s.Seed == 0 {
@@ -292,7 +303,7 @@ func decode(m gameapi.Match) (*State, error) {
 		return nil, errors.New("无效疯狂坦克风力或回合")
 	}
 	if s.Phase == PhasePlaying {
-		if s.Current < 0 || s.Current >= players || (s.Resolution == nil && (!s.Tanks[s.Current].Alive || s.Deadline <= 0)) || s.StartAt <= 0 || s.MatchEndsAt <= 0 {
+		if s.Current < 0 || s.Current >= players || (s.Resolution == nil && (!s.Tanks[s.Current].Alive || (s.Deadline <= 0 && !s.supplyInFlight()))) || s.StartAt <= 0 || s.MatchEndsAt <= 0 {
 			return nil, errors.New("无效疯狂坦克对战状态")
 		}
 		for _, t := range s.Tanks {
@@ -370,6 +381,17 @@ func decode(m gameapi.Match) (*State, error) {
 	}
 	if s.Resolution != nil && s.LastShot != nil && s.PendingShot != nil && s.LastShot.LaunchAt == 0 {
 		s.PendingShot.Launched = true
+	}
+	if s.NextSupplyTurn < 0 || len(s.Supplies) > maxSupplies {
+		return nil, errors.New("无效补给状态")
+	}
+	supplyIDs := map[int64]bool{}
+	for _, d := range s.Supplies {
+		_, validItem := fbdata.ItemByID(d.ItemID)
+		if !validItem || d.ID <= 0 || supplyIDs[d.ID] || math.IsNaN(d.X) || math.IsNaN(d.Y) || math.IsNaN(d.FromX) || d.X < 0 || d.X >= float64(mapSpec.Width) || d.FromX < 0 || d.FromX >= float64(mapSpec.Width) || d.Y < 0 || d.Y >= float64(mapSpec.Height) || d.PickupAt < 0 || (d.PickupAt > 0 && (!d.Landed || d.PickupSeat < 0 || d.PickupSeat >= players || d.PickupAt < d.LandAt)) || d.At <= 0 || d.DropAt <= d.At || d.LandAt <= d.DropAt || d.LandAt-d.At > 10000 {
+			return nil, errors.New("无效补给内容或轨迹")
+		}
+		supplyIDs[d.ID] = true
 	}
 	if len(s.Events) > MaxEvents || len(s.Log) > MaxLog {
 		return nil, errors.New("疯狂坦克事件过多")
@@ -487,6 +509,7 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 	default:
 		return m, errors.New("未知疯狂坦克操作")
 	}
+	processSupplies(s, ctx.Now.UnixMilli())
 	return s.envelope()
 }
 
@@ -596,7 +619,7 @@ func onTimer(ctx gameapi.Context, m gameapi.Match) (gameapi.Match, error) {
 		return s.envelope()
 	}
 	processWorldTimeline(s, now)
-	if s.Resolution != nil || s.Finished {
+	if s.Resolution != nil || s.Finished || s.supplyInFlight() {
 		return s.envelope()
 	}
 	if now.UnixMilli() >= s.MatchEndsAt {

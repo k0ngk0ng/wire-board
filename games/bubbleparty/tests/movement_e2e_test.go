@@ -56,7 +56,7 @@ func TestContinuousShortTapBetweenFrames(t *testing.T) {
 	if p.PX <= 5 || p.PX >= 5.5 || p.PY != 5 || p.X != 5 {
 		t.Fatalf("40ms tap did not create bounded fractional movement: %+v", p)
 	}
-	if p.SpeedMS != bubbleparty.BaseMoveMS {
+	if p.SpeedMS != 240 {
 		t.Fatalf("missing speed for interpolation: %+v", p)
 	}
 	m = refactorTick(t, m, at+500)

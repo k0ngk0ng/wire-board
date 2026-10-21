@@ -2,7 +2,6 @@ package bubbleparty_test
 
 // Failure inventory written before implementation: realtime-efficiency/MOTION.md.
 import (
-	bubbleparty "github.com/k0ngk0ng/wire-board/games/bubbleparty/server"
 	"github.com/k0ngk0ng/wire-board/internal/gametest"
 	"reflect"
 	"testing"
@@ -13,7 +12,7 @@ func avatarData(c *gametest.Client) map[string]any { return gametest.Data(c.Room
 func TestBubblepartyAvatarChoicePreservesGameAndRestores(t *testing.T) {
 	for _, n := range []int{2, 4, 6, 8} {
 		t.Run(string(rune('0'+n)), func(t *testing.T) {
-			h := gametest.NewHTTP(t, n, bubbleparty.Module(), "bubbleparty")
+			h := gametest.NewHTTP(t, n, legacyAppearanceModule(), "bubbleparty")
 			h.Start(map[string]any{"map": "community10", "roundSeconds": 300})
 			before := avatarData(h.People[0])
 			epoch := before["epoch"]
@@ -61,7 +60,7 @@ func TestBubblepartyAvatarChoicePreservesGameAndRestores(t *testing.T) {
 	}
 }
 func TestBubblepartyAvatarChoiceRejectsForgeryAndSpectators(t *testing.T) {
-	h := gametest.NewHTTP(t, 2, bubbleparty.Module(), "bubbleparty")
+	h := gametest.NewHTTP(t, 2, legacyAppearanceModule(), "bubbleparty")
 	h.Start(map[string]any{"map": "community10", "roundSeconds": 300})
 	c := h.People[0]
 	before := avatarData(c)

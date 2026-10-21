@@ -23,9 +23,11 @@ func TestNativeChargeAndUnlimitedSpecial(t *testing.T) {
 		}
 	}
 	for shot := 0; shot < 3; shot++ {
+		m = completeSupplyTransport(t, mod, m)
 		s, _ = timeline(t, m)
 		for s.Current != 0 {
 			m = timerAt(t, mod, m, s.Deadline)
+			m = completeSupplyTransport(t, mod, m)
 			s, _ = timeline(t, m)
 		}
 		now = time.UnixMilli(s.Deadline - 20000 + 1)

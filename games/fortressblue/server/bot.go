@@ -31,6 +31,11 @@ func botAction(ctx gameapi.Context, m gameapi.Match) (json.RawMessage, error) {
 	if !s.canAct(ctx.Actor) {
 		return nil, nil
 	}
+	for _, supply := range s.Supplies {
+		if supply.PickupAt > 0 && supply.PickupSeat == ctx.Actor {
+			return nil, nil
+		}
+	}
 	tank := &s.Tanks[ctx.Actor]
 	target := botTarget(s, ctx.Actor)
 	if target < 0 {
@@ -38,6 +43,9 @@ func botAction(ctx gameapi.Context, m gameapi.Match) (json.RawMessage, error) {
 	}
 	if slot, ok := botItem(s, ctx.Actor); ok {
 		return json.Marshal(Action{Type: "item", Epoch: s.Epoch, Turn: s.Turn, Slot: slot})
+	}
+	if dir := botSupplyMove(s, ctx.Actor, ctx.Now.UnixMilli()); dir != 0 {
+		return json.Marshal(Action{Type: "move", Epoch: s.Epoch, Turn: s.Turn, Dir: dir})
 	}
 	if tank.PendingShotEffect == "heal" {
 		target = ctx.Actor
@@ -101,8 +109,7 @@ func botAction(ctx gameapi.Context, m gameapi.Match) (json.RawMessage, error) {
 			return json.Marshal(Action{Type: "move", Epoch: s.Epoch, Turn: s.Turn, Dir: bestDir})
 		}
 	}
-	jitter := float64(hashString(s.Epoch, "aim", string(rune(ctx.Actor)), string(rune(s.Turn)))%5) - 2
-	best.Angle = clamp(best.Angle+jitter, float64(spec.MinAngle), float64(spec.Angle))
+	best = botAimError(s, ctx.Actor, spec, best)
 	return json.Marshal(Action{Type: "fire", Epoch: s.Epoch, Turn: s.Turn, Angle: best.Angle, Power: best.Power, Facing: best.Facing, Weapon: weapon})
 }
 
@@ -120,9 +127,15 @@ func botAimFor(s *State, seat, target int, spec fbdata.Tank) botAim {
 	stage, _ := fbmaps.ByID(s.MapID)
 	mask := bulletMaskFor(stage, s.Craters)
 	best := botAim{Angle: float64(spec.MinAngle), Power: 70, Score: math.Inf(1), Facing: facing}
+	step := 5.0
+	if s.Options.BotDifficulty == "normal" {
+		step = 8
+	} else if s.Options.BotDifficulty == "easy" {
+		step = 12
+	}
 	// Include the actual minimum rather than assuming every tank starts at 5°.
-	for angle := float64(spec.MinAngle); angle <= float64(spec.Angle); angle += 5 {
-		for power := 0.0; power <= 100; power += 5 {
+	for angle := float64(spec.MinAngle); angle <= float64(spec.Angle); angle += step {
+		for power := 0.0; power <= 100; power += step {
 			arc := simulateArc(stage, mask, s.Tanks, seat, tank.X, tank.Y, angle, power, facing, float64(spec.Range)/50, s.Wind, MaxPath)
 			center := tankCenter(foe)
 			score := math.Hypot(arc.Impact.X-center.X, arc.Impact.Y-center.Y)
@@ -189,4 +202,20 @@ func botGroundRisk(s *State, seat int, at int64) float64 {
 		risk += math.Max(0, h.R-math.Abs(point.X-h.X)+1)
 	}
 	return risk
+}
+
+// Only decision precision changes; hard preserves the original hash and bounds.
+func botAimError(s *State, seat int, spec fbdata.Tank, aim botAim) botAim {
+	angleSpan, powerSpan := uint64(5), uint64(1)
+	switch s.Options.BotDifficulty {
+	case "normal":
+		angleSpan, powerSpan = 11, 9
+	case "easy":
+		angleSpan, powerSpan = 21, 17
+	}
+	angle := float64(hashString(s.Epoch, "aim", string(rune(seat)), string(rune(s.Turn)))%angleSpan) - float64(angleSpan/2)
+	power := float64(hashString(s.Epoch, "power-error", string(rune(seat)), string(rune(s.Turn)))%powerSpan) - float64(powerSpan/2)
+	aim.Angle = clamp(aim.Angle+angle, float64(spec.MinAngle), float64(spec.Angle))
+	aim.Power = clamp(aim.Power+power, 0, 100)
+	return aim
 }

@@ -155,6 +155,9 @@ func processWorldTimeline(s *State, now time.Time) {
 		if resolution > 0 && (next == 0 || resolution < next) {
 			next = resolution
 		}
+		if supply := s.supplyDeadline(); supply > 0 && (next == 0 || supply < next) {
+			next = supply
+		}
 		if next == 0 || next > now.UnixMilli() {
 			break
 		}
@@ -168,9 +171,15 @@ func processWorldTimeline(s *State, now time.Time) {
 		if hazard := s.hazardDeadline(); hazard > 0 && hazard <= next {
 			tickHazards(s, next)
 		}
+		processSupplies(s, next)
 		if s.Resolution == nil && s.checkTeamOutcome(next) {
 			break
 		}
+	}
+	processSupplies(s, now.UnixMilli())
+	if s.resumeSupply {
+		s.Deadline = now.UnixMilli() + int64(s.Options.TurnSeconds)*1000
+		s.resumeSupply = false
 	}
 	if s.Finished || s.Resolution != nil || !s.needsAdvance {
 		return

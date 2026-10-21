@@ -60,3 +60,36 @@ test('legacy integer-step matches never receive a continuous local preview',()=>
  m.frame(v,0,'right',0,'legacy',true);
  assert.deepEqual(m.frame(v,0,'right',100,'legacy',true),{x:2,y:3});
 });
+
+// v3 integration failures were listed before implementation in
+// docs/research/bubble-classic-maps/BATTLEFIELD-SCENARIOS.md.
+test('v3 push crates are solid and only airships pass crates, never walls or balloons',()=>{
+ const grid=cells();grid[3*15+3]=4;
+ close(predictPlayer({x:2,y:3},player(),'right',grid,200).x,2.22);
+ for(const mount of ['airship','airship-broken']){
+  assert.ok(predictPlayer({x:2,y:3},{...player(),mount},'right',grid,200).x>3);
+  for(const obstacle of [1,3]){grid[3*15+3]=obstacle;close(predictPlayer({x:2,y:3},{...player(),mount},'right',grid,200).x,2.22)}
+  grid[3*15+3]=4;
+ }
+});
+test('v3 local motion uses server speed and resets when mount changes',()=>{
+ const m=new PlayerMotion(),v={...view(),rulesVersion:3};v.players[0].speedMs=300;
+ m.frame(v,0,'right',0,'s',true);close(m.frame(v,0,'right',30,'s',true).x,2.1);
+ v.players[0].mount='turtle';v.players[0].speedMs=600;
+ close(m.frame(v,0,'right',60,'s',true).x,2);
+ close(m.frame(v,0,'right',90,'s',true).x,2.05);
+});
+test('native conveyors and directional gates use authoritative movement without invented advances',async()=>{
+ const catalog=(await import('../data/classic-2002.json',{with:{type:'json'}})).default;
+ const tiles=new Map(catalog.tiles.map(t=>[t.id,t]));
+ for(const kind of ['belt','gate']){
+  const map=catalog.maps.find(m=>(kind==='belt'?m.ground:m.objects).flat().some(id=>kind==='belt'?tiles.get(id)?.tileInfo.fieldsRaw[3]===2:tiles.get(id)?.category==='passable'&&tiles.get(id).tileInfo.fieldsRaw.slice(1,5).some(x=>!x)));
+  const layer=kind==='belt'?map.ground:map.objects;let spot;
+  layer.forEach((row,y)=>row.forEach((id,x)=>{const t=tiles.get(id);if(!spot&&(kind==='belt'?t?.category==='ground'&&t.tileInfo.fieldsRaw[3]===2:t?.category==='passable'&&t.tileInfo.fieldsRaw.slice(1,5).some(a=>!a)))spot={x,y}}));
+  const v={...view(),rulesVersion:3,mapId:map.id};v.players[0]={...player(),...spot,px:spot.x,py:spot.y};
+  const m=new PlayerMotion();m.frame(v,0,'right',0,'s',true);
+  assert.deepEqual(m.frame(v,0,'right',30,'s',true),spot);
+  v.serverAt+=100;v.players[0].px+=.2;
+  const next=m.frame(v,0,'right',100,'s',true);assert.ok(next.x>=spot.x&&next.x<=spot.x+.2);
+ }
+});

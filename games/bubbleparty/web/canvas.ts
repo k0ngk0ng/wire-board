@@ -3,8 +3,28 @@ import {
   avatarDeathDuration,
   drawAvatarArt,
   drawAvatarFallback,
-} from "./avatar-art";
-import { frameRect, getSprite, spriteFrames, type SpriteName } from "./sprites";
+} from "./avatar-art.ts";
+import {
+  frameRect,
+  getSprite,
+  spriteFrames,
+  type SpriteName,
+} from "./sprites.ts";
+
+import {
+  characterDeathDuration,
+  drawCharacterArt,
+  drawCharacterFallback,
+} from "./character-art.ts";
+import { drawMountedAvatar, drawMountItem, mountName } from "./mount-art.ts";
+import {
+  classicTerrain,
+  classicObjectEntries,
+  classicObjectOpacity,
+  drawClassicGround,
+  drawClassicObject,
+  type ClassicImages,
+} from "./classic-terrain.ts";
 
 export const CELL = 24;
 export const COLS = 15;
@@ -17,6 +37,89 @@ export const DRAW_WIDTH = WIDTH + 24;
 export const DRAW_HEIGHT = HEIGHT + 52;
 export type DrawPoint = { x: number; y: number; move?: string; dir?: string };
 const TAU = Math.PI * 2;
+export type DrawDiagnostics = {
+  terrain: "classic" | "legacy";
+  nativeObjectsDrawn: number;
+  nativeObjectsFallback: number;
+  playersNative: number;
+  playersFallback: number;
+  mountedNative: number;
+  mountedFallback: number;
+  mountItemsNative: number;
+  movingBoxes: {
+    x: number;
+    y: number;
+    toX: number;
+    toY: number;
+    objectId: number;
+  }[];
+};
+
+export function visibleBoxMotions(
+  view: Pick<View, "boxMotions"> & Partial<Pick<View, "cells">>,
+  now: number,
+) {
+  return (view.boxMotions ?? [])
+    .filter(
+      (m) =>
+        m.endAt > now &&
+        m.endAt > m.at &&
+        (!view.cells || view.cells[m.y * COLS + m.x] === 4),
+    )
+    .map((m) => {
+      const t = Math.max(0, Math.min(1, (now - m.at) / (m.endAt - m.at)));
+      return {
+        x: m.fromX + (m.x - m.fromX) * t,
+        y: m.fromY + (m.y - m.fromY) * t,
+        toX: m.x,
+        toY: m.y,
+        objectId: m.objectId,
+      };
+    });
+}
+
+function mountFallback(
+  ctx: CanvasRenderingContext2D,
+  kind: string,
+  x: number,
+  y: number,
+  scale = 1,
+) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.scale(scale, scale);
+  const air = kind.startsWith("airship"),
+    owl = kind === "owl",
+    rail = kind === "railcar";
+  ctx.fillStyle = air
+    ? "#a8c4d3"
+    : owl
+      ? "#a77947"
+      : rail
+        ? "#c69a58"
+        : kind.startsWith("octopus")
+          ? "#b986b1"
+          : "#4c985e";
+  ctx.strokeStyle = "#294b47";
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.ellipse(0, -5, air ? 18 : 15, air ? 6 : 10, 0, 0, TAU);
+  ctx.fill();
+  ctx.stroke();
+  if (rail) {
+    circle(ctx, -9, 2, 4, "#40505b");
+    circle(ctx, 9, 2, 4, "#40505b");
+  } else if (owl) {
+    circle(ctx, -5, -10, 4, "#fff2c9");
+    circle(ctx, 5, -10, 4, "#fff2c9");
+    circle(ctx, -5, -10, 1.5, "#293940");
+    circle(ctx, 5, -10, 1.5, "#293940");
+  } else if (!air) {
+    circle(ctx, -12, 2, 3, "#b8c781");
+    circle(ctx, 12, 2, 3, "#b8c781");
+  }
+  ctx.restore();
+}
 
 const tileSprites: Record<number, SpriteName> = {
   2: "hedge",
@@ -70,7 +173,7 @@ function tileCode(view: View, i: number) {
     view.tiles?.[i] ??
     (view.cells[i] === 1 || view.cells[i] === 3
       ? 10
-      : view.cells[i] === 2
+      : view.cells[i] === 2 || view.cells[i] === 4
         ? 9
         : 0)
   );
@@ -201,6 +304,7 @@ function drawPlayer(
   now: number,
   reduced: boolean,
   assets: string,
+  diagnostics: DrawDiagnostics,
 ) {
   const px = pos.x * CELL + CELL / 2,
     py = pos.y * CELL + CELL / 2;
@@ -209,7 +313,14 @@ function drawPlayer(
     .reverse()
     .find((e) => e.type === "eliminate" && e.seat === p.seat && e.at <= now);
   const deathAge = death ? now - death.at : Infinity;
-  if (!p.alive && (reduced || deathAge > avatarDeathDuration(p.avatar))) {
+  if (
+    !p.alive &&
+    (reduced ||
+      deathAge >
+        ((view.rulesVersion ?? 0) >= 3
+          ? characterDeathDuration(p.character)
+          : avatarDeathDuration(p.avatar)))
+  ) {
     circle(ctx, px, py, 8, p.team === 1 ? "#d8e8f5" : "#efd7d5", color);
     ctx.strokeStyle = color;
     ctx.lineWidth = 2;
@@ -233,27 +344,47 @@ function drawPlayer(
   const trapped = p.alive && p.trappedUntil > 0;
   const move = pos.move ?? p.applied.move;
   const moving = move !== "none" && move !== "" && !trapped;
-  if (
-    !drawAvatarArt(
+  const original = (view.rulesVersion ?? 0) >= 3;
+  const pose = {
+    character: p.character,
+    avatar: p.avatar,
+    team: p.team,
+    dir: pos.dir ?? (moving ? move : p.dir),
+    moving,
+    trapped,
+    dead: !p.alive,
+    deathAge,
+    now,
+    reduced,
+  };
+  const mounted = original && !!p.mount && p.alive && !trapped;
+  let drawn = false;
+  if (mounted) {
+    drawn = drawMountedAvatar(
       ctx,
       assets,
-      {
-        avatar: p.avatar,
-        team: p.team,
-        dir: pos.dir ?? (moving ? move : p.dir),
-        moving,
-        trapped,
-        dead: !p.alive,
-        deathAge,
-        now,
-        reduced,
-      },
+      { ...pose, mount: p.mount! },
       px,
       py + 12,
-    )
-  ) {
-    drawAvatarFallback(ctx, p.avatar, p.team, px, py + 12);
+    );
+    if (drawn) diagnostics.mountedNative++;
+    else {
+      diagnostics.mountedFallback++;
+      mountFallback(ctx, p.mount!, px, py + 12);
+    }
   }
+  if (!drawn) {
+    const foot = py + 12 - (mounted ? 12 : 0);
+    drawn = original
+      ? drawCharacterArt(ctx, assets, pose, px, foot)
+      : drawAvatarArt(ctx, assets, pose, px, foot);
+    if (!drawn) {
+      if (original) drawCharacterFallback(ctx, p.character, p.team, px, foot);
+      else drawAvatarFallback(ctx, p.avatar, p.team, px, foot);
+    }
+  }
+  if (drawn) diagnostics.playersNative++;
+  else diagnostics.playersFallback++;
 
   if (trapped) {
     const bw = 42,
@@ -311,7 +442,21 @@ export function drawBoard(
   now: number,
   reduced: boolean,
   assets = "",
-) {
+  classicImages: ClassicImages = {},
+): DrawDiagnostics {
+  const native = classicTerrain(view.mapId);
+  const movingBoxes = visibleBoxMotions(view, now);
+  const diagnostics: DrawDiagnostics = {
+    terrain: native ? "classic" : "legacy",
+    nativeObjectsDrawn: 0,
+    nativeObjectsFallback: 0,
+    playersNative: 0,
+    playersFallback: 0,
+    mountedNative: 0,
+    mountedFallback: 0,
+    mountItemsNative: 0,
+    movingBoxes,
+  };
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
   ctx.scale(ctx.canvas.width / DRAW_WIDTH, ctx.canvas.height / DRAW_HEIGHT);
@@ -320,10 +465,22 @@ export function drawBoard(
   ctx.translate(12, 44);
   ctx.imageSmoothingEnabled = true;
   ctx.globalAlpha = 1;
-  ground(ctx, view);
+  if (
+    !drawClassicGround(ctx, view, view.mapId, classicImages, now, {
+      cellSize: CELL,
+      reduced,
+    })
+  )
+    ground(ctx, view);
   for (const item of view.items) {
     const x = item.x * CELL,
       y = item.y * CELL;
+    if (mountName(item.type)) {
+      if (drawMountItem(ctx, assets, item.type, x + CELL / 2, y + CELL))
+        diagnostics.mountItemsNative++;
+      else mountFallback(ctx, item.type, x + CELL / 2, y + CELL - 3, 0.7);
+      continue;
+    }
     // Saved matches may still contain the old passive shield. It has no
     // verified original sprite: keep a shield-shaped fallback, not a text coin.
     if (item.type === "shield") {
@@ -385,16 +542,70 @@ export function drawBoard(
   }
   water(ctx, view, now, reduced);
   const objects: { y: number; draw: () => void }[] = [];
-  for (let y = 0; y < ROWS; y++)
-    for (let x = 0; x < COLS; x++) {
-      const i = y * COLS + x,
-        code = tileCode(view, i);
-      if (code >= 2)
-        objects.push({
-          y: y + (code === 2 ? 0.85 : 0.4),
-          draw: () => obstacle(ctx, code, x, y),
-        });
+  const movingTargets = new Set(movingBoxes.map((m) => `${m.toX},${m.toY}`));
+  if (native) {
+    const positions = view.players
+      .filter((p) => p.alive)
+      .map((p) => display.get(p.seat) ?? { x: p.px ?? p.x, y: p.py ?? p.y });
+    for (const object of classicObjectEntries(view, view.mapId)) {
+      if (movingTargets.has(`${object.x},${object.y}`)) continue;
+      objects.push({
+        y: object.depth,
+        draw: () => {
+          const ok = drawClassicObject(
+            ctx,
+            object.id,
+            object.x,
+            object.y,
+            classicImages,
+            now,
+            {
+              cellSize: CELL,
+              reduced,
+              opacity: classicObjectOpacity(
+                object.id,
+                object.x,
+                object.y,
+                positions,
+              ),
+            },
+          );
+          if (ok) diagnostics.nativeObjectsDrawn++;
+          else diagnostics.nativeObjectsFallback++;
+        },
+      });
     }
+  } else {
+    for (let y = 0; y < ROWS; y++)
+      for (let x = 0; x < COLS; x++) {
+        const i = y * COLS + x,
+          code = tileCode(view, i);
+        if (code >= 2 && !movingTargets.has(`${x},${y}`))
+          objects.push({
+            y: y + (code === 2 ? 0.85 : 0.4),
+            draw: () => obstacle(ctx, code, x, y),
+          });
+      }
+  }
+  for (const box of movingBoxes)
+    objects.push({
+      y: box.y + 0.4,
+      draw: () => {
+        if (native && box.objectId >= 0) {
+          const ok = drawClassicObject(
+            ctx,
+            box.objectId,
+            box.x,
+            box.y,
+            classicImages,
+            now,
+            { cellSize: CELL, reduced },
+          );
+          if (ok) diagnostics.nativeObjectsDrawn++;
+          else diagnostics.nativeObjectsFallback++;
+        } else obstacle(ctx, 9, box.x, box.y);
+      },
+    });
   for (const b of view.bombs)
     if (b.explodeAt > now)
       objects.push({
@@ -422,7 +633,8 @@ export function drawBoard(
     const pos = display.get(p.seat) ?? { x: p.px ?? p.x, y: p.py ?? p.y };
     objects.push({
       y: pos.y + 0.6,
-      draw: () => drawPlayer(ctx, p, view, pos, now, reduced, assets),
+      draw: () =>
+        drawPlayer(ctx, p, view, pos, now, reduced, assets, diagnostics),
     });
   }
   objects.sort((a, b) => a.y - b.y).forEach((o) => o.draw());
@@ -437,10 +649,11 @@ export function drawBoard(
     ctx.lineWidth = 2;
     ctx.strokeRect(inset, inset, WIDTH - 2 * inset, HEIGHT - 2 * inset);
   }
-  if (view.phase === "countdown") {
+  if (view.phase === "countdown" || view.phase === "select") {
     ctx.fillStyle = "#17395533";
     ctx.fillRect(0, 0, WIDTH, HEIGHT);
   }
+  return diagnostics;
 }
 
 export function drawPreview(

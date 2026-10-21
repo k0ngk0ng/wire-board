@@ -48,3 +48,8 @@ python3 -B scripts/fortressblue/check-refactor.py
 本轮最终结果见[重构验收报告](../../docs/research/fortressblue-refactor/verification.md)。浏览器验收范围及复跑方式见 [BROWSER_REFACTOR_SCENARIOS.md](tests/BROWSER_REFACTOR_SCENARIOS.md)。脚本输出独立的 `.local/fortressblue/refactor-browser-*`，保留报告、截图、录像和逐帧记录。需要从原包复核时运行 `verify-original-source.py` 或 `verify-animation-assets.py`；这些源素材检查依赖已取得的本地客户端，不是干净检出的必需依赖。
 
 原素材版权归原权利方，来源、转换与逐文件哈希见 `assets/sources.json`、`assets/manifest.json` 和 `assets/manifest-v3.json`。发布范围沿用会话授权和仓库素材约定。游戏默认上架，管理员可显式下架。
+
+
+电脑难度可选简单、普通、困难，新房间默认普通；托管与电脑席位使用同一难度。困难保留此前策略，降低难度只降低瞄准精度，不改变坦克属性。原进行中存档保持困难。
+
+比赛中直升机间歇送来随机补给。木箱落地后，两队坦克都可以靠近拾取；库存最多 4 格，满格时箱子留在地面，使用道具腾出位置后可再拾取。补给只加入库存，须按正常道具操作使用。小地图金色标记显示补给位置。

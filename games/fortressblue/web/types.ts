@@ -3,10 +3,24 @@ import tankData from "../data/tanks.json" with { type: "json" };
 import itemData from "../data/items.json" with { type: "json" };
 
 export type Options = {
+  botDifficulty?: "easy" | "normal" | "hard";
   map: string;
   turnSeconds: number;
 };
 
+export type Supply = {
+  id: number;
+  itemId: number;
+  x: number;
+  y: number;
+  fromX: number;
+  at: number;
+  dropAt: number;
+  landAt: number;
+  landed?: boolean;
+  pickupAt?: number;
+  pickupSeat?: number;
+};
 export type Point = { x: number; y: number };
 export type Arc = {
   path: Point[];
@@ -110,6 +124,7 @@ export type Hazard = {
   source: number;
 };
 export type View = {
+  supplies?: Supply[];
   options: Options;
   epoch: string;
   phase: "select" | "playing" | "finished";

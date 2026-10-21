@@ -21,7 +21,7 @@ func mapIDs() []string {
 	for i, m := range mapDefs {
 		ids[i] = m.id
 	}
-	return ids
+	return append(ids, classicMapIDs()...)
 }
 
 func mapByID(id string) (mapDef, bool) {
@@ -29,6 +29,9 @@ func mapByID(id string) (mapDef, bool) {
 		if m.id == id {
 			return m, true
 		}
+	}
+	if classicMapIndex[id] != nil {
+		return mapDef{id: id}, true
 	}
 	return mapDef{}, false
 }
@@ -74,6 +77,9 @@ func minInt2(a, b int) int {
 }
 
 func mapCells(id string, seed uint64) []byte {
+	if cells, ok := classicCells(id); ok {
+		return cells
+	}
 	if id == "community10" {
 		return districtCells()
 	}
@@ -212,8 +218,10 @@ func districtCells() []byte {
 				if districtTree(x, y) {
 					cells[y*Cols+x] = CellWall
 				}
-			case 'R', 'O', 'C':
+			case 'R', 'O':
 				cells[y*Cols+x] = CellCrate
+			case 'C':
+				cells[y*Cols+x] = CellPushCrate
 			}
 		}
 	}
@@ -226,6 +234,9 @@ var districtSpawns = [2][][2]int{
 }
 
 func mapSpawnsFor(id string, teamSize, team int) [][2]int {
+	if points, ok := classicSpawns(id, teamSize, team); ok {
+		return points
+	}
 	if id != "community10" {
 		return spawnsFor(teamSize, team)
 	}
@@ -247,7 +258,7 @@ func clearDistrictSpawnExit(cells []byte, x, y int) {
 		clear = [][2]int{{13, 2}, {13, 3}, {13, 4}}
 	}
 	for _, p := range clear {
-		if cells[p[1]*Cols+p[0]] == CellCrate {
+		if isBox(cells[p[1]*Cols+p[0]]) {
 			cells[p[1]*Cols+p[0]] = CellEmpty
 		}
 	}
@@ -282,6 +293,8 @@ func mapTiles(id string, cells []byte) []int {
 						tile = TileHouseYellow
 					}
 				}
+			case CellPushCrate:
+				tile = TileCrate
 			case CellCrate:
 				tile = TileCrate
 				if mark == 'R' {

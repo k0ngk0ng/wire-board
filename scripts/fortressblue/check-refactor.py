@@ -20,7 +20,7 @@ import uuid
 parser = argparse.ArgumentParser()
 parser.add_argument('--build', action='store_true')
 parser.add_argument('--out', default='')
-parser.add_argument('--only', choices=['all','interaction','timeline','effects','bots','reveal','terrain','cancel','facing'], default='all')
+parser.add_argument('--only', choices=['all','interaction','timeline','effects','bots','reveal','terrain','cancel','facing','portraits','supplies'], default='all')
 args = parser.parse_args()
 root = Path(__file__).resolve().parents[2]
 run = 'f' + uuid.uuid4().hex[:6]
@@ -36,7 +36,7 @@ for name, path in {'AGENT_BROWSER_SOCKET_DIR': sockets, 'AGENT_BROWSER_PROFILE':
 env.update(AGENT_BROWSER_SESSION=run, AGENT_BROWSER_ARGS='--mute-audio,--disable-breakpad,--disable-crash-reporter', WIRE_BOARD_FORTRESSBLUE_BROWSER='1', WIRE_BOARD_FORTRESSBLUE_BROWSER_OUT=str(out), GOTOOLCHAIN='local')
 report = {'selection': args.only, 'passed': False, 'checks': [], 'screenshots': [], 'command': 'python3 scripts/fortressblue/check-refactor.py --only '+args.only+(' --build' if args.build else ''), 'scope': 'Fortress only; production HTTP/SQLite/clock; native CDP inputs; labelled opening fixtures only'}
 report['sources']={str(p.relative_to(root)):hashlib.sha256(p.read_bytes()).hexdigest() for folder,pattern in [('games/fortressblue/server','*.go'),('games/fortressblue/web','*.ts*'),('games/fortressblue/data','*.json')] for p in (root/folder).glob(pattern)}
-for rel in ['internal/server/server.go','internal/server/modules.go','internal/server/module_realtime.go','internal/gameapi/module.go','games/fortressblue/tests/browser_fixture_test.go','scripts/fortressblue/check-refactor.py']:
+for rel in ['internal/server/server.go','internal/server/modules.go','internal/server/module_realtime.go','internal/gameapi/module.go','games/fortressblue/tests/browser_fixture_test.go','scripts/fortressblue/check-refactor.py','games/fortressblue/web/style.css','games/fortressblue/assets/picker-frames.json','scripts/fortressblue/prepare-picker-frames.py']:
     source=root/rel
     if source.exists():report['sources'][rel]=hashlib.sha256(source.read_bytes()).hexdigest()
 report['distIndexSHA256']=hashlib.sha256((root/'web/dist/index.html').read_bytes()).hexdigest() if (root/'web/dist/index.html').exists() else None
@@ -134,7 +134,9 @@ MEASURE = r'''(async()=>{
 })()'''
 
 CDP = r'''
-const [endpoint,prefix,raw,measure]=process.argv.slice(2),steps=JSON.parse(raw);
+import {execFileSync} from 'node:child_process';
+import {readFileSync} from 'node:fs';
+const [endpoint,prefix,raw,measure,outdir,captureMode]=process.argv.slice(2),steps=JSON.parse(raw);
 const ws=new WebSocket(endpoint);await new Promise((r,j)=>{ws.onopen=r;ws.onerror=j});let n=0,sessionId;const pending=new Map(),frames=[],network=[],captures=[];let sampling=false,sampler=null,busy=false,delay=0,block='';
 const call=(method,params={},sid=sessionId)=>new Promise((r,j)=>{const id=++n;pending.set(id,{r,j});ws.send(JSON.stringify({id,method,params,sessionId:method.startsWith('Target.')?undefined:sid}))});
 ws.onmessage=({data})=>{const m=JSON.parse(data);if(m.method==='Fetch.requestPaused'){network.push({url:m.params.request.url,at:Date.now(),delay,block});if(block&&m.params.request.url.includes(block))void call('Fetch.failRequest',{requestId:m.params.requestId,errorReason:'Failed'});else setTimeout(()=>void call('Fetch.continueRequest',{requestId:m.params.requestId}),delay);return;}if(!m.id)return;const p=pending.get(m.id);pending.delete(m.id);m.error?p.j(Error(JSON.stringify(m.error))):p.r(m.result)};
@@ -154,7 +156,7 @@ try{
   if(s.waitUntil)await new Promise(r=>setTimeout(r,Math.max(0,s.waitUntil-Date.now())));
   if(s.wait)await new Promise(r=>setTimeout(r,s.wait));
   if(s.read)frames.push({...await read(),label:s.read});
-  if(s.capture)captures.push({name:s.capture,...await call('Page.captureScreenshot',{format:'png'})});
+  if(s.capture){if(captureMode==='browser'){const path=outdir+'/'+s.capture+'.png';const result=JSON.parse(execFileSync('agent-browser',['screenshot',path,'--json'],{encoding:'utf8',timeout:45000}));if(!result.success)throw Error('Browser screenshot failed');captures.push({name:s.capture,data:readFileSync(path).toString('base64')});}else captures.push({name:s.capture,...await call('Page.captureScreenshot',{format:'png'})});}
  }
  sampling=false;if(sampler)clearInterval(sampler);while(busy)await new Promise(r=>setTimeout(r,20));
  if(steps.some(s=>s.touch))await call('Emulation.setTouchEmulationEnabled',{enabled:false});
@@ -167,7 +169,7 @@ try{
 def native(steps, name=None):
     import base64
     endpoint = browser('get', 'cdp-url')['cdpUrl']
-    p = subprocess.run(['node', '--input-type=module', '-', endpoint, base, json.dumps(steps), MEASURE], input=CDP, cwd=root, env=env, text=True, capture_output=True, timeout=60)
+    p = subprocess.run(['node', '--input-type=module', '-', endpoint, base, json.dumps(steps), MEASURE, str(out), 'browser' if args.only=='supplies' else 'cdp'], input=CDP, cwd=root, env=env, text=True, capture_output=True, timeout=60)
     if p.returncode:
         (out/((name or 'native')+'-failure.txt')).write_text(p.stderr)
         if p.stdout: (out/((name or 'native')+'.json')).write_text(p.stdout)
@@ -507,7 +509,7 @@ try:
     assert (root/'web/dist/index.html').exists(),'Build frontend first'
     (out/'scenario').write_text('normal')
     log=(out/'server.log').open('w')
-    if args.only=='facing':
+    if args.only in ('facing','portraits','supplies'):
         # Use the production binary with its real CDN/local-fallback settings;
         # no opening fixture or response rewriting is needed for direction tests.
         executable=temp/'server';subprocess.run(['go','build','-o',str(executable),'.'],cwd=root,env=env,stdout=log,stderr=subprocess.STDOUT,check=True)
@@ -536,6 +538,104 @@ try:
     api('/login',{'name':'坦克验收管理员','password':'fortress-browser-test-only'})
     other('/register',{'name':'坦克静止对手','password':'fortress-browser-test-only','invite':'fortress-browser'})
     browser('reload');browser('set','viewport','1280','1000')
+    if args.only=='supplies':
+        browser('network','route','https://cdn.ichenj.com/bga/v20261002-1/fortressblue/**','--abort')
+        start(ui=True)
+        assert state()['options']['botDifficulty']=='normal'
+        def harmless_fire():
+            data=view();seat=data['current'];payload={'type':'fire','epoch':data['epoch'],'turn':data['turn'],'angle':0,'power':100,'facing':-1 if seat==0 else 1,'weapon':'primary'}
+            if seat==0:action(payload)
+            else:other_command('action',action=payload)
+            wait(lambda:not view().get('resolution'),timeout=15,label='actual shell completes')
+        harmless_fire();harmless_fire()
+        delivery=wait(lambda:(view().get('supplies') or [None])[0],label='scheduled original-style supply')
+        record('supply-original-schedule',delivery)
+        data=native([{'sample':True},{'wait':500,'read':'transport','capture':'supply-transport'},{'wait':1150,'read':'falling','capture':'supply-falling'},{'reload':True},{'wait':2400,'read':'landed','capture':'supply-landed-after-reload'}],'supply-flight')
+        airborne=[d for f in data['frames'] for d in json.loads((f.get('canvas') or {}).get('renderedSupplies','[]')) if d.get('id')==delivery['id'] and d.get('airborne')]
+        assert len(airborne)>=3 and sum(d['artReady'] for d in airborne)>=3,{'airborneFrames':len(airborne),'originalArtFrames':sum(d['artReady'] for d in airborne)}
+        reloaded_at=next(f['at'] for f in data['frames'] if f.get('label')=='falling')
+        fallback_frames=[f for f in data['frames'] if any(d.get('id')==delivery['id'] and not d.get('artReady') for d in json.loads((f.get('canvas') or {}).get('renderedSupplies','[]')))]
+        assert all(reloaded_at<=f['at']<reloaded_at+1000 for f in fallback_frames),'Original art failed to recover after reload'
+        landed_frame=next(f for f in data['frames'] if f.get('label')=='landed')
+        assert any(d.get('id')==delivery['id'] and d.get('artReady') for d in json.loads(landed_frame['canvas']['renderedSupplies']))
+        assert max(d['y'] for d in airborne)-min(d['y'] for d in airborne)>20
+        live=wait(lambda:next((d for d in view().get('supplies',[]) if d['id']==delivery['id'] and d.get('landed')),None),timeout=6)
+        assert live['at']==delivery['at'] and live['dropAt']==delivery['dropAt'] and live['landAt']==delivery['landAt']
+        check('original supply falls continuously and reload preserves server schedule',airborneFrames=len(airborne),delivery=delivery)
+        current=view();target=min(current['tanks'],key=lambda t:abs(t['x']-live['x']))['seat']
+        assert abs(current['tanks'][target]['y']-live['y'])<=8,{'tank':current['tanks'][target],'supply':live}
+        if current['current']!=target:harmless_fire()
+        before=view()['tanks'][target];inventory=len(before['items']);hp=before['hp']
+        for _ in range(12):
+            current=view();tank=current['tanks'][target]
+            if abs(tank['x']-live['x'])<=26:break
+            payload={'type':'move','epoch':current['epoch'],'turn':current['turn'],'dir':1 if live['x']>tank['x'] else -1}
+            if target==0:action(payload)
+            else:other_command('action',action=payload)
+        wait(lambda:not any(d['id']==live['id'] for d in view().get('supplies',[])),timeout=5,label='real movement/contact pickup')
+        after=view();tank=after['tanks'][target];assert len(tank['items'])==inventory+1 and tank['hp']==hp
+        pickup=next(e for e in after['events'] if e['type']=='supply_pickup' and e['seat']==target)
+        assert pickup['at']>=delivery['landAt']+180
+        time.sleep(.4);assert len(view()['tanks'][target]['items'])==inventory+1
+        shot('supply-picked-up');record('supply-pickup',{'before':before,'after':tank,'event':pickup});check('same public movement adds one inventory item after visible contact, no automatic heal',seat=target)
+        browser('set','viewport','320','844');start()
+        harmless_fire();harmless_fire()
+        mobile_delivery=wait(lambda:(view().get('supplies') or [None])[0])
+        mobile=native([{'sample':True},{'wait':550,'read':'transport','capture':'supply-mobile-transport'},{'wait':1000,'read':'falling','capture':'supply-mobile-falling'},{'wait':2500,'read':'landed','capture':'supply-mobile-landed'}],'supply-mobile-flight')
+        in_flight=[f for f in mobile['frames'] if f.get('root',{}).get('fortressblueTransporting')=='1']
+        assert in_flight and all(not any('行动中' in row.get('text','') for row in f.get('rows',[])) and not f['publicState']['room']['game'].get('actors') and f['publicState']['room']['game']['data']['deadline']==0 and not f['overflow'] for f in in_flight)
+        assert all(float(f.get('canvas',{}).get('cameraY',0))>=-.01 for f in mobile['frames'])
+        layout('supply-mobile-playable');check('320px supply transport stops action timer and stays within original map',frames=len(in_flight),delivery=mobile_delivery)
+        for level,width in [('easy',320),('normal',1280),('hard',320)]:
+            leave();browser('set','viewport',str(width),'844');browser('wait','.lobby-create');browser('click','.lobby-create');browser('fill','input[aria-label=搜索可选游戏]','疯狂坦克');browser('click','.choose-games button');browser('wait','select[aria-label="疯狂坦克电脑难度"]')
+            assert js("document.querySelector('select[aria-label=\"疯狂坦克电脑难度\"]').value")=='normal'
+            browser('select','select[aria-label="疯狂坦克电脑难度"]',level);shot('difficulty-'+level)
+            browser('fill','input[name=name]','难度 '+level);browser('click','[role=dialog] button[type=submit]');browser('wait','.waiting-actions')
+            assert state()['options']['botDifficulty']==level
+            assert not js('document.documentElement.scrollWidth>innerWidth+2')
+            check('difficulty selection persists '+level,viewport=width)
+    if args.only=='portraits':
+        # Failure cases: source lobby portraits are baked blue; selected/unselected
+        # cards diverge; atlas outage regresses to blue; all media missing hides
+        # identity; 320px crops cards or leaves later rows unreachable.
+        browser('network','route','https://cdn.ichenj.com/bga/v20261002-1/fortressblue/**','--abort')
+        for mode,width in [('desktop',1280),('mobile',320),('idle-fallback',320),('no-media',320)]:
+            leave();browser('set','viewport',str(width),'1000' if width>320 else '844')
+            if mode=='idle-fallback':browser('network','route','**/fortressblue/v3/**','--abort')
+            if mode=='no-media':browser('network','route','**/fortressblue/v2/**','--abort')
+            api('/rooms',{'kind':'fortressblue','name':'彩色选车 '+mode,'capacity':2,'options':{'map':'stage-16','turnSeconds':40}})
+            r=state();other('/rooms/'+r['id'],{'type':'join','version':r['version'],'nonce':uuid.uuid4().hex});other_command('ready')
+            command('ready');command('start');browser('wait','[data-fortressblue-tank]')
+            # New page intentionally clears image cache between network scenarios.
+            browser('reload');browser('wait','[data-fortressblue-tank]')
+            expected='fallback' if mode=='no-media' else 'idle' if mode=='idle-fallback' else 'atlas'
+            wait(lambda:js("[...document.querySelectorAll('[data-fortressblue-tank] .fb-tank-portrait')].filter(e=>e.dataset.portraitState===" +json.dumps(expected)+').length')==14,timeout=8,label='all fourteen original-color portraits '+mode)
+            palette=js(r'''(async()=>{
+              const catalog=CATALOG, results=[];
+              for(const card of document.querySelectorAll('[data-fortressblue-tank]')){
+                const id=card.dataset.fortressblueTank,c=card.querySelector('canvas'),pixels=c.getContext('2d').getImageData(0,0,c.width,c.height).data;
+                let opaque=0,bright=0,minX=c.width,maxX=0,minY=c.height,maxY=0;const colors=new Set();
+                for(let i=0;i<pixels.length;i+=4)if(pixels[i+3]>250){opaque++;const x=(i/4)%c.width,y=Math.floor(i/4/c.width);minX=Math.min(minX,x);maxX=Math.max(maxX,x);minY=Math.min(minY,y);maxY=Math.max(maxY,y);if(Math.max(...pixels.slice(i,i+3))>100)bright++;colors.add([...pixels.slice(i,i+3)].join(','))}
+                let originalPalette=true;
+                if(c.dataset.portraitState!=='fallback'){
+                  const t=catalog[id],f=t.frame,im=new Image();im.src=c.dataset.portraitState==='atlas'?t.atlases[f.atlas]:'/fortressblue/v2/tanks/'+id+'-idle.webp';await im.decode();
+                  const ref=document.createElement('canvas');ref.width=im.naturalWidth;ref.height=im.naturalHeight;const ctx=ref.getContext('2d');ctx.drawImage(im,0,0);
+                  const src=c.dataset.portraitState==='atlas'?ctx.getImageData(f.x,f.y,f.w,f.h).data:ctx.getImageData(0,0,ref.width,ref.height).data;
+                  const original=new Set();for(let i=0;i<src.length;i+=4)if(src[i+3]>250)original.add([...src.slice(i,i+3)].join(','));
+                  originalPalette=[...colors].every(color=>original.has(color));
+                }
+                const box=c.getBoundingClientRect(),scale=Math.min(box.width/c.width,box.height/c.height);results.push({id,opaque,bright,colors:colors.size,originalPalette,visibleWidth:(maxX-minX+1)*scale,visibleHeight:(maxY-minY+1)*scale});
+              }return results;
+            })()'''.replace('CATALOG',json.dumps({k:{'atlases':t['atlases'],'frame':t['frames'][t['actions']['idle']['right'][0]]} for k,t in json.loads((root/'games/fortressblue/data/animations.json').read_text())['tanks'].items()})))
+            assert all(p['opaque']>100 and p['bright']>50 and p['colors']>=3 and p['originalPalette'] and p['visibleWidth']>=30 and p['visibleHeight']>=30 for p in palette),palette
+            record('picker-pixels-'+mode,palette)
+            rows=js("[...document.querySelectorAll('[data-fortressblue-tank]')].map(e=>{const c=e.querySelector('.fb-tank-portrait'),r=e.getBoundingClientRect(),s=getComputedStyle(c);return {id:e.dataset.fortressblueTank,disabled:e.disabled,state:c.dataset.portraitState,opacity:s.opacity,filter:s.filter,x:r.x,width:r.width,name:e.querySelector('strong').textContent}})")
+            assert len(rows)==14 and all(not r['disabled'] and r['opacity']=='1' and r['filter']=='none' and r['x']>=0 and r['x']+r['width']<=width+1 for r in rows),rows
+            shot('picker-'+mode+'-top')
+            browser('click','[data-fortressblue-tank="14"]');wait(lambda:js("document.querySelector('[data-fortressblue-tank=\"14\"]')?.classList.contains('selected')"))
+            assert js("document.querySelector('[data-fortressblue-tank=\"14\"] .fb-tank-portrait')?.dataset.portraitState")==expected
+            shot('picker-'+mode+'-selected-bottom')
+            record('picker-'+mode,rows);check('all 14 selectable portraits retain color/identity '+mode,cards=rows)
     if args.only=='facing':
         browser('network','route','https://cdn.ichenj.com/bga/v20261002-1/fortressblue/**','--abort')
         assert api('/state')['assetsBaseURL']=='https://cdn.ichenj.com/bga/v20261002-1'
@@ -660,7 +760,7 @@ finally:
         except Exception:pass
     (out/'stop').write_text('stop')
     if server:
-        if args.only=='facing':server.terminate()
+        if args.only in ('facing','portraits','supplies'):server.terminate()
         try:server.wait(timeout=15)
         except subprocess.TimeoutExpired:server.terminate();server.wait(timeout=10)
     if log:log.close()

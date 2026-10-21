@@ -1,3 +1,4 @@
+import { classicMapNames } from "./classic-map-options.ts";
 export type Options = {
   map: string;
   roundSeconds: number;
@@ -6,6 +7,10 @@ export type Options = {
 export type Input = { at: number; move: string; bomb: boolean };
 
 export type Player = {
+  character?: number;
+  nativeSpeed?: number;
+  selected?: boolean;
+  mount?: string;
   avatar?: number;
   seat: number;
   seq: number;
@@ -67,7 +72,10 @@ export type View = {
   rulesVersion?: number;
   schema: number;
   options: Options;
-  phase: "countdown" | "playing" | "finished";
+  phase: "select" | "countdown" | "playing" | "finished";
+  selectUntil?: number;
+  nativeObjects?: number[];
+  boxMotions?: {fromX:number;fromY:number;x:number;y:number;at:number;endAt:number;objectId:number}[];
   epoch: string;
   serverAt: number;
   startAt: number;
@@ -91,6 +99,7 @@ export type View = {
 };
 
 export const mapNames: Record<string, string> = {
+  ...classicMapNames,
   community10: "小区10",
   waterpark: "水乐园",
   forest: "森林公园",
@@ -103,6 +112,14 @@ export const itemNames: Record<string, string> = {
   bomb: "炸弹容量",
   range: "射程",
   shield: "护盾",
+  turtle: "乌龟",
+  "turtle-fast": "快乌龟",
+  owl: "猫头鹰",
+  airship: "飞碟",
+  "airship-broken": "故障飞碟",
+  octopus: "章鱼",
+  "octopus-fast": "快章鱼",
+  railcar: "矿车",
 };
 
 export const teamNames = ["红队", "蓝队"] as const;

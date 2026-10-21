@@ -11,11 +11,15 @@ import (
 	"github.com/k0ngk0ng/wire-board/internal/gameapi"
 )
 
-func runBotMatch(t *testing.T, players int, mapID string) {
+func runBotMatch(t *testing.T, players int, mapID string, difficulty ...string) {
 	t.Helper()
 	module := fortressblue.Module()
 	now := time.Unix(1_800_000_000, 0)
-	options, _ := json.Marshal(fortressblue.Options{Map: mapID, TurnSeconds: 20})
+	level := "hard" // Existing acceptance retains the pre-difficulty strategy.
+	if len(difficulty) > 0 {
+		level = difficulty[0]
+	}
+	options, _ := json.Marshal(fortressblue.Options{Map: mapID, TurnSeconds: 20, BotDifficulty: level})
 	m, err := module.Start(gameapi.Context{Players: players, Now: now}, options)
 	if err != nil {
 		t.Fatal(err)
@@ -112,5 +116,13 @@ func TestAllOriginalMapsBotMatches(t *testing.T) {
 		t.Run(m.ID, func(t *testing.T) {
 			runBotMatch(t, 8, m.ID)
 		})
+	}
+}
+
+func TestAllDifficultyPlayerCountsFinish(t *testing.T) {
+	for _, level := range []string{"easy", "normal", "hard"} {
+		for _, players := range []int{2, 4, 6, 8} {
+			t.Run(fmt.Sprintf("%s-%d", level, players), func(t *testing.T) { runBotMatch(t, players, "stage-16", level) })
+		}
 	}
 }
