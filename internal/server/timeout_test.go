@@ -227,7 +227,25 @@ func TestAssetURLValidationAndCSP(t *testing.T) {
 	}
 	defer response.Body.Close()
 	csp := response.Header.Get("Content-Security-Policy")
-	if !strings.Contains(csp, "media-src 'self' data: https://assets.example.com;") || !strings.Contains(csp, "img-src 'self' data: https://assets.example.com;") || !strings.Contains(csp, "script-src 'self' 'wasm-unsafe-eval';") || !strings.Contains(csp, "connect-src 'self' https://assets.example.com;") || strings.Contains(csp, "'unsafe-eval'") {
+	if !strings.Contains(csp, "media-src 'self' data: https://assets.example.com https://cdn.ichenj.com;") || !strings.Contains(csp, "img-src 'self' data: https://assets.example.com https://cdn.ichenj.com;") || !strings.Contains(csp, "script-src 'self' 'wasm-unsafe-eval';") || !strings.Contains(csp, "connect-src 'self' https://assets.example.com https://cdn.ichenj.com;") || strings.Contains(csp, "'unsafe-eval'") {
 		t.Fatal("incorrect Wasm and asset-fetch CSP", csp)
+	}
+}
+
+func TestDefaultAssetCSPAllowsImmutableOSS(t *testing.T) {
+	// Failure scenario: built-in immutable OSS resources are blocked when an
+	// operator has not configured a mirror. Script execution must remain local.
+
+	_, ts := setupServer(t)
+	response, err := http.Get(ts.URL + "/healthz")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer response.Body.Close()
+	csp := response.Header.Get("Content-Security-Policy")
+	for _, part := range []string{"connect-src 'self' https://cdn.ichenj.com;", "img-src 'self' data: https://cdn.ichenj.com;", "media-src 'self' data: https://cdn.ichenj.com;", "script-src 'self' 'wasm-unsafe-eval';"} {
+		if !strings.Contains(csp, part) {
+			t.Fatal("missing pinned OSS policy", csp)
+		}
 	}
 }

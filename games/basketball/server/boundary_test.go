@@ -31,6 +31,9 @@ func hostStart(t *testing.T) (gameapi.Module, gameapi.Context, gameapi.Match) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	for seat := 0; seat < ctx.Players; seat++ {
+		m = loadingAction(t, module, ctx, m, seat)
+	}
 	return module, ctx, m
 }
 func hostTick(t *testing.T, module gameapi.Module, ctx *gameapi.Context, m gameapi.Match) gameapi.Match {

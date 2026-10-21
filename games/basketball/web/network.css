@@ -41,6 +41,7 @@
   background: #172126;
 }
 .basketball-stage {
+  position: relative;
   width: min(100%, 640px, calc((100svh - 250px) * 256 / 240));
   aspect-ratio: 256/240;
   overflow: hidden;
@@ -84,4 +85,25 @@
   .basketball-status {
     font-size: 12px;
   }
+}
+
+.basketball-loading {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px;
+  text-align: center;
+  background: #172126;
+  color: #f4eedb;
+  font-size: 14px;
+}
+.basketball-loading progress {
+  width: min(100%, 280px);
+  height: 16px;
+  accent-color: #f1cc76;
 }

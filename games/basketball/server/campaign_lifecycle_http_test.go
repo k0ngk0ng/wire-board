@@ -42,6 +42,7 @@ func TestCampaignLifecycleHTTP(t *testing.T) {
 	}
 	h := gametest.NewHTTP(t, 1, m, "basketball")
 	h.Start(map[string]any{"mode": "solo", "campaign": map[string]any{"password": "020010", "opponent": 1}})
+	basketballReadyHTTP(t, h)
 	a := h.People[0]
 	view := func(c *gametest.Client) game.View {
 		raw, _ := json.Marshal(gametest.Data(c.Room()))

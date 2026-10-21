@@ -90,7 +90,7 @@ test("music76 accepts only its exact intro-loop delivery filename", t => {
   }
 });
 
-test('application artifact verifies the separately pinned cover and rejects extra media', async t => {
+test('application artifact rejects all basketball media, including the pinned cover', async t => {
   const f=fixture(t), output=await materializeBasketballAssets(f.dir,{packageDirectory:f.pkg});
   const image=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+a6z8AAAAASUVORK5CYII=','base64');
   const digest=sha(image), localPath='/basketball/v1/cover/heroes-'+digest+'.png';
@@ -98,7 +98,10 @@ test('application artifact verifies the separately pinned cover and rejects extr
   writeFileSync(path.join(f.dir,'games/basketball/assets/cover-manifest.json'),JSON.stringify(cover));
   assert.throws(()=>verifyBasketballPublicFiles(f.dir,output,{exact:false}));
   const target=path.join(output,localPath);mkdirSync(path.dirname(target),{recursive:true});writeFileSync(target,image);
-  verifyBasketballPublicFiles(f.dir,output,{exact:false});
+  assert.throws(()=>verifyBasketballPublicFiles(f.dir,output,{exact:false}));
+  const dist=path.join(f.dir,"dist");mkdirSync(path.join(dist,"basketball/v1/runtime"),{recursive:true});
+  writeFileSync(path.join(dist,"basketball/v1/runtime/build.json"),"{}");
+  verifyBasketballPublicFiles(f.dir,dist,{exact:false});
   writeFileSync(path.join(path.dirname(target),'unlisted.png'),image);
   assert.throws(()=>verifyBasketballPublicFiles(f.dir,output,{exact:false}));
 });

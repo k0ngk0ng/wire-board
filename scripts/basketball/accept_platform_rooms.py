@@ -35,6 +35,7 @@ try:
  page=base+'/'
  browser('--profile',str(OUT/'profile'),'open',page);opened=True
  endpoint=browser('get','cdp-url')['cdpUrl'];inspector=subprocess.Popen(['node',str(ROOT/'scripts/basketball/browser_cdp_session.mjs'),endpoint,page],env=env,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=(OUT/'cdp.stderr').open('w'),text=True);assert json.loads(inspector.stdout.readline())['ready']
+ mirror=(ROOT/'scripts/basketball/browser_oss_mirror.js').read_text();cdp('Page.enable');cdp('Page.addScriptToEvaluateOnNewDocument',dict(source=mirror));js(mirror)
  wait('!!document.querySelector("input[name=name]")')
  browser('fill','input[name=name]','牌局管理员');browser('fill','input[name=password]','poker-test-password');browser('click','.auth-form button[type=submit], .auth-form button.primary')
  wait('!!document.querySelector(".lobby") || document.body.innerText.includes("创建房间")')
@@ -118,6 +119,7 @@ try:
   wait('document.querySelectorAll(".waiting-seat")[1]?.textContent.includes("已准备")')
   browser('find','role','button','click','--name','我准备好了');wait('[...document.querySelectorAll("button")].some(b=>b.textContent.includes("开始游戏")&&!b.disabled)')
   js('[...document.querySelectorAll("button")].find(b=>b.textContent.includes("开始游戏")).scrollIntoView({block:"center"})');browser('find','role','button','click','--name','开始游戏');wait('!!document.querySelector("[data-basketball-ready=true]")')
+  other=request('/state')['room'];request('/rooms/'+room['id'],{'type':'action','version':other['version'],'nonce':'platform-peer-loaded-001','action':{'type':'loaded','epoch':other['game']['data']['epoch']}})
   wait('Number(document.querySelector(".basketball-stage canvas")?.dataset.videoFrame)>=120')
   expect('versus retains original no-equipment mode',js('fetch("/api/state").then(r=>r.json()).then(s=>s.room.game.data.runtime.config.match.Mode===128 && s.room.game.data.runtime.config.match.Equipment.flat().every(i=>i===-1) && !document.querySelector(".basketball-campaign-editor"))'))
   expect('started original runtime uses prepared court and characters',js('fetch("/api/state").then(r=>r.json()).then(s=>s.room.game.data.runtime.config.match.Court===6 && JSON.stringify(s.room.game.data.runtime.config.match.Characters)==="[0,1,1,0]")'))
@@ -147,7 +149,7 @@ try:
   (OUT/'stream-trace.json').write_text(json.dumps(dict(rttMS=int(env.get('BASKETBALL_BROWSER_RTT_MS','0')),trace=trace),indent=2)+'\n')
 
  expect('no application errors',js('platformErrors.length===0 && !document.querySelector(".basketball-error")'))
- (OUT/'result.json').write_text(json.dumps(dict(status='passed',checks=checks,scope='built production UI, real platform login/create/wait/join/start, independent test module registry and verified packaged fallback graphics; no production registration, OSS or full multiplayer match'),ensure_ascii=False,indent=2)+'\n')
+ (OUT/'result.json').write_text(json.dumps(dict(status='passed',checks=checks,scope='built production UI, real platform login/create/wait/join/start, independent test module registry and verified OSS-byte fixture mirrors; no production registration, OSS or full multiplayer match'),ensure_ascii=False,indent=2)+'\n')
  print(json.dumps(checks,ensure_ascii=False))
 except Exception as error:
  (OUT/'result.json').write_text(json.dumps(dict(status='failed',checks=checks,error=repr(error)),ensure_ascii=False,indent=2)+'\n')

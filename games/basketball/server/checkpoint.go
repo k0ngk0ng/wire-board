@@ -23,5 +23,13 @@ func (s State) checkpointKey() string {
 	if s.Runtime.CampaignPreparation != nil {
 		preparation = s.Runtime.CampaignPreparation.Revision
 	}
-	return fmt.Sprintf("%s/%s/%d/%d/%d/%d/%d", s.Epoch, s.phase(), period, round, revision, preparation, s.PresentationConfirmAt)
+	var loaded uint8
+	if s.Loading != nil {
+		for i, ready := range s.Loading.Ready {
+			if ready {
+				loaded |= 1 << i
+			}
+		}
+	}
+	return fmt.Sprintf("%s/%s/%d/%d/%d/%d/%d/%d", s.Epoch, s.phase(), period, round, revision, preparation, s.PresentationConfirmAt, loaded)
 }

@@ -41,6 +41,7 @@ func TestBasketballBrowserPlatformRooms(t *testing.T) {
 	}
 	mux := http.NewServeMux()
 	mux.Handle("/api/", h.Host.Handler())
+	mux.Handle("/__oss/", basketballOSSMirror(t, root))
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		relative := strings.TrimPrefix(r.URL.Path, "/")
 		if relative == "" {

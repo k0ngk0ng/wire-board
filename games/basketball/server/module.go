@@ -46,7 +46,11 @@ type SoundEvent struct {
 	VideoFrame uint64 `json:"videoFrame"`
 	IDs        []int  `json:"ids"`
 }
+type LoadingState struct {
+	Ready [4]bool `json:"ready"`
+}
 type State struct {
+	Loading               *LoadingState               `json:"loading,omitempty"`
 	PresentationConfirmAt int64                       `json:"presentationConfirmAt,omitempty"`
 	Campaign              *CampaignState              `json:"campaign,omitempty"`
 	Options               Options                     `json:"options"`
@@ -62,6 +66,7 @@ type State struct {
 	Music                 MusicState                  `json:"music"`
 }
 type View struct {
+	Loading                 *LoadingState                   `json:"loading,omitempty"`
 	PresentationAutomaticAt int64                           `json:"presentationAutomaticAt,omitempty"`
 	Attributes              *CampaignAttributes             `json:"attributes,omitempty"`
 	Campaign                *CampaignView                   `json:"campaign,omitempty"`
@@ -245,6 +250,12 @@ func start(ctx gameapi.Context, raw json.RawMessage) (gameapi.Match, error) {
 		s.Campaign = &CampaignState{Stage: "playing", Round: 1}
 		s.Options.Characters = r.Config.Match.Characters
 	}
+	for _, a := range flags {
+		if !a {
+			s.Loading = &LoadingState{}
+			break
+		}
+	}
 	for i, a := range flags {
 		s.Inputs[i] = InputState{Automated: a, IdleAt: s.ServerAt + idleMS, LastPacketAt: s.ServerAt}
 	}
@@ -318,6 +329,9 @@ func decode(m gameapi.Match) (State, error) {
 	return s, s.validateCampaignState()
 }
 func (s State) phase() string {
+	if s.Loading != nil {
+		return "loading"
+	}
 	if s.campaignMenu() {
 		return "campaign-" + s.Campaign.Stage
 	}
@@ -394,6 +408,17 @@ func validAction(ctx gameapi.Context, s State, raw json.RawMessage) (action, err
 	if err := strict(raw, &a); err != nil {
 		return a, fmt.Errorf("无效篮球操作")
 	}
+	if a.Type == "loaded" {
+		flags, err := automated(ctx, s.Options)
+		actor := s.actorForSeat(ctx.Actor)
+		if err != nil || actor < 0 || flags[actor] || a.Epoch != s.Epoch || a.Sequence != 0 || a.Buttons != 0 || a.Seat != nil || a.BasedOn != nil || a.Events != nil || a.Campaign != nil || a.Preparation != nil {
+			return a, fmt.Errorf("无效加载确认")
+		}
+		return a, nil
+	}
+	if s.Loading != nil {
+		return a, fmt.Errorf("等待所有玩家加载完成")
+	}
 	if a.Type == "campaign" {
 		_, err := applyCampaignAction(ctx, s, a)
 		return a, err
@@ -448,6 +473,18 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 	a, err := validAction(ctx, s, raw)
 	if err != nil {
 		return m, err
+	}
+	if a.Type == "loaded" {
+		if s.Loading == nil || s.Loading.Ready[s.actorForSeat(ctx.Actor)] {
+			return m, nil
+		}
+		flags, _ := automated(ctx, s.Options)
+		if err = s.syncAutomation(flags); err != nil {
+			return m, err
+		}
+		s.Loading.Ready[s.actorForSeat(ctx.Actor)] = true
+		s.finishLoading(ctx.Now.UnixMilli())
+		return s.match()
 	}
 	if a.Type == "campaign" {
 		s, err = applyCampaignAction(ctx, s, a)
@@ -538,8 +575,13 @@ func onTimer(ctx gameapi.Context, m gameapi.Match) (gameapi.Match, error) {
 		return m, err
 	}
 	now := ctx.Now.UnixMilli()
-	if m.Result != nil || now < s.ServerAt+frameMS {
+	if m.Result != nil {
 		return m, nil
+	}
+	if now < s.ServerAt+frameMS {
+		// The host retains the previous deadline across input actions. Loading
+		// completion can re-anchor time between ticks; move that early wakeup.
+		return s.match()
 	}
 	flags, err := automated(ctx, s.Options)
 	if err != nil {
@@ -548,6 +590,11 @@ func onTimer(ctx gameapi.Context, m gameapi.Match) (gameapi.Match, error) {
 	wasAutomatic := s.Inputs[0].Automated
 	if err = s.syncAutomation(flags); err != nil {
 		return m, err
+	}
+	if s.Loading != nil {
+		s.ServerAt = now
+		s.finishLoading(now)
+		return s.match()
 	}
 	if s.campaignMenu() {
 		s.ServerAt = now
@@ -759,7 +806,7 @@ func project(m gameapi.Match, seat int) (any, error) {
 		return nil, err
 	}
 	actor := s.actorForSeat(seat)
-	v := View{SeatActors: s.seatActors(), LocalActor: actor, Options: s.Options, Epoch: s.Epoch, ServerAt: s.ServerAt, Phase: s.phase(), Runtime: s.Runtime, Inputs: s.Inputs, Events: s.Events, SoundSequence: s.SoundSequence, Scores: s.scores(), CanInput: actor >= 0 && !s.Inputs[actor].Automated && m.Result == nil, VideoInputs: s.VideoInputs, Music: s.Music.view(s.ServerAt)}
+	v := View{Loading: s.Loading, SeatActors: s.seatActors(), LocalActor: actor, Options: s.Options, Epoch: s.Epoch, ServerAt: s.ServerAt, Phase: s.phase(), Runtime: s.Runtime, Inputs: s.Inputs, Events: s.Events, SoundSequence: s.SoundSequence, Scores: s.scores(), CanInput: actor >= 0 && !s.Inputs[actor].Automated && m.Result == nil, VideoInputs: s.VideoInputs, Music: s.Music.view(s.ServerAt)}
 	if s.Inputs[0].Automated && engine.RuntimePresentationNeedsConfirm(s.Runtime) {
 		v.PresentationAutomaticAt = s.PresentationConfirmAt
 	}
@@ -767,7 +814,7 @@ func project(m gameapi.Match, seat int) (any, error) {
 	if err != nil {
 		return nil, err
 	}
-	if s.campaignMenu() {
+	if s.Loading != nil || s.campaignMenu() {
 		v.CanInput = false
 	}
 	if s.Runtime.Config.Campaign != nil && s.Runtime.AwaitingNextPeriod {
@@ -796,5 +843,24 @@ func (s State) rosterDescription() string {
 		return "热血篮球：双人对战 · 第一席 A 队，第二席 B 队，各有一名原版电脑队友"
 	default:
 		return "热血篮球：A 队为席位 1、2，B 队为席位 3、4"
+	}
+}
+
+// Only the initial entry is gated. Reconnects after start cannot pause a match.
+func (s *State) finishLoading(now int64) {
+	if s.Loading == nil {
+		return
+	}
+	for _, actor := range s.seatActors() {
+		if !s.Inputs[actor].Automated && !s.Loading.Ready[actor] {
+			return
+		}
+	}
+	s.Loading = nil
+	s.ServerAt = now
+	s.Remainder = 0
+	for i := range s.Inputs {
+		s.Inputs[i].LastPacketAt = now
+		clearTransport(&s.Inputs[i])
 	}
 }

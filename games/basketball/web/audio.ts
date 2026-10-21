@@ -1,3 +1,4 @@
+import release from "../assets/release-manifest.json" with { type: "json" };
 import type { GameAudioPort } from "../../../web/src/game-api/module";
 import catalog from "../assets/audio-catalog.json" with { type: "json" };
 import playback from "../assets/audio-playback.json" with { type: "json" };
@@ -5,7 +6,7 @@ import playback from "../assets/audio-playback.json" with { type: "json" };
 export type BasketballAudioOptions = {
   /** CDN root; the game appends its immutable versioned asset path. */
   assetsBase?: string;
-  /** Explicit local preview directory, or the future packaged fallback path. */
+  /** Explicit research fixture directory; never a production fallback. */
   localBase?: string;
 };
 
@@ -97,9 +98,10 @@ export class BasketballAudio {
   }
 
   private sources(file: string): string[] {
-    const local = `${(this.options.localBase ?? assetPath).replace(/\/+$/, "")}/${file}`;
-    const root = this.options.assetsBase?.replace(/\/+$/, "");
-    return root ? [`${root}${assetPath}/${file}`, local] : [local];
+    if (this.options.localBase && !this.options.assetsBase)
+      return [`${this.options.localBase.replace(/\/+$/, "")}/${file}`];
+    const root = (this.options.assetsBase || release.assetsBaseURL).replace(/\/+$/, "");
+    return [`${root}${assetPath}/${file}`];
   }
 
   /** Call once for each new engine event batch, not for snapshot rendering.
