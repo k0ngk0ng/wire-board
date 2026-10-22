@@ -100,6 +100,7 @@ export function frameRect(name: SpriteName, column = 0, row = 0) {
   };
 }
 type Atlas = {
+  failed?: boolean;
   images: Partial<Record<SpriteName, HTMLImageElement>>;
   promise: Promise<{ loaded: number; failed: SpriteName[] }>;
 };
@@ -109,14 +110,14 @@ export function getSprite(name: SpriteName): HTMLImageElement | null {
   const image = current?.images[name];
   return image?.complete && image.naturalWidth > 0 ? image : null;
 }
-export function loadSprites(base = ""): Atlas["promise"] {
+export function loadSprites(base = "", retryFailed = false): Atlas["promise"] {
   const cached = atlases.get(base);
-  if (cached) {
+  if (cached && (!retryFailed || !cached.failed)) {
     current = cached;
     return cached.promise;
   }
   const images: Atlas["images"] = {};
-  const atlas = {
+  const atlas: Atlas = {
     images,
     promise: Promise.resolve({ loaded: 0, failed: [] as SpriteName[] }),
   };
@@ -139,9 +140,12 @@ export function loadSprites(base = ""): Atlas["promise"] {
       }
       return name;
     }),
-  ).then((results) => ({
-    loaded: results.filter((x) => x === null).length,
-    failed: results.filter((x): x is SpriteName => x !== null),
-  }));
+  ).then((results) => {
+    atlas.failed = results.some((x) => x !== null);
+    return {
+      loaded: results.filter((x) => x === null).length,
+      failed: results.filter((x): x is SpriteName => x !== null),
+    };
+  });
   return atlas.promise;
 }

@@ -526,7 +526,8 @@ export function Board(props: BoardProps<View>) {
     [audio],
   );
 
-  const serverNow = clock.serverNow + now - clock.receivedAt;
+  const serverNow =
+    clock.serverNow + (clock.paused ? 0 : now - clock.receivedAt);
   const remaining = Math.max(0, d.matchEndsAt - serverNow);
   const countdown = Math.max(0, Math.ceil((d.startAt - serverNow) / 1000));
   const lastEventID = (d.events ?? []).reduce(

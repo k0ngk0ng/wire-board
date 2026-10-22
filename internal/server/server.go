@@ -30,6 +30,9 @@ import (
 )
 
 type Config struct {
+	// Enabled by the production entrypoint; embedders may retain the pre-barrier protocol.
+	ClientLoading bool
+
 	Modules                                             []gameapi.Module
 	DataDir, InviteCode, Origin                         string
 	AssetsBaseURL                                       string
@@ -54,6 +57,10 @@ type Seat struct {
 	Left            bool `json:"left"`
 }
 type Room struct {
+	Loading            *ClientLoadBarrier `json:"loading,omitempty"`
+	ClockOffsetMS      int64              `json:"clockOffsetMs,omitempty"`
+	LoadCompletedToken string             `json:"loadCompletedToken,omitempty"`
+
 	Options                json.RawMessage                `json:"options,omitempty"`
 	Module                 *gameapi.Match                 `json:"module,omitempty"`
 	CatanRiversWorldMap    *game.CatanRiversWorldMap      `json:"catanRiversWorldMap,omitempty"`
@@ -237,7 +244,11 @@ func New(cfg Config, files fs.FS) (*Server, error) {
 			db.Close()
 			return nil, e
 		}
-		moduleMigrated := false
+		moduleMigrated, loadingErr := s.restoreClientLoading(&r)
+		if loadingErr != nil {
+			db.Close()
+			return nil, loadingErr
+		}
 		if _, ok := s.modules[r.Kind]; r.Module != nil || len(r.Options) > 0 {
 			if !ok {
 				db.Close()
@@ -286,7 +297,7 @@ func New(cfg Config, files fs.FS) (*Server, error) {
 		}
 		changed = moduleMigrated || changed
 		changed = r.resumeSanguoshaResponses(time.Now()) || changed
-		if r.Status == "playing" && r.Module == nil && r.TurnDeadline == 0 {
+		if r.Status == "playing" && r.Loading == nil && r.Module == nil && r.TurnDeadline == 0 {
 			r.startTurnClock(time.Now())
 			changed = true
 		}
@@ -378,7 +389,7 @@ func (s *Server) expireSetups(now time.Time) {
 		if s.modules[room.Kind].Realtime {
 			continue // Takeover and all controlled inputs commit with the next frame.
 		}
-		if room.Status != "playing" || room.Game == nil || room.Game.Finished || room.TurnDeadline == 0 || room.TurnDeadline > now.UnixMilli() || room.Game.CatanExplorerSetupBlocked() {
+		if room.Status != "playing" || room.Loading != nil || room.Game == nil || room.Game.Finished || room.TurnDeadline == 0 || room.TurnDeadline > now.UnixMilli() || room.Game.CatanExplorerSetupBlocked() {
 			continue
 		}
 		s.expireToAutoplay(room, now)
@@ -431,7 +442,7 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("POST /api/rooms/{id}/watch", s.watch)
 	mux.HandleFunc("GET /api/ws", s.socket)
 	mux.HandleFunc("/api/", func(w http.ResponseWriter, r *http.Request) { fail(w, 404, "接口不存在") })
-	mux.Handle("/", http.FileServerFS(s.files))
+	mux.Handle("/", staticFiles(s.files))
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("X-Content-Type-Options", "nosniff")
 		w.Header().Set("Referrer-Policy", "same-origin")
@@ -630,10 +641,10 @@ func (s *Server) current(id string) *Room {
 }
 func summary(r *Room) map[string]any {
 	if len(r.Options) > 0 {
-		return map[string]any{"setupVersion": r.SetupVersion, "id": r.ID, "name": r.Name, "kind": r.Kind, "options": r.Options, "host": r.Host, "capacity": r.Capacity, "seats": r.Seats, "status": r.Status, "closeReason": r.CloseReason, "locked": r.Password != "", "version": r.Version, "updated": r.Updated, "spectatorCount": len(r.Spectators)}
+		return map[string]any{"loading": r.loadingView(), "clockOffsetMs": r.ClockOffsetMS, "matchId": r.MatchID, "setupVersion": r.SetupVersion, "id": r.ID, "name": r.Name, "kind": r.Kind, "options": r.Options, "host": r.Host, "capacity": r.Capacity, "seats": r.Seats, "status": r.Status, "closeReason": r.CloseReason, "locked": r.Password != "", "version": r.Version, "updated": r.Updated, "spectatorCount": len(r.Spectators)}
 	}
 
-	result := map[string]any{"catanRiversWorldMap": r.CatanRiversWorldMap, "id": r.ID, "name": r.Name, "kind": r.Kind, "railMap": r.RailMap, "sanguoshaOptions": r.SanguoshaOptions, "splendorOptions": r.SplendorOptions, "catanOptions": r.CatanOptions, "catanSeafarers": r.CatanSeafarers, "catanTransportSea": r.CatanTransportSea, "catanBaseConfiguration": r.CatanBaseConfiguration, "catanCitiesKnights": r.CatanCitiesKnights, "catanHarbors": r.CatanHarbors, "catanFriendlyRobber": r.CatanFriendlyRobber, "catanNewWorldMap": r.CatanNewWorldMap, "host": r.Host, "capacity": r.Capacity, "seats": r.Seats, "status": r.Status, "closeReason": r.CloseReason, "locked": r.Password != "", "version": r.Version, "updated": r.Updated, "spectatorCount": len(r.Spectators)}
+	result := map[string]any{"loading": r.loadingView(), "clockOffsetMs": r.ClockOffsetMS, "matchId": r.MatchID, "catanRiversWorldMap": r.CatanRiversWorldMap, "id": r.ID, "name": r.Name, "kind": r.Kind, "railMap": r.RailMap, "sanguoshaOptions": r.SanguoshaOptions, "splendorOptions": r.SplendorOptions, "catanOptions": r.CatanOptions, "catanSeafarers": r.CatanSeafarers, "catanTransportSea": r.CatanTransportSea, "catanBaseConfiguration": r.CatanBaseConfiguration, "catanCitiesKnights": r.CatanCitiesKnights, "catanHarbors": r.CatanHarbors, "catanFriendlyRobber": r.CatanFriendlyRobber, "catanNewWorldMap": r.CatanNewWorldMap, "host": r.Host, "capacity": r.Capacity, "seats": r.Seats, "status": r.Status, "closeReason": r.CloseReason, "locked": r.Password != "", "version": r.Version, "updated": r.Updated, "spectatorCount": len(r.Spectators)}
 	if r.CatanFishing {
 		result["catanFishing"] = true
 		if publicCatanExplorerScenario(r.CatanScenario) {
@@ -1054,6 +1065,9 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		Version                int                            `json:"version"`
 		ServerInstance         string                         `json:"serverInstance"`
 		Nonce                  string                         `json:"nonce"`
+		LoadToken              string                         `json:"loadToken"`
+		LoadBuild              string                         `json:"loadBuild"`
+		LoadClient             string                         `json:"loadClient"`
 		Action                 game.Action                    `json:"-"`
 		Enabled                *bool                          `json:"enabled,omitempty"`
 	}
@@ -1072,6 +1086,14 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 	}
 	if len(req.Nonce) < 8 || len(req.Nonce) > 100 {
 		fail(w, 400, "缺少有效操作编号")
+		return
+	}
+	if room.Loading != nil && (req.Type == "action" || req.Type == "autoplay") {
+		fail(w, 400, "请等待所有玩家加载完成")
+		return
+	}
+	if req.Type == "load_ready" && room.Loading == nil && room.Status == "playing" && req.LoadToken != "" && req.LoadToken == room.LoadCompletedToken && seatIndex(room, u.ID) >= 0 {
+		respond(w, 200, map[string]int{"version": room.Version})
 		return
 	}
 	if req.Type == "action" && room.Module != nil && s.modules[room.Kind].Realtime {
@@ -1119,7 +1141,8 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			parallelModule = module.AcceptStale(moduleContext(room, actor, req.Version, time.Now()), match, req.RawAction)
 		}
 	}
-	if req.Version != room.Version && !parallelModule && !parallelSetup && !parallelCatan && !parallelSG && !parallelDota && !seatControl && !realtimeControl {
+	parallelLoad := (req.Type == "load_begin" || req.Type == "load_ready") && room.Loading != nil && room.Loading.Token == req.LoadToken && req.Version >= room.SetupVersion && req.Version <= room.Version
+	if req.Version != room.Version && !parallelLoad && !parallelModule && !parallelSetup && !parallelCatan && !parallelSG && !parallelDota && !seatControl && !realtimeControl {
 		fail(w, 409, "局面已更新，请根据最新画面重试")
 		return
 	}
@@ -1134,6 +1157,8 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 	now := time.Now()
 	var err error
 	switch req.Type {
+	case "load_begin", "load_ready":
+		err = s.clientLoadCommand(&next, idx, req.Type, req.LoadToken, req.LoadBuild, req.LoadClient, now)
 	case "prepare":
 		err = s.prepareModule(&next, idx, req.RawAction)
 	case "options":
@@ -1575,6 +1600,9 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			err = errors.New("只有房主能开始游戏")
 			break
 		}
+		next.ClockOffsetMS = 0
+		next.Loading = nil
+		next.LoadCompletedToken = ""
 		for _, p := range next.Seats {
 			if !p.Ready {
 				err = errors.New("请等待所有玩家准备")
@@ -1827,7 +1855,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 				err = errors.New("此游戏不支持托管")
 				break
 			}
-			if !*req.Enabled && next.Seats[idx].AutoPlay && (module.Realtime || (next.Module.Deadline > 0 && next.Module.Deadline <= now.UnixMilli() && slices.Contains(next.Module.TimeoutActors, idx))) {
+			if !*req.Enabled && next.Seats[idx].AutoPlay && (module.Realtime || (next.Module.Deadline > 0 && next.Module.Deadline <= next.gameNow(now).UnixMilli() && slices.Contains(next.Module.TimeoutActors, idx))) {
 				var match gameapi.Match
 				match, err = module.Reclaim(moduleContext(&next, idx, req.Version, now), *next.Module)
 				if err == nil {
@@ -1934,6 +1962,16 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		next.TurnDeadline = 0
 	default:
 		err = errors.New("未知房间操作")
+	}
+	if err == nil && req.Type == "start" {
+		s.beginClientLoading(&next, now)
+	}
+	if err == nil && next.Loading != nil {
+		if next.Status != "playing" {
+			next.Loading = nil
+		} else if req.Type == "leave" {
+			next.releaseClientLoading(now)
+		}
 	}
 	if err == nil && next.Status == "waiting" {
 		err = next.validateCatanTwoSetup()

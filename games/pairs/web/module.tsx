@@ -1,18 +1,11 @@
+import catalog from "./catalog";
 import { defineGame } from "../../../web/src/game-api/module";
 import { Board } from "./Board";
 import { Cover } from "./Cover";
 import type { View } from "./types";
 import "./style.css";
 export default defineGame<View>({
-  id: "pairs",
-  name: "连连看",
-  category: "puzzle",
-  description:
-    "经典图案与闪电连线。1～6 人同图竞速，地图与难度随机，最先清空棋盘的人获胜。",
-  minPlayers: 1,
-  maxPlayers: 6,
-  supportsBots: true,
-  ownsSounds: true,
+  ...catalog,
   defaultOptions: {},
   Board,
   Cover,

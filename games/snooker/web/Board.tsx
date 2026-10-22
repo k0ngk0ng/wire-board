@@ -21,6 +21,8 @@ const phases: Record<string, string> = {
 };
 const teamName = (team: number) => (team === 0 ? "A 队" : "B 队");
 export function Board({
+  onReady,
+  onLoadError,
   room,
   data: d,
   act,
@@ -379,6 +381,8 @@ export function Board({
       )}
       <div className="snooker-game-layout">
         <Table
+          onReady={onReady}
+          onLoadError={onLoadError}
           balls={d.phase === "rolling" ? frame.balls : d.balls}
           angle={(angle * Math.PI) / 180}
           power={power / 100}

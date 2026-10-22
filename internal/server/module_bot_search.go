@@ -37,7 +37,7 @@ func cloneBotRoom(room *Room) (*Room, error) {
 
 func (s *Server) validBotSearch(job *moduleBotSearch) bool {
 	r := s.rooms[job.room]
-	return r != nil && r.Module != nil && r.Status == "playing" && r.Module.Result == nil &&
+	return r != nil && r.Loading == nil && r.Module != nil && r.Status == "playing" && r.Module.Result == nil &&
 		r.Kind == job.kind && r.MatchID == job.match && r.Version == job.version &&
 		job.actor >= 0 && job.actor < len(r.Seats) && r.Seats[job.actor].ID == job.seat &&
 		r.Seats[job.actor].computerControlled() && slices.Contains(r.Module.Actors, job.actor)

@@ -1,3 +1,4 @@
+import catalog from "./catalog";
 import {
   defineGame,
   type GameRoom,
@@ -8,7 +9,12 @@ import { Cover } from "./Cover";
 import { progressText } from "./format";
 import type { Options, View } from "./types";
 
-function OptionsForm({ value, onChange, capacity, disabled }: OptionsProps<Options>) {
+function OptionsForm({
+  value,
+  onChange,
+  capacity,
+  disabled,
+}: OptionsProps<Options>) {
   return (
     <div className="tetris-options">
       <label>
@@ -39,15 +45,17 @@ function Rules() {
     <div className="tetris-rules">
       <p>
         1 人房间是单人练习，2～4 人房间是对战。生存赛通过消行向对手发送垃圾行，
-        最后存活的玩家获胜；40 行冲刺各自清理 40 行，先完成者获胜，冲刺模式不发送垃圾行。
+        最后存活的玩家获胜；40 行冲刺各自清理 40
+        行，先完成者获胜，冲刺模式不发送垃圾行。
       </p>
       <p>
-        普通消行 1／2／3／4 行分别发送 0／1／2／4 行垃圾；垃圾行会进入对手的待落队列，
+        普通消行 1／2／3／4 行分别发送 0／1／2／4
+        行垃圾；垃圾行会进入对手的待落队列，
         在对手下一次锁块后从底部升起。消行也可以抵消自己待落的垃圾行。
       </p>
       <p>
-        计分：单行 100、双行 300、三行 500、四行 800，并乘以当前等级；
-        软降每格 +1，硬降每格 +2。每 10 行提升一级，下落速度加快。
+        计分：单行 100、双行 300、三行 500、四行 800，并乘以当前等级； 软降每格
+        +1，硬降每格 +2。每 10 行提升一级，下落速度加快。
       </p>
       <p>
         键盘：←／→ 移动，↑／X 顺时针旋转，Z／Ctrl 逆时针旋转，↓ 软降，
@@ -94,17 +102,7 @@ function PlayerSummary({
 }
 
 export default defineGame<View, Options>({
-  id: "tetris",
-  name: "俄罗斯方块",
-  description:
-    "经典落块对战：旋转与消行，向对手送去垃圾行，或抢先完成 40 行。",
-  category: "puzzle",
-  minPlayers: 1,
-  maxPlayers: 4,
-  playerCounts: [1, 2, 3, 4],
-  supportsBots: true,
-  ownsSounds: true,
-  realtime: true,
+  ...catalog,
   defaultOptions: { mode: "survival" },
   Board,
   Cover,

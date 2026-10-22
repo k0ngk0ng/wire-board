@@ -283,8 +283,13 @@ export function Board(props: BoardProps<View>) {
       if (!keyboard.has(e.code)) return;
       if (e.code === "Space" && e.target instanceof HTMLButtonElement) return;
       e.preventDefault();
-      if(e.target instanceof HTMLButtonElement && !e.target.closest('[data-game-controls]')) {
-        boardElement.current?.querySelector<HTMLCanvasElement>('.racing-chase')?.focus({preventScroll:true});
+      if (
+        e.target instanceof HTMLButtonElement &&
+        !e.target.closest("[data-game-controls]")
+      ) {
+        boardElement.current
+          ?.querySelector<HTMLCanvasElement>(".racing-chase")
+          ?.focus({ preventScroll: true });
       }
       wake();
       keys.current.add(e.code);
@@ -587,6 +592,8 @@ export function Board(props: BoardProps<View>) {
       </div>
       <div className="racing-stage">
         <TrackCanvas
+          onReady={props.onReady}
+          onLoadError={props.onLoadError}
           data={d}
           clock={clock}
           seat={spectating ? -1 : room.you}

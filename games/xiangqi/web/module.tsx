@@ -1,30 +1,14 @@
+import catalog from "./catalog";
 import { defineGame } from "../../../web/src/game-api/module";
 import { Board } from "./Board";
-import { coverSVG } from "../assets/art";
 import { createPlayback } from "./playback";
 import type { Options, View } from "./types";
 import "./style.css";
 export default defineGame<View, Options>({
-  id: "xiangqi",
-  name: "中国象棋",
-  category: "board",
-  description:
-    "楚河汉界，两军对弈。车马炮协同将杀，支持长将、长捉与循环提示，可与朋友或电脑对弈。",
-  minPlayers: 2,
-  maxPlayers: 2,
-  requiresFullTable: true,
-  supportsBots: true,
-  ownsSounds: true,
+  ...catalog,
   defaultOptions: { difficulty: "standard", turnSeconds: 120 },
   createPresentation: () => createPlayback(),
   Board,
-  Cover: () => (
-    <span
-      className="xiangqi-cover"
-      aria-hidden="true"
-      dangerouslySetInnerHTML={{ __html: coverSVG }}
-    />
-  ),
   Options: ({ value, onChange, disabled }) => (
     <div className="xiangqi-options">
       <label>

@@ -1,3 +1,5 @@
+import { RailMapsContext, playerColors } from "./context";
+export { RailMapsContext, playerColors } from "./context";
 import {
   ArrowRight,
   Check,
@@ -7,13 +9,7 @@ import {
   ZoomIn,
   ZoomOut,
 } from "lucide-react";
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { AnimatedSlot } from "../../../web/src/animated-slot";
 import { PlayerName } from "../../../web/src/profiles";
 import type {
@@ -36,7 +32,7 @@ import {
   railPaymentValid,
   routePoints,
 } from "./rail-expansions";
-export const RailMapsContext = createContext<RailMapSpec[]>([]);
+
 export const trainColors = [
   "#a35e91",
   "#eee6d1",
@@ -59,18 +55,7 @@ export const trainNames = [
   "绿色",
   "万能",
 ];
-export const playerColors = [
-  "#337ab3",
-  "#cf5347",
-  "#42956b",
-  "#d4a833",
-  "#414753",
-  "#8a5a9e",
-  "#527f8d",
-  "#a06a4f",
-  "#6f8f4f",
-  "#8a6f9e",
-];
+
 export function TrainCard({
   color,
   count,

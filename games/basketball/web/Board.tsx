@@ -37,6 +37,15 @@ export function Board(props: BoardProps<BasketballNetworkView>) {
   const localActor = data.localActor ?? room.you;
   const identity = `${room.id}:${data.epoch}:${room.you}:${localActor}:${userID}`;
   const ready = readyIdentity === identity;
+  useEffect(() => {
+    if (ready) props.onReady?.();
+  }, [ready, props.onReady]);
+  useEffect(() => {
+    props.onLoadProgress?.(progress.percent, progress.label);
+  }, [progress, props.onLoadProgress]);
+  useEffect(() => {
+    if (error) props.onLoadError?.(error);
+  }, [error, props.onLoadError]);
   const enabled = (value: BoardProps<BasketballNetworkView>) =>
     !campaignOpenRef.current &&
     value.room.status === "playing" &&

@@ -74,7 +74,7 @@ func moduleContext(r *Room, actor, version int, now time.Time) gameapi.Context {
 	for i, seat := range r.Seats {
 		automated[i] = seat.computerControlled()
 	}
-	return gameapi.Context{Actor: actor, Players: len(r.Seats), Automated: automated, Version: r.Version, RequestedVersion: version, Now: now}
+	return gameapi.Context{Actor: actor, Players: len(r.Seats), Automated: automated, Version: r.Version, RequestedVersion: version, Now: r.gameNow(now)}
 }
 
 // prepareModule only changes options and readiness on the command's detached
@@ -134,6 +134,12 @@ func (r *Room) setModule(match gameapi.Match) error {
 	}
 	r.Module = &match
 	r.TurnDeadline = match.Deadline
+	if r.TurnDeadline > 0 {
+		r.TurnDeadline += r.ClockOffsetMS
+	}
+	if r.Loading != nil {
+		r.TurnDeadline = 0
+	}
 	// The old room envelope remains readable by platform history/chat code.
 	// No game-specific rule or payload is placed in this compatibility header.
 	r.Game = &game.State{Kind: r.Kind, Phase: "module", Turn: -1, Round: 1, Log: match.Log, Winners: []int{}}
@@ -181,7 +187,7 @@ func (s *Server) startModule(r *Room, actor int, now time.Time) error {
 }
 
 func (s *Server) applyModule(r *Room, actor, version int, action json.RawMessage, now time.Time) error {
-	if r.Module == nil || r.Module.Result != nil || !slices.Contains(r.Module.Actors, actor) {
+	if r.Loading != nil || r.Module == nil || r.Module.Result != nil || !slices.Contains(r.Module.Actors, actor) {
 		return errors.New("当前不能执行游戏行动")
 	}
 	match, err := s.modules[r.Kind].Apply(moduleContext(r, actor, version, now), *r.Module, action)
@@ -217,7 +223,17 @@ func (s *Server) moduleView(r *Room, viewer int) (map[string]any, error) {
 	if attention == nil {
 		attention = match.Actors
 	}
-	return map[string]any{"kind": r.Kind, "data": data, "actors": match.Actors, "attention": attention, "eliminated": match.Eliminated, "systemDeadline": match.SystemDeadline, "finished": match.Result != nil, "winners": r.Game.Winners, "log": r.Game.Log, "phase": "module", "turn": r.Game.Turn, "round": 1}, nil
+	actors := match.Actors
+	deadline := match.SystemDeadline
+	if deadline > 0 {
+		deadline += r.ClockOffsetMS
+	}
+	if r.Loading != nil {
+		actors = []int{}
+		attention = []int{}
+		deadline = 0
+	}
+	return map[string]any{"kind": r.Kind, "data": data, "actors": actors, "attention": attention, "eliminated": match.Eliminated, "systemDeadline": deadline, "finished": match.Result != nil, "winners": r.Game.Winners, "log": r.Game.Log, "phase": "module", "turn": r.Game.Turn, "round": 1}, nil
 }
 
 // Called under s.mu, before player timeouts. System events neither enable
@@ -232,7 +248,7 @@ func (s *Server) expireModuleTimersAtCadence(now time.Time, precise bool) {
 		if s.modules[room.Kind].Realtime || s.modules[room.Kind].PreciseTimers != precise {
 			continue // Realtime frames use the fast clock and include bot controls.
 		}
-		if room.Status != "playing" || room.Module == nil || room.Module.Result != nil || room.Module.SystemDeadline == 0 || room.Module.SystemDeadline > now.UnixMilli() {
+		if room.Status != "playing" || room.Loading != nil || room.Module == nil || room.Module.Result != nil || room.Module.SystemDeadline == 0 || room.Module.SystemDeadline > room.gameNow(now).UnixMilli() {
 			continue
 		}
 		if err := s.runModuleTimer(room, now); err != nil {
@@ -259,7 +275,7 @@ func (s *Server) runModuleTimer(room *Room, now time.Time) error {
 	if err != nil {
 		return err
 	}
-	if match.SystemDeadline != 0 && match.SystemDeadline <= now.UnixMilli() {
+	if match.SystemDeadline != 0 && match.SystemDeadline <= next.gameNow(now).UnixMilli() {
 		return errors.New("system timer must clear or advance its deadline")
 	}
 	if err = m.ValidateMatch(match, len(next.Seats)); err != nil {
@@ -304,7 +320,7 @@ func (s *Server) runModuleTimer(room *Room, now time.Time) error {
 
 func (s *Server) runModuleBot(room *Room, now time.Time, expired bool) {
 	m := s.modules[room.Kind]
-	if m.BotAction == nil {
+	if room.Loading != nil || m.BotAction == nil {
 		return
 	}
 	raw, err := json.Marshal(room)

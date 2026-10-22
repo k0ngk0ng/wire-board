@@ -1,3 +1,4 @@
+import catalog from "./catalog";
 import { useEffect } from "react";
 import {
   defineGame,
@@ -166,17 +167,8 @@ export function OptionsForm({
 // The frontend discovers this metadata automatically. The server registry
 // remains gated by gameplay, asset distribution and release acceptance.
 export default defineGame<BasketballNetworkView, BasketballOptions>({
-  id: "basketball",
-  name: "热血篮球",
-  description: "街头双人篮球，争抢、传球与扣篮。支持单人、双人合作和双人对战。",
-  category: "sports",
-  minPlayers: 1,
-  maxPlayers: 2,
-  playerCounts: [1, 2],
-  requiresFullTable: true,
-  supportsBots: true,
-  realtime: true,
-  ownsSounds: true,
+  ...catalog,
+  asyncBoard: true,
   defaultOptions: {
     court: "new-york",
     mode: "solo",

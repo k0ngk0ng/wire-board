@@ -1,3 +1,4 @@
+import catalog from "./catalog";
 import { createPlayback } from "./playback";
 import { useEffect } from "react";
 import {
@@ -89,17 +90,8 @@ function OptionsForm({
   );
 }
 export default defineGame<View, Options>({
-  id: "snooker",
-  name: "斯诺克",
-  description:
-    "纯 2D 俯视球桌。控制力度与旋转，进球走位、做斯诺克；支持单打和双打。",
-  category: "sports",
-  minPlayers: 2,
-  maxPlayers: 4,
-  playerCounts: [2, 4],
-  requiresFullTable: true,
-  supportsBots: true,
-  ownsSounds: true,
+  ...catalog,
+  asyncBoard: true,
   createPresentation: createPlayback,
   defaultOptions: { bestOf: 1, teams: [0, 1], aimAssist: "line" },
   Board,

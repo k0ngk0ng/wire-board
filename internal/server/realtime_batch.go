@@ -233,7 +233,7 @@ func (s *Server) prepareRealtimeInput(room *Room, user User, input streamInput, 
 		}
 	}()
 	module := s.modules[room.Kind]
-	if !module.Realtime || room.Module == nil || room.Status != "playing" || room.Module.Result != nil {
+	if room.Loading != nil || !module.Realtime || room.Module == nil || room.Status != "playing" || room.Module.Result != nil {
 		return nil, nil, 400, fmt.Errorf("无法执行游戏行动")
 	}
 	actor := seatIndex(room, user.ID)

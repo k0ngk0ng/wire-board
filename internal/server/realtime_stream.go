@@ -108,7 +108,7 @@ func (s *Server) streamGame(r *http.Request) (any, bool) {
 	if err != nil {
 		return nil, false
 	}
-	return map[string]any{"serverInstance": s.instance, "type": "game", "roomId": room.ID, "setupVersion": room.SetupVersion, "version": room.Version, "status": room.Status, "turnDeadline": room.TurnDeadline, "serverNow": time.Now().UnixMilli(), "game": view}, true
+	return map[string]any{"serverInstance": s.instance, "type": "game", "roomId": room.ID, "setupVersion": room.SetupVersion, "version": room.Version, "status": room.Status, "turnDeadline": room.TurnDeadline, "loading": room.loadingView(), "clockOffsetMs": room.ClockOffsetMS, "serverNow": time.Now().UnixMilli(), "game": view}, true
 }
 
 func (s *Server) streamSocket(w http.ResponseWriter, r *http.Request, user User) {

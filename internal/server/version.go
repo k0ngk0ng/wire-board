@@ -29,5 +29,5 @@ func (s *Server) version(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	sort.Strings(assets)
-	respond(w, http.StatusOK, map[string]any{"version": s.cfg.Version, "assets": assets})
+	respond(w, http.StatusOK, map[string]any{"version": s.cfg.Version, "assets": assets, "build": s.frontendBuild()})
 }

@@ -97,15 +97,23 @@ const useAtlas = (assets: string): Atlas => {
 
 const useServerNow = (clock: Props["clock"], active: boolean) => {
   const [now, setNow] = useState(
-    () => clock.serverNow + Math.max(0, performance.now() - clock.receivedAt),
+    () =>
+      clock.serverNow +
+      (clock.paused ? 0 : Math.max(0, performance.now() - clock.receivedAt)),
   );
   useEffect(() => {
-    setNow(clock.serverNow + Math.max(0, performance.now() - clock.receivedAt));
+    setNow(
+      clock.serverNow +
+        (clock.paused ? 0 : Math.max(0, performance.now() - clock.receivedAt)),
+    );
     if (!active) return;
     const id = setInterval(
       () =>
         setNow(
-          clock.serverNow + Math.max(0, performance.now() - clock.receivedAt),
+          clock.serverNow +
+            (clock.paused
+              ? 0
+              : Math.max(0, performance.now() - clock.receivedAt)),
         ),
       250,
     );

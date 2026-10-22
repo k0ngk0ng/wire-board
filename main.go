@@ -40,7 +40,7 @@ func run() error {
 		return err
 	}
 	app, err := server.New(server.Config{
-		Modules: games.Modules(), DataDir: dir, InviteCode: os.Getenv("INVITE_CODE"),
+		ClientLoading: true, Modules: games.Modules(), DataDir: dir, InviteCode: os.Getenv("INVITE_CODE"),
 		Origin: os.Getenv("PUBLIC_ORIGIN"), AssetsBaseURL: os.Getenv("ASSETS_BASE_URL"),
 		SecureCookie:  os.Getenv("COOKIE_SECURE") == "true",
 		AdminUsername: os.Getenv("ADMIN_USERNAME"), AdminPassword: os.Getenv("ADMIN_PASSWORD"),

@@ -14,14 +14,8 @@ import { gemCanBuy, gemNames } from "./splendor-orient-state";
 import { SplendorPurchase } from "./splendor-purchase";
 import { SplendorTokenAnimation } from "./splendor-token-animation";
 export const gemDisplayOrder = [1, 2, 0, 4, 3, 5];
-export const gemColors = [
-  "#218357",
-  "#f7f2dd",
-  "#2974bb",
-  "#343c43",
-  "#c94440",
-  "#dcac38",
-];
+import { gemColors } from "./colors";
+export { gemColors } from "./colors";
 export function Gemstone({
   color = 0,
   size = 23,

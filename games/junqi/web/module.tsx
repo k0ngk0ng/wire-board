@@ -1,21 +1,12 @@
+import catalog from "./catalog";
 import { defineGame } from "../../../web/src/game-api/module";
 import { Board } from "./Board";
-import { coverSVG, colors, armyNames } from "../assets/art";
+import { colors, armyNames } from "../assets/art";
 import { createPlayback } from "./playback";
 import type { Options, View } from "./types";
 import "./style.css";
 export default defineGame<View, Options>({
-  id: "junqi",
-  name: "军棋",
-  category: "board",
-  description:
-    "布阵藏锋，沿铁路调兵夺旗。支持两人陆战棋和四国对家搭档，暗子只向本人展示，可与朋友或电脑对战。",
-  minPlayers: 2,
-  maxPlayers: 4,
-  playerCounts: [2, 4],
-  requiresFullTable: true,
-  supportsBots: true,
-  ownsSounds: true,
+  ...catalog,
   defaultOptions: {
     difficulty: "standard",
     turnSeconds: 120,
@@ -23,13 +14,6 @@ export default defineGame<View, Options>({
   },
   createPresentation: () => createPlayback(),
   Board,
-  Cover: () => (
-    <span
-      className="junqi-cover"
-      aria-hidden="true"
-      dangerouslySetInnerHTML={{ __html: coverSVG }}
-    />
-  ),
   Options: ({ value, onChange, disabled, capacity }) => (
     <div className="junqi-options">
       <p>

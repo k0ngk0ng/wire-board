@@ -18,6 +18,7 @@ export function GameBoard({
   audio,
   clock,
   inputWindow,
+  loadEvents,
 }: {
   room: Room;
   act: Act;
@@ -28,12 +29,17 @@ export function GameBoard({
   audio: GameAudioPort;
   clock: GameClock;
   inputWindow?: number;
+  loadEvents?: Pick<
+    import("./module").BoardProps,
+    "onReady" | "onLoadProgress" | "onLoadError"
+  >;
 }) {
   const module = gameModule(room.kind);
   if (!module) return <p role="alert">尚未安装此游戏的界面：{room.kind}</p>;
   const Board = module.Board;
   return (
     <Board
+      {...loadEvents}
       room={room}
       data={room.game?.data}
       act={act}

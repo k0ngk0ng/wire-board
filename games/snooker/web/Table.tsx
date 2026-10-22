@@ -17,6 +17,8 @@ import {
 } from "./presentation";
 
 type Props = {
+  onReady?: () => void;
+  onLoadError?: (message: string) => void;
   balls: Ball[];
   angle: number;
   power: number;
@@ -414,7 +416,7 @@ export function Table(props: Props) {
         if (!local) {
           local = true;
           img.src = path;
-        }
+        } else if (active) props.onLoadError?.("球桌图片加载失败，请重试");
       };
       img.src = props.assets ? props.assets.replace(/\/$/, "") + path : path;
     }
@@ -422,6 +424,9 @@ export function Table(props: Props) {
       active = false;
     };
   }, [props.assets]);
+  useEffect(() => {
+    if (Object.keys(art).length === 9) props.onReady?.();
+  }, [art, props.onReady]);
   const changeCamera = (c: Camera) => {
     cancelCharge();
     cam.current = c;

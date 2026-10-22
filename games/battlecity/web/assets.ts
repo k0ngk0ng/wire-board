@@ -34,6 +34,7 @@ function loadImage(sources: string[]): Promise<HTMLImageElement | null> {
     let index = 0;
     const next = () => {
       if (index >= sources.length) {
+        imageCache.delete(key);
         resolve(null);
         return;
       }
@@ -51,13 +52,17 @@ function loadImage(sources: string[]): Promise<HTMLImageElement | null> {
   return promise;
 }
 
-export function useAtlas(base: string): Atlas | null {
+export function useAtlas(
+  base: string,
+  failed?: (message: string) => void,
+): Atlas | null {
   const [atlas, setAtlas] = useState<Atlas | null>(null);
   useEffect(() => {
     let live = true;
     void loadImage(atlasSources(base)).then((image) => {
       // The frame table is committed; only the image is cross-origin.  This
       // avoids requiring a CORS response from atlas.json on the CDN.
+      if (live && !image) failed?.("坦克图片加载失败，请重试");
       if (live && image) setAtlas({ image, frames: ATLAS_FRAMES });
     });
     return () => {

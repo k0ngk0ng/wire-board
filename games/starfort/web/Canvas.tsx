@@ -555,12 +555,16 @@ function drawFeatures(
 }
 
 export function Battlefield({
+  onReady,
+  onLoadError,
   roomID,
   data,
   assets,
   selected,
   select,
 }: {
+  onReady?: () => void;
+  onLoadError?: (message: string) => void;
   roomID: string;
   data: View;
   assets: string;
@@ -724,6 +728,10 @@ export function Battlefield({
   };
   const [loaded, setLoaded] = useState(false),
     [assetError, setAssetError] = useState(false);
+  useEffect(() => {
+    if (loaded) onReady?.();
+    if (assetError) onLoadError?.("战场图片加载失败，请重试");
+  }, [loaded, assetError, onReady, onLoadError]);
   const [reduced, setReduced] = useState(
     () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
   );

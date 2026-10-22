@@ -98,7 +98,7 @@ func (s *Server) runBots(now time.Time) {
 		if s.modules[room.Kind].Realtime {
 			continue // All controlled actors share the system frame transaction.
 		}
-		if room.Status != "playing" || room.Game == nil || room.BotAt > now.UnixMilli() {
+		if room.Status != "playing" || room.Loading != nil || room.Game == nil || room.BotAt > now.UnixMilli() {
 			continue
 		}
 		if room.Module != nil {

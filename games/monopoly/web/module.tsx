@@ -1,3 +1,4 @@
+import catalog from "./catalog";
 import { defineGame } from "../../../web/src/game-api/module";
 import { Cover } from "./Cover";
 import { Board } from "./Board";
@@ -6,14 +7,7 @@ import { Art } from "./ui";
 import "./style.css";
 
 export default defineGame<View, Options>({
-  id: "monopoly",
-  name: "强手棋",
-  description:
-    "经典地产交易游戏。掷骰买地、公开竞价、交换地产、建房收租，成为最后未破产的玩家。",
-  minPlayers: 2,
-  maxPlayers: 6,
-  supportsBots: true,
-  ownsSounds: true,
+  ...catalog,
   defaultOptions: { auctionSeconds: 20, turnSeconds: 120, tradeSeconds: 90 },
   Board,
   Cover,

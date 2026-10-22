@@ -172,6 +172,9 @@ export type GameHeader = {
   log: string[];
 };
 export type RoomBase = {
+  matchId?: string;
+  loading?: import("./game-api/module").GameRoom["loading"];
+  clockOffsetMs?: number;
   setupVersion?: number;
   options?: unknown;
   result?: {
