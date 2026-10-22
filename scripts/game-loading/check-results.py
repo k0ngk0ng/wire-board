@@ -72,7 +72,7 @@ try:
   b('reload');b('wait','.poker-board');b('wait','--fn','!document.querySelector("[data-game-loading]")');b('set','viewport','320','900')
   if js('document.querySelector(".sound-toggle").getAttribute("aria-pressed")==="true"'):b('find','role','button','click','--name','取消静音','--exact')
   if os.environ.get('WIRE_BOARD_ASSET_BASE'):
-   urls=js('performance.getEntriesByType("resource").map(e=>e.name).filter(u=>/\.(js|css)(\?|$)/.test(u))')
+   urls=js(r'performance.getEntriesByType("resource").map(e=>e.name).filter(u=>/\.(js|css)(\?|$)/.test(u))')
    assert urls and all(u.startswith(os.environ['WIRE_BOARD_ASSET_BASE']) for u in urls),urls
    report['cdnCodeRequests']=urls
   # Fail any new JS/CSS fetch after the game is ready. A result dialog is
@@ -103,7 +103,7 @@ try:
 except Exception as e:
  import traceback;traceback.print_exc();report['error']=repr(e)
  if opened:
-  try:b('screenshot',str(out/'failure.png'),'--full');report['snapshot']=b('snapshot','-i');report['state']=api('/state')
+  try:report['errors']=b('errors');report['requests']=b('network','requests');b('screenshot',str(out/'failure.png'),'--full');report['snapshot']=b('snapshot','-i');report['state']=api('/state')
   except Exception:pass
 finally:
  if opened:

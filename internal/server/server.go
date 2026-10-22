@@ -462,7 +462,7 @@ func (s *Server) Handler() http.Handler {
 			u, _ := url.Parse(s.cfg.WishImageBaseURL)
 			wishSource = " " + u.Scheme + "://" + u.Host
 		}
-		w.Header().Set("Content-Security-Policy", "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:"+assetSource+wishSource+"; connect-src 'self'"+assetSource+"; font-src 'self'; media-src 'self' data:"+assetSource+"; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'")
+		w.Header().Set("Content-Security-Policy", "default-src 'self'; script-src 'self' 'wasm-unsafe-eval' https://cdn.ichenj.com; style-src 'self' 'unsafe-inline' https://cdn.ichenj.com; img-src 'self' data:"+assetSource+wishSource+"; connect-src 'self'"+assetSource+"; font-src 'self' https://cdn.ichenj.com; media-src 'self' data:"+assetSource+"; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'")
 		if strings.HasPrefix(r.URL.Path, "/api/") || r.URL.Path == "/" || r.URL.Path == "/index.html" {
 			w.Header().Set("Cache-Control", "no-store")
 		}

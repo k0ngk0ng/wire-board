@@ -1,7 +1,7 @@
 """Pre-implementation safety failures: incomplete/hash/mime/CORS mismatches,
 symlinks and traversal in uploads; trim before verification; secret publication.
 """
-import unittest,tempfile,json,hashlib
+import unittest,tempfile,json,hashlib,gzip
 from pathlib import Path
 import cdn_delivery as cdn
 class Delivery(unittest.TestCase):
@@ -14,6 +14,10 @@ class Delivery(unittest.TestCase):
   cdn.validate_response(self.entry,body,headers)
   for b,h in [(body+b'!',headers),(body,{'Content-Type':'text/html','Access-Control-Allow-Origin':'*'}),(body,{'Content-Type':'text/javascript'})]:
    with self.assertRaises(ValueError):cdn.validate_response(self.entry,b,h)
+ def test_precompressed_scripts_are_verified_after_decoding(self):
+  body=b'export const ready=true;';headers={'Content-Type':'text/javascript','Content-Encoding':'gzip','Access-Control-Allow-Origin':'*'}
+  cdn.validate_response(self.entry,gzip.compress(body,mtime=0),headers)
+  with self.assertRaises(ValueError):cdn.validate_response(self.entry,b'broken gzip',headers)
  def test_inventory_is_bound_to_files_and_rejects_symlinks(self):
   rows=cdn.inventory(self.dist,self.base);self.assertEqual(rows[0]['url'],self.entry['url']);self.assertEqual(rows[0]['sha256'],self.entry['sha256'])
   (self.dist/'assets/leak.js').symlink_to(self.dist/'index.html')
