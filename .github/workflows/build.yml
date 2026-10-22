@@ -91,13 +91,18 @@ jobs:
       - name: Restore published game fallbacks
         run: python3 -B scripts/fortressblue/fetch-assets.py
       - name: Check game boundaries and compile application
+        env:
+          WIRE_BOARD_ASSET_BASE: https://cdn.ichenj.com/bga/web/${{ github.sha }}/
         run: |
           python3 -B scripts/check_game_boundaries.py
           npm --prefix web ci
           npm --prefix web run build
           node scripts/game-loading/check-build.mjs
       - name: Check shared audio, playback and card presentation
-        run: node --experimental-strip-types --test web/tests/*.test.mjs
+        run: |
+          node --experimental-strip-types --test web/tests/*.test.mjs
+          node --test web/scripts/cdn-base.test.mjs
+          python3 -B scripts/test_cdn_delivery.py
       - name: Verify OSS runtime binding and exclude basketball media
         run: |
           node games/basketball/build/verify-runtime.mjs web/dist
@@ -203,6 +208,21 @@ jobs:
         with:
           name: web-dist
           path: web/dist
+      - name: Publish and verify immutable frontend modules
+        env:
+          OSS_ACCESS_KEY_ID: ${{ secrets.OSS_ACCESS_KEY_ID }}
+          OSS_ACCESS_KEY_SECRET: ${{ secrets.OSS_ACCESS_KEY_SECRET }}
+        run: python3 -B scripts/cdn_delivery.py publish
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cdn-assets-verification
+          path: .local/cdn-delivery/verified.json
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Keep application modules off the server package
+        run: python3 -B scripts/cdn_delivery.py trim
       - name: Build Linux amd64 after every required check passed
         env:
           CGO_ENABLED: '0'

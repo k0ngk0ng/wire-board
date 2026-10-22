@@ -1,9 +1,14 @@
+import { assetBase, assetURL } from "./cdn-base.mjs";
 import { readFileSync, writeFileSync, readdirSync, statSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { gzipSync } from "node:zlib";
 import path from "node:path";
 export function gameLoadManifest() {
+  let base = "/";
   return {
+    configResolved(config) {
+      base = assetBase(config.base);
+    },
     name: "game-load-manifest",
     enforce: "post",
     writeBundle(options, bundle) {
@@ -33,7 +38,7 @@ export function gameLoadManifest() {
       }
       const records = (files) =>
         [...files].map((f) => ({
-          url: "/" + f,
+          url: assetURL(base, f),
           bytes: statSync(path.join(dir, f)).size,
         }));
       const homeFiles = graph(entry.fileName);
@@ -95,7 +100,8 @@ export function gameLoadManifest() {
         path.join(dir, "game-load-manifest.json"),
         JSON.stringify({
           build,
-          entry: "/" + entry.fileName,
+          entry: assetURL(base, entry.fileName),
+          assetBase: base,
           games,
           media,
           home,

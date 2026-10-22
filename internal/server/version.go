@@ -7,7 +7,7 @@ import (
 	"sort"
 )
 
-var frontendAssetAttribute = regexp.MustCompile(`(?:src|href)=["'](/assets/[^"']+)["']`)
+var frontendAssetAttribute = regexp.MustCompile(`(?:src|href)=["']((?:https://cdn\.ichenj\.com/bga/web/[a-f0-9]{40})?/assets/[^"']+)["']`)
 
 // Read only the small entry document, never rooms, game snapshots or SQLite.
 // Asset identity detects a cached old page even if its first API response is

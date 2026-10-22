@@ -15,6 +15,6 @@ export const LegacyCreate = part("LegacyCreate"),
   LegacyWaiting = part("LegacyWaiting"),
   LegacyPlayers = part("LegacyPlayers"),
   LegacyTurn = part("LegacyTurn"),
-  LegacyRules = part("LegacyRules"),
-  Results = part("Results");
+  LegacyRules = part("LegacyRules");
+export { Results } from "../ui/results";
 export { LegacyCover } from "./cover";

@@ -88,3 +88,9 @@ test("checks never overlap and stopped monitors abort and ignore late responses"
   await m.check();
   assert.equal(calls, 1);
 });
+
+test('immutable CDN entry assets participate in release detection', async () => {
+ const old='https://cdn.ichenj.com/bga/web/'+'a'.repeat(40)+'/assets/index-abcdefgh.js';
+ const next='https://cdn.ichenj.com/bga/web/'+'b'.repeat(40)+'/assets/index-ijklmnop.js';
+ const notices=[];const m=new VersionMonitor([old],async()=>({version:'v2',assets:[next]}),x=>notices.push(x));await m.check();assert.equal(notices[0]?.version,'v2');
+});
