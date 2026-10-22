@@ -30,7 +30,7 @@ assert(
 for (const [kind, files] of Object.entries(manifest.games)) {
   assert(files.length, kind);
   for (const f of files)
-    assert.equal(statSync(dir + f.url.slice(1)).size, f.bytes, f.url);
+    assert.equal(statSync(dir + f.url.slice((manifest.assetBase ?? "/").length)).size, f.bytes, f.url);
 }
 console.log(
   JSON.stringify(

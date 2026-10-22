@@ -1,3 +1,4 @@
+import { Results } from "./ui/results";
 import { GameLoading } from "./game-api/loading";
 import { Runtime } from "./game-api/runtime";
 import { VersionUpdateNotice } from "./VersionUpdateNotice";
@@ -76,7 +77,6 @@ import {
   LegacyRules,
   LegacyTurn,
   LegacyWaiting,
-  Results,
 } from "./legacy/lazy-room-ui";
 import { LogLine } from "./log-line";
 import {

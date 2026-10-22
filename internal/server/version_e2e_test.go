@@ -41,3 +41,24 @@ func TestPublicVersionMetadataHTTP(t *testing.T) {
 		files["index.html"].Data = []byte(`<script type="module" src="/assets/app-new.js"></script><link rel="stylesheet" href="/assets/app-new.css">`)
 	}
 }
+
+func TestPublicVersionCDNAssetsHTTP(t *testing.T) {
+	const base = "https://cdn.ichenj.com/bga/web/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/assets/"
+	files := fstest.MapFS{"index.html": {Data: []byte(`<script type="module" src="` + base + `index-abcdefgh.js"></script><link rel="stylesheet" href="` + base + `index-abcdefgh.css"><img src="https://unrelated.example/avatar.jpg">`)}}
+	s, e := New(Config{DataDir: t.TempDir(), InviteCode: "cdn-version-test", Version: "v2"}, files)
+	if e != nil {
+		t.Fatal(e)
+	}
+	defer s.Close()
+	w := httptest.NewRecorder()
+	s.Handler().ServeHTTP(w, httptest.NewRequest("GET", "/api/version", nil))
+	var got struct {
+		Assets []string `json:"assets"`
+	}
+	if e = json.Unmarshal(w.Body.Bytes(), &got); e != nil {
+		t.Fatal(e)
+	}
+	if !reflect.DeepEqual(got.Assets, []string{base + "index-abcdefgh.css", base + "index-abcdefgh.js"}) {
+		t.Fatal(got.Assets)
+	}
+}

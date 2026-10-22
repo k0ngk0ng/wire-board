@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { VersionMonitor, type ReleaseInfo } from "./version-update";
+import {
+  VersionMonitor,
+  isEntryAsset,
+  type ReleaseInfo,
+} from "./version-update";
 
 // Capture the entry document before React/game effects can add optional
 // preload links or styles. Lazy game resources are not a new release.
@@ -12,7 +16,7 @@ const assets = Array.from(
     (element) =>
       element.getAttribute("src") ?? element.getAttribute("href") ?? "",
   )
-  .filter((path) => path.startsWith("/assets/"));
+  .filter(isEntryAsset);
 
 export function VersionUpdateNotice() {
   const [update, setUpdate] = useState<ReleaseInfo | null>(null);

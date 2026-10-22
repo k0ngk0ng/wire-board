@@ -1,3 +1,11 @@
+export function isEntryAsset(path: string) {
+  return (
+    /^\/assets\/[^/?#]+\.(js|css)$/.test(path) ||
+    /^https:\/\/cdn\.ichenj\.com\/bga\/web\/[a-f0-9]{40}\/assets\/[^/?#]+\.(js|css)$/.test(
+      path,
+    )
+  );
+}
 export type ReleaseInfo = { version: string; assets: string[] };
 const assetKey = (assets: string[]) => [...new Set(assets)].sort().join("\n");
 function validInfo(value: unknown): value is ReleaseInfo {
@@ -10,9 +18,7 @@ function validInfo(value: unknown): value is ReleaseInfo {
     data.assets.length <= 100 &&
     data.assets.every(
       (path) =>
-        typeof path === "string" &&
-        path.startsWith("/assets/") &&
-        path.length < 500,
+        typeof path === "string" && isEntryAsset(path) && path.length < 500,
     )
   );
 }
