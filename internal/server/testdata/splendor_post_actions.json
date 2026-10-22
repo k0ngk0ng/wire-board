@@ -1,0 +1,2056 @@
+[
+  {
+    "actor": 0,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "take",
+      "card": 0,
+      "tier": 0,
+      "tokens": [
+        0,
+        0,
+        2,
+        0,
+        0,
+        0
+      ],
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 1,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "take",
+      "card": 0,
+      "tier": 0,
+      "tokens": [
+        0,
+        0,
+        2,
+        0,
+        0,
+        0
+      ],
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 2,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "take",
+      "card": 0,
+      "tier": 0,
+      "tokens": [
+        1,
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 3,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "take",
+      "card": 0,
+      "tier": 0,
+      "tokens": [
+        1,
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 0,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "take",
+      "card": 0,
+      "tier": 0,
+      "tokens": [
+        1,
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 1,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "take",
+      "card": 0,
+      "tier": 0,
+      "tokens": [
+        1,
+        1,
+        0,
+        1,
+        0,
+        0
+      ],
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 2,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "take",
+      "card": 0,
+      "tier": 0,
+      "tokens": [
+        1,
+        1,
+        0,
+        1,
+        0,
+        0
+      ],
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 3,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "take",
+      "card": 0,
+      "tier": 0,
+      "tokens": [
+        1,
+        1,
+        0,
+        1,
+        0,
+        0
+      ],
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 0,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 7,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 1,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 20,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 2,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "take",
+      "card": 0,
+      "tier": 0,
+      "tokens": [
+        1,
+        1,
+        0,
+        1,
+        0,
+        0
+      ],
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 3,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "take",
+      "card": 0,
+      "tier": 0,
+      "tokens": [
+        1,
+        1,
+        0,
+        1,
+        0,
+        0
+      ],
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 0,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "take",
+      "card": 0,
+      "tier": 0,
+      "tokens": [
+        0,
+        0,
+        1,
+        1,
+        1,
+        0
+      ],
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 1,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "take",
+      "card": 0,
+      "tier": 0,
+      "tokens": [
+        0,
+        0,
+        0,
+        0,
+        2,
+        0
+      ],
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 2,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 35,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 3,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "take",
+      "card": 0,
+      "tier": 0,
+      "tokens": [
+        1,
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 3,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "discard",
+      "card": 0,
+      "tier": 0,
+      "tokens": [
+        0,
+        2,
+        0,
+        0,
+        0,
+        0
+      ],
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 0,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "take",
+      "card": 0,
+      "tier": 0,
+      "tokens": [
+        0,
+        1,
+        1,
+        1,
+        0,
+        0
+      ],
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 1,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 1004,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 2,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "take",
+      "card": 0,
+      "tier": 0,
+      "tokens": [
+        0,
+        1,
+        1,
+        1,
+        0,
+        0
+      ],
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 3,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 12,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 0,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 39,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 1,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "take",
+      "card": 0,
+      "tier": 0,
+      "tokens": [
+        1,
+        1,
+        0,
+        1,
+        0,
+        0
+      ],
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 2,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 18,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 3,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 1,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 0,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 1001,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 1,
+    "action": {
+      "cards": [
+        1004
+      ],
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 29,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 2,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "take",
+      "card": 0,
+      "tier": 0,
+      "tokens": [
+        1,
+        1,
+        0,
+        1,
+        0,
+        0
+      ],
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 3,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "take",
+      "card": 0,
+      "tier": 0,
+      "tokens": [
+        1,
+        1,
+        0,
+        0,
+        1,
+        0
+      ],
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 0,
+    "action": {
+      "cards": [
+        1001
+      ],
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 1010,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 0,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "gem_copy",
+      "card": 7,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 1,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "take",
+      "card": 0,
+      "tier": 0,
+      "tokens": [
+        1,
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 2,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 17,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 3,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "take",
+      "card": 0,
+      "tier": 0,
+      "tokens": [
+        1,
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 0,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "take",
+      "card": 0,
+      "tier": 0,
+      "tokens": [
+        1,
+        0,
+        1,
+        1,
+        0,
+        0
+      ],
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 1,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "take",
+      "card": 0,
+      "tier": 0,
+      "tokens": [
+        1,
+        0,
+        0,
+        1,
+        1,
+        0
+      ],
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 2,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 1002,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 3,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 56,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 0,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "take",
+      "card": 0,
+      "tier": 0,
+      "tokens": [
+        1,
+        1,
+        0,
+        1,
+        0,
+        0
+      ],
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 1,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 31,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 2,
+    "action": {
+      "cards": [
+        1002
+      ],
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 54,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 3,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 1026,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 0,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 1005,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 1,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 4,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 2,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "take",
+      "card": 0,
+      "tier": 0,
+      "tokens": [
+        1,
+        0,
+        1,
+        0,
+        1,
+        0
+      ],
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 3,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "take",
+      "card": 0,
+      "tier": 0,
+      "tokens": [
+        0,
+        1,
+        1,
+        0,
+        1,
+        0
+      ],
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 0,
+    "action": {
+      "cards": [
+        1005
+      ],
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 15,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 1,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 16,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 2,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 21,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 3,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 38,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 0,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "take",
+      "card": 0,
+      "tier": 0,
+      "tokens": [
+        1,
+        1,
+        0,
+        0,
+        1,
+        0
+      ],
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 1,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "take",
+      "card": 0,
+      "tier": 0,
+      "tokens": [
+        0,
+        1,
+        1,
+        1,
+        0,
+        0
+      ],
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 2,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 28,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 3,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "take",
+      "card": 0,
+      "tier": 0,
+      "tokens": [
+        1,
+        1,
+        0,
+        1,
+        0,
+        0
+      ],
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 0,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 33,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 1,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 40,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 2,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "take",
+      "card": 0,
+      "tier": 0,
+      "tokens": [
+        1,
+        1,
+        0,
+        1,
+        0,
+        0
+      ],
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 3,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "take",
+      "card": 0,
+      "tier": 0,
+      "tokens": [
+        1,
+        1,
+        0,
+        1,
+        0,
+        0
+      ],
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 0,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "take",
+      "card": 0,
+      "tier": 0,
+      "tokens": [
+        1,
+        1,
+        0,
+        0,
+        1,
+        0
+      ],
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 1,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "take",
+      "card": 0,
+      "tier": 0,
+      "tokens": [
+        0,
+        1,
+        1,
+        1,
+        0,
+        0
+      ],
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 2,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 37,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 3,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 5,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 0,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 1006,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 0,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "gem_copy",
+      "card": 39,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 1,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 11,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 2,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 34,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 3,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 3,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 0,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 19,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 1,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "take",
+      "card": 0,
+      "tier": 0,
+      "tokens": [
+        1,
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 2,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 22,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 3,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "take",
+      "card": 0,
+      "tier": 0,
+      "tokens": [
+        1,
+        0,
+        1,
+        0,
+        1,
+        0
+      ],
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 0,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 27,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 1,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 51,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 2,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "take",
+      "card": 0,
+      "tier": 0,
+      "tokens": [
+        1,
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 3,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 26,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 0,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "take",
+      "card": 0,
+      "tier": 0,
+      "tokens": [
+        1,
+        0,
+        1,
+        0,
+        1,
+        0
+      ],
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 1,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 32,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 2,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 1016,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 2,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "gem_copy",
+      "card": 35,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 2,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "gem_free_card",
+      "card": 14,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 3,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 9,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 0,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 1007,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 0,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "gem_copy",
+      "card": 15,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 1,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 1008,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 1,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "gem_copy",
+      "card": 32,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 2,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 1013,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 3,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 25,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 0,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 6,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 1,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 1003,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 2,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 1018,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 2,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "gem_copy",
+      "card": 1013,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 2,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "gem_free_card",
+      "card": 36,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 3,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 10,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 0,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 8,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 1,
+    "action": {
+      "cards": [
+        1003
+      ],
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 57,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 2,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 30,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 3,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 1009,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 3,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "gem_copy",
+      "card": 26,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 3,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "gem_token",
+      "card": 0,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 3,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 0,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 2,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 1,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 23,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 2,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "buy",
+      "card": 1020,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 2,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "gem_copy",
+      "card": 1013,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 2,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "gem_free_card",
+      "card": 13,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 0,
+      "slot": 0
+    }
+  },
+  {
+    "actor": 2,
+    "action": {
+      "cards": null,
+      "choice": "",
+      "tile": 0,
+      "target": 0,
+      "take": null,
+      "type": "gem_token",
+      "card": 0,
+      "tier": 0,
+      "tokens": null,
+      "noble": 0,
+      "color": 1,
+      "slot": 0
+    }
+  }
+]

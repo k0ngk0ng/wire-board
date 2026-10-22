@@ -9,7 +9,7 @@ export default defineGame<View, Options>({
   defaultOptions: {
     mode: "shanghai4",
     rounds: 1,
-    turnSeconds: 30,
+    turnSeconds: 60,
     allowStraight: true,
     personalDoubling: false,
   },

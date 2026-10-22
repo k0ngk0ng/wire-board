@@ -130,11 +130,24 @@ try:
     groups=js('host','[...document.querySelectorAll("select[aria-label=水泡战场地图] optgroup")].map(e=>e.label)')
     originals=json.loads((root/'games/bubbleparty/data/classic-2002.json').read_text())['maps']
     assert len(choices)==117 and len(set(choices))==117,choices
-    assert len(groups)==10 and len([g for g in groups if '2002' in g])==9,groups
+    assert len(groups)==9 and all('2002' not in g and '现有' not in g for g in groups),groups
+    placement=js('host', '[...document.querySelectorAll("select[aria-label=水泡战场地图] option")].map(e=>({id:e.value,group:e.parentElement.label,text:e.textContent}))')
+    for map_id, family in [('community10','小区'),('forest','森林'),('desert','沙漠'),('waterpark','海洋')]:
+        assert next(m for m in placement if m['id']==map_id)['group']==family,placement
     assert set(choices)=={'community10','forest','desert','waterpark','random'}|{m['id'] for m in originals}
     for map_id in ['community10','forest','desert','waterpark']:
         select(map_id)
-        assert preview()['state']=='schematic' and preview()['map']==map_id,preview()
+        wait(lambda:preview()['state']=='loaded')
+        assert preview()['map']==map_id,preview()
+        canvas=js('host', '(()=>{const c=document.querySelector(".bubble-map-preview canvas");const a=c?.getContext("2d").getImageData(0,0,c.width,c.height).data;let colors=new Set();if(a)for(let i=0;i<a.length;i+=4)colors.add(a.slice(i,i+3).join());return {width:c?.width,height:c?.height,colors:colors.size}})()')
+        assert canvas['colors']>100 and canvas['width']==600 and canvas['height']==520,canvas
+        assert all(text not in preview()['text'] for text in ['2002','重建','国服']),preview()
+        record('actual game sprite preview '+map_id)
+        shot(map_id+'-desktop')
+        browser('host','set','viewport','320','844')
+        p=preview();assert p['left']>=0 and p['right']<=320 and p['scrollWidth']<=322,p
+        shot(map_id+'-320')
+        browser('host','set','viewport','1280','1000')
         assert not preview().get('src'),preview()
     select('random');assert preview()['state']=='random' and not preview().get('src'),preview()
     record('original four maps and random remain truthful without classic thumbnails')
@@ -145,7 +158,7 @@ try:
         p=preview();assert p['map']==original['id'] and p['complete'],p
         assert p['width']==original['preview']['width'] and p['height']==original['preview']['height'],p
         assert p['src'].endswith('/'+original['preview']['file']),p
-        assert '2002' in p['text'] and '国服' in p['text'],p
+        assert all(text not in p['text'] for text in ['2002','留存','重建','国服']),p
         results.append({'id':p['map'],'width':p['width'],'height':p['height'],'src':p['src']})
     (out/'all-previews.json').write_text(json.dumps(results,ensure_ascii=False,indent=2)+'\n')
     record('first 111 verified maps render their own original-resource previews')

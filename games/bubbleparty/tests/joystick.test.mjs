@@ -19,3 +19,20 @@ test('diagonal noise retains the held axis until a deliberate turn; center relea
 test('bad geometry never creates non-finite CSS coordinates or gameplay inputs',()=>{
  for(const args of [[NaN,0,50],[0,Infinity,50],[20,20,0]]){const p=joystickIntent(...args,'none');assert.deepEqual(p,{x:0,y:0,move:'none'})}
 });
+
+// Touch failure inventory: off-center touch immediately walks into a bomb;
+// long drags require crossing the whole pad to reverse; pointer drift produces
+// non-finite CSS; reset keeps a previous origin; cardinal turns remain stable.
+test('touch origin starts neutral anywhere and follows deliberate drags',async()=>{
+ const {TouchStick}=await import('../web/joystick.ts');const s=new TouchStick();
+ s.begin(120,20,32);assert.equal(s.move(120,20,'none').move,'none');
+ assert.equal(s.move(144,20,'none').move,'right');
+ assert.equal(s.move(120,-10,'right').move,'up');
+ s.reset();assert.equal(s.move(500,500,'right').move,'none');
+});
+test('touch anchor follows an extended drag so nearby reversal stays responsive',async()=>{
+ const {TouchStick}=await import('../web/joystick.ts');const s=new TouchStick();
+ s.begin(20,60,32);const far=s.move(220,60,'none');assert.equal(far.move,'right');assert.ok(Math.hypot(far.x,far.y)<=1);
+ assert.equal(s.move(175,60,'right').move,'left');
+ s.begin(NaN,0,32);assert.equal(s.move(5,0,'right').move,'none');
+});

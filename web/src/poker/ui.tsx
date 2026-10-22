@@ -265,6 +265,7 @@ export function Hand({
     step = width < 420 ? 22 : 30;
   const perRow = Math.max(1, Math.floor((width - cardWidth) / step) + 1);
   const reservedRows = Math.ceil(Math.max(capacity, cards.length) / perRow);
+  const filledRows = Math.max(1, Math.ceil(cards.length / perRow));
   const rows = [];
   for (let i = 0; i < cards.length; i += perRow)
     rows.push(cards.slice(i, i + perRow));
@@ -280,6 +281,7 @@ export function Hand({
     <div
       className="poker-hand"
       style={{
+        paddingTop: 16 + (reservedRows - filledRows) * cardWidth * 0.9,
         minHeight:
           32 +
           Math.max(0, reservedRows - 1) * cardWidth * 0.9 +
@@ -288,6 +290,17 @@ export function Hand({
       ref={ref}
       data-seat={seat}
       aria-label="你的手牌"
+      aria-keyshortcuts="Escape"
+      onKeyDown={(e) => {
+        if (e.key === "Escape") {
+          e.stopPropagation();
+          onChange([]);
+        }
+      }}
+      onPointerDownCapture={(e) => {
+        if (!(e.target as HTMLElement).closest("button[data-card]"))
+          onChange([]);
+      }}
       onPointerMove={(e) => {
         const g = gesture.current;
         if (!g) return;
@@ -327,7 +340,7 @@ export function Hand({
             {
               "--card-width": `${cardWidth}px`,
               "--step": `${step}px`,
-              width: cardWidth + (perRow - 1) * step,
+              width: cardWidth + (row.length - 1) * step,
             } as CSSProperties
           }
         >
@@ -433,6 +446,7 @@ export function PokerLayout({
   selected,
   onSelect,
   labels,
+  counts,
   plays,
   center,
   actions,
@@ -449,6 +463,7 @@ export function PokerLayout({
   selected: number[];
   onSelect: (ids: number[]) => void;
   labels: string[];
+  counts: number[];
   plays: { seat: number; cards: number[]; pass?: boolean }[];
   center: ReactNode;
   actions: ReactNode;
@@ -456,6 +471,7 @@ export function PokerLayout({
   fresh?: number[];
 }) {
   const [credits, setCredits] = useState(false);
+  const [preferences, setPreferences] = useState(false);
   const you = room.spectating || room.you < 0 ? 0 : room.you;
   const n = room.seats.length;
   const position = (seat: number) => {
@@ -478,43 +494,57 @@ export function PokerLayout({
       }
       aria-label="扑克牌桌"
     >
-      <div className="poker-tools">
-        <label>
-          牌面风格
-          <select
-            aria-label="牌面风格"
-            value={style.skin}
-            onChange={(e) => style.setSkin(e.target.value)}
-          >
-            {skins.map((s) => (
-              <option value={s.id} key={s.id}>
-                {s.name}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label>
-          牌背
-          <select
-            aria-label="牌背"
-            value={style.back}
-            onChange={(e) => style.setBack(e.target.value)}
-          >
-            {backs.map((s) => (
-              <option value={s.id} key={s.id}>
-                {s.name}
-              </option>
-            ))}
-          </select>
-        </label>
-        <button
-          type="button"
-          className="subtle"
-          onClick={() => setCredits(true)}
-        >
-          素材来源
+      <div className="poker-table-toolbar">
+        <button type="button" onClick={() => setPreferences(true)}>
+          牌面设置
         </button>
       </div>
+      {preferences && (
+        <Modal title="牌面设置" onClose={() => setPreferences(false)}>
+          {" "}
+          <div className="poker-tools">
+            <label>
+              牌面风格
+              <select
+                aria-label="牌面风格"
+                value={style.skin}
+                onChange={(e) => style.setSkin(e.target.value)}
+              >
+                {skins.map((s) => (
+                  <option value={s.id} key={s.id}>
+                    {s.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              牌背
+              <select
+                aria-label="牌背"
+                value={style.back}
+                onChange={(e) => style.setBack(e.target.value)}
+              >
+                {backs.map((s) => (
+                  <option value={s.id} key={s.id}>
+                    {s.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <button
+              type="button"
+              className="subtle"
+              onClick={() => {
+                setPreferences(false);
+                setCredits(true);
+              }}
+            >
+              素材来源
+            </button>
+          </div>
+          <p>点击选牌，拖动可多选；点击手牌空白处或按 Escape 清除选择。</p>
+        </Modal>
+      )}
       <div className="poker-arena">
         {room.seats.map((p, seat) => {
           const pos = position(seat),
@@ -531,7 +561,10 @@ export function PokerLayout({
                   {p.name}
                   {!room.spectating && seat === room.you ? " · 你" : ""}
                 </b>
-                <span>{labels[seat]}</span>
+                <span className="poker-seat-meta">
+                  <span className="poker-seat-role">{labels[seat]}</span>
+                  <span className="poker-seat-count">{counts[seat]}张</span>
+                </span>
               </div>
               {pos !== "bottom" && (
                 <div className="poker-hidden-hand">
@@ -566,30 +599,26 @@ export function PokerLayout({
           );
         })}
         <div className="poker-center">{center}</div>
+        <div className="poker-own-hand">
+          {!room.spectating && room.you >= 0 ? (
+            <div className={fresh.includes(-1) ? "poker-new-deal" : ""}>
+              <Hand
+                cards={hand}
+                capacity={handCapacity}
+                selected={selected}
+                onChange={onSelect}
+                seat={room.you}
+                skin={style.skin}
+                assets={assets}
+                highlights={highlights}
+              />
+            </div>
+          ) : (
+            <p className="poker-spectator">正在观战，手牌仅本人可见。</p>
+          )}
+        </div>
       </div>
       <div className="poker-actions">{actions}</div>
-      {!room.spectating && room.you >= 0 ? (
-        <>
-          <div className="poker-hand-caption">
-            <strong>你的手牌 · {hand.length} 张</strong>
-            <span>点击选牌 · 横向拖动多选</span>
-          </div>
-          <div className={fresh.includes(-1) ? "poker-new-deal" : ""}>
-            <Hand
-              cards={hand}
-              capacity={handCapacity}
-              selected={selected}
-              onChange={onSelect}
-              seat={room.you}
-              skin={style.skin}
-              assets={assets}
-              highlights={highlights}
-            />
-          </div>
-        </>
-      ) : (
-        <p className="poker-spectator">正在观战，手牌仅本人可见。</p>
-      )}
       {credits && (
         <Modal title="扑克牌与音效来源" onClose={() => setCredits(false)}>
           <p>默认传统英式：Byron Knoll，由 notpeter 整理，公有领域／WTFPL。</p>

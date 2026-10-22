@@ -100,7 +100,7 @@ export type View = {
 
 export const mapNames: Record<string, string> = {
   ...classicMapNames,
-  community10: "小区10",
+  community10: "经典小区10",
   waterpark: "水乐园",
   forest: "森林公园",
   desert: "沙丘营地",

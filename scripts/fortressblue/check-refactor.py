@@ -6,6 +6,8 @@ import argparse
 import hashlib
 import http.cookiejar
 import json
+import math
+import base64
 import os
 from pathlib import Path
 import shutil
@@ -20,7 +22,7 @@ import uuid
 parser = argparse.ArgumentParser()
 parser.add_argument('--build', action='store_true')
 parser.add_argument('--out', default='')
-parser.add_argument('--only', choices=['all','interaction','timeline','effects','bots','reveal','terrain','cancel','facing','portraits','supplies','projectiles'], default='all')
+parser.add_argument('--only', choices=['all','interaction','timeline','effects','bots','reveal','terrain','cancel','facing','portraits','supplies','projectiles','slope'], default='all')
 parser.add_argument('--tanks', nargs='+', type=int, choices=range(1,15), default=list(range(1,15)))
 args = parser.parse_args()
 root = Path(__file__).resolve().parents[2]
@@ -257,14 +259,26 @@ def start(scenario='normal', map_id='stage-16', bots=0, ui=False, tank_id=1):
         browser('wait','.lobby-create');browser('click','.lobby-create');browser('fill','input[aria-label=搜索可选游戏]','疯狂坦克');browser('wait','.choose-games button');browser('click','.choose-games button');browser('wait','[data-create-step=setup]:not([hidden])')
         choices=js("[...document.querySelector('select[aria-label=\"座位上限\"]').options].map(o=>o.value)");assert choices==['2','4','6','8'],choices
         browser('select','select[aria-label="座位上限"]','2');browser('select','select[aria-label="疯狂坦克地图"]',map_id);browser('fill','input[name=name]','疯狂坦克原生操作验收');browser('click','[role=dialog] button[type=submit]');browser('wait','.waiting-actions')
-        assert state()['options']['map']==map_id;check('shared creation modal selects game/map/two seats',capacityChoices=choices)
+        assert state()['options']['map']==map_id
+        assert state()['options']['turnSeconds']==60,'new room must default to a full minute'
+        check('shared creation modal selects game/map/two seats and 60-second default',capacityChoices=choices)
     else:
-        api('/rooms',{'kind':'fortressblue','name':'疯狂坦克 '+scenario,'capacity':max(2,bots+1),'options':{'map':map_id,'turnSeconds':40}})
+        api('/rooms',{'kind':'fortressblue','name':'疯狂坦克 '+scenario,'capacity':max(2,bots+1),'options':{'map':map_id,'turnSeconds':60}})
     if bots:
         for _ in range(bots): command('add_bot')
     else:
         r=state();other('/rooms/'+r['id'],{'type':'join','version':r['version'],'nonce':uuid.uuid4().hex});other_command('ready')
     command('ready');command('start')
+    # The scripted opponent is an HTTP client. Acknowledge its real platform
+    # load gate; the browser player must complete actual code/assets loading.
+    if not bots:
+        gate=other('/state')['room'].get('loading')
+        if gate:
+            client='fortress-http-opponent-'+uuid.uuid4().hex
+            for operation in ('load_begin','load_ready'):
+                other_command(operation,loadToken=gate['token'],loadBuild=gate['build'],loadClient=client)
+    wait(lambda: not state().get('loading'),timeout=60)
+    wait(lambda: js('!document.querySelector(".game-loading")'),timeout=60)
     wait(lambda: view()['phase'] in ('select','playing'))
     if scenario=='normal':
         wait(lambda: js('!!document.querySelector("[data-fortressblue-tank]")'))
@@ -511,7 +525,7 @@ try:
     assert (root/'web/dist/index.html').exists(),'Build frontend first'
     (out/'scenario').write_text('normal')
     log=(out/'server.log').open('w')
-    if args.only in ('facing','portraits','supplies','projectiles'):
+    if args.only in ('facing','portraits','supplies','projectiles','slope'):
         # Use the production binary with its real CDN/local-fallback settings;
         # no opening fixture or response rewriting is needed for direction tests.
         executable=temp/'server';subprocess.run(['go','build','-o',str(executable),'.'],cwd=root,env=env,stdout=log,stderr=subprocess.STDOUT,check=True)
@@ -540,13 +554,48 @@ try:
     api('/login',{'name':'坦克验收管理员','password':'fortress-browser-test-only'})
     other('/register',{'name':'坦克静止对手','password':'fortress-browser-test-only','invite':'fortress-browser'})
     browser('reload');browser('set','viewport','1280','1000')
+    if args.only=='slope':
+        catalog=json.loads((root/'games/fortressblue/maps/catalog.json').read_text())
+        terrain=next(m for m in catalog['maps'] if m['id']=='stage-16')
+        bits=base64.b64decode(terrain['mask']);cell=catalog['cell']
+        def solid(x,y):
+            if not 0<=x<terrain['width'] or not 0<=y<terrain['height']:return False
+            i=math.floor(y/cell)*terrain['maskCols']+math.floor(x/cell)
+            return bool(bits[i>>3]&(1<<(7-(i&7))))
+        def verify_dial(name):
+            data=view();tank=data['tanks'][data['you']]
+            def foot(x):
+                ys=[y for y in range(math.floor(tank['y'])-24,math.ceil(tank['y'])+25) if solid(x,y) and not solid(x,y-1)]
+                return min(ys,key=lambda y:abs(y-tank['y'])) if ys else None
+            left,right=foot(tank['x']-12),foot(tank['x']+12)
+            slope=math.degrees(math.atan2(right-left,24)) if left is not None and right is not None else 0
+            dial=js(r'(()=>{const b=document.querySelector(".fortressblue-board"),s=document.querySelector(".fb-angle-dial"),p=s.querySelector("line[stroke=\"#ffdf79\"]");return {local:Number(b.dataset.fortressblueAngle),facing:Number(b.dataset.fortressblueFacing),text:s.querySelector("text").textContent,aria:s.getAttribute("aria-label"),x:Number(p.getAttribute("x2")),y:Number(p.getAttribute("y2"))}})()')
+            world=dial['local']-dial['facing']*slope
+            assert dial['text'].strip()==str(math.floor(world+.5))+'°',(name,dial,world)
+            assert abs(dial['x']-(65+dial['facing']*math.cos(math.radians(world))*40))<.01
+            assert abs(dial['y']-(57-math.sin(math.radians(world))*40))<.01
+            evidence={'tank':tank,'support':[left,right],'slope':slope,'worldAngle':world,'dial':dial}
+            record(name,evidence);shot(name);return evidence
+        for width in (1280,320):
+            browser('set','viewport',str(width),'1000' if width==1280 else '844')
+            start(ui=width==1280)
+            initial=verify_dial('slope-initial-'+str(width))
+            assert abs(initial['slope'])>1,'opening must actually exercise a slope'
+            browser('click','button[aria-label="切换朝向"]');verify_dial('slope-reversed-'+str(width))
+            browser('focus','[data-fortressblue-canvas]')
+            native([{'key':'ArrowRight'},{'wait':170},{'key':'ArrowRight','up':True},{'wait':150}],'slope-movement-'+str(width))
+            after=verify_dial('slope-after-move-'+str(width))
+            assert after['tank']['x']>initial['tank']['x']
+            assert abs(after['slope']-initial['slope'])>1,(initial,after)
+            assert after['dial']['local']==initial['dial']['local'],'movement rewrote relative aim'
+            check('body slope changes world angle and dial while relative aim stays fixed '+str(width),before=initial,after=after)
     if args.only=='projectiles':
         browser('network','route','https://cdn.ichenj.com/bga/v20261002-1/fortressblue/**','--abort')
         for tank_id in args.tanks:
             for mode in ['primary','special']:
                 width=320 if mode=='special' and tank_id in (7,10,13,14) else 1280
                 browser('set','viewport',str(width),'844' if width==320 else '1000')
-                start(tank_id=tank_id)
+                start(tank_id=tank_id,ui=tank_id==1 and mode=='primary')
                 wait(lambda:js('[...document.querySelectorAll(".fb-player-head img")].every(i=>i.complete&&i.naturalWidth>0)'))
                 browser('click','[data-fortressblue-weapon="'+mode+'"]')
                 wait(lambda:js('document.querySelector('+json.dumps('[data-fortressblue-weapon="'+mode+'"]')+').getAttribute("aria-pressed")')=='true')
@@ -829,7 +878,7 @@ finally:
         except Exception:pass
     (out/'stop').write_text('stop')
     if server:
-        if args.only in ('facing','portraits','supplies','projectiles'):server.terminate()
+        if args.only in ('facing','portraits','supplies','projectiles','slope'):server.terminate()
         try:server.wait(timeout=15)
         except subprocess.TimeoutExpired:server.terminate();server.wait(timeout=10)
     if log:log.close()

@@ -109,23 +109,6 @@ export type {
   ThreeV3State,
   SanguoshaState,
 } from "../../games/sanguosha/web/types";
-import type {
-  DotaOrder,
-  DotaPlayer,
-  DotaCardSpec,
-  DotaHeroSpec,
-  DotaItemSpec,
-  DotaState,
-  RoomOptions as dotaRoomOptions,
-} from "../../games/dota/web/types";
-export type {
-  DotaOrder,
-  DotaPlayer,
-  DotaCardSpec,
-  DotaHeroSpec,
-  DotaItemSpec,
-  DotaState,
-} from "../../games/dota/web/types";
 export type User = {
   id: string;
   name: string;
@@ -203,7 +186,6 @@ export type RoomBase = {
   updated: number;
 };
 export type Game = GameHeader & {
-  dota?: DotaState;
   sanguosha?: SanguoshaState;
   carcassonne?: CarcassonneState;
   catan?: CatanState;
@@ -215,5 +197,4 @@ export type Room = RoomBase &
   splendorRoomOptions &
   railRoomOptions &
   carcassonneRoomOptions &
-  sanguoshaRoomOptions &
-  dotaRoomOptions & { game?: Game };
+  sanguoshaRoomOptions & { game?: Game };

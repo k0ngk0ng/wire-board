@@ -1,0 +1,13 @@
+{
+  "sourceCommit": "19894946bb353534fc2481c8542e0c17861f12f1",
+  "policy": "games/splendor/server/bot_dispatch.go at sourceCommit",
+  "optionsMask": 13,
+  "players": 4,
+  "actions": 105,
+  "endingPhase": "gem_post",
+  "method": "Replay legal actions from fixed original opening; no state/score/winner mutation. Current production rules verify every action via HTTP. Current bot handles timeout and completion.",
+  "files": {
+    "internal/server/testdata/splendor_modern_4.json": "d5fe4788b8e2b8dcd5b81a74de506e68eea9a3abefe1301a089ba1def9782db1",
+    "internal/server/testdata/splendor_post_actions.json": "dc0b134ef3eac20f60cefc768e3f6717aa100e1e53c1c3f82fdacb58675bc35c"
+  }
+}

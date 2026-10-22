@@ -360,7 +360,6 @@ function App() {
       return;
     }
     const sg = r.game!.sanguosha;
-    const dota = r.game!.dota;
     const fleetActor =
       twoResponder(r) ??
       caravanResponder(r) ??
@@ -368,18 +367,16 @@ function App() {
       r.game!.catan?.cardEvent?.players[0] ??
       r.game!.catan?.citiesKnights?.pending?.players[0] ??
       r.game!.catan?.seafarers?.pirateIslands?.raid?.rewards[0];
-    const key = `${r.id}:${r.game!.round}:${r.game!.turn}:${r.status}:${dota?.sequence || 0}:${dota?.actors?.includes(r.you) || false}:${sg?.pending?.id || 0}:${sg?.pending?.canRespond || false}:${fleetActor ?? -1}:${r.game!.catan?.two?.sequence ?? 0}:${r.game!.catan?.two?.pending ? "two_build" : r.game!.catan?.two?.trade ? "two_trade" : ""}:${r.game!.catan?.caravans?.pending?.kind ?? ""}:${r.game!.catan?.caravans?.sequence ?? 0}:${caravanPlacementStep(r.game!.catan) ?? 0}:${r.game!.catan?.citiesKnights?.pending?.kind ?? ""}:${r.game!.catan?.cardEvent?.kind ?? ""}:${r.game!.catan?.cardEvent ? r.game!.catan.rollId : 0}`;
+    const key = `${r.id}:${r.game!.round}:${r.game!.turn}:${r.status}:${sg?.pending?.id || 0}:${sg?.pending?.canRespond || false}:${fleetActor ?? -1}:${r.game!.catan?.two?.sequence ?? 0}:${r.game!.catan?.two?.pending ? "two_build" : r.game!.catan?.two?.trade ? "two_trade" : ""}:${r.game!.catan?.caravans?.pending?.kind ?? ""}:${r.game!.catan?.caravans?.sequence ?? 0}:${caravanPlacementStep(r.game!.catan) ?? 0}:${r.game!.catan?.citiesKnights?.pending?.kind ?? ""}:${r.game!.catan?.cardEvent?.kind ?? ""}:${r.game!.catan?.cardEvent ? r.game!.catan.rollId : 0}`;
     if (previousTurn.current && key !== previousTurn.current && sound) {
       if ((r.game!.finished || r.status === "closed") && previousTurn.current) {
         void audio.play("finish");
       } else if (
         r.status === "playing" &&
         !r.seats[r.you]?.autoPlay &&
-        (dota
-          ? dota.actors?.includes(r.you)
-          : sg?.pending
-            ? sg.pending.canRespond
-            : (fleetActor ?? r.game!.turn) === r.you)
+        (sg?.pending
+          ? sg.pending.canRespond
+          : (fleetActor ?? r.game!.turn) === r.you)
       ) {
         void audio.play("turn");
       }
@@ -935,9 +932,7 @@ function App() {
                     >
                       {(loadEvents, loading) => (
                         <>
-                          {!room.game?.sanguosha && !room.game?.dota && (
-                            <Players room={room} />
-                          )}
+                          {!room.game?.sanguosha && <Players room={room} />}
                           {room.game?.finished && (
                             <ResultOverlay
                               key={`${room.id}:${room.result?.id || "finished"}`}

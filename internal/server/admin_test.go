@@ -151,7 +151,7 @@ func TestAdminAuthorizationAndModeration(t *testing.T) {
 				t.Fatal("admin data exposed", path, code)
 			}
 		}
-		c.post("/api/admin/games/dota", map[string]bool{"enabled": false}, want)
+		c.post("/api/admin/games/rail", map[string]bool{"enabled": false}, want)
 		c.post("/api/admin/users/"+id, map[string]string{"action": "role", "role": "superadmin"}, want)
 		c.post("/api/admin/rooms/missing/close", map[string]any{}, want)
 	}
@@ -198,7 +198,7 @@ func TestAdminAuthorizationAndModeration(t *testing.T) {
 	if persisted == newPassword {
 		t.Fatal("stored plaintext")
 	}
-	req, _ := http.NewRequest("POST", ts.URL+"/api/admin/games/dota", strings.NewReader(`{"enabled":false}`))
+	req, _ := http.NewRequest("POST", ts.URL+"/api/admin/games/rail", strings.NewReader(`{"enabled":false}`))
 	req.Header.Set("Origin", "https://evil.example")
 	res, err := root.client.Do(req)
 	if err != nil {
@@ -257,7 +257,7 @@ func TestAdminGameVisibilityExistingPlayAndClosure(t *testing.T) {
 		t.Fatal("all games hidden should be empty")
 	}
 	root.post("/api/admin/games/unknown", map[string]bool{"enabled": false}, 404)
-	root.post("/api/admin/games/dota", map[string]any{}, 400)
+	root.post("/api/admin/games/rail", map[string]any{}, 400)
 }
 
 func TestAdminRevocationTakesOverGameAndClosesSockets(t *testing.T) {
@@ -333,24 +333,24 @@ func TestAdminChangesPersistAndFailedAuditRollsBack(t *testing.T) {
 	a := newClient(t, ts.URL)
 	a.register("PlayerOne")
 	id := a.state()["user"].(map[string]any)["id"].(string)
-	room := a.post("/api/rooms", map[string]any{"name": "Waiting", "kind": "dota", "capacity": 2}, 201)
+	room := a.post("/api/rooms", map[string]any{"name": "Waiting", "kind": "rail", "capacity": 2}, 201)
 	_, err := s.db.Exec("CREATE TRIGGER reject_audit BEFORE INSERT ON admin_audit BEGIN SELECT RAISE(ABORT,'test failure'); END")
 	if err != nil {
 		t.Fatal(err)
 	}
-	root.post("/api/admin/games/dota", map[string]bool{"enabled": false}, 500)
+	root.post("/api/admin/games/rail", map[string]bool{"enabled": false}, 500)
 	root.post("/api/admin/users/"+id, map[string]string{"action": "disable"}, 500)
 	if current(a)["status"] != "waiting" || managed(t, root, id)["disabled"] != false {
 		t.Fatal("failed transaction changed room/user")
 	}
 	s.mu.Lock()
-	hidden := s.hiddenGames["dota"]
+	hidden := s.hiddenGames["rail"]
 	s.mu.Unlock()
 	if hidden {
 		t.Fatal("failed change mutated memory")
 	}
 	s.db.Exec("DROP TRIGGER reject_audit")
-	root.post("/api/admin/games/dota", map[string]bool{"enabled": false}, 200)
+	root.post("/api/admin/games/rail", map[string]bool{"enabled": false}, 200)
 	root.post("/api/admin/users/"+id, map[string]string{"action": "disable"}, 200)
 	// A separate read of the persisted snapshots verifies the administrative
 	// transaction, while a full restart verifies role, user and game reload.
@@ -362,7 +362,7 @@ func TestAdminChangesPersistAndFailedAuditRollsBack(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer restarted.Close()
-	if !restarted.hiddenGames["dota"] || restarted.rooms[room["id"].(string)].CloseReason != "unpublished" {
+	if !restarted.hiddenGames["rail"] || restarted.rooms[room["id"].(string)].CloseReason != "unpublished" {
 		t.Fatal("settings/room not restored")
 	}
 	var disabled bool

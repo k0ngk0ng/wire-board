@@ -81,7 +81,6 @@ import { twoResponder } from "../../../games/catan/web/catan-two-state";
 import { supportsTwoCatanVariants } from "../../../games/catan/web/catan-two-variants";
 import { CatanWonderSeat } from "../../../games/catan/web/catan-wonders";
 import { CatanWorldEditor } from "../../../games/catan/web/catan-world-editor";
-import { DotaRules } from "../../../games/dota/web/dota";
 import { RailMapsContext, playerColors } from "../../../games/rail/web/context";
 import {
   RailMapPicker,
@@ -317,78 +316,118 @@ export function LegacyCreate({
           >
             {(k === "sanguosha" && sgOptions?.mode === "3v3"
               ? [6]
-              : k === "dota"
-                ? [2, 4, 6]
-                : k === "catan" &&
-                    [
-                      "transport-shores",
-                      "transport-desert",
-                      "attack-pirates",
-                      "attack-wonders",
-                      "attack-tribe",
-                      "attack-desert",
-                    ].includes(catanScenario)
+              : k === "catan" &&
+                  [
+                    "transport-shores",
+                    "transport-desert",
+                    "attack-pirates",
+                    "attack-wonders",
+                    "attack-tribe",
+                    "attack-desert",
+                  ].includes(catanScenario)
+                ? [2, 3, 4, 5, 6]
+                : k === "catan" && catanScenario === "attack-shores"
                   ? [2, 3, 4, 5, 6]
-                  : k === "catan" && catanScenario === "attack-shores"
+                  : k === "catan" &&
+                      ["caravans-new-world", "caravans-islands"].includes(
+                        catanScenario,
+                      )
                     ? [2, 3, 4, 5, 6]
-                    : k === "catan" &&
-                        ["caravans-new-world", "caravans-islands"].includes(
-                          catanScenario,
-                        )
-                      ? [2, 3, 4, 5, 6]
-                      : Array.from(
-                          {
-                            length:
-                              k === "catan" &&
-                              catanScenario === "caravans-shores"
+                    : Array.from(
+                        {
+                          length:
+                            k === "catan" && catanScenario === "caravans-shores"
+                              ? 5
+                              : k === "catan" &&
+                                  [
+                                    "caravans-desert",
+                                    "caravans-tribe",
+                                  ].includes(catanScenario)
                                 ? 5
+                                : k === "sanguosha"
+                                  ? 5
+                                  : k === "catan"
+                                    ? [
+                                        "land-ho",
+                                        "spices-for-catan",
+                                        "pirate-lairs",
+                                        "fish-for-catan",
+                                        "explorers-and-pirates",
+                                        "transport",
+                                        "rivers-caravans",
+                                        "rivers-attack",
+                                        "rivers-transport",
+                                        "caravans-attack",
+                                        "caravans-transport",
+                                        "attack-transport",
+                                        "rivers-shores",
+                                        "rivers-fog",
+                                        "rivers-desert",
+                                        "rivers-desert-belt",
+                                        "rivers-tribe",
+                                        "transport-shores",
+                                        "transport-desert",
+                                        "attack-pirates",
+                                        "attack-wonders",
+                                        "attack-tribe",
+                                        "attack-desert",
+                                        "attack-shores",
+                                        "caravans-shores",
+                                        "caravans-new-world",
+                                        "caravans-islands",
+                                        "caravans-tribe",
+                                        "caravans-desert",
+                                        "rivers-new-world",
+                                      ].includes(catanScenario)
+                                      ? 5
+                                      : catanScenario === "barbarian-attack"
+                                        ? 4
+                                        : catanOptions.fiveSix ||
+                                            (capacity !== 2 &&
+                                              catanSeaKnights) ||
+                                            (capacity !== 2 &&
+                                              catanFishing &&
+                                              !isPublicCatanExplorer(
+                                                catanScenario,
+                                              )) ||
+                                            [
+                                              "cities-knights",
+                                              "fishing",
+                                              "barbarian-attack",
+                                            ].includes(catanScenario)
+                                          ? 2
+                                          : 3
+                                    : k === "rail"
+                                      ? (map?.maxPlayers || 5) - 1
+                                      : k === "carcassonne"
+                                        ? 4
+                                        : 3,
+                        },
+                        (_, i) =>
+                          k === "catan" && catanScenario === "caravans-shores"
+                            ? [2, 3, 4, 5, 6][i]
+                            : i +
+                              (k === "catan" &&
+                              catanScenario === "caravans-shores"
+                                ? 4
                                 : k === "catan" &&
                                     [
                                       "caravans-desert",
                                       "caravans-tribe",
                                     ].includes(catanScenario)
-                                  ? 5
+                                  ? 2
                                   : k === "sanguosha"
-                                    ? 5
+                                    ? 4
                                     : k === "catan"
-                                      ? [
-                                          "land-ho",
-                                          "spices-for-catan",
-                                          "pirate-lairs",
-                                          "fish-for-catan",
-                                          "explorers-and-pirates",
-                                          "transport",
-                                          "rivers-caravans",
-                                          "rivers-attack",
-                                          "rivers-transport",
-                                          "caravans-attack",
-                                          "caravans-transport",
-                                          "attack-transport",
-                                          "rivers-shores",
-                                          "rivers-fog",
-                                          "rivers-desert",
-                                          "rivers-desert-belt",
-                                          "rivers-tribe",
-                                          "transport-shores",
-                                          "transport-desert",
-                                          "attack-pirates",
-                                          "attack-wonders",
-                                          "attack-tribe",
-                                          "attack-desert",
-                                          "attack-shores",
-                                          "caravans-shores",
-                                          "caravans-new-world",
-                                          "caravans-islands",
-                                          "caravans-tribe",
-                                          "caravans-desert",
-                                          "rivers-new-world",
-                                        ].includes(catanScenario)
-                                        ? 5
-                                        : catanScenario === "barbarian-attack"
-                                          ? 4
-                                          : catanOptions.fiveSix ||
-                                              (capacity !== 2 &&
-                                                catanSeaKnights) ||
+                                      ? isPublicCatanFlexible(catanScenario)
+                                        ? 2
+                                        : catanOptions.fiveSix
+                                          ? 5
+                                          : (capacity !== 2 &&
+                                                catanSeaKnights &&
+                                                !isPublicCatanExplorer(
+                                                  catanScenario,
+                                                )) ||
                                               (capacity !== 2 &&
                                                 catanFishing &&
                                                 !isPublicCatanExplorer(
@@ -399,53 +438,10 @@ export function LegacyCreate({
                                                 "fishing",
                                                 "barbarian-attack",
                                               ].includes(catanScenario)
-                                            ? 2
-                                            : 3
-                                      : k === "rail"
-                                        ? (map?.maxPlayers || 5) - 1
-                                        : k === "carcassonne"
-                                          ? 4
-                                          : 3,
-                          },
-                          (_, i) =>
-                            k === "catan" && catanScenario === "caravans-shores"
-                              ? [2, 3, 4, 5, 6][i]
-                              : i +
-                                (k === "catan" &&
-                                catanScenario === "caravans-shores"
-                                  ? 4
-                                  : k === "catan" &&
-                                      [
-                                        "caravans-desert",
-                                        "caravans-tribe",
-                                      ].includes(catanScenario)
-                                    ? 2
-                                    : k === "sanguosha"
-                                      ? 4
-                                      : k === "catan"
-                                        ? isPublicCatanFlexible(catanScenario)
-                                          ? 2
-                                          : catanOptions.fiveSix
-                                            ? 5
-                                            : (capacity !== 2 &&
-                                                  catanSeaKnights &&
-                                                  !isPublicCatanExplorer(
-                                                    catanScenario,
-                                                  )) ||
-                                                (capacity !== 2 &&
-                                                  catanFishing &&
-                                                  !isPublicCatanExplorer(
-                                                    catanScenario,
-                                                  )) ||
-                                                [
-                                                  "cities-knights",
-                                                  "fishing",
-                                                  "barbarian-attack",
-                                                ].includes(catanScenario)
-                                              ? 3
-                                              : 2
-                                        : 2),
-                        )
+                                            ? 3
+                                            : 2
+                                      : 2),
+                      )
             ).map((n) => (
               <option key={n} value={n}>
                 {n} 人
@@ -996,7 +992,6 @@ export function LegacyCreate({
                 : 3
             : 2}
         个座位即可开始，不必坐满。一个人也可以在房间里添加电脑玩家体验。
-        {k === "dota" && " 兵线争锋需 2、4 或 6 人，开始后再分队。"}
       </p>
       <button className="primary wide" disabled={busy} type="submit">
         创建房间
@@ -1094,7 +1089,6 @@ export function LegacyWaiting({
     (!room.catanFriendlyRobber?.enabled ||
       room.seats.length >=
         (room.catanFriendlyRobberAvailability?.minPlayers || 3)) &&
-    (room.kind !== "dota" || room.seats.length % 2 === 0) &&
     room.seats.length >=
       (room.kind === "sanguosha"
         ? 4
@@ -1133,83 +1127,79 @@ export function LegacyWaiting({
         <Cover kind={room.kind} />
         <h2>{gameName(room.kind)}</h2>
         <p>
-          {room.kind === "dota"
-            ? "先入座，再结盟；让每一次出牌推动兵线。"
-            : room.kind === "sanguosha"
-              ? "与好友过招，也与身份博弈。"
-              : room.kind === "carcassonne"
-                ? "一块接一块，拼出属于你们的城邦。"
-                : room.kind === "catan"
-                  ? "一座岛屿，无数种通往胜利的道路。"
-                  : room.kind === "splendor"
-                    ? "每颗宝石，都是通往胜利的可能。"
-                    : "下一站，会是你的目的地吗？"}
+          {room.kind === "sanguosha"
+            ? "与好友过招，也与身份博弈。"
+            : room.kind === "carcassonne"
+              ? "一块接一块，拼出属于你们的城邦。"
+              : room.kind === "catan"
+                ? "一座岛屿，无数种通往胜利的道路。"
+                : room.kind === "splendor"
+                  ? "每颗宝石，都是通往胜利的可能。"
+                  : "下一站，会是你的目的地吗？"}
         </p>
         <span className="tag">
-          {room.kind === "dota"
-            ? "1v1 / 2v2 / 3v3 · 开始后分队 · 全部拆遗迹"
-            : room.kind === "sanguosha"
-              ? room.sanguoshaOptions?.mode === "3v3"
-                ? "3v3 竞技 · 6 人 · 抓将与主帅阵亡判负"
-                : room.sanguoshaOptions?.mode === "hegemony"
-                  ? "基础国战 · 4–8 人 · 60 将 / 108 张牌"
-                  : `身份局 · 4–8 人 · ${room.sanguoshaOptions?.deck === "military" ? "标准＋军争 / 160 张牌" : "标准 / 108 张牌"}`
-              : room.kind === "carcassonne"
-                ? "基础版 · 2–5 人 · 包含农民"
-                : room.kind === "catan"
-                  ? room.catanTwoRules
-                    ? twoLabel
-                    : `${room.catanScenario ? (seaInfo ? `航海家 · ${seaInfo.name}` : catanScenarioName(room.catanScenario)) : room.catanCitiesKnights ? `城市与骑士 · ${seaInfo ? `航海家 · ${seaInfo.name}` : "随机地图"}` : seaInfo ? `航海家 · ${seaInfo.name}` : room.catanNewWorldMap ? "航海家 · 新世界" : `基础版${room.catanBaseConfiguration ? ` · ${catanBaseLayoutName(room.catanBaseConfiguration.layout)}` : ""}`}${room.catanCitiesKnights ? "＋城市与骑士" : ""}${room.catanFishing ? "＋渔夫" : ""}${room.catanOptions?.helpers ? "＋Helpers" : ""}${room.catanHarbors?.enabled ? "＋港口霸主" : ""}${room.catanFriendlyRobber?.enabled ? "＋友善强盗" : ""} · ${
-                        room.catanOptions?.fiveSix
-                          ? "5–6 人 · 配对回合"
-                          : room.catanFriendlyRobber?.enabled &&
-                              room.catanFriendlyRobberAvailability
-                                ?.minPlayers === 4
-                            ? "4 人"
-                            : ["barbarian-attack"].includes(
-                                  room.catanScenario || "",
-                                )
-                              ? "3–6 人 · 五六人配对回合"
-                              : [
-                                    "land-ho",
-                                    "spices-for-catan",
-                                    "pirate-lairs",
-                                    "fish-for-catan",
-                                    "explorers-and-pirates",
-                                    "transport",
-                                    "rivers-caravans",
-                                    "rivers-attack",
-                                    "rivers-transport",
-                                    "caravans-attack",
-                                    "caravans-transport",
-                                    "attack-transport",
-                                    "rivers-shores",
-                                    "rivers-fog",
-                                    "rivers-desert",
-                                    "rivers-desert-belt",
-                                    "rivers-tribe",
-                                    "transport-shores",
-                                    "transport-desert",
-                                    "attack-pirates",
-                                    "attack-wonders",
-                                    "attack-tribe",
-                                    "attack-desert",
-                                    "attack-shores",
-                                    "caravans-shores",
-                                    "caravans-new-world",
-                                    "caravans-islands",
-                                    "caravans-tribe",
-                                    "caravans-desert",
-                                    "rivers-new-world",
-                                  ].includes(room.catanScenario || "")
-                                ? "2–6 人 · 五六人配对回合"
-                                : isPublicCatanFlexible(room.catanScenario)
-                                  ? "2–4 人"
-                                  : "3–4 人"
-                      } · ${catanScenarioVictory(catanRuleContext(room).scenario, catanRuleContext(room).target)}`
-                  : room.kind === "splendor"
-                    ? `${splendorRulesLabel(room.splendorOptions)} · 2–4 人`
-                    : `${map?.name || "美国"}地图 · 2–${map?.maxPlayers || 5} 人`}
+          {room.kind === "sanguosha"
+            ? room.sanguoshaOptions?.mode === "3v3"
+              ? "3v3 竞技 · 6 人 · 抓将与主帅阵亡判负"
+              : room.sanguoshaOptions?.mode === "hegemony"
+                ? "基础国战 · 4–8 人 · 60 将 / 108 张牌"
+                : `身份局 · 4–8 人 · ${room.sanguoshaOptions?.deck === "military" ? "标准＋军争 / 160 张牌" : "标准 / 108 张牌"}`
+            : room.kind === "carcassonne"
+              ? "基础版 · 2–5 人 · 包含农民"
+              : room.kind === "catan"
+                ? room.catanTwoRules
+                  ? twoLabel
+                  : `${room.catanScenario ? (seaInfo ? `航海家 · ${seaInfo.name}` : catanScenarioName(room.catanScenario)) : room.catanCitiesKnights ? `城市与骑士 · ${seaInfo ? `航海家 · ${seaInfo.name}` : "随机地图"}` : seaInfo ? `航海家 · ${seaInfo.name}` : room.catanNewWorldMap ? "航海家 · 新世界" : `基础版${room.catanBaseConfiguration ? ` · ${catanBaseLayoutName(room.catanBaseConfiguration.layout)}` : ""}`}${room.catanCitiesKnights ? "＋城市与骑士" : ""}${room.catanFishing ? "＋渔夫" : ""}${room.catanOptions?.helpers ? "＋Helpers" : ""}${room.catanHarbors?.enabled ? "＋港口霸主" : ""}${room.catanFriendlyRobber?.enabled ? "＋友善强盗" : ""} · ${
+                      room.catanOptions?.fiveSix
+                        ? "5–6 人 · 配对回合"
+                        : room.catanFriendlyRobber?.enabled &&
+                            room.catanFriendlyRobberAvailability?.minPlayers ===
+                              4
+                          ? "4 人"
+                          : ["barbarian-attack"].includes(
+                                room.catanScenario || "",
+                              )
+                            ? "3–6 人 · 五六人配对回合"
+                            : [
+                                  "land-ho",
+                                  "spices-for-catan",
+                                  "pirate-lairs",
+                                  "fish-for-catan",
+                                  "explorers-and-pirates",
+                                  "transport",
+                                  "rivers-caravans",
+                                  "rivers-attack",
+                                  "rivers-transport",
+                                  "caravans-attack",
+                                  "caravans-transport",
+                                  "attack-transport",
+                                  "rivers-shores",
+                                  "rivers-fog",
+                                  "rivers-desert",
+                                  "rivers-desert-belt",
+                                  "rivers-tribe",
+                                  "transport-shores",
+                                  "transport-desert",
+                                  "attack-pirates",
+                                  "attack-wonders",
+                                  "attack-tribe",
+                                  "attack-desert",
+                                  "attack-shores",
+                                  "caravans-shores",
+                                  "caravans-new-world",
+                                  "caravans-islands",
+                                  "caravans-tribe",
+                                  "caravans-desert",
+                                  "rivers-new-world",
+                                ].includes(room.catanScenario || "")
+                              ? "2–6 人 · 五六人配对回合"
+                              : isPublicCatanFlexible(room.catanScenario)
+                                ? "2–4 人"
+                                : "3–4 人"
+                    } · ${catanScenarioVictory(catanRuleContext(room).scenario, catanRuleContext(room).target)}`
+                : room.kind === "splendor"
+                  ? `${splendorRulesLabel(room.splendorOptions)} · 2–4 人`
+                  : `${map?.name || "美国"}地图 · 2–${map?.maxPlayers || 5} 人`}
         </span>
       </div>
       <div className="waiting-seats">
@@ -2051,36 +2041,33 @@ export function LegacyTurn({
     g.turn;
   const mine =
     !room.spectating &&
-    (g.dota
-      ? !!g.dota.actors?.includes(room.you)
-      : g.sanguosha
-        ? g.sanguosha.pending
-          ? g.sanguosha.pending.canRespond
-          : sgActor === room.you
-        : twoResponder(room) !== undefined
-          ? twoResponder(room) === room.you
-          : caravanResponder(room) !== undefined
-            ? caravanResponder(room) === room.you
-            : fishResponder(room) !== undefined
-              ? fishResponder(room) === room.you
-              : g.catan?.cardEvent
-                ? g.catan.cardEvent.players[0] === room.you
-                : g.catan?.citiesKnights?.pending
-                  ? g.catan.citiesKnights.pending.players[0] === room.you
-                  : g.catan?.seafarers?.pirateIslands?.raid
-                    ? g.catan.seafarers.pirateIslands.raid.rewards[0] ===
-                      room.you
-                    : g.catan?.seafarers?.tribe?.pending
-                      ? g.catan.seafarers.tribe.pending.player === room.you
-                      : g.catan?.helperPending
-                        ? g.catan.helperPending.player === room.you
-                        : g.catan?.goldPending
-                          ? g.catan.goldPending.claims[0]?.player === room.you
-                          : g.phase === "catan_discard"
-                            ? (g.catan?.discardDue[room.you] || 0) > 0
-                            : setup
-                              ? !g.rail?.setupReady?.[room.you]
-                              : g.turn === room.you);
+    (g.sanguosha
+      ? g.sanguosha.pending
+        ? g.sanguosha.pending.canRespond
+        : sgActor === room.you
+      : twoResponder(room) !== undefined
+        ? twoResponder(room) === room.you
+        : caravanResponder(room) !== undefined
+          ? caravanResponder(room) === room.you
+          : fishResponder(room) !== undefined
+            ? fishResponder(room) === room.you
+            : g.catan?.cardEvent
+              ? g.catan.cardEvent.players[0] === room.you
+              : g.catan?.citiesKnights?.pending
+                ? g.catan.citiesKnights.pending.players[0] === room.you
+                : g.catan?.seafarers?.pirateIslands?.raid
+                  ? g.catan.seafarers.pirateIslands.raid.rewards[0] === room.you
+                  : g.catan?.seafarers?.tribe?.pending
+                    ? g.catan.seafarers.tribe.pending.player === room.you
+                    : g.catan?.helperPending
+                      ? g.catan.helperPending.player === room.you
+                      : g.catan?.goldPending
+                        ? g.catan.goldPending.claims[0]?.player === room.you
+                        : g.phase === "catan_discard"
+                          ? (g.catan?.discardDue[room.you] || 0) > 0
+                          : setup
+                            ? !g.rail?.setupReady?.[room.you]
+                            : g.turn === room.you);
   const [tick, setTick] = useState(performance.now());
   const deadline = room.status === "playing" ? room.turnDeadline : 0;
   useEffect(() => {
@@ -2108,9 +2095,6 @@ export function LegacyTurn({
     ...(g.catan?.seafarers?.wonders
       ? { catan_robber: catanPhases.catan_robber }
       : {}),
-    dota_teams: "确认队伍",
-    dota_draft: "选择英雄",
-    dota_plan: "暗选行动，全部锁定后揭牌",
     sg_select: "选择武将",
     sg_response: "等待响应",
     sg_play: "选择手牌、技能与目标",
@@ -2138,32 +2122,26 @@ export function LegacyTurn({
           ? "本局已结束"
           : mine && autoPlay
             ? "电脑正在代你行动"
-            : g.dota
+            : setup
               ? mine
-                ? phase[g.phase]
-                : "等待同伴锁定"
-              : setup
-                ? mine
-                  ? "一起选择目的地"
-                  : "等待其他人选好"
-                : mine
-                  ? "轮到你了"
-                  : g.sanguosha?.pending?.kind === "nullification"
-                    ? "等待无懈响应"
-                    : `${room.seats[sgActor]?.name} ${twoResponder(room) !== undefined || caravanResponder(room) !== undefined || fishResponder(room) !== undefined || g.sanguosha?.pending || g.catan?.attack?.pending || g.catan?.attack?.endPlan || g.catan?.cardEvent || g.catan?.citiesKnights?.pending || g.catan?.seafarers?.pirateIslands?.raid || g.catan?.seafarers?.tribe?.pending || g.catan?.helperPending || g.catan?.goldPending ? "正在响应" : "的回合"}`}
+                ? "一起选择目的地"
+                : "等待其他人选好"
+              : mine
+                ? "轮到你了"
+                : g.sanguosha?.pending?.kind === "nullification"
+                  ? "等待无懈响应"
+                  : `${room.seats[sgActor]?.name} ${twoResponder(room) !== undefined || caravanResponder(room) !== undefined || fishResponder(room) !== undefined || g.sanguosha?.pending || g.catan?.attack?.pending || g.catan?.attack?.endPlan || g.catan?.cardEvent || g.catan?.citiesKnights?.pending || g.catan?.seafarers?.pirateIslands?.raid || g.catan?.seafarers?.tribe?.pending || g.catan?.helperPending || g.catan?.goldPending ? "正在响应" : "的回合"}`}
       </h3>
       <p>
         {g.finished
           ? "感谢同桌，好局下次再来。"
           : mine && autoPlay
             ? "可随时取消托管，恢复手动操作。"
-            : g.dota
-              ? "超时自动托管，回来可随时接管。"
-              : setup
-                ? "所有人同时选牌，超时由电脑选牌并开启托管。"
-                : mine
-                  ? phase[g.phase]
-                  : "稍等片刻，想想下一步。"}
+            : setup
+              ? "所有人同时选牌，超时由电脑选牌并开启托管。"
+              : mine
+                ? phase[g.phase]
+                : "稍等片刻，想想下一步。"}
       </p>
       {!!deadline && (
         <div className={`turn-clock ${remaining <= 20 ? "urgent" : ""}`}>
@@ -2242,9 +2220,7 @@ export function LegacyRules({
 }) {
   return (
     <div className="rules">
-      {kind === "dota" ? (
-        <DotaRules />
-      ) : kind === "sanguosha" ? (
+      {kind === "sanguosha" ? (
         <SanguoshaRules options={sgOptions} />
       ) : kind === "carcassonne" ? (
         <>

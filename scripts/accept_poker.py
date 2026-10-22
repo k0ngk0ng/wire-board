@@ -6,7 +6,7 @@ selection, preview leaking wild choices, bypassed platform audio, old-event
 replays and failure to submit the player's chosen physical cards.
 Run: . scripts/env.sh && python3 -B scripts/accept_poker.py
 """
-import json,os,subprocess,time,uuid,urllib.request,http.cookiejar
+import json,os,subprocess,time,uuid,urllib.request,http.cookiejar,shutil
 from pathlib import Path
 root=Path(__file__).resolve().parents[1];out=root/'.local/poker/browser';out.mkdir(parents=True,exist_ok=True)
 env=dict(os.environ)
@@ -41,6 +41,8 @@ def shot(name):
  assert all(c['ratio']>=4.5 for c in colors),colors
  (out/(name+'-contrast.json')).write_text(json.dumps(colors,ensure_ascii=False,indent=2))
  b('screenshot',str(out/(name+'.png')),'--full');report['checks'].append(name);print('PASS',name,flush=True)
+def skin(value):
+ b('find','role','button','click','--name','牌面设置','--exact');b('select','select[aria-label="牌面风格"]',value);b('click','[role=dialog] button[aria-label=关闭]')
 def wait_idle():b('wait','--fn','![...document.querySelectorAll(".poker-actions button")].every(b=>b.disabled)')
 try:
  for f in ['url','stop']:(out/f).unlink(missing_ok=True)
@@ -53,14 +55,14 @@ try:
  base=(out/'url').read_text();b('open',base);opened=True
  api('/login',{'name':'扑克验收管理员','password':'poker-browser-test-only'})
  adminCookies=b('cookies','get')['cookies']
- state=api('/state');assert all(k not in state['availableGames'] for k in ['doudizhu','guandan','shengji'])
+ state=api('/state');assert all(k in state['availableGames'] for k in ['doudizhu','guandan','shengji'])
  for k in ['doudizhu','guandan','shengji']:api('/admin/games/'+k,{'enabled':True})
  b('reload');b('wait','.room-list');b('select','select[aria-label="游戏分类"]','poker')
  shot('category-poker')
  assert js('[...document.querySelectorAll("select[aria-label=按游戏筛选牌桌] option")].map(o=>o.value).filter(v=>v!=="all").sort()')==['doudizhu','guandan','shengji']
  for kind,n,decks in [('doudizhu',4,2),('guandan',4,2),('shengji',4,2),('shengji',4,1)]:
   scenario=f'{kind}-{n}-{decks}'
-  b('set','viewport','1280','960');b('select','select[aria-label="按游戏筛选牌桌"]',kind);b('click','.lobby-create');b('wait','[role=dialog]')
+  b('set','viewport','1280','960');b('select','select[aria-label="按游戏筛选牌桌"]',kind);b('click','.lobby-create');b('wait','[role=dialog]');b('fill','[role=dialog] input[type=search]',{'doudizhu':'斗地主','guandan':'掼蛋','shengji':'升级'}[kind]);b('click','.choose-games button');b('wait','select[aria-label=行动时限]');assert js('document.querySelector("select[aria-label=行动时限]").value')=='60'
   b('select','select[aria-label="座位上限"]',str(n));b('select','select[aria-label="行动时限"]','120');b('fill','input[name=name]',kind+'浏览器验收')
   if kind=='doudizhu':
    assert js('[...document.querySelectorAll("select[aria-label=玩法规则] option")].map(o=>o.textContent)')==['上海斗地主']
@@ -123,9 +125,9 @@ try:
    assert js('document.querySelectorAll(".poker-index").length')==0,'CSS index overlay returned'
    shot(f'{scenario}-{width}')
   b('scrollintoview','.poker-hand');first=js('document.querySelector(".poker-hand button[data-card]").getBoundingClientRect().toJSON()');x,y=round(first['x']+8),round(first['y']+22);assert js(f'document.elementFromPoint({x},{y}).closest("button[data-card]")?.dataset.card')==js('document.querySelector(".poker-hand button[data-card]").dataset.card');b('mouse','move',str(x),str(y));b('mouse','down');b('mouse','up');selected=js('[...document.querySelectorAll(".poker-hand [aria-pressed=true]")].map(e=>e.dataset.card)');assert selected
-  b('select','select[aria-label="牌面风格"]','fourcolor');b('wait','--fn','[...document.querySelectorAll(".poker-card img")].every(i=>i.complete)')
+  skin('fourcolor');b('wait','--fn','[...document.querySelectorAll(".poker-card img")].every(i=>i.complete)')
   assert js('[...document.querySelectorAll(".poker-hand [aria-pressed=true]")].map(e=>e.dataset.card)')==selected
-  shot(f'{scenario}-skin-selection');b('select','select[aria-label="牌面风格"]','english')
+  shot(f'{scenario}-skin-selection');skin('english')
   b('reload');b('wait','.poker-board')
   # Select a complete row range with a native pointer drag, including the
   # first card even if the browser delivers only the final move event.
@@ -161,11 +163,11 @@ try:
   acting=api('/state')['room']['game']['actors'][0]
   if acting!=current:login_seat(acting);current=acting
   before=api('/state')['room']['game']['data'];b('find','role','button','click','--name','提示','--exact')
-  if kind=='guandan':b('find','role','button','click','--name','查看牌型','--exact');b('wait','select[aria-label="百搭牌型"]')
   js('window.__pokerAudio=[];const original=HTMLMediaElement.prototype.play;HTMLMediaElement.prototype.play=function(){window.__pokerAudio.push({platform:this.hasAttribute("data-platform-audio"),src:this.src});return original.call(this)}')
   if js('document.querySelector(".sound-toggle").getAttribute("aria-pressed")==="false"'):b('find','role','button','click','--name','静音','--exact')
   count=js('document.querySelectorAll(".poker-hand [aria-pressed=true]").length');assert count>0
   b('find','role','button','click','--name',f'出牌（{count}）','--exact')
+  if kind=='guandan' and js('!!document.querySelector("select[aria-label=百搭牌型]")'):b('find','role','button','click','--name','确认出牌','--exact')
   b('wait','--fn',f'document.querySelectorAll(".poker-hand button[data-card]").length==={len(before["hand"])-count}')
   assert js('window.__pokerAudio.length')==0,'muted poker played audio'
   b('find','role','button','click','--name','取消静音','--exact');assert js('window.__pokerAudio.length')==0,'unmute replayed cards'
@@ -189,5 +191,6 @@ finally:
   try:server.wait(timeout=15)
   except subprocess.TimeoutExpired:server.terminate();server.wait(timeout=10)
  for f in logs:f.close()
+ shutil.rmtree(profile,ignore_errors=True)
  (out/'result.json').write_text(json.dumps(report,ensure_ascii=False,indent=2));print('Artifact:',out/'result.json',flush=True)
  if not report['passed']:raise SystemExit(1)

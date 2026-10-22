@@ -167,3 +167,23 @@
     width: 100%;
   }
 }
+
+/* Once play starts, the same character-details entry is a compact HUD action. */
+.bubble-mine .bubble-character-selection {
+  flex-direction: row;
+  width: auto;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+}
+.bubble-mine .bubble-character-selection-copy {
+  display: none;
+}
+.bubble-mine .bubble-character-open {
+  min-height: 40px;
+  padding: 5px 9px;
+  font-size: 11px;
+  background: #285246;
+  border-color: #769887;
+}

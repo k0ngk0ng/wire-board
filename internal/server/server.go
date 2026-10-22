@@ -244,6 +244,11 @@ func New(cfg Config, files fs.FS) (*Server, error) {
 			db.Close()
 			return nil, e
 		}
+		// Retired rooms remain byte-for-byte in SQLite for historical audit,
+		// but are never admitted to the live room map or resumed by timers.
+		if r.Kind == "dota" {
+			continue
+		}
 		moduleMigrated, loadingErr := s.restoreClientLoading(&r)
 		if loadingErr != nil {
 			db.Close()
@@ -859,13 +864,7 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 	}
 	maxPlayers := 4
 	minPlayers := 2
-	if req.Kind == "dota" {
-		maxPlayers = 6
-		if req.Capacity%2 != 0 {
-			fail(w, 400, "兵线争锋需要 2、4 或 6 个席位")
-			return
-		}
-	} else if req.Kind == "sanguosha" {
+	if req.Kind == "sanguosha" {
 		o, err := game.NormalizeSGOptions(req.SanguoshaOptions)
 		if err != nil {
 			fail(w, 400, err.Error())
@@ -1122,7 +1121,6 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		parallelCatan = (req.Action.Type == "catan_discard" && room.Game.Phase == "catan_discard" && room.CatanPendingVersion > 0 && req.Version >= room.CatanPendingVersion && req.Version <= room.Version) || ((req.Action.Type == "catan_trade_accept" || req.Action.Type == "catan_trade_reject") && g.Trade != nil && req.Action.Offer == g.Trade.ID && room.CatanTradeVersion > 0 && req.Version >= room.CatanTradeVersion && req.Version <= room.Version)
 	}
 	parallelSG := req.Type == "action" && room.Game != nil && room.Game.Sanguosha != nil && room.Game.Sanguosha.Pending != nil && room.Game.Sanguosha.Pending.Kind == "nullification" && req.Action.Prompt == room.Game.Sanguosha.Pending.ID && req.Version <= room.Version
-	parallelDota := req.Type == "action" && room.Status == "playing" && room.Game != nil && room.Game.Dota != nil && req.Action.Prompt == room.Game.Dota.Sequence && req.Version >= room.SetupVersion && req.Version <= room.Version
 	// Control of one's own seat is independent of board versions. In particular,
 	// a returning player must be able to cancel while the bot is taking actions.
 	seatControl := req.Type == "autoplay" && req.Version >= max(1, room.SetupVersion) && req.Version <= room.Version
@@ -1142,7 +1140,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	parallelLoad := (req.Type == "load_begin" || req.Type == "load_ready") && room.Loading != nil && room.Loading.Token == req.LoadToken && req.Version >= room.SetupVersion && req.Version <= room.Version
-	if req.Version != room.Version && !parallelLoad && !parallelModule && !parallelSetup && !parallelCatan && !parallelSG && !parallelDota && !seatControl && !realtimeControl {
+	if req.Version != room.Version && !parallelLoad && !parallelModule && !parallelSetup && !parallelCatan && !parallelSG && !seatControl && !realtimeControl {
 		fail(w, 409, "局面已更新，请根据最新画面重试")
 		return
 	}
@@ -1826,9 +1824,6 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			}
 			if err == nil {
 				next.Status = "playing"
-				if next.Game.Dota != nil {
-					next.Game.Dota.Captain = idx
-				}
 				next.MatchID = randomID(12)
 				next.Rated = true
 				for _, seat := range next.Seats {

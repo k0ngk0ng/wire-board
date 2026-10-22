@@ -1,3 +1,4 @@
+import { RealtimeClock } from "./realtime-clock";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { Room } from "../types";
 import type { GameClock, PresentationFrame, RoomPresentation } from "./module";
@@ -11,22 +12,37 @@ export function useRoomPresentation(
   epoch: number,
 ) {
   const [, tick] = useState(0);
-  const clock = useMemo<GameClock>(
-    () => ({
+  const realtimeClock = useRef(new RealtimeClock());
+  const realtime = !!room && !!gameModule(room.kind)?.realtime;
+  const identity = `${room?.id}:${room?.matchId ?? room?.setupVersion}:${epoch}:${room?.clockOffsetMs ?? 0}`;
+  const clock = useMemo<GameClock>(() => {
+    const raw: GameClock = {
       serverNow:
         room?.loading?.frozenAt ?? serverNow - (room?.clockOffsetMs ?? 0),
       receivedAt,
       epoch,
       paused: !!room?.loading,
-    }),
-    [
-      serverNow,
-      receivedAt,
-      epoch,
-      room?.clockOffsetMs,
-      room?.loading?.frozenAt,
-    ],
-  );
+    };
+    return realtime
+      ? {
+          ...realtimeClock.current.update(
+            identity,
+            raw.serverNow,
+            receivedAt,
+            !!raw.paused,
+          ),
+          epoch,
+        }
+      : raw;
+  }, [
+    realtime,
+    identity,
+    serverNow,
+    receivedAt,
+    epoch,
+    room?.clockOffsetMs,
+    room?.loading?.frozenAt,
+  ]);
   const owner = useRef<
     | {
         identity: string;

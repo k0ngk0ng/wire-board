@@ -1,0 +1,125 @@
+{
+  "scope": "Fortress Blue only; source-bound original client review, server rules/full-match race tests, production HTTP/SQLite and native browser input",
+  "reports": [
+    {
+      "path": ".local/fortress-oct23/rules-race.log",
+      "sha256": "298a1d75e0a430fedb08686c07676679fb803e59f0d9e40c496a0f346ea93a06",
+      "bytes": 139
+    },
+    {
+      "path": ".local/fortress-oct23/frontend.log",
+      "sha256": "b40989e8345514690c3d5c2a15e3eb800ae006493ea34096018307b045c22b81",
+      "bytes": 2990
+    },
+    {
+      "path": ".local/fortress-oct23/typecheck-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": ".local/fortress-oct23/vet.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": ".local/fortress-oct23/slope-http.log",
+      "sha256": "3ea00be64b0a58f57be9c13c90ba5b48ecb2035862b8a1e7a29160e4ea34a41e",
+      "bytes": 676
+    },
+    {
+      "path": ".local/fortress-oct23/slope-http-race.log",
+      "sha256": "88f0f5dc3b0225efeb46b2ee27f031dc3445f065c26ef40001ccd77222d06199",
+      "bytes": 68
+    },
+    {
+      "path": ".local/fortress-oct23/source-verification.json",
+      "sha256": "99eb3ecc64250b3945a68b9afd848695c94d94973f652a5419f02010d08f3614",
+      "bytes": 510
+    },
+    {
+      "path": ".local/fortress-oct23/turn-wind-evidence.json",
+      "sha256": "2e41e6a6abe73b9f4a6f21e93705317d7a88d6e333c27e1fc56f846391807f00",
+      "bytes": 2264
+    },
+    {
+      "path": ".local/fortress-oct23/weather-verification.log",
+      "sha256": "57303375674c3ac8236d54821a47988487202db20fb9ee392bbb301e0750523f",
+      "bytes": 461
+    },
+    {
+      "path": ".local/fortress-oct23/browser-projectiles-final/report.json",
+      "sha256": "2b51820db9ffba47bf5d67e9d86e81283c33d8710a5de1044864aba0f3cda102",
+      "bytes": 10516
+    },
+    {
+      "path": ".local/fortress-oct23/browser-effects/report.json",
+      "sha256": "3ce2e1ac1134f4abad2890d285e3c38c5ae7dc4e1c354dfaa73cbb95a7212087",
+      "bytes": 7252
+    },
+    {
+      "path": ".local/fortress-oct23/browser-slope-final/report.json",
+      "sha256": "1c4609a1ff07a4f8cccaef1b40fdced25eb987bab505d6a7b4a94b0a7066a498",
+      "bytes": 10420
+    },
+    {
+      "path": ".local/fortress-oct23/cleanup.json",
+      "sha256": "456cba4c79c230e0de4207a243beccc204cb2f88573d836452deb3acfc99cc37",
+      "bytes": 708
+    }
+  ],
+  "sources": {
+    "games/fortressblue/server/rules_test.go": "a18c97a19ee36659ebb652fe2b096334f702792aa10e161509ed92ed0c386b36",
+    "games/fortressblue/server/bot_difficulty_test.go": "380a6c4fd8ef6fe9957d86f6dc2feeff615956b9c811106f7d8ec70d8fbe90a7",
+    "games/fortressblue/server/secondary_test.go": "1dd5451ec3a380a354cb430444eb3ae89886ca446acf600f533bd47f3084ca89",
+    "games/fortressblue/server/timeline.go": "100fa87816b63e027cd9a8e9f984ca2fa3eec70add14f41d8eea57bbb0781431",
+    "games/fortressblue/server/mines.go": "2440e6c4d23797713df0e85d6abd68273405c60b2b1186cbfcfbf700e4eed159",
+    "games/fortressblue/server/supplies_test.go": "38ad42643271107d0d3c93bfb72bd9ba61553c4d009a14b40bc80b5f3e381058",
+    "games/fortressblue/server/items_test.go": "9f77e8c66f986bfb510c2843356e68c7bd7b0066a3236128181bbdcb3601257b",
+    "games/fortressblue/server/hazards.go": "fc73d33888713974c5e864a3c069c8307581f3ea23d81e4773550e02f59d9eac",
+    "games/fortressblue/server/stage2_regression_test.go": "d1455ae69e3e45e30421fcf8a88770faa16d86506e64f98fe5e1c51fa95b8ecf",
+    "games/fortressblue/server/spawns.go": "02b763f12d0c5aa45af0e07af07c2ac2630e2f725ec53b3e90214709ac3015e4",
+    "games/fortressblue/server/bot.go": "950aa7390e61afccaeea871d93c7157c33cddebd297b79d9e8353a08f891e957",
+    "games/fortressblue/server/engine.go": "80bf9ba91764a5ef16d6fd6b5e9ba2fe3c1da35449f234dd06b086a8a03c26ee",
+    "games/fortressblue/server/slope_launch_test.go": "df165a1f319b37a20abb99f4eb0450494d879157caed876a60b238c215570545",
+    "games/fortressblue/server/physics.go": "931bf698d066df9fbdecf4ade402c7f1bd3c6f343d848a38140b19df6b52dfbd",
+    "games/fortressblue/server/projectiles.go": "b65633f9a4a7c1c0ab2cf0b6078c13b289245cfa0fd35eef201116b247b3971a",
+    "games/fortressblue/server/state.go": "98ec6ff4a40483b93aabccf7ff0852ea62c7bd8b927ae52518c78b72a8f84a3f",
+    "games/fortressblue/server/supplies.go": "4a004c9df56347f49934e525d781494da42832972ea9a2f8ae93339b04c49ab6",
+    "games/fortressblue/server/items.go": "2eb927eeebb0b406618d9386d860f2de324d4aae48d907cb1c29fedceb609389",
+    "games/fortressblue/server/physics_regression_test.go": "a5b1f77352e436ae9a260bdf3f62e676afe7cb246dc40e0a1c0e88caa594bb28",
+    "games/fortressblue/web/projectiles.ts": "ba84ef8768ac51704e1fb5856ebd7917dfc0235ac650aa8eea1eaec7f9393c70",
+    "games/fortressblue/web/supplies.ts": "9752fb5711bc1d455b36c37b64adef06f4c5a4cc7ca42862b0b886dd18a968f8",
+    "games/fortressblue/web/catalog.tsx": "1d581d71e2ec25120831d6b1d55099e238b78eaeb8a2ad7e08b8a313991d6904",
+    "games/fortressblue/web/reveal.ts": "726a8dad0fd9ee12c4b976c26bc1d2a3863e1a8fe4cb90a1b5c94e654076aacf",
+    "games/fortressblue/web/camera.ts": "4fe0a71165589ab864041717a2b53f1f4e29ac98dc4e8b27c095aaf3b3501a65",
+    "games/fortressblue/web/animation.ts": "fdb83ef7f619dbdbb142d6b07b76f0fab352c9a2f29e52491d7bce19b944444f",
+    "games/fortressblue/web/types.ts": "12001771a1265b321d880d113edca6e971e2aaaebceab2054a70db7b8ff1d8e0",
+    "games/fortressblue/web/aim.ts": "65215fd2a7c507e98f0525a334014c8dfe7dd8d11a0bc163f0ec5faa0eff96c3",
+    "games/fortressblue/web/Board.tsx": "f354a434dc092a332877b0c3b91df5f46fa2422327606e49b20b150ec355841c",
+    "games/fortressblue/web/Cover.tsx": "02c3b89682fb65ca079970f655481ddc6d629f3bd3ad36bca772db1e4bb09f19",
+    "games/fortressblue/web/slope.ts": "bb65384c1452976cd9fadd487370ffadfdceedf6e9d4926ec57b2345229fe33d",
+    "games/fortressblue/web/module.tsx": "45ca8ef65d0065b1bcff3668367c5be1fbd80a03a057493941184fe70be88369",
+    "games/fortressblue/web/render.ts": "f8c09827b2810822e473f98ab5ed0b924ac4fddaaf6291b6300875cb9d4e3e7e",
+    "games/fortressblue/web/timeline.ts": "cf10191f3e646c38d754f3a7d5c4860bb6890f7bd7ba6ebaaaadcce87ce53bb6",
+    "games/fortressblue/web/loading.ts": "19f76f435e6d9e185863f477b4f5540c014f3ce3fdc4fd92ff989a51232e44a6",
+    "games/fortressblue/web/controls.ts": "68738ac76100abf6fd539f9ae273c62b0252032f97b7486efa2edc4d40bd40ba",
+    "scripts/fortressblue/check-refactor.py": "4fe1a34409fe5ded66a8426d76e070bb60cc8b8d29541d3cecd398ad55e0b515",
+    "scripts/fortressblue/inspect-turn-wind.py": "da4447b7067deaee54e997ac45871c9364caecb19ce92208a6abb34d722ebe99",
+    "games/fortressblue/tests/slope_http_e2e_test.go": "a29bafd46d1b76d2240191fe4b477a127b77585ac24d68601e9341d3180e1fc9",
+    "games/fortressblue/tests/slope-launch.test.mjs": "fccbe9a641106c38746c50255778ee4b146df07d233ad919dcbf489130cc56d3"
+  },
+  "coverage": {
+    "frontend": 35,
+    "allTankWeaponBrowser": 28,
+    "defaultCreateForm": 1,
+    "focusedHomingMineIon": 6,
+    "slopeBrowserViewports": [
+      1280,
+      320
+    ]
+  },
+  "limitations": [
+    "Original server probability and exact ballistic constants remain unknown.",
+    "28-weapon and 6-focused reports precede the UI-only dial label/limit-line adjustment; latest-build slope report verifies that final adjustment."
+  ]
+}

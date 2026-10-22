@@ -8,11 +8,12 @@ Snapshots below are labelled presentation cases, not simulated complete games.
 """
 import json,os,shutil,socket,subprocess,time,uuid
 from pathlib import Path
-root=Path(__file__).resolve().parents[2];out=root/'.local/poker-layout';out.mkdir(parents=True,exist_ok=True)
+root=Path(__file__).resolve().parents[2];out=root/'.local/optimization-20261023/poker-layout';out.mkdir(parents=True,exist_ok=True)
 temp=out/'tmp';temp.mkdir(exist_ok=True);env=dict(os.environ)
-for key,name in {'TMPDIR':'tmp','npm_config_cache':'npm','AGENT_BROWSER_SOCKET_DIR':'sockets','AGENT_BROWSER_PROFILE':'profile'}.items():
+for key,name in {'TMPDIR':'tmp','npm_config_cache':'npm','AGENT_BROWSER_SOCKET_DIR':'s','AGENT_BROWSER_PROFILE':'profile'}.items():
  p=temp/name;p.mkdir(exist_ok=True);env[key]=str(p)
-env.update(AGENT_BROWSER_SESSION='pl'+uuid.uuid4().hex[:4],AGENT_BROWSER_ARGS='--mute-audio,--disable-breakpad,--disable-crash-reporter')
+sockets=root/'.s'/('pl'+uuid.uuid4().hex[:5]);sockets.mkdir(parents=True);env['AGENT_BROWSER_SOCKET_DIR']=str(sockets)
+env.update(AGENT_BROWSER_SESSION='p',AGENT_BROWSER_ARGS='--mute-audio,--disable-breakpad,--disable-crash-reporter')
 html=root/'web/poker-layout-acceptance.html';entry=root/'web/poker-layout-acceptance.tsx';server=None;opened=False;created=[]
 report={'passed':False,'scope':'production Boards with labelled projected-state transitions; no rule changes','checks':[],'failures':[],'interaction':[]}
 def b(*args):
@@ -62,7 +63,12 @@ createRoot(document.getElementById("root")!).render(<App/>);
   b('set','viewport',str(width),'1000')
   for game in ['doudizhu','guandan','shengji']:
    js(f'showPoker({json.dumps(game)},"idle")');b('wait','--fn','document.querySelectorAll(".poker-hand button").length>=28');js('new Promise(r=>setTimeout(r,100))')
-   baseline=js('layoutBoxes()');cases=['played','long','pass','waiting','few','empty','round_end','finished','idle']
+   assert js('document.querySelector(".poker-arena").contains(document.querySelector(".poker-hand"))'),'own cards must be on the felt'
+   buttons=js('[...document.querySelectorAll(".poker-actions>button")].map(e=>({text:e.textContent,rect:e.getBoundingClientRect().toJSON()}))')
+   assert len(buttons)==3 and len({round(b['rect']['y']) for b in buttons})==1,buttons
+   assert js('[...document.querySelectorAll(".poker-hand-row")].every(e=>{const r=e.getBoundingClientRect(),p=e.parentElement.getBoundingClientRect();return Math.abs(r.x+r.width/2-p.x-p.width/2)<1})'),'hand rows not centered'
+   counts=js('[...document.querySelectorAll(".poker-seat-count")].map(e=>{const a=e.getBoundingClientRect(),b=e.closest(".poker-seat-label").getBoundingClientRect();return {text:e.textContent,visible:a.x>=b.x&&a.right<=b.right&&e.scrollWidth<=e.clientWidth}})');assert len(counts)==4 and all(c['visible'] for c in counts),counts
+   baseline=js('layoutBoxes()');handBottom=js('document.querySelector(".poker-hand-row:last-child").getBoundingClientRect().bottom+scrollY');cases=['played','long','pass','waiting','few','empty','round_end','finished','idle']
    cases+=['bid','landlord_choice'] if game=='doudizhu' else ['tribute','return','preview'] if game=='guandan' else ['declare','bury']
    for mode in cases:
     frames=js(f'transitionPoker({json.dumps(game)},{json.dumps(mode)})');deltas=[]
@@ -72,6 +78,8 @@ createRoot(document.getElementById("root")!).render(<App/>);
       for axis in ['x','y','width','height']:
        delta=abs(f[selector][axis]-want[axis])
        if delta>.75:deltas.append({'selector':selector,'axis':axis,'delta':round(delta,2)})
+    if mode in ['few','played','long','idle']:
+     bottom=js('document.querySelector(".poker-hand-row:last-child").getBoundingClientRect().bottom+scrollY');assert abs(bottom-handBottom)<.75,(game,width,mode,bottom,handBottom)
     check={'game':game,'width':width,'mode':mode,'frames':len(frames),'boxes':frames[-1],'maxShift':max((d['delta'] for d in deltas),default=0)};report['checks'].append(check)
     if deltas:report['failures'].append({**check,'deltas':deltas[:6]})
     assert js('document.documentElement.scrollWidth<=innerWidth+1'),'page overflow'
@@ -134,5 +142,6 @@ finally:
  for p in created:p.unlink(missing_ok=True)
  # This task owns these temporary profiles/socket/cache directories only.
  shutil.rmtree(temp)
+ shutil.rmtree(sockets)
  (out/'result.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
  print('Artifact:',out/'result.json',flush=True)

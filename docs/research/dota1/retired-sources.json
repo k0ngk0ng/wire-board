@@ -1,0 +1,461 @@
+{
+  "collection": "Classic Warcraft III / DotA",
+  "assets": [
+    {
+      "id": "axe_portrait",
+      "source": "https://iccup.com/upload/images/heroes/MogulKhan_s_hid_36.png",
+      "source_page": "https://iccup.com/dota/heroes/Axe",
+      "source_sha256": "f6db701de95b244e7725c9dd57eb03d7de8dea9417139fe267113d39c0b11ea0",
+      "file": "axe_portrait.webp",
+      "sha256": "1a0485659fdb5ec86389baeb150bd88937f452109a3b350e2cc4211d4912f926"
+    },
+    {
+      "id": "axe_skill_1",
+      "source": "https://iccup.com/upload/images/heroes/berserkersCall_aid_163.png",
+      "source_page": "https://iccup.com/dota/heroes/Axe",
+      "source_sha256": "795fb25ff5d21d87c40351643d3436a9628713c6be09878cc7fb99880c1ac3a9",
+      "file": "axe_skill_1.webp",
+      "sha256": "1a79cd5800ca9bf1ddf17f1f9935f72107aee32abb62dc4fb33dc2204465702e"
+    },
+    {
+      "id": "axe_skill_2",
+      "source": "https://iccup.com/upload/images/heroes/battleHunger_aid_164.png",
+      "source_page": "https://iccup.com/dota/heroes/Axe",
+      "source_sha256": "d2f27cd5dbbd912e48039e068c63f80ea66fe51f534dd7428170c6972c091634",
+      "file": "axe_skill_2.webp",
+      "sha256": "adb14c07d46c1a50569f1eb6d04f1e816006c002a5d6d1889f9f6e51f336ae9b"
+    },
+    {
+      "id": "axe_skill_3",
+      "source": "https://iccup.com/upload/images/heroes/counterHelix_aid_165.png",
+      "source_page": "https://iccup.com/dota/heroes/Axe",
+      "source_sha256": "de034c680ee91bfb56a3bc88fa39eb8c5c6fbef862848d497b5dc7b04b795dfa",
+      "file": "axe_skill_3.webp",
+      "sha256": "53bbf7b668e71989a87df25f00b353262b9d0c443cc512be5f3d750663e356cd"
+    },
+    {
+      "id": "axe_skill_4",
+      "source": "https://iccup.com/upload/images/heroes/cullingBlade_aid_166.png",
+      "source_page": "https://iccup.com/dota/heroes/Axe",
+      "source_sha256": "e5301fe77efd2a2478359ab3d643ed9b9159c9d7e8858ccf40d002871153b6d9",
+      "file": "axe_skill_4.webp",
+      "sha256": "1d6092f69182a9ab183269b2cb9c75b06ef460a0d1a9a2118ba4f75dd280e94b"
+    },
+    {
+      "id": "crystal_maiden_portrait",
+      "source": "https://iccup.com/upload/images/heroes/RylaiCrestfall_s_hid_17.png",
+      "source_page": "https://iccup.com/dota/heroes/Crystal%20Maiden",
+      "source_sha256": "8be37715e312768ebd656b31a9dd43ead714228027fa29367ccc5b96e6526b2c",
+      "file": "crystal_maiden_portrait.webp",
+      "sha256": "ef6d364ccd09a6e7d902f68f8ceda61f7b0d75051078834cad7fe54d803df6d9"
+    },
+    {
+      "id": "crystal_maiden_skill_1",
+      "source": "https://iccup.com/upload/images/heroes/crystalNova_aid_83.png",
+      "source_page": "https://iccup.com/dota/heroes/Crystal%20Maiden",
+      "source_sha256": "3d863cb99955aa32c3fce958fe597473125f523fa5542665c06a7efe8101be6e",
+      "file": "crystal_maiden_skill_1.webp",
+      "sha256": "77a02e0bd226913c0d2bb8bc8c95eb52b31b25ebbba1b74c848a6ddce1be126f"
+    },
+    {
+      "id": "crystal_maiden_skill_2",
+      "source": "https://iccup.com/upload/images/heroes/frostbite_aid_84.png",
+      "source_page": "https://iccup.com/dota/heroes/Crystal%20Maiden",
+      "source_sha256": "10a398e0a7dabc9c4f1a06fe370fed3e15e5dcf6e056868f250039aefd4d655b",
+      "file": "crystal_maiden_skill_2.webp",
+      "sha256": "3f4af5ea191c6d888b0def796a5f36fd22cfdcf99d4a32512967b673a97dd7d1"
+    },
+    {
+      "id": "crystal_maiden_skill_3",
+      "source": "https://iccup.com/upload/images/heroes/brillianceAura_aid_85.png",
+      "source_page": "https://iccup.com/dota/heroes/Crystal%20Maiden",
+      "source_sha256": "e31270c7f7b28294d6f4327f8befa8b88370b968b3836b79f8db8203c5d6181d",
+      "file": "crystal_maiden_skill_3.webp",
+      "sha256": "224be7b90e14054975e3fe19e4513b2a0b1a4f24cebf4d6dbf9f9b0b5216b369"
+    },
+    {
+      "id": "crystal_maiden_skill_4",
+      "source": "https://iccup.com/upload/images/heroes/freezingField_aid_86.png",
+      "source_page": "https://iccup.com/dota/heroes/Crystal%20Maiden",
+      "source_sha256": "e3e2d20679f4ce1b2a9c0f27b751f934f3586181ace4bee4a59a254b36c749ad",
+      "file": "crystal_maiden_skill_4.webp",
+      "sha256": "0f9d42ab38ae20451c6daf6aac15b4bc95601c6fd967e1315ab44afee31f1e05"
+    },
+    {
+      "id": "earthshaker_portrait",
+      "source": "https://iccup.com/upload/images/heroes/RaigorStonehoof_s_hid_11.png",
+      "source_page": "https://iccup.com/dota/heroes/Earthshaker",
+      "source_sha256": "2967a107cfb3d3b97241503219c99877b18b30da80707a74898f9f12ce4b3ee2",
+      "file": "earthshaker_portrait.webp",
+      "sha256": "2b3170c2c652d7d3384dcba08d504411291f5800d1bbb70716edcad435c80ba5"
+    },
+    {
+      "id": "earthshaker_skill_1",
+      "source": "https://iccup.com/upload/images/heroes/fissure_aid_55.jpg",
+      "source_page": "https://iccup.com/dota/heroes/Earthshaker",
+      "source_sha256": "27b2edafc469ea37e6f8a741fc2eca979660501bcee7324a59b68e3e59c1e4c3",
+      "file": "earthshaker_skill_1.webp",
+      "sha256": "0e848523a8d0c867f7be9ae36609b32d1b31241438aa2858935140f577f82af6"
+    },
+    {
+      "id": "earthshaker_skill_2",
+      "source": "https://iccup.com/upload/images/heroes/enchantTotem_aid_56.png",
+      "source_page": "https://iccup.com/dota/heroes/Earthshaker",
+      "source_sha256": "c81351ee076b04fd1cad721678b59f50eecd300f55d6daa83450cfae7b2ce22d",
+      "file": "earthshaker_skill_2.webp",
+      "sha256": "30c10c2633bce879a0bf4b9ea1dd01ae6d14bc697e8ee54cf8d6e447fea04da5"
+    },
+    {
+      "id": "earthshaker_skill_3",
+      "source": "https://iccup.com/upload/images/heroes/aftershock_aid_57.png",
+      "source_page": "https://iccup.com/dota/heroes/Earthshaker",
+      "source_sha256": "37b096352f12e02672ff20dae14e17974fbe08dd721a167d32f0d7afc92c8dc6",
+      "file": "earthshaker_skill_3.webp",
+      "sha256": "3985bc7738f0640ba33fceb5c9ebb9d0e0f4a737d1fd5323302b5e29548b6e88"
+    },
+    {
+      "id": "earthshaker_skill_4",
+      "source": "https://iccup.com/upload/images/heroes/echoSlam_aid_58.png",
+      "source_page": "https://iccup.com/dota/heroes/Earthshaker",
+      "source_sha256": "2958a938e0fbd296f4687254554c62467d360253e7db706de4f02fb793450628",
+      "file": "earthshaker_skill_4.webp",
+      "sha256": "9e0553634323ff396f09362096da1bc5e906f3ec92789802abc23c6fe2f929d6"
+    },
+    {
+      "id": "sven_portrait",
+      "source": "https://iccup.com/upload/images/heroes/Sven_s_hid_14.png",
+      "source_page": "https://iccup.com/dota/heroes/Rogue%20Knight",
+      "source_sha256": "9fa618f3220175b36e4b1c6dbd65c9ee9631583acff5ddc624904e045cd8d242",
+      "file": "sven_portrait.webp",
+      "sha256": "7c14509827186cec85bea50dda028916ea38f21a85166aeb6208b11c65045483"
+    },
+    {
+      "id": "sven_skill_1",
+      "source": "https://iccup.com/upload/images/heroes/stormBolt_aid_67.png",
+      "source_page": "https://iccup.com/dota/heroes/Rogue%20Knight",
+      "source_sha256": "6dbe46ba6f35a5ee0702678bab197ce1ce3902e4252b492639a9cfa730e20aef",
+      "file": "sven_skill_1.webp",
+      "sha256": "04860a5dec1ddf2be78e7858df277a164573aecaaf3e8aeda67573f316c42e78"
+    },
+    {
+      "id": "sven_skill_2",
+      "source": "https://iccup.com/upload/images/heroes/greatCleave_aid_68.png",
+      "source_page": "https://iccup.com/dota/heroes/Rogue%20Knight",
+      "source_sha256": "666574fe8f4de23f6086534d6a55673b44eabb6c7790b95d326e8a50047163ca",
+      "file": "sven_skill_2.webp",
+      "sha256": "81abaf468ad9b2bcb097788f1be8e6081a7fc5ea16652ab230af507fd693f6d4"
+    },
+    {
+      "id": "sven_skill_3",
+      "source": "https://iccup.com/upload/images/heroes/warCry_aid_69.png",
+      "source_page": "https://iccup.com/dota/heroes/Rogue%20Knight",
+      "source_sha256": "cfc2d892ecfb089c81fb68e87de3d747814f8d49a4a54ab2a42d8c0e24cfbc10",
+      "file": "sven_skill_3.webp",
+      "sha256": "14503fa9f0a59ee5ab292bd76b3b932a09f69ff564bc9995dafa536935979ded"
+    },
+    {
+      "id": "sven_skill_4",
+      "source": "https://iccup.com/upload/images/heroes/godsStrength_aid_70.png",
+      "source_page": "https://iccup.com/dota/heroes/Rogue%20Knight",
+      "source_sha256": "e2c8244727263cde60a80592b3911968bcd649927d58b1fc32e7defb70e62d7d",
+      "file": "sven_skill_4.webp",
+      "sha256": "4f94c53119b3b8e36729326f5e8918727e7908d1a2ba33163415f586c710274a"
+    },
+    {
+      "id": "juggernaut_portrait",
+      "source": "https://iccup.com/upload/images/heroes/Yurnero_s_hid_55.png",
+      "source_page": "https://iccup.com/dota/heroes/Juggernaut",
+      "source_sha256": "82cc9aef90d4a6fcfd73f3fe436671dc8e804d15f47fa3fe8a39aa93e64d6602",
+      "file": "juggernaut_portrait.webp",
+      "sha256": "e8146d83d91cfd228c92deb5fd7336051ee3c30c5da256c96ce27cda1bb1546c"
+    },
+    {
+      "id": "juggernaut_skill_1",
+      "source": "https://iccup.com/upload/images/heroes/bladeFury_aid_237.png",
+      "source_page": "https://iccup.com/dota/heroes/Juggernaut",
+      "source_sha256": "bb610d0fcd27e32fc8d1a76da2e21bf69124fdfe670294b81e441a187d73dc5f",
+      "file": "juggernaut_skill_1.webp",
+      "sha256": "7522cc16c33e5ef6a61a7ae7d2e8fed952658b6fa3d83c6313504b9e601f675c"
+    },
+    {
+      "id": "juggernaut_skill_2",
+      "source": "https://iccup.com/upload/images/heroes/arcticSiege_aid_238.png",
+      "source_page": "https://iccup.com/dota/heroes/Juggernaut",
+      "source_sha256": "45fafb6195e836fa7c405fdd8a7d0b3c9e054fb483cf822b0b24ae27c2cc9ac1",
+      "file": "juggernaut_skill_2.webp",
+      "sha256": "741f15953547135fb4b2dd3a015209e8a5d8ac404ae0e7b6a8b7fb934e9b2c0d"
+    },
+    {
+      "id": "juggernaut_skill_3",
+      "source": "https://iccup.com/upload/images/heroes/bladeDance_aid_243.png",
+      "source_page": "https://iccup.com/dota/heroes/Juggernaut",
+      "source_sha256": "65436779c73556b42087a803c3ca015dc6ca6003bc3a90ffaf4c1db8e3c66b00",
+      "file": "juggernaut_skill_3.webp",
+      "sha256": "75ecb06084f800155374a9c01aa3019c0652b453f154ffa01d56d679a7f13d86"
+    },
+    {
+      "id": "juggernaut_skill_4",
+      "source": "https://iccup.com/upload/images/heroes/omnislash_aid_247.png",
+      "source_page": "https://iccup.com/dota/heroes/Juggernaut",
+      "source_sha256": "14123c67a8ca854b61e0dcb9304fa22e5dec6a595fe708b48131dfebff7146ca",
+      "file": "juggernaut_skill_4.webp",
+      "sha256": "c5bd8e3dbc39916969e04c8d5502e62d395b788bc5ebd90b72a99ab1ec63d1ce"
+    },
+    {
+      "id": "drow_portrait",
+      "source": "https://iccup.com/upload/images/heroes/Traxex_s_hid_64.png",
+      "source_page": "https://iccup.com/dota/heroes/Drow%20Ranger",
+      "source_sha256": "516cb8eba5b1338fc5daac77276f496c64bed098f1892b4ef400f7439f3e6224",
+      "file": "drow_portrait.webp",
+      "sha256": "a55be9a7907eaa4329305a4e6bf2cdeee67ac066110c69a6b22bff1e1ac4bece"
+    },
+    {
+      "id": "drow_skill_1",
+      "source": "https://iccup.com/upload/images/heroes/frostArrows_aid_273.png",
+      "source_page": "https://iccup.com/dota/heroes/Drow%20Ranger",
+      "source_sha256": "73f17f5a43a9fc68a4b3aaf67d5cba434a64f89f6bd8790016fcda707532bc2a",
+      "file": "drow_skill_1.webp",
+      "sha256": "453f25cb8504284d18b386140448b3383702a1952b90df848ade6a2e31189c53"
+    },
+    {
+      "id": "drow_skill_2",
+      "source": "https://iccup.com/upload/images/heroes/gust_aid_509.png",
+      "source_page": "https://iccup.com/dota/heroes/Drow%20Ranger",
+      "source_sha256": "bb6231b4fcd427610e5efc8d980bfbbe04f18bb3e57b48fbd4f9c1db5d94d8be",
+      "file": "drow_skill_2.webp",
+      "sha256": "2d3622072d3f4a83be3858d32713b07b4c7db96c57772f69070bbef007228e2a"
+    },
+    {
+      "id": "drow_skill_3",
+      "source": "https://iccup.com/upload/images/heroes/trueshotAura_aid_510.png",
+      "source_page": "https://iccup.com/dota/heroes/Drow%20Ranger",
+      "source_sha256": "ad0dc31fd7c80f833a3680ee7d4f2ac2a888fb715d66067ee1b5ba6ce8bce65c",
+      "file": "drow_skill_3.webp",
+      "sha256": "a1997a212569a5967b9d2a458569922c7574f362c24188b88173b94e2c031864"
+    },
+    {
+      "id": "drow_skill_4",
+      "source": "https://iccup.com/upload/images/heroes/marksmanship_aid_511.png",
+      "source_page": "https://iccup.com/dota/heroes/Drow%20Ranger",
+      "source_sha256": "d9e382c8ac4408617bafd9b5b9d682d8da840824322cce7f5464020940e7c227",
+      "file": "drow_skill_4.webp",
+      "sha256": "614c295418244ce28688cac1d39d248f35b164b793103c438538d43f20f656ad"
+    },
+    {
+      "id": "lina_portrait",
+      "source": "https://iccup.com/upload/images/heroes/LinaInverse_s_hid_76.png",
+      "source_page": "https://iccup.com/dota/heroes/Slayer",
+      "source_sha256": "3d6614f6af53ccd31c31a04c51484747f6da410d65226462977ef5ef1f6964cf",
+      "file": "lina_portrait.webp",
+      "sha256": "9e01b793f32e7f022994f1120fdc9154cbb95518bdd30af28234f36d692bc07a"
+    },
+    {
+      "id": "lina_skill_1",
+      "source": "https://iccup.com/upload/images/heroes/dragonSlave_aid_324.jpg",
+      "source_page": "https://iccup.com/dota/heroes/Slayer",
+      "source_sha256": "4efd38a55bf1467fb70aadadaedd39ff2d89b4ffe1ec9161ef3ce9d69824c2fe",
+      "file": "lina_skill_1.webp",
+      "sha256": "7ae7f95d09e3ba8d7d4a6b04f1058d9e646a110fcdbca532bed1c9b8995657c8"
+    },
+    {
+      "id": "lina_skill_2",
+      "source": "https://iccup.com/upload/images/heroes/lightStrikeArray_aid_325.png",
+      "source_page": "https://iccup.com/dota/heroes/Slayer",
+      "source_sha256": "2cad92d613ea2116d4da0ffd2ecd984a5104d089e2bdcbacb0a62afdb412f04c",
+      "file": "lina_skill_2.webp",
+      "sha256": "a72675661d615f7cf5bfc0e1b9bcff933c5d07a0f42623a89f49fac514f4ed9d"
+    },
+    {
+      "id": "lina_skill_3",
+      "source": "https://iccup.com/upload/images/heroes/fierySoul_aid_326.png",
+      "source_page": "https://iccup.com/dota/heroes/Slayer",
+      "source_sha256": "257ac76ce5e2abf873a45f17b8f64024130dba3e2b30f62f8879f60871e72fd9",
+      "file": "lina_skill_3.webp",
+      "sha256": "69c1d80d1694ce0bf0322da986a997509f9f62bab62297cc195c4b6d7da33303"
+    },
+    {
+      "id": "lina_skill_4",
+      "source": "https://iccup.com/upload/images/heroes/lagunaBlade_aid_327.png",
+      "source_page": "https://iccup.com/dota/heroes/Slayer",
+      "source_sha256": "b6014f6799d0be76877879b3ce686a8680f681b4511f309743c7b72759dc9fed",
+      "file": "lina_skill_4.webp",
+      "sha256": "5c6ea2ad78da92faf1665e6b960d821bec6bd77c6564497aa1844fd6d6e75bca"
+    },
+    {
+      "id": "sniper_portrait",
+      "source": "https://iccup.com/upload/images/heroes/KardelSharpeye_s_hid_31.png",
+      "source_page": "https://iccup.com/dota/heroes/Dwarven%20Sniper",
+      "source_sha256": "bc817cb43d21066581da2373271fa135b63dec47d0d1f9598c79049f4a4c4794",
+      "file": "sniper_portrait.webp",
+      "sha256": "164e55859d6a9bcef2e908b647446861529be29346a6a5246f75bde571819581"
+    },
+    {
+      "id": "sniper_skill_1",
+      "source": "https://iccup.com/upload/images/heroes/shrapnel_aid_142.png",
+      "source_page": "https://iccup.com/dota/heroes/Dwarven%20Sniper",
+      "source_sha256": "b2a9a0058015bfcc9e29c947021be0041cb4bc862eff0d8e150ddcdcb4637c0a",
+      "file": "sniper_skill_1.webp",
+      "sha256": "99cb9e10150edfcd5f08e9ab017bdd0d9eace3c79b87a53e82f96783109a11f2"
+    },
+    {
+      "id": "sniper_skill_2",
+      "source": "https://iccup.com/upload/images/heroes/headshot_aid_143.png",
+      "source_page": "https://iccup.com/dota/heroes/Dwarven%20Sniper",
+      "source_sha256": "674466a418222c5834d5d731e7fa820f592b8737e0b317f8eba0adc7406a819c",
+      "file": "sniper_skill_2.webp",
+      "sha256": "ffe1ce8544a47a24fd0a9e8cf3820cf349156909a757b8725262cc51ebe9a6d2"
+    },
+    {
+      "id": "sniper_skill_3",
+      "source": "https://iccup.com/upload/images/heroes/takeAim_aid_144.png",
+      "source_page": "https://iccup.com/dota/heroes/Dwarven%20Sniper",
+      "source_sha256": "b327eda9a2f0c7f32528dd44e79011b37e501bea28480ce1975e2ca4ca6476a1",
+      "file": "sniper_skill_3.webp",
+      "sha256": "cc7c5a8f192e92cf85c2e67f6d4c9e507624c365083eb0662b3aa91f45eda786"
+    },
+    {
+      "id": "sniper_skill_4",
+      "source": "https://iccup.com/upload/images/heroes/assassinate_aid_145.png",
+      "source_page": "https://iccup.com/dota/heroes/Dwarven%20Sniper",
+      "source_sha256": "6ec9105ef98a843f50a2a282f601ec7aefadaa2bdc6af34934666a507c2e52da",
+      "file": "sniper_skill_4.webp",
+      "sha256": "91d01caff047796a7fe1a04fbb6650db16e7897d085482178919d1921097c87b"
+    },
+    {
+      "id": "boots",
+      "source": "https://iccup.com/upload/images/items/boots_of_speed_sapogi_skorosti_dota.png",
+      "source_page": "https://iccup.com/dota/items.html",
+      "source_sha256": "a474ac64a31b259ca64fa7b043978d758fa519cf7c4893ee62b5e6f637fe5050",
+      "file": "boots.webp",
+      "sha256": "9d9d4c4117bb21a3bc0b5164e64a9755a37efc91efa5f5cd422f3797681627e3"
+    },
+    {
+      "id": "bracer",
+      "source": "https://iccup.com/upload/images/items/bracer_narukavnik_dota.png",
+      "source_page": "https://iccup.com/dota/items.html",
+      "source_sha256": "2d53572eae152ea7ef617e12cf8a9ae45ca01e2ff5ebed6b7cac5c03ab39fc72",
+      "file": "bracer.webp",
+      "sha256": "ebd163ba0f8abc64d2595f2d64e8bb16c1063836a857734ce3394f717d5d1d27"
+    },
+    {
+      "id": "wraith_band",
+      "source": "https://iccup.com/upload/images/items/wraith_band_maska_duha_dota.png",
+      "source_page": "https://iccup.com/dota/items.html",
+      "source_sha256": "4a65488b5e6ad80018d7154980ee145b48887aa009c0ec457326c6ca3fbab381",
+      "file": "wraith_band.webp",
+      "sha256": "2a754998163fde47890f09dc62ed90d4aa5712bf02e056dc4eb5639ef656ed94"
+    },
+    {
+      "id": "null_talisman",
+      "source": "https://iccup.com/upload/images/items/null_talisman_null_talisman_dota.png",
+      "source_page": "https://iccup.com/dota/items.html",
+      "source_sha256": "4dd9062513ee5cda7c7587ada55094c3d124a0f397bbdb99d6a12cc5f75f82f7",
+      "file": "null_talisman.webp",
+      "sha256": "6649d9fac990235390b59bde412f1444cb7b6f5e0592e1f6d5a124d7e95e6863"
+    },
+    {
+      "id": "wand",
+      "source": "https://iccup.com/upload/images/items/magic_wand_volshebnaya_palochka_dota.png",
+      "source_page": "https://iccup.com/dota/items.html",
+      "source_sha256": "eed55ab1df21a0e3fbf81f365921a925e777cb315e2cae1df39c48b7c6d046b2",
+      "file": "wand.webp",
+      "sha256": "a7a109e760e3310f63645ee90b6a61cd79c6069d8d0317780ad05a4312a3c56a"
+    },
+    {
+      "id": "blade_mail",
+      "source": "https://iccup.com/upload/images/items/blade_mail_ostraya_kolchuga_dota.png",
+      "source_page": "https://iccup.com/dota/items.html",
+      "source_sha256": "bc92219ac1974a6c60b1682d4fdd81f500df21270a9f1e37ddf33ba248bef2f0",
+      "file": "blade_mail.webp",
+      "sha256": "36574e4e53e790182643bdc7bdfef8e4cb80f5e99593a7126b30afd948422155"
+    },
+    {
+      "id": "bkb",
+      "source": "https://iccup.com/upload/images/items/black_king_bar_cherniy_posoh_bkb_dota.png",
+      "source_page": "https://iccup.com/dota/items.html",
+      "source_sha256": "2e8c41efbbe80d458362962e933db44ebc59dde873467c087b8eaa58f4206baa",
+      "file": "bkb.webp",
+      "sha256": "a001510712e3671786236090e9787aad1061fc2ae1fa299fd4351b00ccbcb2eb"
+    },
+    {
+      "id": "mekansm",
+      "source": "https://iccup.com/upload/images/items/mekansm_mekanzm_dota.png",
+      "source_page": "https://iccup.com/dota/items.html",
+      "source_sha256": "6b0f9a0dd5b49438529b130033e958694dc129612f3b9b43a2682f206415e29e",
+      "file": "mekansm.webp",
+      "sha256": "6ca417c583c5508c5f96d06b6dbbbcb682902d33ebfce9ff63b0f0c1045a40e4"
+    },
+    {
+      "id": "vanguard",
+      "source": "https://iccup.com/upload/images/items/vanguard_shchit_avangarda_dota.png",
+      "source_page": "https://iccup.com/dota/items.html",
+      "source_sha256": "57a392ea7b997ee9ec4b8e373841f53e340d85782e986c33c16de4288fcf22e8",
+      "file": "vanguard.webp",
+      "sha256": "e4086f2efa19878dd43b0e13c3748eb9873ffa1ab6fa2bff1f4c5ce2e378889b"
+    },
+    {
+      "id": "crystalys",
+      "source": "https://iccup.com/upload/images/items/crystalys_kristalis_dota.png",
+      "source_page": "https://iccup.com/dota/items.html",
+      "source_sha256": "deb28115824ae0ae4db5f8d0404624d722adea66de7b5415db0635af0520b0d8",
+      "file": "crystalys.webp",
+      "sha256": "dbbf95302e226b2ef0b021c4dd28f16bc33ebc34f650ecec9daab2e57737f0dc"
+    },
+    {
+      "id": "aghanim",
+      "source": "https://iccup.com/upload/images/items/aghanim_s_scepter_skipetr_aganima_dota.png",
+      "source_page": "https://iccup.com/dota/items.html",
+      "source_sha256": "ffec412afaf59ce832ba04fdd9fa23b29d7b958966fe883d00909cfa8f6f51da",
+      "file": "aghanim.webp",
+      "sha256": "26597de81b97ebc5bb9b47bc77791e0abe52cc4136471107e86dea4dbf29c93c"
+    },
+    {
+      "id": "force_staff",
+      "source": "https://iccup.com/upload/images/items/force_staff_posoh_prinuzhdeniya_dota.png",
+      "source_page": "https://iccup.com/dota/items.html",
+      "source_sha256": "ff4381eae2e7610cfb28b696dd68089f7f77b582d6caf341b4f155edb4d7b1f6",
+      "file": "force_staff.webp",
+      "sha256": "b7442afcbfc9cda065c12a1998faf8d425d29e5c96716fe0ebfa0d6b0600508c"
+    },
+    {
+      "id": "phase_boots",
+      "source": "https://iccup.com/upload/images/items/phase_boots_botinki_fazi_dota.png",
+      "source_page": "https://iccup.com/dota/items.html",
+      "source_sha256": "9ebf5b7d9147e630a99586f26fabe7e6742c94efdddf90cec8ca78d7bbbcb980",
+      "file": "phase_boots.webp",
+      "sha256": "d9c881d02f9c2fec82e879d8801d72164bb7508d297025f71566a3378b96c7cf"
+    },
+    {
+      "id": "arcane_boots",
+      "source": "https://iccup.com/upload/images/items/arcane_boots_temnie_sapogi_dota.png",
+      "source_page": "https://iccup.com/dota/items.html",
+      "source_sha256": "a64b78a934b74e3bb894d1b53e459dadb829a2c79951bfa7c44c3480a091b421",
+      "file": "arcane_boots.webp",
+      "sha256": "fdf2eb0a4074182ca06878684635e2bfd04c506c67ff6b4792b93afc153c2bd1"
+    },
+    {
+      "id": "quelling_blade",
+      "source": "https://iccup.com/upload/images/items/quelling_blade_podavlyayushchee_lezvie_dota.png",
+      "source_page": "https://iccup.com/dota/items.html",
+      "source_sha256": "1e11fd0666de9d6f0bbaf93520e7c1e49f2bc4d9c962f3f03500ba311789d167",
+      "file": "quelling_blade.webp",
+      "sha256": "cb9804b24699d2db29fd0c8503f1858fa288de52802b90676112d38ad591fabd"
+    },
+    {
+      "id": "blades_attack",
+      "source": "https://iccup.com/upload/images/items/blades_of_attack_nozhi_dota.png",
+      "source_page": "https://iccup.com/dota/items.html",
+      "source_sha256": "1aa3b865ec836be4a242cf52f02958f3f6ccdd7cd7cc3e5389dcfee007304de2",
+      "file": "blades_attack.webp",
+      "sha256": "297499ff93dc906a3b472c4f187c038624f8cbcd5c562b5a18261b88fbe7a69b"
+    },
+    {
+      "id": "blink",
+      "source": "https://iccup.com/upload/images/items/kelen_s_dagger_of_escape_kinzhal_spaseniya_dota.png",
+      "source_page": "https://iccup.com/dota/items.html",
+      "source_sha256": "381df6aa208700f2c0bf382ad32f6eafa96b6fa0575f6b16fd64cfa1b4a040b6",
+      "file": "blink.webp",
+      "sha256": "9f8d6fcd1b6adab58216b0cc015acbc1e3e00125dcb95c0fb216665493258c9d"
+    }
+  ]
+}

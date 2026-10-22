@@ -12,7 +12,7 @@ import (
 )
 
 func TestTimeoutAutoplayAllGamesPersistsAndCanBeCancelled(t *testing.T) {
-	for _, kind := range []string{"splendor", "rail", "catan", "carcassonne", "sanguosha", "dota"} {
+	for _, kind := range []string{"splendor", "rail", "catan", "carcassonne", "sanguosha"} {
 		t.Run(kind, func(t *testing.T) {
 			s, ts, clients, id := autoPlayTable(t, kind)
 			r := s.rooms[id]
@@ -318,7 +318,7 @@ func reclaimTimeoutHumans(t *testing.T, s *Server, clients []*testClient, id str
 }
 
 func TestTimeoutAutoplayAllGamesContinueToNaturalFinish(t *testing.T) {
-	for _, kind := range []string{"splendor", "rail", "catan", "carcassonne", "sanguosha", "dota"} {
+	for _, kind := range []string{"splendor", "rail", "catan", "carcassonne", "sanguosha"} {
 		t.Run(kind, func(t *testing.T) {
 			s, _, _, id := autoPlayTable(t, kind)
 			host := s.rooms[id].Host

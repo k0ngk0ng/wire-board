@@ -74,19 +74,13 @@ func (s *State) gemBot(player int) (Action, error) {
 			}
 		}
 	}
-	// A nearby affordable card gives the bot a consistent collection/discard goal.
+	// Compare points per estimated action, not raw printed cost. A seven-token
+	// card can be a better plan than another free, zero-point development.
 	target := Card{Cost: make([]int, 5)}
-	best := int(^uint(0) >> 1)
+	best := -1
 	for _, c := range cards {
-		cost := 0
-		for i, n := range c.Cost {
-			cost += max(0, n-p.Bonus[i])
-		}
-		rank := gemMissing(p, c, p.Tokens)*12 + cost - c.Points*2
-		if cost > 10 {
-			rank += 100
-		}
-		if rank < best {
+		rank := gemPlanValue(p, c, g.Bank)
+		if rank > best {
 			best = rank
 			target = c
 		}
@@ -127,9 +121,20 @@ func (s *State) gemBot(player int) (Action, error) {
 	choices := []botChoice{}
 	for _, c := range cards {
 		if a, ok := gemBestPurchase(p, c); ok {
-			score := 10000 + c.Points*100 + sum(c.Cost)
+			score := 120 + c.Points*140
 			if c.Color >= 0 && c.Color < 5 {
-				score -= p.Bonus[c.Color] * 3
+				score += max(0, 24-p.Bonus[c.Color]*6)
+				// A permanent discount that helps a planned card or noble is
+				// worth more than collecting another unrelated cheap card.
+				score += min(3, max(0, target.Cost[c.Color]-p.Bonus[c.Color])) * 12
+				for _, noble := range g.Nobles {
+					if noble.Cost[c.Color] > p.Bonus[c.Color] {
+						score += 12
+					}
+				}
+			}
+			if p.Score+c.Points >= 15 && !g.Options.Cities {
+				score += 10000
 			}
 			choices = append(choices, botChoice{a, score})
 		}
@@ -170,12 +175,38 @@ func (s *State) gemBot(player int) (Action, error) {
 	if len(p.Reserved) < 3 {
 		for _, row := range g.Market {
 			for _, c := range row {
-				score := -50 - gemMissing(p, c, p.Tokens)*5
-				if g.Bank[5] > 0 {
-					score += 80
+				if c.ID <= 0 || !g.gemCardAccessible(c.ID, player) {
+					continue
+				}
+				score := -80 - gemMissing(p, c, p.Tokens)*10 - len(p.Reserved)*30
+				if g.Bank[5] > 0 && sum(p.Tokens) < 10 {
+					held := append([]int{}, p.Tokens...)
+					held[5]++
+					// Gold is valuable when it advances our chosen purchase,
+					// especially a color unavailable in the public bank.
+					if gemMissing(p, target, held) < gemMissing(p, target, p.Tokens) {
+						score += 150
+						if gemMissing(p, target, held) == 0 {
+							score += 100
+						}
+					}
 				}
 				if c.ID == target.ID {
-					score += 30
+					score += 60
+				}
+				// Only public bonuses, tokens, owned cards and score matter.
+				// Never inspect opponents' reserved identities or deck order.
+				for other, opponent := range g.Players {
+					if other == player || opponent.Eliminated || !g.gemCardAccessible(c.ID, other) {
+						continue
+					}
+					if _, affordable := gemBestPurchase(opponent, c); affordable {
+						threat := c.Points * 55
+						if opponent.Score+c.Points >= 15 && !g.Options.Cities {
+							threat += 2000
+						}
+						score = max(score, threat-len(p.Reserved)*30)
+					}
 				}
 				choices = append(choices, botChoice{Action{Type: "reserve", Card: c.ID}, score})
 			}
@@ -202,5 +233,22 @@ func gemTakeScore(p GemPlayer, target Card, take []int) int {
 			useful += min(n, max(0, target.Cost[i]-p.Bonus[i]-p.Tokens[i]))
 		}
 	}
-	return 100 + useful*40 - gemMissing(p, target, held)*15 - max(0, sum(held)-10)*20
+	return 80 + useful*45 - gemMissing(p, target, held)*15 - max(0, sum(held)-10)*40
+}
+
+func gemPlanValue(p GemPlayer, c Card, bank []int) int {
+	if !gemCanAcquire(p, c) {
+		return -1
+	}
+	missing := gemMissing(p, c, p.Tokens)
+	turns := (missing + 2) / 3
+	for i, cost := range c.Cost {
+		gap := max(0, cost-p.Bonus[i]-p.Tokens[i]-p.Tokens[5])
+		rate := 1
+		if bank[i] >= 4 {
+			rate = 2
+		}
+		turns = max(turns, (gap+rate-1)/rate)
+	}
+	return (100 + c.Points*180) / (turns + 1)
 }

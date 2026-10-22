@@ -7,7 +7,7 @@ import { Cover } from "./Cover";
 export default defineGame<View, Options>({
   ...catalog,
   resources: pokerResources,
-  defaultOptions: { rounds: 0, startLevel: 2, turnSeconds: 30 },
+  defaultOptions: { rounds: 0, startLevel: 2, turnSeconds: 60 },
   Board,
   Options: OptionsForm,
   Cover,

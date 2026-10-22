@@ -16,7 +16,7 @@ import {
 } from "./input";
 import { DRAW_HEIGHT, DRAW_WIDTH, drawBoard, type DrawPoint } from "./canvas";
 import { PlayerMotion } from "./prediction";
-import { joystickIntent } from "./joystick";
+import { joystickIntent, TouchStick } from "./joystick";
 import { shouldPlayPickup } from "./pickup-audio";
 import { AvatarPicker } from "./AvatarPicker";
 import { CharacterSelection } from "./CharacterSelection";
@@ -78,6 +78,11 @@ export function Board(props: BoardProps<View>) {
   const [characterOpen, setCharacterOpen] = useState(false);
   const originalCharacters = (view?.rulesVersion ?? 0) >= 3;
   const [stick, setStick] = useState({ x: 0, y: 0 });
+  const touchStick = useRef(new TouchStick());
+  const [stickOrigin, setStickOrigin] = useState<{
+    x: number;
+    y: number;
+  } | null>(null);
   const [avatarSaving, setAvatarSaving] = useState(false);
   const preferenceSent = useRef("");
   const canControl =
@@ -215,6 +220,8 @@ export function Board(props: BoardProps<View>) {
       currentMove.current = "none";
       heldKeys.current.clear();
       padPointer.current = null;
+      touchStick.current.reset();
+      setStickOrigin(null);
       setStick({ x: 0, y: 0 });
       input.current.release();
     }
@@ -330,6 +337,8 @@ export function Board(props: BoardProps<View>) {
     const release = () => {
       heldKeys.current.clear();
       padPointer.current = null;
+      touchStick.current.reset();
+      setStickOrigin(null);
       setStick({ x: 0, y: 0 });
       currentMove.current = "none";
       input.current.release();
@@ -339,12 +348,14 @@ export function Board(props: BoardProps<View>) {
     window.addEventListener("keydown", down);
     window.addEventListener("keyup", up);
     window.addEventListener("blur", release);
+    window.addEventListener("resize", release);
     document.addEventListener("visibilitychange", release);
     return () => {
       heldKeys.current.clear();
       window.removeEventListener("keydown", down);
       window.removeEventListener("keyup", up);
       window.removeEventListener("blur", release);
+      window.removeEventListener("resize", release);
       document.removeEventListener("visibilitychange", release);
     };
   }, [enabled, setMove, placeBomb, sendOne]);
@@ -413,17 +424,19 @@ export function Board(props: BoardProps<View>) {
         const media = classicMedia.current;
         const currentMedia =
           media.mapId === current.mapId && media.base === latest.current.assets;
+        const renderAt = clockNow(current, latest.current.clock);
         const diagnostics = drawBoard(
           ctx,
           current,
           display.current,
-          clockNow(current, latest.current.clock),
+          renderAt,
           !!reduced,
           latest.current.assets,
           currentMedia ? media.images : {},
         );
         if (canvas.current) {
           const d = canvas.current.dataset;
+          d.renderAt = String(renderAt);
           d.terrain = diagnostics.terrain;
           d.nativeSpritesRequested = String(currentMedia ? media.requested : 0);
           d.nativeSpritesLoaded = String(currentMedia ? media.loaded : 0);
@@ -459,6 +472,8 @@ export function Board(props: BoardProps<View>) {
       heldKeys.current.clear();
       currentFacing.current = me?.dir ?? "down";
       padPointer.current = null;
+      touchStick.current.reset();
+      setStickOrigin(null);
       setStick({ x: 0, y: 0 });
       input.current.reset(me?.seq ?? 0);
       return;
@@ -562,6 +577,8 @@ export function Board(props: BoardProps<View>) {
     currentMove.current = "none";
     heldKeys.current.clear();
     padPointer.current = null;
+    touchStick.current.reset();
+    setStickOrigin(null);
     setStick({ x: 0, y: 0 });
     input.current.release();
     input.current.set({ ...NEUTRAL });
@@ -624,6 +641,8 @@ export function Board(props: BoardProps<View>) {
     if (padPointer.current !== event.pointerId) return;
     event.preventDefault();
     padPointer.current = null;
+    touchStick.current.reset();
+    setStickOrigin(null);
     setStick({ x: 0, y: 0 });
     if (event.currentTarget.hasPointerCapture(event.pointerId))
       event.currentTarget.releasePointerCapture(event.pointerId);
@@ -633,15 +652,45 @@ export function Board(props: BoardProps<View>) {
     if (!enabled || padPointer.current !== event.pointerId) return;
     event.preventDefault();
     const rect = event.currentTarget.getBoundingClientRect();
-    const intent = joystickIntent(
-      event.clientX - rect.left - rect.width / 2,
-      event.clientY - rect.top - rect.height / 2,
-      rect.width * 0.34,
-      currentMove.current,
-    );
+    const intent =
+      event.pointerType === "touch"
+        ? touchStick.current.move(
+            event.clientX,
+            event.clientY,
+            currentMove.current,
+          )
+        : joystickIntent(
+            event.clientX - rect.left - rect.width / 2,
+            event.clientY - rect.top - rect.height / 2,
+            rect.width * 0.34,
+            currentMove.current,
+          );
     setStick({ x: intent.x, y: intent.y });
     setMove(intent.move);
   };
+
+  const characterPicker = originalCharacters && view.phase !== "finished" && (
+    <CharacterSelection
+      epoch={view.epoch}
+      phase={view.phase}
+      character={me?.character ?? 0}
+      confirmed={!!me?.selected}
+      team={me?.team ?? 0}
+      assets={assets}
+      selectUntil={view.selectUntil ?? 0}
+      now={serverNow}
+      selectedCount={view.players.filter((p) => p.selected).length}
+      playerCount={view.players.length}
+      canChoose={
+        !!me && !room.spectating && !controlled && view.phase === "select"
+      }
+      open={characterOpen}
+      onOpenChange={setCharacterOpen}
+      onChoose={(character, confirm) =>
+        act({ type: "character", epoch: view.epoch, character, confirm })
+      }
+    />
+  );
 
   return (
     <main
@@ -680,28 +729,7 @@ export function Board(props: BoardProps<View>) {
           </div>
         ))}
       </div>
-      {originalCharacters && view.phase !== "finished" && (
-        <CharacterSelection
-          epoch={view.epoch}
-          phase={view.phase}
-          character={me?.character ?? 0}
-          confirmed={!!me?.selected}
-          team={me?.team ?? 0}
-          assets={assets}
-          selectUntil={view.selectUntil ?? 0}
-          now={serverNow}
-          selectedCount={view.players.filter((p) => p.selected).length}
-          playerCount={view.players.length}
-          canChoose={
-            !!me && !room.spectating && !controlled && view.phase === "select"
-          }
-          open={characterOpen}
-          onOpenChange={setCharacterOpen}
-          onChoose={(character, confirm) =>
-            act({ type: "character", epoch: view.epoch, character, confirm })
-          }
-        />
-      )}
+      {view.phase === "select" && characterPicker}
       <div className="bubble-stage">
         <canvas
           ref={canvas}
@@ -742,6 +770,7 @@ export function Board(props: BoardProps<View>) {
             {me.crates ? ` · 木箱 ${me.crates}` : ""}
           </span>
         )}
+        {view.phase !== "select" && characterPicker}
       </div>
       {!originalCharacters &&
         me &&
@@ -779,6 +808,7 @@ export function Board(props: BoardProps<View>) {
             aria-disabled={!enabled}
             data-active={padPointer.current !== null}
             data-bubbleparty-dpad
+            data-floating-stick
             data-game-hold-control
             onPointerDown={(event) => {
               if (!enabled || padPointer.current !== null || event.button !== 0)
@@ -786,45 +816,70 @@ export function Board(props: BoardProps<View>) {
               event.preventDefault();
               padPointer.current = event.pointerId;
               event.currentTarget.setPointerCapture(event.pointerId);
-              movePad(event);
+              if (event.pointerType === "touch") {
+                const rect = event.currentTarget.getBoundingClientRect();
+                touchStick.current.begin(event.clientX, event.clientY, 32);
+                setStickOrigin({
+                  x: Math.max(
+                    56,
+                    Math.min(rect.width - 56, event.clientX - rect.left),
+                  ),
+                  y: Math.max(
+                    56,
+                    Math.min(rect.height - 56, event.clientY - rect.top),
+                  ),
+                });
+                setStick({ x: 0, y: 0 });
+                setMove("none");
+              } else movePad(event);
             }}
             onPointerMove={movePad}
             onPointerUp={releasePad}
             onPointerCancel={releasePad}
             onLostPointerCapture={releasePad}
           >
-            <svg
-              className="bubble-stick-guides"
-              viewBox="0 0 100 100"
-              aria-hidden="true"
+            <div
+              className="bubble-stick-base"
+              style={
+                stickOrigin
+                  ? { left: stickOrigin.x, top: stickOrigin.y }
+                  : undefined
+              }
             >
-              <path d="M45 17l5-5 5 5M45 83l5 5 5-5M17 45l-5 5 5 5M83 45l5 5-5 5" />
-            </svg>
-            <span
-              className="bubble-stick-thumb"
-              aria-hidden="true"
-              style={{
-                transform: `translate(${stick.x * 38}px,${stick.y * 38}px)`,
-              }}
-            >
-              <i />
-            </span>
-            <span className="bubble-stick-caption" aria-hidden="true">
-              摇杆
-            </span>
+              <svg
+                className="bubble-stick-guides"
+                viewBox="0 0 100 100"
+                aria-hidden="true"
+              >
+                <path d="M45 17l5-5 5 5M45 83l5 5 5-5M17 45l-5 5 5 5M83 45l5 5-5 5" />
+              </svg>
+              <span
+                className="bubble-stick-thumb"
+                aria-hidden="true"
+                style={{
+                  transform: `translate(${stick.x * 38}px,${stick.y * 38}px)`,
+                }}
+              >
+                <i />
+              </span>
+            </div>
           </div>
           <button
             className="bubble-bomb"
             data-bubbleparty-bomb
             data-game-hold-control
             disabled={!enabled}
+            onClick={(event) => {
+              if (event.detail === 0) placeBomb();
+            }}
             onPointerDown={(event) => {
+              if (event.button !== 0) return;
               event.preventDefault();
               placeBomb();
             }}
           >
             放水泡
-            <small>空格 / J</small>
+            <small className="bubble-keyboard-hint">空格 / J</small>
           </button>
         </div>
       )}

@@ -7,7 +7,7 @@ import {
 import { Board } from "./Board";
 import { Cover } from "./Cover";
 import { MapPreview } from "./MapPreview";
-import { classicMapGroups } from "./classic-map-options";
+import { mapChoiceGroups } from "./classic-map-options";
 import { characterName } from "./character-definitions";
 import { mountName } from "./mount-art";
 import { mapNames, teamNames, type Options, type View } from "./types";
@@ -23,16 +23,8 @@ function OptionsForm({ value, onChange, disabled }: OptionsProps<Options>) {
           value={value.map}
           onChange={(event) => onChange({ ...value, map: event.target.value })}
         >
-          <optgroup label="现有场地">
-            {["community10", "waterpark", "forest", "desert", "random"].map(
-              (id) => (
-                <option key={id} value={id}>
-                  {mapNames[id]}
-                </option>
-              ),
-            )}
-          </optgroup>
-          {classicMapGroups.map((group) => (
+          <option value="random">{mapNames.random}</option>
+          {mapChoiceGroups.map((group) => (
             <optgroup key={group.family} label={group.label}>
               {group.maps.map((map) => (
                 <option key={map.id} value={map.id}>
@@ -103,15 +95,13 @@ export default defineGame<View, Options>({
         坐骑各有移动特性，受到水柱攻击会先失去坐骑。捡道具的音效仅由捡到的人听见。
       </p>
       <p>
-        经典场地收录可核验的 2002 客户端全部 112
-        张地图，保留来源编号，不能与后续国服编号直接对应。 小区10
-        按历史参考重建，另有三张自定义场地。少出生点地图按平台人数适配，不改变原始地形；
+        场地包括小区、森林、沙漠、冰原、工厂、矿山、海盗船、海洋与圣诞主题。
         方向通道、传送点和传送带按各地图规则通行。
       </p>
       <p>
         新对局没有缩圈，可选择 3、4 或 5
         分钟。电脑和托管使用相同规则；刷新或重连恢复同一局，
-        不重播已发生的爆炸。本项目为围桌内的玩法还原，与官方运营服务无关联。
+        不重播已发生的爆炸。
       </p>
     </div>
   ),

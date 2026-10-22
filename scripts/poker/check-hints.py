@@ -38,7 +38,7 @@ def shot(name):
  assert js('[...document.querySelectorAll(".poker-card[data-card-face] img")].filter(e=>+e.parentElement.dataset.cardFace>=0).every(e=>e.src.includes("/poker/v4/"))'),'latest integrated faces required'
  # Every played row must show each rank's exposed corner, including wrapped rows.
  b('scrollintoview','.poker-arena')
- hits=js('''[...document.querySelectorAll('.poker-play .poker-strip-slot')].map(e=>{const r=e.getBoundingClientRect(),x=r.left+6,y=r.top+10;return {id:e.querySelector('[data-card-face]').dataset.cardFace,hit:e.contains(document.elementFromPoint(x,y)),x,y}})''')
+ hits=js('''[...document.querySelectorAll('.poker-play .poker-strip-slot')].map(e=>{const area=e.closest('.poker-play');area.scrollLeft=e.offsetLeft;const r=e.getBoundingClientRect(),x=r.left+6,y=r.top+10;const result={id:e.querySelector('[data-card-face]').dataset.cardFace,hit:e.contains(document.elementFromPoint(x,y)),x,y};area.scrollLeft=0;return result})''')
  assert all(h['hit'] for h in hits),hits
  b('screenshot',str(out/(name+'.png')),'--full');report['checks'].append(name);print('PASS',name,flush=True)
 try:

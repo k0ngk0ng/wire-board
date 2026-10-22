@@ -183,7 +183,7 @@ const families: { family: string; name: string; sizes: number[][] }[] = [
 
 export const classicMapGroups = families.map(({ family, name, sizes }) => ({
   family,
-  label: `${name} · 2002 留存版`,
+  label: name,
   maps: sizes.map(([sourceNumber, width, height]): ClassicMapOption => {
     const number = String(sourceNumber).padStart(2, "0");
     const id = `classic2002-${family.toLowerCase()}${number}`;
@@ -211,3 +211,19 @@ export function previewSources(assets: string, filename: string): string[] {
   const path = `/bubbleparty/v4/classic/previews/${filename}`;
   return assets ? [assets.replace(/\/$/, "") + path, path] : [path];
 }
+
+// These IDs describe the existing game layouts. They are not aliases for
+// similarly named maps in the source archive.
+export const currentMapOptions = [
+  { id: "community10", name: "经典小区10", family: "Village" },
+  { id: "forest", name: "森林公园", family: "Forest" },
+  { id: "desert", name: "沙丘营地", family: "Desert" },
+  { id: "waterpark", name: "水乐园", family: "Ocean" },
+];
+export const mapChoiceGroups = classicMapGroups.map((group) => ({
+  ...group,
+  maps: [
+    ...group.maps,
+    ...currentMapOptions.filter((map) => map.family === group.family),
+  ],
+}));
