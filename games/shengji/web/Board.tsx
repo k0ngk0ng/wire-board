@@ -125,6 +125,8 @@ export function Board({
       assets={assets}
       style={style}
       hand={d.hand}
+      handCapacity={d.options.decks === 1 ? 18 : 33}
+      actionColumns={3}
       selected={selected}
       onSelect={setSelected}
       highlights={highlights}

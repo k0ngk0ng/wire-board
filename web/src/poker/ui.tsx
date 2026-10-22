@@ -9,6 +9,7 @@ import { nextFeedbackEvents } from "./events";
 // relative seats. Classification and legal decisions belong to each game.
 import {
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
   type CSSProperties,
@@ -150,8 +151,10 @@ export function CardStrip({
   skin,
   assets,
   back,
+  singleRow = false,
 }: {
   ids: number[];
+  singleRow?: boolean;
   skin: string;
   assets: string;
   back?: string;
@@ -161,7 +164,7 @@ export function CardStrip({
     [mobile, setMobile] = useState(
       () => typeof window !== "undefined" && innerWidth <= 600,
     );
-  useEffect(() => {
+  useLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
     const observer = new ResizeObserver(() => {
@@ -173,13 +176,15 @@ export function CardStrip({
   }, []);
   const size = mobile ? 44 : 52,
     step = mobile ? 20 : 24,
-    perRow = Math.max(1, Math.floor((width - size) / step) + 1);
+    perRow = singleRow
+      ? Math.max(1, ids.length)
+      : Math.max(1, Math.floor((width - size) / step) + 1);
   const rows = [];
   for (let i = 0; i < ids.length; i += perRow)
     rows.push(ids.slice(i, i + perRow));
   return (
     <div
-      className="poker-card-strip"
+      className={`poker-card-strip${singleRow ? " poker-card-strip-single" : ""}`}
       ref={ref}
       aria-label={ids.map(cardLabel).join("、")}
       style={
@@ -221,6 +226,7 @@ export function useSelection(hand: number[], windowKey: string) {
 }
 export function Hand({
   cards,
+  capacity,
   selected,
   onChange,
   seat,
@@ -230,6 +236,7 @@ export function Hand({
   disabled = false,
 }: {
   cards: number[];
+  capacity: number;
   selected: number[];
   onChange: (ids: number[]) => void;
   seat: number;
@@ -247,7 +254,7 @@ export function Hand({
     select: boolean;
     baseline: number[];
   } | null>(null);
-  useEffect(() => {
+  useLayoutEffect(() => {
     const e = ref.current;
     if (!e) return;
     const o = new ResizeObserver(() => setWidth(e.clientWidth));
@@ -257,6 +264,7 @@ export function Hand({
   const cardWidth = width < 420 ? 54 : 68,
     step = width < 420 ? 22 : 30;
   const perRow = Math.max(1, Math.floor((width - cardWidth) / step) + 1);
+  const reservedRows = Math.ceil(Math.max(capacity, cards.length) / perRow);
   const rows = [];
   for (let i = 0; i < cards.length; i += perRow)
     rows.push(cards.slice(i, i + perRow));
@@ -271,6 +279,7 @@ export function Hand({
   return (
     <div
       className="poker-hand"
+      style={{ minHeight: 16 + reservedRows * (cardWidth * 1.4 + 16) }}
       ref={ref}
       data-seat={seat}
       aria-label="你的手牌"
@@ -313,7 +322,7 @@ export function Hand({
             {
               "--card-width": `${cardWidth}px`,
               "--step": `${step}px`,
-              width: cardWidth + (row.length - 1) * step,
+              width: cardWidth + (perRow - 1) * step,
             } as CSSProperties
           }
         >
@@ -414,6 +423,8 @@ export function PokerLayout({
   assets,
   style,
   hand,
+  handCapacity,
+  actionColumns,
   selected,
   onSelect,
   labels,
@@ -428,6 +439,8 @@ export function PokerLayout({
   assets: string;
   style: ReturnType<typeof useCardStyle>;
   hand: number[];
+  handCapacity: number;
+  actionColumns: number;
   selected: number[];
   onSelect: (ids: number[]) => void;
   labels: string[];
@@ -451,7 +464,15 @@ export function PokerLayout({
           : "left";
   };
   return (
-    <section className="poker-board" data-phase={phase} aria-label="扑克牌桌">
+    <section
+      className="poker-board"
+      data-phase={phase}
+      data-action-columns={actionColumns}
+      style={
+        { "--poker-desktop-action-columns": actionColumns } as CSSProperties
+      }
+      aria-label="扑克牌桌"
+    >
       <div className="poker-tools">
         <label>
           牌面风格
@@ -517,21 +538,25 @@ export function PokerLayout({
                   />
                 </div>
               )}
-              {play && (
-                <div
-                  className={`poker-play ${fresh.includes(seat) ? "poker-new-play" : ""}`}
-                >
-                  {play.pass ? (
+              <div
+                className="poker-play"
+                tabIndex={play?.cards.length ? 0 : undefined}
+                role="region"
+                aria-label={`${p.name}的出牌`}
+              >
+                <div className={fresh.includes(seat) ? "poker-new-play" : ""}>
+                  {play?.pass ? (
                     <span className="poker-pass">不出</span>
                   ) : (
                     <CardStrip
-                      ids={play.cards}
+                      singleRow
+                      ids={play?.cards ?? []}
                       skin={style.skin}
                       assets={assets}
                     />
                   )}
                 </div>
-              )}
+              </div>
             </div>
           );
         })}
@@ -547,6 +572,7 @@ export function PokerLayout({
           <div className={fresh.includes(-1) ? "poker-new-deal" : ""}>
             <Hand
               cards={hand}
+              capacity={handCapacity}
               selected={selected}
               onChange={onSelect}
               seat={room.you}

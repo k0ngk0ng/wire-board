@@ -135,6 +135,8 @@ export function Board({
         assets={assets}
         style={style}
         hand={d.hand}
+        handCapacity={d.options.mode === "classic3" ? 20 : 33}
+        actionColumns={4}
         selected={selected}
         onSelect={setSelected}
         fresh={fresh}

@@ -126,6 +126,8 @@ export function Board({
       assets={assets}
       style={style}
       hand={d.hand}
+      handCapacity={28}
+      actionColumns={5}
       selected={selected}
       onSelect={(v) => {
         setSelected(v);
@@ -222,33 +224,6 @@ export function Board({
               >
                 查看牌型
               </button>
-              {interpretations.length > 0 && (
-                <label>
-                  牌型
-                  <select
-                    aria-label="百搭牌型"
-                    value={chosen?.key ?? ""}
-                    onChange={(e) => setKey(e.target.value)}
-                  >
-                    {interpretations.map((v) => (
-                      <option value={v.key} key={v.key}>
-                        {names[v.kind] ?? v.kind} ·{" "}
-                        {rankName(v.high === 15 ? d.level : v.high)}
-                        {v.wild.length
-                          ? " · 配牌代 " +
-                            v.wild
-                              .map(
-                                (w) =>
-                                  ["♣", "♦", "♥", "♠"][w.suit] +
-                                  rankName(w.rank),
-                              )
-                              .join("、")
-                          : ""}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-              )}
               <button
                 className="primary"
                 disabled={busy || !c.canAct || !selected.length}
@@ -261,6 +236,38 @@ export function Board({
               >
                 出牌（{selected.length}）
               </button>
+
+              <label
+                className="poker-interpretation"
+                style={{
+                  visibility: interpretations.length ? "visible" : "hidden",
+                }}
+                aria-hidden={!interpretations.length}
+              >
+                牌型
+                <select
+                  aria-label="百搭牌型"
+                  disabled={!interpretations.length}
+                  value={chosen?.key ?? ""}
+                  onChange={(e) => setKey(e.target.value)}
+                >
+                  {interpretations.map((v) => (
+                    <option value={v.key} key={v.key}>
+                      {names[v.kind] ?? v.kind} ·{" "}
+                      {rankName(v.high === 15 ? d.level : v.high)}
+                      {v.wild.length
+                        ? " · 配牌代 " +
+                          v.wild
+                            .map(
+                              (w) =>
+                                ["♣", "♦", "♥", "♠"][w.suit] + rankName(w.rank),
+                            )
+                            .join("、")
+                        : ""}
+                    </option>
+                  ))}
+                </select>
+              </label>
             </>
           )}
           {c.canReady && (
