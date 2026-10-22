@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"regexp"
 	"sort"
+	"strings"
 )
 
 var frontendAssetAttribute = regexp.MustCompile(`(?:src|href)=["']((?:https://cdn\.ichenj\.com/bga/web/[a-f0-9]{40})?/assets/[^"']+)["']`)
@@ -29,5 +30,12 @@ func (s *Server) version(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	sort.Strings(assets)
-	respond(w, http.StatusOK, map[string]any{"version": s.cfg.Version, "assets": assets, "build": s.frontendBuild()})
+	// Older open pages only accept /assets/ identities. Keep those stable while
+	// exposing the actual CDN locations separately for diagnostics.
+	identities := make([]string, len(assets))
+	for i, asset := range assets {
+		identities[i] = asset[strings.LastIndex(asset, "/assets/"):]
+	}
+	sort.Strings(identities)
+	respond(w, http.StatusOK, map[string]any{"version": s.cfg.Version, "assets": identities, "assetURLs": assets, "build": s.frontendBuild()})
 }
