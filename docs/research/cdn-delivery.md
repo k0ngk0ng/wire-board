@@ -38,3 +38,5 @@ WIRE_BOARD_ASSET_BASE="https://cdn.ichenj.com/bga/web/$(git rev-parse HEAD)/" CD
 ```
 
 本地证据在 `.local/cdn-delivery/verified.json` 与 `.local/poker-layout/results/result.json`。前者逐个记录 URL、MIME、编码、字节数和 SHA；后者包含真实动作数量、CDN 请求和结算结果。main 同样保留 `cdn-assets-verification` 产物。上传凭证只通过 GitHub Secrets 或本地忽略目录读取，不进入前端及发布包。
+
+版本接口继续提供旧页面可识别的 `/assets/` 身份标识，另以 `assetURLs` 给出真实 CDN 地址。新页面归一化地址比较，旧页面仍能收到更新提示；不自动刷新或中断对局。

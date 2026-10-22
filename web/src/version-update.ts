@@ -7,7 +7,19 @@ export function isEntryAsset(path: string) {
   );
 }
 export type ReleaseInfo = { version: string; assets: string[] };
-const assetKey = (assets: string[]) => [...new Set(assets)].sort().join("\n");
+const assetKey = (assets: string[]) =>
+  [
+    ...new Set(
+      assets.map((path) =>
+        path.replace(
+          /^https:\/\/cdn\.ichenj\.com\/bga\/web\/[a-f0-9]{40}(?=\/assets\/)/,
+          "",
+        ),
+      ),
+    ),
+  ]
+    .sort()
+    .join("\n");
 function validInfo(value: unknown): value is ReleaseInfo {
   if (!value || typeof value !== "object") return false;
   const data = value as ReleaseInfo;

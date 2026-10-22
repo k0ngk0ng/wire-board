@@ -94,3 +94,10 @@ test('immutable CDN entry assets participate in release detection', async () => 
  const next='https://cdn.ichenj.com/bga/web/'+'b'.repeat(40)+'/assets/index-ijklmnop.js';
  const notices=[];const m=new VersionMonitor([old],async()=>({version:'v2',assets:[next]}),x=>notices.push(x));await m.check();assert.equal(notices[0]?.version,'v2');
 });
+
+test("CDN-loaded entry and backwards-compatible asset identities match", async () => {
+ const full='https://cdn.ichenj.com/bga/web/'+'a'.repeat(40)+'/assets/index-abcdefgh.js';
+ const notices=[];let info={version:'v2',assets:['/assets/index-abcdefgh.js']};
+ const m=new VersionMonitor([full],async()=>info,x=>notices.push(x));await m.check();assert.equal(notices.length,0);
+ info={version:'v3',assets:['/assets/index-ijklmnop.js']};await m.check();assert.equal(notices[0]?.version,'v3');
+});

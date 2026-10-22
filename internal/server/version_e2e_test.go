@@ -54,12 +54,13 @@ func TestPublicVersionCDNAssetsHTTP(t *testing.T) {
 	w := httptest.NewRecorder()
 	s.Handler().ServeHTTP(w, httptest.NewRequest("GET", "/api/version", nil))
 	var got struct {
-		Assets []string `json:"assets"`
+		Assets    []string `json:"assets"`
+		AssetURLs []string `json:"assetURLs"`
 	}
 	if e = json.Unmarshal(w.Body.Bytes(), &got); e != nil {
 		t.Fatal(e)
 	}
-	if !reflect.DeepEqual(got.Assets, []string{base + "index-abcdefgh.css", base + "index-abcdefgh.js"}) {
+	if !reflect.DeepEqual(got.Assets, []string{"/assets/index-abcdefgh.css", "/assets/index-abcdefgh.js"}) || !reflect.DeepEqual(got.AssetURLs, []string{base + "index-abcdefgh.css", base + "index-abcdefgh.js"}) {
 		t.Fatal(got.Assets)
 	}
 }
