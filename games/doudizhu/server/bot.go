@@ -83,28 +83,74 @@ func botAction(ctx gameapi.Context, m gameapi.Match) (json.RawMessage, error) {
 			a.Type = "pass"
 			break
 		}
-		chosen := legal[0]
-		best := -1 << 30
-		for _, move := range legal {
-			score := len(move.Cards)*100 - move.High
-			if move.Kind == "bomb" || move.Kind == "rocket" {
-				score -= 1000
-			}
-			if s.LastPlay != nil {
-				score = -move.High
-				if move.Kind == "bomb" || move.Kind == "rocket" {
-					score -= 200 + move.Count
-				}
-			}
-			if score > best {
-				chosen = move
-				best = score
+		threat := 100
+		for seat, hand := range s.Hands {
+			if seat != p && (p == s.Landlord || seat == s.Landlord) && len(hand) > 0 {
+				threat = min(threat, len(hand))
 			}
 		}
+		chosen := chooseBotMove(own, legal, s.LastPlay != nil, threat, s.Players)
 		a.Type = "play"
 		a.Cards = chosen.Cards
 	default:
 		return nil, nil
 	}
 	return json.Marshal(a)
+}
+
+// Bounded work: score the existing legal move list, without recursively
+// enumerating future deals. Only own cards and public remaining counts enter.
+func chooseBotMove(hand []int, moves []Move, responding bool, threat, players int) Move {
+	held := map[int]int{}
+	for _, id := range hand {
+		held[rank(id)]++
+	}
+	royalSize := 1
+	if players == 4 {
+		royalSize = 2
+	}
+	rocket := held[16] == royalSize && held[17] == royalSize
+	chosen, best := moves[0], -1<<30
+	for _, m := range moves {
+		if len(m.Cards) == len(hand) {
+			return m
+		}
+		used := map[int]int{}
+		for _, id := range m.Cards {
+			used[rank(id)]++
+		}
+		damage := 0
+		for r, n := range used {
+			if n >= held[r] {
+				continue
+			}
+			if r < 16 && held[r] >= 4 {
+				damage += 500
+			} else if held[r] >= 2 {
+				damage += 80
+			}
+		}
+		if rocket && (used[16] > 0 || used[17] > 0) && used[16]+used[17] < royalSize*2 {
+			damage += 600
+		}
+		score := len(m.Cards)*60 - m.High - damage
+		if responding {
+			score = -m.High - damage
+		}
+		if m.Kind == "bomb" || m.Kind == "rocket" {
+			score -= 350 + len(m.Cards)
+		} else if threat <= 2 {
+			if len(m.Cards) <= threat {
+				score += m.High * 12
+			}
+			if !responding && len(m.Cards) > threat {
+				score += 250
+			}
+		}
+
+		if score > best {
+			chosen, best = m, score
+		}
+	}
+	return chosen
 }

@@ -23,8 +23,10 @@ def api(path,body=None):
  r=js('fetch('+json.dumps('/api'+path)+opt+').then(async r=>({status:r.status,body:await r.json()}))');assert 200<=r['status']<300,r;return r['body']
 def command(kind):
  r=api('/state')['room'];return api('/rooms/'+r['id'],{'type':kind,'version':r['version'],'nonce':uuid.uuid4().hex})
+def choose_skin(value):
+ b('find','role','button','click','--name','牌面设置','--exact');b('select','select[aria-label="牌面风格"]',value);b('click','[role=dialog] button[aria-label=关闭]')
 def select(ids):
- if js('document.querySelectorAll(".poker-hand [aria-pressed=true]").length'):b('find','role','button','click','--name','取消选择','--exact')
+ if js('document.querySelectorAll(".poker-hand [aria-pressed=true]").length'):b('focus','.poker-hand button');b('press','Escape')
  for id in ids:
   selector=f'.poker-hand button[data-card="{id}"]';b('scrollintoview',selector);r=js('document.querySelector('+json.dumps(selector)+').getBoundingClientRect().toJSON()');x,y=round(r['x']+8),round(r['y']+24)
   assert js(f'document.elementFromPoint({x},{y}).closest("button[data-card]")?.dataset.card')==str(id)
@@ -41,7 +43,7 @@ def shot(name):
  assert js('[...document.querySelectorAll(".poker-card[data-card-face] img")].filter(e=>+e.parentElement.dataset.cardFace>=0).every(e=>e.src.includes("/poker/v4/"))'),'latest integrated faces required'
  # Every played row must show each rank's exposed corner, including wrapped rows.
  b('scrollintoview','.poker-arena')
- hits=js('''[...document.querySelectorAll('.poker-play .poker-strip-slot')].map(e=>{const r=e.getBoundingClientRect(),x=r.left+6,y=r.top+10;return {id:e.querySelector('[data-card-face]').dataset.cardFace,hit:e.contains(document.elementFromPoint(x,y)),x,y}})''')
+ hits=js('''[...document.querySelectorAll('.poker-play .poker-strip-slot')].map(e=>{const area=e.closest('.poker-play');area.scrollLeft=e.offsetLeft;const r=e.getBoundingClientRect(),x=r.left+6,y=r.top+10;const result={id:e.querySelector('[data-card-face]').dataset.cardFace,hit:e.contains(document.elementFromPoint(x,y)),x,y};area.scrollLeft=0;return result})''')
  assert all(h['hit'] for h in hits),hits
  b('screenshot',str(out/(name+'.png')),'--full');report['checks'].append(name);print('PASS',name,flush=True)
 try:
@@ -68,8 +70,8 @@ try:
   if game=='doudizhu':
    # Check all three skins without changing the selected physical cards.
    for skin in ['english','illustrated','fourcolor']:
-    b('select','select[aria-label="牌面风格"]',skin);shot('joker-'+skin)
-   b('select','select[aria-label="牌面风格"]','english')
+    choose_skin(skin);shot('joker-'+skin)
+   choose_skin('english')
    for ids,expected,cue in [([19,1,6,27,14],[1,14,27,6,19],'trio-pair'),([12,3,13,2,40],[3,2,40,13,12],'straight'),([44,5,31,18],[5,18,31,44],'bomb'),([52,107,53,106],[53,107,52,106],'rocket')]:
     select(ids);probe();b('find','role','button','click','--name',f'出牌（{len(ids)}）','--exact');b('wait','--fn','window.__feedbackAudio.some(v=>v.src.includes("/poker/"))')
     played=api('/state')['room']['game']['data']['lastPlay']['cards'];assert played==expected,(played,expected)

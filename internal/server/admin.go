@@ -59,7 +59,7 @@ INSERT OR IGNORE INTO user_controls(user_id) SELECT id FROM users;`)
 		return err
 	}
 	if _, err = tx.Exec(`INSERT OR IGNORE INTO game_settings(kind,enabled) VALUES
-('splendor',1),('rail',1),('catan',1),('carcassonne',1),('sanguosha',1),('dota',1)`); err != nil {
+('splendor',1),('rail',1),('catan',1),('carcassonne',1),('sanguosha',1)`); err != nil {
 		tx.Rollback()
 		return err
 	}

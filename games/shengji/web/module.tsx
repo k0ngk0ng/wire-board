@@ -11,7 +11,7 @@ export default defineGame<View, Options>({
     decks: 2,
     rounds: 0,
     startLevel: 2,
-    turnSeconds: 30,
+    turnSeconds: 60,
     throwPenalty: 0,
     bottomMode: "cards",
   },

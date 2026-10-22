@@ -481,7 +481,7 @@ export function drawScene(input: {
     ctx.fillText(names[tank.seat] ?? "玩家", 0, 18);
     ctx.restore();
     if (canAim && tank.seat === view.you) {
-      const rad = (angle * Math.PI) / 180;
+      const rad = ((angle-facing*support.angle) * Math.PI) / 180;
       ctx.strokeStyle = "#ffed9e";
       ctx.lineWidth = 2 / scale;
       ctx.beginPath();

@@ -82,4 +82,17 @@ class ScopeTests(unittest.TestCase):
         self.assertNotIn('shard: [0, 1, 2, 3', workflow)
         self.assertNotIn('WIRE_BOARD_SNOOKER_HTTP_FULL=1 go test', workflow)
 
+
+class RetiredGameScopeTests(unittest.TestCase):
+    # Removing only a retired ID from a shared scenario table must not force
+    # every surviving game's full rule matrix. Any actual scenario edit must.
+    def test_retired_table_member_does_not_change_surviving_scenarios(self):
+        before = 'func TestTimeoutAutoplayAllGamesContinueToNaturalFinish(t *testing.T) { for _, kind := range []string{"splendor", "dota"} { play(kind) } }'
+        after = before.replace(', "dota"', '')
+        self.assertEqual(scope.changed_test_source(before, after, retired={'dota'}), '')
+        self.assertIn('TestTimeoutAutoplayAllGamesContinueToNaturalFinish', scope.changed_test_source(before, after.replace('play(kind)', 'playNew(kind)'), retired={'dota'}))
+    def test_other_strings_are_not_ignored(self):
+        before = 'func TestPublic(t *testing.T) { x := "dota" }'
+        self.assertIn('TestPublic', scope.changed_test_source(before, before.replace('dota', 'rail'), retired={'dota'}))
+
 if __name__ == '__main__': unittest.main()

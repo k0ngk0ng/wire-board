@@ -32,9 +32,18 @@ import {
   tankName,
   tanks as tankCatalog,
   sounds,
+  cellSize,
   type View,
 } from "./types";
-import { aimFromPoint, pointerWorld, type Camera } from "./aim";
+import {
+  aimFromPoint,
+  pointerWorld,
+  decodeMask,
+  carveCraters,
+  solidAt,
+  type Camera,
+} from "./aim";
+import { supportSlope } from "./slope";
 import { centeredCamera, panCamera, zoomAt } from "./camera";
 import {
   beginCharge,
@@ -208,6 +217,31 @@ export function Board(props: BoardProps<View>) {
   const { data, room, act, busy, assets, sound, audio, clock } = props;
   const map = mapById.get(data.mapId) ?? maps[0];
   const own = data.tanks.find((t) => t.seat === data.you);
+  const supportMask = useMemo(
+    () =>
+      carveCraters(
+        decodeMask(map.mask),
+        map.maskCols,
+        map.maskRows,
+        cellSize,
+        data.craters ?? [],
+      ),
+    [map, data.craters],
+  );
+  const bodyAngle = own
+    ? supportSlope(own, (x, y) =>
+        solidAt(
+          supportMask,
+          map.maskCols,
+          map.maskRows,
+          cellSize,
+          x,
+          y,
+          map.width,
+          map.height,
+        ),
+      ).angle
+    : 0;
   const active = data.tanks.find((t) => t.seat === data.current);
   const info = tankInfo(own?.tankId ?? 0);
   const minAngle = info?.minAngle ?? 0,
@@ -945,7 +979,7 @@ export function Board(props: BoardProps<View>) {
           event.currentTarget.getBoundingClientRect(),
           cameraRef.current,
         ),
-        aim = aimFromPoint(own, p, maxAngle, 26);
+        aim = aimFromPoint(own, p, maxAngle, 26, bodyAngle);
       changeAngle(Math.round(aim.angle));
       changeFacing(aim.facing);
     }
@@ -1042,7 +1076,7 @@ export function Board(props: BoardProps<View>) {
           <svg
             className="fb-angle-dial"
             viewBox="0 0 130 114"
-            aria-label={`炮角 ${Math.round(angle)} 度，朝${facing > 0 ? "右" : "左"}`}
+            aria-label={`炮角 ${Math.round(angle - facing * bodyAngle)} 度，朝${facing > 0 ? "右" : "左"}`}
           >
             <defs>
               <radialGradient id="fb-dial-glass">
@@ -1085,8 +1119,15 @@ export function Board(props: BoardProps<View>) {
                 key={i}
                 x1="65"
                 y1="57"
-                x2={65 + facing * Math.cos((a * Math.PI) / 180) * 42}
-                y2={57 - Math.sin((a * Math.PI) / 180) * 42}
+                x2={
+                  65 +
+                  facing *
+                    Math.cos(((a - facing * bodyAngle) * Math.PI) / 180) *
+                    42
+                }
+                y2={
+                  57 - Math.sin(((a - facing * bodyAngle) * Math.PI) / 180) * 42
+                }
                 stroke="#ed6e47"
                 strokeWidth="1.5"
               />
@@ -1094,8 +1135,16 @@ export function Board(props: BoardProps<View>) {
             <line
               x1="65"
               y1="57"
-              x2={65 + facing * Math.cos((angle * Math.PI) / 180) * 40}
-              y2={57 - Math.sin((angle * Math.PI) / 180) * 40}
+              x2={
+                65 +
+                facing *
+                  Math.cos(((angle - facing * bodyAngle) * Math.PI) / 180) *
+                  40
+              }
+              y2={
+                57 -
+                Math.sin(((angle - facing * bodyAngle) * Math.PI) / 180) * 40
+              }
               stroke="#ffdf79"
               strokeWidth="3"
             />
@@ -1108,7 +1157,7 @@ export function Board(props: BoardProps<View>) {
               fontSize="19"
               fontFamily="monospace"
             >
-              {Math.round(angle)}°
+              {Math.round(angle - facing * bodyAngle)}°
             </text>
           </svg>
           <span className="fb-wind">

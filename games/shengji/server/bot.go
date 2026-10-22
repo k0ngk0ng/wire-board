@@ -185,66 +185,14 @@ func botAction(ctx gameapi.Context, m gameapi.Match) (json.RawMessage, error) {
 			a.Cards = best.Cards
 		}
 	case "bury":
-		h := append([]int{}, s.Hands[p]...)
-		r := s.rules()
-		sort.Slice(h, func(i, j int) bool {
-			cost := func(id int) int {
-				v := power(id, r) + points([]int{id})*3
-				if suitOf(id, r) == 4 {
-					v += 100
-				}
-				return v
-			}
-			a, b := cost(h[i]), cost(h[j])
-			if a != b {
-				return a < b
-			}
-			return h[i] < h[j]
-		})
 		a.Type = "bury"
-		a.Cards = h[:s.bottomCount()]
+		a.Cards = botBury(s.Hands[p], s.rules(), s.bottomCount())
 	case "play":
 		ms := s.moves(p)
 		if len(ms) == 0 {
 			return nil, nil
 		}
-		chosen := ms[0]
-		best := -1 << 30
-		r := s.rules()
-		winner := Play{}
-		if len(s.Trick) > 0 {
-			winner = s.Trick[0]
-			for _, play := range s.Trick[1:] {
-				if beatsTrick(play.Cards, winner.Cards, *s.Lead, r) {
-					winner = play
-				}
-			}
-		}
-		for _, move := range ms {
-			score := len(move.Cards) * 100
-			cost := 0
-			for _, id := range move.Cards {
-				cost += power(id, r)
-				if suitOf(id, r) == 4 {
-					cost += 8
-				}
-			}
-			score -= cost
-			if s.Lead != nil {
-				score = -cost
-				if winner.Seat%2 == p%2 {
-					score += points(move.Cards) * 4
-				} else if beatsTrick(move.Cards, winner.Cards, *s.Lead, r) {
-					score += 100
-				} else {
-					score -= points(move.Cards) * 4
-				}
-			}
-			if score > best {
-				best = score
-				chosen = move
-			}
-		}
+		chosen := s.botPlay(p, ms)
 		a.Type = "play"
 		a.Cards = chosen.Cards
 	case "round_end":
@@ -253,4 +201,89 @@ func botAction(ctx gameapi.Context, m gameapi.Match) (json.RawMessage, error) {
 		return nil, nil
 	}
 	return json.Marshal(a)
+}
+
+// Evaluate only legal candidates and the public trick.
+func (s *State) botPlay(p int, ms []Move) Move {
+	chosen := ms[0]
+	best := -1 << 30
+	r := s.rules()
+	winner := Play{}
+	if len(s.Trick) > 0 {
+		winner = s.Trick[0]
+		for _, play := range s.Trick[1:] {
+			if beatsTrick(play.Cards, winner.Cards, *s.Lead, r) {
+				winner = play
+			}
+		}
+	}
+	for _, move := range ms {
+		score := len(move.Cards) * 100
+		cost := 0
+		for _, id := range move.Cards {
+			cost += power(id, r)
+			if suitOf(id, r) == 4 {
+				cost += 8
+			}
+		}
+		score += cost
+		if s.Lead != nil {
+			score = -cost
+			if winner.Seat%2 == p%2 {
+				if len(s.Trick) == 3 {
+					score += points(move.Cards) * 8
+				} else {
+					// A partner currently winning is not proof the next opponent cannot
+					// overtake. Save exposed points until we have the final say.
+					score -= points(move.Cards) * 2
+				}
+				if beatsTrick(move.Cards, winner.Cards, *s.Lead, r) {
+					score -= 30
+				}
+			} else if beatsTrick(move.Cards, winner.Cards, *s.Lead, r) {
+				trickPoints := 0
+				for _, play := range s.Trick {
+					trickPoints += points(play.Cards)
+				}
+				score += 80 + trickPoints*5 + points(move.Cards)*4
+			} else {
+				score -= points(move.Cards) * 4
+			}
+		}
+		if score > best {
+			best = score
+			chosen = move
+		}
+	}
+	return chosen
+}
+
+// Keep pairs and trumps, and prefer voiding a short non-trump suit so later
+// tricks can be ruffed. No kitty or opponent identities enter this choice.
+func botBury(hand []int, r Rules, count int) []int {
+	h := append([]int{}, hand...)
+	faces, suits := map[int]int{}, map[int]int{}
+	for _, id := range h {
+		faces[id%54]++
+		suits[suitOf(id, r)]++
+	}
+	sort.Slice(h, func(i, j int) bool {
+		cost := func(id int) int {
+			suit := suitOf(id, r)
+			v := power(id, r) + points([]int{id})*3 + suits[suit]*4
+			if faces[id%54] >= 2 {
+				v += 80
+			}
+			if suit == 4 {
+				v += 120
+			}
+			return v
+		}
+		a, b := cost(h[i]), cost(h[j])
+		if a != b {
+			return a < b
+		}
+		return h[i] < h[j]
+	})
+	return h[:count]
 }

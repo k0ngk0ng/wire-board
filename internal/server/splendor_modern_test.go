@@ -222,6 +222,19 @@ func TestSplendorModernPendingTimeoutAndContinuation(t *testing.T) {
 			t.Run(tc.phase+"/"+mode, func(t *testing.T) {
 				s, ts, clients, id := modernSplendorTable(t, tc.n, tc.mask)
 				initial := slices.Clone(s.rooms[id].Game.Splendor.Bank)
+				var postTrace []struct {
+					Actor  int         `json:"actor"`
+					Action game.Action `json:"action"`
+				}
+				if tc.phase == "gem_post" {
+					raw, err := os.ReadFile("testdata/splendor_post_actions.json")
+					if err != nil {
+						t.Fatal(err)
+					}
+					if err = json.Unmarshal(raw, &postTrace); err != nil {
+						t.Fatal(err)
+					}
+				}
 				for step := 0; s.rooms[id].Game.Phase != tc.phase && step < 500; step++ {
 					state := s.rooms[id].Game
 					if state.Finished {
@@ -230,6 +243,15 @@ func TestSplendorModernPendingTimeoutAndContinuation(t *testing.T) {
 					a, err := state.BotAction(state.Turn)
 					if err != nil {
 						t.Fatal(err)
+					}
+					if state.Phase == "turn" && tc.phase == "discard" {
+						a = modernDiscardSetupAction(t, state, a)
+					}
+					if tc.phase == "gem_post" {
+						if step >= len(postTrace) || postTrace[step].Actor != state.Turn {
+							t.Fatal("post setup trace diverged", step, state.Phase)
+						}
+						a = postTrace[step].Action
 					}
 					if tc.phase == "gem_reserve" && state.Phase == "turn" && slices.Contains(state.Splendor.Players[state.Turn].TradingPosts, game.GemPostBlindReserve) && len(state.Splendor.Players[state.Turn].Reserved) < 3 && len(state.Splendor.Decks[3]) > 0 {
 						a = game.Action{Type: "reserve", Tier: 1, Choice: "orient"}
@@ -427,4 +449,34 @@ func runSplendorHTTPGame(t *testing.T, s *Server, ts *httptest.Server, clients [
 		t.Fatal("rating ledger duplicated/lost", ledger, err)
 	}
 	t.Logf("%d legal actions; phases %v; winners %v", steps, seen, r.Game.Winners)
+}
+
+// This lifecycle test must deliberately over-collect tokens: stronger bots
+// avoid doing so. Probe legal take actions on a copy, then submit via HTTP.
+// The gem_post setup instead replays 105 legal actions recorded with the
+// v1.29.1 strategy and the same fixed opening (provenance in testdata). After
+// reaching the phase, all timeout/reclaim/continuation uses the current bot.
+func modernDiscardSetupAction(t *testing.T, state *game.State, fallback game.Action) game.Action {
+	t.Helper()
+	raw, err := json.Marshal(state)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for mask := 1; mask < 32; mask++ {
+		take := make([]int, 6)
+		for i := 0; i < 5; i++ {
+			if mask&(1<<i) != 0 {
+				take[i] = 1
+			}
+		}
+		action := game.Action{Type: "take", Tokens: take}
+		var trial game.State
+		if err = json.Unmarshal(raw, &trial); err != nil {
+			t.Fatal(err)
+		}
+		if trial.Apply(state.Turn, action) == nil {
+			return action
+		}
+	}
+	return fallback
 }

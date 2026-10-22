@@ -124,7 +124,6 @@ try:
         'carcassonne': {'name': '卡卡颂', 'players': '2–5 人'},
         'sanguosha': {'name': '三国杀', 'players': '4–8 人'},
         # Three/five players are not supported: a range would mislead users.
-        'dota': {'name': '兵线争锋', 'players': '2 / 4 / 6 人'},
         'monopoly': {'name': '强手棋', 'players': '2–6 人'},
         'starfort': {'name': '星垒', 'players': '1–4 人'},
         'doudizhu': {'name': '斗地主', 'players': '4 人'},

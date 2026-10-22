@@ -33,7 +33,7 @@ func configure(n int, raw json.RawMessage) (json.RawMessage, error) {
 	if n != 4 {
 		return nil, errors.New("江苏掼蛋需要坐满四人")
 	}
-	o := Options{Rounds: 0, StartLevel: 2, TurnSeconds: 30}
+	o := Options{Rounds: 0, StartLevel: 2, TurnSeconds: 60}
 	if len(raw) > 0 {
 		if e := strict(raw, &o); e != nil {
 			return nil, errors.New("无效掼蛋设置")

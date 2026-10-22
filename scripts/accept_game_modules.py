@@ -213,7 +213,7 @@ try:
     assert room()['result'] == result
     checkpoint('module-finished-reloaded')
     command('leave')
-    for kind, players, selector in [('splendor', 2, '.splendor-board'), ('rail', 2, '.rail-board'), ('catan', 3, '.catan-board'), ('carcassonne', 2, '.car-board'), ('sanguosha', 4, '.sg-board'), ('dota', 2, '.dota-table')]:
+    for kind, players, selector in [('splendor', 2, '.splendor-board'), ('rail', 2, '.rail-board'), ('catan', 3, '.catan-board'), ('carcassonne', 2, '.car-board'), ('sanguosha', 4, '.sg-board')]:
         api('/api/rooms', {'kind': kind, 'name': kind + ' 模块验收', 'capacity': players})
         for _ in range(players - 1):
             command('add_bot')

@@ -31,7 +31,7 @@ export function gameModule(kind: string) {
   return modules.get(kind);
 }
 export function gameName(kind: string) {
-  return modules.get(kind)?.name || kind;
+  return modules.get(kind)?.name || (kind === "dota" ? "兵线争锋" : kind);
 }
 export function isIndependentGame(kind: string) {
   return !!modules.get(kind) && !modules.get(kind)?.legacy;

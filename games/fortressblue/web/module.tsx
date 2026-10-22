@@ -52,7 +52,7 @@ function OptionsForm({ value, onChange, disabled }: OptionsProps<Options>) {
             onChange({ ...value, turnSeconds: Number(event.target.value) })
           }
         >
-          {[15, 20, 25, 30, 40].map((seconds) => (
+          {[15, 20, 25, 30, 40, 60].map((seconds) => (
             <option key={seconds} value={seconds}>
               {seconds} 秒
             </option>
@@ -109,7 +109,7 @@ export default defineGame<View, Options>({
   ...catalog,
   resources,
   asyncBoard: true,
-  defaultOptions: { map: defaultMap, turnSeconds: 30, botDifficulty: "normal" },
+  defaultOptions: { map: defaultMap, turnSeconds: 60, botDifficulty: "normal" },
   Board,
   Cover,
   Options: OptionsForm,

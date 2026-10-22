@@ -31,7 +31,7 @@ func configure(n int, raw json.RawMessage) (json.RawMessage, error) {
 	if n != 4 {
 		return nil, errors.New("上海升级需要坐满四人")
 	}
-	o := Options{Decks: 2, Rounds: 0, StartLevel: 2, TurnSeconds: 30, ThrowPenalty: 0, BottomMode: "cards"}
+	o := Options{Decks: 2, Rounds: 0, StartLevel: 2, TurnSeconds: 60, ThrowPenalty: 0, BottomMode: "cards"}
 	if len(raw) > 0 {
 		if e := strict(raw, &o); e != nil {
 			return nil, errors.New("无效升级设置")

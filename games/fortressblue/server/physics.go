@@ -90,6 +90,26 @@ func groundY(m fbmaps.Map, mask []byte, x, y float64) float64 {
 
 func tankCenter(t Tank) Point { return Point{X: t.X, Y: t.Y - 18} }
 
+// Match the nearby wheel supports used by the rendered body. Canvas/world Y
+// points down, so a positive slope lowers a right-facing gun's world elevation.
+func supportAngle(m fbmaps.Map, mask []byte, x, y float64) float64 {
+	foot := func(px float64) (float64, bool) {
+		nearest, found := 0.0, false
+		for py := math.Floor(y) - 24; py <= math.Ceil(y)+24; py++ {
+			if solid(m, mask, px, py) && !solid(m, mask, px, py-1) && (!found || math.Abs(py-y) < math.Abs(nearest-y)) {
+				nearest, found = py, true
+			}
+		}
+		return nearest, found
+	}
+	left, lok := foot(x - 12)
+	right, rok := foot(x + 12)
+	if !lok || !rok {
+		return 0
+	}
+	return math.Atan2(right-left, 24) * 180 / math.Pi
+}
+
 // simulateArc is pure and shared by server shot resolution and the bot search.
 func simulateArc(m fbmaps.Map, mask []byte, tanks []Tank, shooter int, startX, startY, angle, power float64, facing int, rangeScale float64, wind int, limit int) Arc {
 	return simulateProjectile(m, mask, tanks, shooter, startX, startY, angle, power, facing, rangeScale, wind, limit, projectileMotion{})
@@ -100,7 +120,9 @@ func simulateProjectile(m fbmaps.Map, mask []byte, tanks []Tank, shooter int, st
 	defer func() { result.LockPoint = lock; result.LockAt = lockAt }()
 
 	speed := (120 + clamp(power, 0, 100)*7.0) * clamp(rangeScale, 0.7, 1.3)
-	rad := clamp(angle, 0, 90) * math.Pi / 180
+	// The submitted angle is relative to the vehicle body; do not clamp the
+	// resulting world angle, which may legitimately point below or past vertical.
+	rad := (clamp(angle, 0, 90) - float64(facing)*supportAngle(m, mask, startX, startY)) * math.Pi / 180
 	vx := math.Cos(rad)*speed*float64(facing) + motion.VX
 	vy := -math.Sin(rad)*speed + motion.VY
 	x := startX + float64(facing)*10

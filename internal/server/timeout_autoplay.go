@@ -15,9 +15,6 @@ func (r *Room) timeoutActors() []int {
 	if g == nil || g.Finished {
 		return nil
 	}
-	if g.Dota != nil {
-		return g.DotaActors()
-	}
 	if g.Sanguosha != nil {
 		return g.SanguoshaActors()
 	}

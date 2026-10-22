@@ -1,3 +1,4 @@
+import { Modal } from "../../../web/src/ui/board-host";
 import { soundFor } from "./sounds";
 import { useEffect, useState } from "react";
 import type {
@@ -133,8 +134,9 @@ export function Board({
       fresh={fresh}
       labels={d.players.map(
         (p, i) =>
-          `${i === d.dealer ? "庄家" : d.dealer < 0 ? "待定" : i % 2 === d.dealer % 2 ? "庄家搭档" : "抓分方"} · ${p.count} 张`,
+          `${i === d.dealer ? "庄家" : d.dealer < 0 ? "待定" : i % 2 === d.dealer % 2 ? "庄家搭档" : "抓分方"}`,
       )}
+      counts={d.players.map((p) => p.count)}
       plays={d.trick.length ? d.trick : (d.lastTrick?.plays ?? [])}
       center={
         <>
@@ -144,53 +146,57 @@ export function Board({
               ? "主牌待定"
               : trumpName(d.trump)}
           </strong>
-          <span>
-            第 {d.round} 副 · 第 {d.trickNumber} 墩
-          </span>
-          <span>{phases[d.phase]}</span>
           <strong>
             抓分 {d.attackPoints} / {d.options.decks === 1 ? 40 : 80}
           </strong>
-          <small>
-            双方级数 {rankName(d.levels[0])} / {rankName(d.levels[1])}
-          </small>
-          {d.lastTrick && (
-            <small>
-              上墩：{room.seats[d.lastTrick.winner].name} · {d.lastTrick.points}{" "}
-              分
-            </small>
-          )}
-          {d.bottom.length > 0 && (
-            <details>
-              <summary>
-                {d.phase === "play" ? "你的底牌" : "底牌"} · {d.bottom.length}{" "}
-                张
-              </summary>
-              <CardStrip ids={d.bottom} skin={style.skin} assets={assets} />
-            </details>
-          )}
-          {d.revealed.length > 0 && (
-            <details>
-              <summary>本副明示牌</summary>
-              {d.revealed.map((v, i) => (
-                <div key={i}>
-                  <small>
-                    {v.seat >= 0 ? room.seats[v.seat].name : "底牌"} ·{" "}
-                    {v.reason}
-                  </small>
-                  <CardStrip ids={v.cards} skin={style.skin} assets={assets} />
-                </div>
-              ))}
-            </details>
-          )}
+          {d.phase !== "play" && <span>{phases[d.phase]}</span>}
+          <details>
+            <summary>牌局</summary>
+            <p>
+              第 {d.round} 副 · 第 {d.trickNumber} 墩
+            </p>
+            {d.lastTrick && (
+              <small>
+                上墩：{room.seats[d.lastTrick.winner].name} ·{" "}
+                {d.lastTrick.points} 分
+              </small>
+            )}
+            {d.bottom.length > 0 && (
+              <details>
+                <summary>
+                  {d.phase === "play" ? "你的底牌" : "底牌"} · {d.bottom.length}{" "}
+                  张
+                </summary>
+                <CardStrip ids={d.bottom} skin={style.skin} assets={assets} />
+              </details>
+            )}
+            {d.revealed.length > 0 && (
+              <details>
+                <summary>本副明示牌</summary>
+                {d.revealed.map((v, i) => (
+                  <div key={i}>
+                    <small>
+                      {v.seat >= 0 ? room.seats[v.seat].name : "底牌"} ·{" "}
+                      {v.reason}
+                    </small>
+                    <CardStrip
+                      ids={v.cards}
+                      skin={style.skin}
+                      assets={assets}
+                    />
+                  </div>
+                ))}
+              </details>
+            )}
+          </details>
         </>
       }
       actions={
         <>
           {error && (
-            <p className="poker-error" role="alert">
-              {error}
-            </p>
+            <Modal title="无法出牌" onClose={() => setError("")}>
+              <p role="alert">{error}</p>
+            </Modal>
           )}
           {d.phase === "declare" && c.canAct && (
             <>
@@ -251,7 +257,7 @@ export function Board({
                 disabled={busy || !selected.length}
                 onClick={() => setSelected([])}
               >
-                取消选择
+                清除选择
               </button>
               <button
                 className="primary"
@@ -276,9 +282,7 @@ export function Board({
               准备下一副
             </button>
           )}
-          {!c.canAct && d.phase !== "finished" && (
-            <p className="poker-notice">等待其他玩家。对面玩家是你的搭档。</p>
-          )}
+
           {d.roundResults.length > 0 &&
             (d.phase === "round_end" || d.phase === "finished") && (
               <p className="poker-notice">

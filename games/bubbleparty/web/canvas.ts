@@ -660,8 +660,9 @@ export function drawPreview(
   ctx: CanvasRenderingContext2D,
   cells: number[],
   mapId: string,
+  tiles?: number[],
 ) {
-  const view = { cells, mapId } as View;
+  const view = { cells, mapId, tiles } as View;
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
   ctx.scale(ctx.canvas.width / WIDTH, ctx.canvas.height / HEIGHT);

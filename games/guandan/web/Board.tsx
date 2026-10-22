@@ -1,3 +1,4 @@
+import { Modal } from "../../../web/src/ui/board-host";
 import { soundFor } from "./sounds";
 import { useEffect, useState } from "react";
 import type {
@@ -5,6 +6,7 @@ import type {
   OptionsProps,
 } from "../../../web/src/game-api/module";
 import {
+  CardStrip,
   PokerLayout,
   PokerOptions,
   rankName,
@@ -89,8 +91,17 @@ export function Board({
     { selected, setSelected } = useSelection(d.hand, room.id + ":" + d.window),
     [key, setKey] = useState(""),
     [error, setError] = useState(""),
-    [hint, setHint] = useState(0);
-  useEffect(() => setHint(0), [room.id, d.window]);
+    [hint, setHint] = useState(0),
+    [chooseOpen, setChooseOpen] = useState(false),
+    [pendingPlay, setPendingPlay] = useState<{
+      cards: number[];
+      window: number;
+    } | null>(null);
+  useEffect(() => {
+    setHint(0);
+    setChooseOpen(false);
+    setPendingPlay(null);
+  }, [room.id, d.window]);
   const fresh = usePokerFeedback(
       d.events,
       room.id,
@@ -108,6 +119,49 @@ export function Board({
     : c.moves.filter((m) => matches(selected, m.cards));
   const chosen =
     interpretations.find((v) => v.key === key) ?? interpretations[0];
+  useEffect(() => {
+    if (
+      busy ||
+      !pendingPlay ||
+      pendingPlay.window !== d.window ||
+      !matches(pendingPlay.cards, selected) ||
+      !matches(pendingPlay.cards, c.previewCards) ||
+      !c.interpretations.length
+    )
+      return;
+    setPendingPlay(null);
+    if (c.interpretations.length === 1)
+      void send("play", {
+        cards: pendingPlay.cards,
+        interpretation: c.interpretations[0].key,
+      });
+    else {
+      setKey(c.interpretations[0].key);
+      setChooseOpen(true);
+    }
+  }, [
+    busy,
+    pendingPlay,
+    d.window,
+    selected,
+    c.previewCards,
+    c.interpretations,
+  ]);
+  function playSelected() {
+    if (interpretations.length === 1) {
+      void send("play", {
+        cards: selected,
+        interpretation: interpretations[0].key,
+      });
+      return;
+    }
+    if (interpretations.length > 1) {
+      setChooseOpen(true);
+      return;
+    }
+    setPendingPlay({ cards: [...selected], window: d.window });
+    void send("preview", { cards: selected });
+  }
   const highlights: Record<number, string> = {};
   for (const id of d.hand)
     if (id % 54 === 26 + d.level - 2) highlights[id] = "配";
@@ -127,38 +181,38 @@ export function Board({
       style={style}
       hand={d.hand}
       handCapacity={28}
-      actionColumns={5}
+      actionColumns={3}
       selected={selected}
       onSelect={(v) => {
         setSelected(v);
         setKey("");
+        setPendingPlay(null);
+        setChooseOpen(false);
       }}
       highlights={highlights}
       fresh={fresh}
       labels={d.players.map(
         (p, i) =>
-          `${i % 2 === room.you % 2 && !room.spectating ? "己方" : "队伍 " + (p.team + 1)} · ${p.count} 张${p.place ? " · 第 " + p.place + " 名" : ""}`,
+          `${i % 2 === room.you % 2 && !room.spectating ? "己方" : "队伍 " + (p.team + 1)}${p.place ? " · 第 " + p.place + " 名" : ""}`,
       )}
+      counts={d.players.map((p) => p.count)}
       plays={d.table}
       center={
         <>
-          <strong>
-            第 {d.round} 副 · 打 {rankName(d.level)}
-          </strong>
-          <span>红心 {rankName(d.level)} 为配牌</span>
+          <strong>打 {rankName(d.level)}</strong>
           <small>
-            双方级数 {rankName(d.levels[0])} / {rankName(d.levels[1])}
+            {rankName(d.levels[0])} : {rankName(d.levels[1])}
           </small>
-          <span>{phases[d.phase]}</span>
+          {d.phase !== "play" && <span>{phases[d.phase]}</span>}
           {d.antiTribute && <small>本副抗贡</small>}
         </>
       }
       actions={
         <>
           {error && (
-            <p className="poker-error" role="alert">
-              {error}
-            </p>
+            <Modal title="无法出牌" onClose={() => setError("")}>
+              <p role="alert">{error}</p>
+            </Modal>
           )}
           {(d.phase === "tribute" || d.phase === "return") && (
             <>
@@ -210,64 +264,59 @@ export function Board({
                 提示
               </button>
               <button
-                disabled={!selected.length || busy}
-                onClick={() => {
-                  setSelected([]);
-                  setKey("");
-                }}
-              >
-                取消选择
-              </button>
-              <button
-                disabled={busy || !c.canAct || !selected.length}
-                onClick={() => void send("preview", { cards: selected })}
-              >
-                查看牌型
-              </button>
-              <button
                 className="primary"
                 disabled={busy || !c.canAct || !selected.length}
-                onClick={() =>
-                  void send("play", {
-                    cards: selected,
-                    interpretation: chosen?.key ?? "",
-                  })
-                }
+                onClick={playSelected}
               >
                 出牌（{selected.length}）
               </button>
 
-              <label
-                className="poker-interpretation"
-                style={{
-                  visibility: interpretations.length ? "visible" : "hidden",
-                }}
-                aria-hidden={!interpretations.length}
-              >
-                牌型
-                <select
-                  aria-label="百搭牌型"
-                  disabled={!interpretations.length}
-                  value={chosen?.key ?? ""}
-                  onChange={(e) => setKey(e.target.value)}
+              {chooseOpen && (
+                <Modal
+                  title="选择出牌方式"
+                  onClose={() => setChooseOpen(false)}
                 >
-                  {interpretations.map((v) => (
-                    <option value={v.key} key={v.key}>
-                      {names[v.kind] ?? v.kind} ·{" "}
-                      {rankName(v.high === 15 ? d.level : v.high)}
-                      {v.wild.length
-                        ? " · 配牌代 " +
-                          v.wild
-                            .map(
-                              (w) =>
-                                ["♣", "♦", "♥", "♠"][w.suit] + rankName(w.rank),
-                            )
-                            .join("、")
-                        : ""}
-                    </option>
-                  ))}
-                </select>
-              </label>
+                  <CardStrip ids={selected} skin={style.skin} assets={assets} />
+                  <label>
+                    牌型
+                    <select
+                      aria-label="百搭牌型"
+                      value={chosen?.key ?? ""}
+                      onChange={(e) => setKey(e.target.value)}
+                    >
+                      {interpretations.map((v) => (
+                        <option key={v.key} value={v.key}>
+                          {names[v.kind] ?? v.kind} ·{" "}
+                          {rankName(v.high === 15 ? d.level : v.high)}
+                          {v.wild.length
+                            ? " · 配牌代 " +
+                              v.wild
+                                .map(
+                                  (w) =>
+                                    ["♣", "♦", "♥", "♠"][w.suit] +
+                                    rankName(w.rank),
+                                )
+                                .join("、")
+                            : ""}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <button
+                    className="primary"
+                    disabled={busy || !chosen}
+                    onClick={() => {
+                      setChooseOpen(false);
+                      void send("play", {
+                        cards: selected,
+                        interpretation: chosen?.key ?? "",
+                      });
+                    }}
+                  >
+                    确认出牌
+                  </button>
+                </Modal>
+              )}
             </>
           )}
           {c.canReady && (
@@ -279,9 +328,7 @@ export function Board({
               准备下一副
             </button>
           )}
-          {!c.canAct && d.phase !== "finished" && (
-            <p className="poker-notice">等待其他玩家。对面玩家是你的搭档。</p>
-          )}
+
           {d.roundResults.length > 0 &&
             (d.phase === "round_end" || d.phase === "finished") && (
               <p className="poker-notice">

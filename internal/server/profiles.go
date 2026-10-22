@@ -449,7 +449,7 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 			} else if r.Game.Rail != nil {
 				score = r.Game.Rail.Players[i].Score
 			}
-			if r.Game.Sanguosha == nil && r.Game.Dota == nil {
+			if r.Game.Sanguosha == nil && r.Kind != "dota" {
 				p.Score = &score
 			}
 			if !record.Unrated {

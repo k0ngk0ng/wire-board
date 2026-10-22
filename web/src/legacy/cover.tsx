@@ -1,4 +1,3 @@
-import { DotaCover } from "../../../games/dota/web/Cover";
 import { SanguoshaCover } from "../../../games/sanguosha/web/Cover";
 import { gemColors } from "../../../games/splendor/web/colors";
 export function LegacyCover({
@@ -10,9 +9,7 @@ export function LegacyCover({
 }) {
   return (
     <div className={`cover ${kind} ${mini ? "mini" : ""}`} aria-hidden="true">
-      {kind === "dota" ? (
-        <DotaCover />
-      ) : kind === "sanguosha" ? (
+      {kind === "sanguosha" ? (
         <SanguoshaCover />
       ) : kind === "carcassonne" ? (
         <svg preserveAspectRatio="xMidYMid slice" viewBox="0 0 520 260">

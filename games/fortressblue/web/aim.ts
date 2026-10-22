@@ -1,6 +1,12 @@
+import { supportSlope } from "./slope.ts";
 export type Point = { x: number; y: number };
 export type Aim = { angle: number; facing: 1 | -1 };
-export type Camera = { x: number; y: number; worldViewW: number; worldViewH: number };
+export type Camera = {
+  x: number;
+  y: number;
+  worldViewW: number;
+  worldViewH: number;
+};
 export type PreviewInput = {
   width: number;
   height: number;
@@ -28,11 +34,18 @@ export function aimFromPoint(
   point: Point,
   maxAngle: number,
   muzzleY = 24,
+  supportAngle = 0,
 ): Aim {
   const dx = point.x - tank.x;
   const dy = tank.y - muzzleY - point.y;
-  const angle = clamp((Math.atan2(Math.max(0, dy), Math.max(1, Math.abs(dx))) * 180) / Math.PI, 0, maxAngle);
-  return { angle, facing: dx < 0 ? -1 : 1 };
+  const facing = dx < 0 ? -1 : 1;
+  const angle = clamp(
+    (Math.atan2(dy, Math.max(1, Math.abs(dx))) * 180) / Math.PI +
+      facing * supportAngle,
+    0,
+    maxAngle,
+  );
+  return { angle, facing };
 }
 
 export function stepPower(value: number, delta: number) {
@@ -47,8 +60,12 @@ export function pointerWorld(
   camera: Camera,
 ): Point {
   return {
-    x: camera.x + ((clientX - rect.left) / Math.max(1, rect.width)) * camera.worldViewW,
-    y: camera.y + ((clientY - rect.top) / Math.max(1, rect.height)) * camera.worldViewH,
+    x:
+      camera.x +
+      ((clientX - rect.left) / Math.max(1, rect.width)) * camera.worldViewW,
+    y:
+      camera.y +
+      ((clientY - rect.top) / Math.max(1, rect.height)) * camera.worldViewH,
   };
 }
 
@@ -71,9 +88,15 @@ export function carveCraters(
   for (const crater of craters) {
     if (crater.r <= 0) continue;
     const fromX = Math.max(0, Math.floor((crater.x - crater.r) / cell));
-    const toX = Math.min(cols - 1, Math.floor((crater.x + crater.r) / cell) + 1);
+    const toX = Math.min(
+      cols - 1,
+      Math.floor((crater.x + crater.r) / cell) + 1,
+    );
     const fromY = Math.max(0, Math.floor((crater.y - crater.r) / cell));
-    const toY = Math.min(rows - 1, Math.floor((crater.y + crater.r) / cell) + 1);
+    const toY = Math.min(
+      rows - 1,
+      Math.floor((crater.y + crater.r) / cell) + 1,
+    );
     for (let cy = fromY; cy <= toY; cy++) {
       for (let cx = fromX; cx <= toX; cx++) {
         const px = cx * cell + cell / 2;
@@ -111,9 +134,23 @@ export function solidAt(
  */
 export function previewPath(input: PreviewInput): Point[] {
   const speed =
-    (120 + clamp(input.power, 20, 100) * 7.0) * clamp(input.rangeScale, 0.7, 1.3);
-  const rad = (clamp(input.angle, 0, 90) * Math.PI) / 180;
+    (120 + clamp(input.power, 20, 100) * 7.0) *
+    clamp(input.rangeScale, 0.7, 1.3);
   const facing = input.facing < 0 ? -1 : 1;
+  const support = supportSlope({ x: input.startX, y: input.startY }, (x, y) =>
+    solidAt(
+      input.mask,
+      input.maskCols,
+      input.maskRows,
+      input.cell,
+      x,
+      y,
+      input.width,
+      input.height,
+    ),
+  );
+  const rad =
+    ((clamp(input.angle, 0, 90) - facing * support.angle) * Math.PI) / 180;
   let vx = Math.cos(rad) * speed * facing;
   let vy = -Math.sin(rad) * speed;
   let x = input.startX + facing * 10;
@@ -133,7 +170,12 @@ export function previewPath(input: PreviewInput): Point[] {
       const t = s / sub;
       const px = x + (nx - x) * t;
       const py = y + (ny - y) * t;
-      if (px < -60 || px > input.width + 60 || py > input.height + 320 || py < -240) {
+      if (
+        px < -60 ||
+        px > input.width + 60 ||
+        py > input.height + 320 ||
+        py < -240
+      ) {
         if (s === sub) path.push({ x: px, y: py });
         return path;
       }

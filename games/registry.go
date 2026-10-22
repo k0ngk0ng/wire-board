@@ -38,5 +38,4 @@ var Legacy = []struct{ ID, Name string }{
 	{"catan", "卡坦岛"},
 	{"carcassonne", "卡卡颂"},
 	{"sanguosha", "三国杀"},
-	{"dota", "兵线争锋"},
 }

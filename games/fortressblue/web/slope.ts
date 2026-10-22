@@ -1,5 +1,5 @@
 export type SlopeFrame = { sourceIndex: number; facing: string };
-/** Visual pose only. This never changes the server position or muzzle angle. */
+/** Nearby supports shared by the body pose, aim guide and shot preview. */
 export function supportSlope(
   tank: { x: number; y: number },
   solid: (x: number, y: number) => boolean,
@@ -19,9 +19,11 @@ export function supportSlope(
   const left = support(tank.x - 12),
     right = support(tank.x + 12);
   // A cliff/crater or detached fall has no pair of nearby supporting surfaces.
-  if (left === null || right === null) return { slope: 0, left, right };
+  if (left === null || right === null)
+    return { slope: 0, angle: 0, left, right };
   const angle = (Math.atan2(right - left, 24) * 180) / Math.PI;
   return {
+    angle,
     slope: Math.max(-2, Math.min(2, Math.round(angle / 22.5))),
     left,
     right,

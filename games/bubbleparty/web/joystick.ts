@@ -35,3 +35,31 @@ export function joystickIntent(
     move: horizontal ? (dx < 0 ? "left" : "right") : dy < 0 ? "up" : "down",
   };
 }
+
+/** Touch-only floating origin; a second pointer is filtered by the owning UI. */
+export class TouchStick {
+  private origin?: { x: number; y: number; radius: number };
+  begin(x: number, y: number, radius: number) {
+    this.origin =
+      [x, y, radius].every(Number.isFinite) && radius > 0
+        ? { x, y, radius }
+        : undefined;
+  }
+  reset() {
+    this.origin = undefined;
+  }
+  move(x: number, y: number, previous: Move) {
+    const origin = this.origin;
+    if (!origin || !Number.isFinite(x) || !Number.isFinite(y))
+      return { x: 0, y: 0, move: "none" as Move };
+    const dx = x - origin.x,
+      dy = y - origin.y;
+    const intent = joystickIntent(dx, dy, origin.radius, previous);
+    const distance = Math.hypot(dx, dy);
+    if (distance > origin.radius) {
+      origin.x = x - (dx * origin.radius) / distance;
+      origin.y = y - (dy * origin.radius) / distance;
+    }
+    return intent;
+  }
+}

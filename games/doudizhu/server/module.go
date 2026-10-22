@@ -36,7 +36,7 @@ func configure(n int, raw json.RawMessage) (json.RawMessage, error) {
 	if n != 4 {
 		return nil, errors.New("上海斗地主需要坐满 4 人")
 	}
-	o := Options{Mode: modeFor(n), Rounds: 1, TurnSeconds: 30, AllowStraight: true}
+	o := Options{Mode: modeFor(n), Rounds: 1, TurnSeconds: 60, AllowStraight: true}
 	if len(raw) > 0 {
 		if e := strict(raw, &o); e != nil {
 			return nil, errors.New("无效斗地主设置")

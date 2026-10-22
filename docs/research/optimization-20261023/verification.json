@@ -1,0 +1,375 @@
+{
+  "status": "local-verification-passed",
+  "baseVersion": "v1.29.1",
+  "releasePending": true,
+  "scope": [
+    "bubbleparty",
+    "fortressblue",
+    "doudizhu",
+    "guandan",
+    "shengji",
+    "splendor",
+    "shared platform",
+    "retired dota"
+  ],
+  "reports": [
+    {
+      "path": ".local/optimization-20261023/mobile/result.json",
+      "sha256": "d5ab937b715ac895adb960f22fe6f3bbb28c264703c45df43c331e475033cb5b",
+      "passed": true,
+      "checks": 3,
+      "commands": []
+    },
+    {
+      "path": ".local/optimization-20261023/asymmetric/result.json",
+      "sha256": "474892319bcd20e1ed02548fadc1bded06150b1c8832bc2beeae4536795c48bf",
+      "passed": true,
+      "checks": 0,
+      "commands": []
+    },
+    {
+      "path": ".local/optimization-20261023/poker-layout/result.json",
+      "sha256": "f9f73ec2a3ccdd0234ed2472c5703d39d68099204099d6b996aacbab07bde074",
+      "passed": true,
+      "checks": 102,
+      "commands": []
+    },
+    {
+      "path": ".local/optimization-20261023/poker-manual/result.json",
+      "sha256": "151cea4166a73defbf64ceda986c11fe507a1cc0ff4117482b170a56d4550831",
+      "passed": true,
+      "checks": 5,
+      "commands": []
+    },
+    {
+      "path": ".local/poker/browser/result.json",
+      "sha256": "bce8d6ff995f67153b8ec77efd1d49da6039abe12ce14026fb01c46c7adcca3d",
+      "passed": true,
+      "checks": 33,
+      "commands": []
+    },
+    {
+      "path": ".local/poker-layout/results/result.json",
+      "sha256": "8defa9194c1fa061b731cf5d84f3e42a0d60b47a3bb7c12af45e0370cd0187b1",
+      "passed": true,
+      "checks": 4,
+      "commands": []
+    },
+    {
+      "path": ".local/game-loading-online/http.json",
+      "sha256": "971e59c742de149690949eea1fb307c14368a70df7f6204eb830aa1e09ed4cde",
+      "passed": true,
+      "checks": 0,
+      "commands": []
+    },
+    {
+      "path": ".local/game-loading-online/browser.json",
+      "sha256": "121e535b8d317142e1a393a473588052e3368b47de94fba86a94c729146a91a2",
+      "passed": true,
+      "checks": 2,
+      "commands": []
+    },
+    {
+      "path": ".local/ci/shared/result-0.json",
+      "sha256": "6bf8c8287a9e26640c3db7afe6c92df14c3a3fdd15a808805a323218d79e13af",
+      "passed": true,
+      "checks": 0,
+      "commands": [
+        [
+          "go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=45m",
+          "-race",
+          "-run",
+          "^(?:TestShutdownWaitsForInFlightRequest)$",
+          "."
+        ],
+        [
+          "go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=45m",
+          "-race",
+          "-run",
+          "^(?:TestBotSearchRegistration|TestCooperativeResults|TestDrawResultContract|TestEventEnvelopeValidation)$",
+          "./internal/gameapi"
+        ],
+        [
+          "go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=45m",
+          "-race",
+          "-run",
+          "^(?:TestDelayedHTTPRoundTrip|TestDelayedWebSocketRemainsOrderedAndPipelined)$",
+          "./internal/nettest"
+        ],
+        [
+          "go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=45m",
+          "-race",
+          "-run",
+          "^(?:TestAdminAuthorizationAndModeration|TestAdminBootstrapDoesNotClaimExistingName|TestAdminChangesPersistAndFailedAuditRollsBack|TestAdminExistingAccountPermanentAcrossRestart|TestAdminGameVisibilityExistingPlayAndClosure|TestAdminPresenceCountsUsersNotTabs|TestAdminRevocationTakesOverGameAndClosesSockets|TestAgentCanAdvanceApprovedWish|TestAgentFeedDisabledAndStatusGuard|TestAssetURLValidationAndCSP|TestAuthCSRFAndStatic|TestAutoPlayFinishesPartialTurns|TestAutoPlayPermissionsCancellationAndOwnership|TestAutoPlayPersistsWithoutBrowserAndRestoresControl|TestBotManagementPermissionsAndCleanup|TestBotTickerActsWithoutBrowser|TestChatIsolationPersistenceAndGameIndependence|TestChatValidationRateAndRetention|TestClientLoadingAllHumansBeforeRealtimeClock|TestClientLoadingReconnectRestoreAndOldClient|TestClientLoadingTurnAndLegacyClocks|TestConcurrentCommandsOnlyOneCommits|TestControllerProfileValidationE2E|TestControllerProfilesE2E|TestCooperativeHistoryHTTP|TestDefaultAssetCSPAllowsImmutableOSS|TestExpiredActionCannotRacePastAutomaticTakeover|TestFinishedDeparturePreservesPlayerIndices|TestFriendRequestsConsentAndIsolation|TestFrontendCDNPolicyHTTP|TestHealth|TestHistorySurvivesRematchAndRoomDeletion|TestInactiveDeadlineIgnoresObserversChatAndTimeouts|TestInactiveDeadlineRenewedByPlayAndAutoplay|TestInactiveGamesCloseWithoutAwardingResults|TestInactiveRoomsCloseAfterRestartAndLegacyMigration|TestInactiveTimerRunsWithoutBrowser|TestInactiveWaitingRoomClosesWithoutHistory|TestLegacyPlayingRoomReceivesPersistentClock|TestMissingInviteRejected|TestModuleAsyncBotBoundedWorkersHTTP|TestModuleAsyncBotExpiredReclaimHTTP|TestModuleAsyncBotFallbackHTTP|TestModuleAsyncBotIdleActorsHTTP|TestModuleAsyncBotManualTakeoverHTTP|TestModuleAsyncBotResponsiveHTTP|TestModuleAsyncBotShutdownRestoreHTTP|TestModuleAsyncBotTransactionHTTP|TestModuleAutomatedSeatContextHTTP|TestModuleBotAndTimeoutE2E|TestModuleBrowserFixture|TestModuleDrawBotUnratedHTTP|TestModuleDrawBrowserFixture|TestModuleDrawHistoryHTTP|TestModuleFixedComputersDoNotRate|TestModuleHiddenProfileHTTP|TestModuleIdleBotSchedulingHTTP|TestModuleLastHumanDepartureE2E|TestModulePreparationHTTP|TestModuleRealtimeAtomicFrameHTTP|TestModuleRealtimeCloseAndOrdinaryWebSocketScopesHTTP|TestModuleRealtimeControlRestoreAndClosureHTTP|TestModuleRealtimeLiveClockHTTP|TestModuleRealtimeRegistrationContract|TestModuleRealtimeResultAndInactivityHTTP|TestModuleRealtimeStaleControlLiveHTTP|TestModuleRealtimeStaleControlSessionBoundsHTTP|TestModuleRealtimeStaleEliminatedLeaveHTTP|TestModuleRealtimeWebSocketScopesHTTP|TestModuleRegistrationAndLifecycleE2E|TestModuleSaveOptionsAndReadyAtomically|TestModuleSystemDeadlinesUsePreciseLiveClock|TestModuleSystemEventAndDepartureE2E|TestModuleSystemEventAtomicityE2E|TestModuleSystemEventLiveClockE2E|TestNewModuleDefaultsToPublishedE2E|TestOSSSignatureReferenceVectors|TestPasswordAndReadyRoomLifecycle|TestPasswordProtectedSpectatingAndRoomDeletion|TestProfilePaginationMigrationAndActiveLobby|TestPublicVersionCDNAssetsHTTP|TestPublicVersionMetadataHTTP|TestRateMatchUnratedPractice|TestRatingLedgerAtomicIdempotentAndHistory|TestRatingRanksRespectTiesAndElimination|TestRealtimeBatchAtomicDurableInputs|TestRealtimeBatchMissingSnapshotRejectsAcknowledgement|TestRealtimeCheckpointFailureRetryAndCriticalControl|TestRealtimeCrashChild|TestRealtimeCriticalResultRequiresDurableRoom|TestRealtimeDoesNotTimeoutToAutoplay|TestRealtimeFrequentInputDoesNotPostponeSystemFrames|TestRealtimeInstanceRejectsOldControlsAndRestoreClearsHeldInput|TestRealtimeLegacyTimeoutMigrationPreservesManualControl|TestRealtimeLivePeriodicCheckpoint|TestRealtimeLoadEvidence|TestRealtimeMemoryInputsFramesAndCheckpoint|TestRealtimeQueuedInputRespectsChangedControl|TestRealtimeSIGKILLRecoversCheckpoint|TestRealtimeSlowSnapshotReaderDoesNotBlockOtherUsers|TestRealtimeSlowWebSocketDoesNotBlockActions|TestRealtimeStreamAuthenticationAndPrivateViews|TestRealtimeStreamBootstrapAndScopedPush|TestRealtimeStreamInputAcknowledgedExactlyOnce|TestRealtimeStreamRejectsSpectatorAndStaleRoom|TestRealtimeTransportBaseline|TestRetiredDotaRestorePreservesStoredHistory|TestRetiredDotaUnavailableHTTP|TestRoomActionsIsolationIdempotencyAndRestart|TestSpectatorPrivacyMembershipAndPersistence|TestStateExposesSanitizedVersion|TestStaticDeliveryHTTP|TestTimeoutAutoplayAllGamesPersistsAndCanBeCancelled|TestTimeoutAutoplayCancellationGivesExpiredActorTime|TestTimeoutAutoplayDoesNotKeepAbandonedRoomsAlive|TestTimeoutAutoplayOnlyOutstandingParallelPlayers|TestTimeoutAutoplayPreservesHostAndSeat|TestTimeoutAutoplayReclaimSuspendedOwnerCanResume|TestTimeoutAutoplaySaveFailureIsAtomic|TestTimeoutClockDoesNotResetDuringSubstepsOrRestart|TestWebsocketNotificationsAuthAndOrigin|TestWishClarificationQuestionsAndPendingStart|TestWishImagesUploadToOSSAndRejectUnsafeInput|TestWishRateLimitAndUnconfiguredUpload|TestWishReviewAuditAndAgentFeed|TestWishesPersistAcrossRestart|TestWishesRequireAuthAndValidateText)$",
+          "./internal/server"
+        ]
+      ]
+    },
+    {
+      "path": ".local/ci/doudizhu/result-0.json",
+      "sha256": "2a1d0e9bbb5c0315e569322ce6b97687130e10bbaa62f5981a7b289ce67ab09a",
+      "passed": true,
+      "checks": 0,
+      "commands": [
+        [
+          "go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=45m",
+          "-run",
+          "^(?:TestBotMovePreservesGroupsAndBlocksEndgame|TestCombinations|TestDefaultMinutePreservesExplicitTime|TestFourPlayerRocketIsHighest|TestGeneratedMovesAreLegalAndDoNotLeakInputMutation|TestHuanleBombQuotasAndScoreTable|TestHuanleMarkerPrivateBottomAndHuangFan|TestHuanleOnlyFourPlayersAndFixedPreset|TestHuanleSequenceAndPlaneRules|TestPlayedCardsAreGroupedAndDescending|TestResponseHintsKeepRocketLastAndRespectQuota|TestResponseHintsPreferOrdinaryIntactCards)$",
+          "./games/doudizhu/server"
+        ],
+        [
+          "go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=45m",
+          "-run",
+          "^(?:TestHuanleBombQuotaSortedCardsHTTP|TestHuanleNaturalCompleteMatchesHTTP|TestHuanleReportPrivacyAndAtomicSettlementHTTP|TestLegacyDoudizhuNaturalCompleteGamesHTTP|TestLegacyDoudizhuRoomsAndPrivateViewsHTTP|TestLegacyNaturalMatchesE2E|TestOptionsAndPrivateDecisionBoundaryE2E|TestPersonalDoublingKeepsAllFarmersWinnersE2E|TestRejectsInconsistentSavedAuctionE2E)$",
+          "./games/doudizhu/tests"
+        ]
+      ]
+    },
+    {
+      "path": ".local/ci/guandan/result-0.json",
+      "sha256": "db7eb0dd05e526ed300d51eed86371adc75db9f110f41eb6e5d6764201fbd90e",
+      "passed": true,
+      "checks": 0,
+      "commands": [
+        [
+          "go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=45m",
+          "-run",
+          "^(?:TestBotIgnoresOtherHands|TestBotMovePreservesGroupsAndBlocksEndgame|TestDefaultMinutePreservesExplicitTime|TestGeneratedMovesHaveValidDeclarations|TestJiangsuBombOrder|TestJiangsuCombinations|TestManualWildPreviewIsPrivateAndAuthoritative|TestPlayedCardsRespectDeclaredWildOrder|TestReclaimOnlyOwnDeadline|TestResponseHintsPreferOrdinaryIntactCards|TestResponseHintsUseGuandanBombHierarchy|TestRestoredCombinationMustMatchDeclaration|TestStartingAtAceCanPassAce|TestWildInterpretationsRemainExplicit)$",
+          "./games/guandan/server"
+        ],
+        [
+          "go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=45m",
+          "-run",
+          "^(?:TestJiangsuDoubleTributeAndPrivateReturnHTTP|TestJiangsuNaturalCompleteGameHTTP|TestJiangsuNaturalMatchesE2E)$",
+          "./games/guandan/tests"
+        ]
+      ]
+    },
+    {
+      "path": ".local/ci/shengji/result-0.json",
+      "sha256": "f5f8467b41d8c21976b0843530fd1fc421afe3d9625708eb341e58af34cf3b01",
+      "passed": true,
+      "checks": 0,
+      "commands": [
+        [
+          "go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=45m",
+          "-run",
+          "^(?:TestBotBuryPreservesPairsAndVoidsShortSuit|TestBotFeedsLastPartnerWithoutOvertaking|TestBotLeadUsesStrongPair|TestDealerRotationAndMustPlayAce|TestDeclarationCounterAndOwnDeadlines|TestDefaultMinutePreservesExplicitTime|TestFailedThrowIsForcedAndIncludesPartner|TestHandPresentationTrumpFirstAndDescending|TestInvalidThrowIsRejectedWithoutSideEffects|TestObligatoryStructure|TestPlaySoundUsesActualFollowStructure|TestRebelRequiresNoScoreCards|TestShanghaiFourSuits|TestShanghaiScoreBoundaries|TestTrickWinningStructureAndTie|TestTrumpAndIdenticalPairs)$",
+          "./games/shengji/server"
+        ],
+        [
+          "go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=45m",
+          "-run",
+          "^(?:TestShanghaiNaturalMatchesE2E|TestShanghaiNaturalRoomsHTTP)$",
+          "./games/shengji/tests"
+        ]
+      ]
+    },
+    {
+      "path": ".local/ci/splendor/result-0.json",
+      "sha256": "eca306d1fc64eebe9ac0866c65db41791a17bdae9b418a7b72b511be8bcbfd99",
+      "passed": true,
+      "checks": 0,
+      "commands": [
+        [
+          "node",
+          "--experimental-strip-types",
+          "--test",
+          "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/games/splendor/tests/splendor-city.test.mjs",
+          "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/games/splendor/tests/splendor-orient-art.test.mjs",
+          "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/games/splendor/tests/splendor-orient.test.mjs"
+        ],
+        [
+          "go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=45m",
+          "-run",
+          "^(?:TestBotBlocksPublicWinButTakesOwnWin|TestBotPlansHighPointInsteadOfFreeFiller|TestBotReservesForUsefulGold|TestBotStrategyIgnoresSecrets|TestFullSplendorGame|TestSplendorBuyDiscountGoldAndReplacement|TestSplendorCardEventHistoryIsBounded|TestSplendorCardEventsSourcesAndPrivacy|TestSplendorChosenGoldPayment|TestSplendorCityCatalogueLegacyContinuationAndBaseIsolation|TestSplendorCityEliminatedTriggerDoesNotEndWithoutWinner|TestSplendorCityFinalRoundOnlyEligiblePlayersAndTies|TestSplendorCityPhysicalCardsAndDistinctAnyColor|TestSplendorCityPostAcquiredBeforeEndCheck|TestSplendorCityReplacesFifteenPointsAndNobles|TestSplendorDiscardAndNobleChoice|TestSplendorDoubleGoldAssignedPerColor|TestSplendorEliminationInNoblePhaseDoesNotAwardNoble|TestSplendorEliminationReturnsResourcesAndContinues|TestSplendorEndEqualTurnsAndTieBreak|TestSplendorEveryStarterGetsEqualFinalTurns|TestSplendorExpansionBotsFinishAndConserveTokens|TestSplendorExpansionEliminationCleansPendingChoices|TestSplendorExtraNoblesCombinationMatches|TestSplendorExtraNoblesPublisherFieldsAndSetup|TestSplendorExtraNoblesSelectionScoreAndPhysicalCards|TestSplendorFinalRoundSkipsEliminatedAndExcludesTheirScore|TestSplendorLogsGemColorsAndReturns|TestSplendorModernCatalogCombinationGames|TestSplendorModernCatalogPublisherExamplesAndValidation|TestSplendorModernCatalogSetupPairsIndependentDecks|TestSplendorModernCityBGAConditions|TestSplendorModernCityPhysicalReviewExamples|TestSplendorModernCityPhysicalUnboxingExamples|TestSplendorModernHTTPFixtureIntegrity|TestSplendorModernOrientBGAComponents|TestSplendorModernOrientPhysicalVideoExamples|TestSplendorNobleAcquisitionAnimation|TestSplendorNobleLogsFollowActionAndUseActingPlayer|TestSplendorOrientBotsResolveEveryChoice|TestSplendorOrientCascadeRestoreAndPurchaseTriggers|TestSplendorOrientCombinationSimulationsConserveCardsAndTokens|TestSplendorOrientRequiresCopySourceAndSkipsEmptyCascade|TestSplendorOrientReservationPrivacyDeckAndElimination|TestSplendorOrientSacrificePriorityAndPermanentAwards|TestSplendorOrientVirtualGoldPayments|TestSplendorPostBlindReservationPrivacyAndRestore|TestSplendorPostExtraTokenBeforeHandLimit|TestSplendorPostPrestigePersistsAndTriggersFinalRound|TestSplendorPostsCountCardsAndChooseOnlyOne|TestSplendorPublicCitiesSetupAndNormalization|TestSplendorPurchaseLogsActualPayment|TestSplendorPurchaseTokenBeforeRefillCanTakePaidToken|TestSplendorRandomOpeningSeat|TestSplendorRejectedActionDoesNotLog|TestSplendorReservationLogsProtectBlindCards|TestSplendorReservePrivacyAndLimit|TestSplendorSetup|TestSplendorShortSupply|TestSplendorStarterSurvivesRestoreAndElimination|TestSplendorStrongholdConquestTriggersAndDelayedRefill|TestSplendorStrongholdOccupationAndProtectedStacks|TestSplendorTakeRules|TestSplendorTokenAnimationEventsFollowActualTransfers|TestSplendorTokenPaymentAndReturnAnimations)$",
+          "./games/splendor/server"
+        ],
+        [
+          "go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=45m",
+          "-run",
+          "^(?:TestBaseData|TestBotHandlesSubstepsAndInvalidSeats|TestBotsDoNotUseOtherPlayersSecretsOrDeckOrder|TestSplendorEliminationLeavesOneWinner)$",
+          "./internal/game"
+        ],
+        [
+          "go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=45m",
+          "-run",
+          "^(?:TestSplendorExtraNoblesHTTPNaturalMatches|TestSplendorModernHTTPCombinationGames|TestSplendorModernPendingTimeoutAndContinuation|TestSplendorNonHostOpeningAndRematch|TestSplendorOldRoomDefaultsToBase|TestSplendorOptionsPermissionsFreezeAndArchive|TestSplendorOrientBrowserFixture|TestSplendorOrientCatalogChainHTTP|TestSplendorOrientCatalogGoldAndBlindReserveHTTP|TestSplendorPublicCitiesHTTPCombinationGames|TestSplendorPublicCitiesWaitingTimeoutAndRematch|TestSplendorPublicOrientHTTPCombinationGames)$",
+          "./internal/server"
+        ],
+        [
+          "go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=45m",
+          "-run",
+          "^TestBotsFinishBothGames$/^splendor-",
+          "./internal/game"
+        ],
+        [
+          "go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=45m",
+          "-run",
+          "^TestAutoPlayAllGamesFinishAndCreditHumanPlayers$/^splendor$",
+          "./internal/server"
+        ],
+        [
+          "go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=45m",
+          "-run",
+          "^TestBaseGamesRemainBaseAfterExpansionSettings$/^splendor$",
+          "./internal/server"
+        ],
+        [
+          "go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=45m",
+          "-run",
+          "^TestSoloGamesAIContinuationPersistenceAndRematch$/^splendor$",
+          "./internal/server"
+        ],
+        [
+          "go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=45m",
+          "-run",
+          "^TestBotFinalTurnFinishesRoom$/^splendor$",
+          "./internal/server"
+        ],
+        [
+          "go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=45m",
+          "-run",
+          "^TestTimeoutAutoplayAllGamesContinueToNaturalFinish$/^splendor$",
+          "./internal/server"
+        ],
+        [
+          "go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=45m",
+          "-race",
+          "-run",
+          "^(?:TestSplendorModernPendingTimeoutAndContinuation|TestSplendorPublicCitiesWaitingTimeoutAndRematch)$",
+          "./internal/server"
+        ],
+        [
+          "go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=45m",
+          "-race",
+          "-run",
+          "^TestAutoPlayAllGamesFinishAndCreditHumanPlayers$/^splendor$",
+          "./internal/server"
+        ],
+        [
+          "go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=45m",
+          "-race",
+          "-run",
+          "^TestTimeoutAutoplayAllGamesContinueToNaturalFinish$/^splendor$",
+          "./internal/server"
+        ]
+      ]
+    },
+    {
+      "path": ".local/optimization-20261023/splendor-race.jsonl",
+      "sha256": "db8255a2666872c2cb93e184519d598dd802e99de475935de5c4b6e625a41d2d",
+      "passed": true,
+      "tests": 185
+    },
+    {
+      "path": ".local/optimization-20261023/poker-strategy-race.jsonl",
+      "sha256": "d49616d0200a215f573d083eb5f2950067fcb414e1f8a189309fb0661201dff3",
+      "passed": true,
+      "tests": 135
+    },
+    {
+      "path": ".local/optimization-20261023/splendor-pending-final.jsonl",
+      "sha256": "8aa0d9e7aeb657569b6389d8835e40d869e81b8bb8fcc1a921e041dd08b5347e",
+      "passed": true,
+      "tests": 25
+    }
+  ],
+  "additionalEvidence": [
+    "docs/research/fortress-oct23/verification.json",
+    "docs/research/bubbleparty/map-preview-audit-20261023.md"
+  ],
+  "limitations": [
+    "CDN timings are from the development network; player mobile slowness was not reproduced.",
+    "Original Fortress server wind selection distribution and exact homing coefficients remain unverified; do not claim those parameters are restored."
+  ],
+  "testSetup": "Splendor gem_post lifecycle setup replays 105 legal actions from v1.29.1; current bot handles takeover and completion. Discard setup deliberately takes tokens through legal HTTP actions."
+}

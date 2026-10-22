@@ -5,45 +5,43 @@ import (
 	"errors"
 	carcassonne "github.com/k0ngk0ng/wire-board/games/carcassonne/server"
 	catan "github.com/k0ngk0ng/wire-board/games/catan/server"
-	dota "github.com/k0ngk0ng/wire-board/games/dota/server"
 	rail "github.com/k0ngk0ng/wire-board/games/rail/server"
 	sanguosha "github.com/k0ngk0ng/wire-board/games/sanguosha/server"
 	splendor "github.com/k0ngk0ng/wire-board/games/splendor/server"
 )
 
 type Action struct {
-	SpiceLoad   []int      `json:"spiceLoad,omitempty"`
-	SpiceUnload []int      `json:"spiceUnload,omitempty"`
-	GoldGive    int        `json:"goldGive,omitempty"`
-	GoldTake    int        `json:"goldTake,omitempty"`
-	Dota        *DotaOrder `json:"dota,omitempty"`
-	Cards       []int      `json:"cards"`
-	Targets     []int      `json:"targets"`
-	Choice      string     `json:"choice"`
-	Skill       string     `json:"skill"`
-	Direction   string     `json:"direction,omitempty"`
-	Prompt      int        `json:"prompt"`
-	X           int        `json:"x"`
-	Y           int        `json:"y"`
-	Rotation    int        `json:"rotation"`
-	Feature     int        `json:"feature"`
-	Vertex      int        `json:"vertex"`
-	Edge        int        `json:"edge"`
-	Tile        int        `json:"tile"`
-	Target      int        `json:"target"`
-	Offer       int        `json:"offer"`
-	Give        []int      `json:"give"`
-	Take        []int      `json:"take"`
-	Type        string     `json:"type"`
-	Card        int        `json:"card"`
-	Tier        int        `json:"tier"`
-	Tokens      []int      `json:"tokens"`
-	Noble       int        `json:"noble"`
-	Route       int        `json:"route"`
-	Color       int        `json:"color"`
-	Wild        int        `json:"wild"`
-	Slot        int        `json:"slot"`
-	Keep        []int      `json:"keep"`
+	SpiceLoad   []int  `json:"spiceLoad,omitempty"`
+	SpiceUnload []int  `json:"spiceUnload,omitempty"`
+	GoldGive    int    `json:"goldGive,omitempty"`
+	GoldTake    int    `json:"goldTake,omitempty"`
+	Cards       []int  `json:"cards"`
+	Targets     []int  `json:"targets"`
+	Choice      string `json:"choice"`
+	Skill       string `json:"skill"`
+	Direction   string `json:"direction,omitempty"`
+	Prompt      int    `json:"prompt"`
+	X           int    `json:"x"`
+	Y           int    `json:"y"`
+	Rotation    int    `json:"rotation"`
+	Feature     int    `json:"feature"`
+	Vertex      int    `json:"vertex"`
+	Edge        int    `json:"edge"`
+	Tile        int    `json:"tile"`
+	Target      int    `json:"target"`
+	Offer       int    `json:"offer"`
+	Give        []int  `json:"give"`
+	Take        []int  `json:"take"`
+	Type        string `json:"type"`
+	Card        int    `json:"card"`
+	Tier        int    `json:"tier"`
+	Tokens      []int  `json:"tokens"`
+	Noble       int    `json:"noble"`
+	Route       int    `json:"route"`
+	Color       int    `json:"color"`
+	Wild        int    `json:"wild"`
+	Slot        int    `json:"slot"`
+	Keep        []int  `json:"keep"`
 }
 type State struct {
 	Kind        string       `json:"kind"`
@@ -58,7 +56,6 @@ type State struct {
 	Catan       *Catan       `json:"catan,omitempty"`
 	Carcassonne *Carcassonne `json:"carcassonne,omitempty"`
 	Sanguosha   *Sanguosha   `json:"sanguosha,omitempty"`
-	Dota        *Dota        `json:"dota,omitempty"`
 }
 
 func fromSplendor(s *splendor.State) *State {
@@ -216,37 +213,6 @@ func toSanguoshaAction(a Action) sanguosha.Action {
 func fromSanguoshaAction(a sanguosha.Action) Action {
 	return Action{Cards: a.Cards, Targets: a.Targets, Choice: a.Choice, Skill: a.Skill, Direction: a.Direction, Prompt: a.Prompt, Target: a.Target, Take: a.Take, Type: a.Type, Card: a.Card, Color: a.Color, Slot: a.Slot}
 }
-func fromDota(s *dota.State) *State {
-	if s == nil {
-		return nil
-	}
-	return &State{Kind: s.Kind, Turn: s.Turn, Phase: s.Phase, Round: s.Round, Finished: s.Finished, Winners: s.Winners, Log: s.Log, Dota: s.Dota}
-}
-func (s *State) asDota() *dota.State {
-	if s == nil {
-		return nil
-	}
-	return &dota.State{Kind: s.Kind, Turn: s.Turn, Phase: s.Phase, Round: s.Round, Finished: s.Finished, Winners: s.Winners, Log: s.Log, Dota: s.Dota}
-}
-func (s *State) syncDota(v *dota.State) {
-	if s == nil {
-		return
-	}
-	s.Kind = v.Kind
-	s.Turn = v.Turn
-	s.Phase = v.Phase
-	s.Round = v.Round
-	s.Finished = v.Finished
-	s.Winners = v.Winners
-	s.Log = v.Log
-	s.Dota = v.Dota
-}
-func toDotaAction(a Action) dota.Action {
-	return dota.Action{Dota: a.Dota, Targets: a.Targets, Choice: a.Choice, Prompt: a.Prompt, Target: a.Target, Type: a.Type, Card: a.Card}
-}
-func fromDotaAction(a dota.Action) Action {
-	return Action{Dota: a.Dota, Targets: a.Targets, Choice: a.Choice, Prompt: a.Prompt, Target: a.Target, Type: a.Type, Card: a.Card}
-}
 func New(kind string, n int) (*State, error) {
 	switch kind {
 	case "splendor":
@@ -264,9 +230,6 @@ func New(kind string, n int) (*State, error) {
 	case "sanguosha":
 		v, e := sanguosha.New(kind, n)
 		return fromSanguosha(v), e
-	case "dota":
-		v, e := dota.New(kind, n)
-		return fromDota(v), e
 	}
 	return nil, errors.New("未知游戏")
 }
@@ -301,12 +264,6 @@ func (s *State) Apply(player int, a Action) error {
 		s.syncSanguosha(v)
 		return e
 	}
-	if s.Dota != nil {
-		v := s.asDota()
-		e := v.Apply(player, toDotaAction(a))
-		s.syncDota(v)
-		return e
-	}
 	return errors.New("未知游戏")
 }
 func (s *State) BotAction(player int) (Action, error) {
@@ -335,11 +292,6 @@ func (s *State) BotAction(player int) (Action, error) {
 		a, e := v.BotAction(player)
 		return fromSanguoshaAction(a), e
 	}
-	if s.Dota != nil {
-		v := s.asDota()
-		a, e := v.BotAction(player)
-		return fromDotaAction(a), e
-	}
 	return Action{}, errors.New("未知游戏")
 }
 func (s *State) View(player int) map[string]any {
@@ -361,10 +313,6 @@ func (s *State) View(player int) map[string]any {
 	}
 	if s.Sanguosha != nil {
 		v := s.asSanguosha()
-		return v.View(player)
-	}
-	if s.Dota != nil {
-		v := s.asDota()
 		return v.View(player)
 	}
 	return nil

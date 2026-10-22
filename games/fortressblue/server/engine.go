@@ -47,7 +47,7 @@ func configure(players int, raw json.RawMessage) (json.RawMessage, error) {
 	if teamSize(players) == 0 {
 		return nil, errors.New("疯狂坦克支持 2、4、6 或 8 人")
 	}
-	o := Options{Map: "stage-1", TurnSeconds: 30, BotDifficulty: "normal"}
+	o := Options{Map: "stage-1", TurnSeconds: 60, BotDifficulty: "normal"}
 	if len(raw) > 0 && !bytes.Equal(bytes.TrimSpace(raw), []byte("null")) {
 		if err := strict(raw, &o); err != nil {
 			return nil, errors.New("无效疯狂坦克设置")
@@ -61,8 +61,8 @@ func configure(players int, raw json.RawMessage) (json.RawMessage, error) {
 			return nil, errors.New("请选择有效地图")
 		}
 	}
-	if o.TurnSeconds < 15 || o.TurnSeconds > 40 {
-		return nil, errors.New("每回合时限需为 15～40 秒")
+	if o.TurnSeconds < 15 || o.TurnSeconds > 60 {
+		return nil, errors.New("每回合时限需为 15～60 秒")
 	}
 	return json.Marshal(o)
 }

@@ -4,7 +4,6 @@ package game
 import (
 	carcassonne "github.com/k0ngk0ng/wire-board/games/carcassonne/server"
 	catan "github.com/k0ngk0ng/wire-board/games/catan/server"
-	dota "github.com/k0ngk0ng/wire-board/games/dota/server"
 	rail "github.com/k0ngk0ng/wire-board/games/rail/server"
 	sanguosha "github.com/k0ngk0ng/wire-board/games/sanguosha/server"
 	splendor "github.com/k0ngk0ng/wire-board/games/splendor/server"
@@ -757,17 +756,6 @@ func NewCatanWonders(n int, options CatanOptions) (*State, error) {
 	v, e := catan.NewCatanWonders(n, options)
 	return fromCatan(v), e
 }
-
-type DotaCardSpec = dota.DotaCardSpec
-type DotaHeroSpec = dota.DotaHeroSpec
-type DotaItemSpec = dota.DotaItemSpec
-type DotaCatalog = dota.DotaCatalog
-type DotaOrder = dota.DotaOrder
-type DotaPlayer = dota.DotaPlayer
-type DotaEvent = dota.DotaEvent
-type Dota = dota.Dota
-
-func (s *State) DotaActors() []int { v := s.asDota(); r := v.DotaActors(); s.syncDota(v); return r }
 
 type City = rail.City
 type Route = rail.Route

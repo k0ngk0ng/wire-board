@@ -670,7 +670,7 @@
 }
 .poker-empty-hand {
   position: absolute;
-  top: 16px;
+  bottom: 16px;
   width: 100%;
   margin: 0;
 }
@@ -699,4 +699,179 @@
   .poker-board[data-action-columns="5"] .poker-actions {
     height: 160px;
   }
+}
+
+/* The whole game lives on one felt; fixed regions do not follow card counts. */
+.poker-table-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  height: 32px;
+  margin-bottom: 4px;
+}
+.poker-table-toolbar button {
+  color: #304a37;
+  background: transparent;
+  font-size: 12px;
+  padding: 2px 8px;
+}
+.poker-arena {
+  grid-template-rows: 112px 140px 112px auto;
+  gap: 6px;
+  padding: 10px;
+}
+.poker-seat {
+  position: relative;
+  grid-template-rows: 36px 76px;
+}
+.poker-seat-label,
+.poker-seat.acting .poker-seat-label {
+  height: 36px;
+  padding: 2px 4px;
+  gap: 0;
+}
+.poker-seat-top > .poker-seat-label {
+  padding-left: 24px;
+}
+.poker-hidden-hand {
+  position: absolute;
+  left: 5px;
+  top: 4px;
+  margin: 0;
+}
+.poker-hidden-hand .poker-card {
+  width: 18px;
+}
+.poker-seat-top .poker-hidden-hand {
+  left: calc(50% - 74px);
+}
+.poker-seat-left .poker-seat-label,
+.poker-seat-right .poker-seat-label {
+  padding-left: 23px;
+}
+.poker-center {
+  font-size: 11px;
+  gap: 4px;
+  padding: 3px 0;
+}
+.poker-center strong {
+  font-size: 13px;
+}
+.poker-center summary {
+  cursor: pointer;
+}
+.poker-own-hand {
+  grid-column: 1 / -1;
+  grid-row: 4;
+  min-width: 0;
+  border-top: 1px solid #81917a;
+}
+.poker-own-hand .poker-empty-hand,
+.poker-own-hand .poker-spectator {
+  color: #fff6dc;
+}
+.poker-actions,
+.poker-board[data-action-columns="5"] .poker-actions {
+  height: 64px;
+  padding: 10px 0;
+  gap: 6px;
+}
+.poker-board[data-phase="play"] .poker-actions > button {
+  flex-basis: calc((100% - 12px) / 3);
+  min-height: 44px;
+}
+@media (max-width: 600px) {
+  .poker-arena {
+    grid-template-rows: 108px 118px 108px auto;
+    padding: 6px;
+  }
+  .poker-seat {
+    grid-template-rows: 36px 72px;
+  }
+  .poker-actions button {
+    padding-left: 3px;
+    padding-right: 3px;
+  }
+  .poker-seat-label {
+    font-size: 10px;
+  }
+  .poker-seat-label span {
+    font-size: 10px;
+  }
+}
+
+/* Four seats share the upper felt; the centered hand fills its lower band. */
+.poker-board {
+  position: relative;
+}
+.poker-table-toolbar {
+  position: absolute;
+  right: 18px;
+  top: 18px;
+  z-index: 2;
+  height: 28px;
+  margin: 0;
+}
+.poker-table-toolbar button {
+  color: #fff6dc;
+  border: 1px solid #adc0a3;
+  border-radius: 6px;
+  background: #244836;
+}
+.poker-arena {
+  grid-template-rows: 112px 112px auto;
+}
+.poker-seat-top {
+  grid-column: 2;
+  grid-row: 1;
+}
+.poker-seat-bottom {
+  grid-column: 2;
+  grid-row: 2;
+}
+.poker-seat-top .poker-hidden-hand {
+  left: max(5px, calc(50% - 74px));
+}
+.poker-center {
+  grid-column: 1;
+  grid-row: 1;
+}
+.poker-own-hand {
+  grid-row: 3;
+}
+@media (max-width: 600px) {
+  .poker-arena {
+    grid-template-rows: 108px 108px auto;
+  }
+  .poker-table-toolbar {
+    top: 14px;
+    right: 14px;
+  }
+}
+/* Card counts never truncate with a long name or role. */
+.poker-seat-label,
+.poker-seat-top > .poker-seat-label,
+.poker-seat-left > .poker-seat-label,
+.poker-seat-right > .poker-seat-label {
+  padding-left: 4px;
+  padding-right: 4px;
+}
+.poker-seat:not(.poker-seat-bottom) .poker-seat-label > b {
+  padding-left: 18px;
+}
+.poker-seat-meta {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+.poker-seat-role {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.poker-seat-count {
+  flex: 0 0 auto;
+  font-variant-numeric: tabular-nums;
+}
+.poker-hidden-hand .poker-card {
+  width: 14px;
 }

@@ -103,9 +103,11 @@ export function Board({
     [hint, setHint] = useState(0),
     [open, setOpen] = useState(false),
     [reports, setReports] = useState<number[]>([]),
-    [peek, setPeek] = useState<"bottom" | "open" | null>(null);
+    [peek, setPeek] = useState<"bottom" | "open" | "info" | null>(null),
+    [landlordOpen, setLandlordOpen] = useState(true);
   useEffect(() => {
     setHint(0);
+    setLandlordOpen(true);
     setOpen(false);
     setReports([]);
     setError("");
@@ -136,61 +138,35 @@ export function Board({
         style={style}
         hand={d.hand}
         handCapacity={d.options.mode === "classic3" ? 20 : 33}
-        actionColumns={4}
+        actionColumns={3}
         selected={selected}
         onSelect={setSelected}
         fresh={fresh}
-        labels={d.players.map((p) => `${roleName(p.role)} · ${p.count} 张`)}
+        labels={d.players.map((p) => roleName(p.role))}
+        counts={d.players.map((p) => p.count)}
         plays={d.table}
         center={
           <>
             <strong>
-              第 {d.round} / {d.options.rounds} 副
+              {huanle ? tierName(d.bid) : `底分 ${d.bid || "未定"}`} · ×
+              {d.multiplier}
             </strong>
-            <span>
-              {huanle
-                ? "上海斗地主"
-                : d.options.mode === "shanghai4"
-                  ? "旧版四人上海"
-                  : "旧版三人经典"}
-            </span>
-            <span>
-              {d.phase === "bid" && !huanle
-                ? "叫分决定地主"
-                : phaseNames[d.phase]}
-            </span>
             <small>
-              {huanle ? `档位 ${tierName(d.bid)}` : `底分 ${d.bid || "未定"}`} ·
-              倍率 ×{d.multiplier}
+              第 {d.round} / {d.options.rounds} 副
             </small>
-            {huanle && (
-              <>
-                <small>
-                  {[
-                    d.huangFan && "荒番",
-                    d.touLiao && "头撩",
-                    d.marker % 54 >= 52 && "明王",
-                    d.openHand && "摊打",
-                  ]
-                    .filter(Boolean)
-                    .join(" · ")}
-                </small>
-                <details>
-                  <summary>标记牌 · {room.seats[d.markerSeat]?.name}</summary>
-                  <CardStrip
-                    ids={[d.marker]}
-                    skin={style.skin}
-                    assets={assets}
-                  />
-                </details>
-              </>
-            )}
+            {d.phase !== "play" && <span>{phaseNames[d.phase]}</span>}
+            <button
+              className="poker-table-link"
+              onClick={() => setPeek("info")}
+            >
+              牌局
+            </button>
             {d.bottom.length > 0 && (
               <button
                 className="poker-table-link"
                 onClick={() => setPeek("bottom")}
               >
-                {huanle ? "你的底牌" : "公开底牌"} · {d.bottom.length} 张
+                {huanle ? "你的底牌" : "公开底牌"}
               </button>
             )}
             {d.openHand && (
@@ -198,30 +174,17 @@ export function Board({
                 className="poker-table-link"
                 onClick={() => setPeek("open")}
               >
-                查看地主明牌 · {d.landlordHand.length} 张
+                地主明牌
               </button>
-            )}
-            {(d.reports ?? []).length > 0 && (
-              <details>
-                <summary>{d.reports.length === 2 ? "双报到" : "报到"}</summary>
-                {d.reports.map((cards, i) => (
-                  <CardStrip
-                    key={i}
-                    ids={cards}
-                    skin={style.skin}
-                    assets={assets}
-                  />
-                ))}
-              </details>
             )}
           </>
         }
         actions={
           <>
             {error && (
-              <p className="poker-error" role="alert">
-                {error}
-              </p>
+              <Modal title="无法出牌" onClose={() => setError("")}>
+                <p role="alert">{error}</p>
+              </Modal>
             )}
             {c.canBid &&
               c.bids.map((bid) => (
@@ -236,104 +199,116 @@ export function Board({
                 </button>
               ))}
             {c.canChoose && (
-              <div className="poker-landlord-choices">
-                {c.canOpen && (
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={open}
-                      disabled={busy}
-                      onChange={(e) => setOpen(e.target.checked)}
-                    />
-                    摊打：公开地主手牌，输赢倍率 ×2
-                  </label>
-                )}
-                {c.reports.length > 0 && (
-                  <>
-                    <p>可选一组报到，或两组双报到：</p>
-                    <div className="poker-report-groups">
-                      {c.reports.map((cards, i) => (
+              <>
+                <button onClick={() => setLandlordOpen(true)}>
+                  摊打／报到
+                </button>
+                {landlordOpen && (
+                  <Modal
+                    title="选择出牌方式"
+                    onClose={() => setLandlordOpen(false)}
+                  >
+                    <div className="poker-landlord-choices">
+                      {c.canOpen && (
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={open}
+                            disabled={busy}
+                            onChange={(e) => setOpen(e.target.checked)}
+                          />
+                          摊打：公开地主手牌，输赢倍率 ×2
+                        </label>
+                      )}
+                      {c.reports.length > 0 && (
+                        <>
+                          <p>可选一组报到，或两组双报到：</p>
+                          <div className="poker-report-groups">
+                            {c.reports.map((cards, i) => (
+                              <button
+                                key={i}
+                                type="button"
+                                aria-label={`报到牌组 ${i + 1}`}
+                                aria-pressed={reports.includes(i)}
+                                disabled={
+                                  busy ||
+                                  (!reports.includes(i) && reports.length >= 2)
+                                }
+                                onClick={() =>
+                                  setReports((v) =>
+                                    v.includes(i)
+                                      ? v.filter((n) => n !== i)
+                                      : [...v, i],
+                                  )
+                                }
+                              >
+                                <span>
+                                  {cards.length === 4
+                                    ? "四王"
+                                    : `${cards.length} 张炸弹`}
+                                </span>
+                                <CardStrip
+                                  ids={cards}
+                                  skin={style.skin}
+                                  assets={assets}
+                                />
+                              </button>
+                            ))}
+                          </div>
+                        </>
+                      )}
+                      <div className="poker-choice-buttons">
                         <button
-                          key={i}
-                          type="button"
-                          aria-label={`报到牌组 ${i + 1}`}
-                          aria-pressed={reports.includes(i)}
-                          disabled={
-                            busy ||
-                            (!reports.includes(i) && reports.length >= 2)
-                          }
+                          className="primary"
+                          disabled={busy}
                           onClick={() =>
-                            setReports((v) =>
-                              v.includes(i)
-                                ? v.filter((n) => n !== i)
-                                : [...v, i],
-                            )
+                            void send("landlord", {
+                              openHand: open,
+                              reports: [],
+                              continue: true,
+                            })
                           }
                         >
-                          <span>
-                            {cards.length === 4
-                              ? "四王"
-                              : `${cards.length} 张炸弹`}
-                          </span>
-                          <CardStrip
-                            ids={cards}
-                            skin={style.skin}
-                            assets={assets}
-                          />
+                          {open ? "摊打，不报到" : "正常出牌"}
                         </button>
-                      ))}
+                        {c.reports.length > 0 && (
+                          <>
+                            <button
+                              disabled={busy || !reports.length}
+                              onClick={() =>
+                                void send("landlord", {
+                                  openHand: open,
+                                  reports,
+                                  continue: true,
+                                })
+                              }
+                            >
+                              报到后继续打
+                            </button>
+                            <button
+                              disabled={busy || !reports.length}
+                              onClick={() =>
+                                void send("landlord", {
+                                  openHand: false,
+                                  reports,
+                                  continue: false,
+                                })
+                              }
+                            >
+                              报到不打
+                            </button>
+                          </>
+                        )}
+                      </div>
+                      {c.reports.length > 0 && (
+                        <p className="poker-notice">
+                          报到不打直接结算，不计荒番、摊打、明王倍率；继续打按官网详细公式结算。
+                        </p>
+                      )}
                     </div>
-                  </>
+                  </Modal>
                 )}
-                <div className="poker-choice-buttons">
-                  <button
-                    className="primary"
-                    disabled={busy}
-                    onClick={() =>
-                      void send("landlord", {
-                        openHand: open,
-                        reports: [],
-                        continue: true,
-                      })
-                    }
-                  >
-                    {open ? "摊打，不报到" : "正常出牌"}
-                  </button>
-                  {c.reports.length > 0 && (
-                    <>
-                      <button
-                        disabled={busy || !reports.length}
-                        onClick={() =>
-                          void send("landlord", {
-                            openHand: open,
-                            reports,
-                            continue: true,
-                          })
-                        }
-                      >
-                        报到后继续打
-                      </button>
-                      <button
-                        disabled={busy || !reports.length}
-                        onClick={() =>
-                          void send("landlord", {
-                            openHand: false,
-                            reports,
-                            continue: false,
-                          })
-                        }
-                      >
-                        报到不打
-                      </button>
-                    </>
-                  )}
-                </div>
-                {c.reports.length > 0 && (
-                  <p className="poker-notice">
-                    报到不打直接结算，不计荒番、摊打、明王倍率；继续打按官网详细公式结算。
-                  </p>
-                )}
-              </div>
+              </>
             )}
             {c.canDouble && (
               <>
@@ -370,25 +345,12 @@ export function Board({
                   提示
                 </button>
                 <button
-                  disabled={!selected.length || busy}
-                  onClick={() => setSelected([])}
-                >
-                  取消选择
-                </button>
-                <button
                   className="primary"
                   disabled={busy || !c.canAct || !selected.length}
                   onClick={() => void send("play", { cards: selected })}
                 >
                   出牌（{selected.length}）
                 </button>
-                {huanle && c.canAct && (
-                  <p className="poker-notice">
-                    {c.bombRemaining < 0
-                      ? "本局炸弹次数不限"
-                      : `本局还可出 ${c.bombRemaining} 次炸弹（含王炸）`}
-                  </p>
-                )}
               </>
             )}
             {c.canReady && (
@@ -400,9 +362,7 @@ export function Board({
                 准备下一副
               </button>
             )}
-            {!c.canAct && d.phase !== "finished" && (
-              <p className="poker-notice">等待其他玩家；你的手牌始终在下方。</p>
-            )}
+
             {d.roundResults.length > 0 &&
               (d.phase === "round_end" || d.phase === "finished") && (
                 <p className="poker-notice">
@@ -418,32 +378,64 @@ export function Board({
                     .join(" · ")}
                 </p>
               )}
-            {!huanle && (
-              <p className="poker-notice">
-                这是更新前开始的对局，继续按原规则结束；新房间仅开放四人上海斗地主。
-              </p>
-            )}
           </>
         }
       />
       {peek && (
         <Modal
           title={
-            peek === "open"
-              ? "地主明牌"
-              : huanle
-                ? "你的底牌（仅你可见）"
-                : "公开底牌"
+            peek === "info"
+              ? "牌局信息"
+              : peek === "open"
+                ? "地主明牌"
+                : huanle
+                  ? "你的底牌（仅你可见）"
+                  : "公开底牌"
           }
           onClose={() => setPeek(null)}
         >
-          <div className="poker-open-cards">
-            <CardStrip
-              ids={peek === "open" ? d.landlordHand : d.bottom}
-              skin={style.skin}
-              assets={assets}
-            />
-          </div>
+          {peek === "info" ? (
+            <>
+              <p>
+                {huanle ? "上海斗地主" : "旧版存档规则"} · 第 {d.round} /{" "}
+                {d.options.rounds} 副
+              </p>
+              {huanle && (
+                <>
+                  <p>
+                    {[
+                      d.huangFan && "荒番",
+                      d.touLiao && "头撩",
+                      d.marker % 54 >= 52 && "明王",
+                      d.openHand && "摊打",
+                    ]
+                      .filter(Boolean)
+                      .join(" · ")}
+                  </p>
+                  <p>首叫标记 · {room.seats[d.markerSeat]?.name}</p>
+                  <CardStrip
+                    ids={[d.marker]}
+                    skin={style.skin}
+                    assets={assets}
+                  />
+                </>
+              )}
+              {(d.reports ?? []).map((cards, i) => (
+                <div key={i}>
+                  <p>{d.reports.length === 2 ? "双报到" : "报到"}</p>
+                  <CardStrip ids={cards} skin={style.skin} assets={assets} />
+                </div>
+              ))}
+            </>
+          ) : (
+            <div className="poker-open-cards">
+              <CardStrip
+                ids={peek === "open" ? d.landlordHand : d.bottom}
+                skin={style.skin}
+                assets={assets}
+              />
+            </div>
+          )}
         </Modal>
       )}
     </>

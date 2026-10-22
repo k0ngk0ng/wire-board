@@ -89,6 +89,15 @@ func TestBubblepartyBrowserFixture(t *testing.T) {
 			_ = json.NewEncoder(w).Encode(map[string]int{"closed": drop()})
 			return
 		}
+		// Per-client latency is opt-in and test-only. Separate browser sessions
+		// can exercise a slow peer without delaying the healthy connection.
+		if os.Getenv("WIRE_BOARD_PER_CLIENT_RTT") == "1" && strings.HasPrefix(r.URL.Path, "/api/") {
+			ms, _ := strconv.Atoi(r.Header.Get("X-Acceptance-RTT"))
+			if ms > 0 && ms <= 1000 {
+				nettest.Delay(s.Handler(), time.Duration(ms)*time.Millisecond).ServeHTTP(w, r)
+				return
+			}
+		}
 		delayed.ServeHTTP(w, r)
 	})
 	srv := &http.Server{Handler: handler, ReadHeaderTimeout: 5 * time.Second, ConnState: func(c net.Conn, state http.ConnState) {

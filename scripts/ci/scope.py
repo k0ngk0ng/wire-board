@@ -10,14 +10,14 @@ import subprocess
 
 ROOT = Path(__file__).resolve().parents[2]
 POKER = ('doudizhu', 'guandan', 'shengji')
-LEGACY = ('splendor', 'rail', 'catan', 'carcassonne', 'sanguosha', 'dota')
+LEGACY = ('splendor', 'rail', 'catan', 'carcassonne', 'sanguosha')
 # Old mixed-package scenarios are run with an exact game subtest selector.
 MULTI = {
     'TestBotsFinishBothGames': ('splendor', 'rail'),
     'TestSoloGamesAIContinuationPersistenceAndRematch': ('splendor', 'rail'),
     'TestBotFinalTurnFinishesRoom': ('splendor', 'rail'),
     'TestBaseGamesRemainBaseAfterExpansionSettings': ('splendor', 'catan'),
-    'TestAutoPlayAllGamesFinishAndCreditHumanPlayers': LEGACY[:-1],
+    'TestAutoPlayAllGamesFinishAndCreditHumanPlayers': LEGACY,
     'TestTimeoutAutoplayAllGamesContinueToNaturalFinish': LEGACY,
 }
 PAIRED = {'TestBaseData', 'TestBotsDoNotUseOtherPlayersSecretsOrDeckOrder', 'TestBotHandlesSubstepsAndInvalidSeats'}
@@ -168,7 +168,16 @@ def test_blocks(source):
     outside.append(source[cursor:])
     return blocks, ''.join(outside).strip()
 
-def changed_test_source(before, after):
+def changed_test_source(before, after, retired=()):
+    # A retired table member has no surviving rules to verify. Ignore exactly
+    # that deletion, while keeping all changes to scenario bodies and helpers.
+    if retired:
+        def table(match):
+            members = re.findall(r'"([^"\\]*)"', match.group(1))
+            return '[]string{' + ','.join(json.dumps(g) for g in members if g not in retired) + '}'
+        pattern = r'\[\]string\{\s*((?:"[^"\\]*"\s*,?\s*)*)\}'
+        before = re.sub(pattern, table, before)
+        after = re.sub(pattern, table, after)
     old, new = test_blocks(before), test_blocks(after)
     # Imports, helpers and fixtures can affect every test in a mixed file.
     if old is None or new is None or old[1] != new[1]: return before + '\n' + after
@@ -197,13 +206,15 @@ def main():
         raw = subprocess.check_output(['git', 'ls-files', '-z'], cwd=ROOT)
     paths = changed_names(raw)
     legacy_sources = {}
+    active_games = game_names(ROOT)
+    retired = {path.split('/')[1] for path in paths if path.startswith('games/') and len(path.split('/')) > 2 and path.split('/')[1] not in active_games}
     for path in paths:
         if path.startswith('internal/') and path.endswith('_test.go'):
             current = subprocess.run(['git', 'show', args.head + ':' + path], cwd=ROOT, text=True, capture_output=True)
             source = current.stdout if current.returncode == 0 else ''
             if args.base:
                 old = subprocess.run(['git', 'show', args.base + ':' + path], cwd=ROOT, text=True, capture_output=True)
-                source = changed_test_source(old.stdout if old.returncode == 0 else '', source)
+                source = changed_test_source(old.stdout if old.returncode == 0 else '', source, retired=retired)
             legacy_sources[path] = source
     result = plan(paths, game_names(ROOT), args.manual, legacy_sources)
     result.update(base=args.base, head=args.head, paths=changed_names(raw))
