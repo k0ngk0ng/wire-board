@@ -33,6 +33,7 @@ export function Modal({
     const el = ref.current;
     el?.querySelector<HTMLElement>("input,button,select")?.focus();
     function key(e: KeyboardEvent) {
+      if (el?.closest("[inert]")) return;
       if (e.key === "Escape" && dismissible) {
         // Dismiss the overlay without invoking the browser's stop-loading
         // shortcut, which can interrupt requests while reviewing a result.

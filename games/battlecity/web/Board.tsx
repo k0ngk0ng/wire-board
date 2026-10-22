@@ -356,7 +356,10 @@ export function Board(props: BoardProps<View>) {
   const [error, setError] = useState("");
   const [suspended, setSuspended] = useState(false);
   const [, setTick] = useState(0);
-  const atlas = useAtlas(assets);
+  const atlas = useAtlas(assets, props.onLoadError);
+  useEffect(() => {
+    if (atlas) props.onReady?.();
+  }, [atlas, props.onReady]);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const inputRef = useRef(new LatestInput());
   const motion = useRef(new TankMotion());

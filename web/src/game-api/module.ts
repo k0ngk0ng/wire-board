@@ -1,6 +1,14 @@
 import type { ComponentType } from "react";
 
 export type GameRoom = {
+  matchId?: string;
+  loading?: {
+    token: string;
+    build: string;
+    frozenAt: number;
+    ready: boolean[];
+  } | null;
+  clockOffsetMs?: number;
   id: string;
   name: string;
   kind: string;
@@ -62,6 +70,7 @@ export type GameAudioPort = {
   stopLoop: (key: string) => void;
 };
 export type GameClock = {
+  paused?: boolean;
   serverNow: number;
   receivedAt: number;
   epoch?: number;
@@ -81,6 +90,9 @@ export type RoomPresentation = {
 };
 
 export type BoardProps<Data = unknown> = {
+  onReady?: () => void;
+  onLoadProgress?: (percent: number, label: string) => void;
+  onLoadError?: (error: string) => void;
   room: GameRoom;
   data: Data;
   act: (action: Record<string, unknown>) => Promise<void>;
@@ -125,6 +137,8 @@ export type GameModule<Data = unknown, Options = unknown> = {
   // Optional game-owned visual timeline. Preserve host room metadata; never
   // modify authoritative snapshots or decide outcomes in this adapter.
   createPresentation?: () => RoomPresentation;
+  resources?: (room: GameRoom, media: Record<string, number>) => string[];
+  asyncBoard?: boolean;
   Board: ComponentType<BoardProps<Data>>;
   Options?: ComponentType<OptionsProps<Options>>;
   // Waiting-room extension inside the shared shell; never part of creation.

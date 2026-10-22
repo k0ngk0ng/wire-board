@@ -1,3 +1,5 @@
+import { GameLoading } from "./game-api/loading";
+import { Runtime } from "./game-api/runtime";
 import { VersionUpdateNotice } from "./VersionUpdateNotice";
 import { installControlContextMenuGuard } from "./control-context-menu";
 import { revealGameOnEntry } from "./game-entry-scroll";
@@ -45,7 +47,7 @@ import {
 import { fishResponder } from "../../games/catan/web/catan-fishing-state";
 import { catanSeatColor } from "../../games/catan/web/catan-player-colors";
 import { twoResponder } from "../../games/catan/web/catan-two-state";
-import { RailMapsContext, playerColors } from "../../games/rail/web/board";
+import { RailMapsContext, playerColors } from "../../games/rail/web/context";
 import { railMapNames } from "../../games/rail/web/rail-expansions";
 import "../../games/splendor/web/splendor-layout.css";
 import { AdminDashboard } from "./admin";
@@ -61,7 +63,12 @@ import {
   ModuleTurn,
   ModuleWaiting,
 } from "./game-api/host";
-import { gameModule, gameName, isIndependentGame } from "./game-api/registry";
+import {
+  gameModule,
+  gameName,
+  isIndependentGame,
+  useGameRegistry,
+} from "./game-api/registry";
 import {
   LegacyCover,
   LegacyCreate,
@@ -70,7 +77,7 @@ import {
   LegacyTurn,
   LegacyWaiting,
   Results,
-} from "./legacy/room-ui";
+} from "./legacy/lazy-room-ui";
 import { LogLine } from "./log-line";
 import {
   Leaderboard,
@@ -114,6 +121,7 @@ function Logo() {
 }
 
 function App() {
+  useGameRegistry();
   useEffect(() => installControlContextMenuGuard(document), []);
   const [adminOpen, setAdminOpen] = useState(
     () => new URLSearchParams(location.search).get("admin") === "1",
@@ -437,7 +445,10 @@ function App() {
             action,
           });
         } else {
-          await command(state.room, "action", { action, serverInstance: state.serverInstance });
+          await command(state.room, "action", {
+            action,
+            serverInstance: state.serverInstance,
+          });
           void refresh();
         }
       } catch (e) {
@@ -917,50 +928,61 @@ function App() {
                   </div>
                 ) : (
                   <>
-                    {!room.game?.sanguosha && !room.game?.dota && (
-                      <Players room={room} />
-                    )}
-                    {room.game?.finished && (
-                      <ResultOverlay
-                        key={`${room.id}:${room.result?.id || "finished"}`}
-                      >
-                        <Results
-                          room={room}
-                          host={
-                            !room.spectating &&
-                            room.host === state.user.id &&
-                            state.availableGames.includes(room.kind)
-                          }
-                          busy={busy}
-                          command={roomCommand}
-                        />
-                      </ResultOverlay>
-                    )}
-                    <div className="game-layout">
-                      <div className="game-main">
-                        <GameBoard
-                          key={`${room.id}:${state.serverInstance ?? ""}`}
-                          room={room}
-                          act={act}
-                          busy={boardBusy}
-                          assets={state.assetsBaseURL || ""}
-                          sound={sound}
-                          audio={gameAudio}
-                          inputWindow={streamInputs.connected ? 8 : 1}
-                          clock={presented.clock}
-                          command={(type, extra) =>
-                            run(() => command(room, type, extra))
-                          }
-                        />
-                      </div>
-                      <aside className="game-sidebar">
-                        <Turn
-                          room={room}
-                          serverNow={state.serverNow}
-                          receivedAt={state.receivedAt}
-                        />
-                      </aside>
-                    </div>
+                    <GameLoading
+                      key={`${room.id}:${room.matchId ?? room.setupVersion}:${room.you}`}
+                      room={room}
+                      assets={state.assetsBaseURL || ""}
+                    >
+                      {(loadEvents, loading) => (
+                        <>
+                          {!room.game?.sanguosha && !room.game?.dota && (
+                            <Players room={room} />
+                          )}
+                          {room.game?.finished && (
+                            <ResultOverlay
+                              key={`${room.id}:${room.result?.id || "finished"}`}
+                            >
+                              <Results
+                                room={room}
+                                host={
+                                  !room.spectating &&
+                                  room.host === state.user.id &&
+                                  state.availableGames.includes(room.kind)
+                                }
+                                busy={busy}
+                                command={roomCommand}
+                              />
+                            </ResultOverlay>
+                          )}
+                          <div className="game-layout">
+                            <div className="game-main">
+                              <GameBoard
+                                key={`${room.id}:${state.serverInstance ?? ""}`}
+                                room={room}
+                                loadEvents={loadEvents}
+                                act={act}
+                                busy={boardBusy || loading}
+                                assets={state.assetsBaseURL || ""}
+                                sound={sound && !loading}
+                                audio={gameAudio}
+                                inputWindow={streamInputs.connected ? 8 : 1}
+                                clock={presented.clock}
+                                command={(type, extra) =>
+                                  run(() => command(room, type, extra))
+                                }
+                              />
+                            </div>
+                            <aside className="game-sidebar">
+                              <Turn
+                                room={room}
+                                serverNow={state.serverNow}
+                                receivedAt={state.receivedAt}
+                              />
+                            </aside>
+                          </div>
+                        </>
+                      )}
+                    </GameLoading>
                   </>
                 )}
               </main>
@@ -1574,7 +1596,9 @@ function Create(props: {
       renderCover={(kind) => <Cover kind={kind} mini />}
       renderForm={(form) =>
         isIndependentGame(form.kind) ? (
-          <ModuleCreate {...form} />
+          <Runtime kind={form.kind}>
+            <ModuleCreate {...form} />
+          </Runtime>
         ) : (
           <LegacyCreate {...form} />
         )
@@ -1585,7 +1609,9 @@ function Create(props: {
 
 function Waiting(props: Parameters<typeof LegacyWaiting>[0]) {
   return isIndependentGame(props.room.kind) ? (
-    <ModuleWaiting {...props} />
+    <Runtime kind={props.room.kind}>
+      <ModuleWaiting {...props} />
+    </Runtime>
   ) : (
     <LegacyWaiting {...props} />
   );

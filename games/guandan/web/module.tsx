@@ -1,18 +1,12 @@
+import { pokerResources } from "../../../web/src/poker/loading";
+import catalog from "./catalog";
 import { defineGame } from "../../../web/src/game-api/module";
 import { rankName } from "../../../web/src/poker/ui";
 import { Board, OptionsForm, type View, type Options } from "./Board";
 import { Cover } from "./Cover";
 export default defineGame<View, Options>({
-  id: "guandan",
-  name: "掼蛋",
-  description:
-    "江苏掼蛋，固定对家、红心配牌，进贡还贡、配合接风，一起打到过 A。",
-  category: "poker",
-  minPlayers: 4,
-  maxPlayers: 4,
-  requiresFullTable: true,
-  supportsBots: true,
-  ownsSounds: true,
+  ...catalog,
+  resources: pokerResources,
   defaultOptions: { rounds: 0, startLevel: 2, turnSeconds: 30 },
   Board,
   Options: OptionsForm,

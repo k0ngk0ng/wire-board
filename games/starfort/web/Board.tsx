@@ -356,6 +356,8 @@ function Sprite({
 }
 
 export function Board({
+  onReady,
+  onLoadError,
   room,
   data,
   act,
@@ -462,7 +464,9 @@ export function Board({
   const remaining = Math.max(
     0,
     Math.ceil(
-      (data.nextAt - (clock.serverNow + now - clock.receivedAt)) / 1000,
+      (data.nextAt -
+        (clock.serverNow + (clock.paused ? 0 : now - clock.receivedAt))) /
+        1000,
     ),
   );
   const totalRemaining =
@@ -472,7 +476,8 @@ export function Board({
   const finished = data.phase === "won" || data.phase === "lost";
   const world = data.world;
   const choosing = !!(world?.choice || world?.boonChoice);
-  const serverNow = clock.serverNow + now - clock.receivedAt;
+  const serverNow =
+    clock.serverNow + (clock.paused ? 0 : now - clock.receivedAt);
   const activeRoutes = data.map.routes?.filter((route) => route.active) ?? [];
   return (
     <div className="starfort-board" data-phase={data.phase}>
@@ -692,6 +697,8 @@ export function Board({
       <div className="sf-layout">
         <section className="sf-map-section" aria-label="星垒战场">
           <Battlefield
+            onReady={onReady}
+            onLoadError={onLoadError}
             roomID={room.id}
             data={data}
             assets={assets}

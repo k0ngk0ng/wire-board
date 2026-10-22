@@ -1,3 +1,4 @@
+import catalog from "./catalog";
 import {
   defineGame,
   type GameRoom,
@@ -22,7 +23,8 @@ function OptionsForm({
   disabled,
 }: OptionsProps<Options>) {
   const selected =
-    value?.map && (value.map === "random" || MAPS.some((m) => m.id === value.map))
+    value?.map &&
+    (value.map === "random" || MAPS.some((m) => m.id === value.map))
       ? value.map
       : "classic-01";
   const preview = selected === "random" ? "classic-01" : selected;
@@ -53,8 +55,8 @@ function OptionsForm({
         </div>
       </div>
       <p className="muted small">
-        {teamSize}v{teamSize}，两队各 {teamSize} 人；座位 1～{teamSize} 为上方队伍，
-        其余为下方队伍。电脑玩家参与的对局不计积分。
+        {teamSize}v{teamSize}，两队各 {teamSize} 人；座位 1～{teamSize}{" "}
+        为上方队伍， 其余为下方队伍。电脑玩家参与的对局不计积分。
       </p>
     </div>
   );
@@ -77,8 +79,9 @@ function Rules() {
         时钟冻结敌方坦克 8 秒。
       </p>
       <p>
-        键盘：WASD／方向键移动，空格或 J 开火。手机使用画布下方的方向键和开火键。
-        对局上限 10 分钟；双方基地都存活时按平台显式和局处理。
+        键盘：WASD／方向键移动，空格或 J
+        开火。手机使用画布下方的方向键和开火键。 对局上限 10
+        分钟；双方基地都存活时按平台显式和局处理。
       </p>
     </div>
   );
@@ -117,25 +120,17 @@ function PlayerSummary({
         {room.you === seat ? " · 你" : ""}
       </strong>
       <span>{team}</span>
-      <span>{alive ? `装甲 ${tank.hp}/${tank.maxHp}` : `重生 ${respawn}s`}</span>
+      <span>
+        {alive ? `装甲 ${tank.hp}/${tank.maxHp}` : `重生 ${respawn}s`}
+      </span>
       <span>击杀 {tank.kills}</span>
     </div>
   );
 }
 
 export default defineGame<View, Options>({
-  id: "battlecity",
-  name: "坦克大战",
-  description:
-    "1v1／2v2／3v3 双基地坦克对战：选择坦克、炸开砖墙、争夺随机道具，摧毁敌方大本营。",
-  category: "realtime",
-  minPlayers: 2,
-  maxPlayers: 6,
-  playerCounts: [2, 4, 6],
-  requiresFullTable: true,
-  supportsBots: true,
-  ownsSounds: true,
-  realtime: true,
+  ...catalog,
+  asyncBoard: true,
   defaultOptions: { map: "classic-01" },
   Board,
   Cover,

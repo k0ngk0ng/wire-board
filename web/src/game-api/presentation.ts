@@ -12,8 +12,20 @@ export function useRoomPresentation(
 ) {
   const [, tick] = useState(0);
   const clock = useMemo<GameClock>(
-    () => ({ serverNow, receivedAt, epoch }),
-    [serverNow, receivedAt, epoch],
+    () => ({
+      serverNow:
+        room?.loading?.frozenAt ?? serverNow - (room?.clockOffsetMs ?? 0),
+      receivedAt,
+      epoch,
+      paused: !!room?.loading,
+    }),
+    [
+      serverNow,
+      receivedAt,
+      epoch,
+      room?.clockOffsetMs,
+      room?.loading?.frozenAt,
+    ],
   );
   const owner = useRef<
     | {
@@ -25,7 +37,10 @@ export function useRoomPresentation(
       }
     | undefined
   >(undefined);
-  const factory = room ? gameModule(room.kind)?.createPresentation : undefined;
+  const factory =
+    room && !room.loading
+      ? gameModule(room.kind)?.createPresentation
+      : undefined;
   let frame: PresentationFrame | undefined;
   if (room && factory) {
     const identity = `${room.id}:${room.you}:${!!room.spectating}`;

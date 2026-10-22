@@ -7,6 +7,7 @@ import { clipDuration, frameAt, type AvatarClip } from "./avatar-animation.ts";
 export type CharacterClipKey =
   "up" | "down" | "left" | "right" | "idle" | "death";
 type Atlas = {
+  failed?: boolean;
   images: Partial<Record<CharacterClipKey, HTMLImageElement>>;
   promise: Promise<{ loaded: number; failed: CharacterClipKey[] }>;
 };
@@ -17,10 +18,11 @@ export function loadCharacter(
   base: string,
   id: number,
   team: number,
+  retryFailed = false,
 ): Atlas["promise"] {
   const key = identity(base, id, team),
     cached = atlases.get(key);
-  if (cached) return cached.promise;
+  if (cached && (!retryFailed || !cached.failed)) return cached.promise;
   const images: Atlas["images"] = {};
   const atlas: Atlas = {
     images,
@@ -46,10 +48,13 @@ export function loadCharacter(
       }
       return kind;
     }),
-  ).then((results) => ({
-    loaded: results.filter((x) => x === null).length,
-    failed: results.filter((x): x is CharacterClipKey => x !== null),
-  }));
+  ).then((results) => {
+    atlas.failed = results.some((x) => x !== null);
+    return {
+      loaded: results.filter((x) => x === null).length,
+      failed: results.filter((x): x is CharacterClipKey => x !== null),
+    };
+  });
   return atlas.promise;
 }
 export function getCharacterImage(

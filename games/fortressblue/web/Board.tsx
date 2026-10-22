@@ -70,7 +70,10 @@ function loadImage(base: string, path: string) {
     img.onload = () => resolve(img);
     img.onerror = () => {
       if (++i < sources.length) img.src = sources[i];
-      else resolve(null);
+      else {
+        cache.delete(key);
+        resolve(null);
+      }
     };
     img.src = sources[0];
   });
@@ -185,7 +188,10 @@ function TankPortrait({ base, id }: { base: string; id: number }) {
   );
 }
 function nowAt(clock: BoardProps<View>["clock"]) {
-  return clock.serverNow + Math.max(0, performance.now() - clock.receivedAt);
+  return (
+    clock.serverNow +
+    (clock.paused ? 0 : Math.max(0, performance.now() - clock.receivedAt))
+  );
 }
 const seconds = (ms: number) => Math.max(0, Math.ceil(ms / 1000));
 const newCharge = (): Charge => ({ start: null, token: "", source: "" });
@@ -290,6 +296,11 @@ export function Board(props: BoardProps<View>) {
     [map, data.tanks.map((t) => t.tankId).join(",")],
   );
   const images = useAssets(assets, assetPaths);
+  useEffect(() => {
+    if (assetPaths.every((path) => images[path])) props.onReady?.();
+    else if (assetPaths.some((path) => images[path] === null))
+      props.onLoadError?.("坦克或场地图片加载失败");
+  }, [images, assetPaths, props.onReady, props.onLoadError]);
   const fg = images[map.fg] ?? null,
     fg2 = map.fg2 ? (images[map.fg2] ?? null) : null,
     bg = map.bg ? (images[map.bg] ?? null) : null;

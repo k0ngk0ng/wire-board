@@ -1,17 +1,11 @@
+import { pokerResources } from "../../../web/src/poker/loading";
+import catalog from "./catalog";
 import { defineGame } from "../../../web/src/game-api/module";
 import { Board, OptionsForm, roleName, type Options, type View } from "./Board";
 import { Cover } from "./Cover";
 export default defineGame<View, Options>({
-  id: "doudizhu",
-  name: "斗地主",
-  description:
-    "上海斗地主，四人欢乐三打一。标牌叫档、头撩摊打、报到，地主对抗三位农民。",
-  category: "poker",
-  minPlayers: 4,
-  maxPlayers: 4,
-  requiresFullTable: true,
-  supportsBots: true,
-  ownsSounds: true,
+  ...catalog,
+  resources: pokerResources,
   defaultOptions: {
     mode: "shanghai4",
     rounds: 1,

@@ -28,7 +28,7 @@ type realtimeFrame struct {
 // persisted SystemDeadline; a 50 ms wakeup never changes ordinary game pacing.
 func (s *Server) expireRealtimeModuleTimers(now time.Time) {
 	for _, room := range s.rooms {
-		if !s.modules[room.Kind].Realtime || room.Status != "playing" || room.Module == nil || room.Module.Result != nil || room.Module.SystemDeadline == 0 || room.Module.SystemDeadline > now.UnixMilli() {
+		if !s.modules[room.Kind].Realtime || room.Status != "playing" || room.Loading != nil || room.Module == nil || room.Module.Result != nil || room.Module.SystemDeadline == 0 || room.Module.SystemDeadline > room.gameNow(now).UnixMilli() {
 			continue
 		}
 		if err := s.runRealtimeModuleFrame(room, now); err != nil {
@@ -44,7 +44,7 @@ func (s *Server) expireRealtimeModuleTimers(now time.Time) {
 // no stale bot proposal survives a returning player's Reclaim.
 func (s *Server) runRealtimeModuleFrame(room *Room, now time.Time) error {
 	module := s.modules[room.Kind]
-	if !module.Realtime || module.OnTimer == nil {
+	if room.Loading != nil || !module.Realtime || module.OnTimer == nil {
 		return errors.New("missing realtime clock capability")
 	}
 	raw, err := json.Marshal(room)
@@ -82,12 +82,12 @@ func (s *Server) runRealtimeModuleFrame(room *Room, now time.Time) error {
 			next.LastActive = now.Unix()
 		}
 	}
-	if next.Module.Result == nil && next.Module.SystemDeadline != 0 && next.Module.SystemDeadline <= now.UnixMilli() {
+	if next.Module.Result == nil && next.Module.SystemDeadline != 0 && next.Module.SystemDeadline <= next.gameNow(now).UnixMilli() {
 		match, err := module.OnTimer(moduleContext(&next, -1, next.Version, now), *next.Module)
 		if err != nil {
 			return err
 		}
-		if match.SystemDeadline != 0 && match.SystemDeadline <= now.UnixMilli() {
+		if match.SystemDeadline != 0 && match.SystemDeadline <= next.gameNow(now).UnixMilli() {
 			return errors.New("realtime timer must clear or advance its deadline")
 		}
 		if err = module.ValidateMatch(match, len(next.Seats)); err != nil {

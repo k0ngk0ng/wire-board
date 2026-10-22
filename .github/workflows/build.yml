@@ -95,6 +95,7 @@ jobs:
           python3 -B scripts/check_game_boundaries.py
           npm --prefix web ci
           npm --prefix web run build
+          node scripts/game-loading/check-build.mjs
       - name: Check shared audio, playback and card presentation
         run: node --experimental-strip-types --test web/tests/*.test.mjs
       - name: Verify OSS runtime binding and exclude basketball media

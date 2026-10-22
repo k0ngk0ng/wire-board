@@ -9,6 +9,8 @@ export type GamePacket = {
   version: number;
   status: string;
   turnDeadline: number;
+  loading?: import("./game-api/module").GameRoom["loading"];
+  clockOffsetMs?: number;
   serverNow: number;
   game: Game;
 };
@@ -18,7 +20,10 @@ export function mergeStreamState(
   incoming: State,
   receivedAt: number,
 ): StreamState {
-  if (previous?.user.id === incoming.user.id && previous?.serverInstance === incoming.serverInstance) {
+  if (
+    previous?.user.id === incoming.user.id &&
+    previous?.serverInstance === incoming.serverInstance
+  ) {
     if (incoming.serverNow < (previous.snapshotAt ?? 0)) return previous;
     const keepRoom =
       incoming.serverNow < previous.serverNow ||
@@ -61,6 +66,9 @@ export function mergeStreamGame(
       version: packet.version,
       status: packet.status,
       turnDeadline: packet.turnDeadline,
+      ...(packet.loading !== undefined
+        ? { loading: packet.loading, clockOffsetMs: packet.clockOffsetMs }
+        : {}),
       game: packet.game,
     } as State["room"],
   };
@@ -78,7 +86,13 @@ type Input = {
   nonce: string;
   action: Record<string, unknown>;
 };
-type Ack = { durable?: boolean; nonce: string; status: number; version?: number; error?: string };
+type Ack = {
+  durable?: boolean;
+  nonce: string;
+  status: number;
+  version?: number;
+  error?: string;
+};
 
 // A successful ACK means authoritative acceptance; only durable:true confirms
 // persistence. Ordinary movement is checkpointed asynchronously. A closed

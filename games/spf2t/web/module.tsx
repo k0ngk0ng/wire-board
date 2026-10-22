@@ -1,3 +1,4 @@
+import catalog from "./catalog";
 import {
   defineGame,
   type GameRoom,
@@ -9,7 +10,12 @@ import { characterName, type Options, type View } from "./types";
 import { warningClass } from "./gems";
 import "./style.css";
 
-function OptionsForm({ value, onChange, capacity, disabled }: OptionsProps<Options>) {
+function OptionsForm({
+  value,
+  onChange,
+  capacity,
+  disabled,
+}: OptionsProps<Options>) {
   return (
     <div className="spf2t-options">
       <label>
@@ -45,17 +51,18 @@ function Rules() {
       <p>
         同色普通宝石形成 2×2 或更大的实心矩形会合并为强化宝石，整体下落、
         整体被同色碎裂宝石清除，面积越大攻击越强。每第 25 对会出现一颗钻石：
-        落在空地上无效，落在宝石上会清除全盘该颜色，攻击减半，送出的反击宝石计时为 3。
+        落在空地上无效，落在宝石上会清除全盘该颜色，攻击减半，送出的反击宝石计时为
+        3。
       </p>
       <p>
         消除会把反击宝石送入对手的待落队列；对手每落下一对，计时减 1，
-        归零后变成普通宝石。消除可以抵消自己的待落反击宝石。
-        每个角色有独立的 12×6 反击宝石图案，开局前双方选角，可选同一角色。
+        归零后变成普通宝石。消除可以抵消自己的待落反击宝石。 每个角色有独立的
+        12×6 反击宝石图案，开局前双方选角，可选同一角色。
       </p>
       <p>
         连锁会提高攻击；同一步同时清除多组、清空棋盘都会获得额外奖励。
-        三局两胜先赢 2 回合；单局决胜先赢 1 回合。每回合一方无法生成下一对即失败。
-        攻击数值为平台平衡近似。
+        三局两胜先赢 2 回合；单局决胜先赢 1
+        回合。每回合一方无法生成下一对即失败。 攻击数值为平台平衡近似。
       </p>
       <p>
         键盘：←／→ 移动，↑／X 顺时针，Z／Ctrl 逆时针，↓ 软降，空格硬降。
@@ -82,7 +89,9 @@ function PlayerSummary({
 }) {
   const player = data?.players?.[seat];
   if (!player || !data) return null;
-  const name = player.selected ? characterName(data, player.character) : "未选角";
+  const name = player.selected
+    ? characterName(data, player.character)
+    : "未选角";
   return (
     <div className="spf2t-summary" data-spf2t-summary={seat}>
       <strong>{name}</strong>
@@ -102,18 +111,7 @@ function PlayerSummary({
 }
 
 export default defineGame<View, Options>({
-  id: "spf2t",
-  name: "街霸方块",
-  description:
-    "双人对战消消乐：同色宝石连成方块，用碎裂宝石引爆连锁，把反击宝石送进对手场地。",
-  category: "puzzle",
-  minPlayers: 2,
-  maxPlayers: 2,
-  playerCounts: [2],
-  requiresFullTable: true,
-  supportsBots: true,
-  ownsSounds: true,
-  realtime: true,
+  ...catalog,
   defaultOptions: { format: "bestOf3" },
   Board,
   Cover,

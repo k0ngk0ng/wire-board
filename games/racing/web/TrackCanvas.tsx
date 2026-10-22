@@ -22,6 +22,8 @@ export type TrackCanvasProps = {
   clock: GameClock;
   seat: number;
   assets: string;
+  onReady?: () => void;
+  onLoadError?: (error: string) => void;
   input: MutableRefObject<Drive>;
   driving: boolean;
   reduced: boolean;
@@ -127,6 +129,7 @@ export function TrackCanvas(props: TrackCanvasProps) {
           setMode("canvas");
         } catch (e) {
           setFailure("画面加载失败，请重新载入。");
+          latest.current.onLoadError?.("画面加载失败，请重新载入。");
           return;
         }
       }
@@ -140,7 +143,8 @@ export function TrackCanvas(props: TrackCanvasProps) {
           raf = requestAnimationFrame(draw);
           return;
         }
-        const serverNow = p.clock.serverNow + now - p.clock.receivedAt,
+        const serverNow =
+            p.clock.serverNow + (p.clock.paused ? 0 : now - p.clock.receivedAt),
           age = serverNow - d.serverAt,
           visual = sceneTime(serverNow, p.driving),
           moving = d.phase === "racing" || d.phase === "finishing";
@@ -247,6 +251,7 @@ export function TrackCanvas(props: TrackCanvasProps) {
           }
           ctx.restore();
         }
+        if (framesCount === 0) latest.current.onReady?.();
         framesCount++;
         if (now - statsAt >= 1000) {
           canvas.dataset.fps = String(

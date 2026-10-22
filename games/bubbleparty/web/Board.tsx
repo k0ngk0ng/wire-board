@@ -23,6 +23,7 @@ import { CharacterSelection } from "./CharacterSelection";
 import { avatarName } from "./avatar-art";
 import { normalizeAvatar } from "./avatar-animation";
 import { loadSprites } from "./sprites";
+import { characters } from "./character-definitions";
 import { loadCharacter } from "./character-art";
 import {
   loadClassicSprites,
@@ -48,6 +49,28 @@ function clockNow(view: View, clock: BoardProps["clock"]) {
 
 export function Board(props: BoardProps<View>) {
   const { room, data: view, act, assets, sound, audio, clock } = props;
+  useEffect(() => {
+    let live = true;
+    void Promise.all([
+      loadSprites(assets, true),
+      loadClassicSprites(view.mapId, assets),
+      ...characters.flatMap((_, id) => [
+        loadCharacter(assets, id, 0, true),
+        loadCharacter(assets, id, 1, true),
+      ]),
+    ])
+      .then((results) => {
+        if (results.some((result) => result.failed.length > 0))
+          throw Error("图片加载失败");
+        if (live) props.onReady?.();
+      })
+      .catch(() => {
+        if (live) props.onLoadError?.("人物或地图图片加载失败");
+      });
+    return () => {
+      live = false;
+    };
+  }, [view.mapId, assets, props.onReady, props.onLoadError]);
   const me = view && room.you >= 0 ? view.players[room.you] : undefined;
   const trapped = !!me?.trappedUntil;
   const controlled = !!room.seats[room.you]?.autoPlay;

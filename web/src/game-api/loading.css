@@ -1,0 +1,89 @@
+.game-loading {
+  position: relative;
+  isolation: isolate;
+  min-height: 440px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 18px;
+  background: #f3f0e8;
+  color: #263b35;
+  padding: 32px 20px;
+}
+.game-loading-cover {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.12;
+  pointer-events: none;
+}
+.game-loading-cover .cover {
+  height: 100%;
+  width: 100%;
+  border: 0;
+}
+.game-loading-cover svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.game-loading-content {
+  width: min(100%, 440px);
+  text-align: center;
+}
+.game-loading-content h2 {
+  margin: 0 0 18px;
+}
+.game-loading-content progress {
+  display: block;
+  width: 100%;
+  height: 18px;
+  accent-color: #26735c;
+  margin: 18px 0 8px;
+}
+.game-loading-content small {
+  display: block;
+  color: #42564f;
+}
+.game-loading-content ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+  text-align: left;
+}
+.game-loading-content li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  background: #f9f8f3;
+  color: #263b35;
+  border: 1px solid #b8c7bd;
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+.game-loading-content li span {
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.game-loading-content li b {
+  white-space: nowrap;
+}
+.game-loading-staging {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: min(1100px, 100vw);
+  visibility: hidden;
+  pointer-events: none;
+  z-index: -1;
+}
+@media (max-width: 420px) {
+  .game-loading {
+    min-height: 400px;
+    padding: 24px 14px;
+  }
+  .game-loading-content li {
+    padding: 8px;
+  }
+}

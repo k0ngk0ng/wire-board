@@ -129,7 +129,10 @@ export function Board({
   useEffect(() => {
     const tick = () =>
       setNow(
-        clock.serverNow + Math.max(0, performance.now() - clock.receivedAt),
+        clock.serverNow +
+          (clock.paused
+            ? 0
+            : Math.max(0, performance.now() - clock.receivedAt)),
       );
     tick();
     const id = setInterval(tick, 100);

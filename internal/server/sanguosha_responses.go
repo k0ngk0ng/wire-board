@@ -5,7 +5,7 @@ import "time"
 // Resume obsolete empty response windows saved before capability filtering.
 // Game rules own eligibility; this adapter only restores the appropriate clock.
 func (r *Room) resumeSanguoshaResponses(now time.Time) bool {
-	if r.Status != "playing" || r.Game == nil || r.Game.Sanguosha == nil {
+	if r.Loading != nil || r.Status != "playing" || r.Game == nil || r.Game.Sanguosha == nil {
 		return false
 	}
 	lastActive := r.LastActive
