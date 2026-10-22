@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"reflect"
+	"strings"
 	"testing"
 	"testing/fstest"
 )
@@ -60,5 +61,25 @@ func TestPublicVersionCDNAssetsHTTP(t *testing.T) {
 	}
 	if !reflect.DeepEqual(got.Assets, []string{base + "index-abcdefgh.css", base + "index-abcdefgh.js"}) {
 		t.Fatal(got.Assets)
+	}
+}
+
+// External compiled modules must pass CSP without trusting arbitrary image hosts.
+func TestFrontendCDNPolicyHTTP(t *testing.T) {
+	s, e := New(Config{DataDir: t.TempDir(), InviteCode: "cdn-csp-test", AssetsBaseURL: "https://images.example.test/media"}, fstest.MapFS{"index.html": {Data: []byte("page")}})
+	if e != nil {
+		t.Fatal(e)
+	}
+	defer s.Close()
+	w := httptest.NewRecorder()
+	s.Handler().ServeHTTP(w, httptest.NewRequest("GET", "/", nil))
+	csp := w.Header().Get("Content-Security-Policy")
+	for _, part := range []string{"script-src 'self' 'wasm-unsafe-eval' https://cdn.ichenj.com;", "style-src 'self' 'unsafe-inline' https://cdn.ichenj.com;", "font-src 'self' https://cdn.ichenj.com;"} {
+		if !strings.Contains(csp, part) {
+			t.Fatal(csp)
+		}
+	}
+	if strings.Contains(csp, "script-src 'self' 'wasm-unsafe-eval' https://images.example.test") || strings.Contains(csp, "'unsafe-eval'") {
+		t.Fatal("unexpected script trust", csp)
 	}
 }

@@ -2,7 +2,7 @@
 """Publish immutable compiled assets, verify CDN responses, then trim packaging.
 Only main's verified source uses credentials. Tags reuse the unchanged binary.
 """
-import argparse,base64,concurrent.futures,hashlib,hmac,json,os,re,shutil
+import argparse,base64,concurrent.futures,gzip,hashlib,hmac,json,os,re,shutil
 from email.utils import formatdate
 from pathlib import Path
 from urllib.request import Request,urlopen
@@ -23,11 +23,20 @@ def inventory(dist,base):
   if p.suffix=='.gz':continue # CDN negotiates compression; publish canonical bytes.
   if p.suffix not in MIME:raise ValueError('Unexpected public asset type: '+p.name)
   data=p.read_bytes();rel=p.relative_to(dist).as_posix()
-  rows.append({'url':base+rel,'path':rel,'bytes':len(data),'sha256':sha(data),'mime':MIME[p.suffix]})
+  encoding='gzip' if p.suffix in ('.js','.css','.svg') else ''
+  rows.append({'url':base+rel,'path':rel,'bytes':len(data),'sha256':sha(data),'mime':MIME[p.suffix],'encoding':encoding,'wireBytes':len(gzip.compress(data,mtime=0)) if encoding else len(data)})
  if not rows:raise ValueError('No compiled assets')
  return rows
 
+def decoded(body,headers):
+ if headers.get('Content-Encoding')=='gzip':
+  try:return gzip.decompress(body)
+  except (OSError,EOFError) as e:raise ValueError('Invalid gzip response') from e
+ return body
+
 def validate_response(row,body,headers):
+ if row.get('encoding') and headers.get('Content-Encoding')!=row['encoding']:raise ValueError('CDN compression missing: '+row['url'])
+ body=decoded(body,headers)
  mime=headers.get('Content-Type','').split(';')[0].lower()
  compatible={row['mime']}
  if row['mime']=='text/javascript':compatible.add('application/javascript')
@@ -61,21 +70,26 @@ def publish(dist,rows,bucket,endpoint):
   signature=base64.b64encode(hmac.new(secret.encode(),canonical.encode(),hashlib.sha1).digest()).decode()
   get=Request(url,headers={'Date':date,'Authorization':f'OSS {key_id}:{signature}'})
   try:
-   with urlopen(get,timeout=45) as r:existing=r.read()
+   with urlopen(get,timeout=45) as r:
+    existing=decoded(r.read(),r.headers)
+    if row.get('encoding') and r.headers.get('Content-Encoding')!=row['encoding']:raise ValueError('Immutable encoding differs: '+key)
    if sha(existing)!=row['sha256']:raise ValueError('Immutable object already differs: '+key)
    return
   except HTTPError as e:
    if e.code!=404:raise
-  body=(dist/row['path']).read_bytes();md5=base64.b64encode(hashlib.md5(body).digest()).decode();date=formatdate(usegmt=True)
+  body=(dist/row['path']).read_bytes()
+  if row['encoding']:body=gzip.compress(body,mtime=0)
+  md5=base64.b64encode(hashlib.md5(body).digest()).decode();date=formatdate(usegmt=True)
   canonical=f'PUT\n{md5}\n{row["mime"]}\n{date}\nx-oss-forbid-overwrite:true\n/{bucket}/{key}'
   signature=base64.b64encode(hmac.new(secret.encode(),canonical.encode(),hashlib.sha1).digest()).decode()
   request=Request(url,data=body,method='PUT',headers={'Content-MD5':md5,'Content-Type':row['mime'],'Date':date,'x-oss-forbid-overwrite':'true','Cache-Control':'public, max-age=31536000, immutable','Authorization':f'OSS {key_id}:{signature}'})
+  if row['encoding']:request.add_header('Content-Encoding',row['encoding'])
   with urlopen(request,timeout=45) as r:
    if r.status!=200:raise ValueError('Upload failed: '+key)
  with concurrent.futures.ThreadPoolExecutor(max_workers=6) as pool:list(pool.map(upload,rows))
 
 def verify(row):
- with urlopen(Request(row['url'],headers={'Origin':'https://bga.ichenj.com','Accept-Encoding':'identity'}),timeout=60) as r:validate_response(row,r.read(),r.headers)
+ with urlopen(Request(row['url'],headers={'Origin':'https://bga.ichenj.com','Accept-Encoding':'gzip'}),timeout=60) as r:validate_response(row,r.read(),r.headers)
  return row
 
 def main():

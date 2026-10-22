@@ -227,7 +227,7 @@ func TestAssetURLValidationAndCSP(t *testing.T) {
 	}
 	defer response.Body.Close()
 	csp := response.Header.Get("Content-Security-Policy")
-	if !strings.Contains(csp, "media-src 'self' data: https://assets.example.com https://cdn.ichenj.com;") || !strings.Contains(csp, "img-src 'self' data: https://assets.example.com https://cdn.ichenj.com;") || !strings.Contains(csp, "script-src 'self' 'wasm-unsafe-eval';") || !strings.Contains(csp, "connect-src 'self' https://assets.example.com https://cdn.ichenj.com;") || strings.Contains(csp, "'unsafe-eval'") {
+	if !strings.Contains(csp, "media-src 'self' data: https://assets.example.com https://cdn.ichenj.com;") || !strings.Contains(csp, "img-src 'self' data: https://assets.example.com https://cdn.ichenj.com;") || !strings.Contains(csp, "script-src 'self' 'wasm-unsafe-eval' https://cdn.ichenj.com;") || !strings.Contains(csp, "connect-src 'self' https://assets.example.com https://cdn.ichenj.com;") || strings.Contains(csp, "'unsafe-eval'") {
 		t.Fatal("incorrect Wasm and asset-fetch CSP", csp)
 	}
 }
@@ -243,7 +243,7 @@ func TestDefaultAssetCSPAllowsImmutableOSS(t *testing.T) {
 	}
 	defer response.Body.Close()
 	csp := response.Header.Get("Content-Security-Policy")
-	for _, part := range []string{"connect-src 'self' https://cdn.ichenj.com;", "img-src 'self' data: https://cdn.ichenj.com;", "media-src 'self' data: https://cdn.ichenj.com;", "script-src 'self' 'wasm-unsafe-eval';"} {
+	for _, part := range []string{"connect-src 'self' https://cdn.ichenj.com;", "img-src 'self' data: https://cdn.ichenj.com;", "media-src 'self' data: https://cdn.ichenj.com;", "script-src 'self' 'wasm-unsafe-eval' https://cdn.ichenj.com;"} {
 		if !strings.Contains(csp, part) {
 			t.Fatal("missing pinned OSS policy", csp)
 		}
