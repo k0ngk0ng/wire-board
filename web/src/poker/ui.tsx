@@ -279,7 +279,12 @@ export function Hand({
   return (
     <div
       className="poker-hand"
-      style={{ minHeight: 16 + reservedRows * (cardWidth * 1.4 + 16) }}
+      style={{
+        minHeight:
+          32 +
+          Math.max(0, reservedRows - 1) * cardWidth * 0.9 +
+          cardWidth * 1.4,
+      }}
       ref={ref}
       data-seat={seat}
       aria-label="你的手牌"

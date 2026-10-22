@@ -76,6 +76,19 @@ createRoot(document.getElementById("root")!).render(<App/>);
     if deltas:report['failures'].append({**check,'deltas':deltas[:6]})
     assert js('document.documentElement.scrollWidth<=innerWidth+1'),'page overflow'
     if mode in ['idle','long','empty']:b('screenshot',str(out/f'{game}-{width}-{mode}.png'),'--full')
+   # Compact hand rows overlap artwork, keeping the exposed index clickable
+   # even after a card in the following row is lifted by selection.
+   js(f'transitionPoker({json.dumps(game)},"idle")')
+   overlap=js('''(()=>{const rs=[...document.querySelectorAll('.poker-hand-row')];if(rs.length<2)return null;return {step:rs[1].getBoundingClientRect().top-rs[0].getBoundingClientRect().top,height:rs[0].querySelector('button').getBoundingClientRect().height};})()''')
+   if overlap:assert overlap['step']<overlap['height']*.75,overlap
+   rows=js('document.querySelectorAll(".poker-hand-row").length')
+   if rows>1:
+    b('focus','.poker-hand-row:last-child button:first-child');b('press','Enter')
+   for row in range(rows):
+    selector=f'.poker-hand-row:nth-child({row+1})';b('scrollintoview',selector)
+    hits=js('''[...document.querySelectorAll('''+json.dumps(selector)+'''+ ' button')].map(e=>{const r=e.getBoundingClientRect();return e.contains(document.elementFromPoint(r.x+8,r.y+22));})''')
+    assert all(hits),(game,width,row,hits)
+   report['interaction'].append({'game':game,'width':width,'overlap':overlap,'allHandCornersClickable':True})
    # Native input and actual Board action callbacks must preserve the regions.
    js(f'transitionPoker({json.dumps(game)},"idle")')
    b('scrollintoview','.poker-hand');r=js('document.querySelector(".poker-hand button").getBoundingClientRect().toJSON()')

@@ -272,15 +272,20 @@
 }
 .poker-hand-row {
   position: relative;
-  margin: 0 auto 16px;
-  height: calc(var(--card-width) * 1.4);
+  margin: 0 auto;
+  height: calc(var(--card-width) * 0.9);
+  isolation: isolate;
   max-width: 100%;
+}
+.poker-hand-row:last-child {
+  height: calc(var(--card-width) * 1.4);
+  margin-bottom: 16px;
 }
 .poker-hand-row button {
   position: absolute;
   top: 0;
   width: var(--card-width);
-  height: 100%;
+  height: calc(var(--card-width) * 1.4);
   padding: 0;
   border: 0;
   border-radius: 5px;
