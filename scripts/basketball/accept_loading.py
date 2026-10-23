@@ -2,7 +2,7 @@
 from pathlib import Path
 import json,os,subprocess,uuid
 ROOT=Path(__file__).resolve().parents[2];OUT=Path(os.environ.get('BASKETBALL_BROWSER_OUTPUT',str(ROOT/'.local/basketball/platform-rooms'))).resolve();assert OUT.is_relative_to((ROOT/'.local/basketball').resolve());OUT.mkdir(parents=True,exist_ok=True)
-env=dict(os.environ,AGENT_BROWSER_SESSION='bkl-'+uuid.uuid4().hex[:6],AGENT_BROWSER_SOCKET_DIR=str((ROOT/'.local/basketball').resolve()/'bl-sockets'),TMPDIR=str(ROOT/'.local/tmp'),NODE_PATH=str(ROOT/'web/node_modules'))
+env=dict(os.environ,AGENT_BROWSER_SESSION='bkl-'+uuid.uuid4().hex[:6],AGENT_BROWSER_SOCKET_DIR=os.environ.get('AGENT_BROWSER_SOCKET_DIR',str(ROOT/'.local/bl-sockets')),TMPDIR=str(ROOT/'.local/tmp'),NODE_PATH=str(ROOT/'web/node_modules'))
 Path(env['AGENT_BROWSER_SOCKET_DIR']).mkdir(exist_ok=True)
 base=env['BASKETBALL_HTTP_URL'];checks=[];opened=False;inspector=None
 def browser(*args):
@@ -48,18 +48,18 @@ try:
   const reader=response.body.getReader();
   return new Response(new ReadableStream({async pull(c){await new Promise(r=>setTimeout(r,25));const next=await reader.read();if(next.done)c.close();else c.enqueue(next.value)},cancel(){return reader.cancel()}}),{status:response.status,headers:response.headers});
  };
- setInterval(()=>{const p=document.querySelector('.basketball-loading progress');if(p)progressSamples.push({value:p.value,at:performance.now()})},30);"""
+ setInterval(()=>{const p=document.querySelector('.game-loading progress,.basketball-loading progress');if(p)progressSamples.push({value:p.value,at:performance.now()})},30);"""
  cdp('Page.enable');cdp('Page.addScriptToEvaluateOnNewDocument',dict(source=bootstrap));js(bootstrap)
  wait('!!document.querySelector("input[name=name]")')
  browser('fill','input[name=name]','牌局管理员');browser('fill','input[name=password]','poker-test-password');browser('click','.auth-form button[type=submit], .auth-form button.primary')
- wait('!!document.querySelector(".basketball-error")')
+ wait('!!document.querySelector(".game-loading [role=alert],.basketball-error")')
  state=js('fetch("/api/state").then(r=>r.json())');room=state['room'];epoch=room['game']['data']['epoch']
- expect('failed graphics keep original match at video zero',room['game']['data']['phase']=='loading' and room['game']['data']['runtime']['videoFrames']==0)
+ expect('failed graphics keep original match at video zero',room['game']['data']['phase']=='loading' and room['game']['data']['frame']==0)
  browser('set','viewport','320','720');browser('screenshot',str(OUT/'load-error-mobile.png'))
- browser('find','role','button','click','--name','重新连接')
+ browser('find','role','button','click','--name','重试加载' if js('!!document.querySelector(".game-loading [role=alert]")') else '重新连接')
  wait('document.querySelector("[data-basketball-ready=true]") && document.querySelector("progress")?.value===100')
  wait('document.querySelector(".basketball-loading").textContent.includes("等待：牌局玩家1")')
- expect('loaded first player waits for second human',js('fetch("/api/state").then(r=>r.json()).then(s=>s.room.game.data.phase==="loading" && s.room.game.data.runtime.videoFrames===0 && s.room.game.data.loading.ready[0] && !s.room.game.data.loading.ready[2])'))
+ expect('loaded first player waits for second human',js('fetch("/api/state").then(r=>r.json()).then(s=>s.room.game.data.phase==="loading" && s.room.game.data.frame===0 && s.room.game.data.loading.ready[0] && !s.room.game.data.loading.ready[2])'))
  expect('actual download produces intermediate progress',js('progressSamples.some(p=>p.value>0&&p.value<100)'))
  expect('320px loading UI fits horizontally',js('document.documentElement.scrollWidth<=innerWidth'))
  browser('screenshot',str(OUT/'waiting-player-mobile.png'))
@@ -77,10 +77,10 @@ try:
  other=request('/state')['room'];request('/rooms/'+room['id'],{'type':'action','version':other['version'],'nonce':'loading-peer-ack-001','action':{'type':'loaded','epoch':epoch}})
  wait('Number(document.querySelector(".basketball-stage canvas")?.dataset.videoFrame)>=120')
  expect('second acknowledgement starts original game',js('!document.querySelector(".basketball-loading") && !document.querySelector(".basketball-error")'))
- before=request('/state')['room']['game']['data']['runtime']['videoFrames']
+ before=request('/state')['room']['game']['data']['frame']
  browser('reload');wait('!!document.querySelector("[data-basketball-ready=true]")')
  after=request('/state')['room']['game']['data']
- expect('reloading active player does not restart barrier or match',after['phase']!='loading' and after['epoch']==epoch and after['runtime']['videoFrames']>before)
+ expect('reloading active player does not restart barrier or match',after['phase']!='loading' and after['epoch']==epoch and after['frame']>before)
  browser('screenshot',str(OUT/'playing-after-reload.png'))
  (OUT/'result.json').write_text(json.dumps(dict(status='passed',checks=checks,requests=requests,progress=samples,scope='production UI and actual host; verified OSS bytes mirrored for loopback CORS, controlled slow transfer/image failure; no production network timing claim'),ensure_ascii=False,indent=2)+'\n')
  print(json.dumps(checks,ensure_ascii=False))

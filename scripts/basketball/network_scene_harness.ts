@@ -7,7 +7,7 @@ import {
   BasketballRenderer,
   loadBasketballAssets,
 } from "../../games/basketball/web/renderer";
-import type { BasketballRuntimeView } from "../../games/basketball/web/client";
+import type { BasketballRuntimeState, BasketballRuntimeView } from "../../games/basketball/web/client";
 
 // Acceptance specified before the network scene. These are actual Go module
 // snapshots and real browser Wasm, with an explicitly synthetic audio schedule.
@@ -27,11 +27,14 @@ async function run() {
     loadBasketballAssets("/assets"),
     fetch("/host-views.json").then((r) => r.json()),
   ]);
-  const views = fixture.views as BasketballNetworkView[];
+  type DiagnosticView=BasketballNetworkView & {runtime:BasketballRuntimeState};
+  const unpack=(data:any):DiagnosticView[]=>data.views.map((view:BasketballNetworkView,index:number)=>({...view,runtime:data.checkpoints[index].state}));
+  const views=unpack(fixture);
+  const install=(scene:BasketballNetworkScene,view:DiagnosticView,version:number,now:number)=>scene.bootstrap({version:1,state:view.runtime},view,version,now);
   const renderer = new BasketballRenderer(canvas, assets);
   const render = (frame: {
     frame: number;
-    display: BasketballNetworkView["runtime"]["display"];
+    display: BasketballRuntimeState["display"];
   }) => {
     frames.push(frame.frame);
     const d = frame.display;
@@ -53,7 +56,7 @@ async function run() {
       soundFrames.push(frames.at(-1)!);
     },
   });
-  scene.update(views[0], 0, 0);
+  install(scene,views[0],0,0);
   check(
     "initial/reset playback receives the current authoritative music state",
     JSON.stringify(musicResets[0]) === JSON.stringify(views[0].music) &&
@@ -116,7 +119,7 @@ async function run() {
     controller: 0,
     onFrame: render,
   });
-  local.update(views[0], 0, 0);
+  install(local,views[0],0,0);
   for (let n = 1; n <= 10; n++) local.tick((n * 1000) / 60, () => 1);
   const reference = engine.request<BasketballRuntimeView>({
     op: "restore",
@@ -158,27 +161,30 @@ async function run() {
   local.dispose();
 
   const recovery = new BasketballNetworkScene({ engine, onFrame: render });
-  recovery.update(views[0], 0, 0);
+  install(recovery,views[0],0,0);
   const gap = structuredClone(views[3]);
-  gap.videoInputs = [];
+  gap.replay = {from:0,runs:[]};
   recovery.update(gap, 3, 300);
   check(
     "missing video history resets to authority instead of inventing intermediate play",
-    recovery.resetReason === "gap" && frames.at(-1) === gap.runtime.videoFrames,
+    recovery.resetReason === "gap" && recovery.needsCheckpoint,
   );
+  install(recovery,gap,3,300);
   const newEpoch = { ...views[0], epoch: "new-match" };
   recovery.update(newEpoch, 0, 400);
+  check("new epoch requests an explicit recovery",recovery.resetReason==="epoch"&&recovery.needsCheckpoint);
+  install(recovery,newEpoch,0,400);
   check(
     "new epoch resets frame and audio watermarks",
     frames.at(-1) === newEpoch.runtime.videoFrames &&
-      recovery.resetReason === "epoch",
+      recovery.resetReason === "checkpoint",
   );
   recovery.tick(1000);
   recovery.update({ ...views[3], epoch: "new-match" }, 3, 1001);
   check(
     "resuming after a long browser suspension uses the newest authority immediately",
     frames.at(-1) === views[3].runtime.videoFrames &&
-      recovery.resetReason === "resume",
+      !recovery.needsCheckpoint,
   );
   recovery.dispose();
   const finalCount = frames.length;
@@ -191,18 +197,17 @@ async function run() {
   // Restore/dispose repeatedly must leave no hidden Wasm sessions behind.
   for (let n = 0; n < 24; n++) {
     const s = new BasketballNetworkScene({ engine, onFrame: () => {} });
-    s.update(views[0], 0, 0);
+    install(s,views[0],0,0);
     s.dispose();
   }
   check("scene lifecycle releases Wasm sessions", true);
-  const endings = (await (await fetch("/host-result-views.json")).json())
-    .views as BasketballNetworkView[];
+  const endings=unpack(await(await fetch("/host-result-views.json")).json());
   const ending = new BasketballNetworkScene({
     engine,
     controller: 0,
     onFrame: render,
   });
-  ending.update(endings.at(-2)!, 0, 0);
+  install(ending,endings.at(-2)!,0,0);
   for (let n = 1; n <= 12; n++) ending.tick((n * 1000) / 60, () => 0);
   check(
     "predicted result reaches the original parked boundary",
@@ -221,16 +226,16 @@ async function run() {
   );
   ending.dispose();
   // Same-frame menu edits are server authority even without a new video tick.
-  const preparation = (await (await fetch("/campaign-preparation-views.json")).json())
-    .views as BasketballNetworkView[];
+  const preparation=unpack(await(await fetch("/campaign-preparation-views.json")).json());
   const preparationSounds: number[] = [];
   const preparing = new BasketballNetworkScene({
     engine, controller: 0, onFrame: render,
     onSound: (_ids, sequence) => preparationSounds.push(sequence),
   });
-  preparing.update(preparation[0], 0, 0);
+  install(preparing,preparation[0],0,0);
   for (let index = 1; index <= 4; index++) {
-    preparing.update(preparation[index], index, index);
+    check("same-frame preparation edit requests explicit checkpoint",!preparing.update(preparation[index], index, index)&&preparing.needsCheckpoint);
+    install(preparing,preparation[index],index,index);
     check(`same-frame campaign preparation revision ${index} reaches Go/Wasm`,
       preparing.predictedState?.videoFrames === preparation[0].runtime.videoFrames &&
       JSON.stringify(preparing.predictedState?.campaignPreparation) ===

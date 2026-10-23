@@ -1,4 +1,4 @@
-import { DisplayReconciliation } from "./reconciliation";
+import { DisplayReconciliation } from "./reconciliation.ts";
 import type { BasketballCheckpoint, BasketballRuntimeState } from "./client";
 import type { BasketballWasm } from "./wasm";
 import type { BasketballMusicState } from "./audio";
@@ -123,6 +123,7 @@ export class BasketballNetworkScene {
   private ownSamples = new Map<number, number>();
   private waitingForSnapshot = false;
   private afterGap = false;
+  private recoveringPresentation = false;
   private reason = "";
   private smoothing = new DisplayReconciliation();
   private lastPresented?: BasketballVideoFrame;
@@ -184,6 +185,7 @@ export class BasketballNetworkScene {
     view: BasketballNetworkView,
     version: number,
     now: number,
+    deferPresentation = false,
   ): void {
     if (this.closed) return;
     if (
@@ -218,11 +220,30 @@ export class BasketballNetworkScene {
     this.receivedAt = this.lastTickAt = now;
     this.nextPlaybackAt = now + frameMS;
     this.reason = "checkpoint";
+    this.recoveringPresentation = deferPresentation;
     this.smoothing.reset();
     this.lastPresented = undefined;
-    this.options.onReset?.(view.soundSequence, view.music);
-    if (this.predicting) this.predicted = this.fork();
-    this.present(next);
+    if (!deferPresentation) {
+      this.options.onReset?.(view.soundSequence, view.music);
+      if (this.predicting) this.predicted = this.fork();
+      this.present(next);
+    }
+  }
+  finishRecovery(now: number): void {
+    if (!this.confirmed || !this.authority || this.waitingForSnapshot)
+      throw Error("Recovery is incomplete");
+    this.recoveringPresentation = false;
+    this.afterGap = false;
+    this.queue = [];
+    this.pendingSounds = [];
+    this.ownSamples.clear();
+    this.localButtons = 0;
+    this.smoothing.reset();
+    this.soundWatermark = this.authority.soundSequence;
+    this.lastTickAt = this.receivedAt = now;
+    this.nextPlaybackAt = now + frameMS;
+    this.options.onReset?.(this.soundWatermark, this.authority.music);
+    this.present(this.confirmed);
   }
   private recover(reason: string): false {
     if (!this.waitingForSnapshot) {
@@ -277,9 +298,9 @@ export class BasketballNetworkScene {
           latches: view.latches,
           compact: true,
           verify: true,
-          captureFrames: !(
-            this.options.controller !== undefined && view.canInput
-          ),
+          captureFrames:
+            !this.recoveringPresentation &&
+            !(this.options.controller !== undefined && view.canInput),
         });
         if (result.frame !== view.frame) return this.recover("gap");
         if (result.digest !== view.digest) return this.recover("checksum");

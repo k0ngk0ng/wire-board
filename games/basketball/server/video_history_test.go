@@ -13,6 +13,7 @@ import (
 
 	"github.com/k0ngk0ng/wire-board/games/basketball/engine"
 	"github.com/k0ngk0ng/wire-board/games/basketball/runtimebridge"
+	game "github.com/k0ngk0ng/wire-board/games/basketball/server"
 )
 
 func TestHostVideoHistoryReplaysExactInputAndHandoff(t *testing.T) {
@@ -131,6 +132,20 @@ func TestHostVideoHistoryReplaysExactInputAndHandoff(t *testing.T) {
 
 func writeVideoFixture(t *testing.T, name string, value any) {
 	t.Helper()
+	if payload, ok := value.(map[string]any); ok && payload["checkpoints"] == nil {
+		if views, ok := payload["views"].([]any); ok {
+			var checkpoints []runtimebridge.Checkpoint
+			for _, view := range views {
+				if v, ok := view.(game.View); ok {
+					checkpoints = append(checkpoints, runtimebridge.Checkpoint{Version: 1, State: v.Runtime})
+				}
+			}
+			if len(checkpoints) == len(views) {
+				payload["checkpoints"] = checkpoints
+			}
+		}
+	}
+
 	root, err := filepath.Abs("../../..")
 	if err != nil {
 		t.Fatal(err)

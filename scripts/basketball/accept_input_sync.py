@@ -62,6 +62,26 @@ try:
  expect('actual game stream remains below 40KB/s',bytes_per_second<40000)
  expect('desktop animation frames have p95 below 35ms',p95<35)
  expect('network reconciliation has no instant walking jump over two source pixels',max(corrections,default=0)<=2)
+ # Exercise held directions, normal actions, simultaneous A+B and turbo over
+ # several replay windows; input release must not cause checksum recovery.
+ combat_start=js('performance.now()');combat_frame=js('networkBoard.room.game.data.frame')
+ combat_checkpoints=js('networkBoard.checkpoints.length');combat_sent=js('networkBoard.sent.length')
+ for direction,letter,number in [('KeyD','d',68),('KeyA','a',65)]*2:
+  key('keyDown',direction,letter,number)
+  for buttons in [[('KeyJ','j',74)],[('KeyK','k',75)],[('KeyJ','j',74),('KeyK','k',75)],[('KeyU','u',85),('KeyI','i',73)]]:
+   for code,label,virtual in buttons:key('keyDown',code,label,virtual)
+   js('new Promise(r=>setTimeout(r,400))')
+   for code,label,virtual in reversed(buttons):key('keyUp',code,label,virtual)
+   js('new Promise(r=>setTimeout(r,150))')
+  key('keyUp',direction,letter,number)
+ js('new Promise(r=>setTimeout(r,1000))')
+ combat_end=js('performance.now()');combat_packets=js('networkBoard.packets').copy()
+ combat_traffic=[p for p in combat_packets if p['type']=='game' and combat_start<=p['at']<=combat_end]
+ combat_bps=sum(p['bytes'] for p in combat_traffic)/((combat_end-combat_start)/1000)
+ expect('continuous action and turbo inputs are acknowledged',js('networkBoard.sent.slice('+str(combat_sent)+').length>20 && networkBoard.sent.slice('+str(combat_sent)+').every(p=>p.ackAt!==undefined)'))
+ expect('continuous combat advances authority without full recovery',js('networkBoard.room.game.data.frame>'+str(combat_frame+200)+' && networkBoard.checkpoints.length==='+str(combat_checkpoints)))
+ expect('combat stream remains compact',combat_bps<40000 and all(not p['full'] for p in combat_traffic))
+ expect('combat leaves no client error or stuck input',js('networkBoard.errors.length===0 && networkBoard.room.game.data.inputs[0].buttons===0 && !document.querySelector(".basketball-error")'))
  browser('screenshot',str(OUT/'playing-desktop.png'))
  browser('set','viewport','320','720');cdp('Emulation.setTouchEmulationEnabled',dict(enabled=True,maxTouchPoints=2))
  point=js('(()=>{const r=document.querySelector("[data-controller-button=right]").getBoundingClientRect();return{x:r.x+r.width/2,y:r.y+r.height/2}})()')
@@ -75,7 +95,7 @@ try:
  js('new Promise(r=>setTimeout(r,1000))');after=js('networkBoard.checkpoints.length')
  expect('reconnection fetches one explicit checkpoint',after==before+1)
  expect('reconnection leaves the match running',js('networkBoard.room.game.data.phase==="playing" && !document.querySelector(".basketball-error")'))
- record=dict(status='passed',checks=checks,metrics=dict(cpuThrottle=cpu,rttMS=int(env.get('BASKETBALL_BROWSER_RTT_MS','0')),sameFrameCorrectionCount=len(corrections),maxSameFrameCorrectionPixels=max(corrections,default=0),gameBytesPerSecond=bytes_per_second,packetCount=len(traffic),frameP95MS=p95,localMoveMS=motion['elapsed'],initialCheckpoints=initial,steadyCheckpoints=current),motion=motion,packets=packets,frameTimes=times,paints=paints,scope='real Board and native input with production StreamInputs/stream merge and actual Go WS server; fixture outer page/audio sink; raw websocket message bytes before compression')
+ record=dict(status='passed',checks=checks,metrics=dict(cpuThrottle=cpu,rttMS=int(env.get('BASKETBALL_BROWSER_RTT_MS','0')),sameFrameCorrectionCount=len(corrections),maxSameFrameCorrectionPixels=max(corrections,default=0),gameBytesPerSecond=bytes_per_second,combatBytesPerSecond=combat_bps,combatDurationMS=combat_end-combat_start,packetCount=len(traffic),frameP95MS=p95,localMoveMS=motion['elapsed'],initialCheckpoints=initial,steadyCheckpoints=current),motion=motion,packets=combat_packets,frameTimes=times,paints=paints,scope='real Board and native input with production StreamInputs/stream merge and actual Go WS server; fixture outer page/audio sink; raw websocket message bytes before compression')
  (OUT/'result.json').write_text(json.dumps(record,ensure_ascii=False,indent=2)+'\n');print(json.dumps(dict(status='passed',checks=checks,metrics=record['metrics']),ensure_ascii=False))
 except Exception as error:
  (OUT/'result.json').write_text(json.dumps(dict(status='failed',checks=checks,error=repr(error)),ensure_ascii=False,indent=2)+'\n')

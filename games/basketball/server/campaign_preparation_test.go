@@ -188,7 +188,11 @@ func TestHostCampaignPreparationCommitRestore(t *testing.T) {
 			if err := os.MkdirAll(dir, 0755); err != nil {
 				t.Fatal(err)
 			}
-			data, err := json.Marshal(map[string]any{"scope": "controlled source-backed halftime; actual module edits, restore and timer; not campaign room entry", "views": views})
+			checkpoints := make([]map[string]any, 0, len(views))
+			for _, view := range views {
+				checkpoints = append(checkpoints, map[string]any{"version": 1, "state": view.(View).Runtime})
+			}
+			data, err := json.Marshal(map[string]any{"scope": "controlled source-backed halftime; actual module edits, restore and timer; not campaign room entry", "views": views, "checkpoints": checkpoints})
 			if err != nil {
 				t.Fatal(err)
 			}

@@ -89,6 +89,8 @@ export class BasketballNetworkClient {
   };
   private courtLoading = false;
   private syncing = false;
+  private syncViews: Array<{ view: BasketballNetworkView; version: number }> =
+    [];
   private syncRequest?: Promise<boolean>;
   private desired?: {
     view: BasketballNetworkView;
@@ -213,54 +215,75 @@ export class BasketballNetworkClient {
   }
   /** Initial entry and explicit recovery only; ordinary snapshots never call
    * this endpoint. The caller owns the client before initialization begins. */
+  private setConnection(value: boolean) {
+    if (this.connection !== value) {
+      this.connection = value;
+      this.options.onConnection?.(value);
+    }
+  }
   initialize(): Promise<boolean> {
     if (this.closed) return Promise.resolve(false);
     if (this.syncRequest) return this.syncRequest;
     this.syncing = true;
+    this.syncViews = [];
     this.enabled = false;
     this.input.setEnabled(false);
     this.scene.cancel();
-    this.options.onConnection?.(false);
+    this.setConnection(false);
     const pending = (async () => {
-      const reply = await this.options.loadCheckpoint();
-      if (this.closed) return false;
-      const { view, checkpoint } = reply.data;
-      if (
-        reply.roomId !== this.options.roomID ||
-        view.epoch !== this.options.epoch ||
-        view.localActor !== (this.options.controller ?? -1)
-      )
-        throw Error("对局或控制席位已改变");
-      await this.renderer.ensureCourt(view.court);
-      if (this.closed) return false;
-      this.clock = this.desired?.clock;
-      this.musicState = view.music;
-      this.hasAuthority = true;
-      this.scene.bootstrap(
-        checkpoint,
-        { ...view, canInput: false },
-        reply.version,
-        performance.now(),
-      );
-      this.viewVersion = reply.version;
-      this.syncing = false;
-      const desired = this.desired;
-      if (desired && desired.version >= reply.version)
-        this.update(
-          desired.view,
-          desired.version,
-          desired.enabled,
-          desired.clock,
-        );
-      else
-        this.update(
-          view,
+      for (let attempt = 0; attempt < 3; attempt++) {
+        const reply = await this.options.loadCheckpoint();
+        if (this.closed) return false;
+        const { view, checkpoint } = reply.data;
+        if (
+          reply.roomId !== this.options.roomID ||
+          view.epoch !== this.options.epoch ||
+          view.localActor !== (this.options.controller ?? -1)
+        )
+          throw Error("对局或控制席位已改变");
+        await this.renderer.ensureCourt(view.court);
+        if (this.closed) return false;
+        this.clock = this.desired?.clock;
+        this.musicState = view.music;
+        this.hasAuthority = true;
+        this.scene.bootstrap(
+          checkpoint,
+          { ...view, canInput: false },
           reply.version,
-          desired?.enabled ?? false,
-          desired?.clock,
+          performance.now(),
+          true,
         );
-      this.options.onConnection?.(true);
-      return true;
+        let latest = { view, version: reply.version },
+          complete = true;
+        const received = this.syncViews;
+        this.syncViews = [];
+        for (const item of received) {
+          if (item.version <= latest.version || item.view.epoch !== view.epoch)
+            continue;
+          if (
+            !this.scene.update(
+              { ...item.view, canInput: false },
+              item.version,
+              performance.now(),
+            )
+          ) {
+            complete = false;
+            break;
+          }
+          latest = item;
+        }
+        if (!complete) continue;
+        this.scene.finishRecovery(performance.now());
+        const enabled = this.desired?.enabled ?? false,
+          clock = this.desired?.clock;
+        this.viewVersion = latest.version;
+        this.desired = { ...latest, enabled, clock };
+        this.syncing = false;
+        this.update(latest.view, latest.version, enabled, clock);
+        this.setConnection(true);
+        return true;
+      }
+      throw Error("同步数据未能及时接续，请重新连接。");
     })();
     this.syncRequest = pending;
     void pending
@@ -292,7 +315,12 @@ export class BasketballNetworkClient {
     if (this.closed) return;
     if (!this.desired || version >= this.desired.version)
       this.desired = { view, version, enabled, clock };
-    if (this.syncing) return;
+    if (this.syncing) {
+      if (!this.syncViews.length || version > this.syncViews.at(-1)!.version)
+        this.syncViews.push({ view, version });
+      if (this.syncViews.length > 64) this.syncViews.shift();
+      return;
+    }
     // A checkpoint can be newer than React's current room snapshot. Apply
     // local enable/disable immediately against that newer authority instead
     // of waiting for another network frame (notably after switching users).
@@ -408,10 +436,7 @@ export class BasketballNetworkClient {
         !this.syncing &&
         !this.scene.needsCheckpoint &&
         (!this.enabled || this.transport.connected);
-      if (connected !== this.connection) {
-        this.connection = connected;
-        this.options.onConnection?.(connected);
-      }
+      this.setConnection(connected);
     } catch (error) {
       this.input.cancel();
       this.options.onError(error);
@@ -472,6 +497,7 @@ export class BasketballNetworkClient {
   dispose(): void {
     if (this.closed) return;
     this.closed = true;
+    this.syncViews = [];
     this.audioGeneration++;
     window.removeEventListener("pointerdown", this.recoverOnGesture, true);
     window.removeEventListener("keydown", this.recoverOnGesture, true);
