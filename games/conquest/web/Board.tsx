@@ -1,71 +1,59 @@
 import {
   useEffect,
   useId,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
-  type CSSProperties,
 } from "react";
 import {
-  ArrowRight,
+  Binoculars,
+  Castle,
   Check,
-  ChevronDown,
+  Coins,
   Crown,
   Flag,
+  Footprints,
   Minus,
+  Pause,
+  Play,
   Plus,
   RotateCcw,
   ScrollText,
-  Shield,
-  Ship,
+  ShieldMinus,
+  Swords,
+  Trash2,
+  UserPlus,
   X,
 } from "lucide-react";
 import type { BoardProps } from "../../../web/src/game-api/module";
 import { Modal } from "../../../web/src/ui/board-host";
-import { mapPoint, viewPoint } from "./camera";
+import { viewPoint, visibleCameraRect } from "./camera";
 import { useCamera } from "./useCamera";
-import { recruitLimit, moveLimit, wholeAmount } from "./action-limits";
 import { createCursor, consumeEvents } from "./events";
-import type {
-  ConquestMap,
-  Event,
-  MapProvince,
-  Order,
-  Province,
-  View,
-} from "./types";
+import { halfMarch, quickRecruit } from "./map-actions";
+import { recruitLimit } from "./action-limits";
+import { useHoldAction } from "./hold-action";
+import type { ConquestMap, Event, MapProvince, Order, View } from "./types";
 
 const loaders: Record<string, () => Promise<{ default: ConquestMap }>> = {
   world: () => import("../maps/world.json"),
   europe: () => import("../maps/europe.json"),
 };
-const number = (n: number) => (n < 0 ? "?" : n.toLocaleString("zh-CN"));
-const short = (n: number) =>
+const number = (n: number) => n.toLocaleString("zh-CN");
+const force = (n: number) =>
   n < 0
     ? "?"
-    : n >= 100000
-      ? `${(n / 10000).toFixed(0)}万`
-      : n >= 10000
-        ? `${(n / 10000).toFixed(1)}万`
-        : String(n);
-const fallbackColors = [
-  "#aa6553",
-  "#4f889c",
-  "#b99b51",
-  "#79916b",
-  "#8a719b",
-  "#ab7e59",
-  "#58968b",
-  "#a56c86",
-];
-type Tab = "move" | "recruit" | "build" | "state";
+    : n >= 10000
+      ? `${(n / 10000).toFixed(n >= 100000 ? 0 : 1)}万`
+      : String(n);
 
 export function Board(props: BoardProps<View>) {
   const { data, onLoadError, onLoadProgress } = props;
   const [map, setMap] = useState<ConquestMap | null>(null),
     [error, setError] = useState("");
   useEffect(() => {
-    let cancelled = false;
+    let alive = true;
     setMap(null);
     setError("");
     onLoadProgress?.(5, "加载地图");
@@ -78,20 +66,20 @@ export function Board(props: BoardProps<View>) {
     }
     void load()
       .then(({ default: next }) => {
-        if (cancelled) return;
+        if (!alive) return;
         if (next.version !== data.mapVersion || next.sha256 !== data.mapSHA256)
           throw new Error("地图版本与对局不一致，请刷新后重试");
-        onLoadProgress?.(75, "绘制地区与兵力");
+        onLoadProgress?.(75, "绘制地形与军队");
         setMap(next);
       })
       .catch((e: unknown) => {
-        if (cancelled) return;
+        if (!alive) return;
         const message = e instanceof Error ? e.message : "地图加载失败";
         setError(message);
         onLoadError?.(message);
       });
     return () => {
-      cancelled = true;
+      alive = false;
     };
   }, [
     data.mapId,
@@ -128,101 +116,233 @@ function MapBoard({
 }: BoardProps<View> & { map: ConquestMap }) {
   const camera = useCamera(map),
     uid = useId().replaceAll(":", "");
+  const renderCount = useRef(0);
+  renderCount.current++;
   const [selected, setSelected] = useState(""),
     [target, setTarget] = useState(""),
-    [tab, setTab] = useState<Tab>("move");
-  const [amount, setAmount] = useState(1),
-    [recruits, setRecruits] = useState(100),
-    [king, setKing] = useState(false),
-    [tax, setTax] = useState(20);
+    [marching, setMarching] = useState(false),
+    [king, setKing] = useState(false);
   const [notice, setNotice] = useState(""),
     [pending, setPending] = useState(false),
-    [ordersOpen, setOrdersOpen] = useState(false),
+    [plansOpen, setPlansOpen] = useState(false),
+    [financeOpen, setFinanceOpen] = useState(false),
     [resignOpen, setResignOpen] = useState(false);
-  const [activeEvents, setActiveEvents] = useState<Event[]>([]),
-    [frame, setFrame] = useState(0);
-  const eventCursor = useRef(
+  const [tax, setTax] = useState(10),
+    [activeEvents, setActiveEvents] = useState<Event[]>([]);
+  const [marchQueue, setMarchQueue] = useState<
+    {
+      from: string;
+      to: string;
+      king: boolean;
+      epoch: number;
+      session: string;
+    }[]
+  >([]);
+  const awaitedOrder = useRef<{
+    after: number;
+    from: string;
+    to: string;
+    amount: number;
+    king: boolean;
+  } | null>(null);
+  const cursor = useRef(
     createCursor({ events: data.events ?? [], round: data.round }, clock.epoch),
   );
   const latestClock = useRef(clock);
   latestClock.current = clock;
-  const loaded = useRef(false);
-  const provinceById = useMemo(
+  const ready = useRef(false),
+    operation = useRef(false);
+  const landOutline = useMemo(
+    () => map.provinces.map((p) => p.path).join(""),
+    [map],
+  );
+  const geography = useMemo(
     () => new Map(map.provinces.map((p) => [p.id, p])),
     [map],
   );
-  const stateById = useMemo(
+  const provinces = useMemo(
     () => new Map(data.provinces.map((p) => [p.id, p])),
     [data.provinces],
   );
-  const projectedById = useMemo(
-    () => new Map((data.projected ?? []).map((p) => [p.id, p])),
+  const projection = useMemo(
+    () => new Map(data.projected.map((p) => [p.id, p])),
     [data.projected],
   );
-  const mine = data.players[room.you],
-    plan = data.orders ?? [],
-    selectedGeo = provinceById.get(selected);
-  const actual = stateById.get(selected),
-    projected = projectedById.get(selected) ?? actual;
-  const own = !!actual && actual.owner === room.you && !room.spectating;
-  const canPlan =
-    data.controls.canPlan &&
+  const me = data.players[room.you],
+    selectedGeo = geography.get(selected),
+    selectedState = provinces.get(selected),
+    selectedPlan = projection.get(selected) ?? selectedState;
+  const own = selectedState?.owner === room.you && !room.spectating;
+  const controlled =
     !room.spectating &&
     !room.seats[room.you]?.autoPlay &&
+    room.status === "playing";
+  const canPlan =
+    controlled &&
+    data.controls.canPlan &&
     !busy &&
     !pending &&
-    room.status === "playing";
-  const mobile = own ? Math.max(0, projected?.mobile ?? 0) : 0;
-  const maxRecruit = own
-    ? recruitLimit(
-        data.availableGold,
-        data.controls.recruitCost,
-        projected?.population ?? 0,
-        data.availableMovement,
-        data.controls.recruitMovement,
-      )
-    : 0;
-  const reachable = useMemo(
+    marchQueue.length === 0;
+  const adjacent = useMemo(
     () =>
-      selectedGeo
-        ? [...selectedGeo.neighbors, ...selectedGeo.seaNeighbors]
-            .map((id) => provinceById.get(id))
-            .filter((p): p is MapProvince => !!p)
-        : [],
-    [selectedGeo, provinceById],
+      new Set(
+        selectedGeo
+          ? [...selectedGeo.neighbors, ...selectedGeo.seaNeighbors]
+          : [],
+      ),
+    [selectedGeo],
   );
-  const sea = !!selectedGeo?.seaNeighbors.includes(target);
-  const maxMove = moveLimit(
-    mobile,
-    data.availableMovement,
-    data.controls.moveCost,
-    sea,
-    data.availableGold,
-    data.controls.seaCost ?? 0,
-  );
+  const plan = data.orders ?? [];
+  const provinceName = (id?: string) =>
+    geography.get(id ?? "")?.name ?? id ?? "";
   const ownerName = (owner: number) =>
     owner < 0 ? "中立" : (room.seats[owner]?.name ?? "未知势力");
   const color = (owner: number) =>
-    owner < 0
-      ? "#d3d1bb"
-      : data.players[owner]?.color ||
-        fallbackColors[owner % fallbackColors.length];
-  const name = (id?: string) => (id ? (provinceById.get(id)?.name ?? id) : "");
-  const serverNow = () =>
+    owner < 0 ? "#d3d1bb" : (data.players[owner]?.color ?? "#758974");
+  const now = () =>
     latestClock.current.serverNow +
     Math.max(0, performance.now() - latestClock.current.receivedAt);
+  const recruit =
+    own && selectedPlan
+      ? quickRecruit(
+          data.availableGold,
+          selectedPlan.population,
+          selectedPlan.troops,
+          data.availableMovement,
+          data.controls.recruitCost,
+          data.controls.recruitMovement,
+        )
+      : 0;
+  const building = selectedPlan?.fort && !selectedPlan.town ? "town" : "fort";
+  const buildCost =
+    building === "town"
+      ? (data.controls.townCost ?? 75000)
+      : data.controls.fortCost;
+  const buildMovement =
+    building === "town"
+      ? (data.controls.townMovement ?? 5)
+      : data.controls.fortMovement;
+  const canBuild =
+    own &&
+    canPlan &&
+    data.availableGold >= buildCost &&
+    data.availableMovement >= buildMovement &&
+    (building === "town" ? !selectedPlan?.town : !selectedPlan?.fort);
+  const canTower =
+    own &&
+    canPlan &&
+    !!data.controls.canBuildTower &&
+    !selectedPlan?.tower &&
+    data.availableGold >= data.controls.towerCost &&
+    data.availableMovement >= data.controls.towerMovement;
+  const fullRecruit =
+    own && selectedPlan
+      ? Math.max(
+          0,
+          Math.min(
+            999999 - selectedPlan.troops,
+            recruitLimit(
+              data.availableGold,
+              data.controls.recruitCost,
+              selectedPlan.population,
+              data.availableMovement,
+              data.controls.recruitMovement,
+            ),
+          ),
+        )
+      : 0;
+  const holdIdentity = `${data.session}:${data.epoch}:${selected}`;
+  const recruitPress = useHoldAction({
+    enabled: canPlan && own && recruit > 0,
+    identity: holdIdentity,
+    onTap: () => send("recruit", { province: selected, amount: recruit }),
+    onHold: () =>
+      fullRecruit > 0
+        ? send("recruit", { province: selected, amount: fullRecruit })
+        : setNotice("当前无法继续征兵"),
+  });
+  const fortPress = useHoldAction({
+    enabled: canBuild,
+    identity: holdIdentity,
+    onTap: () => send("build", { province: selected, building }),
+    onHold: () => {
+      if (selectedPlan?.town) {
+        setNotice("这块领地已经有城镇");
+        return;
+      }
+      const cost = data.controls.townCost ?? 75000,
+        points = data.controls.townMovement ?? 5;
+      if (
+        !canPlan ||
+        data.availableGold < cost ||
+        data.availableMovement < points
+      ) {
+        setNotice(`建城镇需要 ${number(cost)} 金币和 ${points} 行动点`);
+        return;
+      }
+      return send("build", { province: selected, building: "town" });
+    },
+  });
+  const visibleLabels = useMemo(() => {
+    const candidates = map.provinces.filter((p) => {
+      const s = provinces.get(p.id);
+      return (
+        !!s &&
+        (p.id === selected ||
+          p.id === target ||
+          (s.owner >= 0 && (s.troops > 0 || s.fort)))
+      );
+    });
+    candidates.sort(
+      (a, b) =>
+        (a.id === selected || a.id === target
+          ? 0
+          : provinces.get(a.id)?.owner === room.you
+            ? 1
+            : 2) -
+        (b.id === selected || b.id === target
+          ? 0
+          : provinces.get(b.id)?.owner === room.you
+            ? 1
+            : 2),
+    );
+    const labels: { p: MapProvince; point: { x: number; y: number } }[] = [];
+    for (const p of candidates) {
+      const point = viewPoint(camera.camera, p.label);
+      // Keep known armies mounted outside the viewport too. The SVG clips
+      // them; camera transforms can bring them into view before React settles.
+      if (
+        p.id !== selected &&
+        p.id !== target &&
+        labels.some(
+          (x) =>
+            Math.abs(x.point.x - point.x) < 46 &&
+            Math.abs(x.point.y - point.y) < 28,
+        )
+      )
+        continue;
+      labels.push({ p, point });
+    }
+    return labels;
+  }, [map, provinces, selected, target, camera.camera, camera.size, room.you]);
 
   useEffect(() => {
-    if (loaded.current || camera.size.width < 2) return;
+    if (ready.current || camera.size.width < 2) return;
     let first = 0,
       second = 0,
       alive = true;
     void document.fonts.ready.then(() => {
       if (!alive) return;
+      if (camera.size.width <= 620 && !room.spectating) {
+        const home =
+          geography.get(me?.king ?? "") ??
+          map.provinces.find((p) => provinces.get(p.id)?.owner === room.you);
+        if (home) camera.focus(home.label);
+      }
       first = requestAnimationFrame(() => {
         second = requestAnimationFrame(() => {
           if (!alive) return;
-          loaded.current = true;
+          ready.current = true;
           onLoadProgress?.(100, "地图已就绪");
           onReady?.();
         });
@@ -236,10 +356,10 @@ function MapBoard({
   }, [camera.size.width, onReady, onLoadProgress]);
   useEffect(() => {
     const next = consumeEvents(
-      eventCursor.current,
+      cursor.current,
       { events: data.events ?? [], round: data.round },
       clock.epoch,
-      serverNow(),
+      now(),
       sound && !document.hidden,
       !document.hidden &&
         !matchMedia("(prefers-reduced-motion: reduce)").matches,
@@ -251,7 +371,7 @@ function MapBoard({
     }
     if (next.events.length)
       setActiveEvents((previous) =>
-        [...previous, ...next.events].filter((e) => e.until > serverNow()),
+        [...previous, ...next.events].filter((e) => e.until > now()),
       );
     for (const clip of next.clips) {
       const local = `/conquest/v1/audio/${clip}.wav`;
@@ -259,959 +379,921 @@ function MapBoard({
         assets ? [assets.replace(/\/$/, "") + local, local] : [local],
       );
     }
-  }, [data.events, data.round, clock.epoch, audio, assets, sound]);
-  useEffect(() => () => audio.stop(), [audio]);
+  }, [data.events, data.round, clock.epoch, sound, audio, assets]);
   useEffect(() => {
     if (!activeEvents.length) return;
-    let handle = 0,
-      stopped = false;
-    const tick = () => {
-      if (stopped) return;
-      const now = serverNow();
-      setFrame(now);
-      if (activeEvents.every((e) => e.until <= now)) {
-        setActiveEvents([]);
-        return;
-      }
-      handle = requestAnimationFrame(tick);
-    };
-    handle = requestAnimationFrame(tick);
-    return () => {
-      stopped = true;
-      cancelAnimationFrame(handle);
-    };
+    const timer = setTimeout(
+      () => setActiveEvents((v) => v.filter((e) => e.until > now())),
+      Math.max(12, Math.min(...activeEvents.map((e) => e.until)) - now() + 8),
+    );
+    return () => clearTimeout(timer);
   }, [activeEvents]);
   useEffect(() => {
-    setAmount((old) => Math.max(1, Math.min(old, Math.max(1, maxMove))));
-  }, [maxMove]);
+    const release = () => {
+      if (document.hidden) {
+        Object.assign(
+          cursor.current,
+          createCursor(
+            { events: data.events ?? [], round: data.round },
+            clock.epoch,
+          ),
+        );
+        setActiveEvents([]);
+        audio.stop();
+      }
+    };
+    document.addEventListener("visibilitychange", release);
+    return () => document.removeEventListener("visibilitychange", release);
+  }, [data.events, data.round, clock.epoch, audio]);
+  useEffect(() => () => audio.stop(), [audio]);
   useEffect(() => {
-    setRecruits((old) => Math.max(1, Math.min(old, Math.max(1, maxRecruit))));
-  }, [maxRecruit]);
+    if (!own || me?.king !== selected) setKing(false);
+  }, [own, me?.king, selected]);
+  useLayoutEffect(() => {
+    if (!selected || !own || camera.size.width > 620) return;
+    const board = camera.viewport.current?.closest<HTMLElement>(
+      "[data-conquest-board]",
+    );
+    const toolbar = board?.querySelector<HTMLElement>(
+      '[aria-label="领地行动"]',
+    );
+    if (!board || !toolbar) return;
+    const viewportTop = window.visualViewport?.offsetTop ?? 0;
+    const viewportBottom =
+      viewportTop + (window.visualViewport?.height ?? window.innerHeight);
+    const bounds = toolbar.getBoundingClientRect();
+    if (bounds.bottom > viewportBottom - 8 || bounds.top < viewportTop + 8) {
+      window.scrollTo({
+        top: Math.max(
+          0,
+          window.scrollY + board.getBoundingClientRect().top - viewportTop - 8,
+        ),
+        behavior: "instant",
+      });
+    }
+  }, [selected, own, camera.size.width]);
   useEffect(() => {
-    if (!reachable.some((p) => p.id === target)) setTarget("");
-  }, [reachable, target]);
+    if (me?.tax !== undefined) setTax(me.tax);
+  }, [me?.tax]);
   useEffect(() => {
-    if (mine?.tax !== undefined) setTax(mine.tax);
-  }, [mine?.tax]);
+    if (!data.controls.canPlan) setMarching(false);
+  }, [data.controls.canPlan]);
   useEffect(() => {
-    if (!own || mine?.king !== selected) setKing(false);
-  }, [own, mine?.king, selected]);
+    setMarchQueue([]);
+    awaitedOrder.current = null;
+  }, [data.session, data.epoch, controlled]);
+  useEffect(() => {
+    if (!notice) return;
+    const timer = setTimeout(() => setNotice(""), 3000);
+    return () => clearTimeout(timer);
+  }, [notice]);
 
   async function send(type: string, extra: Record<string, unknown> = {}) {
-    setNotice("");
+    if (operation.current) return false;
+    operation.current = true;
     setPending(true);
+    setNotice("");
     try {
       await act({ type, session: data.session, epoch: data.epoch, ...extra });
+      return true;
     } catch (e) {
       setNotice(e instanceof Error ? e.message : "操作未能完成，请重试");
+      return false;
     } finally {
+      operation.current = false;
       setPending(false);
     }
   }
-  function choose(id: string, locate = false) {
-    const geography = provinceById.get(id);
-    if (!geography) return;
+  useEffect(() => {
+    const receipt = awaitedOrder.current;
+    if (receipt) {
+      const confirmed = plan.some(
+        (o) =>
+          o.id > receipt.after &&
+          o.type === "move" &&
+          o.from === receipt.from &&
+          o.to === receipt.to &&
+          o.amount === receipt.amount &&
+          !!o.king === receipt.king,
+      );
+      if (confirmed) awaitedOrder.current = null;
+      else if (!pending && !busy && !operation.current) {
+        // Platform act() finishes after refreshing even when the request was
+        // rejected. No matching authoritative order means there is no receipt
+        // to wait for; do not leave the next click permanently blocked.
+        awaitedOrder.current = null;
+        setMarchQueue([]);
+        setNotice("计划已变化，请重新点选目标");
+        return;
+      }
+    }
+    if (!marchQueue.length) return;
+    const intent = marchQueue[0];
     if (
-      own &&
-      id !== selected &&
-      reachable.some((p) => p.id === id) &&
-      tab === "move" &&
-      !locate
+      !controlled ||
+      !data.controls.canPlan ||
+      intent.epoch !== data.epoch ||
+      intent.session !== data.session
     ) {
+      setMarchQueue([]);
+      awaitedOrder.current = null;
+      return;
+    }
+    if (pending || busy || operation.current || awaitedOrder.current) return;
+    if (plan.length >= data.controls.maxOrders) {
+      setMarchQueue([]);
+      setNotice("本轮计划已满，请先撤销一些操作");
+      return;
+    }
+    const from = projection.get(intent.from),
+      geo = geography.get(intent.from);
+    const amount =
+      from?.owner === room.you && geo
+        ? halfMarch(
+            from.mobile,
+            data.availableGold,
+            data.availableMovement,
+            geo.seaNeighbors.includes(intent.to),
+            data.controls.seaCost ?? 2,
+            data.controls.moveCost,
+          )
+        : 0;
+    if (!amount) {
+      setMarchQueue([]);
+      setNotice(
+        !from || from.owner !== room.you
+          ? "领地归属已变化，请重新选择"
+          : from.mobile <= 0
+            ? "这块领地没有可移动的兵力"
+            : data.availableMovement < data.controls.moveCost
+              ? "本轮行动点不足"
+              : geo?.seaNeighbors.includes(intent.to)
+                ? `海运这支部队需要 ${number(Math.ceil(from.mobile / 2) * (data.controls.seaCost ?? 2))} 金币`
+                : "当前无法派兵，请重新选择",
+      );
+      return;
+    }
+    const carryKing =
+      intent.king && !plan.some((o) => o.type === "move" && o.king);
+    awaitedOrder.current = {
+      after: Math.max(0, ...plan.map((o) => o.id)),
+      from: intent.from,
+      to: intent.to,
+      amount,
+      king: carryKing,
+    };
+    setMarchQueue((q) => q.slice(1));
+    void send("move", {
+      from: intent.from,
+      to: intent.to,
+      amount,
+      king: carryKing,
+    }).then((ok) => {
+      if (!ok) {
+        awaitedOrder.current = null;
+        setMarchQueue([]);
+      }
+      if (ok && carryKing) setKing(false);
+    });
+  }, [
+    marchQueue,
+    pending,
+    busy,
+    controlled,
+    data,
+    projection,
+    geography,
+    room.you,
+  ]);
+  async function choose(id: string) {
+    if (!geography.has(id)) return;
+    if (marching && own && id !== selected) {
+      if (!controlled || !data.controls.canPlan) return;
+      if (!adjacent.has(id)) {
+        setNotice("只能向相邻领地派兵");
+        return;
+      }
       setTarget(id);
+      setMarchQueue((q) =>
+        q.length < 16
+          ? [
+              ...q,
+              {
+                from: selected,
+                to: id,
+                king,
+                epoch: data.epoch,
+                session: data.session,
+              },
+            ]
+          : q,
+      );
       return;
     }
     setSelected(id);
     setTarget("");
+    setMarching(false);
+    setMarchQueue([]);
     setKing(false);
     setNotice("");
-    const province = projectedById.get(id) ?? stateById.get(id);
-    setAmount(Math.max(1, Math.floor((province?.mobile ?? 1) / 2)));
-    if (locate) camera.focus(geography.label);
   }
-  const labels = useMemo(() => {
-    const priority = (p: MapProvince) =>
-      p.id === selected || p.id === target
-        ? 0
-        : stateById.get(p.id)?.owner === room.you
-          ? 1
-          : 2;
-    const result: {
-      province: MapProvince;
-      point: { x: number; y: number };
-      width: number;
-    }[] = [];
-    const ordered = [...map.provinces].sort(
-      (a, b) => priority(a) - priority(b),
-    );
-    for (const province of ordered) {
-      const point = viewPoint(camera.camera, province.label);
-      if (
-        point.x < 8 ||
-        point.x > camera.size.width - 8 ||
-        point.y < 8 ||
-        point.y > camera.size.height - 8
-      )
-        continue;
-      const width = Math.max(
-        29,
-        short(stateById.get(province.id)?.troops ?? 0).length * 7.4 + 14,
-      );
-      if (
-        priority(province) !== 0 &&
-        result.some(
-          (item) =>
-            Math.abs(item.point.x - point.x) < (item.width + width) / 2 + 3 &&
-            Math.abs(item.point.y - point.y) < 25,
-        )
-      )
-        continue;
-      result.push({ province, point, width });
+  function clear() {
+    setMarching(false);
+    setMarchQueue([]);
+    setSelected("");
+    setTarget("");
+    setNotice("");
+  }
+  function keyChoose(
+    event: React.KeyboardEvent<SVGPathElement>,
+    p: MapProvince,
+  ) {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      void choose(p.id);
+      return;
     }
-    return result;
-  }, [map, camera.camera, camera.size, selected, target, stateById, room.you]);
-  const viewportTop = mapPoint(camera.camera, { x: 0, y: 0 });
-  const status = room.spectating
-    ? "正在观战"
-    : mine?.eliminated
-      ? "你的势力已退出"
-      : data.phase === "paused"
-        ? "对局已暂停"
-        : data.phase === "resolving"
-          ? "正在执行各方计划"
-          : data.phase === "finished"
-            ? "本局已结束"
-            : mine?.submitted
-              ? "已提交，等待其他势力"
-              : "规划本轮行动";
-  const orderDescription = (order: Order) =>
-    order.type === "move"
-      ? `${name(order.from)} → ${name(order.to)} · ${number(order.amount ?? 0)}${order.king ? " · 君主随军" : ""}`
-      : order.type === "tax"
-        ? `税率调整为 ${order.value}%`
-        : `${name(order.province)} · ${order.type === "recruit" ? "征募 " + number(order.amount ?? 0) : order.type === "disband" ? "解散 " + number(order.amount ?? 0) : order.building === "fort" ? "修建要塞" : order.building === "tower" ? "修建瞭望塔" : "修建城镇"}`;
-  function miniLocate(e: React.PointerEvent<SVGSVGElement>) {
-    const r = e.currentTarget.getBoundingClientRect();
+    if (event.key === "Escape") {
+      event.preventDefault();
+      clear();
+      return;
+    }
+    const direction: Record<string, { x: number; y: number }> = {
+      ArrowLeft: { x: -1, y: 0 },
+      ArrowRight: { x: 1, y: 0 },
+      ArrowUp: { x: 0, y: -1 },
+      ArrowDown: { x: 0, y: 1 },
+    };
+    const d = direction[event.key];
+    if (!d) return;
+    event.preventDefault();
+    const next = map.provinces
+      .filter(
+        (q) =>
+          q.id !== p.id &&
+          (q.label.x - p.label.x) * d.x + (q.label.y - p.label.y) * d.y > 0,
+      )
+      .sort((a, b) => {
+        const cost = (q: MapProvince) => {
+          const dx = q.label.x - p.label.x,
+            dy = q.label.y - p.label.y;
+          return Math.hypot(dx, dy) + Math.abs(dx * d.y - dy * d.x) * 2;
+        };
+        return cost(a) - cost(b);
+      })[0];
+    if (next) {
+      camera.focus(next.label);
+      camera.viewport.current
+        ?.querySelector<SVGPathElement>(`[data-cq-province="${next.id}"]`)
+        ?.focus({ preventScroll: true });
+    }
+  }
+  function miniLocate(event: React.PointerEvent<SVGSVGElement>) {
+    const r = event.currentTarget.getBoundingClientRect();
     camera.locate({
-      x: ((e.clientX - r.left) / r.width) * map.width,
-      y: ((e.clientY - r.top) / r.height) * map.height,
+      x: ((event.clientX - r.left) / r.width) * map.width,
+      y: ((event.clientY - r.top) / r.height) * map.height,
     });
   }
   const miniRelease = (e: React.PointerEvent<SVGSVGElement>) => {
-    e.stopPropagation();
     if (e.currentTarget.hasPointerCapture(e.pointerId))
       e.currentTarget.releasePointerCapture(e.pointerId);
+    camera.settle();
   };
-  const mapStyle = { "--cq-player-color": color(room.you) } as CSSProperties;
+  const visibleMap = visibleCameraRect(camera.camera, map, camera.size);
+  const status = room.spectating
+    ? "正在观战"
+    : me?.eliminated
+      ? "你的势力已退出"
+      : data.phase === "resolving"
+        ? "各方正在行动"
+        : data.phase === "paused"
+          ? "已暂停"
+          : data.phase === "finished"
+            ? "对局结束"
+            : me?.submitted
+              ? "等待其他势力"
+              : marching
+                ? "点相邻领地派出一半，再点继续追加"
+                : selectedGeo
+                  ? ""
+                  : "选择你的领地";
+  const orderLabel = (o: Order) =>
+    o.type === "move"
+      ? `${provinceName(o.from)} → ${provinceName(o.to)} · ${number(o.amount ?? 0)}`
+      : o.type === "tax"
+        ? `税率 ${o.value}%`
+        : `${provinceName(o.province)} · ${o.type === "recruit" ? "征兵 " + number(o.amount ?? 0) : o.type === "disband" ? "解散 " + number(o.amount ?? 0) : o.building === "fort" ? "筑堡" : o.building === "tower" ? "瞭望塔" : "城镇"}`;
+
   return (
     <section
-      className="cq-board"
-      style={mapStyle}
+      className="cq-board cq-map-first"
       data-conquest-board
-      data-map={map.id}
-      data-round={data.round}
       data-phase={data.phase}
-      data-selected={selected}
-      data-target={target}
-      data-orders={plan.length}
-      data-submitted={!!mine?.submitted}
-      data-zoom={camera.ratio}
+      data-round={data.round}
+      data-map-render-count={renderCount.current}
+      data-cq-selected={selected}
     >
-      <div className="cq-heading">
+      <header className="cq-campaign-strip">
         <div>
-          <span className="cq-map-name">{map.name}</span>
-          <strong>第 {data.round} 轮</strong>
+          <strong>{map.name}</strong>
+          <span>第 {data.round} 轮</span>
         </div>
-        <span className="cq-phase" role="status">
-          {status}
-        </span>
-      </div>
-      <div className="cq-map-tools">
-        <label className="cq-region-select">
-          <span className="cq-sr-only">选择地区</span>
-          <select
-            aria-label="选择地区"
-            value={selected}
-            onChange={(e) => choose(e.target.value, true)}
-          >
-            <option value="">查找地区</option>
-            {map.provinces.map((p) => (
-              <option key={p.id} value={p.id}>
-                {p.name}
-                {stateById.get(p.id)?.owner === room.you && !room.spectating
-                  ? " · 己方"
-                  : ""}
-              </option>
-            ))}
-          </select>
-        </label>
-        <div className="cq-zoom-controls" role="group" aria-label="地图视图">
-          <button
-            type="button"
-            aria-label="缩小地图"
-            disabled={camera.ratio <= 1.001}
-            onClick={() => camera.zoom(1 / 1.4)}
-          >
-            <Minus size={16} />
-          </button>
-          <button
-            type="button"
-            aria-label="放大地图"
-            disabled={camera.ratio >= 7.99}
-            onClick={() => camera.zoom(1.4)}
-          >
-            <Plus size={16} />
-          </button>
-          <button type="button" onClick={camera.reset}>
-            <RotateCcw size={14} />
-            全图
-          </button>
-        </div>
-      </div>
-      <div className="cq-viewport" ref={camera.viewport} {...camera.handlers}>
-        <svg
-          className="cq-map"
-          width="100%"
-          height="100%"
-          role="group"
-          aria-label={`${map.name}战场，选择地区查看与规划`}
-        >
-          <defs>
-            <pattern
-              id={`${uid}-water`}
-              width="60"
-              height="40"
-              patternUnits="userSpaceOnUse"
+        {!room.spectating && me && (
+          <div className="cq-campaign-budget">
+            <button
+              className="cq-text-button"
+              aria-label="财政与税率"
+              onClick={() => setFinanceOpen(true)}
             >
-              <path
-                d="M4 18q9-5 18 0t18 0M34 35q7-4 14 0"
-                fill="none"
-                stroke="#d7e6de"
-                strokeWidth="1"
-                opacity=".55"
-              />
-            </pattern>
-            <pattern
-              id={`${uid}-land`}
-              width="18"
-              height="18"
-              patternUnits="userSpaceOnUse"
-            >
-              <path
-                d="m4 7 2-3 2 3m4 7 2-3 2 3"
-                fill="none"
-                stroke="#5d6752"
-                strokeWidth=".5"
-                opacity=".16"
-              />
-            </pattern>
-            <marker
-              id={`${uid}-arrow`}
-              viewBox="0 0 10 10"
-              refX="8"
-              refY="5"
-              markerWidth="5"
-              markerHeight="5"
-              orient="auto-start-reverse"
-            >
-              <path d="M0 0 10 5 0 10 3 5Z" fill="#234d46" />
-            </marker>
-          </defs>
-          <rect width="100%" height="100%" fill="#a8c6c8" />
-          <rect width="100%" height="100%" fill={`url(#${uid}-water)`} />
-          <g
-            className="cq-map-layer"
-            transform={`translate(${camera.camera.x} ${camera.camera.y}) scale(${camera.camera.scale})`}
+              <Coins size={15} />
+              <b>{number(data.availableGold)}</b>
+            </button>
+            <span title="可用行动点">
+              <Footprints size={15} />
+              {data.availableMovement.toFixed(1)}
+            </span>
+          </div>
+        )}
+      </header>
+      <div className="cq-map-stage">
+        <div className="cq-viewport" ref={camera.viewport} {...camera.handlers}>
+          <svg
+            className="cq-map"
+            width="100%"
+            height="100%"
+            aria-label={`${map.name}征服地图`}
+            onClick={(e) => {
+              if (
+                camera.canClick(e.detail) &&
+                (e.target === e.currentTarget ||
+                  (e.target as Element).hasAttribute("data-cq-water"))
+              )
+                clear();
+            }}
           >
-            <rect
-              width={map.width}
-              height={map.height}
-              fill="none"
-              stroke="#6e9c9d"
-              strokeWidth="1"
-              vectorEffect="non-scaling-stroke"
-            />
-            {map.seaRoutes.map((route, i) => (
-              <path
-                key={i}
-                d={route.path}
-                className={`cq-sea-route ${selected === route.from || selected === route.to ? "active" : ""}`}
-                fill="none"
-                vectorEffect="non-scaling-stroke"
-              />
-            ))}
-            {map.provinces.map((p) => {
-              const state = stateById.get(p.id),
-                isSelected = p.id === selected,
-                isTarget = p.id === target;
-              const eligible = own && reachable.some((n) => n.id === p.id);
-              return (
+            <defs>
+              <pattern
+                id={`${uid}-water`}
+                width="60"
+                height="40"
+                patternUnits="userSpaceOnUse"
+              >
                 <path
-                  key={p.id}
-                  data-cq-province={p.id}
-                  data-owner={state?.owner ?? -1}
-                  data-troops={state?.troops ?? -1}
-                  d={p.path}
-                  fill={color(state?.owner ?? -1)}
-                  fillRule="evenodd"
-                  vectorEffect="non-scaling-stroke"
-                  className={`cq-province ${isSelected ? "selected" : ""} ${isTarget ? "target" : ""} ${eligible ? "reachable" : ""}`}
-                  role="button"
-                  tabIndex={0}
-                  aria-label={`${p.name}，${ownerName(state?.owner ?? -1)}，兵力 ${number(state?.troops ?? 0)}`}
-                  aria-pressed={isSelected || isTarget}
-                  onClick={(e) => {
-                    if (camera.canClick(e.detail)) choose(p.id);
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      choose(p.id);
-                      camera.focus(p.label);
+                  d="M4 18q9-5 18 0t18 0M34 35q7-4 14 0"
+                  fill="none"
+                  stroke="#d7e6de"
+                  strokeWidth="1"
+                  opacity=".55"
+                />
+              </pattern>
+              <pattern
+                id={`${uid}-land`}
+                width="18"
+                height="18"
+                patternUnits="userSpaceOnUse"
+              >
+                <path
+                  d="m4 7 2-3 2 3m4 7 2-3 2 3"
+                  fill="none"
+                  stroke="#5d6752"
+                  strokeWidth=".5"
+                  opacity=".16"
+                />
+              </pattern>
+              <marker
+                id={`${uid}-arrow`}
+                viewBox="0 0 10 10"
+                refX="8"
+                refY="5"
+                markerWidth="5"
+                markerHeight="5"
+                orient="auto-start-reverse"
+              >
+                <path d="M0 0 10 5 0 10 3 5Z" fill="#243e32" />
+              </marker>
+              <symbol id={`${uid}-army`} viewBox="0 0 24 24">
+                <path
+                  d="M5 22V8m14 14V7M3 7l2-5 2 5m10-1 2-5 2 5"
+                  fill="none"
+                  stroke="#34483a"
+                  strokeWidth="1.3"
+                />
+                <path
+                  d="M7 12q5-6 10 0l-1 9H8Z"
+                  fill="currentColor"
+                  stroke="#2f4435"
+                  strokeWidth="1.1"
+                />
+                <path
+                  d="M7 12V9a5 5 0 0 1 10 0v3Z"
+                  fill="#e0d4ac"
+                  stroke="#475842"
+                  strokeWidth="1.2"
+                />
+                <path d="M9 10h6v3H9Z" fill="#34483a" />
+              </symbol>
+            </defs>
+            <rect data-cq-water width="100%" height="100%" fill="#a8c6c8" />
+            <rect
+              data-cq-water
+              width="100%"
+              height="100%"
+              fill={`url(#${uid}-water)`}
+            />
+            <g
+              ref={camera.sceneRef}
+              className="cq-map-layer"
+              transform={`translate(${camera.camera.x} ${camera.camera.y}) scale(${camera.camera.scale})`}
+            >
+              {map.provinces.map((p) => {
+                const s = provinces.get(p.id);
+                const reachable = marching && adjacent.has(p.id);
+                return (
+                  <path
+                    key={p.id}
+                    data-cq-province={p.id}
+                    data-owner={s?.owner ?? -1}
+                    d={p.path}
+                    fill={color(s?.owner ?? -1)}
+                    fillRule="evenodd"
+                    vectorEffect="non-scaling-stroke"
+                    className={`cq-province ${p.id === selected ? "selected" : ""} ${p.id === target ? "target" : ""} ${reachable ? "reachable" : ""}`}
+                    role="button"
+                    tabIndex={
+                      p.id === selected || (!selected && s?.owner === room.you)
+                        ? 0
+                        : -1
                     }
-                  }}
-                  onFocus={() => {
-                    /* Focus ring remains on geographic region. */
-                  }}
-                >
-                  <title>
-                    {p.name} · {ownerName(state?.owner ?? -1)} ·{" "}
-                    {number(state?.troops ?? 0)}
-                  </title>
-                </path>
-              );
-            })}
-            {map.provinces.map((p) => (
+                    aria-label={`${p.name}，${ownerName(s?.owner ?? -1)}，兵力 ${force(s?.troops ?? -1)}${s?.town ? "，城镇" : ""}${s?.fort ? "，要塞" : ""}${s?.tower ? "，瞭望塔" : ""}`}
+                    aria-pressed={p.id === selected}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (camera.canClick(e.detail)) void choose(p.id);
+                    }}
+                    onKeyDown={(e) => keyChoose(e, p)}
+                  />
+                );
+              })}
               <path
-                key={p.id}
-                d={p.path}
+                data-cq-flat-land
+                d={landOutline}
                 fill={`url(#${uid}-land)`}
                 fillRule="evenodd"
                 pointerEvents="none"
               />
-            ))}
-            {plan
-              .filter((o) => o.type === "move")
-              .map((order) => {
-                const from = provinceById.get(order.from ?? "")?.label,
-                  to = provinceById.get(order.to ?? "")?.label;
-                if (!from || !to) return null;
-                return (
+              {map.seaRoutes
+                .filter((r) => r.from === selected || r.to === selected)
+                .map((r, i) => (
                   <path
-                    key={order.id}
-                    className="cq-planned-arrow"
-                    d={`M${from.x},${from.y}L${to.x},${to.y}`}
+                    key={i}
+                    d={r.path}
                     fill="none"
-                    stroke="#234d46"
-                    strokeWidth="2.5"
-                    strokeDasharray="5 4"
+                    className="cq-sea-route"
                     vectorEffect="non-scaling-stroke"
-                    markerEnd={`url(#${uid}-arrow)`}
                     pointerEvents="none"
                   />
+                ))}
+              {plan
+                .filter((o) => o.type === "move")
+                .map((o) => {
+                  const a = geography.get(o.from ?? "")?.label,
+                    b = geography.get(o.to ?? "")?.label;
+                  return a && b ? (
+                    <path
+                      key={o.id}
+                      data-cq-planned={o.id}
+                      d={`M${a.x} ${a.y}L${b.x} ${b.y}`}
+                      className="cq-plan-arrow"
+                      markerEnd={`url(#${uid}-arrow)`}
+                      vectorEffect="non-scaling-stroke"
+                      pointerEvents="none"
+                    />
+                  ) : null;
+                })}
+              {activeEvents.map((e) => {
+                const a = geography.get(e.from ?? "")?.label,
+                  b = geography.get(e.to ?? e.province ?? "")?.label;
+                if (!b) return null;
+                const start = a ?? b,
+                  progress = Math.max(
+                    0,
+                    Math.min(1, (now() - e.at) / Math.max(1, e.until - e.at)),
+                  );
+                const x = start.x + (b.x - start.x) * progress,
+                  y = start.y + (b.y - start.y) * progress;
+                return (
+                  <g key={e.id} data-cq-event={e.id} pointerEvents="none">
+                    <path
+                      d={`M${start.x} ${start.y}L${b.x} ${b.y}`}
+                      className="cq-event-route"
+                      vectorEffect="non-scaling-stroke"
+                    />
+                    <circle
+                      r={4 / camera.camera.scale}
+                      fill={color(e.seat)}
+                      stroke="#fff3c2"
+                      strokeWidth={1.5 / camera.camera.scale}
+                    >
+                      <animateMotion
+                        path={`M${x} ${y}L${b.x} ${b.y}`}
+                        dur={`${Math.max(1, e.until - now())}ms`}
+                        fill="freeze"
+                      />
+                    </circle>
+                  </g>
                 );
               })}
-            {selectedGeo && target && provinceById.has(target) && (
-              <path
-                d={`M${selectedGeo.label.x},${selectedGeo.label.y}L${provinceById.get(target)!.label.x},${provinceById.get(target)!.label.y}`}
-                fill="none"
-                stroke="#fff6ce"
-                strokeWidth="3"
-                strokeDasharray="6 4"
-                vectorEffect="non-scaling-stroke"
-                pointerEvents="none"
-              />
-            )}
-          </g>
-          {labels.map(({ province: p, point, width }) => {
-            const state = stateById.get(p.id),
-              ruler = data.players.find(
-                (player) => !player.eliminated && player.king === p.id,
-              );
-            return (
-              <g
-                key={p.id}
-                data-cq-label={p.id}
-                transform={`translate(${point.x} ${point.y})`}
-                className={`cq-troop-label ${p.id === selected ? "selected" : ""} ${p.id === target ? "target" : ""}`}
-                role="button"
-                tabIndex={-1}
-                aria-label={`${p.name}，兵力 ${number(state?.troops ?? 0)}`}
-                onClick={(e) => {
-                  if (camera.canClick(e.detail)) choose(p.id);
-                }}
-              >
-                <rect
-                  x={-width / 2}
-                  y="-11"
-                  width={width}
-                  height="22"
-                  rx="5"
-                  fill="#fff9e8"
-                  stroke={
-                    p.id === selected || p.id === target ? "#294b40" : "#647267"
-                  }
-                  strokeWidth={p.id === selected ? 2 : 1}
-                />
-                <text
-                  textAnchor="middle"
-                  dominantBaseline="central"
-                  fill="#20372e"
-                  fontSize="12"
-                  fontWeight="750"
-                >
-                  {short(state?.troops ?? 0)}
-                </text>
-                {ruler && (
-                  <g
-                    transform={`translate(${-width / 2 - 10} -7)`}
-                    aria-label="君主所在地区"
-                  >
-                    <path
-                      d="M0 1 3 5 6 0 9 5 12 1 10 10H2Z"
-                      fill="#eed187"
-                      stroke="#665127"
-                      strokeWidth="1.4"
-                    />
+            </g>
+            <g ref={camera.overlayRef} className="cq-army-layer">
+              {visibleLabels.map(({ p, point }) => {
+                const actual = provinces.get(p.id)!;
+                const projected = projection.get(p.id);
+                const troops =
+                  actual.owner === room.you && data.phase === "planning"
+                    ? (projected?.mobile ?? actual.troops)
+                    : actual.troops;
+                const ruler = data.players.some(
+                  (q) => !q.eliminated && q.king === p.id,
+                );
+                return (
+                  <g key={p.id} transform={`translate(${point.x} ${point.y})`}>
+                    <g
+                      className={`cq-army-marker ${p.id === selected ? "selected" : ""}`}
+                      data-cq-label={p.id}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (camera.canClick(e.detail)) void choose(p.id);
+                      }}
+                      role="button"
+                      aria-label={`${p.name}，兵力 ${force(troops)}`}
+                    >
+                      <use
+                        href={`#${uid}-army`}
+                        x="-28"
+                        y="-13"
+                        width="20"
+                        height="20"
+                        style={{ color: color(actual.owner) }}
+                      />
+                      <text
+                        data-cq-troops={p.id}
+                        x="-4"
+                        y="4"
+                        textAnchor="start"
+                      >
+                        {force(troops)}
+                      </text>
+                      {ruler && (
+                        <path
+                          className="cq-ruler"
+                          d="M-6-12-4-18 0-14 4-18 6-12Z"
+                        />
+                      )}
+                      {actual.fort && (
+                        <Castle
+                          data-cq-fort={p.id}
+                          x={12}
+                          y={-27}
+                          width={16}
+                          height={16}
+                          strokeWidth={1.8}
+                          className="cq-flat-fort"
+                          aria-hidden="true"
+                        />
+                      )}
+                    </g>
                   </g>
-                )}
-              </g>
-            );
-          })}
-          {activeEvents.map((event) => {
-            const from = provinceById.get(event.from ?? "")?.label,
-              to = provinceById.get(event.to ?? event.province ?? "")?.label;
-            if (!to || event.until <= Math.max(frame, serverNow())) return null;
-            const end = viewPoint(camera.camera, to),
-              start = viewPoint(camera.camera, from ?? to),
-              progress = Math.max(
-                0,
-                Math.min(
-                  1,
-                  ((frame || serverNow()) - event.at) /
-                    Math.max(1, event.until - event.at),
-                ),
-              );
-            return (
-              <g key={event.id} data-cq-event={event.id} pointerEvents="none">
-                <path
-                  d={`M${start.x},${start.y}L${end.x},${end.y}`}
-                  stroke="#fff9db"
-                  strokeWidth="3"
-                  strokeDasharray="6 4"
-                />
-                <circle
-                  cx={start.x + (end.x - start.x) * progress}
-                  cy={start.y + (end.y - start.y) * progress}
-                  r="7"
-                  fill={color(event.seat)}
-                  stroke="#fff9db"
-                  strokeWidth="2"
-                />
-              </g>
-            );
-          })}
-        </svg>
-        <div className="cq-minimap-wrap">
-          <svg
-            className="cq-minimap"
-            viewBox={`0 0 ${map.width} ${map.height}`}
-            preserveAspectRatio="none"
-            role="img"
-            aria-label="拖动小地图定位"
-            onPointerDown={(e) => {
-              e.stopPropagation();
-              e.currentTarget.setPointerCapture(e.pointerId);
-              miniLocate(e);
-            }}
-            onPointerMove={(e) => {
-              e.stopPropagation();
-              if (e.currentTarget.hasPointerCapture(e.pointerId)) miniLocate(e);
-            }}
-            onPointerUp={miniRelease}
-            onPointerCancel={miniRelease}
-          >
-            <rect width={map.width} height={map.height} fill="#a8c6c8" />
-            {map.provinces.map((p) => (
-              <path
-                key={p.id}
-                d={p.path}
-                fill={color(stateById.get(p.id)?.owner ?? -1)}
-                fillRule="evenodd"
-                stroke="#667565"
-                strokeWidth=".5"
-              />
-            ))}
-            <rect
-              x={Math.max(0, viewportTop.x)}
-              y={Math.max(0, viewportTop.y)}
-              width={Math.min(
-                map.width,
-                camera.size.width / camera.camera.scale,
-              )}
-              height={Math.min(
-                map.height,
-                camera.size.height / camera.camera.scale,
-              )}
-              fill="#fff9db20"
-              stroke="#fff9db"
-              strokeWidth={map.width / 85}
-            />
+                );
+              })}
+            </g>
           </svg>
         </div>
-        <div className="cq-map-scale" aria-hidden="true">
-          {Math.round(camera.ratio * 100)}%
-        </div>
-      </div>
-      <div className="cq-actions">
-        <div className="cq-action-heading">
-          <div>
-            <strong>{selectedGeo?.name || "选择一个地区"}</strong>
-            <span className="cq-selected-owner">
-              {actual ? (
-                <>
-                  <i style={{ backgroundColor: color(actual.owner) }} />
-                  <span>{ownerName(actual.owner)}</span>
-                </>
-              ) : (
-                "点击地图，或从地区列表定位"
+        {selectedGeo && selectedState && (
+          <div className="cq-land-info" aria-live="polite">
+            <strong>{selectedGeo.name}</strong>
+            <span>
+              {ownerName(selectedState.owner)} ·{" "}
+              {own && data.phase === "planning" ? "可用 " : "兵力 "}
+              {force(
+                own && data.phase === "planning"
+                  ? (selectedPlan?.mobile ?? selectedState.troops)
+                  : selectedState.troops,
               )}
-            </span>
-            <span className="cq-selected-detail">
-              {actual ? (
-                <>
-                  <span>兵力 {number(actual.troops)}</span>
-                  {actual.fort && <Shield size={13} aria-label="要塞" />}
-                  {actual.tower && <Flag size={13} aria-label="瞭望塔" />}
-                </>
-              ) : (
-                "\u00a0"
-              )}
+              {selectedState.fort ? " · 筑有要塞" : ""}
             </span>
           </div>
-          <button
-            type="button"
-            className="cq-plan-button"
-            aria-label="查看行动计划"
-            onClick={() => setOrdersOpen(true)}
-          >
-            <ScrollText size={17} />
-            计划 <b>{plan.length}</b>
-          </button>
-        </div>
-        <div className="cq-action-tabs" role="tablist" aria-label="地区操作">
-          {(
-            [
-              ["move", "行军"],
-              ["recruit", "征募"],
-              ["build", "建设"],
-              ["state", "国政"],
-            ] as const
-          ).map(([value, label]) => (
-            <button
-              key={value}
-              type="button"
-              role="tab"
-              aria-selected={tab === value}
-              className={tab === value ? "active" : ""}
-              onClick={() => setTab(value)}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-        <div className="cq-action-content" role="tabpanel">
-          {tab === "move" && (
-            <div className="cq-move-form">
-              <label>
-                目标地区
-                <select
-                  aria-label="目标地区"
-                  value={target}
-                  disabled={!own || !canPlan}
-                  onChange={(e) => setTarget(e.target.value)}
-                >
-                  <option value="">选择相邻地区</option>
-                  {reachable.map((p) => (
-                    <option key={p.id} value={p.id}>
-                      {p.name} · {number(stateById.get(p.id)?.troops ?? 0)}
-                      {selectedGeo?.seaNeighbors.includes(p.id)
-                        ? " · 海路"
-                        : ""}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <div className="cq-amount">
-                <label>
-                  出兵数量
-                  <input
-                    aria-label="出兵数量"
-                    inputMode="numeric"
-                    type="number"
-                    min="1"
-                    max={maxMove}
-                    disabled={!own || !canPlan || maxMove < 1}
-                    value={amount}
-                    onChange={(e) => setAmount(wholeAmount(e.target.value))}
-                  />
-                </label>
-                <div className="cq-proportions">
-                  {[0.25, 0.5, 1].map((fraction, i) => (
-                    <button
-                      type="button"
-                      key={fraction}
-                      disabled={!own || !canPlan || maxMove < 1}
-                      onClick={() =>
-                        setAmount(Math.max(1, Math.floor(maxMove * fraction)))
-                      }
-                    >
-                      {["¼", "½", "全部"][i]}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <div className="cq-move-bottom">
-                <span>
-                  {own
-                    ? `可调动 ${number(mobile)} · ${data.controls.moveCost} 行动点`
-                    : "选择己方地区后规划行军"}
-                  {sea && (
-                    <span className="cq-sea-caption">
-                      <Ship size={13} />
-                      海运 {number(amount * (data.controls.seaCost ?? 0))} 金币
-                    </span>
-                  )}
-                </span>
-                {own && mine?.king === selected && (
-                  <label className="cq-checkbox">
-                    <input
-                      type="checkbox"
-                      checked={king}
-                      disabled={!canPlan}
-                      onChange={(e) => setKing(e.target.checked)}
-                    />
-                    君主随军
-                  </label>
-                )}
-              </div>
-              <button
-                type="button"
-                className="cq-primary"
-                disabled={
-                  !canPlan || !own || !target || amount < 1 || amount > maxMove
-                }
-                onClick={() =>
-                  void send("move", {
-                    from: selected,
-                    to: target,
-                    amount,
-                    king,
-                  })
-                }
-              >
-                加入行军计划
-                <ArrowRight size={16} />
-              </button>
-            </div>
-          )}
-          {tab === "recruit" && (
-            <div className="cq-recruit-form">
-              <label>
-                征募数量
-                <input
-                  type="number"
-                  inputMode="numeric"
-                  aria-label="征募数量"
-                  min="1"
-                  max={maxRecruit}
-                  value={recruits}
-                  disabled={!own || !canPlan}
-                  onChange={(e) => setRecruits(wholeAmount(e.target.value))}
-                />
-              </label>
-              <div className="cq-estimate">
-                <span>
-                  金币 <b>{number(recruits * data.controls.recruitCost)}</b>
-                </span>
-                <span>
-                  行动点 <b>{data.controls.recruitMovement}</b>
-                </span>
-              </div>
-              <button
-                type="button"
-                className="cq-primary"
-                disabled={
-                  !own || !canPlan || recruits < 1 || recruits > maxRecruit
-                }
-                onClick={() =>
-                  void send("recruit", { province: selected, amount: recruits })
-                }
-              >
-                加入征募计划
-                <Plus size={16} />
-              </button>
-            </div>
-          )}
-          {tab === "build" && (
-            <div className="cq-build-form">
-              {(
-                [
-                  [
-                    "fort",
-                    "要塞",
-                    data.controls.fortCost,
-                    data.controls.fortMovement,
-                  ],
-                  [
-                    "tower",
-                    "瞭望塔",
-                    data.controls.towerCost,
-                    data.controls.towerMovement,
-                  ],
-                  [
-                    "town",
-                    "城镇",
-                    data.controls.townCost ?? 0,
-                    data.controls.townMovement ?? 0,
-                  ],
-                ] as const
-              )
-                .filter(
-                  ([building]) =>
-                    (building !== "tower" || data.options.fog) &&
-                    (building !== "town" ||
-                      data.controls.townCost !== undefined),
-                )
-                .map(([building, label, cost, movement]) => (
-                  <button
-                    key={building}
-                    type="button"
-                    disabled={
-                      !own ||
-                      !canPlan ||
-                      !!projected?.[building] ||
-                      data.availableGold < cost ||
-                      data.availableMovement < movement
-                    }
-                    aria-label={`修建${label}`}
-                    onClick={() =>
-                      void send("build", { province: selected, building })
-                    }
-                  >
-                    <Shield size={20} />
-                    <strong>{label}</strong>
-                    <span>
-                      {projected?.[building]
-                        ? "已修建或已规划"
-                        : `${number(cost)} 金币 · ${movement} 行动点`}
-                    </span>
-                  </button>
-                ))}
-            </div>
-          )}
-          {tab === "state" && (
-            <div className="cq-state-form">
-              <div className="cq-estimate">
-                <span>
-                  预计收入 <b>{number(mine?.income ?? 0)}</b>
-                </span>
-                <span>
-                  军队维护 <b>{number(mine?.upkeep ?? 0)}</b>
-                </span>
-                <span>
-                  经济支出 <b>{number(mine?.economySpending ?? 0)}</b>
-                </span>
-              </div>
-              <label className="cq-tax">
-                税率{" "}
-                <input
-                  type="range"
-                  aria-label="税率"
-                  min="0"
-                  max="100"
-                  step="10"
-                  value={tax}
-                  disabled={!canPlan}
-                  onChange={(e) => setTax(Number(e.target.value))}
-                />
-                <strong>{tax}%</strong>
-              </label>
-              <button
-                type="button"
-                disabled={!canPlan}
-                onClick={() => void send("tax", { value: tax })}
-              >
-                调整税率
-              </button>
-              {own && (
-                <button
-                  type="button"
-                  disabled={
-                    !canPlan || mobile < 1 || data.availableMovement < 0.1
-                  }
-                  onClick={() =>
-                    void send("disband", {
-                      province: selected,
-                      amount: Math.min(amount, mobile),
-                    })
-                  }
-                >
-                  解散选定兵力 · {number(Math.min(amount, mobile))}
-                </button>
-              )}
-            </div>
-          )}
-        </div>
-        <div className="cq-notice" role="status">
-          {notice || "\u00a0"}
-        </div>
-        <div className="cq-budget">
-          <span>
-            可用金币{" "}
-            <strong>
-              {room.spectating
-                ? "?"
-                : data.availableGold.toLocaleString("zh-CN")}
-            </strong>
-          </span>
-          <span>
-            行动点 <strong>{data.availableMovement}</strong>
-          </span>
-        </div>
-        <div className="cq-turn-actions">
-          <button
-            type="button"
-            className="cq-primary"
-            disabled={
-              busy ||
-              pending ||
-              room.spectating ||
-              !(data.controls.canSubmit || data.controls.canUnsubmit)
-            }
-            onClick={() =>
-              void send(data.controls.canUnsubmit ? "unsubmit" : "submit")
-            }
-          >
-            <Check size={17} />
-            {data.controls.canUnsubmit ? "撤回提交" : "提交回合"}
-          </button>
-          {data.phase === "paused" ? (
-            <button
-              type="button"
-              disabled={
-                !data.controls.canResume || busy || pending || room.spectating
-              }
-              onClick={() =>
-                void send("resume", { enabled: !data.resumeVotes[room.you] })
-              }
-            >
-              {data.resumeVotes[room.you] ? "撤回恢复" : "同意恢复"}
-            </button>
-          ) : (
-            <button
-              type="button"
-              disabled={
-                !data.controls.canPause || busy || pending || room.spectating
-              }
-              onClick={() =>
-                void send("pause", { enabled: !data.pauseVotes[room.you] })
-              }
-            >
-              {data.pauseVotes[room.you] ? "撤回暂停" : "提议暂停"}
-            </button>
-          )}
-        </div>
-        {(data.pauseVotes.some(Boolean) ||
-          data.resumeVotes.some(Boolean) ||
-          data.phase === "paused") && (
-          <div className="cq-votes">
-            {data.phase === "paused" ? "恢复" : "暂停"}确认：
-            {room.seats
-              .filter(
-                (_, i) =>
-                  (data.phase === "paused"
-                    ? data.resumeVotes[i]
-                    : data.pauseVotes[i]) && !data.players[i]?.eliminated,
-              )
-              .map((s) => s.name)
-              .join("、") || "等待同桌确认"}
-          </div>
         )}
-      </div>
-      <details className="cq-journal">
-        <summary>
-          <span>战报</span>
-          <ChevronDown size={15} />
-        </summary>
-        <ol>
-          {(data.log ?? []).slice(-12).map((line, i) => (
-            <li key={i}>{line}</li>
-          ))}
-        </ol>
-        {data.controls.canResign && !room.spectating && (
+        <div className="cq-map-zoom" aria-label="地图缩放">
           <button
-            type="button"
-            disabled={
-              busy ||
-              pending ||
-              !!room.seats[room.you]?.autoPlay ||
-              room.status !== "playing"
-            }
-            onClick={() => setResignOpen(true)}
+            aria-label="放大地图"
+            title="放大"
+            disabled={camera.ratio >= camera.maxRatio - 0.01}
+            onClick={() => camera.zoom(1.45)}
           >
-            退出争霸
+            <Plus size={19} />
           </button>
-        )}
-      </details>
-      {ordersOpen && (
-        <Modal
-          title="本轮行动计划"
-          onClose={() => setOrdersOpen(false)}
-          className="cq-orders-modal"
+          <button
+            aria-label="缩小地图"
+            title="缩小"
+            disabled={camera.ratio <= 1.001}
+            onClick={() => camera.zoom(1 / 1.45)}
+          >
+            <Minus size={19} />
+          </button>
+          <button aria-label="复位地图" title="全图" onClick={camera.reset}>
+            <RotateCcw size={17} />
+          </button>
+        </div>
+        <svg
+          data-camera-control
+          className="cq-minimap"
+          viewBox={`0 0 ${map.width} ${map.height}`}
+          preserveAspectRatio="none"
+          aria-label="拖动小地图定位"
+          onPointerDown={(e) => {
+            e.currentTarget.setPointerCapture(e.pointerId);
+            miniLocate(e);
+          }}
+          onPointerMove={(e) => {
+            if (e.currentTarget.hasPointerCapture(e.pointerId)) miniLocate(e);
+          }}
+          onPointerUp={miniRelease}
+          onPointerCancel={miniRelease}
         >
-          <div className="cq-order-list">
+          <rect width={map.width} height={map.height} fill="#92b6b9" />
+          {map.provinces.map((p) => (
+            <path
+              key={p.id}
+              d={p.path}
+              fill={color(provinces.get(p.id)?.owner ?? -1)}
+              fillRule="evenodd"
+            />
+          ))}
+          <rect
+            ref={camera.miniViewportRef}
+            x={visibleMap.x}
+            y={visibleMap.y}
+            width={visibleMap.width}
+            height={visibleMap.height}
+            fill="none"
+            stroke="#fff4cf"
+            strokeWidth={map.width / 70}
+          />
+        </svg>
+        {selectedGeo && own && data.phase !== "finished" && (
+          <div
+            className="cq-territory-actions"
+            role="toolbar"
+            aria-label="领地行动"
+          >
+            <button
+              data-cq-action="recruit"
+              aria-label="征兵"
+              title={`短按征募 ${number(recruit)}，长按征满 ${number(fullRecruit)}（Shift+Enter）`}
+              aria-keyshortcuts="Shift+Enter"
+              data-holding={recruitPress.holding}
+              disabled={!canPlan || recruit <= 0}
+              {...recruitPress.handlers}
+            >
+              <UserPlus />
+              <span>征兵</span>
+            </button>
+            <button
+              data-cq-action={marching ? "cancel" : "attack"}
+              aria-label={marching ? "取消进攻" : "进攻"}
+              title={marching ? "取消派兵选择" : "点相邻领地派出剩余兵力的一半"}
+              className={marching ? "active" : ""}
+              disabled={
+                !marching &&
+                (!canPlan ||
+                  (selectedPlan?.mobile ?? 0) <= 0 ||
+                  data.availableMovement < data.controls.moveCost)
+              }
+              onClick={() => {
+                setMarching(!marching);
+                setMarchQueue([]);
+                setTarget("");
+              }}
+            >
+              {marching ? <X /> : <Swords />}
+              <span>{marching ? "取消" : "进攻"}</span>
+            </button>
+            <button
+              data-cq-action="fort"
+              aria-label={building === "town" ? "建城镇" : "筑堡"}
+              title={`${building === "town" ? "建城镇" : "筑堡"} · ${number(buildCost)} 金币；长按直接建城镇（Shift+Enter）`}
+              aria-keyshortcuts="Shift+Enter"
+              data-holding={fortPress.holding}
+              disabled={!canBuild}
+              {...fortPress.handlers}
+            >
+              <Castle />
+              <span>{building === "town" ? "城镇" : "筑堡"}</span>
+            </button>
+            {me?.king === selected && (
+              <button
+                data-cq-action="king"
+                aria-label="君主随军"
+                aria-pressed={king}
+                className={king ? "active" : ""}
+                disabled={
+                  !canPlan || plan.some((o) => o.type === "move" && o.king)
+                }
+                title="君主随下一支军队移动"
+                onClick={() => setKing(!king)}
+              >
+                <Crown />
+                <span>君主</span>
+              </button>
+            )}
+            {data.options.fog && (
+              <button
+                data-cq-action="tower"
+                aria-label="建瞭望塔"
+                title={`瞭望塔 · ${number(data.controls.towerCost)} 金币`}
+                disabled={!canTower}
+                onClick={() =>
+                  void send("build", { province: selected, building: "tower" })
+                }
+              >
+                <Binoculars />
+                <span>瞭望</span>
+              </button>
+            )}
+            <button
+              data-cq-action="disband"
+              aria-label="解散部队"
+              title="将一半可用部队遣返回民间"
+              disabled={
+                !canPlan ||
+                (selectedPlan?.mobile ?? 0) < 1 ||
+                data.availableMovement < 0.1
+              }
+              onClick={() =>
+                void send("disband", {
+                  province: selected,
+                  amount: Math.ceil((selectedPlan?.mobile ?? 0) / 2),
+                })
+              }
+            >
+              <ShieldMinus />
+              <span>解散</span>
+            </button>
+          </div>
+        )}
+        <div
+          className={`cq-map-message ${notice || status ? "visible" : ""}`}
+          role="status"
+          aria-live="polite"
+        >
+          {notice || status}
+        </div>
+      </div>
+      <footer className="cq-round-controls">
+        <button
+          aria-label="查看行动计划"
+          data-cq-action="plans"
+          onClick={() => setPlansOpen(true)}
+        >
+          <ScrollText size={18} />
+          <span>计划</span>
+          <b>{plan.length}</b>
+        </button>
+        <button
+          aria-label={data.phase === "paused" ? "恢复对局" : "提议暂停"}
+          disabled={
+            !controlled ||
+            busy ||
+            pending ||
+            !(data.controls.canPause || data.controls.canResume)
+          }
+          aria-pressed={
+            data.phase === "paused"
+              ? !!data.resumeVotes[room.you]
+              : !!data.pauseVotes[room.you]
+          }
+          onClick={() =>
+            void send(data.phase === "paused" ? "resume" : "pause", {
+              enabled:
+                data.phase === "paused"
+                  ? !data.resumeVotes[room.you]
+                  : !data.pauseVotes[room.you],
+            })
+          }
+        >
+          {data.phase === "paused" ? <Play size={18} /> : <Pause size={18} />}
+        </button>
+        <button
+          className="cq-submit"
+          aria-label={me?.submitted ? "撤回提交" : "提交回合"}
+          disabled={
+            !controlled ||
+            busy ||
+            pending ||
+            marchQueue.length > 0 ||
+            !(data.controls.canSubmit || data.controls.canUnsubmit)
+          }
+          onClick={() => void send(me?.submitted ? "unsubmit" : "submit")}
+        >
+          {me?.submitted ? <RotateCcw size={18} /> : <Check size={19} />}
+          <span>
+            {data.phase === "resolving"
+              ? "行动中"
+              : data.phase === "paused"
+                ? "已暂停"
+                : data.phase === "finished"
+                  ? "已结束"
+                  : me?.submitted
+                    ? "撤回"
+                    : "完成本轮"}
+          </span>
+        </button>
+      </footer>
+      {plansOpen && (
+        <Modal title="本轮计划" onClose={() => setPlansOpen(false)}>
+          <div className="cq-plan-sheet">
             {plan.length ? (
-              plan.map((order) => (
-                <div key={order.id} className="cq-order">
-                  <span>{orderDescription(order)}</span>
+              plan.map((o) => (
+                <div key={o.id}>
+                  <span>{orderLabel(o)}</span>
                   <button
-                    type="button"
-                    aria-label={`撤销指令 ${order.id}`}
+                    aria-label={`撤销计划 ${o.id}`}
                     disabled={!canPlan}
-                    onClick={() => void send("undo", { id: order.id })}
+                    onClick={() => void send("undo", { id: o.id })}
                   >
-                    <X size={16} />
+                    <Trash2 size={18} />
                   </button>
                 </div>
               ))
             ) : (
-              <p>本轮还没有计划。</p>
+              <p>地图上的行动会列在这里。</p>
             )}
           </div>
-          <p className="cq-order-budget">
-            预留后剩余：
-            {room.spectating
-              ? "?"
-              : data.availableGold.toLocaleString("zh-CN")}{" "}
-            金币 · {data.availableMovement} 行动点
-          </p>
-          {notice && <p role="alert">{notice}</p>}
+          <button
+            className="cq-text-button cq-resign"
+            disabled={!controlled || !data.controls.canResign}
+            onClick={() => {
+              setPlansOpen(false);
+              setResignOpen(true);
+            }}
+          >
+            <Flag size={16} />
+            认输
+          </button>
+        </Modal>
+      )}
+      {financeOpen && (
+        <Modal title="国政" onClose={() => setFinanceOpen(false)}>
+          <div className="cq-finance">
+            <dl>
+              <div>
+                <dt>预计税收</dt>
+                <dd>{number(me?.income ?? 0)}</dd>
+              </div>
+              <div>
+                <dt>军费</dt>
+                <dd>{number(me?.upkeep ?? 0)}</dd>
+              </div>
+              <div>
+                <dt>民心</dt>
+                <dd>{me?.morale ?? 0}%</dd>
+              </div>
+            </dl>
+            <label>
+              税率 {tax}%
+              <input
+                aria-label="税率"
+                type="range"
+                min="0"
+                max="100"
+                step="10"
+                value={tax}
+                disabled={!canPlan}
+                onChange={(e) => setTax(Number(e.target.value))}
+              />
+            </label>
+            <button
+              disabled={!canPlan || tax === me?.tax}
+              onClick={async () => {
+                if (await send("tax", { value: tax })) setFinanceOpen(false);
+              }}
+            >
+              调整税率
+            </button>
+          </div>
         </Modal>
       )}
       {resignOpen && (
-        <Modal title="退出本局争霸" onClose={() => setResignOpen(false)}>
-          <p>你的领土将转为中立，其他势力继续争夺。退出后仍可观战。</p>
+        <Modal title="退出争夺" onClose={() => setResignOpen(false)}>
+          <p>认输后领地归为中立，仍可观战。</p>
           <button
-            type="button"
-            className="primary"
-            disabled={busy || pending}
-            onClick={() => {
-              setResignOpen(false);
-              void send("resign");
+            disabled={!controlled || pending || busy}
+            onClick={async () => {
+              if (await send("resign")) setResignOpen(false);
             }}
           >
-            确认退出争霸
+            确认认输
           </button>
         </Modal>
       )}
