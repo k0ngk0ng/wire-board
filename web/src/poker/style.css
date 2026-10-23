@@ -875,3 +875,134 @@
 .poker-hidden-hand .poker-card {
   width: 14px;
 }
+
+/* Public plays wrap inside stable cells; the entire group is visible at once. */
+.poker-play,
+.poker-play:disabled {
+  display: block;
+  padding: 2px 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #fff7df;
+  box-shadow: none;
+  opacity: 1;
+  overflow: visible;
+  touch-action: manipulation;
+}
+.poker-play:not(:disabled) {
+  cursor: zoom-in;
+}
+.poker-play > div {
+  width: 100%;
+}
+@media (max-width: 600px) {
+  .poker-board {
+    box-sizing: border-box;
+    height: var(--poker-viewport-height, calc(100dvh - 48px));
+    min-height: 440px;
+    padding: 4px;
+    display: flex;
+    flex-direction: column;
+  }
+  .poker-arena {
+    flex: 1;
+    min-height: 0;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) minmax(0, 1.1fr) minmax(0, 0.8fr) auto;
+    padding: 4px;
+    gap: 4px 8px;
+  }
+  .poker-seat {
+    grid-template-rows: 28px minmax(0, 1fr);
+    min-height: 0;
+  }
+  .poker-seat-top {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    padding-top: 0;
+  }
+  .poker-seat-left {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .poker-seat-right {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  .poker-seat-bottom {
+    grid-column: 1 / -1;
+    grid-row: 3;
+  }
+  .poker-seat-label,
+  .poker-seat.acting .poker-seat-label {
+    height: 28px;
+    padding: 0 3px;
+  }
+  .poker-seat-top > .poker-seat-label,
+  .poker-seat-bottom > .poker-seat-label {
+    max-width: 105px;
+  }
+  .poker-seat .poker-play {
+    height: 100%;
+    min-height: 0;
+    max-width: 100%;
+  }
+  .poker-seat .poker-hidden-hand {
+    display: none;
+  }
+  .poker-seat:not(.poker-seat-bottom) .poker-seat-label > b {
+    padding-left: 0;
+  }
+  .poker-center {
+    position: absolute;
+    top: 5px;
+    left: 6px;
+    width: 72px;
+    height: 28px;
+    font-size: 9px;
+    padding: 0;
+    gap: 0;
+  }
+  .poker-center strong {
+    font-size: 11px;
+  }
+  .poker-own-hand {
+    grid-column: 1 / -1;
+    grid-row: 4;
+  }
+  .poker-actions,
+  .poker-board[data-action-columns="5"] .poker-actions {
+    height: 48px;
+    min-height: 48px;
+    padding: 4px 0 0;
+    flex-shrink: 0;
+  }
+  .poker-actions > button {
+    min-height: 44px;
+  }
+  .poker-table-toolbar {
+    top: 4px;
+    right: 4px;
+    z-index: 3;
+    height: 24px;
+  }
+  .poker-table-toolbar button {
+    font-size: 10px;
+    padding: 2px 5px;
+  }
+}
+
+@media (max-width: 600px) {
+  .poker-new-play {
+    animation-name: poker-play-fade;
+  }
+}
+@keyframes poker-play-fade {
+  from {
+    opacity: 0.3;
+  }
+  to {
+    opacity: 1;
+  }
+}

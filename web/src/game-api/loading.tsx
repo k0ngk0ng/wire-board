@@ -237,7 +237,7 @@ export function GameLoading({
       {mounted && (
         <div
           ref={host}
-          className={blocked ? "game-loading-staging" : undefined}
+          className={`game-ready-surface${blocked ? " game-loading-staging" : ""}`}
           inert={blocked || undefined}
           aria-hidden={blocked || undefined}
           key={`${identity}:${attempt}`}

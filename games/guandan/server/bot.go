@@ -50,6 +50,10 @@ func botAction(ctx gameapi.Context, m gameapi.Match) (json.RawMessage, error) {
 			}
 		}
 		chosen := chooseBotMove(s.Hands[p], c.Moves, s.LastPlay != nil, threat, s.Level)
+		if !s.shouldSpendBomb(p, chosen) {
+			a.Type = "pass"
+			break
+		}
 		a.Type = "play"
 		a.Cards = chosen.Cards
 		a.Interpretation = chosen.Key
@@ -96,7 +100,10 @@ func chooseBotMove(hand []int, moves []Move, responding bool, threat, level int)
 			score = -m.High - damage
 		}
 		if category(m.Combination) > 0 {
-			score -= 350 + len(m.Cards)
+			score -= 350 + category(m.Combination)*30
+			if !responding {
+				score = -100 - category(m.Combination)*3 - m.High - damage
+			}
 		} else if threat <= 2 {
 			if len(m.Cards) <= threat {
 				score += m.High * 12
@@ -115,4 +122,38 @@ func chooseBotMove(hand []int, moves []Move, responding bool, threat, level int)
 		}
 	}
 	return chosen
+}
+
+// Passing is a strategic choice even with a legal bomb. Spend control only
+// to finish, stop an imminent public threat, or set up a two-play finish.
+// Counts are public; no opponent card identity is read here.
+func (s *State) shouldSpendBomb(p int, move Move) bool {
+	if s.LastPlay == nil || !(category(move.Combination) > 0) {
+		return true
+	}
+	if len(move.Cards) == len(s.Hands[p]) {
+		return true
+	}
+	for seat, hand := range s.Hands {
+		if seat%2 != p%2 && len(hand) > 0 && len(hand) <= 2 {
+			return true
+		}
+	}
+	used := map[int]bool{}
+	for _, id := range move.Cards {
+		used[id] = true
+	}
+	left := []int{}
+	for _, id := range s.Hands[p] {
+		if !used[id] {
+			left = append(left, id)
+		}
+	}
+	// Do not use a speculative long combination as an excuse to start another
+	// bomb war. Only a small, immediately playable remainder is a clear exit.
+	if len(left) > 5 {
+		return false
+	}
+	_, err := interpret(left, s.Level)
+	return err == nil
 }

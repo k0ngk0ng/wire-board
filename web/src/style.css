@@ -30,16 +30,41 @@ select {
 }
 /* Apply callout protection to painted descendants as well as control roots.
    Do not disable pointer defaults: games own hold, drag and release behavior. */
-:is(button, [role="button"], [data-game-controls], input[type="button"], input[type="submit"], input[type="reset"], input[type="image"]),
+:is(
+  button,
+  [role="button"],
+  [data-game-controls],
+  input[type="button"],
+  input[type="submit"],
+  input[type="reset"],
+  input[type="image"]
+),
 :is(button, [role="button"], [data-game-controls]) * {
   -webkit-user-select: none;
   user-select: none;
   -webkit-touch-callout: none;
 }
 /* Editors retain selection and the native copy/paste menu even inside controls. */
-:is(button, [role="button"], [data-game-controls]):is(input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="image"]), textarea, select, [contenteditable]:not([contenteditable="false"])),
-:is(button, [role="button"], [data-game-controls]) :is(input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="image"]), textarea, select, [contenteditable]:not([contenteditable="false"])),
-:is(button, [role="button"], [data-game-controls]) [contenteditable]:not([contenteditable="false"]) * {
+:is(button, [role="button"], [data-game-controls]):is(
+  input:not([type="button"]):not([type="submit"]):not([type="reset"]):not(
+      [type="image"]
+    ),
+  textarea,
+  select,
+  [contenteditable]:not([contenteditable="false"])
+),
+:is(button, [role="button"], [data-game-controls])
+  :is(
+    input:not([type="button"]):not([type="submit"]):not([type="reset"]):not(
+        [type="image"]
+      ),
+    textarea,
+    select,
+    [contenteditable]:not([contenteditable="false"])
+  ),
+:is(button, [role="button"], [data-game-controls])
+  [contenteditable]:not([contenteditable="false"])
+  * {
   -webkit-user-select: text;
   user-select: text;
   -webkit-touch-callout: default;
@@ -5821,7 +5846,8 @@ label small {
 }
 
 /* Update notices never shift a live board or force a navigation. */
-.version-update-notice, .version-update-chip {
+.version-update-notice,
+.version-update-chip {
   position: fixed;
   z-index: 40;
   top: 88px;
@@ -5834,8 +5860,234 @@ label small {
   box-shadow: 0 6px 25px #26382226;
   padding: 14px;
 }
-.version-update-notice { width: 360px; }
-.version-update-notice p { margin: 8px 0 12px; font-size: 13px; line-height: 1.5; }
-.version-update-actions { display: flex; justify-content: flex-end; gap: 10px; }
-.version-update-actions button { min-height: 40px; }
-.version-update-chip { font-size: 13px; min-height: 40px; }
+.version-update-notice {
+  width: 360px;
+}
+.version-update-notice p {
+  margin: 8px 0 12px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.version-update-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.version-update-actions button {
+  min-height: 40px;
+}
+.version-update-chip {
+  font-size: 13px;
+  min-height: 40px;
+}
+
+/* Platform-owned phone poker frame. Keep the playing surface inside the live
+   browser viewport; shared tools remain reachable through explicit dialogs. */
+@media (max-width: 600px) {
+  [data-table-layout="poker"] > .room-page.playing {
+    box-sizing: border-box;
+    height: 100dvh;
+    min-height: 0;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 44px 4px max(4px, env(safe-area-inset-bottom));
+    display: flex;
+    flex-direction: column;
+  }
+  .room-page[data-table-layout="poker"] .room-heading {
+    position: absolute;
+    top: 0;
+    left: 8px;
+    height: 44px;
+    min-height: 0 !important;
+    width: calc(100% - 256px);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+  }
+  .room-page[data-table-layout="poker"] .room-heading > div {
+    min-width: 0;
+  }
+  .room-page[data-table-layout="poker"] .room-heading .eyebrow {
+    display: none;
+  }
+  .room-page[data-table-layout="poker"] .room-heading h1 {
+    font-size: 12px;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .compact-room-button {
+    position: fixed;
+    top: 4px;
+    z-index: 45;
+    height: 36px;
+    padding: 4px 7px;
+    border: 1px solid #9aaa99;
+    border-radius: 7px;
+    background: #f8f4e8;
+    color: #244836;
+    font-size: 11px;
+  }
+  .compact-room-platform {
+    right: 4px;
+  }
+  .compact-room-tools {
+    right: 100px;
+  }
+  .compact-room-players {
+    right: 146px;
+  }
+  [data-table-layout="poker"] .table-chat {
+    position: fixed;
+    margin: 0;
+    top: 4px;
+    right: 50px;
+    bottom: auto;
+  }
+  [data-table-layout="poker"] .chat-toggle {
+    min-height: 36px;
+    height: 36px;
+    padding: 4px 7px;
+    border-radius: 7px;
+    font-size: 11px;
+    box-shadow: none;
+  }
+  [data-table-layout="poker"] .chat-panel {
+    top: 44px;
+    bottom: auto;
+    max-height: calc(100dvh - 56px);
+  }
+  .compact-room-dialog .topbar {
+    display: flex;
+    flex-wrap: wrap;
+    height: auto;
+    padding: 0;
+    gap: 12px;
+    position: static;
+  }
+  .compact-room-dialog .header-right,
+  .compact-room-dialog .room-tools {
+    display: flex;
+    flex-wrap: wrap;
+    position: static;
+    gap: 8px;
+  }
+  .compact-room-dialog .players-strip {
+    margin: 0;
+  }
+  .room-page[data-table-layout="poker"] .game-layout {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    display: block;
+    margin: 0;
+  }
+  .room-page[data-table-layout="poker"] .game-main {
+    height: 100%;
+    min-height: 0;
+  }
+  .room-page[data-table-layout="poker"] .poker-board {
+    --poker-viewport-height: 100%;
+    min-height: 0;
+  }
+  .room-page[data-table-layout="poker"] .poker-table-toolbar {
+    position: fixed;
+    top: 4px;
+    right: 192px;
+    height: 36px;
+    z-index: 45;
+  }
+  .room-page[data-table-layout="poker"] .poker-table-toolbar button {
+    height: 36px;
+    color: #244836;
+    background: #f8f4e8;
+    border-color: #9aaa99;
+  }
+  .room-page[data-table-layout="poker"] .game-sidebar {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    width: 90px;
+    z-index: 3;
+    margin: 0;
+  }
+  .room-page[data-table-layout="poker"] .turn-card {
+    background: #244836;
+    color: #fff6dc;
+    border: 1px solid #9bb78d;
+    border-radius: 6px;
+    padding: 2px 4px;
+    height: 28px;
+    min-height: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3px;
+  }
+  .room-page[data-table-layout="poker"] .turn-card .eyebrow,
+  .room-page[data-table-layout="poker"] .clock-reading > svg,
+  .room-page[data-table-layout="poker"] .clock-reading > span {
+    display: none;
+  }
+  .room-page[data-table-layout="poker"] .turn-card h3 {
+    font-size: 9px;
+    line-height: 1.1;
+    margin: 0;
+    width: 30px;
+  }
+  .room-page[data-table-layout="poker"] .turn-clock {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-height: 0;
+  }
+  .room-page[data-table-layout="poker"] .clock-reading {
+    gap: 0;
+  }
+  .room-page[data-table-layout="poker"] .clock-reading time {
+    font-size: 16px;
+  }
+  .room-page[data-table-layout="poker"] .autoplay-notice {
+    flex: 0 0 auto;
+    padding: 4px;
+    margin: 0 0 4px;
+    font-size: 11px;
+  }
+  .room-page[data-table-layout="poker"] .autoplay-notice span {
+    display: none;
+  }
+  .room-page[data-table-layout="poker"] .spectator-notice {
+    flex: 0 0 auto;
+    padding: 2px 4px;
+    margin: 0;
+    font-size: 10px;
+  }
+  [data-table-layout="poker"] .result-reopen {
+    position: fixed;
+    top: 4px;
+    left: 4px;
+    right: auto;
+    height: 36px;
+    max-width: calc(100% - 256px);
+    padding: 3px;
+    font-size: 10px;
+    z-index: 46;
+  }
+}
+
+@media (max-width: 600px) {
+  .room-page[data-table-layout="poker"] > .game-ready-surface {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  [data-table-layout="poker"] .chat-toggle svg {
+    display: none;
+  }
+}

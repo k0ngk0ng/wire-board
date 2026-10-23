@@ -1,3 +1,4 @@
+import { CompactRoomPanel } from "./ui/compact-room-panel";
 import { Results } from "./ui/results";
 import { GameLoading } from "./game-api/loading";
 import { Runtime } from "./game-api/runtime";
@@ -582,6 +583,10 @@ function App() {
       />
     );
   const room = presented.room;
+  const compactPoker =
+    !!room?.game &&
+    (room.status === "playing" || room.status === "finished") &&
+    gameModule(room.kind)?.category === "poker";
   const canAdmin =
     state.user.role === "admin" || state.user.role === "superadmin";
   const autoPlay = !!room?.seats[room.you]?.autoPlay;
@@ -600,6 +605,7 @@ function App() {
       <AssetsContext.Provider value={state.assetsBaseURL || ""}>
         <RailMapsContext.Provider value={state.railMaps || []}>
           <div
+            data-table-layout={compactPoker ? "poker" : undefined}
             className={state.assetsBaseURL ? "with-artwork" : ""}
             style={
               state.assetsBaseURL
@@ -618,92 +624,106 @@ function App() {
               if (sound) enableAudio();
             }}
           >
-            <header className="topbar">
-              <Logo />
-              <nav>
-                <span className="nav-active">
-                  {adminOpen ? "管理后台" : room ? "游戏牌桌" : "游戏大厅"}
-                </span>
-                <span className="nav-caption">
-                  让相聚，多一局。
-                  <em className="app-version">{versionLabel(state.version)}</em>
-                </span>
-              </nav>
-              <div className="header-right">
-                {canAdmin && (
+            <CompactRoomPanel
+              enabled={compactPoker}
+              label="平台"
+              name="platform"
+            >
+              <header className="topbar">
+                <Logo />
+                <nav>
+                  <span className="nav-active">
+                    {adminOpen ? "管理后台" : room ? "游戏牌桌" : "游戏大厅"}
+                  </span>
+                  <span className="nav-caption">
+                    让相聚，多一局。
+                    <em className="app-version">
+                      {versionLabel(state.version)}
+                    </em>
+                  </span>
+                </nav>
+                <div className="header-right">
+                  {canAdmin && (
+                    <button
+                      className={`subtle admin-nav-button ${adminOpen ? "active" : ""}`}
+                      onClick={() => openAdmin(!adminOpen)}
+                    >
+                      <ShieldCheck size={16} />
+                      {adminOpen ? "返回游戏" : "管理后台"}
+                    </button>
+                  )}
                   <button
-                    className={`subtle admin-nav-button ${adminOpen ? "active" : ""}`}
-                    onClick={() => openAdmin(!adminOpen)}
+                    className="subtle wish-nav-button"
+                    aria-label="打开游戏许愿池"
+                    onClick={() => setWishOpen(true)}
                   >
-                    <ShieldCheck size={16} />
-                    {adminOpen ? "返回游戏" : "管理后台"}
+                    <Sparkles size={16} />
+                    许愿池
                   </button>
-                )}
-                <button
-                  className="subtle wish-nav-button"
-                  aria-label="打开游戏许愿池"
-                  onClick={() => setWishOpen(true)}
-                >
-                  <Sparkles size={16} />
-                  许愿池
-                </button>
-                <button
-                  className="subtle"
-                  onClick={() => setShowLeaderboard(true)}
-                >
-                  积分榜
-                </button>
-                <span
-                  className={`connection ${online ? "" : "offline"}`}
-                  title={online ? "实时连接正常" : "正在重连，座位与进度已保留"}
-                >
-                  {online ? <Wifi size={15} /> : <WifiOff size={15} />}
-                  <span>{online ? "已连接" : "重连中"}</span>
-                </span>
-                <div className="sound-controls" role="group" aria-label="声音">
                   <button
-                    className="sound-preview"
-                    disabled={!sound}
+                    className="subtle"
+                    onClick={() => setShowLeaderboard(true)}
+                  >
+                    积分榜
+                  </button>
+                  <span
+                    className={`connection ${online ? "" : "offline"}`}
                     title={
-                      sound ? "音量由设备媒体音量控制" : "取消静音后可试听"
+                      online ? "实时连接正常" : "正在重连，座位与进度已保留"
                     }
-                    onClick={() => void previewAudio()}
                   >
-                    试听音效
+                    {online ? <Wifi size={15} /> : <WifiOff size={15} />}
+                    <span>{online ? "已连接" : "重连中"}</span>
+                  </span>
+                  <div
+                    className="sound-controls"
+                    role="group"
+                    aria-label="声音"
+                  >
+                    <button
+                      className="sound-preview"
+                      disabled={!sound}
+                      title={
+                        sound ? "音量由设备媒体音量控制" : "取消静音后可试听"
+                      }
+                      onClick={() => void previewAudio()}
+                    >
+                      试听音效
+                    </button>
+                    <button
+                      className="sound-toggle"
+                      aria-label={sound ? "静音" : "取消静音"}
+                      aria-pressed={!sound}
+                      title={
+                        sound ? "静音所有游戏和提示音" : "恢复所有游戏和提示音"
+                      }
+                      onClick={toggleSound}
+                    >
+                      {sound ? <Volume2 size={18} /> : <VolumeX size={18} />}
+                      <span>{sound ? "静音" : "取消静音"}</span>
+                    </button>
+                  </div>
+                  <button
+                    className="avatar"
+                    aria-label="我的战绩与好友"
+                    onClick={() => setProfileID(state.user.id)}
+                  >
+                    {state.user.name[0]}
                   </button>
                   <button
-                    className="sound-toggle"
-                    aria-label={sound ? "静音" : "取消静音"}
-                    aria-pressed={!sound}
-                    title={
-                      sound ? "静音所有游戏和提示音" : "恢复所有游戏和提示音"
-                    }
-                    onClick={toggleSound}
+                    className="icon-button"
+                    aria-label="控制器设置"
+                    title="控制器设置"
+                    onClick={() => setControllerSettingsOpen(true)}
                   >
-                    {sound ? <Volume2 size={18} /> : <VolumeX size={18} />}
-                    <span>{sound ? "静音" : "取消静音"}</span>
+                    <Gamepad2 size={19} />
                   </button>
+                  <span className="username">
+                    <PlayerName user={state.user} />
+                  </span>
                 </div>
-                <button
-                  className="avatar"
-                  aria-label="我的战绩与好友"
-                  onClick={() => setProfileID(state.user.id)}
-                >
-                  {state.user.name[0]}
-                </button>
-                <button
-                  className="icon-button"
-                  aria-label="控制器设置"
-                  title="控制器设置"
-                  onClick={() => setControllerSettingsOpen(true)}
-                >
-                  <Gamepad2 size={19} />
-                </button>
-                <span className="username">
-                  <PlayerName user={state.user} />
-                </span>
-              </div>
-            </header>
+              </header>
+            </CompactRoomPanel>
             {controllerSettingsOpen && (
               <ControllerSettings
                 key={state.user.id}
@@ -761,6 +781,7 @@ function App() {
               />
             ) : (
               <main
+                data-table-layout={compactPoker ? "poker" : undefined}
                 className={`room-page ${room.game ? "playing" : ""} game-${room.kind}`}
               >
                 <RoomHeading
@@ -774,89 +795,95 @@ function App() {
                     </span>
                     <h1>{room.name}</h1>
                   </div>
-                  <div className="room-tools">
-                    {canAutoPlay && (
-                      <button
-                        className={`subtle autoplay-control ${autoPlay ? "active" : ""}`}
-                        aria-pressed={autoPlay}
-                        disabled={busy}
-                        onClick={() =>
-                          roomCommand("autoplay", { enabled: !autoPlay })
-                        }
-                      >
-                        {autoPlay ? <Hand size={16} /> : <Bot size={16} />}
-                        {autoPlay ? "取消托管" : "开启托管"}
-                      </button>
-                    )}
-                    {room.spectating && (
-                      <button
-                        className="subtle"
-                        disabled={busy}
-                        onClick={() =>
-                          void run(() =>
-                            api(`/rooms/${room.id}/watch`, { leave: true }),
-                          )
-                        }
-                      >
-                        <ArrowLeft size={16} />
-                        离开观战
-                      </button>
-                    )}
-                    {room.game && (
-                      <button
-                        className="subtle"
-                        aria-haspopup="dialog"
-                        onClick={() => setJournalRoom(room.id)}
-                      >
-                        <ScrollText size={16} />
-                        对局日志
-                      </button>
-                    )}
-                    <button className="subtle" onClick={() => setRules(true)}>
-                      <BookOpen size={16} />
-                      玩法速查
-                    </button>
-                    <button
-                      className="subtle"
-                      onClick={async () => {
-                        try {
-                          await navigator.clipboard.writeText(
-                            `${location.origin}/?room=${room.id}`,
-                          );
-                          setNotice("房间链接已复制，发给朋友即可");
-                        } catch {
-                          setNotice(`房间编号：${room.id}`);
-                        }
-                      }}
-                    >
-                      <Copy size={16} />
-                      邀请朋友
-                    </button>
-                    {!room.spectating &&
-                      (room.status !== "playing" ||
-                        room.game?.eliminated?.includes(room.you)) && (
+                  <CompactRoomPanel
+                    enabled={compactPoker}
+                    label="房间"
+                    name="tools"
+                  >
+                    <div className="room-tools">
+                      {canAutoPlay && (
+                        <button
+                          className={`subtle autoplay-control ${autoPlay ? "active" : ""}`}
+                          aria-pressed={autoPlay}
+                          disabled={busy}
+                          onClick={() =>
+                            roomCommand("autoplay", { enabled: !autoPlay })
+                          }
+                        >
+                          {autoPlay ? <Hand size={16} /> : <Bot size={16} />}
+                          {autoPlay ? "取消托管" : "开启托管"}
+                        </button>
+                      )}
+                      {room.spectating && (
                         <button
                           className="subtle"
                           disabled={busy}
-                          onClick={() => roomCommand("leave")}
+                          onClick={() =>
+                            void run(() =>
+                              api(`/rooms/${room.id}/watch`, { leave: true }),
+                            )
+                          }
                         >
                           <ArrowLeft size={16} />
-                          离开房间
+                          离开观战
                         </button>
                       )}
-                    {room.status === "playing" &&
-                      !room.spectating &&
-                      room.host === state.user.id && (
+                      {room.game && (
                         <button
-                          className="subtle danger"
-                          disabled={busy}
+                          className="subtle"
                           aria-haspopup="dialog"
-                          onClick={() => setCloseTableRoom(room.id)}
+                          onClick={() => setJournalRoom(room.id)}
                         >
-                          结束牌桌
+                          <ScrollText size={16} />
+                          对局日志
                         </button>
                       )}
-                  </div>
+                      <button className="subtle" onClick={() => setRules(true)}>
+                        <BookOpen size={16} />
+                        玩法速查
+                      </button>
+                      <button
+                        className="subtle"
+                        onClick={async () => {
+                          try {
+                            await navigator.clipboard.writeText(
+                              `${location.origin}/?room=${room.id}`,
+                            );
+                            setNotice("房间链接已复制，发给朋友即可");
+                          } catch {
+                            setNotice(`房间编号：${room.id}`);
+                          }
+                        }}
+                      >
+                        <Copy size={16} />
+                        邀请朋友
+                      </button>
+                      {!room.spectating &&
+                        (room.status !== "playing" ||
+                          room.game?.eliminated?.includes(room.you)) && (
+                          <button
+                            className="subtle"
+                            disabled={busy}
+                            onClick={() => roomCommand("leave")}
+                          >
+                            <ArrowLeft size={16} />
+                            离开房间
+                          </button>
+                        )}
+                      {room.status === "playing" &&
+                        !room.spectating &&
+                        room.host === state.user.id && (
+                          <button
+                            className="subtle danger"
+                            disabled={busy}
+                            aria-haspopup="dialog"
+                            onClick={() => setCloseTableRoom(room.id)}
+                          >
+                            结束牌桌
+                          </button>
+                        )}
+                    </div>
+                  </CompactRoomPanel>
                 </RoomHeading>
                 {room.spectating && (
                   <div className="spectator-notice">
@@ -932,7 +959,15 @@ function App() {
                     >
                       {(loadEvents, loading) => (
                         <>
-                          {!room.game?.sanguosha && <Players room={room} />}
+                          {!room.game?.sanguosha && (
+                            <CompactRoomPanel
+                              enabled={compactPoker}
+                              label="玩家"
+                              name="players"
+                            >
+                              <Players room={room} />
+                            </CompactRoomPanel>
+                          )}
                           {room.game?.finished && (
                             <ResultOverlay
                               key={`${room.id}:${room.result?.id || "finished"}`}
