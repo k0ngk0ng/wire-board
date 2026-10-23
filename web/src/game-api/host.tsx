@@ -421,7 +421,8 @@ export function ModuleTurn({
         1000,
     ),
   );
-  const hasClock = !!room.turnDeadline && !room.game?.finished;
+  const hasClock =
+    !!room.turnDeadline && !room.game?.finished && !room.game?.paused;
   return (
     <section
       className={`turn-card ${(room.game?.attention ?? room.game?.actors)?.includes(room.you) ? "mine" : ""}`}
@@ -430,13 +431,15 @@ export function ModuleTurn({
       <h3>
         {room.game?.finished
           ? "本局已结束"
-          : (room.game?.attention ?? room.game?.actors)?.includes(room.you)
-            ? "请行动"
-            : room.game?.eliminated?.includes(room.you)
-              ? "你已出局，可以观战或离桌"
-              : (room.game?.attention ?? room.game?.actors)?.length
-                ? "等待其他玩家"
-                : "对局进行中"}
+          : room.game?.paused
+            ? "对局已暂停"
+            : (room.game?.attention ?? room.game?.actors)?.includes(room.you)
+              ? "请行动"
+              : room.game?.eliminated?.includes(room.you)
+                ? "你已出局，可以观战或离桌"
+                : (room.game?.attention ?? room.game?.actors)?.length
+                  ? "等待其他玩家"
+                  : "对局进行中"}
       </h3>
       <div
         className={`turn-clock ${hasClock ? (remaining <= 20 ? "urgent" : "") : "turn-clock-placeholder"}`}

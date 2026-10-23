@@ -1850,7 +1850,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 				err = errors.New("此游戏不支持托管")
 				break
 			}
-			if !*req.Enabled && next.Seats[idx].AutoPlay && (module.Realtime || (next.Module.Deadline > 0 && next.Module.Deadline <= next.gameNow(now).UnixMilli() && slices.Contains(next.Module.TimeoutActors, idx))) {
+			if !*req.Enabled && next.Seats[idx].AutoPlay && (module.Realtime || module.ReclaimOnCancel || (next.Module.Deadline > 0 && next.Module.Deadline <= next.gameNow(now).UnixMilli() && slices.Contains(next.Module.TimeoutActors, idx))) {
 				var match gameapi.Match
 				match, err = module.Reclaim(moduleContext(&next, idx, req.Version, now), *next.Module)
 				if err == nil {

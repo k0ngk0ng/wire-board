@@ -7,6 +7,14 @@ import (
 )
 
 const roomIdleLimit = 24 * time.Hour
+const pausedRoomIdleLimit = 30 * 24 * time.Hour
+
+func (r *Room) inactiveLimit() time.Duration {
+	if r.Status == "playing" && r.Module != nil && r.Module.Paused {
+		return pausedRoomIdleLimit
+	}
+	return roomIdleLimit
+}
 
 // Called under s.mu, or during startup before the server is exposed. Only player
 // commands and bot actions renew LastActive; reads, chat, spectators and forced
@@ -16,7 +24,8 @@ func (s *Server) expireIdleRooms(now time.Time) {
 		if room.Status != "waiting" && room.Status != "playing" {
 			continue
 		}
-		if room.LastActive <= 0 || room.LastActive > now.Add(-roomIdleLimit).Unix() {
+		limit := room.inactiveLimit()
+		if room.LastActive <= 0 || room.LastActive > now.Add(-limit).Unix() {
 			continue
 		}
 		raw, _ := json.Marshal(room)
@@ -31,7 +40,11 @@ func (s *Server) expireIdleRooms(now time.Time) {
 			next.Seats[i].TimeoutAutoPlay = false
 		}
 		if next.Game != nil {
-			next.Game.Log = append(next.Game.Log, "牌桌连续 24 小时无人操作，已自动关闭，本局不计胜负与积分。")
+			message := "牌桌连续 24 小时无人操作，已自动关闭，本局不计胜负与积分。"
+			if limit == pausedRoomIdleLimit {
+				message = "暂停对局连续 30 天无人操作，已自动关闭，本局不计胜负与积分。"
+			}
+			next.Game.Log = append(next.Game.Log, message)
 			if len(next.Game.Log) > 80 {
 				next.Game.Log = next.Game.Log[len(next.Game.Log)-80:]
 			}
