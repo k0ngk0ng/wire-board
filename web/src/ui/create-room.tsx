@@ -61,7 +61,7 @@ export function CreateRoom({
     <Modal
       title={choosing ? "选择游戏" : `${gameName(kind)} · 创建房间`}
       onClose={onClose}
-      className="create-room-modal"
+      className={`create-room-modal${choosing ? " create-room-choosing" : ""}`}
     >
       <div
         ref={choices}

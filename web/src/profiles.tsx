@@ -20,10 +20,12 @@ export function PlayerName({
 }) {
   const open = useContext(ProfileContext);
   return user.bot ? (
-    <span>{children || user.name}</span>
+    <span className="player-name" title={user.name}>
+      {children || user.name}
+    </span>
   ) : (
     <button
-      className="player-link"
+      className="player-link player-name"
       title={`查看 ${user.name} 的玩家页面`}
       onClick={() => open(user.id)}
     >

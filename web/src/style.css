@@ -1055,6 +1055,7 @@ label small {
   margin-bottom: 24px;
 }
 .waiting-seats {
+  min-width: 0;
   padding: 38px;
 }
 .waiting-seats h2 {
@@ -1070,6 +1071,7 @@ label small {
 }
 .waiting-seat {
   width: calc(50% - 7px);
+  min-width: 0;
   border: 1px dashed #d3dccb;
   display: flex;
   flex-direction: column;
@@ -1097,10 +1099,29 @@ label small {
   display: flex;
   gap: 7px;
   align-items: center;
+  justify-content: center;
+  min-width: 0;
+  max-width: 100%;
 }
-.waiting-seat > span:last-child {
-  font-size: 10px;
-  color: #97a088;
+.waiting-seat > .waiting-seat-status {
+  font-size: 11px;
+  line-height: 1.4;
+  color: #52664f;
+}
+.waiting-seat h3 > svg,
+.waiting-seat h3 > .bot-badge {
+  flex-shrink: 0;
+}
+.waiting-seat h3 > .bot-badge {
+  margin-left: 0;
+}
+.waiting-seat h3 > .player-name,
+.player-info > strong > .player-name {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .waiting-actions {
   display: flex;
@@ -1141,6 +1162,7 @@ label small {
   min-width: 0;
 }
 .player-info strong {
+  min-width: 0;
   font-size: 12px;
   display: flex;
   align-items: center;
@@ -1148,6 +1170,7 @@ label small {
   overflow-wrap: anywhere;
 }
 .player-info strong small {
+  flex-shrink: 0;
   background: #e8eee1;
   font-size: 8px;
   padding: 1px 3px;
@@ -5463,6 +5486,62 @@ label small {
 }
 
 /* The catalogue and the chosen game's form are separate steps of one dialog. */
+.game-choice-filters {
+  display: contents;
+}
+@media (min-width: 700px) {
+  .create-room-modal.create-room-choosing {
+    width: min(1400px, calc(100vw - 64px));
+    height: min(900px, calc(100dvh - 64px));
+    max-height: calc(100dvh - 64px);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .create-room-choosing .modal-head {
+    flex-shrink: 0;
+  }
+  .create-room-choosing [data-create-step="choose"] {
+    flex: 1;
+    min-height: 0;
+  }
+  .create-room-choosing .game-choices {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .create-room-choosing .game-choice-filters {
+    display: grid;
+    grid-template-columns: minmax(160px, 240px) minmax(180px, 400px);
+    align-items: end;
+    gap: 16px;
+  }
+  .create-room-choosing .game-choice-filters .game-category {
+    margin-bottom: 0;
+    font-size: 13px;
+    gap: 7px;
+  }
+  .create-room-choosing .game-choice-filters select {
+    margin-top: 0;
+  }
+  .create-room-choosing .game-search {
+    width: 100%;
+  }
+  .create-room-choosing .game-choice-filters,
+  .create-room-choosing .game-choice-summary,
+  .create-room-choosing .game-choice-description {
+    flex-shrink: 0;
+  }
+  .create-room-choosing .choose-games {
+    flex: 1;
+    min-height: 0;
+    max-height: none;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    grid-auto-rows: max-content;
+    margin-bottom: 0;
+  }
+}
 .create-room-modal .create-back {
   margin: 0 0 12px;
 }
