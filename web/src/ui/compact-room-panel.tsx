@@ -19,6 +19,9 @@ export function CompactRoomPanel({
   );
   const [open, setOpen] = useState(false);
   useEffect(() => {
+    setOpen(false);
+  }, [enabled]);
+  useEffect(() => {
     const query = matchMedia("(max-width: 600px)");
     const update = () => {
       setMobile(query.matches);

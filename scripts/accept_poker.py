@@ -198,6 +198,12 @@ try:
   shot(f'{scenario}-played')
   b('reload');b('wait','.poker-board');assert js('document.querySelectorAll(".poker-new-play").length')==0
   if current!=0:login_seat(0)
+  b('click','.compact-room-platform');b('find','role','button','click','--name','管理后台','--exact')
+  b('wait','--fn','!document.querySelector(".room-page")')
+  assert js('!!document.querySelector("header.topbar") && !document.querySelector(".compact-room-platform")'),'admin inherited the compact poker header'
+  b('find','role','button','click','--name','返回游戏','--exact');b('wait','.poker-board')
+  # External room closure while a menu is open must not leave a stale dialog.
+  b('click','.compact-room-platform')
   command('close');command('leave');b('wait','.room-list');b('select','select[aria-label="游戏分类"]','poker')
  report['passed']=True
 except Exception as e:
