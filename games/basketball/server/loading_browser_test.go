@@ -6,6 +6,7 @@ package basketball_test
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"github.com/k0ngk0ng/wire-board/internal/gametest"
 	"net/http"
 	"net/http/httptest"
@@ -57,7 +58,7 @@ func TestBasketballBrowserLoading(t *testing.T) {
 
 func basketballOSSMirror(t *testing.T, root string) http.Handler {
 	t.Helper()
-	pathsRaw, e := exec.Command("node", "--input-type=module", "-e", `import {prepareBasketballAssets} from "`+root+`/games/basketball/build/assets.mjs";import {prepareBasketballRuntime} from "`+root+`/games/basketball/build/runtime.mjs";console.log(JSON.stringify({media:prepareBasketballAssets("`+root+`"),runtime:prepareBasketballRuntime("`+root+`") }));`).Output()
+	pathsRaw, e := exec.Command("node", "--input-type=module", "-e", `import {prepareBasketballAssets} from "`+root+`/games/basketball/build/assets.mjs";import {readFileSync} from "node:fs";import assert from "node:assert/strict";import {prepareBasketballRuntime} from "`+root+`/games/basketball/build/runtime.mjs";const mediaRoot=process.env.BASKETBALL_TEST_MEDIA_ROOT||"`+root+`";assert.equal(JSON.parse(readFileSync(mediaRoot+"/games/basketball/assets/release-manifest.json")).contentSHA256,JSON.parse(readFileSync("`+root+`/games/basketball/assets/release-manifest.json")).contentSHA256);console.log(JSON.stringify({media:prepareBasketballAssets(mediaRoot),runtime:prepareBasketballRuntime("`+root+`") }));`).Output()
 	if e != nil {
 		t.Fatal(e)
 	}
@@ -82,5 +83,39 @@ func basketballOSSMirror(t *testing.T, root string) http.Handler {
 			return
 		}
 		http.ServeFile(w, r, filepath.Join(paths["media"], relative))
+	})
+}
+
+// Local candidate descriptor for browser acceptance before publishing its
+// immutable Wasm object. The browser mirror serves the exact compiled bytes.
+func basketballRuntimeFixture(t *testing.T, root string) http.Handler {
+	t.Helper()
+	command := exec.Command("node", "--input-type=module", "-e", `import {prepareBasketballRuntime} from "`+root+`/games/basketball/build/runtime.mjs";console.log(prepareBasketballRuntime("`+root+`"))`)
+	output, err := command.Output()
+	if err != nil {
+		t.Fatal(err)
+	}
+	dir := filepath.Join(strings.TrimSpace(string(output)), "basketball/v1/runtime")
+	raw, err := os.ReadFile(filepath.Join(dir, "build.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var manifest map[string]any
+	if err = json.Unmarshal(raw, &manifest); err != nil {
+		t.Fatal(err)
+	}
+	file := manifest["files"].(map[string]any)["basketball.wasm"].(map[string]any)
+	manifest["wasm"] = map[string]any{"sourceSHA256": manifest["sourceSHA256"], "sha256": file["sha256"], "bytes": file["bytes"], "url": fmt.Sprintf("https://cdn.ichenj.com/bga/basketball/runtime-%s/basketball.wasm", file["sha256"])}
+	descriptor, _ := json.Marshal(manifest)
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch filepath.Base(r.URL.Path) {
+		case "build.json":
+			w.Header().Set("Content-Type", "application/json")
+			w.Write(descriptor)
+		case "wasm_exec.js":
+			http.ServeFile(w, r, filepath.Join(dir, "wasm_exec.js"))
+		default:
+			http.NotFound(w, r)
+		}
 	})
 }

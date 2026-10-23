@@ -35,7 +35,7 @@ export function Board(props: BoardProps<BasketballNetworkView>) {
   const watching = !!room.spectating || room.you < 0;
   const userID = watching ? "spectator" : (room.seats[room.you]?.id ?? "");
   const localActor = data.localActor ?? room.you;
-  const identity = `${room.id}:${data.epoch}:${room.you}:${localActor}:${userID}`;
+  const identity = `${room.id}:${data.epoch}:${room.you}:${localActor}:${userID}:${props.clock.epoch ?? 0}`;
   const ready = readyIdentity === identity;
   useEffect(() => {
     if (ready) props.onReady?.();
@@ -95,8 +95,16 @@ export function Board(props: BoardProps<BasketballNetworkView>) {
         runtimeURL: "/basketball/v1/runtime",
         assetsURL: base + "/basketball/v1/graphics",
         postResult: !!data.campaign,
-        court: (data.runtime.config as { match: { Court: number } }).match
-          .Court,
+        court: data.court,
+        epoch: data.epoch,
+        loadCheckpoint: async () => {
+          if (!alive) throw Error("对局已切换");
+          const result = await api(
+            "/rooms/" + encodeURIComponent(room.id) + "/sync",
+          );
+          if (!alive) throw Error("对局已切换");
+          return result;
+        },
         onProgress: (p) => {
           if (alive) setProgress(p);
         },
@@ -111,7 +119,7 @@ export function Board(props: BoardProps<BasketballNetworkView>) {
               : (current.room.seats[current.room.you]?.id ?? "");
           if (
             !alive ||
-            `${current.room.id}:${current.data.epoch}:${current.room.you}:${current.data.localActor ?? current.room.you}:${currentUser}` !==
+            `${current.room.id}:${current.data.epoch}:${current.room.you}:${current.data.localActor ?? current.room.you}:${currentUser}:${current.clock.epoch ?? 0}` !==
               identity
           )
             return Promise.reject(Error("控制席位已改变"));
@@ -133,6 +141,8 @@ export function Board(props: BoardProps<BasketballNetworkView>) {
       }
       owned = created;
       client.current = created;
+      await created.initialize();
+      if (!alive) return;
       if (changedProfile && changedProfile.revision > saved.revision)
         created.configure(changedProfile);
       const current = latest.current;
@@ -300,7 +310,7 @@ export function Board(props: BoardProps<BasketballNetworkView>) {
           <FCController
             profile={profile}
             mode="play"
-            disabled={!ready || !enabled(props) || !!error}
+            disabled={!ready || !connected || !enabled(props) || !!error}
             sink={client.current?.controllerSink}
           />
         </aside>

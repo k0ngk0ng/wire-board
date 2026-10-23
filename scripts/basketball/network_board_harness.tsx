@@ -1,3 +1,8 @@
+import {
+  StreamInputs,
+  mergeStreamState,
+  mergeStreamGame,
+} from "../../web/src/realtime-stream";
 import { createRoot } from "react-dom/client";
 import { OptionsForm } from "../../games/basketball/web/module";
 import type { BasketballOptions } from "../../games/basketball/web/module";
@@ -10,14 +15,37 @@ import type { GameRoom, GameAudioPort } from "../../web/src/game-api/module";
 // and audio sink are fixture plumbing; no world fields are changed here.
 const records: {
   actions: any[];
+  checkpoints: { at: number; url: string }[];
+  packets: { at: number; bytes: number; type: string; full: boolean }[];
+  sent: { at: number; action: unknown; ackAt?: number }[];
   errors: string[];
   room?: GameRoom;
   ackDelay: number;
   userID: string;
   music: { sources: readonly string[]; options: unknown }[];
   denyFirstMusic?: boolean;
-} = { actions: [], errors: [], ackDelay: 0, userID: "", music: [] };
+} = {
+  packets: [],
+  sent: [],
+  checkpoints: [],
+  actions: [],
+  errors: [],
+  ackDelay: 0,
+  userID: "",
+  music: [],
+};
 (window as any).networkBoard = records;
+const fixtureFetch = window.fetch;
+window.fetch = (input, init) => {
+  const url = String(input);
+  if (/\/sync(?:$|\?)/.test(url) && !url.includes("probe=1"))
+    records.checkpoints.push({ at: performance.now(), url });
+  return fixtureFetch(input, init);
+};
+(window as any).fullStateProbe = async () =>
+  (await api("/rooms/" + records.room!.id + "/sync?probe=1")).data.checkpoint
+    .state;
+
 window.addEventListener("error", (event) => records.errors.push(event.message));
 window.addEventListener("unhandledrejection", (event) =>
   records.errors.push(String(event.reason)),
@@ -33,6 +61,10 @@ async function api(path: string, body?: unknown) {
   return v;
 }
 let serial = 0;
+const ordered = new StreamInputs();
+const streamMode = new URL(location.href).searchParams.get("stream") === "1";
+let stateValue: any, activeSocket: WebSocket | undefined;
+(window as any).disconnectInputStream = () => activeSocket?.close();
 const silence: GameAudioPort = {
   play: async () => true,
   playWithFallback: async () => true,
@@ -54,18 +86,79 @@ const silence: GameAudioPort = {
 function App() {
   const [state, setState] = useState<any>(),
     [settings, setSettings] = useState(false);
+  const [clockEpoch, setClockEpoch] = useState(0);
   const [capacity, setCapacity] = useState(1);
   const [options, setOptions] = useState<BasketballOptions>({
     court: "new-york",
     mode: "solo",
   });
-  const refresh = async () => {
-    const v = await api("/state");
+  const accept = (v: any) => {
+    stateValue = v;
     records.room = v.room;
     records.userID = v.user.id;
     setState(v);
   };
+  const refresh = async () => {
+    const v = await api("/state");
+    accept(mergeStreamState(stateValue, v, performance.now()));
+  };
   useEffect(() => {
+    if (!streamMode) return;
+    let alive = true,
+      timer: ReturnType<typeof setTimeout>,
+      connected = false;
+    const connect = () => {
+      const socket = new WebSocket(
+        location.origin.replace(/^http/, "ws") + "/api/ws?stream=1",
+      );
+      activeSocket = socket;
+      socket.onopen = () => ordered.attach(socket);
+      socket.onmessage = (event) => {
+        const packet = JSON.parse(String(event.data));
+        records.packets.push({
+          at: performance.now(),
+          bytes: new TextEncoder().encode(String(event.data)).length,
+          type: packet.type,
+          full:
+            !!packet.game?.data?.runtime ||
+            !!packet.state?.room?.game?.data?.runtime,
+        });
+        if (packet.type === "ack") {
+          ordered.ack(packet);
+          return;
+        }
+        if (packet.type === "state") {
+          if (
+            connected ||
+            (stateValue?.serverInstance &&
+              stateValue.serverInstance !== packet.state.serverInstance)
+          )
+            setClockEpoch((n) => n + 1);
+          connected = false;
+          accept(mergeStreamState(stateValue, packet.state, performance.now()));
+        } else if (packet.type === "game") {
+          const merged = mergeStreamGame(stateValue, packet, performance.now());
+          if (merged) accept(merged);
+        }
+      };
+      socket.onclose = () => {
+        ordered.close();
+        if (alive) {
+          connected = true;
+          timer = setTimeout(connect, 100);
+        }
+      };
+    };
+    connect();
+    return () => {
+      alive = false;
+      clearTimeout(timer);
+      activeSocket?.close();
+      ordered.close();
+    };
+  }, []);
+  useEffect(() => {
+    if (streamMode) return;
     let alive = true;
     const run = async () => {
       try {
@@ -83,12 +176,29 @@ function App() {
   const act = async (action: Record<string, unknown>) => {
     const room = records.room!;
     records.actions.push(action);
-    await api("/rooms/" + room.id, {
-      type: "action",
-      version: room.version,
-      nonce: "browser-network-" + ++serial,
+    const nonce = "browser-network-" + ++serial;
+    const sent = {
+      at: performance.now(),
       action,
-    });
+      ackAt: undefined as number | undefined,
+    };
+    records.sent.push(sent);
+    if (streamMode && ordered.connected)
+      await ordered.send({
+        roomId: room.id,
+        version: room.version,
+        serverInstance: stateValue.serverInstance,
+        nonce,
+        action,
+      });
+    else
+      await api("/rooms/" + room.id, {
+        type: "action",
+        version: room.version,
+        nonce,
+        action,
+      });
+    sent.ackAt = performance.now();
     if (records.ackDelay)
       await new Promise((r) => setTimeout(r, records.ackDelay));
   };
@@ -133,7 +243,12 @@ function App() {
           assets=""
           sound={false}
           audio={silence}
-          clock={{ serverNow: state.serverNow, receivedAt: performance.now() }}
+          inputWindow={ordered.connected ? 8 : 1}
+          clock={{
+            serverNow: state.serverNow,
+            receivedAt: state.receivedAt ?? performance.now(),
+            epoch: clockEpoch,
+          }}
         />
       )}
       {settings && (

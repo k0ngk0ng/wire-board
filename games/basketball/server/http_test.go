@@ -67,18 +67,25 @@ func observedModule(t *testing.T) gameapi.Module {
 	return m
 }
 
-func view(t *testing.T, c *gametest.Client) game.View {
+// Rule assertions explicitly fetch recovery state; normal clients use the
+// lightweight game view. Both parts of this response share one host boundary.
+func snapshotView(t *testing.T, c *gametest.Client) game.View {
 	t.Helper()
-	data, err := json.Marshal(gametest.Data(c.Room()))
+	room := c.Room()
+	reply := c.Request("GET", "/api/rooms/"+room["id"].(string)+"/sync", nil, 200)
+	raw, err := json.Marshal(reply["data"])
 	if err != nil {
 		t.Fatal(err)
 	}
-	var v game.View
-	if err := json.Unmarshal(data, &v); err != nil {
+	var snapshot game.SyncSnapshot
+	if err = json.Unmarshal(raw, &snapshot); err != nil {
 		t.Fatal(err)
 	}
-	return v
+	snapshot.View.Runtime = snapshot.Checkpoint.State
+	snapshot.View.Inputs = snapshot.Inputs
+	return snapshot.View
 }
+func view(t *testing.T, c *gametest.Client) game.View { return snapshotView(t, c) }
 
 func await(t *testing.T, c *gametest.Client, check func(game.View) bool) game.View {
 	t.Helper()
@@ -120,7 +127,9 @@ func evidence(t *testing.T) func(string, game.View) {
 			t.Error(err)
 		}
 	})
-	return func(label string, v game.View) { trace = append(trace, map[string]any{"label": label, "view": v}) }
+	return func(label string, v game.View) {
+		trace = append(trace, map[string]any{"label": label, "view": v, "runtimeCheckpoint": v.Runtime})
+	}
 }
 
 func buttons(v game.View, seat int, held engine.Buttons) map[string]any {

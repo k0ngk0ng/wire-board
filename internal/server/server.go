@@ -413,6 +413,7 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("POST /api/login", s.auth)
 	mux.HandleFunc("POST /api/logout", s.logout)
 	mux.HandleFunc("GET /api/state", s.state)
+	mux.HandleFunc("GET /api/rooms/{id}/sync", s.moduleSyncSnapshot)
 	mux.HandleFunc("GET /api/version", s.version)
 	mux.HandleFunc("GET /api/wishes", s.listWishes)
 	mux.HandleFunc("POST /api/wishes", s.createWish)

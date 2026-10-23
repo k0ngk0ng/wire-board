@@ -20,7 +20,10 @@ async function poll() {
   room=(await request('/api/state')).room;
   const v=room.game.data;
   transport?.update({roomID:room.id,userID:room.seats[room.you].id,seat:room.you,epoch:v.epoch,serverAt:v.serverAt,sequence:v.inputs[room.you].sequence,canInput:v.canInput,version:room.version});
-  return v;
+  // Assertions inspect an explicit checkpoint; transport binding above still
+  // comes from the normal compact view and cannot depend on private fields.
+  const checkpoint=(await request('/api/rooms/'+room.id+'/sync')).data;
+  return {...checkpoint.view,inputs:checkpoint.inputs,runtime:checkpoint.checkpoint.state};
 }
 async function until(check) {
   for(let n=0;n<60;n++){const v=await poll();if(check(v))return v;await delay(20);}

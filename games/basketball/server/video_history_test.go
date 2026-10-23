@@ -23,6 +23,7 @@ func TestHostVideoHistoryReplaysExactInputAndHandoff(t *testing.T) {
 		t.Fatal(err)
 	}
 	views := []any{firstView}
+	checkpoints := []runtimebridge.Checkpoint{{Version: 1, State: initial}}
 	b := runtimebridge.New()
 	request := func(value any) map[string]json.RawMessage {
 		t.Helper()
@@ -102,6 +103,7 @@ func TestHostVideoHistoryReplaysExactInputAndHandoff(t *testing.T) {
 			t.Fatal(err)
 		}
 		views = append(views, view)
+		checkpoints = append(checkpoints, runtimebridge.Checkpoint{Version: 1, State: s.Runtime})
 	}
 	// A missing frame must fail without consuming any part of a replay batch.
 	s := hostState(t, m)
@@ -124,7 +126,7 @@ func TestHostVideoHistoryReplaysExactInputAndHandoff(t *testing.T) {
 	if !reflect.DeepEqual(saved.State, s.Runtime) {
 		t.Fatal("invalid replay changed state")
 	}
-	writeVideoFixture(t, "host-views.json", map[string]any{"scope": "actual game module snapshots, input and handoff; not a ROM trace", "views": views})
+	writeVideoFixture(t, "host-views.json", map[string]any{"scope": "actual game module snapshots, input and handoff; not a ROM trace", "views": views, "checkpoints": checkpoints})
 }
 
 func writeVideoFixture(t *testing.T, name string, value any) {
