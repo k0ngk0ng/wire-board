@@ -1,0 +1,961 @@
+{
+  "referenceJarSHA256": "38d7ea0d00ee1539eaf07edebdbe1742e82c40da6666ca794a5e8da240cd8905",
+  "probeSHA256": "723f48f3a029ff7d95f7472156619065f2a047dc91f8e3685af349bfea65e116",
+  "method": "Calls historical market, planning projection, move, ruler capture, economy, and action-comparator classes in fresh in-memory worlds; does not launch the desktop GUI.",
+  "results": [
+    {
+      "kind": "market",
+      "recruit1000": 1000,
+      "shipping1000": 2000,
+      "fort": 5000,
+      "tower": 2500,
+      "town": 75000,
+      "upkeep3500at80": 700,
+      "tax25000at10and90": 1328
+    },
+    {
+      "sent": 1000,
+      "defenders": 500,
+      "town": false,
+      "fort": false,
+      "attackingRuler": false,
+      "defendingRuler": false,
+      "captured": true,
+      "survivors": 506,
+      "fortAfter": false,
+      "attackingRulerMoved": false
+    },
+    {
+      "sent": 1000,
+      "defenders": 1000,
+      "town": false,
+      "fort": false,
+      "attackingRuler": false,
+      "defendingRuler": false,
+      "captured": false,
+      "survivors": 0,
+      "fortAfter": false,
+      "attackingRulerMoved": false
+    },
+    {
+      "sent": 1000,
+      "defenders": 1000,
+      "town": false,
+      "fort": true,
+      "attackingRuler": false,
+      "defendingRuler": false,
+      "captured": false,
+      "survivors": 450,
+      "fortAfter": true,
+      "attackingRulerMoved": false
+    },
+    {
+      "sent": 4000,
+      "defenders": 1000,
+      "town": true,
+      "fort": true,
+      "attackingRuler": false,
+      "defendingRuler": true,
+      "captured": true,
+      "survivors": 1421,
+      "fortAfter": false,
+      "attackingRulerMoved": false
+    },
+    {
+      "sent": 1000,
+      "defenders": 2000,
+      "town": false,
+      "fort": false,
+      "attackingRuler": true,
+      "defendingRuler": false,
+      "captured": false,
+      "survivors": 710,
+      "fortAfter": false,
+      "attackingRulerMoved": false
+    },
+    {
+      "sent": 1000,
+      "defenders": 500,
+      "town": false,
+      "fort": true,
+      "attackingRuler": true,
+      "defendingRuler": false,
+      "captured": true,
+      "survivors": 312,
+      "fortAfter": false,
+      "attackingRulerMoved": true
+    },
+    {
+      "sent": 1000,
+      "defenders": 0,
+      "town": false,
+      "fort": true,
+      "attackingRuler": false,
+      "defendingRuler": false,
+      "captured": true,
+      "survivors": 1000,
+      "fortAfter": true,
+      "attackingRulerMoved": false
+    },
+    {
+      "kind": "capture",
+      "remainingBeforeCapture": 0,
+      "defeatedGoldBefore": 1234,
+      "alive": false,
+      "retained": 0,
+      "attackerGold": 6234,
+      "defenderGold": 0,
+      "rulerRegion": -1,
+      "events": 2,
+      "regions": []
+    },
+    {
+      "kind": "capture",
+      "remainingBeforeCapture": 1,
+      "defeatedGoldBefore": 1234,
+      "alive": false,
+      "retained": 0,
+      "attackerGold": 6234,
+      "defenderGold": 0,
+      "rulerRegion": -1,
+      "events": 2,
+      "regions": [
+        {
+          "id": 2,
+          "owner": 0,
+          "troops": 141
+        }
+      ]
+    },
+    {
+      "kind": "capture",
+      "remainingBeforeCapture": 2,
+      "defeatedGoldBefore": 1234,
+      "alive": false,
+      "retained": 0,
+      "attackerGold": 6234,
+      "defenderGold": 0,
+      "rulerRegion": -1,
+      "events": 2,
+      "regions": [
+        {
+          "id": 2,
+          "owner": 0,
+          "troops": 141
+        },
+        {
+          "id": 3,
+          "owner": 0,
+          "troops": 212
+        }
+      ]
+    },
+    {
+      "kind": "capture",
+      "remainingBeforeCapture": 3,
+      "defeatedGoldBefore": 1234,
+      "alive": true,
+      "retained": 1,
+      "attackerGold": 6234,
+      "defenderGold": 0,
+      "rulerRegion": 4,
+      "events": 2,
+      "regions": [
+        {
+          "id": 2,
+          "owner": 0,
+          "troops": 141
+        },
+        {
+          "id": 3,
+          "owner": 0,
+          "troops": 212
+        },
+        {
+          "id": 4,
+          "owner": 1,
+          "troops": 282
+        }
+      ]
+    },
+    {
+      "kind": "capture",
+      "remainingBeforeCapture": 5,
+      "defeatedGoldBefore": 1234,
+      "alive": true,
+      "retained": 1,
+      "attackerGold": 6234,
+      "defenderGold": 0,
+      "rulerRegion": 6,
+      "events": 2,
+      "regions": [
+        {
+          "id": 2,
+          "owner": 0,
+          "troops": 141
+        },
+        {
+          "id": 3,
+          "owner": 0,
+          "troops": 212
+        },
+        {
+          "id": 4,
+          "owner": 0,
+          "troops": 282
+        },
+        {
+          "id": 5,
+          "owner": 0,
+          "troops": 353
+        },
+        {
+          "id": 6,
+          "owner": 1,
+          "troops": 424
+        }
+      ]
+    },
+    {
+      "kind": "capture",
+      "remainingBeforeCapture": 6,
+      "defeatedGoldBefore": 1234,
+      "alive": true,
+      "retained": 1,
+      "attackerGold": 6234,
+      "defenderGold": 0,
+      "rulerRegion": 7,
+      "events": 2,
+      "regions": [
+        {
+          "id": 2,
+          "owner": 0,
+          "troops": 141
+        },
+        {
+          "id": 3,
+          "owner": 0,
+          "troops": 212
+        },
+        {
+          "id": 4,
+          "owner": 0,
+          "troops": 282
+        },
+        {
+          "id": 5,
+          "owner": 0,
+          "troops": 353
+        },
+        {
+          "id": 6,
+          "owner": 0,
+          "troops": 424
+        },
+        {
+          "id": 7,
+          "owner": 1,
+          "troops": 494
+        }
+      ]
+    },
+    {
+      "kind": "capture",
+      "remainingBeforeCapture": 11,
+      "defeatedGoldBefore": 1234,
+      "alive": true,
+      "retained": 1,
+      "attackerGold": 6234,
+      "defenderGold": 0,
+      "rulerRegion": 12,
+      "events": 2,
+      "regions": [
+        {
+          "id": 2,
+          "owner": 0,
+          "troops": 141
+        },
+        {
+          "id": 3,
+          "owner": 0,
+          "troops": 212
+        },
+        {
+          "id": 4,
+          "owner": 0,
+          "troops": 282
+        },
+        {
+          "id": 5,
+          "owner": 0,
+          "troops": 353
+        },
+        {
+          "id": 6,
+          "owner": 0,
+          "troops": 424
+        },
+        {
+          "id": 7,
+          "owner": 0,
+          "troops": 494
+        },
+        {
+          "id": 8,
+          "owner": 0,
+          "troops": 565
+        },
+        {
+          "id": 9,
+          "owner": 0,
+          "troops": 636
+        },
+        {
+          "id": 10,
+          "owner": 0,
+          "troops": 707
+        },
+        {
+          "id": 11,
+          "owner": 0,
+          "troops": 777
+        },
+        {
+          "id": 12,
+          "owner": 1,
+          "troops": 848
+        }
+      ]
+    },
+    {
+      "kind": "capture",
+      "remainingBeforeCapture": 12,
+      "defeatedGoldBefore": 1234,
+      "alive": true,
+      "retained": 2,
+      "attackerGold": 6234,
+      "defenderGold": 0,
+      "rulerRegion": 13,
+      "events": 2,
+      "regions": [
+        {
+          "id": 2,
+          "owner": 0,
+          "troops": 141
+        },
+        {
+          "id": 3,
+          "owner": 0,
+          "troops": 212
+        },
+        {
+          "id": 4,
+          "owner": 0,
+          "troops": 282
+        },
+        {
+          "id": 5,
+          "owner": 0,
+          "troops": 353
+        },
+        {
+          "id": 6,
+          "owner": 0,
+          "troops": 424
+        },
+        {
+          "id": 7,
+          "owner": 0,
+          "troops": 494
+        },
+        {
+          "id": 8,
+          "owner": 0,
+          "troops": 565
+        },
+        {
+          "id": 9,
+          "owner": 0,
+          "troops": 636
+        },
+        {
+          "id": 10,
+          "owner": 0,
+          "troops": 707
+        },
+        {
+          "id": 11,
+          "owner": 0,
+          "troops": 777
+        },
+        {
+          "id": 12,
+          "owner": 1,
+          "troops": 848
+        },
+        {
+          "id": 13,
+          "owner": 1,
+          "troops": 919
+        }
+      ]
+    },
+    {
+      "kind": "capture",
+      "remainingBeforeCapture": 17,
+      "defeatedGoldBefore": 1234,
+      "alive": true,
+      "retained": 3,
+      "attackerGold": 6234,
+      "defenderGold": 0,
+      "rulerRegion": 18,
+      "events": 2,
+      "regions": [
+        {
+          "id": 2,
+          "owner": 0,
+          "troops": 141
+        },
+        {
+          "id": 3,
+          "owner": 0,
+          "troops": 212
+        },
+        {
+          "id": 4,
+          "owner": 0,
+          "troops": 282
+        },
+        {
+          "id": 5,
+          "owner": 0,
+          "troops": 353
+        },
+        {
+          "id": 6,
+          "owner": 0,
+          "troops": 424
+        },
+        {
+          "id": 7,
+          "owner": 0,
+          "troops": 494
+        },
+        {
+          "id": 8,
+          "owner": 0,
+          "troops": 565
+        },
+        {
+          "id": 9,
+          "owner": 0,
+          "troops": 636
+        },
+        {
+          "id": 10,
+          "owner": 0,
+          "troops": 707
+        },
+        {
+          "id": 11,
+          "owner": 0,
+          "troops": 777
+        },
+        {
+          "id": 12,
+          "owner": 0,
+          "troops": 848
+        },
+        {
+          "id": 13,
+          "owner": 0,
+          "troops": 919
+        },
+        {
+          "id": 14,
+          "owner": 0,
+          "troops": 989
+        },
+        {
+          "id": 15,
+          "owner": 0,
+          "troops": 1060
+        },
+        {
+          "id": 16,
+          "owner": 1,
+          "troops": 1131
+        },
+        {
+          "id": 17,
+          "owner": 1,
+          "troops": 1201
+        },
+        {
+          "id": 18,
+          "owner": 1,
+          "troops": 1272
+        }
+      ]
+    },
+    {
+      "kind": "capture",
+      "remainingBeforeCapture": 3,
+      "defeatedGoldBefore": -100,
+      "alive": true,
+      "retained": 1,
+      "attackerGold": 5000,
+      "defenderGold": -100,
+      "rulerRegion": 4,
+      "events": 2,
+      "regions": [
+        {
+          "id": 2,
+          "owner": 0,
+          "troops": 141
+        },
+        {
+          "id": 3,
+          "owner": 0,
+          "troops": 212
+        },
+        {
+          "id": 4,
+          "owner": 1,
+          "troops": 282
+        }
+      ]
+    },
+    {
+      "kind": "movement",
+      "case": "land-ruler",
+      "available": 500,
+      "requested": 300,
+      "sourceAfter": 200,
+      "targetAfter": 400,
+      "moneyAfter": 5000,
+      "mp10After": 22,
+      "rulerRegion": 1,
+      "eventCount": 1
+    },
+    {
+      "kind": "movement",
+      "case": "sea",
+      "available": 500,
+      "requested": 300,
+      "sourceAfter": 200,
+      "targetAfter": 400,
+      "moneyAfter": 4400,
+      "mp10After": 22,
+      "rulerRegion": 0,
+      "eventCount": 1
+    },
+    {
+      "kind": "movement",
+      "case": "reduced-before-execution",
+      "available": 200,
+      "requested": 500,
+      "sourceAfter": 0,
+      "targetAfter": 300,
+      "moneyAfter": 5000,
+      "mp10After": 22,
+      "rulerRegion": 0,
+      "eventCount": 1
+    },
+    {
+      "kind": "movement",
+      "case": "sea-reduced-before-execution",
+      "available": 200,
+      "requested": 500,
+      "sourceAfter": 0,
+      "targetAfter": 300,
+      "moneyAfter": 4600,
+      "mp10After": 22,
+      "rulerRegion": 0,
+      "eventCount": 1
+    },
+    {
+      "kind": "movement",
+      "case": "source-conquered",
+      "available": 500,
+      "requested": 300,
+      "sourceAfter": 500,
+      "targetAfter": 100,
+      "moneyAfter": 5000,
+      "mp10After": 32,
+      "rulerRegion": 0,
+      "eventCount": 0
+    },
+    {
+      "kind": "movement",
+      "case": "sea-cannot-afford-request",
+      "available": 200,
+      "requested": 500,
+      "sourceAfter": 200,
+      "targetAfter": 100,
+      "moneyAfter": 500,
+      "mp10After": 32,
+      "rulerRegion": 0,
+      "eventCount": 0
+    },
+    {
+      "kind": "movement",
+      "case": "source-empty",
+      "available": 0,
+      "requested": 300,
+      "sourceAfter": 0,
+      "targetAfter": 100,
+      "moneyAfter": 5000,
+      "mp10After": 32,
+      "rulerRegion": 0,
+      "eventCount": 0
+    },
+    {
+      "kind": "recruit",
+      "case": "affordable",
+      "requested": 1000,
+      "goldBefore": 1000,
+      "populationBefore": 25000,
+      "troopsAfter": 1500,
+      "goldAfter": 0,
+      "populationAfter": 24000,
+      "mp10After": 22,
+      "eventCount": 1
+    },
+    {
+      "kind": "recruit",
+      "case": "gold-lost-before-execution",
+      "requested": 1000,
+      "goldBefore": 500,
+      "populationBefore": 25000,
+      "troopsAfter": 500,
+      "goldAfter": 500,
+      "populationAfter": 25000,
+      "mp10After": 32,
+      "eventCount": 0
+    },
+    {
+      "kind": "recruit",
+      "case": "population-lost-before-execution",
+      "requested": 1000,
+      "goldBefore": 5000,
+      "populationBefore": 1000,
+      "troopsAfter": 500,
+      "goldAfter": 5000,
+      "populationAfter": 1000,
+      "mp10After": 32,
+      "eventCount": 0
+    },
+    {
+      "kind": "planning-projection",
+      "rulerTravels": false,
+      "sourceTroops": 200,
+      "targetTroops": 100,
+      "rulerRegion": 0,
+      "mp10": 22
+    },
+    {
+      "kind": "planning-projection",
+      "rulerTravels": true,
+      "sourceTroops": 200,
+      "targetTroops": 100,
+      "rulerRegion": -1,
+      "mp10": 22
+    },
+    {
+      "kind": "economy",
+      "case": "default-town",
+      "turn": 1,
+      "population": 34063,
+      "economy": 49500,
+      "troops": 500,
+      "morale": 90,
+      "mp10": 48,
+      "taxIncome": 1770,
+      "economySpending": 177,
+      "militarySpending": 100,
+      "money": 6493,
+      "neighborPopulation": 27250
+    },
+    {
+      "kind": "economy",
+      "case": "default-town",
+      "turn": 2,
+      "population": 46411,
+      "economy": 49005,
+      "troops": 500,
+      "morale": 90,
+      "mp10": 56,
+      "taxIncome": 2359,
+      "economySpending": 235,
+      "militarySpending": 100,
+      "money": 8517,
+      "neighborPopulation": 29703
+    },
+    {
+      "kind": "economy",
+      "case": "default-town",
+      "turn": 3,
+      "population": 63235,
+      "economy": 50475,
+      "troops": 500,
+      "morale": 90,
+      "mp10": 60,
+      "taxIncome": 3266,
+      "economySpending": 326,
+      "militarySpending": 100,
+      "money": 11357,
+      "neighborPopulation": 32376
+    },
+    {
+      "kind": "economy",
+      "case": "default-town",
+      "turn": 4,
+      "population": 86158,
+      "economy": 51989,
+      "troops": 500,
+      "morale": 90,
+      "mp10": 62,
+      "taxIncome": 4522,
+      "economySpending": 452,
+      "militarySpending": 100,
+      "money": 15327,
+      "neighborPopulation": 35290
+    },
+    {
+      "kind": "economy",
+      "case": "default-town",
+      "turn": 5,
+      "population": 100000,
+      "economy": 53549,
+      "troops": 500,
+      "morale": 90,
+      "mp10": 63,
+      "taxIncome": 5368,
+      "economySpending": 536,
+      "militarySpending": 100,
+      "money": 20059,
+      "neighborPopulation": 38466
+    },
+    {
+      "kind": "economy",
+      "case": "default-town",
+      "turn": 6,
+      "population": 100000,
+      "economy": 55155,
+      "troops": 500,
+      "morale": 90,
+      "mp10": 63,
+      "taxIncome": 5522,
+      "economySpending": 552,
+      "militarySpending": 100,
+      "money": 24929,
+      "neighborPopulation": 41928
+    },
+    {
+      "kind": "economy",
+      "case": "default-town",
+      "turn": 7,
+      "population": 100000,
+      "economy": 56810,
+      "troops": 500,
+      "morale": 90,
+      "mp10": 63,
+      "taxIncome": 5681,
+      "economySpending": 568,
+      "militarySpending": 100,
+      "money": 29942,
+      "neighborPopulation": 45702
+    },
+    {
+      "kind": "economy",
+      "case": "default-town",
+      "turn": 8,
+      "population": 100000,
+      "economy": 58514,
+      "troops": 500,
+      "morale": 90,
+      "mp10": 63,
+      "taxIncome": 5845,
+      "economySpending": 584,
+      "militarySpending": 100,
+      "money": 35103,
+      "neighborPopulation": 49815
+    },
+    {
+      "kind": "economy",
+      "case": "default-town",
+      "turn": 9,
+      "population": 100000,
+      "economy": 60269,
+      "troops": 500,
+      "morale": 90,
+      "mp10": 63,
+      "taxIncome": 6013,
+      "economySpending": 601,
+      "militarySpending": 100,
+      "money": 40415,
+      "neighborPopulation": 54298
+    },
+    {
+      "kind": "economy",
+      "case": "default-town",
+      "turn": 10,
+      "population": 100000,
+      "economy": 62077,
+      "troops": 500,
+      "morale": 90,
+      "mp10": 63,
+      "taxIncome": 6186,
+      "economySpending": 618,
+      "militarySpending": 100,
+      "money": 45883,
+      "neighborPopulation": 59185
+    },
+    {
+      "kind": "economy",
+      "case": "default-town",
+      "turn": 11,
+      "population": 100000,
+      "economy": 63939,
+      "troops": 500,
+      "morale": 90,
+      "mp10": 63,
+      "taxIncome": 6364,
+      "economySpending": 636,
+      "militarySpending": 100,
+      "money": 51511,
+      "neighborPopulation": 64512
+    },
+    {
+      "kind": "economy",
+      "case": "default-town",
+      "turn": 12,
+      "population": 100000,
+      "economy": 65857,
+      "troops": 500,
+      "morale": 90,
+      "mp10": 63,
+      "taxIncome": 6547,
+      "economySpending": 654,
+      "militarySpending": 100,
+      "money": 57304,
+      "neighborPopulation": 70318
+    },
+    {
+      "kind": "economy",
+      "case": "bankrupt",
+      "turn": 1,
+      "population": 34113,
+      "economy": 49500,
+      "troops": 450,
+      "morale": 89,
+      "mp10": 48,
+      "taxIncome": 1773,
+      "economySpending": 177,
+      "militarySpending": 90,
+      "money": -8494,
+      "neighborPopulation": 27250
+    },
+    {
+      "kind": "economy",
+      "case": "recovered-debt",
+      "turn": 1,
+      "population": 34113,
+      "economy": 49500,
+      "troops": 450,
+      "morale": 90,
+      "mp10": 48,
+      "taxIncome": 1773,
+      "economySpending": 177,
+      "militarySpending": 90,
+      "money": 1406,
+      "neighborPopulation": 27250
+    },
+    {
+      "kind": "economy",
+      "case": "high-tax",
+      "turn": 1,
+      "population": 34063,
+      "economy": 49500,
+      "troops": 500,
+      "morale": 70,
+      "mp10": 48,
+      "taxIncome": 2754,
+      "economySpending": 275,
+      "militarySpending": 100,
+      "money": 7379,
+      "neighborPopulation": 27250
+    },
+    {
+      "kind": "economy",
+      "case": "high-military",
+      "turn": 1,
+      "population": 34013,
+      "economy": 49500,
+      "troops": 550,
+      "morale": 90,
+      "mp10": 48,
+      "taxIncome": 1768,
+      "economySpending": 176,
+      "militarySpending": 137,
+      "money": 6455,
+      "neighborPopulation": 27250
+    },
+    {
+      "kind": "economy",
+      "case": "migration",
+      "turn": 1,
+      "population": 33041,
+      "economy": 49500,
+      "troops": 500,
+      "morale": 90,
+      "mp10": 48,
+      "taxIncome": 1719,
+      "economySpending": 171,
+      "militarySpending": 100,
+      "money": 6448,
+      "neighborPopulation": 28272
+    },
+    {
+      "kind": "order",
+      "case": "sequence",
+      "firstPlayer": 0,
+      "recruitBeforeMove": true,
+      "recruitBeforeDisband": true,
+      "disbandBeforeMove": true
+    },
+    {
+      "kind": "order",
+      "case": "territories",
+      "firstPlayer": 1,
+      "recruitBeforeMove": true,
+      "recruitBeforeDisband": true,
+      "disbandBeforeMove": true
+    },
+    {
+      "kind": "order",
+      "case": "military",
+      "firstPlayer": 1,
+      "recruitBeforeMove": true,
+      "recruitBeforeDisband": true,
+      "disbandBeforeMove": true
+    },
+    {
+      "kind": "order",
+      "case": "gold",
+      "firstPlayer": 1,
+      "recruitBeforeMove": true,
+      "recruitBeforeDisband": true,
+      "disbandBeforeMove": true
+    },
+    {
+      "kind": "order",
+      "case": "seat",
+      "firstPlayer": 0,
+      "recruitBeforeMove": true,
+      "recruitBeforeDisband": true,
+      "disbandBeforeMove": true
+    }
+  ]
+}

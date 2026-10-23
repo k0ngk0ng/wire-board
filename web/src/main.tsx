@@ -91,6 +91,7 @@ import "./style.css";
 import { useRoomPresentation } from "./game-api/presentation";
 import { ResultOverlay } from "./ui/result-overlay";
 import { RoomHeading } from "./ui/room-heading";
+import { ClosedRoomDescription } from "./ui/closed-room";
 import { CreateRoom } from "./ui/create-room";
 import { ControllerSettings } from "./controllers/Settings";
 import { useTurnTitle } from "./turn-title";
@@ -929,15 +930,7 @@ function App() {
                             ? "牌桌已因闲置关闭"
                             : "这张牌桌已结束"}
                     </h2>
-                    <p>
-                      {room.closeReason === "unpublished"
-                        ? "等待中的牌桌已关闭，可以返回大厅选择其他游戏。"
-                        : room.closeReason === "admin"
-                          ? "本局已中止，不计胜负与积分。"
-                          : room.closeReason === "inactive"
-                            ? "连续 24 小时无人操作，系统已自动关闭牌桌；本局不计胜负与积分。"
-                            : "休息一下，或者准备下一局。"}
-                    </p>
+                    <ClosedRoomDescription room={room} />
                     {!room.spectating &&
                       room.host === state.user.id &&
                       state.availableGames.includes(room.kind) && (

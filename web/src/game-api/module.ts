@@ -29,6 +29,8 @@ export type GameRoom = {
     left?: boolean;
   }[];
   game?: {
+    paused?: boolean;
+    pauseExpiresAt?: number;
     data?: unknown;
     actors?: number[];
     attention?: number[];
