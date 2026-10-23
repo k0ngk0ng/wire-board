@@ -46,9 +46,7 @@ func TestCampaignEntryPreparationHTTP(t *testing.T) {
 	}
 	a.Command("ready", nil, 200)
 	a.Command("start", nil, 200)
-	raw, _ := json.Marshal(gametest.Data(a.Room()))
-	var v game.View
-	json.Unmarshal(raw, &v)
+	v := snapshotView(t, a)
 	if v.Runtime.Config.Match.Court != 0 || v.Runtime.Config.Match.Teams != ([2]uint8{0, 5}) || v.Runtime.Config.Match.Characters[0] != 2 || v.Runtime.Config.Match.Equipment[2][0] != 1 || v.Runtime.Config.HumanTactics[0] != 2 || v.Runtime.Config.Campaign.Period != 2 {
 		t.Fatal("campaign Start lost waiting-room selections")
 	}

@@ -40,17 +40,7 @@ func TestCampaignPreparationHTTPPersistence(t *testing.T) {
 	h.Start(map[string]any{"mode": "solo", "court": "court-0"})
 	basketballReadyHTTP(t, h)
 	a := h.People[0]
-	read := func(c *gametest.Client) game.View {
-		raw, e := json.Marshal(gametest.Data(c.Room()))
-		if e != nil {
-			t.Fatal(e)
-		}
-		var v game.View
-		if e = json.Unmarshal(raw, &v); e != nil {
-			t.Fatal(e)
-		}
-		return v
-	}
+	read := func(c *gametest.Client) game.View { return snapshotView(t, c) }
 	v := read(a)
 	if v.Preparation == nil || !v.CanPrepare {
 		t.Fatal("missing campaign halftime")

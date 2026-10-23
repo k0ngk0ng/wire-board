@@ -109,11 +109,16 @@ type Module struct {
 	Configure  func(capacity int, options json.RawMessage) (json.RawMessage, error) `json:"-"`
 	// Prepare optionally transforms waiting-room options for an authenticated seat.
 	// The host re-runs Configure on its result before atomically saving it.
-	Prepare   func(PreparationContext, json.RawMessage, json.RawMessage) (json.RawMessage, error) `json:"-"`
-	Start     func(Context, json.RawMessage) (Match, error)                                       `json:"-"`
-	Apply     func(Context, Match, json.RawMessage) (Match, error)                                `json:"-"`
-	View      func(Match, int) (any, error)                                                       `json:"-"`
-	BotSearch *BotSearch                                                                          `json:"-"`
+	Prepare func(PreparationContext, json.RawMessage, json.RawMessage) (json.RawMessage, error) `json:"-"`
+	Start   func(Context, json.RawMessage) (Match, error)                                       `json:"-"`
+	Apply   func(Context, Match, json.RawMessage) (Match, error)                                `json:"-"`
+	View    func(Match, int) (any, error)                                                       `json:"-"`
+	// SyncSnapshot optionally supplies a recovery checkpoint on explicit
+	// request, separate from the frequent public View. It receives a detached
+	// Match and authenticated seat (-1 for an authorized spectator), and must
+	// preserve the viewer's visibility restrictions without changing the game.
+	SyncSnapshot func(Match, int) (any, error) `json:"-"`
+	BotSearch    *BotSearch                    `json:"-"`
 	// PreciseTimers opts non-realtime SystemDeadline events into the 50ms clock.
 	// Player timeouts and bot scheduling retain their ordinary cadence.
 	PreciseTimers bool `json:"-"`

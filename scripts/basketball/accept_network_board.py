@@ -1,8 +1,8 @@
 """Real React Board, authenticated HTTP, browser Wasm and native keyboard/touch."""
 from pathlib import Path
 import json,os,subprocess,uuid
-ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'.local/basketball/network-board';OUT.mkdir(parents=True,exist_ok=True)
-env=dict(os.environ,AGENT_BROWSER_SESSION='bkb-'+uuid.uuid4().hex[:6],AGENT_BROWSER_SOCKET_DIR=str((ROOT/'.local/basketball').resolve()/'bkn-sockets'),TMPDIR=str(ROOT/'.local/tmp'),NODE_PATH=str(ROOT/'web/node_modules'))
+ROOT=Path(__file__).resolve().parents[2];OUT=Path(os.environ.get('BASKETBALL_BROWSER_OUTPUT',str(ROOT/'.local/basketball/network-board'))).resolve();assert OUT.is_relative_to(ROOT/'.local');OUT.mkdir(parents=True,exist_ok=True)
+env=dict(os.environ,AGENT_BROWSER_SESSION='bkb-'+uuid.uuid4().hex[:6],AGENT_BROWSER_SOCKET_DIR=os.environ.get('AGENT_BROWSER_SOCKET_DIR',str(ROOT/'.local/bkn-sockets')),TMPDIR=str(ROOT/'.local/tmp'),NODE_PATH=str(ROOT/'web/node_modules'))
 Path(env['AGENT_BROWSER_SOCKET_DIR']).mkdir(exist_ok=True)
 base=env['BASKETBALL_HTTP_URL'];checks=[];opened=False;inspector=None
 def browser(*args):
@@ -20,7 +20,7 @@ def js(source):
  if r.get('exceptionDetails'):raise RuntimeError(r['exceptionDetails'])
  return r['result'].get('value')
 def wait(expression):
- return js('(async()=>{for(let n=0;n<500;n++){if('+expression+')return true;await new Promise(r=>setTimeout(r,20));}throw Error('+json.dumps('Timed out: '+expression)+')})()')
+ return js('(async()=>{for(let n=0;n<500;n++){if(await ('+expression+'))return true;await new Promise(r=>setTimeout(r,20));}throw Error('+json.dumps('Timed out: '+expression)+')})()')
 def key(kind,code,key,number):cdp('Input.dispatchKeyEvent',dict(type=kind,code=code,key=key,windowsVirtualKeyCode=number))
 def expect(name,value):
  assert value,name
@@ -52,12 +52,17 @@ try:
  expect('native D reaches the authenticated Go seat',js('networkBoard.room.you===0 && networkBoard.room.game.data.inputs[0].buttons===1'))
  key('keyUp','KeyD','d',68);wait('networkBoard.room.game.data.inputs[0].buttons===0')
  key('keyDown','Space',' ',32);key('keyUp','Space',' ',32);wait('networkBoard.room.game.data.phase==="playing"')
- before=js('networkBoard.room.game.data.runtime.playing.world.Preparation.Actions.actors[0].player.body.position.x')
- key('keyDown','KeyD','d',68);wait('networkBoard.room.game.data.runtime.playing.world.Preparation.Actions.actors[0].player.body.position.x>'+str(before));key('keyUp','KeyD','d',68)
+ before=js('fullStateProbe().then(s=>s.playing.world.Preparation.Actions.actors[0].player.body.position.x)')
+ key('keyDown','KeyD','d',68);wait('fullStateProbe().then(s=>s.playing.world.Preparation.Actions.actors[0].player.body.position.x>'+str(before)+')');key('keyUp','KeyD','d',68)
  expect('native input moves the server-authoritative original player',True)
  wait('networkBoard.room.game.data.inputs[0].buttons===0')
  key('keyDown','Space',' ',32);key('keyUp','Space',' ',32);wait('networkBoard.room.game.data.phase==="paused"')
  expect('original START pauses without a separate game menu',True)
+ checkpoint_count=js('networkBoard.checkpoints.length')
+ expect('regular view contains inputs and proof instead of full runtime',js('networkBoard.room.game.data.protocol===1 && !Object.hasOwn(networkBoard.room.game.data,"runtime") && !Object.hasOwn(networkBoard.room.game.data,"videoInputs")'))
+ js('new Promise(r=>setTimeout(r,1000))')
+ expect('steady snapshots do not repeatedly fetch checkpoints',js('networkBoard.checkpoints.length')==checkpoint_count)
+
  expect('play controls show original names without keyboard mappings',js('document.querySelectorAll(".fc-play kbd").length===0 && !!document.querySelector(".fc-play")'))
  browser('set','viewport','1100','820')
  placement=js('(()=>{const screen=document.querySelector(".basketball-screen"),pad=document.querySelector(".fc-play");return {outside:!screen?.contains(pad),screen:screen?.getBoundingClientRect().toJSON(),pad:pad.getBoundingClientRect().toJSON()}})()')

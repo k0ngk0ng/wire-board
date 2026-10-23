@@ -2,11 +2,13 @@ package basketball_test
 
 import (
 	"context"
+	"github.com/k0ngk0ng/wire-board/internal/nettest"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
@@ -35,13 +37,46 @@ func TestBasketballBrowserNetworkBoard(t *testing.T) {
 		t.Fatal(err)
 	}
 	out := filepath.Join(root, ".local/basketball/network-board")
+	delayMS := 0
+	if value := os.Getenv("BASKETBALL_CHECKPOINT_DELAY_MS"); value != "" {
+		delayMS, err = strconv.Atoi(value)
+		if err != nil || delayMS < 0 || delayMS > 2000 {
+			t.Fatal("invalid checkpoint delay")
+		}
+		out += "-checkpoint" + value
+	}
+	streamTest := os.Getenv("BASKETBALL_INPUT_SYNC_E2E") == "1"
+	rtt := 0
+	if streamTest {
+		rtt, err = strconv.Atoi(os.Getenv("BASKETBALL_BROWSER_RTT_MS"))
+		if err != nil || rtt < 0 || rtt > 1000 {
+			t.Fatal("invalid RTT")
+		}
+		out = filepath.Join(root, ".local/basketball/input-sync-rtt"+strconv.Itoa(rtt))
+		if cpu := os.Getenv("BASKETBALL_BROWSER_CPU_RATE"); cpu != "" {
+			out += "-cpu" + cpu
+		}
+	}
 	if err = os.MkdirAll(out, 0755); err != nil {
 		t.Fatal(err)
 	}
 	mux := http.NewServeMux()
-	mux.Handle("/api/", h.Host.Handler())
+	mux.Handle("/api/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if delayMS > 0 && strings.HasSuffix(r.URL.Path, "/sync") && r.URL.Query().Get("probe") == "" {
+			captured := httptest.NewRecorder()
+			h.Host.Handler().ServeHTTP(captured, r)
+			time.Sleep(time.Duration(delayMS) * time.Millisecond)
+			for key, values := range captured.Header() {
+				w.Header()[key] = values
+			}
+			w.WriteHeader(captured.Code)
+			w.Write(captured.Body.Bytes())
+			return
+		}
+		h.Host.Handler().ServeHTTP(w, r)
+	}))
 	mux.Handle("/__oss/", basketballOSSMirror(t, root))
-	mux.Handle("/basketball/v1/runtime/", http.FileServer(http.Dir(filepath.Join(root, "web/dist"))))
+	mux.Handle("/basketball/v1/runtime/", basketballRuntimeFixture(t, root))
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		files := map[string]string{"/": "index.html", "/board.js": "board.js", "/board.css": "board.css", "/basketball/v1/runtime/wasm_exec.js": "wasm_exec.js", "/basketball/v1/runtime/basketball.wasm": "basketball.wasm"}
 		if file, ok := files[r.URL.Path]; ok {
@@ -66,16 +101,20 @@ func TestBasketballBrowserNetworkBoard(t *testing.T) {
 	}
 	policy := policyResponse.Header.Get("Content-Security-Policy")
 	policyResponse.Body.Close()
-	browserHost := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	browserHost := httptest.NewServer(nettest.Delay(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Security-Policy", policy)
 		mux.ServeHTTP(w, r)
-	}))
+	}), time.Duration(rtt)*time.Millisecond))
 	defer browserHost.Close()
 	ctx, cancel := context.WithTimeout(context.Background(), 150*time.Second)
 	defer cancel()
-	cmd := exec.CommandContext(ctx, "python3", "scripts/basketball/accept_network_board.py")
+	driver := "scripts/basketball/accept_network_board.py"
+	if streamTest {
+		driver = "scripts/basketball/accept_input_sync.py"
+	}
+	cmd := exec.CommandContext(ctx, "python3", driver)
 	cmd.Dir = root
-	cmd.Env = append(os.Environ(), "BASKETBALL_HTTP_URL="+browserHost.URL)
+	cmd.Env = append(os.Environ(), "BASKETBALL_HTTP_URL="+browserHost.URL, "BASKETBALL_BROWSER_OUTPUT="+out)
 	output, err := cmd.CombinedOutput()
 	if e := os.WriteFile(filepath.Join(out, "driver.log"), output, 0600); e != nil {
 		t.Fatal(e)

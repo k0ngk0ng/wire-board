@@ -44,14 +44,7 @@ func TestCampaignLifecycleHTTP(t *testing.T) {
 	h.Start(map[string]any{"mode": "solo", "campaign": map[string]any{"password": "020010", "opponent": 1}})
 	basketballReadyHTTP(t, h)
 	a := h.People[0]
-	view := func(c *gametest.Client) game.View {
-		raw, _ := json.Marshal(gametest.Data(c.Room()))
-		var v game.View
-		if e := json.Unmarshal(raw, &v); e != nil {
-			t.Fatal(e)
-		}
-		return v
-	}
+	view := func(c *gametest.Client) game.View { return snapshotView(t, c) }
 	v := view(a)
 	epoch := v.Epoch
 	if a.Room()["status"] != "playing" || v.Campaign.Stage != "prepare" || v.Campaign.Settlement.Reward != 0 || v.CanInput || !v.Campaign.CanAct {

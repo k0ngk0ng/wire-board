@@ -47,6 +47,10 @@ func applyCampaignPreparation(ctx gameapi.Context, original State, a action) (St
 	if err != nil {
 		return fail(err)
 	}
+	if s.SyncRevision >= uint64(maxSequence) {
+		return fail(fmt.Errorf("同步版本已耗尽"))
+	}
+	s.SyncRevision++
 	s.Runtime = step.State
 	// Editing a menu counts as activity, but never consumes controller input
 	// sequence numbers or extends another seat's timeout.

@@ -11,26 +11,32 @@ import (
 	"io"
 
 	"github.com/k0ngk0ng/wire-board/games/basketball/engine"
+	"github.com/k0ngk0ng/wire-board/games/basketball/syncwire"
 )
 
 const MaxRequestBytes = 2 << 20
 const maxSessions = 16
 
-type Checkpoint struct {
-	Version int                 `json:"version"`
-	State   engine.RuntimeState `json:"state"`
-}
+type Checkpoint = syncwire.Checkpoint
+
 type Request struct {
-	Projection *PresentationProjectionRequest `json:"projection,omitempty"`
-	Op         string                         `json:"op"`
-	Session    uint64                         `json:"session,omitempty"`
-	Config     *engine.RuntimeConfig          `json:"config,omitempty"`
-	Held       []engine.Buttons               `json:"held,omitempty"`
-	Ticks      *int                           `json:"ticks,omitempty"`
-	Checkpoint *Checkpoint                    `json:"checkpoint,omitempty"`
-	Controller *uint8                         `json:"controller,omitempty"`
-	Buttons    *engine.Buttons                `json:"buttons,omitempty"`
-	Inputs     []engine.RecordedVideoInput    `json:"inputs,omitempty"`
+	Latches       []uint32                       `json:"latches,omitempty"`
+	Compact       bool                           `json:"compact,omitempty"`
+	CaptureFrames bool                           `json:"captureFrames,omitempty"`
+	Verify        bool                           `json:"verify,omitempty"`
+	Target        uint64                         `json:"target,omitempty"`
+	Window        *syncwire.InputWindow          `json:"window,omitempty"`
+	Automated     []bool                         `json:"automated,omitempty"`
+	Projection    *PresentationProjectionRequest `json:"projection,omitempty"`
+	Op            string                         `json:"op"`
+	Session       uint64                         `json:"session,omitempty"`
+	Config        *engine.RuntimeConfig          `json:"config,omitempty"`
+	Held          []engine.Buttons               `json:"held,omitempty"`
+	Ticks         *int                           `json:"ticks,omitempty"`
+	Checkpoint    *Checkpoint                    `json:"checkpoint,omitempty"`
+	Controller    *uint8                         `json:"controller,omitempty"`
+	Buttons       *engine.Buttons                `json:"buttons,omitempty"`
+	Inputs        []engine.RecordedVideoInput    `json:"inputs,omitempty"`
 }
 type Failure struct {
 	Code   string `json:"code"`
@@ -42,8 +48,9 @@ type Response struct {
 	Error *Failure `json:"error,omitempty"`
 }
 type View struct {
-	Session uint64              `json:"session"`
-	State   engine.RuntimeState `json:"state"`
+	renderFrames []CompactVideoFrame
+	Session      uint64              `json:"session"`
+	State        engine.RuntimeState `json:"state"`
 	// JSON encodes []uint8 as base64. The browser needs numeric event IDs.
 	SoundIDs     []int        `json:"soundIDs,omitempty"`
 	LogicUpdates int          `json:"logicUpdates"`
@@ -119,7 +126,7 @@ func (b *Bridge) Handle(raw []byte) (result Response) {
 		if err != nil {
 			return failed("bad_config", err)
 		}
-		return b.create(state)
+		return b.createRequest(state, request)
 	case "restore":
 		if request.Checkpoint == nil || request.Checkpoint.Version != 1 {
 			return failed("invalid_snapshot", fmt.Errorf("unsupported basketball snapshot version"))
@@ -128,8 +135,8 @@ func (b *Bridge) Handle(raw []byte) (result Response) {
 		if err := engine.ValidateRuntimeState(state); err != nil {
 			return failed("invalid_snapshot", err)
 		}
-		return b.create(state)
-	case "advance", "snapshot", "dispose", "cancelInput", "replay":
+		return b.createRequest(state, request)
+	case "advance", "snapshot", "dispose", "cancelInput", "replay", "fork", "automate":
 	default:
 		return failed("bad_operation", fmt.Errorf("unknown basketball operation %q", request.Op))
 	}
@@ -138,8 +145,61 @@ func (b *Bridge) Handle(raw []byte) (result Response) {
 		return failed("bad_session", fmt.Errorf("basketball session is closed or does not exist"))
 	}
 	switch request.Op {
+	case "fork":
+		if request.Target == 0 {
+			return b.createRequest(state, request)
+		}
+		if request.Target == request.Session {
+			return failed("bad_target", fmt.Errorf("prediction must not replace its source"))
+		}
+		if _, ok := b.sessions[request.Target]; !ok {
+			return failed("bad_target", fmt.Errorf("target session does not exist"))
+		}
+		// Engine operations are immutable; sharing the native value here avoids a
+		// complete JSON export/import and preserves independent subsequent steps.
+		b.sessions[request.Target] = state
+		return b.reply(request, View{Session: request.Target, State: state})
+	case "automate":
+		if len(request.Automated) != 4 {
+			return failed("bad_request", fmt.Errorf("supply four automation flags"))
+		}
+		next := state
+		if state.Outcome == nil {
+			var flags [4]bool
+			copy(flags[:], request.Automated)
+			var err error
+			next, err = engine.SetRuntimeAutomation(state, flags)
+			if err != nil {
+				return failed("bad_request", err)
+			}
+		}
+		b.sessions[request.Session] = next
+		return b.reply(request, View{Session: request.Session, State: next})
 	case "replay":
-		if len(request.Inputs) < 1 || len(request.Inputs) > 120 {
+		if request.Window != nil {
+			if len(request.Inputs) != 0 {
+				return failed("bad_request", fmt.Errorf("supply one input representation"))
+			}
+			var err error
+			request.Inputs, err = syncwire.Unpack(*request.Window)
+			if err != nil {
+				return failed("invalid_replay", err)
+			}
+			fresh := request.Inputs[:0]
+			for _, input := range request.Inputs {
+				if input.Frame > state.VideoFrames {
+					fresh = append(fresh, input)
+				}
+			}
+			request.Inputs = fresh
+		}
+		if len(request.Latches) != 0 && len(request.Latches) != 2 {
+			return failed("bad_request", fmt.Errorf("supply both input latches"))
+		}
+		if len(request.Automated) != 0 && len(request.Automated) != 4 {
+			return failed("bad_request", fmt.Errorf("supply four automation flags"))
+		}
+		if (len(request.Inputs) < 1 && request.Window == nil) || len(request.Inputs) > 120 {
 			return failed("bad_request", fmt.Errorf("replay requires 1 through 120 consecutive video inputs"))
 		}
 		view := View{Session: request.Session, State: state}
@@ -149,15 +209,31 @@ func (b *Bridge) Handle(raw []byte) (result Response) {
 				return failed("invalid_replay", err)
 			}
 			view.State = step.State
-			view.Frames = append(view.Frames, VideoFrame{Frame: step.State.VideoFrames, Display: step.State.Display})
+			if !request.Compact {
+				view.Frames = append(view.Frames, VideoFrame{Frame: step.State.VideoFrames, Display: step.State.Display})
+			} else if request.CaptureFrames {
+				view.renderFrames = append(view.renderFrames, CompactVideoFrame{Frame: step.State.VideoFrames, Display: visibleDisplay(step.State.Display)})
+			}
 			if step.LogicAdvanced {
 				view.LogicUpdates++
 			}
 		}
+		if len(request.Automated) == 4 && view.State.Outcome == nil {
+			var flags [4]bool
+			copy(flags[:], request.Automated)
+			next, err := engine.SetRuntimeAutomation(view.State, flags)
+			if err != nil {
+				return failed("invalid_replay", err)
+			}
+			view.State = next
+		}
+		if len(request.Latches) == 2 {
+			view.State = syncwire.ApplyLatches(view.State, [2]uint32{request.Latches[0], request.Latches[1]})
+		}
 		// Confirmed playback consumes the server's sound-event stream; emitting
 		// replay sounds here would replay old audio during reconciliation.
 		b.sessions[request.Session] = view.State
-		return success(view)
+		return b.reply(request, view)
 	case "cancelInput":
 		if request.Controller == nil {
 			return failed("bad_request", fmt.Errorf("input cancellation requires a controller"))
@@ -171,7 +247,7 @@ func (b *Bridge) Handle(raw []byte) (result Response) {
 			return failed("bad_request", err)
 		}
 		b.sessions[request.Session] = next
-		return success(View{Session: request.Session, State: next})
+		return b.reply(request, View{Session: request.Session, State: next})
 	case "dispose":
 		delete(b.sessions, request.Session)
 		return success(struct {
@@ -225,7 +301,7 @@ func (b *Bridge) Handle(raw []byte) (result Response) {
 		view.State.Display = display
 	}
 	b.sessions[request.Session] = view.State
-	return success(view)
+	return b.reply(request, view)
 }
 
 func (b *Bridge) JSON(raw string) string {

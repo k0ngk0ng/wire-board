@@ -12,6 +12,7 @@ import (
 	"io"
 
 	"github.com/k0ngk0ng/wire-board/games/basketball/engine"
+	"github.com/k0ngk0ng/wire-board/games/basketball/syncwire"
 	"github.com/k0ngk0ng/wire-board/internal/gameapi"
 )
 
@@ -50,6 +51,7 @@ type LoadingState struct {
 	Ready [4]bool `json:"ready"`
 }
 type State struct {
+	SyncRevision          uint64                      `json:"syncRevision,omitempty"`
 	Loading               *LoadingState               `json:"loading,omitempty"`
 	PresentationConfirmAt int64                       `json:"presentationConfirmAt,omitempty"`
 	Campaign              *CampaignState              `json:"campaign,omitempty"`
@@ -66,6 +68,13 @@ type State struct {
 	Music                 MusicState                  `json:"music"`
 }
 type View struct {
+	Latches                 [2]uint32                       `json:"latches"`
+	Protocol                int                             `json:"protocol"`
+	Frame                   uint64                          `json:"frame"`
+	Court                   uint8                           `json:"court"`
+	SyncRevision            uint64                          `json:"syncRevision"`
+	Digest                  string                          `json:"digest"`
+	Replay                  syncwire.InputWindow            `json:"replay"`
 	Loading                 *LoadingState                   `json:"loading,omitempty"`
 	PresentationAutomaticAt int64                           `json:"presentationAutomaticAt,omitempty"`
 	Attributes              *CampaignAttributes             `json:"attributes,omitempty"`
@@ -78,13 +87,13 @@ type View struct {
 	Epoch                   string                          `json:"epoch"`
 	ServerAt                int64                           `json:"serverAt"`
 	Phase                   string                          `json:"phase"`
-	Runtime                 engine.RuntimeState             `json:"runtime"`
+	Runtime                 engine.RuntimeState             `json:"-"`
 	Inputs                  [4]InputState                   `json:"inputs"`
 	Events                  []SoundEvent                    `json:"events"`
 	SoundSequence           uint64                          `json:"soundSequence"`
 	Scores                  [2]uint16                       `json:"scores"`
 	CanInput                bool                            `json:"canInput"`
-	VideoInputs             []engine.RecordedVideoInput     `json:"videoInputs"`
+	VideoInputs             []engine.RecordedVideoInput     `json:"-"`
 	Music                   MusicView                       `json:"music"`
 }
 type action struct {
@@ -199,7 +208,7 @@ func automated(ctx gameapi.Context, o Options) ([4]bool, error) {
 }
 func Module() gameapi.Module {
 	return gameapi.Module{ID: "basketball", Name: "热血篮球", MinPlayers: 1, MaxPlayers: 2, Realtime: true,
-		Configure: configure, Prepare: prepare, Start: start, Apply: apply, View: project, BotAction: botAction, Reclaim: reclaim, Restore: restore, AcceptStale: acceptStale, OnTimer: onTimer}
+		Configure: configure, Prepare: prepare, Start: start, Apply: apply, View: project, SyncSnapshot: syncSnapshot, BotAction: botAction, Reclaim: reclaim, Restore: restore, AcceptStale: acceptStale, OnTimer: onTimer}
 }
 func start(ctx gameapi.Context, raw json.RawMessage) (gameapi.Match, error) {
 	o, err := configure(ctx.Players, raw)
@@ -278,6 +287,9 @@ func decode(m gameapi.Match) (State, error) {
 	}
 	if _, err := hex.DecodeString(s.Epoch); err != nil {
 		return s, err
+	}
+	if s.SyncRevision > uint64(maxSequence) {
+		return s, fmt.Errorf("无效同步版本")
 	}
 	if len(s.seatActors()) == 0 {
 		return s, fmt.Errorf("无效篮球分队存档")
@@ -806,7 +818,29 @@ func project(m gameapi.Match, seat int) (any, error) {
 		return nil, err
 	}
 	actor := s.actorForSeat(seat)
-	v := View{Loading: s.Loading, SeatActors: s.seatActors(), LocalActor: actor, Options: s.Options, Epoch: s.Epoch, ServerAt: s.ServerAt, Phase: s.phase(), Runtime: s.Runtime, Inputs: s.Inputs, Events: s.Events, SoundSequence: s.SoundSequence, Scores: s.scores(), CanInput: actor >= 0 && !s.Inputs[actor].Automated && m.Result == nil, VideoInputs: s.VideoInputs, Music: s.Music.view(s.ServerAt)}
+	recent := s.VideoInputs
+	if len(recent) > 24 {
+		recent = recent[len(recent)-24:]
+	}
+	packed, err := syncwire.Pack(recent)
+	if err != nil {
+		return nil, err
+	}
+	digest, err := syncwire.RuntimeDigest(s.Runtime)
+	if err != nil {
+		return nil, err
+	}
+	events := s.Events
+	first := s.Runtime.VideoFrames
+	if len(recent) > 0 {
+		first = recent[0].Frame
+	}
+	at := 0
+	for at < len(events) && events[at].VideoFrame < first {
+		at++
+	}
+	events = events[at:]
+	v := View{Latches: syncwire.PackLatches(s.Runtime), Protocol: 1, Frame: s.Runtime.VideoFrames, Court: s.Runtime.Config.Match.Court, SyncRevision: s.SyncRevision, Digest: digest, Replay: packed, Loading: s.Loading, SeatActors: s.seatActors(), LocalActor: actor, Options: s.Options, Epoch: s.Epoch, ServerAt: s.ServerAt, Phase: s.phase(), Runtime: s.Runtime, Inputs: s.Inputs, Events: events, SoundSequence: s.SoundSequence, Scores: s.scores(), CanInput: actor >= 0 && !s.Inputs[actor].Automated && m.Result == nil, VideoInputs: s.VideoInputs, Music: s.Music.view(s.ServerAt)}
 	if s.Inputs[0].Automated && engine.RuntimePresentationNeedsConfirm(s.Runtime) {
 		v.PresentationAutomaticAt = s.PresentationConfirmAt
 	}

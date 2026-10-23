@@ -20,10 +20,21 @@ import {
 import {
   BasketballNetworkScene,
   type BasketballNetworkView,
+  type BasketballSyncSnapshot,
   type BasketballVideoFrame,
 } from "./network-scene";
 
+export type BasketballCheckpointResponse = {
+  roomId: string;
+  version: number;
+  serverInstance: string;
+  serverNow: number;
+  data: BasketballSyncSnapshot;
+};
+
 export type BasketballNetworkClientOptions = {
+  epoch: string;
+  loadCheckpoint: () => Promise<BasketballCheckpointResponse>;
   root: HTMLElement;
   canvas: HTMLCanvasElement;
   profile: ControllerProfile;
@@ -45,7 +56,7 @@ export type BasketballNetworkClientOptions = {
   onConnection?: (connected: boolean) => void;
 };
 
-/** Live platform adapter: one user's physical sources, reliable HTTP input,
+/** Live platform adapter: one user's physical sources, shared ordered input,
  * authoritative playback, local Wasm prediction, renderer and platform audio.
  */
 export class BasketballNetworkClient {
@@ -77,6 +88,14 @@ export class BasketballNetworkClient {
     clock?: GameClock;
   };
   private courtLoading = false;
+  private syncing = false;
+  private syncRequest?: Promise<boolean>;
+  private desired?: {
+    view: BasketballNetworkView;
+    version: number;
+    enabled: boolean;
+    clock?: GameClock;
+  };
 
   static async create(
     options: BasketballNetworkClientOptions,
@@ -165,7 +184,13 @@ export class BasketballNetworkClient {
           this.restoreMusic();
         }
       },
-      onPredictionError: options.onError,
+      onPredictionError: (error) =>
+        console.warn("Basketball replay needs recovery", error),
+      onResync: () => {
+        void this.initialize().catch((error) => {
+          if (!this.closed) this.options.onError(error);
+        });
+      },
     });
     this.transport = new BasketballNetworkInput({
       send: options.send,
@@ -186,6 +211,68 @@ export class BasketballNetworkClient {
     window.addEventListener("keydown", this.recoverOnGesture, true);
     this.frameRequest = requestAnimationFrame(this.tick);
   }
+  /** Initial entry and explicit recovery only; ordinary snapshots never call
+   * this endpoint. The caller owns the client before initialization begins. */
+  initialize(): Promise<boolean> {
+    if (this.closed) return Promise.resolve(false);
+    if (this.syncRequest) return this.syncRequest;
+    this.syncing = true;
+    this.enabled = false;
+    this.input.setEnabled(false);
+    this.scene.cancel();
+    this.options.onConnection?.(false);
+    const pending = (async () => {
+      const reply = await this.options.loadCheckpoint();
+      if (this.closed) return false;
+      const { view, checkpoint } = reply.data;
+      if (
+        reply.roomId !== this.options.roomID ||
+        view.epoch !== this.options.epoch ||
+        view.localActor !== (this.options.controller ?? -1)
+      )
+        throw Error("对局或控制席位已改变");
+      await this.renderer.ensureCourt(view.court);
+      if (this.closed) return false;
+      this.clock = this.desired?.clock;
+      this.musicState = view.music;
+      this.hasAuthority = true;
+      this.scene.bootstrap(
+        checkpoint,
+        { ...view, canInput: false },
+        reply.version,
+        performance.now(),
+      );
+      this.viewVersion = reply.version;
+      this.syncing = false;
+      const desired = this.desired;
+      if (desired && desired.version >= reply.version)
+        this.update(
+          desired.view,
+          desired.version,
+          desired.enabled,
+          desired.clock,
+        );
+      else
+        this.update(
+          view,
+          reply.version,
+          desired?.enabled ?? false,
+          desired?.clock,
+        );
+      this.options.onConnection?.(true);
+      return true;
+    })();
+    this.syncRequest = pending;
+    void pending
+      .finally(() => {
+        if (this.syncRequest === pending) {
+          this.syncRequest = undefined;
+          this.syncing = false;
+        }
+      })
+      .catch(() => {});
+    return pending;
+  }
   readonly controllerSink = {
     pressPointer: (id: number, buttons: readonly string[]) => {
       if (this.closed || !this.enabled) return;
@@ -202,14 +289,27 @@ export class BasketballNetworkClient {
     enabled: boolean,
     clock?: GameClock,
   ): void {
+    if (this.closed) return;
+    if (!this.desired || version >= this.desired.version)
+      this.desired = { view, version, enabled, clock };
+    if (this.syncing) return;
+    // A checkpoint can be newer than React's current room snapshot. Apply
+    // local enable/disable immediately against that newer authority instead
+    // of waiting for another network frame (notably after switching users).
+    if (
+      version < this.viewVersion &&
+      this.desired?.version === this.viewVersion
+    ) {
+      this.update(this.desired.view, this.desired.version, enabled, clock);
+      return;
+    }
     if (
       this.closed ||
       version < this.viewVersion ||
       (this.pendingCourt && version < this.pendingCourt.version)
     )
       return;
-    const court = (view.runtime.config as { match: { Court: number } }).match
-      .Court;
+    const court = view.court;
     if (!this.renderer.hasCourt(court) || this.courtLoading) {
       this.pendingCourt = { view, version, enabled, clock };
       this.enabled = false;
@@ -297,14 +397,17 @@ export class BasketballNetworkClient {
   private tick = () => {
     if (this.closed) return;
     try {
-      if (!this.courtLoading)
+      if (!this.courtLoading && !this.syncing)
         this.scene.tick(performance.now(), () => {
           const generation = this.inputGeneration,
             held = this.input.sample();
           this.transport.sample(held);
           return generation === this.inputGeneration ? held : 0;
         });
-      const connected = !this.enabled || this.transport.connected;
+      const connected =
+        !this.syncing &&
+        !this.scene.needsCheckpoint &&
+        (!this.enabled || this.transport.connected);
       if (connected !== this.connection) {
         this.connection = connected;
         this.options.onConnection?.(connected);
@@ -318,6 +421,25 @@ export class BasketballNetworkClient {
   private present(frame: BasketballVideoFrame) {
     const d = frame.display;
     this.options.canvas.dataset.videoFrame = String(frame.frame);
+    const actor = this.options.controller;
+    if (actor !== undefined && d.HasVisible) {
+      // Diagnostics report the actual committed drawing coordinates.
+      const object = d.Visible.objects[actor];
+      this.options.canvas.dataset.playerAction = String(object.action);
+      this.options.canvas.dataset.ballAction = String(
+        d.Visible.objects[6]?.action,
+      );
+      this.options.canvas.dataset.ballWorldX = String(
+        d.Visible.objects[6]?.position.x,
+      );
+      this.options.canvas.dataset.playerX = String(object.projected.x);
+      this.options.canvas.dataset.playerWorldX = String(object.position.x);
+      this.options.canvas.dataset.playerVisible = String(
+        d.Visible.drawOrder.includes(actor),
+      );
+      this.options.canvas.dataset.playerY = String(object.projected.y);
+      this.options.canvas.dataset.cameraX = String(d.Visible.camera.x);
+    }
     if (!d.HasVisible) {
       this.options.canvas.getContext("2d")?.clearRect(0, 0, 256, 240);
       this.imageKey = "";

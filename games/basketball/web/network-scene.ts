@@ -1,4 +1,5 @@
-import { basketballRuntimeFinished, type BasketballRuntimeState, type BasketballRuntimeView } from "./client";
+import { DisplayReconciliation } from "./reconciliation";
+import type { BasketballCheckpoint, BasketballRuntimeState } from "./client";
 import type { BasketballWasm } from "./wasm";
 import type { BasketballMusicState } from "./audio";
 
@@ -9,8 +10,16 @@ export type RecordedVideoInput = {
   pendingPressed: number[];
   automated: boolean[];
 };
+export type InputWindow = { from: number; runs: number[][] };
 export type BasketballNetworkView = {
-  loading?: {ready:boolean[]};
+  protocol: number;
+  frame: number;
+  court: number;
+  syncRevision: number;
+  digest: string;
+  replay: InputWindow;
+  latches: [number, number];
+  loading?: { ready: boolean[] };
   presentationAutomaticAt?: number;
   attributes?: import("./campaign-types").CampaignAttributes;
   campaign?: import("./campaign-types").CampaignView;
@@ -24,42 +33,83 @@ export type BasketballNetworkView = {
   serverAt: number;
   phase: string;
   canInput: boolean;
-  runtime: BasketballRuntimeState;
   inputs: {
     sequence: number;
     buttons: number;
     appliedButtons: number;
     automated: boolean;
   }[];
-  videoInputs: RecordedVideoInput[] | null;
   events: { sequence: number; videoFrame: number; ids: number[] }[];
   soundSequence: number;
   scores: number[];
+};
+export type BasketballSyncSnapshot = {
+  view: BasketballNetworkView;
+  checkpoint: BasketballCheckpoint;
 };
 export type BasketballVideoFrame = {
   frame: number;
   display: BasketballRuntimeState["display"];
 };
-type ReplayView = BasketballRuntimeView & { frames: BasketballVideoFrame[] };
+export type CompactRuntimeView = BasketballVideoFrame & {
+  session: number;
+  finished: boolean;
+  hasOutcome: boolean;
+  digest?: string;
+  frames?: BasketballVideoFrame[];
+};
 type Options = {
   engine: BasketballWasm;
   controller?: number;
   onFrame: (frame: BasketballVideoFrame) => void;
   onSound?: (ids: readonly number[], sequence: number) => void;
-  onReset?: (soundSequence: number, music?: BasketballMusicState) => void;
+  onReset?: (sequence: number, music?: BasketballMusicState) => void;
   onPredictionError?: (error: unknown) => void;
+  onResync?: (reason: string) => void;
 };
 const frameMS = 1000 / 60;
+const flags = (view: BasketballNetworkView) =>
+  view.inputs.map((input) => input.automated);
+function windowEnd(window: InputWindow): number {
+  if (
+    !window ||
+    !Number.isSafeInteger(window.from) ||
+    window.from < 0 ||
+    !Array.isArray(window.runs) ||
+    window.runs.length > 120
+  )
+    throw Error("Invalid input window");
+  let count = 0;
+  for (const run of window.runs) {
+    if (
+      run.length !== 5 ||
+      !run.every(Number.isSafeInteger) ||
+      run[0] < 1 ||
+      run[0] > 120 ||
+      run.slice(1, 4).some((n) => n < 0 || n > 0xffffffff) ||
+      run[4] < 0 ||
+      run[4] > 15
+    )
+      throw Error("Invalid input run");
+    count += run[0];
+  }
+  if (
+    count > 120 ||
+    (count > 0 && window.from === 0) ||
+    (count === 0 && window.from !== 0) ||
+    !Number.isSafeInteger(window.from + count)
+  )
+    throw Error("Invalid input window range");
+  return count ? window.from + count - 1 : 0;
+}
 
-/** Confirmed replay and optional local Go prediction. No basketball physics or
- * AI is implemented in JS. Server authority always replaces the replay anchor;
- * predicted sounds and results are never submitted back to the host.
- */
+/** Input-driven local simulation. Full state crosses JS/Wasm only when an
+ * explicit checkpoint is installed; confirmed/predicted forks stay native. */
 export class BasketballNetworkScene {
-  private readonly options: Options;
+  private options: Options;
   private authority?: BasketballNetworkView;
-  private confirmed?: BasketballRuntimeView;
-  private predicted?: BasketballRuntimeView;
+  private confirmed?: CompactRuntimeView;
+  private predicted?: CompactRuntimeView;
   private version = -1;
   private closed = false;
   private queue: BasketballVideoFrame[] = [];
@@ -72,9 +122,10 @@ export class BasketballNetworkScene {
   private localButtons = 0;
   private ownSamples = new Map<number, number>();
   private waitingForSnapshot = false;
+  private afterGap = false;
   private reason = "";
-  lastReplayState?: BasketballRuntimeState;
-
+  private smoothing = new DisplayReconciliation();
+  private lastPresented?: BasketballVideoFrame;
   constructor(options: Options) {
     if (
       options.controller !== undefined &&
@@ -82,180 +133,214 @@ export class BasketballNetworkScene {
         options.controller < 0 ||
         options.controller > 3)
     )
-      throw Error("Invalid local basketball controller");
+      throw Error("Invalid controller");
     this.options = options;
   }
-  get predictedState(): BasketballRuntimeState | undefined {
-    return this.predicted?.state;
-  }
-  get resetReason(): string {
+  get resetReason() {
     return this.reason;
   }
-  get presentationFrame(): number {
+  get presentationFrame() {
     return this.shownFrame;
   }
-  get predicting(): boolean {
-    return this.options.controller !== undefined && !!this.authority?.canInput;
+  get predicting() {
+    return (
+      this.options.controller !== undefined &&
+      !!this.authority?.canInput &&
+      !this.waitingForSnapshot
+    );
   }
-
-  private restore(
-    state: BasketballRuntimeState,
-    previous?: BasketballRuntimeView,
-  ): BasketballRuntimeView {
-    // Create before dispose so an invalid authority cannot destroy the current
-    // usable session. Each scene owns at most two persistent Wasm sessions.
-    const view = this.options.engine.request<BasketballRuntimeView>({
-      op: "restore",
-      checkpoint: { version: 1, state },
+  get needsCheckpoint() {
+    return this.waitingForSnapshot || !this.confirmed;
+  }
+  // Explicit diagnostics only. Ordinary update/tick never exports simulation.
+  get lastReplayState(): BasketballRuntimeState | undefined {
+    return this.inspect(this.confirmed);
+  }
+  get predictedState(): BasketballRuntimeState | undefined {
+    return this.inspect(this.predicted);
+  }
+  private inspect(view?: CompactRuntimeView) {
+    return view
+      ? this.options.engine.request<{ checkpoint: BasketballCheckpoint }>({
+          op: "snapshot",
+          session: view.session,
+        }).checkpoint.state
+      : undefined;
+  }
+  private forget(view?: CompactRuntimeView) {
+    if (view)
+      this.options.engine.request({ op: "dispose", session: view.session });
+  }
+  private fork(): CompactRuntimeView {
+    return this.options.engine.request({
+      op: "fork",
+      session: this.confirmed!.session,
+      target: this.predicted?.session,
+      compact: true,
     });
-    if (previous)
-      this.options.engine.request({ op: "dispose", session: previous.session });
-    return view;
   }
-  private reset(
+  bootstrap(
+    checkpoint: BasketballCheckpoint,
     view: BasketballNetworkView,
     version: number,
     now: number,
-    reason: string,
-  ) {
-    this.confirmed = this.restore(view.runtime, this.confirmed);
-    if (this.predicted) {
-      this.options.engine.request({
-        op: "dispose",
-        session: this.predicted.session,
-      });
-      this.predicted = undefined;
+  ): void {
+    if (this.closed) return;
+    if (
+      view.protocol !== 1 ||
+      !Number.isFinite(now) ||
+      !Number.isSafeInteger(version)
+    )
+      throw Error("Unsupported basketball sync protocol");
+    const next = this.options.engine.request<CompactRuntimeView>({
+      op: "restore",
+      checkpoint,
+      compact: true,
+      verify: true,
+    });
+    if (next.frame !== view.frame || next.digest !== view.digest) {
+      this.forget(next);
+      throw Error("Basketball checkpoint checksum differs");
     }
-    this.authority = structuredClone(view);
+    this.forget(this.confirmed);
+    this.forget(this.predicted);
+    this.confirmed = next;
+    this.predicted = undefined;
+    this.authority = view;
     this.version = version;
+    this.waitingForSnapshot = false;
+    this.afterGap = false;
     this.queue = [];
     this.pendingSounds = [];
     this.ownSamples.clear();
     this.localButtons = 0;
     this.soundWatermark = view.soundSequence;
-    this.reason = reason;
     this.receivedAt = this.lastTickAt = now;
-    this.nextPlaybackAt = now + 100;
-    this.waitingForSnapshot = false;
+    this.nextPlaybackAt = now + frameMS;
+    this.reason = "checkpoint";
+    this.smoothing.reset();
+    this.lastPresented = undefined;
     this.options.onReset?.(view.soundSequence, view.music);
-    if (this.predicting) this.predicted = this.restore(view.runtime);
-    this.present({
-      frame: view.runtime.videoFrames,
-      display: view.runtime.display,
-    });
+    if (this.predicting) this.predicted = this.fork();
+    this.present(next);
   }
-
-  update(view: BasketballNetworkView, version: number, now: number): void {
-    if (this.closed) return;
+  private recover(reason: string): false {
+    if (!this.waitingForSnapshot) {
+      this.reason = reason;
+      this.smoothing.reset();
+      this.waitingForSnapshot = true;
+      this.queue = [];
+      this.pendingSounds = [];
+      this.ownSamples.clear();
+      this.localButtons = 0;
+      this.options.onReset?.(this.authority?.soundSequence ?? 0);
+      this.options.onResync?.(reason);
+    }
+    return false;
+  }
+  update(view: BasketballNetworkView, version: number, now: number): boolean {
+    if (this.closed) return false;
     if (!Number.isSafeInteger(version) || version < 0 || !Number.isFinite(now))
       throw Error("Invalid scene clock/version");
-    if (!this.authority || view.epoch !== this.authority.epoch) {
-      this.reset(view, version, now, this.authority ? "epoch" : "initial");
-      return;
-    }
-    if (
-      version <= this.version ||
-      view.runtime.videoFrames < this.confirmed!.state.videoFrames
-    )
-      return;
-    if (this.waitingForSnapshot) {
-      this.reset(view, version, now, "resume");
-      return;
-    }
-    const previousFrame = this.confirmed!.state.videoFrames;
-    const delta = view.runtime.videoFrames - previousFrame;
-    const inputs = (view.videoInputs ?? []).filter(
-      (input) =>
-        input.frame > previousFrame && input.frame <= view.runtime.videoFrames,
-    );
-    if (
-      delta > 120 ||
-      inputs.length !== delta ||
-      inputs.some((input, index) => input.frame !== previousFrame + index + 1)
-    ) {
-      this.reset(view, version, now, "gap");
-      return;
-    }
-    const wasPredicting = this.predicting;
-    const target =
-      this.predicted?.state.videoFrames ?? view.runtime.videoFrames;
-    let frames: BasketballVideoFrame[] = [];
-    if (inputs.length) {
-      const replay = this.options.engine.request<ReplayView>({
-        op: "replay",
-        session: this.confirmed!.session,
-        inputs,
-      });
-      this.lastReplayState = replay.state;
-      this.confirmed = replay;
-      frames = replay.frames;
-    }
-    // A host cancellation/reclaim may modify input state after the last video
-    // tick; its current snapshot is the exact anchor for the next interval.
-    this.confirmed = this.restore(view.runtime, this.confirmed);
-    this.authority = structuredClone(view);
-    this.version = version;
-    this.receivedAt = now;
-    this.waitingForSnapshot = false;
-    const knownSound =
-      this.pendingSounds.at(-1)?.sequence ?? this.soundWatermark;
-    for (const event of view.events)
-      if (event.sequence > knownSound)
-        this.pendingSounds.push({ ...event, ids: [...event.ids] });
-    if (this.pendingSounds.length > 64) {
-      this.pendingSounds = [];
-      this.soundWatermark = view.soundSequence;
-      this.options.onReset?.(view.soundSequence, view.music);
-    }
-    if (this.predicting) {
-      this.queue = [];
-      this.predicted = this.restore(view.runtime, this.predicted);
-      const until = Math.min(
-        Math.max(target, view.runtime.videoFrames),
-        view.runtime.videoFrames + 12,
-      );
-      try {
-        while (
-          this.predicted.state.videoFrames < until &&
-          !basketballRuntimeFinished(this.predicted.state)
-        ) {
-          const frame = this.predicted.state.videoFrames + 1;
-          this.advancePrediction(
-            this.ownSamples.get(frame) ?? this.localButtons,
-            false,
-          );
-        }
-        this.presentPrediction();
-      } catch (error) {
-        this.predictionFailed(error);
-      }
-    } else {
-      if (this.predicted) {
-        this.options.engine.request({
-          op: "dispose",
-          session: this.predicted.session,
+    if (!this.authority || !this.confirmed) return this.recover("initial");
+    if (view.epoch !== this.authority.epoch) return this.recover("epoch");
+    if (version < this.version || view.frame < this.confirmed.frame)
+      return true;
+    if (this.waitingForSnapshot) return false;
+    if (view.protocol !== 1) return this.recover("protocol");
+    if (view.syncRevision !== this.authority.syncRevision)
+      return this.recover("revision");
+    if (version === this.version && view.canInput === this.authority.canInput)
+      return true;
+    const previous = this.authority,
+      wasPredicting = this.predicting;
+    const oldFrame = this.confirmed.frame,
+      target = this.predicted?.frame ?? view.frame;
+    try {
+      const end = windowEnd(view.replay);
+      if (
+        view.frame > oldFrame &&
+        (view.replay.from > oldFrame + 1 || end !== view.frame)
+      )
+        return this.recover("gap");
+      const changed =
+        view.frame !== oldFrame ||
+        view.digest !== previous.digest ||
+        view.latches.some((n, i) => n !== previous.latches[i]) ||
+        flags(view).some((n, i) => n !== previous.inputs[i].automated);
+      if (changed) {
+        const result = this.options.engine.request<CompactRuntimeView>({
+          op: "replay",
+          session: this.confirmed.session,
+          window: view.replay,
+          automated: flags(view),
+          latches: view.latches,
+          compact: true,
+          verify: true,
+          captureFrames: !(
+            this.options.controller !== undefined && view.canInput
+          ),
         });
-        this.predicted = undefined;
+        if (result.frame !== view.frame) return this.recover("gap");
+        if (result.digest !== view.digest) return this.recover("checksum");
+        this.confirmed = result;
       }
-      if (wasPredicting) {
+      this.authority = view;
+      this.version = version;
+      this.receivedAt = now;
+      if (this.afterGap) {
         this.queue = [];
-        this.ownSamples.clear();
+        this.pendingSounds = [];
+        this.soundWatermark = view.soundSequence;
+        this.options.onReset?.(view.soundSequence, view.music);
         this.nextPlaybackAt = now + frameMS;
+      } else {
+        const known =
+          this.pendingSounds.at(-1)?.sequence ?? this.soundWatermark;
+        for (const event of view.events)
+          if (event.sequence > known) this.pendingSounds.push(event);
       }
-      this.queue.push(
-        ...frames.filter((frame) => frame.frame > this.shownFrame),
-      );
-      if (this.queue.length > 120) {
-        this.reset(view, version, now, "backlog");
-        return;
+      if (this.predicting) {
+        if (changed || !wasPredicting || !this.predicted) {
+          this.queue = [];
+          this.predicted = this.fork();
+          const until = Math.min(Math.max(target, view.frame), view.frame + 12);
+          while (this.predicted.frame < until && !this.predicted.finished)
+            this.advancePrediction(
+              this.ownSamples.get(this.predicted.frame + 1) ??
+                this.localButtons,
+              false,
+            );
+          if (this.lastPresented?.frame === this.predicted.frame)
+            this.smoothing.correct(this.lastPresented, this.predicted, now);
+          this.presentPrediction(now);
+        }
+      } else {
+        this.forget(this.predicted);
+        this.predicted = undefined;
+        this.smoothing.reset();
+        if (wasPredicting || this.afterGap) {
+          this.queue = [];
+          this.ownSamples.clear();
+          this.present(this.confirmed);
+          this.nextPlaybackAt = now + frameMS;
+        } else if (changed)
+          this.queue.push(
+            ...(this.confirmed.frames ?? []).filter(
+              (frame) => frame.frame > this.shownFrame,
+            ),
+          );
+        if (this.queue.length > 120) return this.recover("backlog");
       }
+      this.afterGap = false;
+      for (const frame of this.ownSamples.keys())
+        if (frame <= view.frame) this.ownSamples.delete(frame);
+      return true;
+    } catch (error) {
+      this.options.onPredictionError?.(error);
+      return this.recover("replay");
     }
-    for (const frame of this.ownSamples.keys())
-      if (frame <= view.runtime.videoFrames) this.ownSamples.delete(frame);
   }
-
-  /** Sample only on video boundaries, so a 144 Hz RAF cannot consume a short
-   * physical tap on a frame where the 60 Hz Go runtime does not advance. */
   tick(now: number, sample?: () => number): void {
     if (
       this.closed ||
@@ -268,11 +353,10 @@ export class BasketballNetworkScene {
       this.queue = [];
       this.pendingSounds = [];
       this.ownSamples.clear();
-      this.localButtons = 0;
-      this.waitingForSnapshot = true;
+      this.cancel();
+      this.afterGap = true;
       this.lastTickAt = now;
-      this.soundWatermark = this.authority.soundSequence;
-      this.options.onReset?.(this.soundWatermark);
+      this.options.onReset?.(this.authority.soundSequence);
       return;
     }
     while (now + 1e-6 >= this.lastTickAt + frameMS) {
@@ -287,22 +371,22 @@ export class BasketballNetworkScene {
           throw Error("Invalid prediction buttons");
         if (
           this.predicted &&
-          !basketballRuntimeFinished(this.predicted.state) &&
-          !this.waitingForSnapshot &&
+          !this.predicted.finished &&
+          !this.afterGap &&
           now - this.receivedAt <= 250 &&
-          this.predicted.state.videoFrames <
-            this.authority.runtime.videoFrames + 12
+          this.predicted.frame < this.authority.frame + 12
         ) {
           try {
             this.advancePrediction(this.localButtons, true);
             this.presentPrediction();
           } catch (error) {
-            this.predictionFailed(error);
+            this.options.onPredictionError?.(error);
+            this.recover("prediction");
           }
         }
       }
     }
-    if (!this.predicting && !this.waitingForSnapshot) {
+    if (!this.predicting && !this.waitingForSnapshot && !this.afterGap) {
       while (now + 1e-6 >= this.nextPlaybackAt) {
         const frame = this.queue.shift();
         if (!frame) {
@@ -319,38 +403,23 @@ export class BasketballNetworkScene {
       input.automated ? 0 : input.appliedButtons,
     );
     held[this.options.controller!] = buttons;
-    const next = this.options.engine.request<BasketballRuntimeView>({
+    this.predicted = this.options.engine.request<CompactRuntimeView>({
       op: "advance",
       session: this.predicted!.session,
       ticks: 1,
       held,
+      compact: true,
     });
-    this.predicted = next;
-    if (remember) this.ownSamples.set(next.state.videoFrames, buttons);
+    if (remember) this.ownSamples.set(this.predicted.frame, buttons);
   }
-  private presentPrediction() {
-    const state = this.predicted!.state;
-    // The host owns match completion. Do not show a forecast result screen.
-    if (state.display.Visible.result && !this.authority!.runtime.outcome)
+  private presentPrediction(now = this.lastTickAt) {
+    if (this.predicted!.display.Visible.result && !this.confirmed!.hasOutcome)
       return;
-    this.present({ frame: state.videoFrames, display: state.display });
-  }
-  private predictionFailed(error: unknown) {
-    if (this.predicted)
-      this.options.engine.request({
-        op: "dispose",
-        session: this.predicted.session,
-      });
-    this.predicted = undefined;
-    this.options.onPredictionError?.(error);
-    // Confirmed server updates remain playable; no guessed rule or AI fallback.
-    this.present({
-      frame: this.authority!.runtime.videoFrames,
-      display: this.authority!.runtime.display,
-    });
+    this.present(this.smoothing.frame(this.predicted!, now));
   }
   private present(frame: BasketballVideoFrame) {
     this.shownFrame = frame.frame;
+    this.lastPresented = frame;
     this.options.onFrame(frame);
     while (
       this.pendingSounds.length &&
@@ -363,24 +432,27 @@ export class BasketballNetworkScene {
     }
   }
   cancel(mask = 255): void {
-    if (this.closed || !this.predicted || this.options.controller === undefined)
-      return;
+    if (this.closed || this.options.controller === undefined) return;
     this.localButtons &= ~mask;
     for (const [frame, held] of this.ownSamples)
       this.ownSamples.set(frame, held & ~mask);
-    this.predicted = this.options.engine.request<BasketballRuntimeView>({
-      op: "cancelInput",
-      session: this.predicted.session,
-      controller: this.options.controller,
-      buttons: mask,
-    });
+    for (const name of ["confirmed", "predicted"] as const) {
+      const view = this[name];
+      if (view)
+        this[name] = this.options.engine.request<CompactRuntimeView>({
+          op: "cancelInput",
+          session: view.session,
+          controller: this.options.controller,
+          buttons: mask,
+          compact: true,
+        });
+    }
   }
   dispose(): void {
     if (this.closed) return;
     this.closed = true;
-    for (const view of [this.confirmed, this.predicted])
-      if (view)
-        this.options.engine.request({ op: "dispose", session: view.session });
+    this.forget(this.confirmed);
+    this.forget(this.predicted);
     this.confirmed = this.predicted = undefined;
     this.queue = [];
     this.pendingSounds = [];
