@@ -53,12 +53,14 @@ type HUDWorldSnapshot struct {
 }
 
 type WorldLoopStep struct {
-	MotionSurfaceWrites []MotionSurfaceWrite
-	State               WorldLoopState
-	ActionCalls         []uint8
-	SoundIDs            []uint8
-	HUD                 *HUDWorldSnapshot
-	StreamColumn        bool
+	ChangeBackboardStrength bool
+	BackboardStrength       uint8
+	MotionSurfaceWrites     []MotionSurfaceWrite
+	State                   WorldLoopState
+	ActionCalls             []uint8
+	SoundIDs                []uint8
+	HUD                     *HUDWorldSnapshot
+	StreamColumn            bool
 }
 
 func worldLoopPositions(s WorldActionState) [13]Position {
@@ -195,6 +197,7 @@ func StepWorldLoop(original WorldLoopState, input WorldLoopInput, ctx WorldLoopC
 		return initial, fmt.Errorf("actions: %w", err)
 	}
 	s.Preparation.Actions = actions.State
+	result.ChangeBackboardStrength, result.BackboardStrength = actions.ChangeBackboardStrength, actions.BackboardStrength
 	if actions.ChangeCameraShake {
 		s.Camera.Shake = actions.CameraShake
 	}

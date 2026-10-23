@@ -1,0 +1,13 @@
+{
+  "serverAt": 1792765078051,
+  "soundSequence": 458,
+  "music": {
+    "epoch": 1,
+    "trackID": 60,
+    "assetSHA256": "6d065292d421cc78d2ec22c69b0767559aff775d380742cf37aeaffcbe040986",
+    "controlSequence": 2,
+    "elapsedMS": 0,
+    "startedAt": 1792764928752,
+    "paused": false
+  }
+}

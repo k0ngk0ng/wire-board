@@ -22,6 +22,8 @@ export function Board(props: BoardProps<BasketballNetworkView>) {
   const [profile, setProfile] = useState<ControllerProfile>(),
     [readyIdentity, setReadyIdentity] = useState(""),
     [error, setError] = useState(""),
+    [fault, setFault] = useState<string>(),
+    [faultNeedsReload, setFaultNeedsReload] = useState(false),
     [connected, setConnected] = useState(true),
     [retry, setRetry] = useState(0);
   const [progress, setProgress] = useState<LoadingProgress>({
@@ -61,6 +63,8 @@ export function Board(props: BoardProps<BasketballNetworkView>) {
     let changedProfile: ControllerProfile | undefined;
     setReadyIdentity("");
     setError("");
+    setFault(undefined);
+    setFaultNeedsReload(false);
     setProgress({ percent: 0, label: "加载控制器设置" });
     setProfile(undefined);
     const model = "classic-2";
@@ -133,6 +137,13 @@ export function Board(props: BoardProps<BasketballNetworkView>) {
         },
         onConnection: (value) => {
           if (alive) setConnected(value);
+        },
+        onFault: (message, reload) => {
+          if (alive) {
+            setFault(message);
+            setFaultNeedsReload(!!reload);
+            if (!message) setError("");
+          }
         },
       });
       if (!alive) {
@@ -249,11 +260,13 @@ export function Board(props: BoardProps<BasketballNetworkView>) {
     >
       <div className="basketball-screen">
         <p className="basketball-status" role="status">
-          {!ready && !error
-            ? "正在加载球场…"
-            : !connected
-              ? "连接中断，正在等待同步…"
-              : phase}
+          {fault
+            ? "比赛运行异常"
+            : !ready && !error
+              ? "正在加载球场…"
+              : !connected
+                ? "连接中断，正在等待同步…"
+                : phase}
         </p>
         <CampaignPanel
           data={data}
@@ -263,10 +276,18 @@ export function Board(props: BoardProps<BasketballNetworkView>) {
           clock={props.clock}
           onOpenChange={setCampaignOpen}
         />
-        {error && (
+        {(error || fault) && (
           <div className="basketball-error" role="alert">
-            {error}
-            <button onClick={() => setRetry((n) => n + 1)}>重新连接</button>
+            {fault || error}
+            <button
+              onClick={() =>
+                faultNeedsReload
+                  ? window.location.reload()
+                  : setRetry((n) => n + 1)
+              }
+            >
+              {faultNeedsReload ? "刷新页面" : fault ? "重试" : "重新连接"}
+            </button>
           </div>
         )}
         <div
@@ -310,7 +331,9 @@ export function Board(props: BoardProps<BasketballNetworkView>) {
           <FCController
             profile={profile}
             mode="play"
-            disabled={!ready || !connected || !enabled(props) || !!error}
+            disabled={
+              !ready || !connected || !enabled(props) || !!error || !!fault
+            }
             sink={client.current?.controllerSink}
           />
         </aside>

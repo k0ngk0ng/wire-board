@@ -66,6 +66,7 @@ type Options = {
   onReset?: (sequence: number, music?: BasketballMusicState) => void;
   onPredictionError?: (error: unknown) => void;
   onResync?: (reason: string) => void;
+  onFault?: (message: string | undefined, reload?: boolean) => void;
 };
 const frameMS = 1000 / 60;
 const flags = (view: BasketballNetworkView) =>
@@ -127,6 +128,10 @@ export class BasketballNetworkScene {
   private reason = "";
   private smoothing = new DisplayReconciliation();
   private lastPresented?: BasketballVideoFrame;
+  private fault?: string;
+  private faultNeedsReload = false;
+  private failedFrame = -1;
+  private automaticRecoveryKey?: string;
   constructor(options: Options) {
     if (
       options.controller !== undefined &&
@@ -147,11 +152,55 @@ export class BasketballNetworkScene {
     return (
       this.options.controller !== undefined &&
       !!this.authority?.canInput &&
-      !this.waitingForSnapshot
+      !this.waitingForSnapshot &&
+      !this.fault
     );
   }
   get needsCheckpoint() {
     return this.waitingForSnapshot || !this.confirmed;
+  }
+  get failure() {
+    return this.fault;
+  }
+  private authorityKey() {
+    const view = this.authority;
+    return view
+      ? `${view.epoch}:${view.syncRevision}:${view.frame}:${view.digest}`
+      : "initial";
+  }
+  private halt(message: string, reload = false): false {
+    const notify = this.fault !== message;
+    this.fault = message;
+    this.faultNeedsReload = reload;
+    this.failedFrame = Math.max(
+      this.confirmed?.frame ?? -1,
+      this.predicted?.frame ?? -1,
+    );
+    this.reason = "engine-fault";
+    this.waitingForSnapshot = false;
+    this.queue = [];
+    this.pendingSounds = [];
+    this.ownSamples.clear();
+    this.localButtons = 0;
+    this.smoothing.reset();
+    // Keep the last picture and existing audio resource. An engine fault is
+    // not a checkpoint reset; replaying the same state cannot repair its code.
+    if (notify) this.options.onFault?.(message, reload);
+    return false;
+  }
+  private failed(error: unknown, reason: string): false {
+    this.options.onPredictionError?.(error);
+    const code =
+      error && typeof error === "object" && "code" in error
+        ? error.code
+        : undefined;
+    if (code === "rule_unavailable")
+      return this.halt(
+        "游戏运行遇到未处理的动作，已停止自动重试。请等待修复后重试。",
+      );
+    if (code === "runtime_stopped")
+      return this.halt("游戏程序已停止，请刷新页面重试。", true);
+    return this.recover(reason);
   }
   // Explicit diagnostics only. Ordinary update/tick never exports simulation.
   get lastReplayState(): BasketballRuntimeState | undefined {
@@ -209,6 +258,11 @@ export class BasketballNetworkScene {
     this.confirmed = next;
     this.predicted = undefined;
     this.authority = view;
+    const wasFaulted = !!this.fault;
+    this.fault = undefined;
+    this.faultNeedsReload = false;
+    this.failedFrame = -1;
+    if (wasFaulted) this.options.onFault?.(undefined);
     this.version = version;
     this.waitingForSnapshot = false;
     this.afterGap = false;
@@ -247,6 +301,10 @@ export class BasketballNetworkScene {
   }
   private recover(reason: string): false {
     if (!this.waitingForSnapshot) {
+      const key = this.authorityKey();
+      if (this.automaticRecoveryKey === key)
+        return this.halt("同步恢复未能继续，已停止自动重试。请稍后重试。");
+      this.automaticRecoveryKey = key;
       this.reason = reason;
       this.smoothing.reset();
       this.waitingForSnapshot = true;
@@ -263,6 +321,7 @@ export class BasketballNetworkScene {
     if (this.closed) return false;
     if (!Number.isSafeInteger(version) || version < 0 || !Number.isFinite(now))
       throw Error("Invalid scene clock/version");
+    if (this.faultNeedsReload) return false;
     if (!this.authority || !this.confirmed) return this.recover("initial");
     if (view.epoch !== this.authority.epoch) return this.recover("epoch");
     if (version < this.version || view.frame < this.confirmed.frame)
@@ -271,6 +330,11 @@ export class BasketballNetworkScene {
     if (view.protocol !== 1) return this.recover("protocol");
     if (view.syncRevision !== this.authority.syncRevision)
       return this.recover("revision");
+    // Envelope versions/timestamps and duplicate pushes do not prove that a
+    // stalled simulation moved beyond the failed native operation.
+    if (this.fault && view.frame <= this.failedFrame) return false;
+    const wasFaulted = !!this.fault;
+    this.fault = undefined;
     if (version === this.version && view.canInput === this.authority.canInput)
       return true;
     const previous = this.authority,
@@ -356,16 +420,23 @@ export class BasketballNetworkScene {
       this.afterGap = false;
       for (const frame of this.ownSamples.keys())
         if (frame <= view.frame) this.ownSamples.delete(frame);
+      if (wasFaulted) {
+        // The intentionally paused local clock is not a lost RAF interval.
+        // Resuming it must not stop the media that the client just resumed.
+        this.lastTickAt = now;
+        this.nextPlaybackAt = now + frameMS;
+        this.options.onFault?.(undefined);
+      }
       return true;
     } catch (error) {
-      this.options.onPredictionError?.(error);
-      return this.recover("replay");
+      return this.failed(error, "replay");
     }
   }
   tick(now: number, sample?: () => number): void {
     if (
       this.closed ||
       !this.authority ||
+      !!this.fault ||
       !Number.isFinite(now) ||
       now < this.lastTickAt
     )
@@ -401,8 +472,7 @@ export class BasketballNetworkScene {
             this.advancePrediction(this.localButtons, true);
             this.presentPrediction();
           } catch (error) {
-            this.options.onPredictionError?.(error);
-            this.recover("prediction");
+            this.failed(error, "prediction");
           }
         }
       }
@@ -457,6 +527,7 @@ export class BasketballNetworkScene {
     this.localButtons &= ~mask;
     for (const [frame, held] of this.ownSamples)
       this.ownSamples.set(frame, held & ~mask);
+    if (this.fault) return;
     for (const name of ["confirmed", "predicted"] as const) {
       const view = this[name];
       if (view)
@@ -472,8 +543,18 @@ export class BasketballNetworkScene {
   dispose(): void {
     if (this.closed) return;
     this.closed = true;
-    this.forget(this.confirmed);
-    this.forget(this.predicted);
+    // A terminated Go runtime rejects even dispose; releasing the page must
+    // still remove local ownership and must never start another recovery.
+    try {
+      this.forget(this.confirmed);
+    } catch {
+      /* runtime already stopped */
+    }
+    try {
+      this.forget(this.predicted);
+    } catch {
+      /* runtime already stopped */
+    }
     this.confirmed = this.predicted = undefined;
     this.queue = [];
     this.pendingSounds = [];

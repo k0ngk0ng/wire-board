@@ -1,0 +1,41 @@
+{
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "initialRAMSHA256": "03469969400eda5514c31e78c8b91ef3c554580c9c23558a717b5b6a065d5d76",
+  "sourceRuntimeSHA256": "f15eaa579ddf50c78adc561705907cc434a702dccc37386b8e0e4c4410fb7624",
+  "fixtureSHA256": "05951e876f0ecb7fe36fd144dbbb9195c5bf97699d1e84d60560754c0bee9353",
+  "calls": 1632,
+  "phases": 440,
+  "chains": [
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    24,
+    24,
+    24,
+    24,
+    24,
+    24,
+    24,
+    24,
+    24,
+    24,
+    24,
+    24
+  ],
+  "entries": [
+    "bank6:8810,88E7,92B2,9363,B117 via E165..E168",
+    "fixed:DF39 via bank5:8469..8498 reset and complete D345..D348"
+  ],
+  "naturalGameplay": false,
+  "scope": "controlled original calls, complete action phases and uninterrupted original release-to-landing chains",
+  "reaEvidence": "ev_1ad622c6f6d8c5c1804e844fa9f245547533fd4359788aab647902a76e77679a"
+}

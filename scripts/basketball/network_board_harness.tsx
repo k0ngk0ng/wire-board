@@ -8,8 +8,10 @@ import { OptionsForm } from "../../games/basketball/web/module";
 import type { BasketballOptions } from "../../games/basketball/web/module";
 import { Board } from "../../games/basketball/web/Board";
 import { ControllerSettings } from "../../web/src/controllers/Settings";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { GameRoom, GameAudioPort } from "../../web/src/game-api/module";
+import { GameAudio } from "../../web/src/audio";
+import basketballAssets from "../../games/basketball/assets/release-manifest.json";
 
 // The room and actions use the real authenticated host. Only the outer page
 // and audio sink are fixture plumbing; no world fields are changed here.
@@ -24,6 +26,17 @@ const records: {
   userID: string;
   music: { sources: readonly string[]; options: unknown }[];
   denyFirstMusic?: boolean;
+  mediaEvents: Array<{
+    at: number;
+    type: string;
+    element: number;
+    src: string;
+    currentSrc: string;
+    paused: boolean;
+    readyState: number;
+    networkState: number;
+    error: number | null;
+  }>;
 } = {
   packets: [],
   sent: [],
@@ -33,6 +46,7 @@ const records: {
   ackDelay: 0,
   userID: "",
   music: [],
+  mediaEvents: [],
 };
 (window as any).networkBoard = records;
 const fixtureFetch = window.fetch;
@@ -63,6 +77,50 @@ async function api(path: string, body?: unknown) {
 let serial = 0;
 const ordered = new StreamInputs();
 const streamMode = new URL(location.href).searchParams.get("stream") === "1";
+const mediaMode = new URL(location.href).searchParams.get("audio") === "media";
+const mirroredAssets =
+  "/__oss/" + new URL(basketballAssets.assetsBaseURL).pathname.slice(1);
+if (mediaMode) {
+  // Observe native media lifecycle; do not replace Audio, play(), load() or
+  // event delivery. The fixture serves verified original bytes over loopback.
+  const ids = new WeakMap<HTMLAudioElement, number>();
+  let nextID = 0;
+  for (const type of [
+    "loadstart",
+    "loadedmetadata",
+    "canplay",
+    "playing",
+    "pause",
+    "emptied",
+    "abort",
+    "error",
+  ]) {
+    document.addEventListener(
+      type,
+      (event) => {
+        const media = event.target;
+        if (
+          !(media instanceof HTMLAudioElement) ||
+          !("platformMusic" in media.dataset)
+        )
+          return;
+        if (!ids.has(media)) ids.set(media, ++nextID);
+        records.mediaEvents.push({
+          at: performance.now(),
+          type,
+          element: ids.get(media)!,
+          src: media.getAttribute("src") ?? "",
+          currentSrc: media.currentSrc,
+          paused: media.paused,
+          readyState: media.readyState,
+          networkState: media.networkState,
+          error: media.error?.code ?? null,
+        });
+      },
+      true,
+    );
+  }
+}
 let stateValue: any, activeSocket: WebSocket | undefined;
 (window as any).disconnectInputStream = () => activeSocket?.close();
 const silence: GameAudioPort = {
@@ -86,6 +144,22 @@ const silence: GameAudioPort = {
 function App() {
   const [state, setState] = useState<any>(),
     [settings, setSettings] = useState(false);
+  const [audio] = useState(() => (mediaMode ? new GameAudio() : undefined));
+  const gameAudio = useMemo<GameAudioPort>(() => {
+    if (!audio || !state?.room) return silence;
+    const port = audio.channel(`room:${state.room.id}`);
+    return {
+      ...port,
+      music: (sources, options) => {
+        records.music.push({ sources, options });
+        return port.music(sources, options);
+      },
+    };
+  }, [audio, state?.room?.id]);
+  useEffect(() => {
+    audio?.mount();
+    return () => audio?.dispose();
+  }, [audio]);
   const [clockEpoch, setClockEpoch] = useState(0);
   const [capacity, setCapacity] = useState(1);
   const [options, setOptions] = useState<BasketballOptions>({
@@ -127,6 +201,7 @@ function App() {
           ordered.ack(packet);
           return;
         }
+        if ((window as any).freezeBasketballAuthority) return;
         if (packet.type === "state") {
           if (
             connected ||
@@ -207,7 +282,14 @@ function App() {
     await refresh();
   };
   return (
-    <main>
+    <main
+      onPointerDownCapture={() => {
+        void audio?.unlock();
+      }}
+      onKeyDownCapture={() => {
+        void audio?.unlock();
+      }}
+    >
       <h1>热血篮球 · 联机验收</h1>
       <details id="room-options-preview">
         <summary>创建选项验收</summary>
@@ -240,9 +322,9 @@ function App() {
           act={act}
           command={async () => {}}
           busy={false}
-          assets=""
-          sound={false}
-          audio={silence}
+          assets={mediaMode ? mirroredAssets : ""}
+          sound={mediaMode}
+          audio={gameAudio}
           inputWindow={ordered.connected ? 8 : 1}
           clock={{
             serverNow: state.serverNow,
