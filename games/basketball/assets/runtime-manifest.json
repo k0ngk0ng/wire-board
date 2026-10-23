@@ -1,6 +1,6 @@
 {
-  "sourceSHA256": "f69e0cbae1bc387abb57d2cadaa2b1992eea77b0bd5664054cae334dfca336e9",
-  "sha256": "050d31aa37253dd282d92ff0e18ea0043cf4ee3bd698428ff640c5498053bd35",
-  "bytes": 5018518,
-  "url": "https://cdn.ichenj.com/bga/basketball/runtime-050d31aa37253dd282d92ff0e18ea0043cf4ee3bd698428ff640c5498053bd35/basketball.wasm"
+  "sourceSHA256": "046c6a5bb515d200dd6b6227f5054a78adb4af33f32be51ba7a8cd51c764365c",
+  "sha256": "696832eb890a4543982be12482375b511e0733a93a07bf789bfb00071e126ccc",
+  "bytes": 5216515,
+  "url": "https://cdn.ichenj.com/bga/basketball/runtime-696832eb890a4543982be12482375b511e0733a93a07bf789bfb00071e126ccc/basketball.wasm"
 }

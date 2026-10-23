@@ -2,7 +2,7 @@
 from pathlib import Path
 import json,os,subprocess,uuid
 ROOT=Path(__file__).resolve().parents[2];OUT=Path(os.environ.get('BASKETBALL_BROWSER_OUTPUT',str(ROOT/'.local/basketball/platform-rooms'))).resolve();assert OUT.is_relative_to((ROOT/'.local/basketball').resolve());OUT.mkdir(parents=True,exist_ok=True)
-env=dict(os.environ,AGENT_BROWSER_SESSION='bkp-'+uuid.uuid4().hex[:6],AGENT_BROWSER_SOCKET_DIR=str((ROOT/'.local/basketball').resolve()/'bkn-sockets'),TMPDIR=str(ROOT/'.local/tmp'),NODE_PATH=str(ROOT/'web/node_modules'))
+env=dict(os.environ,AGENT_BROWSER_SESSION='bkp-'+uuid.uuid4().hex[:6],AGENT_BROWSER_SOCKET_DIR=os.environ.get('AGENT_BROWSER_SOCKET_DIR',str(ROOT/'.local/bkn-sockets')),TMPDIR=str(ROOT/'.local/tmp'),NODE_PATH=str(ROOT/'web/node_modules'))
 Path(env['AGENT_BROWSER_SOCKET_DIR']).mkdir(exist_ok=True)
 base=env['BASKETBALL_HTTP_URL'];checks=[];opened=False;inspector=None
 def browser(*args):
@@ -121,8 +121,8 @@ try:
   js('[...document.querySelectorAll("button")].find(b=>b.textContent.includes("开始游戏")).scrollIntoView({block:"center"})');browser('find','role','button','click','--name','开始游戏');wait('!!document.querySelector("[data-basketball-ready=true]")')
   other=request('/state')['room'];request('/rooms/'+room['id'],{'type':'action','version':other['version'],'nonce':'platform-peer-loaded-001','action':{'type':'loaded','epoch':other['game']['data']['epoch']}})
   wait('Number(document.querySelector(".basketball-stage canvas")?.dataset.videoFrame)>=120')
-  expect('versus retains original no-equipment mode',js('fetch("/api/state").then(r=>r.json()).then(s=>s.room.game.data.runtime.config.match.Mode===128 && s.room.game.data.runtime.config.match.Equipment.flat().every(i=>i===-1) && !document.querySelector(".basketball-campaign-editor"))'))
-  expect('started original runtime uses prepared court and characters',js('fetch("/api/state").then(r=>r.json()).then(s=>s.room.game.data.runtime.config.match.Court===6 && JSON.stringify(s.room.game.data.runtime.config.match.Characters)==="[0,1,1,0]")'))
+  expect('versus retains original no-equipment mode',js('fetch("/api/state").then(r=>r.json()).then(s=>fetch("/api/rooms/"+s.room.id+"/sync?probe=1")).then(r=>r.json()).then(s=>s.data.checkpoint.state.config.match.Mode===128 && s.data.checkpoint.state.config.match.Equipment.flat().every(i=>i===-1) && !document.querySelector(".basketball-campaign-editor"))'))
+  expect('started original runtime uses prepared court and characters',js('fetch("/api/state").then(r=>r.json()).then(s=>fetch("/api/rooms/"+s.room.id+"/sync?probe=1")).then(r=>r.json()).then(s=>s.data.checkpoint.state.config.match.Court===6 && JSON.stringify(s.data.checkpoint.state.config.match.Characters)==="[0,1,1,0]")'))
   expect('platform starts directly in game without original player-selection menu',js('!!document.querySelector(".basketball-stage canvas") && !!document.querySelector(".fc-play") && !document.querySelector(".basketball-error")'))
   expect('public player summaries distinguish both teams',js('document.querySelector(".players-strip").textContent.includes("A 队") && document.querySelector(".players-strip").textContent.includes("B 队")'))
   expect('phone controller remains outside the match screen',js('(()=>{const s=document.querySelector(".basketball-screen"),p=document.querySelector(".fc-play");return !s.contains(p)&&s.getBoundingClientRect().bottom<=p.getBoundingClientRect().top})()'))
