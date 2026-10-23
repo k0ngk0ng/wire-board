@@ -1,0 +1,42 @@
+{
+  "passed": true,
+  "assetsBaseURL": "https://cdn.ichenj.com/bga/v20261002-1",
+  "manifestSHA256": "dc49412c54503504a7f12c694b7fddcf46f74d467cf7872141389757510cf85b",
+  "anchor": {
+    "path": "bga/v20261002-1/snooker/v1/cover.webp",
+    "sha256": "759b8f22e397a96803f3110b65b9dafa5131a5382674265b08195c2f4e3105d8",
+    "verified": true
+  },
+  "objects": [
+    {
+      "path": "bga/v20261002-1/conquest/v1/audio/march.wav",
+      "urlPath": "/conquest/v1/audio/march.wav",
+      "sha256": "22db2b6cf8b330cb9f2e017d4bd262d5b3fa8bdd54e38ad4a807434099097843",
+      "bytes": 16802,
+      "mime": "audio/wav",
+      "status": "created",
+      "ossVerified": true,
+      "cdnVerified": true
+    },
+    {
+      "path": "bga/v20261002-1/conquest/v1/audio/capture.wav",
+      "urlPath": "/conquest/v1/audio/capture.wav",
+      "sha256": "37d30d4a133e4504c047e0926972a991e9ef5b4dc77486e348d037878b2dc146",
+      "bytes": 26944,
+      "mime": "audio/wav",
+      "status": "created",
+      "ossVerified": true,
+      "cdnVerified": true
+    },
+    {
+      "path": "bga/v20261002-1/conquest/v1/audio/round.wav",
+      "urlPath": "/conquest/v1/audio/round.wav",
+      "sha256": "c4711aa740a8d8a2e87a5c93fe681fcb71af04ae8a590ad38ca9f2b44f08b41b",
+      "bytes": 24740,
+      "mime": "audio/wav",
+      "status": "created",
+      "ossVerified": true,
+      "cdnVerified": true
+    }
+  ]
+}

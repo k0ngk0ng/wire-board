@@ -28,7 +28,7 @@ type realtimeFrame struct {
 // persisted SystemDeadline; a 50 ms wakeup never changes ordinary game pacing.
 func (s *Server) expireRealtimeModuleTimers(now time.Time) {
 	for _, room := range s.rooms {
-		if !s.modules[room.Kind].Realtime || room.Status != "playing" || room.Loading != nil || room.Module == nil || room.Module.Result != nil || room.Module.SystemDeadline == 0 || room.Module.SystemDeadline > room.gameNow(now).UnixMilli() {
+		if !s.modules[room.Kind].Realtime || room.Status != "playing" || room.Loading != nil || room.Module == nil || room.Module.Paused || room.Module.Result != nil || room.Module.SystemDeadline == 0 || room.Module.SystemDeadline > room.gameNow(now).UnixMilli() {
 			continue
 		}
 		if err := s.runRealtimeModuleFrame(room, now); err != nil {
@@ -60,7 +60,7 @@ func (s *Server) runRealtimeModuleFrame(room *Room, now time.Time) error {
 	// cannot make the same actor run twice or reorder the loop underneath us.
 	actors := slices.Clone(next.Module.Actors)
 	for _, actor := range actors {
-		if module.BotAction == nil || next.Module.Result != nil {
+		if module.BotAction == nil || next.Module.Paused || next.Module.Result != nil {
 			break
 		}
 		if !next.Seats[actor].computerControlled() || !slices.Contains(next.Module.Actors, actor) {

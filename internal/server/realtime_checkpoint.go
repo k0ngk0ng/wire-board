@@ -48,7 +48,7 @@ func (c *realtimeCheckpoint) remember(key realtimeNonce, ack streamAck) {
 	c.receipts[key] = ack
 }
 func realtimeCritical(before, after *Room) bool {
-	return before.Status != after.Status || before.MatchID != after.MatchID || before.Module == nil || after.Module == nil || before.Module.CheckpointKey != after.Module.CheckpointKey || after.Module.Result != nil
+	return before.Status != after.Status || before.MatchID != after.MatchID || before.Module == nil || after.Module == nil || before.Module.Paused != after.Module.Paused || before.Module.CheckpointKey != after.Module.CheckpointKey || after.Module.Result != nil
 }
 
 // Called under s.mu once a second and at graceful shutdown. Failed saves leave

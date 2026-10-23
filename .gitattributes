@@ -3,3 +3,4 @@
 docs/research/racing/evidence/** -text -whitespace
 games/racing/assets/source/kenney/** -text -whitespace
 games/racing/assets/source/licenses/** -text -whitespace
+games/conquest/maps/source/LICENSE.md -text -whitespace

@@ -233,7 +233,12 @@ func (s *Server) moduleView(r *Room, viewer int) (map[string]any, error) {
 		attention = []int{}
 		deadline = 0
 	}
-	return map[string]any{"kind": r.Kind, "data": data, "actors": actors, "attention": attention, "eliminated": match.Eliminated, "systemDeadline": deadline, "finished": match.Result != nil, "winners": r.Game.Winners, "log": r.Game.Log, "phase": "module", "turn": r.Game.Turn, "round": 1}, nil
+	view := map[string]any{"kind": r.Kind, "data": data, "actors": actors, "attention": attention, "eliminated": match.Eliminated, "systemDeadline": deadline, "finished": match.Result != nil, "winners": r.Game.Winners, "log": r.Game.Log, "phase": "module", "turn": r.Game.Turn, "round": 1}
+	if match.Paused {
+		view["paused"] = true
+		view["pauseExpiresAt"] = time.Unix(r.LastActive, 0).Add(pausedRoomIdleLimit).UnixMilli()
+	}
+	return view, nil
 }
 
 // Called under s.mu, before player timeouts. System events neither enable
@@ -248,7 +253,7 @@ func (s *Server) expireModuleTimersAtCadence(now time.Time, precise bool) {
 		if s.modules[room.Kind].Realtime || s.modules[room.Kind].PreciseTimers != precise {
 			continue // Realtime frames use the fast clock and include bot controls.
 		}
-		if room.Status != "playing" || room.Loading != nil || room.Module == nil || room.Module.Result != nil || room.Module.SystemDeadline == 0 || room.Module.SystemDeadline > room.gameNow(now).UnixMilli() {
+		if room.Status != "playing" || room.Loading != nil || room.Module == nil || room.Module.Paused || room.Module.Result != nil || room.Module.SystemDeadline == 0 || room.Module.SystemDeadline > room.gameNow(now).UnixMilli() {
 			continue
 		}
 		if err := s.runModuleTimer(room, now); err != nil {
@@ -320,7 +325,7 @@ func (s *Server) runModuleTimer(room *Room, now time.Time) error {
 
 func (s *Server) runModuleBot(room *Room, now time.Time, expired bool) {
 	m := s.modules[room.Kind]
-	if room.Loading != nil || m.BotAction == nil {
+	if room.Loading != nil || room.Module == nil || room.Module.Paused || m.BotAction == nil {
 		return
 	}
 	raw, err := json.Marshal(room)
@@ -387,6 +392,9 @@ func (s *Server) runModuleBot(room *Room, now time.Time, expired bool) {
 }
 
 func (s *Server) commitModuleBotDecision(next *Room, actor int, action json.RawMessage, now time.Time, expired bool) error {
+	if next.Module == nil || next.Module.Paused {
+		return errors.New("paused game cannot accept automatic decisions")
+	}
 	if err := s.applyModule(next, actor, next.Version, action, now); err != nil {
 		return err
 	}
