@@ -518,6 +518,9 @@ func stepRuntimeOpening(r *RuntimeStep, input [4]ControllerFrame) error {
 		return err
 	}
 	p.World = worldStep.State
+	if worldStep.ChangeBackboardStrength {
+		p.Context.BackboardStrength = worldStep.BackboardStrength
+	}
 	if e := observeRuntimeWorldDisplay(s, worldStep, p.Match); e != nil {
 		return e
 	}
@@ -562,6 +565,9 @@ func stepRuntimePlaying(r *RuntimeStep, input [4]ControllerFrame) error {
 		return err
 	}
 	p.World = worldStep.State
+	if worldStep.ChangeBackboardStrength {
+		p.Context.BackboardStrength = worldStep.BackboardStrength
+	}
 	if e := observeRuntimeWorldDisplay(s, worldStep, p.Match); e != nil {
 		return e
 	}

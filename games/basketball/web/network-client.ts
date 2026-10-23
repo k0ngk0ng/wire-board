@@ -54,6 +54,7 @@ export type BasketballNetworkClientOptions = {
   inputWindow?: () => number;
   onError: (error: unknown) => void;
   onConnection?: (connected: boolean) => void;
+  onFault?: (message: string | undefined, reload?: boolean) => void;
 };
 
 /** Live platform adapter: one user's physical sources, shared ordered input,
@@ -89,6 +90,7 @@ export class BasketballNetworkClient {
   };
   private courtLoading = false;
   private syncing = false;
+  private fault?: string;
   private syncViews: Array<{ view: BasketballNetworkView; version: number }> =
     [];
   private syncRequest?: Promise<boolean>;
@@ -187,7 +189,24 @@ export class BasketballNetworkClient {
         }
       },
       onPredictionError: (error) =>
-        console.warn("Basketball replay needs recovery", error),
+        console.warn("Basketball simulation error", error),
+      onFault: (message, reload) => {
+        this.fault = message;
+        if (message) {
+          this.audioGeneration++;
+          this.recoveryPending = false;
+          const desired = this.desired;
+          if (desired)
+            this.updateControls(desired.view, desired.version, false);
+          this.enabled = false;
+          this.input?.setEnabled(false);
+          // Pause the existing media instead of destroying/reloading its URL.
+          this.options.audio.pause();
+        } else {
+          void this.options.audio.resume();
+        }
+        this.options.onFault?.(message, reload);
+      },
       onResync: () => {
         void this.initialize().catch((error) => {
           if (!this.closed) this.options.onError(error);
@@ -272,7 +291,10 @@ export class BasketballNetworkClient {
           }
           latest = item;
         }
-        if (!complete) continue;
+        if (!complete) {
+          if (this.scene.failure) throw Error(this.scene.failure);
+          continue;
+        }
         this.scene.finishRecovery(performance.now());
         const enabled = this.desired?.enabled ?? false,
           clock = this.desired?.clock;
@@ -374,9 +396,24 @@ export class BasketballNetworkClient {
     this.lastViewAt = performance.now();
     this.clock = clock;
     this.musicState = view.music;
-    const actor = this.options.controller ?? -1;
     const seat = this.options.seat ?? this.options.controller ?? -1;
     const allowed = enabled && seat >= 0 && view.canInput;
+    this.updateControls(view, version, allowed && !this.fault);
+    this.scene.update(
+      { ...view, canInput: allowed },
+      version,
+      performance.now(),
+    );
+    const playable = allowed && !this.fault && !this.syncing;
+    if (this.enabled !== playable) this.updateControls(view, version, playable);
+  }
+  private updateControls(
+    view: BasketballNetworkView,
+    version: number,
+    allowed: boolean,
+  ) {
+    const actor = this.options.controller ?? -1;
+    const seat = this.options.seat ?? this.options.controller ?? -1;
     this.transport.update({
       roomID: this.options.roomID,
       userID: this.options.userID,
@@ -391,11 +428,6 @@ export class BasketballNetworkClient {
       this.enabled = allowed;
       this.input.setEnabled(allowed);
     }
-    this.scene.update(
-      { ...view, canInput: allowed },
-      version,
-      performance.now(),
-    );
   }
   configure(profile: ControllerProfile): void {
     if (!this.closed) this.input.configure(profile);
@@ -416,6 +448,7 @@ export class BasketballNetworkClient {
   private recoverOnGesture = (event: Event) => {
     if (
       !this.closed &&
+      !this.fault &&
       event.isTrusted &&
       this.recoveryPending &&
       performance.now() - this.lastViewAt < 1000

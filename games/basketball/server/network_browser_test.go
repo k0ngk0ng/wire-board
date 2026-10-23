@@ -24,8 +24,14 @@ func TestBasketballBrowserNetworkBoard(t *testing.T) {
 	if os.Getenv("BASKETBALL_BROWSER_E2E") != "1" {
 		t.Skip("set BASKETBALL_BROWSER_E2E=1 for native browser acceptance")
 	}
-	h := gametest.NewHTTP(t, 2, observedModule(t), "basketball")
-	h.Start(map[string]any{"mode": "versus"})
+	incident := os.Getenv("BASKETBALL_INCIDENT_E2E") == "1"
+	players, module, options := 2, observedModule(t), map[string]any{"mode": "versus"}
+	if incident {
+		players, module = 1, hoopIncidentModule(t)
+		options = map[string]any{"mode": "solo", "court": "court-4"}
+	}
+	h := gametest.NewHTTP(t, players, module, "basketball")
+	h.Start(options)
 	basketballReadyHTTP(t, h)
 	a := h.People[0]
 	v := await(t, a, func(v game.View) bool { return v.Runtime.Playing != nil })
@@ -56,6 +62,12 @@ func TestBasketballBrowserNetworkBoard(t *testing.T) {
 		if cpu := os.Getenv("BASKETBALL_BROWSER_CPU_RATE"); cpu != "" {
 			out += "-cpu" + cpu
 		}
+	}
+	if incident {
+		out += "-incident"
+	}
+	if os.Getenv("BASKETBALL_MEDIA_E2E") == "1" {
+		out += "-media"
 	}
 	if err = os.MkdirAll(out, 0755); err != nil {
 		t.Fatal(err)

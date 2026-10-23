@@ -83,8 +83,11 @@ type WorldActionState struct {
 	Auxiliary      [2]AuxiliaryState   `json:"auxiliary"`
 	Ball           Ball                `json:"ball"`
 	Hoops          [6]WorldActionHoop  `json:"hoops"`
-	PlayerLinks    [4]uint8            `json:"playerLinks"`
-	BallLink       uint8               `json:"ballLink"`
+	// Original $04F3..$04F8: independent direction bytes used by hoop action7.
+	// Facing belongs to the pose and cannot substitute for this launch input.
+	HoopHeadings [6]Heading `json:"hoopHeadings,omitempty"`
+	PlayerLinks  [4]uint8   `json:"playerLinks"`
+	BallLink     uint8      `json:"ballLink"`
 	// Original $055A: special target flag when the ball owns itself.
 	UnownedSpecialShot uint8 `json:"unownedSpecialShot,omitempty"`
 	// PoseSource is the original shared follow-position source ($056A).
@@ -135,10 +138,13 @@ type WorldActionContext struct {
 }
 
 type WorldActionStep struct {
-	MotionSurfaceWrites []MotionSurfaceWrite
-	State               WorldActionState
-	Calls               []uint8
-	SoundIDs            []uint8
+	// Original056D writes update the runtime context after this atomic phase.
+	ChangeBackboardStrength bool
+	BackboardStrength       uint8
+	MotionSurfaceWrites     []MotionSurfaceWrite
+	State                   WorldActionState
+	Calls                   []uint8
+	SoundIDs                []uint8
 	// Preparation owns the persistent selector; preserve action-stage writes
 	// as a command so the continuous driver can commit the last write.
 	ChangeSelectedBoard bool
@@ -257,7 +263,7 @@ func advanceWorldPlayer(result *WorldActionStep, actor uint8, ctx WorldActionCon
 	*p = resolved
 	computer := ctx.Controls[actor]&128 != 0
 	profile := ctx.Profiles[actor]
-	if s.PlayerLinks[actor]&128 != 0 && !originalDunkAction(p.Action) && !originalWorldJumpAction(p.Action) && p.Action != 0x68 && p.Action != 0x49 && p.Action != ActionRiding && p.Action != ActionReceiveBall && p.Action != ActionLaunched && p.Action != ActionLaunchedAtBall && p.Action != ActionRiderLift && p.Action != ActionRun && p.Action != ActionFalling && !(p.Action == ActionJump && !p.Entered) && !(p.Action == 9 && s.CarriedPlayer == int8(actor)) && p.Action != 11 && !capturedAction(p.Action) && !worldAuxiliaryPlayerAction(*s, actor) {
+	if s.PlayerLinks[actor]&128 != 0 && !originalDunkAction(p.Action) && !originalWorldJumpAction(p.Action) && p.Action != 0x68 && p.Action != 0x49 && p.Action != ActionRiding && p.Action != ActionReceiveBall && p.Action != ActionLaunched && p.Action != ActionLaunchedAtBall && p.Action != ActionRiderLift && p.Action != ActionRun && p.Action != ActionFalling && !(p.Action == ActionJump && !p.Entered) && !(p.Action == 9 && s.CarriedPlayer == int8(actor)) && p.Action != 11 && p.Action != ActionHoopAirAim && p.Action != ActionHoopAirThrow && !originalHoopSharedAction(p.Action) && !originalHoopGroundAction(p.Action) && !capturedAction(p.Action) && !worldAuxiliaryPlayerAction(*s, actor) {
 		return fmt.Errorf("attached player action %02x (entered %t, link %02x) is not reconstructed", p.Action, p.Entered, s.PlayerLinks[actor])
 	}
 	heldHoop := -1
@@ -305,6 +311,18 @@ func advanceWorldPlayer(result *WorldActionStep, actor uint8, ctx WorldActionCon
 		}
 	}
 	switch {
+	case originalHoopGroundAction(p.Action):
+		if err := advanceWorldHoopGround(result, actor, ctx, court); err != nil {
+			return err
+		}
+	case originalHoopSharedAction(p.Action):
+		if err := advanceWorldHoopShared(result, actor, ctx, court); err != nil {
+			return err
+		}
+	case p.Action == ActionHoopAirAim || p.Action == ActionHoopAirThrow:
+		if err := advanceWorldHoopAirAction(result, actor, ctx, court); err != nil {
+			return err
+		}
 	case originalWorldJumpAction(p.Action):
 		if err := advanceWorldJump(result, actor, ctx, court); err != nil {
 			return err
@@ -734,6 +752,10 @@ func StepWorldActions(original WorldActionState, ctx WorldActionContext) (WorldA
 				}
 			}
 		default:
+			if s.Hoops[object-7].Action == HoopLobbed {
+				err = advanceWorldHoopLobbed(&result, object, ctx, court)
+				break
+			}
 			if s.Hoops[object-7].Action == HoopReady && !s.Hoops[object-7].Entered {
 				s.Hoops[object-7].Owner = originalHoopMountOwner(s.Hoops[object-7].Position)
 			}
