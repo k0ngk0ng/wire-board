@@ -27,10 +27,17 @@ def api(path,body=None):
 def command(kind,**extra):
  r=api('/state')['room'];return api('/rooms/'+r['id'],dict(type=kind,version=r['version'],nonce=uuid.uuid4().hex,**extra))
 def shot(name):
+ if js('!!document.querySelector(".toast[role=status] button")'):b('click','.toast[role=status] button')
  b('wait','--fn','[...document.querySelectorAll(".poker-new-play")].every(e=>e.getAnimations().every(a=>a.playState!=="running"))')
  b('wait','--fn','[...document.querySelectorAll(".poker-card img")].every(i=>i.complete&&i.naturalWidth>0)')
  assert not b('errors')['errors'],b('errors')
  assert js('document.documentElement.scrollWidth<=innerWidth+2'),name+' overflow'
+ if js('innerWidth<=600 && !!document.querySelector(".poker-board")'):
+  geometry=js("(()=>{const b=document.querySelector('.poker-board').getBoundingClientRect(),a=document.querySelector('.poker-actions').getBoundingClientRect(),t=document.querySelector('.game-sidebar .turn-card').getBoundingClientRect();return {top:b.top,bottom:b.bottom,height:innerHeight,actionsBottom:a.bottom,turnTop:t.top,turnRight:t.right,turnBottom:t.bottom,boardRight:b.right,body:document.documentElement.scrollHeight}})()")
+  assert geometry['top']>=0 and geometry['bottom']<=geometry['height']+1 and geometry['actionsBottom']<=geometry['height']+1 and geometry['bottom']>=geometry['height']-12 and geometry['body']<=geometry['height']+1,(name,geometry)
+  assert geometry['turnTop']>=geometry['top'] and geometry['turnRight']<=geometry['boardRight'] and geometry['turnBottom']<geometry['top']+65,(name,geometry)
+  report.setdefault('viewportGeometry',[]).append({'name':name,**geometry})
+
  assert js('[...document.querySelectorAll(".poker-card img")].every(i=>i.complete&&i.naturalWidth>0)'),name+' broken cards'
  colors=js(r"""(() => {
  const rgb=s=>(s.match(/[\d.]+/g)||[]).map(Number),lum=c=>c.map(v=>v/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4).reduce((s,v,i)=>s+v*[.2126,.7152,.0722][i],0);
@@ -115,7 +122,7 @@ try:
    if current!=0:login_seat(current)
    assert len(api('/state')['room']['game']['data']['hand'])==(18 if decks==1 else 33)
   for width in [1280,390,320]:
-   b('set','viewport',str(width),'960' if width==1280 else '844');b('wait','--fn','[...document.querySelectorAll(".poker-card img")].every(i=>i.complete)')
+   b('set','viewport',str(width),'960' if width==1280 else '640' if width==320 else '720');b('wait','--fn','[...document.querySelectorAll(".poker-card img")].every(i=>i.complete)')
    assert js('document.querySelector(".poker-hand").dataset.seat')==str(current)
    assert js('document.querySelectorAll(".poker-hand button[data-card]").length')==len(api('/state')['room']['game']['data']['hand'])
    # Each exposed index is wide enough to read; center of its visible strip
@@ -124,6 +131,10 @@ try:
    assert visible and all(c['w']>=44 and c['step']>=20 for c in visible),visible
    assert js('document.querySelectorAll(".poker-index").length')==0,'CSS index overlay returned'
    shot(f'{scenario}-{width}')
+   if width==320:
+    b('set','viewport','320','568');shot(f'{scenario}-320-short')
+    b('set','viewport','320','640')
+
   b('scrollintoview','.poker-hand');first=js('document.querySelector(".poker-hand button[data-card]").getBoundingClientRect().toJSON()');x,y=round(first['x']+8),round(first['y']+22);assert js(f'document.elementFromPoint({x},{y}).closest("button[data-card]")?.dataset.card')==js('document.querySelector(".poker-hand button[data-card]").dataset.card');b('mouse','move',str(x),str(y));b('mouse','down');b('mouse','up');selected=js('[...document.querySelectorAll(".poker-hand [aria-pressed=true]")].map(e=>e.dataset.card)');assert selected
   skin('fourcolor');b('wait','--fn','[...document.querySelectorAll(".poker-card img")].every(i=>i.complete)')
   assert js('[...document.querySelectorAll(".poker-hand [aria-pressed=true]")].map(e=>e.dataset.card)')==selected
@@ -164,14 +175,26 @@ try:
   if acting!=current:login_seat(acting);current=acting
   before=api('/state')['room']['game']['data'];b('find','role','button','click','--name','提示','--exact')
   js('window.__pokerAudio=[];const original=HTMLMediaElement.prototype.play;HTMLMediaElement.prototype.play=function(){window.__pokerAudio.push({platform:this.hasAttribute("data-platform-audio"),src:this.src});return original.call(this)}')
+  if js('!document.querySelector(".sound-toggle")'):b('click','.compact-room-platform')
   if js('document.querySelector(".sound-toggle").getAttribute("aria-pressed")==="false"'):b('find','role','button','click','--name','静音','--exact')
+  if js('!!document.querySelector(".compact-room-dialog")'):b('click','.compact-room-dialog button[aria-label=关闭]')
+  if js('!document.querySelector(".sound-toggle")'):b('click','.compact-room-platform')
+  assert js('document.querySelector(".sound-toggle").getAttribute("aria-pressed")==="true"'),'mute control did not apply'
+  if js('!!document.querySelector(".compact-room-dialog")'):b('click','.compact-room-dialog button[aria-label=关闭]')
+  js('window.__pokerAudio=[]')
   count=js('document.querySelectorAll(".poker-hand [aria-pressed=true]").length');assert count>0
   b('find','role','button','click','--name',f'出牌（{count}）','--exact')
   if kind=='guandan' and js('!!document.querySelector("select[aria-label=百搭牌型]")'):b('find','role','button','click','--name','确认出牌','--exact')
   b('wait','--fn',f'document.querySelectorAll(".poker-hand button[data-card]").length==={len(before["hand"])-count}')
-  assert js('window.__pokerAudio.length')==0,'muted poker played audio'
+  assert js('window.__pokerAudio.length')==0,('muted poker played audio',js('window.__pokerAudio'))
+  if js('!document.querySelector(".sound-toggle")'):b('click','.compact-room-platform')
   b('find','role','button','click','--name','取消静音','--exact');assert js('window.__pokerAudio.length')==0,'unmute replayed cards'
+  if js('!document.querySelector(".sound-toggle")'):b('click','.compact-room-platform')
   b('find','role','button','click','--name','试听音效','--exact');b('wait','--fn','window.__pokerAudio.length>0');assert js('window.__pokerAudio.every(e=>e.platform)')
+  if js('!!document.querySelector(".compact-room-dialog")'):b('click','.compact-room-dialog button[aria-label=关闭]')
+  if js('innerWidth<=600'):
+   b('click','.compact-room-players');b('wait','.compact-room-dialog .players-strip');assert js('document.querySelectorAll(".compact-room-dialog .player-panel").length')==n;b('click','.compact-room-dialog button[aria-label=关闭]')
+   b('click','.compact-room-tools');b('wait','.compact-room-dialog .room-tools');assert js('!!document.querySelector(".compact-room-dialog .autoplay-control")');b('click','.compact-room-dialog button[aria-label=关闭]')
   shot(f'{scenario}-played')
   b('reload');b('wait','.poker-board');assert js('document.querySelectorAll(".poker-new-play").length')==0
   if current!=0:login_seat(0)

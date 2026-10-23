@@ -152,14 +152,17 @@ export function CardStrip({
   assets,
   back,
   singleRow = false,
+  fit = false,
 }: {
   ids: number[];
   singleRow?: boolean;
+  fit?: boolean;
   skin: string;
   assets: string;
   back?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null),
+    [height, setHeight] = useState(80),
     [width, setWidth] = useState(160),
     [mobile, setMobile] = useState(
       () => typeof window !== "undefined" && innerWidth <= 600,
@@ -170,12 +173,25 @@ export function CardStrip({
     const observer = new ResizeObserver(() => {
       setWidth(el.clientWidth);
       setMobile(innerWidth <= 600);
+      if (fit)
+        setHeight(
+          Math.max(1, (el.closest(".poker-play")?.clientHeight ?? 80) - 4),
+        );
     });
     observer.observe(el);
+    if (fit && el.closest(".poker-play"))
+      observer.observe(el.closest(".poker-play")!);
     return () => observer.disconnect();
-  }, []);
-  const size = mobile ? 44 : 52,
-    step = mobile ? 20 : 24,
+  }, [fit]);
+  let size = mobile ? 44 : 52;
+  if (fit) {
+    for (; size > 18; size--) {
+      const per = Math.max(1, Math.floor((width - size) / (size * 0.4)) + 1);
+      const rows = Math.ceil(ids.length / per);
+      if (size * 1.4 + Math.max(0, rows - 1) * size * 0.68 <= height) break;
+    }
+  }
+  const step = fit ? size * 0.4 : mobile ? 20 : 24,
     perRow = singleRow
       ? Math.max(1, ids.length)
       : Math.max(1, Math.floor((width - size) / step) + 1);
@@ -261,9 +277,12 @@ export function Hand({
     o.observe(e);
     return () => o.disconnect();
   }, []);
-  const cardWidth = width < 420 ? 54 : 68,
-    step = width < 420 ? 22 : 30;
-  const perRow = Math.max(1, Math.floor((width - cardWidth) / step) + 1);
+  const cardWidth = width < 340 ? 60 : width < 420 ? 62 : 68,
+    step = width < 340 ? 20 : width < 420 ? 24 : 30;
+  const perRow = Math.min(
+    width < 420 ? 12 : Infinity,
+    Math.max(1, Math.floor((width - cardWidth) / step) + 1),
+  );
   const reservedRows = Math.ceil(Math.max(capacity, cards.length) / perRow);
   const filledRows = Math.max(1, Math.ceil(cards.length / perRow));
   const rows = [];
@@ -472,6 +491,10 @@ export function PokerLayout({
 }) {
   const [credits, setCredits] = useState(false);
   const [preferences, setPreferences] = useState(false);
+  const [detail, setDetail] = useState<{
+    name: string;
+    cards: number[];
+  } | null>(null);
   const you = room.spectating || room.you < 0 ? 0 : room.you;
   const n = room.seats.length;
   const position = (seat: number) => {
@@ -499,6 +522,11 @@ export function PokerLayout({
           牌面设置
         </button>
       </div>
+      {detail && (
+        <Modal title={`${detail.name}的出牌`} onClose={() => setDetail(null)}>
+          <CardStrip ids={detail.cards} skin={style.skin} assets={assets} />
+        </Modal>
+      )}
       {preferences && (
         <Modal title="牌面设置" onClose={() => setPreferences(false)}>
           {" "}
@@ -576,25 +604,30 @@ export function PokerLayout({
                   />
                 </div>
               )}
-              <div
+              <button
+                type="button"
                 className="poker-play"
-                tabIndex={play?.cards.length ? 0 : undefined}
-                role="region"
+                disabled={!play?.cards.length}
                 aria-label={`${p.name}的出牌`}
+                aria-haspopup="dialog"
+                onClick={() =>
+                  play?.cards.length &&
+                  setDetail({ name: p.name, cards: [...play.cards] })
+                }
               >
                 <div className={fresh.includes(seat) ? "poker-new-play" : ""}>
                   {play?.pass ? (
                     <span className="poker-pass">不出</span>
                   ) : (
                     <CardStrip
-                      singleRow
+                      fit
                       ids={play?.cards ?? []}
                       skin={style.skin}
                       assets={assets}
                     />
                   )}
                 </div>
-              </div>
+              </button>
             </div>
           );
         })}

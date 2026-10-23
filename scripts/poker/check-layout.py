@@ -3,12 +3,12 @@
 Failure inventory before implementation: empty/played/pass seats resize rows;
 long plays and details expand the arena; active borders move labels; waiting,
 preview and phase controls shift the hand; shrinking/empty hands collapse the
-page. Checks every animation frame, all seats, 320/390/1280px, and scroll access.
+page. Checks every animation frame, all seats, 320/390/1280px, and fully visible played-card corners without internal scrolling.
 Snapshots below are labelled presentation cases, not simulated complete games.
 """
 import json,os,shutil,socket,subprocess,time,uuid
 from pathlib import Path
-root=Path(__file__).resolve().parents[2];out=root/'.local/optimization-20261023/poker-layout';out.mkdir(parents=True,exist_ok=True)
+root=Path(__file__).resolve().parents[2];out=root/'.local/poker-refine-oct23/layout';out.mkdir(parents=True,exist_ok=True)
 temp=out/'tmp';temp.mkdir(exist_ok=True);env=dict(os.environ)
 for key,name in {'TMPDIR':'tmp','npm_config_cache':'npm','AGENT_BROWSER_SOCKET_DIR':'s','AGENT_BROWSER_PROFILE':'profile'}.items():
  p=temp/name;p.mkdir(exist_ok=True);env[key]=str(p)
@@ -43,7 +43,7 @@ if(mode==="declare")controls.declarations=[{cards:[0],strength:1,trump:0},{cards
 if(mode==="round_end")controls.canReady=true;
 if(mode==="preview"){controls.previewCards=[0];controls.interpretations=[{cards:[0],key:"single:2:1",kind:"single",high:2,wild:[]}];}
 const hand=mode==="empty"?[]:mode==="few"?ids(1):mode==="played"?ids(cap).slice(1):ids(cap);
-const long=kind==="guandan"?10:kind==="shengji"?25:30;
+const long=kind==="guandan"?10:kind==="shengji"?25:33;
 const plays=["played","long","pass"].includes(mode)?ids(4).map(i=>({seat:i,cards:mode==="pass"?[]:mode==="long"?ids(long):[i],pass:mode==="pass"})):[];
 const room:any={id:"layout-"+kind,kind,you:seat,spectating:mode==="spectator",status:mode==="finished"?"finished":"playing",seats,game:{actors:[mode==="waiting"?1:seat],attention:[],data:{}}};
 const data:any={ruleset:"doudizhu-shanghai-huanle-v2",options:{rounds:3,mode:"shanghai4",decks:2},phase,turn:seat,window:tick,round:1,hand,players:ids(4).map(i=>({count:i===seat?hand.length:25,role:i===0?"landlord":"farmer",team:i%2,place:0,score:0})),table:plays,trick:plays,events:mode==="played"||mode==="long"?[{id:tick,type:"play",seat:0,at:Date.now(),kind:"single",cards:[0]}]:[],roundResults:[],controls,level:2,levels:[2,2],landlord:0,bid:3,multiplier:1,marker:0,markerSeat:0,huangFan:false,touLiao:false,openHand:mode==="long",landlordHand:ids(33),reports:mode==="long"?[ids(8)]:[],bottom:ids(8),dealer:0,trump:3,trickNumber:1,attackPoints:0,challengeSeat:-1,declaration:null,revealed:[],lastTrick:mode==="long"?{winner:2,points:20,plays}:null};
@@ -60,7 +60,7 @@ createRoot(document.getElementById("root")!).render(<App/>);
  b('open',f'http://127.0.0.1:{port}/poker-layout-acceptance.html');opened=True;b('wait','.poker-board')
  js('''window.layoutBoxes=()=>Object.fromEntries(['.poker-board','.poker-arena','.poker-actions','.poker-hand','#after',...['top','left','right','bottom'].map(p=>'.poker-seat-'+p+' .poker-seat-label')].map(s=>{const e=document.querySelector(s);if(!e)return [s,null];const r=e.getBoundingClientRect();return [s,{x:r.x+scrollX,y:r.y+scrollY,width:r.width,height:r.height}]})); window.transitionPoker=(kind,mode,seat=0)=>new Promise(resolve=>{const frames=[];const start=performance.now();function frame(){frames.push(layoutBoxes());if(performance.now()-start<200)requestAnimationFrame(frame);else resolve(frames)};requestAnimationFrame(frame);showPoker(kind,mode,seat)});''')
  for width in [1280,390,320]:
-  b('set','viewport',str(width),'1000')
+  b('set','viewport',str(width),'960' if width==1280 else '640')
   for game in ['doudizhu','guandan','shengji']:
    js(f'showPoker({json.dumps(game)},"idle")');b('wait','--fn','document.querySelectorAll(".poker-hand button").length>=28');js('new Promise(r=>setTimeout(r,100))')
    assert js('document.querySelector(".poker-arena").contains(document.querySelector(".poker-hand"))'),'own cards must be on the felt'
@@ -112,20 +112,20 @@ createRoot(document.getElementById("root")!).render(<App/>);
    assert js('document.querySelectorAll(".poker-hand [aria-pressed=true]").length')==3,'touch multi-select'
    js(f'transitionPoker({json.dumps(game)},"long")');b('scrollintoview','.poker-seat-left .poker-play')
    b('wait','--fn','[...document.querySelectorAll(".poker-new-play")].every(e=>e.getAnimations().every(a=>a.playState!=="running"))')
-   scrollable=js('document.querySelector(".poker-seat-left .poker-play").scrollWidth>document.querySelector(".poker-seat-left .poker-play").clientWidth')
-   if scrollable:
-    b('focus','.poker-seat-left .poker-play');b('press','ArrowRight');b('wait','--fn','document.querySelector(".poker-seat-left .poker-play").scrollLeft>0')
-    js('document.querySelector(".poker-seat-left .poker-play").scrollLeft=0')
-    b('hover','.poker-seat-left .poker-play');b('scroll','right','100')
-    assert js('document.querySelector(".poker-seat-left .poker-play").scrollLeft>0'),'mouse horizontal scroll'
-    js('document.querySelector(".poker-seat-left .poker-play").scrollLeft=0')
-    r=js('document.querySelector(".poker-seat-left .poker-play").getBoundingClientRect().toJSON()')
-    subprocess.run(['node','scripts/browser_touch.mjs',b('get','cdp-url')['cdpUrl'],f'http://127.0.0.1:{port}','drag',str(round(r['right']-8)),str(round(r['y']+30)),str(round(r['left']+8)),str(round(r['y']+30))],cwd=root,env=env,check=True,timeout=20)
-    assert js('document.querySelector(".poker-seat-left .poker-play").scrollLeft>0'),'touch scroll'
-   # Inspect every exposed corner by scrolling it into the fixed play region.
-   visible=js('''(()=>{const all=[];for(const area of document.querySelectorAll('.poker-play')){for(const card of area.querySelectorAll('.poker-strip-slot')){area.scrollLeft=card.offsetLeft;const r=card.getBoundingClientRect(),a=area.getBoundingClientRect();all.push({x:r.x,y:r.y,visible:r.x>=a.x-.5&&r.x+8<=a.right+.5&&r.y>=a.y-.5&&r.bottom<=a.bottom+.5});}area.scrollLeft=0;}return all;})()''')
-   assert all(v['visible'] for v in visible),visible
-   report['interaction'].append({'game':game,'width':width,'mousePlay':True,'touchSelection':True,'scrollable':scrollable,'cardCorners':len(visible)})
+   # Every public card corner is immediately visible. No horizontal or
+   # vertical scrolling is needed to discover a played card.
+   areas=js('[...document.querySelectorAll(".poker-play")].map(e=>({seat:e.closest(".poker-seat").dataset.position,width:e.clientWidth,scrollWidth:e.scrollWidth,height:e.clientHeight,scrollHeight:e.scrollHeight}))')
+   assert all(a['scrollWidth']<=a['width']+1 and a['scrollHeight']<=a['height']+1 for a in areas),areas
+   for pos in ['top','left','right','bottom']:
+    b('scrollintoview','.poker-seat-'+pos+' .poker-play')
+    visible=js("(()=>{const area=document.querySelector('.poker-seat-'+POS+' .poker-play'),a=area.getBoundingClientRect();return [...area.querySelectorAll('.poker-strip-slot')].map(card=>{const r=card.getBoundingClientRect();return {visible:r.x>=a.x-.5&&r.right<=a.right+.5&&r.y>=a.y-.5&&r.bottom<=a.bottom+.5,hit:card.contains(document.elementFromPoint(r.x+6,r.y+8))}})})()".replace('POS',json.dumps(pos)))
+    assert visible and all(v['visible'] and v['hit'] for v in visible),(game,width,pos,visible)
+   if width<=390:
+    assert js('document.querySelector(".poker-hand button").getBoundingClientRect().width>=60'),'hand should use the available vertical space at a readable size'
+   report['interaction'].append({'game':game,'width':width,'mousePlay':True,'touchSelection':True,'allPlaysVisibleWithoutScrolling':True,'areas':areas})
+   b('click','.poker-seat-left .poker-play');b('wait','[role=dialog]')
+   assert js('document.querySelectorAll("[role=dialog] .poker-strip-slot").length')==(10 if game=='guandan' else 25 if game=='shengji' else 33)
+   b('click','[role=dialog] button[aria-label=关闭]')
    # Every orientation has the same fixed seat areas.
    for seat in [1,2,3]:
     js(f'transitionPoker({json.dumps(game)},"played",{seat})')
