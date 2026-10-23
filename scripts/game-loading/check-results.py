@@ -70,7 +70,7 @@ try:
     for kind in ['load_begin','load_ready']:
      rr=req('/state')['room'];req('/rooms/'+rr['id'],{'type':kind,'version':rr['version'],'nonce':uuid.uuid4().hex,'loadToken':gate['token'],'loadBuild':gate['build'],'loadClient':'hint-peer-'+str(index)})
   b('reload');b('wait','.poker-board');b('wait','--fn','!document.querySelector("[data-game-loading]")');b('set','viewport','320','900')
-  if js('!document.querySelector(".sound-toggle")'):b('click','.compact-room-platform')
+  b('wait','.compact-room-platform');b('click','.compact-room-platform');b('wait','.sound-toggle')
   if js('document.querySelector(".sound-toggle").getAttribute("aria-pressed")==="true"'):b('find','role','button','click','--name','取消静音','--exact')
   if js('!!document.querySelector(".compact-room-dialog")'):b('click','.compact-room-dialog button[aria-label=关闭]')
   if os.environ.get('WIRE_BOARD_ASSET_BASE'):

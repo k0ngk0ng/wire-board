@@ -88,12 +88,18 @@ func chooseBotMove(hand []int, moves []Move, responding bool, threat, level int)
 			}
 			if r < 16 && held[r] >= 4 {
 				damage += 500
+				if responding && threat > 2 {
+					damage += 2500
+				}
 			} else if held[r] >= 2 {
 				damage += 80
 			}
 		}
 		if rocket && (used[16] > 0 || used[17] > 0) && used[16]+used[17] < royalSize*2 {
 			damage += 600
+			if responding && threat > 2 {
+				damage += 15000
+			}
 		}
 		score := len(m.Cards)*60 - m.High - damage
 		if responding {
@@ -124,20 +130,12 @@ func chooseBotMove(hand []int, moves []Move, responding bool, threat, level int)
 	return chosen
 }
 
-// Passing is a strategic choice even with a legal bomb. Spend control only
-// to finish, stop an imminent public threat, or set up a two-play finish.
-// Counts are public; no opponent card identity is read here.
+// Compare the continuation unlocked by a bomb with the cost of losing
+// control. No "wait until N cards" gate: efficient long groups and a feeding
+// opportunity can justify a mid-game bomb; scattered hands and bomb wars do not.
 func (s *State) shouldSpendBomb(p int, move Move) bool {
-	if s.LastPlay == nil || !(category(move.Combination) > 0) {
+	if s.LastPlay == nil || !(category(move.Combination) > 0) || len(move.Cards) == len(s.Hands[p]) {
 		return true
-	}
-	if len(move.Cards) == len(s.Hands[p]) {
-		return true
-	}
-	for seat, hand := range s.Hands {
-		if seat%2 != p%2 && len(hand) > 0 && len(hand) <= 2 {
-			return true
-		}
 	}
 	used := map[int]bool{}
 	for _, id := range move.Cards {
@@ -149,11 +147,116 @@ func (s *State) shouldSpendBomb(p int, move Move) bool {
 			left = append(left, id)
 		}
 	}
-	// Do not use a speculative long combination as an excuse to start another
-	// bomb war. Only a small, immediately playable remainder is a clear exit.
-	if len(left) > 5 {
+	budget := -1
+	plan := s.analyzeHand(left, budget)
+	if plan.turns == 1 {
+		return true
+	}
+	ownerLeft := len(s.Hands[s.LastPlay.Seat])
+	for seat, hand := range s.Hands {
+		if !(seat%2 != p%2) || len(hand) == 0 {
+			continue
+		}
+		// A last-card opponent matters when they own the lead or can finish in
+		// the current ordinary shape, not merely because their counter is small.
+		if seat == s.LastPlay.Seat && len(hand) <= 2 || s.LastPlay.Kind == "single" && len(hand) == 1 || s.LastPlay.Kind == "pair" && len(hand) == 2 {
+			return true
+		}
+	}
+	benefit := max(0, 4-plan.turns) * 2
+	if plan.largest >= 5 {
+		benefit += 2
+	}
+	if plan.control {
+		benefit += 2
+	}
+	if s.LastPlay.High >= 13 {
+		benefit++
+	}
+	if ownerLeft <= 5 {
+		benefit += 3
+	} else if ownerLeft <= 8 {
+		benefit++
+	}
+	for seat, hand := range s.Hands {
+		if seat == p || !(seat%2 == p%2) {
+			continue
+		}
+		if len(hand) == 1 && plan.feedOne || len(hand) == 2 && plan.feedPair {
+			benefit += 3
+			break
+		}
+	}
+	if s.unbeatableBomb(p, move) {
+		benefit++
+	}
+	cost := 2 + plan.singles
+	if category(s.LastPlay.Combination) > 0 {
+		cost += 3
+	}
+	if move.Kind == "rocket" {
+		cost++
+	}
+	if plan.turns >= 5 {
+		cost += 3
+	}
+	return benefit-cost >= 3
+}
+
+// A conservative public-card bound: unknown cards are pooled across all other
+// seats. This is a small control bonus, never a claim about a specific hand.
+func (s *State) unbeatableBomb(p int, m Move) bool {
+	if m.Kind == "rocket" {
+		return true
+	}
+	var face [54]int
+	for i := range face {
+		face[i] = 2
+	}
+	for _, id := range s.Hands[p] {
+		face[id%54]--
+	}
+	for _, id := range s.Played {
+		face[id%54]--
+	}
+	if face[52] >= 2 && face[53] >= 2 {
 		return false
 	}
-	_, err := interpret(left, s.Level)
-	return err == nil
+	wilds := max(0, face[26+s.Level-2])
+	ownClass := category(m.Combination)
+	for r := 2; r <= 14; r++ {
+		n := 0
+		for suit := 0; suit < 4; suit++ {
+			if suit == 2 && r == s.Level {
+				continue
+			}
+			n += max(0, face[suit*13+r-2])
+		}
+		n += wilds
+		if n >= 4 {
+			c := category(Combination{Kind: "bomb", Count: n})
+			if c > ownClass || c == ownClass && strength(r, s.Level) > m.High {
+				return false
+			}
+		}
+	}
+	if ownClass <= 20 {
+		for suit := 0; suit < 4; suit++ {
+			for start := 1; start <= 10; start++ {
+				if ownClass == 20 && start+4 <= m.High {
+					continue
+				}
+				missing := 0
+				for _, r := range consecutive(start, 5) {
+					if suit == 2 && r == s.Level || face[suit*13+r-2] <= 0 {
+						missing++
+					}
+				}
+				if missing <= wilds {
+					return false
+				}
+			}
+		}
+	}
+	return true
 }

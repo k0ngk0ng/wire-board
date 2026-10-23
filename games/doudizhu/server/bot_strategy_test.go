@@ -43,7 +43,7 @@ func TestBotBombRequiresPurpose(t *testing.T) {
 		{"8 8 8 8 9 9", "A", 12, true},
 		{"8 8 8 8", "A", 12, true},
 	} {
-		s := State{Ruleset: huanleRuleset, Players: 4, Landlord: 1, Hands: [][]int{cards(tc.hand), make([]int, tc.enemy), make([]int, 12), make([]int, 12)}}
+		s := State{Ruleset: huanleRuleset, Players: 4, Landlord: 1, Bids: make([]int, 4), BidDone: make([]bool, 4), Hands: [][]int{cards(tc.hand), make([]int, tc.enemy), make([]int, 12), make([]int, 12)}}
 		c, e := s.classify(cards(tc.lead))
 		if e != nil {
 			t.Fatal(e)
@@ -88,5 +88,70 @@ func TestBotLeadsAnIntactBombWhenOnlyBombsRemain(t *testing.T) {
 	m := chooseBotMove(s.Hands[0], s.legalMoves(0), false, 12, 4)
 	if m.Kind != "bomb" || len(m.Cards) != 4 || m.High != 14 {
 		t.Fatalf("poor control lead: %+v", m)
+	}
+}
+
+// New failure inventory: late-only bomb gate ignores two long groups remaining;
+// a scatter of singles starts a pointless bomb war; planner uses physical IDs
+// as rank strength; private opponents or unbounded search affect decisions.
+func TestBotUsesMidgameBombToUnlockTwoLongGroups(t *testing.T) {
+	s := State{Ruleset: huanleRuleset, Options: Options{AllowStraight: true}, Players: 4, Landlord: 1, Bids: make([]int, 4), BidDone: make([]bool, 4), Hands: [][]int{cards("8 8 8 8 3 4 5 6 7 9 10 J Q K"), make([]int, 15), make([]int, 15), make([]int, 15)}}
+	c, e := s.classify(cards("A"))
+	if e != nil {
+		t.Fatal(e)
+	}
+	s.LastPlay = &Play{Seat: 1, Combination: c}
+	b, e := s.classify(cards("8 8 8 8"))
+	if e != nil {
+		t.Fatal(e)
+	}
+	move := Move{Cards: cards("8 8 8 8"), Combination: b}
+	if !s.shouldSpendBomb(0, move) {
+		t.Fatal("saved bomb until last cards despite a clear two-group continuation")
+	}
+}
+
+func TestBotPlanningUsesGroupsAndHasFixedBudget(t *testing.T) {
+	s := State{Ruleset: huanleRuleset, Players: 4, Options: Options{AllowStraight: true}}
+	h := cards("3 4 5 6 7 9 10 J Q K")
+	p := s.analyzeHand(h, -1)
+	if p.turns != 2 || p.singles != 0 || p.largest != 5 || p.nodes > 512 {
+		t.Fatalf("poor continuation: %+v", p)
+	}
+	for i, j := 0, len(h)-1; i < j; i, j = i+1, j-1 {
+		h[i], h[j] = h[j], h[i]
+	}
+	again := s.analyzeHand(h, -1)
+	if p != again {
+		t.Fatalf("physical ordering changed plan: %+v %+v", p, again)
+	}
+}
+
+func TestBotPlanningRespectsRemainingBombQuota(t *testing.T) {
+	s := State{Ruleset: huanleRuleset, Players: 4}
+	h := cards("9 9 9 9 9 9 9 9")
+	if p := s.analyzeHand(h, -1); p.turns != 1 {
+		t.Fatal(p)
+	}
+	if p := s.analyzeHand(h, 0); p.turns != 3 {
+		t.Fatalf("spent unavailable bomb: %+v", p)
+	}
+}
+
+// Passing to preserve a complete control group must also beat the temptation
+// to break it into a single just to follow an unimportant mid-game seven.
+func TestBotDoesNotBreakBombJustToFollowSingle(t *testing.T) {
+	s := State{Ruleset: huanleRuleset, Players: 4, Landlord: 0, Hands: [][]int{cards("8 8 8 8 3 6"), make([]int, 15), make([]int, 15), make([]int, 15)}}
+	c, e := s.classify(cards("7"))
+	if e != nil {
+		t.Fatal(e)
+	}
+	s.LastPlay = &Play{Seat: 1, Combination: c}
+	m := chooseBotMove(s.Hands[0], s.legalMoves(0), true, 15, 4)
+	if m.Kind != "bomb" {
+		t.Fatalf("broke control group: %+v", m)
+	}
+	if s.shouldSpendBomb(0, m) {
+		t.Fatal("pointless bomb instead of passing with control intact")
 	}
 }

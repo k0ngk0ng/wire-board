@@ -253,9 +253,7 @@ func (s *State) legalMoves(p int) []Move {
 			out = append(out, m)
 		}
 	}
-	if s.LastPlay != nil {
-		sortResponseHints(out, s.Hands[p], s.Players)
-	}
+	sortHints(out, s.Hands[p], s.Players)
 	return out
 }
 func (s *State) bombLimit(p int) int {

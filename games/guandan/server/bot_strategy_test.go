@@ -91,3 +91,57 @@ func TestBotLeadsAnIntactBombWhenOnlyBombsRemain(t *testing.T) {
 		t.Fatalf("poor control lead: %+v", m)
 	}
 }
+
+// New failure inventory: late-only bomb gate ignores two long groups remaining;
+// a scatter of singles starts a pointless bomb war; planner uses physical IDs
+// as rank strength; private opponents or unbounded search affect decisions.
+func TestBotUsesMidgameBombToUnlockTwoLongGroups(t *testing.T) {
+	s := State{Level: 2, Hands: [][]int{cards("C8 D8 H8 S8 C3 D4 H5 S6 C7 D9 H10 SJ CQ DK"), make([]int, 15), make([]int, 15), make([]int, 15)}}
+	cs, e := interpret(cards("CA"), 2)
+	if e != nil {
+		t.Fatal(e)
+	}
+	s.LastPlay = &Play{Seat: 1, Combination: cs[0]}
+	bs, e := interpret(cards("C8 D8 H8 S8"), 2)
+	if e != nil {
+		t.Fatal(e)
+	}
+	move := Move{Cards: cards("C8 D8 H8 S8"), Combination: bs[0]}
+	if !s.shouldSpendBomb(0, move) {
+		t.Fatal("saved bomb until last cards despite a clear two-group continuation")
+	}
+}
+
+func TestBotPlanningUsesGroupsAndHasFixedBudget(t *testing.T) {
+	s := State{Level: 2}
+	h := cards("C3 D4 H5 S6 C7 D9 H10 SJ CQ DK")
+	p := s.analyzeHand(h, -1)
+	if p.turns != 2 || p.singles != 0 || p.largest != 5 || p.nodes > 512 {
+		t.Fatalf("poor continuation: %+v", p)
+	}
+	for i, j := 0, len(h)-1; i < j; i, j = i+1, j-1 {
+		h[i], h[j] = h[j], h[i]
+	}
+	again := s.analyzeHand(h, -1)
+	if p != again {
+		t.Fatalf("physical ordering changed plan: %+v %+v", p, again)
+	}
+}
+
+// Passing to preserve a complete control group must also beat the temptation
+// to break it into a single just to follow an unimportant mid-game seven.
+func TestBotDoesNotBreakBombJustToFollowSingle(t *testing.T) {
+	s := State{Phase: "play", Due: []int64{100}, Level: 2, Hands: [][]int{cards("C8 D8 H8 S8 C3 D6"), make([]int, 15), make([]int, 15), make([]int, 15)}}
+	cs, e := interpret(cards("C7"), 2)
+	if e != nil {
+		t.Fatal(e)
+	}
+	s.LastPlay = &Play{Seat: 1, Combination: cs[0]}
+	m := chooseBotMove(s.Hands[0], s.controls(0).Moves, true, 15, 2)
+	if m.Kind != "bomb" {
+		t.Fatalf("broke control group: %+v", m)
+	}
+	if s.shouldSpendBomb(0, m) {
+		t.Fatal("pointless bomb instead of passing with control intact")
+	}
+}

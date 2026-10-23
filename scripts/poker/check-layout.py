@@ -86,7 +86,7 @@ createRoot(document.getElementById("root")!).render(<App/>);
     if mode in ['idle','long','empty']:b('screenshot',str(out/f'{game}-{width}-{mode}.png'),'--full')
    # Compact hand rows overlap artwork, keeping the exposed index clickable
    # even after a card in the following row is lifted by selection.
-   js(f'transitionPoker({json.dumps(game)},"idle")')
+   js(f'transitionPoker({json.dumps(game)},"idle")');b('focus','.poker-hand-row:first-child button:first-child');b('press','Escape')
    overlap=js('''(()=>{const rs=[...document.querySelectorAll('.poker-hand-row')];if(rs.length<2)return null;return {step:rs[1].getBoundingClientRect().top-rs[0].getBoundingClientRect().top,height:rs[0].querySelector('button').getBoundingClientRect().height};})()''')
    if overlap:assert overlap['step']<overlap['height']*.75,overlap
    rows=js('document.querySelectorAll(".poker-hand-row").length')
@@ -98,7 +98,7 @@ createRoot(document.getElementById("root")!).render(<App/>);
     assert all(hits),(game,width,row,hits)
    report['interaction'].append({'game':game,'width':width,'overlap':overlap,'allHandCornersClickable':True})
    # Native input and actual Board action callbacks must preserve the regions.
-   js(f'transitionPoker({json.dumps(game)},"idle")')
+   js(f'transitionPoker({json.dumps(game)},"idle")');b('focus','.poker-hand-row:first-child button:first-child');b('press','Escape')
    b('scrollintoview','.poker-hand');r=js('document.querySelector(".poker-hand button").getBoundingClientRect().toJSON()')
    b('mouse','move',str(round(r['x']+8)),str(round(r['y']+22)));b('mouse','down');b('mouse','up')
    assert js('document.querySelectorAll(".poker-hand [aria-pressed=true]").length')==1
@@ -106,7 +106,7 @@ createRoot(document.getElementById("root")!).render(<App/>);
    b('wait','--fn','document.querySelectorAll(".poker-hand button").length==='+str(27 if game=='guandan' else 32))
    current=js('layoutBoxes()')
    assert all(abs(current[s][k]-v[k])<.75 for s,v in baseline.items() for k in v),'real play callback moved layout'
-   js(f'transitionPoker({json.dumps(game)},"idle")');b('scrollintoview','.poker-hand')
+   js(f'transitionPoker({json.dumps(game)},"idle")');b('focus','.poker-hand-row:first-child button:first-child');b('press','Escape');b('scrollintoview','.poker-hand')
    rects=js('[...document.querySelectorAll(".poker-hand-row:first-child button")].slice(0,3).map(e=>e.getBoundingClientRect().toJSON())')
    subprocess.run(['node','scripts/poker/browser-touch.mjs',b('get','cdp-url')['cdpUrl'],f'http://127.0.0.1:{port}',str(round(rects[0]['x']+8)),str(round(rects[0]['y']+24)),str(round(rects[2]['x']+8)),str(round(rects[2]['y']+24))],cwd=root,env=env,check=True,timeout=20)
    assert js('document.querySelectorAll(".poker-hand [aria-pressed=true]").length')==3,'touch multi-select'

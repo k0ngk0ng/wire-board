@@ -37,6 +37,11 @@ def shot(name):
   assert geometry['top']>=0 and geometry['bottom']<=geometry['height']+1 and geometry['actionsBottom']<=geometry['height']+1 and geometry['bottom']>=geometry['height']-12 and geometry['body']<=geometry['height']+1,(name,geometry)
   assert geometry['turnTop']>=geometry['top'] and geometry['turnRight']<=geometry['boardRight'] and geometry['turnBottom']<geometry['top']+65,(name,geometry)
   report.setdefault('viewportGeometry',[]).append({'name':name,**geometry})
+  inner=js("(()=>{const f=document.querySelector('.game-sidebar .turn-card').getBoundingClientRect(),t=document.querySelector('.game-sidebar time').getBoundingClientRect(),buttons=[...document.querySelectorAll('.poker-actions>button')].map(e=>{const r=e.getBoundingClientRect();return {x:r.x,y:r.y,right:r.right,bottom:r.bottom,height:r.height,hit:e.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))}});return {frame:f.toJSON(),time:t.toJSON(),buttons}})()")
+  f,t=inner['frame'],inner['time'];assert t['top']>=f['top'] and t['bottom']<=f['bottom'] and t['right']<=f['right'] and t['left']>=f['left'],(name,inner)
+  assert inner['buttons'] and all(x['hit'] and x['bottom']<=geometry['height'] for x in inner['buttons']),(name,inner)
+  report.setdefault('visibleControls',[]).append({'name':name,**inner})
+
 
  assert js('[...document.querySelectorAll(".poker-card img")].every(i=>i.complete&&i.naturalWidth>0)'),name+' broken cards'
  colors=js(r"""(() => {

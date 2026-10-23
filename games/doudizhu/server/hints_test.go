@@ -17,7 +17,7 @@ func TestResponseHintsPreferOrdinaryIntactCards(t *testing.T) {
 			high             int
 		}{
 			{"8 8 8 8 9 9", "5 5", "pair", 9},
-			{"8 8 8 8", "5 5", "pair", 8},
+			{"8 8 8 8", "5 5", "bomb", 8},
 			{"9 9 6 6 10 10", "5 5", "pair", 6},
 			{"8 8 8 8", "3 4 5 6 7", "bomb", 8},
 			{"8 8 8 8 4 4 4 4", "3 3 3 3", "bomb", 4},
@@ -43,6 +43,9 @@ func TestResponseHintsPreferOrdinaryIntactCards(t *testing.T) {
 					if !beats(m.Combination, combo) {
 						t.Fatal("illegal hint")
 					}
+					if len(m.Cards) == len(before) {
+						continue
+					}
 					if m.Kind == "bomb" || m.Kind == "rocket" {
 						bombSeen = true
 					} else if bombSeen {
@@ -65,8 +68,18 @@ func TestResponseHintsKeepRocketLastAndRespectQuota(t *testing.T) {
 	c, _ := s.classify(cards("3 3 3 3"))
 	s.LastPlay = &Play{Seat: 1, Combination: c}
 	ms := s.legalMoves(0)
-	for i := 1; i < len(ms); i++ {
-		if !beats(ms[i].Combination, ms[i-1].Combination) {
+	intact := []Move{}
+	held := map[int]int{}
+	for _, id := range s.Hands[0] {
+		held[rank(id)]++
+	}
+	for _, m := range ms {
+		if m.Kind != "bomb" || len(m.Cards) == held[m.High] {
+			intact = append(intact, m)
+		}
+	}
+	for i := 1; i < len(intact); i++ {
+		if !beats(intact[i].Combination, intact[i-1].Combination) {
 			t.Fatal("bombs must ascend", ms)
 		}
 	}
@@ -79,5 +92,79 @@ func TestResponseHintsKeepRocketLastAndRespectQuota(t *testing.T) {
 	s.BombCounts = []int{1, 0, 0, 0}
 	if len(s.legalMoves(0)) != 0 {
 		t.Fatal("exhausted bomb quota bypassed")
+	}
+}
+
+// Failure cases before implementation: a full house breaks three eights to
+// make its pair despite an intact pair of fives; physical suit IDs put a pair
+// of nines before a lower intact pair of fives; legal alternatives disappear.
+func TestFullHouseHintsPreserveTriplesAndUseLowestPair(t *testing.T) {
+	for _, hand := range [][]int{
+		{2, 15, 28, 29, 42, 6, 19, 32}, // 444, H5 S5, 888
+		{2, 15, 28, 29, 42, 7, 20},     // 444, H5 S5, C9 D9
+	} {
+		s := State{Ruleset: huanleRuleset, Players: 4, Landlord: 0, Hands: [][]int{hand}}
+		c, e := s.classify(cards("3 3 3 6 6"))
+		if e != nil {
+			t.Fatal(e)
+		}
+		s.LastPlay = &Play{Seat: 1, Combination: c}
+		moves := s.legalMoves(0)
+		if len(moves) == 0 {
+			t.Fatal("no response")
+		}
+		counts := map[int]int{}
+		for _, id := range moves[0].Cards {
+			counts[rank(id)]++
+		}
+		if moves[0].High != 4 || counts[4] != 3 || counts[5] != 2 {
+			t.Fatalf("want 444+55, got %+v", moves[0])
+		}
+		if len(moves) < 2 {
+			t.Fatal("other legal responses removed")
+		}
+	}
+}
+
+// A held five-card bomb should not be suggested as four cards plus a singleton.
+// Keep partial bombs available for deliberate manual/alternative choices.
+func TestHintsKeepFiveCardBombWhole(t *testing.T) {
+	s := State{Ruleset: huanleRuleset, Players: 4, Landlord: 0, Hands: [][]int{cards("9 9 9 9 9 3 6")}}
+	c, e := s.classify(cards("A"))
+	if e != nil {
+		t.Fatal(e)
+	}
+	s.LastPlay = &Play{Seat: 1, Combination: c}
+	moves := s.legalMoves(0)
+	if len(moves) == 0 || moves[0].Kind != "bomb" || len(moves[0].Cards) != 5 {
+		t.Fatalf("split held bomb: %+v", moves)
+	}
+	found := false
+	for _, m := range moves {
+		if m.Kind == "bomb" && len(m.Cards) == 4 {
+			found = true
+		}
+	}
+	if !found {
+		t.Fatal("legal split option was removed")
+	}
+}
+
+// Finishing the entire hand takes precedence over saving a bomb, both when
+// following and when leading; a partial suggestion must not leave one card.
+func TestHintsFinishWholeBombOnLeadAndReply(t *testing.T) {
+	for _, reply := range []bool{false, true} {
+		s := State{Ruleset: huanleRuleset, Players: 4, Landlord: 0, Hands: [][]int{cards("9 9 9 9 9")}}
+		if reply {
+			c, e := s.classify(cards("3"))
+			if e != nil {
+				t.Fatal(e)
+			}
+			s.LastPlay = &Play{Seat: 1, Combination: c}
+		}
+		moves := s.legalMoves(0)
+		if len(moves) == 0 || moves[0].Kind != "bomb" || len(moves[0].Cards) != 5 {
+			t.Fatalf("missed finish (reply %v): %+v", reply, moves)
+		}
 	}
 }

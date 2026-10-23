@@ -6091,3 +6091,42 @@ label small {
     display: none;
   }
 }
+
+/* Keep actual clock glyphs in the compact frame, including Safari's intrinsic
+   5ch time width. The status may shrink; the clock must never wrap below it. */
+@media (max-width: 600px) {
+  .room-page[data-table-layout="poker"] .turn-card {
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) max-content;
+    align-items: center;
+    gap: 3px;
+    height: 28px;
+  }
+  .room-page[data-table-layout="poker"] .turn-card h3 {
+    min-width: 0;
+    width: auto;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .room-page[data-table-layout="poker"] .turn-clock {
+    min-width: 0;
+    width: auto;
+    flex: none;
+  }
+  .room-page[data-table-layout="poker"] .clock-reading {
+    flex-wrap: nowrap;
+    line-height: 1;
+  }
+  .room-page[data-table-layout="poker"] .clock-reading time {
+    flex: none;
+    width: auto;
+    line-height: 1;
+  }
+}
+@media (max-width: 600px) {
+  .room-page[data-table-layout="poker"] .turn-clock.urgent {
+    color: #ffe09a;
+  }
+}
