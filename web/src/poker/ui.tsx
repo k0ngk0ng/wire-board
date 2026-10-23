@@ -230,16 +230,63 @@ export function CardStrip({
     </div>
   );
 }
-export function useSelection(hand: number[], windowKey: string) {
-  const [selected, setSelected] = useState<number[]>([]);
-  const signature = hand.join(",");
-  useEffect(() => setSelected([]), [windowKey]);
-  useEffect(
-    () => setSelected((s) => s.filter((id) => hand.includes(id))),
-    [signature],
+export function PokerNotice({
+  children,
+  label = "本副结果",
+}: {
+  children: ReactNode;
+  label?: string;
+}) {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <button type="button" onClick={() => setOpen(true)}>
+        {label}
+      </button>
+      {open && (
+        <Modal title={label} onClose={() => setOpen(false)}>
+          <p>{children}</p>
+        </Modal>
+      )}
+    </>
   );
-  return { selected, setSelected };
 }
+
+export function useSelection(hand: number[], dealKey: string) {
+  const signature = hand.join(",");
+  const [state, setState] = useState(() => ({
+    key: dealKey,
+    hand: [...hand],
+    ids: [] as number[],
+  }));
+  const reconcile = (previous: typeof state) => {
+    if (previous.key !== dealKey)
+      return { key: dealKey, hand: [...hand], ids: [] as number[] };
+    const kept = previous.ids.filter((id) => hand.includes(id));
+    // Tribute/return and kitty cards stay visibly selected until the player
+    // changes them. A new deal has a different identity and is not a receipt.
+    const added = hand.filter((id) => !previous.hand.includes(id));
+    return {
+      key: dealKey,
+      hand: [...hand],
+      ids: [...new Set([...kept, ...added])],
+    };
+  };
+  const current = reconcile(state);
+  useLayoutEffect(() => {
+    setState((previous) => reconcile(previous));
+  }, [dealKey, signature]);
+  return {
+    selected: current.ids,
+    setSelected: (ids: number[]) =>
+      setState({
+        key: dealKey,
+        hand: [...hand],
+        ids: ids.filter((id) => hand.includes(id)),
+      }),
+  };
+}
+
 export function Hand({
   cards,
   capacity,

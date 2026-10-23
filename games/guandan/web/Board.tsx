@@ -8,6 +8,7 @@ import type {
 import {
   CardStrip,
   PokerLayout,
+  PokerNotice,
   PokerOptions,
   rankName,
   useCardStyle,
@@ -33,6 +34,7 @@ export type View = {
   turn: number;
   window: number;
   round: number;
+  dealSerial?: number;
   hand: number[];
   level: number;
   levels: number[];
@@ -88,7 +90,16 @@ export function Board({
   clock,
 }: BoardProps<View>) {
   const style = useCardStyle(),
-    { selected, setSelected } = useSelection(d.hand, room.id + ":" + d.window),
+    { selected, setSelected } = useSelection(
+      d.hand,
+      JSON.stringify([
+        room.id,
+        room.matchId,
+        room.you,
+        !!room.spectating,
+        d.dealSerial ?? d.round,
+      ]),
+    ),
     [key, setKey] = useState(""),
     [error, setError] = useState(""),
     [hint, setHint] = useState(0),
@@ -216,11 +227,13 @@ export function Board({
           )}
           {(d.phase === "tribute" || d.phase === "return") && (
             <>
-              <p className="poker-notice">
+              <PokerNotice
+                label={d.phase === "tribute" ? "进贡说明" : "还贡说明"}
+              >
                 {d.phase === "tribute"
                   ? "进贡最大的非配牌；可选的同点牌由你决定。"
                   : "还 10 以下非级牌，不能还刚收到的贡牌；无符合牌时还最小非配牌。还牌仅双方可见。"}
-              </p>
+              </PokerNotice>
               {c.canAct && (
                 <>
                   <button
@@ -331,11 +344,11 @@ export function Board({
 
           {d.roundResults.length > 0 &&
             (d.phase === "round_end" || d.phase === "finished") && (
-              <p className="poker-notice">
+              <PokerNotice>
                 上游：{room.seats[d.roundResults.at(-1)!.head].name}；同伴第{" "}
                 {d.roundResults.at(-1)!.partnerPlace} 位，升{" "}
                 {d.roundResults.at(-1)!.promotion} 级。
-              </p>
+              </PokerNotice>
             )}
         </>
       }

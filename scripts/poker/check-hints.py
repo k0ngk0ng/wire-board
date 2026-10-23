@@ -6,7 +6,7 @@ No production debug routes; only the opt-in Go test fixture changes starting han
 """
 import json,os,subprocess,time,uuid,urllib.request,http.cookiejar,shutil
 from pathlib import Path
-root=Path(__file__).resolve().parents[2];layout=os.environ.get('POKER_HINT_LAYOUT')=='1';out=root/('.local/poker-layout/live' if layout else '.local/poker-hints/browser');fixture=root/'.local/poker/browser';out.mkdir(parents=True,exist_ok=True);fixture.mkdir(parents=True,exist_ok=True)
+root=Path(__file__).resolve().parents[2];layout=os.environ.get('POKER_HINT_LAYOUT')=='1';out=root/('.local/poker-layout/live' if layout else '.local/poker-selection-oct23/http-browser');fixture=root/'.local/poker/browser';out.mkdir(parents=True,exist_ok=True);fixture.mkdir(parents=True,exist_ok=True)
 env=dict(os.environ)
 for key,rel in {'AGENT_BROWSER_SOCKET_DIR':'.local/ab-hints','AGENT_BROWSER_PROFILE':'.local/poker-hints/profile','TMPDIR':'.local/tmp','GOTMPDIR':'.local/tmp','GOCACHE':'.local/go-build','GOMODCACHE':'.local/go-mod','npm_config_cache':'.local/npm'}.items():
  p=root/rel;p.mkdir(parents=True,exist_ok=True);env[key]=str(p)
@@ -67,7 +67,9 @@ try:
     for kind in ['load_begin','load_ready']:
      rr=req('/state')['room'];req('/rooms/'+rr['id'],{'type':kind,'version':rr['version'],'nonce':uuid.uuid4().hex,'loadToken':gate['token'],'loadBuild':gate['build'],'loadClient':'hint-peer-'+str(index)})
   b('reload');b('wait','.poker-board');b('wait','--fn','!document.querySelector("[data-game-loading]")');b('set','viewport','320','900')
+  b('wait','.compact-room-platform');b('click','.compact-room-platform');b('wait','.sound-toggle')
   if js('document.querySelector(".sound-toggle").getAttribute("aria-pressed")==="true"'):b('find','role','button','click','--name','取消静音','--exact')
+  if js('!!document.querySelector(".compact-room-dialog")'):b('click','.compact-room-dialog button[aria-label=关闭]')
   if layout:track_layout()
   initial=api('/state')['room'];assert sorted(initial['game']['data']['hand'])==[6,7,19,20,32,45]
   def hint(expected):
@@ -82,6 +84,9 @@ try:
   for req in peers[:2]:
    rr=req('/state')['room'];req('/rooms/'+rr['id'],{'type':'action','version':rr['version'],'nonce':uuid.uuid4().hex,'action':{'type':'pass','window':rr['game']['data']['window']}})
   req=peers[2];rr=req('/state')['room'];req('/rooms/'+rr['id'],{'type':'action','version':rr['version'],'nonce':uuid.uuid4().hex,'action':{'type':'play','cards':[4,17],'window':rr['game']['data']['window']}})
+  b('wait','--fn','["4","17"].every(id=>[...document.querySelectorAll(".poker-play [data-card-face]")].some(e=>e.dataset.cardFace===id))')
+  assert js('[...document.querySelectorAll(".poker-hand [aria-pressed=true]")].map(e=>+e.dataset.card).sort((a,b)=>a-b)')==[6,19],'other HTTP players cleared manual selection'
+  report['checks'].append(game+'-selection-kept-across-pass-and-other-http-plays')
   b('wait','--fn','!document.querySelector(".poker-actions button").disabled')
   hint([7,20]);shot(game+'-new-turn-pair9')
   hint([6,19]);
@@ -93,6 +98,7 @@ try:
   b('wait','--fn','document.querySelectorAll(".poker-hand button[data-card]").length===4')
   after=api('/state')['room']['game']['data'];assert sorted(after['hand'])==[6,19,32,45]
   assert sorted(after['lastPlay']['cards'])==[7,20]
+  assert js('document.querySelectorAll(".poker-hand [aria-pressed=true]").length')==0,'played cards stayed selected'
   if layout:
    shot(game+'-played-kept-bomb');js('window.__layoutEpoch++')
   b('set','viewport','1280','900')
@@ -116,5 +122,6 @@ finally:
   except subprocess.TimeoutExpired:server.terminate();server.wait(timeout=10)
  if handle:handle.close()
  if layout:shutil.rmtree(out/'temporary',ignore_errors=True)
+ else:shutil.rmtree(Path(env['AGENT_BROWSER_PROFILE']),ignore_errors=True)
  (out/'result.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n');print('Artifact:',out/'result.json',flush=True)
  if not report['passed']:raise SystemExit(1)

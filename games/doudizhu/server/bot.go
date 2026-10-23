@@ -130,12 +130,18 @@ func chooseBotMove(hand []int, moves []Move, responding bool, threat, players in
 			}
 			if r < 16 && held[r] >= 4 {
 				damage += 500
+				if responding && threat > 2 {
+					damage += 2500
+				}
 			} else if held[r] >= 2 {
 				damage += 80
 			}
 		}
 		if rocket && (used[16] > 0 || used[17] > 0) && used[16]+used[17] < royalSize*2 {
 			damage += 600
+			if responding && threat > 2 {
+				damage += 15000
+			}
 		}
 		score := len(m.Cards)*60 - m.High - damage
 		if responding {
@@ -168,20 +174,12 @@ func chooseBotMove(hand []int, moves []Move, responding bool, threat, players in
 	return chosen
 }
 
-// Passing is a strategic choice even with a legal bomb. Spend control only
-// to finish, stop an imminent public threat, or set up a two-play finish.
-// Counts are public; no opponent card identity is read here.
+// Compare the continuation unlocked by a bomb with the cost of losing
+// control. No "wait until N cards" gate: efficient long groups and a feeding
+// opportunity can justify a mid-game bomb; scattered hands and bomb wars do not.
 func (s *State) shouldSpendBomb(p int, move Move) bool {
-	if s.LastPlay == nil || !(move.Kind == "bomb" || move.Kind == "rocket") {
+	if s.LastPlay == nil || !(move.Kind == "bomb" || move.Kind == "rocket") || len(move.Cards) == len(s.Hands[p]) {
 		return true
-	}
-	if len(move.Cards) == len(s.Hands[p]) {
-		return true
-	}
-	for seat, hand := range s.Hands {
-		if seat != p && (p == s.Landlord || seat == s.Landlord) && len(hand) > 0 && len(hand) <= 2 {
-			return true
-		}
 	}
 	used := map[int]bool{}
 	for _, id := range move.Cards {
@@ -193,11 +191,94 @@ func (s *State) shouldSpendBomb(p int, move Move) bool {
 			left = append(left, id)
 		}
 	}
-	// Do not use a speculative long combination as an excuse to start another
-	// bomb war. Only a small, immediately playable remainder is a clear exit.
-	if len(left) > 5 {
+	budget := -1
+	if limit := s.bombLimit(p); limit >= 0 {
+		budget = max(0, limit-s.bombsUsed(p)-1)
+	}
+	plan := s.analyzeHand(left, budget)
+	if plan.turns == 1 {
+		return true
+	}
+	ownerLeft := len(s.Hands[s.LastPlay.Seat])
+	for seat, hand := range s.Hands {
+		if !(seat != p && (p == s.Landlord || seat == s.Landlord)) || len(hand) == 0 {
+			continue
+		}
+		// A last-card opponent matters when they own the lead or can finish in
+		// the current ordinary shape, not merely because their counter is small.
+		if seat == s.LastPlay.Seat && len(hand) <= 2 || s.LastPlay.Kind == "single" && len(hand) == 1 || s.LastPlay.Kind == "pair" && len(hand) == 2 {
+			return true
+		}
+	}
+	benefit := max(0, 4-plan.turns) * 2
+	if plan.largest >= 5 {
+		benefit += 2
+	}
+	if plan.control {
+		benefit += 2
+	}
+	if s.LastPlay.High >= 13 {
+		benefit++
+	}
+	if ownerLeft <= 5 {
+		benefit += 3
+	} else if ownerLeft <= 8 {
+		benefit++
+	}
+	for seat, hand := range s.Hands {
+		if seat == p || !(p != s.Landlord && seat != s.Landlord) {
+			continue
+		}
+		if len(hand) == 1 && plan.feedOne || len(hand) == 2 && plan.feedPair {
+			benefit += 3
+			break
+		}
+	}
+	if s.unbeatableBomb(p, move) {
+		benefit++
+	}
+	cost := 2 + plan.singles
+	if s.LastPlay.Kind == "bomb" || s.LastPlay.Kind == "rocket" {
+		cost += 3
+	}
+	if move.Kind == "rocket" {
+		cost++
+	}
+	if plan.turns >= 5 {
+		cost += 3
+	}
+	return benefit-cost >= 3
+}
+
+// The unseen pool is inferable from the deck, our hand and public discards.
+// It deliberately pools all other seats rather than reading their identities.
+func (s *State) unbeatableBomb(p int, m Move) bool {
+	if m.Kind == "rocket" {
+		return true
+	}
+	copies, royals := 4, 1
+	if s.Players == 4 {
+		copies, royals = 8, 2
+	}
+	unseen := map[int]int{}
+	for r := 3; r <= 15; r++ {
+		unseen[r] = copies
+	}
+	unseen[16], unseen[17] = royals, royals
+	for _, id := range s.Hands[p] {
+		unseen[rank(id)]--
+	}
+	for _, id := range s.Played {
+		unseen[rank(id)]--
+	}
+	if unseen[16] >= royals && unseen[17] >= royals {
 		return false
 	}
-	_, err := s.classify(left)
-	return err == nil
+	for r := 3; r <= 15; r++ {
+		n := unseen[r]
+		if n > len(m.Cards) || n == len(m.Cards) && r > m.High {
+			return false
+		}
+	}
+	return true
 }

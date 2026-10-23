@@ -7,6 +7,7 @@ import { Modal } from "../../../web/src/ui/board-host";
 import {
   CardStrip,
   PokerLayout,
+  PokerNotice,
   PokerOptions,
   useCardStyle,
   usePokerFeedback,
@@ -29,6 +30,7 @@ export type View = {
   turn: number;
   window: number;
   round: number;
+  dealSerial?: number;
   hand: number[];
   bottom: number[];
   landlord: number;
@@ -98,7 +100,16 @@ export function Board({
 }: BoardProps<View>) {
   const huanle = d.ruleset === "doudizhu-shanghai-huanle-v2",
     style = useCardStyle(),
-    { selected, setSelected } = useSelection(d.hand, room.id + ":" + d.window);
+    { selected, setSelected } = useSelection(
+      d.hand,
+      JSON.stringify([
+        room.id,
+        room.matchId,
+        room.you,
+        !!room.spectating,
+        d.dealSerial ?? d.round,
+      ]),
+    );
   const [error, setError] = useState(""),
     [hint, setHint] = useState(0),
     [open, setOpen] = useState(false),
@@ -365,7 +376,7 @@ export function Board({
 
             {d.roundResults.length > 0 &&
               (d.phase === "round_end" || d.phase === "finished") && (
-                <p className="poker-notice">
+                <PokerNotice>
                   {d.roundResults.at(-1)!.reason === "report_no_play"
                     ? "报到不打，地主获胜。"
                     : ""}
@@ -376,7 +387,7 @@ export function Board({
                       (v, p) => `${room.seats[p].name} ${v > 0 ? "+" : ""}${v}`,
                     )
                     .join(" · ")}
-                </p>
+                </PokerNotice>
               )}
           </>
         }

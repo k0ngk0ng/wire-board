@@ -8,6 +8,7 @@ import type {
 import {
   CardStrip,
   PokerLayout,
+  PokerNotice,
   PokerOptions,
   cardRank,
   rankName,
@@ -37,6 +38,7 @@ export type View = {
   turn: number;
   window: number;
   round: number;
+  dealSerial?: number;
   hand: number[];
   bottom: number[];
   level: number;
@@ -92,9 +94,20 @@ export function Board({
   clock,
 }: BoardProps<View>) {
   const style = useCardStyle(),
-    { selected, setSelected } = useSelection(d.hand, room.id + ":" + d.window),
+    { selected, setSelected } = useSelection(
+      d.hand,
+      JSON.stringify([
+        room.id,
+        room.matchId,
+        room.you,
+        !!room.spectating,
+        d.dealSerial ?? d.round,
+      ]),
+    ),
     [error, setError] = useState(""),
-    [hint, setHint] = useState(0);
+    [hint, setHint] = useState(0),
+    [declareOpen, setDeclareOpen] = useState(false);
+  useEffect(() => setDeclareOpen(false), [room.id, d.phase]);
   useEffect(() => setHint(0), [room.id, d.window]);
   const fresh = usePokerFeedback(
       d.events,
@@ -203,34 +216,59 @@ export function Board({
               <button disabled={busy} onClick={() => void send("pass")}>
                 不亮／不反
               </button>
-              {c.declarations.map((v) => (
-                <button
-                  className="primary"
-                  key={v.cards.join(",")}
-                  disabled={busy}
-                  onClick={() => void send("declare", { cards: v.cards })}
+              <button
+                className="primary"
+                disabled={busy || (!c.declarations.length && !c.canRebel)}
+                onClick={() => setDeclareOpen(true)}
+              >
+                亮主／反主
+              </button>
+              {declareOpen && (
+                <Modal
+                  title="选择亮主或反主"
+                  onClose={() => setDeclareOpen(false)}
                 >
-                  {v.strength === 1
-                    ? "单亮"
-                    : v.strength === 2
-                      ? "对子反主"
-                      : "双王"}{" "}
-                  · {trumpName(v.trump)}
-                </button>
-              ))}
-              {c.canRebel && (
-                <button disabled={busy} onClick={() => void send("rebel")}>
-                  明示无分牌并重发
-                </button>
+                  <div className="poker-choice-buttons">
+                    {c.declarations.map((v) => (
+                      <button
+                        className="primary"
+                        key={v.cards.join(",")}
+                        disabled={busy}
+                        onClick={() => {
+                          setDeclareOpen(false);
+                          void send("declare", { cards: v.cards });
+                        }}
+                      >
+                        {v.strength === 1
+                          ? "单亮"
+                          : v.strength === 2
+                            ? "对子反主"
+                            : "双王"}{" "}
+                        · {trumpName(v.trump)}
+                      </button>
+                    ))}
+                    {c.canRebel && (
+                      <button
+                        disabled={busy}
+                        onClick={() => {
+                          setDeclareOpen(false);
+                          void send("rebel");
+                        }}
+                      >
+                        明示无分牌并重发
+                      </button>
+                    )}
+                  </div>
+                </Modal>
               )}
             </>
           )}
           {d.phase === "bury" && (
             <>
-              <p className="poker-notice">
+              <PokerNotice label="扣底说明">
                 庄家选择 {c.buryCount || (d.options.decks === 1 ? 6 : 8)}{" "}
                 张牌扣底，其他玩家看不到底牌。
-              </p>
+              </PokerNotice>
               {c.canAct && (
                 <button
                   className="primary"
@@ -285,13 +323,13 @@ export function Board({
 
           {d.roundResults.length > 0 &&
             (d.phase === "round_end" || d.phase === "finished") && (
-              <p className="poker-notice">
+              <PokerNotice>
                 抓分 {d.roundResults.at(-1)!.attackPoints} 分（抠底{" "}
                 {d.roundResults.at(-1)!.bottomPoints} 分，倍率 ×
                 {d.roundResults.at(-1)!.bottomFactor}）；队伍{" "}
                 {d.roundResults.at(-1)!.team + 1} 升{" "}
                 {d.roundResults.at(-1)!.promotion} 级。
-              </p>
+              </PokerNotice>
             )}
         </>
       }
