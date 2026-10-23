@@ -48,6 +48,12 @@ type PreparationContext struct {
 // can act now; TimeoutActors owe a decision at Deadline (Unix milliseconds).
 // These lists differ for optional responses and simultaneous actions.
 type Match struct {
+	// Paused explicitly suspends automatic decisions and opts this saved match
+	// into the host's 30-day inactive retention policy. The game owns pause /
+	// resume authorization and saves its remaining action budget in Data.
+	// A paused match has no deadlines, timeout actors, attention or result;
+	// Actors may still accept manual resume votes through Apply.
+	Paused bool `json:"paused,omitempty"`
 	// HasComputerPlayers includes game-owned AI characters which do not occupy
 	// platform seats. Such matches retain results/history but never earn ratings.
 	HasComputerPlayers bool `json:"hasComputerPlayers,omitempty"`
@@ -124,6 +130,12 @@ type Module struct {
 	// is cancelled, so they can clear the returning seat's previous bot controls.
 	// Omit BotAction/Reclaim together to disable autoplay.
 	Reclaim func(Context, Match) (Match, error) `json:"-"`
+	// ReclaimOnCancel opts into Reclaim on every transition from autoplay to
+	// manual control, even when this seat is not in the earliest TimeoutActors.
+	// Use for independent seat deadlines. Reclaim must preserve live, submitted
+	// and paused windows and every other seat's deadline. Existing modules keep
+	// the normal earliest-expired-window dispatch unless they explicitly opt in.
+	ReclaimOnCancel bool `json:"-"`
 	// Restore optionally migrates a persisted active match at server startup.
 	// It must preserve gameplay and existing deadlines, and return unchanged
 	// input when already current. The host validates and persists any change.
@@ -143,6 +155,9 @@ func (m Module) Validate() error {
 	if m.Configure == nil || m.Start == nil || m.Apply == nil || m.View == nil || (m.BotAction == nil) != (m.Reclaim == nil) {
 		return fmt.Errorf("incomplete game registration: %s", m.ID)
 	}
+	if m.ReclaimOnCancel && m.Reclaim == nil {
+		return fmt.Errorf("reclaim-on-cancel requires autoplay callbacks: %s", m.ID)
+	}
 	if b := m.BotSearch; b != nil && (m.BotAction == nil || b.Input == nil || b.Think == nil || b.Budget < 0 || b.Budget > 10*time.Second) {
 		return fmt.Errorf("invalid bot search registration: %s", m.ID)
 	}
@@ -155,6 +170,9 @@ func (m Module) Validate() error {
 func (m Match) Validate(players int) error {
 	if m.Schema < 0 || !json.Valid(m.Data) || string(m.Data) == "null" || m.Deadline < 0 || m.SystemDeadline < 0 {
 		return errors.New("invalid game snapshot")
+	}
+	if m.Paused && (m.Deadline != 0 || m.SystemDeadline != 0 || len(m.TimeoutActors) != 0 || m.Attention == nil || len(m.Attention) != 0 || m.Result != nil) {
+		return errors.New("paused game must clear timers, attention and result")
 	}
 	for _, actors := range [][]int{m.Actors, m.TimeoutActors, m.Attention, m.Eliminated} {
 		seen := map[int]bool{}

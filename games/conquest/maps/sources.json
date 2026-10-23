@@ -1,0 +1,17 @@
+{
+  "title": "Natural Earth 1:110m Admin 0 Countries",
+  "file": "source/ne_110m_admin_0_countries.geojson",
+  "sourceUrl": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson",
+  "projectUrl": "https://www.naturalearthdata.com/",
+  "license": "Public domain",
+  "licenseUrl": "https://www.naturalearthdata.com/about/terms-of-use/",
+  "sha256": "6866c877d39cba9c357620878839b336d569f8c662d3cfab4cb1dbe2d39c977f",
+  "retrieved": "2026-10-23",
+  "generator": "generate.py",
+  "changes": "中文地名标准化，大国按经纬分界细分，欧洲裁剪，SVG 路径与内部标签，真实边界邻接，显式海路，2～8 人开局位置。",
+  "licenseEvidence": {
+    "file": "source/LICENSE.md",
+    "sourceUrl": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/LICENSE.md",
+    "sha256": "2631b5b39b6d1acc56de75235109b5af2dbb4b0ac5a127b6f06185977247fd4b"
+  }
+}

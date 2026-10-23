@@ -1,0 +1,61 @@
+{
+  "observedAt": "2026-10-23",
+  "reference": "Age of Conquest III desktop 3.0.5318",
+  "download": "https://www.ageofconquest.com/download/user_aoc_v03/standalone/age_of_conquest_iii_win32_3.0.5318.zip",
+  "listing": "https://www.ageofconquest.com/download_v03.html",
+  "iosWorld": "https://apps.apple.com/us/app/age-of-conquest-world/id386104577",
+  "identityLimit": "Official historical desktop sibling; not established byte-equivalent to iOS World 1.0.12. No fourth-generation rules used.",
+  "reaEvidence": {
+    "inventory": "ev_37f0c3520bad97474a1beb007cbe12c6c41f66ff9d97bf3a96022a0b5a045336",
+    "inspection": "ev_b75fef74a6c6e6220a1135f16a6eaae6286f78d6f03a7d76a26d526e89a5b175",
+    "summary": "ev_bd64a73da66219a28c5c1a17a6be3fc44c8991f222fe0f1ba267beca4313a746"
+  },
+  "files": {
+    "aoc3-3.0.5318.zip": {
+      "bytes": 40325442,
+      "sha256": "3ae0dd72389b23aeaad5b4bffdbbfbad11e1de5c064c20e23b20b328bb3e1624"
+    },
+    "aoc-desktop.jar": {
+      "bytes": 1433708,
+      "sha256": "38d7ea0d00ee1539eaf07edebdbe1742e82c40da6666ca794a5e8da240cd8905"
+    },
+    "aoc-desktop-conf.jar": {
+      "bytes": 2915474,
+      "sha256": "955c9e1c7950f325f8fbe21536c0abb21843ad74d2b152ad5ec568bd17df384a"
+    },
+    "manual.html": {
+      "bytes": 10408,
+      "sha256": "e182ed9734d6c907c3963e13722877f892d0303717a3905068ab788860621b2c"
+    },
+    "MessagesBundle.properties": {
+      "bytes": 160393,
+      "sha256": "8cd0215de3e16b8826aca9bb21bedb5e53b1d4ad050702d39970cd36e61352e5"
+    },
+    "cfr-0.152.jar": {
+      "bytes": 2162315,
+      "sha256": "f686e8f3ded377d7bc87d216a90e9e9512df4156e75b06c655a16648ae8765b2"
+    }
+  },
+  "classDigests": {
+    "cg/bu.class": "532fcca31ed21546e01b8bfd0c1a13e643f70766049a692270648381813812de",
+    "cg/pA.class": "eb4cc155e1c3af3f313e90035fdfc6e7622d8a78d4784e7939a13d6d4d30d6b3",
+    "cg/qM.class": "8f8709bcf41cf42750037d6e13a9db0d4aee1f15213ee6d203df94eb0a9556c0",
+    "cg/ev.class": "c44ed1c9115782accdf092fc0ff2bf8ec25e6195688d6dfacfff425be57b39ba",
+    "cg/zF.class": "755fbdc8311801a80639b61d6980c23d3ee489970c9937dc6af1aa9fc8c52e60",
+    "cg/kc.class": "6a159f32dcfd399393cd429a8bb6ac416a1a61df1dd237a925df10fa7e6fd776",
+    "cg/tS.class": "634680b78642bc16d4b3d26ca51267945f60b71606f65b73b04b1c6f08360da0",
+    "cg/wP.class": "8bac61ebc4fac23936a86f6f1b0297d2ed403ecd5f98382f58db14b154de8a5b",
+    "cg/nd.class": "306292318d25ca189cef433f2b1a799f7d59eae22e44bc7d04098d4f44cd55ab",
+    "cg/pG.class": "22d8a1074496722a3dd0bc6531d92db12076cf92e30bcd94062b6eced550e716",
+    "cg/dA.class": "2ed28833b9828095bb74c27731f31273c02926373ba03f2c72530963b43ee46b",
+    "cg/mt.class": "ef1ac9d9719b69c94ab0a7043c20ff28d91fab976b6bc6a3bee39253d6845555",
+    "cg/lw.class": "90d1faaadf0fbd298643cd89c40c27f02c74bc398597f61cbb715ba4c6ed6b86",
+    "cg/ei.class": "36939ca6d23d3424a70b26591592f23b9e4a0e8827865e98538051f3fdc3f9e6",
+    "cg/dg.class": "7c667c28584a079a72ef1ee5e3d97987b3a6832e24b34b8989011d98cd955104",
+    "cg/yR.class": "4ad014442285f757bbe9c1438909d9db84661ddea5598c88f75b8823d4416afe",
+    "cg/rL.class": "f787539dbee6bfe285fe3f1ffea6a40de60bfd9d1308dccb0f4f4a25f3309151",
+    "cg/rv.class": "138c5ea1db4a7786e709652418c379fb7ddd47482581abe21ef0e1895b3461b1",
+    "cg/rA.class": "5b65bfa11504e2391c28d0d0800288e38a28d93eb66411293004b6af260b2090",
+    "cg/av.class": "f55cac2488b987ae79e332de7006634acbe49192a2c69128e0ac25501d97e490"
+  }
+}

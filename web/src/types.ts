@@ -141,6 +141,8 @@ export type State = {
 };
 export type Act = (action: Record<string, unknown>) => Promise<void>;
 export type GameHeader = {
+  paused?: boolean;
+  pauseExpiresAt?: number;
   data?: unknown;
   actors?: number[];
   attention?: number[];

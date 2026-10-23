@@ -1,0 +1,46 @@
+{
+  "version": "conquest/v1",
+  "generator": "games/conquest/assets/generate_audio.py",
+  "generatorSha256": "52d6b26fbd749cb45c93127f83afe86cd671dc944d41af7fcf31ccc32a8e19d6",
+  "license": "wire-board contributors 原创，供 wire-board 项目使用；无外部采样或原版音效。",
+  "source": {
+    "kind": "original-synthesis",
+    "author": "wire-board contributors",
+    "externalSamples": [],
+    "method": "确定性正弦与低电平倍频叠加，平滑起止和指数衰减包络；Python 标准库离线生成。",
+    "reference": "声音节奏仅表达行军、占领与轮次，不复刻 Age of Conquest 商业音频。"
+  },
+  "format": {
+    "container": "WAV",
+    "encoding": "PCM signed little-endian",
+    "sampleRate": 22050,
+    "bits": 16,
+    "channels": 1
+  },
+  "entries": [
+    {
+      "file": "march.wav",
+      "urlPath": "/conquest/v1/audio/march.wav",
+      "output": "games/conquest/assets/public/conquest/v1/audio/march.wav",
+      "sha256": "22db2b6cf8b330cb9f2e017d4bd262d5b3fa8bdd54e38ad4a807434099097843",
+      "bytes": 16802,
+      "frames": 8379
+    },
+    {
+      "file": "capture.wav",
+      "urlPath": "/conquest/v1/audio/capture.wav",
+      "output": "games/conquest/assets/public/conquest/v1/audio/capture.wav",
+      "sha256": "37d30d4a133e4504c047e0926972a991e9ef5b4dc77486e348d037878b2dc146",
+      "bytes": 26944,
+      "frames": 13450
+    },
+    {
+      "file": "round.wav",
+      "urlPath": "/conquest/v1/audio/round.wav",
+      "output": "games/conquest/assets/public/conquest/v1/audio/round.wav",
+      "sha256": "c4711aa740a8d8a2e87a5c93fe681fcb71af04ae8a590ad38ca9f2b44f08b41b",
+      "bytes": 24740,
+      "frames": 12348
+    }
+  ]
+}

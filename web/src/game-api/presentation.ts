@@ -21,7 +21,7 @@ export function useRoomPresentation(
         room?.loading?.frozenAt ?? serverNow - (room?.clockOffsetMs ?? 0),
       receivedAt,
       epoch,
-      paused: !!room?.loading,
+      paused: !!room?.loading || !!room?.game?.paused,
     };
     return realtime
       ? {
@@ -42,6 +42,7 @@ export function useRoomPresentation(
     epoch,
     room?.clockOffsetMs,
     room?.loading?.frozenAt,
+    room?.game?.paused,
   ]);
   const owner = useRef<
     | {

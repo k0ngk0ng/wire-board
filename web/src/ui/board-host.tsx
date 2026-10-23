@@ -67,7 +67,7 @@ export function Modal({
     document.addEventListener("keydown", key);
     return () => {
       document.removeEventListener("keydown", key);
-      prev?.focus();
+      prev?.focus({ preventScroll: true });
     };
   }, []);
   return (

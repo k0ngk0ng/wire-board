@@ -55,6 +55,16 @@ games/<id>/
 
 `Actors` 是当前可行动玩家，`TimeoutActors` 是截止时仍欠操作的玩家，两者不必相同。`Deadline` 为 Unix 毫秒，零表示没有定时窗口。游戏自行保存暂停的时间预算、并发响应令牌等信息，不把复杂规则交给通用回合引擎。若没有提供电脑／托管能力，应使用无自动接管的流程，不依赖截止时间自动推进。
 
+各席位使用独立截止时间的模块可设置 `ReclaimOnCancel: true`。平台在玩家从托管切回手动时调用 `Reclaim`，即使该席位不是全局最早到期的 `TimeoutActors`；模块自行判断该席位是否确实需要恢复操作窗口。回调不能延长尚未过期的时间、重新打开已提交操作、解除暂停或改变其他席位的截止时间。重复取消已经关闭的托管不再次调用回调；保存失败时控制状态与时间一起回滚。默认不启用，现有模块仍按原有最早到期窗口规则调用，实时模块仍在取消托管时清理旧控制。公共 HTTP 验收命令为 `go test -race ./internal/gameapi ./internal/server -run 'Test(ReclaimOnCancelRegistration|ModuleIndependentDeadlineReclaimHTTP|ModuleReclaimCancelPreservesOtherStatesHTTP)' -count=1`，证据保存在 `.local/module-reclaim-cancel/`。
+
+需要跨天保存的游戏可显式设置 `Match.Paused: true`。暂停权限、投票和恢复操作由游戏通过正常 `Apply` 处理；模块须在 `Data` 保存剩余操作时间，并清空 `Deadline`、`SystemDeadline`、`TimeoutActors`，将 `Attention` 设为显式空数组。暂停期间不能有 `Result`，但 `Actors` 可保留供真人提交恢复投票。平台停止普通电脑、后台选步和系统推进；已在计算的后台任务会被取消，迟到结果不能写入。电脑不会自动提交恢复投票，游戏须根据席位控制状态处理电脑同意。
+
+显式暂停的进行中房间连续 30 天无人操作后关闭，普通房间仍为 24 小时。期限以持久化的 `LastActive` 计算；刷新、观战和重启不延长保留期。关闭不计胜负或积分，沿用 `inactive` 原因和历史记录。恢复后立即使用普通闲置策略，并由游戏按已保存的剩余时间重建操作期限，不重新发放资源或推进回合。旧游戏未设置 `Paused` 时行为不变。前端公开 `room.game.paused` 和暂停时的 `pauseExpiresAt`（Unix 毫秒）；公共回合提示保留倒计时占位并显示「对局已暂停」，`BoardProps.clock.paused` 同步为真。
+
+实时模块的暂停和恢复也属于必须先持久化的关键状态转换。帧内一个电脑操作进入暂停后，后续电脑和系统计时器不再执行；WebSocket 输入及系统帧必须在保存成功后才发布暂停或恢复状态，保存失败保留原局面。关闭页面根据持久化的暂停标记说明 30 天保留期，普通历史房间仍显示原有 24 小时说明。
+
+公共暂停契约通过 `go test -race ./internal/gameapi ./internal/server -run 'Test(PausedEnvelopeValidation|ModulePaused)' -count=1` 和 `node --test web/tests/module-pause.test.mjs web/tests/closed-room.test.mjs` 验证，结果保存在 `.local/module-pause/`。HTTP／WebSocket 场景覆盖暂停与恢复、权限、幂等、事务回滚、电脑静默、运行中后台选步取消、实时帧与输入的暂停落库、跨天重启和到期关闭；组件渲染验证不代替游戏自己的桌面与窄屏交互验收。
+
 `Attention` 单独指定需要提示「等待行动」的玩家，必须属于 `Actors`。未设置（`nil`）时沿用 `Actors`；显式空数组表示无人欠操作，持久化后仍保留区别。可选操作不应因此让全桌显示为必须回应。
 
 `SystemDeadline` 为独立的 Unix 毫秒时间，零表示没有系统事件。它要求模块提供 `OnTimer`，但不要求支持电脑／托管。宿主在处理玩家超时前调用它，回调须清零截止时间或设到 `Context.Now` 之后，避免过期事件反复执行。快照、日志、战绩及系统动作记录在一个事务内提交；回调或事务失败时保留原状态并在后续调度重试。因此回调必须保持无外部副作用。玩家在临界时间提交的操作仍须由模块校验窗口和截止时间。

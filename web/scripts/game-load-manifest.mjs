@@ -18,22 +18,16 @@ export function gameLoadManifest() {
         chunks.find(
           (x) => x.isEntry && x.facadeModuleId?.endsWith("/index.html"),
         ) ?? chunks.find((x) => x.isEntry);
-      function graph(file, dynamic = false, seen = new Set()) {
+      function graph(file, seen = new Set()) {
         if (seen.has(file)) return seen;
         seen.add(file);
         const c = bundle[file];
         if (c?.type !== "chunk") return seen;
         for (const css of c.viteMetadata?.importedCss ?? []) seen.add(css);
-        for (const imp of c.imports) graph(imp, dynamic, seen);
-        if (dynamic && c !== entry)
-          for (const imp of c.dynamicImports) {
-            const target = bundle[imp];
-            if (
-              target?.type === "chunk" &&
-              !target.facadeModuleId?.endsWith("/module.tsx")
-            )
-              graph(imp, true, seen);
-          }
+        for (const imp of c.imports) graph(imp, seen);
+        // Lazy imports can be mutually exclusive maps or optional renderers.
+        // Their owning Board loads the selected branch and reports ready only
+        // after initialization. Preloading every branch defeats that contract.
         return seen;
       }
       const records = (files) =>
@@ -59,7 +53,7 @@ export function gameLoadManifest() {
           .map((p) => p.match(/\/games\/([^/]+)\/web\/module\.tsx$/)?.[1])
           .find(Boolean);
         if (id) {
-          const files = graph(c.fileName, true);
+          const files = graph(c.fileName);
           const modulePath = Object.keys(c.modules).find((p) =>
             p.endsWith(`/games/${id}/web/module.tsx`),
           );
@@ -73,7 +67,7 @@ export function gameLoadManifest() {
                 p.endsWith("/legacy/room-ui.tsx"),
               ),
             );
-            if (legacy) graph(legacy.fileName, true, files);
+            if (legacy) graph(legacy.fileName, files);
           }
           games[id] = records(files);
         }
