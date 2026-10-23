@@ -584,6 +584,7 @@ function App() {
     );
   const room = presented.room;
   const compactPoker =
+    !adminOpen &&
     !!room?.game &&
     (room.status === "playing" || room.status === "finished") &&
     gameModule(room.kind)?.category === "poker";
