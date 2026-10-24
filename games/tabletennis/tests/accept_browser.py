@@ -55,6 +55,7 @@ try:
   assert room()['you']==seat
   if seat:hostcmd('autoplay',enabled=True)
   time.sleep(.25)
+  if width<650:wait(lambda:js('(()=>{const r=document.querySelector(".tt-scene canvas").getBoundingClientRect();return r.top>=0&&r.bottom<=innerHeight+2})()'),3)
   entry=js('({height:innerHeight,canvas:document.querySelector(".tt-scene canvas").getBoundingClientRect().toJSON()})')
   if width<650:assert entry['canvas']['top']>=0 and entry['canvas']['bottom']<=entry['height']+2,entry
   b('scrollintoview','.tt-board');meta=js('({width:innerWidth,overflow:document.documentElement.scrollWidth>innerWidth,buttons:document.querySelectorAll(".tt-board button").length,frame:document.querySelector(".tt-scene canvas").__tableTennisFrame,rect:document.querySelector(".tt-scene canvas").getBoundingClientRect().toJSON()})');assert not meta['overflow'] and meta['buttons']==0 and meta['frame']['rackets']==n,meta
@@ -66,10 +67,15 @@ try:
   ws=b('get','cdp-url');ws=ws if isinstance(ws,str) else ws.get('url',ws.get('cdpUrl',ws.get('value')))
   native=[]
   report['currentCase']={'court':court,'metadata':meta}
-  for kind in ['drive','chop']:
-   r=subprocess.run(['node',str(HERE/'native-strike.mjs'),ws,BASE,json.dumps({'kind':kind,'touch':width<650})],cwd=ROOT,env=ENV,capture_output=True,text=True,timeout=40)
+  strokes=[{'kind':kind,'touch':width<650} for kind in ['drive','chop']]
+  if os.environ.get('TT_BROWSER_SPEED'):strokes=[{'kind':'drive','touch':width<650,'serveOnly':True,'stepDelay':delay} for delay in [60,8]]
+  for stroke_options in strokes:
+   r=subprocess.run(['node',str(HERE/'native-strike.mjs'),ws,BASE,json.dumps(stroke_options)],cwd=ROOT,env=ENV,capture_output=True,text=True,timeout=40)
    if r.returncode:raise RuntimeError(r.stderr+r.stdout)
    native.append(json.loads(r.stdout))
+  if os.environ.get('TT_BROWSER_SPEED'):
+   assert native[1]['stroke']['power']>native[0]['stroke']['power']+.1,native
+   assert native[1]['swingDuration']<native[0]['swingDuration'],native
   if os.environ.get('TT_BROWSER_MOVEMENT'):
    r=subprocess.run(['node',str(HERE/'native-movement.mjs'),ws,BASE,str(width<650).lower()],cwd=ROOT,env=ENV,capture_output=True,text=True,timeout=40);assert r.returncode==0,r.stderr+r.stdout;native.append(json.loads(r.stdout))
   b('screenshot',OUT/(court+'-'+str(width)+'.png'))
@@ -101,6 +107,16 @@ try:
    b('click','[role="dialog"] button[aria-label="关闭"]');time.sleep(.4);assert not js('!!document.querySelector("[role=dialog]")')
    b('click','button.result-reopen');wait(lambda:js('!!document.querySelector("[role=dialog]")'));report['cases'][-1]['resultReopened']=True
    b('click','[role="dialog"] button[aria-label="关闭"]')
+  if os.environ.get('TT_BROWSER_SERVICE'):
+   cmd('autoplay',enabled=True);serves={};initial=room()['game']['data'];target=sum(initial['score'])+6
+   def service_progress():
+    state=room()['game']['data'];total=sum(state['score'])
+    if state['phase']=='serve':
+     turn=10+total-20 if min(state['score'])>=10 else total//2
+     assert state['expected']==state['order'][turn%len(state['order'])],state
+     serves[total]={'total':total,'score':state['score'],'server':state['expected'],'order':state['order'],'ballWithinService':1 if min(state['score'])>=10 else total%2+1}
+    return total>=target
+   wait(service_progress,100);assert len(serves)>=4,serves;report['cases'][-1]['serviceRotation']=list(serves.values())
   report['cases'][-1]['seat']=seat
   report['cases'][-1]['visualAudit']=audit
   js('window.__retiredTTCourt=document.querySelector(".tt-scene canvas");true')
