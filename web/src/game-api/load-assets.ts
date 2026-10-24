@@ -1,3 +1,4 @@
+import { VerifiedAssetCache } from "./load-cache";
 import { loadGame } from "./registry";
 import type { GameRoom } from "./module";
 type File = { url: string; bytes: number };
@@ -14,6 +15,8 @@ type Manifest = {
   media: Record<string, number>;
 };
 const retainedImages = new Map<string, HTMLImageElement>();
+const verifiedAssets = new VerifiedAssetCache();
+let retainedManifest: Manifest | undefined;
 async function download(
   file: File,
   base: string,
@@ -69,6 +72,7 @@ async function download(
 }
 async function batch(
   files: File[],
+  build: string,
   base: string,
   signal: AbortSignal,
   report: (loaded: number, total: number) => void,
@@ -81,13 +85,16 @@ async function batch(
       while (index < files.length) {
         signal.throwIfAborted();
         const file = files[index++];
-        await download(file, base, signal, (n) => {
+        const update = (n: number) => {
           counts.set(file.url, Math.min(n, file.bytes));
           report(
             [...counts.values()].reduce((a, b) => a + b, 0),
             total,
           );
-        });
+        };
+        await verifiedAssets.load(file, build, base, signal, update, () =>
+          download(file, base, signal, update),
+        );
       }
     }),
   );
@@ -98,24 +105,41 @@ export async function prepareGame(
   signal: AbortSignal,
   progress: (p: LoadProgress) => void,
 ) {
-  progress({ percent: 0, label: "读取资源清单" });
-  const response = await fetch("/game-load-manifest.json", {
-    cache: "no-cache",
-    signal,
-  });
-  if (!response.ok) throw Error("无法读取资源清单，请重试");
-  const manifest: Manifest = await response.json();
+  progress({ percent: 0, label: "准备对局" });
+  let manifest: Manifest;
+  // A new loading gate carries the authoritative build identity. Without one,
+  // revalidate the manifest so reconnects cannot quietly reuse an old release.
+  if (
+    retainedManifest &&
+    room.loading?.build === retainedManifest.build &&
+    document.querySelector(`script[src="${retainedManifest.entry}"]`)
+  ) {
+    manifest = retainedManifest;
+  } else {
+    progress({ percent: 0, label: "读取资源清单" });
+    const response = await fetch("/game-load-manifest.json", {
+      cache: "no-cache",
+      signal,
+    });
+    if (!response.ok) throw Error("无法读取资源清单，请重试");
+    manifest = await response.json();
+  }
+  signal.throwIfAborted();
   if (
     !document.querySelector(`script[src="${manifest.entry}"]`) ||
     (room.loading && room.loading.build !== manifest.build)
   )
     throw Error("页面版本已更新，请刷新后加载");
+  retainedManifest = manifest;
   const files = manifest.games[room.kind];
   if (!files) throw Error("未找到游戏资源清单");
-  await batch(files, "", signal, (loaded, total) =>
+  const warmCode = files.every((file) =>
+    verifiedAssets.has(file, manifest.build, ""),
+  );
+  await batch(files, manifest.build, "", signal, (loaded, total) =>
     progress({
       percent: total ? (loaded / total) * 35 : 35,
-      label: "下载游戏程序",
+      label: warmCode ? "复用已缓存的游戏程序" : "加载游戏程序",
       loaded,
       total,
     }),
@@ -133,10 +157,13 @@ export async function prepareGame(
     if (!bytes) throw Error("资源清单缺少 " + url);
     return { url, bytes };
   });
-  await batch(media, assets, signal, (loaded, total) =>
+  const warmMedia = media.every((file) =>
+    verifiedAssets.has(file, manifest.build, assets),
+  );
+  await batch(media, manifest.build, assets, signal, (loaded, total) =>
     progress({
       percent: 35 + (total ? (loaded / total) * 55 : 55),
-      label: "下载场地与角色",
+      label: warmMedia ? "复用已缓存的游戏素材" : "加载游戏素材",
       loaded,
       total,
     }),
