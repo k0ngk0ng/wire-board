@@ -7,7 +7,7 @@ import (
 	"fmt"
 )
 
-//go:embed world.json europe.json
+//go:embed world.json europe.json usa.json china.json
 var data embed.FS
 
 type Point struct {
@@ -30,6 +30,14 @@ type SeaRoute struct {
 	Path string `json:"path"`
 }
 
+type Inset struct {
+	Title  string  `json:"title"`
+	X      float64 `json:"x"`
+	Y      float64 `json:"y"`
+	Width  float64 `json:"width"`
+	Height float64 `json:"height"`
+}
+
 type Map struct {
 	ID          string              `json:"id"`
 	Version     int                 `json:"version"`
@@ -41,6 +49,7 @@ type Map struct {
 	Provinces   []Province          `json:"provinces"`
 	Starts      map[string][]string `json:"starts"`
 	SeaRoutes   []SeaRoute          `json:"seaRoutes"`
+	Insets      []Inset             `json:"insets,omitempty"`
 }
 
 type Summary struct {
@@ -56,7 +65,7 @@ type Summary struct {
 
 // Load returns a separate decoded copy, so one match cannot mutate another map.
 func Load(id string) (Map, error) {
-	if id != "world" && id != "europe" {
+	if id != "world" && id != "europe" && id != "usa" && id != "china" {
 		return Map{}, fmt.Errorf("未知地图：%s", id)
 	}
 	raw, err := data.ReadFile(id + ".json")
@@ -71,8 +80,8 @@ func Load(id string) (Map, error) {
 }
 
 func Catalog() []Summary {
-	result := make([]Summary, 0, 2)
-	for _, id := range []string{"europe", "world"} {
+	result := make([]Summary, 0, 4)
+	for _, id := range []string{"world", "europe", "usa", "china"} {
 		m, err := Load(id)
 		if err != nil {
 			panic(err) // Compiled-in map corruption is a build error, never user input.

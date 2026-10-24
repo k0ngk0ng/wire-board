@@ -19,7 +19,7 @@ func TestConquestProductionRegistration(t *testing.T) {
 		if m.Name != "征服时代" || m.MinPlayers != 2 || m.MaxPlayers != 8 || m.BotAction == nil || m.Reclaim == nil {
 			t.Fatal("incomplete conquest production registration")
 		}
-		for _, id := range []string{"world", "europe"} {
+		for _, id := range []string{"world", "europe", "usa", "china"} {
 			if _, e := m.Configure(4, json.RawMessage(`{"mapId":"`+id+`"}`)); e != nil {
 				t.Fatal(id, e)
 			}

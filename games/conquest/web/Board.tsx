@@ -39,6 +39,8 @@ import type { ConquestMap, Event, MapProvince, Order, View } from "./types";
 const loaders: Record<string, () => Promise<{ default: ConquestMap }>> = {
   world: () => import("../maps/world.json"),
   europe: () => import("../maps/europe.json"),
+  usa: () => import("../maps/usa.json"),
+  china: () => import("../maps/china.json"),
 };
 const number = (n: number) => n.toLocaleString("zh-CN");
 const force = (n: number) =>
@@ -806,6 +808,21 @@ function MapBoard({
               className="cq-map-layer"
               transform={`translate(${camera.camera.x} ${camera.camera.y}) scale(${camera.camera.scale})`}
             >
+              {map.insets?.map((inset) => (
+                <rect
+                  key={inset.title}
+                  x={inset.x}
+                  y={inset.y}
+                  width={inset.width}
+                  height={inset.height}
+                  fill="none"
+                  stroke="#637d75"
+                  strokeWidth="1"
+                  strokeDasharray="4 3"
+                  vectorEffect="non-scaling-stroke"
+                  pointerEvents="none"
+                />
+              ))}
               {map.provinces.map((p) => {
                 const s = provinces.get(p.id);
                 const reachable = marching && adjacent.has(p.id);
@@ -906,6 +923,23 @@ function MapBoard({
               })}
             </g>
             <g ref={camera.overlayRef} className="cq-army-layer">
+              {map.insets?.map((inset) => {
+                const p = viewPoint(camera.camera, {
+                  x: inset.x + 6,
+                  y: inset.y + 17,
+                });
+                return (
+                  <g
+                    key={inset.title}
+                    transform={`translate(${p.x} ${p.y})`}
+                    pointerEvents="none"
+                  >
+                    <g className="cq-map-annotation">
+                      <text>{inset.title}</text>
+                    </g>
+                  </g>
+                );
+              })}
               {visibleLabels.map(({ p, point }) => {
                 const actual = provinces.get(p.id)!;
                 const projected = projection.get(p.id);

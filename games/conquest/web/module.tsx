@@ -8,7 +8,7 @@ export default defineGame<View, Options>({
   ...catalog,
   asyncBoard: true,
   defaultOptions: {
-    mapId: "europe",
+    mapId: "world",
     difficulty: "normal",
     turnSeconds: 120,
     fog: false,
@@ -26,8 +26,10 @@ export default defineGame<View, Options>({
             onChange({ ...value, mapId: e.target.value as Options["mapId"] })
           }
         >
-          <option value="europe">欧洲</option>
           <option value="world">世界</option>
+          <option value="europe">欧洲</option>
+          <option value="usa">美国</option>
+          <option value="china">中国</option>
         </select>
       </label>
       <label>
@@ -115,7 +117,7 @@ export default defineGame<View, Options>({
   Rules: () => (
     <div className="cq-rules">
       <p>
-        选择世界或欧洲地图，经营领土并消灭所有敌对势力。各势力同时规划，全部存活玩家提交后按服务器次序结算。
+        选择地图，经营领土并消灭所有敌对势力。各势力同时规划，全部存活玩家提交后按服务器次序结算。
       </p>
       <ol>
         <li>

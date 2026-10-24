@@ -28,7 +28,8 @@ var geographyMaps map[string]*geography
 func mapFor(id string) (*geography, error) {
 	mapOnce.Do(func() {
 		geographyMaps = map[string]*geography{}
-		for _, id := range []string{"world", "europe"} {
+		for _, entry := range conquestmaps.Catalog() {
+			id := entry.ID
 			m, e := conquestmaps.Load(id)
 			if e != nil {
 				continue
@@ -42,7 +43,7 @@ func mapFor(id string) (*geography, error) {
 	})
 	g, ok := geographyMaps[id]
 	if !ok {
-		return nil, errors.New("请选择世界或欧洲地图")
+		return nil, errors.New("请选择世界、欧洲、美国或中国地图")
 	}
 	return g, nil
 }
@@ -64,7 +65,7 @@ func configure(n int, b json.RawMessage) (json.RawMessage, error) {
 	if n < 2 || n > 8 {
 		return nil, errors.New("征服时代支持2～8席")
 	}
-	o := Options{MapID: "europe", Difficulty: "normal", TurnSeconds: 120}
+	o := Options{MapID: "world", Difficulty: "normal", TurnSeconds: 120}
 	if len(b) > 0 {
 		if e := strict(b, &o); e != nil {
 			return nil, e

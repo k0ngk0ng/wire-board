@@ -10,6 +10,7 @@ import hashlib
 import http.cookiejar
 import json
 import os
+import re
 from pathlib import Path
 import shutil
 import subprocess
@@ -27,7 +28,10 @@ ARGS.add_argument('--base-url', default='')
 ARGS.add_argument('--queue-case', choices=['all','undo','reject'])
 ARGS.add_argument('--hold-actions', action='store_true')
 ARGS.add_argument('--marker-case', action='store_true')
+ARGS.add_argument('--maps', default='')
 ARGS = ARGS.parse_args()
+MAP_IDS=ARGS.maps.split(',') if ARGS.maps else (['europe','world'] if ARGS.baseline else ['world','europe','usa','china'])
+assert set(MAP_IDS)<=set(['world','europe','usa','china'])
 RUN = uuid.uuid4().hex[:6]
 AREA = ROOT/'.local/conquest-map-ux'
 OUT = AREA/('queue-'+ARGS.queue_case if ARGS.queue_case else 'hold-actions' if ARGS.hold_actions else 'marker-case' if ARGS.marker_case else 'baseline' if ARGS.baseline else 'browser')
@@ -53,7 +57,7 @@ saved_dist = AREA/('saved-dist-'+RUN)
 
 def source_hashes():
     paths=list((ROOT/'games/conquest/web').glob('*'))+list((ROOT/'games/conquest/server').glob('*.go'))
-    paths += [ROOT/'games/conquest/maps/world.json',ROOT/'games/conquest/maps/europe.json',Path(__file__),Path(__file__).with_name('map_ux_input.mjs'),Path(__file__).with_name('http_e2e_test.go')]
+    paths += [*sorted((ROOT/'games/conquest/maps').glob('*.json')),Path(__file__),Path(__file__).with_name('map_ux_input.mjs'),Path(__file__).with_name('http_e2e_test.go')]
     return {str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(paths) if p.is_file()}
 
 
@@ -122,6 +126,7 @@ def action(name):
 
 def reset_map():
     click('复位地图' if js('!!document.querySelector("button[aria-label=复位地图]")') else '全图')
+    js('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))')
 
 
 def wait_orders(count):
@@ -375,7 +380,7 @@ def orders(map_id,peer):
     assert plan['orders'][2]['to']==target and plan['orders'][2]['amount']==second
     REPORT['checks'].append(map_id+'-repeat-target-half-remaining')
     saved=view();browser('reload');ready();assert view()['orders']==saved['orders'],'reload lost private plans'
-    loaded=js(r'performance.getEntriesByType("resource").map(r=>r.name).filter(n=>/\/(world|europe)-[^/]+\.js/.test(n))')
+    loaded=js(r'performance.getEntriesByType("resource").map(r=>r.name).filter(n=>/\/(world|europe|usa|china)-[^/]+\.js/.test(n))')
     assert loaded and all('/'+map_id+'-' in u for u in loaded),loaded
     REPORT.setdefault('loadedResources',{})[map_id]=loaded
     browser('scrollintoview','.cq-viewport');screenshot(map_id+'-attack-icon-plan')
@@ -568,6 +573,66 @@ def hold_actions(peer):
     finish(peer)
 
 
+def creation_maps(peer):
+    browser('set','viewport','390','780')
+    for map_id in ['world','europe','usa','china']:
+        click('创建房间');browser('find','role','button','click','--name','征服时代','--exact')
+        browser('wait','[aria-label="征服地图"]')
+        values=js('[...document.querySelector("[aria-label=征服地图]").options].map(o=>o.value)')
+        assert values==['world','europe','usa','china'],values
+        assert js('document.querySelector("[aria-label=征服地图]").value')=='world'
+        if map_id!='world':browser('select','[aria-label="征服地图"]',map_id)
+        browser('screenshot',str(OUT/('create-'+map_id+'.png')))
+        browser('click','.create-room-modal button[type=submit]')
+        browser('wait','.waiting-actions');assert room()['options']['mapId']==map_id
+        peer.command('join',room());peer.command('ready');command('ready');command('start');peer.ready_load();ready()
+        assert view()['mapId']==map_id
+        REPORT['checks'].append('create-selected-'+map_id)
+        finish(peer)
+
+
+def regional_small_targets(map_id):
+    if map_id not in ['usa','china']:return
+    browser('set','viewport','320','780')
+    geo=json.loads((ROOT/'games/conquest/maps'/f'{map_id}.json').read_text())
+    def contains(point,ring):
+        x,y=point;odd=False
+        for a,b in zip(ring,ring[1:]+ring[:1]):
+            if (a[1]>y)!=(b[1]>y) and x<(b[0]-a[0])*(y-a[1])/(b[1]-a[1])+a[0]:odd=not odd
+        return odd
+    for province in (['us-dc','us-hi','us-ak'] if map_id=='usa' else ['cn-hk','cn-mo','cn-tw','cn-hi']):
+        region=next(p for p in geo['provinces'] if p['id']==province)
+        fragments=[]
+        for raw in region['path'].split('Z'):
+            nums=[float(v) for v in re.findall(r'-?\d+(?:\.\d+)?',raw)]
+            ring=list(zip(nums[::2],nums[1::2]))
+            if ring and contains((region['label']['x'],region['label']['y']),ring):fragments.append(ring)
+        fragment=min(fragments,key=lambda r:(max(x for x,y in r)-min(x for x,y in r))*(max(y for x,y in r)-min(y for x,y in r)))
+        bounds=(max(x for x,y in fragment)-min(x for x,y in fragment),max(y for x,y in fragment)-min(y for x,y in fragment))
+        reset_map();browser('scrollintoview','.cq-viewport')
+        for _ in range(8):
+            point=point_for(map_id,province);v=point['viewport']
+            cx=(v['left']+v['right'])/2;cy=(max(v['top'],0)+min(v['bottom'],780))/2
+            dx=max(-v['width']*.38,min(v['width']*.38,cx-point['x']));visible_height=min(v['bottom'],780)-max(v['top'],0)
+            dy=max(-visible_height*.38,min(visible_height*.38,cy-point['y']))
+            # Start on unobstructed map centre, never on an offscreen target or
+            # a fixed zoom button covering its tiny unzoomed fragment.
+            native(dict(mode='drag',x=cx,y=cy,dx=dx,dy=dy,steps=24,pace=16))
+            point=point_for(map_id,province)
+            scale=js('document.querySelector('+json.dumps('[data-cq-province="'+province+'"]')+').getScreenCTM().a')
+            if min(bounds)*scale>=25 and v['left']+8<point['x']<v['right']-8 and max(0,v['top'])+8<point['y']<min(780,v['bottom'])-8:break
+            native(dict(mode='pinch',x=cx,y=cy,start=22,end=62,steps=32,pace=16))
+        point=point_for(map_id,province)
+        scale=js('document.querySelector('+json.dumps('[data-cq-province="'+province+'"]')+').getScreenCTM().a')
+        assert min(bounds)*scale>=24,(province,bounds,scale)
+        assert 0<point['x']<320 and 0<point['y']<780,point
+        native(dict(mode='tap',x=point['x'],y=point['y'],steps=1,pace=0))
+        wait('document.querySelector("[data-conquest-board]").dataset.cqSelected==='+json.dumps(province))
+        (OUT/(map_id+'-'+province+'-hit.json')).write_text(json.dumps({'fragmentCSSWidth':bounds[0]*scale,'fragmentCSSHeight':bounds[1]*scale,'point':point,'scale':scale},indent=2))
+        screenshot(map_id+'-native-small-'+province)
+        REPORT['checks'].append(map_id+'-native-small-region-'+province)
+
+
 try:
     if not BASE:
         if ARGS.baseline:
@@ -598,14 +663,15 @@ try:
     elif ARGS.hold_actions:hold_actions(peer)
     elif ARGS.marker_case:marker_case(peer)
     else:
-        for map_id in ['europe','world']:
+        if not ARGS.baseline:creation_maps(peer)
+        for map_id in MAP_IDS:
             if not ARGS.baseline:
                 for width in [320,390]:mobile_entry(map_id,width,peer)
             new_game(map_id,peer)
             for width in [1440,320,390]:
                 gestures(map_id,width);map_first_invariants(map_id,width)
             if not ARGS.baseline:
-                orders(map_id,peer);preserve_platform_controls(map_id,peer)
+                regional_small_targets(map_id);orders(map_id,peer);preserve_platform_controls(map_id,peer)
             finish(peer)
             if not ARGS.baseline:fort_case(map_id,peer)
         if not ARGS.baseline:eight_fog_and_spectator();queue_regressions(peer);hold_actions(peer);marker_case(peer)

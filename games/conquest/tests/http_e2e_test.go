@@ -252,7 +252,7 @@ func (tb *table) restart() {
 }
 
 func TestConquestRegistrationAndInvalidHTTP(t *testing.T) {
-	for _, mapID := range []string{"world", "europe"} {
+	for _, mapID := range []string{"world", "europe", "usa", "china"} {
 		t.Run(mapID, func(t *testing.T) {
 			tb := newTable(t, 2, mapID, false)
 			a := tb.people[0]
@@ -513,7 +513,7 @@ func TestConquestAutoPlayMixedCompleteHTTP(t *testing.T) {
 }
 
 func TestConquestFullGamesHTTP(t *testing.T) {
-	for _, mapID := range []string{"europe", "world"} {
+	for _, mapID := range []string{"world", "europe", "usa", "china"} {
 		for n := 2; n <= 8; n++ {
 			t.Run(fmt.Sprintf("%s-%d", mapID, n), func(t *testing.T) {
 				t.Parallel()

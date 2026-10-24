@@ -101,11 +101,24 @@ class MapContract(unittest.TestCase):
                             self.assertEqual(sum(inside(point, polygon) for polygon in polygons) % 2, 0, ("sea route crosses land", route["from"], route["to"], pid, point))
         # Independent known borders catch a connected but geographically wrong
         # graph. They are not inferred again by the generator implementation.
-        known_land = [("fra-east", "deu-west"), ("esp-west", "prt"), ("ukr", "pol"), ("deu-east", "pol")]
-        known_sea = [("gbr-south", "fra-west"), ("esp-west", "mar")]
+        known_land = [("fra-east", "deu-west"), ("esp-west", "prt"), ("ukr", "pol"), ("deu-east", "pol")] if name in ("world", "europe") else []
+        known_sea = [("gbr-south", "fra-west"), ("esp-west", "mar")] if name in ("world", "europe") else []
         if name == "world":
             known_land += [("usa-alaska", "can-west"), ("chn-north", "mng"), ("zaf", "lso"), ("guf", "bra-north")]
             known_sea += [("usa-alaska", "rus-fareast"), ("aus-east", "nzl"), ("moz", "mdg")]
+        if name == "usa":
+            known_land = [("us-ca", "us-or"), ("us-tx", "us-ok"), ("us-ny", "us-pa"), ("us-dc", "us-md")]
+            known_sea = [("us-ak", "us-wa"), ("us-ca", "us-hi")]
+            for pair in [("us-az", "us-co"), ("us-nm", "us-ut"), ("us-ak", "us-wa")]:
+                self.assertNotIn(tuple(sorted(pair)), edges)
+        if name == "china":
+            known_land = [("cn-bj", "cn-he"), ("cn-sh", "cn-zj"), ("cn-sc", "cn-cq"), ("cn-gd", "cn-hk"), ("cn-gd", "cn-mo")]
+            known_sea = [("cn-gd", "cn-hi"), ("cn-fj", "cn-tw")]
+        for inset in data.get("insets", []):
+            self.assertGreater(inset["width"], 0); self.assertGreater(inset["height"], 0)
+            self.assertGreaterEqual(inset["x"], 0); self.assertGreaterEqual(inset["y"], 0)
+            self.assertLessEqual(inset["x"]+inset["width"],data["width"])
+            self.assertLessEqual(inset["y"]+inset["height"],data["height"])
         for a, b in known_land:
             self.assertIn(tuple(sorted((a, b))), edges)
         for a, b in known_sea:
@@ -134,10 +147,39 @@ class MapContract(unittest.TestCase):
         if name == "world":
             for region in ["中国", "印度", "巴西", "澳大利亚", "加拿大", "埃及"]:
                 self.assertIn(region, names)
-        else:
+        elif name == "europe":
             for region in ["法国", "德国", "西班牙", "英国", "意大利", "希腊"]:
                 self.assertIn(region, names)
         self.reports.append({"id": name, "sha256": data["sha256"], "provinces": len(provinces), "landEdges": len(edges), "seaEdges": len(sea), "connected": True, "startCounts": list(range(2, 9))})
+
+        return data
+
+    def test_usa(self):
+        d=self.validate("usa",51)
+        self.assertEqual(len(d["provinces"]),51)
+        ids={p["id"] for p in d["provinces"]}
+        self.assertTrue({"us-ak","us-hi","us-dc","us-ca","us-ny"}<=ids)
+        self.assertEqual(len(d.get("insets",[])),2)
+        hawaii=next(p for p in d["provinces"] if p["id"]=="us-hi")
+        pieces=[r for r in rings(hawaii['path']) if inside((hawaii['label']['x'],hawaii['label']['y']),r)]
+        self.assertTrue(any(max(x for x,y in r)-min(x for x,y in r)>=40 and max(y for x,y in r)-min(y for x,y in r)>=35 for r in pieces),'Hawaii main island was shrunk by remote atolls')
+
+    def test_china(self):
+        d=self.validate("china",34)
+        self.assertEqual(len(d["provinces"]),34)
+        ids={p["id"] for p in d["provinces"]}
+        self.assertTrue({"cn-bj","cn-sh","cn-hk","cn-mo","cn-tw","cn-hi"}<=ids)
+        self.assertEqual(len(d.get("insets",[])),1)
+
+    def test_regional_source_digest(self):
+        m=json.loads((MAPS/"regional-sources.json").read_text())
+        self.assertEqual(m["license"],"Public domain")
+        self.assertEqual(hashlib.sha256((MAPS/m["file"]).read_bytes()).hexdigest(),m["sha256"])
+        self.assertEqual(hashlib.sha256((MAPS/m["licenseEvidence"]["file"]).read_bytes()).hexdigest(),m["licenseEvidence"]["sha256"])
+
+    def test_regional_regeneration(self):
+        r=subprocess.run([sys.executable,"-B",str(MAPS/"generate_regional.py"),"--check"],cwd=ROOT,text=True,capture_output=True)
+        self.assertEqual(r.returncode,0,r.stdout+r.stderr)
 
     def test_world(self):
         self.validate("world", 170)

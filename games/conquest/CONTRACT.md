@@ -1,19 +1,19 @@
 # 征服时代接口（schema 1）
 
-游戏 ID `conquest`，2～8 个席位，自由争霸。按旧版 Domination 执行代码，最后一个存活势力获胜，不要求继续清扫无主中立地区。世界和欧洲共用同一规则，前端仅加载当前 `maps/{mapId}.json`。地图数据和摘要定义见 [地图契约](maps/CONTRACT.md)。
+游戏 ID `conquest`，2～8 个席位，自由争霸。按旧版 Domination 执行代码，最后一个存活势力获胜，不要求继续清扫无主中立地区。世界、欧洲、美国、中国共用同一规则，前端仅加载当前 `maps/{mapId}.json`。地图数据和摘要定义见 [地图契约](maps/CONTRACT.md)。
 
 ## 创建选项
 
 ```ts
 type Options = {
-  mapId: "world" | "europe";
+  mapId: "world" | "europe" | "usa" | "china";
   difficulty: "easy" | "normal" | "hard";
   turnSeconds: 60 | 120 | 180;
   fog: boolean;
 };
 ```
 
-默认 `europe / normal / 120 / false`。人数由平台容量决定，初始地区从地图的对应人数配置取得。首版固定自由争霸和无外交，不提供未实现的同盟选项。
+默认 `world / normal / 120 / false`。人数由平台容量决定，初始地区从地图的对应人数配置取得。已有存档和等待房间的显式地图不被默认值覆盖。固定自由争霸和无外交，不提供未实现的同盟选项。
 
 ## 视图
 
