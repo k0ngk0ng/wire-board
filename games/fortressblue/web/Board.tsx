@@ -824,7 +824,11 @@ export function Board(props: BoardProps<View>) {
         cameraRef.current = centeredCamera(
           s.size.w,
           s.size.h,
-          Math.min(800, s.size.w * 1.25),
+          Math.min(
+            1200,
+            800 * Math.max(1, s.size.w / s.size.h / (16 / 9)),
+            s.size.w * 1.25,
+          ),
           target,
           s.map.width,
           s.map.height,

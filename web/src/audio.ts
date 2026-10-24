@@ -51,6 +51,7 @@ export class GameAudio {
   private pausedOwners = new Set<string>();
   private factory: () => HTMLAudioElement;
   private allowed = true;
+  private level = 1;
   private primed = false;
   private serial = 0;
   private task?: Task;
@@ -59,7 +60,16 @@ export class GameAudio {
     this.factory = factory;
   }
   get enabled() {
-    return this.allowed;
+    return this.allowed && this.level > 0;
+  }
+  setVolume(value: number) {
+    if (!Number.isFinite(value)) return;
+    this.level = Math.max(0, Math.min(1, value));
+    if (this.level === 0) this.stop();
+    if (this.media) this.media.volume = this.level;
+    this.background?.setVolume(this.level);
+    for (const voice of this.loops.values())
+      voice.media.volume = voice.volume * this.level;
   }
   private createElement() {
     const media = this.factory();
@@ -67,6 +77,7 @@ export class GameAudio {
     media.preload = "none";
     media.hidden = true;
     media.muted = !this.allowed;
+    media.volume = this.level;
     if (typeof document !== "undefined") document.body.append(media);
     return media;
   }
@@ -86,7 +97,7 @@ export class GameAudio {
   }
   private available() {
     return (
-      this.allowed && (typeof document === "undefined" || !document.hidden)
+      this.enabled && (typeof document === "undefined" || !document.hidden)
     );
   }
   private playbackSession() {
@@ -294,7 +305,7 @@ export class GameAudio {
     voice.rate = bounded(options.rate, voice.rate, 0.25, 4);
     const media = voice.media;
     if (immediate || typeof requestAnimationFrame === "undefined") {
-      media.volume = voice.volume;
+      media.volume = voice.volume * this.level;
       media.playbackRate = voice.rate;
       return;
     }
@@ -309,13 +320,14 @@ export class GameAudio {
       const elapsed = previous === undefined ? 16 : Math.max(1, now - previous);
       previous = now;
       const blend = 1 - Math.exp(-elapsed / 40);
-      media.volume += (voice.volume - media.volume) * blend;
+      const targetVolume = voice.volume * this.level;
+      media.volume += (targetVolume - media.volume) * blend;
       media.playbackRate += (voice.rate - media.playbackRate) * blend;
       if (
-        Math.abs(media.volume - voice.volume) < 0.001 &&
+        Math.abs(media.volume - targetVolume) < 0.001 &&
         Math.abs(media.playbackRate - voice.rate) < 0.001
       ) {
-        media.volume = voice.volume;
+        media.volume = targetVolume;
         media.playbackRate = voice.rate;
       } else voice.frame = requestAnimationFrame(ramp);
     };
@@ -464,10 +476,10 @@ export class GameAudio {
     )
       return Promise.resolve(true);
     this.background ??= new GameAudio(this.factory);
+    this.background.setVolume(this.level);
     const media = this.background.element();
     media.dataset.platformMusic = "";
     media.loop = (options.loop ?? true) && loopStart === 0;
-    media.volume = 0.15;
     this.backgroundOwner = owner;
     this.backgroundSources = key;
     return this.background.start(
