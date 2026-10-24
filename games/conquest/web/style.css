@@ -17,6 +17,34 @@
 .cq-board * {
   box-sizing: border-box;
 }
+/* The platform owns fullscreen. Only this game's board expands within it. */
+[data-room-fullscreen] .cq-board {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  max-width: min(100%, calc((100dvh - 150px) * 2.2));
+  min-height: 0;
+}
+[data-room-fullscreen] .cq-campaign-strip,
+[data-room-fullscreen] .cq-round-controls {
+  flex: 0 0 auto;
+}
+[data-room-fullscreen] .cq-round-controls {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  font-size: 13px;
+  letter-spacing: normal;
+}
+[data-room-fullscreen] .cq-map-stage {
+  flex: 1;
+  min-height: 0;
+}
+[data-room-fullscreen] .cq-viewport {
+  height: 100%;
+  min-height: 0;
+}
 .cq-board button,
 .cq-finance button,
 .cq-plan-sheet button {
@@ -52,6 +80,7 @@
 }
 .cq-board button:focus-visible,
 .cq-board [role="button"]:focus-visible,
+.cq-amount-panel input:focus-visible,
 .cq-finance input:focus-visible {
   outline: 3px solid #235c76;
   outline-offset: 2px;
@@ -204,9 +233,7 @@
   stroke-width: 3.8px;
 }
 .cq-ruler {
-  fill: #e0b85c;
-  stroke: #5b4b2d;
-  stroke-width: 1.2;
+  overflow: visible;
 }
 .cq-flat-fort {
   color: #36583f;
@@ -243,6 +270,11 @@
   white-space: nowrap;
   color: #4c5c47;
 }
+.cq-land-info .cq-recruit-reason {
+  white-space: normal;
+  color: #704029;
+  font-weight: 650;
+}
 .cq-map-zoom {
   position: absolute;
   right: 10px;
@@ -271,14 +303,23 @@
   cursor: crosshair;
   background: #92b6b9;
 }
-.cq-territory-actions {
+.cq-territory-controls {
   position: absolute;
   left: 50%;
   bottom: 35px;
   transform: translateX(-50%);
-  display: flex;
-  gap: 3px;
+  width: max-content;
   max-width: calc(100% - 12px);
+  display: grid;
+  gap: 5px;
+}
+.cq-territory-controls.amount-open {
+  width: 340px;
+}
+.cq-territory-actions {
+  display: flex;
+  justify-content: center;
+  gap: 3px;
   padding: 5px;
   border: 1px solid #8a987a;
   border-radius: 10px;
@@ -342,6 +383,124 @@
   color: #4d5847;
   border-color: #adb79d;
 }
+.cq-amount-panel {
+  padding: 6px 8px;
+  border: 1px solid #8a987a;
+  border-radius: 9px;
+  color: #263d30;
+  background: #f2efd7;
+  box-shadow: 0 3px 12px #233c3440;
+}
+.cq-amount-heading,
+.cq-amount-adjust {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.cq-amount-heading {
+  font-size: 12px;
+  font-weight: 650;
+}
+.cq-amount-heading label,
+.cq-amount-limit {
+  white-space: nowrap;
+}
+.cq-amount-limit {
+  margin-right: auto;
+  font-variant-numeric: tabular-nums;
+}
+.cq-amount-heading input[type="number"] {
+  width: 68px;
+  min-width: 0;
+  height: 38px;
+  padding: 4px;
+  border: 1px solid #748571;
+  border-radius: 5px;
+  color: #263d30;
+  background: #fffdf1;
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+.cq-amount-heading input::-webkit-inner-spin-button,
+.cq-amount-heading input::-webkit-outer-spin-button {
+  appearance: none;
+  margin: 0;
+}
+.cq-amount-panel button {
+  min-width: 36px;
+  min-height: 38px;
+  padding: 4px 5px;
+  font-size: 12px;
+  color: #263d30;
+  background: #e1e6cb;
+  border-color: #748571;
+}
+.cq-amount-panel button[aria-pressed="true"],
+.cq-amount-panel [data-cq-action="confirm-recruit"] {
+  color: #fff9e2;
+  background: #345a43;
+  border-color: #345a43;
+}
+.cq-amount-panel button[aria-pressed="true"]:hover:not(:disabled),
+.cq-amount-panel [data-cq-action="confirm-recruit"]:hover:not(:disabled) {
+  color: #fff9e2;
+  background: #294b37;
+  border-color: #294b37;
+}
+.cq-amount-panel input:disabled,
+.cq-amount-panel button:disabled {
+  opacity: 1;
+  color: #4d5847;
+  background: #d6dbc8;
+  border-color: #748571;
+}
+.cq-amount-adjust input[type="range"] {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  height: 38px;
+  margin: 0;
+  padding: 0;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  touch-action: none;
+  accent-color: #345a43;
+  cursor: ew-resize;
+}
+.cq-amount-adjust input[type="range"]::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 3px;
+  background: #748571;
+}
+.cq-amount-adjust input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 23px;
+  height: 23px;
+  margin-top: -8.5px;
+  border: 2px solid #fff7d9;
+  border-radius: 50%;
+  background: #345a43;
+  box-shadow: 0 0 0 1px #345a43;
+}
+.cq-amount-adjust input[type="range"]::-moz-range-track {
+  height: 6px;
+  border-radius: 3px;
+  background: #748571;
+}
+.cq-amount-adjust input[type="range"]::-moz-range-thumb {
+  width: 21px;
+  height: 21px;
+  border: 2px solid #fff7d9;
+  border-radius: 50%;
+  background: #345a43;
+}
+.cq-amount-open .cq-minimap {
+  bottom: 188px;
+}
 .cq-map-message {
   position: absolute;
   bottom: 4px;
@@ -378,6 +537,24 @@
 }
 .cq-round-controls button:nth-child(2) {
   padding: 0;
+}
+.cq-plan-caption {
+  display: grid;
+  justify-items: start;
+  min-width: 3.8em;
+  gap: 0;
+  font-size: 12px;
+  line-height: 16px;
+}
+.cq-plan-caption small {
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.cq-round-controls [data-cq-action="plans"] {
+  padding-top: 3px;
+  padding-bottom: 3px;
 }
 .cq-round-controls button[aria-pressed="true"],
 .cq-round-controls button[aria-pressed="true"]:hover:not(:disabled) {
@@ -606,7 +783,6 @@
   .cq-territory-actions {
     gap: 2px;
     padding: 4px;
-    bottom: 35px;
   }
   .cq-territory-actions button {
     width: 44px;

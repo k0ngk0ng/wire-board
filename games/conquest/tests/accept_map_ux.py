@@ -28,13 +28,15 @@ ARGS.add_argument('--base-url', default='')
 ARGS.add_argument('--queue-case', choices=['all','undo','reject'])
 ARGS.add_argument('--hold-actions', action='store_true')
 ARGS.add_argument('--marker-case', action='store_true')
+ARGS.add_argument('--amount-controls', action='store_true')
+ARGS.add_argument('--fullscreen-layout', action='store_true')
 ARGS.add_argument('--maps', default='')
 ARGS = ARGS.parse_args()
 MAP_IDS=ARGS.maps.split(',') if ARGS.maps else (['europe','world'] if ARGS.baseline else ['world','europe','usa','china'])
 assert set(MAP_IDS)<=set(['world','europe','usa','china'])
 RUN = uuid.uuid4().hex[:6]
 AREA = ROOT/'.local/conquest-map-ux'
-OUT = AREA/('queue-'+ARGS.queue_case if ARGS.queue_case else 'hold-actions' if ARGS.hold_actions else 'marker-case' if ARGS.marker_case else 'baseline' if ARGS.baseline else 'browser')
+OUT = AREA/('queue-'+ARGS.queue_case if ARGS.queue_case else 'hold-actions' if ARGS.hold_actions else 'fullscreen-layout' if ARGS.fullscreen_layout else 'amount-controls' if ARGS.amount_controls else 'marker-case' if ARGS.marker_case else 'baseline' if ARGS.baseline else 'browser')
 FIXTURE = ROOT/'.local/conquest/browser'
 PROFILE = AREA/('profile-'+RUN)
 SOCKET = ROOT/'.s'
@@ -47,7 +49,7 @@ ENV.update(GOTOOLCHAIN='local',WIRE_BOARD_CONQUEST_BROWSER='1',AGENT_BROWSER_SES
 BASE = ARGS.base_url
 PASSWORD = 'map-ux-local-only'
 INVITE = ENV.get('CONQUEST_INVITE','conquest-browser')
-REPORT = {'passed':False,'baseline':ARGS.baseline,'scenario':'queue-'+ARGS.queue_case if ARGS.queue_case else 'hold-actions' if ARGS.hold_actions else 'marker-case' if ARGS.marker_case else 'full-map-ux','scope':'normal local rooms, production module, native Chromium inputs; mobile viewport simulation','checks':[],'violations':[],'inputs':[],'measurements':[]}
+REPORT = {'passed':False,'baseline':ARGS.baseline,'scenario':'queue-'+ARGS.queue_case if ARGS.queue_case else 'hold-actions' if ARGS.hold_actions else 'fullscreen-layout' if ARGS.fullscreen_layout else 'amount-controls' if ARGS.amount_controls else 'marker-case' if ARGS.marker_case else 'full-map-ux','scope':'normal local rooms, production module, native Chromium inputs; mobile viewport simulation','checks':[],'violations':[],'inputs':[],'measurements':[]}
 server = None
 opened = False
 handles = []
@@ -125,6 +127,11 @@ def action(name):
     browser('click',selector)
 
 
+def recruit_default():
+    action('recruit')
+    action('confirm-recruit')
+
+
 def reset_map():
     click('复位地图' if js('!!document.querySelector("button[aria-label=复位地图]")') else '全图')
     js('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))')
@@ -140,13 +147,17 @@ def screenshot(name,check_contrast=True):
     browser('screenshot',str(OUT/(name+'-full.png')),'--full')
     (OUT/(name+'.state.json')).write_text(json.dumps(room(),ensure_ascii=False,indent=2))
     if not ARGS.baseline:
+        if ARGS.amount_controls:
+            readings=js('(()=>{return [...document.querySelectorAll("[data-cq-population],[data-cq-action-points],[data-cq-recruit-reason]")].filter(e=>e.getClientRects().length).map(e=>{const r=document.createRange();r.selectNodeContents(e);const t=r.getBoundingClientRect(),b=e.getBoundingClientRect();return {text:e.textContent,box:b.toJSON(),textBox:t.toJSON(),visible:t.left>=Math.max(0,b.left)-1&&t.right<=Math.min(innerWidth,b.right)+1&&t.top>=Math.max(0,b.top)-1&&t.bottom<=Math.min(innerHeight,b.bottom)+1}})})()')
+            assert all(x['visible'] for x in readings),(name,readings)
+            (OUT/(name+'-resources.json')).write_text(json.dumps(readings,ensure_ascii=False,indent=2))
         colors=js(r'''(() => {
           const rgb=s=>(s.match(/[\d.]+/g)||[]).map(Number),lum=c=>c.slice(0,3).map(v=>v/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4).reduce((s,v,i)=>s+v*[.2126,.7152,.0722][i],0);
-          return [...document.querySelectorAll('.cq-board button,.cq-land-info strong,.cq-land-info span,.cq-map-message,.cq-campaign-strip strong,.cq-campaign-strip span')].filter(e=>e.getClientRects().length&&e.textContent.trim()).map(e=>{
+          return [...document.querySelectorAll('.cq-board button,.cq-land-info strong,.cq-land-info span,.cq-map-message,.cq-campaign-strip strong,.cq-campaign-strip span,.cq-amount-panel label,.cq-amount-panel input[type=number],.cq-amount-limit,[data-cq-action-points],[data-cq-population],[data-cq-recruit-reason]')].filter(e=>e.getClientRects().length&&(e.textContent.trim()||e.value)).map(e=>{
             let bg=[255,255,255],chain=[];for(let p=e;p;p=p.parentElement)chain.unshift(p);
             for(const p of chain){const c=rgb(getComputedStyle(p).backgroundColor),a=c[3]??1;bg=bg.map((v,i)=>c[i]*a+v*(1-a));}
             const style=getComputedStyle(e),a=lum(rgb(style.color)),b=lum(bg);
-            return {text:e.textContent.trim(),color:style.color,background:bg,ratio:(Math.max(a,b)+.05)/(Math.min(a,b)+.05)};
+            return {text:e.textContent.trim()||e.value,color:style.color,background:bg,ratio:(Math.max(a,b)+.05)/(Math.min(a,b)+.05)};
           });
         })()''')
         (OUT/(name+'-contrast.json')).write_text(json.dumps(colors,ensure_ascii=False,indent=2))
@@ -356,7 +367,7 @@ def orders(map_id,peer):
     reset_map()
     own=next(p['id'] for p in view()['provinces'] if p['owner']==0)
     focus_region(map_id,own)
-    initial=view();action('recruit')
+    initial=view();recruit_default()
     wait_orders(1)
     plan=view();assert len(plan['orders'])==1 and plan['orders'][0]['type']=='recruit'
     assert plan['provinces']==initial['provinces'] and peer.api('/state')['room']['game']['data']['orders']==[]
@@ -429,10 +440,16 @@ def fort_case(map_id,peer):
     assert 0<=box['left']<box['right']<=320 and 0<=box['top']<box['bottom']<=780,box
     native(dict(mode='tap',x=box['x']+box['width']/2,y=box['y']+box['height']/2,steps=1,pace=0));wait_orders(1)
     d=view();assert d['orders'][0]['type']=='build' and d['orders'][0]['building']=='fort' and d['availableGold']==0
+    assert js('document.querySelector("[data-cq-action-points]").textContent')=='0.5/3.2'
+    action('recruit')
+    assert '金币不足' in js('document.querySelector("[data-cq-recruit-reason]").textContent')
+    assert js('document.querySelector("[data-cq-action=confirm-recruit]").disabled')
+    action('cancel-amount')
     screenshot(map_id+'-native-fort-plan')
     round=d['round'];click('提交回合');peer.act('submit')
     wait('Number(document.querySelector("[data-conquest-board]").dataset.round)>'+str(round))
     assert next(p for p in view()['provinces'] if p['id']==own)['fort']
+    assert js('document.querySelector("[data-cq-action-points]").textContent')==f"0/{view()['players'][0]['movement']:g}"
     marker=js('(()=>{const e=document.querySelector('+json.dumps('[data-cq-fort="'+own+'"]')+'),r=e?.getBoundingClientRect();return r?{rect:r.toJSON(),visible:r.width>0&&r.height>0&&r.bottom>0&&r.top<innerHeight&&r.right>0&&r.left<innerWidth}:null})()')
     assert marker and marker['visible'],marker
     screenshot(map_id+'-fort-built')
@@ -547,15 +564,17 @@ def hold_actions(peer):
     box=js('document.querySelector("[data-cq-action=recruit]").getBoundingClientRect().toJSON()')
     assert box['top']>=0 and box['bottom']<=780,box
     native(dict(mode='hold',x=box['x']+box['width']/2,y=box['y']+box['height']/2,steps=1,pace=0,holdMS=750))
+    assert view()['orders']==[], 'long press recruited before choosing a count'
+    browser('focus','[data-cq-amount=range]');browser('press','End');action('confirm-recruit')
     wait_orders(1);d=view();requests=js('window.__uxActions')
     (OUT/'long-recruit.json').write_text(json.dumps({'orders':d['orders'],'availableGold':d['availableGold'],'availableMovement':d['availableMovement'],'requests':requests},indent=2))
     assert len(d['orders'])==1 and d['orders'][0]['amount']==5000 and d['availableGold']==0 and abs(d['availableMovement']-2.2)<.001,d
     assert len(requests)==1 and requests[0]['amount']==5000,requests
-    screenshot('hold-recruit-max-once');REPORT['checks'].append('long-recruit-one-order-one-point')
+    screenshot('explicit-recruit-max-once');REPORT['checks'].append('explicit-recruit-one-order-one-point')
     finish(peer)
     # Gain a non-town province through normal recruitment and combat. A town
     # is unaffordable, while a fort is affordable, so falling through is visible.
-    new_game('europe',peer);own=view()['players'][0]['king'];focus_region('europe',own);action('recruit');wait_orders(1);action('attack')
+    new_game('europe',peer);own=view()['players'][0]['king'];focus_region('europe',own);action('recruit');browser('fill','[data-cq-amount=number]','1000');action('confirm-recruit');wait_orders(1);action('attack')
     geo=json.loads((ROOT/'games/conquest/maps/europe.json').read_text());target=next(p for p in geo['provinces'] if p['id']==own)['neighbors'][0];point=point_for('europe',target)
     native(dict(mode='tap',x=point['x'],y=point['y'],steps=1,pace=0));wait_orders(2);round=view()['round'];click('提交回合');peer.act('submit')
     wait('Number(document.querySelector("[data-conquest-board]").dataset.round)>'+str(round))
@@ -572,6 +591,142 @@ def hold_actions(peer):
     assert not any(a.get('type')=='build' and a.get('building')=='fort' for a in js('window.__uxActions')[request_count:]),'long town emitted a short fort request'
     screenshot('hold-town-does-not-fall-through');REPORT['checks'].append('long-town-and-shift-enter-do-not-build-fort')
     finish(peer)
+
+
+
+def amount_controls(peer):
+    for width in [1440,320]:
+        browser('set','viewport',str(width),'900' if width>620 else '780')
+        new_game('world',peer);browser('scrollintoview','.cq-round-controls');own=view()['players'][0]['king'];focus_region('world',own)
+        assert js('document.querySelector("[data-cq-action-points]")?.textContent')=='0/3.2'
+        pop=next(p['population'] for p in view()['projected'] if p['id']==own)
+        assert js('Number(document.querySelector("[data-cq-population]").dataset.cqPopulation)')==pop
+        action('recruit')
+        assert view()['orders']==[], 'opening recruitment must allow choosing before any order'
+        assert js('!!document.querySelector("[data-cq-amount-panel]")'), 'missing troop amount chooser'
+        values=lambda:js('(()=>{const r=document.querySelector("[data-cq-amount=range]"),n=document.querySelector("[data-cq-amount=number]");return {range:Number(r.value),number:Number(n.value),max:Number(r.max),disabled:r.disabled}})()')
+        assert values()==dict(range=2500,number=2500,max=5000,disabled=False),values()
+        REPORT['checks'].append(f'amount-{width}-recruit-default-half-no-implicit-order')
+        before=scene_state();r=js('document.querySelector("[data-cq-amount=range]").getBoundingClientRect().toJSON()')
+        assert r['left']>=0 and r['right']<=width and r['top']>=0 and r['bottom']<=(900 if width>620 else 780),r
+        native(dict(mode='mouse-drag' if width>620 else 'drag',x=r['x']+r['width']/2,y=r['y']+r['height']/2,dx=r['width']*.23,dy=0,steps=12,pace=16))
+        v=values();assert 3300<=v['number']<=4100 and v['range']==v['number'],v
+        assert scene_state()==before and view()['orders']==[], 'slider drag moved map or sent action'
+        browser('focus','[data-cq-amount=range]');browser('press','Home');assert values()['number']==1
+        browser('press','End');assert values()['number']==5000
+        browser('press','ArrowLeft');assert values()['number']==4999
+        browser('fill','[data-cq-amount=number]','0');assert js('document.querySelector("[data-cq-action=confirm-recruit]").disabled')
+        browser('fill','[data-cq-amount=number]','');assert js('document.querySelector("[data-cq-action=confirm-recruit]").disabled')
+        browser('fill','[data-cq-amount=number]','999999');browser('press','Tab');assert values()['number']==5000,values()
+        browser('fill','[data-cq-amount=number]','137');browser('press','Tab');assert values()['range']==137
+        browser('wait','1200');assert values()['number']==137, 'snapshot cleared manual amount'
+        panel=js('(()=>{const e=document.querySelector("[data-cq-amount-panel]");return {rect:e.getBoundingClientRect().toJSON(),controls:[...e.querySelectorAll("input,button")].map(n=>{const b=n.getBoundingClientRect();return {label:n.getAttribute("aria-label"),rect:b.toJSON(),hit:n.contains(document.elementFromPoint(b.x+b.width/2,b.y+b.height/2))}})}})()')
+        assert all(c['hit'] and c['rect']['height']>=36 for c in panel['controls']),panel
+        (OUT/f'amount-{width}-controls.json').write_text(json.dumps(panel,indent=2))
+        screenshot(f'amount-{width}-recruit-137')
+        action('confirm-recruit');wait_orders(1);assert view()['orders'][0]['amount']==137
+        assert js('document.querySelector("[data-cq-action-points]").textContent')=='1/3.2'
+        assert js('Number(document.querySelector("[data-cq-population]").dataset.cqPopulation)')==pop-137
+        REPORT['checks'].append(f'amount-{width}-native-slider-keyboard-exact-number')
+        action('attack');assert values()['number']==319,values()
+        browser('fill','[data-cq-amount=number]','73');browser('press','Tab')
+        geo=json.loads((ROOT/'games/conquest/maps/world.json').read_text());target=next(p for p in geo['provinces'] if p['id']==own)['neighbors'][0]
+        # Keyboard selects the same actual target path on both viewports, then
+        # native rapid taps below exercise queueing after resetting the view.
+        browser('focus','[data-cq-province="'+target+'"]');browser('press','Enter');wait_orders(2)
+        assert view()['orders'][-1]['amount']==73
+        assert js('document.querySelector("[data-cq-action-points]").textContent')=='2/3.2'
+        screenshot(f'amount-{width}-attack-73')
+        action('cancel');assert not js('!!document.querySelector("[data-cq-amount-panel]")')
+        action('attack');assert values()['number']==282,values()
+        action('cancel');action('recruit');assert values()['number']==2432,values()
+        action('cancel-amount');assert not js('!!document.querySelector("[data-cq-amount-panel]")')
+        REPORT['checks'].append(f'amount-{width}-custom-dispatch-mode-reset-and-cancel')
+        # The same chooser must remain playable inside the platform fullscreen.
+        browser('scrollintoview','[data-fullscreen-toggle]');click('全屏')
+        wait('!!document.querySelector("[data-room-fullscreen]")')
+        assert js('document.querySelector("[data-room-fullscreen]").contains(document.querySelector("[data-conquest-board]"))')
+        action('recruit');assert values()['number']==2432
+        screenshot(f'amount-{width}-fullscreen')
+        r=js('document.querySelector("[data-cq-amount=range]").getBoundingClientRect().toJSON()')
+        native(dict(mode='mouse-drag' if width>620 else 'drag',x=r['x']+r['width']/2,y=r['y']+r['height']/2,dx=-r['width']*.2,dy=0,steps=12,pace=16))
+        chosen=values()['number'];assert 500<chosen<2000,chosen
+        b=js('document.querySelector("[data-cq-action=confirm-recruit]").getBoundingClientRect().toJSON()')
+        assert b['top']>=0 and b['bottom']<=(900 if width>620 else 780)
+        native(dict(mode='mouse-tap' if width>620 else 'tap',x=b['x']+b['width']/2,y=b['y']+b['height']/2,steps=1,pace=0))
+        wait_orders(3);assert view()['orders'][-1]['amount']==chosen
+        assert js('document.querySelector("[data-cq-action-points]").textContent')=='3/3.2'
+        assert values()['disabled'], 'insufficient action points must disable further recruitment'
+        assert '行动点不足' in js('document.querySelector("[data-cq-recruit-reason]").textContent')
+        assert js('document.querySelector("[data-cq-action=confirm-recruit]").disabled')
+        screenshot(f'amount-{width}-fullscreen-slider-order')
+        action('cancel-amount');click('退出全屏');wait('!document.querySelector("[data-room-fullscreen]")')
+        assert len(view()['orders'])==3
+        crowns=js('[...document.querySelectorAll("[data-cq-crown]")].map(e=>({rect:e.getBoundingClientRect().toJSON(),parts:e.querySelectorAll("path,circle,rect,ellipse").length,gradients:[...e.querySelectorAll("linearGradient")].map(g=>g.id)}))')
+        assert crowns and all(c['parts']>=7 and c['rect']['width']>=20 and c['rect']['height']>=18 for c in crowns),crowns
+        ids=[i for c in crowns for i in c['gradients']];assert len(ids)==len(set(ids))
+        (OUT/f'amount-{width}-crowns.json').write_text(json.dumps(crowns,indent=2))
+        REPORT['checks'].append(f'amount-{width}-fullscreen-and-detailed-crown')
+        finish(peer)
+    # Default half still uses authoritative remaining troops with queued clicks.
+    browser('set','viewport','1440','900');new_game('europe',peer);browser('scrollintoview','.cq-round-controls');own=view()['players'][0]['king'];focus_region('europe',own);action('attack')
+    geo=json.loads((ROOT/'games/conquest/maps/europe.json').read_text());target=next(p for p in geo['provinces'] if p['id']==own)['neighbors'][0]
+    p=point_for('europe',target);native(dict(mode='doubletap',x=p['x'],y=p['y'],steps=1,pace=0,latency=150));wait_orders(2)
+    assert [o['amount'] for o in view()['orders']]==[250,125]
+    REPORT['checks'].append('amount-default-rapid-half-remains-authoritative')
+    action('cancel');click('财政与税率');browser('focus','input[aria-label="税率"]');browser('press','ArrowRight');click('调整税率');wait_orders(3)
+    assert js('document.querySelector("[data-cq-action-points]").textContent')=='2/3.2', 'free tax plan counted as a movement point'
+    first=view()['orders'][0];action('plans');click('撤销计划 '+str(first['id']));wait_orders(2);click('关闭')
+    assert js('document.querySelector("[data-cq-action-points]").textContent')=='1/3.2'
+    browser('reload');ready();assert js('document.querySelector("[data-cq-action-points]").textContent')=='1/3.2'
+    REPORT['checks'].append('amount-action-points-free-tax-undo-reconnect');finish(peer)
+    new_game('europe',peer);browser('scrollintoview','.cq-round-controls');own=view()['players'][0]['king'];focus_region('europe',own);action('attack')
+    browser('fill','[data-cq-amount=number]','73');browser('press','Tab')
+    target=next(p for p in geo['provinces'] if p['id']==own)['neighbors'][0];p=point_for('europe',target)
+    native(dict(mode='doubletap',x=p['x'],y=p['y'],steps=1,pace=0,latency=150));wait_orders(2)
+    assert [o['amount'] for o in view()['orders']]==[73,73]
+    REPORT['checks'].append('amount-custom-rapid-clicks-use-chosen-number');finish(peer)
+    queue_regressions(peer)
+    fort_case('europe',peer)
+
+
+
+def fullscreen_layout(peer):
+    cases=[(m,w,h) for m in ['world','europe','usa','china'] for w,h in [(2048,1127),(320,780)]]+[('china',2560,1080)]
+    for map_id,width,height in cases:
+        browser('set','viewport',str(width),str(height));new_game(map_id,peer)
+        browser('scrollintoview','.cq-round-controls');own=view()['players'][0]['king'];focus_region(map_id,own)
+        read=lambda:js('(()=>{const board=document.querySelector("[data-conquest-board]"),map=board.querySelector(".cq-viewport"),footer=board.querySelector(".cq-round-controls"),surface=board.closest("[data-game-fullscreen-surface]");return {board:board.getBoundingClientRect().toJSON(),map:map.getBoundingClientRect().toJSON(),footer:footer.getBoundingClientRect().toJSON(),surface:surface.getBoundingClientRect().toJSON(),selected:board.dataset.cqSelected,width:innerWidth,height:innerHeight}})()')
+        initial=read();saved=view()['orders'];js('window.__fullscreenBoard=document.querySelector("[data-conquest-board]");true')
+        browser('scrollintoview','[data-fullscreen-toggle]');click('全屏');wait('!!document.querySelector("[data-room-fullscreen]")')
+        js('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>requestAnimationFrame(resolve))))')
+        full=read();(OUT/f'{map_id}-{width}-fullscreen-geometry.json').write_text(json.dumps({'initial':initial,'fullscreen':full},indent=2))
+        assert full['board']['height']>=height-70,full
+        assert full['footer']['width']>=full['board']['width']-4,full
+        assert full['map']['height']>=height*.76 and full['footer']['bottom']<=height+1,full
+        if width<2300:assert full['board']['width']>=width*.94,full
+        else:assert 1800<full['map']['width']<width-200 and full['map']['width']/full['map']['height']<2.3,full
+        assert full['board']['left']>=0 and full['board']['right']<=width+1,full
+        assert js('window.__fullscreenBoard===document.querySelector("[data-conquest-board]")') and full['selected']==own
+        m=full['map'];before=scene_state()
+        native(dict(mode='mouse-drag' if width>620 else 'drag',x=m['x']+m['width']/2,y=m['y']+m['height']/2,dx=45,dy=18,steps=20,pace=16))
+        after=scene_state();assert abs(after['x']-before['x'])>10 and view()['orders']==saved
+        action('recruit');browser('fill','[data-cq-amount=number]','137');browser('press','Tab')
+        b=js('document.querySelector("[data-cq-action=confirm-recruit]").getBoundingClientRect().toJSON()');assert b['top']>=0 and b['bottom']<=height and b['right']<=width,b
+        screenshot(f'{map_id}-{width}-fullscreen-filled')
+        click('退出全屏');wait('!document.querySelector("[data-room-fullscreen]")')
+        wait('document.querySelector(".cq-viewport").getBoundingClientRect().height<='+str(initial['map']['height']+1))
+        normal=read();assert abs(normal['map']['height']-initial['map']['height'])<1 and abs(normal['board']['width']-initial['board']['width'])<1,(initial,normal)
+        assert js('window.__fullscreenBoard===document.querySelector("[data-conquest-board]")')
+        assert js('document.querySelector("[data-cq-amount=number]").value')=='137' and view()['orders']==saved
+        action('cancel-amount');browser('scrollintoview','[data-fullscreen-toggle]');click('全屏');wait('!!document.querySelector("[data-room-fullscreen]")')
+        peer.act('resign');browser('wait','[role=dialog][aria-label="本局结果"]');click('关闭')
+        final=read();assert final['board']['height']>=height-70 and final['footer']['bottom']<=height+1,final
+        screenshot(f'{map_id}-{width}-fullscreen-finished')
+        browser('press','Escape');wait('!document.querySelector("[data-room-fullscreen]")')
+        assert not js('document.querySelector("[data-conquest-board]").closest("[inert]")')
+        REPORT['checks'].append(f'{map_id}-{width}-fills-fullscreen-native-drag-controls-endgame-and-exit')
+        finish(peer)
 
 
 def creation_maps(peer):
@@ -663,6 +818,8 @@ try:
         queue_regressions(peer,('undo','reject') if ARGS.queue_case=='all' else (ARGS.queue_case,))
     elif ARGS.hold_actions:hold_actions(peer)
     elif ARGS.marker_case:marker_case(peer)
+    elif ARGS.amount_controls:amount_controls(peer)
+    elif ARGS.fullscreen_layout:fullscreen_layout(peer)
     else:
         if not ARGS.baseline:creation_maps(peer)
         for map_id in MAP_IDS:
