@@ -3,7 +3,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { predictLaunch, BallDisplay } from "../web/prediction.ts";
+import { predictPath, BallDisplay } from "../web/prediction.ts";
 import { sampleFlight } from "../web/timeline.ts";
 const rows = JSON.parse(
   readFileSync(new URL("./testdata/prediction-oracle.json", import.meta.url)),
@@ -11,9 +11,9 @@ const rows = JSON.parse(
 test("72 launch variants agree with server physics at 288 sample points", () => {
   assert.equal(rows.length, 72);
   for (const r of rows) {
-    const segment = predictLaunch(r.view, r.seat, r.stroke, r.at);
+    const path = predictPath(r.view, r.seat, r.stroke, r.at);
     for (const want of r.points) {
-      const p = sampleFlight({ segments: [segment] }, want.at);
+      const p = sampleFlight(path, want.at);
       for (const axis of ["x", "y", "z"])
         assert.ok(
           Math.abs(p[axis] - want.p[axis]) < 1e-8,

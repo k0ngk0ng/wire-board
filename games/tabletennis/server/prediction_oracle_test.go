@@ -48,7 +48,15 @@ func TestPredictionOracle(t *testing.T) {
 						}
 						s.launch(a, seat, at, phase == "serve")
 						points := []any{}
-						for _, delta := range []int64{0, 50, 100, 200} {
+						// The display predictor deliberately stops before a physical
+						// bounce/net outcome. Fast shots can reach it inside 200ms.
+						horizon := int64(200)
+						for _, event := range s.Flight.Events {
+							if event.At > at && event.At-at <= horizon {
+								horizon = max(1, event.At-at-2)
+							}
+						}
+						for _, delta := range []int64{0, horizon / 4, horizon / 2, horizon} {
 							p, _ := s.Flight.at(at + delta)
 							points = append(points, map[string]any{"at": at + delta, "p": p})
 						}

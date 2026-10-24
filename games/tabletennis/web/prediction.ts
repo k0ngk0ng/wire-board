@@ -29,17 +29,27 @@ export function contactPoint(view: View, seat: number, at: number): Vec {
 export function canReach(
   view: View,
   seat: number,
-  stroke: Pick<Stroke, "racketX">,
+  stroke: Pick<Stroke, "racketX" | "racketY">,
   at: number,
 ): boolean {
-  if (view.phase === "serve") return true;
+  if (view.phase === "serve")
+    return (
+      stroke.racketY === undefined ||
+      Math.hypot((stroke.racketX ?? 0) * 0.9 - 0.34, stroke.racketY - 1.1) <=
+        0.22
+    );
   if (!view.flight) return false;
   const point = sampleFlight(
     view.flight,
     Math.max(Math.round(at), view.flight.contactStart),
   );
   const dir = (view.options.teams[seat] ^ view.ends) === 0 ? 1 : -1;
-  return Math.abs(point.x - dir * (stroke.racketX ?? 0) * 0.9) <= 0.22;
+  return (
+    Math.hypot(
+      point.x - dir * (stroke.racketX ?? 0) * 0.9,
+      point.y - (stroke.racketY ?? point.y),
+    ) <= 0.22
+  );
 }
 
 /** A short, display-only launch arc. It contains no score, collision, next turn
@@ -49,7 +59,7 @@ export function predictLaunch(
   seat: number,
   stroke: Stroke,
   at: number,
-): Segment {
+): Segment & { spin: number } {
   const from = view.options.teams[seat] ^ view.ends,
     dir = from === 0 ? 1 : -1,
     serve = view.phase === "serve";
@@ -65,7 +75,7 @@ export function predictLaunch(
     v = {
       x: -dir * (0.6 + 0.18 * stroke.aim),
       y: (0.78 - p.y + 0.5 * 9.81 * t * t) / t,
-      z: -dir * (2.1 + 1.2 * stroke.power),
+      z: -dir * (2.0 + 2.1 * stroke.power),
     };
   } else {
     p = sampleFlight(view.flight!, contact);
@@ -73,7 +83,7 @@ export function predictLaunch(
       kind = "smash";
       spin = 0.4;
     }
-    let t = 0.86 - 0.3 * stroke.power;
+    let t = 0.98 - 0.71 * stroke.power;
     if (kind === "chop") t += 0.13;
     if (kind === "block") t += 0.05;
     if (kind === "smash") t -= 0.08;
@@ -86,18 +96,30 @@ export function predictLaunch(
         dir *
         (stroke.aim * 0.7625 * (0.92 + 0.17 * stroke.power) +
           timing * stroke.power * 0.25),
-      targetZ =
-        -dir *
-        (0.65 +
-          0.48 * stroke.power +
-          Math.max(0, timing) * stroke.power * 0.32);
+      targetZ = -dir * (0.95 + Math.max(0, timing) * 0.2);
+    if ((stroke.lift ?? 0) > 0.25 && p.y < 1.1 && kind === "drive") {
+      const fraction = clamp(Math.abs(p.z / (targetZ - p.z)), 0.04, 0.96),
+        baseline = p.y + (0.78 - p.y) * fraction;
+      t = Math.max(
+        t,
+        Math.sqrt(
+          (2 * Math.max(0, 0.76 + 0.1525 + 0.02 + 0.04 - baseline)) /
+            (9.81 * fraction * (1 - fraction)),
+        ),
+      );
+    }
     const vx = (targetX - p.x) / (t - 0.06 * t * t),
       vz = (targetZ - p.z) / (t - 0.06 * t * t),
       a = acceleration({ x: vx, y: 0, z: vz }, spin);
     let vy = (0.78 - p.y - 0.5 * a.y * t * t) / t;
     const incoming = view.flight!.spin;
     if (incoming < -0.3 && kind === "drive")
-      vy -= -incoming * Math.abs(timing) * stroke.power * 0.9;
+      vy -=
+        -incoming *
+        Math.abs(timing) *
+        stroke.power *
+        0.9 *
+        (1 - (stroke.lift ?? 0));
     if (kind === "block") vy -= incoming * 0.18;
     v = { x: vx, y: vy, z: vz };
   }
@@ -117,7 +139,52 @@ export function predictLaunch(
     const y = p.y + v.y * t + 0.5 * a.y * t * t;
     if (t > 0 && y <= 0.76 + 0.1525 + 0.02) horizon = Math.min(horizon, t);
   }
-  return { at: contact, until: contact + horizon * 1000, p, v, a };
+  return { at: contact, until: contact + horizon * 1000, p, v, a, spin };
+}
+function planeTimes(p: number, v: number, a: number, target: number): number[] {
+  if (Math.abs(a) < 1e-9)
+    return Math.abs(v) < 1e-9 ? [] : [(target - p) / v].filter((t) => t > 1e-6);
+  const d = v * v - 2 * a * (p - target);
+  if (d < 0) return [];
+  return [(-v - Math.sqrt(d)) / a, (-v + Math.sqrt(d)) / a]
+    .filter((t) => t > 1e-6)
+    .sort((x, y) => x - y);
+}
+/** A clear net crossing is a force-segment boundary, not a predicted impact. */
+export function predictPath(
+  view: View,
+  seat: number,
+  stroke: Stroke,
+  at: number,
+): { segments: Segment[] } {
+  const launch = predictLaunch(view, seat, stroke, at),
+    segments: Segment[] = [launch];
+  const limit = launch.at + 250;
+  for (const t of planeTimes(launch.p.z, launch.v.z, launch.a.z, 0)) {
+    const crossAt = launch.at + Math.max(1, Math.round(t * 1000));
+    if (crossAt >= launch.until) break;
+    const p = {
+      x: launch.p.x + launch.v.x * t + 0.5 * launch.a.x * t * t,
+      y: launch.p.y + launch.v.y * t + 0.5 * launch.a.y * t * t,
+      z: 0,
+    };
+    if (Math.abs(p.x) > 0.8125) continue;
+    if (p.y <= 0.76 + 0.1525 + 0.02) break;
+    const v = {
+      x: launch.v.x + launch.a.x * t,
+      y: launch.v.y + launch.a.y * t,
+      z: launch.v.z + launch.a.z * t,
+    };
+    const a = acceleration(v, launch.spin);
+    let until = limit;
+    for (const hit of planeTimes(p.y, v.y, a.y, 0.78))
+      if (v.y + a.y * hit < 0)
+        until = Math.min(until, crossAt + Math.max(1, Math.round(hit * 1000)));
+    launch.until = crossAt;
+    segments.push({ at: crossAt, until, p, v, a });
+    break;
+  }
+  return { segments };
 }
 function authority(view: View, at: number): Vec {
   if (view.flight) return sampleFlight(view.flight, at);
@@ -136,7 +203,7 @@ export class BallDisplay {
     return !!this.preview;
   }
   private preview?: {
-    segment: Segment;
+    path: { segments: Segment[] };
     identity: string;
     epoch: string;
     rally: number;
@@ -156,7 +223,7 @@ export class BallDisplay {
       return;
     }
     this.preview = {
-      segment: predictLaunch(view, seat, stroke, at),
+      path: predictPath(view, seat, stroke, at),
       identity,
       epoch: view.epoch,
       rally: view.rally,
@@ -198,8 +265,8 @@ export class BallDisplay {
           };
         }
         this.preview = undefined;
-      } else if (at >= p.segment.at) {
-        const position = sampleFlight({ segments: [p.segment] }, at);
+      } else if (at >= p.path.segments[0].at) {
+        const position = sampleFlight(p.path, at);
         this.shown = position;
         return position;
       }

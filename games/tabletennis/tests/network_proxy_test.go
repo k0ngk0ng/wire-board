@@ -5,6 +5,7 @@ package tabletennis_test
 // only the transport delay through a local file, in round-trip milliseconds.
 import (
 	"encoding/json"
+	"io"
 	"net"
 	"os"
 	"strconv"
@@ -14,6 +15,61 @@ import (
 	"testing"
 	"time"
 )
+
+// A link adds propagation latency, not a new full latency per queued message.
+// Otherwise cosmetic moves spuriously delay a following critical stroke.
+func TestDelayProxyPreservesPipelinedInputs(t *testing.T) {
+	upstream, e := net.Listen("tcp", "127.0.0.1:0")
+	if e != nil {
+		t.Fatal(e)
+	}
+	defer upstream.Close()
+	ready := make(chan struct{})
+	arrivals := make(chan time.Time, 2)
+	go func() {
+		c, e := upstream.Accept()
+		if e != nil {
+			return
+		}
+		defer c.Close()
+		close(ready)
+		b := make([]byte, 1)
+		for range 2 {
+			if _, e = io.ReadFull(c, b); e != nil {
+				return
+			}
+			arrivals <- time.Now()
+		}
+	}()
+	control := t.TempDir() + "/network"
+	if e = os.WriteFile(control, []byte("400"), 0600); e != nil {
+		t.Fatal(e)
+	}
+	address := networkProxy(t, upstream.Addr().String(), control)
+	time.Sleep(60 * time.Millisecond)
+	c, e := net.Dial("tcp", address)
+	if e != nil {
+		t.Fatal(e)
+	}
+	defer c.Close()
+	<-ready
+	c.Write([]byte{1})
+	time.Sleep(40 * time.Millisecond)
+	c.Write([]byte{2})
+	take := func() time.Time {
+		select {
+		case at := <-arrivals:
+			return at
+		case <-time.After(2 * time.Second):
+			t.Fatal("proxy failed to deliver input")
+			return time.Time{}
+		}
+	}
+	first, last := take(), take()
+	if last.Sub(first) > 130*time.Millisecond {
+		t.Fatalf("moves serially blocked the following strike by %v", last.Sub(first))
+	}
+}
 
 func networkProxy(t *testing.T, upstream, control string) string {
 	t.Helper()
@@ -70,30 +126,56 @@ func networkProxy(t *testing.T, upstream, control string) string {
 		}
 	}()
 	pipe := func(dst, src net.Conn) {
-		defer dst.Close()
-		defer src.Close()
-		buffer := make([]byte, 32768)
-		for {
-			n, e := src.Read(buffer)
-			if n > 0 {
-				ms := delay.Load()
-				if span := jitter.Load(); span > 0 {
-					ms = max(0, ms+(packets.Add(1)*37)%(span*2+1)-span)
-				}
-				if ms > 0 {
-					timer := time.NewTimer(time.Duration(ms) * time.Millisecond)
+		type packet struct {
+			body []byte
+			due  time.Time
+		}
+		queue := make(chan packet, 128)
+		done := make(chan struct{})
+		go func() {
+			defer close(done)
+			defer dst.Close()
+			defer src.Close()
+			for {
+				select {
+				case <-stop:
+					return
+				case p, ok := <-queue:
+					if !ok {
+						return
+					}
+					timer := time.NewTimer(max(0, time.Until(p.due)))
 					select {
 					case <-stop:
 						timer.Stop()
 						return
 					case <-timer.C:
 					}
-				}
-				if _, err := dst.Write(buffer[:n]); err != nil {
-					return
+					if _, err := dst.Write(p.body); err != nil {
+						return
+					}
 				}
 			}
-			if e != nil {
+		}()
+		defer func() { close(queue); <-done }()
+		buffer := make([]byte, 32768)
+		for {
+			n, err := src.Read(buffer)
+			if n > 0 {
+				ms := delay.Load()
+				if span := jitter.Load(); span > 0 {
+					ms = max(0, ms+(packets.Add(1)*37)%(span*2+1)-span)
+				}
+				p := packet{append([]byte(nil), buffer[:n]...), time.Now().Add(time.Duration(ms) * time.Millisecond)}
+				select {
+				case <-stop:
+					return
+				case <-done:
+					return
+				case queue <- p:
+				}
+			}
+			if err != nil {
 				return
 			}
 		}

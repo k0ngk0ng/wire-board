@@ -212,14 +212,14 @@ func (s *State) launch(a Action, seat int, at int64, serve bool) {
 		p = Vec{dir * .34, 1.1, dir * 1.28}
 		t := .24
 		vy := (TableHeight + BallRadius - p.Y + .5*9.81*t*t) / t
-		v = Vec{-dir * (.6 + .18*a.Aim), vy, -dir * (2.1 + 1.2*a.Power)}
+		v = Vec{-dir * (.6 + .18*a.Aim), vy, -dir * (2.0 + 2.1*a.Power)}
 	} else {
 		p, _ = s.Flight.at(at)
 		if a.Kind == "drive" && p.Y > 1.18 && a.Power > .86 {
 			kind = "smash"
 			spin = spinFor(kind)
 		}
-		t := .86 - .30*a.Power
+		t := .98 - .71*a.Power
 		if kind == "chop" {
 			t += .13
 		}
@@ -232,7 +232,13 @@ func (s *State) launch(a Action, seat int, at int64, serve bool) {
 		ideal := s.Flight.ContactStart + 130
 		timing := clamp(float64(at-ideal)/260, -1, 1)
 		targetX := dir * (a.Aim*HalfWidth*(.92+.17*a.Power) + timing*a.Power*.25)
-		targetZ := -dir * (.65 + .48*a.Power + math.Max(0, timing)*a.Power*.32)
+		targetZ := -dir * (.95 + math.Max(0, timing)*.2)
+		if a.Lift > .25 && p.Y < 1.1 && kind == "drive" {
+			fraction := clamp(math.Abs(p.Z/(targetZ-p.Z)), .04, .96)
+			baseline := p.Y + (TableHeight+BallRadius-p.Y)*fraction
+			clearance := TableHeight + NetHeight + BallRadius + .04
+			t = math.Max(t, math.Sqrt(2*math.Max(0, clearance-baseline)/(9.81*fraction*(1-fraction))))
+		}
 		// Solve the intended arc, then let incoming spin and mistiming alter it.
 		vz := (targetZ - p.Z) / (t - .06*t*t)
 		vx := (targetX - p.X) / (t - .06*t*t)
@@ -240,16 +246,20 @@ func (s *State) launch(a Action, seat int, at int64, serve bool) {
 		vy := (TableHeight + BallRadius - p.Y - .5*acc.Y*t*t) / t
 		incoming := s.Flight.Spin
 		if incoming < -.3 && kind == "drive" {
-			vy -= (-incoming) * math.Abs(timing) * a.Power * .9
+			vy -= (-incoming) * math.Abs(timing) * a.Power * .9 * (1 - a.Lift)
 		}
 		if kind == "block" {
 			vy -= incoming * .18
 		}
 		v = Vec{vx, vy, vz}
 	}
-	if serve {
+	if serve && a.RacketY == nil {
 		a.RacketX = .34 / .9
 	}
+	if a.RacketY == nil {
+		a.RacketY = &p.Y
+	}
+	a.RacketZ = p.Z * dir
 	s.recordPaddle(a, seat, at, "hit")
 	flight := traceFlight(p, v, spin, at, from, to, serve, len(s.Seq) == 4)
 	s.Flight = &flight

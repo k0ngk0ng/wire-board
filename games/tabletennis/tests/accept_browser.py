@@ -67,21 +67,40 @@ try:
   ws=b('get','cdp-url');ws=ws if isinstance(ws,str) else ws.get('url',ws.get('cdpUrl',ws.get('value')))
   native=[]
   report['currentCase']={'court':court,'metadata':meta}
+  peer_motion=None
+  if os.environ.get('TT_BROWSER_PEER_MOTION'):
+   assert seat,'peer movement requires a second real browser'
+   hostcmd('autoplay',enabled=False);hb('set','viewport',1440,1000);hb('scrollintoview','.tt-board');time.sleep(.2)
+   js('window.__ttPeerFrames=[];window.__ttPeerSampling=true;(function collect(){if(!window.__ttPeerSampling)return;window.__ttPeerFrames.push(document.querySelector(".tt-scene canvas").__tableTennisFrame);requestAnimationFrame(collect)})();true')
+   peer_ws=hb('get','cdp-url');peer_ws=peer_ws if isinstance(peer_ws,str) else peer_ws.get('url',peer_ws.get('cdpUrl',peer_ws.get('value')))
+   r=subprocess.run(['node',str(HERE/'native-follow.mjs'),peer_ws,BASE,'{}'],cwd=ROOT,env=ENV,capture_output=True,text=True,timeout=40);assert r.returncode==0,r.stderr+r.stdout
+   time.sleep(.2);samples=js('window.__ttPeerSampling=false;window.__ttPeerFrames');positions=[next(p for p in f['remoteRackets'] if p['seat']==0) for f in samples]
+   assert len({p['motionSeq'] for p in positions})>=5,positions
+   assert max(p['x'] for p in positions)-min(p['x'] for p in positions)>20 and max(p['y'] for p in positions)-min(p['y'] for p in positions)>20
+   peer_motion={'sender':json.loads(r.stdout),'observerFrames':samples};b('screenshot',OUT/(court+'-peer-motion.png'));hostcmd('autoplay',enabled=True)
+  if os.environ.get('TT_BROWSER_FOLLOW'):
+   r=subprocess.run(['node',str(HERE/'native-follow.mjs'),ws,BASE,json.dumps({'touch':width<650})],cwd=ROOT,env=ENV,capture_output=True,text=True,timeout=40);assert r.returncode==0,r.stderr+r.stdout;native.append(json.loads(r.stdout))
   strokes=[{'kind':kind,'touch':width<650} for kind in ['drive','chop']]
   if os.environ.get('TT_BROWSER_SPEED'):strokes=[{'kind':'drive','touch':width<650,'serveOnly':True,'stepDelay':delay} for delay in [60,8]]
+  if os.environ.get('TT_BROWSER_LOW'):strokes=[{'kind':'drive','touch':width<650} for _ in range(6)]
   for stroke_options in strokes:
    r=subprocess.run(['node',str(HERE/'native-strike.mjs'),ws,BASE,json.dumps(stroke_options)],cwd=ROOT,env=ENV,capture_output=True,text=True,timeout=40)
    if r.returncode:raise RuntimeError(r.stderr+r.stdout)
    native.append(json.loads(r.stdout))
   if os.environ.get('TT_BROWSER_SPEED'):
-   assert native[1]['stroke']['power']>native[0]['stroke']['power']+.1,native
-   assert native[1]['swingDuration']<native[0]['swingDuration'],native
+   hits=[v for v in native if 'stroke' in v];assert hits[1]['stroke']['power']>hits[0]['stroke']['power']+.1,hits
+   assert hits[1]['swingDuration']<hits[0]['swingDuration'],hits
+  if os.environ.get('TT_BROWSER_LOW'):
+   low=[v for v in native if v.get('before',{}).get('phase')=='rally' and v.get('launch') and v['launch']['initial']['y']<1.05 and v['launch']['receiveAt']>0];assert low,'no native low-ball return reached the opposite table'
   if os.environ.get('TT_BROWSER_MOVEMENT'):
    r=subprocess.run(['node',str(HERE/'native-movement.mjs'),ws,BASE,str(width<650).lower()],cwd=ROOT,env=ENV,capture_output=True,text=True,timeout=40);assert r.returncode==0,r.stderr+r.stdout;native.append(json.loads(r.stdout))
   b('screenshot',OUT/(court+'-'+str(width)+'.png'))
+  assert not js('!!document.querySelector("button[aria-label=关闭错误]")'),'unexpected platform action error'
   audit=visual_audit();assert all(v['contrast']>=4.5 for v in audit),audit
   (FIXTURE/'network-delay').write_text('0');time.sleep(.3)
   js('window.__ttFullscreenCanvas=document.querySelector(".tt-scene canvas");true');b('click','button[aria-label="全屏"]');wait(lambda:js('!!document.querySelector("[data-room-fullscreen]")'));full=js('({rect:document.querySelector(".tt-board").getBoundingClientRect().toJSON(),canvas:document.querySelector(".tt-scene canvas").getBoundingClientRect().toJSON(),height:innerHeight,sameCanvas:window.__ttFullscreenCanvas===document.querySelector(".tt-scene canvas")})');b('screenshot',OUT/(court+'-fullscreen.png'));assert full['sameCanvas'] and full['canvas']['height']>200 and full['rect']['bottom']<=full['height']+2,full
+  if os.environ.get('TT_BROWSER_FOLLOW'):
+   r=subprocess.run(['node',str(HERE/'native-follow.mjs'),ws,BASE,json.dumps({'touch':width<650})],cwd=ROOT,env=ENV,capture_output=True,text=True,timeout=40);assert r.returncode==0,r.stderr+r.stdout;full['follow']=json.loads(r.stdout)
   if width>=650:
    r=subprocess.run(['node',str(HERE/'native-strike.mjs'),ws,BASE,json.dumps({'kind':'drive','keyboard':True})],cwd=ROOT,env=ENV,capture_output=True,text=True,timeout=40)
    if r.returncode:raise RuntimeError(r.stderr+r.stdout)
@@ -118,6 +137,7 @@ try:
     return total>=target
    wait(service_progress,100);assert len(serves)>=4,serves;report['cases'][-1]['serviceRotation']=list(serves.values())
   report['cases'][-1]['seat']=seat
+  if peer_motion:report['cases'][-1]['peerMotion']=peer_motion
   report['cases'][-1]['visualAudit']=audit
   js('window.__retiredTTCourt=document.querySelector(".tt-scene canvas");true')
   if room()['status']=='playing':hostcmd('close')
