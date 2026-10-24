@@ -57,6 +57,7 @@ saved_dist = AREA/('saved-dist-'+RUN)
 
 def source_hashes():
     paths=list((ROOT/'games/conquest/web').glob('*'))+list((ROOT/'games/conquest/server').glob('*.go'))
+    paths += [p for p in (ROOT/'web/src').rglob('*') if p.suffix in {'.ts','.tsx','.css'}]
     paths += [*sorted((ROOT/'games/conquest/maps').glob('*.json')),Path(__file__),Path(__file__).with_name('map_ux_input.mjs'),Path(__file__).with_name('http_e2e_test.go')]
     return {str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(paths) if p.is_file()}
 
