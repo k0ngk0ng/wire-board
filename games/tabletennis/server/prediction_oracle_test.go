@@ -3,11 +3,12 @@ package tabletennis
 // Before the browser predictor: bind its short visual extrapolation to actual
 // server flight samples. This fixture never generates a match result.
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
+	"math"
 	"os"
 	"path/filepath"
+	"reflect"
 	"testing"
 )
 
@@ -72,7 +73,31 @@ func TestPredictionOracle(t *testing.T) {
 	if e != nil {
 		t.Fatal(e)
 	}
-	if !bytes.Equal(expected, b) {
+	// ARM may fuse multiply/add where amd64 rounds separately. Compare only
+	// sampled coordinates with a sub-picometre tolerance; keep the complete
+	// view, input, sample timestamps and schema exact. Do not regenerate the
+	// independent client reference merely to match a runner's architecture.
+	var want, got []map[string]any
+	if json.Unmarshal(expected, &want) != nil || json.Unmarshal(b, &got) != nil || len(want) != len(got) {
+		t.Fatal("invalid prediction reference shape")
+	}
+	for i := range want {
+		wp, gp := want[i]["points"].([]any), got[i]["points"].([]any)
+		if len(wp) != len(gp) {
+			t.Fatal("prediction sample count changed")
+		}
+		for j := range wp {
+			w := wp[j].(map[string]any)["p"].(map[string]any)
+			g := gp[j].(map[string]any)["p"].(map[string]any)
+			for _, axis := range []string{"x", "y", "z"} {
+				if math.Abs(w[axis].(float64)-g[axis].(float64)) > 1e-12 {
+					t.Fatalf("%s sample %d %s differs: want %v got %v", want[i]["name"], j, axis, w[axis], g[axis])
+				}
+				g[axis] = w[axis]
+			}
+		}
+	}
+	if !reflect.DeepEqual(want, got) {
 		t.Fatal("client prediction reference differs from server physics; review and regenerate explicitly")
 	}
 }
