@@ -31,6 +31,10 @@ export type GameEvent = {
 };
 export type Paddle = {
   x: number;
+  y: number;
+  z: number;
+  motionSeq: number;
+  motionAt: number;
   seq: number;
   at: number;
   rally: number;
@@ -77,6 +81,9 @@ export type View = {
 };
 export type Stroke = {
   racketX?: number;
+  racketY?: number;
+  racketZ?: number;
+  lift?: number;
   kind: "drive" | "chop" | "block";
   aim: number;
   power: number;

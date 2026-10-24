@@ -30,15 +30,24 @@ export class PaddleMotion {
       velocity: { x: 0, y: 0 },
       stroke: { kind: "block", aim: 0, power: 0.35 } as Stroke,
     };
-    if (!first || !last || last.at === first.at || at - last.at > 90)
+    if (!first || !last || last.at === first.at || at - last.at > 50)
       return idle;
+    let velocityOrigin = this.points[Math.max(0, this.points.length - 2)];
+    for (let i = this.points.length - 2; i >= 0; i--) {
+      velocityOrigin = this.points[i];
+      if (last.at - velocityOrigin.at >= 12) break;
+    }
     const extent = Math.max(160, shortSide),
-      seconds = (last.at - first.at) / 1000;
-    const dx = last.x - first.x,
-      dy = last.y - first.y;
+      seconds = Math.max(0.004, (last.at - velocityOrigin.at) / 1000);
+    const dx = last.x - velocityOrigin.x,
+      dy = last.y - velocityOrigin.y;
     const velocity = { x: dx / extent / seconds, y: dy / extent / seconds };
     const speed = Math.hypot(velocity.x, velocity.y);
-    if (Math.hypot(dx, dy) < Math.max(4, extent * 0.012) || speed < 0.08)
+    if (
+      Math.hypot(last.x - first.x, last.y - first.y) <
+        Math.max(4, extent * 0.012) ||
+      speed < 0.08
+    )
       return idle;
     return {
       active: true,
@@ -54,6 +63,7 @@ export class PaddleMotion {
           1,
         ),
         power: clamp(0.25 + speed * 0.28, 0.25, 1),
+        lift: clamp(-velocity.y / Math.max(0.1, speed), 0, 1),
       } as Stroke,
     };
   }

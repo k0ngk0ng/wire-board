@@ -88,6 +88,12 @@ func validateAction(ctx gameapi.Context, s State, raw json.RawMessage) (Action, 
 		return a, errors.New("当前不能挥拍")
 	}
 	sameBall := a.Rally == s.Rally && a.Shot == s.Shot
+	if a.Type == "move" {
+		if a.Epoch != s.Epoch || a.MotionSeq <= 0 || a.MotionSeq > 1<<31-1 || a.MotionSeq-s.Paddles[ctx.Actor].MotionSeq > 1024 || a.Ends < 0 || a.Ends > 1 || !finite(a.RacketX) || math.Abs(a.RacketX) > 8 || a.RacketY == nil || !finite(*a.RacketY) || *a.RacketY < -4 || *a.RacketY > 8 || !finite(a.RacketZ) || a.RacketZ < -2 || a.RacketZ > 3 || a.At > ctx.Now.UnixMilli()+80 {
+			return a, errors.New("无效球拍位置")
+		}
+		return a, nil
+	}
 	oldCancel := a.Type == "cancel" && a.Rally >= 1 && a.Rally <= s.Rally && a.Shot >= 0 && (a.Rally < s.Rally || a.Shot <= s.Shot)
 	if a.Epoch != s.Epoch || (!sameBall && !oldCancel) {
 		return a, errors.New("来球已更新，请跟随当前球路挥拍")
@@ -105,7 +111,14 @@ func validateAction(ctx gameapi.Context, s State, raw json.RawMessage) (Action, 
 	if a.At < now-LateGraceMS || a.At > now+80 {
 		return a, errors.New("挥拍时间已过期，请重新连接")
 	}
-	if !finite(a.RacketX) || a.RacketX < -1 || a.RacketX > 1 || !finite(a.Aim) || !finite(a.Power) || a.Aim < -1 || a.Aim > 1 || a.Power < 0 || a.Power > 1 || !slices.Contains([]string{"drive", "chop", "block", "smash"}, a.Kind) {
+	reach := 1.
+	if a.RacketY != nil {
+		reach = 8
+		if !finite(a.RacketZ) || a.RacketZ < -2 || a.RacketZ > 3 {
+			return a, errors.New("无效球拍位置")
+		}
+	}
+	if !finite(a.RacketX) || math.Abs(a.RacketX) > reach || (a.RacketY != nil && (!finite(*a.RacketY) || *a.RacketY < -4 || *a.RacketY > 8)) || !finite(a.Lift) || a.Lift < 0 || a.Lift > 1 || !finite(a.Aim) || !finite(a.Power) || a.Aim < -1 || a.Aim > 1 || a.Power < 0 || a.Power > 1 || !slices.Contains([]string{"drive", "chop", "block", "smash"}, a.Kind) {
 		return a, errors.New("无效落点、力度或挥拍类型")
 	}
 	return a, nil
@@ -132,6 +145,15 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 		s.Seq[ctx.Actor] = a.Seq
 		return s.match()
 	}
+	if a.Type == "move" {
+		p := &s.Paddles[ctx.Actor]
+		if a.Ends != s.Ends || a.MotionSeq <= p.MotionSeq || a.At < p.MotionAt || a.At < now-LateGraceMS {
+			return m, nil
+		}
+		p.X, p.Y, p.Z = a.RacketX, *a.RacketY, a.RacketZ
+		p.MotionSeq, p.MotionAt = a.MotionSeq, min(a.At, now)
+		return s.match()
+	}
 	advance(&s, now)
 	if s.Result != nil || s.Rally != a.Rally || s.Shot != a.Shot || s.Expected != ctx.Actor {
 		return m, errors.New("请等待轮到自己接球")
@@ -151,11 +173,21 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 			return m, errors.New("发球时间已结束")
 		}
 		began := a.At
+		if a.RacketY != nil && math.Hypot(a.RacketX*.9-.34, *a.RacketY-1.1) > .22 {
+			s.Seq[ctx.Actor] = a.Seq
+			s.recordPaddle(a, ctx.Actor, now, "miss")
+			return s.match()
+		}
 		if began > now {
 			began = now
 		}
 		launchAt := began + 180
-		a.RacketX = .34 / .9
+		if a.RacketY == nil {
+			y := 1.1
+			a.RacketY = &y
+			a.RacketX = .34 / .9
+		}
+		a.RacketZ = 1.28
 		s.recordPaddle(a, ctx.Actor, launchAt, "armed")
 		s.Seq[ctx.Actor] = a.Seq
 		s.Pending = &PendingSwing{Action: a, Seat: ctx.Actor, At: launchAt}
@@ -185,12 +217,20 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 		s.Seq[ctx.Actor] = a.Seq
 		racketX := sign(s.side(s.Options.Teams[ctx.Actor])) * a.RacketX * .9
 		// Same fixed racket/ball radius plus light assistance on every device.
-		if math.Abs(p.X-racketX) > .22 {
+		height := p.Y
+		if a.RacketY != nil {
+			height = *a.RacketY
+		}
+		if math.Hypot(p.X-racketX, p.Y-height) > .22 {
 			s.recordPaddle(a, ctx.Actor, now, "miss")
-			s.emit("whiff", now, ctx.Actor, Vec{racketX, p.Y, p.Z}, a.Kind)
+			s.emit("whiff", now, ctx.Actor, Vec{racketX, height, p.Z}, a.Kind)
 			return s.match()
 		}
 		s.recordPaddle(a, ctx.Actor, at, "armed")
+		if a.RacketY == nil {
+			a.RacketY = &height
+			a.RacketZ = p.Z * sign(s.side(s.Options.Teams[ctx.Actor]))
+		}
 		if a.Kind == "smash" && p.Y < 1.18 {
 			return m, errors.New("来球过低，适合抽球或削球")
 		}

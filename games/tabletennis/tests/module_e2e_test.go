@@ -81,15 +81,17 @@ func TestTableTennisNaturalCompleteGames(t *testing.T) {
 							if len(a) > 0 {
 								var typ struct{ Type string }
 								_ = json.Unmarshal(a, &typ)
-								if typ.Type != "swing" {
-									t.Fatal("bot bypassed ordinary swing")
+								if typ.Type != "swing" && typ.Type != "move" {
+									t.Fatal("bot bypassed ordinary paddle interfaces")
 								}
 								next, err := mod.Apply(ctx, m, a)
 								if err != nil {
 									t.Fatalf("bot rejected: %s %v", a, err)
 								}
 								m = next
-								strokes++
+								if typ.Type == "swing" {
+									strokes++
+								}
 								_ = enc.Encode(map[string]any{"at": ctx.Now.UnixMilli(), "actor": seat, "action": a})
 							}
 						}

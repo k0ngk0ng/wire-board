@@ -73,24 +73,33 @@ type GameResult struct {
 	Winner int    `json:"winner"`
 }
 type Paddle struct {
-	X      float64 `json:"x"`
-	Seq    int64   `json:"seq"`
-	At     int64   `json:"at"`
-	Rally  int     `json:"rally"`
-	Shot   int     `json:"shot"`
-	Result string  `json:"result"`
+	X         float64 `json:"x"`
+	Y         float64 `json:"y"`
+	Z         float64 `json:"z"`
+	MotionSeq int64   `json:"motionSeq"`
+	MotionAt  int64   `json:"motionAt"`
+	Seq       int64   `json:"seq"`
+	At        int64   `json:"at"`
+	Rally     int     `json:"rally"`
+	Shot      int     `json:"shot"`
+	Result    string  `json:"result"`
 }
 type Action struct {
-	RacketX float64 `json:"racketX"`
-	Type    string  `json:"type"`
-	Epoch   string  `json:"epoch"`
-	Rally   int     `json:"rally"`
-	Shot    int     `json:"shot"`
-	Seq     int64   `json:"seq"`
-	Kind    string  `json:"kind"`
-	Aim     float64 `json:"aim"`
-	Power   float64 `json:"power"`
-	At      int64   `json:"at"`
+	RacketX   float64  `json:"racketX"`
+	RacketY   *float64 `json:"racketY,omitempty"`
+	RacketZ   float64  `json:"racketZ,omitempty"`
+	MotionSeq int64    `json:"motionSeq,omitempty"`
+	Ends      int      `json:"ends,omitempty"`
+	Lift      float64  `json:"lift,omitempty"`
+	Type      string   `json:"type"`
+	Epoch     string   `json:"epoch"`
+	Rally     int      `json:"rally"`
+	Shot      int      `json:"shot"`
+	Seq       int64    `json:"seq"`
+	Kind      string   `json:"kind"`
+	Aim       float64  `json:"aim"`
+	Power     float64  `json:"power"`
+	At        int64    `json:"at"`
 }
 type PendingSwing struct {
 	Action Action `json:"action"`
@@ -194,6 +203,11 @@ func decode(m gameapi.Match) (State, error) {
 	if len(s.Paddles) != n {
 		return s, errors.New("球拍存档不完整")
 	}
+	for i := range s.Paddles {
+		if s.Paddles[i].MotionSeq == 0 && s.Paddles[i].Y == 0 && s.Paddles[i].Z == 0 {
+			s.Paddles[i].Y, s.Paddles[i].Z = .9, 1.7
+		}
+	}
 	return s, nil
 }
 func initialPaddles(teams []int, at int64) []Paddle {
@@ -207,13 +221,20 @@ func initialPaddles(teams []int, at int64) []Paddle {
 				x = -.35
 			}
 		}
-		out[seat] = Paddle{X: x, At: at}
+		out[seat] = Paddle{X: x, Y: .9, Z: 1.7, At: at, MotionAt: at}
 		count[team]++
 	}
 	return out
 }
 func (s *State) recordPaddle(a Action, seat int, at int64, result string) {
-	s.Paddles[seat] = Paddle{X: a.RacketX, Seq: a.Seq, At: at, Rally: a.Rally, Shot: a.Shot, Result: result}
+	p := &s.Paddles[seat]
+	p.Seq, p.At, p.Rally, p.Shot, p.Result = a.Seq, at, a.Rally, a.Shot, result
+	if at >= p.MotionAt {
+		p.X = a.RacketX
+		if a.RacketY != nil {
+			p.Y, p.Z = *a.RacketY, a.RacketZ
+		}
+	}
 }
 func (s *State) emit(kind string, at int64, seat int, p Vec, stroke string) {
 	s.EventID++

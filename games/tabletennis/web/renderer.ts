@@ -2,12 +2,13 @@ import * as T from "three";
 import type { Options, View, Stroke, Vec } from "./types";
 import { localPoint, sampleFlight } from "./timeline";
 import { contactPoint } from "./prediction";
-import { cameraSetup, racketFromScreen } from "./view-space";
+import { cameraSetup, paddleAtScreen } from "./view-space";
+import { RemotePaddles } from "./paddle-stream";
 export type CourtFrame = {
   ball?: Vec;
   predicted?: boolean;
   inputEnabled?: boolean;
-  racketScreenX: number | null;
+  racketScreenPoint: { x: number; y: number } | null;
   data: View;
   seat: number;
   time: number;
@@ -511,6 +512,14 @@ export function createCourt(
     racket.add(front);
     racketRig.traverse((o) => {
       o.castShadow = false;
+      o.renderOrder = 50;
+      if (o instanceof T.Mesh) {
+        const materials = Array.isArray(o.material) ? o.material : [o.material];
+        for (const material of materials) {
+          material.depthTest = false;
+          material.depthWrite = false;
+        }
+      }
     });
   }
 
@@ -596,6 +605,26 @@ export function createCourt(
     }),
   );
   scene.add(streak);
+  const remoteTracks = new RemotePaddles();
+  const remoteTrails = Array.from({ length: players - 1 }, () => {
+    const points = new Float32Array(24);
+    const line = new T.Line(
+      new T.BufferGeometry().setAttribute(
+        "position",
+        new T.BufferAttribute(points, 3),
+      ),
+      new T.LineBasicMaterial({
+        color: "#e7bc73",
+        transparent: true,
+        opacity: 0.45,
+        depthWrite: false,
+      }),
+    );
+    scene.add(line);
+    return { points, line };
+  });
+  let ownDepth = 1.7,
+    lastRender = 0;
   function resize() {
     const w = viewport.clientWidth,
       h = viewport.clientHeight;
@@ -663,28 +692,30 @@ export function createCourt(
       streak.geometry.attributes.position.needsUpdate = true;
       streak.geometry.computeBoundingSphere();
     }
+    remoteTracks.update(`${d.epoch}:${d.ends}`, d.paddles, f.time);
     const others = d.options.teams.map((_, i) => i).filter((i) => i !== seat);
-    let opponent = 0;
+    const remoteRackets: {
+      seat: number;
+      x: number;
+      y: number;
+      motionSeq: number;
+      world: Vec;
+    }[] = [];
     for (let i = 0; i < others.length; i++) {
       const other = others[i],
         racket = rackets[i],
         ally = d.options.teams[other] === team;
-      const paddleX = d.paddles[other]?.x ?? 0;
-      const base = ally
-        ? v(paddleX * 0.9 * scale, 2.4, 4.5)
-        : v(-paddleX * 0.9 * scale, 2.6, -4.2);
-      opponent++;
-      racket.position.copy(base);
-      racket.rotation.set(
-        -0.1,
-        ally ? -0.25 : 0.1,
-        ally ? 0.45 : other % 2 ? 0.3 : -0.3,
-      );
-      const face = racket.userData.face as T.Mesh<
-        T.CircleGeometry,
-        T.MeshStandardMaterial
-      >;
-      face.material.color.set(ally ? "#328b78" : "#bd5548");
+      const pose = remoteTracks.sample(other, f.time),
+        direction = ally ? 1 : -1;
+      const point = {
+        x: pose.x * 0.9 * direction,
+        y: pose.y,
+        z: pose.z * direction,
+      };
+      racket.position.set(point.x * scale, point.y * scale, point.z * scale);
+      const prev = remoteTracks.sample(other, f.time - 60),
+        dx = pose.x - prev.x,
+        dy = pose.y - prev.y;
       const hit = [...d.events]
         .reverse()
         .find(
@@ -692,57 +723,72 @@ export function createCourt(
             e.type === "hit" &&
             e.seat === other &&
             e.at <= f.time &&
-            f.time - e.at < 220,
+            f.time - e.at < 260,
         );
-      if (hit) {
-        const at = localPoint(hit.p, facing);
-        const k = Math.exp(-(f.time - hit.at) / 85);
-        racket.position.lerp(
-          v(at.x * scale + 0.15, (at.y + 0.12) * scale, at.z * scale),
-          k,
-        );
-        racket.rotation.z +=
-          Math.sin(((f.time - hit.at) / 220) * Math.PI) * 0.7;
+      const follow = hit ? Math.sin(((f.time - hit.at) / 260) * Math.PI) : 0;
+      const toss =
+        d.expected === other && d.phase === "serve_toss"
+          ? Math.max(0, Math.min(1, (d.phaseUntil - f.time) / 180))
+          : 0;
+      racket.rotation.set(
+        -0.25 +
+          Math.max(-0.5, Math.min(0.5, dy * 3)) +
+          follow * (hit?.kind === "chop" ? 0.3 : -0.3),
+        ally ? -0.2 : 0.1,
+        Math.max(-0.6, Math.min(0.6, dx * 2)) + direction * 0.35 + toss * 0.4,
+      );
+      (
+        racket.userData.face as T.Mesh<T.CircleGeometry, T.MeshStandardMaterial>
+      ).material.color.set(ally ? "#328b78" : "#bd5548");
+      const trail = remoteTrails[i];
+      let distance = 0;
+      for (let j = 0; j < 8; j++) {
+        const old = remoteTracks.sample(other, f.time - j * 20);
+        trail.points[j * 3] = old.x * 0.9 * direction * scale;
+        trail.points[j * 3 + 1] = old.y * scale;
+        trail.points[j * 3 + 2] = old.z * direction * scale;
+        if (j === 7)
+          distance = Math.hypot(old.x - pose.x, old.y - pose.y, old.z - pose.z);
       }
+      trail.line.visible = !f.reduced && distance > 0.025;
+      trail.line.geometry.attributes.position.needsUpdate = true;
+      trail.line.geometry.computeBoundingSphere();
+      const projected = racket.position.clone().project(camera);
+      remoteRackets.push({
+        seat: other,
+        x: ((projected.x + 1) * viewport.clientWidth) / 2,
+        y: ((1 - projected.y) * viewport.clientHeight) / 2,
+        motionSeq: d.paddles[other].motionSeq ?? 0,
+        world: point,
+      });
     }
     const age = f.swing ? f.now - f.swing.at : Infinity;
     const swingDuration = 120 + (1 - (f.swing?.stroke.power ?? 0.35)) * 140;
     const activeSwing = age >= 0 && age < swingDuration;
     const incoming = localPoint(contactPoint(d, seat, f.time), facing);
-    const serving =
-      d.expected === seat && (d.phase === "serve" || d.phase === "serve_toss");
-    let pose =
-      (serving || f.gesture.down || d.controls.armed) && d.expected === seat
-        ? incoming
-        : { x: 0, y: 0.82, z: 1.7 };
-    if (activeSwing && f.swing?.contact)
-      pose = localPoint(f.swing.contact, facing);
-    let paddleX = d.paddles[seat]?.x ?? 0;
-    if (f.racketScreenX !== null)
-      paddleX = racketFromScreen(
-        f.racketScreenX,
-        pose,
-        viewport.clientWidth,
-        viewport.clientHeight,
-      );
-    if (activeSwing && !f.gesture.down)
-      paddleX = f.swing?.stroke.racketX ?? paddleX;
-    if (serving) paddleX = 0.34 / 0.9;
-    let x = paddleX * 0.9;
-    if (activeSwing && f.swing?.connected)
-      x += Math.max(-0.06, Math.min(0.06, pose.x - x));
-    const k = activeSwing ? Math.sin((age / swingDuration) * Math.PI) : 0;
+    const delta = lastRender
+      ? Math.max(0, Math.min(100, f.now - lastRender))
+      : 16;
+    lastRender = f.now;
+    ownDepth +=
+      (Math.max(0, Math.min(1.7, incoming.z)) - ownDepth) *
+      (1 - Math.exp(-delta / 90));
+    const saved = remoteTracks.sample(seat, f.time);
+    const ownPoint = f.racketScreenPoint
+      ? paddleAtScreen(
+          f.racketScreenPoint,
+          ownDepth,
+          viewport.clientWidth,
+          viewport.clientHeight,
+        )
+      : { x: saved.x * 0.9, y: saved.y, z: saved.z };
     racketRig.position.set(
-      x * scale,
-      (pose.y +
-        (activeSwing || f.gesture.down || d.controls.armed || serving
-          ? 0.12
-          : 0)) *
-        scale,
-      pose.z * scale + f.gesture.y * 0.18 - k * 0.08,
+      ownPoint.x * scale,
+      ownPoint.y * scale,
+      ownPoint.z * scale,
     );
-    const own = rackets[rackets.length - 1];
-    own.rotation.set(pose.y < 1.1 ? -0.75 : -0.25, -0.1, 0.9);
+    const k = activeSwing ? Math.sin((age / swingDuration) * Math.PI) : 0;
+    rackets[rackets.length - 1].rotation.set(-0.3, -0.1, 0.65);
     racketRig.rotation.set(
       f.gesture.y * 0.15 + k * (f.swing?.stroke.kind === "chop" ? 0.12 : -0.12),
       0,
@@ -763,6 +809,19 @@ export function createCourt(
       __tableTennisFrame: {
         at: f.time,
         predicted: !!f.predicted,
+        remoteRackets,
+        authorityFlight: d.flight
+          ? {
+              shot: d.shot,
+              lastHitter: d.lastHitter,
+              startAt: d.flight.startAt,
+              receiveAt: d.flight.receiveAt,
+              reason: d.flight.reason,
+              initial: d.flight.segments[0]?.p,
+              velocity: d.flight.segments[0]?.v,
+            }
+          : null,
+        pointer: f.racketScreenPoint,
         swingAge: f.swing ? f.now - f.swing.at : null,
         stroke: f.swing?.stroke ?? null,
         swingDuration,

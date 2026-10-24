@@ -9,7 +9,8 @@ import {
 import { StrokeChannel } from "./input";
 import { PaddleMotion } from "./motion";
 import { BallDisplay, contactPoint, canReach } from "./prediction";
-import { racketFromScreen } from "./view-space";
+import { paddleAtScreen } from "./view-space";
+import { PaddleStream } from "./paddle-stream";
 import { localPoint } from "./timeline";
 import { EventTimeline, gameNow } from "./timeline";
 import type { View, Stroke, Vec } from "./types";
@@ -20,7 +21,8 @@ export function Board(props: BoardProps<View>) {
   const ballDisplay = useRef(new BallDisplay());
   const currentIdentity = useRef("");
   const focusedIdentity = useRef("");
-  const racketScreenX = useRef<number | null>(null);
+  const racketScreenPoint = useRef<{ x: number; y: number } | null>(null);
+  const movement = useRef<PaddleStream | null>(null);
   const motion = useRef(new PaddleMotion());
   const latest = useRef(props);
   latest.current = props;
@@ -80,9 +82,17 @@ export function Board(props: BoardProps<View>) {
         setError(message);
       },
     });
+  if (!movement.current)
+    movement.current = new PaddleStream((action) => latest.current.act(action));
+  const canTrack = () =>
+    ready &&
+    !watching &&
+    !latest.current.room.seats[latest.current.room.you]?.autoPlay &&
+    latest.current.data.phase !== "finished";
   function clearPointer() {
     pointer.current = null;
     motion.current.clear();
+    movement.current?.clear();
     gesture.current = { x: 0, y: 0, down: false };
   }
   function cancel(emit = false) {
@@ -93,6 +103,16 @@ export function Board(props: BoardProps<View>) {
     ballDisplay.current.reset();
   }
   useLayoutEffect(() => {
+    motion.current.clear();
+    movement.current?.clear();
+  }, [clock.paused]);
+  useLayoutEffect(() => {
+    movement.current!.update(
+      `${identity}:${d.ends}`,
+      d.epoch,
+      d.ends,
+      d.paddles[room.you]?.motionSeq ?? 0,
+    );
     channel.current!.update({
       identity,
       epoch: d.epoch,
@@ -111,18 +131,22 @@ export function Board(props: BoardProps<View>) {
     const contact = contactPoint(p.data, p.room.you >= 0 ? p.room.you : 0, at);
     const rect = canvas.current?.getBoundingClientRect();
     const side = (p.data.options.teams[p.room.you] ?? 0) ^ p.data.ends;
-    const racketX =
-      p.data.phase === "serve"
-        ? 0.34 / 0.9
-        : racketScreenX.current !== null && rect
-          ? racketFromScreen(
-              racketScreenX.current,
-              localPoint(contact, side),
-              canvas.current?.parentElement?.clientWidth ?? rect.width,
-              canvas.current?.parentElement?.clientHeight ?? rect.height,
-            )
-          : (p.data.paddles[p.room.you]?.x ?? 0);
-    return { ...stroke, racketX };
+    const own = p.data.paddles[p.room.you];
+    const position =
+      racketScreenPoint.current && rect
+        ? paddleAtScreen(
+            racketScreenPoint.current,
+            Math.max(0, Math.min(1.7, localPoint(contact, side).z)),
+            rect.width,
+            rect.height,
+          )
+        : { x: (own?.x ?? 0) * 0.9, y: own?.y ?? 0.9, z: own?.z ?? 1.7 };
+    return {
+      ...stroke,
+      racketX: position.x / 0.9,
+      racketY: position.y,
+      racketZ: position.z,
+    };
   }
   function strike(stroke: Stroke) {
     const p = latest.current;
@@ -136,6 +160,7 @@ export function Board(props: BoardProps<View>) {
     if (p.data.phase === "rally" && at > p.data.controls.closeAt) return;
     setError("");
     if (channel.current?.swing(stroke, at)) {
+      movement.current?.clear();
       swing.current = {
         at: performance.now(),
         stroke,
@@ -190,7 +215,7 @@ export function Board(props: BoardProps<View>) {
     const p = latest.current;
     events.current.reset(p.data.events, gameNow(p.clock, performance.now()));
     swing.current = undefined;
-    racketScreenX.current = null;
+    racketScreenPoint.current = null;
     motion.current.clear();
     ballDisplay.current.reset();
     keyboard.current?.clear();
@@ -284,7 +309,8 @@ export function Board(props: BoardProps<View>) {
             const readyToServe =
               p.data.phase === "serve" &&
               liveMotion.moving &&
-              gameNow(p.clock, liveMotion.at) >= p.data.phaseUntil;
+              gameNow(p.clock, liveMotion.at) >= p.data.phaseUntil &&
+              canReach(p.data, p.room.you, stroke, at);
             const readyToReturn =
               p.data.phase === "rally" &&
               p.data.flight &&
@@ -296,6 +322,19 @@ export function Board(props: BoardProps<View>) {
               canReach(p.data, p.room.you, stroke, at);
             if (readyToServe || readyToReturn) strike(stroke);
           }
+          // Reserve the HTTP fallback's single slot for reliable strokes.
+          if (canControl() && liveMotion.active && (p.inputWindow ?? 1) > 1) {
+            const placed = placedStroke(liveMotion.stroke, at);
+            movement.current?.offer(
+              {
+                x: placed.racketX ?? 0,
+                y: placed.racketY ?? 0.9,
+                z: placed.racketZ ?? 1.7,
+              },
+              at,
+            );
+            movement.current?.flush(at);
+          } else movement.current?.clear();
           const shownBall = ballDisplay.current.sample(
             p.data,
             at,
@@ -308,7 +347,7 @@ export function Board(props: BoardProps<View>) {
               canControl() &&
               p.data.controls.canSwing &&
               !!channel.current?.canSwing,
-            racketScreenX: racketScreenX.current,
+            racketScreenPoint: racketScreenPoint.current,
             data: p.data,
             seat: p.room.you,
             time: at,
@@ -359,16 +398,36 @@ export function Board(props: BoardProps<View>) {
             const axis =
               (keys.has("right") ? 1 : 0) - (keys.has("left") ? 1 : 0);
             if (axis)
-              racketScreenX.current = Math.max(
-                -0.95,
-                Math.min(0.95, (racketScreenX.current ?? 0) + axis * 0.045),
-              );
+              racketScreenPoint.current = {
+                x: Math.max(
+                  0,
+                  Math.min(
+                    1,
+                    (racketScreenPoint.current?.x ?? 0.5) + axis * 0.0225,
+                  ),
+                ),
+                y: racketScreenPoint.current?.y ?? 0.7,
+              };
+            const vertical =
+              (keys.has("down") ? 1 : 0) - (keys.has("up") ? 1 : 0);
+            if (vertical)
+              racketScreenPoint.current = {
+                x: racketScreenPoint.current?.x ?? 0.5,
+                y: Math.max(
+                  0,
+                  Math.min(
+                    1,
+                    (racketScreenPoint.current?.y ?? 0.7) + vertical * 0.0225,
+                  ),
+                ),
+              };
             for (const key of ["a", "b", "select", "start"])
               if (keys.has(key) && !held.current.has(key)) {
                 strike({
                   kind: key === "a" ? "drive" : key === "b" ? "chop" : "block",
                   aim: keys.has("left") ? -0.7 : keys.has("right") ? 0.7 : 0,
                   power: keys.has("up") ? 0.95 : keys.has("down") ? 0.35 : 0.65,
+                  lift: keys.has("up") ? 1 : key === "a" ? 0.7 : 0,
                 });
               }
             held.current = keys;
@@ -497,41 +556,49 @@ export function Board(props: BoardProps<View>) {
       <div className="tt-scene">
         <canvas
           ref={canvas}
+          data-pointer-tracking={canTrack()}
           tabIndex={0}
           role="application"
           aria-label="第一人称乒乓球，直接在画面划动挥拍"
           onPointerDown={(e) => {
-            if (!ready || !canControl() || pointer.current || e.button > 0)
-              return;
+            if (!canTrack() || pointer.current || e.button > 0) return;
             e.currentTarget.focus({ preventScroll: true });
             e.currentTarget.setPointerCapture(e.pointerId);
             const rect = e.currentTarget.getBoundingClientRect();
-            racketScreenX.current = Math.max(
-              -1,
-              Math.min(1, ((e.clientX - rect.left) / rect.width) * 2 - 1),
-            );
+            racketScreenPoint.current = {
+              x: (e.clientX - rect.left) / rect.width,
+              y: (e.clientY - rect.top) / rect.height,
+            };
             pointer.current = { id: e.pointerId };
-            motion.current.move(e.clientX, e.clientY, performance.now());
+            motion.current.move(
+              e.clientX,
+              e.clientY,
+              e.timeStamp > 0 && e.timeStamp <= performance.now() + 50
+                ? e.timeStamp
+                : performance.now(),
+            );
             gesture.current = { x: 0, y: 0, down: true };
             setError("");
           }}
           onPointerMove={(e) => {
             if (
-              !ready ||
-              !canControl() ||
+              !canTrack() ||
               (pointer.current && pointer.current.id !== e.pointerId)
             )
               return;
-            if (
-              canControl() &&
-              (pointer.current || e.pointerType === "mouse")
-            ) {
+            if (canTrack() && (pointer.current || e.pointerType === "mouse")) {
               const rect = e.currentTarget.getBoundingClientRect();
-              racketScreenX.current = Math.max(
-                -1,
-                Math.min(1, ((e.clientX - rect.left) / rect.width) * 2 - 1),
+              racketScreenPoint.current = {
+                x: (e.clientX - rect.left) / rect.width,
+                y: (e.clientY - rect.top) / rect.height,
+              };
+              motion.current.move(
+                e.clientX,
+                e.clientY,
+                e.timeStamp > 0 && e.timeStamp <= performance.now() + 50
+                  ? e.timeStamp
+                  : performance.now(),
               );
-              motion.current.move(e.clientX, e.clientY, performance.now());
             }
           }}
           onPointerUp={(e) => {

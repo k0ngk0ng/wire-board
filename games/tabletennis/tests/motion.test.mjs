@@ -2,6 +2,14 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { PaddleMotion } from "../web/motion.ts";
+test("contact uses the latest acceleration and does not retain a stopped fast swing", () => {
+  const m = new PaddleMotion();
+  m.move(100, 300, 1000);
+  m.move(100, 295, 1060);
+  m.move(100, 250, 1075);
+  assert.ok(m.sample(1075, 360).stroke.power > 0.95);
+  assert.equal(m.sample(1135, 360).stroke.kind, "block");
+});
 test("mouse movement needs no button, and speed determines drive power", () => {
   const slow = new PaddleMotion(),
     fast = new PaddleMotion();

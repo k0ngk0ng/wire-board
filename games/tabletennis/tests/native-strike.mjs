@@ -63,7 +63,14 @@ try {
   let state,
     before,
     targetX,
+    targetY,
     directionKey = null;
+  const directionKeys = {
+    KeyA: ["a", 65],
+    KeyD: ["d", 68],
+    KeyW: ["w", 87],
+    KeyS: ["s", 83],
+  };
   const setDirection = async (next) => {
     if (directionKey === next) return;
     if (directionKey)
@@ -71,9 +78,9 @@ try {
         "Input.dispatchKeyEvent",
         {
           type: "keyUp",
-          key: directionKey === "KeyA" ? "a" : "d",
+          key: directionKeys[directionKey][0],
           code: directionKey,
-          windowsVirtualKeyCode: directionKey === "KeyA" ? 65 : 68,
+          windowsVirtualKeyCode: directionKeys[directionKey][1],
         },
         sessionId,
       );
@@ -83,9 +90,9 @@ try {
         "Input.dispatchKeyEvent",
         {
           type: "rawKeyDown",
-          key: next === "KeyA" ? "a" : "d",
+          key: directionKeys[next][0],
           code: next,
-          windowsVirtualKeyCode: next === "KeyA" ? 65 : 68,
+          windowsVirtualKeyCode: directionKeys[next][1],
         },
         sessionId,
       );
@@ -97,11 +104,22 @@ try {
     );
     const now = visual.at;
     let aligned = true;
-    if (options.keyboard && visual.inputEnabled && visual.phase === "rally") {
+    if (options.keyboard && visual.inputEnabled) {
       const tolerance = 35;
       const difference = (visual.contact?.x ?? visual.ball.x) - visual.racket.x;
-      aligned = Math.abs(difference) < tolerance;
-      await setDirection(aligned ? null : difference < 0 ? "KeyA" : "KeyD");
+      const vertical = (visual.contact?.y ?? visual.ball.y) - visual.racket.y;
+      aligned = Math.abs(difference) < tolerance && Math.abs(vertical) < 20;
+      await setDirection(
+        Math.abs(difference) >= tolerance
+          ? difference < 0
+            ? "KeyA"
+            : "KeyD"
+          : Math.abs(vertical) >= 20
+            ? vertical < 0
+              ? "KeyW"
+              : "KeyS"
+            : null,
+      );
     }
     if (
       visual.inputEnabled &&
@@ -112,6 +130,7 @@ try {
           now < visual.controls.closeAt - 100))
     ) {
       targetX = visual.contact?.x ?? visual.ball.x;
+      targetY = visual.contact?.y ?? visual.ball.y;
       before = {
         rally: visual.rally,
         shot: visual.shot,
@@ -128,11 +147,16 @@ try {
   const rect = await evaluate(
     'document.querySelector(".tt-scene canvas").getBoundingClientRect().toJSON()',
   );
+  const dy = options.kind === "chop" ? 65 : -65;
   const x =
       rect.x +
       Math.max(16, Math.min(rect.width - 16, targetX ?? rect.width * 0.5)),
-    y = rect.y + rect.height * 0.63;
-  const dy = options.kind === "chop" ? 65 : -65;
+    y =
+      rect.y +
+      Math.max(
+        40,
+        Math.min(rect.height - 40, (targetY ?? rect.height * 0.63) - dy / 2),
+      );
   const trace = [];
   await evaluate(
     'window.__ttSamples=[];window.__ttSampling=true;(function sample(t){if(!window.__ttSampling||window.__ttSamples.length>=200)return;window.__ttSamples.push({time:t,wall:Date.now(),...document.querySelector(".tt-scene canvas").__tableTennisFrame});requestAnimationFrame(sample)})(performance.now())',
@@ -201,13 +225,14 @@ try {
   }
   const releaseAt = Date.now();
   let measuredRTT = 0;
-  let after;
+  let after, actingSeat;
   for (let i = 0; i < 70; i++) {
     const requestBegan = Date.now();
     const s = await evaluate('fetch("/api/state").then(r=>r.json())');
     measuredRTT = Date.now() - requestBegan;
     if (s.room.game.data.controls.seq > before.seq) {
       after = s.room.game.data;
+      actingSeat = s.room.you;
       const paddle = after.paddles[s.room.you];
       if (paddle.result === "miss")
         throw Error(
@@ -229,8 +254,14 @@ try {
       { type: "touchEnd", touchPoints: [] },
       sessionId,
     );
-  await sleep(120);
+  await sleep(200);
   const frames = await evaluate("window.__ttSampling=false;window.__ttSamples");
+  const launch =
+    frames
+      .map((f) => f.authorityFlight)
+      .find(
+        (f) => f?.lastHitter === actingSeat && f.shot === before.shot + 1,
+      ) ?? null;
   const hitFrame = frames.find(
     (f) =>
       f.swingAge !== null &&
@@ -264,6 +295,7 @@ try {
   console.log(
     JSON.stringify({
       passed: true,
+      launch,
       noMouseButtons: !options.keyboard && !options.touch,
       acceptedBeforeTouchEnd: !!options.touch,
       measuredRTT,
