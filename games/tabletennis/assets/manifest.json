@@ -1,0 +1,42 @@
+{
+  "assetsBaseURL": "https://cdn.ichenj.com/bga/v20261002-1",
+  "license": "CC0-1.0",
+  "source": "original procedural synthesis, no third-party samples",
+  "generator": "games/tabletennis/assets/generate.py",
+  "generatorSHA256": "7f8c5f53a5f36da652b0b126610e71de3432005e3013b55c074192b8c61ac3e3",
+  "encoder": "ffmpeg version 9.0.1 Copyright (c) 2000-2026 the FFmpeg developers",
+  "entries": [
+    {
+      "urlPath": "/tabletennis/v1/hit.mp3",
+      "output": "games/tabletennis/assets/public/tabletennis/v1/hit.mp3",
+      "sha256": "4cf079233cc6bb9467921cfecbe00c542a822e92c425ac32959de2f31fda5abf",
+      "bytes": 1296,
+      "mime": "audio/mpeg",
+      "sourceSHA256": "cbb83d040a9b782bf2bf3934403a389f2c35e07c31a98882749aca220317504b"
+    },
+    {
+      "urlPath": "/tabletennis/v1/bounce.mp3",
+      "output": "games/tabletennis/assets/public/tabletennis/v1/bounce.mp3",
+      "sha256": "d12c5bee544d094fd93fcfffc7339827b4a553575623fcb5bab8cbfec9cf24aa",
+      "bytes": 878,
+      "mime": "audio/mpeg",
+      "sourceSHA256": "fb166050de43913db503e0851eaa7d12eabfa7c9e5442e07309967159dd63622"
+    },
+    {
+      "urlPath": "/tabletennis/v1/net.mp3",
+      "output": "games/tabletennis/assets/public/tabletennis/v1/net.mp3",
+      "sha256": "a39df9f94489f9be4134ac43dd2a4a5d894ce057284b28bcfc58fe1d01bb7ea2",
+      "bytes": 1087,
+      "mime": "audio/mpeg",
+      "sourceSHA256": "b9ebfad464908c36a172e8ccfdba8386e27e02163ad30d90f5d7342859e94acc"
+    },
+    {
+      "urlPath": "/tabletennis/v1/smash.mp3",
+      "output": "games/tabletennis/assets/public/tabletennis/v1/smash.mp3",
+      "sha256": "53795ae07662d01ba98f9262e5bb518542c2dcc719bef2e0dea3be40320c2f3f",
+      "bytes": 1505,
+      "mime": "audio/mpeg",
+      "sourceSHA256": "5d2bd61d30040bb6316961bdcbea7b8bbde4ab5e641c947125aa887cd8a949e2"
+    }
+  ]
+}
