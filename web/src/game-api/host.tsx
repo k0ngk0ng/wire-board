@@ -249,7 +249,7 @@ export function ModuleWaiting({
                   {seat?.id === room.host && <Crown size={14} />}{" "}
                   {seat?.bot && <small className="bot-badge">AI</small>}
                 </h3>
-                <span>
+                <span className="waiting-seat-status">
                   {seat
                     ? seat.ready && (!draftNeedsReady || seat.bot)
                       ? "✓ 已准备"

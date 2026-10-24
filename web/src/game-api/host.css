@@ -19,9 +19,7 @@
   min-width: 0;
 }
 .module-players .player-info strong {
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  display: flex;
   white-space: nowrap;
 }
 .module-players .player-info strong small {

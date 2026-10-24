@@ -1,0 +1,30 @@
+{
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "sourceRuntimeSHA256": "f15eaa579ddf50c78adc561705907cc434a702dccc37386b8e0e4c4410fb7624",
+  "baseRAMSHA256": "f4c5551938e4161c5a3d7996babbdb7c38f6c6feee29da79442faa619c1d3136",
+  "fixtureSHA256": "3ed5db7bc3340e149e7e7c276f30e93bbf4ab0020d213a4a711216eee6e1c63d",
+  "entries": [
+    "bank6:9949 and 9417 via fixed:E165..E168",
+    "fixed:D314..D345 preparation",
+    "fixed:D345..D348 full action phase"
+  ],
+  "scope": "isolated original action calls from controlled initial RAM plus original whole action stage at the incident boundary",
+  "naturalGameplay": false,
+  "calls": 2048,
+  "wholeStages": 3,
+  "stageCalls": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+  ]
+}
