@@ -152,6 +152,12 @@ try:
   tap();wait(lambda:bool(active()));assert not measure()['overflow'];shot(kind+'-playing-320')
   geometry=js("(()=>{const b=document.querySelector('[data-fullscreen-toggle]'),r=b.getBoundingClientRect();return {button:{x:r.x,y:r.y,w:r.width,h:r.height},clear:[...document.fullscreenElement.querySelectorAll('.poker-table-toolbar')].filter(e=>e.getClientRects().length).every(e=>{const q=e.getBoundingClientRect();return q.right<=r.left||q.left>=r.right||q.bottom<=r.top||q.top>=r.bottom})}})()")
   assert geometry['clear'],geometry
+  clock=js('(()=>{const e=document.querySelector("[data-room-fullscreen] .game-fullscreen-status time"),r=e.getBoundingClientRect();let p=e,bg;while(p){bg=getComputedStyle(p).backgroundColor;if(bg!=="rgba(0, 0, 0, 0)"&&bg!=="transparent")break;p=p.parentElement}return {text:e.textContent,color:getComputedStyle(e).color,bg,visible:getComputedStyle(e).visibility,rect:{x:r.x,y:r.y,w:r.width,h:r.height},clear:[...document.fullscreenElement.querySelectorAll("button")].filter(b=>b.getClientRects().length).every(b=>{const q=b.getBoundingClientRect();return q.left>=r.right||q.right<=r.left||q.top>=r.bottom||q.bottom<=r.top})}})()')
+  def lum(rgb):
+   c=[int(v)/255 for v in re.findall(r'\d+',rgb)[:3]];c=[v/12.92 if v<=.04045 else ((v+.055)/1.055)**2.4 for v in c];return sum(v*k for v,k in zip(c,[.2126,.7152,.0722]))
+  a,b=sorted([lum(clock['color']),lum(clock['bg'])]);clock['contrast']=(b+.05)/(a+.05)
+  assert clock['contrast']>=4.5 and clock['visible']=='visible' and clock['clear'] and clock['rect']['x']>=0 and clock['rect']['x']+clock['rect']['w']<=320,clock
+  geometry['clock']=clock
   tap();wait(lambda:not active());cmd('close');cmd('leave');check(kind+'-playing',**geometry)
  # Native entry can finish after navigating away. Its late promise must not
  # restore either the old room layout or a fullscreen element.
