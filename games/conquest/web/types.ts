@@ -1,5 +1,5 @@
 export type Options = {
-  mapId: "world" | "europe";
+  mapId: "world" | "europe" | "usa" | "china";
   difficulty: "easy" | "normal" | "hard";
   turnSeconds: 60 | 120 | 180;
   fog: boolean;
@@ -21,6 +21,13 @@ export type ConquestMap = {
   height: number;
   provinces: MapProvince[];
   seaRoutes: { from: string; to: string; path: string }[];
+  insets?: {
+    title: string;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  }[];
 };
 export type Province = {
   id: string;

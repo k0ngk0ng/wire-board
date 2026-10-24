@@ -1,0 +1,28 @@
+{
+  "title": "Natural Earth 1:10m administrative regions, USA and China gameplay subsets",
+  "file": "source/admin1-regional.json",
+  "license": "Public domain",
+  "licenseUrl": "https://www.naturalearthdata.com/about/terms-of-use/",
+  "licenseEvidence": {
+    "file": "source/LICENSE.md",
+    "sourceUrl": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/LICENSE.md",
+    "sha256": "2631b5b39b6d1acc56de75235109b5af2dbb4b0ac5a127b6f06185977247fd4b"
+  },
+  "upstreamUrl": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/117488dc884bad03366ff727eca013e434615127/geojson/ne_10m_admin_1_states_provinces.geojson",
+  "upstreamSHA256": "22d0e3ad85eb3e27f17cabf8ba2d50e554fbc27a87796ff891d958185da62fb5",
+  "upstreamBytes": 40726851,
+  "sha256": "1e6bc66e754a981b274dbf90d07ceaf5dd294ecff42c9d3031350cc768c012c2",
+  "preparer": "prepare_regional_source.py",
+  "preparerSHA256": "5af9578eaeaea831fd5bd2b3ce51def44d686d3e478441867dbf527ad5be15d4",
+  "toolchain": {
+    "shapely": "2.1.2",
+    "geos": "3.13.1"
+  },
+  "changes": [
+    "Select 50 US states and Washington DC",
+    "Group China gameplay regions at province level, merge Hong Kong and Taiwan district polygons, attach Paracel polygons to Hainan",
+    "Unwrap Alaska longitude across the dateline",
+    "Coverage-preserving display simplification at 0.035 geographic degrees; exact original shared-border graph retained"
+  ],
+  "retrieved": "2026-10-24"
+}

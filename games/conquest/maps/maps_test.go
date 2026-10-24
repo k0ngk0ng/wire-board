@@ -8,8 +8,8 @@ func TestCatalogAndIndependentLoads(t *testing.T) {
 	if _, err := Load("missing"); err == nil {
 		t.Fatal("unknown map accepted")
 	}
-	if len(Catalog()) != 2 {
-		t.Fatal("world and europe must both be available")
+	if len(Catalog()) != 4 {
+		t.Fatal("world, europe, USA and China must all be available")
 	}
 	for _, entry := range Catalog() {
 		a, err := Load(entry.ID)

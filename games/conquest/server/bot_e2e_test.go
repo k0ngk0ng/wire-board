@@ -30,7 +30,7 @@ type botReplayRecord struct {
 }
 
 func TestConquestBotFullGamesE2E(t *testing.T) {
-	for _, mapID := range []string{"world", "europe"} {
+	for _, mapID := range []string{"world", "europe", "usa", "china"} {
 		for players := 2; players <= 8; players++ {
 			for _, fog := range []bool{false, true} {
 				t.Run(fmt.Sprintf("%s/%d/normal/fog-%t", mapID, players, fog), func(t *testing.T) {
@@ -43,7 +43,7 @@ func TestConquestBotFullGamesE2E(t *testing.T) {
 
 func TestConquestBotDifficultyGamesE2E(t *testing.T) {
 	for _, difficulty := range []string{"easy", "hard"} {
-		for _, mapID := range []string{"world", "europe"} {
+		for _, mapID := range []string{"world", "europe", "usa", "china"} {
 			for players := 2; players <= 8; players++ {
 				for _, fog := range []bool{false, true} {
 					t.Run(fmt.Sprintf("%s/%d/%s/fog-%t", mapID, players, difficulty, fog), func(t *testing.T) {
@@ -261,7 +261,7 @@ func botSourceDigests(t *testing.T, root string) map[string]string {
 		t.Fatal(err)
 	}
 	paths = append(paths, mapSources...)
-	paths = append(paths, filepath.Join(root, "games", "conquest", "maps", "world.json"), filepath.Join(root, "games", "conquest", "maps", "europe.json"))
+	paths = append(paths, filepath.Join(root, "games", "conquest", "maps", "world.json"), filepath.Join(root, "games", "conquest", "maps", "europe.json"), filepath.Join(root, "games", "conquest", "maps", "usa.json"), filepath.Join(root, "games", "conquest", "maps", "china.json"))
 	result := map[string]string{}
 	for _, path := range paths {
 		body, err := os.ReadFile(path)

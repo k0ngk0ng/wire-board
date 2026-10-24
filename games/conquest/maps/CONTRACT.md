@@ -1,10 +1,10 @@
 # 征服时代地图契约
 
-`world.json` 与 `europe.json` 是后端规则与前端绘制共用的单一源。地图只定义几何、地区连接与开局位置，不决定收入、战斗或胜负。
+`world.json`、`europe.json`、`usa.json` 与 `china.json` 是后端规则与前端绘制共用的单一源。地图只定义几何、地区连接与开局位置，不决定收入、战斗或胜负。
 
 ```ts
 type Map = {
-  id: "world" | "europe";
+  id: "world" | "europe" | "usa" | "china";
   version: number;
   sha256: string;
   name: string;
@@ -21,6 +21,7 @@ type Map = {
   }[];
   starts: Record<"2"|"3"|"4"|"5"|"6"|"7"|"8", string[]>;
   seaRoutes: {from: string; to: string; path: string}[];
+  insets?: {title: string; x: number; y: number; width: number; height: number}[];
 };
 ```
 

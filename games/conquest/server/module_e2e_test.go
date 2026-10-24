@@ -125,7 +125,7 @@ func TestConquestConfigurationAndViews(t *testing.T) {
 			t.Fatalf("accepted %s", raw)
 		}
 	}
-	for _, mapID := range []string{"world", "europe"} {
+	for _, mapID := range []string{"world", "europe", "usa", "china"} {
 		for n := 2; n <= 8; n++ {
 			t.Run(fmt.Sprintf("%s-%d", mapID, n), func(t *testing.T) {
 				m, _ := start(t, mapID, n)
@@ -136,7 +136,7 @@ func TestConquestConfigurationAndViews(t *testing.T) {
 				if v["controls"].(map[string]any)["canPlan"] != false {
 					t.Fatal("spectator can plan")
 				}
-				if len(provinces(v)) < 50 {
+				if len(provinces(v)) != map[string]int{"world": 206, "europe": 75, "usa": 51, "china": 34}[mapID] {
 					t.Fatal("map not geographic campaign")
 				}
 				if v["mapSHA256"] == "" {
