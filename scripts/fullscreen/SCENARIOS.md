@@ -12,7 +12,8 @@ Regression scenarios defined before the area-only correction:
   the game surface. Fullscreen/resize must not remount or restart the board.
 - All 25 opening boards have desktop and 320px evidence. Bubbleparty and tank
   play are checked with native input; the tank expands to a 2:1 view.
-- Poker controls remain reachable without overlapping the fullscreen control.
+- Poker controls and the timer text remain reachable, within the viewport and
+  without overlap. The timer uses at least 4.5:1 computed text contrast.
 - Escape exits fullscreen and continues to reach game cancellation handlers.
 - Sound controls are outside game fullscreen; leaving fullscreen restores them.
 

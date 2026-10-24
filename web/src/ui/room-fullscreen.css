@@ -70,9 +70,13 @@
   flex: 1;
   min-width: 0;
 }
-[data-room-fullscreen] .game-fullscreen-status .turn-card {
+.game-fullscreen-surface[data-room-fullscreen]
+  .game-fullscreen-status
+  .turn-card {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
+  height: auto;
   gap: 12px;
   margin: 0;
   padding: 0;
@@ -82,13 +86,21 @@
   border: 0;
   box-shadow: none;
 }
-[data-room-fullscreen] .game-fullscreen-status .turn-card h3,
-[data-room-fullscreen] .game-fullscreen-status .turn-clock {
+.game-fullscreen-surface[data-room-fullscreen]
+  .game-fullscreen-status
+  .turn-card
+  h3,
+.game-fullscreen-surface[data-room-fullscreen]
+  .game-fullscreen-status
+  .turn-clock {
   margin: 0;
   color: #244836;
   font-size: 12px;
 }
-[data-room-fullscreen] .game-fullscreen-status .clock-reading time {
+.game-fullscreen-surface[data-room-fullscreen]
+  .game-fullscreen-status
+  .clock-reading
+  time {
   font-size: 14px;
   color: #244836;
 }
@@ -103,4 +115,25 @@
   .room-page.playing[data-table-layout="poker"] .game-sidebar {
     top: 46px;
   }
+}
+
+.game-fullscreen-surface[data-room-fullscreen]
+  .game-fullscreen-status
+  .turn-card
+  h3 {
+  width: auto;
+  white-space: nowrap;
+}
+.game-fullscreen-surface[data-room-fullscreen]
+  .game-fullscreen-status
+  .turn-card
+  h3 {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.game-fullscreen-surface[data-room-fullscreen]
+  .game-fullscreen-status
+  .turn-clock {
+  flex-shrink: 0;
 }
