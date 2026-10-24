@@ -29,8 +29,9 @@ import type { BoardProps } from "../../../web/src/game-api/module";
 import { Modal } from "../../../web/src/ui/board-host";
 import { viewPoint, visibleCameraRect } from "./camera";
 import { useCamera } from "./useCamera";
-import { createCursor, consumeEvents } from "./events";
+import { createCursor, consumeEvents, visibleAction } from "./events";
 import {
+  completeMarches,
   marchAmount,
   recruitCapacity,
   recruitShortages,
@@ -38,6 +39,7 @@ import {
 } from "./map-actions";
 import { TroopAmount } from "./TroopAmount";
 import { Crown } from "./Crown";
+import { ActionPlayback, ActionTrail } from "./ActionPlayback";
 import { useHoldAction } from "./hold-action";
 import type { ConquestMap, Event, MapProvince, Order, View } from "./types";
 
@@ -137,7 +139,12 @@ function MapBoard({
     [financeOpen, setFinanceOpen] = useState(false),
     [resignOpen, setResignOpen] = useState(false);
   const [tax, setTax] = useState(10),
-    [activeEvents, setActiveEvents] = useState<Event[]>([]);
+    [activeEvents, setActiveEvents] = useState<Event[]>([]),
+    [playbackTick, setPlaybackTick] = useState(0);
+  const playbackCamera = useRef<{
+    camera: ReturnType<typeof camera.getCamera>;
+    size: typeof camera.size;
+  } | null>(null);
   const [marchQueue, setMarchQueue] = useState<
     {
       from: string;
@@ -212,6 +219,10 @@ function MapBoard({
   const now = () =>
     latestClock.current.serverNow +
     Math.max(0, performance.now() - latestClock.current.receivedAt);
+  const playback = visibleAction(data.events ?? [], now());
+  const playbackPoint = geography.get(
+    playback?.to ?? playback?.province ?? "",
+  )?.label;
   const fullRecruit =
     own && selectedPlan
       ? recruitCapacity(
@@ -259,7 +270,7 @@ function MapBoard({
           .map(
             (reason) =>
               ({
-                movement: "行动点不足",
+                movement: "征兵所需行动点不足",
                 gold: "金币不足",
                 population: "人口不足（至少需要 2 人）",
                 capacity: "驻军已达上限",
@@ -297,7 +308,10 @@ function MapBoard({
         !!s &&
         (p.id === selected ||
           p.id === target ||
-          (s.owner >= 0 && (s.troops > 0 || s.fort)))
+          (s.owner >= 0 && (s.troops > 0 || s.fort)) ||
+          data.players.some(
+            (player) => !player.eliminated && player.king === p.id,
+          ))
       );
     });
     candidates.sort(
@@ -323,15 +337,24 @@ function MapBoard({
         p.id !== target &&
         labels.some(
           (x) =>
-            Math.abs(x.point.x - point.x) < 46 &&
-            Math.abs(x.point.y - point.y) < 28,
+            Math.abs(x.point.x - point.x) < 56 &&
+            Math.abs(x.point.y - point.y) < 50,
         )
       )
         continue;
       labels.push({ p, point });
     }
     return labels;
-  }, [map, provinces, selected, target, camera.camera, camera.size, room.you]);
+  }, [
+    map,
+    provinces,
+    data.players,
+    selected,
+    target,
+    camera.camera,
+    camera.size,
+    room.you,
+  ]);
 
   useEffect(() => {
     if (ready.current || camera.size.width < 2) return;
@@ -340,7 +363,11 @@ function MapBoard({
       alive = true;
     void document.fonts.ready.then(() => {
       if (!alive) return;
-      if (camera.size.width <= 620 && !room.spectating) {
+      if (
+        camera.size.width <= 620 &&
+        !room.spectating &&
+        data.phase !== "resolving"
+      ) {
         const home =
           geography.get(me?.king ?? "") ??
           map.provinces.find((p) => provinces.get(p.id)?.owner === room.you);
@@ -376,10 +403,16 @@ function MapBoard({
       audio.stop();
       return;
     }
-    if (next.events.length)
-      setActiveEvents((previous) =>
-        [...previous, ...next.events].filter((e) => e.until > now()),
+    setActiveEvents((previous) => {
+      if (!previous.length && !next.events.length) return previous;
+      const latest = new Map((data.events ?? []).map((e) => [e.id, e]));
+      const merged = new Map(
+        [...previous, ...next.events].map((e) => [e.id, latest.get(e.id) ?? e]),
       );
+      return [...merged.values()].filter(
+        (e) => (e.displayUntil ?? e.until) > now(),
+      );
+    });
     for (const clip of next.clips) {
       const local = `/conquest/v1/audio/${clip}.wav`;
       void audio.playWithFallback(
@@ -390,11 +423,69 @@ function MapBoard({
   useEffect(() => {
     if (!activeEvents.length) return;
     const timer = setTimeout(
-      () => setActiveEvents((v) => v.filter((e) => e.until > now())),
-      Math.max(12, Math.min(...activeEvents.map((e) => e.until)) - now() + 8),
+      () =>
+        setActiveEvents((v) =>
+          v.filter((e) => (e.displayUntil ?? e.until) > now()),
+        ),
+      Math.max(
+        12,
+        Math.min(...activeEvents.map((e) => e.displayUntil ?? e.until)) -
+          now() +
+          8,
+      ),
     );
     return () => clearTimeout(timer);
   }, [activeEvents]);
+  useEffect(() => {
+    if (!playback) return;
+    const timer = window.setTimeout(
+      () => setPlaybackTick((v) => v + 1),
+      Math.max(16, (playback.displayUntil ?? playback.until) - now() + 8),
+    );
+    return () => window.clearTimeout(timer);
+  }, [playback?.id, playback?.displayUntil, playback?.until, playbackTick]);
+  useEffect(() => {
+    if (camera.size.width < 2) return;
+    if (data.phase === "resolving") {
+      playbackCamera.current ??= {
+        camera: camera.getCamera(),
+        size: camera.size,
+      };
+    } else if (playbackCamera.current) {
+      if (data.phase === "planning")
+        camera.restore(
+          playbackCamera.current.camera,
+          playbackCamera.current.size,
+        );
+      playbackCamera.current = null;
+    }
+  }, [
+    data.phase,
+    camera.size.width,
+    camera.size.height,
+    camera.getCamera,
+    camera.restore,
+  ]);
+  useEffect(() => {
+    if (
+      data.phase !== "resolving" ||
+      !playback ||
+      camera.size.width < 2 ||
+      document.hidden
+    )
+      return;
+    const points = [playback.from, playback.to, playback.province]
+      .map((id) => geography.get(id ?? "")?.label)
+      .filter((p): p is { x: number; y: number } => !!p);
+    camera.reveal(points);
+  }, [
+    data.phase,
+    playback?.id,
+    camera.size.width,
+    camera.size.height,
+    camera.reveal,
+    geography,
+  ]);
   useEffect(() => {
     const release = () => {
       if (document.hidden) {
@@ -540,7 +631,7 @@ function MapBoard({
           : from.mobile <= 0
             ? "这块领地没有可移动的兵力"
             : data.availableMovement < data.controls.moveCost
-              ? "本轮行动点不足"
+              ? "行军所需行动点不足"
               : geo?.seaNeighbors.includes(intent.to)
                 ? `海运这支部队需要 ${number(troopAmount(from.mobile, intent.amount) * (data.controls.seaCost ?? 2))} 金币`
                 : "当前无法派兵，请重新选择",
@@ -631,10 +722,7 @@ function MapBoard({
     setTarget("");
     setNotice("");
   }
-  function keyChoose(
-    event: React.KeyboardEvent<SVGPathElement>,
-    p: MapProvince,
-  ) {
+  function keyChoose(event: React.KeyboardEvent<SVGElement>, p: MapProvince) {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
       void choose(p.id);
@@ -693,7 +781,9 @@ function MapBoard({
     : me?.eliminated
       ? "你的势力已退出"
       : data.phase === "resolving"
-        ? "各方正在行动"
+        ? playback
+          ? ""
+          : "其他势力正在行动"
         : data.phase === "paused"
           ? "已暂停"
           : data.phase === "finished"
@@ -705,9 +795,10 @@ function MapBoard({
                 : selectedGeo
                   ? ""
                   : "选择你的领地";
-  const movementTotal = Math.max(0, me?.movement ?? 0);
-  const movementUsed =
-    Math.round(Math.max(0, movementTotal - data.availableMovement) * 10) / 10;
+  const remainingMarches = completeMarches(
+    data.availableMovement,
+    data.controls.moveCost,
+  );
   const amountOpen = own && (recruiting || marching);
   const orderLabel = (o: Order) =>
     o.type === "move"
@@ -740,9 +831,9 @@ function MapBoard({
               <Coins size={15} />
               <b>{number(data.availableGold)}</b>
             </button>
-            <span title="可用行动点">
+            <span title="剩余行动点，按原规则结转">
               <Footprints size={15} />
-              {data.availableMovement.toFixed(1)}
+              {number(data.availableMovement)} 点
             </span>
           </div>
         )}
@@ -855,6 +946,11 @@ function MapBoard({
               {map.provinces.map((p) => {
                 const s = provinces.get(p.id);
                 const reachable = marching && adjacent.has(p.id);
+                const acting =
+                  playback &&
+                  [playback.from, playback.to, playback.province].includes(
+                    p.id,
+                  );
                 return (
                   <path
                     key={p.id}
@@ -864,7 +960,7 @@ function MapBoard({
                     fill={color(s?.owner ?? -1)}
                     fillRule="evenodd"
                     vectorEffect="non-scaling-stroke"
-                    className={`cq-province ${p.id === selected ? "selected" : ""} ${p.id === target ? "target" : ""} ${reachable ? "reachable" : ""}`}
+                    className={`cq-province ${p.id === selected ? "selected" : ""} ${p.id === target ? "target" : ""} ${reachable ? "reachable" : ""} ${acting ? "acting" : ""}`}
                     role="button"
                     tabIndex={
                       p.id === selected || (!selected && s?.owner === room.you)
@@ -917,39 +1013,19 @@ function MapBoard({
                     />
                   ) : null;
                 })}
-              {activeEvents.map((e) => {
-                const a = geography.get(e.from ?? "")?.label,
-                  b = geography.get(e.to ?? e.province ?? "")?.label;
-                if (!b) return null;
-                const start = a ?? b,
-                  progress = Math.max(
-                    0,
-                    Math.min(1, (now() - e.at) / Math.max(1, e.until - e.at)),
-                  );
-                const x = start.x + (b.x - start.x) * progress,
-                  y = start.y + (b.y - start.y) * progress;
-                return (
-                  <g key={e.id} data-cq-event={e.id} pointerEvents="none">
-                    <path
-                      d={`M${start.x} ${start.y}L${b.x} ${b.y}`}
-                      className="cq-event-route"
-                      vectorEffect="non-scaling-stroke"
-                    />
-                    <circle
-                      r={4 / camera.camera.scale}
-                      fill={color(e.seat)}
-                      stroke="#fff3c2"
-                      strokeWidth={1.5 / camera.camera.scale}
-                    >
-                      <animateMotion
-                        path={`M${x} ${y}L${b.x} ${b.y}`}
-                        dur={`${Math.max(1, e.until - now())}ms`}
-                        fill="freeze"
-                      />
-                    </circle>
-                  </g>
-                );
-              })}
+              {playback && playbackPoint && (
+                <ActionTrail
+                  event={playback}
+                  from={geography.get(playback.from ?? "")?.label}
+                  to={playbackPoint}
+                  scale={camera.camera.scale}
+                  color={color(playback.seat)}
+                  army={`#${uid}-army`}
+                  arrow={`url(#${uid}-arrow)`}
+                  now={now()}
+                  animate={activeEvents.some((e) => e.id === playback.id)}
+                />
+              )}
             </g>
             <g ref={camera.overlayRef} className="cq-army-layer">
               {map.insets?.map((inset) => {
@@ -979,18 +1055,29 @@ function MapBoard({
                 const ruler = data.players.some(
                   (q) => !q.eliminated && q.king === p.id,
                 );
+                const selectArmy = (event: React.MouseEvent<SVGElement>) => {
+                  event.stopPropagation();
+                  if (camera.canClick(event.detail)) void choose(p.id);
+                };
                 return (
                   <g key={p.id} transform={`translate(${point.x} ${point.y})`}>
                     <g
                       className={`cq-army-marker ${p.id === selected ? "selected" : ""}`}
                       data-cq-label={p.id}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (camera.canClick(e.detail)) void choose(p.id);
-                      }}
+                      onClick={selectArmy}
+                      onKeyDown={(event) => keyChoose(event, p)}
+                      tabIndex={-1}
                       role="button"
                       aria-label={`${p.name}，兵力 ${force(troops)}${ruler ? "，君主" : ""}`}
                     >
+                      <path
+                        data-cq-army-hit
+                        d="M-29-32H25V16H-29Z"
+                        fill="transparent"
+                        stroke="none"
+                        pointerEvents="all"
+                        onClick={selectArmy}
+                      />
                       <use
                         href={`#${uid}-army`}
                         x="-28"
@@ -1036,7 +1123,7 @@ function MapBoard({
             </g>
           </svg>
         </div>
-        {selectedGeo && selectedState && (
+        {selectedGeo && selectedState && !playback && (
           <div className="cq-land-info" aria-live="polite">
             <strong>{selectedGeo.name}</strong>
             <span>
@@ -1061,6 +1148,16 @@ function MapBoard({
               </span>
             )}
           </div>
+        )}
+        {playback && (
+          <ActionPlayback
+            event={playback}
+            name={ownerName(playback.seat)}
+            color={color(playback.seat)}
+            own={playback.seat === room.you}
+            provinceName={provinceName}
+            now={now()}
+          />
         )}
         <div className="cq-map-zoom" aria-label="地图缩放">
           <button
@@ -1273,6 +1370,7 @@ function MapBoard({
         <button
           aria-label="查看行动计划"
           data-cq-action="plans"
+          data-cq-order-count={plan.length}
           onClick={() => setPlansOpen(true)}
         >
           <ScrollText size={18} />
@@ -1283,10 +1381,10 @@ function MapBoard({
             {!room.spectating && (
               <small
                 data-cq-action-points
-                aria-label={`本轮行动点：已用 ${movementUsed}，共 ${movementTotal}`}
-                title={`本轮行动点：已用 ${movementUsed}，共 ${movementTotal}`}
+                aria-label={`可行军 ${remainingMarches} 次，剩余行动点 ${number(data.availableMovement)}`}
+                title={`可行军 ${remainingMarches} 次，剩余行动点 ${number(data.availableMovement)}`}
               >
-                {movementUsed}/{movementTotal}
+                可行军 {remainingMarches} 次
               </small>
             )}
           </span>

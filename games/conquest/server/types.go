@@ -3,11 +3,13 @@ package conquest
 import "encoding/json"
 
 const (
-	schema       = 1
-	maxTroops    = 999999
-	maxCivil     = 100000
-	maxOrders    = 128
-	moveDuration = 220
+	schema         = 1
+	maxTroops      = 999999
+	maxCivil       = 100000
+	maxOrders      = 128
+	moveDuration   = 1000
+	actionDuration = 900
+	resultDuration = 500
 )
 
 var colors = []string{"#b15d54", "#46728d", "#b28a35", "#547b53", "#886793", "#a96286", "#487f7b", "#877144"}
@@ -77,48 +79,52 @@ type Action struct {
 	Enabled  *bool  `json:"enabled,omitempty"`
 }
 type Event struct {
-	ID       int       `json:"id"`
-	Type     string    `json:"type"`
-	From     string    `json:"from,omitempty"`
-	To       string    `json:"to,omitempty"`
-	Province string    `json:"province,omitempty"`
-	Seat     int       `json:"seat"`
-	Amount   int       `json:"amount"`
-	Captured bool      `json:"captured"`
-	At       int64     `json:"at"`
-	Until    int64     `json:"until"`
-	Before   *Province `json:"before,omitempty"`
-	After    *Province `json:"after,omitempty"`
-	Text     string    `json:"text"`
+	ID           int       `json:"id"`
+	Type         string    `json:"type"`
+	From         string    `json:"from,omitempty"`
+	To           string    `json:"to,omitempty"`
+	Province     string    `json:"province,omitempty"`
+	Seat         int       `json:"seat"`
+	Amount       int       `json:"amount"`
+	Captured     bool      `json:"captured"`
+	At           int64     `json:"at"`
+	Until        int64     `json:"until"`
+	DisplayUntil int64     `json:"displayUntil,omitempty"`
+	Applied      bool      `json:"applied,omitempty"`
+	Skipped      bool      `json:"skipped,omitempty"`
+	Before       *Province `json:"before,omitempty"`
+	After        *Province `json:"after,omitempty"`
+	Text         string    `json:"text"`
 }
 type queued struct {
 	Seat  int   `json:"seat"`
 	Order Order `json:"order"`
 }
 type State struct {
-	Options     Options    `json:"options"`
-	Session     string     `json:"session"`
-	Epoch       int        `json:"epoch"`
-	Round       int        `json:"round"`
-	Phase       string     `json:"phase"`
-	MapID       string     `json:"mapId"`
-	MapVersion  int        `json:"mapVersion"`
-	MapSHA256   string     `json:"mapSHA256"`
-	Seed        uint64     `json:"seed"`
-	Provinces   []Province `json:"provinces"`
-	Players     []Player   `json:"players"`
-	Plans       [][]Order  `json:"plans"`
-	NextOrder   []int      `json:"nextOrder"`
-	PauseVotes  []bool     `json:"pauseVotes"`
-	ResumeVotes []bool     `json:"resumeVotes"`
-	Remaining   []int64    `json:"remaining"`
-	Events      []Event    `json:"events"`
-	NextEvent   int        `json:"nextEvent"`
-	Pending     []queued   `json:"pending"`
-	Cursor      int        `json:"cursor"`
-	ResolveAt   int64      `json:"resolveAt"`
-	Winner      int        `json:"winner"`
-	Log         []string   `json:"log"`
+	ResolutionHold bool       `json:"resolutionHold,omitempty"`
+	Options        Options    `json:"options"`
+	Session        string     `json:"session"`
+	Epoch          int        `json:"epoch"`
+	Round          int        `json:"round"`
+	Phase          string     `json:"phase"`
+	MapID          string     `json:"mapId"`
+	MapVersion     int        `json:"mapVersion"`
+	MapSHA256      string     `json:"mapSHA256"`
+	Seed           uint64     `json:"seed"`
+	Provinces      []Province `json:"provinces"`
+	Players        []Player   `json:"players"`
+	Plans          [][]Order  `json:"plans"`
+	NextOrder      []int      `json:"nextOrder"`
+	PauseVotes     []bool     `json:"pauseVotes"`
+	ResumeVotes    []bool     `json:"resumeVotes"`
+	Remaining      []int64    `json:"remaining"`
+	Events         []Event    `json:"events"`
+	NextEvent      int        `json:"nextEvent"`
+	Pending        []queued   `json:"pending"`
+	Cursor         int        `json:"cursor"`
+	ResolveAt      int64      `json:"resolveAt"`
+	Winner         int        `json:"winner"`
+	Log            []string   `json:"log"`
 }
 type Controls struct {
 	CanPlan         bool    `json:"canPlan"`

@@ -80,6 +80,9 @@ export type Event = {
   captured: boolean;
   at: number;
   until: number;
+  displayUntil?: number;
+  applied?: boolean;
+  skipped?: boolean;
   text: string;
   before?: Province;
   after?: Province;

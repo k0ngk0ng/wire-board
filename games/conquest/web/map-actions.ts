@@ -1,5 +1,12 @@
 import { moveLimit, recruitLimit } from "./action-limits.ts";
 
+// A display-only count of full marches. Do not round the server's point budget
+// or use this count to price recruitment, construction, disbanding or taxes.
+export function completeMarches(points: number, cost: number): number {
+  if (!Number.isFinite(points) || !Number.isFinite(cost) || cost <= 0) return 0;
+  return Math.max(0, Math.floor(points / cost));
+}
+
 // null keeps the default tied to the latest authoritative capacity. An explicit
 // choice is captured with each queued click, then bounded by remaining troops.
 export function troopAmount(

@@ -34,6 +34,7 @@ func TestConquestBotFullGamesE2E(t *testing.T) {
 		for players := 2; players <= 8; players++ {
 			for _, fog := range []bool{false, true} {
 				t.Run(fmt.Sprintf("%s/%d/normal/fog-%t", mapID, players, fog), func(t *testing.T) {
+					t.Parallel()
 					runBotGame(t, mapID, players, "normal", fog)
 				})
 			}
@@ -47,6 +48,7 @@ func TestConquestBotDifficultyGamesE2E(t *testing.T) {
 			for players := 2; players <= 8; players++ {
 				for _, fog := range []bool{false, true} {
 					t.Run(fmt.Sprintf("%s/%d/%s/fog-%t", mapID, players, difficulty, fog), func(t *testing.T) {
+						t.Parallel()
 						runBotGame(t, mapID, players, difficulty, fog)
 					})
 				}
@@ -275,4 +277,72 @@ func botSourceDigests(t *testing.T, root string) map[string]string {
 		result[filepath.ToSlash(relative)] = fmt.Sprintf("%x", sha256.Sum256(body))
 	}
 	return result
+}
+
+// Captured from the natural random-start matrix, not a boosted or forced-win
+// fixture. Visible reinforcement losses must stop repeated undersized attacks.
+func TestConquestBotLearnsVisibleReinforcementE2E(t *testing.T) {
+	file, err := os.Open(filepath.Join("..", "tests", "testdata", "usa-reinforcement-stall.json.gz"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer file.Close()
+	reader, err := gzip.NewReader(file)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer reader.Close()
+	var saved botReplayRecord
+	if err = json.NewDecoder(reader).Decode(&saved); err != nil {
+		t.Fatal(err)
+	}
+	match := *saved.Match
+	c := saved.Context
+	c.Actor = 3
+	m := Module()
+	choice, err := m.BotAction(c, match)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var first Action
+	if err = json.Unmarshal(choice, &first); err != nil {
+		t.Fatal(err)
+	}
+	if first.Type != "recruit" || first.Amount < 3500 {
+		t.Fatalf("ignores publicly observed reinforcement: %s", choice)
+	}
+	for step := 0; step < 2000 && match.Result == nil; step++ {
+		if match.SystemDeadline > 0 {
+			c.Actor = -1
+			c.Now = time.UnixMilli(match.SystemDeadline)
+			match, err = m.OnTimer(c, match)
+		} else {
+			if len(match.Actors) == 0 {
+				t.Fatal("no eligible actor")
+			}
+			acted := false
+			for _, seat := range match.Actors {
+				c.Actor = seat
+				choice, err = m.BotAction(c, match)
+				if err != nil {
+					break
+				}
+				if len(choice) == 0 || bytes.Equal(choice, []byte("null")) {
+					continue
+				}
+				match, err = m.Apply(c, match, choice)
+				acted = true
+				break
+			}
+			if err == nil && !acted {
+				t.Fatal("no legal decision at planning phase")
+			}
+		}
+		if err != nil {
+			t.Fatal(step, err)
+		}
+	}
+	if match.Result == nil || len(match.Result.Winners) != 1 {
+		t.Fatal("visible-reinforcement deadlock did not finish naturally")
+	}
 }

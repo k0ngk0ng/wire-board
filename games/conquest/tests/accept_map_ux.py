@@ -30,13 +30,15 @@ ARGS.add_argument('--hold-actions', action='store_true')
 ARGS.add_argument('--marker-case', action='store_true')
 ARGS.add_argument('--amount-controls', action='store_true')
 ARGS.add_argument('--fullscreen-layout', action='store_true')
+ARGS.add_argument('--round-flow', action='store_true')
+ARGS.add_argument('--army-touch', action='store_true')
 ARGS.add_argument('--maps', default='')
 ARGS = ARGS.parse_args()
 MAP_IDS=ARGS.maps.split(',') if ARGS.maps else (['europe','world'] if ARGS.baseline else ['world','europe','usa','china'])
 assert set(MAP_IDS)<=set(['world','europe','usa','china'])
 RUN = uuid.uuid4().hex[:6]
 AREA = ROOT/'.local/conquest-map-ux'
-OUT = AREA/('queue-'+ARGS.queue_case if ARGS.queue_case else 'hold-actions' if ARGS.hold_actions else 'fullscreen-layout' if ARGS.fullscreen_layout else 'amount-controls' if ARGS.amount_controls else 'marker-case' if ARGS.marker_case else 'baseline' if ARGS.baseline else 'browser')
+OUT = AREA/('queue-'+ARGS.queue_case if ARGS.queue_case else 'hold-actions' if ARGS.hold_actions else 'army-touch' if ARGS.army_touch else 'round-flow' if ARGS.round_flow else 'fullscreen-layout' if ARGS.fullscreen_layout else 'amount-controls' if ARGS.amount_controls else 'marker-case' if ARGS.marker_case else 'baseline' if ARGS.baseline else 'browser')
 FIXTURE = ROOT/'.local/conquest/browser'
 PROFILE = AREA/('profile-'+RUN)
 SOCKET = ROOT/'.s'
@@ -49,7 +51,7 @@ ENV.update(GOTOOLCHAIN='local',WIRE_BOARD_CONQUEST_BROWSER='1',AGENT_BROWSER_SES
 BASE = ARGS.base_url
 PASSWORD = 'map-ux-local-only'
 INVITE = ENV.get('CONQUEST_INVITE','conquest-browser')
-REPORT = {'passed':False,'baseline':ARGS.baseline,'scenario':'queue-'+ARGS.queue_case if ARGS.queue_case else 'hold-actions' if ARGS.hold_actions else 'fullscreen-layout' if ARGS.fullscreen_layout else 'amount-controls' if ARGS.amount_controls else 'marker-case' if ARGS.marker_case else 'full-map-ux','scope':'normal local rooms, production module, native Chromium inputs; mobile viewport simulation','checks':[],'violations':[],'inputs':[],'measurements':[]}
+REPORT = {'passed':False,'baseline':ARGS.baseline,'scenario':'queue-'+ARGS.queue_case if ARGS.queue_case else 'hold-actions' if ARGS.hold_actions else 'army-touch' if ARGS.army_touch else 'round-flow' if ARGS.round_flow else 'fullscreen-layout' if ARGS.fullscreen_layout else 'amount-controls' if ARGS.amount_controls else 'marker-case' if ARGS.marker_case else 'full-map-ux','scope':'normal local rooms, production module, native Chromium inputs; mobile viewport simulation','checks':[],'violations':[],'inputs':[],'measurements':[]}
 server = None
 opened = False
 handles = []
@@ -138,7 +140,7 @@ def reset_map():
 
 
 def wait_orders(count):
-    wait('Number(document.querySelector("[data-cq-action=plans] b,.cq-plan-button b")?.textContent)==='+str(count))
+    wait('Number(document.querySelector("[data-cq-action=plans]")?.dataset.cqOrderCount??document.querySelector("[data-cq-action=plans] b,.cq-plan-button b")?.textContent)==='+str(count))
 
 
 def screenshot(name,check_contrast=True):
@@ -170,9 +172,23 @@ def ready():
     wait('!document.querySelector("[data-conquest-board]").closest("[inert]")')
 
 
-def new_game(map_id,peer):
+def new_game(map_id,peer,gesture_start=False):
+    if gesture_start:browser('set','viewport','1440','1000')
     api('/rooms',dict(kind='conquest',name='地图操作验收 '+map_id,capacity=2,options={'mapId':map_id,'difficulty':'normal','turnSeconds':180}))
     peer.command('join',room());peer.command('ready');command('ready');command('start');peer.ready_load();ready()
+    if gesture_start:
+        geo=json.loads((ROOT/'games/conquest/maps'/f'{map_id}.json').read_text())
+        for attempt in range(200):
+            own=view()['players'][0]['king'];p=next(p for p in geo['provinces'] if p['id']==own)
+            size=js('(()=>{const b=document.querySelector('+json.dumps('[data-cq-province="'+own+'"]')+').getBBox();return {width:b.width,height:b.height}})()')
+            if .2< p['label']['x']/geo['width'] <.8 and .2<p['label']['y']/geo['height']<.58 and min(size.values())>=28 and p['neighbors']:
+                browser('scrollintoview','.cq-round-controls');reset_map();focus_region(map_id,own)
+                if mouse_start_point(own,'territory') and mouse_start_point(own,'text'):
+                    action('attack');unobstructed=bool(mouse_start_point(own,'territory') and mouse_start_point(own,'text'));action('cancel')
+                    if unobstructed:break
+            finish(peer);new_game(map_id,peer)
+        else:raise AssertionError('no usable painted-surface gesture fixture after 200 normal random starts')
+        REPORT.setdefault('gestureFixtures',[]).append({'map':map_id,'start':own,'normalRoomAttempts':attempt+1,'reason':'painted land and army text need space for paced whole-map drags'})
 
 
 def finish(peer):
@@ -186,6 +202,34 @@ def finish(peer):
 def point_for(map_id,province):
     m=json.loads((ROOT/'games/conquest/maps'/f'{map_id}.json').read_text());p=next(p for p in m['provinces'] if p['id']==province)
     return js('(()=>{const e=document.querySelector('+json.dumps('[data-cq-province="'+province+'"]')+'),p=new DOMPoint('+str(p['label']['x'])+','+str(p['label']['y'])+').matrixTransform(e.getScreenCTM()),v=document.querySelector(".cq-viewport").getBoundingClientRect();return {x:p.x,y:p.y,viewport:v.toJSON(),hit:document.elementFromPoint(p.x,p.y)?.tagName}})()')
+
+
+def target_point(map_id,province):
+    before_orders=view()['orders'];before_selected=scene_state()['selected']
+    reset_map();browser('scrollintoview','.cq-round-controls')
+    for attempt in range(12):
+        p=point_for(map_id,province);v=p['viewport']
+        candidate=js("""(()=>{
+          const id="""+json.dumps(province)+""",e=document.querySelector('[data-cq-province="'+id+'"]'),b=e.getBBox(),m=e.getScreenCTM(),v=document.querySelector('.cq-viewport').getBoundingClientRect();
+          const controls=[...document.querySelectorAll('.cq-land-info,.cq-territory-controls,.cq-map-zoom,.cq-minimap')].filter(e=>e.getClientRects().length).map(e=>e.getBoundingClientRect());
+          const belongs=(x,y)=>{const h=document.elementFromPoint(x,y)?.closest('[data-cq-province],[data-cq-label]');return (h?.getAttribute('data-cq-province')??h?.getAttribute('data-cq-label'))===id};
+          for(const u of [.5,.35,.65,.2,.8,.1,.9])for(const t of [.5,.35,.65,.2,.8,.1,.9]){
+            const local=new DOMPoint(b.x+b.width*u,b.y+b.height*t);if(!e.isPointInFill(local))continue;const p=local.matrixTransform(m);
+            if(p.x<v.left+14||p.x>v.right-14||p.y<Math.max(0,v.top)+14||p.y>Math.min(innerHeight,v.bottom)-14)continue;
+            if(controls.some(r=>p.x>=r.left-12&&p.x<=r.right+12&&p.y>=r.top-12&&p.y<=r.bottom+12))continue;
+            if([[0,0],[-12,0],[12,0],[0,-12],[0,12]].every(([dx,dy])=>belongs(p.x+dx,p.y+dy)))return {x:p.x,y:p.y};
+          }return null;
+        })()""")
+        if candidate:
+            assert view()['orders']==before_orders and scene_state()['selected']==before_selected, 'target preparation caused a game action'
+            p.update(candidate);REPORT.setdefault('nativeTargets',[]).append({'map':map_id,'province':province,'point':candidate,'clearancePX':12,'attempts':attempt+1});return p
+        cx=(v['left']+v['right'])/2;cy=(max(0,v['top'])+min(js('innerHeight'),v['bottom']))/2
+        dx=max(-v['width']*.35,min(v['width']*.35,cx-p['x']));dy=max(-v['height']*.3,min(v['height']*.3,cy-p['y']))
+        if abs(dx)+abs(dy)>=8:native(dict(mode='drag',x=cx,y=cy,dx=dx,dy=dy,steps=16,pace=16))
+        p=point_for(map_id,province)
+        if v['left']<p['x']<v['right'] and max(v['top'],0)<p['y']<min(v['bottom'],js('innerHeight')):
+            native(dict(mode='pinch',x=cx,y=cy,start=22,end=48,steps=20,pace=16))
+    raise AssertionError(('could not expose real native target',map_id,province,p))
 
 
 def focus_region(map_id,province):
@@ -367,7 +411,10 @@ def orders(map_id,peer):
     reset_map()
     own=next(p['id'] for p in view()['provinces'] if p['owner']==0)
     focus_region(map_id,own)
-    initial=view();recruit_default()
+    initial=view();g=json.loads((ROOT/'games/conquest/maps'/f'{map_id}.json').read_text());home=next(p for p in g['provinces'] if p['id']==own)
+    if home['neighbors']:recruit_default()
+    else:
+        action('recruit');browser('fill','[data-cq-amount=number]','1000');action('confirm-recruit')
     wait_orders(1)
     plan=view();assert len(plan['orders'])==1 and plan['orders'][0]['type']=='recruit'
     assert plan['provinces']==initial['provinces'] and peer.api('/state')['room']['game']['data']['orders']==[]
@@ -379,9 +426,9 @@ def orders(map_id,peer):
     native(dict(mode='drag',x=px,y=py,dx=-18,dy=-12,steps=16,pace=16))
     assert view()['orders']==before,'camera gesture in attack mode accidentally queued a move'
     REPORT['checks'].append(map_id+'-armed-gestures-do-not-attack')
-    m=json.loads((ROOT/'games/conquest/maps'/f'{map_id}.json').read_text());geo=next(p for p in m['provinces'] if p['id']==own);target=geo['neighbors'][0]
+    m=json.loads((ROOT/'games/conquest/maps'/f'{map_id}.json').read_text());geo=next(p for p in m['provinces'] if p['id']==own);target=(geo['neighbors']+geo['seaNeighbors'])[0]
     movable=next(p['mobile'] for p in plan['projected'] if p['id']==own)
-    point=point_for(map_id,target)
+    point=target_point(map_id,target)
     assert point['viewport']['left']<=point['x']<=point['viewport']['right'] and point['viewport']['top']<=point['y']<=point['viewport']['bottom'],point
     # Delayed real HTTP plus two native taps 20ms apart exercises in-flight
     # intent queuing, not just sequential clicks after the first request ends.
@@ -440,7 +487,7 @@ def fort_case(map_id,peer):
     assert 0<=box['left']<box['right']<=320 and 0<=box['top']<box['bottom']<=780,box
     native(dict(mode='tap',x=box['x']+box['width']/2,y=box['y']+box['height']/2,steps=1,pace=0));wait_orders(1)
     d=view();assert d['orders'][0]['type']=='build' and d['orders'][0]['building']=='fort' and d['availableGold']==0
-    assert js('document.querySelector("[data-cq-action-points]").textContent')=='0.5/3.2'
+    assert js('document.querySelector("[data-cq-action-points]").textContent')=='可行军 2 次'
     action('recruit')
     assert '金币不足' in js('document.querySelector("[data-cq-recruit-reason]").textContent')
     assert js('document.querySelector("[data-cq-action=confirm-recruit]").disabled')
@@ -449,7 +496,7 @@ def fort_case(map_id,peer):
     round=d['round'];click('提交回合');peer.act('submit')
     wait('Number(document.querySelector("[data-conquest-board]").dataset.round)>'+str(round))
     assert next(p for p in view()['provinces'] if p['id']==own)['fort']
-    assert js('document.querySelector("[data-cq-action-points]").textContent')==f"0/{view()['players'][0]['movement']:g}"
+    assert js('document.querySelector("[data-cq-action-points]").textContent')==f"可行军 {int(view()['availableMovement'])} 次"
     marker=js('(()=>{const e=document.querySelector('+json.dumps('[data-cq-fort="'+own+'"]')+'),r=e?.getBoundingClientRect();return r?{rect:r.toJSON(),visible:r.width>0&&r.height>0&&r.bottom>0&&r.top<innerHeight&&r.right>0&&r.left<innerWidth}:null})()')
     assert marker and marker['visible'],marker
     screenshot(map_id+'-fort-built')
@@ -468,8 +515,9 @@ def mobile_entry(map_id,width,peer):
     metric=js('(()=>{const v=document.querySelector(".cq-viewport").getBoundingClientRect(),e=document.querySelector('+json.dumps('[data-cq-province="'+own+'"]')+'),r=e.getBoundingClientRect(),m=e.getScreenCTM();return {viewport:v.toJSON(),territory:r.toJSON(),scale:m.a,window:{width:innerWidth,height:innerHeight},scrollY,visibleMapHeight:Math.max(0,Math.min(innerHeight,v.bottom)-Math.max(0,v.top))}})()')
     metric.update(map=map_id,own=own,point=p,renderedMapHeight=geo['height']*metric['scale'])
     (OUT/(map_id+'-'+str(width)+'-entry.json')).write_text(json.dumps(metric,ensure_ascii=False,indent=2))
+    metric['army']=js('document.querySelector('+json.dumps('[data-cq-label="'+own+'"]')+').getBoundingClientRect().toJSON()')
     assert metric['renderedMapHeight']>=metric['viewport']['height']*.9,metric
-    assert min(metric['territory']['width'],metric['territory']['height'])>=24,metric
+    assert min(metric['territory']['width'],metric['territory']['height'])>=24 or min(metric['army']['width'],metric['army']['height'])>=24,metric
     assert metric['viewport']['left']<=p['x']<=metric['viewport']['right'] and metric['viewport']['top']<=p['y']<=metric['viewport']['bottom'],metric
     assert 0<=p['x']<=width and 0<=p['y']<=780,metric
     screenshot(map_id+'-'+str(width)+'-first-entry')
@@ -477,7 +525,9 @@ def mobile_entry(map_id,width,peer):
     # A user can scroll up to read the shared player bar and then tap a visible
     # home region before its action row fits. The application must reveal it.
     browser('scroll','up','2000')
-    p=point_for(map_id,own);assert 0<=p['x']<=width and 0<=p['y']<=780,p
+    p=point_for(map_id,own)
+    if p['y']>740:browser('scroll','down',str(int(p['y']-660)));p=point_for(map_id,own)
+    assert 0<=p['x']<=width and 0<=p['y']<=780,p
     native(dict(mode='tap',x=p['x'],y=p['y'],steps=1,pace=0))
     wait('(()=>{const e=document.querySelector(".cq-territory-actions");if(!e)return false;const r=e.getBoundingClientRect();return r.top>=0&&r.bottom<=innerHeight})()')
     toolbar=js('document.querySelector(".cq-territory-actions").getBoundingClientRect().toJSON()')
@@ -517,8 +567,8 @@ def queue_regressions(peer,cases=('undo','reject')):
     for case in cases:
         browser('set','viewport','390','780');new_game('europe',peer)
         own=view()['players'][room()['you']]['king'];focus_region('europe',own);action('attack')
-        geo=json.loads((ROOT/'games/conquest/maps/europe.json').read_text());target=next(p for p in geo['provinces'] if p['id']==own)['neighbors'][0]
-        point=point_for('europe',target)
+        geo=json.loads((ROOT/'games/conquest/maps/europe.json').read_text());target=next((p['neighbors']+p['seaNeighbors'])[0] for p in geo['provinces'] if p['id']==own)
+        point=target_point('europe',target)
         if case=='undo':
             native(dict(mode='tap',x=point['x'],y=point['y'],steps=1,pace=0));wait_orders(1)
             first=view()['orders'][0];action('plans');click('撤销计划 '+str(first['id']));wait_orders(0);click('关闭')
@@ -531,9 +581,11 @@ def queue_regressions(peer,cases=('undo','reject')):
             # The small regression entry isolates queue recovery; still records
             # colors. The default full suite enforces contrast at this state.
             screenshot('queue-refused-before-retry',check_contrast=not ARGS.queue_case)
+            click('关闭错误')
         # Retain the armed source, then actually click the target again. No
         # reload, mode toggle or test-only state reset can clear the stuck receipt.
-        point=point_for('europe',target)
+        # Reuse the prepared, unobstructed native hit point; closing a toast
+        # does not reset the game mode, viewport or pending-order receipt.
         native(dict(mode='tap',x=point['x'],y=point['y'],steps=1,pace=0))
         wait_orders(1)
         result=view()['orders'];assert len(result)==1 and result[0]['type']=='move' and result[0]['to']==target and result[0]['amount']==250,result
@@ -575,10 +627,13 @@ def hold_actions(peer):
     # Gain a non-town province through normal recruitment and combat. A town
     # is unaffordable, while a fort is affordable, so falling through is visible.
     new_game('europe',peer);own=view()['players'][0]['king'];focus_region('europe',own);action('recruit');browser('fill','[data-cq-amount=number]','1000');action('confirm-recruit');wait_orders(1);action('attack')
-    geo=json.loads((ROOT/'games/conquest/maps/europe.json').read_text());target=next(p for p in geo['provinces'] if p['id']==own)['neighbors'][0];point=point_for('europe',target)
+    geo=json.loads((ROOT/'games/conquest/maps/europe.json').read_text());target=next((p['neighbors']+p['seaNeighbors'])[0] for p in geo['provinces'] if p['id']==own);point=target_point('europe',target)
     native(dict(mode='tap',x=point['x'],y=point['y'],steps=1,pace=0));wait_orders(2);round=view()['round'];click('提交回合');peer.act('submit')
     wait('Number(document.querySelector("[data-conquest-board]").dataset.round)>'+str(round))
     d=view();land=next(p for p in d['provinces']if p['id']==target);assert land['owner']==0 and not land['town']
+    for _ in range(5):
+        if d['availableGold']>=d['controls']['fortCost']:break
+        old_round=d['round'];click('提交回合');peer.act('submit');wait('Number(document.querySelector("[data-conquest-board]").dataset.round)>'+str(old_round));d=view()
     assert d['controls']['fortCost']<=d['availableGold']<d['controls']['townCost'],d['availableGold']
     focus_region('europe',target);before=view()['orders'];request_count=js('window.__uxActions.length');box=js('document.querySelector("[data-cq-action=fort]").getBoundingClientRect().toJSON()')
     native(dict(mode='hold',x=box['x']+box['width']/2,y=box['y']+box['height']/2,steps=1,pace=0,holdMS=750))
@@ -598,7 +653,7 @@ def amount_controls(peer):
     for width in [1440,320]:
         browser('set','viewport',str(width),'900' if width>620 else '780')
         new_game('world',peer);browser('scrollintoview','.cq-round-controls');own=view()['players'][0]['king'];focus_region('world',own)
-        assert js('document.querySelector("[data-cq-action-points]")?.textContent')=='0/3.2'
+        assert js('document.querySelector("[data-cq-action-points]")?.textContent')=='可行军 3 次'
         pop=next(p['population'] for p in view()['projected'] if p['id']==own)
         assert js('Number(document.querySelector("[data-cq-population]").dataset.cqPopulation)')==pop
         action('recruit')
@@ -625,17 +680,17 @@ def amount_controls(peer):
         (OUT/f'amount-{width}-controls.json').write_text(json.dumps(panel,indent=2))
         screenshot(f'amount-{width}-recruit-137')
         action('confirm-recruit');wait_orders(1);assert view()['orders'][0]['amount']==137
-        assert js('document.querySelector("[data-cq-action-points]").textContent')=='1/3.2'
+        assert js('document.querySelector("[data-cq-action-points]").textContent')=='可行军 2 次'
         assert js('Number(document.querySelector("[data-cq-population]").dataset.cqPopulation)')==pop-137
         REPORT['checks'].append(f'amount-{width}-native-slider-keyboard-exact-number')
         action('attack');assert values()['number']==319,values()
         browser('fill','[data-cq-amount=number]','73');browser('press','Tab')
-        geo=json.loads((ROOT/'games/conquest/maps/world.json').read_text());target=next(p for p in geo['provinces'] if p['id']==own)['neighbors'][0]
+        geo=json.loads((ROOT/'games/conquest/maps/world.json').read_text());target=next((p['neighbors']+p['seaNeighbors'])[0] for p in geo['provinces'] if p['id']==own)
         # Keyboard selects the same actual target path on both viewports, then
         # native rapid taps below exercise queueing after resetting the view.
         browser('focus','[data-cq-province="'+target+'"]');browser('press','Enter');wait_orders(2)
         assert view()['orders'][-1]['amount']==73
-        assert js('document.querySelector("[data-cq-action-points]").textContent')=='2/3.2'
+        assert js('document.querySelector("[data-cq-action-points]").textContent')=='可行军 1 次'
         screenshot(f'amount-{width}-attack-73')
         action('cancel');assert not js('!!document.querySelector("[data-cq-amount-panel]")')
         action('attack');assert values()['number']==282,values()
@@ -655,9 +710,9 @@ def amount_controls(peer):
         assert b['top']>=0 and b['bottom']<=(900 if width>620 else 780)
         native(dict(mode='mouse-tap' if width>620 else 'tap',x=b['x']+b['width']/2,y=b['y']+b['height']/2,steps=1,pace=0))
         wait_orders(3);assert view()['orders'][-1]['amount']==chosen
-        assert js('document.querySelector("[data-cq-action-points]").textContent')=='3/3.2'
+        assert js('document.querySelector("[data-cq-action-points]").textContent')=='可行军 0 次'
         assert values()['disabled'], 'insufficient action points must disable further recruitment'
-        assert '行动点不足' in js('document.querySelector("[data-cq-recruit-reason]").textContent')
+        assert '征兵所需行动点不足' in js('document.querySelector("[data-cq-recruit-reason]").textContent')
         assert js('document.querySelector("[data-cq-action=confirm-recruit]").disabled')
         screenshot(f'amount-{width}-fullscreen-slider-order')
         action('cancel-amount');click('退出全屏');wait('!document.querySelector("[data-room-fullscreen]")')
@@ -670,19 +725,19 @@ def amount_controls(peer):
         finish(peer)
     # Default half still uses authoritative remaining troops with queued clicks.
     browser('set','viewport','1440','900');new_game('europe',peer);browser('scrollintoview','.cq-round-controls');own=view()['players'][0]['king'];focus_region('europe',own);action('attack')
-    geo=json.loads((ROOT/'games/conquest/maps/europe.json').read_text());target=next(p for p in geo['provinces'] if p['id']==own)['neighbors'][0]
-    p=point_for('europe',target);native(dict(mode='doubletap',x=p['x'],y=p['y'],steps=1,pace=0,latency=150));wait_orders(2)
+    geo=json.loads((ROOT/'games/conquest/maps/europe.json').read_text());target=next((p['neighbors']+p['seaNeighbors'])[0] for p in geo['provinces'] if p['id']==own)
+    p=target_point('europe',target);native(dict(mode='doubletap',x=p['x'],y=p['y'],steps=1,pace=0,latency=150));wait_orders(2)
     assert [o['amount'] for o in view()['orders']]==[250,125]
     REPORT['checks'].append('amount-default-rapid-half-remains-authoritative')
     action('cancel');click('财政与税率');browser('focus','input[aria-label="税率"]');browser('press','ArrowRight');click('调整税率');wait_orders(3)
-    assert js('document.querySelector("[data-cq-action-points]").textContent')=='2/3.2', 'free tax plan counted as a movement point'
+    assert js('document.querySelector("[data-cq-action-points]").textContent')=='可行军 1 次', 'tax must preserve the original free movement cost'
     first=view()['orders'][0];action('plans');click('撤销计划 '+str(first['id']));wait_orders(2);click('关闭')
-    assert js('document.querySelector("[data-cq-action-points]").textContent')=='1/3.2'
-    browser('reload');ready();assert js('document.querySelector("[data-cq-action-points]").textContent')=='1/3.2'
-    REPORT['checks'].append('amount-action-points-free-tax-undo-reconnect');finish(peer)
+    assert js('document.querySelector("[data-cq-action-points]").textContent')=='可行军 2 次'
+    browser('reload');ready();assert js('document.querySelector("[data-cq-action-points]").textContent')=='可行军 2 次'
+    REPORT['checks'].append('amount-original-points-full-march-display-tax-undo-reconnect');finish(peer)
     new_game('europe',peer);browser('scrollintoview','.cq-round-controls');own=view()['players'][0]['king'];focus_region('europe',own);action('attack')
     browser('fill','[data-cq-amount=number]','73');browser('press','Tab')
-    target=next(p for p in geo['provinces'] if p['id']==own)['neighbors'][0];p=point_for('europe',target)
+    target=next((p['neighbors']+p['seaNeighbors'])[0] for p in geo['provinces'] if p['id']==own);p=target_point('europe',target)
     native(dict(mode='doubletap',x=p['x'],y=p['y'],steps=1,pace=0,latency=150));wait_orders(2)
     assert [o['amount'] for o in view()['orders']]==[73,73]
     REPORT['checks'].append('amount-custom-rapid-clicks-use-chosen-number');finish(peer)
@@ -727,6 +782,84 @@ def fullscreen_layout(peer):
         assert not js('document.querySelector("[data-conquest-board]").closest("[inert]")')
         REPORT['checks'].append(f'{map_id}-{width}-fills-fullscreen-native-drag-controls-endgame-and-exit')
         finish(peer)
+
+
+def round_flow(peer):
+    for width,reduced in [(1440,False),(320,False),(320,True)]:
+        case=str(width)+("-reduced" if reduced else "")
+        browser('set','viewport',str(width),'900' if width>620 else '780');new_game('china',peer)
+        browser('set','media','light',*(['reduced-motion'] if reduced else []))
+        assert js('matchMedia("(prefers-reduced-motion: reduce)").matches')==reduced
+        browser('scrollintoview','.cq-round-controls');own=view()['players'][0]['king'];enemy=view()['players'][1]['king'];focus_region('china',own)
+        assert js('document.querySelector("[data-cq-action-points]").textContent')=='可行军 3 次'
+        assert js('document.querySelector(".cq-campaign-budget > span").textContent').strip()=='3.2 点', 'original point budget must remain visible with its own unit'
+        geo=json.loads((ROOT/'games/conquest/maps/china.json').read_text());regions={p['id']:p for p in geo['provinces']}
+        target=(regions[own]['neighbors']+regions[own]['seaNeighbors'])[0];enemy_target=(regions[enemy]['neighbors']+regions[enemy]['seaNeighbors'])[0]
+        action('recruit');browser('fill','[data-cq-amount=number]','111');action('confirm-recruit');wait_orders(1)
+        action('attack');browser('fill','[data-cq-amount=number]','200');browser('press','Tab');browser('focus','[data-cq-province="'+target+'"]');browser('press','Enter');wait_orders(2)
+        peer.act('recruit',province=enemy,amount=111);peer.act('move',**{'from':enemy,'to':enemy_target,'amount':197})
+        if width>620:
+            browser('scrollintoview','[data-fullscreen-toggle]');click('全屏');wait('!!document.querySelector("[data-room-fullscreen]")')
+        js('window.__roundProbe={active:true,frames:[]};window.__roundProbe.labels='+json.dumps({p['id']:p['label'] for p in geo['provinces']})+';'+r'''(()=>{const tick=()=>{const p=window.__roundProbe;if(!p.active)return;const card=document.querySelector('[data-cq-playback]'),v=document.querySelector('.cq-viewport').getBoundingClientRect(),moving=document.querySelector('[data-cq-moving]'),m=moving?.getScreenCTM();let points=[];if(card)for(const id of [card.dataset.from,card.dataset.to,card.dataset.province].filter(Boolean)){const e=document.querySelector('[data-cq-province="'+id+'"]'),point=p.labels[id];if(e&&point){const q=new DOMPoint(point.x,point.y).matrixTransform(e.getScreenCTM());points.push({id,x:q.x,y:q.y})}}p.frames.push({at:performance.now(),phase:document.querySelector('[data-conquest-board]').dataset.phase,card:card?{id:card.dataset.eventId,seat:card.dataset.seat,state:card.dataset.state,type:card.dataset.type,text:card.textContent,rect:card.getBoundingClientRect().toJSON()}:null,points,viewport:v.toJSON(),moving:m?{x:m.e,y:m.f}:null,animations:document.querySelectorAll('[data-cq-moving] animateMotion').length});requestAnimationFrame(tick)};requestAnimationFrame(tick)})();true''')
+        initial_scene=scene_state();initial_round=view()['round'];click('提交回合');peer.act('submit')
+        until=time.monotonic()+25;captured=set()
+        while time.monotonic()<until:
+            state=js('(()=>{const b=document.querySelector("[data-conquest-board]"),e=document.querySelector("[data-cq-playback]");return {phase:b.dataset.phase,round:Number(b.dataset.round),key:e?e.dataset.eventId+"-"+e.dataset.state:null}})()')
+            if state['key'] and state['key'] not in captured:
+                browser('screenshot',str(OUT/f'playback-{case}-{state["key"]}.png'));captured.add(state['key'])
+            if state['phase']=='planning' and state['round']>initial_round:break
+            time.sleep(.08)
+        assert state['round']>initial_round,state
+        frames=js('window.__roundProbe.active=false;window.__roundProbe.frames');(OUT/f'playback-{case}-frames.json').write_text(json.dumps(frames,ensure_ascii=False,indent=2))
+        groups={}
+        for frame in frames:
+            if frame['card']:groups.setdefault(frame['card']['id'],[]).append(frame)
+        assert len(groups)==4,[(k,v[0]['card']) for k,v in groups.items()]
+        assert {f['card']['seat'] for rows in groups.values() for f in rows}=={'0','1'}
+        for event_id,rows in groups.items():
+            running=[f for f in rows if f['card']['state']=='running'];result=[f for f in rows if f['card']['state']=='result']
+            assert running and result and running[-1]['at']-running[0]['at']>=650 and result[-1]['at']-result[0]['at']>=250,(event_id,rows)
+            for frame in running[5:]:
+                r=frame['card']['rect'];assert r['left']>=0 and r['right']<=width and r['top']>=0 and r['bottom']<=(900 if width>620 else 780),r
+                v=frame['viewport'];assert all(v['left']<=p['x']<=v['right'] and v['top']<=p['y']<=v['bottom'] for p in frame['points']),frame
+            if rows[0]['card']['type']=='move':
+                positions={(round(f['moving']['x']),round(f['moving']['y'])) for f in running if f['moving']}
+                if reduced:assert all(f['animations']==0 for f in running), 'reduced-motion still animates marching'
+                else:assert len(positions)>=5,(event_id,positions)
+            assert all(f['card']['text'].strip() for f in rows)
+        current=scene_state();assert abs(current['scale']-initial_scene['scale'])<.01 and abs(current['x']-initial_scene['x'])<2 and abs(current['y']-initial_scene['y'])<2,(initial_scene,current)
+        finished=view()['events'];browser('reload');ready();assert not js('!!document.querySelector("[data-cq-moving]")'), 'reload replayed historical movement'
+        assert view()['events']==finished
+        screenshot(f'playback-{case}-after-reconnect')
+        REPORT['checks'].append(f'playback-{case}-own-enemy-readable-timed-steps-camera-restore-and-no-replay')
+        browser('set','media','light');finish(peer)
+
+
+def army_touch(peer):
+    browser('set','viewport','390','780');seen=set()
+    for attempt in range(120):
+        new_game('usa',peer);own=view()['players'][0]['king']
+        bounds=js('document.querySelector('+json.dumps('[data-cq-province="'+own+'"]')+').getBoundingClientRect().toJSON()')
+        if min(bounds['width'],bounds['height'])>45 or own in seen:
+            finish(peer);continue
+        wait('document.querySelector(".game-main").getBoundingClientRect().top<=16')
+        browser('scroll','up','2000');p=point_for('usa',own)
+        if p['y']>740:browser('scroll','down',str(int(p['y']-660)));p=point_for('usa',own)
+        native(dict(mode='tap',x=p['x'],y=p['y'],steps=1,pace=0))
+        assert scene_state()['selected']==own,('touch selected neighboring province',own,scene_state())
+        wait('(()=>{const r=document.querySelector(".cq-territory-actions").getBoundingClientRect();return r.top>=0&&r.bottom<=innerHeight})()')
+        screenshot('army-touch-'+own);seen.add(own);REPORT['checks'].append('army-touch-'+own)
+        if len(seen)>=3:
+            d=view();command('action',action=dict(type='disband',province=own,amount=500,session=d['session'],epoch=d['epoch']));wait_orders(1)
+            old=view()['round'];click('提交回合');peer.act('submit');wait('Number(document.querySelector("[data-conquest-board]").dataset.round)>'+str(old))
+            browser('reload');ready();wait('document.querySelector(".game-main").getBoundingClientRect().top<=16')
+            assert next(p for p in view()['provinces'] if p['id']==own)['troops']==0
+            assert js('!!document.querySelector('+json.dumps('[data-cq-crown="'+own+'"]')+')'), 'zero-army ruler disappeared after reconnect'
+            p=point_for('usa',own);native(dict(mode='tap',x=p['x'],y=p['y'],steps=1,pace=0));assert scene_state()['selected']==own
+            screenshot('army-touch-zero-ruler');REPORT['checks'].append('army-touch-zero-ruler-after-reconnect');finish(peer);break
+        finish(peer)
+    else:raise AssertionError('could not sample three small starting territories through normal rooms')
+    (OUT/'army-touch-starts.json').write_text(json.dumps({'regions':sorted(seen),'normalRoomsCreated':attempt+1},indent=2))
 
 
 def creation_maps(peer):
@@ -820,12 +953,14 @@ try:
     elif ARGS.marker_case:marker_case(peer)
     elif ARGS.amount_controls:amount_controls(peer)
     elif ARGS.fullscreen_layout:fullscreen_layout(peer)
+    elif ARGS.round_flow:round_flow(peer)
+    elif ARGS.army_touch:army_touch(peer)
     else:
         if not ARGS.baseline:creation_maps(peer)
         for map_id in MAP_IDS:
             if not ARGS.baseline:
                 for width in [320,390]:mobile_entry(map_id,width,peer)
-            new_game(map_id,peer)
+            new_game(map_id,peer,gesture_start=True)
             for width in [1440,320,390]:
                 gestures(map_id,width);map_first_invariants(map_id,width)
             if not ARGS.baseline:

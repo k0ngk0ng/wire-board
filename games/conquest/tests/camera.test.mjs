@@ -197,3 +197,27 @@ test("focus preserves a player's closer zoom and respects the global maximum", (
     overview.scale * 32,
   );
 });
+
+test("action following reveals both ends without zooming an already visible action", async () => {
+  const { revealCamera } = await import("../web/camera.ts");
+  assert.equal(typeof revealCamera,"function");
+  const fit=fitCamera(world,viewport);
+  assert.deepEqual(revealCamera(fit,[{x:500,y:200},{x:700,y:400}],world,viewport),fit);
+  assert.deepEqual(revealCamera(fit,[],world,viewport),fit);
+  const phone={width:320,height:600};
+  const before=focusCamera(fitCamera(world,phone),{x:100,y:150},world,phone);
+  const points=[{x:800,y:100},{x:1000,y:500}];
+  const next=revealCamera(before,points,world,phone);
+  assert.ok(next.scale<=before.scale&&next.scale>=fitCamera(world,phone).scale);
+  for(const p of points){const v=viewPoint(next,p);assert.ok(v.x>=35&&v.x<=285&&v.y>=95&&v.y<=550,JSON.stringify(v));}
+});
+test("restoring a camera after action playback survives a viewport resize", async () => {
+  const { restoreCamera }=await import("../web/camera.ts");
+  assert.equal(typeof restoreCamera,"function");
+  const original=focusCamera(fitCamera(world,viewport),{x:700,y:300},world,viewport);
+  assert.deepEqual(restoreCamera(original,viewport,world,viewport),original);
+  const nextView={width:900,height:600},next=restoreCamera(original,viewport,world,nextView);
+  near(next.scale/fitCamera(world,nextView).scale,original.scale/fitCamera(world,viewport).scale);
+  const before=mapPoint(original,{x:viewport.width/2,y:viewport.height/2}),after=mapPoint(next,{x:nextView.width/2,y:nextView.height/2});
+  near(before.x,after.x);near(before.y,after.y);
+});

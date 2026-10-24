@@ -1,0 +1,28 @@
+{
+  "origin": "natural public Module bot game; usa / 6 / easy / fog=true; no state editing",
+  "round": 1201,
+  "sha256": "ccb29b03f73abe6abb272661bfc0e77edee00cfbceebb07746181caf6c39c760",
+  "sourceSHA256": {
+    "games/conquest/maps/china.json": "747a793beea3b7fc9a2627b68c3f974772f83d43444809770a7f0e0cc7e66a37",
+    "games/conquest/maps/europe.json": "ac4e2d4b65ab0a9316067efcc052c7de1e7e1564aa8792b13d3fb7fca863dfc2",
+    "games/conquest/maps/maps.go": "9440c5a6497dacd4665c9dd69e7743a54bc7b1d900cf131c4913c60a1d2f685b",
+    "games/conquest/maps/maps_test.go": "b5dbbe476357602f627b34e132b1e13979384716e892df14d0dccc3de50d0066",
+    "games/conquest/maps/usa.json": "3b7c25c9c54e568dd87d17890d00976b9c7ae41ee732e5317f998e6dab54ee0b",
+    "games/conquest/maps/world.json": "a7a09952e6d95cd7cd4238b9449f19dc6a117779493211adf20b5e17302d543a",
+    "games/conquest/server/actions.go": "c41ebe1e00e134b71fe499025819a1b9b812b3d06eecc9e457411c04928fb9b7",
+    "games/conquest/server/bot.go": "75b556a8c7c6fcb843375526c2f7b16e8a17efa68ce5b47b6d83cd1bc723c50a",
+    "games/conquest/server/bot_e2e_test.go": "459e9b692a3d06cbe198b69c82bfe75fd9053af52b5ed45201f03e457edf6f50",
+    "games/conquest/server/boundaries_e2e_test.go": "c9201777121d43b427ba879d9dc990b3fba1940b3da989710ba384ca9c9538c2",
+    "games/conquest/server/combat_contract_test.go": "8caa6422df92b116f0f4137e059025f8b191b38aa0189a679b29cf75c4a63ac7",
+    "games/conquest/server/module.go": "b13d64cb6767b9165d76ee1167e2d48c343d314ecdcf5c4d00d45b58d97add10",
+    "games/conquest/server/module_e2e_test.go": "8d8678c5e83cb7018afebe5b0e9eda28c5e15db404c00522cc66217e40647262",
+    "games/conquest/server/regional_maps_e2e_test.go": "28b8ce0e1e29bb64da92689499ee086702b8630d2cbbf4251bcec75bb5a0554d",
+    "games/conquest/server/resolution.go": "37817acfbaebdb776f1b72646ad916e8ebf8dafa7dc270881ea06a3484b3593e",
+    "games/conquest/server/resume_regressions_test.go": "86cce4f1139b0b31fda9db219a4d5771b60c94458517ab8f07b0d83405b9105b",
+    "games/conquest/server/round_flow_e2e_test.go": "0bd7ec6d2d2a884c7ed05acf316f8ea1758b7072c04c7ffe06cbba4163912a75",
+    "games/conquest/server/starting_regions.go": "6b44f5959ca04140021e0b4eae0732c658a083a1a7d7ee171db10d435e468e27",
+    "games/conquest/server/types.go": "a82908512752f19b0144983cf71b7519ab0383802a86521b706624dc32e34da0",
+    "games/conquest/server/validation.go": "a6464c529781a265b8695c9fe6c04bd919588723a6df54af1e16f8470104005c",
+    "games/conquest/server/visibility.go": "58a910bb206b7b389f4c1c54126f610db8ee10cec8de336ce6aa2a605710943e"
+  }
+}

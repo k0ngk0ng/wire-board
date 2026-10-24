@@ -77,3 +77,12 @@ test("recruitment identifies each resource shortage and simultaneous shortages",
     "capacity",
   ]);
 });
+
+test("display counts complete marches without changing the underlying fractional budget", async () => {
+  const { completeMarches } = await import("../web/map-actions.ts");
+  assert.equal(typeof completeMarches,"function");
+  for(const [points,count] of [[3.2,3],[2.7,2],[.2,0],[10.1,10],[3.3,3],[4.8,4]]) assert.equal(completeMarches(points,1),count);
+  assert.equal(completeMarches(3.2,2),1);
+  for(const points of [-1,NaN,Infinity])assert.equal(completeMarches(points,1),0);
+  assert.equal(completeMarches(3.2,0),0);
+});

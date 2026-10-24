@@ -14,6 +14,7 @@ func (s *State) beginResolution(now time.Time) {
 	s.Phase = "resolving"
 	s.Epoch++
 	s.Cursor = 0
+	s.ResolutionHold = false
 	s.Pending = []queued{}
 	s.PauseVotes = make([]bool, len(s.Players))
 	for seat, orders := range s.Plans {
@@ -58,34 +59,76 @@ func (s *State) appendEvent(e Event) {
 		s.Events = s.Events[len(s.Events)-64:]
 	}
 }
+func (s *State) skipOperation(q queued, now time.Time, reason string) {
+	s.appendEvent(Event{Type: q.Order.Type, From: q.Order.From, To: q.Order.To, Province: q.Order.Province, Seat: q.Seat, At: now.UnixMilli(), Until: now.UnixMilli(), DisplayUntil: now.UnixMilli() + actionDuration, Applied: true, Skipped: true, Text: reason})
+	s.ResolutionHold = true
+	s.ResolveAt = now.UnixMilli() + actionDuration
+}
 func (s *State) nextOperation(now time.Time) {
+	s.checkVictory()
+	if s.Phase == "finished" {
+		return
+	}
 	for s.Cursor < len(s.Pending) {
 		q := s.Pending[s.Cursor]
 		if s.Players[q.Seat].Eliminated {
 			s.Cursor++
 			continue
 		}
+		g, _ := mapFor(s.MapID)
+		event := Event{Type: q.Order.Type, Province: q.Order.Province, From: q.Order.From, To: q.Order.To, Seat: q.Seat, Amount: q.Order.Amount, At: now.UnixMilli()}
+		duration := int64(actionDuration)
 		if q.Order.Type == "move" {
-			g, _ := mapFor(s.MapID)
-			idx, ok := g.index[q.Order.From]
-			target, valid := g.index[q.Order.To]
-			if !ok || !valid || s.Provinces[idx].Owner != q.Seat || s.Provinces[idx].Troops == 0 {
-				s.Cursor++
-				continue
+			from, ok := g.index[q.Order.From]
+			to, valid := g.index[q.Order.To]
+			if !ok || !valid || s.Provinces[from].Owner != q.Seat || s.Provinces[from].Troops <= 0 {
+				s.skipOperation(q, now, "行军取消：出发地或兵力已变化")
+				return
 			}
 			player := s.Players[q.Seat]
 			allowed, sea := route(g, q.Order.From, q.Order.To)
 			if !allowed || player.MP10 < 10 || (sea && player.Gold < int64(q.Order.Amount)*2) {
-				s.Cursor++
-				continue
+				s.skipOperation(q, now, "行军取消：行动次数或海运金币不足")
+				return
 			}
-			before := s.Provinces[target]
-			s.appendEvent(Event{Type: "move", From: q.Order.From, To: q.Order.To, Seat: q.Seat, Amount: min(q.Order.Amount, s.Provinces[idx].Troops), At: now.UnixMilli(), Until: now.UnixMilli() + moveDuration, Before: &before, Text: "部队行军"})
-			s.ResolveAt = now.UnixMilli() + moveDuration
-			return
+			before := s.Provinces[to]
+			event.Before = &before
+			event.Amount = min(q.Order.Amount, s.Provinces[from].Troops)
+			if before.Owner == q.Seat {
+				event.Amount = min(event.Amount, maxTroops-before.Troops)
+			}
+			if event.Amount <= 0 {
+				s.skipOperation(q, now, "行军取消：目的地驻军已满")
+				return
+			}
+			duration = moveDuration
+			event.Text = "部队行军"
+		} else {
+			if _, _, _, _, err := s.project(q.Seat, []Order{q.Order}); err != nil {
+				s.skipOperation(q, now, "计划取消："+err.Error())
+				return
+			}
+			if index, ok := g.index[q.Order.Province]; ok {
+				before := s.Provinces[index]
+				event.Before = &before
+			}
+			switch q.Order.Type {
+			case "recruit":
+				event.Text = "正在征兵"
+			case "build":
+				event.Text = "正在建造"
+			case "disband":
+				event.Text = "正在解散部队"
+			case "tax":
+				event.Text = "正在调整税率"
+			}
 		}
-		s.execute(q, now, false)
-		s.Cursor++
+		event.Until = event.At + duration
+		event.DisplayUntil = event.Until + resultDuration
+		s.appendEvent(event)
+		s.ResolutionHold = false
+		s.ResolveAt = event.Until
+		return
 	}
 	s.finishRound(now)
 }
@@ -100,22 +143,31 @@ func onTimer(c gameapi.Context, m gameapi.Match) (gameapi.Match, error) {
 	if s.Phase != "resolving" || c.Now.UnixMilli() < s.ResolveAt {
 		return m, nil
 	}
-	if s.Cursor < len(s.Pending) {
-		s.execute(s.Pending[s.Cursor], c.Now, true)
-		if s.Phase != "finished" {
-			s.Cursor++
-		}
-	}
-	if s.Phase != "finished" {
+	if s.ResolutionHold {
+		s.ResolutionHold = false
+		s.Cursor++
 		s.nextOperation(c.Now)
+	} else if s.Cursor < len(s.Pending) {
+		if !s.execute(s.Pending[s.Cursor], c.Now, true) {
+			event := &s.Events[len(s.Events)-1]
+			event.Applied = true
+			event.Skipped = true
+			event.Amount = 0
+			event.Text = "计划取消：领地或资源已变化"
+		}
+		if s.Phase != "finished" {
+			s.ResolutionHold = true
+			s.ResolveAt = c.Now.UnixMilli() + resultDuration
+			s.Events[len(s.Events)-1].DisplayUntil = s.ResolveAt
+		}
 	}
 	return s.envelope(), nil
 }
-func (s *State) execute(q queued, now time.Time, animated bool) {
+func (s *State) execute(q queued, now time.Time, animated bool) bool {
 	seat, o := q.Seat, q.Order
 	p := &s.Players[seat]
 	if p.Eliminated {
-		return
+		return false
 	}
 	g, _ := mapFor(s.MapID)
 	i, valid := g.index[o.Province]
@@ -123,7 +175,7 @@ func (s *State) execute(q queued, now time.Time, animated bool) {
 		i, valid = g.index[o.From]
 	}
 	if o.Type != "tax" && (!valid || s.Provinces[i].Owner != seat) {
-		return
+		return false
 	}
 	event := Event{Type: o.Type, Province: o.Province, From: o.From, To: o.To, Seat: seat, Amount: o.Amount, At: now.UnixMilli(), Until: now.UnixMilli(), Text: "指令已执行"}
 	switch o.Type {
@@ -134,7 +186,7 @@ func (s *State) execute(q queued, now time.Time, animated bool) {
 		src := &s.Provinces[i]
 		n := o.Amount
 		if n <= 0 || p.MP10 < 10 || n > src.Population/2 || int64(n) > p.Gold || src.Troops+n > maxTroops {
-			return
+			return false
 		}
 		src.Troops += n
 		src.Population -= n
@@ -146,7 +198,7 @@ func (s *State) execute(q queued, now time.Time, animated bool) {
 		src := &s.Provinces[i]
 		n := min(o.Amount, src.Troops)
 		if n <= 0 || p.MP10 < 1 {
-			return
+			return false
 		}
 		src.Troops -= n
 		src.Population = min(maxCivil, src.Population+n)
@@ -156,25 +208,25 @@ func (s *State) execute(q queued, now time.Time, animated bool) {
 	case "build":
 		cost, points, ok := buildCost(o.Building)
 		if !ok || p.Gold < cost || p.MP10 < points {
-			return
+			return false
 		}
 		src := &s.Provinces[i]
 		switch o.Building {
 		case "fort":
 			if src.Fort {
-				return
+				return false
 			}
 			src.Fort = true
 			event.Text = "工事建成"
 		case "tower":
 			if src.Tower || !s.Options.Fog {
-				return
+				return false
 			}
 			src.Tower = true
 			event.Text = "瞭望塔建成"
 		case "town":
 			if src.Town {
-				return
+				return false
 			}
 			src.Town = true
 			event.Text = "城镇建成"
@@ -185,18 +237,18 @@ func (s *State) execute(q queued, now time.Time, animated bool) {
 		to, ok := g.index[o.To]
 		allowed, sea := route(g, o.From, o.To)
 		if !ok || !allowed || p.MP10 < 10 {
-			return
+			return false
 		}
 		src, dst := &s.Provinces[i], &s.Provinces[to]
 		n := min(o.Amount, src.Troops)
 		if sea && p.Gold < int64(o.Amount)*2 {
-			return
+			return false
 		}
 		if dst.Owner == seat {
 			n = min(n, maxTroops-dst.Troops)
 		}
 		if n <= 0 {
-			return
+			return false
 		}
 		before := *dst
 		event.Before = &before
@@ -264,17 +316,27 @@ func (s *State) execute(q queued, now time.Time, animated bool) {
 		after.Mobile = after.Troops
 		event.After = &after
 		s.refresh()
-		s.checkVictory()
+	}
+	event.Applied = true
+	if o.Type != "move" && o.Type != "tax" {
+		after := s.Provinces[i]
+		after.Mobile = after.Troops
+		event.After = &after
 	}
 	if animated && len(s.Events) > 0 {
 		previous := &s.Events[len(s.Events)-1]
 		event.ID = previous.ID
 		event.At = previous.At
 		event.Until = previous.Until
+		event.DisplayUntil = previous.DisplayUntil
+		if event.Before == nil {
+			event.Before = previous.Before
+		}
 		*previous = event
 	} else {
 		s.appendEvent(event)
 	}
+	return true
 }
 func (s *State) captureKing(loser, winner int) {
 	p := &s.Players[loser]
@@ -414,6 +476,7 @@ func (s *State) finishRound(now time.Time) {
 		s.Plans[i] = []Order{}
 		s.NextOrder[i] = 0
 	}
+	s.ResolutionHold = false
 	s.Round++
 	s.Epoch++
 	s.Phase = "planning"

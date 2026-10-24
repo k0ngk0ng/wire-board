@@ -1,5 +1,10 @@
 import type { Event } from "./types";
 type Snapshot = { events: Event[]; round: number };
+export function visibleAction(events: Event[], now: number): Event | undefined {
+  return events
+    .filter((e) => e.at <= now && (e.displayUntil ?? e.until) > now)
+    .at(-1);
+}
 export type EventCursor = {
   epoch: number;
   lastId: number;
@@ -46,6 +51,8 @@ export function consumeEvents(
   return {
     reset: false,
     clips: audible ? [...new Set(clips)] : [],
-    events: motion ? fresh.filter((e) => !e.after && e.until > now) : [],
+    events: motion
+      ? fresh.filter((e) => (e.displayUntil ?? e.until) > now)
+      : [],
   };
 }

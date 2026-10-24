@@ -16,6 +16,8 @@ import {
   pinchCamera,
   zoomCamera,
   visibleCameraRect,
+  revealCamera,
+  restoreCamera,
   type Camera,
   type Point,
   type Size,
@@ -158,6 +160,20 @@ export function useCamera(map: Size) {
           dimensions.current,
         ),
       );
+    },
+    [map.width, map.height, update, stopWheel],
+  );
+  const reveal = useCallback(
+    (points: Point[]) => {
+      stopWheel();
+      update(revealCamera(current.current, points, map, dimensions.current));
+    },
+    [map.width, map.height, update, stopWheel],
+  );
+  const restore = useCallback(
+    (saved: Camera, previous: Size) => {
+      stopWheel();
+      update(restoreCamera(saved, previous, map, dimensions.current));
     },
     [map.width, map.height, update, stopWheel],
   );
@@ -436,6 +452,8 @@ export function useCamera(map: Size) {
     size,
     reset,
     focus,
+    reveal,
+    restore,
     zoom,
     locate,
     settle,

@@ -120,3 +120,16 @@ test("arrival bookkeeping remains bounded by retained server events", () => {
     );
   assert.ok(c.arrivals.size <= 1);
 });
+
+test("action captions cover execution and result hold, including reduced-motion and reconnect views", async () => {
+  const { visibleAction }=await import("../web/events.ts");
+  assert.equal(typeof visibleAction,"function");
+  const step={...move,at:100,until:1100,displayUntil:1600};
+  assert.equal(visibleAction([step],99),undefined);
+  assert.equal(visibleAction([step],500)?.id,1);
+  assert.equal(visibleAction([{...step,applied:true,after:{}}],1400)?.applied,true);
+  assert.equal(visibleAction([step],1600),undefined);
+  const cursor=createCursor(snapshot([step]));
+  assert.deepEqual(consumeEvents(cursor,snapshot([step]),0,500,true,false).events,[]);
+  assert.equal(visibleAction([step],500)?.id,1, "live text remains available without replaying animation");
+});

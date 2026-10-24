@@ -12,7 +12,6 @@ import (
 	"io"
 	"math"
 	"slices"
-	"strconv"
 	"sync"
 	"time"
 )
@@ -95,9 +94,9 @@ func start(c gameapi.Context, b json.RawMessage) (gameapi.Match, error) {
 	for i, p := range g.data.Provinces {
 		s.Provinces[i] = Province{ID: p.ID, Owner: -1, Troops: 500, Mobile: 500, Population: 25000, Economy: 50000, Morale: 90}
 	}
-	starts := g.data.Starts[strconv.Itoa(c.Players)]
-	if len(starts) != c.Players {
-		return gameapi.Match{}, errors.New("地图缺少开局配置")
+	starts, e := startingRegions(g, c.Players, s.Seed)
+	if e != nil {
+		return gameapi.Match{}, e
 	}
 	for i, id := range starts {
 		p := &s.Provinces[g.index[id]]
