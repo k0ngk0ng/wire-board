@@ -19,7 +19,13 @@ def api(path,body=None):
  r=js('(async()=>{const r=await fetch('+json.dumps('/api'+path)+opts+');return {status:r.status,data:await r.json()}})()');assert r['status'] in (200,201),r;return r['data']
 def room():return api('/state').get('room')
 def cmd(kind,**extra):
- r=room();return api('/rooms/'+r['id'],dict(type=kind,version=r['version'],nonce=uuid.uuid4().hex,**extra))
+ for _ in range(8):
+  r=room();body=dict(type=kind,version=r['version'],nonce=uuid.uuid4().hex,**extra)
+  result=js('(async()=>{const r=await fetch('+json.dumps('/api/rooms/'+r['id'])+',{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify('+json.dumps(body)+')});return {status:r.status,data:await r.json()}})()')
+  if result['status']==409:continue
+  assert result['status'] in (200,201),result
+  return result['data']
+ raise AssertionError('room command repeatedly conflicted with live clock')
 def wait(fn,seconds=20):
  end=time.monotonic()+seconds
  while time.monotonic()<end:
@@ -29,13 +35,13 @@ def wait(fn,seconds=20):
  raise AssertionError('Timed out')
 def save(name,data):(out/(name+'.json')).write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n')
 
-def active():return js('document.documentElement.dataset.roomFullscreen || ""')
+def active():return js('document.querySelector("[data-game-fullscreen-surface]")?.dataset.roomFullscreen || ""')
 def toggle():
  if js('!!document.querySelector(".toast.error")'):
   report.setdefault('notices',[]).append(js('document.querySelector(".toast.error").innerText'))
   browser('click','button[aria-label="关闭错误"]')
- if not active():js('window.scrollTo(0,0);true')
- browser('click','[data-fullscreen-toggle]')
+ if not active():browser('scrollintoview','[data-fullscreen-toggle]')
+ result=subprocess.run(['node','scripts/fullscreen/tap.mjs',browser('get','cdp-url')['cdpUrl'],base,'[data-fullscreen-toggle]','mouse'],cwd=root,env=env,text=True,capture_output=True,timeout=20);assert result.returncode==0,result.stderr
 def tap():
  result=subprocess.run(['node','scripts/fullscreen/tap.mjs',browser('get','cdp-url')['cdpUrl'],base,'[data-fullscreen-toggle]'],cwd=root,env=env,text=True,capture_output=True,timeout=20)
  assert result.returncode==0,result.stderr
@@ -53,36 +59,51 @@ try:
   catalog=(root/'games'/kind/'web/catalog.tsx').read_text()
   capacity=int(re.search(r'minPlayers:\s*(\d+)',catalog)[1])
   api('/rooms',{'kind':kind,'name':'全屏验收 '+kind,'capacity':capacity,'options':{}})
-  browser('wait','[data-fullscreen-toggle]')
-  toggle();wait(lambda:active()=='native')
-  assert js('document.fullscreenElement===document.documentElement')
-  browser('press','Escape');wait(lambda:not active())
-  toggle();wait(lambda:active()=='native');js('document.exitFullscreen().then(()=>true)');wait(lambda:not active());toggle();wait(lambda:active()=='native');toggle();wait(lambda:not active())
-  browser('set','viewport','320','740');assert not measure()['overflow'],kind;toggle();wait(lambda:bool(active()))
-  assert not measure()['overflow'],kind;shot(kind+'-320')
-  toggle();wait(lambda:not active());browser('set','viewport','1600','1000')
-  check(kind,nativeEnter=True,escape=True,buttonExit=True,mobile320=True)
+  browser('wait','.waiting-layout')
+  assert not js('!!document.querySelector("[data-fullscreen-toggle]")'),kind+' waiting room exposes fullscreen'
+  shot(kind+'-waiting')
   for _ in range(capacity-1):cmd('add_bot')
-  cmd('ready');toggle();wait(lambda:active()=='native');cmd('start');browser('wait','.game-main')
+  cmd('ready');cmd('start');browser('wait','.game-main')
   wait(lambda:js('!!document.querySelector(".game-main")?.children.length&&!document.querySelector(".game-loading")'),60)
-  wait(lambda:js('Array.from(document.querySelectorAll(".game-main button,.game-main input,.game-main select,.game-main [role=button],.game-main canvas")).some(e=>e.getClientRects().length&&getComputedStyle(e).visibility!=="hidden")'),30)
+  if kind=='bubbleparty':
+   browser('wait','[data-bubbleparty-character-confirm]');browser('click','[data-bubbleparty-character-confirm]');wait(lambda:room()['game']['data']['phase']=='playing',45)
+  wait(lambda:js('!!document.querySelector("[data-fullscreen-toggle]")'),30)
+  position=js('(()=>{const b=document.querySelector("[data-fullscreen-toggle]").getBoundingClientRect(),g=document.querySelector("[data-fullscreen-board]").firstElementChild.getBoundingClientRect();return {button:{x:b.x,y:b.y,w:b.width,h:b.height},board:{x:g.x,y:g.y,w:g.width,h:g.height},inGame:!!document.querySelector(".game-main [data-fullscreen-toggle]"),inHeading:!!document.querySelector(".room-heading [data-fullscreen-toggle]")}})()')
+  assert position['inGame'] and not position['inHeading'],position
+  assert abs(position['button']['x']+position['button']['w']-position['board']['x']-position['board']['w'])<20,position
+  shot(kind+'-playing-windowed')
+  toggle();wait(lambda:active()=='native')
+  assert js('document.fullscreenElement.matches("[data-game-fullscreen-surface]")&&!document.fullscreenElement.querySelector(".topbar,.room-heading,.players-strip,.room-tools")')
+  assert js('document.querySelector(".room-heading").closest("[inert]")!==null')
+  if kind in ['splendor','rail']:
+   assert js('Array.from(document.querySelectorAll(".splendor-token-animation,.splendor-card-animation,.hidden-draw-animation")).every(e=>document.fullscreenElement.contains(e))')
+  check(kind,waitingHasNoFullscreen=True,gameOnly=True,position=position)
   # Observe actual component/controls across fullscreen, without injecting game
   # state or requiring unrelated rule combinations and complete bot matches.
-  js('window.__boardBeforeFullscreen=document.querySelector(".game-main").firstElementChild;true')
+  js('window.__boardBeforeFullscreen=document.querySelector("[data-fullscreen-board]").firstElementChild;true')
   time.sleep(.4)
-  assert js('window.__boardBeforeFullscreen===document.querySelector(".game-main").firstElementChild'),kind
+  assert js('window.__boardBeforeFullscreen===document.querySelector("[data-fullscreen-board]").firstElementChild'),kind
   controls=js('(()=>{const root=document.querySelector(\'.game-main\');return [...root.querySelectorAll(\'button,input,select,[role="button"],canvas,svg[role="group"]\')].filter(e=>{const s=getComputedStyle(e);return e.getClientRects().length&&s.visibility!==\'hidden\'}).map(e=>({tag:e.tagName,name:e.getAttribute(\'aria-label\')||e.textContent?.trim().slice(0,60),disabled:!!e.disabled,width:e.getBoundingClientRect().width,height:e.getBoundingClientRect().height}))})()')
   assert controls,kind
   shot(kind+'-playing-desktop');save(kind+'-controls',controls)
   browser('set','viewport','320','740');wait(lambda:bool(active()))
-  assert js('window.__boardBeforeFullscreen===document.querySelector(".game-main").firstElementChild'),kind
-  shot(kind+'-playing-mobile');browser('press','Escape');wait(lambda:not active())
+  assert js('document.fullscreenElement.matches("[data-game-fullscreen-surface]")')
+  assert js('window.__boardBeforeFullscreen===document.querySelector("[data-fullscreen-board]").firstElementChild'),kind
+  shot(kind+'-playing-mobile')
+  if kind=='bubbleparty':
+   keys=subprocess.run(['node','scripts/fullscreen/tap.mjs',browser('get','cdp-url')['cdpUrl'],base,'[data-bubbleparty-canvas]','bomb'],cwd=root,env=env,text=True,capture_output=True,timeout=20);assert keys.returncode==0,keys.stderr
+   wait(lambda:any(b['seat']==room()['you'] for b in room()['game']['data']['bombs']))
+   browser('find','role','button','click','--name','角色资料','--exact');browser('wait','[role="dialog"]')
+   assert js('document.fullscreenElement.contains(document.querySelector("[role=dialog]"))')
+   shot('bubbleparty-fullscreen-dialog');browser('click','[role="dialog"] button[aria-label="关闭"]')
+   check('bubbleparty-input',nativeKeyboardBomb=True,gameDialogInsideFullscreen=True)
+  browser('press','Escape');wait(lambda:not active());assert js('!document.querySelector(".room-heading").closest("[inert]")')
   browser('set','viewport','1600','1000');cmd('close');cmd('leave');wait(lambda:not js('!!document.querySelector("[data-fullscreen-toggle]")'))
   check(kind+'-playing',componentPreserved=True,desktopControls=len(controls),mobile320=True)
   browser('reload');browser('wait','.room-list')
  # Actual running tank match; canvas must resize without remounting or state reset.
  api('/rooms',{'kind':'fortressblue','name':'疯狂坦克宽屏验收','capacity':2,'options':{}})
- browser('wait','[data-fullscreen-toggle]')
+ browser('wait','.waiting-layout');assert not js('!!document.querySelector("[data-fullscreen-toggle]")')
  cmd('add_bot')
  cmd('ready');cmd('start');browser('wait','[data-fortressblue-tank]')
  browser('click','[data-fortressblue-tank="1"]')
@@ -107,8 +128,7 @@ try:
  assert active()=='native'
  check('tank-keyboard-fullscreen',angle=True,weapon=True,shot=True)
 
- browser('find','role','button','click','--name','玩法速查');browser('wait','[role="dialog"]');shot('fullscreen-rules')
- browser('click','[role="dialog"] button[aria-label="关闭"]')
+ assert js('!document.fullscreenElement.querySelector(".players-strip,.room-heading,.topbar")')
  toggle();wait(lambda:not active());time.sleep(.4);restored=measure();assert abs(restored['canvas']['w']-normal['canvas']['w'])<2
  # Unsupported and rejected native API are labelled capability fault probes.
  js('window.__nativeRequest=Element.prototype.requestFullscreen;window.__webkitRequest=Element.prototype.webkitRequestFullscreen;Element.prototype.requestFullscreen=undefined;Element.prototype.webkitRequestFullscreen=undefined;true')
@@ -130,21 +150,24 @@ try:
   cmd('ready');cmd('start');browser('wait','.poker-board')
   browser('set','viewport','320','740');time.sleep(.3)
   tap();wait(lambda:bool(active()));assert not measure()['overflow'];shot(kind+'-playing-320')
-  geometry=js("(()=>{const b=document.querySelector('[data-fullscreen-toggle]'),r=b.getBoundingClientRect();return {button:{x:r.x,y:r.y,w:r.width,h:r.height},clear:[...document.querySelectorAll('.compact-room-button,.poker-table-toolbar,.table-chat')].filter(e=>e.getClientRects().length).every(e=>{const q=e.getBoundingClientRect();return q.right<=r.left||q.left>=r.right||q.bottom<=r.top||q.top>=r.bottom})}})()")
+  geometry=js("(()=>{const b=document.querySelector('[data-fullscreen-toggle]'),r=b.getBoundingClientRect();return {button:{x:r.x,y:r.y,w:r.width,h:r.height},clear:[...document.fullscreenElement.querySelectorAll('.poker-table-toolbar')].filter(e=>e.getClientRects().length).every(e=>{const q=e.getBoundingClientRect();return q.right<=r.left||q.left>=r.right||q.bottom<=r.top||q.top>=r.bottom})}})()")
   assert geometry['clear'],geometry
   tap();wait(lambda:not active());cmd('close');cmd('leave');check(kind+'-playing',**geometry)
  # Native entry can finish after navigating away. Its late promise must not
  # restore either the old room layout or a fullscreen element.
  browser('set','viewport','1600','1000')
  api('/rooms',{'kind':'fortressblue','name':'全屏异步退出验收','capacity':2,'options':{}})
- browser('wait','[data-fullscreen-toggle]')
+ cmd('add_bot');cmd('ready');cmd('start');browser('wait','[data-fullscreen-toggle]')
  js('Element.prototype.requestFullscreen=function(){return window.__nativeRequest.call(this).then(()=>new Promise(resolve=>window.__finishFullscreen=resolve))};true')
  toggle();wait(lambda:active()=='native');wait(lambda:js('typeof window.__finishFullscreen==="function"'))
- cmd('leave');wait(lambda:not active());js('window.__finishFullscreen();true');time.sleep(.3)
- assert js('!document.fullscreenElement&&!document.documentElement.dataset.roomFullscreen')
+ cmd('close');cmd('leave');wait(lambda:not active());js('window.__finishFullscreen();true');time.sleep(.3)
+ assert js('!document.fullscreenElement&&!document.querySelector("[data-room-fullscreen]")')
  check('late-native-completion',cleaned=True)
  report['passed']=True
 except BaseException:
+ if opened:
+  try:shot('failure');save('failure-state',{'snapshot':browser('snapshot','-i'),'errors':browser('errors'),'fullscreen':js('({native:document.fullscreenElement?.tagName,roots:[...document.querySelectorAll("[data-game-fullscreen-surface]")].map(e=>({...e.dataset,html:e.outerHTML.slice(0,500)}))})')})
+  except Exception:pass
  report['error']=traceback.format_exc();print(report['error'],flush=True)
 finally:
  if opened:
@@ -159,7 +182,7 @@ finally:
  for path in [temp,sockets,out/'data']:
   if path.exists():shutil.rmtree(path)
  for name in ['url','stop']:(out/name).unlink(missing_ok=True)
- report['sources']={str(p.relative_to(root)):hashlib.sha256(p.read_bytes()).hexdigest() for p in [root/'scripts/fullscreen/check-browser.py',root/'scripts/fullscreen/tap.mjs',root/'web/src/ui/compact-room-panel.tsx',root/'web/src/ui/room-fullscreen.tsx',root/'web/src/ui/room-fullscreen.css',root/'web/src/main.tsx',root/'games/fortressblue/web/style.css',root/'games/fortressblue/web/Board.tsx'] if p.exists()}
+ report['sources']={str(p.relative_to(root)):hashlib.sha256(p.read_bytes()).hexdigest() for p in [root/'scripts/fullscreen/check-browser.py',root/'scripts/fullscreen/tap.mjs',root/'web/src/style.css',root/'web/src/ui/game-overlay-root.ts',root/'games/bubbleparty/web/style.css',root/'web/src/ui/compact-room-panel.tsx',root/'web/src/ui/room-fullscreen.tsx',root/'web/src/ui/room-fullscreen.css',root/'web/src/main.tsx',root/'games/fortressblue/web/style.css',root/'games/fortressblue/web/Board.tsx'] if p.exists()}
  report['scope']='All registered game rooms: shared fullscreen only; actual tank match: canvas/layout; Chromium desktop and mobile viewport. Capability overrides test fallback, not physical iOS.'
  save('report',report)
 raise SystemExit(0 if report['passed'] else 1)

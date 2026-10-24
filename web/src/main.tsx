@@ -1,5 +1,6 @@
 import { CompactRoomPanel } from "./ui/compact-room-panel";
-import { FullscreenButton, useRoomFullscreen } from "./ui/room-fullscreen";
+import { GameFullscreen } from "./ui/room-fullscreen";
+import { GameFeedback } from "./ui/game-overlay-root";
 import { SoundControls } from "./ui/sound-controls";
 import { readAudioPreferences } from "./audio-preferences";
 import { Results } from "./ui/results";
@@ -589,7 +590,6 @@ function App() {
     if (request !== previewRequest.current || !audio.enabled) return "";
     return played ? "已播放" : "无法播放，请检查站点声音权限";
   };
-  const fullscreen = useRoomFullscreen(adminOpen ? undefined : state?.room?.id);
   if (!loaded)
     return (
       <div className="loading">
@@ -653,8 +653,7 @@ function App() {
             }}
           >
             <CompactRoomPanel
-              enabled={compactPoker || fullscreen.active}
-              force={fullscreen.active}
+              enabled={compactPoker}
               label="平台"
               name="platform"
             >
@@ -740,20 +739,24 @@ function App() {
               />
             )}
             {error && (
-              <div className="toast error" role="alert">
-                {error}
-                <button aria-label="关闭错误" onClick={() => setError("")}>
-                  <X size={16} />
-                </button>
-              </div>
+              <GameFeedback>
+                <div className="toast error" role="alert">
+                  {error}
+                  <button aria-label="关闭错误" onClick={() => setError("")}>
+                    <X size={16} />
+                  </button>
+                </div>
+              </GameFeedback>
             )}
             {notice && (
-              <div className="toast" role="status">
-                {notice}
-                <button aria-label="关闭提示" onClick={() => setNotice("")}>
-                  <X size={16} />
-                </button>
-              </div>
+              <GameFeedback>
+                <div className="toast" role="status">
+                  {notice}
+                  <button aria-label="关闭提示" onClick={() => setNotice("")}>
+                    <X size={16} />
+                  </button>
+                </div>
+              </GameFeedback>
             )}
             {adminOpen ? (
               canAdmin ? (
@@ -803,7 +806,6 @@ function App() {
                     </span>
                     <h1>{room.name}</h1>
                   </div>
-                  <FullscreenButton {...fullscreen} />
                   <CompactRoomPanel
                     enabled={compactPoker}
                     label="房间"
@@ -970,39 +972,57 @@ function App() {
                               <Players room={room} />
                             </CompactRoomPanel>
                           )}
-                          {room.game?.finished && (
-                            <ResultOverlay
-                              key={`${room.id}:${room.result?.id || "finished"}`}
-                            >
-                              <Results
-                                room={room}
-                                host={
-                                  !room.spectating &&
-                                  room.host === state.user.id &&
-                                  state.availableGames.includes(room.kind)
-                                }
-                                busy={busy}
-                                command={roomCommand}
-                              />
-                            </ResultOverlay>
-                          )}
                           <div className="game-layout">
                             <div className="game-main" tabIndex={-1}>
-                              <GameBoard
-                                key={`${room.id}:${state.serverInstance ?? ""}`}
-                                room={room}
-                                loadEvents={loadEvents}
-                                act={act}
-                                busy={boardBusy || loading}
-                                assets={state.assetsBaseURL || ""}
-                                sound={sound && volume > 0 && !loading}
-                                audio={gameAudio}
-                                inputWindow={streamInputs.connected ? 8 : 1}
-                                clock={presented.clock}
-                                command={(type, extra) =>
-                                  run(() => command(room, type, extra))
+                              <GameFullscreen
+                                scope={`${room.id}:${room.matchId ?? room.setupVersion}`}
+                                enabled={!loading && !!room.game}
+                                status={
+                                  room.turnDeadline ? (
+                                    <Turn
+                                      room={room}
+                                      serverNow={state.serverNow}
+                                      receivedAt={state.receivedAt}
+                                    />
+                                  ) : undefined
                                 }
-                              />
+                                result={
+                                  room.game?.finished && (
+                                    <ResultOverlay
+                                      key={`${room.id}:${room.result?.id || "finished"}`}
+                                    >
+                                      <Results
+                                        room={room}
+                                        host={
+                                          !room.spectating &&
+                                          room.host === state.user.id &&
+                                          state.availableGames.includes(
+                                            room.kind,
+                                          )
+                                        }
+                                        busy={busy}
+                                        command={roomCommand}
+                                      />
+                                    </ResultOverlay>
+                                  )
+                                }
+                              >
+                                <GameBoard
+                                  key={`${room.id}:${state.serverInstance ?? ""}`}
+                                  room={room}
+                                  loadEvents={loadEvents}
+                                  act={act}
+                                  busy={boardBusy || loading}
+                                  assets={state.assetsBaseURL || ""}
+                                  sound={sound && volume > 0 && !loading}
+                                  audio={gameAudio}
+                                  inputWindow={streamInputs.connected ? 8 : 1}
+                                  clock={presented.clock}
+                                  command={(type, extra) =>
+                                    run(() => command(room, type, extra))
+                                  }
+                                />
+                              </GameFullscreen>
                             </div>
                             <aside className="game-sidebar">
                               <Turn

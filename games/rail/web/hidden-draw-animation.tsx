@@ -1,3 +1,4 @@
+import { useGameOverlayRoot } from "../../../web/src/ui/game-overlay-root";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import { createPortal } from "react-dom";
@@ -11,6 +12,7 @@ type Flight = {
   public: boolean;
 };
 export function HiddenDrawAnimation({ room }: { room: Room }) {
+  const overlayRoot = useGameOverlayRoot();
   const rail = room.game!.rail!;
   const seen = useRef({ room: room.id, id: rail.drawId ?? 0 });
   const [flights, setFlights] = useState<Flight[]>([]);
@@ -88,6 +90,6 @@ export function HiddenDrawAnimation({ room }: { room: Room }) {
         </div>
       ))}
     </div>,
-    document.body,
+    overlayRoot,
   );
 }

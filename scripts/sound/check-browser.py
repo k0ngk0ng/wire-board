@@ -70,13 +70,13 @@ try:
  browser('tab','new',base);browser('wait','[data-sound-trigger]');open_sound();level_key('Home');browser('press','ArrowRight');browser('click','[data-sound-mute]')
  browser('tab','t1');open_sound();wait(lambda:js('Number(document.querySelector("[data-volume]").value)===1&&document.querySelector("[data-sound-preview]").disabled'))
  browser('click','[data-sound-mute]');level_key('End');browser('press','Escape');browser('tab','close','t2');check('cross-tab-preferences',volume=True,mute=True)
- # The speaker remains available inside the fullscreen platform panel.
+ # Game-only fullscreen excludes all platform sound/menu controls; exit
+ # restores the same speaker panel and saved volume.
  if js('!!document.querySelector(".toast.error")'):browser('click','button[aria-label="关闭错误"]')
- js('scrollTo(0,0);true');browser('click','[data-fullscreen-toggle]');wait(lambda:js('!!document.fullscreenElement'))
- browser('click','.compact-room-platform');browser('wait','--fn','document.querySelector(".compact-room-dialog")?.getAnimations().every(a=>a.playState!=="running")');open_sound();level_key('ArrowLeft');shot('fullscreen-sound');browser('press','Escape')
- assert js('!document.fullscreenElement&&!document.querySelector("[data-sound-panel]")')
- wait(lambda:js('!document.fullscreenElement'))
- check('fullscreen-sound',popupAbovePlatformDialog=True,escapeRestoresPage=True)
+ browser('scrollintoview','[data-fullscreen-toggle]');browser('click','[data-fullscreen-toggle]');wait(lambda:js('!!document.fullscreenElement'))
+ assert js('document.fullscreenElement.matches("[data-game-fullscreen-surface]")&&!document.fullscreenElement.querySelector("[data-sound-trigger],.topbar,.players-strip,.room-heading")')
+ browser('press','Escape');wait(lambda:js('!document.fullscreenElement'));js('scrollTo(0,0);true');open_sound();level_key('ArrowLeft');shot('sound-after-game-fullscreen');browser('press','Escape')
+ check('fullscreen-sound',platformOutsideGame=True,restoredAfterExit=True)
  browser('set','viewport','320','740');js('scrollTo(0,0);true');open_sound()
  geometry=js('(()=>{const r=document.querySelector("[data-sound-panel]").getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,viewport:[innerWidth,innerHeight],overflow:document.documentElement.scrollWidth>innerWidth+1}})()')
  assert geometry['x']>=0 and geometry['x']+geometry['w']<=320 and geometry['y']>=0 and geometry['y']+geometry['h']<=740 and not geometry['overflow'],geometry

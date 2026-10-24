@@ -8,14 +8,12 @@ export function CompactRoomPanel({
   label,
   name,
   children,
-  force = false,
   title = label,
 }: {
   enabled: boolean;
   label: string;
   name: string;
   children: ReactNode;
-  force?: boolean;
   title?: string;
 }) {
   const [mobile, setMobile] = useState(
@@ -34,7 +32,7 @@ export function CompactRoomPanel({
     query.addEventListener("change", update);
     return () => query.removeEventListener("change", update);
   }, []);
-  if (!enabled || (!mobile && !force)) return <>{children}</>;
+  if (!enabled || !mobile) return <>{children}</>;
   return (
     <>
       <button

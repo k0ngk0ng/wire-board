@@ -1,3 +1,4 @@
+import { useGameOverlayRoot } from "../../../web/src/ui/game-overlay-root";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
 import { createPortal } from "react-dom";
@@ -32,6 +33,7 @@ export function SplendorTokenAnimation({
   colors: string[];
   renderGem: (color: number) => ReactNode;
 }) {
+  const overlayRoot = useGameOverlayRoot();
   const g = room.game!.splendor!;
   const seen = useRef({ room: room.id, id: g.tokenEventId ?? 0 });
   const [flights, setFlights] = useState<TokenFlight[]>([]);
@@ -194,6 +196,6 @@ export function SplendorTokenAnimation({
         </span>
       ))}
     </div>,
-    document.body,
+    overlayRoot,
   );
 }

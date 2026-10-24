@@ -1,3 +1,4 @@
+import { useGameOverlayRoot } from "../../../web/src/ui/game-overlay-root";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import { createPortal } from "react-dom";
@@ -21,6 +22,7 @@ export function CatanCityEffects({
   room: Room;
   assets: string;
 }) {
+  const overlayRoot = useGameOverlayRoot();
   const anchor = useRef<HTMLSpanElement>(null);
   const previous = useRef(room);
   const animations = useRef(new Set<Animation>());
@@ -235,7 +237,7 @@ export function CatanCityEffects({
             </div>
           ))}
         </div>,
-        document.body,
+        overlayRoot,
       )}
     </>
   );

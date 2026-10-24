@@ -7,7 +7,7 @@
 - Muting stops voices/queues; preview cannot unmute. Raising volume from zero is
   a new user action; cancelled effects must not replay.
 - Browser preference persists through reload and synchronizes between tabs.
-- Fullscreen and the compact platform dialog keep the sound popup reachable.
+- Game-only fullscreen excludes platform sound controls; exiting restores them.
 - Save browser screenshots, source digests and JSON; remove owned profiles and DB.
 
 The native media tests also cover loop ramps, invalid levels and late playback.

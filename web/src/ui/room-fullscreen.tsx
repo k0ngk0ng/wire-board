@@ -1,6 +1,13 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import { Maximize, Minimize } from "lucide-react";
 import "./room-fullscreen.css";
+import { GameOverlayRoot } from "./game-overlay-root";
 
 type Mode = "native" | "page" | "";
 type FullscreenDocument = Document & {
@@ -11,19 +18,20 @@ type FullscreenElement = HTMLElement & {
   webkitRequestFullscreen?: () => Promise<void> | void;
 };
 
-// Fullscreen the document so platform dialogs and game portals remain visible.
-// The game stays mounted throughout entry, resize and exit.
-export function useRoomFullscreen(scope: string | undefined) {
+// Only the game surface enters fullscreen; the surrounding room stays mounted.
+function useRoomFullscreen(
+  scope: string | undefined,
+  root: FullscreenElement | null,
+) {
   const [mode, setMode] = useState<Mode>("");
   const [pending, setPending] = useState(false);
   const control = useRef({ generation: 0, wanted: false, mode: "" as Mode });
   const scroll = useRef({ x: 0, y: 0 });
   const doc = document as FullscreenDocument;
-  const root = document.documentElement as FullscreenElement;
   const nativeElement = () =>
     doc.fullscreenElement ?? doc.webkitFullscreenElement;
   const exitNative = async () => {
-    if (nativeElement() !== root) return;
+    if (!root || nativeElement() !== root) return;
     try {
       if (doc.exitFullscreen) await doc.exitFullscreen();
       else await doc.webkitExitFullscreen?.();
@@ -45,7 +53,8 @@ export function useRoomFullscreen(scope: string | undefined) {
 
   useEffect(() => {
     const change = () => {
-      if (nativeElement() === root && control.current.wanted) update("native");
+      if (root && nativeElement() === root && control.current.wanted)
+        update("native");
       else if (control.current.mode === "native") exit();
     };
     const key = (event: KeyboardEvent) => {
@@ -64,31 +73,47 @@ export function useRoomFullscreen(scope: string | undefined) {
       document.removeEventListener("keydown", key, true);
       exit();
     };
-  }, [scope]);
+  }, [scope, root]);
 
   useLayoutEffect(() => {
-    if (!mode) return;
-    root.dataset.roomFullscreen = mode;
-    window.scrollTo(0, 0);
-    // Space belongs to the game after entry, not to the fullscreen button.
-    document
-      .querySelector<HTMLElement>(".game-main")
+    if (!mode || !root) return;
+    const siblings: [HTMLElement, boolean][] = [];
+    for (
+      let node: HTMLElement | null = root;
+      node?.parentElement;
+      node = node.parentElement
+    ) {
+      for (const sibling of node.parentElement.children) {
+        if (sibling !== node && sibling instanceof HTMLElement) {
+          siblings.push([sibling, sibling.inert]);
+          sibling.inert = true;
+        }
+      }
+    }
+    const overflow = document.documentElement.style.overflow;
+    document.documentElement.style.overflow = "hidden";
+    root.scrollTop = 0;
+    root
+      .querySelector<HTMLElement>("[data-fullscreen-board]")
       ?.focus({ preventScroll: true });
     return () => {
-      delete root.dataset.roomFullscreen;
-      document
+      siblings.forEach(([element, inert]) => {
+        element.inert = inert;
+      });
+      document.documentElement.style.overflow = overflow;
+      root
         .querySelector<HTMLElement>("[data-fullscreen-toggle]")
         ?.focus({ preventScroll: true });
       window.scrollTo(scroll.current.x, scroll.current.y);
     };
-  }, [mode]);
+  }, [mode, root]);
 
   const toggle = async () => {
     if (control.current.wanted) {
       exit();
       return;
     }
-    if (!scope) return;
+    if (!scope || !root) return;
     scroll.current = { x: window.scrollX, y: window.scrollY };
     control.current.wanted = true;
     const generation = ++control.current.generation;
@@ -108,17 +133,17 @@ export function useRoomFullscreen(scope: string | undefined) {
       if (generation === control.current.generation) setPending(false);
     }
   };
-  return { active: !!mode, pending, toggle };
+  return { active: !!mode, mode, pending, toggle };
 }
 
-export function FullscreenButton({
+function FullscreenButton({
   active,
   pending,
   toggle,
 }: ReturnType<typeof useRoomFullscreen>) {
   return (
     <button
-      className="subtle room-fullscreen-toggle"
+      className="room-fullscreen-toggle"
       data-fullscreen-toggle
       aria-label={active ? "退出全屏" : "全屏"}
       aria-pressed={active}
@@ -127,7 +152,81 @@ export function FullscreenButton({
       onClick={() => void toggle()}
     >
       {active ? <Minimize size={16} /> : <Maximize size={16} />}
-      <span>{active ? "退出全屏" : "全屏"}</span>
     </button>
+  );
+}
+
+export function GameFullscreen({
+  scope,
+  enabled,
+  children,
+  result,
+  status,
+}: {
+  scope: string;
+  enabled: boolean;
+  children: ReactNode;
+  result?: ReactNode;
+  status?: ReactNode;
+}) {
+  const [root, setRoot] = useState<HTMLDivElement | null>(null);
+  const board = useRef<HTMLDivElement>(null);
+  const [rightInset, setRightInset] = useState(0);
+  const fullscreen = useRoomFullscreen(enabled ? scope : undefined, root);
+  useLayoutEffect(() => {
+    const container = board.current;
+    if (!container) return;
+    const measure = () => {
+      const target = container.firstElementChild;
+      if (!target) return;
+      const outer = container.getBoundingClientRect(),
+        inner = target.getBoundingClientRect();
+      setRightInset(Math.max(0, outer.right - inner.right));
+    };
+    const resize = new ResizeObserver(measure);
+    resize.observe(container);
+    const observeBoard = () => {
+      if (container.firstElementChild)
+        resize.observe(container.firstElementChild);
+      measure();
+    };
+    const changes = new MutationObserver(observeBoard);
+    changes.observe(container, { childList: true });
+    observeBoard();
+    return () => {
+      resize.disconnect();
+      changes.disconnect();
+    };
+  }, []);
+  return (
+    <div
+      ref={setRoot}
+      className="game-fullscreen-surface"
+      data-game-fullscreen-surface
+      data-room-fullscreen={fullscreen.mode || undefined}
+    >
+      <GameOverlayRoot.Provider value={root}>
+        {enabled && (
+          <div
+            className="game-fullscreen-toolbar"
+            style={{ paddingRight: rightInset }}
+          >
+            {fullscreen.active && status && (
+              <div className="game-fullscreen-status">{status}</div>
+            )}
+            <FullscreenButton {...fullscreen} />
+          </div>
+        )}
+        <div
+          ref={board}
+          className="game-fullscreen-board"
+          data-fullscreen-board
+          tabIndex={-1}
+        >
+          {children}
+        </div>
+        {result}
+      </GameOverlayRoot.Provider>
+    </div>
   );
 }
