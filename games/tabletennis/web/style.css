@@ -1,0 +1,189 @@
+.tt-board {
+  max-width: 1120px;
+  margin: 0 auto;
+  background: #f4f3e9;
+  color: #193f35;
+  border: 1px solid #bdcbb8;
+  border-radius: 16px;
+  overflow: hidden;
+  isolation: isolate;
+}
+.tt-score {
+  min-height: 76px;
+  padding: 12px 20px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 115px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  background: #f8f8ef;
+  color: #193f35;
+}
+.tt-score strong {
+  display: block;
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tt-score small {
+  display: block;
+  font-size: 11px;
+  color: #4b6253;
+  margin-top: 3px;
+}
+.tt-score-center {
+  text-align: center;
+}
+.tt-score-center b {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  font-size: 30px;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+.tt-score-center i {
+  font-size: 19px;
+  font-style: normal;
+  align-self: center;
+  color: #526b5b;
+}
+.tt-opponents {
+  text-align: right;
+}
+.tt-scene {
+  position: relative;
+  aspect-ratio: 16/10;
+  min-height: 360px;
+  background: #dce4d9;
+  overflow: hidden;
+}
+.tt-scene canvas {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  cursor: crosshair;
+  outline: none;
+}
+.tt-scene canvas:focus-visible {
+  outline: 2px solid #204f3c;
+  outline-offset: -3px;
+}
+.tt-status {
+  position: absolute;
+  left: 16px;
+  top: 15px;
+  pointer-events: none;
+  padding: 7px 12px;
+  border-radius: 20px;
+  background: #fcfff1;
+  color: #214b38;
+  font-size: 12px;
+  border: 1px solid #c8d4bc;
+  min-height: 32px;
+}
+.tt-error {
+  position: absolute;
+  left: 50%;
+  top: 54px;
+  transform: translateX(-50%);
+  padding: 8px 12px;
+  border-radius: 9px;
+  background: #fff2de;
+  color: #702a20;
+  font-size: 12px;
+  max-width: 90%;
+  pointer-events: none;
+}
+.tt-options {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.tt-options label {
+  display: grid;
+  gap: 5px;
+}
+.tt-public-score {
+  display: grid;
+  gap: 4px;
+}
+.tt-public-score span {
+  font-size: 12px;
+}
+@media (max-width: 650px) {
+  .tt-board {
+    border-radius: 11px;
+  }
+  .tt-score {
+    grid-template-columns: minmax(0, 1fr) 84px minmax(0, 1fr);
+    padding: 10px;
+    gap: 7px;
+    min-height: 72px;
+  }
+  .tt-score strong {
+    font-size: 11px;
+  }
+  .tt-score small {
+    font-size: 10px;
+  }
+  .tt-score-center b {
+    font-size: 27px;
+    gap: 9px;
+  }
+  .tt-scene {
+    aspect-ratio: auto;
+    height: 74svh;
+    min-height: 360px;
+    max-height: 760px;
+  }
+  .tt-status {
+    left: 10px;
+    top: 10px;
+    font-size: 11px;
+  }
+  .tt-error {
+    font-size: 11px;
+  }
+  .tt-options {
+    grid-template-columns: 1fr;
+  }
+}
+
+[data-room-fullscreen] .tt-board {
+  height: 100%;
+  max-width: 1400px;
+  display: flex;
+  flex-direction: column;
+}
+[data-room-fullscreen] .tt-score {
+  flex: 0 0 76px;
+}
+[data-room-fullscreen] .tt-scene {
+  flex: 1;
+  aspect-ratio: auto;
+  height: auto;
+  min-height: 0;
+  max-height: none;
+}
+
+.tt-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: calc(100% - 32px);
+}
+.tt-status > span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tt-status > b {
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+  color: #214b38;
+}
