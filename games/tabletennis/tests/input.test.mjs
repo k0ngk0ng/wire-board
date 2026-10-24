@@ -32,7 +32,9 @@ test("one outstanding swing per incoming ball; snapshot can acknowledge before r
     },
   });
   c.update(binding());
+  assert.equal(c.canSwing, true);
   assert.equal(c.swing({ kind: "drive", aim: 0.3, power: 0.6 }, 1020), true);
+  assert.equal(c.canSwing, false);
   assert.equal(c.swing({ kind: "chop", aim: 0, power: 0.5 }, 1021), false);
   assert.equal(sent.length, 1);
   c.update(binding({ seq: 1, shot: 3 }));

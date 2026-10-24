@@ -52,7 +52,7 @@ try {
   let ready = false;
   for (let i = 0; i < 1500; i++) {
     const f = await frame();
-    if (f.phase === "rally") {
+    if (f.phase === "rally" && !f.inputEnabled) {
       ready = true;
       break;
     }

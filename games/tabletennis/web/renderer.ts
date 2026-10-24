@@ -706,7 +706,8 @@ export function createCourt(
       }
     }
     const age = f.swing ? f.now - f.swing.at : Infinity;
-    const activeSwing = age >= 0 && age < 380 && !f.gesture.down;
+    const swingDuration = 120 + (1 - (f.swing?.stroke.power ?? 0.35)) * 140;
+    const activeSwing = age >= 0 && age < swingDuration;
     const incoming = localPoint(contactPoint(d, seat, f.time), facing);
     const serving =
       d.expected === seat && (d.phase === "serve" || d.phase === "serve_toss");
@@ -724,12 +725,13 @@ export function createCourt(
         viewport.clientWidth,
         viewport.clientHeight,
       );
-    if (activeSwing) paddleX = f.swing?.stroke.racketX ?? paddleX;
+    if (activeSwing && !f.gesture.down)
+      paddleX = f.swing?.stroke.racketX ?? paddleX;
     if (serving) paddleX = 0.34 / 0.9;
     let x = paddleX * 0.9;
     if (activeSwing && f.swing?.connected)
       x += Math.max(-0.06, Math.min(0.06, pose.x - x));
-    const k = activeSwing ? Math.sin((age / 380) * Math.PI) : 0;
+    const k = activeSwing ? Math.sin((age / swingDuration) * Math.PI) : 0;
     racketRig.position.set(
       x * scale,
       (pose.y +
@@ -737,12 +739,12 @@ export function createCourt(
           ? 0.12
           : 0)) *
         scale,
-      pose.z * scale - k * 0.08,
+      pose.z * scale + f.gesture.y * 0.18 - k * 0.08,
     );
     const own = rackets[rackets.length - 1];
     own.rotation.set(pose.y < 1.1 ? -0.75 : -0.25, -0.1, 0.9);
     racketRig.rotation.set(
-      k * (f.swing?.stroke.kind === "chop" ? 0.12 : -0.12),
+      f.gesture.y * 0.15 + k * (f.swing?.stroke.kind === "chop" ? 0.12 : -0.12),
       0,
       k * (f.swing?.stroke.kind === "chop" ? 0.12 : -0.12),
     );
@@ -762,6 +764,8 @@ export function createCourt(
         at: f.time,
         predicted: !!f.predicted,
         swingAge: f.swing ? f.now - f.swing.at : null,
+        stroke: f.swing?.stroke ?? null,
+        swingDuration,
         gestureDown: f.gesture.down,
         racket: {
           x: ((ownRacket.x + 1) / 2) * viewport.clientWidth,

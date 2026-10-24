@@ -107,7 +107,8 @@ try {
       visual.inputEnabled &&
       aligned &&
       (visual.phase === "serve" ||
-        (now >= visual.controls.openAt + 60 &&
+        (!options.serveOnly &&
+          now >= visual.controls.openAt + 190 &&
           now < visual.controls.closeAt - 100))
     ) {
       targetX = visual.contact?.x ?? visual.ball.x;
@@ -188,46 +189,15 @@ try {
           {
             type: i === 0 ? "mouseMoved" : "mouseMoved",
             ...point,
-            button: i ? "left" : "none",
-            buttons: i ? 1 : 0,
+            button: "none",
+            buttons: 0,
           },
           sessionId,
         );
-        if (i === 0)
-          await call(
-            "Input.dispatchMouseEvent",
-            {
-              type: "mousePressed",
-              ...point,
-              button: "left",
-              buttons: 1,
-              clickCount: 1,
-            },
-            sessionId,
-          );
       }
       trace.push({ ...point, at: Date.now() });
-      await sleep(10);
+      await sleep(options.stepDelay ?? 10);
     }
-    if (options.touch)
-      await call(
-        "Input.dispatchTouchEvent",
-        { type: "touchEnd", touchPoints: [] },
-        sessionId,
-      );
-    else
-      await call(
-        "Input.dispatchMouseEvent",
-        {
-          type: "mouseReleased",
-          x: x + (options.dx ?? 10),
-          y: y + dy,
-          button: "left",
-          buttons: 0,
-          clickCount: 1,
-        },
-        sessionId,
-      );
   }
   const releaseAt = Date.now();
   let measuredRTT = 0;
@@ -253,8 +223,30 @@ try {
       "native swing was not accepted: " +
         JSON.stringify(await evaluate("document.body.innerText")),
     );
+  if (options.touch)
+    await call(
+      "Input.dispatchTouchEvent",
+      { type: "touchEnd", touchPoints: [] },
+      sessionId,
+    );
   await sleep(120);
   const frames = await evaluate("window.__ttSampling=false;window.__ttSamples");
+  const hitFrame = frames.find(
+    (f) =>
+      f.swingAge !== null &&
+      f.swingAge >= 0 &&
+      f.swingAge <= f.wall - inputBegan + 20 &&
+      f.wall >= inputBegan,
+  );
+  if (!hitFrame?.stroke || hitFrame.stroke.kind !== options.kind)
+    throw Error(
+      "wrong live stroke: " +
+        JSON.stringify({
+          expected: options.kind,
+          actual: hitFrame?.stroke,
+          before,
+        }),
+    );
   const firstFeedback = frames.find(
     (f) =>
       f.wall >= inputBegan &&
@@ -272,9 +264,13 @@ try {
   console.log(
     JSON.stringify({
       passed: true,
+      noMouseButtons: !options.keyboard && !options.touch,
+      acceptedBeforeTouchEnd: !!options.touch,
       measuredRTT,
       inputBegan,
       feedbackMS,
+      stroke: hitFrame.stroke,
+      swingDuration: hitFrame.swingDuration,
       feedbackBeforeReceipt: !!receipt && firstFeedback.wall < receipt.wall,
       releaseAt,
       before,

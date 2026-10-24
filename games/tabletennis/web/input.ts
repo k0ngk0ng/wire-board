@@ -39,6 +39,9 @@ type Options = {
  * a ball stays consumed until its token changes. Old completions are inert.
  */
 export class StrokeChannel {
+  get canSwing(): boolean {
+    return !!this.binding?.enabled && !this.locked && !this.closed;
+  }
   private binding?: InputBinding;
   private generation = 0;
   private sequence = 0;
