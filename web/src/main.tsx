@@ -1,4 +1,7 @@
 import { CompactRoomPanel } from "./ui/compact-room-panel";
+import { FullscreenButton, useRoomFullscreen } from "./ui/room-fullscreen";
+import { SoundControls } from "./ui/sound-controls";
+import { readAudioPreferences } from "./audio-preferences";
 import { Results } from "./ui/results";
 import { GameLoading } from "./game-api/loading";
 import { Runtime } from "./game-api/runtime";
@@ -34,8 +37,6 @@ import {
   Sparkles,
   TrainFront,
   Users,
-  Volume2,
-  VolumeX,
   Wifi,
   WifiOff,
   X,
@@ -182,9 +183,9 @@ function App() {
   const [wishOpen, setWishOpen] = useState(false);
   const [controllerSettingsOpen, setControllerSettingsOpen] = useState(false);
   useEffect(() => setControllerSettingsOpen(false), [state?.user.id]);
-  const [sound, setSound] = useState(
-    () => localStorage.getItem("wb_sound") !== "off",
-  );
+  const [sound, setSound] = useState(() => readAudioPreferences().enabled);
+  const [volume, setVolume] = useState(() => readAudioPreferences().volume);
+  const lastVolume = useRef(volume || 0.5);
   const [notice, setNotice] = useState("");
   const refreshWork = useRef<() => Promise<void>>(async () => {});
   const refresh = useMemo(() => refreshQueue(() => refreshWork.current()), []);
@@ -198,6 +199,7 @@ function App() {
   );
   useEffect(() => {
     audio.setEnabled(sound);
+    audio.setVolume(volume);
     audio.mount();
     const visibility = () => {
       resyncRequired.current = true;
@@ -206,11 +208,19 @@ function App() {
       else void refresh();
     };
     const storage = (event: StorageEvent) => {
-      if (event.key !== "wb_sound" && event.key !== null) return;
-      const enabled = event.key === null || event.newValue !== "off";
+      if (
+        event.key !== "wb_sound" &&
+        event.key !== "wb_volume" &&
+        event.key !== null
+      )
+        return;
+      const { enabled, volume: nextVolume } = readAudioPreferences();
       previewRequest.current++;
       audio.setEnabled(enabled);
+      audio.setVolume(nextVolume);
       setSound(enabled);
+      setVolume(nextVolume);
+      if (nextVolume > 0) lastVolume.current = nextVolume;
     };
     document.addEventListener("visibilitychange", visibility);
     window.addEventListener("storage", storage);
@@ -543,6 +553,7 @@ function App() {
   };
   const toggleSound = () => {
     const enabled = !audio.enabled;
+    if (enabled && volume === 0) changeVolume(lastVolume.current);
     previewRequest.current++;
     audio.setEnabled(enabled);
     setSound(enabled);
@@ -553,17 +564,32 @@ function App() {
     }
     if (enabled) void audio.unlock();
   };
+  const changeVolume = (value: number) => {
+    if (!Number.isFinite(value)) return;
+    const next = Math.max(0, Math.min(1, value));
+    audio.setVolume(next);
+    setVolume(next);
+    if (next > 0) {
+      lastVolume.current = next;
+      audio.setEnabled(true);
+      setSound(true);
+      void audio.unlock();
+    }
+    try {
+      localStorage.setItem("wb_volume", String(next));
+      if (next > 0) localStorage.setItem("wb_sound", "on");
+    } catch {
+      /* The current tab still follows the slider when storage is blocked. */
+    }
+  };
   const previewAudio = async () => {
-    if (!audio.enabled) return;
+    if (!audio.enabled) return "";
     const request = ++previewRequest.current;
     const played = await audio.play("preview");
-    if (request !== previewRequest.current || !audio.enabled) return;
-    setNotice(
-      played
-        ? "已播放试听音效，音量由设备媒体音量控制。"
-        : "浏览器未能播放音效，请检查站点声音权限后再次试听。",
-    );
+    if (request !== previewRequest.current || !audio.enabled) return "";
+    return played ? "已播放" : "无法播放，请检查站点声音权限";
   };
+  const fullscreen = useRoomFullscreen(adminOpen ? undefined : state?.room?.id);
   if (!loaded)
     return (
       <div className="loading">
@@ -627,7 +653,8 @@ function App() {
             }}
           >
             <CompactRoomPanel
-              enabled={compactPoker}
+              enabled={compactPoker || fullscreen.active}
+              force={fullscreen.active}
               label="平台"
               name="platform"
             >
@@ -677,34 +704,13 @@ function App() {
                     {online ? <Wifi size={15} /> : <WifiOff size={15} />}
                     <span>{online ? "已连接" : "重连中"}</span>
                   </span>
-                  <div
-                    className="sound-controls"
-                    role="group"
-                    aria-label="声音"
-                  >
-                    <button
-                      className="sound-preview"
-                      disabled={!sound}
-                      title={
-                        sound ? "音量由设备媒体音量控制" : "取消静音后可试听"
-                      }
-                      onClick={() => void previewAudio()}
-                    >
-                      试听音效
-                    </button>
-                    <button
-                      className="sound-toggle"
-                      aria-label={sound ? "静音" : "取消静音"}
-                      aria-pressed={!sound}
-                      title={
-                        sound ? "静音所有游戏和提示音" : "恢复所有游戏和提示音"
-                      }
-                      onClick={toggleSound}
-                    >
-                      {sound ? <Volume2 size={18} /> : <VolumeX size={18} />}
-                      <span>{sound ? "静音" : "取消静音"}</span>
-                    </button>
-                  </div>
+                  <SoundControls
+                    enabled={sound && volume > 0}
+                    volume={volume}
+                    onVolume={changeVolume}
+                    onMute={toggleSound}
+                    onPreview={previewAudio}
+                  />
                   <button
                     className="avatar"
                     aria-label="我的战绩与好友"
@@ -797,9 +803,11 @@ function App() {
                     </span>
                     <h1>{room.name}</h1>
                   </div>
+                  <FullscreenButton {...fullscreen} />
                   <CompactRoomPanel
                     enabled={compactPoker}
                     label="房间"
+                    title={`房间 · ${room.name}`}
                     name="tools"
                   >
                     <div className="room-tools">
@@ -979,7 +987,7 @@ function App() {
                             </ResultOverlay>
                           )}
                           <div className="game-layout">
-                            <div className="game-main">
+                            <div className="game-main" tabIndex={-1}>
                               <GameBoard
                                 key={`${room.id}:${state.serverInstance ?? ""}`}
                                 room={room}
@@ -987,7 +995,7 @@ function App() {
                                 act={act}
                                 busy={boardBusy || loading}
                                 assets={state.assetsBaseURL || ""}
-                                sound={sound && !loading}
+                                sound={sound && volume > 0 && !loading}
                                 audio={gameAudio}
                                 inputWindow={streamInputs.connected ? 8 : 1}
                                 clock={presented.clock}

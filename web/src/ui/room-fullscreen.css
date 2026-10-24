@@ -1,0 +1,77 @@
+.room-fullscreen-toggle {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+html[data-room-fullscreen] {
+  overflow: auto;
+  background: #f6f5ef;
+  color: #293b35;
+}
+html[data-room-fullscreen] .room-page {
+  max-width: 1800px;
+  min-height: 100dvh;
+  padding-top: 52px;
+}
+[data-room-fullscreen] .room-fullscreen-toggle {
+  position: fixed;
+  top: max(6px, env(safe-area-inset-top));
+  right: calc(58px + env(safe-area-inset-right));
+  z-index: 46;
+  height: 36px;
+  padding: 4px 10px;
+  border: 1px solid #9aaa99;
+  background: #f8f4e8;
+  color: #244836;
+  border-radius: 7px;
+}
+[data-room-fullscreen] .compact-room-platform {
+  position: fixed;
+  top: max(6px, env(safe-area-inset-top));
+  right: calc(4px + env(safe-area-inset-right));
+  z-index: 46;
+  height: 36px;
+  padding: 4px 7px;
+  border: 1px solid #9aaa99;
+  background: #f8f4e8;
+  color: #244836;
+  border-radius: 7px;
+}
+@media (min-width: 601px) {
+  html[data-room-fullscreen] .room-page.playing {
+    padding-top: 52px;
+    max-width: 1800px;
+  }
+}
+@media (max-width: 600px) {
+  .room-page[data-table-layout="poker"] .room-fullscreen-toggle {
+    position: fixed;
+    top: 4px;
+    left: 8px;
+    right: auto;
+    z-index: 45;
+    height: 36px;
+    width: 36px;
+    padding: 4px 7px;
+    border: 1px solid #9aaa99;
+    border-radius: 7px;
+    background: #f8f4e8;
+    color: #244836;
+    font-size: 11px;
+  }
+  .room-page[data-table-layout="poker"] .room-fullscreen-toggle span {
+    display: none;
+  }
+  .room-page[data-table-layout="poker"] .room-heading > div:first-child {
+    /* The room menu retains the name; reserve the existing title slot for the
+       fullscreen control without moving the skin, player, room or chat tools. */
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  [data-room-fullscreen] .room-page {
+    padding-left: max(8px, env(safe-area-inset-left));
+    padding-right: max(8px, env(safe-area-inset-right));
+  }
+}

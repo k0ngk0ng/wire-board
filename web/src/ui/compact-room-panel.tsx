@@ -8,11 +8,15 @@ export function CompactRoomPanel({
   label,
   name,
   children,
+  force = false,
+  title = label,
 }: {
   enabled: boolean;
   label: string;
   name: string;
   children: ReactNode;
+  force?: boolean;
+  title?: string;
 }) {
   const [mobile, setMobile] = useState(
     () => matchMedia("(max-width: 600px)").matches,
@@ -30,7 +34,7 @@ export function CompactRoomPanel({
     query.addEventListener("change", update);
     return () => query.removeEventListener("change", update);
   }, []);
-  if (!enabled || !mobile) return <>{children}</>;
+  if (!enabled || (!mobile && !force)) return <>{children}</>;
   return (
     <>
       <button
@@ -42,7 +46,7 @@ export function CompactRoomPanel({
       </button>
       {open && (
         <Modal
-          title={label}
+          title={title}
           onClose={() => setOpen(false)}
           className="compact-room-dialog"
         >

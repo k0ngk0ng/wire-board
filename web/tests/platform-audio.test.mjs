@@ -63,7 +63,7 @@ function musicSetup(){const voices=[];const audio=new GameAudio(()=>{const m=new
 test('game music uses a separate looping native platform channel, effects coexist',async()=>{
  const {audio,voices}=musicSetup(),port=audio.channel('pairs');
  assert.equal(await port.music(['bg.mp3','local.mp3']),true);
- assert.equal(voices.length,2);assert.equal(voices[1].dataset.platformAudio,'');assert.equal(voices[1].loop,true);assert.equal(voices[1].volume,.15);
+ assert.equal(voices.length,2);assert.equal(voices[1].dataset.platformAudio,'');assert.equal(voices[1].loop,true);assert.equal(voices[1].volume,1);
  await port.play(['match.wav']);assert.equal(voices[1].paused,false);assert.equal(voices[0].src,'match.wav');
  await port.music(['bg.mp3','local.mp3']);assert.deepEqual(voices[1].calls,['bg.mp3']);
  port.stopMusic();assert.equal(voices[1].paused,true);assert.equal(voices[0].paused,false);

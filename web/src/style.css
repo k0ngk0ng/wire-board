@@ -3262,14 +3262,6 @@ label small {
   color: #c6d4b3;
 }
 
-.sound-preview {
-  border: 0;
-  background: transparent;
-  color: var(--green, #1c5346);
-  padding: 8px 4px;
-  font-size: 12px;
-  white-space: nowrap;
-}
 .player-panel.eliminated {
   opacity: 0.6;
   border-style: dashed;
@@ -3839,10 +3831,6 @@ label small {
   }
   .clock-reading time {
     font-size: 22px;
-  }
-  .sound-preview {
-    font-size: 10px;
-    padding: 4px 2px;
   }
 }
 
@@ -5365,34 +5353,6 @@ label small {
   }
 }
 
-/* One visible platform control for every game's native-media audio. */
-.sound-controls {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  flex-shrink: 0;
-}
-.sound-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 7px 8px;
-  border: 1px solid #c9d3c8;
-  border-radius: 6px;
-  color: #174e43;
-  background: #f7faf3;
-  font-size: 12px;
-  white-space: nowrap;
-}
-.sound-toggle[aria-pressed="true"] {
-  background: #e5ebdf;
-  color: #40563d;
-}
-.sound-preview:disabled {
-  opacity: 1;
-  color: #576653;
-  cursor: not-allowed;
-}
 @media (max-width: 850px) {
   .topbar {
     height: auto;
@@ -5407,15 +5367,6 @@ label small {
     flex-wrap: wrap;
     justify-content: flex-end;
     row-gap: 4px;
-  }
-  .sound-toggle,
-  .sound-preview {
-    font-size: 11px;
-    padding: 5px 4px;
-  }
-  .sound-toggle svg {
-    width: 16px;
-    height: 16px;
   }
 }
 
@@ -5960,6 +5911,25 @@ label small {
   min-height: 40px;
 }
 
+.compact-room-dialog .topbar {
+  display: flex;
+  flex-wrap: wrap;
+  height: auto;
+  padding: 0;
+  gap: 12px;
+  position: static;
+}
+.compact-room-dialog .header-right,
+.compact-room-dialog .room-tools {
+  display: flex;
+  flex-wrap: wrap;
+  position: static;
+  gap: 8px;
+}
+.compact-room-dialog .players-strip {
+  margin: 0;
+}
+
 /* Platform-owned phone poker frame. Keep the playing surface inside the live
    browser viewport; shared tools remain reachable through explicit dialogs. */
 @media (max-width: 600px) {
@@ -6039,24 +6009,6 @@ label small {
     top: 44px;
     bottom: auto;
     max-height: calc(100dvh - 56px);
-  }
-  .compact-room-dialog .topbar {
-    display: flex;
-    flex-wrap: wrap;
-    height: auto;
-    padding: 0;
-    gap: 12px;
-    position: static;
-  }
-  .compact-room-dialog .header-right,
-  .compact-room-dialog .room-tools {
-    display: flex;
-    flex-wrap: wrap;
-    position: static;
-    gap: 8px;
-  }
-  .compact-room-dialog .players-strip {
-    margin: 0;
   }
   .room-page[data-table-layout="poker"] .game-layout {
     position: relative;
