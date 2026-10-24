@@ -5,6 +5,7 @@ export default {
   description:
     "江苏掼蛋，固定对家、红心配牌，进贡还贡、配合接风，一起打到过 A。",
   category: "poker",
+  tableLayout: "poker",
   minPlayers: 4,
   maxPlayers: 4,
   requiresFullTable: true,

@@ -2,7 +2,7 @@ import { gameModule } from "../game-api/registry";
 export const categories = [
   ["all", "全部分类"],
   ["board", "桌游"],
-  ["poker", "扑克牌"],
+  ["poker", "棋牌类"],
   ["realtime", "即时策略"],
   ["sports", "体育"],
   ["puzzle", "益智休闲"],

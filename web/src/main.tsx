@@ -620,7 +620,7 @@ function App() {
     !adminOpen &&
     !!room?.game &&
     (room.status === "playing" || room.status === "finished") &&
-    gameModule(room.kind)?.category === "poker";
+    gameModule(room.kind)?.tableLayout === "poker";
   const canAdmin =
     state.user.role === "admin" || state.user.role === "superadmin";
   const autoPlay = !!room?.seats[room.you]?.autoPlay;

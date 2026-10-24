@@ -126,6 +126,8 @@ export type GameModule<Data = unknown, Options = unknown> = {
   name: string;
   description: string;
   category?: "board" | "poker" | "realtime" | "sports" | "puzzle";
+  // Presentation is independent of the catalogue category.
+  tableLayout?: "poker";
   requiresFullTable?: boolean;
   minPlayers: number;
   maxPlayers: number;
