@@ -760,3 +760,20 @@
   color: #6d4316;
   font-weight: 650;
 }
+
+.admin-password-field {
+  display: grid;
+  gap: 7px;
+}
+.admin-password-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+}
+.admin-password-row input {
+  min-width: 0;
+  width: 100%;
+}
+.admin-password-row button {
+  white-space: nowrap;
+}
