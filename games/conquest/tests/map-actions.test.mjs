@@ -1,37 +1,79 @@
-// Before map-action implementation: half dispatches must use the remaining
-// server-projected army, never the original army; odd/single units, debt,
-// insufficient movement/sea transport, population and capacity must be safe.
+// Failure inventory: AMOUNT_CONTROL_FAILURE_SCENARIOS.md, written before implementation.
 import test from "node:test";
 import assert from "node:assert/strict";
-import { halfMarch, quickRecruit } from "../web/map-actions.ts";
+import {
+  marchAmount,
+  recruitCapacity,
+  troopAmount,
+} from "../web/map-actions.ts";
 
-test("repeated target taps dispatch half of the remaining army", () => {
+test("default dispatches follow remaining projected army; explicit choices remain exact", () => {
   let remaining = 1000;
   const sent = [];
   for (let i = 0; i < 3; i++) {
-    const n = halfMarch(remaining, 5000, 3.2, false, 2, 1);
+    const n = marchAmount(remaining, 5000, 3.2, false, 2, 1);
     sent.push(n);
     remaining -= n;
   }
   assert.deepEqual(sent, [500, 250, 125]);
-  assert.equal(remaining, 125);
+  assert.equal(marchAmount(1000, 5000, 3.2, false, 2, 1, 123), 123);
+  assert.equal(marchAmount(1000, 5000, 3.2, false, 2, 1, 1000), 1000);
+  assert.equal(marchAmount(70, 5000, 3.2, false, 2, 1, 123), 70);
 });
-test("one soldier, odd armies and invalid budgets stay bounded", () => {
-  assert.equal(halfMarch(1, 0, 1, false, 2, 1), 1);
-  assert.equal(halfMarch(501, 5000, 1, false, 2, 1), 251);
-  assert.equal(halfMarch(500, 5000, 0.2, false, 2, 1), 0);
-  assert.equal(halfMarch(500, -1, 1, true, 2, 1), 0);
-  assert.equal(halfMarch(NaN, 5000, 3, true, 2, 1), 0);
-  // The promised half must not silently shrink into an unsafe tiny landing.
-  assert.equal(halfMarch(1000, 200, 1, true, 2, 1), 0);
-  assert.equal(halfMarch(1000, 999, 1, true, 2, 1), 0);
-  assert.equal(halfMarch(1000, 1000, 1, true, 2, 1), 500);
+test("half rounds up, precise input clamps to live limits and invalid edits cannot submit", () => {
+  for (const [max, expected] of [
+    [0, 0],
+    [1, 1],
+    [501, 251],
+    [5000, 2500],
+  ])
+    assert.equal(troopAmount(max), expected);
+  assert.equal(troopAmount(500, 73), 73);
+  assert.equal(troopAmount(500, 73.8), 73);
+  assert.equal(troopAmount(500, 700), 500);
+  for (const draft of [0, -1, NaN, Infinity])
+    assert.equal(troopAmount(500, draft), 0);
+  for (const max of [-10, NaN, Infinity]) assert.equal(troopAmount(max), 0);
 });
-test("one-tap recruitment respects cash, population, capacity and action points", () => {
-  assert.equal(quickRecruit(5000, 25000, 500, 3.2, 1, 1), 1000);
-  assert.equal(quickRecruit(175, 25000, 500, 3.2, 1, 1), 175);
-  assert.equal(quickRecruit(5000, 250, 500, 3.2, 1, 1), 125);
-  assert.equal(quickRecruit(5000, 25000, 999900, 3.2, 1, 1), 99);
-  assert.equal(quickRecruit(-20, 25000, 500, 3.2, 1, 1), 0);
-  assert.equal(quickRecruit(5000, 25000, 500, 0.2, 1, 1), 0);
+test("insufficient sea fees reject the chosen amount; reducing it can enable transport", () => {
+  assert.equal(marchAmount(1000, 200, 1, true, 2, 1), 0);
+  assert.equal(marchAmount(1000, 999, 1, true, 2, 1), 0);
+  assert.equal(marchAmount(1000, 1000, 1, true, 2, 1), 500);
+  assert.equal(marchAmount(1000, 200, 1, true, 2, 1, 100), 100);
+  assert.equal(marchAmount(1000, 200, 1, true, 2, 1, 101), 0);
+  assert.equal(marchAmount(500, 5000, 0.2, false, 2, 1, 1), 0);
+  assert.equal(marchAmount(500, -1, 1, true, 2, 1, 1), 0);
+  assert.equal(marchAmount(NaN, 5000, 3, true, 2, 1), 0);
+});
+test("recruitment allows the full legal range and defaults to half of that range", () => {
+  for (const [args, capacity, half] of [
+    [[5000, 25000, 500, 3.2, 1, 1], 5000, 2500],
+    [[175, 25000, 500, 3.2, 1, 1], 175, 88],
+    [[5000, 250, 500, 3.2, 1, 1], 125, 63],
+    [[5000, 25000, 999900, 3.2, 1, 1], 99, 50],
+    [[-20, 25000, 500, 3.2, 1, 1], 0, 0],
+    [[5000, 25000, 500, 0.2, 1, 1], 0, 0],
+  ]) {
+    assert.equal(recruitCapacity(...args), capacity);
+    assert.equal(troopAmount(recruitCapacity(...args)), half);
+    assert.equal(troopAmount(capacity, capacity), capacity);
+  }
+});
+
+test("recruitment identifies each resource shortage and simultaneous shortages", async () => {
+  const { recruitShortages } = await import("../web/map-actions.ts");
+  assert.equal(typeof recruitShortages, "function");
+  assert.deepEqual(recruitShortages(5000, 25000, 500, 3.2, 1, 1), []);
+  assert.deepEqual(recruitShortages(0, 25000, 500, 3.2, 1, 1), ["gold"]);
+  assert.deepEqual(recruitShortages(5000, 1, 500, 3.2, 1, 1), ["population"]);
+  assert.deepEqual(recruitShortages(5000, 25000, 999999, 3.2, 1, 1), [
+    "capacity",
+  ]);
+  assert.deepEqual(recruitShortages(5000, 25000, 500, 0.2, 1, 1), ["movement"]);
+  assert.deepEqual(recruitShortages(0, 1, 999999, 0, 1, 1), [
+    "movement",
+    "gold",
+    "population",
+    "capacity",
+  ]);
 });

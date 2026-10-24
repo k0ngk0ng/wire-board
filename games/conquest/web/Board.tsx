@@ -11,7 +11,6 @@ import {
   Castle,
   Check,
   Coins,
-  Crown,
   Flag,
   Footprints,
   Minus,
@@ -31,8 +30,14 @@ import { Modal } from "../../../web/src/ui/board-host";
 import { viewPoint, visibleCameraRect } from "./camera";
 import { useCamera } from "./useCamera";
 import { createCursor, consumeEvents } from "./events";
-import { halfMarch, quickRecruit } from "./map-actions";
-import { recruitLimit } from "./action-limits";
+import {
+  marchAmount,
+  recruitCapacity,
+  recruitShortages,
+  troopAmount,
+} from "./map-actions";
+import { TroopAmount } from "./TroopAmount";
+import { Crown } from "./Crown";
 import { useHoldAction } from "./hold-action";
 import type { ConquestMap, Event, MapProvince, Order, View } from "./types";
 
@@ -123,6 +128,8 @@ function MapBoard({
   const [selected, setSelected] = useState(""),
     [target, setTarget] = useState(""),
     [marching, setMarching] = useState(false),
+    [recruiting, setRecruiting] = useState(false),
+    [requested, setRequested] = useState<number | null>(null),
     [king, setKing] = useState(false);
   const [notice, setNotice] = useState(""),
     [pending, setPending] = useState(false),
@@ -136,6 +143,7 @@ function MapBoard({
       from: string;
       to: string;
       king: boolean;
+      amount: number | null;
       epoch: number;
       session: string;
     }[]
@@ -204,9 +212,9 @@ function MapBoard({
   const now = () =>
     latestClock.current.serverNow +
     Math.max(0, performance.now() - latestClock.current.receivedAt);
-  const recruit =
+  const fullRecruit =
     own && selectedPlan
-      ? quickRecruit(
+      ? recruitCapacity(
           data.availableGold,
           selectedPlan.population,
           selectedPlan.troops,
@@ -237,32 +245,29 @@ function MapBoard({
     !selectedPlan?.tower &&
     data.availableGold >= data.controls.towerCost &&
     data.availableMovement >= data.controls.towerMovement;
-  const fullRecruit =
+  const recruit = troopAmount(fullRecruit, requested);
+  const recruitReason =
     own && selectedPlan
-      ? Math.max(
-          0,
-          Math.min(
-            999999 - selectedPlan.troops,
-            recruitLimit(
-              data.availableGold,
-              data.controls.recruitCost,
-              selectedPlan.population,
-              data.availableMovement,
-              data.controls.recruitMovement,
-            ),
-          ),
+      ? recruitShortages(
+          data.availableGold,
+          selectedPlan.population,
+          selectedPlan.troops,
+          data.availableMovement,
+          data.controls.recruitCost,
+          data.controls.recruitMovement,
         )
-      : 0;
+          .map(
+            (reason) =>
+              ({
+                movement: "行动点不足",
+                gold: "金币不足",
+                population: "人口不足（至少需要 2 人）",
+                capacity: "驻军已达上限",
+              })[reason],
+          )
+          .join("、")
+      : "";
   const holdIdentity = `${data.session}:${data.epoch}:${selected}`;
-  const recruitPress = useHoldAction({
-    enabled: canPlan && own && recruit > 0,
-    identity: holdIdentity,
-    onTap: () => send("recruit", { province: selected, amount: recruit }),
-    onHold: () =>
-      fullRecruit > 0
-        ? send("recruit", { province: selected, amount: fullRecruit })
-        : setNotice("当前无法继续征兵"),
-  });
   const fortPress = useHoldAction({
     enabled: canBuild,
     identity: holdIdentity,
@@ -438,10 +443,16 @@ function MapBoard({
     if (me?.tax !== undefined) setTax(me.tax);
   }, [me?.tax]);
   useEffect(() => {
-    if (!data.controls.canPlan) setMarching(false);
+    if (!data.controls.canPlan) {
+      setMarching(false);
+      setRecruiting(false);
+    }
   }, [data.controls.canPlan]);
   useEffect(() => {
     setMarchQueue([]);
+    setRecruiting(false);
+    setMarching(false);
+    setRequested(null);
     awaitedOrder.current = null;
   }, [data.session, data.epoch, controlled]);
   useEffect(() => {
@@ -511,13 +522,14 @@ function MapBoard({
       geo = geography.get(intent.from);
     const amount =
       from?.owner === room.you && geo
-        ? halfMarch(
+        ? marchAmount(
             from.mobile,
             data.availableGold,
             data.availableMovement,
             geo.seaNeighbors.includes(intent.to),
             data.controls.seaCost ?? 2,
             data.controls.moveCost,
+            intent.amount,
           )
         : 0;
     if (!amount) {
@@ -530,7 +542,7 @@ function MapBoard({
             : data.availableMovement < data.controls.moveCost
               ? "本轮行动点不足"
               : geo?.seaNeighbors.includes(intent.to)
-                ? `海运这支部队需要 ${number(Math.ceil(from.mobile / 2) * (data.controls.seaCost ?? 2))} 金币`
+                ? `海运这支部队需要 ${number(troopAmount(from.mobile, intent.amount) * (data.controls.seaCost ?? 2))} 金币`
                 : "当前无法派兵，请重新选择",
       );
       return;
@@ -584,6 +596,10 @@ function MapBoard({
                 from: selected,
                 to: id,
                 king,
+                amount:
+                  requested === null
+                    ? null
+                    : troopAmount(selectedPlan?.mobile ?? 0, requested),
                 epoch: data.epoch,
                 session: data.session,
               },
@@ -593,14 +609,23 @@ function MapBoard({
       return;
     }
     setSelected(id);
+    setRecruiting(false);
+    setRequested(null);
     setTarget("");
     setMarching(false);
     setMarchQueue([]);
     setKing(false);
     setNotice("");
   }
-  function clear() {
+  function cancelAmount() {
     setMarching(false);
+    setRecruiting(false);
+    setRequested(null);
+    setMarchQueue([]);
+    setTarget("");
+  }
+  function clear() {
+    cancelAmount();
     setMarchQueue([]);
     setSelected("");
     setTarget("");
@@ -676,10 +701,14 @@ function MapBoard({
             : me?.submitted
               ? "等待其他势力"
               : marching
-                ? "点相邻领地派出一半，再点继续追加"
+                ? "点相邻领地派兵，再点继续追加"
                 : selectedGeo
                   ? ""
                   : "选择你的领地";
+  const movementTotal = Math.max(0, me?.movement ?? 0);
+  const movementUsed =
+    Math.round(Math.max(0, movementTotal - data.availableMovement) * 10) / 10;
+  const amountOpen = own && (recruiting || marching);
   const orderLabel = (o: Order) =>
     o.type === "move"
       ? `${provinceName(o.from)} → ${provinceName(o.to)} · ${number(o.amount ?? 0)}`
@@ -718,7 +747,7 @@ function MapBoard({
           </div>
         )}
       </header>
-      <div className="cq-map-stage">
+      <div className={`cq-map-stage ${amountOpen ? "cq-amount-open" : ""}`}>
         <div className="cq-viewport" ref={camera.viewport} {...camera.handlers}>
           <svg
             className="cq-map"
@@ -960,7 +989,7 @@ function MapBoard({
                         if (camera.canClick(e.detail)) void choose(p.id);
                       }}
                       role="button"
-                      aria-label={`${p.name}，兵力 ${force(troops)}`}
+                      aria-label={`${p.name}，兵力 ${force(troops)}${ruler ? "，君主" : ""}`}
                     >
                       <use
                         href={`#${uid}-army`}
@@ -979,9 +1008,13 @@ function MapBoard({
                         {force(troops)}
                       </text>
                       {ruler && (
-                        <path
+                        <Crown
                           className="cq-ruler"
-                          d="M-6-12-4-18 0-14 4-18 6-12Z"
+                          data-cq-crown={p.id}
+                          x={-11}
+                          y={-31}
+                          width={24}
+                          height={21}
                         />
                       )}
                       {actual.fort && (
@@ -1016,6 +1049,17 @@ function MapBoard({
               )}
               {selectedState.fort ? " · 筑有要塞" : ""}
             </span>
+            {own && selectedPlan && (
+              <span data-cq-population={selectedPlan.population}>
+                人口 {number(selectedPlan.population)} · 可征{" "}
+                {number(fullRecruit)}
+              </span>
+            )}
+            {recruitReason && (
+              <span className="cq-recruit-reason" data-cq-recruit-reason>
+                {recruitReason}
+              </span>
+            )}
           </div>
         )}
         <div className="cq-map-zoom" aria-label="地图缩放">
@@ -1077,103 +1121,144 @@ function MapBoard({
         </svg>
         {selectedGeo && own && data.phase !== "finished" && (
           <div
-            className="cq-territory-actions"
-            role="toolbar"
-            aria-label="领地行动"
+            className={`cq-territory-controls ${amountOpen ? "amount-open" : ""}`}
+            data-camera-control
           >
-            <button
-              data-cq-action="recruit"
-              aria-label="征兵"
-              title={`短按征募 ${number(recruit)}，长按征满 ${number(fullRecruit)}（Shift+Enter）`}
-              aria-keyshortcuts="Shift+Enter"
-              data-holding={recruitPress.holding}
-              disabled={!canPlan || recruit <= 0}
-              {...recruitPress.handlers}
+            {amountOpen && (
+              <TroopAmount
+                mode={recruiting ? "recruit" : "march"}
+                maximum={
+                  recruiting
+                    ? fullRecruit
+                    : Math.max(0, selectedPlan?.mobile ?? 0)
+                }
+                requested={requested}
+                enabled={
+                  canPlan &&
+                  (recruiting ||
+                    data.availableMovement >= data.controls.moveCost)
+                }
+                onChange={setRequested}
+                onCancel={cancelAmount}
+                onConfirm={() => {
+                  if (canPlan && recruit > 0)
+                    void send("recruit", {
+                      province: selected,
+                      amount: recruit,
+                    });
+                }}
+              />
+            )}
+            <div
+              className="cq-territory-actions"
+              role="toolbar"
+              aria-label="领地行动"
             >
-              <UserPlus />
-              <span>征兵</span>
-            </button>
-            <button
-              data-cq-action={marching ? "cancel" : "attack"}
-              aria-label={marching ? "取消进攻" : "进攻"}
-              title={marching ? "取消派兵选择" : "点相邻领地派出剩余兵力的一半"}
-              className={marching ? "active" : ""}
-              disabled={
-                !marching &&
-                (!canPlan ||
-                  (selectedPlan?.mobile ?? 0) <= 0 ||
-                  data.availableMovement < data.controls.moveCost)
-              }
-              onClick={() => {
-                setMarching(!marching);
-                setMarchQueue([]);
-                setTarget("");
-              }}
-            >
-              {marching ? <X /> : <Swords />}
-              <span>{marching ? "取消" : "进攻"}</span>
-            </button>
-            <button
-              data-cq-action="fort"
-              aria-label={building === "town" ? "建城镇" : "筑堡"}
-              title={`${building === "town" ? "建城镇" : "筑堡"} · ${number(buildCost)} 金币；长按直接建城镇（Shift+Enter）`}
-              aria-keyshortcuts="Shift+Enter"
-              data-holding={fortPress.holding}
-              disabled={!canBuild}
-              {...fortPress.handlers}
-            >
-              <Castle />
-              <span>{building === "town" ? "城镇" : "筑堡"}</span>
-            </button>
-            {me?.king === selected && (
               <button
-                data-cq-action="king"
-                aria-label="君主随军"
-                aria-pressed={king}
-                className={king ? "active" : ""}
+                data-cq-action="recruit"
+                aria-label="征兵"
+                title="选择征兵人数"
+                aria-pressed={recruiting}
+                className={recruiting ? "active" : ""}
+                disabled={!canPlan}
+                onClick={() => {
+                  setRecruiting(!recruiting);
+                  setMarching(false);
+                  setRequested(null);
+                  setTarget("");
+                  setMarchQueue([]);
+                }}
+              >
+                <UserPlus />
+                <span>征兵</span>
+              </button>
+              <button
+                data-cq-action={marching ? "cancel" : "attack"}
+                aria-label={marching ? "取消进攻" : "进攻"}
+                title={marching ? "取消派兵选择" : "选择派兵人数，再点相邻领地"}
+                className={marching ? "active" : ""}
                 disabled={
-                  !canPlan || plan.some((o) => o.type === "move" && o.king)
+                  !marching &&
+                  (!canPlan ||
+                    (selectedPlan?.mobile ?? 0) <= 0 ||
+                    data.availableMovement < data.controls.moveCost)
                 }
-                title="君主随下一支军队移动"
-                onClick={() => setKing(!king)}
+                onClick={() => {
+                  setMarching(!marching);
+                  setRecruiting(false);
+                  setRequested(null);
+                  setMarchQueue([]);
+                  setTarget("");
+                }}
               >
-                <Crown />
-                <span>君主</span>
+                {marching ? <X /> : <Swords />}
+                <span>{marching ? "取消" : "进攻"}</span>
               </button>
-            )}
-            {data.options.fog && (
               <button
-                data-cq-action="tower"
-                aria-label="建瞭望塔"
-                title={`瞭望塔 · ${number(data.controls.towerCost)} 金币`}
-                disabled={!canTower}
+                data-cq-action="fort"
+                aria-label={building === "town" ? "建城镇" : "筑堡"}
+                title={`${building === "town" ? "建城镇" : "筑堡"} · ${number(buildCost)} 金币；长按直接建城镇（Shift+Enter）`}
+                aria-keyshortcuts="Shift+Enter"
+                data-holding={fortPress.holding}
+                disabled={!canBuild}
+                {...fortPress.handlers}
+              >
+                <Castle />
+                <span>{building === "town" ? "城镇" : "筑堡"}</span>
+              </button>
+              {me?.king === selected && (
+                <button
+                  data-cq-action="king"
+                  aria-label="君主随军"
+                  aria-pressed={king}
+                  className={king ? "active" : ""}
+                  disabled={
+                    !canPlan || plan.some((o) => o.type === "move" && o.king)
+                  }
+                  title="君主随下一支军队移动"
+                  onClick={() => setKing(!king)}
+                >
+                  <Crown />
+                  <span>君主</span>
+                </button>
+              )}
+              {data.options.fog && (
+                <button
+                  data-cq-action="tower"
+                  aria-label="建瞭望塔"
+                  title={`瞭望塔 · ${number(data.controls.towerCost)} 金币`}
+                  disabled={!canTower}
+                  onClick={() =>
+                    void send("build", {
+                      province: selected,
+                      building: "tower",
+                    })
+                  }
+                >
+                  <Binoculars />
+                  <span>瞭望</span>
+                </button>
+              )}
+              <button
+                data-cq-action="disband"
+                aria-label="解散部队"
+                title="将一半可用部队遣返回民间"
+                disabled={
+                  !canPlan ||
+                  (selectedPlan?.mobile ?? 0) < 1 ||
+                  data.availableMovement < 0.1
+                }
                 onClick={() =>
-                  void send("build", { province: selected, building: "tower" })
+                  void send("disband", {
+                    province: selected,
+                    amount: Math.ceil((selectedPlan?.mobile ?? 0) / 2),
+                  })
                 }
               >
-                <Binoculars />
-                <span>瞭望</span>
+                <ShieldMinus />
+                <span>解散</span>
               </button>
-            )}
-            <button
-              data-cq-action="disband"
-              aria-label="解散部队"
-              title="将一半可用部队遣返回民间"
-              disabled={
-                !canPlan ||
-                (selectedPlan?.mobile ?? 0) < 1 ||
-                data.availableMovement < 0.1
-              }
-              onClick={() =>
-                void send("disband", {
-                  province: selected,
-                  amount: Math.ceil((selectedPlan?.mobile ?? 0) / 2),
-                })
-              }
-            >
-              <ShieldMinus />
-              <span>解散</span>
-            </button>
+            </div>
           </div>
         )}
         <div
@@ -1191,8 +1276,20 @@ function MapBoard({
           onClick={() => setPlansOpen(true)}
         >
           <ScrollText size={18} />
-          <span>计划</span>
-          <b>{plan.length}</b>
+          <span className="cq-plan-caption">
+            <span>
+              计划 <b>{plan.length}</b>
+            </span>
+            {!room.spectating && (
+              <small
+                data-cq-action-points
+                aria-label={`本轮行动点：已用 ${movementUsed}，共 ${movementTotal}`}
+                title={`本轮行动点：已用 ${movementUsed}，共 ${movementTotal}`}
+              >
+                {movementUsed}/{movementTotal}
+              </small>
+            )}
+          </span>
         </button>
         <button
           aria-label={data.phase === "paused" ? "恢复对局" : "提议暂停"}
