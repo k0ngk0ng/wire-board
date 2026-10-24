@@ -1,0 +1,9 @@
+{
+  "method": "normal public Module Start/Apply; no state injection",
+  "sha256": {
+    "v1333-paused": "02c1aa99dc86de9805b3857188a2d4485215737b66eb522cbde9331c7686b1e2",
+    "v1333-planning": "c28cc9a09398db4d380d25876d46ee947fc6f93222d4081eca3f43a63ea6f712",
+    "v1333-resolving": "d842a032554c032cb4618f2edb80075a3cbdc6ddaed6dce29b98d14c8ecda4df"
+  },
+  "sourceSHA": "5f89b1a781caa1a7c2ea75e3cfcf6703b5869a44"
+}

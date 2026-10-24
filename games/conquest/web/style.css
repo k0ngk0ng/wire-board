@@ -828,3 +828,118 @@
     stroke-dasharray: none;
   }
 }
+
+.cq-province.acting {
+  stroke: #fff0b5;
+  stroke-width: 3.5;
+}
+.cq-playback {
+  position: absolute;
+  z-index: 2;
+  top: 12px;
+  left: 12px;
+  width: max-content;
+  max-width: min(440px, calc(100% - 62px));
+  padding: 9px 11px 8px;
+  color: #fff6db;
+  background: #263f34;
+  border: 1px solid #f4e4af;
+  border-left: 4px solid var(--cq-action-color);
+  border-radius: 8px;
+  box-shadow: 0 3px 14px #1f302d40;
+  pointer-events: none;
+}
+.cq-playback-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  line-height: 19px;
+  font-size: 12px;
+}
+.cq-playback-heading b {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: #fff6db;
+}
+.cq-playback-heading i {
+  flex: 0 0 9px;
+  height: 9px;
+  border: 1px solid #fff6db;
+  border-radius: 50%;
+  background: var(--cq-action-color);
+}
+.cq-playback-heading strong {
+  flex-shrink: 0;
+  font-weight: 650;
+  color: #fff0b5;
+}
+.cq-playback p {
+  margin: 5px 0 7px;
+  font-size: 13px;
+  line-height: 19px;
+  overflow-wrap: anywhere;
+  color: #fff6db;
+}
+.cq-playback-progress {
+  height: 3px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: #718c74;
+}
+.cq-playback-progress span {
+  display: block;
+  height: 100%;
+  background: #ffecad;
+  transform-origin: left;
+  animation: cq-action-progress linear both;
+}
+.cq-playback[data-state="result"] .cq-playback-progress span {
+  animation: none;
+  transform: scaleX(1);
+}
+@keyframes cq-action-progress {
+  from {
+    transform: scaleX(var(--cq-step-progress));
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+.cq-action-army text,
+.cq-action-change {
+  font:
+    750 13px ui-sans-serif,
+    system-ui,
+    sans-serif;
+  fill: #213d2c;
+  stroke: #fff5d6;
+  stroke-width: 3px;
+  stroke-linejoin: round;
+  paint-order: stroke fill;
+}
+.cq-action-pulse {
+  animation: cq-action-pulse 900ms ease-in-out infinite alternate;
+}
+@keyframes cq-action-pulse {
+  from {
+    opacity: 0.55;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cq-action-pulse,
+  .cq-playback-progress span {
+    animation: none;
+  }
+  .cq-playback-progress span {
+    transform: scaleX(var(--cq-step-progress));
+  }
+}

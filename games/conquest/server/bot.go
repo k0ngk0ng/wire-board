@@ -55,11 +55,13 @@ type botView struct {
 	Players   []botPlayer   `json:"players"`
 	Orders    []botOrder    `json:"orders"`
 	Events    []struct {
-		Type     string `json:"type"`
-		Seat     int    `json:"seat"`
-		To       string `json:"to"`
-		Amount   int    `json:"amount"`
-		Captured bool   `json:"captured"`
+		Type     string       `json:"type"`
+		Seat     int          `json:"seat"`
+		To       string       `json:"to"`
+		Amount   int          `json:"amount"`
+		Captured bool         `json:"captured"`
+		Before   *botProvince `json:"before"`
+		After    *botProvince `json:"after"`
 	} `json:"events"`
 	AvailableGold     float64 `json:"availableGold"`
 	AvailableMovement float64 `json:"availableMovement"`
@@ -205,9 +207,16 @@ func bot(c gameapi.Context, m gameapi.Match) (json.RawMessage, error) {
 	// Past failed expeditions are part of this seat's own battle reports.
 	// They raise a scouting estimate without consulting hidden enemy armies.
 	failedExpeditions := map[string]int{}
+	visibleReplacement := map[string]int{}
 	for _, e := range v.Events {
 		if e.Type == "move" && e.Seat == c.Actor && !e.Captured && provinces[e.To].Owner != c.Actor {
 			failedExpeditions[e.To] = max(failedExpeditions[e.To], e.Amount)
+			// A failed attack can expose reinforcements that were absent from
+			// the earlier planning view. Learn only from this seat's visible
+			// battle report, never from the opponent's private orders or gold.
+			if e.Before != nil && e.After != nil && e.Before.Owner >= 0 && e.Before.Owner == provinces[e.To].Owner && e.After.Owner == e.Before.Owner && e.Before.Troops >= 0 && e.After.Troops >= 0 {
+				visibleReplacement[e.To] = max(visibleReplacement[e.To], e.Before.Troops-e.After.Troops)
+			}
 		}
 	}
 	defenseEstimate := func(p botProvince) float64 {
@@ -227,7 +236,11 @@ func bot(c gameapi.Context, m gameapi.Match) (json.RawMessage, error) {
 		if owner, ok := kings[p.ID]; ok && owner == p.Owner {
 			factor += .3
 		}
-		return math.Round(float64(p.Troops) * factor)
+		replacements := 0
+		if p.Owner >= 0 {
+			replacements = min(visibleReplacement[p.ID], max(0, p.Population/2))
+		}
+		return math.Round(float64(p.Troops+replacements) * factor)
 	}
 	frontline := map[string]bool{}
 	for _, id := range g.ids {
@@ -410,7 +423,7 @@ func bot(c gameapi.Context, m gameapi.Match) (json.RawMessage, error) {
 		if desiredSea {
 			budget = math.Max(0, (gold-2*float64(mobile))/(recruitCost+2))
 		}
-		amount := min(need, int(budget), from.Population/2)
+		amount := min(need, int(budget), from.Population/2, maxTroops-from.Troops)
 		if amount <= 0 {
 			continue
 		}

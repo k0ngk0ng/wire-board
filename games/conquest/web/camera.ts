@@ -106,6 +106,76 @@ export const locateCamera = (
     map,
     viewport,
   );
+export function revealCamera(
+  camera: Camera,
+  points: Point[],
+  map: Size,
+  viewport: Size,
+): Camera {
+  const valid = points.filter(
+    (p) => Number.isFinite(p.x) && Number.isFinite(p.y),
+  );
+  if (!valid.length) return camera;
+  const side = Math.min(48, viewport.width / 6),
+    top = Math.min(128, viewport.height / 3),
+    bottom = Math.min(85, viewport.height / 4);
+  if (
+    valid.every((p) => {
+      const v = viewPoint(camera, p);
+      return (
+        v.x >= side &&
+        v.x <= viewport.width - side &&
+        v.y >= top &&
+        v.y <= viewport.height - bottom
+      );
+    })
+  )
+    return camera;
+  const left = Math.min(...valid.map((p) => p.x)),
+    right = Math.max(...valid.map((p) => p.x));
+  const upper = Math.min(...valid.map((p) => p.y)),
+    lower = Math.max(...valid.map((p) => p.y));
+  const scale = Math.max(
+    fitScale(map, viewport),
+    Math.min(
+      camera.scale,
+      (viewport.width - 2 * side) / Math.max(1, right - left),
+      (viewport.height - top - bottom) / Math.max(1, lower - upper),
+    ),
+  );
+  return clamp(
+    {
+      scale,
+      x: viewport.width / 2 - ((left + right) * scale) / 2,
+      y:
+        top +
+        (viewport.height - top - bottom) / 2 -
+        ((upper + lower) * scale) / 2,
+    },
+    map,
+    viewport,
+  );
+}
+export function restoreCamera(
+  camera: Camera,
+  previous: Size,
+  map: Size,
+  viewport: Size,
+): Camera {
+  const centre = mapPoint(camera, {
+    x: previous.width / 2,
+    y: previous.height / 2,
+  });
+  return locateCamera(
+    {
+      ...camera,
+      scale: (camera.scale * fitScale(map, viewport)) / fitScale(map, previous),
+    },
+    centre,
+    map,
+    viewport,
+  );
+}
 export function focusCamera(
   camera: Camera,
   point: Point,

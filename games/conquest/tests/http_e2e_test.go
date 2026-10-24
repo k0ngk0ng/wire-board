@@ -23,6 +23,7 @@ import (
 	"reflect"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"testing"
 	"testing/fstest"
 	"time"
@@ -39,18 +40,20 @@ type client struct {
 	serial int
 }
 type table struct {
-	t         *testing.T
-	cfg       server.Config
-	host      *server.Server
-	http      *httptest.Server
-	people    []*client
-	spectator *client
-	mu        sync.Mutex
-	latest    gameapi.Match
-	initial   gameapi.Match
-	steps     int
-	trace     *os.File
-	out       string
+	accelerated bool
+	clockOffset atomic.Int64
+	t           *testing.T
+	cfg         server.Config
+	host        *server.Server
+	http        *httptest.Server
+	people      []*client
+	spectator   *client
+	mu          sync.Mutex
+	latest      gameapi.Match
+	initial     gameapi.Match
+	steps       int
+	trace       *os.File
+	out         string
 }
 
 func artifactDir(t *testing.T) string {
@@ -115,6 +118,46 @@ func (c *client) command(kind string, extra map[string]any, want int) map[string
 	}
 	return c.request("POST", "/api/rooms/"+r["id"].(string), q, want)
 }
+
+// Only long, non-browser matrices advance virtual time. Production state and
+// callbacks are unchanged; native contexts/envelopes are what replay records.
+func (tb *table) clockContext(c gameapi.Context, due int64) gameapi.Context {
+	if !tb.accelerated {
+		return c
+	}
+	for {
+		old := tb.clockOffset.Load()
+		next := max(old, due-c.Now.UnixMilli())
+		if tb.clockOffset.CompareAndSwap(old, next) {
+			c.Now = c.Now.Add(time.Duration(next) * time.Millisecond)
+			return c
+		}
+	}
+}
+func (tb *table) nativeMatch(m gameapi.Match) (gameapi.Match, error) {
+	if !tb.accelerated {
+		return m, nil
+	}
+	tb.mu.Lock()
+	defer tb.mu.Unlock()
+	if m.Schema != tb.latest.Schema || !bytes.Equal(m.Data, tb.latest.Data) {
+		return m, fmt.Errorf("HTTP clock lost the native committed snapshot")
+	}
+	return tb.latest, nil
+}
+func (tb *table) hostMatch(m gameapi.Match) gameapi.Match {
+	if !tb.accelerated {
+		return m
+	}
+	offset := tb.clockOffset.Load()
+	if m.Deadline > 0 {
+		m.Deadline -= offset
+	}
+	if m.SystemDeadline > 0 {
+		m.SystemDeadline = time.Now().UnixMilli() + 1
+	}
+	return m
+}
 func (tb *table) capture(kind string, c gameapi.Context, action json.RawMessage, next gameapi.Match, err error) (gameapi.Match, error) {
 	if err != nil {
 		return next, err
@@ -135,7 +178,7 @@ func (tb *table) capture(kind string, c gameapi.Context, action json.RawMessage,
 		tb.t.Error(e)
 	}
 	tb.steps++
-	return next, nil
+	return tb.hostMatch(next), nil
 }
 func (tb *table) match() gameapi.Match { tb.mu.Lock(); defer tb.mu.Unlock(); return tb.latest }
 func newTable(t *testing.T, n int, mapID string, loading bool) *table {
@@ -143,7 +186,7 @@ func newTable(t *testing.T, n int, mapID string, loading bool) *table {
 }
 func newTableWithHumans(t *testing.T, n, humans int, mapID string, loading bool) *table {
 	t.Helper()
-	tb := &table{t: t, out: artifactDir(t)}
+	tb := &table{t: t, out: artifactDir(t), accelerated: strings.HasPrefix(t.Name(), "TestConquestFullGamesHTTP")}
 	var err error
 	tb.trace, err = os.Create(filepath.Join(tb.out, "replay.jsonl"))
 	if err != nil {
@@ -152,29 +195,68 @@ func newTableWithHumans(t *testing.T, n, humans int, mapID string, loading bool)
 	m := conquest.Module()
 	start, apply, timer, restore, reclaim := m.Start, m.Apply, m.OnTimer, m.Restore, m.Reclaim
 	m.Start = func(c gameapi.Context, o json.RawMessage) (gameapi.Match, error) {
+		c = tb.clockContext(c, 0)
 		v, e := start(c, o)
 		return tb.capture("start", c, o, v, e)
 	}
 	m.Apply = func(c gameapi.Context, s gameapi.Match, a json.RawMessage) (gameapi.Match, error) {
-		v, e := apply(c, s, a)
+		native, err := tb.nativeMatch(s)
+		if err != nil {
+			return s, err
+		}
+		c = tb.clockContext(c, 0)
+		v, e := apply(c, native, a)
 		return tb.capture("apply", c, a, v, e)
 	}
 	if timer != nil {
 		m.OnTimer = func(c gameapi.Context, s gameapi.Match) (gameapi.Match, error) {
-			v, e := timer(c, s)
+			native, err := tb.nativeMatch(s)
+			if err != nil {
+				return s, err
+			}
+			c = tb.clockContext(c, native.SystemDeadline)
+			v, e := timer(c, native)
 			return tb.capture("timer", c, nil, v, e)
 		}
 	}
 	if restore != nil {
 		m.Restore = func(c gameapi.Context, s gameapi.Match) (gameapi.Match, error) {
-			v, e := restore(c, s)
+			native, err := tb.nativeMatch(s)
+			if err != nil {
+				return s, err
+			}
+			c = tb.clockContext(c, 0)
+			v, e := restore(c, native)
 			return tb.capture("restore", c, nil, v, e)
 		}
 	}
 	if reclaim != nil {
 		m.Reclaim = func(c gameapi.Context, s gameapi.Match) (gameapi.Match, error) {
-			v, e := reclaim(c, s)
+			native, err := tb.nativeMatch(s)
+			if err != nil {
+				return s, err
+			}
+			c = tb.clockContext(c, 0)
+			v, e := reclaim(c, native)
 			return tb.capture("reclaim", c, nil, v, e)
+		}
+	}
+	if policy := m.BotAction; tb.accelerated && policy != nil {
+		m.BotAction = func(c gameapi.Context, s gameapi.Match) (json.RawMessage, error) {
+			native, err := tb.nativeMatch(s)
+			if err != nil {
+				return nil, err
+			}
+			return policy(tb.clockContext(c, 0), native)
+		}
+	}
+	if accept := m.AcceptStale; tb.accelerated && accept != nil {
+		m.AcceptStale = func(c gameapi.Context, s gameapi.Match, a json.RawMessage) bool {
+			native, err := tb.nativeMatch(s)
+			if err != nil {
+				return false
+			}
+			return accept(tb.clockContext(c, 0), native, a)
 		}
 	}
 	tb.cfg = server.Config{DataDir: t.TempDir(), InviteCode: "conquest-test", AdminUsername: "征服管理员", AdminPassword: "conquest-test-password", ClientLoading: loading, Modules: []gameapi.Module{m}}
@@ -187,7 +269,7 @@ func newTableWithHumans(t *testing.T, n, humans int, mapID string, loading bool)
 		tb.http.Close()
 		tb.host.Close()
 		tb.trace.Close()
-		b, _ := json.MarshalIndent(map[string]any{"test": t.Name(), "passed": !t.Failed(), "map": mapID, "players": n, "scope": "natural start; real HTTP and SQLite; production bot decisions through authenticated human test accounts", "steps": tb.steps, "final": tb.latest}, "", "  ")
+		b, _ := json.MarshalIndent(map[string]any{"test": t.Name(), "passed": !t.Failed(), "map": mapID, "players": n, "scope": "natural start; real HTTP and SQLite; production bot decisions through authenticated human test accounts; long matrix advances only monotonic test time and replays native contexts", "acceleratedClock": tb.accelerated, "steps": tb.steps, "final": tb.latest}, "", "  ")
 		if e := os.WriteFile(filepath.Join(tb.out, "summary.json"), b, 0600); e != nil {
 			t.Error(e)
 		}
@@ -561,7 +643,7 @@ func TestConquestFullGamesHTTP(t *testing.T) {
 						if !eligible {
 							continue
 						}
-						raw, err := policy(gameapi.Context{Actor: seat, Players: n, Now: time.Now(), Automated: make([]bool, n)}, match)
+						raw, err := policy(tb.clockContext(gameapi.Context{Actor: seat, Players: n, Now: time.Now(), Automated: make([]bool, n)}, 0), match)
 						if err != nil {
 							t.Fatal("bot policy", seat, err)
 						}
@@ -683,4 +765,41 @@ func verifyReplay(t *testing.T, path string) {
 			t.Fatal("replay diverged", step, r.Kind)
 		}
 	}
+}
+
+// The full HTTP matrix advances only test time. These checks retain real HTTP
+// and SQLite, preserve production event durations, and replay native envelopes.
+func TestConquestFullGamesHTTPClockE2E(t *testing.T) {
+	tb := newTable(t, 2, "europe", false)
+	a, b := tb.people[0], tb.people[1]
+	d := data(a.room())
+	home := d["players"].([]any)[0].(map[string]any)["king"].(string)
+	a.act("recruit", map[string]any{"province": home, "amount": 10}, 200)
+	a.act("submit", nil, 200)
+	started := time.Now()
+	b.act("submit", nil, 200)
+	for time.Since(started) < 700*time.Millisecond && data(a.room())["round"].(float64) == 1 {
+		time.Sleep(10 * time.Millisecond)
+	}
+	d = data(a.room())
+	if d["round"].(float64) != 2 {
+		t.Fatal("full-game fixture still waits for wall-clock animation")
+	}
+	events := d["events"].([]any)
+	e := events[0].(map[string]any)
+	if e["until"].(float64)-e["at"].(float64) < 900 || e["displayUntil"].(float64)-e["until"].(float64) < 500 {
+		t.Fatal("test clock changed the real animation durations", e)
+	}
+	deadline := a.room()["turnDeadline"].(float64)
+	if remaining := deadline - float64(time.Now().UnixMilli()); remaining < 118000 || remaining > 121000 {
+		t.Fatal("test acceleration shortened planning window", remaining)
+	}
+	tb.restart()
+	if data(a.room())["round"].(float64) != 2 {
+		t.Fatal("restart lost accelerated state")
+	}
+	if err := tb.trace.Sync(); err != nil {
+		t.Fatal(err)
+	}
+	verifyReplay(t, filepath.Join(tb.out, "replay.jsonl"))
 }

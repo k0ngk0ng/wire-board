@@ -112,10 +112,22 @@ func (s *State) validateExecution(m gameapi.Match, g *geography) error {
 				return e
 			}
 		}
-		if s.Pending[s.Cursor].Order.Type != "move" {
-			return errors.New("结算计时事件不是行军")
+		if len(s.Events) == 0 {
+			return errors.New("结算缺少当前事件")
 		}
-	} else if len(s.Pending) != 0 || s.Cursor != 0 || s.ResolveAt != 0 {
+		event := s.Events[len(s.Events)-1]
+		current := s.Pending[s.Cursor]
+		if event.Type != current.Order.Type || event.Seat != current.Seat || event.From != current.Order.From || event.To != current.Order.To || event.Province != current.Order.Province {
+			return errors.New("结算事件与当前计划不一致")
+		}
+		if s.ResolutionHold {
+			if !event.Applied || s.ResolveAt != event.DisplayUntil {
+				return errors.New("结算结果停留时间无效")
+			}
+		} else if event.Applied || s.ResolveAt != event.Until {
+			return errors.New("结算执行时间无效")
+		}
+	} else if len(s.Pending) != 0 || s.Cursor != 0 || s.ResolveAt != 0 || s.ResolutionHold {
 		return errors.New("非结算阶段仍有待执行队列")
 	}
 	previous := 0

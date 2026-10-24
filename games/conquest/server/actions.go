@@ -376,6 +376,7 @@ func (s *State) checkVictory() {
 		s.Phase = "finished"
 		s.Epoch++
 		s.ResolveAt = 0
+		s.ResolutionHold = false
 		s.Pending = nil
 		s.Cursor = 0
 		for i := range s.Players {
