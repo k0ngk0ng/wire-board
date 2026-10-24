@@ -37,25 +37,27 @@ export function GameChoices({
   }, [value, query]);
   return (
     <section className="game-choices" aria-label="选择游戏">
-      <CategoryFilter
-        value={category}
-        onChange={setCategory}
-        label="可选游戏分类"
-      />
-      <label className="game-search">
-        搜索游戏
-        <input
-          type="search"
-          aria-label="搜索可选游戏"
-          placeholder="输入游戏名称"
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-          onKeyDown={(event) => {
-            if (event.key === "Enter" && !event.nativeEvent.isComposing)
-              event.preventDefault();
-          }}
+      <div className="game-choice-filters">
+        <CategoryFilter
+          value={category}
+          onChange={setCategory}
+          label="可选游戏分类"
         />
-      </label>
+        <label className="game-search">
+          搜索游戏
+          <input
+            type="search"
+            aria-label="搜索可选游戏"
+            placeholder="输入游戏名称"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" && !event.nativeEvent.isComposing)
+                event.preventDefault();
+            }}
+          />
+        </label>
+      </div>
       <p className="game-choice-summary">
         {value
           ? `已选：${gameName(value)}`

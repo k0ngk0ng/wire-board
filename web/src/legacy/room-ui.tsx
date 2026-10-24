@@ -1570,7 +1570,7 @@ export function LegacyWaiting({
                   {p?.id === room.host && <Crown size={14} />}
                   {p?.bot && <small className="bot-badge">AI</small>}
                 </h3>
-                <span>
+                <span className="waiting-seat-status">
                   {p ? (p.ready ? "✓ 已准备" : "等待准备") : "邀请一位朋友"}
                 </span>
                 {host && p?.bot && (

@@ -1,0 +1,8 @@
+{
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "fixtureSHA256": "bec3701d9cb38d719451ae702a2ccdb6bbdf4bda5cd8ba1bd8de301c9932ae2b",
+  "calls": 128,
+  "wholeStages": 8,
+  "scope": "controlled original unmodified handlers30/32/39/3B, ground/air and left/right edge with human/computer, Court1 and4; complete airborne action stages",
+  "naturalGameplay": false
+}

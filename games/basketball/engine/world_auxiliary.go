@@ -79,6 +79,10 @@ func advanceWorldAuxiliary(result *WorldActionStep, object uint8, c WorldActionC
 		s.Auxiliary[object-4] = resolved
 		return advanceWorldAuxiliaryRunningObject(result, object, c, court)
 	}
+	if resolved.Action == 4 {
+		s.Auxiliary[object-4] = resolved
+		return advanceWorldAuxiliaryBrake(result, object, c, court)
+	}
 	ctx := AuxiliaryContext{Object: object, Court: c.CourtID, SpecialHolder: s.SpecialHolder}
 	if resolved.Action == 8 && !resolved.Entered {
 		source, e := worldAuxiliaryRunningSource(*s, resolved.Owner)
