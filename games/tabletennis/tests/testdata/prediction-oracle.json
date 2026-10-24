@@ -1,0 +1,9002 @@
+[
+  {
+    "at": 1130,
+    "name": "serve-seat0-ends0-drive-0.35",
+    "points": [
+      {
+        "at": 1310,
+        "p": {
+          "x": 0.34,
+          "y": 1.1,
+          "z": 1.28
+        }
+      },
+      {
+        "at": 1360,
+        "p": {
+          "x": 0.30425755000000004,
+          "y": 1.0787968333333333,
+          "z": 1.154378
+        }
+      },
+      {
+        "at": 1410,
+        "p": {
+          "x": 0.26873020000000003,
+          "y": 1.030800666666667,
+          "z": 1.029512
+        }
+      },
+      {
+        "at": 1510,
+        "p": {
+          "x": 0.19832080000000002,
+          "y": 0.8544293333333334,
+          "z": 0.7820480000000001
+        }
+      }
+    ],
+    "seat": 0,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "drive",
+      "power": 0.35
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "serve",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 0,
+      "rally": 1,
+      "shot": 0,
+      "expected": 0,
+      "receiver": 1,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": true,
+        "armed": false,
+        "seq": 0,
+        "openAt": 1000,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "serve-seat0-ends0-drive-0.85",
+    "points": [
+      {
+        "at": 1310,
+        "p": {
+          "x": 0.34,
+          "y": 1.1,
+          "z": 1.28
+        }
+      },
+      {
+        "at": 1360,
+        "p": {
+          "x": 0.30425755000000004,
+          "y": 1.0785268333333333,
+          "z": 1.124468
+        }
+      },
+      {
+        "at": 1410,
+        "p": {
+          "x": 0.26873020000000003,
+          "y": 1.0297206666666667,
+          "z": 0.969872
+        }
+      },
+      {
+        "at": 1510,
+        "p": {
+          "x": 0.19832080000000002,
+          "y": 0.8501093333333333,
+          "z": 0.663488
+        }
+      }
+    ],
+    "seat": 0,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "drive",
+      "power": 0.85
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "serve",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 0,
+      "rally": 1,
+      "shot": 0,
+      "expected": 0,
+      "receiver": 1,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": true,
+        "armed": false,
+        "seq": 0,
+        "openAt": 1000,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "serve-seat0-ends0-drive-1.00",
+    "points": [
+      {
+        "at": 1310,
+        "p": {
+          "x": 0.34,
+          "y": 1.1,
+          "z": 1.28
+        }
+      },
+      {
+        "at": 1360,
+        "p": {
+          "x": 0.30425755000000004,
+          "y": 1.0784458333333333,
+          "z": 1.115495
+        }
+      },
+      {
+        "at": 1410,
+        "p": {
+          "x": 0.26873020000000003,
+          "y": 1.0293966666666667,
+          "z": 0.95198
+        }
+      },
+      {
+        "at": 1510,
+        "p": {
+          "x": 0.19832080000000002,
+          "y": 0.8488133333333333,
+          "z": 0.62792
+        }
+      }
+    ],
+    "seat": 0,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "drive",
+      "power": 1
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "serve",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 0,
+      "rally": 1,
+      "shot": 0,
+      "expected": 0,
+      "receiver": 1,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": true,
+        "armed": false,
+        "seq": 0,
+        "openAt": 1000,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "serve-seat0-ends0-chop-0.35",
+    "points": [
+      {
+        "at": 1310,
+        "p": {
+          "x": 0.34,
+          "y": 1.1,
+          "z": 1.28
+        }
+      },
+      {
+        "at": 1360,
+        "p": {
+          "x": 0.30425755000000004,
+          "y": 1.0811278333333334,
+          "z": 1.154378
+        }
+      },
+      {
+        "at": 1410,
+        "p": {
+          "x": 0.26873020000000003,
+          "y": 1.0401246666666668,
+          "z": 1.029512
+        }
+      },
+      {
+        "at": 1510,
+        "p": {
+          "x": 0.19832080000000002,
+          "y": 0.8917253333333334,
+          "z": 0.7820480000000001
+        }
+      }
+    ],
+    "seat": 0,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "chop",
+      "power": 0.35
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "serve",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 0,
+      "rally": 1,
+      "shot": 0,
+      "expected": 0,
+      "receiver": 1,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": true,
+        "armed": false,
+        "seq": 0,
+        "openAt": 1000,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "serve-seat0-ends0-chop-0.85",
+    "points": [
+      {
+        "at": 1310,
+        "p": {
+          "x": 0.34,
+          "y": 1.1,
+          "z": 1.28
+        }
+      },
+      {
+        "at": 1360,
+        "p": {
+          "x": 0.30425755000000004,
+          "y": 1.0814128333333333,
+          "z": 1.124468
+        }
+      },
+      {
+        "at": 1410,
+        "p": {
+          "x": 0.26873020000000003,
+          "y": 1.0412646666666667,
+          "z": 0.969872
+        }
+      },
+      {
+        "at": 1510,
+        "p": {
+          "x": 0.19832080000000002,
+          "y": 0.8962853333333334,
+          "z": 0.663488
+        }
+      }
+    ],
+    "seat": 0,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "chop",
+      "power": 0.85
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "serve",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 0,
+      "rally": 1,
+      "shot": 0,
+      "expected": 0,
+      "receiver": 1,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": true,
+        "armed": false,
+        "seq": 0,
+        "openAt": 1000,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "serve-seat0-ends0-chop-1.00",
+    "points": [
+      {
+        "at": 1310,
+        "p": {
+          "x": 0.34,
+          "y": 1.1,
+          "z": 1.28
+        }
+      },
+      {
+        "at": 1360,
+        "p": {
+          "x": 0.30425755000000004,
+          "y": 1.0814983333333335,
+          "z": 1.115495
+        }
+      },
+      {
+        "at": 1410,
+        "p": {
+          "x": 0.26873020000000003,
+          "y": 1.0416066666666668,
+          "z": 0.95198
+        }
+      },
+      {
+        "at": 1510,
+        "p": {
+          "x": 0.19832080000000002,
+          "y": 0.8976533333333333,
+          "z": 0.62792
+        }
+      }
+    ],
+    "seat": 0,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "chop",
+      "power": 1
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "serve",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 0,
+      "rally": 1,
+      "shot": 0,
+      "expected": 0,
+      "receiver": 1,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": true,
+        "armed": false,
+        "seq": 0,
+        "openAt": 1000,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "serve-seat0-ends0-block-0.35",
+    "points": [
+      {
+        "at": 1310,
+        "p": {
+          "x": 0.34,
+          "y": 1.1,
+          "z": 1.28
+        }
+      },
+      {
+        "at": 1360,
+        "p": {
+          "x": 0.30425755000000004,
+          "y": 1.0798678333333334,
+          "z": 1.154378
+        }
+      },
+      {
+        "at": 1410,
+        "p": {
+          "x": 0.26873020000000003,
+          "y": 1.0350846666666669,
+          "z": 1.029512
+        }
+      },
+      {
+        "at": 1510,
+        "p": {
+          "x": 0.19832080000000002,
+          "y": 0.8715653333333333,
+          "z": 0.7820480000000001
+        }
+      }
+    ],
+    "seat": 0,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "block",
+      "power": 0.35
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "serve",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 0,
+      "rally": 1,
+      "shot": 0,
+      "expected": 0,
+      "receiver": 1,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": true,
+        "armed": false,
+        "seq": 0,
+        "openAt": 1000,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "serve-seat0-ends0-block-0.85",
+    "points": [
+      {
+        "at": 1310,
+        "p": {
+          "x": 0.34,
+          "y": 1.1,
+          "z": 1.28
+        }
+      },
+      {
+        "at": 1360,
+        "p": {
+          "x": 0.30425755000000004,
+          "y": 1.0798528333333333,
+          "z": 1.124468
+        }
+      },
+      {
+        "at": 1410,
+        "p": {
+          "x": 0.26873020000000003,
+          "y": 1.035024666666667,
+          "z": 0.969872
+        }
+      },
+      {
+        "at": 1510,
+        "p": {
+          "x": 0.19832080000000002,
+          "y": 0.8713253333333333,
+          "z": 0.663488
+        }
+      }
+    ],
+    "seat": 0,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "block",
+      "power": 0.85
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "serve",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 0,
+      "rally": 1,
+      "shot": 0,
+      "expected": 0,
+      "receiver": 1,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": true,
+        "armed": false,
+        "seq": 0,
+        "openAt": 1000,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "serve-seat0-ends0-block-1.00",
+    "points": [
+      {
+        "at": 1310,
+        "p": {
+          "x": 0.34,
+          "y": 1.1,
+          "z": 1.28
+        }
+      },
+      {
+        "at": 1360,
+        "p": {
+          "x": 0.30425755000000004,
+          "y": 1.0798483333333333,
+          "z": 1.115495
+        }
+      },
+      {
+        "at": 1410,
+        "p": {
+          "x": 0.26873020000000003,
+          "y": 1.0350066666666669,
+          "z": 0.95198
+        }
+      },
+      {
+        "at": 1510,
+        "p": {
+          "x": 0.19832080000000002,
+          "y": 0.8712533333333333,
+          "z": 0.62792
+        }
+      }
+    ],
+    "seat": 0,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "block",
+      "power": 1
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "serve",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 0,
+      "rally": 1,
+      "shot": 0,
+      "expected": 0,
+      "receiver": 1,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": true,
+        "armed": false,
+        "seq": 0,
+        "openAt": 1000,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "serve-seat0-ends1-drive-0.35",
+    "points": [
+      {
+        "at": 1310,
+        "p": {
+          "x": -0.34,
+          "y": 1.1,
+          "z": -1.28
+        }
+      },
+      {
+        "at": 1360,
+        "p": {
+          "x": -0.30425755000000004,
+          "y": 1.0787968333333333,
+          "z": -1.154378
+        }
+      },
+      {
+        "at": 1410,
+        "p": {
+          "x": -0.26873020000000003,
+          "y": 1.030800666666667,
+          "z": -1.029512
+        }
+      },
+      {
+        "at": 1510,
+        "p": {
+          "x": -0.19832080000000002,
+          "y": 0.8544293333333334,
+          "z": -0.7820480000000001
+        }
+      }
+    ],
+    "seat": 0,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "drive",
+      "power": 0.35
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "serve",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 1,
+      "rally": 1,
+      "shot": 0,
+      "expected": 0,
+      "receiver": 1,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": true,
+        "armed": false,
+        "seq": 0,
+        "openAt": 1000,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "serve-seat0-ends1-drive-0.85",
+    "points": [
+      {
+        "at": 1310,
+        "p": {
+          "x": -0.34,
+          "y": 1.1,
+          "z": -1.28
+        }
+      },
+      {
+        "at": 1360,
+        "p": {
+          "x": -0.30425755000000004,
+          "y": 1.0785268333333333,
+          "z": -1.124468
+        }
+      },
+      {
+        "at": 1410,
+        "p": {
+          "x": -0.26873020000000003,
+          "y": 1.0297206666666667,
+          "z": -0.969872
+        }
+      },
+      {
+        "at": 1510,
+        "p": {
+          "x": -0.19832080000000002,
+          "y": 0.8501093333333333,
+          "z": -0.663488
+        }
+      }
+    ],
+    "seat": 0,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "drive",
+      "power": 0.85
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "serve",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 1,
+      "rally": 1,
+      "shot": 0,
+      "expected": 0,
+      "receiver": 1,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": true,
+        "armed": false,
+        "seq": 0,
+        "openAt": 1000,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "serve-seat0-ends1-drive-1.00",
+    "points": [
+      {
+        "at": 1310,
+        "p": {
+          "x": -0.34,
+          "y": 1.1,
+          "z": -1.28
+        }
+      },
+      {
+        "at": 1360,
+        "p": {
+          "x": -0.30425755000000004,
+          "y": 1.0784458333333333,
+          "z": -1.115495
+        }
+      },
+      {
+        "at": 1410,
+        "p": {
+          "x": -0.26873020000000003,
+          "y": 1.0293966666666667,
+          "z": -0.95198
+        }
+      },
+      {
+        "at": 1510,
+        "p": {
+          "x": -0.19832080000000002,
+          "y": 0.8488133333333333,
+          "z": -0.62792
+        }
+      }
+    ],
+    "seat": 0,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "drive",
+      "power": 1
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "serve",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 1,
+      "rally": 1,
+      "shot": 0,
+      "expected": 0,
+      "receiver": 1,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": true,
+        "armed": false,
+        "seq": 0,
+        "openAt": 1000,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "serve-seat0-ends1-chop-0.35",
+    "points": [
+      {
+        "at": 1310,
+        "p": {
+          "x": -0.34,
+          "y": 1.1,
+          "z": -1.28
+        }
+      },
+      {
+        "at": 1360,
+        "p": {
+          "x": -0.30425755000000004,
+          "y": 1.0811278333333334,
+          "z": -1.154378
+        }
+      },
+      {
+        "at": 1410,
+        "p": {
+          "x": -0.26873020000000003,
+          "y": 1.0401246666666668,
+          "z": -1.029512
+        }
+      },
+      {
+        "at": 1510,
+        "p": {
+          "x": -0.19832080000000002,
+          "y": 0.8917253333333334,
+          "z": -0.7820480000000001
+        }
+      }
+    ],
+    "seat": 0,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "chop",
+      "power": 0.35
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "serve",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 1,
+      "rally": 1,
+      "shot": 0,
+      "expected": 0,
+      "receiver": 1,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": true,
+        "armed": false,
+        "seq": 0,
+        "openAt": 1000,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "serve-seat0-ends1-chop-0.85",
+    "points": [
+      {
+        "at": 1310,
+        "p": {
+          "x": -0.34,
+          "y": 1.1,
+          "z": -1.28
+        }
+      },
+      {
+        "at": 1360,
+        "p": {
+          "x": -0.30425755000000004,
+          "y": 1.0814128333333333,
+          "z": -1.124468
+        }
+      },
+      {
+        "at": 1410,
+        "p": {
+          "x": -0.26873020000000003,
+          "y": 1.0412646666666667,
+          "z": -0.969872
+        }
+      },
+      {
+        "at": 1510,
+        "p": {
+          "x": -0.19832080000000002,
+          "y": 0.8962853333333334,
+          "z": -0.663488
+        }
+      }
+    ],
+    "seat": 0,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "chop",
+      "power": 0.85
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "serve",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 1,
+      "rally": 1,
+      "shot": 0,
+      "expected": 0,
+      "receiver": 1,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": true,
+        "armed": false,
+        "seq": 0,
+        "openAt": 1000,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "serve-seat0-ends1-chop-1.00",
+    "points": [
+      {
+        "at": 1310,
+        "p": {
+          "x": -0.34,
+          "y": 1.1,
+          "z": -1.28
+        }
+      },
+      {
+        "at": 1360,
+        "p": {
+          "x": -0.30425755000000004,
+          "y": 1.0814983333333335,
+          "z": -1.115495
+        }
+      },
+      {
+        "at": 1410,
+        "p": {
+          "x": -0.26873020000000003,
+          "y": 1.0416066666666668,
+          "z": -0.95198
+        }
+      },
+      {
+        "at": 1510,
+        "p": {
+          "x": -0.19832080000000002,
+          "y": 0.8976533333333333,
+          "z": -0.62792
+        }
+      }
+    ],
+    "seat": 0,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "chop",
+      "power": 1
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "serve",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 1,
+      "rally": 1,
+      "shot": 0,
+      "expected": 0,
+      "receiver": 1,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": true,
+        "armed": false,
+        "seq": 0,
+        "openAt": 1000,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "serve-seat0-ends1-block-0.35",
+    "points": [
+      {
+        "at": 1310,
+        "p": {
+          "x": -0.34,
+          "y": 1.1,
+          "z": -1.28
+        }
+      },
+      {
+        "at": 1360,
+        "p": {
+          "x": -0.30425755000000004,
+          "y": 1.0798678333333334,
+          "z": -1.154378
+        }
+      },
+      {
+        "at": 1410,
+        "p": {
+          "x": -0.26873020000000003,
+          "y": 1.0350846666666669,
+          "z": -1.029512
+        }
+      },
+      {
+        "at": 1510,
+        "p": {
+          "x": -0.19832080000000002,
+          "y": 0.8715653333333333,
+          "z": -0.7820480000000001
+        }
+      }
+    ],
+    "seat": 0,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "block",
+      "power": 0.35
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "serve",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 1,
+      "rally": 1,
+      "shot": 0,
+      "expected": 0,
+      "receiver": 1,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": true,
+        "armed": false,
+        "seq": 0,
+        "openAt": 1000,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "serve-seat0-ends1-block-0.85",
+    "points": [
+      {
+        "at": 1310,
+        "p": {
+          "x": -0.34,
+          "y": 1.1,
+          "z": -1.28
+        }
+      },
+      {
+        "at": 1360,
+        "p": {
+          "x": -0.30425755000000004,
+          "y": 1.0798528333333333,
+          "z": -1.124468
+        }
+      },
+      {
+        "at": 1410,
+        "p": {
+          "x": -0.26873020000000003,
+          "y": 1.035024666666667,
+          "z": -0.969872
+        }
+      },
+      {
+        "at": 1510,
+        "p": {
+          "x": -0.19832080000000002,
+          "y": 0.8713253333333333,
+          "z": -0.663488
+        }
+      }
+    ],
+    "seat": 0,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "block",
+      "power": 0.85
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "serve",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 1,
+      "rally": 1,
+      "shot": 0,
+      "expected": 0,
+      "receiver": 1,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": true,
+        "armed": false,
+        "seq": 0,
+        "openAt": 1000,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "serve-seat0-ends1-block-1.00",
+    "points": [
+      {
+        "at": 1310,
+        "p": {
+          "x": -0.34,
+          "y": 1.1,
+          "z": -1.28
+        }
+      },
+      {
+        "at": 1360,
+        "p": {
+          "x": -0.30425755000000004,
+          "y": 1.0798483333333333,
+          "z": -1.115495
+        }
+      },
+      {
+        "at": 1410,
+        "p": {
+          "x": -0.26873020000000003,
+          "y": 1.0350066666666669,
+          "z": -0.95198
+        }
+      },
+      {
+        "at": 1510,
+        "p": {
+          "x": -0.19832080000000002,
+          "y": 0.8712533333333333,
+          "z": -0.62792
+        }
+      }
+    ],
+    "seat": 0,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "block",
+      "power": 1
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "serve",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 1,
+      "rally": 1,
+      "shot": 0,
+      "expected": 0,
+      "receiver": 1,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": true,
+        "armed": false,
+        "seq": 0,
+        "openAt": 1000,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "serve-seat1-ends0-drive-0.35",
+    "points": [
+      {
+        "at": 1310,
+        "p": {
+          "x": -0.34,
+          "y": 1.1,
+          "z": -1.28
+        }
+      },
+      {
+        "at": 1360,
+        "p": {
+          "x": -0.30425755000000004,
+          "y": 1.0787968333333333,
+          "z": -1.154378
+        }
+      },
+      {
+        "at": 1410,
+        "p": {
+          "x": -0.26873020000000003,
+          "y": 1.030800666666667,
+          "z": -1.029512
+        }
+      },
+      {
+        "at": 1510,
+        "p": {
+          "x": -0.19832080000000002,
+          "y": 0.8544293333333334,
+          "z": -0.7820480000000001
+        }
+      }
+    ],
+    "seat": 1,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "drive",
+      "power": 0.35
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "serve",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 0,
+      "rally": 1,
+      "shot": 0,
+      "expected": 1,
+      "receiver": 0,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": true,
+        "armed": false,
+        "seq": 0,
+        "openAt": 1000,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "serve-seat1-ends0-drive-0.85",
+    "points": [
+      {
+        "at": 1310,
+        "p": {
+          "x": -0.34,
+          "y": 1.1,
+          "z": -1.28
+        }
+      },
+      {
+        "at": 1360,
+        "p": {
+          "x": -0.30425755000000004,
+          "y": 1.0785268333333333,
+          "z": -1.124468
+        }
+      },
+      {
+        "at": 1410,
+        "p": {
+          "x": -0.26873020000000003,
+          "y": 1.0297206666666667,
+          "z": -0.969872
+        }
+      },
+      {
+        "at": 1510,
+        "p": {
+          "x": -0.19832080000000002,
+          "y": 0.8501093333333333,
+          "z": -0.663488
+        }
+      }
+    ],
+    "seat": 1,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "drive",
+      "power": 0.85
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "serve",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 0,
+      "rally": 1,
+      "shot": 0,
+      "expected": 1,
+      "receiver": 0,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": true,
+        "armed": false,
+        "seq": 0,
+        "openAt": 1000,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "serve-seat1-ends0-drive-1.00",
+    "points": [
+      {
+        "at": 1310,
+        "p": {
+          "x": -0.34,
+          "y": 1.1,
+          "z": -1.28
+        }
+      },
+      {
+        "at": 1360,
+        "p": {
+          "x": -0.30425755000000004,
+          "y": 1.0784458333333333,
+          "z": -1.115495
+        }
+      },
+      {
+        "at": 1410,
+        "p": {
+          "x": -0.26873020000000003,
+          "y": 1.0293966666666667,
+          "z": -0.95198
+        }
+      },
+      {
+        "at": 1510,
+        "p": {
+          "x": -0.19832080000000002,
+          "y": 0.8488133333333333,
+          "z": -0.62792
+        }
+      }
+    ],
+    "seat": 1,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "drive",
+      "power": 1
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "serve",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 0,
+      "rally": 1,
+      "shot": 0,
+      "expected": 1,
+      "receiver": 0,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": true,
+        "armed": false,
+        "seq": 0,
+        "openAt": 1000,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "serve-seat1-ends0-chop-0.35",
+    "points": [
+      {
+        "at": 1310,
+        "p": {
+          "x": -0.34,
+          "y": 1.1,
+          "z": -1.28
+        }
+      },
+      {
+        "at": 1360,
+        "p": {
+          "x": -0.30425755000000004,
+          "y": 1.0811278333333334,
+          "z": -1.154378
+        }
+      },
+      {
+        "at": 1410,
+        "p": {
+          "x": -0.26873020000000003,
+          "y": 1.0401246666666668,
+          "z": -1.029512
+        }
+      },
+      {
+        "at": 1510,
+        "p": {
+          "x": -0.19832080000000002,
+          "y": 0.8917253333333334,
+          "z": -0.7820480000000001
+        }
+      }
+    ],
+    "seat": 1,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "chop",
+      "power": 0.35
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "serve",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 0,
+      "rally": 1,
+      "shot": 0,
+      "expected": 1,
+      "receiver": 0,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": true,
+        "armed": false,
+        "seq": 0,
+        "openAt": 1000,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "serve-seat1-ends0-chop-0.85",
+    "points": [
+      {
+        "at": 1310,
+        "p": {
+          "x": -0.34,
+          "y": 1.1,
+          "z": -1.28
+        }
+      },
+      {
+        "at": 1360,
+        "p": {
+          "x": -0.30425755000000004,
+          "y": 1.0814128333333333,
+          "z": -1.124468
+        }
+      },
+      {
+        "at": 1410,
+        "p": {
+          "x": -0.26873020000000003,
+          "y": 1.0412646666666667,
+          "z": -0.969872
+        }
+      },
+      {
+        "at": 1510,
+        "p": {
+          "x": -0.19832080000000002,
+          "y": 0.8962853333333334,
+          "z": -0.663488
+        }
+      }
+    ],
+    "seat": 1,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "chop",
+      "power": 0.85
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "serve",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 0,
+      "rally": 1,
+      "shot": 0,
+      "expected": 1,
+      "receiver": 0,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": true,
+        "armed": false,
+        "seq": 0,
+        "openAt": 1000,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "serve-seat1-ends0-chop-1.00",
+    "points": [
+      {
+        "at": 1310,
+        "p": {
+          "x": -0.34,
+          "y": 1.1,
+          "z": -1.28
+        }
+      },
+      {
+        "at": 1360,
+        "p": {
+          "x": -0.30425755000000004,
+          "y": 1.0814983333333335,
+          "z": -1.115495
+        }
+      },
+      {
+        "at": 1410,
+        "p": {
+          "x": -0.26873020000000003,
+          "y": 1.0416066666666668,
+          "z": -0.95198
+        }
+      },
+      {
+        "at": 1510,
+        "p": {
+          "x": -0.19832080000000002,
+          "y": 0.8976533333333333,
+          "z": -0.62792
+        }
+      }
+    ],
+    "seat": 1,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "chop",
+      "power": 1
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "serve",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 0,
+      "rally": 1,
+      "shot": 0,
+      "expected": 1,
+      "receiver": 0,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": true,
+        "armed": false,
+        "seq": 0,
+        "openAt": 1000,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "serve-seat1-ends0-block-0.35",
+    "points": [
+      {
+        "at": 1310,
+        "p": {
+          "x": -0.34,
+          "y": 1.1,
+          "z": -1.28
+        }
+      },
+      {
+        "at": 1360,
+        "p": {
+          "x": -0.30425755000000004,
+          "y": 1.0798678333333334,
+          "z": -1.154378
+        }
+      },
+      {
+        "at": 1410,
+        "p": {
+          "x": -0.26873020000000003,
+          "y": 1.0350846666666669,
+          "z": -1.029512
+        }
+      },
+      {
+        "at": 1510,
+        "p": {
+          "x": -0.19832080000000002,
+          "y": 0.8715653333333333,
+          "z": -0.7820480000000001
+        }
+      }
+    ],
+    "seat": 1,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "block",
+      "power": 0.35
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "serve",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 0,
+      "rally": 1,
+      "shot": 0,
+      "expected": 1,
+      "receiver": 0,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": true,
+        "armed": false,
+        "seq": 0,
+        "openAt": 1000,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "serve-seat1-ends0-block-0.85",
+    "points": [
+      {
+        "at": 1310,
+        "p": {
+          "x": -0.34,
+          "y": 1.1,
+          "z": -1.28
+        }
+      },
+      {
+        "at": 1360,
+        "p": {
+          "x": -0.30425755000000004,
+          "y": 1.0798528333333333,
+          "z": -1.124468
+        }
+      },
+      {
+        "at": 1410,
+        "p": {
+          "x": -0.26873020000000003,
+          "y": 1.035024666666667,
+          "z": -0.969872
+        }
+      },
+      {
+        "at": 1510,
+        "p": {
+          "x": -0.19832080000000002,
+          "y": 0.8713253333333333,
+          "z": -0.663488
+        }
+      }
+    ],
+    "seat": 1,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "block",
+      "power": 0.85
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "serve",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 0,
+      "rally": 1,
+      "shot": 0,
+      "expected": 1,
+      "receiver": 0,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": true,
+        "armed": false,
+        "seq": 0,
+        "openAt": 1000,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "serve-seat1-ends0-block-1.00",
+    "points": [
+      {
+        "at": 1310,
+        "p": {
+          "x": -0.34,
+          "y": 1.1,
+          "z": -1.28
+        }
+      },
+      {
+        "at": 1360,
+        "p": {
+          "x": -0.30425755000000004,
+          "y": 1.0798483333333333,
+          "z": -1.115495
+        }
+      },
+      {
+        "at": 1410,
+        "p": {
+          "x": -0.26873020000000003,
+          "y": 1.0350066666666669,
+          "z": -0.95198
+        }
+      },
+      {
+        "at": 1510,
+        "p": {
+          "x": -0.19832080000000002,
+          "y": 0.8712533333333333,
+          "z": -0.62792
+        }
+      }
+    ],
+    "seat": 1,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "block",
+      "power": 1
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "serve",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 0,
+      "rally": 1,
+      "shot": 0,
+      "expected": 1,
+      "receiver": 0,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": true,
+        "armed": false,
+        "seq": 0,
+        "openAt": 1000,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "serve-seat1-ends1-drive-0.35",
+    "points": [
+      {
+        "at": 1310,
+        "p": {
+          "x": 0.34,
+          "y": 1.1,
+          "z": 1.28
+        }
+      },
+      {
+        "at": 1360,
+        "p": {
+          "x": 0.30425755000000004,
+          "y": 1.0787968333333333,
+          "z": 1.154378
+        }
+      },
+      {
+        "at": 1410,
+        "p": {
+          "x": 0.26873020000000003,
+          "y": 1.030800666666667,
+          "z": 1.029512
+        }
+      },
+      {
+        "at": 1510,
+        "p": {
+          "x": 0.19832080000000002,
+          "y": 0.8544293333333334,
+          "z": 0.7820480000000001
+        }
+      }
+    ],
+    "seat": 1,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "drive",
+      "power": 0.35
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "serve",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 1,
+      "rally": 1,
+      "shot": 0,
+      "expected": 1,
+      "receiver": 0,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": true,
+        "armed": false,
+        "seq": 0,
+        "openAt": 1000,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "serve-seat1-ends1-drive-0.85",
+    "points": [
+      {
+        "at": 1310,
+        "p": {
+          "x": 0.34,
+          "y": 1.1,
+          "z": 1.28
+        }
+      },
+      {
+        "at": 1360,
+        "p": {
+          "x": 0.30425755000000004,
+          "y": 1.0785268333333333,
+          "z": 1.124468
+        }
+      },
+      {
+        "at": 1410,
+        "p": {
+          "x": 0.26873020000000003,
+          "y": 1.0297206666666667,
+          "z": 0.969872
+        }
+      },
+      {
+        "at": 1510,
+        "p": {
+          "x": 0.19832080000000002,
+          "y": 0.8501093333333333,
+          "z": 0.663488
+        }
+      }
+    ],
+    "seat": 1,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "drive",
+      "power": 0.85
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "serve",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 1,
+      "rally": 1,
+      "shot": 0,
+      "expected": 1,
+      "receiver": 0,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": true,
+        "armed": false,
+        "seq": 0,
+        "openAt": 1000,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "serve-seat1-ends1-drive-1.00",
+    "points": [
+      {
+        "at": 1310,
+        "p": {
+          "x": 0.34,
+          "y": 1.1,
+          "z": 1.28
+        }
+      },
+      {
+        "at": 1360,
+        "p": {
+          "x": 0.30425755000000004,
+          "y": 1.0784458333333333,
+          "z": 1.115495
+        }
+      },
+      {
+        "at": 1410,
+        "p": {
+          "x": 0.26873020000000003,
+          "y": 1.0293966666666667,
+          "z": 0.95198
+        }
+      },
+      {
+        "at": 1510,
+        "p": {
+          "x": 0.19832080000000002,
+          "y": 0.8488133333333333,
+          "z": 0.62792
+        }
+      }
+    ],
+    "seat": 1,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "drive",
+      "power": 1
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "serve",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 1,
+      "rally": 1,
+      "shot": 0,
+      "expected": 1,
+      "receiver": 0,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": true,
+        "armed": false,
+        "seq": 0,
+        "openAt": 1000,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "serve-seat1-ends1-chop-0.35",
+    "points": [
+      {
+        "at": 1310,
+        "p": {
+          "x": 0.34,
+          "y": 1.1,
+          "z": 1.28
+        }
+      },
+      {
+        "at": 1360,
+        "p": {
+          "x": 0.30425755000000004,
+          "y": 1.0811278333333334,
+          "z": 1.154378
+        }
+      },
+      {
+        "at": 1410,
+        "p": {
+          "x": 0.26873020000000003,
+          "y": 1.0401246666666668,
+          "z": 1.029512
+        }
+      },
+      {
+        "at": 1510,
+        "p": {
+          "x": 0.19832080000000002,
+          "y": 0.8917253333333334,
+          "z": 0.7820480000000001
+        }
+      }
+    ],
+    "seat": 1,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "chop",
+      "power": 0.35
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "serve",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 1,
+      "rally": 1,
+      "shot": 0,
+      "expected": 1,
+      "receiver": 0,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": true,
+        "armed": false,
+        "seq": 0,
+        "openAt": 1000,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "serve-seat1-ends1-chop-0.85",
+    "points": [
+      {
+        "at": 1310,
+        "p": {
+          "x": 0.34,
+          "y": 1.1,
+          "z": 1.28
+        }
+      },
+      {
+        "at": 1360,
+        "p": {
+          "x": 0.30425755000000004,
+          "y": 1.0814128333333333,
+          "z": 1.124468
+        }
+      },
+      {
+        "at": 1410,
+        "p": {
+          "x": 0.26873020000000003,
+          "y": 1.0412646666666667,
+          "z": 0.969872
+        }
+      },
+      {
+        "at": 1510,
+        "p": {
+          "x": 0.19832080000000002,
+          "y": 0.8962853333333334,
+          "z": 0.663488
+        }
+      }
+    ],
+    "seat": 1,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "chop",
+      "power": 0.85
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "serve",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 1,
+      "rally": 1,
+      "shot": 0,
+      "expected": 1,
+      "receiver": 0,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": true,
+        "armed": false,
+        "seq": 0,
+        "openAt": 1000,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "serve-seat1-ends1-chop-1.00",
+    "points": [
+      {
+        "at": 1310,
+        "p": {
+          "x": 0.34,
+          "y": 1.1,
+          "z": 1.28
+        }
+      },
+      {
+        "at": 1360,
+        "p": {
+          "x": 0.30425755000000004,
+          "y": 1.0814983333333335,
+          "z": 1.115495
+        }
+      },
+      {
+        "at": 1410,
+        "p": {
+          "x": 0.26873020000000003,
+          "y": 1.0416066666666668,
+          "z": 0.95198
+        }
+      },
+      {
+        "at": 1510,
+        "p": {
+          "x": 0.19832080000000002,
+          "y": 0.8976533333333333,
+          "z": 0.62792
+        }
+      }
+    ],
+    "seat": 1,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "chop",
+      "power": 1
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "serve",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 1,
+      "rally": 1,
+      "shot": 0,
+      "expected": 1,
+      "receiver": 0,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": true,
+        "armed": false,
+        "seq": 0,
+        "openAt": 1000,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "serve-seat1-ends1-block-0.35",
+    "points": [
+      {
+        "at": 1310,
+        "p": {
+          "x": 0.34,
+          "y": 1.1,
+          "z": 1.28
+        }
+      },
+      {
+        "at": 1360,
+        "p": {
+          "x": 0.30425755000000004,
+          "y": 1.0798678333333334,
+          "z": 1.154378
+        }
+      },
+      {
+        "at": 1410,
+        "p": {
+          "x": 0.26873020000000003,
+          "y": 1.0350846666666669,
+          "z": 1.029512
+        }
+      },
+      {
+        "at": 1510,
+        "p": {
+          "x": 0.19832080000000002,
+          "y": 0.8715653333333333,
+          "z": 0.7820480000000001
+        }
+      }
+    ],
+    "seat": 1,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "block",
+      "power": 0.35
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "serve",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 1,
+      "rally": 1,
+      "shot": 0,
+      "expected": 1,
+      "receiver": 0,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": true,
+        "armed": false,
+        "seq": 0,
+        "openAt": 1000,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "serve-seat1-ends1-block-0.85",
+    "points": [
+      {
+        "at": 1310,
+        "p": {
+          "x": 0.34,
+          "y": 1.1,
+          "z": 1.28
+        }
+      },
+      {
+        "at": 1360,
+        "p": {
+          "x": 0.30425755000000004,
+          "y": 1.0798528333333333,
+          "z": 1.124468
+        }
+      },
+      {
+        "at": 1410,
+        "p": {
+          "x": 0.26873020000000003,
+          "y": 1.035024666666667,
+          "z": 0.969872
+        }
+      },
+      {
+        "at": 1510,
+        "p": {
+          "x": 0.19832080000000002,
+          "y": 0.8713253333333333,
+          "z": 0.663488
+        }
+      }
+    ],
+    "seat": 1,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "block",
+      "power": 0.85
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "serve",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 1,
+      "rally": 1,
+      "shot": 0,
+      "expected": 1,
+      "receiver": 0,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": true,
+        "armed": false,
+        "seq": 0,
+        "openAt": 1000,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "serve-seat1-ends1-block-1.00",
+    "points": [
+      {
+        "at": 1310,
+        "p": {
+          "x": 0.34,
+          "y": 1.1,
+          "z": 1.28
+        }
+      },
+      {
+        "at": 1360,
+        "p": {
+          "x": 0.30425755000000004,
+          "y": 1.0798483333333333,
+          "z": 1.115495
+        }
+      },
+      {
+        "at": 1410,
+        "p": {
+          "x": 0.26873020000000003,
+          "y": 1.0350066666666669,
+          "z": 0.95198
+        }
+      },
+      {
+        "at": 1510,
+        "p": {
+          "x": 0.19832080000000002,
+          "y": 0.8712533333333333,
+          "z": 0.62792
+        }
+      }
+    ],
+    "seat": 1,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "block",
+      "power": 1
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "serve",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 1,
+      "rally": 1,
+      "shot": 0,
+      "expected": 1,
+      "receiver": 0,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": true,
+        "armed": false,
+        "seq": 0,
+        "openAt": 1000,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "rally-seat0-ends0-drive-0.35",
+    "points": [
+      {
+        "at": 1130,
+        "p": {
+          "x": 0.15,
+          "y": 1.3,
+          "z": 0.9
+        }
+      },
+      {
+        "at": 1180,
+        "p": {
+          "x": 0.1732005403339144,
+          "y": 1.4535872669659067,
+          "z": 0.78118413121004
+        }
+      },
+      {
+        "at": 1230,
+        "p": {
+          "x": 0.1962614585595003,
+          "y": 1.5805044129305903,
+          "z": 0.6630833027538209
+        }
+      },
+      {
+        "at": 1330,
+        "p": {
+          "x": 0.2419644286856868,
+          "y": 1.7543283418562887,
+          "z": 0.4290267668426058
+        }
+      }
+    ],
+    "seat": 0,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "drive",
+      "power": 0.35
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "rally",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 0,
+      "rally": 1,
+      "shot": 0,
+      "expected": 0,
+      "receiver": 1,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "flight": {
+        "segments": [
+          {
+            "at": 1000,
+            "until": 2000,
+            "p": {
+              "x": 0.15,
+              "y": 1.3,
+              "z": 0.9
+            },
+            "v": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "a": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        ],
+        "events": null,
+        "spin": -0.95,
+        "startAt": 0,
+        "endAt": 0,
+        "receiveAt": 0,
+        "contactStart": 1000,
+        "contactEnd": 0,
+        "reason": "",
+        "winnerSide": 0,
+        "touchedNet": false,
+        "serve": false
+      },
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": false,
+        "armed": false,
+        "seq": 0,
+        "openAt": 0,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "rally-seat0-ends0-drive-0.85",
+    "points": [
+      {
+        "at": 1130,
+        "p": {
+          "x": 0.15,
+          "y": 1.3,
+          "z": 0.9
+        }
+      },
+      {
+        "at": 1180,
+        "p": {
+          "x": 0.18228432033755063,
+          "y": 1.409913096012313,
+          "z": 0.7325903006405238
+        }
+      },
+      {
+        "at": 1230,
+        "p": {
+          "x": 0.21437435188671072,
+          "y": 1.492278750110413,
+          "z": 0.5661880819191185
+        }
+      },
+      {
+        "at": 1330,
+        "p": {
+          "x": 0.2779715486198596,
+          "y": 1.574367732563973,
+          "z": 0.23640608639052135
+        }
+      }
+    ],
+    "seat": 0,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "drive",
+      "power": 0.85
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "rally",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 0,
+      "rally": 1,
+      "shot": 0,
+      "expected": 0,
+      "receiver": 1,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "flight": {
+        "segments": [
+          {
+            "at": 1000,
+            "until": 2000,
+            "p": {
+              "x": 0.15,
+              "y": 1.3,
+              "z": 0.9
+            },
+            "v": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "a": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        ],
+        "events": null,
+        "spin": -0.95,
+        "startAt": 0,
+        "endAt": 0,
+        "receiveAt": 0,
+        "contactStart": 1000,
+        "contactEnd": 0,
+        "reason": "",
+        "winnerSide": 0,
+        "touchedNet": false,
+        "serve": false
+      },
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": false,
+        "armed": false,
+        "seq": 0,
+        "openAt": 0,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "rally-seat0-ends0-drive-1.00",
+    "points": [
+      {
+        "at": 1130,
+        "p": {
+          "x": 0.15,
+          "y": 1.3,
+          "z": 0.9
+        }
+      },
+      {
+        "at": 1180,
+        "p": {
+          "x": 0.1917289345922999,
+          "y": 1.358780708401977,
+          "z": 0.682924260365184
+        }
+      },
+      {
+        "at": 1230,
+        "p": {
+          "x": 0.23320674219608045,
+          "y": 1.3912945853926415,
+          "z": 0.4671548942888523
+        }
+      },
+      {
+        "at": 1330,
+        "p": {
+          "x": 0.31540897643808347,
+          "y": 1.377521845140033,
+          "z": 0.039535282811642015
+        }
+      }
+    ],
+    "seat": 0,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "drive",
+      "power": 1
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "rally",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 0,
+      "rally": 1,
+      "shot": 0,
+      "expected": 0,
+      "receiver": 1,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "flight": {
+        "segments": [
+          {
+            "at": 1000,
+            "until": 2000,
+            "p": {
+              "x": 0.15,
+              "y": 1.3,
+              "z": 0.9
+            },
+            "v": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "a": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        ],
+        "events": null,
+        "spin": -0.95,
+        "startAt": 0,
+        "endAt": 0,
+        "receiveAt": 0,
+        "contactStart": 1000,
+        "contactEnd": 0,
+        "reason": "",
+        "winnerSide": 0,
+        "touchedNet": false,
+        "serve": false
+      },
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": false,
+        "armed": false,
+        "seq": 0,
+        "openAt": 0,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "rally-seat0-ends0-chop-0.35",
+    "points": [
+      {
+        "at": 1130,
+        "p": {
+          "x": 0.15,
+          "y": 1.3,
+          "z": 0.9
+        }
+      },
+      {
+        "at": 1180,
+        "p": {
+          "x": 0.1699555906450308,
+          "y": 1.4591427734681952,
+          "z": 0.7978023440152314
+        }
+      },
+      {
+        "at": 1230,
+        "p": {
+          "x": 0.18979108746471537,
+          "y": 1.5957081451948762,
+          "z": 0.6962197190594583
+        }
+      },
+      {
+        "at": 1330,
+        "p": {
+          "x": 0.22910179962804586,
+          "y": 1.8011066834236968,
+          "z": 0.49489956223489917
+        }
+      }
+    ],
+    "seat": 0,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "chop",
+      "power": 0.35
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "rally",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 0,
+      "rally": 1,
+      "shot": 0,
+      "expected": 0,
+      "receiver": 1,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "flight": {
+        "segments": [
+          {
+            "at": 1000,
+            "until": 2000,
+            "p": {
+              "x": 0.15,
+              "y": 1.3,
+              "z": 0.9
+            },
+            "v": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "a": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        ],
+        "events": null,
+        "spin": -0.95,
+        "startAt": 0,
+        "endAt": 0,
+        "receiveAt": 0,
+        "contactStart": 1000,
+        "contactEnd": 0,
+        "reason": "",
+        "winnerSide": 0,
+        "touchedNet": false,
+        "serve": false
+      },
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": false,
+        "armed": false,
+        "seq": 0,
+        "openAt": 0,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "rally-seat0-ends0-chop-0.85",
+    "points": [
+      {
+        "at": 1130,
+        "p": {
+          "x": 0.15,
+          "y": 1.3,
+          "z": 0.9
+        }
+      },
+      {
+        "at": 1180,
+        "p": {
+          "x": 0.17679100965237018,
+          "y": 1.4144867034886452,
+          "z": 0.7610757536616488
+        }
+      },
+      {
+        "at": 1230,
+        "p": {
+          "x": 0.20342078955758475,
+          "y": 1.5070959101672892,
+          "z": 0.6229875609622445
+        }
+      },
+      {
+        "at": 1330,
+        "p": {
+          "x": 0.2561966601265467,
+          "y": 1.626681833094573,
+          "z": 0.34931933648027674
+        }
+      }
+    ],
+    "seat": 0,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "chop",
+      "power": 0.85
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "rally",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 0,
+      "rally": 1,
+      "shot": 0,
+      "expected": 0,
+      "receiver": 1,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "flight": {
+        "segments": [
+          {
+            "at": 1000,
+            "until": 2000,
+            "p": {
+              "x": 0.15,
+              "y": 1.3,
+              "z": 0.9
+            },
+            "v": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "a": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        ],
+        "events": null,
+        "spin": -0.95,
+        "startAt": 0,
+        "endAt": 0,
+        "receiveAt": 0,
+        "contactStart": 1000,
+        "contactEnd": 0,
+        "reason": "",
+        "winnerSide": 0,
+        "touchedNet": false,
+        "serve": false
+      },
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": false,
+        "armed": false,
+        "seq": 0,
+        "openAt": 0,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "rally-seat0-ends0-chop-1.00",
+    "points": [
+      {
+        "at": 1130,
+        "p": {
+          "x": 0.15,
+          "y": 1.3,
+          "z": 0.9
+        }
+      },
+      {
+        "at": 1180,
+        "p": {
+          "x": 0.17941038382136387,
+          "y": 1.4006187777465324,
+          "z": 0.7470058993036343
+        }
+      },
+      {
+        "at": 1230,
+        "p": {
+          "x": 0.20864377435995127,
+          "y": 1.479628190310749,
+          "z": 0.5949325253918003
+        }
+      },
+      {
+        "at": 1330,
+        "p": {
+          "x": 0.26657957558879647,
+          "y": 1.5728189198922344,
+          "z": 0.2935479579217278
+        }
+      }
+    ],
+    "seat": 0,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "chop",
+      "power": 1
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "rally",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 0,
+      "rally": 1,
+      "shot": 0,
+      "expected": 0,
+      "receiver": 1,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "flight": {
+        "segments": [
+          {
+            "at": 1000,
+            "until": 2000,
+            "p": {
+              "x": 0.15,
+              "y": 1.3,
+              "z": 0.9
+            },
+            "v": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "a": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        ],
+        "events": null,
+        "spin": -0.95,
+        "startAt": 0,
+        "endAt": 0,
+        "receiveAt": 0,
+        "contactStart": 1000,
+        "contactEnd": 0,
+        "reason": "",
+        "winnerSide": 0,
+        "touchedNet": false,
+        "serve": false
+      },
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": false,
+        "armed": false,
+        "seq": 0,
+        "openAt": 0,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "rally-seat0-ends0-block-0.35",
+    "points": [
+      {
+        "at": 1130,
+        "p": {
+          "x": 0.15,
+          "y": 1.3,
+          "z": 0.9
+        }
+      },
+      {
+        "at": 1180,
+        "p": {
+          "x": 0.1718281044928102,
+          "y": 1.4622621468863826,
+          "z": 0.7882127242717674
+        }
+      },
+      {
+        "at": 1230,
+        "p": {
+          "x": 0.1935248462705182,
+          "y": 1.5998871701260968,
+          "z": 0.6770981904235441
+        }
+      },
+      {
+        "at": 1330,
+        "p": {
+          "x": 0.23652424168062774,
+          "y": 1.8012258456655206,
+          "z": 0.45688734836712597
+        }
+      }
+    ],
+    "seat": 0,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "block",
+      "power": 0.35
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "rally",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 0,
+      "rally": 1,
+      "shot": 0,
+      "expected": 0,
+      "receiver": 1,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "flight": {
+        "segments": [
+          {
+            "at": 1000,
+            "until": 2000,
+            "p": {
+              "x": 0.15,
+              "y": 1.3,
+              "z": 0.9
+            },
+            "v": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "a": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        ],
+        "events": null,
+        "spin": -0.95,
+        "startAt": 0,
+        "endAt": 0,
+        "receiveAt": 0,
+        "contactStart": 1000,
+        "contactEnd": 0,
+        "reason": "",
+        "winnerSide": 0,
+        "touchedNet": false,
+        "serve": false
+      },
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": false,
+        "armed": false,
+        "seq": 0,
+        "openAt": 0,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "rally-seat0-ends0-block-0.85",
+    "points": [
+      {
+        "at": 1130,
+        "p": {
+          "x": 0.15,
+          "y": 1.3,
+          "z": 0.9
+        }
+      },
+      {
+        "at": 1180,
+        "p": {
+          "x": 0.1799129875927381,
+          "y": 1.41817285215158,
+          "z": 0.7448867993042605
+        }
+      },
+      {
+        "at": 1230,
+        "p": {
+          "x": 0.2096459572059813,
+          "y": 1.5116651243626427,
+          "z": 0.5907070782516247
+        }
+      },
+      {
+        "at": 1330,
+        "p": {
+          "x": 0.26857184249398297,
+          "y": 1.6246079289632165,
+          "z": 0.2851480750756645
+        }
+      }
+    ],
+    "seat": 0,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "block",
+      "power": 0.85
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "rally",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 0,
+      "rally": 1,
+      "shot": 0,
+      "expected": 0,
+      "receiver": 1,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "flight": {
+        "segments": [
+          {
+            "at": 1000,
+            "until": 2000,
+            "p": {
+              "x": 0.15,
+              "y": 1.3,
+              "z": 0.9
+            },
+            "v": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "a": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        ],
+        "events": null,
+        "spin": -0.95,
+        "startAt": 0,
+        "endAt": 0,
+        "receiveAt": 0,
+        "contactStart": 1000,
+        "contactEnd": 0,
+        "reason": "",
+        "winnerSide": 0,
+        "touchedNet": false,
+        "serve": false
+      },
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": false,
+        "armed": false,
+        "seq": 0,
+        "openAt": 0,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "rally-seat0-ends0-block-1.00",
+    "points": [
+      {
+        "at": 1130,
+        "p": {
+          "x": 0.15,
+          "y": 1.3,
+          "z": 0.9
+        }
+      },
+      {
+        "at": 1180,
+        "p": {
+          "x": 0.18310173295483548,
+          "y": 1.40423425208534,
+          "z": 0.7278033399469774
+        }
+      },
+      {
+        "at": 1230,
+        "p": {
+          "x": 0.2160042578878766,
+          "y": 1.483770789366213,
+          "z": 0.5566429687207535
+        }
+      },
+      {
+        "at": 1330,
+        "p": {
+          "x": 0.2812116836885756,
+          "y": 1.568750719514561,
+          "z": 0.21743109274870104
+        }
+      }
+    ],
+    "seat": 0,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "block",
+      "power": 1
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "rally",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 0,
+      "rally": 1,
+      "shot": 0,
+      "expected": 0,
+      "receiver": 1,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "flight": {
+        "segments": [
+          {
+            "at": 1000,
+            "until": 2000,
+            "p": {
+              "x": 0.15,
+              "y": 1.3,
+              "z": 0.9
+            },
+            "v": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "a": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        ],
+        "events": null,
+        "spin": -0.95,
+        "startAt": 0,
+        "endAt": 0,
+        "receiveAt": 0,
+        "contactStart": 1000,
+        "contactEnd": 0,
+        "reason": "",
+        "winnerSide": 0,
+        "touchedNet": false,
+        "serve": false
+      },
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": false,
+        "armed": false,
+        "seq": 0,
+        "openAt": 0,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "rally-seat0-ends1-drive-0.35",
+    "points": [
+      {
+        "at": 1130,
+        "p": {
+          "x": 0.15,
+          "y": 1.3,
+          "z": -0.9
+        }
+      },
+      {
+        "at": 1180,
+        "p": {
+          "x": 0.10605163624525439,
+          "y": 1.4535872669659067,
+          "z": -0.78118413121004
+        }
+      },
+      {
+        "at": 1230,
+        "p": {
+          "x": 0.06236775612393755,
+          "y": 1.5805044129305903,
+          "z": -0.6630833027538209
+        }
+      },
+      {
+        "at": 1330,
+        "p": {
+          "x": -0.024206553218409855,
+          "y": 1.7543283418562887,
+          "z": -0.4290267668426058
+        }
+      }
+    ],
+    "seat": 0,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "drive",
+      "power": 0.35
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "rally",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 1,
+      "rally": 1,
+      "shot": 0,
+      "expected": 0,
+      "receiver": 1,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "flight": {
+        "segments": [
+          {
+            "at": 1000,
+            "until": 2000,
+            "p": {
+              "x": 0.15,
+              "y": 1.3,
+              "z": -0.9
+            },
+            "v": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "a": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        ],
+        "events": null,
+        "spin": -0.95,
+        "startAt": 0,
+        "endAt": 0,
+        "receiveAt": 0,
+        "contactStart": 1000,
+        "contactEnd": 0,
+        "reason": "",
+        "winnerSide": 0,
+        "touchedNet": false,
+        "serve": false
+      },
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": false,
+        "armed": false,
+        "seq": 0,
+        "openAt": 0,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "rally-seat0-ends1-drive-0.85",
+    "points": [
+      {
+        "at": 1130,
+        "p": {
+          "x": 0.15,
+          "y": 1.3,
+          "z": -0.9
+        }
+      },
+      {
+        "at": 1180,
+        "p": {
+          "x": 0.0920655725082906,
+          "y": 1.409913096012313,
+          "z": -0.7325903006405238
+        }
+      },
+      {
+        "at": 1230,
+        "p": {
+          "x": 0.03447979753909902,
+          "y": 1.492278750110413,
+          "z": -0.5661880819191185
+        }
+      },
+      {
+        "at": 1330,
+        "p": {
+          "x": -0.0796457948317307,
+          "y": 1.574367732563973,
+          "z": -0.23640608639052135
+        }
+      }
+    ],
+    "seat": 0,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "drive",
+      "power": 0.85
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "rally",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 1,
+      "rally": 1,
+      "shot": 0,
+      "expected": 0,
+      "receiver": 1,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "flight": {
+        "segments": [
+          {
+            "at": 1000,
+            "until": 2000,
+            "p": {
+              "x": 0.15,
+              "y": 1.3,
+              "z": -0.9
+            },
+            "v": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "a": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        ],
+        "events": null,
+        "spin": -0.95,
+        "startAt": 0,
+        "endAt": 0,
+        "receiveAt": 0,
+        "contactStart": 1000,
+        "contactEnd": 0,
+        "reason": "",
+        "winnerSide": 0,
+        "touchedNet": false,
+        "serve": false
+      },
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": false,
+        "armed": false,
+        "seq": 0,
+        "openAt": 0,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "rally-seat0-ends1-drive-1.00",
+    "points": [
+      {
+        "at": 1130,
+        "p": {
+          "x": 0.15,
+          "y": 1.3,
+          "z": -0.9
+        }
+      },
+      {
+        "at": 1180,
+        "p": {
+          "x": 0.07619090684097851,
+          "y": 1.358780708401977,
+          "z": -0.682924260365184
+        }
+      },
+      {
+        "at": 1230,
+        "p": {
+          "x": 0.0028260008022720933,
+          "y": 1.3912945853926415,
+          "z": -0.4671548942888523
+        }
+      },
+      {
+        "at": 1330,
+        "p": {
+          "x": -0.14257124991419554,
+          "y": 1.377521845140033,
+          "z": -0.039535282811642015
+        }
+      }
+    ],
+    "seat": 0,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "drive",
+      "power": 1
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "rally",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 1,
+      "rally": 1,
+      "shot": 0,
+      "expected": 0,
+      "receiver": 1,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "flight": {
+        "segments": [
+          {
+            "at": 1000,
+            "until": 2000,
+            "p": {
+              "x": 0.15,
+              "y": 1.3,
+              "z": -0.9
+            },
+            "v": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "a": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        ],
+        "events": null,
+        "spin": -0.95,
+        "startAt": 0,
+        "endAt": 0,
+        "receiveAt": 0,
+        "contactStart": 1000,
+        "contactEnd": 0,
+        "reason": "",
+        "winnerSide": 0,
+        "touchedNet": false,
+        "serve": false
+      },
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": false,
+        "armed": false,
+        "seq": 0,
+        "openAt": 0,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "rally-seat0-ends1-chop-0.35",
+    "points": [
+      {
+        "at": 1130,
+        "p": {
+          "x": 0.15,
+          "y": 1.3,
+          "z": -0.9
+        }
+      },
+      {
+        "at": 1180,
+        "p": {
+          "x": 0.11219848572549855,
+          "y": 1.4591427734681952,
+          "z": -0.7978023440152314
+        }
+      },
+      {
+        "at": 1230,
+        "p": {
+          "x": 0.0746244630113251,
+          "y": 1.5957081451948762,
+          "z": -0.6962197190594583
+        }
+      },
+      {
+        "at": 1330,
+        "p": {
+          "x": 0.0001588922639621473,
+          "y": 1.8011066834236968,
+          "z": -0.49489956223489917
+        }
+      }
+    ],
+    "seat": 0,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "chop",
+      "power": 0.35
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "rally",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 1,
+      "rally": 1,
+      "shot": 0,
+      "expected": 0,
+      "receiver": 1,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "flight": {
+        "segments": [
+          {
+            "at": 1000,
+            "until": 2000,
+            "p": {
+              "x": 0.15,
+              "y": 1.3,
+              "z": -0.9
+            },
+            "v": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "a": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        ],
+        "events": null,
+        "spin": -0.95,
+        "startAt": 0,
+        "endAt": 0,
+        "receiveAt": 0,
+        "contactStart": 1000,
+        "contactEnd": 0,
+        "reason": "",
+        "winnerSide": 0,
+        "touchedNet": false,
+        "serve": false
+      },
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": false,
+        "armed": false,
+        "seq": 0,
+        "openAt": 0,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "rally-seat0-ends1-chop-0.85",
+    "points": [
+      {
+        "at": 1130,
+        "p": {
+          "x": 0.15,
+          "y": 1.3,
+          "z": -0.9
+        }
+      },
+      {
+        "at": 1180,
+        "p": {
+          "x": 0.10192335505574757,
+          "y": 1.4144867034886452,
+          "z": -0.7610757536616488
+        }
+      },
+      {
+        "at": 1230,
+        "p": {
+          "x": 0.05413603796472034,
+          "y": 1.5070959101672892,
+          "z": -0.6229875609622445
+        }
+      },
+      {
+        "at": 1330,
+        "p": {
+          "x": -0.04057061265765856,
+          "y": 1.626681833094573,
+          "z": -0.34931933648027674
+        }
+      }
+    ],
+    "seat": 0,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "chop",
+      "power": 0.85
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "rally",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 1,
+      "rally": 1,
+      "shot": 0,
+      "expected": 0,
+      "receiver": 1,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "flight": {
+        "segments": [
+          {
+            "at": 1000,
+            "until": 2000,
+            "p": {
+              "x": 0.15,
+              "y": 1.3,
+              "z": -0.9
+            },
+            "v": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "a": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        ],
+        "events": null,
+        "spin": -0.95,
+        "startAt": 0,
+        "endAt": 0,
+        "receiveAt": 0,
+        "contactStart": 1000,
+        "contactEnd": 0,
+        "reason": "",
+        "winnerSide": 0,
+        "touchedNet": false,
+        "serve": false
+      },
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": false,
+        "armed": false,
+        "seq": 0,
+        "openAt": 0,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "rally-seat0-ends1-chop-1.00",
+    "points": [
+      {
+        "at": 1130,
+        "p": {
+          "x": 0.15,
+          "y": 1.3,
+          "z": -0.9
+        }
+      },
+      {
+        "at": 1180,
+        "p": {
+          "x": 0.09797965055848354,
+          "y": 1.4006187777465324,
+          "z": -0.7470058993036343
+        }
+      },
+      {
+        "at": 1230,
+        "p": {
+          "x": 0.04627236239745764,
+          "y": 1.479628190310749,
+          "z": -0.5949325253918003
+        }
+      },
+      {
+        "at": 1330,
+        "p": {
+          "x": -0.056203030083122434,
+          "y": 1.5728189198922344,
+          "z": -0.2935479579217278
+        }
+      }
+    ],
+    "seat": 0,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "chop",
+      "power": 1
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "rally",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 1,
+      "rally": 1,
+      "shot": 0,
+      "expected": 0,
+      "receiver": 1,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "flight": {
+        "segments": [
+          {
+            "at": 1000,
+            "until": 2000,
+            "p": {
+              "x": 0.15,
+              "y": 1.3,
+              "z": -0.9
+            },
+            "v": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "a": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        ],
+        "events": null,
+        "spin": -0.95,
+        "startAt": 0,
+        "endAt": 0,
+        "receiveAt": 0,
+        "contactStart": 1000,
+        "contactEnd": 0,
+        "reason": "",
+        "winnerSide": 0,
+        "touchedNet": false,
+        "serve": false
+      },
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": false,
+        "armed": false,
+        "seq": 0,
+        "openAt": 0,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "rally-seat0-ends1-block-0.35",
+    "points": [
+      {
+        "at": 1130,
+        "p": {
+          "x": 0.15,
+          "y": 1.3,
+          "z": -0.9
+        }
+      },
+      {
+        "at": 1180,
+        "p": {
+          "x": 0.10865141662565908,
+          "y": 1.4622621468863826,
+          "z": -0.7882127242717674
+        }
+      },
+      {
+        "at": 1230,
+        "p": {
+          "x": 0.06755167126560707,
+          "y": 1.5998871701260968,
+          "z": -0.6770981904235441
+        }
+      },
+      {
+        "at": 1330,
+        "p": {
+          "x": -0.013901305411630193,
+          "y": 1.8012258456655206,
+          "z": -0.45688734836712597
+        }
+      }
+    ],
+    "seat": 0,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "block",
+      "power": 0.35
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "rally",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 1,
+      "rally": 1,
+      "shot": 0,
+      "expected": 0,
+      "receiver": 1,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "flight": {
+        "segments": [
+          {
+            "at": 1000,
+            "until": 2000,
+            "p": {
+              "x": 0.15,
+              "y": 1.3,
+              "z": -0.9
+            },
+            "v": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "a": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        ],
+        "events": null,
+        "spin": -0.95,
+        "startAt": 0,
+        "endAt": 0,
+        "receiveAt": 0,
+        "contactStart": 1000,
+        "contactEnd": 0,
+        "reason": "",
+        "winnerSide": 0,
+        "touchedNet": false,
+        "serve": false
+      },
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": false,
+        "armed": false,
+        "seq": 0,
+        "openAt": 0,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "rally-seat0-ends1-block-0.85",
+    "points": [
+      {
+        "at": 1130,
+        "p": {
+          "x": 0.15,
+          "y": 1.3,
+          "z": -0.9
+        }
+      },
+      {
+        "at": 1180,
+        "p": {
+          "x": 0.09632094488493202,
+          "y": 1.41817285215158,
+          "z": -0.7448867993042605
+        }
+      },
+      {
+        "at": 1230,
+        "p": {
+          "x": 0.04296493323093768,
+          "y": 1.5116651243626427,
+          "z": -0.5907070782516247
+        }
+      },
+      {
+        "at": 1330,
+        "p": {
+          "x": -0.06277795969383011,
+          "y": 1.6246079289632165,
+          "z": -0.2851480750756645
+        }
+      }
+    ],
+    "seat": 0,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "block",
+      "power": 0.85
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "rally",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 1,
+      "rally": 1,
+      "shot": 0,
+      "expected": 0,
+      "receiver": 1,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "flight": {
+        "segments": [
+          {
+            "at": 1000,
+            "until": 2000,
+            "p": {
+              "x": 0.15,
+              "y": 1.3,
+              "z": -0.9
+            },
+            "v": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "a": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        ],
+        "events": null,
+        "spin": -0.95,
+        "startAt": 0,
+        "endAt": 0,
+        "receiveAt": 0,
+        "contactStart": 1000,
+        "contactEnd": 0,
+        "reason": "",
+        "winnerSide": 0,
+        "touchedNet": false,
+        "serve": false
+      },
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": false,
+        "armed": false,
+        "seq": 0,
+        "openAt": 0,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "rally-seat0-ends1-block-1.00",
+    "points": [
+      {
+        "at": 1130,
+        "p": {
+          "x": 0.15,
+          "y": 1.3,
+          "z": -0.9
+        }
+      },
+      {
+        "at": 1180,
+        "p": {
+          "x": 0.09145048477131879,
+          "y": 1.40423425208534,
+          "z": -0.7278033399469774
+        }
+      },
+      {
+        "at": 1230,
+        "p": {
+          "x": 0.03325332369647117,
+          "y": 1.483770789366213,
+          "z": -0.5566429687207535
+        }
+      },
+      {
+        "at": 1330,
+        "p": {
+          "x": -0.08208393599172331,
+          "y": 1.568750719514561,
+          "z": -0.21743109274870104
+        }
+      }
+    ],
+    "seat": 0,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "block",
+      "power": 1
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "rally",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 1,
+      "rally": 1,
+      "shot": 0,
+      "expected": 0,
+      "receiver": 1,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "flight": {
+        "segments": [
+          {
+            "at": 1000,
+            "until": 2000,
+            "p": {
+              "x": 0.15,
+              "y": 1.3,
+              "z": -0.9
+            },
+            "v": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "a": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        ],
+        "events": null,
+        "spin": -0.95,
+        "startAt": 0,
+        "endAt": 0,
+        "receiveAt": 0,
+        "contactStart": 1000,
+        "contactEnd": 0,
+        "reason": "",
+        "winnerSide": 0,
+        "touchedNet": false,
+        "serve": false
+      },
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": false,
+        "armed": false,
+        "seq": 0,
+        "openAt": 0,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "rally-seat1-ends0-drive-0.35",
+    "points": [
+      {
+        "at": 1130,
+        "p": {
+          "x": 0.15,
+          "y": 1.3,
+          "z": -0.9
+        }
+      },
+      {
+        "at": 1180,
+        "p": {
+          "x": 0.10605163624525439,
+          "y": 1.4535872669659067,
+          "z": -0.78118413121004
+        }
+      },
+      {
+        "at": 1230,
+        "p": {
+          "x": 0.06236775612393755,
+          "y": 1.5805044129305903,
+          "z": -0.6630833027538209
+        }
+      },
+      {
+        "at": 1330,
+        "p": {
+          "x": -0.024206553218409855,
+          "y": 1.7543283418562887,
+          "z": -0.4290267668426058
+        }
+      }
+    ],
+    "seat": 1,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "drive",
+      "power": 0.35
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "rally",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 0,
+      "rally": 1,
+      "shot": 0,
+      "expected": 1,
+      "receiver": 0,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "flight": {
+        "segments": [
+          {
+            "at": 1000,
+            "until": 2000,
+            "p": {
+              "x": 0.15,
+              "y": 1.3,
+              "z": -0.9
+            },
+            "v": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "a": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        ],
+        "events": null,
+        "spin": -0.95,
+        "startAt": 0,
+        "endAt": 0,
+        "receiveAt": 0,
+        "contactStart": 1000,
+        "contactEnd": 0,
+        "reason": "",
+        "winnerSide": 0,
+        "touchedNet": false,
+        "serve": false
+      },
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": false,
+        "armed": false,
+        "seq": 0,
+        "openAt": 0,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "rally-seat1-ends0-drive-0.85",
+    "points": [
+      {
+        "at": 1130,
+        "p": {
+          "x": 0.15,
+          "y": 1.3,
+          "z": -0.9
+        }
+      },
+      {
+        "at": 1180,
+        "p": {
+          "x": 0.0920655725082906,
+          "y": 1.409913096012313,
+          "z": -0.7325903006405238
+        }
+      },
+      {
+        "at": 1230,
+        "p": {
+          "x": 0.03447979753909902,
+          "y": 1.492278750110413,
+          "z": -0.5661880819191185
+        }
+      },
+      {
+        "at": 1330,
+        "p": {
+          "x": -0.0796457948317307,
+          "y": 1.574367732563973,
+          "z": -0.23640608639052135
+        }
+      }
+    ],
+    "seat": 1,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "drive",
+      "power": 0.85
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "rally",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 0,
+      "rally": 1,
+      "shot": 0,
+      "expected": 1,
+      "receiver": 0,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "flight": {
+        "segments": [
+          {
+            "at": 1000,
+            "until": 2000,
+            "p": {
+              "x": 0.15,
+              "y": 1.3,
+              "z": -0.9
+            },
+            "v": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "a": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        ],
+        "events": null,
+        "spin": -0.95,
+        "startAt": 0,
+        "endAt": 0,
+        "receiveAt": 0,
+        "contactStart": 1000,
+        "contactEnd": 0,
+        "reason": "",
+        "winnerSide": 0,
+        "touchedNet": false,
+        "serve": false
+      },
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": false,
+        "armed": false,
+        "seq": 0,
+        "openAt": 0,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "rally-seat1-ends0-drive-1.00",
+    "points": [
+      {
+        "at": 1130,
+        "p": {
+          "x": 0.15,
+          "y": 1.3,
+          "z": -0.9
+        }
+      },
+      {
+        "at": 1180,
+        "p": {
+          "x": 0.07619090684097851,
+          "y": 1.358780708401977,
+          "z": -0.682924260365184
+        }
+      },
+      {
+        "at": 1230,
+        "p": {
+          "x": 0.0028260008022720933,
+          "y": 1.3912945853926415,
+          "z": -0.4671548942888523
+        }
+      },
+      {
+        "at": 1330,
+        "p": {
+          "x": -0.14257124991419554,
+          "y": 1.377521845140033,
+          "z": -0.039535282811642015
+        }
+      }
+    ],
+    "seat": 1,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "drive",
+      "power": 1
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "rally",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 0,
+      "rally": 1,
+      "shot": 0,
+      "expected": 1,
+      "receiver": 0,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "flight": {
+        "segments": [
+          {
+            "at": 1000,
+            "until": 2000,
+            "p": {
+              "x": 0.15,
+              "y": 1.3,
+              "z": -0.9
+            },
+            "v": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "a": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        ],
+        "events": null,
+        "spin": -0.95,
+        "startAt": 0,
+        "endAt": 0,
+        "receiveAt": 0,
+        "contactStart": 1000,
+        "contactEnd": 0,
+        "reason": "",
+        "winnerSide": 0,
+        "touchedNet": false,
+        "serve": false
+      },
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": false,
+        "armed": false,
+        "seq": 0,
+        "openAt": 0,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "rally-seat1-ends0-chop-0.35",
+    "points": [
+      {
+        "at": 1130,
+        "p": {
+          "x": 0.15,
+          "y": 1.3,
+          "z": -0.9
+        }
+      },
+      {
+        "at": 1180,
+        "p": {
+          "x": 0.11219848572549855,
+          "y": 1.4591427734681952,
+          "z": -0.7978023440152314
+        }
+      },
+      {
+        "at": 1230,
+        "p": {
+          "x": 0.0746244630113251,
+          "y": 1.5957081451948762,
+          "z": -0.6962197190594583
+        }
+      },
+      {
+        "at": 1330,
+        "p": {
+          "x": 0.0001588922639621473,
+          "y": 1.8011066834236968,
+          "z": -0.49489956223489917
+        }
+      }
+    ],
+    "seat": 1,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "chop",
+      "power": 0.35
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "rally",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 0,
+      "rally": 1,
+      "shot": 0,
+      "expected": 1,
+      "receiver": 0,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "flight": {
+        "segments": [
+          {
+            "at": 1000,
+            "until": 2000,
+            "p": {
+              "x": 0.15,
+              "y": 1.3,
+              "z": -0.9
+            },
+            "v": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "a": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        ],
+        "events": null,
+        "spin": -0.95,
+        "startAt": 0,
+        "endAt": 0,
+        "receiveAt": 0,
+        "contactStart": 1000,
+        "contactEnd": 0,
+        "reason": "",
+        "winnerSide": 0,
+        "touchedNet": false,
+        "serve": false
+      },
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": false,
+        "armed": false,
+        "seq": 0,
+        "openAt": 0,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "rally-seat1-ends0-chop-0.85",
+    "points": [
+      {
+        "at": 1130,
+        "p": {
+          "x": 0.15,
+          "y": 1.3,
+          "z": -0.9
+        }
+      },
+      {
+        "at": 1180,
+        "p": {
+          "x": 0.10192335505574757,
+          "y": 1.4144867034886452,
+          "z": -0.7610757536616488
+        }
+      },
+      {
+        "at": 1230,
+        "p": {
+          "x": 0.05413603796472034,
+          "y": 1.5070959101672892,
+          "z": -0.6229875609622445
+        }
+      },
+      {
+        "at": 1330,
+        "p": {
+          "x": -0.04057061265765856,
+          "y": 1.626681833094573,
+          "z": -0.34931933648027674
+        }
+      }
+    ],
+    "seat": 1,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "chop",
+      "power": 0.85
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "rally",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 0,
+      "rally": 1,
+      "shot": 0,
+      "expected": 1,
+      "receiver": 0,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "flight": {
+        "segments": [
+          {
+            "at": 1000,
+            "until": 2000,
+            "p": {
+              "x": 0.15,
+              "y": 1.3,
+              "z": -0.9
+            },
+            "v": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "a": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        ],
+        "events": null,
+        "spin": -0.95,
+        "startAt": 0,
+        "endAt": 0,
+        "receiveAt": 0,
+        "contactStart": 1000,
+        "contactEnd": 0,
+        "reason": "",
+        "winnerSide": 0,
+        "touchedNet": false,
+        "serve": false
+      },
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": false,
+        "armed": false,
+        "seq": 0,
+        "openAt": 0,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "rally-seat1-ends0-chop-1.00",
+    "points": [
+      {
+        "at": 1130,
+        "p": {
+          "x": 0.15,
+          "y": 1.3,
+          "z": -0.9
+        }
+      },
+      {
+        "at": 1180,
+        "p": {
+          "x": 0.09797965055848354,
+          "y": 1.4006187777465324,
+          "z": -0.7470058993036343
+        }
+      },
+      {
+        "at": 1230,
+        "p": {
+          "x": 0.04627236239745764,
+          "y": 1.479628190310749,
+          "z": -0.5949325253918003
+        }
+      },
+      {
+        "at": 1330,
+        "p": {
+          "x": -0.056203030083122434,
+          "y": 1.5728189198922344,
+          "z": -0.2935479579217278
+        }
+      }
+    ],
+    "seat": 1,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "chop",
+      "power": 1
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "rally",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 0,
+      "rally": 1,
+      "shot": 0,
+      "expected": 1,
+      "receiver": 0,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "flight": {
+        "segments": [
+          {
+            "at": 1000,
+            "until": 2000,
+            "p": {
+              "x": 0.15,
+              "y": 1.3,
+              "z": -0.9
+            },
+            "v": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "a": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        ],
+        "events": null,
+        "spin": -0.95,
+        "startAt": 0,
+        "endAt": 0,
+        "receiveAt": 0,
+        "contactStart": 1000,
+        "contactEnd": 0,
+        "reason": "",
+        "winnerSide": 0,
+        "touchedNet": false,
+        "serve": false
+      },
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": false,
+        "armed": false,
+        "seq": 0,
+        "openAt": 0,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "rally-seat1-ends0-block-0.35",
+    "points": [
+      {
+        "at": 1130,
+        "p": {
+          "x": 0.15,
+          "y": 1.3,
+          "z": -0.9
+        }
+      },
+      {
+        "at": 1180,
+        "p": {
+          "x": 0.10865141662565908,
+          "y": 1.4622621468863826,
+          "z": -0.7882127242717674
+        }
+      },
+      {
+        "at": 1230,
+        "p": {
+          "x": 0.06755167126560707,
+          "y": 1.5998871701260968,
+          "z": -0.6770981904235441
+        }
+      },
+      {
+        "at": 1330,
+        "p": {
+          "x": -0.013901305411630193,
+          "y": 1.8012258456655206,
+          "z": -0.45688734836712597
+        }
+      }
+    ],
+    "seat": 1,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "block",
+      "power": 0.35
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "rally",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 0,
+      "rally": 1,
+      "shot": 0,
+      "expected": 1,
+      "receiver": 0,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "flight": {
+        "segments": [
+          {
+            "at": 1000,
+            "until": 2000,
+            "p": {
+              "x": 0.15,
+              "y": 1.3,
+              "z": -0.9
+            },
+            "v": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "a": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        ],
+        "events": null,
+        "spin": -0.95,
+        "startAt": 0,
+        "endAt": 0,
+        "receiveAt": 0,
+        "contactStart": 1000,
+        "contactEnd": 0,
+        "reason": "",
+        "winnerSide": 0,
+        "touchedNet": false,
+        "serve": false
+      },
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": false,
+        "armed": false,
+        "seq": 0,
+        "openAt": 0,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "rally-seat1-ends0-block-0.85",
+    "points": [
+      {
+        "at": 1130,
+        "p": {
+          "x": 0.15,
+          "y": 1.3,
+          "z": -0.9
+        }
+      },
+      {
+        "at": 1180,
+        "p": {
+          "x": 0.09632094488493202,
+          "y": 1.41817285215158,
+          "z": -0.7448867993042605
+        }
+      },
+      {
+        "at": 1230,
+        "p": {
+          "x": 0.04296493323093768,
+          "y": 1.5116651243626427,
+          "z": -0.5907070782516247
+        }
+      },
+      {
+        "at": 1330,
+        "p": {
+          "x": -0.06277795969383011,
+          "y": 1.6246079289632165,
+          "z": -0.2851480750756645
+        }
+      }
+    ],
+    "seat": 1,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "block",
+      "power": 0.85
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "rally",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 0,
+      "rally": 1,
+      "shot": 0,
+      "expected": 1,
+      "receiver": 0,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "flight": {
+        "segments": [
+          {
+            "at": 1000,
+            "until": 2000,
+            "p": {
+              "x": 0.15,
+              "y": 1.3,
+              "z": -0.9
+            },
+            "v": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "a": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        ],
+        "events": null,
+        "spin": -0.95,
+        "startAt": 0,
+        "endAt": 0,
+        "receiveAt": 0,
+        "contactStart": 1000,
+        "contactEnd": 0,
+        "reason": "",
+        "winnerSide": 0,
+        "touchedNet": false,
+        "serve": false
+      },
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": false,
+        "armed": false,
+        "seq": 0,
+        "openAt": 0,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "rally-seat1-ends0-block-1.00",
+    "points": [
+      {
+        "at": 1130,
+        "p": {
+          "x": 0.15,
+          "y": 1.3,
+          "z": -0.9
+        }
+      },
+      {
+        "at": 1180,
+        "p": {
+          "x": 0.09145048477131879,
+          "y": 1.40423425208534,
+          "z": -0.7278033399469774
+        }
+      },
+      {
+        "at": 1230,
+        "p": {
+          "x": 0.03325332369647117,
+          "y": 1.483770789366213,
+          "z": -0.5566429687207535
+        }
+      },
+      {
+        "at": 1330,
+        "p": {
+          "x": -0.08208393599172331,
+          "y": 1.568750719514561,
+          "z": -0.21743109274870104
+        }
+      }
+    ],
+    "seat": 1,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "block",
+      "power": 1
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "rally",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 0,
+      "rally": 1,
+      "shot": 0,
+      "expected": 1,
+      "receiver": 0,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "flight": {
+        "segments": [
+          {
+            "at": 1000,
+            "until": 2000,
+            "p": {
+              "x": 0.15,
+              "y": 1.3,
+              "z": -0.9
+            },
+            "v": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "a": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        ],
+        "events": null,
+        "spin": -0.95,
+        "startAt": 0,
+        "endAt": 0,
+        "receiveAt": 0,
+        "contactStart": 1000,
+        "contactEnd": 0,
+        "reason": "",
+        "winnerSide": 0,
+        "touchedNet": false,
+        "serve": false
+      },
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": false,
+        "armed": false,
+        "seq": 0,
+        "openAt": 0,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "rally-seat1-ends1-drive-0.35",
+    "points": [
+      {
+        "at": 1130,
+        "p": {
+          "x": 0.15,
+          "y": 1.3,
+          "z": 0.9
+        }
+      },
+      {
+        "at": 1180,
+        "p": {
+          "x": 0.1732005403339144,
+          "y": 1.4535872669659067,
+          "z": 0.78118413121004
+        }
+      },
+      {
+        "at": 1230,
+        "p": {
+          "x": 0.1962614585595003,
+          "y": 1.5805044129305903,
+          "z": 0.6630833027538209
+        }
+      },
+      {
+        "at": 1330,
+        "p": {
+          "x": 0.2419644286856868,
+          "y": 1.7543283418562887,
+          "z": 0.4290267668426058
+        }
+      }
+    ],
+    "seat": 1,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "drive",
+      "power": 0.35
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "rally",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 1,
+      "rally": 1,
+      "shot": 0,
+      "expected": 1,
+      "receiver": 0,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "flight": {
+        "segments": [
+          {
+            "at": 1000,
+            "until": 2000,
+            "p": {
+              "x": 0.15,
+              "y": 1.3,
+              "z": 0.9
+            },
+            "v": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "a": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        ],
+        "events": null,
+        "spin": -0.95,
+        "startAt": 0,
+        "endAt": 0,
+        "receiveAt": 0,
+        "contactStart": 1000,
+        "contactEnd": 0,
+        "reason": "",
+        "winnerSide": 0,
+        "touchedNet": false,
+        "serve": false
+      },
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": false,
+        "armed": false,
+        "seq": 0,
+        "openAt": 0,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "rally-seat1-ends1-drive-0.85",
+    "points": [
+      {
+        "at": 1130,
+        "p": {
+          "x": 0.15,
+          "y": 1.3,
+          "z": 0.9
+        }
+      },
+      {
+        "at": 1180,
+        "p": {
+          "x": 0.18228432033755063,
+          "y": 1.409913096012313,
+          "z": 0.7325903006405238
+        }
+      },
+      {
+        "at": 1230,
+        "p": {
+          "x": 0.21437435188671072,
+          "y": 1.492278750110413,
+          "z": 0.5661880819191185
+        }
+      },
+      {
+        "at": 1330,
+        "p": {
+          "x": 0.2779715486198596,
+          "y": 1.574367732563973,
+          "z": 0.23640608639052135
+        }
+      }
+    ],
+    "seat": 1,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "drive",
+      "power": 0.85
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "rally",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 1,
+      "rally": 1,
+      "shot": 0,
+      "expected": 1,
+      "receiver": 0,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "flight": {
+        "segments": [
+          {
+            "at": 1000,
+            "until": 2000,
+            "p": {
+              "x": 0.15,
+              "y": 1.3,
+              "z": 0.9
+            },
+            "v": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "a": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        ],
+        "events": null,
+        "spin": -0.95,
+        "startAt": 0,
+        "endAt": 0,
+        "receiveAt": 0,
+        "contactStart": 1000,
+        "contactEnd": 0,
+        "reason": "",
+        "winnerSide": 0,
+        "touchedNet": false,
+        "serve": false
+      },
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": false,
+        "armed": false,
+        "seq": 0,
+        "openAt": 0,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "rally-seat1-ends1-drive-1.00",
+    "points": [
+      {
+        "at": 1130,
+        "p": {
+          "x": 0.15,
+          "y": 1.3,
+          "z": 0.9
+        }
+      },
+      {
+        "at": 1180,
+        "p": {
+          "x": 0.1917289345922999,
+          "y": 1.358780708401977,
+          "z": 0.682924260365184
+        }
+      },
+      {
+        "at": 1230,
+        "p": {
+          "x": 0.23320674219608045,
+          "y": 1.3912945853926415,
+          "z": 0.4671548942888523
+        }
+      },
+      {
+        "at": 1330,
+        "p": {
+          "x": 0.31540897643808347,
+          "y": 1.377521845140033,
+          "z": 0.039535282811642015
+        }
+      }
+    ],
+    "seat": 1,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "drive",
+      "power": 1
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "rally",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 1,
+      "rally": 1,
+      "shot": 0,
+      "expected": 1,
+      "receiver": 0,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "flight": {
+        "segments": [
+          {
+            "at": 1000,
+            "until": 2000,
+            "p": {
+              "x": 0.15,
+              "y": 1.3,
+              "z": 0.9
+            },
+            "v": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "a": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        ],
+        "events": null,
+        "spin": -0.95,
+        "startAt": 0,
+        "endAt": 0,
+        "receiveAt": 0,
+        "contactStart": 1000,
+        "contactEnd": 0,
+        "reason": "",
+        "winnerSide": 0,
+        "touchedNet": false,
+        "serve": false
+      },
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": false,
+        "armed": false,
+        "seq": 0,
+        "openAt": 0,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "rally-seat1-ends1-chop-0.35",
+    "points": [
+      {
+        "at": 1130,
+        "p": {
+          "x": 0.15,
+          "y": 1.3,
+          "z": 0.9
+        }
+      },
+      {
+        "at": 1180,
+        "p": {
+          "x": 0.1699555906450308,
+          "y": 1.4591427734681952,
+          "z": 0.7978023440152314
+        }
+      },
+      {
+        "at": 1230,
+        "p": {
+          "x": 0.18979108746471537,
+          "y": 1.5957081451948762,
+          "z": 0.6962197190594583
+        }
+      },
+      {
+        "at": 1330,
+        "p": {
+          "x": 0.22910179962804586,
+          "y": 1.8011066834236968,
+          "z": 0.49489956223489917
+        }
+      }
+    ],
+    "seat": 1,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "chop",
+      "power": 0.35
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "rally",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 1,
+      "rally": 1,
+      "shot": 0,
+      "expected": 1,
+      "receiver": 0,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "flight": {
+        "segments": [
+          {
+            "at": 1000,
+            "until": 2000,
+            "p": {
+              "x": 0.15,
+              "y": 1.3,
+              "z": 0.9
+            },
+            "v": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "a": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        ],
+        "events": null,
+        "spin": -0.95,
+        "startAt": 0,
+        "endAt": 0,
+        "receiveAt": 0,
+        "contactStart": 1000,
+        "contactEnd": 0,
+        "reason": "",
+        "winnerSide": 0,
+        "touchedNet": false,
+        "serve": false
+      },
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": false,
+        "armed": false,
+        "seq": 0,
+        "openAt": 0,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "rally-seat1-ends1-chop-0.85",
+    "points": [
+      {
+        "at": 1130,
+        "p": {
+          "x": 0.15,
+          "y": 1.3,
+          "z": 0.9
+        }
+      },
+      {
+        "at": 1180,
+        "p": {
+          "x": 0.17679100965237018,
+          "y": 1.4144867034886452,
+          "z": 0.7610757536616488
+        }
+      },
+      {
+        "at": 1230,
+        "p": {
+          "x": 0.20342078955758475,
+          "y": 1.5070959101672892,
+          "z": 0.6229875609622445
+        }
+      },
+      {
+        "at": 1330,
+        "p": {
+          "x": 0.2561966601265467,
+          "y": 1.626681833094573,
+          "z": 0.34931933648027674
+        }
+      }
+    ],
+    "seat": 1,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "chop",
+      "power": 0.85
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "rally",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 1,
+      "rally": 1,
+      "shot": 0,
+      "expected": 1,
+      "receiver": 0,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "flight": {
+        "segments": [
+          {
+            "at": 1000,
+            "until": 2000,
+            "p": {
+              "x": 0.15,
+              "y": 1.3,
+              "z": 0.9
+            },
+            "v": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "a": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        ],
+        "events": null,
+        "spin": -0.95,
+        "startAt": 0,
+        "endAt": 0,
+        "receiveAt": 0,
+        "contactStart": 1000,
+        "contactEnd": 0,
+        "reason": "",
+        "winnerSide": 0,
+        "touchedNet": false,
+        "serve": false
+      },
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": false,
+        "armed": false,
+        "seq": 0,
+        "openAt": 0,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "rally-seat1-ends1-chop-1.00",
+    "points": [
+      {
+        "at": 1130,
+        "p": {
+          "x": 0.15,
+          "y": 1.3,
+          "z": 0.9
+        }
+      },
+      {
+        "at": 1180,
+        "p": {
+          "x": 0.17941038382136387,
+          "y": 1.4006187777465324,
+          "z": 0.7470058993036343
+        }
+      },
+      {
+        "at": 1230,
+        "p": {
+          "x": 0.20864377435995127,
+          "y": 1.479628190310749,
+          "z": 0.5949325253918003
+        }
+      },
+      {
+        "at": 1330,
+        "p": {
+          "x": 0.26657957558879647,
+          "y": 1.5728189198922344,
+          "z": 0.2935479579217278
+        }
+      }
+    ],
+    "seat": 1,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "chop",
+      "power": 1
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "rally",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 1,
+      "rally": 1,
+      "shot": 0,
+      "expected": 1,
+      "receiver": 0,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "flight": {
+        "segments": [
+          {
+            "at": 1000,
+            "until": 2000,
+            "p": {
+              "x": 0.15,
+              "y": 1.3,
+              "z": 0.9
+            },
+            "v": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "a": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        ],
+        "events": null,
+        "spin": -0.95,
+        "startAt": 0,
+        "endAt": 0,
+        "receiveAt": 0,
+        "contactStart": 1000,
+        "contactEnd": 0,
+        "reason": "",
+        "winnerSide": 0,
+        "touchedNet": false,
+        "serve": false
+      },
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": false,
+        "armed": false,
+        "seq": 0,
+        "openAt": 0,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "rally-seat1-ends1-block-0.35",
+    "points": [
+      {
+        "at": 1130,
+        "p": {
+          "x": 0.15,
+          "y": 1.3,
+          "z": 0.9
+        }
+      },
+      {
+        "at": 1180,
+        "p": {
+          "x": 0.1718281044928102,
+          "y": 1.4622621468863826,
+          "z": 0.7882127242717674
+        }
+      },
+      {
+        "at": 1230,
+        "p": {
+          "x": 0.1935248462705182,
+          "y": 1.5998871701260968,
+          "z": 0.6770981904235441
+        }
+      },
+      {
+        "at": 1330,
+        "p": {
+          "x": 0.23652424168062774,
+          "y": 1.8012258456655206,
+          "z": 0.45688734836712597
+        }
+      }
+    ],
+    "seat": 1,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "block",
+      "power": 0.35
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "rally",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 1,
+      "rally": 1,
+      "shot": 0,
+      "expected": 1,
+      "receiver": 0,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "flight": {
+        "segments": [
+          {
+            "at": 1000,
+            "until": 2000,
+            "p": {
+              "x": 0.15,
+              "y": 1.3,
+              "z": 0.9
+            },
+            "v": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "a": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        ],
+        "events": null,
+        "spin": -0.95,
+        "startAt": 0,
+        "endAt": 0,
+        "receiveAt": 0,
+        "contactStart": 1000,
+        "contactEnd": 0,
+        "reason": "",
+        "winnerSide": 0,
+        "touchedNet": false,
+        "serve": false
+      },
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": false,
+        "armed": false,
+        "seq": 0,
+        "openAt": 0,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "rally-seat1-ends1-block-0.85",
+    "points": [
+      {
+        "at": 1130,
+        "p": {
+          "x": 0.15,
+          "y": 1.3,
+          "z": 0.9
+        }
+      },
+      {
+        "at": 1180,
+        "p": {
+          "x": 0.1799129875927381,
+          "y": 1.41817285215158,
+          "z": 0.7448867993042605
+        }
+      },
+      {
+        "at": 1230,
+        "p": {
+          "x": 0.2096459572059813,
+          "y": 1.5116651243626427,
+          "z": 0.5907070782516247
+        }
+      },
+      {
+        "at": 1330,
+        "p": {
+          "x": 0.26857184249398297,
+          "y": 1.6246079289632165,
+          "z": 0.2851480750756645
+        }
+      }
+    ],
+    "seat": 1,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "block",
+      "power": 0.85
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "rally",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 1,
+      "rally": 1,
+      "shot": 0,
+      "expected": 1,
+      "receiver": 0,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "flight": {
+        "segments": [
+          {
+            "at": 1000,
+            "until": 2000,
+            "p": {
+              "x": 0.15,
+              "y": 1.3,
+              "z": 0.9
+            },
+            "v": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "a": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        ],
+        "events": null,
+        "spin": -0.95,
+        "startAt": 0,
+        "endAt": 0,
+        "receiveAt": 0,
+        "contactStart": 1000,
+        "contactEnd": 0,
+        "reason": "",
+        "winnerSide": 0,
+        "touchedNet": false,
+        "serve": false
+      },
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": false,
+        "armed": false,
+        "seq": 0,
+        "openAt": 0,
+        "closeAt": 0
+      }
+    }
+  },
+  {
+    "at": 1130,
+    "name": "rally-seat1-ends1-block-1.00",
+    "points": [
+      {
+        "at": 1130,
+        "p": {
+          "x": 0.15,
+          "y": 1.3,
+          "z": 0.9
+        }
+      },
+      {
+        "at": 1180,
+        "p": {
+          "x": 0.18310173295483548,
+          "y": 1.40423425208534,
+          "z": 0.7278033399469774
+        }
+      },
+      {
+        "at": 1230,
+        "p": {
+          "x": 0.2160042578878766,
+          "y": 1.483770789366213,
+          "z": 0.5566429687207535
+        }
+      },
+      {
+        "at": 1330,
+        "p": {
+          "x": 0.2812116836885756,
+          "y": 1.568750719514561,
+          "z": 0.21743109274870104
+        }
+      }
+    ],
+    "seat": 1,
+    "stroke": {
+      "aim": 0.65,
+      "kind": "block",
+      "power": 1
+    },
+    "view": {
+      "paddles": [
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        },
+        {
+          "x": 0,
+          "seq": 0,
+          "at": 100000000,
+          "rally": 0,
+          "shot": 0,
+          "result": ""
+        }
+      ],
+      "options": {
+        "bestOf": 1,
+        "teams": [
+          0,
+          1
+        ],
+        "difficulty": "normal",
+        "court": "club"
+      },
+      "epoch": "oracle-v1",
+      "phase": "rally",
+      "serverAt": 1000,
+      "phaseUntil": 1000,
+      "serveDeadline": 0,
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
+      "game": 1,
+      "games": [],
+      "order": [
+        0,
+        1
+      ],
+      "ends": 1,
+      "rally": 1,
+      "shot": 0,
+      "expected": 1,
+      "receiver": 0,
+      "lastHitter": -1,
+      "pointWinner": -1,
+      "flight": {
+        "segments": [
+          {
+            "at": 1000,
+            "until": 2000,
+            "p": {
+              "x": 0.15,
+              "y": 1.3,
+              "z": 0.9
+            },
+            "v": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "a": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        ],
+        "events": null,
+        "spin": -0.95,
+        "startAt": 0,
+        "endAt": 0,
+        "receiveAt": 0,
+        "contactStart": 1000,
+        "contactEnd": 0,
+        "reason": "",
+        "winnerSide": 0,
+        "touchedNet": false,
+        "serve": false
+      },
+      "events": [],
+      "controls": {
+        "retrySeq": 0,
+        "canSwing": false,
+        "armed": false,
+        "seq": 0,
+        "openAt": 0,
+        "closeAt": 0
+      }
+    }
+  }
+]
