@@ -111,11 +111,6 @@
 .game-fullscreen-status .clock-reading > svg {
   display: none;
 }
-@media (max-width: 600px) {
-  .room-page.playing[data-table-layout="poker"] .game-sidebar {
-    top: 46px;
-  }
-}
 
 .game-fullscreen-surface[data-room-fullscreen]
   .game-fullscreen-status
