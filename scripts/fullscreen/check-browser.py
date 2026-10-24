@@ -36,14 +36,20 @@ def wait(fn,seconds=20):
 def save(name,data):(out/(name+'.json')).write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n')
 
 def active():return js('document.querySelector("[data-game-fullscreen-surface]")?.dataset.roomFullscreen || ""')
+def fullscreen_selector():
+ if active():return '[data-room-fullscreen] [data-fullscreen-toggle]'
+ if not js('!!document.querySelector("[data-fullscreen-enter]")'):
+  browser('click','.compact-room-tools');browser('wait','[data-fullscreen-enter]')
+ return '[data-fullscreen-enter]'
 def toggle():
  if js('!!document.querySelector(".toast.error")'):
   report.setdefault('notices',[]).append(js('document.querySelector(".toast.error").innerText'))
   browser('click','button[aria-label="关闭错误"]')
- if not active():browser('scrollintoview','[data-fullscreen-toggle]')
- result=subprocess.run(['node','scripts/fullscreen/tap.mjs',browser('get','cdp-url')['cdpUrl'],base,'[data-fullscreen-toggle]','mouse'],cwd=root,env=env,text=True,capture_output=True,timeout=20);assert result.returncode==0,result.stderr
+ selector=fullscreen_selector()
+ result=subprocess.run(['node','scripts/fullscreen/tap.mjs',browser('get','cdp-url')['cdpUrl'],base,selector,'mouse'],cwd=root,env=env,text=True,capture_output=True,timeout=20);assert result.returncode==0,result.stderr
 def tap():
- result=subprocess.run(['node','scripts/fullscreen/tap.mjs',browser('get','cdp-url')['cdpUrl'],base,'[data-fullscreen-toggle]'],cwd=root,env=env,text=True,capture_output=True,timeout=20)
+ selector=fullscreen_selector()
+ result=subprocess.run(['node','scripts/fullscreen/tap.mjs',browser('get','cdp-url')['cdpUrl'],base,selector],cwd=root,env=env,text=True,capture_output=True,timeout=20)
  assert result.returncode==0,result.stderr
  report.setdefault('touch',[]).append(json.loads(result.stdout))
 def shot(name):browser('screenshot',str(out/(name+'.png')))
@@ -69,8 +75,8 @@ try:
    browser('wait','[data-bubbleparty-character-confirm]');browser('click','[data-bubbleparty-character-confirm]');wait(lambda:room()['game']['data']['phase']=='playing',45)
   wait(lambda:js('!!document.querySelector("[data-fullscreen-toggle]")'),30)
   position=js('(()=>{const b=document.querySelector("[data-fullscreen-toggle]").getBoundingClientRect(),g=document.querySelector("[data-fullscreen-board]").firstElementChild.getBoundingClientRect();return {button:{x:b.x,y:b.y,w:b.width,h:b.height},board:{x:g.x,y:g.y,w:g.width,h:g.height},inGame:!!document.querySelector(".game-main [data-fullscreen-toggle]"),inHeading:!!document.querySelector(".room-heading [data-fullscreen-toggle]")}})()')
-  assert position['inGame'] and not position['inHeading'],position
-  assert abs(position['button']['x']+position['button']['w']-position['board']['x']-position['board']['w'])<20,position
+  assert not position['inGame'] and position['inHeading'],position
+  assert js('!!document.querySelector(".room-tools [data-fullscreen-enter]")'),position
   shot(kind+'-playing-windowed')
   toggle();wait(lambda:active()=='native')
   assert js('document.fullscreenElement.matches("[data-game-fullscreen-surface]")&&!document.fullscreenElement.querySelector(".topbar,.room-heading,.players-strip,.room-tools")')
@@ -150,7 +156,7 @@ try:
   cmd('ready');cmd('start');browser('wait','.poker-board')
   browser('set','viewport','320','740');time.sleep(.3)
   tap();wait(lambda:bool(active()));assert not measure()['overflow'];shot(kind+'-playing-320')
-  geometry=js("(()=>{const b=document.querySelector('[data-fullscreen-toggle]'),r=b.getBoundingClientRect();return {button:{x:r.x,y:r.y,w:r.width,h:r.height},clear:[...document.fullscreenElement.querySelectorAll('.poker-table-toolbar')].filter(e=>e.getClientRects().length).every(e=>{const q=e.getBoundingClientRect();return q.right<=r.left||q.left>=r.right||q.bottom<=r.top||q.top>=r.bottom})}})()")
+  geometry=js("(()=>{const b=document.fullscreenElement.querySelector('[data-fullscreen-toggle]'),r=b.getBoundingClientRect();return {button:{x:r.x,y:r.y,w:r.width,h:r.height},clear:[...document.fullscreenElement.querySelectorAll('.poker-table-toolbar')].filter(e=>e.getClientRects().length).every(e=>{const q=e.getBoundingClientRect();return q.right<=r.left||q.left>=r.right||q.bottom<=r.top||q.top>=r.bottom})}})()")
   assert geometry['clear'],geometry
   clock=js('(()=>{const e=document.querySelector("[data-room-fullscreen] .game-fullscreen-status time"),r=e.getBoundingClientRect();let p=e,bg;while(p){bg=getComputedStyle(p).backgroundColor;if(bg!=="rgba(0, 0, 0, 0)"&&bg!=="transparent")break;p=p.parentElement}return {text:e.textContent,color:getComputedStyle(e).color,bg,visible:getComputedStyle(e).visibility,rect:{x:r.x,y:r.y,w:r.width,h:r.height},clear:[...document.fullscreenElement.querySelectorAll("button")].filter(b=>b.getClientRects().length).every(b=>{const q=b.getBoundingClientRect();return q.left>=r.right||q.right<=r.left||q.top>=r.bottom||q.bottom<=r.top})}})()')
   def lum(rgb):

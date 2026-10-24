@@ -3,6 +3,8 @@ import {
   useLayoutEffect,
   useRef,
   useState,
+  useImperativeHandle,
+  type Ref,
   type ReactNode,
 } from "react";
 import { Maximize, Minimize } from "lucide-react";
@@ -27,6 +29,7 @@ function useRoomFullscreen(
   const [pending, setPending] = useState(false);
   const control = useRef({ generation: 0, wanted: false, mode: "" as Mode });
   const scroll = useRef({ x: 0, y: 0 });
+  const trigger = useRef<HTMLElement | null>(null);
   const doc = document as FullscreenDocument;
   const nativeElement = () =>
     doc.fullscreenElement ?? doc.webkitFullscreenElement;
@@ -101,9 +104,10 @@ function useRoomFullscreen(
         element.inert = inert;
       });
       document.documentElement.style.overflow = overflow;
-      root
-        .querySelector<HTMLElement>("[data-fullscreen-toggle]")
-        ?.focus({ preventScroll: true });
+      const focusTarget = trigger.current?.isConnected
+        ? trigger.current
+        : root.querySelector<HTMLElement>("[data-fullscreen-board]");
+      focusTarget?.focus({ preventScroll: true });
       window.scrollTo(scroll.current.x, scroll.current.y);
     };
   }, [mode, root]);
@@ -114,6 +118,7 @@ function useRoomFullscreen(
       return;
     }
     if (!scope || !root) return;
+    trigger.current = document.activeElement as HTMLElement | null;
     scroll.current = { x: window.scrollX, y: window.scrollY };
     control.current.wanted = true;
     const generation = ++control.current.generation;
@@ -156,23 +161,38 @@ function FullscreenButton({
   );
 }
 
+export type GameFullscreenHandle = { enter: () => void };
+
 export function GameFullscreen({
+  ref,
   scope,
   enabled,
   children,
   result,
   status,
+  onReadyChange,
 }: {
+  ref?: Ref<GameFullscreenHandle>;
   scope: string;
   enabled: boolean;
   children: ReactNode;
   result?: ReactNode;
   status?: ReactNode;
+  onReadyChange: (ready: boolean) => void;
 }) {
   const [root, setRoot] = useState<HTMLDivElement | null>(null);
   const board = useRef<HTMLDivElement>(null);
   const [rightInset, setRightInset] = useState(0);
   const fullscreen = useRoomFullscreen(enabled ? scope : undefined, root);
+  useImperativeHandle(ref, () => ({
+    enter: () => {
+      if (!fullscreen.active) void fullscreen.toggle();
+    },
+  }));
+  useEffect(() => {
+    onReadyChange(enabled && !!root);
+    return () => onReadyChange(false);
+  }, [enabled, root, onReadyChange]);
   useLayoutEffect(() => {
     const container = board.current;
     if (!container) return;
@@ -206,7 +226,7 @@ export function GameFullscreen({
       data-room-fullscreen={fullscreen.mode || undefined}
     >
       <GameOverlayRoot.Provider value={root}>
-        {enabled && (
+        {fullscreen.active && (
           <div
             className="game-fullscreen-toolbar"
             style={{ paddingRight: rightInset }}

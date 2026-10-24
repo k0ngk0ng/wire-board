@@ -1,5 +1,8 @@
 import { CompactRoomPanel } from "./ui/compact-room-panel";
-import { GameFullscreen } from "./ui/room-fullscreen";
+import {
+  GameFullscreen,
+  type GameFullscreenHandle,
+} from "./ui/room-fullscreen";
 import { GameFeedback } from "./ui/game-overlay-root";
 import { SoundControls } from "./ui/sound-controls";
 import { readAudioPreferences } from "./audio-preferences";
@@ -30,6 +33,7 @@ import {
   Gamepad2,
   Hand,
   Lock,
+  Maximize,
   LogOut,
   Plus,
   RotateCcw,
@@ -183,6 +187,8 @@ function App() {
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [wishOpen, setWishOpen] = useState(false);
   const [controllerSettingsOpen, setControllerSettingsOpen] = useState(false);
+  const gameFullscreen = useRef<GameFullscreenHandle>(null);
+  const [gameFullscreenReady, setGameFullscreenReady] = useState(false);
   useEffect(() => setControllerSettingsOpen(false), [state?.user.id]);
   const [sound, setSound] = useState(() => readAudioPreferences().enabled);
   const [volume, setVolume] = useState(() => readAudioPreferences().volume);
@@ -826,6 +832,21 @@ function App() {
                           {autoPlay ? "取消托管" : "开启托管"}
                         </button>
                       )}
+                      {room.game &&
+                        (room.status === "playing" ||
+                          room.status === "finished") && (
+                          <button
+                            className="subtle"
+                            data-fullscreen-enter
+                            data-fullscreen-toggle
+                            aria-label="全屏"
+                            disabled={!gameFullscreenReady}
+                            onClick={() => gameFullscreen.current?.enter()}
+                          >
+                            <Maximize size={16} />
+                            全屏
+                          </button>
+                        )}
                       {room.spectating && (
                         <button
                           className="subtle"
@@ -975,6 +996,8 @@ function App() {
                           <div className="game-layout">
                             <div className="game-main" tabIndex={-1}>
                               <GameFullscreen
+                                ref={gameFullscreen}
+                                onReadyChange={setGameFullscreenReady}
                                 scope={`${room.id}:${room.matchId ?? room.setupVersion}`}
                                 enabled={!loading && !!room.game}
                                 status={

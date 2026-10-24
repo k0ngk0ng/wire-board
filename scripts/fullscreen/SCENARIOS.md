@@ -3,7 +3,8 @@
 Regression scenarios defined before the area-only correction:
 
 - Waiting rooms have no fullscreen button. The control appears only after the
-  game loads, at the upper-right edge of the game board, not in the room heading.
+  game loads, grouped with autoplay in the room tools. The game surface has an
+  upper-right exit control only while fullscreen is active.
 - Native fullscreenElement is the game surface. It never contains the room
   heading, platform menu, public player strip, invitations or room management.
 - Page fallback covers the viewport and makes the outside page inert; exit,
