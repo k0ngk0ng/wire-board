@@ -1,28 +1,27 @@
-# Fullscreen acceptance
+# Game-area fullscreen acceptance
 
-The initial scenarios were written before implementation. The playing-room and
-native keyboard/touch checks extend them following the requested playability review.
+Regression scenarios defined before the area-only correction:
 
-- Every registered game: native entry, button exit, Escape exit, browser-driven exit.
-- Every registered game: actual opening at desktop and 320px; gameplay components
-  remain mounted and game controls remain inside the fullscreen document.
-- Keep the complete game UI: boards/canvases, action panels, choices and dialogs.
-  This does not run unrelated rule combinations or claim complete-match coverage.
-- Unsupported/rejected native fullscreen: page fallback with button/Escape exit.
-- Room departure and late native request completion: no stale fullscreen state.
-- Tank desktop: approximately 2:1 viewport, wider horizontal camera, original size
-  on exit; native keyboard angle/weapon changes and an authoritative fired shot.
-- Tank portrait/landscape and compact poker: native touch entry/exit; no control
-  overlap in the poker toolbar. No physical iOS verification is claimed.
-- Escape continues reaching game handlers so held input can be cancelled.
+- Waiting rooms have no fullscreen button. The control appears only after the
+  game loads, at the upper-right edge of the game board, not in the room heading.
+- Native fullscreenElement is the game surface. It never contains the room
+  heading, platform menu, public player strip, invitations or room management.
+- Page fallback covers the viewport and makes the outside page inert; exit,
+  room departure and late requests restore focus, scrolling and inert states.
+- Game widgets, choices, dialogs, results and animation portals remain within
+  the game surface. Fullscreen/resize must not remount or restart the board.
+- All 25 opening boards have desktop and 320px evidence. Bubbleparty and tank
+  play are checked with native input; the tank expands to a 2:1 view.
+- Poker controls remain reachable without overlapping the fullscreen control.
+- Escape exits fullscreen and continues to reach game cancellation handlers.
+- Sound controls are outside game fullscreen; leaving fullscreen restores them.
 
-Run `npm --prefix web run build`, then:
+Run `npm --prefix web run build`, followed by:
 
 ```sh
 python3 -B scripts/fullscreen/check-browser.py --out .local/fullscreen/<fresh-directory>
 ```
 
-`--games` selects comma-separated game IDs for the opening checks; `--tank-only`
-skips that inventory. Both still include the tank, poker and lifecycle checks.
-The script saves source/build digests, measurements, control inventories and PNGs,
-and cleans its own SQLite database, browser profile and temporary directories.
+Screenshots, measurements and source/build digests are retained. Profiles,
+SQLite fixtures and temporary files are removed. These are game-area/fullscreen
+checks, not an exhaustive full-match or rule-combination matrix.

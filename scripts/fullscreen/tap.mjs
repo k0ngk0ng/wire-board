@@ -39,7 +39,7 @@ try {
     targetId: target.targetId,
     flatten: true,
   }));
-  if (mode === "shot") {
+  if (mode === "shot" || mode === "bomb") {
     await call("Input.dispatchKeyEvent", {
       type: "keyDown",
       key: " ",
@@ -50,8 +50,11 @@ try {
     await new Promise((resolve) => setTimeout(resolve, 300));
     const held = await call("Runtime.evaluate", {
       expression:
-        'document.querySelector(".fortressblue-board").dataset.fortressblueCharging',
+        mode === "shot"
+          ? 'document.querySelector(".fortressblue-board").dataset.fortressblueCharging'
+          : '"1"',
       returnByValue: true,
+      awaitPromise: true,
     });
     await call("Input.dispatchKeyEvent", {
       type: "keyUp",
@@ -65,26 +68,47 @@ try {
     console.log(JSON.stringify({ nativeKeyboard: true, charge: true }));
   } else {
     await call("Emulation.setTouchEmulationEnabled", {
-      enabled: true,
+      enabled: mode !== "mouse",
       maxTouchPoints: 5,
     });
     const { result, exceptionDetails } = await call("Runtime.evaluate", {
-      expression: `(()=>{const e=document.querySelector(${JSON.stringify(selector)});e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;if(!e.contains(document.elementFromPoint(x,y)))throw Error('Control obscured');return {x,y,id:1}})()`,
+      expression: `(async()=>{const e=document.querySelector(${JSON.stringify(selector)});e.scrollIntoView({block:'nearest'});await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;if(!e.contains(document.elementFromPoint(x,y)))throw Error('Control obscured');return {x,y,id:1}})()`,
       returnByValue: true,
+      awaitPromise: true,
     });
     if (exceptionDetails) throw Error(JSON.stringify(exceptionDetails));
-    await call("Input.dispatchTouchEvent", {
-      type: "touchStart",
-      touchPoints: [result.value],
-    });
-    await new Promise((resolve) => setTimeout(resolve, 80));
-    await call("Input.dispatchTouchEvent", {
-      type: "touchEnd",
-      touchPoints: [],
-    });
+    if (mode === "mouse") {
+      await call("Input.dispatchMouseEvent", {
+        type: "mousePressed",
+        x: result.value.x,
+        y: result.value.y,
+        button: "left",
+        buttons: 1,
+        clickCount: 1,
+      });
+      await call("Input.dispatchMouseEvent", {
+        type: "mouseReleased",
+        x: result.value.x,
+        y: result.value.y,
+        button: "left",
+        buttons: 0,
+        clickCount: 1,
+      });
+    } else {
+      await call("Input.dispatchTouchEvent", {
+        type: "touchStart",
+        touchPoints: [result.value],
+      });
+      await new Promise((resolve) => setTimeout(resolve, 80));
+      await call("Input.dispatchTouchEvent", {
+        type: "touchEnd",
+        touchPoints: [],
+      });
+    }
     console.log(
       JSON.stringify({
-        nativeTouch: true,
+        nativeTouch: mode !== "mouse",
+        nativeMouse: mode === "mouse",
         target: selector,
         point: result.value,
       }),

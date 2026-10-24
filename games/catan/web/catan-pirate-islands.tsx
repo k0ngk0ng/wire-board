@@ -1,3 +1,4 @@
+import { useGameOverlayRoot } from "../../../web/src/ui/game-overlay-root";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { CatanState, Room } from "./types";
@@ -29,6 +30,7 @@ export function CatanEndAction({
   busy: boolean;
   end: () => Promise<void>;
 }) {
+  const overlayRoot = useGameOverlayRoot();
   const [confirm, setConfirm] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const dialog = useRef<HTMLElement>(null);
@@ -111,7 +113,7 @@ export function CatanEndAction({
               </div>
             )}
           </section>,
-          document.body,
+          overlayRoot,
         )}
     </>
   );

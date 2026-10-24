@@ -1,77 +1,106 @@
-.room-fullscreen-toggle {
-  flex-shrink: 0;
-  white-space: nowrap;
+.game-fullscreen-surface {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  width: 100%;
 }
-html[data-room-fullscreen] {
+.game-fullscreen-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex: 0 0 36px;
+  min-height: 36px;
+}
+.room-fullscreen-toggle {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border: 1px solid #a6b5a4;
+  border-radius: 7px;
+  background: #f8f4e8;
+  color: #244836;
+}
+.game-fullscreen-board {
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+  outline: none;
+}
+.game-fullscreen-surface[data-room-fullscreen] {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  width: 100%;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 8px max(8px, env(safe-area-inset-right))
+    max(8px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
   overflow: auto;
   background: #f6f5ef;
   color: #293b35;
 }
-html[data-room-fullscreen] .room-page {
-  max-width: 1800px;
-  min-height: 100dvh;
-  padding-top: 52px;
-}
-[data-room-fullscreen] .room-fullscreen-toggle {
-  position: fixed;
-  top: max(6px, env(safe-area-inset-top));
-  right: calc(58px + env(safe-area-inset-right));
-  z-index: 46;
-  height: 36px;
-  padding: 4px 10px;
-  border: 1px solid #9aaa99;
-  background: #f8f4e8;
-  color: #244836;
-  border-radius: 7px;
-}
-[data-room-fullscreen] .compact-room-platform {
-  position: fixed;
-  top: max(6px, env(safe-area-inset-top));
-  right: calc(4px + env(safe-area-inset-right));
-  z-index: 46;
-  height: 36px;
-  padding: 4px 7px;
-  border: 1px solid #9aaa99;
-  background: #f8f4e8;
-  color: #244836;
-  border-radius: 7px;
-}
-@media (min-width: 601px) {
-  html[data-room-fullscreen] .room-page.playing {
-    padding-top: 52px;
-    max-width: 1800px;
-  }
+[data-room-fullscreen] > .game-fullscreen-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 45;
+  background: #f6f5ef;
+  color: #293b35;
 }
 @media (max-width: 600px) {
-  .room-page[data-table-layout="poker"] .room-fullscreen-toggle {
-    position: fixed;
-    top: 4px;
-    left: 8px;
-    right: auto;
-    z-index: 45;
-    height: 36px;
-    width: 36px;
-    padding: 4px 7px;
-    border: 1px solid #9aaa99;
-    border-radius: 7px;
-    background: #f8f4e8;
-    color: #244836;
-    font-size: 11px;
+  .room-page[data-table-layout="poker"] .game-fullscreen-surface {
+    height: 100%;
+    min-height: 0;
   }
-  .room-page[data-table-layout="poker"] .room-fullscreen-toggle span {
-    display: none;
+  .room-page[data-table-layout="poker"] .game-fullscreen-board > .poker-board {
+    height: 100%;
   }
-  .room-page[data-table-layout="poker"] .room-heading > div:first-child {
-    /* The room menu retains the name; reserve the existing title slot for the
-       fullscreen control without moving the skin, player, room or chat tools. */
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
+  .room-page[data-table-layout="poker"]
+    .game-fullscreen-surface[data-room-fullscreen] {
+    height: 100dvh;
   }
-  [data-room-fullscreen] .room-page {
-    padding-left: max(8px, env(safe-area-inset-left));
-    padding-right: max(8px, env(safe-area-inset-right));
+  [data-room-fullscreen] .poker-table-toolbar {
+    top: 8px !important;
+    right: 56px !important;
+  }
+}
+.game-fullscreen-status {
+  flex: 1;
+  min-width: 0;
+}
+[data-room-fullscreen] .game-fullscreen-status .turn-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  min-height: 0;
+  color: #244836;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+[data-room-fullscreen] .game-fullscreen-status .turn-card h3,
+[data-room-fullscreen] .game-fullscreen-status .turn-clock {
+  margin: 0;
+  color: #244836;
+  font-size: 12px;
+}
+[data-room-fullscreen] .game-fullscreen-status .clock-reading time {
+  font-size: 14px;
+  color: #244836;
+}
+.game-fullscreen-status :is(.eyebrow, .save-state, .timeout-kick, .final-round),
+.game-fullscreen-status .turn-card > p,
+.game-fullscreen-status .turn-clock p,
+.game-fullscreen-status .clock-reading > span,
+.game-fullscreen-status .clock-reading > svg {
+  display: none;
+}
+@media (max-width: 600px) {
+  .room-page.playing[data-table-layout="poker"] .game-sidebar {
+    top: 46px;
   }
 }

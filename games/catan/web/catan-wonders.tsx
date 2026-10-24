@@ -1,3 +1,4 @@
+import { useGameOverlayRoot } from "../../../web/src/ui/game-overlay-root";
 import { catanSavedVictoryTarget } from "./catan-rule-context";
 import { useEffect, useId, useRef, useState } from "react";
 import type { CSSProperties } from "react";
@@ -230,6 +231,7 @@ export function CatanWondersPanel({
   act: Act;
   locate: (id: number) => void;
 }) {
+  const overlayRoot = useGameOverlayRoot();
   const [open, setOpen] = useState(false),
     [collapsed, setCollapsed] = useState(false),
     [selected, setSelected] = useState<number | null>(null);
@@ -551,7 +553,7 @@ export function CatanWondersPanel({
               </div>
             )}
           </section>,
-          document.body,
+          overlayRoot,
         )}
     </>
   );

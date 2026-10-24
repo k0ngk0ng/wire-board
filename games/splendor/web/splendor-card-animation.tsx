@@ -1,3 +1,4 @@
+import { useGameOverlayRoot } from "../../../web/src/ui/game-overlay-root";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
 import { createPortal } from "react-dom";
@@ -41,6 +42,7 @@ export function SplendorCardAnimation({
   renderCard: (card: Card) => ReactNode;
   renderNoble: (noble: Noble) => ReactNode;
 }) {
+  const overlayRoot = useGameOverlayRoot();
   const splendor = room.game!.splendor!;
   const seen = useRef({ room: room.id, id: splendor.cardEventId ?? 0 });
   const reservedRects = useRef(new Map<number, CardOrigin>());
@@ -339,6 +341,6 @@ export function SplendorCardAnimation({
         </div>
       ))}
     </div>,
-    document.body,
+    overlayRoot,
   );
 }
