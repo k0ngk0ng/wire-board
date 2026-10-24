@@ -1,3 +1,4 @@
+import { ResetPasswordField } from "./admin/password-field";
 import { CategoryFilter, matchesCategory } from "./ui/game-category";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -475,7 +476,11 @@ export function AdminDashboard({
                 <span>已实现 {data.wishStats.implemented}</span>
                 <span>已驳回 {data.wishStats.rejected}</span>
               </div>
-              <div className="admin-wish-filter" role="group" aria-label="筛选许愿状态">
+              <div
+                className="admin-wish-filter"
+                role="group"
+                aria-label="筛选许愿状态"
+              >
                 {[
                   ["all", "全部"],
                   ["pending", "待审核"],
@@ -515,7 +520,11 @@ export function AdminDashboard({
                         rel="noreferrer"
                         aria-label="查看许愿参考图"
                       >
-                        <img src={wish.imageUrl} alt="许愿参考图" loading="lazy" />
+                        <img
+                          src={wish.imageUrl}
+                          alt="许愿参考图"
+                          loading="lazy"
+                        />
                       </a>
                     )}
                     {!!wish.questions?.length && (
@@ -525,7 +534,10 @@ export function AdminDashboard({
                           {wish.needsAnswer ? " · 等待玩家回答" : ""}
                         </small>
                         {wish.questions.map((question) => (
-                          <div className="admin-wish-question" key={question.id}>
+                          <div
+                            className="admin-wish-question"
+                            key={question.id}
+                          >
                             <p>
                               <b>AI 追问</b>
                               {question.question}
@@ -539,7 +551,9 @@ export function AdminDashboard({
                       </div>
                     )}
                     {wish.note && (
-                      <div className="admin-wish-note">审核备注：{wish.note}</div>
+                      <div className="admin-wish-note">
+                        审核备注：{wish.note}
+                      </div>
                     )}
                     <div className="admin-wish-actions">
                       {(wish.status === "pending" ||
@@ -884,18 +898,7 @@ export function AdminDashboard({
               }}
             >
               {decision.password && (
-                <label>
-                  新密码
-                  <input
-                    name="password"
-                    type="password"
-                    required
-                    minLength={12}
-                    maxLength={72}
-                    autoComplete="new-password"
-                    placeholder="至少 12 字节，最长 72 字节"
-                  />
-                </label>
+                <ResetPasswordField key={decision.path} disabled={busy} />
               )}
               {decision.note && (
                 <label>
