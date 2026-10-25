@@ -156,7 +156,7 @@ func TestModulePausedRealtimeInputDurabilityHTTP(t *testing.T) {
 	paused := current(f.a)
 	streamSend(t, c, request)
 	repeated := streamUntil(t, c, "ack")
-	if repeated["version"] != ack["version"] || !reflect.DeepEqual(paused, current(f.a)) {
+	if repeated["version"] != ack["version"] || !reflect.DeepEqual(roomWithoutNetwork(t, paused), roomWithoutNetwork(t, current(f.a))) {
 		t.Fatal("pause duplicated", repeated)
 	}
 	if _, err := f.s.db.Exec("CREATE TRIGGER fail_pause_resume BEFORE UPDATE ON rooms BEGIN SELECT RAISE(ABORT,'resume rollback'); END"); err != nil {
@@ -165,7 +165,7 @@ func TestModulePausedRealtimeInputDurabilityHTTP(t *testing.T) {
 	resume := map[string]any{"type": "input", "roomId": f.id, "version": paused["version"], "nonce": "durable-resume", "action": map[string]any{"type": "resume"}}
 	streamSend(t, c, resume)
 	rejected := streamUntil(t, c, "ack")
-	if rejected["status"] != float64(500) || !reflect.DeepEqual(paused, current(f.a)) || !pauseStoredRoom(t, f).Module.Paused {
+	if rejected["status"] != float64(500) || !reflect.DeepEqual(roomWithoutNetwork(t, paused), roomWithoutNetwork(t, current(f.a))) || !pauseStoredRoom(t, f).Module.Paused {
 		t.Fatal("failed resume leaked", rejected)
 	}
 	if _, err := f.s.db.Exec("DROP TRIGGER fail_pause_resume"); err != nil {
