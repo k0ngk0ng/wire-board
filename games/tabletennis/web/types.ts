@@ -42,6 +42,7 @@ export type Paddle = {
   result: string;
 };
 export type View = {
+  reachDepth: number;
   paddles: Paddle[];
   options: Options;
   epoch: string;
@@ -83,6 +84,7 @@ export type Stroke = {
   racketX?: number;
   racketY?: number;
   racketZ?: number;
+  racketRadius?: number;
   lift?: number;
   kind: "drive" | "chop" | "block";
   aim: number;

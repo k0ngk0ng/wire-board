@@ -107,6 +107,11 @@ try {
     ),
     "none",
   );
+  const radii = trace.map((v) => v.frame.racket.radius);
+  assert.ok(
+    Math.max(...radii) - Math.min(...radii) < 0.1,
+    "paddle size changed with depth",
+  );
   if (options.touch)
     await call(
       "Input.dispatchTouchEvent",

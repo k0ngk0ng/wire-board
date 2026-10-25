@@ -243,7 +243,7 @@ func TestStrikeWindowStaysInFrontOfPlayer(t *testing.T) {
 			t.Fatal("ordinary shot has no strike window")
 		}
 		p, _ := f.at(f.ContactEnd)
-		if p.Z*direction > 1.71 {
+		if p.Z*direction > ReachDepth+.01 {
 			t.Fatalf("strike window extends behind the player: %+v", p)
 		}
 	}

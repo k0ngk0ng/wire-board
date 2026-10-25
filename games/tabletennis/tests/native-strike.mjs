@@ -147,7 +147,7 @@ try {
   const rect = await evaluate(
     'document.querySelector(".tt-scene canvas").getBoundingClientRect().toJSON()',
   );
-  const dy = options.kind === "chop" ? 65 : -65;
+  const dy = options.kind === "chop" ? 140 : -140;
   const x =
       rect.x +
       Math.max(16, Math.min(rect.width - 16, targetX ?? rect.width * 0.5)),

@@ -342,8 +342,18 @@ func TestRealtimeStreamAuthenticationAndPrivateViews(t *testing.T) {
 	}
 	readCtx, stop := context.WithTimeout(context.Background(), 150*time.Millisecond)
 	defer stop()
-	if _, raw, err := lobby.Read(readCtx); err == nil {
-		t.Fatal("realtime frame leaked to lobby", string(raw))
+	for {
+		_, raw, err := lobby.Read(readCtx)
+		if err != nil {
+			break
+		}
+		var packet map[string]any
+		if json.Unmarshal(raw, &packet) != nil || packet["type"] != "network" || packet["roomId"] != "" {
+			t.Fatal("realtime frame leaked to lobby", string(raw))
+		}
+		if peers, ok := packet["players"].(map[string]any); !ok || len(peers) != 0 {
+			t.Fatal("other room latency leaked to lobby", string(raw))
+		}
 	}
 	streamEvidence(t, "stream-privacy", map[string]any{"passed": true, "seat": seatData, "spectator": watchData, "anonymous": 401, "crossOrigin": 403})
 }

@@ -1,5 +1,11 @@
 import type { Segment, Stroke, Vec, View } from "./types";
-import { sampleFlight } from "./timeline.ts";
+import { sampleFlight, localPoint } from "./timeline.ts";
+import {
+  paddleRadiusPixels,
+  pointerOverBall,
+  paddleAtScreen,
+  paddleReachRadius,
+} from "./view-space.ts";
 const clamp = (v: number, a: number, b: number) => Math.max(a, Math.min(b, v));
 function acceleration(v: Vec, spin: number): Vec {
   return {
@@ -7,6 +13,80 @@ function acceleration(v: Vec, spin: number): Vec {
     y: -9.81 - 1.6 * spin * Math.min(1.5, Math.abs(v.z) / 4),
     z: -0.12 * v.z,
   };
+}
+type PointerSample = { point: { x: number; y: number }; at: number };
+export function sweptPointerContact(
+  view: View,
+  seat: number,
+  from: PointerSample,
+  to: PointerSample,
+  width: number,
+  height: number,
+): PointerSample | undefined {
+  const duration = to.at - from.at;
+  if (
+    (view.phase !== "rally" && view.phase !== "serve") ||
+    view.expected !== seat ||
+    (view.phase === "rally" && !view.flight) ||
+    duration <= 0 ||
+    duration > 80
+  )
+    return;
+  const distance = Math.hypot(
+    (to.point.x - from.point.x) * width,
+    (to.point.y - from.point.y) * height,
+  );
+  if (distance < 1) return;
+  const steps = Math.min(
+    48,
+    Math.max(
+      1,
+      Math.ceil(duration / 4),
+      Math.ceil(distance / (paddleRadiusPixels(width) / 2)),
+    ),
+  );
+  const side = view.options.teams[seat] ^ view.ends;
+  const openAt =
+    view.phase === "serve" ? view.controls.openAt : view.flight!.contactStart;
+  for (let i = 0; i <= steps; i++) {
+    const f = i / steps,
+      at = from.at + duration * f;
+    if (at < openAt || at > view.controls.closeAt) continue;
+    const point = {
+      x: from.point.x + (to.point.x - from.point.x) * f,
+      y: from.point.y + (to.point.y - from.point.y) * f,
+    };
+    const ball = localPoint(contactPoint(view, seat, at), side);
+    if (!pointerOverBall(point, ball, width, height)) continue;
+    const z = Math.max(0, Math.min(view.reachDepth ?? 1.7, ball.z)),
+      p = paddleAtScreen(point, z, width, height);
+    if (
+      canReach(
+        view,
+        seat,
+        {
+          racketX: p.x / 0.9,
+          racketY: p.y,
+          racketRadius: paddleReachRadius(point, z, width, height),
+        },
+        at,
+      )
+    )
+      return { point, at };
+  }
+}
+export function returnWindowOpen(
+  view: View,
+  at: number,
+  motion: { moving: boolean; settled: boolean; touching?: boolean },
+): boolean {
+  return (
+    view.phase === "rally" &&
+    !!view.flight &&
+    at >= view.flight.contactStart &&
+    at <= view.controls.closeAt &&
+    (motion.moving || motion.settled || !!motion.touching)
+  );
 }
 export function contactPoint(view: View, seat: number, at: number): Vec {
   const dir = (view.options.teams[seat] ^ view.ends) === 0 ? 1 : -1;
@@ -29,14 +109,14 @@ export function contactPoint(view: View, seat: number, at: number): Vec {
 export function canReach(
   view: View,
   seat: number,
-  stroke: Pick<Stroke, "racketX" | "racketY">,
+  stroke: Pick<Stroke, "racketX" | "racketY" | "racketRadius">,
   at: number,
 ): boolean {
   if (view.phase === "serve")
     return (
       stroke.racketY === undefined ||
       Math.hypot((stroke.racketX ?? 0) * 0.9 - 0.34, stroke.racketY - 1.1) <=
-        0.22
+        (stroke.racketRadius ?? 0.22)
     );
   if (!view.flight) return false;
   const point = sampleFlight(
@@ -48,7 +128,7 @@ export function canReach(
     Math.hypot(
       point.x - dir * (stroke.racketX ?? 0) * 0.9,
       point.y - (stroke.racketY ?? point.y),
-    ) <= 0.22
+    ) <= (stroke.racketRadius ?? 0.22)
   );
 }
 

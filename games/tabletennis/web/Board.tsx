@@ -8,8 +8,18 @@ import {
 } from "../../../web/src/controllers/input";
 import { StrokeChannel } from "./input";
 import { PaddleMotion } from "./motion";
-import { BallDisplay, contactPoint, canReach } from "./prediction";
-import { paddleAtScreen } from "./view-space";
+import {
+  BallDisplay,
+  contactPoint,
+  canReach,
+  returnWindowOpen,
+  sweptPointerContact,
+} from "./prediction";
+import {
+  paddleAtScreen,
+  paddleReachRadius,
+  pointerOverBall,
+} from "./view-space";
 import { PaddleStream } from "./paddle-stream";
 import { localPoint } from "./timeline";
 import { EventTimeline, gameNow } from "./timeline";
@@ -22,6 +32,11 @@ export function Board(props: BoardProps<View>) {
   const currentIdentity = useRef("");
   const focusedIdentity = useRef("");
   const racketScreenPoint = useRef<{ x: number; y: number } | null>(null);
+  const lastPointerSample = useRef<{
+    point: { x: number; y: number };
+    at: number;
+    key: string;
+  } | null>(null);
   const movement = useRef<PaddleStream | null>(null);
   const motion = useRef(new PaddleMotion());
   const latest = useRef(props);
@@ -32,7 +47,7 @@ export function Board(props: BoardProps<View>) {
     keyboard = useRef<KeyboardController | null>(null),
     events = useRef(new EventTimeline());
   const gesture = useRef({ x: 0, y: 0, down: false }),
-    pointer = useRef<{ id: number } | null>(null),
+    pointer = useRef<{ id: number; touch: boolean } | null>(null),
     swing = useRef<
       | { at: number; stroke: Stroke; contact?: Vec; connected?: boolean }
       | undefined
@@ -91,6 +106,7 @@ export function Board(props: BoardProps<View>) {
     latest.current.data.phase !== "finished";
   function clearPointer() {
     pointer.current = null;
+    lastPointerSample.current = null;
     motion.current.clear();
     movement.current?.clear();
     gesture.current = { x: 0, y: 0, down: false };
@@ -104,6 +120,7 @@ export function Board(props: BoardProps<View>) {
   }
   useLayoutEffect(() => {
     motion.current.clear();
+    lastPointerSample.current = null;
     movement.current?.clear();
   }, [clock.paused]);
   useLayoutEffect(() => {
@@ -126,17 +143,24 @@ export function Board(props: BoardProps<View>) {
     if (d.controls.retrySeq && d.controls.retrySeq === d.controls.seq)
       ballDisplay.current.reset();
   }, [props, identity, ballKey]);
-  function placedStroke(stroke: Stroke, at: number): Stroke {
+  function placedStroke(
+    stroke: Stroke,
+    at: number,
+    screenPoint = racketScreenPoint.current,
+  ): Stroke {
     const p = latest.current;
     const contact = contactPoint(p.data, p.room.you >= 0 ? p.room.you : 0, at);
     const rect = canvas.current?.getBoundingClientRect();
     const side = (p.data.options.teams[p.room.you] ?? 0) ^ p.data.ends;
     const own = p.data.paddles[p.room.you];
     const position =
-      racketScreenPoint.current && rect
+      screenPoint && rect
         ? paddleAtScreen(
-            racketScreenPoint.current,
-            Math.max(0, Math.min(1.7, localPoint(contact, side).z)),
+            screenPoint,
+            Math.max(
+              0,
+              Math.min(p.data.reachDepth ?? 1.7, localPoint(contact, side).z),
+            ),
             rect.width,
             rect.height,
           )
@@ -146,12 +170,19 @@ export function Board(props: BoardProps<View>) {
       racketX: position.x / 0.9,
       racketY: position.y,
       racketZ: position.z,
+      racketRadius:
+        screenPoint && rect
+          ? paddleReachRadius(screenPoint, position.z, rect.width, rect.height)
+          : 0.22,
     };
   }
-  function strike(stroke: Stroke) {
+  function strike(
+    stroke: Stroke,
+    hit?: { point: { x: number; y: number }; at: number },
+  ) {
     const p = latest.current;
-    const at = gameNow(p.clock, performance.now());
-    stroke = placedStroke(stroke, at);
+    const at = hit?.at ?? gameNow(p.clock, performance.now());
+    stroke = placedStroke(stroke, at, hit?.point ?? racketScreenPoint.current);
     if (!canControl() || !p.data.controls.canSwing) return;
     if (at < p.data.controls.openAt) {
       setError("等球靠近再挥拍");
@@ -175,6 +206,62 @@ export function Board(props: BoardProps<View>) {
         currentIdentity.current,
       );
     }
+  }
+  function capturePointer(
+    point: { x: number; y: number },
+    x: number,
+    y: number,
+    time: number,
+    down = false,
+  ) {
+    const p = latest.current,
+      rect = canvas.current?.getBoundingClientRect(),
+      at = gameNow(p.clock, time);
+    racketScreenPoint.current = point;
+    motion.current.move(x, y, time);
+    if (!canControl() || !rect) {
+      lastPointerSample.current = null;
+      return;
+    }
+    const key = `${currentIdentity.current}:${p.data.rally}:${p.data.shot}`,
+      previous = lastPointerSample.current;
+    lastPointerSample.current = { point, at, key };
+    const live = motion.current.sample(time, Math.min(rect.width, rect.height));
+    if (previous?.key === key && live.moving && p.data.controls.canSwing) {
+      const hit = sweptPointerContact(
+        p.data,
+        p.room.you,
+        previous,
+        { point, at },
+        rect.width,
+        rect.height,
+      );
+      if (hit) strike(live.stroke, hit);
+    }
+    if (
+      down &&
+      pointer.current?.touch &&
+      p.data.controls.canSwing &&
+      returnWindowOpen(p.data, at, {
+        moving: false,
+        settled: false,
+        touching: true,
+      }) &&
+      visibleContact(at)
+    )
+      strike({ kind: "block", aim: 0, power: 0.35 }, { point, at });
+  }
+  function visibleContact(at: number): boolean {
+    const p = latest.current,
+      rect = canvas.current?.getBoundingClientRect();
+    if (!racketScreenPoint.current || !rect) return false;
+    const side = (p.data.options.teams[p.room.you] ?? 0) ^ p.data.ends;
+    return pointerOverBall(
+      racketScreenPoint.current,
+      localPoint(contactPoint(p.data, p.room.you, at), side),
+      rect.width,
+      rect.height,
+    );
   }
   useEffect(() => {
     let alive = true;
@@ -216,6 +303,7 @@ export function Board(props: BoardProps<View>) {
     events.current.reset(p.data.events, gameNow(p.clock, performance.now()));
     swing.current = undefined;
     racketScreenPoint.current = null;
+    lastPointerSample.current = null;
     motion.current.clear();
     ballDisplay.current.reset();
     keyboard.current?.clear();
@@ -304,7 +392,12 @@ export function Board(props: BoardProps<View>) {
             y: Math.max(-1, Math.min(1, liveMotion.velocity.y)),
             down: liveMotion.active,
           };
-          if (canControl() && p.data.controls.canSwing && liveMotion.active) {
+          if (
+            canControl() &&
+            p.data.controls.canSwing &&
+            liveMotion.active &&
+            visibleContact(at)
+          ) {
             const stroke = placedStroke(liveMotion.stroke, at);
             const readyToServe =
               p.data.phase === "serve" &&
@@ -312,14 +405,10 @@ export function Board(props: BoardProps<View>) {
               gameNow(p.clock, liveMotion.at) >= p.data.phaseUntil &&
               canReach(p.data, p.room.you, stroke, at);
             const readyToReturn =
-              p.data.phase === "rally" &&
-              p.data.flight &&
-              at >= p.data.flight.contactStart &&
-              at <= p.data.controls.closeAt &&
-              (liveMotion.moving ||
-                (liveMotion.settled &&
-                  at >= p.data.flight.contactStart + 100)) &&
-              canReach(p.data, p.room.you, stroke, at);
+              returnWindowOpen(p.data, at, {
+                ...liveMotion,
+                touching: pointer.current?.touch,
+              }) && canReach(p.data, p.room.you, stroke, at);
             if (readyToServe || readyToReturn) strike(stroke);
           }
           // Reserve the HTTP fallback's single slot for reliable strokes.
@@ -565,17 +654,22 @@ export function Board(props: BoardProps<View>) {
             e.currentTarget.focus({ preventScroll: true });
             e.currentTarget.setPointerCapture(e.pointerId);
             const rect = e.currentTarget.getBoundingClientRect();
-            racketScreenPoint.current = {
+            const point = {
               x: (e.clientX - rect.left) / rect.width,
               y: (e.clientY - rect.top) / rect.height,
             };
-            pointer.current = { id: e.pointerId };
-            motion.current.move(
+            pointer.current = {
+              id: e.pointerId,
+              touch: e.pointerType !== "mouse",
+            };
+            capturePointer(
+              point,
               e.clientX,
               e.clientY,
               e.timeStamp > 0 && e.timeStamp <= performance.now() + 50
                 ? e.timeStamp
                 : performance.now(),
+              true,
             );
             gesture.current = { x: 0, y: 0, down: true };
             setError("");
@@ -588,11 +682,12 @@ export function Board(props: BoardProps<View>) {
               return;
             if (canTrack() && (pointer.current || e.pointerType === "mouse")) {
               const rect = e.currentTarget.getBoundingClientRect();
-              racketScreenPoint.current = {
+              const point = {
                 x: (e.clientX - rect.left) / rect.width,
                 y: (e.clientY - rect.top) / rect.height,
               };
-              motion.current.move(
+              capturePointer(
+                point,
                 e.clientX,
                 e.clientY,
                 e.timeStamp > 0 && e.timeStamp <= performance.now() + 50

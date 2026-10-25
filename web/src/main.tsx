@@ -1,4 +1,7 @@
 import { CompactRoomPanel } from "./ui/compact-room-panel";
+import { NetworkSignal } from "./ui/network-signal";
+import type { NetworkInfo } from "./network-quality";
+import { isTransientSyncError, quietSyncError } from "./game-api/sync-error";
 import {
   GameFullscreen,
   type GameFullscreenHandle,
@@ -17,6 +20,7 @@ import { refreshQueue } from "./refresh-queue";
 import {
   mergeStreamState,
   mergeStreamGame,
+  mergeNetworkState,
   StreamInputs,
   type GamePacket,
 } from "./realtime-stream";
@@ -43,7 +47,6 @@ import {
   TrainFront,
   Users,
   Wifi,
-  WifiOff,
   X,
 } from "lucide-react";
 import React, { useEffect, useMemo, useRef, useState } from "react";
@@ -160,6 +163,14 @@ function App() {
   const networkFailure = useRef(false);
   const networkMessage = "网络连接中断，正在重新连接。";
   const reportError = (error: unknown) => {
+    if (
+      state?.room &&
+      gameModule(state.room.kind)?.realtime &&
+      isTransientSyncError(error)
+    ) {
+      networkFailure.current = true;
+      return;
+    }
     if (error instanceof TypeError) {
       networkFailure.current = true;
       setError(networkMessage);
@@ -168,6 +179,7 @@ function App() {
   };
   const [busy, setBusy] = useState(false);
   const [online, setOnline] = useState(false);
+  const [connectionNetwork, setConnectionNetwork] = useState<NetworkInfo>();
   const [create, setCreate] = useState(false);
   useEffect(() => {
     if (create && state && !state.availableGames.length) setCreate(false);
@@ -312,6 +324,7 @@ function App() {
         if (stopped || socket !== connection) return;
         retryDelay = 250;
         setOnline(true);
+        setConnectionNetwork(undefined);
         if (opened) resyncRequired.current = true;
         opened = true;
       };
@@ -322,6 +335,13 @@ function App() {
           if (packet.type === "state") {
             if (!streamInputs.connected) streamInputs.attach(socket);
             acceptState.current(packet.state);
+          } else if (packet.type === "network") {
+            if (
+              packet.serverInstance === serverInstance.current &&
+              packet.userId === state.user.id
+            )
+              setConnectionNetwork(packet.self);
+            setState((previous) => mergeNetworkState(previous, packet));
           } else if (packet.type === "game") {
             setState((previous) =>
               mergeStreamGame(
@@ -340,9 +360,10 @@ function App() {
         }
       };
       socket.onclose = () => {
-        if (socket !== connection) return;
+        if (stopped || socket !== connection) return;
         streamInputs.close();
         setOnline(false);
+        setConnectionNetwork(undefined);
         resyncRequired.current = true;
         setPresentationEpoch((v) => v + 1);
         audio.stop();
@@ -468,9 +489,10 @@ function App() {
           void refresh();
         }
       } catch (e) {
-        reportError(e);
+        const failure = quietSyncError(e);
+        if (!isTransientSyncError(failure)) reportError(failure);
         void refresh();
-        throw e;
+        throw failure;
       }
       return;
     }
@@ -700,15 +722,7 @@ function App() {
                   >
                     积分榜
                   </button>
-                  <span
-                    className={`connection ${online ? "" : "offline"}`}
-                    title={
-                      online ? "实时连接正常" : "正在重连，座位与进度已保留"
-                    }
-                  >
-                    {online ? <Wifi size={15} /> : <WifiOff size={15} />}
-                    <span>{online ? "已连接" : "重连中"}</span>
-                  </span>
+                  <NetworkSignal info={connectionNetwork} connected={online} />
                   <SoundControls
                     enabled={sound && volume > 0}
                     volume={volume}

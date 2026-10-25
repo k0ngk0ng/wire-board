@@ -1,0 +1,65 @@
+.network-signal {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex: none;
+  vertical-align: middle;
+  width: 70px;
+  min-height: 18px;
+  font-size: 11px;
+  line-height: 1.3;
+  color: #465c50;
+  background: #f1f5ef;
+  border-radius: 4px;
+  padding: 1px 2px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.network-signal svg {
+  flex: none;
+}
+.network-signal .lit {
+  fill: currentColor;
+}
+.network-signal .unlit {
+  fill: #7b897e;
+}
+.network-good {
+  color: #246540;
+}
+.network-fair {
+  color: #825508;
+  background: #fff4dc;
+}
+.network-poor {
+  color: #a33327;
+  background: #fff0e9;
+}
+.network-offline,
+.network-unknown {
+  color: #526357;
+}
+.player-info strong:has(.network-signal),
+.waiting-seat h3:has(.network-signal) {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.player-info strong:has(.network-signal) .player-name {
+  min-width: 0;
+}
+.player-info .network-signal,
+.waiting-seat .network-signal {
+  font-size: 10px;
+  width: 65px;
+}
+@media (max-width: 650px) {
+  .topbar .network-signal {
+    width: 20px;
+    padding: 0;
+  }
+  .topbar .network-delay {
+    display: none;
+  }
+}

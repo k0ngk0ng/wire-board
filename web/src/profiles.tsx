@@ -1,4 +1,5 @@
 import { gameName } from "./game-api/registry";
+import { NetworkSignal } from "./ui/network-signal";
 import { catanBaseLayoutName } from "../../games/catan/web/catan-base-layout";
 import {
   catanScenarioName,
@@ -24,13 +25,18 @@ export function PlayerName({
       {children || user.name}
     </span>
   ) : (
-    <button
-      className="player-link player-name"
-      title={`查看 ${user.name} 的玩家页面`}
-      onClick={() => open(user.id)}
-    >
-      {children || user.name}
-    </button>
+    <>
+      <button
+        className="player-link player-name"
+        title={`查看 ${user.name} 的玩家页面`}
+        onClick={() => open(user.id)}
+      >
+        {children || user.name}
+      </button>
+      {!children && user.network && (
+        <NetworkSignal info={user.network} name={user.name} />
+      )}
+    </>
   );
 }
 type History = {

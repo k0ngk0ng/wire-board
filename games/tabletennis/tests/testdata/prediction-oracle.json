@@ -43,6 +43,7 @@
       "power": 0.35
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -71,7 +72,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -80,11 +84,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 0,
       "rally": 1,
       "shot": 0,
@@ -147,6 +160,7 @@
       "power": 0.85
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -175,7 +189,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -184,11 +201,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 0,
       "rally": 1,
       "shot": 0,
@@ -251,6 +277,7 @@
       "power": 1
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -279,7 +306,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -288,11 +318,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 0,
       "rally": 1,
       "shot": 0,
@@ -355,6 +394,7 @@
       "power": 0.35
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -383,7 +423,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -392,11 +435,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 0,
       "rally": 1,
       "shot": 0,
@@ -459,6 +511,7 @@
       "power": 0.85
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -487,7 +540,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -496,11 +552,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 0,
       "rally": 1,
       "shot": 0,
@@ -563,6 +628,7 @@
       "power": 1
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -591,7 +657,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -600,11 +669,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 0,
       "rally": 1,
       "shot": 0,
@@ -667,6 +745,7 @@
       "power": 0.35
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -695,7 +774,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -704,11 +786,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 0,
       "rally": 1,
       "shot": 0,
@@ -771,6 +862,7 @@
       "power": 0.85
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -799,7 +891,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -808,11 +903,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 0,
       "rally": 1,
       "shot": 0,
@@ -875,6 +979,7 @@
       "power": 1
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -903,7 +1008,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -912,11 +1020,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 0,
       "rally": 1,
       "shot": 0,
@@ -979,6 +1096,7 @@
       "power": 0.35
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -1007,7 +1125,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -1016,11 +1137,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 1,
       "rally": 1,
       "shot": 0,
@@ -1083,6 +1213,7 @@
       "power": 0.85
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -1111,7 +1242,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -1120,11 +1254,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 1,
       "rally": 1,
       "shot": 0,
@@ -1187,6 +1330,7 @@
       "power": 1
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -1215,7 +1359,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -1224,11 +1371,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 1,
       "rally": 1,
       "shot": 0,
@@ -1291,6 +1447,7 @@
       "power": 0.35
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -1319,7 +1476,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -1328,11 +1488,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 1,
       "rally": 1,
       "shot": 0,
@@ -1395,6 +1564,7 @@
       "power": 0.85
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -1423,7 +1593,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -1432,11 +1605,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 1,
       "rally": 1,
       "shot": 0,
@@ -1499,6 +1681,7 @@
       "power": 1
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -1527,7 +1710,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -1536,11 +1722,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 1,
       "rally": 1,
       "shot": 0,
@@ -1603,6 +1798,7 @@
       "power": 0.35
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -1631,7 +1827,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -1640,11 +1839,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 1,
       "rally": 1,
       "shot": 0,
@@ -1707,6 +1915,7 @@
       "power": 0.85
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -1735,7 +1944,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -1744,11 +1956,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 1,
       "rally": 1,
       "shot": 0,
@@ -1811,6 +2032,7 @@
       "power": 1
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -1839,7 +2061,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -1848,11 +2073,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 1,
       "rally": 1,
       "shot": 0,
@@ -1915,6 +2149,7 @@
       "power": 0.35
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -1943,7 +2178,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -1952,11 +2190,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 0,
       "rally": 1,
       "shot": 0,
@@ -2019,6 +2266,7 @@
       "power": 0.85
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -2047,7 +2295,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -2056,11 +2307,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 0,
       "rally": 1,
       "shot": 0,
@@ -2123,6 +2383,7 @@
       "power": 1
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -2151,7 +2412,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -2160,11 +2424,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 0,
       "rally": 1,
       "shot": 0,
@@ -2227,6 +2500,7 @@
       "power": 0.35
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -2255,7 +2529,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -2264,11 +2541,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 0,
       "rally": 1,
       "shot": 0,
@@ -2331,6 +2617,7 @@
       "power": 0.85
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -2359,7 +2646,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -2368,11 +2658,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 0,
       "rally": 1,
       "shot": 0,
@@ -2435,6 +2734,7 @@
       "power": 1
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -2463,7 +2763,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -2472,11 +2775,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 0,
       "rally": 1,
       "shot": 0,
@@ -2539,6 +2851,7 @@
       "power": 0.35
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -2567,7 +2880,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -2576,11 +2892,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 0,
       "rally": 1,
       "shot": 0,
@@ -2643,6 +2968,7 @@
       "power": 0.85
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -2671,7 +2997,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -2680,11 +3009,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 0,
       "rally": 1,
       "shot": 0,
@@ -2747,6 +3085,7 @@
       "power": 1
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -2775,7 +3114,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -2784,11 +3126,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 0,
       "rally": 1,
       "shot": 0,
@@ -2851,6 +3202,7 @@
       "power": 0.35
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -2879,7 +3231,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -2888,11 +3243,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 1,
       "rally": 1,
       "shot": 0,
@@ -2955,6 +3319,7 @@
       "power": 0.85
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -2983,7 +3348,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -2992,11 +3360,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 1,
       "rally": 1,
       "shot": 0,
@@ -3059,6 +3436,7 @@
       "power": 1
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -3087,7 +3465,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -3096,11 +3477,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 1,
       "rally": 1,
       "shot": 0,
@@ -3163,6 +3553,7 @@
       "power": 0.35
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -3191,7 +3582,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -3200,11 +3594,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 1,
       "rally": 1,
       "shot": 0,
@@ -3267,6 +3670,7 @@
       "power": 0.85
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -3295,7 +3699,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -3304,11 +3711,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 1,
       "rally": 1,
       "shot": 0,
@@ -3371,6 +3787,7 @@
       "power": 1
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -3399,7 +3816,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -3408,11 +3828,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 1,
       "rally": 1,
       "shot": 0,
@@ -3475,6 +3904,7 @@
       "power": 0.35
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -3503,7 +3933,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -3512,11 +3945,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 1,
       "rally": 1,
       "shot": 0,
@@ -3579,6 +4021,7 @@
       "power": 0.85
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -3607,7 +4050,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -3616,11 +4062,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 1,
       "rally": 1,
       "shot": 0,
@@ -3683,6 +4138,7 @@
       "power": 1
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -3711,7 +4167,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -3720,11 +4179,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 1,
       "rally": 1,
       "shot": 0,
@@ -3787,6 +4255,7 @@
       "power": 0.35
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -3815,7 +4284,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -3824,11 +4296,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 0,
       "rally": 1,
       "shot": 0,
@@ -3925,6 +4406,7 @@
       "power": 0.85
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -3953,7 +4435,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -3962,11 +4447,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 0,
       "rally": 1,
       "shot": 0,
@@ -4063,6 +4557,7 @@
       "power": 1
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -4091,7 +4586,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -4100,11 +4598,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 0,
       "rally": 1,
       "shot": 0,
@@ -4201,6 +4708,7 @@
       "power": 0.35
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -4229,7 +4737,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -4238,11 +4749,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 0,
       "rally": 1,
       "shot": 0,
@@ -4339,6 +4859,7 @@
       "power": 0.85
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -4367,7 +4888,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -4376,11 +4900,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 0,
       "rally": 1,
       "shot": 0,
@@ -4477,6 +5010,7 @@
       "power": 1
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -4505,7 +5039,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -4514,11 +5051,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 0,
       "rally": 1,
       "shot": 0,
@@ -4615,6 +5161,7 @@
       "power": 0.35
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -4643,7 +5190,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -4652,11 +5202,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 0,
       "rally": 1,
       "shot": 0,
@@ -4753,6 +5312,7 @@
       "power": 0.85
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -4781,7 +5341,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -4790,11 +5353,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 0,
       "rally": 1,
       "shot": 0,
@@ -4891,6 +5463,7 @@
       "power": 1
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -4919,7 +5492,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -4928,11 +5504,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 0,
       "rally": 1,
       "shot": 0,
@@ -5029,6 +5614,7 @@
       "power": 0.35
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -5057,7 +5643,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -5066,11 +5655,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 1,
       "rally": 1,
       "shot": 0,
@@ -5167,6 +5765,7 @@
       "power": 0.85
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -5195,7 +5794,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -5204,11 +5806,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 1,
       "rally": 1,
       "shot": 0,
@@ -5305,6 +5916,7 @@
       "power": 1
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -5333,7 +5945,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -5342,11 +5957,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 1,
       "rally": 1,
       "shot": 0,
@@ -5443,6 +6067,7 @@
       "power": 0.35
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -5471,7 +6096,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -5480,11 +6108,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 1,
       "rally": 1,
       "shot": 0,
@@ -5581,6 +6218,7 @@
       "power": 0.85
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -5609,7 +6247,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -5618,11 +6259,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 1,
       "rally": 1,
       "shot": 0,
@@ -5719,6 +6369,7 @@
       "power": 1
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -5747,7 +6398,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -5756,11 +6410,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 1,
       "rally": 1,
       "shot": 0,
@@ -5857,6 +6520,7 @@
       "power": 0.35
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -5885,7 +6549,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -5894,11 +6561,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 1,
       "rally": 1,
       "shot": 0,
@@ -5995,6 +6671,7 @@
       "power": 0.85
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -6023,7 +6700,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -6032,11 +6712,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 1,
       "rally": 1,
       "shot": 0,
@@ -6133,6 +6822,7 @@
       "power": 1
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -6161,7 +6851,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -6170,11 +6863,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 1,
       "rally": 1,
       "shot": 0,
@@ -6271,6 +6973,7 @@
       "power": 0.35
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -6299,7 +7002,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -6308,11 +7014,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 0,
       "rally": 1,
       "shot": 0,
@@ -6409,6 +7124,7 @@
       "power": 0.85
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -6437,7 +7153,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -6446,11 +7165,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 0,
       "rally": 1,
       "shot": 0,
@@ -6547,6 +7275,7 @@
       "power": 1
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -6575,7 +7304,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -6584,11 +7316,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 0,
       "rally": 1,
       "shot": 0,
@@ -6685,6 +7426,7 @@
       "power": 0.35
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -6713,7 +7455,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -6722,11 +7467,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 0,
       "rally": 1,
       "shot": 0,
@@ -6823,6 +7577,7 @@
       "power": 0.85
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -6851,7 +7606,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -6860,11 +7618,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 0,
       "rally": 1,
       "shot": 0,
@@ -6961,6 +7728,7 @@
       "power": 1
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -6989,7 +7757,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -6998,11 +7769,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 0,
       "rally": 1,
       "shot": 0,
@@ -7099,6 +7879,7 @@
       "power": 0.35
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -7127,7 +7908,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -7136,11 +7920,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 0,
       "rally": 1,
       "shot": 0,
@@ -7237,6 +8030,7 @@
       "power": 0.85
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -7265,7 +8059,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -7274,11 +8071,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 0,
       "rally": 1,
       "shot": 0,
@@ -7375,6 +8181,7 @@
       "power": 1
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -7403,7 +8210,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -7412,11 +8222,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 0,
       "rally": 1,
       "shot": 0,
@@ -7513,6 +8332,7 @@
       "power": 0.35
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -7541,7 +8361,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -7550,11 +8373,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 1,
       "rally": 1,
       "shot": 0,
@@ -7651,6 +8483,7 @@
       "power": 0.85
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -7679,7 +8512,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -7688,11 +8524,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 1,
       "rally": 1,
       "shot": 0,
@@ -7789,6 +8634,7 @@
       "power": 1
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -7817,7 +8663,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -7826,11 +8675,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 1,
       "rally": 1,
       "shot": 0,
@@ -7927,6 +8785,7 @@
       "power": 0.35
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -7955,7 +8814,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -7964,11 +8826,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 1,
       "rally": 1,
       "shot": 0,
@@ -8065,6 +8936,7 @@
       "power": 0.85
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -8093,7 +8965,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -8102,11 +8977,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 1,
       "rally": 1,
       "shot": 0,
@@ -8203,6 +9087,7 @@
       "power": 1
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -8231,7 +9116,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -8240,11 +9128,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 1,
       "rally": 1,
       "shot": 0,
@@ -8341,6 +9238,7 @@
       "power": 0.35
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -8369,7 +9267,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -8378,11 +9279,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 1,
       "rally": 1,
       "shot": 0,
@@ -8479,6 +9389,7 @@
       "power": 0.85
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -8507,7 +9418,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -8516,11 +9430,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 1,
       "rally": 1,
       "shot": 0,
@@ -8617,6 +9540,7 @@
       "power": 1
     },
     "view": {
+      "reachDepth": 2.25,
       "paddles": [
         {
           "x": 0,
@@ -8645,7 +9569,10 @@
       ],
       "options": {
         "bestOf": 1,
-        "teams": [0, 1],
+        "teams": [
+          0,
+          1
+        ],
         "difficulty": "normal",
         "court": "club"
       },
@@ -8654,11 +9581,20 @@
       "serverAt": 1000,
       "phaseUntil": 1000,
       "serveDeadline": 0,
-      "score": [0, 0],
-      "gamesWon": [0, 0],
+      "score": [
+        0,
+        0
+      ],
+      "gamesWon": [
+        0,
+        0
+      ],
       "game": 1,
       "games": [],
-      "order": [0, 1],
+      "order": [
+        0,
+        1
+      ],
       "ends": 1,
       "rally": 1,
       "shot": 0,

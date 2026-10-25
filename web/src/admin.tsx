@@ -1,8 +1,11 @@
 import { ResetPasswordField } from "./admin/password-field";
+import { reorderVisible } from "./admin/game-order";
 import { CategoryFilter, matchesCategory } from "./ui/game-category";
 import { useEffect, useRef, useState } from "react";
 import {
   ArrowLeft,
+  ArrowUp,
+  ArrowDown,
   ShieldCheck,
   Users,
   Radio,
@@ -80,6 +83,7 @@ const actions: Record<string, string> = {
   root_password_rotated: "轮换管理员密码",
   game_published: "上架游戏",
   game_unpublished: "下架游戏",
+  game_order: "调整游戏顺序",
   user_enable: "恢复账号",
   user_disable: "停用账号",
   user_logout: "强制退出",
@@ -139,6 +143,9 @@ export function AdminDashboard({
   const [query, setQuery] = useState("");
   const [gameQuery, setGameQuery] = useState("");
   const [gameCategory, setGameCategory] = useState("all");
+  const [orderDraft, setOrderDraft] = useState<string[] | null>(null);
+  const orderBase = useRef<string[]>([]),
+    draggedGame = useRef<string | null>(null);
   const [wishFilter, setWishFilter] = useState("all");
   const [onlineOnly, setOnlineOnly] = useState(false);
   const [decision, setDecision] = useState<Decision>();
@@ -172,6 +179,59 @@ export function AdminDashboard({
       setMore(next.hasMore);
     } catch (e) {
       setError((e as Error).message);
+    }
+  }
+  const orderedGames = data
+    ? [
+        ...(orderDraft ?? data.games.map((g) => g.kind)),
+        ...data.games
+          .map((g) => g.kind)
+          .filter((id) => orderDraft && !orderDraft.includes(id)),
+      ]
+        .map((id) => data.games.find((g) => g.kind === id))
+        .filter((g): g is Game => !!g)
+    : [];
+  const visibleGames = orderedGames.filter(
+    (g) =>
+      matchesCategory(g.kind, gameCategory) &&
+      `${g.name} ${g.kind}`
+        .toLocaleLowerCase()
+        .includes(gameQuery.trim().toLocaleLowerCase()),
+  );
+  const orderChanged =
+    !!data &&
+    !!orderDraft &&
+    orderDraft.join(",") !== data.games.map((g) => g.kind).join(",");
+  function moveGame(from: string, to: string) {
+    if (busy || !data) return;
+    if (!orderDraft) orderBase.current = data.games.map((g) => g.kind);
+    setOrderDraft(
+      reorderVisible(
+        orderedGames.map((g) => g.kind),
+        visibleGames.map((g) => g.kind),
+        from,
+        to,
+      ),
+    );
+  }
+  async function saveOrder() {
+    if (!orderChanged || busy) return;
+    setBusy(true);
+    setError("");
+    setNotice("");
+    try {
+      await request("/admin/games/order", {
+        order: orderedGames.map((g) => g.kind),
+        expectedOrder: orderBase.current,
+      });
+      setOrderDraft(null);
+      await refresh();
+      await onChange();
+      setNotice("游戏顺序已保存");
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setBusy(false);
     }
   }
   useEffect(() => {
@@ -383,7 +443,29 @@ export function AdminDashboard({
                   <h2>开放给朋友的游戏</h2>
                   <p>下架会隐藏入口、关闭等待牌桌；已经开始的对局可以继续。</p>
                 </div>
-                <ListRefresh onClick={() => void refresh()} />
+                <div className="admin-order-actions">
+                  {orderDraft && (
+                    <>
+                      <button
+                        aria-label="取消游戏排序"
+                        className="subtle"
+                        disabled={busy}
+                        onClick={() => setOrderDraft(null)}
+                      >
+                        取消排序
+                      </button>
+                      <button
+                        className="primary"
+                        aria-label="保存游戏顺序"
+                        disabled={busy || !orderChanged}
+                        onClick={() => void saveOrder()}
+                      >
+                        保存顺序
+                      </button>
+                    </>
+                  )}
+                  <ListRefresh onClick={() => void refresh()} />
+                </div>
               </div>
               <CategoryFilter
                 value={gameCategory}
@@ -412,18 +494,37 @@ export function AdminDashboard({
                 </p>
               )}
               <div className="admin-games">
-                {data.games
-                  .map((g, i) => ({ g, i }))
-                  .filter(
-                    ({ g }) =>
-                      matchesCategory(g.kind, gameCategory) &&
-                      `${g.name} ${g.kind}`
-                        .toLocaleLowerCase()
-                        .includes(gameQuery.trim().toLocaleLowerCase()),
-                  )
-                  .map(({ g, i }) => (
+                {visibleGames.map((g, visibleIndex) => {
+                  const i = orderedGames.findIndex((x) => x.kind === g.kind);
+                  return (
                     <article
                       key={g.kind}
+                      data-game-id={g.kind}
+                      draggable={!busy}
+                      onDragStart={(e) => {
+                        if ((e.target as Element).closest("button")) {
+                          e.preventDefault();
+                          return;
+                        }
+                        draggedGame.current = g.kind;
+                        e.dataTransfer.effectAllowed = "move";
+                        e.dataTransfer.setData("text/plain", g.kind);
+                      }}
+                      onDragOver={(e) => {
+                        if (draggedGame.current && !busy) {
+                          e.preventDefault();
+                          e.dataTransfer.dropEffect = "move";
+                        }
+                      }}
+                      onDrop={(e) => {
+                        e.preventDefault();
+                        if (draggedGame.current)
+                          moveGame(draggedGame.current, g.kind);
+                        draggedGame.current = null;
+                      }}
+                      onDragEnd={() => {
+                        draggedGame.current = null;
+                      }}
                       className={`admin-game-card ${!g.enabled ? "unpublished" : ""}`}
                     >
                       <div className={`admin-game-number tone-${i}`}>
@@ -436,6 +537,40 @@ export function AdminDashboard({
                           {g.enabled ? "已上架" : "已下架"}
                         </span>
                         <h3>{g.name}</h3>
+                      </div>
+                      <div className="admin-game-order-controls">
+                        <button
+                          type="button"
+                          className="icon-button"
+                          aria-label={`上移${g.name}`}
+                          title="上移"
+                          disabled={busy || visibleIndex === 0}
+                          onClick={() =>
+                            moveGame(
+                              g.kind,
+                              visibleGames[visibleIndex - 1].kind,
+                            )
+                          }
+                        >
+                          <ArrowUp size={18} />
+                        </button>
+                        <button
+                          type="button"
+                          className="icon-button"
+                          aria-label={`下移${g.name}`}
+                          title="下移"
+                          disabled={
+                            busy || visibleIndex === visibleGames.length - 1
+                          }
+                          onClick={() =>
+                            moveGame(
+                              g.kind,
+                              visibleGames[visibleIndex + 1].kind,
+                            )
+                          }
+                        >
+                          <ArrowDown size={18} />
+                        </button>
                       </div>
                       <button
                         className={g.enabled ? "outline" : "primary"}
@@ -454,7 +589,8 @@ export function AdminDashboard({
                         {g.enabled ? "下架" : "上架"}
                       </button>
                     </article>
-                  ))}
+                  );
+                })}
               </div>
             </section>
           )}
