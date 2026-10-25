@@ -167,6 +167,8 @@ type Server struct {
 	presence            map[string]time.Time
 	connections         map[chan struct{}]string
 	streamFrames        map[chan struct{}]chan struct{}
+	streamNetworks      map[chan struct{}]chan struct{}
+	networkSamples      map[chan struct{}]networkSample
 }
 
 func New(cfg Config, files fs.FS) (*Server, error) {
@@ -426,6 +428,7 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /api/admin", s.adminOverview)
 	mux.HandleFunc("GET /api/admin/audit", s.adminAudit)
 	mux.HandleFunc("POST /api/admin/games/{kind}", s.adminGame)
+	mux.HandleFunc("POST /api/admin/games/order", s.adminGameOrder)
 	mux.HandleFunc("POST /api/admin/users/{id}", s.adminManageUser)
 	mux.HandleFunc("POST /api/admin/rooms/{id}/close", s.adminCloseRoom)
 	mux.HandleFunc("POST /api/admin/wishes/{id}", s.adminWish)
@@ -750,12 +753,14 @@ func (s *Server) statePayload(r *http.Request) (int, []byte) {
 	}
 	out := map[string]any{"serverInstance": s.instance, "user": map[string]any{"id": u.ID, "name": u.Name, "role": s.role(u.ID)}, "availableGames": s.availableGames(), "rooms": rooms, "serverNow": time.Now().UnixMilli(), "assetsBaseURL": s.cfg.AssetsBaseURL, "version": s.cfg.Version, "railMaps": game.RailMapList()}
 	out["modules"] = s.cfg.Modules
+	out["network"] = s.networkFor(u.ID)
 	room := s.current(u.ID)
 	if room == nil {
 		room = s.watching(u.ID)
 	}
 	if room != nil {
 		v := summary(room)
+		v["seats"] = s.networkSeats(room.Seats)
 		v["you"] = seatIndex(room, u.ID)
 		v["spectating"] = seatIndex(room, u.ID) < 0
 		v["turnDeadline"] = room.TurnDeadline

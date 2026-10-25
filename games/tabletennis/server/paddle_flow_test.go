@@ -104,6 +104,12 @@ func TestPaddleHeightControlsContact(t *testing.T) {
 		if _, e = Module().Apply(gameapi.Context{Players: 2, Actor: 0, Now: time.UnixMilli(s.ServerAt)}, m, b); e == nil {
 			t.Fatal("unbounded stroke depth accepted")
 		}
+		a.RacketZ = 1.1
+		a.RacketRadius = 1
+		b, _ = json.Marshal(a)
+		if _, e = Module().Apply(gameapi.Context{Players: 2, Actor: 0, Now: time.UnixMilli(s.ServerAt)}, m, b); e == nil {
+			t.Fatal("unbounded visible paddle footprint accepted")
+		}
 	}
 }
 

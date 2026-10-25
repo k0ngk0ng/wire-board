@@ -7,6 +7,7 @@ import {
   type PointerEvent as ReactPointerEvent,
 } from "react";
 import type { BoardProps } from "../../../web/src/game-api/module";
+import { isTransientSyncError } from "../../../web/src/game-api/sync-error";
 import { soundSources, useAtlas, type Atlas } from "./assets";
 import { drawBattlefield, drawTankIcon } from "./canvas";
 import { TankMotion, type TankWorld, type TankPose } from "./prediction";
@@ -468,12 +469,23 @@ export function Board(props: BoardProps<View>) {
     void p
       .act(action)
       .then(() => inputRef.current.complete(token))
-      .catch(() => {
+      .catch((error) => {
         if (scopeRef.current !== sentScope) return;
-        const current = p.data as View | undefined;
+        const current = latest.current.data as View | undefined;
         const seq =
           p.room.you >= 0 ? (current?.tanks?.[p.room.you]?.seq ?? 0) : 0;
         inputRef.current.reset(seq);
+        if (isTransientSyncError(error)) {
+          heldMoves.current = [];
+          keysFire.current.clear();
+          touchMove.current = "none";
+          touchFire.current = false;
+          touchTimers.current.forEach(clearTimeout);
+          touchTimers.current = [];
+          setError("");
+          setSuspended(false);
+          return;
+        }
         setSuspended(true);
         setError("操作同步失败，请点击重新同步");
       })

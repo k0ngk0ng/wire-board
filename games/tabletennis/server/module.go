@@ -112,6 +112,9 @@ func validateAction(ctx gameapi.Context, s State, raw json.RawMessage) (Action, 
 		return a, errors.New("挥拍时间已过期，请重新连接")
 	}
 	reach := 1.
+	if !finite(a.RacketRadius) || a.RacketRadius < 0 || a.RacketRadius > .45 || (a.RacketRadius > 0 && a.RacketRadius < .04) {
+		return a, errors.New("无效球拍范围")
+	}
 	if a.RacketY != nil {
 		reach = 8
 		if !finite(a.RacketZ) || a.RacketZ < -2 || a.RacketZ > 3 {
@@ -173,7 +176,11 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 			return m, errors.New("发球时间已结束")
 		}
 		began := a.At
-		if a.RacketY != nil && math.Hypot(a.RacketX*.9-.34, *a.RacketY-1.1) > .22 {
+		tolerance := a.RacketRadius
+		if tolerance == 0 {
+			tolerance = .22
+		}
+		if a.RacketY != nil && math.Hypot(a.RacketX*.9-.34, *a.RacketY-1.1) > tolerance {
 			s.Seq[ctx.Actor] = a.Seq
 			s.recordPaddle(a, ctx.Actor, now, "miss")
 			return s.match()
@@ -221,7 +228,11 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 		if a.RacketY != nil {
 			height = *a.RacketY
 		}
-		if math.Hypot(p.X-racketX, p.Y-height) > .22 {
+		tolerance := a.RacketRadius
+		if tolerance == 0 {
+			tolerance = .22
+		}
+		if math.Hypot(p.X-racketX, p.Y-height) > tolerance {
 			s.recordPaddle(a, ctx.Actor, now, "miss")
 			s.emit("whiff", now, ctx.Actor, Vec{racketX, height, p.Z}, a.Kind)
 			return s.match()
@@ -367,6 +378,7 @@ func project(m gameapi.Match, seat int) (any, error) {
 		effects = effects[len(effects)-16:]
 	}
 	v := View{Paddles: s.Paddles, Options: s.Options, Epoch: s.Epoch, Phase: s.Phase, ServerAt: s.ServerAt, PhaseUntil: s.PhaseUntil, ServeDeadline: s.ServeDeadline, Score: s.Score, GamesWon: s.GamesWon, Game: s.Game, Games: s.Games, Order: s.Order, Ends: s.Ends, Rally: s.Rally, Shot: s.Shot, Expected: s.Expected, Receiver: s.Receiver, LastHitter: s.LastHitter, PointWinner: s.PointWinner, Flight: s.Flight, Events: effects}
+	v.ReachDepth = ReachDepth
 	if seat >= 0 && seat < len(s.Seq) && s.Result == nil {
 		v.Controls.Seq = s.Seq[seat]
 		paddle := s.Paddles[seat]

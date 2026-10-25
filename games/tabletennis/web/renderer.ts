@@ -2,7 +2,7 @@ import * as T from "three";
 import type { Options, View, Stroke, Vec } from "./types";
 import { localPoint, sampleFlight } from "./timeline";
 import { contactPoint } from "./prediction";
-import { cameraSetup, paddleAtScreen } from "./view-space";
+import { cameraSetup, paddleRadiusPixels } from "./view-space";
 import { RemotePaddles } from "./paddle-stream";
 export type CourtFrame = {
   ball?: Vec;
@@ -498,7 +498,7 @@ export function createCourt(
   }
   function firstPersonRacket() {
     racketRig = new T.Group();
-    scene.add(racketRig);
+    paddleScene.add(racketRig);
     scene.add(camera);
     const racket = paddle(racketRig, v(0, 0, 0), "#267c6a");
     racket.rotation.set(-0.1, -0.3, -0.28);
@@ -524,6 +524,15 @@ export function createCourt(
   }
 
   scene = new T.Scene();
+  const paddleScene = new T.Scene();
+  const paddleCamera = new T.OrthographicCamera(-1, 1, 1, -1, 0.1, 1000);
+  paddleCamera.position.z = 200;
+  paddleCamera.updateMatrixWorld();
+  paddleScene.add(new T.HemisphereLight("#fff7e8", "#9caf9a", 2));
+  const paddleLight = new T.DirectionalLight("#ffffff", 2.2);
+  paddleLight.position.set(-500, 700, 900);
+  paddleScene.add(paddleLight);
+
   scene.background = new T.Color(theme.bg);
   scene.fog = new T.Fog(theme.bg, 32, 60);
   camera = new T.PerspectiveCamera(49, 1, 0.1, 100);
@@ -623,8 +632,7 @@ export function createCourt(
     scene.add(line);
     return { points, line };
   });
-  let ownDepth = 1.7,
-    lastRender = 0;
+
   function resize() {
     const w = viewport.clientWidth,
       h = viewport.clientHeight;
@@ -637,9 +645,15 @@ export function createCourt(
     camera.lookAt(0, setup.targetY, -1.1);
     camera.updateProjectionMatrix();
     camera.updateMatrixWorld();
+    paddleCamera.left = -w / 2;
+    paddleCamera.right = w / 2;
+    paddleCamera.top = h / 2;
+    paddleCamera.bottom = -h / 2;
+    paddleCamera.updateProjectionMatrix();
   }
   resize();
   renderer.compile(scene, camera);
+  renderer.compile(paddleScene, paddleCamera);
   function render(f: CourtFrame) {
     const d = f.data;
     const seat = f.seat >= 0 ? f.seat : 0;
@@ -766,36 +780,40 @@ export function createCourt(
     const swingDuration = 120 + (1 - (f.swing?.stroke.power ?? 0.35)) * 140;
     const activeSwing = age >= 0 && age < swingDuration;
     const incoming = localPoint(contactPoint(d, seat, f.time), facing);
-    const delta = lastRender
-      ? Math.max(0, Math.min(100, f.now - lastRender))
-      : 16;
-    lastRender = f.now;
-    ownDepth +=
-      (Math.max(0, Math.min(1.7, incoming.z)) - ownDepth) *
-      (1 - Math.exp(-delta / 90));
     const saved = remoteTracks.sample(seat, f.time);
-    const ownPoint = f.racketScreenPoint
-      ? paddleAtScreen(
-          f.racketScreenPoint,
-          ownDepth,
-          viewport.clientWidth,
-          viewport.clientHeight,
-        )
-      : { x: saved.x * 0.9, y: saved.y, z: saved.z };
+    const projected = new T.Vector3(
+      saved.x * 0.9 * scale,
+      saved.y * scale,
+      saved.z * scale,
+    ).project(camera);
+    const cursor = f.racketScreenPoint ?? {
+      x: (projected.x + 1) / 2,
+      y: (1 - projected.y) / 2,
+    };
     racketRig.position.set(
-      ownPoint.x * scale,
-      ownPoint.y * scale,
-      ownPoint.z * scale,
-    );
-    const k = activeSwing ? Math.sin((age / swingDuration) * Math.PI) : 0;
-    rackets[rackets.length - 1].rotation.set(-0.3, -0.1, 0.65);
-    racketRig.rotation.set(
-      f.gesture.y * 0.15 + k * (f.swing?.stroke.kind === "chop" ? 0.12 : -0.12),
+      (cursor.x - 0.5) * viewport.clientWidth,
+      (0.5 - cursor.y) * viewport.clientHeight,
       0,
-      k * (f.swing?.stroke.kind === "chop" ? 0.12 : -0.12),
+    );
+    const own = rackets[rackets.length - 1];
+    own.scale.setScalar(paddleRadiusPixels(viewport.clientWidth) / 0.23);
+    own.rotation.set(0, 0, 0.65);
+    const k = activeSwing ? Math.sin((age / swingDuration) * Math.PI) : 0;
+    racketRig.rotation.set(
+      0,
+      0,
+      f.gesture.x * 0.08 -
+        f.gesture.y * 0.06 +
+        k * (f.swing?.stroke.kind === "chop" ? 0.12 : -0.12),
     );
 
     renderer.render(scene, camera);
+    const worldCalls = renderer.info.render.calls;
+    renderer.autoClear = false;
+    renderer.clearDepth();
+    renderer.render(paddleScene, paddleCamera);
+    renderer.autoClear = true;
+
     const screen = ball.position.clone().project(camera);
     const contactScreen = new T.Vector3(
       incoming.x * scale,
@@ -804,7 +822,14 @@ export function createCourt(
     ).project(camera);
     const ownRacket = rackets[rackets.length - 1]
       .getWorldPosition(new T.Vector3())
-      .project(camera);
+      .project(paddleCamera);
+    const paddleEdge = own
+      .localToWorld(new T.Vector3(0.23, 0, 0))
+      .project(paddleCamera);
+    const paddleRadius = Math.hypot(
+      ((paddleEdge.x - ownRacket.x) * viewport.clientWidth) / 2,
+      ((paddleEdge.y - ownRacket.y) * viewport.clientHeight) / 2,
+    );
     Object.assign(canvas, {
       __tableTennisFrame: {
         at: f.time,
@@ -816,6 +841,10 @@ export function createCourt(
               lastHitter: d.lastHitter,
               startAt: d.flight.startAt,
               receiveAt: d.flight.receiveAt,
+              landingDepth: localPoint(
+                sampleFlight(d.flight, d.flight.receiveAt),
+                facing,
+              ).z,
               reason: d.flight.reason,
               initial: d.flight.segments[0]?.p,
               velocity: d.flight.segments[0]?.v,
@@ -827,6 +856,7 @@ export function createCourt(
         swingDuration,
         gestureDown: f.gesture.down,
         racket: {
+          radius: paddleRadius,
           x: ((ownRacket.x + 1) / 2) * viewport.clientWidth,
           y: ((1 - ownRacket.y) / 2) * viewport.clientHeight,
         },
@@ -840,32 +870,34 @@ export function createCourt(
         rally: d.rally,
         shot: d.shot,
         ball: {
+          world: q,
           x: ((screen.x + 1) / 2) * viewport.clientWidth,
           y: ((1 - screen.y) / 2) * viewport.clientHeight,
           visible: ball.visible,
         },
         rackets: rackets.length,
         facing,
-        calls: renderer.info.render.calls,
+        calls: worldCalls + renderer.info.render.calls,
       },
     });
   }
   function dispose() {
-    scene.traverse((o) => {
-      if (o instanceof T.DirectionalLight || o instanceof T.SpotLight)
-        o.shadow.dispose();
-      const mesh = o as T.Mesh;
-      if (mesh.geometry) mesh.geometry.dispose();
-      if (mesh.material) {
-        for (const material of Array.isArray(mesh.material)
-          ? mesh.material
-          : [mesh.material]) {
-          const m = material as T.MeshStandardMaterial;
-          m.map?.dispose();
-          material.dispose();
+    for (const ownedScene of [scene, paddleScene])
+      ownedScene.traverse((o) => {
+        if (o instanceof T.DirectionalLight || o instanceof T.SpotLight)
+          o.shadow.dispose();
+        const mesh = o as T.Mesh;
+        if (mesh.geometry) mesh.geometry.dispose();
+        if (mesh.material) {
+          for (const material of Array.isArray(mesh.material)
+            ? mesh.material
+            : [mesh.material]) {
+            const m = material as T.MeshStandardMaterial;
+            m.map?.dispose();
+            material.dispose();
+          }
         }
-      }
-    });
+      });
     renderer.dispose();
     // A replacement effect may reuse the same attached canvas. Release the
     // actual context only after this owned canvas has left the document.

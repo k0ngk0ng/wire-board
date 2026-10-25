@@ -1,6 +1,43 @@
 import type { State, Game } from "./types";
 
 type StreamState = State & { snapshotAt?: number };
+export type NetworkPacket = {
+  type: "network";
+  userId: string;
+  serverInstance?: string;
+  serverNow: number;
+  roomId: string;
+  self: import("./network-quality").NetworkInfo;
+  players: Record<string, import("./network-quality").NetworkInfo>;
+};
+export function mergeNetworkState(
+  previous: State | undefined,
+  packet: NetworkPacket,
+): State | undefined {
+  if (
+    !previous ||
+    previous.user.id !== packet.userId ||
+    previous.serverInstance !== packet.serverInstance ||
+    packet.serverNow < (previous.networkAt ?? 0)
+  )
+    return previous;
+  return {
+    ...previous,
+    network: packet.self,
+    networkAt: packet.serverNow,
+    ...(previous.room?.id === packet.roomId
+      ? {
+          room: {
+            ...previous.room,
+            seats: previous.room.seats.map((p) => ({
+              ...p,
+              network: packet.players[p.id],
+            })),
+          },
+        }
+      : {}),
+  };
+}
 export type GamePacket = {
   type: "game";
   serverInstance?: string;
@@ -25,6 +62,32 @@ export function mergeStreamState(
     previous?.serverInstance === incoming.serverInstance
   ) {
     if (incoming.serverNow < (previous.snapshotAt ?? 0)) return previous;
+    if (incoming.serverNow < (previous.networkAt ?? 0)) {
+      incoming = {
+        ...incoming,
+        network: previous.network,
+        networkAt: previous.networkAt,
+        ...(incoming.room?.id === previous.room?.id &&
+        incoming.room &&
+        previous.room
+          ? {
+              room: {
+                ...incoming.room,
+                seats: incoming.room.seats.map((p) =>
+                  p.bot || p.left
+                    ? p
+                    : {
+                        ...p,
+                        network:
+                          previous.room!.seats.find((old) => old.id === p.id)
+                            ?.network ?? p.network,
+                      },
+                ),
+              },
+            }
+          : {}),
+      };
+    }
     const keepRoom =
       incoming.serverNow < previous.serverNow ||
       (incoming.room?.id === previous.room?.id &&
@@ -36,9 +99,15 @@ export function mergeStreamState(
         serverNow: previous.serverNow,
         receivedAt: previous.receivedAt,
         snapshotAt: incoming.serverNow,
+        networkAt: incoming.networkAt ?? incoming.serverNow,
       };
   }
-  return { ...incoming, receivedAt, snapshotAt: incoming.serverNow };
+  return {
+    ...incoming,
+    receivedAt,
+    snapshotAt: incoming.serverNow,
+    networkAt: incoming.networkAt ?? incoming.serverNow,
+  };
 }
 
 export function mergeStreamGame(
@@ -142,7 +211,12 @@ export class StreamInputs {
     clearTimeout(pending.timer);
     this.pending.delete(ack.nonce);
     if (ack.status === 200) pending.resolve();
-    else pending.reject(new Error(ack.error || "实时操作未生效"));
+    else
+      pending.reject(
+        Object.assign(new Error(ack.error || "实时操作未生效"), {
+          status: ack.status,
+        }),
+      );
   }
   close() {
     this.socket = undefined;

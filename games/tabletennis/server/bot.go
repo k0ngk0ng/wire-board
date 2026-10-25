@@ -15,7 +15,7 @@ func botMove(v View, seat int, now int64, x, y, z float64) (json.RawMessage, err
 	}
 	x = p.X + clamp(x-p.X, -.3, .3)
 	y = p.Y + clamp(y-p.Y, -.18, .18)
-	z = p.Z + clamp(z-p.Z, -.2, .2)
+	z = clamp(p.Z+clamp(z-p.Z, -.2, .2), 0, ReachDepth)
 	if math.Abs(x-p.X)+math.Abs(y-p.Y)+math.Abs(z-p.Z) < .008 {
 		return nil, nil
 	}
@@ -97,7 +97,7 @@ func botAction(ctx gameapi.Context, m gameapi.Match) (json.RawMessage, error) {
 		}
 	}
 	if now < f.ContactStart+delay || now < f.StartAt+180 {
-		when := max(f.ContactStart, f.ContactStart+delay)
+		when := min(f.ContactEnd, max(f.ContactStart, f.ContactStart+delay))
 		point, _ := f.at(when)
 		dir := sign(v.Options.Teams[ctx.Actor] ^ v.Ends)
 		windup := clamp(float64(when-now)/160, 0, 1)

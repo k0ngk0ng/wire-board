@@ -132,7 +132,7 @@ func traceFlight(p, v Vec, spin float64, at int64, from, to int, serve, doubles 
 					break
 				}
 				f.ReceiveAt = at
-				f.ContactStart = at + 25
+				f.ContactStart = at + 1
 				f.WinnerSide = from
 			}
 			v.Y = math.Abs(v.Y) * .84
@@ -157,12 +157,12 @@ func traceFlight(p, v Vec, spin float64, at int64, from, to int, serve, doubles 
 	if f.ReceiveAt > 0 {
 		f.ContactEnd = f.EndAt - 25
 		// No body controls: the legal strike area stays in front of the fixed
-		// first-person observer, ending 33 cm behind the table end line.
+		// first-person observer, including the visible near-court corridor.
 		for _, segment := range f.Segments {
 			if segment.At < f.ReceiveAt {
 				continue
 			}
-			for _, t := range roots(segment.P.Z, segment.V.Z, segment.A.Z, sign(to)*1.7) {
+			for _, t := range roots(segment.P.Z, segment.V.Z, segment.A.Z, sign(to)*ReachDepth) {
 				crossing := segment.At + int64(math.Round(t*1000))
 				if crossing <= segment.Until && crossing < f.ContactEnd {
 					f.ContactEnd = crossing

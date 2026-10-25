@@ -15,6 +15,7 @@ const (
 	TableHeight          = .76
 	NetHeight            = .1525
 	BallRadius           = .02
+	ReachDepth           = 2.25
 	FrameMS        int64 = 50
 	LateGraceMS    int64 = 350
 	EarlyBufferMS  int64 = 220
@@ -85,21 +86,22 @@ type Paddle struct {
 	Result    string  `json:"result"`
 }
 type Action struct {
-	RacketX   float64  `json:"racketX"`
-	RacketY   *float64 `json:"racketY,omitempty"`
-	RacketZ   float64  `json:"racketZ,omitempty"`
-	MotionSeq int64    `json:"motionSeq,omitempty"`
-	Ends      int      `json:"ends,omitempty"`
-	Lift      float64  `json:"lift,omitempty"`
-	Type      string   `json:"type"`
-	Epoch     string   `json:"epoch"`
-	Rally     int      `json:"rally"`
-	Shot      int      `json:"shot"`
-	Seq       int64    `json:"seq"`
-	Kind      string   `json:"kind"`
-	Aim       float64  `json:"aim"`
-	Power     float64  `json:"power"`
-	At        int64    `json:"at"`
+	RacketX      float64  `json:"racketX"`
+	RacketY      *float64 `json:"racketY,omitempty"`
+	RacketZ      float64  `json:"racketZ,omitempty"`
+	RacketRadius float64  `json:"racketRadius,omitempty"`
+	MotionSeq    int64    `json:"motionSeq,omitempty"`
+	Ends         int      `json:"ends,omitempty"`
+	Lift         float64  `json:"lift,omitempty"`
+	Type         string   `json:"type"`
+	Epoch        string   `json:"epoch"`
+	Rally        int      `json:"rally"`
+	Shot         int      `json:"shot"`
+	Seq          int64    `json:"seq"`
+	Kind         string   `json:"kind"`
+	Aim          float64  `json:"aim"`
+	Power        float64  `json:"power"`
+	At           int64    `json:"at"`
 }
 type PendingSwing struct {
 	Action Action `json:"action"`
@@ -146,6 +148,7 @@ type Controls struct {
 	CloseAt  int64 `json:"closeAt"`
 }
 type View struct {
+	ReachDepth    float64      `json:"reachDepth"`
 	Paddles       []Paddle     `json:"paddles"`
 	Options       Options      `json:"options"`
 	Epoch         string       `json:"epoch"`

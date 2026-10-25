@@ -113,6 +113,7 @@ export type User = {
   id: string;
   name: string;
   role?: "player" | "admin" | "superadmin";
+  network?: import("./network-quality").NetworkInfo;
 };
 export type Seat = User & {
   ready: boolean;
@@ -128,6 +129,8 @@ export type ChatMessage = {
   sentAt: number;
 };
 export type State = {
+  network?: import("./network-quality").NetworkInfo;
+  networkAt?: number;
   availableGames: string[];
   railMaps: RailMapSpec[];
   user: User;

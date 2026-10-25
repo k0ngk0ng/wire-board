@@ -46,6 +46,7 @@ func (s *Server) initAdmin() error {
 	_, err := s.db.Exec(`CREATE TABLE IF NOT EXISTS user_controls(user_id TEXT PRIMARY KEY, role TEXT NOT NULL DEFAULT 'player' CHECK(role IN ('player','admin','superadmin')), disabled INTEGER NOT NULL DEFAULT 0, created_at INTEGER NOT NULL DEFAULT 0, last_login INTEGER NOT NULL DEFAULT 0, last_seen INTEGER NOT NULL DEFAULT 0);
 CREATE UNIQUE INDEX IF NOT EXISTS one_superadmin ON user_controls(role) WHERE role='superadmin';
 CREATE TABLE IF NOT EXISTS game_settings(kind TEXT PRIMARY KEY, enabled INTEGER NOT NULL DEFAULT 0);
+CREATE TABLE IF NOT EXISTS game_order(kind TEXT PRIMARY KEY, position INTEGER NOT NULL);
 CREATE TABLE IF NOT EXISTS admin_audit(id INTEGER PRIMARY KEY AUTOINCREMENT, actor TEXT NOT NULL, actor_name TEXT NOT NULL, action TEXT NOT NULL, target TEXT NOT NULL, detail TEXT NOT NULL, created_at INTEGER NOT NULL);
 INSERT OR IGNORE INTO user_controls(user_id) SELECT id FROM users;`)
 	if err != nil {
@@ -89,6 +90,9 @@ INSERT OR IGNORE INTO user_controls(user_id) SELECT id FROM users;`)
 	}
 	rows.Close()
 	if err != nil {
+		return err
+	}
+	if err = s.loadGameOrder(); err != nil {
 		return err
 	}
 	if existing := strings.TrimSpace(s.cfg.AdminExistingUsername); existing != "" {

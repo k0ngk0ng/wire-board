@@ -121,12 +121,18 @@ func (s *Server) streamSocket(w http.ResponseWriter, r *http.Request, user User)
 	ctx, cancel := context.WithCancel(r.Context())
 	defer cancel()
 	changed, frames := make(chan struct{}, 1), make(chan struct{}, 1)
+	networkChanged := make(chan struct{}, 1)
 	replies := make(chan streamAck, 32)
 	s.mu.Lock()
 	if s.streamFrames == nil {
 		s.streamFrames = make(map[chan struct{}]chan struct{})
 	}
+	if s.streamNetworks == nil {
+		s.streamNetworks = make(map[chan struct{}]chan struct{})
+		s.networkSamples = make(map[chan struct{}]networkSample)
+	}
 	s.watchers[changed], s.connections[changed], s.streamFrames[changed] = true, user.ID, frames
+	s.streamNetworks[changed] = networkChanged
 	s.seen(user.ID)
 	s.mu.Unlock()
 	defer func() {
@@ -134,6 +140,9 @@ func (s *Server) streamSocket(w http.ResponseWriter, r *http.Request, user User)
 		delete(s.watchers, changed)
 		delete(s.connections, changed)
 		delete(s.streamFrames, changed)
+		delete(s.streamNetworks, changed)
+		delete(s.networkSamples, changed)
+		s.notifyNetwork(user.ID)
 		s.mu.Unlock()
 	}()
 	go func() {
@@ -176,12 +185,11 @@ func (s *Server) streamSocket(w http.ResponseWriter, r *http.Request, user User)
 	if !state() {
 		return
 	}
+	go s.measureNetwork(ctx, cancel, conn, r, changed, user.ID)
 	// A single pending frame always refers to current state. Slow clients cannot
 	// accumulate an unbounded queue of old snapshots or hold the platform lock.
 	push := time.NewTicker(50 * time.Millisecond)
 	defer push.Stop()
-	heartbeat := time.NewTicker(25 * time.Second)
-	defer heartbeat.Stop()
 	pending := false
 	for {
 		select {
@@ -189,6 +197,11 @@ func (s *Server) streamSocket(w http.ResponseWriter, r *http.Request, user User)
 			return
 		case ack := <-replies:
 			if !write(ack) {
+				return
+			}
+		case <-networkChanged:
+			packet, valid := s.networkPacket(r, changed)
+			if !valid || !write(packet) {
 				return
 			}
 		case <-changed:
@@ -214,19 +227,6 @@ func (s *Server) streamSocket(w http.ResponseWriter, r *http.Request, user User)
 			} else if !state() {
 				return
 			}
-		case <-heartbeat.C:
-			if _, err := s.user(r); err != nil {
-				return
-			}
-			pingCtx, stop := context.WithTimeout(ctx, 5*time.Second)
-			err := conn.Ping(pingCtx)
-			stop()
-			if err != nil {
-				return
-			}
-			s.mu.Lock()
-			s.seen(user.ID)
-			s.mu.Unlock()
 		}
 	}
 }

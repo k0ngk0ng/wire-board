@@ -123,6 +123,33 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
 }
+.admin-order-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.admin-game-card[draggable="true"] {
+  cursor: grab;
+}
+.admin-game-order-controls {
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+  align-self: center;
+}
+.admin-game-order-controls .icon-button {
+  width: 32px;
+  height: 34px;
+  padding: 4px;
+  flex: none;
+}
+.admin-game-order-controls .icon-button:disabled {
+  color: #68766d;
+  background: #e9eee8;
+  opacity: 1;
+}
 .admin-game-card {
   display: flex;
   align-items: flex-start;
@@ -776,4 +803,22 @@
 }
 .admin-password-row button {
   white-space: nowrap;
+}
+
+.admin-section-head:has(.admin-order-actions) {
+  flex-wrap: wrap;
+}
+.admin-section-head:has(.admin-order-actions) > div:first-child {
+  min-width: min(180px, 100%);
+}
+.admin-section-head > .admin-order-actions {
+  flex: 0 0 auto;
+  max-width: 100%;
+}
+
+.admin-order-actions button:disabled {
+  color: #526456;
+  background: #e3e9de;
+  border-color: #bac8ba;
+  opacity: 1;
 }

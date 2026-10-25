@@ -87,6 +87,8 @@ try:
    r=subprocess.run(['node',str(HERE/'native-strike.mjs'),ws,BASE,json.dumps(stroke_options)],cwd=ROOT,env=ENV,capture_output=True,text=True,timeout=40)
    if r.returncode:raise RuntimeError(r.stderr+r.stdout)
    native.append(json.loads(r.stdout))
+  if os.environ.get('TT_BROWSER_LONG'):
+   r=subprocess.run(['node',str(HERE/'native-long.mjs'),ws,BASE,json.dumps({'touch':width<650})],cwd=ROOT,env=ENV,capture_output=True,text=True,timeout=85);assert r.returncode==0,r.stderr+r.stdout;native.append(json.loads(r.stdout))
   if os.environ.get('TT_BROWSER_SPEED'):
    hits=[v for v in native if 'stroke' in v];assert hits[1]['stroke']['power']>hits[0]['stroke']['power']+.1,hits
    assert hits[1]['swingDuration']<hits[0]['swingDuration'],hits
