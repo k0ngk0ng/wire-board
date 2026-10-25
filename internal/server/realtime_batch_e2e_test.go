@@ -5,6 +5,8 @@ package server
 // corrupts an earlier candidate; SQL failure acknowledges part of a batch;
 // control changes/closure before commit permit queued input; acknowledged batch
 // disappears on restart. Inputs use real sockets and the production database.
+// Ping/Pong metadata can change during a failed transaction independently of
+// the game; rollback checks exclude only that ephemeral seat.network field.
 import (
 	"encoding/json"
 	"errors"
@@ -18,6 +20,22 @@ import (
 )
 
 func batchTable(t *testing.T) *realtimeTable { return batchTableMode(t, false) }
+
+func roomWithoutNetwork(t *testing.T, view map[string]any) map[string]any {
+	t.Helper()
+	raw, err := json.Marshal(view)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var result map[string]any
+	if err := json.Unmarshal(raw, &result); err != nil {
+		t.Fatal(err)
+	}
+	for _, seat := range result["seats"].([]any) {
+		delete(seat.(map[string]any), "network")
+	}
+	return result
+}
 
 func batchTableMode(t *testing.T, critical bool) *realtimeTable {
 	module := realtimeFixture(true, time.Hour, 0, "")
@@ -77,7 +95,7 @@ func TestRealtimeBatchAtomicDurableInputs(t *testing.T) {
 				t.Fatal(err)
 			}
 			if mode == "database" {
-				if one["status"] != float64(500) || two["status"] != float64(500) || updates != 0 || !reflect.DeepEqual(before, after) {
+				if one["status"] != float64(500) || two["status"] != float64(500) || updates != 0 || !reflect.DeepEqual(roomWithoutNetwork(t, before), roomWithoutNetwork(t, after)) {
 					t.Fatal("failed transaction leaked state/ACK", one, two, updates, after)
 				}
 			} else {
@@ -149,7 +167,7 @@ func TestRealtimeBatchMissingSnapshotRejectsAcknowledgement(t *testing.T) {
 	}
 	streamSend(t, conn, map[string]any{"type": "input", "roomId": f.id, "version": before["version"], "nonce": "missing-snapshot-input", "action": map[string]any{"drive": 1}})
 	ack := streamUntil(t, conn, "ack")
-	if ack["status"] != float64(500) || !reflect.DeepEqual(before, current(f.a)) {
+	if ack["status"] != float64(500) || !reflect.DeepEqual(roomWithoutNetwork(t, before), roomWithoutNetwork(t, current(f.a))) {
 		t.Fatal("acknowledged input without durable room", ack)
 	}
 	var count int
