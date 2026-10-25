@@ -89,7 +89,9 @@ jobs:
           cache: npm
           cache-dependency-path: web/package-lock.json
       - name: Restore published game fallbacks
-        run: python3 -B scripts/fortressblue/fetch-assets.py
+        run: |
+          python3 -B scripts/fortressblue/test_fetch_assets.py
+          python3 -B scripts/fortressblue/fetch-assets.py
       - name: Check game boundaries and compile application
         env:
           WIRE_BOARD_ASSET_BASE: https://cdn.ichenj.com/bga/web/${{ github.sha }}/

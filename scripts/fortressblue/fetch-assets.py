@@ -11,14 +11,17 @@ from __future__ import annotations
 import concurrent.futures
 import hashlib
 import json
+import subprocess
 import sys
 import time
-import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 MANIFEST = ROOT / "games/fortressblue/assets/manifest.json"
 BASE = "https://cdn.ichenj.com/bga/v20261002-1"
+TRANSFER_TIMEOUT = 45
+DOWNLOAD_ATTEMPTS = 4
+RETRY_DELAY = 1
 
 
 def sha(data: bytes) -> str:
@@ -27,15 +30,27 @@ def sha(data: bytes) -> str:
 
 def fetch(url: str) -> bytes:
     last = None
-    for attempt in range(4):
+    for attempt in range(DOWNLOAD_ATTEMPTS):
         try:
-            request = urllib.request.Request(url, headers={"User-Agent": "wire-board-asset-fetch/1"})
-            with urllib.request.urlopen(request, timeout=45) as response:
-                return response.read()
+            # A socket idle timeout does not bound a slowly trickling body.
+            # curl bounds the complete transfer and uses the reachable IPv4
+            # route consistently on hosted runners. Bytes still pass the
+            # manifest length and SHA-256 checks before being written.
+            result = subprocess.run(
+                ["curl", "--ipv4", "--fail", "--location", "--silent", "--show-error",
+                 "--connect-timeout", str(min(10, TRANSFER_TIMEOUT)),
+                 "--max-time", str(TRANSFER_TIMEOUT),
+                 "--user-agent", "wire-board-asset-fetch/1", "--url", url],
+                capture_output=True, timeout=TRANSFER_TIMEOUT + 2,
+            )
+            if result.returncode:
+                raise RuntimeError(result.stderr.decode(errors="replace").strip())
+            return result.stdout
         except Exception as error:  # noqa: BLE001 - retry timeouts and transient 5xx
             last = error
-            if attempt < 3:
-                time.sleep(1 + attempt * 2)
+            print(f"download attempt {attempt + 1}/{DOWNLOAD_ATTEMPTS}: {url}: {error}", file=sys.stderr, flush=True)
+            if attempt + 1 < DOWNLOAD_ATTEMPTS:
+                time.sleep(RETRY_DELAY * (1 + attempt * 2))
     raise RuntimeError(f"fetch failed after retries: {url}: {last}")
 
 
@@ -58,8 +73,17 @@ def main() -> None:
         target.write_bytes(data)
         return True
 
+    downloaded = 0
     with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
-        downloaded = sum(1 for changed in pool.map(ensure, entries) if changed)
+        pending = {pool.submit(ensure, entry) for entry in entries}
+        try:
+            for done, future in enumerate(concurrent.futures.as_completed(pending), 1):
+                downloaded += bool(future.result())
+                print(f"fallback media checked: {done}/{len(entries)}", flush=True)
+        except Exception:
+            for future in pending:
+                future.cancel()
+            raise
     print(f"fallback media ready: {len(entries)} objects, downloaded {downloaded}")
 
 
