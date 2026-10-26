@@ -1,0 +1,404 @@
+/* The battlefield owns the space; the HUD and compact controls sit inside it. */
+.starfort-board {
+  position: relative;
+  display: block;
+  width: min(100%, 1600px);
+  height: clamp(560px, 76dvh, 880px);
+  min-height: 0;
+  margin-inline: auto;
+  isolation: isolate;
+}
+.starfort-board .sf-layout,
+.starfort-board .sf-map-section,
+.starfort-board .sf-world-camera {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  max-width: none;
+}
+.starfort-board .sf-battlefield.sf-world-viewport {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  border-color: #3b6036;
+}
+.sf-hud {
+  position: absolute;
+  z-index: 4;
+  top: 12px;
+  left: 12px;
+  width: min(calc(100% - 24px), 820px);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  align-items: start;
+}
+.sf-hud .sf-overview,
+.sf-hud .sf-wave-banner {
+  padding: 8px 10px;
+  gap: 8px;
+  border-color: #739265;
+  border-radius: 9px;
+  background: #fffdf1f5;
+  color: #253e29;
+  box-shadow: 0 2px 5px #1b3d2430;
+}
+.sf-hud .sf-overview strong {
+  font-size: 21px;
+}
+.sf-hud .sf-hp-track {
+  margin-top: 1px;
+}
+.sf-hud .sf-overview > div {
+  gap: 1px;
+}
+.sf-hud .sf-wave-banner {
+  min-height: 70px;
+  align-items: center;
+}
+.sf-hud .sf-wave-banner > div:first-child {
+  display: grid;
+  gap: 3px;
+}
+.sf-hud .sf-countdown {
+  padding: 3px 7px;
+}
+.sf-hud .sf-countdown strong {
+  font-size: 22px;
+}
+.sf-hud .sf-countdown > span:last-child:not(:first-child) {
+  display: none;
+}
+.sf-hud .sf-countdown > span:first-child {
+  font-size: 11px;
+}
+.sf-hud .sf-phase-battle .sf-countdown strong,
+.sf-hud .sf-phase-paused .sf-countdown strong {
+  font-size: 13px;
+}
+.starfort-board .sf-wave-controls,
+.sf-field-actions,
+.sf-map-tools,
+.sf-map-navigation {
+  position: absolute;
+  z-index: 4;
+  width: auto;
+  margin: 0;
+}
+.starfort-board .sf-wave-controls {
+  right: 144px;
+  bottom: 12px;
+  max-width: calc(100% - 420px);
+  padding: 6px 8px;
+  gap: 8px;
+  border: 1px solid #739265;
+  background: #fffdf1f5;
+  color: #253e29;
+  border-radius: 9px;
+}
+.starfort-board .sf-wave-controls > div:first-child > strong,
+.starfort-board[data-phase="battle"] .sf-wave-controls > div:first-child,
+.starfort-board[data-phase="won"] .sf-wave-controls,
+.starfort-board[data-phase="lost"] .sf-wave-controls {
+  display: none;
+}
+.starfort-board .sf-wave-controls p {
+  margin: 0;
+  font-size: 11px;
+}
+.starfort-board .sf-control-buttons {
+  width: auto;
+  gap: 5px;
+}
+.starfort-board .sf-control-buttons button {
+  min-height: 34px;
+  padding: 5px 9px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.sf-field-actions {
+  right: 12px;
+  bottom: 12px;
+  display: flex;
+  gap: 6px;
+}
+.starfort-board .sf-field-actions > button {
+  min-height: 46px;
+  padding: 7px 12px;
+}
+.sf-map-tools {
+  bottom: 12px;
+  left: 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  max-width: calc(100% - 430px);
+  padding: 5px;
+  border: 1px solid #739265;
+  border-radius: 9px;
+  background: #fffdf1f5;
+  color: #253e29;
+}
+.starfort-board .sf-camera-toolbar {
+  flex-wrap: nowrap;
+  gap: 3px;
+}
+.starfort-board .sf-camera-toolbar button {
+  min-height: 34px;
+  padding: 4px 7px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.starfort-board .sf-camera-toolbar output {
+  min-width: 34px;
+}
+.sf-map-tools > details {
+  font-size: 12px;
+}
+.sf-map-tools summary {
+  white-space: nowrap;
+}
+.sf-map-tools details[open] > div {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 0;
+  width: min(320px, 85vw);
+  max-height: min(45dvh, 320px);
+  overflow: auto;
+  padding: 8px;
+  border: 1px solid #617e55;
+  border-radius: 8px;
+  background: #fffdf1;
+  color: #253e29;
+  box-shadow: 0 3px 10px #1b3d2430;
+}
+.sf-map-navigation {
+  left: 12px;
+  bottom: 66px;
+  max-width: calc(100% - 24px);
+}
+.starfort-board .sf-minimap {
+  width: 132px;
+  height: 74px;
+  border-color: #476742;
+  box-shadow: 0 2px 5px #1b3d2430;
+}
+.sf-map-navigation p {
+  padding: 4px 8px;
+  background: #fffdf1;
+  border-radius: 6px;
+}
+.sf-information {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+.sf-info-dialog {
+  width: 920px;
+}
+.sf-information .sf-cooperation:empty {
+  display: none;
+}
+.starfort-board .sf-overview-hint {
+  top: 102px;
+}
+.game-fullscreen-surface[data-room-fullscreen]:has(.starfort-board) {
+  overflow: hidden;
+}
+[data-room-fullscreen] .starfort-board {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  margin: 0;
+}
+[data-room-fullscreen] .sf-battlefield {
+  border-radius: 8px;
+}
+@media (max-width: 850px) {
+  .sf-hud {
+    width: calc(100% - 20px);
+    left: 10px;
+    top: 10px;
+    gap: 6px;
+  }
+  .sf-hud .sf-overview {
+    grid-template-columns: 1fr 1fr 0.7fr;
+  }
+  .sf-hud .sf-overview strong {
+    font-size: 19px;
+  }
+  .starfort-board .sf-wave-controls {
+    right: 132px;
+    max-width: calc(100% - 360px);
+  }
+  .starfort-board .sf-wave-controls > div:first-child {
+    display: none;
+  }
+  .sf-map-tools {
+    max-width: 216px;
+    flex-wrap: wrap;
+    gap: 2px 5px;
+  }
+  .sf-map-tools > details > summary {
+    padding: 0;
+  }
+  .sf-field-actions {
+    right: 8px;
+  }
+  .starfort-board .sf-field-actions > button {
+    padding-inline: 10px;
+  }
+}
+@media (max-width: 560px) {
+  .starfort-board {
+    height: clamp(560px, 80dvh, 760px);
+  }
+  .sf-hud {
+    left: 8px;
+    top: 8px;
+    width: calc(100% - 16px);
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+  .sf-hud .sf-overview {
+    padding: 5px 8px;
+  }
+  .sf-hud .sf-overview strong {
+    font-size: 18px;
+  }
+  .sf-hud .sf-overview span {
+    font-size: 10px;
+  }
+  .sf-hud .sf-wave-banner {
+    min-height: 0;
+    padding: 4px 7px;
+  }
+  .sf-hud .sf-wave-banner > div:first-child {
+    display: flex;
+    gap: 6px;
+  }
+  .sf-hud .sf-wave-banner > div:first-child > span {
+    display: none;
+  }
+  .sf-hud .sf-countdown {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 5px;
+  }
+  .sf-hud .sf-countdown strong {
+    font-size: 21px;
+  }
+  .sf-hud .sf-countdown > span:first-child {
+    font-size: 10px;
+  }
+  .starfort-board .sf-wave-controls {
+    right: 8px;
+    bottom: 60px;
+    max-width: calc(50% - 12px);
+    padding: 5px;
+  }
+  .starfort-board .sf-control-buttons {
+    flex-wrap: wrap;
+  }
+  .starfort-board .sf-control-buttons button {
+    min-height: 34px;
+    padding: 4px 6px;
+    font-size: 11px;
+    flex: 1;
+  }
+  .sf-field-actions {
+    bottom: 8px;
+  }
+  .starfort-board .sf-field-actions > button {
+    min-height: 40px;
+    padding: 5px 9px;
+    font-size: 12px;
+  }
+  .sf-map-tools {
+    left: 8px;
+    bottom: 8px;
+    width: calc(50% - 12px);
+    max-width: calc(50% - 12px);
+  }
+  .starfort-board .sf-camera-toolbar {
+    flex-wrap: wrap;
+  }
+  .starfort-board .sf-camera-toolbar button {
+    min-height: 28px;
+    padding: 2px 5px;
+    font-size: 10px;
+  }
+  .starfort-board .sf-camera-toolbar output {
+    min-width: 30px;
+    font-size: 10px;
+  }
+  .sf-map-tools > details {
+    font-size: 10px;
+  }
+  .sf-map-navigation {
+    left: 8px;
+    bottom: 99px;
+  }
+  .starfort-board .sf-minimap {
+    width: 94px;
+    height: 52px;
+  }
+  .starfort-board .sf-overview-hint {
+    top: 112px;
+    max-width: calc(100% - 16px);
+    font-size: 10px;
+    padding: 4px 6px;
+  }
+  .sf-info-dialog {
+    padding: 12px;
+  }
+}
+@media (max-height: 500px) and (min-width: 561px) {
+  .sf-hud {
+    top: 5px;
+    left: 6px;
+    width: calc(100% - 12px);
+  }
+  .sf-hud .sf-overview,
+  .sf-hud .sf-wave-banner {
+    padding: 4px 7px;
+    min-height: 0;
+  }
+  .sf-hud .sf-overview strong {
+    font-size: 17px;
+  }
+  .sf-hud .sf-overview span {
+    font-size: 10px;
+  }
+  .sf-hud .sf-wave-banner > div:first-child > span {
+    display: none;
+  }
+  .sf-hud .sf-countdown {
+    padding: 2px 5px;
+  }
+  .sf-hud .sf-countdown strong {
+    font-size: 19px;
+  }
+  .sf-map-navigation {
+    bottom: 72px;
+  }
+  .starfort-board .sf-minimap {
+    width: 88px;
+    height: 43px;
+  }
+  .starfort-board .sf-overview-hint {
+    top: 73px;
+    padding: 3px 6px;
+    font-size: 10px;
+  }
+}
+
+.starfort-board > [data-sf-open-choice] {
+  position: absolute;
+  right: 12px;
+  bottom: 66px;
+  z-index: 5;
+}

@@ -4,6 +4,7 @@ import { Board } from "./Board";
 import { Cover } from "./Cover";
 import type { Options, View } from "./types";
 import "./style.css";
+import "./viewport.css";
 
 export default defineGame<View, Options>({
   ...catalog,

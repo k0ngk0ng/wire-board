@@ -3,6 +3,7 @@ import type { PointerEvent as ReactPointerEvent } from "react";
 import {
   worldBounds,
   fitCamera,
+  fillCamera,
   clampCamera,
   worldToScreen,
   screenToWorld,
@@ -27,6 +28,7 @@ import type { EventCursor } from "./presentation";
 import type { Enemy, Event, View, MapData, Point, Objective } from "./types";
 import atlasLayout from "../assets/public/starfort/v1/atlas.json";
 import worldAtlasLayout from "../assets/public/starfort/world-v2/atlas.json";
+import { battlefieldPalette as palette } from "./palette";
 
 type Atlas = {
   frames: Record<string, { x: number; y: number; w: number; h: number }>;
@@ -47,12 +49,64 @@ const towerNames: Record<string, string> = {
   frost: "冰塔",
   arcane: "法师塔",
 };
-const towerColors: Record<string, string> = {
-  arrow: "#a07a39",
-  cannon: "#925437",
-  frost: "#6cb9d1",
-  arcane: "#9a76c2",
-};
+const towerColors: Record<string, string> = palette.tower;
+const outlinedFrames = new WeakMap<
+  HTMLImageElement,
+  Map<string, HTMLCanvasElement>
+>();
+const outlineMargin = 6;
+
+function outlinedFrame(
+  sheet: HTMLImageElement,
+  frame: Atlas["frames"][string],
+  name: string,
+) {
+  let frames = outlinedFrames.get(sheet);
+  if (!frames) {
+    frames = new Map();
+    outlinedFrames.set(sheet, frames);
+  }
+  const cached = frames.get(name);
+  if (cached) return cached;
+  const bitmap = document.createElement("canvas");
+  bitmap.width = frame.w + outlineMargin * 2;
+  bitmap.height = frame.h + outlineMargin * 2;
+  const ctx = bitmap.getContext("2d");
+  if (!ctx) return null;
+  // Rasterize the alpha silhouette once per atlas frame. The original image
+  // keeps its exact size/anchor; the thin contour does not affect hit targets.
+  for (let index = 0; index < 8; index++) {
+    const angle = (index * Math.PI) / 4;
+    ctx.drawImage(
+      sheet,
+      frame.x,
+      frame.y,
+      frame.w,
+      frame.h,
+      outlineMargin + Math.cos(angle) * 4,
+      outlineMargin + Math.sin(angle) * 4,
+      frame.w,
+      frame.h,
+    );
+  }
+  ctx.globalCompositeOperation = "source-in";
+  ctx.fillStyle = palette.unitOutline;
+  ctx.fillRect(0, 0, bitmap.width, bitmap.height);
+  ctx.globalCompositeOperation = "source-over";
+  ctx.drawImage(
+    sheet,
+    frame.x,
+    frame.y,
+    frame.w,
+    frame.h,
+    outlineMargin,
+    outlineMargin,
+    frame.w,
+    frame.h,
+  );
+  frames.set(name, bitmap);
+  return bitmap;
+}
 // Canvas artwork and its accessible hit target share the same dimensions.
 function towerDimensions(zoom: number) {
   const width = Math.max(66, 42 / zoom);
@@ -104,6 +158,21 @@ function sprite(
   const frame = worldFrame ?? art.atlas?.frames[name];
   const sheet = worldFrame ? art.worldSheet : art.sheet;
   if (!sheet || !frame) return false;
+  if (/^(tower|enemy|base)-/.test(name)) {
+    const outlined = outlinedFrame(sheet, frame, name);
+    if (outlined) {
+      const marginX = (outlineMargin * width) / frame.w;
+      const marginY = (outlineMargin * height) / frame.h;
+      ctx.drawImage(
+        outlined,
+        x - width / 2 - marginX,
+        y - (anchor === "center" ? height / 2 : height) - marginY,
+        width + marginX * 2,
+        height + marginY * 2,
+      );
+      return true;
+    }
+  }
   ctx.drawImage(
     sheet,
     frame.x,
@@ -124,6 +193,7 @@ function circle(
   r: number,
   fill: string,
   stroke?: string,
+  strokeWidth = 2,
 ) {
   ctx.beginPath();
   ctx.arc(x, y, r, 0, Math.PI * 2);
@@ -131,7 +201,7 @@ function circle(
   ctx.fill();
   if (stroke) {
     ctx.strokeStyle = stroke;
-    ctx.lineWidth = 2;
+    ctx.lineWidth = strokeWidth;
     ctx.stroke();
   }
 }
@@ -146,16 +216,22 @@ function fallbackTower(
   size: number,
   kind: string,
 ) {
-  ctx.fillStyle = "#766653";
+  ctx.strokeStyle = palette.unitOutline;
+  ctx.lineWidth = size * 0.035;
+  ctx.lineJoin = "round";
+  ctx.fillStyle = "#86704b";
   ctx.fillRect(x - size * 0.35, y - size * 0.34, size * 0.7, size * 0.35);
+  ctx.strokeRect(x - size * 0.35, y - size * 0.34, size * 0.7, size * 0.35);
   ctx.fillStyle = towerColors[kind];
   ctx.fillRect(x - size * 0.25, y - size * 0.8, size * 0.5, size * 0.6);
+  ctx.strokeRect(x - size * 0.25, y - size * 0.8, size * 0.5, size * 0.6);
   ctx.beginPath();
   ctx.moveTo(x - size * 0.4, y - size * 0.7);
   ctx.lineTo(x, y - size);
   ctx.lineTo(x + size * 0.4, y - size * 0.7);
   ctx.closePath();
   ctx.fill();
+  ctx.stroke();
 }
 function fallbackEnemy(
   ctx: CanvasRenderingContext2D,
@@ -169,21 +245,15 @@ function fallbackEnemy(
     x,
     y - size * 0.4,
     size * 0.4,
-    kind === "runner" ? "#bd783f" : kind === "boss" ? "#9d628b" : "#91b968",
-    "#345444",
+    kind === "runner" ? "#d68b3f" : kind === "boss" ? "#b16a9e" : "#83b449",
+    palette.unitOutline,
+    size * 0.035,
   );
   circle(ctx, x - size * 0.12, y - size * 0.45, size * 0.045, "#18332d");
   circle(ctx, x + size * 0.12, y - size * 0.45, size * 0.045, "#18332d");
 }
 
-const regionColors: Record<string, string> = {
-  forest: "#bfcea0",
-  canyon: "#d5bb98",
-  river: "#b8cec0",
-  snow: "#dce7e8",
-  marsh: "#9cbbac",
-  ruins: "#c9c2b1",
-};
+const regionColors: Record<string, string> = palette.terrain;
 function drawLandscape(
   ctx: CanvasRenderingContext2D,
   art: Art,
@@ -211,11 +281,18 @@ function drawLandscape(
     ctx.clip();
     ctx.fillStyle = regionColors[region.biome] ?? regionColors.forest;
     ctx.fillRect(region.x, region.y, region.width, region.height);
+    ctx.save();
+    ctx.globalCompositeOperation = "multiply";
+    ctx.globalAlpha *= palette.textureOpacity;
     if (!art.worldSheet && art.map && region.id === 0)
       ctx.drawImage(art.map, region.x, region.y, region.width, region.height);
     for (let y = region.y; y < region.y + region.height; y += 256)
       for (let x = region.x; x < region.x + region.width; x += 256)
         sprite(ctx, art, `tile-${region.biome}`, x + 128, y + 256, 256, 256);
+    ctx.restore();
+    ctx.strokeStyle = palette.terrainEdge;
+    ctx.lineWidth = Math.max(2, (compact ? 0.75 : 1.25) / scale);
+    ctx.strokeRect(region.x, region.y, region.width, region.height);
     ctx.restore();
     // Sparse edge ornaments leave roads, pads and enemy health readable.
     if (!compact) {
@@ -239,9 +316,9 @@ function drawLandscape(
       }
       ctx.font = `600 ${Math.max(17, 12 / scale)}px system-ui`;
       ctx.textAlign = "left";
-      ctx.fillStyle = "#354b37";
+      ctx.fillStyle = palette.label.ink;
       ctx.lineWidth = 4;
-      ctx.strokeStyle = "#fffbed";
+      ctx.strokeStyle = palette.label.halo;
       ctx.strokeText(
         region.label,
         region.x + 26,
@@ -253,7 +330,7 @@ function drawLandscape(
   for (const feature of map.features ?? []) {
     if (previous?.features?.some((old) => old.id === feature.id)) continue;
     if (feature.kind === "river") {
-      ctx.fillStyle = "#83b6c0";
+      ctx.fillStyle = palette.water.fill;
       ctx.fillRect(
         feature.x - feature.width / 2,
         feature.y - feature.height / 2,
@@ -261,7 +338,15 @@ function drawLandscape(
         feature.height,
       );
       ctx.save();
-      ctx.strokeStyle = "#cbe5e4";
+      ctx.strokeStyle = palette.water.edge;
+      ctx.lineWidth = Math.max(4, 1.5 / scale);
+      ctx.strokeRect(
+        feature.x - feature.width / 2,
+        feature.y - feature.height / 2,
+        feature.width,
+        feature.height,
+      );
+      ctx.strokeStyle = palette.water.ripple;
       ctx.lineWidth = 3;
       for (
         let y = feature.y - feature.height / 2 + 14;
@@ -281,7 +366,7 @@ function drawLandscape(
       ctx.restore();
     }
     if (feature.kind === "highground") {
-      ctx.fillStyle = "#92886a";
+      ctx.fillStyle = palette.highground.edge;
       ctx.beginPath();
       ctx.ellipse(
         feature.x,
@@ -293,7 +378,7 @@ function drawLandscape(
         Math.PI * 2,
       );
       ctx.fill();
-      ctx.fillStyle = "#d1d1a9";
+      ctx.fillStyle = palette.highground.top;
       ctx.beginPath();
       ctx.ellipse(
         feature.x,
@@ -305,6 +390,9 @@ function drawLandscape(
         Math.PI * 2,
       );
       ctx.fill();
+      ctx.strokeStyle = palette.highground.edge;
+      ctx.lineWidth = Math.max(3, 1.25 / scale);
+      ctx.stroke();
     }
   }
 }
@@ -333,20 +421,22 @@ function drawRoutes(
     if (previous || !route.active) ctx.setLineDash([24, 18]);
     linePath(ctx, route.points);
     ctx.lineWidth = compact ? 24 : previous ? 22 : gated ? 28 : 72;
-    ctx.strokeStyle = previous ? "#7a536f" : "#879071";
+    ctx.strokeStyle = previous ? "#7a536f" : palette.road.edge;
     ctx.stroke();
     linePath(ctx, route.points);
     ctx.lineWidth = compact ? 14 : previous ? 13 : gated ? 18 : 59;
     ctx.strokeStyle = previous
       ? "#f7e6fb"
       : route.active
-        ? "#dec497"
-        : "#bfb69b";
+        ? palette.road.fill
+        : palette.road.inactive;
     ctx.stroke();
     if (!compact && !previous && !gated) {
       linePath(ctx, route.points);
       ctx.lineWidth = 40;
-      ctx.strokeStyle = route.active ? "#ecd5aa" : "#cdc4ac";
+      ctx.strokeStyle = route.active
+        ? palette.road.center
+        : palette.road.inactiveCenter;
       ctx.stroke();
     }
     const entry = route.points[0];
@@ -519,16 +609,19 @@ function drawFeatures(
     ctx.restore();
     if (objective.status === "active" && objective.maxHP > 0) {
       const barWidth = Math.max(48, 32 / scale),
-        barHeight = Math.max(5, 3 / scale);
-      ctx.fillStyle = "#314734";
+        barHeight = Math.max(5, 3 / scale),
+        border = Math.max(1, 1 / scale);
+      ctx.fillStyle = palette.health.track;
       ctx.fillRect(
-        position.x - barWidth / 2 - 1,
-        position.y - size - barHeight - 4,
-        barWidth + 2,
-        barHeight + 2,
+        position.x - barWidth / 2 - border,
+        position.y - size - barHeight - 3 - border,
+        barWidth + border * 2,
+        barHeight + border * 2,
       );
       ctx.fillStyle =
-        objective.hp < objective.maxHP * 0.35 ? "#e59b79" : "#dce89a";
+        objective.hp < objective.maxHP * 0.35
+          ? palette.health.critical
+          : palette.health.healthy;
       ctx.fillRect(
         position.x - barWidth / 2,
         position.y - size - barHeight - 3,
@@ -538,9 +631,10 @@ function drawFeatures(
     }
     ctx.font = `600 ${Math.max(13, 10 / scale)}px system-ui`;
     ctx.textAlign = "center";
-    ctx.strokeStyle = "#fffbed";
+    ctx.strokeStyle = palette.label.halo;
     ctx.lineWidth = 4;
-    ctx.fillStyle = objective.status === "failed" ? "#763d35" : "#344a36";
+    ctx.fillStyle =
+      objective.status === "failed" ? palette.label.danger : palette.label.ink;
     ctx.strokeText(
       `${objective.label} · ${status}`,
       position.x,
@@ -603,6 +697,10 @@ export function Battlefield({
   const camera = useRef<Camera>({ x: 480, y: 240, zoom: 0.3 });
   const viewport = useRef<Viewport>({ width: 0, height: 0 });
   const cameraRoom = useRef<string | null>(null);
+  const fullscreenView = useRef<{ active: boolean; normal: Camera | null }>({
+    active: false,
+    normal: null,
+  });
   const [view, setView] = useState({
     camera: camera.current,
     viewport: viewport.current,
@@ -888,11 +986,12 @@ export function Battlefield({
       const dpr = Math.min(2, window.devicePixelRatio || 1);
       viewport.current = { width, height };
       const bounds = worldBounds(renderMap.current);
+      const full = !!wrap.closest("[data-room-fullscreen]");
       let next: Camera;
       if (cameraRoom.current !== roomID) {
         cameraRoom.current = roomID;
         // Returning to an expanded game starts at its base, at a readable scale.
-        const starter = fitCamera(
+        const starter = fillCamera(
           worldBounds({ width: 960, height: 640 }),
           viewport.current,
         );
@@ -901,7 +1000,34 @@ export function Battlefield({
           bounds,
           viewport.current,
         );
+        fullscreenView.current.normal = null;
+      } else if (full && !fullscreenView.current.active) {
+        fullscreenView.current.normal = { ...camera.current };
+        const filled = fillCamera(
+          worldBounds({ width: 960, height: 640 }),
+          viewport.current,
+        );
+        next = clampCamera(
+          {
+            ...camera.current,
+            zoom: Math.max(camera.current.zoom, filled.zoom),
+          },
+          bounds,
+          viewport.current,
+        );
+      } else if (
+        !full &&
+        fullscreenView.current.active &&
+        fullscreenView.current.normal
+      ) {
+        next = clampCamera(
+          fullscreenView.current.normal,
+          bounds,
+          viewport.current,
+        );
+        fullscreenView.current.normal = null;
       } else next = clampCamera(camera.current, bounds, viewport.current);
+      fullscreenView.current.active = full;
       publishCamera(next);
       node.width = Math.round(width * dpr);
       node.height = Math.round(height * dpr);
@@ -922,7 +1048,7 @@ export function Battlefield({
         scale = pixelScale * dpr;
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.clearRect(0, 0, node.width, node.height);
-      ctx.fillStyle = "#b9c997";
+      ctx.fillStyle = palette.terrain.forest;
       ctx.fillRect(0, 0, node.width, node.height);
       ctx.setTransform(
         scale,
@@ -985,7 +1111,7 @@ export function Battlefield({
           "#f5edc024",
         );
         ctx.setLineDash([8, 8]);
-        ctx.strokeStyle = "#625536";
+        ctx.strokeStyle = palette.road.edge;
         ctx.lineWidth = 2;
         ctx.stroke();
         ctx.restore();
@@ -996,9 +1122,17 @@ export function Battlefield({
         ctx.save();
         ctx.translate(pad.x, pad.y);
         ctx.scale(1, 0.45);
-        circle(ctx, 0, 0, 22, "#dfe6bd", "#788268");
+        circle(
+          ctx,
+          0,
+          0,
+          22,
+          palette.pad.fill,
+          palette.pad.edge,
+          Math.max(2, 1.2 / pixelScale),
+        );
         if (selectedRef.current === pad.id) {
-          ctx.strokeStyle = "#fff5b0";
+          ctx.strokeStyle = palette.pad.selected;
           ctx.lineWidth = 6;
           ctx.stroke();
         }
@@ -1011,9 +1145,9 @@ export function Battlefield({
         if (!pad) continue;
         const towerPoint = { x: pad.x, y: pad.y + 14 };
         ctx.save();
-        ctx.shadowColor = "#254b2a36";
-        ctx.shadowBlur = 8;
-        ctx.shadowOffsetY = 5;
+        ctx.shadowColor = "#243b2d40";
+        ctx.shadowBlur = 4;
+        ctx.shadowOffsetY = 3;
         if (
           !sprite(
             ctx,
@@ -1085,7 +1219,10 @@ export function Battlefield({
       ) {
         ctx.fillStyle = damaged ? "#b19291" : "#a5bacc";
         ctx.fillRect(bx - 40, by - 76, 80, 76);
-        circle(ctx, bx, by - 72, 18, "#f8e7a1");
+        ctx.strokeStyle = palette.unitOutline;
+        ctx.lineWidth = Math.max(3, 1.2 / pixelScale);
+        ctx.strokeRect(bx - 40, by - 76, 80, 76);
+        circle(ctx, bx, by - 72, 18, "#f8e7a1", palette.unitOutline);
       }
       if (!reduced && v.phase !== "lost") {
         const pulse = 0.3 + 0.12 * Math.sin(at / 700);
@@ -1099,10 +1236,10 @@ export function Battlefield({
       }
       ctx.font = `bold ${Math.max(15, 10 / pixelScale)}px system-ui`;
       ctx.textAlign = "center";
-      ctx.strokeStyle = "#fff9e5";
+      ctx.strokeStyle = palette.label.halo;
       ctx.lineWidth = 4;
       ctx.strokeText("星核", bx, by + 15);
-      ctx.fillStyle = "#3f5143";
+      ctx.fillStyle = palette.label.ink;
       ctx.fillText("星核", bx, by + 15);
       const enemyPositions = new Map<number, Point>();
       for (const enemy of v.enemies) {
@@ -1174,8 +1311,8 @@ export function Battlefield({
           ctx.font = `bold ${Math.max(11, 9 / pixelScale)}px system-ui`;
           ctx.textAlign = "center";
           ctx.lineWidth = 3;
-          ctx.strokeStyle = "#fff9e8";
-          ctx.fillStyle = "#663e39";
+          ctx.strokeStyle = palette.label.halo;
+          ctx.fillStyle = palette.label.danger;
           ctx.strokeText(label, x, y + size * 0.4);
           ctx.fillText(label, x, y + size * 0.4);
         }
@@ -1190,29 +1327,26 @@ export function Battlefield({
         }
         const barWidth = size * 0.66,
           barHeight = Math.max(4, 2.5 / pixelScale),
-          barY = y - size * 0.75;
-        ctx.fillStyle = "#283b34";
-        ctx.fillRect(
-          x - barWidth / 2 - 1,
-          barY - 1,
-          barWidth + 2,
-          barHeight + 2,
-        );
-        ctx.fillStyle = "#add584";
-        ctx.fillRect(
-          x - barWidth / 2,
-          barY,
-          barWidth *
-            Math.max(
-              0,
-              Math.min(
-                1,
-                (enemy.health ?? enemy.hp) /
-                  Math.max(1, enemy.maxHealth ?? enemy.maxHP),
-              ),
+          barY = y - size * 0.75,
+          border = Math.max(1, 1 / pixelScale),
+          health = Math.max(
+            0,
+            Math.min(
+              1,
+              (enemy.health ?? enemy.hp) /
+                Math.max(1, enemy.maxHealth ?? enemy.maxHP),
             ),
-          barHeight,
+          );
+        ctx.fillStyle = palette.health.track;
+        ctx.fillRect(
+          x - barWidth / 2 - border,
+          barY - border,
+          barWidth + border * 2,
+          barHeight + border * 2,
         );
+        ctx.fillStyle =
+          health < 0.35 ? palette.health.critical : palette.health.healthy;
+        ctx.fillRect(x - barWidth / 2, barY, barWidth * health, barHeight);
       }
       effects.current = effects.current.filter((e) => at - e.born < 900);
       for (const e of effects.current) {
@@ -1358,123 +1492,123 @@ export function Battlefield({
     data.map.path[data.map.path.length - 1] ?? { x: 860, y: 340 };
   return (
     <section className="sf-world-camera" aria-label="战场与地图导航">
-      <div className="sf-camera-toolbar" role="group" aria-label="地图视角">
-        <button
-          className="sf-secondary"
-          data-sf-zoom-out
-          aria-label="缩小地图"
-          onClick={() => zoom(1 / 1.3)}
-        >
-          −
-        </button>
-        <output aria-label="地图缩放">
-          {Math.round(view.camera.zoom * 100)}%
-        </output>
-        <button
-          className="sf-secondary"
-          data-sf-zoom-in
-          aria-label="放大地图"
-          onClick={() => zoom(1.3)}
-        >
-          ＋
-        </button>
-        <button
-          className="sf-secondary"
-          data-sf-camera-base
-          onClick={() => {
-            const starter = fitCamera(
-              worldBounds({ width: 960, height: 640 }),
-              viewport.current,
-            );
-            publishCamera(
-              focusCamera(
-                {
-                  ...camera.current,
-                  zoom: Math.max(camera.current.zoom, starter.zoom),
-                },
-                base,
-                bounds,
-                viewport.current,
-              ),
-            );
-          }}
-        >
-          回到星核
-        </button>
-        <button
-          className="sf-secondary"
-          data-sf-fit
-          onClick={() => publishCamera(fitCamera(bounds, viewport.current))}
-        >
-          全图
-        </button>
-      </div>
-      <details className="sf-entry-menu">
-        <summary>
-          进攻入口 · {routes.filter((r) => r.active).length} 路来袭
-        </summary>
-        <div className="sf-entry-list" aria-label="进攻入口">
-          {routes.map((route) => {
-            const enemies = data.enemies.filter(
-              (enemy) => (enemy.route ?? "main") === route.id,
-            ).length;
-            return (
-              <button
-                key={route.id}
-                className="sf-secondary"
-                data-sf-entry={route.id}
-                data-active={route.active}
-                onClick={() => focus(route.points[0] ?? base)}
-              >
-                <span aria-hidden="true">{route.active ? "●" : "○"}</span>{" "}
-                {route.label}
-                {enemies > 0
-                  ? ` · ${enemies} 敌人`
-                  : route.active
-                    ? " · 出怪"
-                    : " · 休整"}
-              </button>
-            );
-          })}
-        </div>
-      </details>
-      {!!data.world?.choice?.options.some((option) => option.map) && (
-        <details className="sf-preview-menu">
-          <summary>在战场上预览扩展方案</summary>
-          <div
-            className="sf-map-previews"
-            role="group"
-            aria-label="扩展地图预览"
+      <div className="sf-map-tools">
+        <div className="sf-camera-toolbar" role="group" aria-label="地图视角">
+          <button
+            className="sf-secondary"
+            data-sf-zoom-out
+            aria-label="缩小地图"
+            onClick={() => zoom(1 / 1.3)}
           >
-            <span>虚线为新道路：</span>
-            <button
-              className="sf-secondary"
-              aria-pressed={!preview}
-              onClick={() => setPreviewID(null)}
-            >
-              当前战场
-            </button>
-            {data.world.choice.options
-              .filter((option) => option.map)
-              .map((option) => (
+            −
+          </button>
+          <output aria-label="地图缩放">
+            {Math.round(view.camera.zoom * 100)}%
+          </output>
+          <button
+            className="sf-secondary"
+            data-sf-zoom-in
+            aria-label="放大地图"
+            onClick={() => zoom(1.3)}
+          >
+            ＋
+          </button>
+          <button
+            className="sf-secondary"
+            data-sf-camera-base
+            onClick={() => {
+              const starter = fitCamera(
+                worldBounds({ width: 960, height: 640 }),
+                viewport.current,
+              );
+              publishCamera(
+                focusCamera(
+                  {
+                    ...camera.current,
+                    zoom: Math.max(camera.current.zoom, starter.zoom),
+                  },
+                  base,
+                  bounds,
+                  viewport.current,
+                ),
+              );
+            }}
+          >
+            回到星核
+          </button>
+          <button
+            className="sf-secondary"
+            data-sf-fit
+            onClick={() => publishCamera(fitCamera(bounds, viewport.current))}
+          >
+            全图
+          </button>
+        </div>
+        <details className="sf-entry-menu">
+          <summary>入口</summary>
+          <div className="sf-entry-list" aria-label="进攻入口">
+            {routes.map((route) => {
+              const enemies = data.enemies.filter(
+                (enemy) => (enemy.route ?? "main") === route.id,
+              ).length;
+              return (
                 <button
+                  key={route.id}
                   className="sf-secondary"
-                  key={option.id}
-                  aria-pressed={previewID === option.id}
-                  data-sf-preview={option.id}
-                  onClick={() => {
-                    setPreviewID(option.id);
-                    publishCamera(
-                      fitCamera(worldBounds(option.map!), viewport.current),
-                    );
-                  }}
+                  data-sf-entry={route.id}
+                  data-active={route.active}
+                  onClick={() => focus(route.points[0] ?? base)}
                 >
-                  预览{option.label}
+                  <span aria-hidden="true">{route.active ? "●" : "○"}</span>{" "}
+                  {route.label}
+                  {enemies > 0
+                    ? ` · ${enemies} 敌人`
+                    : route.active
+                      ? " · 出怪"
+                      : " · 休整"}
                 </button>
-              ))}
+              );
+            })}
           </div>
         </details>
-      )}
+        {!!data.world?.choice?.options.some((option) => option.map) && (
+          <details className="sf-preview-menu">
+            <summary>扩展预览</summary>
+            <div
+              className="sf-map-previews"
+              role="group"
+              aria-label="扩展地图预览"
+            >
+              <span>虚线为新道路：</span>
+              <button
+                className="sf-secondary"
+                aria-pressed={!preview}
+                onClick={() => setPreviewID(null)}
+              >
+                当前战场
+              </button>
+              {data.world.choice.options
+                .filter((option) => option.map)
+                .map((option) => (
+                  <button
+                    className="sf-secondary"
+                    key={option.id}
+                    aria-pressed={previewID === option.id}
+                    data-sf-preview={option.id}
+                    onClick={() => {
+                      setPreviewID(option.id);
+                      publishCamera(
+                        fitCamera(worldBounds(option.map!), viewport.current),
+                      );
+                    }}
+                  >
+                    预览{option.label}
+                  </button>
+                ))}
+            </div>
+          </details>
+        )}
+      </div>
       <div
         className={`sf-battlefield sf-world-viewport ${overview ? "sf-world-overview" : ""}`}
         ref={container}
@@ -1688,17 +1822,11 @@ export function Battlefield({
             style={{ strokeWidth: 2 }}
           />
         </svg>
-        <p>
-          拖动战场 · 滚轮／双指缩放
-          <br />
-          小地图可拖动 · 入口可定位
-          {preview ? (
-            <>
-              <br />
-              <strong>正在预览，投票确定后才会扩展</strong>
-            </>
-          ) : null}
-        </p>
+        {preview && (
+          <p>
+            <strong>扩展方案预览</strong>
+          </p>
+        )}
       </div>
     </section>
   );
