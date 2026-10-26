@@ -1,0 +1,112 @@
+{
+  "date": "2026-10-26",
+  "route": "direct Ghidra 12.1.4; not REA-native 68000 analysis",
+  "language": "68000:BE:32:default",
+  "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+  "dynamic_sample": {
+    "path": ".local/md-yuyuhakusho/dynamic-map/battle-2400.cpu-ram.bin",
+    "sha256": "2a5bc81ddb25322be7aea87b70226e4357736bc4bef67847e131b22e15d9bb94",
+    "frame": 2400,
+    "byte_order": "CPU-address order, big-endian word interpretation",
+    "ownership": "parent investigation"
+  },
+  "files": [
+    {
+      "path": "docs/research/md-yuyuhakusho/static/device-decode.txt",
+      "sha256": "1f69a8b54428c5d87536231138290aaefedf6af843d0227960649be1fa0fca5a",
+      "bytes": 8707
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-active-actions.txt",
+      "sha256": "64c810348f2866c9ef122e0da5f076ccc9eb4282b825fd39708557dc8937f334",
+      "bytes": 4696
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-active.txt",
+      "sha256": "88c94a165036b3f70b01aab10786018c7f01300ca56d8f1f35c4d247bd88cc29",
+      "bytes": 1378
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-entry.txt",
+      "sha256": "0a601db1315508dcabb044796922c4609012655fe1a72c20553e310dbe509fb4",
+      "bytes": 3076
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-motion-ai.txt",
+      "sha256": "429aec4b2b5058304c1384710b6c54630ebfdc7886e80a85f25ff8bda77b6307",
+      "bytes": 7961
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-stages.txt",
+      "sha256": "eecf2a94ca0bb29c21a1f895c4477d67fdf3b41c9fe21f19ac5098a6e06e8e40",
+      "bytes": 8309
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/first-control.txt",
+      "sha256": "106b4aac28c59d9c176d571c0eabc34c5e0ad75a28b070967a365b86c73098fd",
+      "bytes": 3757
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/input-and-tick.txt",
+      "sha256": "36d6af060e4e4c9ab4d7f6f47bbd903063a32b2addc7be70e2594b66876e5dfc",
+      "bytes": 8935
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/input-detail.txt",
+      "sha256": "4ee837e2e89ba82c303c3a73db8a80c17a54b81ab30c43226ace06a363289758",
+      "bytes": 4386
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/logical-input.txt",
+      "sha256": "14e77637a1a7cbe3ed7bcfab350629a39c892ae5436ab4e92c7c99c6a29f7c30",
+      "bytes": 3024
+    },
+    {
+      "path": "scripts/yuyuhakusho/static/MdControlProbe.java",
+      "sha256": "44903c14bfe5a1ffc354e4fab1eb5893303081bbe55aa9f620808daf4ebe18a8",
+      "bytes": 2153
+    },
+    {
+      "path": "scripts/yuyuhakusho/static/run_probe.sh",
+      "sha256": "a0be3774e1171c033f7d505c968dd4bbf632196c3b90c4e5789cf2ea381930f6",
+      "bytes": 1448
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/README.md",
+      "sha256": "3809a30525a2fab972284dc1081c81693a19c1eebc8aaf9c138c68c6750d3b1b",
+      "bytes": 10866
+    }
+  ],
+  "removed": [
+    {
+      "path": "docs/research/md-yuyuhakusho/static/world-dispatch.txt",
+      "bytes": 6379
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static-work",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/static/tmp",
+      "bytes": 209607
+    },
+    {
+      "path": ".local/md-yuyuhakusho/static/console.log",
+      "bytes": 10950
+    },
+    {
+      "path": ".local/md-yuyuhakusho/static/ghidra.log",
+      "bytes": 109056
+    },
+    {
+      "path": ".local/md-yuyuhakusho/static/ghidra-script.log",
+      "bytes": 2579
+    }
+  ],
+  "limitations": [
+    "Static ranges are bounded and do not prove execution coverage.",
+    "Only the reported battle object pointers have dynamic sample corroboration.",
+    "No complete actions, AI or game implementation accepted.",
+    "Default Ghidra language includes instructions beyond MC68000; dynamic validation remains required."
+  ]
+}

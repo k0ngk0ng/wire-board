@@ -1,0 +1,29 @@
+{
+  "scope": "Natural input calls, no RAM edits",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+  "frames": 3600,
+  "complete_calls": 6575,
+  "incomplete_calls": [],
+  "errors": [],
+  "frames_match_original_core": true,
+  "six_button_calls": 6569,
+  "three_button_calls": 6,
+  "pass": true,
+  "fixture_sha256": "075d1d45d8b76b4a1ec62e5d99bbe5dbfc8a9989bbec0b46547a3fb196c87af2",
+  "capture_script_sha256": "3630f59fe1d8bcc0f1ef7c4607fc178016790b7e231dbfea5d55882a0088ff5c",
+  "coverage_limits": [
+    "Two ports only",
+    "A/C swap and device transitions not naturally covered",
+    "Reserved high nibble is preserved; no samples or bits omitted"
+  ]
+}

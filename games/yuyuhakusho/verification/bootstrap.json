@@ -1,0 +1,53 @@
+{
+  "stage": "Recovery started in isolated worktree; input component verified",
+  "goal_complete": false,
+  "release_ready": false,
+  "base_sha": "4dd8f48e7f4becec401e9a2ba9c67d556f0b0249",
+  "branch": "codex/yuyuhakusho",
+  "original_calls": 6575,
+  "original_frames_observer_unchanged": 3600,
+  "restore_replay_frames": 1200,
+  "native_race": "pass",
+  "wasm_node": "pass",
+  "game_implementation_scope": [
+    "controller held/previous/change/press/release",
+    "A/C mapping",
+    "three/six-button state normalization"
+  ],
+  "not_implemented": [
+    "fighter actions and combat",
+    "all characters and modes",
+    "original AI",
+    "independent graphics/audio",
+    "platform controller/room/network/UI integration"
+  ],
+  "cleaned_bytes": 186731911,
+  "cleaned_files_or_directories": 121,
+  "source_archive_sha256": "0fce1347c62c16e0e44795e3fa078204187188daa3639054ae82e83f92eb48b4",
+  "source_files": [
+    {
+      "path": "games/yuyuhakusho/engine/input.go",
+      "sha256": "38e957231a29fd08c889709e0e7a39661284258800521467ba41fcdc9dfa12e2"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/input_test.go",
+      "sha256": "8c17bd14d1f2c626a8c21270f364c5ad2307dd15e136deb54e4786a186c6fa77"
+    },
+    {
+      "path": "scripts/yuyuhakusho/accept_reference.py",
+      "sha256": "a45fcba92beb19fb316e9ca9346e1843d54033ec4c02eb56f90d9eb6cb6d2509"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_inputs.py",
+      "sha256": "3630f59fe1d8bcc0f1ef7c4607fc178016790b7e231dbfea5d55882a0088ff5c"
+    },
+    {
+      "path": "scripts/yuyuhakusho/hook_filter.c",
+      "sha256": "5320b2763215d032ce7eb5aaabcf0be2cfaa3b41eb49398d7c33933ce9f8c874"
+    },
+    {
+      "path": "scripts/yuyuhakusho/reference.py",
+      "sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81"
+    }
+  ]
+}
