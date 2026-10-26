@@ -91,6 +91,9 @@ func botAction(ctx gameapi.Context, m gameapi.Match) (json.RawMessage, error) {
 	return marshalBotAction(a)
 }
 func (s *State) investment(p int) *Action {
+	if s.World.Layout == "central" {
+		return s.centralInvestment(p)
+	}
 	owned := []Tower{}
 	counts := map[string]int{}
 	occupied := map[int]bool{}

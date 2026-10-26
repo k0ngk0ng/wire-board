@@ -3,6 +3,7 @@ package starfort
 import (
 	"fmt"
 	"math"
+	"sort"
 )
 
 const shieldRatio = 0.8
@@ -70,7 +71,11 @@ func (s *State) describeWave() {
 		description += "；分裂怪会留下小怪"
 	}
 	if s.Wave >= 9 {
-		description += "；工兵存活 20 秒会预告下波捷径"
+		if s.World.Layout == "central" {
+			description += "；工兵填坑速度更快"
+		} else {
+			description += "；工兵存活 20 秒会预告下波捷径"
+		}
 	}
 	s.WaveInfo = WaveInfo{Title: fmt.Sprintf("第 %d 波 · %s", s.Wave, title), Description: description, Rule: rule, Total: min(44, 9+s.Wave*2), Boss: boss}
 }
@@ -217,10 +222,53 @@ func (s *State) spawn() {
 	}
 	s.Enemies = append(s.Enemies, Enemy{ID: s.EnemySerial, Kind: kind, Route: route, Phase: phase, AbilityTick: s.Tick, X: p.X, Y: p.Y, HP: hp, MaxHP: hp, Shield: shield, Speed: speed, Armor: armor, Reward: reward, Leak: leak})
 	s.WaveInfo.Spawned++
+	s.event(Event{TargetID: s.EnemySerial, Type: "spawn", X: p.X, Y: p.Y, Kind: kind, Owner: -1})
 }
 func (s *State) step(now int64) {
 	s.Tick++
 	s.ElapsedMS += StepMS
+	// Physics and abilities still advance once per 200 ms. Towers whose saved
+	// remainder expires inside that step fire first, in actual due-time order.
+	// New/idle towers become ready at its boundary, preserving the old first
+	// shot, spawn and ability cadence without rounding later attack intervals.
+	atMS := s.ElapsedMS - StepMS
+	s.eventAtMS = &atMS
+	defer func() { s.eventAtMS = nil }()
+	type dueTower struct{ index, offset int }
+	due := make([]dueTower, 0, len(s.Towers))
+	for i := range s.Towers {
+		offset := s.Towers[i].Cooldown
+		if offset == 0 {
+			offset = StepMS
+		}
+		if offset > StepMS {
+			s.Towers[i].Cooldown = offset - StepMS
+		} else {
+			due = append(due, dueTower{i, offset})
+		}
+	}
+	sort.Slice(due, func(i, j int) bool {
+		if due[i].offset != due[j].offset {
+			return due[i].offset < due[j].offset
+		}
+		return s.Towers[due[i].index].ID < s.Towers[due[j].index].ID
+	})
+	boundary := []int{}
+	for _, item := range due {
+		if item.offset == StepMS {
+			boundary = append(boundary, item.index)
+			continue
+		}
+		atMS = s.ElapsedMS - StepMS + int64(item.offset)
+		if s.fireTower(item.index) {
+			s.Towers[item.index].Cooldown -= StepMS - item.offset
+		} else {
+			// No target earns no attack credit. Retry at the boundary, where
+			// a newly spawned enemy can now enter range.
+			boundary = append(boundary, item.index)
+		}
+	}
+	atMS = s.ElapsedMS
 	s.SpawnClock = max(0, s.SpawnClock-StepMS)
 	if s.WaveInfo.Spawned < s.WaveInfo.Total && s.SpawnClock <= 0 && len(s.Enemies) < MaxEnemies {
 		s.spawn()
@@ -230,38 +278,11 @@ func (s *State) step(now int64) {
 		}
 	}
 	s.enemyAbilities()
-	worldMap := s.mapData()
-	for i := range s.Towers {
-		t := &s.Towers[i]
-		t.Cooldown = max(0, t.Cooldown-StepMS)
-		if t.Cooldown > 0 {
-			continue
-		}
-		damage, radius, interval := s.towerStats(*t)
-		pad := worldMap.Pads[t.Pad]
-		target := -1
-		for j, e := range s.Enemies {
-			if e.HP > 0 && math.Hypot(e.X-pad.X, e.Y-pad.Y) <= radius && (target < 0 || s.preferTarget(e, s.Enemies[target], t.Priority)) {
-				target = j
-			}
-		}
-		if target < 0 {
-			continue
-		}
-		e := s.Enemies[target]
-		t.Angle = math.Atan2(e.Y-pad.Y, e.X-pad.X)
-		t.Cooldown = interval
-		s.event(Event{TargetID: e.ID, Type: "shot", X: pad.X, Y: pad.Y, ToX: e.X, ToY: e.Y, Kind: t.Kind, Owner: t.Owner})
-		if t.Kind == "cannon" {
-			for j := range s.Enemies {
-				if s.Enemies[j].HP > 0 && math.Hypot(s.Enemies[j].X-e.X, s.Enemies[j].Y-e.Y) <= 78 {
-					s.hit(j, damage, *t)
-				}
-			}
-		} else {
-			s.hit(target, damage, *t)
-		}
+	sort.Slice(boundary, func(i, j int) bool { return s.Towers[boundary[i]].ID < s.Towers[boundary[j]].ID })
+	for _, index := range boundary {
+		s.fireTower(index)
 	}
+	worldMap := s.mapData()
 	// Deaths grant the same amount to each seat. The kill's owner is only a
 	// contribution statistic: no last-hit reward race exists.
 	// Snapshot living banner positions before compaction: in-place filtering
@@ -308,10 +329,13 @@ func (s *State) step(now int64) {
 		if e.SlowUntil > s.Tick {
 			speed *= .55
 		}
-		e.Progress += speed * StepMS / 1000
+		nextProgress := e.Progress + speed*StepMS/1000
+		if !s.blockAtCrater(&e, nextProgress) {
+			e.Progress = nextProgress
+		}
 		if e.Progress >= pathDistance(s.routePath(e.Route)) {
 			s.BaseHP = max(0, s.BaseHP-e.Leak)
-			s.event(Event{Type: "base_hit", X: worldMap.Base.X, Y: worldMap.Base.Y, Kind: e.Kind, Owner: -1, Amount: float64(e.Leak)})
+			s.event(Event{TargetID: e.ID, Type: "base_hit", X: worldMap.Base.X, Y: worldMap.Base.Y, Kind: e.Kind, Owner: -1, Amount: float64(e.Leak)})
 			continue
 		}
 		p := pathPosition(s.routePath(e.Route), e.Progress)
@@ -325,9 +349,11 @@ func (s *State) step(now int64) {
 		s.EnemySerial++
 		child.ID = s.EnemySerial
 		alive = append(alive, child)
-		s.event(Event{Type: "summon", X: child.X, Y: child.Y, Kind: child.Kind, Owner: -1})
+		target := viewEnemy(child)
+		s.event(Event{TargetID: child.ID, Target: &target, Type: "summon", X: child.X, Y: child.Y, Kind: child.Kind, Owner: -1})
 	}
 	s.Enemies = alive
+	s.repairCraters()
 	s.stepObjectives()
 	if s.BaseHP == 0 {
 		s.Phase = "lost"
@@ -358,6 +384,41 @@ func (s *State) step(now int64) {
 		s.prepare(now)
 	}
 }
+
+// fireTower consumes one ready attack only when a living legal target exists.
+// The next cooldown is retained as a millisecond remainder by the caller.
+func (s *State) fireTower(index int) bool {
+	t := &s.Towers[index]
+	t.Cooldown = 0
+	damage, radius, interval := s.towerStats(*t)
+	pad := s.World.Map.Pads[t.Pad]
+	target := -1
+	for j, enemy := range s.Enemies {
+		if enemy.HP > 0 && math.Hypot(enemy.X-pad.X, enemy.Y-pad.Y) <= radius && (target < 0 || s.preferTarget(enemy, s.Enemies[target], t.Priority)) {
+			target = j
+		}
+	}
+	if target < 0 {
+		return false
+	}
+	enemy := s.Enemies[target]
+	t.Angle = math.Atan2(enemy.Y-pad.Y, enemy.X-pad.X)
+	t.Cooldown = interval
+	damage, skill := s.focusDamage(t, enemy, damage)
+	s.event(Event{Skill: skill, TowerID: t.ID, TargetID: enemy.ID, Type: "shot", X: pad.X, Y: pad.Y, ToX: enemy.X, ToY: enemy.Y, Kind: t.Kind, Owner: t.Owner})
+	if t.Kind == "cannon" {
+		for j := range s.Enemies {
+			if s.Enemies[j].HP > 0 && math.Hypot(s.Enemies[j].X-enemy.X, s.Enemies[j].Y-enemy.Y) <= 78 {
+				s.hit(j, damage, *t)
+			}
+		}
+	} else {
+		s.hit(target, damage, *t)
+	}
+	s.onTowerHit(t, enemy, damage)
+	return true
+}
+
 func (s *State) hit(index int, damage float64, t Tower) {
 	e := &s.Enemies[index]
 	if e.HP <= 0 {
@@ -380,15 +441,15 @@ func (s *State) hit(index int, damage float64, t Tower) {
 	actual := before - e.HP - e.Shield
 	s.Players[t.Owner].Damage = math.Min(maxValue, s.Players[t.Owner].Damage+actual)
 	if t.Kind == "frost" {
-		e.SlowUntil = s.Tick + 8
+		e.SlowUntil = max(e.SlowUntil, s.Tick+8)
 	}
-	s.event(Event{TargetID: e.ID, Type: "hit", X: e.X, Y: e.Y, Kind: e.Kind, Owner: t.Owner, Amount: actual})
+	s.event(Event{TowerID: t.ID, TargetID: e.ID, Type: "hit", X: e.X, Y: e.Y, Kind: e.Kind, Owner: t.Owner, Amount: actual})
 	if e.HP <= 0 {
 		s.Kills++
 		s.Players[t.Owner].Kills++
 		for i := range s.Players {
 			s.Players[i].Gold = min(maxValue, s.Players[i].Gold+s.rewardGold(e.Reward))
 		}
-		s.event(Event{TargetID: e.ID, Type: "death", X: e.X, Y: e.Y, Kind: e.Kind, Owner: t.Owner, Amount: float64(s.rewardGold(e.Reward))})
+		s.event(Event{TowerID: t.ID, TargetID: e.ID, Type: "death", X: e.X, Y: e.Y, Kind: e.Kind, Owner: t.Owner, Amount: float64(s.rewardGold(e.Reward))})
 	}
 }

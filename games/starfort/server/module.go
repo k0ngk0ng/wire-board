@@ -73,7 +73,7 @@ func Module() gameapi.Module {
 				s.Players[i].Gold = 300
 			}
 			s.describeWave()
-			s.initWorld(ctx.Now.UnixNano()%2147483647 + int64(ctx.Players)*101)
+			s.initCentralWorld(ctx.Now.UnixNano()%2147483647 + int64(ctx.Players)*101)
 			s.note("星核已点亮，共同守住防线")
 			return s.Envelope()
 		},
@@ -366,6 +366,7 @@ func (s *State) controls(p int) Controls {
 // ViewTower adds computed combat stats to the public projection. Persisting
 // these values as well would risk stale ranges after upgrading or tuning.
 type ViewTower struct {
+	Passive *PassiveView `json:"passive,omitempty"`
 	Tower
 	EffectiveRange    float64 `json:"effectiveRange"`
 	EffectiveDamage   float64 `json:"effectiveDamage"`
@@ -379,6 +380,21 @@ type ViewEnemy struct {
 	MaxHealth float64 `json:"maxHealth"`
 }
 
+func viewEnemy(enemy Enemy) ViewEnemy {
+	capacity := enemy.MaxHP
+	if enemy.Kind == "shield" {
+		capacity += enemy.MaxHP * shieldRatio
+	}
+	// Also handle imported snapshots whose shield exceeds the usual capacity.
+	health := enemy.HP + enemy.Shield
+	return ViewEnemy{enemy, health, max(capacity, health)}
+}
+
+type ViewTowerSpec struct {
+	TowerSpec
+	Passive *PassiveView `json:"passive,omitempty"`
+}
+
 func view(m gameapi.Match, p int) (any, error) {
 	s, err := decode(m)
 	if err != nil {
@@ -387,24 +403,22 @@ func view(m gameapi.Match, p int) (any, error) {
 	towers := make([]ViewTower, 0, len(s.Towers))
 	for _, tower := range s.Towers {
 		damage, radius, interval := s.towerStats(tower)
-		towers = append(towers, ViewTower{tower, radius, damage, interval})
+		towers = append(towers, ViewTower{Tower: tower, EffectiveRange: radius, EffectiveDamage: damage, EffectiveInterval: interval, Passive: s.passiveView(tower)})
 	}
 	enemies := make([]ViewEnemy, 0, len(s.Enemies))
 	for _, enemy := range s.Enemies {
-		capacity := enemy.MaxHP
-		if enemy.Kind == "shield" {
-			capacity += enemy.MaxHP * shieldRatio
-		}
-		// Accommodate imported snapshots with a larger shield without overflow.
-		health := enemy.HP + enemy.Shield
-		enemies = append(enemies, ViewEnemy{enemy, health, max(capacity, health)})
+		enemies = append(enemies, viewEnemy(enemy))
+	}
+	specs := make([]ViewTowerSpec, 0, len(catalog))
+	for _, spec := range catalog {
+		specs = append(specs, ViewTowerSpec{spec, s.passiveView(Tower{Kind: spec.Kind})})
 	}
 	return struct {
 		*State
-		Enemies  []ViewEnemy `json:"enemies"`
-		Towers   []ViewTower `json:"towers"`
-		Map      Map         `json:"map"`
-		Catalog  []TowerSpec `json:"catalog"`
-		Controls Controls    `json:"controls"`
-	}{s, enemies, towers, s.mapData(), catalog, s.controls(p)}, nil
+		Enemies  []ViewEnemy     `json:"enemies"`
+		Towers   []ViewTower     `json:"towers"`
+		Map      Map             `json:"map"`
+		Catalog  []ViewTowerSpec `json:"catalog"`
+		Controls Controls        `json:"controls"`
+	}{s, enemies, towers, s.mapData(), specs, s.controls(p)}, nil
 }

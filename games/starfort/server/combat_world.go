@@ -24,9 +24,12 @@ func (s *State) enemyAbilities() {
 				}
 				amount := math.Min(target.MaxHP-target.HP, target.MaxHP*.03)
 				target.HP += amount
-				s.event(Event{Type: "heal", X: target.X, Y: target.Y, ToX: e.X, ToY: e.Y, Kind: "healer", Owner: -1, Amount: amount})
+				s.event(Event{TargetID: target.ID, Type: "heal", X: target.X, Y: target.Y, ToX: e.X, ToY: e.Y, Kind: "healer", Owner: -1, Amount: amount})
 			}
 		case "engineer":
+			if s.World.Layout == "central" {
+				continue
+			}
 			if e.Phase > 0 || s.Tick-e.AbilityTick < 20000/StepMS {
 				continue
 			}
@@ -34,7 +37,7 @@ func (s *State) enemyAbilities() {
 			s.Enemies[i].AbilityTick = s.Tick
 			if s.World.ShortcutWave != s.Wave+1 {
 				s.World.ShortcutWave = s.Wave + 1
-				s.event(Event{Type: "shortcut", X: e.X, Y: e.Y, Kind: "engineer", Owner: -1, Amount: float64(s.Wave + 1)})
+				s.event(Event{TargetID: e.ID, Type: "shortcut", X: e.X, Y: e.Y, Kind: "engineer", Owner: -1, Amount: float64(s.Wave + 1)})
 				s.note("工兵打开了通道：第 %d 波将出现捷径，现有敌人的道路不变", s.Wave+1)
 			}
 		case "boss":
@@ -43,7 +46,7 @@ func (s *State) enemyAbilities() {
 			}
 			s.Enemies[i].Phase = 2
 			s.Enemies[i].AbilityTick = s.Tick
-			s.event(Event{Type: "boss_phase", X: e.X, Y: e.Y, Kind: "boss", Owner: -1, Amount: 2})
+			s.event(Event{TargetID: e.ID, Type: "boss_phase", X: e.X, Y: e.Y, Kind: "boss", Owner: -1, Amount: 2})
 			s.note("首领进入第二阶段：召唤护盾护卫，移动速度提高 18%%")
 			for child := 0; child < 2 && len(s.Enemies) < MaxEnemies; child++ {
 				guard := e
@@ -60,7 +63,7 @@ func (s *State) enemyAbilities() {
 				guard.Reward = 0
 				guard.Leak = 1
 				s.Enemies = append(s.Enemies, guard)
-				s.event(Event{Type: "summon", X: guard.X, Y: guard.Y, Kind: "shield", Owner: -1})
+				s.event(Event{TargetID: guard.ID, Type: "summon", X: guard.X, Y: guard.Y, Kind: "shield", Owner: -1})
 			}
 		}
 	}

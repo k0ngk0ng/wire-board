@@ -70,6 +70,44 @@
   flex: 1;
   min-width: 0;
 }
+
+/* A single shared chat moves into the surface for both native and page modes.
+   Games can reserve the bottom-right 56px square for this platform control. */
+.game-fullscreen-surface[data-room-fullscreen] .table-chat {
+  position: fixed;
+  top: auto;
+  right: max(12px, env(safe-area-inset-right));
+  bottom: max(12px, env(safe-area-inset-bottom));
+  margin: 0;
+  z-index: 46;
+}
+.game-fullscreen-surface[data-room-fullscreen] .chat-toggle {
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
+  padding: 0;
+  border-radius: 50%;
+  background: #174e43;
+  color: #fff8de;
+}
+.game-fullscreen-surface[data-room-fullscreen] .chat-toggle > span {
+  display: none;
+}
+.game-fullscreen-surface[data-room-fullscreen] .chat-toggle svg {
+  width: 22px;
+  height: 22px;
+}
+.game-fullscreen-surface[data-room-fullscreen] .chat-panel {
+  position: absolute;
+  top: auto;
+  right: 0;
+  bottom: 54px;
+  width: min(360px, calc(100vw - 24px));
+  height: min(500px, calc(100dvh - 88px));
+  max-height: calc(100dvh - 88px);
+  color: #293b35;
+  background: #faf9f1;
+}
 .game-fullscreen-surface[data-room-fullscreen]
   .game-fullscreen-status
   .turn-card {

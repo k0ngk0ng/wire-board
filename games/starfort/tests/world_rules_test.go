@@ -1,5 +1,8 @@
 package starfort_test
 
+// Legacy layout regressions use captured v1.36.1 geometry; current central
+// layout and skills are verified separately through production starts.
+
 // Failures enumerated before implementation: generated layouts never differ;
 // expansions move existing towers or pads, reuse IDs, erase upgrades, or occur
 // mid-wave; a late vote mutates a resolved choice; tied/unanswered votes stall;
@@ -173,7 +176,7 @@ func worldGeometry(t *testing.T, m worldMap) {
 func TestStarfortWorldNaturalCampaigns(t *testing.T) {
 	for _, n := range []int{1, 2, 4} {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {
-			b := newRulesTable(t, n, map[string]any{"waves": 20})
+			b := newLegacyRulesTable(t, n, map[string]any{"waves": 20})
 			stages := map[int]bool{}
 			fired := map[int]bool{}
 			events := map[string]bool{}
@@ -240,7 +243,7 @@ func TestStarfortWorldNaturalCampaigns(t *testing.T) {
 	}
 }
 func TestStarfortWorldEndlessForty(t *testing.T) {
-	b := newRulesTable(t, 2, map[string]any{"mode": "endless"})
+	b := newLegacyRulesTable(t, 2, map[string]any{"mode": "endless"})
 	routeSets := map[string]bool{}
 	for sec := 0; sec < 30000 && b.view(0).CompletedWaves < 40 && b.s.Result == nil; sec++ {
 		v := worldRead(t, b)
@@ -266,7 +269,7 @@ func TestStarfortWorldEndlessForty(t *testing.T) {
 	}
 }
 func TestStarfortWorldVotingAndMigration(t *testing.T) {
-	b := newRulesTable(t, 2, map[string]any{"waves": 20})
+	b := newLegacyRulesTable(t, 2, map[string]any{"waves": 20})
 	worldUntil(t, b, 6)
 	v := worldRead(t, b)
 	if v.World.Choice == nil || v.World.BoonChoice == nil {
@@ -303,7 +306,7 @@ func TestStarfortWorldVotingAndMigration(t *testing.T) {
 	worldArtifact(t, b, v)
 	// Public migration boundary: original schema-one layout and live enemy are
 	// frozen while existing wave runs, then normal wave-boundary preview resumes.
-	old := newRulesTable(t, 1, map[string]any{})
+	old := newLegacyRulesTable(t, 1, map[string]any{})
 	old.allReady()
 	old.timer(time.Second)
 	var data map[string]json.RawMessage
@@ -342,7 +345,7 @@ func TestStarfortWorldVotingAndMigration(t *testing.T) {
 	}
 }
 func TestStarfortWorldSeedAndTargetAuthority(t *testing.T) {
-	b := newRulesTable(t, 2, map[string]any{})
+	b := newLegacyRulesTable(t, 2, map[string]any{})
 	v := worldRead(t, b)
 	if v.World.Seed == 0 || len(v.Map.Routes) != 1 {
 		t.Fatal("missing seeded map")
@@ -380,7 +383,7 @@ func TestStarfortWorldGeometrySeeds(t *testing.T) {
 	for _, seed := range seeds {
 		for branchBits := 0; branchBits < 8; branchBits++ {
 			t.Run(fmt.Sprintf("%d-%d", seed, branchBits), func(t *testing.T) {
-				b := newRulesTable(t, 1, map[string]any{"waves": 20})
+				b := newLegacyRulesTable(t, 1, map[string]any{"waves": 20})
 				ctx := b.context(-1)
 				ctx.Now = time.Unix(0, seed)
 				initial, err := b.m.Start(ctx, rulesJSON(map[string]any{"waves": 20}))
@@ -433,7 +436,7 @@ func TestStarfortWorldGeometrySeeds(t *testing.T) {
 // objective health/progress/route corruption, duplicate IDs, broken preview
 // maps, invalid region/feature coordinates, and unbounded boon counters.
 func TestStarfortWorldRejectsCorruptSnapshots(t *testing.T) {
-	b := newRulesTable(t, 1, map[string]any{"waves": 20})
+	b := newLegacyRulesTable(t, 1, map[string]any{"waves": 20})
 	worldUntil(t, b, 6)
 	v := worldRead(t, b)
 	b.action(0, map[string]any{"type": "route_vote", "choice": v.World.Choice.Options[0].ID}, true)
@@ -486,7 +489,7 @@ func TestStarfortWorldLegacyWeatherBoundary(t *testing.T) {
 		nextEvent string
 	}{{"fog", 3, "frost"}, {"frost", 4, "surge"}} {
 		t.Run(tc.name, func(t *testing.T) {
-			b := newRulesTable(t, 1, map[string]any{"waves": 20})
+			b := newLegacyRulesTable(t, 1, map[string]any{"waves": 20})
 			b.action(0, map[string]any{"type": "build", "pad": 12, "tower": "arrow"}, true)
 			b.action(0, map[string]any{"type": "upgrade", "towerId": 1}, true)
 			expectedTower := b.view(0).Towers[0]

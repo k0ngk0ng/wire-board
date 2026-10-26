@@ -402,3 +402,119 @@
   bottom: 66px;
   z-index: 5;
 }
+
+/* A single compact status strip leaves the battlefield visible. */
+.starfort-board .sf-hud {
+  width: max-content;
+  max-width: calc(100% - 68px);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  border: 1px solid #739265;
+  border-radius: 8px;
+  background: #fffdf1f5;
+  color: #253e29;
+  padding: 6px 9px;
+}
+.sf-compact-stats {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  white-space: nowrap;
+  font-size: 13px;
+}
+.sf-compact-stats strong {
+  font-size: 16px;
+}
+.sf-compact-stats small {
+  font-size: 11px;
+}
+.sf-compact-countdown {
+  font-size: 12px;
+  padding: 2px 0 2px 14px;
+  white-space: nowrap;
+}
+.sf-compact-countdown[data-urgent="true"] {
+  color: #8a2d20;
+}
+.starfort-board .sf-field-actions {
+  right: 68px;
+  bottom: 12px;
+}
+.starfort-board .sf-wave-controls {
+  right: 200px;
+}
+.sf-tower-popover {
+  position: absolute;
+  right: 0;
+  bottom: 58px;
+  width: 260px;
+  max-width: calc(100vw - 28px);
+  padding: 10px;
+  border: 1px solid #739265;
+  border-radius: 10px;
+  background: #fffdf1f5;
+  color: #253e29;
+  box-shadow: 0 3px 12px #1b3d2440;
+}
+.sf-tower-popover header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.sf-tower-popover header button {
+  min-height: 32px;
+  width: 32px;
+  padding: 0;
+}
+.sf-tower-popover p {
+  margin: 5px 0;
+  font-size: 12px;
+}
+.sf-quick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 8px;
+}
+.sf-quick-actions button {
+  min-height: 36px;
+  padding: 5px 8px;
+  font-size: 12px;
+}
+@media (max-width: 600px) {
+  .starfort-board .sf-hud {
+    top: 8px;
+    left: 8px;
+    padding: 5px 7px;
+  }
+  .sf-compact-stats {
+    gap: 10px;
+    font-size: 12px;
+  }
+  .sf-compact-stats strong {
+    font-size: 14px;
+  }
+  .sf-compact-countdown {
+    width: 100%;
+    padding: 3px 0 0;
+  }
+  .starfort-board .sf-field-actions {
+    right: 64px;
+    bottom: 8px;
+  }
+  .starfort-board .sf-wave-controls {
+    right: 8px;
+    bottom: 62px;
+  }
+  .sf-tower-popover {
+    right: -48px;
+    bottom: 100px;
+    width: 250px;
+  }
+}
+/* Tower depth ordering is local to the map, below the HUD and tool panels. */
+.starfort-board .sf-world-viewport {
+  isolation: isolate;
+}

@@ -73,6 +73,7 @@ export type Objective = Point & {
   baseAtStart: number;
 };
 export type World = {
+  layout?: "central";
   seed: number;
   stage: 1 | 2 | 3 | 4;
   preparedWave: number;
@@ -94,7 +95,33 @@ export type Player = {
   pauseVote: boolean;
   resumeVote: boolean;
 };
+export type Passive = {
+  name: string;
+  description: string;
+  cooldownMS: number;
+  readyInMS: number;
+  stacks: number;
+  maxStacks: number;
+};
+export type Crater = Point & {
+  id: number;
+  towerId: number;
+  owner: number;
+  route: string;
+  progress: number;
+  radius: number;
+  total: number;
+  remaining: number;
+  workers: number[];
+  exemptEnemy: number;
+  createdMS: number;
+  filledMS?: number;
+};
 export type Tower = {
+  passiveReadyAt?: number;
+  focusTarget?: number;
+  focusHits?: number;
+  passive?: Passive;
   id: number;
   pad: number;
   owner: number;
@@ -109,6 +136,8 @@ export type Tower = {
   effectiveInterval?: number;
 };
 export type Enemy = Point & {
+  repairing?: number;
+  repairSinceMS?: number;
   health?: number;
   maxHealth?: number;
   id: number;
@@ -124,6 +153,15 @@ export type Enemy = Point & {
   abilityTick?: number;
 };
 export type Event = Point & {
+  slowTargets?: number[];
+  slowUntil?: number;
+  damage?: { id: number; amount: number; x: number; y: number }[];
+  crater?: Crater;
+  craterId?: number;
+  skill?: string;
+  atMS?: number;
+  towerId?: number;
+  target?: Enemy;
   targetId?: number;
   id: number;
   type: string;
@@ -135,6 +173,7 @@ export type Event = Point & {
   tick: number;
 };
 export type View = {
+  craters?: Crater[];
   options: Options;
   phase: "prepare" | "battle" | "paused" | "won" | "lost";
   epoch: number;
@@ -162,6 +201,7 @@ export type View = {
     boss: boolean;
   };
   catalog: {
+    passive?: Passive;
     kind: TowerKind;
     name: string;
     cost: number;

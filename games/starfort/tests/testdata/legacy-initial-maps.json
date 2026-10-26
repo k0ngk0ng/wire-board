@@ -1,0 +1,2915 @@
+{
+  "maps": {
+    "0": {
+      "width": 960,
+      "height": 640,
+      "path": [
+        {
+          "x": -30,
+          "y": 120
+        },
+        {
+          "x": 250,
+          "y": 100
+        },
+        {
+          "x": 250,
+          "y": 280
+        },
+        {
+          "x": 700,
+          "y": 280
+        },
+        {
+          "x": 700,
+          "y": 500
+        },
+        {
+          "x": 930,
+          "y": 500
+        }
+      ],
+      "pads": [
+        {
+          "id": 0,
+          "x": 150,
+          "y": 200,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 1,
+          "x": 340,
+          "y": 200,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 2,
+          "x": 470,
+          "y": 200,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 3,
+          "x": 590,
+          "y": 200,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 4,
+          "x": 790,
+          "y": 380,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 5,
+          "x": 610,
+          "y": 390,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 6,
+          "x": 470,
+          "y": 380,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 7,
+          "x": 340,
+          "y": 390,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 8,
+          "x": 160,
+          "y": 340,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 9,
+          "x": 810,
+          "y": 560,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 10,
+          "x": 890,
+          "y": 390,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 11,
+          "x": 610,
+          "y": 560,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 12,
+          "x": 140,
+          "y": 40,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 13,
+          "x": 340,
+          "y": 70,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 14,
+          "x": 790,
+          "y": 200,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 15,
+          "x": 900,
+          "y": 560,
+          "terrain": "plain",
+          "sector": 1
+        }
+      ],
+      "base": {
+        "x": 930,
+        "y": 500
+      },
+      "routes": [
+        {
+          "id": "main",
+          "label": "林间小径",
+          "sector": 1,
+          "points": [
+            {
+              "x": -30,
+              "y": 120
+            },
+            {
+              "x": 250,
+              "y": 100
+            },
+            {
+              "x": 250,
+              "y": 280
+            },
+            {
+              "x": 700,
+              "y": 280
+            },
+            {
+              "x": 700,
+              "y": 500
+            },
+            {
+              "x": 930,
+              "y": 500
+            }
+          ],
+          "active": true
+        }
+      ],
+      "regions": [
+        {
+          "id": 1,
+          "x": 0,
+          "y": 0,
+          "width": 960,
+          "height": 640,
+          "biome": "forest",
+          "label": "星光林地"
+        }
+      ],
+      "features": []
+    },
+    "1": {
+      "width": 960,
+      "height": 640,
+      "path": [
+        {
+          "x": 250,
+          "y": -30
+        },
+        {
+          "x": 250,
+          "y": 110
+        },
+        {
+          "x": 250,
+          "y": 290
+        },
+        {
+          "x": 700,
+          "y": 290
+        },
+        {
+          "x": 700,
+          "y": 500
+        },
+        {
+          "x": 930,
+          "y": 500
+        }
+      ],
+      "pads": [
+        {
+          "id": 0,
+          "x": 150,
+          "y": 205,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 1,
+          "x": 340,
+          "y": 205,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 2,
+          "x": 470,
+          "y": 205,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 3,
+          "x": 590,
+          "y": 205,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 4,
+          "x": 790,
+          "y": 385,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 5,
+          "x": 610,
+          "y": 395,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 6,
+          "x": 470,
+          "y": 385,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 7,
+          "x": 340,
+          "y": 395,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 8,
+          "x": 160,
+          "y": 345,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 9,
+          "x": 810,
+          "y": 565,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 10,
+          "x": 890,
+          "y": 395,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 11,
+          "x": 610,
+          "y": 565,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 12,
+          "x": 140,
+          "y": 40,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 13,
+          "x": 340,
+          "y": 70,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 14,
+          "x": 790,
+          "y": 205,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 15,
+          "x": 900,
+          "y": 565,
+          "terrain": "plain",
+          "sector": 1
+        }
+      ],
+      "base": {
+        "x": 930,
+        "y": 500
+      },
+      "routes": [
+        {
+          "id": "main",
+          "label": "林间小径",
+          "sector": 1,
+          "points": [
+            {
+              "x": 250,
+              "y": -30
+            },
+            {
+              "x": 250,
+              "y": 110
+            },
+            {
+              "x": 250,
+              "y": 290
+            },
+            {
+              "x": 700,
+              "y": 290
+            },
+            {
+              "x": 700,
+              "y": 500
+            },
+            {
+              "x": 930,
+              "y": 500
+            }
+          ],
+          "active": true
+        }
+      ],
+      "regions": [
+        {
+          "id": 1,
+          "x": 0,
+          "y": 0,
+          "width": 960,
+          "height": 640,
+          "biome": "forest",
+          "label": "星光林地"
+        }
+      ],
+      "features": []
+    },
+    "10": {
+      "width": 960,
+      "height": 640,
+      "path": [
+        {
+          "x": 250,
+          "y": -30
+        },
+        {
+          "x": 250,
+          "y": 100
+        },
+        {
+          "x": 250,
+          "y": 280
+        },
+        {
+          "x": 700,
+          "y": 280
+        },
+        {
+          "x": 700,
+          "y": 500
+        },
+        {
+          "x": 930,
+          "y": 500
+        }
+      ],
+      "pads": [
+        {
+          "id": 0,
+          "x": 150,
+          "y": 200,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 1,
+          "x": 340,
+          "y": 200,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 2,
+          "x": 470,
+          "y": 200,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 3,
+          "x": 590,
+          "y": 200,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 4,
+          "x": 790,
+          "y": 380,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 5,
+          "x": 610,
+          "y": 390,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 6,
+          "x": 470,
+          "y": 380,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 7,
+          "x": 340,
+          "y": 390,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 8,
+          "x": 160,
+          "y": 340,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 9,
+          "x": 810,
+          "y": 560,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 10,
+          "x": 890,
+          "y": 390,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 11,
+          "x": 610,
+          "y": 560,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 12,
+          "x": 140,
+          "y": 40,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 13,
+          "x": 340,
+          "y": 70,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 14,
+          "x": 790,
+          "y": 200,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 15,
+          "x": 900,
+          "y": 560,
+          "terrain": "plain",
+          "sector": 1
+        }
+      ],
+      "base": {
+        "x": 930,
+        "y": 500
+      },
+      "routes": [
+        {
+          "id": "main",
+          "label": "林间小径",
+          "sector": 1,
+          "points": [
+            {
+              "x": 250,
+              "y": -30
+            },
+            {
+              "x": 250,
+              "y": 100
+            },
+            {
+              "x": 250,
+              "y": 280
+            },
+            {
+              "x": 700,
+              "y": 280
+            },
+            {
+              "x": 700,
+              "y": 500
+            },
+            {
+              "x": 930,
+              "y": 500
+            }
+          ],
+          "active": true
+        }
+      ],
+      "regions": [
+        {
+          "id": 1,
+          "x": 0,
+          "y": 0,
+          "width": 960,
+          "height": 640,
+          "biome": "forest",
+          "label": "星光林地"
+        }
+      ],
+      "features": []
+    },
+    "11": {
+      "width": 960,
+      "height": 640,
+      "path": [
+        {
+          "x": -30,
+          "y": 500
+        },
+        {
+          "x": 250,
+          "y": 490
+        },
+        {
+          "x": 250,
+          "y": 290
+        },
+        {
+          "x": 700,
+          "y": 290
+        },
+        {
+          "x": 700,
+          "y": 500
+        },
+        {
+          "x": 930,
+          "y": 500
+        }
+      ],
+      "pads": [
+        {
+          "id": 0,
+          "x": 150,
+          "y": 205,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 1,
+          "x": 340,
+          "y": 205,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 2,
+          "x": 470,
+          "y": 205,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 3,
+          "x": 590,
+          "y": 205,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 4,
+          "x": 790,
+          "y": 385,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 5,
+          "x": 610,
+          "y": 395,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 6,
+          "x": 470,
+          "y": 385,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 7,
+          "x": 340,
+          "y": 395,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 8,
+          "x": 160,
+          "y": 345,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 9,
+          "x": 810,
+          "y": 565,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 10,
+          "x": 890,
+          "y": 395,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 11,
+          "x": 610,
+          "y": 565,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 12,
+          "x": 170,
+          "y": 130,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 13,
+          "x": 340,
+          "y": 130,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 14,
+          "x": 790,
+          "y": 205,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 15,
+          "x": 900,
+          "y": 565,
+          "terrain": "plain",
+          "sector": 1
+        }
+      ],
+      "base": {
+        "x": 930,
+        "y": 500
+      },
+      "routes": [
+        {
+          "id": "main",
+          "label": "林间小径",
+          "sector": 1,
+          "points": [
+            {
+              "x": -30,
+              "y": 500
+            },
+            {
+              "x": 250,
+              "y": 490
+            },
+            {
+              "x": 250,
+              "y": 290
+            },
+            {
+              "x": 700,
+              "y": 290
+            },
+            {
+              "x": 700,
+              "y": 500
+            },
+            {
+              "x": 930,
+              "y": 500
+            }
+          ],
+          "active": true
+        }
+      ],
+      "regions": [
+        {
+          "id": 1,
+          "x": 0,
+          "y": 0,
+          "width": 960,
+          "height": 640,
+          "biome": "forest",
+          "label": "星光林地"
+        }
+      ],
+      "features": []
+    },
+    "12": {
+      "width": 960,
+      "height": 640,
+      "path": [
+        {
+          "x": -30,
+          "y": 120
+        },
+        {
+          "x": 250,
+          "y": 120
+        },
+        {
+          "x": 250,
+          "y": 300
+        },
+        {
+          "x": 700,
+          "y": 300
+        },
+        {
+          "x": 700,
+          "y": 500
+        },
+        {
+          "x": 930,
+          "y": 500
+        }
+      ],
+      "pads": [
+        {
+          "id": 0,
+          "x": 150,
+          "y": 210,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 1,
+          "x": 340,
+          "y": 210,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 2,
+          "x": 470,
+          "y": 210,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 3,
+          "x": 590,
+          "y": 210,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 4,
+          "x": 790,
+          "y": 390,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 5,
+          "x": 610,
+          "y": 400,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 6,
+          "x": 470,
+          "y": 390,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 7,
+          "x": 340,
+          "y": 400,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 8,
+          "x": 160,
+          "y": 350,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 9,
+          "x": 810,
+          "y": 570,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 10,
+          "x": 890,
+          "y": 400,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 11,
+          "x": 610,
+          "y": 570,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 12,
+          "x": 140,
+          "y": 40,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 13,
+          "x": 340,
+          "y": 70,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 14,
+          "x": 790,
+          "y": 210,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 15,
+          "x": 900,
+          "y": 570,
+          "terrain": "plain",
+          "sector": 1
+        }
+      ],
+      "base": {
+        "x": 930,
+        "y": 500
+      },
+      "routes": [
+        {
+          "id": "main",
+          "label": "林间小径",
+          "sector": 1,
+          "points": [
+            {
+              "x": -30,
+              "y": 120
+            },
+            {
+              "x": 250,
+              "y": 120
+            },
+            {
+              "x": 250,
+              "y": 300
+            },
+            {
+              "x": 700,
+              "y": 300
+            },
+            {
+              "x": 700,
+              "y": 500
+            },
+            {
+              "x": 930,
+              "y": 500
+            }
+          ],
+          "active": true
+        }
+      ],
+      "regions": [
+        {
+          "id": 1,
+          "x": 0,
+          "y": 0,
+          "width": 960,
+          "height": 640,
+          "biome": "forest",
+          "label": "星光林地"
+        }
+      ],
+      "features": []
+    },
+    "13": {
+      "width": 960,
+      "height": 640,
+      "path": [
+        {
+          "x": 250,
+          "y": -30
+        },
+        {
+          "x": 250,
+          "y": 130
+        },
+        {
+          "x": 250,
+          "y": 310
+        },
+        {
+          "x": 700,
+          "y": 310
+        },
+        {
+          "x": 700,
+          "y": 500
+        },
+        {
+          "x": 930,
+          "y": 500
+        }
+      ],
+      "pads": [
+        {
+          "id": 0,
+          "x": 150,
+          "y": 215,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 1,
+          "x": 340,
+          "y": 215,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 2,
+          "x": 470,
+          "y": 215,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 3,
+          "x": 590,
+          "y": 215,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 4,
+          "x": 790,
+          "y": 395,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 5,
+          "x": 610,
+          "y": 405,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 6,
+          "x": 470,
+          "y": 395,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 7,
+          "x": 340,
+          "y": 405,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 8,
+          "x": 160,
+          "y": 355,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 9,
+          "x": 810,
+          "y": 575,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 10,
+          "x": 890,
+          "y": 405,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 11,
+          "x": 610,
+          "y": 575,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 12,
+          "x": 140,
+          "y": 40,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 13,
+          "x": 340,
+          "y": 70,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 14,
+          "x": 790,
+          "y": 215,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 15,
+          "x": 900,
+          "y": 575,
+          "terrain": "plain",
+          "sector": 1
+        }
+      ],
+      "base": {
+        "x": 930,
+        "y": 500
+      },
+      "routes": [
+        {
+          "id": "main",
+          "label": "林间小径",
+          "sector": 1,
+          "points": [
+            {
+              "x": 250,
+              "y": -30
+            },
+            {
+              "x": 250,
+              "y": 130
+            },
+            {
+              "x": 250,
+              "y": 310
+            },
+            {
+              "x": 700,
+              "y": 310
+            },
+            {
+              "x": 700,
+              "y": 500
+            },
+            {
+              "x": 930,
+              "y": 500
+            }
+          ],
+          "active": true
+        }
+      ],
+      "regions": [
+        {
+          "id": 1,
+          "x": 0,
+          "y": 0,
+          "width": 960,
+          "height": 640,
+          "biome": "forest",
+          "label": "星光林地"
+        }
+      ],
+      "features": []
+    },
+    "14": {
+      "width": 960,
+      "height": 640,
+      "path": [
+        {
+          "x": -30,
+          "y": 500
+        },
+        {
+          "x": 250,
+          "y": 520
+        },
+        {
+          "x": 250,
+          "y": 320
+        },
+        {
+          "x": 700,
+          "y": 320
+        },
+        {
+          "x": 700,
+          "y": 500
+        },
+        {
+          "x": 930,
+          "y": 500
+        }
+      ],
+      "pads": [
+        {
+          "id": 0,
+          "x": 150,
+          "y": 220,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 1,
+          "x": 340,
+          "y": 220,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 2,
+          "x": 470,
+          "y": 220,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 3,
+          "x": 590,
+          "y": 220,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 4,
+          "x": 790,
+          "y": 400,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 5,
+          "x": 610,
+          "y": 410,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 6,
+          "x": 470,
+          "y": 400,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 7,
+          "x": 340,
+          "y": 410,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 8,
+          "x": 160,
+          "y": 360,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 9,
+          "x": 810,
+          "y": 580,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 10,
+          "x": 890,
+          "y": 410,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 11,
+          "x": 610,
+          "y": 580,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 12,
+          "x": 170,
+          "y": 160,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 13,
+          "x": 340,
+          "y": 160,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 14,
+          "x": 790,
+          "y": 220,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 15,
+          "x": 900,
+          "y": 580,
+          "terrain": "plain",
+          "sector": 1
+        }
+      ],
+      "base": {
+        "x": 930,
+        "y": 500
+      },
+      "routes": [
+        {
+          "id": "main",
+          "label": "林间小径",
+          "sector": 1,
+          "points": [
+            {
+              "x": -30,
+              "y": 500
+            },
+            {
+              "x": 250,
+              "y": 520
+            },
+            {
+              "x": 250,
+              "y": 320
+            },
+            {
+              "x": 700,
+              "y": 320
+            },
+            {
+              "x": 700,
+              "y": 500
+            },
+            {
+              "x": 930,
+              "y": 500
+            }
+          ],
+          "active": true
+        }
+      ],
+      "regions": [
+        {
+          "id": 1,
+          "x": 0,
+          "y": 0,
+          "width": 960,
+          "height": 640,
+          "biome": "forest",
+          "label": "星光林地"
+        }
+      ],
+      "features": []
+    },
+    "2": {
+      "width": 960,
+      "height": 640,
+      "path": [
+        {
+          "x": -30,
+          "y": 500
+        },
+        {
+          "x": 250,
+          "y": 500
+        },
+        {
+          "x": 250,
+          "y": 300
+        },
+        {
+          "x": 700,
+          "y": 300
+        },
+        {
+          "x": 700,
+          "y": 500
+        },
+        {
+          "x": 930,
+          "y": 500
+        }
+      ],
+      "pads": [
+        {
+          "id": 0,
+          "x": 150,
+          "y": 210,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 1,
+          "x": 340,
+          "y": 210,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 2,
+          "x": 470,
+          "y": 210,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 3,
+          "x": 590,
+          "y": 210,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 4,
+          "x": 790,
+          "y": 390,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 5,
+          "x": 610,
+          "y": 400,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 6,
+          "x": 470,
+          "y": 390,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 7,
+          "x": 340,
+          "y": 400,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 8,
+          "x": 160,
+          "y": 350,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 9,
+          "x": 810,
+          "y": 570,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 10,
+          "x": 890,
+          "y": 400,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 11,
+          "x": 610,
+          "y": 570,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 12,
+          "x": 200,
+          "y": 130,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 13,
+          "x": 340,
+          "y": 130,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 14,
+          "x": 790,
+          "y": 210,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 15,
+          "x": 900,
+          "y": 570,
+          "terrain": "plain",
+          "sector": 1
+        }
+      ],
+      "base": {
+        "x": 930,
+        "y": 500
+      },
+      "routes": [
+        {
+          "id": "main",
+          "label": "林间小径",
+          "sector": 1,
+          "points": [
+            {
+              "x": -30,
+              "y": 500
+            },
+            {
+              "x": 250,
+              "y": 500
+            },
+            {
+              "x": 250,
+              "y": 300
+            },
+            {
+              "x": 700,
+              "y": 300
+            },
+            {
+              "x": 700,
+              "y": 500
+            },
+            {
+              "x": 930,
+              "y": 500
+            }
+          ],
+          "active": true
+        }
+      ],
+      "regions": [
+        {
+          "id": 1,
+          "x": 0,
+          "y": 0,
+          "width": 960,
+          "height": 640,
+          "biome": "forest",
+          "label": "星光林地"
+        }
+      ],
+      "features": []
+    },
+    "3": {
+      "width": 960,
+      "height": 640,
+      "path": [
+        {
+          "x": -30,
+          "y": 120
+        },
+        {
+          "x": 250,
+          "y": 130
+        },
+        {
+          "x": 250,
+          "y": 310
+        },
+        {
+          "x": 700,
+          "y": 310
+        },
+        {
+          "x": 700,
+          "y": 500
+        },
+        {
+          "x": 930,
+          "y": 500
+        }
+      ],
+      "pads": [
+        {
+          "id": 0,
+          "x": 150,
+          "y": 215,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 1,
+          "x": 340,
+          "y": 215,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 2,
+          "x": 470,
+          "y": 215,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 3,
+          "x": 590,
+          "y": 215,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 4,
+          "x": 790,
+          "y": 395,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 5,
+          "x": 610,
+          "y": 405,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 6,
+          "x": 470,
+          "y": 395,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 7,
+          "x": 340,
+          "y": 405,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 8,
+          "x": 160,
+          "y": 355,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 9,
+          "x": 810,
+          "y": 575,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 10,
+          "x": 890,
+          "y": 405,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 11,
+          "x": 610,
+          "y": 575,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 12,
+          "x": 140,
+          "y": 40,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 13,
+          "x": 340,
+          "y": 70,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 14,
+          "x": 790,
+          "y": 215,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 15,
+          "x": 900,
+          "y": 575,
+          "terrain": "plain",
+          "sector": 1
+        }
+      ],
+      "base": {
+        "x": 930,
+        "y": 500
+      },
+      "routes": [
+        {
+          "id": "main",
+          "label": "林间小径",
+          "sector": 1,
+          "points": [
+            {
+              "x": -30,
+              "y": 120
+            },
+            {
+              "x": 250,
+              "y": 130
+            },
+            {
+              "x": 250,
+              "y": 310
+            },
+            {
+              "x": 700,
+              "y": 310
+            },
+            {
+              "x": 700,
+              "y": 500
+            },
+            {
+              "x": 930,
+              "y": 500
+            }
+          ],
+          "active": true
+        }
+      ],
+      "regions": [
+        {
+          "id": 1,
+          "x": 0,
+          "y": 0,
+          "width": 960,
+          "height": 640,
+          "biome": "forest",
+          "label": "星光林地"
+        }
+      ],
+      "features": []
+    },
+    "4": {
+      "width": 960,
+      "height": 640,
+      "path": [
+        {
+          "x": 250,
+          "y": -30
+        },
+        {
+          "x": 250,
+          "y": 140
+        },
+        {
+          "x": 250,
+          "y": 320
+        },
+        {
+          "x": 700,
+          "y": 320
+        },
+        {
+          "x": 700,
+          "y": 500
+        },
+        {
+          "x": 930,
+          "y": 500
+        }
+      ],
+      "pads": [
+        {
+          "id": 0,
+          "x": 150,
+          "y": 220,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 1,
+          "x": 340,
+          "y": 220,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 2,
+          "x": 470,
+          "y": 220,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 3,
+          "x": 590,
+          "y": 220,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 4,
+          "x": 790,
+          "y": 400,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 5,
+          "x": 610,
+          "y": 410,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 6,
+          "x": 470,
+          "y": 400,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 7,
+          "x": 340,
+          "y": 410,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 8,
+          "x": 160,
+          "y": 360,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 9,
+          "x": 810,
+          "y": 580,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 10,
+          "x": 890,
+          "y": 410,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 11,
+          "x": 610,
+          "y": 580,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 12,
+          "x": 140,
+          "y": 40,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 13,
+          "x": 340,
+          "y": 70,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 14,
+          "x": 790,
+          "y": 220,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 15,
+          "x": 900,
+          "y": 580,
+          "terrain": "plain",
+          "sector": 1
+        }
+      ],
+      "base": {
+        "x": 930,
+        "y": 500
+      },
+      "routes": [
+        {
+          "id": "main",
+          "label": "林间小径",
+          "sector": 1,
+          "points": [
+            {
+              "x": 250,
+              "y": -30
+            },
+            {
+              "x": 250,
+              "y": 140
+            },
+            {
+              "x": 250,
+              "y": 320
+            },
+            {
+              "x": 700,
+              "y": 320
+            },
+            {
+              "x": 700,
+              "y": 500
+            },
+            {
+              "x": 930,
+              "y": 500
+            }
+          ],
+          "active": true
+        }
+      ],
+      "regions": [
+        {
+          "id": 1,
+          "x": 0,
+          "y": 0,
+          "width": 960,
+          "height": 640,
+          "biome": "forest",
+          "label": "星光林地"
+        }
+      ],
+      "features": []
+    },
+    "5": {
+      "width": 960,
+      "height": 640,
+      "path": [
+        {
+          "x": -30,
+          "y": 500
+        },
+        {
+          "x": 250,
+          "y": 480
+        },
+        {
+          "x": 250,
+          "y": 280
+        },
+        {
+          "x": 700,
+          "y": 280
+        },
+        {
+          "x": 700,
+          "y": 500
+        },
+        {
+          "x": 930,
+          "y": 500
+        }
+      ],
+      "pads": [
+        {
+          "id": 0,
+          "x": 150,
+          "y": 200,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 1,
+          "x": 340,
+          "y": 200,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 2,
+          "x": 470,
+          "y": 200,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 3,
+          "x": 590,
+          "y": 200,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 4,
+          "x": 790,
+          "y": 380,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 5,
+          "x": 610,
+          "y": 390,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 6,
+          "x": 470,
+          "y": 380,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 7,
+          "x": 340,
+          "y": 390,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 8,
+          "x": 160,
+          "y": 340,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 9,
+          "x": 810,
+          "y": 560,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 10,
+          "x": 890,
+          "y": 390,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 11,
+          "x": 610,
+          "y": 560,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 12,
+          "x": 170,
+          "y": 130,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 13,
+          "x": 340,
+          "y": 100,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 14,
+          "x": 790,
+          "y": 200,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 15,
+          "x": 900,
+          "y": 560,
+          "terrain": "plain",
+          "sector": 1
+        }
+      ],
+      "base": {
+        "x": 930,
+        "y": 500
+      },
+      "routes": [
+        {
+          "id": "main",
+          "label": "林间小径",
+          "sector": 1,
+          "points": [
+            {
+              "x": -30,
+              "y": 500
+            },
+            {
+              "x": 250,
+              "y": 480
+            },
+            {
+              "x": 250,
+              "y": 280
+            },
+            {
+              "x": 700,
+              "y": 280
+            },
+            {
+              "x": 700,
+              "y": 500
+            },
+            {
+              "x": 930,
+              "y": 500
+            }
+          ],
+          "active": true
+        }
+      ],
+      "regions": [
+        {
+          "id": 1,
+          "x": 0,
+          "y": 0,
+          "width": 960,
+          "height": 640,
+          "biome": "forest",
+          "label": "星光林地"
+        }
+      ],
+      "features": []
+    },
+    "6": {
+      "width": 960,
+      "height": 640,
+      "path": [
+        {
+          "x": -30,
+          "y": 120
+        },
+        {
+          "x": 250,
+          "y": 110
+        },
+        {
+          "x": 250,
+          "y": 290
+        },
+        {
+          "x": 700,
+          "y": 290
+        },
+        {
+          "x": 700,
+          "y": 500
+        },
+        {
+          "x": 930,
+          "y": 500
+        }
+      ],
+      "pads": [
+        {
+          "id": 0,
+          "x": 150,
+          "y": 205,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 1,
+          "x": 340,
+          "y": 205,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 2,
+          "x": 470,
+          "y": 205,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 3,
+          "x": 590,
+          "y": 205,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 4,
+          "x": 790,
+          "y": 385,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 5,
+          "x": 610,
+          "y": 395,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 6,
+          "x": 470,
+          "y": 385,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 7,
+          "x": 340,
+          "y": 395,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 8,
+          "x": 160,
+          "y": 345,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 9,
+          "x": 810,
+          "y": 565,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 10,
+          "x": 890,
+          "y": 395,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 11,
+          "x": 610,
+          "y": 565,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 12,
+          "x": 140,
+          "y": 40,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 13,
+          "x": 340,
+          "y": 70,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 14,
+          "x": 790,
+          "y": 205,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 15,
+          "x": 900,
+          "y": 565,
+          "terrain": "plain",
+          "sector": 1
+        }
+      ],
+      "base": {
+        "x": 930,
+        "y": 500
+      },
+      "routes": [
+        {
+          "id": "main",
+          "label": "林间小径",
+          "sector": 1,
+          "points": [
+            {
+              "x": -30,
+              "y": 120
+            },
+            {
+              "x": 250,
+              "y": 110
+            },
+            {
+              "x": 250,
+              "y": 290
+            },
+            {
+              "x": 700,
+              "y": 290
+            },
+            {
+              "x": 700,
+              "y": 500
+            },
+            {
+              "x": 930,
+              "y": 500
+            }
+          ],
+          "active": true
+        }
+      ],
+      "regions": [
+        {
+          "id": 1,
+          "x": 0,
+          "y": 0,
+          "width": 960,
+          "height": 640,
+          "biome": "forest",
+          "label": "星光林地"
+        }
+      ],
+      "features": []
+    },
+    "7": {
+      "width": 960,
+      "height": 640,
+      "path": [
+        {
+          "x": 250,
+          "y": -30
+        },
+        {
+          "x": 250,
+          "y": 120
+        },
+        {
+          "x": 250,
+          "y": 300
+        },
+        {
+          "x": 700,
+          "y": 300
+        },
+        {
+          "x": 700,
+          "y": 500
+        },
+        {
+          "x": 930,
+          "y": 500
+        }
+      ],
+      "pads": [
+        {
+          "id": 0,
+          "x": 150,
+          "y": 210,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 1,
+          "x": 340,
+          "y": 210,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 2,
+          "x": 470,
+          "y": 210,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 3,
+          "x": 590,
+          "y": 210,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 4,
+          "x": 790,
+          "y": 390,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 5,
+          "x": 610,
+          "y": 400,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 6,
+          "x": 470,
+          "y": 390,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 7,
+          "x": 340,
+          "y": 400,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 8,
+          "x": 160,
+          "y": 350,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 9,
+          "x": 810,
+          "y": 570,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 10,
+          "x": 890,
+          "y": 400,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 11,
+          "x": 610,
+          "y": 570,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 12,
+          "x": 140,
+          "y": 40,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 13,
+          "x": 340,
+          "y": 70,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 14,
+          "x": 790,
+          "y": 210,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 15,
+          "x": 900,
+          "y": 570,
+          "terrain": "plain",
+          "sector": 1
+        }
+      ],
+      "base": {
+        "x": 930,
+        "y": 500
+      },
+      "routes": [
+        {
+          "id": "main",
+          "label": "林间小径",
+          "sector": 1,
+          "points": [
+            {
+              "x": 250,
+              "y": -30
+            },
+            {
+              "x": 250,
+              "y": 120
+            },
+            {
+              "x": 250,
+              "y": 300
+            },
+            {
+              "x": 700,
+              "y": 300
+            },
+            {
+              "x": 700,
+              "y": 500
+            },
+            {
+              "x": 930,
+              "y": 500
+            }
+          ],
+          "active": true
+        }
+      ],
+      "regions": [
+        {
+          "id": 1,
+          "x": 0,
+          "y": 0,
+          "width": 960,
+          "height": 640,
+          "biome": "forest",
+          "label": "星光林地"
+        }
+      ],
+      "features": []
+    },
+    "8": {
+      "width": 960,
+      "height": 640,
+      "path": [
+        {
+          "x": -30,
+          "y": 500
+        },
+        {
+          "x": 250,
+          "y": 510
+        },
+        {
+          "x": 250,
+          "y": 310
+        },
+        {
+          "x": 700,
+          "y": 310
+        },
+        {
+          "x": 700,
+          "y": 500
+        },
+        {
+          "x": 930,
+          "y": 500
+        }
+      ],
+      "pads": [
+        {
+          "id": 0,
+          "x": 150,
+          "y": 215,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 1,
+          "x": 340,
+          "y": 215,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 2,
+          "x": 470,
+          "y": 215,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 3,
+          "x": 590,
+          "y": 215,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 4,
+          "x": 790,
+          "y": 395,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 5,
+          "x": 610,
+          "y": 405,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 6,
+          "x": 470,
+          "y": 395,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 7,
+          "x": 340,
+          "y": 405,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 8,
+          "x": 160,
+          "y": 355,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 9,
+          "x": 810,
+          "y": 575,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 10,
+          "x": 890,
+          "y": 405,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 11,
+          "x": 610,
+          "y": 575,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 12,
+          "x": 230,
+          "y": 130,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 13,
+          "x": 340,
+          "y": 130,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 14,
+          "x": 790,
+          "y": 215,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 15,
+          "x": 900,
+          "y": 575,
+          "terrain": "plain",
+          "sector": 1
+        }
+      ],
+      "base": {
+        "x": 930,
+        "y": 500
+      },
+      "routes": [
+        {
+          "id": "main",
+          "label": "林间小径",
+          "sector": 1,
+          "points": [
+            {
+              "x": -30,
+              "y": 500
+            },
+            {
+              "x": 250,
+              "y": 510
+            },
+            {
+              "x": 250,
+              "y": 310
+            },
+            {
+              "x": 700,
+              "y": 310
+            },
+            {
+              "x": 700,
+              "y": 500
+            },
+            {
+              "x": 930,
+              "y": 500
+            }
+          ],
+          "active": true
+        }
+      ],
+      "regions": [
+        {
+          "id": 1,
+          "x": 0,
+          "y": 0,
+          "width": 960,
+          "height": 640,
+          "biome": "forest",
+          "label": "星光林地"
+        }
+      ],
+      "features": []
+    },
+    "9": {
+      "width": 960,
+      "height": 640,
+      "path": [
+        {
+          "x": -30,
+          "y": 120
+        },
+        {
+          "x": 250,
+          "y": 140
+        },
+        {
+          "x": 250,
+          "y": 320
+        },
+        {
+          "x": 700,
+          "y": 320
+        },
+        {
+          "x": 700,
+          "y": 500
+        },
+        {
+          "x": 930,
+          "y": 500
+        }
+      ],
+      "pads": [
+        {
+          "id": 0,
+          "x": 150,
+          "y": 220,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 1,
+          "x": 340,
+          "y": 220,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 2,
+          "x": 470,
+          "y": 220,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 3,
+          "x": 590,
+          "y": 220,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 4,
+          "x": 790,
+          "y": 400,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 5,
+          "x": 610,
+          "y": 410,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 6,
+          "x": 470,
+          "y": 400,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 7,
+          "x": 340,
+          "y": 410,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 8,
+          "x": 160,
+          "y": 360,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 9,
+          "x": 810,
+          "y": 580,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 10,
+          "x": 890,
+          "y": 410,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 11,
+          "x": 610,
+          "y": 580,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 12,
+          "x": 140,
+          "y": 40,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 13,
+          "x": 340,
+          "y": 70,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 14,
+          "x": 790,
+          "y": 220,
+          "terrain": "plain",
+          "sector": 1
+        },
+        {
+          "id": 15,
+          "x": 900,
+          "y": 580,
+          "terrain": "plain",
+          "sector": 1
+        }
+      ],
+      "base": {
+        "x": 930,
+        "y": 500
+      },
+      "routes": [
+        {
+          "id": "main",
+          "label": "林间小径",
+          "sector": 1,
+          "points": [
+            {
+              "x": -30,
+              "y": 120
+            },
+            {
+              "x": 250,
+              "y": 140
+            },
+            {
+              "x": 250,
+              "y": 320
+            },
+            {
+              "x": 700,
+              "y": 320
+            },
+            {
+              "x": 700,
+              "y": 500
+            },
+            {
+              "x": 930,
+              "y": 500
+            }
+          ],
+          "active": true
+        }
+      ],
+      "regions": [
+        {
+          "id": 1,
+          "x": 0,
+          "y": 0,
+          "width": 960,
+          "height": 640,
+          "biome": "forest",
+          "label": "星光林地"
+        }
+      ],
+      "features": []
+    }
+  },
+  "source": "v1.36.1 legacy schema-2 initial geometry, captured before central map implementation"
+}

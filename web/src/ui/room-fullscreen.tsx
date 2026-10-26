@@ -171,6 +171,7 @@ export function GameFullscreen({
   result,
   status,
   onReadyChange,
+  onChatTargetChange,
 }: {
   ref?: Ref<GameFullscreenHandle>;
   scope: string;
@@ -179,11 +180,16 @@ export function GameFullscreen({
   result?: ReactNode;
   status?: ReactNode;
   onReadyChange: (ready: boolean) => void;
+  onChatTargetChange?: (target: HTMLElement | null) => void;
 }) {
   const [root, setRoot] = useState<HTMLDivElement | null>(null);
   const board = useRef<HTMLDivElement>(null);
   const [rightInset, setRightInset] = useState(0);
   const fullscreen = useRoomFullscreen(enabled ? scope : undefined, root);
+  useLayoutEffect(() => {
+    onChatTargetChange?.(fullscreen.active ? root : null);
+    return () => onChatTargetChange?.(null);
+  }, [fullscreen.active, root, onChatTargetChange]);
   useImperativeHandle(ref, () => ({
     enter: () => {
       if (!fullscreen.active) void fullscreen.toggle();

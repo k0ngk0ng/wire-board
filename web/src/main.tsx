@@ -201,6 +201,8 @@ function App() {
   const [controllerSettingsOpen, setControllerSettingsOpen] = useState(false);
   const gameFullscreen = useRef<GameFullscreenHandle>(null);
   const [gameFullscreenReady, setGameFullscreenReady] = useState(false);
+  const [chatFullscreenTarget, setChatFullscreenTarget] =
+    useState<HTMLElement | null>(null);
   useEffect(() => setControllerSettingsOpen(false), [state?.user.id]);
   const [sound, setSound] = useState(() => readAudioPreferences().enabled);
   const [volume, setVolume] = useState(() => readAudioPreferences().volume);
@@ -1012,6 +1014,7 @@ function App() {
                               <GameFullscreen
                                 ref={gameFullscreen}
                                 onReadyChange={setGameFullscreenReady}
+                                onChatTargetChange={setChatFullscreenTarget}
                                 scope={`${room.id}:${room.matchId ?? room.setupVersion}`}
                                 enabled={!loading && !!room.game}
                                 status={
@@ -1192,31 +1195,33 @@ function App() {
               />
             )}
             {profileID && (
-              <Modal title="玩家页面" onClose={() => setProfileID("")}>
-                {profileID === state.user.id && (
-                  <div className="profile-account-actions">
-                    <button
-                      className="outline"
-                      aria-label="退出登录"
-                      disabled={busy}
-                      onClick={() =>
-                        void run(async () => {
-                          await api("/logout", {});
-                          setProfileID("");
-                        })
-                      }
-                    >
-                      <LogOut size={17} />
-                      退出登录
-                    </button>
-                  </div>
-                )}
-                <ProfilePage
-                  key={profileID}
-                  id={profileID}
-                  self={state.user.id}
-                />
-              </Modal>
+              <GameFeedback>
+                <Modal title="玩家页面" onClose={() => setProfileID("")}>
+                  {profileID === state.user.id && (
+                    <div className="profile-account-actions">
+                      <button
+                        className="outline"
+                        aria-label="退出登录"
+                        disabled={busy}
+                        onClick={() =>
+                          void run(async () => {
+                            await api("/logout", {});
+                            setProfileID("");
+                          })
+                        }
+                      >
+                        <LogOut size={17} />
+                        退出登录
+                      </button>
+                    </div>
+                  )}
+                  <ProfilePage
+                    key={profileID}
+                    id={profileID}
+                    self={state.user.id}
+                  />
+                </Modal>
+              </GameFeedback>
             )}
             {room?.game && journalRoom === room.id && (
               <Modal title="对局日志" onClose={() => setJournalRoom("")}>
@@ -1251,6 +1256,7 @@ function App() {
                 key={`${state.user.id}:${room.id}`}
                 room={room}
                 userId={state.user.id}
+                fullscreenTarget={chatFullscreenTarget}
                 send={async (text, nonce) => {
                   await api(`/rooms/${room.id}/chat`, { text, nonce });
                   await refresh();

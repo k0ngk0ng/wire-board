@@ -105,7 +105,7 @@ def label(name):
 
 def api(path, body=None, status=None):
     options = '' if body is None else ',{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(' + json.dumps(body) + ')}'
-    value = js('fetch(' + json.dumps('/api' + path) + options + ').then(async r=>({status:r.status,body:await r.json()}))')
+    value = json.loads(js('fetch(' + json.dumps('/api' + path) + options + ').then(async r=>JSON.stringify({status:r.status,body:await r.json()}))'))
     assert value['status'] == status if status else 200 <= value['status'] < 300, value
     return value['body']
 

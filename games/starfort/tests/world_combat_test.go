@@ -1,5 +1,8 @@
 package starfort_test
 
+// Legacy layout regressions use captured v1.36.1 geometry; current central
+// layout and skills are verified separately through production starts.
+
 // Failure cases enumerated before combat implementation: enemies change route
 // mid-wave; healing resurrects dead enemies, exceeds maximum health, or runs
 // every tick; banner auras stack without bound or persist after their source
@@ -61,7 +64,7 @@ func combatPublic(b *rulesTable) combatSnapshot {
 }
 func combatFixture(t *testing.T, enemies []map[string]any, tower bool) *rulesTable {
 	t.Helper()
-	b := newRulesTable(t, 1, map[string]any{})
+	b := newLegacyRulesTable(t, 1, map[string]any{})
 	v := combatPublic(b)
 	if tower {
 		// The world has several initial road templates. Choose a real public
@@ -293,7 +296,7 @@ func TestStarfortWorldCombatFortuneRewards(t *testing.T) {
 // construction; a bot changes another player's tower. Natural module gameplay
 // must establish one arrow/arcane support interceptor in every opened sector.
 func TestStarfortWorldCombatBotSupportTargets(t *testing.T) {
-	b := newRulesTable(t, 2, map[string]any{"waves": 20})
+	b := newLegacyRulesTable(t, 2, map[string]any{"waves": 20})
 	previous := map[int]string{}
 	changes := 0
 	covered := map[int]bool{}
