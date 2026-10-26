@@ -17,17 +17,27 @@ import {
 } from "./camera";
 import type { Camera, Viewport } from "./camera";
 import "./world-camera.css";
-import { CombatTimeline, FLIGHT_MS } from "./combat-timeline";
+import {
+  CombatTimeline,
+  CombatPlayback,
+  FLIGHT_MS,
+  activeEffects,
+  dueSoundEvents,
+} from "./combat-timeline";
 import {
   assetURL,
   enemyPoint,
   objectivePoint,
   freshEvents,
+  combatMotion,
 } from "./presentation";
+import type { CombatStatus } from "./combat-timeline";
 import type { EventCursor } from "./presentation";
 import type { Enemy, Event, View, MapData, Point, Objective } from "./types";
 import atlasLayout from "../assets/public/starfort/v1/atlas.json";
 import worldAtlasLayout from "../assets/public/starfort/world-v2/atlas.json";
+import { shotPose, workerPose } from "./animation";
+import { drawCrater, drawRepairTool, drawCombatAccent } from "./combat-art";
 import { battlefieldPalette as palette } from "./palette";
 
 type Atlas = {
@@ -420,24 +430,57 @@ function drawRoutes(
     const gated = route.id.includes("shortcut") && !route.active;
     if (previous || !route.active) ctx.setLineDash([24, 18]);
     linePath(ctx, route.points);
-    ctx.lineWidth = compact ? 24 : previous ? 22 : gated ? 28 : 72;
-    ctx.strokeStyle = previous ? "#7a536f" : palette.road.edge;
+    ctx.lineWidth = compact ? 20 : previous ? 22 : gated ? 28 : 64;
+    ctx.strokeStyle = previous
+      ? "#cbb4d2"
+      : route.active
+        ? "#a19161"
+        : "#86906d";
     ctx.stroke();
     linePath(ctx, route.points);
-    ctx.lineWidth = compact ? 14 : previous ? 13 : gated ? 18 : 59;
-    ctx.strokeStyle = previous
-      ? "#f7e6fb"
-      : route.active
-        ? palette.road.fill
-        : palette.road.inactive;
+    ctx.lineWidth = compact ? 14 : previous ? 14 : gated ? 20 : 53;
+    ctx.strokeStyle = route.active ? "#c5b184" : "#9a9c7a";
     ctx.stroke();
     if (!compact && !previous && !gated) {
-      linePath(ctx, route.points);
-      ctx.lineWidth = 40;
-      ctx.strokeStyle = route.active
-        ? palette.road.center
-        : palette.road.inactiveCenter;
-      ctx.stroke();
+      ctx.setLineDash([]);
+      for (let segment = 1; segment < route.points.length; segment++) {
+        const a = route.points[segment - 1],
+          b = route.points[segment];
+        const length = Math.hypot(b.x - a.x, b.y - a.y),
+          nx = -(b.y - a.y) / length,
+          ny = (b.x - a.x) / length;
+        for (let step = 0; step < length; step += 13) {
+          const p = step / length,
+            seed = segment * 31 + step;
+          const x = a.x + (b.x - a.x) * p,
+            y = a.y + (b.y - a.y) * p;
+          const offset = Math.sin(seed * 2.17) * 22;
+          ctx.fillStyle = step % 3 < 1 ? "#dfcd9f" : "#a69067";
+          ctx.beginPath();
+          ctx.ellipse(
+            x + nx * offset,
+            y + ny * offset,
+            2 + Math.abs(Math.sin(seed)) * 2,
+            1.3,
+            seed,
+            0,
+            Math.PI * 2,
+          );
+          ctx.fill();
+          for (const side of [-1, 1]) {
+            const edge = side * (28 + Math.sin(seed) * 5),
+              ex = x + nx * edge,
+              ey = y + ny * edge;
+            ctx.strokeStyle = side > 0 ? "#71834b" : "#879356";
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(ex - 2, ey);
+            ctx.lineTo(ex, ey - 4 - Math.abs(Math.sin(seed)) * 3);
+            ctx.lineTo(ex + 2, ey);
+            ctx.stroke();
+          }
+        }
+      }
     }
     const entry = route.points[0];
     if (entry) {
@@ -651,6 +694,8 @@ function drawFeatures(
 export function Battlefield({
   onReady,
   onLoadError,
+  onEvents,
+  onCombatState,
   roomID,
   data,
   assets,
@@ -659,6 +704,8 @@ export function Battlefield({
 }: {
   onReady?: () => void;
   onLoadError?: (message: string) => void;
+  onEvents?: (events: Event[], at: number) => void;
+  onCombatState?: (state: CombatStatus) => void;
   roomID: string;
   data: View;
   assets: string;
@@ -678,10 +725,25 @@ export function Battlefield({
     data,
     previous: new Map<number, Enemy>(),
     previousObjectives: new Map<string, Objective>(),
+    destinations: new Map(data.enemies.map((enemy) => [enemy.id, enemy])),
     at: performance.now(),
     duration: 1000,
   });
-  const timeline = useRef(new CombatTimeline(state.current));
+  const timeline = useRef(new CombatPlayback(data, state.current.at));
+  const movement = useRef(new CombatTimeline(state.current));
+  const soundEvents = useRef<Effect[]>([]);
+  const onEventsRef = useRef(onEvents);
+  onEventsRef.current = onEvents;
+  const onCombatStateRef = useRef(onCombatState);
+  onCombatStateRef.current = onCombatState;
+  useEffect(
+    () =>
+      timeline.current.subscribe((status) =>
+        onCombatStateRef.current?.(status),
+      ),
+    [],
+  );
+  const hoverRef = useRef<number | null>(null);
   const selectedRef = useRef(selected);
   selectedRef.current = selected;
   const cursor = useRef<EventCursor | null>(null),
@@ -889,53 +951,84 @@ export function Battlefield({
   useEffect(() => {
     const at = performance.now(),
       prior = state.current;
-    const contiguous =
-      cursor.current?.room === roomID &&
-      data.tick >= prior.data.tick &&
-      at - prior.at < 4000;
-    // Operations between simulation snapshots must not restart enemy motion.
-    if (data.tick !== prior.data.tick || !contiguous) {
+    const [next, batch] = freshEvents(cursor.current, roomID, data, at);
+    const contiguous = !next.reset;
+    cursor.current = next;
+    const immediate =
+      !contiguous ||
+      document.hidden ||
+      reduced ||
+      data.phase === "paused" ||
+      prior.data.phase === "paused" ||
+      (prior.data.phase !== "battle" && data.phase === "battle");
+    if (immediate) {
+      timeline.current.reset(data, at);
+      effects.current = [];
+      soundEvents.current =
+        reduced && contiguous && !document.hidden
+          ? batch
+              .filter((event) => event.type !== "shot")
+              .map((event) => ({ ...event, born: at }))
+          : [];
+    } else {
+      const scheduled = timeline.current.push(data, batch, at);
+      effects.current.push(...scheduled);
+      soundEvents.current.push(...scheduled);
+    }
+    // Geometry follows the same logical interval as attacks. Health is read
+    // separately so a final snapshot cannot reveal damage before impact.
+    if (data.tick !== prior.data.tick || immediate) {
+      const motion = immediate
+        ? {
+            previous: new Map<number, Enemy>(),
+            destinations: new Map(
+              data.enemies.map((enemy) => [enemy.id, enemy]),
+            ),
+          }
+        : combatMotion(
+            prior.data.enemies,
+            prior.destinations,
+            timeline.current.read(at, false).enemies,
+            data.enemies,
+            batch,
+          );
       state.current = {
         data,
-        previous: contiguous
-          ? new Map(prior.data.enemies.map((e) => [e.id, e]))
-          : new Map(),
-        previousObjectives: contiguous
-          ? new Map(
-              (prior.data.world?.objectives ?? []).map((objective) => [
-                objective.id,
-                objective,
-              ]),
-            )
-          : new Map(),
-        at,
-        duration: Math.min(
-          1000,
-          Math.max(200, (data.tick - prior.data.tick) * 200),
-        ),
+        previous: motion.previous,
+        destinations: motion.destinations,
+        previousObjectives:
+          contiguous && !immediate
+            ? new Map(
+                (prior.data.world?.objectives ?? []).map((objective) => [
+                  objective.id,
+                  objective,
+                ]),
+              )
+            : new Map(),
+        at: immediate ? at : timeline.current.time(prior.data.elapsedMS),
+        duration: Math.max(200, data.elapsedMS - prior.data.elapsedMS),
       };
+      if (immediate) movement.current.reset(state.current);
+      else movement.current.pushAt(state.current, state.current.at);
     } else state.current = { ...state.current, data };
-    const immediate =
-      !contiguous || document.hidden || data.phase === "paused" || reduced;
-    if (immediate) timeline.current.reset(state.current);
-    else
-      timeline.current.push(
-        { ...state.current, at: state.current.at + FLIGHT_MS },
-        at,
-      );
-    const [next, batch] = freshEvents(cursor.current, roomID, data, at);
-    cursor.current = next;
-    if (!contiguous || document.hidden || data.phase === "paused")
-      effects.current = [];
-    if (!document.hidden && data.phase !== "paused")
-      effects.current.push(
-        ...batch.map((e) => ({
-          ...e,
-          born: at + (e.type === "shot" || immediate ? 0 : FLIGHT_MS),
-        })),
-      );
-    effects.current = effects.current.slice(-60);
+    effects.current = activeEffects(effects.current, at, reduced);
   }, [data, roomID, reduced]);
+  useEffect(() => {
+    const reset = () => {
+      cursor.current = null;
+      effects.current = [];
+      soundEvents.current = [];
+      timeline.current.reset(state.current.data, performance.now());
+      state.current = {
+        ...state.current,
+        previous: new Map(),
+        previousObjectives: new Map(),
+      };
+      movement.current.reset(state.current);
+    };
+    document.addEventListener("visibilitychange", reset);
+    return () => document.removeEventListener("visibilitychange", reset);
+  }, []);
   useEffect(() => {
     const node = container.current;
     if (!node) return;
@@ -1039,9 +1132,19 @@ export function Battlefield({
       frame = requestAnimationFrame(draw);
       if (document.hidden || (reduced && at - lastPaint < 150)) return;
       lastPaint = at;
+      const [sounds, futureSounds] = dueSoundEvents(soundEvents.current, at);
+      soundEvents.current = futureSounds;
+      if (sounds.length) onEventsRef.current?.(sounds, at);
       if (!wrap.clientWidth || !node.width) return;
-      const current = timeline.current.read(at),
-        v = { ...current.data, towers: state.current.data.towers },
+      const current = movement.current.read(at),
+        combat = timeline.current.read(at),
+        v = {
+          ...state.current.data,
+          enemies: combat.enemies,
+          baseHP: combat.baseHP,
+          craters: combat.craters,
+          phase: combat.phase,
+        },
         map = v.map,
         pixelScale = camera.current.zoom,
         dpr = node.width / viewport.current.width,
@@ -1097,8 +1200,10 @@ export function Battlefield({
         at,
         reduced,
       );
-      const sel = map.pads.find((p) => p.id === selectedRef.current),
-        tower = v.towers.find((t) => t.pad === selectedRef.current);
+      for (const crater of v.craters ?? []) drawCrater(ctx, crater);
+      const rangePad = hoverRef.current ?? selectedRef.current;
+      const sel = map.pads.find((p) => p.id === rangePad),
+        tower = v.towers.find((t) => t.pad === rangePad);
       if (sel && tower) {
         ctx.save();
         circle(
@@ -1140,63 +1245,93 @@ export function Battlefield({
       }
       const { width: towerSize, height: towerHeight } =
         towerDimensions(pixelScale);
+      const buildings: { y: number; draw: () => void }[] = [];
       for (const t of v.towers) {
         const pad = map.pads.find((p) => p.id === t.pad);
         if (!pad) continue;
-        const towerPoint = { x: pad.x, y: pad.y + 14 };
-        ctx.save();
-        ctx.shadowColor = "#243b2d40";
-        ctx.shadowBlur = 4;
-        ctx.shadowOffsetY = 3;
-        if (
-          !sprite(
-            ctx,
-            art.current,
-            `tower-${t.kind}-${Math.min(3, t.level)}`,
-            towerPoint.x,
-            towerPoint.y,
-            towerSize,
-            towerHeight,
+        const lastShot = effects.current
+          .filter(
+            (e) => e.type === "shot" && e.towerId === t.id && e.born <= at,
           )
-        )
-          fallbackTower(ctx, towerPoint.x, towerPoint.y, towerSize, t.kind);
-        ctx.restore();
-        // The aim marker rotates from server angles; it never picks a target itself.
-        if (v.phase === "battle") {
-          const pivot = { x: towerPoint.x, y: towerPoint.y - towerSize * 0.59 };
-          ctx.save();
-          ctx.translate(pivot.x, pivot.y);
-          ctx.rotate(t.angle);
-          ctx.strokeStyle =
-            t.kind === "frost"
-              ? "#d4f5ff"
-              : t.kind === "arcane"
-                ? "#f1d7ff"
-                : "#ffebaa";
-          ctx.lineWidth = 4;
-          ctx.beginPath();
-          ctx.moveTo(8, 0);
-          ctx.lineTo(19, 0);
-          ctx.stroke();
-          ctx.restore();
-        }
-        if (t.level > 1) {
-          ctx.font = `bold ${Math.max(13, 9 / pixelScale)}px system-ui`;
-          ctx.textAlign = "center";
-          ctx.lineWidth = 3;
-          ctx.strokeStyle = "#263c32";
-          ctx.strokeText(
-            `★${t.level}`,
-            towerPoint.x,
-            towerPoint.y - towerSize * 0.93,
-          );
-          ctx.fillStyle = "#fff2b8";
-          ctx.fillText(
-            `★${t.level}`,
-            towerPoint.x,
-            towerPoint.y - towerSize * 0.93,
-          );
-        }
+          .at(-1);
+        const pose = shotPose(
+          t.kind,
+          lastShot ? at - lastShot.born : -1,
+          reduced,
+        );
+        buildings.push({
+          y: pad.y,
+          draw: () => {
+            const towerPoint = {
+              x: pad.x - Math.cos(t.angle) * pose.recoil,
+              y: pad.y + 14 - Math.sin(t.angle) * pose.recoil,
+            };
+            if (pose.glow > 0)
+              circle(
+                ctx,
+                pad.x,
+                pad.y - towerSize * 0.55,
+                12 + pose.glow * 15,
+                `rgba(255,235,160,${pose.glow * 0.6})`,
+              );
+            ctx.save();
+            ctx.shadowColor = "#243b2d40";
+            ctx.shadowBlur = 4;
+            ctx.shadowOffsetY = 3;
+            if (
+              !sprite(
+                ctx,
+                art.current,
+                `tower-${t.kind}-${Math.min(3, t.level)}`,
+                towerPoint.x,
+                towerPoint.y,
+                towerSize,
+                towerHeight,
+              )
+            )
+              fallbackTower(ctx, towerPoint.x, towerPoint.y, towerSize, t.kind);
+            ctx.restore();
+            // The aim marker rotates from server angles; it never picks a target itself.
+            if (v.phase === "battle") {
+              const pivot = {
+                x: towerPoint.x,
+                y: towerPoint.y - towerSize * 0.59,
+              };
+              ctx.save();
+              ctx.translate(pivot.x, pivot.y);
+              ctx.rotate(t.angle);
+              ctx.strokeStyle =
+                t.kind === "frost"
+                  ? "#d4f5ff"
+                  : t.kind === "arcane"
+                    ? "#f1d7ff"
+                    : "#ffebaa";
+              ctx.lineWidth = 4;
+              ctx.beginPath();
+              ctx.moveTo(8, 0);
+              ctx.lineTo(19, 0);
+              ctx.stroke();
+              ctx.restore();
+            }
+            if (t.level > 1) {
+              ctx.font = `bold ${Math.max(13, 9 / pixelScale)}px system-ui`;
+              ctx.textAlign = "center";
+              ctx.lineWidth = 3;
+              ctx.strokeStyle = "#263c32";
+              ctx.strokeText(
+                `★${t.level}`,
+                towerPoint.x,
+                towerPoint.y - towerSize * 0.93,
+              );
+              ctx.fillStyle = "#fff2b8";
+              ctx.fillText(
+                `★${t.level}`,
+                towerPoint.x,
+                towerPoint.y - towerSize * 0.93,
+              );
+            }
+          },
+        });
       }
       const endpoint = map.path[map.path.length - 1] ?? {
         x: map.width,
@@ -1204,53 +1339,75 @@ export function Battlefield({
       };
       const bx = map.base?.x ?? Math.min(map.width - 55, endpoint.x - 65),
         by = (map.base?.y ?? endpoint.y) + 35;
-      const baseSize = Math.max(105, 38 / pixelScale);
-      const damaged = v.baseHP < v.baseMaxHP * 0.5;
-      if (
-        !sprite(
-          ctx,
-          art.current,
-          `base-${damaged ? "damaged" : "intact"}`,
-          bx,
-          by,
-          baseSize,
-          baseSize,
-        )
-      ) {
-        ctx.fillStyle = damaged ? "#b19291" : "#a5bacc";
-        ctx.fillRect(bx - 40, by - 76, 80, 76);
-        ctx.strokeStyle = palette.unitOutline;
-        ctx.lineWidth = Math.max(3, 1.2 / pixelScale);
-        ctx.strokeRect(bx - 40, by - 76, 80, 76);
-        circle(ctx, bx, by - 72, 18, "#f8e7a1", palette.unitOutline);
-      }
-      if (!reduced && v.phase !== "lost") {
-        const pulse = 0.3 + 0.12 * Math.sin(at / 700);
-        circle(
-          ctx,
-          bx,
-          by - baseSize * 0.62,
-          baseSize * 0.13,
-          `rgba(255,239,151,${pulse})`,
-        );
-      }
-      ctx.font = `bold ${Math.max(15, 10 / pixelScale)}px system-ui`;
-      ctx.textAlign = "center";
-      ctx.strokeStyle = palette.label.halo;
-      ctx.lineWidth = 4;
-      ctx.strokeText("星核", bx, by + 15);
-      ctx.fillStyle = palette.label.ink;
-      ctx.fillText("星核", bx, by + 15);
+      buildings.push({
+        y: by - 35,
+        draw: () => {
+          const baseSize = Math.max(105, 38 / pixelScale);
+          const damaged = v.baseHP < v.baseMaxHP * 0.5;
+          if (
+            !sprite(
+              ctx,
+              art.current,
+              `base-${damaged ? "damaged" : "intact"}`,
+              bx,
+              by,
+              baseSize,
+              baseSize,
+            )
+          ) {
+            ctx.fillStyle = damaged ? "#b19291" : "#a5bacc";
+            ctx.fillRect(bx - 40, by - 76, 80, 76);
+            ctx.strokeStyle = palette.unitOutline;
+            ctx.lineWidth = Math.max(3, 1.2 / pixelScale);
+            ctx.strokeRect(bx - 40, by - 76, 80, 76);
+            circle(ctx, bx, by - 72, 18, "#f8e7a1", palette.unitOutline);
+          }
+          if (!reduced && v.phase !== "lost") {
+            const pulse = 0.3 + 0.12 * Math.sin(at / 700);
+            circle(
+              ctx,
+              bx,
+              by - baseSize * 0.62,
+              baseSize * 0.13,
+              `rgba(255,239,151,${pulse})`,
+            );
+          }
+          ctx.font = `bold ${Math.max(15, 10 / pixelScale)}px system-ui`;
+          ctx.textAlign = "center";
+          ctx.strokeStyle = palette.label.halo;
+          ctx.lineWidth = 4;
+          ctx.strokeText("星核", bx, by + 15);
+          ctx.fillStyle = palette.label.ink;
+          ctx.fillText("星核", bx, by + 15);
+        },
+      });
+      buildings.sort((a, b) => a.y - b.y).forEach((item) => item.draw());
       const enemyPositions = new Map<number, Point>();
       for (const enemy of v.enemies) {
+        const destination = current.destinations.get(enemy.id);
         const position = enemyPoint(
           map.routes?.find((route) => route.id === enemy.route)?.points ??
             map.path,
           current.previous.get(enemy.id),
-          enemy,
+          destination ?? enemy,
           fraction,
           reduced,
         );
+        const crater = enemy.repairing
+          ? v.craters?.find((c) => c.id === enemy.repairing && c.remaining > 0)
+          : undefined;
+        const workerIndex = Math.max(0, crater?.workers.indexOf(enemy.id) ?? 0);
+        const workerCount = Math.max(1, crater?.workers.length ?? 0);
+        if (crater) {
+          const pose = workerPose(
+            workerIndex,
+            workerCount,
+            at,
+            reduced || v.phase !== "battle",
+          );
+          position.x = crater.x + pose.x;
+          position.y = crater.y + pose.y;
+        }
         enemyPositions.set(enemy.id, position);
         const frozen = enemy.slowUntil > v.tick;
         if (enemy.kind === "boss" && (enemy.phase ?? 1) > 1) {
@@ -1270,13 +1427,25 @@ export function Battlefield({
           enemy.kind === "boss" ? 64 : 42,
           (enemy.kind === "boss" ? 40 : 32) / pixelScale,
         );
-        const moving = !reduced && v.phase === "battle";
+        const moving = !reduced && v.phase === "battle" && !crater;
         const pose = moving ? Math.floor(at / 160 + enemy.id) % 3 : 0;
         const bob = moving
           ? Math.sin(at / (enemy.kind === "runner" ? 90 : 140) + enemy.id) * 1.5
           : 0;
+        const arrival =
+          crater && !reduced
+            ? effects.current.find(
+                (e) =>
+                  e.type === "repair_start" &&
+                  e.targetId === enemy.id &&
+                  e.born <= at,
+              )
+            : undefined;
+        const falling = arrival
+          ? Math.sin(Math.min(1, (at - arrival.born) / 420) * Math.PI)
+          : 0;
         const x = position.x,
-          y = position.y + bob;
+          y = position.y + bob + falling * 9;
         ctx.save();
         ctx.translate(x, y);
         ctx.scale(1, 0.32);
@@ -1301,6 +1470,16 @@ export function Battlefield({
           )
         )
           fallbackEnemy(ctx, x, y + size * 0.15, size, enemy.kind);
+        if (crater)
+          drawRepairTool(
+            ctx,
+            x,
+            y,
+            workerIndex,
+            workerCount,
+            at,
+            reduced || v.phase !== "battle",
+          );
         if (["healer", "banner", "engineer"].includes(enemy.kind)) {
           const label =
             enemy.kind === "healer"
@@ -1348,7 +1527,7 @@ export function Battlefield({
           health < 0.35 ? palette.health.critical : palette.health.healthy;
         ctx.fillRect(x - barWidth / 2, barY, barWidth * health, barHeight);
       }
-      effects.current = effects.current.filter((e) => at - e.born < 900);
+      effects.current = activeEffects(effects.current, at, reduced);
       for (const e of effects.current) {
         const elapsed = at - e.born,
           t = elapsed / 900;
@@ -1358,6 +1537,27 @@ export function Battlefield({
             circle(ctx, e.x, e.y, 16, "#fff4c880");
           continue;
         }
+        const accent = {
+          ...e,
+          kind: v.towers.find((t) => t.id === e.towerId)?.kind ?? e.kind,
+        };
+        drawCombatAccent(
+          ctx,
+          accent,
+          elapsed,
+          e.impact?.x ?? e.x,
+          e.impact?.y ?? e.y,
+          reduced,
+        );
+        for (const victim of e.damage ?? [])
+          drawCombatAccent(
+            ctx,
+            { ...accent, damage: undefined },
+            elapsed,
+            victim.x,
+            victim.y,
+            reduced,
+          );
         ctx.save();
         if (e.type === "shot" && elapsed < FLIGHT_MS) {
           const target = e.targetId
@@ -1371,6 +1571,25 @@ export function Battlefield({
               e.y +
               (ty - e.y) * p -
               (e.kind === "cannon" ? Math.sin(p * Math.PI) * 45 : 0);
+          ctx.strokeStyle =
+            e.kind === "frost"
+              ? "#b9efffaa"
+              : e.kind === "arcane"
+                ? "#d2a0ffbb"
+                : e.skill === "focus"
+                  ? "#fff4bbee"
+                  : "#ead4a477";
+          ctx.lineWidth = e.skill === "focus" ? 5 : 3;
+          ctx.beginPath();
+          const tail = Math.max(0, p - 0.22);
+          ctx.moveTo(
+            e.x + (tx - e.x) * tail,
+            e.y +
+              (ty - e.y) * tail -
+              (e.kind === "cannon" ? Math.sin(tail * Math.PI) * 45 : 0),
+          );
+          ctx.lineTo(x, y);
+          ctx.stroke();
           ctx.translate(x, y);
           ctx.rotate(Math.atan2(ty - e.y, tx - e.x));
           if (
@@ -1697,11 +1916,30 @@ export function Battlefield({
               className={`sf-pad ${tower ? "sf-pad-occupied" : ""} ${selected === pad.id ? "sf-pad-selected" : ""}`}
               style={{
                 left: point.x,
+                zIndex: tower
+                  ? 1 +
+                    [...data.map.pads]
+                      .sort((a, b) => a.y - b.y)
+                      .findIndex((p) => p.id === pad.id)
+                  : 0,
                 top: tower ? bottom : point.y,
                 ...(tower ? { width, height } : {}),
               }}
               aria-label={`建造点 ${pad.id + 1}${pad.terrain === "highground" ? "，高台" : ""}${tower ? `，${towerNames[tower.kind]} ${tower.level} 级，玩家 ${tower.owner + 1}` : "，空地"}`}
               aria-pressed={selected === pad.id}
+              onPointerEnter={(event) => {
+                if (event.pointerType === "mouse" && tower)
+                  hoverRef.current = pad.id;
+              }}
+              onPointerLeave={() => {
+                hoverRef.current = null;
+              }}
+              onFocus={() => {
+                if (tower) hoverRef.current = pad.id;
+              }}
+              onBlur={() => {
+                hoverRef.current = null;
+              }}
               onClick={() => select(pad.id)}
             >
               {!tower && <span>{pad.id + 1}</span>}

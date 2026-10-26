@@ -1,13 +1,15 @@
-import type { Event, Point, Objective } from "./types.ts";
+import type { Enemy, Event, Point, Objective } from "./types.ts";
 
 export type EventCursor = {
   room: string;
   tick: number;
   lastID: number;
   at: number;
+  reset?: boolean;
 };
 // Event IDs belong to one running game. A reconnect resumes the battlefield,
-// not the historical event ring. Keep a small visual budget for large battles.
+// not the historical event ring. Never truncate a complete combat batch: its
+// individual post-hit states are needed to keep health and impacts together.
 export function freshEvents(
   cursor: EventCursor | null,
   room: string,
@@ -15,22 +17,53 @@ export function freshEvents(
   at: number,
 ): [EventCursor, Event[]] {
   const lastID = Math.max(0, ...snapshot.events.map((e) => e.id));
+  const batch = snapshot.events.filter((e) => e.id > (cursor?.lastID ?? 0));
+  const missing =
+    batch.length > 0 && cursor !== null && batch[0].id !== cursor.lastID + 1;
   const next = {
     room,
     tick: snapshot.tick,
     lastID: Math.max(lastID, cursor?.room === room ? cursor.lastID : 0),
     at,
+    reset: false,
   };
   if (
     !cursor ||
     cursor.room !== room ||
     at - cursor.at > 4000 ||
-    snapshot.tick < cursor.tick
+    snapshot.tick < cursor.tick ||
+    missing
   ) {
     next.lastID = lastID;
+    next.reset = true;
     return [next, []];
   }
-  return [next, snapshot.events.filter((e) => e.id > cursor.lastID).slice(-40)];
+  return [next, batch];
+}
+// Movement endpoints are separate from health. An authoritative snapshot may
+// have removed an enemy whose final projectile is still visibly in flight.
+export function combatMotion(
+  prior: Enemy[],
+  priorDestinations: Map<number, Enemy>,
+  visible: Enemy[],
+  next: Enemy[],
+  events: Event[],
+): { previous: Map<number, Enemy>; destinations: Map<number, Enemy> } {
+  const previous = new Map(prior.map((enemy) => [enemy.id, enemy]));
+  const destinations = new Map<number, Enemy>();
+  for (const enemy of visible) {
+    const endpoint = priorDestinations.get(enemy.id) ?? enemy;
+    destinations.set(enemy.id, endpoint);
+    if (!previous.has(enemy.id)) previous.set(enemy.id, endpoint);
+  }
+  for (const event of events) {
+    if (!event.target) continue;
+    destinations.set(event.target.id, event.target);
+    if (!previous.has(event.target.id))
+      previous.set(event.target.id, event.target);
+  }
+  for (const enemy of next) destinations.set(enemy.id, enemy);
+  return { previous, destinations };
 }
 export function pointOnPath(path: Point[], distance: number): Point {
   if (!path.length) return { x: 0, y: 0 };
@@ -120,7 +153,7 @@ export function pickSound(
   ];
   for (const [type, sound] of priority)
     if (events.some((e) => e.type === type)) return sound;
-  if (at - lastFireAt < 700) return null;
+  if (at - lastFireAt < 120) return null;
   const shot = events.find((e) => e.type === "shot");
   return shot &&
     ["arrow", "cannon", "frost", "arcane"].includes(shot.kind ?? "")

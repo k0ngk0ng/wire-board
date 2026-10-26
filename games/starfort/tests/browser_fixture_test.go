@@ -39,7 +39,7 @@ func scenarioModule() gameapi.Module {
 			delete(v, "scenario")
 		}
 		switch scenario {
-		case "vitality", "impact", "natural", "battle", "victory-ready", "defeat-ready", "advanced", "zero-gold", "growth-vote", "cleared-5", "cleared-10", "cleared-15", "stage2", "stage3", "stage4", "endless-rotation", "objectives", "objectives-clear", "objectives-fail", "legacy-save":
+		case "central-passives", "cadence", "cadence-speed", "vitality", "impact", "natural", "battle", "victory-ready", "defeat-ready", "advanced", "zero-gold", "growth-vote", "cleared-5", "cleared-10", "cleared-15", "stage2", "stage3", "stage4", "endless-rotation", "objectives", "objectives-clear", "objectives-fail", "legacy-save":
 		default:
 			return "", nil, errors.New("unknown test scenario")
 		}
@@ -69,6 +69,12 @@ func scenarioModule() gameapi.Module {
 		if err != nil {
 			return match, err
 		}
+		if scenario != "natural" && scenario != "central-passives" {
+			match, err = legacyStartMatch(match)
+			if err != nil {
+				return match, err
+			}
+		}
 		var s starfort.State
 		if err = json.Unmarshal(match.Data, &s); err != nil {
 			return match, err
@@ -93,6 +99,32 @@ func scenarioModule() gameapi.Module {
 			}
 		}
 		switch scenario {
+		case "central-passives":
+			if err = fixtureCadence(&s, 1, ""); err != nil {
+				return match, err
+			}
+			s.Wave, s.CompletedWaves = 4, 3
+			lead := s.Enemies[0]
+			s.Enemies = nil
+			for i := 0; i < 12; i++ {
+				e := lead
+				e.ID = i + 1
+				e.Progress = lead.Progress - float64(i)*12
+				e.Speed = 70
+				e.X, e.Y = fixturePathPosition(s.World.Map.Routes[0].Points, e.Progress)
+				s.Enemies = append(s.Enemies, e)
+			}
+			s.EnemySerial = 12
+			s.WaveInfo.Total = 12
+			s.WaveInfo.Spawned = 12
+		case "cadence", "cadence-speed":
+			level, branch := 1, ""
+			if scenario == "cadence-speed" {
+				level, branch = 4, "speed"
+			}
+			if err = fixtureCadence(&s, level, branch); err != nil {
+				return match, err
+			}
 		case "impact", "vitality":
 			s.Phase = "battle"
 			s.NextAt = 0

@@ -117,7 +117,10 @@ func rulesJSON(v any) json.RawMessage {
 }
 func newRulesTable(t *testing.T, n int, options any) *rulesTable {
 	t.Helper()
-	m := starfort.Module()
+	return newModuleRulesTable(t, n, options, starfort.Module())
+}
+func newModuleRulesTable(t *testing.T, n int, options any, m gameapi.Module) *rulesTable {
+	t.Helper()
 	if err := m.Validate(); err != nil {
 		t.Fatal(err)
 	}
@@ -185,7 +188,7 @@ func (b *rulesTable) validate() {
 			b.t.Fatal("negative gold")
 		}
 	}
-	if len(v.Enemies) > 96 || len(v.Events) > 192 {
+	if len(v.Enemies) > 96 || len(v.Events) > starfort.MaxEvents {
 		b.t.Fatalf("unbounded runtime state: enemies=%d events=%d", len(v.Enemies), len(v.Events))
 	}
 }
@@ -293,10 +296,11 @@ func TestStarfortRulesTowersAndSharedRewards(t *testing.T) {
 		shotKind, shotOwner, shotTick, hits := "", -1, -1, 0
 		for _, raw := range after.Events {
 			var event struct {
-				Type  string `json:"type"`
-				Kind  string `json:"kind"`
-				Owner int    `json:"owner"`
-				Tick  int    `json:"tick"`
+				Type   string                 `json:"type"`
+				Kind   string                 `json:"kind"`
+				Damage []starfort.DamageDelta `json:"damage"`
+				Owner  int                    `json:"owner"`
+				Tick   int                    `json:"tick"`
 			}
 			if err := json.Unmarshal(raw, &event); err != nil {
 				t.Fatal(err)
@@ -305,7 +309,7 @@ func TestStarfortRulesTowersAndSharedRewards(t *testing.T) {
 				shotKind, shotOwner, shotTick, hits = event.Kind, event.Owner, event.Tick, 0
 			}
 			if event.Type == "hit" && event.Owner == shotOwner && event.Tick == shotTick {
-				hits++
+				hits += 1 + len(event.Damage)
 				cannonSplash = cannonSplash || (shotKind == "cannon" && hits > 1)
 				arcaneArmor = arcaneArmor || (shotKind == "arcane" && event.Kind == "armored")
 				arcaneShield = arcaneShield || (shotKind == "arcane" && event.Kind == "shield")
@@ -621,7 +625,7 @@ func TestStarfortRulesNaturalCampaigns(t *testing.T) {
 		difficulty     string
 	}
 	scenarios := []scenario{}
-	for _, players := range []int{1, 2, 4} {
+	for _, players := range []int{1, 2, 3, 4} {
 		for _, waves := range []int{10, 20} {
 			scenarios = append(scenarios, scenario{players, waves, "normal"})
 		}

@@ -64,7 +64,7 @@ test("only fresh increasing event ids play, duplicate snapshots stay quiet", () 
   );
   assert.deepEqual(events, []);
 });
-test("reconnect gaps, tick rewind, and excessive replay batches reset safely", () => {
+test("reconnect gaps and tick rewind reset safely; complete event batches stay intact", () => {
   const [cursor] = freshEvents(null, "one", snapshot(20, [event(4)]), 1000);
   assert.deepEqual(
     freshEvents(cursor, "one", snapshot(30, [event(5)]), 7000)[1],
@@ -83,7 +83,7 @@ test("reconnect gaps, tick rewind, and excessive replay batches reset safely", (
         Array.from({ length: 150 }, (_, i) => event(i + 5)),
       ),
       1200,
-    )[1].length <= 40,
+    )[1].length === 150,
   );
 });
 test("path interpolation rounds a corner and clamps malformed distances", () => {
@@ -117,7 +117,7 @@ test("enemy motion follows authoritative progress, never guesses beyond the snap
     { x: 100, y: 75 },
   );
 });
-test("one cue per snapshot prioritizes victory and damage, with throttled fire", () => {
+test("one cue per rendered event group prioritizes victory and damage, with throttled fire", () => {
   assert.equal(pickSound([event(1), event(2, "base_hit")], 2000, 0), "leak");
   assert.equal(pickSound([event(1), event(2, "win")], 2000, 0), "victory");
   assert.equal(pickSound([event(1)], 100, 0), null);
@@ -254,4 +254,10 @@ test("convoy motion interpolates authoritative route progress together with its 
       x: next.x,
       y: next.y,
     });
+});
+
+test("fire cues retain fast-tower cadence while grouping simultaneous volleys", () => {
+  assert.equal(pickSound([event(1)], 1340, 1000), "arrow");
+  assert.equal(pickSound([event(2)], 1576, 1000), "arrow");
+  assert.equal(pickSound([event(3)], 1050, 1000), null);
 });

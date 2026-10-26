@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import type { BoardProps } from "../../../web/src/game-api/module";
 import { Modal } from "../../../web/src/ui/board-host";
 import { Battlefield } from "./Canvas";
-import { assetURL, freshEvents, pickSound } from "./presentation";
-import type { EventCursor } from "./presentation";
-import type { MapData, Objective, View, WorldChoice } from "./types";
+import type { CombatStatus } from "./combat-timeline";
+import { assetURL, pickSound } from "./presentation";
+import type { Event, MapData, Objective, View, WorldChoice } from "./types";
 
 const towerNames = {
   arrow: "箭塔",
@@ -375,6 +375,7 @@ export function Board({
     data.world?.boonChoice?.stage,
   ].join(":");
   const hasChoice = !!(data.world?.choice || data.world?.boonChoice);
+  const [towerDetails, setTowerDetails] = useState(false);
   const [selected, setSelected] = useState<number | null>(null);
   useEffect(() => {
     setChoiceOpen(hasChoice);
@@ -387,8 +388,20 @@ export function Board({
   const [now, setNow] = useState(performance.now());
   const [pending, setPending] = useState(false);
   const [failure, setFailure] = useState("");
-  const eventCursor = useRef<EventCursor | null>(null),
-    lastSound = useRef(0);
+  const [combatStatus, setCombatStatus] = useState({
+    room: room.id,
+    baseHP: data.baseHP,
+  });
+  const baseHP =
+    combatStatus.room === room.id ? combatStatus.baseHP : data.baseHP;
+  const updateCombatStatus = (status: CombatStatus) =>
+    setCombatStatus((previous) =>
+      previous.room === room.id && previous.baseHP === status.baseHP
+        ? previous
+        : { room: room.id, baseHP: status.baseHP },
+    );
+  const lastSound = useRef(0),
+    soundGeneration = useRef(0);
   useEffect(() => {
     setSelected(null);
     setInfoOpen(false);
@@ -401,45 +414,41 @@ export function Board({
   useEffect(() => {
     const listener = () => {
       if (document.hidden) {
+        soundGeneration.current++;
         audio.stop();
-      } else {
-        eventCursor.current = null;
       }
     };
     document.addEventListener("visibilitychange", listener);
     return () => {
+      soundGeneration.current++;
       document.removeEventListener("visibilitychange", listener);
       audio.stop();
     };
-  }, [audio]);
+  }, [audio, room.id]);
   useEffect(() => {
-    const [cursor, events] = freshEvents(
-      eventCursor.current,
-      room.id,
-      data,
-      Date.now(),
-    );
-    eventCursor.current = cursor;
-    if (!sound || document.hidden) {
-      audio.stop();
-      return;
-    }
-    const clip = pickSound(events, Date.now(), lastSound.current);
+    soundGeneration.current++;
+    if (!sound || data.phase === "paused") audio.stop();
+  }, [sound, audio, assets, data.phase]);
+  const playEvents = (events: Event[], at: number) => {
+    if (!sound || document.hidden || data.phase === "paused") return;
+    const clip = pickSound(events, at, lastSound.current);
     if (!clip) return;
-    lastSound.current = Date.now();
-    let cancelled = false;
+    lastSound.current = at;
+    const generation = soundGeneration.current;
     const clipURL = (base: string) =>
       ["expand", "objective", "event"].includes(clip)
         ? `${base.replace(/\/$/, "")}/starfort/world-v2/audio/${clip}.wav`
         : assetURL(base, `audio/${clip}.wav`);
     void audio.play([clipURL(assets)]).then((ok) => {
-      if (!ok && assets && !cancelled && !document.hidden)
+      if (
+        !ok &&
+        assets &&
+        generation === soundGeneration.current &&
+        !document.hidden
+      )
         void audio.play([clipURL("")]);
     });
-    return () => {
-      cancelled = true;
-    };
-  }, [data, room.id, sound, audio, assets]);
+  };
   const player = room.you >= 0 ? data.players[room.you] : undefined;
   const selectedTower = data.towers.find((t) => t.pad === selected);
   const selectedPad = data.map.pads.find((pad) => pad.id === selected);
@@ -484,112 +493,54 @@ export function Board({
   return (
     <div className="starfort-board" data-phase={data.phase}>
       <div className="sf-hud">
-        <div className="sf-overview">
-          <div className="sf-base-stat">
-            <span>星核生命</span>
-            <strong data-sf-base>
-              {data.baseHP}
-              <small> / {data.baseMaxHP}</small>
-            </strong>
-            <div
-              className="sf-hp-track"
-              role="meter"
-              aria-label="星核生命"
-              aria-valuemin={0}
-              aria-valuemax={data.baseMaxHP}
-              aria-valuenow={data.baseHP}
-            >
-              <i
-                style={{
-                  width: `${Math.max(0, (100 * data.baseHP) / data.baseMaxHP)}%`,
-                }}
-              />
-            </div>
-          </div>
-          <div className="sf-wave-stat">
-            <span>
-              {data.options.mode === "endless"
-                ? "无尽守望"
-                : `${data.options.waves} 波闯关`}{" "}
-              · {difficultyNames[data.options.difficulty]}
-            </span>
-            <strong data-sf-wave>第 {data.wave} 波</strong>
-            <span>
-              {data.phase === "battle"
-                ? `敌人剩余 ${totalRemaining}`
-                : `已守住 ${data.completedWaves} 波`}
-            </span>
-          </div>
-          <div className="sf-team-stat">
-            <span>{room.spectating ? "团队击杀" : "你的金币"}</span>
+        <div className="sf-compact-stats">
+          <span aria-label="星核生命">
+            ♥ <strong data-sf-base>{baseHP}</strong>
+            <small>/{data.baseMaxHP}</small>
+          </span>
+          <span data-sf-wave>
+            第 <strong>{data.wave}</strong> 波
+          </span>
+          <span>
+            {room.spectating ? "击杀" : "金币"}{" "}
             <strong data-sf-own-gold>
               {room.spectating ? data.kills : (player?.gold ?? 0)}
             </strong>
-            <span>
-              {room.spectating ? data.towers.length : myTowers} 座防御塔
-            </span>
-          </div>
+          </span>
         </div>
-        <div className={`sf-wave-banner sf-phase-${data.phase}`}>
-          <div>
-            <strong>{phaseNames[data.phase]}</strong>
-            <span>
-              {finished
-                ? data.phase === "won"
-                  ? "你们一起守住了星光。"
-                  : "星核熄灭，记住这次防线，下一次再来。"
-                : data.waveInfo.title}
-            </span>
-          </div>
-          <div
-            className="sf-countdown"
-            data-sf-countdown
-            data-urgent={
-              data.phase === "prepare" && !choosing && remaining <= 10
-            }
-          >
-            {data.phase === "prepare" ? (
-              choosing ? (
-                <>
-                  <span>战区选择剩余</span>
-                  <strong>
-                    {Math.max(
-                      0,
-                      Math.ceil(
-                        (Math.min(
-                          ...[
-                            world?.choice?.deadline,
-                            world?.boonChoice?.deadline,
-                          ].filter((v): v is number => v !== undefined),
-                        ) -
-                          serverNow) /
-                          1000,
-                      ),
-                    )}
-                    <small> 秒</small>
-                  </strong>
-                  <span>选择完成后再整备</span>
-                </>
-              ) : (
-                <>
-                  <span>距下一波自动开始</span>
-                  <strong>
-                    {remaining}
-                    <small> 秒</small>
-                  </strong>
-                  <span>全员准备可提前开始</span>
-                </>
-              )
+        <div
+          className="sf-compact-countdown"
+          data-sf-countdown
+          data-urgent={data.phase === "prepare" && !choosing && remaining <= 10}
+        >
+          {data.phase === "prepare" ? (
+            choosing ? (
+              <>
+                强化选择{" "}
+                <strong>
+                  {Math.max(
+                    0,
+                    Math.ceil(
+                      ((world?.boonChoice?.deadline ??
+                        world?.choice?.deadline ??
+                        serverNow) -
+                        serverNow) /
+                        1000,
+                    ),
+                  )}{" "}
+                  秒
+                </strong>
+              </>
             ) : (
-              <strong>
-                {data.phase === "paused"
-                  ? "已暂停 · 不会开战"
-                  : data.phase === "battle"
-                    ? `剩余 ${totalRemaining} 名敌人`
-                    : `共守住 ${data.completedWaves} 波`}
-              </strong>
-            )}
-          </div>
+              <>
+                自动迎敌 <strong>{remaining} 秒</strong>
+              </>
+            )
+          ) : data.phase === "battle" ? (
+            <>剩余 {totalRemaining} 名敌人</>
+          ) : (
+            phaseNames[data.phase]
+          )}
         </div>
       </div>
       {world && choiceOpen && choosing && !finished && (
@@ -705,11 +656,16 @@ export function Board({
           <Battlefield
             onReady={onReady}
             onLoadError={onLoadError}
+            onEvents={playEvents}
+            onCombatState={updateCombatStatus}
             roomID={room.id}
             data={data}
             assets={assets}
             selected={selected}
-            select={setSelected}
+            select={(pad) => {
+              setTowerDetails(false);
+              setSelected(pad);
+            }}
           />
         </section>
         <div className="sf-field-actions">
@@ -729,11 +685,108 @@ export function Board({
             >
               建造
             </button>
+          ) : selectedTower && !towerDetails ? (
+            <section
+              className="sf-tower-popover"
+              aria-label="防御塔操作"
+              data-sf-tower-panel
+              data-sf-tower-tools
+            >
+              <header>
+                <strong>
+                  {towerNames[selectedTower.kind]} · {selectedTower.level} 级
+                </strong>
+                <button
+                  className="sf-secondary"
+                  data-sf-tower-close
+                  aria-label="关闭防御塔操作"
+                  onClick={() => setSelected(null)}
+                >
+                  ×
+                </button>
+              </header>
+              {selectedTower.passive && (
+                <p title={selectedTower.passive.description}>
+                  {selectedTower.passive.name} ·{" "}
+                  {selectedTower.passive.maxStacks
+                    ? `${selectedTower.passive.stacks}/${selectedTower.passive.maxStacks}`
+                    : selectedTower.passive.readyInMS > 0
+                      ? `${(selectedTower.passive.readyInMS / 1000).toFixed(1)} 秒`
+                      : "就绪"}
+                </p>
+              )}
+              <div className="sf-quick-actions">
+                {selectedTower.owner === room.you &&
+                  !finished &&
+                  (upgrade?.needsBranch ? (
+                    <>
+                      <button
+                        data-sf-upgrade="power"
+                        disabled={locked || !upgrade.enabled}
+                        onClick={() =>
+                          void send("upgrade", {
+                            towerId: selectedTower.id,
+                            branch: "power",
+                          })
+                        }
+                      >
+                        威力 · {upgrade.cost}
+                      </button>
+                      <button
+                        data-sf-upgrade="speed"
+                        disabled={locked || !upgrade.enabled}
+                        onClick={() =>
+                          void send("upgrade", {
+                            towerId: selectedTower.id,
+                            branch: "speed",
+                          })
+                        }
+                      >
+                        攻速 · {upgrade.cost}
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      data-sf-upgrade="level"
+                      disabled={locked || !upgrade?.enabled}
+                      onClick={() =>
+                        void send("upgrade", { towerId: selectedTower.id })
+                      }
+                    >
+                      升级 · {upgrade?.cost ?? "—"}
+                    </button>
+                  ))}
+                {selectedTower.owner === room.you && !finished && (
+                  <button
+                    className="sf-secondary"
+                    data-sf-sell
+                    disabled={locked || !sale?.enabled}
+                    onClick={() => {
+                      void send("sell", { towerId: selectedTower.id });
+                      setSelected(null);
+                    }}
+                  >
+                    出售 · {sale?.refund ?? 0}
+                  </button>
+                )}
+                <button
+                  className="sf-secondary"
+                  data-sf-tower-more
+                  onClick={() => setTowerDetails(true)}
+                >
+                  详情
+                </button>
+              </div>
+              {failure && <p role="alert">{failure}</p>}
+            </section>
           ) : (
             <Modal
               title={`建造点 ${selected + 1}`}
               className="sf-command-dialog"
-              onClose={() => setSelected(null)}
+              onClose={() => {
+                if (selectedTower) setTowerDetails(false);
+                else setSelected(null);
+              }}
             >
               <section className="sf-command-panel" aria-label="防线操作">
                 <div className="sf-panel-title">
@@ -999,6 +1052,12 @@ export function Board({
                                   <b>{tower.cost} 金币</b>
                                 </strong>
                                 <small>{tower.description}</small>
+                                {tower.passive && (
+                                  <small>
+                                    {tower.passive.name}：
+                                    {tower.passive.description}
+                                  </small>
+                                )}
                               </span>
                             </button>
                           );
@@ -1070,9 +1129,11 @@ export function Board({
                       </span>
                     </div>
                     <span>
-                      {world.stage < 4
-                        ? `第 ${[0, 6, 11, 16][world.stage]} 波开启新战区`
-                        : "完整战场已展开"}
+                      {world.layout === "central"
+                        ? "固定路线 · 星核居中"
+                        : world.stage < 4
+                          ? `第 ${[0, 6, 11, 16][world.stage]} 波开启新战区`
+                          : "完整战场已展开"}
                     </span>
                   </div>
                   <div
@@ -1249,12 +1310,12 @@ export function Board({
                   史莱姆是基础敌人；疾行怪移动快；重甲怪抵挡普通伤害；小怪成群出没；护盾怪先承受护盾伤害。精英和首领会在关键波次出现。
                 </p>
                 <p>
-                  治疗者恢复附近敌人，旗手为附近敌人加速，分裂怪死亡后留下小怪，工兵会打开捷径。首领半血进入第二阶段并召来护卫；可把关键塔设为优先攻击支援敌人。
+                  治疗者恢复附近敌人，旗手为附近敌人加速，分裂怪死亡后留下小怪。工兵填坑速度是普通敌人的两倍。首领半血进入第二阶段并召来护卫；可把关键塔设为优先攻击支援敌人。
                 </p>
                 <p>
-                  第 6、11、16
-                  波扩展战场，全队投票选择道路，旧塔继续保留。守过每 5
-                  波可选择一次团队成长。无尽模式展开全部战区后轮换来袭入口，浓雾、寒潮与多路突袭会改变防线。
+                  {world?.layout === "central"
+                    ? "星核位于中心，每个参战席位对应一条固定路线，开局后不扩图。每守过 5 波可选择团队成长；天气与敌潮持续变化。"
+                    : "第 6、11、16 波扩展战场，全队投票选择道路，旧塔继续保留。每守过 5 波可选择团队成长；无尽模式轮换来袭入口。"}
                 </p>
                 <p>
                   三级后可选威力或攻速专精。出售会返还部分投入，请先选中自己的塔查看金额。蓝色轮廓表示减速，敌人头顶的细条显示生命和护盾。
