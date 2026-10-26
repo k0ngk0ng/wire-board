@@ -1,0 +1,67 @@
+{
+  "scope": "Original ROM coldboot and complete-RAM/video/register replay",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.4 60bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "frames": 3600,
+  "replayed_frames": 1200,
+  "coldboot_matches_historical_baseline": true,
+  "restore_refresh_cycles": {
+    "False": {
+      "ram": {
+        "count": 10,
+        "first_frames": [
+          2401,
+          2402,
+          2403,
+          2404,
+          2405,
+          2406,
+          2407,
+          2408,
+          2409,
+          2411
+        ]
+      },
+      "video": {
+        "count": 0,
+        "first_frames": []
+      },
+      "registers": {
+        "count": 7,
+        "first_frames": [
+          2401,
+          2402,
+          2404,
+          2405,
+          2406,
+          2408,
+          2410
+        ]
+      }
+    },
+    "True": {
+      "ram": {
+        "count": 0,
+        "first_frames": []
+      },
+      "video": {
+        "count": 0,
+        "first_frames": []
+      },
+      "registers": {
+        "count": 0,
+        "first_frames": []
+      }
+    }
+  },
+  "checkpoint_refresh_cycles": 375,
+  "pass": true
+}

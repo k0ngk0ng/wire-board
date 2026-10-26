@@ -1,0 +1,117 @@
+route=direct-ghidra-headless; REA raw 68000 unsupported
+language=68000:BE:32:default
+source=MD Yu Yu Hakusho Japan; static reachable instructions only
+
+seed=0x2d20 scope=0x2d20..0x2e5d
+00002d20 bset.b #0x7,(0x50,A1)
+00002d26 bclr.b #0x6,(0x50,A1)
+00002d2c beq.b 0x00002d42
+00002d2e clr.b (0x28,A1)
+00002d32 clr.b (0x30,A1)
+00002d36 clr.b (0x38,A1)
+00002d3a clr.b (0x40,A1)
+00002d3e clr.b (0x48,A1)
+00002d42 bsr.b 0x00002d5e
+00002d44 addq.w #0x1,A1
+00002d46 addq.w #0x1,(0xfffff554).w
+00002d4a rts
+00002d5e move.b (0x2,A0),D0b
+00002d62 move.b (0x3,A0),D1b
+00002d66 eori.b #0xf,D0b
+00002d6a eori.b #0xf,D1b
+00002d6e lsl.b #0x4,D1b
+00002d70 or.b D1b,D0b
+00002d72 bsr.b 0x00002dac
+00002d74 move.b (0x0,A1),D1b
+00002d78 move.b D1b,(0x8,A1)
+00002d7c move.b D0b,(0x0,A1)
+00002d80 move.b D0b,D2b
+00002d82 eor.b D1b,D2b
+00002d84 move.b D2b,(0x10,A1)
+00002d88 and.b D2b,D0b
+00002d8a move.b D0b,(0x18,A1)
+00002d8e and.b D2b,D1b
+00002d90 move.b D1b,(0x20,A1)
+00002d94 rts
+00002dac tst.b (0x7d0,A1)
+00002db0 beq.b 0x00002dcc
+00002db2 move.b D0b,D1b
+00002db4 andi.b #-0x61,D0b
+00002db8 btst.l #0x6,D1
+00002dbc beq.b 0x00002dc2
+00002dbe bset.l #0x5,D0
+00002dc2 btst.l #0x5,D1
+00002dc6 beq.b 0x00002dcc
+00002dc8 bset.l #0x6,D0
+00002dcc rts
+printed_instructions=41
+
+seed=0x2d4c scope=0x2d4c..0x2e5d
+00002d4c ori.b #-0x40,(0x50,A1)
+00002d52 bsr.w 0x00002dce
+00002d56 addq.w #0x1,A1
+00002d58 addq.w #0x1,(0xfffff554).w
+00002d5c rts
+00002d5e move.b (0x2,A0),D0b
+00002d62 move.b (0x3,A0),D1b
+00002d66 eori.b #0xf,D0b
+00002d6a eori.b #0xf,D1b
+00002d6e lsl.b #0x4,D1b
+00002d70 or.b D1b,D0b
+00002d72 bsr.b 0x00002dac
+00002d74 move.b (0x0,A1),D1b
+00002d78 move.b D1b,(0x8,A1)
+00002d7c move.b D0b,(0x0,A1)
+00002d80 move.b D0b,D2b
+00002d82 eor.b D1b,D2b
+00002d84 move.b D2b,(0x10,A1)
+00002d88 and.b D2b,D0b
+00002d8a move.b D0b,(0x18,A1)
+00002d8e and.b D2b,D1b
+00002d90 move.b D1b,(0x20,A1)
+00002d94 rts
+00002dac tst.b (0x7d0,A1)
+00002db0 beq.b 0x00002dcc
+00002db2 move.b D0b,D1b
+00002db4 andi.b #-0x61,D0b
+00002db8 btst.l #0x6,D1
+00002dbc beq.b 0x00002dc2
+00002dbe bset.l #0x5,D0
+00002dc2 btst.l #0x5,D1
+00002dc6 beq.b 0x00002dcc
+00002dc8 bset.l #0x6,D0
+00002dcc rts
+00002dce move.b (0x2,A0),D0b
+00002dd2 move.b (0x3,A0),D1b
+00002dd6 move.b (0x4,A0),D2b
+00002dda eori.w #0xf,D0w
+00002dde eori.w #0xf,D1w
+00002de2 eori.w #0xf,D2w
+00002de6 lsl.w #0x4,D1w
+00002de8 lsl.w #0x8,D2w
+00002dea or.w D1w,D0w
+00002dec or.w D2w,D0w
+00002dee bsr.b 0x00002dac
+00002df0 move.b (0x0,A1),D1b
+00002df4 move.b D1b,(0x8,A1)
+00002df8 move.b D0b,(0x0,A1)
+00002dfc move.b D0b,D2b
+00002dfe eor.b D1b,D2b
+00002e00 move.b D2b,(0x10,A1)
+00002e04 and.b D2b,D0b
+00002e06 move.b D0b,(0x18,A1)
+00002e0a and.b D2b,D1b
+00002e0c move.b D1b,(0x20,A1)
+00002e10 lsr.w #0x8,D0w
+00002e12 move.b (0x28,A1),D1b
+00002e16 move.b D1b,(0x30,A1)
+00002e1a move.b D0b,(0x28,A1)
+00002e1e move.b D0b,D2b
+00002e20 eor.b D1b,D2b
+00002e22 move.b D2b,(0x38,A1)
+00002e26 and.b D2b,D0b
+00002e28 move.b D0b,(0x40,A1)
+00002e2c and.b D2b,D1b
+00002e2e move.b D1b,(0x48,A1)
+00002e32 rts
+printed_instructions=67

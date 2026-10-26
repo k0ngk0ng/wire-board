@@ -1,0 +1,115 @@
+{
+  "scope": "Only artifacts created for this research",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/tmp",
+      "bytes": 209497
+    },
+    {
+      "path": ".local/md-yuyuhakusho/browser",
+      "bytes": 0
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/ghidra-work",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/evidence/replay",
+      "bytes": 1429401
+    },
+    {
+      "path": ".local/md-yuyuhakusho/evidence/replay-fast",
+      "bytes": 1463541
+    },
+    {
+      "path": ".local/md-yuyuhakusho/evidence/coldboot-repeat",
+      "bytes": 1743222
+    },
+    {
+      "path": ".local/md-yuyuhakusho/evidence/replay-fast-console.txt",
+      "bytes": 6841
+    },
+    {
+      "path": ".local/md-yuyuhakusho/evidence/combat-console.txt",
+      "bytes": 36520
+    },
+    {
+      "path": ".local/md-yuyuhakusho/evidence/coldboot-console.txt",
+      "bytes": 36520
+    },
+    {
+      "path": ".local/md-yuyuhakusho/evidence/ghidra-console.txt",
+      "bytes": 13986
+    },
+    {
+      "path": ".local/md-yuyuhakusho/evidence/ghidra.log",
+      "bytes": 18634
+    },
+    {
+      "path": ".local/md-yuyuhakusho/evidence/ghidra-script.log",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/evidence/archive-search.json",
+      "bytes": 26460
+    },
+    {
+      "path": ".local/md-yuyuhakusho/evidence/segaretro.txt",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/evidence/combat/frame-02700.png",
+      "bytes": 13291
+    },
+    {
+      "path": ".local/md-yuyuhakusho/evidence/combat/frame-01800.png",
+      "bytes": 13006
+    },
+    {
+      "path": ".local/md-yuyuhakusho/evidence/combat/frame-02100.png",
+      "bytes": 12546
+    },
+    {
+      "path": ".local/md-yuyuhakusho/evidence/combat/report.json",
+      "bytes": 36520
+    },
+    {
+      "path": ".local/md-yuyuhakusho/evidence/combat/frame-02400.png",
+      "bytes": 11844
+    },
+    {
+      "path": ".local/md-yuyuhakusho/evidence/combat/frames.json",
+      "bytes": 668495
+    },
+    {
+      "path": ".local/md-yuyuhakusho/evidence/combat/inputs.json",
+      "bytes": 1919
+    },
+    {
+      "path": ".local/md-yuyuhakusho/evidence/combat/frame-03300.png",
+      "bytes": 12526
+    },
+    {
+      "path": ".local/md-yuyuhakusho/evidence/combat/frame-01200.png",
+      "bytes": 18145
+    },
+    {
+      "path": ".local/md-yuyuhakusho/evidence/combat/frame-03600.png",
+      "bytes": 12706
+    },
+    {
+      "path": ".local/md-yuyuhakusho/evidence/combat/frame-00900.png",
+      "bytes": 8955
+    },
+    {
+      "path": ".local/md-yuyuhakusho/evidence/combat/frame-03000.png",
+      "bytes": 12081
+    },
+    {
+      "path": ".local/md-yuyuhakusho/evidence/combat/frame-00720.png",
+      "bytes": 7087
+    }
+  ],
+  "bytes_removed": 5813743,
+  "retained": "Reports, scripts, hashes, screenshots, source evidence, ROM/core and one local checkpoint"
+}

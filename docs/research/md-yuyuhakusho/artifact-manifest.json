@@ -1,0 +1,160 @@
+{
+  "scope": "Current worktree research artifacts; historical run records retained unchanged",
+  "files": [
+    {
+      "path": "MdEntryProbe.java",
+      "bytes": 1900,
+      "sha256": "658ba4802291d3c1bf95839517f149aaa3f7f8a37c1b72b0c18df65ccc7ec195"
+    },
+    {
+      "path": "README.md",
+      "bytes": 21180,
+      "sha256": "837ee664abad64924fddc4377a7af3feb1fe161b52f808da4aa7c575a8a1e3ae"
+    },
+    {
+      "path": "character-select.png",
+      "bytes": 18145,
+      "sha256": "2b800bc22c8a57f5658c569c98909f1eff33b24a2550b77fc1c4dcf015d6ff2a"
+    },
+    {
+      "path": "cleanup.json",
+      "bytes": 2886,
+      "sha256": "3a7dcff0dc5d4eed37420a7c0e13948cb12d550fa190f56ca69bfb15ebc3c641"
+    },
+    {
+      "path": "coldboot-comparison.json",
+      "bytes": 447,
+      "sha256": "881593407691dfbe62052e9d16fbd81fe4fc8da7db15c51c7d3475bd2b82d44e"
+    },
+    {
+      "path": "combat-air.png",
+      "bytes": 12081,
+      "sha256": "318c2940bff941961a006235532b4ab415043ac39388039a1cd3ccba73f5b62b"
+    },
+    {
+      "path": "combat.png",
+      "bytes": 11844,
+      "sha256": "64642152edef7e8a8eff2057640ccc831e221d64c58dcbed543ba4401fdf5eae"
+    },
+    {
+      "path": "frame-hashes.json",
+      "bytes": 668495,
+      "sha256": "5dce10106326451b42952f473ec80adff118a7185cf64a7d6ef3fd52ff8ee1e8"
+    },
+    {
+      "path": "ghidra-entry.txt",
+      "bytes": 4026,
+      "sha256": "a15fe16b1f05bb663787c3459989643ba9c692893e5a3c4c520570ad869f7184"
+    },
+    {
+      "path": "inputs.json",
+      "bytes": 1919,
+      "sha256": "59383329affb09e87c6452c135d3ae20df19db9f1675acddc0972a080a8551b6"
+    },
+    {
+      "path": "modes.png",
+      "bytes": 8955,
+      "sha256": "b34ef6fead474c35cae8cba91b6f7fac393a296e8580dfd24c1a0aec56562c53"
+    },
+    {
+      "path": "probe.py",
+      "bytes": 10738,
+      "sha256": "03a52ad64abf051a4a0c8914cb4813503f246afc0ec463ecd5cadb55c3bf7642"
+    },
+    {
+      "path": "rea-capabilities.json",
+      "bytes": 9330,
+      "sha256": "556f9860aa6f7112cfad2c44c051017c627880c84f5479d646e25e1f1f4fb6a1"
+    },
+    {
+      "path": "rea-evidence.json",
+      "bytes": 14603,
+      "sha256": "fddea8e540a56c305f56cdbeee5250af12f7e7a178e254e316aa9242dd1b00e1"
+    },
+    {
+      "path": "rom-identity.json",
+      "bytes": 429,
+      "sha256": "f5513673ebcb0805f7ff73d87b0445eb0c2f19a1b2b5ac246474d49c1b3156f5"
+    },
+    {
+      "path": "runtime-report.json",
+      "bytes": 36520,
+      "sha256": "35312b9d7aaaba4a8e034e6b5539e548222108fe9985ddbf9359fb5089bf4fc2"
+    },
+    {
+      "path": "sources.json",
+      "bytes": 2544,
+      "sha256": "78f0ba0e326ecdfc4d59084a66da94ac9719efb2125c8f96c9bfebc06ad80c1d"
+    },
+    {
+      "path": "static/README.md",
+      "bytes": 10866,
+      "sha256": "3809a30525a2fab972284dc1081c81693a19c1eebc8aaf9c138c68c6750d3b1b"
+    },
+    {
+      "path": "static/device-decode.txt",
+      "bytes": 8707,
+      "sha256": "1f69a8b54428c5d87536231138290aaefedf6af843d0227960649be1fa0fca5a"
+    },
+    {
+      "path": "static/fighter-active-actions.txt",
+      "bytes": 4696,
+      "sha256": "64c810348f2866c9ef122e0da5f076ccc9eb4282b825fd39708557dc8937f334"
+    },
+    {
+      "path": "static/fighter-active.txt",
+      "bytes": 1378,
+      "sha256": "88c94a165036b3f70b01aab10786018c7f01300ca56d8f1f35c4d247bd88cc29"
+    },
+    {
+      "path": "static/fighter-entry.txt",
+      "bytes": 3076,
+      "sha256": "0a601db1315508dcabb044796922c4609012655fe1a72c20553e310dbe509fb4"
+    },
+    {
+      "path": "static/fighter-motion-ai.txt",
+      "bytes": 7961,
+      "sha256": "429aec4b2b5058304c1384710b6c54630ebfdc7886e80a85f25ff8bda77b6307"
+    },
+    {
+      "path": "static/fighter-stages.txt",
+      "bytes": 8309,
+      "sha256": "eecf2a94ca0bb29c21a1f895c4477d67fdf3b41c9fe21f19ac5098a6e06e8e40"
+    },
+    {
+      "path": "static/first-control.txt",
+      "bytes": 3757,
+      "sha256": "106b4aac28c59d9c176d571c0eabc34c5e0ad75a28b070967a365b86c73098fd"
+    },
+    {
+      "path": "static/input-and-tick.txt",
+      "bytes": 8935,
+      "sha256": "36d6af060e4e4c9ab4d7f6f47bbd903063a32b2addc7be70e2594b66876e5dfc"
+    },
+    {
+      "path": "static/input-detail.txt",
+      "bytes": 4386,
+      "sha256": "4ee837e2e89ba82c303c3a73db8a80c17a54b81ab30c43226ace06a363289758"
+    },
+    {
+      "path": "static/logical-input.txt",
+      "bytes": 3024,
+      "sha256": "14e77637a1a7cbe3ed7bcfab350629a39c892ae5436ab4e92c7c99c6a29f7c30"
+    },
+    {
+      "path": "static/manifest.json",
+      "bytes": 3898,
+      "sha256": "c5bbab62e0fa995308c9b8b3972362c0a9500d8749d2aeea833f41fc90c3c20e"
+    },
+    {
+      "path": "title.png",
+      "bytes": 9350,
+      "sha256": "5e445e3ca5ab58f0b45fe8fcb5afa6f17c4e1b4c81441a65b8df3f7e79c7800f"
+    },
+    {
+      "path": "verification-plan.md",
+      "bytes": 1736,
+      "sha256": "101e295c500d99c801edbdba0a5645839ad135ebf893cd19620e1ada3c140ed7"
+    }
+  ]
+}

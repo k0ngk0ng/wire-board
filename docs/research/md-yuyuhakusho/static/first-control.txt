@@ -1,0 +1,129 @@
+route=direct-ghidra-headless; REA raw 68000 unsupported
+language=68000:BE:32:default
+source=MD Yu Yu Hakusho Japan; static reachable instructions only
+
+seed=0x24e2 scope=0x24e2..0x2c6b
+000024e2 move.b #0x0,(0x00a10013).l
+000024ea move.b #0x0,(0x00a10019).l
+000024f2 move.b #0x0,(0x00a1001f).l
+000024fa move.b #0x0,(0x00a10009).l
+00002502 move.b #0x0,(0x00a1000b).l
+0000250a move.b #0x0,(0x00a1000d).l
+00002512 rts
+printed_instructions=7
+
+seed=0x2e5e scope=0x2e5e..0x3397
+00002e5e ori #0x700,SR
+00002e62 bset.b #0x0,(0x00a11100).l
+00002e6a bne.b 0x00002e62
+00002e6c move.b #0x1,(0x00a01fff).l
+00002e74 cmpi.b #-0x1,(0xfffff807).w
+00002e7a beq.w 0x00002e88
+00002e7e bclr.b #0x0,(0x00a11100).l
+00002e86 beq.b 0x00002e7e
+00002e88 movem.l {  A5 A4 A3 A2 A1 A0 D7 D6 D5 D4 D3 D2 D1 D0},-(SP)
+00002e8c move.w (0x00c00004).l,D0w
+00002e92 andi.w #0x8,D0w
+00002e96 beq.b 0x00002e8c
+00002e98 bsr.b 0x00002ea0
+00002e9a movem.l (SP)+,{ D0 D1 D2 D3 D4 D5 D6 D7 A0 A1 A2 A3 A4 A5}
+00002e9e rte
+00002ea0 move.w (0xfffff510).w,D0w
+00002ea4 bne.w 0x00002f74
+00002ea8 tst.b (0xfffff50e).w
+00002eac bpl.b 0x00002ee4
+00002eae jsr 0x0000307c.l
+00002eb4 bset.b #0x0,(0x00a11100).l
+00002ebc bne.b 0x00002eb4
+00002ebe move.b #0x0,(0x00a01fff).l
+00002ec6 cmpi.b #-0x1,(0xfffff807).w
+00002ecc beq.w 0x00002eda
+00002ed0 bclr.b #0x0,(0x00a11100).l
+00002ed8 beq.b 0x00002ed0
+00002eda andi #-0x701,SR
+00002ede jmp 0x000219ac.l
+00002ee4 move.b #-0x80,(0xfffff50e).w
+00002eea bsr.w 0x00003030
+00002eee jsr 0x0000046a.l
+00002ef4 jsr 0x00003054.l
+00002efa jsr 0x00000614.l
+00002f00 jsr 0x00002514.l
+00002f06 bset.b #0x0,(0x00a11100).l
+00002f0e bne.b 0x00002f06
+00002f10 move.b #0x0,(0x00a01fff).l
+00002f18 cmpi.b #-0x1,(0xfffff807).w
+00002f1e beq.w 0x00002f2c
+00002f22 bclr.b #0x0,(0x00a11100).l
+00002f2a beq.b 0x00002f22
+00002f2c andi #-0x701,SR
+00002f30 jsr 0x000219ac.l
+00002f36 jsr 0x00003a2e.l
+00002f3c btst.b #0x0,(0xfffff500).w
+00002f42 beq.b 0x00002f6e
+00002f44 jsr 0x0000233c.l
+00002f4a jsr 0x000004e0.l
+00002f50 jsr 0x00000b5a.l
+00002f56 jsr 0x00000c80.l
+00002f5c jsr 0x000022da.l
+00002f62 jsr 0x00001232.l
+00002f68 jsr 0x00000d24.l
+00002f6e clr.b (0xfffff50e).w
+00002f72 rts
+00002f74 btst.b #0x6,(0xfffff50e).w
+00002f7a bne.b 0x00002fbe
+00002f7c bsr.w 0x00003030
+00002f80 jsr 0x0000046a.l
+00002f86 bsr.b 0x00002ff4
+00002f88 jsr 0x00003054.l
+00002f8e btst.b #0x0,(0xfffff50e).w
+00002f94 bne.b 0x00002fbc
+00002f96 bset.b #0x0,(0x00a11100).l
+00002f9e bne.b 0x00002f96
+00002fa0 move.b #0x0,(0x00a01fff).l
+00002fa8 cmpi.b #-0x1,(0xfffff807).w
+00002fae beq.w 0x00002fbc
+00002fb2 bclr.b #0x0,(0x00a11100).l
+00002fba beq.b 0x00002fb2
+00002fbc rts
+00002fbe jsr 0x0000307c.l
+00002fc4 btst.b #0x0,(0xfffff50e).w
+00002fca bne.b 0x00002ff2
+00002fcc bset.b #0x0,(0x00a11100).l
+00002fd4 bne.b 0x00002fcc
+00002fd6 move.b #0x0,(0x00a01fff).l
+00002fde cmpi.b #-0x1,(0xfffff807).w
+00002fe4 beq.w 0x00002ff2
+00002fe8 bclr.b #0x0,(0x00a11100).l
+00002ff0 beq.b 0x00002fe8
+00002ff2 rts
+printed_instructions=83
+
+seed=0x80c scope=0x80c..0xa43
+0000080c move.b (0xfffff54e).w,D0b
+00000810 beq.b 0x0000083c
+00000812 bmi.b 0x0000083c
+00000814 bclr.b #0x1,(0xfffff54e).w
+0000081a beq.b 0x0000082c
+0000081c movea.l (0xfffff530).w,A1
+00000820 move.w (A1)+,D0w
+00000822 bmi.b 0x00000838
+00000824 move.w D0w,(0xfffff540).w
+00000828 clr.w (0xfffff542).w
+0000082c move.w (0xfffff540).w,D0w
+00000830 lea (0x83e,PC,D0w*0x1),A0
+00000834 adda.w (A0),A0
+00000836 jmp (A0)
+00000838 clr.b (0xfffff54e).w
+0000083c rts
+printed_instructions=16
+
+seed=0x219ea scope=0x219ea..0x21bff
+000219ea tst.b (0xfffff563).w
+000219ee beq.b 0x00021a06
+000219f0 move.b #0x1,(0xfffff564).w
+000219f6 jsr 0x000375a6.l
+000219fc clr.b (0xfffff564).w
+00021a00 subq.b #0x1,(0xfffff563).w
+00021a04 bra.b 0x000219ea
+00021a06 rts
+printed_instructions=8

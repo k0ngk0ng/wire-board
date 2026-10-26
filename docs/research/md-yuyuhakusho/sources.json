@@ -1,0 +1,49 @@
+{
+  "checked_date": "2026-10-26",
+  "sources": [
+    {
+      "path": ".local/md-yuyuhakusho/evidence/wikipedia.html",
+      "url": "https://en.wikipedia.org/wiki/Yu_Yu_Hakusho_Maky%C5%8D_T%C5%8Ditsusen",
+      "sha256": "c92b1db0248a18113b899679d4989af13ecad5369672bbaf286e57d2624c6f17",
+      "scope": "Secondary gameplay reference; revision 1373683657"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/evidence/gpgx-readme.md",
+      "url": "https://raw.githubusercontent.com/libretro/Genesis-Plus-GX/60bee4c724859710ce05672239e5b601ad01382e/README.md",
+      "sha256": "d8298a0f652bdfd39d8e5a0ebb4033abe749036b99d47bd6799cbde93a620abf",
+      "scope": "Emulator project description"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/evidence/gpgx-license.txt",
+      "url": "https://raw.githubusercontent.com/libretro/Genesis-Plus-GX/60bee4c724859710ce05672239e5b601ad01382e/LICENSE.txt",
+      "sha256": "642c163624269243d1f6b29d759d4e3a2d161bdc272c90d82ecbeec82ae26755",
+      "scope": "Emulator license; not game asset rights"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/evidence/libretro.c",
+      "url": "https://raw.githubusercontent.com/libretro/Genesis-Plus-GX/60bee4c724859710ce05672239e5b601ad01382e/libretro/libretro.c",
+      "sha256": "4622426e697f692c89ff0d049f3bfcbc2a58e44fc2d393bbdd8302f65fc9b15c",
+      "scope": "Core API, controller mappings and save states"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/evidence/blastem.html",
+      "url": "https://www.retrodev.com/blastem/",
+      "sha256": "56a8063a523177eec4739c9610cc90476de13e7bef22a8e7c3fa48493e3869e5",
+      "scope": "Alternative emulator; not installed or executed this round"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/evidence/rom-source-metadata.json",
+      "url": "https://archive.org/metadata/Yu_Yu_Hakusho_Makyou_Toitsusen_Japan.md",
+      "sha256": "7f222596a554b6c46cac73ff22edf5f159eea30094e726ce0c3f7555e1f23996",
+      "scope": "Community archive metadata; no licenseurl; not an authoritative release provenance check"
+    }
+  ],
+  "emulator_download": {
+    "url": "https://buildbot.libretro.com/nightly/apple/osx/arm64/latest/genesis_plus_gx_libretro.dylib.zip",
+    "archive_sha256": "8e2e080510b84115c2649e1c7e854d2a118c465529aa43ae3865fc4ded8f0df9",
+    "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+    "note": "latest is mutable; reproduce using the retained artifact with this digest"
+  },
+  "repository_head": "4dd8f48e7f4becec401e9a2ba9c67d556f0b0249",
+  "repository_dirty": true
+}
