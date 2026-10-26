@@ -35,6 +35,24 @@ export function fitCamera(bounds: WorldBounds, viewport: Viewport): Camera {
     ),
   };
 }
+// A playable field fills the viewport; the existing fit action still exposes
+// the entire world. Zoom is uniform, so artwork and hit targets never stretch.
+export function fillCamera(bounds: WorldBounds, viewport: Viewport): Camera {
+  const center = fitCamera(bounds, viewport);
+  return {
+    ...center,
+    zoom: Math.max(
+      0.02,
+      Math.min(
+        2,
+        Math.max(
+          Math.max(1, viewport.width) / bounds.width,
+          Math.max(1, viewport.height) / bounds.height,
+        ),
+      ),
+    ),
+  };
+}
 export function clampCamera(
   camera: Camera,
   bounds: WorldBounds,

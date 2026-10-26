@@ -368,6 +368,7 @@ export function Board({
   clock,
 }: BoardProps<View>) {
   const [choiceOpen, setChoiceOpen] = useState(false);
+  const [infoOpen, setInfoOpen] = useState(false);
   const choiceKey = [
     room.id,
     data.world?.choice?.stage,
@@ -390,6 +391,7 @@ export function Board({
     lastSound = useRef(0);
   useEffect(() => {
     setSelected(null);
+    setInfoOpen(false);
     setFailure("");
   }, [room.id]);
   useEffect(() => {
@@ -481,109 +483,113 @@ export function Board({
   const activeRoutes = data.map.routes?.filter((route) => route.active) ?? [];
   return (
     <div className="starfort-board" data-phase={data.phase}>
-      <div className="sf-overview">
-        <div className="sf-base-stat">
-          <span>星核生命</span>
-          <strong data-sf-base>
-            {data.baseHP}
-            <small> / {data.baseMaxHP}</small>
-          </strong>
-          <div
-            className="sf-hp-track"
-            role="meter"
-            aria-label="星核生命"
-            aria-valuemin={0}
-            aria-valuemax={data.baseMaxHP}
-            aria-valuenow={data.baseHP}
-          >
-            <i
-              style={{
-                width: `${Math.max(0, (100 * data.baseHP) / data.baseMaxHP)}%`,
-              }}
-            />
+      <div className="sf-hud">
+        <div className="sf-overview">
+          <div className="sf-base-stat">
+            <span>星核生命</span>
+            <strong data-sf-base>
+              {data.baseHP}
+              <small> / {data.baseMaxHP}</small>
+            </strong>
+            <div
+              className="sf-hp-track"
+              role="meter"
+              aria-label="星核生命"
+              aria-valuemin={0}
+              aria-valuemax={data.baseMaxHP}
+              aria-valuenow={data.baseHP}
+            >
+              <i
+                style={{
+                  width: `${Math.max(0, (100 * data.baseHP) / data.baseMaxHP)}%`,
+                }}
+              />
+            </div>
+          </div>
+          <div className="sf-wave-stat">
+            <span>
+              {data.options.mode === "endless"
+                ? "无尽守望"
+                : `${data.options.waves} 波闯关`}{" "}
+              · {difficultyNames[data.options.difficulty]}
+            </span>
+            <strong data-sf-wave>第 {data.wave} 波</strong>
+            <span>
+              {data.phase === "battle"
+                ? `敌人剩余 ${totalRemaining}`
+                : `已守住 ${data.completedWaves} 波`}
+            </span>
+          </div>
+          <div className="sf-team-stat">
+            <span>{room.spectating ? "团队击杀" : "你的金币"}</span>
+            <strong data-sf-own-gold>
+              {room.spectating ? data.kills : (player?.gold ?? 0)}
+            </strong>
+            <span>
+              {room.spectating ? data.towers.length : myTowers} 座防御塔
+            </span>
           </div>
         </div>
-        <div className="sf-wave-stat">
-          <span>
-            {data.options.mode === "endless"
-              ? "无尽守望"
-              : `${data.options.waves} 波闯关`}{" "}
-            · {difficultyNames[data.options.difficulty]}
-          </span>
-          <strong data-sf-wave>第 {data.wave} 波</strong>
-          <span>
-            {data.phase === "battle"
-              ? `敌人剩余 ${totalRemaining}`
-              : `已守住 ${data.completedWaves} 波`}
-          </span>
-        </div>
-        <div className="sf-team-stat">
-          <span>{room.spectating ? "团队击杀" : "你的金币"}</span>
-          <strong data-sf-own-gold>
-            {room.spectating ? data.kills : (player?.gold ?? 0)}
-          </strong>
-          <span>
-            {room.spectating ? data.towers.length : myTowers} 座防御塔
-          </span>
-        </div>
-      </div>
-      <div className={`sf-wave-banner sf-phase-${data.phase}`}>
-        <div>
-          <strong>{phaseNames[data.phase]}</strong>
-          <span>
-            {finished
-              ? data.phase === "won"
-                ? "你们一起守住了星光。"
-                : "星核熄灭，记住这次防线，下一次再来。"
-              : data.waveInfo.title}
-          </span>
-        </div>
-        <div
-          className="sf-countdown"
-          data-sf-countdown
-          data-urgent={data.phase === "prepare" && !choosing && remaining <= 10}
-        >
-          {data.phase === "prepare" ? (
-            choosing ? (
-              <>
-                <span>战区选择剩余</span>
-                <strong>
-                  {Math.max(
-                    0,
-                    Math.ceil(
-                      (Math.min(
-                        ...[
-                          world?.choice?.deadline,
-                          world?.boonChoice?.deadline,
-                        ].filter((v): v is number => v !== undefined),
-                      ) -
-                        serverNow) /
-                        1000,
-                    ),
-                  )}
-                  <small> 秒</small>
-                </strong>
-                <span>选择完成后再整备</span>
-              </>
+        <div className={`sf-wave-banner sf-phase-${data.phase}`}>
+          <div>
+            <strong>{phaseNames[data.phase]}</strong>
+            <span>
+              {finished
+                ? data.phase === "won"
+                  ? "你们一起守住了星光。"
+                  : "星核熄灭，记住这次防线，下一次再来。"
+                : data.waveInfo.title}
+            </span>
+          </div>
+          <div
+            className="sf-countdown"
+            data-sf-countdown
+            data-urgent={
+              data.phase === "prepare" && !choosing && remaining <= 10
+            }
+          >
+            {data.phase === "prepare" ? (
+              choosing ? (
+                <>
+                  <span>战区选择剩余</span>
+                  <strong>
+                    {Math.max(
+                      0,
+                      Math.ceil(
+                        (Math.min(
+                          ...[
+                            world?.choice?.deadline,
+                            world?.boonChoice?.deadline,
+                          ].filter((v): v is number => v !== undefined),
+                        ) -
+                          serverNow) /
+                          1000,
+                      ),
+                    )}
+                    <small> 秒</small>
+                  </strong>
+                  <span>选择完成后再整备</span>
+                </>
+              ) : (
+                <>
+                  <span>距下一波自动开始</span>
+                  <strong>
+                    {remaining}
+                    <small> 秒</small>
+                  </strong>
+                  <span>全员准备可提前开始</span>
+                </>
+              )
             ) : (
-              <>
-                <span>距下一波自动开始</span>
-                <strong>
-                  {remaining}
-                  <small> 秒</small>
-                </strong>
-                <span>全员准备可提前开始</span>
-              </>
-            )
-          ) : (
-            <strong>
-              {data.phase === "paused"
-                ? "已暂停 · 不会开战"
-                : data.phase === "battle"
-                  ? `剩余 ${totalRemaining} 名敌人`
-                  : `共守住 ${data.completedWaves} 波`}
-            </strong>
-          )}
+              <strong>
+                {data.phase === "paused"
+                  ? "已暂停 · 不会开战"
+                  : data.phase === "battle"
+                    ? `剩余 ${totalRemaining} 名敌人`
+                    : `共守住 ${data.completedWaves} 波`}
+              </strong>
+            )}
+          </div>
         </div>
       </div>
       {world && choiceOpen && choosing && !finished && (
@@ -705,537 +711,563 @@ export function Board({
             selected={selected}
             select={setSelected}
           />
-          <div className="sf-map-caption">
-            <span>
-              {finished
-                ? "本局战场已保留，可点选防御塔查看"
-                : "点空地建塔，点塔身升级或管理"}
-            </span>
-            <span>
-              {activeRoutes.length > 1
-                ? `${activeRoutes.length} 路来袭`
-                : "入口 → 星核"}
-            </span>
-          </div>
         </section>
-        {selected === null ? (
-          <button
-            className="sf-select-pad"
-            onClick={() =>
-              setSelected(
-                data.map.pads.find(
-                  (p) => !data.towers.some((t) => t.pad === p.id),
-                )?.id ??
-                  data.map.pads[0]?.id ??
-                  null,
-              )
-            }
-          >
-            选择建造点／管理防御塔
-          </button>
-        ) : (
-          <Modal
-            title={`建造点 ${selected + 1}`}
-            className="sf-command-dialog"
-            onClose={() => setSelected(null)}
-          >
-            <section className="sf-command-panel" aria-label="防线操作">
-              <div className="sf-panel-title">
-                <div>
-                  <span>
-                    {finished
-                      ? "本局防线"
-                      : room.spectating
-                        ? "观战中"
-                        : "你的防线"}
-                  </span>
-                  <strong>
-                    {room.spectating ? "一起守望" : `金币 ${player?.gold ?? 0}`}
-                  </strong>
-                </div>
-                <span>{room.spectating ? "只读战场" : `${myTowers} 座塔`}</span>
-              </div>
-              {selected === null || (finished && !selectedTower) ? (
-                <div className="sf-select-hint">
-                  <span aria-hidden="true">✦</span>
-                  <strong>{finished ? "守望已结束" : "从一座塔开始"}</strong>
-                  <p>
-                    {finished
-                      ? `本局守住 ${data.completedWaves} 波，团队击杀 ${data.kills} 名敌人。`
-                      : "点选战场上的空建造点。不同的塔搭配，可以应对不同的敌潮。"}
-                  </p>
-                  {finished ? (
-                    data.towers.length > 0 && (
-                      <button onClick={() => setSelected(data.towers[0].pad)}>
-                        查看防御塔
-                      </button>
-                    )
-                  ) : (
-                    <button
-                      onClick={() =>
-                        setSelected(
-                          data.map.pads.find(
-                            (p) => !data.towers.some((t) => t.pad === p.id),
-                          )?.id ??
-                            data.map.pads[0]?.id ??
-                            null,
-                        )
-                      }
-                    >
-                      选择建造点
-                    </button>
-                  )}
-                </div>
-              ) : (
-                <>
-                  <div className="sf-selection-title">
-                    <strong>建造点 {selected + 1}</strong>
-                    <button
-                      className="sf-text-button"
-                      onClick={() => setSelected(null)}
-                      aria-label="取消选中建造点"
-                    >
-                      取消选择
-                    </button>
+        <div className="sf-field-actions">
+          {selected === null ? (
+            <button
+              className="sf-select-pad"
+              aria-label="选择建造点或管理防御塔"
+              onClick={() =>
+                setSelected(
+                  data.map.pads.find(
+                    (p) => !data.towers.some((t) => t.pad === p.id),
+                  )?.id ??
+                    data.map.pads[0]?.id ??
+                    null,
+                )
+              }
+            >
+              建造
+            </button>
+          ) : (
+            <Modal
+              title={`建造点 ${selected + 1}`}
+              className="sf-command-dialog"
+              onClose={() => setSelected(null)}
+            >
+              <section className="sf-command-panel" aria-label="防线操作">
+                <div className="sf-panel-title">
+                  <div>
+                    <span>
+                      {finished
+                        ? "本局防线"
+                        : room.spectating
+                          ? "观战中"
+                          : "你的防线"}
+                    </span>
+                    <strong>
+                      {room.spectating
+                        ? "一起守望"
+                        : `金币 ${player?.gold ?? 0}`}
+                    </strong>
                   </div>
-                  {selectedPad?.terrain === "highground" && (
-                    <p className="sf-terrain-note">
-                      高地建造点 · 射程 +15%，已计入实际属性
+                  <span>
+                    {room.spectating ? "只读战场" : `${myTowers} 座塔`}
+                  </span>
+                </div>
+                {selected === null || (finished && !selectedTower) ? (
+                  <div className="sf-select-hint">
+                    <span aria-hidden="true">✦</span>
+                    <strong>{finished ? "守望已结束" : "从一座塔开始"}</strong>
+                    <p>
+                      {finished
+                        ? `本局守住 ${data.completedWaves} 波，团队击杀 ${data.kills} 名敌人。`
+                        : "点选战场上的空建造点。不同的塔搭配，可以应对不同的敌潮。"}
+                    </p>
+                    {finished ? (
+                      data.towers.length > 0 && (
+                        <button onClick={() => setSelected(data.towers[0].pad)}>
+                          查看防御塔
+                        </button>
+                      )
+                    ) : (
+                      <button
+                        onClick={() =>
+                          setSelected(
+                            data.map.pads.find(
+                              (p) => !data.towers.some((t) => t.pad === p.id),
+                            )?.id ??
+                              data.map.pads[0]?.id ??
+                              null,
+                          )
+                        }
+                      >
+                        选择建造点
+                      </button>
+                    )}
+                  </div>
+                ) : (
+                  <>
+                    <div className="sf-selection-title">
+                      <strong>建造点 {selected + 1}</strong>
+                      <button
+                        className="sf-text-button"
+                        onClick={() => setSelected(null)}
+                        aria-label="取消选中建造点"
+                      >
+                        取消选择
+                      </button>
+                    </div>
+                    {selectedPad?.terrain === "highground" && (
+                      <p className="sf-terrain-note">
+                        高地建造点 · 射程 +15%，已计入实际属性
+                      </p>
+                    )}
+                    {selectedTower ? (
+                      <div className="sf-tower-details">
+                        <div className="sf-tower-heading">
+                          <Sprite
+                            name={`tower-${selectedTower.kind}-${Math.min(3, selectedTower.level)}`}
+                            base={assets}
+                          />
+                          <div>
+                            <h3>
+                              {towerNames[selectedTower.kind]} ·{" "}
+                              {selectedTower.level} 级
+                            </h3>
+                            <p>
+                              {room.seats[selectedTower.owner]?.name} 的防御塔
+                              {selectedTower.branch
+                                ? ` · ${selectedTower.branch === "power" ? "威力" : "攻速"}专精`
+                                : ""}
+                            </p>
+                          </div>
+                        </div>
+                        <p>
+                          {
+                            data.catalog.find(
+                              (t) => t.kind === selectedTower.kind,
+                            )?.description
+                          }
+                        </p>
+                        <dl
+                          className="sf-tower-stats"
+                          aria-label="防御塔实际属性"
+                        >
+                          <div>
+                            <dt>伤害</dt>
+                            <dd>
+                              {selectedTower.effectiveDamage == null
+                                ? "—"
+                                : Number(
+                                    selectedTower.effectiveDamage.toFixed(1),
+                                  )}
+                            </dd>
+                          </div>
+                          <div>
+                            <dt>射程</dt>
+                            <dd>
+                              {selectedTower.effectiveRange == null
+                                ? "—"
+                                : Number(
+                                    selectedTower.effectiveRange.toFixed(1),
+                                  )}
+                            </dd>
+                          </div>
+                          <div>
+                            <dt>攻击间隔</dt>
+                            <dd>
+                              {selectedTower.effectiveInterval == null
+                                ? "—"
+                                : `${(selectedTower.effectiveInterval / 1000).toFixed(2)} 秒`}
+                            </dd>
+                          </div>
+                        </dl>
+                        <label className="sf-target-control">
+                          <span>优先攻击</span>
+                          <select
+                            data-sf-target
+                            aria-label="防御塔优先攻击"
+                            value={selectedTower.priority ?? "first"}
+                            disabled={
+                              locked ||
+                              !active ||
+                              finished ||
+                              selectedTower.owner !== room.you ||
+                              !data.controls.targets?.some(
+                                (item) =>
+                                  item.towerId === selectedTower.id &&
+                                  item.enabled,
+                              )
+                            }
+                            onChange={(event) =>
+                              void send("target", {
+                                towerId: selectedTower.id,
+                                priority: event.target.value,
+                              })
+                            }
+                          >
+                            {Object.entries(priorityNames).map(
+                              ([value, label]) => (
+                                <option key={value} value={value}>
+                                  {label}
+                                </option>
+                              ),
+                            )}
+                          </select>
+                        </label>
+                        <p className="sf-target-hint">
+                          支援优先会先攻击治疗者、旗手和工兵；没有这类敌人时优先拦截最前方敌人。
+                        </p>
+                        {finished ? (
+                          <p className="sf-owned-note">
+                            本局已结束，可查看防御塔与射程复盘。
+                          </p>
+                        ) : selectedTower.owner === room.you &&
+                          !room.spectating ? (
+                          <div className="sf-tower-actions">
+                            {upgrade?.needsBranch ? (
+                              <>
+                                <p className="sf-branch-hint">
+                                  选择专精后继续强化
+                                </p>
+                                <div className="sf-branch-actions">
+                                  <button
+                                    data-sf-upgrade="power"
+                                    disabled={locked || !upgrade.enabled}
+                                    onClick={() =>
+                                      void send("upgrade", {
+                                        towerId: selectedTower.id,
+                                        branch: "power",
+                                      })
+                                    }
+                                  >
+                                    威力专精 · {upgrade.cost}
+                                  </button>
+                                  <button
+                                    data-sf-upgrade="speed"
+                                    disabled={locked || !upgrade.enabled}
+                                    onClick={() =>
+                                      void send("upgrade", {
+                                        towerId: selectedTower.id,
+                                        branch: "speed",
+                                      })
+                                    }
+                                  >
+                                    攻速专精 · {upgrade.cost}
+                                  </button>
+                                </div>
+                              </>
+                            ) : (
+                              <button
+                                data-sf-upgrade="level"
+                                disabled={locked || !upgrade?.enabled}
+                                onClick={() =>
+                                  void send("upgrade", {
+                                    towerId: selectedTower.id,
+                                  })
+                                }
+                              >
+                                升级到 {selectedTower.level + 1} 级 ·{" "}
+                                {upgrade?.cost ?? "—"} 金币
+                              </button>
+                            )}
+                            <button
+                              className="sf-secondary"
+                              data-sf-sell
+                              disabled={locked || !sale?.enabled}
+                              onClick={() =>
+                                void send("sell", { towerId: selectedTower.id })
+                              }
+                            >
+                              出售 · 返还 {sale?.refund ?? 0} 金币
+                            </button>
+                          </div>
+                        ) : (
+                          <p className="sf-owned-note">
+                            由 {room.seats[selectedTower.owner]?.name}{" "}
+                            管理；可赠予金币支援。
+                          </p>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="sf-build-list">
+                        {data.catalog.map((tower) => {
+                          const allowed = data.controls.builds.find(
+                            (b) => b.pad === selected && b.kind === tower.kind,
+                          );
+                          return (
+                            <button
+                              className="sf-build-card"
+                              data-sf-build={tower.kind}
+                              key={tower.kind}
+                              disabled={locked || !active || !allowed?.enabled}
+                              onClick={() =>
+                                void send("build", {
+                                  pad: selected,
+                                  tower: tower.kind,
+                                })
+                              }
+                            >
+                              <Sprite
+                                name={`tower-${tower.kind}-1`}
+                                base={assets}
+                              />
+                              <span>
+                                <strong>
+                                  {tower.name}
+                                  <b>{tower.cost} 金币</b>
+                                </strong>
+                                <small>{tower.description}</small>
+                              </span>
+                            </button>
+                          );
+                        })}
+                        {!active && (
+                          <p>
+                            {room.spectating
+                              ? "观众不能建造。"
+                              : finished
+                                ? "本局已结束。"
+                                : "当前阶段不能建造。"}
+                          </p>
+                        )}
+                      </div>
+                    )}
+                  </>
+                )}
+                {failure && (
+                  <p className="sf-error" role="alert">
+                    {failure}
+                  </p>
+                )}
+              </section>
+            </Modal>
+          )}
+          <button
+            className="sf-secondary"
+            data-sf-open-info
+            aria-label="战场情报与支线"
+            onClick={() => setInfoOpen(true)}
+          >
+            情报
+          </button>
+        </div>
+      </div>
+      {infoOpen && (
+        <Modal
+          title="战场情报"
+          className="sf-info-dialog"
+          onClose={() => setInfoOpen(false)}
+        >
+          <div className="sf-information">
+            {world && (
+              <details className="sf-field-guide sf-intelligence" open>
+                <summary>
+                  战场情报 · {world.event.label} · 第 {world.stage} 战区
+                </summary>{" "}
+                <section className="sf-world-status" aria-label="战场情报">
+                  <p className="sf-wave-description">
+                    {data.waveInfo.description} · 团队击杀 {data.kills}
+                  </p>
+                  <div
+                    className="sf-world-heading"
+                    data-sf-world-stage={world.stage}
+                  >
+                    <div>
+                      <strong>
+                        第 {world.stage} 战区 ·{" "}
+                        {data.map.regions?.at(-1)?.label ?? "林地防线"}
+                      </strong>
+                      <span>
+                        初始面积的{" "}
+                        {(
+                          (data.map.width * data.map.height) /
+                          (960 * 640)
+                        ).toFixed(1)}{" "}
+                        倍 · {data.map.pads.length} 个建造点 ·{" "}
+                        {data.map.routes?.length ?? 1} 条道路
+                      </span>
+                    </div>
+                    <span>
+                      {world.stage < 4
+                        ? `第 ${[0, 6, 11, 16][world.stage]} 波开启新战区`
+                        : "完整战场已展开"}
+                    </span>
+                  </div>
+                  <div
+                    className="sf-world-event"
+                    data-sf-wave-event={world.event.id}
+                  >
+                    {world.event.id !== "calm" && (
+                      <Sprite
+                        name={`event-${world.event.id === "starlight" ? "star" : world.event.id}`}
+                        base={assets}
+                        world
+                      />
+                    )}
+                    <div>
+                      <strong>
+                        第 {world.event.wave} 波 · {world.event.label}
+                      </strong>
+                      <p>{world.event.description}</p>
+                    </div>
+                  </div>
+                  {activeRoutes.length > 0 && (
+                    <p className="sf-entry-alert">
+                      <strong>
+                        {data.phase === "prepare" ? "即将来袭" : "当前入口"}：
+                      </strong>
+                      {activeRoutes.map((route) => route.label).join("、")}
+                      {world.shortcutWave === data.wave
+                        ? " · 工兵已打开捷径，注意漏防"
+                        : world.shortcutWave === data.wave + 1
+                          ? " · 工兵已打开通道，下一波将出现捷径"
+                          : ""}
                     </p>
                   )}
-                  {selectedTower ? (
-                    <div className="sf-tower-details">
-                      <div className="sf-tower-heading">
-                        <Sprite
-                          name={`tower-${selectedTower.kind}-${Math.min(3, selectedTower.level)}`}
-                          base={assets}
-                        />
-                        <div>
-                          <h3>
-                            {towerNames[selectedTower.kind]} ·{" "}
-                            {selectedTower.level} 级
-                          </h3>
-                          <p>
-                            {room.seats[selectedTower.owner]?.name} 的防御塔
-                            {selectedTower.branch
-                              ? ` · ${selectedTower.branch === "power" ? "威力" : "攻速"}专精`
-                              : ""}
-                          </p>
+                  {world.forecast?.length > 0 && !finished && (
+                    <div
+                      className="sf-event-forecast"
+                      aria-label="后续波次预告"
+                    >
+                      {world.forecast.map((event) => (
+                        <div key={event.wave}>
+                          <strong>
+                            第 {event.wave} 波 · {event.label}
+                          </strong>
+                          <span>{event.description}</span>
                         </div>
-                      </div>
-                      <p>
-                        {
-                          data.catalog.find(
-                            (t) => t.kind === selectedTower.kind,
-                          )?.description
+                      ))}
+                    </div>
+                  )}
+                  {Object.values(world.boons).some((value) => value > 0) && (
+                    <p className="sf-boons" data-sf-boons>
+                      <strong>团队成长：</strong>伤害 +{world.boons.power * 12}%
+                      · 射程 +{world.boons.reach * 8}% · 击杀与过波金币 +
+                      {world.boons.fortune * 10}%
+                      <span>已计入防御塔实际属性和全队收益</span>
+                    </p>
+                  )}
+                </section>
+              </details>
+            )}
+            {world && world.objectives.length > 0 && (
+              <details className="sf-field-guide">
+                <summary>
+                  战区支线 ·{" "}
+                  {world.objectives.filter((o) => o.status === "active").length}{" "}
+                  项进行中
+                </summary>
+                <section className="sf-objectives" aria-label="战区支线目标">
+                  <div className="sf-world-heading">
+                    <h3>战区支线</h3>
+                    <span>自由承接 · 全队受益</span>
+                  </div>
+                  <p>
+                    波间由一人支付金币承接。敌人靠近会攻击据点或补给队，需要沿线布塔守护；未承接不会影响正常闯关。
+                  </p>
+                  <div className="sf-objective-grid">
+                    {world.objectives.map((objective) => (
+                      <ObjectiveCard
+                        key={objective.id}
+                        objective={objective}
+                        finished={finished}
+                        enabled={
+                          !locked &&
+                          !room.spectating &&
+                          data.phase === "prepare" &&
+                          !finished &&
+                          !!data.controls.objectives?.some(
+                            (item) =>
+                              item.objectiveId === objective.id && item.enabled,
+                          )
                         }
-                      </p>
-                      <dl
-                        className="sf-tower-stats"
-                        aria-label="防御塔实际属性"
-                      >
-                        <div>
-                          <dt>伤害</dt>
-                          <dd>
-                            {selectedTower.effectiveDamage == null
-                              ? "—"
-                              : Number(
-                                  selectedTower.effectiveDamage.toFixed(1),
-                                )}
-                          </dd>
-                        </div>
-                        <div>
-                          <dt>射程</dt>
-                          <dd>
-                            {selectedTower.effectiveRange == null
-                              ? "—"
-                              : Number(selectedTower.effectiveRange.toFixed(1))}
-                          </dd>
-                        </div>
-                        <div>
-                          <dt>攻击间隔</dt>
-                          <dd>
-                            {selectedTower.effectiveInterval == null
-                              ? "—"
-                              : `${(selectedTower.effectiveInterval / 1000).toFixed(2)} 秒`}
-                          </dd>
-                        </div>
-                      </dl>
-                      <label className="sf-target-control">
-                        <span>优先攻击</span>
+                        wave={data.wave}
+                        completedWaves={data.completedWaves}
+                        route={
+                          data.map.routes?.find(
+                            (route) => route.id === objective.route,
+                          )?.points
+                        }
+                        send={send}
+                      />
+                    ))}
+                  </div>
+                </section>
+              </details>
+            )}
+            <div className="sf-cooperation">
+              {room.seats.length > 1 && !room.spectating && !finished && (
+                <details className="sf-field-guide">
+                  <summary>支援队友 · 赠予金币</summary>
+                  <form
+                    className="sf-gift"
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      void send("gift", { target, amount: gift });
+                    }}
+                  >
+                    <strong>支援队友</strong>
+                    <div>
+                      <label>
+                        <span className="sr-only">接收金币的队友</span>
                         <select
-                          data-sf-target
-                          aria-label="防御塔优先攻击"
-                          value={selectedTower.priority ?? "first"}
-                          disabled={
-                            locked ||
-                            !active ||
-                            finished ||
-                            selectedTower.owner !== room.you ||
-                            !data.controls.targets?.some(
-                              (item) =>
-                                item.towerId === selectedTower.id &&
-                                item.enabled,
-                            )
-                          }
-                          onChange={(event) =>
-                            void send("target", {
-                              towerId: selectedTower.id,
-                              priority: event.target.value,
-                            })
-                          }
+                          aria-label="接收金币的队友"
+                          value={target}
+                          onChange={(e) => setTarget(Number(e.target.value))}
                         >
-                          {Object.entries(priorityNames).map(
-                            ([value, label]) => (
-                              <option key={value} value={value}>
-                                {label}
+                          {room.seats.map((seat, i) =>
+                            i === room.you ? null : (
+                              <option key={seat.id} value={i}>
+                                {seat.name}
                               </option>
                             ),
                           )}
                         </select>
                       </label>
-                      <p className="sf-target-hint">
-                        支援优先会先攻击治疗者、旗手和工兵；没有这类敌人时优先拦截最前方敌人。
-                      </p>
-                      {finished ? (
-                        <p className="sf-owned-note">
-                          本局已结束，可查看防御塔与射程复盘。
-                        </p>
-                      ) : selectedTower.owner === room.you &&
-                        !room.spectating ? (
-                        <div className="sf-tower-actions">
-                          {upgrade?.needsBranch ? (
-                            <>
-                              <p className="sf-branch-hint">
-                                选择专精后继续强化
-                              </p>
-                              <div className="sf-branch-actions">
-                                <button
-                                  data-sf-upgrade="power"
-                                  disabled={locked || !upgrade.enabled}
-                                  onClick={() =>
-                                    void send("upgrade", {
-                                      towerId: selectedTower.id,
-                                      branch: "power",
-                                    })
-                                  }
-                                >
-                                  威力专精 · {upgrade.cost}
-                                </button>
-                                <button
-                                  data-sf-upgrade="speed"
-                                  disabled={locked || !upgrade.enabled}
-                                  onClick={() =>
-                                    void send("upgrade", {
-                                      towerId: selectedTower.id,
-                                      branch: "speed",
-                                    })
-                                  }
-                                >
-                                  攻速专精 · {upgrade.cost}
-                                </button>
-                              </div>
-                            </>
-                          ) : (
-                            <button
-                              data-sf-upgrade="level"
-                              disabled={locked || !upgrade?.enabled}
-                              onClick={() =>
-                                void send("upgrade", {
-                                  towerId: selectedTower.id,
-                                })
-                              }
-                            >
-                              升级到 {selectedTower.level + 1} 级 ·{" "}
-                              {upgrade?.cost ?? "—"} 金币
-                            </button>
-                          )}
-                          <button
-                            className="sf-secondary"
-                            data-sf-sell
-                            disabled={locked || !sale?.enabled}
-                            onClick={() =>
-                              void send("sell", { towerId: selectedTower.id })
-                            }
-                          >
-                            出售 · 返还 {sale?.refund ?? 0} 金币
-                          </button>
-                        </div>
-                      ) : (
-                        <p className="sf-owned-note">
-                          由 {room.seats[selectedTower.owner]?.name}{" "}
-                          管理；可赠予金币支援。
-                        </p>
-                      )}
+                      <label>
+                        <span className="sr-only">赠予金币数量</span>
+                        <input
+                          aria-label="赠予金币数量"
+                          type="number"
+                          min="1"
+                          max={player?.gold ?? 0}
+                          step="1"
+                          value={gift}
+                          onChange={(e) => setGift(Number(e.target.value))}
+                        />
+                      </label>
+                      <button
+                        data-sf-gift
+                        type="submit"
+                        disabled={
+                          locked ||
+                          !active ||
+                          !Number.isInteger(gift) ||
+                          gift <= 0 ||
+                          gift > (player?.gold ?? 0) ||
+                          target < 0
+                        }
+                      >
+                        赠予金币
+                      </button>
                     </div>
-                  ) : (
-                    <div className="sf-build-list">
-                      {data.catalog.map((tower) => {
-                        const allowed = data.controls.builds.find(
-                          (b) => b.pad === selected && b.kind === tower.kind,
-                        );
-                        return (
-                          <button
-                            className="sf-build-card"
-                            data-sf-build={tower.kind}
-                            key={tower.kind}
-                            disabled={locked || !active || !allowed?.enabled}
-                            onClick={() =>
-                              void send("build", {
-                                pad: selected,
-                                tower: tower.kind,
-                              })
-                            }
-                          >
-                            <Sprite
-                              name={`tower-${tower.kind}-1`}
-                              base={assets}
-                            />
-                            <span>
-                              <strong>
-                                {tower.name}
-                                <b>{tower.cost} 金币</b>
-                              </strong>
-                              <small>{tower.description}</small>
-                            </span>
-                          </button>
-                        );
-                      })}
-                      {!active && (
-                        <p>
-                          {room.spectating
-                            ? "观众不能建造。"
-                            : finished
-                              ? "本局已结束。"
-                              : "当前阶段不能建造。"}
-                        </p>
-                      )}
-                    </div>
-                  )}
-                </>
+                  </form>
+                </details>
               )}
-              {failure && (
-                <p className="sf-error" role="alert">
-                  {failure}
+            </div>
+            <details className="sf-field-guide">
+              <summary>守望手册 · 敌群与塔的搭配</summary>
+              <div>
+                <p>
+                  <strong>箭塔</strong>快速点杀 · <strong>炮塔</strong>清理群怪
+                  · <strong>冰塔</strong>延长敌人在火力区的时间 ·{" "}
+                  <strong>法师塔</strong>对付重甲。
                 </p>
-              )}
-            </section>
-          </Modal>
-        )}
-      </div>
-      {world && (
-        <details className="sf-field-guide sf-intelligence">
-          <summary>
-            战场情报 · {world.event.label} · 第 {world.stage} 战区
-          </summary>{" "}
-          <section className="sf-world-status" aria-label="战场情报">
-            <p className="sf-wave-description">
-              {data.waveInfo.description} · 团队击杀 {data.kills}
-            </p>
-            <div className="sf-world-heading" data-sf-world-stage={world.stage}>
-              <div>
-                <strong>
-                  第 {world.stage} 战区 ·{" "}
-                  {data.map.regions?.at(-1)?.label ?? "林地防线"}
-                </strong>
-                <span>
-                  初始面积的{" "}
-                  {((data.map.width * data.map.height) / (960 * 640)).toFixed(
-                    1,
-                  )}{" "}
-                  倍 · {data.map.pads.length} 个建造点 ·{" "}
-                  {data.map.routes?.length ?? 1} 条道路
-                </span>
+                <p>
+                  史莱姆是基础敌人；疾行怪移动快；重甲怪抵挡普通伤害；小怪成群出没；护盾怪先承受护盾伤害。精英和首领会在关键波次出现。
+                </p>
+                <p>
+                  治疗者恢复附近敌人，旗手为附近敌人加速，分裂怪死亡后留下小怪，工兵会打开捷径。首领半血进入第二阶段并召来护卫；可把关键塔设为优先攻击支援敌人。
+                </p>
+                <p>
+                  第 6、11、16
+                  波扩展战场，全队投票选择道路，旧塔继续保留。守过每 5
+                  波可选择一次团队成长。无尽模式展开全部战区后轮换来袭入口，浓雾、寒潮与多路突袭会改变防线。
+                </p>
+                <p>
+                  三级后可选威力或攻速专精。出售会返还部分投入，请先选中自己的塔查看金额。蓝色轮廓表示减速，敌人头顶的细条显示生命和护盾。
+                </p>
+                <p>
+                  暂停需要全员同意，且只能在波间进行。进度自动保存；连续 24
+                  小时无人操作的房间会自动关闭。无尽守望没有固定的结束波数；基地归零时结算。
+                </p>
               </div>
-              <span>
-                {world.stage < 4
-                  ? `第 ${[0, 6, 11, 16][world.stage]} 波开启新战区`
-                  : "完整战场已展开"}
-              </span>
-            </div>
-            <div className="sf-world-event" data-sf-wave-event={world.event.id}>
-              {world.event.id !== "calm" && (
-                <Sprite
-                  name={`event-${world.event.id === "starlight" ? "star" : world.event.id}`}
-                  base={assets}
-                  world
-                />
-              )}
-              <div>
-                <strong>
-                  第 {world.event.wave} 波 · {world.event.label}
-                </strong>
-                <p>{world.event.description}</p>
-              </div>
-            </div>
-            {activeRoutes.length > 0 && (
-              <p className="sf-entry-alert">
-                <strong>
-                  {data.phase === "prepare" ? "即将来袭" : "当前入口"}：
-                </strong>
-                {activeRoutes.map((route) => route.label).join("、")}
-                {world.shortcutWave === data.wave
-                  ? " · 工兵已打开捷径，注意漏防"
-                  : world.shortcutWave === data.wave + 1
-                    ? " · 工兵已打开通道，下一波将出现捷径"
-                    : ""}
-              </p>
-            )}
-            {world.forecast?.length > 0 && !finished && (
-              <div className="sf-event-forecast" aria-label="后续波次预告">
-                {world.forecast.map((event) => (
-                  <div key={event.wave}>
-                    <strong>
-                      第 {event.wave} 波 · {event.label}
-                    </strong>
-                    <span>{event.description}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-            {Object.values(world.boons).some((value) => value > 0) && (
-              <p className="sf-boons" data-sf-boons>
-                <strong>团队成长：</strong>伤害 +{world.boons.power * 12}% ·
-                射程 +{world.boons.reach * 8}% · 击杀与过波金币 +
-                {world.boons.fortune * 10}%
-                <span>已计入防御塔实际属性和全队收益</span>
-              </p>
-            )}
-          </section>
-        </details>
+            </details>
+          </div>
+        </Modal>
       )}
-      {world && world.objectives.length > 0 && (
-        <details className="sf-field-guide">
-          <summary>
-            战区支线 ·{" "}
-            {world.objectives.filter((o) => o.status === "active").length}{" "}
-            项进行中
-          </summary>
-          <section className="sf-objectives" aria-label="战区支线目标">
-            <div className="sf-world-heading">
-              <h3>战区支线</h3>
-              <span>自由承接 · 全队受益</span>
-            </div>
-            <p>
-              波间由一人支付金币承接。敌人靠近会攻击据点或补给队，需要沿线布塔守护；未承接不会影响正常闯关。
-            </p>
-            <div className="sf-objective-grid">
-              {world.objectives.map((objective) => (
-                <ObjectiveCard
-                  key={objective.id}
-                  objective={objective}
-                  finished={finished}
-                  enabled={
-                    !locked &&
-                    !room.spectating &&
-                    data.phase === "prepare" &&
-                    !finished &&
-                    !!data.controls.objectives?.some(
-                      (item) =>
-                        item.objectiveId === objective.id && item.enabled,
-                    )
-                  }
-                  wave={data.wave}
-                  completedWaves={data.completedWaves}
-                  route={
-                    data.map.routes?.find(
-                      (route) => route.id === objective.route,
-                    )?.points
-                  }
-                  send={send}
-                />
-              ))}
-            </div>
-          </section>
-        </details>
-      )}
-      <div className="sf-cooperation">
-        {room.seats.length > 1 && !room.spectating && !finished && (
-          <details className="sf-field-guide">
-            <summary>支援队友 · 赠予金币</summary>
-            <form
-              className="sf-gift"
-              onSubmit={(e) => {
-                e.preventDefault();
-                void send("gift", { target, amount: gift });
-              }}
-            >
-              <strong>支援队友</strong>
-              <div>
-                <label>
-                  <span className="sr-only">接收金币的队友</span>
-                  <select
-                    aria-label="接收金币的队友"
-                    value={target}
-                    onChange={(e) => setTarget(Number(e.target.value))}
-                  >
-                    {room.seats.map((seat, i) =>
-                      i === room.you ? null : (
-                        <option key={seat.id} value={i}>
-                          {seat.name}
-                        </option>
-                      ),
-                    )}
-                  </select>
-                </label>
-                <label>
-                  <span className="sr-only">赠予金币数量</span>
-                  <input
-                    aria-label="赠予金币数量"
-                    type="number"
-                    min="1"
-                    max={player?.gold ?? 0}
-                    step="1"
-                    value={gift}
-                    onChange={(e) => setGift(Number(e.target.value))}
-                  />
-                </label>
-                <button
-                  data-sf-gift
-                  type="submit"
-                  disabled={
-                    locked ||
-                    !active ||
-                    !Number.isInteger(gift) ||
-                    gift <= 0 ||
-                    gift > (player?.gold ?? 0) ||
-                    target < 0
-                  }
-                >
-                  赠予金币
-                </button>
-              </div>
-            </form>
-          </details>
-        )}
-      </div>
-      <details className="sf-field-guide">
-        <summary>守望手册 · 敌群与塔的搭配</summary>
-        <div>
-          <p>
-            <strong>箭塔</strong>快速点杀 · <strong>炮塔</strong>清理群怪 ·{" "}
-            <strong>冰塔</strong>延长敌人在火力区的时间 ·{" "}
-            <strong>法师塔</strong>对付重甲。
-          </p>
-          <p>
-            史莱姆是基础敌人；疾行怪移动快；重甲怪抵挡普通伤害；小怪成群出没；护盾怪先承受护盾伤害。精英和首领会在关键波次出现。
-          </p>
-          <p>
-            治疗者恢复附近敌人，旗手为附近敌人加速，分裂怪死亡后留下小怪，工兵会打开捷径。首领半血进入第二阶段并召来护卫；可把关键塔设为优先攻击支援敌人。
-          </p>
-          <p>
-            第 6、11、16 波扩展战场，全队投票选择道路，旧塔继续保留。守过每 5
-            波可选择一次团队成长。无尽模式展开全部战区后轮换来袭入口，浓雾、寒潮与多路突袭会改变防线。
-          </p>
-          <p>
-            三级后可选威力或攻速专精。出售会返还部分投入，请先选中自己的塔查看金额。蓝色轮廓表示减速，敌人头顶的细条显示生命和护盾。
-          </p>
-          <p>
-            暂停需要全员同意，且只能在波间进行。进度自动保存；连续 24
-            小时无人操作的房间会自动关闭。无尽守望没有固定的结束波数；基地归零时结算。
-          </p>
-        </div>
-      </details>
     </div>
   );
 }
