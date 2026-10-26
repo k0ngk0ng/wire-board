@@ -77,7 +77,6 @@ export type World = {
   seed: number;
   stage: 1 | 2 | 3 | 4;
   preparedWave: number;
-  map: MapData;
   choice: WorldChoice | null;
   boonChoice: WorldChoice | null;
   boons: { power: number; reach: number; fortune: number };
