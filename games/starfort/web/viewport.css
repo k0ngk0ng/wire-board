@@ -518,3 +518,89 @@
 .starfort-board .sf-world-viewport {
   isolation: isolate;
 }
+
+.sf-skill {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 7px 0;
+}
+.starfort-board .sf-skill-icon {
+  width: 48px;
+  height: 48px;
+  min-height: 48px;
+  flex: none;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #f4efd8;
+  color: #435b2d;
+  box-shadow: none;
+}
+.sf-skill-icon svg {
+  width: 48px;
+  height: 48px;
+  display: block;
+  overflow: visible;
+}
+.starfort-board .sf-skill-cannon {
+  color: #8a4e28;
+}
+.starfort-board .sf-skill-frost {
+  color: #26677a;
+}
+.starfort-board .sf-skill-arcane {
+  color: #72418c;
+}
+.sf-skill-track {
+  fill: none;
+  stroke: #b4b5a0;
+  stroke-width: 3;
+}
+.sf-skill-progress {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 90ms linear;
+}
+.sf-skill > span {
+  display: grid;
+  gap: 2px;
+  font-size: 13px;
+  color: #253e29;
+}
+.sf-skill > span small {
+  font-size: 12px;
+  color: #46563a;
+  font-variant-numeric: tabular-nums;
+}
+.sf-skill-tooltip {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  bottom: calc(100% + 7px);
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  border: 1px solid #718567;
+  border-radius: 8px;
+  background: #fffef4;
+  color: #253e29;
+  box-shadow: 0 4px 12px #263d2833;
+  font-size: 13px;
+}
+.sf-skill-tooltip p {
+  margin: 5px 0;
+  line-height: 1.5;
+}
+.sf-skill-icon:focus-visible {
+  outline: 2px solid #2c5c3e;
+  outline-offset: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sf-skill-progress {
+    transition: none;
+  }
+}

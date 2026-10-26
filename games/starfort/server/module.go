@@ -395,11 +395,33 @@ type ViewTowerSpec struct {
 	Passive *PassiveView `json:"passive,omitempty"`
 }
 
+// ViewWorld carries dynamic world state; the map is sent once at the top level.
+type ViewWorld struct {
+	World
+	Map *Map `json:"map,omitempty"`
+}
+
 func view(m gameapi.Match, p int) (any, error) {
 	s, err := decode(m)
 	if err != nil {
 		return nil, err
 	}
+	// Send recent complete batches, not the entire persisted event ring on
+	// every update. Keep the idle cursor so the next batch remains contiguous.
+	cutoff := s.ElapsedMS - 3000
+	first := 0
+	for first < len(s.Events)-1 {
+		event := s.Events[first]
+		at := event.Tick * StepMS
+		if event.AtMS != nil {
+			at = *event.AtMS
+		}
+		if at >= cutoff {
+			break
+		}
+		first++
+	}
+	s.Events = s.Events[first:]
 	towers := make([]ViewTower, 0, len(s.Towers))
 	for _, tower := range s.Towers {
 		damage, radius, interval := s.towerStats(tower)
@@ -414,11 +436,50 @@ func view(m gameapi.Match, p int) (any, error) {
 		specs = append(specs, ViewTowerSpec{spec, s.passiveView(Tower{Kind: spec.Kind})})
 	}
 	return struct {
-		*State
-		Enemies  []ViewEnemy     `json:"enemies"`
-		Towers   []ViewTower     `json:"towers"`
-		Map      Map             `json:"map"`
-		Catalog  []ViewTowerSpec `json:"catalog"`
-		Controls Controls        `json:"controls"`
-	}{s, enemies, towers, s.mapData(), specs, s.controls(p)}, nil
+		Options        Options         `json:"options"`
+		World          ViewWorld       `json:"world"`
+		Players        []Player        `json:"players"`
+		Phase          string          `json:"phase"`
+		Epoch          int             `json:"epoch"`
+		Wave           int             `json:"wave"`
+		CompletedWaves int             `json:"completedWaves"`
+		BaseHP         int             `json:"baseHP"`
+		BaseMaxHP      int             `json:"baseMaxHP"`
+		Kills          int             `json:"kills"`
+		Tick           int64           `json:"tick"`
+		ServerAt       int64           `json:"serverAt"`
+		NextAt         int64           `json:"nextAt"`
+		ElapsedMS      int64           `json:"elapsedMS"`
+		WaveInfo       WaveInfo        `json:"waveInfo"`
+		Events         []Event         `json:"events"`
+		Craters        []Crater        `json:"craters,omitempty"`
+		Enemies        []ViewEnemy     `json:"enemies"`
+		Towers         []ViewTower     `json:"towers"`
+		Map            Map             `json:"map"`
+		Catalog        []ViewTowerSpec `json:"catalog"`
+		Controls       Controls        `json:"controls"`
+	}{
+		Options:        s.Options,
+		World:          ViewWorld{World: s.World},
+		Players:        s.Players,
+		Phase:          s.Phase,
+		Epoch:          s.Epoch,
+		Wave:           s.Wave,
+		CompletedWaves: s.CompletedWaves,
+		BaseHP:         s.BaseHP,
+		BaseMaxHP:      s.BaseMaxHP,
+		Kills:          s.Kills,
+		Tick:           s.Tick,
+		ServerAt:       s.ServerAt,
+		NextAt:         s.NextAt,
+		ElapsedMS:      s.ElapsedMS,
+		WaveInfo:       s.WaveInfo,
+		Events:         s.Events,
+		Craters:        s.Craters,
+		Enemies:        enemies,
+		Towers:         towers,
+		Map:            s.mapData(),
+		Catalog:        specs,
+		Controls:       s.controls(p),
+	}, nil
 }

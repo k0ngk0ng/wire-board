@@ -353,18 +353,33 @@ func TestStarfortCadenceHTTP(t *testing.T) {
 			tb := newHost(t, 1, scenarioModule())
 			tb.start(map[string]any{"scenario": scenario})
 			client := tb.people[0]
-			wait(t, "four seconds of real battle timer", func() bool { return data(client.room())["elapsedMS"].(float64) >= 4000 })
-			room := client.room()
+			var room map[string]any
 			var view struct {
 				ElapsedMS int64
 				Towers    []rulesTower
 				Events    []cadenceEvent
 			}
-			if err := json.Unmarshal(rulesJSON(data(room)), &view); err != nil {
-				t.Fatal(err)
-			}
+			// Consume successive public snapshots like a live client. The
+			// network projection intentionally does not resend all history.
+			seen := map[int]bool{}
+			observed := []cadenceEvent{}
+			wait(t, "four seconds of real battle timer", func() bool {
+				room = client.room()
+				// Each observation owns its optional timestamp/target pointers.
+				view.Events = nil
+				if err := json.Unmarshal(rulesJSON(data(room)), &view); err != nil {
+					t.Fatal(err)
+				}
+				for _, event := range view.Events {
+					if !seen[event.ID] {
+						observed = append(observed, event)
+						seen[event.ID] = true
+					}
+				}
+				return view.ElapsedMS >= 4000
+			})
 			times := map[int][]int64{}
-			for _, event := range view.Events {
+			for _, event := range observed {
 				if event.Type != "shot" {
 					continue
 				}

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import type { BoardProps } from "../../../web/src/game-api/module";
 import { Modal } from "../../../web/src/ui/board-host";
 import { Battlefield } from "./Canvas";
+import { SkillBadge } from "./SkillBadge";
 import type { CombatStatus } from "./combat-timeline";
 import { assetURL, pickSound } from "./presentation";
 import type { Event, MapData, Objective, View, WorldChoice } from "./types";
@@ -706,14 +707,13 @@ export function Board({
                 </button>
               </header>
               {selectedTower.passive && (
-                <p title={selectedTower.passive.description}>
-                  {selectedTower.passive.name} ·{" "}
-                  {selectedTower.passive.maxStacks
-                    ? `${selectedTower.passive.stacks}/${selectedTower.passive.maxStacks}`
-                    : selectedTower.passive.readyInMS > 0
-                      ? `${(selectedTower.passive.readyInMS / 1000).toFixed(1)} 秒`
-                      : "就绪"}
-                </p>
+                <SkillBadge
+                  key={selectedTower.id}
+                  passive={selectedTower.passive}
+                  kind={selectedTower.kind}
+                  phase={data.phase}
+                  elapsedMS={data.elapsedMS}
+                />
               )}
               <div className="sf-quick-actions">
                 {selectedTower.owner === room.you &&

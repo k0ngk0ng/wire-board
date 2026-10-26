@@ -729,6 +729,9 @@ export function Battlefield({
     at: performance.now(),
     duration: 1000,
   });
+  // Map objects are decoded anew with each snapshot; content, not identity,
+  // invalidates the static terrain layer. Never stringify it per animation frame.
+  const terrainKey = useRef("");
   const timeline = useRef(new CombatPlayback(data, state.current.at));
   const movement = useRef(new CombatTimeline(state.current));
   const soundEvents = useRef<Effect[]>([]);
@@ -756,6 +759,7 @@ export function Battlefield({
   renderMap.current = preview ?? data.map;
   const previewRef = useRef(preview);
   previewRef.current = preview;
+  terrainKey.current = JSON.stringify([data.map, preview ?? null]);
   const camera = useRef<Camera>({ x: 480, y: 240, zoom: 0.3 });
   const viewport = useRef<Viewport>({ width: 0, height: 0 });
   const cameraRoom = useRef<string | null>(null);
@@ -1069,6 +1073,10 @@ export function Battlefield({
     if (!node || !wrap) return;
     const ctx = node.getContext("2d");
     if (!ctx) return;
+    const background = document.createElement("canvas");
+    const backgroundContext = background.getContext("2d");
+    let backgroundKey = "",
+      backgroundArt: Art | null = null;
     let lastEnemyPositions = new Map<number, Point>();
     let frame = 0,
       lastPaint = 0;
@@ -1166,23 +1174,59 @@ export function Battlefield({
         viewport.current,
         camera.current,
       );
-      drawLandscape(ctx, art.current, map, pixelScale, undefined, overview);
-      if (previewRef.current) {
-        ctx.save();
-        ctx.globalAlpha = 0.58;
+      const cacheKey = `${terrainKey.current}|${node.width}|${node.height}|${camera.current.x}|${camera.current.y}|${pixelScale}|${overview}`;
+      if (
+        backgroundContext &&
+        (backgroundKey !== cacheKey || backgroundArt !== art.current)
+      ) {
+        background.width = node.width;
+        background.height = node.height;
+        backgroundContext.setTransform(1, 0, 0, 1, 0, 0);
+        backgroundContext.fillStyle = palette.terrain.forest;
+        backgroundContext.fillRect(0, 0, background.width, background.height);
+        backgroundContext.setTransform(ctx.getTransform());
         drawLandscape(
-          ctx,
+          backgroundContext,
           art.current,
-          previewRef.current,
-          pixelScale,
           map,
+          pixelScale,
+          undefined,
           overview,
         );
-        ctx.restore();
+        if (previewRef.current) {
+          backgroundContext.save();
+          backgroundContext.globalAlpha = 0.58;
+          drawLandscape(
+            backgroundContext,
+            art.current,
+            previewRef.current,
+            pixelScale,
+            map,
+            overview,
+          );
+          backgroundContext.restore();
+        }
+        drawRoutes(backgroundContext, map, pixelScale, undefined, overview);
+        if (previewRef.current)
+          drawRoutes(
+            backgroundContext,
+            previewRef.current,
+            pixelScale,
+            map,
+            overview,
+          );
+        backgroundKey = cacheKey;
+        backgroundArt = art.current;
       }
-      drawRoutes(ctx, map, pixelScale, undefined, overview);
-      if (previewRef.current)
-        drawRoutes(ctx, previewRef.current, pixelScale, map, overview);
+      if (backgroundContext) {
+        ctx.save();
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.drawImage(background, 0, 0);
+        ctx.restore();
+      } else {
+        drawLandscape(ctx, art.current, map, pixelScale, undefined, overview);
+        drawRoutes(ctx, map, pixelScale, undefined, overview);
+      }
       if (overview) {
         drawOverview(ctx, map, v, pixelScale);
         return;
