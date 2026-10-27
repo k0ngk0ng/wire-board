@@ -604,3 +604,7 @@
     transition: none;
   }
 }
+/* Keep the icon's foreground/background pair under the shared button hover. */
+.starfort-board .sf-skill-icon:hover:not(:disabled) {
+  background: #f4efd8;
+}

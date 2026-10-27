@@ -48,6 +48,9 @@ try:
     r=c.rect('[data-sf-skill]');c.b('mouse','move',r['x']+r['width']/2,r['y']+r['height']/2)
    c.wait('!!document.querySelector("[data-sf-skill-tooltip]")')
    tip=c.visibility('[data-sf-skill-tooltip]');assert tip['visible'] and tip['inside'],tip
+   contrast=c.js(r"""(()=>{const s=getComputedStyle(document.querySelector('[data-sf-skill]'));const lum=v=>v.match(/[\d.]+/g).slice(0,3).map(Number).map(v=>v/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4).reduce((a,v,i)=>a+v*[.2126,.7152,.0722][i],0);const a=lum(s.color),b=lum(s.backgroundColor);return {color:s.color,background:s.backgroundColor,ratio:(Math.max(a,b)+.05)/(Math.min(a,b)+.05)}})()""")
+   w.artifact('skill-contrast-'+str(width)+'.json',contrast)
+   assert contrast['ratio']>=3,('skill icon hover contrast',contrast)
    assert '填' in c.js('document.querySelector("[data-sf-skill-tooltip]").textContent')
    c.screenshot('skill-'+str(width))
    c.b('press','Escape');c.stable()
