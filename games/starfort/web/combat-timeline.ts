@@ -35,7 +35,7 @@ export type TimedEvent = Event & { born: number };
 export type CombatStatus = { baseHP: number };
 type CombatSnapshot = Pick<
   View,
-  "elapsedMS" | "tick" | "phase" | "enemies" | "baseHP" | "craters"
+  "elapsedMS" | "tick" | "phase" | "enemies" | "baseHP" | "craters" | "iceWalls"
 >;
 type Pending = {
   at: number;
@@ -141,16 +141,31 @@ export class CombatPlayback {
       this.offset = nextOffset;
       this.started = true;
     }
+    const walls = new Map(
+      [
+        ...(this.current.iceWalls ?? []),
+        ...(snapshot.iceWalls ?? []),
+        ...events.flatMap((event) => (event.iceWall ? [event.iceWall] : [])),
+      ].map((wall) => [wall.id, wall]),
+    );
     const effects = events.map((event) => {
-      const born = immediateEvents.has(event.type)
+      let born = immediateEvents.has(event.type)
         ? receivedAt
         : this.time(eventTime(event)) +
-          (["shot", "spawn", "summon"].includes(event.type) ? 0 : FLIGHT_MS);
+          (["shot", "spawn", "summon", "frostbound"].includes(event.type)
+            ? 0
+            : FLIGHT_MS);
+      if (event.type === "frostbound" && event.iceWallId) {
+        const wall = walls.get(event.iceWallId);
+        if (wall) born = Math.max(born, this.time(wall.createdMS) + FLIGHT_MS);
+      }
       if (
         event.target ||
         event.damage?.length ||
         event.crater ||
-        event.slowTargets?.length
+        event.slowTargets?.length ||
+        (event.type === "frostbound" && event.targetId) ||
+        event.iceWall
       )
         this.pending.push({ at: born, order: event.id, event });
       return { ...event, born };
@@ -176,7 +191,11 @@ export class CombatPlayback {
       const enemies = new Map(
         this.current.enemies.map((enemy) => [enemy.id, enemy]),
       );
-      if (target) {
+      if (event.type === "frostbound") {
+        // Contact changes status only; projectile HP remains on its own clock.
+        const current = enemies.get(event.targetId ?? target?.id ?? 0);
+        if (current) enemies.set(current.id, { ...current, frostbound: true });
+      } else if (target) {
         if (
           event.type === "base_hit" ||
           event.type === "death" ||
@@ -184,7 +203,12 @@ export class CombatPlayback {
         )
           enemies.delete(target.id);
         else if (event.type !== "shot" || !enemies.has(target.id))
-          enemies.set(target.id, target);
+          enemies.set(
+            target.id,
+            enemies.get(target.id)?.frostbound
+              ? { ...target, frostbound: true }
+              : target,
+          );
       }
       for (const delta of event.damage ?? []) {
         const victim = enemies.get(delta.id);
@@ -213,8 +237,15 @@ export class CombatPlayback {
               enemies.set(id, { ...enemy, repairing: 0 });
         }
       }
+      let iceWalls = this.current.iceWalls;
+      if (event.iceWall) {
+        const walls = new Map((iceWalls ?? []).map((w) => [w.id, w]));
+        walls.set(event.iceWall.id, event.iceWall);
+        iceWalls = [...walls.values()];
+      }
       this.current = {
         ...this.current,
+        iceWalls,
         enemies: [...enemies.values()],
         craters,
         baseHP:

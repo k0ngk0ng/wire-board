@@ -26,6 +26,10 @@ func legacyStartMatch(m gameapi.Match) (gameapi.Match, error) {
 		return m, e
 	}
 	s.World.Layout = ""
+	s.SkillRules = 0
+	s.SkillRNG = 0
+	s.IceWalls = nil
+	s.IceWallSerial = 0
 	s.World.Map = archive.Maps[int(s.World.Seed%15)]
 	s.World.Objectives = []game.Objective{}
 	s.Craters = nil

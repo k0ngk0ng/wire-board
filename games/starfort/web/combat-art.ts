@@ -1,4 +1,4 @@
-import type { Crater, Event } from "./types";
+import type { Crater, Event, IceWall } from "./types";
 import { craterDepth, workerPose } from "./animation";
 
 function ellipse(
@@ -14,6 +14,93 @@ function ellipse(
   ctx.ellipse(x, y, rx, ry, 0, 0, Math.PI * 2);
   ctx.fill();
 }
+
+const iceArt = new WeakMap<
+  CanvasRenderingContext2D,
+  Map<string, HTMLCanvasElement>
+>();
+function paintIceCrystals(
+  ctx: CanvasRenderingContext2D,
+  wall: IceWall,
+  growth: number,
+) {
+  const dx = Math.cos(wall.angle),
+    dy = Math.sin(wall.angle);
+  ctx.strokeStyle = "#70bddf";
+  ctx.lineWidth = 8;
+  ctx.lineCap = "round";
+  ctx.beginPath();
+  ctx.moveTo(wall.x - dx * 36, wall.y - dy * 36);
+  ctx.lineTo(wall.x + dx * 36, wall.y + dy * 36);
+  ctx.stroke();
+  const crystals = Array.from({ length: 7 }, (_, i) => ({
+    i,
+    x: wall.x + dx * (i - 3) * 11,
+    y: wall.y + dy * (i - 3) * 11,
+  })).sort((a, b) => a.y - b.y);
+  for (const { i, x, y } of crystals) {
+    const height = (22 + (i % 3) * 7) * growth;
+    ctx.fillStyle = "#b7edff";
+    ctx.strokeStyle = "#39758f";
+    ctx.lineWidth = 1.4;
+    ctx.beginPath();
+    ctx.moveTo(x - 7, y + 3);
+    ctx.lineTo(x - 6, y - height * 0.65);
+    ctx.lineTo(x + 1, y - height);
+    ctx.lineTo(x + 7, y - height * 0.6);
+    ctx.lineTo(x + 8, y + 3);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+    ctx.strokeStyle = "#f1fcff";
+    ctx.beginPath();
+    ctx.moveTo(x + 1, y - height + 3);
+    ctx.lineTo(x + 1, y);
+    ctx.lineTo(x - 5, y + 2);
+    ctx.stroke();
+  }
+}
+export function drawIceWall(
+  ctx: CanvasRenderingContext2D,
+  wall: IceWall,
+  logicalMS: number,
+  reduced: boolean,
+  birthAge: number | null = null,
+) {
+  if (logicalMS >= wall.expiresMS) return;
+  const growth =
+    reduced || birthAge === null ? 1 : Math.max(0, Math.min(1, birthAge / 240));
+  let cache = iceArt.get(ctx);
+  if (!cache) {
+    cache = new Map();
+    iceArt.set(ctx, cache);
+  }
+  const key = wall.angle.toFixed(4);
+  let image = cache.get(key);
+  if (!image) {
+    const bitmap = ctx.canvas.ownerDocument.createElement("canvas");
+    bitmap.width = 256;
+    bitmap.height = 256;
+    bitmap.dataset.sfIceArt = "true";
+    const painter = bitmap.getContext("2d");
+    if (painter) {
+      painter.setTransform(2, 0, 0, 2, 128, 160);
+      paintIceCrystals(painter, { ...wall, x: 0, y: 0 }, 1);
+      image = bitmap;
+      cache.set(key, bitmap);
+      if (cache.size > 32) cache.delete(cache.keys().next().value!);
+    }
+  }
+  ctx.save();
+  ctx.globalAlpha = reduced
+    ? 1
+    : Math.min(1, (wall.expiresMS - logicalMS) / 450);
+  if (image)
+    ctx.drawImage(image, wall.x - 64, wall.y - 80 * growth, 128, 128 * growth);
+  else paintIceCrystals(ctx, wall, growth);
+  ctx.restore();
+}
+
 export function drawCrater(ctx: CanvasRenderingContext2D, crater: Crater) {
   const depth = craterDepth(crater.remaining, crater.total),
     r = crater.radius;
@@ -97,7 +184,44 @@ export function drawCombatAccent(
   ctx.save();
   ctx.translate(x, y);
   ctx.globalAlpha = 1 - p;
-  if (e.type === "chain") {
+  if ((e.skill === "execute" || e.skill === "heart") && e.type === "hit") {
+    ctx.strokeStyle = e.skill === "execute" ? "#fff1b8" : "#efb8bf";
+    ctx.lineWidth = 4 * (1 - p) + 1;
+    ctx.beginPath();
+    ctx.moveTo(-14, -24 - 30 * p);
+    ctx.lineTo(12, 12 + 30 * p);
+    ctx.moveTo(12, -16);
+    ctx.lineTo(-9, 10);
+    ctx.stroke();
+    ellipse(ctx, 0, 0, 8 + 18 * p, 5 + 10 * p, "#ffe8a088");
+  } else if (e.skill === "volley" && e.type === "hit") {
+    ctx.strokeStyle = "#ffe8a4";
+    ctx.lineWidth = 2.5;
+    for (let i = 0; i < 9; i++) {
+      const a = (i * Math.PI * 2) / 9;
+      ctx.save();
+      ctx.rotate(a);
+      ctx.beginPath();
+      ctx.moveTo(9 + 8 * p, 0);
+      ctx.lineTo(24 + 22 * p, 0);
+      ctx.lineTo(19 + 22 * p, -4);
+      ctx.moveTo(24 + 22 * p, 0);
+      ctx.lineTo(19 + 22 * p, 4);
+      ctx.stroke();
+      ctx.restore();
+    }
+  } else if (e.type === "ice_wall" || e.type === "frostbound") {
+    ctx.strokeStyle = "#ddf8ff";
+    ctx.lineWidth = 2;
+    for (let i = 0; i < 8; i++) {
+      const a = (i * Math.PI) / 4;
+      const r = 10 + 28 * p;
+      ctx.beginPath();
+      ctx.moveTo(Math.cos(a) * r, Math.sin(a) * r * 0.5 - 10 * p);
+      ctx.lineTo(Math.cos(a) * (r + 7), Math.sin(a) * (r + 7) * 0.5 - 10 * p);
+      ctx.stroke();
+    }
+  } else if (e.type === "chain") {
     ctx.strokeStyle = "#d9b4ff";
     ctx.lineWidth = 3;
     ctx.shadowColor = "#a96bff";

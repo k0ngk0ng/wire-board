@@ -53,6 +53,7 @@ func (s *State) enemyAbilities() {
 				s.EnemySerial++
 				guard.ID = s.EnemySerial
 				guard.Kind = "shield"
+				guard.Frostbound = false
 				guard.Phase = 0
 				guard.AbilityTick = s.Tick
 				guard.HP = math.Max(1, e.MaxHP*.06)

@@ -39,7 +39,7 @@ func scenarioModule() gameapi.Module {
 			delete(v, "scenario")
 		}
 		switch scenario {
-		case "central-passives", "cadence", "cadence-speed", "vitality", "impact", "natural", "battle", "victory-ready", "defeat-ready", "advanced", "zero-gold", "growth-vote", "cleared-5", "cleared-10", "cleared-15", "stage2", "stage3", "stage4", "endless-rotation", "objectives", "objectives-clear", "objectives-fail", "legacy-save":
+		case "ice-arrow", "ice-wall", "central-passives", "cadence", "cadence-speed", "vitality", "impact", "natural", "battle", "victory-ready", "defeat-ready", "advanced", "zero-gold", "growth-vote", "cleared-5", "cleared-10", "cleared-15", "stage2", "stage3", "stage4", "endless-rotation", "objectives", "objectives-clear", "objectives-fail", "legacy-save":
 		default:
 			return "", nil, errors.New("unknown test scenario")
 		}
@@ -69,7 +69,7 @@ func scenarioModule() gameapi.Module {
 		if err != nil {
 			return match, err
 		}
-		if scenario != "natural" && scenario != "central-passives" {
+		if scenario != "natural" && scenario != "central-passives" && scenario != "ice-arrow" && scenario != "ice-wall" {
 			match, err = legacyStartMatch(match)
 			if err != nil {
 				return match, err
@@ -99,7 +99,47 @@ func scenarioModule() gameapi.Module {
 			}
 		}
 		switch scenario {
+		case "ice-arrow", "ice-wall":
+			if err = fixtureCadence(&s, 1, ""); err != nil {
+				return match, err
+			}
+			s.SkillRules = 2
+			s.SkillRNG = 5
+			s.Wave = 4
+			s.CompletedWaves = 3
+			lead := s.Enemies[0]
+			lead.Level = 4
+			lead.Kind = "slime"
+			lead.Shield = 0
+			s.Enemies = nil
+			if scenario == "ice-arrow" {
+				s.Towers[0].Level = 3
+				for i, kind := range []string{"slime", "elite", "boss"} {
+					e := lead
+					e.ID = i + 1
+					e.Kind = kind
+					e.Progress -= float64(i) * 2
+					e.X, e.Y = fixturePathPosition(s.World.Map.Routes[0].Points, e.Progress)
+					e.Phase = 1
+					s.Enemies = append(s.Enemies, e)
+				}
+			} else {
+				s.Towers = []starfort.Tower{s.Towers[2]}
+				s.SkillRNG = 2
+				for i := 0; i < 12; i++ {
+					e := lead
+					e.ID = i + 1
+					e.Progress -= float64(i) * 4
+					e.Speed = 24
+					e.X, e.Y = fixturePathPosition(s.World.Map.Routes[0].Points, e.Progress)
+					s.Enemies = append(s.Enemies, e)
+				}
+			}
+			s.EnemySerial = len(s.Enemies)
+			s.WaveInfo.Total = len(s.Enemies)
+			s.WaveInfo.Spawned = len(s.Enemies)
 		case "central-passives":
+			s.SkillRules = 0
 			if err = fixtureCadence(&s, 1, ""); err != nil {
 				return match, err
 			}

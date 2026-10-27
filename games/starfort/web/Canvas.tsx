@@ -37,7 +37,12 @@ import type { Enemy, Event, View, MapData, Point, Objective } from "./types";
 import atlasLayout from "../assets/public/starfort/v1/atlas.json";
 import worldAtlasLayout from "../assets/public/starfort/world-v2/atlas.json";
 import { shotPose, workerPose } from "./animation";
-import { drawCrater, drawRepairTool, drawCombatAccent } from "./combat-art";
+import {
+  drawCrater,
+  drawRepairTool,
+  drawCombatAccent,
+  drawIceWall,
+} from "./combat-art";
 import { battlefieldPalette as palette } from "./palette";
 
 type Atlas = {
@@ -1151,6 +1156,7 @@ export function Battlefield({
           enemies: combat.enemies,
           baseHP: combat.baseHP,
           craters: combat.craters,
+          iceWalls: combat.iceWalls,
           phase: combat.phase,
         },
         map = v.map,
@@ -1245,6 +1251,23 @@ export function Battlefield({
         reduced,
       );
       for (const crater of v.craters ?? []) drawCrater(ctx, crater);
+      const effectClock =
+        v.phase === "battle"
+          ? at - timeline.current.time(0) - FLIGHT_MS
+          : v.elapsedMS;
+      const wallBirths = new Map(
+        effects.current
+          .filter((e) => e.type === "ice_wall" && e.iceWall && e.born <= at)
+          .map((e) => [e.iceWall!.id, at - e.born]),
+      );
+      for (const wall of v.iceWalls ?? [])
+        drawIceWall(
+          ctx,
+          wall,
+          effectClock,
+          reduced,
+          wallBirths.get(wall.id) ?? null,
+        );
       const rangePad = hoverRef.current ?? selectedRef.current;
       const sel = map.pads.find((p) => p.id === rangePad),
         tower = v.towers.find((t) => t.pad === rangePad);
@@ -1453,7 +1476,7 @@ export function Battlefield({
           position.y = crater.y + pose.y;
         }
         enemyPositions.set(enemy.id, position);
-        const frozen = enemy.slowUntil > v.tick;
+        const frozen = enemy.frostbound || enemy.slowUntil > v.tick;
         if (enemy.kind === "boss" && (enemy.phase ?? 1) > 1) {
           const size = Math.max(100, 60 / pixelScale);
           sprite(
@@ -1514,6 +1537,22 @@ export function Battlefield({
           )
         )
           fallbackEnemy(ctx, x, y + size * 0.15, size, enemy.kind);
+        if (enemy.frostbound) {
+          ctx.save();
+          ctx.strokeStyle = "#ecfbff";
+          ctx.lineWidth = Math.max(1.5, 1 / pixelScale);
+          ctx.beginPath();
+          for (let i = 0; i < 3; i++) {
+            const fx = x + (i - 1) * size * 0.19,
+              fy = y + size * 0.13;
+            ctx.moveTo(fx, fy - 7);
+            ctx.lineTo(fx, fy + 2);
+            ctx.moveTo(fx - 4, fy - 4);
+            ctx.lineTo(fx + 4, fy - 1);
+          }
+          ctx.stroke();
+          ctx.restore();
+        }
         if (crater)
           drawRepairTool(
             ctx,
@@ -1596,7 +1635,7 @@ export function Battlefield({
         for (const victim of e.damage ?? [])
           drawCombatAccent(
             ctx,
-            { ...accent, damage: undefined },
+            { ...accent, damage: undefined, skill: undefined },
             elapsed,
             victim.x,
             victim.y,
@@ -1623,7 +1662,11 @@ export function Battlefield({
                 : e.skill === "focus"
                   ? "#fff4bbee"
                   : "#ead4a477";
-          ctx.lineWidth = e.skill === "focus" ? 5 : 3;
+          ctx.lineWidth = ["focus", "execute", "heart", "volley"].includes(
+            e.skill ?? "",
+          )
+            ? 5
+            : 3;
           ctx.beginPath();
           const tail = Math.max(0, p - 0.22);
           ctx.moveTo(

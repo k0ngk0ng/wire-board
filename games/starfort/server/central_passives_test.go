@@ -64,6 +64,7 @@ func TestCentralMapFixedFromStart(t *testing.T) {
 func craterCase(t *testing.T, workers int) (*State, int) {
 	t.Helper()
 	s := centralCase(t, 1)
+	s.SkillRules = 0 // archived focus/ring skill cases
 	s.Phase = "battle"
 	s.ElapsedMS = 200
 	s.Tick = 1
@@ -160,6 +161,7 @@ func TestCraterCooldownOverlapAndRestore(t *testing.T) {
 }
 func skillCase(t *testing.T, kind string) *State {
 	s := centralCase(t, 1)
+	s.SkillRules = 0 // archived focus/ring skill cases
 	s.Phase = "battle"
 	s.ElapsedMS = 200
 	s.Tick = 1
@@ -243,13 +245,14 @@ func TestCraterSnapshotRejectsInvalidState(t *testing.T) {
 func TestCentralAndLegacySnapshotVersions(t *testing.T) {
 	s := centralCase(t, 1)
 	m, e := s.Envelope()
-	if e != nil || m.Schema != 3 {
-		t.Fatal("new central layout needs schema 3", m.Schema, e)
+	if e != nil || m.Schema != 4 {
+		t.Fatal("new central skills need schema 4", m.Schema, e)
 	}
 	if _, e = decode(m); e != nil {
 		t.Fatal(e)
 	}
 	s.World.Layout = ""
+	s.SkillRules = 0
 	m, e = s.Envelope()
 	if e != nil || m.Schema != 2 {
 		t.Fatal("legacy layout changed schema", e)

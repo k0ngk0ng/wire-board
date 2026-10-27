@@ -121,6 +121,12 @@ func (s *State) centralInvestment(player int) *Action {
 			if t.Kind == "cannon" || t.Kind == "frost" {
 				a.Branch = "speed"
 			}
+			if s.SkillRules == 2 && t.Kind == "arrow" {
+				a.Branch = "volley"
+				if t.ID%2 == 0 {
+					a.Branch = "heart"
+				}
+			}
 		}
 		return a
 	}

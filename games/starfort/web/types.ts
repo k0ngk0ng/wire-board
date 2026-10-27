@@ -95,12 +95,26 @@ export type Player = {
   resumeVote: boolean;
 };
 export type Passive = {
+  triggerChance?: number;
+  executeMaxLevel?: number;
+  variant?: "ice-wall" | "volley" | "heart";
   name: string;
   description: string;
   cooldownMS: number;
   readyInMS: number;
   stacks: number;
   maxStacks: number;
+};
+export type IceWall = Point & {
+  id: number;
+  angle: number;
+  createdMS: number;
+  expiresMS: number;
+};
+export type BranchChoice = {
+  id: "power" | "speed" | "volley" | "heart";
+  name: string;
+  description: string;
 };
 export type Crater = Point & {
   id: number;
@@ -126,7 +140,8 @@ export type Tower = {
   owner: number;
   kind: TowerKind;
   level: number;
-  branch?: "power" | "speed";
+  branch?: "power" | "speed" | "volley" | "heart";
+  branchName?: string;
   angle: number;
   cooldown: number;
   priority?: TargetPriority;
@@ -135,6 +150,8 @@ export type Tower = {
   effectiveInterval?: number;
 };
 export type Enemy = Point & {
+  level?: number;
+  frostbound?: boolean;
   repairing?: number;
   repairSinceMS?: number;
   health?: number;
@@ -152,6 +169,8 @@ export type Enemy = Point & {
   abilityTick?: number;
 };
 export type Event = Point & {
+  iceWallId?: number;
+  iceWall?: IceWall;
   slowTargets?: number[];
   slowUntil?: number;
   damage?: { id: number; amount: number; x: number; y: number }[];
@@ -172,6 +191,7 @@ export type Event = Point & {
   tick: number;
 };
 export type View = {
+  iceWalls?: IceWall[];
   craters?: Crater[];
   options: Options;
   phase: "prepare" | "battle" | "paused" | "won" | "lost";
@@ -224,6 +244,7 @@ export type View = {
       cost: number;
       enabled: boolean;
       needsBranch: boolean;
+      branches?: BranchChoice[];
     }[];
     sells: { towerId: number; refund: number; enabled: boolean }[];
   };

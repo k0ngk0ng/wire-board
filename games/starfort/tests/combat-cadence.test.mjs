@@ -319,3 +319,45 @@ test('one compact frost ring applies all slow targets at impact',()=>{
  assert.equal(p.read(1379).enemies[1].slowUntil,0);
  assert.deepEqual(p.read(1380).enemies.map(e=>e.slowUntil),[16,16]);
 });
+
+test('ice wall and permanent frost appear on the authoritative effect clock',()=>{
+ const initial=snap(0,[enemy(1,100)]),p=new CombatPlayback(initial,0);
+ const wall={id:1,x:100,y:0,progress:100,createdMS:200,expiresMS:6200};
+ const frozen={...enemy(1,100),frostbound:true,level:4};
+ const events=[event(1,'ice_wall',200,undefined,{iceWall:wall}),event(2,'frostbound',600,frozen)];
+ p.push({...snap(1000,[frozen]),iceWalls:[wall]},events,1000);
+ assert.equal(p.read(1379).iceWalls?.length??0,0);
+ assert.equal(p.read(1380).iceWalls.length,1);
+ assert.equal(p.read(1599).enemies[0].frostbound,undefined);
+ assert.equal(p.read(1600).enemies[0].frostbound,true);
+ p.push({...snap(7000,[frozen]),iceWalls:[]},[],7000);
+ assert.equal(p.read(8180).iceWalls.length,0);
+ assert.equal(p.read(8180).enemies[0].frostbound,true);
+});
+
+test('wall contact changes status immediately without revealing a simultaneous hit early',()=>{
+ const p=new CombatPlayback(snap(0,[enemy(1,100)]),0);
+ const damaged=enemy(1,90),frozen={...damaged,frostbound:true};
+ const events=[event(1,'shot',600,enemy(1,100)),event(2,'hit',600,damaged),event(3,'frostbound',600,frozen)];
+ p.push(snap(1000,[frozen]),events,1000);
+ assert.equal(p.read(1600).enemies[0].frostbound,true);assert.equal(hp(p,1779),100);
+ assert.equal(hp(p,1780),90);assert.equal(p.read(1780).enemies[0].frostbound,true);
+});
+
+test('a fast enemy cannot show frost before the creating projectile reaches the wall',()=>{
+ const p=new CombatPlayback(snap(0,[enemy(1,100)]),0);
+ const wall={id:1,x:100,y:0,createdMS:200,expiresMS:6200};
+ const frozen={...enemy(1,90),frostbound:true};
+ const events=[event(1,'shot',200,enemy(1,100)),event(2,'hit',200,enemy(1,90)),event(3,'ice_wall',200,undefined,{iceWall:wall}),event(4,'frostbound',200,frozen,{iceWallId:1})];
+ p.push({...snap(1000,[frozen]),iceWalls:[wall]},events,1000);
+ assert.equal(p.read(1379).enemies[0].frostbound,undefined);assert.equal(hp(p,1379),100);
+ assert.equal(p.read(1380).enemies[0].frostbound,true);assert.equal(hp(p,1380),90);assert.equal(p.read(1380).iceWalls.length,1);
+});
+
+test('compact permanent-frost event needs no copied enemy snapshot',()=>{
+ const p=new CombatPlayback(snap(0,[enemy(1,100)]),0);
+ const frozen={...enemy(1,100),frostbound:true};
+ const events=[event(1,'frostbound',600,undefined,{targetId:1,iceWallId:1})];
+ p.push(snap(1000,[frozen]),events,1000);
+ assert.equal(p.read(1600).enemies[0].frostbound,true);assert.equal(hp(p,1600),100);
+});

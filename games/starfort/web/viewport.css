@@ -608,3 +608,16 @@
 .starfort-board .sf-skill-icon:hover:not(:disabled) {
   background: #f4efd8;
 }
+.starfort-board .sf-skill-branch {
+  flex-basis: 100%;
+  display: grid;
+  gap: 4px;
+  text-align: left;
+  white-space: normal;
+}
+.sf-skill-branch small {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: inherit;
+}

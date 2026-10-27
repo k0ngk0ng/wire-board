@@ -11,6 +11,7 @@ import (
 func TestDenseBattleRetainsCompleteAttackBatch(t *testing.T) {
 	s := centralCase(t, 4)
 	s.World.Layout = ""
+	s.SkillRules = 0
 	s.Phase = "battle"
 	s.NextAt = 0
 	s.Events = nil

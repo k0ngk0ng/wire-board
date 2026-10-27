@@ -3,6 +3,7 @@ package starfort
 import (
 	"fmt"
 	"math"
+	"slices"
 	"sort"
 )
 
@@ -220,7 +221,11 @@ func (s *State) spawn() {
 	if kind == "boss" {
 		phase = 1
 	}
-	s.Enemies = append(s.Enemies, Enemy{ID: s.EnemySerial, Kind: kind, Route: route, Phase: phase, AbilityTick: s.Tick, X: p.X, Y: p.Y, HP: hp, MaxHP: hp, Shield: shield, Speed: speed, Armor: armor, Reward: reward, Leak: leak})
+	level := 0
+	if s.SkillRules == 2 {
+		level = s.Wave
+	}
+	s.Enemies = append(s.Enemies, Enemy{Level: level, ID: s.EnemySerial, Kind: kind, Route: route, Phase: phase, AbilityTick: s.Tick, X: p.X, Y: p.Y, HP: hp, MaxHP: hp, Shield: shield, Speed: speed, Armor: armor, Reward: reward, Leak: leak})
 	s.WaveInfo.Spawned++
 	s.event(Event{TargetID: s.EnemySerial, Type: "spawn", X: p.X, Y: p.Y, Kind: kind, Owner: -1})
 }
@@ -302,6 +307,7 @@ func (s *State) step(now int64) {
 					spawned := e
 					spawned.ID = 0
 					spawned.Kind = "swarm"
+					spawned.Frostbound = false
 					spawned.HP = math.Max(1, e.MaxHP*.3)
 					spawned.MaxHP = spawned.HP
 					spawned.Shield, spawned.Armor = 0, 0
@@ -328,7 +334,10 @@ func (s *State) step(now int64) {
 		}
 		if e.SlowUntil > s.Tick {
 			speed *= .55
+		} else if e.Frostbound {
+			speed *= .7
 		}
+		oldProgress := e.Progress
 		nextProgress := e.Progress + speed*StepMS/1000
 		if !s.blockAtCrater(&e, nextProgress) {
 			e.Progress = nextProgress
@@ -340,6 +349,7 @@ func (s *State) step(now int64) {
 		}
 		p := pathPosition(s.routePath(e.Route), e.Progress)
 		e.X, e.Y = p.X, p.Y
+		s.crossIceWalls(&e, oldProgress, e.Progress)
 		alive = append(alive, e)
 	}
 	for _, child := range children {
@@ -353,6 +363,7 @@ func (s *State) step(now int64) {
 		s.event(Event{TargetID: child.ID, Target: &target, Type: "summon", X: child.X, Y: child.Y, Kind: child.Kind, Owner: -1})
 	}
 	s.Enemies = alive
+	s.IceWalls = slices.DeleteFunc(s.IceWalls, func(w IceWall) bool { return w.ExpiresMS <= s.ElapsedMS })
 	s.repairCraters()
 	s.stepObjectives()
 	if s.BaseHP == 0 {
@@ -404,7 +415,8 @@ func (s *State) fireTower(index int) bool {
 	enemy := s.Enemies[target]
 	t.Angle = math.Atan2(enemy.Y-pad.Y, enemy.X-pad.X)
 	t.Cooldown = interval
-	damage, skill := s.focusDamage(t, enemy, damage)
+	baseDamage := damage
+	damage, skill := s.arrowSkillDamage(t, enemy, damage)
 	s.event(Event{Skill: skill, TowerID: t.ID, TargetID: enemy.ID, Type: "shot", X: pad.X, Y: pad.Y, ToX: enemy.X, ToY: enemy.Y, Kind: t.Kind, Owner: t.Owner})
 	if t.Kind == "cannon" {
 		for j := range s.Enemies {
@@ -413,18 +425,26 @@ func (s *State) fireTower(index int) bool {
 			}
 		}
 	} else {
-		s.hit(target, damage, *t)
+		s.hitWithSkill(target, damage, *t, skill)
+		if skill == "volley" {
+			for j := range s.Enemies {
+				if j != target && s.Enemies[j].HP > 0 && math.Hypot(s.Enemies[j].X-enemy.X, s.Enemies[j].Y-enemy.Y) <= 75 {
+					s.hitWithSkill(j, baseDamage*.7, *t, skill)
+				}
+			}
+		}
 	}
 	s.onTowerHit(t, enemy, damage)
 	return true
 }
 
-func (s *State) hit(index int, damage float64, t Tower) {
+func (s *State) hit(index int, damage float64, t Tower) { s.hitWithSkill(index, damage, t, "") }
+func (s *State) hitWithSkill(index int, damage float64, t Tower, skill string) {
 	e := &s.Enemies[index]
 	if e.HP <= 0 {
 		return
 	}
-	if t.Kind != "arcane" {
+	if t.Kind != "arcane" && skill != "execute" {
 		damage *= 1 - e.Armor
 	}
 	before := e.HP + e.Shield
@@ -443,13 +463,13 @@ func (s *State) hit(index int, damage float64, t Tower) {
 	if t.Kind == "frost" {
 		e.SlowUntil = max(e.SlowUntil, s.Tick+8)
 	}
-	s.event(Event{TowerID: t.ID, TargetID: e.ID, Type: "hit", X: e.X, Y: e.Y, Kind: e.Kind, Owner: t.Owner, Amount: actual})
+	s.event(Event{Skill: skill, TowerID: t.ID, TargetID: e.ID, Type: "hit", X: e.X, Y: e.Y, Kind: e.Kind, Owner: t.Owner, Amount: actual})
 	if e.HP <= 0 {
 		s.Kills++
 		s.Players[t.Owner].Kills++
 		for i := range s.Players {
 			s.Players[i].Gold = min(maxValue, s.Players[i].Gold+s.rewardGold(e.Reward))
 		}
-		s.event(Event{TowerID: t.ID, TargetID: e.ID, Type: "death", X: e.X, Y: e.Y, Kind: e.Kind, Owner: t.Owner, Amount: float64(s.rewardGold(e.Reward))})
+		s.event(Event{Skill: skill, TowerID: t.ID, TargetID: e.ID, Type: "death", X: e.X, Y: e.Y, Kind: e.Kind, Owner: t.Owner, Amount: float64(s.rewardGold(e.Reward))})
 	}
 }

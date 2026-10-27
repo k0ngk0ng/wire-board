@@ -69,11 +69,13 @@ export function SkillBadge({
     };
   }, [open]);
   const state = skillProgress(passive, elapsed, phase === "battle");
-  const label = state.stacks
-    ? `${passive.stacks}/${passive.maxStacks}`
-    : state.ready
-      ? "就绪"
-      : `${(state.remainingMS / 1000).toFixed(1)} 秒`;
+  const label = passive.triggerChance
+    ? `${passive.triggerChance}% 触发`
+    : state.stacks
+      ? `${passive.stacks}/${passive.maxStacks}`
+      : state.ready
+        ? "就绪"
+        : `${(state.remainingMS / 1000).toFixed(1)} 秒`;
   return (
     <div className="sf-skill" ref={root} data-ready={state.ready}>
       <button
@@ -118,7 +120,20 @@ export function SkillBadge({
             strokeLinecap="round"
             strokeLinejoin="round"
           >
-            {kind === "arrow" ? (
+            {passive.variant === "volley" ? (
+              <>
+                <path d="M24 34V13m-4 4 4-4 4 4M17 32l-5-17m-2 6 2-6 5 3M31 32l5-17m-5 3 5-3 2 6" />
+              </>
+            ) : passive.variant === "heart" ? (
+              <>
+                <path d="M14 34 34 14m-8 0h8v8" />
+                <path d="M24 29c-13-6-8-15 0-9 8-6 13 3 0 9Z" />
+              </>
+            ) : passive.variant === "ice-wall" ? (
+              <>
+                <path d="m12 32 2-14 5-4 3 18m-2 0 4-20 5 7 1 13m-1 0 3-12 4 3 1 9M11 34h27" />
+              </>
+            ) : kind === "arrow" ? (
               <>
                 <path d="M15 33 32 16m-9 0h9v9M15 25l7 7m-9-3 6 6" />
               </>
