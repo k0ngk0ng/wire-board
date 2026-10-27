@@ -26,17 +26,23 @@ type Crater struct {
 	FilledMS    int64   `json:"filledMS,omitempty"`
 }
 type PassiveView struct {
-	Name        string `json:"name"`
-	Description string `json:"description"`
-	CooldownMS  int64  `json:"cooldownMS"`
-	ReadyInMS   int64  `json:"readyInMS"`
-	Stacks      int    `json:"stacks"`
-	MaxStacks   int    `json:"maxStacks"`
+	TriggerChance   int    `json:"triggerChance,omitempty"`
+	ExecuteMaxLevel int    `json:"executeMaxLevel,omitempty"`
+	Variant         string `json:"variant,omitempty"`
+	Name            string `json:"name"`
+	Description     string `json:"description"`
+	CooldownMS      int64  `json:"cooldownMS"`
+	ReadyInMS       int64  `json:"readyInMS"`
+	Stacks          int    `json:"stacks"`
+	MaxStacks       int    `json:"maxStacks"`
 }
 
 func (s *State) passiveView(t Tower) *PassiveView {
 	if s.World.Layout != "central" {
 		return nil
+	}
+	if p := s.newSkillView(t); p != nil {
+		return p
 	}
 	p := &PassiveView{ReadyInMS: max(0, t.PassiveReadyAt-s.ElapsedMS)}
 	switch t.Kind {
@@ -194,6 +200,10 @@ func (s *State) onTowerHit(t *Tower, target Enemy, damage float64) {
 		return
 	}
 	now := s.combatNow()
+	if t.Kind == "frost" && s.SkillRules == 2 {
+		s.makeIceWall(t, target)
+		return
+	}
 	if t.Kind == "cannon" {
 		s.makeCrater(t, target)
 		return

@@ -457,6 +457,11 @@ export function Board({
     (u) => u.towerId === selectedTower?.id,
   );
   const sale = data.controls.sells.find((s) => s.towerId === selectedTower?.id);
+  const branchChoices = upgrade?.branches ?? [
+    { id: "power", name: "威力专精", description: "提高单次伤害" },
+    { id: "speed", name: "攻速专精", description: "提高攻击频率" },
+  ];
+
   const locked = busy || pending;
   const active = data.controls.canAct && !room.spectating;
   const send = async (type: string, extra: Record<string, unknown> = {}) => {
@@ -473,6 +478,34 @@ export function Board({
       setPending(false);
     }
   };
+  const branchButtons = branchChoices.map((branch) => (
+    <button
+      key={branch.id}
+      className={
+        branch.id === "volley" || branch.id === "heart"
+          ? "sf-skill-branch"
+          : undefined
+      }
+      data-sf-upgrade={branch.id}
+      title={
+        branch.id === "volley" || branch.id === "heart"
+          ? undefined
+          : branch.description
+      }
+      disabled={locked || !upgrade?.enabled}
+      onClick={() =>
+        void send("upgrade", { towerId: selectedTower?.id, branch: branch.id })
+      }
+    >
+      <span>
+        {branch.name} · {upgrade?.cost}
+      </span>
+      {(branch.id === "volley" || branch.id === "heart") && (
+        <small>{branch.description}</small>
+      )}
+    </button>
+  ));
+
   const remaining = Math.max(
     0,
     Math.ceil(
@@ -719,32 +752,7 @@ export function Board({
                 {selectedTower.owner === room.you &&
                   !finished &&
                   (upgrade?.needsBranch ? (
-                    <>
-                      <button
-                        data-sf-upgrade="power"
-                        disabled={locked || !upgrade.enabled}
-                        onClick={() =>
-                          void send("upgrade", {
-                            towerId: selectedTower.id,
-                            branch: "power",
-                          })
-                        }
-                      >
-                        威力 · {upgrade.cost}
-                      </button>
-                      <button
-                        data-sf-upgrade="speed"
-                        disabled={locked || !upgrade.enabled}
-                        onClick={() =>
-                          void send("upgrade", {
-                            towerId: selectedTower.id,
-                            branch: "speed",
-                          })
-                        }
-                      >
-                        攻速 · {upgrade.cost}
-                      </button>
-                    </>
+                    <>{branchButtons}</>
                   ) : (
                     <button
                       data-sf-upgrade="level"
@@ -871,7 +879,7 @@ export function Board({
                             <p>
                               {room.seats[selectedTower.owner]?.name} 的防御塔
                               {selectedTower.branch
-                                ? ` · ${selectedTower.branch === "power" ? "威力" : "攻速"}专精`
+                                ? ` · ${selectedTower.branchName ?? (selectedTower.branch === "power" ? "威力专精" : "攻速专精")}`
                                 : ""}
                             </p>
                           </div>
@@ -965,30 +973,7 @@ export function Board({
                                   选择专精后继续强化
                                 </p>
                                 <div className="sf-branch-actions">
-                                  <button
-                                    data-sf-upgrade="power"
-                                    disabled={locked || !upgrade.enabled}
-                                    onClick={() =>
-                                      void send("upgrade", {
-                                        towerId: selectedTower.id,
-                                        branch: "power",
-                                      })
-                                    }
-                                  >
-                                    威力专精 · {upgrade.cost}
-                                  </button>
-                                  <button
-                                    data-sf-upgrade="speed"
-                                    disabled={locked || !upgrade.enabled}
-                                    onClick={() =>
-                                      void send("upgrade", {
-                                        towerId: selectedTower.id,
-                                        branch: "speed",
-                                      })
-                                    }
-                                  >
-                                    攻速专精 · {upgrade.cost}
-                                  </button>
+                                  {branchButtons}
                                 </div>
                               </>
                             ) : (
@@ -1318,7 +1303,8 @@ export function Board({
                     : "第 6、11、16 波扩展战场，全队投票选择道路，旧塔继续保留。每守过 5 波可选择团队成长；无尽模式轮换来袭入口。"}
                 </p>
                 <p>
-                  三级后可选威力或攻速专精。出售会返还部分投入，请先选中自己的塔查看金额。蓝色轮廓表示减速，敌人头顶的细条显示生命和护盾。
+                  升到 4
+                  级时选择分支，选定后不能切换。新对局的箭塔可选箭雨或一箭穿心，其他塔可选威力或攻速。新对局的敌人等级等于出场波次；精英与首领不会被穿心直接秒杀。永久冰霜不会叠加，临时减速结束后仍保持减速。出售返还金额以塔面板为准。
                 </p>
                 <p>
                   暂停需要全员同意，且只能在波间进行。进度自动保存；连续 24

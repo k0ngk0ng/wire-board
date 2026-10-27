@@ -87,6 +87,8 @@ type Tower struct {
 	Priority       string  `json:"priority"`
 }
 type Enemy struct {
+	Level         int     `json:"level,omitempty"`
+	Frostbound    bool    `json:"frostbound,omitempty"`
 	Repairing     int     `json:"repairing,omitempty"`
 	RepairSinceMS int64   `json:"repairSinceMS,omitempty"`
 	ID            int     `json:"id"`
@@ -124,6 +126,8 @@ type DamageDelta struct {
 	Y      float64 `json:"y"`
 }
 type Event struct {
+	IceWallID   int           `json:"iceWallId,omitempty"`
+	IceWall     *ViewIceWall  `json:"iceWall,omitempty"`
 	SlowTargets []int         `json:"slowTargets,omitempty"`
 	SlowUntil   int64         `json:"slowUntil,omitempty"`
 	Damage      []DamageDelta `json:"damage,omitempty"`
@@ -148,32 +152,36 @@ type Event struct {
 	Tick     int64      `json:"tick"`
 }
 type State struct {
-	Craters        []Crater `json:"craters,omitempty"`
-	CraterSerial   int      `json:"craterSerial,omitempty"`
-	Options        Options  `json:"options"`
-	World          World    `json:"world"`
-	Players        []Player `json:"players"`
-	Phase          string   `json:"phase"`
-	Epoch          int      `json:"epoch"`
-	Wave           int      `json:"wave"`
-	CompletedWaves int      `json:"completedWaves"`
-	BaseHP         int      `json:"baseHP"`
-	BaseMaxHP      int      `json:"baseMaxHP"`
-	Kills          int      `json:"kills"`
-	Tick           int64    `json:"tick"`
-	ServerAt       int64    `json:"serverAt"`
-	NextAt         int64    `json:"nextAt"`
-	ElapsedMS      int64    `json:"elapsedMS"`
-	Towers         []Tower  `json:"towers"`
-	Enemies        []Enemy  `json:"enemies"`
-	WaveInfo       WaveInfo `json:"waveInfo"`
-	Events         []Event  `json:"events"`
-	SpawnClock     int      `json:"spawnClock"`
-	TowerSerial    int      `json:"towerSerial"`
-	EnemySerial    int      `json:"enemySerial"`
-	EventSerial    int      `json:"eventSerial"`
-	Cursor         int      `json:"cursor"`
-	Log            []string `json:"log"`
+	SkillRules     int       `json:"skillRules,omitempty"`
+	SkillRNG       uint64    `json:"skillRng,omitempty"`
+	IceWalls       []IceWall `json:"iceWalls,omitempty"`
+	IceWallSerial  int       `json:"iceWallSerial,omitempty"`
+	Craters        []Crater  `json:"craters,omitempty"`
+	CraterSerial   int       `json:"craterSerial,omitempty"`
+	Options        Options   `json:"options"`
+	World          World     `json:"world"`
+	Players        []Player  `json:"players"`
+	Phase          string    `json:"phase"`
+	Epoch          int       `json:"epoch"`
+	Wave           int       `json:"wave"`
+	CompletedWaves int       `json:"completedWaves"`
+	BaseHP         int       `json:"baseHP"`
+	BaseMaxHP      int       `json:"baseMaxHP"`
+	Kills          int       `json:"kills"`
+	Tick           int64     `json:"tick"`
+	ServerAt       int64     `json:"serverAt"`
+	NextAt         int64     `json:"nextAt"`
+	ElapsedMS      int64     `json:"elapsedMS"`
+	Towers         []Tower   `json:"towers"`
+	Enemies        []Enemy   `json:"enemies"`
+	WaveInfo       WaveInfo  `json:"waveInfo"`
+	Events         []Event   `json:"events"`
+	SpawnClock     int       `json:"spawnClock"`
+	TowerSerial    int       `json:"towerSerial"`
+	EnemySerial    int       `json:"enemySerial"`
+	EventSerial    int       `json:"eventSerial"`
+	Cursor         int       `json:"cursor"`
+	Log            []string  `json:"log"`
 	eventAtMS      *int64
 }
 
@@ -214,7 +222,7 @@ func (s *State) event(e Event) {
 	e.ID = s.EventSerial
 	e.Tick = s.Tick
 	e.AtMS = &atMS
-	if e.TargetID > 0 && e.Target == nil {
+	if e.TargetID > 0 && e.Target == nil && e.Type != "frostbound" {
 		for _, enemy := range s.Enemies {
 			if enemy.ID == e.TargetID {
 				target := viewEnemy(enemy)
@@ -240,6 +248,9 @@ func (s *State) actors() []int {
 	return a
 }
 func (s *State) valid() error {
+	if err := s.validNewSkills(); err != nil {
+		return err
+	}
 	if err := s.validCraters(); err != nil {
 		return err
 	}
@@ -260,7 +271,7 @@ func (s *State) valid() error {
 	ids, pads := map[int]bool{}, map[int]bool{}
 	for _, t := range s.Towers {
 		_, ok := spec(t.Kind)
-		if t.PassiveReadyAt < 0 || t.FocusHits < 0 || t.FocusHits > 2 || t.FocusTarget < 0 || !ok || !slices.Contains([]string{"first", "strong", "support"}, t.Priority) || t.ID < 1 || t.ID > s.TowerSerial || ids[t.ID] || t.Pad < 0 || t.Pad >= len(s.World.Map.Pads) || pads[t.Pad] || t.Owner < 0 || t.Owner >= len(s.Players) || t.Level < 1 || t.Level > maxValue || t.Spent < 1 || t.Spent > maxValue || !finite(t.Angle) || t.Cooldown < 0 || t.Cooldown > 10000 || ((t.Level <= 3) && (t.Branch != "")) || ((t.Level > 3) && t.Branch != "power" && t.Branch != "speed") {
+		if t.PassiveReadyAt < 0 || t.FocusHits < 0 || t.FocusHits > 2 || t.FocusTarget < 0 || !ok || !slices.Contains([]string{"first", "strong", "support"}, t.Priority) || t.ID < 1 || t.ID > s.TowerSerial || ids[t.ID] || t.Pad < 0 || t.Pad >= len(s.World.Map.Pads) || pads[t.Pad] || t.Owner < 0 || t.Owner >= len(s.Players) || t.Level < 1 || t.Level > maxValue || t.Spent < 1 || t.Spent > maxValue || !finite(t.Angle) || t.Cooldown < 0 || t.Cooldown > 10000 || !s.validBranch(t) {
 			return errors.New("无效防御塔")
 		}
 		ids[t.ID] = true
@@ -268,7 +279,7 @@ func (s *State) valid() error {
 	}
 	ids = map[int]bool{}
 	for _, e := range s.Enemies {
-		if e.ID < 1 || e.ID > s.EnemySerial || ids[e.ID] || !slices.Contains([]string{"slime", "runner", "armored", "swarm", "shield", "elite", "boss", "healer", "banner", "splitter", "engineer"}, e.Kind) || !finite(e.HP) || !finite(e.MaxHP) || !finite(e.Shield) || !finite(e.X) || !finite(e.Y) || !finite(e.Progress) || !finite(e.Speed) || !finite(e.Armor) || e.HP <= 0 || e.MaxHP <= 0 || e.HP > e.MaxHP || e.Shield < 0 || e.Speed <= 0 || e.Speed > 500 || e.Progress < 0 || e.Progress > pathDistance(s.routePath(e.Route)) || len(s.routePath(e.Route)) < 2 || e.Phase < 0 || e.Phase > 2 || e.AbilityTick < 0 || e.Armor < 0 || e.Armor > 1 || e.Reward < 0 || e.Leak < 1 {
+		if e.Level < 0 || e.Level > maxValue || e.ID < 1 || e.ID > s.EnemySerial || ids[e.ID] || !slices.Contains([]string{"slime", "runner", "armored", "swarm", "shield", "elite", "boss", "healer", "banner", "splitter", "engineer"}, e.Kind) || !finite(e.HP) || !finite(e.MaxHP) || !finite(e.Shield) || !finite(e.X) || !finite(e.Y) || !finite(e.Progress) || !finite(e.Speed) || !finite(e.Armor) || e.HP <= 0 || e.MaxHP <= 0 || e.HP > e.MaxHP || e.Shield < 0 || e.Speed <= 0 || e.Speed > 500 || e.Progress < 0 || e.Progress > pathDistance(s.routePath(e.Route)) || len(s.routePath(e.Route)) < 2 || e.Phase < 0 || e.Phase > 2 || e.AbilityTick < 0 || e.Armor < 0 || e.Armor > 1 || e.Reward < 0 || e.Leak < 1 {
 			return errors.New("无效敌人")
 		}
 		ids[e.ID] = true
@@ -278,11 +289,17 @@ func (s *State) valid() error {
 	}
 	last := 0
 	for _, e := range s.Events {
-		if e.ID <= last || e.ID > s.EventSerial || !finite(e.X) || !finite(e.Y) || !finite(e.ToX) || !finite(e.ToY) || !finite(e.Amount) || e.Tick < 0 || e.Tick > s.Tick {
+		if e.IceWallID < 0 || e.IceWallID > s.IceWallSerial || e.ID <= last || e.ID > s.EventSerial || !finite(e.X) || !finite(e.Y) || !finite(e.ToX) || !finite(e.ToY) || !finite(e.Amount) || e.Tick < 0 || e.Tick > s.Tick {
 			return errors.New("无效战场事件")
+		}
+		if w := e.IceWall; w != nil && (w.ID < 1 || w.ID > s.IceWallSerial || !finite(w.X) || !finite(w.Y) || !finite(w.Angle) || w.CreatedMS < 0 || w.ExpiresMS-w.CreatedMS != 6000) {
+			return errors.New("无效冰墙事件")
 		}
 		if e.AtMS != nil && (*e.AtMS < max(int64(0), (e.Tick-1)*StepMS) || *e.AtMS > e.Tick*StepMS) {
 			return errors.New("无效战场事件时间")
+		}
+		if e.Type == "frostbound" && (s.SkillRules != 2 || e.TargetID < 1 || e.TargetID > s.EnemySerial || e.IceWallID < 1) {
+			return errors.New("无效永久减速事件")
 		}
 		if e.Target != nil && (e.Target.ID != e.TargetID || e.Target.ID < 1 || e.Target.ID > s.EnemySerial || !finite(e.Target.Health) || !finite(e.Target.MaxHealth) || !finite(e.Target.HP) || !finite(e.Target.Shield) || e.Target.HP < 0 || e.Target.Shield < 0 || e.Target.Health != e.Target.HP+e.Target.Shield || e.Target.MaxHealth < e.Target.Health) {
 			return errors.New("无效战场事件目标")
@@ -324,6 +341,9 @@ func (s *State) Envelope() (gameapi.Match, error) {
 	if s.World.Layout == "central" {
 		schema = 3
 	}
+	if s.SkillRules == 2 {
+		schema = 4
+	}
 	m := gameapi.Match{Schema: schema, Data: raw, Actors: s.actors(), Attention: []int{}, TimeoutActors: []int{}, Log: append([]string{}, s.Log...)}
 	if s.finished() {
 		r := &gameapi.Result{Cooperative: true, Ranks: make([]int, len(s.Players)), Winners: []int{}, Scores: make([]int, len(s.Players))}
@@ -349,7 +369,7 @@ func (s *State) Envelope() (gameapi.Match, error) {
 	return m, m.Validate(len(s.Players))
 }
 func decode(m gameapi.Match) (*State, error) {
-	if (m.Schema != 1 && m.Schema != 2 && m.Schema != 3) || len(m.Data) > maxSnapshotBytes {
+	if (m.Schema != 1 && m.Schema != 2 && m.Schema != 3 && m.Schema != 4) || len(m.Data) > maxSnapshotBytes {
 		return nil, errors.New("不支持的星垒存档")
 	}
 	var s State
@@ -359,8 +379,11 @@ func decode(m gameapi.Match) (*State, error) {
 	if m.Schema == 1 {
 		s.migrateWorld()
 	}
-	if m.Schema == 3 && s.World.Layout != "central" {
+	if (m.Schema == 3 || m.Schema == 4) && s.World.Layout != "central" {
 		return nil, errors.New("中央地图存档缺少布局标识")
+	}
+	if (m.Schema == 4) != (s.SkillRules == 2) {
+		return nil, errors.New("技能规则与存档版本不一致")
 	}
 	if err := s.valid(); err != nil {
 		return nil, err

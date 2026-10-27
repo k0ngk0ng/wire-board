@@ -68,7 +68,7 @@ func Module() gameapi.Module {
 			}
 			var o Options
 			_ = json.Unmarshal(normalized, &o)
-			s := &State{Options: o, Players: make([]Player, ctx.Players), Phase: "prepare", Epoch: 1, Wave: 1, BaseHP: 30, BaseMaxHP: 30, ServerAt: ctx.Now.UnixMilli(), NextAt: ctx.Now.UnixMilli() + int64(o.PrepSeconds)*1000, Towers: []Tower{}, Enemies: []Enemy{}, Events: []Event{}}
+			s := &State{SkillRules: 2, Options: o, Players: make([]Player, ctx.Players), Phase: "prepare", Epoch: 1, Wave: 1, BaseHP: 30, BaseMaxHP: 30, ServerAt: ctx.Now.UnixMilli(), NextAt: ctx.Now.UnixMilli() + int64(o.PrepSeconds)*1000, Towers: []Tower{}, Enemies: []Enemy{}, Events: []Event{}}
 			for i := range s.Players {
 				s.Players[i].Gold = 300
 			}
@@ -154,8 +154,11 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 			s.event(Event{Type: "sell", X: pos.X, Y: pos.Y, Kind: t.Kind, Owner: p, Amount: float64(amount)})
 			s.Towers = slices.Delete(s.Towers, index, index+1)
 		} else {
-			if (t.Level == 3 && (a.Branch != "power" && a.Branch != "speed")) || (t.Level != 3 && a.Branch != "") {
-				return m, errors.New("第 4 级请选择威力或迅捷专精，其他等级无需选择")
+			chosen := *t
+			chosen.Level++
+			chosen.Branch = a.Branch
+			if (t.Level == 3 && !s.validBranch(chosen)) || (t.Level != 3 && a.Branch != "") {
+				return m, errors.New("请选择当前可用的升级分支；其他等级无需选择")
 			}
 			cost := upgradeCost(*t)
 			if s.Players[p].Gold < cost || t.Level >= maxValue || t.Spent > maxValue-cost {
@@ -293,10 +296,11 @@ type BuildControl struct {
 	Enabled bool   `json:"enabled"`
 }
 type UpgradeControl struct {
-	TowerID     int  `json:"towerId"`
-	Cost        int  `json:"cost"`
-	Enabled     bool `json:"enabled"`
-	NeedsBranch bool `json:"needsBranch"`
+	TowerID     int            `json:"towerId"`
+	Cost        int            `json:"cost"`
+	Enabled     bool           `json:"enabled"`
+	NeedsBranch bool           `json:"needsBranch"`
+	Branches    []BranchChoice `json:"branches,omitempty"`
 }
 type SellControl struct {
 	TowerID int  `json:"towerId"`
@@ -351,7 +355,11 @@ func (s *State) controls(p int) Controls {
 		if t.Owner == p {
 			c.Targets = append(c.Targets, TargetControl{t.ID, c.CanAct})
 			cost := upgradeCost(t)
-			c.Upgrades = append(c.Upgrades, UpgradeControl{t.ID, cost, c.CanAct && s.Players[p].Gold >= cost && t.Level < maxValue && t.Spent <= maxValue-cost, t.Level == 3})
+			var branches []BranchChoice
+			if t.Level == 3 {
+				branches = s.branchChoices(t)
+			}
+			c.Upgrades = append(c.Upgrades, UpgradeControl{t.ID, cost, c.CanAct && s.Players[p].Gold >= cost && t.Level < maxValue && t.Spent <= maxValue-cost, t.Level == 3, branches})
 			c.Sells = append(c.Sells, SellControl{t.ID, refund(t), c.CanAct})
 		}
 	}
@@ -366,7 +374,8 @@ func (s *State) controls(p int) Controls {
 // ViewTower adds computed combat stats to the public projection. Persisting
 // these values as well would risk stale ranges after upgrading or tuning.
 type ViewTower struct {
-	Passive *PassiveView `json:"passive,omitempty"`
+	BranchName string       `json:"branchName,omitempty"`
+	Passive    *PassiveView `json:"passive,omitempty"`
 	Tower
 	EffectiveRange    float64 `json:"effectiveRange"`
 	EffectiveDamage   float64 `json:"effectiveDamage"`
@@ -425,11 +434,15 @@ func view(m gameapi.Match, p int) (any, error) {
 	towers := make([]ViewTower, 0, len(s.Towers))
 	for _, tower := range s.Towers {
 		damage, radius, interval := s.towerStats(tower)
-		towers = append(towers, ViewTower{Tower: tower, EffectiveRange: radius, EffectiveDamage: damage, EffectiveInterval: interval, Passive: s.passiveView(tower)})
+		towers = append(towers, ViewTower{BranchName: s.branchName(tower), Tower: tower, EffectiveRange: radius, EffectiveDamage: damage, EffectiveInterval: interval, Passive: s.passiveView(tower)})
 	}
 	enemies := make([]ViewEnemy, 0, len(s.Enemies))
 	for _, enemy := range s.Enemies {
 		enemies = append(enemies, viewEnemy(enemy))
+	}
+	walls := make([]ViewIceWall, 0, len(s.IceWalls))
+	for _, wall := range s.IceWalls {
+		walls = append(walls, viewIceWall(wall))
 	}
 	specs := make([]ViewTowerSpec, 0, len(catalog))
 	for _, spec := range catalog {
@@ -453,6 +466,7 @@ func view(m gameapi.Match, p int) (any, error) {
 		WaveInfo       WaveInfo        `json:"waveInfo"`
 		Events         []Event         `json:"events"`
 		Craters        []Crater        `json:"craters,omitempty"`
+		IceWalls       []ViewIceWall   `json:"iceWalls,omitempty"`
 		Enemies        []ViewEnemy     `json:"enemies"`
 		Towers         []ViewTower     `json:"towers"`
 		Map            Map             `json:"map"`
@@ -476,6 +490,7 @@ func view(m gameapi.Match, p int) (any, error) {
 		WaveInfo:       s.WaveInfo,
 		Events:         s.Events,
 		Craters:        s.Craters,
+		IceWalls:       walls,
 		Enemies:        enemies,
 		Towers:         towers,
 		Map:            s.mapData(),
