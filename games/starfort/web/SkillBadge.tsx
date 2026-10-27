@@ -26,7 +26,7 @@ export function SkillBadge({
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
     const tick = (now: number) => {
       if (document.hidden || phase !== "battle" || reduced.matches) return;
-      if (now - last >= 80) {
+      if (now - last >= 80 || now - started >= passive.readyInMS) {
         setElapsed(now - started);
         last = now;
       }
