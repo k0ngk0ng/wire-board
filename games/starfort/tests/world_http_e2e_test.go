@@ -80,11 +80,16 @@ func TestStarfortWorldSeedAndPublicationHTTP(t *testing.T) {
 			tb.start(map[string]any{"mode": "endless", "prepSeconds": 45})
 			initial := a.room()
 			w := worldData(t, initial)
-			if w["seed"].(float64) <= 0 || w["stage"] != float64(1) || !reflect.DeepEqual(w["map"], data(initial)["map"]) {
+			initialMap, ok := data(initial)["map"].(map[string]any)
+			if w["seed"].(float64) <= 0 || w["stage"] != float64(1) || !ok || len(initialMap["routes"].([]any)) != n {
 				t.Fatal("invalid initial world")
 			}
+			if _, duplicate := w["map"]; duplicate {
+				t.Fatal("network view duplicated the map")
+			}
 			for i := 0; i < 3; i++ {
-				if !reflect.DeepEqual(w, worldData(t, a.room())) {
+				snapshot := a.room()
+				if !reflect.DeepEqual(w, worldData(t, snapshot)) || !reflect.DeepEqual(initialMap, data(snapshot)["map"]) {
 					t.Fatal("read rerolled world")
 				}
 			}
@@ -93,11 +98,13 @@ func TestStarfortWorldSeedAndPublicationHTTP(t *testing.T) {
 			}
 			paused := worldData(t, a.room())
 			tb.restart()
-			if !reflect.DeepEqual(paused, worldData(t, a.room())) {
+			restored := a.room()
+			if !reflect.DeepEqual(paused, worldData(t, restored)) || !reflect.DeepEqual(initialMap, data(restored)["map"]) {
 				t.Fatal("restart rerolled world")
 			}
 			a.request("POST", "/api/admin/games/starfort", map[string]bool{"enabled": false}, 200)
-			if !reflect.DeepEqual(paused, worldData(t, a.room())) {
+			unpublished := a.room()
+			if !reflect.DeepEqual(paused, worldData(t, unpublished)) || !reflect.DeepEqual(initialMap, data(unpublished)["map"]) {
 				t.Fatal("unpublish altered existing world")
 			}
 			if contains(a.state()["availableGames"], "starfort") {
