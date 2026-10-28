@@ -193,4 +193,48 @@ class NetworkRecovery(unittest.TestCase):
   with patch.object(cdn.time,'sleep'),patch.object(cdn,'urlopen',side_effect=[response(body),URLError(TimeoutError()),response(body),response(body[:64],True)]) as request:
    self.assertEqual(cdn.verify(row),row);self.assertEqual(request.call_count,4)
 
+# Before connection reuse: each full/Range read performs another TLS handshake;
+# unread error bodies poison later responses; retries must not skip verification.
+class TLSReuse(unittest.TestCase):
+ def test_full_and_range_reads_reuse_a_verified_tls_connection(self):
+  self.exercise(False)
+ def test_transient_error_body_is_drained_before_reuse(self):
+  self.exercise(True)
+ def exercise(self,fail_once):
+  import ssl,subprocess,os
+  from unittest.mock import patch
+  from http.server import ThreadingHTTPServer
+  payload=b'x'*100;state={'connections':0,'failed':False,'requests':0}
+  class Handler(BaseHTTPRequestHandler):
+   protocol_version='HTTP/1.1'
+   def log_message(self,*args):pass
+   def do_GET(self):
+    state['requests']+=1;status=200;body=payload
+    if fail_once and not state['failed']:state['failed']=True;status=503;body=b'retry'
+    elif self.headers.get('Range'):status=206;body=payload[:64]
+    self.send_response(status);self.send_header('Content-Type','audio/wav');self.send_header('Access-Control-Allow-Origin','*');self.send_header('Content-Length',str(len(body)))
+    if status==206:self.send_header('Content-Range','bytes 0-63/100')
+    self.end_headers();self.wfile.write(body)
+  class Server(ThreadingHTTPServer):
+   daemon_threads=True
+   def get_request(self):
+    state['connections']+=1
+    return super().get_request()
+  with tempfile.TemporaryDirectory() as temp:
+   cert=Path(temp)/'cert.pem';key=Path(temp)/'key.pem'
+   subprocess.run(['openssl','req','-x509','-newkey','rsa:2048','-nodes','-days','1','-subj','/CN=localhost','-addext','subjectAltName=IP:127.0.0.1','-keyout',str(key),'-out',str(cert)],check=True,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+   server=Server(('127.0.0.1',0),Handler)
+   context=ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER);context.load_cert_chain(cert,key);server.socket=context.wrap_socket(server.socket,server_side=True)
+   trusted=ssl.create_default_context(cafile=str(cert))
+   thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
+   row={'url':f'https://127.0.0.1:{server.server_port}/tone.wav','bytes':100,'sha256':cdn.sha(payload),'mime':'audio/wav','encoding':'','requiresRange':True}
+   try:
+    with patch('ssl._create_default_https_context',return_value=trusted),patch('urllib.request._opener',None),patch.dict(os.environ,{'NO_PROXY':'127.0.0.1,localhost'}),patch.object(cdn.time,'sleep'):
+     for _ in range(3):self.assertEqual(cdn.verify(row),row)
+    self.assertEqual(state['connections'],1,'full and range requests must not repeatedly negotiate TLS')
+    self.assertEqual(state['requests'],7 if fail_once else 6)
+   finally:
+    if hasattr(cdn,'close_connections'):cdn.close_connections()
+    server.shutdown();server.server_close();thread.join(timeout=2)
+
 if __name__=='__main__':unittest.main()
