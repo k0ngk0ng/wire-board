@@ -1,0 +1,12 @@
+{"Time":"2026-10-28T11:04:55.375974+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board"}
+{"Time":"2026-10-28T11:04:56.640569+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board","Test":"TestContraStartupRejectsUnboundBuildBeforeDatabase"}
+{"Time":"2026-10-28T11:04:56.640609+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board","Test":"TestContraStartupRejectsUnboundBuildBeforeDatabase","Output":"=== RUN   TestContraStartupRejectsUnboundBuildBeforeDatabase\n"}
+{"Time":"2026-10-28T11:04:56.640955+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board","Test":"TestContraStartupRejectsUnboundBuildBeforeDatabase","Output":"--- PASS: TestContraStartupRejectsUnboundBuildBeforeDatabase (0.00s)\n"}
+{"Time":"2026-10-28T11:04:56.640964+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board","Test":"TestContraStartupRejectsUnboundBuildBeforeDatabase","Elapsed":0}
+{"Time":"2026-10-28T11:04:56.641015+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board","Test":"TestShutdownWaitsForInFlightRequest"}
+{"Time":"2026-10-28T11:04:56.641023+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board","Test":"TestShutdownWaitsForInFlightRequest","Output":"=== RUN   TestShutdownWaitsForInFlightRequest\n"}
+{"Time":"2026-10-28T11:04:56.811065+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board","Test":"TestShutdownWaitsForInFlightRequest","Output":"--- PASS: TestShutdownWaitsForInFlightRequest (0.17s)\n"}
+{"Time":"2026-10-28T11:04:56.811098+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board","Test":"TestShutdownWaitsForInFlightRequest","Elapsed":0.17}
+{"Time":"2026-10-28T11:04:56.811287+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board","Output":"PASS\n"}
+{"Time":"2026-10-28T11:04:57.826094+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board","Output":"ok  \tgithub.com/k0ngk0ng/wire-board\t2.450s\n"}
+{"Time":"2026-10-28T11:04:57.826204+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board","Elapsed":2.45}

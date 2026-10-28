@@ -1,0 +1,453 @@
+{
+  "scope": "Only contra-campaign-scene-owned temporary/cache/redundant outputs. No source ROM, states, RAM streams, final REA dossiers, PNGs, or other agent files removed.",
+  "reclaimedBytes": 314304806,
+  "actions": [
+    {
+      "operation": "replace with exact gzip",
+      "source": ".local/contra-campaign-scene/oracle/runs/scene-exit-01/scenes.jsonl",
+      "retained": ".local/contra-campaign-scene/oracle/runs/scene-exit-01/scenes.jsonl.gz",
+      "originalSHA256": "e7537a97f2161303dadcb63d2c63ac69fec87034918730184f9254ab47381b48",
+      "gzipSHA256": "f5e4cb102511a82dfb60732a8c992076c989304135c8244612828fc0bd6b71df"
+    },
+    {
+      "operation": "replace with exact gzip",
+      "source": ".local/contra-campaign-scene/oracle/runs/scene-exit-02/scenes.jsonl",
+      "retained": ".local/contra-campaign-scene/oracle/runs/scene-exit-02/scenes.jsonl.gz",
+      "originalSHA256": "46f7a665f2b46b6bd51b2f8c130e2365544fc581114540e5afad6c6bc81d96d4",
+      "gzipSHA256": "f78f94753bccdfc5d2bf72553cb5e17080ec728bd92cd2f6a4b86d95a0b14fe4"
+    },
+    {
+      "operation": "replace with exact gzip",
+      "source": ".local/contra-campaign-scene/oracle/runs/scene-exit-cases-01/scenes.jsonl",
+      "retained": ".local/contra-campaign-scene/oracle/runs/scene-exit-cases-01/scenes.jsonl.gz",
+      "originalSHA256": "957fbe583c5d4530f6d6ff342108bbb65b5a175d0e9b5bd0b06bf39c250ad017",
+      "gzipSHA256": "d77df27ecedc71a5e49647d5c8da4fd1e263de5917d98d8103f6390d9c5a2198"
+    },
+    {
+      "operation": "replace with exact gzip",
+      "source": ".local/contra-campaign-scene/oracle/runs/scene-interlude-1-01/scenes.jsonl",
+      "retained": ".local/contra-campaign-scene/oracle/runs/scene-interlude-1-01/scenes.jsonl.gz",
+      "originalSHA256": "7a0efc549af0372e4ae63dacf0fd353b6ea8b7a5a93e49bc625a3ba91b1880c2",
+      "gzipSHA256": "5ec53fb0840a0d4a392ce7849cfa5bd3f9cdb077525ecb9c23d8b941fca82142"
+    },
+    {
+      "operation": "replace with exact gzip",
+      "source": ".local/contra-campaign-scene/oracle/runs/scene-interlude-2-01/scenes.jsonl",
+      "retained": ".local/contra-campaign-scene/oracle/runs/scene-interlude-2-01/scenes.jsonl.gz",
+      "originalSHA256": "168354946dfcf451ca9072016a65ba56474be2d7b7bda4517c2ca23fd286d638",
+      "gzipSHA256": "422f8d7becd3d3cf9a7b585bdbe41dd8fab26adb169e45a3ac7136803ef6a069"
+    },
+    {
+      "operation": "replace with exact gzip",
+      "source": ".local/contra-campaign-scene/oracle/runs/scene-interlude-3-01/scenes.jsonl",
+      "retained": ".local/contra-campaign-scene/oracle/runs/scene-interlude-3-01/scenes.jsonl.gz",
+      "originalSHA256": "d4b840e661a1f4f3cbc737ef7594b8f7ce23f648100ca96e07aba6c566411c69",
+      "gzipSHA256": "8a4081234c81b1d8fa27130979eac0938010cd091c7263d3d2377b1f6afe4487"
+    },
+    {
+      "operation": "replace with exact gzip",
+      "source": ".local/contra-campaign-scene/oracle/runs/scene-interlude-4-01/scenes.jsonl",
+      "retained": ".local/contra-campaign-scene/oracle/runs/scene-interlude-4-01/scenes.jsonl.gz",
+      "originalSHA256": "bfcf162ff44febf0f69a779e07b955aca3ef1e43c4680483b263f355eb580ac6",
+      "gzipSHA256": "4ae238346e998799e8f278d80ae4e790e96ab4ad3259f9a5824f9c70058a431c"
+    },
+    {
+      "operation": "replace with exact gzip",
+      "source": ".local/contra-campaign-scene/oracle/runs/scene-interlude-5-01/scenes.jsonl",
+      "retained": ".local/contra-campaign-scene/oracle/runs/scene-interlude-5-01/scenes.jsonl.gz",
+      "originalSHA256": "c1e130f00085ec2dfe14e23566765e96d82efb132da193853c366e2ac3587270",
+      "gzipSHA256": "7edbdc1d2472f52814948fb80d304c9ec1ad5f1cdc5af5366e217f74aed3c97e"
+    },
+    {
+      "operation": "replace with exact gzip",
+      "source": ".local/contra-campaign-scene/oracle/runs/scene-interlude-6-01/scenes.jsonl",
+      "retained": ".local/contra-campaign-scene/oracle/runs/scene-interlude-6-01/scenes.jsonl.gz",
+      "originalSHA256": "15f98b74f1bfb4f954e22afa180b778c6c12af20bfce37bb613bf68e5df0fba9",
+      "gzipSHA256": "ee2e0c7be5d65e0174e44abe07d89a0a23c48ffea5db3f117b4adbc35b9da121"
+    },
+    {
+      "operation": "replace with exact gzip",
+      "source": ".local/contra-campaign-scene/oracle/runs/scene-interlude-7-01/scenes.jsonl",
+      "retained": ".local/contra-campaign-scene/oracle/runs/scene-interlude-7-01/scenes.jsonl.gz",
+      "originalSHA256": "1ffae4dc72cabd6625c48506735f1d13aa880dbe246478ce8756ff09fd0dc03b",
+      "gzipSHA256": "bf0882be4edfb1a0d29ce2d0f223b8d699fd3fc90cc5635edc3e3fc77d55d105"
+    },
+    {
+      "operation": "replace with exact gzip",
+      "source": ".local/contra-campaign-scene/oracle/runs/scene-interlude-8-01/scenes.jsonl",
+      "retained": ".local/contra-campaign-scene/oracle/runs/scene-interlude-8-01/scenes.jsonl.gz",
+      "originalSHA256": "6fb19d531f95954a1dc3ccf58edc4b2512124c481f6e7580eab88c7d30a73b2e",
+      "gzipSHA256": "2b9d0b4857153d8ecbbbf621b9d27a0b1d88d0aea0a36c2e846dec2d17f50a0f"
+    },
+    {
+      "operation": "replace with exact gzip",
+      "source": ".local/contra-campaign-scene/oracle/runs/scene-intro-cases-01/scenes.jsonl",
+      "retained": ".local/contra-campaign-scene/oracle/runs/scene-intro-cases-01/scenes.jsonl.gz",
+      "originalSHA256": "beab1597acd0b3b98087e3d431459965d5240520c4fa33efdd28036dc7ee2cb2",
+      "gzipSHA256": "4448c1077e5f99fbe8e1b6b380292a57c91f98ef019bff407f43487f62cd5e6b"
+    },
+    {
+      "operation": "replace with exact gzip",
+      "source": ".local/contra-campaign-scene/oracle/runs/scene-natural-01/scenes.jsonl",
+      "originalSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzipSHA256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "discardedIntermediate": ".local/contra-campaign-scene/oracle/runs/scene-natural-01/scenes.jsonl.gz",
+      "note": "The enclosing failed/redundant run was removed in a later action."
+    },
+    {
+      "operation": "replace with exact gzip",
+      "source": ".local/contra-campaign-scene/oracle/runs/scene-natural-02/scenes.jsonl",
+      "retained": ".local/contra-campaign-scene/oracle/runs/scene-natural-02/scenes.jsonl.gz",
+      "originalSHA256": "c887098f019991a86e90a10e8529ea7e0288f5a2c17fd43eac4fe018b9a3c574",
+      "gzipSHA256": "0d51d432b6adf75227bc79414e30ad069189dc139158bc6ecbc9600c6efae46c"
+    },
+    {
+      "operation": "replace with exact gzip",
+      "source": ".local/contra-campaign-scene/oracle/runs/scene-natural-03/scenes.jsonl",
+      "originalSHA256": "55d29b6ffb49916f37783a55de097dd019084eb1e69568ccdbc9e76f1edbeccc",
+      "gzipSHA256": "9b8498541560024e3ed62d380922252121663b1e4cd009fdde99b676ce477b22",
+      "discardedIntermediate": ".local/contra-campaign-scene/oracle/runs/scene-natural-03/scenes.jsonl.gz",
+      "note": "The enclosing failed/redundant run was removed in a later action."
+    },
+    {
+      "operation": "replace with exact gzip",
+      "source": ".local/contra-campaign-scene/oracle/runs/scene-natural-04/scenes.jsonl",
+      "retained": ".local/contra-campaign-scene/oracle/runs/scene-natural-04/scenes.jsonl.gz",
+      "originalSHA256": "348c1a0972b8678e69f8778b036291689227a60bf89ddcb0c57ec59f905e09d2",
+      "gzipSHA256": "9858701aeda793932ca21d76f18d9b60aa5b364913863dad6014de07b2607533"
+    },
+    {
+      "operation": "replace with exact gzip",
+      "source": ".local/contra-campaign-scene/oracle/runs/scene-stage-2-01/scenes.jsonl",
+      "retained": ".local/contra-campaign-scene/oracle/runs/scene-stage-2-01/scenes.jsonl.gz",
+      "originalSHA256": "179c4b8e7e7305779d1cf315b11053111e44a419e75d92dc5b75e137c57b7d48",
+      "gzipSHA256": "e25175b70de05afbe2dc20361851d7cbc1c965ce9737048b52d196fdf65a37db"
+    },
+    {
+      "operation": "replace with exact gzip",
+      "source": ".local/contra-campaign-scene/oracle/runs/scene-stage-2-02/scenes.jsonl",
+      "retained": ".local/contra-campaign-scene/oracle/runs/scene-stage-2-02/scenes.jsonl.gz",
+      "originalSHA256": "87043d78024016c35fa85595ad8482eca06e69c16e3af98d6a46938b503ff3ab",
+      "gzipSHA256": "0ba7095181cf7bc1459b74ec211552f4e29d99d2bbe2c8d5cf6ab273b015875f"
+    },
+    {
+      "operation": "replace with exact gzip",
+      "source": ".local/contra-campaign-scene/oracle/runs/scene-stage-3-01/scenes.jsonl",
+      "retained": ".local/contra-campaign-scene/oracle/runs/scene-stage-3-01/scenes.jsonl.gz",
+      "originalSHA256": "5d50b96cba8e16ab684f3a6d6641bf6d71e9710da9b1b114d4ff6440ef880190",
+      "gzipSHA256": "ca0db332042ab814a3e03f12fb4d31545f561b366aaeaa029edff763444d84ad"
+    },
+    {
+      "operation": "replace with exact gzip",
+      "source": ".local/contra-campaign-scene/oracle/runs/scene-stage-3-02/scenes.jsonl",
+      "retained": ".local/contra-campaign-scene/oracle/runs/scene-stage-3-02/scenes.jsonl.gz",
+      "originalSHA256": "718601a5843543bd505765d2bdf9d51a0bda9f2aa4a2ba5ddae6596e47225ca8",
+      "gzipSHA256": "704f3007d27ce3a1260d3446372e02df957b23b8b0d3836ee2381f830afbb518"
+    },
+    {
+      "operation": "replace with exact gzip",
+      "source": ".local/contra-campaign-scene/oracle/runs/scene-stage-4-01/scenes.jsonl",
+      "retained": ".local/contra-campaign-scene/oracle/runs/scene-stage-4-01/scenes.jsonl.gz",
+      "originalSHA256": "95a0e071d634a071464619c76c9388dddc90a8e4fa77590f5085d97a680c6f68",
+      "gzipSHA256": "295536d32d904cd5663ea7ea7524ec26df497c19ea67d1cdda7652b05988a742"
+    },
+    {
+      "operation": "replace with exact gzip",
+      "source": ".local/contra-campaign-scene/oracle/runs/scene-stage-4-02/scenes.jsonl",
+      "retained": ".local/contra-campaign-scene/oracle/runs/scene-stage-4-02/scenes.jsonl.gz",
+      "originalSHA256": "7dcd067b943121d167c2966293a1f2a201197bac3dedf7aca6497635ee621331",
+      "gzipSHA256": "a8a1c82332cb896d6d0273c5c4da8c01f0898538447f0a7a254cd2c28d1dd646"
+    },
+    {
+      "operation": "replace with exact gzip",
+      "source": ".local/contra-campaign-scene/oracle/runs/scene-stage-5-01/scenes.jsonl",
+      "retained": ".local/contra-campaign-scene/oracle/runs/scene-stage-5-01/scenes.jsonl.gz",
+      "originalSHA256": "092fc911b176957d4e2629942b0c47c4807ce23e2d8ba7b73dc07bade9d3a302",
+      "gzipSHA256": "96c8d3e0373903a11d81b7a4fd737cfdea3eb5fbeeef9dbc140455caa3c9b6af"
+    },
+    {
+      "operation": "replace with exact gzip",
+      "source": ".local/contra-campaign-scene/oracle/runs/scene-stage-5-02/scenes.jsonl",
+      "retained": ".local/contra-campaign-scene/oracle/runs/scene-stage-5-02/scenes.jsonl.gz",
+      "originalSHA256": "a75e2a39c31f8090e060486d4b4a2c3bf56b24d1bfd5ff5a057866dd0c46c252",
+      "gzipSHA256": "1107aad196f81282a56ad3c3b181623a8d17f7b4983888f0b9e2c0bbd0fdb69d"
+    },
+    {
+      "operation": "replace with exact gzip",
+      "source": ".local/contra-campaign-scene/oracle/runs/scene-stage-6-01/scenes.jsonl",
+      "retained": ".local/contra-campaign-scene/oracle/runs/scene-stage-6-01/scenes.jsonl.gz",
+      "originalSHA256": "a34035deffc48fc43ea24b9675c236823390bdb806725c2119e3a299cd3430fb",
+      "gzipSHA256": "8eea2cd4a82b863dbe7cb3ce859ded8908547b84a57c1fe69dd25e5f7d0c4af2"
+    },
+    {
+      "operation": "replace with exact gzip",
+      "source": ".local/contra-campaign-scene/oracle/runs/scene-stage-6-02/scenes.jsonl",
+      "retained": ".local/contra-campaign-scene/oracle/runs/scene-stage-6-02/scenes.jsonl.gz",
+      "originalSHA256": "f730d6e343c325e3f38cb4e8aaa1f8e84659c58a8e0ae9af325d238be7e67a53",
+      "gzipSHA256": "8ac05109432e2acb25a6fe7d44f9b8f32197ed928f32374b74c3ec8326e3c812"
+    },
+    {
+      "operation": "replace with exact gzip",
+      "source": ".local/contra-campaign-scene/oracle/runs/scene-stage-7-01/scenes.jsonl",
+      "retained": ".local/contra-campaign-scene/oracle/runs/scene-stage-7-01/scenes.jsonl.gz",
+      "originalSHA256": "e088128d0575304be8b5d9f5241a16d4a2787e2090314d190f7d887bd9c3710a",
+      "gzipSHA256": "a3ce06c0c301be993a53af6a45cd9516a47b991971e2b8a1178901009fef3c60"
+    },
+    {
+      "operation": "replace with exact gzip",
+      "source": ".local/contra-campaign-scene/oracle/runs/scene-stage-7-02/scenes.jsonl",
+      "retained": ".local/contra-campaign-scene/oracle/runs/scene-stage-7-02/scenes.jsonl.gz",
+      "originalSHA256": "58805cb7095ca2e32a3c7d8ca24450d0e3273f3e92a543ae906df88faf5b3850",
+      "gzipSHA256": "55b4a9ecce53bf0e586517ba2cc9f79fd8e4950cc393a51d80d667b29a28d491"
+    },
+    {
+      "operation": "replace with exact gzip",
+      "source": ".local/contra-campaign-scene/oracle/runs/scene-stage-8-01/scenes.jsonl",
+      "retained": ".local/contra-campaign-scene/oracle/runs/scene-stage-8-01/scenes.jsonl.gz",
+      "originalSHA256": "0dcbf19b52921e0df9b80dde27e5bbe3f4bf1b766de5e5f2aa7f6c622cdc3989",
+      "gzipSHA256": "75c72ceea196ee2ef0825b7bf604c814fb8dc365fee92063f74f78a51df44853"
+    },
+    {
+      "operation": "replace with exact gzip",
+      "source": ".local/contra-campaign-scene/oracle/runs/scene-stage-8-02/scenes.jsonl",
+      "retained": ".local/contra-campaign-scene/oracle/runs/scene-stage-8-02/scenes.jsonl.gz",
+      "originalSHA256": "011cae8a906fc61f33c2e053282b19b7e879c93d152cdf702a5a7093ca605698",
+      "gzipSHA256": "33b0334c3ace407fd3f9a226df7528dd6798e83942560e25e5b46864a355c22e"
+    },
+    {
+      "operation": "remove own failed/redundant analysis or cache",
+      "path": ".local/contra-campaign-scene/swift-cache",
+      "bytes": 93396920
+    },
+    {
+      "operation": "remove own failed/redundant analysis or cache",
+      "path": ".local/contra-campaign-scene/intro_helpers-rea",
+      "bytes": 1524718
+    },
+    {
+      "operation": "remove own failed/redundant analysis or cache",
+      "path": ".local/contra-campaign-scene/intro_helpers.bin",
+      "bytes": 14022
+    },
+    {
+      "operation": "remove own failed/redundant analysis or cache",
+      "path": ".local/contra-campaign-scene/intro_helpers-seeds.tsv",
+      "bytes": 243
+    },
+    {
+      "operation": "remove own failed/redundant analysis or cache",
+      "path": ".local/contra-campaign-scene/intro_helpers-spec.json",
+      "bytes": 711
+    },
+    {
+      "operation": "remove own failed/redundant analysis or cache",
+      "path": ".local/contra-campaign-scene/oracle/runs/scene-natural-01",
+      "bytes": 5276033
+    },
+    {
+      "operation": "remove own failed/redundant analysis or cache",
+      "path": ".local/contra-campaign-scene/oracle/scene-natural-01.json",
+      "bytes": 1887
+    },
+    {
+      "operation": "remove own failed/redundant analysis or cache",
+      "path": ".local/contra-campaign-scene/oracle/runs/scene-natural-03",
+      "bytes": 5361992
+    },
+    {
+      "operation": "remove own failed/redundant analysis or cache",
+      "path": ".local/contra-campaign-scene/oracle/scene-natural-03.json",
+      "bytes": 2011
+    },
+    {
+      "operation": "remove own failed/redundant analysis or cache",
+      "path": "dist/campaign-scene-tmp",
+      "bytes": 0
+    },
+    {
+      "operation": "remove own failed/redundant analysis or cache",
+      "path": ".local/contra-campaign-scene/oracle/fceux-home",
+      "bytes": 17748
+    },
+    {
+      "operation": "remove own failed/redundant analysis or cache",
+      "path": ".local/contra-campaign-scene/oracle/runtime",
+      "bytes": 0
+    },
+    {
+      "operation": "remove own failed/redundant analysis or cache",
+      "path": ".local/contra-campaign-scene/oracle/tmp",
+      "bytes": 0
+    },
+    {
+      "operation": "remove own failed/redundant analysis or cache",
+      "path": ".local/contra-campaign-scene/background-oracle/fceux-home",
+      "bytes": 17823
+    },
+    {
+      "operation": "remove own failed/redundant analysis or cache",
+      "path": ".local/contra-campaign-scene/background-oracle/runtime",
+      "bytes": 0
+    },
+    {
+      "operation": "remove own failed/redundant analysis or cache",
+      "path": ".local/contra-campaign-scene/background-oracle/tmp",
+      "bytes": 0
+    },
+    {
+      "operation": "remove completed emulator diagnostic log",
+      "path": ".local/contra-campaign-scene/oracle/runs/scene-stage-3-01/emulator.log",
+      "bytes": 957
+    },
+    {
+      "operation": "remove completed emulator diagnostic log",
+      "path": ".local/contra-campaign-scene/oracle/runs/scene-interlude-8-01/emulator.log",
+      "bytes": 957
+    },
+    {
+      "operation": "remove completed emulator diagnostic log",
+      "path": ".local/contra-campaign-scene/oracle/runs/scene-stage-7-01/emulator.log",
+      "bytes": 957
+    },
+    {
+      "operation": "remove completed emulator diagnostic log",
+      "path": ".local/contra-campaign-scene/oracle/runs/scene-stage-6-01/emulator.log",
+      "bytes": 957
+    },
+    {
+      "operation": "remove completed emulator diagnostic log",
+      "path": ".local/contra-campaign-scene/oracle/runs/scene-stage-2-01/emulator.log",
+      "bytes": 957
+    },
+    {
+      "operation": "remove completed emulator diagnostic log",
+      "path": ".local/contra-campaign-scene/oracle/runs/scene-stage-5-02/emulator.log",
+      "bytes": 957
+    },
+    {
+      "operation": "remove completed emulator diagnostic log",
+      "path": ".local/contra-campaign-scene/oracle/runs/scene-interlude-6-01/emulator.log",
+      "bytes": 957
+    },
+    {
+      "operation": "remove completed emulator diagnostic log",
+      "path": ".local/contra-campaign-scene/oracle/runs/scene-exit-01/emulator.log",
+      "bytes": 957
+    },
+    {
+      "operation": "remove completed emulator diagnostic log",
+      "path": ".local/contra-campaign-scene/oracle/runs/scene-interlude-2-01/emulator.log",
+      "bytes": 957
+    },
+    {
+      "operation": "remove completed emulator diagnostic log",
+      "path": ".local/contra-campaign-scene/oracle/runs/scene-interlude-3-01/emulator.log",
+      "bytes": 957
+    },
+    {
+      "operation": "remove completed emulator diagnostic log",
+      "path": ".local/contra-campaign-scene/oracle/runs/scene-stage-4-02/emulator.log",
+      "bytes": 957
+    },
+    {
+      "operation": "remove completed emulator diagnostic log",
+      "path": ".local/contra-campaign-scene/oracle/runs/scene-stage-8-01/emulator.log",
+      "bytes": 957
+    },
+    {
+      "operation": "remove completed emulator diagnostic log",
+      "path": ".local/contra-campaign-scene/oracle/runs/scene-interlude-7-01/emulator.log",
+      "bytes": 957
+    },
+    {
+      "operation": "remove completed emulator diagnostic log",
+      "path": ".local/contra-campaign-scene/oracle/runs/scene-stage-3-02/emulator.log",
+      "bytes": 957
+    },
+    {
+      "operation": "remove completed emulator diagnostic log",
+      "path": ".local/contra-campaign-scene/oracle/runs/scene-stage-7-02/emulator.log",
+      "bytes": 957
+    },
+    {
+      "operation": "remove completed emulator diagnostic log",
+      "path": ".local/contra-campaign-scene/oracle/runs/scene-interlude-4-01/emulator.log",
+      "bytes": 957
+    },
+    {
+      "operation": "remove completed emulator diagnostic log",
+      "path": ".local/contra-campaign-scene/oracle/runs/scene-stage-6-02/emulator.log",
+      "bytes": 957
+    },
+    {
+      "operation": "remove completed emulator diagnostic log",
+      "path": ".local/contra-campaign-scene/oracle/runs/scene-intro-cases-01/emulator.log",
+      "bytes": 957
+    },
+    {
+      "operation": "remove completed emulator diagnostic log",
+      "path": ".local/contra-campaign-scene/oracle/runs/scene-natural-02/emulator.log",
+      "bytes": 957
+    },
+    {
+      "operation": "remove completed emulator diagnostic log",
+      "path": ".local/contra-campaign-scene/oracle/runs/scene-interlude-5-01/emulator.log",
+      "bytes": 957
+    },
+    {
+      "operation": "remove completed emulator diagnostic log",
+      "path": ".local/contra-campaign-scene/oracle/runs/scene-stage-2-02/emulator.log",
+      "bytes": 957
+    },
+    {
+      "operation": "remove completed emulator diagnostic log",
+      "path": ".local/contra-campaign-scene/oracle/runs/scene-natural-04/emulator.log",
+      "bytes": 957
+    },
+    {
+      "operation": "remove completed emulator diagnostic log",
+      "path": ".local/contra-campaign-scene/oracle/runs/scene-interlude-1-01/emulator.log",
+      "bytes": 957
+    },
+    {
+      "operation": "remove completed emulator diagnostic log",
+      "path": ".local/contra-campaign-scene/oracle/runs/scene-exit-cases-01/emulator.log",
+      "bytes": 957
+    },
+    {
+      "operation": "remove completed emulator diagnostic log",
+      "path": ".local/contra-campaign-scene/oracle/runs/scene-stage-5-01/emulator.log",
+      "bytes": 957
+    },
+    {
+      "operation": "remove completed emulator diagnostic log",
+      "path": ".local/contra-campaign-scene/oracle/runs/scene-exit-02/emulator.log",
+      "bytes": 957
+    },
+    {
+      "operation": "remove completed emulator diagnostic log",
+      "path": ".local/contra-campaign-scene/oracle/runs/scene-stage-8-02/emulator.log",
+      "bytes": 957
+    },
+    {
+      "operation": "remove completed emulator diagnostic log",
+      "path": ".local/contra-campaign-scene/oracle/runs/scene-stage-4-01/emulator.log",
+      "bytes": 957
+    },
+    {
+      "operation": "remove completed emulator diagnostic log",
+      "path": ".local/contra-campaign-scene/background-oracle/runs/background-v1-interlude-6/emulator.log",
+      "bytes": 957
+    },
+    {
+      "operation": "remove completed emulator diagnostic log",
+      "path": ".local/contra-campaign-scene/background-oracle/runs/background-v1-interlude-1/emulator.log",
+      "bytes": 957
+    },
+    {
+      "operation": "remove completed emulator diagnostic log",
+      "path": ".local/contra-campaign-scene/background-oracle/runs/background-v1-natural-1/emulator.log",
+      "bytes": 957
+    }
+  ]
+}

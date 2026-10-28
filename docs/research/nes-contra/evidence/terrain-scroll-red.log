@@ -1,0 +1,11 @@
+FAIL	command-line-arguments [build failed]
+FAIL
+# command-line-arguments [command-line-arguments.test]
+games/contra/engine/terrain_scroll_test.go:26:18: undefined: TerrainScrollEffect
+games/contra/engine/terrain_scroll_test.go:79:88: undefined: TerrainScrollState
+games/contra/engine/terrain_scroll_test.go:85:11: undefined: TerrainScrollState
+games/contra/engine/terrain_scroll_test.go:100:17: undefined: TerrainScrollEffectKind
+games/contra/engine/terrain_scroll_test.go:109:36: undefined: TerrainScrollContext
+games/contra/engine/terrain_scroll_test.go:128:36: undefined: TerrainScrollEffect
+games/contra/engine/terrain_scroll_test.go:183:35: undefined: TerrainScrollContext
+games/contra/engine/terrain_scroll_test.go:207:33: undefined: TerrainScrollContext

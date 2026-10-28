@@ -1,0 +1,91 @@
+{
+  "scope": "Independent real-platform solo room visual/fullscreen/native-touch spot check; not complete campaign or final-build acceptance",
+  "fixture": ".local/contra-platform/formal-v1/fixture.json",
+  "room": "D0ECA52E",
+  "viewports": [
+    [
+      800,
+      600
+    ],
+    [
+      320,
+      740
+    ]
+  ],
+  "nativeTouch": {
+    "resume": {
+      "before": 11164,
+      "after": {
+        "contraRuntime": "true",
+        "frame": "2844",
+        "phase": "playing",
+        "revision": "11177",
+        "digest": "b1cb156a8640a12b22000302bb0a3b70246e9f6a5e9b667f9ffca0ff2aefd607",
+        "audioTick": "11175",
+        "paused": "false",
+        "checked": "11177",
+        "resyncs": "0"
+      },
+      "options": {
+        "platform": true,
+        "touch": [
+          {
+            "selector": "button[aria-label=\"开始（Start）\"]"
+          }
+        ],
+        "frames": 12,
+        "cursor": "revision"
+      },
+      "network": []
+    },
+    "pause": {
+      "before": 12266,
+      "after": {
+        "contraRuntime": "true",
+        "frame": "3940",
+        "phase": "playing",
+        "revision": "12279",
+        "digest": "4f35f9e748e06f8fffe0fe0b676e798b60765f288d0b7f745031e2831ebe1014",
+        "audioTick": "12277",
+        "paused": "true",
+        "checked": "12279",
+        "resyncs": "0"
+      },
+      "options": {
+        "platform": true,
+        "touch": [
+          {
+            "selector": "button[aria-label=\"开始（Start）\"]"
+          }
+        ],
+        "frames": 12,
+        "cursor": "revision"
+      },
+      "network": []
+    }
+  },
+  "observations": [
+    "Fullscreen excludes platform navigation and retains life display, controller and paused status.",
+    "320px fullscreen has document scrollWidth=clientWidth=320.",
+    "Native Space resumes with platform fullscreen parent focused.",
+    "Native touch Start resumes and pauses the same running session."
+  ],
+  "artifacts": {
+    ".local/contra-root-browser/pc-fullscreen.png": "43da48972d14d8c772120a6b390304ad4ea1ab47670d28743e8fd69fc7cc4af7",
+    ".local/contra-root-browser/mobile-fullscreen.png": "0ac4cb77c3fded24a8473311f47209968a58b3e9d66f221b9f4e0b2887da3234",
+    ".local/contra-root-browser/mobile-measurements.json": "f449b40651a3e52ddf823ba604b15d0a407420047f14c111e73b2619b7c76a9a",
+    ".local/contra-root-browser/native-touch-start.json": "fb87f2a2050192da1a1d92eaa45f7d8393654380e0e4c5e6d6f4b95e9f8ae736",
+    ".local/contra-root-browser/native-touch-pause.json": "ca711b44c29de2f949023c435297814583d0adcf258d70120bb9a1f88e73140f"
+  },
+  "reproduction": [
+    "Launch TestContraPlatformBrowserFixture with matching web/runtime builds.",
+    "Register a private account, create a one-seat Contra room, ready and start.",
+    "Enter fullscreen at the listed viewports; capture canvas/controller/status bounds.",
+    "Use scripts/contra/browser_input.mjs with recorded options against the private agent-browser CDP endpoint."
+  ],
+  "limitations": [
+    "Frontend was rebuilt during this fixture; initial stale-page loading correctly required refresh.",
+    "This spot check is not bound to the later final frontend build.",
+    "Does not verify natural eight-stage completion or fair bots."
+  ]
+}

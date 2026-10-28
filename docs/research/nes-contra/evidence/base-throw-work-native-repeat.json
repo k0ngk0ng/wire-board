@@ -1,0 +1,94 @@
+{
+  "passed": true,
+  "runs": [
+    {
+      "name": "base-throw-work-v2",
+      "source": {
+        "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+        "source_archive": "/Users/jason/Documents/nes/roms/03/魂斗罗日版(完全版).zip",
+        "initial_state": {
+          "name": "base4.fcs",
+          "sha256": "7a9c222fbe35545b9532f221a78f71134b4140f486a35aaa0222f8cd316b869f"
+        },
+        "emulator": "/opt/homebrew/bin/fceux",
+        "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+        "emulator_launcher_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+        "emulator_executable": "/opt/homebrew/Cellar/fceux/2.6.6_12/libexec/fceux",
+        "emulator_executable_sha256": "466c7a8dc48fc3fd66c8aaffec741e844fe16ec1f5ee2318664bdff7c8327115",
+        "frames": 23,
+        "scenario_sha256": "d8ffd3fca91ab091e5dce538c34f2b67047a09c2ae3c7a06d4dce3c11fa03d50",
+        "has_custom_hooks": true,
+        "completed": true
+      },
+      "recordsSHA256": "3e53ca1f3227ab23f5c6db275bdbac5548deca2417f294d1dceadc081a4be6a3",
+      "records": 19
+    },
+    {
+      "name": "base-throw-work-repeat",
+      "source": {
+        "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+        "source_archive": "/Users/jason/Documents/nes/roms/03/魂斗罗日版(完全版).zip",
+        "initial_state": {
+          "name": "base4.fcs",
+          "sha256": "7a9c222fbe35545b9532f221a78f71134b4140f486a35aaa0222f8cd316b869f"
+        },
+        "emulator": "/opt/homebrew/bin/fceux",
+        "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+        "emulator_launcher_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+        "emulator_executable": "/opt/homebrew/Cellar/fceux/2.6.6_12/libexec/fceux",
+        "emulator_executable_sha256": "466c7a8dc48fc3fd66c8aaffec741e844fe16ec1f5ee2318664bdff7c8327115",
+        "frames": 23,
+        "scenario_sha256": "2dbe11e9ea58d97be8b5e35ed4accab3d562394aa19ca72ddb3bbacb9aef059b",
+        "has_custom_hooks": true,
+        "completed": true
+      },
+      "recordsSHA256": "3e53ca1f3227ab23f5c6db275bdbac5548deca2417f294d1dceadc081a4be6a3",
+      "records": 19
+    },
+    {
+      "name": "base-throw-work-producers-v1",
+      "source": {
+        "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+        "source_archive": "/Users/jason/Documents/nes/roms/03/魂斗罗日版(完全版).zip",
+        "initial_state": {
+          "name": "base4.fcs",
+          "sha256": "7a9c222fbe35545b9532f221a78f71134b4140f486a35aaa0222f8cd316b869f"
+        },
+        "emulator": "/opt/homebrew/bin/fceux",
+        "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+        "emulator_launcher_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+        "emulator_executable": "/opt/homebrew/Cellar/fceux/2.6.6_12/libexec/fceux",
+        "emulator_executable_sha256": "466c7a8dc48fc3fd66c8aaffec741e844fe16ec1f5ee2318664bdff7c8327115",
+        "frames": 31,
+        "scenario_sha256": "136d3d0faf24cef0271aa9f32ca31b6971f23b5846f5a7ee0b0edce95c3eab3e",
+        "has_custom_hooks": true,
+        "completed": true
+      },
+      "recordsSHA256": "94d7240d56cf2803adb02fbb773f4cbd0f29297d2843fe9f8ee8e7c7f7f644e2",
+      "records": 27
+    },
+    {
+      "name": "base-throw-work-producers-repeat",
+      "source": {
+        "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+        "source_archive": "/Users/jason/Documents/nes/roms/03/魂斗罗日版(完全版).zip",
+        "initial_state": {
+          "name": "base4.fcs",
+          "sha256": "7a9c222fbe35545b9532f221a78f71134b4140f486a35aaa0222f8cd316b869f"
+        },
+        "emulator": "/opt/homebrew/bin/fceux",
+        "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+        "emulator_launcher_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+        "emulator_executable": "/opt/homebrew/Cellar/fceux/2.6.6_12/libexec/fceux",
+        "emulator_executable_sha256": "466c7a8dc48fc3fd66c8aaffec741e844fe16ec1f5ee2318664bdff7c8327115",
+        "frames": 31,
+        "scenario_sha256": "441147ee3a55bebd7c57fbcc084ef77d412b8f58947d70c43c325bf58e432c8b",
+        "has_custom_hooks": true,
+        "completed": true
+      },
+      "recordsSHA256": "94d7240d56cf2803adb02fbb773f4cbd0f29297d2843fe9f8ee8e7c7f7f644e2",
+      "records": 27
+    }
+  ],
+  "interventions": "Only declared semantic state at the real weapon entry; native code runs through full enemy phase and output is recorded. Not natural traversal."
+}

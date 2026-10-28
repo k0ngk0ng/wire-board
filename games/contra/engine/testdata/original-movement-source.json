@@ -1,0 +1,362 @@
+{
+  "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "source_is_original_execution": true,
+  "interventions": "none; controller input only",
+  "counts": {
+    "input": 1440,
+    "beginJump": 11,
+    "gravity": 714,
+    "advanceY": 714
+  },
+  "fixture_sha256": "df8ba8a047564ff59c9dba8ba0c7932379a351a7d8376f6ea9ece0faf36d87a1",
+  "sources": [
+    {
+      "scenario": "solo-jump",
+      "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+      "source_archive": "/Users/jason/Documents/nes/roms/03/\u9b42\u6597\u7f57\u65e5\u7248(\u5b8c\u5168\u7248).zip",
+      "initial_state": {
+        "name": "solo-play.fcs",
+        "sha256": "1da4737c5db180acfa1ca5b1a50b5949057c51da1ddf35402b48c2ef6187c236"
+      },
+      "emulator": "/opt/homebrew/bin/fceux",
+      "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+      "frames": 180,
+      "scenario_sha256": "c936a3d9a70e2a312804e8a60c41f980d25418ca719ceaac43b2f6245fb4fcd9",
+      "has_custom_hooks": true,
+      "completed": true,
+      "trace_sha256": "12ad7328bb70d8088e9a73ec71a2ddf0b83a6d71f11c5b972c9139e64281d4cf",
+      "initial_snapshot": "solo-play",
+      "timeline": [
+        {
+          "start": 1,
+          "end": 1,
+          "player": 1,
+          "keys": [
+            "A"
+          ]
+        },
+        {
+          "start": 100,
+          "end": 100,
+          "player": 1,
+          "keys": [
+            "A"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "solo-jump-right",
+      "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+      "source_archive": "/Users/jason/Documents/nes/roms/03/\u9b42\u6597\u7f57\u65e5\u7248(\u5b8c\u5168\u7248).zip",
+      "initial_state": {
+        "name": "solo-play.fcs",
+        "sha256": "1da4737c5db180acfa1ca5b1a50b5949057c51da1ddf35402b48c2ef6187c236"
+      },
+      "emulator": "/opt/homebrew/bin/fceux",
+      "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+      "frames": 180,
+      "scenario_sha256": "63807cfda56534a97a53a0ebabfe996a22ea442463e0e050fbd9d2984465dede",
+      "has_custom_hooks": true,
+      "completed": true,
+      "trace_sha256": "ad8f50246f5b880ccd671d430309b24bdd1758fdb9cb6c25e1c05ee28495f0d7",
+      "initial_snapshot": "solo-play",
+      "timeline": [
+        {
+          "start": 1,
+          "end": 85,
+          "player": 1,
+          "keys": [
+            "right"
+          ]
+        },
+        {
+          "start": 4,
+          "end": 30,
+          "player": 1,
+          "keys": [
+            "A"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "solo-jump-left",
+      "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+      "source_archive": "/Users/jason/Documents/nes/roms/03/\u9b42\u6597\u7f57\u65e5\u7248(\u5b8c\u5168\u7248).zip",
+      "initial_state": {
+        "name": "solo-play.fcs",
+        "sha256": "1da4737c5db180acfa1ca5b1a50b5949057c51da1ddf35402b48c2ef6187c236"
+      },
+      "emulator": "/opt/homebrew/bin/fceux",
+      "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+      "frames": 180,
+      "scenario_sha256": "19169fd16c8e1f799d6657951314934e8620361ae97b175c594716ef1d81fd52",
+      "has_custom_hooks": true,
+      "completed": true,
+      "trace_sha256": "c673925c7029ee53e0381032a3ef70651fb8073e1385cc48cb3d3d452f4cb596",
+      "initial_snapshot": "solo-play",
+      "timeline": [
+        {
+          "start": 1,
+          "end": 90,
+          "player": 1,
+          "keys": [
+            "left"
+          ]
+        },
+        {
+          "start": 3,
+          "end": 3,
+          "player": 1,
+          "keys": [
+            "A"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "solo-down-jump",
+      "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+      "source_archive": "/Users/jason/Documents/nes/roms/03/\u9b42\u6597\u7f57\u65e5\u7248(\u5b8c\u5168\u7248).zip",
+      "initial_state": {
+        "name": "solo-play.fcs",
+        "sha256": "1da4737c5db180acfa1ca5b1a50b5949057c51da1ddf35402b48c2ef6187c236"
+      },
+      "emulator": "/opt/homebrew/bin/fceux",
+      "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+      "frames": 180,
+      "scenario_sha256": "5a7fd6f708b0ada17a9816ebec3070be31da84171bda228f2cb3073d726c5969",
+      "has_custom_hooks": true,
+      "completed": true,
+      "trace_sha256": "6de83c7220bae483771ed300f701b38eccfcac19bad3a17e80f3fef5b153da6b",
+      "initial_snapshot": "solo-play",
+      "timeline": [
+        {
+          "start": 1,
+          "end": 8,
+          "player": 1,
+          "keys": [
+            "down",
+            "A"
+          ]
+        },
+        {
+          "start": 60,
+          "end": 90,
+          "player": 1,
+          "keys": [
+            "right",
+            "A"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "solo-port2",
+      "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+      "source_archive": "/Users/jason/Documents/nes/roms/03/\u9b42\u6597\u7f57\u65e5\u7248(\u5b8c\u5168\u7248).zip",
+      "initial_state": {
+        "name": "solo-play.fcs",
+        "sha256": "1da4737c5db180acfa1ca5b1a50b5949057c51da1ddf35402b48c2ef6187c236"
+      },
+      "emulator": "/opt/homebrew/bin/fceux",
+      "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+      "frames": 180,
+      "scenario_sha256": "d935ded3e202254b32a8ffe8d4589fbe36e0cc5f437e11f6613ae78bcffb4804",
+      "has_custom_hooks": true,
+      "completed": true,
+      "trace_sha256": "b7a76d0b4f202a6b13ea422f34d2af45777a4f0815cccf8157092d76a6f5abc7",
+      "initial_snapshot": "solo-play",
+      "timeline": [
+        {
+          "start": 1,
+          "end": 20,
+          "player": 2,
+          "keys": [
+            "right"
+          ]
+        },
+        {
+          "start": 3,
+          "end": 3,
+          "player": 2,
+          "keys": [
+            "A"
+          ]
+        },
+        {
+          "start": 100,
+          "end": 101,
+          "player": 1,
+          "keys": [
+            "B"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "coop-opposite",
+      "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+      "source_archive": "/Users/jason/Documents/nes/roms/03/\u9b42\u6597\u7f57\u65e5\u7248(\u5b8c\u5168\u7248).zip",
+      "initial_state": {
+        "name": "coop-play.fcs",
+        "sha256": "3101897748bbc64347634680bc4597161bfdee6339a349a1eb6f5c41cd5b6c7e"
+      },
+      "emulator": "/opt/homebrew/bin/fceux",
+      "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+      "frames": 180,
+      "scenario_sha256": "cead6f70f390b314e6ef075c80ec59f1415437d297c59cf9e3f941a787a19305",
+      "has_custom_hooks": true,
+      "completed": true,
+      "trace_sha256": "1cffb2e68484010d5de3d3f929cf5a0fa01af2dd7407b8e4306ac5be455ba5b8",
+      "initial_snapshot": "coop-play",
+      "timeline": [
+        {
+          "start": 1,
+          "end": 30,
+          "player": 1,
+          "keys": [
+            "right",
+            "B"
+          ]
+        },
+        {
+          "start": 1,
+          "end": 30,
+          "player": 2,
+          "keys": [
+            "left",
+            "B"
+          ]
+        },
+        {
+          "start": 3,
+          "end": 3,
+          "player": 1,
+          "keys": [
+            "A"
+          ]
+        },
+        {
+          "start": 20,
+          "end": 20,
+          "player": 2,
+          "keys": [
+            "A"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "coop-pad2-jump",
+      "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+      "source_archive": "/Users/jason/Documents/nes/roms/03/\u9b42\u6597\u7f57\u65e5\u7248(\u5b8c\u5168\u7248).zip",
+      "initial_state": {
+        "name": "coop-play.fcs",
+        "sha256": "3101897748bbc64347634680bc4597161bfdee6339a349a1eb6f5c41cd5b6c7e"
+      },
+      "emulator": "/opt/homebrew/bin/fceux",
+      "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+      "frames": 180,
+      "scenario_sha256": "a9ae7ebc120e93f8fd21946ea3d16dc2ffbef15e87f9137bc3330013d4736a17",
+      "has_custom_hooks": true,
+      "completed": true,
+      "trace_sha256": "18a647f21db1f0bf18bc8129c0eb68fc6eef9048869c9f25c0f30bbdddb18828",
+      "initial_snapshot": "coop-play",
+      "timeline": [
+        {
+          "start": 2,
+          "end": 10,
+          "player": 2,
+          "keys": [
+            "A",
+            "right"
+          ]
+        },
+        {
+          "start": 60,
+          "end": 70,
+          "player": 1,
+          "keys": [
+            "A",
+            "right"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "coop-held-jump",
+      "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+      "source_archive": "/Users/jason/Documents/nes/roms/03/\u9b42\u6597\u7f57\u65e5\u7248(\u5b8c\u5168\u7248).zip",
+      "initial_state": {
+        "name": "coop-play.fcs",
+        "sha256": "3101897748bbc64347634680bc4597161bfdee6339a349a1eb6f5c41cd5b6c7e"
+      },
+      "emulator": "/opt/homebrew/bin/fceux",
+      "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+      "frames": 180,
+      "scenario_sha256": "fbc76ebf1c8435bb74d846ecee8caf9343c59edf4154af42c2147d4586c91dcb",
+      "has_custom_hooks": true,
+      "completed": true,
+      "trace_sha256": "4297b5ade9335268c1946c200793019292288f1159b2506c127ed06f34c8da34",
+      "initial_snapshot": "coop-play",
+      "timeline": [
+        {
+          "start": 1,
+          "end": 120,
+          "player": 1,
+          "keys": [
+            "A"
+          ]
+        },
+        {
+          "start": 1,
+          "end": 120,
+          "player": 2,
+          "keys": [
+            "B"
+          ]
+        },
+        {
+          "start": 130,
+          "end": 130,
+          "player": 1,
+          "keys": [
+            "A"
+          ]
+        },
+        {
+          "start": 130,
+          "end": 130,
+          "player": 2,
+          "keys": [
+            "A"
+          ]
+        }
+      ]
+    }
+  ],
+  "routines": {
+    "beginJump": [
+      "0xd5fd",
+      "0xd625"
+    ],
+    "gravity": [
+      "0xd922",
+      "0xd92f"
+    ],
+    "advanceY": [
+      "0xd901",
+      "0xd921"
+    ],
+    "input": [
+      "0xc1bd",
+      "0xc1f8"
+    ]
+  },
+  "limitations": [
+    "Stage 1 outdoor natural execution only; indoor/boundary arithmetic needs separate coverage.",
+    "Routine differential oracle does not prove complete game behavior."
+  ]
+}

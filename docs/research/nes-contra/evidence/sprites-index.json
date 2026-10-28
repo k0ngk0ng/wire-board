@@ -1,0 +1,3436 @@
+{
+  "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "source": {
+    "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+    "zip_sha256": "2c4fd35488d32ca3abf207114893d54ad294f74df8bd1961a7b1e090549bae64",
+    "prg_banks": [
+      4,
+      5
+    ],
+    "slice": {
+      "cpu_start": 37223,
+      "cpu_end": 49151,
+      "rom_offset": 37239,
+      "bytes": 11929,
+      "sha256": "c030e55c4d7485ab0a9bc86d63a0cd4a2b57d04a77b81e69518d085406da6755"
+    },
+    "sprite_pointer_tables": [
+      37850,
+      38104
+    ],
+    "sprites": [
+      {
+        "code": 1,
+        "cpu_address": 38360,
+        "rom_offset": 38376,
+        "header": 0
+      },
+      {
+        "code": 2,
+        "cpu_address": 38361,
+        "rom_offset": 38377,
+        "header": 5
+      },
+      {
+        "code": 3,
+        "cpu_address": 38382,
+        "rom_offset": 38398,
+        "header": 5
+      },
+      {
+        "code": 4,
+        "cpu_address": 38403,
+        "rom_offset": 38419,
+        "header": 5
+      },
+      {
+        "code": 5,
+        "cpu_address": 38424,
+        "rom_offset": 38440,
+        "header": 5
+      },
+      {
+        "code": 6,
+        "cpu_address": 38436,
+        "rom_offset": 38452,
+        "header": 5
+      },
+      {
+        "code": 7,
+        "cpu_address": 38448,
+        "rom_offset": 38464,
+        "header": 254
+      },
+      {
+        "code": 8,
+        "cpu_address": 38451,
+        "rom_offset": 38467,
+        "header": 4
+      },
+      {
+        "code": 9,
+        "cpu_address": 38468,
+        "rom_offset": 38484,
+        "header": 3
+      },
+      {
+        "code": 10,
+        "cpu_address": 38481,
+        "rom_offset": 38497,
+        "header": 4
+      },
+      {
+        "code": 11,
+        "cpu_address": 38498,
+        "rom_offset": 38514,
+        "header": 4
+      },
+      {
+        "code": 12,
+        "cpu_address": 38515,
+        "rom_offset": 38531,
+        "header": 4
+      },
+      {
+        "code": 13,
+        "cpu_address": 38532,
+        "rom_offset": 38548,
+        "header": 6
+      },
+      {
+        "code": 14,
+        "cpu_address": 38548,
+        "rom_offset": 38564,
+        "header": 6
+      },
+      {
+        "code": 15,
+        "cpu_address": 38564,
+        "rom_offset": 38580,
+        "header": 6
+      },
+      {
+        "code": 16,
+        "cpu_address": 38580,
+        "rom_offset": 38596,
+        "header": 5
+      },
+      {
+        "code": 17,
+        "cpu_address": 38592,
+        "rom_offset": 38608,
+        "header": 5
+      },
+      {
+        "code": 18,
+        "cpu_address": 38604,
+        "rom_offset": 38620,
+        "header": 5
+      },
+      {
+        "code": 19,
+        "cpu_address": 38616,
+        "rom_offset": 38632,
+        "header": 6
+      },
+      {
+        "code": 20,
+        "cpu_address": 38632,
+        "rom_offset": 38648,
+        "header": 6
+      },
+      {
+        "code": 21,
+        "cpu_address": 38648,
+        "rom_offset": 38664,
+        "header": 6
+      },
+      {
+        "code": 22,
+        "cpu_address": 38664,
+        "rom_offset": 38680,
+        "header": 6
+      },
+      {
+        "code": 23,
+        "cpu_address": 38680,
+        "rom_offset": 38696,
+        "header": 4
+      },
+      {
+        "code": 24,
+        "cpu_address": 38697,
+        "rom_offset": 38713,
+        "header": 2
+      },
+      {
+        "code": 25,
+        "cpu_address": 38706,
+        "rom_offset": 38722,
+        "header": 2
+      },
+      {
+        "code": 26,
+        "cpu_address": 38715,
+        "rom_offset": 38731,
+        "header": 2
+      },
+      {
+        "code": 27,
+        "cpu_address": 38724,
+        "rom_offset": 38740,
+        "header": 5
+      },
+      {
+        "code": 28,
+        "cpu_address": 38740,
+        "rom_offset": 38756,
+        "header": 4
+      },
+      {
+        "code": 29,
+        "cpu_address": 38752,
+        "rom_offset": 38768,
+        "header": 5
+      },
+      {
+        "code": 30,
+        "cpu_address": 38768,
+        "rom_offset": 38784,
+        "header": 254
+      },
+      {
+        "code": 31,
+        "cpu_address": 38771,
+        "rom_offset": 38787,
+        "header": 254
+      },
+      {
+        "code": 32,
+        "cpu_address": 38774,
+        "rom_offset": 38790,
+        "header": 254
+      },
+      {
+        "code": 33,
+        "cpu_address": 38777,
+        "rom_offset": 38793,
+        "header": 254
+      },
+      {
+        "code": 34,
+        "cpu_address": 38780,
+        "rom_offset": 38796,
+        "header": 254
+      },
+      {
+        "code": 35,
+        "cpu_address": 38783,
+        "rom_offset": 38799,
+        "header": 254
+      },
+      {
+        "code": 36,
+        "cpu_address": 38786,
+        "rom_offset": 38802,
+        "header": 2
+      },
+      {
+        "code": 37,
+        "cpu_address": 38795,
+        "rom_offset": 38811,
+        "header": 254
+      },
+      {
+        "code": 38,
+        "cpu_address": 38798,
+        "rom_offset": 38814,
+        "header": 4
+      },
+      {
+        "code": 39,
+        "cpu_address": 38815,
+        "rom_offset": 38831,
+        "header": 4
+      },
+      {
+        "code": 40,
+        "cpu_address": 38832,
+        "rom_offset": 38848,
+        "header": 4
+      },
+      {
+        "code": 41,
+        "cpu_address": 38844,
+        "rom_offset": 38860,
+        "header": 4
+      },
+      {
+        "code": 42,
+        "cpu_address": 38861,
+        "rom_offset": 38877,
+        "header": 6
+      },
+      {
+        "code": 43,
+        "cpu_address": 38886,
+        "rom_offset": 38902,
+        "header": 6
+      },
+      {
+        "code": 44,
+        "cpu_address": 38898,
+        "rom_offset": 38914,
+        "header": 5
+      },
+      {
+        "code": 45,
+        "cpu_address": 38919,
+        "rom_offset": 38935,
+        "header": 5
+      },
+      {
+        "code": 46,
+        "cpu_address": 38940,
+        "rom_offset": 38956,
+        "header": 4
+      },
+      {
+        "code": 47,
+        "cpu_address": 38957,
+        "rom_offset": 38973,
+        "header": 3
+      },
+      {
+        "code": 48,
+        "cpu_address": 38970,
+        "rom_offset": 38986,
+        "header": 3
+      },
+      {
+        "code": 49,
+        "cpu_address": 38978,
+        "rom_offset": 38994,
+        "header": 3
+      },
+      {
+        "code": 50,
+        "cpu_address": 38986,
+        "rom_offset": 39002,
+        "header": 3
+      },
+      {
+        "code": 51,
+        "cpu_address": 38994,
+        "rom_offset": 39010,
+        "header": 3
+      },
+      {
+        "code": 52,
+        "cpu_address": 39002,
+        "rom_offset": 39018,
+        "header": 3
+      },
+      {
+        "code": 53,
+        "cpu_address": 39010,
+        "rom_offset": 39026,
+        "header": 8
+      },
+      {
+        "code": 54,
+        "cpu_address": 39043,
+        "rom_offset": 39059,
+        "header": 5
+      },
+      {
+        "code": 55,
+        "cpu_address": 39064,
+        "rom_offset": 39080,
+        "header": 2
+      },
+      {
+        "code": 56,
+        "cpu_address": 39073,
+        "rom_offset": 39089,
+        "header": 6
+      },
+      {
+        "code": 57,
+        "cpu_address": 39098,
+        "rom_offset": 39114,
+        "header": 8
+      },
+      {
+        "code": 58,
+        "cpu_address": 39131,
+        "rom_offset": 39147,
+        "header": 8
+      },
+      {
+        "code": 59,
+        "cpu_address": 39164,
+        "rom_offset": 39180,
+        "header": 4
+      },
+      {
+        "code": 60,
+        "cpu_address": 39181,
+        "rom_offset": 39197,
+        "header": 4
+      },
+      {
+        "code": 61,
+        "cpu_address": 39198,
+        "rom_offset": 39214,
+        "header": 4
+      },
+      {
+        "code": 62,
+        "cpu_address": 39215,
+        "rom_offset": 39231,
+        "header": 4
+      },
+      {
+        "code": 63,
+        "cpu_address": 39227,
+        "rom_offset": 39243,
+        "header": 4
+      },
+      {
+        "code": 64,
+        "cpu_address": 39239,
+        "rom_offset": 39255,
+        "header": 5
+      },
+      {
+        "code": 65,
+        "cpu_address": 39255,
+        "rom_offset": 39271,
+        "header": 5
+      },
+      {
+        "code": 66,
+        "cpu_address": 39276,
+        "rom_offset": 39292,
+        "header": 5
+      },
+      {
+        "code": 67,
+        "cpu_address": 39292,
+        "rom_offset": 39308,
+        "header": 5
+      },
+      {
+        "code": 68,
+        "cpu_address": 39308,
+        "rom_offset": 39324,
+        "header": 1
+      },
+      {
+        "code": 69,
+        "cpu_address": 39313,
+        "rom_offset": 39329,
+        "header": 3
+      },
+      {
+        "code": 70,
+        "cpu_address": 39326,
+        "rom_offset": 39342,
+        "header": 3
+      },
+      {
+        "code": 71,
+        "cpu_address": 39330,
+        "rom_offset": 39346,
+        "header": 254
+      },
+      {
+        "code": 72,
+        "cpu_address": 39333,
+        "rom_offset": 39349,
+        "header": 7
+      },
+      {
+        "code": 73,
+        "cpu_address": 39362,
+        "rom_offset": 39378,
+        "header": 2
+      },
+      {
+        "code": 74,
+        "cpu_address": 39371,
+        "rom_offset": 39387,
+        "header": 6
+      },
+      {
+        "code": 75,
+        "cpu_address": 39396,
+        "rom_offset": 39412,
+        "header": 2
+      },
+      {
+        "code": 76,
+        "cpu_address": 39405,
+        "rom_offset": 39421,
+        "header": 3
+      },
+      {
+        "code": 77,
+        "cpu_address": 39418,
+        "rom_offset": 39434,
+        "header": 3
+      },
+      {
+        "code": 78,
+        "cpu_address": 39431,
+        "rom_offset": 39447,
+        "header": 3
+      },
+      {
+        "code": 79,
+        "cpu_address": 39439,
+        "rom_offset": 39455,
+        "header": 1
+      },
+      {
+        "code": 80,
+        "cpu_address": 39444,
+        "rom_offset": 39460,
+        "header": 7
+      },
+      {
+        "code": 81,
+        "cpu_address": 39473,
+        "rom_offset": 39489,
+        "header": 5
+      },
+      {
+        "code": 82,
+        "cpu_address": 39489,
+        "rom_offset": 39505,
+        "header": 6
+      },
+      {
+        "code": 83,
+        "cpu_address": 39505,
+        "rom_offset": 39521,
+        "header": 6
+      },
+      {
+        "code": 84,
+        "cpu_address": 39521,
+        "rom_offset": 39537,
+        "header": 7
+      },
+      {
+        "code": 85,
+        "cpu_address": 39550,
+        "rom_offset": 39566,
+        "header": 8
+      },
+      {
+        "code": 86,
+        "cpu_address": 39583,
+        "rom_offset": 39599,
+        "header": 8
+      },
+      {
+        "code": 87,
+        "cpu_address": 39616,
+        "rom_offset": 39632,
+        "header": 6
+      },
+      {
+        "code": 88,
+        "cpu_address": 39641,
+        "rom_offset": 39657,
+        "header": 6
+      },
+      {
+        "code": 89,
+        "cpu_address": 39666,
+        "rom_offset": 39682,
+        "header": 22
+      },
+      {
+        "code": 90,
+        "cpu_address": 39755,
+        "rom_offset": 39771,
+        "header": 2
+      },
+      {
+        "code": 91,
+        "cpu_address": 39764,
+        "rom_offset": 39780,
+        "header": 2
+      },
+      {
+        "code": 92,
+        "cpu_address": 39773,
+        "rom_offset": 39789,
+        "header": 2
+      },
+      {
+        "code": 93,
+        "cpu_address": 39782,
+        "rom_offset": 39798,
+        "header": 8
+      },
+      {
+        "code": 94,
+        "cpu_address": 39815,
+        "rom_offset": 39831,
+        "header": 8
+      },
+      {
+        "code": 95,
+        "cpu_address": 39835,
+        "rom_offset": 39851,
+        "header": 8
+      },
+      {
+        "code": 96,
+        "cpu_address": 39855,
+        "rom_offset": 39871,
+        "header": 8
+      },
+      {
+        "code": 97,
+        "cpu_address": 39875,
+        "rom_offset": 39891,
+        "header": 8
+      },
+      {
+        "code": 98,
+        "cpu_address": 39887,
+        "rom_offset": 39903,
+        "header": 9
+      },
+      {
+        "code": 99,
+        "cpu_address": 39895,
+        "rom_offset": 39911,
+        "header": 2
+      },
+      {
+        "code": 100,
+        "cpu_address": 39904,
+        "rom_offset": 39920,
+        "header": 8
+      },
+      {
+        "code": 101,
+        "cpu_address": 39937,
+        "rom_offset": 39953,
+        "header": 3
+      },
+      {
+        "code": 102,
+        "cpu_address": 39945,
+        "rom_offset": 39961,
+        "header": 4
+      },
+      {
+        "code": 103,
+        "cpu_address": 39953,
+        "rom_offset": 39969,
+        "header": 2
+      },
+      {
+        "code": 104,
+        "cpu_address": 39962,
+        "rom_offset": 39978,
+        "header": 8
+      },
+      {
+        "code": 105,
+        "cpu_address": 39995,
+        "rom_offset": 40011,
+        "header": 8
+      },
+      {
+        "code": 106,
+        "cpu_address": 40023,
+        "rom_offset": 40039,
+        "header": 8
+      },
+      {
+        "code": 107,
+        "cpu_address": 40043,
+        "rom_offset": 40059,
+        "header": 8
+      },
+      {
+        "code": 108,
+        "cpu_address": 40055,
+        "rom_offset": 40071,
+        "header": 8
+      },
+      {
+        "code": 109,
+        "cpu_address": 40067,
+        "rom_offset": 40083,
+        "header": 2
+      },
+      {
+        "code": 110,
+        "cpu_address": 40076,
+        "rom_offset": 40092,
+        "header": 2
+      },
+      {
+        "code": 111,
+        "cpu_address": 40085,
+        "rom_offset": 40101,
+        "header": 254
+      },
+      {
+        "code": 112,
+        "cpu_address": 40088,
+        "rom_offset": 40104,
+        "header": 2
+      },
+      {
+        "code": 113,
+        "cpu_address": 40097,
+        "rom_offset": 40113,
+        "header": 2
+      },
+      {
+        "code": 114,
+        "cpu_address": 40106,
+        "rom_offset": 40122,
+        "header": 254
+      },
+      {
+        "code": 115,
+        "cpu_address": 40109,
+        "rom_offset": 40125,
+        "header": 2
+      },
+      {
+        "code": 116,
+        "cpu_address": 40118,
+        "rom_offset": 40134,
+        "header": 2
+      },
+      {
+        "code": 117,
+        "cpu_address": 40127,
+        "rom_offset": 40143,
+        "header": 2
+      },
+      {
+        "code": 118,
+        "cpu_address": 40136,
+        "rom_offset": 40152,
+        "header": 2
+      },
+      {
+        "code": 119,
+        "cpu_address": 40145,
+        "rom_offset": 40161,
+        "header": 2
+      },
+      {
+        "code": 120,
+        "cpu_address": 40154,
+        "rom_offset": 40170,
+        "header": 2
+      },
+      {
+        "code": 121,
+        "cpu_address": 40163,
+        "rom_offset": 40179,
+        "header": 2
+      },
+      {
+        "code": 122,
+        "cpu_address": 40172,
+        "rom_offset": 40188,
+        "header": 2
+      },
+      {
+        "code": 123,
+        "cpu_address": 40181,
+        "rom_offset": 40197,
+        "header": 2
+      },
+      {
+        "code": 124,
+        "cpu_address": 40190,
+        "rom_offset": 40206,
+        "header": 3
+      },
+      {
+        "code": 125,
+        "cpu_address": 40203,
+        "rom_offset": 40219,
+        "header": 3
+      },
+      {
+        "code": 126,
+        "cpu_address": 40216,
+        "rom_offset": 40232,
+        "header": 3
+      },
+      {
+        "code": 127,
+        "cpu_address": 40229,
+        "rom_offset": 40245,
+        "header": 2
+      },
+      {
+        "code": 128,
+        "cpu_address": 40229,
+        "rom_offset": 40245,
+        "header": 2
+      },
+      {
+        "code": 129,
+        "cpu_address": 40238,
+        "rom_offset": 40254,
+        "header": 2
+      },
+      {
+        "code": 130,
+        "cpu_address": 40247,
+        "rom_offset": 40263,
+        "header": 1
+      },
+      {
+        "code": 131,
+        "cpu_address": 40252,
+        "rom_offset": 40268,
+        "header": 1
+      },
+      {
+        "code": 132,
+        "cpu_address": 40257,
+        "rom_offset": 40273,
+        "header": 1
+      },
+      {
+        "code": 133,
+        "cpu_address": 40262,
+        "rom_offset": 40278,
+        "header": 5
+      },
+      {
+        "code": 134,
+        "cpu_address": 40283,
+        "rom_offset": 40299,
+        "header": 4
+      },
+      {
+        "code": 135,
+        "cpu_address": 40300,
+        "rom_offset": 40316,
+        "header": 3
+      },
+      {
+        "code": 136,
+        "cpu_address": 40313,
+        "rom_offset": 40329,
+        "header": 4
+      },
+      {
+        "code": 137,
+        "cpu_address": 40330,
+        "rom_offset": 40346,
+        "header": 4
+      },
+      {
+        "code": 138,
+        "cpu_address": 40347,
+        "rom_offset": 40363,
+        "header": 5
+      },
+      {
+        "code": 139,
+        "cpu_address": 40368,
+        "rom_offset": 40384,
+        "header": 7
+      },
+      {
+        "code": 140,
+        "cpu_address": 40397,
+        "rom_offset": 40413,
+        "header": 5
+      },
+      {
+        "code": 141,
+        "cpu_address": 40405,
+        "rom_offset": 40421,
+        "header": 5
+      },
+      {
+        "code": 142,
+        "cpu_address": 40413,
+        "rom_offset": 40429,
+        "header": 4
+      },
+      {
+        "code": 143,
+        "cpu_address": 40421,
+        "rom_offset": 40437,
+        "header": 5
+      },
+      {
+        "code": 144,
+        "cpu_address": 40429,
+        "rom_offset": 40445,
+        "header": 4
+      },
+      {
+        "code": 145,
+        "cpu_address": 40446,
+        "rom_offset": 40462,
+        "header": 8
+      },
+      {
+        "code": 146,
+        "cpu_address": 40462,
+        "rom_offset": 40478,
+        "header": 1
+      },
+      {
+        "code": 147,
+        "cpu_address": 40467,
+        "rom_offset": 40483,
+        "header": 4
+      },
+      {
+        "code": 148,
+        "cpu_address": 40484,
+        "rom_offset": 40500,
+        "header": 4
+      },
+      {
+        "code": 149,
+        "cpu_address": 40501,
+        "rom_offset": 40517,
+        "header": 4
+      },
+      {
+        "code": 150,
+        "cpu_address": 40518,
+        "rom_offset": 40534,
+        "header": 4
+      },
+      {
+        "code": 151,
+        "cpu_address": 40535,
+        "rom_offset": 40551,
+        "header": 5
+      },
+      {
+        "code": 152,
+        "cpu_address": 40556,
+        "rom_offset": 40572,
+        "header": 3
+      },
+      {
+        "code": 153,
+        "cpu_address": 40569,
+        "rom_offset": 40585,
+        "header": 2
+      },
+      {
+        "code": 154,
+        "cpu_address": 40578,
+        "rom_offset": 40594,
+        "header": 2
+      },
+      {
+        "code": 155,
+        "cpu_address": 40587,
+        "rom_offset": 40603,
+        "header": 3
+      },
+      {
+        "code": 156,
+        "cpu_address": 40600,
+        "rom_offset": 40616,
+        "header": 3
+      },
+      {
+        "code": 157,
+        "cpu_address": 40613,
+        "rom_offset": 40629,
+        "header": 254
+      },
+      {
+        "code": 158,
+        "cpu_address": 40616,
+        "rom_offset": 40632,
+        "header": 2
+      },
+      {
+        "code": 159,
+        "cpu_address": 40625,
+        "rom_offset": 40641,
+        "header": 2
+      },
+      {
+        "code": 160,
+        "cpu_address": 40634,
+        "rom_offset": 40650,
+        "header": 2
+      },
+      {
+        "code": 161,
+        "cpu_address": 40643,
+        "rom_offset": 40659,
+        "header": 1
+      },
+      {
+        "code": 162,
+        "cpu_address": 40648,
+        "rom_offset": 40664,
+        "header": 254
+      },
+      {
+        "code": 163,
+        "cpu_address": 40651,
+        "rom_offset": 40667,
+        "header": 1
+      },
+      {
+        "code": 164,
+        "cpu_address": 40656,
+        "rom_offset": 40672,
+        "header": 1
+      },
+      {
+        "code": 165,
+        "cpu_address": 40661,
+        "rom_offset": 40677,
+        "header": 1
+      },
+      {
+        "code": 166,
+        "cpu_address": 40666,
+        "rom_offset": 40682,
+        "header": 254
+      },
+      {
+        "code": 167,
+        "cpu_address": 40669,
+        "rom_offset": 40685,
+        "header": 1
+      },
+      {
+        "code": 168,
+        "cpu_address": 40674,
+        "rom_offset": 40690,
+        "header": 254
+      },
+      {
+        "code": 169,
+        "cpu_address": 40677,
+        "rom_offset": 40693,
+        "header": 254
+      },
+      {
+        "code": 170,
+        "cpu_address": 40681,
+        "rom_offset": 40697,
+        "header": 2
+      },
+      {
+        "code": 171,
+        "cpu_address": 40690,
+        "rom_offset": 40706,
+        "header": 22
+      },
+      {
+        "code": 172,
+        "cpu_address": 40779,
+        "rom_offset": 40795,
+        "header": 6
+      },
+      {
+        "code": 173,
+        "cpu_address": 40804,
+        "rom_offset": 40820,
+        "header": 6
+      },
+      {
+        "code": 174,
+        "cpu_address": 40816,
+        "rom_offset": 40832,
+        "header": 6
+      },
+      {
+        "code": 175,
+        "cpu_address": 40841,
+        "rom_offset": 40857,
+        "header": 6
+      },
+      {
+        "code": 176,
+        "cpu_address": 40853,
+        "rom_offset": 40869,
+        "header": 2
+      },
+      {
+        "code": 177,
+        "cpu_address": 40862,
+        "rom_offset": 40878,
+        "header": 2
+      },
+      {
+        "code": 178,
+        "cpu_address": 40871,
+        "rom_offset": 40887,
+        "header": 2
+      },
+      {
+        "code": 179,
+        "cpu_address": 40880,
+        "rom_offset": 40896,
+        "header": 6
+      },
+      {
+        "code": 180,
+        "cpu_address": 40905,
+        "rom_offset": 40921,
+        "header": 8
+      },
+      {
+        "code": 181,
+        "cpu_address": 40938,
+        "rom_offset": 40954,
+        "header": 7
+      },
+      {
+        "code": 182,
+        "cpu_address": 40967,
+        "rom_offset": 40983,
+        "header": 2
+      },
+      {
+        "code": 183,
+        "cpu_address": 40976,
+        "rom_offset": 40992,
+        "header": 22
+      },
+      {
+        "code": 184,
+        "cpu_address": 40976,
+        "rom_offset": 40992,
+        "header": 22
+      },
+      {
+        "code": 185,
+        "cpu_address": 41065,
+        "rom_offset": 41081,
+        "header": 18
+      },
+      {
+        "code": 186,
+        "cpu_address": 41138,
+        "rom_offset": 41154,
+        "header": 21
+      },
+      {
+        "code": 187,
+        "cpu_address": 41182,
+        "rom_offset": 41198,
+        "header": 2
+      },
+      {
+        "code": 188,
+        "cpu_address": 41191,
+        "rom_offset": 41207,
+        "header": 2
+      },
+      {
+        "code": 189,
+        "cpu_address": 41200,
+        "rom_offset": 41216,
+        "header": 7
+      },
+      {
+        "code": 190,
+        "cpu_address": 41229,
+        "rom_offset": 41245,
+        "header": 7
+      },
+      {
+        "code": 191,
+        "cpu_address": 41258,
+        "rom_offset": 41274,
+        "header": 1
+      },
+      {
+        "code": 192,
+        "cpu_address": 41263,
+        "rom_offset": 41279,
+        "header": 1
+      },
+      {
+        "code": 193,
+        "cpu_address": 41268,
+        "rom_offset": 41284,
+        "header": 1
+      },
+      {
+        "code": 194,
+        "cpu_address": 41273,
+        "rom_offset": 41289,
+        "header": 1
+      },
+      {
+        "code": 195,
+        "cpu_address": 41278,
+        "rom_offset": 41294,
+        "header": 19
+      },
+      {
+        "code": 196,
+        "cpu_address": 41318,
+        "rom_offset": 41334,
+        "header": 1
+      },
+      {
+        "code": 197,
+        "cpu_address": 41323,
+        "rom_offset": 41339,
+        "header": 2
+      },
+      {
+        "code": 198,
+        "cpu_address": 41332,
+        "rom_offset": 41348,
+        "header": 3
+      },
+      {
+        "code": 199,
+        "cpu_address": 41345,
+        "rom_offset": 41361,
+        "header": 2
+      },
+      {
+        "code": 200,
+        "cpu_address": 41354,
+        "rom_offset": 41370,
+        "header": 3
+      },
+      {
+        "code": 201,
+        "cpu_address": 41367,
+        "rom_offset": 41383,
+        "header": 5
+      },
+      {
+        "code": 202,
+        "cpu_address": 41388,
+        "rom_offset": 41404,
+        "header": 7
+      },
+      {
+        "code": 203,
+        "cpu_address": 41417,
+        "rom_offset": 41433,
+        "header": 10
+      },
+      {
+        "code": 204,
+        "cpu_address": 41458,
+        "rom_offset": 41474,
+        "header": 9
+      },
+      {
+        "code": 205,
+        "cpu_address": 41495,
+        "rom_offset": 41511,
+        "header": 11
+      },
+      {
+        "code": 206,
+        "cpu_address": 41540,
+        "rom_offset": 41556,
+        "header": 9
+      },
+      {
+        "code": 207,
+        "cpu_address": 41577,
+        "rom_offset": 41593,
+        "header": 5
+      },
+      {
+        "code": 208,
+        "cpu_address": 41598,
+        "rom_offset": 41614,
+        "header": 8
+      },
+      {
+        "code": 209,
+        "cpu_address": 41631,
+        "rom_offset": 41647,
+        "header": 6
+      },
+      {
+        "code": 210,
+        "cpu_address": 41656,
+        "rom_offset": 41672,
+        "header": 2
+      },
+      {
+        "code": 211,
+        "cpu_address": 41665,
+        "rom_offset": 41681,
+        "header": 2
+      },
+      {
+        "code": 212,
+        "cpu_address": 41674,
+        "rom_offset": 41690,
+        "header": 254
+      },
+      {
+        "code": 213,
+        "cpu_address": 41677,
+        "rom_offset": 41693,
+        "header": 23
+      },
+      {
+        "code": 214,
+        "cpu_address": 41705,
+        "rom_offset": 41721,
+        "header": 2
+      },
+      {
+        "code": 215,
+        "cpu_address": 41714,
+        "rom_offset": 41730,
+        "header": 1
+      },
+      {
+        "code": 216,
+        "cpu_address": 41719,
+        "rom_offset": 41735,
+        "header": 1
+      },
+      {
+        "code": 217,
+        "cpu_address": 41724,
+        "rom_offset": 41740,
+        "header": 1
+      },
+      {
+        "code": 218,
+        "cpu_address": 41729,
+        "rom_offset": 41745,
+        "header": 1
+      },
+      {
+        "code": 219,
+        "cpu_address": 41734,
+        "rom_offset": 41750,
+        "header": 2
+      },
+      {
+        "code": 220,
+        "cpu_address": 41743,
+        "rom_offset": 41759,
+        "header": 1
+      },
+      {
+        "code": 221,
+        "cpu_address": 41748,
+        "rom_offset": 41764,
+        "header": 1
+      },
+      {
+        "code": 222,
+        "cpu_address": 41753,
+        "rom_offset": 41769,
+        "header": 30
+      },
+      {
+        "code": 223,
+        "cpu_address": 41874,
+        "rom_offset": 41890,
+        "header": 30
+      },
+      {
+        "code": 224,
+        "cpu_address": 41966,
+        "rom_offset": 41982,
+        "header": 29
+      },
+      {
+        "code": 225,
+        "cpu_address": 41994,
+        "rom_offset": 42010,
+        "header": 29
+      },
+      {
+        "code": 226,
+        "cpu_address": 42022,
+        "rom_offset": 42038,
+        "header": 2
+      },
+      {
+        "code": 227,
+        "cpu_address": 42030,
+        "rom_offset": 42046,
+        "header": 2
+      },
+      {
+        "code": 228,
+        "cpu_address": 42038,
+        "rom_offset": 42054,
+        "header": 1
+      },
+      {
+        "code": 229,
+        "cpu_address": 42043,
+        "rom_offset": 42059,
+        "header": 1
+      },
+      {
+        "code": 230,
+        "cpu_address": 42048,
+        "rom_offset": 42064,
+        "header": 2
+      },
+      {
+        "code": 231,
+        "cpu_address": 42056,
+        "rom_offset": 42072,
+        "header": 2
+      },
+      {
+        "code": 232,
+        "cpu_address": 42064,
+        "rom_offset": 42080,
+        "header": 1
+      },
+      {
+        "code": 233,
+        "cpu_address": 42069,
+        "rom_offset": 42085,
+        "header": 1
+      },
+      {
+        "code": 234,
+        "cpu_address": 42074,
+        "rom_offset": 42090,
+        "header": 2
+      },
+      {
+        "code": 235,
+        "cpu_address": 42083,
+        "rom_offset": 42099,
+        "header": 1
+      },
+      {
+        "code": 236,
+        "cpu_address": 42088,
+        "rom_offset": 42104,
+        "header": 2
+      },
+      {
+        "code": 237,
+        "cpu_address": 42097,
+        "rom_offset": 42113,
+        "header": 2
+      },
+      {
+        "code": 238,
+        "cpu_address": 42106,
+        "rom_offset": 42122,
+        "header": 2
+      },
+      {
+        "code": 239,
+        "cpu_address": 42115,
+        "rom_offset": 42131,
+        "header": 2
+      },
+      {
+        "code": 240,
+        "cpu_address": 42124,
+        "rom_offset": 42140,
+        "header": 2
+      },
+      {
+        "code": 241,
+        "cpu_address": 42133,
+        "rom_offset": 42149,
+        "header": 1
+      },
+      {
+        "code": 242,
+        "cpu_address": 42138,
+        "rom_offset": 42154,
+        "header": 1
+      },
+      {
+        "code": 243,
+        "cpu_address": 42138,
+        "rom_offset": 42154,
+        "header": 1
+      },
+      {
+        "code": 244,
+        "cpu_address": 42143,
+        "rom_offset": 42159,
+        "header": 2
+      },
+      {
+        "code": 245,
+        "cpu_address": 42152,
+        "rom_offset": 42168,
+        "header": 2
+      },
+      {
+        "code": 246,
+        "cpu_address": 42161,
+        "rom_offset": 42177,
+        "header": 2
+      },
+      {
+        "code": 247,
+        "cpu_address": 42170,
+        "rom_offset": 42186,
+        "header": 1
+      },
+      {
+        "code": 248,
+        "cpu_address": 42175,
+        "rom_offset": 42191,
+        "header": 1
+      },
+      {
+        "code": 249,
+        "cpu_address": 42180,
+        "rom_offset": 42196,
+        "header": 1
+      },
+      {
+        "code": 250,
+        "cpu_address": 42185,
+        "rom_offset": 42201,
+        "header": 2
+      },
+      {
+        "code": 251,
+        "cpu_address": 42194,
+        "rom_offset": 42210,
+        "header": 1
+      },
+      {
+        "code": 252,
+        "cpu_address": 42199,
+        "rom_offset": 42215,
+        "header": 2
+      },
+      {
+        "code": 253,
+        "cpu_address": 42208,
+        "rom_offset": 42224,
+        "header": 1
+      },
+      {
+        "code": 254,
+        "cpu_address": 42213,
+        "rom_offset": 42229,
+        "header": 1
+      },
+      {
+        "code": 255,
+        "cpu_address": 42218,
+        "rom_offset": 42234,
+        "header": 1
+      }
+    ],
+    "source_unchanged": true
+  },
+  "functions": [
+    {
+      "address": "0x9167",
+      "evidence_id": "ev_1117b69c2fd5737671160dcda39a27f9d72b991e7f3e16f3bb72fd99d7ce29bb",
+      "assembly": [
+        "0x9167: LDA #0x4",
+        "0x9169: STA 0x0010",
+        "0x916b: LDX #0x0",
+        "0x916d: STX 0x0004",
+        "0x916f: CPX #0x1a",
+        "0x9171: BCS 0x9191",
+        "0x9173: LDA 0x300,X",
+        "0x9176: BEQ 0x918e",
+        "0x9178: LDY 0x34e,X",
+        "0x917b: STY 0x0000",
+        "0x917d: LDY 0x31a,X",
+        "0x9180: STY 0x0001",
+        "0x9182: LDY 0x334,X",
+        "0x9185: STY 0x0002",
+        "0x9187: STX 0x0005",
+        "0x9189: JSR 0x9284",
+        "0x918c: LDX 0x0005",
+        "0x918e: INX",
+        "0x918f: BNE 0x916f",
+        "0x9191: LDX 0x0004",
+        "0x9193: LDA #0xf4",
+        "0x9195: STA 0x200,X",
+        "0x9198: INX",
+        "0x9199: INX",
+        "0x919a: INX",
+        "0x919b: INX",
+        "0x919c: BNE 0x9195",
+        "0x919e: RTS"
+      ],
+      "limitations": [
+        "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+        "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+        "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+        "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+        "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+        "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+        "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+        "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+        "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+        "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+        "Headerless raw-binary analysis uses the caller-supplied architecture and entry address; file offset 0 is mapped at that address. Headers are not discovered from file bytes.",
+        "Little-endian generic Ghidra languages are used for x86, x86_64, arm, arm64, and NMOS 6502. Big-endian, Thumb-only, Cortex-M, 65C02, 65816, and other processor variants are unsupported in this increment.",
+        "Static analysis does not emulate reset vectors, memory-mapped I/O, or firmware boot sequences.",
+        "Ghidra analysis was seeded before auto-analysis from /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-sprites/sprite-seeds.tsv (sha256 1c2c0824d6224172e37660fe6bb57013ef7ab99f1d9ad9cd0d3f785c77659f36: 16 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+        "Seed outcome: 15 functions created, 1 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+      ]
+    },
+    {
+      "address": "0x919f",
+      "evidence_id": "ev_814a44be5ca741d280bb09dfe1930e689693d618c007f5684907914dfd1a00fa",
+      "assembly": [
+        "0x919f: LDA 0x07eb",
+        "0x91a2: LSR A",
+        "0x91a3: BCC 0x9167",
+        "0x91a5: LDA #0xc4",
+        "0x91a7: STA 0x0010",
+        "0x91a9: LDA 0x0035",
+        "0x91ab: CLC",
+        "0x91ac: ADC #0x4c",
+        "0x91ae: STA 0x0035",
+        "0x91b0: STA 0x0004",
+        "0x91b2: LDY #0x3f",
+        "0x91b4: STY 0x0007",
+        "0x91b6: LDA 0x0037",
+        "0x91b8: BEQ 0x91bd",
+        "0x91ba: JSR 0x936e",
+        "0x91bd: LDX #0x19",
+        "0x91bf: STX 0x0005",
+        "0x91c1: LDA 0x300,X",
+        "0x91c4: BEQ 0x91d8",
+        "0x91c6: LDY 0x34e,X",
+        "0x91c9: STY 0x0000",
+        "0x91cb: LDY 0x31a,X",
+        "0x91ce: STY 0x0001",
+        "0x91d0: LDY 0x334,X",
+        "0x91d3: STY 0x0002",
+        "0x91d5: JSR 0x9284",
+        "0x91d8: LDY 0x0007",
+        "0x91da: BMI 0x91f7",
+        "0x91dc: LDX 0x0005",
+        "0x91de: DEX",
+        "0x91df: BPL 0x91bf",
+        "0x91e1: JSR 0x91f8",
+        "0x91e4: LDY 0x0007",
+        "0x91e6: BMI 0x91f7",
+        "0x91e8: LDX 0x0004",
+        "0x91ea: LDA #0xf4",
+        "0x91ec: STA 0x200,X",
+        "0x91ef: TXA",
+        "0x91f0: CLC",
+        "0x91f1: ADC 0x0010",
+        "0x91f3: TAX",
+        "0x91f4: DEY",
+        "0x91f5: BPL 0x91ea",
+        "0x91f7: RTS"
+      ],
+      "limitations": [
+        "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+        "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+        "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+        "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+        "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+        "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+        "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+        "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+        "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+        "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+        "Headerless raw-binary analysis uses the caller-supplied architecture and entry address; file offset 0 is mapped at that address. Headers are not discovered from file bytes.",
+        "Little-endian generic Ghidra languages are used for x86, x86_64, arm, arm64, and NMOS 6502. Big-endian, Thumb-only, Cortex-M, 65C02, 65816, and other processor variants are unsupported in this increment.",
+        "Static analysis does not emulate reset vectors, memory-mapped I/O, or firmware boot sequences.",
+        "Ghidra analysis was seeded before auto-analysis from /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-sprites/sprite-seeds.tsv (sha256 1c2c0824d6224172e37660fe6bb57013ef7ab99f1d9ad9cd0d3f785c77659f36: 16 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+        "Seed outcome: 15 functions created, 1 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+      ]
+    },
+    {
+      "address": "0x9284",
+      "evidence_id": "ev_2f218342a95095a283756cb84332b996e4ddfce574df551045a457719d4c0533",
+      "assembly": [
+        "0x9284: ASL A",
+        "0x9285: TAY",
+        "0x9286: BCS 0x9293",
+        "0x9288: LDA 0x93d8,Y",
+        "0x928b: STA 0x0008",
+        "0x928d: LDA 0x93d9,Y",
+        "0x9290: JMP 0x929b",
+        "0x9293: LDA 0x94d8,Y",
+        "0x9296: STA 0x0008",
+        "0x9298: LDA 0x94d9,Y",
+        "0x929b: STA 0x0009",
+        "0x929d: LDY #0x0",
+        "0x929f: LDA (0x8),Y",
+        "0x92a1: BEQ 0x927f",
+        "0x92a3: INY",
+        "0x92a4: CMP #0xfe",
+        "0x92a6: BNE 0x92ab",
+        "0x92a8: JMP 0x9343",
+        "0x92ab: STA 0x0003",
+        "0x92ad: LDA 0x0000",
+        "0x92af: AND #0xc8",
+        "0x92b1: STA 0x000b",
+        "0x92b3: LDA 0x0000",
+        "0x92b5: LSR A",
+        "0x92b6: LSR A",
+        "0x92b7: LSR A",
+        "0x92b8: LDX #0xfc",
+        "0x92ba: LDA #0x23",
+        "0x92bc: BCS 0x92c2",
+        "0x92be: LDX #0xff",
+        "0x92c0: LDA #0x20",
+        "0x92c2: AND 0x0000",
+        "0x92c4: STA 0x0000",
+        "0x92c6: STX 0x000d",
+        "0x92c8: LDX 0x0004",
+        "0x92ca: LDA (0x8),Y",
+        "0x92cc: CMP #0x80",
+        "0x92ce: BNE 0x92e6",
+        "0x92d0: LDA 0x000b",
+        "0x92d2: AND #0xf7",
+        "0x92d4: STA 0x000b",
+        "0x92d6: INY",
+        "0x92d7: LDA (0x8),Y",
+        "0x92d9: STA 0x0006",
+        "0x92db: INY",
+        "0x92dc: LDA (0x8),Y",
+        "0x92de: STA 0x0009",
+        "0x92e0: LDA 0x0006",
+        "0x92e2: STA 0x0008",
+        "0x92e4: LDY #0x0",
+        "0x92e6: LDA (0x8),Y",
+        "0x92e8: STA 0x000c",
+        "0x92ea: LDA 0x000b",
+        "0x92ec: ASL A",
+        "0x92ed: AND #0x10",
+        "0x92ef: BEQ 0x92f3",
+        "0x92f1: INC 0x000c",
+        "0x92f3: LDA 0x000c",
+        "0x92f5: BCC 0x92fe",
+        "0x92f7: STA 0x000c",
+        "0x92f9: LDA #0xf0",
+        "0x92fb: SBC 0x000c",
+        "0x92fd: CLC",
+        "0x92fe: ADC 0x0001",
+        "0x9300: STA 0x200,X",
+        "0x9303: INY",
+        "0x9304: LDA (0x8),Y",
+        "0x9306: STA 0x201,X",
+        "0x9309: INY",
+        "0x930a: LDA (0x8),Y",
+        "0x930c: AND 0x000d",
+        "0x930e: ORA 0x0000",
+        "0x9310: EOR 0x000b",
+        "0x9312: STA 0x202,X",
+        "0x9315: INY",
+        "0x9316: LDA 0x000b",
+        "0x9318: ASL A",
+        "0x9319: ASL A",
+        "0x931a: LDA (0x8),Y",
+        "0x931c: BCC 0x9325",
+        "0x931e: STA 0x000c",
+        "0x9320: LDA #0xf8",
+        "0x9322: SBC 0x000c",
+        "0x9324: CLC",
+        "0x9325: BMI 0x933d",
+        "0x9327: ADC 0x0002",
+        "0x9329: BCS 0x9335",
+        "0x932b: STA 0x203,X",
+        "0x932e: DEC 0x0007",
+        "0x9330: TXA",
+        "0x9331: CLC",
+        "0x9332: ADC 0x0010",
+        "0x9334: TAX",
+        "0x9335: INY",
+        "0x9336: DEC 0x0003",
+        "0x9338: BNE 0x92ca",
+        "0x933a: STX 0x0004",
+        "0x933c: RTS",
+        "0x933d: ADC 0x0002",
+        "0x933f: BCS 0x932b",
+        "0x9341: BCC 0x9335",
+        "0x9343: LDX 0x0004",
+        "0x9345: LDA #0xf8",
+        "0x9347: CLC",
+        "0x9348: ADC 0x0001",
+        "0x934a: STA 0x200,X",
+        "0x934d: LDA (0x8),Y",
+        "0x934f: STA 0x201,X",
+        "0x9352: INY",
+        "0x9353: LDA (0x8),Y",
+        "0x9355: ORA 0x0000",
+        "0x9357: STA 0x202,X",
+        "0x935a: LDA 0x0002",
+        "0x935c: SEC",
+        "0x935d: SBC #0x4",
+        "0x935f: BCC 0x936c",
+        "0x9361: STA 0x203,X",
+        "0x9364: DEC 0x0007",
+        "0x9366: TXA",
+        "0x9367: CLC",
+        "0x9368: ADC 0x0010",
+        "0x936a: STA 0x0004",
+        "0x936c: INY",
+        "0x936d: RTS"
+      ],
+      "limitations": [
+        "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+        "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+        "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+        "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+        "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+        "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+        "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+        "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+        "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+        "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+        "Headerless raw-binary analysis uses the caller-supplied architecture and entry address; file offset 0 is mapped at that address. Headers are not discovered from file bytes.",
+        "Little-endian generic Ghidra languages are used for x86, x86_64, arm, arm64, and NMOS 6502. Big-endian, Thumb-only, Cortex-M, 65C02, 65816, and other processor variants are unsupported in this increment.",
+        "Static analysis does not emulate reset vectors, memory-mapped I/O, or firmware boot sequences.",
+        "Ghidra analysis was seeded before auto-analysis from /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-sprites/sprite-seeds.tsv (sha256 1c2c0824d6224172e37660fe6bb57013ef7ab99f1d9ad9cd0d3f785c77659f36: 16 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+        "Seed outcome: 15 functions created, 1 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+      ]
+    },
+    {
+      "address": "0x936e",
+      "evidence_id": "ev_471a87862f7b2a8fb3b0c70029bef38938cb9be611e30471ccc3d2a0aaafb96a",
+      "assembly": [
+        "0x936e: LDA 0x0022",
+        "0x9370: LDY 0x001c",
+        "0x9372: BEQ 0x9376",
+        "0x9374: LDA #0x1",
+        "0x9376: STA 0x0000",
+        "0x9378: LDX 0x0004",
+        "0x937a: LDY #0x4",
+        "0x937c: LDA 0x001c",
+        "0x937e: BNE 0x9395",
+        "0x9380: LDY 0x0000",
+        "0x9382: LDA 0x38,Y",
+        "0x9385: LDY #0x4",
+        "0x9387: LSR A",
+        "0x9388: BCS 0x9395",
+        "0x938a: LDY 0x0000",
+        "0x938c: LDA 0x32,Y",
+        "0x938f: LDY #0x0",
+        "0x9391: CMP #0x4",
+        "0x9393: BCC 0x9397",
+        "0x9395: LDA #0x4",
+        "0x9397: STA 0x0001",
+        "0x9399: DEC 0x0001",
+        "0x939b: BMI 0x93c3",
+        "0x939d: LDA #0x10",
+        "0x939f: STA 0x200,X",
+        "0x93a2: LDA 0x93ca,Y",
+        "0x93a5: STA 0x201,X",
+        "0x93a8: LDA 0x0000",
+        "0x93aa: STA 0x202,X",
+        "0x93ad: LSR A",
+        "0x93ae: LDA 0x93d2,Y",
+        "0x93b1: BCC 0x93b5",
+        "0x93b3: ADC #0xaf",
+        "0x93b5: STA 0x203,X",
+        "0x93b8: DEC 0x0007",
+        "0x93ba: TXA",
+        "0x93bb: CLC",
+        "0x93bc: ADC 0x0010",
+        "0x93be: TAX",
+        "0x93bf: INY",
+        "0x93c0: JMP 0x9399",
+        "0x93c3: DEC 0x0000",
+        "0x93c5: BPL 0x937a",
+        "0x93c7: STX 0x0004",
+        "0x93c9: RTS"
+      ],
+      "limitations": [
+        "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+        "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+        "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+        "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+        "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+        "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+        "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+        "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+        "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+        "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+        "Headerless raw-binary analysis uses the caller-supplied architecture and entry address; file offset 0 is mapped at that address. Headers are not discovered from file bytes.",
+        "Little-endian generic Ghidra languages are used for x86, x86_64, arm, arm64, and NMOS 6502. Big-endian, Thumb-only, Cortex-M, 65C02, 65816, and other processor variants are unsupported in this increment.",
+        "Static analysis does not emulate reset vectors, memory-mapped I/O, or firmware boot sequences.",
+        "Ghidra analysis was seeded before auto-analysis from /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-sprites/sprite-seeds.tsv (sha256 1c2c0824d6224172e37660fe6bb57013ef7ab99f1d9ad9cd0d3f785c77659f36: 16 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+        "Seed outcome: 15 functions created, 1 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+      ]
+    },
+    {
+      "address": "0xa4f8",
+      "evidence_id": "ev_c3444ee1b633f8f7edf1c5fee49d3f35c0c8d0d33f2dafcba3f359f469a841f6",
+      "assembly": [
+        "0xa4f8: JSR 0xa551"
+      ],
+      "limitations": [
+        "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+        "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+        "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+        "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+        "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+        "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+        "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+        "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+        "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+        "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+        "Headerless raw-binary analysis uses the caller-supplied architecture and entry address; file offset 0 is mapped at that address. Headers are not discovered from file bytes.",
+        "Little-endian generic Ghidra languages are used for x86, x86_64, arm, arm64, and NMOS 6502. Big-endian, Thumb-only, Cortex-M, 65C02, 65816, and other processor variants are unsupported in this increment.",
+        "Static analysis does not emulate reset vectors, memory-mapped I/O, or firmware boot sequences.",
+        "Ghidra analysis was seeded before auto-analysis from /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-sprites/sprite-seeds.tsv (sha256 1c2c0824d6224172e37660fe6bb57013ef7ab99f1d9ad9cd0d3f785c77659f36: 16 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+        "Seed outcome: 15 functions created, 1 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+      ]
+    },
+    {
+      "address": "0xa4fb",
+      "evidence_id": "ev_fe996b7a933dd8c1b18beca4094bf1581f1ce2c35aad0962a3970ffefd8a104f",
+      "assembly": [
+        "0xa4fb: LDA 0xba,X",
+        "0xa4fd: BNE 0xa50a",
+        "0xa4ff: LDY 0xd6,X",
+        "0xa501: LDA 0xae,X",
+        "0xa503: BEQ 0xa50c",
+        "0xa505: LDA 0x001a",
+        "0xa507: LSR A",
+        "0xa508: BCC 0xa50c",
+        "0xa50a: LDY #0x0",
+        "0xa50c: TYA",
+        "0xa50d: STA 0x300,X",
+        "0xa510: LDA 0xa54d,X",
+        "0xa513: LDY 0xc8,X",
+        "0xa515: BEQ 0xa51b",
+        "0xa517: LDA #0x2",
+        "0xa519: BNE 0xa521",
+        "0xa51b: LDY 0xb0,X",
+        "0xa51d: BEQ 0xa531",
+        "0xa51f: LDA #0x4",
+        "0xa521: STA 0x0000",
+        "0xa523: LDA 0x001a",
+        "0xa525: EOR 0xa54f,X",
+        "0xa528: LDY #0x4",
+        "0xa52a: AND 0x0000",
+        "0xa52c: BEQ 0xa530",
+        "0xa52e: LDY #0x5",
+        "0xa530: TYA",
+        "0xa531: LDY 0xda,X",
+        "0xa533: BPL 0xa537",
+        "0xa535: ORA #0x20",
+        "0xa537: LDY 0xce,X",
+        "0xa539: BEQ 0xa541",
+        "0xa53b: CPY #0xc",
+        "0xa53d: BCC 0xa541",
+        "0xa53f: ORA #0x8",
+        "0xa541: STA 0x0000",
+        "0xa543: LDA 0xd8,X",
+        "0xa545: AND #0xc8",
+        "0xa547: ORA 0x0000",
+        "0xa549: STA 0x34e,X",
+        "0xa54c: RTS"
+      ],
+      "limitations": [
+        "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+        "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+        "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+        "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+        "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+        "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+        "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+        "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+        "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+        "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+        "Headerless raw-binary analysis uses the caller-supplied architecture and entry address; file offset 0 is mapped at that address. Headers are not discovered from file bytes.",
+        "Little-endian generic Ghidra languages are used for x86, x86_64, arm, arm64, and NMOS 6502. Big-endian, Thumb-only, Cortex-M, 65C02, 65816, and other processor variants are unsupported in this increment.",
+        "Static analysis does not emulate reset vectors, memory-mapped I/O, or firmware boot sequences.",
+        "Ghidra analysis was seeded before auto-analysis from /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-sprites/sprite-seeds.tsv (sha256 1c2c0824d6224172e37660fe6bb57013ef7ab99f1d9ad9cd0d3f785c77659f36: 16 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+        "Seed outcome: 15 functions created, 1 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+      ]
+    },
+    {
+      "address": "0xa551",
+      "evidence_id": "ev_fbe1cfd89135558efca7ac684866d4a9d1852e91374985de604729c452214be9",
+      "assembly": [
+        "0xa551: LDA 0xb2,X",
+        "0xa553: BEQ 0xa558",
+        "0xa555: JMP 0xa677",
+        "0xa558: LDA 0xa4,X",
+        "0xa55a: BEQ 0xa55f",
+        "0xa55c: JMP 0xa625",
+        "0xa55f: LDA 0xa0,X",
+        "0xa561: BEQ 0xa566",
+        "0xa563: JMP 0xa638",
+        "0xa566: LDA 0x0040",
+        "0xa568: BEQ 0xa572",
+        "0xa56a: BMI 0xa56f",
+        "0xa56c: JMP 0xa7a1",
+        "0xa56f: JMP 0xa7fc",
+        "0xa572: LDY 0xbc,X",
+        "0xa574: CPY #0x3",
+        "0xa576: BCS 0xa581",
+        "0xa578: LDA 0xa57e,Y",
+        "0xa57b: JMP 0xa627"
+      ],
+      "limitations": [
+        "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+        "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+        "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+        "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+        "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+        "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+        "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+        "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+        "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+        "Ghidra Listing reports a terminal call at 0xa555 to 0xa677 choose_water_sprite (external=false, thunk=false, hasNoReturn=false); fallthrough is excluded by Ghidra's flow model. The reason for the terminal flow is not established by this observation.",
+        "Ghidra Listing reports a terminal call at 0xa55c to 0xa625 choose_falling_sprite (external=false, thunk=false, hasNoReturn=false); fallthrough is excluded by Ghidra's flow model. The reason for the terminal flow is not established by this observation.",
+        "Ghidra Listing reports a terminal call at 0xa563 to 0xa638 choose_jumping_sprite (external=false, thunk=false, hasNoReturn=false); fallthrough is excluded by Ghidra's flow model. The reason for the terminal flow is not established by this observation.",
+        "Ghidra Listing reports a terminal call at 0xa56c to 0xa7a1 choose_indoor_sprite (external=false, thunk=false, hasNoReturn=false); fallthrough is excluded by Ghidra's flow model. The reason for the terminal flow is not established by this observation.",
+        "Ghidra Listing reports a terminal call at 0xa56f to 0xa7fc choose_indoor_boss_sprite (external=false, thunk=false, hasNoReturn=false); fallthrough is excluded by Ghidra's flow model. The reason for the terminal flow is not established by this observation.",
+        "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+        "Headerless raw-binary analysis uses the caller-supplied architecture and entry address; file offset 0 is mapped at that address. Headers are not discovered from file bytes.",
+        "Little-endian generic Ghidra languages are used for x86, x86_64, arm, arm64, and NMOS 6502. Big-endian, Thumb-only, Cortex-M, 65C02, 65816, and other processor variants are unsupported in this increment.",
+        "Static analysis does not emulate reset vectors, memory-mapped I/O, or firmware boot sequences.",
+        "Ghidra analysis was seeded before auto-analysis from /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-sprites/sprite-seeds.tsv (sha256 1c2c0824d6224172e37660fe6bb57013ef7ab99f1d9ad9cd0d3f785c77659f36: 16 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+        "Seed outcome: 15 functions created, 1 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+      ]
+    },
+    {
+      "address": "0xa581",
+      "evidence_id": "ev_84d3da0aeb645f5e44bfe91baa1b1db12297d4db1f69cc869c23f845ab41135b",
+      "assembly": [
+        "0xa581: BNE 0xa5ec"
+      ],
+      "limitations": [
+        "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+        "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+        "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+        "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+        "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+        "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+        "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+        "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+        "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+        "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+        "Headerless raw-binary analysis uses the caller-supplied architecture and entry address; file offset 0 is mapped at that address. Headers are not discovered from file bytes.",
+        "Little-endian generic Ghidra languages are used for x86, x86_64, arm, arm64, and NMOS 6502. Big-endian, Thumb-only, Cortex-M, 65C02, 65816, and other processor variants are unsupported in this increment.",
+        "Static analysis does not emulate reset vectors, memory-mapped I/O, or firmware boot sequences.",
+        "Ghidra analysis was seeded before auto-analysis from /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-sprites/sprite-seeds.tsv (sha256 1c2c0824d6224172e37660fe6bb57013ef7ab99f1d9ad9cd0d3f785c77659f36: 16 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+        "Seed outcome: 15 functions created, 1 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+      ]
+    },
+    {
+      "address": "0xa583",
+      "evidence_id": "ev_b4f050cc19fc1a7d31811bade6afd76b23b8bdbc69bf43488871c400ffc7ee21",
+      "assembly": [
+        "0xa583: LDY 0xc2,X",
+        "0xa585: LDA 0xa5ba,Y",
+        "0xa588: BNE 0xa590",
+        "0xa58a: LDY 0xce,X",
+        "0xa58c: BEQ 0xa590",
+        "0xa58e: LDA #0x1",
+        "0xa590: ASL A",
+        "0xa591: TAY",
+        "0xa592: LDA 0xa5c4,Y",
+        "0xa595: STA 0x0001",
+        "0xa597: LDA 0xa5c5,Y",
+        "0xa59a: STA 0x0002",
+        "0xa59c: LDA 0xa6,X",
+        "0xa59e: TAY",
+        "0xa59f: LDA (0x1),Y",
+        "0xa5a1: STA 0xd6,X",
+        "0xa5a3: INC 0x9e,X",
+        "0xa5a5: LDA 0x9e,X",
+        "0xa5a7: AND #0x7",
+        "0xa5a9: BNE 0xa5b7",
+        "0xa5ab: INC 0xa6,X",
+        "0xa5ad: LDA 0xa6,X",
+        "0xa5af: CMP #0x6",
+        "0xa5b1: BCC 0xa5b7",
+        "0xa5b3: LDA #0x0",
+        "0xa5b5: STA 0xa6,X",
+        "0xa5b7: JMP 0xa629"
+      ],
+      "limitations": [
+        "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+        "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+        "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+        "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+        "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+        "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+        "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+        "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+        "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+        "Ghidra Listing reports a terminal call at 0xa5b7 to 0xa629 apply_facing (external=false, thunk=false, hasNoReturn=false); fallthrough is excluded by Ghidra's flow model. The reason for the terminal flow is not established by this observation.",
+        "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+        "Headerless raw-binary analysis uses the caller-supplied architecture and entry address; file offset 0 is mapped at that address. Headers are not discovered from file bytes.",
+        "Little-endian generic Ghidra languages are used for x86, x86_64, arm, arm64, and NMOS 6502. Big-endian, Thumb-only, Cortex-M, 65C02, 65816, and other processor variants are unsupported in this increment.",
+        "Static analysis does not emulate reset vectors, memory-mapped I/O, or firmware boot sequences.",
+        "Ghidra analysis was seeded before auto-analysis from /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-sprites/sprite-seeds.tsv (sha256 1c2c0824d6224172e37660fe6bb57013ef7ab99f1d9ad9cd0d3f785c77659f36: 16 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+        "Seed outcome: 15 functions created, 1 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+      ]
+    },
+    {
+      "address": "0xa5ec",
+      "evidence_id": "ev_9f880b4d2ebb002cd2891e5444cbea2daada14541cc55731e644402bbd652224",
+      "assembly": [
+        "0xa5ec: INC 0xd2,X",
+        "0xa5ee: LDA 0xd2,X",
+        "0xa5f0: AND #0x7",
+        "0xa5f2: BNE 0xa600",
+        "0xa5f4: INC 0xa6,X",
+        "0xa5f6: LDA 0xa6,X",
+        "0xa5f8: CMP #0x5",
+        "0xa5fa: BCC 0xa600",
+        "0xa5fc: LDA #0x4",
+        "0xa5fe: STA 0xa6,X",
+        "0xa600: LDA 0xa6,X",
+        "0xa602: ASL A",
+        "0xa603: TAY",
+        "0xa604: LDA 0xa61b,Y",
+        "0xa607: STA 0xd6,X",
+        "0xa609: LDA 0xa61c,Y",
+        "0xa60c: STA 0xd8,X",
+        "0xa60e: LDA 0xb4,X",
+        "0xa610: AND #0x2",
+        "0xa612: BEQ 0xa61a",
+        "0xa614: LDA 0xd8,X",
+        "0xa616: EOR #0x40",
+        "0xa618: STA 0xd8,X",
+        "0xa61a: RTS"
+      ],
+      "limitations": [
+        "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+        "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+        "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+        "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+        "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+        "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+        "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+        "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+        "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+        "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+        "Headerless raw-binary analysis uses the caller-supplied architecture and entry address; file offset 0 is mapped at that address. Headers are not discovered from file bytes.",
+        "Little-endian generic Ghidra languages are used for x86, x86_64, arm, arm64, and NMOS 6502. Big-endian, Thumb-only, Cortex-M, 65C02, 65816, and other processor variants are unsupported in this increment.",
+        "Static analysis does not emulate reset vectors, memory-mapped I/O, or firmware boot sequences.",
+        "Ghidra analysis was seeded before auto-analysis from /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-sprites/sprite-seeds.tsv (sha256 1c2c0824d6224172e37660fe6bb57013ef7ab99f1d9ad9cd0d3f785c77659f36: 16 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+        "Seed outcome: 15 functions created, 1 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+      ]
+    },
+    {
+      "address": "0xa625",
+      "evidence_id": "ev_1e6a30fc8764a3817eb5500c5821ca7c0ffc35c7e39e545347b3bd25c5eeca56",
+      "assembly": [
+        "0xa625: LDA #0x5",
+        "0xa627: STA 0xd6,X"
+      ],
+      "limitations": [
+        "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+        "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+        "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+        "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+        "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+        "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+        "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+        "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+        "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+        "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+        "Headerless raw-binary analysis uses the caller-supplied architecture and entry address; file offset 0 is mapped at that address. Headers are not discovered from file bytes.",
+        "Little-endian generic Ghidra languages are used for x86, x86_64, arm, arm64, and NMOS 6502. Big-endian, Thumb-only, Cortex-M, 65C02, 65816, and other processor variants are unsupported in this increment.",
+        "Static analysis does not emulate reset vectors, memory-mapped I/O, or firmware boot sequences.",
+        "Ghidra analysis was seeded before auto-analysis from /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-sprites/sprite-seeds.tsv (sha256 1c2c0824d6224172e37660fe6bb57013ef7ab99f1d9ad9cd0d3f785c77659f36: 16 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+        "Seed outcome: 15 functions created, 1 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+      ]
+    },
+    {
+      "address": "0xa629",
+      "evidence_id": "ev_919bb3d37709a9214e03ff27a3970dddfcc5b6ace4e62bf082382a936ff00233",
+      "assembly": [
+        "0xa629: LDA 0xd8,X",
+        "0xa62b: AND #0x3f",
+        "0xa62d: LDY 0xc2,X",
+        "0xa62f: CPY #0x5",
+        "0xa631: BCC 0xa635",
+        "0xa633: ORA #0x40",
+        "0xa635: STA 0xd8,X",
+        "0xa637: RTS"
+      ],
+      "limitations": [
+        "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+        "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+        "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+        "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+        "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+        "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+        "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+        "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+        "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+        "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+        "Headerless raw-binary analysis uses the caller-supplied architecture and entry address; file offset 0 is mapped at that address. Headers are not discovered from file bytes.",
+        "Little-endian generic Ghidra languages are used for x86, x86_64, arm, arm64, and NMOS 6502. Big-endian, Thumb-only, Cortex-M, 65C02, 65816, and other processor variants are unsupported in this increment.",
+        "Static analysis does not emulate reset vectors, memory-mapped I/O, or firmware boot sequences.",
+        "Ghidra analysis was seeded before auto-analysis from /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-sprites/sprite-seeds.tsv (sha256 1c2c0824d6224172e37660fe6bb57013ef7ab99f1d9ad9cd0d3f785c77659f36: 16 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+        "Seed outcome: 15 functions created, 1 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+      ]
+    },
+    {
+      "address": "0xa638",
+      "evidence_id": "ev_bc18e0c6abba1e98a22e51943fcef609cc9954ee5398147201cd6743be74e3b2",
+      "assembly": [
+        "0xa638: LDA 0xa0,X",
+        "0xa63a: ASL A",
+        "0xa63b: LDA #0x0",
+        "0xa63d: BCC 0xa641",
+        "0xa63f: LDA #0x40",
+        "0xa641: STA 0x0008",
+        "0xa643: LDA 0xd8,X",
+        "0xa645: AND #0x3f",
+        "0xa647: LDY 0xa6,X",
+        "0xa649: CPY #0x2",
+        "0xa64b: BCC 0xa64f",
+        "0xa64d: ORA #0xc0",
+        "0xa64f: EOR 0x0008",
+        "0xa651: STA 0xd8,X",
+        "0xa653: LDY 0xa6,X",
+        "0xa655: LDA 0xa673,Y",
+        "0xa658: STA 0xd6,X",
+        "0xa65a: INC 0xd2,X",
+        "0xa65c: LDA 0xd2,X",
+        "0xa65e: CMP #0x5",
+        "0xa660: BCC 0xa672",
+        "0xa662: LDA #0x0",
+        "0xa664: STA 0xd2,X",
+        "0xa666: INC 0xa6,X",
+        "0xa668: LDA 0xa6,X",
+        "0xa66a: CMP #0x4",
+        "0xa66c: BCC 0xa670",
+        "0xa66e: LDA #0x0",
+        "0xa670: STA 0xa6,X",
+        "0xa672: RTS"
+      ],
+      "limitations": [
+        "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+        "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+        "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+        "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+        "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+        "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+        "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+        "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+        "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+        "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+        "Headerless raw-binary analysis uses the caller-supplied architecture and entry address; file offset 0 is mapped at that address. Headers are not discovered from file bytes.",
+        "Little-endian generic Ghidra languages are used for x86, x86_64, arm, arm64, and NMOS 6502. Big-endian, Thumb-only, Cortex-M, 65C02, 65816, and other processor variants are unsupported in this increment.",
+        "Static analysis does not emulate reset vectors, memory-mapped I/O, or firmware boot sequences.",
+        "Ghidra analysis was seeded before auto-analysis from /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-sprites/sprite-seeds.tsv (sha256 1c2c0824d6224172e37660fe6bb57013ef7ab99f1d9ad9cd0d3f785c77659f36: 16 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+        "Seed outcome: 15 functions created, 1 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+      ]
+    },
+    {
+      "address": "0xa677",
+      "evidence_id": "ev_01624a6f17ed547dcd9f8bb4c694412417a2763591eda68e26063dffc14c831f",
+      "assembly": [
+        "0xa677: LDA 0xb2,X",
+        "0xa679: AND #0x4",
+        "0xa67b: BNE 0xa6d1",
+        "0xa67d: LDA 0xb2,X",
+        "0xa67f: AND #0x10",
+        "0xa681: BNE 0xa6aa",
+        "0xa683: LDA #0x0",
+        "0xa685: STA 0xa6,X",
+        "0xa687: LDA #0x5",
+        "0xa689: STA 0xd6,X",
+        "0xa68b: LDA 0x31a,X",
+        "0xa68e: CLC",
+        "0xa68f: ADC #0x10",
+        "0xa691: STA 0x31a,X",
+        "0xa694: LDA 0xc2,X",
+        "0xa696: CMP #0x5",
+        "0xa698: BCC 0xa6a0",
+        "0xa69a: LDA 0xb2,X",
+        "0xa69c: ORA #0x2",
+        "0xa69e: STA 0xb2,X",
+        "0xa6a0: LDA #0x10",
+        "0xa6a2: STA 0xcc,X",
+        "0xa6a4: LDA 0xb2,X",
+        "0xa6a6: ORA #0x90",
+        "0xa6a8: STA 0xb2,X",
+        "0xa6aa: LDA #0x0",
+        "0xa6ac: STA 0x98,X",
+        "0xa6ae: LDA 0xcc,X",
+        "0xa6b0: BEQ 0xa6d1",
+        "0xa6b2: CMP #0xc",
+        "0xa6b4: BCS 0xa6c2",
+        "0xa6b6: LDA #0x73",
+        "0xa6b8: STA 0xd6,X",
+        "0xa6ba: CMP #0x8",
+        "0xa6bc: BCS 0xa6c2",
+        "0xa6be: LDA #0x18",
+        "0xa6c0: STA 0xd6,X",
+        "0xa6c2: DEC 0xcc,X",
+        "0xa6c4: LDA 0xb2,X",
+        "0xa6c6: AND #0x2",
+        "0xa6c8: BEQ 0xa6d0",
+        "0xa6ca: LDA 0xd8,X",
+        "0xa6cc: ORA #0x40",
+        "0xa6ce: STA 0xd8,X",
+        "0xa6d0: RTS",
+        "0xa6d1: LDA 0xb2,X",
+        "0xa6d3: AND #0x8",
+        "0xa6d5: BEQ 0xa6da",
+        "0xa6d7: JMP 0xa750",
+        "0xa6da: LDA 0xb2,X",
+        "0xa6dc: ORA #0x4",
+        "0xa6de: AND #0x7f",
+        "0xa6e0: STA 0xb2,X",
+        "0xa6e2: LDA 0xc2,X",
+        "0xa6e4: ASL A",
+        "0xa6e5: TAY",
+        "0xa6e6: LDA 0xce,X",
+        "0xa6e8: BEQ 0xa6f5",
+        "0xa6ea: LDA 0xa78d,Y",
+        "0xa6ed: STA 0xd6,X",
+        "0xa6ef: LDA 0xa78e,Y",
+        "0xa6f2: JMP 0xa6fd",
+        "0xa6f5: LDA 0xa779,Y",
+        "0xa6f8: STA 0xd6,X",
+        "0xa6fa: LDA 0xa77a,Y",
+        "0xa6fd: STA 0x0001",
+        "0xa6ff: LDA 0xd8,X",
+        "0xa701: AND #0xf",
+        "0xa703: ORA 0x0001",
+        "0xa705: STA 0xd8,X",
+        "0xa707: LDA 0x001a",
+        "0xa709: AND #0xf",
+        "0xa70b: BNE 0xa70f",
+        "0xa70d: INC 0xa6,X",
+        "0xa70f: LDA 0xa6,X",
+        "0xa711: AND #0x1",
+        "0xa713: BNE 0xa71b",
+        "0xa715: LDA 0xd8,X",
+        "0xa717: ORA #0x8",
+        "0xa719: BNE 0xa71f",
+        "0xa71b: LDA 0xd8,X",
+        "0xa71d: AND #0xf7",
+        "0xa71f: STA 0xd8,X",
+        "0xa721: LDA 0x31a,X",
+        "0xa724: TAY",
+        "0xa725: LDA 0x334,X",
+        "0xa728: JSR 0xdfec",
+        "0xa72b: CMP #0x2",
+        "0xa72d: BEQ 0xa74f",
+        "0xa72f: LDA 0xb2,X",
+        "0xa731: ORA #0x88",
+        "0xa733: STA 0xb2,X",
+        "0xa735: LDA #0xc",
+        "0xa737: STA 0xcc,X",
+        "0xa739: LDA #0x1a",
+        "0xa73b: STA 0xd6,X",
+        "0xa73d: LDA 0xc2,X",
+        "0xa73f: CMP #0x5",
+        "0xa741: BCC 0xa749",
+        "0xa743: LDA 0xb2,X",
+        "0xa745: ORA #0x2",
+        "0xa747: BNE 0xa74d",
+        "0xa749: LDA 0xb2,X",
+        "0xa74b: AND #0xfd",
+        "0xa74d: STA 0xb2,X",
+        "0xa74f: RTS",
+        "0xa750: LDA #0x6",
+        "0xa752: STA 0x98,X",
+        "0xa754: LDA 0xcc,X",
+        "0xa756: BEQ 0xa769",
+        "0xa758: CMP #0x5",
+        "0xa75a: BCC 0xa75f",
+        "0xa75c: JMP 0xa6c2",
+        "0xa75f: LDA #0x5",
+        "0xa761: STA 0xd6,X",
+        "0xa763: JMP 0xa6c2",
+        "0xa769: LDA #0x0",
+        "0xa76b: STA 0xb2,X",
+        "0xa76d: STA 0xa6,X",
+        "0xa76f: LDA 0x31a,X",
+        "0xa772: SEC",
+        "0xa773: SBC #0x10",
+        "0xa775: STA 0x31a,X",
+        "0xa778: RTS"
+      ],
+      "limitations": [
+        "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+        "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+        "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+        "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+        "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+        "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+        "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+        "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+        "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+        "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+        "Headerless raw-binary analysis uses the caller-supplied architecture and entry address; file offset 0 is mapped at that address. Headers are not discovered from file bytes.",
+        "Little-endian generic Ghidra languages are used for x86, x86_64, arm, arm64, and NMOS 6502. Big-endian, Thumb-only, Cortex-M, 65C02, 65816, and other processor variants are unsupported in this increment.",
+        "Static analysis does not emulate reset vectors, memory-mapped I/O, or firmware boot sequences.",
+        "Ghidra analysis was seeded before auto-analysis from /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-sprites/sprite-seeds.tsv (sha256 1c2c0824d6224172e37660fe6bb57013ef7ab99f1d9ad9cd0d3f785c77659f36: 16 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+        "Seed outcome: 15 functions created, 1 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+      ]
+    },
+    {
+      "address": "0xa7a1",
+      "evidence_id": "ev_aa138bc64db65dabf504246350d5dc955127853888a471a666d615486abf9050",
+      "assembly": [
+        "0xa7a1: LDA 0xbc,X",
+        "0xa7a3: JSR 0xc6f2"
+      ],
+      "limitations": [
+        "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+        "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+        "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+        "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+        "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+        "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+        "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+        "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+        "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+        "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+        "Headerless raw-binary analysis uses the caller-supplied architecture and entry address; file offset 0 is mapped at that address. Headers are not discovered from file bytes.",
+        "Little-endian generic Ghidra languages are used for x86, x86_64, arm, arm64, and NMOS 6502. Big-endian, Thumb-only, Cortex-M, 65C02, 65816, and other processor variants are unsupported in this increment.",
+        "Static analysis does not emulate reset vectors, memory-mapped I/O, or firmware boot sequences.",
+        "Ghidra analysis was seeded before auto-analysis from /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-sprites/sprite-seeds.tsv (sha256 1c2c0824d6224172e37660fe6bb57013ef7ab99f1d9ad9cd0d3f785c77659f36: 16 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+        "Seed outcome: 15 functions created, 1 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+      ]
+    },
+    {
+      "address": "0xa7fc",
+      "evidence_id": "ev_5cb53f4470947c75473274d6456bcd3d7e90a6456fb4b2024eb40055f4c1478f",
+      "assembly": [
+        "0xa7fc: LDA 0xbc,X",
+        "0xa7fe: JSR 0xc6f2"
+      ],
+      "limitations": [
+        "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+        "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+        "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+        "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+        "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+        "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+        "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+        "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+        "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+        "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+        "Headerless raw-binary analysis uses the caller-supplied architecture and entry address; file offset 0 is mapped at that address. Headers are not discovered from file bytes.",
+        "Little-endian generic Ghidra languages are used for x86, x86_64, arm, arm64, and NMOS 6502. Big-endian, Thumb-only, Cortex-M, 65C02, 65816, and other processor variants are unsupported in this increment.",
+        "Static analysis does not emulate reset vectors, memory-mapped I/O, or firmware boot sequences.",
+        "Ghidra analysis was seeded before auto-analysis from /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-sprites/sprite-seeds.tsv (sha256 1c2c0824d6224172e37660fe6bb57013ef7ab99f1d9ad9cd0d3f785c77659f36: 16 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+        "Seed outcome: 15 functions created, 1 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+      ]
+    }
+  ],
+  "verification": {
+    "passed": true,
+    "builder_calls": 607,
+    "codes": [
+      5,
+      8,
+      9,
+      13,
+      15,
+      16,
+      17,
+      18,
+      23,
+      24,
+      25,
+      29,
+      30,
+      115
+    ],
+    "flags": [
+      0,
+      5,
+      8,
+      13,
+      64,
+      69,
+      72,
+      77,
+      128,
+      192
+    ],
+    "strides": [
+      196
+    ],
+    "counts": {
+      "regular": 480,
+      "compact": 127
+    },
+    "pixels": [
+      {
+        "frame": 1,
+        "opaque_foreground_pixels": 1068,
+        "mismatches": 0,
+        "dma_frame": 1400,
+        "emulator_frame": 1400
+      },
+      {
+        "frame": 2,
+        "opaque_foreground_pixels": 1126,
+        "mismatches": 0,
+        "dma_frame": 1401,
+        "emulator_frame": 1401
+      },
+      {
+        "frame": 10,
+        "opaque_foreground_pixels": 986,
+        "mismatches": 0,
+        "dma_frame": 1409,
+        "emulator_frame": 1409
+      },
+      {
+        "frame": 20,
+        "opaque_foreground_pixels": 986,
+        "mismatches": 0,
+        "dma_frame": 1419,
+        "emulator_frame": 1419
+      },
+      {
+        "frame": 40,
+        "opaque_foreground_pixels": 976,
+        "mismatches": 0,
+        "dma_frame": 1439,
+        "emulator_frame": 1439
+      },
+      {
+        "frame": 60,
+        "opaque_foreground_pixels": 761,
+        "mismatches": 0,
+        "dma_frame": 1459,
+        "emulator_frame": 1459
+      },
+      {
+        "frame": 80,
+        "opaque_foreground_pixels": 849,
+        "mismatches": 0,
+        "dma_frame": 1479,
+        "emulator_frame": 1479
+      },
+      {
+        "frame": 100,
+        "opaque_foreground_pixels": 873,
+        "mismatches": 0,
+        "dma_frame": 1499,
+        "emulator_frame": 1499
+      },
+      {
+        "frame": 120,
+        "opaque_foreground_pixels": 865,
+        "mismatches": 0,
+        "dma_frame": 1519,
+        "emulator_frame": 1519
+      },
+      {
+        "frame": 140,
+        "opaque_foreground_pixels": 856,
+        "mismatches": 0,
+        "dma_frame": 1539,
+        "emulator_frame": 1539
+      },
+      {
+        "frame": 160,
+        "opaque_foreground_pixels": 873,
+        "mismatches": 0,
+        "dma_frame": 1559,
+        "emulator_frame": 1559
+      },
+      {
+        "frame": 180,
+        "opaque_foreground_pixels": 787,
+        "mismatches": 0,
+        "dma_frame": 1579,
+        "emulator_frame": 1579
+      },
+      {
+        "frame": 200,
+        "opaque_foreground_pixels": 873,
+        "mismatches": 0,
+        "dma_frame": 1599,
+        "emulator_frame": 1599
+      },
+      {
+        "frame": 220,
+        "opaque_foreground_pixels": 765,
+        "mismatches": 0,
+        "dma_frame": 1619,
+        "emulator_frame": 1619
+      },
+      {
+        "frame": 240,
+        "opaque_foreground_pixels": 765,
+        "mismatches": 0,
+        "dma_frame": 1639,
+        "emulator_frame": 1639
+      }
+    ],
+    "scope": "recorded natural first-stage execution only",
+    "not_proven": [
+      "unobserved sprites/animation phases",
+      "other weapons/levels",
+      "whole-frame background rendering"
+    ]
+  },
+  "animation_tables": {
+    "stationary": {
+      "cpu_address": 42366,
+      "values": [
+        15,
+        22,
+        23
+      ]
+    },
+    "aim_sequence": {
+      "cpu_address": 42426,
+      "values": [
+        0,
+        2,
+        0,
+        3,
+        0,
+        0,
+        3,
+        0,
+        2,
+        0
+      ]
+    },
+    "walking_sequences": {
+      "cpu_address": 42446,
+      "values": [
+        [
+          2,
+          3,
+          4,
+          5,
+          3,
+          6
+        ],
+        [
+          13,
+          14,
+          15,
+          13,
+          14,
+          15
+        ],
+        [
+          16,
+          17,
+          18,
+          16,
+          17,
+          18
+        ],
+        [
+          19,
+          20,
+          21,
+          19,
+          20,
+          21
+        ],
+        [
+          81,
+          82,
+          83,
+          81,
+          82,
+          83
+        ]
+      ]
+    },
+    "death": {
+      "cpu_address": 42523,
+      "values": [
+        [
+          10,
+          0
+        ],
+        [
+          11,
+          0
+        ],
+        [
+          10,
+          192
+        ],
+        [
+          11,
+          192
+        ],
+        [
+          12,
+          0
+        ]
+      ]
+    },
+    "jump": {
+      "cpu_address": 42611,
+      "values": [
+        8,
+        9,
+        8,
+        9
+      ]
+    }
+  },
+  "animation_calls": 480,
+  "display_mappings": [
+    {
+      "frame": 1,
+      "chr_pages": [
+        1,
+        4,
+        6,
+        7,
+        68,
+        69,
+        70,
+        71
+      ],
+      "palette_codes": [
+        15,
+        25,
+        41,
+        8,
+        0,
+        39,
+        24,
+        8,
+        0,
+        38,
+        48,
+        16,
+        0,
+        17,
+        48,
+        33,
+        15,
+        55,
+        18,
+        15,
+        0,
+        54,
+        22,
+        15,
+        0,
+        32,
+        38,
+        22,
+        0,
+        32,
+        0,
+        15
+      ]
+    },
+    {
+      "frame": 2,
+      "chr_pages": [
+        1,
+        4,
+        6,
+        7,
+        68,
+        69,
+        70,
+        71
+      ],
+      "palette_codes": [
+        15,
+        25,
+        41,
+        8,
+        0,
+        39,
+        24,
+        8,
+        0,
+        38,
+        48,
+        16,
+        0,
+        17,
+        48,
+        33,
+        15,
+        55,
+        18,
+        15,
+        0,
+        54,
+        22,
+        15,
+        0,
+        32,
+        38,
+        22,
+        0,
+        32,
+        0,
+        15
+      ]
+    },
+    {
+      "frame": 10,
+      "chr_pages": [
+        1,
+        4,
+        6,
+        7,
+        68,
+        33,
+        70,
+        71
+      ],
+      "palette_codes": [
+        15,
+        25,
+        41,
+        8,
+        15,
+        39,
+        24,
+        8,
+        15,
+        22,
+        48,
+        16,
+        15,
+        17,
+        33,
+        48,
+        15,
+        55,
+        18,
+        15,
+        15,
+        54,
+        22,
+        15,
+        15,
+        32,
+        38,
+        22,
+        15,
+        32,
+        0,
+        15
+      ]
+    },
+    {
+      "frame": 20,
+      "chr_pages": [
+        1,
+        4,
+        6,
+        7,
+        68,
+        33,
+        70,
+        71
+      ],
+      "palette_codes": [
+        15,
+        25,
+        41,
+        8,
+        15,
+        39,
+        24,
+        8,
+        15,
+        6,
+        48,
+        16,
+        15,
+        17,
+        48,
+        33,
+        15,
+        55,
+        18,
+        15,
+        15,
+        54,
+        22,
+        15,
+        15,
+        32,
+        38,
+        22,
+        15,
+        32,
+        0,
+        15
+      ]
+    },
+    {
+      "frame": 40,
+      "chr_pages": [
+        1,
+        4,
+        6,
+        7,
+        68,
+        69,
+        70,
+        71
+      ],
+      "palette_codes": [
+        15,
+        25,
+        41,
+        8,
+        15,
+        39,
+        24,
+        8,
+        15,
+        22,
+        48,
+        16,
+        15,
+        17,
+        33,
+        48,
+        15,
+        55,
+        18,
+        15,
+        15,
+        54,
+        22,
+        15,
+        15,
+        32,
+        38,
+        22,
+        15,
+        32,
+        0,
+        15
+      ]
+    },
+    {
+      "frame": 60,
+      "chr_pages": [
+        1,
+        4,
+        6,
+        7,
+        68,
+        34,
+        70,
+        71
+      ],
+      "palette_codes": [
+        15,
+        25,
+        41,
+        8,
+        15,
+        39,
+        24,
+        8,
+        15,
+        22,
+        48,
+        16,
+        15,
+        17,
+        33,
+        48,
+        15,
+        55,
+        18,
+        15,
+        15,
+        54,
+        22,
+        15,
+        15,
+        32,
+        38,
+        22,
+        15,
+        32,
+        0,
+        15
+      ]
+    },
+    {
+      "frame": 80,
+      "chr_pages": [
+        1,
+        4,
+        6,
+        7,
+        68,
+        32,
+        70,
+        71
+      ],
+      "palette_codes": [
+        15,
+        25,
+        41,
+        8,
+        15,
+        39,
+        24,
+        8,
+        15,
+        6,
+        48,
+        16,
+        15,
+        17,
+        48,
+        33,
+        15,
+        55,
+        18,
+        15,
+        15,
+        54,
+        22,
+        15,
+        15,
+        32,
+        38,
+        22,
+        15,
+        32,
+        0,
+        15
+      ]
+    },
+    {
+      "frame": 100,
+      "chr_pages": [
+        1,
+        4,
+        6,
+        7,
+        68,
+        69,
+        70,
+        71
+      ],
+      "palette_codes": [
+        15,
+        25,
+        41,
+        8,
+        15,
+        39,
+        24,
+        8,
+        15,
+        38,
+        48,
+        16,
+        15,
+        17,
+        48,
+        33,
+        15,
+        55,
+        18,
+        15,
+        15,
+        54,
+        22,
+        15,
+        15,
+        32,
+        38,
+        22,
+        15,
+        32,
+        0,
+        15
+      ]
+    },
+    {
+      "frame": 120,
+      "chr_pages": [
+        1,
+        4,
+        6,
+        7,
+        68,
+        33,
+        70,
+        71
+      ],
+      "palette_codes": [
+        15,
+        25,
+        41,
+        8,
+        15,
+        39,
+        24,
+        8,
+        15,
+        22,
+        48,
+        16,
+        15,
+        17,
+        33,
+        48,
+        15,
+        55,
+        18,
+        15,
+        15,
+        54,
+        22,
+        15,
+        15,
+        32,
+        38,
+        22,
+        15,
+        32,
+        0,
+        15
+      ]
+    },
+    {
+      "frame": 140,
+      "chr_pages": [
+        1,
+        4,
+        6,
+        7,
+        68,
+        32,
+        70,
+        71
+      ],
+      "palette_codes": [
+        15,
+        25,
+        41,
+        8,
+        15,
+        39,
+        24,
+        8,
+        15,
+        22,
+        48,
+        16,
+        15,
+        17,
+        33,
+        48,
+        15,
+        55,
+        18,
+        15,
+        15,
+        54,
+        22,
+        15,
+        15,
+        32,
+        38,
+        22,
+        15,
+        32,
+        0,
+        15
+      ]
+    },
+    {
+      "frame": 160,
+      "chr_pages": [
+        1,
+        4,
+        6,
+        7,
+        68,
+        34,
+        70,
+        71
+      ],
+      "palette_codes": [
+        15,
+        25,
+        41,
+        8,
+        15,
+        39,
+        24,
+        8,
+        15,
+        38,
+        48,
+        16,
+        15,
+        17,
+        48,
+        33,
+        15,
+        55,
+        18,
+        15,
+        15,
+        54,
+        22,
+        15,
+        15,
+        32,
+        38,
+        22,
+        15,
+        32,
+        0,
+        15
+      ]
+    },
+    {
+      "frame": 180,
+      "chr_pages": [
+        1,
+        4,
+        6,
+        7,
+        68,
+        32,
+        70,
+        71
+      ],
+      "palette_codes": [
+        15,
+        25,
+        41,
+        8,
+        15,
+        39,
+        24,
+        8,
+        15,
+        6,
+        48,
+        16,
+        15,
+        17,
+        48,
+        33,
+        15,
+        55,
+        18,
+        15,
+        15,
+        54,
+        22,
+        15,
+        15,
+        32,
+        38,
+        22,
+        15,
+        32,
+        0,
+        15
+      ]
+    },
+    {
+      "frame": 200,
+      "chr_pages": [
+        1,
+        4,
+        6,
+        7,
+        68,
+        34,
+        70,
+        71
+      ],
+      "palette_codes": [
+        15,
+        25,
+        41,
+        8,
+        15,
+        39,
+        24,
+        8,
+        15,
+        22,
+        48,
+        16,
+        15,
+        17,
+        33,
+        48,
+        15,
+        55,
+        18,
+        15,
+        15,
+        54,
+        22,
+        15,
+        15,
+        32,
+        38,
+        22,
+        15,
+        32,
+        0,
+        15
+      ]
+    },
+    {
+      "frame": 220,
+      "chr_pages": [
+        1,
+        4,
+        6,
+        7,
+        68,
+        32,
+        70,
+        71
+      ],
+      "palette_codes": [
+        15,
+        25,
+        41,
+        8,
+        15,
+        39,
+        24,
+        8,
+        15,
+        22,
+        48,
+        16,
+        15,
+        17,
+        33,
+        48,
+        15,
+        55,
+        18,
+        15,
+        15,
+        54,
+        22,
+        15,
+        15,
+        32,
+        38,
+        22,
+        15,
+        32,
+        0,
+        15
+      ]
+    },
+    {
+      "frame": 240,
+      "chr_pages": [
+        1,
+        4,
+        6,
+        7,
+        68,
+        69,
+        70,
+        71
+      ],
+      "palette_codes": [
+        15,
+        25,
+        41,
+        8,
+        15,
+        39,
+        24,
+        8,
+        15,
+        6,
+        48,
+        16,
+        15,
+        17,
+        48,
+        33,
+        15,
+        55,
+        18,
+        15,
+        15,
+        54,
+        22,
+        15,
+        15,
+        32,
+        38,
+        22,
+        15,
+        32,
+        0,
+        15
+      ]
+    }
+  ],
+  "asset_decode": {
+    "pages": 128,
+    "tiles": 8192,
+    "roundtrip_bytes": 131072
+  },
+  "evidence_files": {
+    "sprites-catalog.json.gz": "292a58f7f9ef5cfd741c481a0701ec1d76a327daa2e7292be0174e394b820e6e",
+    "sprites-natural.json.gz": "7029b9685ca4409e0141924024321ee8d9532de4386b15bfe1378bfaff4ebc4f",
+    "sprites-rea.json.gz": "2ca8ec02e5e05f9b9e8c47c89e90b42d5263ce712ff7cf56f09dccfec0455d15"
+  },
+  "reference": {
+    "repository": "https://github.com/vermiceli/nes-contra-us",
+    "tree": "687d651c021fd7020f10d05b970ccb62663c94bd",
+    "files": {
+      "bank1.asm": "ee9723e0a92d681dca4e634ebf0641600bbb9960d5431b7362358a79c79090bd",
+      "bank2.asm": "259384e0e1741deaf667a2696441449078810f7a2c7886aaa92d75aaad595f1e"
+    },
+    "role": "Candidate symbols only; Japanese addresses and format checked against local ROM and REA."
+  }
+}

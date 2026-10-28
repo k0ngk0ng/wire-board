@@ -1,0 +1,32 @@
+{"Time":"2026-10-25T18:15:22.289017+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-10-25T18:15:22.723841+08:00","Action":"run","Package":"command-line-arguments","Test":"TestLevelResourcesEnergyGiantPalettes"}
+{"Time":"2026-10-25T18:15:22.723909+08:00","Action":"output","Package":"command-line-arguments","Test":"TestLevelResourcesEnergyGiantPalettes","Output":"=== RUN   TestLevelResourcesEnergyGiantPalettes\n"}
+{"Time":"2026-10-25T18:15:22.723926+08:00","Action":"run","Package":"command-line-arguments","Test":"TestLevelResourcesEnergyGiantPalettes/levels.json"}
+{"Time":"2026-10-25T18:15:22.723987+08:00","Action":"output","Package":"command-line-arguments","Test":"TestLevelResourcesEnergyGiantPalettes/levels.json","Output":"=== RUN   TestLevelResourcesEnergyGiantPalettes/levels.json\n"}
+{"Time":"2026-10-25T18:15:22.740906+08:00","Action":"output","Package":"command-line-arguments","Test":"TestLevelResourcesEnergyGiantPalettes/levels.json","Output":"--- PASS: TestLevelResourcesEnergyGiantPalettes/levels.json (0.02s)\n"}
+{"Time":"2026-10-25T18:15:22.740923+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestLevelResourcesEnergyGiantPalettes/levels.json","Elapsed":0.02}
+{"Time":"2026-10-25T18:15:22.740943+08:00","Action":"run","Package":"command-line-arguments","Test":"TestLevelResourcesEnergyGiantPalettes/stage-6.json"}
+{"Time":"2026-10-25T18:15:22.740946+08:00","Action":"output","Package":"command-line-arguments","Test":"TestLevelResourcesEnergyGiantPalettes/stage-6.json","Output":"=== RUN   TestLevelResourcesEnergyGiantPalettes/stage-6.json\n"}
+{"Time":"2026-10-25T18:15:22.743424+08:00","Action":"output","Package":"command-line-arguments","Test":"TestLevelResourcesEnergyGiantPalettes/stage-6.json","Output":"--- PASS: TestLevelResourcesEnergyGiantPalettes/stage-6.json (0.00s)\n"}
+{"Time":"2026-10-25T18:15:22.743435+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestLevelResourcesEnergyGiantPalettes/stage-6.json","Elapsed":0}
+{"Time":"2026-10-25T18:15:22.74344+08:00","Action":"output","Package":"command-line-arguments","Test":"TestLevelResourcesEnergyGiantPalettes","Output":"--- PASS: TestLevelResourcesEnergyGiantPalettes (0.02s)\n"}
+{"Time":"2026-10-25T18:15:22.743445+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestLevelResourcesEnergyGiantPalettes","Elapsed":0.02}
+{"Time":"2026-10-25T18:15:22.743526+08:00","Action":"run","Package":"command-line-arguments","Test":"TestMachinePaletteExportPreservesSnowColors"}
+{"Time":"2026-10-25T18:15:22.743532+08:00","Action":"output","Package":"command-line-arguments","Test":"TestMachinePaletteExportPreservesSnowColors","Output":"=== RUN   TestMachinePaletteExportPreservesSnowColors\n"}
+{"Time":"2026-10-25T18:15:22.76277+08:00","Action":"output","Package":"command-line-arguments","Test":"TestMachinePaletteExportPreservesSnowColors","Output":"--- PASS: TestMachinePaletteExportPreservesSnowColors (0.02s)\n"}
+{"Time":"2026-10-25T18:15:22.762792+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestMachinePaletteExportPreservesSnowColors","Elapsed":0.02}
+{"Time":"2026-10-25T18:15:22.762936+08:00","Action":"run","Package":"command-line-arguments","Test":"TestEnergyGiantPaletteSourceIdentity"}
+{"Time":"2026-10-25T18:15:22.762945+08:00","Action":"output","Package":"command-line-arguments","Test":"TestEnergyGiantPaletteSourceIdentity","Output":"=== RUN   TestEnergyGiantPaletteSourceIdentity\n"}
+{"Time":"2026-10-25T18:15:22.763725+08:00","Action":"output","Package":"command-line-arguments","Test":"TestEnergyGiantPaletteSourceIdentity","Output":"--- PASS: TestEnergyGiantPaletteSourceIdentity (0.00s)\n"}
+{"Time":"2026-10-25T18:15:22.763731+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestEnergyGiantPaletteSourceIdentity","Elapsed":0}
+{"Time":"2026-10-25T18:15:22.764822+08:00","Action":"run","Package":"command-line-arguments","Test":"TestLevelResourcesSnowEnemyPalettes"}
+{"Time":"2026-10-25T18:15:22.764829+08:00","Action":"output","Package":"command-line-arguments","Test":"TestLevelResourcesSnowEnemyPalettes","Output":"=== RUN   TestLevelResourcesSnowEnemyPalettes\n"}
+{"Time":"2026-10-25T18:15:22.767408+08:00","Action":"output","Package":"command-line-arguments","Test":"TestLevelResourcesSnowEnemyPalettes","Output":"--- PASS: TestLevelResourcesSnowEnemyPalettes (0.00s)\n"}
+{"Time":"2026-10-25T18:15:22.767424+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestLevelResourcesSnowEnemyPalettes","Elapsed":0}
+{"Time":"2026-10-25T18:15:22.767673+08:00","Action":"run","Package":"command-line-arguments","Test":"TestLevelResourcesIncludeRuntimePaletteCycles"}
+{"Time":"2026-10-25T18:15:22.767676+08:00","Action":"output","Package":"command-line-arguments","Test":"TestLevelResourcesIncludeRuntimePaletteCycles","Output":"=== RUN   TestLevelResourcesIncludeRuntimePaletteCycles\n"}
+{"Time":"2026-10-25T18:15:22.794849+08:00","Action":"output","Package":"command-line-arguments","Test":"TestLevelResourcesIncludeRuntimePaletteCycles","Output":"--- PASS: TestLevelResourcesIncludeRuntimePaletteCycles (0.03s)\n"}
+{"Time":"2026-10-25T18:15:22.794875+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestLevelResourcesIncludeRuntimePaletteCycles","Elapsed":0.03}
+{"Time":"2026-10-25T18:15:22.795191+08:00","Action":"output","Package":"command-line-arguments","Output":"PASS\n"}
+{"Time":"2026-10-25T18:15:23.801288+08:00","Action":"output","Package":"command-line-arguments","Output":"ok  \tcommand-line-arguments\t1.512s\n"}
+{"Time":"2026-10-25T18:15:23.801316+08:00","Action":"pass","Package":"command-line-arguments","Elapsed":1.512}

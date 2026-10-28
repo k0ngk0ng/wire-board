@@ -1,0 +1,8 @@
+=== RUN   TestBotSnowUnknownSupportAndKnownForwardLanding
+    bot_snow_edge_test.go:45: seat0 walks off unknown support: 1
+    bot_snow_edge_test.go:45: seat1 walks off unknown support: 65
+    bot_snow_edge_test.go:52: known same-height forward platform is not used 64
+--- FAIL: TestBotSnowUnknownSupportAndKnownForwardLanding (0.00s)
+FAIL
+FAIL	github.com/k0ngk0ng/wire-board/games/contra/engine	0.599s
+FAIL

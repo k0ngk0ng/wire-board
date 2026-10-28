@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "runtimeBuildID": "ee979e7ee9809f7ebf445a4e8c7f8a9b085d1b0ddf0349e842ebf19973c31953",
+  "rulesBuildID": "a1a3ed68a3f026bb54af61ba8a19e653c0ac6eb1f16be5416fe988bb98816bbb",
+  "audioPayloadsVerified": true,
+  "mediaPack": ".local/contra-media/portable-v1",
+  "build": ".local/contra-browser/portable-v10",
+  "scope": "Local native/Wasm build and full payload validation; no upload or production registration"
+}

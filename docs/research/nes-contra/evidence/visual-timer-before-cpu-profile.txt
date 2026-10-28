@@ -1,0 +1,43 @@
+File: timer-profile.test
+Type: cpu
+Time: 2026-10-26 11:12:43 CST
+Duration: 5.08s, Total samples = 4.42s (87.08%)
+Active filters:
+   focus=host.*timer
+Showing nodes accounting for 2.97s, 67.19% of 4.42s total
+Dropped 21 nodes (cum <= 0.02s)
+      flat  flat%   sum%        cum   cum%
+     1.15s 26.02% 26.02%      2.06s 46.61%  github.com/k0ngk0ng/wire-board/games/contra/engine.botMatchVisualPattern
+     1.04s 23.53% 49.55%      1.05s 23.76%  github.com/k0ngk0ng/wire-board/games/contra/engine.botPixelRGB (inline)
+     0.39s  8.82% 58.37%      2.88s 65.16%  github.com/k0ngk0ng/wire-board/games/contra/engine.ObserveBotFrame
+     0.19s  4.30% 62.67%      0.23s  5.20%  github.com/k0ngk0ng/wire-board/games/contra/engine.botImageCell
+     0.06s  1.36% 64.03%      0.06s  1.36%  runtime.asyncPreempt
+     0.06s  1.36% 65.38%      0.06s  1.36%  runtime.memclrNoHeapPointers
+     0.04s   0.9% 66.29%      0.05s  1.13%  runtime.mapassign_fast32
+     0.02s  0.45% 66.74%      0.02s  0.45%  encoding/json.stateEndValue
+     0.02s  0.45% 67.19%      0.02s  0.45%  encoding/json.stateInString
+         0     0% 67.19%      0.07s  1.58%  encoding/json.(*Decoder).Decode
+         0     0% 67.19%      0.05s  1.13%  encoding/json.(*Decoder).readValue
+         0     0% 67.19%      0.02s  0.45%  encoding/json.(*decodeState).array
+         0     0% 67.19%      0.02s  0.45%  encoding/json.(*decodeState).object
+         0     0% 67.19%      0.02s  0.45%  encoding/json.(*decodeState).unmarshal
+         0     0% 67.19%      0.02s  0.45%  encoding/json.(*decodeState).value
+         0     0% 67.19%      0.02s  0.45%  encoding/json.(*encodeState).marshal
+         0     0% 67.19%      0.02s  0.45%  encoding/json.(*encodeState).reflectValue
+         0     0% 67.19%      0.06s  1.36%  encoding/json.Marshal
+         0     0% 67.19%      0.02s  0.45%  encoding/json.ptrEncoder.encode
+         0     0% 67.19%      0.02s  0.45%  encoding/json.structEncoder.encode
+         0     0% 67.19%      0.23s  5.20%  github.com/k0ngk0ng/wire-board/games/contra/engine.(*BotVision).observeTerrain
+         0     0% 67.19%      0.05s  1.13%  github.com/k0ngk0ng/wire-board/games/contra/runtime.StateDigest
+         0     0% 67.19%      0.08s  1.81%  github.com/k0ngk0ng/wire-board/games/contra/server.(*host).decode
+         0     0% 67.19%      0.04s   0.9%  github.com/k0ngk0ng/wire-board/games/contra/server.(*host).record
+         0     0% 67.19%      3.02s 68.33%  github.com/k0ngk0ng/wire-board/games/contra/server.(*host).timer
+         0     0% 67.19%      0.09s  2.04%  github.com/k0ngk0ng/wire-board/games/contra/server.BenchmarkContraSharedVisualTimer
+         0     0% 67.19%      2.88s 65.16%  github.com/k0ngk0ng/wire-board/games/contra/server.BenchmarkContraSharedVisualTimer.func1
+         0     0% 67.19%      2.93s 66.29%  github.com/k0ngk0ng/wire-board/games/contra/server.BenchmarkContraSharedVisualTimer.func2
+         0     0% 67.19%      0.07s  1.58%  github.com/k0ngk0ng/wire-board/games/contra/server.strict
+         0     0% 67.19%      0.05s  1.13%  runtime.growslice
+         0     0% 67.19%      0.02s  0.45%  runtime.mallocgc
+         0     0% 67.19%      2.84s 64.25%  testing.(*B).launch
+         0     0% 67.19%      0.18s  4.07%  testing.(*B).run1.func1
+         0     0% 67.19%      3.02s 68.33%  testing.(*B).runN

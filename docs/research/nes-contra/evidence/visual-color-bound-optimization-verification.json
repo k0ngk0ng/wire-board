@@ -1,0 +1,42 @@
+{
+  "scope": "Current pixel classifier semantics and conservative candidate pruning; first-stage two-bot server-batch benchmark",
+  "passed": true,
+  "fullVisualRacePassedTests": 112,
+  "proofs": [
+    "Partial rejection stops only when remaining possible detail pixels cannot reach the unchanged threshold",
+    "Exact small/single-color art remains accepted and one-anchor duplication remains rejected",
+    "Packed RGB represents the same rendered channels",
+    "8x8 expanded-tile color counts upper-bound every candidate rectangle, including boundaries and full-screen counts",
+    "Scene text, visible terrain, occlusion, water and actual public occupancy regression pass"
+  ],
+  "hardware": "Apple M4 darwin/arm64",
+  "twoBot50msBatchNS": 7658334,
+  "twoBotBytesAllocatedPerBatch": 10319712,
+  "twoBotAllocationsPerBatch": 1816,
+  "artifacts": {
+    "docs/research/nes-contra/evidence/packed-vision-full-race.jsonl.gz": "e736be94b497d5a488c91f2f511f3b5749ebd2f47f97a2515f134b8b2d251933",
+    "docs/research/nes-contra/evidence/exact-only-before.log.gz": "c7f1a2797eb0fe30feb7c5530c956fee5f268025a921766cc2dbf93c0cfc8b39",
+    "docs/research/nes-contra/evidence/exact-only-after.jsonl.gz": "222b0b8655f6005e1a1ede7423fe833a8b5dfd02aa33eec197694d7eedb7625b",
+    "docs/research/nes-contra/evidence/pixel-counts-red.log.gz": "7275ae582bf545f4ce62cebe6b8405d84eaafa3c5bac2b7e5d7e49f7a839d173",
+    "docs/research/nes-contra/evidence/pixel-counts-green.jsonl.gz": "541d2367afc9a0986626f65d68b9ad20cc5d85748a0d61ee094b7dcc7b238f66",
+    "docs/research/nes-contra/evidence/color-bound-full-vision-race.jsonl.gz": "fc7d45ad65e40d2ee74bac235eca4808dd8a49fe5a74ec1e4fd49af85fd3900f",
+    "docs/research/nes-contra/evidence/vision-color-bound-timer.log.gz": "40636bbdbcced48d8d36d38adfe0cec92abffc5ab5daf0a98676d7e98c47f86f",
+    "docs/research/nes-contra/evidence/vision-packed-timer.log.gz": "f1763f3b1aaf12377c7e32a718f44ca9cf81cb93359fb2418711c0583c06e49b",
+    "docs/research/nes-contra/evidence/vision-bounded-timer.log.gz": "cd474649afcfdfd5be9ff102e470cb85d601e10dfc51ecff5fa3df92815f0c17",
+    "docs/research/nes-contra/evidence/visible-grid-red.log.gz": "d3795f9813754c6f16ae4b3124b99b854ca19cc7cebe6da9b85c7c9726101dbd"
+  },
+  "sourceSHA256": {
+    "games/contra/engine/bot_vision_match.go": "59781619dd468b1e5cb5924db7c82b6702b8f2ca033a4d8187cc69b1462f52ea",
+    "games/contra/engine/bot_vision_anchors.go": "f734fc263912ce76a727e3885158a0574de461cb9530bac37f5cf8f616109e4d",
+    "games/contra/engine/bot_vision_counts.go": "e0c06cf9f5f84c4db2877b85aba1c8a53699586e7b2e28dc7b5e1d0328115319",
+    "games/contra/engine/bot_vision_match_test.go": "aca31cd99e9bc01ac4d7e9e64a9682be0b88b19429e391384b060287bae91bbb",
+    "games/contra/engine/bot_vision_counts_test.go": "b1f885b3e58b79aa318aae7326df7fd5ddad2d6ac1a0f8f44199ed3e9d04409e",
+    "games/contra/engine/bot_vision_exact_only_test.go": "198e9b8a82ab4348603aa2b7c4832946c02cb9aa502a787fe36bcbd484f1b969"
+  },
+  "limitations": [
+    "Benchmark uses one first-stage scene, not a complete eight-stage or concurrency matrix.",
+    "Production hardware and WAN behavior are not proven.",
+    "Current bot navigation still fails the campaign; this does not mark the game complete."
+  ],
+  "performanceScopeCorrection": "The old frame-600 NewSession fixture did not send Start and remained in LevelRoutine=1 (intro), not battle. Its timing is not battle/capacity acceptance. See actual-battle-performance-verification.json for corrected setup."
+}

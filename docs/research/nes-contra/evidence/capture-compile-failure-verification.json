@@ -1,0 +1,6 @@
+{
+  "passed": true,
+  "elapsedSeconds": 0.2377638341858983,
+  "expectedFailure": "FCEUX Lua compile error detected before timeout",
+  "source": ".local/contra-control-check/syntax-fast-failure.json"
+}

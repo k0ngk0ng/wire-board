@@ -1,0 +1,24 @@
+{"Time":"2026-10-28T05:28:35.939432+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-28T05:28:36.402898+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotOverlapUnknownSupportRecovery"}
+{"Time":"2026-10-28T05:28:36.402934+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotOverlapUnknownSupportRecovery","Output":"=== RUN   TestBotOverlapUnknownSupportRecovery\n"}
+{"Time":"2026-10-28T05:28:36.40649+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotOverlapUnknownSupportRecovery/stalled"}
+{"Time":"2026-10-28T05:28:36.406497+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotOverlapUnknownSupportRecovery/stalled","Output":"=== RUN   TestBotOverlapUnknownSupportRecovery/stalled\n"}
+{"Time":"2026-10-28T05:28:36.4068+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotOverlapUnknownSupportRecovery/stalled","Output":"--- PASS: TestBotOverlapUnknownSupportRecovery/stalled (0.00s)\n"}
+{"Time":"2026-10-28T05:28:36.406806+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotOverlapUnknownSupportRecovery/stalled","Elapsed":0}
+{"Time":"2026-10-28T05:28:36.406821+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotOverlapUnknownSupportRecovery/fresh"}
+{"Time":"2026-10-28T05:28:36.406825+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotOverlapUnknownSupportRecovery/fresh","Output":"=== RUN   TestBotOverlapUnknownSupportRecovery/fresh\n"}
+{"Time":"2026-10-28T05:28:36.406864+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotOverlapUnknownSupportRecovery/fresh","Output":"--- PASS: TestBotOverlapUnknownSupportRecovery/fresh (0.00s)\n"}
+{"Time":"2026-10-28T05:28:36.406868+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotOverlapUnknownSupportRecovery/fresh","Elapsed":0}
+{"Time":"2026-10-28T05:28:36.40688+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotOverlapUnknownSupportRecovery/no-landing"}
+{"Time":"2026-10-28T05:28:36.406883+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotOverlapUnknownSupportRecovery/no-landing","Output":"=== RUN   TestBotOverlapUnknownSupportRecovery/no-landing\n"}
+{"Time":"2026-10-28T05:28:36.407155+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotOverlapUnknownSupportRecovery/no-landing","Output":"--- PASS: TestBotOverlapUnknownSupportRecovery/no-landing (0.00s)\n"}
+{"Time":"2026-10-28T05:28:36.407161+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotOverlapUnknownSupportRecovery/no-landing","Elapsed":0}
+{"Time":"2026-10-28T05:28:36.407173+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotOverlapUnknownSupportRecovery","Output":"--- PASS: TestBotOverlapUnknownSupportRecovery (0.00s)\n"}
+{"Time":"2026-10-28T05:28:36.407177+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotOverlapUnknownSupportRecovery","Elapsed":0}
+{"Time":"2026-10-28T05:28:36.40722+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotSnowUnknownSupportAndKnownForwardLanding"}
+{"Time":"2026-10-28T05:28:36.407223+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotSnowUnknownSupportAndKnownForwardLanding","Output":"=== RUN   TestBotSnowUnknownSupportAndKnownForwardLanding\n"}
+{"Time":"2026-10-28T05:28:36.409825+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotSnowUnknownSupportAndKnownForwardLanding","Output":"--- PASS: TestBotSnowUnknownSupportAndKnownForwardLanding (0.00s)\n"}
+{"Time":"2026-10-28T05:28:36.409848+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotSnowUnknownSupportAndKnownForwardLanding","Elapsed":0}
+{"Time":"2026-10-28T05:28:36.411011+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"PASS\n"}
+{"Time":"2026-10-28T05:28:37.415661+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t1.476s\n"}
+{"Time":"2026-10-28T05:28:37.415695+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":1.476}

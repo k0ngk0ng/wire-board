@@ -1,0 +1,103 @@
+{
+  "passed": true,
+  "romSHA256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "tests": [
+    "TestBotMachineBackgroundRecipesOriginalPixels",
+    "TestBotMachineBackgroundRecipesVisibleTargetsAndNegatives",
+    "TestBotMachineBackgroundRecipesProvenanceAndIsolation"
+  ],
+  "recipes": 10,
+  "patterns": 16,
+  "pixelAppearances": 228,
+  "visibleAnchors": 16,
+  "negativeImages": 14,
+  "command": "source scripts/env.sh\nmkdir -p .local/contra-machine-vision/tmp\nGOTMPDIR=$PWD/.local/contra-machine-vision/tmp go test -race ./games/contra/engine -run '^TestBotMachineBackgroundRecipes' -count=1 -json",
+  "sourcePaletteProof": {
+    "flameSegments": 211,
+    "clawOriginalCalls": 360,
+    "clawPathSegments": 161,
+    "launcherLocations": 2,
+    "clawStaticImageOwners": 34
+  },
+  "files": [
+    {
+      "path": "games/contra/engine/bot_vision_machine_recipes.go",
+      "sha256": "838c392a68cb68f6965f716b7ba06add209b169e305fe77f1960b39ee8604c04"
+    },
+    {
+      "path": "games/contra/engine/bot_vision_machine_recipes_test.go",
+      "sha256": "02f376052984d24d3e19a59939c772e33d014188af6f2293b34730f269e20074"
+    },
+    {
+      "path": "scripts/contra/bot_machine_reference.py",
+      "sha256": "75cbf776e12c6b3d749e9c676688d3f5645507e037e0fa331fdb96eda002312c"
+    },
+    {
+      "path": "games/contra/engine/testdata/bot-machine-original-art.json.gz",
+      "sha256": "7fab92d2fde1f6507a3fe64e087cb08900fb34c1e3960b300cf0c644bd416cee"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/bot-machine-background-red.jsonl.gz",
+      "sha256": "9cf30a5ae59508d4e9a8ae85db2a4376b4266f10d06f26d81c7bf6bd056c8aea"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/bot-machine-background-green.jsonl.gz",
+      "sha256": "85b94bfa57e33db542192d3ec7896bf0f8b9affb79ed7374f3ac51dc586f59da"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/bot-machine-background-red-family.jsonl.gz",
+      "sha256": "72386c3e4980c781252917db3fa56e6d5ca407b47138daf5f927407bd21189d5"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/bot-machine-background-visible.png",
+      "sha256": "080b6f8e5f3e396bf94f342822732ac433c61631545740bee1f12454c3a185e4"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/bot-machine-background-excluded.png",
+      "sha256": "c813ffa1ce5071691b0ca72efe6e8a31d823887c9312d42f3cbd6b465e8e9ca3"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/bot-machine-background-hangar-map.png",
+      "sha256": "9233aaae849ee241f636364d0c1ed999fe2829d26b59eb099d01157b7b1e3fce"
+    }
+  ],
+  "sourceEvidence": [
+    {
+      "path": "docs/research/nes-contra/evidence/levels-catalog.json.gz",
+      "sha256": "7907d15dd973f6f8127a9c3a6aa95bae71b26c6175d4ff5747fadbb2753f5026"
+    },
+    {
+      "path": "games/contra/engine/testdata/original-enemy-machines-graphics-controlled.json.gz",
+      "sha256": "a7e7933bf95016109e10b66f93a053473432f854fec11d43eb98bb3a7677316a"
+    },
+    {
+      "path": "games/contra/engine/testdata/original-enemy-machines-graphics-natural.json.gz",
+      "sha256": "ec6c1a42aa798416513362d49849447a2499d16086e83354541b6aa6bb13036a"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/enemies-machines-rea.json.gz",
+      "sha256": "6e0f6f132fe0a1764ccb4b12e505cdd2276b265c71150a3a430f6f39574e134b"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/enemies-all-stage-data.json",
+      "sha256": "1d9a20a87e69ccf21e3f53d98ac48f956a6ed0aaa431c5cbb3749f0e297a9975"
+    },
+    {
+      "path": ".local/contra-browser/build/public/graphics/colors.rgb",
+      "sha256": "da30843b331e2e4474395866bc9871fcd60a7d716b3c8ee5ce3c89ee46e8c91e"
+    }
+  ],
+  "limitations": [
+    "Review images decode pinned original artwork, not a captured continuous independent campaign.",
+    "Carts are shared OAM sprites 2A/2B; no background recipe or moving/stationary identity is invented.",
+    "Shared closed panels, erased/exit art and unproven wall/generator fragments remain unknown.",
+    "Only this fixed recipe catalog and its pure pixel construction/classification are certified; global catalog integration and complete bot play remain separate."
+  ],
+  "cleanup": {
+    "removed": [
+      ".local/contra-machine-vision"
+    ],
+    "removedBytes": 295368,
+    "scope": "Owned temporary review sheets, uncompressed red/green logs and empty test temp directory only. Final source-decoded images, fixture, compressed results and provenance remain. Shared caches, other owners and user ROM untouched."
+  }
+}

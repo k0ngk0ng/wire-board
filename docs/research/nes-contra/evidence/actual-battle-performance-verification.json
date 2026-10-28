@@ -1,0 +1,28 @@
+{
+  "scope": "Corrected explicit battle-state performance setup and conservative visible-grid phase search",
+  "battleSetupVerified": true,
+  "setup": "Legal Start input skips intro; assert LevelRoutine=4 and frame600 before timing. No position, health or outcome edits.",
+  "correction": "Earlier frame600 fixtures without Start were still in intro and did not establish battle capacity.",
+  "firstCorrectedBattle": {
+    "hardware": "Apple M4 darwin/arm64",
+    "twoHumanBatchAndViewsNS": 2475070,
+    "twoHumanViewBytesPerBatch": 76722,
+    "twoBotTimerNS": 76721214,
+    "timerBudgetNS": 50000000
+  },
+  "gridSearchChecks": "Translated visible grids and equal-score ties retain the original scan result. Unscored remaining samples provide only a conservative pruning bound.",
+  "artifacts": {
+    "docs/research/nes-contra/evidence/benchmark-phase.txt.gz": "892f3284de2dfc4b69bc5ddcc5c8fb4db28507acb15184606cdc69d91176dcb5",
+    "docs/research/nes-contra/evidence/benchmark-battle-precondition-red.log.gz": "b6c456ca1d51b26605ddf437b3a53503ed4971f40ab3a5d82526ad49bc5e85c2",
+    "docs/research/nes-contra/evidence/actual-battle-performance.log.gz": "b98b19d02c9d8ab9e281dac5c132334cd458966bfe3602a8ae47d82a6d7014bd",
+    "docs/research/nes-contra/evidence/grid-search-before.log.gz": "096464262b69b174bbb258ad9266b908121ab52998a1ba60e565042c1f8d8fdc",
+    "docs/research/nes-contra/evidence/grid-search-after.log.gz": "58680aaf708d348bcb398dffadd32410829829aa3d45f6bbb4bfd61f1ffc6587",
+    "docs/research/nes-contra/evidence/battle-grid-pruned.log.gz": "48f9d78faac6ba00a190e936673765aa8c62cb6cae737a878bd2bfd0e3b23b78",
+    "docs/research/nes-contra/evidence/stage-artwork-performance.log.gz": "30d2bc96cb99febc5e23859d4f5483dddc2aa9c79efb96f58ae36caccbcad716"
+  },
+  "limitations": [
+    "Performance is not yet production capacity acceptance.",
+    "Static eight-stage artwork measurements are not dynamic or worst-case stage workloads.",
+    "Full bot campaign and final integration remain incomplete."
+  ]
+}

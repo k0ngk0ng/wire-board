@@ -1,0 +1,29 @@
+{
+  "passed": true,
+  "separateDerivationProcesses": 2,
+  "atomicOutputReplacement": true,
+  "sourceSHA256": "57cd83dec024c04a4c2517fd7d8aaa24a136846ecc5ad108c039bb7a72284090",
+  "outputSHA256": {
+    ".local/contra-audio-loops/output/music-46-pulse1-loop.wav": "65bb73cbfba38784a7b162f043b2e0194e668fce43a07270ab522c1975095502",
+    ".local/contra-audio-loops/output/music-46-pulse2-loop.wav": "41351fffe20a903e5c2ed3ec7b1ebcb4ea41409fb9e95057a7e19d0c7b7d3483",
+    ".local/contra-audio-loops/output/music-46-triangle-loop.wav": "a1145ed8aa219371749df86eea5ca6c4363a4241ba63756fa172edf1dffbd366",
+    ".local/contra-audio-loops/output/music-4a-pulse1-loop.wav": "9b4948281a7d0cf0d697681582d22838ad70ae0da53584df016e9e77087ad2ed",
+    ".local/contra-audio-loops/output/music-4a-pulse2-loop.wav": "e7820b6ecad4c4e2664b80fdd9ef1ff1bd325784e17838c187b6f524b62fec58",
+    ".local/contra-audio-loops/output/music-4a-triangle-loop.wav": "871ebfb4587543245d6abec83424a4b51fd1f6a8f4241c0feac246ddb1fd3685",
+    ".local/contra-audio-loops/output/music-4e-pulse1-loop.wav": "331843ca64e228add25fd14d64526d7c17c26337035b7a079452fbbd6a1dcfbc",
+    ".local/contra-audio-loops/output/music-4e-pulse2-loop.wav": "6ed3b205cc75e3b62708d76139ae517e45505504bf8ab433a767c47068bf6ac4",
+    ".local/contra-audio-loops/output/music-4e-triangle-loop.wav": "39a73484f3c592687932efb426841d44c6af97d85aa6a8b6b5dc98f37d4700c8",
+    ".local/contra-audio-loops/output/music-52-pulse1-loop.wav": "4bad3d3754a9ee7a6f7b931977aab1cff72864c20e4c07bb0ab77ad0a298f1c9",
+    ".local/contra-audio-loops/output/music-52-pulse2-loop.wav": "2f1abb5d0175555a8ef7908a626788b61a20a81c34f7af732844ed2e54557b2f",
+    ".local/contra-audio-loops/output/music-52-triangle-loop.wav": "1e74fa87700f83f2ef27a5bb6adbe41b39af7afb0ea19690fd6041afc73448c8",
+    ".local/contra-audio-loops/output/music-56-pulse1-loop.wav": "55dc8696479cf5442f7ff80de5981234375956fee59138e2a95e1b03d04dd62d",
+    ".local/contra-audio-loops/output/music-56-pulse2-loop.wav": "9643f59796c68d3ba542437a85bad5860fef43d33b5dc2737192e669595d52ca",
+    ".local/contra-audio-loops/output/music-56-triangle-loop.wav": "e23f2f52816f75740c73f8aecdc0335b9b0d2086093bb429323863405669d2fa",
+    ".local/contra-audio-loops/output/music-5a-pulse1-loop.wav": "394851a04e0219167c38ca62fced73e705dd8f5fabcd3af2607f06970148ecf9",
+    ".local/contra-audio-loops/output/music-5a-pulse2-loop.wav": "613b19f2c9a7d9f1e4699fdcf7cf36a452072c381b8bfc06e71ec00c921db969",
+    ".local/contra-audio-loops/output/music-5a-triangle-loop.wav": "4b8d3ea774dea51ae985fd72883e2541f549584a242f4184f91e9990ff79eabc",
+    ".local/contra-audio-loops/output/music-5e-pulse1-loop.wav": "e3964ad706c49bfc4b987b6cb6749ecdaae37ec13ca0ec3d3f36b0d4eb11d4f3",
+    ".local/contra-audio-loops/output/music-5e-pulse2-loop.wav": "428f8df9ec0872500395d2b15157c8f292d9f84d90c921e0d0f249ac2c475ce5",
+    ".local/contra-audio-loops/output/music-5e-triangle-loop.wav": "415932076c4f1f2be884ba6ca18dd9bfe699117bdef25318833bdcf7672ea9c5"
+  }
+}

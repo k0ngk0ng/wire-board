@@ -1,0 +1,7 @@
+=== RUN   TestBotDropFindsNativeFirstContactAtPlatformEdge
+    bot_drop_landing_test.go:49: native lower edge 26 88 116
+    bot_drop_landing_test.go:61: drop predictor skipped reachable first platform 80 196 true
+--- FAIL: TestBotDropFindsNativeFirstContactAtPlatformEdge (0.00s)
+FAIL
+FAIL	github.com/k0ngk0ng/wire-board/games/contra/engine	0.595s
+FAIL

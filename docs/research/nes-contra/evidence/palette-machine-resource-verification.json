@@ -1,0 +1,275 @@
+{
+  "passed": true,
+  "romSHA256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "sourceArchiveSHA256": "2c4fd35488d32ca3abf207114893d54ad294f74df8bd1961a7b1e090549bae64",
+  "sourceArchiveUnchanged": true,
+  "scope": "Add original energy-giant palette IDs decimal81/82 (hex51/52); preserve all existing resources and snow additions.",
+  "addedColors": [
+    {
+      "id": 81,
+      "colors": [
+        32,
+        19,
+        39
+      ],
+      "source": {
+        "cpu": 53718,
+        "romOffset": 119270,
+        "sha256": "f282d504bcb301799fcdabb1a21a87fb885b8524cda77684884461be7384011e"
+      }
+    },
+    {
+      "id": 82,
+      "colors": [
+        32,
+        22,
+        39
+      ],
+      "source": {
+        "cpu": 53721,
+        "romOffset": 119273,
+        "sha256": "1cff724f0e567136a7e030dc70340dc5bb34091aa2ef411fdda7142098036ae1"
+      }
+    }
+  ],
+  "runtimeRequirements": [
+    {
+      "name": "snow-enemies",
+      "stage": 5,
+      "paletteIndices": [
+        63,
+        65,
+        95,
+        96,
+        97
+      ]
+    },
+    {
+      "name": "energy-giant-hp",
+      "stage": 6,
+      "paletteIndices": [
+        81,
+        82
+      ],
+      "paletteSlot": 7,
+      "consumerSource": {
+        "cpuStart": 44216,
+        "cpuEndInclusive": 44244,
+        "prgOffset": 11448,
+        "romOffset": 11464,
+        "bank8KiB": 1,
+        "sha256": "69ed0fabd429ec0a0bb91e45695c87a5e9bfaf3d2c145b0a97dfba31e521e658"
+      }
+    }
+  ],
+  "resourceDelta": {
+    "passed": true,
+    "files": [
+      {
+        "file": "levels.json",
+        "beforeSHA256": "a50468c82171c6d02987557732b824900000cbc6ee5a63ef9a73ed205d685471",
+        "afterSHA256": "44d4829f7ea479efd49ffcfd9aee416e7c592b790363fcaeb67a62194315fdc3",
+        "onlyAddedPaletteIDs": [
+          81,
+          82
+        ]
+      },
+      {
+        "file": "stage-1.json",
+        "beforeSHA256": "02625e6c9abd3f3aa38055ac211773e1dc81c4780b6d314376fd2d925ad00ce3",
+        "afterSHA256": "ae541455b3d25b9b86898b9b013739f8ae0735b409b593defc484a59af5924ad",
+        "onlyAddedPaletteIDs": [
+          81,
+          82
+        ]
+      },
+      {
+        "file": "stage-2.json",
+        "beforeSHA256": "cabaa095ec96c1207075c8386ca1ef9efe2d788c174d8c7b7d10fb126f406249",
+        "afterSHA256": "b398dc1e444c586f4ac6181679d673f8fd9463638a0107a656ef104e69933153",
+        "onlyAddedPaletteIDs": [
+          81,
+          82
+        ]
+      },
+      {
+        "file": "stage-3.json",
+        "beforeSHA256": "a454cbc3b6a79558a943140a334ee26daadbe330ad33632569ee90e7809138a9",
+        "afterSHA256": "2ce2245014def20fd2638c278755f7a2a3b06c92a24b8c232facb568903c7355",
+        "onlyAddedPaletteIDs": [
+          81,
+          82
+        ]
+      },
+      {
+        "file": "stage-4.json",
+        "beforeSHA256": "cd3ab0bd65a418144bd7699da8c38ca91ec3e85e42129c8193954b869ab78df5",
+        "afterSHA256": "a1433c299763814b6c7acf02848e64f1629c163c639914fd6832e81b25b80f4a",
+        "onlyAddedPaletteIDs": [
+          81,
+          82
+        ]
+      },
+      {
+        "file": "stage-5.json",
+        "beforeSHA256": "d5fb58612c3bb9bcff0aa71ddafcfd115d6eb14a31575bc9f6ea1ef896681d46",
+        "afterSHA256": "362f9e0d91e0edebab407317b132c585af5c861f14a98ba9017b061f24720a48",
+        "onlyAddedPaletteIDs": [
+          81,
+          82
+        ]
+      },
+      {
+        "file": "stage-6.json",
+        "beforeSHA256": "414faa8e4b84dfe99c463f1060974dc97347cad72cadd1e143aa35742fda4889",
+        "afterSHA256": "30eba1e7f4048b119665ffe70b736c5ef9d3b268347bd4a365d1773fa154a5fc",
+        "onlyAddedPaletteIDs": [
+          81,
+          82
+        ]
+      },
+      {
+        "file": "stage-7.json",
+        "beforeSHA256": "322ba1ee98e1966e2093400af369cc79609d903c0e83e53c86517ff4f6a9d0fa",
+        "afterSHA256": "aed95f893082874faa83db70c0da7b3d1f61fea023805d10ff6fe90419a893d1",
+        "onlyAddedPaletteIDs": [
+          81,
+          82
+        ]
+      },
+      {
+        "file": "stage-8.json",
+        "beforeSHA256": "ec3a8e7d266452f8a159783fb098bd1e3e75b19202720c7fef105ec2323d00d9",
+        "afterSHA256": "81c8b9ff4bba44d3814dfbda3fef935c6b5a9500e051360307db42d487ea7596",
+        "onlyAddedPaletteIDs": [
+          81,
+          82
+        ]
+      }
+    ]
+  },
+  "raceTests": [
+    "TestLevelResourcesEnergyGiantPalettes/levels.json",
+    "TestLevelResourcesEnergyGiantPalettes/stage-6.json",
+    "TestLevelResourcesEnergyGiantPalettes",
+    "TestMachinePaletteExportPreservesSnowColors",
+    "TestEnergyGiantPaletteSourceIdentity",
+    "TestLevelResourcesSnowEnemyPalettes",
+    "TestLevelResourcesIncludeRuntimePaletteCycles"
+  ],
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "games/contra/engine/audio_control.go",
+    "games/contra/engine/campaign.go",
+    "games/contra/engine/campaign_types.go",
+    "games/contra/engine/chr_animation.go",
+    "games/contra/engine/controls.go",
+    "games/contra/engine/enemies.go",
+    "games/contra/engine/enemies_aliens_blob.go",
+    "games/contra/engine/enemies_aliens_boss.go",
+    "games/contra/engine/enemies_aliens_fetus.go",
+    "games/contra/engine/enemies_aliens_small.go",
+    "games/contra/engine/enemies_aliens_spider.go",
+    "games/contra/engine/enemies_aliens_tables.go",
+    "games/contra/engine/enemies_all_spawn.go",
+    "games/contra/engine/enemies_all_tables.go",
+    "games/contra/engine/enemies_base_boss.go",
+    "games/contra/engine/enemies_base_boss_tables.go",
+    "games/contra/engine/enemies_base_common.go",
+    "games/contra/engine/enemies_base_generators.go",
+    "games/contra/engine/enemies_base_pickup.go",
+    "games/contra/engine/enemies_base_redblue.go",
+    "games/contra/engine/enemies_base_soldiers.go",
+    "games/contra/engine/enemies_base_tables.go",
+    "games/contra/engine/enemies_base_thrown.go",
+    "games/contra/engine/enemies_base_types.go",
+    "games/contra/engine/enemies_base_walls.go",
+    "games/contra/engine/enemies_box.go",
+    "games/contra/engine/enemies_bridge.go",
+    "games/contra/engine/enemies_bullets.go",
+    "games/contra/engine/enemies_capsule.go",
+    "games/contra/engine/enemies_collision.go",
+    "games/contra/engine/enemies_collision_tables.go",
+    "games/contra/engine/enemies_collision_tick.go",
+    "games/contra/engine/enemies_dispatch.go",
+    "games/contra/engine/enemies_explosion.go",
+    "games/contra/engine/enemies_generation.go",
+    "games/contra/engine/enemies_machines.go",
+    "games/contra/engine/enemies_machines_common.go",
+    "games/contra/engine/enemies_machines_flames.go",
+    "games/contra/engine/enemies_machines_giant.go",
+    "games/contra/engine/enemies_machines_graphics.go",
+    "games/contra/engine/enemies_machines_hangar.go",
+    "games/contra/engine/enemies_machines_walls.go",
+    "games/contra/engine/enemies_pickup.go",
+    "games/contra/engine/enemies_progress.go",
+    "games/contra/engine/enemies_runner.go",
+    "games/contra/engine/enemies_shooters_aim.go",
+    "games/contra/engine/enemies_shooters_bossdoor.go",
+    "games/contra/engine/enemies_shooters_bossdoor_terrain.go",
+    "games/contra/engine/enemies_shooters_runner.go",
+    "games/contra/engine/enemies_shooters_sniper.go",
+    "games/contra/engine/enemies_shooters_tables.go",
+    "games/contra/engine/enemies_shooters_turrets.go",
+    "games/contra/engine/enemies_snow_carrier.go",
+    "games/contra/engine/enemies_snow_small.go",
+    "games/contra/engine/enemies_snow_tables.go",
+    "games/contra/engine/enemies_snow_tank.go",
+    "games/contra/engine/enemies_tables.go",
+    "games/contra/engine/enemies_terrain.go",
+    "games/contra/engine/enemies_waterfall.go",
+    "games/contra/engine/enemies_waterfall_arms.go",
+    "games/contra/engine/enemies_waterfall_boss.go",
+    "games/contra/engine/frame.go",
+    "games/contra/engine/graphics_queue.go",
+    "games/contra/engine/level.go",
+    "games/contra/engine/levels.go",
+    "games/contra/engine/movement.go",
+    "games/contra/engine/palette.go",
+    "games/contra/engine/palette_snow.go",
+    "games/contra/engine/player.go",
+    "games/contra/engine/player_animation.go",
+    "games/contra/engine/player_indoor.go",
+    "games/contra/engine/player_lifecycle.go",
+    "games/contra/engine/presentation_sprites.go",
+    "games/contra/engine/random.go",
+    "games/contra/engine/random_adapted.go",
+    "games/contra/engine/scroll.go",
+    "games/contra/engine/scroll_queue.go",
+    "games/contra/engine/terrain.go",
+    "games/contra/engine/terrain_scroll.go",
+    "games/contra/engine/terrain_scroll_graphics.go",
+    "games/contra/engine/weapons.go",
+    "games/contra/engine/weapons_step.go",
+    "games/contra/engine/weapons_tables.go",
+    "games/contra/engine/weapons_types.go",
+    "games/contra/engine/world_active.go",
+    "games/contra/engine/world_pause.go",
+    "games/contra/engine/world_presentation.go",
+    "games/contra/engine/levels_machine_palette_test.go",
+    "games/contra/engine/levels_test.go",
+    "-run",
+    "^TestLevelResourcesEnergyGiantPalettes$|^TestMachinePaletteExportPreservesSnowColors$|^TestEnergyGiantPaletteSourceIdentity$|^TestLevelResourcesSnowEnemyPalettes$|^TestLevelResourcesIncludeRuntimePaletteCycles$",
+    "-count=1",
+    "-json"
+  ],
+  "runtimeManifest": "games/contra/engine/leveldata/levels-source.json",
+  "runtimeManifestSHA256": "2a29f06c494d2df4bd132c044632e8c0d1972c5d76b64ed19b09ba7cb7f861f4",
+  "files": [
+    {
+      "path": "scripts/contra/palette_prepare.py",
+      "sha256": "3d755e48b22c8367d0ed47b2c93aebc43553291de73acf4a5ee8b3fc53947459"
+    },
+    {
+      "path": "scripts/contra/export_levels.py",
+      "sha256": "6a3ddff450302b39b11637d4be70356b5a1c456e8055ecce6bfaa85a8e8e2524"
+    },
+    {
+      "path": "games/contra/engine/levels_machine_palette_test.go",
+      "sha256": "ba16fa8a140cbf55dd8963b27433292f398e34b91cfff94d24d221e6fe030bd5"
+    }
+  ],
+  "interventions": "Read original ROM only; no gameplay-rule, world, enemy or existing levels_test.go edits."
+}

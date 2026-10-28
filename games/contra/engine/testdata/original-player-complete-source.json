@@ -1,0 +1,10 @@
+{
+  "source_is_original_execution": true,
+  "source": "docs/research/nes-contra/evidence/static-playerstep-complete-oracle.json.gz",
+  "sha256": "cfb545aa19f5e4b4e7a94cd963a1111eb4a766aee93fde097946ced3a0ade916",
+  "repeat_labels": [
+    "v6",
+    "v7"
+  ],
+  "before_pool_only_used_as_input": true
+}

@@ -1,0 +1,13 @@
+{
+  "format": "contra-j-sprites-v1",
+  "sourceRomSHA256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "descriptorSource": "docs/research/nes-contra/evidence/sprites-catalog.json.gz",
+  "descriptorSourceSHA256": "292a58f7f9ef5cfd741c481a0701ec1d76a327daa2e7292be0174e394b820e6e",
+  "rawROMRuntimeDependency": false,
+  "publication": "not published",
+  "anchor": "original-sprite-position",
+  "frames": 255,
+  "parts": 1145,
+  "chrLocalResearchPath": ".local/contra-sprites/assets/chr",
+  "distribution": "A future immutable asset release must bind normalized descriptors and only required CHR pages to content hashes."
+}

@@ -1,0 +1,11 @@
+{
+  "scope": "submitted RGBA from parent-owned recorded two-player legal-pad diagnostic; body occlusion/partial-template ambiguity",
+  "source_capture": ".local/contra-bot/diagnostic-coop-5400/frame-5400.png",
+  "frame": 5400,
+  "players": 2,
+  "image_sha256": "debd96f5beebf355dfe669761f9d7c401bee46cb77de44e5a117d12d8a9ef023",
+  "observations_sha256": "36afc26b36fbff953e284dbad0d1dc8d12139301f489a7147bae79339ab0c47e",
+  "limitations": [
+    "Artwork recognition regression only; not a campaign-clear artifact."
+  ]
+}

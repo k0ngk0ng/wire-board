@@ -1,0 +1,246 @@
+{
+  "passed": true,
+  "perTrackBoundaries": 46,
+  "songs": [
+    {
+      "id": 70,
+      "crossTrackClockSpreadMS": 23.22900000000017,
+      "maximumBoundaryClockDebtMS": 17.500950113379528,
+      "tracks": [
+        {
+          "channel": "pulse1",
+          "nativeEnds": 2,
+          "firstBoundaryPositionSeconds": 2.580636,
+          "secondBoundaryPositionSeconds": 2.55053,
+          "maximumBoundaryClockDebtMS": 17.4009497319098
+        },
+        {
+          "channel": "pulse2",
+          "nativeEnds": 2,
+          "firstBoundaryPositionSeconds": 2.557409,
+          "secondBoundaryPositionSeconds": 2.550524,
+          "maximumBoundaryClockDebtMS": 17.500950113379528
+        },
+        {
+          "channel": "triangle",
+          "nativeEnds": 2,
+          "firstBoundaryPositionSeconds": 2.557407,
+          "secondBoundaryPositionSeconds": 2.550519,
+          "maximumBoundaryClockDebtMS": 17.500950113379528
+        }
+      ],
+      "meaning": "Native media clock observations; not captured output PCM or a promise of sample-accurate synchrony."
+    },
+    {
+      "id": 74,
+      "crossTrackClockSpreadMS": 0.01699999999971169,
+      "maximumBoundaryClockDebtMS": 16.916709655195817,
+      "tracks": [
+        {
+          "channel": "pulse1",
+          "nativeEnds": 2,
+          "firstBoundaryPositionSeconds": 10.139843,
+          "secondBoundaryPositionSeconds": 10.142256,
+          "maximumBoundaryClockDebtMS": 16.916709655195817
+        },
+        {
+          "channel": "pulse2",
+          "nativeEnds": 2,
+          "firstBoundaryPositionSeconds": 10.13984,
+          "secondBoundaryPositionSeconds": 10.142245,
+          "maximumBoundaryClockDebtMS": 16.900709845935083
+        },
+        {
+          "channel": "triangle",
+          "nativeEnds": 2,
+          "firstBoundaryPositionSeconds": 10.139857,
+          "secondBoundaryPositionSeconds": 10.14224,
+          "maximumBoundaryClockDebtMS": 16.900709845935083
+        }
+      ],
+      "meaning": "Native media clock observations; not captured output PCM or a promise of sample-accurate synchrony."
+    },
+    {
+      "id": 78,
+      "crossTrackClockSpreadMS": 0.01100000000064938,
+      "maximumBoundaryClockDebtMS": 16.500709750562322,
+      "tracks": [
+        {
+          "channel": "pulse1",
+          "nativeEnds": 2,
+          "firstBoundaryPositionSeconds": 22.77118,
+          "secondBoundaryPositionSeconds": 22.768583,
+          "maximumBoundaryClockDebtMS": 16.500709750562322
+        },
+        {
+          "channel": "pulse2",
+          "nativeEnds": 2,
+          "firstBoundaryPositionSeconds": 22.771191,
+          "secondBoundaryPositionSeconds": 22.768573,
+          "maximumBoundaryClockDebtMS": 16.500709750562322
+        },
+        {
+          "channel": "triangle",
+          "nativeEnds": 2,
+          "firstBoundaryPositionSeconds": 22.771184,
+          "secondBoundaryPositionSeconds": 22.768575,
+          "maximumBoundaryClockDebtMS": 16.500709750562322
+        }
+      ],
+      "meaning": "Native media clock observations; not captured output PCM or a promise of sample-accurate synchrony."
+    },
+    {
+      "id": 82,
+      "crossTrackClockSpreadMS": 0.014000000000180536,
+      "maximumBoundaryClockDebtMS": 17.80087953249346,
+      "tracks": [
+        {
+          "channel": "pulse1",
+          "nativeEnds": 2,
+          "firstBoundaryPositionSeconds": 3.819182,
+          "secondBoundaryPositionSeconds": 3.812002,
+          "maximumBoundaryClockDebtMS": 17.700879627860893
+        },
+        {
+          "channel": "pulse2",
+          "nativeEnds": 2,
+          "firstBoundaryPositionSeconds": 3.819168,
+          "secondBoundaryPositionSeconds": 3.811995,
+          "maximumBoundaryClockDebtMS": 17.80087953249346
+        },
+        {
+          "channel": "triangle",
+          "nativeEnds": 2,
+          "firstBoundaryPositionSeconds": 3.819174,
+          "secondBoundaryPositionSeconds": 3.811991,
+          "maximumBoundaryClockDebtMS": 17.80087953249346
+        }
+      ],
+      "meaning": "Native media clock observations; not captured output PCM or a promise of sample-accurate synchrony."
+    },
+    {
+      "id": 86,
+      "crossTrackClockSpreadMS": 0.014999999999432134,
+      "maximumBoundaryClockDebtMS": 16.899859505800777,
+      "tracks": [
+        {
+          "channel": "pulse1",
+          "nativeEnds": 2,
+          "firstBoundaryPositionSeconds": 11.315287,
+          "secondBoundaryPositionSeconds": 11.321968,
+          "maximumBoundaryClockDebtMS": 16.899859505800777
+        },
+        {
+          "channel": "pulse2",
+          "nativeEnds": 2,
+          "firstBoundaryPositionSeconds": 11.315272,
+          "secondBoundaryPositionSeconds": 11.321957,
+          "maximumBoundaryClockDebtMS": 16.799859601168208
+        },
+        {
+          "channel": "triangle",
+          "nativeEnds": 2,
+          "firstBoundaryPositionSeconds": 11.315278,
+          "secondBoundaryPositionSeconds": 11.321953,
+          "maximumBoundaryClockDebtMS": 16.799859601168208
+        }
+      ],
+      "meaning": "Native media clock observations; not captured output PCM or a promise of sample-accurate synchrony."
+    },
+    {
+      "id": 90,
+      "crossTrackClockSpreadMS": 0.016000000002236447,
+      "maximumBoundaryClockDebtMS": 16.80079336468546,
+      "tracks": [
+        {
+          "channel": "pulse1",
+          "nativeEnds": 2,
+          "firstBoundaryPositionSeconds": 19.412047,
+          "secondBoundaryPositionSeconds": 19.401566,
+          "maximumBoundaryClockDebtMS": 16.80079336468546
+        },
+        {
+          "channel": "pulse2",
+          "nativeEnds": 2,
+          "firstBoundaryPositionSeconds": 19.412058,
+          "secondBoundaryPositionSeconds": 19.401578,
+          "maximumBoundaryClockDebtMS": 16.80079336468546
+        },
+        {
+          "channel": "triangle",
+          "nativeEnds": 2,
+          "firstBoundaryPositionSeconds": 19.412045,
+          "secondBoundaryPositionSeconds": 19.401562,
+          "maximumBoundaryClockDebtMS": 16.80079336468546
+        }
+      ],
+      "meaning": "Native media clock observations; not captured output PCM or a promise of sample-accurate synchrony."
+    },
+    {
+      "id": 94,
+      "crossTrackClockSpreadMS": 0.009999999999621425,
+      "maximumBoundaryClockDebtMS": 29.33302050353055,
+      "tracks": [
+        {
+          "channel": "pulse1",
+          "nativeEnds": 2,
+          "firstBoundaryPositionSeconds": 22.483349,
+          "secondBoundaryPositionSeconds": 22.483009,
+          "maximumBoundaryClockDebtMS": 29.33302050353055
+        },
+        {
+          "channel": "pulse2",
+          "nativeEnds": 2,
+          "firstBoundaryPositionSeconds": 22.483343,
+          "secondBoundaryPositionSeconds": 22.483005,
+          "maximumBoundaryClockDebtMS": 29.21202059889771
+        },
+        {
+          "channel": "triangle",
+          "nativeEnds": 2,
+          "firstBoundaryPositionSeconds": 22.483339,
+          "secondBoundaryPositionSeconds": 22.483003,
+          "maximumBoundaryClockDebtMS": 29.20802059889715
+        }
+      ],
+      "meaning": "Native media clock observations; not captured output PCM or a promise of sample-accurate synchrony."
+    },
+    {
+      "id": 20,
+      "crossTrackClockSpreadMS": 0.008999999999981245,
+      "maximumBoundaryClockDebtMS": 16.90055791849687,
+      "tracks": [
+        {
+          "channel": "pulse1",
+          "nativeEnds": 2,
+          "firstBoundaryPositionSeconds": 0.336073,
+          "secondBoundaryPositionSeconds": 0.337609,
+          "maximumBoundaryClockDebtMS": 16.90055791849687
+        },
+        {
+          "channel": "pulse2",
+          "nativeEnds": 2,
+          "firstBoundaryPositionSeconds": 0.336065,
+          "secondBoundaryPositionSeconds": 0.3376,
+          "maximumBoundaryClockDebtMS": 16.8005580138643
+        }
+      ],
+      "meaning": "Native media clock observations; not captured output PCM or a promise of sample-accurate synchrony."
+    }
+  ],
+  "largestCrossTrackClockSpreadMS": 23.22900000000017,
+  "largestBoundaryClockDebtMS": 29.33302050353055,
+  "outputPCMCaptured": false,
+  "multiTrackSyncAccepted": false,
+  "listeningAccepted": false,
+  "manifestBeforeReadinessSHA256": "7a2c1893788844fa3532a636f18ead61f8d10319d872ec9e3189f345a6f93e00",
+  "manifestAfterReadinessSHA256": "46954da60063e19981b4438df78df4a0b83fd2b6bce7d8c7519e6f537fcc9129",
+  "binding": "Only readiness flags, evidence links and measured native results were added after the run. PCM files, SHA values and the tested loop/prefix/sample parameters are unchanged.",
+  "sourceSHA256": {
+    "scripts/contra/audio_loop_snapshot.py": "a39da5370b9625060104191ec6526bc1020ea5768f2dc9dd37ac58320ca9e8f9",
+    "scripts/contra/audio_loop_derive.py": "ba3e6f0966a0e291ad743b2921facea354ffb888495041bd74170c6ed87a68d3",
+    "scripts/contra/audio_loop_verify.py": "48f28f10dce0ed517725430e843a860f32f894a333d0751b379be31202b06773",
+    "scripts/contra/audio_loop_browser.py": "fc6b071ef27aa63efe36839a7af5b706b979b529820689ff3812d62108ec4c1d",
+    "scripts/contra/audio_loop_finalize.py": "d6a40e54b51d0f7990f1dc26e444673469fbdeb354faadf74dcb1734eb8b93f8"
+  }
+}

@@ -1,0 +1,9 @@
+{"Time":"2026-10-26T17:34:57.5356+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-26T17:34:58.10164+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotBackgroundBuilderDoesNotMutateEmptyVariantStorage"}
+{"Time":"2026-10-26T17:34:58.101865+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotBackgroundBuilderDoesNotMutateEmptyVariantStorage","Output":"=== RUN   TestBotBackgroundBuilderDoesNotMutateEmptyVariantStorage\n"}
+{"Time":"2026-10-26T17:34:58.131003+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotBackgroundBuilderDoesNotMutateEmptyVariantStorage","Output":"    bot_background_appearance_test.go:52: default expansion wrote into caller-owned variant storage\n"}
+{"Time":"2026-10-26T17:34:58.131041+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotBackgroundBuilderDoesNotMutateEmptyVariantStorage","Output":"--- FAIL: TestBotBackgroundBuilderDoesNotMutateEmptyVariantStorage (0.03s)\n"}
+{"Time":"2026-10-26T17:34:58.131049+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotBackgroundBuilderDoesNotMutateEmptyVariantStorage","Elapsed":0.03}
+{"Time":"2026-10-26T17:34:58.131064+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\n"}
+{"Time":"2026-10-26T17:34:58.131756+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t0.596s\n"}
+{"Time":"2026-10-26T17:34:58.131767+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":0.596}

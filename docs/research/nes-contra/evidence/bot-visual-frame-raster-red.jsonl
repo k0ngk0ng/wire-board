@@ -1,0 +1,9 @@
+{"Time":"2026-10-26T08:35:14.111515+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-26T08:35:14.543229+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisualFrameOriginalRasterPixels"}
+{"Time":"2026-10-26T08:35:14.543367+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisualFrameOriginalRasterPixels","Output":"=== RUN   TestBotVisualFrameOriginalRasterPixels\n"}
+{"Time":"2026-10-26T08:35:14.5439+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisualFrameOriginalRasterPixels","Output":"    bot_visual_frame_test.go:229: open testdata/bot-visual-frame-raster.json.gz: no such file or directory\n"}
+{"Time":"2026-10-26T08:35:14.543951+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisualFrameOriginalRasterPixels","Output":"--- FAIL: TestBotVisualFrameOriginalRasterPixels (0.00s)\n"}
+{"Time":"2026-10-26T08:35:14.543978+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisualFrameOriginalRasterPixels","Elapsed":0}
+{"Time":"2026-10-26T08:35:14.543997+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\n"}
+{"Time":"2026-10-26T08:35:14.545171+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t0.433s\n"}
+{"Time":"2026-10-26T08:35:14.545249+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":0.434}

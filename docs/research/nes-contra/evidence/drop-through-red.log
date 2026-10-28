@@ -1,0 +1,12 @@
+=== RUN   TestBotDropsThroughPlatformWhenHighWallBlocksProgress
+=== RUN   TestBotDropsThroughPlatformWhenHighWallBlocksProgress/platform
+    bot_drop_through_test.go:54: blocked actor cannot use visible lower platform 1
+=== RUN   TestBotDropsThroughPlatformWhenHighWallBlocksProgress/solid
+=== RUN   TestBotDropsThroughPlatformWhenHighWallBlocksProgress/no-landing
+--- FAIL: TestBotDropsThroughPlatformWhenHighWallBlocksProgress (0.00s)
+    --- FAIL: TestBotDropsThroughPlatformWhenHighWallBlocksProgress/platform (0.00s)
+    --- PASS: TestBotDropsThroughPlatformWhenHighWallBlocksProgress/solid (0.00s)
+    --- PASS: TestBotDropsThroughPlatformWhenHighWallBlocksProgress/no-landing (0.00s)
+FAIL
+FAIL	github.com/k0ngk0ng/wire-board/games/contra/engine	0.560s
+FAIL

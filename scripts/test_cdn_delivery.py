@@ -1,7 +1,14 @@
 """Pre-implementation safety failures: incomplete/hash/mime/CORS mismatches,
 symlinks and traversal in uploads; trim before verification; secret publication.
+
+Contra failures declared before implementation: absent/mutated receipt, extra
+or missing payloads, wrong identity/hash/size/MIME, path aliases and symlinks,
+WAV incorrectly compressed or marked nonseekable, Range ignored (200), wrong
+Content-Range/body/MIME/CORS/encoding, and trim using another receipt's digest.
+All local HTTP probes are loopback-only; no upload or credentials are used.
 """
-import unittest,tempfile,json,hashlib,gzip
+import unittest,tempfile,json,hashlib,gzip,shutil,threading
+from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 import cdn_delivery as cdn
 class Delivery(unittest.TestCase):
@@ -28,4 +35,116 @@ class Delivery(unittest.TestCase):
   altered=[dict(rows[0],sha256='0'*64)]
   with self.assertRaises(ValueError):cdn.trim(self.dist,{'passed':True,'files':altered})
   cdn.trim(self.dist,{'passed':True,'files':rows});self.assertFalse((self.dist/'assets').exists());self.assertTrue((self.dist/'index.html').exists())
+
+class ContraDelivery(unittest.TestCase):
+ setUp=Delivery.setUp
+
+ def runtime(self, dist=None):
+  dist=dist or self.dist
+  rules='c'*64
+  manifest=json.dumps({'version':1,'rulesBuildID':rules},sort_keys=True).encode()
+  runtime=cdn.sha(manifest)
+  prefix='contra/runtime-'+runtime+'/'
+  payloads={'manifest.json':(manifest,'application/json',False),
+            'audio/tone.wav':(b'RIFF'+bytes(range(128)),'audio/wav',True),
+            'graphics/page.idx':(b'indexed pixels','application/octet-stream',False),
+            'graphics/colors.rgb':(b'palette','application/octet-stream',False)}
+  files={}
+  for name,(body,mime,seek) in payloads.items():
+   path=dist/prefix/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(body)
+   files[name]={'bytes':len(body),'sha256':cdn.sha(body),'mime':mime,'requiresRange':seek}
+  receipt={'prefix':prefix,'runtimeBuildID':runtime,'rulesBuildID':rules,'files':files,'uploaded':False}
+  (dist/'contra-delivery.json').write_text(json.dumps(receipt))
+  return receipt
+
+ def test_inventory_includes_exact_runtime_payloads_without_publishing_receipt(self):
+  receipt=self.runtime();rows=cdn.inventory(self.dist,self.base)
+  runtime={r['path']:r for r in rows if r['path'].startswith('contra/')}
+  self.assertEqual(set(runtime),{receipt['prefix']+name for name in receipt['files']})
+  self.assertNotIn('contra-delivery.json',{r['path'] for r in rows})
+  wave=runtime[receipt['prefix']+'audio/tone.wav']
+  self.assertEqual(wave['mime'],'audio/wav');self.assertEqual(wave['encoding'],'')
+  self.assertTrue(wave['requiresRange']);self.assertEqual(wave['wireBytes'],wave['bytes'])
+
+ def test_inventory_rejects_invalid_runtime_receipts_and_payloads(self):
+  cases=['missing-receipt','missing-root','extra','missing','hash','size','mime','range',
+         'prefix','traversal','absolute','alias','symlink-file','symlink-directory',
+         'symlink-root','symlink-receipt','wrong-runtime-id','wrong-rules-id']
+  for case in cases:
+   with self.subTest(case=case),tempfile.TemporaryDirectory(dir=self.dist) as name:
+    dist=Path(name);(dist/'assets').mkdir();(dist/'assets/app.js').write_bytes(b'app')
+    receipt=self.runtime(dist);receipt_path=dist/'contra-delivery.json'
+    wave=dist/receipt['prefix']/'audio/tone.wav'
+    if case=='missing-receipt':receipt_path.unlink()
+    elif case=='missing-root':shutil.rmtree(dist/'contra')
+    elif case=='extra':(dist/'contra/extra.json').write_text('{}')
+    elif case=='missing':wave.unlink()
+    elif case=='hash':wave.write_bytes(b'bad')
+    elif case=='size':receipt['files']['audio/tone.wav']['bytes']+=1
+    elif case=='mime':receipt['files']['audio/tone.wav']['mime']='text/html'
+    elif case=='range':receipt['files']['audio/tone.wav']['requiresRange']=False
+    elif case=='prefix':receipt['prefix']='contra/runtime-other/'
+    elif case in ('traversal','absolute','alias'):
+     target={'traversal':'../escape.wav','absolute':'/audio/tone.wav','alias':'audio//tone.wav'}[case]
+     receipt['files'][target]=receipt['files'].pop('audio/tone.wav')
+    elif case=='symlink-file':wave.unlink();wave.symlink_to(self.dist/'index.html')
+    elif case=='symlink-directory':(dist/receipt['prefix']/'alias').symlink_to(dist/'assets',target_is_directory=True)
+    elif case=='symlink-root':shutil.rmtree(dist/'contra');(dist/'contra').symlink_to(dist/'assets',target_is_directory=True)
+    elif case=='symlink-receipt':receipt_path.unlink();receipt_path.symlink_to(self.dist/'index.html')
+    elif case=='wrong-runtime-id':receipt['runtimeBuildID']='d'*64
+    elif case=='wrong-rules-id':receipt['rulesBuildID']='d'*64
+    if case not in ('missing-receipt','symlink-receipt'):receipt_path.write_text(json.dumps(receipt))
+    with self.assertRaises(ValueError):cdn.inventory(dist,self.base)
+
+ def test_trim_requires_same_receipt_and_preserves_server_metadata(self):
+  receipt=self.runtime();path=self.dist/'contra-delivery.json';original=path.read_bytes()
+  (self.dist/'game-load-manifest.json').write_text('{}')
+  rows=cdn.inventory(self.dist,self.base)
+  report={'passed':True,'files':rows}
+  with self.assertRaises(ValueError):cdn.trim(self.dist,report)
+  self.assertTrue((self.dist/'assets').exists());self.assertTrue((self.dist/receipt['prefix']).exists())
+  report['contraDeliverySHA256']=cdn.sha(original)
+  path.write_bytes(original+b'\n')
+  with self.assertRaises(ValueError):cdn.trim(self.dist,report)
+  self.assertTrue((self.dist/'assets').exists());self.assertTrue((self.dist/receipt['prefix']).exists())
+  path.write_bytes(original);cdn.trim(self.dist,report)
+  self.assertFalse((self.dist/'assets').exists());self.assertFalse((self.dist/receipt['prefix']).exists())
+  for name in ['index.html','game-load-manifest.json','contra-delivery.json']:self.assertTrue((self.dist/name).exists())
+
+class WaveRangeHTTP(unittest.TestCase):
+ def test_real_range_response_and_failure_boundaries(self):
+  payload=b'RIFF'+bytes(range(128));state={'mode':'good','requests':[]}
+  class Handler(BaseHTTPRequestHandler):
+   def log_message(self,*args):pass
+   def do_GET(self):
+    requested=self.headers.get('Range')
+    state['requests'].append({'range':requested,'origin':self.headers.get('Origin'),'encoding':self.headers.get('Accept-Encoding')})
+    body=payload;status=200;mime='audio/wav';cors='*';content_range=None;encoding=None
+    if requested:
+     body=payload[:64];status=206;content_range=f'bytes 0-63/{len(payload)}'
+     if state['mode']=='status':status=200
+     elif state['mode']=='range':content_range=f'bytes 1-64/{len(payload)}'
+     elif state['mode']=='body':body=bytes([body[0]^1])+body[1:]
+     elif state['mode']=='mime':mime='text/html'
+     elif state['mode']=='cors':cors=None
+     elif state['mode']=='encoding':encoding='gzip'
+    elif state['mode']=='full-body':body+=b'wrong'
+    self.send_response(status);self.send_header('Content-Type',mime);self.send_header('Content-Length',str(len(body)))
+    if cors:self.send_header('Access-Control-Allow-Origin',cors)
+    if content_range:self.send_header('Content-Range',content_range)
+    if encoding:self.send_header('Content-Encoding',encoding)
+    self.end_headers();self.wfile.write(body)
+  server=HTTPServer(('127.0.0.1',0),Handler);thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
+  try:
+   row={'url':f'http://127.0.0.1:{server.server_port}/tone.wav','bytes':len(payload),'sha256':cdn.sha(payload),'mime':'audio/wav','encoding':'','requiresRange':True}
+   self.assertEqual(cdn.verify(row),row)
+   self.assertEqual([r['range'] for r in state['requests']],[None,'bytes=0-63'])
+   self.assertEqual(state['requests'][-1]['encoding'],'identity');self.assertEqual(state['requests'][-1]['origin'],'https://bga.ichenj.com')
+   for mode in ['status','range','body','mime','cors','encoding','full-body']:
+    with self.subTest(mode=mode):
+     state.update(mode=mode,requests=[])
+     with self.assertRaises(ValueError):cdn.verify(row)
+     if mode=='full-body':self.assertEqual(len(state['requests']),1,'full checksum must pass before range probe')
+  finally:server.shutdown();server.server_close();thread.join(timeout=2)
+
 if __name__=='__main__':unittest.main()

@@ -1,0 +1,127 @@
+{
+  "removedBytes": 138602885,
+  "removed": [
+    {
+      "path": ".local/contra-enemies-aliens-boss/swift-cache",
+      "bytes": 93401456
+    },
+    {
+      "path": ".local/contra-enemies-aliens-boss/verify-tmp",
+      "bytes": 0
+    },
+    {
+      "path": "dist/contra-enemies-aliens-boss-tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-enemies-aliens-boss/green.log",
+      "bytes": 220
+    },
+    {
+      "path": ".local/contra-enemies-aliens-boss/sequence-first.log",
+      "bytes": 627
+    },
+    {
+      "path": ".local/contra-enemies-aliens-boss/0xb648.asm",
+      "bytes": 242
+    },
+    {
+      "path": ".local/contra-enemies-aliens-boss/0xb4a1.asm",
+      "bytes": 587
+    },
+    {
+      "path": ".local/contra-enemies-aliens-boss/0xbcc2.asm",
+      "bytes": 179
+    },
+    {
+      "path": ".local/contra-enemies-aliens-boss/0xbd27.asm",
+      "bytes": 637
+    },
+    {
+      "path": ".local/contra-enemies-aliens-boss/0xe73a.asm",
+      "bytes": 86
+    },
+    {
+      "path": ".local/contra-enemies-aliens-boss/0xbcb7.asm",
+      "bytes": 75
+    },
+    {
+      "path": ".local/contra-enemies-aliens-boss/0xb5fd.asm",
+      "bytes": 313
+    },
+    {
+      "path": ".local/contra-enemies-aliens-boss/0xb470.asm",
+      "bytes": 168
+    },
+    {
+      "path": ".local/contra-enemies-aliens-boss/0xb56a.asm",
+      "bytes": 356
+    },
+    {
+      "path": ".local/contra-enemies-aliens-boss/0xb597.asm",
+      "bytes": 161
+    },
+    {
+      "path": ".local/contra-enemies-aliens-boss/0xbd71.asm",
+      "bytes": 167
+    },
+    {
+      "path": ".local/contra-enemies-aliens-boss/0xb6d7.asm",
+      "bytes": 296
+    },
+    {
+      "path": ".local/contra-enemies-aliens-boss/0xbcd9.asm",
+      "bytes": 446
+    },
+    {
+      "path": ".local/contra-enemies-aliens-boss/0xb626.asm",
+      "bytes": 258
+    },
+    {
+      "path": ".local/contra-enemies-aliens-boss/0xb668.asm",
+      "bytes": 142
+    },
+    {
+      "path": ".local/contra-enemies-aliens-boss/0xbd10.asm",
+      "bytes": 105
+    },
+    {
+      "path": ".local/contra-enemies-aliens-boss/0xbd1d.asm",
+      "bytes": 86
+    },
+    {
+      "path": ".local/contra-enemies-aliens-boss/0xb6c0.asm",
+      "bytes": 168
+    },
+    {
+      "path": ".local/contra-enemies-aliens-boss/0xb69b.asm",
+      "bytes": 310
+    },
+    {
+      "path": ".local/contra-enemies-aliens-boss/oracle/runs/aliens-boss-guardian-sequence-v1",
+      "bytes": 9988833
+    },
+    {
+      "path": ".local/contra-enemies-aliens-boss/oracle/runs/aliens-boss-heart-sequence-v1",
+      "bytes": 8278634
+    },
+    {
+      "path": ".local/contra-enemies-aliens-boss/oracle/runs/aliens-boss-repeat",
+      "bytes": 8660368
+    },
+    {
+      "path": ".local/contra-enemies-aliens-boss/oracle/runs/aliens-boss-guardian-repeat",
+      "bytes": 9989082
+    },
+    {
+      "path": ".local/contra-enemies-aliens-boss/oracle/runs/aliens-boss-heart-repeat",
+      "bytes": 8278883
+    }
+  ],
+  "retained": [
+    "Three primary original captures and initial state",
+    "Final source-bound REA evidence and fixtures",
+    "Failure-before-implementation and final race proof"
+  ],
+  "boundary": "Own Guardian/Heart caches, duplicate captures and intermediate sequences only. Parent alien task files, user ROM and shared caches untouched."
+}

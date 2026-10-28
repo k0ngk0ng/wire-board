@@ -1,0 +1,13 @@
+{"Time":"2026-10-25T15:06:41.166905+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-10-25T15:06:41.562045+08:00","Action":"run","Package":"command-line-arguments","Test":"TestOriginalBossDoorStates"}
+{"Time":"2026-10-25T15:06:41.562215+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalBossDoorStates","Output":"=== RUN   TestOriginalBossDoorStates\n"}
+{"Time":"2026-10-25T15:06:41.576763+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalBossDoorStates","Output":"--- PASS: TestOriginalBossDoorStates (0.01s)\n"}
+{"Time":"2026-10-25T15:06:41.576821+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestOriginalBossDoorStates","Elapsed":0.01}
+{"Time":"2026-10-25T15:06:41.577025+08:00","Action":"run","Package":"command-line-arguments","Test":"TestOriginalBossDoorCollisionPatterns"}
+{"Time":"2026-10-25T15:06:41.577033+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalBossDoorCollisionPatterns","Output":"=== RUN   TestOriginalBossDoorCollisionPatterns\n"}
+{"Time":"2026-10-25T15:06:41.57956+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalBossDoorCollisionPatterns","Output":"    enemies_shooters_bossdoor_terrain_test.go:81: verified 16 original tunnel collision writes\n"}
+{"Time":"2026-10-25T15:06:41.579587+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalBossDoorCollisionPatterns","Output":"--- PASS: TestOriginalBossDoorCollisionPatterns (0.00s)\n"}
+{"Time":"2026-10-25T15:06:41.579606+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestOriginalBossDoorCollisionPatterns","Elapsed":0}
+{"Time":"2026-10-25T15:06:41.579611+08:00","Action":"output","Package":"command-line-arguments","Output":"PASS\n"}
+{"Time":"2026-10-25T15:06:41.580055+08:00","Action":"output","Package":"command-line-arguments","Output":"ok  \tcommand-line-arguments\t0.413s\n"}
+{"Time":"2026-10-25T15:06:41.580068+08:00","Action":"pass","Package":"command-line-arguments","Elapsed":0.413}

@@ -1,0 +1,4 @@
+=== RUN   TestBuiltinBotVisionHangarRemnantPreservesVisiblePlatform
+--- PASS: TestBuiltinBotVisionHangarRemnantPreservesVisiblePlatform (13.40s)
+PASS
+ok  	github.com/k0ngk0ng/wire-board/games/contra/engine	14.963s

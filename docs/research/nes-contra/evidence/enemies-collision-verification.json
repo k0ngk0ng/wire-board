@@ -1,0 +1,176 @@
+{
+  "passed": true,
+  "scope": "Original enemy collision/score functions and independent Go implementations; not a complete game or campaign acceptance.",
+  "originalCalls": 8198,
+  "naturalCalls": 6755,
+  "controlledCalls": 1443,
+  "observations": [
+    {
+      "scope": "natural",
+      "calls": 1327,
+      "counts": {
+        "players": 814,
+        "bullets": 513
+      },
+      "sha256": "7be145ecd02a27e422ca366d59f8f5bfebc32f3f57787a22bcc3d8d3addcf011"
+    },
+    {
+      "scope": "natural-hurt",
+      "calls": 5428,
+      "counts": {
+        "players": 2812,
+        "bullets": 2616
+      },
+      "sha256": "12e0aba9924a32c70c64f212c94f5b28e063cb0b10e1794699ac6a050c44255f"
+    },
+    {
+      "scope": "controlled",
+      "calls": 1367,
+      "counts": {
+        "players": 966,
+        "bullets": 401
+      },
+      "sha256": "57a31d89fbc9f14df2e9ddd7512b34ff15500107d2a9fb749e9b12a3cb8436a5"
+    },
+    {
+      "scope": "controlled-special",
+      "calls": 76,
+      "counts": {
+        "players": 0,
+        "bullets": 76
+      },
+      "sha256": "86554019f3c22dd11e109249b02cbd740e35407ebedbc0ba2a9639a2b3aa2a32"
+    }
+  ],
+  "effects": {
+    "naturalPlayerHits": [
+      2,
+      3
+    ],
+    "controlledPlayerHits": 337
+  },
+  "repeatByteIdentical": [
+    {
+      "scope": "natural",
+      "file": "collision.jsonl",
+      "bytes": 4984642,
+      "sha256": "5b43d6a1a06a7d88eb2d05226fd05a91bdc0978a086a686883a4fdd6cc224d6f"
+    },
+    {
+      "scope": "natural",
+      "file": "ram.bin",
+      "bytes": 1433600,
+      "sha256": "7fc7f18260d4cbcd58c4cd1a9658e1daa6ebee560fe98d830b282bd54c7e7a44"
+    },
+    {
+      "scope": "hurt",
+      "file": "collision.jsonl",
+      "bytes": 20526878,
+      "sha256": "c8f4ce472f0ced06e68c4a5a2df03b7d6209cb175322c5e435503e6e77b42d03"
+    },
+    {
+      "scope": "hurt",
+      "file": "ram.bin",
+      "bytes": 2457600,
+      "sha256": "66a665175e9ac57c28ca2f87e13a750089be66446d1880ad613b0a5ebea76967"
+    },
+    {
+      "scope": "controlled",
+      "file": "collision.jsonl",
+      "bytes": 4982583,
+      "sha256": "714e590b7c53e6386f632614c1f2a1f0b26af25edbe832d68cc7bf75fecd1cf4"
+    },
+    {
+      "scope": "controlled",
+      "file": "ram.bin",
+      "bytes": 2799616,
+      "sha256": "2747a534190021dc9a0b4e7a57b49613889cba9dd23fd8f25a21e9401d54475e"
+    },
+    {
+      "scope": "special",
+      "file": "collision.jsonl",
+      "bytes": 276396,
+      "sha256": "cc807af74768fdb1dfb9cd759964048014226c6844be6e70c87f6fb44afb0891"
+    },
+    {
+      "scope": "special",
+      "file": "ram.bin",
+      "bytes": 155648,
+      "sha256": "fee5a47e50eee344db0624eab883f8a4e7426b679e9b8253fb2dde4c87440786"
+    }
+  ],
+  "checks": [
+    "TestOriginalEnemyCollisions",
+    "TestArcadeScoreInitializationMatchesOriginal"
+  ],
+  "commands": [
+    "source scripts/env.sh",
+    "go test ./games/contra/engine -run '^(TestOriginalEnemyCollisions|TestArcadeScoreInitialization)' -count=1 -v"
+  ],
+  "red": "enemies-collision-red.jsonl",
+  "green": "enemies-collision-green.jsonl",
+  "files": {
+    "games/contra/engine/enemies_collision.go": "193800d20a14472d1ad80fe151b9edff0d3112ef30d6996115ede6f092012ba7",
+    "games/contra/engine/enemies_collision_tables.go": "e948f46d1b73a59b22c3dbd8b746e8348c62a952287065ed6a1fe2784ef7e6aa",
+    "games/contra/engine/enemies_collision_test.go": "e3ec4ce905d33d0253aee5a530f39e1f737923824b3405d272d793b2369f26d2",
+    "scripts/contra/enemies_collision_capture.py": "618ec976ac3402ac345b3676a55b6144adfe0361ec14db29f8d4515159e38823",
+    "scripts/contra/enemies_collision_cases.py": "4b2f10a06338787ed2b03d65cbfd2339f5ad22014f26ddb84ce2f5cd293b8183",
+    "scripts/contra/enemies_collision_prepare.py": "0e171c0ebdfce9471bc1dd8de90b97e34bc4205a6ab992946ecfc3fdbad72be5",
+    "scripts/contra/enemies_collision_rea.mjs": "62db2cd17f8de86134551d65d732fad3d070a8dd8684fad83c4f2a78baec93aa",
+    "scripts/contra/enemies_collision_tables.py": "d2f3d51b0ece8524c2228e0f7dd3a180d4a4fe0ed7a8e862e0e7f497a7f51bcc",
+    "docs/research/nes-contra/enemies-collision.md": "733081d04aa91213eb7e76b03a88843f1d5aa4b3ffa7f190a3d7914d6d02370d"
+  },
+  "cleanup": [
+    {
+      "path": ".local/contra-enemies-collision/swift-cache",
+      "bytes": 93399480
+    },
+    {
+      "path": "dist/contra-enemies-collision-tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-enemies-collision/rea",
+      "bytes": 10465678
+    },
+    {
+      "path": ".local/contra-enemies-collision/extra-rea",
+      "bytes": 1468400
+    },
+    {
+      "path": ".local/contra-enemies-collision/oracle/fceux-home",
+      "bytes": 17771
+    },
+    {
+      "path": ".local/contra-enemies-collision/oracle/runtime",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-enemies-collision/oracle/tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-enemies-collision/tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-enemies-collision/oracle/runs/collisions-natural-v2",
+      "bytes": 7415496
+    },
+    {
+      "path": ".local/contra-enemies-collision/oracle/runs/collisions-hurt-v2",
+      "bytes": 23965911
+    },
+    {
+      "path": ".local/contra-enemies-collision/oracle/runs/collisions-controlled-v2",
+      "bytes": 27393979
+    },
+    {
+      "path": ".local/contra-enemies-collision/oracle/runs/collisions-special-v2",
+      "bytes": 1566713
+    }
+  ],
+  "retained": "Primary original capture, 17-function canonical REA bundle/index, input scripts, fixtures and tests. Shared game/research data unchanged.",
+  "followupRegressionLog": "enemies-collision-tick-package-green.jsonl",
+  "followupNote": "Added AudioReset result flag for complete enemy Tick; the original 8198 collision calls passed again unchanged."
+}

@@ -1,0 +1,6 @@
+=== RUN   TestBotCanJumpToKnownTopAcrossUnknownFill
+    bot_known_top_jump_test.go:35: known higher platform blocked by unknown fill 64
+--- FAIL: TestBotCanJumpToKnownTopAcrossUnknownFill (0.00s)
+FAIL
+FAIL	github.com/k0ngk0ng/wire-board/games/contra/engine	0.634s
+FAIL

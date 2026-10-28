@@ -1,0 +1,8 @@
+{"Time":"2026-10-26T13:19:28.140966+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-26T13:19:28.559355+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleVerticalJumpGoalSurvivesSubmittedStandingFrame"}
+{"Time":"2026-10-26T13:19:28.559383+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleVerticalJumpGoalSurvivesSubmittedStandingFrame","Output":"=== RUN   TestBotVisibleVerticalJumpGoalSurvivesSubmittedStandingFrame\n"}
+{"Time":"2026-10-26T13:19:28.559472+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleVerticalJumpGoalSurvivesSubmittedStandingFrame","Output":"--- PASS: TestBotVisibleVerticalJumpGoalSurvivesSubmittedStandingFrame (0.00s)\n"}
+{"Time":"2026-10-26T13:19:28.559479+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleVerticalJumpGoalSurvivesSubmittedStandingFrame","Elapsed":0}
+{"Time":"2026-10-26T13:19:28.559486+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"PASS\n"}
+{"Time":"2026-10-26T13:19:28.559818+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t0.419s\n"}
+{"Time":"2026-10-26T13:19:28.559833+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":0.419}

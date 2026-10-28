@@ -1,0 +1,76 @@
+{
+  "passed": true,
+  "sourceChangedDuringCheck": [],
+  "scope": "Isolated production RuntimeRenderer.draw verification with original presentation oracle and normalized assets; no recorded state is supplied to any game/session entry.",
+  "checks": [
+    {
+      "capture": 6500,
+      "emulatorFrame": 7899,
+      "kind": "interlude",
+      "rgbaSHA256": "a0c74a208e7f60e12def2f8b27a95e67582148c7c37333ffb5bad6f127f4e3a0",
+      "sourcePNG": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-raster/oracle/runs/raster-v1/frame-06500.png",
+      "pixelsCompared": 61440,
+      "mismatchPixels": 0
+    },
+    {
+      "capture": 6550,
+      "emulatorFrame": 7949,
+      "kind": "interlude",
+      "rgbaSHA256": "c08862f71f38400d01fcb8ad1299d45b2a410899f0615abd6ab1347e46e16b92",
+      "sourcePNG": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-raster/oracle/runs/raster-v1/frame-06550.png",
+      "pixelsCompared": 61440,
+      "mismatchPixels": 0
+    },
+    {
+      "capture": 6600,
+      "emulatorFrame": 7999,
+      "kind": "interlude",
+      "rgbaSHA256": "a5157850fec436c2cd2ef0080fbe386ba1e95328cf0a3e37f94720b15638b8d1",
+      "sourcePNG": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-raster/oracle/runs/raster-v1/frame-06600.png",
+      "pixelsCompared": 61440,
+      "mismatchPixels": 0
+    },
+    {
+      "capture": 7250,
+      "emulatorFrame": 8649,
+      "kind": "intro",
+      "rgbaSHA256": "3e995a9a83885f1bb3400bc4f633da5f67ba61e0747d35e689301af147646283",
+      "sourcePNG": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-raster/oracle/runs/raster-v1/frame-07250.png",
+      "pixelsCompared": 61440,
+      "mismatchPixels": 0
+    },
+    {
+      "capture": 7300,
+      "emulatorFrame": 8699,
+      "kind": "intro",
+      "rgbaSHA256": "1c168ba37075bbd023c70d41f59ac71205191de713ac1ed0ab32fd27fb26c7cb",
+      "sourcePNG": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-raster/oracle/runs/raster-v1/frame-07300.png",
+      "pixelsCompared": 61440,
+      "mismatchPixels": 0
+    },
+    {
+      "capture": 7500,
+      "emulatorFrame": 8899,
+      "kind": "intro",
+      "rgbaSHA256": "4ee9e5e10a6704118c8982af7054b7588d55046054705a9088a4e4acbab0570d",
+      "sourcePNG": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-raster/oracle/runs/raster-v1/frame-07500.png",
+      "pixelsCompared": 61440,
+      "mismatchPixels": 0
+    },
+    {
+      "capture": 7800,
+      "emulatorFrame": 9199,
+      "kind": "intro",
+      "rgbaSHA256": "e8672a101deaf34561ed6b34a0c78044ae46f2983d7ec05e3c0d82fdd4b49050",
+      "sourcePNG": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-raster/oracle/runs/raster-v1/frame-07800.png",
+      "pixelsCompared": 61440,
+      "mismatchPixels": 0
+    }
+  ],
+  "sourceHashes": {
+    "games/contra/web/runtime-renderer.ts": "638e9ce5e27ad97ba27585415d9337640ed3ace82d06e2c9de1a1adb266fd4af",
+    "games/contra/web/background.ts": "4e8d9e1a10011573dcdfabb77d3997da02ae4a61d56962754b14e00e91d637c5",
+    "games/contra/web/sprites.ts": "732771548119a0ec3aac18fbc33896c3e7592c98132c8a907290f0405376993c",
+    "games/contra/web/runtime-bridge.ts": "0d9b3fcf12bef4d552ae8fb560573f95c36a36881fc2ad082a9b38972b8cfba9"
+  }
+}

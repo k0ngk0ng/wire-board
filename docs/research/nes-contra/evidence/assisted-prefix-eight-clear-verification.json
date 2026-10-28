@@ -1,0 +1,23 @@
+{
+  "status": "assisted-prefix-campaign-cleared-and-replayed",
+  "frames": 177154,
+  "outcome": "cleared",
+  "finalized": true,
+  "complete_fresh_policy_campaign": false,
+  "standard_lives_acceptance": false,
+  "scope": "Complete recorded legal inputs plus declared test reserve grants, assembled across diagnostic policy continuations. No position, damage immunity, level skips or outcome injection. Does not establish competitive eligibility.",
+  "replay_command": "go run ./scripts/contra/replay_bot -run docs/research/nes-contra/evidence/assisted-prefix-eight-clear",
+  "artifacts": {
+    "result.json": "5fee64b6eb9e9684e65f62562cad5ac7461113ff522b4b860c0a59cb2f893f18",
+    "bot.json": "ba64a838dd17e8f1f2d4b076bcf8688edb06ade91b3fda3312e88dd421c6e75c",
+    "pads.bin.gz": "c26543d463e4497160d3e315d1019ffad4a2d6cc0b5dc7f6b35f099315ce88e5",
+    "final-session.json": "ee160a4bc2c5a2e101a140a745c43b5ce13ca0828aa1e28278f40fb44e0e2b54",
+    "test-life-refills.json": "edfce3c93096a748354d84a9f3d55b9c7c19394989c928b6e67b15cfff4877e5",
+    "replay.json": "e2a52b0b620ca7d2e20c233a7cc08ffa96e2b12a6f2cfc6e4744b3f6474e7186"
+  },
+  "fresh_runs": {
+    "solo": ".local/contra-bot/runs/fresh-1p-motion-v8",
+    "coop": ".local/contra-bot/runs/fresh-2p-motion-v8"
+  },
+  "fresh_run_findings": "Solo waterfall respawn and coop snow unknown support/same-height jump need current fixes; v8 is not final acceptance."
+}

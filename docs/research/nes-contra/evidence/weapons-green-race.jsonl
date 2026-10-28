@@ -1,0 +1,29 @@
+{"Time":"2026-10-25T13:12:58.183592+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-25T13:12:58.610321+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalWeaponFire"}
+{"Time":"2026-10-25T13:12:58.610478+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalWeaponFire","Output":"=== RUN   TestOriginalWeaponFire\n"}
+{"Time":"2026-10-25T13:12:58.610593+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalWeaponFire/natural"}
+{"Time":"2026-10-25T13:12:58.61061+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalWeaponFire/natural","Output":"=== RUN   TestOriginalWeaponFire/natural\n"}
+{"Time":"2026-10-25T13:12:58.719305+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalWeaponFire/natural","Output":"    weapons_test.go:93: 480 original natural weapon calls match\n"}
+{"Time":"2026-10-25T13:12:58.719341+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalWeaponFire/natural","Output":"--- PASS: TestOriginalWeaponFire/natural (0.11s)\n"}
+{"Time":"2026-10-25T13:12:58.719348+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalWeaponFire/natural","Elapsed":0.11}
+{"Time":"2026-10-25T13:12:58.719377+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalWeaponFire/isolated"}
+{"Time":"2026-10-25T13:12:58.719385+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalWeaponFire/isolated","Output":"=== RUN   TestOriginalWeaponFire/isolated\n"}
+{"Time":"2026-10-25T13:12:59.496604+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalWeaponFire/isolated","Output":"    weapons_test.go:93: 6440 original isolated weapon calls match\n"}
+{"Time":"2026-10-25T13:12:59.496646+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalWeaponFire/isolated","Output":"--- PASS: TestOriginalWeaponFire/isolated (0.78s)\n"}
+{"Time":"2026-10-25T13:12:59.496652+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalWeaponFire/isolated","Elapsed":0.78}
+{"Time":"2026-10-25T13:12:59.496696+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalWeaponFire/equipment"}
+{"Time":"2026-10-25T13:12:59.496703+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalWeaponFire/equipment","Output":"=== RUN   TestOriginalWeaponFire/equipment\n"}
+{"Time":"2026-10-25T13:13:01.214758+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalWeaponFire/equipment","Output":"    weapons_test.go:93: 9488 original equipment weapon calls match\n"}
+{"Time":"2026-10-25T13:13:01.214849+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalWeaponFire/equipment","Output":"--- PASS: TestOriginalWeaponFire/equipment (1.72s)\n"}
+{"Time":"2026-10-25T13:13:01.214859+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalWeaponFire/equipment","Elapsed":1.72}
+{"Time":"2026-10-25T13:13:01.214868+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalWeaponFire","Output":"--- PASS: TestOriginalWeaponFire (2.60s)\n"}
+{"Time":"2026-10-25T13:13:01.214872+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalWeaponFire","Elapsed":2.6}
+{"Time":"2026-10-25T13:13:01.21488+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalNaturalProjectileSteps"}
+{"Time":"2026-10-25T13:13:01.2149+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalNaturalProjectileSteps","Output":"=== RUN   TestOriginalNaturalProjectileSteps\n"}
+{"Time":"2026-10-25T13:13:01.291669+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalNaturalProjectileSteps","Output":"    weapons_test.go:122: 240 natural full-pool steps match\n"}
+{"Time":"2026-10-25T13:13:02.949186+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalNaturalProjectileSteps","Output":"    weapons_test.go:122: 5391 equipment full-pool steps match\n"}
+{"Time":"2026-10-25T13:13:02.949215+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalNaturalProjectileSteps","Output":"--- PASS: TestOriginalNaturalProjectileSteps (1.73s)\n"}
+{"Time":"2026-10-25T13:13:02.949219+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalNaturalProjectileSteps","Elapsed":1.73}
+{"Time":"2026-10-25T13:13:02.949249+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"PASS\n"}
+{"Time":"2026-10-25T13:13:03.984387+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t5.801s\n"}
+{"Time":"2026-10-25T13:13:03.984531+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":5.801}

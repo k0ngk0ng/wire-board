@@ -4,6 +4,8 @@ import { PlayerName } from "../profiles";
 import { isIndependentGame } from "../game-api/registry";
 import { catanResultDescription } from "../../../games/catan/web/catan-results";
 import { splendorResultDescription } from "../../../games/splendor/web/splendor-city-state";
+import { cooperativeOutcomeLabel } from "./cooperative-rating";
+import { RatingChanges } from "./rating-changes";
 
 // Platform settlement UI is part of the application, available before play.
 // Finishing a match must never trigger a download of legacy game interfaces.
@@ -30,9 +32,11 @@ export function Results({
             : room.result?.draw
               ? "本局和棋"
               : room.result?.cooperative
-                ? g.winners.length > 0
-                  ? "全队胜利"
-                  : "合作挑战结束"
+                ? room.result.ratingPolicy === "coop_campaign_v1"
+                  ? cooperativeOutcomeLabel(room.result)
+                  : g.winners.length > 0
+                    ? "全队胜利"
+                    : "合作挑战结束"
                 : `${g.winners.map((i) => room.seats[i]?.name).join("、")} 获胜`}
         </h2>
         <p>
@@ -58,33 +62,7 @@ export function Results({
         </p>
       </div>
       {room.result && !room.result.unrated && (
-        <div className="result-ratings">
-          {room.result.rated ? (
-            room.result.players.map((p) => (
-              <span key={p.id}>
-                <PlayerName user={p} />{" "}
-                <b
-                  className={
-                    room.result?.draw
-                      ? "rating-neutral"
-                      : (p.ratingDelta || 0) > 0
-                        ? "rating-gain"
-                        : "rating-loss"
-                  }
-                >
-                  {(p.ratingDelta || 0) > 0 ? "+" : ""}
-                  {p.ratingDelta ?? 0} 积分
-                </b>
-              </span>
-            ))
-          ) : (
-            <p>
-              {room.result.cooperative
-                ? "合作对局不计竞争积分，成绩已保存。"
-                : "本局不计积分（含电脑或积分上线前开始的对局）。"}
-            </p>
-          )}
-        </div>
+        <RatingChanges result={room.result} />
       )}
       {g.rail && (
         <div className="score-table">

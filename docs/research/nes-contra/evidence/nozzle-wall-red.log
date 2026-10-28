@@ -1,0 +1,6 @@
+=== RUN   TestBotJumpKeepsLandingAwayFromVisibleNozzle
+    bot_nozzle_navigation_test.go:35: landing body intersects visible wall 150 144
+--- FAIL: TestBotJumpKeepsLandingAwayFromVisibleNozzle (0.00s)
+FAIL
+FAIL	github.com/k0ngk0ng/wire-board/games/contra/engine	0.439s
+FAIL

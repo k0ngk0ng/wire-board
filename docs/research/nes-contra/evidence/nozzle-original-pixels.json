@@ -1,0 +1,17 @@
+{
+  "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "member": "Contra (J).nes",
+  "source_tiles": [
+    228,
+    130
+  ],
+  "chr_pages": [
+    87,
+    86
+  ],
+  "compared_indexed_pixels": 128,
+  "all_equal": true,
+  "indexed_sha256": "2966e8576eca944f8cb1351b264edbf71ac3b547844fb3db812fd1cc482c5206",
+  "map_source": "stage6 tileset9e9e-a57e supertile20 crop16,0 8x16 retained group0",
+  "scope": "Independent planar ROM decode matches normalized catalog; no match state used in visual knowledge"
+}

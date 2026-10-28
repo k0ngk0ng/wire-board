@@ -1,0 +1,8 @@
+{"Time":"2026-10-26T09:43:50.509076+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-26T09:43:51.050237+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisualSpriteTemplatesAliasesKeepLabelsAndOwnership"}
+{"Time":"2026-10-26T09:43:51.05044+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisualSpriteTemplatesAliasesKeepLabelsAndOwnership","Output":"=== RUN   TestBotVisualSpriteTemplatesAliasesKeepLabelsAndOwnership\n"}
+{"Time":"2026-10-26T09:43:51.05458+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisualSpriteTemplatesAliasesKeepLabelsAndOwnership","Output":"--- PASS: TestBotVisualSpriteTemplatesAliasesKeepLabelsAndOwnership (0.00s)\n"}
+{"Time":"2026-10-26T09:43:51.05461+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisualSpriteTemplatesAliasesKeepLabelsAndOwnership","Elapsed":0}
+{"Time":"2026-10-26T09:43:51.054634+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"PASS\n"}
+{"Time":"2026-10-26T09:43:51.055725+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t0.546s\n"}
+{"Time":"2026-10-26T09:43:51.055742+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":0.547}

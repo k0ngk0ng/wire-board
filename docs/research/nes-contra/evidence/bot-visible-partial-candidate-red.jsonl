@@ -1,0 +1,9 @@
+{"Time":"2026-10-26T13:38:20.125914+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-26T13:38:20.676387+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionPartialStandingPoseRemainsCandidate"}
+{"Time":"2026-10-26T13:38:20.676569+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionPartialStandingPoseRemainsCandidate","Output":"=== RUN   TestBuiltinBotVisionPartialStandingPoseRemainsCandidate\n"}
+{"Time":"2026-10-26T13:38:21.833562+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionPartialStandingPoseRemainsCandidate","Output":"    bot_vision_powerup_test.go:33: partial standing artwork became a definite body over the water head {168 212 true true 0 0 14 0 false false false}\n"}
+{"Time":"2026-10-26T13:38:21.833609+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionPartialStandingPoseRemainsCandidate","Output":"--- FAIL: TestBuiltinBotVisionPartialStandingPoseRemainsCandidate (1.16s)\n"}
+{"Time":"2026-10-26T13:38:21.833614+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionPartialStandingPoseRemainsCandidate","Elapsed":1.16}
+{"Time":"2026-10-26T13:38:21.833634+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\n"}
+{"Time":"2026-10-26T13:38:21.835615+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t1.710s\n"}
+{"Time":"2026-10-26T13:38:21.83563+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":1.71}

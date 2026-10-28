@@ -1,0 +1,29 @@
+{
+  "scope": "Focused public-pixel overlap recovery, not fresh campaign acceptance",
+  "initial_failure": "TestBotOverlapUnknownSupportRecovery/stalled: overlapping actors remain stuck: 64",
+  "targeted_tests_passed": true,
+  "race_passed": true,
+  "negative_cases": [
+    "fresh uncertainty",
+    "no observed landing"
+  ],
+  "continuation": {
+    "path": ".local/contra-bot/diagnostic-coop-post-snow",
+    "frame": 145000,
+    "level_zero_based": 5,
+    "screen": 4
+  },
+  "independent_replay": {
+    "path": ".local/contra-bot/diagnostic-coop-overlap-recovery",
+    "frames": 141000,
+    "recordedStateMatches": true,
+    "recordedRulesAndEffectsMatch": true,
+    "nextStepStoredStateEqual": true
+  },
+  "sha256": {
+    "games/contra/engine/bot.go": "8012abd8e1c2d8f3c618cee231b8ecfe37a8bd4258ad550ce954bbc8654c01a5",
+    "games/contra/engine/bot_overlap_test.go": "58060e6bf62a9bc431e71dfb2af41b5700852e0cc65ce952a2fdc6ef6fdde36e",
+    "games/contra/engine/testdata/bot-coop-overlap.json.gz": "9e49f6258fb0bcbf44ba441fb1013f0de822b0efa956542180a1442bec2cf8f8",
+    "docs/research/nes-contra/evidence/bot-overlap-recovery-race.jsonl": "c097d54342af3c36bb44bf536cde1f09f1f947dc36da960a74ec7dcd67cea52a"
+  }
+}

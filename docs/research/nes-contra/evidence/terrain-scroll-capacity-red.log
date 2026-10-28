@@ -1,0 +1,6 @@
+=== RUN   TestTerrainScrollDoesNotOverlapPaletteStorage
+    terrain_scroll_capacity_test.go:46: cursor 160 crossed graphics/palette storage
+--- FAIL: TestTerrainScrollDoesNotOverlapPaletteStorage (0.09s)
+FAIL
+FAIL	command-line-arguments	0.492s
+FAIL

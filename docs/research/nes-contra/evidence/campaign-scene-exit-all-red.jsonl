@@ -1,0 +1,9 @@
+{"Time":"2026-10-25T18:28:03.779487+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-25T18:28:04.301508+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestCampaignSceneOriginalExit"}
+{"Time":"2026-10-25T18:28:04.301535+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestCampaignSceneOriginalExit","Output":"=== RUN   TestCampaignSceneOriginalExit\n"}
+{"Time":"2026-10-25T18:28:04.385571+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestCampaignSceneOriginalExit","Output":"    campaign_scene_test.go:82: frame 1492: unsupported campaign exit context\n"}
+{"Time":"2026-10-25T18:28:04.385612+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestCampaignSceneOriginalExit","Output":"--- FAIL: TestCampaignSceneOriginalExit (0.08s)\n"}
+{"Time":"2026-10-25T18:28:04.385624+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestCampaignSceneOriginalExit","Elapsed":0.08}
+{"Time":"2026-10-25T18:28:04.385636+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\n"}
+{"Time":"2026-10-25T18:28:04.386417+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t0.607s\n"}
+{"Time":"2026-10-25T18:28:04.386434+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":0.607}

@@ -1,0 +1,267 @@
+{
+  "passed": true,
+  "scope": "Player base, base-boss and vertical scene rules; not a full campaign acceptance",
+  "race_test_count": 29,
+  "race_tests": [
+    "TestOriginalCombatFrameModes",
+    "TestOriginalCombatFramePhase",
+    "TestCombatFrameFailureIsAtomic",
+    "TestOriginalGraphicsCallerAttributeLookup",
+    "TestOriginalGraphicsRequests",
+    "TestGraphicsQueueMixedScrollAndEnemyBudget",
+    "TestGraphicsQueueValidationAndOwnership",
+    "TestJungleLayoutOriginalScreens",
+    "TestJungleLayoutNaturalInitializationAndStreaming",
+    "TestScreenDecodeBoundaries",
+    "TestOriginalMovementTrace",
+    "TestVerticalArithmeticBoundaries",
+    "TestJumpRetainsSubpixelAndExistingJump",
+    "TestControlsLogicalBitsAndRelease",
+    "TestOriginalOutdoorPlayerAndWeaponIntegration",
+    "TestOriginalOutdoorPlayerLifecycle",
+    "TestPlayerHitDoesNotRepeatOutsideNormalState",
+    "TestOriginalPlayerBaseBossAndWaterfallModes",
+    "TestOriginalOutdoorNormalStepsWithoutShooting",
+    "TestOriginalJungleScrolling",
+    "TestJungleScrollScreenBoundaryAndRollback",
+    "TestOriginalTerrainQueries",
+    "TestTerrainPackedOrderAndScrollBoundaries",
+    "TestOriginalWeaponFire/natural",
+    "TestOriginalWeaponFire/isolated",
+    "TestOriginalWeaponFire/equipment",
+    "TestOriginalWeaponFire/machine",
+    "TestOriginalWeaponFire",
+    "TestOriginalNaturalProjectileSteps"
+  ],
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "games/contra/engine/controls.go",
+    "games/contra/engine/enemies.go",
+    "games/contra/engine/enemies_box.go",
+    "games/contra/engine/enemies_bullets.go",
+    "games/contra/engine/enemies_capsule.go",
+    "games/contra/engine/enemies_collision.go",
+    "games/contra/engine/enemies_collision_tables.go",
+    "games/contra/engine/enemies_explosion.go",
+    "games/contra/engine/enemies_runner.go",
+    "games/contra/engine/enemies_shooters_aim.go",
+    "games/contra/engine/enemies_shooters_runner.go",
+    "games/contra/engine/enemies_shooters_sniper.go",
+    "games/contra/engine/enemies_shooters_tables.go",
+    "games/contra/engine/enemies_shooters_turrets.go",
+    "games/contra/engine/enemies_tables.go",
+    "games/contra/engine/enemies_terrain.go",
+    "games/contra/engine/frame.go",
+    "games/contra/engine/graphics_queue.go",
+    "games/contra/engine/level.go",
+    "games/contra/engine/movement.go",
+    "games/contra/engine/player.go",
+    "games/contra/engine/player_animation.go",
+    "games/contra/engine/player_indoor.go",
+    "games/contra/engine/player_lifecycle.go",
+    "games/contra/engine/scroll.go",
+    "games/contra/engine/terrain.go",
+    "games/contra/engine/weapons.go",
+    "games/contra/engine/weapons_step.go",
+    "games/contra/engine/weapons_tables.go",
+    "games/contra/engine/weapons_types.go",
+    "games/contra/engine/frame_modes_test.go",
+    "games/contra/engine/frame_test.go",
+    "games/contra/engine/graphics_queue_test.go",
+    "games/contra/engine/level_test.go",
+    "games/contra/engine/movement_test.go",
+    "games/contra/engine/player_integration_test.go",
+    "games/contra/engine/player_lifecycle_test.go",
+    "games/contra/engine/player_modes_test.go",
+    "games/contra/engine/player_test.go",
+    "games/contra/engine/scroll_test.go",
+    "games/contra/engine/terrain_test.go",
+    "games/contra/engine/weapons_test.go",
+    "-count=1",
+    "-json"
+  ],
+  "original_player_calls": 9776,
+  "original_mode_frame_calls": 3719,
+  "scene_calls": {
+    "vertical_outdoor": 2278,
+    "base": 3642,
+    "base_boss": 3856
+  },
+  "additional_controlled_cases": 12,
+  "blocked_peer_gate_cases": 4,
+  "boss_lifecycle": {
+    "normal": 1716,
+    "dying": 606,
+    "spawn": 4
+  },
+  "repeats": {
+    "scene": [
+      "v2",
+      "v3"
+    ],
+    "boundaries": [
+      "v2",
+      "v3"
+    ],
+    "boss_lifecycle": [
+      "v1",
+      "v2"
+    ]
+  },
+  "interventions": "Stage initializer selection, declared boss-room shortcut and barrier, and separately staged function boundaries are preserved in source metadata; after-states are never implementation inputs.",
+  "fields": [
+    "46 player fields",
+    "peer",
+    "shared world",
+    "16-slot projectile pool",
+    "ordered sounds"
+  ],
+  "source_evidence": [
+    {
+      "path": "docs/research/nes-contra/evidence/static-player-modes.json.gz",
+      "sha256": "7aeb234075120dcfb1caa77ecb70a156d4b6af9837c03fc615d3cf15d4b48d56"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/static-player-mode-boundaries.json.gz",
+      "sha256": "e27ceb5b029d7a3b62e9c539dcf1cbbcdcdede87c1eda99eea4975aea62136d8"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/static-player-boss-lifecycle.json.gz",
+      "sha256": "778b2b892a4dc9bf4e859a0c14e2221f4b76c76ddda60f5409d02908c0725394"
+    }
+  ],
+  "files": [
+    {
+      "path": "games/contra/engine/player.go",
+      "sha256": "eb8e58ff64400ee4c14a525884ed7aef41e3667b1a55d9628a795b3231234eb0"
+    },
+    {
+      "path": "games/contra/engine/player_animation.go",
+      "sha256": "4cf5373a05a76e76ad66610755ca3ccf86861b680bdcdecc2b65423fba215a7e"
+    },
+    {
+      "path": "games/contra/engine/player_indoor.go",
+      "sha256": "ab8014612f5517ec8cbae7c702ce1e3a1d6743f6fb08c64cfb880fbf24f54649"
+    },
+    {
+      "path": "games/contra/engine/player_integration_test.go",
+      "sha256": "7141dd1f13bf76b2c17a3ba6ab96ed50a6a1938a8ed2890c04881c24e6c903ac"
+    },
+    {
+      "path": "games/contra/engine/player_lifecycle.go",
+      "sha256": "8142df869f40347294c4b7980fe0986f0e25499f0d0a350a02902784cf27a358"
+    },
+    {
+      "path": "games/contra/engine/player_lifecycle_test.go",
+      "sha256": "30ce3e570aadc90e2db827046200b0af6984d7dc397794003e4de38d282b9cbc"
+    },
+    {
+      "path": "games/contra/engine/player_modes_test.go",
+      "sha256": "9831317a794d824f58b17ad88513fb38d0f613424aa6fdb1b2272f05445dd6db"
+    },
+    {
+      "path": "games/contra/engine/player_test.go",
+      "sha256": "aa2f5df98391163bf1f12eba78fbcdba4a7f9c9fdc9fb98bc702d93e5995d3db"
+    },
+    {
+      "path": "games/contra/engine/testdata/original-player-modes.json.gz",
+      "sha256": "13844ca60439831b7a5934520e5b4d9a3d73b15ab6d3285a5a995264b3504c4e"
+    },
+    {
+      "path": "games/contra/engine/testdata/original-player-modes-source.json",
+      "sha256": "9443f6df604c8de02fdc3b27379aa84de86a44d8a540fa160d35418d03c9f79f"
+    }
+  ],
+  "cleanup": [
+    {
+      "path": ".local/contra-static/swift-cache",
+      "bytes": 93389352
+    },
+    {
+      "path": "dist/contra-static-tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-static/modes-oracle/fceux-home",
+      "bytes": 17744
+    },
+    {
+      "path": ".local/contra-static/modes-oracle/runtime",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-static/modes-oracle/tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-static/modes-oracle/modes-v1-draft.json.gz",
+      "bytes": 1089790
+    },
+    {
+      "path": ".local/contra-static/modes-oracle/modes-v1-summary.json",
+      "bytes": 388
+    },
+    {
+      "path": ".local/contra-static/modes-oracle/runs/player-modes-v1-base2-boss",
+      "bytes": 13091612
+    },
+    {
+      "path": ".local/contra-static/modes-oracle/runs/player-modes-v1-waterfall-drop",
+      "bytes": 5839328
+    },
+    {
+      "path": ".local/contra-static/modes-oracle/runs/player-modes-v1-base2-progress",
+      "bytes": 27208385
+    },
+    {
+      "path": ".local/contra-static/modes-oracle/runs/player-modes-v1-base4-controls",
+      "bytes": 5129666
+    },
+    {
+      "path": ".local/contra-static/modes-oracle/runs/player-modes-v1-base2-controls",
+      "bytes": 5698077
+    },
+    {
+      "path": ".local/contra-static/modes-oracle/runs/player-modes-v1-waterfall-climb",
+      "bytes": 23516091
+    },
+    {
+      "path": ".local/contra-static/modes-oracle/player-modes-v1-base2-boss.json",
+      "bytes": 28013
+    },
+    {
+      "path": ".local/contra-static/modes-oracle/player-modes-v1-waterfall-climb.json",
+      "bytes": 55787
+    },
+    {
+      "path": ".local/contra-static/modes-oracle/player-modes-v1-base2-controls.json",
+      "bytes": 8060
+    },
+    {
+      "path": ".local/contra-static/modes-oracle/player-modes-v1-base4-controls.json",
+      "bytes": 8060
+    },
+    {
+      "path": ".local/contra-static/modes-oracle/player-modes-v1-waterfall-drop.json",
+      "bytes": 5521
+    },
+    {
+      "path": ".local/contra-static/modes-oracle/player-modes-v1-base2-progress.json",
+      "bytes": 69523
+    },
+    {
+      "path": ".local/contra-static/modes-oracle/runs/player-mode-boundaries-v1",
+      "bytes": 379800
+    },
+    {
+      "path": ".local/contra-static/modes-oracle/player-mode-boundaries-v1.json",
+      "bytes": 10439
+    }
+  ],
+  "limitations": [
+    "Complete level traversal, enemies/bosses, terrain/scene integration and campaign endings remain separate acceptance scopes.",
+    "Room/network/PC/mobile/fullscreen/bot acceptance is not claimed by these reconstruction fixtures."
+  ]
+}

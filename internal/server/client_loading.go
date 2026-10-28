@@ -57,6 +57,11 @@ func (s *Server) beginClientLoading(r *Room, now time.Time) {
 		return
 	}
 	r.Loading = g
+	// Only this first-start barrier can defer challenge liability. Reconnecting
+	// to an already running match never calls beginClientLoading.
+	if r.RatingPolicy != "" {
+		r.RatingStarted = false
+	}
 	r.TurnDeadline = 0
 }
 func (r *Room) releaseClientLoading(now time.Time) bool {
@@ -71,6 +76,9 @@ func (r *Room) releaseClientLoading(now time.Time) bool {
 	}
 	r.LoadCompletedToken = g.Token
 	r.Loading = nil
+	if r.RatingPolicy != "" {
+		r.RatingStarted = true
+	}
 	if r.Module != nil {
 		r.ClockOffsetMS += max(0, now.UnixMilli()-g.StartedAt)
 		r.TurnDeadline = r.Module.Deadline

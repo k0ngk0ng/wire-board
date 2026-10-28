@@ -1,0 +1,9 @@
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"# command-line-arguments [command-line-arguments.test]\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./enemies_shooters_test.go:119:75: undefined: JungleShooterTarget\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./enemies_shooters_test.go:121:34: s.StepTurret undefined (type EnemySystem has no field or method StepTurret)\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./enemies_shooters_test.go:121:64: s.StepRedTurret undefined (type EnemySystem has no field or method StepRedTurret)\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./enemies_shooters_test.go:121:98: s.StepBossCannon undefined (type EnemySystem has no field or method StepBossCannon)\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-fail"}
+{"Time":"2026-10-25T14:09:56.885621+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-10-25T14:09:56.885676+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\tcommand-line-arguments [build failed]\n"}
+{"Time":"2026-10-25T14:09:56.885685+08:00","Action":"fail","Package":"command-line-arguments","Elapsed":0,"FailedBuild":"command-line-arguments [command-line-arguments.test]"}

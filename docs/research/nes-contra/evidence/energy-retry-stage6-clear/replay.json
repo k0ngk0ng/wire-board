@@ -1,0 +1,9 @@
+{
+  "frames": 320120,
+  "nextStepStoredStateEqual": true,
+  "nextStepStructEqual": true,
+  "recordedRulesAndEffectsMatch": true,
+  "recordedStateMatches": true,
+  "replayDerivedReviewAdded": false,
+  "roundTripDifferences": null
+}

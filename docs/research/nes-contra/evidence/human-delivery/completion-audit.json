@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "scope": "User-authorized human-only local delivery; computer victory and public deployment are excluded",
+  "singleHumanStartedAndMoved": true,
+  "twoHumanPCAnd320Touch": true,
+  "computerAndAutoplayRejected": true,
+  "controllerMultiTouchVerified": true,
+  "singleContactComboAdded": false,
+  "nativeBindingAndFrontendChecks": true,
+  "preview": "http://127.0.0.1:52299",
+  "binarySHA256": "9bd90d6ffe6c6a4de78256aa4740b9ffa86d7081a5aa774a99f08bc3c62af4b8",
+  "released": false,
+  "cleanup": "cleanup.json"
+}

@@ -1,0 +1,6 @@
+# command-line-arguments [command-line-arguments.test]
+games/contra/engine/enemies_waterfall_test.go:73:11: undefined: WaterfallBossContext
+games/contra/engine/enemies_waterfall_test.go:77:12: s.StepDragonMouth undefined (type EnemySystem has no field or method StepDragonMouth)
+games/contra/engine/enemies_waterfall_test.go:79:12: s.StepDragonArm undefined (type EnemySystem has no field or method StepDragonArm)
+FAIL	command-line-arguments [build failed]
+FAIL

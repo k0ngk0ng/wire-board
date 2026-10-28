@@ -1,0 +1,6 @@
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"# command-line-arguments [command-line-arguments.test]\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./enemies_shooters_test.go:110:54: s.StepRunnerFire undefined (type EnemySystem has no field or method StepRunnerFire)\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-fail"}
+{"Time":"2026-10-25T13:57:13.869385+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-10-25T13:57:13.869452+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\tcommand-line-arguments [build failed]\n"}
+{"Time":"2026-10-25T13:57:13.869461+08:00","Action":"fail","Package":"command-line-arguments","Elapsed":0,"FailedBuild":"command-line-arguments [command-line-arguments.test]"}

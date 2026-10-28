@@ -1,0 +1,12 @@
+# github.com/k0ngk0ng/wire-board/games/contra/engine [github.com/k0ngk0ng/wire-board/games/contra/engine.test]
+games/contra/engine/player_test.go:63:56: undefined: Player
+games/contra/engine/player_test.go:67:9: undefined: Player
+games/contra/engine/player_test.go:80:23: undefined: Player
+games/contra/engine/player_test.go:80:37: undefined: PlayerInput
+games/contra/engine/player_test.go:93:55: undefined: OutdoorWorld
+games/contra/engine/player_test.go:96:9: undefined: OutdoorWorld
+games/contra/engine/player_test.go:117:11: undefined: PlayerInput
+games/contra/engine/player_test.go:118:13: undefined: WeaponSystem
+games/contra/engine/player_test.go:119:31: undefined: PlayerStepContext
+FAIL	github.com/k0ngk0ng/wire-board/games/contra/engine [build failed]
+FAIL

@@ -1,0 +1,620 @@
+{
+  "exception": "BASE-ROLLER-STALE-ATTRIBUTE",
+  "verified_at": "2026-10-25T09:56:46.096466+00:00",
+  "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "source_is_original_execution": true,
+  "run_count": 32,
+  "total_original_frames": 12800,
+  "paired_comparisons": 24,
+  "sole_permitted_difference": "roller Attributes at $05A8 + current roller slot; forbidden after active slot changes kind",
+  "bundle": {
+    "path": "docs/research/nes-contra/evidence/enemies-base-roller-paired.json.gz",
+    "sha256": "3602fb0133ec369e1fcb6910772f042319c06fc52cd4950c198cabbca4edac88"
+  },
+  "script_sha256": "ef414c506e4443a12c5dc095590f929b347421ab2213b866bb2ab81fc9f69db3",
+  "scenarios": [
+    {
+      "original_record_id": 140,
+      "mode": "natural",
+      "frames": 400,
+      "phases": [
+        1,
+        2
+      ],
+      "collision_codes": [
+        2,
+        14
+      ],
+      "attribute_accesses": [],
+      "hardware_writes": 109423,
+      "variants": [
+        {
+          "attribute": 0,
+          "ram_sha256": "37bc9f0abf63cb4078c002e995058782f9208b93ebe15046168a300241000383",
+          "differing_addresses": [],
+          "complete_ram_equal_after_reuse_frames": 0
+        },
+        {
+          "attribute": 12,
+          "ram_sha256": "35d26360243f7a2a680d64acb1139b01a397f12ddf5558e71f3990bea1bb7441",
+          "differing_addresses": [
+            "0x5b7"
+          ],
+          "complete_ram_equal_after_reuse_frames": 0
+        },
+        {
+          "attribute": 19,
+          "ram_sha256": "95cba69834db45f0039e45c0b07a6c54cdc4e63ce156deb97b28d5eb707b9d24",
+          "differing_addresses": [
+            "0x5b7"
+          ],
+          "complete_ram_equal_after_reuse_frames": 0
+        },
+        {
+          "attribute": 255,
+          "ram_sha256": "880b2ca440ef880cd5bf989d68a84f9898f2ef131ccb287f93842245c19e3c55",
+          "differing_addresses": [
+            "0x5b7"
+          ],
+          "complete_ram_equal_after_reuse_frames": 0
+        }
+      ],
+      "matched_artifacts": [
+        "initial-ram.bin",
+        "initial-prg.bin",
+        "dma.bin",
+        "hardware.jsonl",
+        "calls.jsonl",
+        "audio.jsonl",
+        "inputs.csv",
+        "frames.csv",
+        "frame-00001.png",
+        "frame-00040.png",
+        "frame-00100.png",
+        "frame-00200.png",
+        "frame-00400.png",
+        "frame-00001-ppu.bin",
+        "frame-00001-prg.bin",
+        "frame-00040-ppu.bin",
+        "frame-00040-prg.bin",
+        "frame-00100-ppu.bin",
+        "frame-00100-prg.bin",
+        "frame-00200-ppu.bin",
+        "frame-00200-prg.bin",
+        "frame-00400-ppu.bin",
+        "frame-00400-prg.bin"
+      ]
+    },
+    {
+      "original_record_id": 8586,
+      "mode": "natural",
+      "frames": 400,
+      "phases": [
+        1,
+        2
+      ],
+      "collision_codes": [
+        2,
+        14
+      ],
+      "attribute_accesses": [],
+      "hardware_writes": 109423,
+      "variants": [
+        {
+          "attribute": 0,
+          "ram_sha256": "80202b1813cbeb9cdfdc7957510f5c28d7d59ecd2ad40e9bc0be4dcfe8d6b570",
+          "differing_addresses": [],
+          "complete_ram_equal_after_reuse_frames": 0
+        },
+        {
+          "attribute": 12,
+          "ram_sha256": "dd5867a996a99d6d0c7d6f794f1020932782077abeceaef857d340dcf842c97f",
+          "differing_addresses": [
+            "0x5b7"
+          ],
+          "complete_ram_equal_after_reuse_frames": 0
+        },
+        {
+          "attribute": 19,
+          "ram_sha256": "51b25622ebeb16344a1d48856a54917fb7f85f7f19c90168ab12b93f795ecad3",
+          "differing_addresses": [
+            "0x5b7"
+          ],
+          "complete_ram_equal_after_reuse_frames": 0
+        },
+        {
+          "attribute": 255,
+          "ram_sha256": "9534b62fd7f7d0def9d2efc6e19d1280ec1ef7eb59308181fa25b081227d59fb",
+          "differing_addresses": [
+            "0x5b7"
+          ],
+          "complete_ram_equal_after_reuse_frames": 0
+        }
+      ],
+      "matched_artifacts": [
+        "initial-ram.bin",
+        "initial-prg.bin",
+        "dma.bin",
+        "hardware.jsonl",
+        "calls.jsonl",
+        "audio.jsonl",
+        "inputs.csv",
+        "frames.csv",
+        "frame-00001.png",
+        "frame-00040.png",
+        "frame-00100.png",
+        "frame-00200.png",
+        "frame-00400.png",
+        "frame-00001-ppu.bin",
+        "frame-00001-prg.bin",
+        "frame-00040-ppu.bin",
+        "frame-00040-prg.bin",
+        "frame-00100-ppu.bin",
+        "frame-00100-prg.bin",
+        "frame-00200-ppu.bin",
+        "frame-00200-prg.bin",
+        "frame-00400-ppu.bin",
+        "frame-00400-prg.bin"
+      ]
+    },
+    {
+      "original_record_id": 8715,
+      "mode": "natural",
+      "frames": 400,
+      "phases": [
+        1,
+        2
+      ],
+      "collision_codes": [
+        2,
+        14
+      ],
+      "attribute_accesses": [],
+      "hardware_writes": 109423,
+      "variants": [
+        {
+          "attribute": 0,
+          "ram_sha256": "eebc6635eadc18f8119d40a2d2740f8fd5eb589625df00d75018c015b3c18445",
+          "differing_addresses": [],
+          "complete_ram_equal_after_reuse_frames": 0
+        },
+        {
+          "attribute": 12,
+          "ram_sha256": "7672314dfaedd32c5b410cee3d611352bed30231cac6ce215e8c4aca29e0873f",
+          "differing_addresses": [
+            "0x5b7"
+          ],
+          "complete_ram_equal_after_reuse_frames": 0
+        },
+        {
+          "attribute": 19,
+          "ram_sha256": "c4fe17fd9a7753cb132fae74319cdba815fb51e6bc9ed0c9f43d1f68967b639d",
+          "differing_addresses": [
+            "0x5b7"
+          ],
+          "complete_ram_equal_after_reuse_frames": 0
+        },
+        {
+          "attribute": 255,
+          "ram_sha256": "b9af09996f49ad4522d7c3c65d4c1f9faa1cde5154ee7f5dece39cf23c9094b4",
+          "differing_addresses": [
+            "0x5b7"
+          ],
+          "complete_ram_equal_after_reuse_frames": 0
+        }
+      ],
+      "matched_artifacts": [
+        "initial-ram.bin",
+        "initial-prg.bin",
+        "dma.bin",
+        "hardware.jsonl",
+        "calls.jsonl",
+        "audio.jsonl",
+        "inputs.csv",
+        "frames.csv",
+        "frame-00001.png",
+        "frame-00040.png",
+        "frame-00100.png",
+        "frame-00200.png",
+        "frame-00400.png",
+        "frame-00001-ppu.bin",
+        "frame-00001-prg.bin",
+        "frame-00040-ppu.bin",
+        "frame-00040-prg.bin",
+        "frame-00100-ppu.bin",
+        "frame-00100-prg.bin",
+        "frame-00200-ppu.bin",
+        "frame-00200-prg.bin",
+        "frame-00400-ppu.bin",
+        "frame-00400-prg.bin"
+      ]
+    },
+    {
+      "original_record_id": 9174,
+      "mode": "natural",
+      "frames": 400,
+      "phases": [
+        1,
+        2
+      ],
+      "collision_codes": [
+        2,
+        14
+      ],
+      "attribute_accesses": [],
+      "hardware_writes": 109423,
+      "variants": [
+        {
+          "attribute": 0,
+          "ram_sha256": "697abf0c286603c2dd2373e4616d443f56abd9d3e5328bac6cb3a6341451a530",
+          "differing_addresses": [],
+          "complete_ram_equal_after_reuse_frames": 0
+        },
+        {
+          "attribute": 12,
+          "ram_sha256": "1863ed7439060a5d0553ddf8ad3ff55b62bed4f4e80bb4aeded63924d0be3456",
+          "differing_addresses": [
+            "0x5b7"
+          ],
+          "complete_ram_equal_after_reuse_frames": 0
+        },
+        {
+          "attribute": 19,
+          "ram_sha256": "0fdc082a4eb7cd4f6c3b4b707fa8b69e85c6b93e2aee5e00129f821d5574db60",
+          "differing_addresses": [
+            "0x5b7"
+          ],
+          "complete_ram_equal_after_reuse_frames": 0
+        },
+        {
+          "attribute": 255,
+          "ram_sha256": "7aa4f74ad769d48eea847773ec8d3865675f36efbadb43ec28b4e9cc9886b2ba",
+          "differing_addresses": [
+            "0x5b7"
+          ],
+          "complete_ram_equal_after_reuse_frames": 0
+        }
+      ],
+      "matched_artifacts": [
+        "initial-ram.bin",
+        "initial-prg.bin",
+        "dma.bin",
+        "hardware.jsonl",
+        "calls.jsonl",
+        "audio.jsonl",
+        "inputs.csv",
+        "frames.csv",
+        "frame-00001.png",
+        "frame-00040.png",
+        "frame-00100.png",
+        "frame-00200.png",
+        "frame-00400.png",
+        "frame-00001-ppu.bin",
+        "frame-00001-prg.bin",
+        "frame-00040-ppu.bin",
+        "frame-00040-prg.bin",
+        "frame-00100-ppu.bin",
+        "frame-00100-prg.bin",
+        "frame-00200-ppu.bin",
+        "frame-00200-prg.bin",
+        "frame-00400-ppu.bin",
+        "frame-00400-prg.bin"
+      ]
+    },
+    {
+      "original_record_id": 140,
+      "mode": "contact",
+      "frames": 400,
+      "phases": [
+        1,
+        2
+      ],
+      "collision_codes": [
+        2,
+        14
+      ],
+      "attribute_accesses": [],
+      "hardware_writes": 109525,
+      "variants": [
+        {
+          "attribute": 0,
+          "ram_sha256": "bb4d79165ad18a74c268f71552a4503bc93205d90750b4fe617de9da407894ff",
+          "differing_addresses": [],
+          "complete_ram_equal_after_reuse_frames": 0
+        },
+        {
+          "attribute": 12,
+          "ram_sha256": "e8bc58e562a47189ed5efbc186cd0e603bfebe1e39da8bcd6cd41c3fcfeead72",
+          "differing_addresses": [
+            "0x5b7"
+          ],
+          "complete_ram_equal_after_reuse_frames": 0
+        },
+        {
+          "attribute": 19,
+          "ram_sha256": "8118a94baf8b098c3b996b21c8030f443bbcc5cd93cd23da4d1df0141a68b340",
+          "differing_addresses": [
+            "0x5b7"
+          ],
+          "complete_ram_equal_after_reuse_frames": 0
+        },
+        {
+          "attribute": 255,
+          "ram_sha256": "80255835e037764c6105fb1e99ab8f067a855bd53b7ae24f95f458621bc59a7e",
+          "differing_addresses": [
+            "0x5b7"
+          ],
+          "complete_ram_equal_after_reuse_frames": 0
+        }
+      ],
+      "matched_artifacts": [
+        "initial-ram.bin",
+        "initial-prg.bin",
+        "dma.bin",
+        "hardware.jsonl",
+        "calls.jsonl",
+        "audio.jsonl",
+        "inputs.csv",
+        "frames.csv",
+        "frame-00001.png",
+        "frame-00040.png",
+        "frame-00100.png",
+        "frame-00200.png",
+        "frame-00400.png",
+        "frame-00001-ppu.bin",
+        "frame-00001-prg.bin",
+        "frame-00040-ppu.bin",
+        "frame-00040-prg.bin",
+        "frame-00100-ppu.bin",
+        "frame-00100-prg.bin",
+        "frame-00200-ppu.bin",
+        "frame-00200-prg.bin",
+        "frame-00400-ppu.bin",
+        "frame-00400-prg.bin"
+      ]
+    },
+    {
+      "original_record_id": 140,
+      "mode": "shot",
+      "frames": 400,
+      "phases": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "collision_codes": [
+        2
+      ],
+      "attribute_accesses": [],
+      "hardware_writes": 110068,
+      "variants": [
+        {
+          "attribute": 0,
+          "ram_sha256": "4ff37bffc46746f7e9011d66f8c1a0e81b5f14392ccf7cf114b3936758131de8",
+          "differing_addresses": [],
+          "complete_ram_equal_after_reuse_frames": 0
+        },
+        {
+          "attribute": 12,
+          "ram_sha256": "fc3f5b3d6566765325486972045790cb4454446a152a0582f49235d8a85b5e3f",
+          "differing_addresses": [
+            "0x5b7"
+          ],
+          "complete_ram_equal_after_reuse_frames": 0
+        },
+        {
+          "attribute": 19,
+          "ram_sha256": "440b85aab6c4d6156839e462ec1cd19fcacd6ed9a4265cd64759e5bebe7e9f05",
+          "differing_addresses": [
+            "0x5b7"
+          ],
+          "complete_ram_equal_after_reuse_frames": 0
+        },
+        {
+          "attribute": 255,
+          "ram_sha256": "4609d4ad93f0580b1ea904889711dec2c22dd773c64b5f5b8ba18f69c47b40c4",
+          "differing_addresses": [
+            "0x5b7"
+          ],
+          "complete_ram_equal_after_reuse_frames": 0
+        }
+      ],
+      "matched_artifacts": [
+        "initial-ram.bin",
+        "initial-prg.bin",
+        "dma.bin",
+        "hardware.jsonl",
+        "calls.jsonl",
+        "audio.jsonl",
+        "inputs.csv",
+        "frames.csv",
+        "frame-00001.png",
+        "frame-00040.png",
+        "frame-00100.png",
+        "frame-00200.png",
+        "frame-00400.png",
+        "frame-00001-ppu.bin",
+        "frame-00001-prg.bin",
+        "frame-00040-ppu.bin",
+        "frame-00040-prg.bin",
+        "frame-00100-ppu.bin",
+        "frame-00100-prg.bin",
+        "frame-00200-ppu.bin",
+        "frame-00200-prg.bin",
+        "frame-00400-ppu.bin",
+        "frame-00400-prg.bin"
+      ]
+    },
+    {
+      "original_record_id": 140,
+      "mode": "falcon",
+      "frames": 400,
+      "phases": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "collision_codes": [
+        2
+      ],
+      "attribute_accesses": [
+        {
+          "frame": 1429,
+          "pc": 59761,
+          "kind": 17,
+          "routine": 3,
+          "value": 0
+        },
+        {
+          "frame": 1429,
+          "pc": 59766,
+          "kind": 17,
+          "routine": 3,
+          "value": 0
+        }
+      ],
+      "hardware_writes": 109955,
+      "variants": [
+        {
+          "attribute": 0,
+          "ram_sha256": "edc6747443f4f247a2f04df609a5913a53a2f4845abf79a87f317d43a2d34356",
+          "differing_addresses": [],
+          "complete_ram_equal_after_reuse_frames": 0
+        },
+        {
+          "attribute": 12,
+          "ram_sha256": "61f1b8a5b9724b6452dcbc320568f3dfce51e53d6e03e79746b47784c6784507",
+          "differing_addresses": [
+            "0x5b7"
+          ],
+          "complete_ram_equal_after_reuse_frames": 0
+        },
+        {
+          "attribute": 19,
+          "ram_sha256": "1d6645b53d26ff3432edb54e1bc996f9d3d2746bcab1d8f9955e6c7ca6ba004d",
+          "differing_addresses": [
+            "0x5b7"
+          ],
+          "complete_ram_equal_after_reuse_frames": 0
+        },
+        {
+          "attribute": 255,
+          "ram_sha256": "ca15df4c3b76480bba28788196b48c67f6b703bad119af1278d285edbaa18c79",
+          "differing_addresses": [
+            "0x5b7"
+          ],
+          "complete_ram_equal_after_reuse_frames": 0
+        }
+      ],
+      "matched_artifacts": [
+        "initial-ram.bin",
+        "initial-prg.bin",
+        "dma.bin",
+        "hardware.jsonl",
+        "calls.jsonl",
+        "audio.jsonl",
+        "inputs.csv",
+        "frames.csv",
+        "frame-00001.png",
+        "frame-00040.png",
+        "frame-00100.png",
+        "frame-00200.png",
+        "frame-00400.png",
+        "frame-00001-ppu.bin",
+        "frame-00001-prg.bin",
+        "frame-00040-ppu.bin",
+        "frame-00040-prg.bin",
+        "frame-00100-ppu.bin",
+        "frame-00100-prg.bin",
+        "frame-00200-ppu.bin",
+        "frame-00200-prg.bin",
+        "frame-00400-ppu.bin",
+        "frame-00400-prg.bin"
+      ]
+    },
+    {
+      "original_record_id": 140,
+      "mode": "reuse",
+      "frames": 400,
+      "phases": [
+        1,
+        2
+      ],
+      "collision_codes": [
+        2,
+        14
+      ],
+      "attribute_accesses": [
+        {
+          "frame": 1743,
+          "pc": 60787,
+          "kind": 27,
+          "routine": 1,
+          "value": 0
+        }
+      ],
+      "hardware_writes": 109525,
+      "variants": [
+        {
+          "attribute": 0,
+          "ram_sha256": "3b01f2c2556ecc64718004024f490a7fd473ca0378f965fcb071e999a86c8859",
+          "differing_addresses": [],
+          "complete_ram_equal_after_reuse_frames": 57
+        },
+        {
+          "attribute": 12,
+          "ram_sha256": "27e11ddbeab9abeabdc9883756bc23d695f586601d1de60df91336eeffe5c6aa",
+          "differing_addresses": [
+            "0x5b7"
+          ],
+          "complete_ram_equal_after_reuse_frames": 57
+        },
+        {
+          "attribute": 19,
+          "ram_sha256": "a81d3eb8d11f36b4cbc96233eb83b7dc045766eeedfbe64c93b91c8dc529347a",
+          "differing_addresses": [
+            "0x5b7"
+          ],
+          "complete_ram_equal_after_reuse_frames": 57
+        },
+        {
+          "attribute": 255,
+          "ram_sha256": "bde2a34e55a37ee37b6c6ed528afddcbd158d49ddc2d2f4245b0c2dbd275c0fb",
+          "differing_addresses": [
+            "0x5b7"
+          ],
+          "complete_ram_equal_after_reuse_frames": 57
+        }
+      ],
+      "matched_artifacts": [
+        "initial-ram.bin",
+        "initial-prg.bin",
+        "dma.bin",
+        "hardware.jsonl",
+        "calls.jsonl",
+        "audio.jsonl",
+        "inputs.csv",
+        "frames.csv",
+        "frame-00001.png",
+        "frame-00040.png",
+        "frame-00100.png",
+        "frame-00200.png",
+        "frame-00400.png",
+        "frame-00001-ppu.bin",
+        "frame-00001-prg.bin",
+        "frame-00040-ppu.bin",
+        "frame-00040-prg.bin",
+        "frame-00100-ppu.bin",
+        "frame-00100-prg.bin",
+        "frame-00200-ppu.bin",
+        "frame-00200-prg.bin",
+        "frame-00400-ppu.bin",
+        "frame-00400-prg.bin"
+      ]
+    }
+  ]
+}

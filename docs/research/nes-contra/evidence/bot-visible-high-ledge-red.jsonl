@@ -1,0 +1,9 @@
+{"Time":"2026-10-26T13:02:03.124937+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-26T13:02:03.640814+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleHighLedgeAcceptsCenterFirstContact"}
+{"Time":"2026-10-26T13:02:03.64084+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleHighLedgeAcceptsCenterFirstContact","Output":"=== RUN   TestBotVisibleHighLedgeAcceptsCenterFirstContact\n"}
+{"Time":"2026-10-26T13:02:03.640887+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleHighLedgeAcceptsCenterFirstContact","Output":"    bot_navigation_test.go:203: rejected reachable ledge and repeated a jump on the original platform 129 126 true\n"}
+{"Time":"2026-10-26T13:02:03.640901+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleHighLedgeAcceptsCenterFirstContact","Output":"--- FAIL: TestBotVisibleHighLedgeAcceptsCenterFirstContact (0.00s)\n"}
+{"Time":"2026-10-26T13:02:03.640907+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleHighLedgeAcceptsCenterFirstContact","Elapsed":0}
+{"Time":"2026-10-26T13:02:03.641069+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\n"}
+{"Time":"2026-10-26T13:02:03.641509+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t0.516s\n"}
+{"Time":"2026-10-26T13:02:03.64159+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":0.517}

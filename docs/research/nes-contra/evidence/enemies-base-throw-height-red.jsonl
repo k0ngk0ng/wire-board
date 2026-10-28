@@ -1,0 +1,9 @@
+{"Time":"2026-10-25T23:27:47.056376+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-10-25T23:27:47.614565+08:00","Action":"run","Package":"command-line-arguments","Test":"TestOriginalBaseRollerInheritsCollisionHeight"}
+{"Time":"2026-10-25T23:27:47.61472+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalBaseRollerInheritsCollisionHeight","Output":"=== RUN   TestOriginalBaseRollerInheritsCollisionHeight\n"}
+{"Time":"2026-10-25T23:27:47.619186+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalBaseRollerInheritsCollisionHeight","Output":"    enemies_base_height_test.go:27: frame1410 slot4 got{Sprite:1 Y:114 X:151 SpriteAttributes:0 Routine:2 FractionY:0 FractionX:0 VelocityY:128 VelocityX:85 Kind:17 AnimationDelay:0 VariableA:0 AttackDelay:0 Frame:0 HP:5 ScoreCollision:34 StateWidth:47 Attributes:0 Data:[0 0 0 0]} want{Sprite:1 Y:114 X:151 SpriteAttributes:0 Routine:2 FractionY:0 FractionX:0 VelocityY:128 VelocityX:85 Kind:17 AnimationDelay:0 VariableA:0 AttackDelay:0 Frame:0 HP:5 ScoreCollision:34 StateWidth:47 Attributes:19 Data:[0 0 0 0]}\n"}
+{"Time":"2026-10-25T23:27:47.619252+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalBaseRollerInheritsCollisionHeight","Output":"--- FAIL: TestOriginalBaseRollerInheritsCollisionHeight (0.00s)\n"}
+{"Time":"2026-10-25T23:27:47.619272+08:00","Action":"fail","Package":"command-line-arguments","Test":"TestOriginalBaseRollerInheritsCollisionHeight","Elapsed":0}
+{"Time":"2026-10-25T23:27:47.619299+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\n"}
+{"Time":"2026-10-25T23:27:47.620391+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\tcommand-line-arguments\t0.564s\n"}
+{"Time":"2026-10-25T23:27:47.620404+08:00","Action":"fail","Package":"command-line-arguments","Elapsed":0.564}

@@ -1,0 +1,9 @@
+{"Time":"2026-10-25T18:40:54.34161+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-25T18:40:54.896589+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestCampaignSceneOriginalIntro"}
+{"Time":"2026-10-25T18:40:54.896845+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestCampaignSceneOriginalIntro","Output":"=== RUN   TestCampaignSceneOriginalIntro\n"}
+{"Time":"2026-10-25T18:40:55.107674+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestCampaignSceneOriginalIntro","Output":"    campaign_scene_intro_test.go:83: frame966 phase7 text queue got0125420000000000000000000000000000ff0125820000000000000000000000000000ff want0125420000000000000000000000000000ff0125620000000000000000000000000000ff\n"}
+{"Time":"2026-10-25T18:40:55.107731+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestCampaignSceneOriginalIntro","Output":"--- FAIL: TestCampaignSceneOriginalIntro (0.21s)\n"}
+{"Time":"2026-10-25T18:40:55.107738+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestCampaignSceneOriginalIntro","Elapsed":0.21}
+{"Time":"2026-10-25T18:40:55.107752+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\n"}
+{"Time":"2026-10-25T18:40:55.109043+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t0.767s\n"}
+{"Time":"2026-10-25T18:40:55.109058+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":0.767}

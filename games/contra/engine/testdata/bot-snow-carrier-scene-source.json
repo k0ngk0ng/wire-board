@@ -1,0 +1,7 @@
+{
+  "scope": "submitted pixels from recorded assisted legal continuation; visual integration only",
+  "source_capture": ".local/contra-bot/diagnostic-snow-after-base2/final.png",
+  "after_frame": 55000,
+  "image_sha256": "aa57466cc71c6a2c589fdc7b3b74f0d81854b4b93339981bfd2cd616896316c5",
+  "rule_state_supplied_to_observer": false
+}

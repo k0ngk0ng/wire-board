@@ -1,0 +1,8 @@
+# github.com/k0ngk0ng/wire-board/games/contra/engine [github.com/k0ngk0ng/wire-board/games/contra/engine.test]
+games/contra/engine/player_lifecycle_test.go:28:9: undefined: BorrowLife
+games/contra/engine/player_lifecycle_test.go:33:23: player.Hit undefined (type Player has no field or method Hit)
+games/contra/engine/player_lifecycle_test.go:39:23: player.Step undefined (type Player has no field or method Step)
+games/contra/engine/player_lifecycle_test.go:39:81: unknown field PeerInput in struct literal of type PlayerStepContext
+games/contra/engine/player_lifecycle_test.go:69:18: p.Hit undefined (type Player has no field or method Hit)
+FAIL	github.com/k0ngk0ng/wire-board/games/contra/engine [build failed]
+FAIL

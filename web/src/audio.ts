@@ -13,12 +13,32 @@ type Task = {
   starting: boolean;
   generation: number;
   pendingLoopRestart?: number;
+  deferredStart?: boolean;
 };
 type MusicOptions = {
   loop?: boolean;
   startOffset?: number;
   playbackID?: string;
   loopStartSeconds?: number;
+};
+type TrackOptions = MusicOptions & { muted?: boolean; rate?: number };
+type TrackRestoreOptions = {
+  startOffset: number;
+  muted?: boolean;
+  paused?: boolean;
+};
+type TrackVoice = {
+  owner: string;
+  key: string;
+  audio: GameAudio;
+  signature: string;
+  playbackID?: string;
+  pending: Promise<boolean>;
+  paused: boolean;
+  stopped: boolean;
+  clip: Clip;
+  loop: boolean;
+  rate: number;
 };
 type LoopOptions = { volume?: number; rate?: number };
 type LoopVoice = {
@@ -48,6 +68,10 @@ export class GameAudio {
   private backgroundOwner?: string;
   private backgroundSources = "";
   private loops = new Map<string, LoopVoice>();
+  // Stable keys name media lanes, not individual events. Keep cancelled event
+  // identities so unmute or repeated snapshots cannot replay old one-shots.
+  private tracks = new Map<string, TrackVoice>();
+  private silent = false;
   private pausedOwners = new Set<string>();
   private factory: () => HTMLAudioElement;
   private allowed = true;
@@ -70,13 +94,14 @@ export class GameAudio {
     this.background?.setVolume(this.level);
     for (const voice of this.loops.values())
       voice.media.volume = voice.volume * this.level;
+    for (const voice of this.tracks.values()) voice.audio.setVolume(this.level);
   }
   private createElement() {
     const media = this.factory();
     media.dataset.platformAudio = "";
     media.preload = "none";
     media.hidden = true;
-    media.muted = !this.allowed;
+    media.muted = !this.allowed || this.silent;
     media.volume = this.level;
     if (typeof document !== "undefined") document.body.append(media);
     return media;
@@ -149,12 +174,17 @@ export class GameAudio {
       voice.frame = undefined;
     }
     this.background?.pause(owner);
+    for (const voice of this.tracks.values())
+      if (voice.owner === owner && !voice.stopped) voice.audio.pause(owner);
   }
   async resume(owner: string): Promise<boolean> {
     if (!this.pausedOwners.delete(owner) || !this.available()) return false;
     const pending: Promise<boolean>[] = [];
     const task = this.task;
-    if (task?.owner === owner && this.media?.src) {
+    if (task?.owner === owner && task.deferredStart) {
+      task.deferredStart = false;
+      pending.push(this.next(task));
+    } else if (task?.owner === owner && this.media?.src) {
       const media = this.media;
       const generation = ++task.generation;
       task.starting = false;
@@ -209,6 +239,11 @@ export class GameAudio {
       );
     }
     if (this.background) pending.push(this.background.resume(owner));
+    for (const voice of this.tracks.values()) {
+      if (voice.owner !== owner || voice.stopped || voice.paused) continue;
+      voice.pending = voice.audio.resume(owner);
+      pending.push(voice.pending);
+    }
     return (await Promise.all(pending)).some(Boolean);
   }
   stop(owner?: string) {
@@ -218,6 +253,9 @@ export class GameAudio {
     for (const voice of this.loops.values())
       if (owner === undefined || voice.owner === owner) this.releaseLoop(voice);
     this.background?.stop(owner);
+    for (const voice of this.tracks.values())
+      if (owner === undefined || voice.owner === owner)
+        this.releaseTrack(voice);
     if (owner === undefined || this.backgroundOwner === owner) {
       this.backgroundOwner = undefined;
       this.backgroundSources = "";
@@ -241,6 +279,7 @@ export class GameAudio {
   }
   dispose() {
     this.stop();
+    this.tracks.clear();
     this.background?.dispose();
     this.media?.remove();
     this.media = undefined;
@@ -273,7 +312,253 @@ export class GameAudio {
         const voice = this.loops.get(key);
         if (voice?.owner === owner) this.releaseLoop(voice);
       },
+      track: (
+        key: string,
+        sources: readonly string[],
+        options: TrackOptions = {},
+      ) => this.startTrack(owner, key, sources, options),
+      stopTrack: (key: string) => {
+        const voice = this.tracks.get(this.trackKey(owner, key));
+        if (voice) this.releaseTrack(voice);
+      },
+      muteTrack: (key: string, muted: boolean) => {
+        const voice = this.tracks.get(this.trackKey(owner, key));
+        if (voice && !voice.stopped) this.silenceTrack(voice, muted);
+      },
+      pauseTrack: (key: string) => {
+        const voice = this.tracks.get(this.trackKey(owner, key));
+        if (!voice || voice.stopped) return;
+        voice.paused = true;
+        voice.audio.pause(owner);
+      },
+      resumeTrack: (key: string) => this.resumeTrack(owner, key),
+      seekTrack: (key: string, offsetSeconds: number) =>
+        this.seekTrack(owner, key, offsetSeconds),
+      restoreTrack: (
+        key: string,
+        playbackID: string,
+        options: TrackRestoreOptions,
+      ) => this.restoreTrack(owner, key, playbackID, options),
     };
+  }
+  private trackKey(owner: string, key: string) {
+    return JSON.stringify([owner, key]);
+  }
+  private releaseTrack(voice: TrackVoice) {
+    voice.stopped = true;
+    voice.paused = false;
+    voice.audio.dispose();
+  }
+  private silenceTrack(voice: TrackVoice, muted: boolean) {
+    voice.audio.silent = muted;
+    if (voice.audio.media) voice.audio.media.muted = muted || !this.available();
+  }
+  private resumeTrack(owner: string, key: string): Promise<boolean> {
+    const voice = this.tracks.get(this.trackKey(owner, key));
+    if (!voice || voice.stopped || !voice.paused || !this.available())
+      return Promise.resolve(false);
+    voice.paused = false;
+    if (this.pausedOwners.has(owner)) return Promise.resolve(false);
+    voice.pending = voice.audio.resume(owner);
+    return voice.pending;
+  }
+  private seekTrack(owner: string, key: string, offset: number): boolean {
+    const voice = this.tracks.get(this.trackKey(owner, key));
+    const media = voice?.audio.media;
+    const task = voice?.audio.task;
+    if (
+      !this.available() ||
+      !voice ||
+      voice.stopped ||
+      !task ||
+      !Number.isFinite(offset) ||
+      offset < 0
+    )
+      return false;
+    if (task.deferredStart) {
+      voice.clip.startOffset = offset;
+      return true;
+    }
+    if (!media?.src) return false;
+    const loopStart = voice.clip.loopStartSeconds;
+    if (media.ended && !media.loop && loopStart === undefined) return false;
+    if (media.readyState === 0) {
+      // next() installed the source-bound metadata handler for every track.
+      // Updating the shared Clip makes the latest seek win, including fallback.
+      voice.clip.startOffset = offset;
+      task.pendingLoopRestart = undefined;
+      return true;
+    }
+    const duration = media.duration;
+    if (
+      !Number.isFinite(duration) ||
+      duration <= 0 ||
+      (loopStart !== undefined && loopStart >= duration) ||
+      (!media.loop && loopStart === undefined && offset >= duration)
+    )
+      return false;
+    const position =
+      loopStart !== undefined && offset >= loopStart
+        ? loopStart + ((offset - loopStart) % (duration - loopStart))
+        : media.loop
+          ? offset % duration
+          : offset;
+    try {
+      media.currentTime = position;
+    } catch {
+      return false;
+    }
+    voice.clip.startOffset = offset;
+    // A paused suffix may be waiting to restart at its loop head. An explicit
+    // authority resync supersedes that pending position without resuming it.
+    task.pendingLoopRestart = undefined;
+    return true;
+  }
+  private restoreTrack(
+    owner: string,
+    key: string,
+    playbackID: string,
+    options: TrackRestoreOptions,
+  ): Promise<boolean> {
+    const id = this.trackKey(owner, key),
+      previous = this.tracks.get(id);
+    if (
+      !this.available() ||
+      this.pausedOwners.has(owner) ||
+      !previous?.loop ||
+      !playbackID ||
+      previous.playbackID !== playbackID ||
+      !Number.isFinite(options.startOffset) ||
+      options.startOffset < 0
+    )
+      return Promise.resolve(false);
+    const paused = options.paused ?? previous.paused;
+    if (!previous.stopped && previous.audio.task) {
+      if (!this.seekTrack(owner, key, options.startOffset))
+        return Promise.resolve(false);
+      if (options.muted !== undefined)
+        this.silenceTrack(previous, options.muted);
+      if (paused) {
+        previous.paused = true;
+        previous.audio.pause(owner);
+        return Promise.resolve(true);
+      }
+      if (previous.paused) return this.resumeTrack(owner, key);
+      return previous.pending;
+    }
+    const muted = options.muted ?? previous.audio.silent;
+    this.releaseTrack(previous);
+    const audio = new GameAudio(this.factory);
+    audio.setVolume(this.level);
+    audio.silent = muted;
+    const media = audio.element();
+    media.dataset.platformTrack = key;
+    media.loop = previous.loop && previous.clip.loopStartSeconds === undefined;
+    media.defaultPlaybackRate = previous.rate;
+    media.playbackRate = previous.rate;
+    const clip = { ...previous.clip, startOffset: options.startOffset };
+    const voice: TrackVoice = {
+      ...previous,
+      audio,
+      clip,
+      paused,
+      stopped: false,
+      pending: Promise.resolve(false),
+    };
+    this.tracks.set(id, voice);
+    voice.pending = audio.start([clip], owner, 1, paused);
+    return voice.pending;
+  }
+  private startTrack(
+    owner: string,
+    key: string,
+    requested: readonly string[],
+    options: TrackOptions,
+  ): Promise<boolean> {
+    if (
+      !this.available() ||
+      this.pausedOwners.has(owner) ||
+      !key ||
+      key.length > 128
+    )
+      return Promise.resolve(false);
+    const loop = options.loop ?? false;
+    const loopStart = options.loopStartSeconds ?? 0;
+    const rate = options.rate ?? 1;
+    if (
+      (options.startOffset !== undefined &&
+        (!Number.isFinite(options.startOffset) || options.startOffset < 0)) ||
+      !Number.isFinite(loopStart) ||
+      loopStart < 0 ||
+      (options.loopStartSeconds !== undefined && !loop) ||
+      !Number.isFinite(rate) ||
+      rate < 0.25 ||
+      rate > 4
+    )
+      return Promise.resolve(false);
+    const sources = [...new Set(requested.filter(Boolean))];
+    if (!sources.length) return Promise.resolve(false);
+    const id = this.trackKey(owner, key);
+    const previous = this.tracks.get(id);
+    const signature = JSON.stringify([sources, loop, loopStart, rate]);
+    if (
+      previous &&
+      options.playbackID !== undefined &&
+      previous.playbackID === options.playbackID
+    ) {
+      if (
+        previous.signature !== signature ||
+        previous.stopped ||
+        !previous.audio.task
+      )
+        return Promise.resolve(false);
+      if (options.muted !== undefined)
+        this.silenceTrack(previous, options.muted);
+      return previous.pending;
+    }
+    if (previous?.paused) return Promise.resolve(false);
+    if (!previous && this.tracks.size >= 64) {
+      // Bound retained lanes/tombstones. Never evict live media or this owner's
+      // current event identities to make an arbitrary event-as-key request fit.
+      const retired = [...this.tracks.entries()].find(
+        ([, v]) => v.owner !== owner && v.stopped,
+      );
+      if (!retired) return Promise.resolve(false);
+      this.tracks.delete(retired[0]);
+    }
+    if (previous) this.releaseTrack(previous);
+    const audio = new GameAudio(this.factory);
+    audio.setVolume(this.level);
+    audio.silent = options.muted ?? false;
+    const media = audio.element();
+    media.dataset.platformTrack = key;
+    media.loop = loop && loopStart === 0;
+    media.defaultPlaybackRate = rate;
+    media.playbackRate = rate;
+    const clip: Clip = {
+      src: sources[0],
+      fallback: sources[1],
+      startOffset: options.startOffset ?? 0,
+      loopStartSeconds: loopStart > 0 ? loopStart : undefined,
+    };
+    const voice: TrackVoice = {
+      owner,
+      key,
+      audio,
+      signature,
+      playbackID: options.playbackID,
+      pending: Promise.resolve(false),
+      paused: false,
+      stopped: false,
+      clip,
+      loop,
+      rate,
+    };
+    this.tracks.set(id, voice);
+    // Reuse native one-shot playback, metadata seek, fallback, pause-generation
+    // guards and intro/suffix looping. No game priority or timing rules live here.
+    voice.pending = audio.start([clip], owner, 1);
+    return voice.pending;
   }
   private loopCurrent(voice: LoopVoice) {
     return this.loops.get(voice.key) === voice && this.available();
@@ -409,7 +694,7 @@ export class GameAudio {
       voice.starting = true;
       const generation = voice.generation;
       media.src = voice.sources[index];
-      media.muted = false;
+      media.muted = this.silent;
       try {
         await media.play();
         if (!this.loopCurrent(voice)) {
@@ -517,6 +802,7 @@ export class GameAudio {
     clips: Clip[],
     owner: string,
     priority: number,
+    initiallyPaused = false,
   ): Promise<boolean> {
     if (!this.available() || this.pausedOwners.has(owner) || !clips.length)
       return false;
@@ -532,6 +818,11 @@ export class GameAudio {
       generation: 0,
     };
     this.task = task;
+    if (initiallyPaused) {
+      task.deferredStart = true;
+      this.pausedOwners.add(owner);
+      return true;
+    }
     return this.next(task);
   }
   private seekPendingLoopRestart(task: Task, media: HTMLAudioElement) {
@@ -660,7 +951,7 @@ export class GameAudio {
           /* Seek on metadata. */
         }
       }
-      media.muted = false;
+      media.muted = this.silent;
       try {
         await media.play();
         if (!this.allowed) {

@@ -1,0 +1,450 @@
+{
+  "passed": true,
+  "scope": "Original stage-initializer execution with one declared index override; no natural campaign completion claim.",
+  "sourceArchiveUnchanged": true,
+  "entries": [
+    {
+      "stage": 1,
+      "run": "stage-entry-v2-1",
+      "source": {
+        "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+        "source_archive": "/Users/jason/Documents/nes/roms/03/\u9b42\u6597\u7f57\u65e5\u7248(\u5b8c\u5168\u7248).zip",
+        "initial_state": null,
+        "emulator": "/opt/homebrew/bin/fceux",
+        "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+        "frames": 1420,
+        "scenario_sha256": "1b19d0cf124557d2fef512b3274061230a7e20704340f30e7911c28486eb452b",
+        "has_custom_hooks": true,
+        "completed": true
+      },
+      "intervention": {
+        "frame": 721,
+        "pc": "0xcc5f",
+        "address": "0x30",
+        "before": 0,
+        "after": 0,
+        "reason": "controlled original stage initializer, not a natural campaign clear"
+      },
+      "header": "000001800180c1860b06fbff0508050802030405000122070b00000000000000",
+      "mapPointer": "0x8001",
+      "runtimeHeader": "000001800180c1860b06fbff0508050802030405000122070b00000000000000",
+      "headerChangesAfterInitialization": [],
+      "supertilePointer": "0x8001",
+      "attributePointer": "0x86c1",
+      "sceneType": 0,
+      "scrollType": 0,
+      "players": {
+        "state": [
+          1,
+          1
+        ],
+        "x": [
+          48,
+          32
+        ],
+        "y": [
+          100,
+          100
+        ]
+      },
+      "snapshotSHA256": "94b5dd5ab506ba741328ef93484bb333880cadcc0c5dba9099200d18ea5ca4b4",
+      "ramFrame1400SHA256": "446086a32fb07958996a6f2ffe45620ecda292fb5b0a1865136f65f63f39bab5"
+    },
+    {
+      "stage": 2,
+      "run": "stage-entry-v2-2",
+      "source": {
+        "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+        "source_archive": "/Users/jason/Documents/nes/roms/03/\u9b42\u6597\u7f57\u65e5\u7248(\u5b8c\u5168\u7248).zip",
+        "initial_state": null,
+        "emulator": "/opt/homebrew/bin/fceux",
+        "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+        "frames": 1420,
+        "scenario_sha256": "b6ce80265dba6199cb8a117802c933d3acc7a0ea0cc7abb62ac8203db8aa2cc7",
+        "has_custom_hooks": true,
+        "completed": true
+      },
+      "intervention": {
+        "frame": 721,
+        "pc": "0xcc5f",
+        "address": "0x30",
+        "before": 0,
+        "after": 1,
+        "reason": "controlled original stage initializer, not a natural campaign clear"
+      },
+      "header": "010076826887c88e0400ffff24282928090a04240001222a0500000000000000",
+      "mapPointer": "0x8276",
+      "runtimeHeader": "010076826887c88e0400ffff24282928090a04240001222a0500000004000000",
+      "headerChangesAfterInitialization": [
+        {
+          "address": "0x5c",
+          "initial": 0,
+          "runtime": 4
+        }
+      ],
+      "supertilePointer": "0x8768",
+      "attributePointer": "0x8ec8",
+      "sceneType": 1,
+      "scrollType": 0,
+      "players": {
+        "state": [
+          1,
+          1
+        ],
+        "x": [
+          112,
+          144
+        ],
+        "y": [
+          168,
+          168
+        ]
+      },
+      "snapshotSHA256": "da64009e84dfe4f575800211c630c63122d2540038190d77f437f2c8630946c0",
+      "ramFrame1400SHA256": "1fca24e5a1048175f86c8bb7b125d454b99f6bac27362d80262acfb173e99a4c"
+    },
+    {
+      "stage": 3,
+      "run": "stage-entry-v2-3",
+      "source": {
+        "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+        "source_archive": "/Users/jason/Documents/nes/roms/03/\u9b42\u6597\u7f57\u65e5\u7248(\u5b8c\u5168\u7248).zip",
+        "initial_state": null,
+        "emulator": "/opt/homebrew/bin/fceux",
+        "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+        "frames": 1420,
+        "scenario_sha256": "6486eaa08b68a59cfc14dd159f163635e7470258cda4c07e765af2a1e0400246",
+        "has_custom_hooks": true,
+        "completed": true
+      },
+      "intervention": {
+        "frame": 721,
+        "pc": "0xcc5f",
+        "address": "0x30",
+        "before": 0,
+        "after": 2,
+        "reason": "controlled original stage initializer, not a natural campaign clear"
+      },
+      "header": "00013e85488f98960707ffff0d0d0d0d0b0c040d000122070700000000000000",
+      "mapPointer": "0x853e",
+      "runtimeHeader": "00013e85488f98960707ffff0d0d0d0d0b0c040d000122070700000005000000",
+      "headerChangesAfterInitialization": [
+        {
+          "address": "0x5c",
+          "initial": 0,
+          "runtime": 5
+        }
+      ],
+      "supertilePointer": "0x8f48",
+      "attributePointer": "0x9698",
+      "sceneType": 0,
+      "scrollType": 1,
+      "players": {
+        "state": [
+          1,
+          1
+        ],
+        "x": [
+          48,
+          32
+        ],
+        "y": [
+          180,
+          180
+        ]
+      },
+      "snapshotSHA256": "e94931d373c7529d7d369560c1aa16b2596f07509dbd752e5d5067d537b98a4d",
+      "ramFrame1400SHA256": "51ea1f841ee12da25dd55c74a50fa1d8e1ad0480148aa6ca723b5af80a2d0013"
+    },
+    {
+      "stage": 4,
+      "run": "stage-entry-v2-4",
+      "source": {
+        "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+        "source_archive": "/Users/jason/Documents/nes/roms/03/\u9b42\u6597\u7f57\u65e5\u7248(\u5b8c\u5168\u7248).zip",
+        "initial_state": null,
+        "emulator": "/opt/homebrew/bin/fceux",
+        "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+        "frames": 1420,
+        "scenario_sha256": "8ca24e62ff5fa7cc2241368000636dec377bba0049768c4a4624fe7d303e46c1",
+        "has_custom_hooks": true,
+        "completed": true
+      },
+      "intervention": {
+        "frame": 721,
+        "pc": "0xcc5f",
+        "address": "0x30",
+        "before": 0,
+        "after": 3,
+        "reason": "controlled original stage initializer, not a natural campaign clear"
+      },
+      "header": "0100a6826887c88e0700ffff2e2f302f2c2d042e0001222a0800000000000000",
+      "mapPointer": "0x82a6",
+      "runtimeHeader": "0100a6826887c88e0700ffff2e2f302f2c2d042e0001222a0800000004000000",
+      "headerChangesAfterInitialization": [
+        {
+          "address": "0x5c",
+          "initial": 0,
+          "runtime": 4
+        }
+      ],
+      "supertilePointer": "0x8768",
+      "attributePointer": "0x8ec8",
+      "sceneType": 1,
+      "scrollType": 0,
+      "players": {
+        "state": [
+          1,
+          2
+        ],
+        "x": [
+          112,
+          144
+        ],
+        "y": [
+          168,
+          166
+        ]
+      },
+      "snapshotSHA256": "7a9c222fbe35545b9532f221a78f71134b4140f486a35aaa0222f8cd316b869f",
+      "ramFrame1400SHA256": "773b6b0b3ca62f035244d1c122918812a1acee2ce6d80c0356f4bdddeda260a2"
+    },
+    {
+      "stage": 5,
+      "run": "stage-entry-v2-5",
+      "source": {
+        "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+        "source_archive": "/Users/jason/Documents/nes/roms/03/\u9b42\u6597\u7f57\u65e5\u7248(\u5b8c\u5168\u7248).zip",
+        "initial_state": null,
+        "emulator": "/opt/homebrew/bin/fceux",
+        "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+        "frames": 1420,
+        "scenario_sha256": "d25a8374a377f6e07c5fa1e1e4c8842faef44b7877c158d7cab5d3af07d751e7",
+        "has_custom_hooks": true,
+        "completed": true
+      },
+      "intervention": {
+        "frame": 721,
+        "pc": "0xcc5f",
+        "address": "0x30",
+        "before": 0,
+        "after": 4,
+        "reason": "controlled original stage initializer, not a natural campaign clear"
+      },
+      "header": "000019871897e89d1320f0f0626362633d3e0462000122071301000000000000",
+      "mapPointer": "0x8719",
+      "runtimeHeader": "000019871897e89d1320f0f0626362633d3e0462000122071301010302010000",
+      "headerChangesAfterInitialization": [
+        {
+          "address": "0x5a",
+          "initial": 0,
+          "runtime": 1
+        },
+        {
+          "address": "0x5b",
+          "initial": 0,
+          "runtime": 3
+        },
+        {
+          "address": "0x5c",
+          "initial": 0,
+          "runtime": 2
+        },
+        {
+          "address": "0x5d",
+          "initial": 0,
+          "runtime": 1
+        }
+      ],
+      "supertilePointer": "0x9718",
+      "attributePointer": "0x9de8",
+      "sceneType": 0,
+      "scrollType": 0,
+      "players": {
+        "state": [
+          1,
+          1
+        ],
+        "x": [
+          48,
+          32
+        ],
+        "y": [
+          132,
+          132
+        ]
+      },
+      "snapshotSHA256": "b4eb8fea78563650328dc618ee181b95485d53221a9bdc7a066d629f15c0b684",
+      "ramFrame1400SHA256": "55c490cd2ceadd2797ffc758b8e01839cab9bf007c5d6897643aad3b645b47ff"
+    },
+    {
+      "stage": 6,
+      "run": "stage-entry-v2-6",
+      "source": {
+        "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+        "source_archive": "/Users/jason/Documents/nes/roms/03/\u9b42\u6597\u7f57\u65e5\u7248(\u5b8c\u5168\u7248).zip",
+        "initial_state": null,
+        "emulator": "/opt/homebrew/bin/fceux",
+        "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+        "frames": 1420,
+        "scenario_sha256": "402780e3b209960070b6b5c4d763bb1cb5b1298b38f136f8dea0df13195bb823",
+        "has_custom_hooks": true,
+        "completed": true
+      },
+      "intervention": {
+        "frame": 721,
+        "pc": "0xcc5f",
+        "address": "0x30",
+        "before": 0,
+        "after": 5,
+        "reason": "controlled original stage initializer, not a natural campaign clear"
+      },
+      "header": "0000af899e9e7ea50b0cdede3536373833340435000122070b81000000000000",
+      "mapPointer": "0x89af",
+      "runtimeHeader": "0000af899e9e7ea50b0cdede3536373833340437000122070b810000f2000000",
+      "headerChangesAfterInitialization": [
+        {
+          "address": "0x53",
+          "initial": 53,
+          "runtime": 55
+        },
+        {
+          "address": "0x5c",
+          "initial": 0,
+          "runtime": 242
+        }
+      ],
+      "supertilePointer": "0x9e9e",
+      "attributePointer": "0xa57e",
+      "sceneType": 0,
+      "scrollType": 0,
+      "players": {
+        "state": [
+          1,
+          1
+        ],
+        "x": [
+          48,
+          32
+        ],
+        "y": [
+          196,
+          196
+        ]
+      },
+      "snapshotSHA256": "1825cc47d9beb2fc3fb4babcee6f9f3ee6fa4f918570dceea32613d0b395535b",
+      "ramFrame1400SHA256": "45eb5ee5aae7b1d77737b9567b403fb81f802826845fb229261bb2861554a604"
+    },
+    {
+      "stage": 7,
+      "run": "stage-entry-v2-7",
+      "source": {
+        "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+        "source_archive": "/Users/jason/Documents/nes/roms/03/\u9b42\u6597\u7f57\u65e5\u7248(\u5b8c\u5168\u7248).zip",
+        "initial_state": null,
+        "emulator": "/opt/homebrew/bin/fceux",
+        "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+        "frames": 1420,
+        "scenario_sha256": "5adcd4a4b5c74938f49a6e52f9be32658c0a1803a0dbf2d8965413e478fc3bf3",
+        "has_custom_hooks": true,
+        "completed": true
+      },
+      "intervention": {
+        "frame": 721,
+        "pc": "0xcc5f",
+        "address": "0x30",
+        "before": 0,
+        "after": 6,
+        "reason": "controlled original stage initializer, not a natural campaign clear"
+      },
+      "header": "00000b8c2aa6caad0d0ef1f14757475845460447000122070d81000000000000",
+      "mapPointer": "0x8c0b",
+      "runtimeHeader": "00000b8c2aa6caad0d0ef1f14757475845460447000122070d810000f2000000",
+      "headerChangesAfterInitialization": [
+        {
+          "address": "0x5c",
+          "initial": 0,
+          "runtime": 242
+        }
+      ],
+      "supertilePointer": "0xa62a",
+      "attributePointer": "0xadca",
+      "sceneType": 0,
+      "scrollType": 0,
+      "players": {
+        "state": [
+          1,
+          1
+        ],
+        "x": [
+          48,
+          32
+        ],
+        "y": [
+          132,
+          132
+        ]
+      },
+      "snapshotSHA256": "7f0843d1cd185dd5dd77ff8f663645ce14fc03569ac91f00374c8e6f89ce0399",
+      "ramFrame1400SHA256": "17e4d58ba67a99c005745467e2e083b5e40fe65d7367b6f8adbbb18a2ea8c4e7"
+    },
+    {
+      "stage": 8,
+      "run": "stage-entry-v2-8",
+      "source": {
+        "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+        "source_archive": "/Users/jason/Documents/nes/roms/03/\u9b42\u6597\u7f57\u65e5\u7248(\u5b8c\u5168\u7248).zip",
+        "initial_state": null,
+        "emulator": "/opt/homebrew/bin/fceux",
+        "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+        "frames": 1420,
+        "scenario_sha256": "82463ae45ce3da6e8840bc774f5ce6a47724a40a74769a947d2c791658fb6e3b",
+        "has_custom_hooks": true,
+        "completed": true
+      },
+      "intervention": {
+        "frame": 721,
+        "pc": "0xcc5f",
+        "address": "0x30",
+        "before": 0,
+        "after": 7,
+        "reason": "controlled original stage initializer, not a natural campaign clear"
+      },
+      "header": "0000d18e4aae0ab60905efef4c4d4e4f48494a4c000143440900000000000000",
+      "mapPointer": "0x8ed1",
+      "runtimeHeader": "0000d18e4aae0ab60905efef4c4d4e4f48494a4e000143440900000003000000",
+      "headerChangesAfterInitialization": [
+        {
+          "address": "0x53",
+          "initial": 76,
+          "runtime": 78
+        },
+        {
+          "address": "0x5c",
+          "initial": 0,
+          "runtime": 3
+        }
+      ],
+      "supertilePointer": "0xae4a",
+      "attributePointer": "0xb60a",
+      "sceneType": 0,
+      "scrollType": 0,
+      "players": {
+        "state": [
+          1,
+          1
+        ],
+        "x": [
+          48,
+          32
+        ],
+        "y": [
+          196,
+          196
+        ]
+      },
+      "snapshotSHA256": "42109f1ea5acac37d36ecc6b388b41533b6dedf1ea68b3c08f39d3f31ce4547e",
+      "ramFrame1400SHA256": "68a967f0feaaf4d6c1b50b5c02ebb8b3d70d207acdb1b88539001c5a0cd45c5f"
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "removedBytes": 230653,
+  "removed": [
+    {
+      "path": ".local/contra-bot-aliens/reference.json",
+      "bytes": 73614
+    },
+    {
+      "path": ".local/contra-bot-aliens/reference-last.json",
+      "bytes": 1076
+    },
+    {
+      "path": ".local/contra-bot-aliens/reference-repeat.log",
+      "bytes": 1076
+    },
+    {
+      "path": ".local/contra-bot-aliens/first.log",
+      "bytes": 426
+    },
+    {
+      "path": ".local/contra-bot-aliens/green.jsonl",
+      "bytes": 3230
+    },
+    {
+      "path": ".local/contra-bot-aliens/green-final.jsonl",
+      "bytes": 3230
+    },
+    {
+      "path": ".local/contra-bot-aliens/tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-bot-aliens/guardian-updates.png",
+      "bytes": 33760
+    },
+    {
+      "path": ".local/contra-bot-aliens/guardian-scene.png",
+      "bytes": 24726
+    },
+    {
+      "path": ".local/contra-bot-aliens/heart-updates.png",
+      "bytes": 37053
+    },
+    {
+      "path": ".local/contra-bot-aliens/heart-scene.png",
+      "bytes": 27292
+    },
+    {
+      "path": ".local/contra-bot-aliens/anchors.png",
+      "bytes": 25170
+    }
+  ],
+  "retained": [
+    "Independent original-art fixture",
+    "Final source/picture/race verification",
+    "Pre-implementation and family-change red proof",
+    "Final published research sheets and anchor review"
+  ],
+  "boundary": "Only contra-bot-aliens task intermediate images, duplicate logs and empty temporary directory. User ROM, other tasks and shared caches untouched."
+}

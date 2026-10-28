@@ -1,0 +1,14 @@
+{
+  "go-test.jsonl": "3a2512fac2af729137d4ba587f9ad4796c1313dbc14069931cdb7fdabd1554c9",
+  "players1/final-bots.json": "95705ff755c004aed6eb2e3b86c41faa4f2cccd6a582ac4e66d685ff45cb56dd",
+  "players1/final-session.json": "349be6ab6aa4e78aa7ba8a89608c06c80c075d3219911807f41effc40bc6fe3a",
+  "players1/pads.bin.gz": "631c0022bdbb2834c397077a153cb7a92b87cc5014a5fd2e084efbc9700e02f3",
+  "players1/replay.json": "998d39cde674757c46b433f03326a3059eb9090f16bd14c33bf48ca7f3c5194b",
+  "players1/result.json": "155b1ac3979005102b4ddc92688fe7b448dfd1268011b2e4966cc63956dacccb",
+  "players2/final-bots.json": "e3969e71d730d6de6c4fb07708d697707459f612270500b545a5c3d27a4b6540",
+  "players2/final-session.json": "f7a87e9768f2229ac9477439f375ed40b1a0502f317d5e54b1e945404a640fbf",
+  "players2/pads.bin.gz": "716621f1d6ad23fe2c65ae2c888e5ecc5ebcae86d0f7a6fa87fe8694278ed96a",
+  "players2/replay.json": "b72ab94bd75c2684739b3f57152888cf21feef3bdb17c43e9a7b49a29cdf9c5c",
+  "players2/result.json": "85a4aadb381242d41bb9693000773ea86cff26032f116487ca2f3560533274e9",
+  "verification.json": "6c752d31cdc375902e9b09836e4f225ee19796e56207420fa5761248b0206121"
+}

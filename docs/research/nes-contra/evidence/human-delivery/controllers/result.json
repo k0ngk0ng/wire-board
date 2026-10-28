@@ -1,0 +1,28 @@
+{
+  "turbo_faceplate_labels": true,
+  "native_mouse_drag_and_diagonal": true,
+  "disabled_profile_unmount_release": true,
+  "native_multitouch_and_cancel": true,
+  "native_a_b_and_direction_chords": true,
+  "settings_remap_save_model_isolation": true,
+  "status": "passed",
+  "background": {
+    "complete": true,
+    "source": "http://127.0.0.1:52261/fc-controller-VBFZZN7J.svg",
+    "width": 300
+  },
+  "logical_keys": [
+    "up",
+    "down",
+    "left",
+    "right",
+    "select",
+    "start",
+    "b",
+    "a",
+    "turboB",
+    "turboA"
+  ],
+  "native_pointer_events": true,
+  "viewport_320": true
+}

@@ -1,0 +1,6 @@
+=== RUN   TestBotCrouchIntentSurvivesVisibleBodyOcclusion
+--- PASS: TestBotCrouchIntentSurvivesVisibleBodyOcclusion (0.01s)
+=== RUN   TestBotNozzleCrouchDoesNotSurviveControlGap
+--- PASS: TestBotNozzleCrouchDoesNotSurviveControlGap (0.00s)
+PASS
+ok  	github.com/k0ngk0ng/wire-board/games/contra/engine	1.545s

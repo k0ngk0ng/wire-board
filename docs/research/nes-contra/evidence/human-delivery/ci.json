@@ -1,0 +1,42 @@
+{
+  "passed": true,
+  "scope": "User-authorized temporary human-only Contra delivery; computer campaign checks are explicit non-gating research, not required release acceptance",
+  "policy": {
+    "defaultMainComputerCampaigns": false,
+    "manualContraComputerCampaigns": false,
+    "manualAllComputerCampaigns": false,
+    "researchFlag": "--contra-campaigns",
+    "workflowInput": "contra_campaigns",
+    "workflowInputDefault": false,
+    "researchGatesVerify": false,
+    "failedOrSkippedRunsLabelledPassed": false,
+    "ruleHumanBuildAndSharedChecksPreserved": true,
+    "tagReuseUnchanged": true
+  },
+  "tests": {
+    "scopeUnitTests": 26,
+    "temporaryGitCLIScenarios": 20,
+    "researchReportTruthTests": 2,
+    "baselineAndReleaseGuardTests": 25,
+    "actionlint": true,
+    "yamlValidation": true
+  },
+  "sourceSHA256": {
+    ".github/workflows/build.yml": "358f0cca598eac1fef0180f4761acabdd8c17d18f4331dc818d3c4a1a158c3f5",
+    "scripts/ci/scope.py": "e6f34223a88a3f768ed4c82a4e9a413e41a020e31f6c4bdce546c29fdcf5035d",
+    "scripts/ci/test_scope.py": "bb9e795cc509f99f5d79ab386bc8162ee12eaa070fdf22c1699f7bb482e063d3",
+    "scripts/ci/check-plan.py": "5ba46bf058394bb3fb67762404c178dfaec6b00a9210e30b3a52002ddd15899b"
+  },
+  "logsSHA256": {
+    "actionlint.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "cli-green.log": "48357f82306f43de51a4cbc2d52aa04e207db7343ef5bd988b05afc378fa73d5",
+    "cli-red.log": "19a83294da11f40e9f82eac70ec824454d9e901d31a171dac65288f973037f78",
+    "green.log": "6ecd98319f6a1540513a841f14d2e0cf22a3fe1e4d4b0ec643d2f5cb5d368314",
+    "red.log": "050b04070a5bfc7c43003c4c85580a92971d3e56a58839bb27e427e10d181077",
+    "release-guards.log": "d24a5e2dbd0571ded00d7db168e87ef46ca29a6a3f952536d4622ab09e8d7b58",
+    "research-report-truth.log": "24adda79e21044fef19cdc7f0606a9cd7770fc9a99c705a8622ee923c13bce5d",
+    "yaml-validation.json": "26ef93e803080edf35b939a6073556f8354131b3e120c354e7b266cca5a2a0fd"
+  },
+  "hostedActionsRun": false,
+  "uploads": false
+}

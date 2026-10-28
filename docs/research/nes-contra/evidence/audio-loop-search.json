@@ -1,0 +1,91 @@
+{
+  "songs": [
+    {
+      "id": 70,
+      "attempts": 40,
+      "samePeriodCandidatesSkipped": 11,
+      "failuresByChannel": {
+        "pulse1": 37,
+        "pulse2": 1,
+        "triangle": 24
+      },
+      "selectedOffsetTicks": 50
+    },
+    {
+      "id": 74,
+      "attempts": 24,
+      "samePeriodCandidatesSkipped": 3,
+      "failuresByChannel": {
+        "pulse1": 0,
+        "pulse2": 23,
+        "triangle": 18
+      },
+      "selectedOffsetTicks": 26
+    },
+    {
+      "id": 78,
+      "attempts": 17,
+      "samePeriodCandidatesSkipped": 1,
+      "failuresByChannel": {
+        "pulse1": 0,
+        "pulse2": 0,
+        "triangle": 16
+      },
+      "selectedOffsetTicks": 17
+    },
+    {
+      "id": 82,
+      "attempts": 18,
+      "samePeriodCandidatesSkipped": 151,
+      "failuresByChannel": {
+        "pulse1": 1,
+        "pulse2": 9,
+        "triangle": 14
+      },
+      "selectedOffsetTicks": 168
+    },
+    {
+      "id": 86,
+      "attempts": 2,
+      "samePeriodCandidatesSkipped": 0,
+      "failuresByChannel": {
+        "pulse1": 0,
+        "pulse2": 0,
+        "triangle": 1
+      },
+      "selectedOffsetTicks": 1
+    },
+    {
+      "id": 90,
+      "attempts": 6,
+      "samePeriodCandidatesSkipped": 2,
+      "failuresByChannel": {
+        "pulse1": 0,
+        "pulse2": 0,
+        "triangle": 5
+      },
+      "selectedOffsetTicks": 7
+    },
+    {
+      "id": 94,
+      "attempts": 1,
+      "samePeriodCandidatesSkipped": 0,
+      "failuresByChannel": {
+        "pulse1": 0,
+        "pulse2": 0,
+        "triangle": 0
+      },
+      "selectedOffsetTicks": 0
+    },
+    {
+      "id": 20,
+      "attempts": 3,
+      "samePeriodCandidatesSkipped": 2,
+      "failuresByChannel": {
+        "pulse1": 2,
+        "pulse2": 0
+      },
+      "selectedOffsetTicks": 4
+    }
+  ]
+}

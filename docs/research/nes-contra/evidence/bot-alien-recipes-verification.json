@@ -1,0 +1,134 @@
+{
+  "passed": true,
+  "scope": "Two global, fixed original-art recipe families. Enemy means a potential visual target, with no Alive/HP/vulnerability claim. No gameplay strategy or live-World selector was changed.",
+  "recipes": 2,
+  "patternCodes": 3,
+  "sourcePatterns": 175,
+  "legalContexts": 24,
+  "independentRasters": 1224,
+  "sceneChecks": {
+    "total": 18,
+    "completeCandidate": 8,
+    "closedOrDestroyed": 10
+  },
+  "sourceROMSHA256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "fixtureSHA256": "16bcc91725c3fa75673e8581033047e88518b74569515ceca221a9d58b3b61a1",
+  "repeatedExportIdentical": true,
+  "sourceEvidence": [
+    {
+      "path": "docs/research/nes-contra/evidence/levels-catalog.json.gz",
+      "sha256": "7907d15dd973f6f8127a9c3a6aa95bae71b26c6175d4ff5747fadbb2753f5026"
+    },
+    {
+      "path": ".local/contra-browser/build/public/graphics/colors.rgb",
+      "role": "original calibrated NES RGB palette",
+      "sha256": "da30843b331e2e4474395866bc9871fcd60a7d716b3c8ee5ce3c89ee46e8c91e"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/levels-chr-animation.json",
+      "sha256": "ae7067a054d35c18c2c77bc3a511d1184412a6b70b61d5f4116b475c328595e7"
+    },
+    {
+      "path": "games/contra/engine/testdata/original-enemies-aliens-boss.json.gz",
+      "sha256": "733628da00ca91f9f7a2beea6ec482f88a39f5361c025701a2f4253d6635f5cf"
+    },
+    {
+      "path": "games/contra/engine/testdata/original-enemies-aliens-boss-guardian-sequence.json.gz",
+      "sha256": "3aab5d72c268df3cf6f7f896ae261d73560f94dc1cc6a5c06fba302ea13ad53b"
+    },
+    {
+      "path": "games/contra/engine/testdata/original-enemies-aliens-boss-heart-sequence.json.gz",
+      "sha256": "de9b10d0ae155f2588bda02baf632cacc49093125f67960577eccfa8e223dc25"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/enemies-aliens-boss-index.json",
+      "sha256": "c1064e64a5835208c4dbbb59476b883ed3be2f2a431bb7ecad2c9f115473857d"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/levels-chr-verification.json",
+      "sha256": "aa106c66aab45d8c5c675670636c79b511f9b572ebcc887551856647fef15f4b"
+    }
+  ],
+  "rea": [
+    {
+      "address": "0xb4a1",
+      "evidenceID": "ev_cfefabeac941c17c4cff2a6bbecf0621dd8d1ced622e22df02b06470e7e22190",
+      "session": "main"
+    },
+    {
+      "address": "0xb6d7",
+      "evidenceID": "ev_b1312071f46fee5e0d930c04115849b3803fb91d978c1753594a4203c7241910",
+      "session": "main"
+    },
+    {
+      "address": "0xbcd9",
+      "evidenceID": "ev_37933de642ec2db93455d278a5d52efa7c65ba7f3454d7185d67299767667f3c",
+      "session": "main"
+    },
+    {
+      "address": "0xbd71",
+      "evidenceID": "ev_a5355131cecdeff75e2fab584243eab04dfc47f22ecf665c50da526b7ed07289",
+      "session": "main"
+    },
+    {
+      "address": "0xb50a",
+      "evidenceID": "ev_97a7c99a9317f226e0f7bb895bb3ea3851df58bfb9a69de37beff449253ae436",
+      "session": "helpers"
+    },
+    {
+      "address": "0xb522",
+      "evidenceID": "ev_7fb74e677234ec8704b20173897341fb4207e4ef913ebaf91a800b9ce80f3321",
+      "session": "helpers"
+    },
+    {
+      "address": "0xb5ab",
+      "evidenceID": "ev_3d4e3d19d42c6155fc420049d1c548686b70386ef3aefdde8d07f487c5810942",
+      "session": "helpers"
+    }
+  ],
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "./games/contra/engine",
+    "-run",
+    "^TestBotAlienRecipes",
+    "-count=1",
+    "-json"
+  ],
+  "normalPackageBuild": true,
+  "tests": [
+    "TestBotAlienRecipesOriginalArtAndContexts",
+    "TestBotAlienRecipesVisibleTargetsAndNegatives",
+    "TestBotAlienRecipesSharedJawAndDetachedKnowledge"
+  ],
+  "sourceStableDuringCheck": true,
+  "sourceSHA256": {
+    "games/contra/engine/bot_vision_alien_recipes.go": "400aa3d3768763731444a57c9f49415c9414c09cf4d56a680be4b5a3f7a0a690",
+    "games/contra/engine/bot_vision_alien_recipes_test.go": "956562b295c9f8167b8bac1c7a612eab701530dfc3777dfdf4203881fbea503d",
+    "games/contra/engine/bot_vision_background_recipes.go": "3e163bb54f2bce1016c56a5879c74b02b7bd4f81405d2d341f2310656155a645",
+    "games/contra/engine/bot_vision_builtin_background.go": "f9074d00baeb4c6716d88bd30c6b53c3beadab253f96845511ebbe51ffd96b69",
+    "games/contra/engine/bot_vision.go": "5eeb319048ee74149ffef2fd197554ac41b001b9b2726e65edc439bb59707d7c"
+  },
+  "scriptSHA256": {
+    "scripts/contra/bot_alien_reference.py": "b668e7a835bca1e3a33c88e272cc71e044834bd6fd0edc60a0476358a86d5013",
+    "scripts/contra/bot_alien_verify.py": "723fc090afc6d6ea14ccfcfeb49a26b45fd9cb43138fb27bf10fb783491896c9"
+  },
+  "pictures": {
+    "bot-alien-guardian-updates.png": "7155ebc579c45bfd1d122cfbded1d3ff14808efd631bfafb0a6d2c06a2f55083",
+    "bot-alien-guardian-scene.png": "05bd4819db7203ec5a9a761abae72637686feac409d52f95f1c41171748fc11d",
+    "bot-alien-heart-updates.png": "e4c6167b9ff8c245ba29bea4c7a821bd5293a3518e59886506077c0f13e5e54f",
+    "bot-alien-heart-scene.png": "484a9ba09285497488a099022e740ef6e13c0dfd3436d4b1a5e72e24542803a9",
+    "bot-alien-anchors.png": "f4a826cdba22f156165572756824abfed7baf3aa55d8a077fc3d06c2d44d157b"
+  },
+  "artifacts": {
+    "redSHA256": "35bcb14f1faab56d5e06311a5c1495d756f0a8daacc4132475d24df239ecdd0c",
+    "familyRedSHA256": "dc5c8536161352ae419c260518af64653780bc6019236259471fd69d49ee5cc4",
+    "raceSHA256": "054aa03d29b52a04a4fd27a1c89222cd01118b4021d24bdcb095ef2645e8f746"
+  },
+  "limits": [
+    "Scenes are independent reconstructions of pinned original artwork, not screenshots or a natural Boss-fight acceptance.",
+    "Intact graphics may survive an invisible defeat decision and must produce the same candidate for the same image.",
+    "Global catalog aggregation, other background families, occlusion combinations and complete bot campaign remain separate integration scope."
+  ]
+}

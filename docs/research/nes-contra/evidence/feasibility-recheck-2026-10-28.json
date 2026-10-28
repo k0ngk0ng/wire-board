@@ -1,0 +1,164 @@
+{
+  "scope": "ROM identity and retained evidence integrity; no new gameplay or E2E run",
+  "checkedAt": "2026-10-27T20:03:24.134595+00:00",
+  "passed": true,
+  "rom": {
+    "path": "/Users/jason/Documents/nes/roms/03/魂斗罗日版(完全版).zip",
+    "member": "Contra (J).nes",
+    "sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+    "payloadSha1": "be9dd65be8db897978dd34533dd3a037784a8ee9",
+    "payloadCrc32": "b27b8cf4"
+  },
+  "referenceCommit": "12c21cf79f1e20eff6ac68b80875816c717d0a7a",
+  "prgBanksChecked": 16,
+  "rea": {
+    "evidenceID": "ev_991c8771647c89ee3fdc10bceb653904d01c7666ab15a099ba56fe4449af6481",
+    "provider": {
+      "id": "ghidra",
+      "name": "Ghidra",
+      "version": "12.1.4"
+    },
+    "sliceFileOffset": 129053,
+    "sliceBytes": 2035,
+    "source": "exported historical evidence; not a new analysis session"
+  },
+  "historicalCooperativeResults": [
+    {
+      "players": 1,
+      "win": true,
+      "delta": 20
+    },
+    {
+      "players": 1,
+      "win": false,
+      "delta": -10
+    },
+    {
+      "players": 2,
+      "win": true,
+      "delta": 20
+    },
+    {
+      "players": 2,
+      "win": false,
+      "delta": -10
+    }
+  ],
+  "sourceSHA256": {
+    "docs/research/nes-contra/evidence/rom-inspection.json": "9e4e66fddff56afc1cfaae9af57743be957927f564c86d0df4674fc4b12d7b55",
+    "docs/research/nes-contra/evidence/static-index.json": "3b8be1d43061458e3691ad4cf85e6cfe440086934afbb6ac34d58749a500c46b",
+    "docs/research/nes-contra/evidence/rea-reset-function.json": "be5f1056231a20ad030d1f9f44e40dac8426adf92777007cffce223fe4087b92",
+    ".local/coop-campaign/evidence/TestCoopCampaignSharedHTTP-players-1-win-true.json": "cf17310a8d00b1338e9e2ebdadd0b437b70429f2353ebedf0ab17b8f654d854b",
+    ".local/coop-campaign/evidence/TestCoopCampaignSharedHTTP-players-1-win-false.json": "c203cadfe3d3a9992c26f0007134701ec885045e2001a357f845749e84d80479",
+    ".local/coop-campaign/evidence/TestCoopCampaignSharedHTTP-players-2-win-true.json": "96fea583bd49c51926252f3ff4ccfe179c314ed40bfe874a507c4cfe6e518873",
+    ".local/coop-campaign/evidence/TestCoopCampaignSharedHTTP-players-2-win-false.json": "668c226a9213259450f74c2c0b06c1bcf72bb3e709be5f4e8eb651058c2da02c",
+    "docs/research/nes-contra/evidence/static-fixed-rea.json.gz": "14ec360996e03a853ae090bf1aff982e65f26979ebd5924f9ccb39a6d09e772d",
+    "docs/research/nes-contra/evidence/static-physics-rea.json.gz": "4abe7bcf306312cac2328bc732d977a36bf56409976afaf30129276082a35907",
+    "internal/gameapi/rating.go": "0cfc31c77e0984418b6682b2f86c2027768e8a374a3f8931a666b2c6de063898",
+    "internal/server/coop_campaign.go": "7d21e3b6ca8144ccfbd9f98abc06d9370cd9097e034caafc65e304f6b5f65e16",
+    "internal/server/coop_campaign_e2e_test.go": "214671d8382777f403f8ead488e07e753aa64b2be0c32bac55a2cced609fec86",
+    "docs/ratings.md": "f2b58b0930772cee4434a5912887cb7ec0436e006d2f0e5dd209f7f5330a0cc2",
+    "docs/research/nes-contra/IMPLEMENTATION.md": "ec6465f8ab049edac8d33f94d75003223a477b8d045e6cf7526a1c7ca8f87748"
+  },
+  "limitations": [
+    "Matches the retained DAT entry; does not fetch the reference database again.",
+    "Does not rerun REA, HTTP fixtures, browser checks or the eight-stage campaign.",
+    "Historical passing results do not certify the current uncommitted build."
+  ],
+  "additionalRetainedREA": [
+    {
+      "evidence_id": "ev_a192bc938be1c175b33f6bab96de574afb18f35301def9e670692bc0b19e7831",
+      "operation": "analyze_function",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "parameters": {
+        "procedure": "0xc1bd"
+      },
+      "limitations": [
+        "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+        "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+        "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+        "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+        "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+        "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+        "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+        "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+        "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+        "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+        "Headerless raw-binary analysis uses the caller-supplied architecture and entry address; file offset 0 is mapped at that address. Headers are not discovered from file bytes.",
+        "Little-endian generic Ghidra languages are used for x86, x86_64, arm, arm64, and NMOS 6502. Big-endian, Thumb-only, Cortex-M, 65C02, 65816, and other processor variants are unsupported in this increment.",
+        "Static analysis does not emulate reset vectors, memory-mapped I/O, or firmware boot sequences.",
+        "Ghidra analysis was seeded before auto-analysis from /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-static/fixed-seeds.tsv (sha256 09038e5c35e58046a4edc770a2ddda0504bee85f506e8a29852de93a8fac14b3: 8 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+        "Seed outcome: 7 functions created, 1 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+      ]
+    },
+    {
+      "evidence_id": "ev_1c1060982ecaff8c0da66d68603c8efb8edf43c6fed5056cc3d668cad1f0d4e0",
+      "operation": "analyze_function",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "parameters": {
+        "procedure": "0xd601"
+      },
+      "limitations": [
+        "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+        "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+        "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+        "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+        "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+        "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+        "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+        "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+        "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+        "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+        "Headerless raw-binary analysis uses the caller-supplied architecture and entry address; file offset 0 is mapped at that address. Headers are not discovered from file bytes.",
+        "Little-endian generic Ghidra languages are used for x86, x86_64, arm, arm64, and NMOS 6502. Big-endian, Thumb-only, Cortex-M, 65C02, 65816, and other processor variants are unsupported in this increment.",
+        "Static analysis does not emulate reset vectors, memory-mapped I/O, or firmware boot sequences.",
+        "Ghidra analysis was seeded before auto-analysis from /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-static/physics-seeds.tsv (sha256 0f52d4c6824b1f0a227993c32368dd811bdcfad531f7152e3f74bd3439be0782: 24 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+        "Seed outcome: 24 functions created, 0 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+      ]
+    },
+    {
+      "evidence_id": "ev_76a270dce5c6594f7bfd2b33dc402a6ea5150f169a962aeff81798f604d35ef1",
+      "operation": "analyze_function",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "parameters": {
+        "procedure": "0xd2d9"
+      },
+      "limitations": [
+        "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+        "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+        "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+        "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+        "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+        "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+        "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+        "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+        "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+        "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+        "Headerless raw-binary analysis uses the caller-supplied architecture and entry address; file offset 0 is mapped at that address. Headers are not discovered from file bytes.",
+        "Little-endian generic Ghidra languages are used for x86, x86_64, arm, arm64, and NMOS 6502. Big-endian, Thumb-only, Cortex-M, 65C02, 65816, and other processor variants are unsupported in this increment.",
+        "Static analysis does not emulate reset vectors, memory-mapped I/O, or firmware boot sequences.",
+        "Ghidra analysis was seeded before auto-analysis from /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-static/physics-seeds.tsv (sha256 0f52d4c6824b1f0a227993c32368dd811bdcfad531f7152e3f74bd3439be0782: 24 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+        "Seed outcome: 24 functions created, 0 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+      ]
+    }
+  ],
+  "currentSourceReview": "Read current cooperation policy, HTTP test coverage and implementation status; no execution of current game or HTTP tests."
+}

@@ -1,0 +1,108 @@
+{
+  "passed": true,
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "./games/contra/engine",
+    "-run",
+    "^TestBotPlayerCovered",
+    "-count=1",
+    "-json"
+  ],
+  "exitCode": 0,
+  "sourceChangedDuringCheck": [],
+  "sourceHashes": {
+    "games/contra/engine/bot_vision.go": "d8b581ba90b529a64c7dea7610d18711bf7e84db799c98aa78acfe02a5346ec9",
+    "games/contra/engine/bot_vision_alien_recipes.go": "400aa3d3768763731444a57c9f49415c9414c09cf4d56a680be4b5a3f7a0a690",
+    "games/contra/engine/bot_vision_alien_recipes_test.go": "956562b295c9f8167b8bac1c7a612eab701530dfc3777dfdf4203881fbea503d",
+    "games/contra/engine/bot_vision_anchor_test.go": "20ee3addcfdd0939b085d27fd431dcd4b298111d84f1e2fa261f458e9b201b57",
+    "games/contra/engine/bot_vision_anchors.go": "f734fc263912ce76a727e3885158a0574de461cb9530bac37f5cf8f616109e4d",
+    "games/contra/engine/bot_vision_background_recipes.go": "9fa8a2cb0f28fa7ce3ae08b1b1d03cef664ddc57ce4f7926f97e4e7e8edc9422",
+    "games/contra/engine/bot_vision_background_recipes_test.go": "725db4749863735cbc414f5e6ad5e0915b3c8ce3bb4ed6b866e25a190eb9d71b",
+    "games/contra/engine/bot_vision_bits.go": "d0919b17838644c1d7fa6022fa4144aa80e250d62a7e3a438216c719cbf15c39",
+    "games/contra/engine/bot_vision_bits_test.go": "a1159b6cb40d4a2c50db526ed965b2475b027490015ca82f88886b8bdc37ee99",
+    "games/contra/engine/bot_vision_builtin.go": "7d831de42ffa14c3277bd1156c531a8cffedf1db0ca7a0b11ad618029ca7ed7f",
+    "games/contra/engine/bot_vision_builtin_background.go": "aebdacfd63a37da5efc5fb1569bc04861f4f850c1c7e3d64e2a0f73cf1f745b0",
+    "games/contra/engine/bot_vision_builtin_sprites.go": "5ff564d91f9fbc18735fc5f05fe5c67ed24d660124513a4631abbdece298d61d",
+    "games/contra/engine/bot_vision_builtin_test.go": "84be12bf5b4ccf72b2e51658b7f1b2eacd9a85ff25a63063a459162238865281",
+    "games/contra/engine/bot_vision_counts.go": "e0c06cf9f5f84c4db2877b85aba1c8a53699586e7b2e28dc7b5e1d0328115319",
+    "games/contra/engine/bot_vision_counts_test.go": "b1f885b3e58b79aa318aae7326df7fd5ddad2d6ac1a0f8f44199ed3e9d04409e",
+    "games/contra/engine/bot_vision_exact_only_test.go": "198e9b8a82ab4348603aa2b7c4832946c02cb9aa502a787fe36bcbd484f1b969",
+    "games/contra/engine/bot_vision_future_sprites.go": "96dfcfa3e62f036ef9f115c4a24b7a91ebd5d0a1d94e78675cf4a1cca2922b95",
+    "games/contra/engine/bot_vision_future_sprites_test.go": "21ee994c851d1bc1f9dfa964ddc0aaf8fbba215274fdcfdcbdb7e8d97b774b62",
+    "games/contra/engine/bot_vision_grid_search_test.go": "2b7aa79e81cba171d7ff34b63967d6c30e94abcc6b491cc63e1e68b3950a245b",
+    "games/contra/engine/bot_vision_machine_recipes.go": "838c392a68cb68f6965f716b7ba06add209b169e305fe77f1960b39ee8604c04",
+    "games/contra/engine/bot_vision_machine_recipes_test.go": "02f376052984d24d3e19a59939c772e33d014188af6f2293b34730f269e20074",
+    "games/contra/engine/bot_vision_markers.go": "39e28fddf0348ce6a2ef629f166158aaa29e72b55bd0acb441ea7d7ef74caeb7",
+    "games/contra/engine/bot_vision_markers_test.go": "3773e75d35fb72ad273dd5fb7b14778f288bd173dc059303cd9b980d14f4f820",
+    "games/contra/engine/bot_vision_match.go": "59781619dd468b1e5cb5924db7c82b6702b8f2ca033a4d8187cc69b1462f52ea",
+    "games/contra/engine/bot_vision_match_test.go": "40d5e9e5ee08bd890a3822c21c01aea40a0f55015a2ca2b9d1ac4b99e5b03441",
+    "games/contra/engine/bot_vision_nozzle_recipes.go": "f5079a4f0ff6ba17272fca8061bfe721b3eefa657272b687dbbc04bcef436f35",
+    "games/contra/engine/bot_vision_nozzle_test.go": "c6340099bd50e47afd3ca1316ac97bd94c168a253e41af1c6e95b33cbfbf3d4d",
+    "games/contra/engine/bot_vision_partial_test.go": "0c55bb3614bc0d67a9bd63612c9e9bdb82b9ab57fddc8ba5b02038a4697aef1e",
+    "games/contra/engine/bot_vision_player_support.go": "bc760c23fe4e2e605a33dbda9a8d20f63b8ab55c4fb6946ed06d882d39583e7a",
+    "games/contra/engine/bot_vision_player_support_test.go": "1b28238ff40beb13db57a03d923f302013ef7bded804b63b0d22d66fc2c16191",
+    "games/contra/engine/bot_vision_powerup_test.go": "b235652f6408e1d0d93d6a89d9c0dc6604065d21796e8517efde52b7fcfd5012",
+    "games/contra/engine/bot_vision_snow_recipes.go": "24200bbf1a90b550ff0839d3e964b05594154afd7a8702b98c2a675904d8e152",
+    "games/contra/engine/bot_vision_snow_recipes_test.go": "8b11d6dab630c1440a8813c41379e709f0b6d46ce12d39330ccc4ffd575c2cc9",
+    "games/contra/engine/bot_vision_terrain.go": "58aeb989b7bb5a1b856929ec1bdbce3b797223839703d99b97831e5e928c6429",
+    "games/contra/engine/bot_vision_terrain_player_test.go": "49c8167097fbb16a05d889a8e53a7c1434260b7c510018ea618d606bc33d220c",
+    "games/contra/engine/bot_vision_terrain_test.go": "627b69c8053e779d73f206a0c18bf629b25f5acd1dbc08b562c2aa28249afe1c",
+    "games/contra/engine/bot_vision_test.go": "4d575820449a3ac92c82378368e997cafe064fa1083c996db8a748ef787d307a",
+    "games/contra/engine/bot_vision_uniform.go": "9458a47834f3e554f65f56070996b4e6731f48a4e49b782a9e6f671674989f2d",
+    "games/contra/engine/bot_vision_uniform_test.go": "57a270c022d6f228f64566da4fb9b7a6b6875f6c48939604c9f976d7d7803bd0",
+    "games/contra/engine/bot_vision_water_identity_test.go": "4fbfb8cd0f69fef8629f53f25fd765e9711eeca668452015c3fff2c5957e60d6",
+    "games/contra/engine/bot_vision_water_test.go": "c4a201854bb504f10025e09ca1d44c7b67c5d1d95c74f787c569b8680fc5bff0",
+    "games/contra/engine/testdata/bot-waterfall-player-covered-stone.png": "c91072f742bd1ad8004725666ce01f7638ca6aa109dd6032f41898285add2355",
+    "games/contra/engine/testdata/bot-waterfall-partial-player-stone.png": "c9c0b4a86ea966d37e481eae775134eb259a90beb4fcf2c2ace10fc8d196a499",
+    "scripts/contra/replay_player_support.go": "745498ebe693b7623db3c656cf7942f128a4d1e688d8fc728529457cf79ef32d"
+  },
+  "logSHA256": "0e8775de64f6c2459e53936590500aac78a85fd6d8f7bb559948a002da0543fc",
+  "scope": "Only fixed moving-stone art may omit opaque points of an accepted exact player. No World/OnEnemy input, generic enemy partial matching, policy/nav or Session change.",
+  "regressionLog": "bot-player-covered-supports-race.jsonl",
+  "regressionLogSHA256": "78130c0fc0d161774ecb059b7e8e9b390cb761baf7d96a7e349260e8c67e577f",
+  "replay": {
+    "command": [
+      "go",
+      "run",
+      "scripts/contra/replay_player_support.go",
+      "games/contra/engine/testdata/player-support-replay",
+      "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-player-support/recheck-final",
+      "25924",
+      "25928"
+    ],
+    "sourcePadsSHA256": "674487445e6d81b0d548b3c986d4f16d714db105d39106dee2858b7363e125f2",
+    "declaredLifeGrantsSHA256": "bdd67b1575bef971e63b35c25398f80ad4426cf3acec46f4abe8f5ac72f1961b",
+    "supportPositions": {
+      "25924": [
+        [
+          168,
+          127
+        ]
+      ],
+      "25925": [
+        [
+          169,
+          127
+        ]
+      ],
+      "25926": [
+        [
+          170,
+          127
+        ]
+      ],
+      "25927": [],
+      "25928": [
+        [
+          171,
+          127
+        ]
+      ]
+    },
+    "observationsSHA256": "83e882dfeaeaa8506e4724056cce1a5932cf877dc69c0679ede8af5391a7823e",
+    "fixturePixelsIdentical": true,
+    "limitation": "Diagnostic replay retains the original declared life assistance; this is not a natural standard-lives campaign or policy win."
+  }
+}

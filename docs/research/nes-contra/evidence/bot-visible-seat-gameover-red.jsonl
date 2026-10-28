@@ -1,0 +1,9 @@
+{"Time":"2026-10-26T14:30:32.870399+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-26T14:30:33.430227+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionSeatGameOverIsNotGlobalMenu"}
+{"Time":"2026-10-26T14:30:33.430324+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionSeatGameOverIsNotGlobalMenu","Output":"=== RUN   TestBuiltinBotVisionSeatGameOverIsNotGlobalMenu\n"}
+{"Time":"2026-10-26T14:30:34.536047+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionSeatGameOverIsNotGlobalMenu","Output":"    bot_vision_markers_test.go:184: individual visible HUD message became whole-team game over 15 game-over\n"}
+{"Time":"2026-10-26T14:30:34.536104+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionSeatGameOverIsNotGlobalMenu","Output":"--- FAIL: TestBuiltinBotVisionSeatGameOverIsNotGlobalMenu (1.11s)\n"}
+{"Time":"2026-10-26T14:30:34.536113+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionSeatGameOverIsNotGlobalMenu","Elapsed":1.11}
+{"Time":"2026-10-26T14:30:34.536126+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\n"}
+{"Time":"2026-10-26T14:30:34.538092+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t1.668s\n"}
+{"Time":"2026-10-26T14:30:34.538109+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":1.6680000000000001}

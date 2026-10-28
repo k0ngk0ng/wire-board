@@ -1,0 +1,42 @@
+{
+  "scope": "Pure-visual campaign probe: combined Session and policy-memory checkpoint consistency only",
+  "checkpointConsistencyPassed": true,
+  "completeCampaign": false,
+  "cases": [
+    {
+      "players": 1,
+      "frames": 1100,
+      "restoreCheckpoints": 1,
+      "campaignPassed": false,
+      "artifacts": {
+        ".local/contra-bot/runs/attempt-3751466210/players1/final-bots.json": "8e527389eb8fbd6344341bd9db19320b3bb5b517b7042d7df6b43b8f6731b287",
+        ".local/contra-bot/runs/attempt-3751466210/players1/result.json": "bf796fe8b8e2ebc475b81d84f64d639b610c981986252e6b6f314e6b86d89bb6",
+        ".local/contra-bot/runs/attempt-3751466210/players1/pads.bin.gz": "329191dd8057d970a865812c5cae0d8781489d50541a6dac3d9242fc2a1dab2a",
+        ".local/contra-bot/runs/attempt-3751466210/players1/final-session.json": "36745460f2f9b383634cd27b887d3368ed44ac1aae20f3fc19e93377cd4e5a8c",
+        ".local/contra-bot/runs/attempt-3751466210/players1/trace.jsonl.gz": "efc42d0483ed79ea12367f76e863092c0a7d9f35b52195861ddd427f569c6a11"
+      }
+    },
+    {
+      "players": 2,
+      "frames": 1100,
+      "restoreCheckpoints": 1,
+      "campaignPassed": false,
+      "artifacts": {
+        ".local/contra-bot/runs/attempt-3751466210/players2/final-bots.json": "ce3223b1a892e8155d38cfcb93508dc28a44987b0486b5a9876728775ba183b8",
+        ".local/contra-bot/runs/attempt-3751466210/players2/result.json": "5ab807b570d221c3365ebcba41ebd1a1f2e13faa2f3ac871e242735f8c1131a5",
+        ".local/contra-bot/runs/attempt-3751466210/players2/pads.bin.gz": "da28c2b2881327bc03d2cfb67b73abfdeb2789b5c2016680b15ba3ce3c0e00f6",
+        ".local/contra-bot/runs/attempt-3751466210/players2/final-session.json": "d6599157d2323fcb2cf7b7698d846fab738bbdaa3cb4fb9002f3965c188c2c04",
+        ".local/contra-bot/runs/attempt-3751466210/players2/trace.jsonl.gz": "1cd9e756767e86290716d8c0374b42aedd862028ed02ac5b77bf32cfc44bc36c"
+      }
+    }
+  ],
+  "command": "CONTRA_BOT_FRAMES=1100 CONTRA_BOT_TARGET=1 go test ./games/contra/engine -run '^TestBotStandardCampaignE2E$' -timeout 5m -count=1 -v",
+  "testSHA256": "5df3350b095e1546797cc6feaa5b1c07fc16072b9076a8f90ad853caa755e329",
+  "checks": [
+    "JSON restore before Decide preserves Session and both Bot memories",
+    "Each restored policy independently recomputes the same pad",
+    "Post-decision policy memories match",
+    "The next authoritative Session state matches"
+  ],
+  "limitation": "The test command exits nonzero because the campaign target was not reached. Only the checkpoint subcondition passed."
+}

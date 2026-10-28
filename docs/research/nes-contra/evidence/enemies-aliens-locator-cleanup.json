@@ -1,0 +1,43 @@
+{
+  "removedBytes": 2048022,
+  "removed": [
+    {
+      "path": ".local/contra-enemies-aliens-locator/oracle/runs/aliens-locator-repeat",
+      "bytes": 1950285
+    },
+    {
+      "path": ".local/contra-enemies-aliens-locator/tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-enemies-aliens-locator/examples.json",
+      "bytes": 14791
+    },
+    {
+      "path": ".local/contra-enemies-aliens-locator/green.jsonl",
+      "bytes": 72425
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/verify-tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/verify-run.jsonl",
+      "bytes": 5706
+    },
+    {
+      "path": ".local/contra-enemies-aliens-boss/verify-tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-enemies-aliens-boss/verify-run.jsonl",
+      "bytes": 4815
+    }
+  ],
+  "retained": [
+    "Primary 74-phase original run and initial state",
+    "Original fixture and full write/consumer trace",
+    "TDD red and final normal-package race logs/manifests"
+  ],
+  "boundary": "Only this task duplicate run/scratch outputs and own prior-scope verification temp duplicates. Shared caches, parent files and user ROM unchanged."
+}

@@ -1,0 +1,9 @@
+{"Time":"2026-10-26T13:18:40.450596+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-26T13:18:40.868492+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleVerticalJumpGoalSurvivesSubmittedStandingFrame"}
+{"Time":"2026-10-26T13:18:40.868554+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleVerticalJumpGoalSurvivesSubmittedStandingFrame","Output":"=== RUN   TestBotVisibleVerticalJumpGoalSurvivesSubmittedStandingFrame\n"}
+{"Time":"2026-10-26T13:18:40.868749+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleVerticalJumpGoalSurvivesSubmittedStandingFrame","Output":"    bot_navigation_test.go:231: vertical display delay lost the landing 3 132 132 false 9\n"}
+{"Time":"2026-10-26T13:18:40.868789+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleVerticalJumpGoalSurvivesSubmittedStandingFrame","Output":"--- FAIL: TestBotVisibleVerticalJumpGoalSurvivesSubmittedStandingFrame (0.00s)\n"}
+{"Time":"2026-10-26T13:18:40.868802+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleVerticalJumpGoalSurvivesSubmittedStandingFrame","Elapsed":0}
+{"Time":"2026-10-26T13:18:40.868825+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\n"}
+{"Time":"2026-10-26T13:18:40.869196+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t0.418s\n"}
+{"Time":"2026-10-26T13:18:40.86922+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":0.419}

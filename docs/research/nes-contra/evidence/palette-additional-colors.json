@@ -1,0 +1,387 @@
+{
+  "romSHA256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "sourceArchiveSHA256": "2c4fd35488d32ca3abf207114893d54ad294f74df8bd1961a7b1e090549bae64",
+  "sourceArchiveUnchanged": true,
+  "palettePointerBase": 53475,
+  "runtimePaletteRequirements": [
+    {
+      "name": "snow-enemies",
+      "stage": 5,
+      "paletteIndices": [
+        63,
+        65,
+        95,
+        96,
+        97
+      ]
+    },
+    {
+      "name": "energy-giant-hp",
+      "stage": 6,
+      "paletteIndices": [
+        81,
+        82
+      ],
+      "paletteSlot": 7,
+      "consumerSource": {
+        "cpuStart": 44216,
+        "cpuEndInclusive": 44244,
+        "prgOffset": 11448,
+        "romOffset": 11464,
+        "bank8KiB": 1,
+        "sha256": "69ed0fabd429ec0a0bb91e45695c87a5e9bfaf3d2c145b0a97dfba31e521e658"
+      }
+    }
+  ],
+  "colors": [
+    {
+      "id": 4,
+      "colors": [
+        22,
+        48,
+        16
+      ],
+      "source": {
+        "cpu": 53487,
+        "romOffset": 119039,
+        "sha256": "08ea56a706727bf0db2ed7ef8369ef84e567ab6da1df306ee97f17f69e6b28c7"
+      }
+    },
+    {
+      "id": 19,
+      "colors": [
+        6,
+        0,
+        8
+      ],
+      "source": {
+        "cpu": 53532,
+        "romOffset": 119084,
+        "sha256": "209f064a316d336b5e7002d479ee6501816a84521bd21d2c40991033fd5f069c"
+      }
+    },
+    {
+      "id": 20,
+      "colors": [
+        22,
+        0,
+        8
+      ],
+      "source": {
+        "cpu": 53535,
+        "romOffset": 119087,
+        "sha256": "2a90f8b16ab7052d667a75f65172db47e47241e7e1469de48b86695bd216780d"
+      }
+    },
+    {
+      "id": 21,
+      "colors": [
+        38,
+        0,
+        8
+      ],
+      "source": {
+        "cpu": 53538,
+        "romOffset": 119090,
+        "sha256": "6133b257fda68f94486f35292e6461b177d6b71e9541a1cc8bf91585989ea952"
+      }
+    },
+    {
+      "id": 27,
+      "colors": [
+        6,
+        24,
+        9
+      ],
+      "source": {
+        "cpu": 53556,
+        "romOffset": 119108,
+        "sha256": "7068558e4e53a1756c1b6559efea20bd78a2b51c64523af9f6fb008f99dd3cc9"
+      }
+    },
+    {
+      "id": 28,
+      "colors": [
+        22,
+        24,
+        9
+      ],
+      "source": {
+        "cpu": 53559,
+        "romOffset": 119111,
+        "sha256": "e4e682ce85ecc00090080759e879ffac103e0ff47f3d9834b7f08692a3c15710"
+      }
+    },
+    {
+      "id": 29,
+      "colors": [
+        38,
+        24,
+        9
+      ],
+      "source": {
+        "cpu": 53562,
+        "romOffset": 119114,
+        "sha256": "39d097df94e7121bc5459628e4af84de8ccd4f65a3627c49200ff39928e85795"
+      }
+    },
+    {
+      "id": 63,
+      "colors": [
+        32,
+        0,
+        23
+      ],
+      "source": {
+        "cpu": 53664,
+        "romOffset": 119216,
+        "sha256": "b9d0a2ede8955a34092de8aff23322a4a63b2567a33f0db21d7b72070395df57"
+      }
+    },
+    {
+      "id": 65,
+      "colors": [
+        7,
+        0,
+        23
+      ],
+      "source": {
+        "cpu": 53670,
+        "romOffset": 119222,
+        "sha256": "dad2574639280fbaf6a058e44f401c4a8bbc5c6ae931c487a74d4504b745b7df"
+      }
+    },
+    {
+      "id": 81,
+      "colors": [
+        32,
+        19,
+        39
+      ],
+      "source": {
+        "cpu": 53718,
+        "romOffset": 119270,
+        "sha256": "f282d504bcb301799fcdabb1a21a87fb885b8524cda77684884461be7384011e"
+      }
+    },
+    {
+      "id": 82,
+      "colors": [
+        32,
+        22,
+        39
+      ],
+      "source": {
+        "cpu": 53721,
+        "romOffset": 119273,
+        "sha256": "1cff724f0e567136a7e030dc70340dc5bb34091aa2ef411fdda7142098036ae1"
+      }
+    },
+    {
+      "id": 92,
+      "colors": [
+        6,
+        48,
+        16
+      ],
+      "source": {
+        "cpu": 53751,
+        "romOffset": 119303,
+        "sha256": "000e46def7c61f4de27a304971a58a4f0d5e37e3546b4f3eeb6898ceeb93b061"
+      }
+    },
+    {
+      "id": 93,
+      "colors": [
+        38,
+        48,
+        16
+      ],
+      "source": {
+        "cpu": 53754,
+        "romOffset": 119306,
+        "sha256": "670dd8907d236006989eff721b68823cad985b0760682f5e2944d9e4bc122177"
+      }
+    },
+    {
+      "id": 95,
+      "colors": [
+        32,
+        39,
+        23
+      ],
+      "source": {
+        "cpu": 53760,
+        "romOffset": 119312,
+        "sha256": "620cd13cdd54b272bab2fbafd420cf893ba684323b95f4f93b9d53599aef74dd"
+      }
+    },
+    {
+      "id": 96,
+      "colors": [
+        16,
+        38,
+        6
+      ],
+      "source": {
+        "cpu": 53763,
+        "romOffset": 119315,
+        "sha256": "bb03c07564b4070a5867a446382a23e959e1def45ae82b6d03bed850e7942b04"
+      }
+    },
+    {
+      "id": 97,
+      "colors": [
+        16,
+        22,
+        7
+      ],
+      "source": {
+        "cpu": 53766,
+        "romOffset": 119318,
+        "sha256": "1b16c7d98fbc7a8aa76c0e442b9244d887cb1a4ad5505325c60b7de581654d56"
+      }
+    },
+    {
+      "id": 102,
+      "colors": [
+        22,
+        24,
+        7
+      ],
+      "source": {
+        "cpu": 53781,
+        "romOffset": 119333,
+        "sha256": "3bea863bb6bade734f32b6646322e12de284444f24217ff8b751ba494c1ff321"
+      }
+    },
+    {
+      "id": 106,
+      "colors": [
+        38,
+        24,
+        7
+      ],
+      "source": {
+        "cpu": 53793,
+        "romOffset": 119345,
+        "sha256": "9cbd03491421c6b58c7938a0156a44961bbc10a71fe8bcf94ac3b77207d7036b"
+      }
+    },
+    {
+      "id": 107,
+      "colors": [
+        22,
+        24,
+        7
+      ],
+      "source": {
+        "cpu": 53796,
+        "romOffset": 119348,
+        "sha256": "3bea863bb6bade734f32b6646322e12de284444f24217ff8b751ba494c1ff321"
+      }
+    }
+  ],
+  "tables": {
+    "fade": {
+      "cpu": 53092,
+      "romOffset": 118644,
+      "bytes": [
+        187,
+        0,
+        0,
+        16,
+        16,
+        32,
+        32,
+        48,
+        48
+      ],
+      "sha256": "0f7e13dbb0098526695a23dd8735f033ff4d0474a49fa1a582813119b6cde1f6"
+    },
+    "cycleCounts": {
+      "cpu": 53309,
+      "romOffset": 118861,
+      "bytes": [
+        4,
+        4,
+        3,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "sha256": "f7aa820612fe8fa63bf298cc56d4300198a347daef96bb22854b9593786c8691"
+    },
+    "baseBossPalette2": {
+      "cpu": 53318,
+      "romOffset": 118870,
+      "bytes": [
+        19,
+        20,
+        21,
+        20,
+        27,
+        28,
+        29,
+        28
+      ],
+      "sha256": "38d6fef06ab56bd3dcc03d6d347c2e734321556d0b47db702af887ad90bcdd67"
+    },
+    "flash": {
+      "cpu": 53326,
+      "romOffset": 118878,
+      "bytes": [
+        15,
+        32,
+        22,
+        17
+      ],
+      "sha256": "58e67cb67fcaabcc55e39d3a620758ca78925b55a72d58969e41ed4344556fa0"
+    },
+    "ordinaryPalette2": {
+      "cpu": 53330,
+      "romOffset": 118882,
+      "bytes": [
+        4,
+        92,
+        4,
+        93
+      ],
+      "sha256": "6051e9b72d04b4c15342e057a72cf43b9a877a3effbfe55aeb021f2e57667dde"
+    },
+    "endingPalette2": {
+      "cpu": 53334,
+      "romOffset": 118886,
+      "bytes": [
+        102,
+        106,
+        107,
+        106
+      ],
+      "sha256": "e4d512160a699f403642bf22f21183aeadbdfed39a8e93dbc44586c0d5ae9dcc"
+    },
+    "snowProgram": {
+      "cpu": 52871,
+      "romOffset": 118423,
+      "bytes": [
+        0,
+        0,
+        1,
+        2,
+        0,
+        0,
+        3,
+        128,
+        1,
+        17,
+        0,
+        0,
+        255
+      ],
+      "sha256": "c2e48c05033f35673d6ee9604cb8a721d5b3f7097bb77da74cb62ca3ffde2acc"
+    }
+  }
+}

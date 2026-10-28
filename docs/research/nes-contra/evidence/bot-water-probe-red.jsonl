@@ -1,0 +1,13 @@
+{"Time":"2026-10-26T12:36:33.024211+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-26T12:36:33.586843+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotUnknownWaterHeadsProbeWithoutAssigningIdentity"}
+{"Time":"2026-10-26T12:36:33.586993+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotUnknownWaterHeadsProbeWithoutAssigningIdentity","Output":"=== RUN   TestBotUnknownWaterHeadsProbeWithoutAssigningIdentity\n"}
+{"Time":"2026-10-26T12:36:33.587149+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotUnknownWaterHeadsProbeWithoutAssigningIdentity","Output":"    bot_probe_test.go:27: fresh assistance failed to issue an order-independent legal probe 0 0\n"}
+{"Time":"2026-10-26T12:36:33.587191+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotUnknownWaterHeadsProbeWithoutAssigningIdentity","Output":"--- FAIL: TestBotUnknownWaterHeadsProbeWithoutAssigningIdentity (0.00s)\n"}
+{"Time":"2026-10-26T12:36:33.587203+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotUnknownWaterHeadsProbeWithoutAssigningIdentity","Elapsed":0}
+{"Time":"2026-10-26T12:36:33.58722+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotUnknownWaterProbeRespectsPauseAndMenus"}
+{"Time":"2026-10-26T12:36:33.587232+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotUnknownWaterProbeRespectsPauseAndMenus","Output":"=== RUN   TestBotUnknownWaterProbeRespectsPauseAndMenus\n"}
+{"Time":"2026-10-26T12:36:33.587243+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotUnknownWaterProbeRespectsPauseAndMenus","Output":"--- PASS: TestBotUnknownWaterProbeRespectsPauseAndMenus (0.00s)\n"}
+{"Time":"2026-10-26T12:36:33.587251+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotUnknownWaterProbeRespectsPauseAndMenus","Elapsed":0}
+{"Time":"2026-10-26T12:36:33.587272+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\n"}
+{"Time":"2026-10-26T12:36:33.588289+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t0.564s\n"}
+{"Time":"2026-10-26T12:36:33.588332+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":0.564}

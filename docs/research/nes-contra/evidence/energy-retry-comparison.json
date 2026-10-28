@@ -1,0 +1,84 @@
+{
+  "scope": "User-requested assisted retry; same current strategy, two different saved entry states; no full campaign acceptance",
+  "infinite_lives": true,
+  "runs": {
+    "retry-energy-old-success-current": {
+      "path": ".local/contra-bot/retry-energy-old-success-current",
+      "level_zero_based": 5,
+      "screen": 10,
+      "scroll": 202,
+      "result": {
+        "assisted_campaign_cleared": false,
+        "complete_campaign": false,
+        "finalized": false,
+        "frames": 140000,
+        "infinite_lives": true,
+        "outcome": "",
+        "passed": false,
+        "players": 1,
+        "policy_start_frame": 136001,
+        "refill_after_visible_loss": true,
+        "scope": "focused diagnostic from recorded legal input prefix; not complete campaign acceptance",
+        "seed": 42
+      },
+      "sha256": {
+        "pads.bin.gz": "b4dcf0b213fc8236fa90d9512e409896e53d8c2d0bdac546075a2274a432ed6c",
+        "final-session.json": "5dea8b4ff3db93db9949f905141e693c5bb29b719db2a346229017314c3c9c25",
+        "bot.json": "e1455fab4935bc971febc3bf2c4dbe5dfa1034fd22a5eced6b8f1e28a0634b88"
+      },
+      "replay": {
+        "frames": 140000,
+        "nextStepStoredStateEqual": true,
+        "nextStepStructEqual": true,
+        "recordedRulesAndEffectsMatch": true,
+        "recordedStateMatches": true,
+        "replayDerivedReviewAdded": false,
+        "roundTripDifferences": null
+      }
+    },
+    "retry-energy-fresh-current": {
+      "path": ".local/contra-bot/retry-energy-fresh-current",
+      "level_zero_based": 5,
+      "screen": 6,
+      "scroll": 44,
+      "result": {
+        "assisted_campaign_cleared": false,
+        "complete_campaign": false,
+        "finalized": false,
+        "frames": 304120,
+        "infinite_lives": true,
+        "outcome": "",
+        "passed": false,
+        "players": 1,
+        "policy_start_frame": 300121,
+        "refill_after_visible_loss": true,
+        "scope": "focused diagnostic from recorded legal input prefix; not complete campaign acceptance",
+        "seed": 42
+      },
+      "sha256": {
+        "pads.bin.gz": "208e736c644824080a6413022fa6dd97b073ec5ec150357ceb67e20b4544cc22",
+        "final-session.json": "943824b96fd676f1684d44e60fa74bd37145a7e70c7efa4864618d8726f5bc57",
+        "bot.json": "450b89377660a776740555cdcba66c434705cbed9c8240110f105afe4d302e95"
+      },
+      "replay": {
+        "frames": 304120,
+        "nextStepStoredStateEqual": true,
+        "nextStepStructEqual": true,
+        "recordedRulesAndEffectsMatch": true,
+        "recordedStateMatches": true,
+        "replayDerivedReviewAdded": false,
+        "roundTripDifferences": null
+      }
+    }
+  },
+  "old_scroll44_reference": {
+    "path": ".local/contra-bot/diagnostic-energy-nozzle-progress/observations.json",
+    "frame": 128718,
+    "player": [
+      128,
+      195
+    ],
+    "jumpTarget": 171,
+    "jumpTargetActive": true
+  }
+}

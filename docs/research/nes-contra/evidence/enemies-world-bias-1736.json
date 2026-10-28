@@ -1,0 +1,347 @@
+{
+  "passed": true,
+  "scope": "Read-only producer localization on the retained Boss-controller route, first1740 complete frames byte-identical to parent. No implementation changes.",
+  "source": "docs/research/nes-contra/evidence/world-boss-original.json.gz",
+  "sourceSHA256": "5ccfd41e67bbb017e5470a490367e4c0dc0b1e5b108d0fcac563c10ff89da3cc",
+  "interventions": [
+    {
+      "address": 50,
+      "before": 2,
+      "after": 30
+    },
+    {
+      "address": 51,
+      "before": 2,
+      "after": 30
+    }
+  ],
+  "targetFrame": 1736,
+  "writes": [
+    {
+      "index": 1734,
+      "frame": 3134,
+      "pc": 53003,
+      "bank": 20,
+      "enemy": 6,
+      "value": 233,
+      "high": 0,
+      "a": 233,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "index": 1734,
+      "frame": 3134,
+      "pc": 53003,
+      "bank": 20,
+      "enemy": 6,
+      "value": 236,
+      "high": 0,
+      "a": 236,
+      "x": 4,
+      "y": 1
+    },
+    {
+      "index": 1734,
+      "frame": 3134,
+      "pc": 53003,
+      "bank": 20,
+      "enemy": 6,
+      "value": 239,
+      "high": 0,
+      "a": 239,
+      "x": 8,
+      "y": 2
+    },
+    {
+      "index": 1734,
+      "frame": 3134,
+      "pc": 53003,
+      "bank": 20,
+      "enemy": 6,
+      "value": 242,
+      "high": 0,
+      "a": 242,
+      "x": 12,
+      "y": 3
+    },
+    {
+      "index": 1736,
+      "frame": 3136,
+      "pc": 33953,
+      "bank": 28,
+      "enemy": 6,
+      "value": 244,
+      "high": 65,
+      "a": 244,
+      "x": 8,
+      "y": 0
+    },
+    {
+      "index": 1736,
+      "frame": 3136,
+      "pc": 33953,
+      "bank": 28,
+      "enemy": 6,
+      "value": 244,
+      "high": 132,
+      "a": 244,
+      "x": 9,
+      "y": 0
+    }
+  ],
+  "fireCalls": [
+    {
+      "kind": "start",
+      "index": 1734,
+      "pc": 32769,
+      "bias": 12,
+      "a": 18,
+      "x": 0,
+      "y": 29,
+      "rapid": 150,
+      "aim": 8,
+      "shot": 0
+    },
+    {
+      "kind": "end",
+      "index": 1734,
+      "pc": 54430,
+      "bias": 12,
+      "a": 7,
+      "x": 0,
+      "y": 3,
+      "rapid": 150,
+      "aim": 8,
+      "shot": 0
+    },
+    {
+      "kind": "start",
+      "index": 1735,
+      "pc": 32769,
+      "bias": 242,
+      "a": 18,
+      "x": 0,
+      "y": 29,
+      "rapid": 150,
+      "aim": 8,
+      "shot": 0
+    },
+    {
+      "kind": "end",
+      "index": 1735,
+      "pc": 54430,
+      "bias": 242,
+      "a": 7,
+      "x": 0,
+      "y": 3,
+      "rapid": 150,
+      "aim": 8,
+      "shot": 0
+    },
+    {
+      "kind": "start",
+      "index": 1736,
+      "pc": 32769,
+      "bias": 242,
+      "a": 18,
+      "x": 0,
+      "y": 29,
+      "rapid": 150,
+      "aim": 8,
+      "shot": 0
+    },
+    {
+      "kind": "spread-velocity",
+      "index": 1736,
+      "pc": 33930,
+      "bias": 242,
+      "a": 61,
+      "x": 8,
+      "y": 5,
+      "rapid": 0,
+      "aim": 2,
+      "shot": 0
+    },
+    {
+      "kind": "spread-velocity",
+      "index": 1736,
+      "pc": 33930,
+      "bias": 244,
+      "a": 61,
+      "x": 9,
+      "y": 5,
+      "rapid": 0,
+      "aim": 2,
+      "shot": 1
+    },
+    {
+      "kind": "end",
+      "index": 1736,
+      "pc": 54430,
+      "bias": 244,
+      "a": 4,
+      "x": 0,
+      "y": 0,
+      "rapid": 0,
+      "aim": 2,
+      "shot": 2
+    },
+    {
+      "kind": "start",
+      "index": 1737,
+      "pc": 32769,
+      "bias": 244,
+      "a": 18,
+      "x": 0,
+      "y": 29,
+      "rapid": 150,
+      "aim": 8,
+      "shot": 0
+    },
+    {
+      "kind": "end",
+      "index": 1737,
+      "pc": 54430,
+      "bias": 244,
+      "a": 7,
+      "x": 0,
+      "y": 3,
+      "rapid": 150,
+      "aim": 8,
+      "shot": 0
+    },
+    {
+      "kind": "start",
+      "index": 1738,
+      "pc": 32769,
+      "bias": 244,
+      "a": 18,
+      "x": 0,
+      "y": 29,
+      "rapid": 150,
+      "aim": 8,
+      "shot": 0
+    },
+    {
+      "kind": "end",
+      "index": 1738,
+      "pc": 54430,
+      "bias": 244,
+      "a": 7,
+      "x": 0,
+      "y": 3,
+      "rapid": 150,
+      "aim": 8,
+      "shot": 0
+    }
+  ],
+  "sourceBoundPointers": {
+    "address": "bank12/13 $84DC",
+    "littleEndianBytes": "e4843485f4844485",
+    "pointers": [
+      "84e4",
+      "8534",
+      "84f4",
+      "8544"
+    ]
+  },
+  "conclusion": "$849F writes the selected S-projectile Y-velocity table pointer low byte. rapid=0 selects F4; nonzero rapid selects44. Only successful outside/bit80-set S-shot creation reaches811D->813C->848A. Indoor shots use8128 path. In target frame the two writes occur within Fire, and no later write6 occurs before F8DB.",
+  "correction": "An initial sound correlation was rejected: bank marker1C is weapon bank12/13, not audio. The two sound28 requests do not establish an audio producer.",
+  "limitations": [
+    "The57 existing weapon function reports contain only849F as a direct write6, but this is a static analyzed-scope claim, not a global proof that other modules never write it.",
+    "This artifact supplies evidence to the parent-owned Fire/CombatFrame/World change; it does not itself implement or validate that change."
+  ],
+  "rea": [
+    {
+      "path": ".local/contra-weapons/final-rea/function-0x848a.json",
+      "sha256": "f5cdab0129db24c249adde08a292fe6ee57f50dde17b8865935b6be5eb2fc00a",
+      "evidenceID": "ev_e32dfc82418c5843f44fff7442f114609669b430d3df7f8b8dbb78225aeb575d",
+      "assembly": [
+        "0x848a: LDY #0x0",
+        "0x848c: LDA 0x0009",
+        "0x848e: BEQ 0x8492",
+        "0x8490: LDY #0x2",
+        "0x8492: LDA 0x84dc,Y",
+        "0x8495: STA 0x0004",
+        "0x8497: LDA 0x84dd,Y",
+        "0x849a: STA 0x0005",
+        "0x849c: LDA 0x84e0,Y",
+        "0x849f: STA 0x0006",
+        "0x84a1: LDA 0x84e1,Y",
+        "0x84a4: STA 0x0007",
+        "0x84a6: LDY 0x000b",
+        "0x84a8: LDA 0x84cb,Y",
+        "0x84ab: LDY 0x0017",
+        "0x84ad: CLC",
+        "0x84ae: ADC 0x84d7,Y",
+        "0x84b1: AND #0x1f",
+        "0x84b3: ASL A",
+        "0x84b4: TAY",
+        "0x84b5: LDA (0x4),Y",
+        "0x84b7: STA 0x3d8,X",
+        "0x84ba: LDA (0x6),Y",
+        "0x84bc: STA 0x3e8,X",
+        "0x84bf: INY",
+        "0x84c0: LDA (0x4),Y",
+        "0x84c2: STA 0x3f8,X",
+        "0x84c5: LDA (0x6),Y",
+        "0x84c7: STA 0x408,X",
+        "0x84ca: RTS"
+      ]
+    },
+    {
+      "path": ".local/contra-weapons/final-rea/function-0x811d.json",
+      "sha256": "f2cfc3bcd151205a20e63ecbdd050c6646f3f235bcbce62feb9624aa76072f51",
+      "evidenceID": "ev_a4559a64e49c7333faab3757d6c4c85a3bfad484174d67d0b2b2fe2ac0de8dab",
+      "assembly": [
+        "0x811d: LDA 0x0017",
+        "0x811f: STA 0x4a8,X",
+        "0x8122: LDY 0x0040",
+        "0x8124: BMI 0x813c",
+        "0x8126: BEQ 0x813c",
+        "0x8128: JSR 0x828c",
+        "0x812b: JSR 0x83e3",
+        "0x812e: LDA 0x3c8,X",
+        "0x8131: STA 0x478,X",
+        "0x8134: LDA 0x0009",
+        "0x8136: STA 0x488,X",
+        "0x8139: JMP 0x81eb",
+        "0x813c: JSR 0x81fe",
+        "0x813f: JMP 0x848a"
+      ]
+    }
+  ],
+  "captureSHA256": {
+    "source.json": "7c61f762b3773fa63f3830f52fd7382b6f60a500be65342030b74844eb3b9370",
+    "scenario.json": "68b5094f457ff9afd5ae0cd4a7ce37cf596bf49a183857ca63021fbf2592c14a",
+    "ram.bin": "de0285b4203a8cd9871f7d53f7278b22c70cbdd98f186533abc2c8315d554238",
+    "inputs.csv": "1e8581441924bedee777482bf795e71b84c5e48d9a3f6d9072b00b385d5fd5da",
+    "world-frames.bin": "827d6a72a085022eed811c5054dc878d8607341ce3a286bef0bfe3c9a585f989",
+    "bias.jsonl": "3110af5ea9d1bf5a960e8e27be6e872a5273101252c249b2f36216dd1ba23f22",
+    "fire-calls.jsonl": "0f61dc42f4de5c8f0289c021f209a635155bc2da1293d40489b62fd54473574c"
+  },
+  "repeatByteIdentical": true,
+  "cleanup": [
+    {
+      "path": ".local/contra-enemies-world-bias/runs/world-bias-1736-v1",
+      "bytes": 10912754
+    },
+    {
+      "path": ".local/contra-enemies-world-bias/world-bias-1736-v1.json",
+      "bytes": 22443
+    },
+    {
+      "path": ".local/contra-enemies-world-bias/fceux-home",
+      "bytes": 17732
+    },
+    {
+      "path": ".local/contra-enemies-world-bias/runtime",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-enemies-world-bias/tmp",
+      "bytes": 0
+    }
+  ]
+}

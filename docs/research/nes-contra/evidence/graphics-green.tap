@@ -1,0 +1,19 @@
+✔ 13 original complete frames match background, sprite priority and streamed scrolling (234.29875ms)
+✔ horizontal and vertical screen crossings keep exact pixel anchors (10.717666ms)
+✔ palette quadrants, universal zero and clipping preserve sprite occlusion (5.048459ms)
+✔ composition honors behind-background pixels and does not mutate either layer (0.569625ms)
+✔ 607 original builder calls retain full OAM, shared-part recoil, flips and clipping (2.369959ms)
+✔ caller-owned typed-array views and Node buffers remain unchanged (0.082417ms)
+✔ 15 actual DMA frames reproduce all 13,409 original opaque foreground pixels (16.733916ms)
+✔ catalog has stable original anchors and rejects mismatched or invalid descriptors (0.34125ms)
+✔ compact sprite X clipping keeps partial writes and regular OAM consumes wrapped slots (0.115167ms)
+✔ 8x16 tile low-bit, row boundary and vertical flip bind the correct CHR slot (0.072583ms)
+✔ scanline cap, OAM priority, left clipping and background-priority mask remain explicit (2.296125ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 322.3465

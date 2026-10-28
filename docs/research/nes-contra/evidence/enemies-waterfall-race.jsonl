@@ -1,0 +1,28 @@
+{"Time":"2026-10-25T18:22:43.931533+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-25T18:22:44.505408+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestWaterfallContinuousOriginalBoss"}
+{"Time":"2026-10-25T18:22:44.505438+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestWaterfallContinuousOriginalBoss","Output":"=== RUN   TestWaterfallContinuousOriginalBoss\n"}
+{"Time":"2026-10-25T18:22:46.991994+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestWaterfallContinuousOriginalBoss","Output":"    enemies_waterfall_sequence_test.go:190: 2400 continuous original phases, 19511 live entity calls, 20 graphics refusals matched\n"}
+{"Time":"2026-10-25T18:22:46.992073+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestWaterfallContinuousOriginalBoss","Output":"--- PASS: TestWaterfallContinuousOriginalBoss (2.49s)\n"}
+{"Time":"2026-10-25T18:22:46.992085+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestWaterfallContinuousOriginalBoss","Elapsed":2.49}
+{"Time":"2026-10-25T18:22:46.9921+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestWaterfallOriginalBoss"}
+{"Time":"2026-10-25T18:22:46.992113+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestWaterfallOriginalBoss","Output":"=== RUN   TestWaterfallOriginalBoss\n"}
+{"Time":"2026-10-25T18:22:47.909806+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestWaterfallOriginalBoss","Output":"    enemies_waterfall_test.go:121: 673 original Dragon mouth and arm calls matched\n"}
+{"Time":"2026-10-25T18:22:47.909836+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestWaterfallOriginalBoss","Output":"--- PASS: TestWaterfallOriginalBoss (0.92s)\n"}
+{"Time":"2026-10-25T18:22:47.909848+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestWaterfallOriginalBoss","Elapsed":0.92}
+{"Time":"2026-10-25T18:22:47.909868+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestWaterfallOriginalHazards"}
+{"Time":"2026-10-25T18:22:47.909872+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestWaterfallOriginalHazards","Output":"=== RUN   TestWaterfallOriginalHazards\n"}
+{"Time":"2026-10-25T18:22:47.909897+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestWaterfallOriginalHazards/hazards"}
+{"Time":"2026-10-25T18:22:47.909901+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestWaterfallOriginalHazards/hazards","Output":"=== RUN   TestWaterfallOriginalHazards/hazards\n"}
+{"Time":"2026-10-25T18:22:48.218705+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestWaterfallOriginalHazards/hazards","Output":"    enemies_waterfall_test.go:211: 234 original Waterfall hazard/scuba calls matched\n"}
+{"Time":"2026-10-25T18:22:48.218733+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestWaterfallOriginalHazards/hazards","Output":"--- PASS: TestWaterfallOriginalHazards/hazards (0.31s)\n"}
+{"Time":"2026-10-25T18:22:48.218737+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestWaterfallOriginalHazards/hazards","Elapsed":0.31}
+{"Time":"2026-10-25T18:22:48.218781+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestWaterfallOriginalHazards/natural"}
+{"Time":"2026-10-25T18:22:48.218784+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestWaterfallOriginalHazards/natural","Output":"=== RUN   TestWaterfallOriginalHazards/natural\n"}
+{"Time":"2026-10-25T18:22:52.604313+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestWaterfallOriginalHazards/natural","Output":"    enemies_waterfall_test.go:211: 5563 original Waterfall hazard/scuba calls matched\n"}
+{"Time":"2026-10-25T18:22:52.604624+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestWaterfallOriginalHazards/natural","Output":"--- PASS: TestWaterfallOriginalHazards/natural (4.39s)\n"}
+{"Time":"2026-10-25T18:22:52.604632+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestWaterfallOriginalHazards/natural","Elapsed":4.39}
+{"Time":"2026-10-25T18:22:52.604638+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestWaterfallOriginalHazards","Output":"--- PASS: TestWaterfallOriginalHazards (4.69s)\n"}
+{"Time":"2026-10-25T18:22:52.604642+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestWaterfallOriginalHazards","Elapsed":4.69}
+{"Time":"2026-10-25T18:22:52.604645+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"PASS\n"}
+{"Time":"2026-10-25T18:22:53.619813+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t9.688s\n"}
+{"Time":"2026-10-25T18:22:53.619835+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":9.688}

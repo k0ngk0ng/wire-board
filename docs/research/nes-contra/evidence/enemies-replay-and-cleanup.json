@@ -1,0 +1,108 @@
+{
+  "passed": true,
+  "repeats": [
+    {
+      "first": "natural-enemies-v1",
+      "second": "natural-enemies-v2",
+      "byteIdentical": [
+        "ram.bin",
+        "enemies.jsonl",
+        "enemy-maps.jsonl"
+      ]
+    },
+    {
+      "first": "controlled-generators-v1",
+      "second": "controlled-generators-verify",
+      "byteIdentical": [
+        "ram.bin",
+        "enemies.jsonl",
+        "enemy-maps.jsonl"
+      ]
+    },
+    {
+      "first": "enemy-generators-v1-0",
+      "second": "enemy-generators-verify-0",
+      "byteIdentical": [
+        "ram.bin",
+        "enemies.jsonl",
+        "enemy-maps.jsonl"
+      ]
+    },
+    {
+      "first": "enemy-generators-v1-1",
+      "second": "enemy-generators-verify-1",
+      "byteIdentical": [
+        "ram.bin",
+        "enemies.jsonl",
+        "enemy-maps.jsonl"
+      ]
+    }
+  ],
+  "cleanup": [
+    {
+      "path": ".local/contra-enemies/swift-cache",
+      "bytes": 93390128
+    },
+    {
+      "path": ".local/contra-enemies/terrain-request-rea",
+      "bytes": 9770020
+    },
+    {
+      "path": ".local/contra-enemies/runner-rea",
+      "bytes": 2927036
+    },
+    {
+      "path": ".local/contra-enemies/runner-valid-rea",
+      "bytes": 2023583
+    },
+    {
+      "path": ".local/contra-enemies/pickup-rea",
+      "bytes": 1560666
+    },
+    {
+      "path": ".local/contra-enemies/oracle/runs/natural-enemies-v2",
+      "bytes": 20070168
+    },
+    {
+      "path": ".local/contra-enemies/oracle/runs/controlled-generators-verify",
+      "bytes": 9347132
+    },
+    {
+      "path": ".local/contra-enemies/oracle/runs/enemy-generators-verify-0",
+      "bytes": 20287757
+    },
+    {
+      "path": ".local/contra-enemies/oracle/runs/enemy-generators-verify-1",
+      "bytes": 12310688
+    },
+    {
+      "path": ".local/contra-enemies/oracle/runs/controlled-enemy-explosions-v1",
+      "bytes": 339571
+    },
+    {
+      "path": ".local/contra-enemies/oracle/runs/controlled-enemy-runner-death-v1",
+      "bytes": 802730
+    },
+    {
+      "path": ".local/contra-enemies/oracle/fceux-home",
+      "bytes": 17715
+    },
+    {
+      "path": ".local/contra-enemies/oracle/runtime",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-enemies/oracle/tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-enemies/tmp",
+      "bytes": 0
+    },
+    {
+      "path": "dist/contra-enemies-tmp",
+      "bytes": 0
+    }
+  ],
+  "retained": "Primary original observations, current private analysis evidence/inputs, source manifests and all game-owned oracle fixtures remain for World integration."
+}

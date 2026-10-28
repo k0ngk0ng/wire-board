@@ -1,0 +1,2251 @@
+{
+  "source_is_original_execution": true,
+  "romSHA256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "runs": [
+    {
+      "kind": "stage-initialization",
+      "stage": 1,
+      "bgm": {
+        "frame": 1081,
+        "id": 70,
+        "caller": 52393,
+        "bank": 20,
+        "stage": 0,
+        "gamePhase": 5,
+        "levelPhase": 2,
+        "actor": 32
+      },
+      "requests": [
+        {
+          "frame": 63,
+          "id": 63,
+          "caller": 49239,
+          "bank": 24,
+          "stage": 0,
+          "gamePhase": 1,
+          "levelPhase": 0,
+          "actor": 36
+        },
+        {
+          "frame": 453,
+          "id": 67,
+          "caller": 37784,
+          "bank": 24,
+          "stage": 0,
+          "gamePhase": 4,
+          "levelPhase": 0,
+          "actor": 255
+        },
+        {
+          "frame": 532,
+          "id": 49,
+          "caller": 37875,
+          "bank": 24,
+          "stage": 0,
+          "gamePhase": 4,
+          "levelPhase": 0,
+          "actor": 0
+        },
+        {
+          "frame": 772,
+          "id": 20,
+          "caller": 33706,
+          "bank": 26,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 1,
+          "actor": 255
+        },
+        {
+          "frame": 1081,
+          "id": 70,
+          "caller": 52393,
+          "bank": 20,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 2,
+          "actor": 32
+        },
+        {
+          "frame": 1162,
+          "id": 11,
+          "caller": 55216,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 0
+        },
+        {
+          "frame": 1162,
+          "id": 11,
+          "caller": 55216,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 1
+        }
+      ],
+      "source": {
+        "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+        "source_archive": "/Users/jason/Documents/nes/roms/03/\u9b42\u6597\u7f57\u65e5\u7248(\u5b8c\u5168\u7248).zip",
+        "initial_state": null,
+        "emulator": "/opt/homebrew/bin/fceux",
+        "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+        "frames": 1420,
+        "scenario_sha256": "0a8a04b26613f91e435b1bea7b25bfb304c5fc915296dc522df1e27ad7dba66b",
+        "has_custom_hooks": true,
+        "completed": true
+      },
+      "intervention": "one original stage-index selection at CC5F; audio hooks read only",
+      "sameRAMAsInitializerOracle": true,
+      "slotsSHA256": "37e7a2b5fae617f7a6bc55a2a301e13e653bf133e6a6c32dcacf86e387536d43"
+    },
+    {
+      "kind": "stage-initialization",
+      "stage": 2,
+      "bgm": {
+        "frame": 1081,
+        "id": 90,
+        "caller": 52393,
+        "bank": 20,
+        "stage": 1,
+        "gamePhase": 5,
+        "levelPhase": 2,
+        "actor": 32
+      },
+      "requests": [
+        {
+          "frame": 63,
+          "id": 63,
+          "caller": 49239,
+          "bank": 24,
+          "stage": 0,
+          "gamePhase": 1,
+          "levelPhase": 0,
+          "actor": 36
+        },
+        {
+          "frame": 453,
+          "id": 67,
+          "caller": 37784,
+          "bank": 24,
+          "stage": 0,
+          "gamePhase": 4,
+          "levelPhase": 0,
+          "actor": 255
+        },
+        {
+          "frame": 532,
+          "id": 49,
+          "caller": 37875,
+          "bank": 24,
+          "stage": 0,
+          "gamePhase": 4,
+          "levelPhase": 0,
+          "actor": 0
+        },
+        {
+          "frame": 772,
+          "id": 20,
+          "caller": 33706,
+          "bank": 26,
+          "stage": 1,
+          "gamePhase": 5,
+          "levelPhase": 1,
+          "actor": 255
+        },
+        {
+          "frame": 1081,
+          "id": 90,
+          "caller": 52393,
+          "bank": 20,
+          "stage": 1,
+          "gamePhase": 5,
+          "levelPhase": 2,
+          "actor": 32
+        },
+        {
+          "frame": 1146,
+          "id": 11,
+          "caller": 55216,
+          "bank": 28,
+          "stage": 1,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 0
+        },
+        {
+          "frame": 1146,
+          "id": 11,
+          "caller": 55216,
+          "bank": 28,
+          "stage": 1,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 1
+        },
+        {
+          "frame": 1410,
+          "id": 114,
+          "caller": 54393,
+          "bank": 16,
+          "stage": 1,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 0
+        },
+        {
+          "frame": 1418,
+          "id": 114,
+          "caller": 54393,
+          "bank": 16,
+          "stage": 1,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 1
+        }
+      ],
+      "source": {
+        "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+        "source_archive": "/Users/jason/Documents/nes/roms/03/\u9b42\u6597\u7f57\u65e5\u7248(\u5b8c\u5168\u7248).zip",
+        "initial_state": null,
+        "emulator": "/opt/homebrew/bin/fceux",
+        "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+        "frames": 1420,
+        "scenario_sha256": "351e983c1d7c52a8ac88d60cd5cd56015d8e0b22888595b8c286722d706ce075",
+        "has_custom_hooks": true,
+        "completed": true
+      },
+      "intervention": "one original stage-index selection at CC5F; audio hooks read only",
+      "sameRAMAsInitializerOracle": true,
+      "slotsSHA256": "b015c81221a9ace5db81444785e81c207be5b7be9291322ec50535834850fefd"
+    },
+    {
+      "kind": "stage-initialization",
+      "stage": 3,
+      "bgm": {
+        "frame": 1081,
+        "id": 74,
+        "caller": 52393,
+        "bank": 20,
+        "stage": 2,
+        "gamePhase": 5,
+        "levelPhase": 2,
+        "actor": 32
+      },
+      "requests": [
+        {
+          "frame": 63,
+          "id": 63,
+          "caller": 49239,
+          "bank": 24,
+          "stage": 0,
+          "gamePhase": 1,
+          "levelPhase": 0,
+          "actor": 36
+        },
+        {
+          "frame": 453,
+          "id": 67,
+          "caller": 37784,
+          "bank": 24,
+          "stage": 0,
+          "gamePhase": 4,
+          "levelPhase": 0,
+          "actor": 255
+        },
+        {
+          "frame": 532,
+          "id": 49,
+          "caller": 37875,
+          "bank": 24,
+          "stage": 0,
+          "gamePhase": 4,
+          "levelPhase": 0,
+          "actor": 0
+        },
+        {
+          "frame": 772,
+          "id": 20,
+          "caller": 33706,
+          "bank": 26,
+          "stage": 2,
+          "gamePhase": 5,
+          "levelPhase": 1,
+          "actor": 255
+        },
+        {
+          "frame": 1081,
+          "id": 74,
+          "caller": 52393,
+          "bank": 20,
+          "stage": 2,
+          "gamePhase": 5,
+          "levelPhase": 2,
+          "actor": 32
+        },
+        {
+          "frame": 1150,
+          "id": 11,
+          "caller": 55216,
+          "bank": 28,
+          "stage": 2,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 0
+        },
+        {
+          "frame": 1150,
+          "id": 11,
+          "caller": 55216,
+          "bank": 28,
+          "stage": 2,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 1
+        }
+      ],
+      "source": {
+        "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+        "source_archive": "/Users/jason/Documents/nes/roms/03/\u9b42\u6597\u7f57\u65e5\u7248(\u5b8c\u5168\u7248).zip",
+        "initial_state": null,
+        "emulator": "/opt/homebrew/bin/fceux",
+        "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+        "frames": 1420,
+        "scenario_sha256": "c9b795190f8c94b670dfca8d7fb173f6ef55d1c3f9d11ec78a1081099f51669c",
+        "has_custom_hooks": true,
+        "completed": true
+      },
+      "intervention": "one original stage-index selection at CC5F; audio hooks read only",
+      "sameRAMAsInitializerOracle": true,
+      "slotsSHA256": "64dbc5e9d1879cc615d1a3550552c2e1121c3f7a250d3a4aad8561054e22dbbc"
+    },
+    {
+      "kind": "stage-initialization",
+      "stage": 4,
+      "bgm": {
+        "frame": 1081,
+        "id": 90,
+        "caller": 52393,
+        "bank": 20,
+        "stage": 3,
+        "gamePhase": 5,
+        "levelPhase": 2,
+        "actor": 32
+      },
+      "requests": [
+        {
+          "frame": 63,
+          "id": 63,
+          "caller": 49239,
+          "bank": 24,
+          "stage": 0,
+          "gamePhase": 1,
+          "levelPhase": 0,
+          "actor": 36
+        },
+        {
+          "frame": 453,
+          "id": 67,
+          "caller": 37784,
+          "bank": 24,
+          "stage": 0,
+          "gamePhase": 4,
+          "levelPhase": 0,
+          "actor": 255
+        },
+        {
+          "frame": 532,
+          "id": 49,
+          "caller": 37875,
+          "bank": 24,
+          "stage": 0,
+          "gamePhase": 4,
+          "levelPhase": 0,
+          "actor": 0
+        },
+        {
+          "frame": 772,
+          "id": 20,
+          "caller": 33706,
+          "bank": 26,
+          "stage": 3,
+          "gamePhase": 5,
+          "levelPhase": 1,
+          "actor": 255
+        },
+        {
+          "frame": 1081,
+          "id": 90,
+          "caller": 52393,
+          "bank": 20,
+          "stage": 3,
+          "gamePhase": 5,
+          "levelPhase": 2,
+          "actor": 32
+        },
+        {
+          "frame": 1146,
+          "id": 11,
+          "caller": 55216,
+          "bank": 28,
+          "stage": 3,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 0
+        },
+        {
+          "frame": 1146,
+          "id": 11,
+          "caller": 55216,
+          "bank": 28,
+          "stage": 3,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 1
+        },
+        {
+          "frame": 1398,
+          "id": 114,
+          "caller": 54393,
+          "bank": 16,
+          "stage": 3,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 1
+        },
+        {
+          "frame": 1414,
+          "id": 114,
+          "caller": 54393,
+          "bank": 16,
+          "stage": 3,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 0
+        }
+      ],
+      "source": {
+        "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+        "source_archive": "/Users/jason/Documents/nes/roms/03/\u9b42\u6597\u7f57\u65e5\u7248(\u5b8c\u5168\u7248).zip",
+        "initial_state": null,
+        "emulator": "/opt/homebrew/bin/fceux",
+        "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+        "frames": 1420,
+        "scenario_sha256": "f54acd7b4890ffa85712e55c4536d9d9c41f8c5f714deb289f1ae4742c6f06b7",
+        "has_custom_hooks": true,
+        "completed": true
+      },
+      "intervention": "one original stage-index selection at CC5F; audio hooks read only",
+      "sameRAMAsInitializerOracle": true,
+      "slotsSHA256": "5fc0b5091434d6836564de0098c9d2509d3784347e082b71dde359a1ee1492e9"
+    },
+    {
+      "kind": "stage-initialization",
+      "stage": 5,
+      "bgm": {
+        "frame": 1081,
+        "id": 78,
+        "caller": 52393,
+        "bank": 20,
+        "stage": 4,
+        "gamePhase": 5,
+        "levelPhase": 2,
+        "actor": 32
+      },
+      "requests": [
+        {
+          "frame": 63,
+          "id": 63,
+          "caller": 49239,
+          "bank": 24,
+          "stage": 0,
+          "gamePhase": 1,
+          "levelPhase": 0,
+          "actor": 36
+        },
+        {
+          "frame": 453,
+          "id": 67,
+          "caller": 37784,
+          "bank": 24,
+          "stage": 0,
+          "gamePhase": 4,
+          "levelPhase": 0,
+          "actor": 255
+        },
+        {
+          "frame": 532,
+          "id": 49,
+          "caller": 37875,
+          "bank": 24,
+          "stage": 0,
+          "gamePhase": 4,
+          "levelPhase": 0,
+          "actor": 0
+        },
+        {
+          "frame": 772,
+          "id": 20,
+          "caller": 33706,
+          "bank": 26,
+          "stage": 4,
+          "gamePhase": 5,
+          "levelPhase": 1,
+          "actor": 255
+        },
+        {
+          "frame": 1081,
+          "id": 78,
+          "caller": 52393,
+          "bank": 20,
+          "stage": 4,
+          "gamePhase": 5,
+          "levelPhase": 2,
+          "actor": 32
+        },
+        {
+          "frame": 1168,
+          "id": 11,
+          "caller": 55216,
+          "bank": 28,
+          "stage": 4,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 0
+        },
+        {
+          "frame": 1168,
+          "id": 11,
+          "caller": 55216,
+          "bank": 28,
+          "stage": 4,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 1
+        }
+      ],
+      "source": {
+        "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+        "source_archive": "/Users/jason/Documents/nes/roms/03/\u9b42\u6597\u7f57\u65e5\u7248(\u5b8c\u5168\u7248).zip",
+        "initial_state": null,
+        "emulator": "/opt/homebrew/bin/fceux",
+        "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+        "frames": 1420,
+        "scenario_sha256": "3c8d36c00182d6b6d02b22f0782cfec248aad3fdfaf7d5e8d48fe4269ba895d8",
+        "has_custom_hooks": true,
+        "completed": true
+      },
+      "intervention": "one original stage-index selection at CC5F; audio hooks read only",
+      "sameRAMAsInitializerOracle": true,
+      "slotsSHA256": "0a4f49cca080b868de7154c6736954127a60fbcc07098446c3582c5fe72d9be6"
+    },
+    {
+      "kind": "stage-initialization",
+      "stage": 6,
+      "bgm": {
+        "frame": 1081,
+        "id": 82,
+        "caller": 52393,
+        "bank": 20,
+        "stage": 5,
+        "gamePhase": 5,
+        "levelPhase": 2,
+        "actor": 32
+      },
+      "requests": [
+        {
+          "frame": 63,
+          "id": 63,
+          "caller": 49239,
+          "bank": 24,
+          "stage": 0,
+          "gamePhase": 1,
+          "levelPhase": 0,
+          "actor": 36
+        },
+        {
+          "frame": 453,
+          "id": 67,
+          "caller": 37784,
+          "bank": 24,
+          "stage": 0,
+          "gamePhase": 4,
+          "levelPhase": 0,
+          "actor": 255
+        },
+        {
+          "frame": 532,
+          "id": 49,
+          "caller": 37875,
+          "bank": 24,
+          "stage": 0,
+          "gamePhase": 4,
+          "levelPhase": 0,
+          "actor": 0
+        },
+        {
+          "frame": 772,
+          "id": 20,
+          "caller": 33706,
+          "bank": 26,
+          "stage": 5,
+          "gamePhase": 5,
+          "levelPhase": 1,
+          "actor": 255
+        },
+        {
+          "frame": 971,
+          "id": 22,
+          "caller": 33888,
+          "bank": 26,
+          "stage": 5,
+          "gamePhase": 5,
+          "levelPhase": 1,
+          "actor": 17
+        },
+        {
+          "frame": 992,
+          "id": 24,
+          "caller": 33511,
+          "bank": 26,
+          "stage": 5,
+          "gamePhase": 5,
+          "levelPhase": 1,
+          "actor": 255
+        },
+        {
+          "frame": 1024,
+          "id": 24,
+          "caller": 33511,
+          "bank": 26,
+          "stage": 5,
+          "gamePhase": 5,
+          "levelPhase": 1,
+          "actor": 255
+        },
+        {
+          "frame": 1056,
+          "id": 24,
+          "caller": 33511,
+          "bank": 26,
+          "stage": 5,
+          "gamePhase": 5,
+          "levelPhase": 1,
+          "actor": 255
+        },
+        {
+          "frame": 1081,
+          "id": 82,
+          "caller": 52393,
+          "bank": 20,
+          "stage": 5,
+          "gamePhase": 5,
+          "levelPhase": 2,
+          "actor": 32
+        },
+        {
+          "frame": 1179,
+          "id": 11,
+          "caller": 55216,
+          "bank": 28,
+          "stage": 5,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 0
+        },
+        {
+          "frame": 1179,
+          "id": 11,
+          "caller": 55216,
+          "bank": 28,
+          "stage": 5,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 1
+        }
+      ],
+      "source": {
+        "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+        "source_archive": "/Users/jason/Documents/nes/roms/03/\u9b42\u6597\u7f57\u65e5\u7248(\u5b8c\u5168\u7248).zip",
+        "initial_state": null,
+        "emulator": "/opt/homebrew/bin/fceux",
+        "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+        "frames": 1420,
+        "scenario_sha256": "b376cfc313ab10b11e8ba500e1ffc4edc253c8ee784951d1dba88b1fcbbdb67e",
+        "has_custom_hooks": true,
+        "completed": true
+      },
+      "intervention": "one original stage-index selection at CC5F; audio hooks read only",
+      "sameRAMAsInitializerOracle": true,
+      "slotsSHA256": "ad2aa55e3dff1402807207d599559e963e526878e2cd3ca2e1d36cd275f706fa"
+    },
+    {
+      "kind": "stage-initialization",
+      "stage": 7,
+      "bgm": {
+        "frame": 1081,
+        "id": 70,
+        "caller": 52393,
+        "bank": 20,
+        "stage": 6,
+        "gamePhase": 5,
+        "levelPhase": 2,
+        "actor": 32
+      },
+      "requests": [
+        {
+          "frame": 63,
+          "id": 63,
+          "caller": 49239,
+          "bank": 24,
+          "stage": 0,
+          "gamePhase": 1,
+          "levelPhase": 0,
+          "actor": 36
+        },
+        {
+          "frame": 453,
+          "id": 67,
+          "caller": 37784,
+          "bank": 24,
+          "stage": 0,
+          "gamePhase": 4,
+          "levelPhase": 0,
+          "actor": 255
+        },
+        {
+          "frame": 532,
+          "id": 49,
+          "caller": 37875,
+          "bank": 24,
+          "stage": 0,
+          "gamePhase": 4,
+          "levelPhase": 0,
+          "actor": 0
+        },
+        {
+          "frame": 772,
+          "id": 20,
+          "caller": 33706,
+          "bank": 26,
+          "stage": 6,
+          "gamePhase": 5,
+          "levelPhase": 1,
+          "actor": 255
+        },
+        {
+          "frame": 971,
+          "id": 22,
+          "caller": 33888,
+          "bank": 26,
+          "stage": 6,
+          "gamePhase": 5,
+          "levelPhase": 1,
+          "actor": 17
+        },
+        {
+          "frame": 1016,
+          "id": 24,
+          "caller": 33511,
+          "bank": 26,
+          "stage": 6,
+          "gamePhase": 5,
+          "levelPhase": 1,
+          "actor": 255
+        },
+        {
+          "frame": 1048,
+          "id": 24,
+          "caller": 33511,
+          "bank": 26,
+          "stage": 6,
+          "gamePhase": 5,
+          "levelPhase": 1,
+          "actor": 255
+        },
+        {
+          "frame": 1081,
+          "id": 70,
+          "caller": 52393,
+          "bank": 20,
+          "stage": 6,
+          "gamePhase": 5,
+          "levelPhase": 2,
+          "actor": 32
+        },
+        {
+          "frame": 1168,
+          "id": 11,
+          "caller": 55216,
+          "bank": 28,
+          "stage": 6,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 0
+        },
+        {
+          "frame": 1168,
+          "id": 11,
+          "caller": 55216,
+          "bank": 28,
+          "stage": 6,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 1
+        }
+      ],
+      "source": {
+        "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+        "source_archive": "/Users/jason/Documents/nes/roms/03/\u9b42\u6597\u7f57\u65e5\u7248(\u5b8c\u5168\u7248).zip",
+        "initial_state": null,
+        "emulator": "/opt/homebrew/bin/fceux",
+        "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+        "frames": 1420,
+        "scenario_sha256": "39a24748d31f78dba091ed4045d13db4448d01d5c22a1fead12252cf3fb5d3bc",
+        "has_custom_hooks": true,
+        "completed": true
+      },
+      "intervention": "one original stage-index selection at CC5F; audio hooks read only",
+      "sameRAMAsInitializerOracle": true,
+      "slotsSHA256": "b066d24a3568d5341eebdfb4c5a9655c1e9c2a9261489b008eabcb3daae1f07e"
+    },
+    {
+      "kind": "stage-initialization",
+      "stage": 8,
+      "bgm": {
+        "frame": 1081,
+        "id": 86,
+        "caller": 52393,
+        "bank": 20,
+        "stage": 7,
+        "gamePhase": 5,
+        "levelPhase": 2,
+        "actor": 32
+      },
+      "requests": [
+        {
+          "frame": 63,
+          "id": 63,
+          "caller": 49239,
+          "bank": 24,
+          "stage": 0,
+          "gamePhase": 1,
+          "levelPhase": 0,
+          "actor": 36
+        },
+        {
+          "frame": 453,
+          "id": 67,
+          "caller": 37784,
+          "bank": 24,
+          "stage": 0,
+          "gamePhase": 4,
+          "levelPhase": 0,
+          "actor": 255
+        },
+        {
+          "frame": 532,
+          "id": 49,
+          "caller": 37875,
+          "bank": 24,
+          "stage": 0,
+          "gamePhase": 4,
+          "levelPhase": 0,
+          "actor": 0
+        },
+        {
+          "frame": 772,
+          "id": 20,
+          "caller": 33706,
+          "bank": 26,
+          "stage": 7,
+          "gamePhase": 5,
+          "levelPhase": 1,
+          "actor": 255
+        },
+        {
+          "frame": 971,
+          "id": 22,
+          "caller": 33888,
+          "bank": 26,
+          "stage": 7,
+          "gamePhase": 5,
+          "levelPhase": 1,
+          "actor": 17
+        },
+        {
+          "frame": 1040,
+          "id": 24,
+          "caller": 33511,
+          "bank": 26,
+          "stage": 7,
+          "gamePhase": 5,
+          "levelPhase": 1,
+          "actor": 255
+        },
+        {
+          "frame": 1072,
+          "id": 24,
+          "caller": 33511,
+          "bank": 26,
+          "stage": 7,
+          "gamePhase": 5,
+          "levelPhase": 1,
+          "actor": 255
+        },
+        {
+          "frame": 1081,
+          "id": 86,
+          "caller": 52393,
+          "bank": 20,
+          "stage": 7,
+          "gamePhase": 5,
+          "levelPhase": 2,
+          "actor": 32
+        },
+        {
+          "frame": 1179,
+          "id": 11,
+          "caller": 55216,
+          "bank": 28,
+          "stage": 7,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 0
+        },
+        {
+          "frame": 1179,
+          "id": 11,
+          "caller": 55216,
+          "bank": 28,
+          "stage": 7,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 1
+        }
+      ],
+      "source": {
+        "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+        "source_archive": "/Users/jason/Documents/nes/roms/03/\u9b42\u6597\u7f57\u65e5\u7248(\u5b8c\u5168\u7248).zip",
+        "initial_state": null,
+        "emulator": "/opt/homebrew/bin/fceux",
+        "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+        "frames": 1420,
+        "scenario_sha256": "1cce2db52b09f9b235b0414b851a791f106e3d8e1f69e9d855a4bef9e3059b81",
+        "has_custom_hooks": true,
+        "completed": true
+      },
+      "intervention": "one original stage-index selection at CC5F; audio hooks read only",
+      "sameRAMAsInitializerOracle": true,
+      "slotsSHA256": "f949c0dc5933275e7f424a61f75b295db2ade5444cf757cc9ba09e1e19059ce0"
+    },
+    {
+      "kind": "natural-machine-gun-pickup",
+      "requests": [
+        {
+          "frame": 1400,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 0
+        },
+        {
+          "frame": 1400,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 10
+        },
+        {
+          "frame": 1404,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 1
+        },
+        {
+          "frame": 1404,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 11
+        },
+        {
+          "frame": 1408,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 2
+        },
+        {
+          "frame": 1408,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 12
+        },
+        {
+          "frame": 1412,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 3
+        },
+        {
+          "frame": 1412,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 13
+        },
+        {
+          "frame": 1464,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 0
+        },
+        {
+          "frame": 1468,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 1
+        },
+        {
+          "frame": 1472,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 2
+        },
+        {
+          "frame": 1472,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 10
+        },
+        {
+          "frame": 1473,
+          "id": 11,
+          "caller": 55216,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 0
+        },
+        {
+          "frame": 1473,
+          "id": 11,
+          "caller": 55216,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 1
+        },
+        {
+          "frame": 1476,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 3
+        },
+        {
+          "frame": 1476,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 11
+        },
+        {
+          "frame": 1480,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 12
+        },
+        {
+          "frame": 1484,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 13
+        },
+        {
+          "frame": 1508,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 0
+        },
+        {
+          "frame": 1512,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 1
+        },
+        {
+          "frame": 1516,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 2
+        },
+        {
+          "frame": 1520,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 3
+        },
+        {
+          "frame": 1520,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 10
+        },
+        {
+          "frame": 1524,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 11
+        },
+        {
+          "frame": 1528,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 12
+        },
+        {
+          "frame": 1532,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 13
+        },
+        {
+          "frame": 1543,
+          "id": 11,
+          "caller": 55216,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 0
+        },
+        {
+          "frame": 1543,
+          "id": 11,
+          "caller": 55216,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 1
+        },
+        {
+          "frame": 1544,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 0
+        },
+        {
+          "frame": 1548,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 1
+        },
+        {
+          "frame": 1552,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 2
+        },
+        {
+          "frame": 1556,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 3
+        },
+        {
+          "frame": 1560,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 0
+        },
+        {
+          "frame": 1564,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 10
+        },
+        {
+          "frame": 1568,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 11
+        },
+        {
+          "frame": 1571,
+          "id": 47,
+          "caller": 59035,
+          "bank": 16,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 15
+        },
+        {
+          "frame": 1572,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 12
+        },
+        {
+          "frame": 1576,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 13
+        },
+        {
+          "frame": 1584,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 1
+        },
+        {
+          "frame": 1588,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 2
+        },
+        {
+          "frame": 1596,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 0
+        },
+        {
+          "frame": 1600,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 3
+        },
+        {
+          "frame": 1606,
+          "id": 47,
+          "caller": 59035,
+          "bank": 16,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 14
+        },
+        {
+          "frame": 1608,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 10
+        },
+        {
+          "frame": 1612,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 11
+        },
+        {
+          "frame": 1613,
+          "id": 11,
+          "caller": 55216,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 0
+        },
+        {
+          "frame": 1613,
+          "id": 11,
+          "caller": 55216,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 1
+        },
+        {
+          "frame": 1616,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 12
+        },
+        {
+          "frame": 1620,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 1
+        },
+        {
+          "frame": 1620,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 13
+        },
+        {
+          "frame": 1624,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 2
+        },
+        {
+          "frame": 1632,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 0
+        },
+        {
+          "frame": 1636,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 3
+        },
+        {
+          "frame": 1652,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 1
+        },
+        {
+          "frame": 1652,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 10
+        },
+        {
+          "frame": 1656,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 2
+        },
+        {
+          "frame": 1656,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 11
+        },
+        {
+          "frame": 1660,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 12
+        },
+        {
+          "frame": 1664,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 0
+        },
+        {
+          "frame": 1668,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 3
+        },
+        {
+          "frame": 1670,
+          "id": 47,
+          "caller": 59035,
+          "bank": 16,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 14
+        },
+        {
+          "frame": 1675,
+          "id": 47,
+          "caller": 33497,
+          "bank": 16,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 15
+        },
+        {
+          "frame": 1684,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 10
+        },
+        {
+          "frame": 1688,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 13
+        },
+        {
+          "frame": 1691,
+          "id": 56,
+          "caller": 57905,
+          "bank": 16,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 0
+        },
+        {
+          "frame": 1692,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 4
+        },
+        {
+          "frame": 1700,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 5
+        },
+        {
+          "frame": 1716,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 1
+        },
+        {
+          "frame": 1720,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 11
+        },
+        {
+          "frame": 1724,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 2
+        },
+        {
+          "frame": 1724,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 12
+        },
+        {
+          "frame": 1728,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 10
+        },
+        {
+          "frame": 1732,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 0
+        },
+        {
+          "frame": 1732,
+          "id": 26,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 13
+        },
+        {
+          "frame": 1740,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 3
+        },
+        {
+          "frame": 1748,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 4
+        },
+        {
+          "frame": 1756,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 1
+        },
+        {
+          "frame": 1764,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 2
+        },
+        {
+          "frame": 1772,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 0
+        },
+        {
+          "frame": 1780,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 3
+        },
+        {
+          "frame": 1788,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 4
+        },
+        {
+          "frame": 1796,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 1
+        },
+        {
+          "frame": 1811,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 0
+        },
+        {
+          "frame": 1819,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 2
+        },
+        {
+          "frame": 1827,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 3
+        },
+        {
+          "frame": 1835,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 4
+        },
+        {
+          "frame": 1843,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 1
+        },
+        {
+          "frame": 1847,
+          "id": 47,
+          "caller": 59035,
+          "bank": 16,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 6
+        },
+        {
+          "frame": 1851,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 0
+        },
+        {
+          "frame": 1859,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 2
+        },
+        {
+          "frame": 1874,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 3
+        },
+        {
+          "frame": 1882,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 1
+        },
+        {
+          "frame": 1890,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 0
+        },
+        {
+          "frame": 1898,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 2
+        },
+        {
+          "frame": 1906,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 4
+        },
+        {
+          "frame": 1914,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 3
+        },
+        {
+          "frame": 1922,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 1
+        },
+        {
+          "frame": 1928,
+          "id": 11,
+          "caller": 55216,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 0
+        },
+        {
+          "frame": 1928,
+          "id": 11,
+          "caller": 55216,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 1
+        },
+        {
+          "frame": 1937,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 0
+        },
+        {
+          "frame": 1945,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 2
+        },
+        {
+          "frame": 1953,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 1
+        },
+        {
+          "frame": 1961,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 0
+        },
+        {
+          "frame": 1969,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 2
+        },
+        {
+          "frame": 1977,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 1
+        },
+        {
+          "frame": 1985,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 0
+        },
+        {
+          "frame": 1994,
+          "id": 47,
+          "caller": 33497,
+          "bank": 16,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 11
+        },
+        {
+          "frame": 1998,
+          "id": 11,
+          "caller": 55216,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 0
+        },
+        {
+          "frame": 1998,
+          "id": 11,
+          "caller": 55216,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 1
+        },
+        {
+          "frame": 2000,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 0
+        },
+        {
+          "frame": 2008,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 1
+        },
+        {
+          "frame": 2016,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 2
+        },
+        {
+          "frame": 2024,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 0
+        },
+        {
+          "frame": 2032,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 1
+        },
+        {
+          "frame": 2040,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 2
+        },
+        {
+          "frame": 2048,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 0
+        },
+        {
+          "frame": 2063,
+          "id": 28,
+          "caller": 33235,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 1
+        },
+        {
+          "frame": 2066,
+          "id": 114,
+          "caller": 54393,
+          "bank": 16,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 0
+        },
+        {
+          "frame": 2068,
+          "id": 11,
+          "caller": 55216,
+          "bank": 28,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 1
+        }
+      ],
+      "source": {
+        "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+        "source_archive": "/Users/jason/Documents/nes/roms/03/\u9b42\u6597\u7f57\u65e5\u7248(\u5b8c\u5168\u7248).zip",
+        "initial_state": {
+          "name": "coop-play.fcs",
+          "sha256": "3101897748bbc64347634680bc4597161bfdee6339a349a1eb6f5c41cd5b6c7e"
+        },
+        "emulator": "/opt/homebrew/bin/fceux",
+        "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+        "frames": 700,
+        "scenario_sha256": "dd61ab4af2b9bf457e630bec2f890109d4c2bb745e48647c8562c1789aaa22fe",
+        "has_custom_hooks": true,
+        "completed": true
+      },
+      "intervention": "none; controller inputs only",
+      "sameRAMAsNaturalPickupOracle": true,
+      "slotsSHA256": "83e19564f2a27db9b7edea8e3cd717caf17dfed8e3ba23e75fd3039aba1877b0"
+    },
+    {
+      "kind": "natural-pause-resume",
+      "requests": [
+        {
+          "frame": 1429,
+          "id": 116,
+          "caller": 52436,
+          "bank": 18,
+          "stage": 0,
+          "gamePhase": 5,
+          "levelPhase": 4,
+          "actor": 255
+        }
+      ],
+      "source": {
+        "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+        "source_archive": "/Users/jason/Documents/nes/roms/03/\u9b42\u6597\u7f57\u65e5\u7248(\u5b8c\u5168\u7248).zip",
+        "initial_state": {
+          "name": "coop-play.fcs",
+          "sha256": "3101897748bbc64347634680bc4597161bfdee6339a349a1eb6f5c41cd5b6c7e"
+        },
+        "emulator": "/opt/homebrew/bin/fceux",
+        "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+        "frames": 150,
+        "scenario_sha256": "afc5da86c6c2c626d83f90b77984eeef682b9e693cf00717c62f4ca9e93bc7cf",
+        "has_custom_hooks": true,
+        "completed": true
+      },
+      "intervention": "none; Start presses only",
+      "pausedFrames": [
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89
+      ],
+      "slotsSHA256": "dec0e3cbf8a613a5f8b7ced55cefc07ec211c14a8bf92d10177bbac14e79e3e0"
+    }
+  ]
+}

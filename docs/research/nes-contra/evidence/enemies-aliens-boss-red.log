@@ -1,0 +1,6 @@
+# command-line-arguments [command-line-arguments.test]
+games/contra/engine/enemies_aliens_boss_test.go:91:8: undefined: AlienBossContext
+games/contra/engine/enemies_aliens_boss_test.go:121:12: s.StepAlienGuardian undefined (type EnemySystem has no field or method StepAlienGuardian)
+games/contra/engine/enemies_aliens_boss_test.go:123:12: s.StepAlienHeart undefined (type EnemySystem has no field or method StepAlienHeart)
+FAIL	command-line-arguments [build failed]
+FAIL

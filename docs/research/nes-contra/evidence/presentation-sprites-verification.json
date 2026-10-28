@@ -1,0 +1,205 @@
+{
+  "passed": true,
+  "naturalCalls": 4868,
+  "controlledCases": 20,
+  "controlledCalls": 39,
+  "totalCalls": 4907,
+  "continuousStateCalls": 2087,
+  "generationWriteEvents": 1314,
+  "generationChangedCalls": 793,
+  "sameFinalValueWriteCalls": 615,
+  "race": "passed",
+  "source": {
+    "sourceRomSHA256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+    "fixtureSHA256": "04ea738267b1483b1ec924bd1a7bdbe504748f9412c4c71726e0c605e3567551",
+    "runtimeDataSHA256": "fe84f190385ee83695635445a2712a5dd7ee4fab7b96a00595e6dd44a1362f74",
+    "naturalRecords": 4868,
+    "controlledRecords": 39,
+    "naturalTraces": 10,
+    "controlledCases": 20,
+    "naturalRepeatRAMIdentical": true,
+    "source": "Original complete 919F execution, no output substitution.",
+    "generationBiasSource": "92D9 shared component pointer low byte; write events retained even when value unchanged.",
+    "limitations": [
+      "Controlled overloaded linear mode crosses video frames; capture drains only the already-entered call.",
+      "Pixel submission remains the next World presentation boundary; tests here validate composition output."
+    ]
+  },
+  "scope": "Original whole-scene composition, persistent state and compatibility output; presentation submission remains a separate next-frame boundary.",
+  "files": {
+    "games/contra/engine/presentation_sprites.go": "32d2ce2fd0f29928f654da2c0666ea07e37c3ec901c313ca6f213684f646860d",
+    "games/contra/engine/presentation_sprites_test.go": "bdb3553fb9f871fbe803d4eb99e9a7db477fb6bf2f4c38ff48965a741976b5fd",
+    "games/contra/engine/presentation_sprites_data.json": "fe84f190385ee83695635445a2712a5dd7ee4fab7b96a00595e6dd44a1362f74",
+    "games/contra/engine/testdata/original-presentation-sprites.json.gz": "04ea738267b1483b1ec924bd1a7bdbe504748f9412c4c71726e0c605e3567551",
+    "docs/research/nes-contra/evidence/presentation-sprites-green.jsonl": "bb51cf66d0f1539d10e9df9bd9af901b04330a0f2e4487e601d78753e0e26862",
+    "docs/research/nes-contra/evidence/presentation-sprites-race.jsonl": "1c6ac5049a3cd74996166c1c7e17682b5f577c1aef3c2ed751c3df1fc83731b4",
+    "docs/research/nes-contra/evidence/presentation-sprites-red.jsonl": "7cc511da1bcaadcc69b0813cd55ade72f9d89752e1222bfbf956bad6907b48a2",
+    "docs/research/nes-contra/evidence/presentation-sprites-rea.json.gz": "747274af56268b940c7e52c9d6ccea1783464bd90c744bb6ee3c3daec4236424"
+  },
+  "cleanup": [
+    {
+      "path": ".local/contra-presentation-sprites/swift-cache",
+      "bytes": 93402576
+    },
+    {
+      "path": "dist/cps-tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-presentation-sprites/runtime/fceux-home",
+      "bytes": 17813
+    },
+    {
+      "path": ".local/contra-presentation-sprites/runtime/runtime",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-presentation-sprites/runtime/tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-presentation-sprites/runtime/runs/composition-case-linear-wrap-v1",
+      "bytes": 649486
+    },
+    {
+      "path": ".local/contra-presentation-sprites/runtime/runs/composition-case-empty-retains-generation-v1",
+      "bytes": 660803
+    },
+    {
+      "path": ".local/contra-presentation-sprites/runtime/runs/composition-case-linear-all26-v1",
+      "bytes": 665398
+    },
+    {
+      "path": ".local/contra-presentation-sprites/runtime/runs/composition-stage-4-v1",
+      "bytes": 2974904
+    },
+    {
+      "path": ".local/contra-presentation-sprites/runtime/runs/composition-boot-1-v1",
+      "bytes": 10184788
+    },
+    {
+      "path": ".local/contra-presentation-sprites/runtime/runs/composition-stage-1-v1",
+      "bytes": 2940486
+    },
+    {
+      "path": ".local/contra-presentation-sprites/runtime/runs/composition-stage-5-v1",
+      "bytes": 2934849
+    },
+    {
+      "path": ".local/contra-presentation-sprites/runtime/runs/composition-boot-0-v1",
+      "bytes": 10178706
+    },
+    {
+      "path": ".local/contra-presentation-sprites/runtime/runs/composition-stage-2-v1",
+      "bytes": 2983003
+    },
+    {
+      "path": ".local/contra-presentation-sprites/runtime/runs/composition-case-shared-same-generation-v1",
+      "bytes": 661558
+    },
+    {
+      "path": ".local/contra-presentation-sprites/runtime/runs/composition-stage-6-v1",
+      "bytes": 2931953
+    },
+    {
+      "path": ".local/contra-presentation-sprites/runtime/runs/composition-case-linear-empty-v1",
+      "bytes": 660856
+    },
+    {
+      "path": ".local/contra-presentation-sprites/runtime/runs/composition-stage-7-v1",
+      "bytes": 2932943
+    },
+    {
+      "path": ".local/contra-presentation-sprites/runtime/runs/composition-case-capacity-overrun-v1",
+      "bytes": 667630
+    },
+    {
+      "path": ".local/contra-presentation-sprites/runtime/runs/composition-stage-3-v1",
+      "bytes": 2946099
+    },
+    {
+      "path": ".local/contra-presentation-sprites/runtime/runs/composition-case-all26-small-v1",
+      "bytes": 665287
+    },
+    {
+      "path": ".local/contra-presentation-sprites/runtime/runs/composition-stage-8-v1",
+      "bytes": 2944861
+    },
+    {
+      "path": ".local/contra-presentation-sprites/runtime/runs/composition-case-shared-same-generation-v2",
+      "bytes": 662484
+    },
+    {
+      "path": ".local/contra-presentation-sprites/runtime/runs/composition-case-snow-fast-scroll-v2",
+      "bytes": 658948
+    },
+    {
+      "path": ".local/contra-presentation-sprites/runtime/runs/composition-case-hud-coop-many-v2",
+      "bytes": 662318
+    },
+    {
+      "path": ".local/contra-presentation-sprites/runtime/runs/composition-case-linear-empty-v2",
+      "bytes": 661782
+    },
+    {
+      "path": ".local/contra-presentation-sprites/runtime/runs/composition-case-capacity-overrun-v2",
+      "bytes": 668556
+    },
+    {
+      "path": ".local/contra-presentation-sprites/runtime/runs/composition-case-all26-small-v2",
+      "bytes": 666213
+    },
+    {
+      "path": ".local/contra-presentation-sprites/runtime/runs/composition-case-hud-demo-v2",
+      "bytes": 662501
+    },
+    {
+      "path": ".local/contra-presentation-sprites/runtime/runs/composition-case-hud-even-status-v2",
+      "bytes": 662246
+    },
+    {
+      "path": ".local/contra-presentation-sprites/runtime/runs/composition-case-linear-wrap-v2",
+      "bytes": 662394
+    },
+    {
+      "path": ".local/contra-presentation-sprites/runtime/runs/composition-case-empty-retains-generation-v2",
+      "bytes": 661729
+    },
+    {
+      "path": ".local/contra-presentation-sprites/runtime/runs/composition-case-hud-game-over-v2",
+      "bytes": 662422
+    },
+    {
+      "path": ".local/contra-presentation-sprites/runtime/runs/composition-case-snow-hidden-v2",
+      "bytes": 658968
+    },
+    {
+      "path": ".local/contra-presentation-sprites/runtime/runs/composition-case-linear-all26-v2",
+      "bytes": 666324
+    },
+    {
+      "path": ".local/contra-presentation-sprites/runtime/runs/composition-case-snow-capacity-v2",
+      "bytes": 658958
+    },
+    {
+      "path": ".local/contra-presentation-sprites/runtime/runs/composition-case-hud-solo-four-v2",
+      "bytes": 662244
+    },
+    {
+      "path": ".local/contra-presentation-sprites/runtime/runs/composition-case-flip-clipping-v2",
+      "bytes": 669030
+    },
+    {
+      "path": ".local/contra-presentation-sprites/runtime/runs/composition-case-snow-visible-v2",
+      "bytes": 658998
+    },
+    {
+      "path": ".local/contra-presentation-sprites/runtime/runs/composition-case-hud-solo-zero-v2",
+      "bytes": 662157
+    },
+    {
+      "path": ".local/contra-presentation-sprites/runtime/runs/composition-case-hud-both-over-v2",
+      "bytes": 662448
+    }
+  ]
+}

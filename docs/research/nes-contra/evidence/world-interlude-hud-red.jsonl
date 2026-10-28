@@ -1,0 +1,9 @@
+{"Time":"2026-10-25T22:29:29.138151+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-25T22:29:29.57579+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalContinuousInterludeWorld"}
+{"Time":"2026-10-25T22:29:29.575973+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalContinuousInterludeWorld","Output":"=== RUN   TestOriginalContinuousInterludeWorld\n"}
+{"Time":"2026-10-25T22:29:32.795015+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalContinuousInterludeWorld","Output":"    world_interlude_test.go:147: tick6472 original7872 stage1 routine10 seq0 persistent work/HUD: enemy offset 0/0 random {Value:220}/{Value:220} HUD false/true\n"}
+{"Time":"2026-10-25T22:29:32.795073+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalContinuousInterludeWorld","Output":"--- FAIL: TestOriginalContinuousInterludeWorld (3.22s)\n"}
+{"Time":"2026-10-25T22:29:32.79508+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalContinuousInterludeWorld","Elapsed":3.22}
+{"Time":"2026-10-25T22:29:32.795092+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\n"}
+{"Time":"2026-10-25T22:29:32.801234+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t3.663s\n"}
+{"Time":"2026-10-25T22:29:32.801268+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":3.6630000000000003}

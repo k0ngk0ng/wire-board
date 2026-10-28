@@ -1,0 +1,159 @@
+{
+  "passed": true,
+  "scope": "Native full-frame acquisition and optional independent repeat only; no independent World acceptance claim.",
+  "frames": 6400,
+  "stages": [
+    {
+      "stage": 1,
+      "frames": 800,
+      "phases": {
+        "4": 800
+      },
+      "levels": {
+        "0": 800
+      },
+      "completeCalls": 800,
+      "skippedNonGameCalls": 0,
+      "ignoredInternalF8DB": 42,
+      "fixture": "docs/research/nes-contra/evidence/world-eight-stage-1-original.json.gz",
+      "sha256": "9430509b85969dbda0a96ca88c5b8118bdb15dc345d01c136d8b48836c3f757f",
+      "inputTraceSHA256": "884c31a7b81d189568662b441e37a87221ccea2626ead90cab2a05795855a210",
+      "ramSHA256": "e99df3232615cf38cd1216a332121825326c0867fa6226ecad54212eac9f3a2f",
+      "initialStateSHA256": "94b5dd5ab506ba741328ef93484bb333880cadcc0c5dba9099200d18ea5ca4b4",
+      "repeatedIdentically": true
+    },
+    {
+      "stage": 2,
+      "frames": 800,
+      "phases": {
+        "4": 800
+      },
+      "levels": {
+        "1": 800
+      },
+      "completeCalls": 800,
+      "skippedNonGameCalls": 0,
+      "ignoredInternalF8DB": 0,
+      "fixture": "docs/research/nes-contra/evidence/world-eight-stage-2-original.json.gz",
+      "sha256": "64d186fcd20430884940df8123ca523d566702726edfff94a23c278819048f27",
+      "inputTraceSHA256": "77d00d74e7ad0e4a9a47f64799dbf0a8a18a3ece9efe40bac7519eb30129cc7c",
+      "ramSHA256": "028b902cf5b5de7d2d879d8a85ed46264f52211b5e544861375b9acd739d77dd",
+      "initialStateSHA256": "da64009e84dfe4f575800211c630c63122d2540038190d77f437f2c8630946c0",
+      "repeatedIdentically": true
+    },
+    {
+      "stage": 3,
+      "frames": 800,
+      "phases": {
+        "4": 800
+      },
+      "levels": {
+        "2": 800
+      },
+      "completeCalls": 800,
+      "skippedNonGameCalls": 0,
+      "ignoredInternalF8DB": 0,
+      "fixture": "docs/research/nes-contra/evidence/world-eight-stage-3-original.json.gz",
+      "sha256": "16e6b744c86ce4059a79ca41465f0f2f7f0a08b2d00e336f50ef6032cc6e87ba",
+      "inputTraceSHA256": "884c31a7b81d189568662b441e37a87221ccea2626ead90cab2a05795855a210",
+      "ramSHA256": "a2f14951c0fded7ee08100870eececf1a06ee716b43899282e44be63c5211ebe",
+      "initialStateSHA256": "e94931d373c7529d7d369560c1aa16b2596f07509dbd752e5d5067d537b98a4d",
+      "repeatedIdentically": true
+    },
+    {
+      "stage": 4,
+      "frames": 800,
+      "phases": {
+        "4": 800
+      },
+      "levels": {
+        "3": 800
+      },
+      "completeCalls": 800,
+      "skippedNonGameCalls": 0,
+      "ignoredInternalF8DB": 0,
+      "fixture": "docs/research/nes-contra/evidence/world-eight-stage-4-original.json.gz",
+      "sha256": "2e906db03a5f2c254d6dd8e48427790f091762976be90cd3a0e52f96a0c5243a",
+      "inputTraceSHA256": "77d00d74e7ad0e4a9a47f64799dbf0a8a18a3ece9efe40bac7519eb30129cc7c",
+      "ramSHA256": "a9b586207bb4e6d44ae667a456ce235e4b8b019517c30abb20ef439636f95167",
+      "initialStateSHA256": "7a9c222fbe35545b9532f221a78f71134b4140f486a35aaa0222f8cd316b869f",
+      "repeatedIdentically": true
+    },
+    {
+      "stage": 5,
+      "frames": 800,
+      "phases": {
+        "4": 800
+      },
+      "levels": {
+        "4": 800
+      },
+      "completeCalls": 800,
+      "skippedNonGameCalls": 0,
+      "ignoredInternalF8DB": 0,
+      "fixture": "docs/research/nes-contra/evidence/world-eight-stage-5-original.json.gz",
+      "sha256": "46686402cabdd21969a099ff598e3530226f4c6ecb079182368ce798f40a4e5b",
+      "inputTraceSHA256": "884c31a7b81d189568662b441e37a87221ccea2626ead90cab2a05795855a210",
+      "ramSHA256": "cb409deb4bf985240cbb2f19b2a2720648200b0fb95863ec2ca648ac31f8b87f",
+      "initialStateSHA256": "b4eb8fea78563650328dc618ee181b95485d53221a9bdc7a066d629f15c0b684",
+      "repeatedIdentically": true
+    },
+    {
+      "stage": 6,
+      "frames": 800,
+      "phases": {
+        "4": 800
+      },
+      "levels": {
+        "5": 800
+      },
+      "completeCalls": 800,
+      "skippedNonGameCalls": 0,
+      "ignoredInternalF8DB": 0,
+      "fixture": "docs/research/nes-contra/evidence/world-eight-stage-6-original.json.gz",
+      "sha256": "5a46e0c3d25545d75293baca05cde485bf6591a8f7964707b39eaa8daee4b6de",
+      "inputTraceSHA256": "884c31a7b81d189568662b441e37a87221ccea2626ead90cab2a05795855a210",
+      "ramSHA256": "2b19bc53b25a53ff92c025850529bdbd34f71be43581f29039ec3b0764edaa4f",
+      "initialStateSHA256": "1825cc47d9beb2fc3fb4babcee6f9f3ee6fa4f918570dceea32613d0b395535b",
+      "repeatedIdentically": true
+    },
+    {
+      "stage": 7,
+      "frames": 800,
+      "phases": {
+        "4": 800
+      },
+      "levels": {
+        "6": 800
+      },
+      "completeCalls": 800,
+      "skippedNonGameCalls": 0,
+      "ignoredInternalF8DB": 0,
+      "fixture": "docs/research/nes-contra/evidence/world-eight-stage-7-original.json.gz",
+      "sha256": "4ce3c2e80b15d4752b965e40cbe8b89151fdf5210a6f2fb6110212d3d6d6befd",
+      "inputTraceSHA256": "884c31a7b81d189568662b441e37a87221ccea2626ead90cab2a05795855a210",
+      "ramSHA256": "ef6d81e43787b0e86b5bc343c255a5cb4fecfa162fca08adfdfd52483d6eab09",
+      "initialStateSHA256": "7f0843d1cd185dd5dd77ff8f663645ce14fc03569ac91f00374c8e6f89ce0399",
+      "repeatedIdentically": true
+    },
+    {
+      "stage": 8,
+      "frames": 800,
+      "phases": {
+        "4": 800
+      },
+      "levels": {
+        "7": 800
+      },
+      "completeCalls": 800,
+      "skippedNonGameCalls": 0,
+      "ignoredInternalF8DB": 0,
+      "fixture": "docs/research/nes-contra/evidence/world-eight-stage-8-original.json.gz",
+      "sha256": "e9ebce403a00f8af3a42658b1de6f1558f2e2ff1e94bc94747e673615470b982",
+      "inputTraceSHA256": "884c31a7b81d189568662b441e37a87221ccea2626ead90cab2a05795855a210",
+      "ramSHA256": "e08e1ff033ff12b5943c921892b242261d46ac54db6559304800f5738301a161",
+      "initialStateSHA256": "42109f1ea5acac37d36ecc6b388b41533b6dedf1ea68b3c08f39d3f31ce4547e",
+      "repeatedIdentically": true
+    }
+  ]
+}

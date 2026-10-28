@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "kind": "normalized indexed pixels for native offline perception",
+  "romSHA256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "source": "games/contra/engine/testdata/bot-visual-catalog.json.gz",
+  "sourceSHA256": "262dd05adb06b658d7d7b20bb5ae309c56cf3a6082666a862c0df55796ad32ce",
+  "sourceManifestSHA256": "c7964303f4c60705933021cf57cd1646556b254244030d85fdd5e1b14f62c57c",
+  "catalogID": "24d3c7bfb252cf15523759394c3397e246aa17b331eedf2e0744b75ccb5bee32",
+  "compressedSHA256": "46fa695321db37e3a397b5373840e023a91874893eda12b48719a67b217fc1f5",
+  "uncompressedSHA256": "7c78bd661fc40da7146efcbb7fb830bd20cd6e5de2cd50f5482a04135cad8262",
+  "pages": 100,
+  "bytes": 95315,
+  "generator": "scripts/contra/prepare_visual_bundle.py",
+  "generatorSHA256": "991d2fa289e7b1cb624789a1ecb30c4ddc62df5d3f8157e16d48af87cdd419b2"
+}

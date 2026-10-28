@@ -68,6 +68,13 @@ const silentAudio = {
   stopMusic: () => {},
   loop: async () => true,
   stopLoop: () => {},
+  track: async () => true,
+  stopTrack: () => {},
+  muteTrack: () => {},
+  pauseTrack: () => {},
+  resumeTrack: async () => true,
+  seekTrack: () => false,
+  restoreTrack: async () => false,
 };
 function Harness() {
   const [mode, setMode] = useState("waiting"),

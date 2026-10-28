@@ -1,0 +1,175 @@
+{
+  "removedBytes": 176970511,
+  "removed": [
+    {
+      "path": ".local/contra-enemies-waterfall/swift-cache",
+      "bytes": 93399480
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/verify-tmp",
+      "bytes": 0
+    },
+    {
+      "path": "dist/contra-enemies-waterfall-tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/helpers-rea",
+      "bytes": 3793765
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/helpers-rea.log",
+      "bytes": 2271
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/helpers-seeds.tsv",
+      "bytes": 570
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/helpers-spec.json",
+      "bytes": 891
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/boss-green.log",
+      "bytes": 203
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/hazards-green.log",
+      "bytes": 509
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/sequence-first.log",
+      "bytes": 271
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/0x9d03.asm",
+      "bytes": 251
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/0xeb1d.asm",
+      "bytes": 241
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/0x9b7e.asm",
+      "bytes": 724
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/0x9c1e.asm",
+      "bytes": 183
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/0x996f.asm",
+      "bytes": 259
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/0x9a0a.asm",
+      "bytes": 270
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/0x9c39.asm",
+      "bytes": 1522
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/0x9da5.asm",
+      "bytes": 291
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/0xf492.asm",
+      "bytes": 440
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/0x995c.asm",
+      "bytes": 153
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/0xea19.asm",
+      "bytes": 446
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/0x9ae0.asm",
+      "bytes": 753
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/0x9ef8.asm",
+      "bytes": 185
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/0x99bd.asm",
+      "bytes": 582
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/0x9945.asm",
+      "bytes": 169
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/0x9a2f.asm",
+      "bytes": 239
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/0x9dc7.asm",
+      "bytes": 1329
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/0x9991.asm",
+      "bytes": 310
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/0x9d23.asm",
+      "bytes": 1051
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/0xf433.asm",
+      "bytes": 862
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/0xeb34.asm",
+      "bytes": 543
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/0x9e69.asm",
+      "bytes": 508
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/0x9ab7.asm",
+      "bytes": 321
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/0x9a4e.asm",
+      "bytes": 353
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/oracle/runs/waterfall-natural-v1",
+      "bytes": 4407923
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/oracle/runs/waterfall-natural-v2",
+      "bytes": 4396677
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/oracle/runs/waterfall-boss-v1",
+      "bytes": 9318399
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/oracle/runs/waterfall-hazards-repeat",
+      "bytes": 3803150
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/oracle/runs/waterfall-natural-repeat",
+      "bytes": 27179849
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/oracle/runs/waterfall-boss-repeat",
+      "bytes": 9477601
+    },
+    {
+      "path": ".local/contra-enemies-waterfall/oracle/runs/waterfall-sequence-repeat",
+      "bytes": 21176967
+    }
+  ],
+  "retained": [
+    "Primary four native runs and stage-3 source state",
+    "Final five REA sessions and complete exported gzip bundles",
+    "Original Go fixtures and verification evidence"
+  ],
+  "boundary": "Only this waterfall task caches, failed/duplicate probes and scratch files. User ROM, other tasks and shared build caches untouched."
+}

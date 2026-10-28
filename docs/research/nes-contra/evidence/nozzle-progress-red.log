@@ -1,0 +1,6 @@
+=== RUN   TestBotNozzlePenaltyDoesNotPreferEndlessSamePlaceJump
+    bot_nozzle_progress_test.go:32: no progress despite a visible higher forward platform 123 194 true
+--- FAIL: TestBotNozzlePenaltyDoesNotPreferEndlessSamePlaceJump (0.00s)
+FAIL
+FAIL	github.com/k0ngk0ng/wire-board/games/contra/engine	0.581s
+FAIL

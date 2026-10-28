@@ -1,0 +1,23 @@
+{
+  "scope": "User-authorized test-only infinite reserve assistance; not a production option or standard-lives completion",
+  "boundaryTestsPassed": true,
+  "naturalReserveConsumptionsObserved": 2,
+  "flag": "CONTRA_BOT_INFINITE_LIVES=1",
+  "behavior": "Replenish non-eliminated player reserves below 10 after normal rule steps; preserve damage, death, respawn, weapon loss and all other fields.",
+  "smoke": {
+    "path": ".local/contra-bot/runs/attempt-1400783199/players1",
+    "frames": 1100,
+    "restoreCheckpoints": 1,
+    "infiniteLives": true,
+    "completeCampaign": false,
+    "error": ""
+  },
+  "artifacts": {
+    "docs/research/nes-contra/evidence/infinite-lives-red.log.gz": "9336ded2e7864d5d4a25ff6805fbbc29987cb3c8a5b8b9a0675d3fd408c2a86c",
+    "docs/research/nes-contra/evidence/infinite-lives-green.log.gz": "45ce6478fb47542d7834eda16a6bd7b3faaffeff52f9e76dabc2251d36b2523e"
+  },
+  "limitations": [
+    "The smoke challenge target was not reached; its command correctly exits nonzero.",
+    "Eight-stage assisted traversal remains in progress."
+  ]
+}

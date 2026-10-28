@@ -1,0 +1,9 @@
+{"Time":"2026-10-26T13:33:36.936769+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-26T13:33:37.476921+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotUnknownSoloWaterHeadProbeDoesNotInventIdentity"}
+{"Time":"2026-10-26T13:33:37.477124+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotUnknownSoloWaterHeadProbeDoesNotInventIdentity","Output":"=== RUN   TestBotUnknownSoloWaterHeadProbeDoesNotInventIdentity\n"}
+{"Time":"2026-10-26T13:33:37.477192+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotUnknownSoloWaterHeadProbeDoesNotInventIdentity","Output":"    bot_probe_test.go:69: single-seat head candidate caused permanent inaction 0\n"}
+{"Time":"2026-10-26T13:33:37.477229+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotUnknownSoloWaterHeadProbeDoesNotInventIdentity","Output":"--- FAIL: TestBotUnknownSoloWaterHeadProbeDoesNotInventIdentity (0.00s)\n"}
+{"Time":"2026-10-26T13:33:37.477244+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotUnknownSoloWaterHeadProbeDoesNotInventIdentity","Elapsed":0}
+{"Time":"2026-10-26T13:33:37.477263+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\n"}
+{"Time":"2026-10-26T13:33:37.47826+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t0.541s\n"}
+{"Time":"2026-10-26T13:33:37.478299+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":0.542}

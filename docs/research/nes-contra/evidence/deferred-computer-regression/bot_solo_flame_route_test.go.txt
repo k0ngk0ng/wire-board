@@ -1,0 +1,36 @@
+package contra
+
+import (
+	"compress/gzip"
+	"encoding/json"
+	"os"
+	"testing"
+)
+
+// The cooperative camera admits a different route. A newly added cooperative
+// detour must not replace the solo route which already crossed this column.
+// These are two actual consecutive submitted observations at the first input
+// difference between the v11/v12 fresh solo attempts (frame 60605).
+func TestBotSoloRetainsForwardFlameRoute(t *testing.T) {
+	f, err := os.Open("testdata/bot-solo-flame-route.json.gz")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer f.Close()
+	z, err := gzip.NewReader(f)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer z.Close()
+	var data struct{ Observation, PriorObservation BotObservation }
+	if err := json.NewDecoder(z).Decode(&data); err != nil {
+		t.Fatal(err)
+	}
+	prior := data.PriorObservation
+	p := prior.Players[0]
+	b := Bot{LastTick: prior.Tick, LastPad: ButtonRight | ButtonB, LastX: p.X, LastY: p.Y, LastViewX: prior.ViewX, LastViewY: prior.ViewY, Phase: "battle", Stage: 5, StageKnown: true, SceneKnown: true, GridKnown: true}
+	b.PlayerMemory[0], b.PlayerSeenAt[0] = p, prior.Tick
+	if pad := b.Decide(data.Observation); pad&ButtonRight == 0 || pad&(ButtonDown|ButtonA) == ButtonDown|ButtonA {
+		t.Fatalf("cooperative detour replaced solo forward route: %d", pad)
+	}
+}

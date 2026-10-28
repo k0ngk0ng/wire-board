@@ -1,0 +1,137 @@
+{
+  "scope": "only base non-Boss research caches and duplicate intermediates; Boss and roller proof trees untouched",
+  "removed": [
+    ".local/contra-enemies-base/oracle/runs/base-2-room-v1",
+    ".local/contra-enemies-base/oracle/runs/base-4-room-v1",
+    ".local/contra-enemies-base/oracle/runs/base-cases-v1",
+    ".local/contra-enemies-base/oracle/fceux-home",
+    ".local/contra-enemies-base/oracle/runtime",
+    ".local/contra-enemies-base/oracle/tmp",
+    ".local/contra-enemies-base/cases/fceux-home",
+    ".local/contra-enemies-base/cases/runtime",
+    ".local/contra-enemies-base/cases/tmp",
+    ".local/contra-enemies-base/pickup-oracle/fceux-home",
+    ".local/contra-enemies-base/pickup-oracle/runtime",
+    ".local/contra-enemies-base/pickup-oracle/tmp",
+    ".local/contra-enemies-base/swift-cache",
+    ".local/contra-enemies-base/race-results.jsonl",
+    ".local/contra-enemies-base/core-rea.log",
+    ".local/contra-enemies-base/spawn-rea.log",
+    ".local/contra-enemies-base/oracle/runs/base-2-boss-v1/frame-00200.gd",
+    ".local/contra-enemies-base/oracle/runs/base-2-boss-v1/frame-01200.gd",
+    ".local/contra-enemies-base/oracle/runs/base-2-boss-v1/frame-00600.gd",
+    ".local/contra-enemies-base/oracle/runs/base-2-boss-v1/frame-00001.gd",
+    ".local/contra-enemies-base/oracle/runs/base-2-room-v2/frame-00200.gd",
+    ".local/contra-enemies-base/oracle/runs/base-2-room-v2/frame-00600.gd",
+    ".local/contra-enemies-base/oracle/runs/base-2-room-v2/frame-00001.gd",
+    ".local/contra-enemies-base/oracle/runs/base-2-room-v2/frame-01600.gd",
+    ".local/contra-enemies-base/oracle/runs/base-2-room-v3/frame-00200.gd",
+    ".local/contra-enemies-base/oracle/runs/base-2-room-v3/frame-00600.gd",
+    ".local/contra-enemies-base/oracle/runs/base-2-room-v3/frame-00001.gd",
+    ".local/contra-enemies-base/oracle/runs/base-2-room-v3/frame-01600.gd",
+    ".local/contra-enemies-base/oracle/runs/base-4-boss-v1/frame-00200.gd",
+    ".local/contra-enemies-base/oracle/runs/base-4-boss-v1/frame-01200.gd",
+    ".local/contra-enemies-base/oracle/runs/base-4-boss-v1/frame-00600.gd",
+    ".local/contra-enemies-base/oracle/runs/base-4-boss-v1/frame-00001.gd",
+    ".local/contra-enemies-base/oracle/runs/base-4-room-v2/frame-00200.gd",
+    ".local/contra-enemies-base/oracle/runs/base-4-room-v2/frame-00600.gd",
+    ".local/contra-enemies-base/oracle/runs/base-4-room-v2/frame-00001.gd",
+    ".local/contra-enemies-base/oracle/runs/base-4-room-v2/frame-01600.gd",
+    ".local/contra-enemies-base/oracle/runs/base-4-room-v3/frame-00200.gd",
+    ".local/contra-enemies-base/oracle/runs/base-4-room-v3/frame-00600.gd",
+    ".local/contra-enemies-base/oracle/runs/base-4-room-v3/frame-00001.gd",
+    ".local/contra-enemies-base/oracle/runs/base-4-room-v3/frame-01600.gd",
+    ".local/contra-enemies-base/cases/fceux-home",
+    ".local/contra-enemies-base/cases/runtime",
+    ".local/contra-enemies-base/cases/tmp",
+    ".local/contra-enemies-base/waves-race-results.jsonl",
+    ".local/contra-enemies-base/cases/base-cases-v1.json"
+  ],
+  "lossless_compression": [
+    {
+      "source": ".local/contra-enemies-base/oracle/runs/base-2-boss-v1/base-enemies.jsonl",
+      "retained": ".local/contra-enemies-base/oracle/runs/base-2-boss-v1/base-enemies.jsonl.gz",
+      "original_sha256": "6b07a110ce96a7850b7fff9bcbe6c5afe7fc0c3cdd470fe0d0867d3d11b3dc5d",
+      "compressed_sha256": "ab814e53bb3c6a38c8941be76d9c1c6f5c5a7111f83927ea38164b7c04285b39"
+    },
+    {
+      "source": ".local/contra-enemies-base/oracle/runs/base-2-room-v2/base-enemies.jsonl",
+      "retained": ".local/contra-enemies-base/oracle/runs/base-2-room-v2/base-enemies.jsonl.gz",
+      "original_sha256": "2618ea6d3f3b899cf4fce7cbcc46ed7827efccacaa8a9bf98906162d2253416a",
+      "compressed_sha256": "ea3d18a4f90a11083a47ccefecba803c644df29dee850b03b8de6e0d93af233f"
+    },
+    {
+      "source": ".local/contra-enemies-base/oracle/runs/base-2-room-v3/base-enemies.jsonl",
+      "retained": ".local/contra-enemies-base/oracle/runs/base-2-room-v3/base-enemies.jsonl.gz",
+      "original_sha256": "2618ea6d3f3b899cf4fce7cbcc46ed7827efccacaa8a9bf98906162d2253416a",
+      "compressed_sha256": "ea3d18a4f90a11083a47ccefecba803c644df29dee850b03b8de6e0d93af233f"
+    },
+    {
+      "source": ".local/contra-enemies-base/oracle/runs/base-4-boss-v1/base-enemies.jsonl",
+      "retained": ".local/contra-enemies-base/oracle/runs/base-4-boss-v1/base-enemies.jsonl.gz",
+      "original_sha256": "daec835d524117372f8631db85fad1c958233069720ddd589eadfa3b1555976f",
+      "compressed_sha256": "ab4d337f0e4e4f4e752cd138e82a8c0ddb11b2bbb9fa4b88df1ee397138dd8c7"
+    },
+    {
+      "source": ".local/contra-enemies-base/oracle/runs/base-4-room-v2/base-enemies.jsonl",
+      "retained": ".local/contra-enemies-base/oracle/runs/base-4-room-v2/base-enemies.jsonl.gz",
+      "original_sha256": "e023ea0f33f1d0fc183f274056ea987104e835d09c1f7fae1c31233f759b1589",
+      "compressed_sha256": "d6c1c3f718c3e844d0168c8c4b776790e063e49b0a78506c6c0dbbe02c096e64"
+    },
+    {
+      "source": ".local/contra-enemies-base/oracle/runs/base-4-room-v3/base-enemies.jsonl",
+      "retained": ".local/contra-enemies-base/oracle/runs/base-4-room-v3/base-enemies.jsonl.gz",
+      "original_sha256": "e023ea0f33f1d0fc183f274056ea987104e835d09c1f7fae1c31233f759b1589",
+      "compressed_sha256": "d6c1c3f718c3e844d0168c8c4b776790e063e49b0a78506c6c0dbbe02c096e64"
+    },
+    {
+      "source": ".local/contra-enemies-base/cases/runs/base-cases-v2/boss.jsonl",
+      "retained": ".local/contra-enemies-base/cases/runs/base-cases-v2/boss.jsonl.gz",
+      "original_sha256": "fa0a14ecffa95f2ef59531cde28795fad0c7235c5a4e45607858485d09513dbb",
+      "compressed_sha256": "27b935001aebc4e4d595a4583382a4b2364bc9ec4d6a2c684a08bb3928c0a13b"
+    },
+    {
+      "source": ".local/contra-enemies-base/cases/runs/base-cases-v3/boss.jsonl",
+      "retained": ".local/contra-enemies-base/cases/runs/base-cases-v3/boss.jsonl.gz",
+      "original_sha256": "fa0a14ecffa95f2ef59531cde28795fad0c7235c5a4e45607858485d09513dbb",
+      "compressed_sha256": "27b935001aebc4e4d595a4583382a4b2364bc9ec4d6a2c684a08bb3928c0a13b"
+    },
+    {
+      "source": ".local/contra-enemies-base/pickup-oracle/runs/base-pickup-controlled-v1/boss.jsonl",
+      "retained": ".local/contra-enemies-base/pickup-oracle/runs/base-pickup-controlled-v1/boss.jsonl.gz",
+      "original_sha256": "b2ed1233b3c0f2f54a1b4fb1190b350242d588459421d96afd8aea54af7cda0b",
+      "compressed_sha256": "a322fc32a943704a008ec4e1fac8b2daa6d0c479981a543866c9363a0d4be64c"
+    },
+    {
+      "source": ".local/contra-enemies-base/pickup-oracle/runs/base-pickup-controlled-v2/boss.jsonl",
+      "retained": ".local/contra-enemies-base/pickup-oracle/runs/base-pickup-controlled-v2/boss.jsonl.gz",
+      "original_sha256": "b2ed1233b3c0f2f54a1b4fb1190b350242d588459421d96afd8aea54af7cda0b",
+      "compressed_sha256": "a322fc32a943704a008ec4e1fac8b2daa6d0c479981a543866c9363a0d4be64c"
+    },
+    {
+      "source": ".local/contra-enemies-base/pickup-oracle/runs/base-pickup-natural-v1/base-enemies.jsonl",
+      "retained": ".local/contra-enemies-base/pickup-oracle/runs/base-pickup-natural-v1/base-enemies.jsonl.gz",
+      "original_sha256": "e66792e5cf587410d0483b550abe083c7cea9aa3d970f9c16611a37398974f0b",
+      "compressed_sha256": "ba420e1a075cbe6d967a36346439702bbfe144fe06615ec37a98c77bde4c08c4"
+    },
+    {
+      "source": ".local/contra-enemies-base/pickup-oracle/runs/base-pickup-natural-v2/base-enemies.jsonl",
+      "retained": ".local/contra-enemies-base/pickup-oracle/runs/base-pickup-natural-v2/base-enemies.jsonl.gz",
+      "original_sha256": "e66792e5cf587410d0483b550abe083c7cea9aa3d970f9c16611a37398974f0b",
+      "compressed_sha256": "ba420e1a075cbe6d967a36346439702bbfe144fe06615ec37a98c77bde4c08c4"
+    },
+    {
+      "source": ".local/contra-enemies-base/cases/runs/base-waves-v1/boss.jsonl",
+      "retained": ".local/contra-enemies-base/cases/runs/base-waves-v1/boss.jsonl.gz",
+      "original_sha256": "e501ec7dfd1a033dd0b6f9e43f8cefa4ff51ad284d034e930cd5beabaf9c38e0",
+      "compressed_sha256": "20eb1df3ae200783bf7d4299f0ae0e112f5be601dd6c8a7fd9b64cbf962d2321"
+    },
+    {
+      "source": ".local/contra-enemies-base/cases/runs/base-waves-v2/boss.jsonl",
+      "retained": ".local/contra-enemies-base/cases/runs/base-waves-v2/boss.jsonl.gz",
+      "original_sha256": "e501ec7dfd1a033dd0b6f9e43f8cefa4ff51ad284d034e930cd5beabaf9c38e0",
+      "compressed_sha256": "20eb1df3ae200783bf7d4299f0ae0e112f5be601dd6c8a7fd9b64cbf962d2321"
+    }
+  ],
+  "retained": "source snapshots, complete compressed original calls, native RAM/input traces, PNG evidence, REA records, scoped test JSONL"
+}

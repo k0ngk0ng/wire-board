@@ -5,8 +5,9 @@ accept_controllers.py against the actual Go server.
 """
 from pathlib import Path
 from http.server import BaseHTTPRequestHandler,ThreadingHTTPServer
-import json,os,subprocess,threading,uuid
-ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'.local/fc-controller/browser';OUT.mkdir(parents=True,exist_ok=True)
+import argparse,json,os,re,subprocess,threading,uuid
+parser=argparse.ArgumentParser();parser.add_argument('--label',default='browser');args=parser.parse_args();assert re.fullmatch(r'[a-z0-9-]+',args.label)
+ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'.local/fc-controller'/args.label;OUT.mkdir(parents=True,exist_ok=True)
 env=dict(os.environ,AGENT_BROWSER_SESSION='fc-'+uuid.uuid4().hex[:4],AGENT_BROWSER_SOCKET_DIR=str(ROOT/'.local/fcs'),TMPDIR=str(ROOT/'.local/tmp'));Path(env['AGENT_BROWSER_SOCKET_DIR']).mkdir(exist_ok=True)
 def browser(*a):
  r=subprocess.run(['agent-browser',*a,'--json'],env=env,capture_output=True,text=True,timeout=90)
@@ -72,6 +73,14 @@ try:
  d=rect('[data-controller-dpad]');a=rect('[data-controller-button="a"]');dx,dy=map(float,point(d,.15,.5));ax,ay=map(float,point(a))
  ux,uy=map(float,point(d,.8,.2))
  touch([{'type':'touchStart','touchPoints':[{'id':1,'x':dx,'y':dy},{'id':2,'x':ax,'y':ay}],'expect':['a','left']},{'type':'touchMove','touchPoints':[{'id':1,'x':ux,'y':uy},{'id':2,'x':ax,'y':ay}],'expect':['a','right','up']},{'type':'touchCancel','touchPoints':[],'expect':[]}]);assert held()==[],held();report['native_multitouch_and_cancel']=True
+ b=rect('[data-controller-button="b"]');bx,by=map(float,point(b))
+ touch([{'type':'touchStart','touchPoints':[{'id':11,'x':bx,'y':by}],'expect':['b']},
+        {'type':'touchStart','touchPoints':[{'id':11,'x':bx,'y':by},{'id':12,'x':ax,'y':ay}],'expect':['a','b']},
+        {'type':'touchStart','touchPoints':[{'id':11,'x':bx,'y':by},{'id':12,'x':ax,'y':ay},{'id':13,'x':dx,'y':dy}],'expect':['a','b','left']},
+        {'type':'touchEnd','touchPoints':[{'id':12,'x':ax,'y':ay}],'expect':['b','left']},
+        {'type':'touchEnd','touchPoints':[{'id':13,'x':dx,'y':dy}],'expect':['b']},
+        {'type':'touchCancel','touchPoints':[],'expect':[]}])
+ report['native_a_b_and_direction_chords']=True
  layout=js('(()=>{const root=document.querySelector("[data-controller-layout=fc]"),r=root.getBoundingClientRect();return {overflow:document.documentElement.scrollWidth>innerWidth,width:r.width,right:r.right,buttons:[...root.querySelectorAll("[data-controller-button]")].map(e=>{const b=e.getBoundingClientRect(),hit=document.elementFromPoint(b.x+b.width/2,b.y+b.height/2);return {id:e.dataset.controllerButton,x:b.x,y:b.y,w:b.width,h:b.height,hit:e===hit||e.contains(hit)}})}})()');assert not layout['overflow'] and layout['right']<=320 and all(b['hit'] for b in layout['buttons']),layout
  physical=layout['buttons']
  by_id={b['id']:b for b in physical}

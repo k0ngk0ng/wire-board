@@ -1,0 +1,17 @@
+{
+  "scope": "Assisted continuation from failed fresh v11 run; not fresh single-policy acceptance",
+  "frames": 314530,
+  "outcome": "cleared",
+  "finalized": true,
+  "input_replay_passed": true,
+  "candidate_source": ".local/contra-bot/claw-ground-candidate/bot.go",
+  "candidateSHA256": "5c928565d70e4ec27cef2c2a2d425f2f517954668718f324223e9ecbcb059065",
+  "files": {
+    "result.json": "d43358956fc87b752485eb54e89a4216aea88916ffde7e1b279df4df544c3629",
+    "bot.json": "b00f24b631403b08873b9bc9451757f28292186e2547df873dbf71f1f24408dc",
+    "pads.bin.gz": "0f0d9d8ac903d414032f4568de5409023c5368a3a917ec42723cc1085481aa28",
+    "final-session.json": "883b69fa443e7de5ab97f60fe0dd0ef8a1b82ae7056221f388d879557b42e87e",
+    "test-life-refills.json": "2a69d5530e787449c214721d8b8c7a34fb830fc981dbfc43d0751a0db8386e5e",
+    "replay.json": "30aa6b3addcd241c00c6942020def16606407dc401234bdcad1f9cc74b85012f"
+  }
+}

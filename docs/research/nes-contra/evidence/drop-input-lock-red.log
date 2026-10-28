@@ -1,0 +1,15 @@
+=== RUN   TestBotDropsThroughPlatformWhenHighWallBlocksProgress
+=== RUN   TestBotDropsThroughPlatformWhenHighWallBlocksProgress/platform
+    bot_drop_through_test.go:53: routes 104 112 true 104 66 true support 1 true wall 128
+    bot_drop_through_test.go:57: drop ignores original neutral input / initial fall steering lock 198 104
+=== RUN   TestBotDropsThroughPlatformWhenHighWallBlocksProgress/solid
+    bot_drop_through_test.go:53: routes 0 0 false 104 66 true support 128 true wall 128
+=== RUN   TestBotDropsThroughPlatformWhenHighWallBlocksProgress/no-landing
+    bot_drop_through_test.go:53: routes 128 68 false 104 66 true support 1 true wall 128
+--- FAIL: TestBotDropsThroughPlatformWhenHighWallBlocksProgress (0.00s)
+    --- FAIL: TestBotDropsThroughPlatformWhenHighWallBlocksProgress/platform (0.00s)
+    --- PASS: TestBotDropsThroughPlatformWhenHighWallBlocksProgress/solid (0.00s)
+    --- PASS: TestBotDropsThroughPlatformWhenHighWallBlocksProgress/no-landing (0.00s)
+FAIL
+FAIL	github.com/k0ngk0ng/wire-board/games/contra/engine	0.573s
+FAIL

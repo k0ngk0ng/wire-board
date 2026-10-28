@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "scope": "First-stage original map decoder/expansion. Natural comparison covers initial screen, half-loaded next screen and observed screen-2 decoding; other screens remain static-data coverage.",
+  "sources": {
+    "games/contra/engine/level.go": "8854357fcc3e2b6df97fd1c8b5cfdacc468dae5721a5054d3ec4202624cb1506",
+    "games/contra/engine/level_test.go": "9b736fa0375de43edccacec75cf125c1ec945e942b0843731b5e1e4c9da7a877",
+    "games/contra/engine/leveldata/jungle.json": "4aa0e5bee44bf2a75aea2e2debf6e7f9367f912307c8d3ba528a988e3211ba20",
+    "games/contra/engine/leveldata/jungle-source.json": "e73dd8c6ec6397024a66469884f83d43c4527a6a0872bb11e070e49c7c99a0f9",
+    "scripts/contra/export_jungle.py": "c54283fca682e1aa71e612845c76a51ffb37218cf89e5d3f57456f9c6c13170c"
+  },
+  "distinctScreens": 13,
+  "lookaheadAlias": 13,
+  "decodedEntries": 14,
+  "supertiles": 108,
+  "red": "level-red.jsonl",
+  "green": "level-green.jsonl",
+  "reproduce": [
+    "python3 -B scripts/contra/export_jungle.py",
+    "source scripts/env.sh && go test ./games/contra/engine -run '^Test(Jungle|ScreenDecode)' -count=1 -v"
+  ]
+}

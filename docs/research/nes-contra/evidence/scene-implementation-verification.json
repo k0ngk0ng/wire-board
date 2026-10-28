@@ -1,0 +1,29 @@
+{
+  "passed": true,
+  "scope": "13 original stage-one frames; captured state to independent graphics only, not independent gameplay.",
+  "sources": {
+    "games/contra/web/background.ts": "4e8d9e1a10011573dcdfabb77d3997da02ae4a61d56962754b14e00e91d637c5",
+    "games/contra/tests/background.test.mjs": "b2d1641a591b2f10c93e9da57bcc2930d135a93d0c18906eca336b2646fedcb6",
+    "games/contra/tests/testdata/background-original.json.gz": "1dc7f209c0d8512b44f4ed45bd803fc081e48b7c4ac2183468134fe7302581f2",
+    "games/contra/tests/testdata/background-original-source.json": "291535bd4a41ef752694af7346fa6a1b3896d45a4e797b846ab1515a26a34d7e",
+    "scripts/contra/capture_background.py": "1c93e2b05f59ad1f406a5a67f9294446454050d40bf4cc0f4251b7243a3a0a99",
+    "scripts/contra/render_scene_proof.mjs": "db02ae13878cc3821bad84c589b4c0988e7d8dcee3bf1ddfd806195a7b053d17"
+  },
+  "originalFrames": 13,
+  "exactPixels": 798720,
+  "tests": 4,
+  "typecheck": "passed",
+  "repeat": "Complete RAM, actual scroll-write records and DMA byte-identical in two runs",
+  "reproduce": [
+    "node --experimental-strip-types --test games/contra/tests/background.test.mjs",
+    "node --experimental-strip-types scripts/contra/render_scene_proof.mjs"
+  ],
+  "red": "background-red.tap",
+  "green": "background-green.tap",
+  "image": "scene-comparison.png",
+  "cleanup": [
+    "Removed own duplicate background-v2 capture, FCEUX profile/runtime/tmp; original capture and fixture retained."
+  ],
+  "combinedGraphicsTests": 11,
+  "combinedGraphicsLog": "graphics-green.tap"
+}

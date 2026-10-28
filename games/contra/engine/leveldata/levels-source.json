@@ -1,0 +1,107 @@
+{
+  "source": "docs/research/nes-contra/evidence/levels-catalog.json.gz",
+  "sourceSHA256": "7907d15dd973f6f8127a9c3a6aa95bae71b26c6175d4ff5747fadbb2753f5026",
+  "additionalPaletteSource": "docs/research/nes-contra/evidence/palette-additional-colors.json",
+  "additionalPaletteSHA256": "35a33b1e2705590ac005ffdf367c9dbe06cf2ec12403d1b112ba0ca52a9f96f1",
+  "runtimePaletteRequirements": [
+    {
+      "name": "snow-enemies",
+      "stage": 5,
+      "paletteIndices": [
+        63,
+        65,
+        95,
+        96,
+        97
+      ]
+    },
+    {
+      "name": "energy-giant-hp",
+      "stage": 6,
+      "paletteIndices": [
+        81,
+        82
+      ],
+      "paletteSlot": 7,
+      "consumerSource": {
+        "cpuStart": 44216,
+        "cpuEndInclusive": 44244,
+        "prgOffset": 11448,
+        "romOffset": 11464,
+        "bank8KiB": 1,
+        "sha256": "69ed0fabd429ec0a0bb91e45695c87a5e9bfaf3d2c145b0a97dfba31e521e658"
+      }
+    }
+  ],
+  "paletteColorCount": 96,
+  "additionalPaletteIDs": [
+    4,
+    19,
+    20,
+    21,
+    27,
+    28,
+    29,
+    63,
+    65,
+    81,
+    82,
+    92,
+    93,
+    95,
+    96,
+    97,
+    102,
+    106,
+    107
+  ],
+  "outputSHA256": "44d4829f7ea479efd49ffcfd9aee416e7c592b790363fcaeb67a62194315fdc3",
+  "romSHA256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "scope": "Eight-stage map/art definitions only; no gameplay execution oracle or ROM interpreter.",
+  "stages": 8,
+  "normalMaps": 144,
+  "bossMaps": 2,
+  "tileSets": 8,
+  "stageFiles": [
+    {
+      "file": "stage-1.json",
+      "bytes": 14264,
+      "sha256": "ae541455b3d25b9b86898b9b013739f8ae0735b409b593defc484a59af5924ad"
+    },
+    {
+      "file": "stage-2.json",
+      "bytes": 25443,
+      "sha256": "b398dc1e444c586f4ac6181679d673f8fd9463638a0107a656ef104e69933153"
+    },
+    {
+      "file": "stage-3.json",
+      "bytes": 14522,
+      "sha256": "2ce2245014def20fd2638c278755f7a2a3b06c92a24b8c232facb568903c7355"
+    },
+    {
+      "file": "stage-4.json",
+      "bytes": 26997,
+      "sha256": "a1433c299763814b6c7acf02848e64f1629c163c639914fd6832e81b25b80f4a"
+    },
+    {
+      "file": "stage-5.json",
+      "bytes": 14695,
+      "sha256": "362f9e0d91e0edebab407317b132c585af5c861f14a98ba9017b061f24720a48"
+    },
+    {
+      "file": "stage-6.json",
+      "bytes": 13600,
+      "sha256": "30eba1e7f4048b119665ffe70b736c5ef9d3b268347bd4a365d1773fa154a5fc"
+    },
+    {
+      "file": "stage-7.json",
+      "bytes": 15669,
+      "sha256": "aed95f893082874faa83db70c0da7b3d1f61fea023805d10ff6fe90419a893d1"
+    },
+    {
+      "file": "stage-8.json",
+      "bytes": 14740,
+      "sha256": "81c8b9ff4bba44d3814dfbda3fef935c6b5a9500e051360307db42d487ea7596"
+    }
+  ]
+}

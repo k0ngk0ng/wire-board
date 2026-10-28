@@ -13,7 +13,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/k0ngk0ng/wire-board/games"
+	"github.com/k0ngk0ng/wire-board/internal/production"
 	"github.com/k0ngk0ng/wire-board/internal/server"
 )
 
@@ -27,6 +27,10 @@ func main() {
 }
 
 func run() error {
+	modules, err := production.Modules()
+	if err != nil {
+		return err
+	}
 	dir := os.Getenv("DATA_DIR")
 	if dir == "" {
 		dir = "data"
@@ -40,7 +44,7 @@ func run() error {
 		return err
 	}
 	app, err := server.New(server.Config{
-		ClientLoading: true, Modules: games.Modules(), DataDir: dir, InviteCode: os.Getenv("INVITE_CODE"),
+		ClientLoading: true, Modules: modules, DataDir: dir, InviteCode: os.Getenv("INVITE_CODE"),
 		Origin: os.Getenv("PUBLIC_ORIGIN"), AssetsBaseURL: os.Getenv("ASSETS_BASE_URL"),
 		SecureCookie:  os.Getenv("COOKIE_SECURE") == "true",
 		AdminUsername: os.Getenv("ADMIN_USERNAME"), AdminPassword: os.Getenv("ADMIN_PASSWORD"),

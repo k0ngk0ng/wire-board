@@ -1,0 +1,53 @@
+{
+  "passed": true,
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "./games/contra/engine",
+    "-run",
+    "^TestBotFutureSprite",
+    "-count=1",
+    "-json"
+  ],
+  "exitCode": 0,
+  "sourceChangedDuringCheck": [],
+  "sourceHashes": {
+    "games/contra/engine/enemies_machines_common.go": "c65dfb0b0188b92e9a0137233929f6e037623233481bf31169ccce68685e7de5",
+    "games/contra/engine/enemies_machines_giant.go": "286e059bfffd00fd47a20d3e0ce4dbf0284c5d7ee0933a0321bd72e9c4a17a75",
+    "games/contra/engine/enemies_machines_hangar.go": "d93715a851ff4a698f049c522601a42dc327fd21eb24f59592757f22fb711558",
+    "games/contra/engine/enemies_snow_small.go": "58762e0243a4a020a24610a2bb89e33c60a88dec136e8a51bbedac35771f7b99",
+    "games/contra/engine/enemies_snow_carrier.go": "90356bb7417d25915891d9c9cf33e0dcfac16d4d4c39555ae89a56685eb2909a",
+    "games/contra/engine/enemies_snow_tables.go": "32251d6ec9a2180918499e4014fa6794f68e921b8249853a90ad7fa1ee280467",
+    "games/contra/engine/enemies_aliens_fetus.go": "5c972bd9be3d887e330b41435a2a57d1bad270f89054efc13aaebcc1f2455017",
+    "games/contra/engine/enemies_aliens_blob.go": "f7d3b99e677e6922451ef03a6141435cbd25d6542c73e92c5a50fa0421b95866",
+    "games/contra/engine/enemies_aliens_spider.go": "4eee94a2b3874b1f28d17f96038242c24d0bdc78b50b1008373a4715cf181ebb",
+    "games/contra/engine/enemies_all_tables.go": "2247d31f91a966b5918deaa48a7e2048be4b38e9112a20e5381647d253b2fcdf",
+    "games/contra/engine/enemies_shooters_tables.go": "d57dba7bb57ce7c2a89feb10ed9a186e3967a8d649d6af1cce73490236996e02",
+    "games/contra/engine/presentation_sprites_data.json": "fe84f190385ee83695635445a2712a5dd7ee4fab7b96a00595e6dd44a1362f74",
+    "games/contra/engine/leveldata/stage-5.json": "362f9e0d91e0edebab407317b132c585af5c861f14a98ba9017b061f24720a48",
+    "games/contra/engine/leveldata/stage-6.json": "30eba1e7f4048b119665ffe70b736c5ef9d3b268347bd4a365d1773fa154a5fc",
+    "games/contra/engine/leveldata/stage-7.json": "aed95f893082874faa83db70c0da7b3d1f61fea023805d10ff6fe90419a893d1",
+    "games/contra/engine/leveldata/stage-8.json": "81c8b9ff4bba44d3814dfbda3fef935c6b5a9500e051360307db42d487ea7596",
+    "games/contra/engine/bot_vision_future_sprites.go": "96dfcfa3e62f036ef9f115c4a24b7a91ebd5d0a1d94e78675cf4a1cca2922b95",
+    "games/contra/engine/bot_vision_future_sprites_test.go": "21ee994c851d1bc1f9dfa964ddc0aaf8fbba215274fdcfdcbdb7e8d97b774b62",
+    "games/contra/engine/bot_visual_templates.go": "87aa3c8cccba2de116ced6b97d0309708ed3c6c74688e85ff3180cd5097420ca",
+    "games/contra/engine/bot_visual_frame.go": "18781aae93930ee8a3b4fa67d99055626a0c17948d525e135a4d33c8736247b7",
+    "games/contra/engine/bot_visual_frame_pixels.go": "9bf6da5e26abfd0a97f9d54da452354a7f6c9b0b90fd024930e22cafaede0e20",
+    "games/contra/engine/bot_vision.go": "350496829a727212aee947bf35572257c67e9c3ba62e6b68ff3db5b4e643710a",
+    "games/contra/engine/presentation_sprites.go": "19b3b32ae25806c577446e6554ca9299d01310aef32f37f37abcd7ae14f64805",
+    "docs/research/nes-contra/evidence/bot-future-sprites-original-art.json.gz": "006b260757b8f10af3853fe2acd3ebac6f9c37d284ff79f690d987f48c6d8d87",
+    "scripts/contra/bot_future_sprites_verify.py": "224aa4cf5a22dc1d5a4155cf927aedc64eec47ee2b7c751c9c6f49e43d700eb2",
+    "scripts/contra/bot_future_sprites_reference.py": "06e4d2d3d43b85e7ffdf56b57ed2698529ae62437a9fe1ca8dd9ab6139793ed7"
+  },
+  "logSHA256": "e1ed442689f7aa6eb5e7edd240633ed7a690df057ea80b90e8e39551d76a4598",
+  "recipeCount": 73,
+  "originalArtCases": 73,
+  "tests": [
+    "TestBotFutureSpriteRecipesLegalAppearanceSets",
+    "TestBotFutureSpriteBulletAllegianceIsUnobservable",
+    "TestBotFutureSpriteRecipesUseExactDamagePalettes",
+    "TestBotFutureSpriteRecipesOriginalStaticPixels"
+  ],
+  "scope": "Static visible-art knowledge and alias rejection only. Does not certify the all-stage strategy, current-stage filtering, or live engine state."
+}

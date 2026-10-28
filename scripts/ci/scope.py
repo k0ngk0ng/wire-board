@@ -25,8 +25,12 @@ PAIRED = {'TestBaseData', 'TestBotsDoNotUseOtherPlayersSecretsOrDeckOrder', 'Tes
 def game_names(root):
     return sorted(p.name for p in (root/'games').iterdir() if p.is_dir() and not p.name.startswith(('.', '_')))
 
-def plan(paths, games, manual='', legacy_sources=None):
+def plan(paths, games, manual='', legacy_sources=None, contra_campaigns=False):
     selected = {}
+    # The user authorized human-only Contra delivery. Computer campaigns are
+    # retained as explicit research, never inferred from rule changes or all.
+    if contra_campaigns and 'contra' not in games:
+        raise ValueError('Contra research requested without Contra sources')
     def add(game, backend=False):
         if game in games: selected[game] = selected.get(game, False) or backend
     for path in paths:
@@ -36,9 +40,13 @@ def plan(paths, games, manual='', legacy_sources=None):
             source = (legacy_sources or {}).get(path)
             if source is None: source = (ROOT/path).read_text() if (ROOT/path).exists() else ''
             for name in re.findall(r'^func ((?:Test|Example|Fuzz)\w*)\(', source, re.M):
-                for game in owner(Path(path), name, games): add(game, True)
+                for game in owner(Path(path), name, games):
+                    add(game, True)
         if len(parts) > 2 and parts[0] == 'games':
-            add(parts[1], path.endswith('.go') or parts[2] == 'server' or '/tests/testdata/' in path)
+            # Contra keeps rule tables and visual-AI fixtures under engine,
+            # including JSON/gzip/indexed images rather than Go files alone.
+            engine_data = parts[1] == 'contra' and parts[2] == 'engine'
+            add(parts[1], path.endswith('.go') or parts[2] == 'server' or engine_data or '/tests/testdata/' in path)
             continue
         if path.startswith(('web/src/poker/', 'scripts/poker/', 'internal/gametest/poker_', 'internal/gametest/browser_e2e')):
             for game in POKER: add(game, path.endswith('.go'))
@@ -58,14 +66,20 @@ def plan(paths, games, manual='', legacy_sources=None):
     for row in rows:
         count = 20 if row['game'] == 'catan' and row['backend'] else 1
         matrix.extend({**row, 'shard': i, 'count': count} for i in range(count))
-    return {'games': rows, 'matrix': {'include': matrix}, 'has_games': bool(rows)}
+    campaigns = [{'mode': mode, 'players': players}
+                 for mode in ('standard-terminal', 'assisted-clear') for players in (1, 2)] if contra_campaigns else []
+    return {'games': rows, 'matrix': {'include': matrix}, 'has_games': bool(rows),
+            'contra_campaign_requested': bool(contra_campaigns),
+            'contra_campaign_matrix': {'include': campaigns}, 'has_contra_campaigns': bool(campaigns)}
 
 def changed_names(raw):
     return [p.decode('utf-8') for p in raw.split(b'\0') if p]
 
 def owner(path, name, games):
     parts = path.parts
-    if parts[0] == 'games': return {parts[1]}
+    if path.as_posix() == 'contra_startup_test.go' or parts[:2] == ('internal', 'production'):
+        return set() # Application startup contracts, not game rule campaigns.
+    if parts[0] == 'games' and len(parts) > 2: return {parts[1]}
     if name in MULTI: return set(MULTI[name])
     if name in PAIRED: return {'rail', 'splendor'}
     named = {g for g in games if g in name.lower() or path.name.startswith(g + '_')}
@@ -76,12 +90,15 @@ def go_commands(root, game, index=0, count=1, race=False):
     games = game_names(root)
     if game not in (*games, 'shared'): raise ValueError(f'Unknown game: {game}')
     grouped, special = {}, []
-    files = sorted([*root.glob('*_test.go'), *root.glob('internal/**/*_test.go')])
+    files = sorted([*root.glob('*_test.go'), *root.glob('internal/**/*_test.go'),
+                    *(root/'games').glob('*_test.go')])
     if game != 'shared': files += sorted((root/'games'/game).rglob('*_test.go'))
     for file in files:
         relative = file.relative_to(root)
         if relative.parts[:2] == ('internal', 'gametest'): continue # opt-in browser servers
         for name in re.findall(r'^func ((?:Test|Example|Fuzz)\w*)\(', file.read_text(), re.M):
+            if name == 'TestBotStandardCampaignE2E' and relative.parts[:2] == ('games', 'contra'):
+                continue # Explicit campaign runner validates execution and provenance.
             owners = owner(relative, name, games)
             if (game == 'shared' and owners) or (game != 'shared' and game not in owners): continue
             if int.from_bytes(hashlib.sha256(name.encode()).digest()[:8], 'big') % count != index: continue
@@ -89,6 +106,14 @@ def go_commands(root, game, index=0, count=1, race=False):
                 selected_race = bool(re.search(r'Concurrent|AutoPlay|Timeout|Spectator|LongGameArtifact', name))
                 if game == 'basketball':
                     selected_race = selected_race or name.startswith(('TestBasketballRealtime', 'TestCampaignPresentation', 'TestCampaignEnding', 'TestRuntimePresentation', 'TestDunkSharedTarget', 'TestHighPassHeight')) or name == 'TestBasketballHTTPCompleteOriginalSelection'
+                if game == 'contra':
+                    selected_race = selected_race or name.startswith(('TestContraHTTP', 'TestContraModule', 'TestRuntimePaused', 'TestRuntimeBundle', 'TestRuntimeHTTP'))
+                    area = relative.parts[2] if len(relative.parts) > 3 and relative.parts[:2] == ('games', 'contra') else ''
+                    selected_race = selected_race or (
+                        area == 'server' and name.startswith(('TestProduction', 'TestRuntimeArtifact')) or
+                        area == 'engine' and name.startswith('TestSessionBattleReview') or
+                        area == 'runtime' and name == 'TestRuntimeTerminalUsesPersistedBattleReview'
+                    )
                 if not selected_race: continue
             package = './' + relative.parent.as_posix() if relative.parent.as_posix() != '.' else '.'
             if name in MULTI:
@@ -104,12 +129,25 @@ def go_commands(root, game, index=0, count=1, race=False):
     return commands
 
 def verification_env(game, backend, base=None):
-    env = dict(os.environ if base is None else base)
+    env = {k: v for k, v in (os.environ if base is None else base).items()
+           if not k.startswith('CONTRA_BOT_')}
     if backend and game == 'snooker': env['WIRE_BOARD_SNOOKER_HTTP_FULL'] = '1'
     if backend and game == 'catan': env['WIRE_BOARD_NESTING_ACCEPTANCE'] = '1'
     if backend and game == 'basketball':
         env.update(BASKETBALL_PREPARATION_MATRIX='1', BASKETBALL_SELECTION_ADMISSION='1', BASKETBALL_FULL_HTTP='1')
     return env
+
+def frontend_tests(root, game):
+    base = root/'games'/game
+    return sorted([*(base/'tests').glob('*.test.mjs'),
+                   *(base/'web').glob('*.test.mjs')])
+
+def build_commands(root, game, index=0):
+    if game != 'contra' or index != 0:
+        return []
+    return ([['python3', '-B', str(root/'games/contra/build'/name)]
+             for name in ('identity_test.py', 'media_test.py', 'media_archive_test.py', 'builder_inputs_test.py', 'runtime_assets_test.py', 'delivery_test.py', 'ci_runtime_test.py')]
+            + [['node', '--test', str(root/'games/contra/build/runtime-delivery.test.mjs')]])
 
 def run(args):
     output = ROOT/'.local/ci'/args.game
@@ -119,7 +157,7 @@ def run(args):
     else:
         commands = []
         if args.shard == 0:
-            frontend = sorted((ROOT/'games'/args.game/'tests').glob('*.test.mjs'))
+            frontend = frontend_tests(ROOT, args.game)
             if frontend:
                 commands.append(['node', '--experimental-strip-types', '--test', *(str(p) for p in frontend)])
             assets = ROOT/'scripts'/args.game/'verify-assets.py'
@@ -128,6 +166,7 @@ def run(args):
             commands += go_commands(ROOT, args.game, args.shard, args.count)
             commands += go_commands(ROOT, args.game, args.shard, args.count, race=True)
     env = verification_env(args.game, args.backend)
+    commands += build_commands(ROOT, args.game, args.shard)
     manifest = {'game': args.game, 'backend': args.backend, 'shard': args.shard, 'commands': commands, 'passed': False}
     destination = output/f'result-{args.shard}.json'
     destination.write_text(json.dumps(manifest, indent=2) + '\n')
@@ -191,6 +230,7 @@ def main():
     p.add_argument('--base', default='')
     p.add_argument('--head', default='HEAD')
     p.add_argument('--manual', default='')
+    p.add_argument('--contra-campaigns', action='store_true', help='Opt into non-blocking Contra computer research campaigns')
     r = sub.add_parser('run')
     r.add_argument('--game', required=True, choices=['shared', *game_names(ROOT)])
     r.add_argument('--backend', action='store_true')
@@ -216,7 +256,7 @@ def main():
                 old = subprocess.run(['git', 'show', args.base + ':' + path], cwd=ROOT, text=True, capture_output=True)
                 source = changed_test_source(old.stdout if old.returncode == 0 else '', source, retired=retired)
             legacy_sources[path] = source
-    result = plan(paths, game_names(ROOT), args.manual, legacy_sources)
+    result = plan(paths, game_names(ROOT), args.manual, legacy_sources, contra_campaigns=args.contra_campaigns)
     result.update(base=args.base, head=args.head, paths=changed_names(raw))
     out = ROOT/'.local/ci'
     out.mkdir(parents=True, exist_ok=True)
@@ -225,12 +265,16 @@ def main():
         with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
             f.write('matrix=' + json.dumps(result['matrix']) + '\n')
             f.write('has_games=' + str(result['has_games']).lower() + '\n')
+            f.write('contra_campaign_matrix=' + json.dumps(result['contra_campaign_matrix']) + '\n')
+            f.write('has_contra_campaigns=' + str(result['has_contra_campaigns']).lower() + '\n')
     if os.environ.get('GITHUB_STEP_SUMMARY'):
         with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as f:
             f.write('## Verification scope\n\nBaseline: `' + (args.base or 'bootstrap') + '`\n\n')
             f.write('Shared platform checks always run. Selected games:\n\n')
-            f.write('\n'.join('- ' + r['game'] + (': frontend, rules, full matches and race checks' if r['backend'] else ': frontend/assets only') for r in result['games']) or '- None')
+            f.write('\n'.join('- ' + r['game'] + (': frontend/build and Go contracts; optional computer research listed separately' if r['game'] == 'contra' and r['backend'] else ': frontend, rules, full matches and race checks' if r['backend'] else ': frontend/assets only') for r in result['games']) or '- None')
             f.write('\n')
+            if result['has_contra_campaigns']:
+                f.write('\nOptional Contra computer research explicitly requested: standard terminal and assisted clear, each with one and two seats. These jobs do not gate human gameplay delivery.\n')
     print(json.dumps(result, ensure_ascii=False))
 
 if __name__ == '__main__': main()

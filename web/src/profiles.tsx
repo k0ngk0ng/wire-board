@@ -10,6 +10,10 @@ import { createContext, useContext, useEffect, useState } from "react";
 import type { User, SGOptions, SplendorOptions } from "./types";
 import { splendorCityCatalogue } from "../../games/splendor/web/splendor-city-state";
 import { splendorRulesLabel } from "../../games/splendor/web/splendor-expansions";
+import {
+  cooperativeOutcomeLabel,
+  unratedDescription,
+} from "./ui/cooperative-rating";
 
 export const ProfileContext = createContext<(id: string) => void>(() => {});
 export function PlayerName({
@@ -40,6 +44,10 @@ export function PlayerName({
   );
 }
 type History = {
+  cooperative?: boolean;
+  ratingPolicy?: string;
+  outcome?: string;
+  unratedReason?: string;
   draw?: boolean;
   splendorCatalog?: string;
   splendorOptions?: SplendorOptions;
@@ -345,11 +353,13 @@ export function ProfilePage({ id, self }: { id: string; self: string }) {
                 · {match.room}
               </strong>
               <span>
-                {match.status === "finished"
-                  ? match.draw
-                    ? "和棋"
-                    : "已结算"
-                  : "已中止"}
+                {match.ratingPolicy === "coop_campaign_v1"
+                  ? cooperativeOutcomeLabel(match)
+                  : match.status === "finished"
+                    ? match.draw
+                      ? "和棋"
+                      : "已结算"
+                    : "已中止"}
               </span>
             </header>
             <time>
@@ -358,7 +368,9 @@ export function ProfilePage({ id, self }: { id: string; self: string }) {
                 ? "练习对局"
                 : match.rated
                   ? "计分对局"
-                  : "不计积分"}
+                  : match.cooperative
+                    ? unratedDescription(match)
+                    : "不计积分"}
             </time>
             <div>
               {match.players.map((player) => (
@@ -452,8 +464,9 @@ export function Leaderboard() {
       </div>
       <p className="rating-rules">
         初始 1000 分 · 第一名 +20 · 第二名 −5，之后每低一名多扣 5
-        分。三国杀获胜阵营各 +20，失败阵营各
-        −10。并列同分；含电脑、中止和积分上线前开始的对局不计分。
+        分。三国杀获胜阵营各 +20，失败阵营各 −10。合作计分挑战通关时全员
+        +20，失败、放弃或超过保留期限时全员
+        −10；含电脑、练习、技术中止和未启用计分的旧局不计分。
       </p>
       {error && <p role="alert">{error}</p>}
       <button className="subtle" disabled={busy} onClick={() => void load()}>

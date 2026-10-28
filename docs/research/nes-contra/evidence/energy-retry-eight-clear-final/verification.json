@@ -1,0 +1,18 @@
+{
+  "scope": "Assisted diagnostic continuation across policy repairs; not a fresh single-policy campaign",
+  "outcome": "cleared",
+  "finalized": true,
+  "frames": 363330,
+  "recorded_input_replay_passed": true,
+  "fresh_campaign_acceptance": false,
+  "candidate_source": ".local/contra-bot/short-step-candidate/bot.go",
+  "candidate_sha256": "dabb665b60bdb98d10d1a48b37c510fe34f949bdd451c3fb8313ccff756c8e8b",
+  "files": {
+    "result.json": "dc0606a183eca8eeb7b191d008a44186762ac96c8f427a479d95171f16afafb2",
+    "bot.json": "0a772b9032e4f79556c45c8da7d47d5ec4290165f69904cb7ca9a14f71466901",
+    "pads.bin.gz": "4290ef917b46117c902061ab80d7466d7929880eafd12a9be6bcd5e0b12b66e1",
+    "final-session.json": "603cf0a1ee2ede19329ce8fb46f1db2750c9568ee251159a60ae7212e5896ae2",
+    "test-life-refills.json": "0fe359b95012739a7d0cad879d97b7806f8a478389a2cf9351a4b1cf7a8ae826",
+    "replay.json": "74847d6968c3efd7e66b178d66e253a72a83d949fa0adf34cc15196f5d95a6b9"
+  }
+}

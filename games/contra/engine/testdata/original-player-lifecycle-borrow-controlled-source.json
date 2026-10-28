@@ -1,0 +1,11 @@
+{
+  "source_is_original_execution": true,
+  "scope": "borrow-controlled",
+  "source": "docs/research/nes-contra/evidence/static-lifecycle-borrow-controlled.json.gz",
+  "sha256": "3fa5bd63ba8fd43bbf49573668e0c64deb206800c0730b8d7dfdf7817ab6d6fd",
+  "counts": {
+    "borrow": 102
+  },
+  "borrow_successes": 10,
+  "repeated": true
+}

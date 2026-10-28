@@ -1,0 +1,3448 @@
+{
+  "passed": true,
+  "scope": "Natural Start/shoot inputs; no ROM/RAM writes in hooks",
+  "source": {
+    "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+    "source_archive": "/Users/jason/Documents/nes/roms/03/\u9b42\u6597\u7f57\u65e5\u7248(\u5b8c\u5168\u7248).zip",
+    "initial_state": {
+      "name": "coop-play.fcs",
+      "sha256": "3101897748bbc64347634680bc4597161bfdee6339a349a1eb6f5c41cd5b6c7e"
+    },
+    "emulator": "/opt/homebrew/bin/fceux",
+    "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+    "emulator_launcher_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+    "emulator_executable": "/opt/homebrew/Cellar/fceux/2.6.6_12/libexec/fceux",
+    "emulator_executable_sha256": "466c7a8dc48fc3fd66c8aaffec741e844fe16ec1f5ee2318664bdff7c8327115",
+    "frames": 160,
+    "scenario_sha256": "c352b6b48dd484ccf19412a558b87322b02e9d79c73bbea25a9a71d5ca7179ec",
+    "has_custom_hooks": true,
+    "completed": true
+  },
+  "scenario": {
+    "name": "audio-pause-shot-v1",
+    "load_state": "coop-play",
+    "frames": 160,
+    "captures": [],
+    "segments": [
+      {
+        "start": 5,
+        "end": 5,
+        "keys": [
+          "B"
+        ]
+      },
+      {
+        "start": 10,
+        "end": 12,
+        "keys": [
+          "start"
+        ]
+      },
+      {
+        "start": 100,
+        "end": 100,
+        "keys": [
+          "start",
+          "B"
+        ]
+      }
+    ],
+    "hooks_lua": "\nlocal old_finish=finish_probe\nlocal requests=assert(io.open(out..'/sound-requests.jsonl','w'))\nlocal slots=assert(io.open(out..'/sound-slots.bin','wb'))\nlocal function caller()\n local s=memory.getregister('s');return memory.readbyte(0x100+AND(s+1,255))+256*memory.readbyte(0x100+AND(s+2,255))+1\nend\nmemory.registerexec(0xf9bc,1,function()\n requests:write(string.format('{\"frame\":%d,\"id\":%d,\"caller\":%d,\"bank\":%d,\"stage\":%d,\"gamePhase\":%d,\"levelPhase\":%d,\"actor\":%d}\\n',emu.framecount(),memory.getregister('a'),caller(),memory.readbyte(0x8000),memory.readbyte(0x30),memory.readbyte(0x18),memory.readbyte(0x2c),memory.getregister('x')))\nend)\nemu.registerafter(function()slots:write(memory.readbyterange(0x106,6))end)\nfunction finish_probe()if old_finish then old_finish() end;requests:close();slots:close()end\n"
+  },
+  "ramSHA256": "6f8c8b17922f458530a55e8b0550ebd2b02037483c60a7552e320224c7fc9be6",
+  "requests": [
+    {
+      "frame": 1404,
+      "id": 26,
+      "caller": 33235,
+      "bank": 28,
+      "stage": 0,
+      "gamePhase": 5,
+      "levelPhase": 4,
+      "actor": 0
+    },
+    {
+      "frame": 1409,
+      "id": 116,
+      "caller": 52436,
+      "bank": 18,
+      "stage": 0,
+      "gamePhase": 5,
+      "levelPhase": 4,
+      "actor": 255
+    },
+    {
+      "frame": 1499,
+      "id": 26,
+      "caller": 33235,
+      "bank": 28,
+      "stage": 0,
+      "gamePhase": 5,
+      "levelPhase": 4,
+      "actor": 1
+    }
+  ],
+  "rows": [
+    {
+      "frame": 1,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        0
+      ],
+      "commandTimers": [
+        91,
+        91,
+        1,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "frame": 2,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        2
+      ],
+      "commandTimers": [
+        90,
+        90,
+        6,
+        6,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 3,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        2
+      ],
+      "commandTimers": [
+        89,
+        89,
+        5,
+        5,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 4,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        0
+      ],
+      "commandTimers": [
+        88,
+        88,
+        4,
+        4,
+        0,
+        0
+      ]
+    },
+    {
+      "frame": 5,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        87,
+        87,
+        3,
+        3,
+        1,
+        1
+      ]
+    },
+    {
+      "frame": 6,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        86,
+        86,
+        2,
+        2,
+        5,
+        1
+      ]
+    },
+    {
+      "frame": 7,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        85,
+        85,
+        1,
+        1,
+        4,
+        1
+      ]
+    },
+    {
+      "frame": 8,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        84,
+        84,
+        6,
+        6,
+        3,
+        1
+      ]
+    },
+    {
+      "frame": 9,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        83,
+        83,
+        5,
+        5,
+        2,
+        1
+      ]
+    },
+    {
+      "frame": 10,
+      "gamePaused": 1,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        116,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        1,
+        1
+      ]
+    },
+    {
+      "frame": 11,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        116,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        5,
+        1
+      ]
+    },
+    {
+      "frame": 12,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        116,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        4,
+        1
+      ]
+    },
+    {
+      "frame": 13,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        116,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        3,
+        1
+      ]
+    },
+    {
+      "frame": 14,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        116,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        2,
+        1
+      ]
+    },
+    {
+      "frame": 15,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        116,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        1,
+        1
+      ]
+    },
+    {
+      "frame": 16,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        116,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        5,
+        1
+      ]
+    },
+    {
+      "frame": 17,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        116,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        4,
+        1
+      ]
+    },
+    {
+      "frame": 18,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        116,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        3,
+        1
+      ]
+    },
+    {
+      "frame": 19,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        116,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        2,
+        1
+      ]
+    },
+    {
+      "frame": 20,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        116,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        1,
+        1
+      ]
+    },
+    {
+      "frame": 21,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        116,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        5,
+        1
+      ]
+    },
+    {
+      "frame": 22,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        116,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        4,
+        1
+      ]
+    },
+    {
+      "frame": 23,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        116,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        3,
+        1
+      ]
+    },
+    {
+      "frame": 24,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        116,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        2,
+        1
+      ]
+    },
+    {
+      "frame": 25,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        116,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        1,
+        1
+      ]
+    },
+    {
+      "frame": 26,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        116,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        2,
+        1
+      ]
+    },
+    {
+      "frame": 27,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        116,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        1,
+        1
+      ]
+    },
+    {
+      "frame": 28,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        116,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        2,
+        1
+      ]
+    },
+    {
+      "frame": 29,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        116,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        1,
+        1
+      ]
+    },
+    {
+      "frame": 30,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        116,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        2,
+        1
+      ]
+    },
+    {
+      "frame": 31,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        116,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        1,
+        1
+      ]
+    },
+    {
+      "frame": 32,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        116,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        2,
+        1
+      ]
+    },
+    {
+      "frame": 33,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        116,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        1,
+        1
+      ]
+    },
+    {
+      "frame": 34,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        116,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        2,
+        1
+      ]
+    },
+    {
+      "frame": 35,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        116,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        1,
+        1
+      ]
+    },
+    {
+      "frame": 36,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        116,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        2,
+        1
+      ]
+    },
+    {
+      "frame": 37,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        116,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        1,
+        1
+      ]
+    },
+    {
+      "frame": 38,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        116,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        2,
+        1
+      ]
+    },
+    {
+      "frame": 39,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        116,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        1,
+        1
+      ]
+    },
+    {
+      "frame": 40,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        116,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        2,
+        1
+      ]
+    },
+    {
+      "frame": 41,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        116,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        1,
+        1
+      ]
+    },
+    {
+      "frame": 42,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 43,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 44,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 45,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 46,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 47,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 48,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 49,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 50,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 51,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 52,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 53,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 54,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 55,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 56,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 57,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 58,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 59,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 60,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 61,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 62,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 63,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 64,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 65,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 66,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 67,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 68,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 69,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 70,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 71,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 72,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 73,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 74,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 75,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 76,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 77,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 78,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 79,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 80,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 81,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 82,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 83,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 84,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 85,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 86,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 87,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 88,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 89,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 90,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 91,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 92,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 93,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 94,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 95,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 96,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 97,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 98,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 99,
+      "gamePaused": 1,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        0,
+        1
+      ]
+    },
+    {
+      "frame": 100,
+      "gamePaused": 0,
+      "audioPaused": 1,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        82,
+        82,
+        4,
+        4,
+        1,
+        1
+      ]
+    },
+    {
+      "frame": 101,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        81,
+        81,
+        3,
+        3,
+        5,
+        1
+      ]
+    },
+    {
+      "frame": 102,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        80,
+        80,
+        2,
+        2,
+        4,
+        1
+      ]
+    },
+    {
+      "frame": 103,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        79,
+        79,
+        1,
+        1,
+        3,
+        1
+      ]
+    },
+    {
+      "frame": 104,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        78,
+        78,
+        12,
+        6,
+        2,
+        1
+      ]
+    },
+    {
+      "frame": 105,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        77,
+        77,
+        11,
+        5,
+        1,
+        1
+      ]
+    },
+    {
+      "frame": 106,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        76,
+        76,
+        10,
+        4,
+        5,
+        1
+      ]
+    },
+    {
+      "frame": 107,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        75,
+        75,
+        9,
+        3,
+        4,
+        1
+      ]
+    },
+    {
+      "frame": 108,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        74,
+        74,
+        8,
+        2,
+        3,
+        1
+      ]
+    },
+    {
+      "frame": 109,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        73,
+        73,
+        7,
+        1,
+        2,
+        1
+      ]
+    },
+    {
+      "frame": 110,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        72,
+        72,
+        6,
+        6,
+        1,
+        1
+      ]
+    },
+    {
+      "frame": 111,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        71,
+        71,
+        5,
+        5,
+        1,
+        3
+      ]
+    },
+    {
+      "frame": 112,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        70,
+        70,
+        4,
+        4,
+        5,
+        2
+      ]
+    },
+    {
+      "frame": 113,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        69,
+        69,
+        3,
+        3,
+        4,
+        1
+      ]
+    },
+    {
+      "frame": 114,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        68,
+        68,
+        2,
+        2,
+        3,
+        3
+      ]
+    },
+    {
+      "frame": 115,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        67,
+        67,
+        1,
+        1,
+        2,
+        2
+      ]
+    },
+    {
+      "frame": 116,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        66,
+        66,
+        6,
+        6,
+        1,
+        1
+      ]
+    },
+    {
+      "frame": 117,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        65,
+        65,
+        5,
+        5,
+        1,
+        3
+      ]
+    },
+    {
+      "frame": 118,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        64,
+        64,
+        4,
+        4,
+        5,
+        2
+      ]
+    },
+    {
+      "frame": 119,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        63,
+        63,
+        3,
+        3,
+        4,
+        1
+      ]
+    },
+    {
+      "frame": 120,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        62,
+        62,
+        2,
+        2,
+        3,
+        3
+      ]
+    },
+    {
+      "frame": 121,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        61,
+        61,
+        1,
+        1,
+        2,
+        2
+      ]
+    },
+    {
+      "frame": 122,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        60,
+        60,
+        6,
+        6,
+        1,
+        1
+      ]
+    },
+    {
+      "frame": 123,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        59,
+        59,
+        5,
+        5,
+        5,
+        3
+      ]
+    },
+    {
+      "frame": 124,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        58,
+        58,
+        4,
+        4,
+        4,
+        2
+      ]
+    },
+    {
+      "frame": 125,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        57,
+        57,
+        3,
+        3,
+        3,
+        1
+      ]
+    },
+    {
+      "frame": 126,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        56,
+        56,
+        2,
+        2,
+        2,
+        3
+      ]
+    },
+    {
+      "frame": 127,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        55,
+        55,
+        1,
+        1,
+        1,
+        2
+      ]
+    },
+    {
+      "frame": 128,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        54,
+        54,
+        6,
+        6,
+        5,
+        1
+      ]
+    },
+    {
+      "frame": 129,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        53,
+        53,
+        5,
+        5,
+        4,
+        3
+      ]
+    },
+    {
+      "frame": 130,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        52,
+        52,
+        4,
+        4,
+        3,
+        2
+      ]
+    },
+    {
+      "frame": 131,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        51,
+        51,
+        3,
+        3,
+        2,
+        1
+      ]
+    },
+    {
+      "frame": 132,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        50,
+        50,
+        2,
+        2,
+        1,
+        3
+      ]
+    },
+    {
+      "frame": 133,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        49,
+        49,
+        1,
+        1,
+        5,
+        2
+      ]
+    },
+    {
+      "frame": 134,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        26
+      ],
+      "commandTimers": [
+        48,
+        48,
+        6,
+        6,
+        4,
+        1
+      ]
+    },
+    {
+      "frame": 135,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        0
+      ],
+      "commandTimers": [
+        47,
+        47,
+        5,
+        5,
+        3,
+        0
+      ]
+    },
+    {
+      "frame": 136,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        0
+      ],
+      "commandTimers": [
+        46,
+        46,
+        4,
+        4,
+        2,
+        0
+      ]
+    },
+    {
+      "frame": 137,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        0
+      ],
+      "commandTimers": [
+        45,
+        45,
+        3,
+        3,
+        1,
+        0
+      ]
+    },
+    {
+      "frame": 138,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        0
+      ],
+      "commandTimers": [
+        44,
+        44,
+        2,
+        2,
+        5,
+        0
+      ]
+    },
+    {
+      "frame": 139,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        0
+      ],
+      "commandTimers": [
+        43,
+        43,
+        1,
+        1,
+        4,
+        0
+      ]
+    },
+    {
+      "frame": 140,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        0
+      ],
+      "commandTimers": [
+        42,
+        42,
+        6,
+        6,
+        3,
+        0
+      ]
+    },
+    {
+      "frame": 141,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        0
+      ],
+      "commandTimers": [
+        41,
+        41,
+        5,
+        5,
+        2,
+        0
+      ]
+    },
+    {
+      "frame": 142,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        0
+      ],
+      "commandTimers": [
+        40,
+        40,
+        4,
+        4,
+        1,
+        0
+      ]
+    },
+    {
+      "frame": 143,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        0
+      ],
+      "commandTimers": [
+        39,
+        39,
+        3,
+        3,
+        5,
+        0
+      ]
+    },
+    {
+      "frame": 144,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        0
+      ],
+      "commandTimers": [
+        38,
+        38,
+        2,
+        2,
+        4,
+        0
+      ]
+    },
+    {
+      "frame": 145,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        0
+      ],
+      "commandTimers": [
+        37,
+        37,
+        1,
+        1,
+        3,
+        0
+      ]
+    },
+    {
+      "frame": 146,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        2
+      ],
+      "commandTimers": [
+        36,
+        36,
+        6,
+        6,
+        2,
+        1
+      ]
+    },
+    {
+      "frame": 147,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        2
+      ],
+      "commandTimers": [
+        35,
+        35,
+        5,
+        5,
+        1,
+        1
+      ]
+    },
+    {
+      "frame": 148,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        0
+      ],
+      "commandTimers": [
+        34,
+        34,
+        4,
+        4,
+        5,
+        0
+      ]
+    },
+    {
+      "frame": 149,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        0
+      ],
+      "commandTimers": [
+        33,
+        33,
+        3,
+        3,
+        4,
+        0
+      ]
+    },
+    {
+      "frame": 150,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        0
+      ],
+      "commandTimers": [
+        32,
+        32,
+        2,
+        2,
+        3,
+        0
+      ]
+    },
+    {
+      "frame": 151,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        0
+      ],
+      "commandTimers": [
+        31,
+        31,
+        1,
+        1,
+        2,
+        0
+      ]
+    },
+    {
+      "frame": 152,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        26,
+        0
+      ],
+      "commandTimers": [
+        30,
+        30,
+        6,
+        6,
+        1,
+        0
+      ]
+    },
+    {
+      "frame": 153,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        0
+      ],
+      "commandTimers": [
+        29,
+        29,
+        5,
+        5,
+        0,
+        0
+      ]
+    },
+    {
+      "frame": 154,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        0
+      ],
+      "commandTimers": [
+        28,
+        28,
+        4,
+        4,
+        0,
+        0
+      ]
+    },
+    {
+      "frame": 155,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        0
+      ],
+      "commandTimers": [
+        27,
+        27,
+        3,
+        3,
+        0,
+        0
+      ]
+    },
+    {
+      "frame": 156,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        0
+      ],
+      "commandTimers": [
+        26,
+        26,
+        2,
+        2,
+        0,
+        0
+      ]
+    },
+    {
+      "frame": 157,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        0
+      ],
+      "commandTimers": [
+        25,
+        25,
+        1,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "frame": 158,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        0
+      ],
+      "commandTimers": [
+        24,
+        24,
+        6,
+        6,
+        0,
+        0
+      ]
+    },
+    {
+      "frame": 159,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        0
+      ],
+      "commandTimers": [
+        23,
+        23,
+        5,
+        5,
+        0,
+        0
+      ]
+    },
+    {
+      "frame": 160,
+      "gamePaused": 0,
+      "audioPaused": 0,
+      "slots": [
+        70,
+        70,
+        70,
+        70,
+        0,
+        0
+      ],
+      "commandTimers": [
+        22,
+        22,
+        4,
+        4,
+        0,
+        0
+      ]
+    }
+  ],
+  "conclusion": "Only pause cue74 progresses while paused; prior noise26 timer freezes; cue ends during pause and first resumed shot is accepted in the next audio phase."
+}

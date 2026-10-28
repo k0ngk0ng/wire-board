@@ -1,0 +1,29 @@
+{
+  "status": "targeted-race-and-replay-pass-stage-still-incomplete",
+  "finding": "Crate cap is recognized. Nozzle landing penalty outweighed every forward higher landing, so the planner preferred landing at123,194 near its start127,196.",
+  "change": "Prefer ordinary safe forward/upward progress. If none wins, retain the best known forward higher nozzle-adjacent landing as a plan; existing active-beam and quiet-opening checks still control A.",
+  "sources": {
+    "games/contra/engine/bot_navigation.go": "ebce4952da03ce41470e39a9eaeaac47fcb6045ef09327f55d927bb46ec87e5f",
+    "games/contra/engine/bot_nozzle_progress_test.go": "fea99ef648483bac439ef72a298182af7df43ab587ffc1862ff4b7be8d1563b5",
+    "games/contra/engine/testdata/bot-energy-crate-landing.json.gz": "5aed21cbadf884008030d067ac709f6cd5ac452dd71f1db2b5327f2d87224f12"
+  },
+  "race_log": "nozzle-progress-green.log",
+  "run": ".local/contra-bot/diagnostic-energy-nozzle-progress",
+  "cleanup": [
+    "Removed this task temporary tagged terrain diagnostic after preserving energy-crate-probe.log."
+  ],
+  "complete_campaign": false,
+  "run_result": {
+    "frames": 132000,
+    "level_index": 5,
+    "screen": 6,
+    "finding": "Passed the crate/nozzle obstruction and entered the next map segment; whole stage remains incomplete."
+  },
+  "replay": {
+    "frames": 132000,
+    "nextStepStoredStateEqual": true,
+    "nextStepStructEqual": true,
+    "recordedStateMatches": true,
+    "roundTripDifferences": null
+  }
+}

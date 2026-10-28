@@ -1,0 +1,77 @@
+=== RUN   TestBotJumpCannotPassThroughVisibleFloatingWall
+    bot_air_side_collision_test.go:54: native fall 72 124 225
+--- PASS: TestBotJumpCannotPassThroughVisibleFloatingWall (0.00s)
+=== RUN   TestBotJumpCanLandAfterVisibleCeilingContact
+    bot_ceiling_response_test.go:51: native lower landing 29 114 132
+--- PASS: TestBotJumpCanLandAfterVisibleCeilingContact (0.00s)
+=== RUN   TestBotCrouchIntentSurvivesVisibleBodyOcclusion
+--- PASS: TestBotCrouchIntentSurvivesVisibleBodyOcclusion (0.01s)
+=== RUN   TestBotNozzleCrouchDoesNotSurviveControlGap
+--- PASS: TestBotNozzleCrouchDoesNotSurviveControlGap (0.00s)
+=== RUN   TestBotDropRequiresVisibleSupportInCurrentColumn
+--- PASS: TestBotDropRequiresVisibleSupportInCurrentColumn (0.00s)
+=== RUN   TestBotDropsThroughPlatformWhenHighWallBlocksProgress
+=== RUN   TestBotDropsThroughPlatformWhenHighWallBlocksProgress/platform
+    bot_drop_through_test.go:53: routes 128 112 true 104 66 true support 1 true wall 128
+=== RUN   TestBotDropsThroughPlatformWhenHighWallBlocksProgress/solid
+    bot_drop_through_test.go:53: routes 0 0 false 104 66 true support 128 true wall 128
+=== RUN   TestBotDropsThroughPlatformWhenHighWallBlocksProgress/no-landing
+    bot_drop_through_test.go:53: routes 0 0 false 104 66 true support 1 true wall 128
+--- PASS: TestBotDropsThroughPlatformWhenHighWallBlocksProgress (0.00s)
+    --- PASS: TestBotDropsThroughPlatformWhenHighWallBlocksProgress/platform (0.00s)
+    --- PASS: TestBotDropsThroughPlatformWhenHighWallBlocksProgress/solid (0.00s)
+    --- PASS: TestBotDropsThroughPlatformWhenHighWallBlocksProgress/no-landing (0.00s)
+=== RUN   TestBotGroundedCrouchSurvivesOnePixelVisualJitter
+--- PASS: TestBotGroundedCrouchSurvivesOnePixelVisualJitter (0.00s)
+=== RUN   TestBotCannotLandBodyInsideVisibleHighWall
+--- PASS: TestBotCannotLandBodyInsideVisibleHighWall (0.00s)
+=== RUN   TestBotApproachesUnknownEdgeOnlyWithinKnownSupport
+--- PASS: TestBotApproachesUnknownEdgeOnlyWithinKnownSupport (0.00s)
+=== RUN   TestBotVisibleCliffStartsJumpBeforeLosingSupport
+--- PASS: TestBotVisibleCliffStartsJumpBeforeLosingSupport (0.00s)
+=== RUN   TestBotVisibleContinuousFloorDoesNotJump
+--- PASS: TestBotVisibleContinuousFloorDoesNotJump (0.00s)
+=== RUN   TestBotVisibleSafeLowerLedgeDoesNotNeedJump
+--- PASS: TestBotVisibleSafeLowerLedgeDoesNotNeedJump (0.00s)
+=== RUN   TestBotVisibleCliffWithCeilingDoesNotInventJump
+--- PASS: TestBotVisibleCliffWithCeilingDoesNotInventJump (0.00s)
+=== RUN   TestBotVisibleRespawnDescentKeepsReachableLanding
+--- PASS: TestBotVisibleRespawnDescentKeepsReachableLanding (0.00s)
+=== RUN   TestBotVisibleDeepLedgeDoesNotCancelNecessaryJump
+--- PASS: TestBotVisibleDeepLedgeDoesNotCancelNecessaryJump (0.00s)
+=== RUN   TestBotVisibleJumpGoalSurvivesSubmittedStandingFrame
+--- PASS: TestBotVisibleJumpGoalSurvivesSubmittedStandingFrame (0.00s)
+=== RUN   TestBotVisibleVerticalJumpGoalSurvivesSubmittedStandingFrame
+--- PASS: TestBotVisibleVerticalJumpGoalSurvivesSubmittedStandingFrame (0.00s)
+=== RUN   TestBotVisibleNozzleBeamCrouchesOnlyAcrossCurrentBody
+=== RUN   TestBotVisibleNozzleBeamCrouchesOnlyAcrossCurrentBody/crossing
+=== RUN   TestBotVisibleNozzleBeamCrouchesOnlyAcrossCurrentBody/other-row
+=== RUN   TestBotVisibleNozzleBeamCrouchesOnlyAcrossCurrentBody/no-source
+=== RUN   TestBotVisibleNozzleBeamCrouchesOnlyAcrossCurrentBody/vanished
+--- PASS: TestBotVisibleNozzleBeamCrouchesOnlyAcrossCurrentBody (0.00s)
+    --- PASS: TestBotVisibleNozzleBeamCrouchesOnlyAcrossCurrentBody/crossing (0.00s)
+    --- PASS: TestBotVisibleNozzleBeamCrouchesOnlyAcrossCurrentBody/other-row (0.00s)
+    --- PASS: TestBotVisibleNozzleBeamCrouchesOnlyAcrossCurrentBody/no-source (0.00s)
+    --- PASS: TestBotVisibleNozzleBeamCrouchesOnlyAcrossCurrentBody/vanished (0.00s)
+=== RUN   TestBotNozzleLandmarksDoNotAimBelowWhileJumping
+--- PASS: TestBotNozzleLandmarksDoNotAimBelowWhileJumping (0.00s)
+=== RUN   TestBotWaitsBeforeJumpingIntoVisibleNozzleBeam
+--- PASS: TestBotWaitsBeforeJumpingIntoVisibleNozzleBeam (0.00s)
+=== RUN   TestBotRecordedMiddlePlatformDecision
+    bot_nozzle_middle_test.go:34: remembered nozzle ahead 2000
+    bot_nozzle_middle_test.go:35: landing 107 96 true current {107 148 true true 10 0 13 64 true false false false false} nozzle ahead 0
+--- PASS: TestBotRecordedMiddlePlatformDecision (0.00s)
+=== RUN   TestBotJumpKeepsLandingAwayFromVisibleNozzle
+--- PASS: TestBotJumpKeepsLandingAwayFromVisibleNozzle (0.00s)
+=== RUN   TestBotNozzleAheadAllowsClimbingFromMiddlePlatform
+--- PASS: TestBotNozzleAheadAllowsClimbingFromMiddlePlatform (0.00s)
+=== RUN   TestBotNozzlePenaltyDoesNotPreferEndlessSamePlaceJump
+--- PASS: TestBotNozzlePenaltyDoesNotPreferEndlessSamePlaceJump (0.00s)
+=== RUN   TestBotUnknownFrontDoesNotInventCliff
+--- PASS: TestBotUnknownFrontDoesNotInventCliff (0.00s)
+=== RUN   TestBotVisibleShaftAllowsDropToKnownFloor
+--- PASS: TestBotVisibleShaftAllowsDropToKnownFloor (0.00s)
+=== RUN   TestBotDropCannotFallThroughCurrentPlatform
+--- PASS: TestBotDropCannotFallThroughCurrentPlatform (0.00s)
+PASS
+ok  	github.com/k0ngk0ng/wire-board/games/contra/engine	1.554s

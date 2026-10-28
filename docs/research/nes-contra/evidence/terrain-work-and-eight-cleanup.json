@@ -1,0 +1,263 @@
+{
+  "scope": "Only this task\u2019s private caches, verified duplicate reruns, superseded expanded observations and one incomplete observer experiment. Kept all canonical source fixtures, primary live states, primary RAM, valid REA and red/green proof. User ROMs, other games, parent runtime and tests untouched.",
+  "bytesRemoved": 522888231,
+  "removed": [
+    {
+      "path": ".local/contra-terrain-work/fceux-home",
+      "bytes": 17692,
+      "files": 1
+    },
+    {
+      "path": ".local/contra-terrain-work/runtime",
+      "bytes": 0,
+      "files": 0
+    },
+    {
+      "path": ".local/contra-terrain-work/swift-cache",
+      "bytes": 93395008,
+      "files": 103
+    },
+    {
+      "path": ".local/contra-world-eight-oracle/fceux-home",
+      "bytes": 17743,
+      "files": 1
+    },
+    {
+      "path": ".local/contra-world-eight-oracle/runtime",
+      "bytes": 0,
+      "files": 0
+    },
+    {
+      "path": ".local/contra-base-roller-live/fceux-home",
+      "bytes": 17728,
+      "files": 1
+    },
+    {
+      "path": ".local/contra-base-roller-live/runtime",
+      "bytes": 0,
+      "files": 0
+    },
+    {
+      "path": ".local/contra-base-throw-inputs/fceux-home",
+      "bytes": 17730,
+      "files": 1
+    },
+    {
+      "path": ".local/contra-base-throw-inputs/runtime",
+      "bytes": 0,
+      "files": 0
+    },
+    {
+      "path": ".local/contra-terrain-work/runs/replay-indoor-cases-v2-v1",
+      "bytes": 1847270,
+      "files": 20
+    },
+    {
+      "path": ".local/contra-terrain-work/runs/replay-stage8-v2-v1",
+      "bytes": 61816310,
+      "files": 21
+    },
+    {
+      "path": ".local/contra-terrain-work/runs/replay-guardian-cases-v5-v1",
+      "bytes": 3975242,
+      "files": 20
+    },
+    {
+      "path": ".local/contra-terrain-work/runs/replay-stage6-v2-v1",
+      "bytes": 58311141,
+      "files": 20
+    },
+    {
+      "path": ".local/contra-terrain-work/runs/replay-guardian-world-v1-v1",
+      "bytes": 19303495,
+      "files": 21
+    },
+    {
+      "path": ".local/contra-terrain-work/runs/replay-vertical-cases-v1-v1",
+      "bytes": 989745,
+      "files": 20
+    },
+    {
+      "path": ".local/contra-terrain-work/replay-guardian-cases-v5-v1.json",
+      "bytes": 471829,
+      "files": 1
+    },
+    {
+      "path": ".local/contra-terrain-work/replay-stage6-v2-v1.json",
+      "bytes": 8196,
+      "files": 1
+    },
+    {
+      "path": ".local/contra-terrain-work/replay-stage8-v2-v1.json",
+      "bytes": 7958,
+      "files": 1
+    },
+    {
+      "path": ".local/contra-terrain-work/replay-indoor-cases-v2-v1.json",
+      "bytes": 186468,
+      "files": 1
+    },
+    {
+      "path": ".local/contra-terrain-work/replay-guardian-world-v1-v1.json",
+      "bytes": 9223,
+      "files": 1
+    },
+    {
+      "path": ".local/contra-terrain-work/replay-vertical-cases-v1-v1.json",
+      "bytes": 59930,
+      "files": 1
+    },
+    {
+      "path": ".local/contra-terrain-work/states/guardian-replay-guardian-world-v1-v1.fcs",
+      "bytes": 79429,
+      "files": 1
+    },
+    {
+      "path": ".local/contra-terrain-work/states/guardian-replay-stage8-v2-v1.fcs",
+      "bytes": 79429,
+      "files": 1
+    },
+    {
+      "path": ".local/contra-terrain-work/runs/guardian-cases-v1",
+      "bytes": 1731790,
+      "files": 20
+    },
+    {
+      "path": ".local/contra-terrain-work/runs/guardian-cases-v2",
+      "bytes": 3767618,
+      "files": 20
+    },
+    {
+      "path": ".local/contra-terrain-work/runs/guardian-cases-v4",
+      "bytes": 3975120,
+      "files": 20
+    },
+    {
+      "path": ".local/contra-terrain-work/runs/stage6-v1",
+      "bytes": 45059595,
+      "files": 20
+    },
+    {
+      "path": ".local/contra-terrain-work/runs/indoor-cases-v1",
+      "bytes": 1370696,
+      "files": 20
+    },
+    {
+      "path": ".local/contra-terrain-work/runs/stage8-v1/terrain-work.jsonl",
+      "bytes": 168012204,
+      "files": 1
+    },
+    {
+      "path": ".local/contra-terrain-work/checks/owner-contract-green-candidate.jsonl",
+      "bytes": 2792,
+      "files": 1
+    },
+    {
+      "path": ".local/contra-world-eight-oracle/runs/world-eight-stage-3-repeat-v1",
+      "bytes": 6500155,
+      "files": 26
+    },
+    {
+      "path": ".local/contra-world-eight-oracle/runs/world-eight-stage-5-repeat-v1",
+      "bytes": 6489804,
+      "files": 26
+    },
+    {
+      "path": ".local/contra-world-eight-oracle/runs/world-eight-stage-8-repeat-v1",
+      "bytes": 6492324,
+      "files": 26
+    },
+    {
+      "path": ".local/contra-world-eight-oracle/runs/world-eight-stage-2-repeat-v1",
+      "bytes": 6500229,
+      "files": 26
+    },
+    {
+      "path": ".local/contra-world-eight-oracle/runs/world-eight-stage-4-repeat-v1",
+      "bytes": 6495401,
+      "files": 26
+    },
+    {
+      "path": ".local/contra-world-eight-oracle/runs/world-eight-stage-1-repeat-v1",
+      "bytes": 6493566,
+      "files": 26
+    },
+    {
+      "path": ".local/contra-world-eight-oracle/runs/world-eight-stage-7-repeat-v1",
+      "bytes": 6484374,
+      "files": 26
+    },
+    {
+      "path": ".local/contra-world-eight-oracle/runs/world-eight-stage-6-repeat-v1",
+      "bytes": 6485655,
+      "files": 26
+    },
+    {
+      "path": ".local/contra-world-eight-oracle/world-eight-stage-4-repeat-v1.json",
+      "bytes": 58417,
+      "files": 1
+    },
+    {
+      "path": ".local/contra-world-eight-oracle/world-eight-stage-3-repeat-v1.json",
+      "bytes": 57350,
+      "files": 1
+    },
+    {
+      "path": ".local/contra-world-eight-oracle/world-eight-stage-2-repeat-v1.json",
+      "bytes": 58417,
+      "files": 1
+    },
+    {
+      "path": ".local/contra-world-eight-oracle/world-eight-stage-5-repeat-v1.json",
+      "bytes": 57350,
+      "files": 1
+    },
+    {
+      "path": ".local/contra-world-eight-oracle/world-eight-stage-7-repeat-v1.json",
+      "bytes": 57350,
+      "files": 1
+    },
+    {
+      "path": ".local/contra-world-eight-oracle/world-eight-stage-8-repeat-v1.json",
+      "bytes": 57350,
+      "files": 1
+    },
+    {
+      "path": ".local/contra-world-eight-oracle/world-eight-stage-1-repeat-v1.json",
+      "bytes": 57350,
+      "files": 1
+    },
+    {
+      "path": ".local/contra-world-eight-oracle/world-eight-stage-6-repeat-v1.json",
+      "bytes": 57350,
+      "files": 1
+    },
+    {
+      "path": ".local/contra-world-eight-oracle/runs/world-eight-stage-1-v1",
+      "bytes": 5883918,
+      "files": 26
+    },
+    {
+      "path": ".local/contra-world-eight-oracle/world-eight-stage-1-v1.json",
+      "bytes": 46282,
+      "files": 1
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/terrain-work-guardian-cases-v1.json.gz",
+      "bytes": 21908,
+      "files": 1,
+      "reason": "Incomplete observer experiment:1 call for50 declared cases; superseded by complete v5."
+    },
+    {
+      "path": ".local/contra-enemies-terrain-work-static-index.json",
+      "bytes": 2300,
+      "files": 1
+    }
+  ],
+  "retainedGuardianStates": {
+    ".local/contra-terrain-work/states/guardian-guardian-world-v1.fcs": "c8c46eeaf936910ec68a54f6f61c590c6a35325e840865501a332b4d60689084",
+    ".local/contra-terrain-work/states/guardian-stage8-full-v1.fcs": "c8c46eeaf936910ec68a54f6f61c590c6a35325e840865501a332b4d60689084",
+    ".local/contra-terrain-work/states/guardian-stage8-v1.fcs": "c8c46eeaf936910ec68a54f6f61c590c6a35325e840865501a332b4d60689084",
+    ".local/contra-terrain-work/states/guardian-stage8-v2.fcs": "c8c46eeaf936910ec68a54f6f61c590c6a35325e840865501a332b4d60689084"
+  }
+}

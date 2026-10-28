@@ -1,0 +1,116 @@
+{
+  "passed": true,
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "./games/contra/engine",
+    "-run",
+    "^(TestBotSceneryTerrain|TestBotPlayerCovered|TestBotMaskedTerrain|TestBotEnergyFloor|TestBotVision|TestBuiltinBotVision|TestBotFutureSprite|TestBotSnowBackground)",
+    "-count=1",
+    "-json"
+  ],
+  "exitCode": 0,
+  "topLevelPassed": 43,
+  "testAndSubtestPassed": 101,
+  "failures": [],
+  "nonJSONOutput": [],
+  "sourceChangedDuringCheck": [],
+  "sourceHashes": {
+    "games/contra/engine/bot_vision.go": "998f68f99358aa9a9cf1fe069d9d68ddf214a32e578e405bcd6dbbf5d9c0cb0d",
+    "games/contra/engine/bot_vision_alien_recipes.go": "400aa3d3768763731444a57c9f49415c9414c09cf4d56a680be4b5a3f7a0a690",
+    "games/contra/engine/bot_vision_alien_recipes_test.go": "956562b295c9f8167b8bac1c7a612eab701530dfc3777dfdf4203881fbea503d",
+    "games/contra/engine/bot_vision_anchor_test.go": "20ee3addcfdd0939b085d27fd431dcd4b298111d84f1e2fa261f458e9b201b57",
+    "games/contra/engine/bot_vision_anchors.go": "f734fc263912ce76a727e3885158a0574de461cb9530bac37f5cf8f616109e4d",
+    "games/contra/engine/bot_vision_background_recipes.go": "9fa8a2cb0f28fa7ce3ae08b1b1d03cef664ddc57ce4f7926f97e4e7e8edc9422",
+    "games/contra/engine/bot_vision_background_recipes_test.go": "725db4749863735cbc414f5e6ad5e0915b3c8ce3bb4ed6b866e25a190eb9d71b",
+    "games/contra/engine/bot_vision_bits.go": "d0919b17838644c1d7fa6022fa4144aa80e250d62a7e3a438216c719cbf15c39",
+    "games/contra/engine/bot_vision_bits_test.go": "a1159b6cb40d4a2c50db526ed965b2475b027490015ca82f88886b8bdc37ee99",
+    "games/contra/engine/bot_vision_builtin.go": "7d831de42ffa14c3277bd1156c531a8cffedf1db0ca7a0b11ad618029ca7ed7f",
+    "games/contra/engine/bot_vision_builtin_background.go": "aebdacfd63a37da5efc5fb1569bc04861f4f850c1c7e3d64e2a0f73cf1f745b0",
+    "games/contra/engine/bot_vision_builtin_sprites.go": "5ff564d91f9fbc18735fc5f05fe5c67ed24d660124513a4631abbdece298d61d",
+    "games/contra/engine/bot_vision_builtin_test.go": "84be12bf5b4ccf72b2e51658b7f1b2eacd9a85ff25a63063a459162238865281",
+    "games/contra/engine/bot_vision_counts.go": "e0c06cf9f5f84c4db2877b85aba1c8a53699586e7b2e28dc7b5e1d0328115319",
+    "games/contra/engine/bot_vision_counts_test.go": "b1f885b3e58b79aa318aae7326df7fd5ddad2d6ac1a0f8f44199ed3e9d04409e",
+    "games/contra/engine/bot_vision_exact_only_test.go": "198e9b8a82ab4348603aa2b7c4832946c02cb9aa502a787fe36bcbd484f1b969",
+    "games/contra/engine/bot_vision_future_sprites.go": "96dfcfa3e62f036ef9f115c4a24b7a91ebd5d0a1d94e78675cf4a1cca2922b95",
+    "games/contra/engine/bot_vision_future_sprites_test.go": "21ee994c851d1bc1f9dfa964ddc0aaf8fbba215274fdcfdcbdb7e8d97b774b62",
+    "games/contra/engine/bot_vision_grid_search_test.go": "2b7aa79e81cba171d7ff34b63967d6c30e94abcc6b491cc63e1e68b3950a245b",
+    "games/contra/engine/bot_vision_machine_recipes.go": "838c392a68cb68f6965f716b7ba06add209b169e305fe77f1960b39ee8604c04",
+    "games/contra/engine/bot_vision_machine_recipes_test.go": "02f376052984d24d3e19a59939c772e33d014188af6f2293b34730f269e20074",
+    "games/contra/engine/bot_vision_markers.go": "39e28fddf0348ce6a2ef629f166158aaa29e72b55bd0acb441ea7d7ef74caeb7",
+    "games/contra/engine/bot_vision_markers_test.go": "3773e75d35fb72ad273dd5fb7b14778f288bd173dc059303cd9b980d14f4f820",
+    "games/contra/engine/bot_vision_match.go": "59781619dd468b1e5cb5924db7c82b6702b8f2ca033a4d8187cc69b1462f52ea",
+    "games/contra/engine/bot_vision_match_test.go": "40d5e9e5ee08bd890a3822c21c01aea40a0f55015a2ca2b9d1ac4b99e5b03441",
+    "games/contra/engine/bot_vision_nozzle_recipes.go": "f5079a4f0ff6ba17272fca8061bfe721b3eefa657272b687dbbc04bcef436f35",
+    "games/contra/engine/bot_vision_nozzle_test.go": "c6340099bd50e47afd3ca1316ac97bd94c168a253e41af1c6e95b33cbfbf3d4d",
+    "games/contra/engine/bot_vision_partial_test.go": "0c55bb3614bc0d67a9bd63612c9e9bdb82b9ab57fddc8ba5b02038a4697aef1e",
+    "games/contra/engine/bot_vision_player_support.go": "bc760c23fe4e2e605a33dbda9a8d20f63b8ab55c4fb6946ed06d882d39583e7a",
+    "games/contra/engine/bot_vision_player_support_test.go": "1b28238ff40beb13db57a03d923f302013ef7bded804b63b0d22d66fc2c16191",
+    "games/contra/engine/bot_vision_powerup_test.go": "b235652f6408e1d0d93d6a89d9c0dc6604065d21796e8517efde52b7fcfd5012",
+    "games/contra/engine/bot_vision_scenery_terrain_test.go": "9c1f79e3c69d67bf3cf3edd22e740c7fdb3f7cb3b2e9e55d272258d210c4d6f7",
+    "games/contra/engine/bot_vision_snow_recipes.go": "24200bbf1a90b550ff0839d3e964b05594154afd7a8702b98c2a675904d8e152",
+    "games/contra/engine/bot_vision_snow_recipes_test.go": "8b11d6dab630c1440a8813c41379e709f0b6d46ce12d39330ccc4ffd575c2cc9",
+    "games/contra/engine/bot_vision_terrain.go": "3ac6f1ea1355916232c357c4614d22aef9299593ac1fcc2f8d75c796631fb61d",
+    "games/contra/engine/bot_vision_terrain_player_test.go": "49c8167097fbb16a05d889a8e53a7c1434260b7c510018ea618d606bc33d220c",
+    "games/contra/engine/bot_vision_terrain_test.go": "627b69c8053e779d73f206a0c18bf629b25f5acd1dbc08b562c2aa28249afe1c",
+    "games/contra/engine/bot_vision_test.go": "4d575820449a3ac92c82378368e997cafe064fa1083c996db8a748ef787d307a",
+    "games/contra/engine/bot_vision_uniform.go": "9458a47834f3e554f65f56070996b4e6731f48a4e49b782a9e6f671674989f2d",
+    "games/contra/engine/bot_vision_uniform_test.go": "57a270c022d6f228f64566da4fb9b7a6b6875f6c48939604c9f976d7d7803bd0",
+    "games/contra/engine/bot_vision_water_identity_test.go": "4fbfb8cd0f69fef8629f53f25fd765e9711eeca668452015c3fff2c5957e60d6",
+    "games/contra/engine/bot_vision_water_test.go": "c4a201854bb504f10025e09ca1d44c7b67c5d1d95c74f787c569b8680fc5bff0",
+    "games/contra/engine/testdata/bot-coop-water-head-partial.png": "debd96f5beebf355dfe669761f9d7c401bee46cb77de44e5a117d12d8a9ef023",
+    "games/contra/engine/testdata/bot-energy-floor-67938.png": "d9128e62c8f8cf9ea0847ba2ddb2bd42c7503cbbe20073f16ccd0c017412c31d",
+    "games/contra/engine/testdata/bot-energy-floor-67944.png": "18ef6093181630f058cc4a00dc3424b7a0affbb1961370db590d5556bc37357c",
+    "games/contra/engine/testdata/bot-energy-nozzles.png": "f9f19371e53fb03c7fa80151e6a787601392d56d1dfb3e48be694e1d7e58b8cd",
+    "games/contra/engine/testdata/bot-hangar-remnant-platform.png": "a48c973cd38a35e67de71d55eb75b54854ef99293eb49dc1beca004134969857",
+    "games/contra/engine/testdata/bot-npc-head-no-player.png": "112d0cc0ac6b616b494202c86b42d9f27e3524d5c082b399e71ab78b6bcffec5",
+    "games/contra/engine/testdata/bot-powerup-no-player.png": "95ba3a96e188f94f318ff6601f1f17ebb0b92bbce5a320d0d44828a9e65368fa",
+    "games/contra/engine/testdata/bot-snow-carrier-scene.png": "aa57466cc71c6a2c589fdc7b3b74f0d81854b4b93339981bfd2cd616896316c5",
+    "games/contra/engine/testdata/bot-snow-scenery-119968.png": "e8612e26ede0a1d9d25e0cdceba989c2acd7a16af16f960a1d2115c528c32587",
+    "games/contra/engine/testdata/bot-snow-scenery-129000.png": "070f9d13df91f0ba59393505427fbb626267001c7d42cf734335e8659d3214c5",
+    "games/contra/engine/testdata/bot-waterfall-partial-player-stone.png": "c9c0b4a86ea966d37e481eae775134eb259a90beb4fcf2c2ace10fc8d196a499",
+    "games/contra/engine/testdata/bot-waterfall-player-covered-stone.png": "c91072f742bd1ad8004725666ce01f7638ca6aa109dd6032f41898285add2355",
+    "games/contra/engine/bot_test_resources_test.go": "7d0897d0bd11161e8387b4893b7d13311d24073a88c467b83c9a5f1f4a4fb0b8",
+    "games/contra/engine/testdata/bot-visual-catalog.json.gz": "262dd05adb06b658d7d7b20bb5ae309c56cf3a6082666a862c0df55796ad32ce",
+    "scripts/contra/verify_scenery_terrain.py": "732675f9f41b5224438ddcb398b2a0d327643d7842eef33da850c7c6ac64588a"
+  },
+  "logSHA256": "01a82547f779d825cc2d75342560fd9e22fbd1da691ea274a275627937bd7cdf",
+  "redLogSHA256": "69097a2c9016f15cbc38124662fe5bf656cbb977691e0276aa05c596fe7af199",
+  "scope": "Final RGBA and fixed artwork only. Accepted exact scenery196 opaque pixels join a separate terrain mask; player-only moving-support mask is unchanged. No policy, navigation, Session, World or OAM input.",
+  "fixtures": {
+    "119968": {
+      "targetSceneryAnchor": [
+        183,
+        176
+      ],
+      "exactSceneryCount": 2
+    },
+    "129000": {
+      "targetSceneryAnchor": [
+        183,
+        176
+      ],
+      "exactSceneryCount": 1
+    },
+    "targetSceneryRectangle": [
+      181,
+      177,
+      4,
+      14
+    ],
+    "targetSceneryOpaquePixels": 28,
+    "recoveredPublicCoordinates": [
+      [
+        168,
+        180
+      ],
+      [
+        176,
+        180
+      ]
+    ],
+    "negative": "Damaging one required seam pixel leaves both coordinates unknown."
+  },
+  "limitation": "Pixel recognition and existing vision regressions only; does not certify navigation progress or a completed campaign."
+}

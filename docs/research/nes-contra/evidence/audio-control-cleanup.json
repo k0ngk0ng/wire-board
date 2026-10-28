@@ -1,0 +1,2093 @@
+{
+  "removed": [
+    {
+      "path": ".local/contra-audio/swift-cache",
+      "bytes": 93388120
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/audio-native-adapter-v1",
+      "bytes": 4455
+    },
+    {
+      "path": ".local/contra-audio/oracle/fceux-home",
+      "bytes": 17697
+    },
+    {
+      "path": ".local/contra-audio/export/sound-18-warm120-480-run-2/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-30-warm120-480-run-2/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-2a-warm120-480-run-2/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-19-warm120-480-run-2/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-2e-warm120-480-run-2/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-16-warm120-480-run-1/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-34-warm120-480-run-2/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-75-warm120-480-run-1/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-13-warm120-480-run-1/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-7b-warm120-720-run-2/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-3e-warm120-480-run-1/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-0d-warm120-480-run-1/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-2c-warm120-480-run-2/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-10-warm120-480-run-1/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-33-warm120-480-run-2/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-33-warm120-1320-run-1/fceux-home",
+      "bytes": 17812
+    },
+    {
+      "path": ".local/contra-audio/export/sound-14-warm120-1320-run-2/fceux-home",
+      "bytes": 17812
+    },
+    {
+      "path": ".local/contra-audio/export/sound-20-warm120-480-run-1/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-3d-warm120-480-run-1/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-77-warm120-720-run-1/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-36-warm120-480-run-2/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-2b-warm120-480-run-2/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-39-warm120-480-run-1/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-18-warm120-480-run-1/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-30-warm120-480-run-1/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-2a-warm120-480-run-1/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-2e-warm120-480-run-1/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-16-warm120-480-run-2/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-19-warm120-480-run-1/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-75-warm120-480-run-2/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-13-warm120-480-run-2/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-7b-warm120-720-run-1/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-34-warm120-480-run-1/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-3e-warm120-480-run-2/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-2c-warm120-480-run-1/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-10-warm120-480-run-2/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-0d-warm120-480-run-2/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-3d-warm120-480-run-2/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-33-warm120-1320-run-2/fceux-home",
+      "bytes": 17812
+    },
+    {
+      "path": ".local/contra-audio/export/sound-14-warm120-1320-run-1/fceux-home",
+      "bytes": 17812
+    },
+    {
+      "path": ".local/contra-audio/export/sound-20-warm120-480-run-2/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-33-warm120-480-run-1/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-39-warm120-480-run-2/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-2b-warm120-480-run-1/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-77-warm120-720-run-2/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/export/sound-36-warm120-480-run-1/fceux-home",
+      "bytes": 17807
+    },
+    {
+      "path": ".local/contra-audio/carry-oracle/v1/fceux-home",
+      "bytes": 17720
+    },
+    {
+      "path": ".local/contra-audio/control-oracle/priority-v1/fceux-home",
+      "bytes": 17780
+    },
+    {
+      "path": ".local/contra-audio/control-oracle/long-pause-shot-v1/fceux-home",
+      "bytes": 17822
+    },
+    {
+      "path": ".local/contra-audio/control-oracle/music-cycle-v1/fceux-home",
+      "bytes": 17798
+    },
+    {
+      "path": ".local/contra-audio/control-oracle/dpcm-pause-reset-v1/fceux-home",
+      "bytes": 17828
+    },
+    {
+      "path": ".local/contra-audio/control-oracle/preview-veto-v1/fceux-home",
+      "bytes": 17804
+    },
+    {
+      "path": ".local/contra-audio/control-oracle/clear-heart-v1/fceux-home",
+      "bytes": 17798
+    },
+    {
+      "path": ".local/contra-audio/control-oracle/spread-reset-v1/fceux-home",
+      "bytes": 17804
+    },
+    {
+      "path": ".local/contra-audio/control-oracle/long-pause-high-noise-v1/fceux-home",
+      "bytes": 17858
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-16-pulse1-run-1/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-7b-noise-run-1/fceux-home",
+      "bytes": 17764
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-20-noise-run-2/fceux-home",
+      "bytes": 17764
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-2b-pulse1-run-2/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-2e-pulse1-run-2/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-3d-noise-run-2/fceux-home",
+      "bytes": 17764
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-7b-dpcm-run-1/fceux-home",
+      "bytes": 17759
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-75-pulse1-run-1/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-20-pulse1-run-1/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-7b-triangle-run-1/fceux-home",
+      "bytes": 17779
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-77-noise-run-2/fceux-home",
+      "bytes": 17764
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-34-noise-run-1/fceux-home",
+      "bytes": 17764
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-14-pulse2-run-2/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-2c-pulse1-run-2/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-7b-pulse2-run-1/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-10-pulse1-run-1/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-33-pulse1-run-1/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-34-pulse1-run-1/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-77-pulse2-run-2/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-3e-noise-run-1/fceux-home",
+      "bytes": 17764
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-18-pulse1-run-2/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-39-pulse1-run-1/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-2a-pulse1-run-1/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-16-pulse2-run-1/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-10-noise-run-1/fceux-home",
+      "bytes": 17764
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-75-noise-run-1/fceux-home",
+      "bytes": 17764
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-77-triangle-run-2/fceux-home",
+      "bytes": 17779
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-20-pulse2-run-1/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-36-pulse1-run-2/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-77-dpcm-run-2/fceux-home",
+      "bytes": 17759
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-19-noise-run-1/fceux-home",
+      "bytes": 17764
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-2c-noise-run-1/fceux-home",
+      "bytes": 17764
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-10-pulse2-run-1/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-7b-pulse1-run-1/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-14-pulse1-run-2/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-13-pulse1-run-2/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-0d-pulse1-run-1/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-77-pulse1-run-2/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-30-pulse1-run-2/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-20-noise-run-1/fceux-home",
+      "bytes": 17764
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-2e-pulse1-run-1/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-3d-noise-run-1/fceux-home",
+      "bytes": 17764
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-2b-pulse1-run-1/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-16-pulse1-run-2/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-7b-noise-run-2/fceux-home",
+      "bytes": 17764
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-75-pulse1-run-2/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-20-pulse1-run-2/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-7b-triangle-run-2/fceux-home",
+      "bytes": 17779
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-7b-dpcm-run-2/fceux-home",
+      "bytes": 17759
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-77-noise-run-1/fceux-home",
+      "bytes": 17764
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-7b-pulse2-run-2/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-10-pulse1-run-2/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-14-pulse2-run-1/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-2c-pulse1-run-1/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-34-noise-run-2/fceux-home",
+      "bytes": 17764
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-34-pulse1-run-2/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-33-pulse1-run-2/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-3e-noise-run-2/fceux-home",
+      "bytes": 17764
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-18-pulse1-run-1/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-77-pulse2-run-1/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-2a-pulse1-run-2/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-16-pulse2-run-2/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-10-noise-run-2/fceux-home",
+      "bytes": 17764
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-39-pulse1-run-2/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-77-dpcm-run-1/fceux-home",
+      "bytes": 17759
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-2c-noise-run-2/fceux-home",
+      "bytes": 17764
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-19-noise-run-2/fceux-home",
+      "bytes": 17764
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-75-noise-run-2/fceux-home",
+      "bytes": 17764
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-77-triangle-run-1/fceux-home",
+      "bytes": 17779
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-20-pulse2-run-2/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-36-pulse1-run-1/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-13-pulse1-run-1/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-14-pulse1-run-1/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-10-pulse2-run-2/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-7b-pulse1-run-2/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-30-pulse1-run-1/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-0d-pulse1-run-2/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/stems/sound-77-pulse1-run-1/fceux-home",
+      "bytes": 17769
+    },
+    {
+      "path": ".local/contra-audio/control-checks/native-adapter-v1.log",
+      "bytes": 4455
+    },
+    {
+      "path": ".local/contra-audio/control-checks/stems-expansion-red.log",
+      "bytes": 502
+    },
+    {
+      "path": ".local/contra-audio/control-checks/full-library-red.jsonl",
+      "bytes": 1425
+    },
+    {
+      "path": ".local/contra-audio/control-checks/adapter-red.tap",
+      "bytes": 1466
+    }
+  ],
+  "verifiedRepeatHardlinks": [
+    {
+      "source": ".local/contra-audio/export/sound-0d-warm120-480-run-1/full.wav",
+      "repeat": ".local/contra-audio/export/sound-0d-warm120-480-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/export/sound-0d-warm120-480-run-1/apu.csv",
+      "repeat": ".local/contra-audio/export/sound-0d-warm120-480-run-2/apu.csv",
+      "bytes": 1190
+    },
+    {
+      "source": ".local/contra-audio/export/sound-0d-warm120-480-run-1/driver.bin",
+      "repeat": ".local/contra-audio/export/sound-0d-warm120-480-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/export/sound-0d-warm120-480-run-1/calls.csv",
+      "repeat": ".local/contra-audio/export/sound-0d-warm120-480-run-2/calls.csv",
+      "bytes": 6139
+    },
+    {
+      "source": ".local/contra-audio/export/sound-0d-warm120-480-run-1/samples.csv",
+      "repeat": ".local/contra-audio/export/sound-0d-warm120-480-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/export/sound-10-warm120-480-run-1/full.wav",
+      "repeat": ".local/contra-audio/export/sound-10-warm120-480-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/export/sound-10-warm120-480-run-1/apu.csv",
+      "repeat": ".local/contra-audio/export/sound-10-warm120-480-run-2/apu.csv",
+      "bytes": 597
+    },
+    {
+      "source": ".local/contra-audio/export/sound-10-warm120-480-run-1/driver.bin",
+      "repeat": ".local/contra-audio/export/sound-10-warm120-480-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/export/sound-10-warm120-480-run-1/calls.csv",
+      "repeat": ".local/contra-audio/export/sound-10-warm120-480-run-2/calls.csv",
+      "bytes": 6139
+    },
+    {
+      "source": ".local/contra-audio/export/sound-10-warm120-480-run-1/samples.csv",
+      "repeat": ".local/contra-audio/export/sound-10-warm120-480-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/export/sound-13-warm120-480-run-1/full.wav",
+      "repeat": ".local/contra-audio/export/sound-13-warm120-480-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/export/sound-13-warm120-480-run-1/apu.csv",
+      "repeat": ".local/contra-audio/export/sound-13-warm120-480-run-2/apu.csv",
+      "bytes": 1161
+    },
+    {
+      "source": ".local/contra-audio/export/sound-13-warm120-480-run-1/driver.bin",
+      "repeat": ".local/contra-audio/export/sound-13-warm120-480-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/export/sound-13-warm120-480-run-1/calls.csv",
+      "repeat": ".local/contra-audio/export/sound-13-warm120-480-run-2/calls.csv",
+      "bytes": 6139
+    },
+    {
+      "source": ".local/contra-audio/export/sound-13-warm120-480-run-1/samples.csv",
+      "repeat": ".local/contra-audio/export/sound-13-warm120-480-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/export/sound-14-warm120-1320-run-1/full.wav",
+      "repeat": ".local/contra-audio/export/sound-14-warm120-1320-run-2/full.wav",
+      "bytes": 1935736
+    },
+    {
+      "source": ".local/contra-audio/export/sound-14-warm120-1320-run-1/apu.csv",
+      "repeat": ".local/contra-audio/export/sound-14-warm120-1320-run-2/apu.csv",
+      "bytes": 13540
+    },
+    {
+      "source": ".local/contra-audio/export/sound-14-warm120-1320-run-1/driver.bin",
+      "repeat": ".local/contra-audio/export/sound-14-warm120-1320-run-2/driver.bin",
+      "bytes": 171600
+    },
+    {
+      "source": ".local/contra-audio/export/sound-14-warm120-1320-run-1/calls.csv",
+      "repeat": ".local/contra-audio/export/sound-14-warm120-1320-run-2/calls.csv",
+      "bytes": 17379
+    },
+    {
+      "source": ".local/contra-audio/export/sound-14-warm120-1320-run-1/samples.csv",
+      "repeat": ".local/contra-audio/export/sound-14-warm120-1320-run-2/samples.csv",
+      "bytes": 14596
+    },
+    {
+      "source": ".local/contra-audio/export/sound-16-warm120-480-run-1/full.wav",
+      "repeat": ".local/contra-audio/export/sound-16-warm120-480-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/export/sound-16-warm120-480-run-1/apu.csv",
+      "repeat": ".local/contra-audio/export/sound-16-warm120-480-run-2/apu.csv",
+      "bytes": 1602
+    },
+    {
+      "source": ".local/contra-audio/export/sound-16-warm120-480-run-1/driver.bin",
+      "repeat": ".local/contra-audio/export/sound-16-warm120-480-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/export/sound-16-warm120-480-run-1/calls.csv",
+      "repeat": ".local/contra-audio/export/sound-16-warm120-480-run-2/calls.csv",
+      "bytes": 6139
+    },
+    {
+      "source": ".local/contra-audio/export/sound-16-warm120-480-run-1/samples.csv",
+      "repeat": ".local/contra-audio/export/sound-16-warm120-480-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/export/sound-18-warm120-480-run-1/full.wav",
+      "repeat": ".local/contra-audio/export/sound-18-warm120-480-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/export/sound-18-warm120-480-run-1/apu.csv",
+      "repeat": ".local/contra-audio/export/sound-18-warm120-480-run-2/apu.csv",
+      "bytes": 421
+    },
+    {
+      "source": ".local/contra-audio/export/sound-18-warm120-480-run-1/driver.bin",
+      "repeat": ".local/contra-audio/export/sound-18-warm120-480-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/export/sound-18-warm120-480-run-1/calls.csv",
+      "repeat": ".local/contra-audio/export/sound-18-warm120-480-run-2/calls.csv",
+      "bytes": 6139
+    },
+    {
+      "source": ".local/contra-audio/export/sound-18-warm120-480-run-1/samples.csv",
+      "repeat": ".local/contra-audio/export/sound-18-warm120-480-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/export/sound-19-warm120-480-run-1/full.wav",
+      "repeat": ".local/contra-audio/export/sound-19-warm120-480-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/export/sound-19-warm120-480-run-1/apu.csv",
+      "repeat": ".local/contra-audio/export/sound-19-warm120-480-run-2/apu.csv",
+      "bytes": 1119
+    },
+    {
+      "source": ".local/contra-audio/export/sound-19-warm120-480-run-1/driver.bin",
+      "repeat": ".local/contra-audio/export/sound-19-warm120-480-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/export/sound-19-warm120-480-run-1/calls.csv",
+      "repeat": ".local/contra-audio/export/sound-19-warm120-480-run-2/calls.csv",
+      "bytes": 6139
+    },
+    {
+      "source": ".local/contra-audio/export/sound-19-warm120-480-run-1/samples.csv",
+      "repeat": ".local/contra-audio/export/sound-19-warm120-480-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/export/sound-20-warm120-480-run-1/full.wav",
+      "repeat": ".local/contra-audio/export/sound-20-warm120-480-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/export/sound-20-warm120-480-run-1/apu.csv",
+      "repeat": ".local/contra-audio/export/sound-20-warm120-480-run-2/apu.csv",
+      "bytes": 27218
+    },
+    {
+      "source": ".local/contra-audio/export/sound-20-warm120-480-run-1/driver.bin",
+      "repeat": ".local/contra-audio/export/sound-20-warm120-480-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/export/sound-20-warm120-480-run-1/calls.csv",
+      "repeat": ".local/contra-audio/export/sound-20-warm120-480-run-2/calls.csv",
+      "bytes": 7579
+    },
+    {
+      "source": ".local/contra-audio/export/sound-20-warm120-480-run-1/samples.csv",
+      "repeat": ".local/contra-audio/export/sound-20-warm120-480-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/export/sound-2a-warm120-480-run-1/full.wav",
+      "repeat": ".local/contra-audio/export/sound-2a-warm120-480-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/export/sound-2a-warm120-480-run-1/apu.csv",
+      "repeat": ".local/contra-audio/export/sound-2a-warm120-480-run-2/apu.csv",
+      "bytes": 485
+    },
+    {
+      "source": ".local/contra-audio/export/sound-2a-warm120-480-run-1/driver.bin",
+      "repeat": ".local/contra-audio/export/sound-2a-warm120-480-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/export/sound-2a-warm120-480-run-1/calls.csv",
+      "repeat": ".local/contra-audio/export/sound-2a-warm120-480-run-2/calls.csv",
+      "bytes": 6139
+    },
+    {
+      "source": ".local/contra-audio/export/sound-2a-warm120-480-run-1/samples.csv",
+      "repeat": ".local/contra-audio/export/sound-2a-warm120-480-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/export/sound-2b-warm120-480-run-1/full.wav",
+      "repeat": ".local/contra-audio/export/sound-2b-warm120-480-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/export/sound-2b-warm120-480-run-1/apu.csv",
+      "repeat": ".local/contra-audio/export/sound-2b-warm120-480-run-2/apu.csv",
+      "bytes": 919
+    },
+    {
+      "source": ".local/contra-audio/export/sound-2b-warm120-480-run-1/driver.bin",
+      "repeat": ".local/contra-audio/export/sound-2b-warm120-480-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/export/sound-2b-warm120-480-run-1/calls.csv",
+      "repeat": ".local/contra-audio/export/sound-2b-warm120-480-run-2/calls.csv",
+      "bytes": 6139
+    },
+    {
+      "source": ".local/contra-audio/export/sound-2b-warm120-480-run-1/samples.csv",
+      "repeat": ".local/contra-audio/export/sound-2b-warm120-480-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/export/sound-2c-warm120-480-run-1/full.wav",
+      "repeat": ".local/contra-audio/export/sound-2c-warm120-480-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/export/sound-2c-warm120-480-run-1/apu.csv",
+      "repeat": ".local/contra-audio/export/sound-2c-warm120-480-run-2/apu.csv",
+      "bytes": 1241
+    },
+    {
+      "source": ".local/contra-audio/export/sound-2c-warm120-480-run-1/driver.bin",
+      "repeat": ".local/contra-audio/export/sound-2c-warm120-480-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/export/sound-2c-warm120-480-run-1/calls.csv",
+      "repeat": ".local/contra-audio/export/sound-2c-warm120-480-run-2/calls.csv",
+      "bytes": 6139
+    },
+    {
+      "source": ".local/contra-audio/export/sound-2c-warm120-480-run-1/samples.csv",
+      "repeat": ".local/contra-audio/export/sound-2c-warm120-480-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/export/sound-2e-warm120-480-run-1/full.wav",
+      "repeat": ".local/contra-audio/export/sound-2e-warm120-480-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/export/sound-2e-warm120-480-run-1/apu.csv",
+      "repeat": ".local/contra-audio/export/sound-2e-warm120-480-run-2/apu.csv",
+      "bytes": 489
+    },
+    {
+      "source": ".local/contra-audio/export/sound-2e-warm120-480-run-1/driver.bin",
+      "repeat": ".local/contra-audio/export/sound-2e-warm120-480-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/export/sound-2e-warm120-480-run-1/calls.csv",
+      "repeat": ".local/contra-audio/export/sound-2e-warm120-480-run-2/calls.csv",
+      "bytes": 6139
+    },
+    {
+      "source": ".local/contra-audio/export/sound-2e-warm120-480-run-1/samples.csv",
+      "repeat": ".local/contra-audio/export/sound-2e-warm120-480-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/export/sound-30-warm120-480-run-1/full.wav",
+      "repeat": ".local/contra-audio/export/sound-30-warm120-480-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/export/sound-30-warm120-480-run-1/apu.csv",
+      "repeat": ".local/contra-audio/export/sound-30-warm120-480-run-2/apu.csv",
+      "bytes": 1197
+    },
+    {
+      "source": ".local/contra-audio/export/sound-30-warm120-480-run-1/driver.bin",
+      "repeat": ".local/contra-audio/export/sound-30-warm120-480-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/export/sound-30-warm120-480-run-1/calls.csv",
+      "repeat": ".local/contra-audio/export/sound-30-warm120-480-run-2/calls.csv",
+      "bytes": 6139
+    },
+    {
+      "source": ".local/contra-audio/export/sound-30-warm120-480-run-1/samples.csv",
+      "repeat": ".local/contra-audio/export/sound-30-warm120-480-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/export/sound-33-warm120-480-run-1/full.wav",
+      "repeat": ".local/contra-audio/export/sound-33-warm120-480-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/export/sound-33-warm120-480-run-1/apu.csv",
+      "repeat": ".local/contra-audio/export/sound-33-warm120-480-run-2/apu.csv",
+      "bytes": 6950
+    },
+    {
+      "source": ".local/contra-audio/export/sound-33-warm120-480-run-1/driver.bin",
+      "repeat": ".local/contra-audio/export/sound-33-warm120-480-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/export/sound-33-warm120-480-run-1/calls.csv",
+      "repeat": ".local/contra-audio/export/sound-33-warm120-480-run-2/calls.csv",
+      "bytes": 6139
+    },
+    {
+      "source": ".local/contra-audio/export/sound-33-warm120-480-run-1/samples.csv",
+      "repeat": ".local/contra-audio/export/sound-33-warm120-480-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/export/sound-34-warm120-480-run-1/full.wav",
+      "repeat": ".local/contra-audio/export/sound-34-warm120-480-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/export/sound-34-warm120-480-run-1/apu.csv",
+      "repeat": ".local/contra-audio/export/sound-34-warm120-480-run-2/apu.csv",
+      "bytes": 4625
+    },
+    {
+      "source": ".local/contra-audio/export/sound-34-warm120-480-run-1/driver.bin",
+      "repeat": ".local/contra-audio/export/sound-34-warm120-480-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/export/sound-34-warm120-480-run-1/calls.csv",
+      "repeat": ".local/contra-audio/export/sound-34-warm120-480-run-2/calls.csv",
+      "bytes": 6139
+    },
+    {
+      "source": ".local/contra-audio/export/sound-34-warm120-480-run-1/samples.csv",
+      "repeat": ".local/contra-audio/export/sound-34-warm120-480-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/export/sound-36-warm120-480-run-1/full.wav",
+      "repeat": ".local/contra-audio/export/sound-36-warm120-480-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/export/sound-36-warm120-480-run-1/apu.csv",
+      "repeat": ".local/contra-audio/export/sound-36-warm120-480-run-2/apu.csv",
+      "bytes": 435
+    },
+    {
+      "source": ".local/contra-audio/export/sound-36-warm120-480-run-1/driver.bin",
+      "repeat": ".local/contra-audio/export/sound-36-warm120-480-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/export/sound-36-warm120-480-run-1/calls.csv",
+      "repeat": ".local/contra-audio/export/sound-36-warm120-480-run-2/calls.csv",
+      "bytes": 6139
+    },
+    {
+      "source": ".local/contra-audio/export/sound-36-warm120-480-run-1/samples.csv",
+      "repeat": ".local/contra-audio/export/sound-36-warm120-480-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/export/sound-39-warm120-480-run-1/full.wav",
+      "repeat": ".local/contra-audio/export/sound-39-warm120-480-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/export/sound-39-warm120-480-run-1/apu.csv",
+      "repeat": ".local/contra-audio/export/sound-39-warm120-480-run-2/apu.csv",
+      "bytes": 660
+    },
+    {
+      "source": ".local/contra-audio/export/sound-39-warm120-480-run-1/driver.bin",
+      "repeat": ".local/contra-audio/export/sound-39-warm120-480-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/export/sound-39-warm120-480-run-1/calls.csv",
+      "repeat": ".local/contra-audio/export/sound-39-warm120-480-run-2/calls.csv",
+      "bytes": 6139
+    },
+    {
+      "source": ".local/contra-audio/export/sound-39-warm120-480-run-1/samples.csv",
+      "repeat": ".local/contra-audio/export/sound-39-warm120-480-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/export/sound-3d-warm120-480-run-1/full.wav",
+      "repeat": ".local/contra-audio/export/sound-3d-warm120-480-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/export/sound-3d-warm120-480-run-1/apu.csv",
+      "repeat": ".local/contra-audio/export/sound-3d-warm120-480-run-2/apu.csv",
+      "bytes": 1196
+    },
+    {
+      "source": ".local/contra-audio/export/sound-3d-warm120-480-run-1/driver.bin",
+      "repeat": ".local/contra-audio/export/sound-3d-warm120-480-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/export/sound-3d-warm120-480-run-1/calls.csv",
+      "repeat": ".local/contra-audio/export/sound-3d-warm120-480-run-2/calls.csv",
+      "bytes": 6139
+    },
+    {
+      "source": ".local/contra-audio/export/sound-3d-warm120-480-run-1/samples.csv",
+      "repeat": ".local/contra-audio/export/sound-3d-warm120-480-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/export/sound-3e-warm120-480-run-1/full.wav",
+      "repeat": ".local/contra-audio/export/sound-3e-warm120-480-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/export/sound-3e-warm120-480-run-1/apu.csv",
+      "repeat": ".local/contra-audio/export/sound-3e-warm120-480-run-2/apu.csv",
+      "bytes": 1273
+    },
+    {
+      "source": ".local/contra-audio/export/sound-3e-warm120-480-run-1/driver.bin",
+      "repeat": ".local/contra-audio/export/sound-3e-warm120-480-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/export/sound-3e-warm120-480-run-1/calls.csv",
+      "repeat": ".local/contra-audio/export/sound-3e-warm120-480-run-2/calls.csv",
+      "bytes": 6139
+    },
+    {
+      "source": ".local/contra-audio/export/sound-3e-warm120-480-run-1/samples.csv",
+      "repeat": ".local/contra-audio/export/sound-3e-warm120-480-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/export/sound-75-warm120-480-run-1/full.wav",
+      "repeat": ".local/contra-audio/export/sound-75-warm120-480-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/export/sound-75-warm120-480-run-1/apu.csv",
+      "repeat": ".local/contra-audio/export/sound-75-warm120-480-run-2/apu.csv",
+      "bytes": 1626
+    },
+    {
+      "source": ".local/contra-audio/export/sound-75-warm120-480-run-1/driver.bin",
+      "repeat": ".local/contra-audio/export/sound-75-warm120-480-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/export/sound-75-warm120-480-run-1/calls.csv",
+      "repeat": ".local/contra-audio/export/sound-75-warm120-480-run-2/calls.csv",
+      "bytes": 6140
+    },
+    {
+      "source": ".local/contra-audio/export/sound-75-warm120-480-run-1/samples.csv",
+      "repeat": ".local/contra-audio/export/sound-75-warm120-480-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/export/sound-77-warm120-720-run-1/full.wav",
+      "repeat": ".local/contra-audio/export/sound-77-warm120-720-run-2/full.wav",
+      "bytes": 1055186
+    },
+    {
+      "source": ".local/contra-audio/export/sound-77-warm120-720-run-1/apu.csv",
+      "repeat": ".local/contra-audio/export/sound-77-warm120-720-run-2/apu.csv",
+      "bytes": 3114
+    },
+    {
+      "source": ".local/contra-audio/export/sound-77-warm120-720-run-1/driver.bin",
+      "repeat": ".local/contra-audio/export/sound-77-warm120-720-run-2/driver.bin",
+      "bytes": 93600
+    },
+    {
+      "source": ".local/contra-audio/export/sound-77-warm120-720-run-1/calls.csv",
+      "repeat": ".local/contra-audio/export/sound-77-warm120-720-run-2/calls.csv",
+      "bytes": 9272
+    },
+    {
+      "source": ".local/contra-audio/export/sound-77-warm120-720-run-1/samples.csv",
+      "repeat": ".local/contra-audio/export/sound-77-warm120-720-run-2/samples.csv",
+      "bytes": 7675
+    },
+    {
+      "source": ".local/contra-audio/export/sound-7b-warm120-720-run-1/full.wav",
+      "repeat": ".local/contra-audio/export/sound-7b-warm120-720-run-2/full.wav",
+      "bytes": 1055186
+    },
+    {
+      "source": ".local/contra-audio/export/sound-7b-warm120-720-run-1/apu.csv",
+      "repeat": ".local/contra-audio/export/sound-7b-warm120-720-run-2/apu.csv",
+      "bytes": 3009
+    },
+    {
+      "source": ".local/contra-audio/export/sound-7b-warm120-720-run-1/driver.bin",
+      "repeat": ".local/contra-audio/export/sound-7b-warm120-720-run-2/driver.bin",
+      "bytes": 93600
+    },
+    {
+      "source": ".local/contra-audio/export/sound-7b-warm120-720-run-1/calls.csv",
+      "repeat": ".local/contra-audio/export/sound-7b-warm120-720-run-2/calls.csv",
+      "bytes": 9260
+    },
+    {
+      "source": ".local/contra-audio/export/sound-7b-warm120-720-run-1/samples.csv",
+      "repeat": ".local/contra-audio/export/sound-7b-warm120-720-run-2/samples.csv",
+      "bytes": 7675
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-0d-pulse1-run-1/full.wav",
+      "repeat": ".local/contra-audio/stems/sound-0d-pulse1-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-0d-pulse1-run-1/apu.csv",
+      "repeat": ".local/contra-audio/stems/sound-0d-pulse1-run-2/apu.csv",
+      "bytes": 1190
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-0d-pulse1-run-1/driver.bin",
+      "repeat": ".local/contra-audio/stems/sound-0d-pulse1-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-0d-pulse1-run-1/calls.csv",
+      "repeat": ".local/contra-audio/stems/sound-0d-pulse1-run-2/calls.csv",
+      "bytes": 6139
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-0d-pulse1-run-1/samples.csv",
+      "repeat": ".local/contra-audio/stems/sound-0d-pulse1-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-10-pulse1-run-1/full.wav",
+      "repeat": ".local/contra-audio/stems/sound-10-pulse1-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-10-pulse1-run-1/apu.csv",
+      "repeat": ".local/contra-audio/stems/sound-10-pulse1-run-2/apu.csv",
+      "bytes": 597
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-10-pulse1-run-1/driver.bin",
+      "repeat": ".local/contra-audio/stems/sound-10-pulse1-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-10-pulse1-run-1/calls.csv",
+      "repeat": ".local/contra-audio/stems/sound-10-pulse1-run-2/calls.csv",
+      "bytes": 6139
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-10-pulse1-run-1/samples.csv",
+      "repeat": ".local/contra-audio/stems/sound-10-pulse1-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-10-pulse2-run-1/full.wav",
+      "repeat": ".local/contra-audio/stems/sound-10-pulse2-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-10-pulse2-run-1/apu.csv",
+      "repeat": ".local/contra-audio/stems/sound-10-pulse2-run-2/apu.csv",
+      "bytes": 597
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-10-pulse2-run-1/driver.bin",
+      "repeat": ".local/contra-audio/stems/sound-10-pulse2-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-10-pulse2-run-1/calls.csv",
+      "repeat": ".local/contra-audio/stems/sound-10-pulse2-run-2/calls.csv",
+      "bytes": 6139
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-10-pulse2-run-1/samples.csv",
+      "repeat": ".local/contra-audio/stems/sound-10-pulse2-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-10-noise-run-1/full.wav",
+      "repeat": ".local/contra-audio/stems/sound-10-noise-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-10-noise-run-1/apu.csv",
+      "repeat": ".local/contra-audio/stems/sound-10-noise-run-2/apu.csv",
+      "bytes": 597
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-10-noise-run-1/driver.bin",
+      "repeat": ".local/contra-audio/stems/sound-10-noise-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-10-noise-run-1/calls.csv",
+      "repeat": ".local/contra-audio/stems/sound-10-noise-run-2/calls.csv",
+      "bytes": 6139
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-10-noise-run-1/samples.csv",
+      "repeat": ".local/contra-audio/stems/sound-10-noise-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-13-pulse1-run-1/full.wav",
+      "repeat": ".local/contra-audio/stems/sound-13-pulse1-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-13-pulse1-run-1/apu.csv",
+      "repeat": ".local/contra-audio/stems/sound-13-pulse1-run-2/apu.csv",
+      "bytes": 1161
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-13-pulse1-run-1/driver.bin",
+      "repeat": ".local/contra-audio/stems/sound-13-pulse1-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-13-pulse1-run-1/calls.csv",
+      "repeat": ".local/contra-audio/stems/sound-13-pulse1-run-2/calls.csv",
+      "bytes": 6139
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-13-pulse1-run-1/samples.csv",
+      "repeat": ".local/contra-audio/stems/sound-13-pulse1-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-14-pulse1-run-1/full.wav",
+      "repeat": ".local/contra-audio/stems/sound-14-pulse1-run-2/full.wav",
+      "bytes": 1935736
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-14-pulse1-run-1/apu.csv",
+      "repeat": ".local/contra-audio/stems/sound-14-pulse1-run-2/apu.csv",
+      "bytes": 13540
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-14-pulse1-run-1/driver.bin",
+      "repeat": ".local/contra-audio/stems/sound-14-pulse1-run-2/driver.bin",
+      "bytes": 171600
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-14-pulse1-run-1/calls.csv",
+      "repeat": ".local/contra-audio/stems/sound-14-pulse1-run-2/calls.csv",
+      "bytes": 17379
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-14-pulse1-run-1/samples.csv",
+      "repeat": ".local/contra-audio/stems/sound-14-pulse1-run-2/samples.csv",
+      "bytes": 14596
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-14-pulse2-run-1/full.wav",
+      "repeat": ".local/contra-audio/stems/sound-14-pulse2-run-2/full.wav",
+      "bytes": 1935736
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-14-pulse2-run-1/apu.csv",
+      "repeat": ".local/contra-audio/stems/sound-14-pulse2-run-2/apu.csv",
+      "bytes": 13540
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-14-pulse2-run-1/driver.bin",
+      "repeat": ".local/contra-audio/stems/sound-14-pulse2-run-2/driver.bin",
+      "bytes": 171600
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-14-pulse2-run-1/calls.csv",
+      "repeat": ".local/contra-audio/stems/sound-14-pulse2-run-2/calls.csv",
+      "bytes": 17379
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-14-pulse2-run-1/samples.csv",
+      "repeat": ".local/contra-audio/stems/sound-14-pulse2-run-2/samples.csv",
+      "bytes": 14596
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-16-pulse1-run-1/full.wav",
+      "repeat": ".local/contra-audio/stems/sound-16-pulse1-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-16-pulse1-run-1/apu.csv",
+      "repeat": ".local/contra-audio/stems/sound-16-pulse1-run-2/apu.csv",
+      "bytes": 1602
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-16-pulse1-run-1/driver.bin",
+      "repeat": ".local/contra-audio/stems/sound-16-pulse1-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-16-pulse1-run-1/calls.csv",
+      "repeat": ".local/contra-audio/stems/sound-16-pulse1-run-2/calls.csv",
+      "bytes": 6139
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-16-pulse1-run-1/samples.csv",
+      "repeat": ".local/contra-audio/stems/sound-16-pulse1-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-16-pulse2-run-1/full.wav",
+      "repeat": ".local/contra-audio/stems/sound-16-pulse2-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-16-pulse2-run-1/apu.csv",
+      "repeat": ".local/contra-audio/stems/sound-16-pulse2-run-2/apu.csv",
+      "bytes": 1602
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-16-pulse2-run-1/driver.bin",
+      "repeat": ".local/contra-audio/stems/sound-16-pulse2-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-16-pulse2-run-1/calls.csv",
+      "repeat": ".local/contra-audio/stems/sound-16-pulse2-run-2/calls.csv",
+      "bytes": 6139
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-16-pulse2-run-1/samples.csv",
+      "repeat": ".local/contra-audio/stems/sound-16-pulse2-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-18-pulse1-run-1/full.wav",
+      "repeat": ".local/contra-audio/stems/sound-18-pulse1-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-18-pulse1-run-1/apu.csv",
+      "repeat": ".local/contra-audio/stems/sound-18-pulse1-run-2/apu.csv",
+      "bytes": 421
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-18-pulse1-run-1/driver.bin",
+      "repeat": ".local/contra-audio/stems/sound-18-pulse1-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-18-pulse1-run-1/calls.csv",
+      "repeat": ".local/contra-audio/stems/sound-18-pulse1-run-2/calls.csv",
+      "bytes": 6139
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-18-pulse1-run-1/samples.csv",
+      "repeat": ".local/contra-audio/stems/sound-18-pulse1-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-19-noise-run-1/full.wav",
+      "repeat": ".local/contra-audio/stems/sound-19-noise-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-19-noise-run-1/apu.csv",
+      "repeat": ".local/contra-audio/stems/sound-19-noise-run-2/apu.csv",
+      "bytes": 1119
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-19-noise-run-1/driver.bin",
+      "repeat": ".local/contra-audio/stems/sound-19-noise-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-19-noise-run-1/calls.csv",
+      "repeat": ".local/contra-audio/stems/sound-19-noise-run-2/calls.csv",
+      "bytes": 6139
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-19-noise-run-1/samples.csv",
+      "repeat": ".local/contra-audio/stems/sound-19-noise-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-20-pulse1-run-1/full.wav",
+      "repeat": ".local/contra-audio/stems/sound-20-pulse1-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-20-pulse1-run-1/apu.csv",
+      "repeat": ".local/contra-audio/stems/sound-20-pulse1-run-2/apu.csv",
+      "bytes": 27218
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-20-pulse1-run-1/driver.bin",
+      "repeat": ".local/contra-audio/stems/sound-20-pulse1-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-20-pulse1-run-1/calls.csv",
+      "repeat": ".local/contra-audio/stems/sound-20-pulse1-run-2/calls.csv",
+      "bytes": 7579
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-20-pulse1-run-1/samples.csv",
+      "repeat": ".local/contra-audio/stems/sound-20-pulse1-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-20-pulse2-run-1/full.wav",
+      "repeat": ".local/contra-audio/stems/sound-20-pulse2-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-20-pulse2-run-1/apu.csv",
+      "repeat": ".local/contra-audio/stems/sound-20-pulse2-run-2/apu.csv",
+      "bytes": 27218
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-20-pulse2-run-1/driver.bin",
+      "repeat": ".local/contra-audio/stems/sound-20-pulse2-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-20-pulse2-run-1/calls.csv",
+      "repeat": ".local/contra-audio/stems/sound-20-pulse2-run-2/calls.csv",
+      "bytes": 7579
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-20-pulse2-run-1/samples.csv",
+      "repeat": ".local/contra-audio/stems/sound-20-pulse2-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-20-noise-run-1/full.wav",
+      "repeat": ".local/contra-audio/stems/sound-20-noise-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-20-noise-run-1/apu.csv",
+      "repeat": ".local/contra-audio/stems/sound-20-noise-run-2/apu.csv",
+      "bytes": 27218
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-20-noise-run-1/driver.bin",
+      "repeat": ".local/contra-audio/stems/sound-20-noise-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-20-noise-run-1/calls.csv",
+      "repeat": ".local/contra-audio/stems/sound-20-noise-run-2/calls.csv",
+      "bytes": 7579
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-20-noise-run-1/samples.csv",
+      "repeat": ".local/contra-audio/stems/sound-20-noise-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-2a-pulse1-run-1/full.wav",
+      "repeat": ".local/contra-audio/stems/sound-2a-pulse1-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-2a-pulse1-run-1/apu.csv",
+      "repeat": ".local/contra-audio/stems/sound-2a-pulse1-run-2/apu.csv",
+      "bytes": 485
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-2a-pulse1-run-1/driver.bin",
+      "repeat": ".local/contra-audio/stems/sound-2a-pulse1-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-2a-pulse1-run-1/calls.csv",
+      "repeat": ".local/contra-audio/stems/sound-2a-pulse1-run-2/calls.csv",
+      "bytes": 6139
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-2a-pulse1-run-1/samples.csv",
+      "repeat": ".local/contra-audio/stems/sound-2a-pulse1-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-2b-pulse1-run-1/full.wav",
+      "repeat": ".local/contra-audio/stems/sound-2b-pulse1-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-2b-pulse1-run-1/apu.csv",
+      "repeat": ".local/contra-audio/stems/sound-2b-pulse1-run-2/apu.csv",
+      "bytes": 919
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-2b-pulse1-run-1/driver.bin",
+      "repeat": ".local/contra-audio/stems/sound-2b-pulse1-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-2b-pulse1-run-1/calls.csv",
+      "repeat": ".local/contra-audio/stems/sound-2b-pulse1-run-2/calls.csv",
+      "bytes": 6139
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-2b-pulse1-run-1/samples.csv",
+      "repeat": ".local/contra-audio/stems/sound-2b-pulse1-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-2c-pulse1-run-1/full.wav",
+      "repeat": ".local/contra-audio/stems/sound-2c-pulse1-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-2c-pulse1-run-1/apu.csv",
+      "repeat": ".local/contra-audio/stems/sound-2c-pulse1-run-2/apu.csv",
+      "bytes": 1241
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-2c-pulse1-run-1/driver.bin",
+      "repeat": ".local/contra-audio/stems/sound-2c-pulse1-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-2c-pulse1-run-1/calls.csv",
+      "repeat": ".local/contra-audio/stems/sound-2c-pulse1-run-2/calls.csv",
+      "bytes": 6139
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-2c-pulse1-run-1/samples.csv",
+      "repeat": ".local/contra-audio/stems/sound-2c-pulse1-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-2c-noise-run-1/full.wav",
+      "repeat": ".local/contra-audio/stems/sound-2c-noise-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-2c-noise-run-1/apu.csv",
+      "repeat": ".local/contra-audio/stems/sound-2c-noise-run-2/apu.csv",
+      "bytes": 1241
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-2c-noise-run-1/driver.bin",
+      "repeat": ".local/contra-audio/stems/sound-2c-noise-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-2c-noise-run-1/calls.csv",
+      "repeat": ".local/contra-audio/stems/sound-2c-noise-run-2/calls.csv",
+      "bytes": 6139
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-2c-noise-run-1/samples.csv",
+      "repeat": ".local/contra-audio/stems/sound-2c-noise-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-2e-pulse1-run-1/full.wav",
+      "repeat": ".local/contra-audio/stems/sound-2e-pulse1-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-2e-pulse1-run-1/apu.csv",
+      "repeat": ".local/contra-audio/stems/sound-2e-pulse1-run-2/apu.csv",
+      "bytes": 489
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-2e-pulse1-run-1/driver.bin",
+      "repeat": ".local/contra-audio/stems/sound-2e-pulse1-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-2e-pulse1-run-1/calls.csv",
+      "repeat": ".local/contra-audio/stems/sound-2e-pulse1-run-2/calls.csv",
+      "bytes": 6139
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-2e-pulse1-run-1/samples.csv",
+      "repeat": ".local/contra-audio/stems/sound-2e-pulse1-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-30-pulse1-run-1/full.wav",
+      "repeat": ".local/contra-audio/stems/sound-30-pulse1-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-30-pulse1-run-1/apu.csv",
+      "repeat": ".local/contra-audio/stems/sound-30-pulse1-run-2/apu.csv",
+      "bytes": 1197
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-30-pulse1-run-1/driver.bin",
+      "repeat": ".local/contra-audio/stems/sound-30-pulse1-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-30-pulse1-run-1/calls.csv",
+      "repeat": ".local/contra-audio/stems/sound-30-pulse1-run-2/calls.csv",
+      "bytes": 6139
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-30-pulse1-run-1/samples.csv",
+      "repeat": ".local/contra-audio/stems/sound-30-pulse1-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-33-pulse1-run-1/full.wav",
+      "repeat": ".local/contra-audio/stems/sound-33-pulse1-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-33-pulse1-run-1/apu.csv",
+      "repeat": ".local/contra-audio/stems/sound-33-pulse1-run-2/apu.csv",
+      "bytes": 6950
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-33-pulse1-run-1/driver.bin",
+      "repeat": ".local/contra-audio/stems/sound-33-pulse1-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-33-pulse1-run-1/calls.csv",
+      "repeat": ".local/contra-audio/stems/sound-33-pulse1-run-2/calls.csv",
+      "bytes": 6139
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-33-pulse1-run-1/samples.csv",
+      "repeat": ".local/contra-audio/stems/sound-33-pulse1-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-34-pulse1-run-1/full.wav",
+      "repeat": ".local/contra-audio/stems/sound-34-pulse1-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-34-pulse1-run-1/apu.csv",
+      "repeat": ".local/contra-audio/stems/sound-34-pulse1-run-2/apu.csv",
+      "bytes": 4625
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-34-pulse1-run-1/driver.bin",
+      "repeat": ".local/contra-audio/stems/sound-34-pulse1-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-34-pulse1-run-1/calls.csv",
+      "repeat": ".local/contra-audio/stems/sound-34-pulse1-run-2/calls.csv",
+      "bytes": 6139
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-34-pulse1-run-1/samples.csv",
+      "repeat": ".local/contra-audio/stems/sound-34-pulse1-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-34-noise-run-1/full.wav",
+      "repeat": ".local/contra-audio/stems/sound-34-noise-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-34-noise-run-1/apu.csv",
+      "repeat": ".local/contra-audio/stems/sound-34-noise-run-2/apu.csv",
+      "bytes": 4625
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-34-noise-run-1/driver.bin",
+      "repeat": ".local/contra-audio/stems/sound-34-noise-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-34-noise-run-1/calls.csv",
+      "repeat": ".local/contra-audio/stems/sound-34-noise-run-2/calls.csv",
+      "bytes": 6139
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-34-noise-run-1/samples.csv",
+      "repeat": ".local/contra-audio/stems/sound-34-noise-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-36-pulse1-run-1/full.wav",
+      "repeat": ".local/contra-audio/stems/sound-36-pulse1-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-36-pulse1-run-1/apu.csv",
+      "repeat": ".local/contra-audio/stems/sound-36-pulse1-run-2/apu.csv",
+      "bytes": 435
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-36-pulse1-run-1/driver.bin",
+      "repeat": ".local/contra-audio/stems/sound-36-pulse1-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-36-pulse1-run-1/calls.csv",
+      "repeat": ".local/contra-audio/stems/sound-36-pulse1-run-2/calls.csv",
+      "bytes": 6139
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-36-pulse1-run-1/samples.csv",
+      "repeat": ".local/contra-audio/stems/sound-36-pulse1-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-39-pulse1-run-1/full.wav",
+      "repeat": ".local/contra-audio/stems/sound-39-pulse1-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-39-pulse1-run-1/apu.csv",
+      "repeat": ".local/contra-audio/stems/sound-39-pulse1-run-2/apu.csv",
+      "bytes": 660
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-39-pulse1-run-1/driver.bin",
+      "repeat": ".local/contra-audio/stems/sound-39-pulse1-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-39-pulse1-run-1/calls.csv",
+      "repeat": ".local/contra-audio/stems/sound-39-pulse1-run-2/calls.csv",
+      "bytes": 6139
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-39-pulse1-run-1/samples.csv",
+      "repeat": ".local/contra-audio/stems/sound-39-pulse1-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-3d-noise-run-1/full.wav",
+      "repeat": ".local/contra-audio/stems/sound-3d-noise-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-3d-noise-run-1/apu.csv",
+      "repeat": ".local/contra-audio/stems/sound-3d-noise-run-2/apu.csv",
+      "bytes": 1196
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-3d-noise-run-1/driver.bin",
+      "repeat": ".local/contra-audio/stems/sound-3d-noise-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-3d-noise-run-1/calls.csv",
+      "repeat": ".local/contra-audio/stems/sound-3d-noise-run-2/calls.csv",
+      "bytes": 6139
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-3d-noise-run-1/samples.csv",
+      "repeat": ".local/contra-audio/stems/sound-3d-noise-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-3e-noise-run-1/full.wav",
+      "repeat": ".local/contra-audio/stems/sound-3e-noise-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-3e-noise-run-1/apu.csv",
+      "repeat": ".local/contra-audio/stems/sound-3e-noise-run-2/apu.csv",
+      "bytes": 1273
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-3e-noise-run-1/driver.bin",
+      "repeat": ".local/contra-audio/stems/sound-3e-noise-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-3e-noise-run-1/calls.csv",
+      "repeat": ".local/contra-audio/stems/sound-3e-noise-run-2/calls.csv",
+      "bytes": 6139
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-3e-noise-run-1/samples.csv",
+      "repeat": ".local/contra-audio/stems/sound-3e-noise-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-75-pulse1-run-1/full.wav",
+      "repeat": ".local/contra-audio/stems/sound-75-pulse1-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-75-pulse1-run-1/apu.csv",
+      "repeat": ".local/contra-audio/stems/sound-75-pulse1-run-2/apu.csv",
+      "bytes": 1626
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-75-pulse1-run-1/driver.bin",
+      "repeat": ".local/contra-audio/stems/sound-75-pulse1-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-75-pulse1-run-1/calls.csv",
+      "repeat": ".local/contra-audio/stems/sound-75-pulse1-run-2/calls.csv",
+      "bytes": 6140
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-75-pulse1-run-1/samples.csv",
+      "repeat": ".local/contra-audio/stems/sound-75-pulse1-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-75-noise-run-1/full.wav",
+      "repeat": ".local/contra-audio/stems/sound-75-noise-run-2/full.wav",
+      "bytes": 702966
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-75-noise-run-1/apu.csv",
+      "repeat": ".local/contra-audio/stems/sound-75-noise-run-2/apu.csv",
+      "bytes": 1626
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-75-noise-run-1/driver.bin",
+      "repeat": ".local/contra-audio/stems/sound-75-noise-run-2/driver.bin",
+      "bytes": 62400
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-75-noise-run-1/calls.csv",
+      "repeat": ".local/contra-audio/stems/sound-75-noise-run-2/calls.csv",
+      "bytes": 6140
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-75-noise-run-1/samples.csv",
+      "repeat": ".local/contra-audio/stems/sound-75-noise-run-2/samples.csv",
+      "bytes": 5035
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-77-pulse1-run-1/full.wav",
+      "repeat": ".local/contra-audio/stems/sound-77-pulse1-run-2/full.wav",
+      "bytes": 1055186
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-77-pulse1-run-1/apu.csv",
+      "repeat": ".local/contra-audio/stems/sound-77-pulse1-run-2/apu.csv",
+      "bytes": 3114
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-77-pulse1-run-1/driver.bin",
+      "repeat": ".local/contra-audio/stems/sound-77-pulse1-run-2/driver.bin",
+      "bytes": 93600
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-77-pulse1-run-1/calls.csv",
+      "repeat": ".local/contra-audio/stems/sound-77-pulse1-run-2/calls.csv",
+      "bytes": 9272
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-77-pulse1-run-1/samples.csv",
+      "repeat": ".local/contra-audio/stems/sound-77-pulse1-run-2/samples.csv",
+      "bytes": 7675
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-77-pulse2-run-1/full.wav",
+      "repeat": ".local/contra-audio/stems/sound-77-pulse2-run-2/full.wav",
+      "bytes": 1055186
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-77-pulse2-run-1/apu.csv",
+      "repeat": ".local/contra-audio/stems/sound-77-pulse2-run-2/apu.csv",
+      "bytes": 3114
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-77-pulse2-run-1/driver.bin",
+      "repeat": ".local/contra-audio/stems/sound-77-pulse2-run-2/driver.bin",
+      "bytes": 93600
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-77-pulse2-run-1/calls.csv",
+      "repeat": ".local/contra-audio/stems/sound-77-pulse2-run-2/calls.csv",
+      "bytes": 9272
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-77-pulse2-run-1/samples.csv",
+      "repeat": ".local/contra-audio/stems/sound-77-pulse2-run-2/samples.csv",
+      "bytes": 7675
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-77-triangle-run-1/full.wav",
+      "repeat": ".local/contra-audio/stems/sound-77-triangle-run-2/full.wav",
+      "bytes": 1055186
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-77-triangle-run-1/apu.csv",
+      "repeat": ".local/contra-audio/stems/sound-77-triangle-run-2/apu.csv",
+      "bytes": 3114
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-77-triangle-run-1/driver.bin",
+      "repeat": ".local/contra-audio/stems/sound-77-triangle-run-2/driver.bin",
+      "bytes": 93600
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-77-triangle-run-1/calls.csv",
+      "repeat": ".local/contra-audio/stems/sound-77-triangle-run-2/calls.csv",
+      "bytes": 9272
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-77-triangle-run-1/samples.csv",
+      "repeat": ".local/contra-audio/stems/sound-77-triangle-run-2/samples.csv",
+      "bytes": 7675
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-77-noise-run-1/full.wav",
+      "repeat": ".local/contra-audio/stems/sound-77-noise-run-2/full.wav",
+      "bytes": 1055186
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-77-noise-run-1/apu.csv",
+      "repeat": ".local/contra-audio/stems/sound-77-noise-run-2/apu.csv",
+      "bytes": 3114
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-77-noise-run-1/driver.bin",
+      "repeat": ".local/contra-audio/stems/sound-77-noise-run-2/driver.bin",
+      "bytes": 93600
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-77-noise-run-1/calls.csv",
+      "repeat": ".local/contra-audio/stems/sound-77-noise-run-2/calls.csv",
+      "bytes": 9272
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-77-noise-run-1/samples.csv",
+      "repeat": ".local/contra-audio/stems/sound-77-noise-run-2/samples.csv",
+      "bytes": 7675
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-77-dpcm-run-1/full.wav",
+      "repeat": ".local/contra-audio/stems/sound-77-dpcm-run-2/full.wav",
+      "bytes": 1055186
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-77-dpcm-run-1/apu.csv",
+      "repeat": ".local/contra-audio/stems/sound-77-dpcm-run-2/apu.csv",
+      "bytes": 3114
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-77-dpcm-run-1/driver.bin",
+      "repeat": ".local/contra-audio/stems/sound-77-dpcm-run-2/driver.bin",
+      "bytes": 93600
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-77-dpcm-run-1/calls.csv",
+      "repeat": ".local/contra-audio/stems/sound-77-dpcm-run-2/calls.csv",
+      "bytes": 9272
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-77-dpcm-run-1/samples.csv",
+      "repeat": ".local/contra-audio/stems/sound-77-dpcm-run-2/samples.csv",
+      "bytes": 7675
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-7b-pulse1-run-1/full.wav",
+      "repeat": ".local/contra-audio/stems/sound-7b-pulse1-run-2/full.wav",
+      "bytes": 1055186
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-7b-pulse1-run-1/apu.csv",
+      "repeat": ".local/contra-audio/stems/sound-7b-pulse1-run-2/apu.csv",
+      "bytes": 3009
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-7b-pulse1-run-1/driver.bin",
+      "repeat": ".local/contra-audio/stems/sound-7b-pulse1-run-2/driver.bin",
+      "bytes": 93600
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-7b-pulse1-run-1/calls.csv",
+      "repeat": ".local/contra-audio/stems/sound-7b-pulse1-run-2/calls.csv",
+      "bytes": 9260
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-7b-pulse1-run-1/samples.csv",
+      "repeat": ".local/contra-audio/stems/sound-7b-pulse1-run-2/samples.csv",
+      "bytes": 7675
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-7b-pulse2-run-1/full.wav",
+      "repeat": ".local/contra-audio/stems/sound-7b-pulse2-run-2/full.wav",
+      "bytes": 1055186
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-7b-pulse2-run-1/apu.csv",
+      "repeat": ".local/contra-audio/stems/sound-7b-pulse2-run-2/apu.csv",
+      "bytes": 3009
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-7b-pulse2-run-1/driver.bin",
+      "repeat": ".local/contra-audio/stems/sound-7b-pulse2-run-2/driver.bin",
+      "bytes": 93600
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-7b-pulse2-run-1/calls.csv",
+      "repeat": ".local/contra-audio/stems/sound-7b-pulse2-run-2/calls.csv",
+      "bytes": 9260
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-7b-pulse2-run-1/samples.csv",
+      "repeat": ".local/contra-audio/stems/sound-7b-pulse2-run-2/samples.csv",
+      "bytes": 7675
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-7b-triangle-run-1/full.wav",
+      "repeat": ".local/contra-audio/stems/sound-7b-triangle-run-2/full.wav",
+      "bytes": 1055186
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-7b-triangle-run-1/apu.csv",
+      "repeat": ".local/contra-audio/stems/sound-7b-triangle-run-2/apu.csv",
+      "bytes": 3009
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-7b-triangle-run-1/driver.bin",
+      "repeat": ".local/contra-audio/stems/sound-7b-triangle-run-2/driver.bin",
+      "bytes": 93600
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-7b-triangle-run-1/calls.csv",
+      "repeat": ".local/contra-audio/stems/sound-7b-triangle-run-2/calls.csv",
+      "bytes": 9260
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-7b-triangle-run-1/samples.csv",
+      "repeat": ".local/contra-audio/stems/sound-7b-triangle-run-2/samples.csv",
+      "bytes": 7675
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-7b-noise-run-1/full.wav",
+      "repeat": ".local/contra-audio/stems/sound-7b-noise-run-2/full.wav",
+      "bytes": 1055186
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-7b-noise-run-1/apu.csv",
+      "repeat": ".local/contra-audio/stems/sound-7b-noise-run-2/apu.csv",
+      "bytes": 3009
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-7b-noise-run-1/driver.bin",
+      "repeat": ".local/contra-audio/stems/sound-7b-noise-run-2/driver.bin",
+      "bytes": 93600
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-7b-noise-run-1/calls.csv",
+      "repeat": ".local/contra-audio/stems/sound-7b-noise-run-2/calls.csv",
+      "bytes": 9260
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-7b-noise-run-1/samples.csv",
+      "repeat": ".local/contra-audio/stems/sound-7b-noise-run-2/samples.csv",
+      "bytes": 7675
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-7b-dpcm-run-1/full.wav",
+      "repeat": ".local/contra-audio/stems/sound-7b-dpcm-run-2/full.wav",
+      "bytes": 1055186
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-7b-dpcm-run-1/apu.csv",
+      "repeat": ".local/contra-audio/stems/sound-7b-dpcm-run-2/apu.csv",
+      "bytes": 3009
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-7b-dpcm-run-1/driver.bin",
+      "repeat": ".local/contra-audio/stems/sound-7b-dpcm-run-2/driver.bin",
+      "bytes": 93600
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-7b-dpcm-run-1/calls.csv",
+      "repeat": ".local/contra-audio/stems/sound-7b-dpcm-run-2/calls.csv",
+      "bytes": 9260
+    },
+    {
+      "source": ".local/contra-audio/stems/sound-7b-dpcm-run-1/samples.csv",
+      "repeat": ".local/contra-audio/stems/sound-7b-dpcm-run-2/samples.csv",
+      "bytes": 7675
+    }
+  ],
+  "reclaimedLogicalBytes": 152167506,
+  "scope": "Only Contra audio private profiles/cache, failed native fixture v1, superseded failure logs already summarized in test evidence, and byte-identical repeated media captures. User ROM, primary recordings, loop outputs, other games and active caches untouched."
+}

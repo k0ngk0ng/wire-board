@@ -1,0 +1,8 @@
+{
+  "status": "deferred",
+  "reason": "User explicitly requested human-only delivery; computer strategy is not exposed in production",
+  "first_input_difference": 60605,
+  "old_pad": 65,
+  "candidate_pad": 196,
+  "scope": "Preserved failing AI research case, not a passed product acceptance"
+}

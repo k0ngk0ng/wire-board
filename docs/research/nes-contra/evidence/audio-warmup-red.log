@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/scripts/contra/audio_verify.py", line 92, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/scripts/contra/audio_verify.py", line 40, in main
+    assert sound.get('warmupFrames',0)>=120,'Cold-start export retains unrelated APU startup output'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Cold-start export retains unrelated APU startup output

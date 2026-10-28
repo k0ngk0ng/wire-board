@@ -1,0 +1,41 @@
+{
+  "passed": true,
+  "scope": "Contra CDN inventory, loopback verification and trim; no upload or live CDN acceptance",
+  "topLevelTests": 8,
+  "inventoryFailureVariants": 18,
+  "httpFailureVariants": 7,
+  "protocol": {
+    "passed": true,
+    "scope": "Loopback protocol verification of frozen motion-v10 delivery files, not live CDN or current-engine acceptance",
+    "uploaded": false,
+    "fullFilesVerified": 209,
+    "waveRangesVerified": 95,
+    "requests": 304,
+    "trimRemovedOnlyVerifiedPayloads": true,
+    "serverMetadataPreserved": true,
+    "runtimeBuildID": "8c3aa1a067f3bb64f9ac41049fb9b8d8b4201dcb9d9a740a1bd8aacaf8acd09b",
+    "immutableUploadAndCredentialsUnchanged": true,
+    "sourceSHA256": {
+      "scripts/cdn_delivery.py": "cd437d9cca644527d51c82022fbbe707e73ea3645e452cfc0089f20cfee553de",
+      "scripts/test_cdn_delivery.py": "105e4bde264e523fcedf2bd42e8e6e2e0cc3b71636c14d8dc93afb83955d1050"
+    }
+  },
+  "sourceSHA256": {
+    "scripts/cdn_delivery.py": "cd437d9cca644527d51c82022fbbe707e73ea3645e452cfc0089f20cfee553de",
+    "scripts/test_cdn_delivery.py": "105e4bde264e523fcedf2bd42e8e6e2e0cc3b71636c14d8dc93afb83955d1050",
+    ".local/contra-world/checks/contra-cdn-loopback.py": "e53eea12ebf32b1d6275d5efd205a2b14edb198135e41fba4e4920195606b24e",
+    ".local/contra-delivery/motion-v10/delivery.json": "2f85f5606210aed6a81d6ec0f4ef1b1bb14bdd63f884cb340f30672cb73337c7"
+  },
+  "evidenceSHA256": {
+    "contra-cdn-red.log": "956ea74cb4d51efde57c3d6195822d4b84d8dedbca395131231318baf37b5b67",
+    "contra-cdn-green.log": "67895cacac63f3159c5a2aadf2e731426c6a9037c37afa948f6a28c6f26e7d12",
+    "contra-cdn-loopback.log": "7cad177922b3c1b4d0ca79fd321da41776c3ff84d6ce71401decddd4f529c5d2",
+    "contra-cdn-loopback-receipt.json": "944850a2f35bd71a75f8ba0389aaabf2fec9a623dbd86e7a8003bde01fea7c29",
+    "contra-cdn-loopback-verification.json": "d4fa7278858e9b8933bfc19d2056983a1f082faef27ecd893055b6caa9b0b94a"
+  },
+  "temporaryDirectoriesRemaining": [],
+  "reproduce": [
+    "TMPDIR=\"$PWD/.local/tmp\" python3 -B scripts/test_cdn_delivery.py",
+    "TMPDIR=\"$PWD/.local/tmp\" python3 -B .local/contra-world/checks/contra-cdn-loopback.py"
+  ]
+}

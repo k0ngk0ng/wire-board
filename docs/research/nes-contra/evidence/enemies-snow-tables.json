@@ -1,0 +1,239 @@
+{
+  "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "tables": {
+    "snowTankWait": {
+      "cpu": "0xa50b",
+      "prg_offset": 9483,
+      "rom_offset": 9499,
+      "bytes": [
+        0,
+        0,
+        0,
+        64,
+        244,
+        244,
+        244,
+        52
+      ],
+      "sha256": "f62e258085ca8e7006167e38b77baf2c406b35b84f010a6348d1936c297f3ffd"
+    },
+    "snowTankWheels": {
+      "cpu": "0xa604",
+      "prg_offset": 9732,
+      "rom_offset": 9748,
+      "bytes": [
+        16,
+        17,
+        20,
+        21
+      ],
+      "sha256": "84a7bb655c40df455df63f966b9e4a76b7d0845e7a6b183e5352f28a6a75b251"
+    },
+    "snowTankTurrets": {
+      "cpu": "0xa5c5",
+      "prg_offset": 9669,
+      "rom_offset": 9685,
+      "bytes": [
+        19,
+        18,
+        15
+      ],
+      "sha256": "81b7599c1575fdc18e93df6e3bcb43cd7dde737763051197de6f75c0892b46f7"
+    },
+    "snowTankShots": {
+      "cpu": "0xa5c8",
+      "prg_offset": 9672,
+      "rom_offset": 9688,
+      "bytes": [
+        36,
+        3,
+        9,
+        41,
+        9,
+        10,
+        46,
+        20,
+        12
+      ],
+      "sha256": "15b7c8d2aa03d3cc4bb34f7b695488aaa2754c8c98cfbae119f0b8a414f39e5f"
+    },
+    "snowTankDestruction": {
+      "cpu": "0xa687",
+      "prg_offset": 9863,
+      "rom_offset": 9879,
+      "bytes": [
+        0,
+        22,
+        4,
+        28,
+        14,
+        0,
+        22,
+        228,
+        28,
+        242,
+        255,
+        246,
+        4,
+        0,
+        14,
+        255,
+        246,
+        228,
+        0,
+        242,
+        255,
+        214,
+        4,
+        228,
+        14,
+        255,
+        214,
+        228,
+        228,
+        242
+      ],
+      "sha256": "5c2e0a73c9e7a774d0dad616ff1093e7e2806c2369e3f2978d59247665497242"
+    },
+    "snowTankPalettes": {
+      "cpu": "0xa6ba",
+      "prg_offset": 9914,
+      "rom_offset": 9930,
+      "bytes": [
+        97,
+        96,
+        95,
+        63,
+        63
+      ],
+      "sha256": "c17f35a38c63b8e786ed6e2f986293271d54f51e383b7171b2b09847abb056e6"
+    },
+    "snowCarrierX": {
+      "cpu": "0xa707",
+      "prg_offset": 9991,
+      "rom_offset": 10007,
+      "bytes": [
+        64,
+        96,
+        128,
+        128
+      ],
+      "sha256": "ab9106dbc6622ac5b083159d6744ad8c35cdaecffaa336420c339d391a00c333"
+    },
+    "snowCarrierParts": {
+      "cpu": "0xa73c",
+      "prg_offset": 10044,
+      "rom_offset": 10060,
+      "bytes": [
+        13,
+        14,
+        7,
+        8
+      ],
+      "sha256": "f7389a9e7aa2b9788f76999fd16fa8cbb0f9cf1c13b9b78c7e97118a32852735"
+    },
+    "snowCarrierOffsets": {
+      "cpu": "0xa740",
+      "prg_offset": 10048,
+      "rom_offset": 10064,
+      "bytes": [
+        228,
+        228,
+        4,
+        228,
+        228,
+        4,
+        4,
+        4
+      ],
+      "sha256": "cc1dd0da79c531802684c1b2efe20b3171e0c9053a54a76ed6f56ca727e54c62"
+    },
+    "snowCarrierTop": {
+      "cpu": "0xa77e",
+      "prg_offset": 10110,
+      "rom_offset": 10126,
+      "bytes": [
+        11,
+        5,
+        10,
+        4,
+        9,
+        3,
+        13,
+        14
+      ],
+      "sha256": "9850fbc9677ab026ad62c57f363281c1969e9bb49c2a2029b58c1038a218a838"
+    },
+    "snowCarrierChildren": {
+      "cpu": "0xa80e",
+      "prg_offset": 10254,
+      "rom_offset": 10270,
+      "bytes": [
+        21,
+        20,
+        1,
+        124,
+        22,
+        0,
+        0,
+        34,
+        21,
+        236,
+        254,
+        124,
+        22,
+        0,
+        0,
+        34
+      ],
+      "sha256": "f5344f4df9e37b0592ccfd61ff15054d75c2fc5a9950722d82afae824645575f"
+    },
+    "snowCarrierThrusters": {
+      "cpu": "0xa81e",
+      "prg_offset": 10270,
+      "rom_offset": 10286,
+      "bytes": [
+        7,
+        8,
+        12,
+        6
+      ],
+      "sha256": "c52b8b2e1389f84a1f056d539f02a93f2c34e1b84ae7784e00649eb3aabb929e"
+    },
+    "snowCarrierExplosions": {
+      "cpu": "0xa8d0",
+      "prg_offset": 10448,
+      "rom_offset": 10464,
+      "bytes": [
+        224,
+        0,
+        0,
+        32,
+        32,
+        0,
+        240,
+        240,
+        0,
+        0
+      ],
+      "sha256": "3b0b29b2656a672fad0145c2b2f3a643d0e45f8a2d5c541c2f9ac66d735e38e3"
+    },
+    "snowCarrierDoor": {
+      "cpu": "0xa908",
+      "prg_offset": 10504,
+      "rom_offset": 10520,
+      "bytes": [
+        192,
+        128,
+        150,
+        192,
+        160,
+        151,
+        208,
+        192,
+        152
+      ],
+      "sha256": "aac5000433309c55f0632e1f807cba254ac7e2a9d693f0777cb11f5d39b652eb"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+=== RUN   TestBotApproachesUnknownEdgeOnlyWithinKnownSupport
+    bot_known_support_probe_test.go:34: known support cannot be approached to reveal hidden edge 64
+--- FAIL: TestBotApproachesUnknownEdgeOnlyWithinKnownSupport (0.00s)
+FAIL
+FAIL	github.com/k0ngk0ng/wire-board/games/contra/engine	0.608s
+FAIL

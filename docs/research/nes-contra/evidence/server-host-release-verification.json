@@ -1,0 +1,88 @@
+{
+  "version": 1,
+  "scope": "explicit realtime input release during human-seat autoplay, actual HTTP/WebSocket/SQLite and five existing public regressions",
+  "passed": true,
+  "testsPassed": 11,
+  "checks": [
+    {
+      "log": "docs/research/nes-contra/evidence/server-host-release-green.jsonl.gz",
+      "passed": true,
+      "tests": [
+        "TestInputReleaseCapabilityValidation",
+        "TestContraHTTPWSAutoplayInputRelease",
+        "TestContraHTTPWSInputReleaseCapabilityIsolation/not-opted-in",
+        "TestContraHTTPWSInputReleaseCapabilityIsolation/predicate-panics",
+        "TestContraHTTPWSInputReleaseCapabilityIsolation/predicate-mutates-inputs",
+        "TestContraHTTPWSInputReleaseCapabilityIsolation"
+      ],
+      "finished": "2026-10-26T08:52:07.068068+08:00"
+    },
+    {
+      "log": "docs/research/nes-contra/evidence/server-host-release-platform-regression.jsonl.gz",
+      "passed": true,
+      "tests": [
+        "TestModuleAutomatedSeatContextHTTP",
+        "TestModuleRealtimeControlRestoreAndClosureHTTP",
+        "TestRealtimeQueuedInputRespectsChangedControl",
+        "TestRealtimeStreamRejectsSpectatorAndStaleRoom",
+        "TestRealtimeStreamAuthenticationAndPrivateViews"
+      ],
+      "finished": "2026-10-26T08:53:26.163428+08:00"
+    }
+  ],
+  "commands": [
+    "go test -race ./internal/gameapi ./games/contra/server -run '^(TestInputReleaseCapabilityValidation|TestContraHTTPWSAutoplayInputRelease|TestContraHTTPWSInputReleaseCapabilityIsolation)$' -count=1 -json",
+    "go test -race ./internal/server -run '^(TestRealtimeQueuedInputRespectsChangedControl|TestRealtimeStreamRejectsSpectatorAndStaleRoom|TestRealtimeStreamAuthenticationAndPrivateViews|TestModuleRealtimeControlRestoreAndClosureHTTP|TestModuleAutomatedSeatContextHTTP)$' -count=1 -json"
+  ],
+  "capability": "gameapi.Module.IsInputRelease",
+  "guards": [
+    "explicit realtime opt-in",
+    "authenticated own human seat",
+    "normal Apply epoch/sequence/payload validation",
+    "normal nonce/version and AcceptStale",
+    "detached callback arguments",
+    "panic fails closed",
+    "ordinary held input and game decisions remain blocked"
+  ],
+  "sourceSHA256": {
+    "internal/gameapi/module.go": "c090e4aea8e57a549c9be02083ab985d41b30ca11fc01e31b4ae2c29210ce499",
+    "internal/gameapi/input_release_test.go": "b1bfa3427d811b02f3d2126762497832aa000a9be11c72e823b4cfb6afbfff5c",
+    "internal/server/module_input_release.go": "68768040fa730a1f927c80ed98caf1ee9fcf623d41ca5cdc5078ad4216c3b378",
+    "internal/server/server.go": "c66cd9f13e2f630b9f72436984806319c42169ad12dd3b7b9f35eb2888b94324",
+    "internal/server/realtime_batch.go": "3b7f2ac0da4698728e9f1370c8a0e03a180a2b7f526c262c4ca2877cc474f509",
+    "games/contra/server/module.go": "4c1f5c3af814035dea5e80072d5e9dcd3e5dce45aac28de3894f571c859b646a",
+    "games/contra/server/input.go": "aeb4a194235e54ac3f3473b97a5c6e68ad89b7f5c6fa3946cc5b5d3be0932a68",
+    "games/contra/server/input_release_http_test.go": "318d22d03bad58467b38eb799d8612dae6a4620be6a57cd5363039ca4acda73a"
+  },
+  "artifacts": [
+    {
+      "path": "docs/research/nes-contra/evidence/server-host-release-red.jsonl.gz",
+      "sha256": "0dea36733289bc912e2ceaaea1a18f1fd6c45107a9b1c60f042644e32d3ccad2"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/server-host-release-green.jsonl.gz",
+      "sha256": "443b6d0228771b1efe3938fb104e43ad07f731553675003c391217780152f2fb"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/server-host-release-platform-regression.jsonl.gz",
+      "sha256": "742885f48d533ff75e55c7b8c428fa4cc6a3824090141aa57b7a52fb67b5e36a"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/server-host-release-TestContraHTTPWSAutoplayInputRelease.json.gz",
+      "sha256": "028293462be6aff4f3b1f85247d98317f745f3a1b4a8e2cdfc268a0c04772e72"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/server-host-release-TestContraHTTPWSInputReleaseCapabilityIsolation-not-opted-in.json.gz",
+      "sha256": "32b53a142125e77880ec2ab729052ff87cbfa3bf3d498c80a37bb4b12b01d1b9"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/server-host-release-TestContraHTTPWSInputReleaseCapabilityIsolation-predicate-mutates-inputs.json.gz",
+      "sha256": "02331e327cbbf028be58330142d72d8b1baf4745f0c85a61469d36ff4e488af2"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/server-host-release-TestContraHTTPWSInputReleaseCapabilityIsolation-predicate-panics.json.gz",
+      "sha256": "ab12b049dd16fb2ee8a238b975fea456a5e6f59b0ccc179ad153a768b3ed9c6f"
+    }
+  ],
+  "remaining": "frontend uses matching explicit release exception, owned by root; no other game enabled"
+}

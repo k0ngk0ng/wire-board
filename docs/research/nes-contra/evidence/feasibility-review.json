@@ -1,0 +1,61 @@
+{
+  "scope": "ROM identity and retained evidence integrity; no new gameplay or E2E run",
+  "checkedAt": "2026-10-26T07:35:04.775101+00:00",
+  "passed": true,
+  "rom": {
+    "path": "/Users/jason/Documents/nes/roms/03/魂斗罗日版(完全版).zip",
+    "member": "Contra (J).nes",
+    "sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+    "payloadSha1": "be9dd65be8db897978dd34533dd3a037784a8ee9",
+    "payloadCrc32": "b27b8cf4"
+  },
+  "referenceCommit": "12c21cf79f1e20eff6ac68b80875816c717d0a7a",
+  "prgBanksChecked": 16,
+  "rea": {
+    "evidenceID": "ev_991c8771647c89ee3fdc10bceb653904d01c7666ab15a099ba56fe4449af6481",
+    "provider": {
+      "id": "ghidra",
+      "name": "Ghidra",
+      "version": "12.1.4"
+    },
+    "sliceFileOffset": 129053,
+    "sliceBytes": 2035,
+    "source": "exported historical evidence; not a new analysis session"
+  },
+  "historicalCooperativeResults": [
+    {
+      "players": 1,
+      "win": true,
+      "delta": 20
+    },
+    {
+      "players": 1,
+      "win": false,
+      "delta": -10
+    },
+    {
+      "players": 2,
+      "win": true,
+      "delta": 20
+    },
+    {
+      "players": 2,
+      "win": false,
+      "delta": -10
+    }
+  ],
+  "sourceSHA256": {
+    "docs/research/nes-contra/evidence/rom-inspection.json": "9e4e66fddff56afc1cfaae9af57743be957927f564c86d0df4674fc4b12d7b55",
+    "docs/research/nes-contra/evidence/static-index.json": "3b8be1d43061458e3691ad4cf85e6cfe440086934afbb6ac34d58749a500c46b",
+    "docs/research/nes-contra/evidence/rea-reset-function.json": "be5f1056231a20ad030d1f9f44e40dac8426adf92777007cffce223fe4087b92",
+    ".local/coop-campaign/evidence/TestCoopCampaignSharedHTTP-players-1-win-true.json": "62aa326059872c2a489365ee7443dbaadd4d53680ae3e79266ef299aba6381ab",
+    ".local/coop-campaign/evidence/TestCoopCampaignSharedHTTP-players-1-win-false.json": "cbb962ca5248320ca0b31082237323091f177f2c477843c73ff469e99c567722",
+    ".local/coop-campaign/evidence/TestCoopCampaignSharedHTTP-players-2-win-true.json": "4bc9a263df809a4aff84166cc5c5405b3aa7ec684444a7339ed257d04def9bde",
+    ".local/coop-campaign/evidence/TestCoopCampaignSharedHTTP-players-2-win-false.json": "70861f870c1ccb0c4a903408f919af73b2c73b2fcc53fa75682ad018b77f494c"
+  },
+  "limitations": [
+    "Matches the retained DAT entry; does not fetch the reference database again.",
+    "Does not rerun REA, HTTP fixtures, browser checks or the eight-stage campaign.",
+    "Historical passing results do not certify the current uncommitted build."
+  ]
+}

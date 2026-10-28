@@ -1,0 +1,28 @@
+{
+  "status": "targeted-tests-pass-previous-continuation-still-incomplete",
+  "changes": [
+    "Crouch under the current visible beam delimited by its visible tip and nozzle",
+    "Exclude non-shootable flame/nozzle landmarks from aiming",
+    "Hold on an unknown front floor cell while support remains known; resume on current visible floor evidence"
+  ],
+  "sources": {
+    "games/contra/engine/bot.go": "7951c160228b5798ee070268b74ea93096a0be7272e2f500d7ce5be341fdb41a",
+    "games/contra/engine/bot_nozzle_navigation.go": "0d379c627b9147b43f7d0fb2defa79cc16cb14cce05dfcd16390f83a3d9e49d9",
+    "games/contra/engine/bot_observation.go": "84ea17a1871704e3822bd65869b5e728ac6b4c6fbd632b71c8fc6ebbc1aaa983",
+    "games/contra/engine/bot_nozzle_duck_test.go": "a6b8038d26b4f0a55e8c3d6328fa4837fe1368c3e6b76742377a63ad837aa301",
+    "games/contra/engine/bot_unknown_front_test.go": "959810d8e9d2ef414b6cce313cf179a0ceac8e47bb0e0fd402f1bbc4bf0c083d",
+    "games/contra/engine/testdata/bot-energy-unknown-front.json.gz": "668aeb8307506203a7e305c07430807976c3dc4b94e44c10843f81feef0975e2"
+  },
+  "race_log": "unknown-front-green.log",
+  "native_duck_pair": "energy-duck-pair.json",
+  "previous_continuation": "76001..84000 and84001..92000 still at level5 screen5; regression tests alone did not solve it",
+  "new_run": ".local/contra-bot/diagnostic-energy-unknown-front",
+  "complete_campaign": false,
+  "new_run_result": {
+    "frames": 100000,
+    "level_index": 5,
+    "screen": 5,
+    "complete_campaign": false
+  },
+  "input_explanation_correction": "Earlier pad197 included Right, so it was a jump, not a drop. Only neutral Down+A selects original drop admission. The separate Base roller case produced neutral Down+A and has been fixed."
+}

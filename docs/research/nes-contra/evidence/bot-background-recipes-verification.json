@@ -1,0 +1,151 @@
+{
+  "version": 1,
+  "passed": true,
+  "scope": "immutable background visual recipes only; original ROM byte identity and visible art review; not classifier precision or natural full campaign acceptance",
+  "romSHA256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "recipeCount": 18,
+  "patternCount": 89,
+  "independentOriginalPatterns": 1128,
+  "originalPaletteAnchorObservations": 17,
+  "command": "go test -race ./games/contra/engine -run '^TestBotBackgroundRecipes' -count=1 -json",
+  "tests": [
+    "TestBotBackgroundRecipesMatchOriginalArtwork",
+    "TestBotBackgroundRecipesAmbiguityAndVisibleAnchors",
+    "TestBotBackgroundRecipesAreDetachedGlobalKnowledge"
+  ],
+  "finished": "2026-10-26T09:28:53.028888+08:00",
+  "sourceSHA256": {
+    "games/contra/engine/bot_vision_background_recipes.go": "1cf768df2e6f4334934bb6176223a347a0f955e06e6d0db5e91d75bda32002aa",
+    "games/contra/engine/bot_vision_background_recipes_test.go": "725db4749863735cbc414f5e6ad5e0915b3c8ce3bb4ed6b866e25a190eb9d71b",
+    "games/contra/engine/testdata/bot-background-original-art.json.gz": "ec1c10b72ee1f2b951dfb13321a31dd78ec437ce806395a3ca568c426f5cc7e7",
+    "scripts/contra/bot_background_reference.py": "f2c90ebbceb23b6d388ccdb0c3d965e8b9036ce9538279cbcb0c9f29b31a9fea",
+    "scripts/contra/bot_background_preview.py": "95ad38b0097e5bdc44da833b9a9289f8e44514c4d6b72538827f50458f66fbd5",
+    "games/contra/engine/leveldata/stage-1.json": "ae541455b3d25b9b86898b9b013739f8ae0735b409b593defc484a59af5924ad",
+    "games/contra/engine/leveldata/stage-2.json": "b398dc1e444c586f4ac6181679d673f8fd9463638a0107a656ef104e69933153",
+    "games/contra/engine/leveldata/stage-3.json": "2ce2245014def20fd2638c278755f7a2a3b06c92a24b8c232facb568903c7355",
+    "games/contra/engine/leveldata/stage-4.json": "a1433c299763814b6c7acf02848e64f1629c163c639914fd6832e81b25b80f4a"
+  },
+  "originalSources": [
+    {
+      "path": "docs/research/nes-contra/evidence/levels-catalog.json.gz",
+      "sha256": "7907d15dd973f6f8127a9c3a6aa95bae71b26c6175d4ff5747fadbb2753f5026"
+    },
+    {
+      "path": "games/contra/engine/testdata/original-enemy-machines-graphics-controlled.json.gz",
+      "sha256": "a7e7933bf95016109e10b66f93a053473432f854fec11d43eb98bb3a7677316a"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/enemies-base-2-room.json.gz",
+      "sha256": "182d24468e130f24d7197c5b1ee9f3953c50a1784da62606f4db53d4ed916597"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/enemies-base-4-room.json.gz",
+      "sha256": "a37c4cacf7e998ce1dc09b737688149d922379ea255c8afcf1230f1c455d3bc1"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/enemies-base-rea.json.gz",
+      "sha256": "ff55a95f495503c6c6cd039573ba3f0ed5cfb6a5431382e6f0b0f193f5325fa7"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/enemies-shooters-rea.json.gz",
+      "sha256": "42371c73b0866175b077bdc46bad82495c0725d322261f52d320118a37de7224"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/enemies-shooters-bossdoor-rea.json.gz",
+      "sha256": "4cac830985a6b2c9da989ed058549b2a42cce26e1592170c5bacd2f2828f48ce"
+    }
+  ],
+  "rea": [
+    {
+      "records": 122,
+      "romSHA256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+      "source": "docs/research/nes-contra/evidence/enemies-base-rea.json.gz"
+    },
+    {
+      "records": 49,
+      "romSHA256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+      "source": "docs/research/nes-contra/evidence/enemies-shooters-rea.json.gz"
+    },
+    {
+      "records": 15,
+      "romSHA256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+      "source": "docs/research/nes-contra/evidence/enemies-shooters-bossdoor-rea.json.gz"
+    }
+  ],
+  "semantics": {
+    "classes": [
+      "base core",
+      "base wall turret",
+      "ambiguous base emplacement 254",
+      "base Boss cannon/plating",
+      "Jungle/Waterfall rotating/red gun",
+      "Jungle left/right Boss cannon",
+      "intact Jungle hatch lower-right panel"
+    ],
+    "sharedBasePatterns": [
+      4,
+      5
+    ],
+    "baseTilePalette": 3,
+    "baseVisibleAnchor": [
+      8,
+      8
+    ],
+    "excluded": [
+      "destroyed Base animation 3",
+      "Boss rubble update 5",
+      "red-gun bare scenery updates 0x16/0x17",
+      "destroyed Jungle gun updates 0x28/0x2b",
+      "opened Jungle tunnel updates 0x1e..0x25"
+    ],
+    "sourceSelection": "Level/Variant/Alternate used only to compile every global template at startup; never selects using current hidden state",
+    "unknownLabels": [
+      "Stage",
+      "Scene",
+      "Choice",
+      "Phase"
+    ],
+    "prohibited": [
+      "runtime HP",
+      "timers",
+      "entity slot",
+      "World",
+      "collision window"
+    ]
+  },
+  "artifacts": [
+    {
+      "path": "docs/research/nes-contra/evidence/bot-background-recipes-red.jsonl.gz",
+      "sha256": "985e918991b1147eda66920103e1ade234153d5d165acfcda5e5fc9d0707a219"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/bot-background-recipes-green.jsonl.gz",
+      "sha256": "2d7fa1cc738b76db83f77d03d9c248c10992b81543404563897410a1c11d2ce7"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/bot-background-base-animations-palette-cycles.png",
+      "sha256": "79b3dec9539bb1a44ee306d1d32a4fc7dd60e2d54b47877fc82a98f6c85dff08"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/bot-background-base-boss-supertiles.png",
+      "sha256": "a04fe7f2d026f303b88e459595aeb44e5512b3580f8349a9e0195eba44df45fa"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/bot-background-base-room-supertiles.png",
+      "sha256": "4cefb2af438019bc3868f085ff6227e2474ebe1262aba2026ef06c4686978021"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/bot-background-jungle-boss-supertiles.png",
+      "sha256": "cbeb648cced1e30de825a0c9fd1fdeac058a86051e2125a5229bbb46dbb8aa6c"
+    }
+  ],
+  "remaining": [
+    "static agent compiles recipe RGBA and palette-cycle variants into global knowledge",
+    "full visual classifier and natural campaign acceptance",
+    "other background-only boss families outside this declared recipe subset"
+  ],
+  "cleanup": {
+    "path": ".local/contra-background-vision",
+    "scope": "only this task temporary rendered sheets, logs and empty Go tmp; all final sources and evidence retained above"
+  }
+}

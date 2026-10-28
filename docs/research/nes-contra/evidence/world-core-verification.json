@@ -1,0 +1,39 @@
+{
+  "passed": true,
+  "scope": "Original player/projectile phase and horizontal jungle scroll phase; external enemy/dynamic-terrain/palette/campaign phases are not yet an integrated independent world.",
+  "playerProjectileFrames": 1220,
+  "scrollFrames": 600,
+  "tileColumns": 29,
+  "attributeColumns": 15,
+  "tests": [
+    "TestOriginalCombatFramePhase",
+    "TestCombatFrameFailureIsAtomic",
+    "TestOriginalJungleScrolling",
+    "TestJungleScrollScreenBoundaryAndRollback"
+  ],
+  "race": true,
+  "originalRepeat": "Both phase recorders repeated with byte-identical recorded states; frame recorder also checks complete RAM identity.",
+  "sourceSHA256": {
+    "games/contra/engine/frame.go": "56194b6ed9bb79dc1d19d6d43eb65eee925325b478bd9cf42ac49e74ba11f991",
+    "games/contra/engine/frame_test.go": "745104f16b095ed1dfe23f2dcb277e8728df7dbc16e48d2cbe79c5afb9a83d81",
+    "games/contra/engine/scroll.go": "3dde97a33fd70f5cabf6231a6cdf4fa438feb2dcb5145ec625499a5d37034cab",
+    "games/contra/engine/scroll_test.go": "549e286694a132306d7b534a128114f27c19bdf874da5833c02757d1d18391da",
+    "scripts/contra/world_prepare.py": "4425a1ad57665ccad04aeb5d08615263b916a5798249a930239bd31c3ac983c5",
+    "scripts/contra/world_capture.py": "9a3978882298288a9cb4f5391c313ad65bd01fb9abd20ac474868283695ac57f",
+    "scripts/contra/world_capture_scroll.py": "9a84f373353cd11504bca723ab8f281a9133b59a10989a274b42099ab7a03b74"
+  },
+  "oracleSHA256": {
+    "world-phase-original.json.gz": "4f46c951dc6bfb2139958dc686a2dd8bb8449f0d5c66acfc90006e3350b02fbd",
+    "world-scroll-original.json.gz": "10e1b4dd957f2321a2843eab9169c6f6a26ce94ba5c8ebc1133eb0f059661043"
+  },
+  "commands": [
+    "source scripts/env.sh",
+    "go test -race ./games/contra/engine -run '^Test(OriginalCombatFrame|CombatFrame|OriginalJungleScrolling|JungleScrollScreen)' -count=1 -v"
+  ],
+  "limitations": [
+    "First-stage normal/spawn/death combat phases observed; scene/campaign integration remains incomplete.",
+    "Screen rollover and error rollback are targeted boundary tests; this 600-frame natural scroll trace does not cross a full screen.",
+    "Alternate Boss graphics transition is explicitly rejected until recovered; no initial-tiles substitution.",
+    "Frame callbacks are observed as phase oracles, not a claim of continuously replaying the entire original game."
+  ]
+}

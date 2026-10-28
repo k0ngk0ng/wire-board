@@ -1,0 +1,7 @@
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/contra/engine [github.com/k0ngk0ng/wire-board/games/contra/engine.test]","Action":"build-output","Output":"# github.com/k0ngk0ng/wire-board/games/contra/engine [github.com/k0ngk0ng/wire-board/games/contra/engine.test]\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/contra/engine [github.com/k0ngk0ng/wire-board/games/contra/engine.test]","Action":"build-output","Output":"games/contra/engine/campaign_reset_test.go:63:9: undefined: ApplyCampaignRuntimeReset\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/contra/engine [github.com/k0ngk0ng/wire-board/games/contra/engine.test]","Action":"build-output","Output":"games/contra/engine/campaign_reset_test.go:91:10: undefined: ApplyCampaignRuntimeReset\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/contra/engine [github.com/k0ngk0ng/wire-board/games/contra/engine.test]","Action":"build-fail"}
+{"Time":"2026-10-25T19:42:48.335824+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-25T19:42:48.335864+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/contra/engine [build failed]\n"}
+{"Time":"2026-10-25T19:42:48.335871+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":0,"FailedBuild":"github.com/k0ngk0ng/wire-board/games/contra/engine [github.com/k0ngk0ng/wire-board/games/contra/engine.test]"}

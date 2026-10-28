@@ -1,0 +1,16 @@
+{
+  "sourceRomSHA256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "fixtureSHA256": "04ea738267b1483b1ec924bd1a7bdbe504748f9412c4c71726e0c605e3567551",
+  "runtimeDataSHA256": "fe84f190385ee83695635445a2712a5dd7ee4fab7b96a00595e6dd44a1362f74",
+  "naturalRecords": 4868,
+  "controlledRecords": 39,
+  "naturalTraces": 10,
+  "controlledCases": 20,
+  "naturalRepeatRAMIdentical": true,
+  "source": "Original complete 919F execution, no output substitution.",
+  "generationBiasSource": "92D9 shared component pointer low byte; write events retained even when value unchanged.",
+  "limitations": [
+    "Controlled overloaded linear mode crosses video frames; capture drains only the already-entered call.",
+    "Pixel submission remains the next World presentation boundary; tests here validate composition output."
+  ]
+}

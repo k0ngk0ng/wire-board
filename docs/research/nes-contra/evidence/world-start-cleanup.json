@@ -1,0 +1,21 @@
+{
+  "scope": "Only closed private REA caches and the explicitly invalid startup capture; corrected v2/v3, source baseline, diagnostic scenario and complete native bundle are retained.",
+  "removed": [
+    {
+      "path": ".local/contra-world/display-boundary/swift-cache",
+      "bytes": 93404488
+    },
+    {
+      "path": "dist/cwb-tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-world/start-oracle/runs/world-start-v1",
+      "bytes": 14224432
+    },
+    {
+      "path": ".local/contra-world/start-oracle/incomplete-nested-nmi-v1.json.gz",
+      "bytes": 234336
+    }
+  ]
+}

@@ -1,0 +1,132 @@
+{
+  "scope": "Native independent-engine diagnostic using the existing delayed test-reserve refill; not a fresh ROM execution or complete campaign acceptance",
+  "changed_inputs": "Only Down on actor0 for frames75806..75830, same legal prefix before75806",
+  "baseline_first_death": 75809,
+  "variant": [
+    {
+      "frame": 75806,
+      "sprite": 13,
+      "death": 0
+    },
+    {
+      "frame": 75807,
+      "sprite": 23,
+      "death": 0
+    },
+    {
+      "frame": 75808,
+      "sprite": 23,
+      "death": 0
+    },
+    {
+      "frame": 75809,
+      "sprite": 23,
+      "death": 0
+    },
+    {
+      "frame": 75810,
+      "sprite": 23,
+      "death": 0
+    },
+    {
+      "frame": 75811,
+      "sprite": 23,
+      "death": 0
+    },
+    {
+      "frame": 75812,
+      "sprite": 23,
+      "death": 0
+    },
+    {
+      "frame": 75813,
+      "sprite": 23,
+      "death": 0
+    },
+    {
+      "frame": 75814,
+      "sprite": 23,
+      "death": 0
+    },
+    {
+      "frame": 75815,
+      "sprite": 23,
+      "death": 0
+    },
+    {
+      "frame": 75816,
+      "sprite": 23,
+      "death": 0
+    },
+    {
+      "frame": 75817,
+      "sprite": 23,
+      "death": 0
+    },
+    {
+      "frame": 75818,
+      "sprite": 23,
+      "death": 0
+    },
+    {
+      "frame": 75819,
+      "sprite": 23,
+      "death": 0
+    },
+    {
+      "frame": 75820,
+      "sprite": 23,
+      "death": 0
+    },
+    {
+      "frame": 75821,
+      "sprite": 23,
+      "death": 0
+    },
+    {
+      "frame": 75822,
+      "sprite": 23,
+      "death": 0
+    },
+    {
+      "frame": 75823,
+      "sprite": 23,
+      "death": 0
+    },
+    {
+      "frame": 75824,
+      "sprite": 23,
+      "death": 0
+    },
+    {
+      "frame": 75825,
+      "sprite": 23,
+      "death": 0
+    },
+    {
+      "frame": 75826,
+      "sprite": 23,
+      "death": 0
+    },
+    {
+      "frame": 75827,
+      "sprite": 23,
+      "death": 0
+    },
+    {
+      "frame": 75828,
+      "sprite": 23,
+      "death": 0
+    },
+    {
+      "frame": 75829,
+      "sprite": 23,
+      "death": 0
+    },
+    {
+      "frame": 75830,
+      "sprite": 23,
+      "death": 0
+    }
+  ]
+}

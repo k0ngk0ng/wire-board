@@ -1,0 +1,34 @@
+{
+  "scope": "Preserve current exact/partial pixel-matching semantics while caching immutable detail/color/corner metadata",
+  "boundaryChecksPassed": true,
+  "candidateCases": 42,
+  "anchorCases": 6,
+  "selectedRacePassedTests": 55,
+  "metrics": {
+    "hardware": "Apple M4",
+    "candidateBeforeNS": 1004,
+    "candidateAfterNS": 234.3,
+    "fixedFrameObserverAfterNS": 14828179,
+    "twoBotThreeFrameTimerNS": 95562406,
+    "timerBudgetNS": 50000000
+  },
+  "artifacts": {
+    "docs/research/nes-contra/evidence/bot-match-before.log.gz": "d7985e290da9865d7b321f63b6f385c638b33fa852f519e31979d13262b3e00f",
+    "docs/research/nes-contra/evidence/bot-match-after.log.gz": "feb0e016e2a72925aae703f460f3d1c32009a88aefd3c18d36a01953d3671fc6",
+    "docs/research/nes-contra/evidence/bot-anchor-red.log.gz": "ae374c44d75f68de26db2c1fb262e1d2b3fc4bbc6ad8a6c50702381d7b3f993b",
+    "docs/research/nes-contra/evidence/bot-match-anchor-green.jsonl.gz": "f32c620aae4a3f962e5004d93e5245c88fe1d4cb4291ce7fbbfa857e8bda214b",
+    "docs/research/nes-contra/evidence/vision-optimized-performance.log.gz": "0b2e94262c8d3f3828bf07154b93a35b1c667a1404440350d51d569a6352437d"
+  },
+  "sourceSHA256": {
+    "games/contra/engine/bot_vision_match.go": "45d028927dc3b683678b941f7fbd919741bbcad2a2e52ae0eacfb082edaea3d7",
+    "games/contra/engine/bot_vision_anchors.go": "c9db51a805b4384064d5438f033abae21ea2226a96ff0bcd92af174352a53a19",
+    "games/contra/engine/bot_vision_match_test.go": "eae4f1df086847ba1599d2708417f37cad1eebb9b767fa2861b7fb36dd6be429",
+    "games/contra/engine/bot_vision_anchor_test.go": "20ee3addcfdd0939b085d27fd431dcd4b298111d84f1e2fa261f458e9b201b57"
+  },
+  "limitations": [
+    "Full combined visual suite rerun is temporarily uncompilable while the independent tracking test-first change is being implemented.",
+    "Production timer remains over its 50ms budget; optimization is incomplete.",
+    "No full campaign or production-hardware capacity claim."
+  ],
+  "performanceScopeCorrection": "The old frame-600 NewSession fixture did not send Start and remained in LevelRoutine=1 (intro), not battle. Its timing is not battle/capacity acceptance. See actual-battle-performance-verification.json for corrected setup."
+}

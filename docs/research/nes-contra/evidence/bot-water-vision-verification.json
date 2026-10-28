@@ -1,0 +1,32 @@
+{
+  "scope": "Recover visible water-entry player artwork from normalized cartridge pixels; not complete water navigation or campaign acceptance",
+  "passed": false,
+  "variantCases": 32,
+  "racePassedTests": 33,
+  "command": "go test ./games/contra/engine -run '^TestBuiltinBotVisionWaterPlayers$' -race -count=1 -json",
+  "checks": [
+    "Water pose112-115 recipes included for outdoor appearances",
+    "Both player colors and four direction/bobbing attributes",
+    "Exact pixel equality proves pose114/7 alias and one-pixel bob origin alias",
+    "Canonical public anchors, without recovering hidden pose identity"
+  ],
+  "sourceSHA256": {
+    "games/contra/engine/bot_vision_water_test.go": "a929b6b08bb0187c011fc2b72dfd4722e7afcf88d67682b9b26d1ba9dcd15952",
+    "games/contra/engine/bot_vision_builtin_sprites.go": "e44a71cdf7d780b11e9e86ca5c5d5352a7d65748c77dd716f222fbfc671722df"
+  },
+  "artifacts": {
+    "docs/research/nes-contra/evidence/bot-water-red.log.gz": "4e11b6743ed5a5a35ba04db1e4a5ef5ad06c490a90d48d3301a04682aa2eb3d8",
+    "docs/research/nes-contra/evidence/bot-water-alias.log.gz": "e67d6dacb6d6d8615daa49ca596ed0ab849ce70fcf99b27289500eeca54e53fb",
+    "docs/research/nes-contra/evidence/bot-water-final-race.jsonl.gz": "b5b1bd25158d79520a9ab0334c04b673f375bd30ca05b24e5d5c3faae20979b6"
+  },
+  "naturalProbe": {
+    "path": ".local/contra-bot/runs/attempt-2678367549/players1",
+    "frames": 1800,
+    "reachedScreen": 3,
+    "completeCampaign": false,
+    "remaining": "Stable water pose25 on the actual background remains intermittently unrecognized; partial-classification runtime also needs optimization."
+  },
+  "historicalTestsPassed": true,
+  "supersededBy": "player-recipe-reachability-verification.json",
+  "correction": "Earlier 112..115 role assumptions were too broad: actual player animation emits 115 but not 112..114. Pixel alias equality remained correct; assigning those effect frames to players was wrong."
+}
