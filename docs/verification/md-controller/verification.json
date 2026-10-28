@@ -1,0 +1,63 @@
+{
+  "date": "2026-10-28",
+  "models": [
+    "classic-2",
+    "md-6"
+  ],
+  "removed_model": "classic-4",
+  "http_e2e_and_race": "passed",
+  "react_native_browser": "passed",
+  "fc_regression": "passed",
+  "typescript_no_emit": "passed",
+  "existing_input_tests": 5,
+  "limitations": [
+    "Browser settings API uses fixture responses; HTTP/SQLite are separately tested against real handlers",
+    "No claim that Yu Yu Hakusho gameplay is integrated or published"
+  ],
+  "sources": [
+    {
+      "path": "internal/server/controllers.go",
+      "sha256": "5ca95eba3a95a4aeccb25a91671614453b098ddab1ccd56a16e77bfd55bdf276"
+    },
+    {
+      "path": "internal/server/controllers_e2e_test.go",
+      "sha256": "b9c0b41bd8b4f0abbea959929beb60e6a0df3c28af537f45b22aa80459413d52"
+    },
+    {
+      "path": "web/src/controllers/Settings.tsx",
+      "sha256": "606c9186bf9432cb26191d08362f87fd2245095655f2a7af4c925708c60109bc"
+    },
+    {
+      "path": "web/src/controllers/MDController.tsx",
+      "sha256": "78ad9651a842141a0cd94f234b9923a391e54a4ea3803b0d2f8898f78b6f085f"
+    },
+    {
+      "path": "web/src/controllers/FCController.tsx",
+      "sha256": "57f1db42db3080b7bafd077e3c34f4d457da54c3f8edfe925d8f6a5fa61e9819"
+    },
+    {
+      "path": "web/src/controllers/pointer-controller.ts",
+      "sha256": "70c3f5194f0ff9c6303d1527fcbef04eff6b3237ac71c44eedf367ae04b11364"
+    },
+    {
+      "path": "web/src/controllers/md-controller.css",
+      "sha256": "9aec61b9ccb58462e65862e35c14e4cd385a61c0787a2ac99f751349de7f2983"
+    },
+    {
+      "path": "web/src/controllers/assets/md-controller.svg",
+      "sha256": "e5f7264ca0a328f11b033fa06d018bb3fb56a51a3d631bd9384183cab33375c1"
+    },
+    {
+      "path": "scripts/accept_md_controller.py",
+      "sha256": "ef7213734842d2fa1de3b85d1c93efd3e50bbaab03e5d6f86b35f5e2c3d19ad4"
+    },
+    {
+      "path": "scripts/controllers/md-fixture.tsx",
+      "sha256": "41e970f152e60c7c55e99d172e37b0f4b90dd5d35bff814f53668970147d5f18"
+    },
+    {
+      "path": "scripts/controllers/md-touch.mjs",
+      "sha256": "62c75c577007b515a943f5aafb869446c408a6548a0963a677aff203632f2131"
+    }
+  ]
+}

@@ -1,0 +1,145 @@
+[
+  {
+    "event": "keyDown",
+    "held": [
+      "up"
+    ]
+  },
+  {
+    "event": "keyUp",
+    "held": []
+  },
+  {
+    "event": "keyDown",
+    "held": [
+      "down"
+    ]
+  },
+  {
+    "event": "keyUp",
+    "held": []
+  },
+  {
+    "event": "keyDown",
+    "held": [
+      "left"
+    ]
+  },
+  {
+    "event": "keyUp",
+    "held": []
+  },
+  {
+    "event": "keyDown",
+    "held": [
+      "right"
+    ]
+  },
+  {
+    "event": "keyUp",
+    "held": []
+  },
+  {
+    "event": "keyDown",
+    "held": [
+      "b"
+    ]
+  },
+  {
+    "event": "keyUp",
+    "held": []
+  },
+  {
+    "event": "keyDown",
+    "held": [
+      "a"
+    ]
+  },
+  {
+    "event": "keyUp",
+    "held": []
+  },
+  {
+    "event": "keyDown",
+    "held": [
+      "c"
+    ]
+  },
+  {
+    "event": "keyUp",
+    "held": []
+  },
+  {
+    "event": "keyDown",
+    "held": [
+      "x"
+    ]
+  },
+  {
+    "event": "keyUp",
+    "held": []
+  },
+  {
+    "event": "keyDown",
+    "held": [
+      "y"
+    ]
+  },
+  {
+    "event": "keyUp",
+    "held": []
+  },
+  {
+    "event": "keyDown",
+    "held": [
+      "z"
+    ]
+  },
+  {
+    "event": "keyUp",
+    "held": []
+  },
+  {
+    "event": "keyDown",
+    "held": [
+      "mode"
+    ]
+  },
+  {
+    "event": "keyUp",
+    "held": []
+  },
+  {
+    "event": "keyDown",
+    "held": [
+      "start"
+    ]
+  },
+  {
+    "event": "keyUp",
+    "held": []
+  },
+  {
+    "event": "keyDown",
+    "held": [
+      "x"
+    ]
+  },
+  {
+    "event": "keyDown",
+    "held": [
+      "x",
+      "z"
+    ]
+  },
+  {
+    "event": "keyUp",
+    "held": [
+      "z"
+    ]
+  },
+  {
+    "event": "keyUp",
+    "held": []
+  }
+]

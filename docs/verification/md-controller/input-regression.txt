@@ -1,0 +1,13 @@
+✔ all default buttons have the requested direction and A/B identity (0.709334ms)
+✔ turbo begins immediately and holds its phase through OS key repeats (0.096583ms)
+✔ normal A stays held during a turbo A gap and A+B can coexist (0.05875ms)
+✔ clear and profile replacement release old keys without affecting another controller (0.066542ms)
+✔ OS repeats after clearing cannot reactivate a key without a fresh press (0.056708ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 62.349208

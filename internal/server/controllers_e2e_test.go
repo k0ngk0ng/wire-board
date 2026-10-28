@@ -61,12 +61,12 @@ func TestControllerProfilesE2E(t *testing.T) {
 	if !reflect.DeepEqual(controllerProfileHTTP(t, b, "classic-2")["keyboard"], want) {
 		t.Fatal("other account changed")
 	}
-	if controllerProfileHTTP(t, a, "classic-4")["keyboard"].(map[string]any)["right"] != "KeyD" {
+	if controllerProfileHTTP(t, a, "md-6")["keyboard"].(map[string]any)["right"] != "KeyD" {
 		t.Fatal("other controller model changed")
 	}
-	other := controllerProfileHTTP(t, a, "classic-4")
-	other["keyboard"].(map[string]any)["x"] = "KeyO"
-	a.post("/api/controllers/classic-4", other, 200)
+	other := controllerProfileHTTP(t, a, "md-6")
+	other["keyboard"].(map[string]any)["x"] = "KeyP"
+	mdSaved := a.post("/api/controllers/md-6", other, 200)
 	if controllerProfileHTTP(t, a, "classic-2")["keyboard"].(map[string]any)["right"] != "ArrowRight" {
 		t.Fatal("model settings overwritten")
 	}
@@ -90,6 +90,59 @@ func TestControllerProfilesE2E(t *testing.T) {
 	}
 	if !reflect.DeepEqual(controllerProfileHTTP(t, b, "classic-2")["keyboard"], want) {
 		t.Fatal("defaults changed after restart")
+	}
+	if got := controllerProfileHTTP(t, a, "md-6"); !reflect.DeepEqual(got, mdSaved) {
+		t.Fatalf("restart changed MD preferences: %v", got)
+	}
+}
+
+func TestControllerMDProfilesE2E(t *testing.T) {
+	_, ts := setupServer(t)
+	a, b := newClient(t, ts.URL), newClient(t, ts.URL)
+	a.register("MDControllerAlice")
+	b.register("MDControllerBob")
+	state := controllerState(t, a)
+	models := state["models"].([]any)
+	ids := []string{}
+	for _, raw := range models {
+		ids = append(ids, raw.(map[string]any)["id"].(string))
+	}
+	if !reflect.DeepEqual(ids, []string{"classic-2", "md-6"}) {
+		t.Fatalf("controller models: %v", ids)
+	}
+	want := map[string]any{"up": "KeyW", "down": "KeyS", "left": "KeyA", "right": "KeyD", "mode": "KeyF", "start": "Space", "b": "KeyJ", "a": "KeyK", "c": "KeyL", "x": "KeyU", "y": "KeyI", "z": "KeyO"}
+	p := controllerProfileHTTP(t, a, "md-6")
+	if !reflect.DeepEqual(p["keyboard"], want) {
+		t.Fatalf("MD defaults: %v", p)
+	}
+	a.post("/api/controllers/classic-4", p, 404)
+	for _, change := range []func(map[string]any){
+		func(p map[string]any) { p["keyboard"].(map[string]any)["c"] = "KeyO" },
+		func(p map[string]any) { delete(p["keyboard"].(map[string]any), "z") },
+		func(p map[string]any) { p["keyboard"].(map[string]any)["turboA"] = "KeyP" },
+	} {
+		invalid := controllerProfileHTTP(t, a, "md-6")
+		change(invalid)
+		a.post("/api/controllers/md-6", invalid, 400)
+	}
+	p["keyboard"].(map[string]any)["c"] = "KeyP"
+	saved := a.post("/api/controllers/md-6", p, 200)
+	a.post("/api/controllers/md-6", p, 409)
+	if !reflect.DeepEqual(controllerProfileHTTP(t, a, "md-6"), saved) {
+		t.Fatal("MD profile did not persist")
+	}
+	if !reflect.DeepEqual(controllerProfileHTTP(t, b, "md-6")["keyboard"], want) {
+		t.Fatal("MD settings leaked to another user")
+	}
+	fc := controllerProfileHTTP(t, a, "classic-2")["keyboard"].(map[string]any)
+	if fc["turboB"] != "KeyU" || fc["turboA"] != "KeyI" || fc["b"] != "KeyJ" || fc["a"] != "KeyK" {
+		t.Fatal("MD settings changed FC defaults")
+	}
+	for _, raw := range controllerState(t, a)["models"].([]any) {
+		m := raw.(map[string]any)
+		if m["id"] == "md-6" && !reflect.DeepEqual(m["defaults"].(map[string]any)["keyboard"], want) {
+			t.Fatal("MD reset defaults mutated")
+		}
 	}
 }
 

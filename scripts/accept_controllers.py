@@ -45,7 +45,7 @@ try:
     browser('click','[aria-label="修改 右 按键"]');browser('press','w')
     browser('wait','--text','每个按键只能对应一个操作')
     browser('press','ArrowRight');browser('click','[data-controller-save]');browser('wait','--text','控制器设置已保存')
-    browser('select','[aria-label="控制器型号"]','classic-4')
+    browser('select','[aria-label="控制器型号"]','md-6')
     result=key_text()
     assert result.get('result')=='D',result
     browser('select','[aria-label="控制器型号"]','classic-2')

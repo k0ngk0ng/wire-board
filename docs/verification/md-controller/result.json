@@ -1,0 +1,25 @@
+{
+  "native_keyboard_defaults_and_chords": true,
+  "pointer_slide_diagonal_and_cleanup": true,
+  "mixed_input_and_native_visibility_release": true,
+  "native_three_finger_touch_and_cancel": true,
+  "status": "passed",
+  "settings_model_isolation": true,
+  "sfc_removed": true,
+  "default_keys": {
+    "up": "KeyW",
+    "down": "KeyS",
+    "left": "KeyA",
+    "right": "KeyD",
+    "mode": "KeyF",
+    "start": "Space",
+    "b": "KeyJ",
+    "a": "KeyK",
+    "c": "KeyL",
+    "x": "KeyU",
+    "y": "KeyI",
+    "z": "KeyO"
+  },
+  "viewport_320": true,
+  "scope": "Shared controller and settings components; not a playable Yu Yu Hakusho game"
+}

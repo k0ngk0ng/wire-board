@@ -1,0 +1,8 @@
+{
+  "name": "MD six-button controller faceplate",
+  "file": "md-controller.svg",
+  "creation": "Original SVG authored in this repository; no external bitmap or logo was copied",
+  "license_evidence": "Project-authored vector source; no third-party image dependency",
+  "visual": "Charcoal body, direction pad, Mode/Start, X/Y/Z above A/B/C; labels are rendered by the shared React component",
+  "sha256": "e5f7264ca0a328f11b033fa06d018bb3fb56a51a3d631bd9384183cab33375c1"
+}

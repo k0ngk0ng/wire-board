@@ -1,0 +1,193 @@
+.md-controller {
+  width: 100%;
+  max-width: 840px;
+  color: #f4f6ff;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.md-faceplate {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 900/380;
+  isolation: isolate;
+}
+.md-background {
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+.md-dpad {
+  position: absolute;
+  left: 8.8889%;
+  top: 28.9474%;
+  width: 20%;
+  height: 47.3684%;
+  touch-action: none;
+}
+.md-controller .md-control {
+  transition: none;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #778397;
+  border-radius: 50%;
+  background: #303845;
+  color: #f4f6ff;
+  box-shadow: 0 2px 0 #0b1018;
+  font:
+    700 clamp(11px, 2.5vw, 23px)/1.1 Arial,
+    sans-serif;
+  touch-action: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.md-controller .md-up,
+.md-controller .md-down,
+.md-controller .md-left,
+.md-controller .md-right {
+  width: 33.3333%;
+  height: 33.3333%;
+  border: 0;
+  border-radius: 4px;
+  box-shadow: none;
+}
+.md-up {
+  left: 33.3333%;
+  top: 0;
+}
+.md-down {
+  left: 33.3333%;
+  top: 66.6666%;
+}
+.md-left {
+  left: 0;
+  top: 33.3333%;
+}
+.md-right {
+  left: 66.6666%;
+  top: 33.3333%;
+}
+.md-controller .md-mode {
+  left: 41.1111%;
+  top: 27.3684%;
+  width: 13.5556%;
+  height: 12.3684%;
+  border-radius: 30px;
+  font-size: clamp(8px, 1.4vw, 13px);
+}
+.md-controller .md-start {
+  left: 40%;
+  top: 50%;
+  width: 15.8889%;
+  height: 15.2632%;
+  border-radius: 34px;
+  font-size: clamp(8px, 1.4vw, 14px);
+}
+.md-controller .md-x,
+.md-controller .md-y,
+.md-controller .md-z,
+.md-controller .md-a,
+.md-controller .md-b,
+.md-controller .md-c {
+  width: 10.2222%;
+  height: 24.2105%;
+}
+.md-x,
+.md-a {
+  left: 59.3333%;
+}
+.md-y,
+.md-b {
+  left: 71.3333%;
+}
+.md-z,
+.md-c {
+  left: 83.3333%;
+}
+.md-x,
+.md-y,
+.md-z {
+  top: 20.5263%;
+}
+.md-a,
+.md-b,
+.md-c {
+  top: 50.5263%;
+}
+.md-controller .md-a,
+.md-controller .md-b,
+.md-controller .md-c {
+  background: #52637f;
+}
+.md-controller .md-control:hover {
+  background: #43536b;
+  color: #fff;
+}
+.md-controller .md-control.is-pressed {
+  background: #e0eaff;
+  color: #172238;
+  box-shadow: inset 0 0 0 2px #fff;
+}
+.md-controller .md-control:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 2px;
+}
+.md-controller .md-control.recording {
+  background: #2c685a;
+  color: #fff;
+  outline: 2px solid #d6fff0;
+}
+.md-controller .md-control:disabled {
+  opacity: 1;
+  background: #303845;
+  color: #cbd1de;
+  border-color: #68768c;
+  cursor: default;
+}
+.md-controller .md-control kbd {
+  background: #172238;
+  color: #f4f6ff;
+  padding: 1px 3px;
+  border-radius: 3px;
+  margin: 0;
+  max-width: 100%;
+  font:
+    700 clamp(9px, 1.8vw, 16px)/1.1 ui-monospace,
+    monospace;
+  overflow-wrap: anywhere;
+  text-align: center;
+}
+.md-config-name {
+  font-size: clamp(8px, 1.3vw, 12px);
+}
+@media (max-width: 420px) {
+  .md-controller .md-control {
+    gap: 0;
+  }
+  .md-controller .md-config-name {
+    font-size: 8px;
+  }
+  .md-controller .md-up .md-config-name,
+  .md-controller .md-down .md-config-name,
+  .md-controller .md-left .md-config-name,
+  .md-controller .md-right .md-config-name {
+    display: none;
+  }
+  .md-controller .md-mode .md-config-name,
+  .md-controller .md-start .md-config-name {
+    font-size: 6px;
+  }
+  .controller-settings .md-controller {
+    margin: 0 -4px;
+    width: calc(100% + 8px);
+  }
+}

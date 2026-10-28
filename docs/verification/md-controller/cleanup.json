@@ -1,0 +1,75 @@
+{
+  "scope": "Task-created browser profiles, sockets, generated browser bundles, compiler cache and temporary build metadata",
+  "removed": [
+    {
+      "path": ".local/md-controller/browser/profile",
+      "bytes": 25688697
+    },
+    {
+      "path": ".local/fc-controller/browser/profile",
+      "bytes": 10328560
+    },
+    {
+      "path": ".local/md-controller/tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/mds",
+      "bytes": 1100
+    },
+    {
+      "path": ".local/fcs",
+      "bytes": 110
+    },
+    {
+      "path": ".local/go-cache",
+      "bytes": 629405504
+    },
+    {
+      "path": "web/tsconfig.tsbuildinfo",
+      "bytes": 15302
+    },
+    {
+      "path": ".local/md-controller/format.log",
+      "bytes": 211
+    },
+    {
+      "path": ".local/md-controller/browser/md-controller-UXLIP6HJ.svg",
+      "bytes": 1807
+    },
+    {
+      "path": ".local/md-controller/browser/fixture.js",
+      "bytes": 1227345
+    },
+    {
+      "path": ".local/md-controller/browser/fc-controller-VBFZZN7J.svg",
+      "bytes": 4965
+    },
+    {
+      "path": ".local/md-controller/browser/failure.png",
+      "bytes": 67396
+    },
+    {
+      "path": ".local/md-controller/browser/fixture.css",
+      "bytes": 121060
+    },
+    {
+      "path": ".local/fc-controller/browser/md-controller-UXLIP6HJ.svg",
+      "bytes": 1807
+    },
+    {
+      "path": ".local/fc-controller/browser/fixture.js",
+      "bytes": 1223962
+    },
+    {
+      "path": ".local/fc-controller/browser/fc-controller-VBFZZN7J.svg",
+      "bytes": 4965
+    },
+    {
+      "path": ".local/fc-controller/browser/fixture.css",
+      "bytes": 121040
+    }
+  ],
+  "bytes_removed": 668213831,
+  "retained": "Source, screenshots, measurements, replay scripts, reports and active worktree dependencies"
+}
