@@ -12,14 +12,17 @@ import { createRuntimeRoomPresentation } from "./runtime-result";
 export default defineGame<RoomRuntimeView>({
   ...catalog,
   asyncBoard: true,
+  // Runtime assets use the verified commit CDN root and are fetched by Board
+  // for the current stage or sound event, never by the host's image preloader.
+  resources: () => [],
   isInputRelease: (action) => action.type === "release",
   createPresentation: () => createRuntimeRoomPresentation(readRuntimeVisible),
   Board,
   Rules: () => (
     <p>
       方向键移动和瞄准，B 射击，A 跳跃。原地按「下」 + A 可穿过单向平台；
-      生命耗尽后可按 A 借用队友的备用生命。Start 暂停或继续，双人合作由第一位玩家控制暂停。
-      通关八关后结算。
+      生命耗尽后可按 A 借用队友的备用生命。Start
+      暂停或继续，双人合作由第一位玩家控制暂停。 通关八关后结算。
     </p>
   ),
   PlayerSummary: ({ room, data, seat }) => {
