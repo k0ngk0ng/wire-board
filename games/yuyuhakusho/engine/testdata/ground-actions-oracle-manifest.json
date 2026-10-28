@@ -1,0 +1,32 @@
+{
+  "scope": "Natural constructors and tail-called resets",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "counts": {
+    "stand": 51,
+    "reset": 148,
+    "prepare_jump": 3,
+    "walk": 23,
+    "crouch": 10,
+    "rise": 7,
+    "guard": 2,
+    "turn": 2
+  },
+  "complete_calls": 246,
+  "frames_match_original_core": true,
+  "errors": [],
+  "incomplete_calls": 0,
+  "pass": true,
+  "fixture_sha256": "939f4d4f22c94c602e4f1e905bd8f8f460ce9d6d1a9cec762821e662ece7bae5",
+  "capture_sha256": "25076eebbcbb4192ccf4111330b49693e9adf1a5c95c8f5d5f1fd02e3cd70f0a",
+  "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+  "gzip_sha256": "9726613c1aa7b16171f60985230dbe395eafb0066a5641dbad0d6864dbd8e0bf"
+}

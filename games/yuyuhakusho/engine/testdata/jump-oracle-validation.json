@@ -1,0 +1,60 @@
+{
+  "scope": "Complete jump/landing constructors and air action before shared tail",
+  "command": "go test ./games/yuyuhakusho/engine -run '^TestJump' -count=1 -json",
+  "native_exit_code": 0,
+  "natural": {
+    "jump": 3,
+    "landing": 3,
+    "air": 156
+  },
+  "isolated_original_cpu": {
+    "jump": 90,
+    "landing": 6,
+    "air": 21
+  },
+  "compared_actor_and_pool_bytes": 642816,
+  "race": "not run here; parent performs unified verification",
+  "wasm": "not run here; parent performs unified verification",
+  "files": [
+    {
+      "path": "games/yuyuhakusho/engine/jump.go",
+      "sha256": "3b0ed5bf0c1f5426e4430bd8c08da706d342b2f21cabc03233dee8ff841cdc91"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/jump_test.go",
+      "sha256": "9dd7ebb41549fb7c0528fe11e19b0a230157b1515ebbe46fe690847a46ee81d7"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/JUMP_VERIFICATION.md",
+      "sha256": "852becc196eea9a16aaa153482b2cd15f06e862ec3b0656eb2c42c4c011c9de3"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_jump.py",
+      "sha256": "21017876cd34f9263b6efa11e376ebf84b31d5fc82664c7c8b208213d1ecd8ab"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_ground_actions.py",
+      "sha256": "25076eebbcbb4192ccf4111330b49693e9adf1a5c95c8f5d5f1fd02e3cd70f0a"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_effect_pool.py",
+      "sha256": "b9c753d1c9b6380ac64ee16f2c10cdcf8560654e493e770b31552b1781354f46"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/jump-oracle.json.gz",
+      "sha256": "5a57c6098e757e07e2619711c9af3f3549e2389ecb26e96e8ebfad767689ac28"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/jump-oracle-manifest.json",
+      "sha256": "a2b5220c7df34f285099a4051000dd195b217660b7c90f09e0d95acbb7874032"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/jump-boundaries.json.gz",
+      "sha256": "26d4c609b811b20e1dbe9ecc4fa1ccd0b9f26a1eb1a5fa7aabf48d8222e06b01"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/jump-boundaries-manifest.json",
+      "sha256": "ae4901d5d8e2f6c19b4bd4ec4862bf7f42945b12a2bec02701be179a0a8c49a0"
+    }
+  ]
+}

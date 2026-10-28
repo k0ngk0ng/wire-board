@@ -1,0 +1,30 @@
+{
+  "scope": "Effect allocation and paired dust initialization only",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "b9c753d1c9b6380ac64ee16f2c10cdcf8560654e493e770b31552b1781354f46",
+  "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+  "fixture_sha256": "09e53b908470ca1f2defcca1f335f83b746c69fb2b0f039296a57586666a2e2e",
+  "gzip_sha256": "b99c97ec03d9edb1cae76a0eddf9fcf28e705f2a2614545d4c075acb45bb2bdd",
+  "frames": 3600,
+  "frames_match_original_core": true,
+  "natural_pair_calls": 17,
+  "isolated_original_calls": 108,
+  "complete_calls": 125,
+  "errors": [],
+  "incomplete_calls": 0,
+  "pass": true,
+  "limits": [
+    "Not effect animation or rendering",
+    "Isolated cases deliberately replace private emulator inputs",
+    "Semantic fields are checked against every byte of each original pool result"
+  ]
+}

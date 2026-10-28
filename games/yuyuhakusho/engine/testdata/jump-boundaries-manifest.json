@@ -1,0 +1,27 @@
+{
+  "scope": "Isolated original CPU calls with declared inputs",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "21017876cd34f9263b6efa11e376ebf84b31d5fc82664c7c8b208213d1ecd8ab",
+  "counts": {
+    "jump": 90,
+    "landing": 6,
+    "air": 21
+  },
+  "complete_calls": 117,
+  "fixture_sha256": "73831160ca2ca1dd46621b8f9b10fce57aa59ad8b344d26e9719cc4991bdc3d3",
+  "gzip_sha256": "26d4c609b811b20e1dbe9ecc4fa1ccd0b9f26a1eb1a5fa7aabf48d8222e06b01",
+  "frames_match_original_core": true,
+  "errors": [],
+  "incomplete_calls": 0,
+  "pass": true,
+  "limit": "Shared action tail 0x15afc and later is not executed by this recovered stage"
+}

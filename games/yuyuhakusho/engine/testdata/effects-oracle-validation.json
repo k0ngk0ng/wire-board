@@ -1,0 +1,36 @@
+{
+  "scope": "Effect-pool allocation and paired movement-dust initialization only",
+  "command": "go test ./games/yuyuhakusho/engine -run '^TestEffect' -count=1 -json",
+  "native_exit_code": 0,
+  "original_natural_pairs": 17,
+  "original_isolated_calls": 108,
+  "pool_bytes_compared": 256000,
+  "race": "not run; parent will run scoped checks",
+  "wasm": "not run; parent will run scoped checks",
+  "files": [
+    {
+      "path": "scripts/yuyuhakusho/capture_effect_pool.py",
+      "sha256": "b9c753d1c9b6380ac64ee16f2c10cdcf8560654e493e770b31552b1781354f46"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/effects.go",
+      "sha256": "6a0916fbc4051a0e67988b9cad99e41d9ef778e0e78a7f63d65f5fb35d2f6b18"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/effects_test.go",
+      "sha256": "25b7abb54ed803a4802b3bbe3a9c718d0343270c6f0a6150e187fef4c5c11fb0"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/EFFECTS_VERIFICATION.md",
+      "sha256": "1a88567b963cb935211ab31985445b26cc85ec5144927f944dd04e14ead4fbfd"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/effects-oracle.json.gz",
+      "sha256": "b99c97ec03d9edb1cae76a0eddf9fcf28e705f2a2614545d4c075acb45bb2bdd"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/effects-oracle-manifest.json",
+      "sha256": "22d4b87ab578871ca81b7ac0262876d38f56ece18893cbb52e7127d1fd1305f9"
+    }
+  ]
+}

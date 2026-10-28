@@ -1,0 +1,214 @@
+{
+  "date": "2026-10-28",
+  "stage": "Human control, ground decisions, jump/landing, lane initialization and movement effects",
+  "goal_complete": false,
+  "release_ready": false,
+  "checks": {
+    "native_race": "passed",
+    "node_wasm": "passed",
+    "original_observer_equivalence": "3600 frames for each declared input timeline"
+  },
+  "reference_lane_frames_sha256": "42d5110d9e2a6d858b1bdeaa7c0a856332f0f16d1f18b409cd12a442cc99d133",
+  "coverage": {
+    "fighter_input_natural": 1794,
+    "fighter_input_isolated": 48,
+    "ground_constructors_and_nested_resets_natural": 246,
+    "ground_constructors_isolated": 180,
+    "effect_natural": 17,
+    "effect_isolated": 108,
+    "jump_natural": 3,
+    "landing_natural": 3,
+    "air_stage_natural": 156,
+    "jump_landing_air_isolated": 117,
+    "lane_natural": 26,
+    "lane_isolated": 120,
+    "ground_decision_natural": 2099,
+    "ground_decision_isolated": 1414
+  },
+  "limitations": [
+    "Counts contain nested and overlapping stages, not independent matches",
+    "Full shared action tail, command parsing, attack/collision data, all characters and original AI remain incomplete",
+    "No playable platform game or release claim"
+  ],
+  "fixtures": [
+    {
+      "fixture": "fighter-input-oracle",
+      "sha256": "2027004a4c421d2e294cedb4a94e7d189ebfaa42583ec20927507749cd0a82ea",
+      "gzip_sha256": "1a6004246ac34f42bdf5ab2313e4d1cf8eb6e09852c6d6bc7de688eb8d21e7a0"
+    },
+    {
+      "fixture": "fighter-input-boundaries",
+      "sha256": "e4bdf3c1a48d8587e73288e2d80973be39825e4cc342e93a2dc0f75629c2cba7",
+      "gzip_sha256": "2444cd29ae73c4b007095427a4bc74c739a7b6a056d5b8fda63c1cd9472b5ab7"
+    },
+    {
+      "fixture": "ground-actions-oracle",
+      "sha256": "939f4d4f22c94c602e4f1e905bd8f8f460ce9d6d1a9cec762821e662ece7bae5",
+      "gzip_sha256": "9726613c1aa7b16171f60985230dbe395eafb0066a5641dbad0d6864dbd8e0bf"
+    },
+    {
+      "fixture": "ground-actions-boundaries",
+      "sha256": "87486531b84cdea29c48c02150137d8f7d0da2101c6fe6777af0f37a616870a2",
+      "gzip_sha256": "e3472893c969f0ddfdd05bea83fcc15889d618ef5310022bca8d66fb4c55fdd6"
+    },
+    {
+      "fixture": "effects-oracle",
+      "sha256": "09e53b908470ca1f2defcca1f335f83b746c69fb2b0f039296a57586666a2e2e",
+      "gzip_sha256": "b99c97ec03d9edb1cae76a0eddf9fcf28e705f2a2614545d4c075acb45bb2bdd"
+    },
+    {
+      "fixture": "jump-oracle",
+      "sha256": "13e836ca3eb433d267ca353fa3c3a290f9d00a5bb55ddec416ef6a92627370e3",
+      "gzip_sha256": "5a57c6098e757e07e2619711c9af3f3549e2389ecb26e96e8ebfad767689ac28"
+    },
+    {
+      "fixture": "jump-boundaries",
+      "sha256": "73831160ca2ca1dd46621b8f9b10fce57aa59ad8b344d26e9719cc4991bdc3d3",
+      "gzip_sha256": "26d4c609b811b20e1dbe9ecc4fa1ccd0b9f26a1eb1a5fa7aabf48d8222e06b01"
+    },
+    {
+      "fixture": "lane-switch-oracle",
+      "sha256": "617ecb7b72fcb4bf838bc10943d3ee4c6376d920854c40827567f21497f88aff",
+      "gzip_sha256": "21f8db8ed39f5f4fe517bc7bd12c9fb2df7804a1b179f09c8e052fece0b3e19d"
+    },
+    {
+      "fixture": "ground-control-oracle",
+      "sha256": "7b707e979cfe262c9d227a09242414aab9af67a8db2e1a1fc9017358bb5b5fef",
+      "gzip_sha256": "f6a048ef2ed758fea8730b99edabb99fd03390a5a146a436207c626998395983"
+    }
+  ],
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/engine/animation_clock.go",
+      "sha256": "fa868c5c160fa22fba71520d80c18e8d1f40217ff9a64c6d90a231eab65f28a4"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/animation_clock_test.go",
+      "sha256": "38f65f67172a49be0a1b0f735f023804bf40f37b8b2ec89b511688a0b2f6e6b2"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/effects.go",
+      "sha256": "6a0916fbc4051a0e67988b9cad99e41d9ef778e0e78a7f63d65f5fb35d2f6b18"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/effects_test.go",
+      "sha256": "25b7abb54ed803a4802b3bbe3a9c718d0343270c6f0a6150e187fef4c5c11fb0"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter_input.go",
+      "sha256": "da1cee3d5fffe0a78f97b31fb9ae9f81ba3b44a6f0a79e4f3148027ca3596c9a"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter_input_test.go",
+      "sha256": "e3ffe6543295d40e9cfbd6a6ac21961c95ddf0e30d821778ed9d08f8f907e8dc"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/ground_actions.go",
+      "sha256": "cc6106a696c63bb39293694ed8cc63e04586ceb89e6b04454fb08970aedca80c"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/ground_actions_test.go",
+      "sha256": "21cb4d3d5c25d133d5372c22dd8a8c448d1449ccf7601147f90db8c25079afdb"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/ground_control.go",
+      "sha256": "c5c1d71729abb591b4fb2bcd6de7b18985f2f08da4c2ac472771039dc265b2c5"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/ground_control_test.go",
+      "sha256": "6c2fe49202851db071298350623d61496d733cbeffde9b6bc4f1ca4d5af4ce9e"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/input.go",
+      "sha256": "38e957231a29fd08c889709e0e7a39661284258800521467ba41fcdc9dfa12e2"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/input_test.go",
+      "sha256": "8c17bd14d1f2c626a8c21270f364c5ad2307dd15e136deb54e4786a186c6fa77"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/jump.go",
+      "sha256": "3b0ed5bf0c1f5426e4430bd8c08da706d342b2f21cabc03233dee8ff841cdc91"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/jump_test.go",
+      "sha256": "9dd7ebb41549fb7c0528fe11e19b0a230157b1515ebbe46fe690847a46ee81d7"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/lane_switch.go",
+      "sha256": "a4b2079963327c84f85eda85553e70555fa1273e54ba082bd3bc706683140280"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/lane_switch_test.go",
+      "sha256": "a41b2d4f67ff2d8c5c18261c8e9db8f903310d319129ccfaa097ad5fc11b9463"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/motion.go",
+      "sha256": "35dc27314a13afdff39d96d2d21911c5ba5030baf00ea81d1daf8f9feb5f8878"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/motion_test.go",
+      "sha256": "346dfa14efb76f28b3303798c3d467191f6a0d4f82da0ee24225dad0d0748da0"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/random.go",
+      "sha256": "c9fe3edc3ff9bee0725b78e7a38f2c4517592ddf99e52fec98e8904eb77a2056"
+    },
+    {
+      "path": "scripts/yuyuhakusho/accept_reference.py",
+      "sha256": "a45fcba92beb19fb316e9ca9346e1843d54033ec4c02eb56f90d9eb6cb6d2509"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_animation.py",
+      "sha256": "a5745cf4f89f23bdb2f3be2101213ff922e594ec2db0aa544104c81e05399dd1"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_effect_pool.py",
+      "sha256": "b9c753d1c9b6380ac64ee16f2c10cdcf8560654e493e770b31552b1781354f46"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_fighter_input.py",
+      "sha256": "d639b198c7a534413dc092769a1bfbe5d8182c9446c857539fa543dcdf75048b"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_fighter_input_boundaries.py",
+      "sha256": "99cd4b254f402f50c61c0f5f4ebe8b6afb5150b6d938be67526aa2f27c5fa52f"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_ground_actions.py",
+      "sha256": "25076eebbcbb4192ccf4111330b49693e9adf1a5c95c8f5d5f1fd02e3cd70f0a"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_ground_control.py",
+      "sha256": "3943012dd0f232674255cbaf5f13e19a6b3fd02b9f50020a1e62dae6ad5174ec"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_inputs.py",
+      "sha256": "3630f59fe1d8bcc0f1ef7c4607fc178016790b7e231dbfea5d55882a0088ff5c"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_jump.py",
+      "sha256": "21017876cd34f9263b6efa11e376ebf84b31d5fc82664c7c8b208213d1ecd8ab"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_lane_switch.py",
+      "sha256": "01ac745b422525640efda9bac183508e91437e7d92b9bfc465c7afd03e670687"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_motion.py",
+      "sha256": "e4af350e38ec0c979ea43ecc8733d6be8c9f1826f891ebcca3804e9821768ad3"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_motion_boundaries.py",
+      "sha256": "5ee45f08726e4ada9fc0cd2895bb9aacc92d45426e5ffad32132eb9477c67f1d"
+    },
+    {
+      "path": "scripts/yuyuhakusho/lane-inputs.json",
+      "sha256": "395a58b085020a514f149472238b2de68e2af20669f4e61700cd8b5ffe7460c1"
+    },
+    {
+      "path": "scripts/yuyuhakusho/reference.py",
+      "sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81"
+    }
+  ]
+}

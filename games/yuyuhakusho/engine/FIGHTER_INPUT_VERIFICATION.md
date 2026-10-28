@@ -11,3 +11,11 @@
 - 采样函数尚未返回、错误 return 地址配对、未知对象写入被忽略。
 
 本批以自然原函数前后状态、对象写入范围审计及不改变原 3,600 帧 RAM／视频为验收依据。未自然出现的保留窗口组合需单独补充原 CPU 隔离夹具；不能用自然覆盖数量代替边界覆盖。
+
+## 已验证结果
+
+1,794 个自然真人调用保持原基线不变，均为保留计数零的直接路径。另从相同原检查点明确设置私有输入，执行 48 个原 CPU 隔离用例：计数 0／1／255、当前／按下／变化三个通道是否含 A/B/C 的 8 种组合，以及扩展高位 0／0xf0。完整人物 256 bytes 中未出现未建模写入。
+
+测试先于 `fighter_input.go`，首次运行因 `FighterControls / LatchFighterInput` 不存在而失败。实现后，全部夹具在原生竞态与 Node/Wasm 对照通过。`Changed` 保持 XOR 语义，各通道独立保留，不以一个攻击位覆盖所有通道。
+
+复跑：`python3 -B scripts/yuyuhakusho/capture_fighter_input_boundaries.py --out .local/md-yuyuhakusho/fighter-input-boundaries`。自然采样使用相邻的 `capture_fighter_input.py`。原版电脑、录制与回放路径仍由外层分别处理。

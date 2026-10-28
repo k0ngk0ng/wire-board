@@ -1,0 +1,70 @@
+{
+  "scope": "This phase original-capture duplicates, temporary files and test cache; active worktree, tools, ROM, dependencies and verified fixtures retained",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter-input-boundaries",
+      "bytes": 18469
+    },
+    {
+      "path": ".local/md-yuyuhakusho/ground-actions",
+      "bytes": 310211
+    },
+    {
+      "path": ".local/md-yuyuhakusho/lane-switch",
+      "bytes": 1125611
+    },
+    {
+      "path": ".local/md-yuyuhakusho/lane-switch-active",
+      "bytes": 2033603
+    },
+    {
+      "path": ".local/md-yuyuhakusho/ground-control",
+      "bytes": 33996574
+    },
+    {
+      "path": ".local/md-yuyuhakusho/tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter-input-boundaries-console.txt",
+      "bytes": 907
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter-input-native-initial.jsonl",
+      "bytes": 3343
+    },
+    {
+      "path": ".local/md-yuyuhakusho/ground-actions-console.txt",
+      "bytes": 2032
+    },
+    {
+      "path": ".local/md-yuyuhakusho/ground-actions-native-initial.jsonl",
+      "bytes": 4353
+    },
+    {
+      "path": ".local/md-yuyuhakusho/lane-switch-console.txt",
+      "bytes": 997
+    },
+    {
+      "path": ".local/md-yuyuhakusho/lane-switch-active-console.txt",
+      "bytes": 1085
+    },
+    {
+      "path": ".local/md-yuyuhakusho/ground-lane-native-initial.jsonl",
+      "bytes": 8675
+    },
+    {
+      "path": ".local/md-yuyuhakusho/ground-control-console.txt",
+      "bytes": 1134
+    },
+    {
+      "path": ".local/md-yuyuhakusho/ground-control-native-initial.jsonl",
+      "bytes": 2288
+    },
+    {
+      "path": ".local/go-cache",
+      "bytes": 180951982
+    }
+  ],
+  "bytes_removed": 218461264
+}
