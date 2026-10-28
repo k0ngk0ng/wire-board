@@ -1,0 +1,10 @@
+ROM data, not code: Chu battle sample obj+0x90 points to 0x1262c.
+Only offsets +00/+04/+08/+0c/+18 have named consumers in the current probe.
+The following is a 28-byte window, not a proven whole table extent.
++00 @0001262c: 00018000 signed=98304
++04 @00012630: fffa8000 signed=-360448
++08 @00012634: 00003600 signed=13824
++0c @00012638: 0001c000 signed=114688
++10 @0001263c: 00000600 signed=1536
++14 @00012640: 00002000 signed=8192
++18 @00012644: 0000c000 signed=49152

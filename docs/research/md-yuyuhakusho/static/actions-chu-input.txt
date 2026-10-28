@@ -1,0 +1,134 @@
+route=direct-ghidra-headless; REA raw 68000 unsupported
+language=68000:BE:32:default
+source=MD Yu Yu Hakusho Japan; static reachable instructions only
+
+seeds=17d80,17e12,17f54,17fca,18092 scope=0x17d80..0x180f5
+00017d80 movea.l #0x6,A1
+00017d86 movea.l #0x1eaa4,A2
+00017d8c jsr 0x0001e8d0.l
+00017d92 movea.l #0x7,A1
+00017d98 movea.l #0x1eaa9,A2
+00017d9e jsr 0x0001e8d0.l
+00017da4 movea.l #0x0,A1
+00017daa movea.l #0x1eaf2,A2
+00017db0 jsr 0x0001e972.l
+00017db6 movea.l #0x1,A1
+00017dbc movea.l #0x1eaeb,A2
+00017dc2 jsr 0x0001e972.l
+00017dc8 movea.l #0x2,A1
+00017dce movea.l #0x1eab7,A2
+00017dd4 jsr 0x0001e8d0.l
+00017dda movea.l #0x3,A1
+00017de0 movea.l #0x1eb00,A2
+00017de6 jsr 0x0001e972.l
+00017dec movea.l #0x4,A1
+00017df2 movea.l #0x1ead9,A2
+00017df8 jsr 0x0001e8d0.l
+00017dfe movea.l #0x5,A1
+00017e04 movea.l #0x1eacf,A2
+00017e0a jsr 0x0001e8d0.l
+00017e10 rts
+00017e12 cmpi.b #0x8,(0x6b,A5)
+00017e18 bne.b 0x00017e38
+00017e1a move.b #0xf,(0x5d,A5)
+00017e20 move.b #0xc,(0x5f,A5)
+00017e26 move.l #-0x40000,(0x10,A5)
+00017e2e jsr 0x0001fb4c.l
+00017e34 bra.w 0x00019c1c
+00017e38 cmpi.b #0xb,(0x5f,A5)
+00017e3e beq.b 0x00017e66
+00017e40 cmpi.b #0x7,(0x6b,A5)
+00017e46 bne.b 0x00017e66
+00017e48 move.b #0xf,(0x5d,A5)
+00017e4e move.b #0xb,(0x5f,A5)
+00017e54 move.l #0x40000,(0x10,A5)
+00017e5c jsr 0x0001faf0.l
+00017e62 bra.w 0x00019c1c
+00017e66 move.b (0x71,A5),D0b
+00017e6a andi.w #0xf,D0w
+00017e6e add.w D0w,D0w
+00017e70 lea (0x17e78,PC,D0w*0x1),A0
+00017e74 adda.w (A0),A0
+00017e76 jmp (A0)
+00017f54 move.b (0x71,A5),D0b
+00017f58 andi.w #0xf,D0w
+00017f5c add.w D0w,D0w
+00017f5e lea (0x17f66,PC,D0w*0x1),A0
+00017f62 adda.w (A0),A0
+00017f64 jmp (A0)
+00017fca cmpi.b #0x6,(0x6b,A5)
+00017fd0 beq.w 0x0001807c
+00017fd4 cmpi.b #0x1,(0x6b,A5)
+00017fda beq.b 0x00018000
+00017fdc cmpi.b #0x2,(0x6b,A5)
+00017fe2 beq.b 0x0001801c
+00017fe4 cmpi.b #0x3,(0x6b,A5)
+00017fea beq.b 0x00018036
+00017fec cmpi.b #0x4,(0x6b,A5)
+00017ff2 beq.w 0x00019980
+00017ff6 cmpi.b #0x5,(0x6b,A5)
+00017ffc beq.b 0x0001804c
+00017ffe rts
+00018000 move.b (0x71,A5),D0b
+00018004 andi.w #0xf,D0w
+00018008 cmpi.b #0x0,D0b
+0001800c bne.w 0x00018090
+00018010 btst.b #0x4,(0x73,A5)
+00018016 bne.w 0x00018ea8
+0001801a rts
+0001801c move.b (0x71,A5),D0b
+00018020 andi.w #0xf,D0w
+00018024 cmpi.b #0x0,D0b
+00018028 bne.b 0x00018090
+0001802a btst.b #0x6,(0x73,A5)
+00018030 bne.w 0x00018ec0
+00018034 rts
+00018036 btst.b #0x4,(0x73,A5)
+0001803c bne.w 0x0001992e
+00018040 btst.b #0x6,(0x73,A5)
+00018046 bne.w 0x0001994e
+0001804a rts
+0001804c movea.l A5,A1
+0001804e adda.l #0x100,A1
+00018054 cmpi.w #0x0,(0x4,A1)
+0001805a bne.b 0x00018090
+0001805c btst.b #0x6,(0x73,A5)
+00018062 bne.w 0x000199be
+00018066 btst.b #0x4,(0x73,A5)
+0001806c bne.w 0x000199be
+00018070 btst.b #0x5,(0x73,A5)
+00018076 bne.w 0x000199be
+0001807a rts
+0001807c cmpi.w #0x6f,(0x78,A5)
+00018082 bgt.b 0x00018090
+00018084 btst.b #0x6,(0x73,A5)
+0001808a bne.w 0x00019a84
+0001808e rts
+00018090 rts
+00018092 cmpi.b #0x1,(0x6b,A5)
+00018098 beq.b 0x000180ac
+0001809a cmpi.b #0x2,(0x6b,A5)
+000180a0 beq.b 0x000180c6
+000180a2 cmpi.b #0x3,(0x6b,A5)
+000180a8 beq.b 0x000180e0
+000180aa rts
+000180ac move.b (0x71,A5),D0b
+000180b0 andi.w #0xf,D0w
+000180b4 cmpi.b #0x0,D0b
+000180b8 bne.b 0x000180f4
+000180ba btst.b #0x4,(0x73,A5)
+000180c0 bne.w 0x00018ac4
+000180c4 rts
+000180c6 move.b (0x71,A5),D0b
+000180ca andi.w #0xf,D0w
+000180ce cmpi.b #0x0,D0b
+000180d2 bne.b 0x000180f4
+000180d4 btst.b #0x6,(0x73,A5)
+000180da bne.w 0x00018adc
+000180de rts
+000180e0 btst.b #0x4,(0x73,A5)
+000180e6 bne.w 0x00019a22
+000180ea btst.b #0x6,(0x73,A5)
+000180f0 bne.w 0x00019a4a
+000180f4 rts
+printed_instructions=128
