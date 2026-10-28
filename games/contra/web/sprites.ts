@@ -238,6 +238,8 @@ export type SpriteRasterOptions = Readonly<{
   rgb: Uint8Array;
   control: number;
   mask: number;
+  /** Renderer-owned immutable pages already checked when loaded. */
+  validatedPages?: boolean;
 }>;
 
 /** Produce an RGBA sprite layer and its per-pixel foreground priority.
@@ -259,7 +261,11 @@ export function rasterizeSpriteOAM(
   integer(options.mask, 0, 255);
   const mapped = options.mapping.map((id) => {
     const page = options.pages.get(id);
-    if (!page || page.length !== 4096 || page.some((pixel) => pixel > 3))
+    if (
+      !page ||
+      page.length !== 4096 ||
+      (!options.validatedPages && page.some((pixel) => pixel > 3))
+    )
       throw new Error("Missing or invalid indexed CHR page");
     return page;
   });

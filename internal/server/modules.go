@@ -224,6 +224,10 @@ func (s *Server) moduleView(r *Room, viewer int) (map[string]any, error) {
 	if err != nil {
 		return nil, err
 	}
+	return moduleViewData(r, match, data), nil
+}
+
+func moduleViewData(r *Room, match gameapi.Match, data any) map[string]any {
 	attention := match.Attention
 	if attention == nil {
 		attention = match.Actors
@@ -243,7 +247,7 @@ func (s *Server) moduleView(r *Room, viewer int) (map[string]any, error) {
 		view["paused"] = true
 		view["pauseExpiresAt"] = time.Unix(r.LastActive, 0).Add(pausedRoomIdleLimit).UnixMilli()
 	}
-	return view, nil
+	return view
 }
 
 // Called under s.mu, before player timeouts. System events neither enable

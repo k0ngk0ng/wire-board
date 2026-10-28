@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from "react";
-import type { RuntimeSnapshot } from "./runtime-bridge";
+import type { RuntimeSnapshot, RuntimeSnapshotHeader } from "./runtime-bridge";
 
 // Both public life summaries and the fullscreen HUD follow the painted state.
 // Server snapshots may be up to one small presentation buffer ahead.
@@ -13,7 +13,10 @@ export function publishRuntimeVisible(key: string, value?: RuntimeSnapshot) {
   else values.delete(key);
   for (const listener of listeners.get(key) ?? []) listener();
 }
-export function useRuntimeVisible(key: string, fallback: RuntimeSnapshot) {
+export function useRuntimeVisible(
+  key: string,
+  fallback: RuntimeSnapshotHeader,
+) {
   return useSyncExternalStore(
     (listener) => {
       let group = listeners.get(key);

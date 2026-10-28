@@ -10,6 +10,7 @@ let sequence = 0,
   sessionId;
 const pending = new Map();
 const network = [];
+const gamePackets = [];
 let receivedBytes = 0,
   receivedFrames = 0;
 ws.onmessage = ({ data }) => {
@@ -20,7 +21,21 @@ ws.onmessage = ({ data }) => {
     receivedBytes += new TextEncoder().encode(raw).length;
     receivedFrames++;
     try {
-      if (JSON.parse(raw).type === "ack") network.push(v);
+      const packet = JSON.parse(raw);
+      if (packet.type === "ack") network.push(v);
+      if (packet.type === "game") {
+        const view = packet.game?.data;
+        gamePackets.push({
+          at: v.params.timestamp,
+          bytes: new TextEncoder().encode(raw).length,
+          protocol: view?.protocol,
+          revision: view?.revision,
+          frames: view?.frames?.length,
+          presentation: !!view?.snapshot?.presentation,
+          audio: !!view?.snapshot?.audio,
+          staticStages: !!view?.bundle?.stages,
+        });
+      }
     } catch {}
   } else if (v.method === "Network.webSocketFrameSent") network.push(v);
   if (!p) return;
@@ -203,6 +218,7 @@ try {
       network,
       receivedBytes,
       receivedFrames,
+      gamePackets,
       observedMS: Date.now() - startedAt,
       media,
     }),

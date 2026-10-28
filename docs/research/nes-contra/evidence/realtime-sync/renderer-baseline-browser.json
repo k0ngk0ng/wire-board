@@ -1,0 +1,121 @@
+{
+  "frame": "600",
+  "frames": 240,
+  "maxProjectiles": 8,
+  "phase": "playing",
+  "rulesBuildID": "9abc9b428651fd7fe8d848157a94ef43c4a9475eab0a7716043fdf27e8685618",
+  "samples": {
+    "active": {
+      "draw": {
+        "meanMS": 0.6916666706403096,
+        "p50MS": 0.6999998092651367,
+        "p95MS": 0.8000001907348633,
+        "samples": 240
+      },
+      "parts": {
+        "background": {
+          "meanMS": 0.3858332713445028,
+          "p50MS": 0.39999961853027344,
+          "p95MS": 0.5,
+          "samples": 240
+        },
+        "compose": {
+          "meanMS": 0.09458337624867758,
+          "p50MS": 0.10000038146972656,
+          "p95MS": 0.19999980926513672,
+          "samples": 240
+        },
+        "createImage": {
+          "meanMS": 0.005000003178914388,
+          "p50MS": 0,
+          "p95MS": 0.09999942779541016,
+          "samples": 240
+        },
+        "putImage": {
+          "meanMS": 0.007083336512247722,
+          "p50MS": 0,
+          "p95MS": 0.09999942779541016,
+          "samples": 240
+        },
+        "sprites": {
+          "meanMS": 0.18541666269302368,
+          "p50MS": 0.19999980926513672,
+          "p95MS": 0.3000001907348633,
+          "samples": 240
+        }
+      },
+      "pixelSHA256": "9f8ad489bb8127da544e6387080c9f1794f59ea70020b6e2d2651c63f767892e",
+      "uniqueBackgroundSignatures": 129
+    },
+    "static": {
+      "draw": {
+        "meanMS": 0.668750003973643,
+        "p50MS": 0.6999998092651367,
+        "p95MS": 0.8000001907348633,
+        "samples": 240
+      },
+      "parts": {
+        "background": {
+          "meanMS": 0.3700000007947286,
+          "p50MS": 0.39999961853027344,
+          "p95MS": 0.5,
+          "samples": 240
+        },
+        "compose": {
+          "meanMS": 0.09416666825612388,
+          "p50MS": 0.10000038146972656,
+          "p95MS": 0.19999980926513672,
+          "samples": 240
+        },
+        "createImage": {
+          "meanMS": 0.009166669845581055,
+          "p50MS": 0,
+          "p95MS": 0.10000038146972656,
+          "samples": 240
+        },
+        "putImage": {
+          "meanMS": 0.00916666587193807,
+          "p50MS": 0,
+          "p95MS": 0.10000038146972656,
+          "samples": 240
+        },
+        "sprites": {
+          "meanMS": 0.1712500055631002,
+          "p50MS": 0.19999980926513672,
+          "p95MS": 0.2999992370605469,
+          "samples": 240
+        }
+      },
+      "pixelSHA256": "f98b65a0a2f060217708b2f047d0006dd86ae2a61158524bfeb577010fea3e24",
+      "uniqueBackgroundSignatures": 1
+    }
+  },
+  "wasm": {
+    "invoke": {
+      "meanMS": 0.7011718563735485,
+      "p50MS": 0.6000003814697266,
+      "p95MS": 0.8000001907348633,
+      "samples": 512
+    },
+    "meanReplyBytes": 18109.390625,
+    "requestStringify": {
+      "meanMS": 0.0001953132450580597,
+      "p50MS": 0,
+      "p95MS": 0,
+      "samples": 512
+    },
+    "responseParse": {
+      "meanMS": 0.02519533410668373,
+      "p50MS": 0,
+      "p95MS": 0.10000038146972656,
+      "samples": 512
+    }
+  },
+  "worldRoutine": 4,
+  "browser": {
+    "hardwareConcurrency": 10,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36"
+  },
+  "mode": "baseline",
+  "scope": "Real Chromium CPU timings, native/Wasm battle state, no network transport or live user accounts"
+}

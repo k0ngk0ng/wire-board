@@ -94,14 +94,14 @@ func (h *host) apply(c gameapi.Context, g gameapi.Match, raw json.RawMessage) (g
 	// A physical release never changes ownership and remains valid while an
 	// autoplay cancellation is in flight. Loading pads are acknowledged but
 	// discarded below, including a delayed packet from a now-automated seat.
-	loadingPad := s.StageLoading != nil && a.Type == "input"
+	loadingPad := s.StageLoading != nil && a.Type == "input" && (!s.StageLoading.Ready[c.Actor] || auto[c.Actor])
 	if auto[c.Actor] && a.Type != "stage-ready" && a.Type != "release" && !loadingPad {
 		return g, errors.New("请先取消托管")
 	}
 	resume := false
 	switch a.Type {
 	case "input":
-		if s.StageLoading != nil {
+		if loadingPad {
 			// Never retain controls from the previous stage or the loading UI.
 			// Still commit Sequence/LastAction so retries after gate release are
 			// inert; a fresh post-gate heartbeat may establish a new held pad.
@@ -132,8 +132,11 @@ func (h *host) apply(c gameapi.Context, g gameapi.Match, raw json.RawMessage) (g
 			return g, errors.New("stage resource identity differs")
 		}
 		if s.StageLoading != nil {
+			if !s.StageLoading.Ready[c.Actor] {
+				clearInput(i)
+			}
 			s.StageLoading.Ready[c.Actor] = true
-			releaseStage(&s, c.Now.UnixMilli())
+			releaseStage(&s)
 			critical(&g, &s, "stage-ready")
 		}
 	}
@@ -158,7 +161,7 @@ func (h *host) apply(c gameapi.Context, g gameapi.Match, raw json.RawMessage) (g
 	i.LastAction = key
 	return store(g, &s)
 }
-func releaseStage(s *State, at int64) {
+func releaseStage(s *State) {
 	if s.StageLoading == nil {
 		return
 	}
@@ -167,12 +170,7 @@ func releaseStage(s *State, at int64) {
 			return
 		}
 	}
-	// Also discard transport state restored from an older gate savepoint.
-	// This does not sample pads or touch Session, bot memory or input sequences.
-	for i := range s.Inputs {
-		clearInput(&s.Inputs[i])
-	}
+	// This is per-seat resource readiness, never a barrier for the running
+	// simulation. A late peer must not clear another seat's controls or clock.
 	s.StageLoading = nil
-	s.ServerAt = at
-	s.Remainder = 0
 }

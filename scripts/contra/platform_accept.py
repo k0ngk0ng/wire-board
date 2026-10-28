@@ -18,12 +18,14 @@ input_bytes=(root/'scripts/contra/browser_input.mjs').read_bytes();(out/'native-
 network_bytes=(root/'scripts/contra/browser_network.py').read_bytes();(out/'network-at-run.py').write_bytes(network_bytes)
 report={'passed':False,'scope':'Actual private platform, standard two-human new game and first-stage input; not a natural eight-stage campaign or WAN acceptance.','fixture':{key:fixture.get(key)for key in ['url','rulesBuildID','runtimeBuildID','visualsID','webRoot','publicRoot','webManifestSHA256']},'cases':[]};browsers=[]
 network=BrowserNetwork(base)if args.network_boundaries else None
+slow_network=BrowserNetwork(base)if args.network_boundaries else None
 if network:base=network.url;report['browserOrigin']=base
 class Browser:
- def __init__(self,name,width,height):
+ def __init__(self,name,width,height,origin=None):
+  self.base=origin or base
   self.name=name;self.session='cp'+uuid.uuid4().hex[:6];self.socket=root/'.s'/self.session;self.socket.mkdir(parents=True)
   self.env=dict(os.environ,TMPDIR=str(temp/'tmp'),AGENT_BROWSER_SESSION=self.session,AGENT_BROWSER_SOCKET_DIR=str(self.socket),AGENT_BROWSER_PROFILE=str(temp/name),AGENT_BROWSER_ARGS='--mute-audio,--disable-breakpad,--disable-crash-reporter')
-  browsers.append(self);self.run('open',base);self.run('set','viewport',str(width),str(height))
+  browsers.append(self);self.run('open',self.base);self.run('set','viewport',str(width),str(height))
  def run(self,*a):
   p=subprocess.run(['agent-browser',*a,'--json'],cwd=root,env=self.env,capture_output=True,text=True,timeout=45);assert p.returncode==0,p.stdout+p.stderr;j=json.loads(p.stdout);assert j['success'],j;return j['data']
  def js(self,code):return self.run('eval',code)['result']
@@ -37,7 +39,7 @@ class Browser:
   value=self.js('({surface:{...document.querySelector("[data-contra-runtime]")?.dataset},error:document.querySelector(".contra-board-error")?.textContent})');assert not value.get('error'),value;return value.get('surface')
  def native(self,options):
   assert (root/'scripts/contra/browser_input.mjs').read_bytes()==input_bytes,'native input helper changed during acceptance'
-  p=subprocess.run(['node','scripts/contra/browser_input.mjs',self.run('get','cdp-url')['cdpUrl'],base,json.dumps({'platform':True,**options})],cwd=root,env=self.env,capture_output=True,text=True,timeout=50);assert p.returncode==0,p.stdout+p.stderr;return json.loads(p.stdout)
+  p=subprocess.run(['node','scripts/contra/browser_input.mjs',self.run('get','cdp-url')['cdpUrl'],self.base,json.dumps({'platform':True,**options})],cwd=root,env=self.env,capture_output=True,text=True,timeout=50);assert p.returncode==0,p.stdout+p.stderr;return json.loads(p.stdout)
  def capture(self,name):self.run('screenshot',str(out/(name+'.png')))
  def sync(self):return self.api('/api/rooms/'+getattr(self,'room_id',room_id)+'/sync')['data']
 
@@ -69,7 +71,7 @@ try:
  desktop.wait('!!document.querySelector("[data-contra-runtime]")?.dataset.digest');desktop.data()
  first=desktop.sync();assert first['view']['snapshot']['frame']=='0',first['view']['snapshot']['frame']
  assert desktop.api('/api/state')['room']['loading'];desktop.capture('desktop-loading-barrier')
- mobile=Browser('mobile',320,740);mobile.login(1)
+ mobile=Browser('mobile',320,740,slow_network.url if slow_network else None);mobile.login(1)
  mobile.wait('Number(document.querySelector("[data-contra-runtime]")?.dataset.checked)>5');mobile.data()
  desktop.wait('Number(document.querySelector("[data-contra-runtime]")?.dataset.checked)>5');desktop.data()
  assert not desktop.api('/api/state')['room'].get('loading')
@@ -117,6 +119,27 @@ try:
    for row in visible:
     lives=json.loads(row['lives']);assert [int(re.search(r'生命\s+(\d+)',value)[1])for value in row['hud']]==lives[:len(row['hud'])],row
     assert [int(re.search(r'生命\s+(\d+)',value)[1])for value in row['publicHUD']]==lives[:len(row['publicHUD'])],row
+ # Failure inventory: one slow peer holds back the shared simulation or the
+ # other peer's ACKs; resuming it reopens a global ready gate or desynchronizes.
+ # Delay actual returned TCP bytes only for the mobile connection.
+ if slow_network:
+  slow_network.stream.clear();time.sleep(.3);slow_before=mobile.data();fast_before=desktop.data()
+  fast=desktop.native({'keys':['KeyJ'],'frames':120,'captureNetwork':True})
+  assert fast['gamePackets'] and all(p['protocol']==2 and not p['presentation'] and not p['audio'] and not p['staticStages'] and p['bytes']<6000 for p in fast['gamePackets']),('noncompact realtime wire payload',fast['gamePackets'])
+  fast_after=desktop.data();slow_after=mobile.data()
+  assert int(fast_after['revision'])-int(fast_before['revision'])>=120
+  assert int(slow_after['revision'])-int(slow_before['revision'])<=6,('slow peer was not isolated',slow_before,slow_after)
+  sent={};ack_ms=[]
+  for event in fast['network']:
+   params=event['params'];packet=json.loads(params['response']['payloadData']);nonce=packet.get('nonce')
+   if event['method']=='Network.webSocketFrameSent':sent[nonce]=params['timestamp']
+   elif nonce in sent:
+    assert packet.get('status')==200,packet
+    ack_ms.append((params['timestamp']-sent[nonce])*1000)
+  assert len(ack_ms)>=3 and max(ack_ms)<1000,('slow peer blocked fast input',ack_ms)
+  assert not desktop.api('/api/state')['room'].get('loading')
+  slow_network.stream.set();mobile.wait('BigInt(document.querySelector("[data-contra-runtime]").dataset.revision)>=BigInt('+json.dumps(fast_after['revision'])+')')
+  report['slowPeerIsolation']={'passed':True,'fastBefore':fast_before,'fastAfter':fast_after,'slowBefore':slow_before,'slowHeld':slow_after,'slowRecovered':mobile.data(),'fastAckMS':ack_ms,'native':fast}
  desktop.native({'keys':['Space'],'frames':3,'cursor':'revision'});desktop.wait('document.querySelector("[data-contra-runtime]")?.dataset.paused==="true"');paused=desktop.sync()
  cursor=desktop.data()['audioTick'];desktop.wait('BigInt(document.querySelector("[data-contra-runtime]").dataset.audioTick)>=BigInt('+json.dumps(cursor)+')+30n');held=desktop.sync()
  assert held['view']['snapshot']['frame']==paused['view']['snapshot']['frame']and held['view']['snapshot']['players']==paused['view']['snapshot']['players']
@@ -228,11 +251,13 @@ except BaseException:
   except BaseException:pass
 finally:
  if network:network.stream.set();network.checkpoint.set()
+ if slow_network:slow_network.stream.set();slow_network.checkpoint.set()
  for browser in browsers:
   try:browser.run('close')
   except BaseException:report['passed']=False
   if browser.socket.exists():shutil.rmtree(browser.socket)
  if temp.exists():shutil.rmtree(temp)
  if network:network.close()
+ if slow_network:slow_network.close()
  report['scriptSHA256']=hashlib.sha256(script_bytes).hexdigest();report['inputSHA256']=hashlib.sha256(input_bytes).hexdigest();report['networkSHA256']=hashlib.sha256(network_bytes).hexdigest();report['build']=json.loads((Path(fixture.get('publicRoot',root/'.local/contra-browser/build/public')).parent/'build-source.json').read_text());(out/'result.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n');print(json.dumps({'passed':report['passed'],'error':report.get('error'),'output':str(out)},ensure_ascii=False))
 raise SystemExit(0 if report['passed']else 1)

@@ -11,7 +11,6 @@ import (
 	"errors"
 	engine "github.com/k0ngk0ng/wire-board/games/contra/engine"
 	"github.com/k0ngk0ng/wire-board/internal/gameapi"
-	"reflect"
 	"testing"
 	"time"
 )
@@ -280,9 +279,10 @@ func TestContraModuleVisualIdentityRestoreAndLoading(t *testing.T) {
 	c.Automated = []bool{true, true}
 	before := saved(t, g).Session
 	g = ticks(t, m, &c, g, 50)
-	if calls != 0 || count.frames != 0 || !reflect.DeepEqual(saved(t, g).Session, before) {
-		t.Fatal("stage gate ran visual strategy")
+	if calls != 3 || count.frames != 3 || saved(t, g).Session.Random.Frames != before.Random.Frames+3 || saved(t, g).StageLoading != nil {
+		t.Fatal("ready computer seats stalled at the running stage transition")
 	}
+	calls, count.frames = 0, 0
 	_, c, g = initialWithModule(t, m, 2)
 	g = ticks(t, m, &c, g, 50)
 	g = input(t, m, c, g, engine.ButtonStart)
