@@ -2,12 +2,59 @@
 """Publish immutable compiled assets, verify CDN responses, then trim packaging.
 Only main's verified source uses credentials. Tags reuse the unchanged binary.
 """
-import argparse,base64,concurrent.futures,gzip,hashlib,hmac,json,os,re,shutil,time
+import argparse,base64,concurrent.futures,gzip,hashlib,hmac,json,os,re,shutil,time,threading
 from email.utils import formatdate
 from pathlib import Path
-from urllib.request import Request,urlopen
+from urllib.request import Request,urlopen as standard_urlopen,getproxies,proxy_bypass
+from urllib.parse import urlsplit
+from contextlib import contextmanager
+from io import BytesIO
 from urllib.error import HTTPError,URLError
-from http.client import IncompleteRead
+from http.client import IncompleteRead,HTTPSConnection,HTTPException
+# urllib's default HTTPS opener sends Connection: close. Reuse one verified
+# TLS connection per worker/host so a manifest does not need hundreds of
+# independent handshakes across regions. Preserve configured proxy handling.
+_connections=threading.local()
+_https_proxy=getproxies().get('https')
+def close_connections():
+ for connection in getattr(_connections,'values',{}).values():connection.close()
+ _connections.values={}
+
+@contextmanager
+def urlopen(request,timeout=60):
+ parts=urlsplit(request.full_url)
+ if parts.scheme!='https' or (_https_proxy and not proxy_bypass(parts.hostname)):
+  with standard_urlopen(request,timeout=timeout) as response:yield response
+  return
+ connections=getattr(_connections,'values',None)
+ if connections is None:connections={};_connections.values=connections
+ key=(parts.hostname,parts.port or 443,timeout)
+ connection=connections.get(key)
+ if connection is None:
+  connection=HTTPSConnection(parts.hostname,parts.port or 443,timeout=timeout)
+  connections[key]=connection
+ response=None
+ try:
+  connection.request(request.get_method(),request.selector,body=request.data,headers=dict(request.header_items()))
+  response=connection.getresponse()
+  if 300<=response.status<400:
+   response.read();response.close()
+   with standard_urlopen(request,timeout=timeout) as redirected:yield redirected
+   return
+  if response.status>=400:
+   body=response.read()
+   raise HTTPError(request.full_url,response.status,response.reason,response.headers,BytesIO(body))
+  try:yield response
+  finally:
+   try:response.read()
+   finally:response.close()
+ except HTTPError:
+  if response is not None:response.close()
+  raise
+ except (OSError,HTTPException) as error:
+  connection.close();connections.pop(key,None)
+  raise URLError(error) from error
+
 BASE=re.compile(r'https://cdn\.ichenj\.com/bga/web/[a-f0-9]{40}/\Z')
 MIME={'.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.png':'image/png','.webp':'image/webp','.jpg':'image/jpeg','.woff':'font/woff','.woff2':'font/woff2','.ttf':'font/ttf','.wasm':'application/wasm'}
 CONTRA_MIME={'.js':'text/javascript','.wasm':'application/wasm','.json':'application/json','.idx':'application/octet-stream','.rgb':'application/octet-stream','.wav':'audio/wav'}
@@ -132,7 +179,9 @@ def retry_request(action,label):
    transient=not isinstance(error,HTTPError) or error.code in (408,429,500,502,503,504)
    if not transient or attempt==4:
     error.add_note('Asset request failed: '+label)
+    if isinstance(error,HTTPError):error.close()
     raise
+   if isinstance(error,HTTPError):error.close()
    print(f'Retrying {label} after {type(error).__name__} ({attempt}/4)',flush=True)
    time.sleep(2**(attempt-1))
 
@@ -154,6 +203,7 @@ def publish(dist,rows,bucket,endpoint):
    return
   except HTTPError as e:
    if e.code!=404:raise
+   e.close()
   body=(dist/row['path']).read_bytes()
   if row['encoding']:body=gzip.compress(body,mtime=0)
   md5=base64.b64encode(hashlib.md5(body).digest()).decode();date=formatdate(usegmt=True)
