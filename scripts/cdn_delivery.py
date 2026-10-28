@@ -2,11 +2,12 @@
 """Publish immutable compiled assets, verify CDN responses, then trim packaging.
 Only main's verified source uses credentials. Tags reuse the unchanged binary.
 """
-import argparse,base64,concurrent.futures,gzip,hashlib,hmac,json,os,re,shutil
+import argparse,base64,concurrent.futures,gzip,hashlib,hmac,json,os,re,shutil,time
 from email.utils import formatdate
 from pathlib import Path
 from urllib.request import Request,urlopen
-from urllib.error import HTTPError
+from urllib.error import HTTPError,URLError
+from http.client import IncompleteRead
 BASE=re.compile(r'https://cdn\.ichenj\.com/bga/web/[a-f0-9]{40}/\Z')
 MIME={'.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.png':'image/png','.webp':'image/webp','.jpg':'image/jpeg','.woff':'font/woff','.woff2':'font/woff2','.ttf':'font/ttf','.wasm':'application/wasm'}
 CONTRA_MIME={'.js':'text/javascript','.wasm':'application/wasm','.json':'application/json','.idx':'application/octet-stream','.rgb':'application/octet-stream','.wav':'audio/wav'}
@@ -122,6 +123,19 @@ def credentials():
   return (Path('config/secrets')/file).read_text().strip()
  return read('OSS_ACCESS_KEY_ID','oss-access-key-id'),read('OSS_ACCESS_KEY_SECRET','oss-access-key-secret')
 
+def retry_request(action,label):
+ # Restart the complete object operation, including its immutable-content check.
+ # A PUT may have committed before a timeout; upload must GET it before retrying.
+ for attempt in range(1,5):
+  try:return action()
+  except (URLError,TimeoutError,ConnectionError,IncompleteRead) as error:
+   transient=not isinstance(error,HTTPError) or error.code in (408,429,500,502,503,504)
+   if not transient or attempt==4:
+    error.add_note('Asset request failed: '+label)
+    raise
+   print(f'Retrying {label} after {type(error).__name__} ({attempt}/4)',flush=True)
+   time.sleep(2**(attempt-1))
+
 def publish(dist,rows,bucket,endpoint):
  key_id,secret=credentials()
  def upload(row):
@@ -149,9 +163,13 @@ def publish(dist,rows,bucket,endpoint):
   if row['encoding']:request.add_header('Content-Encoding',row['encoding'])
   with urlopen(request,timeout=45) as r:
    if r.status!=200:raise ValueError('Upload failed: '+key)
- with concurrent.futures.ThreadPoolExecutor(max_workers=6) as pool:list(pool.map(upload,rows))
+ with concurrent.futures.ThreadPoolExecutor(max_workers=6) as pool:list(pool.map(lambda row:retry_request(lambda:upload(row),row["url"]),rows))
+ print(f'Published or confirmed {len(rows)} immutable OSS assets',flush=True)
 
 def verify(row):
+ return retry_request(lambda:verify_once(row),row["url"])
+
+def verify_once(row):
  with urlopen(Request(row['url'],headers={'Origin':'https://bga.ichenj.com','Accept-Encoding':'identity' if row.get('requiresRange') else 'gzip'}),timeout=60) as r:
   body=r.read();validate_response(row,body,r.headers)
   if row.get('requiresRange'):expected=body[:64]

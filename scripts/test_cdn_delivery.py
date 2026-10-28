@@ -147,4 +147,50 @@ class WaveRangeHTTP(unittest.TestCase):
      if mode=='full-body':self.assertEqual(len(state['requests']),1,'full checksum must pass before range probe')
   finally:server.shutdown();server.server_close();thread.join(timeout=2)
 
+# Network failures declared before the retry implementation: transient request
+# errors abort all assets; ambiguous PUT is repeated over an immutable object;
+# permanent authorization/checksum errors retry or are accepted; retries never
+# terminate; a failed Range probe skips the full content contract on retry.
+class NetworkRecovery(unittest.TestCase):
+ def test_transient_failures_are_bounded_and_permanent_errors_fail_closed(self):
+  from unittest.mock import Mock,patch
+  from urllib.error import URLError,HTTPError
+  for error in [URLError(TimeoutError()),TimeoutError(),HTTPError('url',503,'busy',{},None)]:
+   action=Mock(side_effect=[error,'ok'])
+   with patch.object(cdn.time,'sleep') as sleep:
+    self.assertEqual(cdn.retry_request(action,'asset'),'ok');self.assertEqual(action.call_count,2);sleep.assert_called_once_with(1)
+  for error in [ValueError('hash mismatch'),HTTPError('url',403,'forbidden',{},None),HTTPError('url',404,'missing',{},None)]:
+   action=Mock(side_effect=error)
+   with patch.object(cdn.time,'sleep') as sleep:
+    with self.assertRaises(type(error)):cdn.retry_request(action,'asset')
+    self.assertEqual(action.call_count,1);sleep.assert_not_called()
+  action=Mock(side_effect=URLError(TimeoutError()))
+  with patch.object(cdn.time,'sleep') as sleep:
+   with self.assertRaises(URLError):cdn.retry_request(action,'asset')
+   self.assertEqual(action.call_count,4);self.assertEqual([c.args[0] for c in sleep.call_args_list],[1,2,4])
+ def test_ambiguous_upload_rechecks_object_without_overwriting(self):
+  import io
+  from unittest.mock import patch
+  from urllib.error import HTTPError,URLError
+  body=b'asset';response=io.BytesIO(body);response.headers={}
+  row={'url':'https://cdn.ichenj.com/bga/asset','path':'asset','encoding':'','sha256':cdn.sha(body),'mime':'application/octet-stream'}
+  with tempfile.TemporaryDirectory() as temp:
+   dist=Path(temp);(dist/'asset').write_bytes(body)
+   with patch.object(cdn,'credentials',return_value=('test','test')),patch.object(cdn.time,'sleep'),patch.object(cdn,'urlopen',side_effect=[HTTPError('url',404,'missing',{},None),URLError(TimeoutError()),response]) as request:
+    cdn.publish(dist,[row],'bucket','example.invalid')
+    self.assertEqual([c.args[0].get_method() for c in request.call_args_list],['GET','PUT','GET'])
+    self.assertEqual(request.call_args_list[1].args[0].get_header('X-oss-forbid-overwrite'),'true')
+ def test_range_network_retry_still_checks_full_body_and_range(self):
+  import io
+  from unittest.mock import patch
+  from urllib.error import URLError
+  body=b'x'*100
+  def response(data,partial=False):
+   r=io.BytesIO(data);r.headers={'Content-Type':'audio/wav','Access-Control-Allow-Origin':'*'};r.status=206 if partial else 200
+   if partial:r.headers['Content-Range']='bytes 0-63/100'
+   return r
+  row={'url':'https://example.invalid/tone.wav','bytes':100,'sha256':cdn.sha(body),'mime':'audio/wav','encoding':'','requiresRange':True}
+  with patch.object(cdn.time,'sleep'),patch.object(cdn,'urlopen',side_effect=[response(body),URLError(TimeoutError()),response(body),response(body[:64],True)]) as request:
+   self.assertEqual(cdn.verify(row),row);self.assertEqual(request.call_count,4)
+
 if __name__=='__main__':unittest.main()
