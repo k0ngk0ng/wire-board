@@ -32,8 +32,8 @@ func TestViewBoundsHistoricalEventsWithoutChangingMatch(t *testing.T) {
 		Events []Event `json:"events"`
 	}
 	json.Unmarshal(raw, &out)
-	if len(out.Events) != 16 || out.Events[0].ID != 985 || out.Events[len(out.Events)-1].ID != 1000 {
-		t.Fatalf("wire retained %d events, want last 3 seconds", len(out.Events))
+	if len(out.Events) != 5 || out.Events[0].ID != 996 || out.Events[len(out.Events)-1].ID != 1000 {
+		t.Fatalf("wire retained %d events, want last complete one-second batch", len(out.Events))
 	}
 	if !bytes.Equal(before, m.Data) {
 		t.Fatal("view mutated save")

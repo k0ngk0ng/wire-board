@@ -7,6 +7,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
   freshEvents,
+  blastImpactTargets,
   pointOnPath,
   enemyPoint,
   objectivePoint,
@@ -260,4 +261,19 @@ test("fire cues retain fast-tower cadence while grouping simultaneous volleys", 
   assert.equal(pickSound([event(1)], 1340, 1000), "arrow");
   assert.equal(pickSound([event(2)], 1576, 1000), "arrow");
   assert.equal(pickSound([event(3)], 1050, 1000), null);
+});
+
+// A single splash visual must remain at the projectile's chosen target, not
+// move to the first serialized victim when strong/support priority is used.
+test("blast centers follow their own projectile across simultaneous attacks",()=>{
+ const events=[
+  {id:1,type:"shot",kind:"cannon",towerId:1,targetId:20,atMS:200,tick:1},
+  {id:2,type:"hit",towerId:1,targetId:10,atMS:200,tick:1},
+  {id:3,type:"shot",kind:"cannon",towerId:2,targetId:30,atMS:200,tick:1},
+  {id:4,type:"hit",towerId:2,targetId:10,atMS:200,tick:1},
+  {id:5,type:"hit",towerId:1,targetId:10,atMS:400,tick:2},
+ ];
+ const targets=blastImpactTargets(events);
+ assert.equal(targets.get(2),20);assert.equal(targets.get(4),30);assert.equal(targets.has(5),false);
+ assert.equal(events[1].targetId,10,"visual matching cannot change the damaged entity");
 });

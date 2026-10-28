@@ -162,6 +162,8 @@ export class CombatPlayback {
       if (
         event.target ||
         event.damage?.length ||
+        event.damageGroups?.length ||
+        event.vitals ||
         event.crater ||
         event.slowTargets?.length ||
         (event.type === "frostbound" && event.targetId) ||
@@ -210,13 +212,28 @@ export class CombatPlayback {
               : target,
           );
       }
+      if (event.vitals && event.targetId) {
+        const victim = enemies.get(event.targetId);
+        if (victim)
+          enemies.set(event.targetId, {
+            ...victim,
+            ...event.vitals,
+            health: event.vitals.hp + event.vitals.shield,
+          });
+      }
+      const applyDamage = (id: number, amount: number) => {
+        const victim = enemies.get(id);
+        if (!victim) return;
+        const absorbed = Math.min(victim.shield, amount),
+          shield = victim.shield - absorbed;
+        const hp = Math.max(0, victim.hp - (amount - absorbed));
+        enemies.set(id, { ...victim, hp, shield, health: hp + shield });
+      };
+      for (const group of event.damageGroups ?? [])
+        for (const id of group.targets)
+          applyDamage((group.base ?? 0) + id, group.amount);
       for (const delta of event.damage ?? []) {
-        const victim = enemies.get(delta.id);
-        if (!victim) continue;
-        const absorbed = Math.min(victim.shield, delta.amount);
-        const shield = victim.shield - absorbed;
-        const hp = Math.max(0, victim.hp - (delta.amount - absorbed));
-        enemies.set(delta.id, { ...victim, hp, shield, health: hp + shield });
+        applyDamage(delta.id, delta.amount);
       }
       for (const id of event.slowTargets ?? []) {
         const enemy = enemies.get(id);

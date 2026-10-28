@@ -410,6 +410,58 @@ type ViewWorld struct {
 	Map *Map `json:"map,omitempty"`
 }
 
+type EventVitals struct {
+	HP        float64 `json:"hp"`
+	Shield    float64 `json:"shield"`
+	SlowUntil int64   `json:"slowUntil"`
+}
+type ViewDamageGroup struct {
+	Amount  float64 `json:"amount"`
+	Base    int     `json:"base,omitempty"`
+	Targets []int   `json:"targets"`
+}
+type ViewEvent struct {
+	DamageGroups []ViewDamageGroup `json:"damageGroups,omitempty"`
+	Event
+	Target *ViewEnemy   `json:"target,omitempty"`
+	Vitals *EventVitals `json:"vitals,omitempty"`
+}
+
+func compactEvents(events []Event) []ViewEvent {
+	out := make([]ViewEvent, 0, len(events))
+	seen := map[int]bool{}
+	for _, event := range events {
+		item := ViewEvent{Event: event, Target: event.Target}
+		for _, group := range event.DamageGroups {
+			base := group.Targets[0]
+			for _, id := range group.Targets {
+				base = min(base, id)
+			}
+			if base < 100 {
+				base = 0
+			}
+			targets := make([]int, len(group.Targets))
+			for i, id := range group.Targets {
+				targets[i] = id - base
+			}
+			item.DamageGroups = append(item.DamageGroups, ViewDamageGroup{Amount: group.Amount, Base: base, Targets: targets})
+		}
+		if target := event.Target; target != nil {
+			if seen[target.ID] {
+				switch event.Type {
+				case "shot":
+					item.Target = nil
+				case "hit", "heal":
+					item.Target = nil
+					item.Vitals = &EventVitals{target.HP, target.Shield, target.SlowUntil}
+				}
+			}
+			seen[target.ID] = true
+		}
+		out = append(out, item)
+	}
+	return out
+}
 func view(m gameapi.Match, p int) (any, error) {
 	s, err := decode(m)
 	if err != nil {
@@ -417,7 +469,7 @@ func view(m gameapi.Match, p int) (any, error) {
 	}
 	// Send recent complete batches, not the entire persisted event ring on
 	// every update. Keep the idle cursor so the next batch remains contiguous.
-	cutoff := s.ElapsedMS - 3000
+	cutoff := s.ElapsedMS - 1000
 	first := 0
 	for first < len(s.Events)-1 {
 		event := s.Events[first]
@@ -425,7 +477,7 @@ func view(m gameapi.Match, p int) (any, error) {
 		if event.AtMS != nil {
 			at = *event.AtMS
 		}
-		if at >= cutoff {
+		if at > cutoff {
 			break
 		}
 		first++
@@ -464,7 +516,7 @@ func view(m gameapi.Match, p int) (any, error) {
 		NextAt         int64           `json:"nextAt"`
 		ElapsedMS      int64           `json:"elapsedMS"`
 		WaveInfo       WaveInfo        `json:"waveInfo"`
-		Events         []Event         `json:"events"`
+		Events         []ViewEvent     `json:"events"`
 		Craters        []Crater        `json:"craters,omitempty"`
 		IceWalls       []ViewIceWall   `json:"iceWalls,omitempty"`
 		Enemies        []ViewEnemy     `json:"enemies"`
@@ -488,7 +540,7 @@ func view(m gameapi.Match, p int) (any, error) {
 		NextAt:         s.NextAt,
 		ElapsedMS:      s.ElapsedMS,
 		WaveInfo:       s.WaveInfo,
-		Events:         s.Events,
+		Events:         compactEvents(s.Events),
 		Craters:        s.Craters,
 		IceWalls:       walls,
 		Enemies:        enemies,

@@ -29,6 +29,7 @@ import {
   enemyPoint,
   objectivePoint,
   freshEvents,
+  blastImpactTargets,
   combatMotion,
 } from "./presentation";
 import type { CombatStatus } from "./combat-timeline";
@@ -56,7 +57,7 @@ type Art = {
   worldAtlas: Atlas | null;
   worldSheet: HTMLImageElement | null;
 };
-type Effect = Event & { born: number; impact?: Point };
+type Effect = Event & { born: number; impact?: Point; impactTargetId?: number };
 const colors = ["#b34f2d", "#386da7", "#8a5196", "#4f7641"];
 const towerNames: Record<string, string> = {
   arrow: "箭塔",
@@ -1069,7 +1070,13 @@ export function Battlefield({
               .map((event) => ({ ...event, born: at }))
           : [];
     } else {
-      const scheduled = timeline.current.push(data, batch, at);
+      const impactTargets = blastImpactTargets(batch);
+      const scheduled = timeline.current
+        .push(data, batch, at)
+        .map((event) => ({
+          ...event,
+          impactTargetId: impactTargets.get(event.id),
+        }));
       effects.current.push(...scheduled);
       soundEvents.current.push(...scheduled);
     }
@@ -1404,17 +1411,27 @@ export function Battlefield({
         }
         ctx.restore();
       }
+      const towersByID = new Map(v.towers.map((t) => [t.id, t]));
+      const latestShots = new Map<number, Effect>();
+      for (const event of effects.current)
+        if (event.type === "shot" && event.towerId && event.born <= at)
+          latestShots.set(event.towerId, event);
+      const visiblePoint = (point: Point, margin = 100) => {
+        const screen = worldToScreen(point, camera.current, viewport.current);
+        return (
+          screen.x >= -margin &&
+          screen.x <= viewport.current.width + margin &&
+          screen.y >= -margin &&
+          screen.y <= viewport.current.height + margin
+        );
+      };
       const { width: towerSize, height: towerHeight } =
         towerDimensions(pixelScale);
       const buildings: { y: number; draw: () => void }[] = [];
       for (const t of v.towers) {
         const pad = map.pads.find((p) => p.id === t.pad);
-        if (!pad) continue;
-        const lastShot = effects.current
-          .filter(
-            (e) => e.type === "shot" && e.towerId === t.id && e.born <= at,
-          )
-          .at(-1);
+        if (!pad || !visiblePoint(pad, towerHeight * pixelScale + 32)) continue;
+        const lastShot = latestShots.get(t.id);
         const pose = shotPose(
           t.kind,
           lastShot ? at - lastShot.born : -1,
@@ -1571,6 +1588,7 @@ export function Battlefield({
           position.y = crater.y + pose.y;
         }
         enemyPositions.set(enemy.id, position);
+        if (!visiblePoint(position, Math.max(64 * pixelScale, 64))) continue;
         if (inspected.current === enemy.id) {
           ctx.save();
           ctx.lineWidth = 2 / pixelScale;
@@ -1727,6 +1745,40 @@ export function Battlefield({
         ctx.fillRect(x - barWidth / 2, barY, barWidth * health, barHeight);
       }
       effects.current = activeEffects(effects.current, at, reduced);
+      // One explosion represents the whole blast. Keep every projectile and
+      // authoritative impact, but bound decorative bursts in dense battles.
+      for (const event of effects.current) {
+        if (event.born <= at && event.impactTargetId)
+          event.impact ??= enemyPositions.get(event.impactTargetId) ??
+            lastEnemyPositions.get(event.impactTargetId) ?? {
+              x: event.x,
+              y: event.y,
+            };
+      }
+      const accentIDs = new Set<number>();
+      const accentTypes = new Set([
+        "hit",
+        "death",
+        "crater",
+        "crater_filled",
+        "ice_wall",
+        "frostbound",
+        "chain",
+        "frost_ring",
+      ]);
+      for (
+        let i = effects.current.length - 1;
+        i >= 0 && accentIDs.size < 48;
+        i--
+      ) {
+        const event = effects.current[i];
+        if (
+          event.born <= at &&
+          accentTypes.has(event.type) &&
+          visiblePoint(event.impact ?? event)
+        )
+          accentIDs.add(event.id);
+      }
       for (const e of effects.current) {
         const elapsed = at - e.born,
           t = elapsed / 900;
@@ -1738,23 +1790,15 @@ export function Battlefield({
         }
         const accent = {
           ...e,
-          kind: v.towers.find((t) => t.id === e.towerId)?.kind ?? e.kind,
+          kind: towersByID.get(e.towerId ?? 0)?.kind ?? e.kind,
         };
-        drawCombatAccent(
-          ctx,
-          accent,
-          elapsed,
-          e.impact?.x ?? e.x,
-          e.impact?.y ?? e.y,
-          reduced,
-        );
-        for (const victim of e.damage ?? [])
+        if (accentIDs.has(e.id))
           drawCombatAccent(
             ctx,
-            { ...accent, damage: undefined, skill: undefined },
+            accent,
             elapsed,
-            victim.x,
-            victim.y,
+            e.impact?.x ?? e.x,
+            e.impact?.y ?? e.y,
             reduced,
           );
         ctx.save();

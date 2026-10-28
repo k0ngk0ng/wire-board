@@ -39,7 +39,7 @@ func scenarioModule() gameapi.Module {
 			delete(v, "scenario")
 		}
 		switch scenario {
-		case "coop-growth", "coop-objectives", "ice-arrow", "ice-wall", "central-passives", "cadence", "cadence-speed", "vitality", "impact", "natural", "battle", "victory-ready", "defeat-ready", "advanced", "zero-gold", "growth-vote", "cleared-5", "cleared-10", "cleared-15", "stage2", "stage3", "stage4", "endless-rotation", "objectives", "objectives-clear", "objectives-fail", "legacy-save":
+		case "density-observed", "density-central", "density-coop", "density-ceiling", "coop-growth", "coop-objectives", "ice-arrow", "ice-wall", "central-passives", "cadence", "cadence-speed", "vitality", "impact", "natural", "battle", "victory-ready", "defeat-ready", "advanced", "zero-gold", "growth-vote", "cleared-5", "cleared-10", "cleared-15", "stage2", "stage3", "stage4", "endless-rotation", "objectives", "objectives-clear", "objectives-fail", "legacy-save":
 		default:
 			return "", nil, errors.New("unknown test scenario")
 		}
@@ -68,6 +68,21 @@ func scenarioModule() gameapi.Module {
 		match, err := start(ctx, body)
 		if err != nil {
 			return match, err
+		}
+		if strings.HasPrefix(scenario, "density-") {
+			raw, readErr := os.ReadFile(filepath.Join("..", "..", "..", ".local", "starfort-density", "starts", strings.TrimPrefix(scenario, "density-")+".json"))
+			if readErr != nil {
+				return match, readErr
+			}
+			var dense starfort.State
+			if err = json.Unmarshal(raw, &dense); err != nil {
+				return match, err
+			}
+			if len(dense.Players) != ctx.Players {
+				return match, errors.New("density seat count mismatch")
+			}
+			dense.ServerAt = ctx.Now.UnixMilli()
+			return dense.Envelope()
 		}
 		if scenario != "coop-growth" && scenario != "coop-objectives" && scenario != "natural" && scenario != "central-passives" && scenario != "ice-arrow" && scenario != "ice-wall" {
 			match, err = legacyStartMatch(match)

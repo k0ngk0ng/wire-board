@@ -29,6 +29,8 @@ type cadenceEvent struct {
 	Type, Kind            string
 	AtMS                  *int64
 	Damage                []starfort.DamageDelta
+	DamageGroups          []starfort.DamageGroup
+	Vitals                *starfort.EventVitals
 	Target                *struct {
 		starfort.Enemy
 		Health, MaxHealth float64
@@ -258,7 +260,7 @@ func TestStarfortCadenceHealthTimeline(t *testing.T) {
 		if e.Type != "shot" && e.Type != "hit" && e.Type != "death" {
 			continue
 		}
-		if e.Target == nil || e.Target.ID != e.TargetID || e.AtMS == nil || *e.AtMS != 200 {
+		if (e.Target == nil && e.Vitals == nil) || (e.Target != nil && e.Target.ID != e.TargetID) || e.AtMS == nil || *e.AtMS != 200 {
 			t.Fatalf("incomplete health timeline: %+v", e)
 		}
 		if e.Type == "shot" {
@@ -270,7 +272,16 @@ func TestStarfortCadenceHealthTimeline(t *testing.T) {
 			death = &copy
 		}
 		if e.Type == "hit" {
-			hits[e.TargetID] = e.Target.Health
+			if e.Target != nil {
+				hits[e.TargetID] = e.Target.Health
+			} else {
+				hits[e.TargetID] = e.Vitals.HP + e.Vitals.Shield
+			}
+			for _, group := range e.DamageGroups {
+				for _, id := range group.Targets {
+					hits[id] = 100 - group.Amount
+				}
+			}
 			for _, d := range e.Damage {
 				hits[d.ID] = 100 - d.Amount
 			}
@@ -379,11 +390,17 @@ func TestStarfortCadenceHTTP(t *testing.T) {
 				return view.ElapsedMS >= 4000
 			})
 			times := map[int][]int64{}
+			knownTargets := map[int]bool{}
+			for _, event := range observed {
+				if event.Target != nil && event.Target.Health > 0 {
+					knownTargets[event.TargetID] = true
+				}
+			}
 			for _, event := range observed {
 				if event.Type != "shot" {
 					continue
 				}
-				if event.AtMS == nil || event.Target == nil || event.Target.Health <= 0 {
+				if event.AtMS == nil || !knownTargets[event.TargetID] || (event.Target != nil && event.Target.Health <= 0) {
 					t.Fatalf("HTTP omitted combat clock/prestate: %+v", event)
 				}
 				times[event.TowerID] = append(times[event.TowerID], *event.AtMS)
@@ -426,9 +443,15 @@ func TestStarfortCadencePhysicsAndSpawnBoundaries(t *testing.T) {
 		b := newLegacyRulesTable(t, 1, map[string]any{})
 		b.allReady()
 		b.timer(time.Second)
+		events := cadenceEvents(b, 0)
+		cursor := 0
+		for _, e := range events {
+			cursor = max(cursor, e.ID)
+		}
 		b.timer(time.Second)
+		events = append(events, cadenceEvents(b, cursor)...)
 		var spawns []int64
-		for _, e := range cadenceEvents(b, 0) {
+		for _, e := range events {
 			if e.Type != "spawn" {
 				continue
 			}

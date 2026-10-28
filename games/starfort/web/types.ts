@@ -169,6 +169,8 @@ export type Enemy = Point & {
   abilityTick?: number;
 };
 export type Event = Point & {
+  vitals?: { hp: number; shield: number; slowUntil: number };
+  damageGroups?: { amount: number; base?: number; targets: number[] }[];
   iceWallId?: number;
   iceWall?: IceWall;
   slowTargets?: number[];
