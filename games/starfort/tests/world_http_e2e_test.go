@@ -81,7 +81,7 @@ func TestStarfortWorldSeedAndPublicationHTTP(t *testing.T) {
 			initial := a.room()
 			w := worldData(t, initial)
 			initialMap, ok := data(initial)["map"].(map[string]any)
-			if w["seed"].(float64) <= 0 || w["stage"] != float64(1) || !ok || len(initialMap["routes"].([]any)) != n {
+			if w["seed"].(float64) <= 0 || w["stage"] != float64(1) || !ok || len(initialMap["routes"].([]any)) != 1 {
 				t.Fatal("invalid initial world")
 			}
 			if _, duplicate := w["map"]; duplicate {

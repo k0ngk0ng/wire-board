@@ -163,9 +163,6 @@ func (s *State) validNewSkills() error {
 	if s.SkillRules != 0 && s.SkillRules != 2 {
 		return errors.New("无效技能规则")
 	}
-	if s.SkillRules == 2 && s.World.Layout != "central" {
-		return errors.New("新技能需要中央地图")
-	}
 	if s.SkillRules == 0 && (len(s.IceWalls) > 0 || s.SkillRNG != 0) {
 		return errors.New("旧规则包含新技能状态")
 	}

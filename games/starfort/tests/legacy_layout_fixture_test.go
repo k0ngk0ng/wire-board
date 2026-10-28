@@ -14,6 +14,11 @@ import (
 //go:embed testdata/legacy-initial-maps.json
 var legacyInitialMaps []byte
 
+// Central layouts captured from v1.38 before restoring cooperative expansion.
+//
+//go:embed testdata/central-initial-maps.json
+var centralInitialMaps []byte
+
 func legacyStartMatch(m gameapi.Match) (gameapi.Match, error) {
 	var s game.State
 	if e := json.Unmarshal(m.Data, &s); e != nil {

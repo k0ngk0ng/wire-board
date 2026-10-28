@@ -696,6 +696,78 @@ export function Board({
             data={data}
             assets={assets}
             selected={selected}
+            towerPanel={
+              selectedTower && !towerDetails ? (
+                <section
+                  className="sf-tower-popover"
+                  aria-label="防御塔操作"
+                  data-sf-tower-panel
+                  data-sf-tower-tools
+                >
+                  <header>
+                    <strong>
+                      {towerNames[selectedTower.kind]} · {selectedTower.level}{" "}
+                      级
+                    </strong>
+                    <button
+                      className="sf-secondary"
+                      data-sf-tower-close
+                      aria-label="关闭防御塔操作"
+                      onClick={() => setSelected(null)}
+                    >
+                      ×
+                    </button>
+                  </header>
+                  {selectedTower.passive && (
+                    <SkillBadge
+                      key={selectedTower.id}
+                      passive={selectedTower.passive}
+                      kind={selectedTower.kind}
+                      phase={data.phase}
+                      elapsedMS={data.elapsedMS}
+                    />
+                  )}
+                  <div className="sf-quick-actions">
+                    {selectedTower.owner === room.you &&
+                      !finished &&
+                      (upgrade?.needsBranch ? (
+                        <>{branchButtons}</>
+                      ) : (
+                        <button
+                          data-sf-upgrade="level"
+                          disabled={locked || !upgrade?.enabled}
+                          onClick={() =>
+                            void send("upgrade", { towerId: selectedTower.id })
+                          }
+                        >
+                          升级 · {upgrade?.cost ?? "—"}
+                        </button>
+                      ))}
+                    {selectedTower.owner === room.you && !finished && (
+                      <button
+                        className="sf-secondary"
+                        data-sf-sell
+                        disabled={locked || !sale?.enabled}
+                        onClick={() => {
+                          void send("sell", { towerId: selectedTower.id });
+                          setSelected(null);
+                        }}
+                      >
+                        出售 · {sale?.refund ?? 0}
+                      </button>
+                    )}
+                    <button
+                      className="sf-secondary"
+                      data-sf-tower-more
+                      onClick={() => setTowerDetails(true)}
+                    >
+                      详情
+                    </button>
+                  </div>
+                  {failure && <p role="alert">{failure}</p>}
+                </section>
+              ) : null
+            }
             select={(pad) => {
               setTowerDetails(false);
               setSelected(pad);
@@ -719,75 +791,7 @@ export function Board({
             >
               建造
             </button>
-          ) : selectedTower && !towerDetails ? (
-            <section
-              className="sf-tower-popover"
-              aria-label="防御塔操作"
-              data-sf-tower-panel
-              data-sf-tower-tools
-            >
-              <header>
-                <strong>
-                  {towerNames[selectedTower.kind]} · {selectedTower.level} 级
-                </strong>
-                <button
-                  className="sf-secondary"
-                  data-sf-tower-close
-                  aria-label="关闭防御塔操作"
-                  onClick={() => setSelected(null)}
-                >
-                  ×
-                </button>
-              </header>
-              {selectedTower.passive && (
-                <SkillBadge
-                  key={selectedTower.id}
-                  passive={selectedTower.passive}
-                  kind={selectedTower.kind}
-                  phase={data.phase}
-                  elapsedMS={data.elapsedMS}
-                />
-              )}
-              <div className="sf-quick-actions">
-                {selectedTower.owner === room.you &&
-                  !finished &&
-                  (upgrade?.needsBranch ? (
-                    <>{branchButtons}</>
-                  ) : (
-                    <button
-                      data-sf-upgrade="level"
-                      disabled={locked || !upgrade?.enabled}
-                      onClick={() =>
-                        void send("upgrade", { towerId: selectedTower.id })
-                      }
-                    >
-                      升级 · {upgrade?.cost ?? "—"}
-                    </button>
-                  ))}
-                {selectedTower.owner === room.you && !finished && (
-                  <button
-                    className="sf-secondary"
-                    data-sf-sell
-                    disabled={locked || !sale?.enabled}
-                    onClick={() => {
-                      void send("sell", { towerId: selectedTower.id });
-                      setSelected(null);
-                    }}
-                  >
-                    出售 · {sale?.refund ?? 0}
-                  </button>
-                )}
-                <button
-                  className="sf-secondary"
-                  data-sf-tower-more
-                  onClick={() => setTowerDetails(true)}
-                >
-                  详情
-                </button>
-              </div>
-              {failure && <p role="alert">{failure}</p>}
-            </section>
-          ) : (
+          ) : selectedTower && !towerDetails ? null : (
             <Modal
               title={`建造点 ${selected + 1}`}
               className="sf-command-dialog"

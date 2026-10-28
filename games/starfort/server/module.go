@@ -73,7 +73,7 @@ func Module() gameapi.Module {
 				s.Players[i].Gold = 300
 			}
 			s.describeWave()
-			s.initCentralWorld(ctx.Now.UnixNano()%2147483647 + int64(ctx.Players)*101)
+			s.initWorld(ctx.Now.UnixNano()%2147483647 + int64(ctx.Players)*101)
 			s.note("星核已点亮，共同守住防线")
 			return s.Envelope()
 		},

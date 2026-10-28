@@ -28,7 +28,7 @@ try:
    c.wait('document.querySelector("[data-sf-skill-status]")?.textContent.includes("%")')
    mark('authoritative selected branch '+branch,any(t['kind']=='arrow' and t['branch']==branch for t in w.data()['towers']))
    c.activate('[data-sf-skill]',touch);c.wait('!!document.querySelector("[data-sf-skill-tooltip]")')
-   mark('skill description visible '+branch,c.visibility('[data-sf-skill-tooltip]')['visible'])
+   mark('skill description visible '+branch,c.visibility('[data-sf-skill-tooltip]')['visible'] and c.visibility('[data-sf-skill-tooltip]')['hit'])
    c.screenshot(branch+'-'+str(width))
    seen=[];deadline=time.monotonic()+24
    while time.monotonic()<deadline:

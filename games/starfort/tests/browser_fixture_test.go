@@ -39,7 +39,7 @@ func scenarioModule() gameapi.Module {
 			delete(v, "scenario")
 		}
 		switch scenario {
-		case "ice-arrow", "ice-wall", "central-passives", "cadence", "cadence-speed", "vitality", "impact", "natural", "battle", "victory-ready", "defeat-ready", "advanced", "zero-gold", "growth-vote", "cleared-5", "cleared-10", "cleared-15", "stage2", "stage3", "stage4", "endless-rotation", "objectives", "objectives-clear", "objectives-fail", "legacy-save":
+		case "coop-growth", "coop-objectives", "ice-arrow", "ice-wall", "central-passives", "cadence", "cadence-speed", "vitality", "impact", "natural", "battle", "victory-ready", "defeat-ready", "advanced", "zero-gold", "growth-vote", "cleared-5", "cleared-10", "cleared-15", "stage2", "stage3", "stage4", "endless-rotation", "objectives", "objectives-clear", "objectives-fail", "legacy-save":
 		default:
 			return "", nil, errors.New("unknown test scenario")
 		}
@@ -69,7 +69,7 @@ func scenarioModule() gameapi.Module {
 		if err != nil {
 			return match, err
 		}
-		if scenario != "natural" && scenario != "central-passives" && scenario != "ice-arrow" && scenario != "ice-wall" {
+		if scenario != "coop-growth" && scenario != "coop-objectives" && scenario != "natural" && scenario != "central-passives" && scenario != "ice-arrow" && scenario != "ice-wall" {
 			match, err = legacyStartMatch(match)
 			if err != nil {
 				return match, err
@@ -78,6 +78,12 @@ func scenarioModule() gameapi.Module {
 		var s starfort.State
 		if err = json.Unmarshal(match.Data, &s); err != nil {
 			return match, err
+		}
+		if scenario == "coop-growth" {
+			scenario = "growth-vote"
+		}
+		if scenario == "coop-objectives" {
+			scenario = "objectives"
 		}
 		s.Log = append(s.Log, "浏览器／HTTP 验收夹具："+scenario)
 		// Stage construction resolves real production choices using a virtual
@@ -139,6 +145,12 @@ func scenarioModule() gameapi.Module {
 			s.WaveInfo.Total = len(s.Enemies)
 			s.WaveInfo.Spawned = len(s.Enemies)
 		case "central-passives":
+			var archived map[int]starfort.Map
+			if err = json.Unmarshal(centralInitialMaps, &archived); err != nil {
+				return match, err
+			}
+			s.World.Map = archived[ctx.Players]
+			s.World.Layout = "central"
 			s.SkillRules = 0
 			if err = fixtureCadence(&s, 1, ""); err != nil {
 				return match, err

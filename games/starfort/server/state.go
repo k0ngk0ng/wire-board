@@ -343,6 +343,9 @@ func (s *State) Envelope() (gameapi.Match, error) {
 	}
 	if s.SkillRules == 2 {
 		schema = 4
+		if s.World.Layout != "central" {
+			schema = 5
+		}
 	}
 	m := gameapi.Match{Schema: schema, Data: raw, Actors: s.actors(), Attention: []int{}, TimeoutActors: []int{}, Log: append([]string{}, s.Log...)}
 	if s.finished() {
@@ -369,7 +372,7 @@ func (s *State) Envelope() (gameapi.Match, error) {
 	return m, m.Validate(len(s.Players))
 }
 func decode(m gameapi.Match) (*State, error) {
-	if (m.Schema != 1 && m.Schema != 2 && m.Schema != 3 && m.Schema != 4) || len(m.Data) > maxSnapshotBytes {
+	if (m.Schema != 1 && m.Schema != 2 && m.Schema != 3 && m.Schema != 4 && m.Schema != 5) || len(m.Data) > maxSnapshotBytes {
 		return nil, errors.New("不支持的星垒存档")
 	}
 	var s State
@@ -382,8 +385,11 @@ func decode(m gameapi.Match) (*State, error) {
 	if (m.Schema == 3 || m.Schema == 4) && s.World.Layout != "central" {
 		return nil, errors.New("中央地图存档缺少布局标识")
 	}
-	if (m.Schema == 4) != (s.SkillRules == 2) {
+	if (m.Schema == 4 || m.Schema == 5) != (s.SkillRules == 2) {
 		return nil, errors.New("技能规则与存档版本不一致")
+	}
+	if m.Schema == 5 && s.World.Layout != "" {
+		return nil, errors.New("合作扩展地图存档布局不一致")
 	}
 	if err := s.valid(); err != nil {
 		return nil, err

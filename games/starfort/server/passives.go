@@ -38,7 +38,7 @@ type PassiveView struct {
 }
 
 func (s *State) passiveView(t Tower) *PassiveView {
-	if s.World.Layout != "central" {
+	if s.World.Layout != "central" && s.SkillRules != 2 {
 		return nil
 	}
 	if p := s.newSkillView(t); p != nil {
@@ -79,7 +79,7 @@ func (s *State) craterEvent(kind string, c *Crater) {
 }
 func (s *State) makeCrater(t *Tower, target Enemy) bool {
 	now := s.combatNow()
-	if s.World.Layout != "central" || now < t.PassiveReadyAt {
+	if (s.World.Layout != "central" && s.SkillRules != 2) || now < t.PassiveReadyAt {
 		return false
 	}
 	for _, c := range s.Craters {
@@ -181,7 +181,7 @@ func (s *State) repairCraters() {
 	s.Craters = slices.DeleteFunc(s.Craters, func(c Crater) bool { return c.FilledMS > 0 && s.ElapsedMS-c.FilledMS > 3000 })
 }
 func (s *State) focusDamage(t *Tower, target Enemy, damage float64) (float64, string) {
-	if s.World.Layout != "central" || t.Kind != "arrow" {
+	if (s.World.Layout != "central" && s.SkillRules != 2) || t.Kind != "arrow" {
 		return damage, ""
 	}
 	if t.FocusTarget != target.ID {
@@ -196,7 +196,7 @@ func (s *State) focusDamage(t *Tower, target Enemy, damage float64) (float64, st
 	return damage, ""
 }
 func (s *State) onTowerHit(t *Tower, target Enemy, damage float64) {
-	if s.World.Layout != "central" {
+	if s.World.Layout != "central" && s.SkillRules != 2 {
 		return
 	}
 	now := s.combatNow()
