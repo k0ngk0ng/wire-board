@@ -1,0 +1,97 @@
+{
+  "passed": true,
+  "id": 20,
+  "kind": "loop-effect",
+  "sourceSlots": {
+    "pulse1": 4,
+    "pulse2": 1
+  },
+  "periodTicks": 112,
+  "periodSamples": 82185,
+  "loopStartSample": 10273,
+  "decodedSamples": 92458,
+  "blendSamples": 1411,
+  "originalSevenSongParametersAndPCMUnchanged": true,
+  "independentGenerationIdentical": true,
+  "rawStemsRejectedBeforeDerivation": 2,
+  "nativeRegression": {
+    "groups": 8,
+    "tracks": 23,
+    "boundariesPerRun": 46,
+    "runs": 2,
+    "allPrefixesAndPauseResumeStopPassed": true,
+    "platformSHA256": "81b5bf6449e43196af8ae7320c7699d5dd02ed7493aec1c1dd13cfdbfd878e43",
+    "maximumClockSpreadMS": 23.23300000000117,
+    "maximumBoundaryClockDebtMS": 29.33302050353055
+  },
+  "loopReady": true,
+  "listeningAccepted": false,
+  "multiTrackSyncAccepted": false,
+  "acceptedForRelease": false,
+  "sourceSHA256": {
+    "games/contra/assets/audio-loops.json": "46954da60063e19981b4438df78df4a0b83fd2b6bce7d8c7519e6f537fcc9129",
+    "scripts/contra/audio_loop_snapshot.py": "a39da5370b9625060104191ec6526bc1020ea5768f2dc9dd37ac58320ca9e8f9",
+    "scripts/contra/audio_loop_verify.py": "48f28f10dce0ed517725430e843a860f32f894a333d0751b379be31202b06773",
+    "scripts/contra/audio_loop_derive.py": "ba3e6f0966a0e291ad743b2921facea354ffb888495041bd74170c6ed87a68d3",
+    "scripts/contra/audio_loop_browser.py": "fc6b071ef27aa63efe36839a7af5b706b979b529820689ff3812d62108ec4c1d",
+    "scripts/contra/audio_loop_finalize.py": "d6a40e54b51d0f7990f1dc26e444673469fbdeb354faadf74dcb1734eb8b93f8",
+    "docs/research/nes-contra/evidence/audio-loop-intro-repeat.json": "49195ddb01bc26d74fccd41f40deaf461d9534542fb5b8a678801299caa9dd6c",
+    "docs/research/nes-contra/evidence/audio-loop-intro-raw-red.json": "0c2105b0dad6b71456663c99d10dac03ad23612e97e4e963b8705a5b708c2ccd",
+    "docs/research/nes-contra/evidence/audio-loop-intro-native-history.json.gz": "bfdfddb2b8493b2e28d6a5236cb9247588b65b8597aab0ded06888f77ff62ce6"
+  },
+  "cleanup": {
+    "bytesRemovedOrDeduplicated": 5378298,
+    "items": [
+      {
+        "path": ".local/contra-audio-loops/inputs/driver-20.bin",
+        "bytes": 171600,
+        "reason": "Verified duplicate input; original source retained and verifier fallback checked."
+      },
+      {
+        "path": ".local/contra-audio-loops/inputs/samples-20.csv",
+        "bytes": 14596,
+        "reason": "Verified duplicate input; original source retained and verifier fallback checked."
+      },
+      {
+        "path": ".local/contra-audio-loops/inputs/loop-effect-14-pulse1.wav",
+        "bytes": 1758208,
+        "reason": "Verified duplicate input; original source retained and verifier fallback checked."
+      },
+      {
+        "path": ".local/contra-audio-loops/inputs/loop-effect-14-pulse2.wav",
+        "bytes": 1758208,
+        "reason": "Verified duplicate input; original source retained and verifier fallback checked."
+      },
+      {
+        "path": ".local/contra-audio-loops/output/loop-effect-14-pulse1-repeat.wav",
+        "bytes": 184960,
+        "reason": "Independent generation already verified, repeat archived by hard link; generator uses atomic replacement."
+      },
+      {
+        "path": ".local/contra-audio-loops/output/loop-effect-14-pulse2-repeat.wav",
+        "bytes": 184960,
+        "reason": "Independent generation already verified, repeat archived by hard link; generator uses atomic replacement."
+      },
+      {
+        "path": ".local/contra-audio-loops/browser-intro-v1",
+        "bytes": 604987,
+        "reason": "Full native reports retained in compressed history and final screenshot retained."
+      },
+      {
+        "path": ".local/contra-audio-loops/browser-intro-v2",
+        "bytes": 601721,
+        "reason": "Full native reports retained in compressed history and final screenshot retained."
+      },
+      {
+        "path": ".local/contra-audio-loops/intro-before-manifest.json",
+        "bytes": 98816,
+        "reason": "Promoted to retained source and independent generation evidence."
+      },
+      {
+        "path": ".local/contra-audio-loops/intro-generation-check.json",
+        "bytes": 242,
+        "reason": "Promoted to retained source and independent generation evidence."
+      }
+    ]
+  }
+}

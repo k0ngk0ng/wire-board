@@ -1,0 +1,1096 @@
+{
+  "schema": 1,
+  "romSHA256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "sources": {
+    "docs/research/nes-contra/evidence/levels-chr-animation.json": "ae7067a054d35c18c2c77bc3a511d1184412a6b70b61d5f4116b475c328595e7",
+    "games/contra/assets/audio-source.json": "f24d39df9285ab013eeb537b68646e0822741e3abcfd37f8f8ca41d46a8da333",
+    "games/contra/engine/audio_control_data.json": "34ccedb60f81dd76def7f8093f4d6e1ffffdca4dffede6603e9a8bbc84109f7b",
+    "games/contra/engine/campaign.go": "3b806217cdba05e24c519ec5aabe7e4bb2fba2388617147e9e94e5747ea3d047",
+    "games/contra/engine/campaign_initialize.go": "2b28b7b61a1e62ca2c0243f7f1e3607a99613a0165490635bed9fdf94a819d7e",
+    "games/contra/engine/campaign_reset_display.go": "3247a6fb273d2d4ca91db3985d78758ac2f64a04f0a587f239e8a68d43024161",
+    "games/contra/engine/campaign_scene_data.go": "87c45e0c10589a13d31280ada06446191acdf33303b700d86c420db7d62e4b68",
+    "games/contra/engine/campaign_scene_interlude.go": "e9b8a343f3391482d279e27c03ece8807c12545ff20bd2f53811626e86435970",
+    "games/contra/engine/campaign_scene_intro.go": "abccb604137ef5f08bdf419eb48045b8bd6cf7a550d212f908814f230213806e",
+    "games/contra/engine/chr_animation.go": "14159d1555b3cab0a0b27dd099d80e57672811da6700187a4aa4a110d2bc8e60",
+    "games/contra/engine/enemies.go": "5453d59a7a64609f3e97844f32255716698f7121ca48d54c30e07c2dc7101594",
+    "games/contra/engine/enemies_aliens_blob.go": "f7d3b99e677e6922451ef03a6141435cbd25d6542c73e92c5a50fa0421b95866",
+    "games/contra/engine/enemies_aliens_boss.go": "b5822fd07e13a76d5397d60f86f8c4540f4a557b9e7beae8dd856bc8eabb98b3",
+    "games/contra/engine/enemies_aliens_fetus.go": "5c972bd9be3d887e330b41435a2a57d1bad270f89054efc13aaebcc1f2455017",
+    "games/contra/engine/enemies_aliens_small.go": "cf77c572614a38435d5ac64c9e7577d1b0d7b45a31f074993bfb994422348e9f",
+    "games/contra/engine/enemies_aliens_spider.go": "4eee94a2b3874b1f28d17f96038242c24d0bdc78b50b1008373a4715cf181ebb",
+    "games/contra/engine/enemies_aliens_tables.go": "49150a49fa1d65400ac8858a0f926b998ca2f2c6aa61ed0cca77d0de394e184d",
+    "games/contra/engine/enemies_all_spawn.go": "0f449fd4a5fba8af534028ba5518dc7bb329d94dd90a8d9eebded98948580c2b",
+    "games/contra/engine/enemies_all_tables.go": "2247d31f91a966b5918deaa48a7e2048be4b38e9112a20e5381647d253b2fcdf",
+    "games/contra/engine/enemies_base_boss.go": "e3e47eb52d4d5d2ae49f4e412f2d4626367c05e0ce91316edbf99ad6609f0d07",
+    "games/contra/engine/enemies_base_boss_tables.go": "643c6d066a5a41ed48f656f1a5d8ddb71144fe288bf2b6595120ae788c004437",
+    "games/contra/engine/enemies_base_common.go": "33279fcb1e02a35cd52c646b0871abafea55608afb2aae0a13e9da78a86259ec",
+    "games/contra/engine/enemies_base_generators.go": "839e2aebea8d029680ea0f753da70832a952d7a85c39da9bf71dccb97cd17b58",
+    "games/contra/engine/enemies_base_pickup.go": "a5d37901e7afe92649984e2f2488bec704ab388df61686b21e93e765db640410",
+    "games/contra/engine/enemies_base_redblue.go": "758b6e3a262f3f8255af74e14651f6e5cf1ffd7e0eb3eca7b6e0ff6ffd550642",
+    "games/contra/engine/enemies_base_soldiers.go": "19f79e62bb2ff7d145da31e71f8b4a0a139a6507fcbf066d0c5aa2fd15417aa5",
+    "games/contra/engine/enemies_base_tables.go": "089508f8f1305825b414715bcdd7a79cfeaf3645cae046fd60a024c3a0911837",
+    "games/contra/engine/enemies_base_thrown.go": "dc94e4f6f796574a8883f4a815def4608971c4ac91054b7db77f4a5b57259ac5",
+    "games/contra/engine/enemies_base_types.go": "017de660e87019abc7947e2b01cf5beb135c8babb681a14b08c64c6350fbbe22",
+    "games/contra/engine/enemies_base_walls.go": "f1a18790bf394e76d0dd20c494912441cb1b9715703012607b6662c13c0c58c8",
+    "games/contra/engine/enemies_box.go": "22f18cdfb86e18749ac93bd257a5edff4a9c14365f3a1d2a4d1c3f2f94d227a9",
+    "games/contra/engine/enemies_bridge.go": "c65d6be3d1c023c3e900fc26ddeeb1eb321e9020fbfdaa0346fd612e93da919c",
+    "games/contra/engine/enemies_bullets.go": "4594bcf17deb3fc4163bdbad63b6373b50334266e3e0acd0643a9e22cf737f95",
+    "games/contra/engine/enemies_capsule.go": "2c3b89084d3abe8fbfd903b03e1270d9ab44cf93543eb3f0daecc24c3f6256e7",
+    "games/contra/engine/enemies_collision.go": "13f4f13b7598589270e4f71a4a09e680c4169709349ecc7cfd31e05b4e182270",
+    "games/contra/engine/enemies_collision_tables.go": "e948f46d1b73a59b22c3dbd8b746e8348c62a952287065ed6a1fe2784ef7e6aa",
+    "games/contra/engine/enemies_collision_tick.go": "5c3a75f69ee273c1c5ee6c6a4f3b5e9473bc74951837fa8deee710a3d34e6490",
+    "games/contra/engine/enemies_dispatch.go": "02e5df581fae1bfd7a0f171426234454651e326f7927d82ebf729a17dc842f2d",
+    "games/contra/engine/enemies_explosion.go": "c7957b98947d6038a034bc0aa69e930c2f3fdf6a25da16b3caac22c412bab581",
+    "games/contra/engine/enemies_generation.go": "a964e9491ddb362510df78e6036b938124a21966aa9dd07766db8c4d1a470ed8",
+    "games/contra/engine/enemies_machines.go": "330ebe5ce39280b7d9201ab7d8e4e975c81e2a325bfb505456f554ad5f0d08c8",
+    "games/contra/engine/enemies_machines_common.go": "c65dfb0b0188b92e9a0137233929f6e037623233481bf31169ccce68685e7de5",
+    "games/contra/engine/enemies_machines_flames.go": "3b568e6d0f9960e5a23e312ceb5ce94df8f31513b2b6b55b79f98efba83f3b97",
+    "games/contra/engine/enemies_machines_giant.go": "286e059bfffd00fd47a20d3e0ce4dbf0284c5d7ee0933a0321bd72e9c4a17a75",
+    "games/contra/engine/enemies_machines_graphics.go": "2c29abb313c6de5f2d00aa10638685dcc3e7eddc7f6883eea4f5c122032e3fa2",
+    "games/contra/engine/enemies_machines_hangar.go": "d93715a851ff4a698f049c522601a42dc327fd21eb24f59592757f22fb711558",
+    "games/contra/engine/enemies_machines_walls.go": "b8a41e34a9be42c494efcb6471f46c8a64dd0e34ae524e7499e48f3fe6f25b26",
+    "games/contra/engine/enemies_pickup.go": "ee72755e14212ce714c225639767fead9e92cdb1c0535740ebfe8ffe5822f73a",
+    "games/contra/engine/enemies_progress.go": "af4c9a2c311b9f1df44a284eb3cb7b3404a6e6f54116ce0595b6663a7bd87a61",
+    "games/contra/engine/enemies_runner.go": "2dc1814a4c61caa30214d29df0c1a2b082bd615566c422820e0dc1ed5c18fb9f",
+    "games/contra/engine/enemies_shooters_aim.go": "e572d019735880aa80cd4a50e4836bc799365a879490f06f2842471fb7d0f4d8",
+    "games/contra/engine/enemies_shooters_bossdoor.go": "d70e057853a477e247121551b7bf9e4a9dc9a3d1e3686192e3e379d4109de465",
+    "games/contra/engine/enemies_shooters_bossdoor_terrain.go": "3dfc8069c2d83e8a23271b9beb8df8dd5b18250231697a15a54192b0d140210b",
+    "games/contra/engine/enemies_shooters_runner.go": "53032d44797a4c93742590c4c18991f578d4cd40208a854eb57ba0d62b055ba1",
+    "games/contra/engine/enemies_shooters_sniper.go": "69a06fc83a6f31ccbd262e4b1080a5566e1eb290a84364e32802777977ba9766",
+    "games/contra/engine/enemies_shooters_tables.go": "d57dba7bb57ce7c2a89feb10ed9a186e3967a8d649d6af1cce73490236996e02",
+    "games/contra/engine/enemies_shooters_turrets.go": "7e2b933f8828c630ee73ed2b066f7e8e8a45fa694eeefd13fea6dd79b3ae03bb",
+    "games/contra/engine/enemies_snow_carrier.go": "90356bb7417d25915891d9c9cf33e0dcfac16d4d4c39555ae89a56685eb2909a",
+    "games/contra/engine/enemies_snow_small.go": "58762e0243a4a020a24610a2bb89e33c60a88dec136e8a51bbedac35771f7b99",
+    "games/contra/engine/enemies_snow_tables.go": "32251d6ec9a2180918499e4014fa6794f68e921b8249853a90ad7fa1ee280467",
+    "games/contra/engine/enemies_snow_tank.go": "0302721a28609af5e6f3bc3ff6b5d7b3366c0e1eb7bf40240e5b56bccef11bcd",
+    "games/contra/engine/enemies_tables.go": "aa7124b97aba6137fab33603a794c1cfb5d2b09293ca8c6b28a8c161508bb379",
+    "games/contra/engine/enemies_terrain.go": "684f00cf30cb3721f990955c29f2f424217a29d0c01e8ec013dd227ef5ca4481",
+    "games/contra/engine/enemies_waterfall.go": "609480371bdb561a7300493153ebf319d22474745c85ecf974f78cc68dfab0f0",
+    "games/contra/engine/enemies_waterfall_arms.go": "cdd6b582249bdd7ba5b5506a01220c08411c0872e42ff7cac7e7be6d6a191e14",
+    "games/contra/engine/enemies_waterfall_boss.go": "af3964719899eec27a0e25363824cdec5045c458845141bcc8d2cb1fb926f786",
+    "games/contra/engine/leveldata/stage-1.json": "ae541455b3d25b9b86898b9b013739f8ae0735b409b593defc484a59af5924ad",
+    "games/contra/engine/leveldata/stage-2.json": "b398dc1e444c586f4ac6181679d673f8fd9463638a0107a656ef104e69933153",
+    "games/contra/engine/leveldata/stage-3.json": "2ce2245014def20fd2638c278755f7a2a3b06c92a24b8c232facb568903c7355",
+    "games/contra/engine/leveldata/stage-4.json": "a1433c299763814b6c7acf02848e64f1629c163c639914fd6832e81b25b80f4a",
+    "games/contra/engine/leveldata/stage-5.json": "362f9e0d91e0edebab407317b132c585af5c861f14a98ba9017b061f24720a48",
+    "games/contra/engine/leveldata/stage-6.json": "30eba1e7f4048b119665ffe70b736c5ef9d3b268347bd4a365d1773fa154a5fc",
+    "games/contra/engine/leveldata/stage-7.json": "aed95f893082874faa83db70c0da7b3d1f61fea023805d10ff6fe90419a893d1",
+    "games/contra/engine/leveldata/stage-8.json": "81c8b9ff4bba44d3814dfbda3fef935c6b5a9500e051360307db42d487ea7596",
+    "games/contra/engine/player.go": "ed0687688e689a5b2eff66af7961e1016f7e99a389558ea04d76c0abc987d560",
+    "games/contra/engine/player_animation.go": "18392ccb6932d2d506140c0b1caf77878e602859d22aa93aa4ad9473dabcddd8",
+    "games/contra/engine/player_indoor.go": "e0986f8fb67f9a34193d12eb4463405fa34f9088fa8def229d6e914a238b832c",
+    "games/contra/engine/player_lifecycle.go": "8142df869f40347294c4b7980fe0986f0e25499f0d0a350a02902784cf27a358",
+    "games/contra/engine/session_terminal.go": "82a5406ad50b22391d259c94c48f3b3025769d5e5e7cf1e62fa8c88ab2f77890",
+    "games/contra/engine/terrain_scroll.go": "b52d1b920b6db6810d286dde706c303d9682ddbe58049af145ccf4d62dda5925",
+    "games/contra/engine/weapons.go": "cd5149419c3e0c700dcd1896ac1f53f9f609dcfc5eb4853f5139edf7c1ff1884",
+    "games/contra/engine/weapons_tables.go": "b7fc20675297b7ad196c1b2fd581f802e717db47190dd1482cbcd3db3e3e0637"
+  },
+  "stages": [
+    {
+      "level": 0,
+      "intro": {
+        "chrPages": [
+          0,
+          27,
+          38,
+          39,
+          40,
+          50
+        ],
+        "music": [],
+        "sfx": [
+          20,
+          22,
+          24
+        ]
+      },
+      "battle": {
+        "chrPages": [
+          1,
+          4,
+          6,
+          7,
+          32,
+          33,
+          34,
+          68,
+          69,
+          70,
+          71,
+          75,
+          98,
+          103
+        ],
+        "music": [
+          70
+        ],
+        "sfx": [
+          2,
+          11,
+          26,
+          28,
+          36,
+          38,
+          40,
+          42,
+          44,
+          46,
+          47,
+          51,
+          56,
+          57,
+          61,
+          98,
+          114,
+          116,
+          119,
+          127,
+          128
+        ]
+      },
+      "baseBoss": null,
+      "interlude": {
+        "chrPages": [
+          41,
+          42,
+          43,
+          49,
+          51,
+          122
+        ],
+        "music": [],
+        "sfx": [
+          16,
+          19
+        ]
+      },
+      "continue": {
+        "chrPages": [
+          0,
+          27,
+          38,
+          39,
+          40,
+          50
+        ],
+        "music": [],
+        "sfx": [
+          2,
+          110,
+          127,
+          128
+        ]
+      },
+      "final": {
+        "chrPages": [
+          0,
+          27,
+          38,
+          39,
+          40,
+          50
+        ],
+        "music": [],
+        "sfx": [
+          2,
+          110,
+          127,
+          128
+        ]
+      }
+    },
+    {
+      "level": 1,
+      "intro": {
+        "chrPages": [
+          0,
+          27,
+          38,
+          39,
+          40,
+          50
+        ],
+        "music": [],
+        "sfx": [
+          20,
+          22,
+          24
+        ]
+      },
+      "battle": {
+        "chrPages": [
+          1,
+          5,
+          8,
+          9,
+          12,
+          13,
+          72,
+          73,
+          74,
+          75,
+          76,
+          77,
+          78,
+          79,
+          105,
+          106
+        ],
+        "music": [
+          90
+        ],
+        "sfx": [
+          2,
+          11,
+          26,
+          28,
+          36,
+          38,
+          40,
+          42,
+          44,
+          46,
+          47,
+          52,
+          56,
+          57,
+          61,
+          62,
+          98,
+          114,
+          116,
+          119,
+          127,
+          128
+        ]
+      },
+      "baseBoss": {
+        "chrPages": [
+          1,
+          5,
+          12,
+          13,
+          75,
+          76,
+          77,
+          78,
+          79
+        ],
+        "music": [
+          94
+        ],
+        "sfx": [
+          2,
+          11,
+          26,
+          28,
+          36,
+          38,
+          40,
+          42,
+          44,
+          46,
+          47,
+          52,
+          56,
+          57,
+          61,
+          62,
+          98,
+          114,
+          116,
+          119,
+          127,
+          128
+        ]
+      },
+      "interlude": {
+        "chrPages": [
+          41,
+          42,
+          43,
+          49,
+          51,
+          122
+        ],
+        "music": [],
+        "sfx": [
+          16,
+          19
+        ]
+      },
+      "continue": {
+        "chrPages": [
+          0,
+          27,
+          38,
+          39,
+          40,
+          50
+        ],
+        "music": [],
+        "sfx": [
+          2,
+          110,
+          127,
+          128
+        ]
+      },
+      "final": {
+        "chrPages": [
+          0,
+          27,
+          38,
+          39,
+          40,
+          50
+        ],
+        "music": [],
+        "sfx": [
+          2,
+          110,
+          127,
+          128
+        ]
+      }
+    },
+    {
+      "level": 2,
+      "intro": {
+        "chrPages": [
+          0,
+          27,
+          38,
+          39,
+          40,
+          50
+        ],
+        "music": [],
+        "sfx": [
+          20,
+          22,
+          24
+        ]
+      },
+      "battle": {
+        "chrPages": [
+          1,
+          4,
+          10,
+          11,
+          35,
+          36,
+          37,
+          70,
+          75,
+          96,
+          97,
+          99,
+          113,
+          114,
+          115
+        ],
+        "music": [
+          74
+        ],
+        "sfx": [
+          2,
+          11,
+          13,
+          26,
+          28,
+          36,
+          38,
+          40,
+          42,
+          44,
+          46,
+          47,
+          56,
+          57,
+          61,
+          98,
+          114,
+          116,
+          119,
+          127,
+          128
+        ]
+      },
+      "baseBoss": null,
+      "interlude": {
+        "chrPages": [
+          41,
+          42,
+          43,
+          49,
+          51,
+          122
+        ],
+        "music": [],
+        "sfx": [
+          16,
+          19
+        ]
+      },
+      "continue": {
+        "chrPages": [
+          0,
+          27,
+          38,
+          39,
+          40,
+          50
+        ],
+        "music": [],
+        "sfx": [
+          2,
+          110,
+          127,
+          128
+        ]
+      },
+      "final": {
+        "chrPages": [
+          0,
+          27,
+          38,
+          39,
+          40,
+          50
+        ],
+        "music": [],
+        "sfx": [
+          2,
+          110,
+          127,
+          128
+        ]
+      }
+    },
+    {
+      "level": 3,
+      "intro": {
+        "chrPages": [
+          0,
+          27,
+          38,
+          39,
+          40,
+          50
+        ],
+        "music": [],
+        "sfx": [
+          20,
+          22,
+          24
+        ]
+      },
+      "battle": {
+        "chrPages": [
+          1,
+          5,
+          8,
+          9,
+          13,
+          28,
+          72,
+          73,
+          75,
+          76,
+          77,
+          78,
+          79,
+          104,
+          105,
+          106
+        ],
+        "music": [
+          90
+        ],
+        "sfx": [
+          2,
+          11,
+          26,
+          28,
+          36,
+          38,
+          40,
+          42,
+          44,
+          46,
+          47,
+          52,
+          56,
+          57,
+          61,
+          62,
+          98,
+          114,
+          116,
+          119,
+          127,
+          128
+        ]
+      },
+      "baseBoss": {
+        "chrPages": [
+          1,
+          5,
+          13,
+          28,
+          75,
+          76,
+          77,
+          78,
+          79
+        ],
+        "music": [
+          94
+        ],
+        "sfx": [
+          2,
+          11,
+          26,
+          28,
+          36,
+          38,
+          40,
+          42,
+          44,
+          46,
+          47,
+          52,
+          56,
+          57,
+          61,
+          62,
+          98,
+          114,
+          116,
+          119,
+          127,
+          128
+        ]
+      },
+      "interlude": {
+        "chrPages": [
+          41,
+          42,
+          43,
+          49,
+          51,
+          122
+        ],
+        "music": [],
+        "sfx": [
+          16,
+          19
+        ]
+      },
+      "continue": {
+        "chrPages": [
+          0,
+          27,
+          38,
+          39,
+          40,
+          50
+        ],
+        "music": [],
+        "sfx": [
+          2,
+          110,
+          127,
+          128
+        ]
+      },
+      "final": {
+        "chrPages": [
+          0,
+          27,
+          38,
+          39,
+          40,
+          50
+        ],
+        "music": [],
+        "sfx": [
+          2,
+          110,
+          127,
+          128
+        ]
+      }
+    },
+    {
+      "level": 4,
+      "intro": {
+        "chrPages": [
+          0,
+          27,
+          38,
+          39,
+          40,
+          50
+        ],
+        "music": [],
+        "sfx": [
+          20,
+          22,
+          24
+        ]
+      },
+      "battle": {
+        "chrPages": [
+          1,
+          4,
+          14,
+          15,
+          75,
+          80,
+          81,
+          82,
+          83,
+          107,
+          108,
+          109,
+          110
+        ],
+        "music": [
+          78
+        ],
+        "sfx": [
+          2,
+          11,
+          26,
+          28,
+          36,
+          38,
+          40,
+          42,
+          44,
+          46,
+          47,
+          48,
+          54,
+          56,
+          57,
+          61,
+          98,
+          114,
+          116,
+          117,
+          127,
+          128
+        ]
+      },
+      "baseBoss": null,
+      "interlude": {
+        "chrPages": [
+          41,
+          42,
+          43,
+          49,
+          51,
+          122
+        ],
+        "music": [],
+        "sfx": [
+          16,
+          19
+        ]
+      },
+      "continue": {
+        "chrPages": [
+          0,
+          27,
+          38,
+          39,
+          40,
+          50
+        ],
+        "music": [],
+        "sfx": [
+          2,
+          110,
+          127,
+          128
+        ]
+      },
+      "final": {
+        "chrPages": [
+          0,
+          27,
+          38,
+          39,
+          40,
+          50
+        ],
+        "music": [],
+        "sfx": [
+          2,
+          110,
+          127,
+          128
+        ]
+      }
+    },
+    {
+      "level": 5,
+      "intro": {
+        "chrPages": [
+          0,
+          27,
+          38,
+          39,
+          40,
+          50
+        ],
+        "music": [],
+        "sfx": [
+          20,
+          22,
+          24
+        ]
+      },
+      "battle": {
+        "chrPages": [
+          1,
+          4,
+          16,
+          17,
+          22,
+          23,
+          75,
+          84,
+          85,
+          86,
+          87
+        ],
+        "music": [
+          82
+        ],
+        "sfx": [
+          2,
+          11,
+          25,
+          26,
+          28,
+          36,
+          38,
+          40,
+          42,
+          43,
+          44,
+          46,
+          47,
+          56,
+          57,
+          61,
+          98,
+          114,
+          116,
+          117,
+          127,
+          128
+        ]
+      },
+      "baseBoss": null,
+      "interlude": {
+        "chrPages": [
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          51,
+          122
+        ],
+        "music": [],
+        "sfx": [
+          2,
+          16,
+          32,
+          129
+        ]
+      },
+      "continue": {
+        "chrPages": [
+          0,
+          27,
+          38,
+          39,
+          40,
+          50
+        ],
+        "music": [],
+        "sfx": [
+          2,
+          110,
+          127,
+          128
+        ]
+      },
+      "final": {
+        "chrPages": [
+          0,
+          27,
+          38,
+          39,
+          40,
+          50
+        ],
+        "music": [],
+        "sfx": [
+          2,
+          110,
+          127,
+          128
+        ]
+      }
+    },
+    {
+      "level": 6,
+      "intro": {
+        "chrPages": [
+          0,
+          27,
+          38,
+          39,
+          40,
+          50
+        ],
+        "music": [],
+        "sfx": [
+          20,
+          22,
+          24
+        ]
+      },
+      "battle": {
+        "chrPages": [
+          1,
+          4,
+          18,
+          19,
+          75,
+          88,
+          89,
+          90,
+          91
+        ],
+        "music": [
+          70
+        ],
+        "sfx": [
+          2,
+          11,
+          26,
+          28,
+          36,
+          38,
+          40,
+          42,
+          44,
+          46,
+          47,
+          51,
+          56,
+          57,
+          61,
+          98,
+          114,
+          116,
+          119,
+          127,
+          128
+        ]
+      },
+      "baseBoss": null,
+      "interlude": {
+        "chrPages": [
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          51,
+          122
+        ],
+        "music": [],
+        "sfx": [
+          2,
+          16,
+          32,
+          129
+        ]
+      },
+      "continue": {
+        "chrPages": [
+          0,
+          27,
+          38,
+          39,
+          40,
+          50
+        ],
+        "music": [],
+        "sfx": [
+          2,
+          110,
+          127,
+          128
+        ]
+      },
+      "final": {
+        "chrPages": [
+          0,
+          27,
+          38,
+          39,
+          40,
+          50
+        ],
+        "music": [],
+        "sfx": [
+          2,
+          110,
+          127,
+          128
+        ]
+      }
+    },
+    {
+      "level": 7,
+      "intro": {
+        "chrPages": [
+          0,
+          27,
+          38,
+          39,
+          40,
+          50
+        ],
+        "music": [],
+        "sfx": [
+          20,
+          22,
+          24
+        ]
+      },
+      "battle": {
+        "chrPages": [
+          1,
+          4,
+          20,
+          21,
+          52,
+          53,
+          54,
+          66,
+          75,
+          92,
+          93,
+          94,
+          95,
+          100,
+          101,
+          102,
+          112,
+          116,
+          117,
+          118,
+          119
+        ],
+        "music": [
+          86
+        ],
+        "sfx": [
+          2,
+          11,
+          26,
+          28,
+          36,
+          38,
+          40,
+          42,
+          44,
+          46,
+          47,
+          56,
+          57,
+          61,
+          102,
+          114,
+          116,
+          117,
+          123,
+          127,
+          128
+        ]
+      },
+      "baseBoss": null,
+      "interlude": null,
+      "continue": {
+        "chrPages": [
+          0,
+          27,
+          38,
+          39,
+          40,
+          50
+        ],
+        "music": [],
+        "sfx": [
+          2,
+          110,
+          127,
+          128
+        ]
+      },
+      "final": {
+        "chrPages": [
+          0,
+          1,
+          4,
+          20,
+          21,
+          27,
+          38,
+          39,
+          40,
+          50,
+          52,
+          53,
+          54,
+          66,
+          75,
+          92,
+          93,
+          94,
+          95,
+          100,
+          101,
+          102,
+          112,
+          116,
+          117,
+          118,
+          119
+        ],
+        "music": [],
+        "sfx": [
+          2,
+          102,
+          110,
+          123,
+          127,
+          128
+        ]
+      }
+    }
+  ]
+}

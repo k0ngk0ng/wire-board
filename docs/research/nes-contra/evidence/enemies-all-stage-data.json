@@ -1,0 +1,4578 @@
+{
+  "romSHA256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "archiveSHA256": "2c4fd35488d32ca3abf207114893d54ad294f74df8bd1961a7b1e090549bae64",
+  "stages": [
+    {
+      "level": 0,
+      "propertiesPointer": "0xee05",
+      "properties": [
+        {
+          "kind": 0,
+          "values": [
+            130,
+            34,
+            1,
+            0
+          ],
+          "romOffset": 126485
+        },
+        {
+          "kind": 1,
+          "values": [
+            128,
+            0,
+            1,
+            0
+          ],
+          "romOffset": 126489
+        },
+        {
+          "kind": 2,
+          "values": [
+            15,
+            50,
+            240,
+            0
+          ],
+          "romOffset": 126493
+        },
+        {
+          "kind": 3,
+          "values": [
+            11,
+            50,
+            1,
+            0
+          ],
+          "romOffset": 126497
+        },
+        {
+          "kind": 4,
+          "values": [
+            143,
+            34,
+            8,
+            0
+          ],
+          "romOffset": 126501
+        },
+        {
+          "kind": 5,
+          "values": [
+            131,
+            16,
+            1,
+            0
+          ],
+          "romOffset": 126505
+        },
+        {
+          "kind": 6,
+          "values": [
+            131,
+            48,
+            1,
+            0
+          ],
+          "romOffset": 126509
+        },
+        {
+          "kind": 7,
+          "values": [
+            143,
+            48,
+            8,
+            0
+          ],
+          "romOffset": 126513
+        },
+        {
+          "kind": 8,
+          "values": [
+            15,
+            82,
+            241,
+            0
+          ],
+          "romOffset": 126517
+        },
+        {
+          "kind": 9,
+          "values": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "romOffset": 126521
+        },
+        {
+          "kind": 10,
+          "values": [
+            15,
+            66,
+            240,
+            0
+          ],
+          "romOffset": 126525
+        },
+        {
+          "kind": 11,
+          "values": [
+            138,
+            5,
+            1,
+            0
+          ],
+          "romOffset": 126529
+        },
+        {
+          "kind": 12,
+          "values": [
+            131,
+            66,
+            1,
+            0
+          ],
+          "romOffset": 126533
+        },
+        {
+          "kind": 13,
+          "values": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "romOffset": 126537
+        },
+        {
+          "kind": 14,
+          "values": [
+            14,
+            51,
+            10,
+            0
+          ],
+          "romOffset": 126541
+        },
+        {
+          "kind": 15,
+          "values": [
+            128,
+            1,
+            1,
+            0
+          ],
+          "romOffset": 126545
+        },
+        {
+          "kind": 16,
+          "values": [
+            15,
+            66,
+            16,
+            0
+          ],
+          "romOffset": 126549
+        },
+        {
+          "kind": 17,
+          "values": [
+            12,
+            130,
+            32,
+            0
+          ],
+          "romOffset": 126553
+        },
+        {
+          "kind": 18,
+          "values": [
+            137,
+            0,
+            1,
+            0
+          ],
+          "romOffset": 126557
+        }
+      ],
+      "specificDispatch": "0xe5f9",
+      "specificTables": [
+        "0x8b56",
+        "0x8bd6",
+        "0x8c5f"
+      ],
+      "screenTable": "0xad8d",
+      "indoor": false,
+      "scripts": [
+        {
+          "screen": 0,
+          "pointer": "0xada7",
+          "romOffset": 44471,
+          "bytes": [
+            16,
+            5,
+            96,
+            64,
+            5,
+            96,
+            80,
+            6,
+            192,
+            96,
+            2,
+            161,
+            128,
+            5,
+            96,
+            240,
+            3,
+            64,
+            255
+          ],
+          "kinds": [
+            5,
+            5,
+            6,
+            2,
+            5,
+            3
+          ],
+          "sha256": "c0b76ca80e05a9a6ba057b38578e1fd76c5f5bc40c4a1e6efed6d42a655f9efd"
+        },
+        {
+          "screen": 1,
+          "pointer": "0xadba",
+          "romOffset": 44490,
+          "bytes": [
+            144,
+            6,
+            192,
+            255
+          ],
+          "kinds": [
+            6
+          ],
+          "sha256": "5617d0245e3c26524e82c963a2f4f12fe953d01e92b6cb2408631b407ab52674"
+        },
+        {
+          "screen": 2,
+          "pointer": "0xadbe",
+          "romOffset": 44494,
+          "bytes": [
+            32,
+            18,
+            128,
+            255
+          ],
+          "kinds": [
+            18
+          ],
+          "sha256": "4d80dc71fb0e3730e7aec62b9e7b6d41a8d3c566779754fd4e92c10af6e9992f"
+        },
+        {
+          "screen": 3,
+          "pointer": "0xadc2",
+          "romOffset": 44498,
+          "bytes": [
+            64,
+            18,
+            128,
+            255
+          ],
+          "kinds": [
+            18
+          ],
+          "sha256": "2ec2390fa15216840715edc75352a15fc45ded066c8eb9155abd260293c59cf5"
+        },
+        {
+          "screen": 4,
+          "pointer": "0xadc6",
+          "romOffset": 44502,
+          "bytes": [
+            0,
+            4,
+            160,
+            16,
+            6,
+            96,
+            80,
+            6,
+            97,
+            96,
+            3,
+            67,
+            255
+          ],
+          "kinds": [
+            4,
+            6,
+            6,
+            3
+          ],
+          "sha256": "9a68335ac1dc5b2af0ae12069440b36c09b48b04cb247482355caab5a84d57b7"
+        },
+        {
+          "screen": 5,
+          "pointer": "0xadd3",
+          "romOffset": 44515,
+          "bytes": [
+            32,
+            6,
+            65,
+            64,
+            2,
+            162,
+            128,
+            4,
+            128,
+            255
+          ],
+          "kinds": [
+            6,
+            2,
+            4
+          ],
+          "sha256": "80f97cf7958e2535120b3fab2b02c65ac70fec0908ad00a32fd021c58e796a49"
+        },
+        {
+          "screen": 6,
+          "pointer": "0xaddd",
+          "romOffset": 44525,
+          "bytes": [
+            64,
+            4,
+            128,
+            255
+          ],
+          "kinds": [
+            4
+          ],
+          "sha256": "b464d9615969d70be88a2e9b726e9c8cf54a1d41799b29a10a234152d42915a6"
+        },
+        {
+          "screen": 7,
+          "pointer": "0xade1",
+          "romOffset": 44529,
+          "bytes": [
+            32,
+            7,
+            160,
+            160,
+            7,
+            65,
+            255
+          ],
+          "kinds": [
+            7,
+            7
+          ],
+          "sha256": "5b1712afe10a877af42e93fb2fee28a1c50522c8a870300d254713a0aaf7497d"
+        },
+        {
+          "screen": 8,
+          "pointer": "0xade8",
+          "romOffset": 44536,
+          "bytes": [
+            0,
+            2,
+            195,
+            80,
+            6,
+            128,
+            255
+          ],
+          "kinds": [
+            2,
+            6
+          ],
+          "sha256": "a15417a54a5baaa9cb919b5075835bb31446f5e9907f3f301f8818f65c0015cf"
+        },
+        {
+          "screen": 9,
+          "pointer": "0xadef",
+          "romOffset": 44543,
+          "bytes": [
+            16,
+            67,
+            64,
+            180,
+            224,
+            7,
+            129,
+            255
+          ],
+          "kinds": [
+            3,
+            7
+          ],
+          "sha256": "30e7349ed5dbbe0c1e3e02405d0aed215d804f1bf30790cfe028c0cc29c8d068"
+        },
+        {
+          "screen": 10,
+          "pointer": "0xadf7",
+          "romOffset": 44551,
+          "bytes": [
+            192,
+            4,
+            192,
+            255
+          ],
+          "kinds": [
+            4
+          ],
+          "sha256": "87f4c7a1aa6bc47cb62578e63d5972cab18ebd526ea6128288c70d330d8b4a9d"
+        },
+        {
+          "screen": 11,
+          "pointer": "0xadfb",
+          "romOffset": 44555,
+          "bytes": [
+            64,
+            4,
+            195,
+            168,
+            16,
+            129,
+            177,
+            17,
+            176,
+            180,
+            6,
+            82,
+            192,
+            16,
+            128,
+            255
+          ],
+          "kinds": [
+            4,
+            16,
+            17,
+            6,
+            16
+          ],
+          "sha256": "1153a9bfd827abda6e8a42d05d8777aa79346bdf80421616e5fb37a4d2865699"
+        },
+        {
+          "screen": 12,
+          "pointer": "0xae0b",
+          "romOffset": 44571,
+          "bytes": [
+            255
+          ],
+          "kinds": [],
+          "sha256": "a8100ae6aa1940d0b663bb31cd466142ebbdbd5187131b92d93818987832eb89"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "propertiesPointer": "0xee11",
+      "properties": [
+        {
+          "kind": 0,
+          "values": [
+            130,
+            34,
+            1,
+            0
+          ],
+          "romOffset": 126485
+        },
+        {
+          "kind": 1,
+          "values": [
+            128,
+            0,
+            1,
+            0
+          ],
+          "romOffset": 126489
+        },
+        {
+          "kind": 2,
+          "values": [
+            15,
+            50,
+            240,
+            0
+          ],
+          "romOffset": 126493
+        },
+        {
+          "kind": 3,
+          "values": [
+            11,
+            50,
+            1,
+            0
+          ],
+          "romOffset": 126497
+        },
+        {
+          "kind": 4,
+          "values": [
+            143,
+            34,
+            8,
+            0
+          ],
+          "romOffset": 126501
+        },
+        {
+          "kind": 5,
+          "values": [
+            131,
+            16,
+            1,
+            0
+          ],
+          "romOffset": 126505
+        },
+        {
+          "kind": 6,
+          "values": [
+            131,
+            48,
+            1,
+            0
+          ],
+          "romOffset": 126509
+        },
+        {
+          "kind": 7,
+          "values": [
+            143,
+            48,
+            8,
+            0
+          ],
+          "romOffset": 126513
+        },
+        {
+          "kind": 8,
+          "values": [
+            15,
+            82,
+            241,
+            0
+          ],
+          "romOffset": 126517
+        },
+        {
+          "kind": 9,
+          "values": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "romOffset": 126521
+        },
+        {
+          "kind": 10,
+          "values": [
+            15,
+            66,
+            240,
+            0
+          ],
+          "romOffset": 126525
+        },
+        {
+          "kind": 11,
+          "values": [
+            138,
+            5,
+            1,
+            0
+          ],
+          "romOffset": 126529
+        },
+        {
+          "kind": 12,
+          "values": [
+            131,
+            66,
+            1,
+            0
+          ],
+          "romOffset": 126533
+        },
+        {
+          "kind": 13,
+          "values": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "romOffset": 126537
+        },
+        {
+          "kind": 14,
+          "values": [
+            14,
+            51,
+            10,
+            0
+          ],
+          "romOffset": 126541
+        },
+        {
+          "kind": 15,
+          "values": [
+            128,
+            1,
+            1,
+            0
+          ],
+          "romOffset": 126545
+        },
+        {
+          "kind": 16,
+          "values": [
+            141,
+            2,
+            1,
+            0
+          ],
+          "romOffset": 126561
+        },
+        {
+          "kind": 17,
+          "values": [
+            47,
+            34,
+            5,
+            0
+          ],
+          "romOffset": 126565
+        },
+        {
+          "kind": 18,
+          "values": [
+            129,
+            3,
+            1,
+            0
+          ],
+          "romOffset": 126569
+        },
+        {
+          "kind": 19,
+          "values": [
+            159,
+            53,
+            4,
+            0
+          ],
+          "romOffset": 126573
+        },
+        {
+          "kind": 20,
+          "values": [
+            159,
+            5,
+            1,
+            0
+          ],
+          "romOffset": 126577
+        },
+        {
+          "kind": 21,
+          "values": [
+            19,
+            22,
+            1,
+            0
+          ],
+          "romOffset": 126581
+        },
+        {
+          "kind": 22,
+          "values": [
+            19,
+            22,
+            1,
+            0
+          ],
+          "romOffset": 126585
+        },
+        {
+          "kind": 23,
+          "values": [
+            19,
+            54,
+            1,
+            0
+          ],
+          "romOffset": 126589
+        },
+        {
+          "kind": 24,
+          "values": [
+            19,
+            22,
+            1,
+            0
+          ],
+          "romOffset": 126593
+        },
+        {
+          "kind": 25,
+          "values": [
+            137,
+            0,
+            241,
+            0
+          ],
+          "romOffset": 126597
+        },
+        {
+          "kind": 26,
+          "values": [
+            129,
+            0,
+            241,
+            0
+          ],
+          "romOffset": 126601
+        },
+        {
+          "kind": 27,
+          "values": [
+            143,
+            19,
+            2,
+            1
+          ],
+          "romOffset": 126605
+        },
+        {
+          "kind": 28,
+          "values": [
+            143,
+            2,
+            1,
+            0
+          ],
+          "romOffset": 126609
+        },
+        {
+          "kind": 29,
+          "values": [
+            10,
+            21,
+            1,
+            0
+          ],
+          "romOffset": 126613
+        },
+        {
+          "kind": 30,
+          "values": [
+            3,
+            48,
+            1,
+            0
+          ],
+          "romOffset": 126617
+        },
+        {
+          "kind": 31,
+          "values": [
+            3,
+            48,
+            1,
+            0
+          ],
+          "romOffset": 126621
+        },
+        {
+          "kind": 32,
+          "values": [
+            129,
+            0,
+            241,
+            0
+          ],
+          "romOffset": 126625
+        }
+      ],
+      "specificDispatch": "0xe5ff",
+      "specificTables": [
+        "0x8e74",
+        "0x8f8f",
+        "0x8fd6",
+        "0x9099",
+        "0x911d",
+        "0x92c7",
+        "0x937d",
+        "0x945c",
+        "0x9533",
+        "0x8d26",
+        "0x95c4",
+        "0x8f42",
+        "0x9f0e",
+        "0xa06a",
+        "0xa162",
+        "0xa273",
+        "0xa317"
+      ],
+      "screenTable": "0xae0c",
+      "indoor": true,
+      "scripts": [
+        {
+          "screen": 0,
+          "pointer": "0xae18",
+          "romOffset": 44584,
+          "bytes": [
+            1,
+            17,
+            25,
+            0,
+            104,
+            148,
+            3,
+            255
+          ],
+          "kinds": [
+            25,
+            20
+          ],
+          "sha256": "94a3a22dece6951406313787efbd741aeb206d5341a59414249ad91df9a71625"
+        },
+        {
+          "screen": 1,
+          "pointer": "0xae20",
+          "romOffset": 44592,
+          "bytes": [
+            1,
+            17,
+            89,
+            0,
+            102,
+            212,
+            3,
+            105,
+            211,
+            0,
+            255
+          ],
+          "kinds": [
+            25,
+            20,
+            19
+          ],
+          "sha256": "2fb9bb2fc629a7f7843454d4bf9d4dae9924282380985c40867389a57ffa8a40"
+        },
+        {
+          "screen": 2,
+          "pointer": "0xae2b",
+          "romOffset": 44603,
+          "bytes": [
+            1,
+            17,
+            89,
+            0,
+            120,
+            20,
+            3,
+            102,
+            211,
+            0,
+            105,
+            211,
+            0,
+            255
+          ],
+          "kinds": [
+            25,
+            20,
+            19,
+            19
+          ],
+          "sha256": "fc99bb17645e562206e1e728627956cd933c86833bd4449d1477b54404277bdd"
+        },
+        {
+          "screen": 3,
+          "pointer": "0xae39",
+          "romOffset": 44617,
+          "bytes": [
+            1,
+            17,
+            89,
+            0,
+            17,
+            26,
+            0,
+            88,
+            147,
+            0,
+            104,
+            148,
+            3,
+            255
+          ],
+          "kinds": [
+            25,
+            26,
+            19,
+            20
+          ],
+          "sha256": "59a859296ab56313715a7e0ca4ad8b3181a755136a743f926a1da49e3f888a9b"
+        },
+        {
+          "screen": 4,
+          "pointer": "0xae47",
+          "romOffset": 44631,
+          "bytes": [
+            1,
+            17,
+            89,
+            0,
+            104,
+            148,
+            11,
+            102,
+            211,
+            0,
+            105,
+            211,
+            0,
+            88,
+            19,
+            0,
+            255
+          ],
+          "kinds": [
+            25,
+            20,
+            19,
+            19,
+            19
+          ],
+          "sha256": "c1a722f88bea58ebcdf64da63f40b0d6135e4043f95377523e0650794e69598f"
+        },
+        {
+          "screen": 5,
+          "pointer": "0xae58",
+          "romOffset": 44648,
+          "bytes": [
+            1,
+            72,
+            16,
+            0,
+            101,
+            8,
+            0,
+            104,
+            10,
+            1,
+            107,
+            8,
+            0,
+            149,
+            10,
+            0,
+            152,
+            10,
+            0,
+            155,
+            10,
+            0,
+            255
+          ],
+          "kinds": [
+            16,
+            8,
+            10,
+            8,
+            10,
+            10,
+            10
+          ],
+          "sha256": "2e1b8b4c36cf2f4cadda0376906b7db75d4f168ccca1f9840cdc773925de9dcb"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "propertiesPointer": "0xee55",
+      "properties": [
+        {
+          "kind": 0,
+          "values": [
+            130,
+            34,
+            1,
+            0
+          ],
+          "romOffset": 126485
+        },
+        {
+          "kind": 1,
+          "values": [
+            128,
+            0,
+            1,
+            0
+          ],
+          "romOffset": 126489
+        },
+        {
+          "kind": 2,
+          "values": [
+            15,
+            50,
+            240,
+            0
+          ],
+          "romOffset": 126493
+        },
+        {
+          "kind": 3,
+          "values": [
+            11,
+            50,
+            1,
+            0
+          ],
+          "romOffset": 126497
+        },
+        {
+          "kind": 4,
+          "values": [
+            143,
+            34,
+            8,
+            0
+          ],
+          "romOffset": 126501
+        },
+        {
+          "kind": 5,
+          "values": [
+            131,
+            16,
+            1,
+            0
+          ],
+          "romOffset": 126505
+        },
+        {
+          "kind": 6,
+          "values": [
+            131,
+            48,
+            1,
+            0
+          ],
+          "romOffset": 126509
+        },
+        {
+          "kind": 7,
+          "values": [
+            143,
+            48,
+            8,
+            0
+          ],
+          "romOffset": 126513
+        },
+        {
+          "kind": 8,
+          "values": [
+            15,
+            82,
+            241,
+            0
+          ],
+          "romOffset": 126517
+        },
+        {
+          "kind": 9,
+          "values": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "romOffset": 126521
+        },
+        {
+          "kind": 10,
+          "values": [
+            15,
+            66,
+            240,
+            0
+          ],
+          "romOffset": 126525
+        },
+        {
+          "kind": 11,
+          "values": [
+            138,
+            5,
+            1,
+            0
+          ],
+          "romOffset": 126529
+        },
+        {
+          "kind": 12,
+          "values": [
+            131,
+            66,
+            1,
+            0
+          ],
+          "romOffset": 126533
+        },
+        {
+          "kind": 13,
+          "values": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "romOffset": 126537
+        },
+        {
+          "kind": 14,
+          "values": [
+            14,
+            51,
+            10,
+            0
+          ],
+          "romOffset": 126541
+        },
+        {
+          "kind": 15,
+          "values": [
+            128,
+            1,
+            1,
+            0
+          ],
+          "romOffset": 126545
+        },
+        {
+          "kind": 16,
+          "values": [
+            192,
+            4,
+            240,
+            0
+          ],
+          "romOffset": 126629
+        },
+        {
+          "kind": 17,
+          "values": [
+            128,
+            2,
+            240,
+            0
+          ],
+          "romOffset": 126633
+        },
+        {
+          "kind": 18,
+          "values": [
+            129,
+            0,
+            240,
+            0
+          ],
+          "romOffset": 126637
+        },
+        {
+          "kind": 19,
+          "values": [
+            143,
+            49,
+            5,
+            0
+          ],
+          "romOffset": 126641
+        },
+        {
+          "kind": 20,
+          "values": [
+            141,
+            131,
+            241,
+            2
+          ],
+          "romOffset": 126645
+        },
+        {
+          "kind": 21,
+          "values": [
+            14,
+            82,
+            241,
+            0
+          ],
+          "romOffset": 126649
+        }
+      ],
+      "specificDispatch": "0xe621",
+      "specificTables": [
+        "0x97fe",
+        "0x9855",
+        "0x9870",
+        "0x9896",
+        "0x9931",
+        "0x9aa5"
+      ],
+      "screenTable": "0xae6f",
+      "indoor": false,
+      "scripts": [
+        {
+          "screen": 0,
+          "pointer": "0xae83",
+          "romOffset": 44691,
+          "bytes": [
+            8,
+            5,
+            33,
+            34,
+            18,
+            53,
+            64,
+            2,
+            146,
+            72,
+            5,
+            35,
+            98,
+            18,
+            209,
+            104,
+            69,
+            51,
+            150,
+            130,
+            18,
+            181,
+            162,
+            18,
+            85,
+            192,
+            2,
+            148,
+            226,
+            18,
+            149,
+            255
+          ],
+          "kinds": [
+            5,
+            18,
+            2,
+            5,
+            18,
+            5,
+            18,
+            18,
+            2,
+            18
+          ],
+          "sha256": "c9afe87951845e2e9f83bc8d1e088d051255b40a73df048ac2e0a1fdea0b119b"
+        },
+        {
+          "screen": 1,
+          "pointer": "0xaea3",
+          "romOffset": 44723,
+          "bytes": [
+            56,
+            6,
+            224,
+            96,
+            12,
+            160,
+            255
+          ],
+          "kinds": [
+            6,
+            12
+          ],
+          "sha256": "90dac48f10453e6104193b45da10aaf3f576cfff4be519663ea9494e71e63bde"
+        },
+        {
+          "screen": 2,
+          "pointer": "0xaeaa",
+          "romOffset": 44730,
+          "bytes": [
+            64,
+            4,
+            245,
+            115,
+            81,
+            83,
+            178,
+            128,
+            6,
+            224,
+            208,
+            67,
+            53,
+            160,
+            224,
+            4,
+            16,
+            255
+          ],
+          "kinds": [
+            4,
+            17,
+            6,
+            3,
+            4
+          ],
+          "sha256": "068b94198b7002c82fc81f6c5f86636e278e0a04b39c4ff9aa544a3a0c7caa68"
+        },
+        {
+          "screen": 3,
+          "pointer": "0xaebc",
+          "romOffset": 44748,
+          "bytes": [
+            17,
+            16,
+            80,
+            32,
+            6,
+            32,
+            129,
+            16,
+            113,
+            192,
+            4,
+            16,
+            208,
+            12,
+            80,
+            255
+          ],
+          "kinds": [
+            16,
+            6,
+            16,
+            4,
+            12
+          ],
+          "sha256": "300d445778e785a9ff69e7ef449b9e0d80ebfbde2b86e1ca7978d998cab85f4c"
+        },
+        {
+          "screen": 4,
+          "pointer": "0xaecc",
+          "romOffset": 44764,
+          "bytes": [
+            56,
+            5,
+            114,
+            80,
+            12,
+            224,
+            96,
+            2,
+            179,
+            136,
+            5,
+            166,
+            160,
+            4,
+            240,
+            168,
+            5,
+            70,
+            216,
+            69,
+            133,
+            228,
+            224,
+            4,
+            16,
+            255
+          ],
+          "kinds": [
+            5,
+            12,
+            2,
+            5,
+            4,
+            5,
+            5,
+            4
+          ],
+          "sha256": "845c20435aef667d87f619bb9ad354d1c71d1e918ef7feb85d7aa28e35c3dc00"
+        },
+        {
+          "screen": 5,
+          "pointer": "0xaee6",
+          "romOffset": 44790,
+          "bytes": [
+            32,
+            2,
+            17,
+            48,
+            7,
+            225,
+            56,
+            5,
+            102,
+            64,
+            4,
+            48,
+            121,
+            16,
+            129,
+            255
+          ],
+          "kinds": [
+            2,
+            7,
+            5,
+            4,
+            16
+          ],
+          "sha256": "67d6cafd5d055032c5461c7d2a17c908e4211d0749e0f9aa36336984957af0b7"
+        },
+        {
+          "screen": 6,
+          "pointer": "0xaef6",
+          "romOffset": 44806,
+          "bytes": [
+            40,
+            5,
+            198,
+            64,
+            5,
+            21,
+            88,
+            5,
+            149,
+            120,
+            6,
+            32,
+            232,
+            5,
+            101,
+            255
+          ],
+          "kinds": [
+            5,
+            5,
+            5,
+            6,
+            5
+          ],
+          "sha256": "34340fabec5dff6df264acf9387225e3250f851b69e834b8c5a4a5d656c489d7"
+        },
+        {
+          "screen": 7,
+          "pointer": "0xaf06",
+          "romOffset": 44822,
+          "bytes": [
+            8,
+            5,
+            228,
+            168,
+            85,
+            81,
+            176,
+            193,
+            20,
+            128,
+            255
+          ],
+          "kinds": [
+            5,
+            21,
+            20
+          ],
+          "sha256": "983087ced9c33e4b33b602e03f411772784ad2b4ebe6ee1791f34834fc0a28a4"
+        },
+        {
+          "screen": 8,
+          "pointer": "0xaf10",
+          "romOffset": 44832,
+          "bytes": [
+            255
+          ],
+          "kinds": [],
+          "sha256": "a8100ae6aa1940d0b663bb31cd466142ebbdbd5187131b92d93818987832eb89"
+        },
+        {
+          "screen": 9,
+          "pointer": "0xaf10",
+          "romOffset": 44832,
+          "bytes": [
+            255
+          ],
+          "kinds": [],
+          "sha256": "a8100ae6aa1940d0b663bb31cd466142ebbdbd5187131b92d93818987832eb89"
+        }
+      ]
+    },
+    {
+      "level": 3,
+      "propertiesPointer": "0xee11",
+      "properties": [
+        {
+          "kind": 0,
+          "values": [
+            130,
+            34,
+            1,
+            0
+          ],
+          "romOffset": 126485
+        },
+        {
+          "kind": 1,
+          "values": [
+            128,
+            0,
+            1,
+            0
+          ],
+          "romOffset": 126489
+        },
+        {
+          "kind": 2,
+          "values": [
+            15,
+            50,
+            240,
+            0
+          ],
+          "romOffset": 126493
+        },
+        {
+          "kind": 3,
+          "values": [
+            11,
+            50,
+            1,
+            0
+          ],
+          "romOffset": 126497
+        },
+        {
+          "kind": 4,
+          "values": [
+            143,
+            34,
+            8,
+            0
+          ],
+          "romOffset": 126501
+        },
+        {
+          "kind": 5,
+          "values": [
+            131,
+            16,
+            1,
+            0
+          ],
+          "romOffset": 126505
+        },
+        {
+          "kind": 6,
+          "values": [
+            131,
+            48,
+            1,
+            0
+          ],
+          "romOffset": 126509
+        },
+        {
+          "kind": 7,
+          "values": [
+            143,
+            48,
+            8,
+            0
+          ],
+          "romOffset": 126513
+        },
+        {
+          "kind": 8,
+          "values": [
+            15,
+            82,
+            241,
+            0
+          ],
+          "romOffset": 126517
+        },
+        {
+          "kind": 9,
+          "values": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "romOffset": 126521
+        },
+        {
+          "kind": 10,
+          "values": [
+            15,
+            66,
+            240,
+            0
+          ],
+          "romOffset": 126525
+        },
+        {
+          "kind": 11,
+          "values": [
+            138,
+            5,
+            1,
+            0
+          ],
+          "romOffset": 126529
+        },
+        {
+          "kind": 12,
+          "values": [
+            131,
+            66,
+            1,
+            0
+          ],
+          "romOffset": 126533
+        },
+        {
+          "kind": 13,
+          "values": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "romOffset": 126537
+        },
+        {
+          "kind": 14,
+          "values": [
+            14,
+            51,
+            10,
+            0
+          ],
+          "romOffset": 126541
+        },
+        {
+          "kind": 15,
+          "values": [
+            128,
+            1,
+            1,
+            0
+          ],
+          "romOffset": 126545
+        },
+        {
+          "kind": 16,
+          "values": [
+            141,
+            2,
+            1,
+            0
+          ],
+          "romOffset": 126561
+        },
+        {
+          "kind": 17,
+          "values": [
+            47,
+            34,
+            5,
+            0
+          ],
+          "romOffset": 126565
+        },
+        {
+          "kind": 18,
+          "values": [
+            129,
+            3,
+            1,
+            0
+          ],
+          "romOffset": 126569
+        },
+        {
+          "kind": 19,
+          "values": [
+            159,
+            53,
+            4,
+            0
+          ],
+          "romOffset": 126573
+        },
+        {
+          "kind": 20,
+          "values": [
+            159,
+            5,
+            1,
+            0
+          ],
+          "romOffset": 126577
+        },
+        {
+          "kind": 21,
+          "values": [
+            19,
+            22,
+            1,
+            0
+          ],
+          "romOffset": 126581
+        },
+        {
+          "kind": 22,
+          "values": [
+            19,
+            22,
+            1,
+            0
+          ],
+          "romOffset": 126585
+        },
+        {
+          "kind": 23,
+          "values": [
+            19,
+            54,
+            1,
+            0
+          ],
+          "romOffset": 126589
+        },
+        {
+          "kind": 24,
+          "values": [
+            19,
+            22,
+            1,
+            0
+          ],
+          "romOffset": 126593
+        },
+        {
+          "kind": 25,
+          "values": [
+            137,
+            0,
+            241,
+            0
+          ],
+          "romOffset": 126597
+        },
+        {
+          "kind": 26,
+          "values": [
+            129,
+            0,
+            241,
+            0
+          ],
+          "romOffset": 126601
+        },
+        {
+          "kind": 27,
+          "values": [
+            143,
+            19,
+            2,
+            1
+          ],
+          "romOffset": 126605
+        },
+        {
+          "kind": 28,
+          "values": [
+            143,
+            2,
+            1,
+            0
+          ],
+          "romOffset": 126609
+        },
+        {
+          "kind": 29,
+          "values": [
+            10,
+            21,
+            1,
+            0
+          ],
+          "romOffset": 126613
+        },
+        {
+          "kind": 30,
+          "values": [
+            3,
+            48,
+            1,
+            0
+          ],
+          "romOffset": 126617
+        },
+        {
+          "kind": 31,
+          "values": [
+            3,
+            48,
+            1,
+            0
+          ],
+          "romOffset": 126621
+        },
+        {
+          "kind": 32,
+          "values": [
+            129,
+            0,
+            241,
+            0
+          ],
+          "romOffset": 126625
+        }
+      ],
+      "specificDispatch": "0xe5ff",
+      "specificTables": [
+        "0x8e74",
+        "0x8f8f",
+        "0x8fd6",
+        "0x9099",
+        "0x911d",
+        "0x92c7",
+        "0x937d",
+        "0x945c",
+        "0x9533",
+        "0x8d26",
+        "0x95c4",
+        "0x8f42",
+        "0x9f0e",
+        "0xa06a",
+        "0xa162",
+        "0xa273",
+        "0xa317"
+      ],
+      "screenTable": "0xaf11",
+      "indoor": true,
+      "scripts": [
+        {
+          "screen": 0,
+          "pointer": "0xaf23",
+          "romOffset": 44851,
+          "bytes": [
+            1,
+            17,
+            25,
+            1,
+            104,
+            148,
+            4,
+            102,
+            211,
+            0,
+            105,
+            211,
+            0,
+            255
+          ],
+          "kinds": [
+            25,
+            20,
+            19,
+            19
+          ],
+          "sha256": "d6a5ff34148039ba916f429d386419c255d3a268e9db9b904c9e8c99a1b61293"
+        },
+        {
+          "screen": 1,
+          "pointer": "0xaf31",
+          "romOffset": 44865,
+          "bytes": [
+            4,
+            17,
+            25,
+            1,
+            118,
+            84,
+            3,
+            119,
+            84,
+            1,
+            120,
+            84,
+            1,
+            121,
+            84,
+            3,
+            255
+          ],
+          "kinds": [
+            25,
+            20,
+            20,
+            20,
+            20
+          ],
+          "sha256": "ae05b39cd9fc7b7ad0f6bea6a9635a28da8da24410bb8f782606342fc4170217"
+        },
+        {
+          "screen": 2,
+          "pointer": "0xaf42",
+          "romOffset": 44882,
+          "bytes": [
+            2,
+            17,
+            25,
+            1,
+            103,
+            212,
+            4,
+            104,
+            212,
+            4,
+            88,
+            147,
+            0,
+            255
+          ],
+          "kinds": [
+            25,
+            20,
+            20,
+            19
+          ],
+          "sha256": "cd195d0dd2eb1bfaef2dc16a9cc32c7382b3f2b0a0f13261802d11444fb3c414"
+        },
+        {
+          "screen": 3,
+          "pointer": "0xaf50",
+          "romOffset": 44896,
+          "bytes": [
+            2,
+            17,
+            25,
+            1,
+            104,
+            19,
+            0,
+            119,
+            84,
+            3,
+            120,
+            84,
+            3,
+            255
+          ],
+          "kinds": [
+            25,
+            19,
+            20,
+            20
+          ],
+          "sha256": "2af325ad931e6e0b53100ab1205c3fb688745cfaa999413d83435dc2d1dd34e9"
+        },
+        {
+          "screen": 4,
+          "pointer": "0xaf5e",
+          "romOffset": 44910,
+          "bytes": [
+            2,
+            17,
+            25,
+            1,
+            102,
+            212,
+            3,
+            104,
+            147,
+            0,
+            105,
+            212,
+            3,
+            255
+          ],
+          "kinds": [
+            25,
+            20,
+            19,
+            20
+          ],
+          "sha256": "bc36d29f00de58219aef3ed1567f51dc1a50567889f9e49936e96814d2ac8cb3"
+        },
+        {
+          "screen": 5,
+          "pointer": "0xaf6c",
+          "romOffset": 44924,
+          "bytes": [
+            1,
+            17,
+            26,
+            1,
+            17,
+            25,
+            1,
+            104,
+            148,
+            3,
+            255
+          ],
+          "kinds": [
+            26,
+            25,
+            20
+          ],
+          "sha256": "71e7d6726eef234be6c2a25d1f329e4a2602376062b83a405f3f39f488dd2e00"
+        },
+        {
+          "screen": 6,
+          "pointer": "0xaf77",
+          "romOffset": 44935,
+          "bytes": [
+            1,
+            17,
+            25,
+            1,
+            88,
+            148,
+            3,
+            104,
+            147,
+            0,
+            255
+          ],
+          "kinds": [
+            25,
+            20,
+            19
+          ],
+          "sha256": "787df89fdaf82817dce64f39733cc52d024d184514d752fd2e1371f3647c3c78"
+        },
+        {
+          "screen": 7,
+          "pointer": "0xaf82",
+          "romOffset": 44946,
+          "bytes": [
+            1,
+            17,
+            25,
+            1,
+            88,
+            19,
+            0,
+            102,
+            211,
+            0,
+            104,
+            148,
+            11,
+            105,
+            211,
+            0,
+            255
+          ],
+          "kinds": [
+            25,
+            19,
+            19,
+            20,
+            19
+          ],
+          "sha256": "19383b25f49642a05fbb19659c5d7fc748eb1f595220cac2b63b91b79495de34"
+        },
+        {
+          "screen": 8,
+          "pointer": "0xaf93",
+          "romOffset": 44963,
+          "bytes": [
+            2,
+            17,
+            32,
+            0,
+            54,
+            92,
+            0,
+            57,
+            92,
+            0,
+            88,
+            8,
+            0,
+            133,
+            10,
+            0,
+            136,
+            10,
+            1,
+            139,
+            10,
+            0,
+            255
+          ],
+          "kinds": [
+            32,
+            28,
+            28,
+            8,
+            10,
+            10,
+            10
+          ],
+          "sha256": "682c0ef6a9be418c34fae58f038fd03e0466010174609760c70c838ac6d65e1a"
+        }
+      ]
+    },
+    {
+      "level": 4,
+      "propertiesPointer": "0xee6d",
+      "properties": [
+        {
+          "kind": 0,
+          "values": [
+            130,
+            34,
+            1,
+            0
+          ],
+          "romOffset": 126485
+        },
+        {
+          "kind": 1,
+          "values": [
+            128,
+            0,
+            1,
+            0
+          ],
+          "romOffset": 126489
+        },
+        {
+          "kind": 2,
+          "values": [
+            15,
+            50,
+            240,
+            0
+          ],
+          "romOffset": 126493
+        },
+        {
+          "kind": 3,
+          "values": [
+            11,
+            50,
+            1,
+            0
+          ],
+          "romOffset": 126497
+        },
+        {
+          "kind": 4,
+          "values": [
+            143,
+            34,
+            8,
+            0
+          ],
+          "romOffset": 126501
+        },
+        {
+          "kind": 5,
+          "values": [
+            131,
+            16,
+            1,
+            0
+          ],
+          "romOffset": 126505
+        },
+        {
+          "kind": 6,
+          "values": [
+            131,
+            48,
+            1,
+            0
+          ],
+          "romOffset": 126509
+        },
+        {
+          "kind": 7,
+          "values": [
+            143,
+            48,
+            8,
+            0
+          ],
+          "romOffset": 126513
+        },
+        {
+          "kind": 8,
+          "values": [
+            15,
+            82,
+            241,
+            0
+          ],
+          "romOffset": 126517
+        },
+        {
+          "kind": 9,
+          "values": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "romOffset": 126521
+        },
+        {
+          "kind": 10,
+          "values": [
+            15,
+            66,
+            240,
+            0
+          ],
+          "romOffset": 126525
+        },
+        {
+          "kind": 11,
+          "values": [
+            138,
+            5,
+            1,
+            0
+          ],
+          "romOffset": 126529
+        },
+        {
+          "kind": 12,
+          "values": [
+            131,
+            66,
+            1,
+            0
+          ],
+          "romOffset": 126533
+        },
+        {
+          "kind": 13,
+          "values": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "romOffset": 126537
+        },
+        {
+          "kind": 14,
+          "values": [
+            14,
+            51,
+            10,
+            0
+          ],
+          "romOffset": 126541
+        },
+        {
+          "kind": 15,
+          "values": [
+            128,
+            1,
+            1,
+            0
+          ],
+          "romOffset": 126545
+        },
+        {
+          "kind": 16,
+          "values": [
+            129,
+            0,
+            240,
+            0
+          ],
+          "romOffset": 126653
+        },
+        {
+          "kind": 17,
+          "values": [
+            129,
+            2,
+            241,
+            0
+          ],
+          "romOffset": 126657
+        },
+        {
+          "kind": 18,
+          "values": [
+            133,
+            121,
+            240,
+            0
+          ],
+          "romOffset": 126661
+        },
+        {
+          "kind": 19,
+          "values": [
+            129,
+            0,
+            240,
+            0
+          ],
+          "romOffset": 126665
+        },
+        {
+          "kind": 20,
+          "values": [
+            141,
+            147,
+            32,
+            0
+          ],
+          "romOffset": 126669
+        },
+        {
+          "kind": 21,
+          "values": [
+            2,
+            32,
+            1,
+            0
+          ],
+          "romOffset": 126673
+        },
+        {
+          "kind": 22,
+          "values": [
+            10,
+            18,
+            1,
+            0
+          ],
+          "romOffset": 126677
+        }
+      ],
+      "specificDispatch": "0xe62d",
+      "specificTables": [
+        "0xa39d",
+        "0xa3c4",
+        "0xa427",
+        "0xa9a6",
+        "0xa6bd",
+        "0xa90f",
+        "0xa98f"
+      ],
+      "screenTable": "0xafaa",
+      "indoor": false,
+      "scripts": [
+        {
+          "screen": 0,
+          "pointer": "0xafd6",
+          "romOffset": 45030,
+          "bytes": [
+            32,
+            16,
+            96,
+            80,
+            16,
+            97,
+            96,
+            14,
+            130,
+            216,
+            16,
+            96,
+            255
+          ],
+          "kinds": [
+            16,
+            16,
+            14,
+            16
+          ],
+          "sha256": "e8b261434f4a312946c9de33fc609c942b8c4fde5b15553bf8020b05fcf43dc0"
+        },
+        {
+          "screen": 1,
+          "pointer": "0xafe3",
+          "romOffset": 45043,
+          "bytes": [
+            0,
+            14,
+            129,
+            8,
+            16,
+            99,
+            128,
+            2,
+            161,
+            255
+          ],
+          "kinds": [
+            14,
+            16,
+            2
+          ],
+          "sha256": "e341cce883c19306a531eaa45dd6163ff0f5a4c3b7c194b70a1fb5072bd1846b"
+        },
+        {
+          "screen": 2,
+          "pointer": "0xafed",
+          "romOffset": 45053,
+          "bytes": [
+            96,
+            14,
+            130,
+            192,
+            14,
+            178,
+            255
+          ],
+          "kinds": [
+            14,
+            14
+          ],
+          "sha256": "4729be3610cf7f7daa70ace5b7124a3885743ff8ffa1ad6a706f526a4f3089b3"
+        },
+        {
+          "screen": 3,
+          "pointer": "0xaff4",
+          "romOffset": 45060,
+          "bytes": [
+            32,
+            14,
+            81,
+            96,
+            3,
+            48,
+            216,
+            16,
+            67,
+            240,
+            16,
+            67,
+            255
+          ],
+          "kinds": [
+            14,
+            3,
+            16,
+            16
+          ],
+          "sha256": "2a94fc08c5dafb877dc84897e4c1d93edc5dfd174bf58c00a5d1fe90f0be433a"
+        },
+        {
+          "screen": 4,
+          "pointer": "0xb001",
+          "romOffset": 45073,
+          "bytes": [
+            128,
+            16,
+            83,
+            192,
+            16,
+            83,
+            208,
+            14,
+            129,
+            255
+          ],
+          "kinds": [
+            16,
+            16,
+            14
+          ],
+          "sha256": "f98cf0c150943e1f8844f21545816d4ade9a6c5b8787601467876279aabff666"
+        },
+        {
+          "screen": 5,
+          "pointer": "0xb00b",
+          "romOffset": 45083,
+          "bytes": [
+            96,
+            2,
+            130,
+            255
+          ],
+          "kinds": [
+            2
+          ],
+          "sha256": "d2a8add6e1cea9a620542df481d5b7ce315fb25175e4643b680c3fd22117d0a0"
+        },
+        {
+          "screen": 6,
+          "pointer": "0xb00f",
+          "romOffset": 45087,
+          "bytes": [
+            64,
+            131,
+            48,
+            118,
+            179,
+            64,
+            12,
+            216,
+            255
+          ],
+          "kinds": [
+            3,
+            12
+          ],
+          "sha256": "95b303cdd97fadd3f078f2658ed9b42945912ae6811c32bd0006636983219032"
+        },
+        {
+          "screen": 7,
+          "pointer": "0xb018",
+          "romOffset": 45096,
+          "bytes": [
+            16,
+            12,
+            216,
+            160,
+            6,
+            128,
+            255
+          ],
+          "kinds": [
+            12,
+            6
+          ],
+          "sha256": "5d6226f02e1a2fa691f697c37a5d2998a571a50d2b64ef277f31628990b06a1d"
+        },
+        {
+          "screen": 8,
+          "pointer": "0xb01f",
+          "romOffset": 45103,
+          "bytes": [
+            0,
+            19,
+            176,
+            64,
+            19,
+            176,
+            128,
+            19,
+            176,
+            192,
+            19,
+            176,
+            255
+          ],
+          "kinds": [
+            19,
+            19,
+            19,
+            19
+          ],
+          "sha256": "cf6147b9cad42dcdabcaf0d2ccd23b36b63574c63751a8974f5e12b38ef516a4"
+        },
+        {
+          "screen": 9,
+          "pointer": "0xb02c",
+          "romOffset": 45116,
+          "bytes": [
+            1,
+            18,
+            50,
+            0,
+            19,
+            176,
+            255
+          ],
+          "kinds": [
+            18,
+            19
+          ],
+          "sha256": "6d7a024c32ed5ecb8dbacd96cc5e97a3df470f96c86a85e56f742739748373ba"
+        },
+        {
+          "screen": 10,
+          "pointer": "0xb033",
+          "romOffset": 45123,
+          "bytes": [
+            128,
+            19,
+            176,
+            192,
+            19,
+            176,
+            255
+          ],
+          "kinds": [
+            19,
+            19
+          ],
+          "sha256": "7e5e54688993c7469e6bfcd73d7b3e185589123088a434b0b806bdadd0970665"
+        },
+        {
+          "screen": 11,
+          "pointer": "0xb03a",
+          "romOffset": 45130,
+          "bytes": [
+            168,
+            14,
+            161,
+            255
+          ],
+          "kinds": [
+            14
+          ],
+          "sha256": "42e9c9396e5050cbea9d808b16dac622cf5488fe82f19bb365101a0367c317a7"
+        },
+        {
+          "screen": 12,
+          "pointer": "0xb03e",
+          "romOffset": 45134,
+          "bytes": [
+            64,
+            19,
+            176,
+            128,
+            19,
+            176,
+            192,
+            19,
+            176,
+            255
+          ],
+          "kinds": [
+            19,
+            19,
+            19
+          ],
+          "sha256": "2bcea63926cbbe8b6c57e960ebf4d961d0523d458f41cb49e911a2d53f59c65f"
+        },
+        {
+          "screen": 13,
+          "pointer": "0xb048",
+          "romOffset": 45144,
+          "bytes": [
+            1,
+            18,
+            51,
+            0,
+            19,
+            176,
+            255
+          ],
+          "kinds": [
+            18,
+            19
+          ],
+          "sha256": "6ee3606e7bfd8b89341c71ea14b8949a162db51e9b94c08e70d038aec79a080a"
+        },
+        {
+          "screen": 14,
+          "pointer": "0xb04f",
+          "romOffset": 45151,
+          "bytes": [
+            128,
+            19,
+            176,
+            192,
+            19,
+            176,
+            208,
+            14,
+            161,
+            255
+          ],
+          "kinds": [
+            19,
+            19,
+            14
+          ],
+          "sha256": "bbe5950b01d5737d538e8529b80f241c0133a7e1d082565d020a400baf3b2aef"
+        },
+        {
+          "screen": 15,
+          "pointer": "0xb059",
+          "romOffset": 45161,
+          "bytes": [
+            96,
+            16,
+            82,
+            160,
+            16,
+            83,
+            232,
+            16,
+            83,
+            255
+          ],
+          "kinds": [
+            16,
+            16,
+            16
+          ],
+          "sha256": "1320318fd5c66888e9c70cd3183791144429f561db829c6e6cd273c314500de8"
+        },
+        {
+          "screen": 16,
+          "pointer": "0xb063",
+          "romOffset": 45171,
+          "bytes": [
+            96,
+            2,
+            164,
+            255
+          ],
+          "kinds": [
+            2
+          ],
+          "sha256": "5d39f5c7986466fff6e7ef2be00fac70f514b12ab3c12b11910a453c6393e497"
+        },
+        {
+          "screen": 17,
+          "pointer": "0xb067",
+          "romOffset": 45175,
+          "bytes": [
+            0,
+            16,
+            128,
+            96,
+            16,
+            129,
+            176,
+            14,
+            129,
+            192,
+            16,
+            130,
+            255
+          ],
+          "kinds": [
+            16,
+            16,
+            14,
+            16
+          ],
+          "sha256": "9c28fe36aa74ba26be6716191e977f30589a3fe93fdd28115a86ce7fc964bf12"
+        },
+        {
+          "screen": 18,
+          "pointer": "0xb074",
+          "romOffset": 45188,
+          "bytes": [
+            0,
+            19,
+            176,
+            64,
+            19,
+            176,
+            128,
+            19,
+            176,
+            192,
+            19,
+            176,
+            255
+          ],
+          "kinds": [
+            19,
+            19,
+            19,
+            19
+          ],
+          "sha256": "cf6147b9cad42dcdabcaf0d2ccd23b36b63574c63751a8974f5e12b38ef516a4"
+        },
+        {
+          "screen": 19,
+          "pointer": "0xb081",
+          "romOffset": 45201,
+          "bytes": [
+            255
+          ],
+          "kinds": [],
+          "sha256": "a8100ae6aa1940d0b663bb31cd466142ebbdbd5187131b92d93818987832eb89"
+        },
+        {
+          "screen": 20,
+          "pointer": "0xb082",
+          "romOffset": 45202,
+          "bytes": [
+            1,
+            20,
+            48,
+            255
+          ],
+          "kinds": [
+            20
+          ],
+          "sha256": "599d5f2c3e39ff9b36dee2a8f4f81758fcd35f09e4e2164f25d2694d3763f0bc"
+        },
+        {
+          "screen": 21,
+          "pointer": "0xb085",
+          "romOffset": 45205,
+          "bytes": [
+            255
+          ],
+          "kinds": [],
+          "sha256": "a8100ae6aa1940d0b663bb31cd466142ebbdbd5187131b92d93818987832eb89"
+        }
+      ]
+    },
+    {
+      "level": 5,
+      "propertiesPointer": "0xee89",
+      "properties": [
+        {
+          "kind": 0,
+          "values": [
+            130,
+            34,
+            1,
+            0
+          ],
+          "romOffset": 126485
+        },
+        {
+          "kind": 1,
+          "values": [
+            128,
+            0,
+            1,
+            0
+          ],
+          "romOffset": 126489
+        },
+        {
+          "kind": 2,
+          "values": [
+            15,
+            50,
+            240,
+            0
+          ],
+          "romOffset": 126493
+        },
+        {
+          "kind": 3,
+          "values": [
+            11,
+            50,
+            1,
+            0
+          ],
+          "romOffset": 126497
+        },
+        {
+          "kind": 4,
+          "values": [
+            143,
+            34,
+            8,
+            0
+          ],
+          "romOffset": 126501
+        },
+        {
+          "kind": 5,
+          "values": [
+            131,
+            16,
+            1,
+            0
+          ],
+          "romOffset": 126505
+        },
+        {
+          "kind": 6,
+          "values": [
+            131,
+            48,
+            1,
+            0
+          ],
+          "romOffset": 126509
+        },
+        {
+          "kind": 7,
+          "values": [
+            143,
+            48,
+            8,
+            0
+          ],
+          "romOffset": 126513
+        },
+        {
+          "kind": 8,
+          "values": [
+            15,
+            82,
+            241,
+            0
+          ],
+          "romOffset": 126517
+        },
+        {
+          "kind": 9,
+          "values": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "romOffset": 126521
+        },
+        {
+          "kind": 10,
+          "values": [
+            15,
+            66,
+            240,
+            0
+          ],
+          "romOffset": 126525
+        },
+        {
+          "kind": 11,
+          "values": [
+            138,
+            5,
+            1,
+            0
+          ],
+          "romOffset": 126529
+        },
+        {
+          "kind": 12,
+          "values": [
+            131,
+            66,
+            1,
+            0
+          ],
+          "romOffset": 126533
+        },
+        {
+          "kind": 13,
+          "values": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "romOffset": 126537
+        },
+        {
+          "kind": 14,
+          "values": [
+            14,
+            51,
+            10,
+            0
+          ],
+          "romOffset": 126541
+        },
+        {
+          "kind": 15,
+          "values": [
+            128,
+            1,
+            1,
+            0
+          ],
+          "romOffset": 126545
+        },
+        {
+          "kind": 16,
+          "values": [
+            129,
+            15,
+            240,
+            0
+          ],
+          "romOffset": 126681
+        },
+        {
+          "kind": 17,
+          "values": [
+            129,
+            15,
+            240,
+            0
+          ],
+          "romOffset": 126685
+        },
+        {
+          "kind": 18,
+          "values": [
+            129,
+            15,
+            240,
+            0
+          ],
+          "romOffset": 126689
+        },
+        {
+          "kind": 19,
+          "values": [
+            4,
+            157,
+            1,
+            2
+          ],
+          "romOffset": 126693
+        },
+        {
+          "kind": 20,
+          "values": [
+            128,
+            5,
+            1,
+            0
+          ],
+          "romOffset": 126697
+        }
+      ],
+      "specificDispatch": "0xe63b",
+      "specificTables": [
+        "0xa9bc",
+        "0xaa70",
+        "0xaabf",
+        "0xaba2",
+        "0xae65"
+      ],
+      "screenTable": "0xb086",
+      "indoor": false,
+      "scripts": [
+        {
+          "screen": 0,
+          "pointer": "0xb0a0",
+          "romOffset": 45232,
+          "bytes": [
+            64,
+            5,
+            132,
+            96,
+            5,
+            104,
+            192,
+            2,
+            161,
+            224,
+            6,
+            96,
+            255
+          ],
+          "kinds": [
+            5,
+            5,
+            2,
+            6
+          ],
+          "sha256": "122446434046930faa61461deddaa8f0e30ad65a24feece5cb8d3859aea3b39f"
+        },
+        {
+          "screen": 1,
+          "pointer": "0xb0ad",
+          "romOffset": 45245,
+          "bytes": [
+            128,
+            14,
+            97,
+            224,
+            14,
+            97,
+            240,
+            14,
+            193,
+            255
+          ],
+          "kinds": [
+            14,
+            14,
+            14
+          ],
+          "sha256": "1ea8637efb79c24bddf8643bbddabad4d9453ebd6d83c68ef127c11bc33d5741"
+        },
+        {
+          "screen": 2,
+          "pointer": "0xb0b7",
+          "romOffset": 45255,
+          "bytes": [
+            160,
+            14,
+            193,
+            160,
+            6,
+            144,
+            255
+          ],
+          "kinds": [
+            14,
+            6
+          ],
+          "sha256": "df2a45e27c2e94434ecc560d0232f5b872aa2a90724953e6f0e1bf4ca9d9b12f"
+        },
+        {
+          "screen": 3,
+          "pointer": "0xb0be",
+          "romOffset": 45262,
+          "bytes": [
+            64,
+            2,
+            172,
+            72,
+            16,
+            38,
+            200,
+            16,
+            37,
+            224,
+            14,
+            145,
+            240,
+            14,
+            193,
+            255
+          ],
+          "kinds": [
+            2,
+            16,
+            16,
+            14,
+            14
+          ],
+          "sha256": "ade51aa15c941f578b97af5e46e91026aa7bb415754aec5e9e2238091b5a262e"
+        },
+        {
+          "screen": 4,
+          "pointer": "0xb0ce",
+          "romOffset": 45278,
+          "bytes": [
+            40,
+            16,
+            39,
+            184,
+            145,
+            88,
+            132,
+            178,
+            255
+          ],
+          "kinds": [
+            16,
+            17
+          ],
+          "sha256": "215da57d445ab9085f5cafd39492df40d97dee8b1e2647d0da69b21710f77f6b"
+        },
+        {
+          "screen": 5,
+          "pointer": "0xb0d7",
+          "romOffset": 45287,
+          "bytes": [
+            88,
+            81,
+            108,
+            153,
+            168,
+            16,
+            38,
+            160,
+            2,
+            173,
+            200,
+            6,
+            48,
+            248,
+            17,
+            194,
+            255
+          ],
+          "kinds": [
+            17,
+            16,
+            2,
+            6,
+            17
+          ],
+          "sha256": "0e3faa6a69f80f59a8c4efb432eeaa38673423bf5833b9ab15ea1ffa6c3203eb"
+        },
+        {
+          "screen": 6,
+          "pointer": "0xb0e8",
+          "romOffset": 45304,
+          "bytes": [
+            88,
+            81,
+            57,
+            100,
+            168,
+            18,
+            110,
+            255
+          ],
+          "kinds": [
+            17,
+            18
+          ],
+          "sha256": "d05952cf05abda7c763740b87fe94d44332739952ae2f80ac9723957928c0c44"
+        },
+        {
+          "screen": 7,
+          "pointer": "0xb0f0",
+          "romOffset": 45312,
+          "bytes": [
+            64,
+            14,
+            97,
+            72,
+            18,
+            153,
+            104,
+            16,
+            37,
+            168,
+            18,
+            192,
+            232,
+            16,
+            39,
+            255
+          ],
+          "kinds": [
+            14,
+            18,
+            16,
+            18,
+            16
+          ],
+          "sha256": "41a8d09a9fab3257c495ff35bf3b9d4bdf1c4c9fdc3d57fc826a2d5a841cbaf2"
+        },
+        {
+          "screen": 8,
+          "pointer": "0xb100",
+          "romOffset": 45328,
+          "bytes": [
+            96,
+            78,
+            145,
+            193,
+            104,
+            82,
+            106,
+            202,
+            232,
+            18,
+            100,
+            240,
+            14,
+            145,
+            255
+          ],
+          "kinds": [
+            14,
+            18,
+            18,
+            14
+          ],
+          "sha256": "43cc588f8b45d6718e8b80142bd286b61cc03f27c45bb4961e5a65ea0bbfb75d"
+        },
+        {
+          "screen": 9,
+          "pointer": "0xb10f",
+          "romOffset": 45343,
+          "bytes": [
+            104,
+            16,
+            35,
+            255
+          ],
+          "kinds": [
+            16
+          ],
+          "sha256": "c835f3a47a5ce86625ffda329b266428c2b3a71fd4b727082db25cfd92e1c685"
+        },
+        {
+          "screen": 10,
+          "pointer": "0xb113",
+          "romOffset": 45347,
+          "bytes": [
+            255
+          ],
+          "kinds": [],
+          "sha256": "a8100ae6aa1940d0b663bb31cd466142ebbdbd5187131b92d93818987832eb89"
+        },
+        {
+          "screen": 11,
+          "pointer": "0xb114",
+          "romOffset": 45348,
+          "bytes": [
+            177,
+            19,
+            160,
+            255
+          ],
+          "kinds": [
+            19
+          ],
+          "sha256": "5a66def9b666b9d2802617dc57f060ac7aef4d6b8ae6a3cb4b9cd29c33f398b5"
+        },
+        {
+          "screen": 12,
+          "pointer": "0xb118",
+          "romOffset": 45352,
+          "bytes": [
+            255
+          ],
+          "kinds": [],
+          "sha256": "a8100ae6aa1940d0b663bb31cd466142ebbdbd5187131b92d93818987832eb89"
+        }
+      ]
+    },
+    {
+      "level": 6,
+      "propertiesPointer": "0xee9d",
+      "properties": [
+        {
+          "kind": 0,
+          "values": [
+            130,
+            34,
+            1,
+            0
+          ],
+          "romOffset": 126485
+        },
+        {
+          "kind": 1,
+          "values": [
+            128,
+            0,
+            1,
+            0
+          ],
+          "romOffset": 126489
+        },
+        {
+          "kind": 2,
+          "values": [
+            15,
+            50,
+            240,
+            0
+          ],
+          "romOffset": 126493
+        },
+        {
+          "kind": 3,
+          "values": [
+            11,
+            50,
+            1,
+            0
+          ],
+          "romOffset": 126497
+        },
+        {
+          "kind": 4,
+          "values": [
+            143,
+            34,
+            8,
+            0
+          ],
+          "romOffset": 126501
+        },
+        {
+          "kind": 5,
+          "values": [
+            131,
+            16,
+            1,
+            0
+          ],
+          "romOffset": 126505
+        },
+        {
+          "kind": 6,
+          "values": [
+            131,
+            48,
+            1,
+            0
+          ],
+          "romOffset": 126509
+        },
+        {
+          "kind": 7,
+          "values": [
+            143,
+            48,
+            8,
+            0
+          ],
+          "romOffset": 126513
+        },
+        {
+          "kind": 8,
+          "values": [
+            15,
+            82,
+            241,
+            0
+          ],
+          "romOffset": 126517
+        },
+        {
+          "kind": 9,
+          "values": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "romOffset": 126521
+        },
+        {
+          "kind": 10,
+          "values": [
+            15,
+            66,
+            240,
+            0
+          ],
+          "romOffset": 126525
+        },
+        {
+          "kind": 11,
+          "values": [
+            138,
+            5,
+            1,
+            0
+          ],
+          "romOffset": 126529
+        },
+        {
+          "kind": 12,
+          "values": [
+            131,
+            66,
+            1,
+            0
+          ],
+          "romOffset": 126533
+        },
+        {
+          "kind": 13,
+          "values": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "romOffset": 126537
+        },
+        {
+          "kind": 14,
+          "values": [
+            14,
+            51,
+            10,
+            0
+          ],
+          "romOffset": 126541
+        },
+        {
+          "kind": 15,
+          "values": [
+            128,
+            1,
+            1,
+            0
+          ],
+          "romOffset": 126545
+        },
+        {
+          "kind": 16,
+          "values": [
+            128,
+            10,
+            240,
+            0
+          ],
+          "romOffset": 126701
+        },
+        {
+          "kind": 17,
+          "values": [
+            141,
+            15,
+            16,
+            0
+          ],
+          "romOffset": 126705
+        },
+        {
+          "kind": 18,
+          "values": [
+            12,
+            15,
+            16,
+            0
+          ],
+          "romOffset": 126709
+        },
+        {
+          "kind": 19,
+          "values": [
+            129,
+            0,
+            240,
+            0
+          ],
+          "romOffset": 126713
+        },
+        {
+          "kind": 20,
+          "values": [
+            110,
+            12,
+            3,
+            0
+          ],
+          "romOffset": 126717
+        },
+        {
+          "kind": 21,
+          "values": [
+            110,
+            12,
+            3,
+            0
+          ],
+          "romOffset": 126721
+        },
+        {
+          "kind": 22,
+          "values": [
+            12,
+            147,
+            32,
+            0
+          ],
+          "romOffset": 126725
+        },
+        {
+          "kind": 23,
+          "values": [
+            143,
+            114,
+            8,
+            0
+          ],
+          "romOffset": 126729
+        },
+        {
+          "kind": 24,
+          "values": [
+            137,
+            0,
+            1,
+            0
+          ],
+          "romOffset": 126733
+        }
+      ],
+      "specificDispatch": "0xe645",
+      "specificTables": [
+        "0xaede",
+        "0xafed",
+        "0xb11e",
+        "0xb141",
+        "0xb19d",
+        "0xb1fc",
+        "0xb226",
+        "0xb297",
+        "0xb351"
+      ],
+      "screenTable": "0xb119",
+      "indoor": false,
+      "scripts": [
+        {
+          "screen": 0,
+          "pointer": "0xb137",
+          "romOffset": 45383,
+          "bytes": [
+            71,
+            16,
+            161,
+            103,
+            16,
+            165,
+            135,
+            16,
+            169,
+            151,
+            16,
+            64,
+            167,
+            80,
+            68,
+            173,
+            183,
+            16,
+            72,
+            199,
+            80,
+            76,
+            161,
+            255
+          ],
+          "kinds": [
+            16,
+            16,
+            16,
+            16,
+            16,
+            16,
+            16
+          ],
+          "sha256": "d03dd8d1e7c6c919e6f6267022d9ce84b2c60bade4acc0be7aae8846773408af"
+        },
+        {
+          "screen": 1,
+          "pointer": "0xb14f",
+          "romOffset": 45407,
+          "bytes": [
+            0,
+            3,
+            162,
+            128,
+            21,
+            192,
+            151,
+            16,
+            66,
+            167,
+            16,
+            70,
+            247,
+            16,
+            172,
+            255
+          ],
+          "kinds": [
+            3,
+            21,
+            16,
+            16,
+            16
+          ],
+          "sha256": "98cd718c9c225540808416ffa4859097b1cbc61db7e7b84c56aeb2fe125628e8"
+        },
+        {
+          "screen": 2,
+          "pointer": "0xb15f",
+          "romOffset": 45423,
+          "bytes": [
+            7,
+            16,
+            168,
+            24,
+            14,
+            96,
+            100,
+            17,
+            176,
+            132,
+            17,
+            177,
+            144,
+            3,
+            176,
+            255
+          ],
+          "kinds": [
+            16,
+            14,
+            17,
+            17,
+            3
+          ],
+          "sha256": "debbff4e14a6a639f87ad36432a72ef4bde2d86db3c1eddee69af545aeb4fc40"
+        },
+        {
+          "screen": 3,
+          "pointer": "0xb16f",
+          "romOffset": 45439,
+          "bytes": [
+            4,
+            18,
+            146,
+            68,
+            18,
+            146,
+            132,
+            18,
+            146,
+            255
+          ],
+          "kinds": [
+            18,
+            18,
+            18
+          ],
+          "sha256": "bca69f103a4e3a98a50a66cd4a47ce58f4afd578ac45dc62cf80b175c4318722"
+        },
+        {
+          "screen": 4,
+          "pointer": "0xb179",
+          "romOffset": 45449,
+          "bytes": [
+            4,
+            17,
+            114,
+            7,
+            16,
+            173,
+            39,
+            80,
+            72,
+            169,
+            71,
+            80,
+            68,
+            165,
+            103,
+            80,
+            64,
+            161,
+            112,
+            19,
+            64,
+            132,
+            17,
+            115,
+            135,
+            16,
+            173,
+            160,
+            21,
+            192,
+            255
+          ],
+          "kinds": [
+            17,
+            16,
+            16,
+            16,
+            16,
+            19,
+            17,
+            16,
+            21
+          ],
+          "sha256": "52cefddeb1b442c38031490ac7b735951ceac04b0e23e95f76994524c600314b"
+        },
+        {
+          "screen": 5,
+          "pointer": "0xb198",
+          "romOffset": 45480,
+          "bytes": [
+            32,
+            2,
+            101,
+            199,
+            16,
+            74,
+            231,
+            16,
+            66,
+            255
+          ],
+          "kinds": [
+            2,
+            16,
+            16
+          ],
+          "sha256": "8dd098221021c4a488ceca1fa4cc13efbf27c7385f043c18a05a344fdad4edf6"
+        },
+        {
+          "screen": 6,
+          "pointer": "0xb1a2",
+          "romOffset": 45490,
+          "bytes": [
+            48,
+            21,
+            192,
+            255
+          ],
+          "kinds": [
+            21
+          ],
+          "sha256": "48c0312b45cd9a26c1bb9b2d98615f39fae08c3628f3a34b7eca25809890599e"
+        },
+        {
+          "screen": 7,
+          "pointer": "0xb1a6",
+          "romOffset": 45494,
+          "bytes": [
+            16,
+            19,
+            64,
+            240,
+            6,
+            96,
+            255
+          ],
+          "kinds": [
+            19,
+            6
+          ],
+          "sha256": "00d55c186e6a0c9c3f1375a3db217f056992fbf45703e7c070db468163f8234a"
+        },
+        {
+          "screen": 8,
+          "pointer": "0xb1ad",
+          "romOffset": 45501,
+          "bytes": [
+            0,
+            3,
+            49,
+            88,
+            21,
+            192,
+            128,
+            3,
+            195,
+            132,
+            18,
+            112,
+            135,
+            16,
+            171,
+            167,
+            16,
+            171,
+            196,
+            18,
+            112,
+            199,
+            16,
+            167,
+            231,
+            16,
+            167,
+            255
+          ],
+          "kinds": [
+            3,
+            21,
+            3,
+            18,
+            16,
+            16,
+            18,
+            16,
+            16
+          ],
+          "sha256": "d6199ef3183ced085c89dfe9316c454720c3adfcc22813f04126abe29979a116"
+        },
+        {
+          "screen": 9,
+          "pointer": "0xb1c9",
+          "romOffset": 45529,
+          "bytes": [
+            4,
+            18,
+            112,
+            7,
+            16,
+            163,
+            164,
+            17,
+            147,
+            196,
+            17,
+            151,
+            228,
+            17,
+            155,
+            255
+          ],
+          "kinds": [
+            18,
+            16,
+            17,
+            17,
+            17
+          ],
+          "sha256": "019d1465a04f4975a356ce9e8169cdc43283e943bcc68dc53e3fe32a440d2e6a"
+        },
+        {
+          "screen": 10,
+          "pointer": "0xb1d9",
+          "romOffset": 45545,
+          "bytes": [
+            215,
+            16,
+            134,
+            231,
+            16,
+            142,
+            247,
+            16,
+            134,
+            255
+          ],
+          "kinds": [
+            16,
+            16,
+            16
+          ],
+          "sha256": "e646b1c89ded536abf5938c835368261196de5b9c16379f753e31ae258905a57"
+        },
+        {
+          "screen": 11,
+          "pointer": "0xb1e3",
+          "romOffset": 45555,
+          "bytes": [
+            7,
+            16,
+            142,
+            23,
+            16,
+            134,
+            39,
+            16,
+            142,
+            68,
+            17,
+            223,
+            240,
+            14,
+            192,
+            255
+          ],
+          "kinds": [
+            16,
+            16,
+            16,
+            17,
+            14
+          ],
+          "sha256": "f40a11fe0daae36cab28b0137b7fcaa23f330b9637afffdc623c25b4bc390b11"
+        },
+        {
+          "screen": 12,
+          "pointer": "0xb1f3",
+          "romOffset": 45571,
+          "bytes": [
+            32,
+            14,
+            192,
+            168,
+            14,
+            160,
+            254,
+            14,
+            160,
+            255
+          ],
+          "kinds": [
+            14,
+            14,
+            14
+          ],
+          "sha256": "89a8b78b0a34cdf4c3bd14762f567f9a4ee882264dd15c0697af3a220414e0b2"
+        },
+        {
+          "screen": 13,
+          "pointer": "0xb1fd",
+          "romOffset": 45581,
+          "bytes": [
+            105,
+            23,
+            209,
+            169,
+            23,
+            208,
+            217,
+            22,
+            128,
+            225,
+            24,
+            160,
+            255
+          ],
+          "kinds": [
+            23,
+            23,
+            22,
+            24
+          ],
+          "sha256": "ca729ead52b550d09a967c3257da43c8e3a00d153d52e6623d67886ca29a5da8"
+        },
+        {
+          "screen": 14,
+          "pointer": "0xb20a",
+          "romOffset": 45594,
+          "bytes": [
+            255
+          ],
+          "kinds": [],
+          "sha256": "a8100ae6aa1940d0b663bb31cd466142ebbdbd5187131b92d93818987832eb89"
+        }
+      ]
+    },
+    {
+      "level": 7,
+      "propertiesPointer": "0xeec1",
+      "properties": [
+        {
+          "kind": 0,
+          "values": [
+            130,
+            34,
+            1,
+            0
+          ],
+          "romOffset": 126485
+        },
+        {
+          "kind": 1,
+          "values": [
+            128,
+            0,
+            1,
+            0
+          ],
+          "romOffset": 126489
+        },
+        {
+          "kind": 2,
+          "values": [
+            15,
+            50,
+            240,
+            0
+          ],
+          "romOffset": 126493
+        },
+        {
+          "kind": 3,
+          "values": [
+            11,
+            50,
+            1,
+            0
+          ],
+          "romOffset": 126497
+        },
+        {
+          "kind": 4,
+          "values": [
+            143,
+            34,
+            8,
+            0
+          ],
+          "romOffset": 126501
+        },
+        {
+          "kind": 5,
+          "values": [
+            131,
+            16,
+            1,
+            0
+          ],
+          "romOffset": 126505
+        },
+        {
+          "kind": 6,
+          "values": [
+            131,
+            48,
+            1,
+            0
+          ],
+          "romOffset": 126509
+        },
+        {
+          "kind": 7,
+          "values": [
+            143,
+            48,
+            8,
+            0
+          ],
+          "romOffset": 126513
+        },
+        {
+          "kind": 8,
+          "values": [
+            15,
+            82,
+            241,
+            0
+          ],
+          "romOffset": 126517
+        },
+        {
+          "kind": 9,
+          "values": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "romOffset": 126521
+        },
+        {
+          "kind": 10,
+          "values": [
+            15,
+            66,
+            240,
+            0
+          ],
+          "romOffset": 126525
+        },
+        {
+          "kind": 11,
+          "values": [
+            138,
+            5,
+            1,
+            0
+          ],
+          "romOffset": 126529
+        },
+        {
+          "kind": 12,
+          "values": [
+            131,
+            66,
+            1,
+            0
+          ],
+          "romOffset": 126533
+        },
+        {
+          "kind": 13,
+          "values": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "romOffset": 126537
+        },
+        {
+          "kind": 14,
+          "values": [
+            14,
+            51,
+            10,
+            0
+          ],
+          "romOffset": 126541
+        },
+        {
+          "kind": 15,
+          "values": [
+            128,
+            1,
+            1,
+            0
+          ],
+          "romOffset": 126545
+        },
+        {
+          "kind": 16,
+          "values": [
+            4,
+            120,
+            1,
+            2
+          ],
+          "romOffset": 126737
+        },
+        {
+          "kind": 17,
+          "values": [
+            6,
+            34,
+            1,
+            1
+          ],
+          "romOffset": 126741
+        },
+        {
+          "kind": 18,
+          "values": [
+            6,
+            66,
+            1,
+            1
+          ],
+          "romOffset": 126745
+        },
+        {
+          "kind": 19,
+          "values": [
+            2,
+            34,
+            1,
+            0
+          ],
+          "romOffset": 126749
+        },
+        {
+          "kind": 20,
+          "values": [
+            6,
+            51,
+            1,
+            1
+          ],
+          "romOffset": 126753
+        },
+        {
+          "kind": 21,
+          "values": [
+            6,
+            98,
+            16,
+            1
+          ],
+          "romOffset": 126757
+        },
+        {
+          "kind": 22,
+          "values": [
+            4,
+            167,
+            1,
+            3
+          ],
+          "romOffset": 126761
+        }
+      ],
+      "specificDispatch": "0xe657",
+      "specificTables": [
+        "0xb447",
+        "0xb705",
+        "0xb819",
+        "0xb88b",
+        "0xba4e",
+        "0xbbda",
+        "0xbca5"
+      ],
+      "screenTable": "0xb20b",
+      "indoor": false,
+      "scripts": [
+        {
+          "screen": 0,
+          "pointer": "0xb222",
+          "romOffset": 45618,
+          "bytes": [
+            64,
+            67,
+            49,
+            197,
+            240,
+            17,
+            161,
+            255
+          ],
+          "kinds": [
+            3,
+            17
+          ],
+          "sha256": "78d0f61a299c9f86a0a63893fc5e0b8315a869b237d71c29c48c87bfc246b582"
+        },
+        {
+          "screen": 1,
+          "pointer": "0xb22a",
+          "romOffset": 45626,
+          "bytes": [
+            96,
+            17,
+            81,
+            160,
+            17,
+            97,
+            168,
+            17,
+            97,
+            176,
+            16,
+            96,
+            255
+          ],
+          "kinds": [
+            17,
+            17,
+            17,
+            16
+          ],
+          "sha256": "c2a3751ff2e754adada7c6c7d5a1ce42b5a3c900f48dd946c91e2c58d336d67f"
+        },
+        {
+          "screen": 2,
+          "pointer": "0xb237",
+          "romOffset": 45639,
+          "bytes": [
+            190,
+            18,
+            64,
+            222,
+            18,
+            64,
+            255
+          ],
+          "kinds": [
+            18,
+            18
+          ],
+          "sha256": "57ba71c875a40415296a1db8311b44fc4382a8a5eaf3b96a7efc0ec731610f53"
+        },
+        {
+          "screen": 3,
+          "pointer": "0xb23e",
+          "romOffset": 45646,
+          "bytes": [
+            30,
+            18,
+            96,
+            62,
+            18,
+            96,
+            222,
+            18,
+            96,
+            224,
+            3,
+            195,
+            254,
+            18,
+            96,
+            255
+          ],
+          "kinds": [
+            18,
+            18,
+            18,
+            3,
+            18
+          ],
+          "sha256": "ff6ffcc04bbfd224ca8fb199ebc6fc568362f73835f37f30aaaababa46fc1bc5"
+        },
+        {
+          "screen": 4,
+          "pointer": "0xb24e",
+          "romOffset": 45662,
+          "bytes": [
+            222,
+            18,
+            224,
+            254,
+            18,
+            224,
+            255
+          ],
+          "kinds": [
+            18,
+            18
+          ],
+          "sha256": "cae5d01c124729a30f9db2f3b62b72ce9c7a80d3d6aa40ce4b66244d5e962f60"
+        },
+        {
+          "screen": 5,
+          "pointer": "0xb255",
+          "romOffset": 45669,
+          "bytes": [
+            30,
+            18,
+            224,
+            222,
+            18,
+            128,
+            254,
+            18,
+            128,
+            255
+          ],
+          "kinds": [
+            18,
+            18,
+            18
+          ],
+          "sha256": "2e1fa3cdc8362a09a8597d92478280f3afb411af61cae4b75fcf22db3469ea96"
+        },
+        {
+          "screen": 6,
+          "pointer": "0xb25f",
+          "romOffset": 45679,
+          "bytes": [
+            126,
+            18,
+            224,
+            158,
+            18,
+            224,
+            254,
+            18,
+            128,
+            255
+          ],
+          "kinds": [
+            18,
+            18,
+            18
+          ],
+          "sha256": "8f930d12e0e376bebc0d647b879ffab6389ec9a519ec3f6e277ec7ae5f2f9345"
+        },
+        {
+          "screen": 7,
+          "pointer": "0xb269",
+          "romOffset": 45689,
+          "bytes": [
+            30,
+            18,
+            128,
+            190,
+            18,
+            224,
+            222,
+            18,
+            224,
+            255
+          ],
+          "kinds": [
+            18,
+            18,
+            18
+          ],
+          "sha256": "1c0f5dfa092b92f232148a91362aa40fd4348999403428337fe0e70a9cb4c64e"
+        },
+        {
+          "screen": 8,
+          "pointer": "0xb273",
+          "romOffset": 45699,
+          "bytes": [
+            62,
+            18,
+            96,
+            94,
+            18,
+            96,
+            160,
+            20,
+            200,
+            192,
+            20,
+            200,
+            240,
+            20,
+            200,
+            255
+          ],
+          "kinds": [
+            18,
+            18,
+            20,
+            20,
+            20
+          ],
+          "sha256": "130774ac5df03a91de16ff1f707918b46acfbfcd2d77f650ebcf90cb94fa82e0"
+        },
+        {
+          "screen": 9,
+          "pointer": "0xb283",
+          "romOffset": 45715,
+          "bytes": [
+            48,
+            20,
+            200,
+            62,
+            18,
+            224,
+            112,
+            20,
+            32,
+            184,
+            20,
+            200,
+            192,
+            21,
+            64,
+            194,
+            21,
+            192,
+            209,
+            22,
+            112,
+            224,
+            21,
+            64,
+            226,
+            21,
+            192,
+            255
+          ],
+          "kinds": [
+            20,
+            18,
+            20,
+            20,
+            21,
+            21,
+            22,
+            21,
+            21
+          ],
+          "sha256": "7d17e55045e34aba264e30ae6b3c98d09cb9bb5750d514290534371a27007522"
+        },
+        {
+          "screen": 10,
+          "pointer": "0xb29e",
+          "romOffset": 45742,
+          "bytes": [
+            255
+          ],
+          "kinds": [],
+          "sha256": "a8100ae6aa1940d0b663bb31cd466142ebbdbd5187131b92d93818987832eb89"
+        }
+      ]
+    }
+  ]
+}

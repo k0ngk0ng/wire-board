@@ -1,0 +1,1126 @@
+{
+  "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "archive_sha256": "2c4fd35488d32ca3abf207114893d54ad294f74df8bd1961a7b1e090549bae64",
+  "mapping": "bank0/1 at8000 plus fixed14/15 atC000; source table identities matched on Japanese bytes",
+  "tables": [
+    {
+      "kind": 16,
+      "name": "boss-eye",
+      "table_minus_two": "0x8e74",
+      "routines": [
+        "0x8e84",
+        "0x8e8c",
+        "0x8eb3",
+        "0x8f17",
+        "0xe671",
+        "0xe6e1",
+        "0x8f3c"
+      ],
+      "properties": [
+        141,
+        2,
+        1,
+        0
+      ],
+      "property_rom_offset": 126561
+    },
+    {
+      "kind": 17,
+      "name": "roller",
+      "table_minus_two": "0x8f8f",
+      "routines": [
+        "0x8f9b",
+        "0x8fa3",
+        "0xe67c",
+        "0xe6d5",
+        "0xe737"
+      ],
+      "properties": [
+        47,
+        34,
+        5,
+        0
+      ],
+      "property_rom_offset": 126565
+    },
+    {
+      "kind": 18,
+      "name": "grenade",
+      "table_minus_two": "0x8fd6",
+      "routines": [
+        "0x8fe4",
+        "0x8ff7",
+        "0x908b",
+        "0xe67c",
+        "0xe6e1",
+        "0xe737"
+      ],
+      "properties": [
+        129,
+        3,
+        1,
+        0
+      ],
+      "property_rom_offset": 126569
+    },
+    {
+      "kind": 19,
+      "name": "wall-turret",
+      "table_minus_two": "0x9099",
+      "routines": [
+        "0x90ab",
+        "0x90b7",
+        "0x90d0",
+        "0x90fd",
+        "0x9117",
+        "0xe668",
+        "0xe6e1",
+        "0xe737"
+      ],
+      "properties": [
+        159,
+        53,
+        4,
+        0
+      ],
+      "property_rom_offset": 126573
+    },
+    {
+      "kind": 20,
+      "name": "wall-core",
+      "table_minus_two": "0x911d",
+      "routines": [
+        "0x9133",
+        "0x9176",
+        "0x91af",
+        "0x91de",
+        "0x920a",
+        "0xe668",
+        "0xe6e1",
+        "0x924a",
+        "0x9260",
+        "0x92bd"
+      ],
+      "properties": [
+        159,
+        5,
+        1,
+        0
+      ],
+      "property_rom_offset": 126577
+    },
+    {
+      "kind": 21,
+      "name": "indoor-soldier",
+      "table_minus_two": "0x92c7",
+      "routines": [
+        "0x92d7",
+        "0x92e4",
+        "0x9355",
+        "0x936f",
+        "0xe67c",
+        "0xe6db",
+        "0xe737"
+      ],
+      "properties": [
+        19,
+        22,
+        1,
+        0
+      ],
+      "property_rom_offset": 126581
+    },
+    {
+      "kind": 22,
+      "name": "jumping-soldier",
+      "table_minus_two": "0x937d",
+      "routines": [
+        "0x938f",
+        "0x93b4",
+        "0x9355",
+        "0x936f",
+        "0x9446",
+        "0xe67c",
+        "0xe6db",
+        "0xe737"
+      ],
+      "properties": [
+        19,
+        22,
+        1,
+        0
+      ],
+      "property_rom_offset": 126585
+    },
+    {
+      "kind": 23,
+      "name": "grenade-launcher",
+      "table_minus_two": "0x945c",
+      "routines": [
+        "0x946c",
+        "0x947d",
+        "0x9355",
+        "0x936f",
+        "0xe67c",
+        "0xe6db",
+        "0x952d"
+      ],
+      "properties": [
+        19,
+        54,
+        1,
+        0
+      ],
+      "property_rom_offset": 126589
+    },
+    {
+      "kind": 24,
+      "name": "four-soldiers",
+      "table_minus_two": "0x9533",
+      "routines": [
+        "0x9545",
+        "0x9550",
+        "0x9586",
+        "0x9355",
+        "0x936f",
+        "0xe67c",
+        "0xe6db",
+        "0xe737"
+      ],
+      "properties": [
+        19,
+        22,
+        1,
+        0
+      ],
+      "property_rom_offset": 126593
+    },
+    {
+      "kind": 25,
+      "name": "soldier-generator",
+      "table_minus_two": "0x8d26",
+      "routines": [
+        "0x8d2e",
+        "0x8d37",
+        "0xe73a"
+      ],
+      "properties": [
+        137,
+        0,
+        241,
+        0
+      ],
+      "property_rom_offset": 126597
+    },
+    {
+      "kind": 26,
+      "name": "roller-generator",
+      "table_minus_two": "0x95c4",
+      "routines": [
+        "0x95cc",
+        "0x95d1",
+        "0xe73a"
+      ],
+      "properties": [
+        129,
+        0,
+        241,
+        0
+      ],
+      "property_rom_offset": 126601
+    },
+    {
+      "kind": 27,
+      "name": "eye-projectile",
+      "table_minus_two": "0x8f42",
+      "routines": [
+        "0x8f4e",
+        "0x8f67",
+        "0xe67c",
+        "0xe6e1",
+        "0xe737"
+      ],
+      "properties": [
+        143,
+        19,
+        2,
+        1
+      ],
+      "property_rom_offset": 126605
+    },
+    {
+      "kind": 28,
+      "name": "boss-gemini",
+      "table_minus_two": "0x9f0e",
+      "routines": [
+        "0x9f1e",
+        "0x9f40",
+        "0x9f58",
+        "0xa01a",
+        "0xa053",
+        "0xe6e1",
+        "0xa05d"
+      ],
+      "properties": [
+        143,
+        2,
+        1,
+        0
+      ],
+      "property_rom_offset": 126609
+    },
+    {
+      "kind": 29,
+      "name": "spinning-bubbles",
+      "table_minus_two": "0xa06a",
+      "routines": [
+        "0xa076",
+        "0xa0af",
+        "0xe67c",
+        "0xe6e1",
+        "0xe737"
+      ],
+      "properties": [
+        10,
+        21,
+        1,
+        0
+      ],
+      "property_rom_offset": 126613
+    },
+    {
+      "kind": 30,
+      "name": "blue-soldier",
+      "table_minus_two": "0xa162",
+      "routines": [
+        "0xa172",
+        "0xa1a5",
+        "0xa212",
+        "0xa260",
+        "0xe67c",
+        "0xe6e1",
+        "0xe737"
+      ],
+      "properties": [
+        3,
+        48,
+        1,
+        0
+      ],
+      "property_rom_offset": 126617
+    },
+    {
+      "kind": 31,
+      "name": "red-soldier",
+      "table_minus_two": "0xa273",
+      "routines": [
+        "0xa172",
+        "0xa281",
+        "0xa2d6",
+        "0xe67c",
+        "0xe6e1",
+        "0xe737"
+      ],
+      "properties": [
+        3,
+        48,
+        1,
+        0
+      ],
+      "property_rom_offset": 126621
+    },
+    {
+      "kind": 32,
+      "name": "red-blue-generator",
+      "table_minus_two": "0xa317",
+      "routines": [
+        "0xa31f",
+        "0xa324",
+        "0xe73a"
+      ],
+      "properties": [
+        129,
+        0,
+        241,
+        0
+      ],
+      "property_rom_offset": 126625
+    }
+  ],
+  "rooms": {
+    "1": {
+      "table": "0xae0c",
+      "entries": [
+        {
+          "screen": 0,
+          "cpu": "0xae18",
+          "rom_offset": 44584,
+          "core_count": 1,
+          "items": [
+            {
+              "position": 17,
+              "type_flags": 25,
+              "kind": 25,
+              "attributes": 0
+            },
+            {
+              "position": 104,
+              "type_flags": 148,
+              "kind": 20,
+              "attributes": 3
+            }
+          ],
+          "bytes": [
+            1,
+            17,
+            25,
+            0,
+            104,
+            148,
+            3,
+            255
+          ]
+        },
+        {
+          "screen": 1,
+          "cpu": "0xae20",
+          "rom_offset": 44592,
+          "core_count": 1,
+          "items": [
+            {
+              "position": 17,
+              "type_flags": 89,
+              "kind": 25,
+              "attributes": 0
+            },
+            {
+              "position": 102,
+              "type_flags": 212,
+              "kind": 20,
+              "attributes": 3
+            },
+            {
+              "position": 105,
+              "type_flags": 211,
+              "kind": 19,
+              "attributes": 0
+            }
+          ],
+          "bytes": [
+            1,
+            17,
+            89,
+            0,
+            102,
+            212,
+            3,
+            105,
+            211,
+            0,
+            255
+          ]
+        },
+        {
+          "screen": 2,
+          "cpu": "0xae2b",
+          "rom_offset": 44603,
+          "core_count": 1,
+          "items": [
+            {
+              "position": 17,
+              "type_flags": 89,
+              "kind": 25,
+              "attributes": 0
+            },
+            {
+              "position": 120,
+              "type_flags": 20,
+              "kind": 20,
+              "attributes": 3
+            },
+            {
+              "position": 102,
+              "type_flags": 211,
+              "kind": 19,
+              "attributes": 0
+            },
+            {
+              "position": 105,
+              "type_flags": 211,
+              "kind": 19,
+              "attributes": 0
+            }
+          ],
+          "bytes": [
+            1,
+            17,
+            89,
+            0,
+            120,
+            20,
+            3,
+            102,
+            211,
+            0,
+            105,
+            211,
+            0,
+            255
+          ]
+        },
+        {
+          "screen": 3,
+          "cpu": "0xae39",
+          "rom_offset": 44617,
+          "core_count": 1,
+          "items": [
+            {
+              "position": 17,
+              "type_flags": 89,
+              "kind": 25,
+              "attributes": 0
+            },
+            {
+              "position": 17,
+              "type_flags": 26,
+              "kind": 26,
+              "attributes": 0
+            },
+            {
+              "position": 88,
+              "type_flags": 147,
+              "kind": 19,
+              "attributes": 0
+            },
+            {
+              "position": 104,
+              "type_flags": 148,
+              "kind": 20,
+              "attributes": 3
+            }
+          ],
+          "bytes": [
+            1,
+            17,
+            89,
+            0,
+            17,
+            26,
+            0,
+            88,
+            147,
+            0,
+            104,
+            148,
+            3,
+            255
+          ]
+        },
+        {
+          "screen": 4,
+          "cpu": "0xae47",
+          "rom_offset": 44631,
+          "core_count": 1,
+          "items": [
+            {
+              "position": 17,
+              "type_flags": 89,
+              "kind": 25,
+              "attributes": 0
+            },
+            {
+              "position": 104,
+              "type_flags": 148,
+              "kind": 20,
+              "attributes": 11
+            },
+            {
+              "position": 102,
+              "type_flags": 211,
+              "kind": 19,
+              "attributes": 0
+            },
+            {
+              "position": 105,
+              "type_flags": 211,
+              "kind": 19,
+              "attributes": 0
+            },
+            {
+              "position": 88,
+              "type_flags": 19,
+              "kind": 19,
+              "attributes": 0
+            }
+          ],
+          "bytes": [
+            1,
+            17,
+            89,
+            0,
+            104,
+            148,
+            11,
+            102,
+            211,
+            0,
+            105,
+            211,
+            0,
+            88,
+            19,
+            0,
+            255
+          ]
+        },
+        {
+          "screen": 5,
+          "cpu": "0xae58",
+          "rom_offset": 44648,
+          "core_count": 1,
+          "items": [
+            {
+              "position": 72,
+              "type_flags": 16,
+              "kind": 16,
+              "attributes": 0
+            },
+            {
+              "position": 101,
+              "type_flags": 8,
+              "kind": 8,
+              "attributes": 0
+            },
+            {
+              "position": 104,
+              "type_flags": 10,
+              "kind": 10,
+              "attributes": 1
+            },
+            {
+              "position": 107,
+              "type_flags": 8,
+              "kind": 8,
+              "attributes": 0
+            },
+            {
+              "position": 149,
+              "type_flags": 10,
+              "kind": 10,
+              "attributes": 0
+            },
+            {
+              "position": 152,
+              "type_flags": 10,
+              "kind": 10,
+              "attributes": 0
+            },
+            {
+              "position": 155,
+              "type_flags": 10,
+              "kind": 10,
+              "attributes": 0
+            }
+          ],
+          "bytes": [
+            1,
+            72,
+            16,
+            0,
+            101,
+            8,
+            0,
+            104,
+            10,
+            1,
+            107,
+            8,
+            0,
+            149,
+            10,
+            0,
+            152,
+            10,
+            0,
+            155,
+            10,
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    "3": {
+      "table": "0xaf11",
+      "entries": [
+        {
+          "screen": 0,
+          "cpu": "0xaf23",
+          "rom_offset": 44851,
+          "core_count": 1,
+          "items": [
+            {
+              "position": 17,
+              "type_flags": 25,
+              "kind": 25,
+              "attributes": 1
+            },
+            {
+              "position": 104,
+              "type_flags": 148,
+              "kind": 20,
+              "attributes": 4
+            },
+            {
+              "position": 102,
+              "type_flags": 211,
+              "kind": 19,
+              "attributes": 0
+            },
+            {
+              "position": 105,
+              "type_flags": 211,
+              "kind": 19,
+              "attributes": 0
+            }
+          ],
+          "bytes": [
+            1,
+            17,
+            25,
+            1,
+            104,
+            148,
+            4,
+            102,
+            211,
+            0,
+            105,
+            211,
+            0,
+            255
+          ]
+        },
+        {
+          "screen": 1,
+          "cpu": "0xaf31",
+          "rom_offset": 44865,
+          "core_count": 4,
+          "items": [
+            {
+              "position": 17,
+              "type_flags": 25,
+              "kind": 25,
+              "attributes": 1
+            },
+            {
+              "position": 118,
+              "type_flags": 84,
+              "kind": 20,
+              "attributes": 3
+            },
+            {
+              "position": 119,
+              "type_flags": 84,
+              "kind": 20,
+              "attributes": 1
+            },
+            {
+              "position": 120,
+              "type_flags": 84,
+              "kind": 20,
+              "attributes": 1
+            },
+            {
+              "position": 121,
+              "type_flags": 84,
+              "kind": 20,
+              "attributes": 3
+            }
+          ],
+          "bytes": [
+            4,
+            17,
+            25,
+            1,
+            118,
+            84,
+            3,
+            119,
+            84,
+            1,
+            120,
+            84,
+            1,
+            121,
+            84,
+            3,
+            255
+          ]
+        },
+        {
+          "screen": 2,
+          "cpu": "0xaf42",
+          "rom_offset": 44882,
+          "core_count": 2,
+          "items": [
+            {
+              "position": 17,
+              "type_flags": 25,
+              "kind": 25,
+              "attributes": 1
+            },
+            {
+              "position": 103,
+              "type_flags": 212,
+              "kind": 20,
+              "attributes": 4
+            },
+            {
+              "position": 104,
+              "type_flags": 212,
+              "kind": 20,
+              "attributes": 4
+            },
+            {
+              "position": 88,
+              "type_flags": 147,
+              "kind": 19,
+              "attributes": 0
+            }
+          ],
+          "bytes": [
+            2,
+            17,
+            25,
+            1,
+            103,
+            212,
+            4,
+            104,
+            212,
+            4,
+            88,
+            147,
+            0,
+            255
+          ]
+        },
+        {
+          "screen": 3,
+          "cpu": "0xaf50",
+          "rom_offset": 44896,
+          "core_count": 2,
+          "items": [
+            {
+              "position": 17,
+              "type_flags": 25,
+              "kind": 25,
+              "attributes": 1
+            },
+            {
+              "position": 104,
+              "type_flags": 19,
+              "kind": 19,
+              "attributes": 0
+            },
+            {
+              "position": 119,
+              "type_flags": 84,
+              "kind": 20,
+              "attributes": 3
+            },
+            {
+              "position": 120,
+              "type_flags": 84,
+              "kind": 20,
+              "attributes": 3
+            }
+          ],
+          "bytes": [
+            2,
+            17,
+            25,
+            1,
+            104,
+            19,
+            0,
+            119,
+            84,
+            3,
+            120,
+            84,
+            3,
+            255
+          ]
+        },
+        {
+          "screen": 4,
+          "cpu": "0xaf5e",
+          "rom_offset": 44910,
+          "core_count": 2,
+          "items": [
+            {
+              "position": 17,
+              "type_flags": 25,
+              "kind": 25,
+              "attributes": 1
+            },
+            {
+              "position": 102,
+              "type_flags": 212,
+              "kind": 20,
+              "attributes": 3
+            },
+            {
+              "position": 104,
+              "type_flags": 147,
+              "kind": 19,
+              "attributes": 0
+            },
+            {
+              "position": 105,
+              "type_flags": 212,
+              "kind": 20,
+              "attributes": 3
+            }
+          ],
+          "bytes": [
+            2,
+            17,
+            25,
+            1,
+            102,
+            212,
+            3,
+            104,
+            147,
+            0,
+            105,
+            212,
+            3,
+            255
+          ]
+        },
+        {
+          "screen": 5,
+          "cpu": "0xaf6c",
+          "rom_offset": 44924,
+          "core_count": 1,
+          "items": [
+            {
+              "position": 17,
+              "type_flags": 26,
+              "kind": 26,
+              "attributes": 1
+            },
+            {
+              "position": 17,
+              "type_flags": 25,
+              "kind": 25,
+              "attributes": 1
+            },
+            {
+              "position": 104,
+              "type_flags": 148,
+              "kind": 20,
+              "attributes": 3
+            }
+          ],
+          "bytes": [
+            1,
+            17,
+            26,
+            1,
+            17,
+            25,
+            1,
+            104,
+            148,
+            3,
+            255
+          ]
+        },
+        {
+          "screen": 6,
+          "cpu": "0xaf77",
+          "rom_offset": 44935,
+          "core_count": 1,
+          "items": [
+            {
+              "position": 17,
+              "type_flags": 25,
+              "kind": 25,
+              "attributes": 1
+            },
+            {
+              "position": 88,
+              "type_flags": 148,
+              "kind": 20,
+              "attributes": 3
+            },
+            {
+              "position": 104,
+              "type_flags": 147,
+              "kind": 19,
+              "attributes": 0
+            }
+          ],
+          "bytes": [
+            1,
+            17,
+            25,
+            1,
+            88,
+            148,
+            3,
+            104,
+            147,
+            0,
+            255
+          ]
+        },
+        {
+          "screen": 7,
+          "cpu": "0xaf82",
+          "rom_offset": 44946,
+          "core_count": 1,
+          "items": [
+            {
+              "position": 17,
+              "type_flags": 25,
+              "kind": 25,
+              "attributes": 1
+            },
+            {
+              "position": 88,
+              "type_flags": 19,
+              "kind": 19,
+              "attributes": 0
+            },
+            {
+              "position": 102,
+              "type_flags": 211,
+              "kind": 19,
+              "attributes": 0
+            },
+            {
+              "position": 104,
+              "type_flags": 148,
+              "kind": 20,
+              "attributes": 11
+            },
+            {
+              "position": 105,
+              "type_flags": 211,
+              "kind": 19,
+              "attributes": 0
+            }
+          ],
+          "bytes": [
+            1,
+            17,
+            25,
+            1,
+            88,
+            19,
+            0,
+            102,
+            211,
+            0,
+            104,
+            148,
+            11,
+            105,
+            211,
+            0,
+            255
+          ]
+        },
+        {
+          "screen": 8,
+          "cpu": "0xaf93",
+          "rom_offset": 44963,
+          "core_count": 2,
+          "items": [
+            {
+              "position": 17,
+              "type_flags": 32,
+              "kind": 32,
+              "attributes": 0
+            },
+            {
+              "position": 54,
+              "type_flags": 92,
+              "kind": 28,
+              "attributes": 0
+            },
+            {
+              "position": 57,
+              "type_flags": 92,
+              "kind": 28,
+              "attributes": 0
+            },
+            {
+              "position": 88,
+              "type_flags": 8,
+              "kind": 8,
+              "attributes": 0
+            },
+            {
+              "position": 133,
+              "type_flags": 10,
+              "kind": 10,
+              "attributes": 0
+            },
+            {
+              "position": 136,
+              "type_flags": 10,
+              "kind": 10,
+              "attributes": 1
+            },
+            {
+              "position": 139,
+              "type_flags": 10,
+              "kind": 10,
+              "attributes": 0
+            }
+          ],
+          "bytes": [
+            2,
+            17,
+            32,
+            0,
+            54,
+            92,
+            0,
+            57,
+            92,
+            0,
+            88,
+            8,
+            0,
+            133,
+            10,
+            0,
+            136,
+            10,
+            1,
+            139,
+            10,
+            0,
+            255
+          ]
+        }
+      ]
+    }
+  },
+  "shared_dependencies": [
+    8,
+    10
+  ],
+  "notes": [
+    "Table lengths end at first local code target; backward targets are shared routines, not table lengths.",
+    "Runtime/RAM semantics still require original execution checks."
+  ]
+}

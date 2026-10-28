@@ -1,0 +1,67 @@
+{
+  "passed": true,
+  "scope": "All-stage enemy initialization, spawning, ordinary Alien rules and complete enemy-phase dispatch. Not natural whole-campaign/platform acceptance.",
+  "romSHA256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "counts": {
+    "propertyPairs": 199,
+    "initializerCalls": 597,
+    "screenScripts": 99,
+    "screenSpawnCalls": 3230,
+    "allStagePhases": 372,
+    "allStageEntityCalls": 2232,
+    "alienNonBossCalls": 1822,
+    "mixedLocatorPhases": 74,
+    "mixedLocatorEntityCalls": 154,
+    "mixedLocatorWrites": 1332,
+    "independentReplayPairs": 13,
+    "subsystemRaceTests": 70
+  },
+  "subsystemReportSHA256": "68f83054803371db7df8bcbe2c3bafbc5a158c82f81a34fe99b8da023fc3a6fb",
+  "sourceSHA256": {
+    "games/contra/engine/enemies.go": "5453d59a7a64609f3e97844f32255716698f7121ca48d54c30e07c2dc7101594",
+    "games/contra/engine/enemies_all_tables.go": "2247d31f91a966b5918deaa48a7e2048be4b38e9112a20e5381647d253b2fcdf",
+    "games/contra/engine/enemies_all_spawn.go": "0f449fd4a5fba8af534028ba5518dc7bb329d94dd90a8d9eebded98948580c2b",
+    "games/contra/engine/enemies_dispatch.go": "02e5df581fae1bfd7a0f171426234454651e326f7927d82ebf729a17dc842f2d",
+    "games/contra/engine/enemies_collision_tick.go": "71ebf923d12e4bdbd332f21a39b410920850db9739d6024d78b29e398d503688",
+    "games/contra/engine/enemies_bullets.go": "db2d49e3d788c7e945f459d3f115609014779bcf42f25aa5b5f1a23f6324ebed",
+    "games/contra/engine/enemies_progress.go": "af4c9a2c311b9f1df44a284eb3cb7b3404a6e6f54116ce0595b6663a7bd87a61",
+    "games/contra/engine/enemies_explosion.go": "a9945b38d4cbdcf5bfa180e80817f1769d89f92edd385607aa80fc103967ed68",
+    "games/contra/engine/enemies_runner.go": "2dc1814a4c61caa30214d29df0c1a2b082bd615566c422820e0dc1ed5c18fb9f",
+    "games/contra/engine/enemies_generation.go": "a964e9491ddb362510df78e6036b938124a21966aa9dd07766db8c4d1a470ed8",
+    "games/contra/engine/enemies_aliens_fetus.go": "5c972bd9be3d887e330b41435a2a57d1bad270f89054efc13aaebcc1f2455017",
+    "games/contra/engine/enemies_aliens_small.go": "cf77c572614a38435d5ac64c9e7577d1b0d7b45a31f074993bfb994422348e9f",
+    "games/contra/engine/enemies_aliens_blob.go": "f7d3b99e677e6922451ef03a6141435cbd25d6542c73e92c5a50fa0421b95866",
+    "games/contra/engine/enemies_aliens_spider.go": "4eee94a2b3874b1f28d17f96038242c24d0bdc78b50b1008373a4715cf181ebb",
+    "games/contra/engine/enemies_aliens_tables.go": "49150a49fa1d65400ac8858a0f926b998ca2f2c6aa61ed0cca77d0de394e184d"
+  },
+  "fixtureSHA256": {
+    "games/contra/engine/testdata/original-enemy-all-initialization.json.gz": "060153bcd15287263effb1201306d5bd48ae653b998ae51f267b28b43c1fab08",
+    "games/contra/engine/testdata/original-enemy-all-spawn.json.gz": "e456f1a6ff4d2c345bb5abc1710189499e42c24529fa2b7ee1125fce0f51112b",
+    "games/contra/engine/testdata/original-enemies-aliens-natural.json.gz": "1f07fcbfd4c8b9ffe8c0d4d6984e4770e941f26cf72742a6be22d2b81a3ac247",
+    "games/contra/engine/testdata/original-enemies-aliens-fetus.json.gz": "719863d0c2413a4c3e1379c39daba3543607b72d5e2a0824e9f7f46ea0a0f219",
+    "games/contra/engine/testdata/original-enemies-aliens-small.json.gz": "58480eab41ffa9c865cb1bf3e70aae319e199e3f05368ced6889b6e6ec5374d6",
+    "games/contra/engine/testdata/original-enemy-collision-tick-aliens-locator.json.gz": "990553ad053407a60196952e87bea8a78b94e538f93206233f6bf585ec767553",
+    "games/contra/engine/testdata/original-enemy-collision-tick-stage-1-visual.json.gz": "e7a58aff8247edc60bb03a289b53e708182afec383f92937ee1c694a95283c11",
+    "games/contra/engine/testdata/original-enemy-collision-tick-stage-2-visual.json.gz": "a4abf1b31d2b90df0178f482e5b5510892495779a9eff19e1401daeac417f8ac",
+    "games/contra/engine/testdata/original-enemy-collision-tick-stage-3-visual.json.gz": "d1df0c3e1257c609537359a3e2127930a31ee1a8fc40945749ec4f492f4cc83e",
+    "games/contra/engine/testdata/original-enemy-collision-tick-stage-4-visual.json.gz": "39bb8325e991e5fdc6a510d70c86850890408f28502b3750c73be406541f9d8a",
+    "games/contra/engine/testdata/original-enemy-collision-tick-stage-5-visual.json.gz": "ec4613a08b855b8814a7d7bc40fbcb5c17daf126b6b8575e2d713da472269710",
+    "games/contra/engine/testdata/original-enemy-collision-tick-stage-6-visual.json.gz": "d3cdaaf21c438d45842e8c16ed36a808a6d6baa32d7bda8913a78702a1ec2ead",
+    "games/contra/engine/testdata/original-enemy-collision-tick-stage-7-visual.json.gz": "b605415f5eed523ab42b50be36639620c84b514f8a8d5d9b12d1ff011acdf530",
+    "games/contra/engine/testdata/original-enemy-collision-tick-stage-8-visual.json.gz": "80541ad9dc045ac1e4300ad11a4c0b5ae746797e03ccc48c3c79ab397fe7f4b7"
+  },
+  "evidenceSHA256": {
+    "enemies-all-stage-data.json": "1d9a20a87e69ccf21e3f53d98ac48f956a6ed0aaa431c5cbb3749f0e297a9975",
+    "enemies-all-replay.json": "9cf31ebb8a911e6e7a055484eae3dbae61ae3d294d731ee6c2d2d2b10218b97c",
+    "enemies-all-cleanup.json": "200c76764e0d77a0c48a0364ecc8a0b51652c31f9701bd9e07b879c7564c00c6",
+    "enemies-aliens-rea.json.gz": "7dbbe2ceaaceb25c6eac840a40b0878662ecaf7f874e54a13e10ab8913d6b5c7",
+    "enemies-aliens-locator-verification.json": "24fa963bce83ac6ac7206cc67d5d18284cf16deda82a167369d2a1943e46b962"
+  },
+  "supplemental": {
+    "falconReportSHA256": "ca33bce8d033179bb16f835fb59dc2c60ca60d620586daa5d5268f3dbab32011",
+    "falconRaceTests": 12,
+    "completeFirstStagePhases": 5441,
+    "snowReportSHA256": "20c2afa237f34482eed3e39e8e5cebd1b46e01b8c387aae0f8c97dcfb67911d3",
+    "note": "The70-test report is a retained baseline. These changed-scope checks cover the later real-Boss/Falcon corrections and the additional Snow continuations."
+  }
+}

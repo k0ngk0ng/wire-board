@@ -1,0 +1,25 @@
+=== RUN   TestInspectAlienTerrain
+    bot_alien_probe_test.go:43: view 0 0
+    bot_alien_probe_test.go:48: 144 176 true true {0 true}
+    bot_alien_probe_test.go:52: half 0 true true {0 true}
+    bot_alien_probe_test.go:52: half 1 true true {0 true}
+    bot_alien_probe_test.go:52: half 2 true true {0 true}
+    bot_alien_probe_test.go:52: half 3 true true {0 true}
+    bot_alien_probe_test.go:48: 144 192 true true {0 true}
+    bot_alien_probe_test.go:52: half 0 true true {0 true}
+    bot_alien_probe_test.go:52: half 1 true true {0 true}
+    bot_alien_probe_test.go:52: half 2 true true {0 true}
+    bot_alien_probe_test.go:52: half 3 true true {0 true}
+    bot_alien_probe_test.go:48: 160 208 true true {0 true}
+    bot_alien_probe_test.go:52: half 0 true true {0 true}
+    bot_alien_probe_test.go:52: half 1 true true {0 true}
+    bot_alien_probe_test.go:52: half 2 true true {0 true}
+    bot_alien_probe_test.go:52: half 3 true true {0 true}
+    bot_alien_probe_test.go:48: 192 128 true true {0 true}
+    bot_alien_probe_test.go:52: half 0 true true {0 true}
+    bot_alien_probe_test.go:52: half 1 true true {0 true}
+    bot_alien_probe_test.go:52: half 2 true true {0 true}
+    bot_alien_probe_test.go:52: half 3 true true {0 true}
+--- PASS: TestInspectAlienTerrain (1.01s)
+PASS
+ok  	github.com/k0ngk0ng/wire-board/games/contra/engine	1.577s

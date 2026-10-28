@@ -1,0 +1,3197 @@
+{
+  "source": "docs/research/nes-contra/evidence/static-level1-terrain.json",
+  "sourceSHA256": "b30fe359b3a96429aa6401fcf733045d513cf6c72cbbc89900176b72996c2031",
+  "romSHA256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "outputSHA256": "4aa0e5bee44bf2a75aea2e2debf6e7f9367f912307c8d3ba528a988e3211ba20",
+  "scope": "Stage-one terrain definitions only; no CPU opcodes, original player runtime, or other stages.",
+  "screenByteRanges": [
+    {
+      "cpu_start": "0x801d",
+      "cpu_end_exclusive": "0x8050",
+      "prg_offset": 32797,
+      "rom_offset": 32813,
+      "bytes": 51,
+      "sha256": "f4b6fbf21738685eaad51b04a41c97f644c426ce8c8ef211ae6b2d2c5d705991",
+      "commands": [
+        {
+          "cpu": "0x801d",
+          "op": "literal",
+          "value": 33
+        },
+        {
+          "cpu": "0x801e",
+          "op": "literal",
+          "value": 32
+        },
+        {
+          "cpu": "0x801f",
+          "op": "literal",
+          "value": 33
+        },
+        {
+          "cpu": "0x8020",
+          "op": "literal",
+          "value": 43
+        },
+        {
+          "cpu": "0x8021",
+          "op": "literal",
+          "value": 35
+        },
+        {
+          "cpu": "0x8022",
+          "op": "literal",
+          "value": 34
+        },
+        {
+          "cpu": "0x8023",
+          "op": "literal",
+          "value": 35
+        },
+        {
+          "cpu": "0x8024",
+          "op": "literal",
+          "value": 42
+        },
+        {
+          "cpu": "0x8025",
+          "op": "literal",
+          "value": 32
+        },
+        {
+          "cpu": "0x8026",
+          "op": "literal",
+          "value": 84
+        },
+        {
+          "cpu": "0x8027",
+          "op": "literal",
+          "value": 84
+        },
+        {
+          "cpu": "0x8028",
+          "op": "literal",
+          "value": 47
+        },
+        {
+          "cpu": "0x8029",
+          "op": "literal",
+          "value": 39
+        },
+        {
+          "cpu": "0x802a",
+          "op": "literal",
+          "value": 38
+        },
+        {
+          "cpu": "0x802b",
+          "op": "literal",
+          "value": 39
+        },
+        {
+          "cpu": "0x802c",
+          "op": "literal",
+          "value": 46
+        },
+        {
+          "cpu": "0x802d",
+          "op": "literal",
+          "value": 84
+        },
+        {
+          "cpu": "0x802e",
+          "op": "literal",
+          "value": 28
+        },
+        {
+          "cpu": "0x802f",
+          "op": "literal",
+          "value": 29
+        },
+        {
+          "cpu": "0x8030",
+          "op": "literal",
+          "value": 30
+        },
+        {
+          "cpu": "0x8031",
+          "op": "literal",
+          "value": 28
+        },
+        {
+          "cpu": "0x8032",
+          "op": "literal",
+          "value": 30
+        },
+        {
+          "cpu": "0x8033",
+          "op": "literal",
+          "value": 28
+        },
+        {
+          "cpu": "0x8034",
+          "op": "literal",
+          "value": 28
+        },
+        {
+          "cpu": "0x8035",
+          "op": "literal",
+          "value": 84
+        },
+        {
+          "cpu": "0x8036",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x8037",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x8038",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x8039",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x803a",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x803b",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x803c",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x803d",
+          "op": "literal",
+          "value": 12
+        },
+        {
+          "cpu": "0x803e",
+          "op": "literal",
+          "value": 104
+        },
+        {
+          "cpu": "0x803f",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x8040",
+          "op": "literal",
+          "value": 106
+        },
+        {
+          "cpu": "0x8041",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x8042",
+          "op": "repeat",
+          "count": 3,
+          "value": 0
+        },
+        {
+          "cpu": "0x8044",
+          "op": "literal",
+          "value": 13
+        },
+        {
+          "cpu": "0x8045",
+          "op": "repeat",
+          "count": 3,
+          "value": 9
+        },
+        {
+          "cpu": "0x8047",
+          "op": "literal",
+          "value": 10
+        },
+        {
+          "cpu": "0x8048",
+          "op": "literal",
+          "value": 106
+        },
+        {
+          "cpu": "0x8049",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x804a",
+          "op": "literal",
+          "value": 104
+        },
+        {
+          "cpu": "0x804b",
+          "op": "repeat",
+          "count": 4,
+          "value": 16
+        },
+        {
+          "cpu": "0x804d",
+          "op": "literal",
+          "value": 17
+        },
+        {
+          "cpu": "0x804e",
+          "op": "repeat",
+          "count": 3,
+          "value": 18
+        }
+      ]
+    },
+    {
+      "cpu_start": "0x8050",
+      "cpu_end_exclusive": "0x8087",
+      "prg_offset": 32848,
+      "rom_offset": 32864,
+      "bytes": 55,
+      "sha256": "5cb457e690c72c1a3ff0378af69774edd8a66d1e28ae4aecdb41654ca939a4f2",
+      "commands": [
+        {
+          "cpu": "0x8050",
+          "op": "literal",
+          "value": 33
+        },
+        {
+          "cpu": "0x8051",
+          "op": "literal",
+          "value": 32
+        },
+        {
+          "cpu": "0x8052",
+          "op": "literal",
+          "value": 43
+        },
+        {
+          "cpu": "0x8053",
+          "op": "literal",
+          "value": 35
+        },
+        {
+          "cpu": "0x8054",
+          "op": "literal",
+          "value": 34
+        },
+        {
+          "cpu": "0x8055",
+          "op": "literal",
+          "value": 35
+        },
+        {
+          "cpu": "0x8056",
+          "op": "literal",
+          "value": 34
+        },
+        {
+          "cpu": "0x8057",
+          "op": "literal",
+          "value": 35
+        },
+        {
+          "cpu": "0x8058",
+          "op": "literal",
+          "value": 84
+        },
+        {
+          "cpu": "0x8059",
+          "op": "literal",
+          "value": 84
+        },
+        {
+          "cpu": "0x805a",
+          "op": "literal",
+          "value": 47
+        },
+        {
+          "cpu": "0x805b",
+          "op": "literal",
+          "value": 39
+        },
+        {
+          "cpu": "0x805c",
+          "op": "literal",
+          "value": 38
+        },
+        {
+          "cpu": "0x805d",
+          "op": "literal",
+          "value": 39
+        },
+        {
+          "cpu": "0x805e",
+          "op": "literal",
+          "value": 38
+        },
+        {
+          "cpu": "0x805f",
+          "op": "literal",
+          "value": 39
+        },
+        {
+          "cpu": "0x8060",
+          "op": "repeat",
+          "count": 3,
+          "value": 29
+        },
+        {
+          "cpu": "0x8062",
+          "op": "literal",
+          "value": 30
+        },
+        {
+          "cpu": "0x8063",
+          "op": "literal",
+          "value": 28
+        },
+        {
+          "cpu": "0x8064",
+          "op": "literal",
+          "value": 29
+        },
+        {
+          "cpu": "0x8065",
+          "op": "literal",
+          "value": 29
+        },
+        {
+          "cpu": "0x8066",
+          "op": "literal",
+          "value": 30
+        },
+        {
+          "cpu": "0x8067",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x8068",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x8069",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x806a",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x806b",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x806c",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x806d",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x806e",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x806f",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x8070",
+          "op": "literal",
+          "value": 106
+        },
+        {
+          "cpu": "0x8071",
+          "op": "literal",
+          "value": 59
+        },
+        {
+          "cpu": "0x8072",
+          "op": "literal",
+          "value": 104
+        },
+        {
+          "cpu": "0x8073",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x8074",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x8075",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x8076",
+          "op": "literal",
+          "value": 106
+        },
+        {
+          "cpu": "0x8077",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x8078",
+          "op": "literal",
+          "value": 104
+        },
+        {
+          "cpu": "0x8079",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x807a",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x807b",
+          "op": "literal",
+          "value": 11
+        },
+        {
+          "cpu": "0x807c",
+          "op": "literal",
+          "value": 106
+        },
+        {
+          "cpu": "0x807d",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x807e",
+          "op": "literal",
+          "value": 8
+        },
+        {
+          "cpu": "0x807f",
+          "op": "literal",
+          "value": 23
+        },
+        {
+          "cpu": "0x8080",
+          "op": "literal",
+          "value": 57
+        },
+        {
+          "cpu": "0x8081",
+          "op": "literal",
+          "value": 57
+        },
+        {
+          "cpu": "0x8082",
+          "op": "literal",
+          "value": 22
+        },
+        {
+          "cpu": "0x8083",
+          "op": "literal",
+          "value": 20
+        },
+        {
+          "cpu": "0x8084",
+          "op": "literal",
+          "value": 18
+        },
+        {
+          "cpu": "0x8085",
+          "op": "literal",
+          "value": 18
+        },
+        {
+          "cpu": "0x8086",
+          "op": "literal",
+          "value": 19
+        }
+      ]
+    },
+    {
+      "cpu_start": "0x8087",
+      "cpu_end_exclusive": "0x80bd",
+      "prg_offset": 32903,
+      "rom_offset": 32919,
+      "bytes": 54,
+      "sha256": "a0cf06174d75caf3fd78399f1e341fb18ded2b45214b9cd285f1971a7db66788",
+      "commands": [
+        {
+          "cpu": "0x8087",
+          "op": "literal",
+          "value": 34
+        },
+        {
+          "cpu": "0x8088",
+          "op": "literal",
+          "value": 35
+        },
+        {
+          "cpu": "0x8089",
+          "op": "literal",
+          "value": 34
+        },
+        {
+          "cpu": "0x808a",
+          "op": "literal",
+          "value": 35
+        },
+        {
+          "cpu": "0x808b",
+          "op": "literal",
+          "value": 42
+        },
+        {
+          "cpu": "0x808c",
+          "op": "literal",
+          "value": 84
+        },
+        {
+          "cpu": "0x808d",
+          "op": "literal",
+          "value": 33
+        },
+        {
+          "cpu": "0x808e",
+          "op": "literal",
+          "value": 84
+        },
+        {
+          "cpu": "0x808f",
+          "op": "literal",
+          "value": 38
+        },
+        {
+          "cpu": "0x8090",
+          "op": "literal",
+          "value": 39
+        },
+        {
+          "cpu": "0x8091",
+          "op": "literal",
+          "value": 38
+        },
+        {
+          "cpu": "0x8092",
+          "op": "literal",
+          "value": 39
+        },
+        {
+          "cpu": "0x8093",
+          "op": "literal",
+          "value": 46
+        },
+        {
+          "cpu": "0x8094",
+          "op": "literal",
+          "value": 33
+        },
+        {
+          "cpu": "0x8095",
+          "op": "literal",
+          "value": 32
+        },
+        {
+          "cpu": "0x8096",
+          "op": "literal",
+          "value": 84
+        },
+        {
+          "cpu": "0x8097",
+          "op": "literal",
+          "value": 30
+        },
+        {
+          "cpu": "0x8098",
+          "op": "literal",
+          "value": 28
+        },
+        {
+          "cpu": "0x8099",
+          "op": "literal",
+          "value": 29
+        },
+        {
+          "cpu": "0x809a",
+          "op": "literal",
+          "value": 29
+        },
+        {
+          "cpu": "0x809b",
+          "op": "literal",
+          "value": 28
+        },
+        {
+          "cpu": "0x809c",
+          "op": "literal",
+          "value": 29
+        },
+        {
+          "cpu": "0x809d",
+          "op": "literal",
+          "value": 29
+        },
+        {
+          "cpu": "0x809e",
+          "op": "literal",
+          "value": 30
+        },
+        {
+          "cpu": "0x809f",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x80a0",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x80a1",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x80a2",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x80a3",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x80a4",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x80a5",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x80a6",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x80a7",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x80a8",
+          "op": "literal",
+          "value": 106
+        },
+        {
+          "cpu": "0x80a9",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x80aa",
+          "op": "literal",
+          "value": 105
+        },
+        {
+          "cpu": "0x80ab",
+          "op": "repeat",
+          "count": 3,
+          "value": 4
+        },
+        {
+          "cpu": "0x80ad",
+          "op": "literal",
+          "value": 105
+        },
+        {
+          "cpu": "0x80ae",
+          "op": "literal",
+          "value": 9
+        },
+        {
+          "cpu": "0x80af",
+          "op": "literal",
+          "value": 10
+        },
+        {
+          "cpu": "0x80b0",
+          "op": "literal",
+          "value": 106
+        },
+        {
+          "cpu": "0x80b1",
+          "op": "literal",
+          "value": 104
+        },
+        {
+          "cpu": "0x80b2",
+          "op": "repeat",
+          "count": 3,
+          "value": 7
+        },
+        {
+          "cpu": "0x80b4",
+          "op": "literal",
+          "value": 8
+        },
+        {
+          "cpu": "0x80b5",
+          "op": "literal",
+          "value": 16
+        },
+        {
+          "cpu": "0x80b6",
+          "op": "literal",
+          "value": 17
+        },
+        {
+          "cpu": "0x80b7",
+          "op": "literal",
+          "value": 23
+        },
+        {
+          "cpu": "0x80b8",
+          "op": "literal",
+          "value": 57
+        },
+        {
+          "cpu": "0x80b9",
+          "op": "literal",
+          "value": 57
+        },
+        {
+          "cpu": "0x80ba",
+          "op": "literal",
+          "value": 22
+        },
+        {
+          "cpu": "0x80bb",
+          "op": "literal",
+          "value": 18
+        },
+        {
+          "cpu": "0x80bc",
+          "op": "literal",
+          "value": 19
+        }
+      ]
+    },
+    {
+      "cpu_start": "0x80bd",
+      "cpu_end_exclusive": "0x80e9",
+      "prg_offset": 32957,
+      "rom_offset": 32973,
+      "bytes": 44,
+      "sha256": "e49cf443fea58ba6c7230269dbf6000422601e7158aebe71f125fe84d77b2b6b",
+      "commands": [
+        {
+          "cpu": "0x80bd",
+          "op": "literal",
+          "value": 33
+        },
+        {
+          "cpu": "0x80be",
+          "op": "literal",
+          "value": 32
+        },
+        {
+          "cpu": "0x80bf",
+          "op": "literal",
+          "value": 84
+        },
+        {
+          "cpu": "0x80c0",
+          "op": "literal",
+          "value": 33
+        },
+        {
+          "cpu": "0x80c1",
+          "op": "literal",
+          "value": 32
+        },
+        {
+          "cpu": "0x80c2",
+          "op": "literal",
+          "value": 32
+        },
+        {
+          "cpu": "0x80c3",
+          "op": "literal",
+          "value": 84
+        },
+        {
+          "cpu": "0x80c4",
+          "op": "literal",
+          "value": 33
+        },
+        {
+          "cpu": "0x80c5",
+          "op": "literal",
+          "value": 84
+        },
+        {
+          "cpu": "0x80c6",
+          "op": "literal",
+          "value": 84
+        },
+        {
+          "cpu": "0x80c7",
+          "op": "literal",
+          "value": 33
+        },
+        {
+          "cpu": "0x80c8",
+          "op": "literal",
+          "value": 32
+        },
+        {
+          "cpu": "0x80c9",
+          "op": "literal",
+          "value": 33
+        },
+        {
+          "cpu": "0x80ca",
+          "op": "literal",
+          "value": 33
+        },
+        {
+          "cpu": "0x80cb",
+          "op": "repeat",
+          "count": 3,
+          "value": 84
+        },
+        {
+          "cpu": "0x80cd",
+          "op": "literal",
+          "value": 32
+        },
+        {
+          "cpu": "0x80ce",
+          "op": "literal",
+          "value": 84
+        },
+        {
+          "cpu": "0x80cf",
+          "op": "literal",
+          "value": 84
+        },
+        {
+          "cpu": "0x80d0",
+          "op": "literal",
+          "value": 28
+        },
+        {
+          "cpu": "0x80d1",
+          "op": "repeat",
+          "count": 3,
+          "value": 29
+        },
+        {
+          "cpu": "0x80d3",
+          "op": "literal",
+          "value": 3
+        },
+        {
+          "cpu": "0x80d4",
+          "op": "literal",
+          "value": 41
+        },
+        {
+          "cpu": "0x80d5",
+          "op": "literal",
+          "value": 41
+        },
+        {
+          "cpu": "0x80d6",
+          "op": "literal",
+          "value": 55
+        },
+        {
+          "cpu": "0x80d7",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x80d8",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x80d9",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x80da",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x80db",
+          "op": "repeat",
+          "count": 4,
+          "value": 12
+        },
+        {
+          "cpu": "0x80dd",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x80de",
+          "op": "literal",
+          "value": 106
+        },
+        {
+          "cpu": "0x80df",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x80e0",
+          "op": "literal",
+          "value": 104
+        },
+        {
+          "cpu": "0x80e1",
+          "op": "literal",
+          "value": 14
+        },
+        {
+          "cpu": "0x80e2",
+          "op": "literal",
+          "value": 12
+        },
+        {
+          "cpu": "0x80e3",
+          "op": "literal",
+          "value": 12
+        },
+        {
+          "cpu": "0x80e4",
+          "op": "literal",
+          "value": 13
+        },
+        {
+          "cpu": "0x80e5",
+          "op": "repeat",
+          "count": 4,
+          "value": 9
+        },
+        {
+          "cpu": "0x80e7",
+          "op": "repeat",
+          "count": 8,
+          "value": 16
+        }
+      ]
+    },
+    {
+      "cpu_start": "0x80e9",
+      "cpu_end_exclusive": "0x8117",
+      "prg_offset": 33001,
+      "rom_offset": 33017,
+      "bytes": 46,
+      "sha256": "80559906b5d705e138320daf209b65d0acb2c4ff4befd60784ace0b42122cce9",
+      "commands": [
+        {
+          "cpu": "0x80e9",
+          "op": "repeat",
+          "count": 3,
+          "value": 84
+        },
+        {
+          "cpu": "0x80eb",
+          "op": "literal",
+          "value": 32
+        },
+        {
+          "cpu": "0x80ec",
+          "op": "literal",
+          "value": 33
+        },
+        {
+          "cpu": "0x80ed",
+          "op": "literal",
+          "value": 84
+        },
+        {
+          "cpu": "0x80ee",
+          "op": "literal",
+          "value": 32
+        },
+        {
+          "cpu": "0x80ef",
+          "op": "literal",
+          "value": 43
+        },
+        {
+          "cpu": "0x80f0",
+          "op": "literal",
+          "value": 32
+        },
+        {
+          "cpu": "0x80f1",
+          "op": "literal",
+          "value": 32
+        },
+        {
+          "cpu": "0x80f2",
+          "op": "literal",
+          "value": 84
+        },
+        {
+          "cpu": "0x80f3",
+          "op": "literal",
+          "value": 33
+        },
+        {
+          "cpu": "0x80f4",
+          "op": "repeat",
+          "count": 3,
+          "value": 84
+        },
+        {
+          "cpu": "0x80f6",
+          "op": "literal",
+          "value": 47
+        },
+        {
+          "cpu": "0x80f7",
+          "op": "literal",
+          "value": 30
+        },
+        {
+          "cpu": "0x80f8",
+          "op": "repeat",
+          "count": 4,
+          "value": 84
+        },
+        {
+          "cpu": "0x80fa",
+          "op": "literal",
+          "value": 28
+        },
+        {
+          "cpu": "0x80fb",
+          "op": "literal",
+          "value": 29
+        },
+        {
+          "cpu": "0x80fc",
+          "op": "literal",
+          "value": 29
+        },
+        {
+          "cpu": "0x80fd",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x80fe",
+          "op": "literal",
+          "value": 3
+        },
+        {
+          "cpu": "0x80ff",
+          "op": "literal",
+          "value": 41
+        },
+        {
+          "cpu": "0x8100",
+          "op": "literal",
+          "value": 41
+        },
+        {
+          "cpu": "0x8101",
+          "op": "literal",
+          "value": 55
+        },
+        {
+          "cpu": "0x8102",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x8103",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x8104",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x8105",
+          "op": "literal",
+          "value": 105
+        },
+        {
+          "cpu": "0x8106",
+          "op": "repeat",
+          "count": 4,
+          "value": 12
+        },
+        {
+          "cpu": "0x8108",
+          "op": "literal",
+          "value": 104
+        },
+        {
+          "cpu": "0x8109",
+          "op": "literal",
+          "value": 105
+        },
+        {
+          "cpu": "0x810a",
+          "op": "literal",
+          "value": 62
+        },
+        {
+          "cpu": "0x810b",
+          "op": "literal",
+          "value": 9
+        },
+        {
+          "cpu": "0x810c",
+          "op": "literal",
+          "value": 14
+        },
+        {
+          "cpu": "0x810d",
+          "op": "literal",
+          "value": 12
+        },
+        {
+          "cpu": "0x810e",
+          "op": "literal",
+          "value": 12
+        },
+        {
+          "cpu": "0x810f",
+          "op": "literal",
+          "value": 13
+        },
+        {
+          "cpu": "0x8110",
+          "op": "literal",
+          "value": 9
+        },
+        {
+          "cpu": "0x8111",
+          "op": "literal",
+          "value": 10
+        },
+        {
+          "cpu": "0x8112",
+          "op": "literal",
+          "value": 106
+        },
+        {
+          "cpu": "0x8113",
+          "op": "repeat",
+          "count": 6,
+          "value": 16
+        },
+        {
+          "cpu": "0x8115",
+          "op": "literal",
+          "value": 17
+        },
+        {
+          "cpu": "0x8116",
+          "op": "literal",
+          "value": 18
+        }
+      ]
+    },
+    {
+      "cpu_start": "0x8117",
+      "cpu_end_exclusive": "0x8147",
+      "prg_offset": 33047,
+      "rom_offset": 33063,
+      "bytes": 48,
+      "sha256": "c2b04ef87a42932814e8ecb45b8907642cc46b9249df65f40abde6ee5794e3cf",
+      "commands": [
+        {
+          "cpu": "0x8117",
+          "op": "literal",
+          "value": 35
+        },
+        {
+          "cpu": "0x8118",
+          "op": "literal",
+          "value": 42
+        },
+        {
+          "cpu": "0x8119",
+          "op": "literal",
+          "value": 32
+        },
+        {
+          "cpu": "0x811a",
+          "op": "literal",
+          "value": 45
+        },
+        {
+          "cpu": "0x811b",
+          "op": "repeat",
+          "count": 4,
+          "value": 44
+        },
+        {
+          "cpu": "0x811d",
+          "op": "literal",
+          "value": 39
+        },
+        {
+          "cpu": "0x811e",
+          "op": "literal",
+          "value": 46
+        },
+        {
+          "cpu": "0x811f",
+          "op": "literal",
+          "value": 33
+        },
+        {
+          "cpu": "0x8120",
+          "op": "literal",
+          "value": 103
+        },
+        {
+          "cpu": "0x8121",
+          "op": "repeat",
+          "count": 4,
+          "value": 82
+        },
+        {
+          "cpu": "0x8123",
+          "op": "literal",
+          "value": 29
+        },
+        {
+          "cpu": "0x8124",
+          "op": "literal",
+          "value": 29
+        },
+        {
+          "cpu": "0x8125",
+          "op": "literal",
+          "value": 30
+        },
+        {
+          "cpu": "0x8126",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x8127",
+          "op": "repeat",
+          "count": 3,
+          "value": 0
+        },
+        {
+          "cpu": "0x8129",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x812a",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x812b",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x812c",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x812d",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x812e",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x812f",
+          "op": "literal",
+          "value": 105
+        },
+        {
+          "cpu": "0x8130",
+          "op": "literal",
+          "value": 106
+        },
+        {
+          "cpu": "0x8131",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x8132",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x8133",
+          "op": "literal",
+          "value": 106
+        },
+        {
+          "cpu": "0x8134",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x8135",
+          "op": "literal",
+          "value": 106
+        },
+        {
+          "cpu": "0x8136",
+          "op": "repeat",
+          "count": 3,
+          "value": 81
+        },
+        {
+          "cpu": "0x8138",
+          "op": "literal",
+          "value": 4
+        },
+        {
+          "cpu": "0x8139",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x813a",
+          "op": "literal",
+          "value": 105
+        },
+        {
+          "cpu": "0x813b",
+          "op": "literal",
+          "value": 104
+        },
+        {
+          "cpu": "0x813c",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x813d",
+          "op": "literal",
+          "value": 105
+        },
+        {
+          "cpu": "0x813e",
+          "op": "literal",
+          "value": 106
+        },
+        {
+          "cpu": "0x813f",
+          "op": "literal",
+          "value": 104
+        },
+        {
+          "cpu": "0x8140",
+          "op": "literal",
+          "value": 7
+        },
+        {
+          "cpu": "0x8141",
+          "op": "repeat",
+          "count": 3,
+          "value": 18
+        },
+        {
+          "cpu": "0x8143",
+          "op": "literal",
+          "value": 23
+        },
+        {
+          "cpu": "0x8144",
+          "op": "repeat",
+          "count": 3,
+          "value": 57
+        },
+        {
+          "cpu": "0x8146",
+          "op": "literal",
+          "value": 22
+        }
+      ]
+    },
+    {
+      "cpu_start": "0x8147",
+      "cpu_end_exclusive": "0x8172",
+      "prg_offset": 33095,
+      "rom_offset": 33111,
+      "bytes": 43,
+      "sha256": "6e9ad341cedfb3d54235c257b9fdb3727d8c14e461b04186cb2e1e3a6d7acb99",
+      "commands": [
+        {
+          "cpu": "0x8147",
+          "op": "repeat",
+          "count": 8,
+          "value": 44
+        },
+        {
+          "cpu": "0x8149",
+          "op": "repeat",
+          "count": 8,
+          "value": 82
+        },
+        {
+          "cpu": "0x814b",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x814c",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x814d",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x814e",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x814f",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x8150",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x8151",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x8152",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x8153",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x8154",
+          "op": "literal",
+          "value": 106
+        },
+        {
+          "cpu": "0x8155",
+          "op": "literal",
+          "value": 105
+        },
+        {
+          "cpu": "0x8156",
+          "op": "literal",
+          "value": 62
+        },
+        {
+          "cpu": "0x8157",
+          "op": "literal",
+          "value": 104
+        },
+        {
+          "cpu": "0x8158",
+          "op": "literal",
+          "value": 105
+        },
+        {
+          "cpu": "0x8159",
+          "op": "literal",
+          "value": 104
+        },
+        {
+          "cpu": "0x815a",
+          "op": "literal",
+          "value": 106
+        },
+        {
+          "cpu": "0x815b",
+          "op": "literal",
+          "value": 4
+        },
+        {
+          "cpu": "0x815c",
+          "op": "literal",
+          "value": 59
+        },
+        {
+          "cpu": "0x815d",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x815e",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x815f",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x8160",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x8161",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x8162",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x8163",
+          "op": "literal",
+          "value": 7
+        },
+        {
+          "cpu": "0x8164",
+          "op": "literal",
+          "value": 11
+        },
+        {
+          "cpu": "0x8165",
+          "op": "literal",
+          "value": 106
+        },
+        {
+          "cpu": "0x8166",
+          "op": "literal",
+          "value": 105
+        },
+        {
+          "cpu": "0x8167",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x8168",
+          "op": "literal",
+          "value": 106
+        },
+        {
+          "cpu": "0x8169",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x816a",
+          "op": "literal",
+          "value": 104
+        },
+        {
+          "cpu": "0x816b",
+          "op": "literal",
+          "value": 18
+        },
+        {
+          "cpu": "0x816c",
+          "op": "literal",
+          "value": 20
+        },
+        {
+          "cpu": "0x816d",
+          "op": "repeat",
+          "count": 3,
+          "value": 18
+        },
+        {
+          "cpu": "0x816f",
+          "op": "literal",
+          "value": 23
+        },
+        {
+          "cpu": "0x8170",
+          "op": "literal",
+          "value": 57
+        },
+        {
+          "cpu": "0x8171",
+          "op": "literal",
+          "value": 24
+        }
+      ]
+    },
+    {
+      "cpu_start": "0x8172",
+      "cpu_end_exclusive": "0x819b",
+      "prg_offset": 33138,
+      "rom_offset": 33154,
+      "bytes": 41,
+      "sha256": "33365b9ff98a207696e467301b52c960c5471e33e2b6524a93556ad9e3504091",
+      "commands": [
+        {
+          "cpu": "0x8172",
+          "op": "repeat",
+          "count": 8,
+          "value": 44
+        },
+        {
+          "cpu": "0x8174",
+          "op": "repeat",
+          "count": 3,
+          "value": 82
+        },
+        {
+          "cpu": "0x8176",
+          "op": "repeat",
+          "count": 5,
+          "value": 40
+        },
+        {
+          "cpu": "0x8178",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x8179",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x817a",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x817b",
+          "op": "repeat",
+          "count": 5,
+          "value": 82
+        },
+        {
+          "cpu": "0x817d",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x817e",
+          "op": "literal",
+          "value": 62
+        },
+        {
+          "cpu": "0x817f",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x8180",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x8181",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x8182",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x8183",
+          "op": "repeat",
+          "count": 3,
+          "value": 0
+        },
+        {
+          "cpu": "0x8185",
+          "op": "literal",
+          "value": 104
+        },
+        {
+          "cpu": "0x8186",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x8187",
+          "op": "literal",
+          "value": 106
+        },
+        {
+          "cpu": "0x8188",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x8189",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x818a",
+          "op": "literal",
+          "value": 104
+        },
+        {
+          "cpu": "0x818b",
+          "op": "repeat",
+          "count": 3,
+          "value": 81
+        },
+        {
+          "cpu": "0x818d",
+          "op": "literal",
+          "value": 106
+        },
+        {
+          "cpu": "0x818e",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x818f",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x8190",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x8191",
+          "op": "literal",
+          "value": 106
+        },
+        {
+          "cpu": "0x8192",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x8193",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x8194",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x8195",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x8196",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x8197",
+          "op": "literal",
+          "value": 104
+        },
+        {
+          "cpu": "0x8198",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x8199",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x819a",
+          "op": "literal",
+          "value": 104
+        }
+      ]
+    },
+    {
+      "cpu_start": "0x819b",
+      "cpu_end_exclusive": "0x81c9",
+      "prg_offset": 33179,
+      "rom_offset": 33195,
+      "bytes": 46,
+      "sha256": "d0fc117e6724fcbb0c5adaeb72164aca6d670eb5e5a24c4ea90d619f054ca9a2",
+      "commands": [
+        {
+          "cpu": "0x819b",
+          "op": "repeat",
+          "count": 8,
+          "value": 44
+        },
+        {
+          "cpu": "0x819d",
+          "op": "repeat",
+          "count": 5,
+          "value": 82
+        },
+        {
+          "cpu": "0x819f",
+          "op": "repeat",
+          "count": 3,
+          "value": 40
+        },
+        {
+          "cpu": "0x81a1",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x81a2",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x81a3",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x81a4",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x81a5",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x81a6",
+          "op": "literal",
+          "value": 40
+        },
+        {
+          "cpu": "0x81a7",
+          "op": "literal",
+          "value": 82
+        },
+        {
+          "cpu": "0x81a8",
+          "op": "literal",
+          "value": 82
+        },
+        {
+          "cpu": "0x81a9",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x81aa",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x81ab",
+          "op": "literal",
+          "value": 104
+        },
+        {
+          "cpu": "0x81ac",
+          "op": "literal",
+          "value": 106
+        },
+        {
+          "cpu": "0x81ad",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x81ae",
+          "op": "literal",
+          "value": 82
+        },
+        {
+          "cpu": "0x81af",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x81b0",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x81b1",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x81b2",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x81b3",
+          "op": "literal",
+          "value": 4
+        },
+        {
+          "cpu": "0x81b4",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x81b5",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x81b6",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x81b7",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x81b8",
+          "op": "literal",
+          "value": 106
+        },
+        {
+          "cpu": "0x81b9",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x81ba",
+          "op": "literal",
+          "value": 104
+        },
+        {
+          "cpu": "0x81bb",
+          "op": "literal",
+          "value": 7
+        },
+        {
+          "cpu": "0x81bc",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x81bd",
+          "op": "literal",
+          "value": 104
+        },
+        {
+          "cpu": "0x81be",
+          "op": "literal",
+          "value": 105
+        },
+        {
+          "cpu": "0x81bf",
+          "op": "literal",
+          "value": 104
+        },
+        {
+          "cpu": "0x81c0",
+          "op": "literal",
+          "value": 59
+        },
+        {
+          "cpu": "0x81c1",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x81c2",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x81c3",
+          "op": "literal",
+          "value": 106
+        },
+        {
+          "cpu": "0x81c4",
+          "op": "literal",
+          "value": 104
+        },
+        {
+          "cpu": "0x81c5",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x81c6",
+          "op": "literal",
+          "value": 106
+        },
+        {
+          "cpu": "0x81c7",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x81c8",
+          "op": "literal",
+          "value": 106
+        }
+      ]
+    },
+    {
+      "cpu_start": "0x81c9",
+      "cpu_end_exclusive": "0x81f4",
+      "prg_offset": 33225,
+      "rom_offset": 33241,
+      "bytes": 43,
+      "sha256": "f55e63e3a99c323065a9193dbb4014c14547c6fe9455d99aa733b0a41ce60032",
+      "commands": [
+        {
+          "cpu": "0x81c9",
+          "op": "repeat",
+          "count": 8,
+          "value": 44
+        },
+        {
+          "cpu": "0x81cb",
+          "op": "repeat",
+          "count": 6,
+          "value": 40
+        },
+        {
+          "cpu": "0x81cd",
+          "op": "literal",
+          "value": 82
+        },
+        {
+          "cpu": "0x81ce",
+          "op": "literal",
+          "value": 82
+        },
+        {
+          "cpu": "0x81cf",
+          "op": "repeat",
+          "count": 5,
+          "value": 40
+        },
+        {
+          "cpu": "0x81d1",
+          "op": "literal",
+          "value": 82
+        },
+        {
+          "cpu": "0x81d2",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x81d3",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x81d4",
+          "op": "literal",
+          "value": 40
+        },
+        {
+          "cpu": "0x81d5",
+          "op": "literal",
+          "value": 82
+        },
+        {
+          "cpu": "0x81d6",
+          "op": "literal",
+          "value": 82
+        },
+        {
+          "cpu": "0x81d7",
+          "op": "literal",
+          "value": 40
+        },
+        {
+          "cpu": "0x81d8",
+          "op": "literal",
+          "value": 40
+        },
+        {
+          "cpu": "0x81d9",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x81da",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x81db",
+          "op": "literal",
+          "value": 106
+        },
+        {
+          "cpu": "0x81dc",
+          "op": "literal",
+          "value": 40
+        },
+        {
+          "cpu": "0x81dd",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x81de",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x81df",
+          "op": "literal",
+          "value": 82
+        },
+        {
+          "cpu": "0x81e0",
+          "op": "literal",
+          "value": 82
+        },
+        {
+          "cpu": "0x81e1",
+          "op": "literal",
+          "value": 104
+        },
+        {
+          "cpu": "0x81e2",
+          "op": "literal",
+          "value": 105
+        },
+        {
+          "cpu": "0x81e3",
+          "op": "literal",
+          "value": 4
+        },
+        {
+          "cpu": "0x81e4",
+          "op": "literal",
+          "value": 40
+        },
+        {
+          "cpu": "0x81e5",
+          "op": "literal",
+          "value": 106
+        },
+        {
+          "cpu": "0x81e6",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x81e7",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x81e8",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x81e9",
+          "op": "literal",
+          "value": 105
+        },
+        {
+          "cpu": "0x81ea",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x81eb",
+          "op": "literal",
+          "value": 7
+        },
+        {
+          "cpu": "0x81ec",
+          "op": "literal",
+          "value": 40
+        },
+        {
+          "cpu": "0x81ed",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x81ee",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x81ef",
+          "op": "literal",
+          "value": 106
+        },
+        {
+          "cpu": "0x81f0",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x81f1",
+          "op": "literal",
+          "value": 104
+        },
+        {
+          "cpu": "0x81f2",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x81f3",
+          "op": "literal",
+          "value": 106
+        }
+      ]
+    },
+    {
+      "cpu_start": "0x81f4",
+      "cpu_end_exclusive": "0x821d",
+      "prg_offset": 33268,
+      "rom_offset": 33284,
+      "bytes": 41,
+      "sha256": "8776f663dcf584fb275975f81ea429da97f4f3e3f4ed7515c099a13355c33851",
+      "commands": [
+        {
+          "cpu": "0x81f4",
+          "op": "literal",
+          "value": 44
+        },
+        {
+          "cpu": "0x81f5",
+          "op": "repeat",
+          "count": 7,
+          "value": 36
+        },
+        {
+          "cpu": "0x81f7",
+          "op": "literal",
+          "value": 40
+        },
+        {
+          "cpu": "0x81f8",
+          "op": "literal",
+          "value": 56
+        },
+        {
+          "cpu": "0x81f9",
+          "op": "repeat",
+          "count": 6,
+          "value": 44
+        },
+        {
+          "cpu": "0x81fb",
+          "op": "literal",
+          "value": 40
+        },
+        {
+          "cpu": "0x81fc",
+          "op": "literal",
+          "value": 82
+        },
+        {
+          "cpu": "0x81fd",
+          "op": "literal",
+          "value": 82
+        },
+        {
+          "cpu": "0x81fe",
+          "op": "repeat",
+          "count": 6,
+          "value": 40
+        },
+        {
+          "cpu": "0x8200",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x8201",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x8202",
+          "op": "repeat",
+          "count": 4,
+          "value": 82
+        },
+        {
+          "cpu": "0x8204",
+          "op": "literal",
+          "value": 40
+        },
+        {
+          "cpu": "0x8205",
+          "op": "literal",
+          "value": 40
+        },
+        {
+          "cpu": "0x8206",
+          "op": "literal",
+          "value": 105
+        },
+        {
+          "cpu": "0x8207",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x8208",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x8209",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x820a",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x820b",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x820c",
+          "op": "literal",
+          "value": 40
+        },
+        {
+          "cpu": "0x820d",
+          "op": "literal",
+          "value": 40
+        },
+        {
+          "cpu": "0x820e",
+          "op": "literal",
+          "value": 106
+        },
+        {
+          "cpu": "0x820f",
+          "op": "literal",
+          "value": 104
+        },
+        {
+          "cpu": "0x8210",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x8211",
+          "op": "literal",
+          "value": 104
+        },
+        {
+          "cpu": "0x8212",
+          "op": "literal",
+          "value": 105
+        },
+        {
+          "cpu": "0x8213",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x8214",
+          "op": "literal",
+          "value": 82
+        },
+        {
+          "cpu": "0x8215",
+          "op": "literal",
+          "value": 40
+        },
+        {
+          "cpu": "0x8216",
+          "op": "literal",
+          "value": 104
+        },
+        {
+          "cpu": "0x8217",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x8218",
+          "op": "literal",
+          "value": 106
+        },
+        {
+          "cpu": "0x8219",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x821a",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x821b",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x821c",
+          "op": "literal",
+          "value": 107
+        }
+      ]
+    },
+    {
+      "cpu_start": "0x821d",
+      "cpu_end_exclusive": "0x8243",
+      "prg_offset": 33309,
+      "rom_offset": 33325,
+      "bytes": 38,
+      "sha256": "360cc8ecc029fa6e22d5aef17310d798d607d70db7227e579dbd5e989338c960",
+      "commands": [
+        {
+          "cpu": "0x821d",
+          "op": "repeat",
+          "count": 8,
+          "value": 36
+        },
+        {
+          "cpu": "0x821f",
+          "op": "repeat",
+          "count": 8,
+          "value": 44
+        },
+        {
+          "cpu": "0x8221",
+          "op": "repeat",
+          "count": 6,
+          "value": 40
+        },
+        {
+          "cpu": "0x8223",
+          "op": "literal",
+          "value": 82
+        },
+        {
+          "cpu": "0x8224",
+          "op": "literal",
+          "value": 82
+        },
+        {
+          "cpu": "0x8225",
+          "op": "repeat",
+          "count": 4,
+          "value": 40
+        },
+        {
+          "cpu": "0x8227",
+          "op": "literal",
+          "value": 82
+        },
+        {
+          "cpu": "0x8228",
+          "op": "literal",
+          "value": 82
+        },
+        {
+          "cpu": "0x8229",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x822a",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x822b",
+          "op": "literal",
+          "value": 40
+        },
+        {
+          "cpu": "0x822c",
+          "op": "literal",
+          "value": 82
+        },
+        {
+          "cpu": "0x822d",
+          "op": "literal",
+          "value": 82
+        },
+        {
+          "cpu": "0x822e",
+          "op": "literal",
+          "value": 40
+        },
+        {
+          "cpu": "0x822f",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x8230",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x8231",
+          "op": "literal",
+          "value": 104
+        },
+        {
+          "cpu": "0x8232",
+          "op": "literal",
+          "value": 4
+        },
+        {
+          "cpu": "0x8233",
+          "op": "literal",
+          "value": 40
+        },
+        {
+          "cpu": "0x8234",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x8235",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x8236",
+          "op": "literal",
+          "value": 40
+        },
+        {
+          "cpu": "0x8237",
+          "op": "literal",
+          "value": 106
+        },
+        {
+          "cpu": "0x8238",
+          "op": "literal",
+          "value": 62
+        },
+        {
+          "cpu": "0x8239",
+          "op": "literal",
+          "value": 106
+        },
+        {
+          "cpu": "0x823a",
+          "op": "literal",
+          "value": 7
+        },
+        {
+          "cpu": "0x823b",
+          "op": "literal",
+          "value": 40
+        },
+        {
+          "cpu": "0x823c",
+          "op": "literal",
+          "value": 104
+        },
+        {
+          "cpu": "0x823d",
+          "op": "literal",
+          "value": 105
+        },
+        {
+          "cpu": "0x823e",
+          "op": "literal",
+          "value": 40
+        },
+        {
+          "cpu": "0x823f",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x8240",
+          "op": "literal",
+          "value": 104
+        },
+        {
+          "cpu": "0x8241",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x8242",
+          "op": "literal",
+          "value": 107
+        }
+      ]
+    },
+    {
+      "cpu_start": "0x8243",
+      "cpu_end_exclusive": "0x8276",
+      "prg_offset": 33347,
+      "rom_offset": 33363,
+      "bytes": 51,
+      "sha256": "8df3932d149cac83edf2e403b50429408b81f96f54ee85daf63aa2dd272b5ca2",
+      "commands": [
+        {
+          "cpu": "0x8243",
+          "op": "repeat",
+          "count": 3,
+          "value": 36
+        },
+        {
+          "cpu": "0x8245",
+          "op": "literal",
+          "value": 37
+        },
+        {
+          "cpu": "0x8246",
+          "op": "repeat",
+          "count": 4,
+          "value": 84
+        },
+        {
+          "cpu": "0x8248",
+          "op": "repeat",
+          "count": 4,
+          "value": 44
+        },
+        {
+          "cpu": "0x824a",
+          "op": "literal",
+          "value": 25
+        },
+        {
+          "cpu": "0x824b",
+          "op": "literal",
+          "value": 26
+        },
+        {
+          "cpu": "0x824c",
+          "op": "literal",
+          "value": 2
+        },
+        {
+          "cpu": "0x824d",
+          "op": "literal",
+          "value": 27
+        },
+        {
+          "cpu": "0x824e",
+          "op": "literal",
+          "value": 82
+        },
+        {
+          "cpu": "0x824f",
+          "op": "literal",
+          "value": 82
+        },
+        {
+          "cpu": "0x8250",
+          "op": "literal",
+          "value": 40
+        },
+        {
+          "cpu": "0x8251",
+          "op": "literal",
+          "value": 40
+        },
+        {
+          "cpu": "0x8252",
+          "op": "literal",
+          "value": 1
+        },
+        {
+          "cpu": "0x8253",
+          "op": "literal",
+          "value": 5
+        },
+        {
+          "cpu": "0x8254",
+          "op": "literal",
+          "value": 6
+        },
+        {
+          "cpu": "0x8255",
+          "op": "literal",
+          "value": 50
+        },
+        {
+          "cpu": "0x8256",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x8257",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x8258",
+          "op": "literal",
+          "value": 82
+        },
+        {
+          "cpu": "0x8259",
+          "op": "literal",
+          "value": 40
+        },
+        {
+          "cpu": "0x825a",
+          "op": "literal",
+          "value": 97
+        },
+        {
+          "cpu": "0x825b",
+          "op": "literal",
+          "value": 100
+        },
+        {
+          "cpu": "0x825c",
+          "op": "literal",
+          "value": 6
+        },
+        {
+          "cpu": "0x825d",
+          "op": "literal",
+          "value": 50
+        },
+        {
+          "cpu": "0x825e",
+          "op": "literal",
+          "value": 4
+        },
+        {
+          "cpu": "0x825f",
+          "op": "literal",
+          "value": 4
+        },
+        {
+          "cpu": "0x8260",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x8261",
+          "op": "literal",
+          "value": 82
+        },
+        {
+          "cpu": "0x8262",
+          "op": "literal",
+          "value": 48
+        },
+        {
+          "cpu": "0x8263",
+          "op": "literal",
+          "value": 49
+        },
+        {
+          "cpu": "0x8264",
+          "op": "literal",
+          "value": 51
+        },
+        {
+          "cpu": "0x8265",
+          "op": "literal",
+          "value": 54
+        },
+        {
+          "cpu": "0x8266",
+          "op": "literal",
+          "value": 7
+        },
+        {
+          "cpu": "0x8267",
+          "op": "literal",
+          "value": 62
+        },
+        {
+          "cpu": "0x8268",
+          "op": "literal",
+          "value": 106
+        },
+        {
+          "cpu": "0x8269",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x826a",
+          "op": "literal",
+          "value": 52
+        },
+        {
+          "cpu": "0x826b",
+          "op": "literal",
+          "value": 53
+        },
+        {
+          "cpu": "0x826c",
+          "op": "literal",
+          "value": 6
+        },
+        {
+          "cpu": "0x826d",
+          "op": "literal",
+          "value": 50
+        },
+        {
+          "cpu": "0x826e",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x826f",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x8270",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x8271",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x8272",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x8273",
+          "op": "literal",
+          "value": 21
+        },
+        {
+          "cpu": "0x8274",
+          "op": "literal",
+          "value": 58
+        },
+        {
+          "cpu": "0x8275",
+          "op": "literal",
+          "value": 50
+        }
+      ]
+    },
+    {
+      "cpu_start": "0x801d",
+      "cpu_end_exclusive": "0x8050",
+      "prg_offset": 32797,
+      "rom_offset": 32813,
+      "bytes": 51,
+      "sha256": "f4b6fbf21738685eaad51b04a41c97f644c426ce8c8ef211ae6b2d2c5d705991",
+      "commands": [
+        {
+          "cpu": "0x801d",
+          "op": "literal",
+          "value": 33
+        },
+        {
+          "cpu": "0x801e",
+          "op": "literal",
+          "value": 32
+        },
+        {
+          "cpu": "0x801f",
+          "op": "literal",
+          "value": 33
+        },
+        {
+          "cpu": "0x8020",
+          "op": "literal",
+          "value": 43
+        },
+        {
+          "cpu": "0x8021",
+          "op": "literal",
+          "value": 35
+        },
+        {
+          "cpu": "0x8022",
+          "op": "literal",
+          "value": 34
+        },
+        {
+          "cpu": "0x8023",
+          "op": "literal",
+          "value": 35
+        },
+        {
+          "cpu": "0x8024",
+          "op": "literal",
+          "value": 42
+        },
+        {
+          "cpu": "0x8025",
+          "op": "literal",
+          "value": 32
+        },
+        {
+          "cpu": "0x8026",
+          "op": "literal",
+          "value": 84
+        },
+        {
+          "cpu": "0x8027",
+          "op": "literal",
+          "value": 84
+        },
+        {
+          "cpu": "0x8028",
+          "op": "literal",
+          "value": 47
+        },
+        {
+          "cpu": "0x8029",
+          "op": "literal",
+          "value": 39
+        },
+        {
+          "cpu": "0x802a",
+          "op": "literal",
+          "value": 38
+        },
+        {
+          "cpu": "0x802b",
+          "op": "literal",
+          "value": 39
+        },
+        {
+          "cpu": "0x802c",
+          "op": "literal",
+          "value": 46
+        },
+        {
+          "cpu": "0x802d",
+          "op": "literal",
+          "value": 84
+        },
+        {
+          "cpu": "0x802e",
+          "op": "literal",
+          "value": 28
+        },
+        {
+          "cpu": "0x802f",
+          "op": "literal",
+          "value": 29
+        },
+        {
+          "cpu": "0x8030",
+          "op": "literal",
+          "value": 30
+        },
+        {
+          "cpu": "0x8031",
+          "op": "literal",
+          "value": 28
+        },
+        {
+          "cpu": "0x8032",
+          "op": "literal",
+          "value": 30
+        },
+        {
+          "cpu": "0x8033",
+          "op": "literal",
+          "value": 28
+        },
+        {
+          "cpu": "0x8034",
+          "op": "literal",
+          "value": 28
+        },
+        {
+          "cpu": "0x8035",
+          "op": "literal",
+          "value": 84
+        },
+        {
+          "cpu": "0x8036",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x8037",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x8038",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x8039",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x803a",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x803b",
+          "op": "literal",
+          "value": 107
+        },
+        {
+          "cpu": "0x803c",
+          "op": "literal",
+          "value": 0
+        },
+        {
+          "cpu": "0x803d",
+          "op": "literal",
+          "value": 12
+        },
+        {
+          "cpu": "0x803e",
+          "op": "literal",
+          "value": 104
+        },
+        {
+          "cpu": "0x803f",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x8040",
+          "op": "literal",
+          "value": 106
+        },
+        {
+          "cpu": "0x8041",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x8042",
+          "op": "repeat",
+          "count": 3,
+          "value": 0
+        },
+        {
+          "cpu": "0x8044",
+          "op": "literal",
+          "value": 13
+        },
+        {
+          "cpu": "0x8045",
+          "op": "repeat",
+          "count": 3,
+          "value": 9
+        },
+        {
+          "cpu": "0x8047",
+          "op": "literal",
+          "value": 10
+        },
+        {
+          "cpu": "0x8048",
+          "op": "literal",
+          "value": 106
+        },
+        {
+          "cpu": "0x8049",
+          "op": "literal",
+          "value": 81
+        },
+        {
+          "cpu": "0x804a",
+          "op": "literal",
+          "value": 104
+        },
+        {
+          "cpu": "0x804b",
+          "op": "repeat",
+          "count": 4,
+          "value": 16
+        },
+        {
+          "cpu": "0x804d",
+          "op": "literal",
+          "value": 17
+        },
+        {
+          "cpu": "0x804e",
+          "op": "repeat",
+          "count": 3,
+          "value": 18
+        }
+      ]
+    }
+  ]
+}

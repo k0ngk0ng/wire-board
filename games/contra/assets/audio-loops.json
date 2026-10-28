@@ -1,0 +1,3035 @@
+{
+  "format": "contra-j-audio-loops-v1",
+  "romSHA256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "sampleRate": 44100,
+  "acceptedForRelease": false,
+  "listeningAccepted": false,
+  "mixedGameplayAccepted": false,
+  "algorithm": "A shared original driver-frame anchor for each song; 1411-sample raised-cosine bridge from source end tail to the genuine source prefix immediately before loopStart. No resampling, normalization or synthesis.",
+  "songs": [
+    {
+      "id": 70,
+      "label": "jungle-hangar",
+      "driverFrames": [
+        269,
+        3245
+      ],
+      "driverOffsetTicks": 50,
+      "loopStartSample": 107867,
+      "decodedSamples": 2291631,
+      "periodSamples": 2183764,
+      "periodTicks": 2976,
+      "loopStartSeconds": 2.445963718820862,
+      "periodSeconds": 49.51845804988662,
+      "pcmSeamReady": true,
+      "nativeBoundaryReady": true,
+      "loopReady": true,
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": ".local/contra-audio-loops/output/music-46-pulse1-loop.wav",
+          "repeatFile": ".local/contra-audio-loops/output/music-46-pulse1-repeat.wav",
+          "sha256": "65bb73cbfba38784a7b162f043b2e0194e668fce43a07270ab522c1975095502",
+          "sourceFile": ".local/contra-audio/stems/music-46-pulse1.wav",
+          "sourceSHA256": "919e7409b6ec03f002ebb9b6710791f09bd443753f5dc5d820c207ca050c3694",
+          "blendSamples": 1411,
+          "changedFractionMaximum": 0.0006157186737306312,
+          "periodChangedFractionMaximum": 0.0006461320911966677,
+          "metrics": {
+            "passed": true,
+            "boundaryError": 0,
+            "tail16Error": 0,
+            "maximumStep": 1,
+            "sourceMaximumStep": 1,
+            "maximumCurvature": 1,
+            "sourceMaximumCurvature": 1,
+            "peak": 41,
+            "localRMS": [
+              {
+                "offset": 0,
+                "rms": 40.85422852861813,
+                "referenceRMS": 40.854335113874804,
+                "differenceDB": -2.2660728209213324e-05,
+                "passed": true
+              },
+              {
+                "offset": 88,
+                "rms": 40.932785366342046,
+                "referenceRMS": 40.93372750565854,
+                "differenceDB": -0.00019991857085453424,
+                "passed": true
+              },
+              {
+                "offset": 176,
+                "rms": 40.68538169030885,
+                "referenceRMS": 40.68702910704599,
+                "differenceDB": -0.0003516985629016222,
+                "passed": true
+              },
+              {
+                "offset": 264,
+                "rms": 40.211691956092466,
+                "referenceRMS": 40.2160714396678,
+                "differenceDB": -0.000945934822468898,
+                "passed": true
+              },
+              {
+                "offset": 352,
+                "rms": 39.50888306899821,
+                "referenceRMS": 39.517624217680535,
+                "differenceDB": -0.0019214983853153885,
+                "passed": true
+              },
+              {
+                "offset": 440,
+                "rms": 38.618971104607,
+                "referenceRMS": 38.62256992414707,
+                "differenceDB": -0.0008093818160194597,
+                "passed": true
+              },
+              {
+                "offset": 528,
+                "rms": 37.62544645533356,
+                "referenceRMS": 37.624596008514786,
+                "differenceDB": 0.00019632911741593878,
+                "passed": true
+              },
+              {
+                "offset": 616,
+                "rms": 36.55652613965711,
+                "referenceRMS": 36.55171189418106,
+                "differenceDB": 0.001143947825320672,
+                "passed": true
+              },
+              {
+                "offset": 704,
+                "rms": 35.42665886927846,
+                "referenceRMS": 35.41612388127912,
+                "differenceDB": 0.0025833469613230826,
+                "passed": true
+              },
+              {
+                "offset": 792,
+                "rms": 34.25231325287103,
+                "referenceRMS": 34.24464158317361,
+                "differenceDB": 0.0019456420148778375,
+                "passed": true
+              },
+              {
+                "offset": 880,
+                "rms": 33.07155946316682,
+                "referenceRMS": 33.06779712783154,
+                "differenceDB": 0.000988193149231495,
+                "passed": true
+              },
+              {
+                "offset": 968,
+                "rms": 31.89754313094299,
+                "referenceRMS": 31.894903739616257,
+                "differenceDB": 0.0007187516050376366,
+                "passed": true
+              },
+              {
+                "offset": 1056,
+                "rms": 30.698801777836554,
+                "referenceRMS": 30.697709450081437,
+                "differenceDB": 0.00030906766983285666,
+                "passed": true
+              }
+            ]
+          }
+        },
+        {
+          "channel": "pulse2",
+          "file": ".local/contra-audio-loops/output/music-46-pulse2-loop.wav",
+          "repeatFile": ".local/contra-audio-loops/output/music-46-pulse2-repeat.wav",
+          "sha256": "41351fffe20a903e5c2ed3ec7b1ebcb4ea41409fb9e95057a7e19d0c7b7d3483",
+          "sourceFile": ".local/contra-audio/stems/music-46-pulse2.wav",
+          "sourceSHA256": "7ab1f807420d7394b04e73b720c2214980855a1eaaef098e6ec5dcecae2907f6",
+          "blendSamples": 1411,
+          "changedFractionMaximum": 0.0006157186737306312,
+          "periodChangedFractionMaximum": 0.0006461320911966677,
+          "metrics": {
+            "passed": true,
+            "boundaryError": 0,
+            "tail16Error": 0,
+            "maximumStep": 1,
+            "sourceMaximumStep": 1,
+            "maximumCurvature": 1,
+            "sourceMaximumCurvature": 1,
+            "peak": 75,
+            "localRMS": [
+              {
+                "offset": 0,
+                "rms": 48.72574576425985,
+                "referenceRMS": 48.67057852665357,
+                "differenceDB": 0.009839726339134717,
+                "passed": true
+              },
+              {
+                "offset": 88,
+                "rms": 57.1692730322577,
+                "referenceRMS": 57.067217363201515,
+                "differenceDB": 0.015519463371467873,
+                "passed": true
+              },
+              {
+                "offset": 176,
+                "rms": 63.65652342458115,
+                "referenceRMS": 63.51683478453188,
+                "differenceDB": 0.01908136446510115,
+                "passed": true
+              },
+              {
+                "offset": 264,
+                "rms": 68.41520464508525,
+                "referenceRMS": 68.25226093847499,
+                "differenceDB": 0.020711757804386742,
+                "passed": true
+              },
+              {
+                "offset": 352,
+                "rms": 71.70286105369938,
+                "referenceRMS": 71.53581163831772,
+                "differenceDB": 0.020259520933276383,
+                "passed": true
+              },
+              {
+                "offset": 440,
+                "rms": 73.63503907902795,
+                "referenceRMS": 73.6354784311327,
+                "differenceDB": -5.182522555986117e-05,
+                "passed": true
+              },
+              {
+                "offset": 528,
+                "rms": 74.6263971402991,
+                "referenceRMS": 74.6966543966221,
+                "differenceDB": -0.008173511235470778,
+                "passed": true
+              },
+              {
+                "offset": 616,
+                "rms": 74.91271597108401,
+                "referenceRMS": 75.00604004395882,
+                "differenceDB": -0.010813893122055506,
+                "passed": true
+              },
+              {
+                "offset": 704,
+                "rms": 74.57245464312822,
+                "referenceRMS": 74.67895886403971,
+                "differenceDB": -0.012396318990995962,
+                "passed": true
+              },
+              {
+                "offset": 792,
+                "rms": 73.88197846707702,
+                "referenceRMS": 73.9097934126947,
+                "differenceDB": -0.003269431683558168,
+                "passed": true
+              },
+              {
+                "offset": 880,
+                "rms": 72.76665332206815,
+                "referenceRMS": 72.76760737691252,
+                "differenceDB": -0.00011388129567796408,
+                "passed": true
+              },
+              {
+                "offset": 968,
+                "rms": 71.24766285118673,
+                "referenceRMS": 71.24530638272485,
+                "differenceDB": 0.00028728470053506486,
+                "passed": true
+              },
+              {
+                "offset": 1056,
+                "rms": 69.5072091559278,
+                "referenceRMS": 69.50473130533176,
+                "differenceDB": 0.0003096473115563516,
+                "passed": true
+              }
+            ]
+          }
+        },
+        {
+          "channel": "triangle",
+          "file": ".local/contra-audio-loops/output/music-46-triangle-loop.wav",
+          "repeatFile": ".local/contra-audio-loops/output/music-46-triangle-repeat.wav",
+          "sha256": "a1145ed8aa219371749df86eea5ca6c4363a4241ba63756fa172edf1dffbd366",
+          "sourceFile": ".local/contra-audio/stems/music-46-triangle.wav",
+          "sourceSHA256": "bee501b83a6cb766dacf86028297a2e19055095b92c44172acbd66b69056d68b",
+          "blendSamples": 1411,
+          "changedFractionMaximum": 0.0006157186737306312,
+          "periodChangedFractionMaximum": 0.0006461320911966677,
+          "metrics": {
+            "passed": true,
+            "boundaryError": 0,
+            "tail16Error": 1,
+            "maximumStep": 684,
+            "sourceMaximumStep": 704,
+            "maximumCurvature": 625,
+            "sourceMaximumCurvature": 655,
+            "peak": 6161,
+            "localRMS": [
+              {
+                "offset": 0,
+                "rms": 3597.844952229499,
+                "referenceRMS": 3702.205925630091,
+                "differenceDB": -0.248362558802856,
+                "passed": true
+              },
+              {
+                "offset": 88,
+                "rms": 3692.6039469930215,
+                "referenceRMS": 3759.2293261130812,
+                "differenceDB": -0.15532180866487164,
+                "passed": true
+              },
+              {
+                "offset": 176,
+                "rms": 3267.151955146408,
+                "referenceRMS": 3578.184891901901,
+                "differenceDB": -0.7898688739591654,
+                "passed": true
+              },
+              {
+                "offset": 264,
+                "rms": 3511.6828508222675,
+                "referenceRMS": 3678.980101197655,
+                "differenceDB": -0.4042430417620044,
+                "passed": true
+              },
+              {
+                "offset": 352,
+                "rms": 3160.051193241867,
+                "referenceRMS": 3614.863882361917,
+                "differenceDB": -1.1679566056879924,
+                "passed": true
+              },
+              {
+                "offset": 440,
+                "rms": 3406.5345616251634,
+                "referenceRMS": 3714.3122715092477,
+                "differenceDB": -0.7513122729568623,
+                "passed": true
+              },
+              {
+                "offset": 528,
+                "rms": 3091.083586604667,
+                "referenceRMS": 3614.3647657990696,
+                "differenceDB": -1.358424617279093,
+                "passed": true
+              },
+              {
+                "offset": 616,
+                "rms": 3385.2927809075227,
+                "referenceRMS": 3681.155235254588,
+                "differenceDB": -0.727757940854336,
+                "passed": true
+              },
+              {
+                "offset": 704,
+                "rms": 3209.9758667559804,
+                "referenceRMS": 3634.3213623969486,
+                "differenceDB": -1.0784311912102922,
+                "passed": true
+              },
+              {
+                "offset": 792,
+                "rms": 3403.917829389412,
+                "referenceRMS": 3660.7849644075695,
+                "differenceDB": -0.6319030275679217,
+                "passed": true
+              },
+              {
+                "offset": 880,
+                "rms": 3424.218822020066,
+                "referenceRMS": 3680.000383769158,
+                "differenceDB": -0.6257270764708932,
+                "passed": true
+              },
+              {
+                "offset": 968,
+                "rms": 3471.278615120952,
+                "referenceRMS": 3608.5433717060114,
+                "differenceDB": -0.33684913382987614,
+                "passed": true
+              },
+              {
+                "offset": 1056,
+                "rms": 3613.2989082000954,
+                "referenceRMS": 3700.5957449480875,
+                "differenceDB": -0.2073551059005117,
+                "passed": true
+              }
+            ]
+          }
+        }
+      ],
+      "nativeMeasurements": {
+        "crossTrackClockSpreadMS": 23.22900000000017,
+        "maximumBoundaryClockDebtMS": 17.500950113379528,
+        "tracks": [
+          {
+            "channel": "pulse1",
+            "nativeEnds": 2,
+            "firstBoundaryPositionSeconds": 2.580636,
+            "secondBoundaryPositionSeconds": 2.55053,
+            "maximumBoundaryClockDebtMS": 17.4009497319098
+          },
+          {
+            "channel": "pulse2",
+            "nativeEnds": 2,
+            "firstBoundaryPositionSeconds": 2.557409,
+            "secondBoundaryPositionSeconds": 2.550524,
+            "maximumBoundaryClockDebtMS": 17.500950113379528
+          },
+          {
+            "channel": "triangle",
+            "nativeEnds": 2,
+            "firstBoundaryPositionSeconds": 2.557407,
+            "secondBoundaryPositionSeconds": 2.550519,
+            "maximumBoundaryClockDebtMS": 17.500950113379528
+          }
+        ],
+        "meaning": "Native media clock observations; not captured output PCM or a promise of sample-accurate synchrony."
+      },
+      "multiTrackSyncAccepted": false,
+      "listeningAccepted": false
+    },
+    {
+      "id": 74,
+      "label": "waterfall",
+      "driverFrames": [
+        725,
+        2645
+      ],
+      "driverOffsetTicks": 26,
+      "loopStartSample": 442476,
+      "decodedSamples": 1851356,
+      "periodSamples": 1408880,
+      "periodTicks": 1920,
+      "loopStartSeconds": 10.033469387755103,
+      "periodSeconds": 31.947392290249432,
+      "pcmSeamReady": true,
+      "nativeBoundaryReady": true,
+      "loopReady": true,
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": ".local/contra-audio-loops/output/music-4a-pulse1-loop.wav",
+          "repeatFile": ".local/contra-audio-loops/output/music-4a-pulse1-repeat.wav",
+          "sha256": "9b4948281a7d0cf0d697681582d22838ad70ae0da53584df016e9e77087ad2ed",
+          "sourceFile": ".local/contra-audio/stems/music-4a-pulse1.wav",
+          "sourceSHA256": "096e151f4712d3af6655470aaccd550a398d5235be5108f2e0fb74224975a900",
+          "blendSamples": 1411,
+          "changedFractionMaximum": 0.0007621440716966375,
+          "periodChangedFractionMaximum": 0.001001504741354835,
+          "metrics": {
+            "passed": true,
+            "boundaryError": 0,
+            "tail16Error": 0,
+            "maximumStep": 1,
+            "sourceMaximumStep": 1,
+            "maximumCurvature": 1,
+            "sourceMaximumCurvature": 1,
+            "peak": 84,
+            "localRMS": [
+              {
+                "offset": 0,
+                "rms": 30.88886228126833,
+                "referenceRMS": 30.885066246890013,
+                "differenceDB": 0.0010675032817080614,
+                "passed": true
+              },
+              {
+                "offset": 88,
+                "rms": 42.286959796591276,
+                "referenceRMS": 42.276771986225725,
+                "differenceDB": 0.002092864045880548,
+                "passed": true
+              },
+              {
+                "offset": 176,
+                "rms": 53.71530766569616,
+                "referenceRMS": 53.70040105829809,
+                "differenceDB": 0.0024107674586298397,
+                "passed": true
+              },
+              {
+                "offset": 264,
+                "rms": 63.151443497864896,
+                "referenceRMS": 63.134733410180154,
+                "differenceDB": 0.0022986201953814453,
+                "passed": true
+              },
+              {
+                "offset": 352,
+                "rms": 70.41735155083175,
+                "referenceRMS": 70.40254854252387,
+                "differenceDB": 0.0018261239620523764,
+                "passed": true
+              },
+              {
+                "offset": 440,
+                "rms": 75.74625898820493,
+                "referenceRMS": 75.73634038105587,
+                "differenceDB": 0.0011374498132703213,
+                "passed": true
+              },
+              {
+                "offset": 528,
+                "rms": 79.45905995940127,
+                "referenceRMS": 79.45378367755164,
+                "differenceDB": 0.0005767841140230858,
+                "passed": true
+              },
+              {
+                "offset": 616,
+                "rms": 81.85022250130264,
+                "referenceRMS": 81.84970644262097,
+                "differenceDB": 5.4763967030123184e-05,
+                "passed": true
+              },
+              {
+                "offset": 704,
+                "rms": 83.14322602590265,
+                "referenceRMS": 83.14231253893988,
+                "differenceDB": 9.543159330574266e-05,
+                "passed": true
+              },
+              {
+                "offset": 792,
+                "rms": 83.50315086250342,
+                "referenceRMS": 83.50063362128326,
+                "differenceDB": 0.00026184411928066256,
+                "passed": true
+              },
+              {
+                "offset": 880,
+                "rms": 83.12211570322407,
+                "referenceRMS": 83.12003521691777,
+                "differenceDB": 0.00021740424255663592,
+                "passed": true
+              },
+              {
+                "offset": 968,
+                "rms": 82.15802157984949,
+                "referenceRMS": 82.15609860711731,
+                "differenceDB": 0.00020330241747274123,
+                "passed": true
+              },
+              {
+                "offset": 1056,
+                "rms": 80.74358743690611,
+                "referenceRMS": 80.74249948802098,
+                "differenceDB": 0.00011703551839326738,
+                "passed": true
+              }
+            ]
+          }
+        },
+        {
+          "channel": "pulse2",
+          "file": ".local/contra-audio-loops/output/music-4a-pulse2-loop.wav",
+          "repeatFile": ".local/contra-audio-loops/output/music-4a-pulse2-repeat.wav",
+          "sha256": "e7820b6ecad4c4e2664b80fdd9ef1ff1bd325784e17838c187b6f524b62fec58",
+          "sourceFile": ".local/contra-audio/stems/music-4a-pulse2.wav",
+          "sourceSHA256": "58fe7ed81170c0289131ee1e66d8bfef055fb050d2c694042492de34f6c1b271",
+          "blendSamples": 1411,
+          "changedFractionMaximum": 0.0007621440716966375,
+          "periodChangedFractionMaximum": 0.001001504741354835,
+          "metrics": {
+            "passed": true,
+            "boundaryError": 0,
+            "tail16Error": 0,
+            "maximumStep": 1,
+            "sourceMaximumStep": 1,
+            "maximumCurvature": 2,
+            "sourceMaximumCurvature": 1,
+            "peak": 150,
+            "localRMS": [
+              {
+                "offset": 0,
+                "rms": 104.60402876018298,
+                "referenceRMS": 104.49773168705502,
+                "differenceDB": 0.008830960806796302,
+                "passed": true
+              },
+              {
+                "offset": 88,
+                "rms": 119.5746119320355,
+                "referenceRMS": 119.38283833080291,
+                "differenceDB": 0.013941600829651582,
+                "passed": true
+              },
+              {
+                "offset": 176,
+                "rms": 130.81900434576391,
+                "referenceRMS": 130.58326682187277,
+                "differenceDB": 0.01566620413823856,
+                "passed": true
+              },
+              {
+                "offset": 264,
+                "rms": 138.88203974298767,
+                "referenceRMS": 138.60109510881583,
+                "differenceDB": 0.017588491797641843,
+                "passed": true
+              },
+              {
+                "offset": 352,
+                "rms": 144.28648320313127,
+                "referenceRMS": 143.98186632910395,
+                "differenceDB": 0.018356989512147724,
+                "passed": true
+              },
+              {
+                "offset": 440,
+                "rms": 147.27258841159284,
+                "referenceRMS": 147.169481040303,
+                "differenceDB": 0.006083229113072198,
+                "passed": true
+              },
+              {
+                "offset": 528,
+                "rms": 148.63206277578817,
+                "referenceRMS": 148.5836221455975,
+                "differenceDB": 0.002831277034865841,
+                "passed": true
+              },
+              {
+                "offset": 616,
+                "rms": 148.5785243690444,
+                "referenceRMS": 148.59190501247713,
+                "differenceDB": -0.0007821962128823925,
+                "passed": true
+              },
+              {
+                "offset": 704,
+                "rms": 147.3884463166931,
+                "referenceRMS": 147.47797961606418,
+                "differenceDB": -0.005274770626794317,
+                "passed": true
+              },
+              {
+                "offset": 792,
+                "rms": 145.53757923243924,
+                "referenceRMS": 145.54440451572245,
+                "differenceDB": -0.0004073330585005468,
+                "passed": true
+              },
+              {
+                "offset": 880,
+                "rms": 142.87136392186918,
+                "referenceRMS": 142.86084017967198,
+                "differenceDB": 0.0006398163177512929,
+                "passed": true
+              },
+              {
+                "offset": 968,
+                "rms": 139.64053406350564,
+                "referenceRMS": 139.62817142975223,
+                "differenceDB": 0.000769011854001805,
+                "passed": true
+              },
+              {
+                "offset": 1056,
+                "rms": 135.9944591439189,
+                "referenceRMS": 135.98683699625846,
+                "differenceDB": 0.0004868359283553053,
+                "passed": true
+              }
+            ]
+          }
+        },
+        {
+          "channel": "triangle",
+          "file": ".local/contra-audio-loops/output/music-4a-triangle-loop.wav",
+          "repeatFile": ".local/contra-audio-loops/output/music-4a-triangle-repeat.wav",
+          "sha256": "871ebfb4587543245d6abec83424a4b51fd1f6a8f4241c0feac246ddb1fd3685",
+          "sourceFile": ".local/contra-audio/stems/music-4a-triangle.wav",
+          "sourceSHA256": "e2a34cc4e97fba53b12585f1b0b5d3c61af60bfcc298911bc34f2a09af13be0a",
+          "blendSamples": 1411,
+          "changedFractionMaximum": 0.0007621440716966375,
+          "periodChangedFractionMaximum": 0.001001504741354835,
+          "metrics": {
+            "passed": true,
+            "boundaryError": 0,
+            "tail16Error": 1,
+            "maximumStep": 695,
+            "sourceMaximumStep": 712,
+            "maximumCurvature": 624,
+            "sourceMaximumCurvature": 639,
+            "peak": 6122,
+            "localRMS": [
+              {
+                "offset": 0,
+                "rms": 3280.9634985402595,
+                "referenceRMS": 3400.8466873543157,
+                "differenceDB": -0.3117131054739005,
+                "passed": true
+              },
+              {
+                "offset": 88,
+                "rms": 3578.9506612545038,
+                "referenceRMS": 3767.3072417917433,
+                "differenceDB": -0.4455065819180316,
+                "passed": true
+              },
+              {
+                "offset": 176,
+                "rms": 3500.0709434331693,
+                "referenceRMS": 3770.2878820967244,
+                "differenceDB": -0.645953300291991,
+                "passed": true
+              },
+              {
+                "offset": 264,
+                "rms": 3160.9356617606704,
+                "referenceRMS": 3546.206993674639,
+                "differenceDB": -0.998968514856605,
+                "passed": true
+              },
+              {
+                "offset": 352,
+                "rms": 3256.746926598588,
+                "referenceRMS": 3794.569714296082,
+                "differenceDB": -1.3275704834891564,
+                "passed": true
+              },
+              {
+                "offset": 440,
+                "rms": 3008.8228854167146,
+                "referenceRMS": 3618.095624926611,
+                "differenceDB": -1.6016683440448527,
+                "passed": true
+              },
+              {
+                "offset": 528,
+                "rms": 3210.6397022167444,
+                "referenceRMS": 3726.084769014203,
+                "differenceDB": -1.293223182771822,
+                "passed": true
+              },
+              {
+                "offset": 616,
+                "rms": 2986.7548469167564,
+                "referenceRMS": 3539.297909531052,
+                "differenceDB": -1.474350848799325,
+                "passed": true
+              },
+              {
+                "offset": 704,
+                "rms": 3321.402224444355,
+                "referenceRMS": 3827.344050605759,
+                "differenceDB": -1.2315206345831733,
+                "passed": true
+              },
+              {
+                "offset": 792,
+                "rms": 3121.04078349482,
+                "referenceRMS": 3508.5097856541083,
+                "differenceDB": -1.0164649683698963,
+                "passed": true
+              },
+              {
+                "offset": 880,
+                "rms": 3513.1039821267927,
+                "referenceRMS": 3821.3975481743355,
+                "differenceDB": -0.7306243247230069,
+                "passed": true
+              },
+              {
+                "offset": 968,
+                "rms": 3388.064009683266,
+                "referenceRMS": 3573.789309240905,
+                "differenceDB": -0.46354677205144584,
+                "passed": true
+              },
+              {
+                "offset": 1056,
+                "rms": 3493.7222137021113,
+                "referenceRMS": 3601.50822751977,
+                "differenceDB": -0.2639208006867522,
+                "passed": true
+              }
+            ]
+          }
+        }
+      ],
+      "nativeMeasurements": {
+        "crossTrackClockSpreadMS": 0.01699999999971169,
+        "maximumBoundaryClockDebtMS": 16.916709655195817,
+        "tracks": [
+          {
+            "channel": "pulse1",
+            "nativeEnds": 2,
+            "firstBoundaryPositionSeconds": 10.139843,
+            "secondBoundaryPositionSeconds": 10.142256,
+            "maximumBoundaryClockDebtMS": 16.916709655195817
+          },
+          {
+            "channel": "pulse2",
+            "nativeEnds": 2,
+            "firstBoundaryPositionSeconds": 10.13984,
+            "secondBoundaryPositionSeconds": 10.142245,
+            "maximumBoundaryClockDebtMS": 16.900709845935083
+          },
+          {
+            "channel": "triangle",
+            "nativeEnds": 2,
+            "firstBoundaryPositionSeconds": 10.139857,
+            "secondBoundaryPositionSeconds": 10.14224,
+            "maximumBoundaryClockDebtMS": 16.900709845935083
+          }
+        ],
+        "meaning": "Native media clock observations; not captured output PCM or a promise of sample-accurate synchrony."
+      },
+      "multiTrackSyncAccepted": false,
+      "listeningAccepted": false
+    },
+    {
+      "id": 78,
+      "label": "snowfield",
+      "driverFrames": [
+        1484,
+        3404
+      ],
+      "driverOffsetTicks": 17,
+      "loopStartSample": 999424,
+      "decodedSamples": 2408304,
+      "periodSamples": 1408880,
+      "periodTicks": 1920,
+      "loopStartSeconds": 22.66267573696145,
+      "periodSeconds": 31.947392290249432,
+      "pcmSeamReady": true,
+      "nativeBoundaryReady": true,
+      "loopReady": true,
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": ".local/contra-audio-loops/output/music-4e-pulse1-loop.wav",
+          "repeatFile": ".local/contra-audio-loops/output/music-4e-pulse1-repeat.wav",
+          "sha256": "331843ca64e228add25fd14d64526d7c17c26337035b7a079452fbbd6a1dcfbc",
+          "sourceFile": ".local/contra-audio/stems/music-4e-pulse1.wav",
+          "sourceSHA256": "139bb996b5a35d3d4a815e41592935f499c9e199463a0e73bebb6d8779e76193",
+          "blendSamples": 1411,
+          "changedFractionMaximum": 0.0005858894890346069,
+          "periodChangedFractionMaximum": 0.001001504741354835,
+          "metrics": {
+            "passed": true,
+            "boundaryError": 0,
+            "tail16Error": 0,
+            "maximumStep": 1191,
+            "sourceMaximumStep": 1218,
+            "maximumCurvature": 1111,
+            "sourceMaximumCurvature": 1123,
+            "peak": 1759,
+            "localRMS": [
+              {
+                "offset": 0,
+                "rms": 747.4102862399856,
+                "referenceRMS": 764.8670871589562,
+                "differenceDB": -0.20053805500575836,
+                "passed": true
+              },
+              {
+                "offset": 88,
+                "rms": 647.5836061175278,
+                "referenceRMS": 683.3848958026746,
+                "differenceDB": -0.46739059849078773,
+                "passed": true
+              },
+              {
+                "offset": 176,
+                "rms": 626.0296538333896,
+                "referenceRMS": 685.1029752138885,
+                "differenceDB": -0.7832189628840068,
+                "passed": true
+              },
+              {
+                "offset": 264,
+                "rms": 634.4682478320583,
+                "referenceRMS": 711.8862883447555,
+                "differenceDB": -1.0000147099219192,
+                "passed": true
+              },
+              {
+                "offset": 352,
+                "rms": 612.4126624440526,
+                "referenceRMS": 712.1285732176407,
+                "differenceDB": -1.310284997558096,
+                "passed": true
+              },
+              {
+                "offset": 440,
+                "rms": 587.035940524447,
+                "referenceRMS": 687.4862758433239,
+                "differenceDB": -1.3719868333148788,
+                "passed": true
+              },
+              {
+                "offset": 528,
+                "rms": 547.7315154627872,
+                "referenceRMS": 643.4403536503041,
+                "differenceDB": -1.3988112848155676,
+                "passed": true
+              },
+              {
+                "offset": 616,
+                "rms": 475.3514638289294,
+                "referenceRMS": 565.7280155063116,
+                "differenceDB": -1.5118570079027238,
+                "passed": true
+              },
+              {
+                "offset": 704,
+                "rms": 444.0576296723827,
+                "referenceRMS": 501.23066215386916,
+                "differenceDB": -1.0519658833207084,
+                "passed": true
+              },
+              {
+                "offset": 792,
+                "rms": 451.44700622933334,
+                "referenceRMS": 499.62771021126355,
+                "differenceDB": -0.8807947948624407,
+                "passed": true
+              },
+              {
+                "offset": 880,
+                "rms": 459.02426074737514,
+                "referenceRMS": 495.6523940374378,
+                "differenceDB": -0.666831366841075,
+                "passed": true
+              },
+              {
+                "offset": 968,
+                "rms": 461.1350603774868,
+                "referenceRMS": 486.9049570717395,
+                "differenceDB": -0.47232105755447,
+                "passed": true
+              },
+              {
+                "offset": 1056,
+                "rms": 466.7729913949078,
+                "referenceRMS": 481.772811897686,
+                "differenceDB": -0.2747313767566783,
+                "passed": true
+              }
+            ]
+          }
+        },
+        {
+          "channel": "pulse2",
+          "file": ".local/contra-audio-loops/output/music-4e-pulse2-loop.wav",
+          "repeatFile": ".local/contra-audio-loops/output/music-4e-pulse2-repeat.wav",
+          "sha256": "6ed3b205cc75e3b62708d76139ae517e45505504bf8ab433a767c47068bf6ac4",
+          "sourceFile": ".local/contra-audio/stems/music-4e-pulse2.wav",
+          "sourceSHA256": "41cad8618cf9f76b05003661a0f9b048a2bfc37858f04e30c2d0220b8d9be0a4",
+          "blendSamples": 1411,
+          "changedFractionMaximum": 0.0005858894890346069,
+          "periodChangedFractionMaximum": 0.001001504741354835,
+          "metrics": {
+            "passed": true,
+            "boundaryError": 0,
+            "tail16Error": 0,
+            "maximumStep": 1217,
+            "sourceMaximumStep": 1217,
+            "maximumCurvature": 1111,
+            "sourceMaximumCurvature": 1122,
+            "peak": 1818,
+            "localRMS": [
+              {
+                "offset": 0,
+                "rms": 750.2422536044504,
+                "referenceRMS": 760.6281293823384,
+                "differenceDB": -0.11941724819311092,
+                "passed": true
+              },
+              {
+                "offset": 88,
+                "rms": 706.7056858025193,
+                "referenceRMS": 728.9616960044453,
+                "differenceDB": -0.2693224609755659,
+                "passed": true
+              },
+              {
+                "offset": 176,
+                "rms": 669.9730936206598,
+                "referenceRMS": 707.6512626917737,
+                "differenceDB": -0.47523848639763744,
+                "passed": true
+              },
+              {
+                "offset": 264,
+                "rms": 644.0418427277345,
+                "referenceRMS": 698.5836261671183,
+                "differenceDB": -0.7060863644608253,
+                "passed": true
+              },
+              {
+                "offset": 352,
+                "rms": 636.2421145512233,
+                "referenceRMS": 696.0606701158624,
+                "differenceDB": -0.7804936491614558,
+                "passed": true
+              },
+              {
+                "offset": 440,
+                "rms": 612.2864592780878,
+                "referenceRMS": 671.4358276443292,
+                "differenceDB": -0.800997125167273,
+                "passed": true
+              },
+              {
+                "offset": 528,
+                "rms": 580.4206079671659,
+                "referenceRMS": 634.0533086874607,
+                "differenceDB": -0.7676589881891437,
+                "passed": true
+              },
+              {
+                "offset": 616,
+                "rms": 543.9912279537709,
+                "referenceRMS": 595.1894957582053,
+                "differenceDB": -0.7812672264766278,
+                "passed": true
+              },
+              {
+                "offset": 704,
+                "rms": 511.1971507277611,
+                "referenceRMS": 546.3119941478831,
+                "differenceDB": -0.5770462186108949,
+                "passed": true
+              },
+              {
+                "offset": 792,
+                "rms": 475.4438004280202,
+                "referenceRMS": 505.9333047306958,
+                "differenceDB": -0.5398816090086727,
+                "passed": true
+              },
+              {
+                "offset": 880,
+                "rms": 457.75263307578984,
+                "referenceRMS": 480.2370367124611,
+                "differenceDB": -0.41649598868896964,
+                "passed": true
+              },
+              {
+                "offset": 968,
+                "rms": 457.9263829896246,
+                "referenceRMS": 475.78890759453674,
+                "differenceDB": -0.33237294188151306,
+                "passed": true
+              },
+              {
+                "offset": 1056,
+                "rms": 458.1938491505898,
+                "referenceRMS": 467.6185128087272,
+                "differenceDB": -0.17684882968500157,
+                "passed": true
+              }
+            ]
+          }
+        },
+        {
+          "channel": "triangle",
+          "file": ".local/contra-audio-loops/output/music-4e-triangle-loop.wav",
+          "repeatFile": ".local/contra-audio-loops/output/music-4e-triangle-repeat.wav",
+          "sha256": "39a73484f3c592687932efb426841d44c6af97d85aa6a8b6b5dc98f37d4700c8",
+          "sourceFile": ".local/contra-audio/stems/music-4e-triangle.wav",
+          "sourceSHA256": "e4f975b9f2e8766e765b0795d63c4f3c314a53136a1cec142d2c85b9598beda5",
+          "blendSamples": 1411,
+          "changedFractionMaximum": 0.0005858894890346069,
+          "periodChangedFractionMaximum": 0.001001504741354835,
+          "metrics": {
+            "passed": true,
+            "boundaryError": 0,
+            "tail16Error": 0,
+            "maximumStep": 649,
+            "sourceMaximumStep": 711,
+            "maximumCurvature": 600,
+            "sourceMaximumCurvature": 633,
+            "peak": 5975,
+            "localRMS": [
+              {
+                "offset": 0,
+                "rms": 3218.312133065358,
+                "referenceRMS": 3455.151208903186,
+                "differenceDB": -0.6167779151424734,
+                "passed": true
+              },
+              {
+                "offset": 88,
+                "rms": 3712.270081586229,
+                "referenceRMS": 3964.913423539511,
+                "differenceDB": -0.5718828680921058,
+                "passed": true
+              },
+              {
+                "offset": 176,
+                "rms": 3631.792777156203,
+                "referenceRMS": 3884.7347092442333,
+                "differenceDB": -0.5848061070180337,
+                "passed": true
+              },
+              {
+                "offset": 264,
+                "rms": 3570.946489778472,
+                "referenceRMS": 3809.212834824435,
+                "differenceDB": -0.561037931814725,
+                "passed": true
+              },
+              {
+                "offset": 352,
+                "rms": 3503.4165101549174,
+                "referenceRMS": 3541.9469852583,
+                "differenceDB": -0.09500568460122708,
+                "passed": true
+              },
+              {
+                "offset": 440,
+                "rms": 2804.040620550943,
+                "referenceRMS": 2808.2192844893466,
+                "differenceDB": -0.012934333450225946,
+                "passed": true
+              },
+              {
+                "offset": 528,
+                "rms": 2059.159521466026,
+                "referenceRMS": 2068.5841109692788,
+                "differenceDB": -0.03966384245251324,
+                "passed": true
+              },
+              {
+                "offset": 616,
+                "rms": 1459.302291668952,
+                "referenceRMS": 1473.045886039533,
+                "differenceDB": -0.08142022080183098,
+                "passed": true
+              },
+              {
+                "offset": 704,
+                "rms": 983.0338237230545,
+                "referenceRMS": 1000.1039554553413,
+                "differenceDB": -0.14953367726744787,
+                "passed": true
+              },
+              {
+                "offset": 792,
+                "rms": 614.8036513758213,
+                "referenceRMS": 634.4901958390009,
+                "differenceDB": -0.2737695520212725,
+                "passed": true
+              },
+              {
+                "offset": 880,
+                "rms": 351.8846265017441,
+                "referenceRMS": 373.5809966033463,
+                "differenceDB": -0.5196896598448274,
+                "passed": true
+              },
+              {
+                "offset": 968,
+                "rms": 228.3547449001522,
+                "referenceRMS": 247.42239623338773,
+                "differenceDB": -0.6965793709888223,
+                "passed": true
+              },
+              {
+                "offset": 1056,
+                "rms": 265.3830893933849,
+                "referenceRMS": 274.81491992426623,
+                "differenceDB": -0.3033412341769682,
+                "passed": true
+              }
+            ]
+          }
+        }
+      ],
+      "nativeMeasurements": {
+        "crossTrackClockSpreadMS": 0.01100000000064938,
+        "maximumBoundaryClockDebtMS": 16.500709750562322,
+        "tracks": [
+          {
+            "channel": "pulse1",
+            "nativeEnds": 2,
+            "firstBoundaryPositionSeconds": 22.77118,
+            "secondBoundaryPositionSeconds": 22.768583,
+            "maximumBoundaryClockDebtMS": 16.500709750562322
+          },
+          {
+            "channel": "pulse2",
+            "nativeEnds": 2,
+            "firstBoundaryPositionSeconds": 22.771191,
+            "secondBoundaryPositionSeconds": 22.768573,
+            "maximumBoundaryClockDebtMS": 16.500709750562322
+          },
+          {
+            "channel": "triangle",
+            "nativeEnds": 2,
+            "firstBoundaryPositionSeconds": 22.771184,
+            "secondBoundaryPositionSeconds": 22.768575,
+            "maximumBoundaryClockDebtMS": 16.500709750562322
+          }
+        ],
+        "meaning": "Native media clock observations; not captured output PCM or a promise of sample-accurate synchrony."
+      },
+      "multiTrackSyncAccepted": false,
+      "listeningAccepted": false
+    },
+    {
+      "id": 82,
+      "label": "energy-zone",
+      "driverFrames": [
+        345,
+        1641
+      ],
+      "driverOffsetTicks": 168,
+      "loopStartSample": 163636,
+      "decodedSamples": 1114629,
+      "periodSamples": 950993,
+      "periodTicks": 1296,
+      "loopStartSeconds": 3.710566893424036,
+      "periodSeconds": 21.564467120181405,
+      "pcmSeamReady": true,
+      "nativeBoundaryReady": true,
+      "loopReady": true,
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": ".local/contra-audio-loops/output/music-52-pulse1-loop.wav",
+          "repeatFile": ".local/contra-audio-loops/output/music-52-pulse1-repeat.wav",
+          "sha256": "4bad3d3754a9ee7a6f7b931977aab1cff72864c20e4c07bb0ab77ad0a298f1c9",
+          "sourceFile": ".local/contra-audio/stems/music-52-pulse1.wav",
+          "sourceSHA256": "f7103c776ca1626a5f737992fc5adf790635161b505da65922c53f67e2f5c878",
+          "blendSamples": 1411,
+          "changedFractionMaximum": 0.0012658920591515203,
+          "periodChangedFractionMaximum": 0.001483712288103067,
+          "metrics": {
+            "passed": true,
+            "boundaryError": 0,
+            "tail16Error": 0,
+            "maximumStep": 774,
+            "sourceMaximumStep": 819,
+            "maximumCurvature": 751,
+            "sourceMaximumCurvature": 755,
+            "peak": 1060,
+            "localRMS": [
+              {
+                "offset": 0,
+                "rms": 365.6083060158262,
+                "referenceRMS": 370.8574359257816,
+                "differenceDB": -0.12381875375506071,
+                "passed": true
+              },
+              {
+                "offset": 88,
+                "rms": 316.0249389520708,
+                "referenceRMS": 322.7263781666174,
+                "differenceDB": -0.18226215956815087,
+                "passed": true
+              },
+              {
+                "offset": 176,
+                "rms": 372.6095975431968,
+                "referenceRMS": 384.8000261575594,
+                "differenceDB": -0.27962111566796044,
+                "passed": true
+              },
+              {
+                "offset": 264,
+                "rms": 308.9079916557386,
+                "referenceRMS": 321.627821519266,
+                "differenceDB": -0.3504893040349649,
+                "passed": true
+              },
+              {
+                "offset": 352,
+                "rms": 324.21328184490824,
+                "referenceRMS": 345.7153520097142,
+                "differenceDB": -0.5577572623891176,
+                "passed": true
+              },
+              {
+                "offset": 440,
+                "rms": 361.53336490243476,
+                "referenceRMS": 384.55617391975784,
+                "differenceDB": -0.5362280979222338,
+                "passed": true
+              },
+              {
+                "offset": 528,
+                "rms": 302.6236408291139,
+                "referenceRMS": 322.17176068520104,
+                "differenceDB": -0.5436923726970113,
+                "passed": true
+              },
+              {
+                "offset": 616,
+                "rms": 362.4362364551187,
+                "referenceRMS": 385.34761505681826,
+                "differenceDB": -0.5324212683533727,
+                "passed": true
+              },
+              {
+                "offset": 704,
+                "rms": 311.7718394702856,
+                "referenceRMS": 334.0179164797298,
+                "differenceDB": -0.5986575467772444,
+                "passed": true
+              },
+              {
+                "offset": 792,
+                "rms": 310.21056999030685,
+                "referenceRMS": 322.77790252845716,
+                "differenceDB": -0.34494406865006777,
+                "passed": true
+              },
+              {
+                "offset": 880,
+                "rms": 372.76332784163384,
+                "referenceRMS": 384.8115415198526,
+                "differenceDB": -0.27629817932833817,
+                "passed": true
+              },
+              {
+                "offset": 968,
+                "rms": 315.30833868124444,
+                "referenceRMS": 321.8927732256168,
+                "differenceDB": -0.17951540402960128,
+                "passed": true
+              },
+              {
+                "offset": 1056,
+                "rms": 377.38066233704797,
+                "referenceRMS": 382.53592390438007,
+                "differenceDB": -0.11785167159194616,
+                "passed": true
+              }
+            ]
+          }
+        },
+        {
+          "channel": "pulse2",
+          "file": ".local/contra-audio-loops/output/music-52-pulse2-loop.wav",
+          "repeatFile": ".local/contra-audio-loops/output/music-52-pulse2-repeat.wav",
+          "sha256": "2f1abb5d0175555a8ef7908a626788b61a20a81c34f7af732844ed2e54557b2f",
+          "sourceFile": ".local/contra-audio/stems/music-52-pulse2.wav",
+          "sourceSHA256": "971eb328e70495e5e6ecf3cea4e2710adb11ed82de15688476e84748430b5ff1",
+          "blendSamples": 1411,
+          "changedFractionMaximum": 0.0012658920591515203,
+          "periodChangedFractionMaximum": 0.001483712288103067,
+          "metrics": {
+            "passed": true,
+            "boundaryError": 0,
+            "tail16Error": 0,
+            "maximumStep": 803,
+            "sourceMaximumStep": 818,
+            "maximumCurvature": 748,
+            "sourceMaximumCurvature": 756,
+            "peak": 1176,
+            "localRMS": [
+              {
+                "offset": 0,
+                "rms": 517.6214012327584,
+                "referenceRMS": 523.128088198082,
+                "differenceDB": -0.09191630088041772,
+                "passed": true
+              },
+              {
+                "offset": 88,
+                "rms": 520.754173625562,
+                "referenceRMS": 528.8201180254786,
+                "differenceDB": -0.13350418871126568,
+                "passed": true
+              },
+              {
+                "offset": 176,
+                "rms": 461.65893435672626,
+                "referenceRMS": 476.70946686850505,
+                "differenceDB": -0.2786506362650117,
+                "passed": true
+              },
+              {
+                "offset": 264,
+                "rms": 435.6722655232665,
+                "referenceRMS": 452.0457945622666,
+                "differenceDB": -0.32045038511547713,
+                "passed": true
+              },
+              {
+                "offset": 352,
+                "rms": 427.0278632993336,
+                "referenceRMS": 448.53332843131335,
+                "differenceDB": -0.4267701119316477,
+                "passed": true
+              },
+              {
+                "offset": 440,
+                "rms": 422.9534762352593,
+                "referenceRMS": 452.2416194371715,
+                "differenceDB": -0.5815585773619915,
+                "passed": true
+              },
+              {
+                "offset": 528,
+                "rms": 456.72121907644515,
+                "referenceRMS": 484.95799329234563,
+                "differenceDB": -0.5210586548958343,
+                "passed": true
+              },
+              {
+                "offset": 616,
+                "rms": 457.16091166037114,
+                "referenceRMS": 484.0471763557075,
+                "differenceDB": -0.49637201891096894,
+                "passed": true
+              },
+              {
+                "offset": 704,
+                "rms": 435.7452637082733,
+                "referenceRMS": 460.7446020017731,
+                "differenceDB": -0.4845516104458715,
+                "passed": true
+              },
+              {
+                "offset": 792,
+                "rms": 443.062612678548,
+                "referenceRMS": 460.4273473289723,
+                "differenceDB": -0.33392013464984494,
+                "passed": true
+              },
+              {
+                "offset": 880,
+                "rms": 450.4575829024685,
+                "referenceRMS": 462.3124035815394,
+                "differenceDB": -0.22563286676469935,
+                "passed": true
+              },
+              {
+                "offset": 968,
+                "rms": 463.29676794052426,
+                "referenceRMS": 473.327576966325,
+                "differenceDB": -0.1860507509687008,
+                "passed": true
+              },
+              {
+                "offset": 1056,
+                "rms": 488.09409648703576,
+                "referenceRMS": 493.1113021156575,
+                "differenceDB": -0.0888280359100101,
+                "passed": true
+              }
+            ]
+          }
+        },
+        {
+          "channel": "triangle",
+          "file": ".local/contra-audio-loops/output/music-52-triangle-loop.wav",
+          "repeatFile": ".local/contra-audio-loops/output/music-52-triangle-repeat.wav",
+          "sha256": "1e74fa87700f83f2ef27a5bb6adbe41b39af7afb0ea19690fd6041afc73448c8",
+          "sourceFile": ".local/contra-audio/stems/music-52-triangle.wav",
+          "sourceSHA256": "c4a75421489788fa99f5c62f0b5b080932de98acd83953d886bac4de444993f9",
+          "blendSamples": 1411,
+          "changedFractionMaximum": 0.0012658920591515203,
+          "periodChangedFractionMaximum": 0.001483712288103067,
+          "metrics": {
+            "passed": true,
+            "boundaryError": 0,
+            "tail16Error": 0,
+            "maximumStep": 6,
+            "sourceMaximumStep": 5,
+            "maximumCurvature": 2,
+            "sourceMaximumCurvature": 1,
+            "peak": 1546,
+            "localRMS": [
+              {
+                "offset": 0,
+                "rms": 930.998816344035,
+                "referenceRMS": 927.4924187162994,
+                "differenceDB": 0.0327752086041517,
+                "passed": true
+              },
+              {
+                "offset": 88,
+                "rms": 656.7186284403009,
+                "referenceRMS": 651.1636331622576,
+                "differenceDB": 0.0737839597404738,
+                "passed": true
+              },
+              {
+                "offset": 176,
+                "rms": 438.77046855881275,
+                "referenceRMS": 432.60042506501,
+                "differenceDB": 0.12300895736997977,
+                "passed": true
+              },
+              {
+                "offset": 264,
+                "rms": 271.40863267838637,
+                "referenceRMS": 266.102268619513,
+                "differenceDB": 0.17150160070726372,
+                "passed": true
+              },
+              {
+                "offset": 352,
+                "rms": 152.5691316857469,
+                "referenceRMS": 151.35977604001835,
+                "differenceDB": 0.06912396184723464,
+                "passed": true
+              },
+              {
+                "offset": 440,
+                "rms": 93.54880866905485,
+                "referenceRMS": 102.52485132828231,
+                "differenceDB": -0.7958177399147609,
+                "passed": true
+              },
+              {
+                "offset": 528,
+                "rms": 102.80853515564678,
+                "referenceRMS": 117.94886362366891,
+                "differenceDB": -1.193291795856651,
+                "passed": true
+              },
+              {
+                "offset": 616,
+                "rms": 134.14657325532883,
+                "referenceRMS": 149.04936677572442,
+                "differenceDB": -0.91501104229108,
+                "passed": true
+              },
+              {
+                "offset": 704,
+                "rms": 160.56218514161554,
+                "referenceRMS": 173.54044009969905,
+                "differenceDB": -0.6751484904017967,
+                "passed": true
+              },
+              {
+                "offset": 792,
+                "rms": 178.53426679285815,
+                "referenceRMS": 188.79428058803174,
+                "differenceDB": -0.48534498293222367,
+                "passed": true
+              },
+              {
+                "offset": 880,
+                "rms": 189.5095802850875,
+                "referenceRMS": 196.5356180026075,
+                "differenceDB": -0.31620197885546547,
+                "passed": true
+              },
+              {
+                "offset": 968,
+                "rms": 195.64544881764945,
+                "referenceRMS": 199.32987982181336,
+                "differenceDB": -0.16205310589268374,
+                "passed": true
+              },
+              {
+                "offset": 1056,
+                "rms": 198.8911826843389,
+                "referenceRMS": 199.66943343317908,
+                "differenceDB": -0.03392110727053729,
+                "passed": true
+              }
+            ]
+          }
+        }
+      ],
+      "nativeMeasurements": {
+        "crossTrackClockSpreadMS": 0.014000000000180536,
+        "maximumBoundaryClockDebtMS": 17.80087953249346,
+        "tracks": [
+          {
+            "channel": "pulse1",
+            "nativeEnds": 2,
+            "firstBoundaryPositionSeconds": 3.819182,
+            "secondBoundaryPositionSeconds": 3.812002,
+            "maximumBoundaryClockDebtMS": 17.700879627860893
+          },
+          {
+            "channel": "pulse2",
+            "nativeEnds": 2,
+            "firstBoundaryPositionSeconds": 3.819168,
+            "secondBoundaryPositionSeconds": 3.811995,
+            "maximumBoundaryClockDebtMS": 17.80087953249346
+          },
+          {
+            "channel": "triangle",
+            "nativeEnds": 2,
+            "firstBoundaryPositionSeconds": 3.819174,
+            "secondBoundaryPositionSeconds": 3.811991,
+            "maximumBoundaryClockDebtMS": 17.80087953249346
+          }
+        ],
+        "meaning": "Native media clock observations; not captured output PCM or a promise of sample-accurate synchrony."
+      },
+      "multiTrackSyncAccepted": false,
+      "listeningAccepted": false
+    },
+    {
+      "id": 86,
+      "label": "alien-lair",
+      "driverFrames": [
+        796,
+        2182
+      ],
+      "driverOffsetTicks": 1,
+      "loopStartSample": 494576,
+      "decodedSamples": 1511611,
+      "periodSamples": 1017035,
+      "periodTicks": 1386,
+      "loopStartSeconds": 11.214875283446712,
+      "periodSeconds": 23.06201814058957,
+      "pcmSeamReady": true,
+      "nativeBoundaryReady": true,
+      "loopReady": true,
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": ".local/contra-audio-loops/output/music-56-pulse1-loop.wav",
+          "repeatFile": ".local/contra-audio-loops/output/music-56-pulse1-repeat.wav",
+          "sha256": "55dc8696479cf5442f7ff80de5981234375956fee59138e2a95e1b03d04dd62d",
+          "sourceFile": ".local/contra-audio/stems/music-56-pulse1.wav",
+          "sourceSHA256": "d4f1a3b2b060c0c14e3ab86bdc22e6020922a8c229767957b8b153d46fc44e3a",
+          "blendSamples": 1411,
+          "changedFractionMaximum": 0.0009334412094116806,
+          "periodChangedFractionMaximum": 0.0013873662165018903,
+          "metrics": {
+            "passed": true,
+            "boundaryError": 0,
+            "tail16Error": 0,
+            "maximumStep": 1435,
+            "sourceMaximumStep": 1584,
+            "maximumCurvature": 1469,
+            "sourceMaximumCurvature": 1473,
+            "peak": 1901,
+            "localRMS": [
+              {
+                "offset": 0,
+                "rms": 580.1154153995013,
+                "referenceRMS": 589.0888833190169,
+                "differenceDB": -0.133328422616437,
+                "passed": true
+              },
+              {
+                "offset": 88,
+                "rms": 697.6795655628492,
+                "referenceRMS": 718.2540148958,
+                "differenceDB": -0.2524411847579268,
+                "passed": true
+              },
+              {
+                "offset": 176,
+                "rms": 645.5975272093367,
+                "referenceRMS": 674.5062833807502,
+                "differenceDB": -0.38048282882533435,
+                "passed": true
+              },
+              {
+                "offset": 264,
+                "rms": 673.8564061360934,
+                "referenceRMS": 715.8197291875723,
+                "differenceDB": -0.5247260535774473,
+                "passed": true
+              },
+              {
+                "offset": 352,
+                "rms": 671.0368409605733,
+                "referenceRMS": 715.3441441987493,
+                "differenceDB": -0.5553732422134363,
+                "passed": true
+              },
+              {
+                "offset": 440,
+                "rms": 587.7376994879888,
+                "referenceRMS": 635.9786048850979,
+                "differenceDB": -0.6851791391464801,
+                "passed": true
+              },
+              {
+                "offset": 528,
+                "rms": 585.6244240173609,
+                "referenceRMS": 635.0735802949285,
+                "differenceDB": -0.7040972987215849,
+                "passed": true
+              },
+              {
+                "offset": 616,
+                "rms": 506.1259570692492,
+                "referenceRMS": 544.4258813308326,
+                "differenceDB": -0.6336030365503738,
+                "passed": true
+              },
+              {
+                "offset": 704,
+                "rms": 503.9502426088272,
+                "referenceRMS": 542.4048989891405,
+                "differenceDB": -0.6387188960226718,
+                "passed": true
+              },
+              {
+                "offset": 792,
+                "rms": 510.7996369632745,
+                "referenceRMS": 535.4478532486401,
+                "differenceDB": -0.4093320355357265,
+                "passed": true
+              },
+              {
+                "offset": 880,
+                "rms": 519.1607986396822,
+                "referenceRMS": 542.5899681230217,
+                "differenceDB": -0.3833973607160058,
+                "passed": true
+              },
+              {
+                "offset": 968,
+                "rms": 454.54276437524817,
+                "referenceRMS": 466.87522150816346,
+                "differenceDB": -0.23252152713977528,
+                "passed": true
+              },
+              {
+                "offset": 1056,
+                "rms": 534.6649343916138,
+                "referenceRMS": 542.5199455712961,
+                "differenceDB": -0.12668014724848403,
+                "passed": true
+              }
+            ]
+          }
+        },
+        {
+          "channel": "pulse2",
+          "file": ".local/contra-audio-loops/output/music-56-pulse2-loop.wav",
+          "repeatFile": ".local/contra-audio-loops/output/music-56-pulse2-repeat.wav",
+          "sha256": "9643f59796c68d3ba542437a85bad5860fef43d33b5dc2737192e669595d52ca",
+          "sourceFile": ".local/contra-audio/stems/music-56-pulse2.wav",
+          "sourceSHA256": "dc1730dddd65e80e75385acce4430fa0810e4e7fc08af3728750f65093513d7a",
+          "blendSamples": 1411,
+          "changedFractionMaximum": 0.0009334412094116806,
+          "periodChangedFractionMaximum": 0.0013873662165018903,
+          "metrics": {
+            "passed": true,
+            "boundaryError": 0,
+            "tail16Error": 1,
+            "maximumStep": 2233,
+            "sourceMaximumStep": 2343,
+            "maximumCurvature": 3758,
+            "sourceMaximumCurvature": 3758,
+            "peak": 3036,
+            "localRMS": [
+              {
+                "offset": 0,
+                "rms": 1821.0550867272477,
+                "referenceRMS": 1837.3424842527543,
+                "differenceDB": -0.07734067681351575,
+                "passed": true
+              },
+              {
+                "offset": 88,
+                "rms": 1604.6032409622371,
+                "referenceRMS": 1641.3448811007515,
+                "differenceDB": -0.19664360001251463,
+                "passed": true
+              },
+              {
+                "offset": 176,
+                "rms": 1483.3269607612633,
+                "referenceRMS": 1520.3000379477994,
+                "differenceDB": -0.21384831731505574,
+                "passed": true
+              },
+              {
+                "offset": 264,
+                "rms": 1385.323185618395,
+                "referenceRMS": 1450.6721789878472,
+                "differenceDB": -0.40036358645160114,
+                "passed": true
+              },
+              {
+                "offset": 352,
+                "rms": 1319.9281184823437,
+                "referenceRMS": 1393.3730514294514,
+                "differenceDB": -0.4703425208242955,
+                "passed": true
+              },
+              {
+                "offset": 440,
+                "rms": 1196.6680867788755,
+                "referenceRMS": 1275.1040110984384,
+                "differenceDB": -0.5514380532884365,
+                "passed": true
+              },
+              {
+                "offset": 528,
+                "rms": 1225.8578334219835,
+                "referenceRMS": 1324.4221883707,
+                "differenceDB": -0.6717268274760333,
+                "passed": true
+              },
+              {
+                "offset": 616,
+                "rms": 1043.244291409291,
+                "referenceRMS": 1117.7873980235909,
+                "differenceDB": -0.5994638421421479,
+                "passed": true
+              },
+              {
+                "offset": 704,
+                "rms": 1072.5292444357738,
+                "referenceRMS": 1135.1555110542613,
+                "differenceDB": -0.4929243820583553,
+                "passed": true
+              },
+              {
+                "offset": 792,
+                "rms": 1185.6760816252656,
+                "referenceRMS": 1238.610147866082,
+                "differenceDB": -0.37937149616912663,
+                "passed": true
+              },
+              {
+                "offset": 880,
+                "rms": 1007.3179138699953,
+                "referenceRMS": 1045.2067573281317,
+                "differenceDB": -0.3207130282074301,
+                "passed": true
+              },
+              {
+                "offset": 968,
+                "rms": 1206.9451440461344,
+                "referenceRMS": 1236.937319715353,
+                "differenceDB": -0.21320322181212592,
+                "passed": true
+              },
+              {
+                "offset": 1056,
+                "rms": 1136.675267123165,
+                "referenceRMS": 1150.51947384497,
+                "differenceDB": -0.10515127387111835,
+                "passed": true
+              }
+            ]
+          }
+        },
+        {
+          "channel": "triangle",
+          "file": ".local/contra-audio-loops/output/music-56-triangle-loop.wav",
+          "repeatFile": ".local/contra-audio-loops/output/music-56-triangle-repeat.wav",
+          "sha256": "e23f2f52816f75740c73f8aecdc0335b9b0d2086093bb429323863405669d2fa",
+          "sourceFile": ".local/contra-audio/stems/music-56-triangle.wav",
+          "sourceSHA256": "0070e1c0d22a7418a9861bb996fb9e9a66fc7a878e14befffdbacc6fbe61ca28",
+          "blendSamples": 1411,
+          "changedFractionMaximum": 0.0009334412094116806,
+          "periodChangedFractionMaximum": 0.0013873662165018903,
+          "metrics": {
+            "passed": true,
+            "boundaryError": 0,
+            "tail16Error": 1,
+            "maximumStep": 667,
+            "sourceMaximumStep": 718,
+            "maximumCurvature": 651,
+            "sourceMaximumCurvature": 654,
+            "peak": 7072,
+            "localRMS": [
+              {
+                "offset": 0,
+                "rms": 985.7425279680081,
+                "referenceRMS": 1151.6536551003146,
+                "differenceDB": -1.3511679306032778,
+                "passed": true
+              },
+              {
+                "offset": 88,
+                "rms": 2755.1552492721835,
+                "referenceRMS": 2844.8306531677467,
+                "differenceDB": -0.278206861445735,
+                "passed": true
+              },
+              {
+                "offset": 176,
+                "rms": 3518.43638051612,
+                "referenceRMS": 3898.8425246724273,
+                "differenceDB": -0.8917198327494382,
+                "passed": true
+              },
+              {
+                "offset": 264,
+                "rms": 3690.332208266004,
+                "referenceRMS": 4123.516795582532,
+                "differenceDB": -0.9640460838365962,
+                "passed": true
+              },
+              {
+                "offset": 352,
+                "rms": 3716.225708374121,
+                "referenceRMS": 4176.788813702302,
+                "differenceDB": -1.014808673568635,
+                "passed": true
+              },
+              {
+                "offset": 440,
+                "rms": 3537.2731967654463,
+                "referenceRMS": 3886.444353450548,
+                "differenceDB": -0.8176770104059379,
+                "passed": true
+              },
+              {
+                "offset": 528,
+                "rms": 2943.18760489718,
+                "referenceRMS": 3605.000621428168,
+                "differenceDB": -1.7617479620751801,
+                "passed": true
+              },
+              {
+                "offset": 616,
+                "rms": 3200.155027229194,
+                "referenceRMS": 3804.740676310615,
+                "differenceDB": -1.5030808761479928,
+                "passed": true
+              },
+              {
+                "offset": 704,
+                "rms": 3373.063509076078,
+                "referenceRMS": 3830.160897566504,
+                "differenceDB": -1.1038499983459926,
+                "passed": true
+              },
+              {
+                "offset": 792,
+                "rms": 3117.9763149009464,
+                "referenceRMS": 3548.6115496136667,
+                "differenceDB": -1.1237129974660227,
+                "passed": true
+              },
+              {
+                "offset": 880,
+                "rms": 3446.170607842412,
+                "referenceRMS": 3709.2239530609136,
+                "differenceDB": -0.6389256324088592,
+                "passed": true
+              },
+              {
+                "offset": 968,
+                "rms": 3439.2603996087996,
+                "referenceRMS": 3664.599504417016,
+                "differenceDB": -0.5512291872822025,
+                "passed": true
+              },
+              {
+                "offset": 1056,
+                "rms": 3707.0196561224475,
+                "referenceRMS": 3792.3677988930867,
+                "differenceDB": -0.19771122942666533,
+                "passed": true
+              }
+            ]
+          }
+        }
+      ],
+      "nativeMeasurements": {
+        "crossTrackClockSpreadMS": 0.014999999999432134,
+        "maximumBoundaryClockDebtMS": 16.899859505800777,
+        "tracks": [
+          {
+            "channel": "pulse1",
+            "nativeEnds": 2,
+            "firstBoundaryPositionSeconds": 11.315287,
+            "secondBoundaryPositionSeconds": 11.321968,
+            "maximumBoundaryClockDebtMS": 16.899859505800777
+          },
+          {
+            "channel": "pulse2",
+            "nativeEnds": 2,
+            "firstBoundaryPositionSeconds": 11.315272,
+            "secondBoundaryPositionSeconds": 11.321957,
+            "maximumBoundaryClockDebtMS": 16.799859601168208
+          },
+          {
+            "channel": "triangle",
+            "nativeEnds": 2,
+            "firstBoundaryPositionSeconds": 11.315278,
+            "secondBoundaryPositionSeconds": 11.321953,
+            "maximumBoundaryClockDebtMS": 16.799859601168208
+          }
+        ],
+        "meaning": "Native media clock observations; not captured output PCM or a promise of sample-accurate synchrony."
+      },
+      "multiTrackSyncAccepted": false,
+      "listeningAccepted": false
+    },
+    {
+      "id": 90,
+      "label": "bases",
+      "driverFrames": [
+        1282,
+        3970
+      ],
+      "driverOffsetTicks": 7,
+      "loopStartSample": 851198,
+      "decodedSamples": 2823630,
+      "periodSamples": 1972432,
+      "periodTicks": 2688,
+      "loopStartSeconds": 19.30154195011338,
+      "periodSeconds": 44.726349206349205,
+      "pcmSeamReady": true,
+      "nativeBoundaryReady": true,
+      "loopReady": true,
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": ".local/contra-audio-loops/output/music-5a-pulse1-loop.wav",
+          "repeatFile": ".local/contra-audio-loops/output/music-5a-pulse1-repeat.wav",
+          "sha256": "394851a04e0219167c38ca62fced73e705dd8f5fabcd3af2607f06970148ecf9",
+          "sourceFile": ".local/contra-audio/stems/music-5a-pulse1.wav",
+          "sourceSHA256": "24c91ce044cf77ead3b59b9824ad1f92becdba8d066ac3846363a5dfd3b6602c",
+          "blendSamples": 1411,
+          "changedFractionMaximum": 0.0004997113644493082,
+          "periodChangedFractionMaximum": 0.0007153605295391679,
+          "metrics": {
+            "passed": true,
+            "boundaryError": 0,
+            "tail16Error": 0,
+            "maximumStep": 1,
+            "sourceMaximumStep": 1,
+            "maximumCurvature": 1,
+            "sourceMaximumCurvature": 1,
+            "peak": 118,
+            "localRMS": [
+              {
+                "offset": 0,
+                "rms": 73.47921792875925,
+                "referenceRMS": 73.47701572157389,
+                "differenceDB": 0.0002603241536418894,
+                "passed": true
+              },
+              {
+                "offset": 88,
+                "rms": 53.627796056849235,
+                "referenceRMS": 53.623081617347886,
+                "differenceDB": 0.0007636133545659093,
+                "passed": true
+              },
+              {
+                "offset": 176,
+                "rms": 37.60684495587752,
+                "referenceRMS": 37.600848427745184,
+                "differenceDB": 0.00138510248981259,
+                "passed": true
+              },
+              {
+                "offset": 264,
+                "rms": 24.869745661984258,
+                "referenceRMS": 24.862637862738772,
+                "differenceDB": 0.0024827911256446824,
+                "passed": true
+              },
+              {
+                "offset": 352,
+                "rms": 15.126286146239059,
+                "referenceRMS": 15.117317168011496,
+                "differenceDB": 0.00515173780882762,
+                "passed": true
+              },
+              {
+                "offset": 440,
+                "rms": 8.83977618831439,
+                "referenceRMS": 8.823072075999912,
+                "differenceDB": 0.01642884739196954,
+                "passed": true
+              },
+              {
+                "offset": 528,
+                "rms": 7.803718152084117,
+                "referenceRMS": 7.787708476107499,
+                "differenceDB": 0.017837793918830124,
+                "passed": true
+              },
+              {
+                "offset": 616,
+                "rms": 10.551640179687062,
+                "referenceRMS": 10.53863269445397,
+                "differenceDB": 0.010714095185312592,
+                "passed": true
+              },
+              {
+                "offset": 704,
+                "rms": 13.782712824568774,
+                "referenceRMS": 13.770794768038657,
+                "differenceDB": 0.0075140291905691475,
+                "passed": true
+              },
+              {
+                "offset": 792,
+                "rms": 16.51662395453514,
+                "referenceRMS": 16.50682721615637,
+                "differenceDB": 0.005153512903752099,
+                "passed": true
+              },
+              {
+                "offset": 880,
+                "rms": 18.68601452450999,
+                "referenceRMS": 18.67969075888909,
+                "differenceDB": 0.002939997004628298,
+                "passed": true
+              },
+              {
+                "offset": 968,
+                "rms": 20.278164759308613,
+                "referenceRMS": 20.275549744524323,
+                "differenceDB": 0.0011201799947366023,
+                "passed": true
+              },
+              {
+                "offset": 1056,
+                "rms": 21.466754057030663,
+                "referenceRMS": 21.46510229729777,
+                "differenceDB": 0.0006683616304498201,
+                "passed": true
+              }
+            ]
+          }
+        },
+        {
+          "channel": "pulse2",
+          "file": ".local/contra-audio-loops/output/music-5a-pulse2-loop.wav",
+          "repeatFile": ".local/contra-audio-loops/output/music-5a-pulse2-repeat.wav",
+          "sha256": "613b19f2c9a7d9f1e4699fdcf7cf36a452072c381b8bfc06e71ec00c921db969",
+          "sourceFile": ".local/contra-audio/stems/music-5a-pulse2.wav",
+          "sourceSHA256": "aa064359d0ac06a94ec5b12875d4c7376abcaeb46907c915314b645f63605766",
+          "blendSamples": 1411,
+          "changedFractionMaximum": 0.0004997113644493082,
+          "periodChangedFractionMaximum": 0.0007153605295391679,
+          "metrics": {
+            "passed": true,
+            "boundaryError": 0,
+            "tail16Error": 0,
+            "maximumStep": 3,
+            "sourceMaximumStep": 3,
+            "maximumCurvature": 1,
+            "sourceMaximumCurvature": 1,
+            "peak": 761,
+            "localRMS": [
+              {
+                "offset": 0,
+                "rms": 478.7231127665384,
+                "referenceRMS": 478.7291868328305,
+                "differenceDB": -0.00011020636639612322,
+                "passed": true
+              },
+              {
+                "offset": 88,
+                "rms": 353.29102674009545,
+                "referenceRMS": 353.3017194255284,
+                "differenceDB": -0.00026288264666221524,
+                "passed": true
+              },
+              {
+                "offset": 176,
+                "rms": 251.84992046109647,
+                "referenceRMS": 251.8633527396176,
+                "differenceDB": -0.0004632448460549183,
+                "passed": true
+              },
+              {
+                "offset": 264,
+                "rms": 170.64780754807012,
+                "referenceRMS": 170.66499269775818,
+                "differenceDB": -0.0008746716420995379,
+                "passed": true
+              },
+              {
+                "offset": 352,
+                "rms": 107.28557902822772,
+                "referenceRMS": 107.30458459412404,
+                "differenceDB": -0.0015385630499504708,
+                "passed": true
+              },
+              {
+                "offset": 440,
+                "rms": 62.19641282023733,
+                "referenceRMS": 62.2119820771021,
+                "differenceDB": -0.0021740148274022207,
+                "passed": true
+              },
+              {
+                "offset": 528,
+                "rms": 43.701634536820265,
+                "referenceRMS": 43.71549675715052,
+                "differenceDB": -0.0027547396066219085,
+                "passed": true
+              },
+              {
+                "offset": 616,
+                "rms": 54.38028408762154,
+                "referenceRMS": 54.387934966665966,
+                "differenceDB": -0.0012219505238111393,
+                "passed": true
+              },
+              {
+                "offset": 704,
+                "rms": 73.30602547611497,
+                "referenceRMS": 73.30890604062893,
+                "differenceDB": -0.00034130583028545093,
+                "passed": true
+              },
+              {
+                "offset": 792,
+                "rms": 90.52744407256627,
+                "referenceRMS": 90.52954913148415,
+                "differenceDB": -0.00020197297126824118,
+                "passed": true
+              },
+              {
+                "offset": 880,
+                "rms": 104.35774165641024,
+                "referenceRMS": 104.35852312011964,
+                "differenceDB": -6.504243972881893e-05,
+                "passed": true
+              },
+              {
+                "offset": 968,
+                "rms": 114.84076918189355,
+                "referenceRMS": 114.84101213681448,
+                "differenceDB": -1.8375681502885493e-05,
+                "passed": true
+              },
+              {
+                "offset": 1056,
+                "rms": 122.40721756571915,
+                "referenceRMS": 122.4073213046103,
+                "differenceDB": -7.36120137236527e-06,
+                "passed": true
+              }
+            ]
+          }
+        },
+        {
+          "channel": "triangle",
+          "file": ".local/contra-audio-loops/output/music-5a-triangle-loop.wav",
+          "repeatFile": ".local/contra-audio-loops/output/music-5a-triangle-repeat.wav",
+          "sha256": "4b8d3ea774dea51ae985fd72883e2541f549584a242f4184f91e9990ff79eabc",
+          "sourceFile": ".local/contra-audio/stems/music-5a-triangle.wav",
+          "sourceSHA256": "19f47318c848e11b87fcfc1ee363a4ef6a8b5db81a9012fecb9e41759ecc6e71",
+          "blendSamples": 1411,
+          "changedFractionMaximum": 0.0004997113644493082,
+          "periodChangedFractionMaximum": 0.0007153605295391679,
+          "metrics": {
+            "passed": true,
+            "boundaryError": 0,
+            "tail16Error": 0,
+            "maximumStep": 2,
+            "sourceMaximumStep": 2,
+            "maximumCurvature": 2,
+            "sourceMaximumCurvature": 1,
+            "peak": 477,
+            "localRMS": [
+              {
+                "offset": 0,
+                "rms": 334.16248952433176,
+                "referenceRMS": 334.07718501790214,
+                "differenceDB": 0.0022176041343530276,
+                "passed": true
+              },
+              {
+                "offset": 88,
+                "rms": 270.2767074380799,
+                "referenceRMS": 269.90105180992737,
+                "differenceDB": 0.012080852268325322,
+                "passed": true
+              },
+              {
+                "offset": 176,
+                "rms": 216.87348957764848,
+                "referenceRMS": 216.45393810402373,
+                "differenceDB": 0.01681951662099113,
+                "passed": true
+              },
+              {
+                "offset": 264,
+                "rms": 172.58287823059663,
+                "referenceRMS": 172.22182545672158,
+                "differenceDB": 0.018190388124381295,
+                "passed": true
+              },
+              {
+                "offset": 352,
+                "rms": 136.1375013119313,
+                "referenceRMS": 135.87511278514987,
+                "differenceDB": 0.016757152975200047,
+                "passed": true
+              },
+              {
+                "offset": 440,
+                "rms": 106.4043546362291,
+                "referenceRMS": 106.21134374682435,
+                "differenceDB": 0.015769971432811662,
+                "passed": true
+              },
+              {
+                "offset": 528,
+                "rms": 82.3282313489961,
+                "referenceRMS": 82.17047549882338,
+                "differenceDB": 0.01665970937631691,
+                "passed": true
+              },
+              {
+                "offset": 616,
+                "rms": 63.016725150750354,
+                "referenceRMS": 62.84509054010459,
+                "differenceDB": 0.02368947566918328,
+                "passed": true
+              },
+              {
+                "offset": 704,
+                "rms": 47.639789830254514,
+                "referenceRMS": 47.432405589126915,
+                "differenceDB": 0.03789371814104564,
+                "passed": true
+              },
+              {
+                "offset": 792,
+                "rms": 35.46745705453119,
+                "referenceRMS": 35.234120384939125,
+                "differenceDB": 0.0573323536035944,
+                "passed": true
+              },
+              {
+                "offset": 880,
+                "rms": 25.9426257350394,
+                "referenceRMS": 25.67878621774956,
+                "differenceDB": 0.08878877186849453,
+                "passed": true
+              },
+              {
+                "offset": 968,
+                "rms": 18.509166246146226,
+                "referenceRMS": 18.256383480920327,
+                "differenceDB": 0.11944213083293523,
+                "passed": true
+              },
+              {
+                "offset": 1056,
+                "rms": 12.77989745799344,
+                "referenceRMS": 12.548109887803678,
+                "differenceDB": 0.15898111783771954,
+                "passed": true
+              }
+            ]
+          }
+        }
+      ],
+      "nativeMeasurements": {
+        "crossTrackClockSpreadMS": 0.016000000002236447,
+        "maximumBoundaryClockDebtMS": 16.80079336468546,
+        "tracks": [
+          {
+            "channel": "pulse1",
+            "nativeEnds": 2,
+            "firstBoundaryPositionSeconds": 19.412047,
+            "secondBoundaryPositionSeconds": 19.401566,
+            "maximumBoundaryClockDebtMS": 16.80079336468546
+          },
+          {
+            "channel": "pulse2",
+            "nativeEnds": 2,
+            "firstBoundaryPositionSeconds": 19.412058,
+            "secondBoundaryPositionSeconds": 19.401578,
+            "maximumBoundaryClockDebtMS": 16.80079336468546
+          },
+          {
+            "channel": "triangle",
+            "nativeEnds": 2,
+            "firstBoundaryPositionSeconds": 19.412045,
+            "secondBoundaryPositionSeconds": 19.401562,
+            "maximumBoundaryClockDebtMS": 16.80079336468546
+          }
+        ],
+        "meaning": "Native media clock observations; not captured output PCM or a promise of sample-accurate synchrony."
+      },
+      "multiTrackSyncAccepted": false,
+      "listeningAccepted": false
+    },
+    {
+      "id": 94,
+      "label": "base-boss",
+      "driverFrames": [
+        1467,
+        3567
+      ],
+      "driverOffsetTicks": 0,
+      "loopStartSample": 986950,
+      "decodedSamples": 2527912,
+      "periodSamples": 1540962,
+      "periodTicks": 2100,
+      "loopStartSeconds": 22.379818594104307,
+      "periodSeconds": 34.94244897959184,
+      "pcmSeamReady": true,
+      "nativeBoundaryReady": true,
+      "loopReady": true,
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": ".local/contra-audio-loops/output/music-5e-pulse1-loop.wav",
+          "repeatFile": ".local/contra-audio-loops/output/music-5e-pulse1-repeat.wav",
+          "sha256": "e3964ad706c49bfc4b987b6cb6749ecdaae37ec13ca0ec3d3f36b0d4eb11d4f3",
+          "sourceFile": ".local/contra-audio/stems/music-5e-pulse1.wav",
+          "sourceSHA256": "384068cecdb4988ca67ddee9c0b39cdb752cca123318f42fe408db52ef7ca694",
+          "blendSamples": 1411,
+          "changedFractionMaximum": 0.0005581681640816611,
+          "periodChangedFractionMaximum": 0.0009156617749172271,
+          "metrics": {
+            "passed": true,
+            "boundaryError": 0,
+            "tail16Error": 0,
+            "maximumStep": 2584,
+            "sourceMaximumStep": 2699,
+            "maximumCurvature": 2492,
+            "sourceMaximumCurvature": 2497,
+            "peak": 3703,
+            "localRMS": [
+              {
+                "offset": 0,
+                "rms": 3.039401312749493,
+                "referenceRMS": 3.039401312749493,
+                "differenceDB": 0.0,
+                "passed": true
+              },
+              {
+                "offset": 88,
+                "rms": 3.0,
+                "referenceRMS": 3.0,
+                "differenceDB": 0.0,
+                "passed": true
+              },
+              {
+                "offset": 176,
+                "rms": 3.0,
+                "referenceRMS": 3.0,
+                "differenceDB": 0.0,
+                "passed": true
+              },
+              {
+                "offset": 264,
+                "rms": 3.0,
+                "referenceRMS": 3.0,
+                "differenceDB": 0.0,
+                "passed": true
+              },
+              {
+                "offset": 352,
+                "rms": 3.0,
+                "referenceRMS": 3.0,
+                "differenceDB": 0.0,
+                "passed": true
+              },
+              {
+                "offset": 440,
+                "rms": 800.0845281122776,
+                "referenceRMS": 801.2920348534063,
+                "differenceDB": -0.013099070538475867,
+                "passed": true
+              },
+              {
+                "offset": 528,
+                "rms": 882.2480540614324,
+                "referenceRMS": 882.5450960353551,
+                "differenceDB": -0.0029239390776060856,
+                "passed": true
+              },
+              {
+                "offset": 616,
+                "rms": 1118.341078430629,
+                "referenceRMS": 1119.9341847102503,
+                "differenceDB": -0.01236447356681827,
+                "passed": true
+              },
+              {
+                "offset": 704,
+                "rms": 1350.1873398499995,
+                "referenceRMS": 1351.9053641276284,
+                "differenceDB": -0.011045195644020121,
+                "passed": true
+              },
+              {
+                "offset": 792,
+                "rms": 1100.9548791355398,
+                "referenceRMS": 1102.185156321611,
+                "differenceDB": -0.009700747842821655,
+                "passed": true
+              },
+              {
+                "offset": 880,
+                "rms": 1293.3274245895614,
+                "referenceRMS": 1293.540390071983,
+                "differenceDB": -0.0014301424067561738,
+                "passed": true
+              },
+              {
+                "offset": 968,
+                "rms": 1095.941986843698,
+                "referenceRMS": 1096.6466288254069,
+                "differenceDB": -0.005582846371126079,
+                "passed": true
+              },
+              {
+                "offset": 1056,
+                "rms": 1091.1547954050382,
+                "referenceRMS": 1091.4055984155766,
+                "differenceDB": -0.0019962309278481276,
+                "passed": true
+              }
+            ]
+          }
+        },
+        {
+          "channel": "pulse2",
+          "file": ".local/contra-audio-loops/output/music-5e-pulse2-loop.wav",
+          "repeatFile": ".local/contra-audio-loops/output/music-5e-pulse2-repeat.wav",
+          "sha256": "428f8df9ec0872500395d2b15157c8f292d9f84d90c921e0d0f249ac2c475ce5",
+          "sourceFile": ".local/contra-audio/stems/music-5e-pulse2.wav",
+          "sourceSHA256": "b9d142dd63fdf1fe32625e8daf2faa889c694a1cc93c34bf53a547107acc1f6e",
+          "blendSamples": 1411,
+          "changedFractionMaximum": 0.0005581681640816611,
+          "periodChangedFractionMaximum": 0.0009156617749172271,
+          "metrics": {
+            "passed": true,
+            "boundaryError": 0,
+            "tail16Error": 0,
+            "maximumStep": 3211,
+            "sourceMaximumStep": 3401,
+            "maximumCurvature": 3438,
+            "sourceMaximumCurvature": 3732,
+            "peak": 3492,
+            "localRMS": [
+              {
+                "offset": 0,
+                "rms": 1232.868965740298,
+                "referenceRMS": 1241.8803333449268,
+                "differenceDB": -0.06325658156573172,
+                "passed": true
+              },
+              {
+                "offset": 88,
+                "rms": 927.7061937217453,
+                "referenceRMS": 939.2761531205209,
+                "differenceDB": -0.10765680473559097,
+                "passed": true
+              },
+              {
+                "offset": 176,
+                "rms": 1165.189810553441,
+                "referenceRMS": 1198.5984217015737,
+                "differenceDB": -0.24554046738210994,
+                "passed": true
+              },
+              {
+                "offset": 264,
+                "rms": 1043.01649456373,
+                "referenceRMS": 1081.7617492646143,
+                "differenceDB": -0.31680888660315365,
+                "passed": true
+              },
+              {
+                "offset": 352,
+                "rms": 1097.0085321212148,
+                "referenceRMS": 1144.2119605596756,
+                "differenceDB": -0.36592955617136647,
+                "passed": true
+              },
+              {
+                "offset": 440,
+                "rms": 1368.8831669086637,
+                "referenceRMS": 1493.5829789590248,
+                "differenceDB": -0.7572594534707779,
+                "passed": true
+              },
+              {
+                "offset": 528,
+                "rms": 1487.6144324779568,
+                "referenceRMS": 1712.9857601202941,
+                "differenceDB": -1.2252673921136885,
+                "passed": true
+              },
+              {
+                "offset": 616,
+                "rms": 1743.7695589691705,
+                "referenceRMS": 1983.7649899636042,
+                "differenceDB": -1.1200225907990524,
+                "passed": true
+              },
+              {
+                "offset": 704,
+                "rms": 1848.5886684592133,
+                "referenceRMS": 2127.263737817053,
+                "differenceDB": -1.2196210089024206,
+                "passed": true
+              },
+              {
+                "offset": 792,
+                "rms": 1891.2462728553453,
+                "referenceRMS": 2136.5097737398946,
+                "differenceDB": -1.0591359748215163,
+                "passed": true
+              },
+              {
+                "offset": 880,
+                "rms": 1924.0812508978556,
+                "referenceRMS": 2087.4060838028636,
+                "differenceDB": -0.7076707448113567,
+                "passed": true
+              },
+              {
+                "offset": 968,
+                "rms": 1840.0354566112042,
+                "referenceRMS": 1974.8237940645738,
+                "differenceDB": -0.6140431905011888,
+                "passed": true
+              },
+              {
+                "offset": 1056,
+                "rms": 1886.5500085723127,
+                "referenceRMS": 1968.430938865876,
+                "differenceDB": -0.36903721010053264,
+                "passed": true
+              }
+            ]
+          }
+        },
+        {
+          "channel": "triangle",
+          "file": ".local/contra-audio-loops/output/music-5e-triangle-loop.wav",
+          "repeatFile": ".local/contra-audio-loops/output/music-5e-triangle-repeat.wav",
+          "sha256": "415932076c4f1f2be884ba6ca18dd9bfe699117bdef25318833bdcf7672ea9c5",
+          "sourceFile": ".local/contra-audio/stems/music-5e-triangle.wav",
+          "sourceSHA256": "67bd6008002bfbf3955be5f6f87ddebbb9bc1dd28126ab6334d587e498f1ede8",
+          "blendSamples": 1411,
+          "changedFractionMaximum": 0.0005581681640816611,
+          "periodChangedFractionMaximum": 0.0009156617749172271,
+          "metrics": {
+            "passed": true,
+            "boundaryError": 0,
+            "tail16Error": 0,
+            "maximumStep": 763,
+            "sourceMaximumStep": 766,
+            "maximumCurvature": 757,
+            "sourceMaximumCurvature": 777,
+            "peak": 6130,
+            "localRMS": [
+              {
+                "offset": 0,
+                "rms": 3513.7226072794247,
+                "referenceRMS": 3587.1596128594383,
+                "differenceDB": -0.17966456806310732,
+                "passed": true
+              },
+              {
+                "offset": 88,
+                "rms": 3555.9965863846946,
+                "referenceRMS": 3704.767003572845,
+                "differenceDB": -0.35599129151422504,
+                "passed": true
+              },
+              {
+                "offset": 176,
+                "rms": 3494.196314846313,
+                "referenceRMS": 3727.262913388708,
+                "differenceDB": -0.5608545342951253,
+                "passed": true
+              },
+              {
+                "offset": 264,
+                "rms": 3298.9373385590966,
+                "referenceRMS": 3610.3572506986197,
+                "differenceDB": -0.7835222345563497,
+                "passed": true
+              },
+              {
+                "offset": 352,
+                "rms": 3321.147550319242,
+                "referenceRMS": 3702.950896586741,
+                "differenceDB": -0.945195648500249,
+                "passed": true
+              },
+              {
+                "offset": 440,
+                "rms": 3305.639587027012,
+                "referenceRMS": 3698.9816727311427,
+                "differenceDB": -0.9765335744362292,
+                "passed": true
+              },
+              {
+                "offset": 528,
+                "rms": 3082.1910394067777,
+                "referenceRMS": 3605.02137250545,
+                "differenceDB": -1.360965805442285,
+                "passed": true
+              },
+              {
+                "offset": 616,
+                "rms": 3165.683651757205,
+                "referenceRMS": 3674.0086439724105,
+                "differenceDB": -1.2934532061320576,
+                "passed": true
+              },
+              {
+                "offset": 704,
+                "rms": 3323.8330419338995,
+                "referenceRMS": 3768.1207953396734,
+                "differenceDB": -1.0897123161251747,
+                "passed": true
+              },
+              {
+                "offset": 792,
+                "rms": 3320.587877147412,
+                "referenceRMS": 3645.45670763084,
+                "differenceDB": -0.8107393401496739,
+                "passed": true
+              },
+              {
+                "offset": 880,
+                "rms": 3341.0532189562646,
+                "referenceRMS": 3644.2506628288493,
+                "differenceDB": -0.7544969592821835,
+                "passed": true
+              },
+              {
+                "offset": 968,
+                "rms": 3473.080124266509,
+                "referenceRMS": 3715.3371539584473,
+                "differenceDB": -0.585668559280685,
+                "passed": true
+              },
+              {
+                "offset": 1056,
+                "rms": 3573.6430040105174,
+                "referenceRMS": 3672.618913606571,
+                "differenceDB": -0.23729401624178076,
+                "passed": true
+              }
+            ]
+          }
+        }
+      ],
+      "nativeMeasurements": {
+        "crossTrackClockSpreadMS": 0.009999999999621425,
+        "maximumBoundaryClockDebtMS": 29.33302050353055,
+        "tracks": [
+          {
+            "channel": "pulse1",
+            "nativeEnds": 2,
+            "firstBoundaryPositionSeconds": 22.483349,
+            "secondBoundaryPositionSeconds": 22.483009,
+            "maximumBoundaryClockDebtMS": 29.33302050353055
+          },
+          {
+            "channel": "pulse2",
+            "nativeEnds": 2,
+            "firstBoundaryPositionSeconds": 22.483343,
+            "secondBoundaryPositionSeconds": 22.483005,
+            "maximumBoundaryClockDebtMS": 29.21202059889771
+          },
+          {
+            "channel": "triangle",
+            "nativeEnds": 2,
+            "firstBoundaryPositionSeconds": 22.483339,
+            "secondBoundaryPositionSeconds": 22.483003,
+            "maximumBoundaryClockDebtMS": 29.20802059889715
+          }
+        ],
+        "meaning": "Native media clock observations; not captured output PCM or a promise of sample-accurate synchrony."
+      },
+      "multiTrackSyncAccepted": false,
+      "listeningAccepted": false
+    },
+    {
+      "id": 20,
+      "label": "intro-flight",
+      "kind": "loop-effect",
+      "driverFrames": [
+        136,
+        248
+      ],
+      "driverOffsetTicks": 4,
+      "loopStartSample": 10273,
+      "decodedSamples": 92458,
+      "periodSamples": 82185,
+      "periodTicks": 112,
+      "loopStartSeconds": 0.23294784580498867,
+      "periodSeconds": 1.8636054421768709,
+      "pcmSeamReady": true,
+      "nativeBoundaryReady": true,
+      "loopReady": true,
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": ".local/contra-audio-loops/output/loop-effect-14-pulse1-loop.wav",
+          "repeatFile": ".local/contra-audio-loops/output/loop-effect-14-pulse1-repeat.wav",
+          "sha256": "9d26ed08bc6a094a3f7bef7ca4a15e8e04da696605ff0ae3bc9def082c3098d1",
+          "sourceFile": ".local/contra-audio/stems/loop-effect-14-pulse1.wav",
+          "sourceSHA256": "1bb7144600f8335eca86d34054a661fd2c3866a0706119dd0b74700419e99936",
+          "blendSamples": 1411,
+          "changedFractionMaximum": 0.015260983365419974,
+          "periodChangedFractionMaximum": 0.017168583074770337,
+          "metrics": {
+            "passed": true,
+            "boundaryError": 0,
+            "tail16Error": 0,
+            "maximumStep": 1558,
+            "sourceMaximumStep": 1601,
+            "maximumCurvature": 1426,
+            "sourceMaximumCurvature": 1475,
+            "peak": 1406,
+            "localRMS": [
+              {
+                "offset": 0,
+                "rms": 745.5710931611466,
+                "referenceRMS": 774.2943234682837,
+                "differenceDB": -0.328340277926272,
+                "passed": true
+              },
+              {
+                "offset": 88,
+                "rms": 789.8552777397712,
+                "referenceRMS": 823.218579242598,
+                "differenceDB": -0.35935278121059755,
+                "passed": true
+              },
+              {
+                "offset": 176,
+                "rms": 727.0445002765898,
+                "referenceRMS": 796.0266790155581,
+                "differenceDB": -0.7873325977410395,
+                "passed": true
+              },
+              {
+                "offset": 264,
+                "rms": 690.3148273842273,
+                "referenceRMS": 793.0551274137036,
+                "differenceDB": -1.2051235116912191,
+                "passed": true
+              },
+              {
+                "offset": 352,
+                "rms": 668.2894319623207,
+                "referenceRMS": 800.6661106959037,
+                "differenceDB": -1.5697370669041588,
+                "passed": true
+              },
+              {
+                "offset": 440,
+                "rms": 662.6568529909458,
+                "referenceRMS": 816.773678934654,
+                "differenceDB": -1.8162608042911563,
+                "passed": true
+              },
+              {
+                "offset": 528,
+                "rms": 765.9520284685028,
+                "referenceRMS": 917.2183933250229,
+                "differenceDB": -1.5654236913944894,
+                "passed": true
+              },
+              {
+                "offset": 616,
+                "rms": 822.3249531735602,
+                "referenceRMS": 973.7522051111434,
+                "differenceDB": -1.4680997036953265,
+                "passed": true
+              },
+              {
+                "offset": 704,
+                "rms": 882.4305412080076,
+                "referenceRMS": 1032.2339792026632,
+                "differenceDB": -1.3619524072375917,
+                "passed": true
+              },
+              {
+                "offset": 792,
+                "rms": 930.8705678902444,
+                "referenceRMS": 1066.5934347900948,
+                "differenceDB": -1.182192141371668,
+                "passed": true
+              },
+              {
+                "offset": 880,
+                "rms": 939.5682014091101,
+                "referenceRMS": 1045.9065250634435,
+                "differenceDB": -0.9312912452272579,
+                "passed": true
+              },
+              {
+                "offset": 968,
+                "rms": 984.1081926516986,
+                "referenceRMS": 1043.1833321295105,
+                "differenceDB": -0.5063558406222236,
+                "passed": true
+              },
+              {
+                "offset": 1056,
+                "rms": 1029.3619754426777,
+                "referenceRMS": 1059.020600056604,
+                "differenceDB": -0.24672573354824556,
+                "passed": true
+              }
+            ]
+          }
+        },
+        {
+          "channel": "pulse2",
+          "file": ".local/contra-audio-loops/output/loop-effect-14-pulse2-loop.wav",
+          "repeatFile": ".local/contra-audio-loops/output/loop-effect-14-pulse2-repeat.wav",
+          "sha256": "21b7cb229367442116e2170846d5da915940eb5addf70db8c45531911f3b84e5",
+          "sourceFile": ".local/contra-audio/stems/loop-effect-14-pulse2.wav",
+          "sourceSHA256": "59002dd2660508fcc041c1f9bc293807b1a98d9e0b333a5b90a4ab407702bebf",
+          "blendSamples": 1411,
+          "changedFractionMaximum": 0.015260983365419974,
+          "periodChangedFractionMaximum": 0.017168583074770337,
+          "metrics": {
+            "passed": true,
+            "boundaryError": 0,
+            "tail16Error": 0,
+            "maximumStep": 1545,
+            "sourceMaximumStep": 1601,
+            "maximumCurvature": 1467,
+            "sourceMaximumCurvature": 1478,
+            "peak": 1329,
+            "localRMS": [
+              {
+                "offset": 0,
+                "rms": 1034.8579708491538,
+                "referenceRMS": 1053.2555252456712,
+                "differenceDB": -0.15305993902259102,
+                "passed": true
+              },
+              {
+                "offset": 88,
+                "rms": 1021.486980611145,
+                "referenceRMS": 1053.4796198399326,
+                "differenceDB": -0.2678660532091567,
+                "passed": true
+              },
+              {
+                "offset": 176,
+                "rms": 1004.0463179049976,
+                "referenceRMS": 1052.1269503006595,
+                "differenceDB": -0.40628794819334063,
+                "passed": true
+              },
+              {
+                "offset": 264,
+                "rms": 988.3383012580819,
+                "referenceRMS": 1052.168783534161,
+                "differenceDB": -0.543595734390501,
+                "passed": true
+              },
+              {
+                "offset": 352,
+                "rms": 973.1074812021905,
+                "referenceRMS": 1050.955292280537,
+                "differenceDB": -0.6684686019247723,
+                "passed": true
+              },
+              {
+                "offset": 440,
+                "rms": 963.7494708133011,
+                "referenceRMS": 1050.8342576467035,
+                "differenceDB": -0.7514013987844617,
+                "passed": true
+              },
+              {
+                "offset": 528,
+                "rms": 958.7235183839758,
+                "referenceRMS": 1049.7704068981227,
+                "differenceDB": -0.7880188932212905,
+                "passed": true
+              },
+              {
+                "offset": 616,
+                "rms": 961.2736195648916,
+                "referenceRMS": 1049.5350022286705,
+                "differenceDB": -0.762998058767162,
+                "passed": true
+              },
+              {
+                "offset": 704,
+                "rms": 968.7075353024985,
+                "referenceRMS": 1048.6093301417036,
+                "differenceDB": -0.6884207916790236,
+                "passed": true
+              },
+              {
+                "offset": 792,
+                "rms": 981.7054435540646,
+                "referenceRMS": 1048.3165225554424,
+                "differenceDB": -0.5702246323772924,
+                "passed": true
+              },
+              {
+                "offset": 880,
+                "rms": 996.6161728739878,
+                "referenceRMS": 1047.5514252241253,
+                "differenceDB": -0.4329484306195852,
+                "passed": true
+              },
+              {
+                "offset": 968,
+                "rms": 1012.5446711371102,
+                "referenceRMS": 1047.2480512284435,
+                "differenceDB": -0.29270736992390955,
+                "passed": true
+              },
+              {
+                "offset": 1056,
+                "rms": 1026.2156254486745,
+                "referenceRMS": 1046.7005817115298,
+                "differenceDB": -0.1716768494030443,
+                "passed": true
+              }
+            ]
+          }
+        }
+      ],
+      "nativeMeasurements": {
+        "crossTrackClockSpreadMS": 0.008999999999981245,
+        "maximumBoundaryClockDebtMS": 16.90055791849687,
+        "tracks": [
+          {
+            "channel": "pulse1",
+            "nativeEnds": 2,
+            "firstBoundaryPositionSeconds": 0.336073,
+            "secondBoundaryPositionSeconds": 0.337609,
+            "maximumBoundaryClockDebtMS": 16.90055791849687
+          },
+          {
+            "channel": "pulse2",
+            "nativeEnds": 2,
+            "firstBoundaryPositionSeconds": 0.336065,
+            "secondBoundaryPositionSeconds": 0.3376,
+            "maximumBoundaryClockDebtMS": 16.8005580138643
+          }
+        ],
+        "meaning": "Native media clock observations; not captured output PCM or a promise of sample-accurate synchrony."
+      },
+      "multiTrackSyncAccepted": false,
+      "listeningAccepted": false
+    }
+  ],
+  "multiTrackSyncAccepted": false,
+  "sampleAccurateSyncAccepted": false,
+  "readinessScope": "loopReady means numerical PCM seam and per-track native suffix-loop position/progress/pause checks passed. It does not accept output-PCM continuity, multitrack synchronization, listening or mixed gameplay.",
+  "numericalEvidence": "docs/research/nes-contra/evidence/audio-loop-numerical.json",
+  "nativeEvidence": "docs/research/nes-contra/evidence/audio-loop-native.json.gz",
+  "nativePlatformSHA256": "81b5bf6449e43196af8ae7320c7699d5dd02ed7493aec1c1dd13cfdbfd878e43",
+  "nativeHistoryEvidence": "docs/research/nes-contra/evidence/audio-loop-native-history.json.gz",
+  "nativeCoverageComplete": true
+}

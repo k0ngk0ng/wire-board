@@ -1,0 +1,21 @@
+{"Time":"2026-10-25T15:48:45.429491+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-10-25T15:48:45.95535+08:00","Action":"run","Package":"command-line-arguments","Test":"TestCampaignOriginalDecisionBoundaries"}
+{"Time":"2026-10-25T15:48:45.955548+08:00","Action":"output","Package":"command-line-arguments","Test":"TestCampaignOriginalDecisionBoundaries","Output":"=== RUN   TestCampaignOriginalDecisionBoundaries\n"}
+{"Time":"2026-10-25T15:48:46.012442+08:00","Action":"output","Package":"command-line-arguments","Test":"TestCampaignOriginalDecisionBoundaries","Output":"    campaign_test.go:150: 199 original boundaries match: map[afterCombat:42 beginPlaying:20 clearWait:36 continueMenu:16 delay:16 exhaustedMenu:2 gameOverWait:4 initialize:1 pause:20 prepareBattle:18 resetCounters:4 transition:20]\n"}
+{"Time":"2026-10-25T15:48:46.012508+08:00","Action":"output","Package":"command-line-arguments","Test":"TestCampaignOriginalDecisionBoundaries","Output":"--- PASS: TestCampaignOriginalDecisionBoundaries (0.06s)\n"}
+{"Time":"2026-10-25T15:48:46.012515+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestCampaignOriginalDecisionBoundaries","Elapsed":0.06}
+{"Time":"2026-10-25T15:48:46.012536+08:00","Action":"run","Package":"command-line-arguments","Test":"TestCampaignInvalidStateAndCheckpointAtomicity"}
+{"Time":"2026-10-25T15:48:46.012539+08:00","Action":"output","Package":"command-line-arguments","Test":"TestCampaignInvalidStateAndCheckpointAtomicity","Output":"=== RUN   TestCampaignInvalidStateAndCheckpointAtomicity\n"}
+{"Time":"2026-10-25T15:48:46.012559+08:00","Action":"output","Package":"command-line-arguments","Test":"TestCampaignInvalidStateAndCheckpointAtomicity","Output":"--- PASS: TestCampaignInvalidStateAndCheckpointAtomicity (0.00s)\n"}
+{"Time":"2026-10-25T15:48:46.012564+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestCampaignInvalidStateAndCheckpointAtomicity","Elapsed":0}
+{"Time":"2026-10-25T15:48:46.012576+08:00","Action":"run","Package":"command-line-arguments","Test":"TestCampaignThreeContinuesAndTerminalRestore"}
+{"Time":"2026-10-25T15:48:46.012579+08:00","Action":"output","Package":"command-line-arguments","Test":"TestCampaignThreeContinuesAndTerminalRestore","Output":"=== RUN   TestCampaignThreeContinuesAndTerminalRestore\n"}
+{"Time":"2026-10-25T15:48:46.012923+08:00","Action":"output","Package":"command-line-arguments","Test":"TestCampaignThreeContinuesAndTerminalRestore","Output":"--- PASS: TestCampaignThreeContinuesAndTerminalRestore (0.00s)\n"}
+{"Time":"2026-10-25T15:48:46.012935+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestCampaignThreeContinuesAndTerminalRestore","Elapsed":0}
+{"Time":"2026-10-25T15:48:46.012942+08:00","Action":"run","Package":"command-line-arguments","Test":"TestCampaignBossWipePriorityPauseAndClearOnce"}
+{"Time":"2026-10-25T15:48:46.012945+08:00","Action":"output","Package":"command-line-arguments","Test":"TestCampaignBossWipePriorityPauseAndClearOnce","Output":"=== RUN   TestCampaignBossWipePriorityPauseAndClearOnce\n"}
+{"Time":"2026-10-25T15:48:46.013024+08:00","Action":"output","Package":"command-line-arguments","Test":"TestCampaignBossWipePriorityPauseAndClearOnce","Output":"--- PASS: TestCampaignBossWipePriorityPauseAndClearOnce (0.00s)\n"}
+{"Time":"2026-10-25T15:48:46.013028+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestCampaignBossWipePriorityPauseAndClearOnce","Elapsed":0}
+{"Time":"2026-10-25T15:48:46.013043+08:00","Action":"output","Package":"command-line-arguments","Output":"PASS\n"}
+{"Time":"2026-10-25T15:48:47.021361+08:00","Action":"output","Package":"command-line-arguments","Output":"ok  \tcommand-line-arguments\t1.591s\n"}
+{"Time":"2026-10-25T15:48:47.021514+08:00","Action":"pass","Package":"command-line-arguments","Elapsed":1.592}

@@ -1,0 +1,136 @@
+{
+  "passed": true,
+  "scope": "CI ownership/selection only; no registration, engine, long-test opt-in, environment cleanup, publication or deployment change.",
+  "unitTests": 19,
+  "cliScenarios": [
+    "cancelled-predecessor-web-scope",
+    "rename-both-owners",
+    "server-and-rule-fixtures",
+    "contra-rule-data-and-ai-fixture-backend",
+    "contra-frontend-does-not-run-campaign",
+    "shared-registry-without-unrelated-games",
+    "shared-does-not-fan-out",
+    "mixed-legacy-test-ownership",
+    "mixed-file-public-test-does-not-run-rail",
+    "mixed-file-game-test-retains-owner",
+    "mixed-file-public-test-deletion-does-not-run-rail",
+    "mixed-file-helper-conservatively-retains-game-owner",
+    "deleted-test-retains-previous-owner",
+    "invalid-baseline-fails"
+  ],
+  "selectedTopLevelRaceTests": 9,
+  "raceEntries": {
+    "github.com/k0ngk0ng/wire-board/games": 1,
+    "github.com/k0ngk0ng/wire-board/games/contra/engine": 2,
+    "github.com/k0ngk0ng/wire-board/games/contra/runtime": 1,
+    "github.com/k0ngk0ng/wire-board/games/contra/server": 13
+  },
+  "commands": [
+    {
+      "argv": [
+        "go",
+        "test",
+        "-json",
+        "-count=1",
+        "-timeout=45m",
+        "-race",
+        "-run",
+        "^(TestAllIndependentGamesSupportComputers)$",
+        "./games"
+      ],
+      "tests": [
+        "TestAllIndependentGamesSupportComputers"
+      ],
+      "log": ".local/contra-ci-scope/selected-1.jsonl"
+    },
+    {
+      "argv": [
+        "go",
+        "test",
+        "-json",
+        "-count=1",
+        "-timeout=45m",
+        "-race",
+        "-run",
+        "^(TestSessionBattleReviewIsCommittedAndRestorable|TestSessionBattleReviewSelectionRejectsFadeAndMenus)$",
+        "./games/contra/engine"
+      ],
+      "tests": [
+        "TestSessionBattleReviewIsCommittedAndRestorable",
+        "TestSessionBattleReviewSelectionRejectsFadeAndMenus"
+      ],
+      "log": ".local/contra-ci-scope/selected-5.jsonl"
+    },
+    {
+      "argv": [
+        "go",
+        "test",
+        "-json",
+        "-count=1",
+        "-timeout=45m",
+        "-race",
+        "-run",
+        "^(TestRuntimeTerminalUsesPersistedBattleReview)$",
+        "./games/contra/runtime"
+      ],
+      "tests": [
+        "TestRuntimeTerminalUsesPersistedBattleReview"
+      ],
+      "log": ".local/contra-ci-scope/selected-6.jsonl"
+    },
+    {
+      "argv": [
+        "go",
+        "test",
+        "-json",
+        "-count=1",
+        "-timeout=45m",
+        "-race",
+        "-run",
+        "^(TestProductionAndBrowserVisualCatalogueAgree|TestProductionArchiveRejectsMalformedData|TestProductionEmbeddedVisualsAndOfflineCallbacks|TestProductionRequiresBothCompiledIdentities|TestRuntimeArtifactStageConfirmationAndRestore)$",
+        "./games/contra/server"
+      ],
+      "tests": [
+        "TestProductionAndBrowserVisualCatalogueAgree",
+        "TestProductionArchiveRejectsMalformedData",
+        "TestProductionEmbeddedVisualsAndOfflineCallbacks",
+        "TestProductionRequiresBothCompiledIdentities",
+        "TestRuntimeArtifactStageConfirmationAndRestore"
+      ],
+      "log": ".local/contra-ci-scope/selected-7.jsonl"
+    }
+  ],
+  "plans": {
+    "games/contra/engine/leveldata/stage-8.json": [
+      {
+        "game": "contra",
+        "backend": true
+      }
+    ],
+    "games/contra/engine/testdata/bot-visual-catalog.json.gz": [
+      {
+        "game": "contra",
+        "backend": true
+      }
+    ],
+    "games/contra/web/Board.tsx": [
+      {
+        "game": "contra",
+        "backend": false
+      }
+    ],
+    "games/registry.go": []
+  },
+  "sources": {
+    "scripts/ci/scope.py": "6d81d348672571326039cb80711aeb053378457c70617e00e59f71c12c2305cd",
+    "scripts/ci/test_scope.py": "e32ec1547d9c2a762f18ae0569d0c6045b06bc33a4c2d38623f8ef7801d238d1",
+    "scripts/ci/check-plan.py": "36a340089eba59beed054d5d85df59fc078d695338da66cd68bbb90e7ea4d5fb"
+  },
+  "standardAndAssistedAcceptanceSeparatedInDesign": true,
+  "record": "docs/research/nes-contra/evidence/ci-scope/records.json.gz",
+  "recordSHA256": "48bec7cc9521050ec37206fc504fd23d20261c7c6c12cca6cabb1e1c2b10789a",
+  "cleanup": {
+    "temporaryGitRepositoriesAndRegistryFixtures": "automatically removed by TemporaryDirectory",
+    "workspaceCommitsCreated": 0
+  }
+}

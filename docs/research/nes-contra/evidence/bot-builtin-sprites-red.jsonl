@@ -1,0 +1,9 @@
+{"Time":"2026-10-26T09:33:23.640955+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-26T09:33:24.092464+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionCartridgeActors"}
+{"Time":"2026-10-26T09:33:24.092589+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionCartridgeActors","Output":"=== RUN   TestBuiltinBotVisionCartridgeActors\n"}
+{"Time":"2026-10-26T09:33:24.183896+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionCartridgeActors","Output":"    bot_vision_builtin_test.go:156: actual cartridge actor0 not visually recovered: {X:0 Y:0 Alive:false Visible:false Lives:0 Weapon:0 Sprite:0 Appearance:0 LivesKnown:false WeaponKnown:false AliveKnown:false}\n"}
+{"Time":"2026-10-26T09:33:24.183941+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionCartridgeActors","Output":"--- FAIL: TestBuiltinBotVisionCartridgeActors (0.09s)\n"}
+{"Time":"2026-10-26T09:33:24.183947+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionCartridgeActors","Elapsed":0.09}
+{"Time":"2026-10-26T09:33:24.183956+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\n"}
+{"Time":"2026-10-26T09:33:24.184455+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t0.543s\n"}
+{"Time":"2026-10-26T09:33:24.184477+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":0.544}

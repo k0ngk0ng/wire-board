@@ -1,0 +1,15 @@
+{
+  "scope": "Portable SHA-verified normalized RGB/CHR fixture used by built-in visual knowledge and pure-pixel campaign E2E",
+  "passed": true,
+  "pageCount": 100,
+  "romSHA256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "sourceManifestSHA256": "c7964303f4c60705933021cf57cd1646556b254244030d85fdd5e1b14f62c57c",
+  "fixtureSHA256": "262dd05adb06b658d7d7b20bb5ae309c56cf3a6082666a862c0df55796ad32ce",
+  "generator": "scripts/contra/build_bot_visual_fixture.py",
+  "command": "go test ./games/contra/engine -run '^(TestBuiltinBotVisionPublishedTerrain|TestBuiltinBotVisionCartridgeActors)$' -race -count=1 -v",
+  "output": "=== RUN   TestBuiltinBotVisionPublishedTerrain\n--- PASS: TestBuiltinBotVisionPublishedTerrain (15.57s)\n=== RUN   TestBuiltinBotVisionCartridgeActors\n--- PASS: TestBuiltinBotVisionCartridgeActors (15.66s)\nPASS\nok  \tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t32.912s\n",
+  "limitations": [
+    "Background emplacement and full strategy acceptance remain separate.",
+    "Fixture contains normalized graphics, not a ROM runtime or saved game state."
+  ]
+}

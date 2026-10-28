@@ -1,0 +1,6 @@
+{
+  "passed": true,
+  "condition": "if: (matrix.game == 'battlecity' || matrix.game == 'conquest' || matrix.game == 'tabletennis' || matrix.game == 'contra') && matrix.shard == 0",
+  "frontend_log": "portable-frontend-tests.log",
+  "scope": "Workflow dependency selection and local input/client/renderer checks; not a hosted Actions run"
+}

@@ -1,0 +1,6 @@
+=== RUN   TestBotGroundedCrouchSurvivesOnePixelVisualJitter
+    bot_grounded_jitter_test.go:31: safe crouch released after visual anchor jitter 104210 1
+--- FAIL: TestBotGroundedCrouchSurvivesOnePixelVisualJitter (0.00s)
+FAIL
+FAIL	github.com/k0ngk0ng/wire-board/games/contra/engine	0.555s
+FAIL

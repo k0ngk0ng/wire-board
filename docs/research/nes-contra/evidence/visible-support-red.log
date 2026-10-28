@@ -1,0 +1,6 @@
+=== RUN   TestBotVisibleMovingPlatformAllowsGroundedClimb
+    bot_visible_support_test.go:17: visible support is discarded because background is unknown 0
+--- FAIL: TestBotVisibleMovingPlatformAllowsGroundedClimb (0.00s)
+FAIL
+FAIL	github.com/k0ngk0ng/wire-board/games/contra/engine	0.619s
+FAIL

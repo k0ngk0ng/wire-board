@@ -1,0 +1,45 @@
+{
+  "scope": "Visible co-op jungle water route and exact uniform-terrain-cell pruning",
+  "boundaryChecksPassed": true,
+  "coopProbe": {
+    "frames": 3600,
+    "level": 0,
+    "screen": 10,
+    "reserve_refills": 5,
+    "restore_checkpoints": 3,
+    "source_changed_during_run": false,
+    "complete_campaign": false
+  },
+  "routeChecks": [
+    "Only current visible teammate and exact water-art candidate support the route",
+    "Public first-stage knowledge required",
+    "Pause/vertical/base/other-stage/unknown/hidden/dying peers do not establish this route",
+    "Reachable dry landing remains preferred",
+    "Per-seat policy remains separate"
+  ],
+  "uniformChecks": [
+    "1000 rectangles compared against full RGB scans",
+    "Single different interior/edge pixel prevents uniform rejection",
+    "Alpha ignored consistently with the original RGB matcher",
+    "Clipped cells retain unknown semantics"
+  ],
+  "timerBenchmark": {
+    "hardware": "Apple M4",
+    "twoBotBatchNS": 6181180,
+    "scope": "One first-stage scene; not eight-stage or production capacity evidence"
+  },
+  "artifacts": {
+    "docs/research/nes-contra/evidence/coop-water-route-red.log.gz": "840b6e32a62c99caceecab497d72afe6a8e85bd19b1fb983d5a201c474f35915",
+    "docs/research/nes-contra/evidence/coop-water-quality-red.log.gz": "55ac6fe81b341a12a7c6e087040de553e562af5f92921ee84401f0e739cd6bc3",
+    "docs/research/nes-contra/evidence/coop-water-final-green.log.gz": "af4c8cc9367ce7f4e0243079992e5cd37b339317be1a68c795a49fcd86b40d5d",
+    "docs/research/nes-contra/evidence/water-head-candidate-green.log.gz": "a83811d1813aee7534fbd2c89779372c5b176ee0c9ff137904361298d8ffd33f",
+    "docs/research/nes-contra/evidence/uniform-cell-red.log.gz": "606cdab8b47428afaf4d6947162963052669152db1feae5c4b0c9f39c8b43a94",
+    "docs/research/nes-contra/evidence/uniform-cell-green.jsonl.gz": "594908f5fc887bc9c95f1eb43fef33ee96b435f0add7768ea63879b337e54a52",
+    "docs/research/nes-contra/evidence/uniform-cell-timer.log.gz": "bffca0a88905c2cf56ae7974525f628d894e5aa4b06b880ecc93615c38085c14"
+  },
+  "limitations": [
+    "The 3600-frame assisted probe reached screen10 but did not finish the campaign.",
+    "Observed progress includes current perception/tracking fixes as well as the co-op policy."
+  ],
+  "performanceScopeCorrection": "The old frame-600 NewSession fixture did not send Start and remained in LevelRoutine=1 (intro), not battle. Its timing is not battle/capacity acceptance. See actual-battle-performance-verification.json for corrected setup."
+}

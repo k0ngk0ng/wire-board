@@ -1,0 +1,67 @@
+{
+  "passed": true,
+  "scope": "Authored cover and lightweight catalogue preparation; not registered or published. Desktop/mobile visual review, 320px no-overflow, 160px thumbnail and full web TypeScript check.",
+  "source": {
+    "format": "repo-native-svg",
+    "source": "games/contra/web/Cover.tsx",
+    "sourceSHA256": "d206ae85515eea417cf1e340123d8c757a3d2e785354a6fe654d2702cd20eb44",
+    "origin": "Original vector illustration authored for this repository",
+    "externalArtwork": [],
+    "licenseEvidence": "No external image asset was imported; source is the authored SVG component.",
+    "theme": "Two cooperative soldiers, jungle cliff and alien fortress",
+    "published": false
+  },
+  "measurements": {
+    "width": 320,
+    "scroll": 320,
+    "svgs": [
+      {
+        "label": "魂斗罗：蓝衣与红衣战士在丛林岩台协同射击，远处是异形要塞",
+        "box": {
+          "x": 16,
+          "y": 16,
+          "width": 288,
+          "height": 177.21875,
+          "top": 16,
+          "right": 304,
+          "bottom": 193.21875,
+          "left": 16
+        },
+        "images": 0,
+        "text": 0
+      },
+      {
+        "label": "魂斗罗：蓝衣与红衣战士在丛林岩台协同射击，远处是异形要塞",
+        "box": {
+          "x": 16,
+          "y": 245.21875,
+          "width": 160,
+          "height": 98.453125,
+          "top": 245.21875,
+          "right": 176,
+          "bottom": 343.671875,
+          "left": 16
+        },
+        "images": 0,
+        "text": 0
+      }
+    ]
+  },
+  "screenshots": {
+    "desktop.png": {
+      "path": ".local/contra-cover/desktop.png",
+      "sha256": "917f17ee19ec45126bfa889113c42340255c47670a37b00c1e8835a790fdb2d0"
+    },
+    "mobile.png": {
+      "path": ".local/contra-cover/mobile.png",
+      "sha256": "70576edb9821664d86b1cc087ea1eb1117ea902aa199a3c5294570b77247e518"
+    }
+  },
+  "renderedSVG_SHA256": "0882588f56bdbe1666b838b72b0e5ac6f4582b0f1368b69e1dd2a187b3d899a3",
+  "typecheck": [
+    "web/node_modules/.bin/tsc",
+    "--noEmit"
+  ],
+  "category": "action",
+  "sharedCategoryLabel": "动作"
+}

@@ -1,0 +1,33 @@
+{
+  "passed": true,
+  "scope": "Contra runtime manifest URL root only; no Vite config/CDN/workflow/Go changes or upload",
+  "source_sha256": {
+    "games/contra/web/Board.tsx": "b1944929cff6377dd045861b9b60f8c60fb14ef8303c1c038b3731093c955d43",
+    "games/contra/web/runtime-url.ts": "747a109d23db764e9784b1081b6336397e32fff93ce6ddc456058f6548c2af52",
+    "games/contra/web/runtime-url.test.mjs": "7f743aac502f1c8993670b1a6e37cb0dcf8f56f9b82e64f403be69bd302524b1"
+  },
+  "changes": {
+    "games/contra/web/Board.tsx": "Use runtimeManifestURL and remove image assets from effect dependency",
+    "games/contra/web/runtime-url.ts": "Resolve Vite BASE_URL with local / fallback when no Vite env exists",
+    "games/contra/web/runtime-url.test.mjs": "Pre-implementation production, local nested route and standalone esbuild cases"
+  },
+  "verification": {
+    "new_tests": 3,
+    "contra_frontend_tests": 44,
+    "typecheck": "tsc -p web/tsconfig.json --noEmit",
+    "real_vite": "write:false library build with commit CDN base",
+    "standalone_esbuild": true
+  },
+  "logs_sha256": {
+    "runtime-url-red.log": "b22d73dd9ff1abbe37156d78847419c1e2fd96c4a95c300a2b3b65b6e9200e68",
+    "runtime-url-green.log": "cd6ca331158546ba645f3aa0b11be81fad39af17f2007463746f1f334f8d29a4",
+    "runtime-url-frontend.log": "f4edcddcf7631c34e421cc26d8f740f37d2194014e70e756f45936c10a77b0c3",
+    "runtime-url-types.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "runtime-url-vite.log": "83f15e22a38d3903efa4efb95a623e83dd58aba6ff1cec6a80dbb4829e6dc6c6",
+    "runtime-url-format.log": "13af28a81b9152cd5644f63e46a268238d20aad5b843f283afd2f52d25ecf98d"
+  },
+  "requires_rebuild": [
+    "platform frontend",
+    "Contra browser build-source proof"
+  ]
+}

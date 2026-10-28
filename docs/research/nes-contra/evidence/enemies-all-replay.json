@@ -1,0 +1,292 @@
+{
+  "passed": true,
+  "scope": "13 independent original-emulator reruns; controlled and controller-only scopes remain those in the canonical fixtures. This is not whole-campaign acceptance.",
+  "pairs": [
+    {
+      "primary": ".local/contra-enemies-aliens/oracle/runs/aliens-natural-v1",
+      "repeat": ".local/contra-enemies-aliens/oracle/runs/aliens-natural-v2",
+      "equal": true,
+      "files": [
+        {
+          "name": "ram.bin",
+          "sha256": "af47eca0cdbe38401715d0f0fb935d0e08398bf458ec3c2b0fc7654438278576",
+          "bytes": 6144000
+        },
+        {
+          "name": "inputs.csv",
+          "sha256": "3711b1fb9fda180b91714429750596b704d8b9e2a59cc3f45af1c6d070ff6d09",
+          "bytes": 28191
+        },
+        {
+          "name": "aliens.jsonl",
+          "sha256": "708ebdc8086b2f0bd1794d4c02c0eac9f73f9faccbb96bcbecac92e43031eb80",
+          "bytes": 646390
+        }
+      ]
+    },
+    {
+      "primary": ".local/contra-enemies-aliens/oracle/runs/aliens-fetus-v1",
+      "repeat": ".local/contra-enemies-aliens/oracle/runs/aliens-fetus-v2",
+      "equal": true,
+      "files": [
+        {
+          "name": "ram.bin",
+          "sha256": "cd46bf5980c52d122f0f4063adea738de57fb6a6913c39c347edd82885241c03",
+          "bytes": 1329152
+        },
+        {
+          "name": "inputs.csv",
+          "sha256": "60f66a60fc79f60de3c52533690ab89fc753a85405a36166730b552c36fe1bdb",
+          "bytes": 5096
+        },
+        {
+          "name": "aliens.jsonl",
+          "sha256": "2484ab0cca18a561313f2a3e94b31f5ece75d5910462c0840c88a1fc9341f31d",
+          "bytes": 2490812
+        }
+      ]
+    },
+    {
+      "primary": ".local/contra-enemies-aliens/oracle/runs/aliens-small-v1",
+      "repeat": ".local/contra-enemies-aliens/oracle/runs/aliens-small-v2",
+      "equal": true,
+      "files": [
+        {
+          "name": "ram.bin",
+          "sha256": "f5d142483d799cbfb03904a02e07288d3ba1c748aeda5859a019fa71ccec1232",
+          "bytes": 2060288
+        },
+        {
+          "name": "inputs.csv",
+          "sha256": "b63922eefe4664360003a25c02b5d7de49f894b4444f5ff52ce77d15ce20fa18",
+          "bytes": 7959
+        },
+        {
+          "name": "aliens.jsonl",
+          "sha256": "deb4877f581a9c700b470497bcba7820b390ca4428d57df2cc406664a414a134",
+          "bytes": 3873399
+        }
+      ]
+    },
+    {
+      "primary": ".local/contra-enemies-all/runs/all-enemy-initialization-v1",
+      "repeat": ".local/contra-enemies-all/runs/all-enemy-initialization-v2",
+      "equal": true,
+      "files": [
+        {
+          "name": "ram.bin",
+          "sha256": "4c416cf0e559b54ce1dc0bf24eb75ba44ffb8576f17f498e307539993345ba88",
+          "bytes": 1222656
+        },
+        {
+          "name": "inputs.csv",
+          "sha256": "3a62a1257a58044e29d84d5ac71aa74516cf17bdc3de88672943628cfc15eb94",
+          "bytes": 4680
+        },
+        {
+          "name": "initializations.jsonl",
+          "sha256": "60e376430e3978209afca57fe3894032dc5b36c0c0bd9ad3ed9eadfed641b6e8",
+          "bytes": 1674217
+        }
+      ]
+    },
+    {
+      "primary": ".local/contra-enemies-all/runs/all-enemy-spawn-v1",
+      "repeat": ".local/contra-enemies-all/runs/all-enemy-spawn-v2",
+      "equal": true,
+      "files": [
+        {
+          "name": "ram.bin",
+          "sha256": "764e9c028cbbcab9dcde0a70e206452adb78255eadf084f371de26166fc5627f",
+          "bytes": 6615040
+        },
+        {
+          "name": "inputs.csv",
+          "sha256": "aa8dc17081b5bf2b7ad634ff3a685ccedf227d726655311b0bdbef3a8c49c439",
+          "bytes": 27975
+        },
+        {
+          "name": "spawns.jsonl",
+          "sha256": "50260218d57e916bc7a0aab6c12e46f12c2ad88e42b6c411a211899c9c46a475",
+          "bytes": 9172099
+        }
+      ]
+    },
+    {
+      "primary": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-1-v3",
+      "repeat": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-1-v4",
+      "equal": true,
+      "files": [
+        {
+          "name": "ram.bin",
+          "sha256": "60ba3105f4a9e4cec3913318b400da94171403378fb462b5e4dd167e1917623c",
+          "bytes": 67584
+        },
+        {
+          "name": "inputs.csv",
+          "sha256": "9afb7deaca6bfd6d222c48b8459640f2560733f9e9dd4db7c8fb347ea54dc29c",
+          "bytes": 234
+        },
+        {
+          "name": "enemy-ticks.jsonl",
+          "sha256": "66953c202ba1147ae5e5708e2080d11eb3b76f40e55b19958b116ea02b68b86f",
+          "bytes": 196376
+        }
+      ]
+    },
+    {
+      "primary": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-2-v3",
+      "repeat": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-2-v4",
+      "equal": true,
+      "files": [
+        {
+          "name": "ram.bin",
+          "sha256": "bf178209bad81ded4dc6a52b107865685699bc9b6cd13590f8a77cd73d58b5e3",
+          "bytes": 110592
+        },
+        {
+          "name": "inputs.csv",
+          "sha256": "914453de5cd8af407d123e5d0c711eba337556dc1d9b340e27081a08478cd980",
+          "bytes": 381
+        },
+        {
+          "name": "enemy-ticks.jsonl",
+          "sha256": "77d23350df1f3fbaf15d7aab8d59592190e24c26c12143a55a917a3559606e1d",
+          "bytes": 321969
+        }
+      ]
+    },
+    {
+      "primary": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-3-v3",
+      "repeat": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-3-v4",
+      "equal": true,
+      "files": [
+        {
+          "name": "ram.bin",
+          "sha256": "0a02d6d3bfa96a4c905c5a666cf858a93f9a0ed6389f647c41d7895815ed949e",
+          "bytes": 98304
+        },
+        {
+          "name": "inputs.csv",
+          "sha256": "1cba6eb8ba2a71449d0cca729e6edcc16e3485b7ebfbb5fc8e71118d960cf48b",
+          "bytes": 339
+        },
+        {
+          "name": "enemy-ticks.jsonl",
+          "sha256": "b20c36a9ddff7bc086e4120694438ca98baf6c64b590ea04b57350624c26b291",
+          "bytes": 285224
+        }
+      ]
+    },
+    {
+      "primary": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-4-v3",
+      "repeat": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-4-v4",
+      "equal": true,
+      "files": [
+        {
+          "name": "ram.bin",
+          "sha256": "76ddce0421029a1044520d2d5b783cbc1f34fb83dfb7b53d4adeb92fad0b8a0d",
+          "bytes": 129024
+        },
+        {
+          "name": "inputs.csv",
+          "sha256": "2109a2111b19a6e5abfdbc11d423e65ee08d8b11efa63c18bdf2a55dd9dafe68",
+          "bytes": 444
+        },
+        {
+          "name": "enemy-ticks.jsonl",
+          "sha256": "93cfe0ef5e6b76824e5736dc934eedc8cb0df82979b84c6bb539aaac9f4654aa",
+          "bytes": 375951
+        }
+      ]
+    },
+    {
+      "primary": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-5-v3",
+      "repeat": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-5-v4",
+      "equal": true,
+      "files": [
+        {
+          "name": "ram.bin",
+          "sha256": "9d7f10cbd1ec9a3b22199d49cd88f761391bf26e1c3771205d100dc83ef4c26b",
+          "bytes": 104448
+        },
+        {
+          "name": "inputs.csv",
+          "sha256": "d0024f297ca93562bf256b455d6cd5af446e5ce321cc9e053614e5d3965942bb",
+          "bytes": 360
+        },
+        {
+          "name": "enemy-ticks.jsonl",
+          "sha256": "6561fd3a7458efecc5d82f955c189ab1affe32c98911cfa035b7bd051dbb357a",
+          "bytes": 304382
+        }
+      ]
+    },
+    {
+      "primary": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-6-v3",
+      "repeat": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-6-v4",
+      "equal": true,
+      "files": [
+        {
+          "name": "ram.bin",
+          "sha256": "81696940d04e2d5d9e1478751fe79eb66146c7001026e865afc30b7e8ce449b4",
+          "bytes": 79872
+        },
+        {
+          "name": "inputs.csv",
+          "sha256": "f1af996fb6ba50c1a44ad179e8549a8eaf16468df9419a4db9501d07fe9f9b7e",
+          "bytes": 276
+        },
+        {
+          "name": "enemy-ticks.jsonl",
+          "sha256": "3c53f8f138b14fb92b450480fe7b9c4532979753b79ff648b90c6043b47ebdd4",
+          "bytes": 232342
+        }
+      ]
+    },
+    {
+      "primary": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-7-v3",
+      "repeat": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-7-v4",
+      "equal": true,
+      "files": [
+        {
+          "name": "ram.bin",
+          "sha256": "795a2bcf5e491a9a2c12299e838001476878cf0298a9f9f033769b6f94eb0961",
+          "bytes": 110592
+        },
+        {
+          "name": "inputs.csv",
+          "sha256": "914453de5cd8af407d123e5d0c711eba337556dc1d9b340e27081a08478cd980",
+          "bytes": 381
+        },
+        {
+          "name": "enemy-ticks.jsonl",
+          "sha256": "55ed414f2d742c3d4f1ba45a0275280cfe3467fbda9a6b3460071311bcda98e9",
+          "bytes": 323222
+        }
+      ]
+    },
+    {
+      "primary": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-8-v3",
+      "repeat": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-8-v4",
+      "equal": true,
+      "files": [
+        {
+          "name": "ram.bin",
+          "sha256": "abdcc40fa1fd5af78d6e20922180b640e719d31ed9030ea21565de4b6ef4cabe",
+          "bytes": 61440
+        },
+        {
+          "name": "inputs.csv",
+          "sha256": "64663bbb15b7604fd5e053b26a86cb9fa820d5e30475f38ebcbd8c9daf3c5822",
+          "bytes": 213
+        },
+        {
+          "name": "enemy-ticks.jsonl",
+          "sha256": "3d892812f502d44df1fd420d0dfe21211d4ac708c88fa78b8f6785c6a6925b79",
+          "bytes": 179870
+        }
+      ]
+    }
+  ]
+}

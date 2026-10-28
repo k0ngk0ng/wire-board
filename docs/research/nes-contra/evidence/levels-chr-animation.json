@@ -1,0 +1,247 @@
+{
+  "schema": 1,
+  "romSHA256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "entry": 51259,
+  "fields": {
+    "stage": 48,
+    "sceneType": 64,
+    "transition": 106,
+    "timer": 92,
+    "phase": 113,
+    "pace": 93,
+    "alternate": 72,
+    "random": 52,
+    "screen": 100,
+    "counter": 26,
+    "desired": 2032
+  },
+  "rows": [
+    {
+      "index": 0,
+      "backgroundSlot": 5,
+      "pages": [
+        34,
+        33,
+        32,
+        69
+      ],
+      "source": {
+        "cpu": 51423,
+        "romOffset": 116975,
+        "bytes": 5,
+        "sha256": "86573bfb5cebf810d2e70c2a44f4daa073486e9d4e413e7891e3c77be1f3a01f"
+      }
+    },
+    {
+      "index": 1,
+      "backgroundSlot": 7,
+      "pages": [
+        105,
+        106,
+        105,
+        106
+      ],
+      "source": {
+        "cpu": 51428,
+        "romOffset": 116980,
+        "bytes": 5,
+        "sha256": "ab975d27ff3018fed9bdf57c4c645e49069b7e0db701102ed5eed6c60ca5e5b9"
+      }
+    },
+    {
+      "index": 2,
+      "backgroundSlot": 7,
+      "pages": [
+        37,
+        36,
+        35,
+        99
+      ],
+      "source": {
+        "cpu": 51433,
+        "romOffset": 116985,
+        "bytes": 5,
+        "sha256": "0a6df0565f0fea731f781bae4cc0b01d5406aadeca69c1e7dd0a6b7571838d5d"
+      }
+    },
+    {
+      "index": 3,
+      "backgroundSlot": 7,
+      "pages": [
+        105,
+        106,
+        105,
+        106
+      ],
+      "source": {
+        "cpu": 51438,
+        "romOffset": 116990,
+        "bytes": 5,
+        "sha256": "ab975d27ff3018fed9bdf57c4c645e49069b7e0db701102ed5eed6c60ca5e5b9"
+      }
+    },
+    {
+      "index": 4,
+      "backgroundSlot": 5,
+      "pages": [
+        110,
+        109,
+        108,
+        81
+      ],
+      "source": {
+        "cpu": 51443,
+        "romOffset": 116995,
+        "bytes": 5,
+        "sha256": "5c5d74349bdb9ff5683fe4c582fc18e36ba390ec75fffb477afbc8af4a34a519"
+      }
+    },
+    {
+      "index": 5,
+      "backgroundSlot": 4,
+      "pages": [
+        64,
+        65,
+        66,
+        67
+      ],
+      "source": {
+        "cpu": 51448,
+        "romOffset": 117000,
+        "bytes": 5,
+        "sha256": "4271a26be0d8a84f0bd54c8c302e7cb3a3b5d1fa6780a40bcce2873477dab658"
+      }
+    },
+    {
+      "index": 6,
+      "backgroundSlot": 4,
+      "pages": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "source": {
+        "cpu": 51453,
+        "romOffset": 117005,
+        "bytes": 5,
+        "sha256": "8855508aade16ec573d21e6a485dfd0a7624085c1a14b5ecdd6485de0c6839a4"
+      }
+    },
+    {
+      "index": 7,
+      "backgroundSlot": 4,
+      "pages": [
+        118,
+        117,
+        116,
+        92
+      ],
+      "source": {
+        "cpu": 51458,
+        "romOffset": 117010,
+        "bytes": 5,
+        "sha256": "0574da1bb270fbce38f4bd0f3076660c389ba3891b298a78e0668d14a8792d00"
+      }
+    },
+    {
+      "index": 8,
+      "backgroundSlot": 6,
+      "pages": [
+        102,
+        101,
+        100,
+        66
+      ],
+      "source": {
+        "cpu": 51463,
+        "romOffset": 117015,
+        "bytes": 5,
+        "sha256": "08023911c93f24380c7d3096942c7dba5e2308d6a658b1a67e2c80339caa9410"
+      }
+    }
+  ],
+  "secondaryLair": {
+    "slot": 7,
+    "pages": [
+      54,
+      53,
+      52,
+      95
+    ],
+    "sourceCPU": 51468,
+    "disabledWhenAlternateHighBit": true
+  },
+  "transition": {
+    "whenNonzero": true,
+    "setTransition": 128,
+    "setTimer": 0,
+    "slot": 7,
+    "page": 75
+  },
+  "countdown": {
+    "operation": "decrement byte modulo 256; return when high bit is clear",
+    "phaseOperation": "decrement byte; reset to 3 when high bit is set"
+  },
+  "stageRules": [
+    {
+      "stage": 1,
+      "row": 0,
+      "randomMask": 7,
+      "delayBase": 4
+    },
+    {
+      "stage": 2,
+      "row": 1,
+      "delay": 4,
+      "disabledWhenSceneTypeHighBit": true
+    },
+    {
+      "stage": 3,
+      "row": 2,
+      "randomMask": 1,
+      "delayBase": 6,
+      "disabledWhenAlternateHighBit": true
+    },
+    {
+      "stage": 4,
+      "row": 3,
+      "delay": 4,
+      "disabledWhenSceneTypeHighBit": true
+    },
+    {
+      "stage": 5,
+      "row": 4,
+      "randomMask": 3,
+      "delayBase": 1,
+      "addPaceByteModulo256": true
+    },
+    {
+      "stage": 6,
+      "disabled": true
+    },
+    {
+      "stage": 7,
+      "disabled": true
+    },
+    {
+      "stage": 8,
+      "row": 7,
+      "nonzeroPace": "increment pace modulo 256; if it remains nonzero, reload timer from old pace",
+      "screenDistanceBase": 12,
+      "distanceOperation": "12-screen modulo 256",
+      "zeroDistance": {
+        "counterMask": 7,
+        "waitWhenMaskedCounterNonzero": true,
+        "row": 8,
+        "keepDecrementedTimer": true
+      }
+    }
+  ],
+  "presentation": "Apply desired pages at the next original FACE/NMI presentation boundary; do not render the just-updated desired vector immediately.",
+  "limits": [
+    "Rows 5 and 6 are retained source bytes but disabled by the eight-stage dispatch.",
+    "Row 8 is the lair screen-12 branch, not a ninth gameplay stage.",
+    "Reload timer value 4 does not mean a four-frame interval: decrement then high-bit gate also counts zero."
+  ]
+}

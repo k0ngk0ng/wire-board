@@ -1,0 +1,14 @@
+{
+  "source_is_original_execution": true,
+  "scope": "natural",
+  "source": "docs/research/nes-contra/evidence/static-lifecycle-natural.json.gz",
+  "sha256": "9cfa8d0eaf5013dbffc47dea410832c064bfd6f42863d4919d7ba79e841cb631",
+  "counts": {
+    "spawn": 4,
+    "borrow": 4427,
+    "hit": 3,
+    "dying": 297
+  },
+  "borrow_successes": 0,
+  "repeated": true
+}

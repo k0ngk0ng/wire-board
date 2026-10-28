@@ -57,9 +57,12 @@ type Seat struct {
 	Left            bool `json:"left"`
 }
 type Room struct {
-	Loading            *ClientLoadBarrier `json:"loading,omitempty"`
-	ClockOffsetMS      int64              `json:"clockOffsetMs,omitempty"`
-	LoadCompletedToken string             `json:"loadCompletedToken,omitempty"`
+	RatingPolicy        gameapi.RatingPolicy `json:"ratingPolicy,omitempty"`
+	RatingStarted       bool                 `json:"ratingStarted,omitempty"`
+	RatingUnratedReason string               `json:"ratingUnratedReason,omitempty"`
+	Loading             *ClientLoadBarrier   `json:"loading,omitempty"`
+	ClockOffsetMS       int64                `json:"clockOffsetMs,omitempty"`
+	LoadCompletedToken  string               `json:"loadCompletedToken,omitempty"`
 
 	Options                json.RawMessage                `json:"options,omitempty"`
 	Module                 *gameapi.Match                 `json:"module,omitempty"`
@@ -650,7 +653,7 @@ func (s *Server) current(id string) *Room {
 }
 func summary(r *Room) map[string]any {
 	if len(r.Options) > 0 {
-		return map[string]any{"loading": r.loadingView(), "clockOffsetMs": r.ClockOffsetMS, "matchId": r.MatchID, "setupVersion": r.SetupVersion, "id": r.ID, "name": r.Name, "kind": r.Kind, "options": r.Options, "host": r.Host, "capacity": r.Capacity, "seats": r.Seats, "status": r.Status, "closeReason": r.CloseReason, "locked": r.Password != "", "version": r.Version, "updated": r.Updated, "spectatorCount": len(r.Spectators)}
+		return withChallengeSummary(r, map[string]any{"loading": r.loadingView(), "clockOffsetMs": r.ClockOffsetMS, "matchId": r.MatchID, "setupVersion": r.SetupVersion, "id": r.ID, "name": r.Name, "kind": r.Kind, "options": r.Options, "host": r.Host, "capacity": r.Capacity, "seats": r.Seats, "status": r.Status, "closeReason": r.CloseReason, "locked": r.Password != "", "version": r.Version, "updated": r.Updated, "spectatorCount": len(r.Spectators)})
 	}
 
 	result := map[string]any{"loading": r.loadingView(), "clockOffsetMs": r.ClockOffsetMS, "matchId": r.MatchID, "catanRiversWorldMap": r.CatanRiversWorldMap, "id": r.ID, "name": r.Name, "kind": r.Kind, "railMap": r.RailMap, "sanguoshaOptions": r.SanguoshaOptions, "splendorOptions": r.SplendorOptions, "catanOptions": r.CatanOptions, "catanSeafarers": r.CatanSeafarers, "catanTransportSea": r.CatanTransportSea, "catanBaseConfiguration": r.CatanBaseConfiguration, "catanCitiesKnights": r.CatanCitiesKnights, "catanHarbors": r.CatanHarbors, "catanFriendlyRobber": r.CatanFriendlyRobber, "catanNewWorldMap": r.CatanNewWorldMap, "host": r.Host, "capacity": r.Capacity, "seats": r.Seats, "status": r.Status, "closeReason": r.CloseReason, "locked": r.Password != "", "version": r.Version, "updated": r.Updated, "spectatorCount": len(r.Spectators)}
@@ -722,6 +725,14 @@ func summary(r *Room) map[string]any {
 		}
 		result["catanSeafarersChoices"] = choices
 	}
+	return withChallengeSummary(r, result)
+}
+
+// Independent and legacy room views expose the same frozen challenge metadata.
+func withChallengeSummary(r *Room, result map[string]any) map[string]any {
+	if r.RatingPolicy != "" {
+		result["ratingPolicy"], result["ratingStarted"], result["ratingEligible"] = r.RatingPolicy, r.RatingStarted, r.Rated
+	}
 	return result
 }
 
@@ -775,7 +786,7 @@ func (s *Server) statePayload(r *http.Request) (int, []byte) {
 			} else {
 				v["game"] = room.Game.View(seatIndex(room, u.ID))
 			}
-			if room.Status == "finished" && room.MatchID != "" {
+			if (room.Status == "finished" || room.Status == "closed") && room.MatchID != "" {
 				var raw []byte
 				if err := s.db.QueryRow("SELECT snapshot FROM match_history WHERE id=?", room.MatchID).Scan(&raw); err == nil {
 					var result MatchRecord
@@ -1138,7 +1149,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 	parallelModule := false
 	if room.Module != nil && req.Type == "action" && req.Version >= room.SetupVersion && req.Version < room.Version && room.Status == "playing" {
 		actor := seatIndex(room, u.ID)
-		if module := s.modules[room.Kind]; actor >= 0 && !room.Seats[actor].AutoPlay && module.AcceptStale != nil {
+		if module := s.modules[room.Kind]; actor >= 0 && (!room.Seats[actor].AutoPlay || s.moduleInputReleaseAllowed(room, actor, req.Version, req.RawAction, time.Now())) && module.AcceptStale != nil {
 			raw, _ := json.Marshal(room.Module)
 			var match gameapi.Match
 			_ = json.Unmarshal(raw, &match)
@@ -1917,7 +1928,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			err = errors.New("无法执行游戏行动")
 			break
 		}
-		if next.Seats[idx].AutoPlay {
+		if next.Seats[idx].AutoPlay && !s.moduleInputReleaseAllowed(&next, idx, req.Version, req.RawAction, now) {
 			err = errors.New("当前由电脑托管，请先取消托管再手动操作")
 			break
 		}
@@ -1939,6 +1950,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		}
 		next.Game = nil
 		next.Module = nil
+		next.RatingPolicy, next.RatingStarted, next.RatingUnratedReason = "", false, ""
 		next.TurnDeadline = 0
 		active := []Seat{}
 		for _, seat := range next.Seats {
@@ -1960,6 +1972,9 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 		next.Status = "closed"
+		if next.RatingPolicy == gameapi.RatingCoopCampaignV1 {
+			next.CloseReason = "abandoned"
+		}
 		next.TurnDeadline = 0
 	default:
 		err = errors.New("未知房间操作")

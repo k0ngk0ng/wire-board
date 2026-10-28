@@ -1,6 +1,9 @@
 import type { ComponentType } from "react";
 
 export type GameRoom = {
+  ratingPolicy?: string;
+  ratingStarted?: boolean;
+  ratingEligible?: boolean;
   matchId?: string;
   loading?: {
     token: string;
@@ -70,6 +73,39 @@ export type GameAudioPort = {
     options?: { volume?: number; rate?: number },
   ) => Promise<boolean>;
   stopLoop: (key: string) => void;
+  // Owner-scoped native media lanes; default is finite playback. Sources are
+  // primary/fallback alternatives. Supply an epoch/event playbackID to prevent
+  // snapshot replay of that lane's latest event after end, stop or mute. The game
+  // still filters older/out-of-order events. Use stable keys (max 64 lanes).
+  track: (
+    key: string,
+    sources: readonly string[],
+    options?: {
+      loop?: boolean;
+      startOffset?: number;
+      loopStartSeconds?: number;
+      playbackID?: string;
+      muted?: boolean;
+      // Native playback rate, bound to this event identity; offsets remain media seconds.
+      rate?: number;
+    },
+  ) => Promise<boolean>;
+  stopTrack: (key: string) => void;
+  // Soft mute keeps the lane's native time advancing. Pause freezes its position.
+  muteTrack: (key: string, muted: boolean) => void;
+  pauseTrack: (key: string) => void;
+  resumeTrack: (key: string) => Promise<boolean>;
+  // Reposition only a live owner track; never play/resume/recreate it. True also
+  // accepts a pending metadata seek. Loop offsets use elapsed prefix/suffix time.
+  seekTrack: (key: string, offsetSeconds: number) => boolean;
+  // Explicit authority resync of a retained continuous track only. Reuse this
+  // owner's exact playbackID/source/loop; never revive finite effects or muted
+  // global output. Paused restores make no native play call until resumed.
+  restoreTrack: (
+    key: string,
+    playbackID: string,
+    options: { startOffset: number; muted?: boolean; paused?: boolean },
+  ) => Promise<boolean>;
 };
 export type GameClock = {
   paused?: boolean;
@@ -122,10 +158,11 @@ export type PreparationProps<Options = unknown> = {
   prepare: (action: Record<string, unknown>) => void;
 };
 export type GameModule<Data = unknown, Options = unknown> = {
+  ratingPolicy?: "coop_campaign_v1";
   id: string;
   name: string;
   description: string;
-  category?: "board" | "poker" | "realtime" | "sports" | "puzzle";
+  category?: "board" | "poker" | "realtime" | "sports" | "puzzle" | "action";
   // Presentation is independent of the catalogue category.
   tableLayout?: "poker";
   requiresFullTable?: boolean;
@@ -137,6 +174,9 @@ export type GameModule<Data = unknown, Options = unknown> = {
   // Continuous controls stay responsive while an earlier request is in flight.
   // The module must coalesce input and validate its own sequence/epoch on server.
   realtime?: boolean;
+  // Allow only input cleanup during manual autoplay, never a gameplay action.
+  // The server must independently declare and validate the same capability.
+  isInputRelease?: (action: Record<string, unknown>) => boolean;
   defaultOptions?: Options;
   // Optional game-owned visual timeline. Preserve host room metadata; never
   // modify authoritative snapshots or decide outcomes in this adapter.

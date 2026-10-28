@@ -240,7 +240,7 @@ func (s *Server) prepareRealtimeInput(room *Room, user User, input streamInput, 
 	if actor < 0 {
 		return nil, nil, 400, fmt.Errorf("只有牌桌玩家可以操作游戏")
 	}
-	if room.Seats[actor].AutoPlay {
+	if room.Seats[actor].AutoPlay && !s.moduleInputReleaseAllowed(room, actor, input.Version, input.Action, now) {
 		return nil, nil, 400, fmt.Errorf("当前由电脑托管，请先取消托管再手动操作")
 	}
 	if input.Version != room.Version {

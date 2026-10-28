@@ -1,0 +1,308 @@
+{
+  "passed": true,
+  "scope": "Complete original E54F invocations from first-stage entry states, not continuous independent campaign acceptance.",
+  "ticks": 5396,
+  "naturalTicks": 5380,
+  "controlledTicks": 16,
+  "entityCalls": 15635,
+  "graphicsRequests": 120,
+  "observations": [
+    {
+      "scope": "machine",
+      "ticks": 700,
+      "entityCalls": 1376,
+      "graphicsRequests": 3,
+      "sounds": 7,
+      "audioResets": 0,
+      "fixtureSHA256": "bd028f14f2f1a35dc6df22568a9bc9c75ff19bfaf11ef73b1a36157efde72e10"
+    },
+    {
+      "scope": "ordinary",
+      "ticks": 1200,
+      "entityCalls": 3978,
+      "graphicsRequests": 16,
+      "sounds": 11,
+      "audioResets": 0,
+      "fixtureSHA256": "9d2e5283c8141946c7932cd0bdb73f03db99faba34f19e470023d9d27fbf9e85"
+    },
+    {
+      "scope": "traverse",
+      "ticks": 3480,
+      "entityCalls": 10253,
+      "graphicsRequests": 94,
+      "sounds": 58,
+      "audioResets": 0,
+      "fixtureSHA256": "52f099f378946f9634f842d24285b2a6d37373c1558ad5ffe0fd10efc80f050a"
+    },
+    {
+      "scope": "controlled",
+      "ticks": 11,
+      "entityCalls": 19,
+      "graphicsRequests": 5,
+      "sounds": 9,
+      "audioResets": 0,
+      "fixtureSHA256": "6239ecdd743b6a0adca8513037318dec496803eba7139433a73d47361846bae6"
+    },
+    {
+      "scope": "boss",
+      "ticks": 5,
+      "entityCalls": 9,
+      "graphicsRequests": 2,
+      "sounds": 3,
+      "audioResets": 3,
+      "fixtureSHA256": "98bec9114eae97a5038cca677150f7df932ab616050ac2a91eb014989d75876b"
+    }
+  ],
+  "generationBiasWrites": [
+    {
+      "pc": "0xe9d2",
+      "bank": 16,
+      "count": 36
+    },
+    {
+      "pc": "0xea0a",
+      "bank": 16,
+      "count": 72
+    },
+    {
+      "pc": "0xf227",
+      "bank": 16,
+      "count": 42
+    },
+    {
+      "pc": "0xf26b",
+      "bank": 16,
+      "count": 35
+    },
+    {
+      "pc": "0xf3df",
+      "bank": 16,
+      "count": 709
+    }
+  ],
+  "repeatByteIdentical": [
+    {
+      "route": "machine",
+      "file": "enemy-ticks.jsonl",
+      "bytes": 3842967,
+      "sha256": "64bfee15fc881ab5c282328dc884f5719e76a87dde70619a90a47a9eff0151c6"
+    },
+    {
+      "route": "machine",
+      "file": "ram.bin",
+      "bytes": 1433600,
+      "sha256": "7fc7f18260d4cbcd58c4cd1a9658e1daa6ebee560fe98d830b282bd54c7e7a44"
+    },
+    {
+      "route": "machine",
+      "file": "inputs.csv",
+      "bytes": 6390,
+      "sha256": "b2bd826596170f38c3cbc081432361ab4cab30d398caf26e76385b6558bc905b"
+    },
+    {
+      "route": "ordinary",
+      "file": "enemy-ticks.jsonl",
+      "bytes": 6677498,
+      "sha256": "87be3ffa58d4cc8fdf593d8cca616ae5b0bd4dd3d583ee3059b3433e5b5281c3"
+    },
+    {
+      "route": "ordinary",
+      "file": "ram.bin",
+      "bytes": 2457600,
+      "sha256": "66a665175e9ac57c28ca2f87e13a750089be66446d1880ad613b0a5ebea76967"
+    },
+    {
+      "route": "ordinary",
+      "file": "inputs.csv",
+      "bytes": 12157,
+      "sha256": "3c04d1c2140aebbb5d9923168d9f345264173f8231c4da23a89a3f6a5aab7cee"
+    },
+    {
+      "route": "traverse",
+      "file": "enemy-ticks.jsonl",
+      "bytes": 19670194,
+      "sha256": "ecac91333b0aad541fd654304d9f1a82e8db2b7492289d32cad4e8ea6200b5d6"
+    },
+    {
+      "route": "traverse",
+      "file": "ram.bin",
+      "bytes": 10240000,
+      "sha256": "d4915b2f2731e02dccdb0857dc464ae870a96c158e7ba94635bece3c93e434bd"
+    },
+    {
+      "route": "traverse",
+      "file": "inputs.csv",
+      "bytes": 47335,
+      "sha256": "aaf2f2bf19861a7d5673931efee3eb128d16a8e5da5ae4be69febb37f74d8219"
+    },
+    {
+      "route": "controlled",
+      "file": "enemy-ticks.jsonl",
+      "bytes": 59997,
+      "sha256": "b4c436a8f3658a6baf2b0b6943eb7802a7b8965c3b7625e31d62ebca652921a2"
+    },
+    {
+      "route": "controlled",
+      "file": "ram.bin",
+      "bytes": 22528,
+      "sha256": "40c1e0a34de2225b91bdbe2f77044277d4851eb46516ec91f8fabd864960dcb0"
+    },
+    {
+      "route": "controlled",
+      "file": "inputs.csv",
+      "bytes": 80,
+      "sha256": "6811952e599a48e0cd76bca965bc0a19c91725f3892199d6eb31d54ca3942402"
+    },
+    {
+      "route": "boss",
+      "file": "enemy-ticks.jsonl",
+      "bytes": 27489,
+      "sha256": "c4631c01e56f57f3cdf1fdf9bfb5243bc9aefa9de769518c26357acb94aecd39"
+    },
+    {
+      "route": "boss",
+      "file": "ram.bin",
+      "bytes": 10240,
+      "sha256": "98fc41ef639c7fadc21a0de1a78dc859a80331e109ec69d92b207ca93a46de7d"
+    },
+    {
+      "route": "boss",
+      "file": "inputs.csv",
+      "bytes": 42,
+      "sha256": "4bb5d0f7a6a04e4d0fbb138483fe47767eb04768294cbad8ea93cc4d52158cf7"
+    }
+  ],
+  "logs": {
+    "red.jsonl": "enemies-collision-tick-red.jsonl",
+    "boss-red.jsonl": "enemies-collision-tick-boss-red.jsonl",
+    "shared-random-red.jsonl": "enemies-collision-tick-shared-random-red.jsonl",
+    "target-projection-red.jsonl": "enemies-collision-tick-target-projection-red.jsonl",
+    "generation-bias-red.jsonl": "enemies-collision-tick-generation-bias-red.jsonl",
+    "package-green.jsonl": "enemies-collision-tick-package-green.jsonl"
+  },
+  "checks": [
+    "TestOriginalEnemyCollisions",
+    "TestArcadeScoreInitializationMatchesOriginal",
+    "TestOriginalWholeEnemyPhase",
+    "TestEnemyTickClearsEphemeralStateAndRejectsUnknownLevel"
+  ],
+  "files": {
+    "games/contra/engine/enemies_collision_tick.go": "6061222878528940844155dc79708bc9665b54c3f7904deed9adb09124d4b846",
+    "games/contra/engine/enemies_collision_tick_test.go": "4a6c0a77ec8e9ed13c7d73d998a9c34058fcdba240a0058917a315f227b637b7",
+    "scripts/contra/enemies_collision_tick_capture.py": "c6416a843089a57b51bfaab1cea1402e538354fb51fcb43e379bf9cf8c1d8898",
+    "scripts/contra/enemies_collision_tick_cases.py": "84bd9baedef4ffc43f74c4d0dc6f70d4199156c3e5ff2191a6505a370066c6b7",
+    "games/contra/engine/enemies_collision.go": "193800d20a14472d1ad80fe151b9edff0d3112ef30d6996115ede6f092012ba7",
+    "docs/research/nes-contra/enemies-collision-tick.md": "9b29c4b5246365137eaaeab3a2f9df3f3940094807858ddc2a4e6bc5f17df60c"
+  },
+  "dependenciesAtVerification": {
+    "games/contra/engine/enemies_box.go": "22f18cdfb86e18749ac93bd257a5edff4a9c14365f3a1d2a4d1c3f2f94d227a9",
+    "games/contra/engine/enemies_bridge.go": "c65d6be3d1c023c3e900fc26ddeeb1eb321e9020fbfdaa0346fd612e93da919c",
+    "games/contra/engine/enemies_bullets.go": "8abd8ce8a2c014d301cdb2d301a932fa9b5341e040bd096223922da63196b15a",
+    "games/contra/engine/enemies_capsule.go": "2c3b89084d3abe8fbfd903b03e1270d9ab44cf93543eb3f0daecc24c3f6256e7",
+    "games/contra/engine/enemies_collision.go": "193800d20a14472d1ad80fe151b9edff0d3112ef30d6996115ede6f092012ba7",
+    "games/contra/engine/enemies_collision_tables.go": "e948f46d1b73a59b22c3dbd8b746e8348c62a952287065ed6a1fe2784ef7e6aa",
+    "games/contra/engine/enemies_collision_tick.go": "6061222878528940844155dc79708bc9665b54c3f7904deed9adb09124d4b846",
+    "games/contra/engine/enemies_explosion.go": "e697a3769c40119243518f105fb717382d3d51696b53e8a27269da89e3d237aa",
+    "games/contra/engine/enemies_generation.go": "e64d7d7dc7774a0ad22b4934f5ed6a3ec84f996125abe839cd7a1c7a96b4163f",
+    "games/contra/engine/enemies_pickup.go": "095dbcdb5f9476a12fbc4d9f4d6d29c33b3dbdcf1f5d7cacedc7085b193a9722",
+    "games/contra/engine/enemies_progress.go": "d8197ec188da0c1f8f61d19a501b04df0b7bcf434e4773e6e63d0b459c613048",
+    "games/contra/engine/enemies_runner.go": "8b90440113c89ecc547f95d3b478d682452fba19acc289342cd279aa44fc92ac",
+    "games/contra/engine/enemies_shooters_aim.go": "7717e1fe16c35984b20eecfb5e1bc9686db5826f9edf932c3a0fb625aaa232f1",
+    "games/contra/engine/enemies_shooters_bossdoor.go": "d70e057853a477e247121551b7bf9e4a9dc9a3d1e3686192e3e379d4109de465",
+    "games/contra/engine/enemies_shooters_bossdoor_terrain.go": "3dfc8069c2d83e8a23271b9beb8df8dd5b18250231697a15a54192b0d140210b",
+    "games/contra/engine/enemies_shooters_runner.go": "53032d44797a4c93742590c4c18991f578d4cd40208a854eb57ba0d62b055ba1",
+    "games/contra/engine/enemies_shooters_sniper.go": "25b39eca07ce2617f9d602a7be711f0cea87e3df6baf2f43b7b1af797e179617",
+    "games/contra/engine/enemies_shooters_tables.go": "d57dba7bb57ce7c2a89feb10ed9a186e3967a8d649d6af1cce73490236996e02",
+    "games/contra/engine/enemies_shooters_turrets.go": "5fa0a7852e60018fd6e9183256be6f913f783104c0633d2ffbe3a07b78ca18b6",
+    "games/contra/engine/enemies_tables.go": "aa7124b97aba6137fab33603a794c1cfb5d2b09293ca8c6b28a8c161508bb379",
+    "games/contra/engine/enemies_terrain.go": "684f00cf30cb3721f990955c29f2f424217a29d0c01e8ec013dd227ef5ca4481",
+    "games/contra/engine/graphics_queue.go": "9d630b16bfe135773e42896a21d026f91c7f60187aed2c2f89d71f082dc3b3a6",
+    "games/contra/engine/player.go": "eb8e58ff64400ee4c14a525884ed7aef41e3667b1a55d9628a795b3231234eb0",
+    "games/contra/engine/player_lifecycle.go": "8142df869f40347294c4b7980fe0986f0e25499f0d0a350a02902784cf27a358",
+    "games/contra/engine/random.go": "a6b91ae20bafdae5b255d9ea6ad8d55d299e6e260ac53dbca61a3c21772f0db8",
+    "games/contra/engine/weapons_step.go": "66418a29dc83ed1592549c9d0a242bef5c3670c7d44829cd0a63635488e3182e"
+  },
+  "cleanup": [
+    {
+      "path": ".local/contra-enemies-collision/tick-oracle/runs/enemy-phase-boss-bias-v2",
+      "bytes": 785344
+    },
+    {
+      "path": ".local/contra-enemies-collision/tick-oracle/runs/enemy-phase-boss-v1",
+      "bytes": 784091
+    },
+    {
+      "path": ".local/contra-enemies-collision/tick-oracle/runs/enemy-phase-boss-v2",
+      "bytes": 784092
+    },
+    {
+      "path": ".local/contra-enemies-collision/tick-oracle/runs/enemy-phase-controlled-bias-v2",
+      "bytes": 945841
+    },
+    {
+      "path": ".local/contra-enemies-collision/tick-oracle/runs/enemy-phase-controlled-v1",
+      "bytes": 943213
+    },
+    {
+      "path": ".local/contra-enemies-collision/tick-oracle/runs/enemy-phase-controlled-v2",
+      "bytes": 944111
+    },
+    {
+      "path": ".local/contra-enemies-collision/tick-oracle/runs/enemy-phase-machine-bias-v2",
+      "bytes": 5977821
+    },
+    {
+      "path": ".local/contra-enemies-collision/tick-oracle/runs/enemy-phase-machine-v1",
+      "bytes": 5952096
+    },
+    {
+      "path": ".local/contra-enemies-collision/tick-oracle/runs/enemy-phase-machine-v2",
+      "bytes": 5953393
+    },
+    {
+      "path": ".local/contra-enemies-collision/tick-oracle/runs/enemy-phase-ordinary-bias-v2",
+      "bytes": 9827509
+    },
+    {
+      "path": ".local/contra-enemies-collision/tick-oracle/runs/enemy-phase-ordinary-v1",
+      "bytes": 9783037
+    },
+    {
+      "path": ".local/contra-enemies-collision/tick-oracle/runs/enemy-phase-ordinary-v2",
+      "bytes": 9784334
+    },
+    {
+      "path": ".local/contra-enemies-collision/tick-oracle/runs/enemy-phase-traverse-bias-v2",
+      "bytes": 30774189
+    },
+    {
+      "path": ".local/contra-enemies-collision/tick-oracle/runs/enemy-phase-traverse-v1",
+      "bytes": 30619481
+    },
+    {
+      "path": ".local/contra-enemies-collision/tick-oracle/runs/enemy-phase-traverse-v2",
+      "bytes": 30619785
+    },
+    {
+      "path": ".local/contra-enemies-collision/tick-oracle/runs/enemy-phase-traverse-v3",
+      "bytes": 30621082
+    },
+    {
+      "path": ".local/contra-enemies-collision/tick-oracle/fceux-home",
+      "bytes": 17804
+    },
+    {
+      "path": ".local/contra-enemies-collision/tick-oracle/runtime",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-enemies-collision/tick-oracle/tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-enemies-collision/tmp",
+      "bytes": 0
+    }
+  ],
+  "retained": "Latest bias-v1 primary captures and every self-contained fixture; no user ROM or other task files removed."
+}

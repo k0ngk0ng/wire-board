@@ -1,0 +1,669 @@
+{
+  "passed": true,
+  "scope": "Original eight-stage DB81 terrain scrolling, shared graphics queue, and real Palette/CHR effect composition",
+  "records": 8070,
+  "coverage": {
+    "natural": {
+      "records": 4999,
+      "queue_changes": 420,
+      "collision_changes": 52,
+      "early_boss_variant": 32,
+      "repeat_labels": [
+        "v3",
+        "v4"
+      ]
+    },
+    "boundaries": {
+      "records": 3047,
+      "queue_changes": 2453,
+      "collision_changes": 958,
+      "early_boss_variant": 64,
+      "repeat_labels": [
+        "v3",
+        "v4"
+      ]
+    },
+    "counters": {
+      "records": 24,
+      "queue_changes": 2,
+      "collision_changes": 0,
+      "early_boss_variant": 0,
+      "repeat_labels": [
+        "v1",
+        "v2"
+      ]
+    }
+  },
+  "race_tests": [
+    "TestOriginalTerrainScrollAllStages",
+    "TestTerrainScrollFailureLeavesWholePhaseUnchanged/queue-overflow",
+    "TestTerrainScrollFailureLeavesWholePhaseUnchanged/missing-stage",
+    "TestTerrainScrollFailureLeavesWholePhaseUnchanged",
+    "TestTerrainScrollAndEnemyShareOriginalQueueBudget",
+    "TestTerrainScrollLateResourceFailureIsAtomic/missing-lookahead-map",
+    "TestTerrainScrollLateResourceFailureIsAtomic/bad-late-supertile",
+    "TestTerrainScrollLateResourceFailureIsAtomic",
+    "TestOriginalTerrainScrollWithPaletteAndCHR",
+    "TestTerrainScrollDoesNotOverlapPaletteStorage",
+    "TestOriginalJungleScrolling",
+    "TestJungleScrollScreenBoundaryAndRollback",
+    "TestOriginalJungleScrollQueued",
+    "TestJungleScrollQueueFailureIsAtomic",
+    "TestScrollAndEnemyRequestsShareQueueBudget",
+    "TestOriginalGraphicsCallerAttributeLookup",
+    "TestOriginalGraphicsRequests",
+    "TestGraphicsQueueMixedScrollAndEnemyBudget",
+    "TestGraphicsQueueValidationAndOwnership",
+    "TestAllOriginalLevelMapLoads",
+    "TestStageResourcesRemainLocalAndIndependent",
+    "TestLevelGraphicsAndAppearanceDefinitions",
+    "TestLevelResourceRejectionIsAtomic",
+    "TestLevelResourcesIncludeRuntimePaletteCycles",
+    "TestJungleLayoutOriginalScreens",
+    "TestJungleLayoutNaturalInitializationAndStreaming",
+    "TestScreenDecodeBoundaries",
+    "TestOriginalTerrainQueries",
+    "TestTerrainPackedOrderAndScrollBoundaries",
+    "TestOriginalPaletteAndSnowPhases/palette-stage-1-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-stage-2-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-stage-3-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-stage-4-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-stage-5-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-stage-6-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-stage-7-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-stage-8-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-16-0-0-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-16-0-1-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-16-0-2-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-16-0-3-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-16-0-4-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-16-0-5-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-16-0-6-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-16-0-7-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-16-0-8-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-16-0-9-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-16-0-127-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-16-0-128-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-16-0-255-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-16-128-0-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-16-128-1-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-16-128-2-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-16-128-3-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-16-128-4-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-16-128-5-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-16-128-6-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-16-128-7-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-16-128-8-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-16-128-9-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-16-128-127-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-16-128-128-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-16-128-255-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-32-0-0-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-32-0-1-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-32-0-2-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-32-0-3-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-32-0-4-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-32-0-5-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-32-0-6-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-32-0-7-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-32-0-8-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-32-0-9-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-32-0-127-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-32-0-128-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-32-0-255-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-32-128-0-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-32-128-1-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-32-128-2-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-32-128-3-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-32-128-4-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-32-128-5-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-32-128-6-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-32-128-7-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-32-128-8-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-32-128-9-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-32-128-127-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-32-128-128-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load-32-128-255-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-load16-unused-sprite-indices-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-commit-0-0-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-commit-0-70-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-commit-0-71-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-commit-0-86-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-commit-16-0-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-commit-16-70-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-commit-16-71-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-commit-16-86-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-commit-32-0-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-commit-32-70-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-commit-32-71-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-commit-32-86-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-stage-1-phase-0-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-stage-1-phase-1-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-stage-1-phase-2-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-stage-1-phase-3-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-stage-2-phase-0-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-stage-2-phase-1-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-stage-2-phase-2-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-stage-2-phase-3-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-stage-3-phase-0-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-stage-3-phase-1-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-stage-3-phase-2-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-stage-3-phase-3-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-stage-4-phase-0-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-stage-4-phase-1-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-stage-4-phase-2-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-stage-4-phase-3-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-stage-5-phase-0-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-stage-5-phase-1-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-stage-5-phase-2-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-stage-5-phase-3-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-stage-6-phase-0-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-stage-6-phase-1-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-stage-6-phase-2-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-stage-6-phase-3-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-stage-7-phase-0-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-stage-7-phase-1-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-stage-7-phase-2-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-stage-7-phase-3-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-stage-8-phase-0-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-stage-8-phase-1-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-stage-8-phase-2-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-stage-8-phase-3-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-boss-2-queue-0-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-boss-2-queue-64-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-boss-2-queue-70-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-boss-2-queue-71-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-boss-2-queue-86-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-boss-2-queue-183-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-boss-2-queue-184-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-boss-2-queue-246-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-boss-4-queue-0-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-boss-4-queue-64-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-boss-4-queue-70-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-boss-4-queue-71-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-boss-4-queue-86-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-boss-4-queue-183-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-boss-4-queue-184-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-boss-4-queue-246-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-flash-1-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-flash-2-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-flash-3-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-flash-4-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-flash-5-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-flash-6-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-flash-7-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-flash-8-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-flash-9-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-flash-10-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-requested-gate-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-pause-cycle-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-cycle-then-flash-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-ending-colors-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-snow-0-0-0-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-snow-0-20-0-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-snow-3-1-255-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-snow-3-2-0-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-snow-6-3-127-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-snow-6-3-128-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-snow-9-16-255-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-snow-9-17-0-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-snow-12-20-0-v2",
+    "TestOriginalPaletteAndSnowPhases/palette-snow-other-stage-v2",
+    "TestOriginalPaletteAndSnowPhases",
+    "TestPaletteFailureIsAtomic",
+    "TestOriginalCHRAnimation",
+    "TestOriginalCHRAnimationBoundaries",
+    "TestCHRDisplayBoundaryAndAtomicFailure"
+  ],
+  "race_test_count": 179,
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "games/contra/engine/campaign.go",
+    "games/contra/engine/campaign_types.go",
+    "games/contra/engine/chr_animation.go",
+    "games/contra/engine/controls.go",
+    "games/contra/engine/enemies.go",
+    "games/contra/engine/enemies_all_spawn.go",
+    "games/contra/engine/enemies_all_tables.go",
+    "games/contra/engine/enemies_base_boss.go",
+    "games/contra/engine/enemies_base_boss_tables.go",
+    "games/contra/engine/enemies_base_common.go",
+    "games/contra/engine/enemies_base_generators.go",
+    "games/contra/engine/enemies_base_redblue.go",
+    "games/contra/engine/enemies_base_soldiers.go",
+    "games/contra/engine/enemies_base_tables.go",
+    "games/contra/engine/enemies_base_thrown.go",
+    "games/contra/engine/enemies_base_types.go",
+    "games/contra/engine/enemies_base_walls.go",
+    "games/contra/engine/enemies_box.go",
+    "games/contra/engine/enemies_bridge.go",
+    "games/contra/engine/enemies_bullets.go",
+    "games/contra/engine/enemies_capsule.go",
+    "games/contra/engine/enemies_collision.go",
+    "games/contra/engine/enemies_collision_tables.go",
+    "games/contra/engine/enemies_collision_tick.go",
+    "games/contra/engine/enemies_explosion.go",
+    "games/contra/engine/enemies_generation.go",
+    "games/contra/engine/enemies_machines.go",
+    "games/contra/engine/enemies_machines_common.go",
+    "games/contra/engine/enemies_machines_flames.go",
+    "games/contra/engine/enemies_machines_graphics.go",
+    "games/contra/engine/enemies_machines_hangar.go",
+    "games/contra/engine/enemies_pickup.go",
+    "games/contra/engine/enemies_progress.go",
+    "games/contra/engine/enemies_runner.go",
+    "games/contra/engine/enemies_shooters_aim.go",
+    "games/contra/engine/enemies_shooters_bossdoor.go",
+    "games/contra/engine/enemies_shooters_bossdoor_terrain.go",
+    "games/contra/engine/enemies_shooters_runner.go",
+    "games/contra/engine/enemies_shooters_sniper.go",
+    "games/contra/engine/enemies_shooters_tables.go",
+    "games/contra/engine/enemies_shooters_turrets.go",
+    "games/contra/engine/enemies_snow_small.go",
+    "games/contra/engine/enemies_tables.go",
+    "games/contra/engine/enemies_terrain.go",
+    "games/contra/engine/enemies_waterfall.go",
+    "games/contra/engine/enemies_waterfall_arm.go",
+    "games/contra/engine/enemies_waterfall_boss.go",
+    "games/contra/engine/frame.go",
+    "games/contra/engine/graphics_queue.go",
+    "games/contra/engine/level.go",
+    "games/contra/engine/levels.go",
+    "games/contra/engine/movement.go",
+    "games/contra/engine/palette.go",
+    "games/contra/engine/palette_snow.go",
+    "games/contra/engine/player.go",
+    "games/contra/engine/player_animation.go",
+    "games/contra/engine/player_indoor.go",
+    "games/contra/engine/player_lifecycle.go",
+    "games/contra/engine/presentation_sprites.go",
+    "games/contra/engine/random.go",
+    "games/contra/engine/random_adapted.go",
+    "games/contra/engine/scroll.go",
+    "games/contra/engine/scroll_queue.go",
+    "games/contra/engine/terrain.go",
+    "games/contra/engine/terrain_scroll.go",
+    "games/contra/engine/terrain_scroll_graphics.go",
+    "games/contra/engine/weapons.go",
+    "games/contra/engine/weapons_step.go",
+    "games/contra/engine/weapons_tables.go",
+    "games/contra/engine/weapons_types.go",
+    "games/contra/engine/terrain_scroll_test.go",
+    "games/contra/engine/terrain_scroll_visual_test.go",
+    "games/contra/engine/terrain_scroll_capacity_test.go",
+    "games/contra/engine/scroll_test.go",
+    "games/contra/engine/scroll_queue_test.go",
+    "games/contra/engine/graphics_queue_test.go",
+    "games/contra/engine/levels_test.go",
+    "games/contra/engine/level_test.go",
+    "games/contra/engine/terrain_test.go",
+    "games/contra/engine/palette_test.go",
+    "games/contra/engine/chr_animation_test.go",
+    "-count=1",
+    "-json"
+  ],
+  "sources": [
+    {
+      "path": "docs/research/nes-contra/evidence/terrain-scroll-natural.json.gz",
+      "sha256": "78a9aafb4eda81f83ace5a8ea1a76d60de8f31b0048ff22f547bb72a1fa39d4c"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/terrain-scroll-boundaries.json.gz",
+      "sha256": "e8fa0c01feb57b5a79efd69131ac66f9c248af373d977cfbb40d9a7e629f52a3"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/terrain-scroll-counters.json.gz",
+      "sha256": "df89a3bcbc5c47ab2f5b690ffa3017872cec299cc2df474d8eb61fc5e37c3947"
+    }
+  ],
+  "files": [
+    {
+      "path": "games/contra/engine/terrain_scroll.go",
+      "sha256": "9223a7578aea481665a048ba90a1551b066d162c2beaeb965b33592858e14b56"
+    },
+    {
+      "path": "games/contra/engine/terrain_scroll_capacity_test.go",
+      "sha256": "aa1b85119e89918bb8427805733ec74bba1e4db1c44cb39a23722e6ea2d60d65"
+    },
+    {
+      "path": "games/contra/engine/terrain_scroll_graphics.go",
+      "sha256": "9a4a460005bf629b5482464f54e8f56db5d013f6e1d5a1d78607f027cae09200"
+    },
+    {
+      "path": "games/contra/engine/terrain_scroll_test.go",
+      "sha256": "0cbc8a157a4fd8fb3adb421f8f7fed5c1474ac6fcd9fd1adaf56b6884911f6b4"
+    },
+    {
+      "path": "games/contra/engine/terrain_scroll_visual_test.go",
+      "sha256": "a07e9346a3f25960981607e72672a4f83c75737ba9f08d5160b4be3ef8a58ac6"
+    },
+    {
+      "path": "scripts/contra/terrain_scroll_capture.py",
+      "sha256": "b5ac41613f37e12604e323fbb408e4e1a30225064fa72daf2b253a24bbcfd5c8"
+    },
+    {
+      "path": "scripts/contra/terrain_scroll_prepare.py",
+      "sha256": "a0e10f2fdf21ecc6ad2d43d5954d440677f65d150d0f0c04083ff75c60a0fdb5"
+    }
+  ],
+  "ownership": {
+    "scroll": "cursors, 128 supertiles, map variant, mutable alternate trigger",
+    "world": "existing authoritative screen/scroll/auto/base fields",
+    "header": "caller-owned PaletteState pointer",
+    "screenCleared": "caller-owned CombatFrame flag",
+    "queue": "shared GraphicsQueue; 192-byte physical domain",
+    "visual": "ordered effects applied through real PaletteOutput.Load and CHR presets; next-boundary Applied is unchanged"
+  },
+  "atomic_cases": [
+    "late queue overflow including header/effects",
+    "missing stage",
+    "missing lookahead map after drawing began",
+    "invalid late supertile",
+    "exact192 accepted/193 rejected/preexisting overlap rejected"
+  ],
+  "limitations": [
+    "Controller paths start from declared original stage initializers; selected Boss/counter/boundary setups are explicitly controlled, not natural campaign clears.",
+    "Audio is emitted as verified semantic requests; no player or outcome is fabricated.",
+    "Whole continuous World, full campaign, bot/room/network/browser acceptance remains separate."
+  ],
+  "cleanup": [
+    {
+      "path": ".local/contra-terrain-scroll/swift-cache",
+      "bytes": 93396920
+    },
+    {
+      "path": "dist/cts-tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/fceux-home",
+      "bytes": 17781
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/runtime",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-terrain-scroll/initial-boundaries.json.gz",
+      "bytes": 175856
+    },
+    {
+      "path": ".local/contra-terrain-scroll/initial-natural.json.gz",
+      "bytes": 147534
+    },
+    {
+      "path": ".local/contra-terrain-scroll/partial-fields-boundaries.json.gz",
+      "bytes": 177198
+    },
+    {
+      "path": ".local/contra-terrain-scroll/partial-fields-natural.json.gz",
+      "bytes": 149486
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/runs/terrain-scroll-natural-v1-stage-5-walk",
+      "bytes": 2165414
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/runs/terrain-scroll-natural-v1-stage-8-walk",
+      "bytes": 2170403
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/runs/terrain-scroll-natural-v1-base2-progress",
+      "bytes": 5305489
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/runs/terrain-scroll-natural-v1-stage-1-walk",
+      "bytes": 2168634
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/runs/terrain-scroll-natural-v1-base2-boss",
+      "bytes": 4092992
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/runs/terrain-scroll-natural-v1-stage-7-walk",
+      "bytes": 2164665
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/runs/terrain-scroll-natural-v1-waterfall-climb",
+      "bytes": 4136321
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/runs/terrain-scroll-natural-v1-stage-6-walk",
+      "bytes": 2162236
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/terrain-scroll-natural-v1-base2-progress.json",
+      "bytes": 67479
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/terrain-scroll-natural-v1-base2-boss.json",
+      "bytes": 15016
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/terrain-scroll-natural-v1-stage-8-walk.json",
+      "bytes": 4229
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/terrain-scroll-natural-v1-stage-5-walk.json",
+      "bytes": 4229
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/terrain-scroll-natural-v1-waterfall-climb.json",
+      "bytes": 53743
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/terrain-scroll-natural-v1-stage-6-walk.json",
+      "bytes": 4229
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/terrain-scroll-natural-v1-stage-1-walk.json",
+      "bytes": 4229
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/terrain-scroll-natural-v1-stage-7-walk.json",
+      "bytes": 4229
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/runs/terrain-scroll-natural-v2-base2-progress",
+      "bytes": 5312747
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/runs/terrain-scroll-natural-v2-stage-7-walk",
+      "bytes": 2167901
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/runs/terrain-scroll-natural-v2-stage-6-walk",
+      "bytes": 2165408
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/runs/terrain-scroll-natural-v2-base2-boss",
+      "bytes": 4098543
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/runs/terrain-scroll-natural-v2-stage-1-walk",
+      "bytes": 2171662
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/runs/terrain-scroll-natural-v2-waterfall-climb",
+      "bytes": 4142097
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/runs/terrain-scroll-natural-v2-stage-5-walk",
+      "bytes": 2167754
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/runs/terrain-scroll-natural-v2-stage-8-walk",
+      "bytes": 2173661
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/terrain-scroll-natural-v2-stage-8-walk.json",
+      "bytes": 4291
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/terrain-scroll-natural-v2-stage-5-walk.json",
+      "bytes": 4291
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/terrain-scroll-natural-v2-base2-progress.json",
+      "bytes": 67541
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/terrain-scroll-natural-v2-waterfall-climb.json",
+      "bytes": 53805
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/terrain-scroll-natural-v2-base2-boss.json",
+      "bytes": 15078
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/terrain-scroll-natural-v2-stage-7-walk.json",
+      "bytes": 4291
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/terrain-scroll-natural-v2-stage-1-walk.json",
+      "bytes": 4291
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/terrain-scroll-natural-v2-stage-6-walk.json",
+      "bytes": 4291
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/runs/terrain-scroll-boundaries-v1-stage-2-alternate",
+      "bytes": 802472
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/runs/terrain-scroll-boundaries-v1-stage-4-alternate",
+      "bytes": 801153
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/runs/terrain-scroll-boundaries-v1-stage-3-alternate",
+      "bytes": 1852320
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/runs/terrain-scroll-boundaries-v1-stage-8-alternate",
+      "bytes": 2207712
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/runs/terrain-scroll-boundaries-v1-stage-5-alternate",
+      "bytes": 3624190
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/runs/terrain-scroll-boundaries-v1-stage-6-alternate",
+      "bytes": 2482944
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/runs/terrain-scroll-boundaries-v1-stage-1-alternate",
+      "bytes": 2492286
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/runs/terrain-scroll-boundaries-v1-stage-7-alternate",
+      "bytes": 2771108
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/terrain-scroll-boundaries-v1-stage-3-alternate.json",
+      "bytes": 3366
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/terrain-scroll-boundaries-v1-stage-4-alternate.json",
+      "bytes": 3306
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/terrain-scroll-boundaries-v1-stage-5-alternate.json",
+      "bytes": 3366
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/terrain-scroll-boundaries-v1-stage-2-alternate.json",
+      "bytes": 3306
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/terrain-scroll-boundaries-v1-stage-8-alternate.json",
+      "bytes": 3366
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/terrain-scroll-boundaries-v1-stage-7-alternate.json",
+      "bytes": 3366
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/terrain-scroll-boundaries-v1-stage-6-alternate.json",
+      "bytes": 3366
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/terrain-scroll-boundaries-v1-stage-1-alternate.json",
+      "bytes": 3366
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/runs/terrain-scroll-boundaries-v2-stage-8-alternate",
+      "bytes": 2210802
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/runs/terrain-scroll-boundaries-v2-stage-5-alternate",
+      "bytes": 3629268
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/runs/terrain-scroll-boundaries-v2-stage-3-alternate",
+      "bytes": 1854836
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/runs/terrain-scroll-boundaries-v2-stage-4-alternate",
+      "bytes": 801587
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/runs/terrain-scroll-boundaries-v2-stage-2-alternate",
+      "bytes": 802836
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/runs/terrain-scroll-boundaries-v2-stage-7-alternate",
+      "bytes": 2775396
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/runs/terrain-scroll-boundaries-v2-stage-1-alternate",
+      "bytes": 2495768
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/runs/terrain-scroll-boundaries-v2-stage-6-alternate",
+      "bytes": 2486662
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/terrain-scroll-boundaries-v2-stage-2-alternate.json",
+      "bytes": 3368
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/terrain-scroll-boundaries-v2-stage-5-alternate.json",
+      "bytes": 3428
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/terrain-scroll-boundaries-v2-stage-4-alternate.json",
+      "bytes": 3368
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/terrain-scroll-boundaries-v2-stage-3-alternate.json",
+      "bytes": 3428
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/terrain-scroll-boundaries-v2-stage-1-alternate.json",
+      "bytes": 3428
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/terrain-scroll-boundaries-v2-stage-6-alternate.json",
+      "bytes": 3428
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/terrain-scroll-boundaries-v2-stage-7-alternate.json",
+      "bytes": 3428
+    },
+    {
+      "path": ".local/contra-terrain-scroll/oracle/terrain-scroll-boundaries-v2-stage-8-alternate.json",
+      "bytes": 3428
+    },
+    {
+      "path": ".local/contra-terrain-scroll/checks/visual-integration-red.log",
+      "bytes": 239
+    }
+  ]
+}

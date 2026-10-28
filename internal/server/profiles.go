@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/k0ngk0ng/wire-board/internal/game"
+	"github.com/k0ngk0ng/wire-board/internal/gameapi"
 	"net/http"
 	"sort"
 	"strconv"
@@ -20,6 +21,9 @@ type MatchPlayer struct {
 	Won   bool `json:"won"`
 }
 type MatchRecord struct {
+	RatingPolicy        gameapi.RatingPolicy `json:"ratingPolicy,omitempty"`
+	Outcome             string               `json:"outcome,omitempty"`
+	UnratedReason       string               `json:"unratedReason,omitempty"`
 	Draw                bool                 `json:"draw,omitempty"`
 	Cooperative         bool                 `json:"cooperative,omitempty"`
 	Details             json.RawMessage      `json:"details,omitempty"`
@@ -429,13 +433,15 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 	}
 	if r.Module != nil {
 		record.Options = r.Options
+		record.Unrated = r.Module.Unrated
 		if r.Module.Result != nil {
 			record.Draw = r.Module.Result.Draw
 			record.Details = r.Module.Result.Details
 			record.Cooperative = r.Module.Result.Cooperative
-			record.Unrated = r.Module.Result.Unrated
+			record.Unrated = record.Unrated || r.Module.Result.Unrated
 		}
 	}
+	record.Unrated = record.Unrated || r.RatingUnratedReason == "practice"
 	for i, seat := range r.Seats {
 		p := MatchPlayer{User: seat.User, Bot: seat.Bot}
 		if r.Status == "finished" {
@@ -536,7 +542,7 @@ func (s *Server) profile(w http.ResponseWriter, r *http.Request) {
 		if err = json.Unmarshal(raw, &match); err != nil {
 			break
 		}
-		if match.Status == "finished" {
+		if match.Status == "finished" || match.Rated {
 			for _, p := range match.Players {
 				if p.ID == id {
 					if stats[match.Kind] == nil {
@@ -549,7 +555,7 @@ func (s *Server) profile(w http.ResponseWriter, r *http.Request) {
 				}
 			}
 		}
-		if match.Status == "finished" || viewer.ID == id {
+		if match.Status == "finished" || match.Rated || viewer.ID == id {
 			records = append(records, match)
 		}
 	}

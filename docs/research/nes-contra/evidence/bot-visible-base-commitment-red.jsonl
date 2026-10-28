@@ -1,0 +1,9 @@
+{"Time":"2026-10-26T13:58:19.846491+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-26T13:58:20.38795+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleBaseCoreCommitmentSurvivesOtherTargets"}
+{"Time":"2026-10-26T13:58:20.388104+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleBaseCoreCommitmentSurvivesOtherTargets","Output":"=== RUN   TestBotVisibleBaseCoreCommitmentSurvivesOtherTargets\n"}
+{"Time":"2026-10-26T13:58:20.38827+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleBaseCoreCommitmentSurvivesOtherTargets","Output":"    bot_base_memory_test.go:92: briefly occluded selected core was replaced by a different firing lane 2 2\n"}
+{"Time":"2026-10-26T13:58:20.388306+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleBaseCoreCommitmentSurvivesOtherTargets","Output":"--- FAIL: TestBotVisibleBaseCoreCommitmentSurvivesOtherTargets (0.00s)\n"}
+{"Time":"2026-10-26T13:58:20.38832+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleBaseCoreCommitmentSurvivesOtherTargets","Elapsed":0}
+{"Time":"2026-10-26T13:58:20.388345+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\n"}
+{"Time":"2026-10-26T13:58:20.389322+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t0.543s\n"}
+{"Time":"2026-10-26T13:58:20.389373+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":0.543}

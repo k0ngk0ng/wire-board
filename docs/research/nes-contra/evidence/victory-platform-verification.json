@@ -1,0 +1,332 @@
+{
+  "passed": true,
+  "scope": "Verified assisted single-player boundary; actual module terminal transition and private rating projection only. Not standard lives, a fresh campaign, full bot acceptance, or a two-player clear.",
+  "rulesBuildID": "bbb69fc1c17651837afde0424d42c3a8cabe1b69e279bcd46d1a29ba42e445b7",
+  "runtimeBuildID": "4079b0f339db9de9d232366b8bbc7af1c6342b03c021838577485880fd3e8c23",
+  "visualsID": "24d3c7bfb252cf15523759394c3397e246aa17b331eedf2e0744b75ccb5bee32",
+  "lastBattleFrame": "177061",
+  "clearFrame": "177154",
+  "terminalRevision": "177155",
+  "nativeWasmChecks": "61",
+  "resyncs": "0",
+  "finalPixels": {
+    "colors": 13,
+    "nonBlack": 19256,
+    "sha256": "e938d933f5506320dde8afd39368719ab33961f5629dc6350e6474dd74f0ed62"
+  },
+  "pixelsAfterReload": {
+    "colors": 13,
+    "nonBlack": 19256,
+    "sha256": "e938d933f5506320dde8afd39368719ab33961f5629dc6350e6474dd74f0ed62"
+  },
+  "privateRatingBefore": {
+    "played": 0,
+    "points": 1000,
+    "wins": 0
+  },
+  "privateRatingAfter": {
+    "played": 1,
+    "points": 1020,
+    "wins": 1
+  },
+  "privateRatingAfterReload": {
+    "played": 1,
+    "points": 1020,
+    "wins": 1
+  },
+  "sourceDiagnostic": {
+    "assisted": true,
+    "finalFrame": 177154,
+    "finalSHA256": "d4d51bae6507bf5cb626e56a170ed6b94cabb8d2d36613fd257f61f419fb2302",
+    "players": 1,
+    "prefixFrame": 177094,
+    "prefixSHA256": "52323290acd63141af515235a473c0894e946b399e9c464c6244def634ad8588",
+    "recordedRulesAndEffectsMatch": true,
+    "recordedStateMatches": false,
+    "replayDerivedReviewAdded": true,
+    "reserveGrants": 337,
+    "schema": 1,
+    "scope": "Declared reserve-refill diagnostic replay; test-only terminal and rating projection, not standard lives or fresh campaign acceptance",
+    "seed": 42,
+    "source": ".local/contra-bot/diagnostic-alien-terminal",
+    "sourceSHA256": {
+      "final-session.json": "ee160a4bc2c5a2e101a140a745c43b5ce13ca0828aa1e28278f40fb44e0e2b54",
+      "pads.bin.gz": "c26543d463e4497160d3e315d1019ffad4a2d6cc0b5dc7f6b35f099315ce88e5",
+      "result.json": "5fee64b6eb9e9684e65f62562cad5ac7461113ff522b4b860c0a59cb2f893f18",
+      "test-life-refills.json": "edfce3c93096a748354d84a9f3d55b9c7c19394989c928b6e67b15cfff4877e5"
+    },
+    "tailFrames": 60,
+    "tailPadsZero": true
+  },
+  "ruleAndEffectFieldsPreserved": true,
+  "presentationMetadataExplicitlyReplayDerived": true,
+  "standardFailureRegression": {
+    "passed": true,
+    "scope": "Natural standard solo failure and terminal presentation; not eight-stage clear, bot or subjective audio acceptance.",
+    "finalSurface": {
+      "audioTick": "2019",
+      "checked": "2019",
+      "contraRuntime": "true",
+      "digest": "5d3354f1522ac3affb6a70afbd7933380bb5d683eabe5deb644b0609cbaec994",
+      "frame": "2018",
+      "lives": "[0,0]",
+      "paused": "false",
+      "phase": "finished",
+      "resyncs": "0",
+      "reviewFrame": "1989",
+      "reviewRevision": "1989",
+      "revision": "2019"
+    },
+    "resultText": "本局结果对局结算挑战失败本局挑战结束，没有获胜者。可以再来一局。魂斗罗终局-82d37e3 -10 积分再来一局"
+  },
+  "checks": {
+    "coopHTTPRaceEntries": 29,
+    "runtimeRaceTests": 8,
+    "frontendTests": 58,
+    "targetedSessionAndTerminalRaceEntries": 7,
+    "browserPC320": true,
+    "contrastMinimum": 5.756632232929615,
+    "fixtureExitCode": 0
+  },
+  "limits": [
+    "Victory source has explicit reserve grants and is single-player; private +20 tests a rating projection, not real competitive qualification.",
+    "No standard-lives complete new campaign or actual two-player victory was proved by this fixture.",
+    "Original ending animation was not reconstructed; the final review is one actual pre-fade submitted battlefield.",
+    "Engine navigation remains under development; final current-source build and complete bot acceptance require a later freeze."
+  ],
+  "files": {
+    "docs/research/nes-contra/evidence/victory-platform/before-black-terminal.png": "d2ccdfa5c5e90fe0dd90aba90809f93d445279e7e3cf3d7cbb83ad17518e58bc",
+    "docs/research/nes-contra/evidence/victory-platform/before-terminal.json.gz": "fe3a0be27866918d03d9a995c9438a92bd78f0c09e946f80b8a3e28d21179339",
+    "docs/research/nes-contra/evidence/victory-platform/boundary.json.gz": "65a62ff667d0d200963e793d6fd98f75ca4ee73ebcd5dd87588b545299175a3f",
+    "docs/research/nes-contra/evidence/victory-platform/desktop-final-board.png": "7b5d2c5959a8aaa3484bf9050c31bf704417ca1f3176a695f0b3e658d913c44f",
+    "docs/research/nes-contra/evidence/victory-platform/desktop-victory-result.png": "ce326c09c220d80cc1af40ec04993d22d5c2d19ed2ee9c06dd53abdb7f7c0309",
+    "docs/research/nes-contra/evidence/victory-platform/expected-final.json.gz": "a9025bfa7bc7ff951ffdba2fc9795d6ebfd8e15255598bdeda272e06246da010",
+    "docs/research/nes-contra/evidence/victory-platform/failure-browser.json.gz": "7a98f5cb4f401433908f110fc53c58530e8a95a9cb952c873832966e99814a6f",
+    "docs/research/nes-contra/evidence/victory-platform/failure-final-board.png": "2a7807110e9a9af04b7772533f076586c4baecab0faece9b76a29974b291980d",
+    "docs/research/nes-contra/evidence/victory-platform/harness-at-run.py": "12d3a6bb16956443dd69d1a75704555f351420b1a0b0f49f9b4195b091757a2c",
+    "docs/research/nes-contra/evidence/victory-platform/mobile-final-board.png": "ff9d3db5ad1f413aa5b70e2429278e5accec50ffe84b4c05ea57038aa74696ed",
+    "docs/research/nes-contra/evidence/victory-platform/mobile-victory-result.png": "239b08930f548dfd5f52d55f1563825d7d636825d22c6d6ed4e5f42702f86bae",
+    "docs/research/nes-contra/evidence/victory-platform/preterminal-fullscreen.png": "324feff7f7324390da0357ad2fa61de8e350b80fdda74f2e83e06cd28070e5b0",
+    "docs/research/nes-contra/evidence/victory-platform/test-records.json.gz": "8bd7c5f60d9073bf8587791b198a8d817268cd9002ac536aa958f785d7699b0e",
+    "docs/research/nes-contra/evidence/victory-platform/victory-browser.json.gz": "93dd7769b28aabaa62f9c3a648728b1fe79b38bf0276d34cbcf9f15351ca7a42"
+  },
+  "cleanup": {
+    "removedBytes": 118928197,
+    "removed": [
+      {
+        "path": ".local/contra-victory/review-integration-green.jsonl",
+        "bytes": 10382
+      },
+      {
+        "path": ".local/contra-victory/fixture-green.jsonl",
+        "bytes": 1829
+      },
+      {
+        "path": ".local/contra-victory/fixture-review-v1.log",
+        "bytes": 317
+      },
+      {
+        "path": ".local/contra-victory/review-death-delay-red.log",
+        "bytes": 219
+      },
+      {
+        "path": ".local/contra-victory/failure-browser.log",
+        "bytes": 143
+      },
+      {
+        "path": ".local/contra-victory/runtime-final.jsonl",
+        "bytes": 7423
+      },
+      {
+        "path": ".local/contra-victory/summary-copy-green.tap",
+        "bytes": 414
+      },
+      {
+        "path": ".local/contra-victory/vet.log",
+        "bytes": 0
+      },
+      {
+        "path": ".local/contra-victory/format.log",
+        "bytes": 104
+      },
+      {
+        "path": ".local/contra-victory/web-dist",
+        "bytes": 99288927
+      },
+      {
+        "path": ".local/contra-victory/boundary-v1",
+        "bytes": 63630
+      },
+      {
+        "path": ".local/contra-victory/browser-v3",
+        "bytes": 594395
+      },
+      {
+        "path": ".local/contra-victory/fixture-review-v1",
+        "bytes": 281240
+      },
+      {
+        "path": ".local/contra-victory/browser-v2",
+        "bytes": 633906
+      },
+      {
+        "path": ".local/contra-victory/browser-review-v1",
+        "bytes": 687602
+      },
+      {
+        "path": ".local/contra-victory/review-contract-green.jsonl",
+        "bytes": 3892
+      },
+      {
+        "path": ".local/contra-victory/replay-v1.log",
+        "bytes": 142
+      },
+      {
+        "path": ".local/contra-victory/browser-v1.log",
+        "bytes": 568
+      },
+      {
+        "path": ".local/contra-victory/summary-green.jsonl",
+        "bytes": 26146
+      },
+      {
+        "path": ".local/contra-victory/browser-skill.txt",
+        "bytes": 38018
+      },
+      {
+        "path": ".local/contra-victory/failure-fixture.log",
+        "bytes": 318
+      },
+      {
+        "path": ".local/contra-victory/browser-v3.log",
+        "bytes": 130
+      },
+      {
+        "path": ".local/contra-victory/build-v3.log",
+        "bytes": 87
+      },
+      {
+        "path": ".local/contra-victory/fixture-red.log",
+        "bytes": 351
+      },
+      {
+        "path": ".local/contra-victory/build-v2.log",
+        "bytes": 87
+      },
+      {
+        "path": ".local/contra-victory/browser-v2.log",
+        "bytes": 701
+      },
+      {
+        "path": ".local/contra-victory/replay-review-v1.log",
+        "bytes": 219
+      },
+      {
+        "path": ".local/contra-victory/build-final.log",
+        "bytes": 87
+      },
+      {
+        "path": ".local/contra-victory/web-review.log",
+        "bytes": 8783
+      },
+      {
+        "path": ".local/contra-victory/summary-red.jsonl",
+        "bytes": 3767
+      },
+      {
+        "path": ".local/contra-victory/review-contract-red.log",
+        "bytes": 1302
+      },
+      {
+        "path": ".local/contra-victory/review-browser-red",
+        "bytes": 62717
+      },
+      {
+        "path": ".local/contra-victory/web-build.log",
+        "bytes": 8783
+      },
+      {
+        "path": ".local/contra-victory/browser-review-v1.log",
+        "bytes": 137
+      },
+      {
+        "path": ".local/contra-victory/fixture-v1.log",
+        "bytes": 280
+      },
+      {
+        "path": ".local/contra-victory/review-final-race.jsonl",
+        "bytes": 20260
+      },
+      {
+        "path": ".local/contra-victory/fixture-v3",
+        "bytes": 264750
+      },
+      {
+        "path": ".local/contra-victory/fixture-v4",
+        "bytes": 260654
+      },
+      {
+        "path": ".local/contra-victory/build-review.log",
+        "bytes": 87
+      },
+      {
+        "path": ".local/contra-victory/frontend-final.log",
+        "bytes": 5699
+      },
+      {
+        "path": ".local/contra-victory/browser-v1",
+        "bytes": 238363
+      },
+      {
+        "path": ".local/contra-victory/fixture-v2.log",
+        "bytes": 310
+      },
+      {
+        "path": ".local/contra-victory/fixture-v2",
+        "bytes": 252413
+      },
+      {
+        "path": ".local/contra-victory/fixture-v3.log",
+        "bytes": 310
+      },
+      {
+        "path": ".local/contra-victory/failure-regression",
+        "bytes": 308448
+      },
+      {
+        "path": ".local/contra-victory/fixture-v4.log",
+        "bytes": 397
+      },
+      {
+        "path": ".local/contra-victory/vet-final.log",
+        "bytes": 0
+      },
+      {
+        "path": ".local/contra-victory/review-runtime-red.log",
+        "bytes": 570
+      },
+      {
+        "path": ".local/contra-victory/build.log",
+        "bytes": 87
+      },
+      {
+        "path": ".local/contra-browser/terminal-review-failure",
+        "bytes": 513541
+      },
+      {
+        "path": ".local/contra-browser/protocol",
+        "bytes": 15321968
+      },
+      {
+        "path": ".local/contra-browser/raster-test",
+        "bytes": 13294
+      }
+    ],
+    "retainedInUse": [
+      ".local/contra-victory/build",
+      ".local/contra-victory/boundary-review-v1"
+    ],
+    "untouchedSource": ".local/contra-bot/diagnostic-alien-terminal",
+    "scope": "Only this task owned expired fixture databases, profiles, failed probes, duplicated outputs and test build caches; original diagnostic input/life-grant records, other games, parent builds and archived evidence remain."
+  }
+}

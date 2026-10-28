@@ -1,0 +1,144 @@
+{
+  "passed": true,
+  "scope": "Original natural inputs and vertical motion routines; independent Go helpers only. Not a full Contra gameplay acceptance.",
+  "observations": {
+    "input": 1440,
+    "beginJump": 11,
+    "gravity": 714,
+    "advanceY": 714
+  },
+  "repeatComparison": [
+    {
+      "scenario": "coop-held-jump",
+      "file": "ram.bin",
+      "sha256": "16a32e5b6fee43924dfc52e37581a260fdb3634d02bf13659562a5d40e0a5dc3",
+      "bytes": 368640
+    },
+    {
+      "scenario": "coop-held-jump",
+      "file": "movement.jsonl",
+      "sha256": "4297b5ade9335268c1946c200793019292288f1159b2506c127ed06f34c8da34",
+      "bytes": 103325
+    },
+    {
+      "scenario": "coop-opposite",
+      "file": "ram.bin",
+      "sha256": "e61160e569c2ee69b76cae0cfab761749692002e7d03e488d5732b31c956ab12",
+      "bytes": 368640
+    },
+    {
+      "scenario": "coop-opposite",
+      "file": "movement.jsonl",
+      "sha256": "1cffb2e68484010d5de3d3f929cf5a0fa01af2dd7407b8e4306ac5be455ba5b8",
+      "bytes": 69348
+    },
+    {
+      "scenario": "coop-pad2-jump",
+      "file": "ram.bin",
+      "sha256": "54e438b66e69d1937883f2b73819c87078dfc2b075fb594b3f321373126ddd72",
+      "bytes": 368640
+    },
+    {
+      "scenario": "coop-pad2-jump",
+      "file": "movement.jsonl",
+      "sha256": "18a647f21db1f0bf18bc8129c0eb68fc6eef9048869c9f25c0f30bbdddb18828",
+      "bytes": 80380
+    },
+    {
+      "scenario": "solo-down-jump",
+      "file": "ram.bin",
+      "sha256": "33d51aa0263d508b8f47b43870a7ce706e7c03aea5a41f3f390441c8cbd4c3b5",
+      "bytes": 368640
+    },
+    {
+      "scenario": "solo-down-jump",
+      "file": "movement.jsonl",
+      "sha256": "6de83c7220bae483771ed300f701b38eccfcac19bad3a17e80f3fef5b153da6b",
+      "bytes": 39652
+    },
+    {
+      "scenario": "solo-jump",
+      "file": "ram.bin",
+      "sha256": "6eb65f06749a86fcae08fcc5eda54216bb8aaf3505e2d280d1487876997f268f",
+      "bytes": 368640
+    },
+    {
+      "scenario": "solo-jump",
+      "file": "movement.jsonl",
+      "sha256": "12ad7328bb70d8088e9a73ec71a2ddf0b83a6d71f11c5b972c9139e64281d4cf",
+      "bytes": 80236
+    },
+    {
+      "scenario": "solo-jump-left",
+      "file": "ram.bin",
+      "sha256": "4eb364e520e9436ffce94c42bb28e213be798bd2bb22bf9eaa446b8450dca94a",
+      "bytes": 368640
+    },
+    {
+      "scenario": "solo-jump-left",
+      "file": "movement.jsonl",
+      "sha256": "c673925c7029ee53e0381032a3ef70651fb8073e1385cc48cb3d3d452f4cb596",
+      "bytes": 59970
+    },
+    {
+      "scenario": "solo-jump-right",
+      "file": "ram.bin",
+      "sha256": "ae104008d7e6e6eb7b193efb2652680eead4245a8bc428fd7f999c25a66c2259",
+      "bytes": 368640
+    },
+    {
+      "scenario": "solo-jump-right",
+      "file": "movement.jsonl",
+      "sha256": "ad8f50246f5b880ccd671d430309b24bdd1758fdb9cb6c25e1c05ee28495f0d7",
+      "bytes": 50676
+    },
+    {
+      "scenario": "solo-port2",
+      "file": "ram.bin",
+      "sha256": "98d360c59c5e0e2928a150328ecdd062f118df57e9f9cf2e3ab842a74bd99e4b",
+      "bytes": 368640
+    },
+    {
+      "scenario": "solo-port2",
+      "file": "movement.jsonl",
+      "sha256": "b7a76d0b4f202a6b13ea422f34d2af45777a4f0815cccf8157092d76a6f5abc7",
+      "bytes": 50483
+    }
+  ],
+  "sourceSHA256": {
+    "games/contra/engine/controls.go": "8997448968036aaee15b2f6c564cbf8358ac5d86ebcebab80544ef27bd61b309",
+    "games/contra/engine/movement.go": "ec945d0fdb15f6c410feb8d2399d6a38d79faedf9476cb7573c41847042b1d67",
+    "games/contra/engine/movement_test.go": "b406d3ff2fd3f60e900568a833008efb8d24dc6969144414ec0f66c69688aac6",
+    "games/contra/engine/testdata/original-movement.json.gz": "df8ba8a047564ff59c9dba8ba0c7932379a351a7d8376f6ea9ece0faf36d87a1",
+    "games/contra/engine/testdata/original-movement-source.json": "b6f56a9c50c7bc3498e8a1ef315e5d97b62bd47e863fb2ecd138044dd2b9315a",
+    "scripts/contra/capture_reference.py": "50a0b75d8fcfbb170a0f4d1729b2b20d69d6718fe69d657f8fc5e4e58d88d095",
+    "scripts/contra/capture_bootstrap.py": "69a3d1d7e968f02dcffe7d68eab362fa22beb16a7658a3d23bc530b708eb70f9",
+    "scripts/contra/capture_movement.py": "c04bdfbc104eec222a7481963f9b5645afc36c228a11a03d67d3f30646e3ed39"
+  },
+  "tests": [
+    "TestOriginalMovementTrace",
+    "TestVerticalArithmeticBoundaries",
+    "TestJumpRetainsSubpixelAndExistingJump",
+    "TestControlsLogicalBitsAndRelease"
+  ],
+  "red": "movement-red.jsonl",
+  "green": "movement-green.jsonl",
+  "reproduce": [
+    "export CONTRA_REFERENCE_ROOT=\"$PWD/.local/contra-recheck-unique\"",
+    ".local/board-art-env/bin/python -B scripts/contra/capture_bootstrap.py",
+    ".local/board-art-env/bin/python -B scripts/contra/capture_movement.py recheck",
+    "source scripts/env.sh",
+    "go test ./games/contra/engine -count=1 -v"
+  ],
+  "cleanup": [
+    ".local/contra-replay",
+    ".local/contra/runs/boot-solo"
+  ],
+  "retained": "Active reference ROM, natural savestates and useful traces remain in .local/contra for ongoing reconstruction; source user ROM was not modified.",
+  "recheckAfterProvenanceFix": {
+    "passed": true,
+    "originalFixtureSourceUnchanged": true,
+    "scenarios": 8,
+    "redundantRunOutputsRemoved": true
+  }
+}

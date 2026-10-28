@@ -1,0 +1,42 @@
+{
+  "status": "regressions-and-assisted-prefix-continuation-pass",
+  "cause": "13 unclassified frames erased a previously disclosed indoor scene",
+  "change": "Keep scene memory across unclassified frames; explicit new stage invalidates it as before. Phase inference still stops after 12 missing frames.",
+  "race_checks_passed": 13,
+  "sources": {
+    "games/contra/engine/bot_tracking.go": "7e78dc336a94f9e1b19e5ccb07b5ea5d0435fd2399fc834f90e2f29c3643df53",
+    "games/contra/engine/bot_scene_memory_test.go": "9d4b5a11a609f991070b463fc90fde4c6d04da8734147762948197166ae8acd9"
+  },
+  "red_log": "coop-scene-memory-red.log",
+  "green_log": "coop-scene-memory-green.log",
+  "diagnostic_run": ".local/contra-bot/runs/coop-base-scene-recovery-v1",
+  "full_campaign_verified": false,
+  "continuation": {
+    "frames": 13486,
+    "level": 2,
+    "prefix_frames": 8500,
+    "restore_checkpoints": 13,
+    "reserve_refills": 31,
+    "source_changed_during_run": false,
+    "passed": true
+  },
+  "replay": {
+    "frames": 13486,
+    "nextStepStoredStateEqual": true,
+    "nextStepStructEqual": true,
+    "recordedStateMatches": true,
+    "roundTripDifferences": [
+      "Session.Audio.Published: nil=false/true len=0/0"
+    ]
+  },
+  "artifacts": {
+    "final-bots.json": "e449f52259011bc36cbb59101c9d1ec95c508aa89d3d8cec0eaddf0715a39e00",
+    "result.json": "c33baf5dd95226dda8f09d7979a3aa6365ffd3e939e1c1848f7ba0fce63b5ad6",
+    "pads.bin.gz": "91f17a0c2c295be4ca1a3447bac1b25983eb271bcfb4baf0a563d7ed9a1bc925",
+    "final-session.json": "7a75afbd45ada5ee89075e511994693b1af2c006662e9af80a82eda8c380800f",
+    "test-life-refills.json": "b33064f47fe1b1fd646f6e8fba53dec449e41d3236a259c61099512b10b9985b",
+    "replay.json": "8b66fa7eb5224b980e74962ff787c2f6588f6c1a950840caf39317ba4eb52894",
+    "trace.jsonl.gz": "02c77b34498b6ef38b8d0244e6171ec51529058b5fdcc308c9eeb13ae4de5123"
+  },
+  "replay_command": "go run ./scripts/contra/replay_bot -run docs/research/nes-contra/evidence/coop-base-scene-recovery"
+}

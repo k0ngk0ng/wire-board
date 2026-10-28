@@ -1,0 +1,9 @@
+{"Time":"2026-10-25T15:28:55.631518+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-25T15:28:56.16882+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalWholeEnemyPhase"}
+{"Time":"2026-10-25T15:28:56.168975+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalWholeEnemyPhase","Output":"=== RUN   TestOriginalWholeEnemyPhase\n"}
+{"Time":"2026-10-25T15:28:56.233761+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalWholeEnemyPhase","Output":"    enemies_collision_tick_test.go:157: machine frame1400 record1 final target projection is stale for actor0\n"}
+{"Time":"2026-10-25T15:28:56.233809+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalWholeEnemyPhase","Output":"--- FAIL: TestOriginalWholeEnemyPhase (0.06s)\n"}
+{"Time":"2026-10-25T15:28:56.233817+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalWholeEnemyPhase","Elapsed":0.06}
+{"Time":"2026-10-25T15:28:56.233825+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\n"}
+{"Time":"2026-10-25T15:28:56.234369+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t0.603s\n"}
+{"Time":"2026-10-25T15:28:56.234381+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":0.603}

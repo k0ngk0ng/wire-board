@@ -1,0 +1,9 @@
+{"Time":"2026-10-26T09:23:00.077628+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-26T09:23:00.62735+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionPublishedTerrain"}
+{"Time":"2026-10-26T09:23:00.627576+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionPublishedTerrain","Output":"=== RUN   TestBuiltinBotVisionPublishedTerrain\n"}
+{"Time":"2026-10-26T09:23:00.662932+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionPublishedTerrain","Output":"    bot_vision_builtin_test.go:46: visual page 64 is not declared\n"}
+{"Time":"2026-10-26T09:23:00.662963+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionPublishedTerrain","Output":"--- FAIL: TestBuiltinBotVisionPublishedTerrain (0.04s)\n"}
+{"Time":"2026-10-26T09:23:00.662969+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionPublishedTerrain","Elapsed":0.04}
+{"Time":"2026-10-26T09:23:00.662987+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\n"}
+{"Time":"2026-10-26T09:23:00.663593+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t0.586s\n"}
+{"Time":"2026-10-26T09:23:00.663621+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":0.586}

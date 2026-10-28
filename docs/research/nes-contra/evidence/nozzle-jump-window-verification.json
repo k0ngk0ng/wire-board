@@ -1,0 +1,26 @@
+{
+  "status": "targeted-tests-pass-continuation-still-incomplete",
+  "change": "Retain only observed flame/nozzle positions for up to eight public frames. Permit risky ascent only during the first quiet observations after recently visible fire, rather than any frame with no recognized fire. No hidden timer or live emission length is read.",
+  "sources": {
+    "games/contra/engine/bot.go": "c32630b15e41833e2cb603d634007d1833fdd166ef1e2d7c45b6ea5e2c482914",
+    "games/contra/engine/bot_nozzle_navigation.go": "ce3f285113dcff222e336db3f81d277273732547d9aeea0724e57c91fe0ece2b",
+    "games/contra/engine/bot_nozzle_jump_window_test.go": "004dad37416111b8574afe347558bb42a23dc7c217ee80eeb1ebde4c9a9fc87b"
+  },
+  "race_log": "nozzle-opening-green.log",
+  "new_run": ".local/contra-bot/diagnostic-energy-quiet-opening",
+  "complete_campaign": false,
+  "previous_run_result": {
+    "frames": 104000,
+    "level_index": 5,
+    "screen": 5,
+    "complete_campaign": false
+  },
+  "test_context_note": "Existing duck and middle-platform tests now provide a recent public beam observation to satisfy the new jump-opening prerequisite; their original movement assertions remain.",
+  "new_run_result": {
+    "frames": 108000,
+    "level_index": 5,
+    "screen": 5,
+    "complete_campaign": false
+  },
+  "remaining_issue": "Short quiet-gap heuristics still fail the live fire corridor. Must distinguish actual retraction from fire hidden by the player before claiming a safe jump window."
+}

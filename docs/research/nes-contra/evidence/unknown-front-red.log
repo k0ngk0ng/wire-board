@@ -1,0 +1,6 @@
+=== RUN   TestBotUnknownFrontDoesNotInventCliff
+    bot_unknown_front_test.go:33: unknown patch became an invented jump or blind movement 193
+--- FAIL: TestBotUnknownFrontDoesNotInventCliff (0.00s)
+FAIL
+FAIL	github.com/k0ngk0ng/wire-board/games/contra/engine	0.546s
+FAIL

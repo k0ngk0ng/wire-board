@@ -1,0 +1,85 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "original music starts three independent tonal lanes",
+      "passed": true,
+      "tracks": [
+        {
+          "key": "contra/slot-0",
+          "src": "http://127.0.0.1:61345/media/65bb73cbfba38784a7b162f043b2e0194e668fce43a07270ab522c1975095502",
+          "time": 0.125522
+        },
+        {
+          "key": "contra/slot-1",
+          "src": "http://127.0.0.1:61345/media/41351fffe20a903e5c2ed3ec7b1ebcb4ea41409fb9e95057a7e19d0c7b7d3483",
+          "time": 0.125525
+        },
+        {
+          "key": "contra/slot-2",
+          "src": "http://127.0.0.1:61345/media/a1145ed8aa219371749df86eea5ca6c4363a4241ba63756fa172edf1dffbd366",
+          "time": 0.125528
+        }
+      ]
+    },
+    {
+      "name": "accepted gun mutes pulse1 without pausing its clock",
+      "passed": true,
+      "time": 0.131279
+    },
+    {
+      "name": "pause freezes background and old noise while cue74 plays",
+      "passed": true,
+      "time": 0.254612
+    },
+    {
+      "name": "cue expiry releases its lane and keeps prior noise frozen",
+      "passed": true,
+      "time": 0.254612
+    },
+    {
+      "name": "resume accepts a new gun and keeps music identity",
+      "passed": true
+    },
+    {
+      "name": "reset stops old song before replacing all tonal lanes",
+      "passed": true
+    },
+    {
+      "name": "history gap restores song position and never missed effects",
+      "passed": true,
+      "sequence": 284,
+      "time": 0
+    },
+    {
+      "name": "old snapshot and old epoch cannot rewind or replace",
+      "passed": true,
+      "time": 2.042514
+    },
+    {
+      "name": "unmute resync cannot resurrect stopped playback IDs",
+      "passed": true
+    },
+    {
+      "name": "native page hiding stops the owner and old views stay silent",
+      "events": [
+        "hidden",
+        "visible"
+      ],
+      "passed": true
+    },
+    {
+      "name": "dispose and late updates cannot restart media",
+      "passed": true
+    }
+  ],
+  "scope": "Production Go AudioState snapshots → Contra adapter → platform GameAudio → native Chromium HTMLAudioElement. No ROM runtime, physical-device audio capture, listening or nonlinear-mix acceptance.",
+  "sources": {
+    "web/src/audio.ts": "81b5bf6449e43196af8ae7320c7699d5dd02ed7493aec1c1dd13cfdbfd878e43",
+    "games/contra/web/audio.ts": "3804b063d320484e671f71895ed7e89580b7dd7393ff1c3014bfdbefe0ff1ed4",
+    "games/contra/engine/audio_control.go": "bde8282741e22d6daedef20baba0b538593d4f4eff4fefc8fc1cfa05bdb070f1",
+    "games/contra/engine/audio_control_data.json": "34ccedb60f81dd76def7f8093f4d6e1ffffdca4dffede6603e9a8bbc84109f7b",
+    "scripts/contra/audio_fixture.go": "f72a46ad2671134b81bf7adb9bf36a3bbcf278fc424eb0f3bc23d129d33c925b",
+    "scripts/contra/audio_accept.py": "3c3032f676ce7b2c279badcd2e11537de46e4fe3e978c66421b30f90577c84c1"
+  }
+}

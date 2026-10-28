@@ -1,0 +1,22 @@
+{
+  "scope": "Independent legal-input replay of an assisted diagnostic prefix continuation; not full-policy or full-campaign acceptance",
+  "frames": 68000,
+  "level_index": 5,
+  "screen": 4,
+  "source_run": ".local/contra-bot/diagnostic-energy-family-fixed",
+  "replay": {
+    "frames": 68000,
+    "nextStepStoredStateEqual": true,
+    "nextStepStructEqual": true,
+    "recordedStateMatches": true,
+    "roundTripDifferences": null
+  },
+  "inputs": {
+    "pads.bin.gz": "9ba6c356b40c136c50ded54c20507b1d6a5757a411dee1b107b337e6064f795a",
+    "test-life-refills.json": "fdf2862571c82ea06d291fa458b12b25146df1f760a29a3420bd3abb60c8511b",
+    "final-session.json": "b10cd7189832b78f4dbbd1fee6c8498ff4165040e6ad8f57c1f8babc79e6ddef",
+    "result.json": "20f02e287ce259f36a8da16f8bed0ff227263f171b4d2974ec80054ff36ad6a2"
+  },
+  "replay_command": "go run ./scripts/contra/replay_bot -run .local/contra-bot/diagnostic-energy-family-fixed",
+  "complete_campaign": false
+}

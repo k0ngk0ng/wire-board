@@ -1,0 +1,22 @@
+=== RUN   TestBotEnergyFloorBehindVisibleFeet
+=== RUN   TestBotEnergyFloorBehindVisibleFeet/67938
+    bot_vision_terrain_player_test.go:21: visible floor remainder lost behind feet 1 0 false 0
+=== RUN   TestBotEnergyFloorBehindVisibleFeet/67944
+    bot_vision_terrain_player_test.go:21: visible floor remainder lost behind feet 1 0 false 0
+--- FAIL: TestBotEnergyFloorBehindVisibleFeet (2.29s)
+    --- FAIL: TestBotEnergyFloorBehindVisibleFeet/67938 (1.15s)
+    --- FAIL: TestBotEnergyFloorBehindVisibleFeet/67944 (1.14s)
+=== RUN   TestBotMaskedTerrainRequiresIdentifiedBodyAndUniqueMaterial
+=== RUN   TestBotMaskedTerrainRequiresIdentifiedBodyAndUniqueMaterial/complete
+    bot_vision_terrain_player_test.go:89: complete body did not permit unique current-pixel recovery
+=== RUN   TestBotMaskedTerrainRequiresIdentifiedBodyAndUniqueMaterial/no-player
+=== RUN   TestBotMaskedTerrainRequiresIdentifiedBodyAndUniqueMaterial/ambiguous
+=== RUN   TestBotMaskedTerrainRequiresIdentifiedBodyAndUniqueMaterial/transparent-hole
+--- FAIL: TestBotMaskedTerrainRequiresIdentifiedBodyAndUniqueMaterial (0.01s)
+    --- FAIL: TestBotMaskedTerrainRequiresIdentifiedBodyAndUniqueMaterial/complete (0.00s)
+    --- PASS: TestBotMaskedTerrainRequiresIdentifiedBodyAndUniqueMaterial/no-player (0.00s)
+    --- PASS: TestBotMaskedTerrainRequiresIdentifiedBodyAndUniqueMaterial/ambiguous (0.00s)
+    --- PASS: TestBotMaskedTerrainRequiresIdentifiedBodyAndUniqueMaterial/transparent-hole (0.00s)
+FAIL
+FAIL	github.com/k0ngk0ng/wire-board/games/contra/engine	2.815s
+FAIL

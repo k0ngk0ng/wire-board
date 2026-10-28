@@ -1,0 +1,12 @@
+✔ stage resource catalog is source-bound, small, and scene-specific (3.615625ms)
+✔ every published level preset and enabled animation page is present (0.707875ms)
+✔ scene and terminal sets keep specific source resources (0.078167ms)
+✔ declared audio recursively covers native percussion and end callbacks (2.441125ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 39.880667

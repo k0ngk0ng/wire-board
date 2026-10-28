@@ -1,0 +1,6 @@
+=== RUN   TestBotNozzleCrouchDoesNotSurviveControlGap
+    bot_crouch_occlusion_test.go:50: stale crouch carried across manual control gap
+--- FAIL: TestBotNozzleCrouchDoesNotSurviveControlGap (0.00s)
+FAIL
+FAIL	github.com/k0ngk0ng/wire-board/games/contra/engine	0.632s
+FAIL

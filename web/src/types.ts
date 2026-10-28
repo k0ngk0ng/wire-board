@@ -160,6 +160,9 @@ export type GameHeader = {
   log: string[];
 };
 export type RoomBase = {
+  ratingPolicy?: string;
+  ratingStarted?: boolean;
+  ratingEligible?: boolean;
   matchId?: string;
   loading?: import("./game-api/module").GameRoom["loading"];
   clockOffsetMs?: number;
@@ -171,6 +174,9 @@ export type RoomBase = {
     unrated?: boolean;
     draw?: boolean;
     cooperative?: boolean;
+    ratingPolicy?: string;
+    outcome?: string;
+    unratedReason?: string;
     players: (User & { ratingDelta?: number; rank?: number; bot?: boolean })[];
   };
   spectating?: boolean;

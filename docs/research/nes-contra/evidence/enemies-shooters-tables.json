@@ -1,0 +1,424 @@
+{
+  "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "tables": {
+    "shotDirectionIndex": {
+      "cpu": "0xf2e5",
+      "rom_offset": 127733,
+      "bytes": [
+        0,
+        2,
+        4,
+        6,
+        8,
+        10,
+        12,
+        10,
+        8,
+        6,
+        4,
+        2,
+        0,
+        2,
+        4,
+        6,
+        8,
+        10,
+        12,
+        10,
+        8,
+        6,
+        4,
+        2
+      ],
+      "sha256": "0fd7fb2caff359aa35609aa4e43033326f0b69ebd3126ab672ee8ff4e37d8adc"
+    },
+    "shotComponents": {
+      "cpu": "0xf2fd",
+      "rom_offset": 127757,
+      "bytes": [
+        0,
+        255,
+        66,
+        247,
+        128,
+        221,
+        181,
+        181,
+        221,
+        128,
+        247,
+        66,
+        255,
+        0
+      ],
+      "sha256": "3bafd364707205550702ca9a769d4e0c780dcefc0ed20d907b56c0e06966e33c"
+    },
+    "aimQuarter12": {
+      "cpu": "0xf518",
+      "rom_offset": 128296,
+      "bytes": [
+        0,
+        0,
+        0,
+        0,
+        50,
+        17,
+        0,
+        0,
+        50,
+        17,
+        17,
+        17,
+        50,
+        34,
+        17,
+        17,
+        51,
+        34,
+        17,
+        17,
+        51,
+        34,
+        34,
+        17,
+        51,
+        34,
+        34,
+        17,
+        51,
+        34,
+        34,
+        34
+      ],
+      "sha256": "3294a46d8e39563e71bd8de842ef60ce02234e8e91846611d6fea0856bfa8cca"
+    },
+    "aimQuarter24": {
+      "cpu": "0xf538",
+      "rom_offset": 128328,
+      "bytes": [
+        0,
+        0,
+        0,
+        0,
+        99,
+        33,
+        17,
+        17,
+        100,
+        50,
+        33,
+        17,
+        101,
+        67,
+        34,
+        34,
+        101,
+        68,
+        51,
+        34,
+        101,
+        84,
+        51,
+        50,
+        101,
+        84,
+        67,
+        51,
+        101,
+        84,
+        68,
+        51
+      ],
+      "sha256": "9c00718a5a0bdb0b428c1ea3b991180d31123ffaafdfa9d2b8fa3f6c0e4784a2"
+    },
+    "sniperInitialDelay": {
+      "cpu": "0x8988",
+      "rom_offset": 2456,
+      "bytes": [
+        1,
+        48,
+        128
+      ],
+      "sha256": "1759e150522ae5e0d2c8ab58ba3426659edd90a742d5dd454e171d78b45891a6"
+    },
+    "sniperHideDelay": {
+      "cpu": "0x898b",
+      "rom_offset": 2459,
+      "bytes": [
+        1,
+        96,
+        128
+      ],
+      "sha256": "f1a4e7e36c9a67ce62080117f561297e506ef8072a8d74dc8bf4d8bdccaacbd1"
+    },
+    "sniperInitialFrame": {
+      "cpu": "0x898e",
+      "rom_offset": 2462,
+      "bytes": [
+        3,
+        0,
+        0
+      ],
+      "sha256": "3e4479e6b5a0a3bed1440325ca4bb09327a1dfb39c28bdd59de53a687ade0105"
+    },
+    "sniperAttackDelay": {
+      "cpu": "0x89db",
+      "rom_offset": 2539,
+      "bytes": [
+        64,
+        4,
+        16
+      ],
+      "sha256": "a143a4dbcde4a394bea49156dd4f9aec6ff1194cdbfa0eabc9b255728f0c6141"
+    },
+    "sniperShots": {
+      "cpu": "0x89de",
+      "rom_offset": 2542,
+      "bytes": [
+        3,
+        1,
+        3
+      ],
+      "sha256": "12124c735fd95b9aa2dbe65ae22452b657e5f01e313028efcd52d58742a8c122"
+    },
+    "sniperFireFrame": {
+      "cpu": "0x8ab6",
+      "rom_offset": 2758,
+      "bytes": [
+        4,
+        3,
+        5
+      ],
+      "sha256": "40d8597ea9a489ae7d1e43e93de718c7c5ccdf3299fd58493b2f6f777d51550d"
+    },
+    "sniperFireY": {
+      "cpu": "0x8ab9",
+      "rom_offset": 2761,
+      "bytes": [
+        238,
+        245,
+        6
+      ],
+      "sha256": "54ca32d0a9a40258a114e73c77200ac77326079600be7239e58e55bad377055e"
+    },
+    "sniperFireX": {
+      "cpu": "0x8abc",
+      "rom_offset": 2764,
+      "bytes": [
+        243,
+        241,
+        241
+      ],
+      "sha256": "8735f3b76c77581358067c78afd23a09429260fa4ba43c4e9b8dfe7d3d3545c1"
+    },
+    "sniperFireSpeed": {
+      "cpu": "0x8abf",
+      "rom_offset": 2767,
+      "bytes": [
+        3,
+        5,
+        3
+      ],
+      "sha256": "0b0d6f945c2ebd6e6c4e16ca65649e9e9256cd8080f2364cc82b788d374a5eb1"
+    },
+    "turretBurstCounts": {
+      "cpu": "0x842f",
+      "rom_offset": 1087,
+      "bytes": [
+        1,
+        2,
+        3,
+        3
+      ],
+      "sha256": "ffaf96eeed0eaac39025bf016f9a4c25499c4468ad84a725f967cd778ee018a6"
+    },
+    "turretRotationDelays": {
+      "cpu": "0x847a",
+      "rom_offset": 1162,
+      "bytes": [
+        48,
+        40,
+        32,
+        24
+      ],
+      "sha256": "c6bb296efe0078c57854877d0367a16458d59f70c5a4346610d8303907473eb5"
+    },
+    "turretAttackDelays": {
+      "cpu": "0x847e",
+      "rom_offset": 1166,
+      "bytes": [
+        128,
+        96,
+        64,
+        48
+      ],
+      "sha256": "b340b3b34a336b8f2934223f54855feda66b8256aceb525721596cb7f8dcc9fd"
+    },
+    "turretFireOffsets": {
+      "cpu": "0x8482",
+      "rom_offset": 1170,
+      "bytes": [
+        0,
+        7,
+        12,
+        13,
+        12,
+        7,
+        0,
+        249,
+        244,
+        243,
+        244,
+        249,
+        0,
+        7,
+        12
+      ],
+      "sha256": "de4b510c8787c933f57481bb7673c56526d10cff55deb5e1210dee8d1605f074"
+    },
+    "redTurretFrames": {
+      "cpu": "0x853b",
+      "rom_offset": 1355,
+      "bytes": [
+        22,
+        20,
+        24,
+        17,
+        23,
+        21,
+        24,
+        17,
+        17,
+        18,
+        19
+      ],
+      "sha256": "bab1df4e30afda8d7baaa51beb668583310e83a051659c16f55a6df5ce417e5b"
+    },
+    "redTurretFireY": {
+      "cpu": "0x85da",
+      "rom_offset": 1514,
+      "bytes": [
+        0,
+        248,
+        240
+      ],
+      "sha256": "1acf5094a070dac1ee3c7855bed1c29395e0cf3c55adc1cb036840cf8726282f"
+    },
+    "redTurretFireX": {
+      "cpu": "0x85dd",
+      "rom_offset": 1517,
+      "bytes": [
+        242,
+        242,
+        248
+      ],
+      "sha256": "b8f3639a3829c557735cc15c3ffdb9dd4813a19c9701bb15b0a91004e9ca6bb6"
+    },
+    "bossCannonSpeed": {
+      "cpu": "0x8ba1",
+      "rom_offset": 2993,
+      "bytes": [
+        1,
+        3,
+        5,
+        7
+      ],
+      "sha256": "e6e8cb429864b8e8d7fe95e53360dbd00756316813fb1e4a03a778d4632dbde6"
+    },
+    "bossCannonFrames": {
+      "cpu": "0x8bc8",
+      "rom_offset": 3032,
+      "bytes": [
+        41,
+        38,
+        42,
+        39,
+        43,
+        40
+      ],
+      "sha256": "67be9bf4328b73ba43a6bdb3332fbe70f828f181fe649fc88dd74129caa2230e"
+    },
+    "bossDoorOffsets": {
+      "cpu": "0x8c40",
+      "rom_offset": 3152,
+      "bytes": [
+        240,
+        240,
+        32,
+        0,
+        224,
+        32,
+        32,
+        0,
+        224,
+        32,
+        32,
+        0,
+        224,
+        32,
+        32,
+        0,
+        255
+      ],
+      "sha256": "70dbc03b6989787866116e3b6d088940575a476c6ffce696174515d8f1cd40b8"
+    },
+    "bossDoorFrames": {
+      "cpu": "0x8c51",
+      "rom_offset": 3169,
+      "bytes": [
+        30,
+        34,
+        31,
+        35,
+        32,
+        36,
+        33,
+        37
+      ],
+      "sha256": "1548ada0c1bd7f8cff7e6568a92177f7257f7a29d95419178427197125580b20"
+    },
+    "bossDoorCollision": {
+      "cpu": "0x8c59",
+      "rom_offset": 3177,
+      "bytes": [
+        0,
+        0,
+        0,
+        4,
+        0,
+        4,
+        0,
+        4
+      ],
+      "sha256": "43ade8e63dcb11e1ec417e983de90476c87421cb7cd30faa7b8a31df0e888161"
+    },
+    "sniperSprites0": {
+      "cpu": "0x8b4a",
+      "rom_offset": 2906,
+      "bytes": [
+        68,
+        69,
+        70,
+        67,
+        66,
+        65,
+        41
+      ],
+      "sha256": "09d65b60ed4a37068b5adaf73a21f956e87cdaa0e694b2f68beb0ab79bc510d3"
+    },
+    "sniperSprites1": {
+      "cpu": "0x8b51",
+      "rom_offset": 2913,
+      "bytes": [
+        68,
+        69,
+        70,
+        44,
+        66,
+        45,
+        41
+      ],
+      "sha256": "3297d88d84cb7b5fef62930048821016df98a91b50bdf494ac176c0698560303"
+    }
+  }
+}

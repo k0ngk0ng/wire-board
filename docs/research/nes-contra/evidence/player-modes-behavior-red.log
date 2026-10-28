@@ -1,0 +1,6 @@
+=== RUN   TestOriginalPlayerBaseBossAndWaterfallModes
+    player_modes_test.go:32: base2-controls normal frame1400 actor0: player lifecycle currently requires horizontal outdoor context
+--- FAIL: TestOriginalPlayerBaseBossAndWaterfallModes (1.29s)
+FAIL
+FAIL	command-line-arguments	1.809s
+FAIL

@@ -1,0 +1,6 @@
+=== RUN   TestBotBaseRollerDodgeReleasesCrouchForJump
+    bot_base_jump_input_test.go:14: roller dodge retains neutral Down+A instead of jumping 196
+--- FAIL: TestBotBaseRollerDodgeReleasesCrouchForJump (0.00s)
+FAIL
+FAIL	github.com/k0ngk0ng/wire-board/games/contra/engine	0.571s
+FAIL

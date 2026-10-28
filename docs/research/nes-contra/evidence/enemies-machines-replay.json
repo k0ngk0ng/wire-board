@@ -1,0 +1,110 @@
+{
+  "passed": true,
+  "scope": "Exact original replay only; independent-engine tests are a separate check. Saved stage entry overrides and controlled function-boundary interventions remain declared.",
+  "runs": [
+    {
+      "fixture": "games/contra/engine/testdata/original-enemy-machines-cases.json.gz",
+      "fixtureSHA256": "b7964055ca4b49984a209e0ef8a895099e78d95d0843d80f5d68e83a321dba1e",
+      "originalScenario": "machines-cases-v2",
+      "replayScenario": "machines-replay-v1-0-0-s7",
+      "records": 546,
+      "ramSHA256": "aa4ab1acd5dd8c320e3a7b905fdf0acdc0f987f01646427ad83c1df74cd3608a"
+    },
+    {
+      "fixture": "games/contra/engine/testdata/original-enemy-machines-common.json.gz",
+      "fixtureSHA256": "5ab7381d8519bbe3d8b932676c2a25d459044aec9ce2a224fa7bab03f364f09d",
+      "originalScenario": "machines-cases-common-v1",
+      "replayScenario": "machines-replay-v1-1-0-s7",
+      "records": 469,
+      "ramSHA256": "bbed784e5d5105a7fa98f696af9a3c4e085722d573ee0b9de364ed9f1b9c336a"
+    },
+    {
+      "fixture": "games/contra/engine/testdata/original-enemy-machines-edges.json.gz",
+      "fixtureSHA256": "f2e4606bf9c458b40230cc0f222d86bb83e0ad722368f176fee44d2883bd7a73",
+      "originalScenario": "machines-cases-edges-v1",
+      "replayScenario": "machines-replay-v1-2-0-s7",
+      "records": 15,
+      "ramSHA256": "c3b2add09eb73ab44d38c8db80c53bd06f7601544d0444cd674964387dac2186"
+    },
+    {
+      "fixture": "games/contra/engine/testdata/original-enemy-machines-giant-audio.json.gz",
+      "fixtureSHA256": "2636891ed8c568d489bde9a20f297cf69050fc88e32b92a152c1cd86a4a936f4",
+      "originalScenario": "machines-cases-giant-audio-v2",
+      "replayScenario": "machines-replay-v1-3-0-s7",
+      "records": 9,
+      "ramSHA256": "1b56ecab8049d2815db6ddb7615e931fee58250ccfa475b603aae47ff47283ca"
+    },
+    {
+      "fixture": "games/contra/engine/testdata/original-enemy-machines-giant.json.gz",
+      "fixtureSHA256": "da1db311b506ba144e56162071950d8af6fd98936e7f16670961a5942f4619cb",
+      "originalScenario": "machines-cases-giant-v1",
+      "replayScenario": "machines-replay-v1-4-0-s7",
+      "records": 342,
+      "ramSHA256": "f8abdcdab3f94fc5ba42d36183e37f51ae505459bb3e41c7e1f53efa4ce4d3e4"
+    },
+    {
+      "fixture": "games/contra/engine/testdata/original-enemy-machines-graphics-controlled.json.gz",
+      "fixtureSHA256": "a7e7933bf95016109e10b66f93a053473432f854fec11d43eb98bb3a7677316a",
+      "originalScenario": "tile-animation-v1",
+      "replayScenario": "machines-replay-v1-5-0-s7",
+      "records": 1920,
+      "ramSHA256": "d4d3437408d141c5eb69950f50267011cc443bedb5c7d9ed0e36d1f711436c08"
+    },
+    {
+      "fixture": "games/contra/engine/testdata/original-enemy-machines-graphics-natural.json.gz",
+      "fixtureSHA256": "ec6c1a42aa798416513362d49849447a2499d16086e83354541b6aa6bb13036a",
+      "originalScenario": "tile-animation-natural-v1",
+      "replayScenario": "machines-replay-v1-6-0-s7",
+      "records": 360,
+      "ramSHA256": "5ec7bc2a7433b8a562a368236db0b3dee83efdfba0eaa7a2e362fe58574e212c"
+    },
+    {
+      "fixture": "games/contra/engine/testdata/original-enemy-machines-mechanisms.json.gz",
+      "fixtureSHA256": "20a45759bd3cc73bbd93e01d1577cec6ebb93760898276e28772349bfaf3a1e8",
+      "originalScenario": "machines-cases-mechanisms-v1",
+      "replayScenario": "machines-replay-v1-7-0-s7",
+      "records": 542,
+      "ramSHA256": "b580fb55f85932639b53296c284d640864b9ab109677cd38493672651cf66256"
+    },
+    {
+      "fixture": "games/contra/engine/testdata/original-enemy-machines-natural.json.gz",
+      "fixtureSHA256": "ea1252181c643d47a9889103f2c3bbf1f01397c79acb2e2a15e769c175183e27",
+      "originalScenario": "machines-natural-v1-6",
+      "replayScenario": "machines-replay-v1-8-0-s6",
+      "records": 0,
+      "ramSHA256": "9f8a2117de706b5cd8ef39a631b79a712ebadf781de01810e06ef0f5a243358a"
+    },
+    {
+      "fixture": "games/contra/engine/testdata/original-enemy-machines-natural.json.gz",
+      "fixtureSHA256": "ea1252181c643d47a9889103f2c3bbf1f01397c79acb2e2a15e769c175183e27",
+      "originalScenario": "machines-natural-v1-7",
+      "replayScenario": "machines-replay-v1-9-0-s7",
+      "records": 6845,
+      "ramSHA256": "5ec7bc2a7433b8a562a368236db0b3dee83efdfba0eaa7a2e362fe58574e212c"
+    },
+    {
+      "fixture": "games/contra/engine/testdata/original-enemy-machines-walls.json.gz",
+      "fixtureSHA256": "ae3626556b602d3de9e5706d25604130887461e6a80f7caf9520e8d6de5cd43c",
+      "originalScenario": "machines-cases-walls-v1",
+      "replayScenario": "machines-replay-v1-10-0-s7",
+      "records": 207,
+      "ramSHA256": "192f157c25895f2a704e46e213c7a43034f8db152a66ee5fe08ef5e91b44b02f"
+    },
+    {
+      "fixture": "games/contra/engine/testdata/original-enemy-machines-spawn-variants.json.gz",
+      "fixtureSHA256": "28be21dacc0d0ac186467ad4b410854058320615a26be62bbe0245e9ad8ca9f5",
+      "originalScenario": "machines-cases-spawn-variants-v1",
+      "replayScenario": "machines-replay-spawn-v1-0-0-s7",
+      "records": 18,
+      "ramSHA256": "db8b18155ee194e7e70f339eb677e5e92f21842094e49b6ace06aff60de84cff"
+    },
+    {
+      "fixture": "games/contra/engine/testdata/original-enemy-machines-mortar-vertical.json.gz",
+      "fixtureSHA256": "6ec9285d529993b0fa2c54be8793bb5e0c948513d372f6a62d0667267e047f7c",
+      "originalScenario": "machines-cases-mortar-vertical-v1",
+      "replayScenario": "machines-replay-vertical-v1-0-0-s7",
+      "records": 108,
+      "ramSHA256": "2ccfd6b6ccf7178ab254ffda747faaad784b02b004587eb24121e4ebb70715c9"
+    }
+  ]
+}

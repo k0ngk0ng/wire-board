@@ -1,0 +1,6 @@
+=== RUN   TestBotDropRequiresVisibleSupportInCurrentColumn
+    bot_drop_admission_test.go:20: adjacent landing bypasses same-column admission 132 131
+--- FAIL: TestBotDropRequiresVisibleSupportInCurrentColumn (0.00s)
+FAIL
+FAIL	github.com/k0ngk0ng/wire-board/games/contra/engine	0.611s
+FAIL

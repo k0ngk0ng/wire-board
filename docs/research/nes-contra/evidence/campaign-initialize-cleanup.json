@@ -1,0 +1,294 @@
+{
+  "scope": "Only this initialization task private cache, failed short probe, repeated capture intermediates and redundant green outputs. Primary original captures, complete REA records, source slices, first red and source-bound final race are retained.",
+  "removed": [
+    {
+      "path": ".local/contra-campaign-initialize/swift-cache",
+      "bytes": 93401456
+    },
+    {
+      "path": "dist/cci-tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/stage1-p2",
+      "bytes": 2133191
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/fceux-home",
+      "bytes": 17784
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runtime",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-preserve-stage3/record.lua",
+      "bytes": 4847
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-preserve-stage3/initial-ram.bin",
+      "bytes": 2048
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-preserve-stage3/source.json",
+      "bytes": 787
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-preserve-stage3/frame-01700-ppu.bin",
+      "bytes": 16384
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-preserve-stage3/capture-complete.json",
+      "bytes": 21
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-preserve-stage3/emulator.log",
+      "bytes": 957
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-preserve-stage3/hashes.json",
+      "bytes": 971
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-preserve-stage3/frames.csv",
+      "bytes": 35605
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-preserve-stage3/inputs.csv",
+      "bytes": 15114
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-preserve-stage3/initial-prg.bin",
+      "bytes": 32768
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-preserve-stage3/frame-01700.png",
+      "bytes": 8286
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-preserve-stage3/scenario.json",
+      "bytes": 3132
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-preserve-stage3/frame-01700-prg.bin",
+      "bytes": 32768
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-preserve-stage3/frame-01700.gd",
+      "bytes": 245771
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-preserve-stage3/initialize.jsonl",
+      "bytes": 123359
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-preserve-stage3/ram.bin",
+      "bytes": 3686400
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-preserve-stage8/record.lua",
+      "bytes": 4846
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-preserve-stage8/initial-ram.bin",
+      "bytes": 2048
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-preserve-stage8/source.json",
+      "bytes": 787
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-preserve-stage8/frame-01700-ppu.bin",
+      "bytes": 16384
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-preserve-stage8/capture-complete.json",
+      "bytes": 21
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-preserve-stage8/emulator.log",
+      "bytes": 957
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-preserve-stage8/hashes.json",
+      "bytes": 971
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-preserve-stage8/frames.csv",
+      "bytes": 35605
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-preserve-stage8/inputs.csv",
+      "bytes": 15114
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-preserve-stage8/initial-prg.bin",
+      "bytes": 32768
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-preserve-stage8/frame-01700.png",
+      "bytes": 7191
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-preserve-stage8/scenario.json",
+      "bytes": 3131
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-preserve-stage8/frame-01700-prg.bin",
+      "bytes": 32768
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-preserve-stage8/frame-01700.gd",
+      "bytes": 245771
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-preserve-stage8/initialize.jsonl",
+      "bytes": 123357
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-preserve-stage8/ram.bin",
+      "bytes": 3686400
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-stage1-p2-v2/record.lua",
+      "bytes": 4849
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-stage1-p2-v2/initial-ram.bin",
+      "bytes": 2048
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-stage1-p2-v2/source.json",
+      "bytes": 787
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-stage1-p2-v2/frame-01700-ppu.bin",
+      "bytes": 16384
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-stage1-p2-v2/capture-complete.json",
+      "bytes": 21
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-stage1-p2-v2/emulator.log",
+      "bytes": 957
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-stage1-p2-v2/hashes.json",
+      "bytes": 971
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-stage1-p2-v2/frames.csv",
+      "bytes": 35605
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-stage1-p2-v2/inputs.csv",
+      "bytes": 15114
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-stage1-p2-v2/initial-prg.bin",
+      "bytes": 32768
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-stage1-p2-v2/frame-01700.png",
+      "bytes": 6166
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-stage1-p2-v2/scenario.json",
+      "bytes": 3131
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-stage1-p2-v2/frame-01700-prg.bin",
+      "bytes": 32768
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-stage1-p2-v2/frame-01700.gd",
+      "bytes": 245771
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-stage1-p2-v2/initialize.jsonl",
+      "bytes": 123359
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-stage1-p2-v2/ram.bin",
+      "bytes": 3686400
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-stage2-p2/record.lua",
+      "bytes": 4849
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-stage2-p2/initial-ram.bin",
+      "bytes": 2048
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-stage2-p2/source.json",
+      "bytes": 787
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-stage2-p2/frame-01700-ppu.bin",
+      "bytes": 16384
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-stage2-p2/capture-complete.json",
+      "bytes": 21
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-stage2-p2/emulator.log",
+      "bytes": 957
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-stage2-p2/hashes.json",
+      "bytes": 971
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-stage2-p2/frames.csv",
+      "bytes": 35605
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-stage2-p2/inputs.csv",
+      "bytes": 15114
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-stage2-p2/initial-prg.bin",
+      "bytes": 32768
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-stage2-p2/frame-01700.png",
+      "bytes": 9393
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-stage2-p2/scenario.json",
+      "bytes": 3128
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-stage2-p2/frame-01700-prg.bin",
+      "bytes": 32768
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-stage2-p2/frame-01700.gd",
+      "bytes": 245771
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-stage2-p2/initialize.jsonl",
+      "bytes": 123359
+    },
+    {
+      "path": ".local/contra-campaign-initialize/oracle/runs/repeat-stage2-p2/ram.bin",
+      "bytes": 3686400
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/campaign-initialize-first.jsonl",
+      "bytes": 55681
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/campaign-initialize-race.jsonl",
+      "bytes": 55708
+    }
+  ],
+  "bytes_removed": 112498579
+}

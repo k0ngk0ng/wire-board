@@ -1,0 +1,64 @@
+{
+  "date": "2026-10-25",
+  "platform_commit": "4dd8f48e7f4becec401e9a2ba9c67d556f0b0249",
+  "passed": true,
+  "checks": [
+    "ROM probe repeated with byte-identical JSON",
+    "Japan and USA payloads match pinned No-Intro records",
+    "5 input ZIPs CRC-valid and unchanged during each probe",
+    "REA archive inspection and real Ghidra 6502 function analysis completed",
+    "REA pseudocode warning preserved",
+    "document local links and JSON valid",
+    "Python AST and shell syntax valid"
+  ],
+  "not_run": [
+    "gameplay execution",
+    "original full campaign",
+    "browser E2E",
+    "new scoring implementation"
+  ],
+  "files": [
+    {
+      "path": "docs/research/nes-contra/README.md",
+      "sha256": "433f2fc2cae03a2c4ab451b621ed8320beccb43bca2c4690361376b139bab173",
+      "bytes": 24061
+    },
+    {
+      "path": "scripts/contra/probe_roms.py",
+      "sha256": "278179d7605fa7eef0d4e92195ab51e89565b5bccad7888ff625e7210d1109ec",
+      "bytes": 5513
+    },
+    {
+      "path": "scripts/contra/probe_rea.sh",
+      "sha256": "fbb9fa836e951f63be80135252ea57491cfd48afe69f27758883e44b2ceb3234",
+      "bytes": 1281
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/rea-archive.json",
+      "sha256": "6128c3a5f6cf4069fb39f57b36283c35a2755dc6a86593bc977ef8839a184186",
+      "bytes": 12894
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/rea-reset-function.json",
+      "sha256": "be5f1056231a20ad030d1f9f44e40dac8426adf92777007cffce223fe4087b92",
+      "bytes": 242244
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/rom-inspection.json",
+      "sha256": "9e4e66fddff56afc1cfaae9af57743be957927f564c86d0df4674fc4b12d7b55",
+      "bytes": 10450
+    }
+  ],
+  "cleanup": [
+    {
+      "path": ".local/nes-contra-research",
+      "removed": true,
+      "file_bytes": 93662222
+    },
+    {
+      "path": "dist/contra-research-tmp",
+      "removed": true,
+      "file_bytes": 0
+    }
+  ]
+}

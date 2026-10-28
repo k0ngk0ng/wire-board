@@ -1,0 +1,34 @@
+{
+  "scope": "Focused higher-ledge priority fix, full stage acceptance pending",
+  "regression_passed": true,
+  "race_passed": true,
+  "failure_frame": 304333,
+  "visible_player": [
+    128,
+    148
+  ],
+  "predicted_higher_landing": [
+    132,
+    96
+  ],
+  "old_pad": 196,
+  "fixture": "games/contra/engine/testdata/bot-energy-up-before-drop.json.gz",
+  "continuation": ".local/contra-bot/retry-energy-upward-route",
+  "continuation_complete": true,
+  "source_sha256": "6b04c79f601909bd28ae660911b7e860fa6fbd39c82763f11bb4f033e63af3f9",
+  "continuation_frame": 320120,
+  "continuation_level_zero_based": 6,
+  "continuation_screen": 1,
+  "stage6_cleared": true,
+  "fresh_campaign_acceptance": false,
+  "independent_replay": {
+    "frames": 320120,
+    "nextStepStoredStateEqual": true,
+    "nextStepStructEqual": true,
+    "recordedRulesAndEffectsMatch": true,
+    "recordedStateMatches": true,
+    "replayDerivedReviewAdded": false,
+    "roundTripDifferences": null
+  },
+  "retained_inputs": "docs/research/nes-contra/evidence/energy-retry-stage6-clear"
+}

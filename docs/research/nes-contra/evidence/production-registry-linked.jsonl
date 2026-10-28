@@ -1,0 +1,12 @@
+{"Time":"2026-10-28T06:26:43.81064+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games"}
+{"Time":"2026-10-28T06:26:44.415839+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games","Test":"TestContraProductionRegistrationRequiresIdentities"}
+{"Time":"2026-10-28T06:26:44.415893+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games","Test":"TestContraProductionRegistrationRequiresIdentities","Output":"=== RUN   TestContraProductionRegistrationRequiresIdentities\n"}
+{"Time":"2026-10-28T06:26:44.415923+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games","Test":"TestContraProductionRegistrationRequiresIdentities","Output":"--- PASS: TestContraProductionRegistrationRequiresIdentities (0.00s)\n"}
+{"Time":"2026-10-28T06:26:44.415929+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games","Test":"TestContraProductionRegistrationRequiresIdentities","Elapsed":0}
+{"Time":"2026-10-28T06:26:44.415946+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games","Test":"TestContraProductionRegistrationWithLinkedBuild"}
+{"Time":"2026-10-28T06:26:44.41595+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games","Test":"TestContraProductionRegistrationWithLinkedBuild","Output":"=== RUN   TestContraProductionRegistrationWithLinkedBuild\n"}
+{"Time":"2026-10-28T06:26:58.838639+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games","Test":"TestContraProductionRegistrationWithLinkedBuild","Output":"--- PASS: TestContraProductionRegistrationWithLinkedBuild (14.42s)\n"}
+{"Time":"2026-10-28T06:26:58.838685+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games","Test":"TestContraProductionRegistrationWithLinkedBuild","Elapsed":14.42}
+{"Time":"2026-10-28T06:26:58.839391+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games","Output":"PASS\n"}
+{"Time":"2026-10-28T06:26:59.853184+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games\t16.042s\n"}
+{"Time":"2026-10-28T06:26:59.853246+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games","Elapsed":16.042}

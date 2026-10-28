@@ -1,0 +1,20 @@
+{
+  "status": "pixel-and-regression-race-passed",
+  "family": "machine-flame-nozzle-left",
+  "kind": 17,
+  "anchor": "center of visible 8x16 mouth; recipe anchor20,8 in uncropped32x32 source becomes4,8 after crop",
+  "source": "Japanese Energy Zone base supertile20 crop16,0; CHR E4/82; retained palette group0",
+  "original_pixels": "nozzle-original-pixels.json",
+  "fixture": "frame76000 of diagnostic-energy-terrain-recovery; all three nozzles unobscured",
+  "fixture_correction": "Initial frame75808 had a partially occluded middle nozzle and was unsuitable for asserting all three full matches. Initial recipe anchor was corrected to uncropped source coordinates.",
+  "scope": "Static position/direction only; no active state, cooldown, HP, or guaranteed safe approach. Other nozzle directions not included.",
+  "sources": {
+    "games/contra/engine/bot_vision_nozzle_recipes.go": "f5079a4f0ff6ba17272fca8061bfe721b3eefa657272b687dbbc04bcef436f35",
+    "games/contra/engine/bot_vision_builtin_background.go": "aebdacfd63a37da5efc5fb1569bc04861f4f850c1c7e3d64e2a0f73cf1f745b0",
+    "games/contra/engine/bot_vision_nozzle_test.go": "c6340099bd50e47afd3ca1316ac97bd94c168a253e41af1c6e95b33cbfbf3d4d",
+    "games/contra/engine/testdata/bot-energy-nozzles.png": "f9f19371e53fb03c7fa80151e6a787601392d56d1dfb3e48be694e1d7e58b8cd"
+  },
+  "complete_campaign": false,
+  "race_log": "nozzle-race.log",
+  "tests_passed": 2
+}

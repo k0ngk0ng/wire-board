@@ -1,0 +1,452 @@
+{
+  "scope": "Conservative per-stage reachable graphics and on-event audio declarations; no assets are downloaded. Battle includes same-stage alternate/baseBoss dependencies.",
+  "sourceSHA256": "b5e307c308df7c019d67c3de87b560e90c45afcc1c0a8644c73fafd475b00fea",
+  "reasons": [
+    {
+      "level": 0,
+      "presetIDs": [
+        0,
+        13
+      ],
+      "animationRows": [
+        0
+      ],
+      "sharedTransitionPage": 75,
+      "commonAudioRoots": [
+        11,
+        26,
+        28,
+        36,
+        38,
+        40,
+        42,
+        44,
+        46,
+        47,
+        56,
+        57,
+        61,
+        114,
+        116
+      ],
+      "stageAudioRoots": [
+        51,
+        119
+      ],
+      "battleIncludesBaseBossForWithinStageTransition": false
+    },
+    {
+      "level": 1,
+      "presetIDs": [
+        1,
+        8
+      ],
+      "animationRows": [
+        1
+      ],
+      "sharedTransitionPage": 75,
+      "commonAudioRoots": [
+        11,
+        26,
+        28,
+        36,
+        38,
+        40,
+        42,
+        44,
+        46,
+        47,
+        56,
+        57,
+        61,
+        114,
+        116
+      ],
+      "stageAudioRoots": [
+        52,
+        62,
+        119
+      ],
+      "battleIncludesBaseBossForWithinStageTransition": true
+    },
+    {
+      "level": 2,
+      "presetIDs": [
+        2,
+        14
+      ],
+      "animationRows": [
+        2
+      ],
+      "sharedTransitionPage": 75,
+      "commonAudioRoots": [
+        11,
+        26,
+        28,
+        36,
+        38,
+        40,
+        42,
+        44,
+        46,
+        47,
+        56,
+        57,
+        61,
+        114,
+        116
+      ],
+      "stageAudioRoots": [
+        13,
+        119
+      ],
+      "battleIncludesBaseBossForWithinStageTransition": false
+    },
+    {
+      "level": 3,
+      "presetIDs": [
+        3,
+        9
+      ],
+      "animationRows": [
+        3
+      ],
+      "sharedTransitionPage": 75,
+      "commonAudioRoots": [
+        11,
+        26,
+        28,
+        36,
+        38,
+        40,
+        42,
+        44,
+        46,
+        47,
+        56,
+        57,
+        61,
+        114,
+        116
+      ],
+      "stageAudioRoots": [
+        52,
+        62,
+        119
+      ],
+      "battleIncludesBaseBossForWithinStageTransition": true
+    },
+    {
+      "level": 4,
+      "presetIDs": [
+        4,
+        15
+      ],
+      "animationRows": [
+        4
+      ],
+      "sharedTransitionPage": 75,
+      "commonAudioRoots": [
+        11,
+        26,
+        28,
+        36,
+        38,
+        40,
+        42,
+        44,
+        46,
+        47,
+        56,
+        57,
+        61,
+        114,
+        116
+      ],
+      "stageAudioRoots": [
+        48,
+        54,
+        98,
+        117
+      ],
+      "battleIncludesBaseBossForWithinStageTransition": false
+    },
+    {
+      "level": 5,
+      "presetIDs": [
+        5,
+        16
+      ],
+      "animationRows": [],
+      "sharedTransitionPage": 75,
+      "commonAudioRoots": [
+        11,
+        26,
+        28,
+        36,
+        38,
+        40,
+        42,
+        44,
+        46,
+        47,
+        56,
+        57,
+        61,
+        114,
+        116
+      ],
+      "stageAudioRoots": [
+        25,
+        43,
+        98,
+        117
+      ],
+      "battleIncludesBaseBossForWithinStageTransition": false
+    },
+    {
+      "level": 6,
+      "presetIDs": [
+        6
+      ],
+      "animationRows": [],
+      "sharedTransitionPage": 75,
+      "commonAudioRoots": [
+        11,
+        26,
+        28,
+        36,
+        38,
+        40,
+        42,
+        44,
+        46,
+        47,
+        56,
+        57,
+        61,
+        114,
+        116
+      ],
+      "stageAudioRoots": [
+        51,
+        119
+      ],
+      "battleIncludesBaseBossForWithinStageTransition": false
+    },
+    {
+      "level": 7,
+      "presetIDs": [
+        7,
+        17
+      ],
+      "animationRows": [
+        7,
+        8
+      ],
+      "sharedTransitionPage": 75,
+      "commonAudioRoots": [
+        11,
+        26,
+        28,
+        36,
+        38,
+        40,
+        42,
+        44,
+        46,
+        47,
+        56,
+        57,
+        61,
+        114,
+        116
+      ],
+      "stageAudioRoots": [
+        102,
+        117,
+        123
+      ],
+      "battleIncludesBaseBossForWithinStageTransition": false
+    }
+  ],
+  "allReachableCHRPages": [
+    0,
+    1,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    27,
+    28,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    66,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    90,
+    91,
+    92,
+    93,
+    94,
+    95,
+    96,
+    97,
+    98,
+    99,
+    100,
+    101,
+    102,
+    103,
+    104,
+    105,
+    106,
+    107,
+    108,
+    109,
+    110,
+    112,
+    113,
+    114,
+    115,
+    116,
+    117,
+    118,
+    119,
+    122
+  ],
+  "pageCounts": [
+    {
+      "level": 0,
+      "intro": 6,
+      "battle": 14,
+      "baseBoss": 0,
+      "interlude": 6,
+      "continue": 6,
+      "final": 6
+    },
+    {
+      "level": 1,
+      "intro": 6,
+      "battle": 16,
+      "baseBoss": 9,
+      "interlude": 6,
+      "continue": 6,
+      "final": 6
+    },
+    {
+      "level": 2,
+      "intro": 6,
+      "battle": 15,
+      "baseBoss": 0,
+      "interlude": 6,
+      "continue": 6,
+      "final": 6
+    },
+    {
+      "level": 3,
+      "intro": 6,
+      "battle": 16,
+      "baseBoss": 9,
+      "interlude": 6,
+      "continue": 6,
+      "final": 6
+    },
+    {
+      "level": 4,
+      "intro": 6,
+      "battle": 13,
+      "baseBoss": 0,
+      "interlude": 6,
+      "continue": 6,
+      "final": 6
+    },
+    {
+      "level": 5,
+      "intro": 6,
+      "battle": 11,
+      "baseBoss": 0,
+      "interlude": 8,
+      "continue": 6,
+      "final": 6
+    },
+    {
+      "level": 6,
+      "intro": 6,
+      "battle": 9,
+      "baseBoss": 0,
+      "interlude": 8,
+      "continue": 6,
+      "final": 6
+    },
+    {
+      "level": 7,
+      "intro": 6,
+      "battle": 21,
+      "baseBoss": 0,
+      "interlude": 0,
+      "continue": 6,
+      "final": 27
+    }
+  ],
+  "reconnectRule": "Also ensure the snapshot currently Applied Patterns are available; do not guess from new level alone. In particular stage5->6 can still present preset18 while new stage uses19.",
+  "audioRule": "Music and SFX lists are descriptors only. Fetch media for actual Audio events/active voices, including native percussion/end-callback closure.",
+  "finalRule": "Failed terminal can retain continue preset10 at any level. Level8 success preserves its last battlefield; no credits BGM/preset is introduced."
+}

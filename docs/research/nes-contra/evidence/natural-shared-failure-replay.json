@@ -1,0 +1,1146 @@
+{
+  "epoch": "3e5a46e91cdf9400ec0f5242b0863562",
+  "finalFrame": 1663,
+  "finalRevision": 1664,
+  "initialAtMS": 100000,
+  "inputs": [
+    {
+      "atMS": 100000,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 100000,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 100250,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 100250,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 100500,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 100500,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 100750,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 100750,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 101000,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 101000,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 101250,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 101250,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 101500,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 101500,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 101750,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 101750,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 102000,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 102000,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 102250,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 102250,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 102500,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 102500,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 102750,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 102750,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 103000,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 103000,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 103250,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 103250,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 103500,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 103500,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 103750,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 103750,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 104000,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 104000,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 104250,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 104250,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 104500,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 104500,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 104750,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 104750,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 105000,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 105000,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 105250,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 105250,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 105500,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 105500,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 105750,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 105750,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 106000,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 106000,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 106250,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 106250,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 106500,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 106500,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 106750,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 106750,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 107000,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 107000,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 107250,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 107250,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 107500,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 107500,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 107750,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 107750,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 108000,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 108000,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 108250,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 108250,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 108500,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 108500,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 108750,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 108750,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 109000,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 109000,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 109250,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 109250,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 109500,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 109500,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 109750,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 109750,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 110000,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 110000,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 110250,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 110250,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 110500,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 110500,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 110750,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 110750,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 111000,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 111000,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 111250,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 111250,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 111500,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 111500,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 111750,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 111750,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 112000,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 112000,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 112250,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 112250,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 112500,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 112500,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 112750,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 112750,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 113000,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 113000,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 113250,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 113250,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 113500,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 113500,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 113750,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 113750,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 114000,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 114000,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 114250,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 114250,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 114500,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 114500,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 114750,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 114750,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 115000,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 115000,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 115250,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 115250,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 115500,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 115500,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 115750,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 115750,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 116000,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 116000,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 116250,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 116250,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 116500,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 116500,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 116750,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 116750,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 117000,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 117000,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 117250,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 117250,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 117500,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 117500,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 117750,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 117750,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 118000,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 118000,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 118250,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 118250,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 118500,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 118500,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 118750,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 118750,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 119000,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 119000,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 119250,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 119250,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 119500,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 119500,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 119750,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 119750,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 120000,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 120000,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 120250,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 120250,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 120500,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 120500,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 120750,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 120750,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 121000,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 121000,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 121250,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 121250,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 121500,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 121500,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 121750,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 121750,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 122000,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 122000,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 122250,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 122250,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 122500,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 122500,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 122750,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 122750,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 123000,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 123000,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 123250,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 123250,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 123500,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 123500,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 123750,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 123750,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 124000,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 124000,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 124250,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 124250,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 124500,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 124500,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 124750,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 124750,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 125000,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 125000,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 125250,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 125250,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 125500,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 125500,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 125750,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 125750,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 126000,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 126000,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 126250,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 126250,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 126500,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 126500,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 126750,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 126750,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 127000,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 127000,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 127250,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 127250,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 127500,
+      "actor": 0,
+      "held": 1
+    },
+    {
+      "atMS": 127500,
+      "actor": 1,
+      "held": 1
+    },
+    {
+      "atMS": 127550,
+      "actor": 0,
+      "held": 0
+    },
+    {
+      "atMS": 127550,
+      "actor": 1,
+      "held": 0
+    },
+    {
+      "atMS": 127600,
+      "actor": 0,
+      "held": 32
+    },
+    {
+      "atMS": 127650,
+      "actor": 0,
+      "held": 0
+    },
+    {
+      "atMS": 127700,
+      "actor": 0,
+      "held": 16
+    }
+  ],
+  "rulesBuildID": "0105a96fa28932353c8813180c905806decec6c96c3b5c0a216f8bf4a11dec41",
+  "seed": "5668944675814266256",
+  "timerStepMS": 50
+}

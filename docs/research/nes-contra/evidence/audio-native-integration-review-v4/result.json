@@ -1,0 +1,124 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "original music starts three independent tonal lanes",
+      "passed": true,
+      "tracks": [
+        {
+          "key": "contra/slot-0",
+          "src": "http://127.0.0.1:54079/media/65bb73cbfba38784a7b162f043b2e0194e668fce43a07270ab522c1975095502",
+          "time": 0.11674
+        },
+        {
+          "key": "contra/slot-1",
+          "src": "http://127.0.0.1:54079/media/41351fffe20a903e5c2ed3ec7b1ebcb4ea41409fb9e95057a7e19d0c7b7d3483",
+          "time": 0.116743
+        },
+        {
+          "key": "contra/slot-2",
+          "src": "http://127.0.0.1:54079/media/a1145ed8aa219371749df86eea5ca6c4363a4241ba63756fa172edf1dffbd366",
+          "time": 0.116744
+        }
+      ]
+    },
+    {
+      "name": "accepted gun mutes pulse1 without pausing its clock",
+      "passed": true,
+      "time": 0.123182
+    },
+    {
+      "name": "pause freezes background and old noise while cue74 plays",
+      "passed": true,
+      "time": 0.083196
+    },
+    {
+      "name": "cue expiry releases its lane and keeps prior noise frozen",
+      "passed": true,
+      "time": 0.083196
+    },
+    {
+      "name": "resume accepts a new gun and keeps music identity",
+      "passed": true
+    },
+    {
+      "name": "reset stops old song before replacing all tonal lanes",
+      "passed": true
+    },
+    {
+      "name": "history gap restores song position and never missed effects",
+      "passed": true,
+      "sequence": 284,
+      "time": 0
+    },
+    {
+      "name": "old snapshot and old epoch cannot rewind or replace",
+      "passed": true,
+      "time": 15.840582
+    },
+    {
+      "name": "unmute resync cannot resurrect stopped playback IDs",
+      "passed": true
+    },
+    {
+      "name": "native page hiding stops all lanes before explicit recovery",
+      "events": [
+        "hidden",
+        "visible"
+      ],
+      "passed": true
+    },
+    {
+      "name": "same-ID background recovery restores current music only and preserves source rate",
+      "expected": 9.983560090702946,
+      "passed": true,
+      "position": 9.988549,
+      "rate": 0.9983560090702946
+    },
+    {
+      "name": "rate-corrected native loop restarts at verified suffix with rate preserved",
+      "loopStart": 2.445963718820862,
+      "passed": true,
+      "position": 2.466258,
+      "rate": 0.9983560090702946
+    },
+    {
+      "name": "delayed native media aligns to latest visible voice after load",
+      "expected": 0.4326209372637944,
+      "passed": true,
+      "position": 0.394519,
+      "rate": 0.9983560090702946,
+      "tick": 26
+    },
+    {
+      "name": "live terminal 6E replaces all tonal stems with one source-verified complete finite cue",
+      "duration": 5.94712,
+      "expected": 0.066556,
+      "passed": true,
+      "position": 0.130812,
+      "rate": 0.99834
+    },
+    {
+      "name": "completed terminal cue and duplicate finalized views never replay",
+      "duration": 5.94712,
+      "passed": true
+    },
+    {
+      "name": "global unmute and finalized reconnect cannot replay the finite terminal cue",
+      "passed": true
+    },
+    {
+      "name": "dispose and late updates cannot restart media",
+      "passed": true
+    }
+  ],
+  "scope": "Production Go AudioState snapshots → Contra adapter → platform GameAudio → native Chromium HTMLAudioElement. No ROM runtime, physical-device audio capture, listening or nonlinear-mix acceptance.",
+  "sources": {
+    "web/src/audio.ts": "e2734b797f71f642792bf27ed07ab7bf0693e569b3a3e3a03c5f66b27480a19c",
+    "games/contra/web/audio.ts": "67e82d537ed49f4b9987aecfdeb8cc8be62ff56c52c734fda107c261e42991c3",
+    "games/contra/engine/audio_control.go": "bde8282741e22d6daedef20baba0b538593d4f4eff4fefc8fc1cfa05bdb070f1",
+    "games/contra/engine/audio_control_data.json": "34ccedb60f81dd76def7f8093f4d6e1ffffdca4dffede6603e9a8bbc84109f7b",
+    "scripts/contra/audio_fixture.go": "6d16c15668d7e722bd80985b8ff4219a0de5ead921a07d2ba8e4db0c5d77a7f9",
+    "scripts/contra/audio_accept.py": "cc507196e2d6c323c305f8ae6abf84801188579da3063b55d41705312f4bb3d5"
+  }
+}

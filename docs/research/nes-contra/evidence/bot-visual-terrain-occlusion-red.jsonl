@@ -1,0 +1,9 @@
+{"Time":"2026-10-26T11:48:16.912153+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-26T11:48:17.471119+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisionTerrainOccludedSupport"}
+{"Time":"2026-10-26T11:48:17.471246+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisionTerrainOccludedSupport","Output":"=== RUN   TestBotVisionTerrainOccludedSupport\n"}
+{"Time":"2026-10-26T11:48:17.48228+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisionTerrainOccludedSupport","Output":"    bot_vision_terrain_test.go:46: visible lower artwork did not identify support\n"}
+{"Time":"2026-10-26T11:48:17.482354+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisionTerrainOccludedSupport","Output":"--- FAIL: TestBotVisionTerrainOccludedSupport (0.01s)\n"}
+{"Time":"2026-10-26T11:48:17.482369+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisionTerrainOccludedSupport","Elapsed":0.01}
+{"Time":"2026-10-26T11:48:17.48239+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\n"}
+{"Time":"2026-10-26T11:48:17.483272+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t0.571s\n"}
+{"Time":"2026-10-26T11:48:17.483297+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":0.571}

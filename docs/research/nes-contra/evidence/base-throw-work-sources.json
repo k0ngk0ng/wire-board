@@ -1,0 +1,227 @@
+{
+  "passed": true,
+  "romSHA256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "tables": {
+    "projectile-dispatch-families": {
+      "bank8KiB": 12,
+      "cpu": "0x85c6",
+      "romOffset": 99798,
+      "bytes": [
+        154,
+        133,
+        222,
+        133,
+        228,
+        133,
+        234,
+        133,
+        240,
+        133,
+        246,
+        133,
+        154,
+        133,
+        252,
+        133,
+        2,
+        134,
+        8,
+        134,
+        14,
+        134,
+        20,
+        134
+      ],
+      "sha256": "e6cc106bf80ddabcc97784f3698108982850e6df3aeb2cb892acfd69b2fea4b4"
+    },
+    "indoor-flame-offset-families": {
+      "bank8KiB": 12,
+      "cpu": "0x872c",
+      "romOffset": 100156,
+      "bytes": [
+        100,
+        135,
+        96,
+        135,
+        80,
+        135,
+        76,
+        135,
+        60,
+        135,
+        56,
+        135
+      ],
+      "sha256": "77a2e65fd08ab25fb82535b287356256b573ec4b835b7ab1c6dc5e66a1e3af9d"
+    },
+    "enemy-explosion-families": {
+      "bank8KiB": 14,
+      "cpu": "0xe754",
+      "romOffset": 124772,
+      "bytes": [
+        92,
+        231,
+        95,
+        231,
+        99,
+        231,
+        102,
+        231
+      ],
+      "sha256": "9c7c7d7cc819cc52c445d0d4324f6ca9b76af085ad97e4be64358ca40d9ded18"
+    },
+    "screen-0": {
+      "prgOffset": 44429,
+      "identities": [
+        167,
+        186,
+        190,
+        194,
+        198,
+        211,
+        221,
+        225,
+        232,
+        239,
+        247,
+        251,
+        11
+      ],
+      "pointerTableSHA256": "9df30afe193770b9c1e186e4eac71d07b140c3cdcd45953a96be005bd0c717de"
+    },
+    "screen-1": {
+      "prgOffset": 44556,
+      "identities": [
+        24,
+        32,
+        43,
+        57,
+        71,
+        88
+      ],
+      "pointerTableSHA256": "0dc839efa92fbc8136ba6a4e8860129dd17e465333f96314db7a09f7cbc2b70a"
+    },
+    "screen-2": {
+      "prgOffset": 44655,
+      "identities": [
+        131,
+        163,
+        170,
+        188,
+        204,
+        230,
+        246,
+        6,
+        16,
+        16
+      ],
+      "pointerTableSHA256": "247a3ea89d10ce8279b1cf57a1c9a7b5911725b8216c9919efe17c5317aeda36"
+    },
+    "screen-3": {
+      "prgOffset": 44817,
+      "identities": [
+        35,
+        49,
+        66,
+        80,
+        94,
+        108,
+        119,
+        130,
+        147
+      ],
+      "pointerTableSHA256": "e9f5eddffda3680c15c8bbdc2b93fb2fa6e831fb65fd5c9d528f983ce48ead66"
+    },
+    "screen-4": {
+      "prgOffset": 44970,
+      "identities": [
+        214,
+        227,
+        237,
+        244,
+        1,
+        11,
+        15,
+        24,
+        31,
+        44,
+        51,
+        58,
+        62,
+        72,
+        79,
+        89,
+        99,
+        103,
+        116,
+        129,
+        130,
+        133
+      ],
+      "pointerTableSHA256": "5aa93b8ad83ac3a1c00c7805ddfe4eaac73219b98790dfab3b7ff3a7c0f16c98"
+    },
+    "screen-5": {
+      "prgOffset": 45190,
+      "identities": [
+        160,
+        173,
+        183,
+        190,
+        206,
+        215,
+        232,
+        240,
+        0,
+        15,
+        19,
+        20,
+        24
+      ],
+      "pointerTableSHA256": "7d236c36ffeaa63224505352725a6f3eb032e827be4fcdf58682fb2759f51dd4"
+    },
+    "screen-6": {
+      "prgOffset": 45337,
+      "identities": [
+        55,
+        79,
+        95,
+        111,
+        121,
+        152,
+        162,
+        166,
+        173,
+        201,
+        217,
+        227,
+        243,
+        253,
+        10
+      ],
+      "pointerTableSHA256": "ab45e5768fb203b9b6a096439e1290bfb4a5ea23704ca21d7ac2cfb44f152a6d"
+    },
+    "screen-7": {
+      "prgOffset": 45579,
+      "identities": [
+        34,
+        42,
+        55,
+        62,
+        78,
+        85,
+        95,
+        105,
+        115,
+        131,
+        158
+      ],
+      "pointerTableSHA256": "543c1b2f9fb51d09ca58136b7ae5ffdd199a24c6cdaac4de73cb4663215641f0"
+    }
+  },
+  "rea": {
+    "path": "docs/research/nes-contra/evidence/base-throw-work-rea.json.gz",
+    "sha256": "2cb847a1460341cf7c3177e6f59bac55810601617be23129458ff6e693f08ce5",
+    "records": 14
+  },
+  "scope": "source identity bytes and complete retained REA function evidence; no runtime ROM interpretation"
+}

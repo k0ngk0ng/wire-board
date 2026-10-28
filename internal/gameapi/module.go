@@ -48,11 +48,16 @@ type PreparationContext struct {
 // can act now; TimeoutActors owe a decision at Deadline (Unix milliseconds).
 // These lists differ for optional responses and simultaneous actions.
 type Match struct {
+	// Unrated declares a practice/casual match before its first action. For a
+	// versioned challenge, the host latches this exclusion for the whole match.
+	Unrated bool `json:"unrated,omitempty"`
 	// Paused explicitly suspends automatic decisions and opts this saved match
 	// into the host's 30-day inactive retention policy. The game owns pause /
 	// resume authorization and saves its remaining action budget in Data.
-	// A paused match has no deadlines, timeout actors, attention or result;
-	// Actors may still accept manual resume votes through Apply.
+	// A paused match has no player deadline, timeout actors, attention or result.
+	// Actors may still accept manual resume votes through Apply. Only a realtime
+	// module with OnPausedTimer may retain a presentation SystemDeadline; use that
+	// module's ValidateMatch, since unscoped Match.Validate stays strict.
 	Paused bool `json:"paused,omitempty"`
 	// HasComputerPlayers includes game-owned AI characters which do not occupy
 	// platform seats. Such matches retain results/history but never earn ratings.
@@ -71,7 +76,8 @@ type Match struct {
 	// Eliminated seats have no remaining decisions or liabilities and may leave.
 	// Their original index and identity remain in the match roster and results.
 	Eliminated []int `json:"eliminated,omitempty"`
-	// SystemDeadline invokes OnTimer, without attributing inactivity to a player.
+	// SystemDeadline invokes OnTimer (or an opted-in OnPausedTimer while paused),
+	// without attributing inactivity to a player.
 	SystemDeadline int64    `json:"systemDeadline,omitempty"`
 	Log            []string `json:"log,omitempty"`
 	Result         *Result  `json:"result,omitempty"`
@@ -79,8 +85,8 @@ type Match struct {
 
 // Ranks use competition ranking (1,1,3); Winners can be a whole team.
 // Team selects the platform's existing team rating policy (+20 / -10).
-// Cooperative games share one outcome: all seats win, or nobody wins. They
-// never award competitive ratings and all seats retain rank 1.
+// Cooperative games share one outcome: all seats win, or nobody wins. All seats
+// retain rank 1; only a server-enabled, start-frozen rating policy awards points.
 type Result struct {
 	// Draw is an explicit competitive draw, never a shared victory. Every seat
 	// has rank 1, Winners is empty, and no competitive rating points are moved.
@@ -102,17 +108,27 @@ type Result struct {
 // authentication, transactions, clocks, deduplication and publication. Keep all
 // game-specific types, decoding and snapshot upgrades in the game's package.
 type Module struct {
-	ID         string                                                               `json:"id"`
-	Name       string                                                               `json:"name"`
-	MinPlayers int                                                                  `json:"minPlayers"`
-	MaxPlayers int                                                                  `json:"maxPlayers"`
-	Configure  func(capacity int, options json.RawMessage) (json.RawMessage, error) `json:"-"`
+	// RatingPolicy is trusted registration metadata, frozen by the host when a
+	// new match starts. An empty value preserves existing cooperative behavior.
+	RatingPolicy RatingPolicy                                                         `json:"ratingPolicy,omitempty"`
+	ID           string                                                               `json:"id"`
+	Name         string                                                               `json:"name"`
+	MinPlayers   int                                                                  `json:"minPlayers"`
+	MaxPlayers   int                                                                  `json:"maxPlayers"`
+	Configure    func(capacity int, options json.RawMessage) (json.RawMessage, error) `json:"-"`
 	// Prepare optionally transforms waiting-room options for an authenticated seat.
 	// The host re-runs Configure on its result before atomically saving it.
 	Prepare func(PreparationContext, json.RawMessage, json.RawMessage) (json.RawMessage, error) `json:"-"`
 	Start   func(Context, json.RawMessage) (Match, error)                                       `json:"-"`
 	Apply   func(Context, Match, json.RawMessage) (Match, error)                                `json:"-"`
 	View    func(Match, int) (any, error)                                                       `json:"-"`
+	// IsInputRelease is an explicit realtime-only exception to the manual-action
+	// guard while the authenticated human seat is in autoplay. Return true only
+	// for a valid release of that seat's existing transport controls, after
+	// checking its epoch/sequence and payload shape. It must not authorize held
+	// input or game decisions. The host supplies detached inputs, then still runs
+	// Apply and all normal authentication, transaction and version checks.
+	IsInputRelease func(Context, Match, json.RawMessage) bool `json:"-"`
 	// SyncSnapshot optionally supplies a recovery checkpoint on explicit
 	// request, separate from the frequent public View. It receives a detached
 	// Match and authenticated seat (-1 for an authorized spectator), and must
@@ -151,9 +167,19 @@ type Module struct {
 	// OnTimer runs with Actor == -1. Clear SystemDeadline or advance it beyond
 	// Context.Now; the host commits the event atomically with history and audit.
 	OnTimer func(Context, Match) (Match, error) `json:"-"`
+	// OnPausedTimer is an optional realtime-only presentation clock. Actor is -1;
+	// no bot/timeout callbacks run while paused. It may change only Data,
+	// SystemDeadline and CheckpointKey; all control metadata must stay identical.
+	// Clear SystemDeadline or advance it past Context.Now. Data may advance audio
+	// and display state, never physics or game decisions. The host treats Data as
+	// opaque, so the module must verify that semantic boundary itself.
+	OnPausedTimer func(Context, Match) (Match, error) `json:"-"`
 }
 
 func (m Module) Validate() error {
+	if m.RatingPolicy != "" && m.RatingPolicy != RatingCoopCampaignV1 {
+		return errors.New("unknown module rating policy")
+	}
 	if !regexp.MustCompile(`^[a-z][a-z0-9_-]*$`).MatchString(m.ID) || m.Name == "" || m.MinPlayers < 1 || m.MaxPlayers < m.MinPlayers || m.MaxPlayers > 32 {
 		return fmt.Errorf("invalid game registration: %q", m.ID)
 	}
@@ -169,14 +195,24 @@ func (m Module) Validate() error {
 	if m.Realtime && (m.OnTimer == nil || m.BotSearch != nil) {
 		return fmt.Errorf("invalid realtime registration: %s", m.ID)
 	}
+	if m.OnPausedTimer != nil && !m.Realtime {
+		return fmt.Errorf("paused timer requires realtime registration: %s", m.ID)
+	}
+	if m.IsInputRelease != nil && !m.Realtime {
+		return fmt.Errorf("input release requires realtime registration: %s", m.ID)
+	}
 	return nil
 }
 
 func (m Match) Validate(players int) error {
+	return m.validate(players, false)
+}
+
+func (m Match) validate(players int, pausedTimer bool) error {
 	if m.Schema < 0 || !json.Valid(m.Data) || string(m.Data) == "null" || m.Deadline < 0 || m.SystemDeadline < 0 {
 		return errors.New("invalid game snapshot")
 	}
-	if m.Paused && (m.Deadline != 0 || m.SystemDeadline != 0 || len(m.TimeoutActors) != 0 || m.Attention == nil || len(m.Attention) != 0 || m.Result != nil) {
+	if m.Paused && (m.Deadline != 0 || (!pausedTimer && m.SystemDeadline != 0) || len(m.TimeoutActors) != 0 || m.Attention == nil || len(m.Attention) != 0 || m.Result != nil) {
 		return errors.New("paused game must clear timers, attention and result")
 	}
 	for _, actors := range [][]int{m.Actors, m.TimeoutActors, m.Attention, m.Eliminated} {
@@ -239,7 +275,7 @@ func (m Match) Validate(players int) error {
 
 // ValidateMatch also checks that the host can service requested capabilities.
 func (module Module) ValidateMatch(match Match, players int) error {
-	if err := match.Validate(players); err != nil {
+	if err := match.validate(players, module.Realtime && module.OnPausedTimer != nil); err != nil {
 		return err
 	}
 	if match.SystemDeadline > 0 && module.OnTimer == nil {

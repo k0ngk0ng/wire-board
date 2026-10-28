@@ -1,0 +1,269 @@
+{
+  "reference": {
+    "url": "https://raw.githubusercontent.com/libretro/libretro-database/12c21cf79f1e20eff6ac68b80875816c717d0a7a/metadat/no-intro/Nintendo%20-%20Nintendo%20Entertainment%20System.dat",
+    "commit": "12c21cf79f1e20eff6ac68b80875816c717d0a7a",
+    "sha256": "f8afe5fd148ba547287b1c5ddd1a92bb7fc3a42351205c466fe380da18aec34b",
+    "sha1": "10069a7e11701e91d4eb59c1e25170dcab4f1594",
+    "crc32": "556621ff",
+    "bytes": 3104048,
+    "entries": [
+      "game (\n\tname \"Contra (Japan)\"\n\tregion \"Japan\"\n\trom ( name \"Contra (Japan).nes\" size 262160 crc 08789A28 md5 72D6541992A722549C2DBEF33B307FBA sha1 0F9D205AEFBCE24C71E1772174520C8C2E91FE81 )\n)",
+      "game (\n\tname \"Contra (Japan)\"\n\tregion \"Japan\"\n\trom ( name \"Contra (Japan).unh\" size 262144 crc B27B8CF4 md5 D306C54CCFDF5CB4F8EC588F19B3E33D sha1 BE9DD65BE8DB897978DD34533DD3A037784A8EE9 )\n)",
+      "game (\n\tname \"Contra (USA)\"\n\tregion \"USA\"\n\trom ( name \"Contra (USA).nes\" size 131088 crc 52CD5CD8 md5 CDF73714FF3EF47F4EEB2B71707BE2A0 sha1 4B9FAD65727042595C5820CA03BC32BFD72DE5E7 )\n)",
+      "game (\n\tname \"Contra (USA)\"\n\tregion \"USA\"\n\trom ( name \"Contra (USA).unh\" size 131072 crc F6035030 md5 5A5C2F4F1CAFB1F55A8DC0D5AD4550E5 sha1 979494E7869AC7AB4815FDBD1DC99F893F713FBF )\n)"
+    ]
+  },
+  "archives": [
+    {
+      "path": "/Users/jason/Documents/nes/roms/03/魂斗罗日版(完全版).zip",
+      "sha256": "2c4fd35488d32ca3abf207114893d54ad294f74df8bd1961a7b1e090549bae64",
+      "sha1": "3845ac16f2443ccb27229e508a93e1b1869ae277",
+      "crc32": "d885664a",
+      "bytes": 126924,
+      "members": [
+        {
+          "name": "Contra (J).nes",
+          "sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+          "sha1": "376836361f404c815d404e1d5903d5d11f4eff0e",
+          "crc32": "8a96a3c4",
+          "bytes": 262160,
+          "header": "4e45531a081070100000000000000000",
+          "mapper": 23,
+          "prg_bytes": 131072,
+          "chr_bytes": 131072,
+          "payload": {
+            "sha256": "62c9d4e0578cb1e615ce9bb2c8ebc15b1e8de4c928c5c07ba9a85c11aa36ae4d",
+            "sha1": "be9dd65be8db897978dd34533dd3a037784a8ee9",
+            "crc32": "b27b8cf4",
+            "bytes": 262144
+          },
+          "vectors": {
+            "nmi": "0xf889",
+            "reset": "0xf80d",
+            "irq": "0xf8e1"
+          },
+          "matched_original_region": "Japan"
+        },
+        {
+          "name": "disland.txt",
+          "sha256": "c2c4b3448f89e13de068d4fb71fc52d3138d325e20ed296739052b86898b7834",
+          "sha1": "edc51b7ef624cfa6e94e92c9321337f6058bf1df",
+          "crc32": "eb53eb90",
+          "bytes": 331
+        }
+      ]
+    },
+    {
+      "path": "/Users/jason/Documents/nes/roms/20/魂斗罗美版.zip",
+      "sha256": "67be1bf658e136b1765d8ee8e60064423697e67e6261cb4c9d425eb8fc80bd2f",
+      "sha1": "f11b19b0a27cfdb98918db9acb51ab60b399e670",
+      "crc32": "604ed5ce",
+      "bytes": 90289,
+      "members": [
+        {
+          "name": "CONTRA.NES",
+          "sha256": "26541a5550ee22deeb3d5484e4a96130219b58cff74d068fb1eb6567fa5e5519",
+          "sha1": "c9ea66bb7cb30ad5343f1721b1d4d3219859319b",
+          "crc32": "c50a8304",
+          "bytes": 131088,
+          "header": "4e45531a080021000000000000000000",
+          "mapper": 2,
+          "prg_bytes": 131072,
+          "chr_bytes": 0,
+          "payload": {
+            "sha256": "d41e28b1a33b3b6768e7c39c9fdfb1fda4b49940542d14085911fabd399e1ca9",
+            "sha1": "979494e7869ac7ab4815fdbd1dc99f893f713fbf",
+            "crc32": "f6035030",
+            "bytes": 131072
+          },
+          "vectors": {
+            "nmi": "0xc060",
+            "reset": "0xc001",
+            "irq": "0xc0b5"
+          },
+          "matched_original_region": "USA"
+        },
+        {
+          "name": "disland.txt",
+          "sha256": "c2c4b3448f89e13de068d4fb71fc52d3138d325e20ed296739052b86898b7834",
+          "sha1": "edc51b7ef624cfa6e94e92c9321337f6058bf1df",
+          "crc32": "eb53eb90",
+          "bytes": 331
+        }
+      ]
+    },
+    {
+      "path": "/Users/jason/Documents/nes/roms/42/魂斗罗(中文).zip",
+      "sha256": "3bb164d1ee5f5143fa48038bf292c8218040d0646b54197afc4f569233a9e497",
+      "sha1": "b75c97020977c2bd6a54e6592c6ecd3d30ec127b",
+      "crc32": "4b441091",
+      "bytes": 126754,
+      "members": [
+        {
+          "name": "╗Ω╢╖┬▐.nes",
+          "sha256": "0b79e04375c00b4e65c0dd8e3bc610b02f31eaf45966ebc4441f2688161840f5",
+          "sha1": "118615b3addbe5b8d4c249405beb3256efd215f6",
+          "crc32": "6d4f3582",
+          "bytes": 262160,
+          "header": "4e45531a081070100000000000000000",
+          "mapper": 23,
+          "prg_bytes": 131072,
+          "chr_bytes": 131072,
+          "payload": {
+            "sha256": "da3fb2dae1e737d4a4e36ea251fafe918a428bec97cbdf3229deb77db458f795",
+            "sha1": "4c469c2d34c18017c8295d4e8bf893046ae31e23",
+            "crc32": "55a21ab2",
+            "bytes": 262144
+          },
+          "vectors": {
+            "nmi": "0xf889",
+            "reset": "0xf80d",
+            "irq": "0xf8e1"
+          },
+          "matched_original_region": null
+        },
+        {
+          "name": "disland.TXT",
+          "sha256": "c2c4b3448f89e13de068d4fb71fc52d3138d325e20ed296739052b86898b7834",
+          "sha1": "edc51b7ef624cfa6e94e92c9321337f6058bf1df",
+          "crc32": "eb53eb90",
+          "bytes": 331
+        }
+      ]
+    },
+    {
+      "path": "/Users/jason/Documents/nes/roms/06/魂斗罗.zip",
+      "sha256": "878d8e9089e46ed4c46f07e423b12d49eb42a7dc57999c4729b192fd55b8107e",
+      "sha1": "05c7abc902379ffe06c4ee0297e6cbb58fb63406",
+      "crc32": "a0871758",
+      "bytes": 386250,
+      "members": [
+        {
+          "name": "633e09.12g",
+          "sha256": "3734a04da6491b2c13ecbe353709c0efdad463a1a7d349e033aa5e6bb63d39b5",
+          "sha1": "eeee2f8b3d1e4acf47de1e74c4e507ff924591e7",
+          "crc32": "14ca5e19",
+          "bytes": 256
+        },
+        {
+          "name": "633f11.20g",
+          "sha256": "3734a04da6491b2c13ecbe353709c0efdad463a1a7d349e033aa5e6bb63d39b5",
+          "sha1": "eeee2f8b3d1e4acf47de1e74c4e507ff924591e7",
+          "crc32": "14ca5e19",
+          "bytes": 256
+        },
+        {
+          "name": "633e02.17a",
+          "sha256": "c5cf5ea61f4ba4cdeb0cf850cef4f29cdc71a9d472a844c504fc544147d45493",
+          "sha1": "6c29568419bc49f0be3995b0c34edd9038f6f8d9",
+          "crc32": "b2f7bd9a",
+          "bytes": 65536
+        },
+        {
+          "name": "633e01.12a",
+          "sha256": "15a7bfe616b5298e31e7e699bc1d0236cf4399c8615337b95145bc8875cbcbe9",
+          "sha1": "d700c7de36746ba247e3a5d0410b7aa036aa4073",
+          "crc32": "d1549255",
+          "bytes": 32768
+        },
+        {
+          "name": "633e03.18a",
+          "sha256": "834ed99d86527945fa71a1704e681f90a62da81cbaa580055a8ae6c98ca80334",
+          "sha1": "cf1cf15646a4e5dc72671e957bc51ca44d30995c",
+          "crc32": "7fc0d8cf",
+          "bytes": 65536
+        },
+        {
+          "name": "633e08.10g",
+          "sha256": "bfe6211568d0517369d52593b74aafc27e35cb0597926b2f7ab1f2f8e7b8a673",
+          "sha1": "7c8fefdcae4523d008a7d39062194c7a80aa3500",
+          "crc32": "9f0949fa",
+          "bytes": 256
+        },
+        {
+          "name": "633f10.18g",
+          "sha256": "1c233772e9e33dd16098f78333504939673369161d08d5aa073bd496d3a4624e",
+          "sha1": "c3bde7afb501bae58d07721c637dc06938c22150",
+          "crc32": "2b244d84",
+          "bytes": 256
+        },
+        {
+          "name": "633e04.7d",
+          "sha256": "1c085309182fa06e274934f283fb1e07a5d74b2f83ecb3d4df9c084cf986de01",
+          "sha1": "c7d8592672a6e50c2fe6b0670001c340022f16f9",
+          "crc32": "14ddc542",
+          "bytes": 262144
+        },
+        {
+          "name": "633e07.16f",
+          "sha256": "889c1093685a6681b3f52de54d6d7c243708170705ec5979ac7062123cc38256",
+          "sha1": "0fa0fbfc53ab5c31b9de22f90153d9af37ff22ce",
+          "crc32": "f2d06638",
+          "bytes": 262144
+        },
+        {
+          "name": "633e05.7f",
+          "sha256": "5254656bc5a0cdce473499843017ef2eca3e8f4842a480160948189e1195ec61",
+          "sha1": "a6e2598d766e6995c1a912e4a04987e6f4d547ff",
+          "crc32": "42185044",
+          "bytes": 262144
+        },
+        {
+          "name": "633e06.16d",
+          "sha256": "9bab25fa5e1d93833924b62a74b8ed19f174471996b57df51e2f5a818fabf739",
+          "sha1": "9ab79c06cb541ce6fdac322886b8a14a2f3f5cf7",
+          "crc32": "9cf6faae",
+          "bytes": 262144
+        },
+        {
+          "name": "disland.txt",
+          "sha256": "c2c4b3448f89e13de068d4fb71fc52d3138d325e20ed296739052b86898b7834",
+          "sha1": "edc51b7ef624cfa6e94e92c9321337f6058bf1df",
+          "crc32": "eb53eb90",
+          "bytes": 331
+        }
+      ]
+    },
+    {
+      "path": "/Users/jason/Documents/nes/roms/24/魂斗罗.zip",
+      "sha256": "5af5131ff9fcb7e4df026ae7fa192f60e9a0cd18e96fe8037712a788133239f8",
+      "sha1": "8cfbe89e0d9eaff30592a9dbed89e8f8eab21a65",
+      "crc32": "7424d267",
+      "bytes": 1406181,
+      "members": [
+        {
+          "name": "CONTRA.SMD",
+          "sha256": "0aa2d8afdcefe208fc7eef40bed8c9c212ed7c02f14b8e10dd7aa5760f946312",
+          "sha1": "98ade1d66fcd467c89f44ad9ecee99e546a27f60",
+          "crc32": "bead1a78",
+          "bytes": 2097664
+        },
+        {
+          "name": "disland.txt",
+          "sha256": "c2c4b3448f89e13de068d4fb71fc52d3138d325e20ed296739052b86898b7834",
+          "sha1": "edc51b7ef624cfa6e94e92c9321337f6058bf1df",
+          "crc32": "eb53eb90",
+          "bytes": 331
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "DAT match identifies PRG+CHR bytes, not cartridge ownership or distribution rights.",
+    "Reset slice is a static fixed-bank hypothesis; no mapper or NES runtime is emulated.",
+    "No gameplay, all-stage completion, timing or bot behavior is verified by this probe."
+  ],
+  "rea_sample": {
+    "path": "contra-j-reset-f80d.bin",
+    "sha256": "e35c3fe1bc1ca5fc624c7764e06bb619d2ae54ccbc30336633c0a2892c32368e",
+    "sha1": "a81305b6d4dc5cb6dac38bc655ebdb393d82239d",
+    "crc32": "e794fa1d",
+    "bytes": 2035,
+    "rom_offset": 129053,
+    "prg_offset": 129037,
+    "cpu_start": "0xf80d",
+    "cpu_end": "0xffff",
+    "mapping": "last 8 KiB PRG bank at 0xe000; reset-vector slice"
+  },
+  "passed": true
+}

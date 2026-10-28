@@ -1,0 +1,66 @@
+{
+  "scope": "Public reserve lives paired with submitted OAM across normal, paused, terminal and restored Session boundaries",
+  "passed": true,
+  "naturalCase": {
+    "seed": 42,
+    "players": 1,
+    "input": "right held from standard new Session",
+    "lossFrame": 969,
+    "submittedLivesAtLoss": 2,
+    "pendingRuleLivesAtLoss": 1,
+    "nextSubmittedFrame": 970
+  },
+  "checks": [
+    "Initial public reserve values",
+    "Natural reserve loss with no state/damage/result injection",
+    "JSON restore preserves submitted HUD",
+    "Duplicate and rejected rule frames remain inert",
+    "Paused and terminal commits include HUD",
+    "Runtime View uses submitted lives",
+    "Server hides pending raw lives and exposes submitted zero lives as known"
+  ],
+  "regression": {
+    "initialIntegrationPassedTests": 63,
+    "initialIntegrationFailedTest": "TestContraModuleHiddenRulesDoNotAlterVisualInput",
+    "reason": "Preexisting zero-HUD fixture changed pending raw rule lives, which must now remain hidden.",
+    "correction": "Set PresentedLives to zero for public-zero case and add raw Lives to hidden-state noninterference case.",
+    "correctedTargetRacePassed": true,
+    "finalWholeBuildRerunRequired": true
+  },
+  "artifacts": [
+    {
+      "path": "docs/research/nes-contra/evidence/hud-session-hud-red.log.gz",
+      "sha256": "081315afc5bbb4d51535a895526bad696ddbb97217292057c4c73751093066b8"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/hud-session-hud-view-red.log.gz",
+      "sha256": "0da257a23649b880c46c05f1a6b35845507bf0be47b968f495c725f42134b9f3"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/hud-session-hud-green.log.gz",
+      "sha256": "fe7c10d7ce5a002f59775362f0a87895e7f25f06c1ef45cf22dc7e4f2c44c051"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/hud-session-hud-integration.jsonl.gz",
+      "sha256": "8e95172fa4027b8220145cf486ce4cbe7fede00b9829e3c9e2ab6223a3a8e758"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/hud-session-hud-server-green.jsonl.gz",
+      "sha256": "99304d90694a3148be0bfa0b9a684e051aff24b077822e64e2e954756517140b"
+    }
+  ],
+  "sourceSHA256": {
+    "games/contra/engine/session.go": "b853c7af11c35da7a11467d64a0be3c22a605ec0c1b4895b8623102896ad787a",
+    "games/contra/engine/session_paused.go": "d91e16fcd8ee7f5b4f57ba7c36e4a14183b82abadc0dc3d817b6180323e72c3f",
+    "games/contra/engine/session_terminal.go": "82a5406ad50b22391d259c94c48f3b3025769d5e5e7cf1e62fa8c88ab2f77890",
+    "games/contra/engine/session_hud_test.go": "c49c7e71adf673ff01b7272c483ba821289290079065358eb3a8ff510bae50b6",
+    "games/contra/runtime/bridge.go": "a6dabe220b276b26a432eaab4b980fa980ddbf1fb81da5e22105bb031d57005c",
+    "games/contra/runtime/hud_projection_test.go": "3a77b3e70dc9027dddde8240604a7539bd8b36856d3a7580f9132a0aa3f3a987",
+    "games/contra/server/bot_visual_e2e_test.go": "ede38de077cdf0c414d0bfd9df29c6a594efba05124365fae6a85cf05f345daa"
+  },
+  "limitations": [
+    "Boundary tests for paused/terminal include explicitly isolated states.",
+    "Does not prove continuous eight-stage gameplay or final frontend visuals.",
+    "Old build/checkpoint identities must not be reused after Session schema/source change."
+  ]
+}

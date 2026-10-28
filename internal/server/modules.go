@@ -120,9 +120,12 @@ func (s *Server) prepareModule(r *Room, actor int, action json.RawMessage) error
 	return nil
 }
 
-func (r *Room) setModule(match gameapi.Match) error {
-	if err := match.Validate(len(r.Seats)); err != nil {
+func (r *Room) setModule(match gameapi.Match, module gameapi.Module) error {
+	if err := module.ValidateMatch(match, len(r.Seats)); err != nil {
 		return err
+	}
+	if r.RatingPolicy == gameapi.RatingCoopCampaignV1 && match.Result != nil && !match.Result.Cooperative {
+		return errors.New("cooperative challenge requires a shared outcome")
 	}
 	for actor, seat := range r.Seats {
 		if seat.Left && slices.Contains(match.Actors, actor) {
@@ -133,6 +136,7 @@ func (r *Room) setModule(match gameapi.Match) error {
 		match.Log = []string{}
 	}
 	r.Module = &match
+	r.observeChallengeEligibility(match)
 	r.TurnDeadline = match.Deadline
 	if r.TurnDeadline > 0 {
 		r.TurnDeadline += r.ClockOffsetMS
@@ -174,14 +178,15 @@ func (s *Server) startModule(r *Room, actor int, now time.Time) error {
 		return err
 	}
 	r.Status = "playing"
-	if err = s.setModule(r, match); err != nil {
-		return err
-	}
-	r.MatchID, r.SetupVersion, r.Rated = randomID(12), r.Version+1, !match.HasComputerPlayers
+	r.MatchID, r.SetupVersion, r.Rated = randomID(12), r.Version+1, !match.HasComputerPlayers && !match.Unrated
+	r.RatingPolicy, r.RatingStarted, r.RatingUnratedReason = m.RatingPolicy, m.RatingPolicy != "", ""
 	for _, seat := range r.Seats {
 		if seat.Bot {
 			r.Rated = false
 		}
+	}
+	if err = s.setModule(r, match); err != nil {
+		return err
 	}
 	return nil
 }

@@ -1,0 +1,19 @@
+{
+  "status": "targeted-tests-pass-continuation-still-incomplete",
+  "change": "Approach an unknown leading-foot cell only while a four-pixel visible support margin remains under the center, with no visible head wall and no crouch to release. Do not step into the unknown cell.",
+  "sources": {
+    "games/contra/engine/bot.go": "a320541a5ef6f5bbc07083848dd24c55b354bd1934c36f4b9cbf9c693940f3f5",
+    "games/contra/engine/bot_known_support_probe_test.go": "e785e185bc400c5acb587745ec928af19a56fe54392440551586b100d6f7481b",
+    "games/contra/engine/testdata/bot-energy-top-unknown-front.json.gz": "b273457a26d077a11146c8959897f7f59254d498cf5931667d075aaf5921e0e7"
+  },
+  "race_log": "known-support-probe-green.log",
+  "run": ".local/contra-bot/diagnostic-energy-support-probe",
+  "complete_campaign": false,
+  "run_result": {
+    "frames": 124000,
+    "level_index": 5,
+    "screen": 5,
+    "last_visible_y": 52,
+    "finding": "Advanced the camera slightly but still holds at the upper platform unknown cell; the probe is not sufficient to complete the corridor."
+  }
+}

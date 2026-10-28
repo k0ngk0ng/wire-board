@@ -1,0 +1,21 @@
+{"Time":"2026-10-25T13:39:18.306804+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-25T13:39:18.701831+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalCombatFramePhase"}
+{"Time":"2026-10-25T13:39:18.70188+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalCombatFramePhase","Output":"=== RUN   TestOriginalCombatFramePhase\n"}
+{"Time":"2026-10-25T13:39:19.288113+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalCombatFramePhase","Output":"    frame_test.go:129: 1220 complete player/projectile frame phases match\n"}
+{"Time":"2026-10-25T13:39:19.288168+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalCombatFramePhase","Output":"--- PASS: TestOriginalCombatFramePhase (0.59s)\n"}
+{"Time":"2026-10-25T13:39:19.288178+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalCombatFramePhase","Elapsed":0.59}
+{"Time":"2026-10-25T13:39:19.288197+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestCombatFrameFailureIsAtomic"}
+{"Time":"2026-10-25T13:39:19.288203+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestCombatFrameFailureIsAtomic","Output":"=== RUN   TestCombatFrameFailureIsAtomic\n"}
+{"Time":"2026-10-25T13:39:19.676614+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestCombatFrameFailureIsAtomic","Output":"--- PASS: TestCombatFrameFailureIsAtomic (0.39s)\n"}
+{"Time":"2026-10-25T13:39:19.676654+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestCombatFrameFailureIsAtomic","Elapsed":0.39}
+{"Time":"2026-10-25T13:39:19.676748+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalJungleScrolling"}
+{"Time":"2026-10-25T13:39:19.676754+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalJungleScrolling","Output":"=== RUN   TestOriginalJungleScrolling\n"}
+{"Time":"2026-10-25T13:39:19.749731+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalJungleScrolling","Output":"--- PASS: TestOriginalJungleScrolling (0.07s)\n"}
+{"Time":"2026-10-25T13:39:19.749786+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalJungleScrolling","Elapsed":0.07}
+{"Time":"2026-10-25T13:39:19.749803+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestJungleScrollScreenBoundaryAndRollback"}
+{"Time":"2026-10-25T13:39:19.74981+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestJungleScrollScreenBoundaryAndRollback","Output":"=== RUN   TestJungleScrollScreenBoundaryAndRollback\n"}
+{"Time":"2026-10-25T13:39:19.812717+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestJungleScrollScreenBoundaryAndRollback","Output":"--- PASS: TestJungleScrollScreenBoundaryAndRollback (0.06s)\n"}
+{"Time":"2026-10-25T13:39:19.812773+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestJungleScrollScreenBoundaryAndRollback","Elapsed":0.06}
+{"Time":"2026-10-25T13:39:19.812797+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"PASS\n"}
+{"Time":"2026-10-25T13:39:20.821276+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t2.514s\n"}
+{"Time":"2026-10-25T13:39:20.821306+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":2.5140000000000002}

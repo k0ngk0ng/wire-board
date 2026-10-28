@@ -1,0 +1,23 @@
+{
+  "source": "https://raw.githubusercontent.com/TASEmulators/fceux/v2.6.6/src/ppu.cpp",
+  "localEvidence": ".local/contra-raster/fceux-2.6.6-ppu.cpp",
+  "sourceSHA256": "c7befd6ea4622a63f3e4171886ce1b3c0c96f643a5deb590af98a5b58f9a5e2d",
+  "pinnedOracle": "FCEUX 2.6.6, SDL.NewPPU=0",
+  "observedFullPixelAgreement": "campaign-scene-raster-runtime.json",
+  "nativeEvidenceIDs": {
+    "0xf889": "ev_bd5c3444b582ff8c90d284bdb4003356b75730a01802331819f17a5e37c53893",
+    "0xf926": "ev_354cb40b90eec32a33fbf1e65021548a5eab53656e2b460d97dbf9c2c264eb31",
+    "0xf968": "ev_c318a6c448048bb4e219a126bd4b0e547984484bb2e40ff30da47bc69c2c115f"
+  },
+  "nativeArchiveSHA256": "9da1a22e5152ae014769c8ad26c3caea1d6f53279114f006c4c7e6bc40c46478",
+  "luaAPIInventory": {
+    "path": ".local/contra-raster/lua-api.txt",
+    "sha256": "2986401d525e1e07109bceb270fc279f8e2852b18d33425e1785069aa922101c"
+  },
+  "researchScripts": {
+    "scripts/contra/campaign_scene_raster_analyze.py": "a39a8e94430031518993632671280f061323ed9e4aadcd1ff8c0f220f226717d",
+    "scripts/contra/campaign_scene_raster_capture.py": "93c5da13ba8e59e18eb9d8e63675a80dc02ecd73ec408c23d1f41e711bebea80",
+    "scripts/contra/campaign_scene_raster_pixels.py": "78f76ee0eeaf7899fbbf24f7c2a86dd176790c5d2795b1d6159d856bc3d27ebe",
+    "scripts/contra/campaign_scene_raster_runtime.mjs": "0aa3f87a54d89fedc956f2f0b3b0985f2646100f7c56f5ff0941c692c84c80b0"
+  }
+}

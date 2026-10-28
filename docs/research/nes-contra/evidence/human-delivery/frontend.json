@@ -1,0 +1,50 @@
+{
+  "passed": true,
+  "scope": "Human-only Contra catalog and shared capability/count/rating copy; real SSR controls plus actual autoplay-gate extraction; full browser acceptance remains root task",
+  "capability": {
+    "supportsBots": false,
+    "minPlayers": 1,
+    "maxPlayers": 2,
+    "playerCounts": [
+      1,
+      2
+    ],
+    "requiresFullTable": true
+  },
+  "verification": {
+    "regressionTests": 85,
+    "failed": 0,
+    "skipped": 0,
+    "typescript": "tsc -p web/tsconfig.json --noEmit",
+    "create": "solo/co-op options kept; no computer or autoplay copy",
+    "waiting": "one/two ready humans can start; incomplete two-seat room cannot; no add-computer control; capacity-one copy does not require friends",
+    "playing": "actual main canAutoPlay predicate and button JSX render no enable/cancel buttons; capability-true positive controls preserved",
+    "rating": "false shows human victory/failure/abandonment policy only; omitted/true argument keeps previous exact text"
+  },
+  "changedSHA256": {
+    "games/contra/web/catalog.tsx": "6d7198e99597e3049f42fc6528c76e5450a4d430670deaa888709d2120a07cc0",
+    "games/contra/web/human-mode.test.mjs": "5114c6b17f1b6c728278226c6e28ed34a45fff31463820d9e47fa4d6de02c943",
+    "web/src/game-api/host.tsx": "e5573d10b7bf29345e55f8785c46149aeb4fb634b55702c184dda8ef11d8f266",
+    "web/tests/computer-support.test.mjs": "e99912d1c1d6fc759851b1b5c9a5388de616292103ffb90ec96d26d80dea6574",
+    "web/src/ui/cooperative-rating.ts": "65f966a7eae976b1cbb807ee60d9b33c4e8ec4457aa829a3a3fa9b0f664f4ed4",
+    "web/tests/coop-campaign-copy.test.mjs": "492cda08d24242b8da02b2ed973ddc26b01e6ef66d42ea5534a1e9343b43b6a0"
+  },
+  "readOnlyGateSourceSHA256": "8793d3558f693e56af4ec9f78c8769097ed90e5a91f82c1a5325ee823dabc6c4",
+  "evidenceSHA256": {
+    ".local/contra-frontend-human-red.log": "0aef34cf3bdc2b2bd24c8e5131f17f121458860e04279f7e474b09843d2682f2",
+    ".local/contra-frontend-human-green.log": "ec3d79a6e2d1c3725fdedf210eadca5a2d0a29466a8ec93b35a5f21d3c8ebeb6",
+    ".local/contra-frontend-human-rating-red.log": "c407bc5fa47360bf041eb5f534e8bbf82a4b0b9d11b4494a09e087a4fec4e45b",
+    ".local/contra-frontend-human-rating-green.log": "ddcbe96a67b6da35b36ed1e85bf8c026cc444de1bc83906b7586a15c043c0bce",
+    ".local/contra-frontend-human-regression.log": "ba938a9d32cdc66ee2b4c11395dca54c748f1a9b5e901f659774778a6dbb63a0",
+    ".local/contra-frontend-human-types.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".local/contra-frontend-human-format.log": "e7317797bdcbd756a0d7650327f407f8b331732bcb039ae7f1bc0d6aed039b97",
+    ".local/contra-frontend-human-rating-format.log": "3a31f2ec34d23e26563f883901f8ca33ed567b0a3c2080315ab4dfdd808cac45",
+    ".local/contra-frontend-human/render-evidence.json": "46e4d55a0c642c8338f08a6f4698b76ebb3f4505f266770f5ceaa4a2ea3235fa"
+  },
+  "cleanup": {
+    "removed": ".local/contra-frontend-human/fixture.cjs",
+    "bytes": 2340753,
+    "preserved": "render-evidence.json, test sources and logs; no AI diagnostics deleted"
+  },
+  "reproduce": "node --experimental-strip-types --test games/contra/web/*.test.mjs web/tests/computer-support.test.mjs web/tests/module-preparation.test.mjs web/tests/autoplay-action.test.mjs web/tests/game-test-discovery.test.mjs web/tests/coop-campaign-copy.test.mjs"
+}

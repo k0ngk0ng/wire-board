@@ -1,0 +1,12 @@
+{"Time":"2026-10-26T16:20:45.718466+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-26T16:20:46.280202+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionReviewedFutureBackgrounds"}
+{"Time":"2026-10-26T16:20:46.280347+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionReviewedFutureBackgrounds","Output":"=== RUN   TestBuiltinBotVisionReviewedFutureBackgrounds\n"}
+{"Time":"2026-10-26T16:20:47.335547+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionReviewedFutureBackgrounds","Output":"--- PASS: TestBuiltinBotVisionReviewedFutureBackgrounds (1.06s)\n"}
+{"Time":"2026-10-26T16:20:47.335593+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionReviewedFutureBackgrounds","Elapsed":1.06}
+{"Time":"2026-10-26T16:20:47.335617+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionHangarCartIsNotSniper"}
+{"Time":"2026-10-26T16:20:47.335621+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionHangarCartIsNotSniper","Output":"=== RUN   TestBuiltinBotVisionHangarCartIsNotSniper\n"}
+{"Time":"2026-10-26T16:20:48.345667+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionHangarCartIsNotSniper","Output":"--- PASS: TestBuiltinBotVisionHangarCartIsNotSniper (1.01s)\n"}
+{"Time":"2026-10-26T16:20:48.345697+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionHangarCartIsNotSniper","Elapsed":1.01}
+{"Time":"2026-10-26T16:20:48.345703+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"PASS\n"}
+{"Time":"2026-10-26T16:20:48.348812+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t2.630s\n"}
+{"Time":"2026-10-26T16:20:48.348836+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":2.63}

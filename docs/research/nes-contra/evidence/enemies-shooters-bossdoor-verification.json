@@ -1,0 +1,205 @@
+{
+  "passed": true,
+  "scope": "First-stage Boss door and tunnel; controlled original state/continuation, not a naturally defeated Boss or full-game acceptance.",
+  "isolated_original_states": 102,
+  "original_tunnel_collision_writes": 16,
+  "continuation_sequences": [
+    {
+      "mode": "defeat-to-removal",
+      "calls": 115,
+      "initial_writes": "one explicit defeated-door setup"
+    },
+    {
+      "mode": "tunnel-with-surviving-box-contention",
+      "calls": 65,
+      "rejected_requests": 1,
+      "initial_writes": "one explicit tunnel/box setup"
+    }
+  ],
+  "signals": {
+    "BossDoorDefeated": {
+      "BossDefeated": 1,
+      "DelayLow": 255,
+      "DelayHigh": "preserved",
+      "audio": "reset before77 and later effects"
+    },
+    "BossDoorTunnelFinished": {
+      "DelayLow": 48,
+      "DelayHigh": 0,
+      "BossDefeated": "preserved"
+    }
+  },
+  "native_records": 15,
+  "native_evidence_ids": [
+    "ev_5d7937d4519ca0af45755d2929ce24530847ab356214cab0c41a28f157056ed0",
+    "ev_9aa3ba7f79b0774d8b2f3f804427500cd34962a5015274f00b80bf00ecb3767e",
+    "ev_7f683be43a5700baec3849e8a819f7ffa0fb7d3fb9bba7c69e5f8547af24d4d2",
+    "ev_8d4e9201146c6c92e4fc556c973a76feda4f4d09aef1ce34da0247ce5b867eb8",
+    "ev_6c87c92cb41e6f6cbe096710d511d7502ee23448580061e7a5bdbfa0472f6b7d",
+    "ev_9156c8963af1bc094ed771a4a35110bc23ce15ac9d0f4827e409f55fc2f1254f",
+    "ev_3ffc3c369829be9991cd0277389dcb1c320b53a53eb6e4d3697f947fc02f2a7b",
+    "ev_02b79d1e7b40db19b68da8a50350d4ffbc6d4f9b21630a8955f2ee4600946632",
+    "ev_012c5e128619d64ca6aab0ee39e1d3e65c2198867fadfb61144de4e7cd1598a8",
+    "ev_e41e04914998e7154385dc39abe01214dcf9c4b35a53fc07dae46b1601cb640d",
+    "ev_6f3351a236816e8bcaf1f261eebcd7259b82091a7a046e4b7010ac02754f1f49",
+    "ev_22f336c723d51d7f26eadce3d47bb161721b55a788ce60be1c5958de6be30690",
+    "ev_5a110b3526cc36f02ae6fa4b7a5a1e1104cc07c52e273ff3e16799ccd9dadc09",
+    "ev_e08468d95ffdf4089bc624a0f88f5e2d3dfb5b3d5c14a12676026f0450989006",
+    "ev_b9a798ad5079567c60444862b0290665479a133b0079c5a30a29b0dabfbae7f7"
+  ],
+  "race_tests": [
+    "TestContinuousOriginalBossDoor",
+    "TestOriginalBossDoorCollisionPatterns",
+    "TestOriginalBossDoorStates",
+    "TestOriginalRunnerFireTransition",
+    "TestOriginalEnemyShotAndAimBoundaries",
+    "TestOriginalTurretStatesWithGraphicsQueue",
+    "TestOriginalControlledShooterStates",
+    "TestOriginalSniperSteps",
+    "TestContinuousNaturalShooterStates"
+  ],
+  "repeat_comparisons": [
+    {
+      "first": ".local/contra-enemies-shooters/bossdoor/runs/bossdoor-v1/ram.bin",
+      "repeat": ".local/contra-enemies-shooters/bossdoor/runs/bossdoor-v2/ram.bin",
+      "sha256": "fbd147b00db668b7396af78b81e0a0275ae777fa33ddc33557fc1635b0147023"
+    },
+    {
+      "first": ".local/contra-enemies-shooters/bossdoor/runs/bossdoor-v1/bossdoor.jsonl",
+      "repeat": ".local/contra-enemies-shooters/bossdoor/runs/bossdoor-v2/bossdoor.jsonl",
+      "sha256": "60cd0dc80e4271d5e275ac3735a2e76d9c5d06880eab79858a61a0ea3a1ae97c"
+    },
+    {
+      "first": ".local/contra-enemies-shooters/bossdoor-sequence/runs/door-sequence-v2-0/ram.bin",
+      "repeat": ".local/contra-enemies-shooters/bossdoor-sequence/runs/door-sequence-v3-0/ram.bin",
+      "sha256": "a1a5ca33f46921829b52c5e3aafc9cfb13d85802e46fb551c6d00684fcbdc548"
+    },
+    {
+      "first": ".local/contra-enemies-shooters/bossdoor-sequence/runs/door-sequence-v2-0/door-sequence.jsonl",
+      "repeat": ".local/contra-enemies-shooters/bossdoor-sequence/runs/door-sequence-v3-0/door-sequence.jsonl",
+      "sha256": "8c309df3003ee92d1523fef587e097cdb408c659e93607479d1496e6a71181a6"
+    },
+    {
+      "first": ".local/contra-enemies-shooters/bossdoor-sequence/runs/door-sequence-v2-0/inputs.csv",
+      "repeat": ".local/contra-enemies-shooters/bossdoor-sequence/runs/door-sequence-v3-0/inputs.csv",
+      "sha256": "73219c531316516b7ebbca18176545263a318ab9033acc98d35c30ce958b7f09"
+    },
+    {
+      "first": ".local/contra-enemies-shooters/bossdoor-sequence/runs/door-sequence-v2-1/ram.bin",
+      "repeat": ".local/contra-enemies-shooters/bossdoor-sequence/runs/door-sequence-v3-1/ram.bin",
+      "sha256": "df89a8cadb90ac259d35724da42d01f8216c949c7e6519812a9c3801f09ef5c8"
+    },
+    {
+      "first": ".local/contra-enemies-shooters/bossdoor-sequence/runs/door-sequence-v2-1/door-sequence.jsonl",
+      "repeat": ".local/contra-enemies-shooters/bossdoor-sequence/runs/door-sequence-v3-1/door-sequence.jsonl",
+      "sha256": "9d29f7d28cfcddbc9b053fac8e90cbe88cdda59bcb5089161dae578cc307b018"
+    },
+    {
+      "first": ".local/contra-enemies-shooters/bossdoor-sequence/runs/door-sequence-v2-1/inputs.csv",
+      "repeat": ".local/contra-enemies-shooters/bossdoor-sequence/runs/door-sequence-v3-1/inputs.csv",
+      "sha256": "73219c531316516b7ebbca18176545263a318ab9033acc98d35c30ce958b7f09"
+    }
+  ],
+  "source_sha256": {
+    "games/contra/engine/enemies_shooters_aim.go": "d269f4599c5fa5e869b39878b6210dfc0c1017da8ac804d000ae30df443731fe",
+    "games/contra/engine/enemies_shooters_bossdoor.go": "08ab25e4176aa7369cbf0476f4a162c9f87b3177ab62867a487e5706bbdf99ce",
+    "games/contra/engine/enemies_shooters_bossdoor_sequence_test.go": "715c79d8618526e509890403de5f9dfc42010ae57651ba61a1330b9069eba088",
+    "games/contra/engine/enemies_shooters_bossdoor_terrain.go": "3dfc8069c2d83e8a23271b9beb8df8dd5b18250231697a15a54192b0d140210b",
+    "games/contra/engine/enemies_shooters_bossdoor_terrain_test.go": "2c82a95a0e3e80efaf2065a03b04ced0e088b4330b2c897fb5f7c4cca4ea06ab",
+    "games/contra/engine/enemies_shooters_bossdoor_test.go": "43ef5823dd89868735dd236f1651143edff3d6a2348e8643d6c7cd213c8165bf",
+    "games/contra/engine/enemies_shooters_runner.go": "53032d44797a4c93742590c4c18991f578d4cd40208a854eb57ba0d62b055ba1",
+    "games/contra/engine/enemies_shooters_runner_transition_test.go": "e50f23c8852f189c53e25735950a95b201231c7aa22cd0de005273eb31f969be",
+    "games/contra/engine/enemies_shooters_sniper.go": "0ef33341f693063e3caeb003b857a4159255c7dd87155f0278403cb211479877",
+    "games/contra/engine/enemies_shooters_tables.go": "d57dba7bb57ce7c2a89feb10ed9a186e3967a8d649d6af1cce73490236996e02",
+    "games/contra/engine/enemies_shooters_test.go": "27ab93480f11e8f97fc8df142e12028420beaa22dceb480b73636412b3510705",
+    "games/contra/engine/enemies_shooters_turrets.go": "767ebe192762aef0b8e6fdaca54b4e6a24a80c8f660b7225e2daaf07eb939b31",
+    "scripts/contra/enemies_shooters_capture.py": "a9075a2507d4fb45ff62ffbdc022d5dac0e82c0889771d9594f1d1790b9b9967",
+    "scripts/contra/enemies_shooters_capture_bossdoor.py": "046a91942ca4a47c962ff9f4c48f0d4cc46e5fd0961c9c67a357a9e4a84e972a",
+    "scripts/contra/enemies_shooters_capture_bossdoor_sequence.py": "333c4ce2e482464f580273cb1eb5ae4ca053dc3a8b5afa50b2d9bd7b3e78208f",
+    "scripts/contra/enemies_shooters_capture_natural.py": "113dfdce87195c65c811689c46dacdf91f0e5d104c057a24d6ea53d6067d3fcb",
+    "scripts/contra/enemies_shooters_capture_runner_transition.py": "285ddae3a3cf1ab5518bea8e724c651da62d60f4fd4fdc2e270c9224ddbc7fa9",
+    "scripts/contra/enemies_shooters_capture_states.py": "5cafb5537dfac2493d52c45817f3a52ed0ff6b2b44000fd8d7a99f1790878289",
+    "scripts/contra/enemies_shooters_capture_turrets.py": "8d28d4d0d8caa6634e867435d265e8296eb2530e2cc718b81134af291249d3b3",
+    "scripts/contra/enemies_shooters_export.py": "41e4c32d5806caabd5564cde0bc14271f2f593d59d839802874317e180ac651a",
+    "scripts/contra/enemies_shooters_export_bossdoor.py": "13b94fbe5a3e5cef340cc2e62418e756f5d0e3a12f60cdcb76a056b11e63fa17",
+    "scripts/contra/enemies_shooters_prepare.py": "61943fc76e3b2f76a6267692a4d411844a6c191ea56a6a0b2834b1d72e3c179a",
+    "scripts/contra/enemies_shooters_tables.py": "4e227e42583973e9fb1f541f71a73499426ad81edce3eedfe2ac3eff60679b38"
+  },
+  "fixture_sha256": {
+    "games/contra/engine/testdata/original-enemy-shooters-bossdoor-sequence.json.gz": "4d317c8a47b37295fa68a7073de732b19f40d1cbd22304526da6d1276fcf801e",
+    "games/contra/engine/testdata/original-enemy-shooters-bossdoor.json.gz": "5a2c4a6c161310f54ed9f0146fbbc2e786f33b5066bca123b2b8c2f27c7aeb9f",
+    "games/contra/engine/testdata/original-enemy-shooters-boundaries.json.gz": "48d18a1b921dc4c3cf4a3e9cb5660683195f55bb9c2666458d76955e45a6fa77",
+    "games/contra/engine/testdata/original-enemy-shooters-natural.json.gz": "88ef191f60e86a7c42201bb3c871cae2e31d6f8dd5595d1bf996b74dcde89b2d",
+    "games/contra/engine/testdata/original-enemy-shooters-runner-transition.json.gz": "1661e2f3479eb28734983a520c0e0483969d1336fc5e45c83618c5888e7cc559",
+    "games/contra/engine/testdata/original-enemy-shooters-states.json.gz": "2ef381a5f14a1e8f45da558f4512c491e967ae2325a830f7300f1d3eccdd54a6",
+    "games/contra/engine/testdata/original-enemy-shooters-turrets.json.gz": "deb3203e177f3233ab545421cc5abc9e880064c110443ed87c85e7607b8b20ce"
+  },
+  "limitations": [
+    "Original first-stage Boss fight has not been naturally reached/cleared by this task.",
+    "World must immediately consume progression signals and AudioReset; this component never writes platform victory or ratings.",
+    "Independent complete campaign, browser interaction and computer-player acceptance remain separate."
+  ],
+  "cleanup": [
+    {
+      "path": ".local/contra-enemies-shooters/swift-cache",
+      "bytes": 93398792
+    },
+    {
+      "path": "dist/contra-enemies-shooters-tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-enemies-shooters/tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-enemies-shooters/bossdoor/runs/bossdoor-v2",
+      "bytes": 599255
+    },
+    {
+      "path": ".local/contra-enemies-shooters/bossdoor-sequence/runs/door-sequence-v1-0",
+      "bytes": 2976453
+    },
+    {
+      "path": ".local/contra-enemies-shooters/bossdoor-sequence/runs/door-sequence-v1-1",
+      "bytes": 2835361
+    },
+    {
+      "path": ".local/contra-enemies-shooters/bossdoor-sequence/no-contention-probe.json.gz",
+      "bytes": 14324
+    },
+    {
+      "path": ".local/contra-enemies-shooters/bossdoor-sequence/runs/door-sequence-v3-0",
+      "bytes": 2976671
+    },
+    {
+      "path": ".local/contra-enemies-shooters/bossdoor-sequence/runs/door-sequence-v3-1",
+      "bytes": 2815936
+    },
+    {
+      "path": ".local/contra-enemies-shooters/bossdoor/fceux-home",
+      "bytes": 17767
+    },
+    {
+      "path": ".local/contra-enemies-shooters/bossdoor/runtime",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-enemies-shooters/bossdoor/tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-enemies-shooters/bossdoor-sequence/fceux-home",
+      "bytes": 17828
+    },
+    {
+      "path": ".local/contra-enemies-shooters/bossdoor-sequence/runtime",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-enemies-shooters/bossdoor-sequence/tmp",
+      "bytes": 0
+    }
+  ],
+  "retained": "Canonical original captures, replay inputs, initial states and complete REA records still used for World integration; only own closed profiles/cache/duplicate probes removed."
+}

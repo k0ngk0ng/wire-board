@@ -1,0 +1,34 @@
+{
+  "scope": "Player labels restricted to recovered animation outputs, plus corrected test checkpoint semantics and visible-life replenishment",
+  "passed": true,
+  "removedPlayerCodes": [
+    7,
+    89,
+    90,
+    91,
+    112,
+    113,
+    114
+  ],
+  "retainedWaterEntryCode": 115,
+  "addedBaseExitCode": 145,
+  "checks": [
+    "Recovered animation branch/table outputs bound player recipe labels",
+    "Actual powerup-only picture produces no avatar or player candidate",
+    "Eight real water-entry color/direction/bob variants remain recognized",
+    "Recorded assisted coop replay reproduces frame10966 exactly; only empty Audio.Published map/nil differs structurally; next step is identical",
+    "Checkpoint Session comparison uses canonical stored JSON; policy memory remains strict",
+    "Natural reserve loss reaches public HUD before test refill"
+  ],
+  "artifacts": {
+    "docs/research/nes-contra/evidence/player-recipes-red.log.gz": "fc484aeb6bb98e6124fcb1441f0921481dede45a200d3afd0b900605c1c79314",
+    "docs/research/nes-contra/evidence/player-recipes-green.jsonl.gz": "d90bbf66447c7cf3e4b1eaabb5a5273b324dd9d505c4418e91217ef3be4191b7",
+    "docs/research/nes-contra/evidence/visible-assistance-red.log.gz": "7079492574629afcb50c16447219c5726ac85ccfbb402c7dc0ae4482227c7f9f",
+    "docs/research/nes-contra/evidence/visible-assistance-green.log.gz": "11ca539d3625cd3760b2fab2d284e525596ea0c138bb51631dc9d3c9cc734cdb",
+    "docs/research/nes-contra/evidence/assisted-interlude-restore-diagnostic.json.gz": "432276c9123dcd70fad0598114b3e795754ed639b51780c2bdaa4848097c81a5"
+  },
+  "limitations": [
+    "The first-stage assisted run still requires continuation beyond the repaired checkpoint.",
+    "No production invincibility, state reset or damage modification was introduced."
+  ]
+}

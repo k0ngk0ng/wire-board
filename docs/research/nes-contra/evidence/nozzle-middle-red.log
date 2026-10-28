@@ -1,0 +1,8 @@
+=== RUN   TestBotRecordedMiddlePlatformDecision
+    bot_nozzle_middle_test.go:34: remembered nozzle ahead 2000
+    bot_nozzle_middle_test.go:35: landing 107 96 true current {107 148 true true 10 0 13 64 true false false false false} nozzle ahead 0
+    bot_nozzle_middle_test.go:37: walks toward nozzle instead of waiting or ascending 65
+--- FAIL: TestBotRecordedMiddlePlatformDecision (0.00s)
+FAIL
+FAIL	github.com/k0ngk0ng/wire-board/games/contra/engine	0.562s
+FAIL

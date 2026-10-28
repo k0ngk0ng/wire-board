@@ -23,7 +23,7 @@ games/<id>/
 先列出失败场景并编写 E2E，再实现游戏。复杂功能以完整链路验收为主；小型纯函数和低风险改动可以针对性验证。禁止先实现代码再补单元测试。
 
 1. 在 `games/<id>/server` 中实现自己的类型和导出的 `Module() gameapi.Module`。接入契约位于 [internal/gameapi/module.go](../internal/gameapi/module.go)，不需要导入 `internal/game` 或 `internal/server`。
-2. 在 [games/registry.go](../games/registry.go) 中导入这个 Go 包，并将其 `Module()` 加入 `Modules()` 返回值。这是新游戏唯一需要修改的公共注册文件。
+2. 普通模块在 [games/registry.go](../games/registry.go) 中导入 Go 包，并将其 `Module()` 加入 `Modules()` 返回值。需要校验原生运行产物、可能初始化失败的模块在 [internal/production/modules.go](../internal/production/modules.go) 中构造；初始化错误必须在数据库创建和服务监听前返回，不得静默省略模块。游戏之间不互相初始化。
 3. 在 `games/<id>/web/module.tsx` 中默认导出 `defineGame<本游戏视图, 本游戏选项>({...})`。前端自动发现该路径，ID 必须与后端一致。`legacy` 保持未设置。
 4. 在游戏目录内编写自己的测试、玩法说明和素材声明。游戏之间不得直接导入实现，不得修改另一款游戏的源码来完成接入。
 5. 执行本页的构建、边界和接入验收；新游戏应另有自己的完整对局 E2E。

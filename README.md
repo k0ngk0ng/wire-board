@@ -107,11 +107,11 @@ docker compose logs -f
 
 ## 游戏模块开发
 
-六款游戏的规则、前端与测试按 `games/<id>/` 拆分维护，继续共用一个仓库和部署服务。新游戏通过后端 `games/registry.go` 和自动发现的 `web/module.tsx` 接入，无需修改旧游戏的状态或动作类型。目录、兼容范围及验收命令见 [游戏开发说明](docs/game-development.md)。
+各游戏的规则、前端与测试按 `games/<id>/` 拆分维护，继续共用一个仓库和部署服务。普通模块在后端 `games/registry.go` 注册；需要校验原生运行产物身份的模块由 `internal/production` 初始化。前端自动发现 `web/module.tsx`，无需修改旧游戏的状态或动作类型。目录、兼容范围及验收命令见 [游戏开发说明](docs/game-development.md)。
 
 ## 本地开发与验证
 
-需要 Go 1.26+、Node 22+。以下命令从仓库根目录执行，缓存和临时文件均存放在仓库 `.local` 中。
+需要 Go 1.26+、Node 22+ 和带 `lzma` 支持的 Python 3。以下命令从仓库根目录执行，缓存和临时文件均存放在仓库 `.local` 中。前端构建同时准备魂斗罗的运行清单和无损音频源码包；后端必须链接这份清单的真实身份。
 
 ```sh
 . scripts/env.sh
@@ -122,11 +122,20 @@ python3 -B scripts/ci/scope.py run --game shared
 # 只验证当前开发的游戏；服务端规则改动时再增加 --backend。
 python3 -B scripts/ci/scope.py run --game snooker
 go vet ./...
-go build -o .local/wire-board .
+python3 -B games/contra/build/native.py --runtime .local/contra-web-runtime/public/manifest.json --out .local/wire-board
 INVITE_CODE=local-friends ADDR=127.0.0.1:18080 DATA_DIR="$PWD/.local/data" .local/wire-board
 ```
 
 前端开发：将后端监听 `127.0.0.1:8080`，运行 `npm --prefix web run dev`，通过 Vite 开发地址访问。第一次运行 Go 前需要先构建前端以满足 embed。
+
+直接执行未注入运行身份的 `go build` 或 `go run` 会在服务启动时被拒绝。修改魂斗罗引擎或构建输入后，重新执行前端构建和上述原生构建命令，不复用旧清单。需要从源码构建 Docker 镜像时，传入匹配的 `SOURCE_SHA` 和 `WIRE_BOARD_ASSET_BASE=https://cdn.ichenj.com/bga/web/<SOURCE_SHA>/`；构建只验证该提交已发布的 CDN 对象，不负责上传资源。
+
+魂斗罗当前交付单人／双人真人模式，暂不开放电脑与托管。以下电脑长战役命令仅用于后续研发，不是本次交付门槛；CI 需要显式开启默认关闭的 `contra_campaigns` 开关。正常生命数模式检查自然通关或失败结算，辅助模式使用测试补命检查八关通关。每次执行使用新的证据目录：
+
+```sh
+python3 -B scripts/contra/campaign_modes.py --mode standard-terminal --out .local/contra-standard-acceptance
+python3 -B scripts/contra/campaign_modes.py --mode assisted-clear --out .local/contra-assisted-acceptance
+```
 
 GitHub Actions 的 main 检查始终验证公共平台，并按最近已验证的祖先构建选择变更游戏；取消或失败的前序提交不会从检查范围中消失。游戏前端修改只运行对应前端／素材检查，服务端规则及夹具修改才运行该游戏的完整规则、对局和竞态检查。卡坦岛的大型规则套件按 20 片并行，其他游戏改动不会启动这些分片。工作流摘要及 `verification-plan` 产物列出本次范围，各检查保存独立结果；全部必需检查通过后生成二进制，版本 tag 只复用产物发布。
 

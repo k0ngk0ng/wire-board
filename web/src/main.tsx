@@ -2,6 +2,7 @@ import { CompactRoomPanel } from "./ui/compact-room-panel";
 import { NetworkSignal } from "./ui/network-signal";
 import type { NetworkInfo } from "./network-quality";
 import { isTransientSyncError, quietSyncError } from "./game-api/sync-error";
+import { blocksAutoplayAction } from "./game-api/autoplay-action";
 import {
   GameFullscreen,
   type GameFullscreenHandle,
@@ -10,6 +11,11 @@ import { GameFeedback } from "./ui/game-overlay-root";
 import { SoundControls } from "./ui/sound-controls";
 import { readAudioPreferences } from "./audio-preferences";
 import { Results } from "./ui/results";
+import { RatingChanges } from "./ui/rating-changes";
+import {
+  closeTableDescription,
+  cooperativeOutcomeLabel,
+} from "./ui/cooperative-rating";
 import { GameLoading } from "./game-api/loading";
 import { Runtime } from "./game-api/runtime";
 import { VersionUpdateNotice } from "./VersionUpdateNotice";
@@ -461,7 +467,11 @@ function App() {
   };
   const act: Act = async (action) => {
     if (!state?.room || presented.blocked) return;
-    if (state.room.seats[state.room.you]?.autoPlay) {
+    if (blocksAutoplayAction(
+      state.room.seats[state.room.you]?.autoPlay,
+      gameModule(state.room.kind),
+      action,
+    )) {
       setNotice("当前由电脑托管，取消托管后即可继续操作。");
       return;
     }
@@ -969,15 +979,20 @@ function App() {
                   <div className="closed-panel">
                     <Flag size={40} />
                     <h2>
-                      {room.closeReason === "unpublished"
-                        ? "这款游戏已下架"
-                        : room.closeReason === "admin"
-                          ? "管理员已结束牌桌"
-                          : room.closeReason === "inactive"
-                            ? "牌桌已因闲置关闭"
-                            : "这张牌桌已结束"}
+                      {room.result?.ratingPolicy === "coop_campaign_v1"
+                        ? cooperativeOutcomeLabel(room.result)
+                        : room.closeReason === "unpublished"
+                          ? "这款游戏已下架"
+                          : room.closeReason === "admin"
+                            ? "管理员已结束牌桌"
+                            : room.closeReason === "inactive"
+                              ? "牌桌已因闲置关闭"
+                              : "这张牌桌已结束"}
                     </h2>
                     <ClosedRoomDescription room={room} />
+                    {room.result?.rated && (
+                      <RatingChanges result={room.result} />
+                    )}
                     {!room.spectating &&
                       room.host === state.user.id &&
                       state.availableGames.includes(room.kind) && (
@@ -1157,9 +1172,7 @@ function App() {
                       <span>{gameName(room.kind)} · 对局进行中</span>
                     </div>
                   </div>
-                  <p>
-                    结束后本局不计胜负，也不加减积分。所有玩家可以离开牌桌，或由房主重新开局。
-                  </p>
+                  <p>{closeTableDescription(room)}</p>
                   <div className="modal-actions">
                     <button
                       className="outline"

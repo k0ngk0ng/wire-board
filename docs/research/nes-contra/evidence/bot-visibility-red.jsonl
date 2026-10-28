@@ -1,0 +1,9 @@
+{"Time":"2026-10-26T08:25:51.168721+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-26T08:25:51.611235+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotPublicObservation"}
+{"Time":"2026-10-26T08:25:51.611405+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotPublicObservation","Output":"=== RUN   TestBotPublicObservation\n"}
+{"Time":"2026-10-26T08:25:51.614448+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotPublicObservation","Output":"    bot_test.go:58: unsubmitted rule entity leaked through an entirely hidden frame [{0 130 90 1 30 0}]\n"}
+{"Time":"2026-10-26T08:25:51.614514+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotPublicObservation","Output":"--- FAIL: TestBotPublicObservation (0.00s)\n"}
+{"Time":"2026-10-26T08:25:51.614537+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotPublicObservation","Elapsed":0}
+{"Time":"2026-10-26T08:25:51.614554+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\n"}
+{"Time":"2026-10-26T08:25:51.615421+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t0.447s\n"}
+{"Time":"2026-10-26T08:25:51.615445+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":0.447}

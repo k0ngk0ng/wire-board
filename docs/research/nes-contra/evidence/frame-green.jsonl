@@ -1,0 +1,13 @@
+{"Time":"2026-10-25T13:23:17.454943+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-25T13:23:17.86869+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalCombatFramePhase"}
+{"Time":"2026-10-25T13:23:17.868798+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalCombatFramePhase","Output":"=== RUN   TestOriginalCombatFramePhase\n"}
+{"Time":"2026-10-25T13:23:17.954368+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalCombatFramePhase","Output":"    frame_test.go:129: 1220 complete player/projectile frame phases match\n"}
+{"Time":"2026-10-25T13:23:17.954408+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalCombatFramePhase","Output":"--- PASS: TestOriginalCombatFramePhase (0.09s)\n"}
+{"Time":"2026-10-25T13:23:17.954413+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalCombatFramePhase","Elapsed":0.09}
+{"Time":"2026-10-25T13:23:17.954424+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestCombatFrameFailureIsAtomic"}
+{"Time":"2026-10-25T13:23:17.954427+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestCombatFrameFailureIsAtomic","Output":"=== RUN   TestCombatFrameFailureIsAtomic\n"}
+{"Time":"2026-10-25T13:23:17.979762+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestCombatFrameFailureIsAtomic","Output":"--- PASS: TestCombatFrameFailureIsAtomic (0.03s)\n"}
+{"Time":"2026-10-25T13:23:17.979781+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestCombatFrameFailureIsAtomic","Elapsed":0.03}
+{"Time":"2026-10-25T13:23:17.979793+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"PASS\n"}
+{"Time":"2026-10-25T13:23:17.980327+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t0.525s\n"}
+{"Time":"2026-10-25T13:23:17.980341+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":0.525}

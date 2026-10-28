@@ -1,0 +1,7 @@
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/contra/engine [github.com/k0ngk0ng/wire-board/games/contra/engine.test]","Action":"build-output","Output":"# github.com/k0ngk0ng/wire-board/games/contra/engine [github.com/k0ngk0ng/wire-board/games/contra/engine.test]\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/contra/engine [github.com/k0ngk0ng/wire-board/games/contra/engine.test]","Action":"build-output","Output":"games/contra/engine/campaign_scene_test.go:149:14: undefined: StepCampaignEntrance\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/contra/engine [github.com/k0ngk0ng/wire-board/games/contra/engine.test]","Action":"build-output","Output":"games/contra/engine/campaign_scene_test.go:183:13: undefined: StepCampaignEntrance\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/contra/engine [github.com/k0ngk0ng/wire-board/games/contra/engine.test]","Action":"build-fail"}
+{"Time":"2026-10-25T18:20:29.077547+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-25T18:20:29.077588+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/contra/engine [build failed]\n"}
+{"Time":"2026-10-25T18:20:29.077594+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":0,"FailedBuild":"github.com/k0ngk0ng/wire-board/games/contra/engine [github.com/k0ngk0ng/wire-board/games/contra/engine.test]"}

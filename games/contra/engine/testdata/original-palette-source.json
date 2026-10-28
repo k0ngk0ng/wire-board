@@ -1,0 +1,9 @@
+{
+  "romSHA256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "fixtureSHA256": "bb7a9b775875af6d1ffbda2fc8fd90b1074282876b28382cb26b43be22811db4",
+  "naturalRecords": 6400,
+  "controlledRecords": 137,
+  "naturalRepeatRAMIdentical": true,
+  "scope": "Original CEE3/CF6D/CC02/CE59 calls. Natural gameplay and controlled function inputs remain separate.",
+  "fadeInterpretation": "CF64 byte BB belongs to the preceding BNE operand; valid indexed fade values use CF65..CF6C for timer 1..8."
+}

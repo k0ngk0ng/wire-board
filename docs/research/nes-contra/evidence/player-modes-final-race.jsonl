@@ -1,0 +1,136 @@
+{"Time":"2026-10-25T14:15:50.358566+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-10-25T14:15:50.697348+08:00","Action":"run","Package":"command-line-arguments","Test":"TestOriginalCombatFrameModes"}
+{"Time":"2026-10-25T14:15:50.697517+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalCombatFrameModes","Output":"=== RUN   TestOriginalCombatFrameModes\n"}
+{"Time":"2026-10-25T14:15:52.488432+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalCombatFrameModes","Output":"    frame_modes_test.go:62: 3719 original complete mode frame phases match: map[[0 1]:1139 [1 0]:1815 [128 0]:765]\n"}
+{"Time":"2026-10-25T14:15:52.488488+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalCombatFrameModes","Output":"--- PASS: TestOriginalCombatFrameModes (1.79s)\n"}
+{"Time":"2026-10-25T14:15:52.488496+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestOriginalCombatFrameModes","Elapsed":1.79}
+{"Time":"2026-10-25T14:15:52.488504+08:00","Action":"run","Package":"command-line-arguments","Test":"TestOriginalCombatFramePhase"}
+{"Time":"2026-10-25T14:15:52.488508+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalCombatFramePhase","Output":"=== RUN   TestOriginalCombatFramePhase\n"}
+{"Time":"2026-10-25T14:15:53.051376+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalCombatFramePhase","Output":"    frame_test.go:129: 1220 complete player/projectile frame phases match\n"}
+{"Time":"2026-10-25T14:15:53.051406+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalCombatFramePhase","Output":"--- PASS: TestOriginalCombatFramePhase (0.56s)\n"}
+{"Time":"2026-10-25T14:15:53.05141+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestOriginalCombatFramePhase","Elapsed":0.56}
+{"Time":"2026-10-25T14:15:53.051414+08:00","Action":"run","Package":"command-line-arguments","Test":"TestCombatFrameFailureIsAtomic"}
+{"Time":"2026-10-25T14:15:53.051417+08:00","Action":"output","Package":"command-line-arguments","Test":"TestCombatFrameFailureIsAtomic","Output":"=== RUN   TestCombatFrameFailureIsAtomic\n"}
+{"Time":"2026-10-25T14:15:53.432797+08:00","Action":"output","Package":"command-line-arguments","Test":"TestCombatFrameFailureIsAtomic","Output":"--- PASS: TestCombatFrameFailureIsAtomic (0.38s)\n"}
+{"Time":"2026-10-25T14:15:53.432826+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestCombatFrameFailureIsAtomic","Elapsed":0.38}
+{"Time":"2026-10-25T14:15:53.432832+08:00","Action":"run","Package":"command-line-arguments","Test":"TestOriginalGraphicsCallerAttributeLookup"}
+{"Time":"2026-10-25T14:15:53.432835+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalGraphicsCallerAttributeLookup","Output":"=== RUN   TestOriginalGraphicsCallerAttributeLookup\n"}
+{"Time":"2026-10-25T14:15:53.506915+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalGraphicsCallerAttributeLookup","Output":"--- PASS: TestOriginalGraphicsCallerAttributeLookup (0.07s)\n"}
+{"Time":"2026-10-25T14:15:53.506929+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestOriginalGraphicsCallerAttributeLookup","Elapsed":0.07}
+{"Time":"2026-10-25T14:15:53.506934+08:00","Action":"run","Package":"command-line-arguments","Test":"TestOriginalGraphicsRequests"}
+{"Time":"2026-10-25T14:15:53.506936+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalGraphicsRequests","Output":"=== RUN   TestOriginalGraphicsRequests\n"}
+{"Time":"2026-10-25T14:15:53.581029+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalGraphicsRequests","Output":"    graphics_queue_test.go:156: 255 accepted and 168 rejected original requests match\n"}
+{"Time":"2026-10-25T14:15:53.581041+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalGraphicsRequests","Output":"--- PASS: TestOriginalGraphicsRequests (0.07s)\n"}
+{"Time":"2026-10-25T14:15:53.581045+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestOriginalGraphicsRequests","Elapsed":0.07}
+{"Time":"2026-10-25T14:15:53.581055+08:00","Action":"run","Package":"command-line-arguments","Test":"TestGraphicsQueueMixedScrollAndEnemyBudget"}
+{"Time":"2026-10-25T14:15:53.581058+08:00","Action":"output","Package":"command-line-arguments","Test":"TestGraphicsQueueMixedScrollAndEnemyBudget","Output":"=== RUN   TestGraphicsQueueMixedScrollAndEnemyBudget\n"}
+{"Time":"2026-10-25T14:15:53.581121+08:00","Action":"output","Package":"command-line-arguments","Test":"TestGraphicsQueueMixedScrollAndEnemyBudget","Output":"--- PASS: TestGraphicsQueueMixedScrollAndEnemyBudget (0.00s)\n"}
+{"Time":"2026-10-25T14:15:53.581127+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestGraphicsQueueMixedScrollAndEnemyBudget","Elapsed":0}
+{"Time":"2026-10-25T14:15:53.58113+08:00","Action":"run","Package":"command-line-arguments","Test":"TestGraphicsQueueValidationAndOwnership"}
+{"Time":"2026-10-25T14:15:53.581132+08:00","Action":"output","Package":"command-line-arguments","Test":"TestGraphicsQueueValidationAndOwnership","Output":"=== RUN   TestGraphicsQueueValidationAndOwnership\n"}
+{"Time":"2026-10-25T14:15:53.581165+08:00","Action":"output","Package":"command-line-arguments","Test":"TestGraphicsQueueValidationAndOwnership","Output":"--- PASS: TestGraphicsQueueValidationAndOwnership (0.00s)\n"}
+{"Time":"2026-10-25T14:15:53.581169+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestGraphicsQueueValidationAndOwnership","Elapsed":0}
+{"Time":"2026-10-25T14:15:53.581172+08:00","Action":"run","Package":"command-line-arguments","Test":"TestJungleLayoutOriginalScreens"}
+{"Time":"2026-10-25T14:15:53.581174+08:00","Action":"output","Package":"command-line-arguments","Test":"TestJungleLayoutOriginalScreens","Output":"=== RUN   TestJungleLayoutOriginalScreens\n"}
+{"Time":"2026-10-25T14:15:53.605334+08:00","Action":"output","Package":"command-line-arguments","Test":"TestJungleLayoutOriginalScreens","Output":"--- PASS: TestJungleLayoutOriginalScreens (0.02s)\n"}
+{"Time":"2026-10-25T14:15:53.605349+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestJungleLayoutOriginalScreens","Elapsed":0.02}
+{"Time":"2026-10-25T14:15:53.605354+08:00","Action":"run","Package":"command-line-arguments","Test":"TestJungleLayoutNaturalInitializationAndStreaming"}
+{"Time":"2026-10-25T14:15:53.605357+08:00","Action":"output","Package":"command-line-arguments","Test":"TestJungleLayoutNaturalInitializationAndStreaming","Output":"=== RUN   TestJungleLayoutNaturalInitializationAndStreaming\n"}
+{"Time":"2026-10-25T14:15:53.644547+08:00","Action":"output","Package":"command-line-arguments","Test":"TestJungleLayoutNaturalInitializationAndStreaming","Output":"--- PASS: TestJungleLayoutNaturalInitializationAndStreaming (0.04s)\n"}
+{"Time":"2026-10-25T14:15:53.644558+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestJungleLayoutNaturalInitializationAndStreaming","Elapsed":0.04}
+{"Time":"2026-10-25T14:15:53.644563+08:00","Action":"run","Package":"command-line-arguments","Test":"TestScreenDecodeBoundaries"}
+{"Time":"2026-10-25T14:15:53.644565+08:00","Action":"output","Package":"command-line-arguments","Test":"TestScreenDecodeBoundaries","Output":"=== RUN   TestScreenDecodeBoundaries\n"}
+{"Time":"2026-10-25T14:15:53.644582+08:00","Action":"output","Package":"command-line-arguments","Test":"TestScreenDecodeBoundaries","Output":"--- PASS: TestScreenDecodeBoundaries (0.00s)\n"}
+{"Time":"2026-10-25T14:15:53.644588+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestScreenDecodeBoundaries","Elapsed":0}
+{"Time":"2026-10-25T14:15:53.644594+08:00","Action":"run","Package":"command-line-arguments","Test":"TestOriginalMovementTrace"}
+{"Time":"2026-10-25T14:15:53.644596+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalMovementTrace","Output":"=== RUN   TestOriginalMovementTrace\n"}
+{"Time":"2026-10-25T14:15:53.72733+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalMovementTrace","Output":"    movement_test.go:94: verified original observations: map[advanceY:714 beginJump:11 gravity:714 input:1440]\n"}
+{"Time":"2026-10-25T14:15:53.727344+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalMovementTrace","Output":"--- PASS: TestOriginalMovementTrace (0.08s)\n"}
+{"Time":"2026-10-25T14:15:53.727353+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestOriginalMovementTrace","Elapsed":0.08}
+{"Time":"2026-10-25T14:15:53.727358+08:00","Action":"run","Package":"command-line-arguments","Test":"TestVerticalArithmeticBoundaries"}
+{"Time":"2026-10-25T14:15:53.727361+08:00","Action":"output","Package":"command-line-arguments","Test":"TestVerticalArithmeticBoundaries","Output":"=== RUN   TestVerticalArithmeticBoundaries\n"}
+{"Time":"2026-10-25T14:15:53.727397+08:00","Action":"output","Package":"command-line-arguments","Test":"TestVerticalArithmeticBoundaries","Output":"--- PASS: TestVerticalArithmeticBoundaries (0.00s)\n"}
+{"Time":"2026-10-25T14:15:53.727405+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestVerticalArithmeticBoundaries","Elapsed":0}
+{"Time":"2026-10-25T14:15:53.727409+08:00","Action":"run","Package":"command-line-arguments","Test":"TestJumpRetainsSubpixelAndExistingJump"}
+{"Time":"2026-10-25T14:15:53.727412+08:00","Action":"output","Package":"command-line-arguments","Test":"TestJumpRetainsSubpixelAndExistingJump","Output":"=== RUN   TestJumpRetainsSubpixelAndExistingJump\n"}
+{"Time":"2026-10-25T14:15:53.727429+08:00","Action":"output","Package":"command-line-arguments","Test":"TestJumpRetainsSubpixelAndExistingJump","Output":"--- PASS: TestJumpRetainsSubpixelAndExistingJump (0.00s)\n"}
+{"Time":"2026-10-25T14:15:53.727436+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestJumpRetainsSubpixelAndExistingJump","Elapsed":0}
+{"Time":"2026-10-25T14:15:53.727439+08:00","Action":"run","Package":"command-line-arguments","Test":"TestControlsLogicalBitsAndRelease"}
+{"Time":"2026-10-25T14:15:53.727441+08:00","Action":"output","Package":"command-line-arguments","Test":"TestControlsLogicalBitsAndRelease","Output":"=== RUN   TestControlsLogicalBitsAndRelease\n"}
+{"Time":"2026-10-25T14:15:53.727456+08:00","Action":"output","Package":"command-line-arguments","Test":"TestControlsLogicalBitsAndRelease","Output":"--- PASS: TestControlsLogicalBitsAndRelease (0.00s)\n"}
+{"Time":"2026-10-25T14:15:53.727463+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestControlsLogicalBitsAndRelease","Elapsed":0}
+{"Time":"2026-10-25T14:15:53.727475+08:00","Action":"run","Package":"command-line-arguments","Test":"TestOriginalOutdoorPlayerAndWeaponIntegration"}
+{"Time":"2026-10-25T14:15:53.727478+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalOutdoorPlayerAndWeaponIntegration","Output":"=== RUN   TestOriginalOutdoorPlayerAndWeaponIntegration\n"}
+{"Time":"2026-10-25T14:16:02.118822+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalOutdoorPlayerAndWeaponIntegration","Output":"    player_integration_test.go:43: 3006 original complete player+weapon calls match all fields and the entire projectile pool\n"}
+{"Time":"2026-10-25T14:16:02.119499+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalOutdoorPlayerAndWeaponIntegration","Output":"--- PASS: TestOriginalOutdoorPlayerAndWeaponIntegration (8.39s)\n"}
+{"Time":"2026-10-25T14:16:02.11951+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestOriginalOutdoorPlayerAndWeaponIntegration","Elapsed":8.39}
+{"Time":"2026-10-25T14:16:02.119515+08:00","Action":"run","Package":"command-line-arguments","Test":"TestOriginalOutdoorPlayerLifecycle"}
+{"Time":"2026-10-25T14:16:02.119519+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalOutdoorPlayerLifecycle","Output":"=== RUN   TestOriginalOutdoorPlayerLifecycle\n"}
+{"Time":"2026-10-25T14:16:03.164499+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalOutdoorPlayerLifecycle","Output":"    player_lifecycle_test.go:62: original lifecycle calls map[borrow:4529 dying:297 hit:3 spawn:4], successful controlled borrows 10\n"}
+{"Time":"2026-10-25T14:16:03.164537+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalOutdoorPlayerLifecycle","Output":"--- PASS: TestOriginalOutdoorPlayerLifecycle (1.05s)\n"}
+{"Time":"2026-10-25T14:16:03.164541+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestOriginalOutdoorPlayerLifecycle","Elapsed":1.05}
+{"Time":"2026-10-25T14:16:03.164545+08:00","Action":"run","Package":"command-line-arguments","Test":"TestPlayerHitDoesNotRepeatOutsideNormalState"}
+{"Time":"2026-10-25T14:16:03.164552+08:00","Action":"output","Package":"command-line-arguments","Test":"TestPlayerHitDoesNotRepeatOutsideNormalState","Output":"=== RUN   TestPlayerHitDoesNotRepeatOutsideNormalState\n"}
+{"Time":"2026-10-25T14:16:03.164556+08:00","Action":"output","Package":"command-line-arguments","Test":"TestPlayerHitDoesNotRepeatOutsideNormalState","Output":"--- PASS: TestPlayerHitDoesNotRepeatOutsideNormalState (0.00s)\n"}
+{"Time":"2026-10-25T14:16:03.164559+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestPlayerHitDoesNotRepeatOutsideNormalState","Elapsed":0}
+{"Time":"2026-10-25T14:16:03.164566+08:00","Action":"run","Package":"command-line-arguments","Test":"TestOriginalPlayerBaseBossAndWaterfallModes"}
+{"Time":"2026-10-25T14:16:03.164569+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalPlayerBaseBossAndWaterfallModes","Output":"=== RUN   TestOriginalPlayerBaseBossAndWaterfallModes\n"}
+{"Time":"2026-10-25T14:16:26.170629+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalPlayerBaseBossAndWaterfallModes","Output":"    player_modes_test.go:60: 9776 original calls: scenes=map[0:2278 1:3642 128:3856] vertical=2278 advancing=539; all player/peer/world/pool/sound fields match\n"}
+{"Time":"2026-10-25T14:16:26.171015+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalPlayerBaseBossAndWaterfallModes","Output":"--- PASS: TestOriginalPlayerBaseBossAndWaterfallModes (23.01s)\n"}
+{"Time":"2026-10-25T14:16:26.171029+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestOriginalPlayerBaseBossAndWaterfallModes","Elapsed":23.01}
+{"Time":"2026-10-25T14:16:26.171035+08:00","Action":"run","Package":"command-line-arguments","Test":"TestOriginalOutdoorNormalStepsWithoutShooting"}
+{"Time":"2026-10-25T14:16:26.17104+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalOutdoorNormalStepsWithoutShooting","Output":"=== RUN   TestOriginalOutdoorNormalStepsWithoutShooting\n"}
+{"Time":"2026-10-25T14:16:32.717893+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalOutdoorNormalStepsWithoutShooting","Output":"    player_test.go:181: compared 1019 complete original normal-player calls, all 44 player fields plus peer/world\n"}
+{"Time":"2026-10-25T14:16:32.717942+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalOutdoorNormalStepsWithoutShooting","Output":"--- PASS: TestOriginalOutdoorNormalStepsWithoutShooting (6.55s)\n"}
+{"Time":"2026-10-25T14:16:32.717948+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestOriginalOutdoorNormalStepsWithoutShooting","Elapsed":6.55}
+{"Time":"2026-10-25T14:16:32.717955+08:00","Action":"run","Package":"command-line-arguments","Test":"TestOriginalJungleScrolling"}
+{"Time":"2026-10-25T14:16:32.717958+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalJungleScrolling","Output":"=== RUN   TestOriginalJungleScrolling\n"}
+{"Time":"2026-10-25T14:16:32.787991+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalJungleScrolling","Output":"--- PASS: TestOriginalJungleScrolling (0.07s)\n"}
+{"Time":"2026-10-25T14:16:32.788029+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestOriginalJungleScrolling","Elapsed":0.07}
+{"Time":"2026-10-25T14:16:32.788037+08:00","Action":"run","Package":"command-line-arguments","Test":"TestJungleScrollScreenBoundaryAndRollback"}
+{"Time":"2026-10-25T14:16:32.788054+08:00","Action":"output","Package":"command-line-arguments","Test":"TestJungleScrollScreenBoundaryAndRollback","Output":"=== RUN   TestJungleScrollScreenBoundaryAndRollback\n"}
+{"Time":"2026-10-25T14:16:32.848139+08:00","Action":"output","Package":"command-line-arguments","Test":"TestJungleScrollScreenBoundaryAndRollback","Output":"--- PASS: TestJungleScrollScreenBoundaryAndRollback (0.06s)\n"}
+{"Time":"2026-10-25T14:16:32.848158+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestJungleScrollScreenBoundaryAndRollback","Elapsed":0.06}
+{"Time":"2026-10-25T14:16:32.848164+08:00","Action":"run","Package":"command-line-arguments","Test":"TestOriginalTerrainQueries"}
+{"Time":"2026-10-25T14:16:32.848167+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalTerrainQueries","Output":"=== RUN   TestOriginalTerrainQueries\n"}
+{"Time":"2026-10-25T14:16:32.922049+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalTerrainQueries","Output":"    terrain_test.go:73: verified 3234 original terrain reads across 13 streamed windows\n"}
+{"Time":"2026-10-25T14:16:32.922075+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalTerrainQueries","Output":"--- PASS: TestOriginalTerrainQueries (0.07s)\n"}
+{"Time":"2026-10-25T14:16:32.922079+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestOriginalTerrainQueries","Elapsed":0.07}
+{"Time":"2026-10-25T14:16:32.922085+08:00","Action":"run","Package":"command-line-arguments","Test":"TestTerrainPackedOrderAndScrollBoundaries"}
+{"Time":"2026-10-25T14:16:32.922089+08:00","Action":"output","Package":"command-line-arguments","Test":"TestTerrainPackedOrderAndScrollBoundaries","Output":"=== RUN   TestTerrainPackedOrderAndScrollBoundaries\n"}
+{"Time":"2026-10-25T14:16:32.922119+08:00","Action":"output","Package":"command-line-arguments","Test":"TestTerrainPackedOrderAndScrollBoundaries","Output":"--- PASS: TestTerrainPackedOrderAndScrollBoundaries (0.00s)\n"}
+{"Time":"2026-10-25T14:16:32.922125+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestTerrainPackedOrderAndScrollBoundaries","Elapsed":0}
+{"Time":"2026-10-25T14:16:32.922129+08:00","Action":"run","Package":"command-line-arguments","Test":"TestOriginalWeaponFire"}
+{"Time":"2026-10-25T14:16:32.922132+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalWeaponFire","Output":"=== RUN   TestOriginalWeaponFire\n"}
+{"Time":"2026-10-25T14:16:32.922146+08:00","Action":"run","Package":"command-line-arguments","Test":"TestOriginalWeaponFire/natural"}
+{"Time":"2026-10-25T14:16:32.922149+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalWeaponFire/natural","Output":"=== RUN   TestOriginalWeaponFire/natural\n"}
+{"Time":"2026-10-25T14:16:33.007276+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalWeaponFire/natural","Output":"    weapons_test.go:96: 480 original natural weapon calls match\n"}
+{"Time":"2026-10-25T14:16:33.007296+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalWeaponFire/natural","Output":"--- PASS: TestOriginalWeaponFire/natural (0.09s)\n"}
+{"Time":"2026-10-25T14:16:33.0073+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestOriginalWeaponFire/natural","Elapsed":0.09}
+{"Time":"2026-10-25T14:16:33.007309+08:00","Action":"run","Package":"command-line-arguments","Test":"TestOriginalWeaponFire/isolated"}
+{"Time":"2026-10-25T14:16:33.007312+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalWeaponFire/isolated","Output":"=== RUN   TestOriginalWeaponFire/isolated\n"}
+{"Time":"2026-10-25T14:16:33.805716+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalWeaponFire/isolated","Output":"    weapons_test.go:96: 6440 original isolated weapon calls match\n"}
+{"Time":"2026-10-25T14:16:33.805759+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalWeaponFire/isolated","Output":"--- PASS: TestOriginalWeaponFire/isolated (0.80s)\n"}
+{"Time":"2026-10-25T14:16:33.805773+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestOriginalWeaponFire/isolated","Elapsed":0.8}
+{"Time":"2026-10-25T14:16:33.805778+08:00","Action":"run","Package":"command-line-arguments","Test":"TestOriginalWeaponFire/equipment"}
+{"Time":"2026-10-25T14:16:33.805781+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalWeaponFire/equipment","Output":"=== RUN   TestOriginalWeaponFire/equipment\n"}
+{"Time":"2026-10-25T14:16:35.552744+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalWeaponFire/equipment","Output":"    weapons_test.go:96: 9488 original equipment weapon calls match\n"}
+{"Time":"2026-10-25T14:16:35.55278+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalWeaponFire/equipment","Output":"--- PASS: TestOriginalWeaponFire/equipment (1.75s)\n"}
+{"Time":"2026-10-25T14:16:35.552784+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestOriginalWeaponFire/equipment","Elapsed":1.75}
+{"Time":"2026-10-25T14:16:35.552789+08:00","Action":"run","Package":"command-line-arguments","Test":"TestOriginalWeaponFire/machine"}
+{"Time":"2026-10-25T14:16:35.552792+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalWeaponFire/machine","Output":"=== RUN   TestOriginalWeaponFire/machine\n"}
+{"Time":"2026-10-25T14:16:35.789948+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalWeaponFire/machine","Output":"    weapons_test.go:96: 1367 original machine weapon calls match\n"}
+{"Time":"2026-10-25T14:16:35.789985+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalWeaponFire/machine","Output":"--- PASS: TestOriginalWeaponFire/machine (0.24s)\n"}
+{"Time":"2026-10-25T14:16:35.789989+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestOriginalWeaponFire/machine","Elapsed":0.24}
+{"Time":"2026-10-25T14:16:35.789994+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalWeaponFire","Output":"--- PASS: TestOriginalWeaponFire (2.87s)\n"}
+{"Time":"2026-10-25T14:16:35.789997+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestOriginalWeaponFire","Elapsed":2.87}
+{"Time":"2026-10-25T14:16:35.790001+08:00","Action":"run","Package":"command-line-arguments","Test":"TestOriginalNaturalProjectileSteps"}
+{"Time":"2026-10-25T14:16:35.790003+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalNaturalProjectileSteps","Output":"=== RUN   TestOriginalNaturalProjectileSteps\n"}
+{"Time":"2026-10-25T14:16:35.870004+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalNaturalProjectileSteps","Output":"    weapons_test.go:128: 240 natural full-pool steps match\n"}
+{"Time":"2026-10-25T14:16:37.561871+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalNaturalProjectileSteps","Output":"    weapons_test.go:128: 5391 equipment full-pool steps match\n"}
+{"Time":"2026-10-25T14:16:37.817124+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalNaturalProjectileSteps","Output":"    weapons_test.go:128: 700 machine full-pool steps match\n"}
+{"Time":"2026-10-25T14:16:37.817232+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalNaturalProjectileSteps","Output":"--- PASS: TestOriginalNaturalProjectileSteps (2.03s)\n"}
+{"Time":"2026-10-25T14:16:37.81725+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestOriginalNaturalProjectileSteps","Elapsed":2.03}
+{"Time":"2026-10-25T14:16:37.817258+08:00","Action":"output","Package":"command-line-arguments","Output":"PASS\n"}
+{"Time":"2026-10-25T14:16:38.848756+08:00","Action":"output","Package":"command-line-arguments","Output":"ok  \tcommand-line-arguments\t48.489s\n"}
+{"Time":"2026-10-25T14:16:38.848784+08:00","Action":"pass","Package":"command-line-arguments","Elapsed":48.49}

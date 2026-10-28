@@ -1,0 +1,17 @@
+{"Time":"2026-10-26T08:58:33.901129+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-26T08:58:34.421544+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisionPixelsAndHUD"}
+{"Time":"2026-10-26T08:58:34.421609+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisionPixelsAndHUD","Output":"=== RUN   TestBotVisionPixelsAndHUD\n"}
+{"Time":"2026-10-26T08:58:34.423209+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisionPixelsAndHUD","Output":"--- PASS: TestBotVisionPixelsAndHUD (0.00s)\n"}
+{"Time":"2026-10-26T08:58:34.423224+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisionPixelsAndHUD","Elapsed":0}
+{"Time":"2026-10-26T08:58:34.423232+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisionAliasesAndHiddenInput"}
+{"Time":"2026-10-26T08:58:34.423235+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisionAliasesAndHiddenInput","Output":"=== RUN   TestBotVisionAliasesAndHiddenInput\n"}
+{"Time":"2026-10-26T08:58:34.424454+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisionAliasesAndHiddenInput","Output":"--- PASS: TestBotVisionAliasesAndHiddenInput (0.00s)\n"}
+{"Time":"2026-10-26T08:58:34.42446+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisionAliasesAndHiddenInput","Elapsed":0}
+{"Time":"2026-10-26T08:58:34.424466+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisionTerrainFromPixels"}
+{"Time":"2026-10-26T08:58:34.424469+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisionTerrainFromPixels","Output":"=== RUN   TestBotVisionTerrainFromPixels\n"}
+{"Time":"2026-10-26T08:58:34.427375+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisionTerrainFromPixels","Output":"    bot_vision_test.go:154: visible cell alignment differs 15 13\n"}
+{"Time":"2026-10-26T08:58:34.427394+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisionTerrainFromPixels","Output":"--- FAIL: TestBotVisionTerrainFromPixels (0.00s)\n"}
+{"Time":"2026-10-26T08:58:34.427399+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisionTerrainFromPixels","Elapsed":0}
+{"Time":"2026-10-26T08:58:34.427404+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\n"}
+{"Time":"2026-10-26T08:58:34.428105+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t0.526s\n"}
+{"Time":"2026-10-26T08:58:34.428116+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":0.527}
