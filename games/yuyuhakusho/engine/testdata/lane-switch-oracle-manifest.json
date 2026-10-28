@@ -1,0 +1,31 @@
+{
+  "scope": "Complete lane-switch initialization before subsequent motion",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "01ac745b422525640efda9bac183508e91437e7d92b9bfc465c7afd03e670687",
+  "inputs_sha256": "395a58b085020a514f149472238b2de68e2af20669f4e61700cd8b5ffe7460c1",
+  "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+  "frames_match_original_core": true,
+  "natural_calls": 26,
+  "isolated_calls": 120,
+  "complete_calls": 146,
+  "incomplete_calls": 0,
+  "errors": [],
+  "branch_counts": {
+    "11": 61,
+    "10": 85
+  },
+  "pass": true,
+  "fixture_sha256": "617ecb7b72fcb4bf838bc10943d3ee4c6376d920854c40827567f21497f88aff",
+  "gzip_sha256": "21f8db8ed39f5f4fe517bc7bd12c9fb2df7804a1b179f09c8e052fece0b3e19d",
+  "reference_frames_sha256": "42d5110d9e2a6d858b1bdeaa7c0a856332f0f16d1f18b409cd12a442cc99d133",
+  "reference_core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da"
+}

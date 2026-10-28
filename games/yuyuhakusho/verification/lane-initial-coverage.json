@@ -1,0 +1,27 @@
+{
+  "scope": "Complete lane-switch initialization before subsequent motion",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "e4542735a0b160a33e767133c24c8169d6bc49131bb8a7762b1cd1732ae0867b",
+  "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+  "frames_match_original_core": true,
+  "natural_calls": 0,
+  "isolated_calls": 120,
+  "complete_calls": 120,
+  "incomplete_calls": 0,
+  "errors": [],
+  "branch_counts": {
+    "11": 48,
+    "10": 72
+  },
+  "pass": true,
+  "fixture_sha256": "22c9f208cc3b092cee7ae7363ab080f8f63bdaffd8507b8d9d57452def508c86"
+}
