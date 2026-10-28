@@ -1,0 +1,108 @@
+{
+  "scope": "Animation-data selection, actor/shape submission and sound producer; not complete audio-consumer timing",
+  "command": "go test ./games/yuyuhakusho/engine -run '^TestAnimationRecords' -count=1 -json",
+  "native_exit_code": 0,
+  "tests_preceded_implementation": true,
+  "red_phase": "undefined AnimationActorState / AnimationSubmissionState observed before implementation",
+  "natural_actor_buffer_offsets_pending_matched": 4134,
+  "natural_complete_sound_queue_states_matched": 4126,
+  "natural_external_queue_consumption_snapshots": 8,
+  "isolated_original_cpu_complete_states_matched": 69,
+  "immutable_library_frames": 101,
+  "animation_shape_sets": 1,
+  "initial_strict_raw_queue_mismatch_frame": 2003,
+  "unmodeled_external_consumer_entry": "0x37c44",
+  "consumer_write_pc": "0x37c56",
+  "consumer_priority_table": "0x3a50e",
+  "all_natural_raw_state_predicted_by_atomic_function": false,
+  "race": "not run by this component; parent performs unified verification",
+  "wasm": "not run by this component; parent performs unified verification",
+  "files": [
+    {
+      "path": "scripts/yuyuhakusho/capture_animation_records.py",
+      "sha256": "9ed4d8019c29cdf4272cdc54636047b6325c45b2d5d9b9b16efd74e1eb1c3208"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/animation_records.go",
+      "sha256": "15e3eb6b849d7d29f8b3b55f9c843b36c9ce38fbf3fa4ffa71a9672593d13cbe"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/animation_records_test.go",
+      "sha256": "1d4941c79f4d3dd5d51e906ce39edde2e9d21a64d4379604a1ae15085a6f2630"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/ANIMATION_RECORDS_VERIFICATION.md",
+      "sha256": "2d05199a8e04e1b0dec94ad839509ef18ea05e5f6574541c5dd10c7e28419cec"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/animation-records.md",
+      "sha256": "eabcca76f776a6915cbd20396d11b316f40028611f0aa19168023ae8f148b6b4"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/animation-records-tail.txt",
+      "sha256": "636dcd66a4a81ac73a40a70b4f044ce2886f51e1439bce015dc1d5ceccabf307"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/animation-records-consumer.txt",
+      "sha256": "ad170522e4bcb4f204bac6e7a28f9ab4e4595ff528d5782d87aba9258a307ffa"
+    }
+  ],
+  "cleanup": {
+    "scope": "Only this component temporary projects/observers/cache/logs; shared core, Go cache and other tasks retained",
+    "removed": [
+      {
+        "path": ".local/md-yuyuhakusho/animation-records-static",
+        "bytes": 245487
+      },
+      {
+        "path": ".local/md-yuyuhakusho/animation-records",
+        "bytes": 653510
+      },
+      {
+        "path": ".local/md-yuyuhakusho/animation-records-traced",
+        "bytes": 691794
+      },
+      {
+        "path": ".local/md-yuyuhakusho/animation-records-final",
+        "bytes": 696963
+      },
+      {
+        "path": ".local/md-yuyuhakusho/animation-records-verified",
+        "bytes": 697190
+      },
+      {
+        "path": "docs/research/md-yuyuhakusho/animation-records-work",
+        "bytes": 0
+      },
+      {
+        "path": ".local/md-yuyuhakusho/animation-records-red.txt",
+        "bytes": 1175
+      },
+      {
+        "path": ".local/md-yuyuhakusho/animation-records-traced-console.txt",
+        "bytes": 2019
+      },
+      {
+        "path": ".local/md-yuyuhakusho/animation-records-final-console.txt",
+        "bytes": 2019
+      },
+      {
+        "path": ".local/md-yuyuhakusho/animation-records-console.txt",
+        "bytes": 2019
+      },
+      {
+        "path": ".local/md-yuyuhakusho/animation-records-verified-console.txt",
+        "bytes": 2246
+      },
+      {
+        "path": ".local/md-yuyuhakusho/animation-records-native-final.jsonl",
+        "bytes": 5230
+      },
+      {
+        "path": ".local/md-yuyuhakusho/animation-records-native.jsonl",
+        "bytes": 5489
+      }
+    ],
+    "bytes_removed": 3005141
+  }
+}

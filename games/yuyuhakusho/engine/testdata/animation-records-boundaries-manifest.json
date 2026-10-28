@@ -1,0 +1,20 @@
+{
+  "scope": "Isolated original CPU animation/shape and sound-queue cases",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "complete_calls": 69,
+  "errors": [],
+  "pass": true,
+  "fixture_sha256": "5558f7e373114562670d2c6f485c313d3d32e66655a8ddb2c1fb595e975e886c",
+  "gzip_sha256": "7f85cdd4d5bee83a240d6c5485b741cff156304fdd7a4fb1c92620e4701fca8b",
+  "capture_sha256": "9ed4d8019c29cdf4272cdc54636047b6325c45b2d5d9b9b16efd74e1eb1c3208",
+  "filter_sha256": "5493124865763ee4069fadcbbf7f71c67b21b8ab89909cef57c60b367570adb9"
+}

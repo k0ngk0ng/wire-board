@@ -1,0 +1,37 @@
+{
+  "scope": "Natural lane-motion phases before shared tail",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "reference_identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.4 60bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "inputs_sha256": "395a58b085020a514f149472238b2de68e2af20669f4e61700cd8b5ffe7460c1",
+  "capture_sha256": "a930f3bcf09402c0e80544819d9baf6a323b841c402c05dd6a7e6cdb5f5b526e",
+  "records": 1029,
+  "fixture_sha256": "ece192addb363972aaac726ba157cc872ad13c4df1badb0be563d729b472d19e",
+  "gzip_sha256": "0e40f93e0525ea3c5fc4e2ec647f5fb0230ec62203983dee9fc1eb340ad1030b",
+  "frames_match_original_core": true,
+  "incomplete_calls": 0,
+  "errors": [],
+  "pass": true,
+  "landings": 26,
+  "kind_counts": {
+    "11": 706,
+    "10": 323
+  }
+}
