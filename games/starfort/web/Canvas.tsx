@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import type { PointerEvent as ReactPointerEvent } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import type { ReactNode, PointerEvent as ReactPointerEvent } from "react";
 import {
   worldBounds,
   fitCamera,
@@ -696,6 +696,69 @@ function drawFeatures(
   }
 }
 
+function MapPopover({
+  point,
+  viewport,
+  children,
+}: {
+  point: Point;
+  viewport: Viewport;
+  children: ReactNode;
+}) {
+  const node = useRef<HTMLDivElement>(null);
+  const [height, setHeight] = useState(160);
+  useLayoutEffect(() => {
+    const observer = new ResizeObserver(() =>
+      setHeight(node.current?.offsetHeight ?? 160),
+    );
+    if (node.current) observer.observe(node.current);
+    return () => observer.disconnect();
+  }, []);
+  const width = Math.min(260, Math.max(0, viewport.width - 16));
+  const topLimit = 64,
+    bottomLimit = Math.max(topLimit, viewport.height - 76);
+  let left = point.x + 34;
+  let top = point.y - height / 2;
+  if (left + width > viewport.width - 8) {
+    if (point.x - 34 - width >= 8) left = point.x - 34 - width;
+    else {
+      left = point.x - width / 2;
+      top =
+        point.y + 38 + height <= bottomLimit
+          ? point.y + 38
+          : point.y - height - 38;
+    }
+  }
+  left = Math.max(8, Math.min(viewport.width - width - 8, left));
+  top = Math.max(topLimit, Math.min(bottomLimit - height, top));
+  return (
+    <div
+      ref={node}
+      className="sf-map-popover"
+      style={{ left, top, width, maxHeight: bottomLimit - topLimit }}
+      onPointerDown={(e) => e.stopPropagation()}
+      onPointerUp={(e) => e.stopPropagation()}
+      onClick={(e) => e.stopPropagation()}
+      onWheel={(e) => e.stopPropagation()}
+    >
+      {children}
+    </div>
+  );
+}
+const enemyInfo: Record<string, [string, string]> = {
+  slime: ["史莱姆", "普通敌人"],
+  runner: ["疾行者", "移动较快"],
+  swarm: ["蜂群", "成群来袭"],
+  armored: ["重甲兵", "护甲降低物理伤害"],
+  shield: ["护盾兵", "护盾吸收伤害"],
+  elite: ["精英", "不受一箭穿心秒杀"],
+  boss: ["首领", "半血进入第二阶段，加速并召唤护卫；不受一箭穿心秒杀"],
+  healer: ["治疗者", "恢复附近同伴生命"],
+  banner: ["旗手", "提高附近同伴移动速度"],
+  splitter: ["分裂怪", "死亡后生成小怪"],
+  engineer: ["工兵", "更快修补弹坑，可打开下一波捷径"],
+};
+
 export function Battlefield({
   onReady,
   onLoadError,
@@ -705,6 +768,7 @@ export function Battlefield({
   data,
   assets,
   selected,
+  towerPanel,
   select,
 }: {
   onReady?: () => void;
@@ -715,6 +779,7 @@ export function Battlefield({
   data: View;
   assets: string;
   selected: number | null;
+  towerPanel?: ReactNode;
   select: (pad: number) => void;
 }) {
   const canvas = useRef<HTMLCanvasElement>(null),
@@ -751,6 +816,30 @@ export function Battlefield({
       ),
     [],
   );
+  const drawnEnemies = useRef<{ enemy: Enemy; point: Point }[]>([]);
+  const inspected = useRef<number | null>(null);
+  const [inspection, setInspection] = useState<{
+    enemy: Enemy;
+    point: Point;
+  } | null>(null);
+  const closeInspection = () => {
+    inspected.current = null;
+    setInspection(null);
+  };
+  useEffect(() => {
+    closeInspection();
+  }, [selected, roomID]);
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      if (inspected.current === null) return;
+      const current = drawnEnemies.current.find(
+        (e) => e.enemy.id === inspected.current && e.enemy.hp > 0,
+      );
+      if (current) setInspection(current);
+      else closeInspection();
+    }, 100);
+    return () => window.clearInterval(timer);
+  }, []);
   const hoverRef = useRef<number | null>(null);
   const selectedRef = useRef(selected);
   selectedRef.current = selected;
@@ -1042,6 +1131,11 @@ export function Battlefield({
     const node = container.current;
     if (!node) return;
     const wheel = (event: WheelEvent) => {
+      if (
+        event.target instanceof Element &&
+        event.target.closest(".sf-map-popover")
+      )
+        return;
       // Wheel input over the battlefield zooms around the pointer. Outside it,
       // the page retains normal scrolling.
       event.preventDefault();
@@ -1449,6 +1543,7 @@ export function Battlefield({
         },
       });
       buildings.sort((a, b) => a.y - b.y).forEach((item) => item.draw());
+      drawnEnemies.current = [];
       const enemyPositions = new Map<number, Point>();
       for (const enemy of v.enemies) {
         const destination = current.destinations.get(enemy.id);
@@ -1476,6 +1571,19 @@ export function Battlefield({
           position.y = crater.y + pose.y;
         }
         enemyPositions.set(enemy.id, position);
+        if (inspected.current === enemy.id) {
+          ctx.save();
+          ctx.lineWidth = 2 / pixelScale;
+          circle(
+            ctx,
+            position.x,
+            position.y,
+            24 / pixelScale,
+            "#fff8cf22",
+            "#fff4b0",
+          );
+          ctx.restore();
+        }
         const frozen = enemy.frostbound || enemy.slowUntil > v.tick;
         if (enemy.kind === "boss" && (enemy.phase ?? 1) > 1) {
           const size = Math.max(100, 60 / pixelScale);
@@ -1494,6 +1602,14 @@ export function Battlefield({
           enemy.kind === "boss" ? 64 : 42,
           (enemy.kind === "boss" ? 40 : 32) / pixelScale,
         );
+        drawnEnemies.current.push({
+          enemy,
+          point: worldToScreen(
+            { x: position.x, y: position.y - size * 0.3 },
+            camera.current,
+            viewport.current,
+          ),
+        });
         const moving = !reduced && v.phase === "battle" && !crater;
         const pose = moving ? Math.floor(at / 160 + enemy.id) % 3 : 0;
         const bob = moving
@@ -1930,6 +2046,24 @@ export function Battlefield({
             pointerUp(event);
         }}
         onClick={(event) => {
+          if (performance.now() < gesture.current.suppressUntil) return;
+          if (
+            event.target === canvas.current ||
+            event.target === container.current
+          ) {
+            const rect = canvas.current!.getBoundingClientRect();
+            const x = event.clientX - rect.left,
+              y = event.clientY - rect.top;
+            const hit = [...drawnEnemies.current]
+              .reverse()
+              .find((e) => Math.hypot(e.point.x - x, e.point.y - y) <= 24);
+            if (hit) {
+              inspected.current = hit.enemy.id;
+              setInspection(hit);
+              return;
+            }
+            closeInspection();
+          }
           if (
             !isWorldOverview(
               renderMap.current,
@@ -2027,12 +2161,73 @@ export function Battlefield({
               onBlur={() => {
                 hoverRef.current = null;
               }}
-              onClick={() => select(pad.id)}
+              onClick={() => {
+                closeInspection();
+                select(pad.id);
+              }}
             >
               {!tower && <span>{pad.id + 1}</span>}
             </button>
           );
         })}
+        {inspection ? (
+          <MapPopover point={inspection.point} viewport={view.viewport}>
+            <section
+              className="sf-enemy-info"
+              data-sf-enemy-info
+              aria-label="敌人信息"
+            >
+              <header>
+                <strong>
+                  {enemyInfo[inspection.enemy.kind]?.[0] ??
+                    inspection.enemy.kind}{" "}
+                  · Lv.{inspection.enemy.level ?? data.wave}
+                </strong>
+                <button
+                  data-sf-enemy-close
+                  aria-label="关闭敌人信息"
+                  onClick={closeInspection}
+                >
+                  ×
+                </button>
+              </header>
+              <p>
+                生命{" "}
+                {Math.ceil(
+                  inspection.enemy.health ??
+                    inspection.enemy.hp + inspection.enemy.shield,
+                )}{" "}
+                /{" "}
+                {Math.ceil(
+                  inspection.enemy.maxHealth ??
+                    inspection.enemy.maxHP + inspection.enemy.shield,
+                )}
+              </p>
+              <p>
+                基础速度 {Math.round(inspection.enemy.speed)}
+                {inspection.enemy.frostbound ? " · 永久减速 30%" : ""}
+                {inspection.enemy.slowUntil > data.tick
+                  ? " · 临时减速 45%"
+                  : ""}
+                {inspection.enemy.repairing ? " · 填坑中" : ""}
+              </p>
+              <p>{enemyInfo[inspection.enemy.kind]?.[1]}</p>
+            </section>
+          </MapPopover>
+        ) : towerPanel &&
+          selected !== null &&
+          data.map.pads.some((p) => p.id === selected) ? (
+          <MapPopover
+            point={worldToScreen(
+              data.map.pads.find((p) => p.id === selected)!,
+              view.camera,
+              view.viewport,
+            )}
+            viewport={view.viewport}
+          >
+            {towerPanel}
+          </MapPopover>
+        ) : null}
         {overview && (
           <span className="sf-overview-hint" role="status">
             总览 · 点选区域放大

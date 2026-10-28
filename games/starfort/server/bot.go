@@ -196,6 +196,9 @@ func (s *State) investment(p int) *Action {
 		a := &Action{Type: "upgrade", TowerID: t.ID}
 		if t.Level == 3 {
 			a.Branch = "power"
+			if t.Kind == "arrow" && s.SkillRules == 2 {
+				a.Branch = "volley"
+			}
 			if t.Kind == "frost" || t.Kind == "cannon" {
 				a.Branch = "speed"
 			}

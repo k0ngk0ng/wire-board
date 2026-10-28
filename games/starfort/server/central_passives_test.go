@@ -26,6 +26,7 @@ func centralCase(t *testing.T, n int) *State {
 	if e != nil {
 		t.Fatal(e)
 	}
+	s.initCentralWorld(s.World.Seed) // Explicit archived central-map fixture.
 	return s
 }
 func TestCentralMapFixedFromStart(t *testing.T) {

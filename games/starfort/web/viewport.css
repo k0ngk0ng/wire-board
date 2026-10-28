@@ -621,3 +621,49 @@
   line-height: 1.4;
   color: inherit;
 }
+
+/* Anchored to the selected world object, inside the fullscreen battlefield. */
+.sf-map-popover {
+  position: absolute;
+  z-index: 90;
+  overflow: auto;
+  border: 1px solid #739265;
+  border-radius: 10px;
+  background: rgba(255, 253, 241, 0.91);
+  color: #253e29;
+  box-shadow: 0 3px 12px #1b3d2440;
+}
+.sf-map-popover .sf-tower-popover {
+  position: static;
+  width: auto;
+  max-width: none;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+.sf-enemy-info {
+  padding: 10px;
+  font-size: 12px;
+}
+.sf-enemy-info header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.sf-enemy-info header button {
+  min-width: 36px;
+  min-height: 36px;
+  padding: 0;
+}
+.sf-enemy-info p {
+  margin: 6px 0;
+}
+.sf-map-popover .sf-skill {
+  flex-wrap: wrap;
+}
+.sf-map-popover .sf-skill-tooltip {
+  position: static;
+  flex-basis: 100%;
+  margin-top: 4px;
+}
