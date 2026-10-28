@@ -1,0 +1,55 @@
+{
+  "date": "2026-10-28",
+  "stage": "Movement, projection, random sequence and animation-clock components",
+  "goal_complete": false,
+  "release_ready": false,
+  "native_race": "passed",
+  "node_wasm": "passed",
+  "original_motion_counts": {
+    "random": 12002,
+    "projection": 7517,
+    "walk": 852,
+    "air": 156
+  },
+  "original_animation_counts": {
+    "clock": 3974,
+    "residual_motion": 3974
+  },
+  "original_cpu_boundary_cases": 30,
+  "animation_static_boundary_cases": 19,
+  "limits": [
+    "Not a continuous fighter update",
+    "Landing effects, shared action tail, complete AI and rendering remain unfinished",
+    "16 animation calls retain unclassified external RAM changes"
+  ],
+  "files": [
+    {
+      "path": "games/yuyuhakusho/engine/animation_clock.go",
+      "sha256": "fa868c5c160fa22fba71520d80c18e8d1f40217ff9a64c6d90a231eab65f28a4"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/animation_clock_test.go",
+      "sha256": "38f65f67172a49be0a1b0f735f023804bf40f37b8b2ec89b511688a0b2f6e6b2"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/input.go",
+      "sha256": "38e957231a29fd08c889709e0e7a39661284258800521467ba41fcdc9dfa12e2"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/input_test.go",
+      "sha256": "8c17bd14d1f2c626a8c21270f364c5ad2307dd15e136deb54e4786a186c6fa77"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/motion.go",
+      "sha256": "35dc27314a13afdff39d96d2d21911c5ba5030baf00ea81d1daf8f9feb5f8878"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/motion_test.go",
+      "sha256": "346dfa14efb76f28b3303798c3d467191f6a0d4f82da0ee24225dad0d0748da0"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/random.go",
+      "sha256": "c9fe3edc3ff9bee0725b78e7a38f2c4517592ddf99e52fec98e8904eb77a2056"
+    }
+  ]
+}

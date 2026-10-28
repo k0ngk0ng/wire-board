@@ -1,0 +1,36 @@
+{
+  "scope": "Only animation clock and residual displacement components",
+  "command": "go test ./games/yuyuhakusho/engine -run 'Test(Animation|Residual)' -count=1 -v",
+  "native_exit_code": 0,
+  "original_clock_calls_matched": 3974,
+  "original_drift_calls_matched": 3974,
+  "static_boundary_cases_passed": 19,
+  "race": "delegated to parent; not run by this component",
+  "wasm": "delegated to parent; not run by this component",
+  "files": [
+    {
+      "path": "scripts/yuyuhakusho/capture_animation.py",
+      "sha256": "a5745cf4f89f23bdb2f3be2101213ff922e594ec2db0aa544104c81e05399dd1"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/animation_clock.go",
+      "sha256": "fa868c5c160fa22fba71520d80c18e8d1f40217ff9a64c6d90a231eab65f28a4"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/animation_clock_test.go",
+      "sha256": "38f65f67172a49be0a1b0f735f023804bf40f37b8b2ec89b511688a0b2f6e6b2"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/ANIMATION_VERIFICATION.md",
+      "sha256": "a6a2948fb1a5cd8748f996240aac83e6046473d2336682eb4c27132877b1fb80"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/animation-oracle.json",
+      "sha256": "f79f3c100215237ead92a9f0b777b326b6747601a314aafa99364a83f0fefdb0"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/animation-oracle-manifest.json",
+      "sha256": "df2241e1a4026014661c45c18193fc54887fd3c22d612c93ece69bd3a84a17cc"
+    }
+  ]
+}

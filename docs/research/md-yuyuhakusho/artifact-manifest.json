@@ -87,9 +87,49 @@
       "sha256": "78f0ba0e326ecdfc4d59084a66da94ac9719efb2125c8f96c9bfebc06ad80c1d"
     },
     {
+      "path": "static/ACTION_BOUNDARIES.md",
+      "bytes": 5845,
+      "sha256": "7c3b8b6673dbedd98a7a25df69da9caaf36d87a5b77c52eb08a9d6b0a69c4210"
+    },
+    {
       "path": "static/README.md",
       "bytes": 10866,
       "sha256": "3809a30525a2fab972284dc1081c81693a19c1eebc8aaf9c138c68c6750d3b1b"
+    },
+    {
+      "path": "static/action-character-tables.txt",
+      "bytes": 1760,
+      "sha256": "41420035a9a1c6e1145dcbb3c479ea3f2dda47c7f18b4a591a05dda0b5d20764"
+    },
+    {
+      "path": "static/action-chu-parameters.txt",
+      "bytes": 470,
+      "sha256": "fd1920212f6483bb47aab6262177bf72fc9f94b50ab5c3565c475a9bf861ffbe"
+    },
+    {
+      "path": "static/action-dispatch-table.txt",
+      "bytes": 2352,
+      "sha256": "0e2546bc1e0490ad3a3dcb490f87318cd6765171cdedea6254f4ac7ff94ac3b1"
+    },
+    {
+      "path": "static/actions-chu-input.txt",
+      "bytes": 3600,
+      "sha256": "36ed990cdc7ca0c91fd948e5629a2e759e6017a4bde4c9875b2b9bd6a2b24d75"
+    },
+    {
+      "path": "static/actions-ground-constructors.txt",
+      "bytes": 4112,
+      "sha256": "fef1289b4501801a57ab1c976c7ab1925ad511417307d4c9b3c29c8f05cdbd1a"
+    },
+    {
+      "path": "static/actions-shared-tail.txt",
+      "bytes": 3037,
+      "sha256": "86fafb812a107047b59069c22361167d7124101be56714b05a1acc995dc6a056"
+    },
+    {
+      "path": "static/actions-tail-dependencies.txt",
+      "bytes": 5750,
+      "sha256": "9070a1ecd21832cc607652cad9ee1a4b0fe4137cf5980498f1ea67ead9eba05a"
     },
     {
       "path": "static/device-decode.txt",

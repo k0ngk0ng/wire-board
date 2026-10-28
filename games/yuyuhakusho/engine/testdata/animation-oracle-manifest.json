@@ -1,0 +1,49 @@
+{
+  "scope": "Two bounded original functions, no RAM edits; not a full character update",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+  "capture_sha256": "a5745cf4f89f23bdb2f3be2101213ff922e594ec2db0aa544104c81e05399dd1",
+  "inputs_sha256": "59383329affb09e87c6452c135d3ae20df19db9f1675acddc0972a080a8551b6",
+  "baseline_sha256": "5dce10106326451b42952f473ec80adff118a7185cf64a7d6ef3fd52ff8ee1e8",
+  "fixture_sha256": "f79f3c100215237ead92a9f0b777b326b6747601a314aafa99364a83f0fefdb0",
+  "frames": 3600,
+  "complete_calls": 7948,
+  "incomplete_calls": 0,
+  "errors": [],
+  "all_actor_ram_writes_within_declared_fields": true,
+  "calls_with_external_ram_changes": 16,
+  "calls_crossing_video_frame": 0,
+  "external_changes_crossing_video_frame": 0,
+  "limitations": [
+    "Per-call external RAM changes may include intervening Z80/VDP work; they are retained, not attributed to the observed function.",
+    "Natural samples do not establish unobserved arithmetic boundaries or complete animation behavior."
+  ],
+  "frames_match_original_core": true,
+  "coverage": {
+    "clock_calls": 3974,
+    "drift_calls": 3974,
+    "clock_tick_byte_wraps": 127,
+    "clock_zero_duration": 0,
+    "clock_index_byte_wraps": 0,
+    "clock_loop_completion": 69,
+    "clock_preserved_completion": 215,
+    "drift_positive": 60,
+    "drift_negative": 223,
+    "drift_zero": 3691,
+    "drift_crosses_zero": 3,
+    "drift_facing_values": [
+      0,
+      1
+    ]
+  },
+  "pass": true
+}

@@ -1,0 +1,8 @@
+{
+  "phase": "tests-before-implementation",
+  "implementation_file_existed": false,
+  "test_sha256": "38f65f67172a49be0a1b0f735f023804bf40f37b8b2ec89b511688a0b2f6e6b2",
+  "command": "go test ./games/yuyuhakusho/engine -run 'Test(Animation|Residual)' -count=1",
+  "exit_code": 1,
+  "expected_failure": "undefined: AnimationClock, ResidualMotion, StepAnimationClock, StepResidualMotion"
+}
