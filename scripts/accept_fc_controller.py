@@ -17,8 +17,10 @@ def browser(*a):
 def js(s):return browser('eval',s)['result']
 keys={'up':'KeyW','down':'KeyS','left':'KeyA','right':'KeyD','select':'KeyF','start':'Space','b':'KeyJ','a':'KeyK','turboB':'KeyU','turboA':'KeyI'};labels={'up':'上','down':'下','left':'左','right':'右','select':'选择（Select）','start':'开始（Start）','b':'B','a':'A','turboB':'Turbo B','turboA':'Turbo A','x':'X','y':'Y','l':'L','r':'R'}
 models=[];profiles={}
-for model,name,extra in [('classic-2','经典双键（FC）',{}),('classic-4','经典四键（SFC）',{'x':'KeyL','y':'KeyH','l':'KeyQ','r':'KeyE'})]:
- profile={'revision':0,'turboHz':10,'keyboard':{**keys,**extra}};profiles[model]=profile;models.append({'id':model,'name':name,'buttons':[{'id':k,'label':labels[k]} for k in profile['keyboard']],'defaults':profile})
+labels.update({'mode':'模式（Mode）','c':'C','z':'Z'})
+mdkeys={'up':'KeyW','down':'KeyS','left':'KeyA','right':'KeyD','mode':'KeyF','start':'Space','b':'KeyJ','a':'KeyK','c':'KeyL','x':'KeyU','y':'KeyI','z':'KeyO'}
+for model,name,mappings in [('classic-2','经典双键（FC）',keys),('md-6','MD 六键手柄',mdkeys)]:
+ profile={'revision':0,'turboHz':10,'keyboard':dict(mappings)};profiles[model]=profile;models.append({'id':model,'name':name,'buttons':[{'id':k,'label':labels[k]} for k in profile['keyboard']],'defaults':profile})
 class Handler(BaseHTTPRequestHandler):
  def log_message(self,*a):pass
  def send(self,data,mime='application/json'):
@@ -85,7 +87,7 @@ try:
  browser('click','[aria-label="修改 右 按键"]');browser('press','w');browser('wait','--text','每个按键只能对应一个操作');browser('press','ArrowRight');browser('click','[data-controller-save]');browser('wait','--text','控制器设置已保存')
  (OUT/'contrast-settings.json').write_text(json.dumps(contrast('.controller-settings [data-controller-layout=fc]'),indent=2)+'\n')
  assert js('["修改 Turbo B 按键","修改 Turbo A 按键"].every(label=>[...document.querySelectorAll(".controller-settings button")].some(e=>e.getAttribute("aria-label")===label))');assert profiles['classic-2']['keyboard']['right']=='ArrowRight';browser('screenshot',str(OUT/'settings-mobile-320.png'))
- browser('select','[aria-label="控制器型号"]','classic-4');assert js('document.querySelectorAll(".controller-settings [data-controller-layout=fc]").length')==0
+ browser('select','[aria-label="控制器型号"]','md-6');assert js('document.querySelectorAll(".controller-settings [data-controller-layout=fc]").length')==0
  browser('select','[aria-label="控制器型号"]','classic-2');browser('set','viewport','1100','900');browser('screenshot',str(OUT/'settings-desktop.png'));report['settings_remap_save_model_isolation']=True
  assert all(js('window.fcTest.trusted')), 'Synthetic pointer events were used'
  report.update(status='passed',background=image,logical_keys=list(keys),native_pointer_events=True,viewport_320=True);(OUT/'result.json').write_text(json.dumps(report,indent=2,ensure_ascii=False)+'\n');print(json.dumps(report,ensure_ascii=False))

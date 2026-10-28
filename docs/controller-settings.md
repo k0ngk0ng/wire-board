@@ -22,7 +22,7 @@
 
 ## 当前实现
 
-- 顶栏「控制器设置」沿用平台弹窗。目前分别维护「经典双键（FC）」和「经典四键（SFC）」预设，新增型号可以独立扩展。
+- 顶栏「控制器设置」沿用平台弹窗，目前提供「经典双键（FC）」和「MD 六键手柄」。SFC 型号已移除，不再出现在目录或接受配置写入。
 - SQLite 按 `user_id + model` 保存配置。`GET /api/controllers` 只返回当前用户的配置；`POST /api/controllers/{model}` 校验按键和修改版本，拒绝冲突键位、无效型号及过期写入。
 - 默认向右始终是 **D**。验收会临时改为方向键证明自定义和持久化，再恢复默认；最终展示截图为默认 WASD。
 - 连发默认每秒 10 次，可选 2～15 次。普通 A／B 与对应连发同时按住时，普通按键不会被连发间隙取消。
@@ -39,16 +39,33 @@ go build -o .local/controllers/wire-board .
 python3 -B scripts/accept_controllers.py
 ```
 
-HTTP 覆盖默认键位、两个账号／两个型号隔离、过期写入、无效配置、公开资料不泄露配置及 SQLite 重启恢复。浏览器使用原生按键修改、保存／刷新／恢复默认，并验证 320px 布局。结果和截图保存在 `.local/controllers/`。
+HTTP 覆盖默认键位、两个账号／FC 与 MD 型号隔离、过期写入、无效配置、旧 SFC 写入拒绝、公开资料不泄露配置及 SQLite 重启恢复。浏览器使用原生按键修改、保存／刷新／恢复默认，并验证 320px 布局。平台设置原有验收结果保存在 `.local/controllers/`；本次 MD 验收在 `.local/md-controller/`。
 
 ## FC 手柄界面
 
 游戏内手柄和控制器设置共用 `FCController`，使用项目自绘的红白机红金配色 SVG 底图。布局为左侧十字键、中间 Select／Start、右侧两列按钮：上排 Turbo B／Turbo A，下排 B／A。连发键位于手柄内，以 Turbo B／Turbo A 标注。热血篮球比赛画面与手柄分区：PC 与手机的手柄均在比赛画面下方居中显示，手柄不占用比赛画面内部空间。
 
-游玩模式只显示方向和逻辑按键名；Select／Start、B／A、连发名称沿用底图标注，避免重复印字。配置模式在对应控件上显示当前用户的键盘映射，点击后重绑。键位明细为只读列表；经典四键（SFC）继续使用自身的设置布局。
+游玩模式只显示方向和逻辑按键名；Select／Start、B／A、连发名称沿用底图标注，避免重复印字。配置模式在对应控件上显示当前用户的键盘映射，点击后重绑。键位明细为只读列表。
 
 共享组件不解释游戏位值，也不建立连发计时器。游戏通过 `sink.pressPointer(id, buttons)` 和 `sink.releasePointer(id, cancelled)` 接收逻辑按钮；连发由公共输入层采样。十字区域通过 pointer capture 支持连续方向和斜向切换；中间区域松开方向，多指按钮独立保持。失焦、页面隐藏、禁用、配置改变和组件卸载都会释放已持有的指针来源。
 
 SVG 来源记录见 `web/src/controllers/assets/fc-controller.source.json`。比例参考来自 Evan-Amos 的公有领域 FC 手柄照片，发布素材为自绘矢量图，连发位置按本平台约定安排。
 
 运行 `python3 -B scripts/accept_fc_controller.py` 可复核共享组件及真实 Settings 组件。脚本在独立浏览器会话中验证原生鼠标拖动、原生多点触摸／取消、模式区分、重绑与模型切换；接口使用专用设置夹具。真实账号／数据库的保存隔离仍由 `scripts/accept_controllers.py` 验收。结果和 PC／320px 截图保存到 `.local/fc-controller/browser/`；实际 Go 对局的输入接线另由篮球 live 验收覆盖。
+
+## MD 六键手柄
+
+MD 使用独立型号 `md-6`。方向、A／B 与 Start 延续 FC 默认键位，新增 O／L；Mode 使用原 Select 所在的 F。两种型号按用户分别保存，MD 的普通 X／Y／Z 不改变 FC 的连发功能。
+
+| 逻辑操作 | 默认按键 |
+| --- | --- |
+| 上／下／左／右 | W／S／A／D |
+| Mode／Start | F／空格 |
+| B／A／C | J／K／L |
+| X／Y／Z | U／I／O |
+
+`MDController` 在配置与游玩模式共用自绘 SVG 外形，左侧方向键、中间 Mode／Start、右侧上排 X／Y／Z、下排 A／B／C。游玩时只显示逻辑键名，配置时显示对应键盘映射。MD 不显示连发速度设置。FC 与 MD 共用 `pointer-controller.ts` 的指针归属、方向滑动、多指和取消逻辑；绘图布局与配置仍分别维护。
+
+`python3 -B scripts/accept_md_controller.py` 验证真实 React 组件的键盘组合、方向滑动、三指触摸／取消、禁用／切换配置／卸载释放、设置重绑、冲突拒绝、恢复默认和 320px 命中／对比度。原生键盘通过此验收自有浏览器的 CDP 提交明确的物理 `code`，不会用合成 DOM 键盘事件。该组件验收使用设置 API 夹具；真实持久化与用户隔离由 `TestController*E2E` 单独验证。它不代表《魔强统一战》已经接入完整平台对局。
+
+MD 源码和来源记录为 `web/src/controllers/assets/md-controller.svg`、`md-controller.source.json`。本次未使用第三方照片或商标图像。

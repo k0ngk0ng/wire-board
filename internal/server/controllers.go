@@ -30,16 +30,20 @@ type controllerModel struct {
 // Models describe logical layouts, not game rules. Physical gamepad identities
 // can gain a separate binding source without sharing one user's keyboard map.
 func controllerModels() []controllerModel {
-	makeModel := func(id, name string, fourButtons bool) controllerModel {
+	makeFC := func() controllerModel {
 		buttons := []controllerButton{{"up", "上"}, {"down", "下"}, {"left", "左"}, {"right", "右"}, {"select", "选择（Select）"}, {"start", "开始（Start）"}, {"b", "B"}, {"a", "A"}, {"turboB", "Turbo B"}, {"turboA", "Turbo A"}}
 		keys := map[string]string{"up": "KeyW", "down": "KeyS", "left": "KeyA", "right": "KeyD", "select": "KeyF", "start": "Space", "b": "KeyJ", "a": "KeyK", "turboB": "KeyU", "turboA": "KeyI"}
-		if fourButtons {
-			buttons = append(buttons, controllerButton{"x", "X"}, controllerButton{"y", "Y"}, controllerButton{"l", "L"}, controllerButton{"r", "R"})
-			keys["x"], keys["y"], keys["l"], keys["r"] = "KeyL", "KeyH", "KeyQ", "KeyE"
-		}
-		return controllerModel{ID: id, Name: name, Buttons: buttons, Defaults: controllerProfile{Keyboard: keys, TurboHz: 10}}
+		return controllerModel{ID: "classic-2", Name: "经典双键（FC）", Buttons: buttons, Defaults: controllerProfile{Keyboard: keys, TurboHz: 10}}
 	}
-	return []controllerModel{makeModel("classic-2", "经典双键（FC）", false), makeModel("classic-4", "经典四键（SFC）", true)}
+	md := controllerModel{
+		ID: "md-6", Name: "MD 六键手柄",
+		Buttons: []controllerButton{{"up", "上"}, {"down", "下"}, {"left", "左"}, {"right", "右"}, {"mode", "模式（Mode）"}, {"start", "开始（Start）"}, {"x", "X"}, {"y", "Y"}, {"z", "Z"}, {"a", "A"}, {"b", "B"}, {"c", "C"}},
+		Defaults: controllerProfile{TurboHz: 10, Keyboard: map[string]string{
+			"up": "KeyW", "down": "KeyS", "left": "KeyA", "right": "KeyD", "mode": "KeyF", "start": "Space",
+			"b": "KeyJ", "a": "KeyK", "c": "KeyL", "x": "KeyU", "y": "KeyI", "z": "KeyO",
+		}},
+	}
+	return []controllerModel{makeFC(), md}
 }
 
 var controllerKeyCode = regexp.MustCompile(`^(Key[A-Z]|Digit[0-9]|Numpad[0-9]|Arrow(Up|Down|Left|Right)|Space|Enter|Tab|Backspace|Shift(Left|Right)|Control(Left|Right)|Alt(Left|Right)|Bracket(Left|Right)|Semicolon|Quote|Comma|Period|Slash|Backslash|Minus|Equal|Backquote|F([1-9]|1[0-2]))$`)

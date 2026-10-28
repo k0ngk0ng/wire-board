@@ -6,6 +6,7 @@ import {
   type ControllerSettingsData,
 } from "./input";
 import { FCController } from "./FCController";
+import { MDController } from "./MDController";
 import "./settings.css";
 
 export function ControllerSettings({
@@ -43,6 +44,7 @@ export function ControllerSettings({
   }, []);
   const model = data?.models.find((m) => m.id === modelID);
   const draft = drafts[modelID];
+  const VisualController = modelID === "md-6" ? MDController : FCController;
   useEffect(() => {
     if (!waiting || !draft) return;
     const capture = (event: KeyboardEvent) => {
@@ -163,13 +165,13 @@ export function ControllerSettings({
           <p className="controller-help" aria-live="polite">
             {waiting
               ? `请按下「${model.buttons.find((b) => b.id === waiting)?.label}」的新按键，Esc 取消。`
-              : modelID === "classic-2"
+              : modelID === "classic-2" || modelID === "md-6"
                 ? "点击手柄上的按键，再按下新的键盘按键。"
                 : "点击要修改的按键，再按下新的键盘按键。"}
           </p>
-          {modelID === "classic-2" ? (
+          {modelID === "classic-2" || modelID === "md-6" ? (
             <>
-              <FCController
+              <VisualController
                 profile={draft}
                 mode="configure"
                 recording={waiting}
@@ -208,27 +210,31 @@ export function ControllerSettings({
               ))}
             </div>
           )}
-          <label className="controller-model controller-turbo">
-            连发速度
-            <select
-              aria-label="连发速度"
-              value={draft.turboHz}
-              disabled={busy}
-              onChange={(e) => {
-                setDrafts((all) => ({
-                  ...all,
-                  [modelID]: { ...draft, turboHz: Number(e.target.value) },
-                }));
-                setNotice("");
-              }}
-            >
-              {Array.from({ length: 14 }, (_, i) => i + 2).map((hz) => (
-                <option key={hz} value={hz}>
-                  每秒 {hz} 次
-                </option>
-              ))}
-            </select>
-          </label>
+          {model.buttons.some(
+            (button) => button.id === "turboA" || button.id === "turboB",
+          ) && (
+            <label className="controller-model controller-turbo">
+              连发速度
+              <select
+                aria-label="连发速度"
+                value={draft.turboHz}
+                disabled={busy}
+                onChange={(e) => {
+                  setDrafts((all) => ({
+                    ...all,
+                    [modelID]: { ...draft, turboHz: Number(e.target.value) },
+                  }));
+                  setNotice("");
+                }}
+              >
+                {Array.from({ length: 14 }, (_, i) => i + 2).map((hz) => (
+                  <option key={hz} value={hz}>
+                    每秒 {hz} 次
+                  </option>
+                ))}
+              </select>
+            </label>
+          )}
           <div className="controller-actions">
             <button
               className="secondary"
