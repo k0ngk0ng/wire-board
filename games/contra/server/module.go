@@ -73,6 +73,9 @@ type State struct {
 	StageLoading *StageLoading   `json:"stageLoading,omitempty"`
 }
 type View struct {
+	full           bool
+	streaming      bool
+	Resync         bool                         `json:"resync,omitempty"`
 	RuntimeBuildID string                       `json:"runtimeBuildID,omitempty"`
 	VisualsID      string                       `json:"visualsID"`
 	Protocol       int                          `json:"protocol"`
@@ -144,6 +147,7 @@ func ModuleWithConfig(c Config) (gameapi.Module, error) {
 	}
 	h := &host{build: c.RulesBuildID, runtimeBuild: c.RuntimeBuildID, bundle: bundle, visuals: *c.Visuals, observeBot: c.ObserveBot}
 	m := gameapi.Module{ID: "contra", Name: "魂斗罗", MinPlayers: 1, MaxPlayers: 2, RatingPolicy: gameapi.RatingCoopCampaignV1, Realtime: true, Configure: configure, Start: h.start, Apply: h.apply, View: h.view, IsInputRelease: h.isInputRelease, SyncSnapshot: h.sync, BotAction: func(gameapi.Context, gameapi.Match) (json.RawMessage, error) { return nil, nil }, Reclaim: h.reclaim, Restore: h.restore, AcceptStale: h.acceptStale, OnTimer: h.timer, OnPausedTimer: h.pausedTimer}
+	m.StreamView = h.stream
 	return m, m.Validate()
 }
 func flags(c gameapi.Context, n int) ([]bool, error) {
@@ -246,7 +250,7 @@ func (h *host) decode(g gameapi.Match) (State, error) {
 		if gate.RuntimeBuildID != "" && !validSHA(gate.RuntimeBuildID) {
 			return s, errors.New("invalid stage runtime identity")
 		}
-		if gate.Level >= 8 || gate.Level != s.Session.World.Active.Combat.World.Level || len(gate.Ready) != s.Players || s.Session.World.Campaign.Outcome != engine.CampaignOngoing || g.Paused {
+		if gate.Level >= 8 || gate.Level != s.Session.World.Active.Combat.World.Level || len(gate.Ready) != s.Players || s.Session.World.Campaign.Outcome != engine.CampaignOngoing {
 			return s, errors.New("invalid stage gate")
 		}
 	}
@@ -260,11 +264,11 @@ func (h *host) view(g gameapi.Match, actor int) (any, error) {
 	if actor < -1 || actor >= s.Players {
 		return nil, errors.New("invalid viewer")
 	}
-	snapshot, e := runtime.View(s.Session, s.BundleID, h.build)
+	snapshot, e := h.snapshotHeader(&s)
 	if e != nil {
 		return nil, e
 	}
-	v := View{RuntimeBuildID: h.runtimeBuild, VisualsID: s.VisualsID, Protocol: 1, Epoch: s.Epoch, Actor: actor, SeatActors: seats(s.Players), Inputs: make([]InputView, s.Players), Snapshot: snapshot, Revision: s.Session.Revision, Frames: s.Frames, Stage: h.bundle.Manifest().Stages[min(7, snapshot.Level)], Bundle: h.bundle.Manifest(), RulesBuildID: h.build, StageLoading: s.StageLoading}
+	v := View{RuntimeBuildID: h.runtimeBuild, VisualsID: s.VisualsID, Protocol: 2, Epoch: s.Epoch, Actor: actor, SeatActors: seats(s.Players), Inputs: make([]InputView, s.Players), Snapshot: snapshot, Revision: s.Session.Revision, Frames: s.Frames, Stage: h.bundle.Manifest().Stages[min(7, snapshot.Level)], Bundle: h.bundle.Manifest(), RulesBuildID: h.build, StageLoading: s.StageLoading}
 	for i, input := range s.Inputs {
 		v.Inputs[i] = InputView{input.Sequence, input.Held, input.Automated}
 	}
@@ -283,7 +287,13 @@ func (h *host) sync(g gameapi.Match, actor int) (any, error) {
 	if e != nil {
 		return nil, e
 	}
-	return SyncView{View: v.(View), Checkpoint: cp}, nil
+	full := v.(View)
+	full.full = true
+	full.Snapshot, e = runtime.View(s.Session, s.BundleID, h.build)
+	if e != nil {
+		return nil, e
+	}
+	return SyncView{View: full, Checkpoint: cp}, nil
 }
 func (h *host) record(s *State, kind string, pads [2]engine.Buttons) error {
 	digest, e := runtime.StateDigest(s.Session, s.BundleID, h.build)

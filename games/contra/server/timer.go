@@ -41,16 +41,14 @@ func (h *host) timer(c gameapi.Context, g gameapi.Match) (gameapi.Match, error) 
 		if s.StageLoading != nil && a {
 			s.StageLoading.Ready[i] = true
 		}
+		if s.StageLoading != nil && !s.StageLoading.Ready[i] {
+			clearInput(&s.Inputs[i])
+		}
 		if !a && s.Inputs[i].ReceivedAt != 0 && at-s.Inputs[i].ReceivedAt >= leaseMS {
 			clearInput(&s.Inputs[i])
 		}
 	}
-	if s.StageLoading != nil {
-		releaseStage(&s, at)
-		s.ServerAt = at
-		s.Remainder = 0
-		return store(g, &s)
-	}
+	releaseStage(&s)
 	if s.Session.World.Campaign.Outcome != engine.CampaignOngoing {
 		if e = h.finish(&g, &s); e != nil {
 			return g, e

@@ -1,6 +1,6 @@
 # 魂斗罗服务端接入契约
 
-实现前失败清单；本模块暂不在生产大厅注册。规则来自已经保存的原版 ROM／REA 恢复证据，服务端本身不执行模拟器。
+实现前失败清单与接入约定。生产入口当前开放单人和双人真人合作，电脑与托管入口关闭。规则来自已经保存的原版 ROM／REA 恢复证据，服务端本身不执行模拟器。
 
 | 边界 | 必须拒绝或防止的失败 |
 | --- | --- |
@@ -11,15 +11,15 @@
 | 重放 | frame／revision 不连续；摘要未绑定规则代码与资源；120 条重放环之外缺少显式检查点恢复 |
 | 暂停 | P2 恢复；计时器恢复；按住 Start 心跳误恢复；暂停改变随机数、生命、得分、物理；恢复重新开局 |
 | 托管 | 没有 host Automated 标记仍调用策略；取消后残留按键；改动其他玩家输入或重置战役 |
-| 加载 | 初始资源未加载就推进；观战者阻塞；换关未加载就运行；错版本 ready 被接受；重连重设关卡屏障；加载期间／本人确认后迟到的旧按键在新关首帧重播；托管取消与迟到输入交错；释放被托管状态阻断；丢弃旧输入导致序号回退 |
+| 加载 | 初始资源未加载就推进；观战者阻塞；运行中换关等待慢客户端而停住全员；错版本 ready 被接受；重连重设全员屏障；本人加载确认前的旧按键在新关重播；迟到确认清除其他玩家输入或重置时间；托管取消与迟到输入交错；释放被托管状态阻断；丢弃旧输入导致序号回退 |
 | 存档 | 恢复残留真人按键；epoch／序号／规则构建或资源错配；恢复重置角色或关卡 |
 | 终局 | 尚未 FlushTerminal 就发 Result；把共同失败当和局；敌方 NPC 导致真人合作对局不计分 |
 | 传输 | HTTP／WS 绕过鉴权；重复 nonce 重放；重启旧 serverInstance 可继续操作 |
 
 复杂路径通过正式 Module 回调与真实 HTTP／WebSocket／SQLite 验收；终局和换关使用明确标注的服务器测试边界初态，只证明平台边界，不冒充自然通关。原版自然战役与电脑完整对局由引擎验收另行覆盖。
 
-`input {epoch,sequence,held}`、`release {epoch,sequence}`、`resume {epoch,sequence}` 只控制登录席位。换关确认使用 `stage-ready {epoch,sequence,bundleID,rulesBuildID,level,stageSHA256}`。初始加载由平台 `load_begin/load_ready` 负责。真人按键租约 750 ms；心跳需增加序号。过期只释放按键。换关屏障内的合法 `input` 只确认序号并保存去重记录，丢弃 held 与队列；解除屏障再次清理输运输入，不改 `Session` 或序号。托管期间也允许 `release`，不因此取消托管。客户端的输入、释放和 `stage-ready` 应使用同一递增序号与发送链，屏障解除后发送新的物理按键；加载期间的 ACK 不代表按键已执行。
+`input {epoch,sequence,held}`、`release {epoch,sequence}`、`resume {epoch,sequence}` 只控制登录席位。换关确认使用 `stage-ready {epoch,sequence,bundleID,rulesBuildID,runtimeBuildID,level,stageSHA256}`。初始加载由平台 `load_begin/load_ready` 负责。真人按键租约 750 ms；心跳需增加序号。过期只释放按键。运行中换关按席位记录资源就绪，服务端时钟持续推进。尚未确认本关资源的席位，其合法 `input` 只确认序号并保存去重记录，丢弃 held 与队列；已确认的席位正常操作。最后一人确认只移除加载标记，不清除其他席位输入，也不重设 `Session`、时钟或序号。托管期间也允许 `release`，不因此取消托管。客户端的输入、释放和 `stage-ready` 应使用同一递增序号与发送链，本人确认后发送新的物理按键；本人加载期间的 ACK 不代表按键已执行。慢连接自行恢复快照或追赶，不能阻止其他玩家继续。
 
-宿主每 50 ms 调用一次 `OnTimer`，内部仍使用 60 Hz 固定规则时钟：正常批次推进 3 个独立规则／音频帧，每次最多追赶 250 ms，即 15 帧。`OnPausedTimer` 仅调用 `PresentPaused`。重放事件为 `pads`、`present-paused`、`resume`、`terminal`，均包含连续 revision 与状态摘要。`SyncSnapshot` 返回完整检查点，普通 View 只含当前画面及最近 120 个紧凑事件。
+宿主每 50 ms 调用一次 `OnTimer`，内部仍使用 60 Hz 固定规则时钟：正常批次推进 3 个独立规则／音频帧，每次最多追赶 250 ms，即 15 帧。`OnPausedTimer` 仅调用 `PresentPaused`。重放事件为 `pads`、`present-paused`、`resume`、`terminal`，均包含连续 revision 与状态摘要。`SyncSnapshot` 用于初次接入、重连和失步恢复，返回完整检查点。常规 View 只含状态摘要及短窗口输入记录，不携带画面、静态地图或音频历史。WebSocket 的输入游标按连接独立维护；地图与素材来自已经校验的不可变资源目录。
 
 所有参与者共同成功或共同失败，注册策略固定为 `coop_campaign_v1`；具体资格及 +20／−10 由平台计算。显式电脑席位或占玩家角色的电脑排除计分，敌兵和 Boss 不算电脑玩家；真人主动托管保留开局计分资格。

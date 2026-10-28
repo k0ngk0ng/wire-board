@@ -1,0 +1,9 @@
+=== RUN   TestContraModuleVisualIdentityRestoreAndLoading
+--- PASS: TestContraModuleVisualIdentityRestoreAndLoading (0.64s)
+=== RUN   TestContraRunningStageSlowPeerDoesNotBlockReadySeat
+    stage_network_e2e_test.go:58: {"automaticTakeover":false,"fastPeerFrames":180,"lateReadyPreservedClock":true,"passed":true,"slowPeerElapsedMS":3000}
+--- PASS: TestContraRunningStageSlowPeerDoesNotBlockReadySeat (3.48s)
+=== RUN   TestContraRunningStageAllowsReadyPlayerPauseAndRestore
+--- PASS: TestContraRunningStageAllowsReadyPlayerPauseAndRestore (0.40s)
+PASS
+ok  	github.com/k0ngk0ng/wire-board/games/contra/server	6.370s

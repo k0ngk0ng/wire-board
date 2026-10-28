@@ -296,9 +296,10 @@ func TestContraModuleStageGateAndTerminalPublication(t *testing.T) {
 	}
 	f := v.Snapshot.Frame
 	g = ticks(t, m, &c, g, 5000)
-	if wire(t, m, g, 0).Snapshot.Frame != f {
-		t.Fatal("stage loaded without humans")
+	if wire(t, m, g, 0).Snapshot.Frame != f+15 {
+		t.Fatal("loading client stopped the running rule clock or caused unbounded catch-up")
 	}
+	f += 15
 	ready := map[string]any{"type": "stage-ready", "epoch": v.Epoch, "sequence": 1, "level": 1, "bundleID": v.Bundle.ID, "rulesBuildID": v.RulesBuildID, "stageSHA256": v.Stage.SHA256}
 	g = action(t, m, c, g, ready)
 	c.Actor = 1
@@ -440,9 +441,10 @@ func TestContraModuleReplayWindowAndGateAutomation(t *testing.T) {
 	c.Automated[1] = true
 	g = ticks(t, m, &c, g, 50)
 	s := saved(t, g)
-	if s.StageLoading == nil || !s.StageLoading.Ready[1] || s.Session.Random.Frames != before.Session.Random.Frames || s.Bots != before.Bots {
-		t.Fatal("loading ran bot or ignored explicit automation")
+	if s.StageLoading == nil || !s.StageLoading.Ready[1] || s.Session.Random.Frames != before.Session.Random.Frames+3 || s.Bots[1].LastTick == 0 {
+		t.Fatal("unready human stopped the running clock or the explicit computer")
 	}
+	manualBotTick := s.Bots[1].LastTick
 	c.Actor = 1
 	g, e = m.Reclaim(c, g)
 	if e != nil {
@@ -457,12 +459,12 @@ func TestContraModuleReplayWindowAndGateAutomation(t *testing.T) {
 	g = action(t, m, c, g, ready)
 	c.Automated[0] = true
 	g = ticks(t, m, &c, g, 50)
-	if saved(t, g).StageLoading != nil || saved(t, g).Session.Random.Frames != before.Session.Random.Frames {
-		t.Fatal("gate release simulated accumulated time")
+	if saved(t, g).StageLoading != nil || saved(t, g).Session.Random.Frames != before.Session.Random.Frames+6 {
+		t.Fatal("readiness acknowledgement reset the running frame schedule")
 	}
 	g = ticks(t, m, &c, g, 50)
 	s = saved(t, g)
-	if s.Bots[0].LastTick == 0 || s.Bots[1].LastTick != 0 || s.Inputs[1].Automated {
+	if s.Bots[0].LastTick == 0 || s.Bots[1].LastTick != manualBotTick || s.Inputs[1].Automated {
 		t.Fatal("wrong seat ran strategy")
 	}
 }
@@ -547,8 +549,8 @@ func TestContraModuleStageLoadingDiscardsLateControls(t *testing.T) {
 			}
 			ready()
 			v := wire(t, m, g, 0)
-			late := map[string]any{"type": "input", "epoch": v.Epoch, "sequence": v.Inputs[0].Sequence + 1, "held": int(engine.ButtonStart | engine.ButtonB)}
-			g = action(t, m, c, g, late) // even after own ready, another human still loads.
+			late := map[string]any{"type": "input", "epoch": v.Epoch, "sequence": v.Inputs[0].Sequence + 1, "held": int(engine.ButtonRight | engine.ButtonB)}
+			g = action(t, m, c, g, late) // own ready allows play while the other human still loads.
 			beforeReady := saved(t, g)
 			c.Actor = 1
 			ready()
@@ -574,12 +576,11 @@ func TestContraModuleStageLoadingDiscardsLateControls(t *testing.T) {
 				t.Fatal("gate changed 60 Hz frame schedule")
 			}
 			for _, f := range s.Frames {
-				if f.Frame > frame && f.Kind == "pads" && f.Pads != [2]engine.Buttons{} {
-					t.Error("new stage replayed loading controls", f.Frame, f.Pads)
+				if f.Frame > frame && f.Kind == "pads" && f.Pads != [2]engine.Buttons{engine.ButtonRight | engine.ButtonB, 0} {
+					t.Error("other seat readiness cleared the active human input", f.Frame, f.Pads)
 				}
 			}
-			// Fresh post-gate input remains usable; the same held mask must produce a
-			// new intent, despite having been acknowledged and dropped while loading.
+			// Fresh post-load input remains usable and can create a new button edge.
 			g = input(t, m, c, g, engine.ButtonStart|engine.ButtonB)
 			g = ticks(t, m, &c, g, 50)
 			s = saved(t, g)

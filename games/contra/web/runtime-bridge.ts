@@ -128,8 +128,12 @@ export type RuntimeCheckpoint = {
   digest: string;
   state: unknown;
 };
+export type RuntimeSnapshotHeader = Omit<
+  RuntimeSnapshot,
+  "presentation" | "audio"
+>;
 export type RuntimePoll = {
-  snapshot: RuntimeSnapshot;
+  snapshot: RuntimeSnapshotHeader;
   frames: {
     kind?: "pads" | "present-paused" | "resume" | "terminal";
     revision?: string;

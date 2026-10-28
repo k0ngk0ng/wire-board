@@ -5,6 +5,7 @@ import type {
   RuntimeCheckpoint,
   RuntimePoll,
   RuntimeSnapshot,
+  RuntimeSnapshotHeader,
 } from "./runtime-bridge";
 import type { RuntimeTransport } from "./runtime-client";
 
@@ -16,13 +17,15 @@ export type RoomRuntimeView = {
   actor: number;
   seatActors: number[];
   inputs: { sequence: number; held: number; automated: boolean }[];
-  snapshot: RuntimeSnapshot;
+  snapshot: RuntimeSnapshotHeader &
+    Partial<Pick<RuntimeSnapshot, "presentation" | "audio">>;
   revision: string;
   frames: RuntimePoll["frames"];
   stage: { level: number; path: string; sha256: string; digest: string };
-  bundle: RuntimeBundle;
+  bundle: Pick<RuntimeBundle, "id" | "version">;
   rulesBuildID: string;
   stageLoading?: { level: number; ready: boolean[] };
+  resync?: boolean;
 };
 type Binding = {
   room: Pick<
@@ -33,7 +36,7 @@ type Binding = {
 };
 type Sync = {
   version: number;
-  view: RoomRuntimeView;
+  view: RoomRuntimeView & { snapshot: RuntimeSnapshot };
   checkpoint: RuntimeCheckpoint;
 };
 type Options = {
@@ -56,9 +59,10 @@ const recoverable = (error: unknown) =>
 /** Room actions share one ordered sequence with stage acknowledgements. The
  * public platform still authenticates the seat and decides every accepted pad.
  * Snapshot updates are read from the host; /sync is explicit recovery only. */
-export function createRoomTransport(
-  options: Options,
-): RuntimeTransport & { dispose: () => void } {
+export function createRoomTransport(options: Options): RuntimeTransport & {
+  initial: () => Promise<RuntimeSnapshot>;
+  dispose: () => void;
+} {
   let sequence = 0,
     chain = Promise.resolve(),
     closed = false,
@@ -91,7 +95,7 @@ export function createRoomTransport(
     const b = current();
     return (
       owner(b) &&
-      !b.view.stageLoading &&
+      (!b.view.stageLoading || b.view.stageLoading.ready[options.actor]) &&
       !b.room.seats[b.room.you]?.autoPlay &&
       !b.room.seats[b.room.you]?.bot &&
       !b.view.snapshot.finalized
@@ -192,6 +196,12 @@ export function createRoomTransport(
     if (!recovering) readySent.add(key);
   };
   return {
+    initial: async () => {
+      const value = await sync();
+      if (!value.view.snapshot.presentation || !value.view.snapshot.audio)
+        throw Error("初始快照缺少画面或音频状态");
+      return value.view.snapshot;
+    },
     inputEnabled,
     sequenceBase: () =>
       Math.max(sequence, current().view.inputs[options.actor]?.sequence ?? 0),
@@ -226,7 +236,7 @@ export function createRoomTransport(
         first = frames[0]?.revision ?? frames[0]?.snapshot?.revision;
       if (
         head > BigInt(after) &&
-        (!first || BigInt(first) !== BigInt(after) + 1n)
+        (b.view.resync || !first || BigInt(first) !== BigInt(after) + 1n)
       ) {
         await sync();
         return {

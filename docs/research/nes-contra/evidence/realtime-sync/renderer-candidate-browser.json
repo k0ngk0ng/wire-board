@@ -1,0 +1,115 @@
+{
+  "frame": "600",
+  "frames": 240,
+  "maxProjectiles": 8,
+  "phase": "playing",
+  "rulesBuildID": "9abc9b428651fd7fe8d848157a94ef43c4a9475eab0a7716043fdf27e8685618",
+  "samples": {
+    "active": {
+      "draw": {
+        "meanMS": 0.397083338101705,
+        "p50MS": 0.5,
+        "p95MS": 0.8000001907348633,
+        "samples": 240
+      },
+      "parts": {
+        "background": {
+          "meanMS": 0.4441379481348498,
+          "p50MS": 0.40000057220458984,
+          "p95MS": 0.8000001907348633,
+          "samples": 145
+        },
+        "compose": {
+          "meanMS": 0.06249998013178507,
+          "p50MS": 0.09999942779541016,
+          "p95MS": 0.19999980926513672,
+          "samples": 240
+        },
+        "createImage": {
+          "meanMS": null,
+          "samples": 0
+        },
+        "putImage": {
+          "meanMS": 0.005416675408681234,
+          "p50MS": 0,
+          "p95MS": 0.09999942779541016,
+          "samples": 240
+        },
+        "sprites": {
+          "meanMS": 0.05416667461395264,
+          "p50MS": 0,
+          "p95MS": 0.10000038146972656,
+          "samples": 240
+        }
+      },
+      "pixelSHA256": "9f8ad489bb8127da544e6387080c9f1794f59ea70020b6e2d2651c63f767892e",
+      "uniqueBackgroundSignatures": 129
+    },
+    "static": {
+      "draw": {
+        "meanMS": 0.1387500007947286,
+        "p50MS": 0.10000038146972656,
+        "p95MS": 0.3000001907348633,
+        "samples": 240
+      },
+      "parts": {
+        "background": {
+          "meanMS": null,
+          "samples": 0
+        },
+        "compose": {
+          "meanMS": 0.07624998092651367,
+          "p50MS": 0.09999942779541016,
+          "p95MS": 0.19999980926513672,
+          "samples": 240
+        },
+        "createImage": {
+          "meanMS": null,
+          "samples": 0
+        },
+        "putImage": {
+          "meanMS": 0.007499992847442627,
+          "p50MS": 0,
+          "p95MS": 0.09999942779541016,
+          "samples": 240
+        },
+        "sprites": {
+          "meanMS": 0.05208336114883423,
+          "p50MS": 0,
+          "p95MS": 0.10000038146972656,
+          "samples": 240
+        }
+      },
+      "pixelSHA256": "f98b65a0a2f060217708b2f047d0006dd86ae2a61158524bfeb577010fea3e24",
+      "uniqueBackgroundSignatures": 1
+    }
+  },
+  "wasm": {
+    "invoke": {
+      "meanMS": 0.7283203024417162,
+      "p50MS": 0.6999998092651367,
+      "p95MS": 1.3999996185302734,
+      "samples": 512
+    },
+    "meanReplyBytes": 18109.390625,
+    "requestStringify": {
+      "meanMS": 0.0001953132450580597,
+      "p50MS": 0,
+      "p95MS": 0,
+      "samples": 512
+    },
+    "responseParse": {
+      "meanMS": 0.027539068832993507,
+      "p50MS": 0,
+      "p95MS": 0.10000038146972656,
+      "samples": 512
+    }
+  },
+  "worldRoutine": 4,
+  "browser": {
+    "hardwareConcurrency": 10,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36"
+  },
+  "mode": "candidate",
+  "scope": "Real Chromium CPU timings, native/Wasm battle state, no network transport or live user accounts"
+}

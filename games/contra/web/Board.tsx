@@ -142,7 +142,8 @@ export function Board(props: BoardProps<RoomRuntimeView>) {
         }
         await pending;
         await client.current?.prepareStage(next);
-        await client.current?.preparePresentation(view.snapshot.presentation);
+        if (view.snapshot.presentation)
+          await client.current?.preparePresentation(view.snapshot.presentation);
       };
       transport = createRoomTransport({
         runtimeBuildID: data.runtimeBuildID,
@@ -168,6 +169,7 @@ export function Board(props: BoardProps<RoomRuntimeView>) {
         },
         prepare,
       });
+      const initial = await transport.initial();
       if (!active) {
         transport.dispose();
         return;
@@ -178,7 +180,7 @@ export function Board(props: BoardProps<RoomRuntimeView>) {
         bridge,
         transport,
         resources,
-        initial: data.snapshot,
+        initial,
       });
     })().catch((e) => {
       if (active) {
@@ -196,11 +198,13 @@ export function Board(props: BoardProps<RoomRuntimeView>) {
     };
   }, [identity, retry]);
 
+  const loadingStage =
+    !watching && !!data.stageLoading && !data.stageLoading.ready[data.actor];
   const disabled =
     watching ||
     room.status !== "playing" ||
     !!room.loading ||
-    !!data.stageLoading ||
+    loadingStage ||
     !!room.seats[room.you]?.autoPlay ||
     snapshot.finalized;
   return (
@@ -246,11 +250,9 @@ export function Board(props: BoardProps<RoomRuntimeView>) {
               latest.current.onLoadError?.(text);
             }}
           />
-          {(data.stageLoading || snapshot.paused) && (
+          {(loadingStage || snapshot.paused) && (
             <p className="contra-state" role="status">
-              {data.stageLoading
-                ? "正在加载下一关，等待队友就绪"
-                : "已暂停 · Start 继续"}
+              {loadingStage ? "正在加载下一关" : "已暂停 · Start 继续"}
             </p>
           )}
         </>
