@@ -296,11 +296,12 @@ func TestStarfortRulesTowersAndSharedRewards(t *testing.T) {
 		shotKind, shotOwner, shotTick, hits := "", -1, -1, 0
 		for _, raw := range after.Events {
 			var event struct {
-				Type   string                 `json:"type"`
-				Kind   string                 `json:"kind"`
-				Damage []starfort.DamageDelta `json:"damage"`
-				Owner  int                    `json:"owner"`
-				Tick   int                    `json:"tick"`
+				Type         string                 `json:"type"`
+				Kind         string                 `json:"kind"`
+				Damage       []starfort.DamageDelta `json:"damage"`
+				DamageGroups []starfort.DamageGroup `json:"damageGroups"`
+				Owner        int                    `json:"owner"`
+				Tick         int                    `json:"tick"`
 			}
 			if err := json.Unmarshal(raw, &event); err != nil {
 				t.Fatal(err)
@@ -310,6 +311,9 @@ func TestStarfortRulesTowersAndSharedRewards(t *testing.T) {
 			}
 			if event.Type == "hit" && event.Owner == shotOwner && event.Tick == shotTick {
 				hits += 1 + len(event.Damage)
+				for _, group := range event.DamageGroups {
+					hits += len(group.Targets)
+				}
 				cannonSplash = cannonSplash || (shotKind == "cannon" && hits > 1)
 				arcaneArmor = arcaneArmor || (shotKind == "arcane" && event.Kind == "armored")
 				arcaneShield = arcaneShield || (shotKind == "arcane" && event.Kind == "shield")

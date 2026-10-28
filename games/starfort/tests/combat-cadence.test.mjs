@@ -361,3 +361,29 @@ test('compact permanent-frost event needs no copied enemy snapshot',()=>{
  p.push(snap(1000,[frozen]),events,1000);
  assert.equal(p.read(1600).enemies[0].frostbound,true);assert.equal(hp(p,1600),100);
 });
+
+// Before late-wave compaction: grouped victims lose shield/HP, thin vitals are
+// ignored or visible before impact, and a later hit clears permanent frost.
+test('grouped splash and compact primary vitals remain on the impact clock',()=>{
+ const initial=snap(0,[enemy(1,100,20),enemy(2,100,10),enemy(3,100)]),p=new CombatPlayback(initial,0);
+ const shot=event(1,'shot',200,enemy(1,100,20));
+ const hit={...event(2,'hit',200,enemy(1,90)),target:undefined,targetId:1,vitals:{hp:90,shield:0,slowUntil:0},damageGroups:[{amount:25,targets:[2,3]}]};
+ p.push(snap(1000,[enemy(1,90),enemy(2,85),enemy(3,75)]),[shot,hit],1000);
+ assert.equal(hp(p,1379,1),100);assert.equal(hp(p,1379,2),100);
+ assert.equal(hp(p,1380,1),90);assert.equal(hp(p,1380,2),85);assert.equal(hp(p,1380,3),75);
+ assert.equal(initial.enemies[0].hp,100);assert.equal(p.read(1380).enemies[1].shield,0);
+});
+test('compact vitals do not erase an earlier permanent frost contact',()=>{
+ const initial=snap(0,[{...enemy(1,100),frostbound:true}]),p=new CombatPlayback(initial,0);
+ const hit={...event(1,'hit',200,enemy(1,90)),target:undefined,targetId:1,vitals:{hp:90,shield:0,slowUntil:0}};
+ p.push(snap(1000,[{...enemy(1,90),frostbound:true}]),[hit],1000);
+ assert.equal(p.read(1380).enemies[0].frostbound,true);assert.equal(hp(p,1380,1),90);
+});
+// Late waves use large entity IDs; compact target offsets must never hit a
+// different enemy or change the impact time.
+test('group target bases preserve late-wave enemy identities',()=>{
+ const p=new CombatPlayback(snap(0,[enemy(2201,100),enemy(2202,100,10)]),0);
+ const hit={...event(1,'hit',200,enemy(2201,90)),damageGroups:[{amount:25,base:2200,targets:[2]}]};
+ p.push(snap(1000,[enemy(2201,90),enemy(2202,85)]),[hit],1000);
+ assert.equal(hp(p,1379,2202),100);assert.equal(hp(p,1380,2202),85);
+});

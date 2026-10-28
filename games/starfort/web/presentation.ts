@@ -196,3 +196,20 @@ export function battlefieldTopInset(
   const towerSize = Math.max(66, 42 / (viewportWidth / mapWidth));
   return Math.max(0, Math.ceil((towerSize * 224) / 192 + 4 - (minPadY + 14)));
 }
+
+// Damage groups may list another victim first. Match one blast to its own
+// projectile, without modifying any authoritative target or damage record.
+export function blastImpactTargets(events: Event[]): Map<number, number> {
+  const key = (e: Event) => `${e.towerId}:${e.atMS ?? e.tick * 200}`;
+  const shots = new Map<string, number>();
+  for (const e of events)
+    if (e.type === "shot" && e.kind === "cannon" && e.targetId)
+      shots.set(key(e), e.targetId);
+  const targets = new Map<number, number>();
+  for (const e of events)
+    if (e.type === "hit") {
+      const id = shots.get(key(e));
+      if (id !== undefined) targets.set(e.id, id);
+    }
+  return targets;
+}

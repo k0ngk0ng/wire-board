@@ -63,6 +63,21 @@ def analyze_combat_probe(raw):
         for event in snapshot['events']:
             events[event['id']] = event
     events = sorted(events.values(), key=lambda e: e['id'])
+    # Thin hit packets supply absolute vitality; identity/max-health come from
+    # the initial snapshot or a preceding full target. No production decoder is used.
+    targets = {e['id']: dict(e) for e in initial.get('enemies', [])}
+    expanded = []
+    for event in events:
+        event = dict(event)
+        if event.get('target') is not None:
+            targets[event['targetId']] = dict(event['target'])
+        elif event.get('vitals') is not None and event.get('targetId') in targets:
+            target = dict(targets[event['targetId']], **event['vitals'])
+            target['health'] = target['hp'] + target['shield']
+            event['target'] = target
+            targets[event['targetId']] = target
+        expanded.append(event)
+    events = expanded
     shots = [e for e in events if e['type'] == 'shot' and e['id'] > baseline_id]
     check('shots expose exact logical time and tower identity', bool(shots) and all(
         isinstance(e.get('atMS'), (float, int)) and e.get('towerId') for e in shots))

@@ -11,7 +11,10 @@ import (
 )
 
 const StepMS = 200
+
+// All summons and split children share this simultaneous-entity budget.
 const MaxEnemies = 64
+const MaxWaveEnemies = 44
 const MaxEvents = 1024
 const maxSnapshotBytes = 2 * 1024 * 1024
 const maxValue = 1e12
@@ -125,15 +128,21 @@ type DamageDelta struct {
 	X      float64 `json:"x"`
 	Y      float64 `json:"y"`
 }
+type DamageGroup struct {
+	Amount  float64 `json:"amount"`
+	Targets []int   `json:"targets"`
+}
+
 type Event struct {
-	IceWallID   int           `json:"iceWallId,omitempty"`
-	IceWall     *ViewIceWall  `json:"iceWall,omitempty"`
-	SlowTargets []int         `json:"slowTargets,omitempty"`
-	SlowUntil   int64         `json:"slowUntil,omitempty"`
-	Damage      []DamageDelta `json:"damage,omitempty"`
-	Skill       string        `json:"skill,omitempty"`
-	CraterID    int           `json:"craterId,omitempty"`
-	Crater      *Crater       `json:"crater,omitempty"`
+	DamageGroups []DamageGroup `json:"damageGroups,omitempty"`
+	IceWallID    int           `json:"iceWallId,omitempty"`
+	IceWall      *ViewIceWall  `json:"iceWall,omitempty"`
+	SlowTargets  []int         `json:"slowTargets,omitempty"`
+	SlowUntil    int64         `json:"slowUntil,omitempty"`
+	Damage       []DamageDelta `json:"damage,omitempty"`
+	Skill        string        `json:"skill,omitempty"`
+	CraterID     int           `json:"craterId,omitempty"`
+	Crater       *Crater       `json:"crater,omitempty"`
 	// AtMS is optional for schema-1/2 saves created before the combat clock.
 	// A pointer preserves the difference between an old event and time zero.
 	AtMS     *int64     `json:"atMS,omitempty"`
@@ -212,8 +221,21 @@ func (s *State) event(e Event) {
 			if prior.AtMS == nil || *prior.AtMS != atMS || prior.Type == "shot" {
 				break
 			}
-			if prior.Type == "hit" && prior.TowerID == e.TowerID && len(prior.Damage) < MaxEnemies-1 {
-				prior.Damage = append(prior.Damage, DamageDelta{ID: e.TargetID, Amount: e.Amount, X: e.X, Y: e.Y})
+			if prior.Type == "hit" && prior.TowerID == e.TowerID {
+				count := len(prior.Damage)
+				for _, group := range prior.DamageGroups {
+					count += len(group.Targets)
+				}
+				if count >= MaxEnemies-1 {
+					break
+				}
+				for j := range prior.DamageGroups {
+					if prior.DamageGroups[j].Amount == e.Amount {
+						prior.DamageGroups[j].Targets = append(prior.DamageGroups[j].Targets, e.TargetID)
+						return
+					}
+				}
+				prior.DamageGroups = append(prior.DamageGroups, DamageGroup{Amount: e.Amount, Targets: []int{e.TargetID}})
 				return
 			}
 		}
@@ -323,6 +345,19 @@ func (s *State) valid() error {
 				return errors.New("范围命中数据无效")
 			}
 			victims[hit.ID] = true
+		}
+		count := len(e.Damage)
+		for _, group := range e.DamageGroups {
+			count += len(group.Targets)
+			if count >= MaxEnemies || len(group.Targets) == 0 || !finite(group.Amount) || group.Amount < 0 {
+				return errors.New("范围命中分组无效")
+			}
+			for _, id := range group.Targets {
+				if id < 1 || id > s.EnemySerial || victims[id] {
+					return errors.New("范围命中分组目标无效")
+				}
+				victims[id] = true
+			}
 		}
 		last = e.ID
 	}

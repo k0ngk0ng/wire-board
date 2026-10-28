@@ -78,7 +78,7 @@ func (s *State) describeWave() {
 			description += "；工兵存活 20 秒会预告下波捷径"
 		}
 	}
-	s.WaveInfo = WaveInfo{Title: fmt.Sprintf("第 %d 波 · %s", s.Wave, title), Description: description, Rule: rule, Total: min(44, 9+s.Wave*2), Boss: boss}
+	s.WaveInfo = WaveInfo{Title: fmt.Sprintf("第 %d 波 · %s", s.Wave, title), Description: description, Rule: rule, Total: min(MaxWaveEnemies, 9+s.Wave*2), Boss: boss}
 }
 func (s *State) prepare(now int64) {
 	s.Phase = "prepare"
