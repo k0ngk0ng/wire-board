@@ -170,6 +170,7 @@ export type GameModule<Data = unknown, Options = unknown> = {
   maxPlayers: number;
   playerCounts?: readonly number[];
   supportsBots?: boolean;
+  mobilePlayNotice?: boolean;
   ownsSounds?: boolean;
   // Continuous controls stay responsive while an earlier request is in flight.
   // The module must coalesce input and validate its own sequence/epoch on server.

@@ -125,7 +125,10 @@ test("common create keeps solo and co-op options without computer invitation", (
   assert.match(html, /<option value="1"[^>]*>1 人<\/option>/);
   assert.match(html, /<option value="2"[^>]*>2 人<\/option>/);
   assert.doesNotMatch(html, /添加电脑玩家体验/);
-  assert.doesNotMatch(html, /电脑|托管/);
+  assert.doesNotMatch(
+    html,
+    /添加电脑|电脑玩家|支持电脑|电脑自动准备|含电脑|托管/,
+  );
   records.push({ name: "create", html });
 });
 
@@ -137,7 +140,10 @@ test("waiting allows ready human solo/co-op starts and offers no add-computer co
     assert.doesNotMatch(start.attributes, /\bdisabled\b/);
     assert.ok(buttons(html).every((b) => !/添加电脑|托管/.test(b.text)));
     assert.doesNotMatch(html, /电脑自动准备/);
-    assert.doesNotMatch(html, /电脑|托管/);
+    assert.doesNotMatch(
+      html,
+      /添加电脑|电脑玩家|支持电脑|电脑自动准备|含电脑|托管/,
+    );
     if (capacity === 1) assert.doesNotMatch(html, /好友到齐/);
     records.push({ name: `waiting-${capacity}`, html });
   }

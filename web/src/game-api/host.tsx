@@ -8,6 +8,7 @@ import type { GameAudioPort, GameClock } from "./module";
 import { PlayerName } from "../profiles";
 import { gameModule, gameName } from "./registry";
 import { cooperativeRatingNotice } from "../ui/cooperative-rating";
+import { GameMobilePlayNotice } from "../ui/game-mobile-play-notice";
 
 export function GameBoard({
   room,
@@ -39,19 +40,22 @@ export function GameBoard({
   if (!module) return <p role="alert">尚未安装此游戏的界面：{room.kind}</p>;
   const Board = module.Board;
   return (
-    <Board
-      {...loadEvents}
-      room={room}
-      data={room.game?.data}
-      act={act}
-      inputWindow={inputWindow}
-      command={command}
-      busy={busy}
-      assets={assets}
-      sound={sound}
-      audio={audio}
-      clock={clock}
-    />
+    <>
+      <Board
+        {...loadEvents}
+        room={room}
+        data={room.game?.data}
+        act={act}
+        inputWindow={inputWindow}
+        command={command}
+        busy={busy}
+        assets={assets}
+        sound={sound}
+        audio={audio}
+        clock={clock}
+      />
+      <GameMobilePlayNotice enabled={module.mobilePlayNotice} />
+    </>
   );
 }
 
@@ -207,6 +211,7 @@ export function ModuleWaiting({
               ? "朋友或电脑，到齐就开局。"
               : "好友到齐，就能开局。"}
         </h2>
+        <GameMobilePlayNotice enabled={module.mobilePlayNotice} />
         {Options && (
           <>
             <Options

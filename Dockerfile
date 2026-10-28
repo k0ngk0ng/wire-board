@@ -32,11 +32,12 @@ ARG TARGETARCH=amd64
 RUN python3 -B games/contra/build/ci_runtime.py --dist web/dist --out .local/contra-ci-runtime \
     && python3 -B scripts/cdn_delivery.py verify --report .local/cdn-delivery/verified.json \
     && python3 -B scripts/cdn_delivery.py trim --report .local/cdn-delivery/verified.json \
-    && python3 -B games/contra/build/native.py --runtime .local/contra-ci-runtime/manifest.json --out .local/contra-container/wire-board --goos "$TARGETOS" --goarch "$TARGETARCH"
+    && python3 -B games/contra/build/native.py --runtime .local/contra-ci-runtime/manifest.json --out .local/contra-container/wire-board --goos "$TARGETOS" --goarch "$TARGETARCH" \
+    && cp .local/contra-container/wire-board /wire-board
 
 FROM alpine:3.23
 RUN apk add --no-cache sqlite && addgroup -g 10001 board && adduser -D -u 10001 -G board board && mkdir /data && chown board:board /data
-COPY --from=backend /src/.local/contra-container/wire-board /usr/local/bin/wire-board
+COPY --from=backend /wire-board /usr/local/bin/wire-board
 ENV DATA_DIR=/data ADDR=:8080
 USER 10001:10001
 EXPOSE 8080
