@@ -1,0 +1,32 @@
+{
+  "scope": "Complete natural animation/shape submission with sound tail",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "complete_calls": 4134,
+  "library_frames": 101,
+  "incomplete_calls": 0,
+  "errors": [],
+  "frames_match_original_core": true,
+  "external_change_calls": 628,
+  "exit_counts": {
+    "0x1edaa": 4081,
+    "0x21970": 53
+  },
+  "external_sound_consumer_calls": 8,
+  "limitations": [
+    "Natural snapshots retain external sound-consumer interleaving; capture equivalence does not mean an atomic animation function predicts those unrelated writes."
+  ],
+  "pass": true,
+  "fixture_sha256": "6efd00c004a7e010a393fc5955da7b34b64080e9a220e095eaee6ede348e8850",
+  "gzip_sha256": "427194c459465a14de58ac537ff6ce7583a0d7c226c7333c05df718fabc97fe7",
+  "capture_sha256": "9ed4d8019c29cdf4272cdc54636047b6325c45b2d5d9b9b16efd74e1eb1c3208",
+  "filter_sha256": "5493124865763ee4069fadcbbf7f71c67b21b8ab89909cef57c60b367570adb9"
+}

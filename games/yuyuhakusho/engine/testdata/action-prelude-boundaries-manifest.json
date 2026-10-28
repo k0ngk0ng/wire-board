@@ -1,0 +1,23 @@
+{
+  "scope": "Explicit isolated original CPU prelude cases",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "e7741c558abb0258c2b0e2afedadb681c6130180b27492cc82b472713509817e",
+  "records": 144,
+  "dispatch": 36,
+  "hit_stop": 108,
+  "fixture_sha256": "177dc82f99e6135a0c5d80927a73050a651383726750a98976dba2248123082c",
+  "gzip_sha256": "9dfa0ce9f69768f1a95791f139d83b8d93536ce9950e5c16ec8b1943159f767e",
+  "frames_match_original_core": true,
+  "incomplete_calls": 0,
+  "errors": [],
+  "pass": true
+}

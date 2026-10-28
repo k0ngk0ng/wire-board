@@ -5,15 +5,19 @@ package engine
 // GroundActionState, including its preparatory directional-byte representation.
 type FighterBodyState struct {
 	GroundActionState
-	X          int32  `json:"x"`
-	Y          int32  `json:"y"`
-	VelocityX  int32  `json:"velocity_x"`
-	Gravity    int32  `json:"gravity"`
-	Ground     int32  `json:"ground"`
-	ExtraJump  uint8  `json:"extra_jump"`
-	Attributes uint16 `json:"attributes"`
-	Depth      uint16 `json:"depth"`
-	Layer      uint8  `json:"layer"`
+	X               int32  `json:"x"`
+	Y               int32  `json:"y"`
+	VelocityX       int32  `json:"velocity_x"`
+	Gravity         int32  `json:"gravity"`
+	Ground          int32  `json:"ground"`
+	ExtraJump       uint8  `json:"extra_jump"`
+	Attributes      uint16 `json:"attributes"`
+	Depth           uint16 `json:"depth"`
+	Layer           uint8  `json:"layer"`
+	Health          int16  `json:"health"`
+	Auxiliary7E     int16  `json:"auxiliary_7e"`
+	Auxiliary80     int16  `json:"auxiliary_80"`
+	TransitionDelay uint8  `json:"transition_delay"`
 }
 
 type JumpParameters struct {

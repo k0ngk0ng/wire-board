@@ -1,0 +1,58 @@
+{
+  "scope": "This phase capture duplicates, Ghidra temporary projects/settings/cache and Go test cache; source, verified fixtures, active worktree/tools retained",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/lane-motion",
+      "bytes": 226704
+    },
+    {
+      "path": ".local/md-yuyuhakusho/ground-idle",
+      "bytes": 157613
+    },
+    {
+      "path": ".local/md-yuyuhakusho/action-prelude",
+      "bytes": 288665
+    },
+    {
+      "path": ".local/md-yuyuhakusho/static",
+      "bytes": 229195
+    },
+    {
+      "path": ".local/md-yuyuhakusho/tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/lane-motion-console.txt",
+      "bytes": 4494
+    },
+    {
+      "path": ".local/md-yuyuhakusho/lane-motion-native-initial.jsonl",
+      "bytes": 4882
+    },
+    {
+      "path": ".local/md-yuyuhakusho/ground-idle-console.txt",
+      "bytes": 1761
+    },
+    {
+      "path": ".local/md-yuyuhakusho/ground-idle-native-initial.jsonl",
+      "bytes": 4038
+    },
+    {
+      "path": ".local/md-yuyuhakusho/action-prelude-console.txt",
+      "bytes": 1819
+    },
+    {
+      "path": ".local/md-yuyuhakusho/action-prelude-native-initial.jsonl",
+      "bytes": 3335
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static-work",
+      "bytes": 0
+    },
+    {
+      "path": ".local/go-cache",
+      "bytes": 183728495
+    }
+  ],
+  "bytes_removed": 184651001
+}

@@ -1,0 +1,23 @@
+{
+  "scope": "Natural complete ordinary/hit-stop prelude",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "e7741c558abb0258c2b0e2afedadb681c6130180b27492cc82b472713509817e",
+  "records": 4134,
+  "dispatch": 3974,
+  "hit_stop": 160,
+  "fixture_sha256": "883603f273d91a1f07a34703b5de87b4513fb26d16ffd0f314bc0c73dbdb77dc",
+  "gzip_sha256": "24750c11e3611e1181fba59cfeb10bd2dfe83d49f8bf764450ff0e80da413e13",
+  "frames_match_original_core": true,
+  "incomplete_calls": 0,
+  "errors": [],
+  "pass": true
+}

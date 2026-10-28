@@ -1,0 +1,21 @@
+{
+  "scope": "Natural complete ground-idle actions before shared tail",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "01d4798e937fa01946b7612fbc4fa7418dda97ec3411db4beb4629975614ba1d",
+  "records": 1313,
+  "fixture_sha256": "6c26a29e736f49f2e058a9431e9002b42519550f8c46115f932c83596e2995c6",
+  "gzip_sha256": "fbe8d8f004d2542045433f19fc56c0d24007222cb57f61e3c5d67c060d3463b7",
+  "frames_match_original_core": true,
+  "incomplete_calls": 0,
+  "errors": [],
+  "pass": true
+}
