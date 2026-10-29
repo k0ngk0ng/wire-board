@@ -298,7 +298,8 @@ jobs:
           cp .local/ci/plan.json dist/package/verification-plan.json
           cp README.md .env.example compose.yaml dist/package/
           cp scripts/update.sh dist/package/update.sh
-          cp -r docs dist/package/
+          mkdir -p dist/package/docs
+          cp docs/deployment.md docs/admin.md docs/THIRD_PARTY.md dist/package/docs/
           tar -C dist/package -czf dist/wire-board-linux-amd64.tar.gz .
           cd dist && sha256sum wire-board-linux-amd64.tar.gz > SHA256SUMS
       - name: Smoke test Linux binary
