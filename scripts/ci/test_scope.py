@@ -21,11 +21,12 @@ spec.loader.exec_module(scope)
 
 class ScopeTests(unittest.TestCase):
     def test_application_composition_checks_remain_shared(self):
-        for path,name in [('contra_startup_test.go','TestContraStartupRejectsUnboundBuildBeforeDatabase'),
+        for path,name in [('internal/production/startup_test.go','TestStartupRejectsUnboundBuildBeforeDatabase'),
                           ('internal/production/modules_test.go','TestContraProductionRegistrationRequiresIdentities')]:
             self.assertEqual(scope.owner(Path(path),name,scope.game_names(ROOT)),set())
         commands=' '.join(' '.join(c) for c in scope.go_commands(ROOT,'shared',race=True))
-        self.assertIn('TestContraStartupRejectsUnboundBuildBeforeDatabase',commands)
+        self.assertIn('TestStartupRejectsUnboundBuildBeforeDatabase',commands)
+        self.assertFalse((ROOT/'contra_startup_test.go').exists())
         self.assertIn('TestContraProductionRegistrationRequiresIdentities',commands)
         self.assertNotIn('TestBotStandardCampaignE2E',commands)
 
@@ -82,7 +83,7 @@ class ScopeTests(unittest.TestCase):
             self.assertFalse(result['has_contra_campaigns'],path)
             self.assertFalse(result['contra_campaign_requested'],path)
         for path in ['games/contra/build/identity.py','games/contra/assets/audio-source.json',
-                     'games/contra/web/Board.tsx','internal/production/modules.go','main.go','contra_startup_test.go']:
+                     'games/contra/web/Board.tsx','internal/production/modules.go','main.go','internal/production/startup_test.go']:
             result=self.plan(path)
             self.assertFalse(result['has_contra_campaigns'],path)
             self.assertFalse(result['contra_campaign_requested'],path)

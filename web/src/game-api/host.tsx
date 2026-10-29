@@ -9,6 +9,7 @@ import { PlayerName } from "../profiles";
 import { gameModule, gameName } from "./registry";
 import { cooperativeRatingNotice } from "../ui/cooperative-rating";
 import { GameMobilePlayNotice } from "../ui/game-mobile-play-notice";
+import { NavigationController } from "../controllers/NavigationController";
 
 export function GameBoard({
   room,
@@ -41,6 +42,17 @@ export function GameBoard({
   const Board = module.Board;
   return (
     <>
+      <NavigationController
+        gameId={room.kind}
+        userId={room.seats[room.you]?.id ?? ""}
+        enabled={
+          !busy &&
+          !room.spectating &&
+          room.you >= 0 &&
+          !room.seats[room.you]?.autoPlay &&
+          !room.seats[room.you]?.left
+        }
+      />
       <Board
         {...loadEvents}
         room={room}

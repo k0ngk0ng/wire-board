@@ -1,6 +1,6 @@
 import { MAX_ROAD_SPEED, ROAD_DRAG } from "./dynamics.ts";
 import type { Car, Point, Track } from "./types";
-import type { Drive } from "./input";
+import { brakeLevel, type Drive } from "./input.ts";
 import { clamp } from "./presentation.ts";
 export function roadDistance(track: Pick<Track, "points">, p: Point) {
   let best = Infinity;
@@ -28,6 +28,7 @@ export function predictCar(
   serverNow: number,
 ): Car {
   const c = { ...car };
+  const braking = brakeLevel(input);
   if (c.finishAt || c.resetUntil > serverNow) return c;
   let remaining = clamp(ms, 0, 250) / 1000;
   while (remaining > 0) {
@@ -45,10 +46,10 @@ export function predictCar(
     forward = c.vx * cos + c.vy * sin;
     let side = -c.vx * sin + c.vy * cos;
     c.offroad = roadDistance(track, c) > track.roadWidth / 2;
-    forward += (input.brake ? 0 : input.throttle) * 245 * dt;
+    forward += (braking > 0 ? 0 : input.throttle) * 245 * dt;
     forward *= Math.exp(-(c.offroad ? 2.5 : ROAD_DRAG) * dt);
     if (input.drift) forward *= Math.exp(-1.2 * dt);
-    if (input.brake) forward *= Math.exp(-6 * dt);
+    if (braking > 0) forward *= Math.exp(-6 * braking * dt);
     const limit = c.offroad ? 110 : MAX_ROAD_SPEED;
     forward = clamp(forward, 0, limit);
     side *= Math.exp(-(c.offroad ? 4 : input.drift ? 1.35 : 9) * dt);
@@ -88,6 +89,7 @@ export function predictCar(
     steer: input.steer,
     throttle: input.throttle,
     brake: input.brake,
+    brakeAmount: braking,
     drift: input.drift,
   };
 }

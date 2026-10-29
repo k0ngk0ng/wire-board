@@ -1,13 +1,19 @@
 import {
   KeyboardController,
+  actionsForKey,
   sampleLogicalControllerButton,
   type ControllerProfile,
 } from "../../../web/src/controllers/input";
 import { contraControllerMask } from "./controller";
 import type { FCControllerSink } from "../../../web/src/controllers/FCController";
+import {
+  PhysicalController,
+  mergeLogicalButtons,
+} from "../../../web/src/controllers/gamepad";
 
 export class RuntimeInput implements FCControllerSink {
   private keyboard: KeyboardController;
+  private gamepad: PhysicalController;
   private pointers = new Map<
     number,
     { buttons: readonly string[]; began: number }
@@ -21,6 +27,7 @@ export class RuntimeInput implements FCControllerSink {
     private release: () => void,
   ) {
     this.keyboard = new KeyboardController(profile);
+    this.gamepad = new PhysicalController(profile);
     window.addEventListener("keydown", this.down);
     window.addEventListener("keyup", this.up);
     window.addEventListener("blur", this.cancel);
@@ -37,7 +44,10 @@ export class RuntimeInput implements FCControllerSink {
       (target instanceof HTMLElement &&
         target !== document.body &&
         !this.root.contains(target) &&
-        !(target.matches("[data-fullscreen-board]") && target.contains(this.root)))
+        !(
+          target.matches("[data-fullscreen-board]") &&
+          target.contains(this.root)
+        ))
     );
   }
   private down = (e: KeyboardEvent) => {
@@ -51,9 +61,7 @@ export class RuntimeInput implements FCControllerSink {
       this.keys.has(e.code)
     )
       return;
-    const buttons = Object.entries(this.profile.keyboard)
-      .filter(([, code]) => code === e.code)
-      .map(([name]) => name);
+    const buttons = actionsForKey(this.profile, e.code);
     if (!buttons.length) return;
     e.preventDefault();
     this.keys.add(e.code);
@@ -79,6 +87,7 @@ export class RuntimeInput implements FCControllerSink {
   };
   cancel = () => {
     this.keyboard.clear();
+    this.gamepad.clear();
     this.keys.clear();
     this.pointers.clear();
     this.pending.clear();
@@ -88,6 +97,7 @@ export class RuntimeInput implements FCControllerSink {
     this.cancel();
     this.profile = profile;
     this.keyboard.configure(profile);
+    this.gamepad.configure(profile);
   }
   setEnabled(enabled: boolean) {
     if (this.enabled && !enabled) this.cancel();
@@ -113,7 +123,10 @@ export class RuntimeInput implements FCControllerSink {
     if (cancelled) this.pending.delete("pointer:" + id);
   }
   sample(now: number) {
-    const buttons = this.keyboard.sample(now);
+    const buttons = mergeLogicalButtons(
+      this.keyboard.sample(now),
+      this.gamepad.sample(now, this.enabled && !document.hidden),
+    );
     for (const source of this.pointers.values())
       for (const name of source.buttons) {
         const button = sampleLogicalControllerButton(
@@ -127,10 +140,13 @@ export class RuntimeInput implements FCControllerSink {
     for (const set of this.pending.values())
       for (const button of set) buttons.add(button);
     this.pending.clear();
-    return this.enabled && !document.hidden ? contraControllerMask(buttons) : 0;
+    return this.enabled && !document.hidden
+      ? contraControllerMask(mergeLogicalButtons(buttons))
+      : 0;
   }
   dispose() {
     this.cancel();
+    this.gamepad.dispose();
     window.removeEventListener("keydown", this.down);
     window.removeEventListener("keyup", this.up);
     window.removeEventListener("blur", this.cancel);

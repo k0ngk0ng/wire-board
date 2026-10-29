@@ -188,6 +188,7 @@ export function Board({
             <div style={controls.canvasStyle}>
               <div
                 className="gomoku-map"
+                data-controller-group="grid"
                 style={controls.mapStyle}
                 role="group"
                 aria-label="十五路五子棋棋盘"
@@ -426,7 +427,11 @@ export function Board({
             确认落子{selected === null ? "" : ` · ${label(selected)}`}
           </button>
           {selected !== null && (
-            <button type="button" onClick={() => setSelected(null)}>
+            <button
+              type="button"
+              data-controller-cancel
+              onClick={() => setSelected(null)}
+            >
               取消选点
             </button>
           )}

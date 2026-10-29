@@ -115,6 +115,7 @@ type StreamViewResult struct {
 }
 
 type Module struct {
+	Controls *ControllerDefinition `json:"-"`
 	// RatingPolicy is trusted registration metadata, frozen by the host when a
 	// new match starts. An empty value preserves existing cooperative behavior.
 	RatingPolicy RatingPolicy                                                         `json:"ratingPolicy,omitempty"`

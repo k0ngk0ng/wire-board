@@ -48,6 +48,8 @@ func TestControllerProfilesE2E(t *testing.T) {
 	if !reflect.DeepEqual(profile["keyboard"], want) {
 		t.Fatalf("defaults: %v", profile)
 	}
+	profile["gamepads"] = map[string]any{"standard:Restart Pad": padConfig(1)}
+	profile["gamepadDevice"] = "standard:Restart Pad"
 	profile["keyboard"].(map[string]any)["right"] = "ArrowRight"
 	saved := a.post("/api/controllers/classic-2", profile, 200)
 	if saved["revision"] != float64(1) {

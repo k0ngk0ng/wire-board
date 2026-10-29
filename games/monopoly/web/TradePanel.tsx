@@ -55,6 +55,7 @@ function BundleEditor({
   );
   return (
     <fieldset
+      data-controller-group={`trade-${side}`}
       data-trade-side={side}
       className="mono-bundle"
       disabled={disabled}
@@ -300,7 +301,7 @@ export function TradePanel({
             void send("trade_offer", { offer: { target, give, want } });
           }}
         >
-          <label>
+          <label data-controller-group="recipient">
             交易对象
             <select
               aria-label="交易对象"
@@ -342,6 +343,7 @@ export function TradePanel({
           </p>
           <button
             className="mono-button primary mono-game-action"
+            data-controller-action="trade-offer"
             type="submit"
             disabled={busy || !data.controls.trade || !meaningful}
           >

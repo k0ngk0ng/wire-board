@@ -184,3 +184,61 @@
     width: calc(100% + 8px);
   }
 }
+.gamepad-settings {
+  min-width: 0;
+}
+.gamepad-connection,
+.gamepad-live {
+  display: block;
+  overflow-wrap: anywhere;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #3f5542;
+  background: #f3f6ee;
+  padding: 8px 10px;
+  border-radius: 7px;
+}
+.gamepad-live {
+  min-height: 38px;
+  margin: 12px 0;
+  font-variant-numeric: tabular-nums;
+}
+.gamepad-bindings {
+  margin: 12px 0 20px;
+}
+.gamepad-binding {
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr) 44px 44px;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 0;
+  border-bottom: 1px solid #d4ddcd;
+}
+.gamepad-binding > span {
+  font-size: 12px;
+  color: #303d2d;
+  overflow-wrap: anywhere;
+}
+.gamepad-binding .controller-key {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.gamepad-binding-action {
+  min-height: 42px;
+  padding: 4px;
+  color: #25462f;
+  background: #edf2e7;
+  border: 1px solid #6c8063;
+  border-radius: 6px;
+  font-size: 12px;
+}
+@media (max-width: 520px) {
+  .gamepad-binding {
+    grid-template-columns: 62px minmax(0, 1fr) 36px 36px;
+    gap: 4px;
+  }
+  .gamepad-binding .controller-key {
+    min-width: 0;
+    font-size: 12px;
+  }
+}

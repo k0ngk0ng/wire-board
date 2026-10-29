@@ -50,6 +50,9 @@ func view(t *testing.T, mod gameapi.Module, m gameapi.Match, seat int) game.View
 func trace(t *testing.T, v any) {
 	t.Helper()
 	dir := filepath.Join("..", "..", "..", ".local", "racing", "module")
+	if base := os.Getenv("WIRE_BOARD_RACING_EVIDENCE"); base != "" {
+		dir = filepath.Join(base, "module")
+	}
 	if e := os.MkdirAll(dir, 0755); e != nil {
 		t.Fatal(e)
 	}
@@ -363,5 +366,62 @@ func TestRacingBotUsesSportsCarSpeed(t *testing.T) {
 		if car.FinishAt == 0 {
 			t.Fatal("computer failed to finish naturally")
 		}
+	}
+}
+
+// Optional pressure must traverse production Apply/View/restore and remain
+// attached to its own queued input; invalid values cannot change the race.
+func TestRacingBrakePressureContract(t *testing.T) {
+	mod, ctx, m := begin(t, 2, 1, "metro")
+	ctx.Actor = 0
+	for _, amount := range []any{-.1, 1.1, "bad"} {
+		if _, err := mod.Apply(ctx, m, raw(map[string]any{"type": "drive", "epoch": view(t, mod, m, 0).Epoch, "seq": 1, "brake": true, "brakeAmount": amount})); err == nil {
+			t.Fatal("invalid brake pressure accepted", amount)
+		}
+	}
+	epoch := view(t, mod, m, 0).Epoch
+	next, err := mod.Apply(ctx, m, raw(map[string]any{"type": "drive", "epoch": epoch, "seq": 1, "brake": true, "brakeAmount": .3}))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var state struct {
+		Cars []struct {
+			BrakeAmount *float64
+			Pending     []struct{ BrakeAmount *float64 }
+		}
+	}
+	if err = json.Unmarshal(next.Data, &state); err != nil {
+		t.Fatal(err)
+	}
+	if state.Cars[0].BrakeAmount == nil || *state.Cars[0].BrakeAmount != .3 || len(state.Cars[0].Pending) != 1 || *state.Cars[0].Pending[0].BrakeAmount != .3 {
+		t.Fatal("pressure lost", state)
+	}
+	if _, err = mod.Apply(ctx, next, raw(map[string]any{"type": "drive", "epoch": epoch, "seq": 2, "brake": false, "brakeAmount": .3})); err == nil {
+		t.Fatal("contradictory brake accepted")
+	}
+	ctx.Now = ctx.Now.Add(100 * time.Millisecond)
+	restored, err := mod.Restore(ctx, next)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err = json.Unmarshal(restored.Data, &state); err != nil {
+		t.Fatal(err)
+	}
+	if state.Cars[0].BrakeAmount == nil || *state.Cars[0].BrakeAmount != .3 {
+		t.Fatal("restore discarded pressure")
+	}
+	reclaimed, err := mod.Reclaim(ctx, restored)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err = json.Unmarshal(reclaimed.Data, &state); err != nil {
+		t.Fatal(err)
+	}
+	// Decode into a fresh value because omitted optional fields must mean legacy full brake.
+	var cleared map[string]any
+	_ = json.Unmarshal(reclaimed.Data, &cleared)
+	car := cleared["cars"].([]any)[0].(map[string]any)
+	if car["brake"] != true || car["brakeAmount"] != nil {
+		t.Fatal("reclaim did not force full brake", car)
 	}
 }

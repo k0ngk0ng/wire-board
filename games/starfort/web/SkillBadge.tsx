@@ -1,4 +1,6 @@
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useId, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import { useGameOverlayRoot } from "../../../web/src/ui/game-overlay-root";
 import type { Passive, TowerKind } from "./types";
 import { skillProgress } from "./skill-progress";
 
@@ -15,9 +17,85 @@ export function SkillBadge({
 }) {
   const root = useRef<HTMLDivElement>(null),
     tipID = useId();
+  const overlayRoot = useGameOverlayRoot(),
+    tip = useRef<HTMLDivElement>(null);
+  const hovered = useRef(false),
+    focused = useRef(false),
+    pinnedRef = useRef(false),
+    closeTimer = useRef<number | undefined>(undefined);
+  const [placement, setPlacement] = useState<{
+    left: number;
+    top: number;
+    width: number;
+    maxHeight: number;
+  }>();
+  const clearClose = () => {
+    if (closeTimer.current !== undefined)
+      window.clearTimeout(closeTimer.current);
+    closeTimer.current = undefined;
+  };
+  const show = () => {
+    clearClose();
+    setOpen(true);
+  };
+  const closeLater = () => {
+    clearClose();
+    closeTimer.current = window.setTimeout(() => {
+      if (!hovered.current && !focused.current && !pinnedRef.current)
+        setOpen(false);
+    }, 100);
+  };
+  const dismiss = () => {
+    clearClose();
+    pinnedRef.current = false;
+    setPinned(false);
+    setOpen(false);
+  };
   const [open, setOpen] = useState(false),
     [pinned, setPinned] = useState(false),
     [elapsed, setElapsed] = useState(0);
+  useEffect(() => () => clearClose(), []);
+  useLayoutEffect(() => {
+    if (!open) {
+      setPlacement(undefined);
+      return;
+    }
+    let frame = 0;
+    const position = () => {
+      const button = root.current?.querySelector("button"),
+        node = tip.current;
+      if (!button || !node) return;
+      const r = button.getBoundingClientRect(),
+        viewport = window.visualViewport;
+      const x = viewport?.offsetLeft ?? 0,
+        y = viewport?.offsetTop ?? 0,
+        w = viewport?.width ?? innerWidth,
+        h = viewport?.height ?? innerHeight;
+      const width = Math.min(280, Math.max(1, w - 16)),
+        maxHeight = Math.max(48, h - 16),
+        height = Math.min(node.getBoundingClientRect().height, maxHeight);
+      const left = Math.round(
+        Math.max(x + 8, Math.min(x + w - width - 8, r.left)),
+      );
+      const preferred =
+        r.top - height - 8 >= y + 8 ? r.top - height - 8 : r.bottom + 8;
+      const top = Math.round(
+        Math.max(y + 8, Math.min(y + h - height - 8, preferred)),
+      );
+      setPlacement((old) =>
+        old &&
+        old.left === left &&
+        old.top === top &&
+        old.width === width &&
+        old.maxHeight === maxHeight
+          ? old
+          : { left, top, width, maxHeight },
+      );
+      frame = requestAnimationFrame(position);
+    };
+    position();
+    return () => cancelAnimationFrame(frame);
+  }, [open, overlayRoot]);
   useEffect(() => {
     setElapsed(0);
     let frame = 0,
@@ -50,22 +128,27 @@ export function SkillBadge({
   useEffect(() => {
     if (!open) return;
     const outside = (e: PointerEvent) => {
-      if (!root.current?.contains(e.target as Node)) {
-        setOpen(false);
-        setPinned(false);
-      }
+      if (
+        !root.current?.contains(e.target as Node) &&
+        !tip.current?.contains(e.target as Node)
+      )
+        dismiss();
     };
     const key = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        setOpen(false);
-        setPinned(false);
+        dismiss();
       }
     };
     document.addEventListener("pointerdown", outside);
     window.addEventListener("keydown", key, true);
+    // Native fullscreen can consume Escape before the page receives keydown.
+    document.addEventListener("fullscreenchange", dismiss);
+    document.addEventListener("webkitfullscreenchange", dismiss);
     return () => {
       document.removeEventListener("pointerdown", outside);
       window.removeEventListener("keydown", key, true);
+      document.removeEventListener("fullscreenchange", dismiss);
+      document.removeEventListener("webkitfullscreenchange", dismiss);
     };
   }, [open]);
   const state = skillProgress(passive, elapsed, phase === "battle");
@@ -84,19 +167,31 @@ export function SkillBadge({
         aria-label={`${passive.name}，${label}，查看技能说明`}
         aria-describedby={open ? tipID : undefined}
         aria-expanded={open}
+        aria-pressed={pinned}
         onPointerEnter={(e) => {
-          if (e.pointerType === "mouse") setOpen(true);
+          if (e.pointerType === "mouse") {
+            hovered.current = true;
+            show();
+          }
         }}
         onPointerLeave={() => {
-          if (!pinned) setOpen(false);
+          hovered.current = false;
+          closeLater();
         }}
-        onFocus={() => setOpen(true)}
+        onFocus={() => {
+          focused.current = true;
+          show();
+        }}
         onBlur={() => {
-          if (!pinned) setOpen(false);
+          focused.current = false;
+          closeLater();
         }}
         onClick={() => {
-          setPinned(!pinned);
-          setOpen(!pinned);
+          const next = !pinnedRef.current;
+          pinnedRef.current = next;
+          setPinned(next);
+          clearClose();
+          setOpen(next);
         }}
       >
         <svg viewBox="0 0 48 48" aria-hidden="true">
@@ -161,20 +256,37 @@ export function SkillBadge({
         <strong>{passive.name}</strong>
         <small data-sf-skill-status>{label}</small>
       </span>
-      {open && (
-        <div
-          id={tipID}
-          role="tooltip"
-          className="sf-skill-tooltip"
-          data-sf-skill-tooltip
-        >
-          <strong>{passive.name}</strong>
-          <p>{passive.description}</p>
-          {passive.cooldownMS > 0 && (
-            <small>冷却 {passive.cooldownMS / 1000} 秒</small>
-          )}
-        </div>
-      )}
+      {open &&
+        createPortal(
+          <div
+            ref={tip}
+            id={tipID}
+            role="tooltip"
+            className="sf-skill-tooltip"
+            data-sf-skill-tooltip
+            style={{
+              ...placement,
+              visibility: placement ? "visible" : "hidden",
+            }}
+            onPointerEnter={(e) => {
+              if (e.pointerType === "mouse") {
+                hovered.current = true;
+                show();
+              }
+            }}
+            onPointerLeave={() => {
+              hovered.current = false;
+              closeLater();
+            }}
+          >
+            <strong>{passive.name}</strong>
+            <p>{passive.description}</p>
+            {passive.cooldownMS > 0 && (
+              <small>冷却 {passive.cooldownMS / 1000} 秒</small>
+            )}
+          </div>,
+          overlayRoot,
+        )}
     </div>
   );
 }

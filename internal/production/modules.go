@@ -15,5 +15,6 @@ func Modules() ([]gameapi.Module, error) {
 	if err != nil {
 		return nil, fmt.Errorf("initialize contra: %w", err)
 	}
+	module.Controls = games.ControllerDefinitionFor(module.ID)
 	return append(games.Modules(), module), nil
 }

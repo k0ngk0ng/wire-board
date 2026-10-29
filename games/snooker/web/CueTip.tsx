@@ -11,6 +11,39 @@ export function CueTip({
   disabled: boolean;
   onChange: (p: { top: number; side: number }) => void;
 }) {
+  const node = useRef<HTMLButtonElement>(null);
+  const current = useRef({ top, side, disabled, onChange });
+  current.current = { top, side, disabled, onChange };
+  useEffect(() => {
+    const button = node.current;
+    const direction = (event: Event) => {
+      const d = (event as CustomEvent).detail?.direction;
+      if (!["navUp", "navDown", "navLeft", "navRight"].includes(d)) return;
+      event.preventDefault();
+      event.stopPropagation();
+      const p = current.current;
+      if (!p.disabled)
+        p.onChange(
+          cueTip(
+            p.side + (d === "navRight" ? 0.05 : d === "navLeft" ? -0.05 : 0),
+            p.top + (d === "navUp" ? 0.05 : d === "navDown" ? -0.05 : 0),
+          ),
+        );
+    };
+    const reset = (event: Event) => {
+      if ((event as CustomEvent).detail?.action !== "reset") return;
+      event.preventDefault();
+      event.stopPropagation();
+      if (!current.current.disabled)
+        current.current.onChange({ top: 0, side: 0 });
+    };
+    button?.addEventListener("controller-direction", direction);
+    button?.addEventListener("controller-action", reset);
+    return () => {
+      button?.removeEventListener("controller-direction", direction);
+      button?.removeEventListener("controller-action", reset);
+    };
+  }, []);
   const pointer = useRef<number | null>(null),
     id = useId();
   useEffect(() => {
@@ -31,11 +64,12 @@ export function CueTip({
     <div className="snooker-tip-control">
       <button
         type="button"
+        ref={node}
         className="snooker-tip-ball"
         disabled={disabled}
         data-top={top}
         data-side={side}
-        aria-label={`白球击点：${label}；方向键调整，Home 恢复中杆`}
+        aria-label={`白球击点：${label}；使用方向控制调整击点`}
         onPointerDown={(e) => {
           if (disabled || e.button !== 0) return;
           pointer.current = e.pointerId;
@@ -54,31 +88,6 @@ export function CueTip({
         }}
         onPointerCancel={() => (pointer.current = null)}
         onLostPointerCapture={() => (pointer.current = null)}
-        onKeyDown={(e) => {
-          const delta = 0.05;
-          let next = { top, side };
-          switch (e.key) {
-            case "ArrowUp":
-              next.top += delta;
-              break;
-            case "ArrowDown":
-              next.top -= delta;
-              break;
-            case "ArrowLeft":
-              next.side -= delta;
-              break;
-            case "ArrowRight":
-              next.side += delta;
-              break;
-            case "Home":
-              next = { top: 0, side: 0 };
-              break;
-            default:
-              return;
-          }
-          e.preventDefault();
-          onChange(cueTip(next.side, next.top));
-        }}
       >
         <svg viewBox="0 0 160 160" aria-hidden="true">
           <defs>
