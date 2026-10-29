@@ -1,0 +1,72 @@
+{
+  "passed": true,
+  "scope": "Isolated real application build excluding concurrent controller implementation changes; actual native keyboard/touch; player-colored Canvas pixel movement under withheld authority and ACK bytes. Local network measurement, not a WAN/device-wide SLA.",
+  "baseCommit": "d884a3b4a59a558ee43daef39b674bc33080cd3f",
+  "sourceFiles": {
+    "games/contra/runtime/bridge.go": "276f5f1220ac49d88930a799966d3471ff2fb27c52d925d499ab440d10ac0bf7",
+    "games/contra/runtime/fork_test.go": "35d302efa3a8f16da3566764cd8de9141145da9ca258d095dfbaa70b1269c1d0",
+    "games/contra/web/runtime-client.ts": "e457846c738572083fcc788b78adcf9816ce12f8ad35ddacce14ab26d1591c8c",
+    "games/contra/web/runtime-client.test.mjs": "bfb67f8ecb19cf93dac6dc24bf8385692595e676adeb96f4052208dfbe94fc21",
+    "games/contra/web/runtime-board.tsx": "c2b76f76451cd5b89bbfe58cd20526e46de7073be1248cb07058c8f3f394ee2f",
+    "games/contra/web/runtime-room.ts": "8ecf1200eb16fdf02dd5305940b0ed0ed5b4617cba25866ac9580ca0755cafcb",
+    "games/contra/web/runtime-prediction.ts": "e2efe3d2dbee9b15b15f7c06c2ca6ff4f639a648d7d96ee928fb14d5c5b35819",
+    "games/contra/web/runtime-prediction.test.mjs": "dd3cad74978be4e980b6c3fee415e4357ad1962f95d506254b1d5ca810ab2be9",
+    "games/contra/web/runtime-presentation.ts": "f839739ab73aa74930be762013e66b77e9e8ff0acd13266f1579185d6dd1424c",
+    "games/contra/web/runtime-presentation.test.mjs": "50e8e82dff0379303e0443cc5a554f7a0a6d2cc7a2088db73c95efca47d1f2a9",
+    "scripts/contra/browser_input.mjs": "dbfea7bd4aec9a19b1de1096575c5ab4c487abb386f4a4b8d236264ba4e206b8",
+    "scripts/contra/platform_accept.py": "0cfac3fdbcd1f5043c338b0f80acb9adbed8f904ffbde5b02e67e98a50e71cb0"
+  },
+  "keyboardPixelsMS": 43.30000019073486,
+  "touchPixelsMS": 28.0,
+  "predictionTiming": {
+    "desktop": {
+      "samples": 283,
+      "medianIntervalMS": 16.699999999999818,
+      "p95IntervalMS": 16.700000000000728
+    },
+    "mobile": {
+      "samples": 96,
+      "medianIntervalMS": 16.69999999999891,
+      "p95IntervalMS": 16.700000000000728
+    }
+  },
+  "slowPeerMaximumFastAckMS": 6.272000260651112,
+  "authoritativeResultsAndAudioOnly": true,
+  "browserCases": [
+    "initial loading barrier",
+    "one/two humans",
+    "PC mouse/keyboard",
+    "320px native touch",
+    "prediction before server response",
+    "slow peer isolation",
+    "life loss",
+    "pause/resume",
+    "fullscreen",
+    "controller remapping",
+    "observer",
+    "hidden/reconnect recovery"
+  ],
+  "checks": {
+    "contraFrontendTests": 83,
+    "runtimeRace": true,
+    "nativeForkIsolationAndReuse": true,
+    "shortPress144Hz": true,
+    "restoreGraphicsGuard": true,
+    "rulesMigration": true
+  },
+  "artifacts": {
+    "final-targeted.log": "aa11edb3e4a124d3b62785e5e64d9164e5aff01470ba79df460826350d43ee0a",
+    "browser-result.json.gz": "bf78355328ecae722326f556c499221e7672ab4975762d88e95255ca817b9361",
+    "mobile-playing-fullscreen.png": "c4a1f81518ecbb65d4ac5bf839bb9f758c16eae1cdd210fc2ad5ce2cd4889103",
+    "wasm-prediction.json": "2f84be62c54b00ca2a5f3277e7d3d14f75d31bba575a6a9ba38b111a909cfeea",
+    "desktop-playing-fullscreen.png": "b9177d1aab9d2609d8f14e71269214bd102fdbe344916020e7e35f7d1ea45fd3",
+    "runtime-race.log": "57bf8b3d5c6814ff110d47e92c499b433ea80c254e3e92b3a40bb2fbf5af998b",
+    "isolated-frontend-final.log": "0eb0c3133630e3aa519a5103fa026cb2cc411e7f208a42355777cbc977268bd8"
+  },
+  "build": {
+    "rulesBuildID": "9abc9b428651fd7fe8d848157a94ef43c4a9475eab0a7716043fdf27e8685618",
+    "runtimeBuildID": "216e298b0702eabe61d016ba31f7329cb294fefd446347258cc93c4627a6bcc9",
+    "visualsID": "24d3c7bfb252cf15523759394c3397e246aa17b331eedf2e0744b75ccb5bee32",
+    "webManifestSHA256": "83bcec5d4699d8b5a305d3b45d76ab4401feb3f9bee8f27deeac82f2ad4985e8"
+  }
+}

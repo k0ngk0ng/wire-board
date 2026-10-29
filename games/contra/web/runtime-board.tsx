@@ -74,6 +74,14 @@ export function RuntimeBoard(props: Props) {
           props.onSnapshot?.(value);
         }
       },
+      onVisual: (value, predicted) => {
+        if (!active) return;
+        root.current!.dataset.visualFrame = value.frame;
+        root.current!.dataset.visualRevision = value.revision;
+        root.current!.dataset.predicted = String(predicted);
+        // Drawing diagnostics are separate from verified public state/digest.
+        root.current!.dataset.visualPlayers = JSON.stringify(value.players);
+      },
       onError: (e) => {
         if (active) {
           setError(e.message);

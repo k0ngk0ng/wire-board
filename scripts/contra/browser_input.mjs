@@ -112,7 +112,9 @@ try {
         `(()=>{if(!window.__contraMedia){window.__contraMedia=[];const play=HTMLMediaElement.prototype.play;HTMLMediaElement.prototype.play=function(...args){const row={at:performance.now(),src:this.currentSrc||this.src,offset:this.currentTime,paused:this.paused};window.__contraMedia.push(row);const promise=play.apply(this,args);promise?.catch(error=>{row.error=error.name});return promise;}}return window.__contraMedia.length})()`,
       )
     : 0;
-  const cursor = options.cursor === "revision" ? "revision" : "frame";
+  const cursor = ["revision", "visualFrame"].includes(options.cursor)
+    ? options.cursor
+    : "frame";
   const snapshot = options.platform
     ? '({...document.querySelector("[data-contra-runtime]").dataset})'
     : "window.contraBrowser.snapshot";
@@ -120,6 +122,26 @@ try {
     ? 'document.querySelector(".contra-board-error")?.textContent'
     : "window.contraBrowser.error";
   const initialSnapshot = await js(snapshot);
+  if (options.measureVisual)
+    await js(`(()=>{
+    const root=document.querySelector('[data-contra-runtime]'),canvas=root.querySelector('canvas'),ctx=canvas.getContext('2d'),actor=${options.actor ?? 0};
+    const initial=JSON.parse(root.dataset.visualPlayers)[actor],pixels=ctx.getImageData(0,0,256,240).data;
+    // Player colors come from verified stage-one NES palette entries 0x12/0x16.
+    // Restrict the scan to the standing player, excluding HUD and water.
+    const color=actor===0?[32,56,239]:[219,40,0];
+    const blue=bytes=>{let total=0,count=0;for(let y=Math.max(24,initial.y-28);y<Math.min(190,initial.y+20);y++)for(let x=Math.max(0,initial.x-24);x<Math.min(256,initial.x+32);x++){const i=(y*256+x)*4;if(bytes[i]===color[0]&&bytes[i+1]===color[1]&&bytes[i+2]===color[2]){total+=x;count++}}return count?{x:total/count,count}:null};
+    const baseline=blue(pixels);
+    const report=window.__contraVisualLatency={initial,baseline,initialAuthority:root.dataset.revision,keyAt:null,firstPaint:null};
+    const pressed=e=>{if(e.isTrusted&&report.keyAt===null)report.keyAt=performance.now()};
+    window.addEventListener('keydown',pressed,true);window.addEventListener('pointerdown',pressed,true);
+    const observe=()=>{const player=JSON.parse(root.dataset.visualPlayers)[actor];
+      if(report.keyAt!==null&&player.x!==initial.x){
+        const next=ctx.getImageData(0,0,256,240).data;let changed=0;for(let i=0;i<next.length;i++)if(next[i]!==pixels[i])changed++;
+        const observed=blue(next);if(changed&&baseline&&observed&&Math.abs(observed.x-baseline.x)>.5){report.firstPaint={at:performance.now(),changedBytes:changed,observed,player,authority:root.dataset.revision,visual:root.dataset.visualRevision,predicted:root.dataset.predicted};window.removeEventListener('keydown',pressed,true);window.removeEventListener('pointerdown',pressed,true);return;}
+      }
+      if(report.keyAt===null||performance.now()-report.keyAt<1000)requestAnimationFrame(observe);else {window.removeEventListener('keydown',pressed,true);window.removeEventListener('pointerdown',pressed,true);}
+    };requestAnimationFrame(observe);return true;
+  })()`);
   const before = Number(initialSnapshot[cursor]);
   const lives = (value) =>
     typeof value.lives === "string"
@@ -213,6 +235,7 @@ try {
   console.log(
     JSON.stringify({
       before,
+      initial: initialSnapshot,
       after,
       options,
       network,
@@ -221,6 +244,9 @@ try {
       gamePackets,
       observedMS: Date.now() - startedAt,
       media,
+      visualLatency: options.measureVisual
+        ? await js("window.__contraVisualLatency")
+        : undefined,
     }),
   );
 } finally {

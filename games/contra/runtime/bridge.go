@@ -59,6 +59,7 @@ type Checkpoint struct {
 type Request struct {
 	Op         string                      `json:"op"`
 	Session    uint64                      `json:"session,omitempty"`
+	Target     uint64                      `json:"target,omitempty"`
 	Epoch      string                      `json:"epoch,omitempty"`
 	Frame      uint64                      `json:"frame,string,omitempty"`
 	Revision   uint64                      `json:"revision,string,omitempty"`
@@ -331,6 +332,34 @@ func (b *Bridge) Call(request Request) (any, error) {
 		return nil, err
 	}
 	switch request.Op {
+	case "fork":
+		// Prediction is a private native copy. Never export/reimport a full
+		// checkpoint through JS or allow a destination to alias authority.
+		if request.Target == request.Session {
+			return nil, errors.New("cannot fork a session onto itself")
+		}
+		if request.Target != 0 {
+			if _, e := b.state(request.Target, request.Epoch); e != nil {
+				return nil, e
+			}
+		} else if len(b.sessions) >= 8 {
+			return nil, errors.New("runtime session limit")
+		}
+		raw, e := json.Marshal(s)
+		if e != nil {
+			return nil, e
+		}
+		var owned contra.Session
+		if e = json.Unmarshal(raw, &owned); e != nil {
+			return nil, e
+		}
+		target := request.Target
+		if target == 0 {
+			b.next++
+			target = b.next
+		}
+		b.sessions[target] = &owned
+		return b.snapshot(target, &owned)
 	case "snapshot":
 		return b.snapshot(request.Session, s)
 	case "checkpoint":

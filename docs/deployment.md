@@ -170,7 +170,7 @@ WantedBy=multi-user.target
 
 ## 发布已经验证的构建产物
 
-完整检查只在 main 提交时运行，版本 tag 不重复执行规则分片、竞态检查或完整对局矩阵。发布约定同时记录在仓库根目录的 [AGENTS.md](../AGENTS.md)。
+完整检查只在 main 提交时运行，版本 tag 不重复执行规则分片、竞态检查或完整对局矩阵。发布约定同时记录在[通用开发规范](../rules/common.md)。
 
 正常流程：将提交推送到 main，等待该提交的 `Test and Linux amd64 binary` 作业成功，再为同一提交推送 `vX.Y.Z` tag。tag 自动触发 `Publish version tag`，Actions 运行名称为 `Release vX.Y.Z`，运行 ref 为版本 tag，查找同一 SHA 的 main 构建及未过期的 `wire-board-linux-amd64` 产物。若 tag 比构建先到，工作流会短暂等待；找不到匹配产物、构建未通过或来源存在已知失败检查时，停止发布，不重跑整套检查，也不改用其他提交。
 

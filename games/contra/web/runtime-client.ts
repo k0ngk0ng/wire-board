@@ -14,8 +14,10 @@ import {
 import { RuntimeInput } from "./runtime-input";
 import { RuntimeRenderer } from "./runtime-renderer";
 import { RuntimePresentationQueue } from "./runtime-presentation";
+import { RuntimePrediction } from "./runtime-prediction";
 
 export interface RuntimeTransport {
+  actor?(): number;
   inputEnabled?(): boolean;
   sequenceBase?(): number;
   release?(sequence: number): Promise<void>;
@@ -54,11 +56,12 @@ type Options = {
   initial: RuntimeSnapshot;
   onProgress: (percent: number, label: string) => void;
   onSnapshot: (value: RuntimeSnapshot) => void;
+  onVisual?: (value: RuntimeSnapshot, predicted: boolean) => void;
   onError: (error: Error) => void;
 };
 
-/** Native server frames are authoritative. Wasm replays their accepted pads and
- * must match the Go-canonical digest before a frame reaches the Canvas/audio.
+/** Native server frames are authoritative. Only verified replay publishes
+ * public state/audio; an independent Wasm fork predicts the player's picture.
  * A formal Board can supply its existing authenticated room transport here.
  */
 export class RuntimeClient {
@@ -73,6 +76,10 @@ export class RuntimeClient {
   private renderer: RuntimeRenderer;
   private audio: ContraAudioAdapter;
   private presentation: RuntimePresentationQueue;
+  private prediction: RuntimePrediction;
+  private predicting = false;
+  private lastAuthorityAt = 0;
+  private lastPads: [number, number] = [0, 0];
   private snapshot: RuntimeSnapshot;
   private localSession = 0;
   private request = 0;
@@ -80,6 +87,7 @@ export class RuntimeClient {
   private ready = false;
   private polling = false;
   private resync = false;
+  private restoring = false;
   private frameRequest = 0;
   private lastPoll = 0;
   private lastInput = 0;
@@ -91,6 +99,7 @@ export class RuntimeClient {
   constructor(private options: Options) {
     this.snapshot = options.initial;
     this.renderer = new RuntimeRenderer(options.canvas);
+    this.prediction = new RuntimePrediction(options.bridge);
     this.audio = new ContraAudioAdapter(
       options.audio,
       options.audioResources,
@@ -98,18 +107,42 @@ export class RuntimeClient {
     );
     this.presentation = new RuntimePresentationQueue((snapshot, resync) => {
       if (this.closed || document.hidden) return;
-      this.renderer.draw(snapshot.presentation);
+      if (!this.predicting) this.draw(snapshot, false);
       this.audio.update(snapshot.audio, {
         resync,
         finalized: snapshot.finalized,
       });
       this.options.onSnapshot(snapshot);
     });
-    this.input = new RuntimeInput(options.profile, options.root, () =>
-      this.send(0, true),
-    );
+    this.input = new RuntimeInput(options.profile, options.root, () => {
+      this.prediction.cancel();
+      this.send(0, true);
+    });
     this.input.setEnabled(false);
     document.addEventListener("visibilitychange", this.visibility);
+  }
+  private draw(snapshot: RuntimeSnapshot, predicted: boolean) {
+    this.renderer.draw(snapshot.presentation);
+    this.options.onVisual?.(snapshot, predicted);
+  }
+  private direct() {
+    return (
+      (this.options.transport.actor?.() ?? -1) >= 0 &&
+      this.options.transport.inputEnabled?.() !== false &&
+      this.snapshot.phase === "playing" &&
+      !this.snapshot.paused &&
+      !this.snapshot.finalized &&
+      !this.resync &&
+      !this.restoring
+    );
+  }
+  private confirmPrediction(now: number) {
+    this.lastAuthorityAt = now;
+    this.prediction.confirm(
+      { ...this.snapshot, session: this.localSession },
+      this.lastPads,
+      now,
+    );
   }
   async initialize() {
     await this.prepareStage(this.options.initial.level);
@@ -171,6 +204,17 @@ export class RuntimeClient {
     await this.loadGraphics(manifest);
   }
   private async restore() {
+    this.restoring = true;
+    this.input.setEnabled(false);
+    try {
+      await this.restoreCheckpoint();
+    } finally {
+      this.restoring = false;
+    }
+  }
+  private async restoreCheckpoint() {
+    this.prediction.cancel();
+    this.predicting = false;
     const checkpoint = await this.options.transport.checkpoint();
     if (this.closed) return;
     if (checkpoint.epoch !== this.options.initial.epoch)
@@ -201,6 +245,8 @@ export class RuntimeClient {
     });
     this.localSession = local.session;
     this.snapshot = { ...local, session: this.options.initial.session };
+    this.lastPads = [0, 0];
+    this.confirmPrediction(performance.now());
     await this.preparePresentation(local.presentation);
     if (!this.closed) this.presentation.reset(this.snapshot, performance.now());
   }
@@ -229,24 +275,40 @@ export class RuntimeClient {
     this.evidence.inputs.push({ sequence, mask });
     if (this.evidence.inputs.length > 4096) this.evidence.inputs.shift();
     this.inputChain = this.inputChain
-      .then(() =>
-        force && this.options.transport.release
+      .then(() => {
+        if (!force && (this.closed || performance.now() - now > 250)) return;
+        return force && this.options.transport.release
           ? this.options.transport.release(sequence)
-          : this.options.transport.input(mask, sequence),
-      )
+          : this.options.transport.input(mask, sequence);
+      })
       .catch((e) => this.fail(e));
   }
   private tick = (now: number) => {
     if (this.closed) return;
     this.frameRequest = requestAnimationFrame(this.tick);
-    if (!this.ready || document.hidden) return;
+    if (!this.ready || document.hidden || this.restoring) return;
     try {
-      if (!this.resync) this.presentation.sample(now);
+      const actor = this.options.transport.actor?.() ?? -1;
       const enabled =
         !this.snapshot.finalized &&
-        this.options.transport.inputEnabled?.() !== false;
+        this.options.transport.inputEnabled?.() !== false &&
+        !(actor >= 0 && now - this.lastAuthorityAt > 250);
       this.input.setEnabled(enabled);
-      if (enabled) this.send(this.input.sample(now));
+      const mask = enabled ? this.input.sample(now) : 0;
+      if (enabled) this.send(mask);
+      this.predicting = enabled && this.direct();
+      if (this.predicting) {
+        const predicted = this.prediction.sample(now, actor, mask);
+        const drawable =
+          predicted &&
+          !predicted.presentation.Patterns?.some(
+            (page) => !this.loadedPages.has(String(page)),
+          );
+        this.draw(drawable ? predicted : this.snapshot, !!drawable);
+      } else {
+        this.prediction.cancel();
+        if (!this.resync) this.presentation.sample(now);
+      }
     } catch (error) {
       this.fail(error);
       return;
@@ -317,14 +379,24 @@ export class RuntimeClient {
       if (this.evidence.frames.length > 4096) this.evidence.frames.shift();
       await this.preparePresentation(local.presentation);
       if (this.closed) return;
-      this.presentation.push(this.snapshot);
+      if (accepted.pads) this.lastPads = accepted.pads;
+      if (this.direct()) {
+        this.predicting = true;
+        this.presentation.presentNow(this.snapshot, performance.now());
+      } else if (this.predicting) {
+        this.predicting = false;
+        this.prediction.cancel();
+        this.presentation.presentNow(this.snapshot, performance.now());
+      } else this.presentation.push(this.snapshot);
     }
+    if (response.frames.length) this.confirmPrediction(performance.now());
   }
 
   private fail(reason: unknown) {
     if (this.closed) return;
     this.send(0, true);
     this.ready = false;
+    this.prediction.cancel();
     this.presentation.clear();
     this.input.setEnabled(false);
     this.audio.stop();
@@ -345,6 +417,7 @@ export class RuntimeClient {
     cancelAnimationFrame(this.frameRequest);
     this.input.dispose();
     this.audio.dispose();
+    this.prediction.dispose();
     this.options.audio.stop();
     void this.inputChain.finally(() => this.options.transport.dispose?.());
     document.removeEventListener("visibilitychange", this.visibility);
@@ -380,6 +453,7 @@ export function developmentTransport(
     return value as T;
   };
   return {
+    actor: () => 0,
     checkpoint: () => call("checkpoint"),
     ready: () => call("ready"),
     input: async (held, sequence) => {

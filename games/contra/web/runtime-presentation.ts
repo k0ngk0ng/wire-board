@@ -28,6 +28,12 @@ export class RuntimePresentationQueue {
     this.paintedAt = now;
     this.show(snapshot, true);
   }
+  presentNow(snapshot: RuntimeSnapshot, now: number) {
+    this.clear();
+    this.sampledAt = now;
+    this.paintedAt = now;
+    this.show(snapshot, false);
+  }
   push(snapshot: RuntimeSnapshot) {
     this.queue.push(snapshot);
     if (this.queue.length > 12) {
