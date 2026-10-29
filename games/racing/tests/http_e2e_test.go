@@ -87,6 +87,9 @@ func httpRaceEvidence(t *testing.T, h *gametest.HTTP) func(string) {
 			dir = parent
 		}
 		dir = filepath.Join(dir, ".local", "racing", "http")
+		if base := os.Getenv("WIRE_BOARD_RACING_EVIDENCE"); base != "" {
+			dir = filepath.Join(base, "http")
+		}
 		if err = os.MkdirAll(dir, 0755); err != nil {
 			t.Error(err)
 			return

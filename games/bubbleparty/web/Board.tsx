@@ -1,3 +1,5 @@
+import { useGameController } from "../../../web/src/controllers/use-game-controller";
+import { lastDirection } from "../../../web/src/controllers/game-controller";
 import {
   useCallback,
   useEffect,
@@ -6,14 +8,7 @@ import {
   type PointerEvent as ReactPointerEvent,
 } from "react";
 import type { BoardProps } from "../../../web/src/game-api/module";
-import {
-  LatestInput,
-  HeldDirections,
-  NEUTRAL,
-  isBombKey,
-  keyMove,
-  type Move,
-} from "./input";
+import { LatestInput, NEUTRAL, type Move } from "./input";
 import { DRAW_HEIGHT, DRAW_WIDTH, drawBoard, type DrawPoint } from "./canvas";
 import { PlayerMotion } from "./prediction";
 import { joystickIntent, TouchStick } from "./joystick";
@@ -114,7 +109,9 @@ export function Board(props: BoardProps<View>) {
   latest.current = props;
   const currentMove = useRef<Move>("none");
   const currentFacing = useRef(me?.dir ?? "down");
-  const heldKeys = useRef(new HeldDirections());
+  const touchMove = useRef<Move>("none");
+  const bombHeld = useRef(false);
+  const pumpControls = useRef<() => void>(() => {});
   const padPointer = useRef<number | null>(null);
   const display = useRef(new Map<number, DrawPoint>());
   const canvas = useRef<HTMLCanvasElement>(null);
@@ -139,6 +136,35 @@ export function Board(props: BoardProps<View>) {
         .join(",")
     : "";
   const boardElement = useRef<HTMLElement>(null);
+  const controller = useGameController({
+    gameId: "bubbleparty",
+    userId: room.seats[room.you]?.id ?? "",
+    scope,
+    root: boardElement,
+    enabled: () => enabled,
+    menu: () => {
+      if (room.spectating || controlled) return null;
+      return (
+        boardElement.current?.querySelector<HTMLElement>(
+          ".bubble-character-modal,.bubble-avatar-modal",
+        ) ??
+        (view.phase === "select"
+          ? (boardElement.current?.querySelector<HTMLElement>(
+              ".bubble-character-selection",
+            ) ?? null)
+          : null)
+      );
+    },
+    menuActions: {
+      up: "navUp",
+      down: "navDown",
+      left: "navLeft",
+      right: "navRight",
+      bomb: "confirm",
+    },
+    changed: () => pumpControls.current(),
+    error: setError,
+  });
   const avatarWasOpen = useRef(false);
   const anyPickerOpen = avatarOpen || characterOpen;
   useEffect(() => {
@@ -218,7 +244,9 @@ export function Board(props: BoardProps<View>) {
     currentFacing.current = me?.dir ?? "down";
     if (!enabled) {
       currentMove.current = "none";
-      heldKeys.current.clear();
+      controller.current?.clear();
+      touchMove.current = "none";
+      bombHeld.current = false;
       padPointer.current = null;
       touchStick.current.reset();
       setStickOrigin(null);
@@ -287,12 +315,10 @@ export function Board(props: BoardProps<View>) {
   const setMove = useCallback(
     (move: Move) => {
       if (!enabled) return;
-      currentMove.current = move;
-      if (move !== "none") currentFacing.current = move;
-      input.current.set({ move, bomb: false });
-      sendOne(true);
+      touchMove.current = move;
+      pumpControls.current();
     },
-    [enabled, sendOne],
+    [enabled],
   );
 
   const placeBomb = useCallback(() => {
@@ -302,40 +328,35 @@ export function Board(props: BoardProps<View>) {
     input.current.set({ move: currentMove.current, bomb: false });
   }, [enabled, sendOne]);
 
+  pumpControls.current = () => {
+    const actions =
+      controller.current?.sample(performance.now()) ?? new Set<string>();
+    const playable =
+      enabled &&
+      !document.hidden &&
+      !document.querySelector('[aria-modal="true"],dialog[open]');
+    if (!playable) touchMove.current = "none";
+    const move = playable
+      ? touchMove.current !== "none"
+        ? touchMove.current
+        : lastDirection(actions)
+      : "none";
+    if (move !== currentMove.current) {
+      currentMove.current = move;
+      if (move !== "none") currentFacing.current = move;
+      input.current.set({ move, bomb: false });
+      sendOne(true);
+    }
+    const bomb = playable && actions.has("bomb");
+    if (bomb && !bombHeld.current) placeBomb();
+    bombHeld.current = bomb;
+  };
+
   useEffect(() => {
-    const down = (event: KeyboardEvent) => {
-      if (
-        !enabled ||
-        (event.target instanceof HTMLElement &&
-          event.target.closest(
-            "input,textarea,select,[contenteditable=true],[role=dialog]",
-          ))
-      )
-        return;
-      const move = keyMove(event.key);
-      if (move) {
-        event.preventDefault();
-        setMove(heldKeys.current.press(event.key));
-        return;
-      }
-      if (isBombKey(event.key)) {
-        if (
-          event.target instanceof HTMLElement &&
-          event.target.closest("button,a") &&
-          !event.target.closest(".bubble-controls")
-        )
-          return;
-        event.preventDefault();
-        if (!event.repeat) placeBomb();
-      }
-    };
-    const up = (event: KeyboardEvent) => {
-      const move = keyMove(event.key);
-      if (!move) return;
-      setMove(heldKeys.current.release(event.key));
-    };
     const release = () => {
-      heldKeys.current.clear();
+      controller.current?.clear();
+      touchMove.current = "none";
+      bombHeld.current = false;
       padPointer.current = null;
       touchStick.current.reset();
       setStickOrigin(null);
@@ -345,20 +366,15 @@ export function Board(props: BoardProps<View>) {
       input.current.set({ ...NEUTRAL });
       sendOne(true);
     };
-    window.addEventListener("keydown", down);
-    window.addEventListener("keyup", up);
     window.addEventListener("blur", release);
     window.addEventListener("resize", release);
     document.addEventListener("visibilitychange", release);
     return () => {
-      heldKeys.current.clear();
-      window.removeEventListener("keydown", down);
-      window.removeEventListener("keyup", up);
       window.removeEventListener("blur", release);
       window.removeEventListener("resize", release);
       document.removeEventListener("visibilitychange", release);
     };
-  }, [enabled, setMove, placeBomb, sendOne]);
+  }, [sendOne]);
 
   useEffect(() => {
     let raf = 0;
@@ -367,6 +383,7 @@ export function Board(props: BoardProps<View>) {
     ).matches;
     let lastFrame = performance.now();
     const frame = () => {
+      pumpControls.current();
       const frameNow = performance.now();
       const blend = 1 - Math.exp(-Math.min(100, frameNow - lastFrame) / 35);
       lastFrame = frameNow;
@@ -469,7 +486,9 @@ export function Board(props: BoardProps<View>) {
         view.players.map((p) => [p.seat, { x: p.px ?? p.x, y: p.py ?? p.y }]),
       );
       currentMove.current = "none";
-      heldKeys.current.clear();
+      controller.current?.clear();
+      touchMove.current = "none";
+      bombHeld.current = false;
       currentFacing.current = me?.dir ?? "down";
       padPointer.current = null;
       touchStick.current.reset();
@@ -575,7 +594,9 @@ export function Board(props: BoardProps<View>) {
 
   const openAvatars = () => {
     currentMove.current = "none";
-    heldKeys.current.clear();
+    controller.current?.clear();
+    touchMove.current = "none";
+    bombHeld.current = false;
     padPointer.current = null;
     touchStick.current.reset();
     setStickOrigin(null);
@@ -879,14 +900,13 @@ export function Board(props: BoardProps<View>) {
             }}
           >
             放水泡
-            <small className="bubble-keyboard-hint">空格 / J</small>
           </button>
         </div>
       )}
       <p className="bubble-hint">
         {view.spectator
           ? "观战只读；你可以发表情和聊天。"
-          : "WASD／方向键移动，空格或 J 放水泡。触碰敌方困泡可击破、队友可救援；冲进未消退的水柱也会被困。"}
+          : "触碰敌方困泡可击破、队友可救援；冲进未消退的水柱也会被困。"}
       </p>
       {error && (
         <div className="bubble-error" role="alert">

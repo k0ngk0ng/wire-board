@@ -467,11 +467,13 @@ function App() {
   };
   const act: Act = async (action) => {
     if (!state?.room || presented.blocked) return;
-    if (blocksAutoplayAction(
-      state.room.seats[state.room.you]?.autoPlay,
-      gameModule(state.room.kind),
-      action,
-    )) {
+    if (
+      blocksAutoplayAction(
+        state.room.seats[state.room.you]?.autoPlay,
+        gameModule(state.room.kind),
+        action,
+      )
+    ) {
       setNotice("当前由电脑托管，取消托管后即可继续操作。");
       return;
     }
@@ -743,13 +745,6 @@ function App() {
                     onPreview={previewAudio}
                   />
                   <button
-                    className="avatar"
-                    aria-label="我的战绩与好友"
-                    onClick={() => setProfileID(state.user.id)}
-                  >
-                    {state.user.name[0]}
-                  </button>
-                  <button
                     className="icon-button"
                     aria-label="控制器设置"
                     title="控制器设置"
@@ -757,9 +752,17 @@ function App() {
                   >
                     <Gamepad2 size={19} />
                   </button>
-                  <span className="username">
-                    <PlayerName user={state.user} />
-                  </span>
+                  <button
+                    className="profile-nav"
+                    aria-label="我的战绩与好友"
+                    title={`查看 ${state.user.name} 的玩家页面`}
+                    onClick={() => setProfileID(state.user.id)}
+                  >
+                    <span className="avatar" aria-hidden="true">
+                      {state.user.name[0]}
+                    </span>
+                    <span className="username">{state.user.name}</span>
+                  </button>
                 </div>
               </header>
             </CompactRoomPanel>
@@ -767,6 +770,8 @@ function App() {
               <ControllerSettings
                 key={state.user.id}
                 userId={state.user.id}
+                gameId={room?.kind}
+                availableGames={state.availableGames}
                 onClose={() => setControllerSettingsOpen(false)}
               />
             )}
@@ -845,19 +850,6 @@ function App() {
                     name="tools"
                   >
                     <div className="room-tools">
-                      {canAutoPlay && (
-                        <button
-                          className={`subtle autoplay-control ${autoPlay ? "active" : ""}`}
-                          aria-pressed={autoPlay}
-                          disabled={busy}
-                          onClick={() =>
-                            roomCommand("autoplay", { enabled: !autoPlay })
-                          }
-                        >
-                          {autoPlay ? <Hand size={16} /> : <Bot size={16} />}
-                          {autoPlay ? "取消托管" : "开启托管"}
-                        </button>
-                      )}
                       {room.game &&
                         (room.status === "playing" ||
                           room.status === "finished") && (
@@ -873,18 +865,17 @@ function App() {
                             全屏
                           </button>
                         )}
-                      {room.spectating && (
+                      {canAutoPlay && (
                         <button
-                          className="subtle"
+                          className={`subtle autoplay-control ${autoPlay ? "active" : ""}`}
+                          aria-pressed={autoPlay}
                           disabled={busy}
                           onClick={() =>
-                            void run(() =>
-                              api(`/rooms/${room.id}/watch`, { leave: true }),
-                            )
+                            roomCommand("autoplay", { enabled: !autoPlay })
                           }
                         >
-                          <ArrowLeft size={16} />
-                          离开观战
+                          {autoPlay ? <Hand size={16} /> : <Bot size={16} />}
+                          {autoPlay ? "取消托管" : "开启托管"}
                         </button>
                       )}
                       {room.game && (
@@ -917,18 +908,6 @@ function App() {
                         <Copy size={16} />
                         邀请朋友
                       </button>
-                      {!room.spectating &&
-                        (room.status !== "playing" ||
-                          room.game?.eliminated?.includes(room.you)) && (
-                          <button
-                            className="subtle"
-                            disabled={busy}
-                            onClick={() => roomCommand("leave")}
-                          >
-                            <ArrowLeft size={16} />
-                            离开房间
-                          </button>
-                        )}
                       {room.status === "playing" &&
                         !room.spectating &&
                         room.host === state.user.id && (
@@ -939,6 +918,32 @@ function App() {
                             onClick={() => setCloseTableRoom(room.id)}
                           >
                             结束牌桌
+                          </button>
+                        )}
+                      {room.spectating && (
+                        <button
+                          className="subtle"
+                          disabled={busy}
+                          onClick={() =>
+                            void run(() =>
+                              api(`/rooms/${room.id}/watch`, { leave: true }),
+                            )
+                          }
+                        >
+                          <ArrowLeft size={16} />
+                          离开观战
+                        </button>
+                      )}
+                      {!room.spectating &&
+                        (room.status !== "playing" ||
+                          room.game?.eliminated?.includes(room.you)) && (
+                          <button
+                            className="subtle"
+                            disabled={busy}
+                            onClick={() => roomCommand("leave")}
+                          >
+                            <ArrowLeft size={16} />
+                            离开房间
                           </button>
                         )}
                     </div>

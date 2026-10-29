@@ -1,6 +1,7 @@
 package production
 
 import (
+	"reflect"
 	"strings"
 	"testing"
 
@@ -34,6 +35,9 @@ func TestContraProductionRegistrationWithLinkedBuild(t *testing.T) {
 			t.Fatalf("duplicate module %s", module.ID)
 		}
 		seen[module.ID] = true
+		if module.ID == "contra" && !reflect.DeepEqual(module.Controls, games.ControllerDefinitionFor("contra")) {
+			t.Fatal("production Contra lost its controller definition")
+		}
 		if module.ID == "contra" && (module.BotAction != nil || module.Reclaim != nil || module.BotSearch != nil) {
 			t.Fatal("Contra human-only release exposes computer/autoplay capabilities")
 		}

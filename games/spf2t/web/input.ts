@@ -54,6 +54,15 @@ export class InputQueue {
   clearPending() {
     this.pendingEvents = [];
   }
+
+  unconfirmed(acknowledged = 0): InputEvent[] {
+    return [
+      ...this.sentBatches
+        .filter((batch) => batch.seq > acknowledged)
+        .flatMap((batch) => batch.events),
+      ...this.pendingEvents,
+    ];
+  }
 }
 
 export function repeatTimes(

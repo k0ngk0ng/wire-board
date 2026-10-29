@@ -1,6 +1,6 @@
 # 升级开发规范
 
-本游戏同时遵循[通用规范](common.md)、[扑克牌游戏开发规范](poker.md)。界面、加载、音效等改动按 [AGENTS.md](../AGENTS.md) 的专题索引读取对应规范。
+本游戏同时遵循[通用规范](common.md)、[扑克牌游戏开发规范](poker.md)、[控制器开发规范](controller.md)。界面、加载、音效等改动按 [AGENTS.md](../AGENTS.md) 的专题索引读取对应规范。
 
 ## 席位与阵营
 

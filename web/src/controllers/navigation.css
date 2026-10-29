@@ -1,0 +1,5 @@
+[data-game-fullscreen-surface] [data-controller-focus]:focus {
+  outline: 3px solid #075b50;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 5px #fff;
+}

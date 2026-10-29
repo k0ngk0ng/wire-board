@@ -93,6 +93,7 @@ export function SplendorPurchase({
         <button
           className="icon-button"
           aria-label="关闭卡牌详情"
+          data-controller-cancel
           onClick={onClose}
         >
           <X size={18} />

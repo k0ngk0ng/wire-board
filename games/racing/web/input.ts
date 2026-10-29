@@ -2,6 +2,7 @@ export type Drive = {
   steer: number;
   throttle: number;
   brake: boolean;
+  brakeAmount?: number;
   drift: boolean;
 };
 export const neutral: Drive = {
@@ -12,10 +13,14 @@ export const neutral: Drive = {
 };
 const clamp = (x: number, lo: number, hi: number) =>
   Math.max(lo, Math.min(hi, Number.isFinite(x) ? x : 0));
+export function brakeLevel(input: Pick<Drive, "brake" | "brakeAmount">) {
+  return input.brake ? clamp(input.brakeAmount ?? 1, 0, 1) : 0;
+}
 const same = (a: Drive, b: Drive) =>
   a.steer === b.steer &&
   a.throttle === b.throttle &&
   a.brake === b.brake &&
+  brakeLevel(a) === brakeLevel(b) &&
   a.drift === b.drift;
 export function wheelSteer(x: number, left: number, width: number) {
   const raw = clamp((x - left - width / 2) / Math.max(1, width * 0.42), -1, 1);
@@ -69,7 +74,8 @@ export class LatestDrive {
     this.value = {
       steer: clamp(v.steer, -1, 1),
       throttle: clamp(v.throttle, 0, 1),
-      brake: !!v.brake,
+      brake: !!v.brake && brakeLevel(v) > 0,
+      brakeAmount: brakeLevel(v),
       drift: !!v.drift,
     };
   }

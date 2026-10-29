@@ -885,6 +885,27 @@ export function Battlefield({
         viewport.current,
       ),
     );
+  useEffect(() => {
+    const node = container.current;
+    const reveal = (event: globalThis.Event) => {
+      const target = event.target;
+      if (
+        !(target instanceof HTMLElement) ||
+        !target.hasAttribute("data-sf-pad")
+      )
+        return;
+      const pad = state.current.data.map.pads.find(
+        (p) => p.id === Number(target.dataset.sfPad),
+      );
+      if (!pad) return;
+      event.preventDefault();
+      // Center in the clear part of the battlefield, below the fixed HUD.
+      focus(pad);
+      node?.scrollIntoView({ block: "nearest", inline: "nearest" });
+    };
+    node?.addEventListener("controller-reveal", reveal);
+    return () => node?.removeEventListener("controller-reveal", reveal);
+  }, []);
   const navigateMinimap = (event: ReactPointerEvent<SVGSVGElement>) => {
     const svg = event.currentTarget,
       point = svg.createSVGPoint();
@@ -1071,12 +1092,10 @@ export function Battlefield({
           : [];
     } else {
       const impactTargets = blastImpactTargets(batch);
-      const scheduled = timeline.current
-        .push(data, batch, at)
-        .map((event) => ({
-          ...event,
-          impactTargetId: impactTargets.get(event.id),
-        }));
+      const scheduled = timeline.current.push(data, batch, at).map((event) => ({
+        ...event,
+        impactTargetId: impactTargets.get(event.id),
+      }));
       effects.current.push(...scheduled);
       soundEvents.current.push(...scheduled);
     }
@@ -1959,7 +1978,12 @@ export function Battlefield({
   return (
     <section className="sf-world-camera" aria-label="战场与地图导航">
       <div className="sf-map-tools">
-        <div className="sf-camera-toolbar" role="group" aria-label="地图视角">
+        <div
+          className="sf-camera-toolbar"
+          data-controller-group="camera"
+          role="group"
+          aria-label="地图视角"
+        >
           <button
             className="sf-secondary"
             data-sf-zoom-out
@@ -2154,66 +2178,57 @@ export function Battlefield({
           role="img"
           aria-label={`星垒战场，第 ${data.wave} 波，${data.enemies.length} 名敌人，${data.towers.length} 座防御塔。拖动或双指缩放查看地图，空地可建造，点击塔身可升级，所有按钮均可用键盘选择。`}
         />
-        {data.map.pads.map((pad) => {
-          const tower = data.towers.find((t) => t.pad === pad.id);
-          const point = worldToScreen(pad, view.camera, view.viewport);
-          const dimensions = towerDimensions(view.camera.zoom);
-          const width = dimensions.width * view.camera.zoom;
-          const height = dimensions.height * view.camera.zoom;
-          const bottom = point.y + 14 * view.camera.zoom;
-          const visible =
-            !overview &&
-            (tower
-              ? point.x + width / 2 > 0 &&
-                point.x - width / 2 < view.viewport.width &&
-                bottom > 0 &&
-                bottom - height < view.viewport.height
-              : point.x >= 16 &&
-                point.x <= view.viewport.width - 16 &&
-                point.y >= 16 &&
-                point.y <= view.viewport.height - 16);
-          return (
-            <button
-              key={pad.id}
-              data-sf-pad={pad.id}
-              data-pad={pad.id}
-              hidden={!visible}
-              className={`sf-pad ${tower ? "sf-pad-occupied" : ""} ${selected === pad.id ? "sf-pad-selected" : ""}`}
-              style={{
-                left: point.x,
-                zIndex: tower
-                  ? 1 +
-                    [...data.map.pads]
-                      .sort((a, b) => a.y - b.y)
-                      .findIndex((p) => p.id === pad.id)
-                  : 0,
-                top: tower ? bottom : point.y,
-                ...(tower ? { width, height } : {}),
-              }}
-              aria-label={`建造点 ${pad.id + 1}${pad.terrain === "highground" ? "，高台" : ""}${tower ? `，${towerNames[tower.kind]} ${tower.level} 级，玩家 ${tower.owner + 1}` : "，空地"}`}
-              aria-pressed={selected === pad.id}
-              onPointerEnter={(event) => {
-                if (event.pointerType === "mouse" && tower)
-                  hoverRef.current = pad.id;
-              }}
-              onPointerLeave={() => {
-                hoverRef.current = null;
-              }}
-              onFocus={() => {
-                if (tower) hoverRef.current = pad.id;
-              }}
-              onBlur={() => {
-                hoverRef.current = null;
-              }}
-              onClick={() => {
-                closeInspection();
-                select(pad.id);
-              }}
-            >
-              {!tower && <span>{pad.id + 1}</span>}
-            </button>
-          );
-        })}
+        <div data-controller-group="board" style={{ display: "contents" }}>
+          {data.map.pads.map((pad) => {
+            const tower = data.towers.find((t) => t.pad === pad.id);
+            const point = worldToScreen(pad, view.camera, view.viewport);
+            const dimensions = towerDimensions(view.camera.zoom);
+            const width = dimensions.width * view.camera.zoom;
+            const height = dimensions.height * view.camera.zoom;
+            const bottom = point.y + 14 * view.camera.zoom;
+            return (
+              <button
+                key={pad.id}
+                data-sf-pad={pad.id}
+                data-pad={pad.id}
+                hidden={overview}
+                className={`sf-pad ${tower ? "sf-pad-occupied" : ""} ${selected === pad.id ? "sf-pad-selected" : ""}`}
+                style={{
+                  left: point.x,
+                  zIndex: tower
+                    ? 1 +
+                      [...data.map.pads]
+                        .sort((a, b) => a.y - b.y)
+                        .findIndex((p) => p.id === pad.id)
+                    : 0,
+                  top: tower ? bottom : point.y,
+                  ...(tower ? { width, height } : {}),
+                }}
+                aria-label={`建造点 ${pad.id + 1}${pad.terrain === "highground" ? "，高台" : ""}${tower ? `，${towerNames[tower.kind]} ${tower.level} 级，玩家 ${tower.owner + 1}` : "，空地"}`}
+                aria-pressed={selected === pad.id}
+                onPointerEnter={(event) => {
+                  if (event.pointerType === "mouse" && tower)
+                    hoverRef.current = pad.id;
+                }}
+                onPointerLeave={() => {
+                  hoverRef.current = null;
+                }}
+                onFocus={() => {
+                  if (tower) hoverRef.current = pad.id;
+                }}
+                onBlur={() => {
+                  hoverRef.current = null;
+                }}
+                onClick={() => {
+                  closeInspection();
+                  select(pad.id);
+                }}
+              >
+                {!tower && <span>{pad.id + 1}</span>}
+              </button>
+            );
+          })}
+        </div>
         {inspection ? (
           <MapPopover point={inspection.point} viewport={view.viewport}>
             <section

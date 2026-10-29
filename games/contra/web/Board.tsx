@@ -67,7 +67,11 @@ export function Board(props: BoardProps<RoomRuntimeView>) {
     };
     const changed = (event: Event) => {
       const change = (event as CustomEvent).detail;
-      if (!active || change?.userId !== userID || change?.model !== "classic-2")
+      if (
+        !active ||
+        change?.userId !== userID ||
+        change?.model !== "game:contra"
+      )
         return;
       if (changedProfile && changedProfile.revision > change.profile.revision)
         return;
@@ -77,9 +81,11 @@ export function Board(props: BoardProps<RoomRuntimeView>) {
     window.addEventListener("controller-settings-changed", changed);
     void (async () => {
       report(0, "加载控制器设置");
-      const settings: ControllerSettingsData = await api("/controllers");
+      const settings: ControllerSettingsData = await api(
+        "/controllers?game=contra",
+      );
       if (!active) return;
-      const fetched = settings.profiles["classic-2"];
+      const fetched = settings.profiles["game:contra"];
       const saved =
         changedProfile &&
         (!fetched || changedProfile.revision >= fetched.revision)

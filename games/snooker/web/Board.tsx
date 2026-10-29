@@ -381,6 +381,23 @@ export function Board({
       )}
       <div className="snooker-game-layout">
         <Table
+          controllerUser={room.seats[room.you]?.id ?? ""}
+          controllerScope={`${scope}:${room.you}`}
+          controlsEnabled={
+            !busy &&
+            !room.spectating &&
+            !room.seats[room.you]?.autoPlay &&
+            !room.seats[room.you]?.left
+          }
+          onControllerError={setError}
+          spin={{ top, side }}
+          onSpin={(value) => {
+            setTop(value.top);
+            setSide(value.side);
+          }}
+          onTogglePlace={() => {
+            if (d.controls.canPlace && !busy) setPlacing((v) => !v);
+          }}
           onReady={onReady}
           onLoadError={onLoadError}
           balls={d.phase === "rolling" ? frame.balls : d.balls}
@@ -407,7 +424,7 @@ export function Board({
         />
         <div className="snooker-controls">
           {["start_choice", "black_choice"].includes(d.phase) && (
-            <div className="snooker-decision">
+            <div className="snooker-decision" data-controller-group="board">
               <p>{phases[d.phase]}</p>
               {[0, 1].map((team) => (
                 <button
@@ -428,7 +445,7 @@ export function Board({
             </div>
           )}
           {d.phase === "black_player" && (
-            <div className="snooker-decision">
+            <div className="snooker-decision" data-controller-group="board">
               <p>由 {teamName(d.teams[d.turn])} 选择黑球先打者</p>
               {room.seats.map(
                 (seat, p) =>
@@ -445,7 +462,7 @@ export function Board({
             </div>
           )}
           {d.phase === "foul" && d.foul && (
-            <div className="snooker-decision">
+            <div className="snooker-decision" data-controller-group="board">
               <strong>对方获得 {d.foul.ruling.foul} 分</strong>
               <p>{d.foul.ruling.reasons.join("；")}</p>
               {d.foul.ruling.miss && <p>解球未中，可要求原位重打。</p>}
@@ -479,7 +496,7 @@ export function Board({
             </div>
           )}
           {d.phase === "concede" && (
-            <div className="snooker-decision">
+            <div className="snooker-decision" data-controller-group="board">
               <strong>{teamName(d.offerTeam)}提出认输本局</strong>
               <p>可以接受并结束本局，也可以继续打。</p>
               <button
@@ -505,7 +522,10 @@ export function Board({
                 · 下一位 {player(d.nextSeat)}
               </p>
               {d.inHand && (
-                <div className="snooker-placement">
+                <div
+                  className="snooker-placement"
+                  data-controller-group="placement"
+                >
                   <button
                     disabled={!d.controls.canPlace || busy}
                     onClick={() => setPlacing((v) => !v)}
@@ -514,7 +534,7 @@ export function Board({
                   </button>
                   {placing && (
                     <>
-                      <p>点击 D 区摆放白球，完成后瞄准并向后拉杆。</p>
+                      <p>点击 D 区或用方向控制摆放白球，确认后瞄准。</p>
                       <button
                         disabled={busy}
                         onClick={() =>
@@ -558,7 +578,7 @@ export function Board({
                   </select>
                 </label>
               )}
-              <details className="snooker-spin">
+              <details className="snooker-spin" data-controller-group="spin">
                 <summary>击点 · 高低杆与侧旋</summary>
                 <CueTip
                   top={top}
@@ -582,7 +602,7 @@ export function Board({
             </p>
           )}
           {d.phase === "frame_end" && (
-            <div className="snooker-decision">
+            <div className="snooker-decision" data-controller-group="board">
               <strong>
                 {teamName(d.results.at(-1)?.winner ?? activeTeam)}获胜 ·{" "}
                 {d.scores[0]} : {d.scores[1]}
@@ -632,9 +652,9 @@ export function Board({
         </p>
       )}
       {mine && ["aim", "frame_end"].includes(d.phase) && (
-        <div className="snooker-secondary">
+        <div className="snooker-secondary" data-controller-group="secondary">
           {d.phase === "concede" && (
-            <div className="snooker-decision">
+            <div className="snooker-decision" data-controller-group="board">
               <strong>{teamName(d.offerTeam)}提出认输本局</strong>
               <p>可以接受并结束本局，也可以继续打。</p>
               <button

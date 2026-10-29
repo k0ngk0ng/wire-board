@@ -1,3 +1,4 @@
+import { useControllerCancel } from "../../../web/src/controllers/use-controller-cancel";
 import { useEffect, useRef, useState } from "react";
 import type { BoardProps } from "../../../web/src/game-api/module";
 import { Modal } from "../../../web/src/ui/board-host";
@@ -378,6 +379,11 @@ export function Board({
   const hasChoice = !!(data.world?.choice || data.world?.boonChoice);
   const [towerDetails, setTowerDetails] = useState(false);
   const [selected, setSelected] = useState<number | null>(null);
+  const root = useRef<HTMLDivElement>(null);
+  useControllerCancel(root, () => {
+    setSelected(null);
+    setTowerDetails(false);
+  });
   useEffect(() => {
     setChoiceOpen(hasChoice);
     if (hasChoice) setSelected(null);
@@ -525,7 +531,7 @@ export function Board({
     clock.serverNow + (clock.paused ? 0 : now - clock.receivedAt);
   const activeRoutes = data.map.routes?.filter((route) => route.active) ?? [];
   return (
-    <div className="starfort-board" data-phase={data.phase}>
+    <div ref={root} className="starfort-board" data-phase={data.phase}>
       <div className="sf-hud">
         <div className="sf-compact-stats">
           <span aria-label="星核生命">
@@ -641,7 +647,10 @@ export function Board({
           </p>
         </div>
         {!finished && !room.spectating && (
-          <div className="sf-control-buttons">
+          <div
+            className="sf-control-buttons"
+            data-controller-group="sf-control-buttons"
+          >
             {choosing && (
               <button data-sf-open-choice onClick={() => setChoiceOpen(true)}>
                 选择战区方案
@@ -970,13 +979,19 @@ export function Board({
                           </p>
                         ) : selectedTower.owner === room.you &&
                           !room.spectating ? (
-                          <div className="sf-tower-actions">
+                          <div
+                            className="sf-tower-actions"
+                            data-controller-group="sf-tower-actions"
+                          >
                             {upgrade?.needsBranch ? (
                               <>
                                 <p className="sf-branch-hint">
                                   选择专精后继续强化
                                 </p>
-                                <div className="sf-branch-actions">
+                                <div
+                                  className="sf-branch-actions"
+                                  data-controller-group="sf-branch-actions"
+                                >
                                   {branchButtons}
                                 </div>
                               </>

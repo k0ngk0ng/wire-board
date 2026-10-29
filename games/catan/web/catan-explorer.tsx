@@ -1,3 +1,4 @@
+import { useControllerCancel } from "../../../web/src/controllers/use-controller-cancel";
 import {
   ExplorerHelpers,
   isExplorerHelperAction,
@@ -6,7 +7,7 @@ import { CatanCardEventSummary } from "./catan-card-event";
 import { ExplorerPairedTurn } from "./catan-explorer-paired";
 import { ExplorerSpiceMission } from "./catan-explorer-spice";
 import { ExplorerFullMissions } from "./catan-explorer-full-missions";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { CSSProperties, KeyboardEvent } from "react";
 import { Anchor, Dices, Minus, Plus, RotateCcw, Ship } from "lucide-react";
 import type { Room } from "./types";
@@ -157,6 +158,17 @@ export function CatanExplorerBoard({
     [goldTake, setGoldTake] = useState(0);
   const [error, setError] = useState("");
   const [confirmReset, setConfirmReset] = useState(false);
+  const root = useRef<HTMLElement>(null);
+  useControllerCancel(root, () => {
+    setPick(null);
+    setProgress(null);
+    setMode("");
+    setHelperMap(false);
+    setHelperFrom(-1);
+    setFishMode("");
+    setFishChosen(null);
+    setShip(-1);
+  });
   const canReset =
     !!resetOpening &&
     !!x.setupBlocked &&
@@ -385,6 +397,7 @@ export function CatanExplorerBoard({
       : "";
   return (
     <section
+      ref={root}
       className={`explorer-board${g.paired ? " has-paired" : ""}${city ? " has-cities-knights" : ""}`}
       aria-label={`探索者与海盗${scenario}`}
     >
@@ -423,7 +436,10 @@ export function CatanExplorerBoard({
         </header>
         <ExplorerPairedTurn room={room} />
         {g.eventDeck && <CatanCardEventSummary room={room} assets={assets} />}
-        <div className="explorer-map-tools">
+        <div
+          className="explorer-map-tools"
+          data-controller-group="explorer-map-tools"
+        >
           <span>
             {targets.size
               ? `选择高亮位置：${fishingMap ? (fishingMap === "fish_ship" ? "用鱼造船" : "用鱼修路") : activeProgress ? catanProgressNames[activeProgress.card] : explorerActionNames[effective]}`
@@ -456,6 +472,7 @@ export function CatanExplorerBoard({
           <div className="map-canvas" style={controls.canvasStyle}>
             <svg
               className="explorer-map"
+              data-controller-group="board"
               viewBox={`${minX} ${minY} ${width} ${height}`}
               style={controls.mapStyle}
               role="group"
@@ -1071,7 +1088,10 @@ export function CatanExplorerBoard({
           />
         )}
         {game.phase === "catan_discard" && can && due > 0 && (
-          <section className="explorer-discard">
+          <section
+            className="explorer-discard"
+            data-controller-group="explorer-discard"
+          >
             <ResourcePicker
               label={`归还${city ? "资源与商品" : "资源"}（共${due}张）`}
               values={discard}
@@ -1112,7 +1132,10 @@ export function CatanExplorerBoard({
             <p>
               所有玩家已放置的起始棋子将收回，由原先手重新开始摆放。地图、先手顺序和隐藏牌堆保持不变。
             </p>
-            <div className="explorer-confirm-actions">
+            <div
+              className="explorer-confirm-actions"
+              data-controller-group="explorer-confirm-actions"
+            >
               <button disabled={busy} onClick={() => setConfirmReset(false)}>
                 取消
               </button>
@@ -1361,8 +1384,15 @@ export function CatanExplorerBoard({
                 </label>
               )}
               <p>{describe(selected)}</p>
-              <div className="explorer-confirm-actions">
-                <button disabled={busy} onClick={() => setPick(null)}>
+              <div
+                className="explorer-confirm-actions"
+                data-controller-group="explorer-confirm-actions"
+              >
+                <button
+                  data-controller-cancel
+                  disabled={busy}
+                  onClick={() => setPick(null)}
+                >
                   取消
                 </button>
                 <button
@@ -1482,7 +1512,10 @@ export function CatanExplorerBoard({
           </>
         )}
         {trade && (
-          <section className="explorer-trade">
+          <section
+            className="explorer-trade"
+            data-controller-group="explorer-trade"
+          >
             <strong>{room.seats[trade.from]?.name}提出交易</strong>
             <p>付出</p>
             <Bundle values={trade.give} assets={assets} />
@@ -1565,7 +1598,10 @@ export function CatanExplorerBoard({
           </section>
         )}
         {mayOffer && (
-          <details className="explorer-trade">
+          <details
+            className="explorer-trade"
+            data-controller-group="explorer-trade"
+          >
             <summary>向玩家提出交易</summary>
             <ResourcePicker
               label="我付出"

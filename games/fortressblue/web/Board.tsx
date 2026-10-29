@@ -1,3 +1,4 @@
+import { useGameController } from "../../../web/src/controllers/use-game-controller";
 import {
   projectilePaths,
   projectileEffectPaths,
@@ -270,6 +271,7 @@ export function Board(props: BoardProps<View>) {
     lastFrame = useRef(0);
   const charge = useRef(newCharge()),
     moveDir = useRef(0),
+    lastMoveAt = useRef(-Infinity),
     requestInFlight = useRef(false),
     firedTurn = useRef("");
   const pointers = useRef(new Map<number, Pointer>()),
@@ -278,6 +280,12 @@ export function Board(props: BoardProps<View>) {
     previous = useRef<View | null>(null);
   const audioCursor = useRef({ epoch: "", id: 0 }),
     music = useRef("");
+  const mappedPressed = useRef(new Set<string>()),
+    touchMoveIntent = useRef(0);
+  const repeatAt = useRef(new Map<string, number>()),
+    cancelVersion = useRef(0);
+  const pumpControls = useRef<() => void>(() => {});
+  const [controllerError, setControllerError] = useState("");
   const turnToken = `${data.epoch}:${data.turn}:${data.current}`;
   const permitted =
     data.phase === "playing" &&
@@ -312,6 +320,29 @@ export function Board(props: BoardProps<View>) {
     canFire,
     canMove,
   };
+  const controller = useGameController({
+    gameId: "fortressblue",
+    userId: room.seats[room.you]?.id ?? "",
+    root: boardRef,
+    scope: `${room.id}:${data.epoch}:${clock.epoch ?? 0}:${room.you}`,
+    enabled: () => data.phase === "playing" && !room.spectating,
+    menu: () =>
+      data.phase === "select" &&
+      !room.spectating &&
+      !room.seats[data.you]?.autoPlay
+        ? (boardRef.current?.querySelector<HTMLElement>(".fb-draft") ?? null)
+        : null,
+    menuActions: {
+      left: "navLeft",
+      right: "navRight",
+      up: "navUp",
+      down: "navDown",
+      fire: "confirm",
+    },
+    keyboardTarget: (target) => acceptsGameKeys(target as HTMLElement),
+    changed: () => pumpControls.current(),
+    error: setControllerError,
+  });
   const assetPaths = useMemo(
     () =>
       [
@@ -345,6 +376,10 @@ export function Board(props: BoardProps<View>) {
   }, [map, fg, fg2, craterKey]);
 
   function cancelInputs() {
+    controller.current?.clear();
+    mappedPressed.current.clear();
+    repeatAt.current.clear();
+    touchMoveIntent.current = 0;
     cancelCharge(charge.current);
     moveDir.current = 0;
     setCharging(false);
@@ -427,9 +462,68 @@ export function Board(props: BoardProps<View>) {
   }
   function setMove(dir: number) {
     if (latest.current.permitted && charge.current.start === null) {
+      const changed = moveDir.current !== dir;
+      touchMoveIntent.current = dir;
       moveDir.current = dir;
       changeFacing(dir);
+      if (changed) moveOne(true);
     }
+  }
+  function moveOne(edge = false) {
+    const state = latest.current;
+    const now = performance.now();
+    if (!edge && now - lastMoveAt.current < 65) return;
+    if (
+      !moveDir.current ||
+      !state.canMove ||
+      requestInFlight.current ||
+      document.hidden
+    )
+      return;
+    const dir = moveDir.current;
+    lastMoveAt.current = now;
+    requestInFlight.current = true;
+    void state.props
+      .act({
+        type: "move",
+        epoch: state.props.data.epoch,
+        turn: state.props.data.turn,
+        dir,
+      })
+      .catch(() => {
+        moveDir.current = 0;
+        touchMoveIntent.current = 0;
+        controller.current?.clear();
+        mappedPressed.current.clear();
+      })
+      .finally(() => {
+        requestInFlight.current = false;
+      });
+  }
+  function useItem(slot: number) {
+    const current = latest.current;
+    if (
+      !current.canFire ||
+      requestInFlight.current ||
+      charge.current.start !== null
+    )
+      return;
+    const self = current.props.data.tanks.find(
+      (t) => t.seat === current.props.data.you,
+    );
+    if (self?.items?.[slot] === undefined) return;
+    requestInFlight.current = true;
+    void current.props
+      .act({
+        type: "item",
+        epoch: current.props.data.epoch,
+        turn: current.props.data.turn,
+        slot,
+      })
+      .catch(() => {})
+      .finally(() => {
+        requestInFlight.current = false;
+      });
   }
   function resetCamera() {
     manualCamera.current = false;
@@ -548,29 +642,7 @@ export function Board(props: BoardProps<View>) {
   useEffect(() => {
     const timer = window.setInterval(() => {
       setTick((n) => n + 1);
-      const state = latest.current;
-      if (
-        !moveDir.current ||
-        !state.canMove ||
-        requestInFlight.current ||
-        document.hidden
-      )
-        return;
-      const dir = moveDir.current;
-      requestInFlight.current = true;
-      void state.props
-        .act({
-          type: "move",
-          epoch: state.props.data.epoch,
-          turn: state.props.data.turn,
-          dir,
-        })
-        .catch(() => {
-          moveDir.current = 0;
-        })
-        .finally(() => {
-          requestInFlight.current = false;
-        });
+      moveOne(false);
     }, 65);
     const chargeTimer = window.setInterval(() => {
       if (charge.current.start === null) return;
@@ -601,7 +673,13 @@ export function Board(props: BoardProps<View>) {
       }
     };
     const focus = (event: FocusEvent) => {
-      if (!acceptsGameKeys(event.target as HTMLElement)) cancel();
+      if (
+        !(
+          event.target instanceof Element && event.target.closest(".fb-draft")
+        ) &&
+        !acceptsGameKeys(event.target as HTMLElement)
+      )
+        cancel();
     };
     window.addEventListener("blur", cancel);
     document.addEventListener("visibilitychange", visibility);
@@ -614,78 +692,96 @@ export function Board(props: BoardProps<View>) {
       document.removeEventListener("focusin", focus);
     };
   }, []);
-  useEffect(() => {
-    const down = (event: KeyboardEvent) => {
-      const state = latest.current;
-      if (
-        !state.permitted ||
-        !acceptsGameKeys(event.target as HTMLElement) ||
-        document.querySelector('[role="dialog"][aria-modal="true"]')
-      )
-        return;
-      const k = event.key.toLowerCase();
-      if (
-        ![
-          " ",
-          "arrowup",
-          "arrowdown",
-          "arrowleft",
-          "arrowright",
-          "w",
-          "s",
-          "a",
-          "d",
-          "q",
-          "e",
-          "escape",
-        ].includes(k)
-      )
-        return;
-      event.preventDefault();
-      if (k === "escape") {
-        cancelInputs();
-        return;
+  pumpControls.current = () => {
+    const now = performance.now(),
+      state = latest.current;
+    const actions = controller.current?.sample(now) ?? new Set<string>();
+    const interrupted =
+      (controller.current?.cancelVersion ?? 0) !== cancelVersion.current;
+    cancelVersion.current = controller.current?.cancelVersion ?? 0;
+    const before = mappedPressed.current;
+    const fresh = (action: string) =>
+      actions.has(action) && !before.has(action);
+    const repeat = (action: string, interval = 80) => {
+      if (!actions.has(action)) {
+        repeatAt.current.delete(action);
+        return false;
       }
-      if (k === " ") {
-        if (!event.repeat) startCharge("key");
-        return;
+      if (fresh(action) || now >= (repeatAt.current.get(action) ?? 0)) {
+        repeatAt.current.set(action, now + interval);
+        return true;
       }
-      if (charge.current.start !== null) return;
-      if (k === "arrowup" || k === "w") changeAngle(state.angle + 1);
-      if (k === "arrowdown" || k === "s") changeAngle(state.angle - 1);
-      if (k === "arrowleft" || k === "a") setMove(-1);
-      if (k === "arrowright" || k === "d") setMove(1);
-      if ((k === "q" || k === "e") && !event.repeat) {
+      return false;
+    };
+    if (fresh("cancel")) {
+      cancelInputs();
+      return;
+    }
+    if (
+      charge.current.source === "controller" &&
+      before.has("fire") &&
+      !actions.has("fire")
+    ) {
+      if (interrupted || !state.canFire) cancelInputs();
+      else endCharge("controller");
+    }
+    if (fresh("fire") && state.canFire) startCharge("controller");
+    if (
+      charge.current.start === null &&
+      firedTurn.current !== state.turnToken &&
+      state.permitted
+    ) {
+      const mapped =
+        (actions.has("right") ? 1 : 0) - (actions.has("left") ? 1 : 0);
+      const dir = touchMoveIntent.current || mapped;
+      const moved = moveDir.current !== dir;
+      moveDir.current = dir;
+      if (dir && moved) moveOne(true);
+      if (dir) changeFacing(dir);
+      if (repeat("up")) changeAngle(state.angle + 1);
+      if (repeat("down")) changeAngle(state.angle - 1);
+      if (fresh("facing")) changeFacing(-state.facing);
+      if (fresh("weapon")) {
         const self = state.props.data.tanks.find(
           (t) => t.seat === state.props.data.you,
         );
         setWeapon((w) =>
           w === "primary" &&
-          (self?.specialUnlimited || (self?.special ?? 0) !== 0)
+          (self?.specialUnlimited || (self?.special ?? 0) > 0)
             ? "special"
             : "primary",
         );
       }
+      for (let slot = 0; slot < 4; slot++)
+        if (fresh(`item${slot + 1}`)) useItem(slot);
+    } else moveDir.current = 0;
+    if (repeat("zoomIn", 100)) zoom(0.9);
+    if (repeat("zoomOut", 100)) zoom(1.1);
+    if (fresh("resetCamera")) resetCamera();
+    const dx =
+        (actions.has("panRight") ? 1 : 0) - (actions.has("panLeft") ? 1 : 0),
+      dy = (actions.has("panDown") ? 1 : 0) - (actions.has("panUp") ? 1 : 0);
+    if ((dx || dy) && now >= (repeatAt.current.get("pan") ?? 0)) {
+      manualCamera.current = true;
+      cameraRef.current = panCamera(
+        cameraRef.current,
+        dx * 12,
+        dy * 12,
+        map.width,
+        map.height,
+      );
+      repeatAt.current.set("pan", now + 30);
+    }
+    mappedPressed.current = actions;
+  };
+  useEffect(() => {
+    const escape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") cancelInputs();
     };
-    const up = (event: KeyboardEvent) => {
-      const k = event.key.toLowerCase();
-      if (k === " ") {
-        if (charge.current.source === "key") {
-          event.preventDefault();
-          if (acceptsGameKeys(event.target as HTMLElement)) endCharge("key");
-          else cancelInputs();
-        }
-      }
-      if (["arrowleft", "arrowright", "a", "d"].includes(k))
-        moveDir.current = 0;
-    };
-    window.addEventListener("keydown", down);
-    window.addEventListener("keyup", up);
-    return () => {
-      window.removeEventListener("keydown", down);
-      window.removeEventListener("keyup", up);
-    };
+    window.addEventListener("keydown", escape);
+    return () => window.removeEventListener("keydown", escape);
   }, []);
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -776,6 +872,7 @@ export function Board(props: BoardProps<View>) {
   useEffect(() => {
     let raf = 0;
     const frame = () => {
+      pumpControls.current();
       const canvas = canvasRef.current;
       if (!canvas) return;
       const s = drawState.current,
@@ -1050,7 +1147,7 @@ export function Board(props: BoardProps<View>) {
           className="fb-canvas"
           data-fortressblue-canvas
           tabIndex={0}
-          aria-label={`${map.name}战场。拖动平移，滚轮缩放，点击调整瞄准；按住空格蓄力，松开发射。`}
+          aria-label={`${map.name}战场。拖动平移，滚轮缩放，点击调整瞄准；按住蓄力键，松开发射。`}
           onPointerDown={pointerDown}
           onPointerMove={pointerMove}
           onPointerUp={(event) => pointerEnd(event)}
@@ -1271,16 +1368,28 @@ export function Board(props: BoardProps<View>) {
                   e.currentTarget.setPointerCapture(e.pointerId);
                   setMove(dir);
                 }}
-                onPointerUp={() => (moveDir.current = 0)}
-                onPointerCancel={() => (moveDir.current = 0)}
-                onLostPointerCapture={() => (moveDir.current = 0)}
+                onPointerUp={() => {
+                  touchMoveIntent.current = 0;
+                  pumpControls.current();
+                }}
+                onPointerCancel={() => {
+                  touchMoveIntent.current = 0;
+                  pumpControls.current();
+                }}
+                onLostPointerCapture={() => {
+                  touchMoveIntent.current = 0;
+                  pumpControls.current();
+                }}
                 onKeyDown={(e) => {
                   if (e.key === " " || e.key === "Enter") {
                     e.preventDefault();
                     setMove(dir);
                   }
                 }}
-                onKeyUp={() => (moveDir.current = 0)}
+                onKeyUp={() => {
+                  touchMoveIntent.current = 0;
+                  pumpControls.current();
+                }}
               >
                 {dir < 0 ? (
                   <ChevronLeft size={18} />
@@ -1369,19 +1478,8 @@ export function Board(props: BoardProps<View>) {
                   aria-label={`使用${item.name}：${item.description}`}
                   title={item.description}
                   data-fortressblue-item={item.id}
-                  onClick={() => {
-                    if (!latest.current.canFire || requestInFlight.current)
-                      return;
-                    requestInFlight.current = true;
-                    void act({
-                      type: "item",
-                      epoch: data.epoch,
-                      turn: data.turn,
-                      slot,
-                    }).finally(() => {
-                      requestInFlight.current = false;
-                    });
-                  }}
+                  data-fortressblue-item-slot={slot}
+                  onClick={() => useItem(slot)}
                 >
                   <FallbackImage base={assets} path={item.icon} alt="" />
                   <span>{item.name}</span>
@@ -1407,10 +1505,8 @@ export function Board(props: BoardProps<View>) {
           </div>
         </div>
       </div>
-      <p className="fb-help">
-        方向键移动／调角 · Q／E 换弹 · 按住空格蓄力，松开或满力发射 ·
-        拖图与滚轮缩放
-      </p>
+      {controllerError && <p role="alert">{controllerError}</p>}
+      <p className="fb-help">按住蓄力，松开或满力发射 · 拖图与滚轮缩放</p>
       <div className="fb-live" aria-live="polite">
         {(data.supplies?.length ?? 0) > 0 && (
           <span data-fortressblue-supplies>

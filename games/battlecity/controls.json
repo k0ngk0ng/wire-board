@@ -1,0 +1,135 @@
+{
+  "layout": "game",
+  "actions": [
+    {
+      "id": "up",
+      "label": "向上移动",
+      "keys": [
+        "KeyW",
+        "ArrowUp"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 12
+        },
+        {
+          "type": "axis",
+          "index": 1,
+          "direction": -1
+        }
+      ]
+    },
+    {
+      "id": "down",
+      "label": "向下移动",
+      "keys": [
+        "KeyS",
+        "ArrowDown"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 13
+        },
+        {
+          "type": "axis",
+          "index": 1,
+          "direction": 1
+        }
+      ]
+    },
+    {
+      "id": "left",
+      "label": "向左移动",
+      "keys": [
+        "KeyA",
+        "ArrowLeft"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 14
+        },
+        {
+          "type": "axis",
+          "index": 0,
+          "direction": -1
+        }
+      ]
+    },
+    {
+      "id": "right",
+      "label": "向右移动",
+      "keys": [
+        "KeyD",
+        "ArrowRight"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 15
+        },
+        {
+          "type": "axis",
+          "index": 0,
+          "direction": 1
+        }
+      ]
+    },
+    {
+      "id": "fire",
+      "label": "开火／确认选择",
+      "keys": [
+        "Space",
+        "KeyJ",
+        "KeyK"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "id": "cancel",
+      "label": "关闭选择面板",
+      "keys": [
+        "Backspace"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 1
+        }
+      ]
+    },
+    {
+      "id": "nextGroup",
+      "label": "下一组选择",
+      "keys": [
+        "PageDown"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 5
+        }
+      ]
+    },
+    {
+      "id": "previousGroup",
+      "label": "上一组选择",
+      "keys": [
+        "PageUp"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 4
+        }
+      ]
+    }
+  ]
+}

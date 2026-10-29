@@ -1,0 +1,204 @@
+{
+  "layout": "game",
+  "actions": [
+    {
+      "id": "left",
+      "label": "向左瞄准／移动",
+      "keys": [
+        "ArrowLeft"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 14
+        },
+        {
+          "type": "axis",
+          "index": 0,
+          "direction": -1
+        }
+      ],
+      "continuous": true
+    },
+    {
+      "id": "right",
+      "label": "向右瞄准／移动",
+      "keys": [
+        "ArrowRight"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 15
+        },
+        {
+          "type": "axis",
+          "index": 0,
+          "direction": 1
+        }
+      ],
+      "continuous": true
+    },
+    {
+      "id": "up",
+      "label": "向上瞄准／增加力度",
+      "keys": [
+        "ArrowUp"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 12
+        },
+        {
+          "type": "axis",
+          "index": 1,
+          "direction": -1
+        }
+      ],
+      "continuous": true
+    },
+    {
+      "id": "down",
+      "label": "向下瞄准／减小力度",
+      "keys": [
+        "ArrowDown"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 13
+        },
+        {
+          "type": "axis",
+          "index": 1,
+          "direction": 1
+        }
+      ],
+      "continuous": true
+    },
+    {
+      "id": "fire",
+      "label": "蓄力／松开击球",
+      "keys": [
+        "Space",
+        "Enter"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 0
+        },
+        {
+          "type": "button",
+          "index": 7
+        }
+      ]
+    },
+    {
+      "id": "cancel",
+      "label": "取消／返回",
+      "keys": [
+        "Backspace"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 1
+        }
+      ]
+    },
+    {
+      "id": "fine",
+      "label": "精细调整（按住）",
+      "keys": [
+        "ShiftLeft",
+        "ShiftRight"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 4
+        }
+      ]
+    },
+    {
+      "id": "spin",
+      "label": "调整击点（按住）",
+      "keys": [
+        "KeyQ"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 6
+        }
+      ]
+    },
+    {
+      "id": "place",
+      "label": "摆放白球",
+      "keys": [
+        "KeyP"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 2
+        }
+      ]
+    },
+    {
+      "id": "reset",
+      "label": "恢复瞄准／击点",
+      "keys": [
+        "Home"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 3
+        }
+      ]
+    },
+    {
+      "id": "menu",
+      "label": "操作菜单",
+      "keys": [
+        "KeyM"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 9
+        }
+      ]
+    },
+    {
+      "id": "previousGroup",
+      "label": "上一组操作",
+      "keys": [
+        "PageUp"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 8
+        }
+      ]
+    },
+    {
+      "id": "nextGroup",
+      "label": "下一组操作",
+      "keys": [
+        "PageDown"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 5
+        }
+      ]
+    }
+  ]
+}

@@ -1,3 +1,4 @@
+import { useControllerCancel } from "../../../web/src/controllers/use-controller-cancel";
 import {
   useEffect,
   useId,
@@ -125,6 +126,40 @@ function MapBoard({
 }: BoardProps<View> & { map: ConquestMap }) {
   const camera = useCamera(map),
     uid = useId().replaceAll(":", "");
+  const root = useRef<HTMLElement>(null);
+  useControllerCancel(root, () => clear());
+  useEffect(() => {
+    const node = camera.viewport.current;
+    const reveal = (event: globalThis.Event) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      const province = map.provinces.find(
+        (p) => p.id === target.getAttribute("data-cq-province"),
+      );
+      if (!province) return;
+      event.preventDefault();
+      camera.reveal([province.label]);
+      node?.scrollIntoView({ block: "nearest", inline: "nearest" });
+    };
+    node?.addEventListener("controller-reveal", reveal);
+    return () => node?.removeEventListener("controller-reveal", reveal);
+  }, [camera.reveal, map]);
+  const townAction = useRef(() => {});
+  useEffect(() => {
+    const node = root.current;
+    const action = (event: globalThis.Event) => {
+      if (
+        (event as CustomEvent).detail?.action !== "buildTown" ||
+        (event.target instanceof Element &&
+          event.target.closest('[role="dialog"],dialog'))
+      )
+        return;
+      event.preventDefault();
+      townAction.current();
+    };
+    node?.addEventListener("controller-action", action);
+    return () => node?.removeEventListener("controller-action", action);
+  }, []);
   const renderCount = useRef(0);
   renderCount.current++;
   const [selected, setSelected] = useState(""),
@@ -279,27 +314,28 @@ function MapBoard({
           .join("、")
       : "";
   const holdIdentity = `${data.session}:${data.epoch}:${selected}`;
+  const buildTown = () => {
+    if (!own || !canPlan) return;
+    if (selectedPlan?.town) {
+      setNotice("这块领地已经有城镇");
+      return;
+    }
+    const cost = data.controls.townCost ?? 75000,
+      points = data.controls.townMovement ?? 5;
+    if (data.availableGold < cost || data.availableMovement < points) {
+      setNotice(`建城镇需要 ${number(cost)} 金币和 ${points} 行动点`);
+      return;
+    }
+    return send("build", { province: selected, building: "town" });
+  };
+  townAction.current = () => {
+    void buildTown();
+  };
   const fortPress = useHoldAction({
     enabled: canBuild,
     identity: holdIdentity,
     onTap: () => send("build", { province: selected, building }),
-    onHold: () => {
-      if (selectedPlan?.town) {
-        setNotice("这块领地已经有城镇");
-        return;
-      }
-      const cost = data.controls.townCost ?? 75000,
-        points = data.controls.townMovement ?? 5;
-      if (
-        !canPlan ||
-        data.availableGold < cost ||
-        data.availableMovement < points
-      ) {
-        setNotice(`建城镇需要 ${number(cost)} 金币和 ${points} 行动点`);
-        return;
-      }
-      return send("build", { province: selected, building: "town" });
-    },
+    onHold: buildTown,
   });
   const visibleLabels = useMemo(() => {
     const candidates = map.provinces.filter((p) => {
@@ -809,6 +845,7 @@ function MapBoard({
 
   return (
     <section
+      ref={root}
       className="cq-board cq-map-first"
       data-conquest-board
       data-phase={data.phase}
@@ -842,6 +879,7 @@ function MapBoard({
         <div className="cq-viewport" ref={camera.viewport} {...camera.handlers}>
           <svg
             className="cq-map"
+            data-controller-group="board"
             width="100%"
             height="100%"
             aria-label={`${map.name}征服地图`}
@@ -1067,6 +1105,7 @@ function MapBoard({
                       onClick={selectArmy}
                       onKeyDown={(event) => keyChoose(event, p)}
                       tabIndex={-1}
+                      data-controller-ignore=""
                       role="button"
                       aria-label={`${p.name}，兵力 ${force(troops)}${ruler ? "，君主" : ""}`}
                     >
@@ -1248,6 +1287,7 @@ function MapBoard({
             )}
             <div
               className="cq-territory-actions"
+              data-controller-group="territory"
               role="toolbar"
               aria-label="领地行动"
             >
@@ -1366,7 +1406,7 @@ function MapBoard({
           {notice || status}
         </div>
       </div>
-      <footer className="cq-round-controls">
+      <footer className="cq-round-controls" data-controller-group="round">
         <button
           aria-label="查看行动计划"
           data-cq-action="plans"

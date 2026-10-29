@@ -327,23 +327,10 @@
   color: #95acb9;
   background: #293e4c;
 }
-.racing-drive-info {
-  grid-column: 2;
-  grid-row: 1;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-.racing-key-hint {
-  color: #b4c6d2;
-  font-size: 11px;
-  line-height: 1.7;
-}
+
 .racing-pedals {
   grid-column: 2;
-  grid-row: 2;
+  grid-row: 1 / span 2;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
@@ -574,10 +561,6 @@
     max-width: 600px;
     justify-self: end;
   }
-  .racing-drive-info {
-    justify-content: flex-end;
-    gap: 24px;
-  }
 }
 @media (max-width: 600px) {
   .racing-board {
@@ -651,12 +634,7 @@
   .racing-wheel small {
     font-size: 9px;
   }
-  .racing-drive-info {
-    justify-content: center;
-  }
-  .racing-key-hint {
-    display: none;
-  }
+
   .racing-pedals {
     gap: 5px;
   }

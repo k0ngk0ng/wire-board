@@ -30,6 +30,7 @@ export type Car = Point & {
   steer: number;
   throttle: number;
   brake: boolean;
+  brakeAmount?: number;
   drift: boolean;
   skin: number;
   seq: number;

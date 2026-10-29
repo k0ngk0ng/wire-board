@@ -1,3 +1,4 @@
+import { useControllerCancel } from "../../../web/src/controllers/use-controller-cancel";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import type { BoardProps } from "../../../web/src/game-api/module";
 import { Modal } from "../../../web/src/ui/board-host";
@@ -88,6 +89,8 @@ export function Board({
     [windowRect, setWindowRect] = useState({ x: 0, y: 0, w: 1, h: 1 });
   const nodes = useRef<(HTMLButtonElement | null)[]>([]),
     pinch = useRef<{ distance: number; zoom: number } | null>(null);
+  const controllerRoot = useRef<HTMLElement>(null);
+  useControllerCancel(controllerRoot, () => clear());
   const scope = `${room.id}:${data.round}:${room.you}:${clock.epoch ?? 0}`;
   const seen = useRef({
     scope,
@@ -331,6 +334,7 @@ export function Board({
   const ownPlayer = data.players[room.you];
   return (
     <section
+      ref={controllerRoot}
       className={"junqi-board " + data.mode + (overview ? " overview" : "")}
       data-overview={overview}
       data-ply={data.ply}
@@ -397,6 +401,7 @@ export function Board({
           >
             <div style={controls.canvasStyle}>
               <div
+                data-controller-group="board"
                 className="junqi-map"
                 style={controls.mapStyle}
                 role="group"
@@ -677,7 +682,7 @@ export function Board({
             </div>
           </div>
         </div>
-        <aside className="junqi-actions">
+        <aside data-controller-group="actions" className="junqi-actions">
           <div className="junqi-overview">
             <div>
               <strong>整盘概览</strong>
@@ -788,6 +793,7 @@ export function Board({
           {data.phase === "deploy" ? (
             <>
               <button
+                data-controller-action="swap"
                 disabled={overview || !canArrange || !swapOK}
                 onClick={() => {
                   if (selected && other)
@@ -814,6 +820,7 @@ export function Board({
                 <button
                   className="primary"
                   disabled={!canAct || !data.canConfirm}
+                  data-controller-action="deploy-ready"
                   onClick={() => void send("deploy_ready", { ready: true })}
                 >
                   完成布阵
@@ -841,6 +848,7 @@ export function Board({
               </button>
               <button
                 disabled={!canAct || !data.canResign}
+                data-controller-action="resign"
                 onClick={() => setResign(true)}
               >
                 认输

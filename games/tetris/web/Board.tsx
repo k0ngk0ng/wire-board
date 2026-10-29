@@ -1,3 +1,4 @@
+import { useGameController } from "../../../web/src/controllers/use-game-controller";
 import { memo, useEffect, useMemo, useRef, useState } from "react";
 import type { BoardProps } from "../../../web/src/game-api/module";
 import { Controls } from "./Controls";
@@ -200,27 +201,17 @@ const actionError = (error: unknown) =>
       ? error.message
       : String(error);
 
-const keyMap: Record<string, { kind: InputKind; held: boolean }> = {
-  ArrowLeft: { kind: "left", held: true },
-  KeyA: { kind: "left", held: true },
-  ArrowRight: { kind: "right", held: true },
-  KeyD: { kind: "right", held: true },
-  ArrowUp: { kind: "rotateCW", held: false },
-  KeyX: { kind: "rotateCW", held: false },
-  KeyZ: { kind: "rotateCCW", held: false },
-  ControlLeft: { kind: "rotateCCW", held: false },
-  ControlRight: { kind: "rotateCCW", held: false },
-  ArrowDown: { kind: "softDrop", held: true },
-  KeyS: { kind: "softDrop", held: true },
-  Space: { kind: "hardDrop", held: false },
-  KeyC: { kind: "hold", held: false },
-  ShiftLeft: { kind: "hold", held: false },
-  ShiftRight: { kind: "hold", held: false },
-};
-
-const ignoredTarget = (target: EventTarget | null) =>
-  target instanceof HTMLElement &&
-  (target.matches("input,select,textarea") || target.isContentEditable);
+const inputKinds = new Set<string>([
+  "left",
+  "right",
+  "rotateCW",
+  "rotateCCW",
+  "softDrop",
+  "hardDrop",
+  "hold",
+]);
+const repeatingInput = (kind: string) =>
+  kind === "left" || kind === "right" || kind === "softDrop";
 
 export function Board(props: BoardProps<View>) {
   const { room, data: d, act, busy, clock, assets, audio, sound } = props;
@@ -242,12 +233,15 @@ export function Board(props: BoardProps<View>) {
       window.matchMedia("(prefers-reduced-motion: reduce)").matches,
   );
   const queue = useRef(new InputQueue(0));
+  const root = useRef<HTMLElement>(null);
+  const pumpControls = useRef<() => void>(() => {});
+  const pressed = useRef(new Set<string>());
   const latest = useRef(props);
   latest.current = props;
   const enabledRef = useRef(false);
   const suspendedRef = useRef(false);
   const sending = useRef(false);
-  const held = useRef(new Map<string, { since: number; emitted: number }>());
+  const held = useRef(new Map<InputKind, { since: number; emitted: number }>());
   const touchHold = useRef<{
     kind: InputKind;
     since: number;
@@ -270,10 +264,19 @@ export function Board(props: BoardProps<View>) {
   const enabled = baseEnabled && !suspended;
   enabledRef.current = baseEnabled;
   suspendedRef.current = suspended;
-  const unconfirmed = queue.current.unconfirmed();
+  const controller = useGameController({
+    gameId: "tetris",
+    userId: room.seats[you]?.id ?? "",
+    scope,
+    root,
+    enabled: () => enabledRef.current,
+    changed: () => pumpControls.current(),
+    error: setError,
+  });
+  const unconfirmed = queue.current.unconfirmed(ownSeq);
   const predicted = useMemo(
     () => predict(own?.board ?? [], own?.active, unconfirmed),
-    [own?.board, own?.active, queueVersion, d.epoch],
+    [own?.board, own?.active, ownSeq, queueVersion, d.epoch],
   );
   const ghost = predicted && own ? ghostY(own.board, predicted) : undefined;
   const rivals =
@@ -286,6 +289,8 @@ export function Board(props: BoardProps<View>) {
     );
     setQueueVersion((value) => value + 1);
     held.current.clear();
+    pressed.current.clear();
+    controller.current?.clear();
     touchHold.current = null;
     const max = (p.data.events ?? []).reduce(
       (value, event) => Math.max(value, event.id),
@@ -310,6 +315,8 @@ export function Board(props: BoardProps<View>) {
   useEffect(() => {
     if (baseEnabled) return;
     held.current.clear();
+    pressed.current.clear();
+    controller.current?.clear();
     touchHold.current = null;
     queue.current.reset(spectator ? 0 : ownSeq);
     setQueueVersion((value) => value + 1);
@@ -394,6 +401,8 @@ export function Board(props: BoardProps<View>) {
 
   const suspend = (message = "") => {
     held.current.clear();
+    pressed.current.clear();
+    controller.current?.clear();
     touchHold.current = null;
     suspendedRef.current = true;
     setSuspended(true);
@@ -402,20 +411,19 @@ export function Board(props: BoardProps<View>) {
 
   useEffect(() => {
     const id = window.setInterval(() => {
+      pumpControls.current();
       if (!enabledRef.current || suspendedRef.current) {
         held.current.clear();
         touchHold.current = null;
         return;
       }
       const time = performance.now();
-      for (const [code, state] of held.current) {
-        const map = keyMap[code];
-        if (!map?.held) continue;
-        const delay = map.kind === "softDrop" ? SOFT_DROP_DELAY : DAS_DELAY;
+      for (const [kind, state] of held.current) {
+        const delay = kind === "softDrop" ? SOFT_DROP_DELAY : DAS_DELAY;
         const interval =
-          map.kind === "softDrop" ? SOFT_DROP_INTERVAL : DAS_INTERVAL;
+          kind === "softDrop" ? SOFT_DROP_INTERVAL : DAS_INTERVAL;
         const due = repeatTimes(state.since, time, delay, interval);
-        for (let i = state.emitted; i < due; i++) push(map.kind);
+        for (let i = state.emitted; i < due; i++) push(kind);
         state.emitted = Math.max(state.emitted, due);
       }
       const touch = touchHold.current;
@@ -431,49 +439,30 @@ export function Board(props: BoardProps<View>) {
     return () => window.clearInterval(id);
   }, []);
 
+  pumpControls.current = () => {
+    const actions =
+      controller.current?.sample(performance.now()) ?? new Set<string>();
+    for (const kind of held.current.keys())
+      if (!actions.has(kind)) held.current.delete(kind);
+    for (const kind of actions) {
+      if (!inputKinds.has(kind) || pressed.current.has(kind)) continue;
+      push(kind as InputKind);
+      if (repeatingInput(kind))
+        held.current.set(kind as InputKind, {
+          since: performance.now(),
+          emitted: 0,
+        });
+    }
+    pressed.current = actions;
+  };
   useEffect(() => {
-    const down = (event: KeyboardEvent) => {
-      if (ignoredTarget(event.target)) return;
-      if (suspendedRef.current) wake();
-      if (!enabledRef.current) return;
-      if (
-        event.code === "Space" &&
-        event.target instanceof HTMLElement &&
-        event.target.matches("button")
-      )
-        return;
-      const map = keyMap[event.code];
-      if (!map) return;
-      event.preventDefault();
-      if (event.repeat) return;
-      if (map.held) {
-        if (!held.current.has(event.code)) {
-          held.current.set(event.code, {
-            since: performance.now(),
-            emitted: 0,
-          });
-          push(map.kind);
-        }
-      } else {
-        push(map.kind);
-      }
-    };
-    const up = (event: KeyboardEvent) => {
-      held.current.delete(event.code);
-    };
-    const blur = () => {
-      suspend();
-    };
+    const blur = () => suspend();
     const visibility = () => {
       if (document.hidden) suspend();
     };
-    window.addEventListener("keydown", down);
-    window.addEventListener("keyup", up);
     window.addEventListener("blur", blur);
     document.addEventListener("visibilitychange", visibility);
     return () => {
-      window.removeEventListener("keydown", down);
-      window.removeEventListener("keyup", up);
       window.removeEventListener("blur", blur);
       document.removeEventListener("visibilitychange", visibility);
     };
@@ -562,6 +551,7 @@ export function Board(props: BoardProps<View>) {
 
   return (
     <section
+      ref={root}
       className={`tetris-board${spectator ? " is-spectator" : ""}`}
       data-tetris-phase={d.phase}
       data-tetris-seat={you}

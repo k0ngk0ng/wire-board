@@ -1,3 +1,4 @@
+import { useControllerCancel } from "../../../web/src/controllers/use-controller-cancel";
 import { useEffect, useRef, useState } from "react";
 import type { CSSProperties, PointerEvent as ReactPointerEvent } from "react";
 import type { BoardProps } from "../../../web/src/game-api/module";
@@ -37,11 +38,15 @@ export function Board({
 }: BoardProps<View>) {
   const n = data.options.size,
     controls = useMapControls({ aspect: 1, fitMobile: true });
+  const controllerRoot = useRef<HTMLElement>(null);
   const [selected, setSelected] = useState<number | null>(null),
     [focus, setFocus] = useState((n * n) >> 1),
     [resign, setResign] = useState(false),
     [windowRect, setWindowRect] = useState({ x: 0, y: 0, w: 600, h: 600 });
   const pinch = useRef<{ distance: number; zoom: number } | null>(null);
+  useControllerCancel(controllerRoot, () => {
+    setSelected(null);
+  });
   const cells = useRef<(HTMLButtonElement | null)[]>([]),
     scope = `${room.id}:${data.round}:${room.you}:${clock.epoch ?? 0}`,
     seen = useRef({ scope, id: data.last.id });
@@ -212,6 +217,7 @@ export function Board({
     star = n === 9 ? [2, 4, 6] : n === 13 ? [3, 6, 9] : [3, 9, 15];
   return (
     <section
+      ref={controllerRoot}
       className="weiqi-board"
       data-ply={data.ply}
       data-phase={data.phase}
@@ -277,6 +283,7 @@ export function Board({
           >
             <div style={controls.canvasStyle}>
               <div
+                data-controller-group="board"
                 className="weiqi-map"
                 style={controls.mapStyle}
                 role="group"
@@ -416,7 +423,7 @@ export function Board({
             </div>
           </div>
         </div>
-        <aside className="weiqi-actions">
+        <aside data-controller-group="actions" className="weiqi-actions">
           <div className="weiqi-minimap-row">
             <div>
               <strong>整盘概览</strong>
@@ -513,6 +520,7 @@ export function Board({
               </p>
               <button
                 type="button"
+                data-weiqi-mark-dead
                 disabled={!canScore || selected === null}
                 onClick={() => {
                   if (selected !== null)
@@ -525,6 +533,7 @@ export function Board({
                 type="button"
                 className="primary"
                 disabled={!canScore || data.confirmed[room.you]}
+                data-weiqi-score
                 onClick={() => void send("confirm_score")}
               >
                 确认计分
@@ -532,6 +541,7 @@ export function Board({
               <button
                 type="button"
                 disabled={!canScore}
+                data-weiqi-resume
                 onClick={() => void send("resume")}
               >
                 继续对弈
@@ -570,6 +580,7 @@ export function Board({
               <button
                 type="button"
                 disabled={!canPlay}
+                data-weiqi-pass
                 onClick={() => void send("pass")}
               >
                 停一手
@@ -588,6 +599,7 @@ export function Board({
             <button
               type="button"
               disabled={!data.canResign || !enabled}
+              data-weiqi-resign
               onClick={() => setResign(true)}
             >
               认输

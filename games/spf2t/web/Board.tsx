@@ -1,3 +1,5 @@
+import { useGameController } from "../../../web/src/controllers/use-game-controller";
+import { predictPair } from "./prediction";
 import {
   memo,
   useCallback,
@@ -701,32 +703,16 @@ function RoundBreakOverlay({
   );
 }
 
-const keyMap: Record<string, { kind: InputKind; held: boolean }> = {
-  ArrowLeft: { kind: "left", held: true },
-  KeyA: { kind: "left", held: true },
-  ArrowRight: { kind: "right", held: true },
-  KeyD: { kind: "right", held: true },
-  ArrowUp: { kind: "rotateCW", held: false },
-  KeyX: { kind: "rotateCW", held: false },
-  KeyZ: { kind: "rotateCCW", held: false },
-  ControlLeft: { kind: "rotateCCW", held: false },
-  ControlRight: { kind: "rotateCCW", held: false },
-  ArrowDown: { kind: "softDrop", held: true },
-  KeyS: { kind: "softDrop", held: true },
-  Space: { kind: "hardDrop", held: false },
-};
-
-const ignoredTarget = (target: EventTarget | null) => {
-  const element = target as HTMLElement | null;
-  if (!element) return false;
-  const tag = element.tagName;
-  return (
-    tag === "INPUT" ||
-    tag === "TEXTAREA" ||
-    tag === "SELECT" ||
-    element.isContentEditable
-  );
-};
+const inputKinds = new Set<string>([
+  "left",
+  "right",
+  "rotateCW",
+  "rotateCCW",
+  "softDrop",
+  "hardDrop",
+]);
+const repeatingInput = (kind: string) =>
+  kind === "left" || kind === "right" || kind === "softDrop";
 
 export function Board({
   room,
@@ -753,14 +739,44 @@ export function Board({
   const inputScope = useRef({ scope, seq: selfSeq });
   inputScope.current = { scope, seq: selfSeq };
   const queue = useRef<InputQueue>(new InputQueue(selfSeq));
+  const root = useRef<HTMLDivElement>(null);
+  const pumpControls = useRef<() => void>(() => {});
+  const pressed = useRef(new Set<string>());
+  const held = useRef(new Map<InputKind, { since: number; sent: number }>());
+  const [, setInputVersion] = useState(0);
   const sending = useRef(false);
   const [sendError, setSendError] = useState<string | null>(null);
   const [fx, setFx] = useState<Fx[]>([]);
   const fxTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const seen = useRef<Seen>({ scope: "", id: 0 });
+  const controller = useGameController({
+    gameId: "spf2t",
+    userId: room.seats[room.you]?.id ?? "",
+    scope,
+    root,
+    enabled: () => canPlay,
+    menu: () =>
+      !room.spectating && room.you >= 0 && !hosted && data.phase === "select"
+        ? (root.current?.querySelector<HTMLElement>(".spf2t-select") ?? null)
+        : null,
+    menuActions: {
+      left: "navLeft",
+      right: "navRight",
+      menuUp: "navUp",
+      softDrop: "navDown",
+      rotateCW: "confirm",
+      hardDrop: "confirm",
+      rotateCCW: "cancel",
+    },
+    changed: () => pumpControls.current(),
+    error: setSendError,
+  });
 
   useEffect(() => {
     queue.current.reset(selfSeq);
+    pressed.current.clear();
+    held.current.clear();
+    controller.current?.clear();
     sending.current = false;
     setSendError(null);
     setFx([]);
@@ -768,6 +784,7 @@ export function Board({
 
   useEffect(() => {
     queue.current.acknowledge(selfSeq);
+    setInputVersion((v) => v + 1);
   }, [selfSeq]);
 
   useEffect(() => {
@@ -791,6 +808,10 @@ export function Board({
         .catch((error: unknown) => {
           if (inputScope.current.scope !== sentScope) return;
           queue.current.reset(inputScope.current.seq);
+          controller.current?.clear();
+          held.current.clear();
+          pressed.current.clear();
+          setInputVersion((v) => v + 1);
           setSendError(
             error instanceof TypeError
               ? "网络连接中断，正在恢复操作"
@@ -806,62 +827,38 @@ export function Board({
     return () => clearInterval(id);
   }, [canPlay, scope, data.epoch, selfSeq, act, inputWindow]);
 
+  pumpControls.current = () => {
+    const raw =
+      controller.current?.sample(performance.now()) ?? new Set<string>();
+    const actions = new Set(
+      [...raw].map((a) => (a === "menuUp" ? "rotateCW" : a)),
+    );
+    const time = performance.now();
+    for (const kind of held.current.keys())
+      if (!actions.has(kind)) held.current.delete(kind);
+    for (const kind of actions) {
+      if (!inputKinds.has(kind) || pressed.current.has(kind)) continue;
+      pushInput(kind as InputKind);
+      if (repeatingInput(kind))
+        held.current.set(kind as InputKind, { since: time, sent: 0 });
+    }
+    pressed.current = actions;
+    for (const [kind, state] of held.current) {
+      const delay = kind === "softDrop" ? SOFT_DROP_DELAY : DAS_DELAY,
+        interval = kind === "softDrop" ? SOFT_DROP_INTERVAL : DAS_INTERVAL;
+      const due = repeatTimes(state.since, time, delay, interval);
+      for (let i = state.sent; i < due; i++) pushInput(kind);
+      state.sent = Math.max(state.sent, due);
+    }
+  };
   useEffect(() => {
-    if (!canPlay) return;
-    const held = new Map<
-      string,
-      { kind: InputKind; since: number; sent: number }
-    >();
-    const down = (event: KeyboardEvent) => {
-      if (ignoredTarget(event.target)) return;
-      if (
-        event.code === "Space" &&
-        (event.target as HTMLElement | null)?.tagName === "BUTTON"
-      )
-        return;
-      const mapped = keyMap[event.code];
-      if (!mapped) return;
-      event.preventDefault();
-      if (event.repeat) return;
-      queue.current.push(mapped.kind);
-      if (mapped.held) {
-        const delay = mapped.kind === "softDrop" ? SOFT_DROP_DELAY : DAS_DELAY;
-        held.set(event.code, {
-          kind: mapped.kind,
-          since: performance.now() + delay,
-          sent: 0,
-        });
-      }
-    };
-    const up = (event: KeyboardEvent) => {
-      held.delete(event.code);
-    };
-    const clear = () => held.clear();
-    window.addEventListener("keydown", down);
-    window.addEventListener("keyup", up);
-    window.addEventListener("blur", clear);
-    document.addEventListener("visibilitychange", clear);
-    const timer = setInterval(() => {
-      const time = performance.now();
-      const intervalKind = (kind: InputKind) =>
-        kind === "softDrop" ? SOFT_DROP_INTERVAL : DAS_INTERVAL;
-      for (const state of held.values()) {
-        const due = repeatTimes(state.since, time, 0, intervalKind(state.kind));
-        if (due > state.sent) {
-          for (let i = state.sent; i < due; i++) queue.current.push(state.kind);
-          state.sent = due;
-        }
-      }
-    }, 16);
+    const timer = setInterval(() => pumpControls.current(), 16);
     return () => {
-      window.removeEventListener("keydown", down);
-      window.removeEventListener("keyup", up);
-      window.removeEventListener("blur", clear);
-      document.removeEventListener("visibilitychange", clear);
       clearInterval(timer);
-      held.clear();
+      held.current.clear();
+      pressed.current.clear();
     };
-  }, [canPlay, scope]);
+  }, []);
 
   useEffect(() => {
     const file = data.phase === "select" ? BGM_FILES.select : BGM_FILES.battle;
@@ -923,7 +920,7 @@ export function Board({
 
   const pushInput = useCallback(
     (kind: InputKind) => {
-      if (canPlay) queue.current.push(kind);
+      if (canPlay && queue.current.push(kind)) setInputVersion((v) => v + 1);
     },
     [canPlay],
   );
@@ -940,8 +937,15 @@ export function Board({
   const phase = data.phase;
   const spectator = !!room.spectating || room.you < 0;
 
+  const players = data.players.map((p) =>
+    p.seat === room.you && !room.spectating
+      ? { ...p, active: predictPair(p, queue.current.unconfirmed(p.seq ?? 0)) }
+      : p,
+  );
+
   return (
     <div
+      ref={root}
       className="spf2t-game"
       data-spf2t-phase={phase}
       data-spf2t-format={format}
@@ -975,7 +979,7 @@ export function Board({
       ) : null}
       <div className="spf2t-stage">
         <BoardPanel
-          player={data.players[0]}
+          player={players[0]}
           name={names[0]}
           self={room.you === 0}
           data={data}
@@ -985,7 +989,7 @@ export function Board({
         />
         <Center data={data} names={names} assets={assets} />
         <BoardPanel
-          player={data.players[1]}
+          player={players[1]}
           name={names[1]}
           self={room.you === 1}
           data={data}

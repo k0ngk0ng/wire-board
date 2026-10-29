@@ -1,3 +1,4 @@
+import { useGameController } from "../../../web/src/controllers/use-game-controller";
 import { MAX_ROAD_SPEED } from "./dynamics";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type {
@@ -72,7 +73,9 @@ export function Board(props: BoardProps<View>) {
   const queue = useRef(new LatestDrive()),
     lifecycle = useRef(new ControlLifecycle()),
     input = useRef<Drive>({ ...neutral }),
-    keys = useRef(new Set<string>()),
+    mapped = useRef(new Map<string, number>()),
+    mappedPressed = useRef(new Set<string>()),
+    pumpControls = useRef<() => void>(() => {}),
     wheel = useRef<{ id: number; steer: number } | null>(null),
     throttles = useRef(new Set<number>()),
     brakes = useRef(new Set<number>()),
@@ -99,6 +102,32 @@ export function Board(props: BoardProps<View>) {
     !car?.finishAt;
   const scope = `${room.id}:${d.epoch}:${clock.epoch ?? 0}:${room.you}`;
   activeRef.current = enabled;
+  const controller = useGameController({
+    gameId: "racing",
+    userId: room.seats[room.you]?.id ?? "",
+    scope,
+    root: boardElement,
+    enabled: () => activeRef.current,
+    menu: () =>
+      mapOpen
+        ? (boardElement.current?.querySelector<HTMLElement>(
+            ".racing-map-modal",
+          ) ?? null)
+        : null,
+    menuActions: {
+      left: "navLeft",
+      right: "navRight",
+      throttle: "navUp",
+      brake: "navDown",
+      drift: "confirm",
+      map: "cancel",
+      cancel: "cancel",
+    },
+    keyboardTarget: (target) =>
+      !(target instanceof Element && target.closest("button")),
+    changed: () => pumpControls.current(),
+    error: setError,
+  });
   useLayoutEffect(() => {
     queue.current.sync({
       scope,
@@ -124,41 +153,52 @@ export function Board(props: BoardProps<View>) {
   const setInput = (next: Drive) => {
     queue.current.set(next);
     input.current = queue.current.value;
-    setDrive({ ...input.current });
+    const value = input.current;
+    setDrive((old) =>
+      old.steer === value.steer &&
+      old.throttle === value.throttle &&
+      old.brake === value.brake &&
+      old.brakeAmount === value.brakeAmount &&
+      old.drift === value.drift
+        ? old
+        : { ...value },
+    );
   };
   const compute = () => {
     if (!activeRef.current || paused.current) {
       setInput({ ...neutral });
       return;
     }
-    const held = keys.current;
-    const braking =
-      brakes.current.size > 0 ||
-      pedalKeys.current.brake.size > 0 ||
-      held.has("ArrowDown") ||
-      held.has("KeyS");
+    const values = mapped.current;
+    const pressure =
+      brakes.current.size > 0 || pedalKeys.current.brake.size > 0
+        ? 1
+        : (values.get("brake") ?? 0);
     setInput({
       steer:
         wheel.current?.steer ??
-        (held.has("ArrowRight") || held.has("KeyD") ? 1 : 0) -
-          (held.has("ArrowLeft") || held.has("KeyA") ? 1 : 0),
+        (values.get("right") ?? 0) - (values.get("left") ?? 0),
       throttle:
-        !braking &&
-        (throttles.current.size > 0 ||
-          pedalKeys.current.throttle.size > 0 ||
-          held.has("ArrowUp") ||
-          held.has("KeyW"))
-          ? 1
-          : 0,
-      brake: braking,
+        pressure > 0
+          ? 0
+          : Math.max(
+              throttles.current.size > 0 || pedalKeys.current.throttle.size > 0
+                ? 1
+                : 0,
+              values.get("throttle") ?? 0,
+            ),
+      brake: pressure > 0,
+      brakeAmount: pressure,
       drift:
         drifts.current.size > 0 ||
         pedalKeys.current.drift.size > 0 ||
-        held.has("Space"),
+        !!values.get("drift"),
     });
   };
   const release = () => {
-    keys.current.clear();
+    controller.current?.clear();
+    mapped.current.clear();
+    mappedPressed.current.clear();
     rearHold.current.clear();
     setRear(false);
     throttles.current.clear();
@@ -243,86 +283,45 @@ export function Board(props: BoardProps<View>) {
     }, 40);
     return () => clearInterval(id);
   }, []);
+  pumpControls.current = () => {
+    const actions =
+      controller.current?.sample(performance.now()) ?? new Set<string>();
+    const fresh = (name: string) =>
+      actions.has(name) && !mappedPressed.current.has(name);
+    const wasRear = rearHold.current.active;
+    if (actions.has("rear")) rearHold.current.press("mapped");
+    else rearHold.current.release("mapped");
+    if (wasRear !== rearHold.current.active) setRear(rearHold.current.active);
+    mapped.current = new Map(controller.current?.values ?? []);
+    if (actions.size && paused.current) wake();
+    if (fresh("reset")) void reset();
+    if (fresh("map")) {
+      release();
+      setMapOpen(true);
+    }
+    if (fresh("nextSkin")) chooseSkin((skin + 1) % skinNames.length);
+    if (fresh("previousSkin"))
+      chooseSkin((skin + skinNames.length - 1) % skinNames.length);
+    if (document.querySelector('[aria-modal="true"]') && !mapOpen) {
+      release();
+      return;
+    }
+    mappedPressed.current = actions;
+    compute();
+  };
   useEffect(() => {
-    const keyboard = new Set([
-      "KeyW",
-      "KeyA",
-      "KeyS",
-      "KeyD",
-      "ArrowUp",
-      "ArrowDown",
-      "ArrowLeft",
-      "ArrowRight",
-      "Space",
-    ]);
-    const ignored = (target: EventTarget | null) =>
-      target instanceof HTMLElement &&
-      (!!target.closest("input,select,textarea,[role=dialog]") ||
-        target.isContentEditable);
-    const down = (e: KeyboardEvent) => {
-      if (ignored(e.target) || e.metaKey || e.ctrlKey || e.altKey) return;
-      if (e.repeat && (paused.current || !keys.current.has(e.code))) {
-        if (keyboard.has(e.code) || e.code === "KeyB" || e.code === "KeyR")
-          e.preventDefault();
-        return;
-      }
-      if (e.code === "KeyB") {
-        if (mapOpen) return;
-        e.preventDefault();
-        keys.current.add("KeyB");
-        rearHold.current.press("KeyB");
-        setRear(rearHold.current.active);
-        return;
-      }
-      if (!activeRef.current) return;
-      if (e.code === "KeyR" && !e.repeat) {
-        e.preventDefault();
-        void reset();
-        return;
-      }
-      if (!keyboard.has(e.code)) return;
-      if (e.code === "Space" && e.target instanceof HTMLButtonElement) return;
-      e.preventDefault();
-      if (
-        e.target instanceof HTMLButtonElement &&
-        !e.target.closest("[data-game-controls]")
-      ) {
-        boardElement.current
-          ?.querySelector<HTMLCanvasElement>(".racing-chase")
-          ?.focus({ preventScroll: true });
-      }
-      wake();
-      keys.current.add(e.code);
-      compute();
-    };
-    const up = (e: KeyboardEvent) => {
-      if (e.code === "KeyB") {
-        keys.current.delete("KeyB");
-        rearHold.current.release("KeyB");
-        setRear(rearHold.current.active);
-        return;
-      }
-      if (!keyboard.has(e.code)) return;
-      keys.current.delete(e.code);
-      compute();
-    };
-    const suspend = () => {
-      suspendInput();
-    };
+    const suspend = () => suspendInput();
     const visibility = () => {
       if (document.hidden) suspend();
     };
-    window.addEventListener("keydown", down);
-    window.addEventListener("keyup", up);
     window.addEventListener("blur", suspend);
     document.addEventListener("visibilitychange", visibility);
     return () => {
-      window.removeEventListener("keydown", down);
-      window.removeEventListener("keyup", up);
       window.removeEventListener("blur", suspend);
       document.removeEventListener("visibilitychange", visibility);
     };
-  }, [scope, enabled, mobile, mapOpen]);
+  }, [scope]);
+
   useEffect(() => {
     if (!enabled || !d.controls.canSkin || skinSent.current === scope) return;
     skinSent.current = scope;
@@ -331,6 +330,16 @@ export function Board(props: BoardProps<View>) {
         setError(actionError(e)),
       );
   }, [scope, enabled, d.controls.canSkin]);
+  function chooseSkin(value: number) {
+    if (!latest.current.data.controls.canSkin) return;
+    setSkin(value);
+    try {
+      localStorage.setItem("racing.skin", String(value));
+    } catch {}
+    void latest.current
+      .act({ type: "skin", epoch: latest.current.data.epoch, skin: value })
+      .catch((e) => setError(actionError(e)));
+  }
   async function reset() {
     const p = latest.current;
     if (!p.data.controls.canReset) return;
@@ -592,6 +601,7 @@ export function Board(props: BoardProps<View>) {
       </div>
       <div className="racing-stage">
         <TrackCanvas
+          onInputFrame={() => pumpControls.current()}
           onReady={props.onReady}
           onLoadError={props.onLoadError}
           data={d}
@@ -685,7 +695,7 @@ export function Board(props: BoardProps<View>) {
             setRear(rearHold.current.active);
           }}
         >
-          向后看 <kbd>B</kbd>
+          向后看
         </button>
         <span>自动挡 · 无需换挡</span>
         <button
@@ -697,7 +707,6 @@ export function Board(props: BoardProps<View>) {
           {car && car.resetUntil > 0 && car.resetUntil + 3000 > serverNow
             ? `重置 ${Math.ceil((car.resetUntil + 3000 - serverNow) / 1000)}秒`
             : "重置"}{" "}
-          <kbd>R</kbd>
         </button>
       </div>
       {spectating ? (
@@ -723,6 +732,7 @@ export function Board(props: BoardProps<View>) {
             data-steer={drive.steer}
             data-throttle={drive.throttle}
             data-brake={drive.brake}
+            data-brake-amount={drive.brakeAmount ?? (drive.brake ? 1 : 0)}
             data-drift={drive.drift}
           >
             <div
@@ -777,13 +787,6 @@ export function Board(props: BoardProps<View>) {
               </svg>
               <small>滑动转向</small>
             </div>
-            <div className="racing-drive-info">
-              <span className="racing-key-hint">
-                WASD／方向键
-                <br />
-                空格手刹 · B 后视 · R 重置
-              </span>
-            </div>
             <div className="racing-pedals">
               <button
                 type="button"
@@ -793,27 +796,33 @@ export function Board(props: BoardProps<View>) {
                 disabled={!enabled}
                 {...heldButton("drift")}
               >
-                手刹<small>空格</small>
+                手刹
               </button>
               <button
                 type="button"
                 className={drive.brake ? "pressed" : ""}
+                style={{
+                  background: `linear-gradient(to top, #386d72 ${(drive.brakeAmount ?? 0) * 100}%, #2a4352 ${(drive.brakeAmount ?? 0) * 100}%)`,
+                }}
                 aria-label="刹车"
                 aria-pressed={drive.brake}
                 disabled={!enabled}
                 {...heldButton("brake")}
               >
-                刹车<small>S／↓</small>
+                刹车
               </button>
               <button
                 type="button"
+                style={{
+                  background: `linear-gradient(to top, #386d72 ${drive.throttle * 100}%, #2a4352 ${drive.throttle * 100}%)`,
+                }}
                 aria-label="油门"
                 aria-pressed={drive.throttle > 0}
                 className={drive.throttle > 0 ? "pressed" : ""}
                 disabled={!enabled}
                 {...heldButton("throttle")}
               >
-                油门<small>W／↑</small>
+                油门
               </button>
             </div>
           </div>

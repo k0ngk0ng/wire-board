@@ -531,7 +531,16 @@ func TestStarfortBrowserFixture(t *testing.T) {
 	if err = os.MkdirAll(out, 0755); err != nil {
 		t.Fatal(err)
 	}
-	s, err := server.New(server.Config{DataDir: t.TempDir(), InviteCode: "starfort-browser", AdminUsername: "上架管理员", AdminPassword: "starfort-browser-test", AssetsBaseURL: os.Getenv("WIRE_BOARD_STARFORT_ASSETS"), Modules: []gameapi.Module{scenarioModule()}}, os.DirFS(filepath.Join(root, "web", "dist")))
+	web := filepath.Join(root, "web", "dist")
+	if override := os.Getenv("WIRE_BOARD_STARFORT_BROWSER_WEB"); override != "" {
+		absolute, e := filepath.Abs(override)
+		rel, re := filepath.Rel(root, absolute)
+		if e != nil || re != nil || rel == ".." || strings.HasPrefix(rel, ".."+string(filepath.Separator)) {
+			t.Fatal("browser web root must stay inside repository")
+		}
+		web = absolute
+	}
+	s, err := server.New(server.Config{DataDir: t.TempDir(), InviteCode: "starfort-browser", AdminUsername: "上架管理员", AdminPassword: "starfort-browser-test", AssetsBaseURL: os.Getenv("WIRE_BOARD_STARFORT_ASSETS"), Modules: []gameapi.Module{scenarioModule()}}, os.DirFS(web))
 	if err != nil {
 		t.Fatal(err)
 	}

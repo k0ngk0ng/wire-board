@@ -213,12 +213,17 @@ export function Board({
           )}
           {d.phase === "declare" && c.canAct && (
             <>
-              <button disabled={busy} onClick={() => void send("pass")}>
+              <button
+                disabled={busy}
+                data-controller-action="pass"
+                onClick={() => void send("pass")}
+              >
                 不亮／不反
               </button>
               <button
                 className="primary"
                 disabled={busy || (!c.declarations.length && !c.canRebel)}
+                data-controller-action="declare"
                 onClick={() => setDeclareOpen(true)}
               >
                 亮主／反主
@@ -273,6 +278,7 @@ export function Board({
                 <button
                   className="primary"
                   disabled={busy || selected.length !== c.buryCount}
+                  data-controller-action="bury"
                   onClick={() => void send("bury", { cards: selected })}
                 >
                   确认扣底（{selected.length}/{c.buryCount}）
@@ -283,6 +289,7 @@ export function Board({
           {d.phase === "play" && !room.spectating && (
             <>
               <button
+                data-controller-action="hint"
                 disabled={busy || !c.canAct || !c.moves.length}
                 onClick={() => {
                   setSelected(c.moves[hint % c.moves.length].cards);
@@ -300,6 +307,7 @@ export function Board({
               <button
                 className="primary"
                 disabled={busy || !c.canAct || !selected.length}
+                data-controller-action="play"
                 onClick={() => void send("play", { cards: selected })}
               >
                 出牌（{selected.length}）

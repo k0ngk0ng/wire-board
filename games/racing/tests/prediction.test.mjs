@@ -125,3 +125,10 @@ test('sports-car prediction retains 324 km/h road speed and decelerates on grass
  assert.ok(predictCar({...fast,y:100},input,straight,200,1000).speed<=110.01);
  assert.ok(predictCar(fast,{...input,brake:true},straight,200,1000).speed<300);
 });
+
+test('predicted brake pressure matches partial/full and preserves legacy braking',()=>{
+ const light=predictCar(c,{...input,brake:true,brakeAmount:.25},track,200,1000);
+ const full=predictCar(c,{...input,brake:true,brakeAmount:1},track,200,1000);
+ const legacy=predictCar(c,{...input,brake:true},track,200,1000);
+ assert.ok(light.speed>full.speed);assert.equal(full.speed,legacy.speed);
+});

@@ -577,11 +577,11 @@
   font-variant-numeric: tabular-nums;
 }
 .sf-skill-tooltip {
-  position: absolute;
-  z-index: 3;
-  left: 0;
-  bottom: calc(100% + 7px);
-  width: 100%;
+  position: fixed;
+  z-index: 120;
+  bottom: auto;
+  width: min(280px, calc(100vw - 16px));
+  overflow-y: auto;
   box-sizing: border-box;
   padding: 10px;
   border: 1px solid #718567;
@@ -661,9 +661,4 @@
 }
 .sf-map-popover .sf-skill {
   flex-wrap: wrap;
-}
-.sf-map-popover .sf-skill-tooltip {
-  position: static;
-  flex-basis: 100%;
-  margin-top: 4px;
 }
