@@ -112,6 +112,43 @@ func httpRaceEvidence(t *testing.T, h *gametest.HTTP) func(string) {
 	}
 }
 
+// Invalid input must reach Apply's 400 response without treating a concurrent
+// timer's 409 as an input-validation result. Retry only that revision conflict,
+// with a fresh request/nonce; never change the invalid action or server clock.
+func httpRejectInvalidDrive(t *testing.T, c *gametest.Client, action map[string]any) {
+	t.Helper()
+	for attempt := 0; attempt < 12; attempt++ {
+		r := c.Room()
+		body, err := json.Marshal(c.ActionRequest(action))
+		if err != nil {
+			t.Fatal(err)
+		}
+		req, err := http.NewRequest("POST", c.Base+"/api/rooms/"+r["id"].(string), bytes.NewReader(body))
+		if err != nil {
+			t.Fatal(err)
+		}
+		req.Header.Set("Content-Type", "application/json")
+		res, err := c.HTTP.Do(req)
+		if err != nil {
+			t.Fatal(err)
+		}
+		var result map[string]any
+		err = json.NewDecoder(res.Body).Decode(&result)
+		res.Body.Close()
+		if err != nil {
+			t.Fatal(err)
+		}
+		if res.StatusCode == http.StatusBadRequest {
+			return
+		}
+		if res.StatusCode != http.StatusConflict {
+			t.Fatalf("invalid drive accepted or unexpected rejection: status=%d body=%v", res.StatusCode, result)
+		}
+		time.Sleep(5 * time.Millisecond)
+	}
+	t.Fatal("invalid drive never reached current-revision validation")
+}
+
 // A bad response token may be rejected by AcceptStale (409) before Apply (400).
 // Both reject it; neither is allowed to become a successful drive.
 func httpRejectDrive(t *testing.T, c *gametest.Client, action map[string]any) {
@@ -271,7 +308,7 @@ func TestRacingHTTPRejectSequenceExhaustion(t *testing.T) {
 			}
 			malicious := httpDrive(before, 0, 1)
 			malicious["seq"] = seq
-			c.Action(malicious, 400)
+			httpRejectInvalidDrive(t, c, malicious)
 			after := httpRaceState(t, c)
 			if after.Cars[0].Seq != 0 {
 				t.Fatal("rejected sequence exhausted the controller counter")
@@ -305,7 +342,7 @@ func TestRacingHTTPComputerTakeoverAndRestore(t *testing.T) {
 	for _, seq := range []int64{1025, 9007199254740991} {
 		malicious := httpDrive(initial, 0, 1)
 		malicious["seq"] = seq
-		c.Action(malicious, 400)
+		httpRejectInvalidDrive(t, c, malicious)
 	}
 	c.Action(httpDrive(initial, 0, .75), 200)
 	c.Command("autoplay", map[string]any{"enabled": true}, 200)
