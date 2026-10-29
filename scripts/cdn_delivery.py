@@ -58,6 +58,8 @@ def urlopen(request,timeout=60):
 BASE=re.compile(r'https://cdn\.ichenj\.com/bga/web/[a-f0-9]{40}/\Z')
 MIME={'.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.png':'image/png','.webp':'image/webp','.jpg':'image/jpeg','.woff':'font/woff','.woff2':'font/woff2','.ttf':'font/ttf','.wasm':'application/wasm'}
 CONTRA_MIME={'.js':'text/javascript','.wasm':'application/wasm','.json':'application/json','.idx':'application/octet-stream','.rgb':'application/octet-stream','.wav':'audio/wav'}
+MIME.update({'.jpeg':'image/jpeg','.gif':'image/gif','.json':'application/json','.txt':'text/plain','.md':'text/plain','.mp3':'audio/mpeg','.wav':'audio/wav','.ogg':'audio/ogg','.idx':'application/octet-stream','.rgb':'application/octet-stream'})
+SERVER_METADATA={'index.html','game-load-manifest.json','contra-delivery.json','cdn-assets-manifest.json'}
 SHA256=re.compile(r'[a-f0-9]{64}\Z')
 def sha(data):return hashlib.sha256(data).hexdigest()
 def contra_inventory(dist,base):
@@ -102,21 +104,28 @@ def contra_inventory(dist,base):
 
 def inventory(dist,base):
  if not BASE.fullmatch(base):raise ValueError('Expected immutable commit-bound CDN base')
- folder=dist/'assets'
- if folder.is_symlink():raise ValueError('Symlink asset directory')
+ if dist.is_symlink():raise ValueError('Symlink public directory')
+ runtime_rows=contra_inventory(dist,base)
  rows=[]
- candidates=sorted(folder.rglob('*'))
- if (dist/'favicon.svg').exists():candidates.append(dist/'favicon.svg')
- for p in candidates:
-  if p.is_symlink():raise ValueError('Symlink in asset directory')
+ for p in sorted(dist.rglob('*')):
+  if p.is_symlink():raise ValueError('Symlink in public directory')
   if not p.is_file():continue
-  if p.suffix=='.gz':continue # CDN negotiates compression; publish canonical bytes.
-  if p.suffix not in MIME:raise ValueError('Unexpected public asset type: '+p.name)
-  data=p.read_bytes();rel=p.relative_to(dist).as_posix()
-  encoding='gzip' if p.suffix in ('.js','.css','.svg') else ''
-  rows.append({'url':base+rel,'path':rel,'bytes':len(data),'sha256':sha(data),'mime':MIME[p.suffix],'encoding':encoding,'wireBytes':len(gzip.compress(data,mtime=0)) if encoding else len(data)})
- rows.extend(contra_inventory(dist,base))
- if not rows:raise ValueError('No compiled assets')
+  rel=p.relative_to(dist).as_posix()
+  if not re.fullmatch(r'[A-Za-z0-9._/-]+',rel) or any(part.startswith('.') for part in Path(rel).parts):raise ValueError('Noncanonical public asset path: '+rel)
+  if rel in SERVER_METADATA or rel.startswith('contra/'):continue
+  if p.suffix=='.gz':
+   canonical=p.with_suffix('')
+   if not canonical.is_file() or canonical.suffix not in MIME or gzip.decompress(p.read_bytes())!=canonical.read_bytes():raise ValueError('Invalid precompressed asset: '+rel)
+   continue
+  if p.suffix not in MIME:raise ValueError('Unexpected public asset type: '+rel)
+  data=p.read_bytes()
+  if not data:raise ValueError('Empty public asset: '+rel)
+  encoding='gzip' if p.suffix in ('.js','.css','.svg','.json','.txt','.md') else ''
+  row={'url':base+rel,'path':rel,'bytes':len(data),'sha256':sha(data),'mime':MIME[p.suffix],'encoding':encoding,'wireBytes':len(gzip.compress(data,mtime=0)) if encoding else len(data)}
+  if p.suffix in ('.mp3','.wav','.ogg'):row['requiresRange']=True
+  rows.append(row)
+ rows.extend(runtime_rows)
+ if not rows:raise ValueError('No published assets')
  return rows
 
 def decoded(body,headers):
@@ -161,8 +170,44 @@ def trim(dist,report):
   if report.get('contraDeliverySHA256')!=sha(raw):raise ValueError('Contra delivery receipt changed or was not verified')
   contra_prefix=json.loads(raw)['prefix']
  elif report.get('contraDeliverySHA256'):raise ValueError('Verified Contra delivery receipt is missing')
- if (dist/'assets').exists():shutil.rmtree(dist/'assets')
- if contra_prefix:shutil.rmtree(dist/contra_prefix)
+ manifest={'version':1,'assetBase':base,'files':{'/'+row['path']:{key:row[key] for key in ('url','bytes','sha256','mime')} for row in rows}}
+ (dist/'cdn-assets-manifest.json').write_text(json.dumps(manifest,separators=(',',':'))+'\n')
+ for row in rows:
+  target=dist/row['path'];target.unlink()
+  compressed=target.with_suffix(target.suffix+'.gz')
+  if compressed.exists():compressed.unlink()
+ for p in sorted(dist.rglob('*'),key=lambda p:len(p.parts),reverse=True):
+  if p.is_dir() and not any(p.iterdir()):p.rmdir()
+ remaining={p.relative_to(dist).as_posix() for p in dist.rglob('*') if p.is_file()}
+ if not remaining<=SERVER_METADATA:raise ValueError('Client payload remains in server assets: '+str(sorted(remaining-SERVER_METADATA)))
+
+def verify_server_package(root,dist,binary,report):
+ if dist.is_symlink() or binary.is_symlink():raise ValueError('Symlink package input')
+ root=root.resolve();dist=dist.resolve();binary=binary.resolve()
+ binary.relative_to(root)
+ if not report.get('passed') or not report.get('files'):raise ValueError('Missing verified CDN report')
+ prefix=dist.relative_to(root).as_posix()+'/'
+ actual={p.relative_to(dist).as_posix():p for p in dist.rglob('*') if p.is_file()}
+ if not {'index.html','game-load-manifest.json','cdn-assets-manifest.json'}<=set(actual) or not set(actual)<=SERVER_METADATA:raise ValueError('Server assets are not metadata-only')
+ if any(p.is_symlink() for p in dist.rglob('*')):raise ValueError('Symlink in server assets')
+ for name,key in [('index.html','indexSHA256'),('game-load-manifest.json','manifestSHA256')]:
+  if report.get(key)!=sha(actual[name].read_bytes()):raise ValueError('Server entry metadata differs from CDN verification')
+ if 'contra-delivery.json' in actual or report.get('contraDeliverySHA256'):
+  if 'contra-delivery.json' not in actual or report.get('contraDeliverySHA256')!=sha(actual['contra-delivery.json'].read_bytes()):raise ValueError('Server runtime receipt differs from CDN verification')
+ manifest=json.loads(actual['cdn-assets-manifest.json'].read_bytes())
+ rows=report['files'];first=rows[0];base=first['url'][:-len(first['path'])]
+ expected={'version':1,'assetBase':base,'files':{'/'+r['path']:{k:r[k] for k in ('url','bytes','sha256','mime')} for r in rows}}
+ if not BASE.fullmatch(base) or manifest!=expected:raise ValueError('Server redirects differ from verified CDN assets')
+ receipt=json.loads(binary.with_suffix(binary.suffix+'.build.json').read_bytes())
+ data=binary.read_bytes()
+ if receipt.get('sha256')!=sha(data) or receipt.get('bytes')!=len(data):raise ValueError('Binary differs from compiler receipt')
+ embedded={row['path']:row['sha256'] for row in receipt.get('inputs',[]) if row['path'].startswith(prefix)}
+ expected_inputs={prefix+name:sha(path.read_bytes()) for name,path in actual.items()}
+ if embedded!=expected_inputs:raise ValueError('Compiler embedded client payloads or stale server metadata')
+ for row in receipt['inputs']:
+  if re.search(r'(?:^|/)games/[^/]+/assets/public/',row['path']) or row['path'].startswith('.local/web-public/'):
+   raise ValueError('Client media source embedded outside the server asset directory')
+ return {'passed':True,'binarySHA256':sha(data),'binaryBytes':len(data),'embeddedFiles':sorted(embedded),'cdnFileCount':len(rows),'metadataOnly':True}
 
 def credentials():
  def read(env,file):
@@ -229,8 +274,14 @@ def verify_once(row):
  return row
 
 def main():
- p=argparse.ArgumentParser(description=__doc__);p.add_argument('action',choices=['publish','verify','trim']);p.add_argument('--dist',type=Path,default=Path('web/dist'));p.add_argument('--report',type=Path,default=Path('.local/cdn-delivery/verified.json'));args=p.parse_args()
- if args.action=='trim':trim(args.dist,json.loads(args.report.read_text()));print('Removed verified compiled assets from server packaging');return
+ p=argparse.ArgumentParser(description=__doc__);p.add_argument('action',choices=['publish','verify','trim','check-package']);p.add_argument('--dist',type=Path,default=Path('web/dist'));p.add_argument('--report',type=Path,default=Path('.local/cdn-delivery/verified.json'));p.add_argument('--binary',type=Path,default=Path('dist/package/wire-board'));args=p.parse_args()
+ if args.action=='check-package':
+  output=args.report.parent/'server-package.json'
+  try:result=verify_server_package(Path.cwd(),args.dist,args.binary,json.loads(args.report.read_text()))
+  except Exception as error:
+   output.write_text(json.dumps({'passed':False,'error':str(error)},indent=2)+'\n');raise
+  output.write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result));return
+ if args.action=='trim':trim(args.dist,json.loads(args.report.read_text()));print('Removed all verified client payloads from server packaging');return
  manifest=json.loads((args.dist/'game-load-manifest.json').read_text());base=manifest.get('assetBase','');rows=inventory(args.dist,base)
  known={r['url']:r for r in rows}
  for files in manifest['games'].values():

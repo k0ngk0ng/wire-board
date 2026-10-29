@@ -295,6 +295,7 @@ jobs:
           mkdir -p dist/package
           python3 -B games/contra/build/native.py --runtime .local/contra-ci-runtime/manifest.json --out dist/package/wire-board --goos linux --goarch amd64
           test -s dist/package/wire-board.build.json
+          python3 -B scripts/cdn_delivery.py check-package --binary dist/package/wire-board
           cp .local/ci/plan.json dist/package/verification-plan.json
           cp README.md .env.example compose.yaml dist/package/
           cp scripts/update.sh dist/package/update.sh
@@ -302,6 +303,14 @@ jobs:
           cp docs/deployment.md docs/admin.md docs/THIRD_PARTY.md dist/package/docs/
           tar -C dist/package -czf dist/wire-board-linux-amd64.tar.gz .
           cd dist && sha256sum wire-board-linux-amd64.tar.gz > SHA256SUMS
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: server-package-boundary
+          path: .local/cdn-delivery/server-package.json
+          if-no-files-found: warn
+          include-hidden-files: true
+          retention-days: 30
       - name: Smoke test Linux binary
         env:
           INVITE_CODE: ci-smoke-only

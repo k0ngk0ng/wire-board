@@ -201,3 +201,12 @@ input adapters. Do not run unrelated complete-match/rules matrices.
 - Verify real foul decisions, server-accepted placement and shot, visible charge,
   disconnect/rearm, mixed sources, settings cancellation, fine aiming, spin,
   remapping, full screen and native 320px touch, with reproducible artifacts.
+
+## Metadata-only production asset delivery
+
+- The production-module fixture must not install the private Contra media route.
+  It uses verified runtime identities and serves only the trimmed asset directory.
+- Actual CDN-loaded application modules, Canvas images, native audio and Wasm
+  must still reach ready state and perform the original keyboard/pad/touch actions.
+  Relative media paths follow the production redirect; no asset response or game
+  state is fabricated. Run representative clients against the verified build.
