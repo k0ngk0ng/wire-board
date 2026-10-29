@@ -622,6 +622,7 @@ export function Table(props: Props) {
       ...Array.from({ length: 8 }, (_, i) => `ball-${i}`),
     ]) {
       const img = new Image();
+      img.crossOrigin = "anonymous";
       const path = `/snooker/v1/${name}.webp`;
       img.onload = () => {
         if (active) setArt((old) => ({ ...old, [name]: img }));
