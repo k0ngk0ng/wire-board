@@ -91,7 +91,7 @@ games/<id>/
 
 [web/src/game-api/module.ts](../web/src/game-api/module.ts) 定义 `defineGame`。模块提供名称、介绍、人数范围、棋盘及可选的配置编辑、规则和封面组件。人数不是连续范围时提供 `playerCounts`（例如 `[2, 4, 6]`），首页据此准确显示可选人数。分类通过 `category` 声明为 `board`、`poker` 或 `realtime`，大厅、创建和后台共用分类下拉。必须满桌开局时声明 `requiresFullTable: true`，后端仍须严格校验实际人数和模式。支持机器人时声明 `supportsBots: true`，并与后端能力保持一致。自行播放音效的游戏声明 `ownsSounds: true`，宿主停止重复播放通用动作音；事件到音效的映射保留在游戏目录；通过 `BoardProps.audio.play([音效 URL])` 交给平台播放，退出时调用 `audio.stop()` 清理本游戏队列。播放器、用户交互解锁、静音、停止和失败处理由平台统一维护。游戏不得另建播放器或绕过全局静音。
 
-新游戏复用宿主的创建卡片、等待房间、玩家栏和回合提示。`Cover` 提供与既有游戏一致的 SVG 插画；`PlayerSummary` 可在公共玩家卡中补充本游戏的公开资产摘要。不得通过游戏 CSS 隐藏或另行重排宿主布局；文字与背景须成对定义并验证最终对比度，详见 [AGENTS.md](../AGENTS.md)。
+新游戏复用宿主的创建卡片、等待房间、玩家栏和回合提示。`Cover` 提供与既有游戏一致的 SVG 插画；`PlayerSummary` 可在公共玩家卡中补充本游戏的公开资产摘要。不得通过游戏 CSS 隐藏或另行重排宿主布局；文字与背景须成对定义并验证最终对比度，详见 [界面与交互开发规范](../rules/ui.md)。
 
 棋盘收到本游戏的 `data`、房间席位、当前观看者、`busy`、素材地址、全局音效开关 `sound`、服务器时间基准 `clock`，以及 `act`／`command`。一般游戏行动使用 `act({ ...本游戏动作 })`；平台负责加入当前版本和幂等键。`room.game.actors` 可用于提示当前行动者，但所有合法性仍由服务端确认。
 

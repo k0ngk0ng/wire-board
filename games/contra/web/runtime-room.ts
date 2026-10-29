@@ -196,6 +196,7 @@ export function createRoomTransport(options: Options): RuntimeTransport & {
     if (!recovering) readySent.add(key);
   };
   return {
+    actor: () => options.actor,
     initial: async () => {
       const value = await sync();
       if (!value.view.snapshot.presentation || !value.view.snapshot.audio)

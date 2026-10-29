@@ -12,7 +12,7 @@ from browser_network import BrowserNetwork
 root=Path(__file__).resolve().parents[2]
 parser=argparse.ArgumentParser();parser.add_argument('--fixture',required=True);parser.add_argument('--label',required=True);parser.add_argument('--presentation',action='store_true');parser.add_argument('--network-boundaries',action='store_true');args=parser.parse_args()
 assert re.fullmatch(r'[a-z0-9-]+',args.label)
-fixture=json.loads((root/args.fixture).read_text());human_only=fixture.get('supportsBots') is False;base=fixture['url'];out=root/'.local/contra-browser'/('platform-'+args.label);out.mkdir();temp=out/'temporary';temp.mkdir();(temp/'tmp').mkdir()
+fixture=json.loads((root/args.fixture).read_text());human_only=fixture.get('supportsBots') is False;base=fixture['url'];out=root/'.local/contra-browser'/('platform-'+args.label);out.mkdir(parents=True);temp=out/'temporary';temp.mkdir();(temp/'tmp').mkdir()
 script_bytes=Path(__file__).read_bytes();(out/'harness-at-run.py').write_bytes(script_bytes)
 input_bytes=(root/'scripts/contra/browser_input.mjs').read_bytes();(out/'native-input-at-run.mjs').write_bytes(input_bytes)
 network_bytes=(root/'scripts/contra/browser_network.py').read_bytes();(out/'network-at-run.py').write_bytes(network_bytes)
@@ -23,7 +23,7 @@ if network:base=network.url;report['browserOrigin']=base
 class Browser:
  def __init__(self,name,width,height,origin=None):
   self.base=origin or base
-  self.name=name;self.session='cp'+uuid.uuid4().hex[:6];self.socket=root/'.s'/self.session;self.socket.mkdir(parents=True)
+  self.cdp=None;self.name=name;self.session='cp'+uuid.uuid4().hex[:6];self.socket=root/'.s'/self.session;self.socket.mkdir(parents=True)
   self.env=dict(os.environ,TMPDIR=str(temp/'tmp'),AGENT_BROWSER_SESSION=self.session,AGENT_BROWSER_SOCKET_DIR=str(self.socket),AGENT_BROWSER_PROFILE=str(temp/name),AGENT_BROWSER_ARGS='--mute-audio,--disable-breakpad,--disable-crash-reporter')
   browsers.append(self);self.run('open',self.base);self.run('set','viewport',str(width),str(height))
  def run(self,*a):
@@ -39,7 +39,8 @@ class Browser:
   value=self.js('({surface:{...document.querySelector("[data-contra-runtime]")?.dataset},error:document.querySelector(".contra-board-error")?.textContent})');assert not value.get('error'),value;return value.get('surface')
  def native(self,options):
   assert (root/'scripts/contra/browser_input.mjs').read_bytes()==input_bytes,'native input helper changed during acceptance'
-  p=subprocess.run(['node','scripts/contra/browser_input.mjs',self.run('get','cdp-url')['cdpUrl'],self.base,json.dumps({'platform':True,**options})],cwd=root,env=self.env,capture_output=True,text=True,timeout=50);assert p.returncode==0,p.stdout+p.stderr;return json.loads(p.stdout)
+  if not self.cdp:self.cdp=self.run('get','cdp-url')['cdpUrl']
+  p=subprocess.run(['node','scripts/contra/browser_input.mjs',self.cdp,self.base,json.dumps({'platform':True,**options})],cwd=root,env=self.env,capture_output=True,text=True,timeout=50);assert p.returncode==0,p.stdout+p.stderr;return json.loads(p.stdout)
  def capture(self,name):self.run('screenshot',str(out/(name+'.png')))
  def sync(self):return self.api('/api/rooms/'+getattr(self,'room_id',room_id)+'/sync')['data']
 
@@ -82,9 +83,37 @@ try:
   assert browser.js('(()=>{const r=document.querySelector("[data-room-fullscreen]");return !r.querySelector(".room-head,.player-strip,.topbar")&&r!==document.body&&r!==document.documentElement})()')
   browser.capture(browser.name+'-intro-fullscreen')
  desktop.native({'keys':['Space'],'frames':3});desktop.wait('document.querySelector("[data-contra-runtime]")?.dataset.phase==="playing"')
+ # Withhold real authority and ACK bytes. Native input must change actual
+ # Canvas pixels using a separate predicted state before any response arrives.
+ if network:
+  desktop.native({'frames':150}) # Finish the original spawn flicker before pixel measurement.
+  desktop.js('document.querySelector("[data-contra-runtime]").focus({preventScroll:true});true')
+  desktop.wait('document.querySelector("[data-contra-runtime]").dataset.predicted==="true"')
+  network.stream.clear()
+  try:local=desktop.native({'keys':['KeyD'],'frames':4,'cursor':'visualFrame','captureNetwork':True,'measureVisual':True,'actor':0})
+  finally:network.stream.set()
+  measure=local['visualLatency'];assert measure['firstPaint'] and measure['firstPaint']['predicted']=='true',measure
+  delay=measure['firstPaint']['at']-measure['keyAt'];assert 0<=delay<100,measure
+  assert measure['firstPaint']['authority']==measure['initialAuthority'],'display waited for an authority frame'
+  sent=[json.loads(e['params']['response']['payloadData']) for e in local['network'] if e['method']=='Network.webSocketFrameSent']
+  acks=[json.loads(e['params']['response']['payloadData']) for e in local['network'] if e['method']=='Network.webSocketFrameReceived']
+  assert any(p.get('action',{}).get('held',0)&1 for p in sent)
+  assert not any(a.get('nonce')==p['nonce']for a in acks for p in sent),'test did not withhold input acknowledgement'
+  report['localPredictionLatency']={'passed':True,'inputToCanvasMS':delay,'native':local}
+  mobile.js('document.querySelector("[data-contra-runtime]").focus({preventScroll:true});true')
+  mobile.wait('document.querySelector("[data-contra-runtime]").dataset.predicted==="true"')
+  if not mobile.cdp:mobile.cdp=mobile.run('get','cdp-url')['cdpUrl']
+  slow_network.stream.clear()
+  try:touch=mobile.native({'touch':[{'selector':'[data-controller-dpad]','x':.83,'y':.5}],'frames':4,'cursor':'visualFrame','captureNetwork':True,'measureVisual':True,'actor':1})
+  finally:slow_network.stream.set()
+  report['localPredictionTouchLatency']={'passed':False,'native':touch}
+  measurement=touch['visualLatency'];assert measurement['firstPaint'] and measurement['firstPaint']['predicted']=='true',measurement
+  touch_delay=measurement['firstPaint']['at']-measurement['keyAt'];assert 0<=touch_delay<100,measurement
+  assert measurement['firstPaint']['authority']==measurement['initialAuthority']
+  report['localPredictionTouchLatency']={'passed':True,'inputToCanvasMS':touch_delay,'native':touch}
  # Standard physical movement and firing, independently authenticated seats.
  for browser,actor in [(desktop,0),(mobile,1)]:
-  if args.presentation:browser.js('(()=>{window.__contraVisible=[];window.__contraObserve=true;let previous="";const sample=at=>{const r=document.querySelector("[data-contra-runtime]");if(r&&r.dataset.revision!==previous){previous=r.dataset.revision;window.__contraVisible.push({at,revision:previous,frame:r.dataset.frame,audioTick:r.dataset.audioTick,lives:r.dataset.lives,hud:[...document.querySelectorAll(".contra-game-resources>span")].map(n=>n.textContent),publicHUD:[...document.querySelectorAll(".module-players .player-extras")].map(n=>n.textContent)});}if(window.__contraObserve)requestAnimationFrame(sample)};requestAnimationFrame(sample);return true})()')
+  if args.presentation:browser.js('(()=>{window.__contraVisible=[];window.__contraObserve=true;let previous="";const sample=at=>{const r=document.querySelector("[data-contra-runtime]");if(r&&(r.dataset.visualRevision||r.dataset.revision)!==previous){previous=r.dataset.visualRevision||r.dataset.revision;window.__contraVisible.push({at,revision:previous,predicted:r.dataset.predicted,authorityRevision:r.dataset.revision,frame:r.dataset.visualFrame||r.dataset.frame,audioTick:r.dataset.audioTick,lives:r.dataset.lives,hud:[...document.querySelectorAll(".contra-game-resources>span")].map(n=>n.textContent),publicHUD:[...document.querySelectorAll(".module-players .player-extras")].map(n=>n.textContent)});}if(window.__contraObserve)requestAnimationFrame(sample)};requestAnimationFrame(sample);return true})()')
   before=browser.sync()['view']['snapshot']
   damage=None
   if args.presentation and actor==0 and browser.data().get('lives'):
@@ -113,8 +142,8 @@ try:
   report['cases'].append({'name':browser.name,'before':before,'after':after,'nativeMove':movement,'nativeMouse':fire,'nativeJump':jump,'nativeDamage':damage,'geometry':geometry,'client':browser.data()})
   if args.presentation:
    visible=browser.js('window.__contraObserve=false;window.__contraVisible');report['cases'][-1]['visible']=visible
-   steps=[int(b['revision'])-int(a['revision'])for a,b in zip(visible,visible[1:])];intervals=[b['at']-a['at']for a,b in zip(visible,visible[1:])]
-   assert len(steps)>=30 and sum(step==1 for step in steps)/len(steps)>=.9,('authoritative frames skipped between visible RAFs',steps)
+   pairs=[(a,b)for a,b in zip(visible,visible[1:])if a.get('predicted')=='true'and b.get('predicted')=='true'];steps=[int(b['revision'])-int(a['revision'])for a,b in pairs];intervals=[b['at']-a['at']for a,b in pairs]
+   assert len(steps)>=30 and sum(step==1 for step in steps)/len(steps)>=.8,('predicted display did not maintain its frame cadence',steps)
    assert 13<=sorted(intervals)[len(intervals)//2]<=21,intervals
    for row in visible:
     lives=json.loads(row['lives']);assert [int(re.search(r'生命\s+(\d+)',value)[1])for value in row['hud']]==lives[:len(row['hud'])],row

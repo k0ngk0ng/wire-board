@@ -1,0 +1,8 @@
+# 街霸方块开发规范
+
+本游戏同时遵循[通用规范](common.md)、[即时游戏开发规范](realtime.md)、[复刻游戏开发规范](recreation.md)、[控制器开发规范](controllers.md)。界面、加载、音效等改动按 [AGENTS.md](../AGENTS.md) 的专题索引读取对应规范。
+
+## 相关资料
+
+- [模块目录](../games/spf2t/)
+- [玩法、实现与验收说明](../games/spf2t/README.md)
