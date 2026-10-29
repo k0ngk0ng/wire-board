@@ -10,6 +10,7 @@ import (
 	engine "github.com/k0ngk0ng/wire-board/games/contra/engine"
 	runtime "github.com/k0ngk0ng/wire-board/games/contra/runtime"
 	contra "github.com/k0ngk0ng/wire-board/games/contra/server"
+	"github.com/k0ngk0ng/wire-board/internal/production"
 	"github.com/k0ngk0ng/wire-board/internal/server"
 	"net"
 	"net/http"
@@ -45,6 +46,15 @@ func TestControllerGamepadBrowserFixture(t *testing.T) {
 		t.Fatal("use a fresh fixture directory", err)
 	}
 	modules := games.Modules()
+	if os.Getenv("WIRE_BOARD_GAMEPAD_PRODUCTION") == "1" {
+		if os.Getenv("WIRE_BOARD_GAMEPAD_CONTRA_PUBLIC") != "" {
+			t.Fatal("production fixture must not mount a private media server")
+		}
+		modules, err = production.Modules()
+		if err != nil {
+			t.Fatal(err)
+		}
+	}
 	mux := http.NewServeMux()
 	if public := os.Getenv("WIRE_BOARD_GAMEPAD_CONTRA_PUBLIC"); public != "" {
 		public = inside(public)

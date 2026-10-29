@@ -40,13 +40,31 @@ func acceptsGzip(value string) bool {
 }
 func staticFiles(files fs.FS) http.Handler {
 	fallback := http.FileServerFS(files)
+	delivery, deliveryErr := readDeliveredAssets(files)
 	type cached struct {
 		data []byte
 		etag string
 	}
 	var cache sync.Map
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path == "/" || r.URL.Path == "/index.html" || r.URL.Path == "/game-load-manifest.json" {
+		if deliveryErr != nil {
+			w.Header().Set("Cache-Control", "no-store")
+			http.Error(w, "Asset delivery unavailable", http.StatusServiceUnavailable)
+			return
+		}
+		if delivery != nil && !serverMetadataPath(r.URL.Path) {
+			w.Header().Set("Cache-Control", "no-store")
+			if r.Method != http.MethodGet && r.Method != http.MethodHead {
+				w.Header().Set("Allow", "GET, HEAD")
+				http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+			} else if asset, ok := delivery.Files[r.URL.Path]; ok {
+				http.Redirect(w, r, asset.URL, http.StatusTemporaryRedirect)
+			} else {
+				http.NotFound(w, r)
+			}
+			return
+		}
+		if serverMetadataPath(r.URL.Path) {
 			w.Header().Set("Cache-Control", "no-cache")
 		}
 		if !hashedAsset.MatchString(r.URL.Path) {

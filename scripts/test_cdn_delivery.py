@@ -36,6 +36,81 @@ class Delivery(unittest.TestCase):
   with self.assertRaises(ValueError):cdn.trim(self.dist,{'passed':True,'files':altered})
   cdn.trim(self.dist,{'passed':True,'files':rows});self.assertFalse((self.dist/'assets').exists());self.assertTrue((self.dist/'index.html').exists())
 
+class GeneralMediaDelivery(unittest.TestCase):
+ # Failure inventory: ordinary game media remains embedded; audio loses Range;
+ # client maps/loaders are skipped; metadata leaks; mismatched verification trims
+ # originals; generated redirects point outside the immutable commit namespace.
+ setUp=Delivery.setUp
+ def media(self):
+  payloads={'snooker/v1/ball.webp':b'RIFF-image','snooker/v1/music.mp3':b'ID3'+bytes(range(128)),
+            'rail/v1/map.json':b'{"cities":[]}','other/v1/runtime.js':b'export const ready=true;',
+            'other/v1/runtime.wasm':b'\x00asm\x01\x00\x00\x00','other/v1/font.woff2':b'wOF2-font',
+            'other/v1/LICENSE.txt':b'public license','favicon.svg':b'<svg/>'}
+  for name,body in payloads.items():
+   p=self.dist/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(body)
+  (self.dist/'game-load-manifest.json').write_text('{}')
+  return payloads
+ def test_every_public_payload_is_verified_with_correct_type(self):
+  payloads=self.media();rows=cdn.inventory(self.dist,self.base);by_path={r['path']:r for r in rows}
+  self.assertEqual(set(by_path),set(payloads)|{'assets/index-abcdefgh.js'})
+  for name,body in payloads.items():
+   self.assertEqual(by_path[name]['sha256'],cdn.sha(body));self.assertEqual(by_path[name]['url'],self.base+name)
+  self.assertEqual(by_path['snooker/v1/music.mp3']['mime'],'audio/mpeg')
+  self.assertTrue(by_path['snooker/v1/music.mp3']['requiresRange']);self.assertEqual(by_path['snooker/v1/music.mp3']['encoding'],'')
+  self.assertEqual(by_path['rail/v1/map.json']['mime'],'application/json')
+  self.assertEqual(by_path['other/v1/runtime.js']['encoding'],'gzip')
+ def test_trim_leaves_metadata_and_exact_redirect_inventory_only(self):
+  payloads=self.media();rows=cdn.inventory(self.dist,self.base)
+  cdn.trim(self.dist,{'passed':True,'files':rows})
+  self.assertEqual({p.relative_to(self.dist).as_posix() for p in self.dist.rglob('*') if p.is_file()},
+                   {'index.html','game-load-manifest.json','cdn-assets-manifest.json'})
+  manifest=json.loads((self.dist/'cdn-assets-manifest.json').read_text())
+  self.assertEqual(manifest['version'],1);self.assertEqual(manifest['assetBase'],self.base)
+  self.assertEqual(set(manifest['files']),{'/'+r['path'] for r in rows})
+  for row in rows:self.assertEqual(manifest['files']['/'+row['path']]['url'],row['url'])
+ def test_game_media_tamper_and_symlinks_fail_before_removal(self):
+  self.media();rows=cdn.inventory(self.dist,self.base);p=self.dist/'snooker/v1/ball.webp';p.write_bytes(b'tampered')
+  with self.assertRaises(ValueError):cdn.trim(self.dist,{'passed':True,'files':rows})
+  self.assertTrue((self.dist/'assets/index-abcdefgh.js').exists())
+  p.unlink();p.symlink_to(self.dist/'index.html')
+  with self.assertRaises(ValueError):cdn.inventory(self.dist,self.base)
+
+class ServerPackageBoundary(unittest.TestCase):
+ # Before implementation: untrimmed files, stale compiler inputs, forged binary
+ # receipts and unverified redirect metadata must all prevent publication.
+ def setUp(self):
+  self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup);self.root=Path(self.temp.name)
+  self.dist=self.root/'web/dist';(self.dist/'assets').mkdir(parents=True)
+  (self.dist/'index.html').write_text('home');(self.dist/'game-load-manifest.json').write_text('{}')
+  (self.dist/'assets/app.js').write_bytes(b'client-code')
+  self.rows=cdn.inventory(self.dist,'https://cdn.ichenj.com/bga/web/'+'a'*40+'/')
+  self.report={'passed':True,'files':self.rows,'indexSHA256':cdn.sha((self.dist/'index.html').read_bytes()),'manifestSHA256':cdn.sha((self.dist/'game-load-manifest.json').read_bytes())}
+  cdn.trim(self.dist,self.report)
+  self.binary=self.root/'package/wire-board';self.binary.parent.mkdir();self.binary.write_bytes(b'native-program')
+  self.receipt={'sha256':cdn.sha(self.binary.read_bytes()),'bytes':self.binary.stat().st_size,
+                'inputs':[{'path':p.relative_to(self.root).as_posix(),'sha256':cdn.sha(p.read_bytes())} for p in self.dist.iterdir()]}
+  self.save()
+ def save(self):self.binary.with_suffix('.build.json').write_text(json.dumps(self.receipt))
+ def test_real_package_bytes_and_compiler_embed_inputs_are_bound(self):
+  result=cdn.verify_server_package(self.root,self.dist,self.binary,self.report)
+  self.assertTrue(result['passed']);self.assertEqual(result['embeddedFiles'],sorted(r['path'] for r in self.receipt['inputs']))
+ def test_untrimmed_payload_is_rejected(self):
+  (self.dist/'photo.png').write_bytes(b'picture')
+  with self.assertRaises(ValueError):cdn.verify_server_package(self.root,self.dist,self.binary,self.report)
+ def test_stale_embedded_payload_or_metadata_is_rejected(self):
+  self.receipt['inputs'].append({'path':'web/dist/photo.png','sha256':'0'*64});self.save()
+  with self.assertRaises(ValueError):cdn.verify_server_package(self.root,self.dist,self.binary,self.report)
+  self.receipt['inputs'].pop();self.save();(self.dist/'index.html').write_text('changed after compile')
+  with self.assertRaises(ValueError):cdn.verify_server_package(self.root,self.dist,self.binary,self.report)
+  self.receipt['inputs']=[{'path':p.relative_to(self.root).as_posix(),'sha256':cdn.sha(p.read_bytes())} for p in self.dist.iterdir()];self.save()
+  with self.assertRaises(ValueError):cdn.verify_server_package(self.root,self.dist,self.binary,self.report)
+ def test_receipt_or_redirect_tamper_is_rejected(self):
+  self.binary.write_bytes(b'changed-binary')
+  with self.assertRaises(ValueError):cdn.verify_server_package(self.root,self.dist,self.binary,self.report)
+  self.binary.write_bytes(b'native-program');p=self.dist/'cdn-assets-manifest.json';d=json.loads(p.read_text());d['files']['/assets/app.js']['url']='https://invalid.test/app.js';p.write_text(json.dumps(d))
+  self.receipt['inputs']=[{'path':p.relative_to(self.root).as_posix(),'sha256':cdn.sha(p.read_bytes())} for p in self.dist.iterdir()];self.save()
+  with self.assertRaises(ValueError):cdn.verify_server_package(self.root,self.dist,self.binary,self.report)
+
 class ContraDelivery(unittest.TestCase):
  setUp=Delivery.setUp
 

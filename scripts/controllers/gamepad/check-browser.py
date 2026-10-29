@@ -2,17 +2,26 @@
 """Physical gamepad browser acceptance, see SCENARIOS.md. Build web first."""
 import argparse, math, hashlib, http.cookiejar, json, os, re, shutil, subprocess, time, traceback, urllib.request, uuid
 from pathlib import Path
-parser=argparse.ArgumentParser();parser.add_argument('--out',required=True);parser.add_argument('--settings-only',action='store_true');parser.add_argument('--games',default='');parser.add_argument('--contra',action='store_true');parser.add_argument('--junqi-teams',action='store_true');parser.add_argument('--catan-explorer',action='store_true');args=parser.parse_args()
+parser=argparse.ArgumentParser();parser.add_argument('--out',required=True);parser.add_argument('--settings-only',action='store_true');parser.add_argument('--games',default='');parser.add_argument('--contra',action='store_true');parser.add_argument('--junqi-teams',action='store_true');parser.add_argument('--catan-explorer',action='store_true');parser.add_argument('--web');parser.add_argument('--production-runtime');args=parser.parse_args()
 root=Path(__file__).resolve().parents[3];out=(root/args.out).resolve();assert out.is_relative_to(root) and not out.exists();out.mkdir(parents=True)
 run='pad'+uuid.uuid4().hex[:6];temp=out/'temporary';sockets=root/'.s'/run;env=dict(os.environ)
 for k,v in {'TMPDIR':temp/'tmp','GOTMPDIR':temp/'tmp','GOCACHE':root/'.local/go-build','GOMODCACHE':root/'.local/go-mod','npm_config_cache':root/'.local/npm','AGENT_BROWSER_SOCKET_DIR':sockets,'AGENT_BROWSER_PROFILE':temp/'profile'}.items():v.mkdir(parents=True,exist_ok=True);env[k]=str(v)
 env['AGENT_BROWSER_INIT_SCRIPTS']=str(root/'scripts/controllers/gamepad/virtual-device.js')
 env.update(AGENT_BROWSER_SESSION=run,AGENT_BROWSER_ARGS='--mute-audio,--disable-breakpad,--disable-crash-reporter',WIRE_BOARD_BUBBLEPARTY_BROWSER='1',WIRE_BOARD_BUBBLEPARTY_BROWSER_OUT=str(out),GOTOOLCHAIN='local')
 fixture_dir=out/'fixture'
-web_dir=root/'.local/gamepad/web-dist'
+web_dir=(root/args.web).resolve() if args.web else root/'.local/gamepad/web-dist'
+assert web_dir.is_relative_to(root)
 env.update(WIRE_BOARD_GAMEPAD_BROWSER='1',WIRE_BOARD_GAMEPAD_BROWSER_OUT=str(fixture_dir),WIRE_BOARD_GAMEPAD_BROWSER_WEB=str(web_dir))
-if args.contra:env['WIRE_BOARD_GAMEPAD_CONTRA_PUBLIC']=str(root/'.local/gamepad/contra-build/public')
+if args.contra and not args.production_runtime:env['WIRE_BOARD_GAMEPAD_CONTRA_PUBLIC']=str(root/'.local/gamepad/contra-build/public')
 report={'passed':False,'games':{},'command':'python3 -B scripts/controllers/gamepad/check-browser.py --out '+args.out+(' --settings-only' if args.settings_only else '')+(' --contra' if args.contra else '')+(' --games '+args.games if args.games else '')+(' --junqi-teams' if args.junqi_teams else '')+(' --catan-explorer' if args.catan_explorer else ''),'buildIndexSHA256':hashlib.sha256((web_dir/'index.html').read_bytes()).hexdigest()}
+production_flags=[]
+if args.production_runtime:
+ receipt_path=(root/args.production_runtime).resolve();assert receipt_path.is_relative_to(root)
+ receipt=json.loads(receipt_path.read_text());assert all(re.fullmatch('[a-f0-9]{64}',receipt[k]) for k in ['rulesBuildID','runtimeBuildID'])
+ env['WIRE_BOARD_GAMEPAD_PRODUCTION']='1'
+ production_flags=['-ldflags=-X github.com/k0ngk0ng/wire-board/games/contra/runtime.CompiledRulesBuildID='+receipt['rulesBuildID']+' -X github.com/k0ngk0ng/wire-board/games/contra/runtime.CompiledRuntimeBuildID='+receipt['runtimeBuildID']]
+ report['productionRuntime']={'rulesBuildID':receipt['rulesBuildID'],'runtimeBuildID':receipt['runtimeBuildID']}
+ report['command']+=(' --web '+args.web if args.web else '')+' --production-runtime '+args.production_runtime
 primary_model='game:contra' if args.contra else 'game:basketball'
 other_model='game:splendor' if args.contra else 'game:tabletennis'
 server=log=None;opened=False;watch_opened=False;sg_watchers=[]
@@ -72,7 +81,7 @@ def binding(name):
 def save_settings():browser('click','[data-controller-save]');browser('wait','--text','控制器设置已保存')
 def close_settings():browser('click','.controller-settings button[aria-label="关闭"]')
 try:
- log=(out/'server.log').open('w');server=subprocess.Popen(['go','test','-count=1','-timeout=12m','-run','^TestControllerGamepadBrowserFixture$','./internal/gametest'],cwd=root,env=env,stdout=log,stderr=subprocess.STDOUT)
+ log=(out/'server.log').open('w');server=subprocess.Popen(['go','test','-count=1','-timeout=12m','-run','^TestControllerGamepadBrowserFixture$',*production_flags,'./internal/gametest'],cwd=root,env=env,stdout=log,stderr=subprocess.STDOUT)
  wait(lambda:(fixture_dir/'url').exists(),120);base=(fixture_dir/'url').read_text();browser('open',base);opened=True
  credentials={'name':'手柄验收管理员','password':'gamepad-browser-test-only'}
  api('/login',credentials);browser('reload');browser('wait','.room-list');browser('set','viewport','1280','1000')
