@@ -7,7 +7,7 @@ const built=await build({entryPoints:['games/contra/web/runtime-input.ts'],bundl
 const {RuntimeInput}=await import('data:text/javascript;base64,'+Buffer.from(built.outputFiles[0].text).toString('base64'));
 class Element {constructor(kind){this.kind=kind}closest(){return null}contains(other){return this.kind==='fullscreen'&&other.kind==='root'}matches(selector){return this.kind==='fullscreen'&&selector==='[data-fullscreen-board]'}}
 test('fullscreen focus accepts keyboard but unrelated public room controls stay blocked',()=>{
- globalThis.HTMLElement=Element;const listeners=new Map();globalThis.window={addEventListener:(n,f)=>listeners.set(n,f),removeEventListener(){}};globalThis.document={hidden:false,body:new Element('body'),querySelector(){return null},addEventListener(){},removeEventListener(){}};
+ globalThis.HTMLElement=Element;const listeners=new Map();globalThis.window={addEventListener:(n,f)=>listeners.set(n,f),removeEventListener(){}};globalThis.document={hidden:false,body:new Element('body'),querySelector(){return null},querySelectorAll(){return []},hasFocus(){return true},addEventListener(){},removeEventListener(){}};
  const root=new Element('root'),input=new RuntimeInput({keyboard:{right:'KeyD'},turboHz:12},root,()=>{});
  const press=target=>listeners.get('keydown')({code:'KeyD',target,preventDefault(){}});
  press(new Element('fullscreen'));assert.equal(input.sample(performance.now()),1);
