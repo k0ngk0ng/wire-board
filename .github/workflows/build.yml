@@ -129,7 +129,7 @@ jobs:
     name: Shared platform HTTP, persistence and race checks
     needs: frontend
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5

@@ -51,6 +51,9 @@ func TestTimeoutAutoplayPreservesHostAndSeat(t *testing.T) {
 
 func TestTimeoutClockDoesNotResetDuringSubstepsOrRestart(t *testing.T) {
 	s, ts := setupServer(t)
+	// This case expires the clock explicitly after comparing persisted state.
+	// Keep the background worker from taking that same turn between snapshots.
+	stopBotTicker(s)
 	a, b := newClient(t, ts.URL), newClient(t, ts.URL)
 	a.register("Alice")
 	b.register("Bobby")
@@ -79,6 +82,7 @@ func TestTimeoutClockDoesNotResetDuringSubstepsOrRestart(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer restarted.Close()
+	stopBotTicker(restarted)
 	ts2 := httptest.NewServer(restarted.Handler())
 	defer ts2.Close()
 	a.base, b.base = ts2.URL, ts2.URL
