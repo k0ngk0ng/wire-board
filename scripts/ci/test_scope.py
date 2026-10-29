@@ -27,6 +27,8 @@ class ScopeTests(unittest.TestCase):
         commands=' '.join(' '.join(c) for c in scope.go_commands(ROOT,'shared',race=True))
         self.assertIn('TestStartupRejectsUnboundBuildBeforeDatabase',commands)
         self.assertFalse((ROOT/'contra_startup_test.go').exists())
+        # The deleted historical root test is still an application contract.
+        self.assertEqual(scope.owner(Path('contra_startup_test.go'),'TestContraStartupRejectsUnboundBuildBeforeDatabase',scope.game_names(ROOT)),set())
         self.assertIn('TestContraProductionRegistrationRequiresIdentities',commands)
         self.assertNotIn('TestBotStandardCampaignE2E',commands)
 

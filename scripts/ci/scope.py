@@ -77,7 +77,7 @@ def changed_names(raw):
 
 def owner(path, name, games):
     parts = path.parts
-    if parts[:2] == ('internal', 'production'):
+    if len(parts) == 1 or parts[:2] == ('internal', 'production'):
         return set() # Application startup contracts, not game rule campaigns.
     if parts[0] == 'games' and len(parts) > 2: return {parts[1]}
     if name in MULTI: return set(MULTI[name])
