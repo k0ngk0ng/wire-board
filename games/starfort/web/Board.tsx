@@ -312,8 +312,8 @@ function ObjectiveCard({
       {objective.status === "failed" && (
         <p>
           {objective.hp <= 0
-            ? "目标被摧毁，本次支线已结束。"
-            : "本局结束时未完成目标，本次支线已结束。"}
+            ? "目标被摧毁，本次任务已结束。"
+            : "本局结束时未完成目标，本次任务已结束。"}
         </p>
       )}
       {objective.status === "completed" && <p>奖励已发放给全队。</p>}
@@ -371,6 +371,7 @@ export function Board({
 }: BoardProps<View>) {
   const [choiceOpen, setChoiceOpen] = useState(false);
   const [infoOpen, setInfoOpen] = useState(false);
+  const [tasksOpen, setTasksOpen] = useState(false);
   const choiceKey = [
     room.id,
     data.world?.choice?.stage,
@@ -412,6 +413,7 @@ export function Board({
   useEffect(() => {
     setSelected(null);
     setInfoOpen(false);
+    setTasksOpen(false);
     setFailure("");
   }, [room.id]);
   useEffect(() => {
@@ -777,9 +779,15 @@ export function Board({
                 </section>
               ) : null
             }
-            select={(pad) => {
+            select={(pad, toggle = true) => {
               setTowerDetails(false);
-              setSelected(pad);
+              setSelected((previous) =>
+                toggle &&
+                previous === pad &&
+                data.towers.some((tower) => tower.pad === pad)
+                  ? null
+                  : pad,
+              );
             }}
           />
         </section>
@@ -1089,14 +1097,76 @@ export function Board({
           )}
           <button
             className="sf-secondary"
+            data-sf-open-tasks
+            onClick={() => {
+              setInfoOpen(false);
+              setTasksOpen(true);
+            }}
+          >
+            任务
+          </button>
+          <button
+            className="sf-secondary"
             data-sf-open-info
-            aria-label="战场情报与支线"
-            onClick={() => setInfoOpen(true)}
+            aria-label="战场情报"
+            onClick={() => {
+              setTasksOpen(false);
+              setInfoOpen(true);
+            }}
           >
             情报
           </button>
         </div>
       </div>
+      {tasksOpen && (
+        <Modal
+          title="任务"
+          className="sf-tasks-dialog"
+          onClose={() => setTasksOpen(false)}
+        >
+          {world && world.objectives.length > 0 ? (
+            <section className="sf-objectives" aria-label="任务列表">
+              <p>
+                波间由一人支付金币承接。敌人靠近会攻击据点或补给队，需要沿线布塔守护；未承接不会影响正常闯关。
+              </p>
+              <div className="sf-objective-grid">
+                {world.objectives.map((objective) => (
+                  <ObjectiveCard
+                    key={objective.id}
+                    objective={objective}
+                    finished={finished}
+                    enabled={
+                      !locked &&
+                      !room.spectating &&
+                      data.phase === "prepare" &&
+                      !finished &&
+                      !!data.controls.objectives?.some(
+                        (item) =>
+                          item.objectiveId === objective.id && item.enabled,
+                      )
+                    }
+                    wave={data.wave}
+                    completedWaves={data.completedWaves}
+                    route={
+                      data.map.routes?.find(
+                        (route) => route.id === objective.route,
+                      )?.points
+                    }
+                    send={send}
+                  />
+                ))}
+              </div>
+            </section>
+          ) : (
+            <p>当前暂无任务。</p>
+          )}
+          {failure && (
+            <p className="sf-error" role="alert">
+              {failure}
+            </p>
+          )}
+        </Modal>
+      )}
       {infoOpen && (
         <Modal
           title="战场情报"
@@ -1194,51 +1264,6 @@ export function Board({
                       <span>已计入防御塔实际属性和全队收益</span>
                     </p>
                   )}
-                </section>
-              </details>
-            )}
-            {world && world.objectives.length > 0 && (
-              <details className="sf-field-guide">
-                <summary>
-                  战区支线 ·{" "}
-                  {world.objectives.filter((o) => o.status === "active").length}{" "}
-                  项进行中
-                </summary>
-                <section className="sf-objectives" aria-label="战区支线目标">
-                  <div className="sf-world-heading">
-                    <h3>战区支线</h3>
-                    <span>自由承接 · 全队受益</span>
-                  </div>
-                  <p>
-                    波间由一人支付金币承接。敌人靠近会攻击据点或补给队，需要沿线布塔守护；未承接不会影响正常闯关。
-                  </p>
-                  <div className="sf-objective-grid">
-                    {world.objectives.map((objective) => (
-                      <ObjectiveCard
-                        key={objective.id}
-                        objective={objective}
-                        finished={finished}
-                        enabled={
-                          !locked &&
-                          !room.spectating &&
-                          data.phase === "prepare" &&
-                          !finished &&
-                          !!data.controls.objectives?.some(
-                            (item) =>
-                              item.objectiveId === objective.id && item.enabled,
-                          )
-                        }
-                        wave={data.wave}
-                        completedWaves={data.completedWaves}
-                        route={
-                          data.map.routes?.find(
-                            (route) => route.id === objective.route,
-                          )?.points
-                        }
-                        send={send}
-                      />
-                    ))}
-                  </div>
                 </section>
               </details>
             )}

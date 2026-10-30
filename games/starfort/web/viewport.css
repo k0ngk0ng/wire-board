@@ -18,6 +18,9 @@
   min-height: 0;
   max-width: none;
 }
+.starfort-board .sf-world-camera {
+  position: relative;
+}
 .starfort-board .sf-battlefield.sf-world-viewport {
   width: 100%;
   height: 100%;
@@ -88,8 +91,9 @@
   margin: 0;
 }
 .starfort-board .sf-wave-controls {
-  right: 144px;
-  bottom: 12px;
+  right: 204px;
+  top: 12px;
+  bottom: auto;
   max-width: calc(100% - 420px);
   padding: 6px 8px;
   gap: 8px;
@@ -120,7 +124,8 @@
 }
 .sf-field-actions {
   right: 12px;
-  bottom: 12px;
+  top: 12px;
+  bottom: auto;
   display: flex;
   gap: 6px;
 }
@@ -195,7 +200,8 @@
   gap: 10px;
   min-width: 0;
 }
-.sf-info-dialog {
+.sf-info-dialog,
+.sf-tasks-dialog {
   width: 920px;
 }
 .sf-information .sf-cooperation:empty {
@@ -352,7 +358,8 @@
     font-size: 10px;
     padding: 4px 6px;
   }
-  .sf-info-dialog {
+  .sf-info-dialog,
+  .sf-tasks-dialog {
     padding: 12px;
   }
 }
@@ -438,11 +445,12 @@
   color: #8a2d20;
 }
 .starfort-board .sf-field-actions {
-  right: 68px;
-  bottom: 12px;
+  right: 12px;
+  top: 12px;
+  bottom: auto;
 }
 .starfort-board .sf-wave-controls {
-  right: 200px;
+  right: 204px;
 }
 .sf-tower-popover {
   position: absolute;
@@ -501,12 +509,12 @@
     padding: 3px 0 0;
   }
   .starfort-board .sf-field-actions {
-    right: 64px;
-    bottom: 8px;
+    right: 8px;
+    bottom: auto;
   }
   .starfort-board .sf-wave-controls {
-    right: 8px;
-    bottom: 62px;
+    right: 132px;
+    bottom: auto;
   }
   .sf-tower-popover {
     right: -48px;
@@ -625,7 +633,9 @@
 /* Anchored to the selected world object, inside the fullscreen battlefield. */
 .sf-map-popover {
   position: absolute;
-  z-index: 90;
+  touch-action: pan-y;
+  overscroll-behavior: contain;
+  z-index: 10;
   overflow: auto;
   border: 1px solid #739265;
   border-radius: 10px;
@@ -661,4 +671,47 @@
 }
 .sf-map-popover .sf-skill {
   flex-wrap: wrap;
+}
+
+/* Keep the action groups together at the upper right. On narrow screens they
+   occupy a second row beneath the resource HUD, without covering its text. */
+@media (max-width: 1100px) {
+  .starfort-board .sf-field-actions {
+    top: 84px;
+    right: 8px;
+    bottom: auto;
+  }
+  .starfort-board .sf-wave-controls {
+    top: 84px;
+    right: 200px;
+    bottom: auto;
+    max-width: calc(100% - 216px);
+  }
+  .starfort-board .sf-control-buttons {
+    flex-wrap: wrap;
+  }
+  .starfort-board .sf-overview-hint {
+    top: 172px;
+  }
+}
+.starfort-board > [data-sf-open-choice] {
+  top: 68px;
+  bottom: auto;
+}
+@media (max-width: 1100px) {
+  .starfort-board > [data-sf-open-choice] {
+    top: 172px;
+  }
+}
+
+@media (max-width: 600px) {
+  .starfort-board .sf-wave-controls {
+    top: 134px;
+    right: 8px;
+    max-width: calc(100% - 16px);
+  }
+  .starfort-board .sf-overview-hint,
+  .starfort-board > [data-sf-open-choice] {
+    top: 194px;
+  }
 }

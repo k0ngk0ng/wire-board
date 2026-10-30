@@ -700,10 +700,12 @@ function drawFeatures(
 function MapPopover({
   point,
   viewport,
+  avoid,
   children,
 }: {
   point: Point;
   viewport: Viewport;
+  avoid?: { left: number; top: number; right: number; bottom: number };
   children: ReactNode;
 }) {
   const node = useRef<HTMLDivElement>(null);
@@ -718,25 +720,49 @@ function MapPopover({
   const width = Math.min(260, Math.max(0, viewport.width - 16));
   const topLimit = 64,
     bottomLimit = Math.max(topLimit, viewport.height - 76);
-  let left = point.x + 34;
-  let top = point.y - height / 2;
+  const bounds = avoid ?? {
+    left: point.x - 64,
+    right: point.x + 64,
+    top: point.y - 64,
+    bottom: point.y + 64,
+  };
+  let left = bounds.right + 10;
+  let top = Math.max(
+    topLimit,
+    Math.min(bottomLimit - height, point.y - height / 2),
+  );
+  let maxHeight = bottomLimit - topLimit;
+  let transform: string | undefined;
   if (left + width > viewport.width - 8) {
-    if (point.x - 34 - width >= 8) left = point.x - 34 - width;
+    if (bounds.left - 10 - width >= 8) left = bounds.left - 10 - width;
     else {
-      left = point.x - width / 2;
-      top =
-        point.y + 38 + height <= bottomLimit
-          ? point.y + 38
-          : point.y - height - 38;
+      left = Math.max(
+        8,
+        Math.min(viewport.width - width - 8, point.x - width / 2),
+      );
+      const above = Math.max(
+        0,
+        Math.min(bottomLimit, bounds.top - 10) - topLimit,
+      );
+      const below = Math.max(
+        0,
+        bottomLimit - Math.max(topLimit, bounds.bottom + 10),
+      );
+      if (below >= above) {
+        top = Math.max(topLimit, bounds.bottom + 10);
+        maxHeight = below;
+      } else {
+        top = Math.min(bottomLimit, bounds.top - 10);
+        maxHeight = above;
+        transform = "translateY(-100%)";
+      }
     }
   }
-  left = Math.max(8, Math.min(viewport.width - width - 8, left));
-  top = Math.max(topLimit, Math.min(bottomLimit - height, top));
   return (
     <div
       ref={node}
       className="sf-map-popover"
-      style={{ left, top, width, maxHeight: bottomLimit - topLimit }}
+      style={{ left, top, width, maxHeight, transform }}
       onPointerDown={(e) => e.stopPropagation()}
       onPointerUp={(e) => e.stopPropagation()}
       onClick={(e) => e.stopPropagation()}
@@ -781,7 +807,7 @@ export function Battlefield({
   assets: string;
   selected: number | null;
   towerPanel?: ReactNode;
-  select: (pad: number) => void;
+  select: (pad: number, toggle?: boolean) => void;
 }) {
   const canvas = useRef<HTMLCanvasElement>(null),
     container = useRef<HTMLDivElement>(null);
@@ -2126,8 +2152,11 @@ export function Battlefield({
               .reverse()
               .find((e) => Math.hypot(e.point.x - x, e.point.y - y) <= 24);
             if (hit) {
-              inspected.current = hit.enemy.id;
-              setInspection(hit);
+              if (inspected.current === hit.enemy.id) closeInspection();
+              else {
+                inspected.current = hit.enemy.id;
+                setInspection(hit);
+              }
               return;
             }
             closeInspection();
@@ -2220,8 +2249,9 @@ export function Battlefield({
                   hoverRef.current = null;
                 }}
                 onClick={() => {
+                  const switchingFromEnemy = inspected.current !== null;
                   closeInspection();
-                  select(pad.id);
+                  select(pad.id, !switchingFromEnemy);
                 }}
               >
                 {!tower && <span>{pad.id + 1}</span>}
@@ -2229,64 +2259,6 @@ export function Battlefield({
             );
           })}
         </div>
-        {inspection ? (
-          <MapPopover point={inspection.point} viewport={view.viewport}>
-            <section
-              className="sf-enemy-info"
-              data-sf-enemy-info
-              aria-label="敌人信息"
-            >
-              <header>
-                <strong>
-                  {enemyInfo[inspection.enemy.kind]?.[0] ??
-                    inspection.enemy.kind}{" "}
-                  · Lv.{inspection.enemy.level ?? data.wave}
-                </strong>
-                <button
-                  data-sf-enemy-close
-                  aria-label="关闭敌人信息"
-                  onClick={closeInspection}
-                >
-                  ×
-                </button>
-              </header>
-              <p>
-                生命{" "}
-                {Math.ceil(
-                  inspection.enemy.health ??
-                    inspection.enemy.hp + inspection.enemy.shield,
-                )}{" "}
-                /{" "}
-                {Math.ceil(
-                  inspection.enemy.maxHealth ??
-                    inspection.enemy.maxHP + inspection.enemy.shield,
-                )}
-              </p>
-              <p>
-                基础速度 {Math.round(inspection.enemy.speed)}
-                {inspection.enemy.frostbound ? " · 永久减速 30%" : ""}
-                {inspection.enemy.slowUntil > data.tick
-                  ? " · 临时减速 45%"
-                  : ""}
-                {inspection.enemy.repairing ? " · 填坑中" : ""}
-              </p>
-              <p>{enemyInfo[inspection.enemy.kind]?.[1]}</p>
-            </section>
-          </MapPopover>
-        ) : towerPanel &&
-          selected !== null &&
-          data.map.pads.some((p) => p.id === selected) ? (
-          <MapPopover
-            point={worldToScreen(
-              data.map.pads.find((p) => p.id === selected)!,
-              view.camera,
-              view.viewport,
-            )}
-            viewport={view.viewport}
-          >
-            {towerPanel}
-          </MapPopover>
-        ) : null}
         {overview && (
           <span className="sf-overview-hint" role="status">
             总览 · 点选区域放大
@@ -2306,6 +2278,75 @@ export function Battlefield({
           </div>
         )}
       </div>
+      {inspection ? (
+        <MapPopover point={inspection.point} viewport={view.viewport}>
+          <section
+            className="sf-enemy-info"
+            data-sf-enemy-info
+            aria-label="敌人信息"
+          >
+            <header>
+              <strong>
+                {enemyInfo[inspection.enemy.kind]?.[0] ?? inspection.enemy.kind}{" "}
+                · Lv.{inspection.enemy.level ?? data.wave}
+              </strong>
+              <button
+                data-sf-enemy-close
+                aria-label="关闭敌人信息"
+                onClick={closeInspection}
+              >
+                ×
+              </button>
+            </header>
+            <p>
+              生命{" "}
+              {Math.ceil(
+                inspection.enemy.health ??
+                  inspection.enemy.hp + inspection.enemy.shield,
+              )}{" "}
+              /{" "}
+              {Math.ceil(
+                inspection.enemy.maxHealth ??
+                  inspection.enemy.maxHP + inspection.enemy.shield,
+              )}
+            </p>
+            <p>
+              基础速度 {Math.round(inspection.enemy.speed)}
+              {inspection.enemy.frostbound ? " · 永久减速 30%" : ""}
+              {inspection.enemy.slowUntil > data.tick ? " · 临时减速 45%" : ""}
+              {inspection.enemy.repairing ? " · 填坑中" : ""}
+            </p>
+            <p>{enemyInfo[inspection.enemy.kind]?.[1]}</p>
+          </section>
+        </MapPopover>
+      ) : towerPanel &&
+        selected !== null &&
+        data.map.pads.some((p) => p.id === selected) ? (
+        <MapPopover
+          point={worldToScreen(
+            data.map.pads.find((p) => p.id === selected)!,
+            view.camera,
+            view.viewport,
+          )}
+          viewport={view.viewport}
+          avoid={(() => {
+            const pad = data.map.pads.find((p) => p.id === selected)!;
+            const point = worldToScreen(pad, view.camera, view.viewport);
+            const dimensions = towerDimensions(view.camera.zoom);
+            const width = dimensions.width * view.camera.zoom,
+              height = dimensions.height * view.camera.zoom;
+            const bottom = point.y + 14 * view.camera.zoom;
+            return {
+              left: point.x - width / 2,
+              right: point.x + width / 2,
+              top: bottom - height,
+              bottom,
+            };
+          })()}
+        >
+          {towerPanel}
+        </MapPopover>
+      ) : null}
       <div className="sf-map-navigation">
         <svg
           className="sf-minimap"
