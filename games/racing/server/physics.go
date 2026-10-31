@@ -30,7 +30,10 @@ func stepCar(c *Car, t Track, ms, at int64) {
 		drift = false
 	}
 	forward := c.VX*math.Cos(c.Angle) + c.VY*math.Sin(c.Angle)
-	yaw := steer * (1.65 + .002*math.Abs(forward)) * math.Min(math.Abs(forward)/65, 1)
+	// Full steering remains useful at low speed, but loses authority as road
+	// speed rises. Inputs from keyboard, mouse and gamepad share this rule.
+	speedForSteering := math.Abs(forward)
+	yaw := steer * 1.65 * math.Min(speedForSteering/65, 1) / (1 + math.Pow(speedForSteering/220, 2))
 	if drift {
 		yaw *= 1.18
 	}

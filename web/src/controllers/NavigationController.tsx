@@ -101,9 +101,14 @@ export function NavigationController({
       event.preventDefault();
       event.stopImmediatePropagation();
       keyboard?.press(event.code, performance.now(), event.repeat);
+      sample(performance.now());
     };
-    const up = (event: KeyboardEvent) => keyboard?.release(event.code);
-    const tick = (at: number) => {
+    const up = (event: KeyboardEvent) => {
+      keyboard?.release(event.code);
+      if (profile && actionsForKey(profile, event.code).length)
+        sample(performance.now());
+    };
+    const sample = (at: number) => {
       if (!alive) return;
       if (context()) {
         if (
@@ -123,6 +128,10 @@ export function NavigationController({
         );
         root.dataset.controllerNavigation = gameId;
       } else clear();
+    };
+    const tick = (at: number) => {
+      if (!alive) return;
+      sample(at);
       frame = requestAnimationFrame(tick);
     };
     window.addEventListener("controller-settings-changed", changed);

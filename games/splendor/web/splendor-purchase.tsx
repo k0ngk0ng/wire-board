@@ -1,5 +1,7 @@
 import { useEffect, useState, type ReactNode } from "react";
-import { X } from "lucide-react";
+import { createPortal } from "react-dom";
+import { Modal } from "../../../web/src/ui/board-host";
+import { useGameOverlayRoot } from "../../../web/src/ui/game-overlay-root";
 import type { Card, Room } from "./types";
 import type { Act } from "../../../web/src/types";
 import {
@@ -32,6 +34,7 @@ export function SplendorPurchase({
   renderCard: (card: Card, onClick?: () => void) => ReactNode;
   renderCost: (cost: number[]) => ReactNode;
 }) {
+  const overlayRoot = useGameOverlayRoot();
   const g = room.game!,
     s = g.splendor!,
     p = s.players[room.you];
@@ -74,31 +77,30 @@ export function SplendorPurchase({
     setIDs(next);
     setTokens(gemDefaultPayment(p, card, next, tokens));
   };
-  return (
-    <section
-      className={`discard-panel gem-purchase-panel ${open ? "" : "is-collapsed"}`}
-      aria-label={`${conquest ? "征服" : "查看"}${gemCardName(card)}`}
-    >
-      <header>
-        <h3>
-          {gemCardName(card)} · {card.points} 分
-        </h3>
+  return createPortal(
+    <Modal
+      className={`gem-purchase-panel ${open ? "" : "is-collapsed"}`}
+      title={`${gemCardName(card)} · ${card.points} 分`}
+      onClose={onClose}
+      dismissible={!busy}
+      initialFocus={
+        open
+          ? `[data-card-acquire="${card.id}"]:not(:disabled)`
+          : "[data-splendor-resume]"
+      }
+      headerActions={
         <button
+          type="button"
           className="subtle"
+          data-splendor-resume
+          disabled={busy}
           aria-expanded={open}
           onClick={() => setOpen(!open)}
         >
           {open ? "查看牌桌" : "继续选择"}
         </button>
-        <button
-          className="icon-button"
-          aria-label="关闭卡牌详情"
-          data-controller-cancel
-          onClick={onClose}
-        >
-          <X size={18} />
-        </button>
-      </header>
+      }
+    >
       {open && (
         <div className="gem-purchase-content">
           <div className="purchase-preview">
@@ -273,6 +275,7 @@ export function SplendorPurchase({
           )}
         </div>
       )}
-    </section>
+    </Modal>,
+    overlayRoot,
   );
 }

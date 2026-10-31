@@ -157,8 +157,8 @@ try:
     if ui()['placing']!='true':press(2)
     cursor_before=ui();pad({'12':1});time.sleep(.15);pad({'12':0});cursor=ui();assert float(cursor['cursorY'])<float(cursor_before['cursorY']),[cursor_before,cursor]
     press(0);wait(lambda:abs(data()['balls'][0]['pos']['x']-float(cursor['cursorX']))<.002 and abs(data()['balls'][0]['pos']['y']-float(cursor['cursorY']))<.002);wait(lambda:ui()['placing']=='false')
-    neutral();time.sleep(.15);angle=float(ui()['angle']);pad({'15':1});time.sleep(.16);pad({'15':0});normal=float(ui()['angle'])-angle;angle=float(ui()['angle']);pad({'15':1,'4':1});time.sleep(.16);pad({'15':0,'4':0});fine=float(ui()['angle'])-angle;assert normal>.04 and 0<fine<normal*.5,(normal,fine)
-    angle=float(ui()['angle']);pad(axes={'0':.4});time.sleep(.18);pad(axes={'0':0});weak=float(ui()['angle'])-angle;angle=float(ui()['angle']);pad(axes={'0':1});time.sleep(.18);pad(axes={'0':0});strong=float(ui()['angle'])-angle;assert weak>.01 and strong>weak*1.4,(weak,strong)
+    neutral();time.sleep(.15);angle=float(ui()['angle']);pad({'15':1});time.sleep(.16);pad({'15':0});normal=float(ui()['angle'])-angle;angle=float(ui()['angle']);pad({'15':1,'4':1});time.sleep(.16);pad({'15':0,'4':0});fine=float(ui()['angle'])-angle;assert 0<normal<.08 and 0<fine<normal*.5,(normal,fine)
+    angle=float(ui()['angle']);pad(axes={'0':.4});time.sleep(.18);pad(axes={'0':0});weak=float(ui()['angle'])-angle;angle=float(ui()['angle']);pad(axes={'0':1});time.sleep(.18);pad(axes={'0':0});strong=float(ui()['angle'])-angle;assert weak>0 and strong>weak*1.4,(weak,strong);check("snooker-aim-granularity",normalRadians=normal,fineRadians=fine,weakRadians=weak,strongRadians=strong)
     pad({'6':1,'12':1});time.sleep(.18);pad({'6':0,'12':0});assert float(ui()['spinTop'])>.02
     browser('focus','.snooker-tip-ball');press(15);assert float(ui()['spinSide'])>0;press(3);assert float(ui()['spinTop'])==0 and float(ui()['spinSide'])==0;press(1);wait(lambda:js('document.activeElement.matches(".snooker-table > canvas")'))
     charge_up();charged=ui();js('window.__disconnectGamepad(0);true');wait(lambda:ui()['charging']=='false');assert shot_id()==baseline_shot

@@ -512,6 +512,8 @@ func (s *Server) profile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	id := r.PathValue("id")
+	role := s.role(viewer.ID)
+	canInspectPrivateHistory := viewer.ID == id || role == "admin" || role == "superadmin"
 	var user User
 	if err := s.db.QueryRow("SELECT id,name FROM users WHERE id=?", id).Scan(&user.ID, &user.Name); err != nil {
 		fail(w, 404, "玩家不存在")
@@ -555,7 +557,7 @@ func (s *Server) profile(w http.ResponseWriter, r *http.Request) {
 				}
 			}
 		}
-		if match.Status == "finished" || match.Rated || viewer.ID == id {
+		if match.Status == "finished" || match.Rated || canInspectPrivateHistory {
 			records = append(records, match)
 		}
 	}

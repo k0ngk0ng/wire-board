@@ -36,8 +36,7 @@ export function predictCar(
     remaining -= dt;
     let forward = c.vx * Math.cos(c.angle) + c.vy * Math.sin(c.angle);
     c.angle +=
-      input.steer *
-      (1.65 + 0.002 * Math.abs(forward)) *
+      ((input.steer * 1.65) / (1 + (Math.abs(forward) / 220) ** 2)) *
       Math.min(Math.abs(forward) / 65, 1) *
       (input.drift ? 1.18 : 1) *
       dt;

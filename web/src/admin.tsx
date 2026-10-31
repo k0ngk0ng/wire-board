@@ -26,6 +26,7 @@ import {
   XCircle,
 } from "lucide-react";
 import type { Room, User } from "./types";
+import { PlayerName } from "./profiles";
 import { WishStatus, type Wish } from "./wishes";
 import "./admin.css";
 
@@ -817,7 +818,7 @@ export function AdminDashboard({
                         <span className="admin-avatar">{u.name[0]}</span>
                         <div>
                           <h3>
-                            {u.name}
+                            <PlayerName user={u} />
                             <span
                               className={`admin-badge ${u.disabled ? "red" : u.role !== "player" ? "gold" : "gray"}`}
                             >

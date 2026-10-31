@@ -41,6 +41,17 @@ const c = {
   resetUntil: 0,
 };
 const input = { steer: 0, throttle: 1, brake: false, drift: false };
+test('higher road speeds reduce yaw, with the same direction and analogue proportion',()=>{
+ let previous=Infinity;
+ for(const speed of [65,130,260,520,900]){
+  const car={...c,vx:speed,speed};
+  const right=predictCar(car,{...input,steer:1},track,20,1000).angle;
+  assert.ok(right>0&&right<previous,{speed,right,previous});previous=right;
+  assert.ok(Math.abs(predictCar(car,{...input,steer:-1},track,20,1000).angle+right)<1e-12);
+  assert.ok(Math.abs(predictCar(car,{...input,steer:.25},track,20,1000).angle-right*.25)<1e-12);
+ }
+ assert.equal(predictCar({...c,vx:0,speed:0},{...input,throttle:0,steer:1},track,20,1000).angle,0);
+});
 test("prediction reacts immediately yet leaves all scoring and server inputs unchanged", () => {
   const original = JSON.stringify(c),
     n = predictCar(c, { ...input, steer: 1 }, track, 100, 1000);
