@@ -531,7 +531,7 @@ export function Table(props: Props) {
         if (edge("reset")) p.onSpin({ top: 0, side: 0 });
       } else {
         let angle = p.angle;
-        if (dx) angle += ((dx * dt * Math.PI) / 3) * precision;
+        if (dx) angle += ((dx * dt * Math.PI) / 12) * precision;
         if (edge("reset")) angle = 0;
         if (
           !charge.current &&
