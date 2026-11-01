@@ -34,7 +34,8 @@ def check(name,ok,detail=None):
 def geometry():return js("""(() => {
  const rect=s=>{const e=document.querySelector(s);return e?e.getBoundingClientRect().toJSON():null};
  const scores=[...document.querySelectorAll('[data-snooker-score]')].map(e=>{const r=e.getBoundingClientRect();return {text:e.textContent,rect:r.toJSON(),visible:r.width>0&&r.height>0&&r.top>=0&&r.bottom<=innerHeight&&r.left>=0&&r.right<=innerWidth&&e.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))}});
- return {table:rect('.snooker-table'),tip:rect('.snooker-tip-ball'),scores,width:innerWidth,height:innerHeight,scroll:document.documentElement.scrollWidth,zoom:document.querySelector('.snooker-table').dataset.zoom,phase:document.querySelector('.snooker-board').dataset.phase};
+ const tip=document.querySelector('.snooker-tip-ball'),r=tip?.getBoundingClientRect();const tipVisible=!!r&&[[r.left+2,r.top+2],[r.right-2,r.top+2],[r.left+2,r.bottom-2],[r.right-2,r.bottom-2]].every(([x,y])=>tip.contains(document.elementFromPoint(x,y)));
+ return {table:rect('.snooker-table'),tip:rect('.snooker-tip-ball'),tipVisible,scores,width:innerWidth,height:innerHeight,scroll:document.documentElement.scrollWidth,zoom:document.querySelector('.snooker-table').dataset.zoom,phase:document.querySelector('.snooker-board').dataset.phase};
 })()""")
 try:
  if not args.skip_build:
@@ -64,7 +65,7 @@ try:
   g=geometry();label=f'fullscreen-{width}-{height}'
   check(label+' scores visible',len(g['scores'])==2 and all(s['visible'] for s in g['scores']),g)
   t=g['table'];check(label+' table fits',t['y']>=0 and t['bottom']<=height+1 and t['x']>=0 and t['right']<=width+1,g)
-  check(label+' tip visible',g['tip'] and g['tip']['width']>0 and g['tip']['y']>=0 and g['tip']['bottom']<=height+1,g)
+  check(label+' tip visible',g['tipVisible'] and g['tip'] and g['tip']['width']>0 and g['tip']['y']>=0 and g['tip']['bottom']<=height+1,g)
   browser('screenshot',out/(label+'.png'))
   browser('find','role','button','click','--name','退出全屏','--exact');browser('wait','--fn','!document.querySelector("[data-room-fullscreen]")')
   check(label+' exits cleanly',not js('document.body.inert'))
