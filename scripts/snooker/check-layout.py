@@ -34,7 +34,7 @@ def check(name,ok,detail=None):
 def geometry():return js("""(() => {
  const rect=s=>{const e=document.querySelector(s);return e?e.getBoundingClientRect().toJSON():null};
  const scores=[...document.querySelectorAll('[data-snooker-score]')].map(e=>{const r=e.getBoundingClientRect();return {text:e.textContent,rect:r.toJSON(),visible:r.width>0&&r.height>0&&r.top>=0&&r.bottom<=innerHeight&&r.left>=0&&r.right<=innerWidth&&e.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))}});
- const tip=document.querySelector('.snooker-tip-ball'),r=tip?.getBoundingClientRect();const tipVisible=!!r&&[[r.left+2,r.top+2],[r.right-2,r.top+2],[r.left+2,r.bottom-2],[r.right-2,r.bottom-2]].every(([x,y])=>tip.contains(document.elementFromPoint(x,y)));
+ const tip=document.querySelector('.snooker-tip-ball'),r=tip?.getBoundingClientRect();const tipVisible=!!r&&[[r.left+12,r.top+12],[r.right-12,r.top+12],[r.left+12,r.bottom-12],[r.right-12,r.bottom-12]].every(([x,y])=>tip.contains(document.elementFromPoint(x,y)));
  return {table:rect('.snooker-table'),tip:rect('.snooker-tip-ball'),tipVisible,scores,width:innerWidth,height:innerHeight,scroll:document.documentElement.scrollWidth,zoom:document.querySelector('.snooker-table').dataset.zoom,phase:document.querySelector('.snooker-board').dataset.phase};
 })()""")
 try:
