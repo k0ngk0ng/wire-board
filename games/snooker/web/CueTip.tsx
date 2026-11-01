@@ -144,7 +144,6 @@ export function CueTip({
       </button>
       <p>
         <strong>{label}</strong>
-        <span>点击或拖动白球上的红点</span>
       </p>
       <button
         type="button"
