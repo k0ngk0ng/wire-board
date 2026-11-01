@@ -88,6 +88,13 @@ var rails = []rail{
 	{Vec{TableWidth/2 + .082, TableHeight}, Vec{TableWidth - .076, TableHeight}},
 	{Vec{0, .076}, Vec{0, TableHeight - .076}},
 	{Vec{TableWidth, .076}, Vec{TableWidth, TableHeight - .076}},
+	// Pocket facings continue the cushion into the throat. Without these
+	// jaws, a grazing ball can miss both the rounded rail end and capture
+	// circle, then roll through the gap and be reported off the table.
+	{Vec{TableWidth/2 - .082, 0}, Vec{TableWidth/2 - .055, -.08}},
+	{Vec{TableWidth/2 + .082, 0}, Vec{TableWidth/2 + .055, -.08}},
+	{Vec{TableWidth/2 - .082, TableHeight}, Vec{TableWidth/2 - .055, TableHeight + .08}},
+	{Vec{TableWidth/2 + .082, TableHeight}, Vec{TableWidth/2 + .055, TableHeight + .08}},
 }
 
 func BallValue(id int) int {

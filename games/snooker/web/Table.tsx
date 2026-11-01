@@ -12,8 +12,6 @@ import {
   scaleOf,
   screenToWorld,
   worldToScreen,
-  zoomAt,
-  clampPan,
   type Camera,
 } from "./presentation";
 
@@ -156,7 +154,7 @@ function drawScene(
     ctx.fill();
   }
   // The ball diameter follows the actual table geometry. Precision is supplied
-  // by zoom and the magnifier rather than by changing the collision diameter.
+  // by the magnifier rather than by changing the collision diameter.
   for (const b of p.balls) {
     if (b.down) continue;
     if (p.flash?.ids.includes(b.id) && p.flash.intensity > 0) {
@@ -290,19 +288,17 @@ export function Table(props: Props) {
       height: 350,
       portrait: false,
     }),
-    [pose, setPose] = useState({ zoom: 1, pan: { x: 0, y: 0 } }),
     [art, setArt] = useState<Record<string, HTMLImageElement>>({});
-  const camera: Camera = { ...size, ...pose },
+  const camera: Camera = { ...size, zoom: 1, pan: { x: 0, y: 0 } },
     cam = useRef(camera);
   cam.current = camera;
   const pointers = useRef(new Map<number, Vec>()),
     gesture = useRef<{
       start: Vec;
       dragged: boolean;
-      mode: "pan" | "place" | "aim" | "shot" | "cancel";
+      mode: "place" | "aim" | "shot" | "cancel";
     } | null>(null);
-  const [movingView, setMovingView] = useState(false),
-    [touchInput, setTouchInput] = useState(
+  const [touchInput, setTouchInput] = useState(
       () => matchMedia("(pointer: coarse)").matches,
     ),
     [charging, setCharging] = useState(false),
@@ -482,7 +478,7 @@ export function Table(props: Props) {
       wrap.current
         ?.closest(".snooker-board")
         ?.querySelector<HTMLElement>(
-          ".snooker-controls summary,.snooker-decision button:not(:disabled),.snooker-secondary button",
+          ".snooker-tip-ball:not(:disabled),.snooker-decision button:not(:disabled),.snooker-secondary button:not(:disabled)",
         )
         ?.focus();
       previous.current = actions;
@@ -643,25 +639,10 @@ export function Table(props: Props) {
   useEffect(() => {
     if (Object.keys(art).length === 9) props.onReady?.();
   }, [art, props.onReady]);
-  const changeCamera = (c: Camera) => {
-    cancelCharge();
-    cam.current = c;
-    setPose({ zoom: c.zoom, pan: c.pan });
-  };
   useEffect(() => {
     const el = canvas.current!;
-    const wheel = (e: WheelEvent) => {
-      e.preventDefault();
-      const r = el.getBoundingClientRect();
-      changeCamera(
-        zoomAt(cam.current, cam.current.zoom * Math.exp(-e.deltaY * 0.0015), {
-          x: e.clientX - r.left,
-          y: e.clientY - r.top,
-        }),
-      );
-    };
-    el.addEventListener("wheel", wheel, { passive: false });
-    return () => el.removeEventListener("wheel", wheel);
+    el.addEventListener("wheel", cancelCharge, { passive: true });
+    return () => el.removeEventListener("wheel", cancelCharge);
   }, []);
   useEffect(() => {
     const el = canvas.current!,
@@ -759,7 +740,6 @@ export function Table(props: Props) {
     props.assist,
     props.placing,
     placementCursor,
-    pose,
     size,
     art,
   ]);
@@ -768,119 +748,110 @@ export function Table(props: Props) {
     return { x: e.clientX - r.left, y: e.clientY - r.top };
   };
   const touchControls = touchInput || size.portrait;
-  const sliderEnabled = props.canAim && !props.placing && !movingView;
+  const sliderEnabled = props.canAim && !props.placing;
   return (
     <div className="snooker-viewport">
-      {!props.finished && (
-        <div className="snooker-aim-tools">
-          <div className="snooker-aim-preview">
-            <canvas ref={preview} role="img" aria-label="瞄准细节放大视图" />
-          </div>
-          <div className="snooker-aim-readout">
-            <strong>
-              {touchControls ? "拖动球桌瞄准 · 滑动力度后松手击球" : "瞄准细节"}
-            </strong>
-            {charging && !touchControls && (
-              <div
-                className="snooker-charge"
-                role="progressbar"
-                aria-label="击球力度"
-                aria-valuemin={0}
-                aria-valuemax={100}
-                aria-valuenow={Math.round(chargePower * 100)}
-              >
-                <span>拉杆 {Math.round(chargePower * 100)}% · 松开击球</span>
-                <div>
-                  <i style={{ width: `${chargePower * 100}%` }} />
-                </div>
-              </div>
-            )}
-            {!charging && props.flash && (
-              <span className="snooker-respot-note" role="status">
-                已复位：{props.flash.ids.map(ballName).join("、")}
-              </span>
-            )}
-            {!charging && !props.flash && !touchControls && (
-              <span>
-                {movingView
-                  ? "移动视图中，拖动只平移球桌"
-                  : props.placing
-                    ? "在 D 区点击摆放白球"
-                    : props.strikeCue
-                      ? "正在出杆…"
-                      : props.canAim
-                        ? "瞄准后向后拉杆，松开击球"
-                        : "等待下一次瞄准"}
-              </span>
-            )}
-            {touchControls && (
-              <button
-                type="button"
-                role="slider"
-                data-controller-ignore=""
-                className={`snooker-power-pull${charging ? " snooker-charge" : ""}`}
-                aria-label="击球力度，向右滑动增加力度，拉回起点取消，松开击球"
-                aria-valuemin={0}
-                aria-valuemax={100}
-                aria-valuenow={charging ? Math.round(chargePower * 100) : 0}
-                disabled={!sliderEnabled}
-                onBlur={cancelCharge}
-                onPointerDown={(e) => {
-                  if (!sliderEnabled || e.button !== 0) return;
-                  if (!e.isPrimary || charge.current || pointers.current.size) {
-                    cancelCharge();
-                    return;
-                  }
-                  e.currentTarget.focus({ preventScroll: true });
-                  e.currentTarget.setPointerCapture(e.pointerId);
-                  startCharge(e.pointerId, props.angle, { x: e.clientX, y: 0 });
-                  charge.current!.slider = true;
-                  charge.current!.limit = Math.max(
-                    80,
-                    Math.min(140, e.currentTarget.clientWidth - 30),
-                  );
-                }}
-                onPointerMove={(e) => {
-                  if (charge.current?.pointer === e.pointerId)
-                    updateSlider(e.clientX);
-                }}
-                onPointerUp={(e) => {
-                  if (charge.current?.pointer === e.pointerId) {
-                    updateSlider(e.clientX);
-                    releaseCharge(e.pointerId);
-                  }
-                  if (e.currentTarget.hasPointerCapture(e.pointerId))
-                    e.currentTarget.releasePointerCapture(e.pointerId);
-                }}
-                onPointerCancel={cancelCharge}
-                onLostPointerCapture={(e) => {
-                  if (charge.current?.pointer === e.pointerId) cancelCharge();
-                }}
-              >
-                <i
-                  aria-hidden="true"
-                  style={{ width: `${charging ? chargePower * 100 : 0}%` }}
-                />
-                <span>
-                  {!sliderEnabled
-                    ? props.placing
-                      ? "先在 D 区摆放白球"
-                      : movingView
-                        ? "移动视图中"
-                        : "等待击球"
-                    : charging
-                      ? `力度 ${Math.round(chargePower * 100)}% · 拉回取消`
-                      : "向右滑动调力度 →"}
-                </span>
-              </button>
-            )}
-          </div>
+      <div className="snooker-aim-tools">
+        <div className="snooker-aim-preview">
+          <canvas ref={preview} role="img" aria-label="瞄准细节放大视图" />
         </div>
-      )}
+        <div className="snooker-aim-readout">
+          {charging && !touchControls && (
+            <div
+              className="snooker-charge"
+              role="progressbar"
+              aria-label="击球力度"
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-valuenow={Math.round(chargePower * 100)}
+            >
+              <span>拉杆 {Math.round(chargePower * 100)}% · 松开击球</span>
+              <div>
+                <i style={{ width: `${chargePower * 100}%` }} />
+              </div>
+            </div>
+          )}
+          {!charging && props.flash && (
+            <span className="snooker-respot-note" role="status">
+              已复位：{props.flash.ids.map(ballName).join("、")}
+            </span>
+          )}
+          {!charging && !props.flash && !touchControls && (
+            <span>
+              {props.placing
+                ? "在 D 区点击摆放白球"
+                : props.strikeCue
+                  ? "正在出杆…"
+                  : props.canAim
+                    ? "瞄准后向后拉杆，松开击球"
+                    : "等待下一次瞄准"}
+            </span>
+          )}
+          {touchControls && (
+            <button
+              type="button"
+              role="slider"
+              data-controller-ignore=""
+              className={`snooker-power-pull${charging ? " snooker-charge" : ""}`}
+              aria-label="击球力度，向右滑动增加力度，拉回起点取消，松开击球"
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-valuenow={charging ? Math.round(chargePower * 100) : 0}
+              disabled={!sliderEnabled}
+              onBlur={cancelCharge}
+              onPointerDown={(e) => {
+                if (!sliderEnabled || e.button !== 0) return;
+                if (!e.isPrimary || charge.current || pointers.current.size) {
+                  cancelCharge();
+                  return;
+                }
+                e.currentTarget.focus({ preventScroll: true });
+                e.currentTarget.setPointerCapture(e.pointerId);
+                startCharge(e.pointerId, props.angle, { x: e.clientX, y: 0 });
+                charge.current!.slider = true;
+                charge.current!.limit = Math.max(
+                  80,
+                  Math.min(140, e.currentTarget.clientWidth - 30),
+                );
+              }}
+              onPointerMove={(e) => {
+                if (charge.current?.pointer === e.pointerId)
+                  updateSlider(e.clientX);
+              }}
+              onPointerUp={(e) => {
+                if (charge.current?.pointer === e.pointerId) {
+                  updateSlider(e.clientX);
+                  releaseCharge(e.pointerId);
+                }
+                if (e.currentTarget.hasPointerCapture(e.pointerId))
+                  e.currentTarget.releasePointerCapture(e.pointerId);
+              }}
+              onPointerCancel={cancelCharge}
+              onLostPointerCapture={(e) => {
+                if (charge.current?.pointer === e.pointerId) cancelCharge();
+              }}
+            >
+              <i
+                aria-hidden="true"
+                style={{ width: `${charging ? chargePower * 100 : 0}%` }}
+              />
+              <span>
+                {!sliderEnabled
+                  ? props.placing
+                    ? "先在 D 区摆放白球"
+                    : "等待击球"
+                  : charging
+                    ? `力度 ${Math.round(chargePower * 100)}% · 拉回取消`
+                    : "向右滑动调力度 →"}
+              </span>
+            </button>
+          )}
+        </div>
+      </div>
       <div
         className="snooker-table"
         ref={wrap}
-        data-zoom={pose.zoom.toFixed(3)}
+        data-zoom="1.000"
         data-angle={props.angle}
         data-charging={charging}
         data-charge-power={charging ? chargePower : 0}
@@ -910,20 +881,19 @@ export function Table(props: Props) {
             e.currentTarget.setPointerCapture(e.pointerId);
             if (pointers.current.size > 1) {
               cancelCharge();
-              gesture.current = { start: p, dragged: true, mode: "pan" };
+              gesture.current = { start: p, dragged: true, mode: "cancel" };
               return;
             }
             const cue = props.balls.find((b) => b.id === 0);
-            const mode =
-              movingView || !props.canAim
-                ? "pan"
-                : props.placing
-                  ? "place"
-                  : cue && !cue.down
-                    ? e.pointerType === "touch"
-                      ? "aim"
-                      : "shot"
-                    : "cancel";
+            const mode = !props.canAim
+              ? "cancel"
+              : props.placing
+                ? "place"
+                : cue && !cue.down
+                  ? e.pointerType === "touch"
+                    ? "aim"
+                    : "shot"
+                  : "cancel";
             if ((mode === "shot" || mode === "aim") && cue) {
               const world = screenToWorld(p, cam.current);
               const angle = Math.atan2(
@@ -944,7 +914,6 @@ export function Table(props: Props) {
                 e.buttons === 0 &&
                 !pointers.current.size &&
                 !charge.current &&
-                !movingView &&
                 props.canAim &&
                 !props.placing &&
                 cue &&
@@ -957,31 +926,11 @@ export function Table(props: Props) {
               }
               return;
             }
-            const before = [...pointers.current.values()],
-              p = point(e);
+            const p = point(e);
             pointers.current.set(e.pointerId, p);
-            const after = [...pointers.current.values()];
-            if (after.length === 2) {
+            if (pointers.current.size > 1) {
               cancelCharge();
-              const dist = (a: Vec[]) =>
-                  Math.hypot(a[1].x - a[0].x, a[1].y - a[0].y),
-                mid = (a: Vec[]) => ({
-                  x: (a[0].x + a[1].x) / 2,
-                  y: (a[0].y + a[1].y) / 2,
-                });
-              const a = mid(before),
-                b = mid(after),
-                next = zoomAt(
-                  cam.current,
-                  (cam.current.zoom * dist(after)) / Math.max(1, dist(before)),
-                  a,
-                );
-              changeCamera(
-                clampPan({
-                  ...next,
-                  pan: { x: next.pan.x + b.x - a.x, y: next.pan.y + b.y - a.y },
-                }),
-              );
+              if (gesture.current) gesture.current.mode = "cancel";
               return;
             }
             const g = gesture.current;
@@ -998,16 +947,6 @@ export function Table(props: Props) {
                   Math.atan2(world.y - cue.pos.y, world.x - cue.pos.x),
                 );
               }
-            } else if (g.mode === "pan" && g.dragged) {
-              changeCamera(
-                clampPan({
-                  ...cam.current,
-                  pan: {
-                    x: cam.current.pan.x + p.x - old.x,
-                    y: cam.current.pan.y + p.y - old.y,
-                  },
-                }),
-              );
             }
           }}
           onPointerUp={(e) => {
@@ -1042,57 +981,6 @@ export function Table(props: Props) {
             }
           }}
         />
-      </div>
-      <div className="snooker-camera">
-        <span>
-          {movingView
-            ? "拖动平移 · 滚轮／双指缩放"
-            : touchControls
-              ? "点按或拖动瞄准 · 力度条松手击球"
-              : "移动瞄准 · 向后拉杆 · 松开击球 · Esc 取消"}
-        </span>
-        <button
-          aria-pressed={movingView}
-          onClick={() => {
-            cancelCharge();
-            setMovingView((v) => !v);
-          }}
-        >
-          移动视图
-        </button>
-        <button
-          onClick={() =>
-            changeCamera(
-              zoomAt(cam.current, pose.zoom * 1.25, {
-                x: size.width / 2,
-                y: size.height / 2,
-              }),
-            )
-          }
-          aria-label="放大球桌"
-        >
-          ＋
-        </button>
-        <button
-          onClick={() =>
-            changeCamera(
-              zoomAt(cam.current, pose.zoom / 1.25, {
-                x: size.width / 2,
-                y: size.height / 2,
-              }),
-            )
-          }
-          aria-label="缩小球桌"
-        >
-          −
-        </button>
-        <button
-          onClick={() =>
-            changeCamera({ ...cam.current, zoom: 1, pan: { x: 0, y: 0 } })
-          }
-        >
-          复位视图
-        </button>
       </div>
     </div>
   );
