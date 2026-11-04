@@ -1,0 +1,44 @@
+{
+  "scope": "Complete natural15540 including real AI returns",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "b5ab29cd810845a213b470ead845a35727ad821081ed25202ea70599f8cae7e3",
+  "records": 4134,
+  "calls": 4134,
+  "routes": {
+    "disabled": 546,
+    "human": 1794,
+    "ai": 1794
+  },
+  "ai_calls": 1794,
+  "record_continuations": 0,
+  "rng_call_counts": {
+    "0": 2340,
+    "4": 472,
+    "2": 1303,
+    "6": 2,
+    "5": 10,
+    "1": 6,
+    "7": 1
+  },
+  "canonical_source_registers": true,
+  "fixture_sha256": "af41edc5ee9f70164e17a77e2ee0419c33bb475716a3dd67285ff265c19de016",
+  "gzip_sha256": "1b4e3da653a43862fbff5a4697df105268f736aa7a128b0ba9cb50005b3836b0",
+  "frames_match_original_core": true,
+  "rom_slot_zero_byte_writer_is_noop": true,
+  "errors": [],
+  "incomplete_calls": 0,
+  "pass": true,
+  "limits": [
+    "Complete input function only; not full fighter/world/matches",
+    "AI is the recovered source9 strategy; other character strategies remain separate"
+  ]
+}

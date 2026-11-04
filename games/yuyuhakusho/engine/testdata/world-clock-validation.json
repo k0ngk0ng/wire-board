@@ -1,0 +1,75 @@
+{
+  "verified_at_utc": "2026-11-04T11:32:31.578147+00:00",
+  "scope": "Complete world counter/pause/feedback helpers only",
+  "pass": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "test_first": {
+    "tests_written_before_implementation": true,
+    "initial_build_log": "games/yuyuhakusho/verification/world-clock-preimplementation-build.jsonl",
+    "sha256": "0b8f8bb3c916b5b1747af0cf5acc85a7ecfe024f249f7df2b599c6db0fa9eaa6",
+    "limitation": "Initial package build stopped on concurrent missing EffectMotion types; it is not a focused missing-WorldClock-symbol result. Actual three WorldClock tests subsequently pass in both full integration runs."
+  },
+  "coverage": {
+    "natural_complete_helpers": 16436,
+    "isolated_complete_helpers": 4536,
+    "helper_kinds": 5,
+    "single_initial_streams": 4,
+    "single_initial_calls": 640,
+    "world_window_bytes": 64,
+    "controller_bytes": 8
+  },
+  "integration_checks": [
+    {
+      "environment": "Go native race",
+      "path": "games/yuyuhakusho/verification/world-foundations-native.jsonl",
+      "sha256": "d0d93e801fb728eeb1bf5961b5792343f5f13234b563c8ce9e6f73a58a28abe4"
+    },
+    {
+      "environment": "Node/Wasm",
+      "path": "games/yuyuhakusho/verification/world-foundations-wasm.jsonl",
+      "sha256": "b3c12bd222d7b21221fb11390322d69f3a19583eba48d53ad5c2606e04c5f486"
+    }
+  ],
+  "fixtures": [
+    {
+      "manifest": "games/yuyuhakusho/engine/testdata/world-clock-boundaries-manifest.json",
+      "sha256": "573d76310569ccf3a2fb4a78d2f1393924569fc73e639f13f10a3d6264802573",
+      "records": 4536,
+      "fixture_sha256": "a232de3d0623e6fbb01fa4403952232aa959a5399e4fa310a75deec238882389",
+      "gzip_sha256": "a5d6f30ee00a83269fc7bd65d780d78b5f5ed2021a935246eef052ae919297af"
+    },
+    {
+      "manifest": "games/yuyuhakusho/engine/testdata/world-clock-oracle-manifest.json",
+      "sha256": "ed4982629f79b0041a0ad87c5b404cdd78c3c997e587d02f390861c25e5abc97",
+      "records": 16436,
+      "fixture_sha256": "ffb8930f4cad59b5891c93b17a9117e684a21b3ff36c167a029ceeb0674b1bc4",
+      "gzip_sha256": "23b460e719cdefe10949dad389d21c7de7e7f493aa28141258e1f98f2d6657af"
+    },
+    {
+      "manifest": "games/yuyuhakusho/engine/testdata/world-clock-sequences-manifest.json",
+      "sha256": "ece05088568c8d93ebeae9cfb1d8002a85f8f58fd4636b444351224f2dc03bff",
+      "records": 4,
+      "fixture_sha256": "88d42a3548123c1aaa3a156d96ad4ac360c6e52c9704a96cc75ecd7e8bb7155b",
+      "gzip_sha256": "a20fd24acccd1ca013c75099b0d7583108e34357d123d5130bd8271f04ecb854"
+    }
+  ],
+  "sources": [
+    {
+      "path": "scripts/yuyuhakusho/capture_world_clock.py",
+      "sha256": "daa9eec8b11af22aa6dce9430795b1fcfe60f5fca667a4cc0524c24c64c3c264"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/world_clock.go",
+      "sha256": "6da632fe858e2ad43104975d74d1e945d6886f306c142fa324edbbf9a4829cd9"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/world_clock_test.go",
+      "sha256": "04f9de14ddefa43d4ffa2092c0285a8c5a95080137a0055acf306dff0ea855a7"
+    }
+  ],
+  "limits": [
+    "Not a complete world step, registered game or match",
+    "All external queue changes remain reference evidence; no expected-state injection"
+  ]
+}

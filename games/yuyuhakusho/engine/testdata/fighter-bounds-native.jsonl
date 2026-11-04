@@ -1,0 +1,26 @@
+{"Time":"2026-11-04T17:32:25.065736+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-04T17:32:25.62909+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighterBoundsOriginalCalls"}
+{"Time":"2026-11-04T17:32:25.629223+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterBoundsOriginalCalls","Output":"=== RUN   TestFighterBoundsOriginalCalls\n"}
+{"Time":"2026-11-04T17:32:25.629317+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighterBoundsOriginalCalls/fighter-bounds-oracle"}
+{"Time":"2026-11-04T17:32:25.629346+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterBoundsOriginalCalls/fighter-bounds-oracle","Output":"=== RUN   TestFighterBoundsOriginalCalls/fighter-bounds-oracle\n"}
+{"Time":"2026-11-04T17:32:26.104386+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterBoundsOriginalCalls/fighter-bounds-oracle","Output":"    fighter_bounds_test.go:117: complete original fighter-bounds calls=4134\n"}
+{"Time":"2026-11-04T17:32:26.104439+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterBoundsOriginalCalls/fighter-bounds-oracle","Output":"--- PASS: TestFighterBoundsOriginalCalls/fighter-bounds-oracle (0.48s)\n"}
+{"Time":"2026-11-04T17:32:26.104445+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighterBoundsOriginalCalls/fighter-bounds-oracle","Elapsed":0.48}
+{"Time":"2026-11-04T17:32:26.104457+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighterBoundsOriginalCalls/fighter-bounds-boundaries"}
+{"Time":"2026-11-04T17:32:26.104461+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterBoundsOriginalCalls/fighter-bounds-boundaries","Output":"=== RUN   TestFighterBoundsOriginalCalls/fighter-bounds-boundaries\n"}
+{"Time":"2026-11-04T17:32:26.324897+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterBoundsOriginalCalls/fighter-bounds-boundaries","Output":"    fighter_bounds_test.go:117: complete original fighter-bounds calls=1980\n"}
+{"Time":"2026-11-04T17:32:26.32493+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterBoundsOriginalCalls/fighter-bounds-boundaries","Output":"--- PASS: TestFighterBoundsOriginalCalls/fighter-bounds-boundaries (0.22s)\n"}
+{"Time":"2026-11-04T17:32:26.324934+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighterBoundsOriginalCalls/fighter-bounds-boundaries","Elapsed":0.22}
+{"Time":"2026-11-04T17:32:26.324961+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterBoundsOriginalCalls","Output":"--- PASS: TestFighterBoundsOriginalCalls (0.70s)\n"}
+{"Time":"2026-11-04T17:32:26.324975+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighterBoundsOriginalCalls","Elapsed":0.7}
+{"Time":"2026-11-04T17:32:26.324986+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighterBoundsSingleInitialState"}
+{"Time":"2026-11-04T17:32:26.324998+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterBoundsSingleInitialState","Output":"=== RUN   TestFighterBoundsSingleInitialState\n"}
+{"Time":"2026-11-04T17:32:26.339292+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterBoundsSingleInitialState","Output":"--- PASS: TestFighterBoundsSingleInitialState (0.01s)\n"}
+{"Time":"2026-11-04T17:32:26.339317+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighterBoundsSingleInitialState","Elapsed":0.01}
+{"Time":"2026-11-04T17:32:26.339321+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighterBoundsInvalidLowOffsetsAreAtomic"}
+{"Time":"2026-11-04T17:32:26.339324+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterBoundsInvalidLowOffsetsAreAtomic","Output":"=== RUN   TestFighterBoundsInvalidLowOffsetsAreAtomic\n"}
+{"Time":"2026-11-04T17:32:26.339334+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterBoundsInvalidLowOffsetsAreAtomic","Output":"--- PASS: TestFighterBoundsInvalidLowOffsetsAreAtomic (0.00s)\n"}
+{"Time":"2026-11-04T17:32:26.339355+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighterBoundsInvalidLowOffsetsAreAtomic","Elapsed":0}
+{"Time":"2026-11-04T17:32:26.339358+08:00","Action":"output","Package":"command-line-arguments","Output":"PASS\n"}
+{"Time":"2026-11-04T17:32:27.360264+08:00","Action":"output","Package":"command-line-arguments","Output":"ok  \tcommand-line-arguments\t2.294s\n"}
+{"Time":"2026-11-04T17:32:27.360441+08:00","Action":"pass","Package":"command-line-arguments","Elapsed":2.295}

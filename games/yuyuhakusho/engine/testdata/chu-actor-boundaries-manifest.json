@@ -1,0 +1,53 @@
+{
+  "scope": "Declared isolated complete active rules",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "d90107daec842d386170bfb26d986d09254a6dc7f7b6c31593aa36c8a5d2187c",
+  "records": 1654,
+  "calls": 1654,
+  "baselines": [
+    {
+      "inputs": "docs/research/md-yuyuhakusho/inputs.json",
+      "sha256": "59383329affb09e87c6452c135d3ae20df19db9f1675acddc0972a080a8551b6",
+      "frames": 3600,
+      "match": true,
+      "reference_sha256": "69bdbc4ae9d5e8b971563074a3fc1db6b0f11cb0f5cf2c6c8a92fbef4e6f568a"
+    },
+    {
+      "inputs": "games/yuyuhakusho/engine/testdata/chu-special-motion-inputs.json",
+      "sha256": "a79710c3625aa205c048236efbec59c08d48aeefc183050a36b4d4923b1373a8",
+      "frames": 3600,
+      "match": true,
+      "reference_sha256": "dc7596b1a51688b29ee9c580783f0fad572e1b560beedc99182a40ddee7fa059"
+    }
+  ],
+  "frames_match_original_core": true,
+  "external_queue_calls": 0,
+  "rng_counts": {
+    "1": 852,
+    "5": 205,
+    "4": 101,
+    "3": 101,
+    "6": 9,
+    "2": 2,
+    "0": 384
+  },
+  "fixture_sha256": "0d39f3f1a4b31ff1eeb6c21cd0002c2830c6fa5288f19d1d06a6f6ce71fcf420",
+  "gzip_sha256": "41ee13a0c176e571568c226038de6c84c30dfe66c36c66fcab0e5cbe5b0997ab",
+  "incomplete_calls": 0,
+  "errors": [],
+  "pass": true,
+  "limits": [
+    "Stops before actualsprite1580; initialization126c8 and child/world callbacks excluded",
+    "Natural externalaudio events preserved; expectedqueue never reinjected",
+    "Singleinitial streams omit collision manager and otheractors/children"
+  ]
+}

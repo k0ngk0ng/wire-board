@@ -1,0 +1,193 @@
+{
+  "verified_at_utc": "2026-11-04T09:09:16.584173+00:00",
+  "scope": "Complete Chu projectile rule phase through draw request or completed deletion, excluding hardware sprite emission",
+  "pass": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "test_first": "Original CPU fixtures and undefined semantic types/function red phase preceded production implementation; explicit Team/TargetBit field tests preceded those field additions",
+  "coverage": {
+    "natural_calls": 3,
+    "natural_projectiles": 1,
+    "natural_draws": 2,
+    "natural_deletions": 1,
+    "natural_object_id": "0x9100",
+    "natural_power": 7,
+    "isolated_calls": 4678,
+    "isolated_deletions": 1208,
+    "single_initial_trajectories": 18,
+    "single_initial_steps": 948,
+    "trajectory_deletions": 18,
+    "immutable_frames": 14,
+    "unchanged_original_frames": 3600,
+    "external_queue_calls": 0,
+    "actor_bytes_compared": 256,
+    "parent_bytes_compared": 256,
+    "effect_pool_bytes_compared": 2048,
+    "shape_bytes_compared": 1024
+  },
+  "fixtures": [
+    {
+      "name": "chu-projectile-oracle",
+      "manifest_sha256": "4e5e7919337f6a98849c5e05ead715445f8301fb8c1d96dd6c18e675d8de9075",
+      "records": 3,
+      "calls": 3,
+      "draws": 2,
+      "deletions": 1,
+      "fixture_sha256": "1e686795c6f9b9aad1878a16252628925b0606d7f7ee35d94d4fd52208c30fa2",
+      "gzip_sha256": "c3f84fa344add9f70d10251741a6b0d97c7c7c51b1a91e6741cadb9daa51de85"
+    },
+    {
+      "name": "chu-projectile-boundaries",
+      "manifest_sha256": "95060a61a50150dcf85f1b8074205ca98a5366c6537d80c682a6776e8d93b586",
+      "records": 4678,
+      "calls": 4678,
+      "draws": 3470,
+      "deletions": 1208,
+      "fixture_sha256": "cab2fd8049703dc6a973a8aaa4f117db788207f248263210af9765f84fe77733",
+      "gzip_sha256": "b1a88c7f5e6268868c788333626f1cf12ec32d60af3e30f883a2acd63a9e2796"
+    },
+    {
+      "name": "chu-projectile-sequences",
+      "manifest_sha256": "51586b37d348fc79a7027e0f7a10b8d3e30ea8c268a8809a0362beab554f02d1",
+      "records": 18,
+      "calls": 948,
+      "draws": 930,
+      "deletions": 18,
+      "fixture_sha256": "342e7b4dc60fb81aa01b2859e325ca7578b72f6e9d7c940ab3fd4aba799d85ec",
+      "gzip_sha256": "3e30d3997bb753df3eea4664789ef6a092f7cb26da3775d3975cdadb1c250097"
+    }
+  ],
+  "logs": [
+    {
+      "phase": "red-before-implementation",
+      "path": "games/yuyuhakusho/engine/testdata/chu-projectile-red.jsonl",
+      "sha256": "4b451c0aefe1f71e30ab7f2cd7c6e0bf7be648dcd24f548f8ac33fe6bf825dbf",
+      "result": "fail",
+      "top_level_tests": [],
+      "elapsed_seconds": 0
+    },
+    {
+      "phase": "red-before-ownership-fields",
+      "path": "games/yuyuhakusho/engine/testdata/chu-projectile-ownership-red.jsonl",
+      "sha256": "f3ea440d826cba51fb12305dd3c0a5d4685f56d3b8054e34821da73d7b9f840e",
+      "result": "fail",
+      "top_level_tests": [],
+      "elapsed_seconds": 0
+    },
+    {
+      "phase": "native-race",
+      "path": "games/yuyuhakusho/engine/testdata/chu-projectile-native.jsonl",
+      "sha256": "27c02b87c9c20b2eccd452f59fdb2cae8437b2d7b63a659fd971c13e9f326dc5",
+      "result": "pass",
+      "top_level_tests": [
+        "TestChuProjectileErrorsAreAtomic",
+        "TestChuProjectileOriginalRules",
+        "TestChuProjectileSingleInitialState"
+      ],
+      "elapsed_seconds": 19.896
+    },
+    {
+      "phase": "node-wasm",
+      "path": "games/yuyuhakusho/engine/testdata/chu-projectile-wasm.jsonl",
+      "sha256": "6478a28122d593c3adfa63c76fa6c6d4f537cf0026aa89bc207cf2b2aab3cb90",
+      "result": "pass",
+      "top_level_tests": [
+        "TestChuProjectileErrorsAreAtomic",
+        "TestChuProjectileOriginalRules",
+        "TestChuProjectileSingleInitialState"
+      ],
+      "elapsed_seconds": 4.902
+    }
+  ],
+  "source_scope": "Focused explicit production source files plus effect/attack codec test helpers; package integration remains parent gate",
+  "focused_sources": [
+    "animation_clock.go",
+    "animation_records.go",
+    "effects.go",
+    "motion.go",
+    "attack_contacts.go",
+    "chu_projectile.go",
+    "effects_test.go",
+    "attack_contacts_test.go",
+    "chu_projectile_test.go"
+  ],
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/engine/chu_projectile.go",
+      "sha256": "b6b6f115b819c74cb771707f04e18a801d382b2e5a152d5f4c10b01d7bf79363"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_projectile_test.go",
+      "sha256": "6a5b4141b7a1294c57edec969f3ffb04dcc826cddc648a16b1a5cf57a131b0f9"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_chu_projectile.py",
+      "sha256": "2b07eee725800a8b9e5082abb4cadcf1f68ab0adc19c1ea8f3589ab5b8df1086"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/chu-projectile-core.txt",
+      "sha256": "d66756a27d03a14e4e0e93b540cfcd7222cd6119d444f15cd246fc96cb730033"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/chu-projectile-helpers.txt",
+      "sha256": "a8a5545bb2c6b283e554cdbf2c0b8fff09a1f88f9ef9ee87ef4586300c44097a"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/chu-projectile-effects.txt",
+      "sha256": "cb4d40aadf5faaf1ad4edc09c4c90bdac678b4d21278aac0fb0da350cae381f6"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/CHU_PROJECTILE_VERIFICATION.md",
+      "sha256": "21e6dd8c74fc694a2d48463150fb76b838263a5e2df648c0c26d52e598dcd13b"
+    }
+  ],
+  "semantic_library": {
+    "path": "games/yuyuhakusho/data/chu-projectile-animation.json",
+    "sha256": "f6f72392d7e0010259659578f0ac70b94db67c255455e5378f64a61169467137",
+    "frames": 14,
+    "verified_equal_to_original_fixture_library": true
+  },
+  "input": {
+    "path": "games/yuyuhakusho/engine/testdata/chu-special-motion-inputs.json",
+    "sha256": "a79710c3625aa205c048236efbec59c08d48aeefc183050a36b4d4923b1373a8"
+  },
+  "limits": [
+    "Natural sample is a single power7 projectile, not all powers in natural gameplay",
+    "Rules end before0x1580; hardware sprite emission, collision-manager order and full world updates remain separate",
+    "Trajectories include only declared external contact-bit writes, no rendering/effect lifetime/collision manager between calls",
+    "Impact table is validated for creator-derived power0..7; unsupported indices fail atomically",
+    "Deletion validates logical prefixes through256 bytes, not corrupt sizes causing multi-object or ROM/RAM address aliases",
+    "No full actor/world simulation, match, AI, network or platform E2E claim"
+  ],
+  "parent_commit": "eafd9c03",
+  "dependencies": [
+    {
+      "path": "games/yuyuhakusho/engine/animation_clock.go",
+      "sha256": "fa868c5c160fa22fba71520d80c18e8d1f40217ff9a64c6d90a231eab65f28a4"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/animation_records.go",
+      "sha256": "15e3eb6b849d7d29f8b3b55f9c843b36c9ce38fbf3fa4ffa71a9672593d13cbe"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/effects.go",
+      "sha256": "6a0916fbc4051a0e67988b9cad99e41d9ef778e0e78a7f63d65f5fb35d2f6b18"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/motion.go",
+      "sha256": "35dc27314a13afdff39d96d2d21911c5ba5030baf00ea81d1daf8f9feb5f8878"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/attack_contacts.go",
+      "sha256": "1bc022b3649e4765ad7b33f8e08c91ca909e3097b714c24555ee4a64fac0d880"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/effects_test.go",
+      "sha256": "25b7abb54ed803a4802b3bbe3a9c718d0343270c6f0a6150e187fef4c5c11fb0"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/attack_contacts_test.go",
+      "sha256": "a7398b4e96c22d89801e3974637f83562c39155020a901214aea9005ee4c386a"
+    }
+  ]
+}

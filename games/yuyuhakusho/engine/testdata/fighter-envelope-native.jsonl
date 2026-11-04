@@ -1,0 +1,26 @@
+{"Time":"2026-11-04T17:02:18.022655+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-04T17:02:18.4318+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighterEnvelopeOriginalCalls"}
+{"Time":"2026-11-04T17:02:18.431846+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterEnvelopeOriginalCalls","Output":"=== RUN   TestFighterEnvelopeOriginalCalls\n"}
+{"Time":"2026-11-04T17:02:18.431861+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighterEnvelopeOriginalCalls/fighter-envelope-oracle"}
+{"Time":"2026-11-04T17:02:18.431868+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterEnvelopeOriginalCalls/fighter-envelope-oracle","Output":"=== RUN   TestFighterEnvelopeOriginalCalls/fighter-envelope-oracle\n"}
+{"Time":"2026-11-04T17:02:25.607677+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterEnvelopeOriginalCalls/fighter-envelope-oracle","Output":"    fighter_envelope_test.go:246: complete function or explicit AI prefix records=19919\n"}
+{"Time":"2026-11-04T17:02:25.607743+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterEnvelopeOriginalCalls/fighter-envelope-oracle","Output":"--- PASS: TestFighterEnvelopeOriginalCalls/fighter-envelope-oracle (7.18s)\n"}
+{"Time":"2026-11-04T17:02:25.607757+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighterEnvelopeOriginalCalls/fighter-envelope-oracle","Elapsed":7.18}
+{"Time":"2026-11-04T17:02:25.607774+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighterEnvelopeOriginalCalls/fighter-envelope-boundaries"}
+{"Time":"2026-11-04T17:02:25.607777+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterEnvelopeOriginalCalls/fighter-envelope-boundaries","Output":"=== RUN   TestFighterEnvelopeOriginalCalls/fighter-envelope-boundaries\n"}
+{"Time":"2026-11-04T17:02:27.831084+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterEnvelopeOriginalCalls/fighter-envelope-boundaries","Output":"    fighter_envelope_test.go:246: complete function or explicit AI prefix records=3601\n"}
+{"Time":"2026-11-04T17:02:27.831117+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterEnvelopeOriginalCalls/fighter-envelope-boundaries","Output":"--- PASS: TestFighterEnvelopeOriginalCalls/fighter-envelope-boundaries (2.22s)\n"}
+{"Time":"2026-11-04T17:02:27.831121+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighterEnvelopeOriginalCalls/fighter-envelope-boundaries","Elapsed":2.22}
+{"Time":"2026-11-04T17:02:27.831146+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterEnvelopeOriginalCalls","Output":"--- PASS: TestFighterEnvelopeOriginalCalls (9.40s)\n"}
+{"Time":"2026-11-04T17:02:27.83115+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighterEnvelopeOriginalCalls","Elapsed":9.4}
+{"Time":"2026-11-04T17:02:27.831152+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighterEnvelopeSingleInitialState"}
+{"Time":"2026-11-04T17:02:27.831155+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterEnvelopeSingleInitialState","Output":"=== RUN   TestFighterEnvelopeSingleInitialState\n"}
+{"Time":"2026-11-04T17:02:27.892232+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterEnvelopeSingleInitialState","Output":"--- PASS: TestFighterEnvelopeSingleInitialState (0.06s)\n"}
+{"Time":"2026-11-04T17:02:27.892256+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighterEnvelopeSingleInitialState","Elapsed":0.06}
+{"Time":"2026-11-04T17:02:27.892262+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighterEnvelopeMalformedStorageIsAtomic"}
+{"Time":"2026-11-04T17:02:27.892265+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterEnvelopeMalformedStorageIsAtomic","Output":"=== RUN   TestFighterEnvelopeMalformedStorageIsAtomic\n"}
+{"Time":"2026-11-04T17:02:27.892316+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterEnvelopeMalformedStorageIsAtomic","Output":"--- PASS: TestFighterEnvelopeMalformedStorageIsAtomic (0.00s)\n"}
+{"Time":"2026-11-04T17:02:27.892336+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighterEnvelopeMalformedStorageIsAtomic","Elapsed":0}
+{"Time":"2026-11-04T17:02:27.892339+08:00","Action":"output","Package":"command-line-arguments","Output":"PASS\n"}
+{"Time":"2026-11-04T17:02:28.961913+08:00","Action":"output","Package":"command-line-arguments","Output":"ok  \tcommand-line-arguments\t10.939s\n"}
+{"Time":"2026-11-04T17:02:28.961972+08:00","Action":"pass","Package":"command-line-arguments","Elapsed":10.939}

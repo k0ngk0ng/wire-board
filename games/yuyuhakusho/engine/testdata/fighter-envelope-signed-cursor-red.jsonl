@@ -1,0 +1,9 @@
+{"Time":"2026-11-04T17:01:51.961626+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-04T17:01:52.534525+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighterEnvelopeMalformedStorageIsAtomic"}
+{"Time":"2026-11-04T17:01:52.534775+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterEnvelopeMalformedStorageIsAtomic","Output":"=== RUN   TestFighterEnvelopeMalformedStorageIsAtomic\n"}
+{"Time":"2026-11-04T17:01:52.534847+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterEnvelopeMalformedStorageIsAtomic","Output":"    fighter_envelope_test.go:316: negative registration offset was treated as positive storage\n"}
+{"Time":"2026-11-04T17:01:52.534899+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterEnvelopeMalformedStorageIsAtomic","Output":"--- FAIL: TestFighterEnvelopeMalformedStorageIsAtomic (0.00s)\n"}
+{"Time":"2026-11-04T17:01:52.534935+08:00","Action":"fail","Package":"command-line-arguments","Test":"TestFighterEnvelopeMalformedStorageIsAtomic","Elapsed":0}
+{"Time":"2026-11-04T17:01:52.534954+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\n"}
+{"Time":"2026-11-04T17:01:52.535967+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\tcommand-line-arguments\t0.574s\n"}
+{"Time":"2026-11-04T17:01:52.536039+08:00","Action":"fail","Package":"command-line-arguments","Elapsed":0.574}

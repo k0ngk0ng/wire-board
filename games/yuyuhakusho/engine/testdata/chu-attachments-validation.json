@@ -1,0 +1,179 @@
+{
+  "verified_at_utc": "2026-11-04T09:03:14.875470+00:00",
+  "scope": "Chu charging/release attachment rule stages through presentation dispatch or complete object clearing",
+  "pass": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "test_first": {
+    "path": "games/yuyuhakusho/engine/testdata/chu-attachments-red.jsonl",
+    "sha256": "10509fb310a7091bcffed6a77456fd95db7e7a3d7f46473ef875fa29fd4efb2c",
+    "reason": "Actual missing ChuAttachmentWorld/State/Kind/Outcome/StepChuAttachment before implementation; original line numbers precede formatting"
+  },
+  "focused_tests": {
+    "command_source_files": [
+      "chu_attachments.go",
+      "animation_records.go",
+      "animation_clock.go",
+      "motion.go",
+      "chu_attachments_test.go"
+    ],
+    "whole_engine_gate": "Required at parent integration; focused tests intentionally exclude unrelated concurrent test-first files"
+  },
+  "logs": [
+    {
+      "phase": "red",
+      "path": "games/yuyuhakusho/engine/testdata/chu-attachments-red.jsonl",
+      "sha256": "10509fb310a7091bcffed6a77456fd95db7e7a3d7f46473ef875fa29fd4efb2c",
+      "result": "fail",
+      "top_level_tests": [],
+      "elapsed_seconds": 0
+    },
+    {
+      "phase": "native",
+      "path": "games/yuyuhakusho/engine/testdata/chu-attachments-native.jsonl",
+      "sha256": "9d8cbcf17db44c65016335e595367003edd69b2010bdedad53d982397fd65356",
+      "result": "pass",
+      "top_level_tests": [
+        "TestChuAttachmentsOriginalRules",
+        "TestChuAttachmentsSingleInitialLifetimes",
+        "TestChuAttachmentsErrorsAreAtomic"
+      ],
+      "elapsed_seconds": 11.938
+    },
+    {
+      "phase": "wasm",
+      "path": "games/yuyuhakusho/engine/testdata/chu-attachments-wasm.jsonl",
+      "sha256": "06cfa1d2fe66da00e40c013a06fb4a9d946f43cdff40576a880c1e32df4e29b5",
+      "result": "pass",
+      "top_level_tests": [
+        "TestChuAttachmentsOriginalRules",
+        "TestChuAttachmentsSingleInitialLifetimes",
+        "TestChuAttachmentsErrorsAreAtomic"
+      ],
+      "elapsed_seconds": 2.981
+    }
+  ],
+  "fixtures": [
+    {
+      "name": "chu-attachments-oracle",
+      "manifest_sha256": "f8d2fbb700a4a07396194206c4d5169b6f06c2f0e32ff3ef1b887d269ebb9946",
+      "records": 177,
+      "calls": 177,
+      "kind_counts": {
+        "charge": 164,
+        "release": 13
+      },
+      "draw_calls": 174,
+      "delete_calls": 3,
+      "fixture_sha256": "ffcfe6ca6960eb6b4d215f9ca68d6ef397852ff51e473e3b68590e36614e1516",
+      "gzip_sha256": "d65ec7ddef4ef34923e950bd3a8b48d27df53da69adea5a51f700d4654334475"
+    },
+    {
+      "name": "chu-attachments-boundaries",
+      "manifest_sha256": "f8362a9665e723e3b888dfbace92323d6ae6fd0ca2462bcd718868f1046740c8",
+      "records": 10877,
+      "calls": 10877,
+      "kind_counts": {
+        "charge": 4823,
+        "release": 6054
+      },
+      "draw_calls": 9287,
+      "delete_calls": 1590,
+      "fixture_sha256": "ae16ab1700a3029e079fbf2b21956a7f29111bb5a78528707db8879535fa9c4f",
+      "gzip_sha256": "958ed108a983924688bdaee61844cd28f52c8f456836f33c50a6beb5bb64923c"
+    },
+    {
+      "name": "chu-attachments-sequences",
+      "manifest_sha256": "138764dbda6602ddcd13a7e8b8e9fa6fd6960c745bcfe7abe0a324d8e3f29165",
+      "records": 8,
+      "calls": 236,
+      "kind_counts": {
+        "charge": 164,
+        "release": 72
+      },
+      "draw_calls": 228,
+      "delete_calls": 8,
+      "fixture_sha256": "89b3e8a96364f485a11174029b69e09a5c3f61b9603a35168f61eac2a072a9d4",
+      "gzip_sha256": "a27080322df7279c00bce05dcd85312ad6ed2424dc1b7df6c0cc57760e839d51"
+    }
+  ],
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/engine/chu_attachments.go",
+      "sha256": "7aac1a6716a25445e4c9f6302af4b810d1cb6e421f425e6aec15c29100efb48c"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_attachments_test.go",
+      "sha256": "d2b54bd9dab19498c5df0217d1de75f536d66da0d499c0e68066c25c62c7b375"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/CHU_ATTACHMENTS_VERIFICATION.md",
+      "sha256": "aad5ef5b08047eb9d43d6eb738ced012365dc7756816e11d7d314c35578343ea"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_chu_attachments.py",
+      "sha256": "229b57f44120e6e4e27464caafef3a7569334d58c28883b0f5c5076bb4c025e7"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/chu-attachments-core.txt",
+      "sha256": "a7d19512e6a08ea652757eb87231df8346192a69dbc4aad7ee2539f1b40c8c95"
+    }
+  ],
+  "dependencies": [
+    {
+      "path": "games/yuyuhakusho/engine/animation_records.go",
+      "sha256": "15e3eb6b849d7d29f8b3b55f9c843b36c9ce38fbf3fa4ffa71a9672593d13cbe"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/animation_clock.go",
+      "sha256": "fa868c5c160fa22fba71520d80c18e8d1f40217ff9a64c6d90a231eab65f28a4"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/motion.go",
+      "sha256": "35dc27314a13afdff39d96d2d21911c5ba5030baf00ea81d1daf8f9feb5f8878"
+    },
+    {
+      "path": "scripts/yuyuhakusho/reference.py",
+      "sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_animation_records.py",
+      "sha256": "9ed4d8019c29cdf4272cdc54636047b6325c45b2d5d9b9b16efd74e1eb1c3208"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/chu-special-motion-inputs.json",
+      "sha256": "a79710c3625aa205c048236efbec59c08d48aeefc183050a36b4d4923b1373a8"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/chu-projectile-helpers.txt",
+      "sha256": "a8a5545bb2c6b283e554cdbf2c0b8fff09a1f88f9ef9ee87ef4586300c44097a"
+    }
+  ],
+  "immutable_data": {
+    "charge_sequences": 8,
+    "charge_source_start": "0x13492",
+    "charge_source_end_exclusive": "0x134c2",
+    "release_animation_set": "0xd92ca",
+    "release_shape_set": "0xd9a3a",
+    "release_poses": [
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32
+    ],
+    "release_frames": 21,
+    "graphics_set": "0xd8f1a",
+    "tiles_base": "0x240000"
+  },
+  "limits": [
+    "Rule boundary is before0x1580 rendering or after0x3556 clearing; not full callback with hardware sprite/DMA output",
+    "Natural altered input uses fixed original-core same-input baseline; only selected Chu gameplay is naturally covered",
+    "Release animation records and charge countdown data are separate from parent-character libraries",
+    "Retained object storage is256bytes; original size1..15 DBF overflow and larger aliasing clears are not modeled",
+    "Single-initial-state lifetimes accept declared parent/world inputs and do not run full parent/world scheduling",
+    "No registered game renderer, complete match or platform E2E is proved"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "scope": "Only this complete Chu input subtask duplicate capture and intermediate logs",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/chu-input",
+      "bytes": 2566018
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-input-red.jsonl",
+      "bytes": 2316
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-input-native.jsonl",
+      "bytes": 4717
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-input-wasm.jsonl",
+      "bytes": 4711
+    }
+  ],
+  "bytes_removed": 2577762,
+  "shared_go_caches_untouched": true,
+  "canonical_fixtures_logs_sources_preserved": true
+}

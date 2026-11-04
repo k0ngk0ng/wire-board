@@ -1,0 +1,72 @@
+route=direct-ghidra-headless; REA raw 68000 unsupported
+language=68000:BE:32:default
+source=MD Yu Yu Hakusho Japan; static reachable instructions only
+
+seeds=15a18 scope=0x15a18..0x15c0f
+00015a18 bsr.w 0x00015c10
+00015a1c bsr.w 0x00015c36
+00015a20 cmpi.b #0x0,(0x69,A5)
+00015a26 bhi.w 0x00015b84
+00015a2a clr.b (0x6a,A5)
+00015a2e bsr.w 0x00015bd8
+00015a32 tst.b (0xc8,A5)
+00015a36 beq.b 0x00015a3c
+00015a38 subq.b #0x1,(0xc8,A5)
+00015a3c cmpi.b #0x0,(0x86,A5)
+00015a42 beq.b 0x00015a4a
+00015a44 subq.b #0x1,(0x86,A5)
+00015a48 bra.b 0x00015a50
+00015a4a move.w (0x80,A5),(0x7e,A5)
+00015a50 bsr.w 0x00019cc4
+00015a54 bsr.w 0x00019c96
+00015a58 moveq 0x0,D0
+00015a5a move.b (0x5d,A5),D0b
+00015a5e add.w D0w,D0w
+00015a60 lea (0x15a68,PC,D0w*0x1),A0
+00015a64 adda.w (A0),A0
+00015a66 jmp (A0)
+00015b40 cmpi.b #0x9,(0x5f,A5)
+00015b46 beq.b 0x00015b62
+00015b48 cmpi.b #0x2c,(0x5f,A5)
+00015b4e beq.b 0x00015b62
+00015b50 cmpi.b #0xa,(0x5f,A5)
+00015b56 beq.b 0x00015b6a
+00015b58 cmpi.b #0x2d,(0x5f,A5)
+00015b5e beq.b 0x00015b6a
+00015b60 bra.b 0x00015b72
+00015b62 move.b #0x4,(0x63,A5)
+00015b68 bra.b 0x00015b78
+00015b6a move.b #0x8,(0x63,A5)
+00015b70 bra.b 0x00015b78
+00015b72 move.b #0x0,(0x63,A5)
+00015b78 jsr 0x0001eb40.l
+00015b7e bsr.w 0x00015bfe
+00015b82 rts
+00015b84 subi.b #0x1,(0x69,A5)
+00015b8a cmpi.b #0x1,(0x6a,A5)
+00015b90 bls.b 0x00015b98
+00015b92 subi.b #0x1,(0x6a,A5)
+00015b98 moveq 0x0,D0
+00015b9a move.b (0x6a,A5),D0b
+00015b9e btst.b #0x0,(0x69,A5)
+00015ba4 bne.b 0x00015bac
+00015ba6 add.w D0w,(0x54,A5)
+00015baa bra.b 0x00015bb0
+00015bac sub.w D0w,(0x54,A5)
+00015bb0 bra.b 0x00015b40
+00015bd8 tst.w (0x78,A5)
+00015bdc bmi.b 0x00015bfc
+00015bde cmpi.w #0x140,(0x9c,A5)
+00015be4 bne.b 0x00015bee
+00015be6 bset.b #0x0,(0xffffa042).w
+00015bec rts
+00015bee cmpi.w #0x130,(0x9c,A5)
+00015bf4 bne.b 0x00015bfc
+00015bf6 bset.b #0x1,(0xffffa042).w
+00015bfc rts
+00015bfe jsr 0x00003982.l
+00015c04 mulu.w (0xc4,A5),D0
+00015c08 swap D0
+00015c0a add.b D0b,(0x65,A5)
+00015c0e rts
+printed_instructions=66

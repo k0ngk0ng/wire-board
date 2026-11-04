@@ -1,0 +1,76 @@
+route=direct-ghidra-headless; REA raw 68000 unsupported
+language=68000:BE:32:default
+source=MD Yu Yu Hakusho Japan; static reachable instructions only
+
+seeds=1313e scope=0x1313e..0x132dd
+0001313e move.w (0x6,A5),D0w
+00013142 bne.b 0x0001319c
+00013144 addq.w #0x2,(0x6,A5)
+00013148 move.w #0x0,(0x28,A5)
+0001314e move.w #0x0,(0x2a,A5)
+00013154 clr.w (0x3c,A5)
+00013158 clr.l (0x2c,A5)
+0001315c clr.l (0x30,A5)
+00013160 clr.l (0x34,A5)
+00013164 clr.l (0x38,A5)
+00013168 move.l #0xd8f1a,(0x1c,A5)
+00013170 move.l #0x240000,(0x20,A5)
+00013178 move.l #0xd92ca,(0x50,A5)
+00013180 move.l #0xd9a3a,(0x8c,A5)
+00013188 move.w (0xffffa03e).w,D0w
+0001318c or.w D0w,(0x24,A5)
+00013190 move.b #0x8,(0x5a,A5)
+00013196 move.b #-0x1,(0x5b,A5)
+0001319c move.w #0xff,(0x78,A5)
+000131a2 tst.b (0xfffff550).w
+000131a6 bmi.w 0x00013250
+000131aa cmpi.b #0x0,(0xfffff55a).w
+000131b0 bne.w 0x00013250
+000131b4 clr.b (0x6a,A5)
+000131b8 jsr 0x00019c96.l
+000131be cmpi.w #0x5,(0x7c,A5)
+000131c4 bls.b 0x000131ee
+000131c6 move.w (0x9c,A5),D0w
+000131ca subi.w #0x40,D0w
+000131ce cmp.w (0x44,A5),D0w
+000131d2 bgt.b 0x000131ee
+000131d4 addi.b #0x1,(0x48,A5)
+000131da move.b (0x48,A5),D0b
+000131de andi.b #0x3,D0b
+000131e2 cmpi.b #0x0,D0b
+000131e6 bne.b 0x000131ee
+000131e8 jsr 0x00020250.l
+000131ee move.l (0x10,A5),D1
+000131f2 add.l D1,(0x40,A5)
+000131f6 move.l (0x14,A5),D1
+000131fa add.l D1,(0x44,A5)
+000131fe cmpi.l #0x0,(0x14,A5)
+00013206 blt.b 0x00013214
+00013208 move.w (0x9c,A5),D1w
+0001320c cmp.w (0x44,A5),D1w
+00013210 ble.w 0x0001328e
+00013214 move.w (0x40,A5),D0w
+00013218 move.w (0xffffa012).w,D1w
+0001321c addi.w #0x20,D1w
+00013220 cmp.w D1w,D0w
+00013222 bgt.w 0x000132d8
+00013226 move.w (0xffffa010).w,D1w
+0001322a subi.w #0x20,D1w
+0001322e cmp.w D1w,D0w
+00013230 blt.w 0x000132d8
+00013234 btst.b #0x4,(0x89,A5)
+0001323a bne.b 0x0001328e
+0001323c btst.b #0x3,(0x89,A5)
+00013242 bne.b 0x0001328e
+00013244 jsr 0x0001eb40.l
+0001324a jsr 0x000156f0.l
+00013250 jmp 0x00001580.l
+0001328e move.w (0x40,A5),D5w
+00013292 move.w (0x44,A5),D6w
+00013296 move.w (0x7c,A5),D0w
+0001329a lsl.w #0x1,D0w
+0001329c lea (0x132a4,PC,D0w*0x1),A0
+000132a0 adda.w (A0),A0
+000132a2 jmp (A0)
+000132d8 jmp 0x00003556.l
+printed_instructions=70

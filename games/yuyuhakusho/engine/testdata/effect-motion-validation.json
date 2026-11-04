@@ -1,0 +1,255 @@
+{
+  "verified_at_utc": "2026-11-04T11:11:38.762052+00:00",
+  "parent_commit": "eafd9c03",
+  "scope": "Complete generic149ac FX rules through actual initialization/delay return, draw request or completed deletion; no hardware sprite encoding",
+  "pass": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "test_first": "Original CPU fixtures and actual undefined semantic types/function red output preceded effect_motion.go",
+  "coverage": {
+    "types": 37,
+    "unique_initializers": 21,
+    "sequences": 21,
+    "natural_calls": 1130,
+    "natural_draws": 1014,
+    "natural_initialization_returns": 58,
+    "natural_deletions": 58,
+    "natural_types": [
+      2,
+      16,
+      25
+    ],
+    "natural_pool_slots": 16,
+    "isolated_calls": 5752,
+    "isolated_draws": 1999,
+    "isolated_direct_returns": 3501,
+    "isolated_deletions": 252,
+    "single_initial_lifetimes": 111,
+    "single_initial_steps": 2700,
+    "trajectory_deletions": 111,
+    "unchanged_original_frames": 3600,
+    "external_queue_calls": 0,
+    "slot_bytes_compared": 128,
+    "pool_bytes_compared": 2048
+  },
+  "api": {
+    "function": "StepEffectMotion",
+    "state": "EffectMotionState with existing EffectSlot plus per-callback animation/projection/follow fields",
+    "world": "EffectMotionWorld with mutable tile cursor/sound queue and retained readonly environment",
+    "owners": "Readonly map[uint16]EffectMotionOwner; self-follow resolved as slot alias",
+    "outcomes": "Initialization/delay return noDraw/noDelete; pause/drawing Draw; terminal deletion Deleted/ClearedBytes"
+  },
+  "source_scope": "Focused explicit source files only; parent must run whole-package integration gate",
+  "focused_sources": [
+    "effects.go",
+    "motion.go",
+    "effect_motion.go",
+    "effect_motion_test.go"
+  ],
+  "fixtures": [
+    {
+      "name": "effect-motion-oracle",
+      "manifest_sha256": "6fe3f439295adb6be956215df571dfe711d587e92f2188c062ba2193fc6699ef",
+      "records": 1130,
+      "calls": 1130,
+      "draws": 1014,
+      "deletions": 58,
+      "direct_returns": 58,
+      "type_counts": {
+        "16": 884,
+        "2": 199,
+        "25": 47
+      },
+      "fixture_sha256": "419843cfe4f2c097d6e59c48c1481249ad8f7dc34c50c08f7d694290b0a75369",
+      "gzip_sha256": "73c7a0912fc98ff3160db80d80d5358ed6dd46009ab3e1f2745398996b4daac2"
+    },
+    {
+      "name": "effect-motion-boundaries",
+      "manifest_sha256": "1255852ae10136808a81fb4c0b6cb9241541fecbfaaacd3b9f88a0dac7cef48c",
+      "records": 5752,
+      "calls": 5752,
+      "draws": 1999,
+      "deletions": 252,
+      "direct_returns": 3501,
+      "type_counts": {
+        "0": 81,
+        "1": 81,
+        "2": 81,
+        "3": 81,
+        "4": 81,
+        "5": 81,
+        "6": 81,
+        "7": 81,
+        "8": 81,
+        "9": 81,
+        "10": 81,
+        "11": 81,
+        "12": 81,
+        "13": 81,
+        "14": 81,
+        "15": 81,
+        "16": 2836,
+        "17": 81,
+        "18": 81,
+        "19": 81,
+        "20": 81,
+        "21": 81,
+        "22": 81,
+        "23": 81,
+        "24": 81,
+        "25": 81,
+        "26": 81,
+        "27": 81,
+        "28": 81,
+        "29": 81,
+        "30": 81,
+        "31": 81,
+        "32": 81,
+        "33": 81,
+        "34": 81,
+        "35": 81,
+        "36": 81
+      },
+      "fixture_sha256": "762719ace784a7226bd395414db52686c2e98d31f9a17accaf7209f3942ff906",
+      "gzip_sha256": "0e4ae9a542c00e251c9e022bac7c3aca9b394fa79cf90310b28d38fcf3668960"
+    },
+    {
+      "name": "effect-motion-sequences",
+      "manifest_sha256": "77f7647e55dfc8f71b32be2f8ab1f04c5ab95854a2e4304378b53acaa2d87ae4",
+      "records": 111,
+      "calls": 2700,
+      "draws": 2370,
+      "deletions": 111,
+      "direct_returns": 219,
+      "type_counts": {
+        "0": 42,
+        "1": 54,
+        "2": 66,
+        "3": 42,
+        "4": 54,
+        "5": 66,
+        "6": 42,
+        "7": 45,
+        "8": 48,
+        "9": 42,
+        "10": 45,
+        "11": 48,
+        "12": 42,
+        "13": 45,
+        "14": 48,
+        "15": 42,
+        "16": 57,
+        "17": 60,
+        "18": 54,
+        "19": 57,
+        "20": 96,
+        "21": 114,
+        "22": 117,
+        "23": 120,
+        "24": 102,
+        "25": 144,
+        "26": 84,
+        "27": 114,
+        "28": 117,
+        "29": 165,
+        "30": 102,
+        "31": 105,
+        "32": 60,
+        "33": 54,
+        "34": 57,
+        "35": 60,
+        "36": 90
+      },
+      "fixture_sha256": "33ccfab844a749aedc0d62e59c160e6724dc4bad35372d234344914aff216d0b",
+      "gzip_sha256": "1787083c0c2291c48773ead0345d18d7c119321b38ceda97a956e4de8b5fdfbe"
+    }
+  ],
+  "logs": [
+    {
+      "phase": "red-before-implementation",
+      "path": "games/yuyuhakusho/engine/testdata/effect-motion-red.jsonl",
+      "sha256": "a4931fad0bcb2f94b2b758d8232dcab2f435eeaeee35d87a32e545a0ac08e9a0",
+      "result": "fail",
+      "top_level_tests": [],
+      "elapsed_seconds": 0
+    },
+    {
+      "phase": "native-race",
+      "path": "games/yuyuhakusho/engine/testdata/effect-motion-native.jsonl",
+      "sha256": "ad24f4e701e0ad766411830a337cfb3659639243fbd1053e95597605bbe90c8b",
+      "result": "pass",
+      "top_level_tests": [
+        "TestEffectMotionErrorsAreAtomic",
+        "TestEffectMotionOriginalRules",
+        "TestEffectMotionSingleInitialLifetimes"
+      ],
+      "elapsed_seconds": 16.021
+    },
+    {
+      "phase": "node-wasm",
+      "path": "games/yuyuhakusho/engine/testdata/effect-motion-wasm.jsonl",
+      "sha256": "7f3eb3b674a75f8556688fedf55698e9907f74e5bc81c1d59be6799c27ccf526",
+      "result": "pass",
+      "top_level_tests": [
+        "TestEffectMotionErrorsAreAtomic",
+        "TestEffectMotionOriginalRules",
+        "TestEffectMotionSingleInitialLifetimes"
+      ],
+      "elapsed_seconds": 4.196
+    }
+  ],
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/engine/effect_motion.go",
+      "sha256": "0be7ed205b89d5099d17b543acaf9cc5887e3b6a3d2c5749b139cb8dc776e13a"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/effect_motion_test.go",
+      "sha256": "a390f243ab256c26c04500b0a07d0d352c4ad728dfa502405d45c1759c0bc01a"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_effect_motion.py",
+      "sha256": "34ea05d6f7d779e46d6bac891a9371e43b0c429fa62ebb9e40d2464488f5940d"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/effect-motion-core.txt",
+      "sha256": "5373c9d4ff80633ed4599d7b81a0d2db5df3a58736c3b6b3520d1b4c63497071"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/EFFECT_MOTION_VERIFICATION.md",
+      "sha256": "170fe3627fe925dc1f525283a65f45e4d0d8ac77acd49bf8996619444daa70e7"
+    }
+  ],
+  "dependencies": [
+    {
+      "path": "games/yuyuhakusho/engine/effects.go",
+      "sha256": "6a0916fbc4051a0e67988b9cad99e41d9ef778e0e78a7f63d65f5fb35d2f6b18"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/motion.go",
+      "sha256": "35dc27314a13afdff39d96d2d21911c5ba5030baf00ea81d1daf8f9feb5f8878"
+    }
+  ],
+  "semantic_library": {
+    "path": "games/yuyuhakusho/data/effect-sequences.json",
+    "sha256": "d86cd13b88889ae61580bf15d36302dec4a97c484ba0ffa86d4a0961d2a0d93c",
+    "types": 37,
+    "sequences": 21,
+    "equals_original_fixture_libraries": true
+  },
+  "extraction_provenance": {
+    "path": "games/yuyuhakusho/engine/testdata/effect-motion-data-source.json",
+    "sha256": "1fde110184b2c215ea521299250a753a620fb96c7ec5bc57bcdc8cb6e627cf96"
+  },
+  "input": {
+    "path": "games/yuyuhakusho/engine/testdata/chu-special-motion-inputs.json",
+    "sha256": "a79710c3625aa205c048236efbec59c08d48aeefc183050a36b4d4923b1373a8"
+  },
+  "limits": [
+    "Only generic149ac behavior;14930 combo number/14ec6 attached status and other callbacks remain separate",
+    "Natural calls cover only types2/16/25, not all37 types in natural play",
+    "Full finite lifetimes are isolated rule calls with declared owner motion, without hardware rendering, pool scheduling or whole world updates",
+    "Deletion validates logical prefixes through128 bytes, not corrupt sizes causing cross-object or ROM/RAM aliases",
+    "No complete match, AI, network, room, platform E2E or sprite/audio presentation claim"
+  ]
+}

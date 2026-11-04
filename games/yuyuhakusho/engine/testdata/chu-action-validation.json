@@ -1,0 +1,77 @@
+{
+  "verified_at_utc": "2026-11-04T11:32:31.576559+00:00",
+  "scope": "Complete15a18 action routine only",
+  "pass": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "test_first": {
+    "tests_written_before_implementation": true,
+    "initial_build_log": "games/yuyuhakusho/verification/chu-action-preimplementation-build.jsonl",
+    "sha256": "ddb68a8f230b6add56f41dae249478ad50d0c004651d42b6fd491cd575892ece",
+    "result": "Actual undefined ChuActionState/ChuActionParameters/StepChuAction before production implementation"
+  },
+  "coverage": {
+    "natural_complete_calls": 8108,
+    "isolated_complete_calls": 3312,
+    "action_types": 23,
+    "single_initial_streams": 8,
+    "single_initial_calls": 790,
+    "natural_queue_rows_excluded": 99,
+    "natural_queue_differences": 98,
+    "strict_complete_queue_rows": 8009,
+    "rng_calls_per_action": 1
+  },
+  "integration_checks": [
+    {
+      "environment": "Go native race",
+      "path": "games/yuyuhakusho/verification/world-foundations-native.jsonl",
+      "sha256": "d0d93e801fb728eeb1bf5961b5792343f5f13234b563c8ce9e6f73a58a28abe4"
+    },
+    {
+      "environment": "Node/Wasm",
+      "path": "games/yuyuhakusho/verification/world-foundations-wasm.jsonl",
+      "sha256": "b3c12bd222d7b21221fb11390322d69f3a19583eba48d53ad5c2606e04c5f486"
+    }
+  ],
+  "fixtures": [
+    {
+      "manifest": "games/yuyuhakusho/engine/testdata/chu-action-boundaries-manifest.json",
+      "sha256": "d98254f45b742ebe84b6f125d5b9c1ad476193edc5f91413b1c3dbcb59ff165b",
+      "records": 3312,
+      "fixture_sha256": "c714c8f19b11c776a1d718c72577809d76ff64fb4d93542c894d722b540e05e8",
+      "gzip_sha256": "7d11b42ceaad7b0846c0d80fafdbd4d8d668d4adfb3b6228d419a947c224cc8c"
+    },
+    {
+      "manifest": "games/yuyuhakusho/engine/testdata/chu-action-oracle-manifest.json",
+      "sha256": "bdee7af34439a8a13e74430caf8c13f6d7869a3e1524cb764e68af35241cef30",
+      "records": 8108,
+      "fixture_sha256": "8af1c6858c7e25acc612bc5c70e60b653f108c80caf88a38dde69b9458852f64",
+      "gzip_sha256": "4f90042ae862dde9dbf9c4b9ea2acf065a7727e5d33ed18d2baf33234bda6b98"
+    },
+    {
+      "manifest": "games/yuyuhakusho/engine/testdata/chu-action-sequences-manifest.json",
+      "sha256": "765c3065b49c31b25ccd7e70fca70b6f61471386be8ad7483cf7766a3eb16817",
+      "records": 8,
+      "fixture_sha256": "48fb98b0e289a465e3eae73e3f6279bbc30b8c1d6ace1500a2e4a06b2bc3d8a1",
+      "gzip_sha256": "7f95ff1622a9cb6c86346093d0e47ad54a0682dc9b12fe80acd4704bfccbdf10"
+    }
+  ],
+  "sources": [
+    {
+      "path": "scripts/yuyuhakusho/capture_chu_action.py",
+      "sha256": "0219cf3d8c7176b202a5c1ab628761c74434723fc2bff113de7ce2ec33df6f4d"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_action.go",
+      "sha256": "e6e6348336187606913196cce368d82ed549a4c0645b4c0f1e44c69d14015502"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_action_test.go",
+      "sha256": "a3ee2a1eb0863eaefec00c99381fa1f21ccd3284b67d2296cdb06cb743237940"
+    }
+  ],
+  "limits": [
+    "Not a complete world step, registered game or match",
+    "All external queue changes remain reference evidence; no expected-state injection"
+  ]
+}

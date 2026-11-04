@@ -1,0 +1,26 @@
+{"Time":"2026-11-04T18:01:43.708166+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-04T18:01:43.758779+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuInputOriginalCompleteCalls"}
+{"Time":"2026-11-04T18:01:43.758813+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuInputOriginalCompleteCalls","Output":"=== RUN   TestChuInputOriginalCompleteCalls\n"}
+{"Time":"2026-11-04T18:01:43.759938+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuInputOriginalCompleteCalls/chu-input-oracle"}
+{"Time":"2026-11-04T18:01:43.759955+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuInputOriginalCompleteCalls/chu-input-oracle","Output":"=== RUN   TestChuInputOriginalCompleteCalls/chu-input-oracle\n"}
+{"Time":"2026-11-04T18:01:45.677501+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuInputOriginalCompleteCalls/chu-input-oracle","Output":"    chu_input_test.go:102: complete input calls=4134 AI executions=1794 record continuations=0\n"}
+{"Time":"2026-11-04T18:01:45.679798+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuInputOriginalCompleteCalls/chu-input-oracle","Output":"--- PASS: TestChuInputOriginalCompleteCalls/chu-input-oracle (1.92s)\n"}
+{"Time":"2026-11-04T18:01:45.680102+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestChuInputOriginalCompleteCalls/chu-input-oracle","Elapsed":1.92}
+{"Time":"2026-11-04T18:01:45.680201+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuInputOriginalCompleteCalls/chu-input-boundaries"}
+{"Time":"2026-11-04T18:01:45.68021+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuInputOriginalCompleteCalls/chu-input-boundaries","Output":"=== RUN   TestChuInputOriginalCompleteCalls/chu-input-boundaries\n"}
+{"Time":"2026-11-04T18:01:47.986648+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuInputOriginalCompleteCalls/chu-input-boundaries","Output":"    chu_input_test.go:102: complete input calls=5760 AI executions=192 record continuations=1152\n"}
+{"Time":"2026-11-04T18:01:47.991819+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuInputOriginalCompleteCalls/chu-input-boundaries","Output":"--- PASS: TestChuInputOriginalCompleteCalls/chu-input-boundaries (2.31s)\n"}
+{"Time":"2026-11-04T18:01:47.991866+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestChuInputOriginalCompleteCalls/chu-input-boundaries","Elapsed":2.31}
+{"Time":"2026-11-04T18:01:47.991948+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuInputOriginalCompleteCalls","Output":"--- PASS: TestChuInputOriginalCompleteCalls (4.23s)\n"}
+{"Time":"2026-11-04T18:01:47.99202+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestChuInputOriginalCompleteCalls","Elapsed":4.23}
+{"Time":"2026-11-04T18:01:47.992093+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuInputSingleInitialState"}
+{"Time":"2026-11-04T18:01:47.992109+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuInputSingleInitialState","Output":"=== RUN   TestChuInputSingleInitialState\n"}
+{"Time":"2026-11-04T18:01:48.108343+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuInputSingleInitialState","Output":"--- PASS: TestChuInputSingleInitialState (0.12s)\n"}
+{"Time":"2026-11-04T18:01:48.122241+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestChuInputSingleInitialState","Elapsed":0.12}
+{"Time":"2026-11-04T18:01:48.12229+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuInputControlsAndFailuresAreAtomic"}
+{"Time":"2026-11-04T18:01:48.1223+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuInputControlsAndFailuresAreAtomic","Output":"=== RUN   TestChuInputControlsAndFailuresAreAtomic\n"}
+{"Time":"2026-11-04T18:01:49.461016+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuInputControlsAndFailuresAreAtomic","Output":"--- PASS: TestChuInputControlsAndFailuresAreAtomic (1.34s)\n"}
+{"Time":"2026-11-04T18:01:49.46107+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestChuInputControlsAndFailuresAreAtomic","Elapsed":1.34}
+{"Time":"2026-11-04T18:01:49.461509+08:00","Action":"output","Package":"command-line-arguments","Output":"PASS\n"}
+{"Time":"2026-11-04T18:01:49.467554+08:00","Action":"output","Package":"command-line-arguments","Output":"ok  \tcommand-line-arguments\t5.759s\n"}
+{"Time":"2026-11-04T18:01:49.467574+08:00","Action":"pass","Package":"command-line-arguments","Elapsed":5.759}

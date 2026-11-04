@@ -1,0 +1,9 @@
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"# command-line-arguments [command-line-arguments.test]\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/chu_projectile_test.go:37:98: unknown field Team in struct literal of type ChuProjectileState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/chu_projectile_test.go:37:113: unknown field TargetBit in struct literal of type ChuProjectileState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/chu_projectile_test.go:95:23: s.Team undefined (type ChuProjectileState has no field or method Team)\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/chu_projectile_test.go:95:31: s.TargetBit undefined (type ChuProjectileState has no field or method TargetBit)\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-fail"}
+{"Time":"2026-11-04T16:59:09.038405+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-04T16:59:09.038452+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\tcommand-line-arguments [build failed]\n"}
+{"Time":"2026-11-04T16:59:09.038461+08:00","Action":"fail","Package":"command-line-arguments","Elapsed":0,"FailedBuild":"command-line-arguments [command-line-arguments.test]"}

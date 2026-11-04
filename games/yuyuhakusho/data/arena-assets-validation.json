@@ -1,0 +1,182 @@
+{
+  "verified_at_utc": "2026-11-04T11:02:51.830275+00:00",
+  "scope": "Default arena static A/B indexed material and observed ordinary-mode A/B/window/raster background pixels only",
+  "pass": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "test_first": "Original references and actual missing decoder types/functions preceded implementation; separate real missing raster fields and catalog functions retained before those additions",
+  "coverage": {
+    "known_static_arena_bindings": 8,
+    "natural_asset_arena_offsets": [
+      0
+    ],
+    "natural_reference_frames": 20,
+    "original_baseline_frames_unchanged": 3600,
+    "observed_raster_rows": 4480,
+    "draw_line_range": [
+      14,
+      207
+    ],
+    "background_pixels_compared": 1354388,
+    "nonblack_pixels": 1125356,
+    "opaque_sprite_pixels_excluded": 79212,
+    "pixel_mismatches": 0,
+    "background_source_pixels": [
+      298431,
+      548773,
+      415428,
+      91756
+    ],
+    "compact_tiles": 406,
+    "packed_tile_bytes": 12992,
+    "plane_cells": 4096,
+    "catalog_gzip_bytes": 10965,
+    "observed_original_resource_enqueues": [
+      {
+        "frame": 1512,
+        "resource_list": 136992
+      }
+    ],
+    "static_background_vram_changes": 0,
+    "static_vram_observer_ranges": [
+      "0000..3fff",
+      "8000..efff"
+    ]
+  },
+  "observer": {
+    "route": "Wrapper records actual background-render entry, invokes original exactly once; CPU hook tracks rebindings/blank redraws",
+    "source_sha256": "bec96b811a043d3b0aec15964d9aa64110cfae32f50606b0669f94660bb6560a",
+    "binary_sha256": "21772e485ea403722b30ff81770685069d8015ddded701080dbd460de1bedc77",
+    "rebindings": 3290,
+    "effects": "Host function-pointer observation calls original renderer once; CPU observer captures blank redraw and palette writes; original full RAM/video baseline unchanged"
+  },
+  "logs": [
+    {
+      "phase": "red",
+      "path": "games/yuyuhakusho/data/arena-assets-red.jsonl",
+      "sha256": "0f5b24d9d121f68bfde7ee2ff5f27b308f314d699a281bc4c36677d892e2cc67",
+      "result": "fail",
+      "elapsed_seconds": 0,
+      "top_level_tests": []
+    },
+    {
+      "phase": "raster-red",
+      "path": "games/yuyuhakusho/data/arena-assets-raster-red.jsonl",
+      "sha256": "a9af6e1739bca50723571fc31d997eeca1b30b740a6c081836af03e9ef97b26f",
+      "result": "fail",
+      "elapsed_seconds": 0,
+      "top_level_tests": []
+    },
+    {
+      "phase": "catalog-red",
+      "path": "games/yuyuhakusho/data/arena-assets-catalog-red.jsonl",
+      "sha256": "71e4861694b4e54e33086127e6143df8c10f0c59571664dfb460391f82c8e68e",
+      "result": "fail",
+      "elapsed_seconds": 0,
+      "top_level_tests": []
+    },
+    {
+      "phase": "native",
+      "path": "games/yuyuhakusho/data/arena-assets-native.jsonl",
+      "sha256": "89b0a58e12e972cc751ff9c7d307624d4e78b061525eaacae59669d0c17fc04f",
+      "result": "pass",
+      "elapsed_seconds": 14.255,
+      "top_level_tests": [
+        "TestArenaBackgroundAgainstOriginalVideo",
+        "TestArenaBackgroundRejectsUnsupportedOrTruncatedInput",
+        "TestArenaBackgroundRejectsWrongTimingAndCorruptEvidence",
+        "TestCompactArenaCatalogBindsEveryPlaneCellAndTile"
+      ]
+    },
+    {
+      "phase": "wasm",
+      "path": "games/yuyuhakusho/data/arena-assets-wasm.jsonl",
+      "sha256": "ab83db4dd33fac784bd87cf9dc241f93a0c3d2f15138720504e272373fa053ab",
+      "result": "pass",
+      "elapsed_seconds": 3.846,
+      "top_level_tests": [
+        "TestArenaBackgroundAgainstOriginalVideo",
+        "TestArenaBackgroundRejectsUnsupportedOrTruncatedInput",
+        "TestArenaBackgroundRejectsWrongTimingAndCorruptEvidence",
+        "TestCompactArenaCatalogBindsEveryPlaneCellAndTile"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "games/yuyuhakusho/data/arena-assets-reference.json.gz",
+      "sha256": "878558a7f9b964efca0d05a92f3025ba27376e489260ea5bc5868813547ce403"
+    },
+    {
+      "path": "games/yuyuhakusho/data/arena-assets-reference-manifest.json",
+      "sha256": "af6d902d84705a593c799a108b3880e6d84b66f2eb5f567dbec3e026488548b8"
+    },
+    {
+      "path": "games/yuyuhakusho/data/arena-assets-default.json.gz",
+      "sha256": "8b3626b608d90ac990176370f665b42499dc404546f955aafd0beeee5cd35542"
+    },
+    {
+      "path": "games/yuyuhakusho/data/arena-assets-go-comparison.json",
+      "sha256": "ab93f0ce99fd8e29e17e89f74cf7db9b409ff5c67237296524a593c7d242b698"
+    }
+  ],
+  "sources": [
+    {
+      "path": "scripts/yuyuhakusho/extract_arena_assets.py",
+      "sha256": "f003119c665edaeffecec06ff99f77625d14a5345e82956d10ab8dc165e9a13a"
+    },
+    {
+      "path": "games/yuyuhakusho/cmd/verify-arena-assets/main.go",
+      "sha256": "eeaf39f9b5529d3a25d95305ab12eee3577f064750d59534f71191afac6af7c3"
+    },
+    {
+      "path": "games/yuyuhakusho/cmd/verify-arena-assets/catalog.go",
+      "sha256": "91db0adf3094d9c100fe1ad348373c73358ec7fcdf574645f2e2c1dd4cbde3ba"
+    },
+    {
+      "path": "games/yuyuhakusho/cmd/verify-arena-assets/main_test.go",
+      "sha256": "c50a9d444165aa677eda3b20e27d4820f8b17a46da4f833b00f7c92367362e3b"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/ARENA_ASSETS.md",
+      "sha256": "b14930fe6b00024b9bd5663937cf32cb641430167753331b310cd4fd0563e34a"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/arena-assets-bindings.txt",
+      "sha256": "dd60dbf46d572255df93bab6b53b87d3310e55ef5aa16df77ede2ffbca1a4ab9"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/arena-assets-loader.txt",
+      "sha256": "5b1955e1b088f08c8aa2167462a0a8162b10291f5e459a0e4408046c64057c6d"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/arena-assets-scenes.txt",
+      "sha256": "0375753b2dc55fae32cad6372cda751c7cf9e3555755178035099b304f3d816d"
+    }
+  ],
+  "local_visual_sample": {
+    "directory": ".local/md-yuyuhakusho/arena-assets-preview",
+    "state_frame": 1855,
+    "video_frame": 1856,
+    "files": [
+      "default-background.png",
+      "1856-original.png",
+      "sample.json"
+    ],
+    "published": false
+  },
+  "limits": [
+    "Only default arena0 has decoded assets and natural background pixel coverage; eight resource bindings do not establish all-scene presentation or menu reachability",
+    "Every opaque sprite pixel is excluded, including low priority; not full sprite/background priority merging",
+    "Catalog contains static A/B tilebank and maps plus initial scene palette only; caller supplies dynamic color/scroll/visible rows/window-HUD state",
+    "Captured window HUD belongs to observed characters and is excluded from compact A/B runtime data",
+    "Frame-end VDP registers do not determine visible raster inputs; actual background entry/blank/palette observations are required for this reference",
+    "Camera/parallax/waves, environmental palette callbacks150ca/1525e, other scenes, renderer integration, asset packaging/CDN/publication remain incomplete",
+    "Normal H40/64x32/global vertical/no partial horizontal window only; no full VDP hardware model"
+  ],
+  "cleanup": {
+    "path": "games/yuyuhakusho/data/arena-assets-cleanup.json",
+    "sha256": "b16733a9ff1e24f5a495b596f413b3650fd853e26897cdadcd45a22a7b68f90e",
+    "bytes_removed": 6000453
+  }
+}

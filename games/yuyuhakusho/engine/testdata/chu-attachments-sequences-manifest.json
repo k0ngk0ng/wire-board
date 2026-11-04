@@ -1,0 +1,48 @@
+{
+  "scope": "Single-initial-state attachment lifetimes with declared parent/world inputs",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "unobserved_identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.4 60bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "229b57f44120e6e4e27464caafef3a7569334d58c28883b0f5c5076bb4c025e7",
+  "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+  "inputs_sha256": "a79710c3625aa205c048236efbec59c08d48aeefc183050a36b4d4923b1373a8",
+  "records": 8,
+  "calls": 236,
+  "kind_counts": {
+    "charge": 164,
+    "release": 72
+  },
+  "draw_calls": 228,
+  "delete_calls": 8,
+  "external_queue_calls": 0,
+  "animation_frames": 21,
+  "charge_sequences": 8,
+  "fixture_sha256": "89b3e8a96364f485a11174029b69e09a5c3f61b9603a35168f61eac2a072a9d4",
+  "gzip_sha256": "a27080322df7279c00bce05dcd85312ad6ed2424dc1b7df6c0cc57760e839d51",
+  "frames_match_original_core": true,
+  "incomplete_calls": 0,
+  "errors": [],
+  "pass": true,
+  "limits": [
+    "Rules end before0x1580 sprite submission or after0x3556 clear; not full presentation callback/world step",
+    "Original clear sizes1..15 imply large wrapped DBF writes and are outside validated storage bounds",
+    "Declared parent/world changes are external inputs, never expected child-state injection"
+  ]
+}

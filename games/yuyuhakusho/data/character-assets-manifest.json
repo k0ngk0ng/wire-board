@@ -1,0 +1,36 @@
+{
+  "scope": "Palette selector/slot binding CPU calls and declared-private original frame pixels; indexedbank and graphic metadata",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "producer_sha256": "5fc7098265fbb4439c7a8e43489a22ab6b62a732c202fb625596b2c25854aa26",
+  "asset_sha256": "4301df3ff1b20933e4d5d15b62eee8b053d58716f7641f92365f53a85f62b74d",
+  "asset_gzip_sha256": "bb351ca02f48c0fd3c338798a0b8215e129bfe82507ef4aa7c5ab09b9f618c7f",
+  "oracle_sha256": "4eca2bb7c9132f524aa69a8d60ab3ef048ac2961b0dd4d59894a6b9053e3495b",
+  "oracle_gzip_sha256": "88a96b187ea87a0dfdd897595d0168c4f9f6421d2b3cd3ded7f5e58cea6051ef",
+  "source_sprite_fixture_sha256": "74952eb9b961fe51227156c443944a97fcdc025c52941420cd1bbea9387fc516",
+  "source_characters": 11,
+  "palette_selectors": 12,
+  "binding_calls": 528,
+  "pixel_cases": 132,
+  "cpu_prefix_bytes": 10484,
+  "resume_control_frames_match_original": 10,
+  "frames": 1133,
+  "tiles": 32567,
+  "prior_tile_dependent_frames": 7,
+  "frames_match_original_core": true,
+  "pass": true,
+  "limits": [
+    "Selector values0..11 are exact CPU bindings, not a claim that every menu path has been exercised",
+    "Indices0..5 stay world/slot dependent",
+    "Seven graphic frames retain unresolved prior-slot dependencies",
+    "Private pixel scenarios use idle original-frame states; whole matches and all poses are not pixel verified"
+  ]
+}

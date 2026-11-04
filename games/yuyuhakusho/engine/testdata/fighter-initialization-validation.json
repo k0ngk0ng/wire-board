@@ -1,0 +1,175 @@
+{
+  "verified_at_utc": "2026-11-04T10:03:10.601292+00:00",
+  "scope": "Complete original fighter initializer0x126c8 common path and all11 character branches plus bounded consumed movement specs",
+  "pass": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "test_first": "Actual undefined FighterSpecLibrary, FighterSpec, FighterInitializationState and initializer function failure retained before production implementation",
+  "logs": [
+    {
+      "phase": "red",
+      "path": "games/yuyuhakusho/engine/testdata/fighter-initialization-red.jsonl",
+      "sha256": "394c8afeaeacc0a2f2ed482294b1cdbdae9d2b81f453447df6c7b71cf9a7f11f",
+      "result": "fail",
+      "elapsed_seconds": 0,
+      "top_level_tests": [],
+      "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine"
+    },
+    {
+      "phase": "native",
+      "path": "games/yuyuhakusho/engine/testdata/fighter-initialization-native.jsonl",
+      "sha256": "c76764d7fcde1a8a31211f3890032412487071b4eee6ee1661cfdb0197bbfeee",
+      "result": "pass",
+      "elapsed_seconds": 2.589,
+      "top_level_tests": [
+        "TestFighterInitializationAgainstOriginal",
+        "TestFighterSpecsConsumedMovementSources",
+        "TestFighterInitializationPreservesUnownedState",
+        "TestFighterInitializationErrorsAreAtomic"
+      ],
+      "package": "command-line-arguments"
+    },
+    {
+      "phase": "wasm",
+      "path": "games/yuyuhakusho/engine/testdata/fighter-initialization-wasm.jsonl",
+      "sha256": "2104be63fe1be57e26c687d7bc6aae00582f911a88b5001e06e2f9ba32a86c22",
+      "result": "pass",
+      "elapsed_seconds": 0.471,
+      "top_level_tests": [
+        "TestFighterInitializationAgainstOriginal",
+        "TestFighterSpecsConsumedMovementSources",
+        "TestFighterInitializationPreservesUnownedState",
+        "TestFighterInitializationErrorsAreAtomic"
+      ],
+      "package": "command-line-arguments"
+    }
+  ],
+  "build_scope": {
+    "kind": "Explicit source-file focused tests to avoid a concurrent unrelated ChuInput missing-implementation red phase",
+    "files": [
+      "games/yuyuhakusho/engine/fighter_initialization.go",
+      "games/yuyuhakusho/engine/fighter_initialization_test.go",
+      "games/yuyuhakusho/engine/jump.go",
+      "games/yuyuhakusho/engine/jump_test.go",
+      "games/yuyuhakusho/engine/ground_actions.go",
+      "games/yuyuhakusho/engine/effects.go",
+      "games/yuyuhakusho/engine/effects_test.go",
+      "games/yuyuhakusho/engine/input.go",
+      "games/yuyuhakusho/engine/motion.go",
+      "games/yuyuhakusho/engine/animation_clock.go"
+    ],
+    "filter": "^TestFighter(Initialization|Specs)",
+    "whole_engine_gate": "Deferred to parent integration; focused result is not whole engine or game E2E"
+  },
+  "coverage": {
+    "natural_complete_calls": 2,
+    "natural_source_ids": [
+      9
+    ],
+    "isolated_complete_calls": 4224,
+    "isolated_sources": 11,
+    "isolated_calls_per_source": 384,
+    "dirty_patterns": 16,
+    "attribute_masks": 6,
+    "old_attribute_values": 4,
+    "canonical_isolated_a5": "0xff8400",
+    "complete_actor_bytes_compared": 256,
+    "baseline_ram_video_frames_unchanged": 3600,
+    "unrecognized_actor_writes": 0,
+    "isolated_outside_ram_writes": 0,
+    "consumed_parameter_offsets": [
+      0,
+      4,
+      8,
+      12,
+      24,
+      28
+    ],
+    "unassigned_parameter_span": [
+      16,
+      24
+    ]
+  },
+  "fixtures": [
+    {
+      "manifest": "games/yuyuhakusho/engine/testdata/fighter-initialization-oracle-manifest.json",
+      "sha256": "6c88ca7c7699921679de2517376a0df766997c5558406a1171f54d38fd7cf08d",
+      "records": 2,
+      "character_counts": {
+        "9": 2
+      },
+      "fixture_sha256": "acf5babe82da7cfd779a40f58605a227efd723920cad163c9e7bbf553520a580",
+      "gzip_sha256": "6f032259dcb8d1866282b71583be1b6d76ffd0fb0251e28f86af59fc5c03d6f3"
+    },
+    {
+      "manifest": "games/yuyuhakusho/engine/testdata/fighter-initialization-boundaries-manifest.json",
+      "sha256": "b11ba72d7c8d24714e01a6d463927dfde116f4876d2d73696d9b4dc821501f55",
+      "records": 4224,
+      "character_counts": {
+        "0": 384,
+        "1": 384,
+        "2": 384,
+        "3": 384,
+        "4": 384,
+        "5": 384,
+        "6": 384,
+        "7": 384,
+        "8": 384,
+        "9": 384,
+        "10": 384
+      },
+      "fixture_sha256": "991512e4aa1d0e7a3ed31b03833ccfa157ed9283fcf3d0f0691cf51d9bd3f3f0",
+      "gzip_sha256": "9f14a0bf4c9eedf17b78ad316168a18b0b83520dd09d980624491f87169ff692"
+    }
+  ],
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/engine/fighter_initialization.go",
+      "sha256": "52f5c58440b000688a9508e8b419cf0d36e88b4b05250742692e21a4c741f8ad"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter_initialization_test.go",
+      "sha256": "a9df6e8c1bf54784c600762592f551b7836fe2ffb60a4ac6fd23a535c6689869"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/FIGHTER_INITIALIZATION_VERIFICATION.md",
+      "sha256": "faa4adf1dd2f633e9d50f8e27dd090fdec772c7ce48e42573212608336053e83"
+    },
+    {
+      "path": "games/yuyuhakusho/data/fighter-specs.json",
+      "sha256": "d8934db6f84228213ad3591af00357bb3a955a743d559437596aa350f93db7dd"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_fighter_initialization.py",
+      "sha256": "3753800b3bdf4a3520224953a8bdafef6c6f4053ef07b8e3fa6a10f421d4bb8c"
+    },
+    {
+      "path": "scripts/yuyuhakusho/extract_animation_catalog.py",
+      "sha256": "5959c2693068d610c7d25ea2c4c51165b1c60cbfdca5d3a891e0ce21563f9bd2"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-active.txt",
+      "sha256": "88c94a165036b3f70b01aab10786018c7f01300ca56d8f1f35c4d247bd88cc29"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/animation-catalog-initializers.txt",
+      "sha256": "01ce33bd0b2e2aa8a3d4021087f9da8c22bfb5b5af52282ee2bb3479b86d45e4"
+    }
+  ],
+  "limits": [
+    "Initialization only, not spawn/room setup/ready/full actor or world update",
+    "Natural source coverage only9; all11 branches are covered by explicit dirty originalCPU inputs",
+    "Unknown parameter words/longs at10/14 are not assigned guessed gameplay semantics",
+    "Energy low word and other unowned dirty state survive, so this cannot substitute for a complete object reset"
+  ]
+}

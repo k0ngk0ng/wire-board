@@ -1,0 +1,26 @@
+{"Time":"2026-11-04T16:58:57.212009+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-04T16:58:57.272341+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuAttachmentsOriginalRules"}
+{"Time":"2026-11-04T16:58:57.272411+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAttachmentsOriginalRules","Output":"=== RUN   TestChuAttachmentsOriginalRules\n"}
+{"Time":"2026-11-04T16:58:57.273883+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuAttachmentsOriginalRules/chu-attachments-oracle"}
+{"Time":"2026-11-04T16:58:57.273899+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAttachmentsOriginalRules/chu-attachments-oracle","Output":"=== RUN   TestChuAttachmentsOriginalRules/chu-attachments-oracle\n"}
+{"Time":"2026-11-04T16:58:57.350638+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAttachmentsOriginalRules/chu-attachments-oracle","Output":"    chu_attachments_test.go:241: complete attachment rule calls=177\n"}
+{"Time":"2026-11-04T16:58:57.352031+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAttachmentsOriginalRules/chu-attachments-oracle","Output":"--- PASS: TestChuAttachmentsOriginalRules/chu-attachments-oracle (0.08s)\n"}
+{"Time":"2026-11-04T16:58:57.352354+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestChuAttachmentsOriginalRules/chu-attachments-oracle","Elapsed":0.08}
+{"Time":"2026-11-04T16:58:57.352514+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuAttachmentsOriginalRules/chu-attachments-boundaries"}
+{"Time":"2026-11-04T16:58:57.352528+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAttachmentsOriginalRules/chu-attachments-boundaries","Output":"=== RUN   TestChuAttachmentsOriginalRules/chu-attachments-boundaries\n"}
+{"Time":"2026-11-04T16:59:00.089869+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAttachmentsOriginalRules/chu-attachments-boundaries","Output":"    chu_attachments_test.go:241: complete attachment rule calls=10877\n"}
+{"Time":"2026-11-04T16:59:00.090669+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAttachmentsOriginalRules/chu-attachments-boundaries","Output":"--- PASS: TestChuAttachmentsOriginalRules/chu-attachments-boundaries (2.74s)\n"}
+{"Time":"2026-11-04T16:59:00.090716+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestChuAttachmentsOriginalRules/chu-attachments-boundaries","Elapsed":2.74}
+{"Time":"2026-11-04T16:59:00.090809+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAttachmentsOriginalRules","Output":"--- PASS: TestChuAttachmentsOriginalRules (2.82s)\n"}
+{"Time":"2026-11-04T16:59:00.090851+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestChuAttachmentsOriginalRules","Elapsed":2.82}
+{"Time":"2026-11-04T16:59:00.090902+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuAttachmentsSingleInitialLifetimes"}
+{"Time":"2026-11-04T16:59:00.090909+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAttachmentsSingleInitialLifetimes","Output":"=== RUN   TestChuAttachmentsSingleInitialLifetimes\n"}
+{"Time":"2026-11-04T16:59:00.151093+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAttachmentsSingleInitialLifetimes","Output":"--- PASS: TestChuAttachmentsSingleInitialLifetimes (0.06s)\n"}
+{"Time":"2026-11-04T16:59:00.151159+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestChuAttachmentsSingleInitialLifetimes","Elapsed":0.06}
+{"Time":"2026-11-04T16:59:00.151508+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuAttachmentsErrorsAreAtomic"}
+{"Time":"2026-11-04T16:59:00.151522+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAttachmentsErrorsAreAtomic","Output":"=== RUN   TestChuAttachmentsErrorsAreAtomic\n"}
+{"Time":"2026-11-04T16:59:00.187096+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAttachmentsErrorsAreAtomic","Output":"--- PASS: TestChuAttachmentsErrorsAreAtomic (0.04s)\n"}
+{"Time":"2026-11-04T16:59:00.18738+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestChuAttachmentsErrorsAreAtomic","Elapsed":0.04}
+{"Time":"2026-11-04T16:59:00.187912+08:00","Action":"output","Package":"command-line-arguments","Output":"PASS\n"}
+{"Time":"2026-11-04T16:59:00.193079+08:00","Action":"output","Package":"command-line-arguments","Output":"ok  \tcommand-line-arguments\t2.981s\n"}
+{"Time":"2026-11-04T16:59:00.193098+08:00","Action":"pass","Package":"command-line-arguments","Elapsed":2.981}

@@ -1,0 +1,174 @@
+{
+  "verified_at_utc": "2026-11-04T10:40:12.764798+00:00",
+  "scope": "Complete battle-manager phases4..26, with initialization0/2 explicitly excluded",
+  "pass": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "test_first": {
+    "path": "games/yuyuhakusho/engine/testdata/match-lifecycle-red.jsonl",
+    "sha256": "a851c065e54b05d5b4af42923849840cef20f84288022a5dba8ffa81195f30d9",
+    "reason": "Actual missing MatchLifecycleState/MatchObjectHeader/StepMatchLifecycle before production implementation; later the same acceptance class retained out-of-domain CPU results as explicit atomic-rejection diagnostics"
+  },
+  "coverage": {
+    "covered_stages": [
+      4,
+      6,
+      8,
+      10,
+      12,
+      14,
+      16,
+      18,
+      20,
+      22,
+      24,
+      26
+    ],
+    "natural_complete_calls": 3223,
+    "isolated_original_calls": 5180,
+    "isolated_full_semantic_matches": 5140,
+    "out_of_domain_reference_only_atomic_rejections": 40,
+    "single_initial_streams": 4,
+    "single_initial_steps": 3112,
+    "stream_world_clears": 4,
+    "original_frames_unchanged": 5500,
+    "external_sound_queue_calls": 0,
+    "natural_intro_events": 1,
+    "natural_result_events": 1,
+    "natural_clear_world_events": 1
+  },
+  "logs": [
+    {
+      "phase": "red",
+      "path": "games/yuyuhakusho/engine/testdata/match-lifecycle-red.jsonl",
+      "sha256": "a851c065e54b05d5b4af42923849840cef20f84288022a5dba8ffa81195f30d9",
+      "result": "fail",
+      "elapsed_seconds": 0,
+      "top_level_tests": []
+    },
+    {
+      "phase": "native-race",
+      "path": "games/yuyuhakusho/engine/testdata/match-lifecycle-native.jsonl",
+      "sha256": "93a222bf4740e735257602281cd3f8519bce3f39c8ab57c0b84c152501f481bb",
+      "result": "pass",
+      "elapsed_seconds": 25.834,
+      "top_level_tests": [
+        "TestMatchLifecycleOriginalStages",
+        "TestMatchLifecycleSingleInitialState",
+        "TestMatchLifecycleBoundariesAreAtomic"
+      ]
+    },
+    {
+      "phase": "node-wasm",
+      "path": "games/yuyuhakusho/engine/testdata/match-lifecycle-wasm.jsonl",
+      "sha256": "d97d5d7e486307354ac8d1394cf84932f93f17889b19d52c470f9abc7fa2f54f",
+      "result": "pass",
+      "elapsed_seconds": 6.493,
+      "top_level_tests": [
+        "TestMatchLifecycleOriginalStages",
+        "TestMatchLifecycleSingleInitialState",
+        "TestMatchLifecycleBoundariesAreAtomic"
+      ]
+    }
+  ],
+  "fixtures": [
+    {
+      "name": "match-lifecycle-oracle",
+      "manifest_sha256": "c9fda14b0954811186830338b48fa3a63805920c882687b14b5138f6a4b2c56d",
+      "records": 3223,
+      "calls": 3223,
+      "reference_only": 0,
+      "fixture_sha256": "d56401db6219199a36b7f54c71acf45525a37588a16ac51db7580904823c33bd",
+      "gzip_sha256": "f3043de0045daf980f0146c3b1ed39a171272ee7c76c70d1ca1df5e9a16dd801"
+    },
+    {
+      "name": "match-lifecycle-boundaries",
+      "manifest_sha256": "c39b6c4e60d1acd568860f6251b77186dd9329dae7f5def7666d3a0125c021f2",
+      "records": 5180,
+      "calls": 5180,
+      "reference_only": 40,
+      "fixture_sha256": "7b06c16332049beadd89abd77a8a69ca09667373e477a540f96bb7ce61055cfe",
+      "gzip_sha256": "13b8b3418c63ed7edd7486c160ef868b5276225b600f7f2f1c5d3ff3a68fe279"
+    },
+    {
+      "name": "match-lifecycle-sequences",
+      "manifest_sha256": "61f01b15cdf50a2f1f093bfb97f65f00ebca1dd823812ba9fced7e16f8611c9a",
+      "records": 4,
+      "calls": 3112,
+      "reference_only": 0,
+      "fixture_sha256": "d6c5682288ca5414423dbec199a58637d2a8148edb798f67f1988fd5d1eb1680",
+      "gzip_sha256": "a41ebee5517e3e67b51bea9396f89410b4fdfd3fbba5cce4575c572e18ce7d20"
+    }
+  ],
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/engine/match_lifecycle.go",
+      "sha256": "1121ba3d339b266c46a5af08c157741a21e5feb5f8872cb287a14a369c8753dc"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/match_lifecycle_test.go",
+      "sha256": "2f5cd48499f5f5decc1bba5d2142db9994ca4e237fdc98723cb29da1b7e6c4d7"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/MATCH_LIFECYCLE_VERIFICATION.md",
+      "sha256": "978981f7bf8a3777a0425c7abdd51793fdf6429f020d67558e74ded6afccfb27"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_match_lifecycle.py",
+      "sha256": "042aa6c80fa04535d51844caccf88f7f03c9c448019173f13d416b802af938e6"
+    },
+    {
+      "path": "scripts/yuyuhakusho/trace_match_lifecycle.py",
+      "sha256": "6cac316346e0cc8ef76f60a9c206f7b313e87ebe3f2c6fe599bed43091416a91"
+    },
+    {
+      "path": "scripts/yuyuhakusho/trace_match_lifecycle_stack.py",
+      "sha256": "4388e5dee043a33446f48b7181f165cf1f369144efb2456be34968ad2c794015"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/match-lifecycle-entry.txt",
+      "sha256": "1337c3b2cba22f86c22210fe8fd8f6cf060142c607af39f9818e6a2d7b8e967b"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/match-lifecycle-core.txt",
+      "sha256": "ae8f7aafb7907b4b1552414a42488fadc7c42239db4039fc46c15f7b24474a3f"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/match-lifecycle-helpers.txt",
+      "sha256": "8da89d15dd2460a62bc50d7fe3078a16598708c156b48c79ce1d0a8b33a1e808"
+    }
+  ],
+  "extra_evidence": [
+    {
+      "path": "games/yuyuhakusho/engine/testdata/match-lifecycle-stack-diagnostics.json",
+      "sha256": "206ed8ecf61cbca8f9ac3b020c9ba3bad91880fad3f5fd57d7323d9c8b427c65"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/match-lifecycle-reference-frames.json.gz",
+      "sha256": "a7628aa7d1475774323bb8ab5cee1f3da1419e345cc9b7240bca248f5b829b85"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/match-lifecycle-tables.json",
+      "sha256": "d3fabdf23d5852e885fc1c08ced6673ff3c00c8c31b84008ad81a8e5785e0845"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/match-lifecycle-discovery.json",
+      "sha256": "76d1520e21836258fe3c6d40f558235eb54f40cc5c5296a663828f4b424b6b57"
+    }
+  ],
+  "shared_aliases": {
+    "head_to_head": "FFFF60..FFFF6F",
+    "character_wins": "FFFF80..FFFFBF",
+    "character_losses": "FFFFC0..FFFFFF",
+    "recording_end_markers": "LossesByCharacter[60:64] == FFFFFC..FFFFFF"
+  },
+  "limits": [
+    "Stages0/2 scene, actor and resource initialization remain separate and explicitly unsupported by this phase API",
+    "Natural scenario covers only two configured characters and one mode-field configuration; four-object/team/statistics cases are declared isolated inputs, not all menu/mode E2E",
+    "Forty malformed high-team states cause original reads beyond decoded taunt configuration/ROM data; original outputs retained, independent rules reject atomically rather than emulate adjacent code bytes",
+    "Single-initial streams externally declare health and fade-completion changes; no full actor/collision/palette/world simulation or complete independent match claim",
+    "Caller must apply ClearWorldFrom8040 across all object types/fields; platform result mapping uses original team code or explicit MatchDrawCode, never platform seats directly",
+    "No game timeout or full tournament/menu progression is asserted from these covered phases",
+    "Statistics and recording markers must share storage in final world composition"
+  ]
+}

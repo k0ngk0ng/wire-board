@@ -1,0 +1,26 @@
+{"Time":"2026-11-04T17:16:34.310206+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-04T17:16:34.887964+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuAIOriginalCompleteCalls"}
+{"Time":"2026-11-04T17:16:34.88812+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAIOriginalCompleteCalls","Output":"=== RUN   TestChuAIOriginalCompleteCalls\n"}
+{"Time":"2026-11-04T17:16:34.88821+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuAIOriginalCompleteCalls/chu-ai-oracle"}
+{"Time":"2026-11-04T17:16:34.888231+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAIOriginalCompleteCalls/chu-ai-oracle","Output":"=== RUN   TestChuAIOriginalCompleteCalls/chu-ai-oracle\n"}
+{"Time":"2026-11-04T17:16:38.040093+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAIOriginalCompleteCalls/chu-ai-oracle","Output":"    chu_ai_test.go:166: complete original Chu AI calls=1794\n"}
+{"Time":"2026-11-04T17:16:38.040146+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAIOriginalCompleteCalls/chu-ai-oracle","Output":"--- PASS: TestChuAIOriginalCompleteCalls/chu-ai-oracle (3.15s)\n"}
+{"Time":"2026-11-04T17:16:38.040156+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestChuAIOriginalCompleteCalls/chu-ai-oracle","Elapsed":3.15}
+{"Time":"2026-11-04T17:16:38.040206+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuAIOriginalCompleteCalls/chu-ai-boundaries"}
+{"Time":"2026-11-04T17:16:38.040212+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAIOriginalCompleteCalls/chu-ai-boundaries","Output":"=== RUN   TestChuAIOriginalCompleteCalls/chu-ai-boundaries\n"}
+{"Time":"2026-11-04T17:17:05.508053+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAIOriginalCompleteCalls/chu-ai-boundaries","Output":"    chu_ai_test.go:166: complete original Chu AI calls=15468\n"}
+{"Time":"2026-11-04T17:17:05.508772+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAIOriginalCompleteCalls/chu-ai-boundaries","Output":"--- PASS: TestChuAIOriginalCompleteCalls/chu-ai-boundaries (27.47s)\n"}
+{"Time":"2026-11-04T17:17:05.508785+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestChuAIOriginalCompleteCalls/chu-ai-boundaries","Elapsed":27.47}
+{"Time":"2026-11-04T17:17:05.508799+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAIOriginalCompleteCalls","Output":"--- PASS: TestChuAIOriginalCompleteCalls (30.62s)\n"}
+{"Time":"2026-11-04T17:17:05.508808+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestChuAIOriginalCompleteCalls","Elapsed":30.62}
+{"Time":"2026-11-04T17:17:05.508814+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuAISingleInitialState"}
+{"Time":"2026-11-04T17:17:05.508818+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAISingleInitialState","Output":"=== RUN   TestChuAISingleInitialState\n"}
+{"Time":"2026-11-04T17:17:06.217934+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAISingleInitialState","Output":"--- PASS: TestChuAISingleInitialState (0.71s)\n"}
+{"Time":"2026-11-04T17:17:06.217993+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestChuAISingleInitialState","Elapsed":0.71}
+{"Time":"2026-11-04T17:17:06.218+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuAIInvalidStateIsAtomic"}
+{"Time":"2026-11-04T17:17:06.218004+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAIInvalidStateIsAtomic","Output":"=== RUN   TestChuAIInvalidStateIsAtomic\n"}
+{"Time":"2026-11-04T17:17:06.218009+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAIInvalidStateIsAtomic","Output":"--- PASS: TestChuAIInvalidStateIsAtomic (0.00s)\n"}
+{"Time":"2026-11-04T17:17:06.218015+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestChuAIInvalidStateIsAtomic","Elapsed":0}
+{"Time":"2026-11-04T17:17:06.218035+08:00","Action":"output","Package":"command-line-arguments","Output":"PASS\n"}
+{"Time":"2026-11-04T17:17:07.331704+08:00","Action":"output","Package":"command-line-arguments","Output":"ok  \tcommand-line-arguments\t33.021s\n"}
+{"Time":"2026-11-04T17:17:07.331759+08:00","Action":"pass","Package":"command-line-arguments","Elapsed":33.022}

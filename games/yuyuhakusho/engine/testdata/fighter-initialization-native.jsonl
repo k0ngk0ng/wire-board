@@ -1,0 +1,30 @@
+{"Time":"2026-11-04T17:59:19.850855+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-04T17:59:20.316254+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighterInitializationAgainstOriginal"}
+{"Time":"2026-11-04T17:59:20.316385+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterInitializationAgainstOriginal","Output":"=== RUN   TestFighterInitializationAgainstOriginal\n"}
+{"Time":"2026-11-04T17:59:20.319485+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighterInitializationAgainstOriginal/fighter-initialization-oracle"}
+{"Time":"2026-11-04T17:59:20.319548+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterInitializationAgainstOriginal/fighter-initialization-oracle","Output":"=== RUN   TestFighterInitializationAgainstOriginal/fighter-initialization-oracle\n"}
+{"Time":"2026-11-04T17:59:20.322926+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterInitializationAgainstOriginal/fighter-initialization-oracle","Output":"    fighter_initialization_test.go:134: complete original initialization calls=2 source characters=1\n"}
+{"Time":"2026-11-04T17:59:20.323056+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterInitializationAgainstOriginal/fighter-initialization-oracle","Output":"--- PASS: TestFighterInitializationAgainstOriginal/fighter-initialization-oracle (0.00s)\n"}
+{"Time":"2026-11-04T17:59:20.32308+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighterInitializationAgainstOriginal/fighter-initialization-oracle","Elapsed":0}
+{"Time":"2026-11-04T17:59:20.323098+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighterInitializationAgainstOriginal/fighter-initialization-boundaries"}
+{"Time":"2026-11-04T17:59:20.323107+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterInitializationAgainstOriginal/fighter-initialization-boundaries","Output":"=== RUN   TestFighterInitializationAgainstOriginal/fighter-initialization-boundaries\n"}
+{"Time":"2026-11-04T17:59:21.41405+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterInitializationAgainstOriginal/fighter-initialization-boundaries","Output":"    fighter_initialization_test.go:134: complete original initialization calls=4224 source characters=11\n"}
+{"Time":"2026-11-04T17:59:21.41409+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterInitializationAgainstOriginal/fighter-initialization-boundaries","Output":"--- PASS: TestFighterInitializationAgainstOriginal/fighter-initialization-boundaries (1.09s)\n"}
+{"Time":"2026-11-04T17:59:21.414097+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighterInitializationAgainstOriginal/fighter-initialization-boundaries","Elapsed":1.09}
+{"Time":"2026-11-04T17:59:21.414191+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterInitializationAgainstOriginal","Output":"--- PASS: TestFighterInitializationAgainstOriginal (1.10s)\n"}
+{"Time":"2026-11-04T17:59:21.414198+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighterInitializationAgainstOriginal","Elapsed":1.1}
+{"Time":"2026-11-04T17:59:21.41422+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighterSpecsConsumedMovementSources"}
+{"Time":"2026-11-04T17:59:21.414225+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterSpecsConsumedMovementSources","Output":"=== RUN   TestFighterSpecsConsumedMovementSources\n"}
+{"Time":"2026-11-04T17:59:21.415694+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterSpecsConsumedMovementSources","Output":"--- PASS: TestFighterSpecsConsumedMovementSources (0.00s)\n"}
+{"Time":"2026-11-04T17:59:21.4157+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighterSpecsConsumedMovementSources","Elapsed":0}
+{"Time":"2026-11-04T17:59:21.415712+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighterInitializationPreservesUnownedState"}
+{"Time":"2026-11-04T17:59:21.41573+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterInitializationPreservesUnownedState","Output":"=== RUN   TestFighterInitializationPreservesUnownedState\n"}
+{"Time":"2026-11-04T17:59:21.416443+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterInitializationPreservesUnownedState","Output":"--- PASS: TestFighterInitializationPreservesUnownedState (0.00s)\n"}
+{"Time":"2026-11-04T17:59:21.416452+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighterInitializationPreservesUnownedState","Elapsed":0}
+{"Time":"2026-11-04T17:59:21.416465+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighterInitializationErrorsAreAtomic"}
+{"Time":"2026-11-04T17:59:21.416468+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterInitializationErrorsAreAtomic","Output":"=== RUN   TestFighterInitializationErrorsAreAtomic\n"}
+{"Time":"2026-11-04T17:59:21.417215+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterInitializationErrorsAreAtomic","Output":"--- PASS: TestFighterInitializationErrorsAreAtomic (0.00s)\n"}
+{"Time":"2026-11-04T17:59:21.417222+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighterInitializationErrorsAreAtomic","Elapsed":0}
+{"Time":"2026-11-04T17:59:21.41725+08:00","Action":"output","Package":"command-line-arguments","Output":"PASS\n"}
+{"Time":"2026-11-04T17:59:22.439719+08:00","Action":"output","Package":"command-line-arguments","Output":"ok  \tcommand-line-arguments\t2.589s\n"}
+{"Time":"2026-11-04T17:59:22.439863+08:00","Action":"pass","Package":"command-line-arguments","Elapsed":2.589}

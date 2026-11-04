@@ -1,0 +1,114 @@
+{
+  "verified_at_utc": "2026-11-04T09:34:57.755879+00:00",
+  "scope": "Complete208d8 X-word clipping and paired shared position submission only",
+  "pass": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "test_first": "Actual missing FighterBoundsState/StepFighterBounds build failure retained before implementation",
+  "focused_source_files": [
+    "fighter_bounds.go",
+    "fighter_bounds_test.go"
+  ],
+  "logs": [
+    {
+      "phase": "red",
+      "path": "games/yuyuhakusho/engine/testdata/fighter-bounds-red.jsonl",
+      "sha256": "e360ca369073c6469c412c7e8e6ead7782e5d4845a3016cc2a21bf567127aa90",
+      "result": "fail",
+      "elapsed_seconds": 0,
+      "top_level_tests": []
+    },
+    {
+      "phase": "native",
+      "path": "games/yuyuhakusho/engine/testdata/fighter-bounds-native.jsonl",
+      "sha256": "4ba0f4748b182b42661b5215c60dd9a3d6503e4936a80af4b8b339222cc33a64",
+      "result": "pass",
+      "elapsed_seconds": 2.295,
+      "top_level_tests": [
+        "TestFighterBoundsOriginalCalls",
+        "TestFighterBoundsSingleInitialState",
+        "TestFighterBoundsInvalidLowOffsetsAreAtomic"
+      ]
+    },
+    {
+      "phase": "wasm",
+      "path": "games/yuyuhakusho/engine/testdata/fighter-bounds-wasm.jsonl",
+      "sha256": "42d5a7e047e61ccce2a947834340a2015950dd9afe4750cee8adecc67381a1d1",
+      "result": "pass",
+      "elapsed_seconds": 0.338,
+      "top_level_tests": [
+        "TestFighterBoundsOriginalCalls",
+        "TestFighterBoundsSingleInitialState",
+        "TestFighterBoundsInvalidLowOffsetsAreAtomic"
+      ]
+    }
+  ],
+  "fixtures": [
+    {
+      "name": "fighter-bounds-oracle",
+      "records": 4134,
+      "calls": 4134,
+      "manifest_sha256": "d5f73c9b964aec35c24bc1e5e51f531df3e0942b72a7a1b02c8455f91986086a",
+      "fixture_sha256": "91bdc7f1ddbd690763b599de5139445c471de65a0e832165f7eea1bb098b31d4",
+      "gzip_sha256": "aa11b74864a5abe63350c73024a1b5441568ea400ec271b4421ab63a6ed639a7"
+    },
+    {
+      "name": "fighter-bounds-boundaries",
+      "records": 1980,
+      "calls": 1980,
+      "manifest_sha256": "733384761b1bdffc280bedbadb99374765f73586cdb517a26e15ebe9cffa73d5",
+      "fixture_sha256": "43e75f53bea14e55fae443ef5ccfbbc83fd87fbdffd9a7c195d5e0d975962954",
+      "gzip_sha256": "74fbea9a8c051cc6adbd36edc0798da55d8d041bb8cc11cfe27843b6244ba002"
+    },
+    {
+      "name": "fighter-bounds-sequences",
+      "records": 4,
+      "calls": 128,
+      "manifest_sha256": "94d3a4f629b291152388a086568717a35df2e1beed513e620eab2c19663cbeac",
+      "fixture_sha256": "d1c6637124e983f5c9e0544624a72a73cb0a684b83888ee7ce28c347cdc243eb",
+      "gzip_sha256": "cd201fbe72aa77a343a324030943a485ba9b1c6999e063bbc4bfa3eaacd6b84d"
+    }
+  ],
+  "coverage": {
+    "natural_complete_calls": 4134,
+    "isolated_original_calls": 1980,
+    "single_initial_streams": 4,
+    "single_initial_steps": 128,
+    "actor_bytes_compared": 256,
+    "sample_bytes_compared": 128,
+    "baseline_frames_unchanged": 3600,
+    "isolated_external_ram_changes": 0
+  },
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/engine/fighter_bounds.go",
+      "sha256": "065c32dff3bbad040988cadad753661447f7ed3508dacab9b19f34d9ff6da310"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter_bounds_test.go",
+      "sha256": "7eee8f33f9c3c91afc230a5aaafbdf94775f6ab4d6ffbc8e46b379fca1ffad0d"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_fighter_bounds.py",
+      "sha256": "37fc748c88ae1f427d2bdacf0056bc43eeba0bac691de286689767494d71e3fa"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-bounds-core.txt",
+      "sha256": "98c1a0ad83a6278253e39cae29bc5846b74f647fd3960a719f1bf8af536f2877"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-stages.txt",
+      "sha256": "eecf2a94ca0bb29c21a1f895c4477d67fdf3b41c9fe21f19ac5098a6e06e8e40"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/FIGHTER_BOUNDS_VERIFICATION.md",
+      "sha256": "7d0ffdae6335cf4086a9fc705bf557c53caf5c41b9fa1844975fc3105a54c052"
+    }
+  ],
+  "limits": [
+    "Outercaller must skip only health==-1024; function itself has no health gate",
+    "Singleinitial streams change declared upstream positions only; not fullactor/world steps",
+    "Malformed low non-long-aligned offsets are rejected by typedstorage API; damaged cross-array hardware aliases are not claimed",
+    "Fullpackage integration remains parent responsibility"
+  ]
+}

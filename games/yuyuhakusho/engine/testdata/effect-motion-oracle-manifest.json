@@ -1,0 +1,50 @@
+{
+  "scope": "Natural complete generic FX rule phases",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "unobserved_identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.4 60bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "34ea05d6f7d779e46d6bac891a9371e43b0c429fa62ebb9e40d2464488f5940d",
+  "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+  "inputs_sha256": "a79710c3625aa205c048236efbec59c08d48aeefc183050a36b4d4923b1373a8",
+  "records": 1130,
+  "calls": 1130,
+  "type_counts": {
+    "16": 884,
+    "2": 199,
+    "25": 47
+  },
+  "draws": 1014,
+  "deletions": 58,
+  "direct_returns": 58,
+  "types": 37,
+  "sequences": 21,
+  "external_queue_calls": 0,
+  "fixture_sha256": "419843cfe4f2c097d6e59c48c1481249ad8f7dc34c50c08f7d694290b0a75369",
+  "gzip_sha256": "73c7a0912fc98ff3160db80d80d5358ed6dd46009ab3e1f2745398996b4daac2",
+  "frames_match_original_core": true,
+  "errors": [],
+  "incomplete_calls": 0,
+  "pass": true,
+  "limits": [
+    "Generic149ac callback only, not14930/14ec6 or other effect behaviors",
+    "Rules stop at draw request before1580 or original direct return/deletion",
+    "No hardware sprite encoding or whole world/effect-pool scheduling"
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "scope": "Single-initial-state complete action-routine streams",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "0219cf3d8c7176b202a5c1ab628761c74434723fc2bff113de7ce2ec33df6f4d",
+  "records": 8,
+  "calls": 790,
+  "actions": {
+    "0": 127,
+    "1": 11,
+    "3": 27,
+    "2": 8,
+    "15": 249,
+    "10": 27,
+    "11": 254,
+    "5": 1,
+    "6": 26,
+    "65": 1,
+    "66": 21,
+    "67": 38
+  },
+  "library_frames": 139,
+  "baselines": [
+    {
+      "inputs": "docs/research/md-yuyuhakusho/inputs.json",
+      "sha256": "59383329affb09e87c6452c135d3ae20df19db9f1675acddc0972a080a8551b6",
+      "frames": 3600,
+      "match": true,
+      "reference_sha256": "69bdbc4ae9d5e8b971563074a3fc1db6b0f11cb0f5cf2c6c8a92fbef4e6f568a"
+    },
+    {
+      "inputs": "games/yuyuhakusho/engine/testdata/chu-special-motion-inputs.json",
+      "sha256": "a79710c3625aa205c048236efbec59c08d48aeefc183050a36b4d4923b1373a8",
+      "frames": 3600,
+      "match": true,
+      "reference_sha256": "dc7596b1a51688b29ee9c580783f0fad572e1b560beedc99182a40ddee7fa059"
+    }
+  ],
+  "external_queue_calls": 0,
+  "one_rng_call_each": true,
+  "frames_match_original_core": true,
+  "fixture_sha256": "48fb98b0e289a465e3eae73e3f6279bbc30b8c1d6ace1500a2e4a06b2bc3d8a1",
+  "gzip_sha256": "7f95ff1622a9cb6c86346093d0e47ad54a0682dc9b12fe80acd4704bfccbdf10",
+  "incomplete_calls": 0,
+  "errors": [],
+  "pass": true,
+  "limits": [
+    "Complete15a18 rule routine only, not outer fighter/world/collision scheduling or matches",
+    "External queue consumer calls are preserved as independent evidence"
+  ]
+}

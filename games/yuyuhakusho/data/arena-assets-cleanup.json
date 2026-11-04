@@ -1,0 +1,96 @@
+{
+  "scope": "Only this arena-assets investigation temporary projects, duplicate captures, compiled observer/cache and superseded draft/intermediate logs",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/arena-assets-diagnostic.log",
+      "bytes": 55
+    },
+    {
+      "path": ".local/md-yuyuhakusho/arena-assets-raster-native.jsonl",
+      "bytes": 16006
+    },
+    {
+      "path": ".local/md-yuyuhakusho/arena-assets-current-native.jsonl",
+      "bytes": 15627
+    },
+    {
+      "path": ".local/md-yuyuhakusho/arena-assets-catalog-red.jsonl",
+      "bytes": 2766
+    },
+    {
+      "path": ".local/md-yuyuhakusho/arena-assets-diagnostic.json",
+      "bytes": 1072
+    },
+    {
+      "path": ".local/md-yuyuhakusho/arena-assets-render-observer",
+      "bytes": 1502270
+    },
+    {
+      "path": ".local/md-yuyuhakusho/arena-assets-native.jsonl",
+      "bytes": 16625
+    },
+    {
+      "path": ".local/md-yuyuhakusho/arena-assets-wasm.jsonl",
+      "bytes": 16612
+    },
+    {
+      "path": ".local/md-yuyuhakusho/arena-assets-raster-red.jsonl",
+      "bytes": 4358
+    },
+    {
+      "path": ".local/md-yuyuhakusho/arena-assets-static",
+      "bytes": 261113
+    },
+    {
+      "path": ".local/md-yuyuhakusho/arena-assets-first-native.jsonl",
+      "bytes": 15964
+    },
+    {
+      "path": ".local/md-yuyuhakusho/arena-assets-red.jsonl",
+      "bytes": 2780
+    },
+    {
+      "path": ".local/md-yuyuhakusho/arena-assets-catalog-native-fixed.jsonl",
+      "bytes": 16618
+    },
+    {
+      "path": ".local/md-yuyuhakusho/arena-assets-final",
+      "bytes": 1522614
+    },
+    {
+      "path": ".local/md-yuyuhakusho/arena-assets-palette-observer",
+      "bytes": 1519071
+    },
+    {
+      "path": ".local/md-yuyuhakusho/arena-assets",
+      "bytes": 1018277
+    },
+    {
+      "path": ".local/md-yuyuhakusho/arena-assets-comparison.json",
+      "bytes": 333
+    },
+    {
+      "path": ".local/md-yuyuhakusho/arena-assets-catalog-native.jsonl",
+      "bytes": 16958
+    },
+    {
+      "path": ".local/md-yuyuhakusho/arena-assets-raster",
+      "bytes": 35159
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/arena-assets-work",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/arena-assets-preview/default-background-draft.png",
+      "bytes": 16175
+    }
+  ],
+  "bytes_removed": 6000453,
+  "preserved": [
+    "Canonical reference/catalog/validation/red/native/Wasm artifacts",
+    "Independent source and static evidence",
+    "Verified background/original preview pair and sample metadata",
+    "Shared Go caches and every other task resource"
+  ]
+}

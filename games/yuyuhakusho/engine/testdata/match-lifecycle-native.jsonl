@@ -1,0 +1,26 @@
+{"Time":"2026-11-04T18:31:48.384977+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-04T18:31:48.910811+08:00","Action":"run","Package":"command-line-arguments","Test":"TestMatchLifecycleOriginalStages"}
+{"Time":"2026-11-04T18:31:48.91086+08:00","Action":"output","Package":"command-line-arguments","Test":"TestMatchLifecycleOriginalStages","Output":"=== RUN   TestMatchLifecycleOriginalStages\n"}
+{"Time":"2026-11-04T18:31:48.910877+08:00","Action":"run","Package":"command-line-arguments","Test":"TestMatchLifecycleOriginalStages/match-lifecycle-oracle"}
+{"Time":"2026-11-04T18:31:48.910884+08:00","Action":"output","Package":"command-line-arguments","Test":"TestMatchLifecycleOriginalStages/match-lifecycle-oracle","Output":"=== RUN   TestMatchLifecycleOriginalStages/match-lifecycle-oracle\n"}
+{"Time":"2026-11-04T18:31:56.135929+08:00","Action":"output","Package":"command-line-arguments","Test":"TestMatchLifecycleOriginalStages/match-lifecycle-oracle","Output":"    match_lifecycle_test.go:247: complete original manager records=3223 semantic matches=3223 reference-only rejected=0\n"}
+{"Time":"2026-11-04T18:31:56.136669+08:00","Action":"output","Package":"command-line-arguments","Test":"TestMatchLifecycleOriginalStages/match-lifecycle-oracle","Output":"--- PASS: TestMatchLifecycleOriginalStages/match-lifecycle-oracle (7.23s)\n"}
+{"Time":"2026-11-04T18:31:56.136686+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestMatchLifecycleOriginalStages/match-lifecycle-oracle","Elapsed":7.23}
+{"Time":"2026-11-04T18:31:56.136697+08:00","Action":"run","Package":"command-line-arguments","Test":"TestMatchLifecycleOriginalStages/match-lifecycle-boundaries"}
+{"Time":"2026-11-04T18:31:56.136701+08:00","Action":"output","Package":"command-line-arguments","Test":"TestMatchLifecycleOriginalStages/match-lifecycle-boundaries","Output":"=== RUN   TestMatchLifecycleOriginalStages/match-lifecycle-boundaries\n"}
+{"Time":"2026-11-04T18:32:07.00612+08:00","Action":"output","Package":"command-line-arguments","Test":"TestMatchLifecycleOriginalStages/match-lifecycle-boundaries","Output":"    match_lifecycle_test.go:247: complete original manager records=5180 semantic matches=5140 reference-only rejected=40\n"}
+{"Time":"2026-11-04T18:32:07.006172+08:00","Action":"output","Package":"command-line-arguments","Test":"TestMatchLifecycleOriginalStages/match-lifecycle-boundaries","Output":"--- PASS: TestMatchLifecycleOriginalStages/match-lifecycle-boundaries (10.87s)\n"}
+{"Time":"2026-11-04T18:32:07.006185+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestMatchLifecycleOriginalStages/match-lifecycle-boundaries","Elapsed":10.87}
+{"Time":"2026-11-04T18:32:07.006195+08:00","Action":"output","Package":"command-line-arguments","Test":"TestMatchLifecycleOriginalStages","Output":"--- PASS: TestMatchLifecycleOriginalStages (18.10s)\n"}
+{"Time":"2026-11-04T18:32:07.006202+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestMatchLifecycleOriginalStages","Elapsed":18.1}
+{"Time":"2026-11-04T18:32:07.006208+08:00","Action":"run","Package":"command-line-arguments","Test":"TestMatchLifecycleSingleInitialState"}
+{"Time":"2026-11-04T18:32:07.006215+08:00","Action":"output","Package":"command-line-arguments","Test":"TestMatchLifecycleSingleInitialState","Output":"=== RUN   TestMatchLifecycleSingleInitialState\n"}
+{"Time":"2026-11-04T18:32:13.18206+08:00","Action":"output","Package":"command-line-arguments","Test":"TestMatchLifecycleSingleInitialState","Output":"--- PASS: TestMatchLifecycleSingleInitialState (6.18s)\n"}
+{"Time":"2026-11-04T18:32:13.182789+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestMatchLifecycleSingleInitialState","Elapsed":6.18}
+{"Time":"2026-11-04T18:32:13.182799+08:00","Action":"run","Package":"command-line-arguments","Test":"TestMatchLifecycleBoundariesAreAtomic"}
+{"Time":"2026-11-04T18:32:13.182804+08:00","Action":"output","Package":"command-line-arguments","Test":"TestMatchLifecycleBoundariesAreAtomic","Output":"=== RUN   TestMatchLifecycleBoundariesAreAtomic\n"}
+{"Time":"2026-11-04T18:32:13.182821+08:00","Action":"output","Package":"command-line-arguments","Test":"TestMatchLifecycleBoundariesAreAtomic","Output":"--- PASS: TestMatchLifecycleBoundariesAreAtomic (0.00s)\n"}
+{"Time":"2026-11-04T18:32:13.182825+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestMatchLifecycleBoundariesAreAtomic","Elapsed":0}
+{"Time":"2026-11-04T18:32:13.182828+08:00","Action":"output","Package":"command-line-arguments","Output":"PASS\n"}
+{"Time":"2026-11-04T18:32:14.219078+08:00","Action":"output","Package":"command-line-arguments","Output":"ok  \tcommand-line-arguments\t25.834s\n"}
+{"Time":"2026-11-04T18:32:14.219109+08:00","Action":"pass","Package":"command-line-arguments","Elapsed":25.834}

@@ -1,0 +1,43 @@
+{
+  "scope": "Single-initial-state rule trajectories through deletion",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "unobserved_identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.4 60bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "inputs_sha256": "a79710c3625aa205c048236efbec59c08d48aeefc183050a36b4d4923b1373a8",
+  "capture_sha256": "2b07eee725800a8b9e5082abb4cadcf1f68ab0adc19c1ea8f3589ab5b8df1086",
+  "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+  "records": 18,
+  "calls": 948,
+  "draws": 930,
+  "deletions": 18,
+  "library_frames": 14,
+  "external_queue_calls": 0,
+  "fixture_sha256": "342e7b4dc60fb81aa01b2859e325ca7578b72f6e9d7c940ab3fd4aba799d85ec",
+  "gzip_sha256": "3e30d3997bb753df3eea4664789ef6a092f7cb26da3775d3975cdadb1c250097",
+  "frames_match_original_core": true,
+  "errors": [],
+  "incomplete_calls": 0,
+  "pass": true,
+  "limits": [
+    "Rules stop at draw request before 0x1580; hardware sprite emission is separate",
+    "Deletion tested for logical slot prefixes up to256 bytes, not corrupt address aliases",
+    "Impact table bounded to creator-derived power0..7"
+  ]
+}

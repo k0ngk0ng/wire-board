@@ -1,0 +1,199 @@
+{
+  "verified_at_utc": "2026-11-04T09:22:56.873034+00:00",
+  "scope": "Complete original source9 AI entry, shared reaction, seventeen common behaviors and Chu decision tail",
+  "pass": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "test_first": {
+    "path": "games/yuyuhakusho/engine/testdata/chu-ai-red.jsonl",
+    "sha256": "b804d60b14feb7bf67103e6fcabcfbbfdecb5a6d8d28de7f941e8e4127dc0d38",
+    "reason": "Actual missing ChuAIState/ChuAIActor/ChuAIFighter and StepChuAI before implementation; line numbers predate formatting"
+  },
+  "coverage": {
+    "natural_complete_calls": 1794,
+    "natural_source_objects": [
+      "9000"
+    ],
+    "source_character_id": 9,
+    "isolated_complete_calls": 15468,
+    "isolated_source_objects": [
+      "8400",
+      "8800",
+      "8c00",
+      "9000"
+    ],
+    "shared_behaviors": 17,
+    "chu_shared_decision_entries": 15,
+    "single_initial_state_streams": 17,
+    "single_initial_state_steps": 408,
+    "actor_bytes": 256,
+    "world_bytes": 4096,
+    "source_overlaps_world": true,
+    "unchanged_baseline_frames": 3600,
+    "isolated_rng_calls_per_function": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      9
+    ]
+  },
+  "logs": [
+    {
+      "phase": "red",
+      "path": "games/yuyuhakusho/engine/testdata/chu-ai-red.jsonl",
+      "sha256": "b804d60b14feb7bf67103e6fcabcfbbfdecb5a6d8d28de7f941e8e4127dc0d38",
+      "result": "fail",
+      "elapsed_seconds": 0,
+      "top_level_tests": []
+    },
+    {
+      "phase": "native-race",
+      "path": "games/yuyuhakusho/engine/testdata/chu-ai-native.jsonl",
+      "sha256": "de284185b1e4d25b3a3df2121f83ca7888687bb5d57229c000e638d6f421d4e7",
+      "result": "pass",
+      "elapsed_seconds": 33.022,
+      "top_level_tests": [
+        "TestChuAIOriginalCompleteCalls",
+        "TestChuAISingleInitialState",
+        "TestChuAIInvalidStateIsAtomic"
+      ]
+    },
+    {
+      "phase": "node-wasm",
+      "path": "games/yuyuhakusho/engine/testdata/chu-ai-wasm.jsonl",
+      "sha256": "0f9f8e624f960c6b92e8a92a47d4bd7cbae929fa19e8e8f1a2ead9947ffc9e10",
+      "result": "pass",
+      "elapsed_seconds": 8.935,
+      "top_level_tests": [
+        "TestChuAIOriginalCompleteCalls",
+        "TestChuAISingleInitialState",
+        "TestChuAIInvalidStateIsAtomic"
+      ]
+    }
+  ],
+  "fixtures": [
+    {
+      "name": "chu-ai-oracle",
+      "manifest_sha256": "98cb442f5ea3e11f9c13ac02908b440e9109ca71a5d722c40a7509df0c0e3070",
+      "records": 1794,
+      "calls": 1794,
+      "fixture_sha256": "ef1a597d3231f6f976dd28eab9cf34842fac7e5b49845578e00e1115c988cb67",
+      "gzip_sha256": "1441ece9bd94327df21ba92e11f0ce98b2bfef7335078a88e0173f4bbcc7b5c6",
+      "captured_paths": 14,
+      "rng_call_counts": [
+        1,
+        2,
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    {
+      "name": "chu-ai-boundaries",
+      "manifest_sha256": "f104c3938bfe4589c38b2c1fa4db782cc27a7c56c68d876a78c4f33b52d7028f",
+      "records": 15468,
+      "calls": 15468,
+      "fixture_sha256": "16c7dbdc7458ee9ba1c96566d64b18d288ed4c6ca46eb8f1ba32e01e0907bf79",
+      "gzip_sha256": "a18f6305ff718d96b2210d3d55464afe7cc50ba72d29d50c5fd68d8faf6e8ed5",
+      "captured_paths": 34,
+      "rng_call_counts": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        9
+      ]
+    },
+    {
+      "name": "chu-ai-sequences",
+      "manifest_sha256": "ec1dfe5858e864185fabb4bf791e388c88a0df8436eb50f588c18f74d4dcacdf",
+      "records": 17,
+      "calls": 408,
+      "fixture_sha256": "97b1dc0a444994d0a4401c9c666c06d41feb9a9fe2fd2eb16810ac62554cfc08",
+      "gzip_sha256": "b27094cebad1b2d4bd8ff3891d7748d7e74301faa6702cff1dbcfc38e6c336ef",
+      "captured_paths": 15,
+      "rng_call_counts": [
+        2,
+        4,
+        5,
+        6,
+        7
+      ]
+    }
+  ],
+  "pointer_encoding_diagnostic": {
+    "path": "games/yuyuhakusho/engine/testdata/chu-ai-pointer-diagnostics.json",
+    "sha256": "6e43f01afb93bce33a23a4551ca9197fc7254be4f28ea9d0c14cfc93284e5aa0",
+    "natural_source_registers": [
+      "0xffff9000"
+    ],
+    "private_source_registers": [
+      "0xff9000",
+      "0xffff9000"
+    ],
+    "private_follow_targets": [
+      "0x8800",
+      "0x8400"
+    ],
+    "same_input_ram_and_seed": true,
+    "go_strategy_changed_for_alias": false,
+    "final_fixtures_use_original_scheduler_encoding": true
+  },
+  "focused_source_files": [
+    "input.go",
+    "fighter_input.go",
+    "random.go",
+    "chu_ai.go",
+    "chu_ai_test.go"
+  ],
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/engine/chu_ai.go",
+      "sha256": "f1180e17963062b329b22b685e1acf49c95266ba6b78b7507ea51132bdfa61ac"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_ai_test.go",
+      "sha256": "e5c07393a7051e6917e7a460b0bd7ca3e9bd0e2fdad8913b5c0e43dc4b780dd1"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_chu_ai.py",
+      "sha256": "c4803b501d7450467f44a7ae0a3be1337da8c18e92708eec8b0de303bc1cfe52"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/chu-ai-core.txt",
+      "sha256": "c901102e2c81958225f5adc0df6def1645210f901bcc271772dc457b28e3b9fa"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/chu-ai-decisions.txt",
+      "sha256": "ced694ae48be96b0b7662747cf6dcfc28ce21ae54e9a4f27ca2b68361a393b00"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/CHU_AI_VERIFICATION.md",
+      "sha256": "49a721d553a0a08e8d4484b3f4c8b81247f7f58740c24885d965c8815ce61ce9"
+    }
+  ],
+  "limits": [
+    "Only source9 AI is recovered; other source-character strategies remain incomplete",
+    "Function streams change declared target X and do not run fighter motion, collision, world scheduling or full matches",
+    "Input-mode clearing, recording, takeover, visible presentation and network prediction remain caller integrations",
+    "Difficulty uses only the four confirmed word offsets; corrupt source/cursor/behavior/follow identities are atomically rejected instead of reading unrelated ROM bytes",
+    "Arbitrary noncanonical CPU register bus aliases are diagnostic private inputs, not independent game identity",
+    "Native/Wasm tests used explicit source-file scope; parent package integration gate remains required"
+  ],
+  "cleanup": {
+    "path": "games/yuyuhakusho/engine/testdata/chu-ai-cleanup.json",
+    "sha256": "9c667d1e314bededa42ca195cff11baae56a9c66e4d4ed58df14ac366bf386d5",
+    "bytes_removed": 12245571,
+    "shared_go_caches_untouched": true
+  }
+}

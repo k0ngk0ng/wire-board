@@ -1,0 +1,70 @@
+{
+  "scope": "Explicit original CPU effect rules",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "fe373d9f612c32283c736f2cabb26d2e053503533c48a307118189ccdbcccf1a",
+  "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+  "records": 4294,
+  "calls": 4294,
+  "kind_counts": {
+    "combo": 1440,
+    "status": 2854
+  },
+  "draw_calls": 3250,
+  "delete_calls": 264,
+  "silent_returns": 780,
+  "baselines": [
+    {
+      "name": "baseline",
+      "frames": 3600,
+      "frames_match_original_core": true,
+      "inputs_sha256": "4556875db9561132a3f95d5bdb625c4a58325cf8f3f07cd699912529d5134b18",
+      "unobserved_identity": {
+        "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+        "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+        "core_name": "Genesis Plus GX",
+        "core_version": "v1.7.4 60bee4c",
+        "fps": 59.92274340431231,
+        "ram_bytes": 65536,
+        "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+        "teamplayer": false
+      }
+    },
+    {
+      "name": "attack-pulses",
+      "frames": 3600,
+      "frames_match_original_core": true,
+      "inputs_sha256": "93b51e4efee98efa6e12af04e7dda1489ea894c555e3d816d462af552e88dd03",
+      "unobserved_identity": {
+        "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+        "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+        "core_name": "Genesis Plus GX",
+        "core_version": "v1.7.4 60bee4c",
+        "fps": 59.92274340431231,
+        "ram_bytes": 65536,
+        "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+        "teamplayer": false
+      }
+    }
+  ],
+  "frames_match_original_core": true,
+  "inputs_sha256": "ac4a97254060a76a933bf47474610aa3cfc41254302d1711dac8ee3c868e1be4",
+  "fixture_sha256": "0b2de881e6435d271cfc4dc57adb5d541f6285f4417248974be82a7b40c5c7e1",
+  "gzip_sha256": "2c049e4cbf2480bdaa84e2cf75795c0f4210a84464b09097cb03f6be9f431d38",
+  "incomplete_calls": 0,
+  "errors": [],
+  "pass": true,
+  "limits": [
+    "Rules stop before0x1580 renderer or after0x3556 deletion; not full sprite callback/world step",
+    "One retained effect slot is128bytes; wrapped/larger original clear aliasing is not modeled",
+    "Lifetimes consume declared external parent/world inputs without expected-state reinjection"
+  ]
+}

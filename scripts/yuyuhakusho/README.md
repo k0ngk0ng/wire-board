@@ -97,3 +97,22 @@ go test -count=1 -json -exec "$(go env GOROOT)/lib/wasm/go_js_wasm_exec" \
 | `trace_sprite_consumers.py`、`extract_sprites.py` | [图形帧组合、图块与选定像素对照](../../docs/research/md-yuyuhakusho/SPRITE_RESEARCH.md) |
 
 本批独立规则使用上述 `engine` 与 `verify-animation-catalog` 回归命令。精灵验证器另运行 `go test -race -count=1 ./games/yuyuhakusho/cmd/verify-sprites`，Wasm 使用同一执行器；它覆盖研究数据组合与选定像素，尚未接入正式渲染器。测试日志、当前来源摘要和明确剩余工作见 [actor-pipeline.json](../../games/yuyuhakusho/verification/actor-pipeline.json)。
+
+## 完整人物、世界基础与索引素材
+
+新增脚本均沿用固定 ROM／内核和 worktree 内 `--out` 目录。它们覆盖所列完整规则边界；绘制请求不等于最终精灵提交，单对象或单阶段流不等于整个世界循环。
+
+| 脚本 | 验证范围 |
+| --- | --- |
+| `capture_chu_action.py` | [完整酎动作调用](../../games/yuyuhakusho/engine/CHU_ACTION_VERIFICATION.md) |
+| `capture_chu_ai.py`、`capture_chu_input.py` | [真实 AI](../../games/yuyuhakusho/engine/CHU_AI_VERIFICATION.md)与[完整输入](../../games/yuyuhakusho/engine/CHU_INPUT_VERIFICATION.md) |
+| `capture_fighter_envelope.py`、`capture_fighter_bounds.py`、`capture_chu_actor.py` | [包络](../../games/yuyuhakusho/engine/FIGHTER_ENVELOPE_VERIFICATION.md)、[边界](../../games/yuyuhakusho/engine/FIGHTER_BOUNDS_VERIFICATION.md)和[完整活跃人物规则](../../games/yuyuhakusho/engine/CHU_ACTOR_VERIFICATION.md) |
+| `capture_fighter_initialization.py` | [全角色初始化与规格](../../games/yuyuhakusho/engine/FIGHTER_INITIALIZATION_VERIFICATION.md) |
+| `capture_chu_projectile.py`、`capture_chu_attachments.py` | [弹体](../../games/yuyuhakusho/engine/CHU_PROJECTILE_VERIFICATION.md)与[附件](../../games/yuyuhakusho/engine/CHU_ATTACHMENTS_VERIFICATION.md)规则生命周期 |
+| `capture_effect_motion.py`、`capture_attached_effects.py` | [通用 FX](../../games/yuyuhakusho/engine/EFFECT_MOTION_VERIFICATION.md)与[数字／附着 FX](../../games/yuyuhakusho/engine/ATTACHED_EFFECTS_VERIFICATION.md) |
+| `capture_match_lifecycle.py`、`capture_world_clock.py` | [退场／结算阶段](../../games/yuyuhakusho/engine/MATCH_LIFECYCLE_VERIFICATION.md)与[计数／暂停／反馈](../../games/yuyuhakusho/engine/WORLD_CLOCK_VERIFICATION.md) |
+| `extract_character_assets.py`、`extract_arena_assets.py` | [角色索引素材](../../docs/research/md-yuyuhakusho/CHARACTER_ASSETS.md)与[默认场景](../../docs/research/md-yuyuhakusho/ARENA_ASSETS.md) |
+
+角色／背景验证分别运行 `go test -race -count=1 ./games/yuyuhakusho/cmd/verify-character-assets` 和 `go test -race -count=1 ./games/yuyuhakusho/cmd/verify-arena-assets`，Wasm 采用前述执行器。已验证的客户端索引资产仍是本地研究／接入材料，本阶段不上传 OSS、不发布应用，也不把它们嵌入服务器。
+
+整体结果与来源绑定见 [world-foundations.json](../../games/yuyuhakusho/verification/world-foundations.json)。仍未完成世界循环、完整独立对局和平台 E2E；这些门槛保留在进度记录中。
