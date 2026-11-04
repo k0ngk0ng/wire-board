@@ -1,0 +1,28 @@
+{
+  "pass": true,
+  "scope": "Source1 child graphic-key availability; original AN records verified separately, full rendered matches independently compared",
+  "animation_records": 8,
+  "required_keys": [
+    {
+      "graphics_set": 888602,
+      "parameter": 52
+    },
+    {
+      "graphics_set": 888602,
+      "parameter": 54
+    },
+    {
+      "graphics_set": 888602,
+      "parameter": 56
+    },
+    {
+      "graphics_set": 888602,
+      "parameter": 58
+    }
+  ],
+  "all_required_graphics_already_decoded": true,
+  "sources": {
+    "games/yuyuhakusho/data/fighter1-projectile-rules.json": "09c7c5eeff2d896983edb8200ec47ff2fc20675394658d2f40207e1b1554914b",
+    "games/yuyuhakusho/data/world-sprites.json.gz": "200e28e775a809de89c19df0dfef314d5697224fcb6a145853beb7344b5833ef"
+  }
+}

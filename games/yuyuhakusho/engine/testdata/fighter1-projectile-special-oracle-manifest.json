@@ -1,0 +1,65 @@
+{
+  "pass": true,
+  "baseline_verified": true,
+  "scope": "Actual source1 callbacks under the declared real-menu input flow",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "fdcdc4dca2811bef4f4a54a8c81f569158812f1aa2449164728323c17a718383",
+  "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+  "records": 161,
+  "calls": 161,
+  "kind_counts": {
+    "wave": 72,
+    "linear": 22,
+    "beam": 67
+  },
+  "library_frames": 18,
+  "fixture_sha256": "ecf2bbb3916a620b2a246503934d68844f5f6d733279625f15bb704483e0beb0",
+  "gzip_sha256": "6c45c618e27e44945b7637672db1994c087c1ae8deff391968243f803308b311",
+  "baselines": [
+    {
+      "input": "games/yuyuhakusho/engine/testdata/fighter1-special-inputs.json",
+      "input_sha256": "4c4ebc2a611db9d98337010cc5d38eea6cabeaf2bf60826387a0f34733a1fd8d",
+      "reference": "games/yuyuhakusho/engine/testdata/fighter1-attacks-special-reference-frames.json",
+      "reference_raw_sha256": "d4eafaf4f9a9484d465aa506e1ca63db9308b6bb2fb8a25fbb7d9cc475d22777",
+      "reference_manifest": "games/yuyuhakusho/engine/testdata/fighter1-attacks-special-reference-manifest.json",
+      "reference_manifest_sha256": "7a14f6e051ca53d17f9bb788fe96850521abf91f6bfa7cadcb7e7951b7625ff7",
+      "video_steps": 3602,
+      "all_ram_video_match": true
+    }
+  ],
+  "binding": {
+    "source_tag": 1,
+    "source_actor_sha256": "b7e931a88f69f0e79b894cc9fbbd86fdd2cc0040ecc26122a105f8f1dbfd4fe5",
+    "animation_set": 784218,
+    "shape_set": 787658,
+    "movement_source": 75038
+  },
+  "frames_match_original_core": true,
+  "rng_calls": 0,
+  "external_queue_calls": 0,
+  "external_change_calls": 0,
+  "unexplained_change_calls": 0,
+  "interrupt_calls": 0,
+  "clears": 5,
+  "errors": [],
+  "incomplete_calls": 0,
+  "wave_table": {
+    "source": "0x34000 signed-byte stride2",
+    "existing_arena_sha256": "4d042ce63dd009836165dd22d58ad28b67ecac36ad1923c465e8a8b78a5dc302",
+    "existing_wave_x_equal": true
+  },
+  "limits": [
+    "Zero natural callbacks remain pass:false, not renamed private evidence",
+    "Original clock/phase/callback stages and readonly Duration/Flags refresh only; no full tail/world/collision/activeFX simulation",
+    "No expected-state or RNG injection within a stream"
+  ]
+}

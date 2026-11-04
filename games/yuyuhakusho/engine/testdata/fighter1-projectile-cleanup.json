@@ -1,0 +1,46 @@
+{
+  "scope": "Only source1 projectile capture copies already verified against canonical fixtures/data, private Java cache and superseded private-only check logs",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-projectile",
+      "files": 8,
+      "bytes": 1789870
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-projectile-special",
+      "files": 4,
+      "bytes": 44906
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-projectile-static",
+      "files": 19,
+      "bytes": 233743
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-projectile-capture.txt",
+      "files": 1,
+      "bytes": 455
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-projectile-special-capture.txt",
+      "files": 1,
+      "bytes": 140
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-projectile-private-native.jsonl",
+      "files": 1,
+      "bytes": 4080
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-projectile-private-wasm.jsonl",
+      "files": 1,
+      "bytes": 4074
+    }
+  ],
+  "removed_bytes": 2077268,
+  "preserved": [
+    "Canonical ordinary zero-coverage and real special/private fixtures, own red, five final native/Wasm tests and vet",
+    "Eight typed semantic records, unchanged existingArena.WaveX, static evidence, Root/selector input/baseline files",
+    "Original ROM/core/tools, shared Go caches, other agents/games/worktrees, original media andb5723d24 local service assets"
+  ]
+}

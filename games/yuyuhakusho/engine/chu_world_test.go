@@ -169,7 +169,7 @@ func chuWorldLibrariesTest(t *testing.T) ChuWorldLibrary {
 	var commands struct{ Library CommandLibrary }
 	read("../data/command-programs.json", &commands)
 	library.Commands = commands.Library
-	for _, path := range []string{"../data/animation-catalog.json.gz", "../data/chu-projectile-animation.json", "../data/fighter2-projectile-rules.json"} {
+	for _, path := range []string{"../data/animation-catalog.json.gz", "../data/chu-projectile-animation.json", "../data/fighter2-projectile-rules.json", "../data/fighter1-projectile-rules.json"} {
 		var catalog struct {
 			Frames []struct {
 				Key  AnimationFrameKey
@@ -245,6 +245,10 @@ func visitChuWorldTest(t *testing.T, handle func(chuWorldOriginalPass), fixtureN
 			wantRecords, wantFrames = 3154, 5500
 		} else if name == "chu-world-fighter8-special" {
 			wantRecords, wantFrames = 1801, 3600
+		} else if name == "chu-world-fighter1" {
+			wantRecords, wantFrames = 2955, 5500
+		} else if name == "chu-world-fighter1-special" {
+			wantRecords, wantFrames = 1801, 3600
 		}
 	}
 	zipped, err := os.ReadFile("testdata/" + name + ".json.gz")
@@ -295,9 +299,9 @@ func visitChuWorldTest(t *testing.T, handle func(chuWorldOriginalPass), fixtureN
 			t.Fatal(err)
 		}
 		firstEntries := 0
-		if name == "chu-world-fighter10" {
-			// This input reaches the first captured pass after3a2e in the
-			// same video label. The older inputs cross that boundary earlier.
+		if name == "chu-world-fighter10" || name == "chu-world-fighter1" || name == "chu-world-fighter1-special" {
+			// These inputs reach the first captured pass after3a2e in the
+			// same video label. The other inputs cross that boundary earlier.
 			firstEntries = 1
 		}
 		if count == 0 && (len(row.DriverEntries) != firstEntries || firstEntries == 1 && row.DriverEntries[0] != row.Frame) || count != 0 && (len(row.DriverEntries) != 1 || row.DriverEntries[0] < row.Frame-1 || row.DriverEntries[0] > row.Frame) {

@@ -1,0 +1,19 @@
+{
+  "scope": "First implemented selector check caught air A pose transposition; fixtures and frozen tests unchanged",
+  "files": [
+    {
+      "path": "games/yuyuhakusho/engine/fighter1_attacks.go",
+      "sha256": "512bf80593ada6ac4c60db8445b038ab70e1e16621262731aa46b57ff3a1834c"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter1_attacks_test.go",
+      "sha256": "feea08162613cb478fa622d48212bb36471a1f813914623008f9793403345968"
+    }
+  ],
+  "log": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter1-attacks-initial-isolated-native.jsonl",
+    "sha256": "527e4bbb8754206c8afa5d4f58acd281dc6b68042a9545dff48b190ce7c3046c"
+  },
+  "observed": "Original complete calls require pose95 for directions 0/2/4/6/8/10, pose94 otherwise",
+  "correction": "Change only the two pose literals in source1 production air selector"
+}

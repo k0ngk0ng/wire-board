@@ -176,6 +176,10 @@ func stepChuWorldObject(state *ChuWorldState, object WorldObject, view ChuWorldV
 		return stepFighter2WorldProjectile(state, object, library.Animations)
 	case 0x147ae:
 		return stepFighter8WorldProjectile(state, object, library.Animations)
+	case 0x12ee8:
+		return stepFighter1WorldLinear(state, object, library.Animations)
+	case 0x1300c:
+		return stepFighter1WorldWave(state, object, library.Animations, library.Arena.WaveX)
 	case 0x132de, 0x1361e:
 		return stepChuWorldAttachment(state, object, library.Attachments)
 	case 0x149ac:
@@ -353,7 +357,7 @@ func stepChuWorldArena(state *ChuWorldState, object WorldObject, library ArenaRu
 }
 
 func stepChuWorldFighter(state *ChuWorldState, object WorldObject, view ChuWorldView, library ChuWorldLibrary, hudCursor *uint16) ([]ChuWorldEvent, error) {
-	if _, ok := chuAIIndex(object.ObjectID); !ok || (object.Tag != 0 && object.Tag != 2 && object.Tag != 3 && object.Tag != 8 && object.Tag != 9 && object.Tag != 10) {
+	if _, ok := chuAIIndex(object.ObjectID); !ok || (object.Tag != 0 && object.Tag != 1 && object.Tag != 2 && object.Tag != 3 && object.Tag != 8 && object.Tag != 9 && object.Tag != 10) {
 		return nil, errors.New("complete fighter action source is not recovered")
 	}
 	switch object.Header.Stage {
@@ -509,6 +513,68 @@ func stepFighter8WorldProjectile(state *ChuWorldState, object WorldObject, libra
 	object.ScreenX, object.ScreenY, object.ScreenOffsetX, object.ScreenOffsetY = next.ScreenX, next.ScreenY, next.ScreenOffsetX, next.ScreenOffsetY
 	state.Objects[object.ObjectID] = object
 	state.Buffers, state.PendingSound, state.SoundQueue = next.Buffers, next.PendingSound, next.SoundQueue
+	return chuWorldPresentation(object.ObjectID, out.Draw, out.ClearedBytes), nil
+}
+
+func fighter1WorldVisual(state *ChuWorldState, object WorldObject) Fighter8ProjectileState {
+	return Fighter8ProjectileState{Header: object.Header, Animation: object.AsAnimation(), GraphicsSet: object.GraphicsSet, TilesBase: object.TilesBase,
+		GraphicCache: object.GraphicCache, Health: object.Body.Health, Shake: object.Shake, ScreenX: object.ScreenX, ScreenY: object.ScreenY,
+		ScreenOffsetX: object.ScreenOffsetX, ScreenOffsetY: object.ScreenOffsetY, Buffers: state.Buffers, PendingSound: state.PendingSound, SoundQueue: state.SoundQueue}
+}
+
+func mergeFighter1WorldVisual(object WorldObject, visual Fighter8ProjectileState, cleared uint16) (WorldObject, error) {
+	object, err := ApplyObjectClearPrefix(object, cleared)
+	if err != nil {
+		return object, err
+	}
+	object, err = object.MergeAnimation(visual.Animation)
+	if err != nil {
+		return object, err
+	}
+	object.Header, object.GraphicsSet, object.TilesBase, object.GraphicCache = visual.Header, visual.GraphicsSet, visual.TilesBase, visual.GraphicCache
+	object.Body.Health, object.Shake = visual.Health, visual.Shake
+	object.ScreenX, object.ScreenY, object.ScreenOffsetX, object.ScreenOffsetY = visual.ScreenX, visual.ScreenY, visual.ScreenOffsetX, visual.ScreenOffsetY
+	return object, nil
+}
+
+func stepFighter1WorldLinear(state *ChuWorldState, object WorldObject, library AnimationLibrary) ([]ChuWorldEvent, error) {
+	view := Fighter1LinearProjectileState{Visual: fighter1WorldVisual(state, object), VelocityX: object.Body.VelocityX,
+		VelocityY: object.Body.VerticalVelocity, Ground: object.Body.Ground, ContactFlags: object.ContactFlags}
+	next, out, err := StepFighter1LinearProjectile(view, ChuProjectileEnvironment{PauseFlags: state.Clock.PauseFlags, SlowFlag: state.Clock.SlowFlag,
+		PaletteAttributes: state.Match.AttributeMask, ArenaLeft: state.Camera.Left, ArenaRight: state.Camera.Right,
+		CameraX: state.Camera.X, CameraY: state.Camera.Y, Shake: int16(state.Clock.ScreenShake)}, library)
+	if err != nil {
+		return nil, err
+	}
+	object, err = mergeFighter1WorldVisual(object, next.Visual, out.ClearedBytes)
+	if err != nil {
+		return nil, err
+	}
+	object.Body.VelocityX, object.Body.VerticalVelocity, object.Body.Ground, object.ContactFlags = next.VelocityX, next.VelocityY, next.Ground, next.ContactFlags
+	state.Objects[object.ObjectID] = object
+	state.Buffers, state.PendingSound, state.SoundQueue = next.Visual.Buffers, next.Visual.PendingSound, next.Visual.SoundQueue
+	return chuWorldPresentation(object.ObjectID, out.Draw, out.ClearedBytes), nil
+}
+
+func stepFighter1WorldWave(state *ChuWorldState, object WorldObject, library AnimationLibrary, wave []int8) ([]ChuWorldEvent, error) {
+	view := Fighter1WaveProjectileState{Visual: fighter1WorldVisual(state, object), OriginX: object.Body.VelocityX, VelocityY: object.Body.VerticalVelocity,
+		Phase: uint16(uint32(object.Aux48) >> 16), Remaining: uint16(uint32(object.Body.Gravity) >> 16), ContactFlags: object.ContactFlags}
+	next, out, err := StepFighter1WaveProjectile(view, ChuAttachmentWorld{PauseFlags: state.Clock.PauseFlags, SlowFlag: state.Clock.SlowFlag,
+		AttributeMask: state.Match.AttributeMask, CameraX: state.Camera.X, CameraY: state.Camera.Y, Shake: int16(state.Clock.ScreenShake)}, library, wave)
+	if err != nil {
+		return nil, err
+	}
+	object, err = mergeFighter1WorldVisual(object, next.Visual, out.ClearedBytes)
+	if err != nil {
+		return nil, err
+	}
+	object.Body.VelocityX, object.Body.VerticalVelocity, object.ContactFlags = next.OriginX, next.VelocityY, next.ContactFlags
+	// Merge word aliases into the already-cleared canonical longs. Their low
+	// words survive only when the original prefix did not cover them.
+	object.Aux48 = worldObjectHighWord(object.Aux48, next.Phase)
+	object.Body.Gravity = worldObjectHighWord(object.Body.Gravity, next.Remaining)
+	state.Objects[object.ObjectID] = object
+	state.Buffers, state.PendingSound, state.SoundQueue = next.Visual.Buffers, next.Visual.PendingSound, next.Visual.SoundQueue
 	return chuWorldPresentation(object.ObjectID, out.Draw, out.ClearedBytes), nil
 }
 

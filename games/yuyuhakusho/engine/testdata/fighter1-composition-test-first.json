@@ -1,0 +1,36 @@
+{
+  "stage": "Six source1 tests frozen before shared driver support",
+  "recorded_at_utc": "2026-11-04T22:20:39.674525+00:00",
+  "test_top_levels": 6,
+  "files": [
+    {
+      "path": "games/yuyuhakusho/engine/fighter1_composition_test.go",
+      "sha256": "f1578032e7209d349310ae86ae0a68163ba3ab0821a87ff91479f6ac0b5c2380"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/FIGHTER1_COMPOSITION_VERIFICATION.md",
+      "sha256": "2c9254d97c12dcec74b2dc6fa2e46f798e3a806015c3e9e17a45d0d9ce4e7b56"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_action.go",
+      "sha256": "2badb3912f4a8d922c2ff924f04f53e117897151dcd6e20d2f5f78b6d3372da6"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_actor.go",
+      "sha256": "4f72bee260f6ee6a1032985fb3fec5015e160af5ec2016e9d9e3b576d65d6ba9"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_input.go",
+      "sha256": "a9d14993c78d4ae89403824254d72edc3a6315f61928c65129e8b67ac870e294"
+    }
+  ],
+  "actual_natural_red": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter1-composition-red.jsonl",
+    "sha256": "c7656a3d746eb8ff9110e201a457d4f27f9cb9e3358ef19adcf276dead14a185",
+    "tests": [
+      "TestFighter1CompositionOriginalActions",
+      "TestFighter1CompositionOriginalActors"
+    ],
+    "scope": "True menu source1 natural CPU calls; actual unsupported1 after all six tests frozen"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "pass": true,
+  "completed": true,
+  "reference_state_loaded": false,
+  "environment": "js/wasm",
+  "seed": 305419896,
+  "players": 2,
+  "team": false,
+  "human_idle": false,
+  "characters": [
+    0,
+    1
+  ],
+  "ticks": 4985,
+  "callbacks": 62800,
+  "first_damage_tick": 383,
+  "first_ko_tick": 4279,
+  "retirement_tick": 4454,
+  "result_tick": 4521,
+  "clear_tick": 4985,
+  "winner_code": 4,
+  "human_auto_takeovers": 0,
+  "rules_sha256": "3edae07d8be37acdf09ee4a4fc5d2ca7deacafc4f4e6279f8309a2ffb1e043a0",
+  "final_state_sha256": "8d2d475a700dc4382b0c1c9ba9fed0a7a92880e93ec3ee315a9e837bff695189",
+  "trace_sha256": "555633aefdc79cca2ea4f6a7917854fcb6daf008c7bfdd8fa305d6d9255b3f92"
+}

@@ -199,3 +199,5 @@ PATH="/opt/homebrew/Cellar/openjdk/26.0.1/libexec/openjdk.jdk/Contents/Home/bin:
 清理范围仅限本次目录：Ghidra 临时项目／配置／编译缓存、浏览器预留空目录、早期探索回放的重复截图与存档、失败运行控制台日志和不再需要的中间 JSON。保留可核验的差异报告，不删除其他游戏研究文件、用户已有资料、已发布资源或当前工作区的其他改动。
 
 当前进一步完成来源 8「户愚吕兄」，六角色世界／新建对局与呈现结果见[六角色验收](../../../games/yuyuhakusho/verification/elder-session.json)。此前把 8／10 的兄弟姓名标注写反，已按原 HUD 放大字形及造型订正为 8「兄」、10「弟」，旧报告保留历史提交与摘要；规则、原 CPU 编号和素材不变。
+
+藏马现已完成，七角色完整 input／action／actor、原世界、新建对局及呈现验证见[七角色验收](../../../games/yuyuhakusho/verification/kurama-session.json)。两种新子对象使用原有字段的临时窄视图，公共姿态 10／11 新增 8 条 AN，索引图形与波表沿用已验资源。原版首采样帧的 driver-entry 边界已依据未改动 CPU 记录纠正，并以旧 `b5723d24` 实现回放确认回归测试能识别来源 1 未实现。

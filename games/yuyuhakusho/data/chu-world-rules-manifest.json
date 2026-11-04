@@ -46,13 +46,17 @@
     {
       "path": "games/yuyuhakusho/data/fighter2-projectile-rules.json",
       "sha256": "a919578d7f0bbb3656e1802ca9f9e6327c6e1bd7d789c3367a63a7a6f1d6d891"
+    },
+    {
+      "path": "games/yuyuhakusho/data/fighter1-projectile-rules.json",
+      "sha256": "09c7c5eeff2d896983edb8200ec47ff2fc20675394658d2f40207e1b1554914b"
     }
   ],
-  "exporter_sha256": "e72976507789773ffc29ef7d80a1deca5d1341646cc6ed19a3fe2b5e17e3094a",
+  "exporter_sha256": "890afffd6e87be575eb50cf6dd9a3709373a133ccaa7e6c327fa6093d5605052",
   "counts": {
     "fighters": 11,
     "command_programs": 16,
-    "animations": 4780,
+    "animations": 4788,
     "charge_sequences": 8,
     "release_animations": 21,
     "effect_types": 37,
@@ -60,10 +64,11 @@
     "attached_sequences": 3,
     "fighter0_projectile_frames": 25,
     "fighter2_projectile_frames": 23,
+    "fighter1_projectile_frames": 8,
     "fighter0_release_sequences": 8
   },
-  "bytes": 1892087,
-  "gzip_bytes": 87313,
-  "sha256": "ce455cc832d25a5350de2c1824186c86b16096ffee282f9cae985f51d454e650",
-  "gzip_sha256": "f6fb7ec89cde87e3de2eba011614277a6e448049af9420a0ada2f82a3541dfca"
+  "bytes": 1894883,
+  "gzip_bytes": 87440,
+  "sha256": "3edae07d8be37acdf09ee4a4fc5d2ca7deacafc4f4e6279f8309a2ffb1e043a0",
+  "gzip_sha256": "45cdfc3a6f31e41ec7bbec93f8444bcafff8de486ea6bc0a09c1aafea4f853a0"
 }

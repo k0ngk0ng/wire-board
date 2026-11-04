@@ -1,0 +1,174 @@
+{
+  "pass": true,
+  "scope": "Sampler local expected-child name shadowed original baseline list; fixed variable and reran both full natural flows/private/sequences, all12 original CPU gzip files byte-identical; only producer SHA and erroneous private baseline metadata corrected from rerun output",
+  "changes": [
+    {
+      "fixture": "fighter1-composition-action-natural",
+      "CPU_gzip_byte_identical": true,
+      "gzip_sha256": "493544dfe02562fa49d3ea37392853a878fb3084d449481208773b5978ffd0a6",
+      "old_manifest_sha256": "57a5df72ba8022dbbc2028a69596533aad8e5d1de295c6accac28acb3c81110e",
+      "differences": {
+        "capture_sha256": {
+          "before": "b44939d689ad62eb44945985a98a315cd18d3d76cadf07075c7dc58437a99aa5",
+          "after": "1659bf17e791b7fe54f29956ed5d9df4782ff99d516fad1386708e382eff416b"
+        }
+      }
+    },
+    {
+      "fixture": "fighter1-composition-input-natural",
+      "CPU_gzip_byte_identical": true,
+      "gzip_sha256": "d461668308aa0c8e005516de6bbdfd71e9e8c43911b00ea3a1d678b2a3e03ebb",
+      "old_manifest_sha256": "4eba66c83559766c14344baa785bd6791f3154d9c74240836464e10354beca5a",
+      "differences": {
+        "capture_sha256": {
+          "before": "b44939d689ad62eb44945985a98a315cd18d3d76cadf07075c7dc58437a99aa5",
+          "after": "1659bf17e791b7fe54f29956ed5d9df4782ff99d516fad1386708e382eff416b"
+        }
+      }
+    },
+    {
+      "fixture": "fighter1-composition-actor-natural",
+      "CPU_gzip_byte_identical": true,
+      "gzip_sha256": "94caf6dd183f88a257639f1eb4e9d08608465801679abff0b3a3619f5b813759",
+      "old_manifest_sha256": "fac73615da6a5921eaf3d0e086e63c7da50ecb025bb53d1d566bae78ad7fd1f6",
+      "differences": {
+        "capture_sha256": {
+          "before": "b44939d689ad62eb44945985a98a315cd18d3d76cadf07075c7dc58437a99aa5",
+          "after": "1659bf17e791b7fe54f29956ed5d9df4782ff99d516fad1386708e382eff416b"
+        }
+      }
+    },
+    {
+      "fixture": "fighter1-composition-action-special",
+      "CPU_gzip_byte_identical": true,
+      "gzip_sha256": "598f447e4382472ab06f66b60f07a94155a112d35ebcdd1c4242ea819048747b",
+      "old_manifest_sha256": "ee98c9a08cb6b2c77b03c55a53b10dceefce9fbc0de3d95be00c0d7ef26a1774",
+      "differences": {
+        "capture_sha256": {
+          "before": "b44939d689ad62eb44945985a98a315cd18d3d76cadf07075c7dc58437a99aa5",
+          "after": "1659bf17e791b7fe54f29956ed5d9df4782ff99d516fad1386708e382eff416b"
+        }
+      }
+    },
+    {
+      "fixture": "fighter1-composition-input-special",
+      "CPU_gzip_byte_identical": true,
+      "gzip_sha256": "7832e76a77443db4a7bac766da035598499d25f2df9c52adaee7bc5d3276aa19",
+      "old_manifest_sha256": "190a8b1998d1b65fff555ea78fdfdccbd78794842523d92a8af6e0cfb0f73dff",
+      "differences": {
+        "capture_sha256": {
+          "before": "b44939d689ad62eb44945985a98a315cd18d3d76cadf07075c7dc58437a99aa5",
+          "after": "1659bf17e791b7fe54f29956ed5d9df4782ff99d516fad1386708e382eff416b"
+        }
+      }
+    },
+    {
+      "fixture": "fighter1-composition-actor-special",
+      "CPU_gzip_byte_identical": true,
+      "gzip_sha256": "21949734323e991afdf0787a3f5802c0aae4d13b9adb606c4c5524d7fbbfc67b",
+      "old_manifest_sha256": "7a0b0fe6bd4edfdf4a51549378d7b9618c1809e25fdc3adb725ca7e5322e4d60",
+      "differences": {
+        "capture_sha256": {
+          "before": "b44939d689ad62eb44945985a98a315cd18d3d76cadf07075c7dc58437a99aa5",
+          "after": "1659bf17e791b7fe54f29956ed5d9df4782ff99d516fad1386708e382eff416b"
+        }
+      }
+    },
+    {
+      "fixture": "fighter1-composition-action-boundaries",
+      "CPU_gzip_byte_identical": true,
+      "gzip_sha256": "9ee290a0cc8d90307d98e145bd61dc3a6de49171ee87c7a3fc88fd72a34141b8",
+      "old_manifest_sha256": "cd03ebad570c89da72a4344e3c1f29ef045e8a0c3a247d1c165f4d789a986351",
+      "differences": {
+        "capture_sha256": {
+          "before": "b44939d689ad62eb44945985a98a315cd18d3d76cadf07075c7dc58437a99aa5",
+          "after": "1659bf17e791b7fe54f29956ed5d9df4782ff99d516fad1386708e382eff416b"
+        },
+        "frames_match_original_core": {
+          "before": false,
+          "after": true
+        }
+      }
+    },
+    {
+      "fixture": "fighter1-composition-input-boundaries",
+      "CPU_gzip_byte_identical": true,
+      "gzip_sha256": "29c34e217051a6d209bd24998821280bddcf247bb5fd701c8226bdba01e3c659",
+      "old_manifest_sha256": "d2ec625d35e378672b7c96acae3c8db978ef4eedf15013872ec982bab7d29129",
+      "differences": {
+        "capture_sha256": {
+          "before": "b44939d689ad62eb44945985a98a315cd18d3d76cadf07075c7dc58437a99aa5",
+          "after": "1659bf17e791b7fe54f29956ed5d9df4782ff99d516fad1386708e382eff416b"
+        },
+        "frames_match_original_core": {
+          "before": false,
+          "after": true
+        }
+      }
+    },
+    {
+      "fixture": "fighter1-composition-actor-boundaries",
+      "CPU_gzip_byte_identical": true,
+      "gzip_sha256": "eaf236f7355d801d0b03ff9bbda27b74541c0666ea89d9a3f23e41fa6da79558",
+      "old_manifest_sha256": "2c2b5c0e5440b40f0a0895ef108d238d41c2726ae03f76b923d9d2c6ebdc208c",
+      "differences": {
+        "capture_sha256": {
+          "before": "b44939d689ad62eb44945985a98a315cd18d3d76cadf07075c7dc58437a99aa5",
+          "after": "1659bf17e791b7fe54f29956ed5d9df4782ff99d516fad1386708e382eff416b"
+        },
+        "frames_match_original_core": {
+          "before": false,
+          "after": true
+        }
+      }
+    },
+    {
+      "fixture": "fighter1-composition-action-sequences",
+      "CPU_gzip_byte_identical": true,
+      "gzip_sha256": "8ccdb96396e163c317bf35bf7932242d6cc74c70592c96d224270304681930b3",
+      "old_manifest_sha256": "bb63ed5554faedac21d734388fe6cc69ca063ae5cc361e76c1d69e5c6f90dd5e",
+      "differences": {
+        "capture_sha256": {
+          "before": "b44939d689ad62eb44945985a98a315cd18d3d76cadf07075c7dc58437a99aa5",
+          "after": "1659bf17e791b7fe54f29956ed5d9df4782ff99d516fad1386708e382eff416b"
+        },
+        "frames_match_original_core": {
+          "before": false,
+          "after": true
+        }
+      }
+    },
+    {
+      "fixture": "fighter1-composition-input-sequences",
+      "CPU_gzip_byte_identical": true,
+      "gzip_sha256": "7e4d7dbcb539c8f5ffa11b45dca541f90f811430ac36e8bb11782301a5ed92af",
+      "old_manifest_sha256": "b3ae6c918c2c7af5ab2f14e05fa12261e2152a02774ce4ed5b90160553fadda7",
+      "differences": {
+        "capture_sha256": {
+          "before": "b44939d689ad62eb44945985a98a315cd18d3d76cadf07075c7dc58437a99aa5",
+          "after": "1659bf17e791b7fe54f29956ed5d9df4782ff99d516fad1386708e382eff416b"
+        },
+        "frames_match_original_core": {
+          "before": false,
+          "after": true
+        }
+      }
+    },
+    {
+      "fixture": "fighter1-composition-actor-sequences",
+      "CPU_gzip_byte_identical": true,
+      "gzip_sha256": "f1018a070790cf2fe28c87c0046b9e323917c7856cb2c2a0e2cb83fdac4ec036",
+      "old_manifest_sha256": "3ba2f12512651346a3422b4b0ec93f858841fedd0caeaa1be1b8a71e1e83fe6c",
+      "differences": {
+        "capture_sha256": {
+          "before": "b44939d689ad62eb44945985a98a315cd18d3d76cadf07075c7dc58437a99aa5",
+          "after": "1659bf17e791b7fe54f29956ed5d9df4782ff99d516fad1386708e382eff416b"
+        },
+        "frames_match_original_core": {
+          "before": false,
+          "after": true
+        }
+      }
+    }
+  ]
+}
