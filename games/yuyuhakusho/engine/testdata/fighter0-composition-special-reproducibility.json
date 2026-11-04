@@ -1,0 +1,36 @@
+{
+  "pass": true,
+  "scope": "Repeat special natural capture after private-stimulus fixes; all original CPU data byte-identical, only producer-source binding changes",
+  "changes": [
+    {
+      "fixture": "fighter0-composition-action-special",
+      "cpu_data_unchanged": true,
+      "differences": {
+        "capture_sha256": {
+          "before": "9720e22e7d8dddd0143ae3bba346aac44374958a145c29af33a9c41ee3f8a635",
+          "after": "247fc47d11e64b319aae4befeaeb6f1d9d3249f37fbd1dd1c6913c00ab374f77"
+        }
+      }
+    },
+    {
+      "fixture": "fighter0-composition-input-special",
+      "cpu_data_unchanged": true,
+      "differences": {
+        "capture_sha256": {
+          "before": "9720e22e7d8dddd0143ae3bba346aac44374958a145c29af33a9c41ee3f8a635",
+          "after": "247fc47d11e64b319aae4befeaeb6f1d9d3249f37fbd1dd1c6913c00ab374f77"
+        }
+      }
+    },
+    {
+      "fixture": "fighter0-composition-actor-special",
+      "cpu_data_unchanged": true,
+      "differences": {
+        "capture_sha256": {
+          "before": "9720e22e7d8dddd0143ae3bba346aac44374958a145c29af33a9c41ee3f8a635",
+          "after": "247fc47d11e64b319aae4befeaeb6f1d9d3249f37fbd1dd1c6913c00ab374f77"
+        }
+      }
+    }
+  ]
+}

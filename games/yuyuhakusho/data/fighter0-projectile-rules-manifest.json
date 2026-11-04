@@ -1,0 +1,29 @@
+{
+  "pass": true,
+  "scope": "Source0 child/projectile semantic data without CPU inputs, raw RAM or original instruction bytes",
+  "animations": 25,
+  "sequences": 8,
+  "rules_bytes": 10254,
+  "rules_sha256": "e621888c399662b8e3df190530f4712e5312e83b34074190dd2785a20b963d3f",
+  "capture_sha256": "e0db8ccd61478a076bc2320d2ea12d6bbaa072366848028492f0553c4110341e",
+  "export_sha256": "c869098aaf3067d89dabc58e2afdeac876181f9986f3e448e59765d8a8ec5e9b",
+  "inputs_sha256": "b7976367c37584f8f154fed981be9529b0c5eb78cc521166a306b68dc77464b7",
+  "baseline_gzip_sha256": "e3324d5ffddfd50a5e10681149dad6a52c227dc173ae44a040ff40a1709a8f6e",
+  "evidence": {
+    "fighter0-projectile-oracle": {
+      "fixture_sha256": "de435c23fa9c9013b1ba5243893fcb848dc818855c5cf3d016461cccbedd1777",
+      "gzip_sha256": "a8e9ae1eea36652768fc44857e4ec3e6c2af9ea3f23fb0b69e42fa6b6e910f65",
+      "calls": 47
+    },
+    "fighter0-projectile-boundaries": {
+      "fixture_sha256": "6cb6edd6eb045359b0d73273ccb4f8299733ee8d397adab8d4ad85020bff701d",
+      "gzip_sha256": "cf6519945235c13ac10bb3e35a1a078aa3638a6b6f3c63453f15842ef91c339f",
+      "calls": 5837
+    },
+    "fighter0-projectile-sequences": {
+      "fixture_sha256": "bcbff865c2e763d587ae146c37c67275fe77a0539b5e60ac3f467641e2f83a50",
+      "gzip_sha256": "9f2bf9f32c9ccc866d70c76059b0718cbaa4aaa62377305591a6655f74fd8d88",
+      "calls": 472
+    }
+  }
+}

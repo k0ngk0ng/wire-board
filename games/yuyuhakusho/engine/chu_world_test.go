@@ -181,6 +181,24 @@ func chuWorldLibrariesTest(t *testing.T) ChuWorldLibrary {
 			library.Animations[frame.Key] = frame.Data
 		}
 	}
+	var fighter0 struct {
+		Animations []struct {
+			Key  AnimationFrameKey
+			Data AnimationRecordData
+		}
+		Sequences []struct {
+			Identity uint32
+			Frames   []ChuAttachmentFrame
+		}
+	}
+	read("../data/fighter0-projectile-rules.json", &fighter0)
+	for _, frame := range fighter0.Animations {
+		library.Animations[frame.Key] = frame.Data
+	}
+	library.Fighter0Projectiles = Fighter0ProjectileLibrary{Animations: library.Animations, Sequences: make(map[uint32][]ChuAttachmentFrame)}
+	for _, sequence := range fighter0.Sequences {
+		library.Fighter0Projectiles.Sequences[sequence.Identity] = sequence.Frames
+	}
 	_, library.Attachments, _ = readAttachmentOriginal(t, "chu-attachments-oracle")
 	var effects struct{ Library EffectMotionLibrary }
 	read("../data/effect-sequences.json", &effects)
@@ -207,6 +225,10 @@ func visitChuWorldTest(t *testing.T, handle func(chuWorldOriginalPass), fixtureN
 			wantRecords, wantFrames = 1801, 3600
 		} else if name == "chu-world-fighter10" {
 			wantRecords, wantFrames = 2789, 5500
+		} else if name == "chu-world-fighter0" {
+			wantRecords, wantFrames = 3156, 5500
+		} else if name == "chu-world-fighter0-special" {
+			wantRecords, wantFrames = 1801, 3600
 		}
 	}
 	zipped, err := os.ReadFile("testdata/" + name + ".json.gz")
@@ -584,7 +606,7 @@ func TestChuWorldErrorsAreAtomic(t *testing.T) {
 			case "identity":
 				o.ObjectID++
 			case "fighter":
-				o.Header.Behavior, o.Header.Stage, o.Tag = 0x12668, 2, 0
+				o.Header.Behavior, o.Header.Stage, o.Tag = 0x12668, 2, 1
 			case "wait-stage":
 				o.Header.Behavior, o.Header.Stage = 0x9ad0, 18
 			case "world-id":

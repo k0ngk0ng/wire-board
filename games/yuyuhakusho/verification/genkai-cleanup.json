@@ -1,0 +1,76 @@
+{
+  "at_utc": "2026-11-04T19:00:37.011334+00:00",
+  "scope": "Root-owned Genkai integration scratch only",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/genkai-browser",
+      "files": 214,
+      "bytes": 9345218,
+      "reason": "Completed owned discovery/acceptance scratch; canonical fixtures/reports/name glyphs retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter0-world",
+      "files": 3,
+      "bytes": 3612457,
+      "reason": "Completed owned discovery/acceptance scratch; canonical fixtures/reports/name glyphs retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter0-world-special",
+      "files": 3,
+      "bytes": 2068489,
+      "reason": "Completed owned discovery/acceptance scratch; canonical fixtures/reports/name glyphs retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter0-special-discovery",
+      "files": 4,
+      "bytes": 32322,
+      "reason": "Completed owned discovery/acceptance scratch; canonical fixtures/reports/name glyphs retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/genkai-legacy",
+      "files": 24,
+      "bytes": 16416,
+      "reason": "Completed owned discovery/acceptance scratch; canonical fixtures/reports/name glyphs retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/character-name-sheet.png",
+      "files": 1,
+      "bytes": 3535,
+      "reason": "Completed owned discovery/acceptance scratch; canonical fixtures/reports/name glyphs retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-session",
+      "files": 1,
+      "bytes": 4059730,
+      "reason": "Completed owned discovery/acceptance scratch; canonical fixtures/reports/name glyphs retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-session.wasm",
+      "files": 1,
+      "bytes": 4636444,
+      "reason": "Completed owned discovery/acceptance scratch; canonical fixtures/reports/name glyphs retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-render",
+      "files": 1,
+      "bytes": 4518450,
+      "reason": "Completed owned discovery/acceptance scratch; canonical fixtures/reports/name glyphs retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-render.wasm",
+      "files": 1,
+      "bytes": 5197766,
+      "reason": "Completed owned discovery/acceptance scratch; canonical fixtures/reports/name glyphs retained"
+    }
+  ],
+  "total_bytes": 33490827,
+  "preserved": [
+    "canonical original ordinary/special worlds and test-first evidence",
+    "24 actual legacy report archive and all final reports/screenshots",
+    "running8799 local player assets/server",
+    "all original ROM/core/source/tools/IRQ/audio",
+    "active worktree/main/other games",
+    "shared Go caches for ongoing goal",
+    "agent-owned retained canonical captures"
+  ]
+}

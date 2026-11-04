@@ -1,0 +1,46 @@
+{
+  "scope": "Only source0 projectile redundant first capture/discovery, private Ghidra cache and superseded focused checks",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter0-projectile",
+      "files": 8,
+      "bytes": 1884431
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter0-projectile-discovery",
+      "files": 4,
+      "bytes": 15414
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter0-projectile-static",
+      "files": 19,
+      "bytes": 233917
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter0-projectile-capture.txt",
+      "files": 1,
+      "bytes": 6618
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter0-projectile-native-focused.jsonl",
+      "files": 1,
+      "bytes": 4934
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter0-projectile-wasm-focused.jsonl",
+      "files": 1,
+      "bytes": 4930
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter0-projectile-vet-focused.txt",
+      "files": 1,
+      "bytes": 0
+    }
+  ],
+  "removed_bytes": 2150244,
+  "preserved": [
+    "Canonical fixtures/baseline/semantic data and red/native/Wasm evidence",
+    "Final .local/md-yuyuhakusho/fighter0-projectile-natural capture while shared consumers integrate",
+    "Shared Go caches, ROM/core/JDK/tools, original IRQ evidence, other agent files and worktrees"
+  ]
+}

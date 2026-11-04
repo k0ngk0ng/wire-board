@@ -37,32 +37,38 @@ def main():
     attached = read(tests + 'attached-effects-data.json')
     start = read(tests + 'match-start-library.json')
     arena = read(data + 'arena-runtime-rules.json')['library']
+    fighter0_projectiles = read(data + 'fighter0-projectile-rules.json')
 
     def animations(frames):
-        output, seen = [], set()
+        output, seen = [], {}
         for frame in frames:
             identity = json.dumps(frame['key'], sort_keys=True)
-            assert identity not in seen
-            seen.add(identity)
+            if identity in seen:
+                assert seen[identity] == frame['data'], ('conflicting semantic animation', identity)
+                continue
+            seen[identity] = frame['data']
             output.append({'key': frame['key'], 'data': frame['data']})
         return output
 
-    payload = {'schema': 1, 'rom_sha256': ROM_SHA, 'fighters': fighters, 'commands': commands,
-               'animations': animations(parents + projectiles),
+    payload = {'schema': 2, 'rom_sha256': ROM_SHA, 'fighters': fighters, 'commands': commands,
+               'animations': animations(parents + projectiles + fighter0_projectiles['animations']),
                'attachments': {'sequences': attachments['sequences'], 'animations': animations(attachments['animations'])},
                'effects': effects,
                'attached_effects': {key: attached[key] for key in ['sequences', 'orbit_x', 'orbit_y', 'offset_y']},
-               'match_start': start, 'arena': arena}
+               'match_start': start, 'arena': arena,
+               'fighter0_projectiles': {'sequences': fighter0_projectiles['sequences']}}
     raw = (json.dumps(payload, separators=(',', ':')) + '\n').encode()
     packed = gzip.compress(raw, mtime=0)
     target = ROOT / data / 'chu-world-rules.json.gz'
     target.write_bytes(packed)
-    manifest = {'schema': 1, 'scope': 'Immutable independently decoded semantic rules only; no calls, RAM images, executable code or client media',
+    manifest = {'schema': 2, 'scope': 'Immutable independently decoded semantic rules only; no calls, RAM images, executable code or client media',
                 'rom_sha256': ROM_SHA, 'sources': sources, 'exporter_sha256': sha(Path(__file__).read_bytes()),
                 'counts': {'fighters': len(fighters), 'command_programs': len(commands), 'animations': len(payload['animations']),
                            'charge_sequences': len(payload['attachments']['sequences']), 'release_animations': len(payload['attachments']['animations']),
                            'effect_types': len(effects['types']), 'effect_sequences': len(effects['sequences']),
-                           'attached_sequences': len(payload['attached_effects']['sequences'])},
+                           'attached_sequences': len(payload['attached_effects']['sequences']),
+                           'fighter0_projectile_frames': len(fighter0_projectiles['animations']),
+                           'fighter0_release_sequences': len(fighter0_projectiles['sequences'])},
                 'bytes': len(raw), 'gzip_bytes': len(packed), 'sha256': sha(raw), 'gzip_sha256': sha(packed)}
     (ROOT / data / 'chu-world-rules-manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
     print(json.dumps({key: value for key, value in manifest.items() if key != 'sources'}, indent=2))

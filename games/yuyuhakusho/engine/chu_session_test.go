@@ -192,7 +192,7 @@ func TestChuSessionInvalidInputsAreAtomic(t *testing.T) {
 		{Players: nil},
 		{Difficulty: 1, Players: sessionOptions(true).Players},
 		{Players: []ChuSessionPlayer{{Slot: 0, CharacterID: 9}, {Slot: 0, CharacterID: 9}}},
-		{Players: []ChuSessionPlayer{{Slot: 0, CharacterID: 0}, {Slot: 3, CharacterID: 9}}},
+		{Players: []ChuSessionPlayer{{Slot: 0, CharacterID: 1}, {Slot: 3, CharacterID: 9}}},
 		{Players: []ChuSessionPlayer{{Slot: 0, CharacterID: 9, HumanChannel: 0}, {Slot: 3, CharacterID: 9, HumanChannel: 0}}},
 		{TeamBattle: true, Players: sessionOptions(true).Players},
 	} {

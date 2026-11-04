@@ -1,0 +1,12 @@
+{"Time":"2026-11-05T02:26:42.254606+08:00","Action":"start","Package":"fighter0-attacks-special-native"}
+{"Time":"2026-11-05T02:26:42.674466+08:00","Action":"run","Package":"fighter0-attacks-special-native","Test":"TestFighter0AttacksOriginalFullCalls"}
+{"Time":"2026-11-05T02:26:42.674495+08:00","Action":"output","Package":"fighter0-attacks-special-native","Test":"TestFighter0AttacksOriginalFullCalls","Output":"=== RUN   TestFighter0AttacksOriginalFullCalls\n"}
+{"Time":"2026-11-05T02:26:42.674609+08:00","Action":"run","Package":"fighter0-attacks-special-native","Test":"TestFighter0AttacksOriginalFullCalls/fighter0-attacks-natural"}
+{"Time":"2026-11-05T02:26:42.674614+08:00","Action":"output","Package":"fighter0-attacks-special-native","Test":"TestFighter0AttacksOriginalFullCalls/fighter0-attacks-natural","Output":"=== RUN   TestFighter0AttacksOriginalFullCalls/fighter0-attacks-natural\n"}
+{"Time":"2026-11-05T02:26:48.521768+08:00","Action":"output","Package":"fighter0-attacks-special-native","Test":"TestFighter0AttacksOriginalFullCalls/fighter0-attacks-natural","Output":"    fighter0_attacks_test.go:188: complete original source0 calls=1700 modes=map[ground:849 ground-special:851] objects=map[33792:1700]\n"}
+{"Time":"2026-11-05T02:26:48.521995+08:00","Action":"output","Package":"fighter0-attacks-special-native","Test":"TestFighter0AttacksOriginalFullCalls","Output":"--- PASS: TestFighter0AttacksOriginalFullCalls (5.85s)\n"}
+{"Time":"2026-11-05T02:26:48.522002+08:00","Action":"output","Package":"fighter0-attacks-special-native","Test":"TestFighter0AttacksOriginalFullCalls/fighter0-attacks-natural","Output":"    --- PASS: TestFighter0AttacksOriginalFullCalls/fighter0-attacks-natural (5.85s)\n"}
+{"Time":"2026-11-05T02:26:48.52208+08:00","Action":"pass","Package":"fighter0-attacks-special-native","Test":"TestFighter0AttacksOriginalFullCalls/fighter0-attacks-natural","Elapsed":5.85}
+{"Time":"2026-11-05T02:26:48.52209+08:00","Action":"pass","Package":"fighter0-attacks-special-native","Test":"TestFighter0AttacksOriginalFullCalls","Elapsed":5.85}
+{"Time":"2026-11-05T02:26:48.522093+08:00","Action":"output","Package":"fighter0-attacks-special-native","Output":"PASS\n"}
+{"Time":"2026-11-05T02:26:49.525972+08:00","Action":"pass","Package":"fighter0-attacks-special-native","Elapsed":7.271}

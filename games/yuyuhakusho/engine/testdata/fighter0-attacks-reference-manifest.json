@@ -1,0 +1,27 @@
+{
+  "scope": "Unobserved original core cold-start3600-frame baseline for true source0 Genkai menu input; not Go attack acceptance",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.4 60bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "input": {
+    "path": "docs/research/md-yuyuhakusho/source0-next-inputs.json",
+    "sha256": "ab1089aa8453df2997800c3e8477bf64161734d31521aec7c2f48827409a406a"
+  },
+  "frames": 3600,
+  "output": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter0-attacks-reference-frames.json",
+    "sha256": "690471dc7e3d2ddd7ed3fe2770169ec6078d0c1570fc57dafe38bf4805778285"
+  },
+  "observer_attached": false,
+  "selection_discovery": {
+    "path": "docs/research/md-yuyuhakusho/source0-next-selection.json",
+    "sha256": "9c40f5ad26519e66c7b5af901524d4e2a2124d5cc2060c95be5d60b0a4582d79"
+  }
+}

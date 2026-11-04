@@ -1,0 +1,127 @@
+{
+  "verified_at_utc": "2026-11-04T18:34:19.523376+00:00",
+  "scope": "Only this selector task raw/duplicate captures, isolated crosscheck binaries/fixture aliases and copied logs; canonical input/baseline/fixtures remain",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter0-attacks",
+      "files": 11,
+      "bytes": 517100794
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter0-attacks-special-natural",
+      "files": 5,
+      "bytes": 57775432
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter0-attacks-cross",
+      "files": 4,
+      "bytes": 12819146
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter0-attacks-baseline",
+      "files": 0,
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter0-attacks-red.jsonl",
+      "files": 1,
+      "bytes": 1376
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter0-attacks-native.jsonl",
+      "files": 1,
+      "bytes": 10450
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter0-attacks-wasm.jsonl",
+      "files": 1,
+      "bytes": 10449
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter0-attacks-special-native.jsonl",
+      "files": 1,
+      "bytes": 2319
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter0-attacks-special-wasm.jsonl",
+      "files": 1,
+      "bytes": 2294
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter0-attacks-capture.json",
+      "files": 1,
+      "bytes": 5313
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter0-attacks-special-capture.json",
+      "files": 1,
+      "bytes": 1094
+    }
+  ],
+  "bytes_removed": 587728667,
+  "canonical_artifacts_verified_before_removal": [
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter0-attacks-natural.json.gz",
+      "sha256": "f74a9e69ec0c861b4418037e39470fa670b197f20a4e212b9a05ec92177acbe5"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter0-attacks-natural-manifest.json",
+      "sha256": "65d7d22d0c8efe84bae3e9f3115ee2a38acc6c5a946618b8e0e4ea1f4dc70c68"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter0-attacks-oracle.json.gz",
+      "sha256": "cb651192551d6f50055c14cbce8bf3f700b86f942383ee7d46fc3657750d4e35"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter0-attacks-oracle-manifest.json",
+      "sha256": "1f3fb848e2110cdb986495ddaa0baaf1017d7e4a7692e283c56a60452657d95d"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter0-attacks-boundaries.json.gz",
+      "sha256": "feabeb4a629286f53bd43da2dca553bab4aaacc544530431b148342d3d5fedf9"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter0-attacks-boundaries-manifest.json",
+      "sha256": "de5551d7ee34539bee6724e7ba389b41eff3035223418590d9bb7a706940ae3b"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter0-attacks-sequences.json.gz",
+      "sha256": "08b8fce22353675ed998f5a1a0f673b117020bd807fd772ea3cd99f38fbf5ce7"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter0-attacks-sequences-manifest.json",
+      "sha256": "d8fd28584b6de82bf0d7b4f7820657961a624f1d4d6f383207ef477aa7fb32b5"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter0-attacks-special-natural.json.gz",
+      "sha256": "5f18ffbf4d5ab2190606d7034a53efaae04ee93912436f925f8d52562cf0c110"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter0-attacks-special-natural-manifest.json",
+      "sha256": "dbd471632083ecea40055b268cdf9c525820a9b3a79833e2f0299c75b406b074"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter0-attacks-red.jsonl",
+      "sha256": "3be242420b6d8bee1d7385d3378b28e320bb2634f7903c131ca0b9b9c55f47fe"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter0-attacks-native.jsonl",
+      "sha256": "9f561a6d4b922e9b69f425cde9913879afe52cd6a063574aa805bf569081066c"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter0-attacks-wasm.jsonl",
+      "sha256": "e670111dcf65419a0407b105a3ee99aafe7ccd56cab404ddb36bd07c15230008"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter0-attacks-special-native.jsonl",
+      "sha256": "2fed8f71d9a936cd2156bc24a990ca8c9d99c282f81c17b3c4f52e631b1c5342"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter0-attacks-special-wasm.jsonl",
+      "sha256": "840da4f4014f7b9b4b56a097b00324418b34f4fdec8498b60ddca06a351584cc"
+    }
+  ],
+  "shared_go_caches_untouched": true,
+  "other_agents_files_and_inputs_untouched": true,
+  "existing_go_data_reports_progress_and_local_player_assets_untouched_by_this_task": true
+}

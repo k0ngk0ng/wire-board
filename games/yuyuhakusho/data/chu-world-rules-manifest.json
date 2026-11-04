@@ -1,5 +1,5 @@
 {
-  "schema": 1,
+  "schema": 2,
   "scope": "Immutable independently decoded semantic rules only; no calls, RAM images, executable code or client media",
   "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
   "sources": [
@@ -38,21 +38,27 @@
     {
       "path": "games/yuyuhakusho/data/arena-runtime-rules.json",
       "sha256": "4d042ce63dd009836165dd22d58ad28b67ecac36ad1923c465e8a8b78a5dc302"
+    },
+    {
+      "path": "games/yuyuhakusho/data/fighter0-projectile-rules.json",
+      "sha256": "e621888c399662b8e3df190530f4712e5312e83b34074190dd2785a20b963d3f"
     }
   ],
-  "exporter_sha256": "c1e98af496f95ade822d440329726165fad41c6ae3549459da8902e98c234811",
+  "exporter_sha256": "ad1f628dbe626a1f1e9f407c3296bc82d467a3a5610f03c6d6fd3068b88d2a53",
   "counts": {
     "fighters": 11,
     "command_programs": 16,
-    "animations": 4746,
+    "animations": 4757,
     "charge_sequences": 8,
     "release_animations": 21,
     "effect_types": 37,
     "effect_sequences": 21,
-    "attached_sequences": 3
+    "attached_sequences": 3,
+    "fighter0_projectile_frames": 25,
+    "fighter0_release_sequences": 8
   },
-  "bytes": 1879860,
-  "gzip_bytes": 86596,
-  "sha256": "31a68fb3398b85aef747aab754f70429f987128ec914744de48b92b099761ee1",
-  "gzip_sha256": "f212f590d19e2b0751b1a8f4b725053e49451a3186f7fada398c2c32093eae4f"
+  "bytes": 1884842,
+  "gzip_bytes": 86943,
+  "sha256": "9987183edfdfcb5b2c330f5c7cfd1b7da770d198555636a7e2f6e798de93acf2",
+  "gzip_sha256": "ab26683fa1ac39981dc9b83bd1db269c143c790452f56c4726e00f31874a17e0"
 }

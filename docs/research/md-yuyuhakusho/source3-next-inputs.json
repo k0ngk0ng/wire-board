@@ -1,0 +1,282 @@
+[
+  {
+    "start": 180,
+    "end": 185,
+    "buttons": [
+      3
+    ]
+  },
+  {
+    "start": 360,
+    "end": 365,
+    "buttons": [
+      3
+    ]
+  },
+  {
+    "start": 650,
+    "end": 655,
+    "buttons": [
+      3
+    ]
+  },
+  {
+    "start": 800,
+    "end": 805,
+    "buttons": [
+      0
+    ]
+  },
+  {
+    "start": 950,
+    "end": 955,
+    "buttons": [
+      0
+    ]
+  },
+  {
+    "start": 1000,
+    "end": 1060,
+    "buttons": [
+      7
+    ]
+  },
+  {
+    "start": 1100,
+    "end": 1104,
+    "buttons": [
+      1
+    ]
+  },
+  {
+    "start": 1150,
+    "end": 1154,
+    "buttons": [
+      0
+    ]
+  },
+  {
+    "start": 1250,
+    "end": 1254,
+    "buttons": [
+      1
+    ]
+  },
+  {
+    "start": 1300,
+    "end": 1304,
+    "buttons": [
+      0
+    ]
+  },
+  {
+    "start": 1305,
+    "end": 1354,
+    "buttons": [
+      6
+    ]
+  },
+  {
+    "start": 1400,
+    "end": 1404,
+    "buttons": [
+      4
+    ]
+  },
+  {
+    "start": 1450,
+    "end": 1454,
+    "buttons": [
+      1
+    ]
+  },
+  {
+    "start": 1500,
+    "end": 1504,
+    "buttons": [
+      0
+    ]
+  },
+  {
+    "start": 1550,
+    "end": 1554,
+    "buttons": [
+      8
+    ]
+  },
+  {
+    "start": 1600,
+    "end": 1604,
+    "buttons": [
+      1
+    ]
+  },
+  {
+    "start": 1850,
+    "end": 1910,
+    "buttons": [
+      7
+    ]
+  },
+  {
+    "start": 1950,
+    "end": 1954,
+    "buttons": [
+      1
+    ]
+  },
+  {
+    "start": 2000,
+    "end": 2004,
+    "buttons": [
+      0
+    ]
+  },
+  {
+    "start": 2050,
+    "end": 2054,
+    "buttons": [
+      10
+    ]
+  },
+  {
+    "start": 2100,
+    "end": 2104,
+    "buttons": [
+      9
+    ]
+  },
+  {
+    "start": 2150,
+    "end": 2154,
+    "buttons": [
+      11
+    ]
+  },
+  {
+    "start": 2200,
+    "end": 2204,
+    "buttons": [
+      4
+    ]
+  },
+  {
+    "start": 2250,
+    "end": 2300,
+    "buttons": [
+      7
+    ]
+  },
+  {
+    "start": 2350,
+    "end": 2354,
+    "buttons": [
+      0
+    ]
+  },
+  {
+    "start": 2450,
+    "end": 2454,
+    "buttons": [
+      1
+    ]
+  },
+  {
+    "start": 2500,
+    "end": 2504,
+    "buttons": [
+      0
+    ]
+  },
+  {
+    "start": 2550,
+    "end": 2554,
+    "buttons": [
+      10
+    ]
+  },
+  {
+    "start": 2600,
+    "end": 2604,
+    "buttons": [
+      9
+    ]
+  },
+  {
+    "start": 2650,
+    "end": 2654,
+    "buttons": [
+      11
+    ]
+  },
+  {
+    "start": 2700,
+    "end": 2704,
+    "buttons": [
+      4
+    ]
+  },
+  {
+    "start": 2800,
+    "end": 2850,
+    "buttons": [
+      7
+    ]
+  },
+  {
+    "start": 2900,
+    "end": 2904,
+    "buttons": [
+      1
+    ]
+  },
+  {
+    "start": 2950,
+    "end": 2954,
+    "buttons": [
+      0
+    ]
+  },
+  {
+    "start": 3050,
+    "end": 3054,
+    "buttons": [
+      10
+    ]
+  },
+  {
+    "start": 3100,
+    "end": 3104,
+    "buttons": [
+      9
+    ]
+  },
+  {
+    "start": 3150,
+    "end": 3154,
+    "buttons": [
+      11
+    ]
+  },
+  {
+    "start": 3200,
+    "end": 3204,
+    "buttons": [
+      4
+    ]
+  },
+  {
+    "start": 3250,
+    "end": 3300,
+    "buttons": [
+      7
+    ]
+  },
+  {
+    "start": 3350,
+    "end": 3354,
+    "buttons": [
+      0
+    ]
+  }
+]
