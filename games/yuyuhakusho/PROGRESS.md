@@ -1,39 +1,39 @@
 # 《幽游白书：魔强统一战》复刻进度
 
-更新：2026-11-05。整体约 **52%**（工程估算）。独立 worktree 为 `worktrees/yuyuhakusho`，分支为 `codex/yuyuhakusho`。当前已有可操作的幻海、酎、户愚吕兄／默认场地本地研究页；游戏尚未注册到平台，未上传资源、发布或部署。main 工作区的其他改动未导入或覆盖。
+更新：2026-11-05。整体约 **56%**（工程估算）。独立 worktree 为 `worktrees/yuyuhakusho`，分支为 `codex/yuyuhakusho`。当前已有可操作的幻海、幽助、酎、户愚吕兄／默认场地本地研究页；游戏尚未注册到平台，未上传资源、发布或部署。main 工作区的其他改动未导入或覆盖。
 
 ## 当前可运行范围
 
-- 从空对象和明确配置创建对局，支持 2／3／4 人混战、4 人组队，以及真人与显式电脑混合。当前开放来源 ID 0「幻海」、9「酎」和 10「户愚吕兄」，场地只开放默认场地。
+- 从空对象和明确配置创建对局，支持 2／3／4 人混战、4 人组队，以及真人与显式电脑混合。当前开放来源 ID 0「幻海」、3「幽助」、9「酎」和 10「户愚吕兄」，场地只开放默认场地。
 - 独立 Go／Wasm 规则驱动输入、真实原版 AI、动作、子对象、特效、碰撞、退场、判胜和清场；运行时不读取 ROM、不执行模拟器，不逐帧载入参考状态。
 - 独立索引素材呈现人物、特效、动态背景、色盘、滚动、原版姓名／头像／生命与能量条。浏览器页复用公共 MD 手柄，支持键盘和触屏；当前页面没有接入声音播放。
 - 资源解码、Wasm 和 Canvas 就绪后才开始推进。存档保留规则状态、图块映射与呈现缓存；出错时不提交半帧状态。
 
-启动方式和截图见[本地研究页](../../docs/research/md-yuyuhakusho/LOCAL_PLAYER.md)。本轮完整摘要见[三角色对局验收](verification/genkai-session.json)；既有[双角色验收](verification/fighter10-session.json)和[独立对局／素材验收](verification/independent-session.json)保留各自提交时的来源绑定。
+启动方式和截图见[本地研究页](../../docs/research/md-yuyuhakusho/LOCAL_PLAYER.md)。本轮完整摘要见[四角色对局验收](verification/yusuke-session.json)；既有[三角色验收](verification/genkai-session.json)、[双角色验收](verification/fighter10-session.json)和[独立对局／素材验收](verification/independent-session.json)保留各自提交时的绑定。
 
 ## 已验证证据
 
 | 项目 | 证据 | 当前边界 |
 | --- | --- | --- |
 | 原版运行与恢复 | 固定日版 ROM、内核和输入；3,600 帧冷启动基线；恢复 sidecar 补齐原内核未保存的 `m68k.refresh_cycles` 后，1,200 帧 RAM／寄存器／视频一致 | 原版工具仅用于开发对照；不把模拟器源码许可视为游戏素材许可 |
-| 输入、共享规则与完整人物 | 酎保留完整验证；户愚吕兄新增四选择器、七构造、五持续槽与共享 input／action／actor，三层各 2,065 次自然返回和私有完整组合通过 | 剩余八个角色未实现完整动作，见[完整组合](engine/FIGHTER10_COMPOSITION_VERIFICATION.md)、[选择器](engine/FIGHTER10_ATTACK_VERIFICATION.md)和[持续动作](engine/FIGHTER10_MOTION_VERIFICATION.md) |
+| 输入、共享规则与完整人物 | 四个已开放人物共用 input／action／actor 驱动；幽助新增四 selector、五持续槽与既有蓄力／主弹／光效上下文，三层两自然流各 2,067 返回通过 | 剩余七个角色未实现完整动作，见[幽助组合](engine/FIGHTER3_COMPOSITION_VERIFICATION.md)、[选择器](engine/FIGHTER3_ATTACK_VERIFICATION.md)、[核心](engine/FIGHTER3_MOTION_VERIFICATION.md)和[空中释放](engine/FIGHTER3_AIR_MOTION_VERIFICATION.md) |
 | 幻海完整人物与父子对象 | 四 selector、12 特殊构造、五持续槽、散射弹／释放光效；完整三层各 4,133 次自然调用；原 CPU 私有与真实动画流通过 | `15/16/19` 自然仍未覆盖，私有／连续已覆盖；自然 AI 仍只有酎，见[幻海世界与完整组合](engine/FIGHTER0_WORLD_VERIFICATION.md) |
 | 全角色准备、AI 与素材目录 | 11 个来源角色的命令准备、动画／形状目录及真实 AI；AI 新增 37,056 次隔离调用、1,794 次酎自然调用和 33 条连续流 | 自然 AI 证据仅覆盖酎；全角色 AI／素材覆盖不代表全角色招式可玩，见 [AI 验证](engine/FIGHTER_AI_VERIFICATION.md) |
 | 开局、覆盖层与场地 | 开局阶段 0／2、14 类覆盖层、默认场地 camera／滚动／色盘／天空对象恢复；自然、隔离与连续流通过 | 其他七个场地及原菜单／全部赛制没有开放，见[开局](engine/MATCH_START_VERIFICATION.md)、[覆盖层](engine/MATCH_OVERLAYS_VERIFICATION.md)和[场地](engine/DEFAULT_ARENA_VERIFICATION.md) |
-| 唯一对象状态与完整轮次 | 五条原版流合计 12,504 轮、164,778 回调逐轮及单初态连续一致；幻海普通流到 4,957 清场，特殊流实际含五种父子回调 | 比较明确排除硬件呈现缓存／DMA 游标；独立音频清槽差异留证，见[幻海世界](engine/FIGHTER0_WORLD_VERIFICATION.md) |
+| 唯一对象状态与完整轮次 | 七条原版流合计 17,101 轮、225,400 回调逐轮及单初态连续一致；幽助新增普通 2,796 轮到 4,596 清场及特殊 1,801 轮 | 比较明确排除硬件呈现缓存／DMA 游标；独立音频清槽留证，见[幽助世界](engine/FIGHTER3_WORLD_VERIFICATION.md) |
 | 帧前后阶段与 IRQ | 6,576 次自然前后调用、1,440 次隔离、4 流 320 次连续调用；另从冷启动复跑 2,400 视频步取得相同 RAM IRQ | 视频标签不能当作逻辑 tick；硬件采样的 F554 游标明确在边界外，见[帧验证](engine/WORLD_FRAME_VERIFICATION.md) |
-| 全新独立对局 | 新增九组幻海／三角色配置和六组完整呈现，原生／Wasm 全状态／像素轨迹一致；旧角色 24 报告除明确升级的规则数据摘要外全等 | 覆盖代表性的 2／3／4 人、组队、真人静止输入，不证明平台网络，见[三角色验收](verification/genkai-session.json) |
+| 全新独立对局 | 新增十一组幽助／四角色配置与七组完整呈现，原生／Wasm 全状态／像素轨迹一致；旧角色 42 报告保持世界／事件／生命周期，原 schema2 报告 JSON 全等 | 代表性 2／3／4 人、组队、真人静止输入，不证明平台网络，见[四角色验收](verification/yusuke-session.json) |
 | 世界精灵 | 1,500 图形键、34,520 去重图块、12,238 原 CPU 提交；83 个自然帧的 355,914 个高优先级精灵像素零差异 | 有界普通显示模式；逐扫描线溢出与影亮模式未模拟，见[精灵呈现](../../docs/research/md-yuyuhakusho/WORLD_PRESENTATION.md) |
 | 默认背景与 HUD | 20 原帧背景 1,354,388 像素、完整图层合成 1,433,600 像素零差异；空 HUD 加原资源和有序事件重建的 91,756 窗口像素零差异 | 这些原帧对照与全新对局的跨运行时一致性分别验收；三人使用原槽 0／1／3，见[背景](presentation/ARENA_VERIFICATION.md)和[HUD](presentation/HUD_VERIFICATION.md) |
-| 完整呈现与存档 | 幻海单角色、混合、三人、四人、组队六组完整呈现，原生／Wasm 状态和像素轨迹一致；恢复后 30 帧全等 | 三个人物／默认场地，规则数据 schema2 仅新增已验证语义记录，见[完整矩阵](verification/genkai-session.json) |
-| 浏览器与 MD 控制器 | 可选幻海／酎／户愚吕兄；实际 tag0 与前冲 `0e/0b`、键盘、三指触屏／取消、后台释放、桌面／320px 通过 | 本地研究页没有平台房间／网络；公共 MD 配置的既有验收见[控制器记录](../../docs/verification/md-controller/README.md) |
+| 完整呈现与存档 | 幽助单角色、混合、三人、四人、组队七组完整呈现，原生／Wasm 状态／像素一致，恢复后 30 帧全等；复用现有 schema2 资源 | 四个人物／默认场地，见[完整矩阵](verification/yusuke-session.json) |
+| 浏览器与 MD 控制器 | 可选幻海／幽助／酎／户愚吕兄；实际 tag3 与前向攻击 `13/83`、键盘、三指触屏／取消、后台释放、桌面／320px 通过 | 本地研究页没有平台房间／网络；公共配置的既有验收见[控制器记录](../../docs/verification/md-controller/README.md) |
 | 音频采集 | 134 个有限 WAV，覆盖动画使用的 78 个声音编号，双次完整 PCM 一致；另确认 `82/87` 的完整音序周期 | 精确 PCM 循环、原版混音和平台播放未完成，见[音频采集](../../docs/research/md-yuyuhakusho/AUDIO_RESEARCH.md)与[循环研究](../../docs/research/md-yuyuhakusho/AUDIO_LOOPS.md) |
 
-本轮规则与组合原生竞态和 Wasm 各 **179 项**顶层测试通过，`go vet`、Wasm 入口检查及本地页 TypeScript 检查通过。原生 176 项引擎测试分成 59／59／58 三组，另有 3 项动画目录检查，覆盖并集与 Wasm 逐项相同。既有 27 项素材／呈现检查的代码与媒体未变；当前完整对局另做全像素轨迹比较。源码、原资料、前置失败和结果由[三角色验收摘要](verification/genkai-session.json)绑定，没有运行其他游戏矩阵。
+本轮规则与组合原生竞态和 Wasm 各 **198 项**顶层测试通过，`go vet`、Wasm 入口检查及本地页 TypeScript 检查通过。原生 195 项引擎测试分成 65／65／65 三组，另有 3 项动画目录检查，覆盖并集与 Wasm 相同。既有 27 项素材／呈现检查的代码与媒体未变；完整对局另做全像素轨迹比较。源码、原资料、前置失败和结果由[四角色验收摘要](verification/yusuke-session.json)绑定，没有运行其他游戏矩阵。
 
 ## 后续工作
 
-1. 继续恢复其余八个角色，下一步按[幽助恢复边界](../../docs/research/md-yuyuhakusho/FIGHTER3_PLAN.md)复用共享蓄力与子对象。姓名以[原 HUD 字形](../../docs/research/md-yuyuhakusho/CHARACTER_IDS.md)为准；原[动作路线图](../../docs/research/md-yuyuhakusho/FIGHTER_ACTION_ROADMAP.md)中的来源 0／10 缺口已分别补齐。
+1. 继续恢复其余七个角色，下一步按[桑原恢复边界](../../docs/research/md-yuyuhakusho/FIGHTER2_PLAN.md)恢复三个持续槽与新子对象。姓名以[原 HUD 字形](../../docs/research/md-yuyuhakusho/CHARACTER_IDS.md)为准；原[动作路线图](../../docs/research/md-yuyuhakusho/FIGHTER_ACTION_ROADMAP.md)中来源 0／3／10 缺口已补齐。
 2. 恢复其他场地及拟开放赛制，补齐其动态背景、资源与完整对局证据。
 3. 恢复声音播放时基、BGM 循环和原版混音语义，再接入平台 `BoardProps.audio`。
 4. 接入统一房间准备、席位／角色映射、显式电脑和主动托管、公共加载、MD 控制器与全屏。
@@ -47,3 +47,5 @@
 上一检查点清理了 27,572,183 bytes 的早期对局报告、CLI 构建／浏览器 profile 及过期日志，见[清理记录](verification/independent-session-cleanup.json)。本轮另清理父任务重复探针、验收构建、浏览器 profile 和被最终结果替代的日志共 28,076,393 bytes，见[双角色清理记录](verification/fighter10-cleanup.json)；各子任务的清理范围独立保留。运行中的本地页、原版工具／素材、下一角色原版发现和共享 Go 缓存继续供未完成工作使用。
 
 幻海阶段另清理父任务 10 个已完成探针／构建／浏览器缓存，共 33,490,827 bytes，见[本轮清理记录](verification/genkai-cleanup.json)。保留规则与原世界夹具、24 份实际旧角色报告的压缩归档、最终日志、截图、原工具和运行中的试玩页。
+
+幽助阶段清理父任务 12 个已完成探针／CLI 构建／浏览器缓存及过期初跑，共 33,156,043 bytes，见[幽助清理记录](verification/yusuke-cleanup.json)。保留 42 份实际旧角色报告、原世界／字节夹具、原始红灯、最终日志、截图和正在运行的试玩页；共享 Go 缓存继续供完整目标使用。

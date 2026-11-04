@@ -1,0 +1,14 @@
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"# command-line-arguments [command-line-arguments.test]\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter3_attacks_test.go:49:80: undefined: Fighter3AttackState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter3_attacks_test.go:59:11: undefined: Fighter3AttackState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter3_attacks_test.go:69:47: undefined: Fighter3AttackState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter3_attacks_test.go:160:18: undefined: SelectFighter3Attack\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter3_attacks_test.go:218:18: undefined: SelectFighter3Attack\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter3_attacks_test.go:234:11: undefined: Fighter3AttackState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter3_attacks_test.go:253:15: undefined: SelectFighter3Attack\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter3_attacks_test.go:264:16: undefined: SelectFighter3Attack\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter3_attacks_test.go:275:14: undefined: SelectFighter3Attack\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-fail"}
+{"Time":"2026-11-05T03:24:03.680256+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-05T03:24:03.680307+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\tcommand-line-arguments [build failed]\n"}
+{"Time":"2026-11-05T03:24:03.680314+08:00","Action":"fail","Package":"command-line-arguments","Elapsed":0,"FailedBuild":"command-line-arguments [command-line-arguments.test]"}

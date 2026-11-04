@@ -1,0 +1,78 @@
+{
+  "pass": true,
+  "scope": "Only this source3-composition subtask duplicate JSONL/gzip/manifest/run outputs; canonical fixtures, both baselines/inputs, tools/ROM/shared caches, Root native/Wasm logs and8799 assets retained",
+  "deleted": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter3-composition-natural",
+      "files": 12,
+      "bytes": 234550327
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter3-composition-special",
+      "files": 12,
+      "bytes": 234578407
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter3-composition-full",
+      "files": 24,
+      "bytes": 243464280
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter3-composition-natural-final",
+      "files": 12,
+      "bytes": 234550327
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter3-composition-special-final",
+      "files": 12,
+      "bytes": 234578407
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter3-composition-natural-run.txt",
+      "files": 1,
+      "bytes": 917
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter3-composition-special-run.txt",
+      "files": 1,
+      "bytes": 933
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter3-composition-full-run.txt",
+      "files": 1,
+      "bytes": 2439
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter3-composition-natural-final-run.txt",
+      "files": 1,
+      "bytes": 917
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter3-composition-special-final-run.txt",
+      "files": 1,
+      "bytes": 933
+    }
+  ],
+  "natural_library_variants_checked": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter3-composition-full/fighter3-composition-action-natural.json.gz",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter3-composition-action-natural.json.gz",
+      "original_CPU_calls_sha256": "7eb6804e568db988d81a45b71bd2c7a868281a87c04863d6f1a757894c16feb6",
+      "difference": "Full private run library union contains extra private/stream records; natural CPU call bytes identical"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter3-composition-full/fighter3-composition-input-natural.json.gz",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter3-composition-input-natural.json.gz",
+      "original_CPU_calls_sha256": "8dba256f7b71e5e06db809f38208c25e8adc832316de8bd811d744a62d614a07",
+      "difference": "Full private run library union contains extra private/stream records; natural CPU call bytes identical"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter3-composition-full/fighter3-composition-actor-natural.json.gz",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter3-composition-actor-natural.json.gz",
+      "original_CPU_calls_sha256": "d80a884bed0e3789d36c8926ff330e0908b097bce21859c502fe2778d5b65211",
+      "difference": "Full private run library union contains extra private/stream records; natural CPU call bytes identical"
+    }
+  ],
+  "files_removed": 77,
+  "bytes_removed": 1181727887
+}

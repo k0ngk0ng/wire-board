@@ -1,6 +1,6 @@
-# 三角色／默认场地本地研究页
+# 四角色／默认场地本地研究页
 
-当前可以在浏览器选择幻海、酎或户愚吕兄，与原版恢复的电脑策略对战。支持 2／3／4 人混战和 4 人组队，提供电脑演示。人物、特效、默认场地及 HUD 使用独立索引素材；对局由独立 Go／Wasm 规则运行，不加载 ROM 或模拟器。
+当前可以在浏览器选择幻海、幽助、酎或户愚吕兄，与原版恢复的电脑策略对战。支持 2／3／4 人混战和 4 人组队，提供电脑演示。人物、特效、默认场地及 HUD 使用独立索引素材；对局由独立 Go／Wasm 规则运行，不加载 ROM 或模拟器。
 
 本页用于本地验收，尚未接入平台房间、网络同步、托管及音效。其他角色和场地没有开放。
 
@@ -37,3 +37,5 @@ node web/node_modules/typescript/bin/tsc -p scripts/yuyuhakusho/tsconfig.json
 原视频对照分别证明规则调用和选定呈现帧；全新对局没有逐 tick 注入原期望状态。原生／Wasm 完整轨迹一致证明两个独立构建的确定性，不单独替代原版行为对照。
 
 幻海父子对象与三角色矩阵使用 `sh scripts/yuyuhakusho/verify_genkai_sessions.sh both`，真实浏览器使用 `PYTHONDONTWRITEBYTECODE=1 python3 scripts/yuyuhakusho/check_genkai_player.py`。结果与[桌面](../../../games/yuyuhakusho/verification/genkai-local-player/desktop.png)、[320px](../../../games/yuyuhakusho/verification/genkai-local-player/mobile-320.png)截图见[三角色验收](../../../games/yuyuhakusho/verification/genkai-session.json)。规则包 schema2 增加 11 条公共 projectile 动画和 8 组释放短序列；旧角色回归仅规则数据摘要改变，世界及事件轨迹未变。
+
+幽助与四角色矩阵使用 `sh scripts/yuyuhakusho/verify_yusuke_sessions.sh both`，真实浏览器使用 `PYTHONDONTWRITEBYTECODE=1 python3 scripts/yuyuhakusho/check_yusuke_player.py`。当前[桌面](../../../games/yuyuhakusho/verification/yusuke-local-player/desktop.png)、[320px](../../../games/yuyuhakusho/verification/yusuke-local-player/mobile-320.png)和[完整结果](../../../games/yuyuhakusho/verification/yusuke-session.json)独立保留，不覆盖旧阶段证据。

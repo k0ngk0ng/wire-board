@@ -1,0 +1,61 @@
+{
+  "scope": "Only source3 air-motion superseded IRQ-attribution attempts and final capture copies already verified against canonical fixtures",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter3-air-motion-irq",
+      "files": 0,
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter3-air-motion-irq-final",
+      "files": 0,
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter3-air-motion-final",
+      "files": 6,
+      "bytes": 2287063
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter3-air-motion-irq-capture.txt",
+      "files": 1,
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter3-air-motion-irq-final-capture.txt",
+      "files": 1,
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter3-air-motion-final-capture.txt",
+      "files": 1,
+      "bytes": 526
+    }
+  ],
+  "removed_bytes": 2287589,
+  "preserved": [
+    "Original pre-implementation CPU capture in .local/md-yuyuhakusho/fighter3-air-motion for test-first audit",
+    "Canonical fixtures, red/native/Wasm/vet evidence, selector-owned shared baselines and inputs",
+    "ROM/core/tools, shared Go caches, other agents/game files, worktrees and8799 assets"
+  ],
+  "original_to_final_rule_scope_equivalence": {
+    "oracle": {
+      "initial_capture_sha256": "ed8fd75729e632df0cbd2831a49f87beb78a7152bf71176ca508542d4507b570",
+      "final_fixture_sha256": "38a3c77d3c2fd12b7bfe93013ac0e5b7db99716e9402827b32693c98961cc91c",
+      "unchanged_rule_scope_sha256": "99b27177939142fbcba382dda0452fa8a8e87d24adb4b98233613035a9361126",
+      "rule_outputs_unchanged": true
+    },
+    "boundaries": {
+      "initial_capture_sha256": "52805d5018ce50236dfb291dc7f3b13f474847bff052cbb7f30c5cf4bc3858ce",
+      "final_fixture_sha256": "b1af6c671f6d4a0046b7572f450c7f7ddfc4d477d7bbf5c17a0a98250b4e6bf2",
+      "unchanged_rule_scope_sha256": "5db7dfd5dcbb456582e15e8339366278d1642ba612466f2be11c25bcf9ef7131",
+      "rule_outputs_unchanged": true
+    },
+    "sequences": {
+      "initial_capture_sha256": "6dbc24cae40b77ad0cf67655e9f4ba9b086d54b218f210a43a806882b6abbf7f",
+      "final_fixture_sha256": "a622b84baaa5671785b701798a3f137a7e0d4c6a9feb3d60bf682dec4825236b",
+      "unchanged_rule_scope_sha256": "95250032a57013d9bcfb871bca24e5a712092c826afffb54641784f82a09b02d",
+      "rule_outputs_unchanged": true
+    }
+  }
+}

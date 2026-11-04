@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "scope": "Only duplicate task-owned source3 core motion capture outputs; retain complete three fixtures/manifests, actual preimplementation red and final logs",
+  "deleted_files": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter3-motion/fighter3-motion-boundaries-manifest.json",
+      "bytes": 3516,
+      "sha256": "701f63b561129a4665a1c457d34010d5744c19e134ee0465074b32fc1d69c3df"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter3-motion/fighter3-motion-boundaries.json.gz",
+      "bytes": 415721,
+      "sha256": "9609c15c3b76ba66df9c5349028cb3b662066ace36f3d89257c4385974cdea31"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter3-motion/fighter3-motion-oracle-manifest.json",
+      "bytes": 3446,
+      "sha256": "5059a523b00fc0cf7991f946a2b7ff47dc55a927c2aa4b10eecb3ad4b71dfdec"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter3-motion/fighter3-motion-oracle.json.gz",
+      "bytes": 49071,
+      "sha256": "35c2c8bbb751b41f9b40b52f42f8cf404d07076e4861eb26da96f2a357c6dc2e"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter3-motion/fighter3-motion-sequences-manifest.json",
+      "bytes": 3544,
+      "sha256": "129bfe055480bf88e740c1e2877e635fde83986db0ca60015533250be67c64b5"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter3-motion/fighter3-motion-sequences.json.gz",
+      "bytes": 252212,
+      "sha256": "64c58e12c25d6448ad99cad5bcc9bcc693eef958ea501fb3e16d59ea897d2fbe"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter3-motion-capture.txt",
+      "bytes": 482,
+      "sha256": "5b500ddc6723b14cf71bfd71d88b670e4905bb4fdb4771433aecb6c189d24797"
+    }
+  ],
+  "deleted_bytes": 727992,
+  "shared_go_cache_deleted": false,
+  "fixed_rom_core_tools_deleted": false,
+  "peer_air22_scope_changed": false,
+  "other_agent_files_changed": false,
+  "local8799_assets_changed": false
+}

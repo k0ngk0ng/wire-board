@@ -1,0 +1,18 @@
+{
+  "scope": "Source3 air22 tests and original CPU evidence precede rule implementation",
+  "implementation_present": false,
+  "own_missing_symbol_observed": true,
+  "files": {
+    "games/yuyuhakusho/engine/fighter3_air_motion_test.go": "33ea38d6b6cd4ab568fe108be1d3baba972fe857ad55b3e9996af7ea20863d11",
+    "games/yuyuhakusho/engine/FIGHTER3_AIR_MOTION_VERIFICATION.md": "1139ba42928fc919b827359f0c6bee0914735788d74340e468dcc5f238fa5853",
+    "games/yuyuhakusho/engine/testdata/fighter3-air-motion-red.jsonl": "900388649bbfb07f6cdc20b110e2e5e061433d637cfd0eeb2457fd05b7a32eb2"
+  },
+  "original_cpu_evidence_before_implementation": {
+    "fighter3-air-motion-oracle.json.gz": "ed8fd75729e632df0cbd2831a49f87beb78a7152bf71176ca508542d4507b570",
+    "fighter3-air-motion-sequences.json.gz": "6dbc24cae40b77ad0cf67655e9f4ba9b086d54b218f210a43a806882b6abbf7f",
+    "fighter3-air-motion-boundaries.json.gz": "52805d5018ce50236dfb291dc7f3b13f474847bff052cbb7f30c5cf4bc3858ce"
+  },
+  "limits": [
+    "Final passive IRQ entry/RTE annotation recapture is separate; original scoped family outputs and complete private matrix/lifecycles were already collected"
+  ]
+}

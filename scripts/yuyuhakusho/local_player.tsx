@@ -22,7 +22,7 @@ const profile: ControllerProfile = { revision: 0, turboHz: 10, keyboard: {
 const keyboard = new KeyboardController(profile);
 const pointers = new Map<number, readonly string[]>();
 const bits: Record<string, number> = { up: 1, down: 2, left: 4, right: 8, b: 16, c: 32, a: 64, start: 128, z: 256, y: 512, x: 1024, mode: 2048 };
-const characterNames: Record<number, string> = { 0: "幻海", 9: "酎", 10: "户愚吕兄" };
+const characterNames: Record<number, string> = { 0: "幻海", 3: "幽助", 9: "酎", 10: "户愚吕兄" };
 function sample() {
   const held = keyboard.sample(performance.now());
   for (const buttons of pointers.values()) for (const button of buttons) held.add(button);

@@ -1,0 +1,89 @@
+{
+  "at_utc": "2026-11-04T20:02:07.314780+00:00",
+  "scope": "Root-owned Yusuke stage scratch only",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/yusuke-browser",
+      "files": 213,
+      "bytes": 9345225,
+      "reason": "Completed root-owned probes/acceptance cache or superseded missing-fixture run; canonical proof retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter3-world",
+      "files": 3,
+      "bytes": 3196881,
+      "reason": "Completed root-owned probes/acceptance cache or superseded missing-fixture run; canonical proof retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter3-world-special",
+      "files": 3,
+      "bytes": 2072186,
+      "reason": "Completed root-owned probes/acceptance cache or superseded missing-fixture run; canonical proof retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter3-special-discovery",
+      "files": 3,
+      "bytes": 27320,
+      "reason": "Completed root-owned probes/acceptance cache or superseded missing-fixture run; canonical proof retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter3-ultimate-discovery",
+      "files": 3,
+      "bytes": 15245,
+      "reason": "Completed root-owned probes/acceptance cache or superseded missing-fixture run; canonical proof retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/yusuke-legacy",
+      "files": 0,
+      "bytes": 0,
+      "reason": "Completed root-owned probes/acceptance cache or superseded missing-fixture run; canonical proof retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source2-menu-discovery",
+      "files": 0,
+      "bytes": 0,
+      "reason": "Completed root-owned probes/acceptance cache or superseded missing-fixture run; canonical proof retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-session",
+      "files": 1,
+      "bytes": 4093730,
+      "reason": "Completed root-owned probes/acceptance cache or superseded missing-fixture run; canonical proof retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-session.wasm",
+      "files": 1,
+      "bytes": 4657549,
+      "reason": "Completed root-owned probes/acceptance cache or superseded missing-fixture run; canonical proof retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-render",
+      "files": 1,
+      "bytes": 4519426,
+      "reason": "Completed root-owned probes/acceptance cache or superseded missing-fixture run; canonical proof retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-render.wasm",
+      "files": 1,
+      "bytes": 5218865,
+      "reason": "Completed root-owned probes/acceptance cache or superseded missing-fixture run; canonical proof retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter3-composition-first-native.jsonl",
+      "files": 1,
+      "bytes": 9616,
+      "reason": "Completed root-owned probes/acceptance cache or superseded missing-fixture run; canonical proof retained"
+    }
+  ],
+  "total_bytes": 33156043,
+  "preserved": [
+    "all canonical CPU/world/test-first/final logs and screenshots",
+    "42 actual legacy report archive",
+    "running8799 local player assets/server",
+    "original ROM/core/source/tools/IRQ/audio",
+    "next-source original input/selection proof",
+    "shared Go caches for active goal",
+    "agent-owned retained canonical captures",
+    "main/other games/active worktree"
+  ]
+}
