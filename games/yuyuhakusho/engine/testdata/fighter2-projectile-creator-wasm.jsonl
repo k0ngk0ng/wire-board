@@ -1,0 +1,9 @@
+{"Time":"2026-11-05T04:47:26.272945+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-05T04:47:26.334465+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter2ProjectileCreatorLifecycles"}
+{"Time":"2026-11-05T04:47:26.33452+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter2ProjectileCreatorLifecycles","Output":"=== RUN   TestFighter2ProjectileCreatorLifecycles\n"}
+{"Time":"2026-11-05T04:47:26.803339+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter2ProjectileCreatorLifecycles","Output":"    fighter2_projectile_test.go:209: source2 continuous lifecycles=24 creators=16 callbackSteps=896\n"}
+{"Time":"2026-11-05T04:47:26.805984+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter2ProjectileCreatorLifecycles","Output":"--- PASS: TestFighter2ProjectileCreatorLifecycles (0.47s)\n"}
+{"Time":"2026-11-05T04:47:26.806321+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighter2ProjectileCreatorLifecycles","Elapsed":0.47}
+{"Time":"2026-11-05T04:47:26.807009+08:00","Action":"output","Package":"command-line-arguments","Output":"PASS\n"}
+{"Time":"2026-11-05T04:47:26.811026+08:00","Action":"output","Package":"command-line-arguments","Output":"ok  \tcommand-line-arguments\t0.538s\n"}
+{"Time":"2026-11-05T04:47:26.811045+08:00","Action":"pass","Package":"command-line-arguments","Elapsed":0.538}

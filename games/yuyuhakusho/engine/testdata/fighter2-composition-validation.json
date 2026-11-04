@@ -1,0 +1,979 @@
+{
+  "reported_at_utc": "2026-11-04T20:42:44.424649+00:00",
+  "scope": "Source2 complete action/input/actor original CPU composition, frozen six tests and final read-only wiring review",
+  "pass": true,
+  "cpu_capture_pass": true,
+  "test_first_pass": true,
+  "independent_rules_pass": true,
+  "rule_verification_status": "Six frozen tests native-race and Node/Wasm first-run pass",
+  "goal_complete": false,
+  "release_ready": false,
+  "test_first": {
+    "stage": "six source2 tests frozen before complete-driver production support",
+    "recorded_at_utc": "2026-11-04T20:10:08.870608+00:00",
+    "test_top_levels": 6,
+    "expected_gap": "Action/Actor source2 unsupported; generic full Input may already pass",
+    "files": [
+      {
+        "path": "games/yuyuhakusho/engine/fighter2_composition_test.go",
+        "sha256": "2e36a99be288fe5ab6333b1555a7c6a9a9e58658c8a33faf7b2d5c24208ec84b"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/FIGHTER2_COMPOSITION_VERIFICATION.md",
+        "sha256": "9b4da9a359a649c0911183bb39dc97026807ddbe23d3dd89db1e008a55c7ec2a"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/chu_action.go",
+        "sha256": "2714aefa126f195c53f66e1217df02f776cb11877e55fd569b2a3c3481c5f357"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/chu_actor.go",
+        "sha256": "481bf428e162d59e2460913d5a6573db915a7da408a07e9fdf78e5e777cedeb2"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/chu_input.go",
+        "sha256": "a9d14993c78d4ae89403824254d72edc3a6315f61928c65129e8b67ac870e294"
+      }
+    ],
+    "early_red": {
+      "path": "games/yuyuhakusho/engine/testdata/fighter2-composition-red.jsonl",
+      "sha256": "2404202537c1e5df248903b0c0adefc8ccca48d640d709d87321fa63b6fd56eb",
+      "executed_tests": [
+        "TestFighter2CompositionOriginalActions",
+        "TestFighter2CompositionOriginalActors"
+      ],
+      "result": "Actual source2 unsupported runtime errors; six tests frozen before production, private fixtures completed later"
+    }
+  },
+  "coverage": {
+    "ordinary_video_steps": 3600,
+    "special_video_steps": 3602,
+    "accepted_special_entry_limit": 3600,
+    "ordinary_calls_each_API": 2067,
+    "special_calls_each_API": 2067,
+    "natural_source2_AI_calls": 0,
+    "special_actions": {
+      "0x1e": 108,
+      "0x1f": 49,
+      "0x20": 53
+    },
+    "special_parent_child_creations": {
+      "0x12dd4": 2,
+      "0x12c96": 3
+    },
+    "private_action_calls": 163,
+    "private_input_calls": 31,
+    "private_actor_calls": 43,
+    "private_action_slots": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      15,
+      17,
+      30,
+      31,
+      32
+    ],
+    "canonical_A5": [
+      "0xffff8400",
+      "0xffff8800",
+      "0xffff8c00",
+      "0xffff9000"
+    ],
+    "private_stack_below": "0xffffff00",
+    "private_unknown_RAM_writes": 0,
+    "ground_request1_normal_nibbles": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "ground_request1_diagnostic_nibbles_in_composition": [],
+    "action_streams": 10,
+    "action_stream_calls": 434,
+    "input_streams": 3,
+    "input_stream_calls": 48,
+    "actor_streams": 4,
+    "actor_stream_calls": 96,
+    "intermediate_expected_state_injected": false,
+    "children_advanced_in_streams": false,
+    "observed_audio_clear_action_calls": 76,
+    "observed_audio_clear_actor_calls": 90,
+    "private_AI_inputs": 8,
+    "private_AI_input_RNG_calls": 4,
+    "private_pause_or_slow_actor_calls": 12,
+    "wiring_review_findings": 0
+  },
+  "fixtures": [
+    {
+      "fixture": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter2-composition-action-boundaries.json.gz",
+        "sha256": "9e8a3992a18800fb9f58eb63939ef14a2494c0b56696b151521ea9739fbca573",
+        "bytes": 112788
+      },
+      "manifest": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter2-composition-action-boundaries-manifest.json",
+        "sha256": "3129ed22c71d2d045909bd0779445b430583ed4a7b43bbcf12f704f0b4442536",
+        "bytes": 2808
+      },
+      "records": 163,
+      "calls": 163,
+      "external_queue_calls": 0,
+      "binding": {
+        "source_tag": 2,
+        "source_object": "0x8400",
+        "checkpoint_video_label": 2400,
+        "animation_set": 795290,
+        "shape_set": 799194,
+        "parameter_pointer": 75068,
+        "source_actor_sha256": "a1e17b5615f6b27f21600c3d7ebf6bd47ca8ecfa4c97d9e1df6e15782d37f7b7"
+      },
+      "statistics": {
+        "calls": 163,
+        "external": 0,
+        "threat_branches": 0,
+        "actions": {
+          "0": 61,
+          "1": 4,
+          "2": 6,
+          "3": 4,
+          "4": 4,
+          "5": 4,
+          "6": 4,
+          "7": 4,
+          "8": 4,
+          "9": 4,
+          "10": 4,
+          "11": 4,
+          "12": 4,
+          "13": 4,
+          "15": 4,
+          "17": 5,
+          "30": 13,
+          "31": 13,
+          "32": 13
+        },
+        "routes": {},
+        "rng_counts": {
+          "1": 163
+        },
+        "sources": {
+          "0xffff8400": 85,
+          "0xffff8800": 26,
+          "0xffff8c00": 26,
+          "0xffff9000": 26
+        }
+      }
+    },
+    {
+      "fixture": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter2-composition-action-natural.json.gz",
+        "sha256": "8a49c636575ada3c47077bcaa2b93b03a28b57bdca45d6550c6f27c3f89b8229",
+        "bytes": 624800
+      },
+      "manifest": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter2-composition-action-natural-manifest.json",
+        "sha256": "86a1b0e896075fdaf140b421a8fc3df5f528ca2a576f3136a70b57acfd613783",
+        "bytes": 2638
+      },
+      "records": 2067,
+      "calls": 2067,
+      "external_queue_calls": 39,
+      "binding": {
+        "source_tag": 2,
+        "source_object": "0x8400",
+        "checkpoint_video_label": 2400,
+        "animation_set": 795290,
+        "shape_set": 799194,
+        "parameter_pointer": 75068,
+        "source_actor_sha256": "a1e17b5615f6b27f21600c3d7ebf6bd47ca8ecfa4c97d9e1df6e15782d37f7b7"
+      },
+      "statistics": {
+        "calls": 2067,
+        "external": 39,
+        "threat_branches": 0,
+        "actions": {
+          "0": 929,
+          "1": 81,
+          "3": 211,
+          "17": 33,
+          "11": 52,
+          "2": 53,
+          "5": 340,
+          "6": 156,
+          "4": 57,
+          "15": 25,
+          "12": 130
+        },
+        "routes": {},
+        "rng_counts": {
+          "1": 2067
+        },
+        "sources": {
+          "0xffff8400": 2067
+        }
+      }
+    },
+    {
+      "fixture": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter2-composition-action-sequences.json.gz",
+        "sha256": "d118a97f2fb693b4617f6060e44a1ddffc2839016b3c314e697902ba7dd5c2d1",
+        "bytes": 114859
+      },
+      "manifest": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter2-composition-action-sequences-manifest.json",
+        "sha256": "af5ea125b20c476dcb90a866526f5622bdae7c8ae02e82ff1ee7078350711992",
+        "bytes": 2281
+      },
+      "records": 10,
+      "calls": 434,
+      "external_queue_calls": 0,
+      "binding": {
+        "source_tag": 2,
+        "source_object": "0x8400",
+        "checkpoint_video_label": 2400,
+        "animation_set": 795290,
+        "shape_set": 799194,
+        "parameter_pointer": 75068,
+        "source_actor_sha256": "a1e17b5615f6b27f21600c3d7ebf6bd47ca8ecfa4c97d9e1df6e15782d37f7b7"
+      },
+      "statistics": {
+        "calls": 434
+      }
+    },
+    {
+      "fixture": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter2-composition-action-special.json.gz",
+        "sha256": "3de8e5406053b14cb5c3d20d98e9bd47803778947581206ac8c9b015aae7b974",
+        "bytes": 625809
+      },
+      "manifest": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter2-composition-action-special-manifest.json",
+        "sha256": "a741c794d9e22af8eace89332472ceb0e7531e05716b2c458e68a6572d55df11",
+        "bytes": 2642
+      },
+      "records": 2067,
+      "calls": 2067,
+      "external_queue_calls": 37,
+      "binding": {
+        "source_tag": 2,
+        "source_object": "0x8400",
+        "checkpoint_video_label": 2400,
+        "animation_set": 795290,
+        "shape_set": 799194,
+        "parameter_pointer": 75068,
+        "source_actor_sha256": "b3db1bbc410febc09d480f933630d8630ddfc7dcaa54719ae5a5ea65e45a0547"
+      },
+      "statistics": {
+        "calls": 2067,
+        "external": 37,
+        "threat_branches": 0,
+        "actions": {
+          "0": 1277,
+          "32": 53,
+          "30": 108,
+          "4": 149,
+          "31": 49,
+          "7": 48,
+          "5": 258,
+          "6": 78,
+          "3": 42,
+          "12": 5
+        },
+        "routes": {},
+        "rng_counts": {
+          "1": 2067
+        },
+        "sources": {
+          "0xffff8400": 2067
+        }
+      }
+    },
+    {
+      "fixture": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter2-composition-actor-boundaries.json.gz",
+        "sha256": "d18b9df41f0784d6942c56ce116a1ad5f089bbb5c6bc4b4c2bf7bb5be5889c81",
+        "bytes": 66474
+      },
+      "manifest": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter2-composition-actor-boundaries-manifest.json",
+        "sha256": "80c06364982c573e2dbbe6ab7b97210ecc899e6dbcb929bf5408e93836b6d97d",
+        "bytes": 2613
+      },
+      "records": 43,
+      "calls": 43,
+      "external_queue_calls": 0,
+      "binding": {
+        "source_tag": 2,
+        "source_object": "0x8400",
+        "checkpoint_video_label": 2400,
+        "animation_set": 795290,
+        "shape_set": 799194,
+        "parameter_pointer": 75068,
+        "source_actor_sha256": "a1e17b5615f6b27f21600c3d7ebf6bd47ca8ecfa4c97d9e1df6e15782d37f7b7"
+      },
+      "statistics": {
+        "calls": 43,
+        "external": 0,
+        "threat_branches": 0,
+        "actions": {
+          "0": 40,
+          "30": 1,
+          "31": 1,
+          "32": 1
+        },
+        "routes": {},
+        "rng_counts": {
+          "1": 23,
+          "5": 8,
+          "0": 12
+        },
+        "sources": {
+          "0xffff8400": 13,
+          "0xffff8800": 10,
+          "0xffff8c00": 10,
+          "0xffff9000": 10
+        }
+      }
+    },
+    {
+      "fixture": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter2-composition-actor-natural.json.gz",
+        "sha256": "3b208b38dcf1b2511cae29b52afc63c2f6bf1fb9f43984c65401543269e0a584",
+        "bytes": 1988592
+      },
+      "manifest": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter2-composition-actor-natural-manifest.json",
+        "sha256": "6f436be7326c50a6a4cbd10af7f1f9229647f5ba965ee2057c3eb7335d1ef725",
+        "bytes": 2637
+      },
+      "records": 2067,
+      "calls": 2067,
+      "external_queue_calls": 44,
+      "binding": {
+        "source_tag": 2,
+        "source_object": "0x8400",
+        "checkpoint_video_label": 2400,
+        "animation_set": 795290,
+        "shape_set": 799194,
+        "parameter_pointer": 75068,
+        "source_actor_sha256": "a1e17b5615f6b27f21600c3d7ebf6bd47ca8ecfa4c97d9e1df6e15782d37f7b7"
+      },
+      "statistics": {
+        "calls": 2067,
+        "external": 44,
+        "threat_branches": 0,
+        "actions": {
+          "0": 929,
+          "1": 81,
+          "3": 211,
+          "17": 33,
+          "11": 52,
+          "2": 53,
+          "5": 340,
+          "6": 156,
+          "4": 57,
+          "15": 25,
+          "12": 130
+        },
+        "routes": {},
+        "rng_counts": {
+          "1": 2067
+        },
+        "sources": {
+          "0xffff8400": 2067
+        }
+      }
+    },
+    {
+      "fixture": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter2-composition-actor-sequences.json.gz",
+        "sha256": "f54637ca2ce590a74ab457026739fff927d93a44f90044c9da2a5617dca946c6",
+        "bytes": 89962
+      },
+      "manifest": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter2-composition-actor-sequences-manifest.json",
+        "sha256": "0c9bf451bcb98deac3ffe2ebb2d5d0801cf178534996bc543ffc78b45117ab58",
+        "bytes": 2277
+      },
+      "records": 4,
+      "calls": 96,
+      "external_queue_calls": 0,
+      "binding": {
+        "source_tag": 2,
+        "source_object": "0x8400",
+        "checkpoint_video_label": 2400,
+        "animation_set": 795290,
+        "shape_set": 799194,
+        "parameter_pointer": 75068,
+        "source_actor_sha256": "a1e17b5615f6b27f21600c3d7ebf6bd47ca8ecfa4c97d9e1df6e15782d37f7b7"
+      },
+      "statistics": {
+        "calls": 96
+      }
+    },
+    {
+      "fixture": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter2-composition-actor-special.json.gz",
+        "sha256": "27762b14791419d622698e720f66bdb1fe59f961a78a8554b12575c7c2215395",
+        "bytes": 1985507
+      },
+      "manifest": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter2-composition-actor-special-manifest.json",
+        "sha256": "197d09383d43135717e78008dfee21c32b2bfb134b603866b668f8d8ed3d45e1",
+        "bytes": 2641
+      },
+      "records": 2067,
+      "calls": 2067,
+      "external_queue_calls": 46,
+      "binding": {
+        "source_tag": 2,
+        "source_object": "0x8400",
+        "checkpoint_video_label": 2400,
+        "animation_set": 795290,
+        "shape_set": 799194,
+        "parameter_pointer": 75068,
+        "source_actor_sha256": "b3db1bbc410febc09d480f933630d8630ddfc7dcaa54719ae5a5ea65e45a0547"
+      },
+      "statistics": {
+        "calls": 2067,
+        "external": 46,
+        "threat_branches": 0,
+        "actions": {
+          "0": 1277,
+          "32": 53,
+          "30": 108,
+          "4": 149,
+          "31": 49,
+          "7": 48,
+          "5": 258,
+          "6": 78,
+          "3": 42,
+          "12": 5
+        },
+        "routes": {},
+        "rng_counts": {
+          "1": 2067
+        },
+        "sources": {
+          "0xffff8400": 2067
+        }
+      }
+    },
+    {
+      "fixture": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter2-composition-input-boundaries.json.gz",
+        "sha256": "6058aa26512846038633bc2c86e0fe110a9090f92a5ce2e3a9293a4cd9421088",
+        "bytes": 21444
+      },
+      "manifest": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter2-composition-input-boundaries-manifest.json",
+        "sha256": "39ec7bf9499e1069229933a98b0c2f8eb612cc71af3c37eac6385f6f0bbb1647",
+        "bytes": 2686
+      },
+      "records": 31,
+      "calls": 31,
+      "external_queue_calls": 0,
+      "binding": {
+        "source_tag": 2,
+        "source_object": "0x8400",
+        "checkpoint_video_label": 2400,
+        "animation_set": 795290,
+        "shape_set": 799194,
+        "parameter_pointer": 75068,
+        "source_actor_sha256": "a1e17b5615f6b27f21600c3d7ebf6bd47ca8ecfa4c97d9e1df6e15782d37f7b7"
+      },
+      "statistics": {
+        "calls": 31,
+        "external": 0,
+        "threat_branches": 0,
+        "actions": {},
+        "routes": {
+          "human": 7,
+          "ai": 4,
+          "human-record": 4,
+          "ai-record": 4,
+          "playback": 4,
+          "playback-stopped": 4,
+          "disabled": 4
+        },
+        "rng_counts": {
+          "0": 23,
+          "4": 8
+        },
+        "sources": {
+          "0xffff8400": 10,
+          "0xffff8800": 7,
+          "0xffff8c00": 7,
+          "0xffff9000": 7
+        }
+      }
+    },
+    {
+      "fixture": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter2-composition-input-natural.json.gz",
+        "sha256": "d50209a0c3f85dfafba7dbef1571cfaa5f3582266d7dbfadfa5df8e5b377e1d4",
+        "bytes": 349608
+      },
+      "manifest": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter2-composition-input-natural-manifest.json",
+        "sha256": "7a4e3df08cf82bc82abe288bf7e6e797137a1f07d2e3545d0055121ee2f1ab20",
+        "bytes": 2505
+      },
+      "records": 2067,
+      "calls": 2067,
+      "external_queue_calls": 1,
+      "binding": {
+        "source_tag": 2,
+        "source_object": "0x8400",
+        "checkpoint_video_label": 2400,
+        "animation_set": 795290,
+        "shape_set": 799194,
+        "parameter_pointer": 75068,
+        "source_actor_sha256": "a1e17b5615f6b27f21600c3d7ebf6bd47ca8ecfa4c97d9e1df6e15782d37f7b7"
+      },
+      "statistics": {
+        "calls": 2067,
+        "external": 1,
+        "threat_branches": 0,
+        "actions": {},
+        "routes": {
+          "disabled": 273,
+          "human": 1794
+        },
+        "rng_counts": {
+          "0": 2067
+        },
+        "sources": {
+          "0xffff8400": 2067
+        }
+      }
+    },
+    {
+      "fixture": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter2-composition-input-sequences.json.gz",
+        "sha256": "19a07fb5b8398c771c0190a67df3e2ae795efdc3b00e6cacf67ff819abc491bd",
+        "bytes": 16873
+      },
+      "manifest": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter2-composition-input-sequences-manifest.json",
+        "sha256": "23b1775fb9cbcd196b8848d366eec7338ce34c4439d9f302e244a0c8bf674430",
+        "bytes": 2277
+      },
+      "records": 3,
+      "calls": 48,
+      "external_queue_calls": 0,
+      "binding": {
+        "source_tag": 2,
+        "source_object": "0x8400",
+        "checkpoint_video_label": 2400,
+        "animation_set": 795290,
+        "shape_set": 799194,
+        "parameter_pointer": 75068,
+        "source_actor_sha256": "a1e17b5615f6b27f21600c3d7ebf6bd47ca8ecfa4c97d9e1df6e15782d37f7b7"
+      },
+      "statistics": {
+        "calls": 48
+      }
+    },
+    {
+      "fixture": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter2-composition-input-special.json.gz",
+        "sha256": "74a825af383adf015e34aefc831f0034bf4b68b549dae5faf10e8b6e89dc6431",
+        "bytes": 354015
+      },
+      "manifest": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter2-composition-input-special-manifest.json",
+        "sha256": "9adbea687bee7fe00d6177b1310b2c0f98b73aa1905584a182f6be90ad05418c",
+        "bytes": 2525
+      },
+      "records": 2067,
+      "calls": 2067,
+      "external_queue_calls": 2,
+      "binding": {
+        "source_tag": 2,
+        "source_object": "0x8400",
+        "checkpoint_video_label": 2400,
+        "animation_set": 795290,
+        "shape_set": 799194,
+        "parameter_pointer": 75068,
+        "source_actor_sha256": "b3db1bbc410febc09d480f933630d8630ddfc7dcaa54719ae5a5ea65e45a0547"
+      },
+      "statistics": {
+        "calls": 2067,
+        "external": 2,
+        "threat_branches": 0,
+        "actions": {},
+        "routes": {
+          "disabled": 273,
+          "human": 1794
+        },
+        "rng_counts": {
+          "0": 2067
+        },
+        "sources": {
+          "0xffff8400": 2067
+        }
+      }
+    }
+  ],
+  "sources": [
+    {
+      "path": "scripts/yuyuhakusho/capture_fighter2_composition.py",
+      "sha256": "a6a4cd52c633d1a7b07d17a66606081050967b09ead42ca4086590bb173f22c2",
+      "bytes": 29360
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter2_composition_test.go",
+      "sha256": "2e36a99be288fe5ab6333b1555a7c6a9a9e58658c8a33faf7b2d5c24208ec84b",
+      "bytes": 15235
+    },
+    {
+      "path": "games/yuyuhakusho/engine/FIGHTER2_COMPOSITION_VERIFICATION.md",
+      "sha256": "70c729d9db4979a6ca66d21d1c6c5ad3d17dc716afdcdd669ae6b89a24344619",
+      "bytes": 10368
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_chu_action.py",
+      "sha256": "0219cf3d8c7176b202a5c1ab628761c74434723fc2bff113de7ce2ec33df6f4d",
+      "bytes": 15362
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_chu_actor.py",
+      "sha256": "d90107daec842d386170bfb26d986d09254a6dc7f7b6c31593aa36c8a5d2187c",
+      "bytes": 16893
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_chu_input.py",
+      "sha256": "b5ab29cd810845a213b470ead845a35727ad821081ed25202ea70599f8cae7e3",
+      "bytes": 12772
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_chu_tail.py",
+      "sha256": "2ca411fa0792b7a8ba03fdf0f71f6839977cf9c8fb0143f79ac8fac707d09997",
+      "bytes": 13691
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_animation_records.py",
+      "sha256": "9ed4d8019c29cdf4272cdc54636047b6325c45b2d5d9b9b16efd74e1eb1c3208",
+      "bytes": 15101
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_ground_idle.py",
+      "sha256": "01d4798e937fa01946b7612fbc4fa7418dda97ec3411db4beb4629975614ba1d",
+      "bytes": 6310
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_effect_pool.py",
+      "sha256": "b9c753d1c9b6380ac64ee16f2c10cdcf8560654e493e770b31552b1781354f46",
+      "bytes": 9332
+    },
+    {
+      "path": "scripts/yuyuhakusho/reference.py",
+      "sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "bytes": 8606
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_action_test.go",
+      "sha256": "a3ee2a1eb0863eaefec00c99381fa1f21ccd3284b67d2296cdb06cb743237940",
+      "bytes": 10184
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_actor_test.go",
+      "sha256": "64cbd90975e93b8ca9e44fe034bca3d177de4e15f45939248256c5823e44c0e7",
+      "bytes": 17003
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_input_test.go",
+      "sha256": "5c6de3c3ef929886adf9f42cf073624542e2b3767a633c9f0e24c078916eda31",
+      "bytes": 6548
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_special_motion_test.go",
+      "sha256": "dfd3cf4c7e19b5a4e7e6653744a4160732f14415f78b1b997124660675f7d269",
+      "bytes": 8962
+    }
+  ],
+  "baselines": [
+    {
+      "path": "docs/research/md-yuyuhakusho/source2-next-inputs.json",
+      "sha256": "43a1cab4f2147616db4798cd5ab88d6c208f2311d5b99468816f3265d9fee596",
+      "bytes": 3039
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter2-attacks-reference-frames.json",
+      "sha256": "43c15a7d09b8244d4d6cea5b2b90a23673794ccd5f7effb33e66b39452d69338",
+      "bytes": 668495
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter2-attacks-reference-manifest.json",
+      "sha256": "2a8fae219a3da333fa7cf1b6c572d57e411ce5baa4f0cddaf6c37ad9532620bf",
+      "bytes": 1139
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter2-projectile-inputs.json",
+      "sha256": "90d7d03e229a1cdd4eac98273f867f3c8118a34cfcdbe275d1932e630c529af8",
+      "bytes": 2578
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter2-attacks-special-reference-frames.json",
+      "sha256": "b60a1f74146c783ec55290b5f4f84f73e00f0fd2d3eae4e745dd25d3f4cd0682",
+      "bytes": 668867
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter2-attacks-special-reference-manifest.json",
+      "sha256": "2729d0ce15255955252ffd4fc9f599ade272ee309418855668f121639ccd00c7",
+      "bytes": 1027
+    }
+  ],
+  "early_red": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter2-composition-red.jsonl",
+    "sha256": "2404202537c1e5df248903b0c0adefc8ccca48d640d709d87321fa63b6fd56eb",
+    "bytes": 2455
+  },
+  "diagnostics": [
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter2-composition-red-files.json",
+      "sha256": "cff55a22144b28cd01ce4ab67e35d37f90fe4634164e07f01735bc2b5a7791fc",
+      "bytes": 3645
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter2-composition-natural-reproducibility.json",
+      "sha256": "ffa615acee50025a88d19fb8fab8009dccead411e45c9eef5d5f8e8aa927e27f",
+      "bytes": 1268
+    }
+  ],
+  "cleanup": {
+    "pass": true,
+    "scope": "Only source2-composition duplicate JSONL/gzip/manifests/run summaries; canonical fixtures, baseline/input, tools/ROM/shared caches and8799 assets retained",
+    "deleted": [
+      {
+        "path": ".local/md-yuyuhakusho/fighter2-composition-natural",
+        "files": 12,
+        "bytes": 234521072
+      },
+      {
+        "path": ".local/md-yuyuhakusho/fighter2-composition-natural-run.txt",
+        "files": 1,
+        "bytes": 935
+      },
+      {
+        "path": ".local/md-yuyuhakusho/fighter2-composition-full",
+        "files": 24,
+        "bytes": 242493222
+      },
+      {
+        "path": ".local/md-yuyuhakusho/fighter2-composition-full-run.txt",
+        "files": 1,
+        "bytes": 2408
+      },
+      {
+        "path": ".local/md-yuyuhakusho/fighter2-composition-special",
+        "files": 12,
+        "bytes": 234530823
+      },
+      {
+        "path": ".local/md-yuyuhakusho/fighter2-composition-special-run.txt",
+        "files": 1,
+        "bytes": 915
+      },
+      {
+        "path": ".local/md-yuyuhakusho/fighter2-composition-natural-final",
+        "files": 12,
+        "bytes": 234521072
+      },
+      {
+        "path": ".local/md-yuyuhakusho/fighter2-composition-natural-final-run.txt",
+        "files": 1,
+        "bytes": 935
+      }
+    ],
+    "natural_library_variants_checked": [
+      {
+        "path": ".local/md-yuyuhakusho/fighter2-composition-full/fighter2-composition-actor-natural.json.gz",
+        "canonical": "games/yuyuhakusho/engine/testdata/fighter2-composition-actor-natural.json.gz",
+        "original_CPU_call_bytes_sha256": "cc5d4918660f7d60219fc8850efdab597b6b5897e6605449100819c2f490a739",
+        "difference": "Private-run library union contains extra private/stream frames, natural CPU calls unchanged"
+      },
+      {
+        "path": ".local/md-yuyuhakusho/fighter2-composition-full/fighter2-composition-action-natural.json.gz",
+        "canonical": "games/yuyuhakusho/engine/testdata/fighter2-composition-action-natural.json.gz",
+        "original_CPU_call_bytes_sha256": "ab8794bd9015052497d700c2c81d1b525203bb1addd21e80d211df763671b306",
+        "difference": "Private-run library union contains extra private/stream frames, natural CPU calls unchanged"
+      },
+      {
+        "path": ".local/md-yuyuhakusho/fighter2-composition-full/fighter2-composition-input-natural.json.gz",
+        "canonical": "games/yuyuhakusho/engine/testdata/fighter2-composition-input-natural.json.gz",
+        "original_CPU_call_bytes_sha256": "681c93e8a0e655a4cd3f92e2a1ab9066e1113feb5b7d911e6fbfa0ef5bb51825",
+        "difference": "Private-run library union contains extra private/stream frames, natural CPU calls unchanged"
+      }
+    ],
+    "files_removed": 64,
+    "bytes_removed": 946071382
+  },
+  "wiring_review_status": "Read-only final action/tail/actor/world/session alias, child merges, source gating and canonical HitStopTicks view reviewed; no findings",
+  "limits": [
+    "Natural source2 is human/disabled; AI/record/playback contexts are explicitly private original CPU evidence",
+    "Nested natural action/input/actor calls overlap and do not multiply gameplay coverage",
+    "Ground request1 nibble11..15 diagnostics belong to selector research and are excluded from normal composition",
+    "New child HitStopTicks is not stepped here; parent initialization preserves the complete old child byte69, actual lifecycle/world handling is separate",
+    "Only actual audio-consumer PC/address markers exclude the four queue bytes; no expected queue or intermediate state enters Go",
+    "Actor endpoint precedes sprite submission; no child/FX scheduling, collision-manager, full-world/fresh/browser/network acceptance is claimed",
+    "Composition subtask wrote no production implementation and did not edit frozen tests; Root owns driver/world/session wiring"
+  ],
+  "verified_at_utc": "2026-11-04T20:51:17.890109+00:00",
+  "logs": [
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter2-composition-native.jsonl",
+      "sha256": "ac01d714a62851c433310039965ac3ce6d4f6974ae9ba8823c8fac0f12e0cb4b",
+      "bytes": 9387,
+      "phase": "native",
+      "result": "pass",
+      "elapsed_seconds": 46.906,
+      "tests": [
+        {
+          "name": "TestFighter2CompositionOriginalActions",
+          "result": "pass",
+          "seconds": 12.32
+        },
+        {
+          "name": "TestFighter2CompositionOriginalInputs",
+          "result": "pass",
+          "seconds": 7.87
+        },
+        {
+          "name": "TestFighter2CompositionOriginalActors",
+          "result": "pass",
+          "seconds": 23.24
+        },
+        {
+          "name": "TestFighter2CompositionActionStreams",
+          "result": "pass",
+          "seconds": 1.05
+        },
+        {
+          "name": "TestFighter2CompositionInputAndActorStreams",
+          "result": "pass",
+          "seconds": 0.54
+        },
+        {
+          "name": "TestFighter2CompositionFailuresAreAtomic",
+          "result": "pass",
+          "seconds": 0.44
+        }
+      ],
+      "executed_by": "composition subtask after Root wiring; frozen source unchanged"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter2-composition-wasm.jsonl",
+      "sha256": "5fd002ded91e6890c4ca97ed50bcc202fa7a7106f1ac23e71fc20dd7ab8565ae",
+      "bytes": 9385,
+      "phase": "wasm",
+      "result": "pass",
+      "elapsed_seconds": 11.637,
+      "tests": [
+        {
+          "name": "TestFighter2CompositionOriginalActions",
+          "result": "pass",
+          "seconds": 3.23
+        },
+        {
+          "name": "TestFighter2CompositionOriginalInputs",
+          "result": "pass",
+          "seconds": 1.9
+        },
+        {
+          "name": "TestFighter2CompositionOriginalActors",
+          "result": "pass",
+          "seconds": 5.83
+        },
+        {
+          "name": "TestFighter2CompositionActionStreams",
+          "result": "pass",
+          "seconds": 0.28
+        },
+        {
+          "name": "TestFighter2CompositionInputAndActorStreams",
+          "result": "pass",
+          "seconds": 0.15
+        },
+        {
+          "name": "TestFighter2CompositionFailuresAreAtomic",
+          "result": "pass",
+          "seconds": 0.13
+        }
+      ],
+      "executed_by": "composition subtask after Root wiring; frozen source unchanged"
+    }
+  ],
+  "validated_production_sources": [
+    {
+      "path": "games/yuyuhakusho/engine/chu_action.go",
+      "sha256": "8d722908fd4acf5d19ef9578ea18a3f835ada0faaee75db1e1dc578fa681a2ef",
+      "bytes": 11216
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_tail.go",
+      "sha256": "b82f7389c92e4a0849c1bf81f9d88510b125dd8c06fbb982d93c7417064536a4",
+      "bytes": 8730
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_actor.go",
+      "sha256": "de23b3ff7bd9b736d3c15fe798b1d287bc9e7f590d3b92bbe2f28f8a15e17aed",
+      "bytes": 12038
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_input.go",
+      "sha256": "a9d14993c78d4ae89403824254d72edc3a6315f61928c65129e8b67ac870e294",
+      "bytes": 1729
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_world.go",
+      "sha256": "1c8c7bb5eb37a12002511267a257ec7caf488b52ea3523e4114a3b73260687ec",
+      "bytes": 42017
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_session.go",
+      "sha256": "40e669cb1a8cb45df3ea7adf3d0a7ec20615eaf1aa144c01c1a767c8315da538",
+      "bytes": 6296
+    },
+    {
+      "path": "games/yuyuhakusho/engine/world_objects.go",
+      "sha256": "77d3ba95ae9d44f26465e854a75886004e4550ffdc6cbde14e6a49dda8a546b1",
+      "bytes": 27660
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter2_attacks.go",
+      "sha256": "01c1f021357443798343c35a38e2bbaab5bdb0eb1ef22bcb9e7d54c7bae5d94b",
+      "bytes": 5391
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter2_motion.go",
+      "sha256": "b67ef2363472157538ae898e3240a0e2492045eda064d0d4c3044d5dabed2672",
+      "bytes": 3455
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter2_projectile.go",
+      "sha256": "2bc1bb203157a57a35f5c26c77054250eac7621fd2a4c62754da64a903d556d4",
+      "bytes": 2936
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "scope": "Only source2 projectile capture duplicates already byte-verified against canonical fixtures/data, discovery duplicates and private Java cache",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter2-projectile",
+      "files": 8,
+      "bytes": 591226
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter2-projectile-discovery",
+      "files": 2,
+      "bytes": 3015
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter2-projectile-static",
+      "files": 19,
+      "bytes": 233807
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter2-projectile-capture.txt",
+      "files": 1,
+      "bytes": 416
+    }
+  ],
+  "removed_bytes": 828464,
+  "preserved": [
+    "Canonical fixtures, own real red, four native/Wasm tests, frozen-creator checks, vet and23 semantic records",
+    "Selector-owned shared baselines/input, original source2 menu evidence, static instruction listing",
+    "Shared Go caches, ROM/core/tools, other agent/game files, worktrees, original media and9133ceae8799 assets"
+  ]
+}

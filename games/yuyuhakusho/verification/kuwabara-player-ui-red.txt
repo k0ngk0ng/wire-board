@@ -1,0 +1,14 @@
+
+  .local/md-yuyuhakusho/local-player/player.js                   1.2mb ⚠️
+  .local/md-yuyuhakusho/local-player/player.css                  6.7kb
+  .local/md-yuyuhakusho/local-player/md-controller-UXLIP6HJ.svg  1.8kb
+
+⚡ Done in 31ms
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/check_kuwabara_player.py", line 50, in <module>
+    browser('select','#player-character','2')
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/check_kuwabara_player.py", line 27, in browser
+    if result.returncode: raise RuntimeError(result.stdout+result.stderr)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: {"success":false,"data":null,"error":"No option matched [\"2\"]. Available options: 0 (\"幻海\"), 3 (\"幽助\"), 9 (\"酎\"), 10 (\"户愚吕兄\")"}

@@ -1,0 +1,37 @@
+{
+  "stage": "six source2 tests frozen before complete-driver production support",
+  "recorded_at_utc": "2026-11-04T20:10:08.870608+00:00",
+  "test_top_levels": 6,
+  "expected_gap": "Action/Actor source2 unsupported; generic full Input may already pass",
+  "files": [
+    {
+      "path": "games/yuyuhakusho/engine/fighter2_composition_test.go",
+      "sha256": "2e36a99be288fe5ab6333b1555a7c6a9a9e58658c8a33faf7b2d5c24208ec84b"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/FIGHTER2_COMPOSITION_VERIFICATION.md",
+      "sha256": "9b4da9a359a649c0911183bb39dc97026807ddbe23d3dd89db1e008a55c7ec2a"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_action.go",
+      "sha256": "2714aefa126f195c53f66e1217df02f776cb11877e55fd569b2a3c3481c5f357"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_actor.go",
+      "sha256": "481bf428e162d59e2460913d5a6573db915a7da408a07e9fdf78e5e777cedeb2"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_input.go",
+      "sha256": "a9d14993c78d4ae89403824254d72edc3a6315f61928c65129e8b67ac870e294"
+    }
+  ],
+  "early_red": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter2-composition-red.jsonl",
+    "sha256": "2404202537c1e5df248903b0c0adefc8ccca48d640d709d87321fa63b6fd56eb",
+    "executed_tests": [
+      "TestFighter2CompositionOriginalActions",
+      "TestFighter2CompositionOriginalActors"
+    ],
+    "result": "Actual source2 unsupported runtime errors; six tests frozen before production, private fixtures completed later"
+  }
+}

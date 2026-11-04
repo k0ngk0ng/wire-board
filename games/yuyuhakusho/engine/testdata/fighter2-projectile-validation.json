@@ -1,0 +1,180 @@
+{
+  "pass": true,
+  "scope": "Complete source2 child12dd4 and reused12c96 pose13 creator/lifetime contexts through draw or prefix clear",
+  "go_version": "go version go1.26.2 darwin/arm64",
+  "test_first": {
+    "own_missing_symbols_observed": true,
+    "test_source_unchanged_since_red": true,
+    "original_cpu_fixtures_precede_rule_file": true,
+    "cpu_fixtures_unchanged_since_red": true
+  },
+  "evidence": {
+    "oracle": {
+      "path": "games/yuyuhakusho/engine/testdata/fighter2-projectile-oracle-manifest.json",
+      "manifest_sha256": "68b7c610147f174a2001b595a9441db99eb6cf0fa6df36901d7820df11136655",
+      "records": 124,
+      "calls": 124,
+      "kind_counts": {
+        "scatter": 51,
+        "beam": 73
+      },
+      "fixture_sha256": "6fdb8653a328fb472fb0ed6fe79d666f5b66288d1e4c0c7e34ab4dbb76c05af0",
+      "gzip_sha256": "f8df094bcc635cc6ce147c5b52164cdce437fc2b0cdb5e35deba69fda4b4f112",
+      "external_or_unexplained_changes": 0
+    },
+    "boundaries": {
+      "path": "games/yuyuhakusho/engine/testdata/fighter2-projectile-boundaries-manifest.json",
+      "manifest_sha256": "60e666b735b53d80e2c201bc3141a134c61cc5e0f162ecf985a1edc1bec148f5",
+      "records": 1724,
+      "calls": 1724,
+      "kind_counts": {
+        "beam": 1708,
+        "scatter": 16
+      },
+      "fixture_sha256": "3fa8d1cd84ace4adfc4a4982da40bcd509ad5c22c4e067f18779149e0b066484",
+      "gzip_sha256": "7eef5a82d04a3819b744af35dca91f603e730be483adc9f7e5edcb4d59db780b",
+      "external_or_unexplained_changes": 0
+    },
+    "sequences": {
+      "path": "games/yuyuhakusho/engine/testdata/fighter2-projectile-sequences-manifest.json",
+      "manifest_sha256": "83727368e13181e15230d8612d5dfeb46db5c2a4774ecf5c0de88371af8c1e88",
+      "records": 24,
+      "calls": 912,
+      "kind_counts": {
+        "creator_beam": 8,
+        "beam": 752,
+        "creator_scatter": 8,
+        "scatter": 144
+      },
+      "fixture_sha256": "bf79935c9c6bfd6eb1a7d2f332f32a19d6d1440e9d648412d8b71c32838a21b9",
+      "gzip_sha256": "63153e47469515048362023b2d36bac3be46430ce54b399adbb5d35f372e178b",
+      "external_or_unexplained_changes": 0
+    }
+  },
+  "natural_hitstop": {
+    "nonzero_entry_calls": 32,
+    "nonzero_return_calls": 30,
+    "first_entry_video_step": 2633,
+    "last_entry_video_step": 2667,
+    "entry_values": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16
+    ],
+    "note": "Each of two16..1 entry chains includes the1\u21920 call; return snapshots omit those two zero results"
+  },
+  "continuous": {
+    "streams": 24,
+    "original_source2_creators": 16,
+    "child_callback_steps": 896,
+    "original_cpu_calls": 912,
+    "all_created_children_deleted": true,
+    "no_intermediate_state_or_clock_injection": true
+  },
+  "semantic": {
+    "animations": 23,
+    "poses": {
+      "9": 10,
+      "12": 5,
+      "13": 8
+    },
+    "bytes": 7262,
+    "rules_sha256": "a919578d7f0bbb3656e1802ca9f9e6327c6e1bd7d789c3367a63a7a6f1d6d891"
+  },
+  "checks": {
+    "native": {
+      "pass": true,
+      "top_level_tests": 4,
+      "elapsed_seconds": 7.571,
+      "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+      "log": "games/yuyuhakusho/engine/testdata/fighter2-projectile-native.jsonl",
+      "log_sha256": "e1d8f10ab17b085c986d80470b5488f0287307718ca4784b20a49da6e1746a6a",
+      "command": "go test -race -count=1 -json ./games/yuyuhakusho/engine -run ^TestFighter2Projectile"
+    },
+    "wasm": {
+      "pass": true,
+      "top_level_tests": 4,
+      "elapsed_seconds": 1.853,
+      "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+      "log": "games/yuyuhakusho/engine/testdata/fighter2-projectile-wasm.jsonl",
+      "log_sha256": "003c19abdde2a30e0507fb5ce1ec85a940935b6b20c8ca8b9b6821f0ea337de9",
+      "command": "GOOS=js GOARCH=wasm go test -count=1 -json -exec <GOROOT>/lib/wasm/go_js_wasm_exec ./games/yuyuhakusho/engine -run ^TestFighter2Projectile"
+    },
+    "creator-native": {
+      "pass": true,
+      "top_level_tests": 1,
+      "elapsed_seconds": 3.054,
+      "package": "command-line-arguments",
+      "log": "games/yuyuhakusho/engine/testdata/fighter2-projectile-creator-native.jsonl",
+      "log_sha256": "e044eeb8532d51377e191105fa82d958d4cef0f1662b8f65dc93aa23ee2d06b6",
+      "command": "go test <all engine Go files except fighter2_attacks_test.go> -run ^TestFighter2ProjectileCreatorLifecycles$; native race or Node/Wasm",
+      "excluded": [
+        "games/yuyuhakusho/engine/fighter2_attacks_test.go"
+      ],
+      "reason": "Frozen parent-creator confirmation while the independent selector test was in its missing-implementation red stage"
+    },
+    "creator-wasm": {
+      "pass": true,
+      "top_level_tests": 1,
+      "elapsed_seconds": 0.538,
+      "package": "command-line-arguments",
+      "log": "games/yuyuhakusho/engine/testdata/fighter2-projectile-creator-wasm.jsonl",
+      "log_sha256": "83d1329d12bf92548bc9f05eaf17fa0af13cdeb5d0f13ad2159df1dd3521bef6",
+      "command": "go test <all engine Go files except fighter2_attacks_test.go> -run ^TestFighter2ProjectileCreatorLifecycles$; native race or Node/Wasm",
+      "excluded": [
+        "games/yuyuhakusho/engine/fighter2_attacks_test.go"
+      ],
+      "reason": "Frozen parent-creator confirmation while the independent selector test was in its missing-implementation red stage"
+    },
+    "vet": {
+      "pass": true,
+      "command": "go vet ./games/yuyuhakusho/engine",
+      "excluded": [],
+      "log": "games/yuyuhakusho/engine/testdata/fighter2-projectile-vet.txt",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "source_sha256": {
+    "docs/research/md-yuyuhakusho/static/fighter2-projectile.txt": "ae8c4288c2d8d880a5a5f527028d340b358c0216855d56f45e321066ef708746",
+    "games/yuyuhakusho/data/fighter2-projectile-rules-manifest.json": "dec2432d2378750fe466c52869002e3852ff4c964b01951a0b21a4e1c3c13f39",
+    "games/yuyuhakusho/data/fighter2-projectile-rules.json": "a919578d7f0bbb3656e1802ca9f9e6327c6e1bd7d789c3367a63a7a6f1d6d891",
+    "games/yuyuhakusho/engine/FIGHTER2_PROJECTILE_VERIFICATION.md": "4c0e7e84fedf2707dae740c7b92f5a25c5d28812741635c6610571f9cae70da5",
+    "games/yuyuhakusho/engine/animation_clock.go": "fa868c5c160fa22fba71520d80c18e8d1f40217ff9a64c6d90a231eab65f28a4",
+    "games/yuyuhakusho/engine/animation_records.go": "15e3eb6b849d7d29f8b3b55f9c843b36c9ce38fbf3fa4ffa71a9672593d13cbe",
+    "games/yuyuhakusho/engine/chu_projectile.go": "b6b6f115b819c74cb771707f04e18a801d382b2e5a152d5f4c10b01d7bf79363",
+    "games/yuyuhakusho/engine/effects.go": "6a0916fbc4051a0e67988b9cad99e41d9ef778e0e78a7f63d65f5fb35d2f6b18",
+    "games/yuyuhakusho/engine/fighter0_projectile.go": "75fd4602a62ced5944f8be174faa6f3906e295cd1e62f3f091de9593c02d1915",
+    "games/yuyuhakusho/engine/fighter2_motion.go": "b67ef2363472157538ae898e3240a0e2492045eda064d0d4c3044d5dabed2672",
+    "games/yuyuhakusho/engine/fighter2_projectile.go": "2bc1bb203157a57a35f5c26c77054250eac7621fd2a4c62754da64a903d556d4",
+    "games/yuyuhakusho/engine/fighter2_projectile_test.go": "dd2089fffaaefa277599903de205aea723708dad62f966d24436da87440b3c9f",
+    "games/yuyuhakusho/engine/fighter3_air_motion_test.go": "33ea38d6b6cd4ab568fe108be1d3baba972fe857ad55b3e9996af7ea20863d11",
+    "games/yuyuhakusho/engine/motion.go": "35dc27314a13afdff39d96d2d21911c5ba5030baf00ea81d1daf8f9feb5f8878",
+    "games/yuyuhakusho/engine/testdata/fighter2-projectile-cleanup.json": "b3fa8eb4e0079e59e4adefd58c3abd7a2adddb38625dfc4a40094071b411a7e2",
+    "games/yuyuhakusho/engine/testdata/fighter2-projectile-red.jsonl": "65ec3ef2a9d3308eb08f31fe317bbe98ccc5cc1bbf07811775618e13a483b934",
+    "games/yuyuhakusho/engine/testdata/fighter2-projectile-test-first.json": "2efc33396fa844553ecabb6ff5430af53bfee7018919f5e8276c19384daa0eb1",
+    "games/yuyuhakusho/engine/world_objects_test.go": "be37d61ae8dd40dc85a63efe4846118aa71f3ddf0d92333a89f4b0be9483e719",
+    "scripts/yuyuhakusho/capture_fighter2_projectile.py": "4afb96b2ec742e14d6feb3a607ad59dc8a524c09c9f9af5349cef059d6344788",
+    "scripts/yuyuhakusho/static/MdControlProbe.java": "44903c14bfe5a1ffc354e4fab1eb5893303081bbe55aa9f620808daf4ebe18a8"
+  },
+  "limits": [
+    "Closed callbacks and creator-to-child lifecycles are not complete actor/world, collision, active FX or platform E2E",
+    "Pose9 paired dust is private CPU coverage; natural source2 records use actual creators and poses",
+    "Parent freezes after creation; declared pause/hitstop pulses are external private inputs",
+    "Existing12c96 is reused without copying; bundle/runtime integration belongs to the parent task",
+    "Raw68000 static evidence is direct Ghidra, not REA decompilation",
+    "No existing Go/bundle/PROGRESS/other report/deployment or9133ceae8799 asset changes"
+  ]
+}

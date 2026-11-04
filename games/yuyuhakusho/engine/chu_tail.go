@@ -110,6 +110,8 @@ func stepFighterActionTail(state ChuTailState, characterID uint8, aux48 int32, e
 			var err error
 			if characterID == 0 {
 				selection, err = SelectFighter0Attack(selection, stage.mode)
+			} else if characterID == 2 {
+				selection, err = SelectFighter2Attack(selection, stage.mode)
 			} else if characterID == 3 {
 				var selected Fighter3AttackState
 				selected, err = SelectFighter3Attack(Fighter3AttackState{ChuAttackState: selection, AlternateVelocity: aux48}, stage.mode)

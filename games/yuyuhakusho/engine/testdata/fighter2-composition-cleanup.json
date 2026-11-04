@@ -1,0 +1,68 @@
+{
+  "pass": true,
+  "scope": "Only source2-composition duplicate JSONL/gzip/manifests/run summaries; canonical fixtures, baseline/input, tools/ROM/shared caches and8799 assets retained",
+  "deleted": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter2-composition-natural",
+      "files": 12,
+      "bytes": 234521072
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter2-composition-natural-run.txt",
+      "files": 1,
+      "bytes": 935
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter2-composition-full",
+      "files": 24,
+      "bytes": 242493222
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter2-composition-full-run.txt",
+      "files": 1,
+      "bytes": 2408
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter2-composition-special",
+      "files": 12,
+      "bytes": 234530823
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter2-composition-special-run.txt",
+      "files": 1,
+      "bytes": 915
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter2-composition-natural-final",
+      "files": 12,
+      "bytes": 234521072
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter2-composition-natural-final-run.txt",
+      "files": 1,
+      "bytes": 935
+    }
+  ],
+  "natural_library_variants_checked": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter2-composition-full/fighter2-composition-actor-natural.json.gz",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter2-composition-actor-natural.json.gz",
+      "original_CPU_call_bytes_sha256": "cc5d4918660f7d60219fc8850efdab597b6b5897e6605449100819c2f490a739",
+      "difference": "Private-run library union contains extra private/stream frames, natural CPU calls unchanged"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter2-composition-full/fighter2-composition-action-natural.json.gz",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter2-composition-action-natural.json.gz",
+      "original_CPU_call_bytes_sha256": "ab8794bd9015052497d700c2c81d1b525203bb1addd21e80d211df763671b306",
+      "difference": "Private-run library union contains extra private/stream frames, natural CPU calls unchanged"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter2-composition-full/fighter2-composition-input-natural.json.gz",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter2-composition-input-natural.json.gz",
+      "original_CPU_call_bytes_sha256": "681c93e8a0e655a4cd3f92e2a1ab9066e1113feb5b7d911e6fbfa0ef5bb51825",
+      "difference": "Private-run library union contains extra private/stream frames, natural CPU calls unchanged"
+    }
+  ],
+  "files_removed": 64,
+  "bytes_removed": 946071382
+}

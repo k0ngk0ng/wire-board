@@ -1,0 +1,36 @@
+{
+  "pass": true,
+  "scope": "Final producer binding after private-plan completion; ordinary natural CPU gzip byte-identical to preimplementation red, only sampler-source SHA changed",
+  "changes": [
+    {
+      "fixture": "fighter2-composition-action-natural",
+      "original_CPU_data_unchanged": true,
+      "differences": {
+        "capture_sha256": {
+          "before": "ca124ccc44cfb0174a98f375e4ac48b4188c94073e2af0e3f7ee6bc5a07f3ce1",
+          "after": "a6a4cd52c633d1a7b07d17a66606081050967b09ead42ca4086590bb173f22c2"
+        }
+      }
+    },
+    {
+      "fixture": "fighter2-composition-input-natural",
+      "original_CPU_data_unchanged": true,
+      "differences": {
+        "capture_sha256": {
+          "before": "ca124ccc44cfb0174a98f375e4ac48b4188c94073e2af0e3f7ee6bc5a07f3ce1",
+          "after": "a6a4cd52c633d1a7b07d17a66606081050967b09ead42ca4086590bb173f22c2"
+        }
+      }
+    },
+    {
+      "fixture": "fighter2-composition-actor-natural",
+      "original_CPU_data_unchanged": true,
+      "differences": {
+        "capture_sha256": {
+          "before": "ca124ccc44cfb0174a98f375e4ac48b4188c94073e2af0e3f7ee6bc5a07f3ce1",
+          "after": "a6a4cd52c633d1a7b07d17a66606081050967b09ead42ca4086590bb173f22c2"
+        }
+      }
+    }
+  ]
+}

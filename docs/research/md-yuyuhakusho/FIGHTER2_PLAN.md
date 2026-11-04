@@ -1,5 +1,7 @@
 # 来源 2「桑原」下一阶段范围
 
+本页保留实现前的静态范围。桑原完整规则、世界组合和五角色对局已按此范围验证，结果及剩余边界见[桑原世界验收](../../../games/yuyuhakusho/engine/FIGHTER2_WORLD_VERIFICATION.md)。
+
 姓名由[原 HUD 字形](CHARACTER_IDS.md)及[真实菜单发现](source2-next-selection.png)确认；[输入](source2-next-inputs.json)与[记录](source2-next-selection.json)仅是原 core 1,800 步发现，双 core 基线、原 CPU 返回及独立规则尚未完成。下列是有限静态观察与当前恢复代码对照，不冒充执行证据。
 
 | 并行范围 | 原入口 | 最小规则边界 |

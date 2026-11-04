@@ -1,0 +1,79 @@
+{
+  "scope": "Root-owned source2 discovery duplicates, verified CLI builds, closed browser profile and unused candidate inputs only",
+  "recorded_at_utc": "2026-11-04T21:01:54.174020+00:00",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter2-special-discovery",
+      "bytes": 26405
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter2-beam-discovery",
+      "bytes": 5136
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter2-combined-discovery",
+      "bytes": 247
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter2-world",
+      "bytes": 3629736
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter2-world-special",
+      "bytes": 2085949
+    },
+    {
+      "path": ".local/md-yuyuhakusho/kuwabara-browser",
+      "bytes": 9361693
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-session",
+      "bytes": 4111570
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-render",
+      "bytes": 4537298
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-session.wasm",
+      "bytes": 4679897
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-render.wasm",
+      "bytes": 5241508
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/kuwabara-legacy",
+      "bytes": 4111570
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/kuwabara-legacy.wasm",
+      "bytes": 4679897
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter2-special-inputs.json",
+      "bytes": 3329
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter2-beam-inputs.json",
+      "bytes": 3945
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter2-combined-inputs.json",
+      "bytes": 4258
+    }
+  ],
+  "removed_bytes": 42482438,
+  "preserved": [
+    "All canonical CPU fixtures/manifests/references/selected fighter2-projectile-inputs.json/diagnostics/test-first logs/final logs/screenshots/reports",
+    "ROM/reference cores/source/hooks/audio/IRQ/static evidence",
+    "Active worktree, loopback8799 independent player build and shared Go caches",
+    "Original main-workspace user changes and other games"
+  ],
+  "subtask_cleanup_reports": [
+    "games/yuyuhakusho/engine/testdata/fighter2-attacks-cleanup.json",
+    "games/yuyuhakusho/engine/testdata/fighter2-motion-cleanup.json",
+    "games/yuyuhakusho/engine/testdata/fighter2-projectile-cleanup.json",
+    "games/yuyuhakusho/engine/testdata/fighter2-composition-cleanup.json"
+  ]
+}

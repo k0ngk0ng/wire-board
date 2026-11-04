@@ -1,0 +1,61 @@
+{
+  "pass": true,
+  "scope": "Source2 child graphic-key availability; actual rendered matches are separately verified",
+  "animation_records": 23,
+  "distinct_required_graphics": 12,
+  "required_keys": [
+    {
+      "graphics_set": 888602,
+      "parameter": 44
+    },
+    {
+      "graphics_set": 888602,
+      "parameter": 46
+    },
+    {
+      "graphics_set": 888602,
+      "parameter": 48
+    },
+    {
+      "graphics_set": 888602,
+      "parameter": 50
+    },
+    {
+      "graphics_set": 888602,
+      "parameter": 60
+    },
+    {
+      "graphics_set": 888602,
+      "parameter": 62
+    },
+    {
+      "graphics_set": 888602,
+      "parameter": 64
+    },
+    {
+      "graphics_set": 888602,
+      "parameter": 66
+    },
+    {
+      "graphics_set": 888602,
+      "parameter": 68
+    },
+    {
+      "graphics_set": 888602,
+      "parameter": 70
+    },
+    {
+      "graphics_set": 888602,
+      "parameter": 72
+    },
+    {
+      "graphics_set": 888602,
+      "parameter": 74
+    }
+  ],
+  "all_required_graphics_already_decoded": true,
+  "sources": {
+    "games/yuyuhakusho/data/fighter2-projectile-rules.json": "a919578d7f0bbb3656e1802ca9f9e6327c6e1bd7d789c3367a63a7a6f1d6d891",
+    "games/yuyuhakusho/data/world-sprites.json.gz": "200e28e775a809de89c19df0dfef314d5697224fcb6a145853beb7344b5833ef"
+  }
+}

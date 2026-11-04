@@ -1,0 +1,9 @@
+{"Time":"2026-11-05T04:29:23.501124+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-05T04:29:24.063119+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter2WorldHitStopSaveRestore"}
+{"Time":"2026-11-05T04:29:24.063273+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter2WorldHitStopSaveRestore","Output":"=== RUN   TestFighter2WorldHitStopSaveRestore\n"}
+{"Time":"2026-11-05T04:29:24.529057+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter2WorldHitStopSaveRestore","Output":"    fighter2_world_test.go:93: source2 child hit-stop frame 2634 object 8400 callback 12668 stage 2: complete fighter action source is not recovered\n"}
+{"Time":"2026-11-05T04:29:24.5291+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter2WorldHitStopSaveRestore","Output":"--- FAIL: TestFighter2WorldHitStopSaveRestore (0.47s)\n"}
+{"Time":"2026-11-05T04:29:24.529105+08:00","Action":"fail","Package":"command-line-arguments","Test":"TestFighter2WorldHitStopSaveRestore","Elapsed":0.47}
+{"Time":"2026-11-05T04:29:24.529118+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\n"}
+{"Time":"2026-11-05T04:29:24.529554+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\tcommand-line-arguments\t1.028s\n"}
+{"Time":"2026-11-05T04:29:24.529566+08:00","Action":"fail","Package":"command-line-arguments","Elapsed":1.028}
