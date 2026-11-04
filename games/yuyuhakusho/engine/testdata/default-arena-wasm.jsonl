@@ -1,0 +1,26 @@
+{"Time":"2026-11-04T20:25:38.851851+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-04T20:25:38.904428+08:00","Action":"run","Package":"command-line-arguments","Test":"TestDefaultArenaOriginalCompleteRules"}
+{"Time":"2026-11-04T20:25:38.9045+08:00","Action":"output","Package":"command-line-arguments","Test":"TestDefaultArenaOriginalCompleteRules","Output":"=== RUN   TestDefaultArenaOriginalCompleteRules\n"}
+{"Time":"2026-11-04T20:25:38.905863+08:00","Action":"run","Package":"command-line-arguments","Test":"TestDefaultArenaOriginalCompleteRules/default-arena-oracle"}
+{"Time":"2026-11-04T20:25:38.905881+08:00","Action":"output","Package":"command-line-arguments","Test":"TestDefaultArenaOriginalCompleteRules/default-arena-oracle","Output":"=== RUN   TestDefaultArenaOriginalCompleteRules/default-arena-oracle\n"}
+{"Time":"2026-11-04T20:25:42.687538+08:00","Action":"output","Package":"command-line-arguments","Test":"TestDefaultArenaOriginalCompleteRules/default-arena-oracle","Output":"    default_arena_test.go:371: calls=14772 reference-only=0 draw=4136 deletes=0 spawn=0\n"}
+{"Time":"2026-11-04T20:25:42.688819+08:00","Action":"output","Package":"command-line-arguments","Test":"TestDefaultArenaOriginalCompleteRules/default-arena-oracle","Output":"--- PASS: TestDefaultArenaOriginalCompleteRules/default-arena-oracle (3.78s)\n"}
+{"Time":"2026-11-04T20:25:42.689224+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestDefaultArenaOriginalCompleteRules/default-arena-oracle","Elapsed":3.78}
+{"Time":"2026-11-04T20:25:42.689296+08:00","Action":"run","Package":"command-line-arguments","Test":"TestDefaultArenaOriginalCompleteRules/default-arena-boundaries"}
+{"Time":"2026-11-04T20:25:42.689307+08:00","Action":"output","Package":"command-line-arguments","Test":"TestDefaultArenaOriginalCompleteRules/default-arena-boundaries","Output":"=== RUN   TestDefaultArenaOriginalCompleteRules/default-arena-boundaries\n"}
+{"Time":"2026-11-04T20:25:43.876786+08:00","Action":"output","Package":"command-line-arguments","Test":"TestDefaultArenaOriginalCompleteRules/default-arena-boundaries","Output":"    default_arena_test.go:371: calls=4456 reference-only=6 draw=1607 deletes=9 spawn=3\n"}
+{"Time":"2026-11-04T20:25:43.877373+08:00","Action":"output","Package":"command-line-arguments","Test":"TestDefaultArenaOriginalCompleteRules/default-arena-boundaries","Output":"--- PASS: TestDefaultArenaOriginalCompleteRules/default-arena-boundaries (1.19s)\n"}
+{"Time":"2026-11-04T20:25:43.877465+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestDefaultArenaOriginalCompleteRules/default-arena-boundaries","Elapsed":1.19}
+{"Time":"2026-11-04T20:25:43.87757+08:00","Action":"output","Package":"command-line-arguments","Test":"TestDefaultArenaOriginalCompleteRules","Output":"--- PASS: TestDefaultArenaOriginalCompleteRules (4.97s)\n"}
+{"Time":"2026-11-04T20:25:43.877627+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestDefaultArenaOriginalCompleteRules","Elapsed":4.97}
+{"Time":"2026-11-04T20:25:43.877705+08:00","Action":"run","Package":"command-line-arguments","Test":"TestDefaultArenaSingleInitialStreams"}
+{"Time":"2026-11-04T20:25:43.877762+08:00","Action":"output","Package":"command-line-arguments","Test":"TestDefaultArenaSingleInitialStreams","Output":"=== RUN   TestDefaultArenaSingleInitialStreams\n"}
+{"Time":"2026-11-04T20:25:44.318884+08:00","Action":"output","Package":"command-line-arguments","Test":"TestDefaultArenaSingleInitialStreams","Output":"--- PASS: TestDefaultArenaSingleInitialStreams (0.44s)\n"}
+{"Time":"2026-11-04T20:25:44.319981+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestDefaultArenaSingleInitialStreams","Elapsed":0.44}
+{"Time":"2026-11-04T20:25:44.320068+08:00","Action":"run","Package":"command-line-arguments","Test":"TestDefaultArenaInvalidDataIsAtomic"}
+{"Time":"2026-11-04T20:25:44.320121+08:00","Action":"output","Package":"command-line-arguments","Test":"TestDefaultArenaInvalidDataIsAtomic","Output":"=== RUN   TestDefaultArenaInvalidDataIsAtomic\n"}
+{"Time":"2026-11-04T20:25:44.320346+08:00","Action":"output","Package":"command-line-arguments","Test":"TestDefaultArenaInvalidDataIsAtomic","Output":"--- PASS: TestDefaultArenaInvalidDataIsAtomic (0.00s)\n"}
+{"Time":"2026-11-04T20:25:44.320406+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestDefaultArenaInvalidDataIsAtomic","Elapsed":0}
+{"Time":"2026-11-04T20:25:44.320884+08:00","Action":"output","Package":"command-line-arguments","Output":"PASS\n"}
+{"Time":"2026-11-04T20:25:44.324024+08:00","Action":"output","Package":"command-line-arguments","Output":"ok  \tcommand-line-arguments\t5.472s\n"}
+{"Time":"2026-11-04T20:25:44.324036+08:00","Action":"pass","Package":"command-line-arguments","Elapsed":5.4719999999999995}

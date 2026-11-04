@@ -1,0 +1,16 @@
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"# command-line-arguments [command-line-arguments.test]\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/default_arena_test.go:45:62: undefined: DefaultArenaCamera\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/default_arena_test.go:49:49: undefined: DefaultArenaCamera\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/default_arena_test.go:53:61: undefined: ArenaPaletteState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/default_arena_test.go:57:50: undefined: ArenaPaletteState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/default_arena_test.go:61:62: undefined: DefaultArenaState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/default_arena_test.go:61:80: undefined: DefaultArenaView\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/default_arena_test.go:68:63: undefined: DefaultArenaState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/default_arena_test.go:73:45: undefined: ArenaSkyKind\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/default_arena_test.go:74:70: undefined: ArenaSkyState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/default_arena_test.go:74:84: undefined: ArenaSkyWorld\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/default_arena_test.go:74:84: too many errors\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-fail"}
+{"Time":"2026-11-04T20:10:38.615543+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-04T20:10:38.615573+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\tcommand-line-arguments [build failed]\n"}
+{"Time":"2026-11-04T20:10:38.61558+08:00","Action":"fail","Package":"command-line-arguments","Elapsed":0,"FailedBuild":"command-line-arguments [command-line-arguments.test]"}

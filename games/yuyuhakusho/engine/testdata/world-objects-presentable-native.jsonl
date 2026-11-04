@@ -1,0 +1,48 @@
+{"Time":"2026-11-04T20:40:17.658972+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-04T20:40:18.221648+08:00","Action":"run","Package":"command-line-arguments","Test":"TestWorldObjectsClearAgainstOriginal"}
+{"Time":"2026-11-04T20:40:18.221794+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsClearAgainstOriginal","Output":"=== RUN   TestWorldObjectsClearAgainstOriginal\n"}
+{"Time":"2026-11-04T20:40:18.221884+08:00","Action":"run","Package":"command-line-arguments","Test":"TestWorldObjectsClearAgainstOriginal/world-objects-oracle"}
+{"Time":"2026-11-04T20:40:18.221935+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsClearAgainstOriginal/world-objects-oracle","Output":"=== RUN   TestWorldObjectsClearAgainstOriginal/world-objects-oracle\n"}
+{"Time":"2026-11-04T20:40:18.237297+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsClearAgainstOriginal/world-objects-oracle","Output":"    world_objects_test.go:174: original object clear calls=61 prefixes=2\n"}
+{"Time":"2026-11-04T20:40:18.237341+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsClearAgainstOriginal/world-objects-oracle","Output":"--- PASS: TestWorldObjectsClearAgainstOriginal/world-objects-oracle (0.02s)\n"}
+{"Time":"2026-11-04T20:40:18.237361+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestWorldObjectsClearAgainstOriginal/world-objects-oracle","Elapsed":0.02}
+{"Time":"2026-11-04T20:40:18.237384+08:00","Action":"run","Package":"command-line-arguments","Test":"TestWorldObjectsClearAgainstOriginal/world-objects-boundaries"}
+{"Time":"2026-11-04T20:40:18.237392+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsClearAgainstOriginal/world-objects-boundaries","Output":"=== RUN   TestWorldObjectsClearAgainstOriginal/world-objects-boundaries\n"}
+{"Time":"2026-11-04T20:40:18.274719+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsClearAgainstOriginal/world-objects-boundaries","Output":"    world_objects_test.go:174: original object clear calls=288 prefixes=16\n"}
+{"Time":"2026-11-04T20:40:18.274729+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsClearAgainstOriginal/world-objects-boundaries","Output":"--- PASS: TestWorldObjectsClearAgainstOriginal/world-objects-boundaries (0.04s)\n"}
+{"Time":"2026-11-04T20:40:18.274745+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestWorldObjectsClearAgainstOriginal/world-objects-boundaries","Elapsed":0.04}
+{"Time":"2026-11-04T20:40:18.274761+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsClearAgainstOriginal","Output":"--- PASS: TestWorldObjectsClearAgainstOriginal (0.05s)\n"}
+{"Time":"2026-11-04T20:40:18.27479+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestWorldObjectsClearAgainstOriginal","Elapsed":0.05}
+{"Time":"2026-11-04T20:40:18.274796+08:00","Action":"run","Package":"command-line-arguments","Test":"TestWorldObjectsIndependentComponentViews"}
+{"Time":"2026-11-04T20:40:18.274801+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsIndependentComponentViews","Output":"=== RUN   TestWorldObjectsIndependentComponentViews\n"}
+{"Time":"2026-11-04T20:40:18.27701+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsIndependentComponentViews","Output":"--- PASS: TestWorldObjectsIndependentComponentViews (0.00s)\n"}
+{"Time":"2026-11-04T20:40:18.277019+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestWorldObjectsIndependentComponentViews","Elapsed":0}
+{"Time":"2026-11-04T20:40:18.277024+08:00","Action":"run","Package":"command-line-arguments","Test":"TestWorldObjectsRoundTripsAndIdentityErrors"}
+{"Time":"2026-11-04T20:40:18.277027+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsRoundTripsAndIdentityErrors","Output":"=== RUN   TestWorldObjectsRoundTripsAndIdentityErrors\n"}
+{"Time":"2026-11-04T20:40:18.277501+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsRoundTripsAndIdentityErrors","Output":"--- PASS: TestWorldObjectsRoundTripsAndIdentityErrors (0.00s)\n"}
+{"Time":"2026-11-04T20:40:18.277511+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestWorldObjectsRoundTripsAndIdentityErrors","Elapsed":0}
+{"Time":"2026-11-04T20:40:18.277515+08:00","Action":"run","Package":"command-line-arguments","Test":"TestWorldObjectsParentAndAllocatorOwnership"}
+{"Time":"2026-11-04T20:40:18.277517+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsParentAndAllocatorOwnership","Output":"=== RUN   TestWorldObjectsParentAndAllocatorOwnership\n"}
+{"Time":"2026-11-04T20:40:18.278832+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsParentAndAllocatorOwnership","Output":"--- PASS: TestWorldObjectsParentAndAllocatorOwnership (0.00s)\n"}
+{"Time":"2026-11-04T20:40:18.278842+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestWorldObjectsParentAndAllocatorOwnership","Elapsed":0}
+{"Time":"2026-11-04T20:40:18.278845+08:00","Action":"run","Package":"command-line-arguments","Test":"TestWorldObjectsCollisionResultsAgainstOriginal"}
+{"Time":"2026-11-04T20:40:18.278848+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsCollisionResultsAgainstOriginal","Output":"=== RUN   TestWorldObjectsCollisionResultsAgainstOriginal\n"}
+{"Time":"2026-11-04T20:40:18.8947+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsCollisionResultsAgainstOriginal","Output":"--- PASS: TestWorldObjectsCollisionResultsAgainstOriginal (0.62s)\n"}
+{"Time":"2026-11-04T20:40:18.894727+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestWorldObjectsCollisionResultsAgainstOriginal","Elapsed":0.62}
+{"Time":"2026-11-04T20:40:18.894731+08:00","Action":"run","Package":"command-line-arguments","Test":"TestWorldObjectsFirst64PresentableViews"}
+{"Time":"2026-11-04T20:40:18.894734+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsFirst64PresentableViews","Output":"=== RUN   TestWorldObjectsFirst64PresentableViews\n"}
+{"Time":"2026-11-04T20:40:18.895429+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsFirst64PresentableViews","Output":"--- PASS: TestWorldObjectsFirst64PresentableViews (0.00s)\n"}
+{"Time":"2026-11-04T20:40:18.895435+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestWorldObjectsFirst64PresentableViews","Elapsed":0}
+{"Time":"2026-11-04T20:40:18.895443+08:00","Action":"run","Package":"command-line-arguments","Test":"TestWorldObjectsOverlayRulesAgainstOriginal"}
+{"Time":"2026-11-04T20:40:18.895455+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsOverlayRulesAgainstOriginal","Output":"=== RUN   TestWorldObjectsOverlayRulesAgainstOriginal\n"}
+{"Time":"2026-11-04T20:40:19.122157+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsOverlayRulesAgainstOriginal","Output":"    world_presentable_test.go:223: original overlay canonical merges=484 kinds=map[character:92 draw:32 intro:59 intro-part:61 partner:92 shadow:24 team:92 win:32]\n"}
+{"Time":"2026-11-04T20:40:19.122188+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsOverlayRulesAgainstOriginal","Output":"--- PASS: TestWorldObjectsOverlayRulesAgainstOriginal (0.23s)\n"}
+{"Time":"2026-11-04T20:40:19.122191+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestWorldObjectsOverlayRulesAgainstOriginal","Elapsed":0.23}
+{"Time":"2026-11-04T20:40:19.122196+08:00","Action":"run","Package":"command-line-arguments","Test":"TestWorldObjectsSkyRulesAgainstOriginal"}
+{"Time":"2026-11-04T20:40:19.122198+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsSkyRulesAgainstOriginal","Output":"=== RUN   TestWorldObjectsSkyRulesAgainstOriginal\n"}
+{"Time":"2026-11-04T20:40:19.186555+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsSkyRulesAgainstOriginal","Output":"    world_presentable_test.go:275: original sky canonical merges=59 kinds=map[moon:18 spark:25 sun:16]\n"}
+{"Time":"2026-11-04T20:40:19.186583+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsSkyRulesAgainstOriginal","Output":"--- PASS: TestWorldObjectsSkyRulesAgainstOriginal (0.06s)\n"}
+{"Time":"2026-11-04T20:40:19.186587+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestWorldObjectsSkyRulesAgainstOriginal","Elapsed":0.06}
+{"Time":"2026-11-04T20:40:19.186591+08:00","Action":"output","Package":"command-line-arguments","Output":"PASS\n"}
+{"Time":"2026-11-04T20:40:20.211549+08:00","Action":"output","Package":"command-line-arguments","Output":"ok  \tcommand-line-arguments\t2.552s\n"}
+{"Time":"2026-11-04T20:40:20.211666+08:00","Action":"pass","Package":"command-line-arguments","Elapsed":2.553}

@@ -1,0 +1,76 @@
+Observed2400-frame RAM code; direct Ghidra68000; static instructions only
+00fff000 ori #0x700,SR
+00fff004 cmpi.w #0x2,(0xfffff516).w
+00fff00a beq.w 0x00fff09c
+00fff00e bgt.w 0x00fff0aa
+00fff012 move.w #-0x7548,(0x00c00004).l
+00fff01a addq.w #0x2,(0xfffff516).w
+00fff01e movem.l {  A5 A4 A3 A2 A1 A0 D7 D6 D5 D4 D3 D2 D1 D0},-(SP)
+00fff022 tst.b (0xfffff500).w
+00fff026 bpl.b 0x00fff08a
+00fff028 move.b #0xd,D0b
+00fff02c lea (0xc00008).l,A0
+00fff032 cmp.b (A0),D0b
+00fff034 bhi.b 0x00fff032
+00fff036 cmp.b (A0),D0b
+00fff038 bhi.b 0x00fff032
+00fff03a move.w #0x2a,D0w
+00fff03e dbf D0w,0x00fff03e
+00fff042 lea (0xc00004).l,A0
+00fff048 bset.b #0x6,(0xfffff6d3).w
+00fff04e move.w (0xfffff6d2).w,D0w
+00fff052 move.w D0w,(A0)
+00fff054 move.b #0xf,D0b
+00fff058 lea (0xc00008).l,A0
+00fff05e cmp.b (A0),D0b
+00fff060 bhi.b 0x00fff05e
+00fff062 cmp.b (A0),D0b
+00fff064 bhi.b 0x00fff05e
+00fff066 move.w #0x28,D0w
+00fff06a dbf D0w,0x00fff06a
+00fff06e lea (0xc00004).l,A0
+00fff074 lea (0xc00000).l,A1
+00fff07a move.w (0xfffff140).l,D1w
+00fff080 move.l #-0x40000000,D2
+00fff086 move.l D2,(A0)
+00fff088 move.w D1w,(A1)
+00fff08a jsr 0x00002514.l
+00fff090 jsr 0x000219ac.l
+00fff096 movem.l (SP)+,{ D0 D1 D2 D3 D4 D5 D6 D7 A0 A1 A2 A3 A4 A5}
+00fff09a rte
+00fff09c move.w #-0x7521,(0x00c00004).l
+00fff0a4 addq.w #0x2,(0xfffff516).w
+00fff0a8 rte
+00fff0aa bset.b #0x0,(0xfffff50e).w
+00fff0b0 bset.b #0x0,(0x00a11100).l
+00fff0b8 bne.b 0x00fff0b0
+00fff0ba move.b #0x1,(0x00a01fff).l
+00fff0c2 cmpi.b #-0x1,(0xfffff807).w
+00fff0c8 beq.w 0x00fff0d6
+00fff0cc bclr.b #0x0,(0x00a11100).l
+00fff0d4 beq.b 0x00fff0cc
+00fff0d6 movem.l {  A5 A4 A3 A2 A1 A0 D7 D6 D5 D4 D3 D2 D1 D0},-(SP)
+00fff0da tst.b (0xfffff500).w
+00fff0de bpl.b 0x00fff130
+00fff0e0 move.b #-0x32,D0b
+00fff0e4 lea (0xc00008).l,A0
+00fff0ea cmp.b (A0),D0b
+00fff0ec bhi.b 0x00fff0ea
+00fff0ee cmp.b (A0),D0b
+00fff0f0 bhi.b 0x00fff0ea
+00fff0f2 move.l #0x74020003,(0x00c00004).l
+00fff0fc move.w #0x0,(0x00c00000).l
+00fff104 move.w #0x50,D0w
+00fff108 dbf D0w,0x00fff108
+00fff10c bclr.b #0x6,(0xfffff6d3).w
+00fff112 move.w (0xfffff6d2).w,D0w
+00fff116 clr.w D1w
+00fff118 move.l #-0x40000000,D2
+00fff11e lea (0xc00004).l,A0
+00fff124 lea (0xc00000).l,A1
+00fff12a move.w D0w,(A0)
+00fff12c move.l D2,(A0)
+00fff12e move.w D1w,(A1)
+00fff130 jsr 0x000032d6.l
+00fff136 movem.l (SP)+,{ D0 D1 D2 D3 D4 D5 D6 D7 A0 A1 A2 A3 A4 A5}
+00fff13a rte

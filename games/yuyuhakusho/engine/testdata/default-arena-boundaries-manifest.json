@@ -1,0 +1,35 @@
+{
+  "scope": "Default arena/camera/sky rules and complete palette step/color functions; sprite1580 excluded",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "records": 4456,
+  "calls": 4456,
+  "kind_counts": {
+    "camera": 360,
+    "arena": 432,
+    "sun": 336,
+    "moon": 416,
+    "spark": 864,
+    "progress": 700,
+    "colors": 1348
+  },
+  "draws": 1607,
+  "deleted": 9,
+  "reference_only": 6,
+  "spawned": 3,
+  "capture_sha256": "b73e4d01d3bc0149600d2bedbd14f61da61e210a7b86cdc57023e5fa15d842b0",
+  "fixture_sha256": "9be9e468eb5874c2a326d9ca2f7b2f60fc7066022c581efd187fa8c45c136602",
+  "gzip_sha256": "acce9eae3555b0fe6af0b60d6012a4696979baf76bab262de11700c4364a39ed",
+  "frames_match_original_core": true,
+  "incomplete_calls": 0,
+  "errors": [],
+  "pass": true
+}

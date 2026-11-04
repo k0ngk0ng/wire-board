@@ -1,0 +1,555 @@
+{
+  "verified_at_utc": "2026-11-04T12:54:38.244510+00:00",
+  "parent_commit": "9c65b0de",
+  "scope": "Canonical typed object fields, bounded clear/merge ownership and overlay/shadow/sky typed adapters only",
+  "pass": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "test_first": {
+    "implementation_existed": false,
+    "test_sha256_before_implementation": "27a8e2a63c9bbbee3c519b148254e3478a12a2e13a8680c4334ae8a68719a074",
+    "actual_red_log": "games/yuyuhakusho/engine/testdata/world-objects-red.jsonl",
+    "red_sha256": "597ec2f30e0bb7811a6fd51ec6e492a63c9c91b9df8d3ecf8af8f9b35d114f94",
+    "reason": "WorldObject and canonical adapters absent, actual focused build failure before production implementation"
+  },
+  "coverage": {
+    "natural_original_clear_calls": 61,
+    "isolated_original_clear_calls": 288,
+    "unchanged_original_baseline_frames": 3600,
+    "all16byte_prefixes_through256": true,
+    "original_attack_boundary_merges": 915,
+    "top_level_tests_each": 8,
+    "production_opaque_ram": false,
+    "original_overlay_representative_merges": 484,
+    "original_sky_representative_merges": 59,
+    "first64_single_owners": true
+  },
+  "fixtures": [
+    {
+      "path": "games/yuyuhakusho/engine/testdata/world-objects-oracle-manifest.json",
+      "sha256": "983df31980a4eb61d60bca0550b72d1441d37b66d91c04f1ea922d9ec4c11a00",
+      "records": 61,
+      "fixture_sha256": "149c43a64799c3a3c8640f39d2527e6011e481d8bc8161bf93e65a3d1f9372f9",
+      "gzip_sha256": "7cb95e647ac02f9096cfdb23781e8e604cc4e8a7533718947decd0c3d5a9e75f"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/world-objects-boundaries-manifest.json",
+      "sha256": "a0ddced6a260cda60adc3873c8616c0e238eecaab9eeb4fc14ab77102bda0bbb",
+      "records": 288,
+      "fixture_sha256": "6fc1b49cda542cd686d168c02d63c32f692c2afc155f25c796757922a21de45a",
+      "gzip_sha256": "7f32c3b37ef03031c63a43210255f6d87945f670e5608d8800ebd0a9a43f67e3"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/world-objects-overlay-samples-manifest.json",
+      "sha256": "65bfb0be1c923a6bc6666ae468318e33dad09125f0c9847897f3371a3244667b",
+      "records": 484,
+      "fixture_sha256": "55696929921283f0b9ff1a3eb811e6e654017480dc0a495e690014071a08bc1e",
+      "gzip_sha256": "da94e397034af81c767c84ec05da646e7fd5880573581932be6d950976b0b43a",
+      "source": {
+        "fixture": "games/yuyuhakusho/engine/testdata/match-overlays-boundaries.json.gz",
+        "gzip_sha256": "ad8bcf343d752b8ef21c68f59da9eee4cee61ecf711c27c86c64c69cac68a562",
+        "fixture_sha256": "8ef60dffd9eea3dfd70c4ecbc6df113713c2d4b8f8a00d628bb091d8866abfad",
+        "manifest": "games/yuyuhakusho/engine/testdata/match-overlays-boundaries-manifest.json",
+        "manifest_sha256": "ebca865711753400eeda8ade7e788ff0b8a776f91312cd1e2b4eb54f124413e2"
+      }
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/world-objects-sky-samples-manifest.json",
+      "sha256": "740f43f75dd311fae5c166d903655a78c95a7c94778058a0b48a5f199a027928",
+      "records": 59,
+      "fixture_sha256": "8480b6eefb81e6c40c2be251d3b5368630b3024b1ad2e0f8032c6f2b5b2d1448",
+      "gzip_sha256": "2367926ae9aa7a06ab0751b10d671c7d85c437e0ea8fa5785175803dff767437",
+      "source": {
+        "fixture": "games/yuyuhakusho/engine/testdata/default-arena-boundaries.json.gz",
+        "gzip_sha256": "acce9eae3555b0fe6af0b60d6012a4696979baf76bab262de11700c4364a39ed",
+        "fixture_sha256": "9be9e468eb5874c2a326d9ca2f7b2f60fc7066022c581efd187fa8c45c136602",
+        "manifest": "games/yuyuhakusho/engine/testdata/default-arena-boundaries-manifest.json",
+        "manifest_sha256": "d52f128d48b2d6d83757a50a741907cf9387cbe219061de8a1c536cec6e386ef"
+      }
+    }
+  ],
+  "logs": [
+    {
+      "phase": "red",
+      "path": "games/yuyuhakusho/engine/testdata/world-objects-red.jsonl",
+      "sha256": "597ec2f30e0bb7811a6fd51ec6e492a63c9c91b9df8d3ecf8af8f9b35d114f94",
+      "result": "fail",
+      "top_level_tests": [],
+      "elapsed_seconds": 0
+    },
+    {
+      "phase": "native",
+      "path": "games/yuyuhakusho/engine/testdata/world-objects-native.jsonl",
+      "sha256": "3eefacacd311df11c4f038ec6e930a94203735ac5398f78ceab614ac9239fbf9",
+      "result": "pass",
+      "top_level_tests": [
+        "TestWorldObjectsClearAgainstOriginal",
+        "TestWorldObjectsIndependentComponentViews",
+        "TestWorldObjectsRoundTripsAndIdentityErrors",
+        "TestWorldObjectsParentAndAllocatorOwnership",
+        "TestWorldObjectsCollisionResultsAgainstOriginal"
+      ],
+      "elapsed_seconds": 2.148
+    },
+    {
+      "phase": "wasm",
+      "path": "games/yuyuhakusho/engine/testdata/world-objects-wasm.jsonl",
+      "sha256": "676685b25ebd6855838c19428e8b21a7aad320862516401099cea7649b8448c8",
+      "result": "pass",
+      "top_level_tests": [
+        "TestWorldObjectsClearAgainstOriginal",
+        "TestWorldObjectsIndependentComponentViews",
+        "TestWorldObjectsRoundTripsAndIdentityErrors",
+        "TestWorldObjectsParentAndAllocatorOwnership",
+        "TestWorldObjectsCollisionResultsAgainstOriginal"
+      ],
+      "elapsed_seconds": 0.339
+    },
+    {
+      "phase": "presentable-red",
+      "path": "games/yuyuhakusho/engine/testdata/world-objects-presentable-red.jsonl",
+      "sha256": "ec8b4c09153288032fec93556dd809aaceb867fa90aed9b33f2692cc887b682e",
+      "result": "fail",
+      "top_level_tests": [],
+      "elapsed_seconds": 0
+    },
+    {
+      "phase": "presentable-native",
+      "path": "games/yuyuhakusho/engine/testdata/world-objects-presentable-native.jsonl",
+      "sha256": "8ff29d67e649f7b012dab7791ea4209dcd21d2a057139927c8e2abf82e9827a4",
+      "result": "pass",
+      "top_level_tests": [
+        "TestWorldObjectsClearAgainstOriginal",
+        "TestWorldObjectsIndependentComponentViews",
+        "TestWorldObjectsRoundTripsAndIdentityErrors",
+        "TestWorldObjectsParentAndAllocatorOwnership",
+        "TestWorldObjectsCollisionResultsAgainstOriginal",
+        "TestWorldObjectsFirst64PresentableViews",
+        "TestWorldObjectsOverlayRulesAgainstOriginal",
+        "TestWorldObjectsSkyRulesAgainstOriginal"
+      ],
+      "elapsed_seconds": 2.553
+    },
+    {
+      "phase": "presentable-wasm",
+      "path": "games/yuyuhakusho/engine/testdata/world-objects-presentable-wasm.jsonl",
+      "sha256": "0a58f579659b9562ef4899224b3892380185e95de571113adbc36f74948362c1",
+      "result": "pass",
+      "top_level_tests": [
+        "TestWorldObjectsClearAgainstOriginal",
+        "TestWorldObjectsIndependentComponentViews",
+        "TestWorldObjectsRoundTripsAndIdentityErrors",
+        "TestWorldObjectsParentAndAllocatorOwnership",
+        "TestWorldObjectsCollisionResultsAgainstOriginal",
+        "TestWorldObjectsFirst64PresentableViews",
+        "TestWorldObjectsOverlayRulesAgainstOriginal",
+        "TestWorldObjectsSkyRulesAgainstOriginal"
+      ],
+      "elapsed_seconds": 0.451
+    }
+  ],
+  "focused_source_scope": "Tracked production/test files at parent plus world_objects.go/_test.go; exact red source list retained below",
+  "focused_red_sources": [
+    "games/yuyuhakusho/engine/action_prelude.go",
+    "games/yuyuhakusho/engine/action_prelude_test.go",
+    "games/yuyuhakusho/engine/animation_clock.go",
+    "games/yuyuhakusho/engine/animation_clock_test.go",
+    "games/yuyuhakusho/engine/animation_records.go",
+    "games/yuyuhakusho/engine/animation_records_test.go",
+    "games/yuyuhakusho/engine/attached_effects.go",
+    "games/yuyuhakusho/engine/attached_effects_test.go",
+    "games/yuyuhakusho/engine/attack_contacts.go",
+    "games/yuyuhakusho/engine/attack_contacts_test.go",
+    "games/yuyuhakusho/engine/body_separation.go",
+    "games/yuyuhakusho/engine/body_separation_test.go",
+    "games/yuyuhakusho/engine/character_commands.go",
+    "games/yuyuhakusho/engine/character_commands_test.go",
+    "games/yuyuhakusho/engine/chu_action.go",
+    "games/yuyuhakusho/engine/chu_action_test.go",
+    "games/yuyuhakusho/engine/chu_actor.go",
+    "games/yuyuhakusho/engine/chu_actor_test.go",
+    "games/yuyuhakusho/engine/chu_ai.go",
+    "games/yuyuhakusho/engine/chu_ai_test.go",
+    "games/yuyuhakusho/engine/chu_attachments.go",
+    "games/yuyuhakusho/engine/chu_attachments_test.go",
+    "games/yuyuhakusho/engine/chu_attacks.go",
+    "games/yuyuhakusho/engine/chu_attacks_test.go",
+    "games/yuyuhakusho/engine/chu_input.go",
+    "games/yuyuhakusho/engine/chu_input_test.go",
+    "games/yuyuhakusho/engine/chu_projectile.go",
+    "games/yuyuhakusho/engine/chu_projectile_test.go",
+    "games/yuyuhakusho/engine/chu_special_motion.go",
+    "games/yuyuhakusho/engine/chu_special_motion_test.go",
+    "games/yuyuhakusho/engine/chu_tail.go",
+    "games/yuyuhakusho/engine/chu_tail_test.go",
+    "games/yuyuhakusho/engine/clash.go",
+    "games/yuyuhakusho/engine/clash_test.go",
+    "games/yuyuhakusho/engine/collision_manager.go",
+    "games/yuyuhakusho/engine/collision_manager_test.go",
+    "games/yuyuhakusho/engine/commands.go",
+    "games/yuyuhakusho/engine/commands_test.go",
+    "games/yuyuhakusho/engine/effect_motion.go",
+    "games/yuyuhakusho/engine/effect_motion_test.go",
+    "games/yuyuhakusho/engine/effects.go",
+    "games/yuyuhakusho/engine/effects_test.go",
+    "games/yuyuhakusho/engine/fighter_bounds.go",
+    "games/yuyuhakusho/engine/fighter_bounds_test.go",
+    "games/yuyuhakusho/engine/fighter_envelope.go",
+    "games/yuyuhakusho/engine/fighter_envelope_test.go",
+    "games/yuyuhakusho/engine/fighter_initialization.go",
+    "games/yuyuhakusho/engine/fighter_initialization_test.go",
+    "games/yuyuhakusho/engine/fighter_input.go",
+    "games/yuyuhakusho/engine/fighter_input_test.go",
+    "games/yuyuhakusho/engine/fighter_preparation.go",
+    "games/yuyuhakusho/engine/fighter_preparation_test.go",
+    "games/yuyuhakusho/engine/ground_actions.go",
+    "games/yuyuhakusho/engine/ground_actions_test.go",
+    "games/yuyuhakusho/engine/ground_control.go",
+    "games/yuyuhakusho/engine/ground_control_test.go",
+    "games/yuyuhakusho/engine/ground_idle.go",
+    "games/yuyuhakusho/engine/ground_idle_test.go",
+    "games/yuyuhakusho/engine/input.go",
+    "games/yuyuhakusho/engine/input_test.go",
+    "games/yuyuhakusho/engine/jump.go",
+    "games/yuyuhakusho/engine/jump_test.go",
+    "games/yuyuhakusho/engine/lane_motion.go",
+    "games/yuyuhakusho/engine/lane_motion_test.go",
+    "games/yuyuhakusho/engine/lane_switch.go",
+    "games/yuyuhakusho/engine/lane_switch_test.go",
+    "games/yuyuhakusho/engine/match_lifecycle.go",
+    "games/yuyuhakusho/engine/match_lifecycle_test.go",
+    "games/yuyuhakusho/engine/motion.go",
+    "games/yuyuhakusho/engine/motion_test.go",
+    "games/yuyuhakusho/engine/random.go",
+    "games/yuyuhakusho/engine/reaction_motion.go",
+    "games/yuyuhakusho/engine/reaction_motion_test.go",
+    "games/yuyuhakusho/engine/sound_queue.go",
+    "games/yuyuhakusho/engine/sound_queue_test.go",
+    "games/yuyuhakusho/engine/throw_contacts.go",
+    "games/yuyuhakusho/engine/throw_contacts_test.go",
+    "games/yuyuhakusho/engine/throw_records.go",
+    "games/yuyuhakusho/engine/throw_records_test.go",
+    "games/yuyuhakusho/engine/world_clock.go",
+    "games/yuyuhakusho/engine/world_clock_test.go",
+    "games/yuyuhakusho/engine/world_objects_test.go"
+  ],
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/engine/world_objects.go",
+      "sha256": "77d3ba95ae9d44f26465e854a75886004e4550ffdc6cbde14e6a49dda8a546b1"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/world_objects_test.go",
+      "sha256": "be37d61ae8dd40dc85a63efe4846118aa71f3ddf0d92333a89f4b0be9483e719"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/world_presentable.go",
+      "sha256": "0f724ad3e2c393c16650342a0ada34cbd8b665b9b6b8a3a333917dbbaf373220"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/world_presentable_test.go",
+      "sha256": "deb6c6d829f383cb6f9946d4abbab530b9c85211f43d4203a59ca73ecb3e23f7"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_world_objects.py",
+      "sha256": "213f5beb4cf596fbee29c14fd09b9eb7abe6dab71c707e14b1a824285892d455"
+    },
+    {
+      "path": "scripts/yuyuhakusho/derive_world_object_views.py",
+      "sha256": "87821138d75b52ffd05f72586565ca0a93cc76debb07a5ab689e951315bcbfaa"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/WORLD_OBJECTS_VERIFICATION.md",
+      "sha256": "05799fa22d75e891cc46af0030602ffbca0d8c42d124dca1cbc1c09d46ba9580"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/world-objects-clear.txt",
+      "sha256": "797c73ceac85b3dcb6972b845751bb5ac4df7594154397c897ce1c570204e574"
+    }
+  ],
+  "dependencies": [
+    {
+      "path": "games/yuyuhakusho/engine/chu_actor.go",
+      "sha256": "996c20280a056670ac174a143c3cedc75b8ed816e9fcb4347878507a8c0554be"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_special_motion.go",
+      "sha256": "5c37d35003f4f983010232d495b6e45143553a36b347edbaf2aa494006839c98"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_projectile.go",
+      "sha256": "b6b6f115b819c74cb771707f04e18a801d382b2e5a152d5f4c10b01d7bf79363"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_attachments.go",
+      "sha256": "7aac1a6716a25445e4c9f6302af4b810d1cb6e421f425e6aec15c29100efb48c"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/effect_motion.go",
+      "sha256": "0be7ed205b89d5099d17b543acaf9cc5887e3b6a3d2c5749b139cb8dc776e13a"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/attached_effects.go",
+      "sha256": "360b0dbd71f9ad049cab4710640fc1b9d0507c380cd0b5cb15b19f57fb093071"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/collision_manager.go",
+      "sha256": "8dee73e990a50667007be0b8bdc0d06671f14f64a22abfa6d78e8091cd0b312d"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/effects.go",
+      "sha256": "6a0916fbc4051a0e67988b9cad99e41d9ef778e0e78a7f63d65f5fb35d2f6b18"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter_initialization.go",
+      "sha256": "52f5c58440b000688a9508e8b419cf0d36e88b4b05250742692e21a4c741f8ad"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/attack_contacts.go",
+      "sha256": "1bc022b3649e4765ad7b33f8e08c91ca909e3097b714c24555ee4a64fac0d880"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/match_overlays.go",
+      "sha256": "84e1dfc88806ade15930e57fc8565befc210f2403b3a4395c6466385b79e484e"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/default_arena.go",
+      "sha256": "e4c44bc532b0103b95c7c522733eeea44d8aedded58a1de6ef7b657df4499d38"
+    }
+  ],
+  "cross_component_oracles": [
+    {
+      "path": "games/yuyuhakusho/engine/testdata/attack-contacts-boundaries.json.gz",
+      "sha256": "1a98e8e36fa81bdaf1e2e26e7e565a222d67d60148d0d825d3a86db065db764a"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/attack-contacts-boundaries-manifest.json",
+      "sha256": "d8296b969b322019d7fea2508f35cf488c53bd9da641f85c62c95dbc1d37b4fb"
+    }
+  ],
+  "limits": [
+    "Not a complete object scheduler, world step, rendered frame or independent match",
+    "Object stores recovered owned semantic fields, not all256 physical bytes or cross-slot unknown aliases",
+    "Only already resolved aligned clear prefixes0..256 are accepted; zero means no request, not3556 Size0 default",
+    "Current small manager/presentation types must only use their owned fields, not decode neighboring bytes as authoritative object data",
+    "As-view world buffers/sound/pool fields are empty and must be supplied and separately carried by the world caller",
+    "Parent merge intentionally ignores ChildAttackFlags read-only view; child live combat state is canonical",
+    "Pool and parent merges clone maps and preserve unowned fields; full world integration remains parent gate"
+  ],
+  "original_stage_sources": [
+    {
+      "path": "games/yuyuhakusho/engine/world_objects.go",
+      "sha256": "c37e37dacfc3021452facade5d2795420b0988809b931284dc6138d3d5a93aa7"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/world_objects_test.go",
+      "sha256": "27a8e2a63c9bbbee3c519b148254e3478a12a2e13a8680c4334ae8a68719a074"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_world_objects.py",
+      "sha256": "213f5beb4cf596fbee29c14fd09b9eb7abe6dab71c707e14b1a824285892d455"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/WORLD_OBJECTS_VERIFICATION.md",
+      "sha256": "ac007227bfde8bf88b278d1b272d7c8fa51378b0b8224e4d61fdd10905d285ef"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/world-objects-clear.txt",
+      "sha256": "797c73ceac85b3dcb6972b845751bb5ac4df7594154397c897ce1c570204e574"
+    }
+  ],
+  "test_first_extensions": [
+    {
+      "fields_existed": false,
+      "adapter_file_existed": false,
+      "actual_red_log": "games/yuyuhakusho/engine/testdata/world-objects-presentable-red.jsonl",
+      "sha256": "ec8b4c09153288032fec93556dd809aaceb867fa90aed9b33f2692cc887b682e",
+      "reason": "Actual undefined Aux0A/Aux0E/Aux18 and presentation adapters before extension implementation",
+      "test_sources_before_extension": [
+        {
+          "path": "games/yuyuhakusho/engine/world_objects_test.go",
+          "sha256": "be37d61ae8dd40dc85a63efe4846118aa71f3ddf0d92333a89f4b0be9483e719"
+        },
+        {
+          "path": "games/yuyuhakusho/engine/world_presentable_test.go",
+          "sha256": "deb6c6d829f383cb6f9946d4abbab530b9c85211f43d4203a59ca73ecb3e23f7"
+        }
+      ],
+      "focused_source_files": [
+        "games/yuyuhakusho/engine/action_prelude.go",
+        "games/yuyuhakusho/engine/action_prelude_test.go",
+        "games/yuyuhakusho/engine/animation_clock.go",
+        "games/yuyuhakusho/engine/animation_clock_test.go",
+        "games/yuyuhakusho/engine/animation_records.go",
+        "games/yuyuhakusho/engine/animation_records_test.go",
+        "games/yuyuhakusho/engine/attached_effects.go",
+        "games/yuyuhakusho/engine/attached_effects_test.go",
+        "games/yuyuhakusho/engine/attack_contacts.go",
+        "games/yuyuhakusho/engine/attack_contacts_test.go",
+        "games/yuyuhakusho/engine/body_separation.go",
+        "games/yuyuhakusho/engine/body_separation_test.go",
+        "games/yuyuhakusho/engine/character_commands.go",
+        "games/yuyuhakusho/engine/character_commands_test.go",
+        "games/yuyuhakusho/engine/chu_action.go",
+        "games/yuyuhakusho/engine/chu_action_test.go",
+        "games/yuyuhakusho/engine/chu_actor.go",
+        "games/yuyuhakusho/engine/chu_actor_test.go",
+        "games/yuyuhakusho/engine/chu_ai.go",
+        "games/yuyuhakusho/engine/chu_ai_test.go",
+        "games/yuyuhakusho/engine/chu_attachments.go",
+        "games/yuyuhakusho/engine/chu_attachments_test.go",
+        "games/yuyuhakusho/engine/chu_attacks.go",
+        "games/yuyuhakusho/engine/chu_attacks_test.go",
+        "games/yuyuhakusho/engine/chu_input.go",
+        "games/yuyuhakusho/engine/chu_input_test.go",
+        "games/yuyuhakusho/engine/chu_projectile.go",
+        "games/yuyuhakusho/engine/chu_projectile_test.go",
+        "games/yuyuhakusho/engine/chu_special_motion.go",
+        "games/yuyuhakusho/engine/chu_special_motion_test.go",
+        "games/yuyuhakusho/engine/chu_tail.go",
+        "games/yuyuhakusho/engine/chu_tail_test.go",
+        "games/yuyuhakusho/engine/clash.go",
+        "games/yuyuhakusho/engine/clash_test.go",
+        "games/yuyuhakusho/engine/collision_manager.go",
+        "games/yuyuhakusho/engine/collision_manager_test.go",
+        "games/yuyuhakusho/engine/commands.go",
+        "games/yuyuhakusho/engine/commands_test.go",
+        "games/yuyuhakusho/engine/default_arena.go",
+        "games/yuyuhakusho/engine/default_arena_test.go",
+        "games/yuyuhakusho/engine/effect_motion.go",
+        "games/yuyuhakusho/engine/effect_motion_test.go",
+        "games/yuyuhakusho/engine/effects.go",
+        "games/yuyuhakusho/engine/effects_test.go",
+        "games/yuyuhakusho/engine/fighter_bounds.go",
+        "games/yuyuhakusho/engine/fighter_bounds_test.go",
+        "games/yuyuhakusho/engine/fighter_envelope.go",
+        "games/yuyuhakusho/engine/fighter_envelope_test.go",
+        "games/yuyuhakusho/engine/fighter_initialization.go",
+        "games/yuyuhakusho/engine/fighter_initialization_test.go",
+        "games/yuyuhakusho/engine/fighter_input.go",
+        "games/yuyuhakusho/engine/fighter_input_test.go",
+        "games/yuyuhakusho/engine/fighter_preparation.go",
+        "games/yuyuhakusho/engine/fighter_preparation_test.go",
+        "games/yuyuhakusho/engine/ground_actions.go",
+        "games/yuyuhakusho/engine/ground_actions_test.go",
+        "games/yuyuhakusho/engine/ground_control.go",
+        "games/yuyuhakusho/engine/ground_control_test.go",
+        "games/yuyuhakusho/engine/ground_idle.go",
+        "games/yuyuhakusho/engine/ground_idle_test.go",
+        "games/yuyuhakusho/engine/input.go",
+        "games/yuyuhakusho/engine/input_test.go",
+        "games/yuyuhakusho/engine/jump.go",
+        "games/yuyuhakusho/engine/jump_test.go",
+        "games/yuyuhakusho/engine/lane_motion.go",
+        "games/yuyuhakusho/engine/lane_motion_test.go",
+        "games/yuyuhakusho/engine/lane_switch.go",
+        "games/yuyuhakusho/engine/lane_switch_test.go",
+        "games/yuyuhakusho/engine/match_lifecycle.go",
+        "games/yuyuhakusho/engine/match_lifecycle_test.go",
+        "games/yuyuhakusho/engine/match_overlays.go",
+        "games/yuyuhakusho/engine/match_overlays_test.go",
+        "games/yuyuhakusho/engine/motion.go",
+        "games/yuyuhakusho/engine/motion_test.go",
+        "games/yuyuhakusho/engine/random.go",
+        "games/yuyuhakusho/engine/reaction_motion.go",
+        "games/yuyuhakusho/engine/reaction_motion_test.go",
+        "games/yuyuhakusho/engine/sound_queue.go",
+        "games/yuyuhakusho/engine/sound_queue_test.go",
+        "games/yuyuhakusho/engine/throw_contacts.go",
+        "games/yuyuhakusho/engine/throw_contacts_test.go",
+        "games/yuyuhakusho/engine/throw_records.go",
+        "games/yuyuhakusho/engine/throw_records_test.go",
+        "games/yuyuhakusho/engine/world_clock.go",
+        "games/yuyuhakusho/engine/world_clock_test.go",
+        "games/yuyuhakusho/engine/world_objects.go",
+        "games/yuyuhakusho/engine/world_objects_test.go",
+        "games/yuyuhakusho/engine/world_presentable_test.go"
+      ]
+    }
+  ],
+  "overlay_api_compatibility": {
+    "verified_at_utc": "2026-11-04T14:29:37.473222+00:00",
+    "production_changes": false,
+    "scope": "Updated original fixture window8100/768, shared ModeFlag/SlowFlag state, Round/Blink environment; original8 overlay kinds retained",
+    "source_files": [
+      {
+        "path": "games/yuyuhakusho/engine/world_presentable_test.go",
+        "sha256": "8d637be943cd2b9ce05e787782faeea8424c8f3fef672986f617d48adf308117"
+      },
+      {
+        "path": "scripts/yuyuhakusho/derive_world_object_views.py",
+        "sha256": "017f97f585d988bbfd96b683c346e94eb2dda7293ffc43a5bdc4f07c9b249412"
+      }
+    ],
+    "logs": [
+      {
+        "path": "games/yuyuhakusho/engine/testdata/world-objects-overlay-compat-red.jsonl",
+        "sha256": "18feb22fdddf9db5899db66d8cec22933be66be8782295ceb48e7e7142f0a0e3"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/testdata/world-objects-overlay-compat-native.jsonl",
+        "sha256": "610b888f116debf08f0d84a9c20c045b812f5bcea5798c0ca731f70123884d2e"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/testdata/world-objects-overlay-compat-wasm.jsonl",
+        "sha256": "1109719e6de6795362e585a0164f9d2f01915cb00e8c128136780025673cb53f"
+      }
+    ],
+    "sample_manifests": [
+      {
+        "scope": "Derived representative existing original-CPU cases, not a new execution or world simulation",
+        "source": {
+          "fixture": "games/yuyuhakusho/engine/testdata/match-overlays-boundaries.json.gz",
+          "gzip_sha256": "dc6f69acf2f11f6ccc1c31c3ab89cd143a127b646a03e25abc818d1afb74dc58",
+          "fixture_sha256": "fd01c51f22d19d3e561914ee7c7344c26a5d99d0537238c9bf9d658300c715f7",
+          "manifest": "games/yuyuhakusho/engine/testdata/match-overlays-boundaries-manifest.json",
+          "manifest_sha256": "9e5e6d17a957468ee931726a70f689f88ff705bb0d4e387243bfe3459e217dbd"
+        },
+        "records": 484,
+        "kind_counts": {
+          "intro": 59,
+          "intro-part": 61,
+          "draw": 32,
+          "win": 32,
+          "character": 92,
+          "team": 92,
+          "partner": 92,
+          "shadow": 24
+        },
+        "selection": "First two rows per(kind,stage,pause-sign,slow-nonzero,draw,clear-prefix,spawned); overlay only intro/intro-part/draw/win/character/team/partner/shadow; sky only sun/moon/spark, reference-only rows excluded",
+        "derive_script_sha256": "017f97f585d988bbfd96b683c346e94eb2dda7293ffc43a5bdc4f07c9b249412",
+        "fixture_sha256": "78bc259bfd350093365e3c5b6e2f4cd4fb46499b1b32d020e56ea23a2fca3503",
+        "gzip_sha256": "2265cddc2a031bfbbb6bee642e519ec8f8a0fbb0f0a09eb311baca8276bacca7",
+        "frames_match_original_core": true,
+        "pass": true
+      },
+      {
+        "scope": "Derived representative existing original-CPU cases, not a new execution or world simulation",
+        "source": {
+          "fixture": "games/yuyuhakusho/engine/testdata/default-arena-boundaries.json.gz",
+          "gzip_sha256": "acce9eae3555b0fe6af0b60d6012a4696979baf76bab262de11700c4364a39ed",
+          "fixture_sha256": "9be9e468eb5874c2a326d9ca2f7b2f60fc7066022c581efd187fa8c45c136602",
+          "manifest": "games/yuyuhakusho/engine/testdata/default-arena-boundaries-manifest.json",
+          "manifest_sha256": "d52f128d48b2d6d83757a50a741907cf9387cbe219061de8a1c536cec6e386ef"
+        },
+        "records": 59,
+        "kind_counts": {
+          "sun": 16,
+          "moon": 18,
+          "spark": 25
+        },
+        "selection": "First two rows per(kind,stage,pause-sign,slow-nonzero,draw,clear-prefix,spawned); overlay only intro/intro-part/draw/win/character/team/partner/shadow; sky only sun/moon/spark, reference-only rows excluded",
+        "derive_script_sha256": "017f97f585d988bbfd96b683c346e94eb2dda7293ffc43a5bdc4f07c9b249412",
+        "fixture_sha256": "8480b6eefb81e6c40c2be251d3b5368630b3024b1ad2e0f8032c6f2b5b2d1448",
+        "gzip_sha256": "2367926ae9aa7a06ab0751b10d671c7d85c437e0ea8fa5785175803dff767437",
+        "frames_match_original_core": true,
+        "pass": true
+      }
+    ],
+    "race_seconds": 2.596,
+    "wasm_seconds": 0.523,
+    "top_level_tests": 8,
+    "pass": true,
+    "historical_evidence_preserved": true
+  }
+}

@@ -1,0 +1,160 @@
+{
+  "verified_at_utc": "2026-11-04T12:18:37.636019+00:00",
+  "scope": "Complete f2a4 stages0/2 game rules and actual ordered presentation requests, excluding hardware rendering output",
+  "pass": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "test_first": {
+    "tests_preceded_implementation": true,
+    "focused_missing_symbol_red_observed": false,
+    "initial_environment_failure": "games/yuyuhakusho/engine/testdata/match-start-preimplementation-build.txt",
+    "sha256": "7e2e744348e6a3e343bdbf5aa41fdca6513f61f22dffc7379b196457cd7c6e13",
+    "limitation": "Initial preimplementation Go command failed on a missing GOTMPDIR before compilation. Raw failure is retained and is not represented as a missing-symbol red. Tests were created before production code; subsequent real CPU fixture/native/Wasm comparisons pass."
+  },
+  "logs": [
+    {
+      "environment": "native-race",
+      "path": "games/yuyuhakusho/engine/testdata/match-start-native.jsonl",
+      "sha256": "89fe827da6ac67578d4a713412a513b1baa4bd86a618e8716fdd471d9ef3c4ee",
+      "result": "pass",
+      "elapsed_seconds": 6.274,
+      "top_level_tests": [
+        "TestMatchStartOriginalRules",
+        "TestMatchStartSingleInitialState",
+        "TestMatchStartAtomicErrors"
+      ]
+    },
+    {
+      "environment": "Node/Wasm",
+      "path": "games/yuyuhakusho/engine/testdata/match-start-wasm.jsonl",
+      "sha256": "a8b9223fb6abcce975002d63262e0cbe0fcf4d2a824fa7af13a1554a5c14b719",
+      "result": "pass",
+      "elapsed_seconds": 1.377,
+      "top_level_tests": [
+        "TestMatchStartOriginalRules",
+        "TestMatchStartSingleInitialState",
+        "TestMatchStartAtomicErrors"
+      ]
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "games/yuyuhakusho/engine/testdata/match-start-oracle-manifest.json",
+      "sha256": "b907c5d5c16dcfaa30e43ef056379dfd6c22259ce166e7837b5cc5e75b472ce1",
+      "records": 21,
+      "calls": 21,
+      "fixture_sha256": "0b7a05f968075edb124d85658f11b8b2ccd4881f0766ba05c9fadea5ca3acb85",
+      "gzip_sha256": "4403a832b645c845aa6aefd7965df9fbc0d0612df93c94e9919b2e70e8596437"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/match-start-boundaries-manifest.json",
+      "sha256": "d1fcd76e6709275ccdd046c1cd052f7e7f729de8b8fa618325523d57d7d27375",
+      "records": 1047,
+      "calls": 1047,
+      "fixture_sha256": "92d175a2fab236cb43d5837dc5c8eb6d1ec8aad5874a6cb4c2090206a167b300",
+      "gzip_sha256": "239daa4e109cbe5d81f731d10a0c26d0fb2e0535aa347e84e9722382737d3229"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/match-start-sequences-manifest.json",
+      "sha256": "3b4b9995e77c1750cc2f2802b3bf98b27e3d2f3ae7dbe05686eff1c512fa2254",
+      "records": 4,
+      "calls": 16,
+      "fixture_sha256": "04037d36a5d68ad20380b8f35cdf13ab51290cbed6728aeb84224205670c29d1",
+      "gzip_sha256": "298cef8870e2a1eee14c59e6c455c1c8ec27be3c0ab27d88a2970a5deedf7a17"
+    }
+  ],
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/engine/match_start.go",
+      "sha256": "055f98de7c8666ba0c68504e3cb3f31601d0d2496bd2fe79fabb2bec6e5563ad"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/match_start_test.go",
+      "sha256": "d8d9db5de78374b91472291ba85c2f75972a1d56acfe1cf46edf74eec8b146ba"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_match_start.py",
+      "sha256": "76e30439fe1d84f17e4f3e0f298984c81b49d4f1a096918b6c9ba7c6132a2f4b"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/match-start-core.txt",
+      "sha256": "840b0448e0aab61cb930b2859bc1929fde3a88b5e60d42350e2115aebf62aab7"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/MATCH_START_VERIFICATION.md",
+      "sha256": "a908cd73dce4e6a9a3e165af6a9e4e69fc4907708c441ff75bd9d84751afc909"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/match-start-library.json",
+      "sha256": "5195f80794310d101dc9b0d33d59b5465fe0467b18e6a7b48a147b4b07229833"
+    }
+  ],
+  "dependencies": [
+    {
+      "path": "games/yuyuhakusho/engine/match_lifecycle.go",
+      "sha256": "1121ba3d339b266c46a5af08c157741a21e5feb5f8872cb287a14a369c8753dc"
+    }
+  ],
+  "build_scope": {
+    "kind": "Explicit source-file focused build",
+    "files": [
+      "match_lifecycle.go",
+      "match_start.go",
+      "match_start_test.go"
+    ],
+    "whole_package_gate": "Pending parent integration"
+  },
+  "coverage": {
+    "natural_returns": 21,
+    "natural_stage0": 1,
+    "natural_stage2": 20,
+    "isolated_returns": 1047,
+    "arenas": 8,
+    "selected_actor_masks": 16,
+    "source_characters": 11,
+    "hud_layouts": 4,
+    "single_initial_streams": 4,
+    "single_initial_calls": 16,
+    "baseline_frames_unchanged": 3600,
+    "queue_exceptions": 0
+  },
+  "storage_order": {
+    "objects": [
+      "8100",
+      "8140",
+      "8180",
+      "81c0",
+      "8200",
+      "8240",
+      "8280",
+      "9c00",
+      "9c80",
+      "9d00"
+    ],
+    "fighters": [
+      "8400",
+      "8800",
+      "8c00",
+      "9000"
+    ],
+    "source_configuration": "Characters/controllers/colors/teams are raw original IDs, not platform seats"
+  },
+  "comparison": {
+    "full_actor_family_bytes": 4096,
+    "full_globals_bytes": 512,
+    "full_palette_words": 64,
+    "full_sound_queue_bytes": 4,
+    "other_object_bytes": "Preserved/compared except manager8048..807f portrait state",
+    "presentation_requests": "Actual CPU3436/800/fe68/fdbe/20dc call arguments compared in order",
+    "system_window": "Only named modeled fields are compared; unmodeled hardware text/DMA/font/sprite data excluded explicitly; complete original windows remain in fixtures"
+  },
+  "limits": [
+    "No stage4..26 behavior here; existing StepMatchLifecycle handles those phases",
+    "No direct126c8 execution during spawn; world must schedule newly created actors later in original order",
+    "Hardware text raster/manager portrait cache/SAT/DMA buffers are explicitly excluded; this is not a fullhardware callback or allRAM comparison",
+    "ResourceBusy completion is an external declared event, not a fabricated fixed delay or proven platform loading pipeline",
+    "Natural sample has only originaldefault twoactors; other masks/teams/characters/options are declaredprivate CPUcases and not menu reachability proof",
+    "HUDlayout0 and unsupportedselectedCID/controller/roundtables reject atomically rather thanreadadjacentROM",
+    "Initial test-order evidence lacks a focused missing-symbol red because of the environment failure; do not misreport that gap"
+  ]
+}

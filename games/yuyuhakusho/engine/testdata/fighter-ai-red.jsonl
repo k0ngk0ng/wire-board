@@ -1,0 +1,16 @@
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"# command-line-arguments [command-line-arguments.test]\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter_ai_test.go:23:66: undefined: FighterAIState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter_ai_test.go:28:21: state.Fighters[i].ChildAttackValue undefined (type ChuAIFighter has no field or method ChildAttackValue)\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter_ai_test.go:33:42: undefined: FighterAIState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter_ai_test.go:114:18: undefined: StepFighterAI\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter_ai_test.go:153:18: undefined: StepFighterAI\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter_ai_test.go:168:10: undefined: FighterAIState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter_ai_test.go:168:80: undefined: FighterAIActor\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter_ai_test.go:169:52: undefined: FighterAIFighter\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter_ai_test.go:171:33: undefined: FighterAIState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter_ai_test.go:173:15: undefined: StepFighterAI\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter_ai_test.go:173:15: too many errors\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-fail"}
+{"Time":"2026-11-04T22:24:20.555596+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-04T22:24:20.555636+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\tcommand-line-arguments [build failed]\n"}
+{"Time":"2026-11-04T22:24:20.555643+08:00","Action":"fail","Package":"command-line-arguments","Elapsed":0,"FailedBuild":"command-line-arguments [command-line-arguments.test]"}

@@ -1,0 +1,32 @@
+{"Time":"2026-11-04T22:27:56.602721+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-04T22:27:57.161618+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuWorldOriginalObjectPasses"}
+{"Time":"2026-11-04T22:27:57.161677+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuWorldOriginalObjectPasses","Output":"=== RUN   TestChuWorldOriginalObjectPasses\n"}
+{"Time":"2026-11-04T22:27:57.221076+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuWorldOriginalObjectPasses/chu-world-oracle"}
+{"Time":"2026-11-04T22:27:57.221096+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuWorldOriginalObjectPasses/chu-world-oracle","Output":"=== RUN   TestChuWorldOriginalObjectPasses/chu-world-oracle\n"}
+{"Time":"2026-11-04T22:27:57.225781+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuWorldOriginalObjectPasses/chu-world-oracle","Output":"    chu_world_test.go:351: world frame=1800 raw clock offset=29 got=02 want=33\n"}
+{"Time":"2026-11-04T22:27:57.2258+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuWorldOriginalObjectPasses/chu-world-oracle","Output":"--- FAIL: TestChuWorldOriginalObjectPasses/chu-world-oracle (0.00s)\n"}
+{"Time":"2026-11-04T22:27:57.225803+08:00","Action":"fail","Package":"command-line-arguments","Test":"TestChuWorldOriginalObjectPasses/chu-world-oracle","Elapsed":0}
+{"Time":"2026-11-04T22:27:57.225811+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuWorldOriginalObjectPasses/chu-world-special"}
+{"Time":"2026-11-04T22:27:57.225813+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuWorldOriginalObjectPasses/chu-world-special","Output":"=== RUN   TestChuWorldOriginalObjectPasses/chu-world-special\n"}
+{"Time":"2026-11-04T22:27:57.228718+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuWorldOriginalObjectPasses/chu-world-special","Output":"    chu_world_test.go:351: world frame=1800 raw clock offset=29 got=02 want=33\n"}
+{"Time":"2026-11-04T22:27:57.228725+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuWorldOriginalObjectPasses/chu-world-special","Output":"--- FAIL: TestChuWorldOriginalObjectPasses/chu-world-special (0.00s)\n"}
+{"Time":"2026-11-04T22:27:57.228727+08:00","Action":"fail","Package":"command-line-arguments","Test":"TestChuWorldOriginalObjectPasses/chu-world-special","Elapsed":0}
+{"Time":"2026-11-04T22:27:57.22873+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuWorldOriginalObjectPasses","Output":"--- FAIL: TestChuWorldOriginalObjectPasses (0.07s)\n"}
+{"Time":"2026-11-04T22:27:57.228733+08:00","Action":"fail","Package":"command-line-arguments","Test":"TestChuWorldOriginalObjectPasses","Elapsed":0.07}
+{"Time":"2026-11-04T22:27:57.228738+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuWorldSingleInitialMatch"}
+{"Time":"2026-11-04T22:27:57.228739+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuWorldSingleInitialMatch","Output":"=== RUN   TestChuWorldSingleInitialMatch\n"}
+{"Time":"2026-11-04T22:27:57.257663+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuWorldSingleInitialMatch/chu-world-oracle"}
+{"Time":"2026-11-04T22:27:57.257666+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuWorldSingleInitialMatch/chu-world-oracle","Output":"=== RUN   TestChuWorldSingleInitialMatch/chu-world-oracle\n"}
+{"Time":"2026-11-04T22:27:57.25969+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuWorldSingleInitialMatch/chu-world-oracle","Output":"    chu_world_test.go:351: world frame=1800 raw clock offset=29 got=02 want=33\n"}
+{"Time":"2026-11-04T22:27:57.259696+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuWorldSingleInitialMatch/chu-world-oracle","Output":"--- FAIL: TestChuWorldSingleInitialMatch/chu-world-oracle (0.00s)\n"}
+{"Time":"2026-11-04T22:27:57.259697+08:00","Action":"fail","Package":"command-line-arguments","Test":"TestChuWorldSingleInitialMatch/chu-world-oracle","Elapsed":0}
+{"Time":"2026-11-04T22:27:57.2597+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuWorldSingleInitialMatch/chu-world-special"}
+{"Time":"2026-11-04T22:27:57.259702+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuWorldSingleInitialMatch/chu-world-special","Output":"=== RUN   TestChuWorldSingleInitialMatch/chu-world-special\n"}
+{"Time":"2026-11-04T22:27:57.261218+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuWorldSingleInitialMatch/chu-world-special","Output":"    chu_world_test.go:351: world frame=1800 raw clock offset=29 got=02 want=33\n"}
+{"Time":"2026-11-04T22:27:57.261221+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuWorldSingleInitialMatch/chu-world-special","Output":"--- FAIL: TestChuWorldSingleInitialMatch/chu-world-special (0.00s)\n"}
+{"Time":"2026-11-04T22:27:57.261226+08:00","Action":"fail","Package":"command-line-arguments","Test":"TestChuWorldSingleInitialMatch/chu-world-special","Elapsed":0}
+{"Time":"2026-11-04T22:27:57.261228+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuWorldSingleInitialMatch","Output":"--- FAIL: TestChuWorldSingleInitialMatch (0.03s)\n"}
+{"Time":"2026-11-04T22:27:57.261229+08:00","Action":"fail","Package":"command-line-arguments","Test":"TestChuWorldSingleInitialMatch","Elapsed":0.03}
+{"Time":"2026-11-04T22:27:57.261243+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\n"}
+{"Time":"2026-11-04T22:27:57.261794+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\tcommand-line-arguments\t0.659s\n"}
+{"Time":"2026-11-04T22:27:57.261802+08:00","Action":"fail","Package":"command-line-arguments","Elapsed":0.659}

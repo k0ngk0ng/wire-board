@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "scope": "Immutable independently decoded semantic rules only; no calls, RAM images, executable code or client media",
+  "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/data/fighter-specs.json",
+      "sha256": "d8934db6f84228213ad3591af00357bb3a955a743d559437596aa350f93db7dd"
+    },
+    {
+      "path": "games/yuyuhakusho/data/command-programs.json",
+      "sha256": "ce50d443432dc1db6be7ecb95ea12bb8b44ba88216fc12c815c43b1d88ef9ec3"
+    },
+    {
+      "path": "games/yuyuhakusho/data/animation-catalog.json.gz",
+      "sha256": "845e2f43179f831130b40c4b796843fdc0c3ae4c699d605e4326905800781495"
+    },
+    {
+      "path": "games/yuyuhakusho/data/chu-projectile-animation.json",
+      "sha256": "f6f72392d7e0010259659578f0ac70b94db67c255455e5378f64a61169467137"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/chu-attachments-oracle.json.gz",
+      "sha256": "d65ec7ddef4ef34923e950bd3a8b48d27df53da69adea5a51f700d4654334475"
+    },
+    {
+      "path": "games/yuyuhakusho/data/effect-sequences.json",
+      "sha256": "d86cd13b88889ae61580bf15d36302dec4a97c484ba0ffa86d4a0961d2a0d93c"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/attached-effects-data.json",
+      "sha256": "1e3062e69f3767a88c590faa0e9310ee7aa97ab0a46f87b4837537a7252e14f5"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/match-start-library.json",
+      "sha256": "5195f80794310d101dc9b0d33d59b5465fe0467b18e6a7b48a147b4b07229833"
+    },
+    {
+      "path": "games/yuyuhakusho/data/arena-runtime-rules.json",
+      "sha256": "4d042ce63dd009836165dd22d58ad28b67ecac36ad1923c465e8a8b78a5dc302"
+    }
+  ],
+  "exporter_sha256": "c1e98af496f95ade822d440329726165fad41c6ae3549459da8902e98c234811",
+  "counts": {
+    "fighters": 11,
+    "command_programs": 16,
+    "animations": 4746,
+    "charge_sequences": 8,
+    "release_animations": 21,
+    "effect_types": 37,
+    "effect_sequences": 21,
+    "attached_sequences": 3
+  },
+  "bytes": 1879860,
+  "gzip_bytes": 86596,
+  "sha256": "31a68fb3398b85aef747aab754f70429f987128ec914744de48b92b099761ee1",
+  "gzip_sha256": "f212f590d19e2b0751b1a8f4b725053e49451a3186f7fada398c2c32093eae4f"
+}

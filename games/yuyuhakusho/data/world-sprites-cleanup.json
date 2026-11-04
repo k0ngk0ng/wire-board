@@ -1,0 +1,105 @@
+{
+  "scope": "Only this presentation task\u2019s duplicate captures, temporary C/Ghidra files, intermediate logs and scratch preview writer",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/world-presentation-phases.jsonl",
+      "bytes": 2109
+    },
+    {
+      "path": ".local/md-yuyuhakusho/world-presentation-wasm-complete.jsonl",
+      "bytes": 6723
+    },
+    {
+      "path": ".local/md-yuyuhakusho/world-sprites-phases",
+      "bytes": 6032727
+    },
+    {
+      "path": ".local/md-yuyuhakusho/world-presentation-red-final.jsonl",
+      "bytes": 4047
+    },
+    {
+      "path": ".local/md-yuyuhakusho/world-presentation-native.jsonl",
+      "bytes": 5848
+    },
+    {
+      "path": ".local/md-yuyuhakusho/world-sprites-all",
+      "bytes": 4793611
+    },
+    {
+      "path": ".local/md-yuyuhakusho/world-sprites-static",
+      "bytes": 229655
+    },
+    {
+      "path": ".local/md-yuyuhakusho/world-presentation-core-fixed.jsonl",
+      "bytes": 2666
+    },
+    {
+      "path": ".local/md-yuyuhakusho/world-presentation-green.jsonl",
+      "bytes": 5882
+    },
+    {
+      "path": ".local/md-yuyuhakusho/world-presentation-native-final.jsonl",
+      "bytes": 5861
+    },
+    {
+      "path": ".local/md-yuyuhakusho/world-sprites-overlays",
+      "bytes": 4771069
+    },
+    {
+      "path": ".local/md-yuyuhakusho/world-presentation-red.jsonl",
+      "bytes": 4047
+    },
+    {
+      "path": ".local/md-yuyuhakusho/world-presentation-vet.txt",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/world-presentation-wasm-final.jsonl",
+      "bytes": 5852
+    },
+    {
+      "path": ".local/md-yuyuhakusho/world-presentation-list-red.jsonl",
+      "bytes": 1824
+    },
+    {
+      "path": ".local/md-yuyuhakusho/world-sprites",
+      "bytes": 17809
+    },
+    {
+      "path": ".local/md-yuyuhakusho/world-presentation-full.jsonl",
+      "bytes": 5841
+    },
+    {
+      "path": ".local/md-yuyuhakusho/world-presentation-native-complete.jsonl",
+      "bytes": 6725
+    },
+    {
+      "path": ".local/md-yuyuhakusho/world-sprites-debug",
+      "bytes": 17809
+    },
+    {
+      "path": ".local/md-yuyuhakusho/world-presentation-wasm.jsonl",
+      "bytes": 5841
+    },
+    {
+      "path": ".local/md-yuyuhakusho/world-sprites-final",
+      "bytes": 4509157
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/world-sprites-work",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/world-presentation-preview/render.go",
+      "bytes": 2600
+    }
+  ],
+  "bytes_removed": 20437703,
+  "preserved": [
+    "Shared Go caches and other agents work",
+    "Canonical indexed assets/oracle/manifests/red/native/Wasm evidence",
+    "Independent sprite-plane/original-video preview PNG pair",
+    "Original ROM/reference tools/source"
+  ],
+  "no_paths_outside_worktree_modified": true
+}

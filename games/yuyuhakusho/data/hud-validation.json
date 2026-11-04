@@ -1,0 +1,284 @@
+{
+  "verified_at_utc": "2026-11-04T15:56:42.491328+00:00",
+  "pass": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "scope": "ROM-derived default HUD/Window indexed artwork, ordered start/bar presentation adapter, rule-cell ownership and default battle row display profile",
+  "test_first": "Failure scenarios before implementation; separate real missing DefaultArenaRows and HUD API errors retained; per-row vertical contract compile failure retained before changing the implementation",
+  "coverage": {
+    "original_baseline_frames_each_run": 3600,
+    "independent_original_runs": 2,
+    "identical_runs": true,
+    "natural_hud_calls": 10,
+    "isolated_hud_calls": 55,
+    "private_names": 11,
+    "private_portraits": 44,
+    "complete_cpu_cell_bytes_per_call": 512,
+    "natural_ordered_events": 1134,
+    "event_counts": {
+      "reset": 1,
+      "resource": 1,
+      "words": 6,
+      "name": 2,
+      "portrait": 2,
+      "hud": 1122
+    },
+    "natural_windows_rebuilt": 20,
+    "visible_window_cells_and_referenced_tiles_compared": 4800,
+    "original_window_pixels_compared": 91756,
+    "pixel_mismatches": 0,
+    "row_profile_observations": 4480,
+    "fresh_player_counts": [
+      2,
+      3,
+      4
+    ],
+    "fresh_ticks_each": 500,
+    "base_tiles": 16,
+    "bar_patterns": 32,
+    "name_glyphs": 20,
+    "portraits": 11,
+    "catalog_gzip_bytes": 5395,
+    "reference_window_used_as_asset": false
+  },
+  "runtime_api": [
+    "DecodeHUDCatalog([]byte) (HUDCatalog,error)",
+    "NewHUD(HUDCatalog) (HUDState,error)",
+    "ApplyHUDWorldEvents(HUDState,[]engine.ChuWorldEvent,[]uint16,HUDCatalog) (HUDState,error)",
+    "HUDWindow(HUDState) (IndexedPlane,error)",
+    "DefaultArenaRows([64]uint16,[224][2]uint16,[224][2]uint16) ([224]ArenaRow,error)"
+  ],
+  "logs": [
+    {
+      "path": "games/yuyuhakusho/data/hud-profile-red.jsonl",
+      "sha256": "d934c8d6d09d8f26bfe707b82a6a7602d8db3aa2a4c4026419f4822ae77f6cdc",
+      "bytes": 1690,
+      "phase": "profile-red",
+      "result": "fail",
+      "elapsed_seconds": 0,
+      "top_level_tests": []
+    },
+    {
+      "path": "games/yuyuhakusho/data/hud-profile-vertical-red.jsonl",
+      "sha256": "ed1471e814683e4f29cb1e4b3e1328195c6ea00f5e763fd255583684f0b2471b",
+      "bytes": 1849,
+      "phase": "profile-vertical-red",
+      "result": "fail",
+      "elapsed_seconds": 0,
+      "top_level_tests": []
+    },
+    {
+      "path": "games/yuyuhakusho/data/hud-red.jsonl",
+      "sha256": "d43fe6ac2e1229de2feb09c0c3d0e70acf5d3a3f69b11b72d0e3d96d7ff3a030",
+      "bytes": 4005,
+      "phase": "hud-red",
+      "result": "fail",
+      "elapsed_seconds": 0,
+      "top_level_tests": []
+    },
+    {
+      "path": "games/yuyuhakusho/data/hud-native.jsonl",
+      "sha256": "8909ae84fc9a3adde5ee5db06686f3b63001bc015a757f508636650e3e7fa718",
+      "bytes": 5887,
+      "phase": "native",
+      "result": "pass",
+      "elapsed_seconds": 5.557,
+      "top_level_tests": [
+        "TestDefaultArenaRowsAgainstAllOriginalRows",
+        "TestDefaultArenaRowsRejectsInvalidPalette",
+        "TestHUDOriginalCallsAndNaturalWindow",
+        "TestHUDFreshSessionConstructsWindowWithoutReferenceState",
+        "TestHUDErrorsAreAtomicAndRuleSyncPreservesPictures"
+      ]
+    },
+    {
+      "path": "games/yuyuhakusho/data/hud-wasm.jsonl",
+      "sha256": "b8f68c2310ff66e5cdb02eadd5348f3788e72a7d8a09d761e9cdd9a42a0e54bf",
+      "bytes": 5901,
+      "phase": "wasm",
+      "result": "pass",
+      "elapsed_seconds": 1.5779999999999998,
+      "top_level_tests": [
+        "TestDefaultArenaRowsAgainstAllOriginalRows",
+        "TestDefaultArenaRowsRejectsInvalidPalette",
+        "TestHUDOriginalCallsAndNaturalWindow",
+        "TestHUDFreshSessionConstructsWindowWithoutReferenceState",
+        "TestHUDErrorsAreAtomicAndRuleSyncPreservesPictures"
+      ]
+    },
+    {
+      "path": "games/yuyuhakusho/data/hud-vet.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "phase": "vet",
+      "result": "pass"
+    }
+  ],
+  "sources": [
+    {
+      "path": "scripts/yuyuhakusho/extract_hud_assets.py",
+      "sha256": "df8c8fff4f3b1d9b2f8d9e556b2b861527d4d033802874bd3d24a2892955817a",
+      "bytes": 13624
+    },
+    {
+      "path": "games/yuyuhakusho/presentation/hud.go",
+      "sha256": "f186cb54360458240680af1e5525b397fc268ef04cf98d5fb6bf76459472d38e",
+      "bytes": 8940
+    },
+    {
+      "path": "games/yuyuhakusho/presentation/hud_test.go",
+      "sha256": "b859e2f837d6a50106ab01c517e54ee043b436774c6a392e7ec7cb2d5017cb58",
+      "bytes": 9531
+    },
+    {
+      "path": "games/yuyuhakusho/presentation/hud_profile.go",
+      "sha256": "59249152051a3ba195086b34c547f3d667d153c4d4985a15e040c91268e3c8e8",
+      "bytes": 856
+    },
+    {
+      "path": "games/yuyuhakusho/presentation/hud_profile_test.go",
+      "sha256": "b1122c78b3e4155c83d74429c1edca194456b0e09319e1f8ab7a8e5fb175a7e4",
+      "bytes": 1590
+    },
+    {
+      "path": "games/yuyuhakusho/presentation/HUD_VERIFICATION.md",
+      "sha256": "45dc19813513a7e92e02decfb57361322068d16ad25218269ec7c550ac75e97d",
+      "bytes": 8187
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/hud-present.txt",
+      "sha256": "8a10ba9f08202fa6711f66ba4ce13bb2583b168784a49260d966199f67e54968",
+      "bytes": 7879
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/hud-present-helpers.txt",
+      "sha256": "dceafbd5ea9f5a79fce1cc9ac9ccddf126d64ee032a2987da72b7addd251ad96",
+      "bytes": 5211
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/hud-present-window-template.txt",
+      "sha256": "c13417cca0ed6180ee50fa44256e85719156483911d12305c098b14e256badde",
+      "bytes": 1686
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/hud-present-scene-init.txt",
+      "sha256": "ecb4c019f28fc6d63cc349c927469e29bce43513cd75fdad4490d37c8c1b32d5",
+      "bytes": 1115
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "games/yuyuhakusho/data/hud-assets.json.gz",
+      "sha256": "4c26a97efb8901db2c6ed791d3cb99ebf7e9efcbeaed2cc13e8bd54f22bdc50c",
+      "bytes": 5395
+    },
+    {
+      "path": "games/yuyuhakusho/data/hud-assets-manifest.json",
+      "sha256": "40fbae466e8b0175697572c3526b6bd7b5f17647b42a2b2d9de9c4ff0170b611",
+      "bytes": 943
+    },
+    {
+      "path": "games/yuyuhakusho/data/hud-reference.json.gz",
+      "sha256": "1e329e932cc78fc84ba5bfa07e0ba4e0ac60d27fe604547cee65a816b3bd4868",
+      "bytes": 9039
+    },
+    {
+      "path": "games/yuyuhakusho/data/hud-reference-manifest.json",
+      "sha256": "eee5ce1d7d26bdd804a8d70fe57ffbae780859517014a6fe9453f3442edf7829",
+      "bytes": 1085
+    },
+    {
+      "path": "games/yuyuhakusho/data/hud-reproducibility.json",
+      "sha256": "5eca3aa24832fc81f10550a2e64ca0167f03045bf14a328f949a5715a6353121",
+      "bytes": 749
+    },
+    {
+      "path": "games/yuyuhakusho/data/hud-cleanup.json",
+      "sha256": "8b78df6924544e869127db46cb126854a15b83eead6587f97bffef85b0cb3104",
+      "bytes": 880
+    }
+  ],
+  "reused_evidence": [
+    {
+      "path": "games/yuyuhakusho/data/arena-assets-reference.json.gz",
+      "sha256": "878558a7f9b964efca0d05a92f3025ba27376e489260ea5bc5868813547ce403",
+      "bytes": 1465833
+    },
+    {
+      "path": "games/yuyuhakusho/data/arena-assets-reference-manifest.json",
+      "sha256": "af6d902d84705a593c799a108b3880e6d84b66f2eb5f567dbec3e026488548b8",
+      "bytes": 2572
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/match-start-library.json",
+      "sha256": "5195f80794310d101dc9b0d33d59b5465fe0467b18e6a7b48a147b4b07229833",
+      "bytes": 10072
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/arena-assets-loader.txt",
+      "sha256": "5b1955e1b088f08c8aa2167462a0a8162b10291f5e459a0e4408046c64057c6d",
+      "bytes": 5144
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/match-start-core.txt",
+      "sha256": "840b0448e0aab61cb930b2859bc1929fde3a88b5e60d42350e2115aebf62aab7",
+      "bytes": 13431
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-envelope-core.txt",
+      "sha256": "5a4d39268ffcf7498cb7f9771eb437f6a0f8b7bbd65672b4ba4afda25ac129ec",
+      "bytes": 7258
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/world-frame-irq.txt",
+      "sha256": "15b00ba93c9aa7a4a0a6fed6d068e1d650a4b8765c3979060fa3bd704f9f1047",
+      "bytes": 2357
+    }
+  ],
+  "limits": [
+    "Natural pixels use default arena source9; all11 names/portrait cell layouts separately checked against private original CPU calls",
+    "HUD asset contains raw indexed art from original ROM resources, never captured Window or prerecorded player portraits/names/state",
+    "Caller provides the declared canonical E600 rule-cell view; adapter syncs only rule-owned cells and never computes life/energy results",
+    "HUD tile map is separate from sprite tile assignments; standard2-player slots0/3 and3-player slots0/1/3 avoid portrait/body alias, original4-player layout omits portraits; arbitrary three-slot configurations with slot2 need original slot selection or shared tile assignment",
+    "No one-player story portrait overflow, other arenas, dynamic training text, menus or general VDP hardware behavior",
+    "Fresh500-tick headless presentation scenarios are not a platform/browser/network/audio acceptance"
+  ],
+  "cleanup": {
+    "pass": true,
+    "scope": "This HUD subtask only; canonical assets, source evidence, original tools/ROM and shared Go cache retained",
+    "deleted": [
+      {
+        "path": ".local/md-yuyuhakusho/hud-assets",
+        "files": 4,
+        "bytes": 16462
+      },
+      {
+        "path": ".local/md-yuyuhakusho/hud-assets-replay",
+        "files": 4,
+        "bytes": 16462
+      },
+      {
+        "path": ".local/md-yuyuhakusho/hud-assets-static",
+        "files": 19,
+        "bytes": 262867
+      },
+      {
+        "path": "docs/research/md-yuyuhakusho/static-work/hud-assets-project",
+        "files": 0,
+        "bytes": 0
+      },
+      {
+        "path": ".local/md-yuyuhakusho/hud-assets-run.txt",
+        "files": 1,
+        "bytes": 2162
+      },
+      {
+        "path": ".local/md-yuyuhakusho/hud-assets-replay-run.txt",
+        "files": 1,
+        "bytes": 2162
+      }
+    ],
+    "files_removed": 29,
+    "bytes_removed": 300115
+  }
+}

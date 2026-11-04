@@ -1,0 +1,14 @@
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"# command-line-arguments [command-line-arguments.test]\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/match_overlays_test.go:97:94: unknown field ModeFlag in struct literal of type MatchOverlayState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/match_overlays_test.go:97:114: unknown field SlowFlag in struct literal of type MatchOverlayState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/match_overlays_test.go:127:13: undefined: MatchTrainingState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/match_overlays_test.go:131:21: undefined: MatchHealthTarget\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/match_overlays_test.go:133:8: undefined: StepMatchTraining\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/match_overlays_test.go:171:182: unknown field RoundIndex in struct literal of type MatchOverlayEnvironment\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/match_overlays_test.go:171:206: unknown field Blink in struct literal of type MatchOverlayEnvironment\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/match_overlays_test.go:188:102: got.ModeFlag undefined (type MatchOverlayState has no field or method ModeFlag)\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/match_overlays_test.go:188:116: got.SlowFlag undefined (type MatchOverlayState has no field or method SlowFlag)\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-fail"}
+{"Time":"2026-11-04T20:43:45.876953+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-04T20:43:45.876991+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\tcommand-line-arguments [build failed]\n"}
+{"Time":"2026-11-04T20:43:45.876999+08:00","Action":"fail","Package":"command-line-arguments","Elapsed":0,"FailedBuild":"command-line-arguments [command-line-arguments.test]"}

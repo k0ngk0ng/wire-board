@@ -1,0 +1,29 @@
+{
+  "pass": true,
+  "catalog_sha256": "e0e7bdcece370e69b640b439eba2f28ee4010c1a16d07d37c0b84166524b1bfe",
+  "gzip_sha256": "4c26a97efb8901db2c6ed791d3cb99ebf7e9efcbeaed2cc13e8bd54f22bdc50c",
+  "producer_sha256": "df8c8fff4f3b1d9b2f8d9e556b2b861527d4d033802874bd3d24a2892955817a",
+  "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+  "scope": "ROM-derived base, bars, name glyphs, portraits and fixed stripe only",
+  "base_tiles": 16,
+  "bar_patterns": 32,
+  "name_glyphs": 20,
+  "portraits": 11,
+  "resource_source": 2612096,
+  "compressed_source_sha256": "e8c8053c38485b230756ef379958426112e50623c5a6cb9a6a415d7d7e194fa5",
+  "base_decompression_token_counts": [
+    37,
+    7,
+    2,
+    4,
+    72,
+    2,
+    0,
+    1
+  ],
+  "base_matches_original_loaded_frames": 20,
+  "font_source": 2406880,
+  "portrait_tiles_source": 2490368,
+  "bar_patterns_source": 2562560,
+  "reference_window_used_as_asset": false
+}

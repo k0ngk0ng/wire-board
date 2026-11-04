@@ -1,0 +1,180 @@
+{
+  "scope": "Only this audio-loop task exploratory capture, temporary Ghidra state and redundant log; accepted audio assets unchanged",
+  "pass": true,
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/audio-loop-research",
+      "file_count": 7,
+      "bytes": 22452772,
+      "manifest": [
+        {
+          "path": ".local/md-yuyuhakusho/audio-loop-research/82-control-summary.json",
+          "bytes": 1856,
+          "sha256": "d2487bdbe3d36bcc5caf88cd1cb7cf02ff02ae8f7b7ab1a91f860103c1f4af3f"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-loop-research/82-events.json.gz",
+          "bytes": 1409551,
+          "sha256": "744c61b2e3e4e0542bd58f6acfc77382fed268856857f601a52e7d1521f33375"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-loop-research/82-native-states.jsonl.gz",
+          "bytes": 9630256,
+          "sha256": "d3a4fc0112e5040776161d21a7337f01a3ccfa7bbf41d381f31e127d967317ba"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-loop-research/87-control-summary.json",
+          "bytes": 1856,
+          "sha256": "863f507583c5e01a482d63cb9a76703f6239debbe2a8f90a8c1ecde60cec03f2"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-loop-research/87-events.json.gz",
+          "bytes": 1302580,
+          "sha256": "8083b5eca1de38d19653814b447fb0db602039c02311b459848d579b292b7bfb"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-loop-research/87-native-states.jsonl.gz",
+          "bytes": 10105299,
+          "sha256": "f83bcc056427d4914b5ea7d061a99333e8dadf5242309bd2fdd81f5da87561f8"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-loop-research/capture.json",
+          "bytes": 1374,
+          "sha256": "eba01fe2d75a8c5c1fdbae3fab358ae141bd26c67b728acc5ae11493a2c59f6d"
+        }
+      ]
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-loop-static",
+      "file_count": 19,
+      "bytes": 255145,
+      "manifest": [
+        {
+          "path": ".local/md-yuyuhakusho/audio-loop-static/console.log",
+          "bytes": 11408,
+          "sha256": "3ce382d1d532efcdb6974cba16dbeb83872fe620e352a6a21ee9cba5abd143cb"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-loop-static/ghidra.log",
+          "bytes": 29782,
+          "sha256": "ddcecc8d1b58d5399531a752495b11f611896dd1a37b5b70f7e4829f17e185f7"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-loop-static/script.log",
+          "bytes": 570,
+          "sha256": "7aed6168401688f1aee0cad505af602812511019104024891daa179280c93f59"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-loop-static/tmp/cache/jason-ghidra/fscache2/.lastmaint",
+          "bytes": 46,
+          "sha256": "8c91304ea50f297d5df11d84d36e88624ec024cccab06dddd2114a19ed5f941d"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-loop-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/osgi/compiled-bundles/d5ce2b6/GeneratedActivator.class",
+          "bytes": 608,
+          "sha256": "f55703662e3acd9ac4e5238005621103e5a86c70079b9772301b78e32c030e88"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-loop-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/osgi/compiled-bundles/d5ce2b6/GeneratedActivator.java",
+          "bytes": 407,
+          "sha256": "2a604f29202d03de20281e95e9e9cf25d51350a7f0bcebdff63c06b6207b6658"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-loop-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/osgi/compiled-bundles/d5ce2b6/META-INF/MANIFEST.MF",
+          "bytes": 603,
+          "sha256": "908785298868f1ca9a30cc7fac3684b41ee46f49e3d363bf8be1775649734917"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-loop-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/osgi/compiled-bundles/d5ce2b6/MdControlProbe.class",
+          "bytes": 4688,
+          "sha256": "72396de71c5a18dfbf54d60d1d021e676b0fe24dbdccf11262681f4582e7ec74"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-loop-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/osgi/compiled-bundles/d5ce2b6/MdRamFrameProbe.class",
+          "bytes": 3723,
+          "sha256": "c7db65cc8425c8b9e099a1ecbcf8a22f9a724d299948900796a90ec0add3ebb3"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-loop-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/osgi/felixcache/bundle0/bundle.id",
+          "bytes": 1,
+          "sha256": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-loop-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/osgi/felixcache/bundle0/last.java.version",
+          "bytes": 3,
+          "sha256": "20d2add851bf39edcc6b5e830930f962db7e19dffa2cab8610eed551eda6c302"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-loop-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/osgi/felixcache/bundle1/bundle.info",
+          "bytes": 229,
+          "sha256": "7afd2f4e86e8eb48b167744ce58c63ed2192dd01711373f7054b4d5d2c2cfb68"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-loop-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/osgi/felixcache/bundle1/version0.0/revision.location",
+          "bytes": 205,
+          "sha256": "4c1618d950efdc2fb942978fe96ee368d08f3be9878f4ed62bef0fb964aff734"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-loop-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/osgi/parallel.lock",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-loop-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/tools/_code_browser.tcd",
+          "bytes": 38435,
+          "sha256": "7f3b72bbcccef22e476da60f88101885b1ec625fae79a58cbb78a9a81dacbd0d"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-loop-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/tools/_debugger.tcd",
+          "bytes": 46088,
+          "sha256": "efa89df0d486fe15de6c1abdbfb3a1fbcde70596c7f6c96fd9fd547cd1477ed4"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-loop-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/tools/_emulator.tcd",
+          "bytes": 116623,
+          "sha256": "bdc4262723f9b714ef8e2038f39c09b1aa567fb57acb9edf3d597b4bd892385a"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-loop-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/tools/_version _tracking.tcd",
+          "bytes": 1656,
+          "sha256": "42a672303407e4d56e3042c396cc9d37a72965c653aa6aec62160cadcd98e1c0"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-loop-static/tmp/java-home/Library/ghidra/ghidra_12.1.4_PUBLIC/java_home.save",
+          "bytes": 70,
+          "sha256": "d96a6f882c80576492a97eff2df6c0d6a3a0859cea48cb43924276776fd56342"
+        }
+      ]
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/audio-loop-work",
+      "file_count": 0,
+      "bytes": 0,
+      "manifest": []
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-loop-research-console.jsonl",
+      "file_count": 1,
+      "bytes": 932,
+      "manifest": [
+        {
+          "path": ".local/md-yuyuhakusho/audio-loop-research-console.jsonl",
+          "bytes": 932,
+          "sha256": "20c583aa653b1fa3813bbb946494b8966e78d4433a11ae287d0e6df3f2cd0946"
+        }
+      ]
+    }
+  ],
+  "removed_file_count": 27,
+  "removed_bytes": 22708849,
+  "retained": [
+    ".local/md-yuyuhakusho/audio-loop-verified",
+    ".local/md-yuyuhakusho/audio-loop-verified-console.jsonl",
+    ".local/md-yuyuhakusho/audio-loop-analysis-console.jsonl",
+    "scripts/yuyuhakusho/research_audio_loops.py",
+    "scripts/yuyuhakusho/analyze_audio_loops.py",
+    "docs/research/md-yuyuhakusho/AUDIO_LOOPS.md",
+    "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt"
+  ],
+  "published": false
+}

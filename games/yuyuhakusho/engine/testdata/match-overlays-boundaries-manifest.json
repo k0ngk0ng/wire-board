@@ -1,0 +1,42 @@
+{
+  "scope": "Complete overlay/shadow rule callbacks before sprite emission or after internal clear",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "records": 28094,
+  "calls": 28094,
+  "kinds": {
+    "pause-label": 840,
+    "demo": 3416,
+    "training": 2504,
+    "round": 1260,
+    "bracket-round": 848,
+    "bracket-opponent": 848,
+    "intro": 2945,
+    "intro-part": 2945,
+    "draw": 1680,
+    "win": 1680,
+    "character": 2896,
+    "team": 2872,
+    "partner": 2520,
+    "shadow": 840
+  },
+  "draws": 16626,
+  "clear_calls": 290,
+  "external_queue_calls": 0,
+  "reference_only_calls": 21,
+  "frames_match_original_core": true,
+  "capture_sha256": "dad5828bfd1d0fceb5e91d8fd75048e5592c1488e7716bd4fe5cd49a4dd425a1",
+  "fixture_sha256": "fd01c51f22d19d3e561914ee7c7344c26a5d99d0537238c9bf9d658300c715f7",
+  "gzip_sha256": "dc6f69acf2f11f6ccc1c31c3ab89cd143a127b646a03e25abc818d1afb74dc58",
+  "errors": [],
+  "incomplete_calls": 0,
+  "pass": true
+}

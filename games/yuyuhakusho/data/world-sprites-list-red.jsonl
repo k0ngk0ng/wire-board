@@ -1,0 +1,9 @@
+{"Time":"2026-11-04T21:09:57.218523+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation"}
+{"Time":"2026-11-04T21:09:57.777541+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation","Test":"TestPresentationHardwareListBoundary"}
+{"Time":"2026-11-04T21:09:57.777654+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation","Test":"TestPresentationHardwareListBoundary","Output":"=== RUN   TestPresentationHardwareListBoundary\n"}
+{"Time":"2026-11-04T21:09:57.77777+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation","Test":"TestPresentationHardwareListBoundary","Output":"    presentation_test.go:462: sprite list did not stop at the original index80 boundary \u003cnil\u003e\n"}
+{"Time":"2026-11-04T21:09:57.777823+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation","Test":"TestPresentationHardwareListBoundary","Output":"--- FAIL: TestPresentationHardwareListBoundary (0.00s)\n"}
+{"Time":"2026-11-04T21:09:57.777851+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation","Test":"TestPresentationHardwareListBoundary","Elapsed":0}
+{"Time":"2026-11-04T21:09:57.777868+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation","Output":"FAIL\n"}
+{"Time":"2026-11-04T21:09:57.778617+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation\t0.560s\n"}
+{"Time":"2026-11-04T21:09:57.778641+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation","Elapsed":0.56}

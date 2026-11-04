@@ -22,6 +22,7 @@ type ChuAIFighter struct {
 	FrameFlags, AttackFlags     uint8
 	ChildX, ChildY, ChildGround int16
 	ChildAttackFlags            uint8
+	ChildAttackValue            uint8
 }
 
 type ChuAIState struct {
@@ -45,9 +46,18 @@ var (
 // input-mode clearing, subsequent fighter updates and the shared world RNG;
 // only this returned seed may be passed to the next world consumer.
 func StepChuAI(state ChuAIState) (ChuAIState, error) {
+	if state.Actor.CharacterID != 9 {
+		return state, errors.New("unsupported Chu AI source, difficulty or target cursor")
+	}
+	return stepFighterAI(state, chooseChuAI)
+}
+
+// stepFighterAI keeps one copy of the original shared driver and behaviors.
+// Character wrappers supply only the reached decision tail.
+func stepFighterAI(state ChuAIState, decide func(*ChuAIState, ChuAIFighter, ChuAIFighter)) (ChuAIState, error) {
 	original := state
 	selfIndex, ok := chuAIIndex(state.ObjectID)
-	if !ok || state.Actor.CharacterID != 9 || state.Difficulty > 6 || state.Difficulty&1 != 0 || state.Actor.TargetCursor&1 != 0 {
+	if !ok || state.Actor.CharacterID > 10 || state.Difficulty > 6 || state.Difficulty&1 != 0 || state.Actor.TargetCursor&1 != 0 {
 		return state, errors.New("unsupported Chu AI source, difficulty or target cursor")
 	}
 	a := &state.Actor
@@ -82,7 +92,7 @@ func StepChuAI(state ChuAIState) (ChuAIState, error) {
 		}
 		threshold := chuAIThreshold(chuAIDecisionThresholds[state.Difficulty/2], self.Health)
 		if chuAIRandom(&state) < threshold {
-			chooseChuAI(&state, self, target)
+			decide(&state, self, target)
 		}
 		return state, nil
 	}
@@ -152,8 +162,18 @@ func reactChuAI(state *ChuAIState, self, target ChuAIFighter) (bool, error) {
 		}
 		if target.FrameFlags&16 != 0 {
 			if target.AttackFlags&4 != 0 {
+				if a.CharacterID == 5 && chuAIRandom(state)&15 == 0 {
+					setChuAIBase(a, 0, true)
+					a.Request = 1
+					return true, nil
+				}
 				resetChuAIBehavior(a, 0, 4)
 			} else if target.AttackFlags&8 != 0 {
+				if a.CharacterID == 5 && chuAIRandom(state)&15 == 0 {
+					setChuAIBase(a, 2, true)
+					a.Request = 1
+					return true, nil
+				}
 				resetChuAIBehavior(a, 1, 4)
 			}
 		}

@@ -1,0 +1,16 @@
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"# command-line-arguments [command-line-arguments.test]\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/world_objects_test.go:33:48: unknown field Aux0A in struct literal of type WorldObject\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/world_objects_test.go:33:62: unknown field Aux0E in struct literal of type WorldObject\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/world_objects_test.go:34:3: unknown field Aux18 in struct literal of type WorldObject\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/world_objects_test.go:61:10: o.Aux0A undefined (type WorldObject has no field or method Aux0A)\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/world_objects_test.go:63:10: o.Aux0E undefined (type WorldObject has no field or method Aux0E)\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/world_objects_test.go:64:19: o.Aux18 undefined (type WorldObject has no field or method Aux18)\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/world_presentable_test.go:29:15: o.AsMatchOverlay undefined (type WorldObject has no field or method AsMatchOverlay)\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/world_presentable_test.go:32:8: o.MergeMatchOverlay undefined (type WorldObject has no field or method MergeMatchOverlay)\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/world_presentable_test.go:40:15: o.MergeMatchOverlay undefined (type WorldObject has no field or method MergeMatchOverlay)\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/world_presentable_test.go:43:100: o.Aux0A undefined (type WorldObject has no field or method Aux0A)\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/world_presentable_test.go:43:100: too many errors\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-fail"}
+{"Time":"2026-11-04T20:39:00.81171+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-04T20:39:00.811754+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\tcommand-line-arguments [build failed]\n"}
+{"Time":"2026-11-04T20:39:00.811759+08:00","Action":"fail","Package":"command-line-arguments","Elapsed":0,"FailedBuild":"command-line-arguments [command-line-arguments.test]"}

@@ -1,0 +1,16 @@
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"# command-line-arguments [command-line-arguments.test]\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/match_overlays_test.go:51:30: undefined: MatchOverlayObject\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/match_overlays_test.go:54:9: undefined: MatchOverlayObject\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/match_overlays_test.go:59:28: undefined: MatchOverlayObject\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/match_overlays_test.go:83:89: undefined: MatchOverlayState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/match_overlays_test.go:87:7: undefined: MatchOverlayState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/match_overlays_test.go:94:65: undefined: MatchShadowState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/match_overlays_test.go:94:94: undefined: MatchShadowOwner\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/match_overlays_test.go:97:7: undefined: MatchShadowState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/match_overlays_test.go:104:28: undefined: MatchShadowOwner\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/match_overlays_test.go:112:119: undefined: MatchOverlayOutcome\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/match_overlays_test.go:104:28: too many errors\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-fail"}
+{"Time":"2026-11-04T20:06:27.411104+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-04T20:06:27.411138+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\tcommand-line-arguments [build failed]\n"}
+{"Time":"2026-11-04T20:06:27.411145+08:00","Action":"fail","Package":"command-line-arguments","Elapsed":0,"FailedBuild":"command-line-arguments [command-line-arguments.test]"}

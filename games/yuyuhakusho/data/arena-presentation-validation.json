@@ -1,0 +1,165 @@
+{
+  "verified_at_utc": "2026-11-04T15:29:46.783044+00:00",
+  "pass": true,
+  "scope": "Reusable default-arena indexed A/B/window row raster and normal-mode sprite/background composition; no emulator or RAM input at runtime",
+  "goal_complete": false,
+  "release_ready": false,
+  "test_first": "Failure scenarios and all three tests preceded arena.go; red log records missing new ArenaCatalog/DecodeArenaCatalog/IndexedPlane/ArenaFrame/ArenaRow symbols",
+  "coverage": {
+    "natural_frames": 20,
+    "observed_rows": 4480,
+    "original_baseline_frames_unchanged": 3600,
+    "background_pixels_compared": 1354388,
+    "sprite_covered_pixels": 79212,
+    "complete_composite_pixels_compared": 1433600,
+    "pixel_mismatches": 0,
+    "indexed_arena_tiles": 406,
+    "plane_cells": 4096,
+    "priority_transparency_blank_combinations": 128,
+    "invalid_catalog_cases": 8,
+    "invalid_frame_cases": 5,
+    "truncated_sprite_case": 1,
+    "natural_visible_rows": [
+      14,
+      207
+    ],
+    "natural_window_rows": 680,
+    "natural_vertical_values": [
+      30,
+      31,
+      32,
+      35,
+      36,
+      37,
+      40
+    ],
+    "natural_visible_plane_flip_samples": {
+      "B_horizontal": 314025,
+      "B_none": 857685,
+      "A_horizontal": 512351,
+      "A_none": 509681,
+      "B_both": 37081,
+      "B_vertical": 32809,
+      "A_vertical": 928,
+      "A_both": 1040
+    },
+    "natural_limited_color_rows": 0
+  },
+  "runtime_api": [
+    "DecodeArenaCatalog([]byte) (ArenaCatalog,error)",
+    "RasterizeArena(ArenaCatalog,ArenaFrame) (ArenaRaster,error)",
+    "CompositeArenaSprites(ArenaRaster,Raster) (Raster,error)"
+  ],
+  "logs": [
+    {
+      "path": "games/yuyuhakusho/data/arena-presentation-red.jsonl",
+      "sha256": "a1db65a38c44807de0fd110486857001c87ca9bdd738be098d3547bd1c9e1e1d",
+      "bytes": 4003,
+      "phase": "red",
+      "result": "fail",
+      "elapsed_seconds": 0,
+      "top_level_tests": []
+    },
+    {
+      "path": "games/yuyuhakusho/data/arena-presentation-native.jsonl",
+      "sha256": "53625d76e305908630f5b3ef923a41f906e41e1dca09552aecd2e23d3ec6fa61",
+      "bytes": 3654,
+      "phase": "native",
+      "result": "pass",
+      "elapsed_seconds": 3.553,
+      "top_level_tests": [
+        "TestArenaIndexedAgainstOriginalVideo",
+        "TestArenaPriorityOpaqueBlackAndBlankRows",
+        "TestArenaRejectsInvalidDataWithoutMutation"
+      ]
+    },
+    {
+      "path": "games/yuyuhakusho/data/arena-presentation-wasm.jsonl",
+      "sha256": "4606098c819a5f5280c4e4c93b857e23bdbe09b2e73e1ec3b44d30b3f19c0ded",
+      "bytes": 3651,
+      "phase": "wasm",
+      "result": "pass",
+      "elapsed_seconds": 0.753,
+      "top_level_tests": [
+        "TestArenaIndexedAgainstOriginalVideo",
+        "TestArenaPriorityOpaqueBlackAndBlankRows",
+        "TestArenaRejectsInvalidDataWithoutMutation"
+      ]
+    },
+    {
+      "path": "games/yuyuhakusho/data/arena-presentation-vet.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "phase": "vet",
+      "result": "pass"
+    }
+  ],
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/presentation/arena.go",
+      "sha256": "d3af67253cf288ebaf4d736c2e40209f115eebf13d9d8ca782ffb3063976363a",
+      "bytes": 8099
+    },
+    {
+      "path": "games/yuyuhakusho/presentation/arena_test.go",
+      "sha256": "83040b384e0ef89067c8f4489f2d72a81ab5fa51743f8b2b4cf82dd98c4fe0d5",
+      "bytes": 11653
+    },
+    {
+      "path": "games/yuyuhakusho/presentation/raster.go",
+      "sha256": "1fbbad72d09a0e13ce9cdc8ad65a77ad958c44b04ac4c76947bcd648eabfaeb4",
+      "bytes": 3203
+    },
+    {
+      "path": "games/yuyuhakusho/presentation/ARENA_VERIFICATION.md",
+      "sha256": "ae0c7090b529c2e3dd10b7ca48a43739d4575053366644a52f5d24a5047c3d39",
+      "bytes": 4786
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/arena-composition-core-source.txt",
+      "sha256": "a56c13054a58e0ea5e3e3a4de489007f4eb02aff7d6c78e385d51f3268f71a4b",
+      "bytes": 3339
+    }
+  ],
+  "reused_evidence": [
+    {
+      "path": "games/yuyuhakusho/data/arena-assets-default.json.gz",
+      "sha256": "8b3626b608d90ac990176370f665b42499dc404546f955aafd0beeee5cd35542",
+      "bytes": 10965
+    },
+    {
+      "path": "games/yuyuhakusho/data/arena-assets-reference.json.gz",
+      "sha256": "878558a7f9b964efca0d05a92f3025ba27376e489260ea5bc5868813547ce403",
+      "bytes": 1465833
+    },
+    {
+      "path": "games/yuyuhakusho/data/arena-assets-reference-manifest.json",
+      "sha256": "af6d902d84705a593c799a108b3880e6d84b66f2eb5f567dbec3e026488548b8",
+      "bytes": 2572
+    },
+    {
+      "path": "games/yuyuhakusho/data/arena-assets-validation.json",
+      "sha256": "4597d6e4508ab730d395b832f4dadee778a8b3339d17bd8ae04ac87fc0b60604",
+      "bytes": 7229
+    }
+  ],
+  "limits": [
+    "Only default arena A/B data is a reusable asset; reference window and SAT are converted to indexed inputs in tests only, never exported into fresh match state",
+    "Fresh HUD, portraits, names and dynamic window material remain to be independently constructed",
+    "World-to-row raster timing is not recovered by this pure compositor; all row inputs remain explicit",
+    "No general VDP, shadow/highlight, interlace, column scrolling, partial horizontal windows, scanline sprite overflow or other arenas",
+    "Limited color conversion reuses existing helper, with no natural visible-row coverage in this batch",
+    "Not a platform/browser, networking, controller, audio or publication acceptance"
+  ],
+  "cleanup": {
+    "new_large_media_copies": 0,
+    "private_temporary_profiles_or_caches": 0,
+    "shared_go_cache": "retained for root integration"
+  },
+  "source_excerpt_formatting": {
+    "previous_sha256": "b3e89a4af56ee7366d8bf1c2e11d6e56129411e68ff355efdb90a8f5053ea0da",
+    "current_sha256": "a56c13054a58e0ea5e3e3a4de489007f4eb02aff7d6c78e385d51f3268f71a4b",
+    "change": "Omit trailing line-number separator on blank source lines; all source payloads rechecked against fixed original core",
+    "original_core_source_unchanged": true
+  }
+}

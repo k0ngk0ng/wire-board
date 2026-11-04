@@ -1,0 +1,1 @@
+go: creating work dir: stat /Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp: no such file or directory

@@ -1,0 +1,27 @@
+{
+  "pass": true,
+  "two_complete_original_runs_identical": true,
+  "each_run_baseline_frames": 3600,
+  "files": [
+    {
+      "name": "hud-assets.json.gz",
+      "sha256": "4c26a97efb8901db2c6ed791d3cb99ebf7e9efcbeaed2cc13e8bd54f22bdc50c",
+      "bytes": 5395
+    },
+    {
+      "name": "hud-assets-manifest.json",
+      "sha256": "40fbae466e8b0175697572c3526b6bd7b5f17647b42a2b2d9de9c4ff0170b611",
+      "bytes": 943
+    },
+    {
+      "name": "hud-reference.json.gz",
+      "sha256": "1e329e932cc78fc84ba5bfa07e0ba4e0ac60d27fe604547cee65a816b3bd4868",
+      "bytes": 9039
+    },
+    {
+      "name": "hud-reference-manifest.json",
+      "sha256": "eee5ce1d7d26bdd804a8d70fe57ffbae780859517014a6fe9453f3442edf7829",
+      "bytes": 1085
+    }
+  ]
+}

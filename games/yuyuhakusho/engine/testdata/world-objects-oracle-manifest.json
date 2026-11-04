@@ -1,0 +1,26 @@
+{
+  "scope": "Original 0x3556 complete clear with logical prefix no larger than256 bytes",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "213f5beb4cf596fbee29c14fd09b9eb7abe6dab71c707e14b1a824285892d455",
+  "records": 61,
+  "counts": {
+    "64": 7,
+    "128": 54
+  },
+  "fixture_sha256": "149c43a64799c3a3c8640f39d2527e6011e481d8bc8161bf93e65a3d1f9372f9",
+  "gzip_sha256": "7cb95e647ac02f9096cfdb23781e8e604cc4e8a7533718947decd0c3d5a9e75f",
+  "frames_match_original_core": true,
+  "excluded_natural": [],
+  "incomplete_calls": 0,
+  "errors": [],
+  "pass": true
+}

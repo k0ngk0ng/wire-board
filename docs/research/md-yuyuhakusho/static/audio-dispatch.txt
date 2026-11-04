@@ -1,0 +1,169 @@
+route=direct-ghidra-headless; REA raw 68000 unsupported
+language=68000:BE:32:default
+source=MD Yu Yu Hakusho Japan; static reachable instructions only
+
+seeds=37cb4 scope=0x37cb4..0x37f7f
+00037cb4 moveq 0x0,D7
+00037cb6 move.b (0xfffff809).w,D7b
+00037cba move.b #-0x1,(0xfffff809).w
+00037cc0 tst.b D7b
+00037cc2 beq.w 0x00038a7a
+00037cc6 cmpi.b #-0x1,D7b
+00037cca beq.b 0x00037d0c
+00037ccc cmpi.b #0x1,D7b
+00037cd0 bcs.w 0x00038a2c
+00037cd4 cmpi.b #0x6,D7b
+00037cd8 bcs.w 0x00037d0e
+00037cdc cmpi.b #-0x80,D7b
+00037ce0 bcs.w 0x00037d4a
+00037ce4 cmpi.b #-0x7f,D7b
+00037ce8 bcs.w 0x00038628
+00037cec cmpi.b #-0x60,D7b
+00037cf0 bcs.w 0x000384d8
+00037cf4 cmpi.b #-0x54,D7b
+00037cf8 bcs.w 0x0003863e
+00037cfc cmpi.b #-0x10,D7b
+00037d00 bcs.w 0x00038742
+00037d04 cmpi.b #-0xf,D7b
+00037d08 bcs.w 0x00037d34
+00037d0c rts
+00037d0e cmpi.b #0x6,D7b
+00037d12 bcs.w 0x00037d18
+00037d16 rts
+00037d18 subq.b #0x1,D7b
+00037d1a lsl.w #0x2,D7w
+00037d1c jmp (0x37d20,PC,D7w*0x1)
+00037d34 cmpi.b #-0xf,D7b
+00037d38 bcs.w 0x00037d3e
+00037d3c rts
+00037d3e subi.b #-0x10,D7b
+00037d42 addi.b #0x7a,D7b
+00037d46 bra.w 0x00037d56
+00037d4a cmpi.b #-0x80,D7b
+00037d4e bcs.w 0x00037d54
+00037d52 rts
+00037d54 subq.b #0x6,D7b
+00037d56 andi.w #0xff,D7w
+00037d5a lsl.w #0x3,D7w
+00037d5c lea (0x380a8).l,A0
+00037d62 lea (0x0,A0,D7w*0x1),A0
+00037d66 btst.b #0x0,(0x5,A0)
+00037d6c bne.w 0x00037e5e
+00037d70 move SR,-(SP)
+00037d72 ori #0x700,SR
+00037d76 move.w #0x100,(0x00a11100).l
+00037d7e bset.b #0x0,(0x00a11100).l
+00037d86 bne.b 0x00037d7e
+00037d88 move.b (0x00a01ffc).l,D1b
+00037d8e move.b (0x00a01f87).l,D2b
+00037d94 move.b (0x00a01fa7).l,D3b
+00037d9a move.w #0x0,(0x00a11100).l
+00037da2 move (SP)+,SR
+00037da4 move.b D1b,D6b
+00037da6 move.b (0x5,A0),D0b
+00037daa andi.b #-0x40,D0b
+00037dae btst.l #0x0,D1
+00037db2 bne.w 0x00037dc2
+00037db6 andi.b #-0x40,D1b
+00037dba cmp.b D1b,D0b
+00037dbc bcc.w 0x00037dd8
+00037dc0 rts
+00037dc2 andi.b #-0x40,D2b
+00037dc6 andi.b #-0x40,D3b
+00037dca cmp.b D2b,D0b
+00037dcc bcs.w 0x00037e5c
+00037dd0 cmp.b D3b,D0b
+00037dd2 bcc.w 0x00037dd8
+00037dd6 rts
+00037dd8 move SR,-(SP)
+00037dda ori #0x700,SR
+00037dde move.w #0x100,(0x00a11100).l
+00037de6 bset.b #0x0,(0x00a11100).l
+00037dee bne.b 0x00037de6
+00037df0 move.b #-0x80,(0x00a01ffd).l
+00037df8 move.b (0x0,A0),(0x00a01fe8).l
+00037e00 move.b (0x1,A0),(0x00a01fe9).l
+00037e08 move.b (0x2,A0),(0x00a01fe6).l
+00037e10 move.b (0x3,A0),(0x00a01fe7).l
+00037e18 move.b (0x4,A0),(0x00a01ffe).l
+00037e20 move.b (0x5,A0),(0x00a01ffb).l
+00037e28 move.b (0x6,A0),(0x00a01ffa).l
+00037e30 move.w #0x0,(0x00a11100).l
+00037e38 move (SP)+,SR
+00037e3a btst.b #0x5,(0x5,A0)
+00037e40 beq.w 0x00037e5c
+00037e44 btst.l #0x5,D6
+00037e48 bne.w 0x00037e5c
+00037e4c cmpi.b #0x2,(0xfffff82b).w
+00037e52 beq.w 0x00037e5c
+00037e56 move.b #0x1,(0xfffff82b).w
+00037e5c rts
+00037e5e move SR,-(SP)
+00037e60 ori #0x700,SR
+00037e64 move.w #0x100,(0x00a11100).l
+00037e6c bset.b #0x0,(0x00a11100).l
+00037e74 bne.b 0x00037e6c
+00037e76 move.b (0x00a01ffc).l,D1b
+00037e7c move.b (0x00a01f87).l,D2b
+00037e82 move.b (0x00a01fa7).l,D3b
+00037e88 move.b (0x00a01f86).l,D4b
+00037e8e move.b (0x00a01fa6).l,D5b
+00037e94 move.w #0x0,(0x00a11100).l
+00037e9c move (SP)+,SR
+00037e9e move.b D1b,D6b
+00037ea0 move.b (0x5,A0),D0b
+00037ea4 andi.b #-0x40,D0b
+00037ea8 btst.l #0x0,D1
+00037eac bne.w 0x00037eba
+00037eb0 andi.b #-0x40,D1b
+00037eb4 cmp.b D1b,D0b
+00037eb6 bcs.w 0x00037eea
+00037eba andi.b #-0x40,D2b
+00037ebe andi.b #-0x40,D3b
+00037ec2 move.b (0x6,A0),D1b
+00037ec6 andi.b #-0x40,D1b
+00037eca beq.w 0x00037eec
+00037ece cmpi.b #-0x40,D1b
+00037ed2 beq.w 0x00037eec
+00037ed6 tst.b D1b
+00037ed8 bpl.w 0x00037ee4
+00037edc cmp.b D2b,D0b
+00037ede bcc.w 0x00037f1e
+00037ee2 rts
+00037ee4 cmp.b D3b,D0b
+00037ee6 bcc.w 0x00037fce
+00037eea rts
+00037eec tst.b D4b
+00037eee beq.w 0x00037f1e
+00037ef2 tst.b D5b
+00037ef4 beq.w 0x00037fce
+00037ef8 btst.b #0x0,(0xfffff82c).w
+00037efe bne.w 0x00037f10
+00037f02 cmp.b D2b,D0b
+00037f04 bcc.w 0x00037f1e
+00037f08 cmp.b D3b,D0b
+00037f0a bcc.w 0x00037fce
+00037f0e rts
+00037f10 cmp.b D3b,D0b
+00037f12 bcc.w 0x00037fce
+00037f16 cmp.b D2b,D0b
+00037f18 bcc.w 0x00037f1e
+00037f1c rts
+00037f1e bset.b #0x0,(0xfffff82c).w
+00037f24 bsr.w 0x0003807e
+00037f28 move SR,-(SP)
+00037f2a ori #0x700,SR
+00037f2e move.w #0x100,(0x00a11100).l
+00037f36 bset.b #0x0,(0x00a11100).l
+00037f3e bne.b 0x00037f36
+00037f40 btst.l #0x0,D6
+00037f44 bne.w 0x00037f58
+00037f48 move.b #-0x80,(0x00a01ffe).l
+00037f50 move.b #-0x80,(0x00a01ffd).l
+00037f58 move.b #-0x80,(0x00a01f86).l
+00037f60 move.b (0x0,A0),(0x00a01f80).l
+00037f68 move.b (0x1,A0),(0x00a01f81).l
+00037f70 move.b D2b,(0x00a01f82).l
+00037f76 move.b D3b,(0x00a01f83).l
+00037f7c move.b D4b,(0x00a01f84).l
+printed_instructions=163

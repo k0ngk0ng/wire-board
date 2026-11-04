@@ -1,0 +1,22 @@
+{
+  "scope": "Derived representative existing original-CPU cases, not a new execution or world simulation",
+  "source": {
+    "fixture": "games/yuyuhakusho/engine/testdata/default-arena-boundaries.json.gz",
+    "gzip_sha256": "acce9eae3555b0fe6af0b60d6012a4696979baf76bab262de11700c4364a39ed",
+    "fixture_sha256": "9be9e468eb5874c2a326d9ca2f7b2f60fc7066022c581efd187fa8c45c136602",
+    "manifest": "games/yuyuhakusho/engine/testdata/default-arena-boundaries-manifest.json",
+    "manifest_sha256": "d52f128d48b2d6d83757a50a741907cf9387cbe219061de8a1c536cec6e386ef"
+  },
+  "records": 59,
+  "kind_counts": {
+    "sun": 16,
+    "moon": 18,
+    "spark": 25
+  },
+  "selection": "First two rows per(kind,stage,pause-sign,slow-nonzero,draw,clear-prefix,spawned); overlay only intro/intro-part/draw/win/character/team/partner/shadow; sky only sun/moon/spark, reference-only rows excluded",
+  "derive_script_sha256": "017f97f585d988bbfd96b683c346e94eb2dda7293ffc43a5bdc4f07c9b249412",
+  "fixture_sha256": "8480b6eefb81e6c40c2be251d3b5368630b3024b1ad2e0f8032c6f2b5b2d1448",
+  "gzip_sha256": "2367926ae9aa7a06ab0751b10d671c7d85c437e0ea8fa5785175803dff767437",
+  "frames_match_original_core": true,
+  "pass": true
+}

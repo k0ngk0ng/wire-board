@@ -1,0 +1,16 @@
+{"Time":"2026-11-04T23:29:10.573003+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine"}
+{"Time":"2026-11-04T23:29:10.781107+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestChuWorldStartCellsOriginal"}
+{"Time":"2026-11-04T23:29:10.781139+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestChuWorldStartCellsOriginal","Output":"=== RUN   TestChuWorldStartCellsOriginal\n"}
+{"Time":"2026-11-04T23:29:10.82574+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestChuWorldStartCellsOriginal","Output":"--- PASS: TestChuWorldStartCellsOriginal (0.04s)\n"}
+{"Time":"2026-11-04T23:29:10.825772+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestChuWorldStartCellsOriginal","Elapsed":0.04}
+{"Time":"2026-11-04T23:29:10.825789+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestChuWorldStartCellsBoundaries"}
+{"Time":"2026-11-04T23:29:10.825792+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestChuWorldStartCellsBoundaries","Output":"=== RUN   TestChuWorldStartCellsBoundaries\n"}
+{"Time":"2026-11-04T23:29:10.82581+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestChuWorldStartCellsBoundaries","Output":"--- PASS: TestChuWorldStartCellsBoundaries (0.00s)\n"}
+{"Time":"2026-11-04T23:29:10.825817+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestChuWorldStartCellsBoundaries","Elapsed":0}
+{"Time":"2026-11-04T23:29:10.825824+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestChuWorldStartCellsManagerIntegration"}
+{"Time":"2026-11-04T23:29:10.825837+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestChuWorldStartCellsManagerIntegration","Output":"=== RUN   TestChuWorldStartCellsManagerIntegration\n"}
+{"Time":"2026-11-04T23:29:11.08043+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestChuWorldStartCellsManagerIntegration","Output":"--- PASS: TestChuWorldStartCellsManagerIntegration (0.25s)\n"}
+{"Time":"2026-11-04T23:29:11.080451+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestChuWorldStartCellsManagerIntegration","Elapsed":0.25}
+{"Time":"2026-11-04T23:29:11.080548+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"PASS\n"}
+{"Time":"2026-11-04T23:29:12.099764+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine\t1.526s\n"}
+{"Time":"2026-11-04T23:29:12.099893+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Elapsed":1.5270000000000001}

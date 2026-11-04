@@ -1,0 +1,21 @@
+Existing direct-Ghidra static excerpt, not a new disassembler run.
+source=docs/research/md-yuyuhakusho/static/chu-projectile-helpers.txt
+source_sha256=a8a5545bb2c6b283e554cdbf2c0b8fff09a1f88f9ef9ee87ef4586300c44097a
+ROM range0x3556..0x3575 bytes=204d7200302800046604303c0040e848534020c120c120c120c151c8fff64e75
+ROM range sha256=a2c2a41ca726fac9ff258d518e01e8cc5db30530c6b9e89ecefc2a1aedd1ee18
+
+seeds=3556 scope=0x3556..0x357f
+00003556 movea.l A5,A0
+00003558 moveq 0x0,D1
+0000355a move.w (0x4,A0),D0w
+0000355e bne.b 0x00003564
+00003560 move.w #0x40,D0w
+00003564 lsr.w #0x4,D0w
+00003566 subq.w #0x1,D0w
+00003568 move.l D1,(A0)+
+0000356a move.l D1,(A0)+
+0000356c move.l D1,(A0)+
+0000356e move.l D1,(A0)+
+00003570 dbf D0w,0x00003568
+00003574 rts
+printed_instructions=13

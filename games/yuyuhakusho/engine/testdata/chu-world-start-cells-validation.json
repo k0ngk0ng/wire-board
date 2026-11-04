@@ -1,0 +1,138 @@
+{
+  "schema": 1,
+  "pass": true,
+  "scope": "FE68 shared E600..EC00 words materialization plus fresh manager integration; not complete HUD hardware rendering",
+  "test_first": {
+    "failure_scenarios_before_implementation": true,
+    "test_before_implementation": true,
+    "test_sha256_at_red": "2134c1c065c9567d2571063e2fbd480a78522a637ec0b0ba86b879fc850942e7",
+    "failure_scenarios_document_sha256_at_red": "f8942567d9fe8bcd5fd299b490de0270f455c043b3c9fdd247f03e20d1baf5f0",
+    "red_path": "games/yuyuhakusho/engine/testdata/chu-world-start-cells-red.jsonl",
+    "red_sha256": "a365b93d58c7b4a4875d2df088fb513bd46c738ac1f55e2f4a6aea151935f8b9",
+    "observed_failure": "undefined: matchStartCells"
+  },
+  "original_evidence": {
+    "fixture_path": "games/yuyuhakusho/engine/testdata/match-start-cells.json.gz",
+    "gzip_sha256": "a027d7a2e5a596938d1c60c19f3778d944513d0660fd38b16f9d7c66e2c77bdd",
+    "fixture_sha256": "df3c8e2274bc08ba08fc5bcde0a6194dbbcd2a58de708632d6557e9f42ef9489",
+    "manifest_path": "games/yuyuhakusho/engine/testdata/match-start-cells-manifest.json",
+    "manifest_sha256": "e85b42dc2d1c23c25d46d305ef02fd0311437cbe891ad1c3849dcb4f7ae7c104",
+    "natural_calls": 6,
+    "isolated_calls": 121,
+    "complete_cell_bytes_per_call": 1536,
+    "unobserved_baseline_frames": 3600,
+    "frames_match_original_core": true,
+    "identity": {
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+      "core_name": "Genesis Plus GX",
+      "core_version": "v1.7.460bee4c",
+      "fps": 59.92274340431231,
+      "ram_bytes": 65536,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "teamplayer": false
+    }
+  },
+  "integration": {
+    "fresh_configurations": 6,
+    "player_counts": [
+      2,
+      3,
+      4
+    ],
+    "controller_modes": [
+      "explicit computers",
+      "explicit human channels"
+    ],
+    "unready_and_paused_preserve_cells": true,
+    "late_invalid_hud_offset_rolls_back_full_world": true,
+    "diagnostic_offsets": [
+      1,
+      1534,
+      65534
+    ],
+    "diagnostic_offsets_are_cpu_oracles": false,
+    "normal_words_target_base": "E600",
+    "subsequent_fighter_hud_view_base": "E602"
+  },
+  "verification": {
+    "native": {
+      "path": "games/yuyuhakusho/engine/testdata/chu-world-start-cells-native.jsonl",
+      "sha256": "3c03aac17d0ffb6ad2978a4b3c536dd666e3c2235231bdcc1f1e0630dae8104c",
+      "top_level_tests": [
+        "TestChuWorldStartCellsOriginal",
+        "TestChuWorldStartCellsBoundaries",
+        "TestChuWorldStartCellsManagerIntegration"
+      ],
+      "elapsed_seconds": 1.5270000000000001,
+      "pass": true,
+      "source_boundary": "final bound source including WorldDraw payload extension"
+    },
+    "wasm": {
+      "path": "games/yuyuhakusho/engine/testdata/chu-world-start-cells-wasm.jsonl",
+      "sha256": "289c81e49f75e7d80066a36b3edf448f5da6f0728f97495ce556d72b59eff858",
+      "top_level_tests": [
+        "TestChuWorldStartCellsOriginal",
+        "TestChuWorldStartCellsBoundaries",
+        "TestChuWorldStartCellsManagerIntegration"
+      ],
+      "elapsed_seconds": 0.228,
+      "pass": true,
+      "source_boundary": "final bound source including WorldDraw payload extension"
+    },
+    "regression-native": {
+      "path": "games/yuyuhakusho/engine/testdata/chu-world-start-cells-regression-native.jsonl",
+      "sha256": "9f0b2659ed71ed4e15722c2fa754d45a1bb84859010b170e60c009d9fb730480",
+      "top_level_tests": [
+        "TestChuWorldStartCellsOriginal",
+        "TestChuWorldStartCellsBoundaries",
+        "TestChuWorldStartCellsManagerIntegration",
+        "TestChuWorldOriginalObjectPasses",
+        "TestChuWorldSingleInitialMatch",
+        "TestChuWorldFutureSlotsAndSavedStride",
+        "TestChuWorldErrorsAreAtomic",
+        "TestChuWorldRuleBundle"
+      ],
+      "elapsed_seconds": 110.79,
+      "pass": true,
+      "source_boundary": "before later WorldDraw payload extension"
+    },
+    "regression-wasm": {
+      "path": "games/yuyuhakusho/engine/testdata/chu-world-start-cells-regression-wasm.jsonl",
+      "sha256": "e802fbc201e791aa8e1f603fe6433805a141c92ed2df5c860f7af7643fe35104",
+      "top_level_tests": [
+        "TestChuWorldStartCellsOriginal",
+        "TestChuWorldStartCellsBoundaries",
+        "TestChuWorldStartCellsManagerIntegration",
+        "TestChuWorldOriginalObjectPasses",
+        "TestChuWorldSingleInitialMatch",
+        "TestChuWorldFutureSlotsAndSavedStride",
+        "TestChuWorldErrorsAreAtomic",
+        "TestChuWorldRuleBundle"
+      ],
+      "elapsed_seconds": 29.852,
+      "pass": true,
+      "source_boundary": "before later WorldDraw payload extension"
+    }
+  },
+  "source_sha256": {
+    "games/yuyuhakusho/engine/chu_world.go": "c79822fc7c0b6b6284bbe22ecf309f3517ce7cde503f92e64e45aeb6e66c90f3",
+    "games/yuyuhakusho/engine/match_start.go": "055f98de7c8666ba0c68504e3cb3f31601d0d2496bd2fe79fabb2bec6e5563ad",
+    "games/yuyuhakusho/engine/chu_session.go": "002f6cc7718a58351af016f4213cfc918696df09be16aa7caf387c3713afa33d",
+    "games/yuyuhakusho/engine/world_draw.go": "e623738a8fad5eb5605c5e83356858d9fa0175a34b325405dbc34aef78fb8328",
+    "games/yuyuhakusho/engine/chu_world_start_cells_test.go": "2134c1c065c9567d2571063e2fbd480a78522a637ec0b0ba86b879fc850942e7",
+    "games/yuyuhakusho/engine/CHU_WORLD_START_CELLS_VERIFICATION.md": "76e7f1d0801a362402e7c1ac21928c2cf45f96b8e2f0814d9225ed66286de587",
+    "scripts/yuyuhakusho/capture_match_start_cells.py": "d26ac278754cbbbe0298ee06196780477be4b4cb2094d1a5dbcd0226eff61c93",
+    "scripts/yuyuhakusho/reference.py": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81"
+  },
+  "limits": [
+    "Name glyph raster FDBE→0FE0, portraits, window plane, VRAM and DMA remain presentation boundary; no complete HUD pixel claim.",
+    "Original-world 4758-round regression logs preceded the later WorldDraw event extension; only the refreshed focused three tests bind the final source listed here.",
+    "No emulator or RAM snapshot is added to production."
+  ],
+  "cleanup": {
+    "retained": "normative fixture/manifests, real preimplementation red, final focused and baseline regression logs; temporary capture directory remains within worktree",
+    "shared_caches_deleted": false,
+    "tests_used_existing_shared_go_cache": true
+  }
+}

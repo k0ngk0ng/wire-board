@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/check_local_player.py", line 9, in <module>
+    from serve_local_player import build, PlayerHandler, ROOT
+ModuleNotFoundError: No module named 'serve_local_player'
