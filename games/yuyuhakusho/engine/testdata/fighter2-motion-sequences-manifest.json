@@ -1,0 +1,73 @@
+{
+  "pass": true,
+  "scope": "Single initial state; original clock plus actual readonly animation timing records",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "df3da59d1f86704588e8df08acc381aa8df61ca7686b3190d78b3103688874db",
+  "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+  "records": 18,
+  "calls": 782,
+  "kind_counts": {
+    "15": 50,
+    "17": 66,
+    "30": 216,
+    "31": 132,
+    "32": 318
+  },
+  "character_counts": {
+    "2": 782
+  },
+  "allocation_attempts": 18,
+  "external_queue_calls": 0,
+  "fixture_sha256": "da81cef786e2e72401cde27b630823c17b2d4ca19e786c6d7fa656d616ec6718",
+  "gzip_sha256": "570a53e9d054ced18a4876d4968cfa020fd71ee0eaeefbeffda99bc46437f84b",
+  "baselines": [
+    {
+      "input": "docs/research/md-yuyuhakusho/source2-next-inputs.json",
+      "input_sha256": "43a1cab4f2147616db4798cd5ab88d6c208f2311d5b99468816f3265d9fee596",
+      "reference": "games/yuyuhakusho/engine/testdata/fighter2-attacks-reference-frames.json",
+      "reference_raw_sha256": "43c15a7d09b8244d4d6cea5b2b90a23673794ccd5f7effb33e66b39452d69338",
+      "reference_file_sha256": "43c15a7d09b8244d4d6cea5b2b90a23673794ccd5f7effb33e66b39452d69338",
+      "reference_manifest": "games/yuyuhakusho/engine/testdata/fighter2-attacks-reference-manifest.json",
+      "reference_manifest_sha256": "2a8fae219a3da333fa7cf1b6c572d57e411ce5baa4f0cddaf6c37ad9532620bf",
+      "video_steps": 3600,
+      "all_ram_video_match": true
+    },
+    {
+      "input": "games/yuyuhakusho/engine/testdata/fighter2-projectile-inputs.json",
+      "input_sha256": "90d7d03e229a1cdd4eac98273f867f3c8118a34cfcdbe275d1932e630c529af8",
+      "reference": "games/yuyuhakusho/engine/testdata/fighter2-attacks-special-reference-frames.json",
+      "reference_raw_sha256": "b60a1f74146c783ec55290b5f4f84f73e00f0fd2d3eae4e745dd25d3f4cd0682",
+      "reference_file_sha256": "b60a1f74146c783ec55290b5f4f84f73e00f0fd2d3eae4e745dd25d3f4cd0682",
+      "reference_manifest": "games/yuyuhakusho/engine/testdata/fighter2-attacks-special-reference-manifest.json",
+      "reference_manifest_sha256": "2729d0ce15255955252ffd4fc9f599ade272ee309418855668f121639ccd00c7",
+      "video_steps": 3602,
+      "all_ram_video_match": true
+    }
+  ],
+  "frames_match_original_core": true,
+  "binding": {
+    "source_tag": 2,
+    "animation_set": 795290,
+    "shape_set": 799194,
+    "parameter_pointer": 75068,
+    "source_actor_sha256": "b3db1bbc410febc09d480f933630d8630ddfc7dcaa54719ae5a5ea65e45a0547"
+  },
+  "library_frames": 43,
+  "rng_calls": 0,
+  "private_unknown_ram_writes": 0,
+  "errors": [],
+  "incomplete_calls": 0,
+  "limits": [
+    "Stops at15afc; no shared tail, actor/world/collision or child/FX lifetime.",
+    "Sequences refresh only Duration/Flags from actual immutable animation records, not other tail or shape outputs."
+  ]
+}

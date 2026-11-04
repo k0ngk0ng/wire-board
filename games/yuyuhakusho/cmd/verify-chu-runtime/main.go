@@ -62,7 +62,7 @@ func digest(raw []byte) string { sum := sha256.Sum256(raw); return hex.EncodeToS
 
 func run() error {
 	players := flag.Int("players", 2, "active players,2..4")
-	selection := flag.String("characters", "", "comma-separated source IDs,0/3/9/10; defaults to all9")
+	selection := flag.String("characters", "", "comma-separated source IDs,0/2/3/9/10; defaults to all9")
 	team := flag.Bool("team", false, "four-player teams")
 	out := flag.String("output", ".local/md-yuyuhakusho/runtime-preview", "PNG output inside the worktree")
 	flag.Parse()
@@ -80,7 +80,7 @@ func run() error {
 		}
 		for i, part := range parts {
 			id, err := strconv.ParseUint(strings.TrimSpace(part), 10, 8)
-			if err != nil || (id != 0 && id != 3 && id != 9 && id != 10) {
+			if err != nil || (id != 0 && id != 2 && id != 3 && id != 9 && id != 10) {
 				return fmt.Errorf("unsupported character ID %q", part)
 			}
 			characters[i] = uint8(id)

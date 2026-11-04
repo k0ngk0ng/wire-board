@@ -1,0 +1,12 @@
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"# command-line-arguments [command-line-arguments.test]\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter2_attacks_test.go:159:18: undefined: SelectFighter2Attack\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter2_attacks_test.go:217:18: undefined: SelectFighter2Attack\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter2_attacks_test.go:252:15: undefined: SelectFighter2Attack\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter2_attacks_test.go:263:16: undefined: SelectFighter2Attack\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter2_attacks_test.go:272:15: undefined: SelectFighter2Attack\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter2_attacks_test.go:280:14: undefined: SelectFighter2Attack\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter2_attacks_test.go:342:15: undefined: SelectFighter2Attack\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-fail"}
+{"Time":"2026-11-05T04:44:25.771336+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-05T04:44:25.771366+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\tcommand-line-arguments [build failed]\n"}
+{"Time":"2026-11-05T04:44:25.771375+08:00","Action":"fail","Package":"command-line-arguments","Elapsed":0,"FailedBuild":"command-line-arguments [command-line-arguments.test]"}

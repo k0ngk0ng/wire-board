@@ -169,15 +169,19 @@ func chuWorldLibrariesTest(t *testing.T) ChuWorldLibrary {
 	var commands struct{ Library CommandLibrary }
 	read("../data/command-programs.json", &commands)
 	library.Commands = commands.Library
-	for _, path := range []string{"../data/animation-catalog.json.gz", "../data/chu-projectile-animation.json"} {
+	for _, path := range []string{"../data/animation-catalog.json.gz", "../data/chu-projectile-animation.json", "../data/fighter2-projectile-rules.json"} {
 		var catalog struct {
 			Frames []struct {
 				Key  AnimationFrameKey
 				Data AnimationRecordData
 			}
+			Animations []struct {
+				Key  AnimationFrameKey
+				Data AnimationRecordData
+			}
 		}
 		read(path, &catalog)
-		for _, frame := range catalog.Frames {
+		for _, frame := range append(catalog.Frames, catalog.Animations...) {
 			library.Animations[frame.Key] = frame.Data
 		}
 	}
@@ -232,6 +236,10 @@ func visitChuWorldTest(t *testing.T, handle func(chuWorldOriginalPass), fixtureN
 		} else if name == "chu-world-fighter3" {
 			wantRecords, wantFrames = 2796, 5500
 		} else if name == "chu-world-fighter3-special" {
+			wantRecords, wantFrames = 1801, 3600
+		} else if name == "chu-world-fighter2" {
+			wantRecords, wantFrames = 3165, 5500
+		} else if name == "chu-world-fighter2-special" {
 			wantRecords, wantFrames = 1801, 3600
 		}
 	}

@@ -1,0 +1,446 @@
+{
+  "schema": 1,
+  "pass": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "checkpoint_commit": "9133ceae",
+  "scope": "Source2 Kuwabara motion1e/1f/20 and shared0f/11 through15afc; child creation only, no tail/child lifetime",
+  "api": "StepFighter2Motion(ChuSpecialMotionState,JumpParameters)(ChuSpecialMotionState,error)",
+  "test_first": {
+    "failure_scenarios_before_capture_and_implementation": true,
+    "initial_failure_scenarios_sha256": "a7d4ff80c9acc4f3e52e712930569f4b63469a827d560d900bcb53ff4e4cd112",
+    "original_cpu_fixtures_before_tests_and_implementation": true,
+    "actual_missing_implementation_red": true,
+    "test_sha256_at_red": "981c63e33db1f8a72754e3a8f1283402c6b82d0e2503467ab121ed426af7f06c",
+    "test_assertions_changed_after_implementation": false,
+    "rule_corrections_after_first_executable_test": 0,
+    "final_cleanup": "Removed trivial bodyValue helper after first native green, then refreshed same four native/Wasm tests against final source"
+  },
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "baselines": [
+    {
+      "input": "docs/research/md-yuyuhakusho/source2-next-inputs.json",
+      "input_sha256": "43a1cab4f2147616db4798cd5ab88d6c208f2311d5b99468816f3265d9fee596",
+      "reference": "games/yuyuhakusho/engine/testdata/fighter2-attacks-reference-frames.json",
+      "reference_raw_sha256": "43c15a7d09b8244d4d6cea5b2b90a23673794ccd5f7effb33e66b39452d69338",
+      "reference_file_sha256": "43c15a7d09b8244d4d6cea5b2b90a23673794ccd5f7effb33e66b39452d69338",
+      "reference_manifest": "games/yuyuhakusho/engine/testdata/fighter2-attacks-reference-manifest.json",
+      "reference_manifest_sha256": "2a8fae219a3da333fa7cf1b6c572d57e411ce5baa4f0cddaf6c37ad9532620bf",
+      "video_steps": 3600,
+      "all_ram_video_match": true
+    },
+    {
+      "input": "games/yuyuhakusho/engine/testdata/fighter2-projectile-inputs.json",
+      "input_sha256": "90d7d03e229a1cdd4eac98273f867f3c8118a34cfcdbe275d1932e630c529af8",
+      "reference": "games/yuyuhakusho/engine/testdata/fighter2-attacks-special-reference-frames.json",
+      "reference_raw_sha256": "b60a1f74146c783ec55290b5f4f84f73e00f0fd2d3eae4e745dd25d3f4cd0682",
+      "reference_file_sha256": "b60a1f74146c783ec55290b5f4f84f73e00f0fd2d3eae4e745dd25d3f4cd0682",
+      "reference_manifest": "games/yuyuhakusho/engine/testdata/fighter2-attacks-special-reference-manifest.json",
+      "reference_manifest_sha256": "2729d0ce15255955252ffd4fc9f599ade272ee309418855668f121639ccd00c7",
+      "video_steps": 3602,
+      "all_ram_video_match": true
+    }
+  ],
+  "actual_source2_initialization_binding": {
+    "source_tag": 2,
+    "animation_set": 795290,
+    "shape_set": 799194,
+    "parameter_pointer": 75068,
+    "source_actor_sha256": "b3db1bbc410febc09d480f933630d8630ddfc7dcaa54719ae5a5ea65e45a0547"
+  },
+  "state_ownership": {
+    "uses_existing_ChuSpecialMotionState_only": true,
+    "new_canonical_fields": 0,
+    "cursor": "Body.Gravity highword; lowword preserved",
+    "1e_offset": "Body.VelocityX highword",
+    "20_shot_speed": "Complete Body.VelocityX long copied and facing-adjusted",
+    "child_speed_and_Power_not_cleared_unless_written": true
+  },
+  "fixtures": [
+    {
+      "name": "fighter2-motion-oracle",
+      "path": "games/yuyuhakusho/engine/testdata/fighter2-motion-oracle.json.gz",
+      "manifest_path": "games/yuyuhakusho/engine/testdata/fighter2-motion-oracle-manifest.json",
+      "manifest_sha256": "a78a065b14224988f63c6a3a9d7b988c909e8bd4139291a1acae78a3f73e4310",
+      "gzip_sha256": "4b41a135ba80a05bb493bb0c991e774e8db0f19c99e60a1cb5537f4adec00526",
+      "fixture_sha256": "51fac5e05a085f52e4bd990b69be4eb32c3493cf2b35d28f6a8657ea981bee29",
+      "records": 252,
+      "calls": 252,
+      "kind_counts_decimal": {
+        "17": 33,
+        "15": 25,
+        "32": 53,
+        "30": 108,
+        "31": 33
+      },
+      "allocation_attempts": 6,
+      "successful_allocations": 6,
+      "external_queue_rows": 0
+    },
+    {
+      "name": "fighter2-motion-boundaries",
+      "path": "games/yuyuhakusho/engine/testdata/fighter2-motion-boundaries.json.gz",
+      "manifest_path": "games/yuyuhakusho/engine/testdata/fighter2-motion-boundaries-manifest.json",
+      "manifest_sha256": "2e8704afde3ccefe82624affbffcc5ac1c489c5d2decfe8af5c9989df332eeee",
+      "gzip_sha256": "e3ad643fcb795954c0960b984f264cca32adf41803c1f18f83511c60b929ebfb",
+      "fixture_sha256": "fdb9a6ca8d2c3c447e60284a3e6b7f43ad4456f31e193c2594ea30f29d2691cf",
+      "records": 3415,
+      "calls": 3415,
+      "kind_counts_decimal": {
+        "30": 484,
+        "31": 1460,
+        "32": 1299,
+        "15": 108,
+        "17": 64
+      },
+      "allocation_attempts": 174,
+      "successful_allocations": 110,
+      "external_queue_rows": 0
+    },
+    {
+      "name": "fighter2-motion-sequences",
+      "path": "games/yuyuhakusho/engine/testdata/fighter2-motion-sequences.json.gz",
+      "manifest_path": "games/yuyuhakusho/engine/testdata/fighter2-motion-sequences-manifest.json",
+      "manifest_sha256": "657011b73b6f109749525b390192b77aea30a9f28d33f8c7dbbda2b7aa967d14",
+      "gzip_sha256": "570a53e9d054ced18a4876d4968cfa020fd71ee0eaeefbeffda99bc46437f84b",
+      "fixture_sha256": "da81cef786e2e72401cde27b630823c17b2d4ca19e786c6d7fa656d616ec6718",
+      "records": 18,
+      "calls": 782,
+      "kind_counts_decimal": {
+        "15": 50,
+        "17": 66,
+        "30": 216,
+        "31": 132,
+        "32": 318
+      },
+      "allocation_attempts": 18,
+      "successful_allocations": 9,
+      "external_queue_rows": 0
+    }
+  ],
+  "test_logs": [
+    {
+      "phase": "red",
+      "path": "games/yuyuhakusho/engine/testdata/fighter2-motion-red.jsonl",
+      "sha256": "29f3177bd875631e8977f9c3aefa04b699643c33ed92031c200d02bbcf295454",
+      "final_action": "fail",
+      "elapsed_seconds": 0,
+      "top_level_tests": [],
+      "scope": "Focused TestFighter2Motion in full engine package"
+    },
+    {
+      "phase": "native",
+      "path": "games/yuyuhakusho/engine/testdata/fighter2-motion-native.jsonl",
+      "sha256": "f509374d01880afaced032fa737d7acb5c0a38a70c1052351fc924902c90aa8b",
+      "final_action": "pass",
+      "elapsed_seconds": 8.99,
+      "top_level_tests": [
+        "TestFighter2MotionOriginalPhases",
+        "TestFighter2MotionRealTimingStreams",
+        "TestFighter2MotionChildPrefixesAndCursor",
+        "TestFighter2MotionErrorsAreAtomic"
+      ],
+      "scope": "Focused TestFighter2Motion in full engine package"
+    },
+    {
+      "phase": "wasm",
+      "path": "games/yuyuhakusho/engine/testdata/fighter2-motion-wasm.jsonl",
+      "sha256": "3df3ba16f84f93432cad399c7f376e104c2dc52efe7d45ac56c8d799f6291c47",
+      "final_action": "pass",
+      "elapsed_seconds": 2.404,
+      "top_level_tests": [
+        "TestFighter2MotionOriginalPhases",
+        "TestFighter2MotionRealTimingStreams",
+        "TestFighter2MotionChildPrefixesAndCursor",
+        "TestFighter2MotionErrorsAreAtomic"
+      ],
+      "scope": "Focused TestFighter2Motion in full engine package"
+    }
+  ],
+  "natural_coverage_hex": {
+    "0f": 25,
+    "11": 33,
+    "1e": 108,
+    "1f": 33,
+    "20": 53
+  },
+  "motion_semantics": {
+    "1e": {
+      "trigger_frame": 4,
+      "trigger_ticks": 0,
+      "child_offset_hex": "100",
+      "behavior_hex": "12dd4",
+      "pose_hex": "0c",
+      "attribute_OR_hex": "4000",
+      "uses_parent_VX_highword_X_offset": true,
+      "old_child_VX_VY_Power_retained": true
+    },
+    "1f": {
+      "displacements_hex": {
+        "4/5": "40000",
+        "6": "20000",
+        "7": "10000"
+      },
+      "stored_parent_VX_never_overwritten": true,
+      "trail_only_frames4_5_every4ticks": true,
+      "frame4_contact_bit0_processed_after_movement": true,
+      "facing_test": "byte nonzero"
+    },
+    "20": {
+      "trigger_frame": 5,
+      "trigger_ticks": [
+        0,
+        1,
+        2
+      ],
+      "VY_constants_hex": [
+        "0",
+        "-30000",
+        "30000"
+      ],
+      "cursor_highword_add_hex": "100",
+      "cursor_exact300_to0": true,
+      "valid_ff00_to0_word_wrap_checked": true,
+      "cursor_and_VY_update_before_busy": true,
+      "slot_rotation_hex": [
+        "200",
+        "300",
+        "100"
+      ],
+      "attribute_OR_hex": "2000",
+      "behavior_hex": "12c96",
+      "pose_hex": "0d",
+      "Y_offset_hex": "-34",
+      "X_offsets_hex": [
+        "38",
+        "-38"
+      ],
+      "whole_parent_VX_copied": true,
+      "old_child_Power_retained": true
+    }
+  },
+  "continuous": {
+    "streams": [
+      {
+        "name": "dash",
+        "pool": "empty",
+        "initial_action_hex": "0xf",
+        "steps": 25,
+        "final_action": 0,
+        "final_pose": 0
+      },
+      {
+        "name": "dash",
+        "pool": "full",
+        "initial_action_hex": "0xf",
+        "steps": 25,
+        "final_action": 0,
+        "final_pose": 0
+      },
+      {
+        "name": "retreat",
+        "pool": "empty",
+        "initial_action_hex": "0x11",
+        "steps": 33,
+        "final_action": 0,
+        "final_pose": 0
+      },
+      {
+        "name": "retreat",
+        "pool": "full",
+        "initial_action_hex": "0x11",
+        "steps": 33,
+        "final_action": 0,
+        "final_pose": 0
+      },
+      {
+        "name": "sword",
+        "pool": "empty",
+        "initial_action_hex": "0x1e",
+        "steps": 54,
+        "final_action": 0,
+        "final_pose": 0
+      },
+      {
+        "name": "sword",
+        "pool": "full",
+        "initial_action_hex": "0x1e",
+        "steps": 54,
+        "final_action": 0,
+        "final_pose": 0
+      },
+      {
+        "name": "sword-busy",
+        "pool": "empty",
+        "initial_action_hex": "0x1e",
+        "steps": 54,
+        "final_action": 0,
+        "final_pose": 0
+      },
+      {
+        "name": "sword-busy",
+        "pool": "full",
+        "initial_action_hex": "0x1e",
+        "steps": 54,
+        "final_action": 0,
+        "final_pose": 0
+      },
+      {
+        "name": "rush-a4",
+        "pool": "empty",
+        "initial_action_hex": "0x1f",
+        "steps": 33,
+        "final_action": 0,
+        "final_pose": 0
+      },
+      {
+        "name": "rush-a4",
+        "pool": "full",
+        "initial_action_hex": "0x1f",
+        "steps": 33,
+        "final_action": 0,
+        "final_pose": 0
+      },
+      {
+        "name": "rush-a5-contact",
+        "pool": "empty",
+        "initial_action_hex": "0x1f",
+        "steps": 33,
+        "final_action": 0,
+        "final_pose": 0
+      },
+      {
+        "name": "rush-a5-contact",
+        "pool": "full",
+        "initial_action_hex": "0x1f",
+        "steps": 33,
+        "final_action": 0,
+        "final_pose": 0
+      },
+      {
+        "name": "scatter-b",
+        "pool": "empty",
+        "initial_action_hex": "0x20",
+        "steps": 53,
+        "final_action": 0,
+        "final_pose": 0
+      },
+      {
+        "name": "scatter-b",
+        "pool": "full",
+        "initial_action_hex": "0x20",
+        "steps": 53,
+        "final_action": 0,
+        "final_pose": 0
+      },
+      {
+        "name": "scatter-a",
+        "pool": "empty",
+        "initial_action_hex": "0x20",
+        "steps": 53,
+        "final_action": 0,
+        "final_pose": 0
+      },
+      {
+        "name": "scatter-a",
+        "pool": "full",
+        "initial_action_hex": "0x20",
+        "steps": 53,
+        "final_action": 0,
+        "final_pose": 0
+      },
+      {
+        "name": "scatter-all-busy",
+        "pool": "empty",
+        "initial_action_hex": "0x20",
+        "steps": 53,
+        "final_action": 0,
+        "final_pose": 0
+      },
+      {
+        "name": "scatter-all-busy",
+        "pool": "full",
+        "initial_action_hex": "0x20",
+        "steps": 53,
+        "final_action": 0,
+        "final_pose": 0
+      }
+    ],
+    "total_streams": 18,
+    "total_complete_motion_steps": 782,
+    "original_clock19c96_vs_StepAnimationClock": true,
+    "readonly_record_frames": 43,
+    "record_refresh_only": [
+      "Clock.Duration",
+      "Clock.Flags"
+    ],
+    "record_selection_from_own_current_pose_index": true,
+    "expected_intermediate_state_fed_back": false,
+    "shared_tail_child_fx_world_callbacks_executed": false,
+    "predeclared_external_input": "None after single initial state"
+  },
+  "audit": {
+    "all_parent_children_FX_bytes_unmasked": true,
+    "private_full_RAM_unknown_writes": 0,
+    "private_stack": "FEC0..FF04 below FF20 statistics",
+    "SP_restored_at15afc": true,
+    "throws_shapes_other_unowned_buffers_unchanged_in_private_RAM_audit": true,
+    "motion_RNG_calls": 0,
+    "pending_sound_request_unchanged": true,
+    "diagnostic_cursor_FX_errors_atomic": true,
+    "normal_busy_is_not_error_and_retains_prior_side_effects": true
+  },
+  "source_sha256": {
+    "games/yuyuhakusho/engine/fighter2_motion.go": "b67ef2363472157538ae898e3240a0e2492045eda064d0d4c3044d5dabed2672",
+    "games/yuyuhakusho/engine/fighter2_motion_test.go": "981c63e33db1f8a72754e3a8f1283402c6b82d0e2503467ab121ed426af7f06c",
+    "games/yuyuhakusho/engine/FIGHTER2_MOTION_VERIFICATION.md": "599a5663e07a7c1da4d5ea27e8ab8f1cdddc69eea32c5165830ba84c83a561f2",
+    "games/yuyuhakusho/engine/fighter0_motion.go": "3fcd2c8280c1383f41198d87ffba62936aaad259acff8413713d4ba18b35cf71",
+    "games/yuyuhakusho/engine/fighter10_motion.go": "120bf695e1e02406d6ba94493d373b59782e606ba939fbfe284bd17b99b8e427",
+    "games/yuyuhakusho/engine/chu_special_motion.go": "5c37d35003f4f983010232d495b6e45143553a36b347edbaf2aa494006839c98",
+    "games/yuyuhakusho/engine/ground_actions.go": "cc6106a696c63bb39293694ed8cc63e04586ceb89e6b04454fb08970aedca80c",
+    "games/yuyuhakusho/engine/animation_clock.go": "fa868c5c160fa22fba71520d80c18e8d1f40217ff9a64c6d90a231eab65f28a4",
+    "games/yuyuhakusho/engine/effects.go": "6a0916fbc4051a0e67988b9cad99e41d9ef778e0e78a7f63d65f5fb35d2f6b18",
+    "games/yuyuhakusho/engine/jump.go": "4d04cd8fc08edde75a5793d6be21644e058e7b2caf4e7c3c6c7b15f18fa39605",
+    "games/yuyuhakusho/engine/throw_records.go": "ce5f9c6c77a8d7ebc298f30e9f99fb9686ad436bc4cc716960c3c0542480b34f",
+    "games/yuyuhakusho/engine/fighter0_motion_test.go": "475425489dc89714c8a7af147d9c3064daf6971e40ac710c8e3b7c9c8b60a150",
+    "games/yuyuhakusho/engine/chu_special_motion_test.go": "dfd3cf4c7e19b5a4e7e6653744a4160732f14415f78b1b997124660675f7d269",
+    "games/yuyuhakusho/engine/chu_actor_test.go": "64cbd90975e93b8ca9e44fe034bca3d177de4e15f45939248256c5823e44c0e7",
+    "games/yuyuhakusho/engine/jump_test.go": "9dd7ebb41549fb7c0528fe11e19b0a230157b1515ebbe46fe690847a46ee81d7",
+    "games/yuyuhakusho/engine/effects_test.go": "25b7abb54ed803a4802b3bbe3a9c718d0343270c6f0a6150e187fef4c5c11fb0",
+    "games/yuyuhakusho/engine/lane_motion_test.go": "1ce015651231e59d4134999e02c9af300a7bfc5ca65da658778b96c8a506868e",
+    "games/yuyuhakusho/engine/attack_contacts_test.go": "a7398b4e96c22d89801e3974637f83562c39155020a901214aea9005ee4c386a",
+    "scripts/yuyuhakusho/capture_fighter2_motion.py": "df3da59d1f86704588e8df08acc381aa8df61ca7686b3190d78b3103688874db",
+    "scripts/yuyuhakusho/reference.py": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "scripts/yuyuhakusho/capture_ground_idle.py": "01d4798e937fa01946b7612fbc4fa7418dda97ec3411db4beb4629975614ba1d",
+    "scripts/yuyuhakusho/capture_jump.py": "21017876cd34f9263b6efa11e376ebf84b31d5fc82664c7c8b208213d1ecd8ab",
+    "scripts/yuyuhakusho/capture_ground_actions.py": "25076eebbcbb4192ccf4111330b49693e9adf1a5c95c8f5d5f1fd02e3cd70f0a",
+    "scripts/yuyuhakusho/capture_effect_pool.py": "b9c753d1c9b6380ac64ee16f2c10cdcf8560654e493e770b31552b1781354f46",
+    "scripts/yuyuhakusho/capture_animation_records.py": "9ed4d8019c29cdf4272cdc54636047b6325c45b2d5d9b9b16efd74e1eb1c3208",
+    "docs/research/md-yuyuhakusho/FIGHTER2_PLAN.md": "9088e15b0b3d2db3c5ccff960e86fd9ad34f84477f57ab1d5ef82fefd890be1e",
+    "docs/research/md-yuyuhakusho/static/fighter-action-slots-focused.txt": "c6a52e94bea31dc12e08c6cd76a282dc4ae51c56288f2df3e7bef40cd72a072d",
+    "docs/research/md-yuyuhakusho/probe.py": "03a52ad64abf051a4a0c8914cb4813503f246afc0ec463ecd5cadb55c3bf7642"
+  },
+  "cleanup": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter2-motion-cleanup.json",
+    "sha256": "3fbaa7150a7eff6e1c27bb377e8fa505c47316998c7849cc96f0c87e547e8661",
+    "deleted_files": 7,
+    "deleted_bytes": 528026,
+    "shared_cache_other_scopes_or_local8799_assets_changed": false
+  },
+  "limits": [
+    "Motion ends before shared tail and child/FX/object/world updates; no actor/world/match/pixel acceptance claim.",
+    "Actual timing streams apply immutable Duration/Flags only, not full shape/audio/stage submission.",
+    "Out-of-range derived cursor and FX alignment diagnostics are independent API errors, not original CPU error semantics.",
+    "Source2 request1 directions11..15 selector diagnostics and new12dd4/scatter lifecycle are separate owners; not altered here.",
+    "REA does not support raw68000; original entry evidence reused from direct Ghidra, no runtime VM introduced."
+  ]
+}

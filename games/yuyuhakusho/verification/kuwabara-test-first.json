@@ -1,0 +1,15 @@
+{
+  "baseline_commit": "9133ceae",
+  "scope": "Source2 full world, fresh CLI matches and actual UI tests precede shared implementation",
+  "initial_files": {
+    "games/yuyuhakusho/engine/fighter2_world_test.go": "b08c7bac3fefb094636813e219893c9f17028dc83cc69f3067d826888fba315f",
+    "scripts/yuyuhakusho/verify_kuwabara_sessions.sh": "0d82b7f9e3a1fbbde17780047e752d6513ef2aad5f04802ba1a793458061fa3b",
+    "scripts/yuyuhakusho/check_kuwabara_player.py": "46ce837e376e1b5f42465468f9a7ac3d8806ec9c8f8c9dfa62c1e04dc89bd643"
+  },
+  "files": {
+    "games/yuyuhakusho/engine/fighter2_world_test.go": "8d9954b7921763fd28d6df296bd2fa7566c0a7ff54e0f270c3bab3dcb49552af",
+    "scripts/yuyuhakusho/verify_kuwabara_sessions.sh": "0d82b7f9e3a1fbbde17780047e752d6513ef2aad5f04802ba1a793458061fa3b",
+    "scripts/yuyuhakusho/check_kuwabara_player.py": "5315aad2624dd892c8d94a54e72e32d1a45ef53c63df4fe4210ffa60581ed34e"
+  },
+  "test_refinement_before_implementation": "Source2 original selector maps forward A to Action3/Pose83; add30 natural active child hit-stop save/resume states before production."
+}

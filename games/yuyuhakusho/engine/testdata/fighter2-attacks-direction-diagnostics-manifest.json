@@ -1,0 +1,156 @@
+{
+  "scope": "Independent actual-CPU diagnostics; never mixed into normal source2 fixtures",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "4f8c63f91ccab891dc32ff8702d5196316726ebc31b225c8924701dd13c94c79",
+  "capture_dependencies": [
+    {
+      "path": "scripts/yuyuhakusho/capture_fighter2_attacks.py",
+      "sha256": "dad228b91f76c69e3793a322481030eec0a280b948dee007e2f65ee87b4fa287"
+    }
+  ],
+  "context": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter2-attacks-diagnostic-context.json.gz",
+    "sha256": "94197f8921e0a8c8295f083e7ac5187bc47fe1f4a3bc231c04782482c359d27b"
+  },
+  "records": 15,
+  "cycle_budget_per_attempt": 100000,
+  "fixture_sha256": "00379a0e2ecc7a95d2884d5603a7dcddebc4983a5539f6781b614a59608f24d6",
+  "gzip_sha256": "8196518bdc17ac8ccf03c6c09ecd292b7addeb524e0ab59ea24ebb2c7f0db636",
+  "outcomes": [
+    {
+      "profile": "zero-registers",
+      "direction": 11,
+      "target": "0x1c922",
+      "status": "returned",
+      "pc": "0x3d8",
+      "changed_bytes": 24
+    },
+    {
+      "profile": "zero-registers",
+      "direction": 12,
+      "target": "0x18cc0",
+      "status": "returned",
+      "pc": "0x3d8",
+      "changed_bytes": 10
+    },
+    {
+      "profile": "zero-registers",
+      "direction": 13,
+      "target": "0x1c926",
+      "status": "returned",
+      "pc": "0x3d8",
+      "changed_bytes": 24
+    },
+    {
+      "profile": "zero-registers",
+      "direction": 14,
+      "target": "0x18cea",
+      "status": "returned",
+      "pc": "0x3d8",
+      "changed_bytes": 10
+    },
+    {
+      "profile": "zero-registers",
+      "direction": 15,
+      "target": "0x1c92a",
+      "status": "not-returned-within-cycle-budget",
+      "pc": "0x15b06",
+      "changed_bytes": 88
+    },
+    {
+      "profile": "natural-register-transplant",
+      "direction": 11,
+      "target": "0x1c922",
+      "status": "returned",
+      "pc": "0x3d8",
+      "changed_bytes": 24
+    },
+    {
+      "profile": "natural-register-transplant",
+      "direction": 12,
+      "target": "0x18cc0",
+      "status": "returned",
+      "pc": "0x3d8",
+      "changed_bytes": 10
+    },
+    {
+      "profile": "natural-register-transplant",
+      "direction": 13,
+      "target": "0x1c926",
+      "status": "returned",
+      "pc": "0x3d8",
+      "changed_bytes": 24
+    },
+    {
+      "profile": "natural-register-transplant",
+      "direction": 14,
+      "target": "0x18cea",
+      "status": "returned",
+      "pc": "0x3d8",
+      "changed_bytes": 10
+    },
+    {
+      "profile": "natural-register-transplant",
+      "direction": 15,
+      "target": "0x1c92a",
+      "status": "not-returned-within-cycle-budget",
+      "pc": "0x15b06",
+      "changed_bytes": 88
+    },
+    {
+      "profile": "nonzero-d4-a4",
+      "direction": 11,
+      "target": "0x1c922",
+      "status": "returned",
+      "pc": "0x3d8",
+      "changed_bytes": 27
+    },
+    {
+      "profile": "nonzero-d4-a4",
+      "direction": 12,
+      "target": "0x18cc0",
+      "status": "returned",
+      "pc": "0x3d8",
+      "changed_bytes": 10
+    },
+    {
+      "profile": "nonzero-d4-a4",
+      "direction": 13,
+      "target": "0x1c926",
+      "status": "returned",
+      "pc": "0x3d8",
+      "changed_bytes": 27
+    },
+    {
+      "profile": "nonzero-d4-a4",
+      "direction": 14,
+      "target": "0x18cea",
+      "status": "returned",
+      "pc": "0x3d8",
+      "changed_bytes": 10
+    },
+    {
+      "profile": "nonzero-d4-a4",
+      "direction": 15,
+      "target": "0x1c92a",
+      "status": "not-returned-within-cycle-budget",
+      "pc": "0x15b06",
+      "changed_bytes": 88
+    }
+  ],
+  "limits": [
+    "Stopped at sentinel or first known exception-vector target, otherwise cycle budget",
+    "An observed vector-handler PC does not alone distinguish overlapping vector identities",
+    "Raw out-of-table target computation is not a structural table entry",
+    "No Go fallback, noop or strategy is inferred by this producer"
+  ]
+}

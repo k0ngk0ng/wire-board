@@ -1,0 +1,131 @@
+{
+  "verified_at_utc": "2026-11-04T20:57:42.351825+00:00",
+  "scope": "Only this selector task raw/duplicate captures, diagnostic copies, empty frontend output and copied logs; canonical diagnostic complete state/context and shared references remain",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter2-attacks",
+      "files": 12,
+      "bytes": 763985251
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter2-attacks-special-natural",
+      "files": 5,
+      "bytes": 76286925
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter2-attacks-directions",
+      "files": 2,
+      "bytes": 1231961
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter2-attacks-baseline",
+      "files": 0,
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter2-attacks-special-baseline",
+      "files": 0,
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter2-attacks-capture.json",
+      "files": 1,
+      "bytes": 5401
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter2-attacks-special-capture.json",
+      "files": 1,
+      "bytes": 1163
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter2-attacks-directions-capture.json",
+      "files": 1,
+      "bytes": 4332
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter2-attacks-red.jsonl",
+      "files": 1,
+      "bytes": 1898
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter2-attacks-native.jsonl",
+      "files": 1,
+      "bytes": 12409
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter2-attacks-wasm.jsonl",
+      "files": 1,
+      "bytes": 12407
+    }
+  ],
+  "bytes_removed": 841541747,
+  "canonical_artifacts_verified_before_removal": [
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter2-attacks-natural.json.gz",
+      "sha256": "f0ef8dce82566441dbc76f54086fd26a2824022589fb69ab9befcd5b964b3047"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter2-attacks-natural-manifest.json",
+      "sha256": "2c52937d480cd184a37960a9a4ac785841dcab2dc19474b4f3d55934ae8b5ba1"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter2-attacks-special-natural.json.gz",
+      "sha256": "91d7366fd62048472c2e6bc32d1e4d2a7d44eaa1befd1c92068c4c685238b019"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter2-attacks-special-natural-manifest.json",
+      "sha256": "a5211ac0ef94ec46411c8334f5b24cc7a8f31bbfa14aa47f72a4454e424f4003"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter2-attacks-oracle.json.gz",
+      "sha256": "a7957aefaaefc07318489176cfbdd0ea713463a7c12943ae2dcf2da93b069058"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter2-attacks-oracle-manifest.json",
+      "sha256": "ee948d0eaad05ff34480772fca30adac384670b1f5aa61740b6fa8fd5a99560a"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter2-attacks-boundaries.json.gz",
+      "sha256": "fad83cc94b67c590175f3eb552b57017430b270ba051cd4c7f316831ba78d2b0"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter2-attacks-boundaries-manifest.json",
+      "sha256": "aea9f7ec44844b891b3a264bfc367b6ac3bbb16d43fde01b55cb306a6e5ee4d6"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter2-attacks-sequences.json.gz",
+      "sha256": "df61b408823cc5d1fbefc761f47ef989ac9a4078b7e49dd7353135c289e3cde4"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter2-attacks-sequences-manifest.json",
+      "sha256": "233f6c80b5a5a04471ea09a8042d7d57eb5f8ea2fc8c236a8c4db559329ceb1f"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter2-attacks-direction-diagnostics.json.gz",
+      "sha256": "8196518bdc17ac8ccf03c6c09ecd292b7addeb524e0ab59ea24ebb2c7f0db636"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter2-attacks-direction-diagnostics-manifest.json",
+      "sha256": "bb04597a4619113e96a56730857673c151f38cc3149fe3b92b1740a1b264aa8d"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter2-attacks-diagnostic-context.json.gz",
+      "sha256": "94197f8921e0a8c8295f083e7ac5187bc47fe1f4a3bc231c04782482c359d27b"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter2-attacks-red.jsonl",
+      "sha256": "93e165866be4818258bebe7e5f9a943324d94af2854222a066db8c60b9c9d095"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter2-attacks-native.jsonl",
+      "sha256": "0cc1f87d0a69949567fa86c01612d88e8c5940b605becf2359f49313377106c5"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter2-attacks-wasm.jsonl",
+      "sha256": "8be4773092e2cd42d6be94da7295cae66f8fc89ff08b3d01cde790c6de90b084"
+    }
+  ],
+  "shared_go_caches_untouched": true,
+  "other_agents_inputs_files_and_shared_baselines_untouched": true,
+  "existing_go_bundles_progress_reports_and_9133_page_assets_untouched_by_this_task": true
+}

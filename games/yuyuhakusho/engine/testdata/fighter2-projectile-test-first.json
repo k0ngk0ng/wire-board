@@ -1,0 +1,18 @@
+{
+  "scope": "Source2 projectile failure ledger, original CPU callbacks/lifecycles and tests precede new rule implementation",
+  "implementation_present": false,
+  "own_missing_symbols_observed": true,
+  "independent_parent_motion_also_pending_in_red": true,
+  "source_sha256": {
+    "games/yuyuhakusho/engine/fighter2_projectile_test.go": "dd2089fffaaefa277599903de205aea723708dad62f966d24436da87440b3c9f",
+    "games/yuyuhakusho/engine/FIGHTER2_PROJECTILE_VERIFICATION.md": "22117914f5326429002a8660fc6aabc440af13d003de59a7e8b731dc79071d88",
+    "games/yuyuhakusho/engine/testdata/fighter2-projectile-red.jsonl": "65ec3ef2a9d3308eb08f31fe317bbe98ccc5cc1bbf07811775618e13a483b934",
+    "scripts/yuyuhakusho/capture_fighter2_projectile.py": "4afb96b2ec742e14d6feb3a607ad59dc8a524c09c9f9af5349cef059d6344788",
+    "games/yuyuhakusho/data/fighter2-projectile-rules.json": "a919578d7f0bbb3656e1802ca9f9e6327c6e1bd7d789c3367a63a7a6f1d6d891"
+  },
+  "fixture_sha256": {
+    "fighter2-projectile-boundaries.json.gz": "7eef5a82d04a3819b744af35dca91f603e730be483adc9f7e5edcb4d59db780b",
+    "fighter2-projectile-sequences.json.gz": "63153e47469515048362023b2d36bac3be46430ce54b399adbb5d35f372e178b",
+    "fighter2-projectile-oracle.json.gz": "f8df094bcc635cc6ce147c5b52164cdce437fc2b0cdb5e35deba69fda4b4f112"
+  }
+}

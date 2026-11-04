@@ -1,0 +1,68 @@
+{
+  "pass": true,
+  "scope": "Actual source2 new/static and reused-scatter full callbacks",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "4afb96b2ec742e14d6feb3a607ad59dc8a524c09c9f9af5349cef059d6344788",
+  "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+  "records": 124,
+  "calls": 124,
+  "kind_counts": {
+    "scatter": 51,
+    "beam": 73
+  },
+  "library_frames": 23,
+  "fixture_sha256": "6fdb8653a328fb472fb0ed6fe79d666f5b66288d1e4c0c7e34ab4dbb76c05af0",
+  "gzip_sha256": "f8df094bcc635cc6ce147c5b52164cdce437fc2b0cdb5e35deba69fda4b4f112",
+  "baselines": [
+    {
+      "input": "docs/research/md-yuyuhakusho/source2-next-inputs.json",
+      "input_sha256": "43a1cab4f2147616db4798cd5ab88d6c208f2311d5b99468816f3265d9fee596",
+      "reference": "games/yuyuhakusho/engine/testdata/fighter2-attacks-reference-frames.json",
+      "reference_raw_sha256": "43c15a7d09b8244d4d6cea5b2b90a23673794ccd5f7effb33e66b39452d69338",
+      "reference_manifest": "games/yuyuhakusho/engine/testdata/fighter2-attacks-reference-manifest.json",
+      "reference_manifest_sha256": "2a8fae219a3da333fa7cf1b6c572d57e411ce5baa4f0cddaf6c37ad9532620bf",
+      "video_steps": 3600,
+      "all_ram_video_match": true
+    },
+    {
+      "input": "games/yuyuhakusho/engine/testdata/fighter2-projectile-inputs.json",
+      "input_sha256": "90d7d03e229a1cdd4eac98273f867f3c8118a34cfcdbe275d1932e630c529af8",
+      "reference": "games/yuyuhakusho/engine/testdata/fighter2-attacks-special-reference-frames.json",
+      "reference_raw_sha256": "b60a1f74146c783ec55290b5f4f84f73e00f0fd2d3eae4e745dd25d3f4cd0682",
+      "reference_manifest": "games/yuyuhakusho/engine/testdata/fighter2-attacks-special-reference-manifest.json",
+      "reference_manifest_sha256": "2729d0ce15255955252ffd4fc9f599ade272ee309418855668f121639ccd00c7",
+      "video_steps": 3602,
+      "all_ram_video_match": true
+    }
+  ],
+  "binding": {
+    "source_tag": 2,
+    "animation_set": 795290,
+    "shape_set": 799194,
+    "parameter_pointer": 75068,
+    "source_actor_sha256": "b3db1bbc410febc09d480f933630d8630ddfc7dcaa54719ae5a5ea65e45a0547"
+  },
+  "frames_match_original_core": true,
+  "rng_calls": 0,
+  "external_queue_calls": 0,
+  "external_change_calls": 0,
+  "unexplained_change_calls": 0,
+  "interrupt_calls": 0,
+  "clears": 5,
+  "errors": [],
+  "incomplete_calls": 0,
+  "limits": [
+    "Stops at draw request or completed clear, without hardware sprites or active FX/collision callbacks",
+    "Source2 parent creators are executed once; parent then freezes during the complete child lifecycle",
+    "Private external hit-stop/pause pulses are explicit; no intermediate expected-state, clock or data-record reinjection"
+  ]
+}
