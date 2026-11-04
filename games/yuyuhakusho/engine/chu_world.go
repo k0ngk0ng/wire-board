@@ -67,14 +67,15 @@ type ChuWorldView struct {
 }
 
 type ChuWorldLibrary struct {
-	Fighters        FighterSpecLibrary
-	Commands        CommandLibrary
-	Animations      AnimationLibrary
-	Attachments     ChuAttachmentLibrary
-	Effects         EffectMotionLibrary
-	AttachedEffects AttachedEffectLibrary
-	MatchStart      MatchStartLibrary
-	Arena           ArenaRuntimeLibrary
+	Fighters            FighterSpecLibrary
+	Commands            CommandLibrary
+	Animations          AnimationLibrary
+	Attachments         ChuAttachmentLibrary
+	Effects             EffectMotionLibrary
+	AttachedEffects     AttachedEffectLibrary
+	MatchStart          MatchStartLibrary
+	Arena               ArenaRuntimeLibrary
+	Fighter0Projectiles Fighter0ProjectileLibrary
 }
 
 // Events follow callback address order. A callback records its entry header
@@ -169,6 +170,8 @@ func stepChuWorldObject(state *ChuWorldState, object WorldObject, view ChuWorldV
 		return stepChuWorldFighter(state, object, view, library, hudCursor)
 	case 0x1313e:
 		return stepChuWorldProjectile(state, object, library.Animations)
+	case 0x12c96, 0x134c2:
+		return stepFighter0WorldProjectile(state, object, library.Fighter0Projectiles)
 	case 0x132de, 0x1361e:
 		return stepChuWorldAttachment(state, object, library.Attachments)
 	case 0x149ac:
@@ -346,7 +349,7 @@ func stepChuWorldArena(state *ChuWorldState, object WorldObject, library ArenaRu
 }
 
 func stepChuWorldFighter(state *ChuWorldState, object WorldObject, view ChuWorldView, library ChuWorldLibrary, hudCursor *uint16) ([]ChuWorldEvent, error) {
-	if _, ok := chuAIIndex(object.ObjectID); !ok || (object.Tag != 9 && object.Tag != 10) {
+	if _, ok := chuAIIndex(object.ObjectID); !ok || (object.Tag != 0 && object.Tag != 9 && object.Tag != 10) {
 		return nil, errors.New("complete fighter action source is not recovered")
 	}
 	switch object.Header.Stage {
@@ -447,6 +450,23 @@ func stepChuWorldFighter(state *ChuWorldState, object WorldObject, view ChuWorld
 }
 
 func stepChuWorldProjectile(state *ChuWorldState, object WorldObject, library AnimationLibrary) ([]ChuWorldEvent, error) {
+	return stepWorldProjectile(state, object, func(projectile ChuProjectileState, environment ChuProjectileEnvironment) (ChuProjectileState, ChuProjectileOutcome, error) {
+		return StepChuProjectile(projectile, environment, library)
+	})
+}
+
+func stepFighter0WorldProjectile(state *ChuWorldState, object WorldObject, library Fighter0ProjectileLibrary) ([]ChuWorldEvent, error) {
+	kind := Fighter0ScatterProjectile
+	if object.Header.Behavior == 0x134c2 {
+		kind = Fighter0ReleaseLight
+	}
+	return stepWorldProjectile(state, object, func(projectile ChuProjectileState, environment ChuProjectileEnvironment) (ChuProjectileState, ChuProjectileOutcome, error) {
+		next, out, err := StepFighter0Projectile(Fighter0ProjectileState{Kind: kind, Projectile: projectile}, environment, library)
+		return next.Projectile, out, err
+	})
+}
+
+func stepWorldProjectile(state *ChuWorldState, object WorldObject, step func(ChuProjectileState, ChuProjectileEnvironment) (ChuProjectileState, ChuProjectileOutcome, error)) ([]ChuWorldEvent, error) {
 	s := object.AsChuProjectile()
 	var err error
 	s.Pool, err = BuildWorldEffectPool(state.Objects, state.EffectCursor)
@@ -454,8 +474,8 @@ func stepChuWorldProjectile(state *ChuWorldState, object WorldObject, library An
 		return nil, err
 	}
 	s.Buffers, s.PendingSound, s.SoundQueue = state.Buffers, state.PendingSound, state.SoundQueue
-	next, out, err := StepChuProjectile(s, ChuProjectileEnvironment{PauseFlags: state.Clock.PauseFlags, SlowFlag: state.Clock.SlowFlag, PaletteAttributes: state.Match.AttributeMask,
-		ArenaLeft: state.Camera.Left, ArenaRight: state.Camera.Right, CameraX: state.Camera.X, CameraY: state.Camera.Y, Shake: int16(state.Clock.ScreenShake)}, library)
+	next, out, err := step(s, ChuProjectileEnvironment{PauseFlags: state.Clock.PauseFlags, SlowFlag: state.Clock.SlowFlag, PaletteAttributes: state.Match.AttributeMask,
+		ArenaLeft: state.Camera.Left, ArenaRight: state.Camera.Right, CameraX: state.Camera.X, CameraY: state.Camera.Y, Shake: int16(state.Clock.ScreenShake)})
 	if err != nil {
 		return nil, err
 	}
@@ -753,8 +773,14 @@ type chuWorldRules struct {
 		OrbitY  [1024]int8 `json:"orbit_y"`
 		OffsetY [11]int16  `json:"offset_y"`
 	} `json:"attached_effects"`
-	MatchStart MatchStartLibrary   `json:"match_start"`
-	Arena      ArenaRuntimeLibrary `json:"arena"`
+	MatchStart          MatchStartLibrary   `json:"match_start"`
+	Arena               ArenaRuntimeLibrary `json:"arena"`
+	Fighter0Projectiles struct {
+		Sequences []struct {
+			Identity uint32               `json:"identity"`
+			Frames   []ChuAttachmentFrame `json:"frames"`
+		} `json:"sequences"`
+	} `json:"fighter0_projectiles"`
 }
 
 // DecodeChuWorldRules loads immutable semantic data once, before simulation.
@@ -765,7 +791,7 @@ func DecodeChuWorldRules(raw []byte) (ChuWorldLibrary, error) {
 	if err := json.Unmarshal(raw, &rules); err != nil {
 		return empty, err
 	}
-	if rules.Schema != 1 || len(rules.Fighters) != 11 || len(rules.Animations) == 0 || len(rules.Commands) == 0 || len(rules.Effects.Types) != 37 || len(rules.Attachments.Sequences) != 8 || len(rules.Attachments.Animations) == 0 || len(rules.AttachedEffects.Sequences) != 3 || len(rules.Arena.WaveX) != 1024 || len(rules.Arena.WaveY) != 1024 || len(rules.Arena.Tails) == 0 || rules.MatchStart.ArenaBehaviors[0] != 0x20918 {
+	if (rules.Schema != 1 && rules.Schema != 2) || len(rules.Fighters) != 11 || len(rules.Animations) == 0 || len(rules.Commands) == 0 || len(rules.Effects.Types) != 37 || len(rules.Attachments.Sequences) != 8 || len(rules.Attachments.Animations) == 0 || len(rules.AttachedEffects.Sequences) != 3 || len(rules.Arena.WaveX) != 1024 || len(rules.Arena.WaveY) != 1024 || len(rules.Arena.Tails) == 0 || rules.MatchStart.ArenaBehaviors[0] != 0x20918 {
 		return empty, errors.New("incomplete or unsupported Chu world rules")
 	}
 	library := ChuWorldLibrary{Fighters: make(FighterSpecLibrary), Commands: rules.Commands, Animations: make(AnimationLibrary), Effects: rules.Effects, MatchStart: rules.MatchStart, Arena: rules.Arena,
@@ -785,6 +811,26 @@ func DecodeChuWorldRules(raw []byte) (ChuWorldLibrary, error) {
 			return empty, errors.New("duplicate world animation identity")
 		}
 		library.Animations[animation.Key] = animation.Data
+	}
+	if rules.Schema == 2 {
+		if len(rules.Fighter0Projectiles.Sequences) != 8 {
+			return empty, errors.New("source0 release sequences are unavailable")
+		}
+		library.Fighter0Projectiles = Fighter0ProjectileLibrary{Animations: library.Animations, Sequences: make(map[uint32][]ChuAttachmentFrame)}
+		for _, sequence := range rules.Fighter0Projectiles.Sequences {
+			if sequence.Identity < 0x135ee || sequence.Identity > 0x13618 || (sequence.Identity-0x135ee)%6 != 0 || len(sequence.Frames) != 3 || sequence.Frames[2] != (ChuAttachmentFrame{}) {
+				return empty, errors.New("invalid source0 release sequence identity or termination")
+			}
+			if _, exists := library.Fighter0Projectiles.Sequences[sequence.Identity]; exists {
+				return empty, errors.New("duplicate source0 release sequence")
+			}
+			for _, frame := range sequence.Frames[:2] {
+				if frame.Duration == 0 || frame.Parameter&1 != 0 || frame.Parameter > 510 {
+					return empty, errors.New("invalid source0 release frame")
+				}
+			}
+			library.Fighter0Projectiles.Sequences[sequence.Identity] = sequence.Frames
+		}
 	}
 	for _, animation := range rules.Attachments.Animations {
 		if _, found := library.Attachments.Animations[animation.Key]; found {

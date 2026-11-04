@@ -108,7 +108,9 @@ func stepFighterActionTail(state ChuTailState, characterID uint8, aux48 int32, e
 			selection := ChuAttackState{Body: state.Body, Controls: state.Controls, ObjectID: state.ObjectID,
 				Energy: state.Energy, ChildSize: state.ChildSize, GravityParameter: parameters.Gravity, Pool: state.Pool, Throws: state.Throws}
 			var err error
-			if characterID == 9 {
+			if characterID == 0 {
+				selection, err = SelectFighter0Attack(selection, stage.mode)
+			} else if characterID == 9 {
 				selection, err = SelectChuAttack(selection, stage.mode)
 			} else {
 				var selected Fighter10AttackState

@@ -1,0 +1,16 @@
+{
+  "scope": "Exact decompression of shared projectile-agent unobserved/observed baseline for selector crosscheck; no duplicate core run",
+  "source": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter0-projectile-reference-frames.json.gz",
+    "sha256": "e3324d5ffddfd50a5e10681149dad6a52c227dc173ae44a040ff40a1709a8f6e"
+  },
+  "source_manifest": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter0-projectile-reference-manifest.json",
+    "sha256": "6701adbde1de011a4665cc2cd20eb27c4963c88441f798a5f7d96305bd418357"
+  },
+  "output": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter0-attacks-special-reference-frames.json",
+    "sha256": "a3bd8138db14896284f772a8b4a6dbe5a3f8712b91d9837f5843dc87dcb48fb3"
+  },
+  "frames": 3602
+}

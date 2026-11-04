@@ -1,0 +1,34 @@
+{
+  "stage": "tests written before source0 complete action/actor production support",
+  "recorded_at_utc": "2026-11-04T18:31:26.275081+00:00",
+  "expected_actual_gap": "StepFighterAction/Actor source0 unsupported; generic StepFighterInput may already pass",
+  "test_top_levels": 6,
+  "files": [
+    {
+      "path": "games/yuyuhakusho/engine/fighter0_composition_test.go",
+      "sha256": "fb7ee9bd8ba9fdfe607b7bee54854f4a1638615d1835787ef319f6117d78e62b"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/FIGHTER0_COMPOSITION_VERIFICATION.md",
+      "sha256": "549317c7df373f618d89f46f8aa00e6e09fb9fe2e2a818bf530168c4144b9869"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_action.go",
+      "sha256": "fea1830fc480f5324c9bedd0ae81f5859af9b7b94720e56cd5fb1e5be2e40a9a"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_actor.go",
+      "sha256": "786a3b6580be71f7958d03f91b327b97513eb19c88b144aca656d2ca90bcac13"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_input.go",
+      "sha256": "a9d14993c78d4ae89403824254d72edc3a6315f61928c65129e8b67ac870e294"
+    }
+  ],
+  "actual_red_log": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter0-composition-red.jsonl",
+    "sha256": "64de4d87369890b73685e5ea6071f7abb8dfe295da74661a9a4fa07d013d0c29",
+    "full_action_and_actor": "unsupported source0 actual runtime errors",
+    "full_inputs": "all natural/special/private original input cases passed"
+  }
+}

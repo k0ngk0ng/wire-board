@@ -36,10 +36,10 @@ func StepChuAction(state ChuActionState, parameters ChuActionParameters, command
 }
 
 // StepFighterAction keeps one copy of the complete action driver for the
-// restored sources9/10. AlternateVelocity remains the sole +48 long owner.
+// restored sources0/9/10. AlternateVelocity remains the sole +48 long owner.
 func StepFighterAction(state ChuActionState, characterID uint8, parameters ChuActionParameters, commands CommandLibrary, animations AnimationLibrary) (ChuActionState, error) {
 	original := state
-	if characterID != 9 && characterID != 10 {
+	if characterID != 0 && characterID != 9 && characterID != 10 {
 		return original, errors.New("unsupported complete fighter action source")
 	}
 	command := CommandState{RawHeld: state.Controls.RawHeld, Facing: state.Body.Facing, Request: state.Body.Request}
@@ -97,6 +97,13 @@ func StepFighterAction(state ChuActionState, characterID uint8, parameters ChuAc
 				return original, actionErr
 			}
 			state.Body, state.Pool, state.OccupiedLanes = body, pool, occupied
+		case 0x0e, 0x16, 0x17, 0x18, 0x19:
+			if characterID != 0 {
+				return original, errors.New("unsupported fighter action source/slot")
+			}
+			if actionErr := stepFighter0ActionMotion(&state, parameters.JumpParameters); actionErr != nil {
+				return original, actionErr
+			}
 		case 15, 20, 21, 65, 66, 67, 68, 69, 70:
 			special, actionErr := StepChuSpecialMotion(ChuSpecialMotionState{ObjectID: state.ObjectID, Body: state.Body, Controls: state.Controls,
 				Energy: state.fullActionEnergy(), Power: state.Power, AlternateVelocity: state.AlternateVelocity, ContactFlags: state.ContactFlags,
@@ -108,6 +115,12 @@ func StepFighterAction(state ChuActionState, characterID uint8, parameters ChuAc
 			state.setActionEnergy(special.Energy)
 			state.Power, state.AlternateVelocity, state.ContactFlags = special.Power, special.AlternateVelocity, special.ContactFlags
 		case 0x11, 0x2d, 0x47, 0x48, 0x49:
+			if characterID == 0 && state.Body.ActionKind == 0x11 {
+				if actionErr := stepFighter0ActionMotion(&state, parameters.JumpParameters); actionErr != nil {
+					return original, actionErr
+				}
+				break
+			}
 			if characterID != 10 {
 				return original, errors.New("unsupported Chu action")
 			}
@@ -130,6 +143,21 @@ func StepFighterAction(state ChuActionState, characterID uint8, parameters ChuAc
 	}
 	state.ChuTailState, state.AlternateVelocity = tail, aux48
 	return state, nil
+}
+
+func stepFighter0ActionMotion(state *ChuActionState, parameters JumpParameters) error {
+	next, err := StepFighter0Motion(Fighter0MotionState{ChuSpecialMotionState: ChuSpecialMotionState{
+		ObjectID: state.ObjectID, Body: state.Body, Controls: state.Controls, Energy: state.fullActionEnergy(), Power: state.Power,
+		AlternateVelocity: state.AlternateVelocity, ContactFlags: state.ContactFlags, TargetBit: state.TargetBit,
+		Children: state.Children, Pool: state.Pool}, PendingSound: state.PendingSound, EffectExtras: state.EffectExtras}, parameters)
+	if err != nil {
+		return err
+	}
+	state.Body, state.Pool, state.Children = next.Body, next.Pool, next.Children
+	state.setActionEnergy(next.Energy)
+	state.Power, state.AlternateVelocity, state.ContactFlags = next.Power, next.AlternateVelocity, next.ContactFlags
+	state.PendingSound, state.EffectExtras = next.PendingSound, next.EffectExtras
+	return nil
 }
 
 func (state ChuActionState) fullActionEnergy() int32 {

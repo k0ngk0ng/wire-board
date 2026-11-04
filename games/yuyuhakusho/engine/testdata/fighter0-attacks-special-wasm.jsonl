@@ -1,0 +1,12 @@
+{"Time":"2026-11-05T02:26:42.12084+08:00","Action":"start","Package":"fighter0-attacks-special-wasm"}
+{"Time":"2026-11-05T02:26:42.182084+08:00","Action":"run","Package":"fighter0-attacks-special-wasm","Test":"TestFighter0AttacksOriginalFullCalls"}
+{"Time":"2026-11-05T02:26:42.182122+08:00","Action":"output","Package":"fighter0-attacks-special-wasm","Test":"TestFighter0AttacksOriginalFullCalls","Output":"=== RUN   TestFighter0AttacksOriginalFullCalls\n"}
+{"Time":"2026-11-05T02:26:42.186133+08:00","Action":"run","Package":"fighter0-attacks-special-wasm","Test":"TestFighter0AttacksOriginalFullCalls/fighter0-attacks-natural"}
+{"Time":"2026-11-05T02:26:42.186177+08:00","Action":"output","Package":"fighter0-attacks-special-wasm","Test":"TestFighter0AttacksOriginalFullCalls/fighter0-attacks-natural","Output":"=== RUN   TestFighter0AttacksOriginalFullCalls/fighter0-attacks-natural\n"}
+{"Time":"2026-11-05T02:26:43.542941+08:00","Action":"output","Package":"fighter0-attacks-special-wasm","Test":"TestFighter0AttacksOriginalFullCalls/fighter0-attacks-natural","Output":"    fighter0_attacks_test.go:188: complete original source0 calls=1700 modes=map[ground:849 ground-special:851] objects=map[33792:1700]\n"}
+{"Time":"2026-11-05T02:26:43.5449+08:00","Action":"output","Package":"fighter0-attacks-special-wasm","Test":"TestFighter0AttacksOriginalFullCalls","Output":"--- PASS: TestFighter0AttacksOriginalFullCalls (1.36s)\n"}
+{"Time":"2026-11-05T02:26:43.544967+08:00","Action":"output","Package":"fighter0-attacks-special-wasm","Test":"TestFighter0AttacksOriginalFullCalls/fighter0-attacks-natural","Output":"    --- PASS: TestFighter0AttacksOriginalFullCalls/fighter0-attacks-natural (1.36s)\n"}
+{"Time":"2026-11-05T02:26:43.545402+08:00","Action":"pass","Package":"fighter0-attacks-special-wasm","Test":"TestFighter0AttacksOriginalFullCalls/fighter0-attacks-natural","Elapsed":1.36}
+{"Time":"2026-11-05T02:26:43.545417+08:00","Action":"pass","Package":"fighter0-attacks-special-wasm","Test":"TestFighter0AttacksOriginalFullCalls","Elapsed":1.36}
+{"Time":"2026-11-05T02:26:43.545421+08:00","Action":"output","Package":"fighter0-attacks-special-wasm","Output":"PASS\n"}
+{"Time":"2026-11-05T02:26:43.551844+08:00","Action":"pass","Package":"fighter0-attacks-special-wasm","Elapsed":1.431}

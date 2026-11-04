@@ -1,0 +1,76 @@
+{
+  "scope": "Declared-private single-initial-state source0 selector streams",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "ff014b4e75bceeaa5f9ebf1e89cb1fc22abd7d9caa33057a871514f27504b78c",
+  "capture_dependencies": [
+    {
+      "path": "scripts/yuyuhakusho/capture_chu_attacks.py",
+      "sha256": "f3d42a7d04267fcdbdea9e67963a70bb34920b861676358d67ab607e563eb580"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_ground_idle.py",
+      "sha256": "01d4798e937fa01946b7612fbc4fa7418dda97ec3411db4beb4629975614ba1d"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_jump.py",
+      "sha256": "21017876cd34f9263b6efa11e376ebf84b31d5fc82664c7c8b208213d1ecd8ab"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_ground_actions.py",
+      "sha256": "25076eebbcbb4192ccf4111330b49693e9adf1a5c95c8f5d5f1fd02e3cd70f0a"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_effect_pool.py",
+      "sha256": "b9c753d1c9b6380ac64ee16f2c10cdcf8560654e493e770b31552b1781354f46"
+    },
+    {
+      "path": "scripts/yuyuhakusho/reference.py",
+      "sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/probe.py",
+      "sha256": "03a52ad64abf051a4a0c8914cb4813503f246afc0ec463ecd5cadb55c3bf7642"
+    }
+  ],
+  "input": {
+    "path": "docs/research/md-yuyuhakusho/source0-next-inputs.json",
+    "sha256": "ab1089aa8453df2997800c3e8477bf64161734d31521aec7c2f48827409a406a"
+  },
+  "baseline": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter0-attacks-reference-frames.json",
+    "sha256": "690471dc7e3d2ddd7ed3fe2770169ec6078d0c1570fc57dafe38bf4805778285",
+    "frames": 3600
+  },
+  "records": 16,
+  "calls": 320,
+  "kind_counts": {
+    "ground": 4,
+    "air": 4,
+    "ground-special": 4,
+    "air-special": 4
+  },
+  "constructor_counts": {},
+  "source_objects": {},
+  "fixture_sha256": "6966ca2bc88f1854c64edaabcb3680dbfe83a4a249eeb42190154f7c0b1b3b8c",
+  "gzip_sha256": "08b8fce22353675ed998f5a1a0f673b117020bd807fd772ea3cd99f38fbf5ce7",
+  "frames_match_original_core": true,
+  "incomplete_calls": 0,
+  "errors": [],
+  "rng_calls": 0,
+  "pass": true,
+  "limits": [
+    "Private contexts do not establish natural gameplay",
+    "Natural source0 count is explicit, including zero",
+    "Selection and initialization only; no continued motion, collision or full matches",
+    "Streams change declared base controls only; no expected intermediate state or RNG injection"
+  ]
+}

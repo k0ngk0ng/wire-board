@@ -1,0 +1,11 @@
+{
+  "scope": "Tests and captured original CPU evidence precede source0 projectile rule implementation",
+  "implementation_present": false,
+  "red_missing_own_symbols": true,
+  "files": {
+    "games/yuyuhakusho/engine/fighter0_projectile_test.go": "05ee04813f6c30d6093a7a46fc2ff7ddfa2d058ebd04b142b4a2893449c934b3",
+    "games/yuyuhakusho/engine/FIGHTER0_PROJECTILE_VERIFICATION.md": "f3b1cbb569166b45082de642a2513c9a79ee32d629e66ebc5c1c7ed82432453d",
+    "games/yuyuhakusho/engine/testdata/fighter0-projectile-red.jsonl": "7de1264ef75acf9dc0b3db440046bf24e5e41e2de6fe1a43e409fccef3efd758",
+    "scripts/yuyuhakusho/capture_fighter0_projectiles.py": "e0db8ccd61478a076bc2320d2ea12d6bbaa072366848028492f0553c4110341e"
+  }
+}

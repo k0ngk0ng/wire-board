@@ -1,0 +1,62 @@
+{
+  "scope": "Source IDs identified from the original verified HUD name glyphs; not natural gameplay coverage for all characters",
+  "layout": "Rows0..10, three16x16 column-major glyphs per row, scale3; every nonzero glyph index shown white for identification, no CRAM color-equality claim",
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/engine/testdata/match-start-library.json",
+      "sha256": "5195f80794310d101dc9b0d33d59b5465fe0467b18e6a7b48a147b4b07229833"
+    },
+    {
+      "path": "games/yuyuhakusho/data/hud-assets.json.gz",
+      "sha256": "4c26a97efb8901db2c6ed791d3cb99ebf7e9efcbeaed2cc13e8bd54f22bdc50c"
+    }
+  ],
+  "image_sha256": "8ab96d7a97e8bcac554a561f75927d47f7d9556a4b8c35a46cdfe494c75047b6",
+  "characters": [
+    {
+      "source_id": 0,
+      "display_name": "幻海"
+    },
+    {
+      "source_id": 1,
+      "display_name": "藏马"
+    },
+    {
+      "source_id": 2,
+      "display_name": "桑原"
+    },
+    {
+      "source_id": 3,
+      "display_name": "幽助"
+    },
+    {
+      "source_id": 4,
+      "display_name": "飞影"
+    },
+    {
+      "source_id": 5,
+      "display_name": "仙水"
+    },
+    {
+      "source_id": 6,
+      "display_name": "阵"
+    },
+    {
+      "source_id": 7,
+      "display_name": "树"
+    },
+    {
+      "source_id": 8,
+      "display_name": "户愚吕弟"
+    },
+    {
+      "source_id": 9,
+      "display_name": "酎"
+    },
+    {
+      "source_id": 10,
+      "display_name": "户愚吕兄"
+    }
+  ],
+  "method": "Decode four32-byte4bpp tiles for each16x16 glyph referenced by MatchStartLibrary.Names; preserve source order"
+}

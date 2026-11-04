@@ -1,0 +1,52 @@
+{
+  "scope": "Single-initial-state original lifecycles ending in deletion",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "unobserved_identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.4 60bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "inputs_sha256": "b7976367c37584f8f154fed981be9529b0c5eb78cc521166a306b68dc77464b7",
+  "capture_sha256": "e0db8ccd61478a076bc2320d2ea12d6bbaa072366848028492f0553c4110341e",
+  "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+  "records": 44,
+  "calls": 472,
+  "kind_counts": {
+    "scatter": 192,
+    "release": 280
+  },
+  "draws": 428,
+  "deletions": 44,
+  "library_frames": 25,
+  "short_sequences": 8,
+  "external_queue_calls": 0,
+  "external_change_calls": 0,
+  "fixture_sha256": "bcbff865c2e763d587ae146c37c67275fe77a0539b5e60ac3f467641e2f83a50",
+  "gzip_sha256": "9f2bf9f32c9ccc866d70c76059b0718cbaa4aaa62377305591a6655f74fd8d88",
+  "frames_match_original_core": true,
+  "video_steps": 3602,
+  "accepted_entry_last_frame": 3600,
+  "errors": [],
+  "incomplete_calls": 0,
+  "pass": true,
+  "limits": [
+    "Stop at draw request before hardware sprite emission or after completed prefix clear",
+    "Natural counts are reported per actual callback kind; absent kinds are not claimed observed",
+    "Parent/world collision scheduling and source0 actor composition are separate",
+    "Private cases execute a restored original CPU with declared external inputs; no rules are executed by this capture script"
+  ]
+}

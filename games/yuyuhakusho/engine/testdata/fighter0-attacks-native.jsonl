@@ -1,0 +1,53 @@
+{"Time":"2026-11-05T02:17:47.66601+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-05T02:17:48.179846+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuAttacksOriginalFullCalls"}
+{"Time":"2026-11-05T02:17:48.179874+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAttacksOriginalFullCalls","Output":"=== RUN   TestChuAttacksOriginalFullCalls\n"}
+{"Time":"2026-11-05T02:17:48.179909+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuAttacksOriginalFullCalls/chu-attacks-oracle"}
+{"Time":"2026-11-05T02:17:48.179915+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAttacksOriginalFullCalls/chu-attacks-oracle","Output":"=== RUN   TestChuAttacksOriginalFullCalls/chu-attacks-oracle\n"}
+{"Time":"2026-11-05T02:17:53.336372+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAttacksOriginalFullCalls/chu-attacks-oracle","Output":"    chu_attacks_test.go:157: original complete Chu selector calls=4348\n"}
+{"Time":"2026-11-05T02:17:53.337239+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAttacksOriginalFullCalls/chu-attacks-oracle","Output":"--- PASS: TestChuAttacksOriginalFullCalls/chu-attacks-oracle (5.16s)\n"}
+{"Time":"2026-11-05T02:17:53.337251+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestChuAttacksOriginalFullCalls/chu-attacks-oracle","Elapsed":5.16}
+{"Time":"2026-11-05T02:17:53.33726+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuAttacksOriginalFullCalls/chu-attacks-boundaries"}
+{"Time":"2026-11-05T02:17:53.337263+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAttacksOriginalFullCalls/chu-attacks-boundaries","Output":"=== RUN   TestChuAttacksOriginalFullCalls/chu-attacks-boundaries\n"}
+{"Time":"2026-11-05T02:17:58.826038+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAttacksOriginalFullCalls/chu-attacks-boundaries","Output":"    chu_attacks_test.go:157: original complete Chu selector calls=4596\n"}
+{"Time":"2026-11-05T02:17:58.82611+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAttacksOriginalFullCalls/chu-attacks-boundaries","Output":"--- PASS: TestChuAttacksOriginalFullCalls/chu-attacks-boundaries (5.49s)\n"}
+{"Time":"2026-11-05T02:17:58.826115+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestChuAttacksOriginalFullCalls/chu-attacks-boundaries","Elapsed":5.49}
+{"Time":"2026-11-05T02:17:58.826128+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAttacksOriginalFullCalls","Output":"--- PASS: TestChuAttacksOriginalFullCalls (10.65s)\n"}
+{"Time":"2026-11-05T02:17:58.826146+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestChuAttacksOriginalFullCalls","Elapsed":10.65}
+{"Time":"2026-11-05T02:17:58.82615+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuAttacksSingleInitialState"}
+{"Time":"2026-11-05T02:17:58.826153+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAttacksSingleInitialState","Output":"=== RUN   TestChuAttacksSingleInitialState\n"}
+{"Time":"2026-11-05T02:17:58.859748+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAttacksSingleInitialState","Output":"--- PASS: TestChuAttacksSingleInitialState (0.03s)\n"}
+{"Time":"2026-11-05T02:17:58.859776+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestChuAttacksSingleInitialState","Elapsed":0.03}
+{"Time":"2026-11-05T02:17:58.859783+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuAttacksInvalidInputIsAtomic"}
+{"Time":"2026-11-05T02:17:58.859787+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAttacksInvalidInputIsAtomic","Output":"=== RUN   TestChuAttacksInvalidInputIsAtomic\n"}
+{"Time":"2026-11-05T02:18:02.427671+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAttacksInvalidInputIsAtomic","Output":"--- PASS: TestChuAttacksInvalidInputIsAtomic (3.57s)\n"}
+{"Time":"2026-11-05T02:18:02.427874+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestChuAttacksInvalidInputIsAtomic","Elapsed":3.57}
+{"Time":"2026-11-05T02:18:02.427882+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter0AttacksOriginalFullCalls"}
+{"Time":"2026-11-05T02:18:02.427885+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter0AttacksOriginalFullCalls","Output":"=== RUN   TestFighter0AttacksOriginalFullCalls\n"}
+{"Time":"2026-11-05T02:18:02.427888+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter0AttacksOriginalFullCalls/fighter0-attacks-natural"}
+{"Time":"2026-11-05T02:18:02.427891+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter0AttacksOriginalFullCalls/fighter0-attacks-natural","Output":"=== RUN   TestFighter0AttacksOriginalFullCalls/fighter0-attacks-natural\n"}
+{"Time":"2026-11-05T02:18:07.804037+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter0AttacksOriginalFullCalls/fighter0-attacks-natural","Output":"    fighter0_attacks_test.go:188: complete original source0 calls=1644 modes=map[air:43 air-special:43 ground:772 ground-special:786] objects=map[33792:1644]\n"}
+{"Time":"2026-11-05T02:18:07.804121+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter0AttacksOriginalFullCalls/fighter0-attacks-natural","Output":"--- PASS: TestFighter0AttacksOriginalFullCalls/fighter0-attacks-natural (5.38s)\n"}
+{"Time":"2026-11-05T02:18:07.80413+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighter0AttacksOriginalFullCalls/fighter0-attacks-natural","Elapsed":5.38}
+{"Time":"2026-11-05T02:18:07.804142+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter0AttacksOriginalFullCalls/fighter0-attacks-oracle"}
+{"Time":"2026-11-05T02:18:07.804146+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter0AttacksOriginalFullCalls/fighter0-attacks-oracle","Output":"=== RUN   TestFighter0AttacksOriginalFullCalls/fighter0-attacks-oracle\n"}
+{"Time":"2026-11-05T02:18:07.917894+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter0AttacksOriginalFullCalls/fighter0-attacks-oracle","Output":"    fighter0_attacks_test.go:188: complete original source0 calls=35 modes=map[air:3 air-special:8 ground:4 ground-special:20] objects=map[33792:8 34816:9 35840:9 36864:9]\n"}
+{"Time":"2026-11-05T02:18:07.917917+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter0AttacksOriginalFullCalls/fighter0-attacks-oracle","Output":"--- PASS: TestFighter0AttacksOriginalFullCalls/fighter0-attacks-oracle (0.11s)\n"}
+{"Time":"2026-11-05T02:18:07.917921+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighter0AttacksOriginalFullCalls/fighter0-attacks-oracle","Elapsed":0.11}
+{"Time":"2026-11-05T02:18:07.917937+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter0AttacksOriginalFullCalls/fighter0-attacks-boundaries"}
+{"Time":"2026-11-05T02:18:07.917942+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter0AttacksOriginalFullCalls/fighter0-attacks-boundaries","Output":"=== RUN   TestFighter0AttacksOriginalFullCalls/fighter0-attacks-boundaries\n"}
+{"Time":"2026-11-05T02:18:51.935422+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter0AttacksOriginalFullCalls/fighter0-attacks-boundaries","Output":"    fighter0_attacks_test.go:188: complete original source0 calls=13276 modes=map[air:1280 air-special:3396 ground:2432 ground-special:6168] objects=map[33792:3319 34816:3319 35840:3319 36864:3319]\n"}
+{"Time":"2026-11-05T02:18:51.936117+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter0AttacksOriginalFullCalls/fighter0-attacks-boundaries","Output":"--- PASS: TestFighter0AttacksOriginalFullCalls/fighter0-attacks-boundaries (44.02s)\n"}
+{"Time":"2026-11-05T02:18:51.93613+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighter0AttacksOriginalFullCalls/fighter0-attacks-boundaries","Elapsed":44.02}
+{"Time":"2026-11-05T02:18:51.93615+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter0AttacksOriginalFullCalls","Output":"--- PASS: TestFighter0AttacksOriginalFullCalls (49.51s)\n"}
+{"Time":"2026-11-05T02:18:51.936156+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighter0AttacksOriginalFullCalls","Elapsed":49.51}
+{"Time":"2026-11-05T02:18:51.936159+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter0AttacksSingleInitialState"}
+{"Time":"2026-11-05T02:18:51.936162+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter0AttacksSingleInitialState","Output":"=== RUN   TestFighter0AttacksSingleInitialState\n"}
+{"Time":"2026-11-05T02:18:52.799673+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter0AttacksSingleInitialState","Output":"--- PASS: TestFighter0AttacksSingleInitialState (0.86s)\n"}
+{"Time":"2026-11-05T02:18:52.799698+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighter0AttacksSingleInitialState","Elapsed":0.86}
+{"Time":"2026-11-05T02:18:52.799704+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter0AttacksInvalidInputIsAtomic"}
+{"Time":"2026-11-05T02:18:52.799707+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter0AttacksInvalidInputIsAtomic","Output":"=== RUN   TestFighter0AttacksInvalidInputIsAtomic\n"}
+{"Time":"2026-11-05T02:18:52.864877+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter0AttacksInvalidInputIsAtomic","Output":"--- PASS: TestFighter0AttacksInvalidInputIsAtomic (0.07s)\n"}
+{"Time":"2026-11-05T02:18:52.864892+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighter0AttacksInvalidInputIsAtomic","Elapsed":0.07}
+{"Time":"2026-11-05T02:18:52.864897+08:00","Action":"output","Package":"command-line-arguments","Output":"PASS\n"}
+{"Time":"2026-11-05T02:18:53.926793+08:00","Action":"output","Package":"command-line-arguments","Output":"ok  \tcommand-line-arguments\t66.260s\n"}
+{"Time":"2026-11-05T02:18:53.92685+08:00","Action":"pass","Package":"command-line-arguments","Elapsed":66.261}

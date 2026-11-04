@@ -1,0 +1,38 @@
+{
+  "pass": true,
+  "scope": "Only this complete-composition subtask duplicate JSONL/gzip outputs and run summaries; canonical fixtures, baselines, input, tools, ROM, shared caches and8799 assets retained",
+  "deleted": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter0-composition",
+      "files": 24,
+      "bytes": 242172422
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter0-composition-special",
+      "files": 12,
+      "bytes": 234552143
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter0-composition-special-final",
+      "files": 12,
+      "bytes": 234552143
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter0-composition-run.txt",
+      "files": 1,
+      "bytes": 2432
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter0-composition-special-run.txt",
+      "files": 1,
+      "bytes": 881
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter0-composition-special-final-run.txt",
+      "files": 1,
+      "bytes": 881
+    }
+  ],
+  "files_removed": 51,
+  "bytes_removed": 711280902
+}

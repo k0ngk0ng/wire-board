@@ -1,0 +1,36 @@
+{
+  "pass": true,
+  "scope": "Source0 special-flow passive observed/unobserved per-video RAM/video baseline",
+  "frames": 3602,
+  "frames_match_original_core": true,
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "unobserved_identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.4 60bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "inputs_sha256": "b7976367c37584f8f154fed981be9529b0c5eb78cc521166a306b68dc77464b7",
+  "capture_sha256": "e0db8ccd61478a076bc2320d2ea12d6bbaa072366848028492f0553c4110341e",
+  "fixture_sha256": "a3bd8138db14896284f772a8b4a6dbe5a3f8712b91d9837f5843dc87dcb48fb3",
+  "gzip_sha256": "e3324d5ffddfd50a5e10681149dad6a52c227dc173ae44a040ff40a1709a8f6e",
+  "capture_manifest_sha256": "dcabc0721f44db2f58838133704594a92a48b87892d3b4ca1f9a442141a42a26",
+  "export_sha256": "c869098aaf3067d89dabc58e2afdeac876181f9986f3e448e59765d8a8ec5e9b",
+  "limits": [
+    "Video labels are not logical tick counts",
+    "The accepted projectile entry boundary is3600; two extra video steps drain pending callbacks"
+  ]
+}

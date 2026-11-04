@@ -1,0 +1,86 @@
+{
+  "pass": true,
+  "scope": "action source0 complete original API returns; actor stops before sprites",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "247fc47d11e64b319aae4befeaeb6f1d9d3249f37fbd1dd1c6913c00ab374f77",
+  "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+  "records": 162,
+  "calls": 162,
+  "frames_match_original_core": true,
+  "external_queue_calls": 0,
+  "fixture_sha256": "bfe24fb5247cdb17c7e1ea5d403e0a4cc73f559dad8793245ffcbf276d5fe2e3",
+  "gzip_sha256": "7a79c13848f1651d3e74986e1a08a2ef35298ce9f22aaacef3ba19e761bc2116",
+  "binding": {
+    "source_tag": 0,
+    "source_object": "0x8400",
+    "checkpoint_video_label": 2400,
+    "animation_set": 772778,
+    "shape_set": 777386,
+    "parameter_pointer": 75008,
+    "source_actor_sha256": "f0ec7898e4740fdb9fb20c440faf312d019d29744e5380853e392c825518fbbd"
+  },
+  "library_frames": 167,
+  "baseline_path": "games/yuyuhakusho/engine/testdata/fighter0-attacks-reference-frames.json",
+  "baseline_sha256": "690471dc7e3d2ddd7ed3fe2770169ec6078d0c1570fc57dafe38bf4805778285",
+  "baseline_manifest_sha256": "468da442990d1df113f80a6a888095242d30e1a35a8fc205ab4a433e0366510e",
+  "input_path": "docs/research/md-yuyuhakusho/source0-next-inputs.json",
+  "input_sha256": "ab1089aa8453df2997800c3e8477bf64161734d31521aec7c2f48827409a406a",
+  "baseline_raw_sha256": "690471dc7e3d2ddd7ed3fe2770169ec6078d0c1570fc57dafe38bf4805778285",
+  "accepted_entry_video_limit": 3600,
+  "canonical_source_registers": true,
+  "private_unknown_ram_writes": 0,
+  "incomplete_calls": 0,
+  "errors": [],
+  "statistics": {
+    "calls": 162,
+    "external": 0,
+    "threat_branches": 0,
+    "actions": {
+      "0": 44,
+      "1": 4,
+      "2": 6,
+      "3": 4,
+      "4": 4,
+      "5": 4,
+      "6": 4,
+      "7": 4,
+      "8": 4,
+      "9": 4,
+      "10": 4,
+      "11": 4,
+      "12": 4,
+      "13": 4,
+      "14": 7,
+      "17": 9,
+      "21": 4,
+      "22": 12,
+      "23": 12,
+      "24": 10,
+      "25": 10
+    },
+    "routes": {},
+    "rng_counts": {
+      "1": 162
+    },
+    "sources": {
+      "0xffff8400": 78,
+      "0xffff8800": 28,
+      "0xffff8c00": 28,
+      "0xffff9000": 28
+    }
+  },
+  "limits": [
+    "Natural source0 actor is human; source0 AI is private evidence only.",
+    "Actor excludes sprite, child, collision-manager and world callbacks.",
+    "Independent audio consumer exclusions require observed PC/address markers."
+  ]
+}
