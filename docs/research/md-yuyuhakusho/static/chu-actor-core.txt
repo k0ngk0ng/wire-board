@@ -1,0 +1,19 @@
+route=reused-direct-ghidra-headless; REA raw68000 unsupported
+source_path=docs/research/md-yuyuhakusho/static/fighter-active.txt
+source_sha256=88c94a165036b3f70b01aab10786018c7f01300ca56d8f1f35c4d247bd88cc29
+rule_boundary=12682 through126ba beforeJSR1580; actualspriteemit and126c0RTS excluded
+
+00012682 jsr 0x00014922.l
+00012688 tst.b (0xfffff550).w
+0001268c bmi.b 0x000126a6
+0001268e tst.b (0xfffff55a).w
+00012692 bne.b 0x000126a6
+00012694 jsr 0x00015540.l
+0001269a jsr 0x00015a18.l
+000126a0 jsr 0x000156f0.l
+000126a6 cmpi.w #-0x400,(0x78,A5)
+000126ac beq.b 0x000126b4
+000126ae jsr 0x000208d8.l
+000126b4 jsr 0x00015772.l
+000126ba jsr 0x00001580.l
+000126c0 rts

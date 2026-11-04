@@ -1,0 +1,349 @@
+{
+  "schema": 1,
+  "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+  "specs": [
+    {
+      "character_id": 0,
+      "graphics_set": 768586,
+      "tiles_base": 917504,
+      "animation_set": 772778,
+      "shape_set": 777386,
+      "movement_source": 75008,
+      "base_stun": 34,
+      "attack_scale": 2,
+      "movement": {
+        "walk_speed": 131072,
+        "vertical_velocity": -368640,
+        "gravity": 14336,
+        "horizontal_velocity": 106496,
+        "burst_speed": 81920,
+        "energy_drain": 48
+      }
+    },
+    {
+      "character_id": 1,
+      "graphics_set": 780602,
+      "tiles_base": 1048576,
+      "animation_set": 784218,
+      "shape_set": 787658,
+      "movement_source": 75038,
+      "base_stun": 40,
+      "attack_scale": 4,
+      "movement": {
+        "walk_speed": 90112,
+        "vertical_velocity": -368640,
+        "gravity": 13824,
+        "horizontal_velocity": 114688,
+        "burst_speed": 49152,
+        "energy_drain": 30
+      }
+    },
+    {
+      "character_id": 2,
+      "graphics_set": 790234,
+      "tiles_base": 1179648,
+      "animation_set": 795290,
+      "shape_set": 799194,
+      "movement_source": 75068,
+      "base_stun": 56,
+      "attack_scale": 8,
+      "movement": {
+        "walk_speed": 90112,
+        "vertical_velocity": -368640,
+        "gravity": 13824,
+        "horizontal_velocity": 114688,
+        "burst_speed": 65536,
+        "energy_drain": 48
+      }
+    },
+    {
+      "character_id": 3,
+      "graphics_set": 802506,
+      "tiles_base": 1310720,
+      "animation_set": 806634,
+      "shape_set": 810410,
+      "movement_source": 75098,
+      "base_stun": 48,
+      "attack_scale": 6,
+      "movement": {
+        "walk_speed": 98304,
+        "vertical_velocity": -360448,
+        "gravity": 13824,
+        "horizontal_velocity": 114688,
+        "burst_speed": 57344,
+        "energy_drain": 36
+      }
+    },
+    {
+      "character_id": 4,
+      "graphics_set": 813530,
+      "tiles_base": 1441792,
+      "animation_set": 818330,
+      "shape_set": 822250,
+      "movement_source": 75128,
+      "base_stun": 44,
+      "attack_scale": 2,
+      "movement": {
+        "walk_speed": 139264,
+        "vertical_velocity": -393216,
+        "gravity": 17408,
+        "horizontal_velocity": 114688,
+        "burst_speed": 65536,
+        "energy_drain": 48
+      }
+    },
+    {
+      "character_id": 5,
+      "graphics_set": 825258,
+      "tiles_base": 1572864,
+      "animation_set": 829146,
+      "shape_set": 832394,
+      "movement_source": 75188,
+      "base_stun": 54,
+      "attack_scale": 2,
+      "movement": {
+        "walk_speed": 86016,
+        "vertical_velocity": -368640,
+        "gravity": 12800,
+        "horizontal_velocity": 114688,
+        "burst_speed": 32768,
+        "energy_drain": 36
+      }
+    },
+    {
+      "character_id": 6,
+      "graphics_set": 835002,
+      "tiles_base": 1703936,
+      "animation_set": 838778,
+      "shape_set": 843514,
+      "movement_source": 75218,
+      "base_stun": 46,
+      "attack_scale": 4,
+      "movement": {
+        "walk_speed": 131072,
+        "vertical_velocity": -393216,
+        "gravity": 12288,
+        "horizontal_velocity": 131072,
+        "burst_speed": 49152,
+        "energy_drain": 30
+      }
+    },
+    {
+      "character_id": 7,
+      "graphics_set": 846218,
+      "tiles_base": 1835008,
+      "animation_set": 850330,
+      "shape_set": 853658,
+      "movement_source": 75248,
+      "base_stun": 40,
+      "attack_scale": 2,
+      "movement": {
+        "walk_speed": 90112,
+        "vertical_velocity": -368640,
+        "gravity": 13824,
+        "horizontal_velocity": 114688,
+        "burst_speed": 49152,
+        "energy_drain": 48
+      }
+    },
+    {
+      "character_id": 8,
+      "graphics_set": 856138,
+      "tiles_base": 1966080,
+      "animation_set": 859738,
+      "shape_set": 863338,
+      "movement_source": 75278,
+      "base_stun": 38,
+      "attack_scale": 4,
+      "movement": {
+        "walk_speed": 81920,
+        "vertical_velocity": -368640,
+        "gravity": 14336,
+        "horizontal_velocity": 106496,
+        "burst_speed": 65536,
+        "energy_drain": 36
+      }
+    },
+    {
+      "character_id": 9,
+      "graphics_set": 865978,
+      "tiles_base": 2097152,
+      "animation_set": 871066,
+      "shape_set": 875002,
+      "movement_source": 75308,
+      "base_stun": 48,
+      "attack_scale": 6,
+      "movement": {
+        "walk_speed": 98304,
+        "vertical_velocity": -360448,
+        "gravity": 13824,
+        "horizontal_velocity": 114688,
+        "burst_speed": 49152,
+        "energy_drain": 56
+      }
+    },
+    {
+      "character_id": 10,
+      "graphics_set": 877626,
+      "tiles_base": 2228224,
+      "animation_set": 882554,
+      "shape_set": 886186,
+      "movement_source": 75338,
+      "base_stun": 62,
+      "attack_scale": 8,
+      "movement": {
+        "walk_speed": 81920,
+        "vertical_velocity": -376832,
+        "gravity": 14336,
+        "horizontal_velocity": 98304,
+        "burst_speed": 49152,
+        "energy_drain": 52
+      }
+    }
+  ],
+  "sources": [
+    {
+      "character_id": 0,
+      "initializer": 75592,
+      "initializer_sha256": "e010621ef9695fa5d239bbbd7cd6aa98e46c72e468de8ba6ea7f5e856d13a53b",
+      "movement_address": 75008,
+      "movement_bytes": "00020000fffa6000000038000001a0000000060000002000000140000030",
+      "movement_sha256": "88c4e82ebb6dccfbc23389ea442f54fc6e66ec35ccd9fd86bb3abfd921945298",
+      "unassigned_parameter_span": {
+        "offset": 16,
+        "length": 8,
+        "bytes": "0000060000002000"
+      }
+    },
+    {
+      "character_id": 1,
+      "initializer": 75666,
+      "initializer_sha256": "1275e6f3acb06225b57ce14e2b851767798a96f1c64e685f848245a897e89cc8",
+      "movement_address": 75038,
+      "movement_bytes": "00016000fffa6000000036000001c00000000600000020000000c000001e",
+      "movement_sha256": "73f4830220eb9fc53a938247262f0d5d3a50f8f9bc6f11dc496cf6954196c55a",
+      "unassigned_parameter_span": {
+        "offset": 16,
+        "length": 8,
+        "bytes": "0000060000002000"
+      }
+    },
+    {
+      "character_id": 2,
+      "initializer": 75740,
+      "initializer_sha256": "0756c94aea796f745c81df4373faba54d27ca6b242784b6a0734a687fd9a92e5",
+      "movement_address": 75068,
+      "movement_bytes": "00016000fffa6000000036000001c0000000060000002000000100000030",
+      "movement_sha256": "13fd7fe6b9a4babf961310ad9f5169fce17c48e8c3b39d4acc91391f334071ee",
+      "unassigned_parameter_span": {
+        "offset": 16,
+        "length": 8,
+        "bytes": "0000060000002000"
+      }
+    },
+    {
+      "character_id": 3,
+      "initializer": 75814,
+      "initializer_sha256": "a10799a9eaeaddc0ae67424d14589bce51ff812d7304921d951fc964784accde",
+      "movement_address": 75098,
+      "movement_bytes": "00018000fffa8000000036000001c00000000600000020000000e0000024",
+      "movement_sha256": "0e78a66257fb132d1de91e24604058a517a49203613dcab82b9175b28ad427a4",
+      "unassigned_parameter_span": {
+        "offset": 16,
+        "length": 8,
+        "bytes": "0000060000002000"
+      }
+    },
+    {
+      "character_id": 4,
+      "initializer": 75888,
+      "initializer_sha256": "fcfe035b5e753227a92b0fd9d527fecaae90e19f2e0bfc8b1173939da4dbeac5",
+      "movement_address": 75128,
+      "movement_bytes": "00022000fffa0000000044000001c0000000060000002000000100000030",
+      "movement_sha256": "a1921b891888c291cb9e823019f2d39ed9324c05a10198f2b451439e9442a62b",
+      "unassigned_parameter_span": {
+        "offset": 16,
+        "length": 8,
+        "bytes": "0000060000002000"
+      }
+    },
+    {
+      "character_id": 5,
+      "initializer": 75962,
+      "initializer_sha256": "99d338c1fb500099c6812d6559febbdbca013f883ea19dddbe09b6800d985027",
+      "movement_address": 75188,
+      "movement_bytes": "00015000fffa6000000032000001c0000000060000002000000080000024",
+      "movement_sha256": "1715d70f76b705e6b00dcc4be5660209716f2c615962e05456d1bea4b0644040",
+      "unassigned_parameter_span": {
+        "offset": 16,
+        "length": 8,
+        "bytes": "0000060000002000"
+      }
+    },
+    {
+      "character_id": 6,
+      "initializer": 76036,
+      "initializer_sha256": "b87b77471726316f9748be50d54e8f272f6dbf9fc2b52f574b91dc7101beff45",
+      "movement_address": 75218,
+      "movement_bytes": "00020000fffa0000000030000002000000000600000020000000c000001e",
+      "movement_sha256": "76db953e4cd732ac9d9acdc3604f7b20d295de8a50a4cec7bbbeeb5c3affca7b",
+      "unassigned_parameter_span": {
+        "offset": 16,
+        "length": 8,
+        "bytes": "0000060000002000"
+      }
+    },
+    {
+      "character_id": 7,
+      "initializer": 76110,
+      "initializer_sha256": "2a7de39744832f10261e4cdeea8b582c689242beba8b6264349bb54a1932385b",
+      "movement_address": 75248,
+      "movement_bytes": "00016000fffa6000000036000001c00000000600000020000000c0000030",
+      "movement_sha256": "ee92ce13f060a7e94f65ba67791bd6b38d5459581e772f4a2824d87e697c0d69",
+      "unassigned_parameter_span": {
+        "offset": 16,
+        "length": 8,
+        "bytes": "0000060000002000"
+      }
+    },
+    {
+      "character_id": 8,
+      "initializer": 76184,
+      "initializer_sha256": "a29e81d78196e952a334e6e558e4a1470edea634d07a362313618967f3786260",
+      "movement_address": 75278,
+      "movement_bytes": "00014000fffa6000000038000001a0000000060000002000000100000024",
+      "movement_sha256": "9f5ecade431fe55a4881ee2762bbbfb474c8c06af25f442c11ba63567e68ac85",
+      "unassigned_parameter_span": {
+        "offset": 16,
+        "length": 8,
+        "bytes": "0000060000002000"
+      }
+    },
+    {
+      "character_id": 9,
+      "initializer": 76258,
+      "initializer_sha256": "44a33e43f869e3b782509031fb94919eed828dc2bfe59fdebc7839bb87a5cb53",
+      "movement_address": 75308,
+      "movement_bytes": "00018000fffa8000000036000001c00000000600000020000000c0000038",
+      "movement_sha256": "52279971350efe5f5a2c054cb65a9c6ec23c9f13611567c09bf231bebb447547",
+      "unassigned_parameter_span": {
+        "offset": 16,
+        "length": 8,
+        "bytes": "0000060000002000"
+      }
+    },
+    {
+      "character_id": 10,
+      "initializer": 76332,
+      "initializer_sha256": "02807cd3e96709dffacf3b7eff8ac388132a23c90e6698fe681c9cba76c7e589",
+      "movement_address": 75338,
+      "movement_bytes": "00014000fffa4000000038000001800000000600000020000000c0000034",
+      "movement_sha256": "b87e6b8281bcff4102acaff60dd3105c478a6d5d2006aca4b828cc2e1774c044",
+      "unassigned_parameter_span": {
+        "offset": 16,
+        "length": 8,
+        "bytes": "0000060000002000"
+      }
+    }
+  ]
+}

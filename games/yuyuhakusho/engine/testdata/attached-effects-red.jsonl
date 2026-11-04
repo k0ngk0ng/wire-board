@@ -1,0 +1,16 @@
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"# command-line-arguments [command-line-arguments.test]\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./attached_effects_test.go:23:14: undefined: AttachedEffectWorld\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./attached_effects_test.go:35:48: undefined: AttachedEffectKind\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./attached_effects_test.go:47:75: undefined: AttachedEffectState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./attached_effects_test.go:47:96: undefined: AttachedEffectParent\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./attached_effects_test.go:66:43: undefined: AttachedEffectState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./attached_effects_test.go:66:71: undefined: AttachedEffectParent\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./attached_effects_test.go:66:99: undefined: AttachedEffectWorld\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./attached_effects_test.go:66:124: undefined: AttachedEffectOutcome\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./attached_effects_test.go:124:13: undefined: AttachedEffectFrame\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./attached_effects_test.go:133:68: undefined: AttachedEffectLibrary\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./attached_effects_test.go:133:68: too many errors\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-fail"}
+{"Time":"2026-11-04T18:58:42.930031+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-04T18:58:42.930059+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\tcommand-line-arguments [build failed]\n"}
+{"Time":"2026-11-04T18:58:42.930064+08:00","Action":"fail","Package":"command-line-arguments","Elapsed":0,"FailedBuild":"command-line-arguments [command-line-arguments.test]"}

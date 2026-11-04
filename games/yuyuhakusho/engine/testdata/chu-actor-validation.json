@@ -1,0 +1,170 @@
+{
+  "verified_at_utc": "2026-11-04T10:50:33.308979+00:00",
+  "scope": "Complete active Chu rule callback12682 through126ba before actual sprite1580",
+  "pass": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "test_first": "Actual undefined ChuActorState/ChuActorView/StepChuActor build failure retained before implementation",
+  "logs": [
+    {
+      "phase": "red",
+      "path": "games/yuyuhakusho/engine/testdata/chu-actor-red.jsonl",
+      "sha256": "4d0631b6fefb415619e1daf3ab6efa710dbc49773621cac4b76963337d15ab47",
+      "result": "fail",
+      "elapsed_seconds": 0,
+      "top_level_tests": []
+    },
+    {
+      "phase": "native-race",
+      "path": "games/yuyuhakusho/engine/testdata/chu-actor-native.jsonl",
+      "sha256": "06ed46a99bdc4c1c2f4afdbf3f202588af76adfe6f77c00639bd4a0a359dde89",
+      "result": "pass",
+      "elapsed_seconds": 60.287,
+      "top_level_tests": [
+        "TestChuActorOriginalRules",
+        "TestChuActorSingleInitialState",
+        "TestChuActorLateFailureIsAtomic"
+      ]
+    },
+    {
+      "phase": "node-wasm",
+      "path": "games/yuyuhakusho/engine/testdata/chu-actor-wasm.jsonl",
+      "sha256": "73a98253c103c161c18af034dbcc7f5af3104f8b9e115d0e1c603db29bc0969d",
+      "result": "pass",
+      "elapsed_seconds": 15.15,
+      "top_level_tests": [
+        "TestChuActorOriginalRules",
+        "TestChuActorSingleInitialState",
+        "TestChuActorLateFailureIsAtomic"
+      ]
+    }
+  ],
+  "fixtures": [
+    {
+      "name": "chu-actor-oracle",
+      "manifest_sha256": "b1848df1730cb1361d31cd888afe4560b2e98f6995a3b738550e9add089dd412",
+      "records": 8268,
+      "calls": 8268,
+      "external_queue_calls": 113,
+      "rng_counts": {
+        "1": 4770,
+        "5": 880,
+        "3": 2391,
+        "7": 10,
+        "6": 22,
+        "2": 33,
+        "8": 2,
+        "0": 160
+      },
+      "fixture_sha256": "b8bb37014a9bc3195b400b33cb7edf9f56ec69b0ea61eae6582addd7ba46939d",
+      "gzip_sha256": "75191dd505db92be52a6be6e9f0d375a9cd5855ad660b570063ebfd8156a89da"
+    },
+    {
+      "name": "chu-actor-boundaries",
+      "manifest_sha256": "c17cab98c2af4687f8809d069a467d52e35680713bb1b00c117c26cbb0fc52db",
+      "records": 1654,
+      "calls": 1654,
+      "external_queue_calls": 0,
+      "rng_counts": {
+        "1": 852,
+        "5": 205,
+        "4": 101,
+        "3": 101,
+        "6": 9,
+        "2": 2,
+        "0": 384
+      },
+      "fixture_sha256": "0d39f3f1a4b31ff1eeb6c21cd0002c2830c6fa5288f19d1d06a6f6ce71fcf420",
+      "gzip_sha256": "41ee13a0c176e571568c226038de6c84c30dfe66c36c66fcab0e5cbe5b0997ab"
+    },
+    {
+      "name": "chu-actor-sequences",
+      "manifest_sha256": "26c95d10b56632e4767f2674da6fb404308efea2ec475762cd47326d50820fed",
+      "records": 6,
+      "calls": 144,
+      "external_queue_calls": 0,
+      "rng_counts": {
+        "1": 88,
+        "5": 22,
+        "3": 23,
+        "8": 2,
+        "7": 1,
+        "0": 8
+      },
+      "fixture_sha256": "55bc1acc8963dc578450c4b5cfcd38c4e241203c9efee2d8189db1adaf43a050",
+      "gzip_sha256": "97b3dbb30e444e82f7a5f995c019cbf6cad489e71fe8449fd93fa5c5976250e8"
+    }
+  ],
+  "coverage": {
+    "natural_rule_callbacks": 8268,
+    "natural_noninterleaved_complete_queue_assertions": 8155,
+    "natural_async_queue_rows_excluded": 113,
+    "natural_actual_queue_mismatches": 112,
+    "natural_interleaved_queue_coincidences": 1,
+    "isolated_rule_callbacks": 1654,
+    "single_initial_streams": 6,
+    "single_initial_steps": 144,
+    "source_slots": 4,
+    "source_character_id": 9,
+    "actions": 23,
+    "input_routes": 6,
+    "baselines": 2,
+    "baseline_frames_each": 3600
+  },
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/engine/chu_actor.go",
+      "sha256": "996c20280a056670ac174a143c3cedc75b8ed816e9fcb4347878507a8c0554be"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_actor_test.go",
+      "sha256": "64cbd90975e93b8ca9e44fe034bca3d177de4e15f45939248256c5823e44c0e7"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_chu_actor.py",
+      "sha256": "d90107daec842d386170bfb26d986d09254a6dc7f7b6c31593aa36c8a5d2187c"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/chu-actor-core.txt",
+      "sha256": "1693bb08755265bec661d93dea8895d3ec296b84ec117071c70d291b64ce72a0"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/CHU_ACTOR_VERIFICATION.md",
+      "sha256": "cd8749ba9803c7dd6087d47390d51fe625e696cef905df199a6b35452fc9d6a7"
+    }
+  ],
+  "component_sources": [
+    {
+      "path": "games/yuyuhakusho/engine/chu_input.go",
+      "sha256": "b949c10336456617f301086ea1e503a4cd11524cebbcea0c318850b31debe667"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_ai.go",
+      "sha256": "f1180e17963062b329b22b685e1acf49c95266ba6b78b7507ea51132bdfa61ac"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_action.go",
+      "sha256": "e6e6348336187606913196cce368d82ed549a4c0645b4c0f1e44c69d14015502"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter_envelope.go",
+      "sha256": "f0cba93adb159eea905cc66ed976843c24ba1d7cec34a50423c356c303156453"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter_bounds.go",
+      "sha256": "065c32dff3bbad040988cadad753661447f7ed3508dacab9b19f34d9ff6da310"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/motion.go",
+      "sha256": "35dc27314a13afdff39d96d2d21911c5ba5030baf00ea81d1daf8f9feb5f8878"
+    }
+  ],
+  "model": "Unified intrinsic Fighter plus shared World; immutable external View; OtherEnergy contains only mutable opponent energy, visible geometry/resources are readonly; no production RAM image",
+  "limits": [
+    "Stops before1580 actualsprite emission; not full12682 RTS or126c8 initialization",
+    "113natural rows exclude the entire4-byte soundqueue assertion only, with actual consumer clears retained; all other captured output remains compared",
+    "Singleinitial streams advance this rule callback only, no collision manager, otheractors/children, camera/audio driver orfullworld tick",
+    "Othercharacter callbacks, fullmatch/AI world integration, renderer and platform E2E remain incomplete",
+    "Whole-engine integration gate remains parent responsibility"
+  ]
+}

@@ -1,0 +1,26 @@
+{"Time":"2026-11-04T17:03:29.911836+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-04T17:03:30.330109+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuProjectileOriginalRules"}
+{"Time":"2026-11-04T17:03:30.330158+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuProjectileOriginalRules","Output":"=== RUN   TestChuProjectileOriginalRules\n"}
+{"Time":"2026-11-04T17:03:30.330184+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuProjectileOriginalRules/chu-projectile-oracle"}
+{"Time":"2026-11-04T17:03:30.330191+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuProjectileOriginalRules/chu-projectile-oracle","Output":"=== RUN   TestChuProjectileOriginalRules/chu-projectile-oracle\n"}
+{"Time":"2026-11-04T17:03:30.339121+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuProjectileOriginalRules/chu-projectile-oracle","Output":"    chu_projectile_test.go:229: projectile complete rules=3 deletions=1\n"}
+{"Time":"2026-11-04T17:03:30.339137+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuProjectileOriginalRules/chu-projectile-oracle","Output":"--- PASS: TestChuProjectileOriginalRules/chu-projectile-oracle (0.01s)\n"}
+{"Time":"2026-11-04T17:03:30.339143+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestChuProjectileOriginalRules/chu-projectile-oracle","Elapsed":0.01}
+{"Time":"2026-11-04T17:03:30.339158+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuProjectileOriginalRules/chu-projectile-boundaries"}
+{"Time":"2026-11-04T17:03:30.339161+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuProjectileOriginalRules/chu-projectile-boundaries","Output":"=== RUN   TestChuProjectileOriginalRules/chu-projectile-boundaries\n"}
+{"Time":"2026-11-04T17:03:40.302951+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuProjectileOriginalRules/chu-projectile-boundaries","Output":"    chu_projectile_test.go:229: projectile complete rules=4678 deletions=1208\n"}
+{"Time":"2026-11-04T17:03:40.303+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuProjectileOriginalRules/chu-projectile-boundaries","Output":"--- PASS: TestChuProjectileOriginalRules/chu-projectile-boundaries (9.96s)\n"}
+{"Time":"2026-11-04T17:03:40.303006+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestChuProjectileOriginalRules/chu-projectile-boundaries","Elapsed":9.96}
+{"Time":"2026-11-04T17:03:40.303016+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuProjectileOriginalRules","Output":"--- PASS: TestChuProjectileOriginalRules (9.97s)\n"}
+{"Time":"2026-11-04T17:03:40.303028+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestChuProjectileOriginalRules","Elapsed":9.97}
+{"Time":"2026-11-04T17:03:40.303033+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuProjectileSingleInitialState"}
+{"Time":"2026-11-04T17:03:40.303036+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuProjectileSingleInitialState","Output":"=== RUN   TestChuProjectileSingleInitialState\n"}
+{"Time":"2026-11-04T17:03:41.989399+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuProjectileSingleInitialState","Output":"--- PASS: TestChuProjectileSingleInitialState (1.69s)\n"}
+{"Time":"2026-11-04T17:03:41.989443+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestChuProjectileSingleInitialState","Elapsed":1.69}
+{"Time":"2026-11-04T17:03:41.989448+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuProjectileErrorsAreAtomic"}
+{"Time":"2026-11-04T17:03:41.989452+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuProjectileErrorsAreAtomic","Output":"=== RUN   TestChuProjectileErrorsAreAtomic\n"}
+{"Time":"2026-11-04T17:03:48.750929+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuProjectileErrorsAreAtomic","Output":"--- PASS: TestChuProjectileErrorsAreAtomic (6.76s)\n"}
+{"Time":"2026-11-04T17:03:48.75115+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestChuProjectileErrorsAreAtomic","Elapsed":6.76}
+{"Time":"2026-11-04T17:03:48.751155+08:00","Action":"output","Package":"command-line-arguments","Output":"PASS\n"}
+{"Time":"2026-11-04T17:03:49.808029+08:00","Action":"output","Package":"command-line-arguments","Output":"ok  \tcommand-line-arguments\t19.896s\n"}
+{"Time":"2026-11-04T17:03:49.808096+08:00","Action":"pass","Package":"command-line-arguments","Elapsed":19.896}

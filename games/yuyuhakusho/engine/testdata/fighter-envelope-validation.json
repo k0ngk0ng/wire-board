@@ -1,0 +1,198 @@
+{
+  "verified_at_utc": "2026-11-04T09:17:38.136548+00:00",
+  "scope": "Common input envelope with explicit AI boundary, complete recording continuation, HUD/registration and reused full projection",
+  "pass": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "test_first": {
+    "initial": "Actual undefined FighterInputEnvelopeState/FighterHUDState/functions before implementation",
+    "signed_cursor_fix": "A separate real failing regression preceded signed MOVEA.W storage-boundary correction"
+  },
+  "verification_scope": "Focused explicit source files; whole-engine integration remains parent responsibility",
+  "logs": [
+    {
+      "phase": "red",
+      "path": "games/yuyuhakusho/engine/testdata/fighter-envelope-red.jsonl",
+      "sha256": "ae0a7b6b533ef0f6dbfb1691d2307cbf5070d416604743bd94e419dac2632ef5",
+      "result": "fail",
+      "elapsed_seconds": 0,
+      "top_level_tests": []
+    },
+    {
+      "phase": "signed-cursor-red",
+      "path": "games/yuyuhakusho/engine/testdata/fighter-envelope-signed-cursor-red.jsonl",
+      "sha256": "8b6a3739e048c3eac44042f3d346557ad1d88072dbb2ea7924d3f34105cf556a",
+      "result": "fail",
+      "elapsed_seconds": 0.574,
+      "top_level_tests": []
+    },
+    {
+      "phase": "native-race",
+      "path": "games/yuyuhakusho/engine/testdata/fighter-envelope-native.jsonl",
+      "sha256": "8b4b97a106909e5f4bbe70da506d9a263b76a9effe7970ab521555d6f92f2879",
+      "result": "pass",
+      "elapsed_seconds": 10.939,
+      "top_level_tests": [
+        "TestFighterEnvelopeOriginalCalls",
+        "TestFighterEnvelopeSingleInitialState",
+        "TestFighterEnvelopeMalformedStorageIsAtomic"
+      ]
+    },
+    {
+      "phase": "node-wasm",
+      "path": "games/yuyuhakusho/engine/testdata/fighter-envelope-wasm.jsonl",
+      "sha256": "c509a13d53bca3cdecb952bd307aba43151149af5b18b576fdee098e5fc05389",
+      "result": "pass",
+      "elapsed_seconds": 3.068,
+      "top_level_tests": [
+        "TestFighterEnvelopeOriginalCalls",
+        "TestFighterEnvelopeSingleInitialState",
+        "TestFighterEnvelopeMalformedStorageIsAtomic"
+      ]
+    }
+  ],
+  "fixtures": [
+    {
+      "name": "fighter-envelope-oracle",
+      "manifest_sha256": "6c2b3c114d6f034d5f64d30a2b98e4fa5c46cb9c66a026d989701fc91a834141",
+      "records": 19919,
+      "calls": 19919,
+      "kind_counts": {
+        "register": 4134,
+        "input": 4134,
+        "project": 7517,
+        "hud": 4134
+      },
+      "routes": {
+        "complete": 18125,
+        "ai": 1794
+      },
+      "fixture_sha256": "947cc131b83fdfef462ba26c6ed76c056540d2806b47041a1496ec630b39a9e1",
+      "gzip_sha256": "fe5bb3bd71b6d23016e05819cf01a29acfc01d787077834f3b0c91eb5929f068"
+    },
+    {
+      "name": "fighter-envelope-boundaries",
+      "manifest_sha256": "de19c8ad546d7fffbd35587ab0a4ffed7a74099baac57f90e148dd857884878e",
+      "records": 3601,
+      "calls": 3601,
+      "kind_counts": {
+        "input": 2160,
+        "record": 81,
+        "hud": 1344,
+        "register": 16
+      },
+      "routes": {
+        "complete": 3529,
+        "ai-record": 48,
+        "ai": 24
+      },
+      "fixture_sha256": "7dd21b4006fbd546bebcfce6b0002b2ebfcca552b080de9a474715fc38e0df5b",
+      "gzip_sha256": "bd658d9900e318577a4f88fe942080d8bf14b6070ff60bd92fb5cf78a64b6ff4"
+    },
+    {
+      "name": "fighter-envelope-sequences",
+      "manifest_sha256": "44cfdcf8fb0d02c5fea29b015cbbbb70dd7d5af244439100d7d3d829f756754e",
+      "records": 6,
+      "calls": 72,
+      "kind_counts": {
+        "input": 24,
+        "hud": 48
+      },
+      "routes": {
+        "complete": 72
+      },
+      "fixture_sha256": "38c573b593f24d25e9eb50b4d14b2afe5ab9c090cfce37886256f5a2d9585c9a",
+      "gzip_sha256": "ce5c0ac08871fe1e5f3a040072f2c372e64698575c107f3550e4263d822491ab"
+    }
+  ],
+  "coverage": {
+    "natural_records": 19919,
+    "natural_input_calls": 4134,
+    "natural_input_full_returns": 2340,
+    "natural_ai_prefixes_only": 1794,
+    "natural_hud": 4134,
+    "natural_registration": 4134,
+    "natural_projection": 7517,
+    "isolated_calls": 3601,
+    "isolated_input": 2160,
+    "isolated_record_continuations": 81,
+    "isolated_hud": 1344,
+    "isolated_registration": 16,
+    "isolated_ai_prefixes": 24,
+    "isolated_ai_record_prefixes": 48,
+    "single_initial_streams": 6,
+    "single_initial_steps": 72,
+    "input_stream_steps": 24,
+    "hud_stream_steps": 48,
+    "baseline_frames_unchanged": 3600,
+    "isolated_external_ram_changes": 0
+  },
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/engine/fighter_envelope.go",
+      "sha256": "f0cba93adb159eea905cc66ed976843c24ba1d7cec34a50423c356c303156453"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter_envelope_test.go",
+      "sha256": "328f0ec88c017fa4e032577d9419206ca288d84e24e00845d4ad7e8e5b925a48"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter_input.go",
+      "sha256": "da1cee3d5fffe0a78f97b31fb9ae9f81ba3b44a6f0a79e4f3148027ca3596c9a"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/input.go",
+      "sha256": "38e957231a29fd08c889709e0e7a39661284258800521467ba41fcdc9dfa12e2"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/motion.go",
+      "sha256": "35dc27314a13afdff39d96d2d21911c5ba5030baf00ea81d1daf8f9feb5f8878"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_fighter_envelope.py",
+      "sha256": "61e1685b44663ffdd36037dac176787352547f0e598e45ead8f018a3a4ce5598"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-envelope-core.txt",
+      "sha256": "5a4d39268ffcf7498cb7f9771eb437f6a0f8b7bbd65672b4ba4afda25ac129ec"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/FIGHTER_ENVELOPE_VERIFICATION.md",
+      "sha256": "ff0ab0cb6bd97d6c3ac1fd020e16b235177f84239af5160a029933654f94d328"
+    }
+  ],
+  "recording_aliases": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter-envelope-recording-aliases.json",
+    "sha256": "ac85776fd260ca7801bcb15e35956375cdacfa85848e99977809a327bac3a26c",
+    "actual_rom_slot0_byte_writer_is_noop": true,
+    "core_abi_and_mapping_sources": [
+      {
+        "path": ".local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/core/m68k/m68k.h",
+        "sha256": "960f56e6811af0d6f8d6021c94198fec214ec338b83064b764ae12186b4ff93d"
+      },
+      {
+        "path": ".local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/core/cart_hw/md_cart.c",
+        "sha256": "e132a59d1ef903602e27f782ee63464994e93d2298fccf8bc02fd85bfd5d2405"
+      },
+      {
+        "path": ".local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/core/mem68k.c",
+        "sha256": "5a16c625ea77934fee90cf5d5eaa72cf92fc478811e20cb0af3138b247e9f022"
+      }
+    ]
+  },
+  "replay": {
+    "final_capture_matches_tested_fixture_bytes": true,
+    "private_a5_encoding": "ffff0000 | objectID, matching original sign-extended scheduler pointer",
+    "capture_command": "PYTHONDONTWRITEBYTECODE=1 python3 scripts/yuyuhakusho/capture_fighter_envelope.py --out .local/md-yuyuhakusho/fighter-envelope-replay"
+  },
+  "limits": [
+    "Input1794 natural records stop before1cc8a; actual AI output is neither predicted nor reinjected",
+    "Natural input modeC9 is0; playback/recording use declared isolated CPU fixtures",
+    "Input/HUD streams do not advance full actor/world clocks or collisions",
+    "HUD emitted semantic transfer descriptors are independently encoded only by tests, not a production ROM/DMA runtime",
+    "HUD display fixtures cover observed nonnegative values and declared positive edges, not every corrupted hardware address alias",
+    "Independent stream/HUD/owner storage validates caller-provided bounds; original registration has no clamp and damaged pointer aliases remain outside validated scope",
+    "Global disabled/stopped/marker bytes, HUD cells/transfer cursor and registration list must remain world-shared",
+    "Whole-engine regression, fullworld/AI composition, shadow-object update and rendered platform game remain incomplete"
+  ]
+}

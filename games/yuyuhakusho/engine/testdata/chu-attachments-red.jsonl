@@ -1,0 +1,16 @@
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"# command-line-arguments [command-line-arguments.test]\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./chu_attachments_test.go:24:15: undefined: ChuAttachmentWorld\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./chu_attachments_test.go:36:56: undefined: ChuAttachmentKind\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./chu_attachments_test.go:48:89: undefined: ChuAttachmentState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./chu_attachments_test.go:48:109: undefined: ChuAttachmentParent\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./chu_attachments_test.go:81:51: undefined: ChuAttachmentState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./chu_attachments_test.go:81:78: undefined: ChuAttachmentParent\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./chu_attachments_test.go:81:105: undefined: ChuAttachmentWorld\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./chu_attachments_test.go:81:133: undefined: ChuAttachmentOutcome\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./chu_attachments_test.go:147:12: undefined: ChuAttachmentFrame\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./chu_attachments_test.go:156:84: undefined: ChuAttachmentLibrary\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./chu_attachments_test.go:156:84: too many errors\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-fail"}
+{"Time":"2026-11-04T16:54:01.122639+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-04T16:54:01.12267+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\tcommand-line-arguments [build failed]\n"}
+{"Time":"2026-11-04T16:54:01.122676+08:00","Action":"fail","Package":"command-line-arguments","Elapsed":0,"FailedBuild":"command-line-arguments [command-line-arguments.test]"}

@@ -1,0 +1,27 @@
+{
+  "scope": "Singleinitial buffer with external upstream positions only",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "37fc748c88ae1f427d2bdacf0056bc43eeba0bac691de286689767494d71e3fa",
+  "records": 4,
+  "calls": 128,
+  "fixture_sha256": "d1c6637124e983f5c9e0544624a72a73cb0a684b83888ee7ce28c347cdc243eb",
+  "gzip_sha256": "cd201fbe72aa77a343a324030943a485ba9b1c6999e063bbc4bfa3eaacd6b84d",
+  "frames_match_original_core": true,
+  "incomplete_calls": 0,
+  "errors": [],
+  "pass": true,
+  "limits": [
+    "Health=-1024 callfilter remains the outer caller responsibility",
+    "Isolated position streams are not fullworld steps",
+    "Malformed unaligned low counters outside typed sample storage are rejected independently"
+  ]
+}

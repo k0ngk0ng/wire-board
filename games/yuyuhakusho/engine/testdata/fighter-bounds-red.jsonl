@@ -1,0 +1,12 @@
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"# command-line-arguments [command-line-arguments.test]\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter_bounds_test.go:37:67: undefined: FighterBoundsState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter_bounds_test.go:40:7: undefined: FighterBoundsState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter_bounds_test.go:47:46: undefined: FighterBoundsState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter_bounds_test.go:112:17: undefined: StepFighterBounds\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter_bounds_test.go:141:17: undefined: StepFighterBounds\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter_bounds_test.go:156:12: undefined: FighterBoundsState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter_bounds_test.go:157:15: undefined: StepFighterBounds\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-fail"}
+{"Time":"2026-11-04T17:31:11.030542+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-04T17:31:11.03059+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\tcommand-line-arguments [build failed]\n"}
+{"Time":"2026-11-04T17:31:11.030597+08:00","Action":"fail","Package":"command-line-arguments","Elapsed":0,"FailedBuild":"command-line-arguments [command-line-arguments.test]"}

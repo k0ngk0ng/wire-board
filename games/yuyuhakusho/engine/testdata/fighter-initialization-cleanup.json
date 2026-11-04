@@ -1,0 +1,31 @@
+{
+  "scope": "Only this initializer task duplicate original captures and redundant intermediate logs",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter-initialization",
+      "bytes": 214644
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter-initialization-red.jsonl",
+      "bytes": 4010
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter-initialization-native.jsonl",
+      "bytes": 3305
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter-initialization-focused-native.jsonl",
+      "bytes": 5856
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter-initialization-focused-wasm.jsonl",
+      "bytes": 5864
+    }
+  ],
+  "bytes_removed": 233679,
+  "preserved": [
+    "Canonical specs/fixtures/source/red/native/Wasm evidence",
+    "ROM/core/tools/shared caches/other work"
+  ],
+  "shared_caches_modified": false
+}

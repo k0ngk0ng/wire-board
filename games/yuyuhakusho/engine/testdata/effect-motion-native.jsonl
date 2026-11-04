@@ -1,0 +1,26 @@
+{"Time":"2026-11-04T19:07:05.262418+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-04T19:07:05.800935+08:00","Action":"run","Package":"command-line-arguments","Test":"TestEffectMotionOriginalRules"}
+{"Time":"2026-11-04T19:07:05.800961+08:00","Action":"output","Package":"command-line-arguments","Test":"TestEffectMotionOriginalRules","Output":"=== RUN   TestEffectMotionOriginalRules\n"}
+{"Time":"2026-11-04T19:07:05.800989+08:00","Action":"run","Package":"command-line-arguments","Test":"TestEffectMotionOriginalRules/effect-motion-oracle"}
+{"Time":"2026-11-04T19:07:05.800997+08:00","Action":"output","Package":"command-line-arguments","Test":"TestEffectMotionOriginalRules/effect-motion-oracle","Output":"=== RUN   TestEffectMotionOriginalRules/effect-motion-oracle\n"}
+{"Time":"2026-11-04T19:07:06.929949+08:00","Action":"output","Package":"command-line-arguments","Test":"TestEffectMotionOriginalRules/effect-motion-oracle","Output":"    effect_motion_test.go:211: original FX calls=1130 deletion=58 no-draw returns=58\n"}
+{"Time":"2026-11-04T19:07:06.930025+08:00","Action":"output","Package":"command-line-arguments","Test":"TestEffectMotionOriginalRules/effect-motion-oracle","Output":"--- PASS: TestEffectMotionOriginalRules/effect-motion-oracle (1.13s)\n"}
+{"Time":"2026-11-04T19:07:06.930034+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestEffectMotionOriginalRules/effect-motion-oracle","Elapsed":1.13}
+{"Time":"2026-11-04T19:07:06.930048+08:00","Action":"run","Package":"command-line-arguments","Test":"TestEffectMotionOriginalRules/effect-motion-boundaries"}
+{"Time":"2026-11-04T19:07:06.930055+08:00","Action":"output","Package":"command-line-arguments","Test":"TestEffectMotionOriginalRules/effect-motion-boundaries","Output":"=== RUN   TestEffectMotionOriginalRules/effect-motion-boundaries\n"}
+{"Time":"2026-11-04T19:07:12.64684+08:00","Action":"output","Package":"command-line-arguments","Test":"TestEffectMotionOriginalRules/effect-motion-boundaries","Output":"    effect_motion_test.go:211: original FX calls=5752 deletion=252 no-draw returns=3501\n"}
+{"Time":"2026-11-04T19:07:12.646894+08:00","Action":"output","Package":"command-line-arguments","Test":"TestEffectMotionOriginalRules/effect-motion-boundaries","Output":"--- PASS: TestEffectMotionOriginalRules/effect-motion-boundaries (5.72s)\n"}
+{"Time":"2026-11-04T19:07:12.6469+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestEffectMotionOriginalRules/effect-motion-boundaries","Elapsed":5.72}
+{"Time":"2026-11-04T19:07:12.646906+08:00","Action":"output","Package":"command-line-arguments","Test":"TestEffectMotionOriginalRules","Output":"--- PASS: TestEffectMotionOriginalRules (6.85s)\n"}
+{"Time":"2026-11-04T19:07:12.646914+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestEffectMotionOriginalRules","Elapsed":6.85}
+{"Time":"2026-11-04T19:07:12.646923+08:00","Action":"run","Package":"command-line-arguments","Test":"TestEffectMotionSingleInitialLifetimes"}
+{"Time":"2026-11-04T19:07:12.646929+08:00","Action":"output","Package":"command-line-arguments","Test":"TestEffectMotionSingleInitialLifetimes","Output":"=== RUN   TestEffectMotionSingleInitialLifetimes\n"}
+{"Time":"2026-11-04T19:07:15.243092+08:00","Action":"output","Package":"command-line-arguments","Test":"TestEffectMotionSingleInitialLifetimes","Output":"--- PASS: TestEffectMotionSingleInitialLifetimes (2.60s)\n"}
+{"Time":"2026-11-04T19:07:15.243127+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestEffectMotionSingleInitialLifetimes","Elapsed":2.6}
+{"Time":"2026-11-04T19:07:15.243133+08:00","Action":"run","Package":"command-line-arguments","Test":"TestEffectMotionErrorsAreAtomic"}
+{"Time":"2026-11-04T19:07:15.243137+08:00","Action":"output","Package":"command-line-arguments","Test":"TestEffectMotionErrorsAreAtomic","Output":"=== RUN   TestEffectMotionErrorsAreAtomic\n"}
+{"Time":"2026-11-04T19:07:20.204864+08:00","Action":"output","Package":"command-line-arguments","Test":"TestEffectMotionErrorsAreAtomic","Output":"--- PASS: TestEffectMotionErrorsAreAtomic (4.96s)\n"}
+{"Time":"2026-11-04T19:07:20.205126+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestEffectMotionErrorsAreAtomic","Elapsed":4.96}
+{"Time":"2026-11-04T19:07:20.205131+08:00","Action":"output","Package":"command-line-arguments","Output":"PASS\n"}
+{"Time":"2026-11-04T19:07:21.284389+08:00","Action":"output","Package":"command-line-arguments","Output":"ok  \tcommand-line-arguments\t16.020s\n"}
+{"Time":"2026-11-04T19:07:21.284505+08:00","Action":"pass","Package":"command-line-arguments","Elapsed":16.021}

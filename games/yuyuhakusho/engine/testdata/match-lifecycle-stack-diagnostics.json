@@ -1,0 +1,42 @@
+{
+  "scope": "Declared paired private CPU inputs stopped after first actual loss-counter write, not complete calls",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "script_sha256": "4388e5dee043a33446f48b7181f165cf1f369144efb2456be34968ad2c794015",
+  "baseline_frames_unchanged": 2400,
+  "statistics_range": "FFFFC0..FFFFFF",
+  "comparisons": [
+    {
+      "writer_pc": "0xf84c",
+      "address": "0xffffd9",
+      "stack_at_writer": "0xffffd8",
+      "before": 0,
+      "return_before": "0000f78a",
+      "writes_return_address": true,
+      "after": 1,
+      "return_after": "0001f78a",
+      "initial_stack": "0xffffffe0"
+    },
+    {
+      "writer_pc": "0xf84c",
+      "address": "0xffffd9",
+      "stack_at_writer": "0xfffef8",
+      "before": 0,
+      "return_before": "0000f78a",
+      "writes_return_address": false,
+      "after": 1,
+      "return_after": "0000f78a",
+      "initial_stack": "0xffffff00"
+    }
+  ],
+  "pass": true,
+  "conclusion": "Use canonical FF00-or-lower stack; FFE0 test trampoline aliases statistics and corrupts its return"
+}

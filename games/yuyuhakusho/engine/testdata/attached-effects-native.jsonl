@@ -1,0 +1,26 @@
+{"Time":"2026-11-04T19:04:38.22599+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-04T19:04:38.544894+08:00","Action":"run","Package":"command-line-arguments","Test":"TestAttachedEffectsOriginalRules"}
+{"Time":"2026-11-04T19:04:38.544954+08:00","Action":"output","Package":"command-line-arguments","Test":"TestAttachedEffectsOriginalRules","Output":"=== RUN   TestAttachedEffectsOriginalRules\n"}
+{"Time":"2026-11-04T19:04:38.544968+08:00","Action":"run","Package":"command-line-arguments","Test":"TestAttachedEffectsOriginalRules/attached-effects-oracle"}
+{"Time":"2026-11-04T19:04:38.544975+08:00","Action":"output","Package":"command-line-arguments","Test":"TestAttachedEffectsOriginalRules/attached-effects-oracle","Output":"=== RUN   TestAttachedEffectsOriginalRules/attached-effects-oracle\n"}
+{"Time":"2026-11-04T19:04:39.115811+08:00","Action":"output","Package":"command-line-arguments","Test":"TestAttachedEffectsOriginalRules/attached-effects-oracle","Output":"    attached_effects_test.go:209: original full effect rules=548\n"}
+{"Time":"2026-11-04T19:04:39.115881+08:00","Action":"output","Package":"command-line-arguments","Test":"TestAttachedEffectsOriginalRules/attached-effects-oracle","Output":"--- PASS: TestAttachedEffectsOriginalRules/attached-effects-oracle (0.57s)\n"}
+{"Time":"2026-11-04T19:04:39.115887+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestAttachedEffectsOriginalRules/attached-effects-oracle","Elapsed":0.57}
+{"Time":"2026-11-04T19:04:39.115897+08:00","Action":"run","Package":"command-line-arguments","Test":"TestAttachedEffectsOriginalRules/attached-effects-boundaries"}
+{"Time":"2026-11-04T19:04:39.1159+08:00","Action":"output","Package":"command-line-arguments","Test":"TestAttachedEffectsOriginalRules/attached-effects-boundaries","Output":"=== RUN   TestAttachedEffectsOriginalRules/attached-effects-boundaries\n"}
+{"Time":"2026-11-04T19:04:43.449954+08:00","Action":"output","Package":"command-line-arguments","Test":"TestAttachedEffectsOriginalRules/attached-effects-boundaries","Output":"    attached_effects_test.go:209: original full effect rules=4294\n"}
+{"Time":"2026-11-04T19:04:43.449998+08:00","Action":"output","Package":"command-line-arguments","Test":"TestAttachedEffectsOriginalRules/attached-effects-boundaries","Output":"--- PASS: TestAttachedEffectsOriginalRules/attached-effects-boundaries (4.33s)\n"}
+{"Time":"2026-11-04T19:04:43.450031+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestAttachedEffectsOriginalRules/attached-effects-boundaries","Elapsed":4.33}
+{"Time":"2026-11-04T19:04:43.450053+08:00","Action":"output","Package":"command-line-arguments","Test":"TestAttachedEffectsOriginalRules","Output":"--- PASS: TestAttachedEffectsOriginalRules (4.91s)\n"}
+{"Time":"2026-11-04T19:04:43.450066+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestAttachedEffectsOriginalRules","Elapsed":4.91}
+{"Time":"2026-11-04T19:04:43.450083+08:00","Action":"run","Package":"command-line-arguments","Test":"TestAttachedEffectsSingleInitialLifetimes"}
+{"Time":"2026-11-04T19:04:43.450088+08:00","Action":"output","Package":"command-line-arguments","Test":"TestAttachedEffectsSingleInitialLifetimes","Output":"=== RUN   TestAttachedEffectsSingleInitialLifetimes\n"}
+{"Time":"2026-11-04T19:04:43.97875+08:00","Action":"output","Package":"command-line-arguments","Test":"TestAttachedEffectsSingleInitialLifetimes","Output":"--- PASS: TestAttachedEffectsSingleInitialLifetimes (0.53s)\n"}
+{"Time":"2026-11-04T19:04:43.978787+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestAttachedEffectsSingleInitialLifetimes","Elapsed":0.53}
+{"Time":"2026-11-04T19:04:43.9788+08:00","Action":"run","Package":"command-line-arguments","Test":"TestAttachedEffectsErrorsAreAtomic"}
+{"Time":"2026-11-04T19:04:43.978804+08:00","Action":"output","Package":"command-line-arguments","Test":"TestAttachedEffectsErrorsAreAtomic","Output":"=== RUN   TestAttachedEffectsErrorsAreAtomic\n"}
+{"Time":"2026-11-04T19:04:44.47913+08:00","Action":"output","Package":"command-line-arguments","Test":"TestAttachedEffectsErrorsAreAtomic","Output":"--- PASS: TestAttachedEffectsErrorsAreAtomic (0.50s)\n"}
+{"Time":"2026-11-04T19:04:44.479184+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestAttachedEffectsErrorsAreAtomic","Elapsed":0.5}
+{"Time":"2026-11-04T19:04:44.47919+08:00","Action":"output","Package":"command-line-arguments","Output":"PASS\n"}
+{"Time":"2026-11-04T19:04:45.519639+08:00","Action":"output","Package":"command-line-arguments","Output":"ok  \tcommand-line-arguments\t7.293s\n"}
+{"Time":"2026-11-04T19:04:45.52078+08:00","Action":"pass","Package":"command-line-arguments","Elapsed":7.295}

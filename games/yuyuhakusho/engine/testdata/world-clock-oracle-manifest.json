@@ -1,0 +1,22 @@
+{
+  "scope": "Complete world counter/pause/feedback helper calls only",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "records": 16436,
+  "calls": 16436,
+  "capture_sha256": "daa9eec8b11af22aa6dce9430795b1fcfe60f5fca667a4cc0524c24c64c3c264",
+  "fixture_sha256": "ffb8930f4cad59b5891c93b17a9117e684a21b3ff36c167a029ceeb0674b1bc4",
+  "gzip_sha256": "23b460e719cdefe10949dad389d21c7de7e7f493aa28141258e1f98f2d6657af",
+  "frames_match_original_core": true,
+  "errors": [],
+  "incomplete_calls": 0,
+  "pass": true
+}

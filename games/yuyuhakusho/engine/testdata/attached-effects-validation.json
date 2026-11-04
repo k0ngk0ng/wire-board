@@ -1,0 +1,177 @@
+{
+  "verified_at_utc": "2026-11-04T11:08:54.246164+00:00",
+  "scope": "Combo number14930 and attached status14ec6 complete rule stages through Draw/silent RTS/slot clearing",
+  "pass": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "test_first": {
+    "path": "games/yuyuhakusho/engine/testdata/attached-effects-red.jsonl",
+    "sha256": "e6eb0084fbda280f1cf1e7c94509f47ed24c55ebbf6c82c8916351c9e423e2b7",
+    "reason": "Actual missing AttachedEffectWorld/Kind/State/Parent/StepAttachedEffect before implementation; original line numbers precede formatting"
+  },
+  "focused_tests": {
+    "command_source_files": [
+      "attached_effects.go",
+      "effects.go",
+      "motion.go",
+      "attached_effects_test.go"
+    ],
+    "whole_engine_gate": "Required at parent integration; focused tests exclude unrelated concurrent test-first files"
+  },
+  "logs": [
+    {
+      "phase": "red",
+      "path": "games/yuyuhakusho/engine/testdata/attached-effects-red.jsonl",
+      "sha256": "e6eb0084fbda280f1cf1e7c94509f47ed24c55ebbf6c82c8916351c9e423e2b7",
+      "result": "fail",
+      "top_level_tests": [],
+      "elapsed_seconds": 0
+    },
+    {
+      "phase": "native",
+      "path": "games/yuyuhakusho/engine/testdata/attached-effects-native.jsonl",
+      "sha256": "8b8b3ed753b3c72b1d980a6fdbfd6005502ab815085a0a911f56a8375055bb06",
+      "result": "pass",
+      "top_level_tests": [
+        "TestAttachedEffectsOriginalRules",
+        "TestAttachedEffectsSingleInitialLifetimes",
+        "TestAttachedEffectsErrorsAreAtomic"
+      ],
+      "elapsed_seconds": 7.295
+    },
+    {
+      "phase": "wasm",
+      "path": "games/yuyuhakusho/engine/testdata/attached-effects-wasm.jsonl",
+      "sha256": "92a31ce65fe1526ba212cbe4595a3ea4fcfbc32985c92c991a4ce30372e855b7",
+      "result": "pass",
+      "top_level_tests": [
+        "TestAttachedEffectsOriginalRules",
+        "TestAttachedEffectsSingleInitialLifetimes",
+        "TestAttachedEffectsErrorsAreAtomic"
+      ],
+      "elapsed_seconds": 1.833
+    }
+  ],
+  "fixtures": [
+    {
+      "name": "attached-effects-oracle",
+      "manifest_sha256": "6dba44c49e9689becfe6b4f75597c3a4b61e963347a0aa201eac36f666a64e5c",
+      "records": 548,
+      "calls": 548,
+      "kind_counts": {
+        "status": 516,
+        "combo": 32
+      },
+      "draw_calls": 478,
+      "delete_calls": 4,
+      "silent_returns": 66,
+      "fixture_sha256": "6ed741378cd0816eae4090651494e8045fc58881079d16f68823f7eea418d705",
+      "gzip_sha256": "0ae414e35407b256b98f5b81be9986babe65508fd54fe9a4f18fda45e68d77aa"
+    },
+    {
+      "name": "attached-effects-boundaries",
+      "manifest_sha256": "f2f4c926f1f7aeeb78b03e5b29b983857ed900793471344e2e4603760aa8a192",
+      "records": 4294,
+      "calls": 4294,
+      "kind_counts": {
+        "combo": 1440,
+        "status": 2854
+      },
+      "draw_calls": 3250,
+      "delete_calls": 264,
+      "silent_returns": 780,
+      "fixture_sha256": "0b2de881e6435d271cfc4dc57adb5d541f6285f4417248974be82a7b40c5c7e1",
+      "gzip_sha256": "2c049e4cbf2480bdaa84e2cf75795c0f4210a84464b09097cb03f6be9f431d38"
+    },
+    {
+      "name": "attached-effects-sequences",
+      "manifest_sha256": "f310b24c6397d131bbf8e1fa8898db7934117c1ccaa815e69b4953c041913adc",
+      "records": 12,
+      "calls": 538,
+      "kind_counts": {
+        "combo": 226,
+        "status": 312
+      },
+      "draw_calls": 410,
+      "delete_calls": 12,
+      "silent_returns": 116,
+      "fixture_sha256": "ff61a1756a0a532a8fe349d7465122715cb1870e7f47636e554ebcb9ffb702d8",
+      "gzip_sha256": "e8bd58be14fb2d924bb18a5206c87d8360ace7e3efe6f2f039487e12cb025cb8"
+    }
+  ],
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/engine/attached_effects.go",
+      "sha256": "360b0dbd71f9ad049cab4710640fc1b9d0507c380cd0b5cb15b19f57fb093071"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/attached_effects_test.go",
+      "sha256": "06898f374768bbb2d7a8b47373f0a7bb2d3da7281e67fc3a70a76d8dda847eda"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/ATTACHED_EFFECTS_VERIFICATION.md",
+      "sha256": "188eeeba60c4f386adab148150a3ead4294c1c5cddcd34733e7f5a4d70c820e4"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_attached_effects.py",
+      "sha256": "fe373d9f612c32283c736f2cabb26d2e053503533c48a307118189ccdbcccf1a"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/attached-effects-core.txt",
+      "sha256": "38b9426853aa7b0c51dcd7b14ebd69a2156b6d4e09a35ac5551e0d48e0fee524"
+    }
+  ],
+  "dependencies": [
+    {
+      "path": "games/yuyuhakusho/engine/effects.go",
+      "sha256": "6a0916fbc4051a0e67988b9cad99e41d9ef778e0e78a7f63d65f5fb35d2f6b18"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/motion.go",
+      "sha256": "35dc27314a13afdff39d96d2d21911c5ba5030baf00ea81d1daf8f9feb5f8878"
+    },
+    {
+      "path": "scripts/yuyuhakusho/reference.py",
+      "sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/inputs.json",
+      "sha256": "59383329affb09e87c6452c135d3ae20df19db9f1675acddc0972a080a8551b6"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/chu-projectile-helpers.txt",
+      "sha256": "a8a5545bb2c6b283e554cdbf2c0b8fff09a1f88f9ef9ee87ef4586300c44097a"
+    }
+  ],
+  "immutable_data": {
+    "path": "games/yuyuhakusho/engine/testdata/attached-effects-data.json",
+    "sha256": "1e3062e69f3767a88c590faa0e9310ee7aa97ab0a46f87b4837537a7252e14f5",
+    "status_sequences": 3,
+    "orbit_samples_each_axis": 1024,
+    "character_offsets": 11,
+    "font_graphics_set": "0x27f618"
+  },
+  "input_profiles": {
+    "path": "games/yuyuhakusho/engine/testdata/attached-effects-inputs.json",
+    "sha256": "ac4a97254060a76a933bf47474610aa3cfc41254302d1711dac8ee3c868e1be4",
+    "baseline_frames_each": 3600,
+    "profiles": 2,
+    "natural_callback_profiles": {
+      "baseline": {
+        "status": 516,
+        "combo": 32
+      },
+      "attack-pulses": {}
+    },
+    "note": "Second declared input did not exercise either target callback; not added as natural logic coverage"
+  },
+  "recording_correction": "Regenerated all CPU fixtures after aligning combo-number observed parent8400 with declared external updates; no parent-byte exclusions were introduced",
+  "limits": [
+    "Rule boundary is before0x1580 rendering, direct silent RTS, or after0x3556 clearing; not full hardware sprite callback/world step",
+    "One retained pool slot is128bytes; original size1..15 DBF overflow or larger aliasing clears remain outside modeled storage",
+    "Callers must apply ClearedBytes to unowned stored slot fields as well as update semantic state",
+    "Status initializers and stagger delays may return without Draw; paused active status instead draws without decrementing delay",
+    "Lifetimes accept declared parent/world inputs and do not run full parent/world scheduling",
+    "No registered game renderer, complete match or platform E2E is proved"
+  ]
+}

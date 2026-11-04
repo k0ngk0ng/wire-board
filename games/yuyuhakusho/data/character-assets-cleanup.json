@@ -1,0 +1,81 @@
+{
+  "scope": "Only this palette/indexed-asset task duplicate captures, temporary native observers/static projects and redundant intermediate logs",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/character-assets",
+      "bytes": 957142
+    },
+    {
+      "path": ".local/md-yuyuhakusho/character-assets-static",
+      "bytes": 237548
+    },
+    {
+      "path": ".local/md-yuyuhakusho/character-assets-extract",
+      "bytes": 2690665
+    },
+    {
+      "path": ".local/md-yuyuhakusho/character-assets-extract-fixed",
+      "bytes": 4254443
+    },
+    {
+      "path": ".local/md-yuyuhakusho/character-assets-final",
+      "bytes": 5042938
+    },
+    {
+      "path": ".local/md-yuyuhakusho/character-assets-trace-final",
+      "bytes": 957142
+    },
+    {
+      "path": ".local/md-yuyuhakusho/character-assets-ready",
+      "bytes": 5043292
+    },
+    {
+      "path": ".local/md-yuyuhakusho/character-assets-trace-ready",
+      "bytes": 957142
+    },
+    {
+      "path": ".local/md-yuyuhakusho/character-assets-red.jsonl",
+      "bytes": 4725
+    },
+    {
+      "path": ".local/md-yuyuhakusho/character-assets-green-first.jsonl",
+      "bytes": 1764
+    },
+    {
+      "path": ".local/md-yuyuhakusho/character-assets-green.jsonl",
+      "bytes": 19965
+    },
+    {
+      "path": ".local/md-yuyuhakusho/character-assets-native.jsonl",
+      "bytes": 19974
+    },
+    {
+      "path": ".local/md-yuyuhakusho/character-assets-wasm.jsonl",
+      "bytes": 19974
+    },
+    {
+      "path": ".local/md-yuyuhakusho/character-assets-native-final.jsonl",
+      "bytes": 19977
+    },
+    {
+      "path": ".local/md-yuyuhakusho/character-assets-wasm-final.jsonl",
+      "bytes": 19971
+    },
+    {
+      "path": ".local/md-yuyuhakusho/character-assets-comparison.json",
+      "bytes": 300
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/character-assets-work",
+      "bytes": 0
+    }
+  ],
+  "bytes_removed": 20246962,
+  "preserved": [
+    "Canonical indexed catalog/oracles/manifests/source/red/native/Wasm evidence",
+    "Local132-cell PNG preview, QA and repeatable preview check",
+    "Original ROM/core/source, shared Go caches and all other agents work"
+  ],
+  "shared_caches_modified": false,
+  "no_paths_outside_worktree_modified": true
+}

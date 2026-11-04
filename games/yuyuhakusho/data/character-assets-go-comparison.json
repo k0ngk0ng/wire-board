@@ -1,0 +1,12 @@
+{
+  "pass": true,
+  "Characters": 11,
+  "Frames": 1133,
+  "Tiles": 32567,
+  "palette_calls": 528,
+  "pixel_cases": 132,
+  "Pixels": 172680,
+  "Mismatches": 0,
+  "prior_dependent_frames": 7,
+  "Scope": "Indexed tiles/palette bindings and declared-private idle frame pixels; not full game rendering"
+}

@@ -1,0 +1,52 @@
+{
+  "scope": "Only this Chu AI subtask temporary static project/configuration, duplicate/superseded captures and intermediate logs",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/chu-ai",
+      "bytes": 3830259
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-ai-final",
+      "bytes": 4051719
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-ai-canonical",
+      "bytes": 4055865
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-ai-pointer",
+      "bytes": 45670
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-ai-static",
+      "bytes": 245003
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-ai-red.jsonl",
+      "bytes": 2655
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-ai-native.jsonl",
+      "bytes": 5490
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-ai-native-canonical.jsonl",
+      "bytes": 4458
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-ai-wasm.jsonl",
+      "bytes": 4452
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/chu-ai-work",
+      "bytes": 0
+    }
+  ],
+  "bytes_removed": 12245571,
+  "shared_go_caches_untouched": true,
+  "kept": [
+    "Canonical CPU fixtures/manifests and red/native/Wasm logs",
+    "Original private alias input, both diagnostic outputs and natural source-register observation",
+    "Original ROM/core/tools, source files and other agents work"
+  ]
+}

@@ -1,0 +1,61 @@
+route=direct-ghidra-headless; REA raw 68000 unsupported
+language=68000:BE:32:default
+source=MD Yu Yu Hakusho Japan; static reachable instructions only
+
+seeds=f938,f96c,f98a,f9ba,f9c6,f9d2,f9de,f9ea,f9f6,fa02 scope=0xf938..0xfa4b
+0000f938 move.w (0xffffa060).w,D0w
+0000f93c add.w D0w,D0w
+0000f93e movea.l (0xf94c,PC,D0w*0x1),A1
+0000f942 move.w #0x40,D0w
+0000f946 jmp 0x00003584.l
+0000f96c bsr.b 0x0000f938
+0000f96e move.w (0xffffa060).w,D0w
+0000f972 lea (0xf97a,PC,D0w*0x1),A0
+0000f976 adda.w (A0),A0
+0000f978 jmp (A0)
+0000f98a move.w #-0x8000,(0xffffa03e).w
+0000f990 move.l #0x150ca,(0xffff9c80).w
+0000f998 move.w #0x80,(0xffff9c84).w
+0000f99e clr.w (0xffff9c86).w
+0000f9a2 move.l #0x1525e,(0xffff9d00).w
+0000f9aa move.w #0x80,(0xffff9d04).w
+0000f9b0 clr.w (0xffff9d06).w
+0000f9b4 move.b #-0x7e,D0b
+0000f9b8 bra.b 0x0000fa0c
+0000f9ba move.w #0x0,(0xffffa03e).w
+0000f9c0 move.b #-0x7a,D0b
+0000f9c4 bra.b 0x0000fa0c
+0000f9c6 move.w #-0x8000,(0xffffa03e).w
+0000f9cc move.b #-0x7d,D0b
+0000f9d0 bra.b 0x0000fa0c
+0000f9d2 move.w #0x0,(0xffffa03e).w
+0000f9d8 move.b #-0x6b,D0b
+0000f9dc bra.b 0x0000fa0c
+0000f9de move.w #0x0,(0xffffa03e).w
+0000f9e4 move.b #-0x7b,D0b
+0000f9e8 bra.b 0x0000fa0c
+0000f9ea move.w #0x0,(0xffffa03e).w
+0000f9f0 move.b #-0x76,D0b
+0000f9f4 bra.b 0x0000fa0c
+0000f9f6 move.w #0x0,(0xffffa03e).w
+0000f9fc move.b #-0x78,D0b
+0000fa00 bra.b 0x0000fa0c
+0000fa02 move.w #0x0,(0xffffa03e).w
+0000fa08 move.b #-0x73,D0b
+0000fa0c tst.b (0xffffff14).w
+0000fa10 bne.b 0x0000fa18
+0000fa12 tst.b (0xffffa097).w
+0000fa16 beq.b 0x0000fa1a
+0000fa18 rts
+0000fa1a cmpi.w #0x0,(0xffffa062).w
+0000fa20 bne.b 0x0000fa32
+0000fa22 cmpi.b #0xa,(0xffffa103).w
+0000fa28 beq.b 0x0000fa42
+0000fa2a cmpi.b #0x7,(0xffffa103).w
+0000fa30 beq.b 0x0000fa38
+0000fa32 jmp 0x00021960.l
+0000fa38 move.b #-0x7c,D0b
+0000fa3c jmp 0x00021960.l
+0000fa42 move.b #-0x79,D0b
+0000fa46 jmp 0x00021960.l
+printed_instructions=55

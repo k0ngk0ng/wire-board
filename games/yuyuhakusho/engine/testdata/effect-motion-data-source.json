@@ -1,0 +1,234 @@
+{
+  "scope": "ROM initializer immediates and bounded sequence extraction provenance; not runtime code",
+  "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+  "source": {
+    "bindings": [
+      {
+        "type": 0,
+        "entry": "0x14a00",
+        "target": "0x14ad6",
+        "bytes": "2b7c00014d6c0050002d00200024"
+      },
+      {
+        "type": 1,
+        "entry": "0x14a02",
+        "target": "0x14aea",
+        "bytes": "2b7c00014d760050002d00200024"
+      },
+      {
+        "type": 2,
+        "entry": "0x14a04",
+        "target": "0x14afe",
+        "bytes": "2b7c00014d820050002d00200024"
+      },
+      {
+        "type": 3,
+        "entry": "0x14a06",
+        "target": "0x14b12",
+        "bytes": "2b7c00014d900050002d00400024"
+      },
+      {
+        "type": 4,
+        "entry": "0x14a08",
+        "target": "0x14b26",
+        "bytes": "2b7c00014d9a0050002d00400024"
+      },
+      {
+        "type": 5,
+        "entry": "0x14a0a",
+        "target": "0x14b3a",
+        "bytes": "2b7c00014da60050002d00400024"
+      },
+      {
+        "type": 6,
+        "entry": "0x14a0c",
+        "target": "0x14b4e",
+        "bytes": "2b7c00014dbe0050002d00200024"
+      },
+      {
+        "type": 7,
+        "entry": "0x14a0e",
+        "target": "0x14b62",
+        "bytes": "2b7c00014dc80050002d00200024"
+      },
+      {
+        "type": 8,
+        "entry": "0x14a10",
+        "target": "0x14b76",
+        "bytes": "2b7c00014dd20050002d00200024"
+      },
+      {
+        "type": 9,
+        "entry": "0x14a12",
+        "target": "0x14b8a",
+        "bytes": "2b7c00014db40050002d00600024"
+      },
+      {
+        "type": 10,
+        "entry": "0x14a14",
+        "target": "0x14b8a",
+        "bytes": "2b7c00014db40050002d00600024"
+      },
+      {
+        "type": 11,
+        "entry": "0x14a16",
+        "target": "0x14b8a",
+        "bytes": "2b7c00014db40050002d00600024"
+      },
+      {
+        "type": 12,
+        "entry": "0x14a18",
+        "target": "0x14b8a",
+        "bytes": "2b7c00014db40050002d00600024"
+      },
+      {
+        "type": 13,
+        "entry": "0x14a1a",
+        "target": "0x14b8a",
+        "bytes": "2b7c00014db40050002d00600024"
+      },
+      {
+        "type": 14,
+        "entry": "0x14a1c",
+        "target": "0x14b8a",
+        "bytes": "2b7c00014db40050002d00600024"
+      },
+      {
+        "type": 15,
+        "entry": "0x14a1e",
+        "target": "0x14b8a",
+        "bytes": "2b7c00014db40050002d00600024"
+      },
+      {
+        "type": 16,
+        "entry": "0x14a20",
+        "target": "0x14bd2",
+        "bytes": "2b7c00014ddc00502b7c0027f618001c006d00c000241b7c000100274e75"
+      },
+      {
+        "type": 17,
+        "entry": "0x14a22",
+        "target": "0x14bd2",
+        "bytes": "2b7c00014ddc00502b7c0027f618001c006d00c000241b7c000100274e75"
+      },
+      {
+        "type": 18,
+        "entry": "0x14a24",
+        "target": "0x14bd2",
+        "bytes": "2b7c00014ddc00502b7c0027f618001c006d00c000241b7c000100274e75"
+      },
+      {
+        "type": 19,
+        "entry": "0x14a26",
+        "target": "0x14bd2",
+        "bytes": "2b7c00014ddc00502b7c0027f618001c006d00c000241b7c000100274e75"
+      },
+      {
+        "type": 20,
+        "entry": "0x14a28",
+        "target": "0x14bf0",
+        "bytes": "103c00a54eb9000219602b7c00014de600502b7c0027f618001c006d015000241b7c000100274e75"
+      },
+      {
+        "type": 21,
+        "entry": "0x14a2a",
+        "target": "0x14c18",
+        "bytes": "103c00a54eb9000219602b7c00014df600502b7c0027f618001c006d00c000241b7c000100274e75"
+      },
+      {
+        "type": 22,
+        "entry": "0x14a2c",
+        "target": "0x14c18",
+        "bytes": "103c00a54eb9000219602b7c00014df600502b7c0027f618001c006d00c000241b7c000100274e75"
+      },
+      {
+        "type": 23,
+        "entry": "0x14a2e",
+        "target": "0x14c18",
+        "bytes": "103c00a54eb9000219602b7c00014df600502b7c0027f618001c006d00c000241b7c000100274e75"
+      },
+      {
+        "type": 24,
+        "entry": "0x14a30",
+        "target": "0x14c40",
+        "bytes": "103c00794eb9000219602b7c00014e1000502b7c0027f618001c006d00d000241b7c000100274e75"
+      },
+      {
+        "type": 25,
+        "entry": "0x14a32",
+        "target": "0x14c68",
+        "bytes": "103c00794eb9000219602b7c00014e2200502b7c0027f618001c006d00c000241b7c000100274e75"
+      },
+      {
+        "type": 26,
+        "entry": "0x14a34",
+        "target": "0x14c90",
+        "bytes": "103c00794eb9000219602b7c00014e4200502b7c0027f618001c006d00c000241b7c000100274e75"
+      },
+      {
+        "type": 27,
+        "entry": "0x14a36",
+        "target": "0x14cb8",
+        "bytes": "103c00794eb9000219602b7c00014e5400502b7c0027f618001c006d00c000241b7c000100274e75"
+      },
+      {
+        "type": 28,
+        "entry": "0x14a38",
+        "target": "0x14ce0",
+        "bytes": "103c00794eb9000219602b7c00014e6e00502b7c0027f618001c006d00c000241b7c000100274e75"
+      },
+      {
+        "type": 29,
+        "entry": "0x14a3a",
+        "target": "0x14d08",
+        "bytes": "103c00794eb9000219602b7c00014e8800502b7c0027f618001c006d00c000241b7c000100274e75"
+      },
+      {
+        "type": 30,
+        "entry": "0x14a3c",
+        "target": "0x14c40",
+        "bytes": "103c00794eb9000219602b7c00014e1000502b7c0027f618001c006d00d000241b7c000100274e75"
+      },
+      {
+        "type": 31,
+        "entry": "0x14a3e",
+        "target": "0x14c40",
+        "bytes": "103c00794eb9000219602b7c00014e1000502b7c0027f618001c006d00d000241b7c000100274e75"
+      },
+      {
+        "type": 32,
+        "entry": "0x14a40",
+        "target": "0x14d30",
+        "bytes": "2b7c00014eac00502b7c0027f618001c006d01a600241b7c000100274e75"
+      },
+      {
+        "type": 33,
+        "entry": "0x14a42",
+        "target": "0x14d30",
+        "bytes": "2b7c00014eac00502b7c0027f618001c006d01a600241b7c000100274e75"
+      },
+      {
+        "type": 34,
+        "entry": "0x14a44",
+        "target": "0x14d30",
+        "bytes": "2b7c00014eac00502b7c0027f618001c006d01a600241b7c000100274e75"
+      },
+      {
+        "type": 35,
+        "entry": "0x14a46",
+        "target": "0x14d30",
+        "bytes": "2b7c00014eac00502b7c0027f618001c006d01a600241b7c000100274e75"
+      },
+      {
+        "type": 36,
+        "entry": "0x14a48",
+        "target": "0x14d4e",
+        "bytes": "2b7c00014eb600502b7c0027f618001c006d01fa00241b7c000100274e75"
+      }
+    ],
+    "common_initializer": {
+      "address": "0x14b98",
+      "bytes": "42ad001042ad00142b7c000d9e4a001c2b7c00246f800020203c00000080d038a031d16d002406380010a0310c380040a03165044238a0314e75"
+    }
+  }
+}

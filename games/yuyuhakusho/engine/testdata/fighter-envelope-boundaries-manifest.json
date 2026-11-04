@@ -1,0 +1,39 @@
+{
+  "scope": "Declared isolated complete functions or explicitAI prefix",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "61e1685b44663ffdd36037dac176787352547f0e598e45ead8f018a3a4ce5598",
+  "records": 3601,
+  "calls": 3601,
+  "kind_counts": {
+    "input": 2160,
+    "record": 81,
+    "hud": 1344,
+    "register": 16
+  },
+  "routes": {
+    "complete": 3529,
+    "ai-record": 48,
+    "ai": 24
+  },
+  "fixture_sha256": "7dd21b4006fbd546bebcfce6b0002b2ebfcca552b080de9a474715fc38e0df5b",
+  "gzip_sha256": "bd658d9900e318577a4f88fe942080d8bf14b6070ff60bd92fb5cf78a64b6ff4",
+  "frames_match_original_core": true,
+  "incomplete_calls": 0,
+  "errors": [],
+  "pass": true,
+  "rom_slot_zero_byte_writer_is_noop": true,
+  "limits": [
+    "AI output itself is not injected or predicted; prefix explicitly returns at156e8",
+    "Streams are isolated function calls, not fullworld steps",
+    "HUD current display values are the observed nonnegative domain plus declared positive edges"
+  ]
+}

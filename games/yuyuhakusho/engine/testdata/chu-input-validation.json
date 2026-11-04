@@ -1,0 +1,189 @@
+{
+  "verified_at_utc": "2026-11-04T10:06:00.448590+00:00",
+  "scope": "Complete15540 for Chu: human/AI/playback/recording/disabled with real AI and recording resumption",
+  "pass": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "test_first": {
+    "path": "games/yuyuhakusho/engine/testdata/chu-input-red.jsonl",
+    "sha256": "f54050e30df0e553f58be7e22da34b909515fdea7616001a5498bd6fa13cd1db",
+    "reason": "Actual missing ChuInputState and StepChuInput before implementation; source line numbers predate formatting"
+  },
+  "coverage": {
+    "natural_complete_calls": 4134,
+    "natural_disabled": 546,
+    "natural_human": 1794,
+    "natural_ai": 1794,
+    "isolated_complete_calls": 5760,
+    "isolated_ai_calls": 192,
+    "isolated_ai_record_routes": 128,
+    "isolated_record_continuations": 1152,
+    "isolated_routes": 7,
+    "source_slots": 4,
+    "human_channels": 8,
+    "single_initial_state_streams": 24,
+    "single_initial_state_steps": 288,
+    "stream_ai_calls": 96,
+    "source_bytes": 256,
+    "world_bytes": 4096,
+    "source_overlaps_world": true,
+    "stream_bytes": 1024,
+    "unchanged_baseline_frames": 3600
+  },
+  "logs": [
+    {
+      "phase": "red",
+      "path": "games/yuyuhakusho/engine/testdata/chu-input-red.jsonl",
+      "sha256": "f54050e30df0e553f58be7e22da34b909515fdea7616001a5498bd6fa13cd1db",
+      "result": "fail",
+      "elapsed_seconds": 0,
+      "top_level_tests": []
+    },
+    {
+      "phase": "native",
+      "path": "games/yuyuhakusho/engine/testdata/chu-input-native.jsonl",
+      "sha256": "eac6fb4213d5f9d324d8e88ae098ecb2378fb7815dfdb2524a472b558ad513a8",
+      "result": "pass",
+      "elapsed_seconds": 20.938,
+      "top_level_tests": [
+        "TestChuInputOriginalCompleteCalls",
+        "TestChuInputSingleInitialState",
+        "TestChuInputControlsAndFailuresAreAtomic"
+      ]
+    },
+    {
+      "phase": "wasm",
+      "path": "games/yuyuhakusho/engine/testdata/chu-input-wasm.jsonl",
+      "sha256": "0e3bc06da5d16fe2b28ebcf76726aa8f3624f1a7b9032d16ccb35c50007a951d",
+      "result": "pass",
+      "elapsed_seconds": 5.759,
+      "top_level_tests": [
+        "TestChuInputOriginalCompleteCalls",
+        "TestChuInputSingleInitialState",
+        "TestChuInputControlsAndFailuresAreAtomic"
+      ]
+    }
+  ],
+  "fixtures": [
+    {
+      "name": "chu-input-oracle",
+      "manifest_sha256": "f0f7a5447745690037bb64aaf2d1ac5c7de1ff7c18d0b6b01ec88f0dafde3c9c",
+      "records": 4134,
+      "calls": 4134,
+      "routes": {
+        "disabled": 546,
+        "human": 1794,
+        "ai": 1794
+      },
+      "ai_calls": 1794,
+      "record_continuations": 0,
+      "fixture_sha256": "af41edc5ee9f70164e17a77e2ee0419c33bb475716a3dd67285ff265c19de016",
+      "gzip_sha256": "1b4e3da653a43862fbff5a4697df105268f736aa7a128b0ba9cb50005b3836b0"
+    },
+    {
+      "name": "chu-input-boundaries",
+      "manifest_sha256": "2e72d0a0743ad44bfe35705d9e00fdf8902e77a31ea3b6c42f507293735d854e",
+      "records": 5760,
+      "calls": 5760,
+      "routes": {
+        "human-record": 1024,
+        "disabled": 2880,
+        "ai-record": 128,
+        "human": 512,
+        "ai": 64,
+        "playback": 494,
+        "playback-stopped": 658
+      },
+      "ai_calls": 192,
+      "record_continuations": 1152,
+      "fixture_sha256": "b432f3b9b360608ee53fd4c87e43984287a31dd889ab616fd36d57f71da1c1f1",
+      "gzip_sha256": "7d4fda130cac8303ff41a98488d3cb7adf8678ab10f44fd3f75eca0a81d5a818"
+    },
+    {
+      "name": "chu-input-sequences",
+      "manifest_sha256": "6e8021bf83465391c564fe61f6424f38f2a91721785bd3b7249944e564516f91",
+      "records": 24,
+      "calls": 288,
+      "routes": {
+        "human": 48,
+        "ai": 48,
+        "human-record": 48,
+        "ai-record": 48,
+        "playback": 96
+      },
+      "ai_calls": 96,
+      "record_continuations": 96,
+      "fixture_sha256": "083f122530080368d9b36ac408ab96e870cdea1ff8406da1a3c76ee71bb4cfd8",
+      "gzip_sha256": "38bc03bb7f03051236edc85e8421072853e69a5181e866c5e53f24fb1485148d"
+    }
+  ],
+  "focused_source_files": [
+    "input.go",
+    "fighter_input.go",
+    "random.go",
+    "motion.go",
+    "fighter_envelope.go",
+    "chu_ai.go",
+    "chu_input.go",
+    "fighter_envelope_test.go",
+    "chu_ai_test.go",
+    "chu_input_test.go"
+  ],
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/engine/chu_input.go",
+      "sha256": "b949c10336456617f301086ea1e503a4cd11524cebbcea0c318850b31debe667"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_input_test.go",
+      "sha256": "5c6de3c3ef929886adf9f42cf073624542e2b3767a633c9f0e24c078916eda31"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_chu_input.py",
+      "sha256": "b5ab29cd810845a213b470ead845a35727ad821081ed25202ea70599f8cae7e3"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/chu-input-flow.txt",
+      "sha256": "94dbba6bfd30a17e3313cdbffb03a84d053367017bb508e62fa95ad9ebc5dc0f"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/CHU_INPUT_VERIFICATION.md",
+      "sha256": "29b632706e201040d3230619928b0bad67fed64182df8f7cc993edb0732801a7"
+    }
+  ],
+  "dependencies": [
+    {
+      "path": "games/yuyuhakusho/engine/chu_ai.go",
+      "sha256": "f1180e17963062b329b22b685e1acf49c95266ba6b78b7507ea51132bdfa61ac"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter_envelope.go",
+      "sha256": "f0cba93adb159eea905cc66ed976843c24ba1d7cec34a50423c356c303156453"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter_input.go",
+      "sha256": "da1cee3d5fffe0a78f97b31fb9ae9f81ba3b44a6f0a79e4f3148027ca3596c9a"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/random.go",
+      "sha256": "c9fe3edc3ff9bee0725b78e7a38f2c4517592ddf99e52fec98e8904eb77a2056"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_chu_ai.py",
+      "sha256": "c4803b501d7450467f44a7ae0a3be1337da8c18e92708eec8b0de303bc1cfe52"
+    }
+  ],
+  "limits": [
+    "Complete input function boundary only; no outer actor, motion, collision, child/world scheduling or complete match verified",
+    "Natural recording/playback absent; those paths use explicit originalCPU isolated fixtures",
+    "Only source9 AI strategy is used; other character AI remains separate",
+    "Streams change declared controllerframes and targetX without replaying expected input/AI/recording outputs",
+    "Focused native/Wasm used explicit source-file scope; parent fullpackage integration required"
+  ],
+  "cleanup": {
+    "path": "games/yuyuhakusho/engine/testdata/chu-input-cleanup.json",
+    "sha256": "7274861256817783ce0508bc804acb3b4cd666affae7f59f4ef92cc573c9e471",
+    "bytes_removed": 2577762,
+    "shared_go_caches_untouched": true
+  }
+}

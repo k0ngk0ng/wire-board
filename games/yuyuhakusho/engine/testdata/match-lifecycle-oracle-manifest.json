@@ -1,0 +1,48 @@
+{
+  "scope": "Natural covered complete manager returns including a real KO/result/clear",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "042aa6c80fa04535d51844caccf88f7f03c9c448019173f13d416b802af938e6",
+  "records": 3223,
+  "calls": 3223,
+  "stage_counts": {
+    "4": 1,
+    "6": 16,
+    "8": 1,
+    "10": 255,
+    "12": 1,
+    "14": 2419,
+    "16": 1,
+    "18": 64,
+    "20": 1,
+    "22": 447,
+    "24": 1,
+    "26": 16
+  },
+  "events": {
+    "intro": 1,
+    "results": 1,
+    "clear-world": 1
+  },
+  "frames_match_original_core": true,
+  "baseline_frames": 5500,
+  "incomplete_calls": 0,
+  "errors": [],
+  "external_queue_calls": 0,
+  "fixture_sha256": "d56401db6219199a36b7f54c71acf45525a37588a16ac51db7580904823c33bd",
+  "gzip_sha256": "f3043de0045daf980f0146c3b1ed39a171272ee7c76c70d1ca1df5e9a16dd801",
+  "reference_only_calls": 0,
+  "pass": true,
+  "limits": [
+    "Stages0/2 scene/actor/resource initialization remain outside this covered phase API",
+    "Not a full world or all-menu/all-mode implementation"
+  ]
+}

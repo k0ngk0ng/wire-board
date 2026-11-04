@@ -1,0 +1,217 @@
+{
+  "verified_at_utc": "2026-11-04T09:24:28.962733+00:00",
+  "scope": "Verified palette-tail selector bindings and indexed character asset catalog with declared-private idle original-frame pixel comparison",
+  "pass": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "test_first": "Actual missing characterAssets, characterAssetOracle, sourceSpriteFixture and load/verify function failure retained before Go implementation",
+  "coverage": {
+    "source_characters": 11,
+    "deduplicated_tiles": 32567,
+    "packed_tile_bytes": 1042144,
+    "graphic_keys": 1133,
+    "pieces": 8950,
+    "rom_source_tiles": 35749,
+    "normal_palette_tails": 44,
+    "shared_palette_tails": 8,
+    "selector_values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "palette_slots": 4,
+    "original_cpu_palette_calls": 528,
+    "private_original_pixel_cases": 132,
+    "compared_character_pixels": 172680,
+    "pixel_mismatches": 0,
+    "horizontal_flip_bits": [
+      0,
+      1
+    ],
+    "natural_baseline_frames_unchanged": 3600,
+    "palette_ram_write_events": 1363,
+    "palette_observer_dropped": 0,
+    "cpu_prefix_bytes": 10484,
+    "resume_control_full_ram_video_frames": 10,
+    "prior_dependent_frames": 7
+  },
+  "logs": [
+    {
+      "phase": "red",
+      "path": "games/yuyuhakusho/data/character-assets-red.jsonl",
+      "sha256": "8bf5efc0fa654399807009bfe623bba75c8ef36ccddd8322ba08b4da140d1116",
+      "result": "fail",
+      "elapsed_seconds": 0,
+      "top_level_tests": []
+    },
+    {
+      "phase": "native",
+      "path": "games/yuyuhakusho/data/character-assets-native.jsonl",
+      "sha256": "d26ff6001e69d06c3680d4e929b65521bbfc5a2da12ea46c938eef1ccd5dd0cf",
+      "result": "pass",
+      "elapsed_seconds": 76.29,
+      "top_level_tests": [
+        "TestCharacterAssetPriorSlotState",
+        "TestCharacterAssetsAgainstOriginal",
+        "TestCharacterAssetsRejectCorruption",
+        "TestCharacterAssetsRequireCompleteCoverage"
+      ]
+    },
+    {
+      "phase": "wasm",
+      "path": "games/yuyuhakusho/data/character-assets-wasm.jsonl",
+      "sha256": "6996926253904fbb3cfb2e56ff7421c64b97c3362f4ed2680ebb1667c19e7bb8",
+      "result": "pass",
+      "elapsed_seconds": 23.153,
+      "top_level_tests": [
+        "TestCharacterAssetPriorSlotState",
+        "TestCharacterAssetsAgainstOriginal",
+        "TestCharacterAssetsRejectCorruption",
+        "TestCharacterAssetsRequireCompleteCoverage"
+      ]
+    }
+  ],
+  "files": [
+    {
+      "path": "games/yuyuhakusho/data/character-assets.json.gz",
+      "sha256": "bb351ca02f48c0fd3c338798a0b8215e129bfe82507ef4aa7c5ab09b9f618c7f",
+      "bytes": 2238260
+    },
+    {
+      "path": "games/yuyuhakusho/data/character-assets-oracle.json.gz",
+      "sha256": "88a96b187ea87a0dfdd897595d0168c4f9f6421d2b3cd3ded7f5e58cea6051ef",
+      "bytes": 2786336
+    },
+    {
+      "path": "games/yuyuhakusho/data/character-assets-manifest.json",
+      "sha256": "d1d2b3aa3f00c384ba2dfb26325d87cc00497e84c873430f4aa604da9fe1eea9",
+      "bytes": 1769
+    },
+    {
+      "path": "games/yuyuhakusho/data/character-assets-palette-trace.json.gz",
+      "sha256": "4333500f19b62842bbdcd84e3e97a9aad86710c1d1de17a04b67bf8eafe1fed2",
+      "bytes": 22946
+    },
+    {
+      "path": "games/yuyuhakusho/data/character-assets-go-comparison.json",
+      "sha256": "4053ed21fd5a1979c3dfc736d9c55843b26f91ce0162c72e057869b29dcf2c11",
+      "bytes": 300
+    },
+    {
+      "path": "games/yuyuhakusho/data/character-assets-preview-qa.json",
+      "sha256": "761e5aca163b2fe382b777d4bc00a6ab80e55aa759f32e95bdb42b84ea347cdf",
+      "bytes": 2023
+    }
+  ],
+  "sources": [
+    {
+      "path": "scripts/yuyuhakusho/extract_character_assets.py",
+      "sha256": "5fc7098265fbb4439c7a8e43489a22ab6b62a732c202fb625596b2c25854aa26"
+    },
+    {
+      "path": "games/yuyuhakusho/cmd/verify-character-assets/main.go",
+      "sha256": "7d2f6ecbe6689cadc7a70b983faeda0acafef53a964fbcc24037bfee34d187df"
+    },
+    {
+      "path": "games/yuyuhakusho/cmd/verify-character-assets/main_test.go",
+      "sha256": "063fcd466c7e78392d9d1cb9a34ab14169bf368aa3ee23e5d986eef5c3b4f0d6"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/character-assets-palette-flow.txt",
+      "sha256": "756943c610c6d961373e7bf7accbeb2c8e3e14fc1892420043fd4ade8d981149"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/character-assets-binding.txt",
+      "sha256": "c4975d1089b1c204e283553be8e766d45ed93cf0acc2963d946071649458d935"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/CHARACTER_ASSETS.md",
+      "sha256": "723fa4e911371c84e462eb89e119f2c053c07a5483e102b294fd24758a1a77f3"
+    }
+  ],
+  "prior_slot_dependencies": [
+    {
+      "character_id": 1,
+      "parameter": 184,
+      "slots": [
+        83
+      ]
+    },
+    {
+      "character_id": 2,
+      "parameter": 0,
+      "slots": [
+        0
+      ]
+    },
+    {
+      "character_id": 3,
+      "parameter": 0,
+      "slots": [
+        0
+      ]
+    },
+    {
+      "character_id": 5,
+      "parameter": 0,
+      "slots": [
+        0
+      ]
+    },
+    {
+      "character_id": 6,
+      "parameter": 0,
+      "slots": [
+        0
+      ]
+    },
+    {
+      "character_id": 9,
+      "parameter": 0,
+      "slots": [
+        0
+      ]
+    },
+    {
+      "character_id": 10,
+      "parameter": 0,
+      "slots": [
+        0
+      ]
+    }
+  ],
+  "local_preview": {
+    "path": ".local/md-yuyuhakusho/character-assets-preview/contact-sheet.png",
+    "sha256": "a8cb7aba67d80750ca497f3f295fc267a741086eb6363e15e9977af376338c7e",
+    "published": false,
+    "human_inspected": true
+  },
+  "limits": [
+    "Raw palette selection inputs0..11 verified, not every original menu path or aliases outside that range",
+    "Only colors6..15 are character/selector data; colors0..5 stay caller-world/slot dependent",
+    "Pixel cases are declared-private idle parameter2 scenes atslot1 and both horizontal facings, not every pose or complete natural matches",
+    "Seven frames explicitly require prior actor tile slots; no blank replacement is invented",
+    "Full background/scanline/shadow-highlight and world palette dynamics remain separate",
+    "Current combined catalog is research/verification data; final per-character runtime packages, on-demand load/CDN deployment and platform renderer remain unintegrated",
+    "No emulator/ROM program is carried in the independent data or comparison code"
+  ]
+}

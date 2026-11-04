@@ -1,0 +1,30 @@
+{
+  "scope": "Natural complete original initializer calls",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "3753800b3bdf4a3520224953a8bdafef6c6f4053ef07b8e3fa6a10f421d4bb8c",
+  "spec_sha256": "d8934db6f84228213ad3591af00357bb3a955a743d559437596aa350f93db7dd",
+  "records": 2,
+  "character_counts": {
+    "9": 2
+  },
+  "fixture_sha256": "acf5babe82da7cfd779a40f58605a227efd723920cad163c9e7bbf553520a580",
+  "gzip_sha256": "6f032259dcb8d1866282b71583be1b6d76ffd0fb0251e28f86af59fc5c03d6f3",
+  "frames_match_original_core": true,
+  "incomplete_calls": 0,
+  "errors": [],
+  "pass": true,
+  "limits": [
+    "Initializer only, not spawn/menu/ready/world update",
+    "Untouched dirty fields and energy low word deliberately remain",
+    "Only movement offsets0/4/8/c/18/1c are named;10/14 are retained as unassigned source bytes"
+  ]
+}

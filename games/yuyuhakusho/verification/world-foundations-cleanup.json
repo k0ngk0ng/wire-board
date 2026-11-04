@@ -1,0 +1,349 @@
+{
+  "scope": "Only task-owned in-worktree caches, duplicate/superseded captures, temporary Ghidra projects and redundant intermediate logs",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter-bounds-capture",
+      "bytes": 306687
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter-envelope-native.jsonl",
+      "bytes": 4833
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter-envelope-red.jsonl",
+      "bytes": 2584
+    },
+    {
+      "path": ".local/md-yuyuhakusho/match-lifecycle-extended",
+      "bytes": 1055975
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter-envelope-capture",
+      "bytes": 2347372
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-action-native.jsonl",
+      "bytes": 5587
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter-envelope-canonical.jsonl",
+      "bytes": 4068
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter-envelope-replay.jsonl",
+      "bytes": 4068
+    },
+    {
+      "path": ".local/md-yuyuhakusho/world-foundations-native.jsonl",
+      "bytes": 196783
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-actor-capture.jsonl",
+      "bytes": 5820
+    },
+    {
+      "path": ".local/md-yuyuhakusho/attached-effects-native-final.jsonl",
+      "bytes": 4754
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-projectile",
+      "bytes": 1077660
+    },
+    {
+      "path": ".local/md-yuyuhakusho/match-lifecycle-native-final.jsonl",
+      "bytes": 4847
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter-bounds-red.jsonl",
+      "bytes": 1862
+    },
+    {
+      "path": ".local/md-yuyuhakusho/match-lifecycle-gates",
+      "bytes": 5031319
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-projectile-focused-native.jsonl",
+      "bytes": 4665
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-projectile-final-wasm.jsonl",
+      "bytes": 4665
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-attachments-wasm.jsonl",
+      "bytes": 4724
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-actor-red.jsonl",
+      "bytes": 3794
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-projectile-static",
+      "bytes": 253411
+    },
+    {
+      "path": ".local/md-yuyuhakusho/attached-effects-red.jsonl",
+      "bytes": 2566
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-actor-capture",
+      "bytes": 10094176
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-actor-native-final.jsonl",
+      "bytes": 5424
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-actor-expanded.jsonl",
+      "bytes": 5820
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-attachments-static",
+      "bytes": 229774
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-action-red.jsonl",
+      "bytes": 3827
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-projectile-expanded",
+      "bytes": 1107842
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-attachments-native.jsonl",
+      "bytes": 4724
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-attachments",
+      "bytes": 1648811
+    },
+    {
+      "path": ".local/md-yuyuhakusho/attached-effects-fixed",
+      "bytes": 852386
+    },
+    {
+      "path": ".local/md-yuyuhakusho/effect-motion-static",
+      "bytes": 229928
+    },
+    {
+      "path": ".local/md-yuyuhakusho/effect-motion-native.jsonl",
+      "bytes": 3842
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter-envelope-canonical",
+      "bytes": 2347507
+    },
+    {
+      "path": ".local/md-yuyuhakusho/world-clock",
+      "bytes": 663225
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-actor-wasm-final.jsonl",
+      "bytes": 5427
+    },
+    {
+      "path": ".local/md-yuyuhakusho/effect-motion-focused-native.jsonl",
+      "bytes": 4666
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter-envelope-replay",
+      "bytes": 2347507
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter-bounds-capture.jsonl",
+      "bytes": 3380
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter-envelope-wasm.jsonl",
+      "bytes": 4833
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-projectile-red.jsonl",
+      "bytes": 3917
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-projectile-final-native.jsonl",
+      "bytes": 4665
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-attachments-red.jsonl",
+      "bytes": 2546
+    },
+    {
+      "path": ".local/md-yuyuhakusho/world-foundations-wasm.jsonl",
+      "bytes": 196742
+    },
+    {
+      "path": ".local/md-yuyuhakusho/match-lifecycle-native.jsonl",
+      "bytes": 4946
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-projectile-ownership-red.jsonl",
+      "bytes": 1614
+    },
+    {
+      "path": ".local/md-yuyuhakusho/attached-effects-native.jsonl",
+      "bytes": 5007
+    },
+    {
+      "path": ".local/md-yuyuhakusho/attached-effects",
+      "bytes": 831892
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-actor-expanded",
+      "bytes": 10199577
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter-bounds-native.jsonl",
+      "bytes": 4729
+    },
+    {
+      "path": ".local/md-yuyuhakusho/effect-motion-final",
+      "bytes": 1030405
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-attachments-native-final.jsonl",
+      "bytes": 4723
+    },
+    {
+      "path": ".local/md-yuyuhakusho/match-lifecycle",
+      "bytes": 295472
+    },
+    {
+      "path": ".local/md-yuyuhakusho/effect-motion",
+      "bytes": 1030381
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-projectile-final",
+      "bytes": 1159660
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-actor-native.jsonl",
+      "bytes": 5373
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter-envelope-signed-cursor-red.jsonl",
+      "bytes": 1476
+    },
+    {
+      "path": ".local/md-yuyuhakusho/match-lifecycle-capture",
+      "bytes": 4881293
+    },
+    {
+      "path": ".local/md-yuyuhakusho/world-clock-red.jsonl",
+      "bytes": 3877
+    },
+    {
+      "path": ".local/md-yuyuhakusho/effect-motion-focused-wasm.jsonl",
+      "bytes": 4666
+    },
+    {
+      "path": ".local/md-yuyuhakusho/match-lifecycle-static",
+      "bytes": 245723
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-action",
+      "bytes": 4945936
+    },
+    {
+      "path": ".local/md-yuyuhakusho/effect-motion-red.jsonl",
+      "bytes": 3886
+    },
+    {
+      "path": ".local/md-yuyuhakusho/match-lifecycle-red.jsonl",
+      "bytes": 3918
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter-envelope-static",
+      "bytes": 237615
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter-bounds-wasm.jsonl",
+      "bytes": 4732
+    },
+    {
+      "path": ".local/md-yuyuhakusho/attached-effects-wasm.jsonl",
+      "bytes": 4761
+    },
+    {
+      "path": ".local/md-yuyuhakusho/attached-effects-static",
+      "bytes": 237551
+    },
+    {
+      "path": ".local/md-yuyuhakusho/match-lifecycle-wasm-final.jsonl",
+      "bytes": 4840
+    },
+    {
+      "path": ".local/md-yuyuhakusho/match-lifecycle-stack",
+      "bytes": 1450
+    },
+    {
+      "path": ".local/md-yuyuhakusho/world-clock-native.jsonl",
+      "bytes": 5728
+    },
+    {
+      "path": ".local/md-yuyuhakusho/match-lifecycle-final",
+      "bytes": 4896459
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-projectile-native.jsonl",
+      "bytes": 3922
+    },
+    {
+      "path": ".local/go-cache",
+      "bytes": 249154815
+    },
+    {
+      "path": ".local/md-yuyuhakusho/static",
+      "bytes": 236874
+    },
+    {
+      "path": ".local/md-yuyuhakusho/tmp",
+      "bytes": 0
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static-work",
+      "bytes": 0
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/fighter-envelope-work",
+      "bytes": 0
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/effect-motion-work",
+      "bytes": 0
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/chu-attachments-work",
+      "bytes": 0
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/attached-effects-work",
+      "bytes": 0
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/chu-projectile-work",
+      "bytes": 0
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/match-lifecycle-work",
+      "bytes": 0
+    }
+  ],
+  "bytes_removed": 309552314,
+  "preserved": [
+    "Active worktree and independent rule/asset sources",
+    "Pinned originalROM/core/reference source andtools",
+    "Canonical fixtures, pointer/stack/recording diagnostics and alternateinputprofiles",
+    "Actual red/build-failure, native/Wasm and source-bound verification evidence",
+    "Character and background preview artifacts; previous sprite comparison pair",
+    "Other games, original-repository changes and user materials"
+  ],
+  "no_paths_outside_worktree_modified": true,
+  "component_owned_prior_cleanup_reports": [
+    "games/yuyuhakusho/data/character-assets-cleanup.json",
+    "games/yuyuhakusho/data/arena-assets-validation.json",
+    "games/yuyuhakusho/engine/testdata/chu-ai-validation.json",
+    "games/yuyuhakusho/engine/testdata/chu-input-validation.json"
+  ]
+}
