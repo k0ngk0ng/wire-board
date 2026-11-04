@@ -1,0 +1,49 @@
+{"Time":"2026-11-04T22:29:23.69618+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-04T22:29:24.136002+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuAIOriginalCompleteCalls"}
+{"Time":"2026-11-04T22:29:24.136134+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAIOriginalCompleteCalls","Output":"=== RUN   TestChuAIOriginalCompleteCalls\n"}
+{"Time":"2026-11-04T22:29:24.136249+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuAIOriginalCompleteCalls/chu-ai-oracle"}
+{"Time":"2026-11-04T22:29:24.136272+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAIOriginalCompleteCalls/chu-ai-oracle","Output":"=== RUN   TestChuAIOriginalCompleteCalls/chu-ai-oracle\n"}
+{"Time":"2026-11-04T22:29:27.41253+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAIOriginalCompleteCalls/chu-ai-oracle","Output":"    chu_ai_test.go:166: complete original Chu AI calls=1794\n"}
+{"Time":"2026-11-04T22:29:27.412585+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAIOriginalCompleteCalls/chu-ai-oracle","Output":"--- PASS: TestChuAIOriginalCompleteCalls/chu-ai-oracle (3.28s)\n"}
+{"Time":"2026-11-04T22:29:27.412596+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestChuAIOriginalCompleteCalls/chu-ai-oracle","Elapsed":3.28}
+{"Time":"2026-11-04T22:29:27.412644+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuAIOriginalCompleteCalls/chu-ai-boundaries"}
+{"Time":"2026-11-04T22:29:27.412651+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAIOriginalCompleteCalls/chu-ai-boundaries","Output":"=== RUN   TestChuAIOriginalCompleteCalls/chu-ai-boundaries\n"}
+{"Time":"2026-11-04T22:29:55.742609+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAIOriginalCompleteCalls/chu-ai-boundaries","Output":"    chu_ai_test.go:166: complete original Chu AI calls=15468\n"}
+{"Time":"2026-11-04T22:29:55.745046+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAIOriginalCompleteCalls/chu-ai-boundaries","Output":"--- PASS: TestChuAIOriginalCompleteCalls/chu-ai-boundaries (28.33s)\n"}
+{"Time":"2026-11-04T22:29:55.745055+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestChuAIOriginalCompleteCalls/chu-ai-boundaries","Elapsed":28.33}
+{"Time":"2026-11-04T22:29:55.745307+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAIOriginalCompleteCalls","Output":"--- PASS: TestChuAIOriginalCompleteCalls (31.60s)\n"}
+{"Time":"2026-11-04T22:29:55.745317+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestChuAIOriginalCompleteCalls","Elapsed":31.6}
+{"Time":"2026-11-04T22:29:55.745328+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuAISingleInitialState"}
+{"Time":"2026-11-04T22:29:55.745335+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAISingleInitialState","Output":"=== RUN   TestChuAISingleInitialState\n"}
+{"Time":"2026-11-04T22:29:56.457165+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAISingleInitialState","Output":"--- PASS: TestChuAISingleInitialState (0.72s)\n"}
+{"Time":"2026-11-04T22:29:56.457237+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestChuAISingleInitialState","Elapsed":0.72}
+{"Time":"2026-11-04T22:29:56.457243+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuAIInvalidStateIsAtomic"}
+{"Time":"2026-11-04T22:29:56.457246+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAIInvalidStateIsAtomic","Output":"=== RUN   TestChuAIInvalidStateIsAtomic\n"}
+{"Time":"2026-11-04T22:29:56.457262+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuAIInvalidStateIsAtomic","Output":"--- PASS: TestChuAIInvalidStateIsAtomic (0.00s)\n"}
+{"Time":"2026-11-04T22:29:56.457271+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestChuAIInvalidStateIsAtomic","Elapsed":0}
+{"Time":"2026-11-04T22:29:56.457285+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighterAIOriginalCompleteCalls"}
+{"Time":"2026-11-04T22:29:56.457305+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterAIOriginalCompleteCalls","Output":"=== RUN   TestFighterAIOriginalCompleteCalls\n"}
+{"Time":"2026-11-04T22:29:56.457315+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighterAIOriginalCompleteCalls/fighter-ai-oracle"}
+{"Time":"2026-11-04T22:29:56.457317+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterAIOriginalCompleteCalls/fighter-ai-oracle","Output":"=== RUN   TestFighterAIOriginalCompleteCalls/fighter-ai-oracle\n"}
+{"Time":"2026-11-04T22:29:58.85303+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterAIOriginalCompleteCalls/fighter-ai-oracle","Output":"    fighter_ai_test.go:168: complete original AI calls=1794 characters=map[9:1794]\n"}
+{"Time":"2026-11-04T22:29:58.853073+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterAIOriginalCompleteCalls/fighter-ai-oracle","Output":"--- PASS: TestFighterAIOriginalCompleteCalls/fighter-ai-oracle (2.40s)\n"}
+{"Time":"2026-11-04T22:29:58.853077+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighterAIOriginalCompleteCalls/fighter-ai-oracle","Elapsed":2.4}
+{"Time":"2026-11-04T22:29:58.853097+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighterAIOriginalCompleteCalls/fighter-ai-boundaries"}
+{"Time":"2026-11-04T22:29:58.8531+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterAIOriginalCompleteCalls/fighter-ai-boundaries","Output":"=== RUN   TestFighterAIOriginalCompleteCalls/fighter-ai-boundaries\n"}
+{"Time":"2026-11-04T22:30:47.390516+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterAIOriginalCompleteCalls/fighter-ai-boundaries","Output":"    fighter_ai_test.go:168: complete original AI calls=37056 characters=map[0:3480 1:3552 2:3480 3:3408 4:3336 5:3264 6:3336 7:3408 8:3264 9:3336 10:3192]\n"}
+{"Time":"2026-11-04T22:30:47.391278+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterAIOriginalCompleteCalls/fighter-ai-boundaries","Output":"--- PASS: TestFighterAIOriginalCompleteCalls/fighter-ai-boundaries (48.54s)\n"}
+{"Time":"2026-11-04T22:30:47.391291+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighterAIOriginalCompleteCalls/fighter-ai-boundaries","Elapsed":48.54}
+{"Time":"2026-11-04T22:30:47.391472+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterAIOriginalCompleteCalls","Output":"--- PASS: TestFighterAIOriginalCompleteCalls (50.93s)\n"}
+{"Time":"2026-11-04T22:30:47.391482+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighterAIOriginalCompleteCalls","Elapsed":50.93}
+{"Time":"2026-11-04T22:30:47.391491+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighterAISingleInitialState"}
+{"Time":"2026-11-04T22:30:47.391499+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterAISingleInitialState","Output":"=== RUN   TestFighterAISingleInitialState\n"}
+{"Time":"2026-11-04T22:30:48.378324+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterAISingleInitialState","Output":"    fighter_ai_test.go:208: single-initial-state streams=33 steps=792\n"}
+{"Time":"2026-11-04T22:30:48.378376+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterAISingleInitialState","Output":"--- PASS: TestFighterAISingleInitialState (0.99s)\n"}
+{"Time":"2026-11-04T22:30:48.378382+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighterAISingleInitialState","Elapsed":0.99}
+{"Time":"2026-11-04T22:30:48.378387+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighterAIInvalidStateIsAtomic"}
+{"Time":"2026-11-04T22:30:48.378391+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterAIInvalidStateIsAtomic","Output":"=== RUN   TestFighterAIInvalidStateIsAtomic\n"}
+{"Time":"2026-11-04T22:30:48.378615+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighterAIInvalidStateIsAtomic","Output":"--- PASS: TestFighterAIInvalidStateIsAtomic (0.00s)\n"}
+{"Time":"2026-11-04T22:30:48.37862+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighterAIInvalidStateIsAtomic","Elapsed":0}
+{"Time":"2026-11-04T22:30:48.378791+08:00","Action":"output","Package":"command-line-arguments","Output":"PASS\n"}
+{"Time":"2026-11-04T22:30:49.462067+08:00","Action":"output","Package":"command-line-arguments","Output":"ok  \tcommand-line-arguments\t85.765s\n"}
+{"Time":"2026-11-04T22:30:49.462109+08:00","Action":"pass","Package":"command-line-arguments","Elapsed":85.765}

@@ -1,0 +1,332 @@
+{
+  "verified_at_utc": "2026-11-04T14:38:51.510668+00:00",
+  "scope": "Complete original 0x1cc8a AI returns for all 11 source-character IDs, with one shared driver and 17 common behaviors",
+  "pass": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "test_first": {
+    "phase": "red",
+    "path": "games/yuyuhakusho/engine/testdata/fighter-ai-red.jsonl",
+    "sha256": "3068ef8f882ff706a3a5c7112715b696351f2f99152c5635a9131f6a7c4340ec",
+    "result": "fail",
+    "elapsed_seconds": 0,
+    "top_level_tests": [],
+    "reason": "Actual missing FighterAIState/StepFighterAI/ChildAttackValue after original fixtures and tests, before production implementation; historical compiler line numbers predate formatting"
+  },
+  "coverage": {
+    "source_character_ids": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "natural_complete_calls": 1794,
+    "natural_character_ids": [
+      9
+    ],
+    "isolated_complete_calls": 37056,
+    "shared_behaviors": 17,
+    "character_decision_entries": [
+      "0x1d32a",
+      "0x1d4a4",
+      "0x1d628",
+      "0x1d790",
+      "0x1d904",
+      "0x1dab4",
+      "0x1dc50",
+      "0x1de48",
+      "0x1e010",
+      "0x1e1e4",
+      "0x1e3cc"
+    ],
+    "shared_decision_leaves": 26,
+    "source2_local_leaves": [
+      "0x1d75c",
+      "0x1d776"
+    ],
+    "single_initial_state_streams": 33,
+    "single_initial_state_steps": 792,
+    "streams_per_character": 3,
+    "steps_per_stream": 24,
+    "stream_external_changes": [
+      "Declared target X only"
+    ],
+    "actor_bytes": 256,
+    "world_bytes": 4096,
+    "source_overlaps_world": true,
+    "unchanged_baseline_frames": 3600,
+    "incomplete_calls": 0,
+    "capture_errors": 0,
+    "out_of_scope_private_ram_writes": 0,
+    "isolated_rng_calls_per_function": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ]
+  },
+  "source1_odd_ccr": {
+    "pcs": [
+      "0x1d55e",
+      "0x1d562"
+    ],
+    "observations": 112,
+    "all_d1_high_word_zero": true,
+    "all_n_v_zero": true,
+    "conditional_extra_rng_preserved": true,
+    "evidence": "odd_ccr in fighter-ai-boundaries original fixture"
+  },
+  "legacy_chu_regression": {
+    "strict_source_id": 9,
+    "old_three_top_level_tests_repeated_in_both_runtimes": true,
+    "generic_source9_returns_also_compared_to_StepChuAI": true,
+    "historical_validation_report": {
+      "path": "games/yuyuhakusho/engine/testdata/chu-ai-validation.json",
+      "sha256": "084a2d25924df68d9f0209432c91e4e317d71b9964611edd78272b63b161f268"
+    },
+    "historical_report_source_hashes_belong_to_prior_implementation": true
+  },
+  "logs": [
+    {
+      "phase": "red",
+      "path": "games/yuyuhakusho/engine/testdata/fighter-ai-red.jsonl",
+      "sha256": "3068ef8f882ff706a3a5c7112715b696351f2f99152c5635a9131f6a7c4340ec",
+      "result": "fail",
+      "elapsed_seconds": 0,
+      "top_level_tests": []
+    },
+    {
+      "phase": "native-race",
+      "path": "games/yuyuhakusho/engine/testdata/fighter-ai-native.jsonl",
+      "sha256": "bf015d08868094ee3935f437e052f547c6468e96d48c6336b3a859f3bb847bec",
+      "result": "pass",
+      "elapsed_seconds": 85.765,
+      "top_level_tests": [
+        "TestChuAIOriginalCompleteCalls",
+        "TestChuAISingleInitialState",
+        "TestChuAIInvalidStateIsAtomic",
+        "TestFighterAIOriginalCompleteCalls",
+        "TestFighterAISingleInitialState",
+        "TestFighterAIInvalidStateIsAtomic"
+      ]
+    },
+    {
+      "phase": "node-wasm",
+      "path": "games/yuyuhakusho/engine/testdata/fighter-ai-wasm.jsonl",
+      "sha256": "805b14f36bb93ac99cb63dc5c23f9bef21d2f28525b175e5b316a714c881d1b2",
+      "result": "pass",
+      "elapsed_seconds": 20.685,
+      "top_level_tests": [
+        "TestChuAIOriginalCompleteCalls",
+        "TestChuAISingleInitialState",
+        "TestChuAIInvalidStateIsAtomic",
+        "TestFighterAIOriginalCompleteCalls",
+        "TestFighterAISingleInitialState",
+        "TestFighterAIInvalidStateIsAtomic"
+      ]
+    }
+  ],
+  "fixtures": [
+    {
+      "name": "fighter-ai-oracle",
+      "manifest": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter-ai-oracle-manifest.json",
+        "sha256": "6331ce8d9ed91978cba2c8323e7d71b3c04d881dc195ea37224464902c5048a7"
+      },
+      "compressed": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter-ai-oracle.json.gz",
+        "sha256": "5ae2e136700832876676e1aa9a71c743d24a25283a3ab3175ffc80ee7f01cd52"
+      },
+      "raw_sha256": "19dd322303b6036c227d7686d72b6e67f350753fb13d60466c446a0a33d781ac",
+      "raw_bytes": 31887823,
+      "records": 1794,
+      "calls": 1794,
+      "character_counts": {
+        "9": 1794
+      },
+      "captured_paths": 13,
+      "rng_calls_per_function": [
+        1,
+        2,
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    {
+      "name": "fighter-ai-boundaries",
+      "manifest": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter-ai-boundaries-manifest.json",
+        "sha256": "2e74142d89d2deb223ea14acd58bd3a6d90514d9d40761527c763b2d57eec51f"
+      },
+      "compressed": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter-ai-boundaries.json.gz",
+        "sha256": "f9dbf3725822ec6deaf7a8a88eee9e6130574da584ea06cb85f46e4f199e6b0a"
+      },
+      "raw_sha256": "dec97c1decf197ba812b9aef178ce8a01c2743c60ffcbf5a55c4427254defc86",
+      "raw_bytes": 659499498,
+      "records": 37056,
+      "calls": 37056,
+      "character_counts": {
+        "0": 3480,
+        "1": 3552,
+        "2": 3480,
+        "3": 3408,
+        "4": 3336,
+        "5": 3264,
+        "6": 3336,
+        "7": 3408,
+        "8": 3264,
+        "9": 3336,
+        "10": 3192
+      },
+      "captured_paths": 60,
+      "rng_calls_per_function": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    {
+      "name": "fighter-ai-sequences",
+      "manifest": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter-ai-sequences-manifest.json",
+        "sha256": "acd3eb9afb938b4f4e14c83eba5d1f59f1f72e5c88bbcf6d87fc17ab627685ba"
+      },
+      "compressed": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter-ai-sequences.json.gz",
+        "sha256": "eb62467043166ba3a6b26b6a30e7bef2d3fb118f6a17ee1c5da4a36d7b6034ea"
+      },
+      "raw_sha256": "c3297193658d11530a51b9d5e95029be576cab0ab1e103ae05c13549b9fe4b1b",
+      "raw_bytes": 14426317,
+      "records": 33,
+      "calls": 792,
+      "character_counts": {
+        "0": 3,
+        "1": 3,
+        "2": 3,
+        "3": 3,
+        "4": 3,
+        "5": 3,
+        "6": 3,
+        "7": 3,
+        "8": 3,
+        "9": 3,
+        "10": 3
+      },
+      "captured_paths": 0,
+      "rng_calls_per_function": []
+    }
+  ],
+  "runtime": {
+    "native": "go1.26.2 darwin/arm64 with race detector",
+    "wasm": "GOOS=js GOARCH=wasm, Node v24.15.0 via go_js_wasm_exec"
+  },
+  "focused_source_files": [
+    "input.go",
+    "fighter_input.go",
+    "random.go",
+    "chu_ai.go",
+    "fighter_ai.go",
+    "chu_ai_test.go",
+    "fighter_ai_test.go"
+  ],
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/engine/input.go",
+      "sha256": "38e957231a29fd08c889709e0e7a39661284258800521467ba41fcdc9dfa12e2"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter_input.go",
+      "sha256": "da1cee3d5fffe0a78f97b31fb9ae9f81ba3b44a6f0a79e4f3148027ca3596c9a"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/random.go",
+      "sha256": "c9fe3edc3ff9bee0725b78e7a38f2c4517592ddf99e52fec98e8904eb77a2056"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_ai.go",
+      "sha256": "63ee0b171558e51b45cb793eb9d0aabe5d5b6bf5a92286c66a1c77bf33f0ea61"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter_ai.go",
+      "sha256": "10401486da28a33f95fc5427b6cc5d7f00a90a86b6914f9a7d3d8fd723c29c93"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_ai_test.go",
+      "sha256": "e5c07393a7051e6917e7a460b0bd7ca3e9bd0e2fdad8913b5c0e43dc4b780dd1"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter_ai_test.go",
+      "sha256": "4ee71b0c659fa350fb3b5552608dbefadcc075ee74453d9b9023d13bda95f477"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_fighter_ai.py",
+      "sha256": "aa8c4302f8cd9200cfa9184ee22f9e664ed3c06bf1cb0c8b7989c93957c9c545"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_chu_ai.py",
+      "sha256": "c4803b501d7450467f44a7ae0a3be1337da8c18e92708eec8b0de303bc1cfe52"
+    },
+    {
+      "path": "scripts/yuyuhakusho/reference.py",
+      "sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-ai-decisions.txt",
+      "sha256": "53653633bc0024c195ef8067bb9ca838f9240d54c0dcb09745c9586de33f38b6"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/FIGHTER_AI_VERIFICATION.md",
+      "sha256": "635a63d809e5a491621a7bec5421137c118b82e563f35da50489af6b97b9c9d9"
+    }
+  ],
+  "static_route": {
+    "route": "direct Ghidra headless",
+    "language": "68000:BE:32:default",
+    "instructions": 1394,
+    "rea_raw_68000_supported": false,
+    "natural_execution_coverage_implied": false
+  },
+  "limits": [
+    "Natural original CPU evidence covers source9 only; other characters use declared isolated inputs and streams",
+    "AI outputs do not execute attacks, movement, collision, world scheduling or full matches",
+    "Input-mode clearing, recording, takeover and network integration remain caller work",
+    "Invalid source, difficulty, cursor, behavior and follow identity are atomically rejected rather than reading unrelated ROM bytes",
+    "Native and Wasm tests used an explicit seven-file source scope; parent full-package integration gate remains required",
+    "No all-character natural match, playable attack or full-match completion claim is made"
+  ],
+  "cleanup": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter-ai-cleanup.json",
+    "sha256": "52e750f0bdff6f543e5cd13b1f1d658912bae2c47896e63f71178326fa874add",
+    "bytes_removed": 701765267,
+    "shared_go_caches_untouched": true
+  }
+}

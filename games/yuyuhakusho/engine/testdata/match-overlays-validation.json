@@ -1,0 +1,338 @@
+{
+  "verified_at_utc": "2026-11-04T13:05:46.087338+00:00",
+  "parent_commit": "9c65b0de",
+  "scope": "Complete14 match overlay/training/shadow rule callbacks to sprite request, silent RTS or internal clear; no hardware sprite emission",
+  "pass": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "api": [
+    "StepMatchOverlay",
+    "StepMatchShadow",
+    "StepMatchTraining"
+  ],
+  "test_first": {
+    "initial_missing_types_log": {
+      "phase": "red",
+      "path": "games/yuyuhakusho/engine/testdata/match-overlays-red.jsonl",
+      "sha256": "cf71f43bb6985724748f1f1123aa368cf80c5990841460e5439814a2602c3353",
+      "result": "fail",
+      "elapsed_seconds": 0,
+      "top_level_tests": []
+    },
+    "added_labels_missing_fields_and_training_log": {
+      "phase": "labels-red",
+      "path": "games/yuyuhakusho/engine/testdata/match-overlays-labels-red.jsonl",
+      "sha256": "6cbc7167ddddd36e609be5e9d12b51c8d3f4e1b4b7a8eed984906bdf8774f67a",
+      "result": "fail",
+      "elapsed_seconds": 0,
+      "top_level_tests": []
+    },
+    "note": "Original CPU fixtures and unit tests preceded initial production implementation; added labels/training tests and real missing API build failure preceded that implementation extension. Later codec diagnostics and coverage expanded without feeding expected results."
+  },
+  "coverage": {
+    "callbacks": 14,
+    "natural_complete_calls": 14460,
+    "natural_kinds": [
+      "demo",
+      "pause-label",
+      "round",
+      "shadow",
+      "intro",
+      "intro-part",
+      "win",
+      "character"
+    ],
+    "natural_original_baseline_frames": 5500,
+    "isolated_cpu_outputs": 28094,
+    "isolated_semantic_matches": 28073,
+    "isolated_reference_only_atomic_errors": 21,
+    "single_initial_streams": 14,
+    "single_initial_calls": 2372,
+    "intro_parent_calls_to_deletion": 264,
+    "stream_internal_clear_calls": 6,
+    "objects_window_bytes": 768,
+    "shadow_bytes": 128,
+    "four_owner_bytes": 1024,
+    "registration_bytes": 128,
+    "queue_bytes": 4,
+    "external_queue_exceptions": 0,
+    "private_training_controller_slots": 4
+  },
+  "logs": [
+    {
+      "phase": "red",
+      "path": "games/yuyuhakusho/engine/testdata/match-overlays-red.jsonl",
+      "sha256": "cf71f43bb6985724748f1f1123aa368cf80c5990841460e5439814a2602c3353",
+      "result": "fail",
+      "elapsed_seconds": 0,
+      "top_level_tests": []
+    },
+    {
+      "phase": "labels-red",
+      "path": "games/yuyuhakusho/engine/testdata/match-overlays-labels-red.jsonl",
+      "sha256": "6cbc7167ddddd36e609be5e9d12b51c8d3f4e1b4b7a8eed984906bdf8774f67a",
+      "result": "fail",
+      "elapsed_seconds": 0,
+      "top_level_tests": []
+    },
+    {
+      "phase": "native",
+      "path": "games/yuyuhakusho/engine/testdata/match-overlays-native.jsonl",
+      "sha256": "36de0d9967f04cd3f7d8f9ebed6c917d8c6f203faec6b34139096d723bd817b1",
+      "result": "pass",
+      "elapsed_seconds": 48.986,
+      "top_level_tests": [
+        "TestMatchOverlaysOriginalCalls",
+        "TestMatchOverlaysSingleInitialState",
+        "TestMatchOverlaysErrorsAreAtomic"
+      ]
+    },
+    {
+      "phase": "wasm",
+      "path": "games/yuyuhakusho/engine/testdata/match-overlays-wasm.jsonl",
+      "sha256": "d1d4f7dcf6fa425195fecbf8e994ec6ecf8d2e143c4c724f7ae01fba1338bd42",
+      "result": "pass",
+      "elapsed_seconds": 13.179,
+      "top_level_tests": [
+        "TestMatchOverlaysOriginalCalls",
+        "TestMatchOverlaysSingleInitialState",
+        "TestMatchOverlaysErrorsAreAtomic"
+      ]
+    }
+  ],
+  "fixtures": [
+    {
+      "manifest": "games/yuyuhakusho/engine/testdata/match-overlays-oracle-manifest.json",
+      "sha256": "1c1c4c13b4ccb446c0ea89e9f31be6cd16b272b7bdb96d63146ff4970386f2d5",
+      "records": 14460,
+      "calls": 14460,
+      "reference_only": 0,
+      "fixture_sha256": "ec527bd7c52752c948079b10141d0861af3cba8a9fec6980812ede83cdc101f4",
+      "gzip_sha256": "4126c20b9a50a21743baf92e636d7d2181714705b3346fd8cddc98972922db2d"
+    },
+    {
+      "manifest": "games/yuyuhakusho/engine/testdata/match-overlays-boundaries-manifest.json",
+      "sha256": "9e5e6d17a957468ee931726a70f689f88ff705bb0d4e387243bfe3459e217dbd",
+      "records": 28094,
+      "calls": 28094,
+      "reference_only": 21,
+      "fixture_sha256": "fd01c51f22d19d3e561914ee7c7344c26a5d99d0537238c9bf9d658300c715f7",
+      "gzip_sha256": "dc6f69acf2f11f6ccc1c31c3ab89cd143a127b646a03e25abc818d1afb74dc58"
+    },
+    {
+      "manifest": "games/yuyuhakusho/engine/testdata/match-overlays-sequences-manifest.json",
+      "sha256": "e990ffe1cc78faaa06f388ddcfbeccd661f067380064eb7d77d2e304f4edec4f",
+      "records": 14,
+      "calls": 2372,
+      "reference_only": 0,
+      "fixture_sha256": "88a1b71e8c365807a5d240143a7f2b2afe11fa4ebcad99df8fcf6ca757ab3dff",
+      "gzip_sha256": "1700a164d6956adc0349b9e04d14a3f1e01366fe19ed6b3a9f294b4a56e892d1"
+    }
+  ],
+  "immutable_data": {
+    "path": "games/yuyuhakusho/engine/testdata/match-overlays-data.json",
+    "sha256": "64f63332208970a455f320abc1cae3e4c9e60073794399165aadd36e30b0a2ad"
+  },
+  "focused_source_files": [
+    "games/yuyuhakusho/engine/match_lifecycle.go",
+    "games/yuyuhakusho/engine/fighter_envelope.go",
+    "games/yuyuhakusho/engine/fighter_input.go",
+    "games/yuyuhakusho/engine/input.go",
+    "games/yuyuhakusho/engine/motion.go",
+    "games/yuyuhakusho/engine/match_overlays.go",
+    "games/yuyuhakusho/engine/match_overlays_test.go"
+  ],
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/engine/match_overlays.go",
+      "sha256": "9d00e02470cacbfddebb36598fc797d86f97ca39fc509870022629435de94851"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/match_overlays_test.go",
+      "sha256": "cc2477905bfeba33596e1f407a24bdfe16a7c3e192bc3135d54ab5c5cfc2e39f"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/MATCH_OVERLAYS_VERIFICATION.md",
+      "sha256": "7504250f1ef8313ffa23a889b56d9bd8bfc2770b4792811dfd7aa89acb498892"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_match_overlays.py",
+      "sha256": "dad5828bfd1d0fceb5e91d8fd75048e5592c1488e7716bd4fe5cd49a4dd425a1"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/match-overlays-core.txt",
+      "sha256": "9a298dd8c973413eeac557c74ef48b1b4cd0e508a3362cdb24b3adce1375a26d"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/match-overlays-demo.txt",
+      "sha256": "a02e4cdcbafd0f40018d068c61c5e79898e522af053b239cabc49bd1b7ca4be3"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/match-overlays-helpers.txt",
+      "sha256": "fb418efe741e2eead5fc4438bfa36a0c9cce9fb74ee71720ce2460b46da79910"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/match-overlays-intro-child.txt",
+      "sha256": "70fa663c9e7ce39869899cf0d97cb7037c7742e6cfb0693a80b69fb93f714a13"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/match-overlays-labels.txt",
+      "sha256": "7739d523a154770ffd12ee4939e1412015982b8e8a77455f616f45276a09ac64"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/match-overlays-phases.txt",
+      "sha256": "47e9d006baf5262a3ade6bb3ef3ffa40a69a7b799655a790c0593f5a75c5546d"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/match-overlays-resource.txt",
+      "sha256": "a248fb33b501b8dbeda53357a99844224c1f920c000383599be771d3a6377d80"
+    }
+  ],
+  "dependencies": [
+    {
+      "path": "games/yuyuhakusho/engine/match_lifecycle.go",
+      "sha256": "1121ba3d339b266c46a5af08c157741a21e5feb5f8872cb287a14a369c8753dc"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter_envelope.go",
+      "sha256": "f0cba93adb159eea905cc66ed976843c24ba1d7cec34a50423c356c303156453"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter_input.go",
+      "sha256": "da1cee3d5fffe0a78f97b31fb9ae9f81ba3b44a6f0a79e4f3148027ca3596c9a"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/input.go",
+      "sha256": "38e957231a29fd08c889709e0e7a39661284258800521467ba41fcdc9dfa12e2"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/motion.go",
+      "sha256": "35dc27314a13afdff39d96d2d21911c5ba5030baf00ea81d1daf8f9feb5f8878"
+    },
+    {
+      "path": "scripts/yuyuhakusho/reference.py",
+      "sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81"
+    },
+    {
+      "path": "scripts/yuyuhakusho/hook_filter.c",
+      "sha256": "5320b2763215d032ce7eb5aaabcf0be2cfaa3b41eb49398d7c33933ce9f8c874"
+    }
+  ],
+  "corrections": {
+    "shadow_location": "Natural actualA5 was9c00, not initial8200 assumption; complete128-byte actual slot added and all original capture rerun",
+    "shadow_schedule": "9c00 runs after fighters/effects in the same object round; registration list is consumed then cleared",
+    "same_call_fallthrough": "Oracle comparison detected both result-name initialize\u2192scale and reset-counter\u2192first-count fallthroughs; source implementation fixed and all final runs pass",
+    "sampling_window": "8100..83ff plus9c00..9c7f, including six additional spawned callbacks"
+  },
+  "world_integration": [
+    "Carry sharedModeFlag/SlowFlag/SoundQueue between callbacks, not perobject copies",
+    "Actual shadow entry14882 lives at9c00, after fighters/FX in the object round; it renders one registered owner and clears Used",
+    "ApplyClearedBytes to all owner fields within prefix; intro-part may also requestDraw after clear",
+    "Training callback writes only selected12668 HP; it does not award platform score",
+    "Result objects remain until manager world-clear; no invented TTL"
+  ],
+  "limits": [
+    "Complete percallback rules, not fullworld/physics/match/menu/platform E2E",
+    "Sprite1580 emission, glyph raster, DMA/SAT and pixel rendering excluded explicitly",
+    "Only default natural configuration exercised; training/team/draw/bracket paths covered by declared private CPU inputs",
+    "Round11\u2192D6 zero graphic CPU outputs retained reference-only; actualnormalcaller reachability remains unknown, Go atomically refuses onlywhenneeded",
+    "Overlay partial clears supported up to64bytes; arbitrary corrupt header ranges/RAM aliases not simulated",
+    "Intro stream executes actual parent and child callbacks, other streams declare external mode/blink/registration/training inputs; no expected-state injection",
+    "REA raw68000 unavailable; static records use direct Ghidra plus actualMC68000 reference execution",
+    "Parent must run package-level integration; focused build uses explicit stable source files to avoid parallel incomplete modules"
+  ],
+  "reference_baseline": [
+    {
+      "path": "games/yuyuhakusho/engine/testdata/match-lifecycle-reference-frames.json.gz",
+      "sha256": "a7628aa7d1475774323bb8ab5cee1f3da1419e345cc9b7240bca248f5b829b85"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/inputs.json",
+      "sha256": "59383329affb09e87c6452c135d3ae20df19db9f1675acddc0972a080a8551b6"
+    }
+  ],
+  "cleanup": {
+    "scope": "Only this task repeated/superseded captures, temporary Ghidra project/cache and intermediate logs; canonical fixtures/logs/source retained",
+    "removed": [
+      {
+        "path": ".local/md-yuyuhakusho/match-overlays-final",
+        "bytes": 3317271
+      },
+      {
+        "path": ".local/md-yuyuhakusho/match-overlays-wasm-complete.jsonl",
+        "bytes": 4813
+      },
+      {
+        "path": ".local/md-yuyuhakusho/match-overlays-native-final.jsonl",
+        "bytes": 10057
+      },
+      {
+        "path": ".local/md-yuyuhakusho/match-overlays-wasm-final.jsonl",
+        "bytes": 10056
+      },
+      {
+        "path": ".local/md-yuyuhakusho/match-overlays-static",
+        "bytes": 301353
+      },
+      {
+        "path": ".local/md-yuyuhakusho/match-overlays-labels-red.jsonl",
+        "bytes": 2676
+      },
+      {
+        "path": ".local/md-yuyuhakusho/match-overlays-all",
+        "bytes": 6695779
+      },
+      {
+        "path": ".local/md-yuyuhakusho/match-overlays-final-wasm.jsonl",
+        "bytes": 4948
+      },
+      {
+        "path": ".local/md-yuyuhakusho/match-overlays-native-complete.jsonl",
+        "bytes": 4821
+      },
+      {
+        "path": ".local/md-yuyuhakusho/match-overlays-shadow-fixed",
+        "bytes": 3800334
+      },
+      {
+        "path": ".local/md-yuyuhakusho/match-overlays-final-native.jsonl",
+        "bytes": 4951
+      },
+      {
+        "path": ".local/md-yuyuhakusho/match-overlays",
+        "bytes": 3306404
+      },
+      {
+        "path": ".local/md-yuyuhakusho/match-overlays-red.jsonl",
+        "bytes": 2770
+      },
+      {
+        "path": ".local/md-yuyuhakusho/match-overlays-all-native.jsonl",
+        "bytes": 4954
+      },
+      {
+        "path": ".local/md-yuyuhakusho/match-overlays-native-fixed.jsonl",
+        "bytes": 8935
+      },
+      {
+        "path": ".local/md-yuyuhakusho/match-overlays-native.jsonl",
+        "bytes": 8248
+      },
+      {
+        "path": ".local/md-yuyuhakusho/match-overlays-coverage",
+        "bytes": 6947697
+      },
+      {
+        "path": ".local/md-yuyuhakusho/match-overlays-labels",
+        "bytes": 6695198
+      },
+      {
+        "path": "docs/research/md-yuyuhakusho/match-overlays-work",
+        "bytes": 0
+      }
+    ],
+    "bytes_removed": 31131265,
+    "shared_go_cache_preserved": true,
+    "original_rom_tools_preserved": true
+  }
+}

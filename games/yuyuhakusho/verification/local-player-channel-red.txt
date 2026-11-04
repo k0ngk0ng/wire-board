@@ -1,0 +1,11 @@
+
+  .local/md-yuyuhakusho/local-player/player.js                   1.2mb ⚠️
+  .local/md-yuyuhakusho/local-player/player.css                  6.7kb
+  .local/md-yuyuhakusho/local-player/md-controller-UXLIP6HJ.svg  1.8kb
+
+⚡ Done in 40ms
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/check_local_player.py", line 65, in <module>
+    assert js('!window.yyResearch.view.players[0].computer && window.yyResearch.view.players[0].input_channel === 0')
+           ~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

@@ -1,0 +1,235 @@
+{
+  "schema": 1,
+  "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+  "tables": {
+    "character_parameters": [
+      2,
+      4,
+      6,
+      8,
+      10,
+      12,
+      14,
+      16,
+      18,
+      20,
+      22
+    ],
+    "character_sounds": [
+      107,
+      105,
+      104,
+      103,
+      106,
+      113,
+      112,
+      114,
+      108,
+      111,
+      108
+    ],
+    "team_parameters": [
+      28,
+      30,
+      32,
+      34,
+      36,
+      38,
+      40,
+      42
+    ],
+    "team_sounds": [
+      94,
+      95,
+      96,
+      97,
+      98,
+      99,
+      100,
+      101
+    ],
+    "round_parameters": [
+      192,
+      194,
+      196,
+      198,
+      200,
+      202,
+      204,
+      206,
+      208,
+      210,
+      212,
+      214
+    ],
+    "bracket_round_x": [
+      400,
+      392,
+      392,
+      368,
+      368,
+      368,
+      416,
+      384
+    ],
+    "bracket_round_parameters": [
+      132,
+      152,
+      130,
+      138,
+      142,
+      146,
+      128,
+      128
+    ],
+    "bracket_opponent_attributes": [
+      57456,
+      57456,
+      57456,
+      57460,
+      57460,
+      57460,
+      57456,
+      57456
+    ],
+    "bracket_opponent_x": [
+      424,
+      424,
+      424,
+      424,
+      424,
+      424,
+      408,
+      400
+    ],
+    "bracket_opponent_parameters": [
+      154,
+      156,
+      158,
+      160,
+      154,
+      156,
+      150,
+      128
+    ]
+  },
+  "sources": [
+    {
+      "name": "character_parameters",
+      "address": 68670,
+      "bytes": 22,
+      "sha256": "bcfdc4551b6fcbb38b21e656b345cf5cd38baf3ea72f937d0a5854049bdc0888"
+    },
+    {
+      "name": "character_sounds",
+      "address": 68694,
+      "bytes": 22,
+      "sha256": "4860a541215737a963cc432a8665093b4f11b9d9e04195962a3b283e9ef2edcb"
+    },
+    {
+      "name": "team_parameters",
+      "address": 67272,
+      "bytes": 16,
+      "sha256": "53c1403de9cf58e9258192abaaf01484a38d3c3d0f6680ffdfa1877214c6afcb"
+    },
+    {
+      "name": "team_sounds",
+      "address": 67288,
+      "bytes": 16,
+      "sha256": "c1b902f388d996eddc06a1eea57ac84ef8a25e94ccce05ec3e93179e9f7a537d"
+    },
+    {
+      "name": "round_parameters",
+      "address": 65790,
+      "bytes": 24,
+      "sha256": "6a2bbefb3205d73303bed11b323202c92969bcf1b050dce28c1bdb1d32f8961e"
+    },
+    {
+      "name": "bracket_round_x",
+      "address": 65874,
+      "bytes": 16,
+      "sha256": "292254cd475b54389c78c0a82c5b31d6798d71c9d76027f90a67b044981985c2"
+    },
+    {
+      "name": "bracket_round_parameters",
+      "address": 65890,
+      "bytes": 16,
+      "sha256": "156818988492f0510043cc0d941b769c0b782b2fd2f6626e1ab9418f5e7ae5da"
+    },
+    {
+      "name": "bracket_opponent_attributes",
+      "address": 65966,
+      "bytes": 16,
+      "sha256": "22eea3615688c6e66770e8dd74ebeab1d06c8234851d19171cdcdfb6166f8aa7"
+    },
+    {
+      "name": "bracket_opponent_x",
+      "address": 65982,
+      "bytes": 16,
+      "sha256": "dea0e3e1d05fdbda6b3cf807ffbcdd3b96e339b52901d0d9144091cf5ef96b97"
+    },
+    {
+      "name": "bracket_opponent_parameters",
+      "address": 65998,
+      "bytes": 16,
+      "sha256": "2c60063bac8de053af849daf30860918d2e60c66da4ec7f1c00d7d70afb65a85"
+    }
+  ],
+  "bindings_after_initialization": [
+    {
+      "callbacks": [
+        65144,
+        65202,
+        65672,
+        65814,
+        65906,
+        66614,
+        66732,
+        66850,
+        67094,
+        67304
+      ],
+      "graphics_set": 893402,
+      "tiles_base": 2406880,
+      "skip_graphics": false
+    },
+    {
+      "callbacks": [
+        66352
+      ],
+      "graphics_set": 895562,
+      "tiles_base": 2478688,
+      "skip_graphics": false,
+      "parameters": [
+        2,
+        4,
+        6,
+        8
+      ]
+    },
+    {
+      "callbacks": [
+        84098
+      ],
+      "graphics_set": 2618904,
+      "parameter": 38,
+      "skip_graphics": true,
+      "tiles_base_is_not_initialized": true,
+      "preloaded_tile_context_required": true
+    }
+  ],
+  "round_zero_graphic_diagnostic": {
+    "round_index": 11,
+    "parameter": 214,
+    "graphics_set": 893402,
+    "entry_address": 893616,
+    "entry_bytes": "0000",
+    "normal_caller_reachability": "not established",
+    "reference_only_cpu_records": 21
+  },
+  "limits": [
+    "Rule and numeric presentation identities only; no ROM program executes",
+    "Index11 round output has no verified nonzero graphic; other paths can ignore unused round index",
+    "Glyph images, sprite encoding and menu reachability are outside this module"
+  ]
+}

@@ -1,0 +1,84 @@
+Reference core source, not game decompilation
+commit=60bee4c724859710ce05672239e5b601ad01382e
+sha256=3627f311789c6cd774db903db716394e12148aa671d4b2001ab8c844077ac761
+normal mode5 source excerpt; scanline overflow itself remains unsupported
+4471:   /* Sprite counter */
+4472:   int count = 0;
+4473:
+4474:   /* max. number of rendered sprites (16 or 20 sprites per line by default) */
+4475:   int max = MODE5_MAX_SPRITES_PER_LINE;
+4476:
+4477:   /* max. number of parsed sprites (64 or 80 sprites per line by default) */
+4478:   int total = max_sprite_pixels >> 2;
+4479:
+4480:   /* Pointer to sprite attribute table */
+4481:   uint16 *p = (uint16 *) &vram[satb];
+4482:
+4483:   /* Pointer to internal RAM */
+4484:   uint16 *q = (uint16 *) &sat[0];
+4485:
+4486:   /* Sprite list for next line */
+4487:   object_info_t *object_info = obj_info[(line + 1) & 1];
+4488:
+4489:   /* Adjust line offset */
+4490:   line += 0x81;
+4491:
+4492:   do
+4493:   {
+4494:     /* Read sprite Y position from internal SAT cache (9 bits) */
+4495:     ypos = q[link] & 0x1FF;
+4496:
+4497:     /* Check if sprite Y position has been reached */
+4498:     if (line >= ypos)
+4499:     {
+4500:       /* Read sprite size from internal SAT cache */
+4501:       size = q[link + 1] >> 8;
+4502:
+4503:       /* Sprite height (8, 16, 24 or 32 pixels) */
+4504:       height = 8 + ((size & 3) << 3);
+4505:
+4506:       /* Y range */
+4507:       ypos = line - ypos;
+4508:
+4509:       /* Check if sprite is visible on current line */
+4510:       if (ypos < height)
+4511:       {
+4512:         /* Sprite overflow */
+4513:         if (count == max)
+4514:         {
+4515:           status |= 0x40;
+4516:           break;
+4517:         }
+4518:
+4519:         /* Update sprite list (only name, attribute & xpos are parsed from VRAM) */
+4520:         object_info->attr  = p[link + 2];
+4521:         object_info->xpos  = p[link + 3] & 0x1ff;
+4522:         object_info->ypos  = ypos;
+4523:         object_info->size  = size & 0x0f;
+4524:
+4525:         /* Increment Sprite count */
+4526:         ++count;
+4527:
+4528:         /* Next sprite entry */
+4529:         object_info++;
+4530:       }
+4531:     }
+4532:
+4533:     /* Read link data from internal SAT cache */
+4534:     link = (q[link + 1] & 0x7F) << 2;
+4535:
+4536:     /* Stop parsing if link data points to first entry (#0) or after the last entry (#64 in H32 mode, #80 in H40 mode) */
+4537:     if ((link == 0) || (link >= bitmap.viewport.w)) break;
+4538:   }
+4539:   while (--total);
+4540:
+4541:   /* Update sprite count for next line (line value already incremented) */
+4542:   object_count[line & 1] = count;
+4543: }
+4544:
+4545: void parse_satb_m5_im2(int line)
+4546: {
+4547:   /* Sprite Y position */
+4548:   int ypos;
+4549:
+4550:   /* Sprite height */

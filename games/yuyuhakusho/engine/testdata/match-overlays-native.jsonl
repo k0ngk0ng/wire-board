@@ -1,0 +1,26 @@
+{"Time":"2026-11-04T20:58:05.912688+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-04T20:58:06.424172+08:00","Action":"run","Package":"command-line-arguments","Test":"TestMatchOverlaysOriginalCalls"}
+{"Time":"2026-11-04T20:58:06.424197+08:00","Action":"output","Package":"command-line-arguments","Test":"TestMatchOverlaysOriginalCalls","Output":"=== RUN   TestMatchOverlaysOriginalCalls\n"}
+{"Time":"2026-11-04T20:58:06.424225+08:00","Action":"run","Package":"command-line-arguments","Test":"TestMatchOverlaysOriginalCalls/match-overlays-oracle"}
+{"Time":"2026-11-04T20:58:06.42423+08:00","Action":"output","Package":"command-line-arguments","Test":"TestMatchOverlaysOriginalCalls/match-overlays-oracle","Output":"=== RUN   TestMatchOverlaysOriginalCalls/match-overlays-oracle\n"}
+{"Time":"2026-11-04T20:58:21.867478+08:00","Action":"output","Package":"command-line-arguments","Test":"TestMatchOverlaysOriginalCalls/match-overlays-oracle","Output":"    match_overlays_test.go:273: complete original overlays=14460 kinds=map[character:464 demo:3223 intro:264 intro-part:376 pause-label:3223 round:3223 shadow:3223 win:464]\n"}
+{"Time":"2026-11-04T20:58:21.867817+08:00","Action":"output","Package":"command-line-arguments","Test":"TestMatchOverlaysOriginalCalls/match-overlays-oracle","Output":"--- PASS: TestMatchOverlaysOriginalCalls/match-overlays-oracle (15.44s)\n"}
+{"Time":"2026-11-04T20:58:21.86784+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestMatchOverlaysOriginalCalls/match-overlays-oracle","Elapsed":15.44}
+{"Time":"2026-11-04T20:58:21.86785+08:00","Action":"run","Package":"command-line-arguments","Test":"TestMatchOverlaysOriginalCalls/match-overlays-boundaries"}
+{"Time":"2026-11-04T20:58:21.867854+08:00","Action":"output","Package":"command-line-arguments","Test":"TestMatchOverlaysOriginalCalls/match-overlays-boundaries","Output":"=== RUN   TestMatchOverlaysOriginalCalls/match-overlays-boundaries\n"}
+{"Time":"2026-11-04T20:58:51.486378+08:00","Action":"output","Package":"command-line-arguments","Test":"TestMatchOverlaysOriginalCalls/match-overlays-boundaries","Output":"    match_overlays_test.go:273: complete original overlays=28094 kinds=map[bracket-opponent:848 bracket-round:848 character:2896 demo:3416 draw:1680 intro:2945 intro-part:2945 partner:2520 pause-label:840 round:1260 shadow:840 team:2872 training:2504 win:1680]\n"}
+{"Time":"2026-11-04T20:58:51.487229+08:00","Action":"output","Package":"command-line-arguments","Test":"TestMatchOverlaysOriginalCalls/match-overlays-boundaries","Output":"--- PASS: TestMatchOverlaysOriginalCalls/match-overlays-boundaries (29.62s)\n"}
+{"Time":"2026-11-04T20:58:51.487249+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestMatchOverlaysOriginalCalls/match-overlays-boundaries","Elapsed":29.62}
+{"Time":"2026-11-04T20:58:51.487256+08:00","Action":"output","Package":"command-line-arguments","Test":"TestMatchOverlaysOriginalCalls","Output":"--- PASS: TestMatchOverlaysOriginalCalls (45.06s)\n"}
+{"Time":"2026-11-04T20:58:51.487263+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestMatchOverlaysOriginalCalls","Elapsed":45.06}
+{"Time":"2026-11-04T20:58:51.487276+08:00","Action":"run","Package":"command-line-arguments","Test":"TestMatchOverlaysSingleInitialState"}
+{"Time":"2026-11-04T20:58:51.487282+08:00","Action":"output","Package":"command-line-arguments","Test":"TestMatchOverlaysSingleInitialState","Output":"=== RUN   TestMatchOverlaysSingleInitialState\n"}
+{"Time":"2026-11-04T20:58:53.788475+08:00","Action":"output","Package":"command-line-arguments","Test":"TestMatchOverlaysSingleInitialState","Output":"--- PASS: TestMatchOverlaysSingleInitialState (2.30s)\n"}
+{"Time":"2026-11-04T20:58:53.788513+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestMatchOverlaysSingleInitialState","Elapsed":2.3}
+{"Time":"2026-11-04T20:58:53.788519+08:00","Action":"run","Package":"command-line-arguments","Test":"TestMatchOverlaysErrorsAreAtomic"}
+{"Time":"2026-11-04T20:58:53.788522+08:00","Action":"output","Package":"command-line-arguments","Test":"TestMatchOverlaysErrorsAreAtomic","Output":"=== RUN   TestMatchOverlaysErrorsAreAtomic\n"}
+{"Time":"2026-11-04T20:58:53.788538+08:00","Action":"output","Package":"command-line-arguments","Test":"TestMatchOverlaysErrorsAreAtomic","Output":"--- PASS: TestMatchOverlaysErrorsAreAtomic (0.00s)\n"}
+{"Time":"2026-11-04T20:58:53.78854+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestMatchOverlaysErrorsAreAtomic","Elapsed":0}
+{"Time":"2026-11-04T20:58:53.788553+08:00","Action":"output","Package":"command-line-arguments","Output":"PASS\n"}
+{"Time":"2026-11-04T20:58:54.897244+08:00","Action":"output","Package":"command-line-arguments","Output":"ok  \tcommand-line-arguments\t48.986s\n"}
+{"Time":"2026-11-04T20:58:54.897273+08:00","Action":"pass","Package":"command-line-arguments","Elapsed":48.986}

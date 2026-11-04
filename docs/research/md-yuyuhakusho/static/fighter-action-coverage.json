@@ -1,0 +1,6853 @@
+{
+  "schema": 1,
+  "scope": "Static roadmap for source0..10 action execution gaps; no engine implementation",
+  "evidence_kind": "Bounded static observation and explicitly overapproximated control-flow inference",
+  "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+  "new_original_cpu_calls": 0,
+  "runtime_complete": false,
+  "analysis_checks_pass": true,
+  "flow": {
+    "path": "docs/research/md-yuyuhakusho/static/fighter-action-flow.json.gz",
+    "sha256": "54d4cb7d1b5087c6fb4546323fb4b514ec0d9665889f1e4659795d6d95da48ea",
+    "raw_sha256": "128227ea48d21333be8ebec88248dbd712be79fbdf0b0f76de8486ebae55dc66",
+    "instructions": 5454,
+    "instruction_bytes_verified": 24744,
+    "prior_listing_instructions_equal": 1372,
+    "computed_jumps_bound": 29
+  },
+  "ghidra_seed_arguments": "15fdc,16062,1607a,16106,1611e,16152,16168,1617e,16228,16318,163fe,16484,1649c,16528,16540,16572,16588,1659e,165b6,1668c,16714,1679a,167b2,1683e,16856,16888,1689e,168b4,168cc,16922,16926,1692a,169b0,16a40,16ac6,16ade,16b6a,16b82,16bb4,16bca,16be0,16bf8,16cc2,16d86,16e0c,16e24,16eb0,16ec8,16efa,16f10,16f26,16f3e,16fcc,1705c,170e2,170fa,17186,1719e,171d0,171e6,171fc,17214,172c4,1738c,17412,1742a,174b6,174ce,1757e,17594,175aa,17654,176be,17790,17816,1782e,178ba,178d2,178ea,1791c,17932,17948,17960,17a08,17adc,17b62,17b7a,17c06,17c1e,17c50,17c66,17c7c,17c94,17d5e,17e12,17e98,17eb0,17f3c,17f54,17f86,17f9c,17fb2,17fca,18092,18164,181ea,18202,1828e,182a6,182da,182f0,18306,183b0,18420,19cee,19da2,19dc6,19e08,19ecc,19f90,19fb0,1a016,1a02c,1a13c,1a1ae,1a22c,1a282,1a2c2,1a2f2,1a328,1a35c,1a37a,1a3ac,1a42c,1a430,1a6fe,1a868,1a8f0,1a9be,1aac2,1ab92,1ac58,1ad28,1adc8,1aefa,1af5c,1af7a,1af98,1afc4,1afc8,1b146,1b1ce,1b1e8,1b21e,1b246,1b274,1b27c,1b2b8,1b2bc,1b2d4,1b3f0,1b48a,1b51a,1b67a,1b6c4,1b704,1b7fa,1b8f4,1b9bc,1bab2,1bad6,1bafe,1bbbe,1bc7e,1bc92,1bd6e,1be08,1be64,1bfce,1c032,1c09a,1c196,1c27c,1c33a,1c3ba,1c50a,1c6a0,1c6e2,1c7bc,1c85e,1c8e0,1c9aa,1ca46,1ca9c,1cb08,1cb30,1cb64,1cb68,1cb90,1cbc4,1cbc8,1cc28",
+  "dispatcher": {
+    "entry": "0x15a18",
+    "command_preparation_dispatch": "0x15c10",
+    "shared_input_preparation": "0x15c36",
+    "table": "0x15a68",
+    "slots": 74,
+    "unique_targets": 73,
+    "shared_tail": "0x15afc",
+    "return": "0x15b82",
+    "table_bytes": "42864338435a4522454045ba46c84738459e47b2438c444e480248406fc270167014707e70dc713a719848604894499a4c664dce50264e524f1e50f051b4528253205450551c5698571e5736576a57905804581a593459cc5a5a5bb85c005c3e5d325e2a5ef05fe46006602c60ea61a861ba6294632c638664ee655065b666b06794685068ce6a1c6bb06bf06cc86d686de86eb0",
+    "arbitrary_runtime_index_range_established": false
+  },
+  "selector_tables": {
+    "ground": {
+      "table": "0x15e10",
+      "wrapper": "0x15de6",
+      "bytes": "01cc05ec09000c2a0f6e1242157019721cbc1ff02340"
+    },
+    "air": {
+      "table": "0x15ee8",
+      "wrapper": "0x15e28",
+      "bytes": "02360656096a0c940fd812ac15da19f41d26205a23aa"
+    },
+    "ground_special": {
+      "table": "0x15f0e",
+      "wrapper": "0x15efe",
+      "bytes": "031a06a609ba0ce4102812fc173a1a441d7620aa248e"
+    },
+    "air_special": {
+      "table": "0x15f34",
+      "wrapper": "0x15f24",
+      "bytes": "03e407560a780d8810901386177e1ac61e1a214c24d8"
+    }
+  },
+  "indirect_tables": [
+    {
+      "lea_pc": "0x1603a",
+      "table": "0x16042",
+      "count": 16,
+      "bytes": "0020001e00c0001a0030002e00b800120028002600b0000a0008000600040002",
+      "targets": [
+        "0x16062",
+        "0x16062",
+        "0x16106",
+        "0x16062",
+        "0x1607a",
+        "0x1607a",
+        "0x16106",
+        "0x16062",
+        "0x1607a",
+        "0x1607a",
+        "0x16106",
+        "0x16062",
+        "0x16062",
+        "0x16062",
+        "0x16062",
+        "0x16062"
+      ],
+      "scope": "structural entries; arbitrary input/frame indexes are not proven valid"
+    },
+    {
+      "lea_pc": "0x1612a",
+      "table": "0x16132",
+      "count": 16,
+      "bytes": "0036001e0048001a002e0016004000120026000e0038000a0008000600040002",
+      "targets": [
+        "0x16168",
+        "0x16152",
+        "0x1617e",
+        "0x16152",
+        "0x16168",
+        "0x16152",
+        "0x1617e",
+        "0x16152",
+        "0x16168",
+        "0x16152",
+        "0x1617e",
+        "0x16152",
+        "0x16152",
+        "0x16152",
+        "0x16152",
+        "0x16152"
+      ],
+      "scope": "structural entries; arbitrary input/frame indexes are not proven valid"
+    },
+    {
+      "lea_pc": "0x1645c",
+      "table": "0x16464",
+      "count": 16,
+      "bytes": "0020001e00c0001a0030002e00b800120028002600b0000a0008000600040002",
+      "targets": [
+        "0x16484",
+        "0x16484",
+        "0x16528",
+        "0x16484",
+        "0x1649c",
+        "0x1649c",
+        "0x16528",
+        "0x16484",
+        "0x1649c",
+        "0x1649c",
+        "0x16528",
+        "0x16484",
+        "0x16484",
+        "0x16484",
+        "0x16484",
+        "0x16484"
+      ],
+      "scope": "structural entries; arbitrary input/frame indexes are not proven valid"
+    },
+    {
+      "lea_pc": "0x1654a",
+      "table": "0x16552",
+      "count": 16,
+      "bytes": "0036001e0048001a002e0016004000120026000e0038000a0008000600040002",
+      "targets": [
+        "0x16588",
+        "0x16572",
+        "0x1659e",
+        "0x16572",
+        "0x16588",
+        "0x16572",
+        "0x1659e",
+        "0x16572",
+        "0x16588",
+        "0x16572",
+        "0x1659e",
+        "0x16572",
+        "0x16572",
+        "0x16572",
+        "0x16572",
+        "0x16572"
+      ],
+      "scope": "structural entries; arbitrary input/frame indexes are not proven valid"
+    },
+    {
+      "lea_pc": "0x16772",
+      "table": "0x1677a",
+      "count": 16,
+      "bytes": "0020001e00c0001a0030002e00b800120028002600b0000a0008000600040002",
+      "targets": [
+        "0x1679a",
+        "0x1679a",
+        "0x1683e",
+        "0x1679a",
+        "0x167b2",
+        "0x167b2",
+        "0x1683e",
+        "0x1679a",
+        "0x167b2",
+        "0x167b2",
+        "0x1683e",
+        "0x1679a",
+        "0x1679a",
+        "0x1679a",
+        "0x1679a",
+        "0x1679a"
+      ],
+      "scope": "structural entries; arbitrary input/frame indexes are not proven valid"
+    },
+    {
+      "lea_pc": "0x16860",
+      "table": "0x16868",
+      "count": 16,
+      "bytes": "0036001e0048001a002e0016004000120026000e0038000a0008000600040002",
+      "targets": [
+        "0x1689e",
+        "0x16888",
+        "0x168b4",
+        "0x16888",
+        "0x1689e",
+        "0x16888",
+        "0x168b4",
+        "0x16888",
+        "0x1689e",
+        "0x16888",
+        "0x168b4",
+        "0x16888",
+        "0x16888",
+        "0x16888",
+        "0x16888",
+        "0x16888"
+      ],
+      "scope": "structural entries; arbitrary input/frame indexes are not proven valid"
+    },
+    {
+      "lea_pc": "0x16904",
+      "table": "0x1690c",
+      "count": 11,
+      "bytes": "00160014001a00100012001000120008000a0008000a",
+      "targets": [
+        "0x16922",
+        "0x16922",
+        "0x1692a",
+        "0x16922",
+        "0x16926",
+        "0x16926",
+        "0x1692a",
+        "0x16922",
+        "0x16926",
+        "0x16926",
+        "0x1692a"
+      ],
+      "scope": "structural entries; arbitrary input/frame indexes are not proven valid"
+    },
+    {
+      "lea_pc": "0x16a9e",
+      "table": "0x16aa6",
+      "count": 16,
+      "bytes": "0020001e00c0001a0030002e00b800120028002600b0000a0008000600040002",
+      "targets": [
+        "0x16ac6",
+        "0x16ac6",
+        "0x16b6a",
+        "0x16ac6",
+        "0x16ade",
+        "0x16ade",
+        "0x16b6a",
+        "0x16ac6",
+        "0x16ade",
+        "0x16ade",
+        "0x16b6a",
+        "0x16ac6",
+        "0x16ac6",
+        "0x16ac6",
+        "0x16ac6",
+        "0x16ac6"
+      ],
+      "scope": "structural entries; arbitrary input/frame indexes are not proven valid"
+    },
+    {
+      "lea_pc": "0x16b8c",
+      "table": "0x16b94",
+      "count": 16,
+      "bytes": "0036001e0048001a002e0016004000120026000e0038000a0008000600040002",
+      "targets": [
+        "0x16bca",
+        "0x16bb4",
+        "0x16be0",
+        "0x16bb4",
+        "0x16bca",
+        "0x16bb4",
+        "0x16be0",
+        "0x16bb4",
+        "0x16bca",
+        "0x16bb4",
+        "0x16be0",
+        "0x16bb4",
+        "0x16bb4",
+        "0x16bb4",
+        "0x16bb4",
+        "0x16bb4"
+      ],
+      "scope": "structural entries; arbitrary input/frame indexes are not proven valid"
+    },
+    {
+      "lea_pc": "0x16de4",
+      "table": "0x16dec",
+      "count": 16,
+      "bytes": "0020001e00c0001a0030002e00b800120028002600b0000a0008000600040002",
+      "targets": [
+        "0x16e0c",
+        "0x16e0c",
+        "0x16eb0",
+        "0x16e0c",
+        "0x16e24",
+        "0x16e24",
+        "0x16eb0",
+        "0x16e0c",
+        "0x16e24",
+        "0x16e24",
+        "0x16eb0",
+        "0x16e0c",
+        "0x16e0c",
+        "0x16e0c",
+        "0x16e0c",
+        "0x16e0c"
+      ],
+      "scope": "structural entries; arbitrary input/frame indexes are not proven valid"
+    },
+    {
+      "lea_pc": "0x16ed2",
+      "table": "0x16eda",
+      "count": 16,
+      "bytes": "0036001e0048001a002e0016004000120026000e0038000a0008000600040002",
+      "targets": [
+        "0x16f10",
+        "0x16efa",
+        "0x16f26",
+        "0x16efa",
+        "0x16f10",
+        "0x16efa",
+        "0x16f26",
+        "0x16efa",
+        "0x16f10",
+        "0x16efa",
+        "0x16f26",
+        "0x16efa",
+        "0x16efa",
+        "0x16efa",
+        "0x16efa",
+        "0x16efa"
+      ],
+      "scope": "structural entries; arbitrary input/frame indexes are not proven valid"
+    },
+    {
+      "lea_pc": "0x170ba",
+      "table": "0x170c2",
+      "count": 16,
+      "bytes": "0020001e00c0001a0030002e00b800120028002600b0000a0008000600040002",
+      "targets": [
+        "0x170e2",
+        "0x170e2",
+        "0x17186",
+        "0x170e2",
+        "0x170fa",
+        "0x170fa",
+        "0x17186",
+        "0x170e2",
+        "0x170fa",
+        "0x170fa",
+        "0x17186",
+        "0x170e2",
+        "0x170e2",
+        "0x170e2",
+        "0x170e2",
+        "0x170e2"
+      ],
+      "scope": "structural entries; arbitrary input/frame indexes are not proven valid"
+    },
+    {
+      "lea_pc": "0x171a8",
+      "table": "0x171b0",
+      "count": 16,
+      "bytes": "0036001e0048001a002e0016004000120026000e0038000a0008000600040002",
+      "targets": [
+        "0x171e6",
+        "0x171d0",
+        "0x171fc",
+        "0x171d0",
+        "0x171e6",
+        "0x171d0",
+        "0x171fc",
+        "0x171d0",
+        "0x171e6",
+        "0x171d0",
+        "0x171fc",
+        "0x171d0",
+        "0x171d0",
+        "0x171d0",
+        "0x171d0",
+        "0x171d0"
+      ],
+      "scope": "structural entries; arbitrary input/frame indexes are not proven valid"
+    },
+    {
+      "lea_pc": "0x173ea",
+      "table": "0x173f2",
+      "count": 16,
+      "bytes": "0020001e00c0001a0030002e00b800120028002600b0000a0008000600040002",
+      "targets": [
+        "0x17412",
+        "0x17412",
+        "0x174b6",
+        "0x17412",
+        "0x1742a",
+        "0x1742a",
+        "0x174b6",
+        "0x17412",
+        "0x1742a",
+        "0x1742a",
+        "0x174b6",
+        "0x17412",
+        "0x17412",
+        "0x17412",
+        "0x17412",
+        "0x17412"
+      ],
+      "scope": "structural entries; arbitrary input/frame indexes are not proven valid"
+    },
+    {
+      "lea_pc": "0x17556",
+      "table": "0x1755e",
+      "count": 16,
+      "bytes": "0036001e0048001a002e0016004000120026000e0038000a0008000600040002",
+      "targets": [
+        "0x17594",
+        "0x1757e",
+        "0x175aa",
+        "0x1757e",
+        "0x17594",
+        "0x1757e",
+        "0x175aa",
+        "0x1757e",
+        "0x17594",
+        "0x1757e",
+        "0x175aa",
+        "0x1757e",
+        "0x1757e",
+        "0x1757e",
+        "0x1757e",
+        "0x1757e"
+      ],
+      "scope": "structural entries; arbitrary input/frame indexes are not proven valid"
+    },
+    {
+      "lea_pc": "0x177ee",
+      "table": "0x177f6",
+      "count": 16,
+      "bytes": "0020001e00c0001a0030002e00d000120028002600c8000a0008000600040002",
+      "targets": [
+        "0x17816",
+        "0x17816",
+        "0x178ba",
+        "0x17816",
+        "0x1782e",
+        "0x1782e",
+        "0x178d2",
+        "0x17816",
+        "0x1782e",
+        "0x1782e",
+        "0x178d2",
+        "0x17816",
+        "0x17816",
+        "0x17816",
+        "0x17816",
+        "0x17816"
+      ],
+      "scope": "structural entries; arbitrary input/frame indexes are not proven valid"
+    },
+    {
+      "lea_pc": "0x178f4",
+      "table": "0x178fc",
+      "count": 16,
+      "bytes": "0036001e0048001a002e0016004000120026000e0038000a0008000600040002",
+      "targets": [
+        "0x17932",
+        "0x1791c",
+        "0x17948",
+        "0x1791c",
+        "0x17932",
+        "0x1791c",
+        "0x17948",
+        "0x1791c",
+        "0x17932",
+        "0x1791c",
+        "0x17948",
+        "0x1791c",
+        "0x1791c",
+        "0x1791c",
+        "0x1791c",
+        "0x1791c"
+      ],
+      "scope": "structural entries; arbitrary input/frame indexes are not proven valid"
+    },
+    {
+      "lea_pc": "0x17b3a",
+      "table": "0x17b42",
+      "count": 16,
+      "bytes": "0020001e00c0001a0030002e00b800120028002600b0000a0008000600040002",
+      "targets": [
+        "0x17b62",
+        "0x17b62",
+        "0x17c06",
+        "0x17b62",
+        "0x17b7a",
+        "0x17b7a",
+        "0x17c06",
+        "0x17b62",
+        "0x17b7a",
+        "0x17b7a",
+        "0x17c06",
+        "0x17b62",
+        "0x17b62",
+        "0x17b62",
+        "0x17b62",
+        "0x17b62"
+      ],
+      "scope": "structural entries; arbitrary input/frame indexes are not proven valid"
+    },
+    {
+      "lea_pc": "0x17c28",
+      "table": "0x17c30",
+      "count": 16,
+      "bytes": "0036001e0048001a002e0016004000120026000e0038000a0008000600040002",
+      "targets": [
+        "0x17c66",
+        "0x17c50",
+        "0x17c7c",
+        "0x17c50",
+        "0x17c66",
+        "0x17c50",
+        "0x17c7c",
+        "0x17c50",
+        "0x17c66",
+        "0x17c50",
+        "0x17c7c",
+        "0x17c50",
+        "0x17c50",
+        "0x17c50",
+        "0x17c50",
+        "0x17c50"
+      ],
+      "scope": "structural entries; arbitrary input/frame indexes are not proven valid"
+    },
+    {
+      "lea_pc": "0x17e70",
+      "table": "0x17e78",
+      "count": 16,
+      "bytes": "0020001e00c0001a0030002e00b800120028002600b0000a0008000600040002",
+      "targets": [
+        "0x17e98",
+        "0x17e98",
+        "0x17f3c",
+        "0x17e98",
+        "0x17eb0",
+        "0x17eb0",
+        "0x17f3c",
+        "0x17e98",
+        "0x17eb0",
+        "0x17eb0",
+        "0x17f3c",
+        "0x17e98",
+        "0x17e98",
+        "0x17e98",
+        "0x17e98",
+        "0x17e98"
+      ],
+      "scope": "structural entries; arbitrary input/frame indexes are not proven valid"
+    },
+    {
+      "lea_pc": "0x17f5e",
+      "table": "0x17f66",
+      "count": 16,
+      "bytes": "0036001e0048001a002e0016004000120026000e0038000a0008000600040002",
+      "targets": [
+        "0x17f9c",
+        "0x17f86",
+        "0x17fb2",
+        "0x17f86",
+        "0x17f9c",
+        "0x17f86",
+        "0x17fb2",
+        "0x17f86",
+        "0x17f9c",
+        "0x17f86",
+        "0x17fb2",
+        "0x17f86",
+        "0x17f86",
+        "0x17f86",
+        "0x17f86",
+        "0x17f86"
+      ],
+      "scope": "structural entries; arbitrary input/frame indexes are not proven valid"
+    },
+    {
+      "lea_pc": "0x181c2",
+      "table": "0x181ca",
+      "count": 16,
+      "bytes": "0020001e00c0001a0030002e00b800120028002600b0000a0008000600040002",
+      "targets": [
+        "0x181ea",
+        "0x181ea",
+        "0x1828e",
+        "0x181ea",
+        "0x18202",
+        "0x18202",
+        "0x1828e",
+        "0x181ea",
+        "0x18202",
+        "0x18202",
+        "0x1828e",
+        "0x181ea",
+        "0x181ea",
+        "0x181ea",
+        "0x181ea",
+        "0x181ea"
+      ],
+      "scope": "structural entries; arbitrary input/frame indexes are not proven valid"
+    },
+    {
+      "lea_pc": "0x182b2",
+      "table": "0x182ba",
+      "count": 16,
+      "bytes": "0036001e0048001a002e0016004000120026000e0038000a0008000600040002",
+      "targets": [
+        "0x182f0",
+        "0x182da",
+        "0x18306",
+        "0x182da",
+        "0x182f0",
+        "0x182da",
+        "0x18306",
+        "0x182da",
+        "0x182f0",
+        "0x182da",
+        "0x18306",
+        "0x182da",
+        "0x182da",
+        "0x182da",
+        "0x182da",
+        "0x182da"
+      ],
+      "scope": "structural entries; arbitrary input/frame indexes are not proven valid"
+    },
+    {
+      "lea_pc": "0x1a33a",
+      "table": "0x1a342",
+      "count": 13,
+      "bytes": "001a00180016003200620060005e005c005a00580056005400d2",
+      "targets": [
+        "0x1a35c",
+        "0x1a35c",
+        "0x1a35c",
+        "0x1a37a",
+        "0x1a3ac",
+        "0x1a3ac",
+        "0x1a3ac",
+        "0x1a3ac",
+        "0x1a3ac",
+        "0x1a3ac",
+        "0x1a3ac",
+        "0x1a3ac",
+        "0x1a42c"
+      ],
+      "scope": "structural entries; arbitrary input/frame indexes are not proven valid"
+    },
+    {
+      "lea_pc": "0x1af20",
+      "table": "0x1af28",
+      "count": 26,
+      "bytes": "009c009a0098002e0094002a00900026008c008a0088003c0084003800800034007c007a0078004a0074004600700042006c006a",
+      "targets": [
+        "0x1afc4",
+        "0x1afc4",
+        "0x1afc4",
+        "0x1af5c",
+        "0x1afc4",
+        "0x1af5c",
+        "0x1afc4",
+        "0x1af5c",
+        "0x1afc4",
+        "0x1afc4",
+        "0x1afc4",
+        "0x1af7a",
+        "0x1afc4",
+        "0x1af7a",
+        "0x1afc4",
+        "0x1af7a",
+        "0x1afc4",
+        "0x1afc4",
+        "0x1afc4",
+        "0x1af98",
+        "0x1afc4",
+        "0x1af98",
+        "0x1afc4",
+        "0x1af98",
+        "0x1afc4",
+        "0x1afc4"
+      ],
+      "scope": "structural entries; arbitrary input/frame indexes are not proven valid"
+    },
+    {
+      "lea_pc": "0x1b230",
+      "table": "0x1b238",
+      "count": 7,
+      "bytes": "003c003a00380036003c00760074",
+      "targets": [
+        "0x1b274",
+        "0x1b274",
+        "0x1b274",
+        "0x1b274",
+        "0x1b27c",
+        "0x1b2b8",
+        "0x1b2b8"
+      ],
+      "scope": "structural entries; arbitrary input/frame indexes are not proven valid"
+    },
+    {
+      "lea_pc": "0x1b256",
+      "table": "0x1b25e",
+      "count": 11,
+      "bytes": "0016001400120010000e000c000a0008000e00480046",
+      "targets": [
+        "0x1b274",
+        "0x1b274",
+        "0x1b274",
+        "0x1b274",
+        "0x1b274",
+        "0x1b274",
+        "0x1b274",
+        "0x1b274",
+        "0x1b27c",
+        "0x1b2b8",
+        "0x1b2b8"
+      ],
+      "scope": "structural entries; arbitrary input/frame indexes are not proven valid"
+    },
+    {
+      "lea_pc": "0x1cb18",
+      "table": "0x1cb20",
+      "count": 8,
+      "bytes": "0044000e000c000a0008000600380036",
+      "targets": [
+        "0x1cb64",
+        "0x1cb30",
+        "0x1cb30",
+        "0x1cb30",
+        "0x1cb30",
+        "0x1cb30",
+        "0x1cb64",
+        "0x1cb64"
+      ],
+      "scope": "structural entries; arbitrary input/frame indexes are not proven valid"
+    },
+    {
+      "lea_pc": "0x1cb78",
+      "table": "0x1cb80",
+      "count": 8,
+      "bytes": "0044000e000c003e0008000600380036",
+      "targets": [
+        "0x1cbc4",
+        "0x1cb90",
+        "0x1cb90",
+        "0x1cbc4",
+        "0x1cb90",
+        "0x1cb90",
+        "0x1cbc4",
+        "0x1cbc4"
+      ],
+      "scope": "structural entries; arbitrary input/frame indexes are not proven valid"
+    }
+  ],
+  "current_recovered_slots": [
+    "00",
+    "01",
+    "02",
+    "03",
+    "04",
+    "05",
+    "06",
+    "07",
+    "08",
+    "09",
+    "0a",
+    "0b",
+    "0c",
+    "0d",
+    "0f",
+    "14",
+    "15",
+    "41",
+    "42",
+    "43",
+    "44",
+    "45",
+    "46"
+  ],
+  "characters": [
+    {
+      "source_id": 0,
+      "command_preparation_entry": "0x15f4a",
+      "attack_selectors": {
+        "ground": {
+          "entry": "0x15fdc",
+          "static_action_writes": [
+            {
+              "action": 17,
+              "pc": "0x15fe4"
+            },
+            {
+              "action": 14,
+              "pc": "0x16012"
+            },
+            {
+              "action": 3,
+              "pc": "0x18812"
+            },
+            {
+              "action": 3,
+              "pc": "0x18828"
+            },
+            {
+              "action": 3,
+              "pc": "0x1883e"
+            },
+            {
+              "action": 3,
+              "pc": "0x18854"
+            },
+            {
+              "action": 3,
+              "pc": "0x1886a"
+            },
+            {
+              "action": 3,
+              "pc": "0x18880"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x18812",
+            "0x18828",
+            "0x1883e",
+            "0x18854",
+            "0x1886a",
+            "0x18880",
+            "0x19c1c"
+          ],
+          "inline_throw_instructions": [
+            {
+              "pc": "0x16096",
+              "text": "move.w A5w,(-0x59f4,A1)"
+            },
+            {
+              "pc": "0x160b6",
+              "text": "move.w (0x44,A5),(-0x59fe,A1)"
+            },
+            {
+              "pc": "0x160bc",
+              "text": "subi.w #0x1c,(-0x59fe,A1)"
+            },
+            {
+              "pc": "0x160c2",
+              "text": "move.b #0x14,(-0x59fc,A1)"
+            },
+            {
+              "pc": "0x160c8",
+              "text": "move.b #0x1c,(-0x59fb,A1)"
+            },
+            {
+              "pc": "0x160ce",
+              "text": "move.b #-0x48,(-0x59fa,A1)"
+            },
+            {
+              "pc": "0x160d4",
+              "text": "move.b #0x3,(-0x59f8,A1)"
+            },
+            {
+              "pc": "0x160da",
+              "text": "move.b #0x40,(-0x59f9,A1)"
+            },
+            {
+              "pc": "0x160e0",
+              "text": "move.b #0x3,(-0x59f7,A1)"
+            },
+            {
+              "pc": "0x160e6",
+              "text": "move.w #0x18,(-0x59f0,A1)"
+            },
+            {
+              "pc": "0x160ec",
+              "text": "move.w #0x0,(-0x59ee,A1)"
+            },
+            {
+              "pc": "0x160f2",
+              "text": "move.b #0x1,(-0x59f6,A1)"
+            }
+          ],
+          "outside_edges": [
+            "0x15e26",
+            "0x1faf0",
+            "0x1fb4c"
+          ],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        },
+        "air": {
+          "entry": "0x1611e",
+          "static_action_writes": [
+            {
+              "action": 2,
+              "pc": "0x188d8"
+            },
+            {
+              "action": 2,
+              "pc": "0x188ee"
+            },
+            {
+              "action": 2,
+              "pc": "0x18930"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x188d8",
+            "0x188ee",
+            "0x18930"
+          ],
+          "inline_throw_instructions": [
+            {
+              "pc": "0x161be",
+              "text": "move.w A5w,(-0x59f4,A1)"
+            },
+            {
+              "pc": "0x161de",
+              "text": "move.w (0x44,A5),(-0x59fe,A1)"
+            },
+            {
+              "pc": "0x161e4",
+              "text": "subi.w #0x30,(-0x59fe,A1)"
+            },
+            {
+              "pc": "0x161ea",
+              "text": "move.b #0x10,(-0x59fc,A1)"
+            },
+            {
+              "pc": "0x161f0",
+              "text": "move.b #0x10,(-0x59fb,A1)"
+            },
+            {
+              "pc": "0x161f6",
+              "text": "move.b #-0x47,(-0x59fa,A1)"
+            },
+            {
+              "pc": "0x161fc",
+              "text": "move.b #0x9,(-0x59f8,A1)"
+            },
+            {
+              "pc": "0x16202",
+              "text": "move.b #0x41,(-0x59f9,A1)"
+            },
+            {
+              "pc": "0x16208",
+              "text": "move.b #0x9,(-0x59f7,A1)"
+            },
+            {
+              "pc": "0x1620e",
+              "text": "move.w #0x18,(-0x59f0,A1)"
+            },
+            {
+              "pc": "0x16214",
+              "text": "move.w #0x0,(-0x59ee,A1)"
+            },
+            {
+              "pc": "0x1621a",
+              "text": "move.b #0x1,(-0x59f6,A1)"
+            }
+          ],
+          "outside_edges": [],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        },
+        "ground_special": {
+          "entry": "0x16228",
+          "static_action_writes": [
+            {
+              "action": 21,
+              "pc": "0x1897a"
+            },
+            {
+              "action": 22,
+              "pc": "0x189d4"
+            },
+            {
+              "action": 23,
+              "pc": "0x18a2c"
+            },
+            {
+              "action": 24,
+              "pc": "0x18a7a"
+            },
+            {
+              "action": 25,
+              "pc": "0x18ab0"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x18946",
+            "0x1895e",
+            "0x1898e",
+            "0x189ae",
+            "0x189e8",
+            "0x18a4c",
+            "0x18a64",
+            "0x18a92"
+          ],
+          "inline_throw_instructions": [],
+          "outside_edges": [],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        },
+        "air_special": {
+          "entry": "0x16318",
+          "static_action_writes": [
+            {
+              "action": 22,
+              "pc": "0x189d4"
+            },
+            {
+              "action": 2,
+              "pc": "0x18af2"
+            },
+            {
+              "action": 22,
+              "pc": "0x18b4e"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x18ac4",
+            "0x18adc",
+            "0x18b06",
+            "0x18b28"
+          ],
+          "inline_throw_instructions": [],
+          "outside_edges": [],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        }
+      },
+      "selector_region": [
+        "0x15fdc",
+        "0x1637e"
+      ],
+      "static_action_closure": [
+        "00",
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09",
+        "0a",
+        "0b",
+        "0c",
+        "0d",
+        "0e",
+        "11",
+        "15",
+        "16",
+        "17",
+        "18",
+        "19"
+      ],
+      "already_recovered_same_slot": [
+        "00",
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09",
+        "0a",
+        "0b",
+        "0c",
+        "0d",
+        "15"
+      ],
+      "missing_continuation_slots": [
+        "0e",
+        "11",
+        "16",
+        "17",
+        "18",
+        "19"
+      ],
+      "missing_continuation_roots": [
+        "0x1ca46",
+        "0x1cb08",
+        "0x1a328",
+        "0x1a430",
+        "0x1a6fe",
+        "0x1a868"
+      ],
+      "constructor_roots": [
+        "0x18812",
+        "0x18828",
+        "0x1883e",
+        "0x18854",
+        "0x1886a",
+        "0x18880",
+        "0x188d8",
+        "0x188ee",
+        "0x18930",
+        "0x18946",
+        "0x1895e",
+        "0x1898e",
+        "0x189ae",
+        "0x189e8",
+        "0x18a4c",
+        "0x18a64",
+        "0x18a92",
+        "0x18ac4",
+        "0x18adc",
+        "0x18b06",
+        "0x18b28",
+        "0x19c1c"
+      ],
+      "child_callback_stores": [
+        {
+          "pc": "0x1a454",
+          "target": "0x132de",
+          "entry_has_recovered_chu_rule": true,
+          "new_creation_context_cpu_verified": false
+        },
+        {
+          "pc": "0x1a59e",
+          "target": "0x1313e",
+          "entry_has_recovered_chu_rule": true,
+          "new_creation_context_cpu_verified": false
+        },
+        {
+          "pc": "0x1a658",
+          "target": "0x134c2",
+          "entry_has_recovered_chu_rule": false,
+          "new_creation_context_cpu_verified": false
+        },
+        {
+          "pc": "0x1a7a8",
+          "target": "0x12c96",
+          "entry_has_recovered_chu_rule": false,
+          "new_creation_context_cpu_verified": false
+        }
+      ],
+      "new_child_callback_entries": [
+        "0x12c96",
+        "0x134c2"
+      ],
+      "outside_helpers": [
+        {
+          "entry": "0x15cb0",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x1faf0",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x1fbaa",
+          "same_entry_has_recovered_helper": false
+        },
+        {
+          "entry": "0x1fce8",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x20202",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x203f8",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x20444",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x204fa",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x205b0",
+          "same_entry_has_recovered_helper": true
+        }
+      ],
+      "full_action_oracle_status": "not_yet_captured_for_this_source",
+      "new_original_cpu_calls": 0
+    },
+    {
+      "source_id": 1,
+      "command_preparation_entry": "0x1637e",
+      "attack_selectors": {
+        "ground": {
+          "entry": "0x163fe",
+          "static_action_writes": [
+            {
+              "action": 17,
+              "pc": "0x16406"
+            },
+            {
+              "action": 15,
+              "pc": "0x16434"
+            },
+            {
+              "action": 3,
+              "pc": "0x18812"
+            },
+            {
+              "action": 3,
+              "pc": "0x18828"
+            },
+            {
+              "action": 3,
+              "pc": "0x1883e"
+            },
+            {
+              "action": 3,
+              "pc": "0x18854"
+            },
+            {
+              "action": 3,
+              "pc": "0x1886a"
+            },
+            {
+              "action": 3,
+              "pc": "0x18880"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x18812",
+            "0x18828",
+            "0x1883e",
+            "0x18854",
+            "0x1886a",
+            "0x18880",
+            "0x19c1c"
+          ],
+          "inline_throw_instructions": [
+            {
+              "pc": "0x164b8",
+              "text": "move.w A5w,(-0x59f4,A1)"
+            },
+            {
+              "pc": "0x164d8",
+              "text": "move.w (0x44,A5),(-0x59fe,A1)"
+            },
+            {
+              "pc": "0x164de",
+              "text": "subi.w #0x24,(-0x59fe,A1)"
+            },
+            {
+              "pc": "0x164e4",
+              "text": "move.b #0x18,(-0x59fc,A1)"
+            },
+            {
+              "pc": "0x164ea",
+              "text": "move.b #0x24,(-0x59fb,A1)"
+            },
+            {
+              "pc": "0x164f0",
+              "text": "move.b #-0x48,(-0x59fa,A1)"
+            },
+            {
+              "pc": "0x164f6",
+              "text": "move.b #0x3,(-0x59f8,A1)"
+            },
+            {
+              "pc": "0x164fc",
+              "text": "move.b #0x40,(-0x59f9,A1)"
+            },
+            {
+              "pc": "0x16502",
+              "text": "move.b #0x3,(-0x59f7,A1)"
+            },
+            {
+              "pc": "0x16508",
+              "text": "move.w #0x18,(-0x59f0,A1)"
+            },
+            {
+              "pc": "0x1650e",
+              "text": "move.w #0x0,(-0x59ee,A1)"
+            },
+            {
+              "pc": "0x16514",
+              "text": "move.b #0x1,(-0x59f6,A1)"
+            }
+          ],
+          "outside_edges": [
+            "0x15e26",
+            "0x1faf0",
+            "0x1fb4c"
+          ],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        },
+        "air": {
+          "entry": "0x16540",
+          "static_action_writes": [
+            {
+              "action": 2,
+              "pc": "0x188d8"
+            },
+            {
+              "action": 2,
+              "pc": "0x188ee"
+            },
+            {
+              "action": 2,
+              "pc": "0x18930"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x188d8",
+            "0x188ee",
+            "0x18930"
+          ],
+          "inline_throw_instructions": [],
+          "outside_edges": [],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        },
+        "ground_special": {
+          "entry": "0x165b6",
+          "static_action_writes": [
+            {
+              "action": 3,
+              "pc": "0x18b90"
+            },
+            {
+              "action": 28,
+              "pc": "0x18bd2"
+            },
+            {
+              "action": 27,
+              "pc": "0x18c22"
+            },
+            {
+              "action": 26,
+              "pc": "0x18c82"
+            },
+            {
+              "action": 29,
+              "pc": "0x18cac"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x18b7a",
+            "0x18ba4",
+            "0x18bbc",
+            "0x18bea",
+            "0x18c04",
+            "0x18c36",
+            "0x18c4e",
+            "0x18c66",
+            "0x18c96"
+          ],
+          "inline_throw_instructions": [],
+          "outside_edges": [],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        },
+        "air_special": {
+          "entry": "0x1668c",
+          "static_action_writes": [],
+          "direct_constructor_roots": [],
+          "inline_throw_instructions": [],
+          "outside_edges": [],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        }
+      },
+      "selector_region": [
+        "0x163fe",
+        "0x16694"
+      ],
+      "static_action_closure": [
+        "00",
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09",
+        "0a",
+        "0b",
+        "0c",
+        "0d",
+        "0f",
+        "11",
+        "1a",
+        "1b",
+        "1c",
+        "1d"
+      ],
+      "already_recovered_same_slot": [
+        "00",
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09",
+        "0a",
+        "0b",
+        "0c",
+        "0d",
+        "0f"
+      ],
+      "missing_continuation_slots": [
+        "11",
+        "1a",
+        "1b",
+        "1c",
+        "1d"
+      ],
+      "missing_continuation_roots": [
+        "0x1cb08",
+        "0x1aac2",
+        "0x1a8f0",
+        "0x1a9be",
+        "0x1ab92"
+      ],
+      "constructor_roots": [
+        "0x18812",
+        "0x18828",
+        "0x1883e",
+        "0x18854",
+        "0x1886a",
+        "0x18880",
+        "0x188d8",
+        "0x188ee",
+        "0x18930",
+        "0x18b7a",
+        "0x18ba4",
+        "0x18bbc",
+        "0x18bea",
+        "0x18c04",
+        "0x18c36",
+        "0x18c4e",
+        "0x18c66",
+        "0x18c96",
+        "0x19c1c"
+      ],
+      "child_callback_stores": [
+        {
+          "pc": "0x1a922",
+          "target": "0x12ee8",
+          "entry_has_recovered_chu_rule": false,
+          "new_creation_context_cpu_verified": false
+        },
+        {
+          "pc": "0x1aa34",
+          "target": "0x1300c",
+          "entry_has_recovered_chu_rule": false,
+          "new_creation_context_cpu_verified": false
+        },
+        {
+          "pc": "0x1aaf4",
+          "target": "0x12dd4",
+          "entry_has_recovered_chu_rule": false,
+          "new_creation_context_cpu_verified": false
+        }
+      ],
+      "new_child_callback_entries": [
+        "0x12dd4",
+        "0x12ee8",
+        "0x1300c"
+      ],
+      "outside_helpers": [
+        {
+          "entry": "0x15cb0",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x1faf0",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x1fbaa",
+          "same_entry_has_recovered_helper": false
+        },
+        {
+          "entry": "0x1fce8",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x20202",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x203f8",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x20444",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x204fa",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x205b0",
+          "same_entry_has_recovered_helper": true
+        }
+      ],
+      "full_action_oracle_status": "not_yet_captured_for_this_source",
+      "new_original_cpu_calls": 0
+    },
+    {
+      "source_id": 2,
+      "command_preparation_entry": "0x16694",
+      "attack_selectors": {
+        "ground": {
+          "entry": "0x16714",
+          "static_action_writes": [
+            {
+              "action": 17,
+              "pc": "0x1671c"
+            },
+            {
+              "action": 15,
+              "pc": "0x1674a"
+            },
+            {
+              "action": 3,
+              "pc": "0x18812"
+            },
+            {
+              "action": 3,
+              "pc": "0x18828"
+            },
+            {
+              "action": 3,
+              "pc": "0x1883e"
+            },
+            {
+              "action": 3,
+              "pc": "0x18854"
+            },
+            {
+              "action": 3,
+              "pc": "0x1886a"
+            },
+            {
+              "action": 3,
+              "pc": "0x18880"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x18812",
+            "0x18828",
+            "0x1883e",
+            "0x18854",
+            "0x1886a",
+            "0x18880",
+            "0x19c1c"
+          ],
+          "inline_throw_instructions": [
+            {
+              "pc": "0x167ce",
+              "text": "move.w A5w,(-0x59f4,A1)"
+            },
+            {
+              "pc": "0x167ee",
+              "text": "move.w (0x44,A5),(-0x59fe,A1)"
+            },
+            {
+              "pc": "0x167f4",
+              "text": "subi.w #0x24,(-0x59fe,A1)"
+            },
+            {
+              "pc": "0x167fa",
+              "text": "move.b #0x1a,(-0x59fc,A1)"
+            },
+            {
+              "pc": "0x16800",
+              "text": "move.b #0x24,(-0x59fb,A1)"
+            },
+            {
+              "pc": "0x16806",
+              "text": "move.b #-0x48,(-0x59fa,A1)"
+            },
+            {
+              "pc": "0x1680c",
+              "text": "move.b #0x3,(-0x59f8,A1)"
+            },
+            {
+              "pc": "0x16812",
+              "text": "move.b #0x40,(-0x59f9,A1)"
+            },
+            {
+              "pc": "0x16818",
+              "text": "move.b #0x3,(-0x59f7,A1)"
+            },
+            {
+              "pc": "0x1681e",
+              "text": "move.w #0x18,(-0x59f0,A1)"
+            },
+            {
+              "pc": "0x16824",
+              "text": "move.w #0x0,(-0x59ee,A1)"
+            },
+            {
+              "pc": "0x1682a",
+              "text": "move.b #0x1,(-0x59f6,A1)"
+            }
+          ],
+          "outside_edges": [
+            "0x15e26",
+            "0x1faf0",
+            "0x1fb4c"
+          ],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        },
+        "air": {
+          "entry": "0x16856",
+          "static_action_writes": [
+            {
+              "action": 2,
+              "pc": "0x188d8"
+            },
+            {
+              "action": 2,
+              "pc": "0x188ee"
+            },
+            {
+              "action": 2,
+              "pc": "0x18930"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x188d8",
+            "0x188ee",
+            "0x18930"
+          ],
+          "inline_throw_instructions": [],
+          "outside_edges": [],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        },
+        "ground_special": {
+          "entry": "0x168cc",
+          "static_action_writes": [
+            {
+              "action": 3,
+              "pc": "0x18cd6"
+            },
+            {
+              "action": 3,
+              "pc": "0x18d00"
+            },
+            {
+              "action": 3,
+              "pc": "0x18d2a"
+            },
+            {
+              "action": 30,
+              "pc": "0x18d8a"
+            },
+            {
+              "action": 31,
+              "pc": "0x18dcc"
+            },
+            {
+              "action": 32,
+              "pc": "0x18e1e"
+            },
+            {
+              "action": 3,
+              "pc": "0x18e76"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x18cc0",
+            "0x18cea",
+            "0x18d14",
+            "0x18d3e",
+            "0x18d56",
+            "0x18d6e",
+            "0x18d9e",
+            "0x18db6",
+            "0x18de0",
+            "0x18e00",
+            "0x18e60"
+          ],
+          "inline_throw_instructions": [],
+          "outside_edges": [],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        },
+        "air_special": {
+          "entry": "0x169b0",
+          "static_action_writes": [
+            {
+              "action": 2,
+              "pc": "0x18e4c"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x18e36"
+          ],
+          "inline_throw_instructions": [],
+          "outside_edges": [],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        }
+      },
+      "selector_region": [
+        "0x16714",
+        "0x169c0"
+      ],
+      "static_action_closure": [
+        "00",
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09",
+        "0a",
+        "0b",
+        "0c",
+        "0d",
+        "0f",
+        "11",
+        "1e",
+        "1f",
+        "20"
+      ],
+      "already_recovered_same_slot": [
+        "00",
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09",
+        "0a",
+        "0b",
+        "0c",
+        "0d",
+        "0f"
+      ],
+      "missing_continuation_slots": [
+        "11",
+        "1e",
+        "1f",
+        "20"
+      ],
+      "missing_continuation_roots": [
+        "0x1cb08",
+        "0x1ac58",
+        "0x1ad28",
+        "0x1adc8"
+      ],
+      "constructor_roots": [
+        "0x18812",
+        "0x18828",
+        "0x1883e",
+        "0x18854",
+        "0x1886a",
+        "0x18880",
+        "0x188d8",
+        "0x188ee",
+        "0x18930",
+        "0x18cc0",
+        "0x18cea",
+        "0x18d14",
+        "0x18d3e",
+        "0x18d56",
+        "0x18d6e",
+        "0x18d9e",
+        "0x18db6",
+        "0x18de0",
+        "0x18e00",
+        "0x18e36",
+        "0x18e60",
+        "0x19c1c"
+      ],
+      "child_callback_stores": [
+        {
+          "pc": "0x1ac8a",
+          "target": "0x12dd4",
+          "entry_has_recovered_chu_rule": false,
+          "new_creation_context_cpu_verified": false
+        },
+        {
+          "pc": "0x1ae3c",
+          "target": "0x12c96",
+          "entry_has_recovered_chu_rule": false,
+          "new_creation_context_cpu_verified": false
+        }
+      ],
+      "new_child_callback_entries": [
+        "0x12c96",
+        "0x12dd4"
+      ],
+      "outside_helpers": [
+        {
+          "entry": "0x15cb0",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x1faf0",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x1fce8",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x20202",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x203f8",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x20444",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x204fa",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x205b0",
+          "same_entry_has_recovered_helper": true
+        }
+      ],
+      "full_action_oracle_status": "not_yet_captured_for_this_source",
+      "new_original_cpu_calls": 0
+    },
+    {
+      "source_id": 3,
+      "command_preparation_entry": "0x169c0",
+      "attack_selectors": {
+        "ground": {
+          "entry": "0x16a40",
+          "static_action_writes": [
+            {
+              "action": 17,
+              "pc": "0x16a48"
+            },
+            {
+              "action": 15,
+              "pc": "0x16a76"
+            },
+            {
+              "action": 3,
+              "pc": "0x18812"
+            },
+            {
+              "action": 3,
+              "pc": "0x18828"
+            },
+            {
+              "action": 3,
+              "pc": "0x1883e"
+            },
+            {
+              "action": 3,
+              "pc": "0x1886a"
+            },
+            {
+              "action": 3,
+              "pc": "0x18880"
+            },
+            {
+              "action": 19,
+              "pc": "0x18e8a"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x18812",
+            "0x18828",
+            "0x1883e",
+            "0x1886a",
+            "0x18880",
+            "0x18e8a",
+            "0x19c1c"
+          ],
+          "inline_throw_instructions": [
+            {
+              "pc": "0x16afa",
+              "text": "move.w A5w,(-0x59f4,A1)"
+            },
+            {
+              "pc": "0x16b1a",
+              "text": "move.w (0x44,A5),(-0x59fe,A1)"
+            },
+            {
+              "pc": "0x16b20",
+              "text": "subi.w #0x20,(-0x59fe,A1)"
+            },
+            {
+              "pc": "0x16b26",
+              "text": "move.b #0x18,(-0x59fc,A1)"
+            },
+            {
+              "pc": "0x16b2c",
+              "text": "move.b #0x20,(-0x59fb,A1)"
+            },
+            {
+              "pc": "0x16b32",
+              "text": "move.b #-0x48,(-0x59fa,A1)"
+            },
+            {
+              "pc": "0x16b38",
+              "text": "move.b #0x3,(-0x59f8,A1)"
+            },
+            {
+              "pc": "0x16b3e",
+              "text": "move.b #0x40,(-0x59f9,A1)"
+            },
+            {
+              "pc": "0x16b44",
+              "text": "move.b #0x3,(-0x59f7,A1)"
+            },
+            {
+              "pc": "0x16b4a",
+              "text": "move.w #0x18,(-0x59f0,A1)"
+            },
+            {
+              "pc": "0x16b50",
+              "text": "move.w #0x0,(-0x59ee,A1)"
+            },
+            {
+              "pc": "0x16b56",
+              "text": "move.b #0x1,(-0x59f6,A1)"
+            }
+          ],
+          "outside_edges": [
+            "0x15e26",
+            "0x1faf0",
+            "0x1fb4c"
+          ],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        },
+        "air": {
+          "entry": "0x16b82",
+          "static_action_writes": [
+            {
+              "action": 2,
+              "pc": "0x188d8"
+            },
+            {
+              "action": 2,
+              "pc": "0x188ee"
+            },
+            {
+              "action": 2,
+              "pc": "0x18930"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x188d8",
+            "0x188ee",
+            "0x18930"
+          ],
+          "inline_throw_instructions": [],
+          "outside_edges": [],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        },
+        "ground_special": {
+          "entry": "0x16bf8",
+          "static_action_writes": [
+            {
+              "action": 21,
+              "pc": "0x18edc"
+            },
+            {
+              "action": 33,
+              "pc": "0x18f06"
+            },
+            {
+              "action": 23,
+              "pc": "0x18f62"
+            },
+            {
+              "action": 35,
+              "pc": "0x18ff8"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x18ea8",
+            "0x18ec0",
+            "0x18ef0",
+            "0x18f1e",
+            "0x18fda"
+          ],
+          "inline_throw_instructions": [],
+          "outside_edges": [],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        },
+        "air_special": {
+          "entry": "0x16cc2",
+          "static_action_writes": [
+            {
+              "action": 34,
+              "pc": "0x18fba"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x18f82",
+            "0x18f9c"
+          ],
+          "inline_throw_instructions": [],
+          "outside_edges": [],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        }
+      },
+      "selector_region": [
+        "0x16a40",
+        "0x16d06"
+      ],
+      "static_action_closure": [
+        "00",
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09",
+        "0a",
+        "0b",
+        "0c",
+        "0d",
+        "0f",
+        "11",
+        "13",
+        "15",
+        "17",
+        "21",
+        "22",
+        "23",
+        "24"
+      ],
+      "already_recovered_same_slot": [
+        "00",
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09",
+        "0a",
+        "0b",
+        "0c",
+        "0d",
+        "0f",
+        "15"
+      ],
+      "missing_continuation_slots": [
+        "11",
+        "13",
+        "17",
+        "21",
+        "22",
+        "23",
+        "24"
+      ],
+      "missing_continuation_roots": [
+        "0x1cb08",
+        "0x1cbc8",
+        "0x1a430",
+        "0x1aefa",
+        "0x1afc8",
+        "0x1b146",
+        "0x1b1ce"
+      ],
+      "constructor_roots": [
+        "0x18812",
+        "0x18828",
+        "0x1883e",
+        "0x1886a",
+        "0x18880",
+        "0x188d8",
+        "0x188ee",
+        "0x18930",
+        "0x18e8a",
+        "0x18ea8",
+        "0x18ec0",
+        "0x18ef0",
+        "0x18f1e",
+        "0x18f82",
+        "0x18f9c",
+        "0x18fda",
+        "0x19c1c"
+      ],
+      "child_callback_stores": [
+        {
+          "pc": "0x1a454",
+          "target": "0x132de",
+          "entry_has_recovered_chu_rule": true,
+          "new_creation_context_cpu_verified": false
+        },
+        {
+          "pc": "0x1a59e",
+          "target": "0x1313e",
+          "entry_has_recovered_chu_rule": true,
+          "new_creation_context_cpu_verified": false
+        },
+        {
+          "pc": "0x1a658",
+          "target": "0x134c2",
+          "entry_has_recovered_chu_rule": false,
+          "new_creation_context_cpu_verified": false
+        },
+        {
+          "pc": "0x1aff8",
+          "target": "0x1313e",
+          "entry_has_recovered_chu_rule": true,
+          "new_creation_context_cpu_verified": false
+        },
+        {
+          "pc": "0x1b0ae",
+          "target": "0x134c2",
+          "entry_has_recovered_chu_rule": false,
+          "new_creation_context_cpu_verified": false
+        }
+      ],
+      "new_child_callback_entries": [
+        "0x134c2"
+      ],
+      "outside_helpers": [
+        {
+          "entry": "0x15cb0",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x1faf0",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x1fce8",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x20202",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x203f8",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x20444",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x204fa",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x205b0",
+          "same_entry_has_recovered_helper": true
+        }
+      ],
+      "full_action_oracle_status": "not_yet_captured_for_this_source",
+      "new_original_cpu_calls": 0
+    },
+    {
+      "source_id": 4,
+      "command_preparation_entry": "0x16d06",
+      "attack_selectors": {
+        "ground": {
+          "entry": "0x16d86",
+          "static_action_writes": [
+            {
+              "action": 18,
+              "pc": "0x16d8e"
+            },
+            {
+              "action": 14,
+              "pc": "0x16dbc"
+            },
+            {
+              "action": 3,
+              "pc": "0x18812"
+            },
+            {
+              "action": 3,
+              "pc": "0x18828"
+            },
+            {
+              "action": 3,
+              "pc": "0x1883e"
+            },
+            {
+              "action": 3,
+              "pc": "0x18854"
+            },
+            {
+              "action": 3,
+              "pc": "0x1886a"
+            },
+            {
+              "action": 3,
+              "pc": "0x18880"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x18812",
+            "0x18828",
+            "0x1883e",
+            "0x18854",
+            "0x1886a",
+            "0x18880",
+            "0x19c1c"
+          ],
+          "inline_throw_instructions": [
+            {
+              "pc": "0x16e40",
+              "text": "move.w A5w,(-0x59f4,A1)"
+            },
+            {
+              "pc": "0x16e60",
+              "text": "move.w (0x44,A5),(-0x59fe,A1)"
+            },
+            {
+              "pc": "0x16e66",
+              "text": "subi.w #0x1c,(-0x59fe,A1)"
+            },
+            {
+              "pc": "0x16e6c",
+              "text": "move.b #0x16,(-0x59fc,A1)"
+            },
+            {
+              "pc": "0x16e72",
+              "text": "move.b #0x1c,(-0x59fb,A1)"
+            },
+            {
+              "pc": "0x16e78",
+              "text": "move.b #-0x48,(-0x59fa,A1)"
+            },
+            {
+              "pc": "0x16e7e",
+              "text": "move.b #0x3,(-0x59f8,A1)"
+            },
+            {
+              "pc": "0x16e84",
+              "text": "move.b #0x40,(-0x59f9,A1)"
+            },
+            {
+              "pc": "0x16e8a",
+              "text": "move.b #0x3,(-0x59f7,A1)"
+            },
+            {
+              "pc": "0x16e90",
+              "text": "move.w #0x18,(-0x59f0,A1)"
+            },
+            {
+              "pc": "0x16e96",
+              "text": "move.w #0x0,(-0x59ee,A1)"
+            },
+            {
+              "pc": "0x16e9c",
+              "text": "move.b #0x1,(-0x59f6,A1)"
+            }
+          ],
+          "outside_edges": [
+            "0x15e26",
+            "0x1faf0",
+            "0x1fb4c"
+          ],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        },
+        "air": {
+          "entry": "0x16ec8",
+          "static_action_writes": [
+            {
+              "action": 2,
+              "pc": "0x188d8"
+            },
+            {
+              "action": 2,
+              "pc": "0x188ee"
+            },
+            {
+              "action": 2,
+              "pc": "0x18930"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x188d8",
+            "0x188ee",
+            "0x18930"
+          ],
+          "inline_throw_instructions": [],
+          "outside_edges": [],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        },
+        "ground_special": {
+          "entry": "0x16f3e",
+          "static_action_writes": [
+            {
+              "action": 37,
+              "pc": "0x1905e"
+            },
+            {
+              "action": 3,
+              "pc": "0x190be"
+            },
+            {
+              "action": 38,
+              "pc": "0x190e8"
+            },
+            {
+              "action": 39,
+              "pc": "0x19106"
+            },
+            {
+              "action": 44,
+              "pc": "0x19162"
+            },
+            {
+              "action": 41,
+              "pc": "0x191a6"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x1904e",
+            "0x190a8",
+            "0x190d2",
+            "0x190f0",
+            "0x1911a",
+            "0x1913c",
+            "0x19190"
+          ],
+          "inline_throw_instructions": [],
+          "outside_edges": [],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        },
+        "air_special": {
+          "entry": "0x16fcc",
+          "static_action_writes": [
+            {
+              "action": 40,
+              "pc": "0x19202"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x191d4",
+            "0x191ec"
+          ],
+          "inline_throw_instructions": [],
+          "outside_edges": [],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        }
+      },
+      "selector_region": [
+        "0x16d86",
+        "0x16fee"
+      ],
+      "static_action_closure": [
+        "00",
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09",
+        "0a",
+        "0b",
+        "0c",
+        "0d",
+        "0e",
+        "12",
+        "25",
+        "26",
+        "27",
+        "28",
+        "29",
+        "2a",
+        "2b",
+        "2c"
+      ],
+      "already_recovered_same_slot": [
+        "00",
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09",
+        "0a",
+        "0b",
+        "0c",
+        "0d"
+      ],
+      "missing_continuation_slots": [
+        "0e",
+        "12",
+        "25",
+        "26",
+        "27",
+        "28",
+        "29",
+        "2a",
+        "2b",
+        "2c"
+      ],
+      "missing_continuation_roots": [
+        "0x1ca46",
+        "0x1cb68",
+        "0x1b1e8",
+        "0x1b21e",
+        "0x1b246",
+        "0x1b2bc",
+        "0x1b2d4",
+        "0x1b3f0",
+        "0x1b48a",
+        "0x1b51a"
+      ],
+      "constructor_roots": [
+        "0x18812",
+        "0x18828",
+        "0x1883e",
+        "0x18854",
+        "0x1886a",
+        "0x18880",
+        "0x188d8",
+        "0x188ee",
+        "0x18930",
+        "0x1904e",
+        "0x190a8",
+        "0x190d2",
+        "0x190f0",
+        "0x1911a",
+        "0x1913c",
+        "0x19190",
+        "0x191d4",
+        "0x191ec",
+        "0x19c1c"
+      ],
+      "child_callback_stores": [
+        {
+          "pc": "0x1b324",
+          "target": "0x13bb6",
+          "entry_has_recovered_chu_rule": false,
+          "new_creation_context_cpu_verified": false
+        },
+        {
+          "pc": "0x1b4b8",
+          "target": "0x13fc8",
+          "entry_has_recovered_chu_rule": false,
+          "new_creation_context_cpu_verified": false
+        }
+      ],
+      "new_child_callback_entries": [
+        "0x13bb6",
+        "0x13fc8"
+      ],
+      "outside_helpers": [
+        {
+          "entry": "0x15cb0",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x1faf0",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x1fce8",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x20202",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x2029e",
+          "same_entry_has_recovered_helper": false
+        },
+        {
+          "entry": "0x203f8",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x20444",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x204fa",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x205b0",
+          "same_entry_has_recovered_helper": true
+        }
+      ],
+      "full_action_oracle_status": "not_yet_captured_for_this_source",
+      "new_original_cpu_calls": 0
+    },
+    {
+      "source_id": 5,
+      "command_preparation_entry": "0x16fee",
+      "attack_selectors": {
+        "ground": {
+          "entry": "0x1705c",
+          "static_action_writes": [
+            {
+              "action": 17,
+              "pc": "0x17064"
+            },
+            {
+              "action": 15,
+              "pc": "0x17092"
+            },
+            {
+              "action": 3,
+              "pc": "0x18812"
+            },
+            {
+              "action": 3,
+              "pc": "0x18828"
+            },
+            {
+              "action": 3,
+              "pc": "0x1883e"
+            },
+            {
+              "action": 3,
+              "pc": "0x18854"
+            },
+            {
+              "action": 3,
+              "pc": "0x1886a"
+            },
+            {
+              "action": 3,
+              "pc": "0x18880"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x18812",
+            "0x18828",
+            "0x1883e",
+            "0x18854",
+            "0x1886a",
+            "0x18880",
+            "0x19c1c"
+          ],
+          "inline_throw_instructions": [
+            {
+              "pc": "0x17116",
+              "text": "move.w A5w,(-0x59f4,A1)"
+            },
+            {
+              "pc": "0x17136",
+              "text": "move.w (0x44,A5),(-0x59fe,A1)"
+            },
+            {
+              "pc": "0x1713c",
+              "text": "subi.w #0x28,(-0x59fe,A1)"
+            },
+            {
+              "pc": "0x17142",
+              "text": "move.b #0x18,(-0x59fc,A1)"
+            },
+            {
+              "pc": "0x17148",
+              "text": "move.b #0x28,(-0x59fb,A1)"
+            },
+            {
+              "pc": "0x1714e",
+              "text": "move.b #-0x48,(-0x59fa,A1)"
+            },
+            {
+              "pc": "0x17154",
+              "text": "move.b #0x3,(-0x59f8,A1)"
+            },
+            {
+              "pc": "0x1715a",
+              "text": "move.b #0x40,(-0x59f9,A1)"
+            },
+            {
+              "pc": "0x17160",
+              "text": "move.b #0x3,(-0x59f7,A1)"
+            },
+            {
+              "pc": "0x17166",
+              "text": "move.w #0x18,(-0x59f0,A1)"
+            },
+            {
+              "pc": "0x1716c",
+              "text": "move.w #0x0,(-0x59ee,A1)"
+            },
+            {
+              "pc": "0x17172",
+              "text": "move.b #0x1,(-0x59f6,A1)"
+            }
+          ],
+          "outside_edges": [
+            "0x15e26",
+            "0x1faf0",
+            "0x1fb4c"
+          ],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        },
+        "air": {
+          "entry": "0x1719e",
+          "static_action_writes": [
+            {
+              "action": 2,
+              "pc": "0x188d8"
+            },
+            {
+              "action": 2,
+              "pc": "0x188ee"
+            },
+            {
+              "action": 2,
+              "pc": "0x18930"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x188d8",
+            "0x188ee",
+            "0x18930"
+          ],
+          "inline_throw_instructions": [],
+          "outside_edges": [],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        },
+        "ground_special": {
+          "entry": "0x17214",
+          "static_action_writes": [
+            {
+              "action": 45,
+              "pc": "0x1922c"
+            },
+            {
+              "action": 46,
+              "pc": "0x19256"
+            },
+            {
+              "action": 46,
+              "pc": "0x1929a"
+            },
+            {
+              "action": 47,
+              "pc": "0x19350"
+            },
+            {
+              "action": 49,
+              "pc": "0x193f0"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x19216",
+            "0x19240",
+            "0x19284",
+            "0x192c8",
+            "0x192f6",
+            "0x19324",
+            "0x193a4",
+            "0x193bc",
+            "0x193d4"
+          ],
+          "inline_throw_instructions": [],
+          "outside_edges": [],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        },
+        "air_special": {
+          "entry": "0x172c4",
+          "static_action_writes": [
+            {
+              "action": 48,
+              "pc": "0x19390"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x19364"
+          ],
+          "inline_throw_instructions": [],
+          "outside_edges": [],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        }
+      },
+      "selector_region": [
+        "0x1705c",
+        "0x1730c"
+      ],
+      "static_action_closure": [
+        "00",
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09",
+        "0a",
+        "0b",
+        "0c",
+        "0d",
+        "0f",
+        "11",
+        "2d",
+        "2e",
+        "2f",
+        "30",
+        "31",
+        "32"
+      ],
+      "already_recovered_same_slot": [
+        "00",
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09",
+        "0a",
+        "0b",
+        "0c",
+        "0d",
+        "0f"
+      ],
+      "missing_continuation_slots": [
+        "11",
+        "2d",
+        "2e",
+        "2f",
+        "30",
+        "31",
+        "32"
+      ],
+      "missing_continuation_roots": [
+        "0x1cb08",
+        "0x1b67a",
+        "0x1b6c4",
+        "0x1b704",
+        "0x1b7fa",
+        "0x1b8f4",
+        "0x1b9bc"
+      ],
+      "constructor_roots": [
+        "0x18812",
+        "0x18828",
+        "0x1883e",
+        "0x18854",
+        "0x1886a",
+        "0x18880",
+        "0x188d8",
+        "0x188ee",
+        "0x18930",
+        "0x19216",
+        "0x19240",
+        "0x19284",
+        "0x192c8",
+        "0x192f6",
+        "0x19324",
+        "0x19364",
+        "0x193a4",
+        "0x193bc",
+        "0x193d4",
+        "0x19c1c"
+      ],
+      "child_callback_stores": [
+        {
+          "pc": "0x1b736",
+          "target": "0x1414e",
+          "entry_has_recovered_chu_rule": false,
+          "new_creation_context_cpu_verified": false
+        },
+        {
+          "pc": "0x1b834",
+          "target": "0x1414e",
+          "entry_has_recovered_chu_rule": false,
+          "new_creation_context_cpu_verified": false
+        },
+        {
+          "pc": "0x1b916",
+          "target": "0x146ba",
+          "entry_has_recovered_chu_rule": false,
+          "new_creation_context_cpu_verified": false
+        },
+        {
+          "pc": "0x1b9ee",
+          "target": "0x143e4",
+          "entry_has_recovered_chu_rule": false,
+          "new_creation_context_cpu_verified": false
+        }
+      ],
+      "new_child_callback_entries": [
+        "0x1414e",
+        "0x143e4",
+        "0x146ba"
+      ],
+      "outside_helpers": [
+        {
+          "entry": "0x15cb0",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x1faf0",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x1fce8",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x203f8",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x20444",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x204fa",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x205b0",
+          "same_entry_has_recovered_helper": true
+        }
+      ],
+      "full_action_oracle_status": "not_yet_captured_for_this_source",
+      "new_original_cpu_calls": 0
+    },
+    {
+      "source_id": 6,
+      "command_preparation_entry": "0x1730c",
+      "attack_selectors": {
+        "ground": {
+          "entry": "0x1738c",
+          "static_action_writes": [
+            {
+              "action": 17,
+              "pc": "0x17394"
+            },
+            {
+              "action": 14,
+              "pc": "0x173c2"
+            },
+            {
+              "action": 3,
+              "pc": "0x18812"
+            },
+            {
+              "action": 3,
+              "pc": "0x18828"
+            },
+            {
+              "action": 3,
+              "pc": "0x1883e"
+            },
+            {
+              "action": 3,
+              "pc": "0x1886a"
+            },
+            {
+              "action": 19,
+              "pc": "0x194dc"
+            },
+            {
+              "action": 19,
+              "pc": "0x194fa"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x18812",
+            "0x18828",
+            "0x1883e",
+            "0x1886a",
+            "0x194dc",
+            "0x194fa",
+            "0x19c1c"
+          ],
+          "inline_throw_instructions": [
+            {
+              "pc": "0x17446",
+              "text": "move.w A5w,(-0x59f4,A1)"
+            },
+            {
+              "pc": "0x17466",
+              "text": "move.w (0x44,A5),(-0x59fe,A1)"
+            },
+            {
+              "pc": "0x1746c",
+              "text": "subi.w #0x22,(-0x59fe,A1)"
+            },
+            {
+              "pc": "0x17472",
+              "text": "move.b #0x18,(-0x59fc,A1)"
+            },
+            {
+              "pc": "0x17478",
+              "text": "move.b #0x22,(-0x59fb,A1)"
+            },
+            {
+              "pc": "0x1747e",
+              "text": "move.b #-0x48,(-0x59fa,A1)"
+            },
+            {
+              "pc": "0x17484",
+              "text": "move.b #0x3,(-0x59f8,A1)"
+            },
+            {
+              "pc": "0x1748a",
+              "text": "move.b #0x40,(-0x59f9,A1)"
+            },
+            {
+              "pc": "0x17490",
+              "text": "move.b #0x3,(-0x59f7,A1)"
+            },
+            {
+              "pc": "0x17496",
+              "text": "move.w #-0x18,(-0x59f0,A1)"
+            },
+            {
+              "pc": "0x1749c",
+              "text": "move.w #0x0,(-0x59ee,A1)"
+            },
+            {
+              "pc": "0x174a2",
+              "text": "move.b #0x0,(-0x59f6,A1)"
+            }
+          ],
+          "outside_edges": [
+            "0x15e26",
+            "0x1faf0",
+            "0x1fb4c"
+          ],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        },
+        "air": {
+          "entry": "0x174ce",
+          "static_action_writes": [
+            {
+              "action": 17,
+              "pc": "0x174fe"
+            },
+            {
+              "action": 14,
+              "pc": "0x17534"
+            },
+            {
+              "action": 2,
+              "pc": "0x188d8"
+            },
+            {
+              "action": 2,
+              "pc": "0x188ee"
+            },
+            {
+              "action": 2,
+              "pc": "0x18930"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x188d8",
+            "0x188ee",
+            "0x18930",
+            "0x19c1c",
+            "0x19c46"
+          ],
+          "inline_throw_instructions": [
+            {
+              "pc": "0x175ea",
+              "text": "move.w A5w,(-0x59f4,A1)"
+            },
+            {
+              "pc": "0x1760a",
+              "text": "move.w (0x44,A5),(-0x59fe,A1)"
+            },
+            {
+              "pc": "0x17610",
+              "text": "subi.w #0x10,(-0x59fe,A1)"
+            },
+            {
+              "pc": "0x17616",
+              "text": "move.b #0xc,(-0x59fc,A1)"
+            },
+            {
+              "pc": "0x1761c",
+              "text": "move.b #0x10,(-0x59fb,A1)"
+            },
+            {
+              "pc": "0x17622",
+              "text": "move.b #-0x48,(-0x59fa,A1)"
+            },
+            {
+              "pc": "0x17628",
+              "text": "move.b #0x9,(-0x59f8,A1)"
+            },
+            {
+              "pc": "0x1762e",
+              "text": "move.b #0x41,(-0x59f9,A1)"
+            },
+            {
+              "pc": "0x17634",
+              "text": "move.b #0x9,(-0x59f7,A1)"
+            },
+            {
+              "pc": "0x1763a",
+              "text": "move.w #-0x18,(-0x59f0,A1)"
+            },
+            {
+              "pc": "0x17640",
+              "text": "move.w #0x0,(-0x59ee,A1)"
+            },
+            {
+              "pc": "0x17646",
+              "text": "move.b #0x0,(-0x59f6,A1)"
+            }
+          ],
+          "outside_edges": [],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        },
+        "ground_special": {
+          "entry": "0x17654",
+          "static_action_writes": [
+            {
+              "action": 51,
+              "pc": "0x1948a"
+            },
+            {
+              "action": 53,
+              "pc": "0x1952e"
+            },
+            {
+              "action": 54,
+              "pc": "0x19558"
+            },
+            {
+              "action": 56,
+              "pc": "0x19582"
+            },
+            {
+              "action": 55,
+              "pc": "0x195c8"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x19474",
+            "0x19518",
+            "0x19542",
+            "0x1956c",
+            "0x1959a",
+            "0x195b2"
+          ],
+          "inline_throw_instructions": [],
+          "outside_edges": [],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        },
+        "air_special": {
+          "entry": "0x176be",
+          "static_action_writes": [
+            {
+              "action": 51,
+              "pc": "0x1948a"
+            },
+            {
+              "action": 52,
+              "pc": "0x194c0"
+            },
+            {
+              "action": 53,
+              "pc": "0x1952e"
+            },
+            {
+              "action": 54,
+              "pc": "0x19558"
+            },
+            {
+              "action": 55,
+              "pc": "0x195c8"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x19474",
+            "0x194aa",
+            "0x19518",
+            "0x19542",
+            "0x1959a",
+            "0x195b2"
+          ],
+          "inline_throw_instructions": [],
+          "outside_edges": [],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        }
+      },
+      "selector_region": [
+        "0x1738c",
+        "0x17722"
+      ],
+      "static_action_closure": [
+        "00",
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09",
+        "0a",
+        "0b",
+        "0c",
+        "0d",
+        "0e",
+        "11",
+        "13",
+        "33",
+        "34",
+        "35",
+        "36",
+        "37",
+        "38"
+      ],
+      "already_recovered_same_slot": [
+        "00",
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09",
+        "0a",
+        "0b",
+        "0c",
+        "0d"
+      ],
+      "missing_continuation_slots": [
+        "0e",
+        "11",
+        "13",
+        "33",
+        "34",
+        "35",
+        "36",
+        "37",
+        "38"
+      ],
+      "missing_continuation_roots": [
+        "0x1ca46",
+        "0x1cb08",
+        "0x1cbc8",
+        "0x1bab2",
+        "0x1bad6",
+        "0x1bafe",
+        "0x1bbbe",
+        "0x1bc7e",
+        "0x1bc92"
+      ],
+      "constructor_roots": [
+        "0x18812",
+        "0x18828",
+        "0x1883e",
+        "0x1886a",
+        "0x188d8",
+        "0x188ee",
+        "0x18930",
+        "0x19474",
+        "0x194aa",
+        "0x194dc",
+        "0x194fa",
+        "0x19518",
+        "0x19542",
+        "0x1956c",
+        "0x1959a",
+        "0x195b2",
+        "0x19c1c",
+        "0x19c46"
+      ],
+      "child_callback_stores": [],
+      "new_child_callback_entries": [],
+      "outside_helpers": [
+        {
+          "entry": "0x15cb0",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x1faf0",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x1fce8",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x20202",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x203f8",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x20444",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x204fa",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x205b0",
+          "same_entry_has_recovered_helper": true
+        }
+      ],
+      "full_action_oracle_status": "not_yet_captured_for_this_source",
+      "new_original_cpu_calls": 0
+    },
+    {
+      "source_id": 7,
+      "command_preparation_entry": "0x17722",
+      "attack_selectors": {
+        "ground": {
+          "entry": "0x17790",
+          "static_action_writes": [
+            {
+              "action": 17,
+              "pc": "0x17798"
+            },
+            {
+              "action": 15,
+              "pc": "0x177c6"
+            },
+            {
+              "action": 3,
+              "pc": "0x18812"
+            },
+            {
+              "action": 3,
+              "pc": "0x18828"
+            },
+            {
+              "action": 3,
+              "pc": "0x1883e"
+            },
+            {
+              "action": 3,
+              "pc": "0x18854"
+            },
+            {
+              "action": 3,
+              "pc": "0x1886a"
+            },
+            {
+              "action": 3,
+              "pc": "0x18880"
+            },
+            {
+              "action": 19,
+              "pc": "0x195dc"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x18812",
+            "0x18828",
+            "0x1883e",
+            "0x18854",
+            "0x1886a",
+            "0x18880",
+            "0x195dc",
+            "0x19c1c"
+          ],
+          "inline_throw_instructions": [
+            {
+              "pc": "0x1784a",
+              "text": "move.w A5w,(-0x59f4,A1)"
+            },
+            {
+              "pc": "0x1786a",
+              "text": "move.w (0x44,A5),(-0x59fe,A1)"
+            },
+            {
+              "pc": "0x17870",
+              "text": "subi.w #0x24,(-0x59fe,A1)"
+            },
+            {
+              "pc": "0x17876",
+              "text": "move.b #0x18,(-0x59fc,A1)"
+            },
+            {
+              "pc": "0x1787c",
+              "text": "move.b #0x24,(-0x59fb,A1)"
+            },
+            {
+              "pc": "0x17882",
+              "text": "move.b #-0x48,(-0x59fa,A1)"
+            },
+            {
+              "pc": "0x17888",
+              "text": "move.b #0x3,(-0x59f8,A1)"
+            },
+            {
+              "pc": "0x1788e",
+              "text": "move.b #0x40,(-0x59f9,A1)"
+            },
+            {
+              "pc": "0x17894",
+              "text": "move.b #0x3,(-0x59f7,A1)"
+            },
+            {
+              "pc": "0x1789a",
+              "text": "move.w #0x10,(-0x59f0,A1)"
+            },
+            {
+              "pc": "0x178a0",
+              "text": "move.w #0x0,(-0x59ee,A1)"
+            },
+            {
+              "pc": "0x178a6",
+              "text": "move.b #0x1,(-0x59f6,A1)"
+            }
+          ],
+          "outside_edges": [
+            "0x15e26",
+            "0x1faf0",
+            "0x1fb4c"
+          ],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        },
+        "air": {
+          "entry": "0x178ea",
+          "static_action_writes": [
+            {
+              "action": 2,
+              "pc": "0x188d8"
+            },
+            {
+              "action": 2,
+              "pc": "0x188ee"
+            },
+            {
+              "action": 2,
+              "pc": "0x18930"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x188d8",
+            "0x188ee",
+            "0x18930"
+          ],
+          "inline_throw_instructions": [],
+          "outside_edges": [],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        },
+        "ground_special": {
+          "entry": "0x17960",
+          "static_action_writes": [
+            {
+              "action": 57,
+              "pc": "0x19652"
+            },
+            {
+              "action": 58,
+              "pc": "0x196c2"
+            },
+            {
+              "action": 59,
+              "pc": "0x19722"
+            },
+            {
+              "action": 61,
+              "pc": "0x197ae"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x195fa",
+            "0x19624",
+            "0x19676",
+            "0x1968e",
+            "0x196a6",
+            "0x196d6",
+            "0x196ee",
+            "0x19706",
+            "0x19798"
+          ],
+          "inline_throw_instructions": [],
+          "outside_edges": [],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        },
+        "air_special": {
+          "entry": "0x17a08",
+          "static_action_writes": [
+            {
+              "action": 58,
+              "pc": "0x196c2"
+            },
+            {
+              "action": 69,
+              "pc": "0x19784"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x19676",
+            "0x1968e",
+            "0x196a6",
+            "0x19736",
+            "0x1975e"
+          ],
+          "inline_throw_instructions": [],
+          "outside_edges": [],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        }
+      },
+      "selector_region": [
+        "0x17790",
+        "0x17a5c"
+      ],
+      "static_action_closure": [
+        "00",
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09",
+        "0a",
+        "0b",
+        "0c",
+        "0d",
+        "0f",
+        "11",
+        "13",
+        "14",
+        "39",
+        "3a",
+        "3b",
+        "3c",
+        "3d",
+        "45"
+      ],
+      "already_recovered_same_slot": [
+        "00",
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09",
+        "0a",
+        "0b",
+        "0c",
+        "0d",
+        "0f",
+        "14",
+        "45"
+      ],
+      "missing_continuation_slots": [
+        "11",
+        "13",
+        "39",
+        "3a",
+        "3b",
+        "3c",
+        "3d"
+      ],
+      "missing_continuation_roots": [
+        "0x1cb08",
+        "0x1cbc8",
+        "0x1bd6e",
+        "0x1be08",
+        "0x1be64",
+        "0x1bfce",
+        "0x1c032"
+      ],
+      "constructor_roots": [
+        "0x18812",
+        "0x18828",
+        "0x1883e",
+        "0x18854",
+        "0x1886a",
+        "0x18880",
+        "0x188d8",
+        "0x188ee",
+        "0x18930",
+        "0x195dc",
+        "0x195fa",
+        "0x19624",
+        "0x19676",
+        "0x1968e",
+        "0x196a6",
+        "0x196d6",
+        "0x196ee",
+        "0x19706",
+        "0x19736",
+        "0x1975e",
+        "0x19798",
+        "0x19c1c"
+      ],
+      "child_callback_stores": [
+        {
+          "pc": "0x1be9c",
+          "target": "0x136e6",
+          "entry_has_recovered_chu_rule": false,
+          "new_creation_context_cpu_verified": false
+        },
+        {
+          "pc": "0x1bf3c",
+          "target": "0x1391e",
+          "entry_has_recovered_chu_rule": false,
+          "new_creation_context_cpu_verified": false
+        },
+        {
+          "pc": "0x1c058",
+          "target": "0x15094",
+          "entry_has_recovered_chu_rule": false,
+          "new_creation_context_cpu_verified": false
+        }
+      ],
+      "new_child_callback_entries": [
+        "0x136e6",
+        "0x1391e",
+        "0x15094"
+      ],
+      "outside_helpers": [
+        {
+          "entry": "0x15cb0",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x1faf0",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x1fce8",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x20202",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x203f8",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x20444",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x204fa",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x205b0",
+          "same_entry_has_recovered_helper": true
+        }
+      ],
+      "full_action_oracle_status": "not_yet_captured_for_this_source",
+      "new_original_cpu_calls": 0
+    },
+    {
+      "source_id": 8,
+      "command_preparation_entry": "0x17a5c",
+      "attack_selectors": {
+        "ground": {
+          "entry": "0x17adc",
+          "static_action_writes": [
+            {
+              "action": 17,
+              "pc": "0x17ae4"
+            },
+            {
+              "action": 15,
+              "pc": "0x17b12"
+            },
+            {
+              "action": 3,
+              "pc": "0x18812"
+            },
+            {
+              "action": 3,
+              "pc": "0x18828"
+            },
+            {
+              "action": 3,
+              "pc": "0x1883e"
+            },
+            {
+              "action": 3,
+              "pc": "0x18854"
+            },
+            {
+              "action": 3,
+              "pc": "0x1886a"
+            },
+            {
+              "action": 3,
+              "pc": "0x18880"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x18812",
+            "0x18828",
+            "0x1883e",
+            "0x18854",
+            "0x1886a",
+            "0x18880",
+            "0x19c1c"
+          ],
+          "inline_throw_instructions": [
+            {
+              "pc": "0x17b96",
+              "text": "move.w A5w,(-0x59f4,A1)"
+            },
+            {
+              "pc": "0x17bb6",
+              "text": "move.w (0x44,A5),(-0x59fe,A1)"
+            },
+            {
+              "pc": "0x17bbc",
+              "text": "subi.w #0x1c,(-0x59fe,A1)"
+            },
+            {
+              "pc": "0x17bc2",
+              "text": "move.b #0x14,(-0x59fc,A1)"
+            },
+            {
+              "pc": "0x17bc8",
+              "text": "move.b #0x1c,(-0x59fb,A1)"
+            },
+            {
+              "pc": "0x17bce",
+              "text": "move.b #-0x48,(-0x59fa,A1)"
+            },
+            {
+              "pc": "0x17bd4",
+              "text": "move.b #0x3,(-0x59f8,A1)"
+            },
+            {
+              "pc": "0x17bda",
+              "text": "move.b #0x40,(-0x59f9,A1)"
+            },
+            {
+              "pc": "0x17be0",
+              "text": "move.b #0x3,(-0x59f7,A1)"
+            },
+            {
+              "pc": "0x17be6",
+              "text": "move.w #0x18,(-0x59f0,A1)"
+            },
+            {
+              "pc": "0x17bec",
+              "text": "move.w #0x0,(-0x59ee,A1)"
+            },
+            {
+              "pc": "0x17bf2",
+              "text": "move.b #0x1,(-0x59f6,A1)"
+            }
+          ],
+          "outside_edges": [
+            "0x15e26",
+            "0x1faf0",
+            "0x1fb4c"
+          ],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        },
+        "air": {
+          "entry": "0x17c1e",
+          "static_action_writes": [
+            {
+              "action": 2,
+              "pc": "0x188d8"
+            },
+            {
+              "action": 2,
+              "pc": "0x188ee"
+            },
+            {
+              "action": 2,
+              "pc": "0x18930"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x188d8",
+            "0x188ee",
+            "0x18930"
+          ],
+          "inline_throw_instructions": [],
+          "outside_edges": [],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        },
+        "ground_special": {
+          "entry": "0x17c94",
+          "static_action_writes": [
+            {
+              "action": 3,
+              "pc": "0x197d8"
+            },
+            {
+              "action": 3,
+              "pc": "0x19832"
+            },
+            {
+              "action": 62,
+              "pc": "0x1987e"
+            },
+            {
+              "action": 63,
+              "pc": "0x198e8"
+            },
+            {
+              "action": 64,
+              "pc": "0x19912"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x197c2",
+            "0x197ec",
+            "0x19804",
+            "0x1981c",
+            "0x19846",
+            "0x19860",
+            "0x19896",
+            "0x198b0",
+            "0x198ca",
+            "0x198fc"
+          ],
+          "inline_throw_instructions": [],
+          "outside_edges": [],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        },
+        "air_special": {
+          "entry": "0x17d5e",
+          "static_action_writes": [
+            {
+              "action": 62,
+              "pc": "0x1987e"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x19846",
+            "0x19860"
+          ],
+          "inline_throw_instructions": [],
+          "outside_edges": [],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        }
+      },
+      "selector_region": [
+        "0x17adc",
+        "0x17d80"
+      ],
+      "static_action_closure": [
+        "00",
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09",
+        "0a",
+        "0b",
+        "0c",
+        "0d",
+        "0f",
+        "11",
+        "3e",
+        "3f",
+        "40"
+      ],
+      "already_recovered_same_slot": [
+        "00",
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09",
+        "0a",
+        "0b",
+        "0c",
+        "0d",
+        "0f"
+      ],
+      "missing_continuation_slots": [
+        "11",
+        "3e",
+        "3f",
+        "40"
+      ],
+      "missing_continuation_roots": [
+        "0x1cb08",
+        "0x1c09a",
+        "0x1c196",
+        "0x1c27c"
+      ],
+      "constructor_roots": [
+        "0x18812",
+        "0x18828",
+        "0x1883e",
+        "0x18854",
+        "0x1886a",
+        "0x18880",
+        "0x188d8",
+        "0x188ee",
+        "0x18930",
+        "0x197c2",
+        "0x197ec",
+        "0x19804",
+        "0x1981c",
+        "0x19846",
+        "0x19860",
+        "0x19896",
+        "0x198b0",
+        "0x198ca",
+        "0x198fc",
+        "0x19c1c"
+      ],
+      "child_callback_stores": [
+        {
+          "pc": "0x1c1ce",
+          "target": "0x147ae",
+          "entry_has_recovered_chu_rule": false,
+          "new_creation_context_cpu_verified": false
+        }
+      ],
+      "new_child_callback_entries": [
+        "0x147ae"
+      ],
+      "outside_helpers": [
+        {
+          "entry": "0x15cb0",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x1faf0",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x1fce8",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x20202",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x203f8",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x20444",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x204fa",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x205b0",
+          "same_entry_has_recovered_helper": true
+        }
+      ],
+      "full_action_oracle_status": "not_yet_captured_for_this_source",
+      "new_original_cpu_calls": 0
+    },
+    {
+      "source_id": 9,
+      "command_preparation_entry": "0x17d80",
+      "attack_selectors": {
+        "ground": {
+          "entry": "0x17e12",
+          "static_action_writes": [
+            {
+              "action": 15,
+              "pc": "0x17e1a"
+            },
+            {
+              "action": 15,
+              "pc": "0x17e48"
+            },
+            {
+              "action": 3,
+              "pc": "0x18812"
+            },
+            {
+              "action": 3,
+              "pc": "0x18828"
+            },
+            {
+              "action": 3,
+              "pc": "0x1883e"
+            },
+            {
+              "action": 3,
+              "pc": "0x18854"
+            },
+            {
+              "action": 3,
+              "pc": "0x1886a"
+            },
+            {
+              "action": 3,
+              "pc": "0x18880"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x18812",
+            "0x18828",
+            "0x1883e",
+            "0x18854",
+            "0x1886a",
+            "0x18880",
+            "0x19c1c"
+          ],
+          "inline_throw_instructions": [
+            {
+              "pc": "0x17ecc",
+              "text": "move.w A5w,(-0x59f4,A1)"
+            },
+            {
+              "pc": "0x17eec",
+              "text": "move.w (0x44,A5),(-0x59fe,A1)"
+            },
+            {
+              "pc": "0x17ef2",
+              "text": "subi.w #0x28,(-0x59fe,A1)"
+            },
+            {
+              "pc": "0x17ef8",
+              "text": "move.b #0x18,(-0x59fc,A1)"
+            },
+            {
+              "pc": "0x17efe",
+              "text": "move.b #0x28,(-0x59fb,A1)"
+            },
+            {
+              "pc": "0x17f04",
+              "text": "move.b #-0x48,(-0x59fa,A1)"
+            },
+            {
+              "pc": "0x17f0a",
+              "text": "move.b #0x3,(-0x59f8,A1)"
+            },
+            {
+              "pc": "0x17f10",
+              "text": "move.b #0x40,(-0x59f9,A1)"
+            },
+            {
+              "pc": "0x17f16",
+              "text": "move.b #0x3,(-0x59f7,A1)"
+            },
+            {
+              "pc": "0x17f1c",
+              "text": "move.w #0x18,(-0x59f0,A1)"
+            },
+            {
+              "pc": "0x17f22",
+              "text": "move.w #0x0,(-0x59ee,A1)"
+            },
+            {
+              "pc": "0x17f28",
+              "text": "move.b #0x1,(-0x59f6,A1)"
+            }
+          ],
+          "outside_edges": [
+            "0x15e26",
+            "0x1faf0",
+            "0x1fb4c"
+          ],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        },
+        "air": {
+          "entry": "0x17f54",
+          "static_action_writes": [
+            {
+              "action": 2,
+              "pc": "0x188d8"
+            },
+            {
+              "action": 2,
+              "pc": "0x188ee"
+            },
+            {
+              "action": 2,
+              "pc": "0x18930"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x188d8",
+            "0x188ee",
+            "0x18930"
+          ],
+          "inline_throw_instructions": [],
+          "outside_edges": [],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        },
+        "ground_special": {
+          "entry": "0x17fca",
+          "static_action_writes": [
+            {
+              "action": 21,
+              "pc": "0x18edc"
+            },
+            {
+              "action": 65,
+              "pc": "0x1996c"
+            },
+            {
+              "action": 68,
+              "pc": "0x1999c"
+            },
+            {
+              "action": 66,
+              "pc": "0x19a02"
+            },
+            {
+              "action": 70,
+              "pc": "0x19a9a"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x18ea8",
+            "0x18ec0",
+            "0x1992e",
+            "0x1994e",
+            "0x19980",
+            "0x199be",
+            "0x19a84"
+          ],
+          "inline_throw_instructions": [],
+          "outside_edges": [],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        },
+        "air_special": {
+          "entry": "0x18092",
+          "static_action_writes": [
+            {
+              "action": 2,
+              "pc": "0x18af2"
+            },
+            {
+              "action": 69,
+              "pc": "0x19a70"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x18ac4",
+            "0x18adc",
+            "0x19a22",
+            "0x19a4a"
+          ],
+          "inline_throw_instructions": [],
+          "outside_edges": [],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        }
+      },
+      "selector_region": [
+        "0x17e12",
+        "0x180f6"
+      ],
+      "static_action_closure": [
+        "00",
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09",
+        "0a",
+        "0b",
+        "0c",
+        "0d",
+        "0f",
+        "14",
+        "15",
+        "41",
+        "42",
+        "43",
+        "44",
+        "45",
+        "46"
+      ],
+      "already_recovered_same_slot": [
+        "00",
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09",
+        "0a",
+        "0b",
+        "0c",
+        "0d",
+        "0f",
+        "14",
+        "15",
+        "41",
+        "42",
+        "43",
+        "44",
+        "45",
+        "46"
+      ],
+      "missing_continuation_slots": [],
+      "missing_continuation_roots": [],
+      "constructor_roots": [
+        "0x18812",
+        "0x18828",
+        "0x1883e",
+        "0x18854",
+        "0x1886a",
+        "0x18880",
+        "0x188d8",
+        "0x188ee",
+        "0x18930",
+        "0x18ac4",
+        "0x18adc",
+        "0x18ea8",
+        "0x18ec0",
+        "0x1992e",
+        "0x1994e",
+        "0x19980",
+        "0x199be",
+        "0x19a22",
+        "0x19a4a",
+        "0x19a84",
+        "0x19c1c"
+      ],
+      "child_callback_stores": [
+        {
+          "pc": "0x1c3ca",
+          "target": "0x132de",
+          "entry_has_recovered_chu_rule": true,
+          "new_creation_context_cpu_verified": false
+        },
+        {
+          "pc": "0x1c542",
+          "target": "0x1313e",
+          "entry_has_recovered_chu_rule": true,
+          "new_creation_context_cpu_verified": false
+        },
+        {
+          "pc": "0x1c60e",
+          "target": "0x1361e",
+          "entry_has_recovered_chu_rule": true,
+          "new_creation_context_cpu_verified": false
+        }
+      ],
+      "new_child_callback_entries": [],
+      "outside_helpers": [
+        {
+          "entry": "0x15cb0",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x1faf0",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x1fce8",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x20202",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x203f8",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x20444",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x204fa",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x205b0",
+          "same_entry_has_recovered_helper": true
+        }
+      ],
+      "full_action_oracle_status": "existing_source9_verified",
+      "new_original_cpu_calls": 0
+    },
+    {
+      "source_id": 10,
+      "command_preparation_entry": "0x180f6",
+      "attack_selectors": {
+        "ground": {
+          "entry": "0x18164",
+          "static_action_writes": [
+            {
+              "action": 17,
+              "pc": "0x1816c"
+            },
+            {
+              "action": 15,
+              "pc": "0x1819a"
+            },
+            {
+              "action": 3,
+              "pc": "0x18812"
+            },
+            {
+              "action": 3,
+              "pc": "0x18828"
+            },
+            {
+              "action": 3,
+              "pc": "0x1883e"
+            },
+            {
+              "action": 3,
+              "pc": "0x18854"
+            },
+            {
+              "action": 3,
+              "pc": "0x1886a"
+            },
+            {
+              "action": 3,
+              "pc": "0x18880"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x18812",
+            "0x18828",
+            "0x1883e",
+            "0x18854",
+            "0x1886a",
+            "0x18880",
+            "0x19c1c"
+          ],
+          "inline_throw_instructions": [
+            {
+              "pc": "0x1821e",
+              "text": "move.w A5w,(-0x59f4,A1)"
+            },
+            {
+              "pc": "0x1823e",
+              "text": "move.w (0x44,A5),(-0x59fe,A1)"
+            },
+            {
+              "pc": "0x18244",
+              "text": "subi.w #0x28,(-0x59fe,A1)"
+            },
+            {
+              "pc": "0x1824a",
+              "text": "move.b #0x18,(-0x59fc,A1)"
+            },
+            {
+              "pc": "0x18250",
+              "text": "move.b #0x28,(-0x59fb,A1)"
+            },
+            {
+              "pc": "0x18256",
+              "text": "move.b #-0x48,(-0x59fa,A1)"
+            },
+            {
+              "pc": "0x1825c",
+              "text": "move.b #0x3,(-0x59f8,A1)"
+            },
+            {
+              "pc": "0x18262",
+              "text": "move.b #0x41,(-0x59f9,A1)"
+            },
+            {
+              "pc": "0x18268",
+              "text": "move.b #0x9,(-0x59f7,A1)"
+            },
+            {
+              "pc": "0x1826e",
+              "text": "move.w #0x20,(-0x59f0,A1)"
+            },
+            {
+              "pc": "0x18274",
+              "text": "move.w #-0x30,(-0x59ee,A1)"
+            },
+            {
+              "pc": "0x1827a",
+              "text": "move.b #0x1,(-0x59f6,A1)"
+            }
+          ],
+          "outside_edges": [
+            "0x15e26",
+            "0x1faf0",
+            "0x1fb4c"
+          ],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        },
+        "air": {
+          "entry": "0x182a6",
+          "static_action_writes": [
+            {
+              "action": 2,
+              "pc": "0x188d8"
+            },
+            {
+              "action": 2,
+              "pc": "0x188ee"
+            },
+            {
+              "action": 2,
+              "pc": "0x18930"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x188d8",
+            "0x188ee",
+            "0x18930"
+          ],
+          "inline_throw_instructions": [
+            {
+              "pc": "0x18346",
+              "text": "move.w A5w,(-0x59f4,A1)"
+            },
+            {
+              "pc": "0x18366",
+              "text": "move.w (0x44,A5),(-0x59fe,A1)"
+            },
+            {
+              "pc": "0x1836c",
+              "text": "subi.w #0x30,(-0x59fe,A1)"
+            },
+            {
+              "pc": "0x18372",
+              "text": "move.b #0x18,(-0x59fc,A1)"
+            },
+            {
+              "pc": "0x18378",
+              "text": "move.b #0x8,(-0x59fb,A1)"
+            },
+            {
+              "pc": "0x1837e",
+              "text": "move.b #-0x47,(-0x59fa,A1)"
+            },
+            {
+              "pc": "0x18384",
+              "text": "move.b #0x9,(-0x59f8,A1)"
+            },
+            {
+              "pc": "0x1838a",
+              "text": "move.b #0x41,(-0x59f9,A1)"
+            },
+            {
+              "pc": "0x18390",
+              "text": "move.b #0x9,(-0x59f7,A1)"
+            },
+            {
+              "pc": "0x18396",
+              "text": "move.w #0x18,(-0x59f0,A1)"
+            },
+            {
+              "pc": "0x1839c",
+              "text": "move.w #0x0,(-0x59ee,A1)"
+            },
+            {
+              "pc": "0x183a2",
+              "text": "move.b #0x1,(-0x59f6,A1)"
+            }
+          ],
+          "outside_edges": [],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        },
+        "ground_special": {
+          "entry": "0x183b0",
+          "static_action_writes": [
+            {
+              "action": 3,
+              "pc": "0x19ad6"
+            },
+            {
+              "action": 45,
+              "pc": "0x19b00"
+            },
+            {
+              "action": 71,
+              "pc": "0x19b2a"
+            },
+            {
+              "action": 71,
+              "pc": "0x19b5c"
+            },
+            {
+              "action": 73,
+              "pc": "0x19bea"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x19ac0",
+            "0x19aea",
+            "0x19b14",
+            "0x19b46",
+            "0x19bd8"
+          ],
+          "inline_throw_instructions": [],
+          "outside_edges": [],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        },
+        "air_special": {
+          "entry": "0x18420",
+          "static_action_writes": [
+            {
+              "action": 72,
+              "pc": "0x19bc6"
+            }
+          ],
+          "direct_constructor_roots": [
+            "0x19b78",
+            "0x19ba0"
+          ],
+          "inline_throw_instructions": [],
+          "outside_edges": [],
+          "observation_kind": "bounded_static_overapproximation; no new CPU calls"
+        }
+      },
+      "selector_region": [
+        "0x18164",
+        "0x18440"
+      ],
+      "static_action_closure": [
+        "00",
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09",
+        "0a",
+        "0b",
+        "0c",
+        "0d",
+        "0f",
+        "11",
+        "14",
+        "2d",
+        "47",
+        "48",
+        "49"
+      ],
+      "already_recovered_same_slot": [
+        "00",
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09",
+        "0a",
+        "0b",
+        "0c",
+        "0d",
+        "0f",
+        "14"
+      ],
+      "missing_continuation_slots": [
+        "11",
+        "2d",
+        "47",
+        "48",
+        "49"
+      ],
+      "missing_continuation_roots": [
+        "0x1cb08",
+        "0x1b67a",
+        "0x1c85e",
+        "0x1c8e0",
+        "0x1c9aa"
+      ],
+      "constructor_roots": [
+        "0x18812",
+        "0x18828",
+        "0x1883e",
+        "0x18854",
+        "0x1886a",
+        "0x18880",
+        "0x188d8",
+        "0x188ee",
+        "0x18930",
+        "0x19ac0",
+        "0x19aea",
+        "0x19b14",
+        "0x19b46",
+        "0x19b78",
+        "0x19ba0",
+        "0x19bd8",
+        "0x19c1c"
+      ],
+      "child_callback_stores": [],
+      "new_child_callback_entries": [],
+      "outside_helpers": [
+        {
+          "entry": "0x15cb0",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x1faf0",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x1fce8",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x20202",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x203f8",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x20444",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x204fa",
+          "same_entry_has_recovered_helper": true
+        },
+        {
+          "entry": "0x205b0",
+          "same_entry_has_recovered_helper": true
+        }
+      ],
+      "full_action_oracle_status": "not_yet_captured_for_this_source",
+      "new_original_cpu_calls": 0
+    }
+  ],
+  "slots": [
+    {
+      "slot": "00",
+      "entry": "0x19cee",
+      "structural_region_end_exclusive": "0x19da2",
+      "source_ids_static_may_use": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "recovered_same_slot",
+      "reachable_instruction_count_including_helpers": 101,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        },
+        {
+          "action": 0,
+          "pc": "0x1846a"
+        },
+        {
+          "action": 2,
+          "pc": "0x1859e"
+        },
+        {
+          "action": 12,
+          "pc": "0x18682"
+        },
+        {
+          "action": 0,
+          "pc": "0x187c6"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc",
+        "0x1fce8"
+      ]
+    },
+    {
+      "slot": "01",
+      "entry": "0x19da2",
+      "structural_region_end_exclusive": "0x19dc6",
+      "source_ids_static_may_use": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "recovered_same_slot",
+      "reachable_instruction_count_including_helpers": 9,
+      "next_action_writes": [],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "02",
+      "entry": "0x19dc6",
+      "structural_region_end_exclusive": "0x19e08",
+      "source_ids_static_may_use": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "recovered_same_slot",
+      "reachable_instruction_count_including_helpers": 30,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x1856a"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc",
+        "0x1fce8"
+      ]
+    },
+    {
+      "slot": "03",
+      "entry": "0x19f90",
+      "structural_region_end_exclusive": "0x19fb0",
+      "source_ids_static_may_use": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "recovered_same_slot",
+      "reachable_instruction_count_including_helpers": 25,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        },
+        {
+          "action": 0,
+          "pc": "0x1846a"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "04",
+      "entry": "0x19fb0",
+      "structural_region_end_exclusive": "0x1a016",
+      "source_ids_static_may_use": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "recovered_same_slot",
+      "reachable_instruction_count_including_helpers": 36,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "05",
+      "entry": "0x1a02c",
+      "structural_region_end_exclusive": "0x1a13c",
+      "source_ids_static_may_use": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "recovered_same_slot",
+      "reachable_instruction_count_including_helpers": 91,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x187b0"
+        },
+        {
+          "action": 0,
+          "pc": "0x187c6"
+        },
+        {
+          "action": 6,
+          "pc": "0x187e2"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc",
+        "0x15cb0",
+        "0x1fce8",
+        "0x20444",
+        "0x204fa",
+        "0x205b0"
+      ]
+    },
+    {
+      "slot": "06",
+      "entry": "0x1a13c",
+      "structural_region_end_exclusive": "0x1a1ae",
+      "source_ids_static_may_use": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "recovered_same_slot",
+      "reachable_instruction_count_including_helpers": 39,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x187b0"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc",
+        "0x1fce8"
+      ]
+    },
+    {
+      "slot": "07",
+      "entry": "0x1a1ae",
+      "structural_region_end_exclusive": "0x1a22c",
+      "source_ids_static_may_use": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "recovered_same_slot",
+      "reachable_instruction_count_including_helpers": 34,
+      "next_action_writes": [
+        {
+          "action": 5,
+          "pc": "0x1a1e2"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "08",
+      "entry": "0x1a016",
+      "structural_region_end_exclusive": "0x1a02c",
+      "source_ids_static_may_use": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "recovered_same_slot",
+      "reachable_instruction_count_including_helpers": 96,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x187b0"
+        },
+        {
+          "action": 0,
+          "pc": "0x187c6"
+        },
+        {
+          "action": 6,
+          "pc": "0x187e2"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc",
+        "0x15cb0",
+        "0x1fce8",
+        "0x203f8",
+        "0x20444",
+        "0x204fa",
+        "0x205b0"
+      ]
+    },
+    {
+      "slot": "09",
+      "entry": "0x1a22c",
+      "structural_region_end_exclusive": "0x1a282",
+      "source_ids_static_may_use": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "recovered_same_slot",
+      "reachable_instruction_count_including_helpers": 30,
+      "next_action_writes": [
+        {
+          "action": 2,
+          "pc": "0x1a26c"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "0a",
+      "entry": "0x19e08",
+      "structural_region_end_exclusive": "0x19ecc",
+      "source_ids_static_may_use": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "recovered_same_slot",
+      "reachable_instruction_count_including_helpers": 53,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x1856a"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc",
+        "0x1fce8"
+      ]
+    },
+    {
+      "slot": "0b",
+      "entry": "0x19ecc",
+      "structural_region_end_exclusive": "0x19f90",
+      "source_ids_static_may_use": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "recovered_same_slot",
+      "reachable_instruction_count_including_helpers": 53,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x1856a"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc",
+        "0x1fce8"
+      ]
+    },
+    {
+      "slot": "0c",
+      "entry": "0x1a282",
+      "structural_region_end_exclusive": "0x1a2c2",
+      "source_ids_static_may_use": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "recovered_same_slot",
+      "reachable_instruction_count_including_helpers": 28,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "0d",
+      "entry": "0x1a2c2",
+      "structural_region_end_exclusive": "0x1a2f2",
+      "source_ids_static_may_use": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "recovered_same_slot",
+      "reachable_instruction_count_including_helpers": 25,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "0e",
+      "entry": "0x1ca46",
+      "structural_region_end_exclusive": "0x1ca9c",
+      "source_ids_static_may_use": [
+        0,
+        4,
+        6
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 45,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        },
+        {
+          "action": 2,
+          "pc": "0x18626"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc",
+        "0x1faf0"
+      ]
+    },
+    {
+      "slot": "0f",
+      "entry": "0x1ca9c",
+      "structural_region_end_exclusive": "0x1cb08",
+      "source_ids_static_may_use": [
+        1,
+        2,
+        3,
+        5,
+        7,
+        8,
+        9,
+        10
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [
+        "10"
+      ],
+      "implementation": "recovered_same_slot",
+      "reachable_instruction_count_including_helpers": 53,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        },
+        {
+          "action": 2,
+          "pc": "0x18626"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc",
+        "0x1faf0"
+      ]
+    },
+    {
+      "slot": "10",
+      "entry": "0x1ca9c",
+      "structural_region_end_exclusive": "0x1cb08",
+      "source_ids_static_may_use": [],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [
+        "0f"
+      ],
+      "implementation": "same_entry_as_0f_but_current_switch_rejects_10",
+      "reachable_instruction_count_including_helpers": 53,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        },
+        {
+          "action": 2,
+          "pc": "0x18626"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc",
+        "0x1faf0"
+      ]
+    },
+    {
+      "slot": "11",
+      "entry": "0x1cb08",
+      "structural_region_end_exclusive": "0x1cb68",
+      "source_ids_static_may_use": [
+        0,
+        1,
+        2,
+        3,
+        5,
+        6,
+        7,
+        8,
+        10
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 46,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        },
+        {
+          "action": 2,
+          "pc": "0x18626"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "12",
+      "entry": "0x1cb68",
+      "structural_region_end_exclusive": "0x1cbc8",
+      "source_ids_static_may_use": [
+        4
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 46,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        },
+        {
+          "action": 2,
+          "pc": "0x18626"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "13",
+      "entry": "0x1cbc8",
+      "structural_region_end_exclusive": "0x1cc28",
+      "source_ids_static_may_use": [
+        3,
+        6,
+        7
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 43,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        },
+        {
+          "action": 0,
+          "pc": "0x1846a"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc",
+        "0x1faf0"
+      ]
+    },
+    {
+      "slot": "14",
+      "entry": "0x1cc28",
+      "structural_region_end_exclusive": "0x1cc82",
+      "source_ids_static_may_use": [
+        7,
+        9,
+        10
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "recovered_same_slot",
+      "reachable_instruction_count_including_helpers": 41,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        },
+        {
+          "action": 0,
+          "pc": "0x1846a"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc",
+        "0x1faf0"
+      ]
+    },
+    {
+      "slot": "15",
+      "entry": "0x1a2f2",
+      "structural_region_end_exclusive": "0x1a328",
+      "source_ids_static_may_use": [
+        0,
+        3,
+        9
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "recovered_same_slot",
+      "reachable_instruction_count_including_helpers": 49,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        },
+        {
+          "action": 21,
+          "pc": "0x1897a"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "16",
+      "entry": "0x1a328",
+      "structural_region_end_exclusive": "0x1a430",
+      "source_ids_static_may_use": [
+        0
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 70,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc",
+        "0x1fbaa",
+        "0x1fce8",
+        "0x20202"
+      ]
+    },
+    {
+      "slot": "17",
+      "entry": "0x1a430",
+      "structural_region_end_exclusive": "0x1a6fe",
+      "source_ids_static_may_use": [
+        0,
+        3
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 166,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        }
+      ],
+      "child_callback_stores": [
+        {
+          "pc": "0x1a454",
+          "target": "0x132de",
+          "entry_has_recovered_chu_rule": true,
+          "new_creation_context_cpu_verified": false
+        },
+        {
+          "pc": "0x1a59e",
+          "target": "0x1313e",
+          "entry_has_recovered_chu_rule": true,
+          "new_creation_context_cpu_verified": false
+        },
+        {
+          "pc": "0x1a658",
+          "target": "0x134c2",
+          "entry_has_recovered_chu_rule": false,
+          "new_creation_context_cpu_verified": false
+        }
+      ],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "18",
+      "entry": "0x1a6fe",
+      "structural_region_end_exclusive": "0x1a868",
+      "source_ids_static_may_use": [
+        0
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 86,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        }
+      ],
+      "child_callback_stores": [
+        {
+          "pc": "0x1a7a8",
+          "target": "0x12c96",
+          "entry_has_recovered_chu_rule": false,
+          "new_creation_context_cpu_verified": false
+        }
+      ],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "19",
+      "entry": "0x1a868",
+      "structural_region_end_exclusive": "0x1a8f0",
+      "source_ids_static_may_use": [
+        0
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 64,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        },
+        {
+          "action": 22,
+          "pc": "0x189d4"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc",
+        "0x20202"
+      ]
+    },
+    {
+      "slot": "1a",
+      "entry": "0x1aac2",
+      "structural_region_end_exclusive": "0x1ab92",
+      "source_ids_static_may_use": [
+        1
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 54,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        }
+      ],
+      "child_callback_stores": [
+        {
+          "pc": "0x1aaf4",
+          "target": "0x12dd4",
+          "entry_has_recovered_chu_rule": false,
+          "new_creation_context_cpu_verified": false
+        }
+      ],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "1b",
+      "entry": "0x1a8f0",
+      "structural_region_end_exclusive": "0x1a9be",
+      "source_ids_static_may_use": [
+        1
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 53,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        }
+      ],
+      "child_callback_stores": [
+        {
+          "pc": "0x1a922",
+          "target": "0x12ee8",
+          "entry_has_recovered_chu_rule": false,
+          "new_creation_context_cpu_verified": false
+        }
+      ],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "1c",
+      "entry": "0x1a9be",
+      "structural_region_end_exclusive": "0x1aac2",
+      "source_ids_static_may_use": [
+        1
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 66,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        }
+      ],
+      "child_callback_stores": [
+        {
+          "pc": "0x1aa34",
+          "target": "0x1300c",
+          "entry_has_recovered_chu_rule": false,
+          "new_creation_context_cpu_verified": false
+        }
+      ],
+      "outside_edges": [
+        "0x15afc",
+        "0x1fbaa"
+      ]
+    },
+    {
+      "slot": "1d",
+      "entry": "0x1ab92",
+      "structural_region_end_exclusive": "0x1ac58",
+      "source_ids_static_may_use": [
+        1
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 61,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc",
+        "0x20202"
+      ]
+    },
+    {
+      "slot": "1e",
+      "entry": "0x1ac58",
+      "structural_region_end_exclusive": "0x1ad28",
+      "source_ids_static_may_use": [
+        2
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 54,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        }
+      ],
+      "child_callback_stores": [
+        {
+          "pc": "0x1ac8a",
+          "target": "0x12dd4",
+          "entry_has_recovered_chu_rule": false,
+          "new_creation_context_cpu_verified": false
+        }
+      ],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "1f",
+      "entry": "0x1ad28",
+      "structural_region_end_exclusive": "0x1adc8",
+      "source_ids_static_may_use": [
+        2
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 52,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc",
+        "0x20202"
+      ]
+    },
+    {
+      "slot": "20",
+      "entry": "0x1adc8",
+      "structural_region_end_exclusive": "0x1aefa",
+      "source_ids_static_may_use": [
+        2
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 74,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        }
+      ],
+      "child_callback_stores": [
+        {
+          "pc": "0x1ae3c",
+          "target": "0x12c96",
+          "entry_has_recovered_chu_rule": false,
+          "new_creation_context_cpu_verified": false
+        }
+      ],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "21",
+      "entry": "0x1aefa",
+      "structural_region_end_exclusive": "0x1afc8",
+      "source_ids_static_may_use": [
+        3
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 51,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "22",
+      "entry": "0x1afc8",
+      "structural_region_end_exclusive": "0x1b146",
+      "source_ids_static_may_use": [
+        3
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 103,
+      "next_action_writes": [
+        {
+          "action": 2,
+          "pc": "0x1866e"
+        }
+      ],
+      "child_callback_stores": [
+        {
+          "pc": "0x1aff8",
+          "target": "0x1313e",
+          "entry_has_recovered_chu_rule": true,
+          "new_creation_context_cpu_verified": false
+        },
+        {
+          "pc": "0x1b0ae",
+          "target": "0x134c2",
+          "entry_has_recovered_chu_rule": false,
+          "new_creation_context_cpu_verified": false
+        }
+      ],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "23",
+      "entry": "0x1b146",
+      "structural_region_end_exclusive": "0x1b1ce",
+      "source_ids_static_may_use": [
+        3
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 66,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        },
+        {
+          "action": 36,
+          "pc": "0x19022"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc",
+        "0x20202"
+      ]
+    },
+    {
+      "slot": "24",
+      "entry": "0x1b1ce",
+      "structural_region_end_exclusive": "0x1b1e8",
+      "source_ids_static_may_use": [
+        3
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 172,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        }
+      ],
+      "child_callback_stores": [
+        {
+          "pc": "0x1a454",
+          "target": "0x132de",
+          "entry_has_recovered_chu_rule": true,
+          "new_creation_context_cpu_verified": false
+        },
+        {
+          "pc": "0x1a59e",
+          "target": "0x1313e",
+          "entry_has_recovered_chu_rule": true,
+          "new_creation_context_cpu_verified": false
+        },
+        {
+          "pc": "0x1a658",
+          "target": "0x134c2",
+          "entry_has_recovered_chu_rule": false,
+          "new_creation_context_cpu_verified": false
+        }
+      ],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "25",
+      "entry": "0x1b1e8",
+      "structural_region_end_exclusive": "0x1b21e",
+      "source_ids_static_may_use": [
+        4
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 26,
+      "next_action_writes": [
+        {
+          "action": 3,
+          "pc": "0x19092"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "26",
+      "entry": "0x1b21e",
+      "structural_region_end_exclusive": "0x1b246",
+      "source_ids_static_may_use": [
+        4
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 39,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc",
+        "0x20202"
+      ]
+    },
+    {
+      "slot": "27",
+      "entry": "0x1b246",
+      "structural_region_end_exclusive": "0x1b2bc",
+      "source_ids_static_may_use": [
+        4
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 39,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc",
+        "0x20202"
+      ]
+    },
+    {
+      "slot": "28",
+      "entry": "0x1b2bc",
+      "structural_region_end_exclusive": "0x1b2d4",
+      "source_ids_static_may_use": [
+        4
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 25,
+      "next_action_writes": [
+        {
+          "action": 2,
+          "pc": "0x18626"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "29",
+      "entry": "0x1b2d4",
+      "structural_region_end_exclusive": "0x1b3f0",
+      "source_ids_static_may_use": [
+        4
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 68,
+      "next_action_writes": [
+        {
+          "action": 42,
+          "pc": "0x191c0"
+        }
+      ],
+      "child_callback_stores": [
+        {
+          "pc": "0x1b324",
+          "target": "0x13bb6",
+          "entry_has_recovered_chu_rule": false,
+          "new_creation_context_cpu_verified": false
+        }
+      ],
+      "outside_edges": [
+        "0x15afc",
+        "0x2029e"
+      ]
+    },
+    {
+      "slot": "2a",
+      "entry": "0x1b3f0",
+      "structural_region_end_exclusive": "0x1b48a",
+      "source_ids_static_may_use": [
+        4
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 46,
+      "next_action_writes": [
+        {
+          "action": 3,
+          "pc": "0x1b44a"
+        },
+        {
+          "action": 43,
+          "pc": "0x1b474"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc",
+        "0x203f8"
+      ]
+    },
+    {
+      "slot": "2b",
+      "entry": "0x1b48a",
+      "structural_region_end_exclusive": "0x1b51a",
+      "source_ids_static_may_use": [
+        4
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 41,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        }
+      ],
+      "child_callback_stores": [
+        {
+          "pc": "0x1b4b8",
+          "target": "0x13fc8",
+          "entry_has_recovered_chu_rule": false,
+          "new_creation_context_cpu_verified": false
+        }
+      ],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "2c",
+      "entry": "0x1b51a",
+      "structural_region_end_exclusive": "0x1b67a",
+      "source_ids_static_may_use": [
+        4
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 87,
+      "next_action_writes": [
+        {
+          "action": 2,
+          "pc": "0x1b640"
+        },
+        {
+          "action": 3,
+          "pc": "0x1b65c"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "2d",
+      "entry": "0x1b67a",
+      "structural_region_end_exclusive": "0x1b6c4",
+      "source_ids_static_may_use": [
+        5,
+        10
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 32,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "2e",
+      "entry": "0x1b6c4",
+      "structural_region_end_exclusive": "0x1b704",
+      "source_ids_static_may_use": [
+        5
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 39,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        },
+        {
+          "action": 3,
+          "pc": "0x19270"
+        },
+        {
+          "action": 3,
+          "pc": "0x192b4"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "2f",
+      "entry": "0x1b704",
+      "structural_region_end_exclusive": "0x1b7fa",
+      "source_ids_static_may_use": [
+        5
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 60,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        }
+      ],
+      "child_callback_stores": [
+        {
+          "pc": "0x1b736",
+          "target": "0x1414e",
+          "entry_has_recovered_chu_rule": false,
+          "new_creation_context_cpu_verified": false
+        }
+      ],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "30",
+      "entry": "0x1b7fa",
+      "structural_region_end_exclusive": "0x1b8f4",
+      "source_ids_static_may_use": [
+        5
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 74,
+      "next_action_writes": [
+        {
+          "action": 2,
+          "pc": "0x1866e"
+        }
+      ],
+      "child_callback_stores": [
+        {
+          "pc": "0x1b834",
+          "target": "0x1414e",
+          "entry_has_recovered_chu_rule": false,
+          "new_creation_context_cpu_verified": false
+        }
+      ],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "31",
+      "entry": "0x1b8f4",
+      "structural_region_end_exclusive": "0x1b9bc",
+      "source_ids_static_may_use": [
+        5
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 68,
+      "next_action_writes": [
+        {
+          "action": 50,
+          "pc": "0x19460"
+        }
+      ],
+      "child_callback_stores": [
+        {
+          "pc": "0x1b916",
+          "target": "0x146ba",
+          "entry_has_recovered_chu_rule": false,
+          "new_creation_context_cpu_verified": false
+        }
+      ],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "32",
+      "entry": "0x1b9bc",
+      "structural_region_end_exclusive": "0x1bab2",
+      "source_ids_static_may_use": [
+        5
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 60,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        }
+      ],
+      "child_callback_stores": [
+        {
+          "pc": "0x1b9ee",
+          "target": "0x143e4",
+          "entry_has_recovered_chu_rule": false,
+          "new_creation_context_cpu_verified": false
+        }
+      ],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "33",
+      "entry": "0x1bab2",
+      "structural_region_end_exclusive": "0x1bad6",
+      "source_ids_static_may_use": [
+        6
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 28,
+      "next_action_writes": [
+        {
+          "action": 2,
+          "pc": "0x18626"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "34",
+      "entry": "0x1bad6",
+      "structural_region_end_exclusive": "0x1bafe",
+      "source_ids_static_may_use": [
+        6
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 24,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x1856a"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc",
+        "0x1fce8"
+      ]
+    },
+    {
+      "slot": "35",
+      "entry": "0x1bafe",
+      "structural_region_end_exclusive": "0x1bbbe",
+      "source_ids_static_may_use": [
+        6
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 71,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        },
+        {
+          "action": 2,
+          "pc": "0x18626"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc",
+        "0x20202"
+      ]
+    },
+    {
+      "slot": "36",
+      "entry": "0x1bbbe",
+      "structural_region_end_exclusive": "0x1bc7e",
+      "source_ids_static_may_use": [
+        6
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 71,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        },
+        {
+          "action": 2,
+          "pc": "0x18626"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc",
+        "0x20202"
+      ]
+    },
+    {
+      "slot": "37",
+      "entry": "0x1bc7e",
+      "structural_region_end_exclusive": "0x1bc92",
+      "source_ids_static_may_use": [
+        6
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 24,
+      "next_action_writes": [
+        {
+          "action": 2,
+          "pc": "0x18626"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "38",
+      "entry": "0x1bc92",
+      "structural_region_end_exclusive": "0x1bd6e",
+      "source_ids_static_may_use": [
+        6
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 68,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        },
+        {
+          "action": 12,
+          "pc": "0x18682"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "39",
+      "entry": "0x1bd6e",
+      "structural_region_end_exclusive": "0x1be08",
+      "source_ids_static_may_use": [
+        7
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 45,
+      "next_action_writes": [
+        {
+          "action": 3,
+          "pc": "0x1bdd8"
+        },
+        {
+          "action": 3,
+          "pc": "0x1bdec"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "3a",
+      "entry": "0x1be08",
+      "structural_region_end_exclusive": "0x1be64",
+      "source_ids_static_may_use": [
+        7
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 31,
+      "next_action_writes": [
+        {
+          "action": 3,
+          "pc": "0x1be16"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "3b",
+      "entry": "0x1be64",
+      "structural_region_end_exclusive": "0x1bfce",
+      "source_ids_static_may_use": [
+        7
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 78,
+      "next_action_writes": [
+        {
+          "action": 60,
+          "pc": "0x1be76"
+        }
+      ],
+      "child_callback_stores": [
+        {
+          "pc": "0x1be9c",
+          "target": "0x136e6",
+          "entry_has_recovered_chu_rule": false,
+          "new_creation_context_cpu_verified": false
+        },
+        {
+          "pc": "0x1bf3c",
+          "target": "0x1391e",
+          "entry_has_recovered_chu_rule": false,
+          "new_creation_context_cpu_verified": false
+        }
+      ],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "3c",
+      "entry": "0x1bfce",
+      "structural_region_end_exclusive": "0x1c032",
+      "source_ids_static_may_use": [
+        7
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 31,
+      "next_action_writes": [
+        {
+          "action": 3,
+          "pc": "0x1c024"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "3d",
+      "entry": "0x1c032",
+      "structural_region_end_exclusive": "0x1c09a",
+      "source_ids_static_may_use": [
+        7
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 38,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        }
+      ],
+      "child_callback_stores": [
+        {
+          "pc": "0x1c058",
+          "target": "0x15094",
+          "entry_has_recovered_chu_rule": false,
+          "new_creation_context_cpu_verified": false
+        }
+      ],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "3e",
+      "entry": "0x1c09a",
+      "structural_region_end_exclusive": "0x1c196",
+      "source_ids_static_may_use": [
+        8
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 77,
+      "next_action_writes": [
+        {
+          "action": 2,
+          "pc": "0x18626"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc",
+        "0x20202"
+      ]
+    },
+    {
+      "slot": "3f",
+      "entry": "0x1c196",
+      "structural_region_end_exclusive": "0x1c27c",
+      "source_ids_static_may_use": [
+        8
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 59,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        }
+      ],
+      "child_callback_stores": [
+        {
+          "pc": "0x1c1ce",
+          "target": "0x147ae",
+          "entry_has_recovered_chu_rule": false,
+          "new_creation_context_cpu_verified": false
+        }
+      ],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "40",
+      "entry": "0x1c27c",
+      "structural_region_end_exclusive": "0x1c33a",
+      "source_ids_static_may_use": [
+        8
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 55,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "41",
+      "entry": "0x1c33a",
+      "structural_region_end_exclusive": "0x1c3ba",
+      "source_ids_static_may_use": [
+        9
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "recovered_same_slot",
+      "reachable_instruction_count_including_helpers": 46,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc",
+        "0x20202"
+      ]
+    },
+    {
+      "slot": "42",
+      "entry": "0x1c3ba",
+      "structural_region_end_exclusive": "0x1c50a",
+      "source_ids_static_may_use": [
+        9
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "recovered_same_slot",
+      "reachable_instruction_count_including_helpers": 88,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        },
+        {
+          "action": 67,
+          "pc": "0x1c4e4"
+        }
+      ],
+      "child_callback_stores": [
+        {
+          "pc": "0x1c3ca",
+          "target": "0x132de",
+          "entry_has_recovered_chu_rule": true,
+          "new_creation_context_cpu_verified": false
+        }
+      ],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "43",
+      "entry": "0x1c50a",
+      "structural_region_end_exclusive": "0x1c6a0",
+      "source_ids_static_may_use": [
+        9
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "recovered_same_slot",
+      "reachable_instruction_count_including_helpers": 91,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        }
+      ],
+      "child_callback_stores": [
+        {
+          "pc": "0x1c542",
+          "target": "0x1313e",
+          "entry_has_recovered_chu_rule": true,
+          "new_creation_context_cpu_verified": false
+        },
+        {
+          "pc": "0x1c60e",
+          "target": "0x1361e",
+          "entry_has_recovered_chu_rule": true,
+          "new_creation_context_cpu_verified": false
+        }
+      ],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "44",
+      "entry": "0x1c6a0",
+      "structural_region_end_exclusive": "0x1c6e2",
+      "source_ids_static_may_use": [
+        9
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "recovered_same_slot",
+      "reachable_instruction_count_including_helpers": 30,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc"
+      ]
+    },
+    {
+      "slot": "45",
+      "entry": "0x1c6e2",
+      "structural_region_end_exclusive": "0x1c7bc",
+      "source_ids_static_may_use": [
+        7,
+        9
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "recovered_same_slot",
+      "reachable_instruction_count_including_helpers": 67,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        },
+        {
+          "action": 20,
+          "pc": "0x1c74e"
+        },
+        {
+          "action": 2,
+          "pc": "0x1c7a6"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc",
+        "0x20202"
+      ]
+    },
+    {
+      "slot": "46",
+      "entry": "0x1c7bc",
+      "structural_region_end_exclusive": "0x1c85e",
+      "source_ids_static_may_use": [
+        9
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "recovered_same_slot",
+      "reachable_instruction_count_including_helpers": 49,
+      "next_action_writes": [
+        {
+          "action": 3,
+          "pc": "0x1c840"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc",
+        "0x20202"
+      ]
+    },
+    {
+      "slot": "47",
+      "entry": "0x1c85e",
+      "structural_region_end_exclusive": "0x1c8e0",
+      "source_ids_static_may_use": [
+        10
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 57,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        },
+        {
+          "action": 2,
+          "pc": "0x18626"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc",
+        "0x20202"
+      ]
+    },
+    {
+      "slot": "48",
+      "entry": "0x1c8e0",
+      "structural_region_end_exclusive": "0x1c9aa",
+      "source_ids_static_may_use": [
+        10
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 46,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        },
+        {
+          "action": 20,
+          "pc": "0x1c93c"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc",
+        "0x20202"
+      ]
+    },
+    {
+      "slot": "49",
+      "entry": "0x1c9aa",
+      "structural_region_end_exclusive": "0x1ca46",
+      "source_ids_static_may_use": [
+        10
+      ],
+      "owner_scope": "selector + continuation closure; common 00..0d included for all; not natural execution",
+      "same_entry_slots": [],
+      "implementation": "missing",
+      "reachable_instruction_count_including_helpers": 51,
+      "next_action_writes": [
+        {
+          "action": 0,
+          "pc": "0x18440"
+        }
+      ],
+      "child_callback_stores": [],
+      "outside_edges": [
+        "0x15afc",
+        "0x20202"
+      ]
+    }
+  ],
+  "focused_listings": [
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-action-selectors-focused.txt",
+      "sha256": "8c27ef51fc1bddfbf4b928e5a1290b2556c057f01d320e46a0ccdda56609692b",
+      "instructions": 1642
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-action-constructors-focused.txt",
+      "sha256": "e43cec558dad5ba037b0ad39577ec0ebc8b9d9a6c6af0b667596d35e0ae44dad",
+      "instructions": 1157
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-action-slots-focused.txt",
+      "sha256": "c6a52e94bea31dc12e08c6cd76a282dc4ae51c56288f2df3e7bef40cd72a072d",
+      "instructions": 2655
+    }
+  ],
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/engine/chu_action.go",
+      "sha256": "e6e6348336187606913196cce368d82ed549a4c0645b4c0f1e44c69d14015502"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_tail.go",
+      "sha256": "584532622708a4269adb8d4e9b253038a9cb58e2062eb26fd621a5b2d168cc07"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_attacks.go",
+      "sha256": "108d7a4a72ab06cd9c2950c6830e861c063f937a968499f554cd633062f434a6"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_special_motion.go",
+      "sha256": "5c37d35003f4f983010232d495b6e45143553a36b347edbaf2aa494006839c98"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_projectile.go",
+      "sha256": "b6b6f115b819c74cb771707f04e18a801d382b2e5a152d5f4c10b01d7bf79363"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_attachments.go",
+      "sha256": "7aac1a6716a25445e4c9f6302af4b810d1cb6e421f425e6aec15c29100efb48c"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/throw_records.go",
+      "sha256": "ce5f9c6c77a8d7ebc298f30e9f99fb9686ad436bc4cc716960c3c0542480b34f"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/ground_control.go",
+      "sha256": "c5c1d71729abb591b4fb2bcd6de7b18985f2f08da4c2ac472771039dc265b2c5"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/reaction_motion.go",
+      "sha256": "12f7ef77773aef729bf5891f05a0589ed343cad4d4a0231e3a89b757e2268ceb"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/effects.go",
+      "sha256": "6a0916fbc4051a0e67988b9cad99e41d9ef778e0e78a7f63d65f5fb35d2f6b18"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/character_commands.go",
+      "sha256": "6f67aa187c0e48fd7787b00b38c41b6a7105a2a72553f1aa899fb9fed9665e5c"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter_ai.go",
+      "sha256": "10401486da28a33f95fc5427b6cc5d7f00a90a86b6914f9a7d3d8fd723c29c93"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/jump.go",
+      "sha256": "4d04cd8fc08edde75a5793d6be21644e058e7b2caf4e7c3c6c7b15f18fa39605"
+    },
+    {
+      "path": "games/yuyuhakusho/data/animation-catalog-manifest.json",
+      "sha256": "18fa96ed9adda02de5b890bb99802e49416bdbf143318835cecf2bc7574eaaba"
+    },
+    {
+      "path": "games/yuyuhakusho/data/animation-catalog-validation.json",
+      "sha256": "d94b07741d4bb3dcd2cb09bff994e1507d9c892f71be2482e8955294c8116a6b"
+    },
+    {
+      "path": "games/yuyuhakusho/data/command-programs.json",
+      "sha256": "ce50d443432dc1db6be7ecb95ea12bb8b44ba88216fc12c815c43b1d88ef9ec3"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/character-commands-validation.json",
+      "sha256": "e2e435c46838202637f7f440681b4b830bd0b59a40298ec8c076124547d218df"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter-ai-validation.json",
+      "sha256": "a2226e1c8ca31a44c2536c16e8585ccecc640ad887b59dcb76c6705b03a8c3cc"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/chu-action-validation.json",
+      "sha256": "82dbec0e3d61c70b20e6cd30955a08f62d65d47b04addeb1f5ccefb2a0badc08"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/chu-special-motion-validation.json",
+      "sha256": "b2ab87979ed523cda074ec990264236b3be9e6145e933e1992dac62f43ab250e"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/chu-projectile-validation.json",
+      "sha256": "4ad18d957699437b60d3008c898efc0dda10a19869f8ecd6535c1fd122664a30"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/chu-attachments-validation.json",
+      "sha256": "d94f5760a1b5006ab80f446d6411f7f18da84f34fa78ec98e31fe520bec5e096"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/action-character-tables.txt",
+      "sha256": "41420035a9a1c6e1145dcbb3c479ea3f2dda47c7f18b4a591a05dda0b5d20764"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/action-dispatch-table.txt",
+      "sha256": "0e2546bc1e0490ad3a3dcb490f87318cd6765171cdedea6254f4ac7ff94ac3b1"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/FighterActionRoadmapProbe.java",
+      "sha256": "b2b09722af5ea4202eb62a1771f12ab85c1efe7f8e9a43723422fe4b34cfa091"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/derive-fighter-action-roadmap.py",
+      "sha256": "344dd3032df9b8bdf1eac0710c722326def4020bb55a3554d351b57b922d60b4"
+    }
+  ],
+  "recommended_next_source": 10,
+  "recommendation_basis": "Five missing continuations; no new character child callback store; existing 0x20202 helper; source8/2 need one/two new child lifecycles",
+  "known_new_source10_state": [
+    {
+      "offset": "0x48",
+      "width": "byte",
+      "use": "cleared by 0x19bf0, incremented/read by action49; current Chu action state has no named owner"
+    }
+  ],
+  "unknowns": [
+    "No new character selector, constructor or continuation CPU return is claimed here",
+    "Static graph follows both sides of conditions and direct-call fallthrough; it is an overapproximation",
+    "Source2 request1 direction table0x1690c has 11 structural entries; held nibble11..15 reads adjacent code, behavior unverified",
+    "Slot10 aliases slot0f at0x1ca9c but no in-scope selector/common path writes10; validity and reachability remain unknown",
+    "Child callback entries are known stores; newly needed callback extents, initialization resources and full lifetimes are not recovered here",
+    "Animation, commands and AI coverage do not prove attacks or full matches playable",
+    "Collision-selected states outside selector/continuation closure may add requirements and need integrated CPU evidence"
+  ]
+}

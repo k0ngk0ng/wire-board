@@ -1,0 +1,34 @@
+{"Time":"2026-11-04T20:12:40.414055+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-04T20:12:40.476322+08:00","Action":"run","Package":"command-line-arguments","Test":"TestWorldObjectsClearAgainstOriginal"}
+{"Time":"2026-11-04T20:12:40.47636+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsClearAgainstOriginal","Output":"=== RUN   TestWorldObjectsClearAgainstOriginal\n"}
+{"Time":"2026-11-04T20:12:40.477802+08:00","Action":"run","Package":"command-line-arguments","Test":"TestWorldObjectsClearAgainstOriginal/world-objects-oracle"}
+{"Time":"2026-11-04T20:12:40.477821+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsClearAgainstOriginal/world-objects-oracle","Output":"=== RUN   TestWorldObjectsClearAgainstOriginal/world-objects-oracle\n"}
+{"Time":"2026-11-04T20:12:40.491476+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsClearAgainstOriginal/world-objects-oracle","Output":"    world_objects_test.go:171: original object clear calls=61 prefixes=2\n"}
+{"Time":"2026-11-04T20:12:40.492493+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsClearAgainstOriginal/world-objects-oracle","Output":"--- PASS: TestWorldObjectsClearAgainstOriginal/world-objects-oracle (0.01s)\n"}
+{"Time":"2026-11-04T20:12:40.4929+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestWorldObjectsClearAgainstOriginal/world-objects-oracle","Elapsed":0.01}
+{"Time":"2026-11-04T20:12:40.493197+08:00","Action":"run","Package":"command-line-arguments","Test":"TestWorldObjectsClearAgainstOriginal/world-objects-boundaries"}
+{"Time":"2026-11-04T20:12:40.493229+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsClearAgainstOriginal/world-objects-boundaries","Output":"=== RUN   TestWorldObjectsClearAgainstOriginal/world-objects-boundaries\n"}
+{"Time":"2026-11-04T20:12:40.506063+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsClearAgainstOriginal/world-objects-boundaries","Output":"    world_objects_test.go:171: original object clear calls=288 prefixes=16\n"}
+{"Time":"2026-11-04T20:12:40.506183+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsClearAgainstOriginal/world-objects-boundaries","Output":"--- PASS: TestWorldObjectsClearAgainstOriginal/world-objects-boundaries (0.01s)\n"}
+{"Time":"2026-11-04T20:12:40.506228+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestWorldObjectsClearAgainstOriginal/world-objects-boundaries","Elapsed":0.01}
+{"Time":"2026-11-04T20:12:40.506299+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsClearAgainstOriginal","Output":"--- PASS: TestWorldObjectsClearAgainstOriginal (0.03s)\n"}
+{"Time":"2026-11-04T20:12:40.506385+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestWorldObjectsClearAgainstOriginal","Elapsed":0.03}
+{"Time":"2026-11-04T20:12:40.506464+08:00","Action":"run","Package":"command-line-arguments","Test":"TestWorldObjectsIndependentComponentViews"}
+{"Time":"2026-11-04T20:12:40.50647+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsIndependentComponentViews","Output":"=== RUN   TestWorldObjectsIndependentComponentViews\n"}
+{"Time":"2026-11-04T20:12:40.508221+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsIndependentComponentViews","Output":"--- PASS: TestWorldObjectsIndependentComponentViews (0.00s)\n"}
+{"Time":"2026-11-04T20:12:40.508474+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestWorldObjectsIndependentComponentViews","Elapsed":0}
+{"Time":"2026-11-04T20:12:40.508553+08:00","Action":"run","Package":"command-line-arguments","Test":"TestWorldObjectsRoundTripsAndIdentityErrors"}
+{"Time":"2026-11-04T20:12:40.508592+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsRoundTripsAndIdentityErrors","Output":"=== RUN   TestWorldObjectsRoundTripsAndIdentityErrors\n"}
+{"Time":"2026-11-04T20:12:40.509138+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsRoundTripsAndIdentityErrors","Output":"--- PASS: TestWorldObjectsRoundTripsAndIdentityErrors (0.00s)\n"}
+{"Time":"2026-11-04T20:12:40.509166+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestWorldObjectsRoundTripsAndIdentityErrors","Elapsed":0}
+{"Time":"2026-11-04T20:12:40.50923+08:00","Action":"run","Package":"command-line-arguments","Test":"TestWorldObjectsParentAndAllocatorOwnership"}
+{"Time":"2026-11-04T20:12:40.509239+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsParentAndAllocatorOwnership","Output":"=== RUN   TestWorldObjectsParentAndAllocatorOwnership\n"}
+{"Time":"2026-11-04T20:12:40.511195+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsParentAndAllocatorOwnership","Output":"--- PASS: TestWorldObjectsParentAndAllocatorOwnership (0.00s)\n"}
+{"Time":"2026-11-04T20:12:40.511357+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestWorldObjectsParentAndAllocatorOwnership","Elapsed":0}
+{"Time":"2026-11-04T20:12:40.511466+08:00","Action":"run","Package":"command-line-arguments","Test":"TestWorldObjectsCollisionResultsAgainstOriginal"}
+{"Time":"2026-11-04T20:12:40.511482+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsCollisionResultsAgainstOriginal","Output":"=== RUN   TestWorldObjectsCollisionResultsAgainstOriginal\n"}
+{"Time":"2026-11-04T20:12:40.749329+08:00","Action":"output","Package":"command-line-arguments","Test":"TestWorldObjectsCollisionResultsAgainstOriginal","Output":"--- PASS: TestWorldObjectsCollisionResultsAgainstOriginal (0.24s)\n"}
+{"Time":"2026-11-04T20:12:40.749834+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestWorldObjectsCollisionResultsAgainstOriginal","Elapsed":0.24}
+{"Time":"2026-11-04T20:12:40.750386+08:00","Action":"output","Package":"command-line-arguments","Output":"PASS\n"}
+{"Time":"2026-11-04T20:12:40.752861+08:00","Action":"output","Package":"command-line-arguments","Output":"ok  \tcommand-line-arguments\t0.339s\n"}
+{"Time":"2026-11-04T20:12:40.752874+08:00","Action":"pass","Package":"command-line-arguments","Elapsed":0.339}

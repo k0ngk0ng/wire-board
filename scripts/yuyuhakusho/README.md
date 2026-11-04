@@ -2,6 +2,18 @@
 
 先阅读 [失败场景与验收范围](REFERENCE_VALIDATION.md)。当前工具在 macOS arm64 验证；libretro 内部结构与固定的 Genesis Plus GX 提交绑定，不能换内核后直接沿用其 ABI。独立游戏代码不依赖这些工具。
 
+## 独立本地对局
+
+酎／默认场地已有独立浏览器研究页，运行与复跑命令见 [LOCAL_PLAYER.md](../../docs/research/md-yuyuhakusho/LOCAL_PLAYER.md)。`serve_local_player.py` 只在 loopback 提供独立 Wasm 和索引素材；它不提供 ROM 或模拟器。
+
+```sh
+sh scripts/yuyuhakusho/verify_chu_sessions.sh both
+sh scripts/yuyuhakusho/verify_chu_runtime.sh both
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/yuyuhakusho/check_local_player.py
+```
+
+完成所需检查后，`summarize_independent_session.py` 核对原生／Wasm 报告、当前源码、测试日志和浏览器结果并生成绑定摘要；它本身不运行游戏或替代检查。
+
 ## 输入文件
 
 - ROM：`.local/md-yuyuhakusho/downloads/yuyuhakusho-jp.bin`，SHA-256 `c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06`。

@@ -1,0 +1,214 @@
+{
+  "verified_at_utc": "2026-11-04T12:31:49.849218+00:00",
+  "scope": "Complete default arena20918/camera21556, sky150ca/1525e/spawned15330 rules before sprite1580 or after deletion, and full2300/233c palette functions",
+  "pass": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "test_first": "Failure document/original CPU fixtures and test file precede production Go; actual undefined DefaultArenaCamera/ArenaPaletteState red output retained. Later palette missing-data test input was corrected to high-byte interpolation0x0200 after original comparisons exposed big-endian byte selection.",
+  "coverage": {
+    "natural_complete_calls": 14772,
+    "natural_baseline_frames": 3600,
+    "isolated_records": 4456,
+    "isolated_semantic_matches": 4450,
+    "reference_only_rejections": 6,
+    "single_initial_streams": 6,
+    "single_initial_calls": 1726,
+    "combined_rounds": 180,
+    "isolated_spawned_headers": 3,
+    "stream_spawned_headers": 1,
+    "stream_deletions": 2,
+    "fade_interpolation_rows": 8,
+    "palette_banks": 3,
+    "colors_per_bank": 64,
+    "wave_samples_each": 1024,
+    "camera_tail_rows": 241,
+    "rows_each_tail": 56,
+    "spark_sequence_entries": 17
+  },
+  "api": [
+    "StepDefaultArenaCamera",
+    "StepDefaultArena",
+    "StepArenaSky",
+    "AdvancePaletteFade",
+    "ApplyPaletteFade"
+  ],
+  "build_scope": "Focused explicit default_arena.go/_test.go + random.go + match_lifecycle.go to avoid unrelated concurrent red phases; parent still runs whole-engine gate",
+  "focused_sources": [
+    "games/yuyuhakusho/engine/default_arena.go",
+    "games/yuyuhakusho/engine/default_arena_test.go",
+    "games/yuyuhakusho/engine/random.go",
+    "games/yuyuhakusho/engine/match_lifecycle.go"
+  ],
+  "logs": [
+    {
+      "phase": "red",
+      "path": "games/yuyuhakusho/engine/testdata/default-arena-red.jsonl",
+      "sha256": "30441faaa7ff1376291975e5bc49ff030a8e1088f294bf755ceec67d5aaf9ee1",
+      "result": "fail",
+      "seconds": 0,
+      "top_level_tests": []
+    },
+    {
+      "phase": "native-race",
+      "path": "games/yuyuhakusho/engine/testdata/default-arena-native.jsonl",
+      "sha256": "580f7712e4cf85393ebed7c74540555585a5ada97831ea46555715ba11c7be63",
+      "result": "pass",
+      "seconds": 19.695,
+      "top_level_tests": [
+        "TestDefaultArenaOriginalCompleteRules",
+        "TestDefaultArenaSingleInitialStreams",
+        "TestDefaultArenaInvalidDataIsAtomic"
+      ]
+    },
+    {
+      "phase": "node-wasm",
+      "path": "games/yuyuhakusho/engine/testdata/default-arena-wasm.jsonl",
+      "sha256": "a6e44cf8db715a8b986b1f8ee45e33cb129a3583374eba0fc7d0a610392948bb",
+      "result": "pass",
+      "seconds": 5.4719999999999995,
+      "top_level_tests": [
+        "TestDefaultArenaOriginalCompleteRules",
+        "TestDefaultArenaSingleInitialStreams",
+        "TestDefaultArenaInvalidDataIsAtomic"
+      ]
+    }
+  ],
+  "fixtures": [
+    {
+      "name": "default-arena-oracle",
+      "manifest_sha256": "56cf01192ec2f603cf2dbffefd496f6767994306135e5ac19c07cd2b3348d40c",
+      "records": 14772,
+      "calls": 14772,
+      "reference_only": 0,
+      "kind_counts": {
+        "progress": 3287,
+        "colors": 3213,
+        "camera": 2068,
+        "arena": 2068,
+        "sun": 2068,
+        "moon": 2068
+      },
+      "draws": 4136,
+      "deleted": 0,
+      "spawned": 0,
+      "fixture_sha256": "cc8d60f0560ad5c7c204fae58aa633166ef0b195607004a248a4a9b1d5b1997f",
+      "gzip_sha256": "16faa4f442ba0bd31825f8f5960c86ceb638b63339032808ceab151d696d193d"
+    },
+    {
+      "name": "default-arena-boundaries",
+      "manifest_sha256": "d52f128d48b2d6d83757a50a741907cf9387cbe219061de8a1c536cec6e386ef",
+      "records": 4456,
+      "calls": 4456,
+      "reference_only": 6,
+      "kind_counts": {
+        "camera": 360,
+        "arena": 432,
+        "sun": 336,
+        "moon": 416,
+        "spark": 864,
+        "progress": 700,
+        "colors": 1348
+      },
+      "draws": 1607,
+      "deleted": 9,
+      "spawned": 3,
+      "fixture_sha256": "9be9e468eb5874c2a326d9ca2f7b2f60fc7066022c581efd187fa8c45c136602",
+      "gzip_sha256": "acce9eae3555b0fe6af0b60d6012a4696979baf76bab262de11700c4364a39ed"
+    },
+    {
+      "name": "default-arena-sequences",
+      "manifest_sha256": "02d1ed8c008e5d20e5d47a9c90eaf3040b45b77bf4fcfe122c9365ea5c513eb9",
+      "records": 6,
+      "calls": 1726,
+      "reference_only": 0,
+      "kind_counts": {
+        "arena": 340,
+        "sun": 440,
+        "moon": 440,
+        "spark": 66,
+        "progress": 220,
+        "colors": 220
+      },
+      "draws": 944,
+      "deleted": 2,
+      "spawned": 1,
+      "fixture_sha256": "9541b9ec8eb4ce208e049b9e74077ac7743cd5aa105a623357e770eec308738c",
+      "gzip_sha256": "1e91f725bf5c64a3bbd2d431800247196ddef58437ca6038358a9191bef57880"
+    }
+  ],
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/engine/default_arena.go",
+      "sha256": "e4c44bc532b0103b95c7c522733eeea44d8aedded58a1de6ef7b657df4499d38"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/default_arena_test.go",
+      "sha256": "4f60c850e95f48d9b790daf0851d8332b0d7ad837aaf3935831e6aef575e1045"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_default_arena.py",
+      "sha256": "b73e4d01d3bc0149600d2bedbd14f61da61e210a7b86cdc57023e5fa15d842b0"
+    },
+    {
+      "path": "games/yuyuhakusho/data/arena-runtime-rules.json",
+      "sha256": "4d042ce63dd009836165dd22d58ad28b67ecac36ad1923c465e8a8b78a5dc302"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/DEFAULT_ARENA_VERIFICATION.md",
+      "sha256": "a38d4f22b298b56a4127cb147cfabc323fed44771254d4cfdd3b7a75d5336e32"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/default-arena-core.txt",
+      "sha256": "26bdfaee211f8ad394c6c9d67c154266e83ab3698930ac695ff022f7aee096cb"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/default-arena-palette.txt",
+      "sha256": "401219efb3eba2be7be5ee3b7da5ad96d6d05b80720937fbd15547a96edb2c1a"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/default-arena-copy.txt",
+      "sha256": "62dcc60b47210d3458cf601d3f6c6fe01a473fa4fb8fb4528ed95210a1381f3a"
+    }
+  ],
+  "dependencies": [
+    {
+      "path": "games/yuyuhakusho/engine/random.go",
+      "sha256": "c9fe3edc3ff9bee0725b78e7a38f2c4517592ddf99e52fec98e8904eb77a2056"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/match_lifecycle.go",
+      "sha256": "1121ba3d339b266c46a5af08c157741a21e5feb5f8872cb287a14a369c8753dc"
+    },
+    {
+      "path": "scripts/yuyuhakusho/reference.py",
+      "sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81"
+    },
+    {
+      "path": "scripts/yuyuhakusho/static/MdControlProbe.java",
+      "sha256": "44903c14bfe5a1ffc354e4fab1eb5893303081bbe55aa9f620808daf4ebe18a8"
+    }
+  ],
+  "storage_aliases": {
+    "camera_samples": "A800/A840 with A00E byte offset consumed and cleared by21556",
+    "hud_prefix": "E600..E7FF readonly256words passed to feedback row copy",
+    "scroll_a": "E800..E9FF aliases latter half of historical1024byteHUD capture",
+    "scroll_b": "EA00..EBFF",
+    "feedback_a": "6000..61BF",
+    "feedback_b": "6200..63BF",
+    "palette_flags": "F500",
+    "palette_status": "F501",
+    "palette_mode": "F502.word; byte read selects high byte",
+    "palette_target": "F506.word; byte read selects high byte",
+    "palette_banks": "E000 Current/E080 Primary/E100 Secondary"
+  },
+  "limits": [
+    "Other7 arena callbacks and full world/object loop not recovered here",
+    "Natural input contains no Spark or moon RNG/spawn condition; explicit original CPU matrix and mixed streams cover it",
+    "6 deliberately invalid persistent moon phases read outside decoded wave data; original outputs preserved and Go rejects atomically, rather than interpreting neighboring ROM bytes",
+    "Draw requests exclude hardware sprite1580; no VDP encoding or complete pixels claimed",
+    "Palette frame call F500.bit0 gate and original frame/object order remain world responsibilities",
+    "HUD prefix, row alias and palette/RNG/next header must be shared across callbacks; caller applies deletion prefix to all slot fields",
+    "Runtime row tables/identity values are immutable semantic data; no ROM/emulator execution or image content included",
+    "Initial full comparison caught uint8(word) low-byte error; corrected to actual first/high byte and all8 interpolation rows rerun"
+  ]
+}

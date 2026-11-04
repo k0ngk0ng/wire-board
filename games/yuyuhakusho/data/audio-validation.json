@@ -1,0 +1,169 @@
+{
+  "scope": "Deterministic original PCM/sequence finite assets and bounded music diagnostics; no runtime MD synthesis",
+  "pass": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "script_sha256": "e8a59cb97a15b02d930b2335175eca9fb17600a778ce93d779449cdac3775f56",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.4 60bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "coverage": {
+    "finite_pcm_sample_commands": 121,
+    "finite_fm_psg_sequences": 12,
+    "finite_music_cues": 1,
+    "ready_assets": 134,
+    "excluded_or_bounded_codes": [
+      127,
+      130,
+      135
+    ],
+    "animation_sound_codes": 78,
+    "all_animation_sound_codes_have_finite_assets": true,
+    "natural_ram_video_pcm_frames": 5500,
+    "natural_requests": 109,
+    "natural_selected": 107,
+    "save_restore_pcm_frames": 120,
+    "all_asset_pcm_replays_equal": true
+  },
+  "verification": [
+    {
+      "name": "Original3600-frame frontend RAM/video baseline",
+      "pass": true
+    },
+    {
+      "name": "Original120-frame audio save/restore replay",
+      "pass": true
+    },
+    {
+      "name": "Unhooked/hooked5500-frame fullRAM/video/PCM comparison",
+      "pass": true
+    },
+    {
+      "name": "Twice-rendered each isolated command, native terminal + exact-zero tail",
+      "pass": true
+    },
+    {
+      "name": "StandardWAV reader headers, sample count, fullPCM/fileSHA for every acquisition",
+      "pass": true
+    }
+  ],
+  "files": [
+    {
+      "path": "games/yuyuhakusho/data/audio-frontend-replay.json.gz",
+      "sha256": "f19303d3e816c432ce4fd7d97809754a6745dba424f57c8b6746c8604558c76c"
+    },
+    {
+      "path": "games/yuyuhakusho/data/audio-natural-events.json.gz",
+      "sha256": "8d445cd35d2c70ad850a8ca1de479d97d96dc43878e2502f7c9f228d683e580c"
+    },
+    {
+      "path": "games/yuyuhakusho/data/audio-assets.json",
+      "sha256": "617737f8ef07043401fa74f7f48ba551a64dd91cedd3a94dbfcf4883e0ff1541"
+    },
+    {
+      "path": "games/yuyuhakusho/data/audio-acquisition.json.gz",
+      "sha256": "e7df8b55df7814233dd7252fa8e3eff8bfce3f1903c0885c2aca864597f3ddd7"
+    }
+  ],
+  "sources": [
+    {
+      "path": "scripts/yuyuhakusho/extract_audio_assets.py",
+      "sha256": "e8a59cb97a15b02d930b2335175eca9fb17600a778ce93d779449cdac3775f56"
+    },
+    {
+      "path": "scripts/yuyuhakusho/reference.py",
+      "sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81"
+    }
+  ],
+  "media_root": ".local/md-yuyuhakusho/audio-assets-final",
+  "published": false,
+  "limits": [
+    "Catalog contains verified finite acquisitions only; not an independent synthesizer or complete playback scheduler",
+    "Every media path is local/unpublished; platform publication must use immutableCDN assets andBoardProps.audio",
+    "Animation references are decoded-data bindings, not proof of all normal gameplay reachability",
+    "Music82/87 remain bounded excerpts; no loop inference from an idle or repeated state",
+    "Original mixed channel stealing/pause/fade timing and other music tracks remain unimplemented"
+  ],
+  "static_evidence": [
+    {
+      "path": "docs/research/md-yuyuhakusho/static/audio-dispatch.txt",
+      "sha256": "1293e212c85faa1a1aa8800257c594d560bb9f698b4177bf5919e0423dfafd02"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/audio-control.txt",
+      "sha256": "87cc908286681bfe2d9e76b42e9f6ea2750ae1dd0f9e543507eb1df4ffc53505"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/audio-z80.txt",
+      "sha256": "6de7db3bc1660869bd228d8d09ea990a4ae4da12bfd35c2bed74523f05cc8e0a"
+    }
+  ],
+  "documentation": [
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_RESEARCH.md",
+      "sha256": "7ad6309481a73b60bccc22fad9474f55d9f4f5f60df1d25a8ebab9f430cb7884"
+    }
+  ],
+  "replay_dependencies": [
+    {
+      "path": "scripts/yuyuhakusho/static/MdControlProbe.java",
+      "sha256": "44903c14bfe5a1ffc354e4fab1eb5893303081bbe55aa9f620808daf4ebe18a8"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/inputs.json",
+      "sha256": "59383329affb09e87c6452c135d3ae20df19db9f1675acddc0972a080a8551b6"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/frame-hashes.json",
+      "sha256": "5dce10106326451b42952f473ec80adff118a7185cf64a7d6ef3fd52ff8ee1e8"
+    },
+    {
+      "path": "games/yuyuhakusho/data/animation-catalog.json.gz",
+      "sha256": "845e2f43179f831130b40c4b796843fdc0c3ae4c699d605e4326905800781495"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/match-lifecycle-reference-frames.json.gz",
+      "sha256": "a7628aa7d1475774323bb8ab5cee1f3da1419e345cc9b7240bca248f5b829b85"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/downloads/yuyuhakusho-jp.bin",
+      "sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/tools/genesis_plus_gx_libretro.dylib",
+      "sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/genesis_plus_gx_libretro.dylib",
+      "sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/tools/hook_filter.dylib",
+      "sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4"
+    }
+  ],
+  "post_acquisition_review": {
+    "pass": true,
+    "wav_files_verified": 137,
+    "finite_assets_verified": 134,
+    "isolated_per_frame_pcm_hashes_verified": 23993,
+    "isolated_wav_bytes": 70636680,
+    "natural_per_frame_pcm_hashes_verified": 5500,
+    "save_restore_rows_equal": 120,
+    "native_terminal_and_exact_zero_tail_verified": true,
+    "rom_firmware_sha256": "42ed1d2c4133d88d36c4024ff535a710f064dcb5d791b892eb3a07f6ded6ef27",
+    "script_unchanged_since_acquisition": true,
+    "scope": "Re-read existing acquisition artifacts; not a new synthesis run or Go/Wasm test"
+  },
+  "cleanup_report": {
+    "path": "games/yuyuhakusho/data/audio-cleanup.json",
+    "sha256": "67611934da116988cb0764f09bbc5a6e7f5791810a82f0bdd995d26f43a30982"
+  }
+}

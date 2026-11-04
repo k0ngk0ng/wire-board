@@ -1,0 +1,64 @@
+{
+  "scope": "Natural complete source9 AI returns",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "records": 1794,
+  "calls": 1794,
+  "capture_sha256": "aa8c4302f8cd9200cfa9184ee22f9e664ed3c06bf1cb0c8b7989c93957c9c545",
+  "capture_dependencies": [
+    {
+      "path": "scripts/yuyuhakusho/capture_chu_ai.py",
+      "sha256": "c4803b501d7450467f44a7ae0a3be1337da8c18e92708eec8b0de303bc1cfe52"
+    }
+  ],
+  "frames_match_original_core": true,
+  "fixture_sha256": "19dd322303b6036c227d7686d72b6e67f350753fb13d60466c446a0a33d781ac",
+  "gzip_sha256": "5ae2e136700832876676e1aa9a71c743d24a25283a3ab3175ffc80ee7f01cd52",
+  "errors": [],
+  "incomplete_calls": 0,
+  "pass": true,
+  "character_counts": {
+    "9": 1794
+  },
+  "paths": {
+    "0x1d074": 59,
+    "0x1e1e4": 478,
+    "0x1d14c": 3,
+    "0x1d000": 10,
+    "0x1d212": 1667,
+    "0x1d2fa": 6,
+    "0x1e7a2": 4,
+    "0x1e5d0": 17,
+    "0x1e5be": 5,
+    "0x1e5fc": 10,
+    "0x1e60e": 1,
+    "0x1cf4c": 49,
+    "0x1e562": 2
+  },
+  "rng_calls": {
+    "4": 472,
+    "2": 1303,
+    "6": 2,
+    "5": 10,
+    "1": 6,
+    "7": 1
+  },
+  "odd_source1_ccr": {
+    "observations": 0,
+    "all_d1_high_zero": true,
+    "all_nonnegative_no_overflow": true
+  },
+  "limits": [
+    "Natural source9 only; allothercharacters explicitly isolated",
+    "AI returns are not attacks/matches/platformtakeover",
+    "Canonical sign-extended source A5 follows actual original scheduler"
+  ]
+}

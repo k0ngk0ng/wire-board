@@ -1,0 +1,38 @@
+{
+  "pass": true,
+  "scope": "This HUD subtask only; canonical assets, source evidence, original tools/ROM and shared Go cache retained",
+  "deleted": [
+    {
+      "path": ".local/md-yuyuhakusho/hud-assets",
+      "files": 4,
+      "bytes": 16462
+    },
+    {
+      "path": ".local/md-yuyuhakusho/hud-assets-replay",
+      "files": 4,
+      "bytes": 16462
+    },
+    {
+      "path": ".local/md-yuyuhakusho/hud-assets-static",
+      "files": 19,
+      "bytes": 262867
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static-work/hud-assets-project",
+      "files": 0,
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/hud-assets-run.txt",
+      "files": 1,
+      "bytes": 2162
+    },
+    {
+      "path": ".local/md-yuyuhakusho/hud-assets-replay-run.txt",
+      "files": 1,
+      "bytes": 2162
+    }
+  ],
+  "files_removed": 29,
+  "bytes_removed": 300115
+}

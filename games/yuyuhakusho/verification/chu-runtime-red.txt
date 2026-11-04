@@ -1,0 +1,2 @@
+games/yuyuhakusho/cmd/verify-chu-runtime/main.go:23:2: no required module provides package github.com/k0ngk0ng/wire-board/games/yuyuhakusho/runtimebridge; to add it:
+	go get github.com/k0ngk0ng/wire-board/games/yuyuhakusho/runtimebridge

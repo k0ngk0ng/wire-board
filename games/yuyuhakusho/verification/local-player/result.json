@@ -1,0 +1,85 @@
+{
+  "native_keyboard_visible_movement": {
+    "before": {
+      "pixel": 2171466480,
+      "x": 944
+    },
+    "after": {
+      "pixel": 763700369,
+      "x": 966
+    }
+  },
+  "native_visibility_release": true,
+  "native_mobile_touch": [
+    {
+      "event": "touchStart",
+      "held": [
+        "c",
+        "left",
+        "z"
+      ]
+    },
+    {
+      "event": "touchCancel",
+      "held": []
+    }
+  ],
+  "scope": "Independent local Wasm research player; no platform room, network or full-character acceptance",
+  "viewport": 320,
+  "input_trusted": true,
+  "human_idle_no_takeover": true,
+  "final_view": {
+    "completed": false,
+    "logic_frame": 327,
+    "paused": false,
+    "players": [
+      {
+        "Action": 0,
+        "Pose": 3,
+        "X": 1002,
+        "Y": 320,
+        "active": true,
+        "computer": false,
+        "energy": 223,
+        "health": 223,
+        "input_channel": 0,
+        "slot": 0
+      },
+      {
+        "Action": 1,
+        "Pose": 5,
+        "X": 1081,
+        "Y": 320,
+        "active": true,
+        "computer": true,
+        "energy": 223,
+        "health": 223,
+        "input_channel": 255,
+        "slot": 3
+      }
+    ],
+    "ready": true,
+    "tick": 327,
+    "window_complete": true,
+    "winner": 0
+  },
+  "asset_requests": [
+    "/",
+    "/player.css",
+    "/wasm_exec.js",
+    "/player.js",
+    "/md-controller-UXLIP6HJ.svg",
+    "/player.wasm",
+    "/rules.json.gz",
+    "/sprites.json.gz",
+    "/arena.json.gz",
+    "/hud.json.gz",
+    "/favicon.ico"
+  ],
+  "pass": true,
+  "source_sha256": {
+    "scripts/yuyuhakusho/local_player.tsx": "c44a0af208e2de20457a500d3c1bf74b1198e64b061483bfa1897f6b87480a69",
+    "games/yuyuhakusho/cmd/local-player-wasm/main_js.go": "61d4d2b2ff20f773dfb07ac1a1e178e95570980a4a7aa6240bea120b3d44decf",
+    "games/yuyuhakusho/runtimebridge/session.go": "c5ad12c392a11644b44ae632c070ca2f5e24eccaa769dab26846fc33c00e0b78"
+  }
+}

@@ -1,0 +1,24 @@
+{"Time":"2026-11-04T20:16:56.189289+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-04T20:16:56.243143+08:00","Action":"run","Package":"command-line-arguments","Test":"TestMatchStartOriginalRules"}
+{"Time":"2026-11-04T20:16:56.243185+08:00","Action":"output","Package":"command-line-arguments","Test":"TestMatchStartOriginalRules","Output":"=== RUN   TestMatchStartOriginalRules\n"}
+{"Time":"2026-11-04T20:16:56.250999+08:00","Action":"run","Package":"command-line-arguments","Test":"TestMatchStartOriginalRules/match-start-oracle"}
+{"Time":"2026-11-04T20:16:56.251037+08:00","Action":"output","Package":"command-line-arguments","Test":"TestMatchStartOriginalRules/match-start-oracle","Output":"=== RUN   TestMatchStartOriginalRules/match-start-oracle\n"}
+{"Time":"2026-11-04T20:16:56.281016+08:00","Action":"output","Package":"command-line-arguments","Test":"TestMatchStartOriginalRules/match-start-oracle","Output":"--- PASS: TestMatchStartOriginalRules/match-start-oracle (0.03s)\n"}
+{"Time":"2026-11-04T20:16:56.282956+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestMatchStartOriginalRules/match-start-oracle","Elapsed":0.03}
+{"Time":"2026-11-04T20:16:56.283031+08:00","Action":"run","Package":"command-line-arguments","Test":"TestMatchStartOriginalRules/match-start-boundaries"}
+{"Time":"2026-11-04T20:16:56.283053+08:00","Action":"output","Package":"command-line-arguments","Test":"TestMatchStartOriginalRules/match-start-boundaries","Output":"=== RUN   TestMatchStartOriginalRules/match-start-boundaries\n"}
+{"Time":"2026-11-04T20:16:57.018774+08:00","Action":"output","Package":"command-line-arguments","Test":"TestMatchStartOriginalRules/match-start-boundaries","Output":"--- PASS: TestMatchStartOriginalRules/match-start-boundaries (0.74s)\n"}
+{"Time":"2026-11-04T20:16:57.022956+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestMatchStartOriginalRules/match-start-boundaries","Elapsed":0.74}
+{"Time":"2026-11-04T20:16:57.023092+08:00","Action":"output","Package":"command-line-arguments","Test":"TestMatchStartOriginalRules","Output":"--- PASS: TestMatchStartOriginalRules (0.78s)\n"}
+{"Time":"2026-11-04T20:16:57.023117+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestMatchStartOriginalRules","Elapsed":0.78}
+{"Time":"2026-11-04T20:16:57.023161+08:00","Action":"run","Package":"command-line-arguments","Test":"TestMatchStartSingleInitialState"}
+{"Time":"2026-11-04T20:16:57.023174+08:00","Action":"output","Package":"command-line-arguments","Test":"TestMatchStartSingleInitialState","Output":"=== RUN   TestMatchStartSingleInitialState\n"}
+{"Time":"2026-11-04T20:16:57.035724+08:00","Action":"output","Package":"command-line-arguments","Test":"TestMatchStartSingleInitialState","Output":"--- PASS: TestMatchStartSingleInitialState (0.01s)\n"}
+{"Time":"2026-11-04T20:16:57.035754+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestMatchStartSingleInitialState","Elapsed":0.01}
+{"Time":"2026-11-04T20:16:57.035786+08:00","Action":"run","Package":"command-line-arguments","Test":"TestMatchStartAtomicErrors"}
+{"Time":"2026-11-04T20:16:57.035792+08:00","Action":"output","Package":"command-line-arguments","Test":"TestMatchStartAtomicErrors","Output":"=== RUN   TestMatchStartAtomicErrors\n"}
+{"Time":"2026-11-04T20:16:57.561047+08:00","Action":"output","Package":"command-line-arguments","Test":"TestMatchStartAtomicErrors","Output":"--- PASS: TestMatchStartAtomicErrors (0.53s)\n"}
+{"Time":"2026-11-04T20:16:57.562344+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestMatchStartAtomicErrors","Elapsed":0.53}
+{"Time":"2026-11-04T20:16:57.562819+08:00","Action":"output","Package":"command-line-arguments","Output":"PASS\n"}
+{"Time":"2026-11-04T20:16:57.566639+08:00","Action":"output","Package":"command-line-arguments","Output":"ok  \tcommand-line-arguments\t1.377s\n"}
+{"Time":"2026-11-04T20:16:57.566653+08:00","Action":"pass","Package":"command-line-arguments","Elapsed":1.377}

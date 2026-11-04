@@ -1,0 +1,82 @@
+{
+  "at_utc": "2026-11-04T16:14:49.483002+00:00",
+  "scope": "This independent-session stage only",
+  "removed": [
+    {
+      "path": "games/yuyuhakusho/verification/session-e2e/two-ai.json",
+      "bytes": 662,
+      "sha256": "87a89fe5699d3f13f1c451a61c397e852fbc666191ea605d5f65a66597a2d0db",
+      "reason": "superseded by final HUD-fixed native/Wasm reports"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/session-e2e/three-ai.json",
+      "bytes": 662,
+      "sha256": "9b820f762d026c03cd51ca41314b0475275bf86625db7934512f595cb130f792",
+      "reason": "superseded by final HUD-fixed native/Wasm reports"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/session-e2e/four-ai.json",
+      "bytes": 662,
+      "sha256": "4943712a61f266162b01ecd3c530677c082763bdea26dc640b6bf57dcf4b91b2",
+      "reason": "superseded by final HUD-fixed native/Wasm reports"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/session-e2e/team-ai.json",
+      "bytes": 661,
+      "sha256": "d69687e9fe7f5a5fc5c88be087e942a0708ada196b2aaa783d49888a8394eb9d",
+      "reason": "superseded by final HUD-fixed native/Wasm reports"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/session-e2e/mixed-idle.json",
+      "bytes": 661,
+      "sha256": "6ae496258091f188c463ad7916e30758279aada4fb2f43be35ff05430cd88580",
+      "reason": "superseded by final HUD-fixed native/Wasm reports"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/browser",
+      "files": 220,
+      "bytes": 9580553,
+      "reason": "completed acceptance build/profile or superseded comparison log"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/verify-chu-session",
+      "files": 1,
+      "bytes": 3972898,
+      "reason": "completed acceptance build/profile or superseded comparison log"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/verify-chu-session.wasm",
+      "files": 1,
+      "bytes": 4528307,
+      "reason": "completed acceptance build/profile or superseded comparison log"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/verify-chu-runtime",
+      "files": 1,
+      "bytes": 4398418,
+      "reason": "completed acceptance build/profile or superseded comparison log"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/verify-chu-runtime.wasm",
+      "files": 1,
+      "bytes": 5088390,
+      "reason": "completed acceptance build/profile or superseded comparison log"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-runtime-hud-native.txt",
+      "files": 1,
+      "bytes": 309,
+      "reason": "completed acceptance build/profile or superseded comparison log"
+    }
+  ],
+  "total_bytes": 27572183,
+  "preserved": [
+    "running local player assets/server",
+    "active worktree and branch",
+    "ROM/core/source/tools and original IRQ evidence",
+    "audio-assets-final and active audio-loop research",
+    "canonical fixtures/logs/reports/screenshots",
+    "shared Go caches for the continuing game goal",
+    "main worktree and other games"
+  ]
+}

@@ -1,0 +1,223 @@
+{
+  "verified_at_utc": "2026-11-04T13:23:38.105566+00:00",
+  "scope": "Reusable independent indexed sprite composition/raster/palette runtime and bounded world sprite asset catalog; not a full world or platform renderer",
+  "pass": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "test_first": "Catalog/Actor/ComposeActor undefined-symbol output was captured after original fixtures/tests and before production implementation; index80 boundary test also failed before the corresponding raster fix",
+  "coverage": {
+    "parent_graphic_keys": 1133,
+    "extra_nonzero_graphic_keys": 367,
+    "total_graphic_keys": 1500,
+    "deduplicated_tiles": 34520,
+    "old_character_original_cpu_submissions": 9218,
+    "world_original_cpu_submissions": 3020,
+    "total_original_cpu_submissions": 12238,
+    "original_palette_calls": 528,
+    "natural_presentation_frames": 83,
+    "high_priority_opaque_pixels": 355914,
+    "pixel_mismatches": 0,
+    "baseline_frames_by_input": [
+      5500,
+      3600
+    ],
+    "extra_table_counts": [
+      60,
+      35,
+      10,
+      107,
+      9,
+      146
+    ],
+    "zero_parameters_excluded": {
+      "d9e4a": [
+        70
+      ],
+      "da1da": [
+        214
+      ],
+      "daa4a": [
+        18
+      ]
+    },
+    "default_static_slots": 320
+  },
+  "api": [
+    "DecodeCatalog",
+    "BeginFrame",
+    "DefaultTileSlots",
+    "ComposeActor",
+    "OrderedParts",
+    "ApplyPalette",
+    "CompactPalette",
+    "RasterizeSprites",
+    "Raster.RGBA"
+  ],
+  "state_ownership": "Catalog immutable; TileSlots globally retained; Parts/Transfers currentframe only; four Actor cache stamps written back to owningworld slot and reset/cleared by actual rules",
+  "logs": [
+    {
+      "phase": "red",
+      "path": "games/yuyuhakusho/data/world-sprites-red.jsonl",
+      "sha256": "8b1d83f1f400f28b48741d6bfd1ab88757d7fdd2cc15faac16718ebc91bc80aa",
+      "result": "fail",
+      "elapsed_seconds": 0,
+      "top_level_tests": []
+    },
+    {
+      "phase": "list-red",
+      "path": "games/yuyuhakusho/data/world-sprites-list-red.jsonl",
+      "sha256": "f9d1deaaf5d65de5d24ac1f75db61ab13cd7b334eb9e3a2cf1f5b5d92e5fbf49",
+      "result": "fail",
+      "elapsed_seconds": 0.56,
+      "top_level_tests": []
+    },
+    {
+      "phase": "native",
+      "path": "games/yuyuhakusho/data/world-sprites-native.jsonl",
+      "sha256": "8c206f74e77503eafda4a4f5939c876b8269d80f71111c0e91507750ef68f5b1",
+      "result": "pass",
+      "elapsed_seconds": 38.276,
+      "top_level_tests": [
+        "TestPresentationErrorsAreAtomic",
+        "TestPresentationHardwareListBoundary",
+        "TestPresentationNaturalFramesAndPixels",
+        "TestPresentationOpaqueBlackAndCoordinateWrap",
+        "TestPresentationOriginalCPUSubmissions",
+        "TestPresentationPaletteSelectors"
+      ]
+    },
+    {
+      "phase": "wasm",
+      "path": "games/yuyuhakusho/data/world-sprites-wasm.jsonl",
+      "sha256": "b6762c670edd969f37d7e78ed475a34cb1ca47928514744f7f876d921ddd044e",
+      "result": "pass",
+      "elapsed_seconds": 7.793,
+      "top_level_tests": [
+        "TestPresentationErrorsAreAtomic",
+        "TestPresentationHardwareListBoundary",
+        "TestPresentationNaturalFramesAndPixels",
+        "TestPresentationOpaqueBlackAndCoordinateWrap",
+        "TestPresentationOriginalCPUSubmissions",
+        "TestPresentationPaletteSelectors"
+      ]
+    }
+  ],
+  "go_vet": {
+    "pass": true,
+    "path": "games/yuyuhakusho/data/world-sprites-vet.txt",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "assets": [
+    {
+      "path": "games/yuyuhakusho/data/world-sprites.json.gz",
+      "sha256": "200e28e775a809de89c19df0dfef314d5697224fcb6a145853beb7344b5833ef",
+      "bytes": 639790
+    },
+    {
+      "path": "games/yuyuhakusho/data/world-sprites-oracle.json.gz",
+      "sha256": "3f5100d1d96ecab5512b6bef45f57e6757fc70ba1be1f9ba0d9d558022c81915",
+      "bytes": 5372052
+    },
+    {
+      "path": "games/yuyuhakusho/data/world-sprites-manifest.json",
+      "sha256": "3c4292154c2135e5fed203d3a39d9ce19b3f4554533dfa178568e14991448dc0",
+      "bytes": 3076
+    }
+  ],
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/presentation/catalog.go",
+      "sha256": "dd94a7db1fb11bd9b4bce54b998b3c3e82c3f81389991485995ac5047a189a39"
+    },
+    {
+      "path": "games/yuyuhakusho/presentation/compose.go",
+      "sha256": "cec22bfa541f55328db498ffc8f0e13fe56c2a737f6293539ebd99e25d8136fa"
+    },
+    {
+      "path": "games/yuyuhakusho/presentation/presentation_test.go",
+      "sha256": "8429fa3816ac8e58ae6b27a0a418e367fd23f6dc251ebf86da4f9901cdb1e9d1"
+    },
+    {
+      "path": "games/yuyuhakusho/presentation/raster.go",
+      "sha256": "1fbbad72d09a0e13ce9cdc8ad65a77ad958c44b04ac4c76947bcd648eabfaeb4"
+    },
+    {
+      "path": "scripts/yuyuhakusho/extract_world_sprites.py",
+      "sha256": "1c762f291582382188a680beb8f507a961819c1a589400bac4a94a964cff6554"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/WORLD_PRESENTATION.md",
+      "sha256": "983296b188641dccc35713fc555be305c9a8cf02107bbf6b8bcd84ef7e62875f"
+    },
+    {
+      "path": "games/yuyuhakusho/presentation/README.md",
+      "sha256": "43a021ceb25b3c4b333d139a426e3602a5a59bbf8542fc1b6eed5a549ee61742"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/world-sprites-order.txt",
+      "sha256": "0a881e65a1b0911beaaa2fc20f46241b22386e5ab70c7f3060936d3e3a91a645"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/world-sprites-raster-source.txt",
+      "sha256": "906190c9163c37eb10b05f79689ff49b97997fb6c5f78c378cce970c350c4527"
+    }
+  ],
+  "dependencies": [
+    {
+      "path": "games/yuyuhakusho/data/sprite-oracle.json.gz",
+      "sha256": "74952eb9b961fe51227156c443944a97fcdc025c52941420cd1bbea9387fc516"
+    },
+    {
+      "path": "games/yuyuhakusho/data/character-assets.json.gz",
+      "sha256": "bb351ca02f48c0fd3c338798a0b8215e129bfe82507ef4aa7c5ab09b9f618c7f"
+    },
+    {
+      "path": "games/yuyuhakusho/data/character-assets-oracle.json.gz",
+      "sha256": "88a96b187ea87a0dfdd897595d0168c4f9f6421d2b3cd3ded7f5e58cea6051ef"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/match-lifecycle-reference-frames.json.gz",
+      "sha256": "a7628aa7d1475774323bb8ab5cee1f3da1419e345cc9b7240bca248f5b829b85"
+    }
+  ],
+  "capture_corrections": [
+    "Initial count1 assumption rejected by actual125a output; default isF57A1+1=2, retaining originalcounter budget",
+    "Natural9c80 usedDA16A/24B620, discovered by fullframe replay and added as10 independently executed graphic keys",
+    "Exact reserved size-byte high nibble retained asPart.SourceXor; no buffer masks used",
+    "Palette selector test adapter character_id tag corrected; original before/after128bytes retained",
+    "Fade cases use observed corresponding uploaded palette and preserve previous end-frame palette separately"
+  ],
+  "local_preview": {
+    "files": [
+      {
+        "path": ".local/md-yuyuhakusho/world-presentation-preview/2181-independent-sprites.png",
+        "sha256": "d83646b62b6446b46e1c9dc7d537e8910440ecee62aa18caaa8b267d29e6e185"
+      },
+      {
+        "path": ".local/md-yuyuhakusho/world-presentation-preview/2182-original.png",
+        "sha256": "d69513a96ec7abed4b6017bd898f1bde52aff071cfc1d8db9f92f45d3e5d09b0"
+      }
+    ],
+    "source_state_frame": 2181,
+    "source_video_frame": 2182,
+    "human_inspected": true,
+    "note": "Transparent sprite plane includes low-priority pixels hidden by the original background; not final background composite"
+  },
+  "limits": [
+    "Full table existence/privateCPU geometry does not prove all normalgameplay/menu reachability",
+    "83 frame replays start from observed prior tilecontext per frame; all within-frame cache/global-slot/layer/raster work is independent, but this is not an uninterrupted worldtimeline",
+    "Natural pixels cover ordinary mode5 H40 highpriority output; lowpriority contributes sprite occupancy but not complete background blending comparison",
+    "Per-scanline sprite/pixel overflow, X0 masking, shadow/highlight and all hardwaremodes remain outside raster scope",
+    "Zero-count transfer identity is preserved without claiming emulation of raw DMA zero-length copying on intentionally inconsistent privatecache states",
+    "Common27F618 frames arepreloaded-only; scene0 C0..1FF data is initialdependency, not a universal dynamicHUD/otherarena asset binding",
+    "Public six palette entries and caller world palette/fade timing remain external; character selector0..11 does not prove each originalmenu reachable",
+    "Current catalog is research/integration data; final per-role/per-scene delivery, CDNpublication and platform/browser E2E remain incomplete",
+    "OrderedParts preserves every original composed item; manual Canvas consumers stop the entire layer list at Index0 or>=80, as RasterizeSprites already does"
+  ],
+  "source_excerpt_formatting": {
+    "previous_sha256": "d6032bbdbf05b720e045c589711333431799dd26961280881c768e66904d7f2e",
+    "current_sha256": "906190c9163c37eb10b05f79689ff49b97997fb6c5f78c378cce970c350c4527",
+    "change": "Omit trailing line-number separator on blank source lines; all source payloads rechecked against fixed original core",
+    "original_core_source_unchanged": true
+  }
+}

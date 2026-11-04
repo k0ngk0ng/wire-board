@@ -1,0 +1,7 @@
+{
+  "implementation_existed": false,
+  "test_source_sha256": "b7bf421b1ec1be7aa5b381a9c0296ac504fe63d3e9be77421b5fbd078af68a65",
+  "red_log": "games/yuyuhakusho/engine/testdata/chu-world-red.jsonl",
+  "red_sha256": "d90b95f052985749ab15c89ff8ba9523cbc4203f13439a33f9cba64d61f4f479",
+  "exit_code": 1
+}

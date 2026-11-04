@@ -1,0 +1,34 @@
+{
+  "scope": "Full0/2 rules with explicit presentation-request boundary; hardware graphics buffers excluded",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "76e30439fe1d84f17e4f3e0f298984c81b49d4f1a096918b6c9ba7c6132a2f4b",
+  "library_sha256": "5195f80794310d101dc9b0d33d59b5465fe0467b18e6a7b48a147b4b07229833",
+  "records": 4,
+  "calls": 16,
+  "stage_counts": {
+    "0": 4,
+    "2": 12
+  },
+  "events": {
+    "reset": 4,
+    "resource": 4,
+    "words": 24,
+    "name": 8,
+    "portrait": 4
+  },
+  "frames_match_original_core": true,
+  "fixture_sha256": "04037d36a5d68ad20380b8f35cdf13ab51290cbed6728aeb84224205670c29d1",
+  "gzip_sha256": "298cef8870e2a1eee14c59e6c455c1c8ec27be3c0ab27d88a2970a5deedf7a17",
+  "incomplete_calls": 0,
+  "errors": [],
+  "pass": true
+}

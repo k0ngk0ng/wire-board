@@ -1,0 +1,27 @@
+{
+  "scope": "Derived representative existing original-CPU cases, not a new execution or world simulation",
+  "source": {
+    "fixture": "games/yuyuhakusho/engine/testdata/match-overlays-boundaries.json.gz",
+    "gzip_sha256": "dc6f69acf2f11f6ccc1c31c3ab89cd143a127b646a03e25abc818d1afb74dc58",
+    "fixture_sha256": "fd01c51f22d19d3e561914ee7c7344c26a5d99d0537238c9bf9d658300c715f7",
+    "manifest": "games/yuyuhakusho/engine/testdata/match-overlays-boundaries-manifest.json",
+    "manifest_sha256": "9e5e6d17a957468ee931726a70f689f88ff705bb0d4e387243bfe3459e217dbd"
+  },
+  "records": 484,
+  "kind_counts": {
+    "intro": 59,
+    "intro-part": 61,
+    "draw": 32,
+    "win": 32,
+    "character": 92,
+    "team": 92,
+    "partner": 92,
+    "shadow": 24
+  },
+  "selection": "First two rows per(kind,stage,pause-sign,slow-nonzero,draw,clear-prefix,spawned); overlay only intro/intro-part/draw/win/character/team/partner/shadow; sky only sun/moon/spark, reference-only rows excluded",
+  "derive_script_sha256": "017f97f585d988bbfd96b683c346e94eb2dda7293ffc43a5bdc4f07c9b249412",
+  "fixture_sha256": "78bc259bfd350093365e3c5b6e2f4cd4fb46499b1b32d020e56ea23a2fca3503",
+  "gzip_sha256": "2265cddc2a031bfbbb6bee642e519ec8f8a0fbb0f0a09eb311baca8276bacca7",
+  "frames_match_original_core": true,
+  "pass": true
+}

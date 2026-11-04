@@ -1,0 +1,114 @@
+route=direct-ghidra-headless; REA raw 68000 unsupported
+language=68000:BE:32:default
+source=MD Yu Yu Hakusho Japan; static reachable instructions only
+
+seeds=101f2,10436,104ac,10522,10616,106e8 scope=0x101f2..0x1083f
+000101f2 tst.b (0xfffff550).w
+000101f6 bmi.b 0x00010200
+000101f8 tst.b (0xfffff55a).w
+000101fc bne.b 0x00010200
+000101fe bsr.b 0x00010202
+00010200 rts
+00010202 move.w (0x6,A5),D0w
+00010206 lea (0x1020e,PC,D0w*0x1),A0
+0001020a adda.w (A0),A0
+0001020c jmp (A0)
+00010436 tst.b (0xfffff550).w
+0001043a bmi.b 0x00010444
+0001043c tst.b (0xfffff55a).w
+00010440 bne.b 0x00010444
+00010442 bsr.b 0x0001044a
+00010444 jmp 0x00001580.l
+0001044a move.w (0x6,A5),D0w
+0001044e lea (0x10456,PC,D0w*0x1),A0
+00010452 adda.w (A0),A0
+00010454 jmp (A0)
+000104ac tst.b (0xfffff550).w
+000104b0 bmi.b 0x000104ba
+000104b2 tst.b (0xfffff55a).w
+000104b6 bne.b 0x000104ba
+000104b8 bsr.b 0x000104c0
+000104ba jmp 0x00001580.l
+000104c0 move.w (0x6,A5),D0w
+000104c4 lea (0x104cc,PC,D0w*0x1),A0
+000104c8 adda.w (A0),A0
+000104ca jmp (A0)
+00010522 tst.b (0xfffff550).w
+00010526 bmi.b 0x00010530
+00010528 tst.b (0xfffff55a).w
+0001052c bne.b 0x00010530
+0001052e bsr.b 0x0001053e
+00010530 tst.w (0x3c,A5)
+00010534 beq.b 0x0001053c
+00010536 jmp 0x00001580.l
+0001053c rts
+0001053e move.w (0x6,A5),D0w
+00010542 lea (0x1054a,PC,D0w*0x1),A0
+00010546 adda.w (A0),A0
+00010548 jmp (A0)
+00010616 tst.b (0xfffff550).w
+0001061a bmi.b 0x00010624
+0001061c tst.b (0xfffff55a).w
+00010620 bne.b 0x00010624
+00010622 bsr.b 0x00010632
+00010624 tst.w (0x3c,A5)
+00010628 beq.b 0x00010630
+0001062a jmp 0x00001580.l
+00010630 rts
+00010632 move.w (0x6,A5),D0w
+00010636 lea (0x1063e,PC,D0w*0x1),A0
+0001063a adda.w (A0),A0
+0001063c jmp (A0)
+000106e8 tst.b (0xfffff550).w
+000106ec bmi.b 0x000106f6
+000106ee tst.b (0xfffff55a).w
+000106f2 bne.b 0x000106f6
+000106f4 bsr.b 0x00010704
+000106f6 tst.w (0x3c,A5)
+000106fa beq.b 0x00010702
+000106fc jmp 0x00001580.l
+00010702 rts
+00010704 move.w (0x6,A5),D0w
+00010708 lea (0x10710,PC,D0w*0x1),A0
+0001070c adda.w (A0),A0
+0001070e jmp (A0)
+printed_instructions=69
+
+seeds=14882 scope=0x14882..0x1492f
+00014882 move.w (0x6,A5),D0w
+00014886 bne.b 0x000148e4
+00014888 move.l #0x27f618,(0x1c,A5)
+00014890 move.b #0x1,(0x27,A5)
+00014896 move.w #0x0,(0x28,A5)
+0001489c move.w #0x0,(0x2a,A5)
+000148a2 move.b #-0xc,(0x26,A5)
+000148a8 clr.w (0x3c,A5)
+000148ac clr.l (0x2c,A5)
+000148b0 clr.l (0x30,A5)
+000148b4 clr.l (0x34,A5)
+000148b8 clr.l (0x38,A5)
+000148bc move.w #0x21a0,D0w
+000148c0 or.w (0xffffa03e).w,D0w
+000148c4 move.w D0w,(0x24,A5)
+000148c8 move.w #0x26,(0x3c,A5)
+000148ce clr.w (0x54,A5)
+000148d2 move.w #-0x3,(0x56,A5)
+000148d8 clr.w (0x50,A5)
+000148dc clr.w (0xffffa034).w
+000148e0 addq.w #0x2,(0x6,A5)
+000148e4 move.w (0xffffa034).w,D0w
+000148e8 beq.b 0x00014920
+000148ea cmp.w (0x50,A5),D0w
+000148ee bgt.b 0x000148f4
+000148f0 clr.w (0x50,A5)
+000148f4 movea.w (0x50,A5),A1
+000148f8 movea.w (-0x5780,A1),A0
+000148fc move.w (0x3e,A0),(0x3e,A5)
+00014902 move.l (0x40,A0),(0x40,A5)
+00014908 move.l (0x9c,A0),(0x44,A5)
+0001490e addq.w #0x2,(0x50,A5)
+00014912 clr.w (0xffffa034).w
+00014916 bsr.w 0x000156f0
+0001491a jmp 0x00001580.l
+00014920 rts
+printed_instructions=36

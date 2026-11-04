@@ -1,0 +1,4 @@
+# github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-chu-runtime
+games/yuyuhakusho/cmd/verify-chu-runtime/main.go:84:67: too many arguments in call to runtimebridge.DecodeAssets
+	have ([]byte, []byte, []byte, []byte)
+	want ([]byte, []byte, []byte)

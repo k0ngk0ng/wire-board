@@ -1,0 +1,48 @@
+{
+  "cleaned_at_utc": "2026-11-04T14:36:19.767089+00:00",
+  "scope": "Only this task duplicate/preliminary CPU capture outputs and temporary preliminary verification logs; canonical fixtures, baseline, manifests, test-first red and final logs retained",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/chu-world",
+      "files": 2,
+      "bytes": 2678648
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-world-final",
+      "files": 2,
+      "bytes": 2983447
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-world-special",
+      "files": 3,
+      "bytes": 2093477
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-world-trace",
+      "files": 2,
+      "bytes": 46785
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-world-with-shapes",
+      "files": 2,
+      "bytes": 2924607
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-world-with-driver",
+      "files": 2,
+      "bytes": 2983379
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-world-raw-e2e-first.jsonl",
+      "files": 1,
+      "bytes": 5941
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-world-raw-e2e-second.jsonl",
+      "files": 1,
+      "bytes": 6023
+    }
+  ],
+  "bytes_removed": 13722307,
+  "shared_go_cache_tools_and_active_worktree_untouched": true
+}

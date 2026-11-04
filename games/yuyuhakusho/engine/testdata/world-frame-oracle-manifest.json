@@ -1,0 +1,32 @@
+{
+  "scope": "Complete pre-object rules with trusted normalized-input boundary and post-object palette composition",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "records": 6576,
+  "calls": 6576,
+  "begin": 3288,
+  "finish": 3288,
+  "resets": 0,
+  "capture_sha256": "18693d1b13e914105c3a1ca40a99ba81af328b83b0293013caec6ccd8714e76f",
+  "fixture_sha256": "d93ffb994fb405c3d9cf0cbc8350b4be0d16c52095e7a4dbc3776670e78df900",
+  "gzip_sha256": "25735cfdbbf2343eb887b96cc99f1135f87d86ff02c93916fcea98836b7d8b2d",
+  "frames_match_original_core": true,
+  "baseline_video_frames": 3602,
+  "accepted_entry_last_frame": 3600,
+  "incomplete_calls": 0,
+  "errors": [],
+  "pass": true,
+  "limits": [
+    "Hardware normalization2c9e and its F554 scratch cursor are outside this API",
+    "Private begins compose original video helper and post-normalization block, not hardware samples",
+    "Object pass/presentation/audio-driver timing are separate stages"
+  ]
+}

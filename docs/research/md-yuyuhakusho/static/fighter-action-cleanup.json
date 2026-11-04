@@ -1,0 +1,55 @@
+{
+  "verified_at_utc": "2026-11-04T16:10:44.085802+00:00",
+  "scope": "Only fighter action roadmap temporary Ghidra project/config/cache/logs and duplicate raw exports",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter-action-roadmap-static",
+      "files": 29,
+      "bytes": 1170323
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/fighter-action-roadmap-work",
+      "files": 0,
+      "bytes": 0
+    }
+  ],
+  "bytes_removed": 1170323,
+  "canonical_static_flow_verified_before_cleanup": true,
+  "shared_go_caches_untouched": true,
+  "other_agents_files_untouched": true,
+  "engine_runtimebridge_progress_untouched": true,
+  "retained": [
+    {
+      "path": "docs/research/md-yuyuhakusho/FIGHTER_ACTION_ROADMAP.md",
+      "sha256": "7cbb3d14808f46fbbdd6f0201d59e9c13a84b5743a3afcb0af9bf9922bd70dab"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-action-coverage.json",
+      "sha256": "521080d1aaa6947d0d71316ea9ce2d3e4872958e74a9e54933061493e2650824"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-action-flow.json.gz",
+      "sha256": "54d4cb7d1b5087c6fb4546323fb4b514ec0d9665889f1e4659795d6d95da48ea"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/FighterActionRoadmapProbe.java",
+      "sha256": "b2b09722af5ea4202eb62a1771f12ab85c1efe7f8e9a43723422fe4b34cfa091"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/derive-fighter-action-roadmap.py",
+      "sha256": "344dd3032df9b8bdf1eac0710c722326def4020bb55a3554d351b57b922d60b4"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-action-selectors-focused.txt",
+      "sha256": "8c27ef51fc1bddfbf4b928e5a1290b2556c057f01d320e46a0ccdda56609692b"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-action-constructors-focused.txt",
+      "sha256": "e43cec558dad5ba037b0ad39577ec0ebc8b9d9a6c6af0b667596d35e0ae44dad"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-action-slots-focused.txt",
+      "sha256": "c6a52e94bea31dc12e08c6cd76a282dc4ae51c56288f2df3e7bef40cd72a072d"
+    }
+  ]
+}

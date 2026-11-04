@@ -1,0 +1,13 @@
+{"Time":"2026-11-04T23:43:43.761283+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation"}
+{"Time":"2026-11-04T23:43:44.318598+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation","Test":"TestDefaultArenaRowsAgainstAllOriginalRows"}
+{"Time":"2026-11-04T23:43:44.318835+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation","Test":"TestDefaultArenaRowsAgainstAllOriginalRows","Output":"=== RUN   TestDefaultArenaRowsAgainstAllOriginalRows\n"}
+{"Time":"2026-11-04T23:43:45.763276+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation","Test":"TestDefaultArenaRowsAgainstAllOriginalRows","Output":"    hud_profile_test.go:50: 4,480 original rows: exact palette, CRAM0 bands, window and visibility profile\n"}
+{"Time":"2026-11-04T23:43:45.763343+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation","Test":"TestDefaultArenaRowsAgainstAllOriginalRows","Output":"--- PASS: TestDefaultArenaRowsAgainstAllOriginalRows (1.44s)\n"}
+{"Time":"2026-11-04T23:43:45.763354+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation","Test":"TestDefaultArenaRowsAgainstAllOriginalRows","Elapsed":1.44}
+{"Time":"2026-11-04T23:43:45.763363+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation","Test":"TestDefaultArenaRowsRejectsInvalidPalette"}
+{"Time":"2026-11-04T23:43:45.763368+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation","Test":"TestDefaultArenaRowsRejectsInvalidPalette","Output":"=== RUN   TestDefaultArenaRowsRejectsInvalidPalette\n"}
+{"Time":"2026-11-04T23:43:45.763404+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation","Test":"TestDefaultArenaRowsRejectsInvalidPalette","Output":"--- PASS: TestDefaultArenaRowsRejectsInvalidPalette (0.00s)\n"}
+{"Time":"2026-11-04T23:43:45.763409+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation","Test":"TestDefaultArenaRowsRejectsInvalidPalette","Elapsed":0}
+{"Time":"2026-11-04T23:43:45.763449+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation","Output":"PASS\n"}
+{"Time":"2026-11-04T23:43:46.792408+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation\t3.031s\n"}
+{"Time":"2026-11-04T23:43:46.792544+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation","Elapsed":3.031}

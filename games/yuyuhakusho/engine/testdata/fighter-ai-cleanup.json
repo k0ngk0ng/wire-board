@@ -1,0 +1,39 @@
+{
+  "verified_at_utc": "2026-11-04T14:38:51.510331+00:00",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter-ai",
+      "files": 8,
+      "bytes": 701511948
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter-ai-static",
+      "files": 19,
+      "bytes": 232856
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/fighter-ai-work",
+      "files": 0,
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter-ai-red.jsonl",
+      "files": 1,
+      "bytes": 2527
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter-ai-native.jsonl",
+      "files": 1,
+      "bytes": 8969
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter-ai-wasm.jsonl",
+      "files": 1,
+      "bytes": 8967
+    }
+  ],
+  "bytes_removed": 701765267,
+  "canonical_fixtures_manifests_and_logs_verified_before_removal": true,
+  "shared_go_caches_untouched": true,
+  "other_agents_files_untouched": true
+}

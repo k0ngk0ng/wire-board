@@ -1,0 +1,104 @@
+Reference core source, not game ROM disassembly.
+Genesis-Plus-GX revision 60bee4c724859710ce05672239e5b601ad01382e
+Source: core/vdp_render.c
+Full source SHA-256: 3627f311789c6cd774db903db716394e12148aa671d4b2001ab8c844077ac761
+Lines 697..794, normal-mode A/B and sprite priority tables.
+
+697: /* Layers priority pixel look-up tables functions                           */
+698: /*--------------------------------------------------------------------------*/
+699:
+700: /* Input (bx):  d5-d0=color, d6=priority, d7=unused */
+701: /* Input (ax):  d5-d0=color, d6=priority, d7=unused */
+702: /* Output:    d5-d0=color, d6=priority, d7=zero */
+703: static uint32 make_lut_bg(uint32 bx, uint32 ax)
+704: {
+705:   int bf = (bx & 0x7F);
+706:   int bp = (bx & 0x40);
+707:   int b  = (bx & 0x0F);
+708:
+709:   int af = (ax & 0x7F);
+710:   int ap = (ax & 0x40);
+711:   int a  = (ax & 0x0F);
+712:
+713:   int c = (ap ? (a ? af : bf) : (bp ? (b ? bf : af) : (a ? af : bf)));
+714:
+715:   /* Strip palette & priority bits from transparent pixels */
+716:   if((c & 0x0F) == 0x00) c &= 0x80;
+717:
+718:   return (c);
+719: }
+720:
+721: /* Input (bx):  d5-d0=color, d6=priority, d7=unused */
+722: /* Input (sx):  d5-d0=color, d6=priority, d7=unused */
+723: /* Output:    d5-d0=color, d6=priority, d7=intensity select (0=half/1=normal) */
+724: static uint32 make_lut_bg_ste(uint32 bx, uint32 ax)
+725: {
+726:   int bf = (bx & 0x7F);
+727:   int bp = (bx & 0x40);
+728:   int b  = (bx & 0x0F);
+729:
+730:   int af = (ax & 0x7F);
+731:   int ap = (ax & 0x40);
+732:   int a  = (ax & 0x0F);
+733:
+734:   int c = (ap ? (a ? af : bf) : (bp ? (b ? bf : af) : (a ? af : bf)));
+735:
+736:   /* Half intensity when both pixels are low priority */
+737:   c |= ((ap | bp) << 1);
+738:
+739:   /* Strip palette & priority bits from transparent pixels */
+740:   if((c & 0x0F) == 0x00) c &= 0x80;
+741:
+742:   return (c);
+743: }
+744:
+745: /* Input (bx):  d5-d0=color, d6=priority/1, d7=sprite pixel marker */
+746: /* Input (sx):  d5-d0=color, d6=priority, d7=unused */
+747: /* Output:    d5-d0=color, d6=priority, d7=sprite pixel marker */
+748: static uint32 make_lut_obj(uint32 bx, uint32 sx)
+749: {
+750:   int c;
+751:
+752:   int bf = (bx & 0x7F);
+753:   int bs = (bx & 0x80);
+754:   int sf = (sx & 0x7F);
+755:
+756:   if((sx & 0x0F) == 0) return bx;
+757:
+758:   c = (bs ? bf : sf);
+759:
+760:   /* Strip palette bits from transparent pixels */
+761:   if((c & 0x0F) == 0x00) c &= 0xC0;
+762:
+763:   return (c | 0x80);
+764: }
+765:
+766:
+767: /* Input (bx):  d5-d0=color, d6=priority, d7=opaque sprite pixel marker */
+768: /* Input (sx):  d5-d0=color, d6=priority, d7=unused */
+769: /* Output:    d5-d0=color, d6=zero/priority, d7=opaque sprite pixel marker */
+770: static uint32 make_lut_bgobj(uint32 bx, uint32 sx)
+771: {
+772:   int c;
+773:
+774:   int bf = (bx & 0x3F);
+775:   int bs = (bx & 0x80);
+776:   int bp = (bx & 0x40);
+777:   int b  = (bx & 0x0F);
+778:
+779:   int sf = (sx & 0x3F);
+780:   int sp = (sx & 0x40);
+781:   int s  = (sx & 0x0F);
+782:
+783:   if(s == 0) return bx;
+784:
+785:   /* Previous sprite has higher priority */
+786:   if(bs) return bx;
+787:
+788:   c = (sp ? sf : (bp ? (b ? bf : sf) : sf));
+789:
+790:   /* Strip palette & priority bits from transparent pixels */
+791:   if((c & 0x0F) == 0x00) c &= 0x80;
+792:
+793:   return (c | 0x80);
+794: }

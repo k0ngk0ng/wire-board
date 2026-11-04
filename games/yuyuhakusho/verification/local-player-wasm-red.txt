@@ -1,0 +1,1 @@
+stat /Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/games/yuyuhakusho/cmd/local-player-wasm: directory not found
