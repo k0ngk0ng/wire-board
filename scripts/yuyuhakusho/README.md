@@ -52,12 +52,30 @@ PYTHONDONTWRITEBYTECODE=1 python3 scripts/yuyuhakusho/capture_inputs.py \
 mkdir -p .local/md-yuyuhakusho/tmp
 GOCACHE="$PWD/.local/go-cache" GOMODCACHE="$PWD/.local/go-mod" \
 GOTMPDIR="$PWD/.local/md-yuyuhakusho/tmp" \
-go test -race -json ./games/yuyuhakusho/engine
+go test -race -count=1 -json ./games/yuyuhakusho/engine ./games/yuyuhakusho/cmd/verify-animation-catalog
 
 GOCACHE="$PWD/.local/go-cache" GOMODCACHE="$PWD/.local/go-mod" \
 GOTMPDIR="$PWD/.local/md-yuyuhakusho/tmp" TMPDIR="$PWD/.local/md-yuyuhakusho/tmp" \
 GOOS=js GOARCH=wasm \
-go test -json -exec "$(go env GOROOT)/lib/wasm/go_js_wasm_exec" ./games/yuyuhakusho/engine
+go test -count=1 -json -exec "$(go env GOROOT)/lib/wasm/go_js_wasm_exec" \
+  ./games/yuyuhakusho/engine ./games/yuyuhakusho/cmd/verify-animation-catalog
 ```
 
-单元边界和原版函数夹具先于 `engine/input.go` 编写；首次执行因实现不存在而失败，之后才加入规则。当前测试仅证明原输入采样语义，不证明动作识别、网络同步或完整对局。
+各阶段先列失败场景、保存原版输入／输出并编写测试，首次因缺少实现失败后才加入独立规则。输入、动作、命令、动画和碰撞阶段均有各自覆盖边界；完整集成回归仍不代表网络同步、渲染或完整对局通过。
+
+## 命令、全角色目录与碰撞
+
+下列脚本均使用 `--out` 指向 worktree 内 `.local/md-yuyuhakusho/` 子目录。原版自然记录须保持 3,600 帧 RAM／画面基线一致；明确声明的隔离用例只修改私有研究进程输入。生产引擎不读取 ROM、模拟器或原版输出。
+
+| 脚本 | 范围与证据 |
+| --- | --- |
+| `capture_commands.py` | [通用命令和酎准备](../../games/yuyuhakusho/engine/COMMANDS_VERIFICATION.md) |
+| `extract_animation_catalog.py` | [11 个来源集合及逐帧原 CPU 对照](../../docs/research/md-yuyuhakusho/animation-catalog.md) |
+| `trace_shape_consumers.py` | [自然执行中的形状读取](../../docs/research/md-yuyuhakusho/COLLISION_RESEARCH.md) |
+| `capture_body_separation.py` | [完整身体分离](../../games/yuyuhakusho/engine/BODY_SEPARATION_VERIFICATION.md) |
+| `capture_clash.py` | [完整攻击相消](../../games/yuyuhakusho/engine/CLASH_VERIFICATION.md) |
+| `capture_throw_contacts.py` | [完整投技接触](../../games/yuyuhakusho/engine/THROW_CONTACTS_VERIFICATION.md) |
+| `capture_attack_contacts.py` | [防御、伤害及反应初始化](../../games/yuyuhakusho/engine/ATTACK_CONTACTS_VERIFICATION.md) |
+| `capture_collision_manager.py` | [完整管理器组合与尾段](../../games/yuyuhakusho/engine/COLLISION_MANAGER_VERIFICATION.md) |
+
+各夹具和来源摘要在 `games/yuyuhakusho/engine/testdata/`；本阶段整体测试与覆盖见 [collision-stage.json](../../games/yuyuhakusho/verification/collision-stage.json)。尚未恢复的招式分派、原版电脑、完整人物／世界步和呈现列在[进度记录](../../games/yuyuhakusho/PROGRESS.md)。

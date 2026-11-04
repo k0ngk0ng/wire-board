@@ -1,0 +1,108 @@
+{
+  "verified_at_utc": "2026-11-04T06:50:23.832198+00:00",
+  "scope": "Generic original command helpers and complete Chu ordered eight-slot preparation only",
+  "goal_complete": false,
+  "release_ready": false,
+  "original_capture_rerun_this_pass": false,
+  "original_capture_evidence": "Existing original-CPU fixtures and retained 3,600-frame unmodified-baseline manifests, with matching capture script digest",
+  "test_first_evidence": {
+    "path": "games/yuyuhakusho/engine/testdata/commands-red-phase.txt",
+    "sha256": "b971943349efdac697d52a980a1b6092d8e42f42192151e879096d95959e4267",
+    "result": "Retained actual missing-implementation build failure from prior test-first phase; original line numbers predate subsequent formatting"
+  },
+  "coverage": {
+    "natural_direction_calls": 20670,
+    "natural_button_calls": 12402,
+    "natural_chu_preparation_calls": 4134,
+    "natural_records_overlap": true,
+    "isolated_direction_calls": 4896,
+    "isolated_button_calls": 3681,
+    "isolated_chu_priority_calls": 48,
+    "isolated_private_program_cases_included": 72,
+    "single_initial_state_streams": 12,
+    "single_initial_state_steps": 435,
+    "actor_bytes_compared_per_step": 256,
+    "immutable_chu_programs": 8
+  },
+  "verification": [
+    {
+      "environment": "Go native race",
+      "status": "passed",
+      "log": "games/yuyuhakusho/engine/testdata/commands-native.jsonl",
+      "sha256": "a0836c7884e893e2c83b9a276b120722f2214af837479520d507864f46e024fa",
+      "elapsed_seconds": 12.609,
+      "top_level_tests": [
+        "TestCommandsOriginalCalls",
+        "TestCommandsSingleInitialState",
+        "TestCommandsMalformedInputsAreAtomic"
+      ]
+    },
+    {
+      "environment": "Node/Wasm",
+      "status": "passed",
+      "log": "games/yuyuhakusho/engine/testdata/commands-wasm.jsonl",
+      "sha256": "4686f5dea06ec8171ea63d0fdce3bfa9e1ea477280b1464f0838e93fa34a3c0e",
+      "elapsed_seconds": 4.24,
+      "top_level_tests": [
+        "TestCommandsOriginalCalls",
+        "TestCommandsSingleInitialState",
+        "TestCommandsMalformedInputsAreAtomic"
+      ]
+    }
+  ],
+  "fixtures": [
+    {
+      "manifest": "games/yuyuhakusho/engine/testdata/commands-oracle-manifest.json",
+      "manifest_sha256": "596ad45333614a65439f38875fc43159ccf3df44dd907e6595214b6ed0ab5f77",
+      "records": 37206,
+      "fixture_sha256": "d52f7e1eec40a403f5955ae45c08ed8ff1f341401480d64d00eceb0d171f90f2",
+      "gzip_sha256": "8eff783c191c8d68d12f95f2f36144851e7d2bf1795cf19d3ded1fbf95b853e2"
+    },
+    {
+      "manifest": "games/yuyuhakusho/engine/testdata/commands-boundaries-manifest.json",
+      "manifest_sha256": "1dfe49c85bd1a53bd083dda402f8c2db0e28bfcdd39f43ff4a7c78dccf97e72c",
+      "records": 8625,
+      "fixture_sha256": "597350412d9ade1f67c571398edaaf13e755b87814183248db5e6fdcaf848ecd",
+      "gzip_sha256": "4e5f49b566c6fdad0ea4165e499ee12ee472252b21a9a8e45f637239ff3434d8"
+    },
+    {
+      "manifest": "games/yuyuhakusho/engine/testdata/commands-sequences-manifest.json",
+      "manifest_sha256": "462707ad6ec89246a55a70b34d236fcb49ab007d774989aea7937c7e76cdfdfc",
+      "records": 12,
+      "fixture_sha256": "21fd922ddd28d75470a03498460023f161029eeca137cc1dde8f5df08e973052",
+      "gzip_sha256": "fea4d8a0c1ccb3a548a1c090c66d4ff83ccb511326494815f74dbe7512a30875"
+    }
+  ],
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/engine/commands.go",
+      "sha256": "fd0c39b62a11345e35a2f41e01a545da4dc13f24eb45853dc51ef8be6ac5439e"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/commands_test.go",
+      "sha256": "0e57d8056d0b422ccec3bbf0792f433bb238e7075c8802b2c22214f5177187ad"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_commands.py",
+      "sha256": "bd61798278a6efef548643cc9fc4cb5b80a596773f65f3689367cbea5a20f33e"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/commands-core.txt",
+      "sha256": "2465d7a2d0329ceeec7f5c0205075d886bbbd2077cec965586cf8ce5854405d4"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/COMMANDS_VERIFICATION.md",
+      "sha256": "6ff23978d85fc2653a12f34d1ac301f1c5b2f59579f69c7ffb81b71e4bbd9697"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/commands-red-phase.txt",
+      "sha256": "b971943349efdac697d52a980a1b6092d8e42f42192151e879096d95959e4267"
+    }
+  ],
+  "limitations": [
+    "Natural helper and parent preparation counts overlap; they are not independent action or match counts",
+    "Only Chu preparation is recovered; other character preparations remain incomplete",
+    "Command-to-attack dispatch, energy/cancel restrictions, full actor/world steps and complete matches are not validated by these helper tests",
+    "Original-CPU isolated fixtures declare private inputs and preserve full actor bytes, but they are not platform E2E runs"
+  ]
+}

@@ -1,0 +1,22 @@
+{"Time":"2026-11-04T15:06:08.267219+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-04T15:06:08.324528+08:00","Action":"run","Package":"command-line-arguments","Test":"TestThrowContactsOriginalCalls"}
+{"Time":"2026-11-04T15:06:08.32458+08:00","Action":"output","Package":"command-line-arguments","Test":"TestThrowContactsOriginalCalls","Output":"=== RUN   TestThrowContactsOriginalCalls\n"}
+{"Time":"2026-11-04T15:06:08.325777+08:00","Action":"run","Package":"command-line-arguments","Test":"TestThrowContactsOriginalCalls/throw-contacts-oracle"}
+{"Time":"2026-11-04T15:06:08.325798+08:00","Action":"output","Package":"command-line-arguments","Test":"TestThrowContactsOriginalCalls/throw-contacts-oracle","Output":"=== RUN   TestThrowContactsOriginalCalls/throw-contacts-oracle\n"}
+{"Time":"2026-11-04T15:06:08.639088+08:00","Action":"output","Package":"command-line-arguments","Test":"TestThrowContactsOriginalCalls/throw-contacts-oracle","Output":"    throw_contacts_test.go:165: complete throw calls=2068 contacts=18\n"}
+{"Time":"2026-11-04T15:06:08.641932+08:00","Action":"output","Package":"command-line-arguments","Test":"TestThrowContactsOriginalCalls/throw-contacts-oracle","Output":"--- PASS: TestThrowContactsOriginalCalls/throw-contacts-oracle (0.32s)\n"}
+{"Time":"2026-11-04T15:06:08.642272+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestThrowContactsOriginalCalls/throw-contacts-oracle","Elapsed":0.32}
+{"Time":"2026-11-04T15:06:08.642359+08:00","Action":"run","Package":"command-line-arguments","Test":"TestThrowContactsOriginalCalls/throw-contacts-boundaries"}
+{"Time":"2026-11-04T15:06:08.642371+08:00","Action":"output","Package":"command-line-arguments","Test":"TestThrowContactsOriginalCalls/throw-contacts-boundaries","Output":"=== RUN   TestThrowContactsOriginalCalls/throw-contacts-boundaries\n"}
+{"Time":"2026-11-04T15:06:08.682974+08:00","Action":"output","Package":"command-line-arguments","Test":"TestThrowContactsOriginalCalls/throw-contacts-boundaries","Output":"    throw_contacts_test.go:165: complete throw calls=278 contacts=359\n"}
+{"Time":"2026-11-04T15:06:08.684052+08:00","Action":"output","Package":"command-line-arguments","Test":"TestThrowContactsOriginalCalls/throw-contacts-boundaries","Output":"--- PASS: TestThrowContactsOriginalCalls/throw-contacts-boundaries (0.04s)\n"}
+{"Time":"2026-11-04T15:06:08.684093+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestThrowContactsOriginalCalls/throw-contacts-boundaries","Elapsed":0.04}
+{"Time":"2026-11-04T15:06:08.684177+08:00","Action":"output","Package":"command-line-arguments","Test":"TestThrowContactsOriginalCalls","Output":"--- PASS: TestThrowContactsOriginalCalls (0.36s)\n"}
+{"Time":"2026-11-04T15:06:08.684233+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestThrowContactsOriginalCalls","Elapsed":0.36}
+{"Time":"2026-11-04T15:06:08.684293+08:00","Action":"run","Package":"command-line-arguments","Test":"TestThrowContactsInvalidStateIsAtomic"}
+{"Time":"2026-11-04T15:06:08.6843+08:00","Action":"output","Package":"command-line-arguments","Test":"TestThrowContactsInvalidStateIsAtomic","Output":"=== RUN   TestThrowContactsInvalidStateIsAtomic\n"}
+{"Time":"2026-11-04T15:06:08.684513+08:00","Action":"output","Package":"command-line-arguments","Test":"TestThrowContactsInvalidStateIsAtomic","Output":"--- PASS: TestThrowContactsInvalidStateIsAtomic (0.00s)\n"}
+{"Time":"2026-11-04T15:06:08.684544+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestThrowContactsInvalidStateIsAtomic","Elapsed":0}
+{"Time":"2026-11-04T15:06:08.684999+08:00","Action":"output","Package":"command-line-arguments","Output":"PASS\n"}
+{"Time":"2026-11-04T15:06:08.688201+08:00","Action":"output","Package":"command-line-arguments","Output":"ok  \tcommand-line-arguments\t0.421s\n"}
+{"Time":"2026-11-04T15:06:08.688212+08:00","Action":"pass","Package":"command-line-arguments","Elapsed":0.421}

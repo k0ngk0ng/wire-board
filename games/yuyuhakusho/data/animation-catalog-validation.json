@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "pass": true,
+  "validated_utc": "2026-11-04T06:54:06.102306+00:00",
+  "scope": "Bounded semantic animation/shape records across 11 source sets; original-CPU isolated calls, not complete gameplay or matches",
+  "characters": 11,
+  "poses_per_character": 191,
+  "frames": 4732,
+  "original_cpu_calls": 9464,
+  "all_extracted_records_verified": true,
+  "comparison": "Full 256-byte actor, 1,024-byte shape buffers, all four offsets, pending sound and four queue slots; no masks or expected-value injection",
+  "test_first_evidence": {
+    "artifact": "games/yuyuhakusho/data/animation-catalog-red.jsonl",
+    "sha256": "51ed66d4248df33e9d6b923ee7935a7ed504fc32d02e89896c27bd3c2135a6c2",
+    "observed_failure": "Missing verifier implementation: undefined loadInputs, verifyCatalog, buildLibrary, verifyCall and originalCalls",
+    "recorded_before_implementation": true
+  },
+  "suites": {
+    "native": {
+      "pass": true,
+      "tests": [
+        "TestVerifyAllCatalogFramesAgainstOriginalCPU",
+        "TestCatalogVerifierRejectsIndependentCorruption",
+        "TestCatalogVerifierRequiresFullStateAndUniqueCoverage"
+      ],
+      "artifact": "games/yuyuhakusho/data/animation-catalog-native.jsonl",
+      "sha256": "2560664bcfd2e46da5490117e58169804e12bf1be51882782ca2f97ec90f71ca"
+    },
+    "wasm": {
+      "pass": true,
+      "tests": [
+        "TestVerifyAllCatalogFramesAgainstOriginalCPU",
+        "TestCatalogVerifierRejectsIndependentCorruption",
+        "TestCatalogVerifierRequiresFullStateAndUniqueCoverage"
+      ],
+      "artifact": "games/yuyuhakusho/data/animation-catalog-wasm.jsonl",
+      "sha256": "3fc92d4a597028592d233faa2fb48bd1253f57da79456fa10efc40703153b7c1"
+    }
+  },
+  "comparison_artifact": "games/yuyuhakusho/data/animation-catalog-go-comparison.json",
+  "comparison_sha256": "aa91432e0033ee7b1b22fdec61d30872ebf900d86a22644cfaa81b7d1d6806bd",
+  "source_sha256": {
+    "scripts/yuyuhakusho/extract_animation_catalog.py": "5959c2693068d610c7d25ea2c4c51165b1c60cbfdca5d3a891e0ce21563f9bd2",
+    "games/yuyuhakusho/cmd/verify-animation-catalog/main.go": "a56f209da98717f8f1fd06a4b2c503ed4ac2dcaee3f72d2a60ca63085a978a56",
+    "games/yuyuhakusho/cmd/verify-animation-catalog/main_test.go": "49b3613fab1e939dd9bfce476a3acf87126063ae8be7656ade12a3939f9ab0bb",
+    "games/yuyuhakusho/engine/animation_records.go": "15e3eb6b849d7d29f8b3b55f9c843b36c9ce38fbf3fa4ffa71a9672593d13cbe",
+    "games/yuyuhakusho/data/animation-catalog.json.gz": "845e2f43179f831130b40c4b796843fdc0c3ae4c699d605e4326905800781495",
+    "games/yuyuhakusho/data/animation-catalog-oracle.json.gz": "e0aca7811e14cadc2e2760cba989fa58051e4707a113fd8d7724b34833eb0c87",
+    "games/yuyuhakusho/data/animation-catalog-manifest.json": "18fa96ed9adda02de5b890bb99802e49416bdbf143318835cecf2bc7574eaaba"
+  },
+  "limitations": [
+    "Normal-game reachability of every pose is unproven",
+    "Character display names remain unmapped in the catalog",
+    "Pose 191 zero entries and trailing zero padding excluded",
+    "Last shape collection uses ROM end as upper bound; referenced payloads explicitly terminate",
+    "No sprites, renderer, complete actions, AI or playable matches delivered"
+  ],
+  "accepted_for_release": false
+}

@@ -1,0 +1,83 @@
+route=direct-ghidra-headless; REA raw 68000 unsupported
+language=68000:BE:32:default
+source=MD Yu Yu Hakusho Japan; static reachable instructions only
+
+seeds=1e8d0,1e972 scope=0x1e8d0..0x1eb3f
+0001e8d0 move.l A1,D4
+0001e8d2 addi.b #0x1,D4b
+0001e8d6 adda.l A5,A1
+0001e8d8 moveq 0x0,D1
+0001e8da move.b (0xb0,A1),D1b
+0001e8de moveq 0x0,D2
+0001e8e0 moveq 0x0,D3
+0001e8e2 move.b (A2),D3b
+0001e8e4 move.b (0x1,A2,D1w*0x1),D2b
+0001e8e8 cmpi.b #-0x1,D2b
+0001e8ec beq.b 0x0001e95c
+0001e8ee cmpi.b #0x0,(0x61,A5)
+0001e8f4 beq.b 0x0001e90e
+0001e8f6 move.b D2b,D5b
+0001e8f8 move.b D2b,D6b
+0001e8fa lsr.b #0x1,D5b
+0001e8fc andi.b #0x4,D5b
+0001e900 lsl.b #0x1,D6b
+0001e902 andi.b #0x8,D6b
+0001e906 andi.b #-0xd,D2b
+0001e90a or.b D5b,D2b
+0001e90c or.b D6b,D2b
+0001e90e move.b (0x74,A5),D0b
+0001e912 andi.b #0xf,D0b
+0001e916 andi.b #0xf,D2b
+0001e91a cmp.b D0b,D2b
+0001e91c beq.b 0x0001e92c
+0001e91e addi.b #0x1,(0xa8,A1)
+0001e924 cmp.b (0xa8,A1),D3b
+0001e928 bls.b 0x0001e93e
+0001e92a rts
+0001e92c addi.b #0x1,(0xb0,A1)
+0001e932 move.b #0x0,(0xa8,A1)
+0001e938 jmp 0x0001e92a.l
+0001e93e move.b #0x0,(0xa8,A1)
+0001e944 move.b #0x0,(0xb0,A1)
+0001e94a cmp.b (0x6b,A5),D4b
+0001e94e bne.b 0x0001e92a
+0001e950 move.b #0x0,(0x6b,A5)
+0001e956 jmp 0x0001e92a.l
+0001e95c move.b #0x0,(0xa8,A1)
+0001e962 move.b #0x0,(0xb0,A1)
+0001e968 move.b D4b,(0x6b,A5)
+0001e96c jmp 0x0001e92a.l
+0001e972 move.l A1,D4
+0001e974 addi.b #0x1,D4b
+0001e978 adda.l A5,A1
+0001e97a moveq 0x0,D1
+0001e97c move.b (0xb0,A1),D1b
+0001e980 moveq 0x0,D2
+0001e982 moveq 0x0,D3
+0001e984 move.b (A2),D3b
+0001e986 move.b (0x1,A2,D1w*0x1),D2b
+0001e98a cmpi.b #-0x1,D2b
+0001e98e beq.b 0x0001e9de
+0001e990 move.b (0x74,A5),D0b
+0001e994 andi.b #-0x10,D0b
+0001e998 andi.b #-0x10,D2b
+0001e99c cmp.b D2b,D0b
+0001e99e beq.b 0x0001e9ae
+0001e9a0 addi.b #0x1,(0xa8,A1)
+0001e9a6 cmp.b (0xa8,A1),D3b
+0001e9aa bls.b 0x0001e9c0
+0001e9ac rts
+0001e9ae addi.b #0x1,(0xb0,A1)
+0001e9b4 move.b #0x0,(0xa8,A1)
+0001e9ba jmp 0x0001e9ac.l
+0001e9c0 move.b #0x0,(0xa8,A1)
+0001e9c6 move.b #0x0,(0xb0,A1)
+0001e9cc cmp.b (0x6b,A5),D4b
+0001e9d0 bne.b 0x0001e9ac
+0001e9d2 move.b #0x0,(0x6b,A5)
+0001e9d8 jmp 0x0001e9ac.l
+0001e9de move.b #0x0,(0xa8,A1)
+0001e9e4 move.b #0x0,(0xb0,A1)
+0001e9ea move.b D4b,(0x6b,A5)
+0001e9ee jmp 0x0001e9ac.l
+printed_instructions=77

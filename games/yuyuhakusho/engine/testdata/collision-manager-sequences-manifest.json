@@ -1,0 +1,27 @@
+{
+  "scope": "Single-initial-state isolated manager streams",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "records": 5,
+  "capture_sha256": "0422fbefc0ab2184bc5ad4045e2a255d8b047ef5c4a9d7a1d06c95a83e474af9",
+  "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+  "fixture_sha256": "cbce951f7352d04e997375df2cdfc57640949297809baec59067ce1aa6b30db0",
+  "gzip_sha256": "e32e26cacd7973cb1036aee297d293664f17b48816a8fc3a4802c94734940170",
+  "frames_match_original_core": true,
+  "incomplete_calls": 0,
+  "errors": [],
+  "external_queue_calls": 0,
+  "pass": true,
+  "limits": [
+    "Complete manager calls, not full actor/world steps or matches",
+    "The 512-byte throw capture is not producer-capacity evidence"
+  ]
+}

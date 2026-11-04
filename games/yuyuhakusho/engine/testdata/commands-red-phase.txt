@@ -1,0 +1,14 @@
+# github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine [github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine.test]
+games/yuyuhakusho/engine/commands_test.go:18:8: undefined: CommandProgram
+games/yuyuhakusho/engine/commands_test.go:19:15: undefined: CommandState
+games/yuyuhakusho/engine/commands_test.go:25:10: undefined: CommandLibrary
+games/yuyuhakusho/engine/commands_test.go:42:31: undefined: CommandState
+games/yuyuhakusho/engine/commands_test.go:51:12: undefined: CommandState
+games/yuyuhakusho/engine/commands_test.go:52:29: undefined: PrepareChuCommands
+games/yuyuhakusho/engine/commands_test.go:53:11: undefined: CommandDirection
+games/yuyuhakusho/engine/commands_test.go:53:54: undefined: CommandButtons
+games/yuyuhakusho/engine/commands_test.go:55:13: undefined: RecognizeCommand
+games/yuyuhakusho/engine/commands_test.go:66:28: undefined: CommandState
+games/yuyuhakusho/engine/commands_test.go:66:28: too many errors
+FAIL	github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine [build failed]
+FAIL

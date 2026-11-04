@@ -1,0 +1,29 @@
+{
+  "scope": "Explicit isolated original CPU input matrix",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "ef7908d24a1b6e4e8bafe1aa86f1ef0a70829ace4cd952acc5abef3b895e100b",
+  "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+  "records": 278,
+  "contacts": 359,
+  "nonempty_calls": 275,
+  "fixture_sha256": "8ae38d6e3eea21e574fa8d3edcad8805a7c9234fe81e9da526d8526618cc819b",
+  "gzip_sha256": "c437cba2afdd281bea931940e79469f1db22f057847c7c6f5ae0b9bbac425ec4",
+  "frames_match_original_core": true,
+  "errors": [],
+  "incomplete_calls": 0,
+  "pass": true,
+  "limits": [
+    "Consumer only; A600 producer capacity and subsequent throw/damage stages are not recovered",
+    "Natural frames untouched; isolated CPU cases explicitly replace private inputs",
+    "Captured A600 bytes span 512 bytes; production semantic slice does not impose that as an original capacity"
+  ]
+}
