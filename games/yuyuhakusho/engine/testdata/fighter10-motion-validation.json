@@ -1,0 +1,328 @@
+{
+  "schema": 1,
+  "pass": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "checkpoint_commit": "149cc02dc9e78508295c725a988386427fd88b2f",
+  "scope": "Source10 continuation slots11/2d/47/48/49 through15afc before shared tail; typed Go state, no runtime ROM or CPU",
+  "api": "StepFighter10Motion(Fighter10MotionState, JumpParameters) (Fighter10MotionState,error)",
+  "state_ownership": {
+    "fields": [
+      "ObjectID",
+      "Body",
+      "Controls",
+      "Aux48",
+      "ContactFlags",
+      "Pool"
+    ],
+    "aux48": "One int32 owner; only high byte changes in slot49; low24 bits preserved",
+    "view_boundary": "Caller maps existing action AlternateVelocity/world Aux48 to this single field and merges it back"
+  },
+  "test_first": {
+    "failure_scenarios_before_implementation": true,
+    "failure_scenarios_initial_sha256": "1e53b414ab7bb7473fa1bfc0874ed2f859899ef57c1be2d4b36f61696efefc62",
+    "test_before_implementation": true,
+    "test_sha256_at_red": "5a4dd4a1e0a651b6f960d42321f815150445bddc1b382051847915be5617ef42",
+    "original_private_matrix_and_sequences_before_tests_and_implementation": true,
+    "original_private_calls": 8586,
+    "original_private_trajectories": 27,
+    "original_private_trajectory_steps": 285,
+    "actual_red": "undefined Fighter10MotionState / StepFighter10Motion",
+    "natural35_calls_appended_after_real_menu_input_available": true,
+    "production_logic_added_for_natural_append": false
+  },
+  "test_logs": [
+    {
+      "phase": "red",
+      "path": "games/yuyuhakusho/engine/testdata/fighter10-motion-red.jsonl",
+      "sha256": "8597c066e1c86fe1224af434334624f0e8eb5dce3a5f20094702f634674c6966",
+      "final_action": "fail",
+      "top_level_tests": [],
+      "elapsed_seconds": 0,
+      "scope": "Focused TestFighter10Motion in the complete engine package; no unrelated game tests"
+    },
+    {
+      "phase": "native",
+      "path": "games/yuyuhakusho/engine/testdata/fighter10-motion-native.jsonl",
+      "sha256": "84fdb91bf98c10e05b8d8539a5de788437d49450b5e75c92b456ee69abf340ed",
+      "final_action": "pass",
+      "top_level_tests": [
+        "TestFighter10MotionOriginalPhases",
+        "TestFighter10MotionSingleInitialState",
+        "TestFighter10MotionRetreatPoseRange",
+        "TestFighter10MotionErrorsAreAtomic"
+      ],
+      "elapsed_seconds": 9.414,
+      "scope": "Focused TestFighter10Motion in the complete engine package; no unrelated game tests"
+    },
+    {
+      "phase": "wasm",
+      "path": "games/yuyuhakusho/engine/testdata/fighter10-motion-wasm.jsonl",
+      "sha256": "12ed3f631ad1b1b8fdc81ece0f19184b3fe9988965b7f791bd74a1cf85699f21",
+      "final_action": "pass",
+      "top_level_tests": [
+        "TestFighter10MotionOriginalPhases",
+        "TestFighter10MotionSingleInitialState",
+        "TestFighter10MotionRetreatPoseRange",
+        "TestFighter10MotionErrorsAreAtomic"
+      ],
+      "elapsed_seconds": 2.502,
+      "scope": "Focused TestFighter10Motion in the complete engine package; no unrelated game tests"
+    }
+  ],
+  "fixtures": [
+    {
+      "name": "fighter10-motion-oracle",
+      "path": "games/yuyuhakusho/engine/testdata/fighter10-motion-oracle.json.gz",
+      "manifest_path": "games/yuyuhakusho/engine/testdata/fighter10-motion-oracle-manifest.json",
+      "manifest_sha256": "d472b347f9f03131bb0a11c73494f5e7004b522e33972e48748955371bca9117",
+      "fixture_sha256": "b567d5379be87c8c17c35ce50cbbde9869d56762c3de350b6add76208757c9a7",
+      "gzip_sha256": "b965fe1e0f891d63a865378fc143c4597a8dcd1b0682862e4883caf6b827f302",
+      "records": 35,
+      "calls": 35,
+      "kind_counts_decimal": {
+        "17": 35
+      },
+      "character_counts": {
+        "10": 35
+      },
+      "allocation_attempts": 0,
+      "input_path": "games/yuyuhakusho/engine/testdata/fighter10-motion-natural-inputs.json",
+      "input_sha256": "d7859f794df2a2a9cf356eae01d239bf658632f58e69cee0cc5abb979ad3776e",
+      "identity": {
+        "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+        "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+        "core_name": "Genesis Plus GX",
+        "core_version": "v1.7.460bee4c",
+        "fps": 59.92274340431231,
+        "ram_bytes": 65536,
+        "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+        "teamplayer": false
+      },
+      "unobserved_identity": {
+        "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+        "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+        "core_name": "Genesis Plus GX",
+        "core_version": "v1.7.4 60bee4c",
+        "fps": 59.92274340431231,
+        "ram_bytes": 65536,
+        "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+        "teamplayer": false
+      },
+      "baseline_video_steps": 3600,
+      "baseline_match": true
+    },
+    {
+      "name": "fighter10-motion-boundaries",
+      "path": "games/yuyuhakusho/engine/testdata/fighter10-motion-boundaries.json.gz",
+      "manifest_path": "games/yuyuhakusho/engine/testdata/fighter10-motion-boundaries-manifest.json",
+      "manifest_sha256": "6773f5697b8a2b98623a1fd58622562777c18b71b1fb8224913d60e73e014de5",
+      "fixture_sha256": "55576448af8e4fe8dca23ecd9ef8908c54c7725dd450ebd663fc224b022c9480",
+      "gzip_sha256": "bcfc1a23f5e1c5b721b37c28e32c69df45036fdcd143110a59d63a3a455c0d9c",
+      "records": 8586,
+      "calls": 8586,
+      "kind_counts_decimal": {
+        "17": 1152,
+        "45": 630,
+        "71": 3856,
+        "72": 1636,
+        "73": 1312
+      },
+      "character_counts": {
+        "10": 8586
+      },
+      "allocation_attempts": 1920,
+      "input_path": "games/yuyuhakusho/engine/testdata/fighter10-motion-inputs.json",
+      "input_sha256": "59383329affb09e87c6452c135d3ae20df19db9f1675acddc0972a080a8551b6",
+      "identity": {
+        "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+        "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+        "core_name": "Genesis Plus GX",
+        "core_version": "v1.7.460bee4c",
+        "fps": 59.92274340431231,
+        "ram_bytes": 65536,
+        "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+        "teamplayer": false
+      },
+      "unobserved_identity": {
+        "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+        "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+        "core_name": "Genesis Plus GX",
+        "core_version": "v1.7.4 60bee4c",
+        "fps": 59.92274340431231,
+        "ram_bytes": 65536,
+        "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+        "teamplayer": false
+      },
+      "baseline_video_steps": 3600,
+      "baseline_match": true
+    },
+    {
+      "name": "fighter10-motion-sequences",
+      "path": "games/yuyuhakusho/engine/testdata/fighter10-motion-sequences.json.gz",
+      "manifest_path": "games/yuyuhakusho/engine/testdata/fighter10-motion-sequences-manifest.json",
+      "manifest_sha256": "4e02a13918876098e26ddb3735b489e873ef92ec037624c6720973841fcfa2e2",
+      "fixture_sha256": "63611067ce0898813f9955222969a4f9bed46b7e01b7be894e71e07e92a8bca5",
+      "gzip_sha256": "b3d5da6a014e9c76d6e94d63d361dccb2838e818de794c492245c6e38e6394cc",
+      "records": 27,
+      "calls": 285,
+      "kind_counts_decimal": {
+        "17": 48,
+        "45": 93,
+        "71": 36,
+        "72": 12,
+        "73": 96
+      },
+      "character_counts": {
+        "10": 285
+      },
+      "allocation_attempts": 36,
+      "input_path": "games/yuyuhakusho/engine/testdata/fighter10-motion-inputs.json",
+      "input_sha256": "59383329affb09e87c6452c135d3ae20df19db9f1675acddc0972a080a8551b6",
+      "identity": {
+        "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+        "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+        "core_name": "Genesis Plus GX",
+        "core_version": "v1.7.460bee4c",
+        "fps": 59.92274340431231,
+        "ram_bytes": 65536,
+        "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+        "teamplayer": false
+      },
+      "unobserved_identity": {
+        "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+        "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+        "core_name": "Genesis Plus GX",
+        "core_version": "v1.7.4 60bee4c",
+        "fps": 59.92274340431231,
+        "ram_bytes": 65536,
+        "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+        "teamplayer": false
+      },
+      "baseline_video_steps": 3600,
+      "baseline_match": true
+    }
+  ],
+  "comparison": {
+    "parent_actor_bytes": 256,
+    "reserved_children_bytes": 768,
+    "full_fx_pool_bytes": 2048,
+    "effect_cursor": true,
+    "semantic_state": true,
+    "masked_parent_child_or_pool_bytes": 0,
+    "private_full_ram_unknown_write_check": true,
+    "private_stack_region": "FEC0..FF04; stack below FF20 statistics alias",
+    "entry_to_pretail_SP_equal": true,
+    "late_counter_then_allocation_failure_atomic": true
+  },
+  "retreat": {
+    "table_address": "0x1cb20",
+    "table_bytes": "0044000e000c000a0008000600380036",
+    "structural_entries": 8,
+    "moving_indices": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "nonmoving_indices": [
+      0,
+      6,
+      7
+    ],
+    "source10_pose_hex": "0c",
+    "actual_pose_records": 7,
+    "natural_before_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "natural_before_completed_values": [
+      0,
+      1
+    ],
+    "normal_reachable_index7_proven": false,
+    "unavailable_index_policy": "Only when table lookup is required, reject >=8 atomically; completed==1 bypasses table"
+  },
+  "natural": {
+    "source_character_id": 10,
+    "calls": 35,
+    "kind_counts_hex": {
+      "11": 35,
+      "2d": 0,
+      "47": 0,
+      "48": 0,
+      "49": 0
+    },
+    "video_labels": [
+      2052,
+      2086
+    ],
+    "original_menu_no_ram_mutation": true,
+    "all_five_slots_naturally_covered": false
+  },
+  "continuous": {
+    "streams": 27,
+    "steps": 285,
+    "initialization_count_per_stream": 1,
+    "clock": "Actual original19c96 versus independent StepAnimationClock",
+    "external_inputs": "Only predeclared pressed update in2d trajectory",
+    "timing_context": "Declared private duration/flags, no animation-record refresh",
+    "milestones": [
+      "action-transition",
+      "frame-six",
+      "frame-fourteen",
+      "frame-thirty-one"
+    ],
+    "expected_intermediate_state_fed_back": false
+  },
+  "private_new_source10_checkpoint_crosscheck": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter10-motion-natural-crosscheck.json",
+    "sha256": "b05638741c03713f98755015f0bb02ca726c4340cfb61b1d33c03f2a9e6a9b19",
+    "complete_boundary_and_sequence_gzip_bytes_identical": true,
+    "old_private_manifests_preserved": true
+  },
+  "source_sha256": {
+    "games/yuyuhakusho/engine/fighter10_motion.go": "120bf695e1e02406d6ba94493d373b59782e606ba939fbfe284bd17b99b8e427",
+    "games/yuyuhakusho/engine/fighter10_motion_test.go": "5a4dd4a1e0a651b6f960d42321f815150445bddc1b382051847915be5617ef42",
+    "games/yuyuhakusho/engine/FIGHTER10_MOTION_VERIFICATION.md": "cf211be0580e5817b743704a29d2eb51c0352b8b6e0613a5819e68144d68b656",
+    "games/yuyuhakusho/engine/chu_special_motion.go": "5c37d35003f4f983010232d495b6e45143553a36b347edbaf2aa494006839c98",
+    "games/yuyuhakusho/engine/ground_actions.go": "cc6106a696c63bb39293694ed8cc63e04586ceb89e6b04454fb08970aedca80c",
+    "games/yuyuhakusho/engine/animation_clock.go": "fa868c5c160fa22fba71520d80c18e8d1f40217ff9a64c6d90a231eab65f28a4",
+    "games/yuyuhakusho/engine/effects.go": "6a0916fbc4051a0e67988b9cad99e41d9ef778e0e78a7f63d65f5fb35d2f6b18",
+    "games/yuyuhakusho/engine/jump.go": "4d04cd8fc08edde75a5793d6be21644e058e7b2caf4e7c3c6c7b15f18fa39605",
+    "games/yuyuhakusho/engine/jump_test.go": "9dd7ebb41549fb7c0528fe11e19b0a230157b1515ebbe46fe690847a46ee81d7",
+    "games/yuyuhakusho/engine/effects_test.go": "25b7abb54ed803a4802b3bbe3a9c718d0343270c6f0a6150e187fef4c5c11fb0",
+    "games/yuyuhakusho/engine/lane_motion_test.go": "1ce015651231e59d4134999e02c9af300a7bfc5ca65da658778b96c8a506868e",
+    "games/yuyuhakusho/data/animation-catalog.json.gz": "845e2f43179f831130b40c4b796843fdc0c3ae4c699d605e4326905800781495",
+    "games/yuyuhakusho/data/animation-catalog-manifest.json": "18fa96ed9adda02de5b890bb99802e49416bdbf143318835cecf2bc7574eaaba",
+    "scripts/yuyuhakusho/capture_fighter10_motion.py": "5ab816b3a450d9940d16cf357533dea2e4b7fd2fc45e99a96ebc498af92ad43f",
+    "scripts/yuyuhakusho/reference.py": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "scripts/yuyuhakusho/capture_ground_idle.py": "01d4798e937fa01946b7612fbc4fa7418dda97ec3411db4beb4629975614ba1d",
+    "scripts/yuyuhakusho/capture_ground_actions.py": "25076eebbcbb4192ccf4111330b49693e9adf1a5c95c8f5d5f1fd02e3cd70f0a",
+    "scripts/yuyuhakusho/capture_jump.py": "21017876cd34f9263b6efa11e376ebf84b31d5fc82664c7c8b208213d1ecd8ab",
+    "scripts/yuyuhakusho/capture_effect_pool.py": "b9c753d1c9b6380ac64ee16f2c10cdcf8560654e493e770b31552b1781354f46",
+    "docs/research/md-yuyuhakusho/static/fighter-action-slots-focused.txt": "c6a52e94bea31dc12e08c6cd76a282dc4ae51c56288f2df3e7bef40cd72a072d",
+    "docs/research/md-yuyuhakusho/static/chu-special-motion-helpers.txt": "0d25511d9b73b4723563a1dec541ce6715522451d75b96060f60ab0fb60959f0",
+    "docs/research/md-yuyuhakusho/FIGHTER_ACTION_ROADMAP.md": "7cbb3d14808f46fbbdd6f0201d59e9c13a84b5743a3afcb0af9bf9922bd70dab"
+  },
+  "limits": [
+    "Only pre-tail motion phases; shared action preparation/tail, full fighter, whole world and platform integration are not claimed.",
+    "Natural source10 evidence covers slot11 only;2d/47/48/49 remain isolated CPU coverage in this report.",
+    "No original animation-record refresh or FX lifetime in private clock trajectories.",
+    "Out-of-range frame/cursor errors are independent boundary checks, not original CPU error semantics.",
+    "Static evidence reused from direct Ghidra; REA currently does not support raw68000."
+  ],
+  "cleanup": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter10-motion-cleanup.json",
+    "sha256": "f5148a3da61c7eb556a70db043a2f885e8212031a36b5be8b06c28299825aea2",
+    "deleted_files": 16,
+    "deleted_bytes": 1810859,
+    "shared_go_cache_deleted": false
+  }
+}

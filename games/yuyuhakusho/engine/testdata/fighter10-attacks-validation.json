@@ -1,0 +1,495 @@
+{
+  "verified_at_utc": "2026-11-04T16:54:49.646577+00:00",
+  "base_commit": "149cc02d",
+  "scope": "Complete original source10 four attack selector returns including ordinary throws, dash effects and seven special constructors; no continued action motion",
+  "pass": true,
+  "phase_complete": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "api": {
+    "state": "Fighter10AttackState embeds ChuAttackState; Aux48High uint8; EnergyFraction uint16; RandomSeed uint32",
+    "function": "SelectFighter10Attack(Fighter10AttackState, ChuAttackMode) (Fighter10AttackState, error)",
+    "canonical_aux48_ownership": "Only high byte; caller retains low24; no additional canonical store",
+    "energy_fraction_and_shared_rng": "Explicit immutable pass-through"
+  },
+  "test_first": {
+    "phase": "red",
+    "path": "games/yuyuhakusho/engine/testdata/fighter10-attacks-red.jsonl",
+    "sha256": "c6fd6a6271427b04f0d93644e4b065bb592b6f512e221980b3bd392ac08b6d69",
+    "result": "fail",
+    "elapsed_seconds": 0,
+    "top_level_tests": [],
+    "reason": "Actual missing Fighter10AttackState and SelectFighter10Attack, with all existing dependencies present, after original fixtures and new test were saved, before implementation"
+  },
+  "coverage": {
+    "source_character_id": 10,
+    "natural_complete_returns": 2005,
+    "natural_source_objects": [
+      "0x8400"
+    ],
+    "natural_kinds": {
+      "ground": 891,
+      "ground-special": 906,
+      "air": 104,
+      "air-special": 104
+    },
+    "natural_selected_constructor_counts": {
+      "0x18828": 1,
+      "0x18812": 1
+    },
+    "natural_source10_ai": false,
+    "private_representative_returns": 21,
+    "private_boundary_returns": 11428,
+    "private_boundary_objects": {
+      "0x8400": 2857,
+      "0x8800": 2857,
+      "0x8c00": 2857,
+      "0x9000": 2857
+    },
+    "special_constructor_entries": [
+      "0x19ac0",
+      "0x19aea",
+      "0x19b14",
+      "0x19b46",
+      "0x19b78",
+      "0x19ba0",
+      "0x19bd8"
+    ],
+    "ordinary_and_throw_entries": [
+      "0x18214",
+      "0x1833c",
+      "0x18812",
+      "0x18828",
+      "0x1883e",
+      "0x18854",
+      "0x1886a",
+      "0x18880",
+      "0x188d8",
+      "0x188ee",
+      "0x18930"
+    ],
+    "single_initial_state_streams": 16,
+    "single_initial_state_steps": 320,
+    "stream_changes": [
+      "Declared base Held/Pressed/Changed only"
+    ],
+    "actor_bytes": 256,
+    "children_bytes": 768,
+    "four_fighter_families_bytes": 4096,
+    "effect_pool_bytes": 2048,
+    "throw_buffer_bytes": 512,
+    "energy_fraction_values": [
+      0,
+      1,
+      65535
+    ],
+    "shared_rng_calls": 0,
+    "unmasked_output_bytes": true,
+    "actual_return_sp_checked": true,
+    "incomplete_calls": 0,
+    "out_of_scope_private_ram_writes": 0,
+    "errors": 0
+  },
+  "natural_baseline": {
+    "unobserved_core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+    "observed_core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "unchanged_ram_video_frames": 3600,
+    "input": {
+      "path": "games/yuyuhakusho/engine/testdata/fighter10-inputs.json",
+      "sha256": "d7859f794df2a2a9cf356eae01d239bf658632f58e69cee0cc5abb979ad3776e"
+    },
+    "reference_frames": {
+      "path": "games/yuyuhakusho/engine/testdata/fighter10-attacks-natural-reference-frames.json",
+      "sha256": "1aa1048464a6f2d1cfb079d8c3d9646c81c96ac507cf0fe5c90a6c446dd486af"
+    },
+    "reference_manifest": {
+      "path": "games/yuyuhakusho/engine/testdata/fighter10-attacks-natural-reference-manifest.json",
+      "sha256": "b022fb615ef8bcbce4931dcf5111dcd8d466e00af1f3f1b59129ea472b0dd7f1"
+    },
+    "initial_source9_baseline_frames": 3600,
+    "initial_source9_input_natural_source10_returns": 0
+  },
+  "legacy_chu_regression": {
+    "existing_source_files_byte_equal_to_base_commit": true,
+    "same_three_original_chu_attack_tests_passed_native_and_wasm": true,
+    "existing_chu_reports_unmodified": true
+  },
+  "logs": [
+    {
+      "phase": "red",
+      "path": "games/yuyuhakusho/engine/testdata/fighter10-attacks-red.jsonl",
+      "sha256": "c6fd6a6271427b04f0d93644e4b065bb592b6f512e221980b3bd392ac08b6d69",
+      "result": "fail",
+      "elapsed_seconds": 0,
+      "top_level_tests": []
+    },
+    {
+      "phase": "native-race",
+      "path": "games/yuyuhakusho/engine/testdata/fighter10-attacks-native.jsonl",
+      "sha256": "c97797274daf3ac51850fc4a275c068f3f16ad25645d25ebfadfaaa3a90f359f",
+      "result": "pass",
+      "elapsed_seconds": 60.724,
+      "top_level_tests": [
+        "TestChuAttacksOriginalFullCalls",
+        "TestChuAttacksSingleInitialState",
+        "TestChuAttacksInvalidInputIsAtomic",
+        "TestFighter10AttacksOriginalFullCalls",
+        "TestFighter10AttacksSingleInitialState",
+        "TestFighter10AttacksInvalidInputIsAtomic"
+      ]
+    },
+    {
+      "phase": "node-wasm",
+      "path": "games/yuyuhakusho/engine/testdata/fighter10-attacks-wasm.jsonl",
+      "sha256": "ee1a71db4fc360c0d3edfa4abaa60ffe2a05a43a4a99ee1c7649691433b4c8c2",
+      "result": "pass",
+      "elapsed_seconds": 14.64,
+      "top_level_tests": [
+        "TestChuAttacksOriginalFullCalls",
+        "TestChuAttacksSingleInitialState",
+        "TestChuAttacksInvalidInputIsAtomic",
+        "TestFighter10AttacksOriginalFullCalls",
+        "TestFighter10AttacksSingleInitialState",
+        "TestFighter10AttacksInvalidInputIsAtomic"
+      ]
+    }
+  ],
+  "fixtures": [
+    {
+      "name": "fighter10-attacks-natural",
+      "manifest": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter10-attacks-natural-manifest.json",
+        "sha256": "b9eef9472de0da37d48052cc82c0f0addadd01cb5c5caadfb501c0c6ba217511"
+      },
+      "compressed": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter10-attacks-natural.json.gz",
+        "sha256": "a33e7627f50095217b2682d9401ad3c4b5991ac6f29269203a118b9ed96e5fee"
+      },
+      "raw_sha256": "64aa4972c05ba9081448a4931148e2a8626f2fb884eeeb168794f081ef24381d",
+      "raw_bytes": 67408226,
+      "records": 2005,
+      "calls": 2005,
+      "kind_counts": {
+        "ground": 891,
+        "ground-special": 906,
+        "air-special": 104,
+        "air": 104
+      },
+      "constructor_counts": {
+        "0x18828": 1,
+        "0x18812": 1
+      },
+      "source_objects": {
+        "0x8400": 2005
+      }
+    },
+    {
+      "name": "fighter10-attacks-oracle",
+      "manifest": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter10-attacks-oracle-manifest.json",
+        "sha256": "c1672db31808f30660821a9f7bd3f1058a1575f883e33b3cb44edfbeb3dcaeed"
+      },
+      "compressed": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter10-attacks-oracle.json.gz",
+        "sha256": "9e180042f12a3331f8955cf15e764177b77ee5826f5611afd2b1a990e42b6c12"
+      },
+      "raw_sha256": "a59cf36f5a85ea75719c99741aea57629d277675d5373ed68a0f29254d89244b",
+      "raw_bytes": 710849,
+      "records": 21,
+      "calls": 21,
+      "kind_counts": {
+        "ground": 4,
+        "air": 3,
+        "ground-special": 10,
+        "air-special": 4
+      },
+      "constructor_counts": {
+        "0x18214": 1,
+        "0x18854": 1,
+        "0x1886a": 1,
+        "0x1833c": 2,
+        "0x18930": 2,
+        "0x188ee": 1,
+        "0x19ac0": 2,
+        "0x19aea": 2,
+        "0x19b14": 2,
+        "0x19b46": 2,
+        "0x19bd8": 2,
+        "0x19b78": 2,
+        "0x19ba0": 2
+      },
+      "source_objects": {
+        "0x8800": 6,
+        "0x8c00": 5,
+        "0x9000": 5,
+        "0x8400": 5
+      }
+    },
+    {
+      "name": "fighter10-attacks-boundaries",
+      "manifest": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter10-attacks-boundaries-manifest.json",
+        "sha256": "fc1e347ef3675cb19c769b05645954eb6c4e7caff62b1127f6ae69b2f52c4628"
+      },
+      "compressed": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter10-attacks-boundaries.json.gz",
+        "sha256": "002099f14940ec18f749973e9900edc620714f8603f5e0e8ceee462b66fed6e1"
+      },
+      "raw_sha256": "9f3e436d30ce701d37361128ff4678610902065079115b7ba8645c877e145eed",
+      "raw_bytes": 386899678,
+      "records": 11428,
+      "calls": 11428,
+      "kind_counts": {
+        "ground": 2432,
+        "air": 1280,
+        "ground-special": 4488,
+        "air-special": 3228
+      },
+      "constructor_counts": {
+        "0x18812": 344,
+        "0x18828": 572,
+        "0x1886a": 72,
+        "0x18880": 84,
+        "0x1883e": 96,
+        "0x18214": 112,
+        "0x18854": 112,
+        "0x188ee": 384,
+        "0x18930": 464,
+        "0x188d8": 240,
+        "0x1833c": 448,
+        "0x19ac0": 600,
+        "0x19aea": 580,
+        "0x19b14": 648,
+        "0x19b46": 1036,
+        "0x19bd8": 317,
+        "0x19b78": 648,
+        "0x19ba0": 1036
+      },
+      "source_objects": {
+        "0x8c00": 2857,
+        "0x9000": 2857,
+        "0x8400": 2857,
+        "0x8800": 2857
+      }
+    },
+    {
+      "name": "fighter10-attacks-sequences",
+      "manifest": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter10-attacks-sequences-manifest.json",
+        "sha256": "2476bcc21f0910e5682d651dc172e21954717b641f21d8bbc489ab32a417edad"
+      },
+      "compressed": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter10-attacks-sequences.json.gz",
+        "sha256": "930dc7c5c7ca4e10cc9a8053d4a492f08d59b52b14c1e47fac0d253753b931a8"
+      },
+      "raw_sha256": "34761cfeb11076dfc4c9774bf5f8ea88a5a36a82c2b06db8dba9bd1458247b4c",
+      "raw_bytes": 11112152,
+      "records": 16,
+      "calls": 320,
+      "kind_counts": {
+        "ground": 4,
+        "air": 4,
+        "ground-special": 4,
+        "air-special": 4
+      },
+      "constructor_counts": {},
+      "source_objects": {}
+    },
+    {
+      "name": "fighter10-attacks-source9-baseline",
+      "manifest": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter10-attacks-source9-baseline-manifest.json",
+        "sha256": "f61a1ff248a19a7760b7c42e11a826e11cc058543a417c1a6da4538d67dc81bd"
+      },
+      "compressed": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter10-attacks-source9-baseline.json.gz",
+        "sha256": "faf0cba279f4e6defc701dee89c549801f9af39a6c182f36fc69e2d99277dcf7"
+      },
+      "raw_sha256": "eef7c4eae457a03b5dfde336b8cf1cd72d34b278aea4c80cf733819bd0f1989b",
+      "raw_bytes": 13,
+      "records": 0,
+      "calls": 0,
+      "kind_counts": {},
+      "constructor_counts": {},
+      "source_objects": {}
+    }
+  ],
+  "focused_source_files": [
+    "input.go",
+    "fighter_input.go",
+    "animation_clock.go",
+    "animation_records.go",
+    "ground_actions.go",
+    "motion.go",
+    "jump.go",
+    "effects.go",
+    "throw_contacts.go",
+    "throw_records.go",
+    "chu_attacks.go",
+    "fighter10_attacks.go",
+    "attack_contacts.go",
+    "effects_test.go",
+    "jump_test.go",
+    "throw_contacts_test.go",
+    "attack_contacts_test.go",
+    "chu_attacks_test.go",
+    "fighter10_attacks_test.go"
+  ],
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/engine/input.go",
+      "sha256": "38e957231a29fd08c889709e0e7a39661284258800521467ba41fcdc9dfa12e2"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter_input.go",
+      "sha256": "da1cee3d5fffe0a78f97b31fb9ae9f81ba3b44a6f0a79e4f3148027ca3596c9a"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/animation_clock.go",
+      "sha256": "fa868c5c160fa22fba71520d80c18e8d1f40217ff9a64c6d90a231eab65f28a4"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/animation_records.go",
+      "sha256": "15e3eb6b849d7d29f8b3b55f9c843b36c9ce38fbf3fa4ffa71a9672593d13cbe"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/ground_actions.go",
+      "sha256": "cc6106a696c63bb39293694ed8cc63e04586ceb89e6b04454fb08970aedca80c"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/motion.go",
+      "sha256": "35dc27314a13afdff39d96d2d21911c5ba5030baf00ea81d1daf8f9feb5f8878"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/jump.go",
+      "sha256": "4d04cd8fc08edde75a5793d6be21644e058e7b2caf4e7c3c6c7b15f18fa39605"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/effects.go",
+      "sha256": "6a0916fbc4051a0e67988b9cad99e41d9ef778e0e78a7f63d65f5fb35d2f6b18"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/throw_contacts.go",
+      "sha256": "0b433935245fa97df63841e9d76cd109d53d848d6c816dc93a7a1a33922a3ffb"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/throw_records.go",
+      "sha256": "ce5f9c6c77a8d7ebc298f30e9f99fb9686ad436bc4cc716960c3c0542480b34f"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_attacks.go",
+      "sha256": "108d7a4a72ab06cd9c2950c6830e861c063f937a968499f554cd633062f434a6"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter10_attacks.go",
+      "sha256": "3be75d818323df1d8097cd337a435b66bb31b03747966c1aaa078557b43822b1"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/attack_contacts.go",
+      "sha256": "1bc022b3649e4765ad7b33f8e08c91ca909e3097b714c24555ee4a64fac0d880"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/effects_test.go",
+      "sha256": "25b7abb54ed803a4802b3bbe3a9c718d0343270c6f0a6150e187fef4c5c11fb0"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/jump_test.go",
+      "sha256": "9dd7ebb41549fb7c0528fe11e19b0a230157b1515ebbe46fe690847a46ee81d7"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/throw_contacts_test.go",
+      "sha256": "5e5ed29d8866de57ad4b5610f8fe6c19e409263eb4fd4b9b19b7a03cc018962b"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/attack_contacts_test.go",
+      "sha256": "a7398b4e96c22d89801e3974637f83562c39155020a901214aea9005ee4c386a"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_attacks_test.go",
+      "sha256": "ff4bd0fb65a690923fe3b06821af51363b12b8f2449ce2a39c14341606d8c4a8"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter10_attacks_test.go",
+      "sha256": "60eecad927f55c5996fefd61a8ca2c08a581f7d0194508b3e37f31eb08349f54"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_fighter10_attacks.py",
+      "sha256": "96f30a1def964ebda4e11b5eaa56811b11de19559302300089b19b4f7dee4372"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_ground_actions.py",
+      "sha256": "25076eebbcbb4192ccf4111330b49693e9adf1a5c95c8f5d5f1fd02e3cd70f0a"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/FIGHTER10_ATTACK_VERIFICATION.md",
+      "sha256": "47651454eb01a7389eb940e9f9f27409cd65bfa974e51e8c700625e191d5cdc9"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter10-inputs.json",
+      "sha256": "d7859f794df2a2a9cf356eae01d239bf658632f58e69cee0cc5abb979ad3776e"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter10-attacks-natural-reference-frames.json",
+      "sha256": "1aa1048464a6f2d1cfb079d8c3d9646c81c96ac507cf0fe5c90a6c446dd486af"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter10-attacks-natural-reference-manifest.json",
+      "sha256": "b022fb615ef8bcbce4931dcf5111dcd8d466e00af1f3f1b59129ea472b0dd7f1"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-action-selectors-focused.txt",
+      "sha256": "8c27ef51fc1bddfbf4b928e5a1290b2556c057f01d320e46a0ccdda56609692b"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-action-constructors-focused.txt",
+      "sha256": "e43cec558dad5ba037b0ad39577ec0ebc8b9d9a6c6af0b667596d35e0ae44dad"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_chu_attacks.py",
+      "sha256": "f3d42a7d04267fcdbdea9e67963a70bb34920b861676358d67ab607e563eb580"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_ground_idle.py",
+      "sha256": "01d4798e937fa01946b7612fbc4fa7418dda97ec3411db4beb4629975614ba1d"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_jump.py",
+      "sha256": "21017876cd34f9263b6efa11e376ebf84b31d5fc82664c7c8b208213d1ecd8ab"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_effect_pool.py",
+      "sha256": "b9c753d1c9b6380ac64ee16f2c10cdcf8560654e493e770b31552b1781354f46"
+    },
+    {
+      "path": "scripts/yuyuhakusho/reference.py",
+      "sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/probe.py",
+      "sha256": "03a52ad64abf051a4a0c8914cb4813503f246afc0ec463ecd5cadb55c3bf7642"
+    }
+  ],
+  "additional_transitive_capture_source": {
+    "path": "scripts/yuyuhakusho/capture_ground_actions.py",
+    "sha256": "25076eebbcbb4192ccf4111330b49693e9adf1a5c95c8f5d5f1fd02e3cd70f0a",
+    "unchanged_from_capture_base_commit": true
+  },
+  "runtime": {
+    "native": "go1.26.2 darwin/arm64 with race detector",
+    "wasm": "GOOS=js GOARCH=wasm; Node v24.15.0 via go_js_wasm_exec"
+  },
+  "limits": [
+    "Special constructors and throws are fully CPU-checked in declared private contexts; natural input reached only two ordinary constructor entries",
+    "Natural stream is human source10 versus AI source9; no source10 natural AI or complete source10 match claim",
+    "Selector streams do not advance animation clock, motion, collision, child lifetime or shared action tail; special requests are consumed and later calls may do nothing",
+    "Only Aux48 high byte is owned; caller must merge it into its existing full AlternateVelocity/canonical Aux48 and preserve low24",
+    "Invalid semantic throw slice or effect cursor is atomically rejected; arbitrary original out-of-storage bus aliases are not recovered",
+    "Six focused top-level tests used explicit 19-file scope; parent full-package and continued-action/world integration gates remain required"
+  ],
+  "cleanup": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter10-attacks-cleanup.json",
+    "sha256": "4c6ef693d3768bc8e839704d4fa85d68e004e215ee1272dbccf3348c4aa0145a",
+    "bytes_removed": 465025142,
+    "shared_go_caches_untouched": true
+  }
+}

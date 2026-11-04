@@ -4,7 +4,7 @@ import { MDController } from "../../web/src/controllers/MDController";
 import { KeyboardController, type ControllerProfile } from "../../web/src/controllers/input";
 import "./local_player.css";
 
-type Player = { slot: number; computer: boolean; input_channel: number; active: boolean; health: number; energy: number; X: number; Y: number; Pose: number; Action: number };
+type Player = { slot: number; character_id: number; computer: boolean; input_channel: number; active: boolean; health: number; energy: number; X: number; Y: number; Pose: number; Action: number };
 type View = { tick: number; logic_frame: number; ready: boolean; paused: boolean; completed: boolean; winner: number; window_complete: boolean; players: Player[] };
 type Reply = { ok: boolean; error?: string; view?: View; snapshot?: string; sprite_pixels?: number };
 declare global {
@@ -22,6 +22,7 @@ const profile: ControllerProfile = { revision: 0, turboHz: 10, keyboard: {
 const keyboard = new KeyboardController(profile);
 const pointers = new Map<number, readonly string[]>();
 const bits: Record<string, number> = { up: 1, down: 2, left: 4, right: 8, b: 16, c: 32, a: 64, start: 128, z: 256, y: 512, x: 1024, mode: 2048 };
+const characterNames: Record<number, string> = { 9: "酎", 10: "户愚吕兄" };
 function sample() {
   const held = keyboard.sample(performance.now());
   for (const buttons of pointers.values()) for (const button of buttons) held.add(button);
@@ -57,6 +58,8 @@ function App() {
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState("");
   const [players, setPlayers] = useState(2);
+  const [character, setCharacter] = useState(9);
+  const [opponent, setOpponent] = useState(9);
   const [team, setTeam] = useState(false);
   const [watch, setWatch] = useState(false);
   const [view, setView] = useState<View | null>(null);
@@ -173,7 +176,7 @@ function App() {
     try {
       const slots = players === 2 ? [0, 3] : players === 3 ? [0, 1, 3] : [0, 1, 2, 3];
       call({ Op: "prepare", Options: { Seed: 0x12345678, Difficulty: 6, TeamBattle: team && players === 4,
-        Players: slots.map((slot, color) => ({ Slot: slot, CharacterID: 9, Color: color, Computer: watch || slot !== 0, HumanChannel: 0 })),
+        Players: slots.map((slot, color) => ({ Slot: slot, CharacterID: slot === 0 ? character : opponent, Color: color, Computer: watch || slot !== 0, HumanChannel: 0 })),
       } });
       const response = call({ Op: "ready" });
       setView(response.view ?? null); setError(""); running.current = true;
@@ -185,6 +188,8 @@ function App() {
     <header className="yy-heading"><h1>魔强统一战</h1><span>本地研究</span></header>
     <div className="yy-options">
       <label>人数<select aria-label="人数" value={players} onChange={event => { setPlayers(Number(event.target.value)); clearInput(); }}><option value={2}>2 人</option><option value={3}>3 人</option><option value={4}>4 人</option></select></label>
+      <label>角色<select id="player-character" aria-label="角色" value={character} onChange={event => { setCharacter(Number(event.target.value)); clearInput(); }}>{Object.entries(characterNames).map(([id, name]) => <option key={id} value={id}>{name}</option>)}</select></label>
+      <label>电脑<select id="opponent-character" aria-label="电脑角色" value={opponent} onChange={event => { setOpponent(Number(event.target.value)); clearInput(); }}>{Object.entries(characterNames).map(([id, name]) => <option key={id} value={id}>{name}</option>)}</select></label>
       {players === 4 && <label className="yy-check"><input type="checkbox" checked={team} onChange={event => setTeam(event.target.checked)} />组队</label>}
       <label className="yy-check"><input type="checkbox" checked={watch} onChange={event => setWatch(event.target.checked)} />电脑演示</label>
       <button id="start-match" type="button" onClick={start} disabled={!ready}>{view ? "重新开始" : "开始对局"}</button>
@@ -195,7 +200,7 @@ function App() {
     </section>
     {error && <div className="yy-error" role="alert">{error}<button onClick={() => location.reload()}>重新加载</button></div>}
     {view && <div className="yy-players">{view.players.map((player, index) => <div className="yy-player-card" key={player.slot} style={{ borderTopColor: colors[index] }}>
-      <span>{player.computer ? "电脑" : "你"}<small>酎</small></span><strong>{Math.max(0, player.health)}</strong>
+      <span>{player.computer ? "电脑" : "你"}<small>{characterNames[player.character_id]}</small></span><strong>{Math.max(0, player.health)}</strong>
       <meter aria-label={`${player.computer ? "电脑" : "你的"}生命`} min={0} max={223} value={Math.max(0, player.health)} />
     </div>)}</div>}
     {view?.paused && <p className="yy-status">已暂停</p>}

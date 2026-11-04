@@ -1,0 +1,14 @@
+flag provided but not defined: -characters
+Usage of .local/md-yuyuhakusho/build/fighter-session:
+  -human-idle
+        keep slot0 explicitly human with neutral input
+  -max-ticks int
+        maximum complete logical ticks (default 20000)
+  -players int
+        number of active original slots,2..4 (default 2)
+  -rules string
+        semantic rules only (default "games/yuyuhakusho/data/chu-world-rules.json.gz")
+  -seed uint
+        shared32-bit initial rule seed (default 305419896)
+  -team
+        use original four-player1/1/4/4 teams

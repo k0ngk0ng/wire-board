@@ -1,0 +1,89 @@
+{
+  "schema": 1,
+  "scope": "Only duplicate task-owned fighter10 motion capture outputs; normative fixtures, authentic red, final logs and source/context manifests retained",
+  "deleted_files": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-motion/fighter10-motion-boundaries-manifest.json",
+      "bytes": 2211,
+      "sha256": "6773f5697b8a2b98623a1fd58622562777c18b71b1fb8224913d60e73e014de5"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-motion/fighter10-motion-boundaries.json.gz",
+      "bytes": 849524,
+      "sha256": "bcfc1a23f5e1c5b721b37c28e32c69df45036fdcd143110a59d63a3a455c0d9c"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-motion/fighter10-motion-inputs.json",
+      "bytes": 1919,
+      "sha256": "59383329affb09e87c6452c135d3ae20df19db9f1675acddc0972a080a8551b6"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-motion/fighter10-motion-oracle-manifest.json",
+      "bytes": 2126,
+      "sha256": "126a33fcd32a5b1f890953683944f2c8bab813c5d34652da0d886b4acf630938"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-motion/fighter10-motion-oracle.json.gz",
+      "bytes": 23,
+      "sha256": "abc129be8d26e8d4afe9ce45f9d5a73c8ed9aa62810ca24ee789fe4581dc4a80"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-motion/fighter10-motion-sequences-manifest.json",
+      "bytes": 2209,
+      "sha256": "4e02a13918876098e26ddb3735b489e873ef92ec037624c6720973841fcfa2e2"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-motion/fighter10-motion-sequences.json.gz",
+      "bytes": 37262,
+      "sha256": "b3d5da6a014e9c76d6e94d63d361dccb2838e818de794c492245c6e38e6394cc"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-motion-natural10/fighter10-motion-boundaries-manifest.json",
+      "bytes": 2211,
+      "sha256": "f27868983d0a6a03a6b9554373e71bdd285e280911b9afbf7c2731f904ed3969"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-motion-natural10/fighter10-motion-boundaries.json.gz",
+      "bytes": 849524,
+      "sha256": "bcfc1a23f5e1c5b721b37c28e32c69df45036fdcd143110a59d63a3a455c0d9c"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-motion-natural10/fighter10-motion-inputs.json",
+      "bytes": 3039,
+      "sha256": "d7859f794df2a2a9cf356eae01d239bf658632f58e69cee0cc5abb979ad3776e"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-motion-natural10/fighter10-motion-oracle-manifest.json",
+      "bytes": 2160,
+      "sha256": "d472b347f9f03131bb0a11c73494f5e7004b522e33972e48748955371bca9117"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-motion-natural10/fighter10-motion-oracle.json.gz",
+      "bytes": 6054,
+      "sha256": "b965fe1e0f891d63a865378fc143c4597a8dcd1b0682862e4883caf6b827f302"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-motion-natural10/fighter10-motion-sequences-manifest.json",
+      "bytes": 2209,
+      "sha256": "1bfe72a3319c5c1bdd0ab4e0a5d02875f1bcf2a71e7cdab67c44c67de1f08e63"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-motion-natural10/fighter10-motion-sequences.json.gz",
+      "bytes": 37262,
+      "sha256": "b3d5da6a014e9c76d6e94d63d361dccb2838e818de794c492245c6e38e6394cc"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-motion-capture.txt",
+      "bytes": 6546,
+      "sha256": "4102f34365390e41387f2ffac801f5836a81cf450b3f8f3a65ca1e830db1c841"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-motion-natural10-capture.txt",
+      "bytes": 6580,
+      "sha256": "b63e15be03f333f5f975fcbfa2426223729dcf7377602079b0a330b7084f651a"
+    }
+  ],
+  "deleted_bytes": 1810859,
+  "shared_go_cache_deleted": false,
+  "rom_tools_or_other_worktree_files_deleted": false
+}

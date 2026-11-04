@@ -12,6 +12,8 @@ import (
 	"io"
 	"os"
 	"runtime"
+	"strconv"
+	"strings"
 
 	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine"
 )
@@ -25,6 +27,7 @@ type verification struct {
 	Players              int    `json:"players"`
 	Team                 bool   `json:"team"`
 	HumanIdle            bool   `json:"human_idle"`
+	Characters           []int  `json:"characters,omitempty"`
 	Ticks                int    `json:"ticks"`
 	Callbacks            int    `json:"callbacks"`
 	FirstDamage          int    `json:"first_damage_tick"`
@@ -43,6 +46,7 @@ func digest(raw []byte) string { sum := sha256.Sum256(raw); return hex.EncodeToS
 
 func run() error {
 	players := flag.Int("players", 2, "number of active original slots,2..4")
+	selection := flag.String("characters", "", "comma-separated source IDs,9 or10; defaults to all9")
 	team := flag.Bool("team", false, "use original four-player1/1/4/4 teams")
 	human := flag.Bool("human-idle", false, "keep slot0 explicitly human with neutral input")
 	seed := flag.Uint64("seed", 0x12345678, "shared32-bit initial rule seed")
@@ -51,6 +55,23 @@ func run() error {
 	flag.Parse()
 	if *players < 2 || *players > 4 || *seed > 0xffffffff || *max < 1 {
 		return fmt.Errorf("invalid players/seed/tick limit")
+	}
+	characters := make([]uint8, *players)
+	for i := range characters {
+		characters[i] = 9
+	}
+	if *selection != "" {
+		parts := strings.Split(*selection, ",")
+		if len(parts) != *players {
+			return fmt.Errorf("one character ID is required for each player")
+		}
+		for i, part := range parts {
+			id, err := strconv.ParseUint(strings.TrimSpace(part), 10, 8)
+			if err != nil || (id != 9 && id != 10) {
+				return fmt.Errorf("unsupported character ID %q", part)
+			}
+			characters[i] = uint8(id)
+		}
 	}
 	file, err := os.Open(*path)
 	if err != nil {
@@ -78,7 +99,7 @@ func run() error {
 		slots = []uint8{0, 1, 2, 3}
 	}
 	for i, slot := range slots {
-		options.Players = append(options.Players, engine.ChuSessionPlayer{Slot: slot, CharacterID: 9, Color: uint8(i), Computer: !(*human && slot == 0)})
+		options.Players = append(options.Players, engine.ChuSessionPlayer{Slot: slot, CharacterID: characters[i], Color: uint8(i), Computer: !(*human && slot == 0)})
 	}
 	state, _, err := engine.NewChuSession(options, library)
 	if err != nil {
@@ -89,6 +110,11 @@ func run() error {
 		return err
 	}
 	report := verification{Seed: uint32(*seed), Players: *players, Team: *team, HumanIdle: *human, Environment: runtime.GOOS + "/" + runtime.GOARCH, RulesSHA: digest(raw)}
+	if *selection != "" {
+		for _, character := range characters {
+			report.Characters = append(report.Characters, int(character))
+		}
+	}
 	trace := sha256.New()
 	for tick := 1; tick <= *max && !state.MatchComplete; tick++ {
 		var events []engine.ChuWorldEvent

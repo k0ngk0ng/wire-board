@@ -1,0 +1,100 @@
+{
+  "native_keyboard_visible_movement": {
+    "before": {
+      "pixel": 4142966437,
+      "x": 944
+    },
+    "after": {
+      "pixel": 3167289103,
+      "x": 967
+    }
+  },
+  "source10_retreat_action": {
+    "Action": 17,
+    "Pose": 12,
+    "X": 959,
+    "Y": 320,
+    "active": true,
+    "character_id": 10,
+    "computer": false,
+    "energy": 223,
+    "health": 223,
+    "input_channel": 0,
+    "slot": 0
+  },
+  "native_visibility_release": true,
+  "native_mobile_touch": [
+    {
+      "event": "touchStart",
+      "held": [
+        "c",
+        "left",
+        "z"
+      ]
+    },
+    {
+      "event": "touchCancel",
+      "held": []
+    }
+  ],
+  "scope": "Two-character independent local Wasm research player; no platform room, network or full-roster acceptance",
+  "viewport": 320,
+  "input_trusted": true,
+  "human_idle_no_takeover": true,
+  "final_view": {
+    "completed": false,
+    "logic_frame": 345,
+    "paused": false,
+    "players": [
+      {
+        "Action": 0,
+        "Pose": 3,
+        "X": 887,
+        "Y": 320,
+        "active": true,
+        "character_id": 10,
+        "computer": false,
+        "energy": 223,
+        "health": 223,
+        "input_channel": 0,
+        "slot": 0
+      },
+      {
+        "Action": 67,
+        "Pose": 167,
+        "X": 1060,
+        "Y": 320,
+        "active": true,
+        "character_id": 9,
+        "computer": true,
+        "energy": 218,
+        "health": 223,
+        "input_channel": 255,
+        "slot": 3
+      }
+    ],
+    "ready": true,
+    "tick": 345,
+    "window_complete": true,
+    "winner": 0
+  },
+  "asset_requests": [
+    "/",
+    "/player.css",
+    "/wasm_exec.js",
+    "/player.js",
+    "/md-controller-UXLIP6HJ.svg",
+    "/player.wasm",
+    "/rules.json.gz",
+    "/sprites.json.gz",
+    "/hud.json.gz",
+    "/arena.json.gz",
+    "/favicon.ico"
+  ],
+  "pass": true,
+  "source_sha256": {
+    "scripts/yuyuhakusho/local_player.tsx": "72fb2d0a76be2fce2225a659b7d2977a33d22b5bd33257812b622a914e831e68",
+    "games/yuyuhakusho/cmd/local-player-wasm/main_js.go": "61d4d2b2ff20f773dfb07ac1a1e178e95570980a4a7aa6240bea120b3d44decf",
+    "games/yuyuhakusho/runtimebridge/session.go": "743c46f752dfeeaa6b12b0b59da983d512a442e196468b314eb50bfa73b62ee7"
+  }
+}

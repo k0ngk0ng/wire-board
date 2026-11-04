@@ -1,0 +1,50 @@
+{
+  "pass": true,
+  "reason": "AI channel255 has no hardware sample; external_input now preserves that actual trusted-boundary zero frame instead of unrelated hardware channel0",
+  "correction_in_collector_only": true,
+  "production_go_changed_for_correction": false,
+  "test_assertions_changed_for_correction": false,
+  "original_test_sha256": "a2cab7998fabdc560562ad006f3df139718a1eddb8996bb4dc9578637094abcf",
+  "crosschecks": [
+    {
+      "fixture": "fighter10-composition-action-boundaries.json.gz",
+      "complete_original_payload_unchanged": true
+    },
+    {
+      "fixture": "fighter10-composition-action-natural.json.gz",
+      "complete_original_payload_unchanged": true
+    },
+    {
+      "fixture": "fighter10-composition-action-sequences.json.gz",
+      "complete_original_payload_unchanged": true
+    },
+    {
+      "fixture": "fighter10-composition-actor-boundaries.json.gz",
+      "complete_original_payload_unchanged": true
+    },
+    {
+      "fixture": "fighter10-composition-actor-natural.json.gz",
+      "complete_original_payload_unchanged": true
+    },
+    {
+      "fixture": "fighter10-composition-actor-sequences.json.gz",
+      "complete_original_payload_unchanged": true
+    },
+    {
+      "fixture": "fighter10-composition-input-boundaries.json.gz",
+      "complete_original_payload_unchanged": true
+    },
+    {
+      "fixture": "fighter10-composition-input-natural.json.gz",
+      "complete_original_payload_unchanged": true
+    },
+    {
+      "fixture": "fighter10-composition-input-sequences.json.gz",
+      "cpu_before_after_and_other_fields_unchanged": true,
+      "only_declared_external_input_metadata_changed": true,
+      "changed_rows": 9
+    }
+  ],
+  "capture_sha256_at_metadata_correction": "b61cb92931b57965632f4fc57ad91aa843108541bf381198bc5da93d34d77490",
+  "scope": "Historical metadata-only correction before bounded long-action streams and constructor calls were added"
+}

@@ -5,7 +5,7 @@ button,select,input{font:inherit}
 button{color:#f9f8f3;background:#365e58;border:1px solid #365e58;border-radius:7px;padding:8px 12px;cursor:pointer}
 button:disabled{color:#45564f;background:#dbe0d7;border-color:#b2bdb3;cursor:default}
 select{color:#263635;background:#fffdf5;border:1px solid #9caea5;border-radius:6px;padding:7px}
-.yy-player{max-width:800px;padding:18px 16px 24px;margin:auto}
+.yy-player{max-width:660px;padding:18px 16px 24px;margin:auto}
 .yy-heading{display:flex;align-items:baseline;gap:12px;margin-bottom:14px}
 .yy-heading h1{font-size:23px;margin:0;font-weight:650;letter-spacing:.04em}
 .yy-heading>span{font-size:12px;color:#596c61}

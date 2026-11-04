@@ -35,7 +35,7 @@ func NewChuSession(options ChuSessionOptions, library ChuWorldLibrary) (ChuWorld
 	if len(options.Players) < 2 || len(options.Players) > 4 || options.Difficulty > 6 || options.Difficulty&1 != 0 || options.TeamBattle && len(options.Players) != 4 {
 		return ChuWorldState{}, nil, errors.New("unsupported Chu match size, difficulty or team configuration")
 	}
-	if _, ok := library.Fighters[9]; !ok || len(library.Commands) == 0 || len(library.Animations) == 0 {
+	if len(library.Commands) == 0 || len(library.Animations) == 0 {
 		return ChuWorldState{}, nil, errors.New("Chu match rules are unavailable")
 	}
 	state := ChuWorldState{Objects: WorldObjects{
@@ -50,11 +50,14 @@ func NewChuSession(options ChuSessionOptions, library ChuWorldLibrary) (ChuWorld
 	}
 	var slots, humanChannels uint8
 	for _, player := range options.Players {
-		if player.Slot >= 4 || player.CharacterID != 9 || player.Color >= 12 || slots&(1<<player.Slot) != 0 || !player.Computer && (player.HumanChannel >= 4 || humanChannels&(1<<player.HumanChannel) != 0) {
+		if player.Slot >= 4 || (player.CharacterID != 9 && player.CharacterID != 10) || player.Color >= 12 || slots&(1<<player.Slot) != 0 || !player.Computer && (player.HumanChannel >= 4 || humanChannels&(1<<player.HumanChannel) != 0) {
 			return ChuWorldState{}, nil, errors.New("unsupported or repeated Chu player slot, character, palette or input channel")
 		}
+		if spec, ok := library.Fighters[player.CharacterID]; !ok || spec.CharacterID != player.CharacterID {
+			return ChuWorldState{}, nil, errors.New("selected fighter initialization rules are unavailable")
+		}
 		slots |= 1 << player.Slot
-		state.Match.Characters[player.Slot], state.Match.Colors[player.Slot] = 10, player.Color
+		state.Match.Characters[player.Slot], state.Match.Colors[player.Slot] = player.CharacterID+1, player.Color
 		state.Match.BaseTeams[player.Slot] = player.Slot + 1
 		if options.TeamBattle {
 			state.Match.BaseTeams[player.Slot] = 1

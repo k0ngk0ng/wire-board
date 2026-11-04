@@ -1,0 +1,12 @@
+{
+  "scope": "Diagnostic only; initial default-timeout invocation is not counted as passed",
+  "messages": [
+    "panic: test timed out after 10m0s",
+    "TestFighterWorldSource10OriginalPasses (26s)"
+  ],
+  "original_log_sha256": "fc3a45d69fa3d52306d9075cba4dc50c2b2d37299eeecb71a8f81392648a07e7",
+  "original_limit_seconds": 600,
+  "replacement_shard_limit_seconds": 1200,
+  "shard_plan": "games/yuyuhakusho/verification/fighter10-native-shards.json",
+  "all_test_bodies_unchanged": true
+}
