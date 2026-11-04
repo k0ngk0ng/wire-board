@@ -1,0 +1,165 @@
+{
+  "scope": "Only task-owned in-worktree caches, duplicate captures, temporary Ghidra projects and redundant intermediate logs",
+  "removed": [
+    {
+      "path": ".local/go-cache",
+      "bytes": 198535239
+    },
+    {
+      "path": ".local/go-mod",
+      "bytes": 437765618
+    },
+    {
+      "path": ".local/md-yuyuhakusho/animation-catalog",
+      "bytes": 1618270
+    },
+    {
+      "path": ".local/md-yuyuhakusho/commands-capture",
+      "bytes": 1076437
+    },
+    {
+      "path": ".local/md-yuyuhakusho/body-separation",
+      "bytes": 160559
+    },
+    {
+      "path": ".local/md-yuyuhakusho/clash",
+      "bytes": 148430
+    },
+    {
+      "path": ".local/md-yuyuhakusho/collision-manager",
+      "bytes": 755207
+    },
+    {
+      "path": ".local/md-yuyuhakusho/collision-manager-replay",
+      "bytes": 755207
+    },
+    {
+      "path": ".local/md-yuyuhakusho/throw-contacts",
+      "bytes": 200749
+    },
+    {
+      "path": ".local/md-yuyuhakusho/attack-contacts",
+      "bytes": 892088
+    },
+    {
+      "path": ".local/md-yuyuhakusho/catalog-static",
+      "bytes": 229744
+    },
+    {
+      "path": ".local/md-yuyuhakusho/commands-static",
+      "bytes": 229377
+    },
+    {
+      "path": ".local/md-yuyuhakusho/static",
+      "bytes": 237496
+    },
+    {
+      "path": ".local/md-yuyuhakusho/shape-consumers",
+      "bytes": 65419
+    },
+    {
+      "path": ".local/md-yuyuhakusho/tmp",
+      "bytes": 0
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static-work",
+      "bytes": 0
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/animation-catalog-work",
+      "bytes": 0
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/commands-work",
+      "bytes": 0
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static-work-attack",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/animation-catalog-console.txt",
+      "bytes": 325
+    },
+    {
+      "path": ".local/md-yuyuhakusho/commands-capture-console.txt",
+      "bytes": 3061
+    },
+    {
+      "path": ".local/md-yuyuhakusho/commands-native.jsonl",
+      "bytes": 4823
+    },
+    {
+      "path": ".local/md-yuyuhakusho/commands-red.txt",
+      "bytes": 1016
+    },
+    {
+      "path": ".local/md-yuyuhakusho/body-separation-red.jsonl",
+      "bytes": 3903
+    },
+    {
+      "path": ".local/md-yuyuhakusho/body-separation-green.jsonl",
+      "bytes": 4244
+    },
+    {
+      "path": ".local/md-yuyuhakusho/body-separation-wasm.jsonl",
+      "bytes": 4243
+    },
+    {
+      "path": ".local/md-yuyuhakusho/clash-red.jsonl",
+      "bytes": 3739
+    },
+    {
+      "path": ".local/md-yuyuhakusho/clash-green.jsonl",
+      "bytes": 4563
+    },
+    {
+      "path": ".local/md-yuyuhakusho/clash-wasm.jsonl",
+      "bytes": 4564
+    },
+    {
+      "path": ".local/md-yuyuhakusho/collision-manager-red.jsonl",
+      "bytes": 3961
+    },
+    {
+      "path": ".local/md-yuyuhakusho/collision-manager-green.jsonl",
+      "bytes": 5887
+    },
+    {
+      "path": ".local/md-yuyuhakusho/collision-stage-native.jsonl",
+      "bytes": 92277
+    },
+    {
+      "path": ".local/md-yuyuhakusho/collision-stage-wasm.jsonl",
+      "bytes": 92276
+    },
+    {
+      "path": ".local/md-yuyuhakusho/throw-contacts-red.jsonl",
+      "bytes": 3898
+    },
+    {
+      "path": ".local/md-yuyuhakusho/throw-contacts-green.jsonl",
+      "bytes": 3918
+    },
+    {
+      "path": ".local/md-yuyuhakusho/throw-contacts-focused-green.jsonl",
+      "bytes": 3978
+    },
+    {
+      "path": ".local/md-yuyuhakusho/throw-contacts-focused-wasm.jsonl",
+      "bytes": 3977
+    },
+    {
+      "path": ".local/md-yuyuhakusho/shape-consumers-console.txt",
+      "bytes": 1875
+    }
+  ],
+  "bytes_removed": 642916368,
+  "kept": [
+    "Original ROM and downloaded reference tools/source",
+    "Independent game source and worktree",
+    "Canonical fixtures, manifests, red/green/Wasm logs and comparison evidence",
+    "Existing other-stage research evidence and user materials"
+  ],
+  "no_paths_outside_worktree_modified": true
+}

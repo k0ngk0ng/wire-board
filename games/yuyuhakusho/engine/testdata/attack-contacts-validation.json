@@ -1,0 +1,129 @@
+{
+  "scope": "Complete attack/hurt resolution and reached guard, hit, reaction, combo effect and KO request helpers",
+  "pass": true,
+  "goal_complete": false,
+  "native_race": "passed",
+  "node_wasm": "passed",
+  "test_first": {
+    "path": "games/yuyuhakusho/engine/testdata/attack-contacts-red-phase.jsonl",
+    "sha256": "6de6b895ed472132b0a42fd4292494bde6f7186d894b25dd8c513f0e82112b78",
+    "reason": "AttackContactActor, AttackContactState and ResolveAttackContacts absent; concurrent throw-test types also absent in unchanged raw log"
+  },
+  "fixtures": [
+    {
+      "name": "attack-contacts-oracle",
+      "records": 2068,
+      "contacts": 11,
+      "guards": 0,
+      "hits": 11,
+      "knockouts": 0,
+      "reactions": [
+        0,
+        1,
+        4,
+        5,
+        9
+      ],
+      "fixture_sha256": "547060bd6ba958c1f475f377df9aeecbb60fb69833d4d1e4350ab5fe7ea346e5",
+      "gzip_sha256": "939b87fcb5034827c6072c0215dd16c00ab76c33fecda27653ab2338b2bb65a9"
+    },
+    {
+      "name": "attack-contacts-boundaries",
+      "records": 915,
+      "contacts": 895,
+      "guards": 288,
+      "hits": 607,
+      "knockouts": 66,
+      "reactions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "fixture_sha256": "b09a1c4c235afc420691359c0d03b865129d899e15a19dfc145d64385ad8ac9b",
+      "gzip_sha256": "1a98e8e36fa81bdaf1e2e26e7e565a222d67d60148d0d825d3a86db065db764a"
+    }
+  ],
+  "test_logs": [
+    {
+      "path": "games/yuyuhakusho/engine/testdata/attack-contacts-native.jsonl",
+      "sha256": "035102bf7fa3b2b828035f18d4121c4dab904cad95613f0772feac6842ef7822",
+      "tests_passed": [
+        "TestAttackContactsOriginalCompleteCalls",
+        "TestAttackContactsMalformedInputsAreAtomic"
+      ]
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/attack-contacts-wasm.jsonl",
+      "sha256": "6f25087f8dfd8d834a2bd7d4bbf9abacaab9b57c756e0ffda092fdf4301c9b51",
+      "tests_passed": [
+        "TestAttackContactsOriginalCompleteCalls",
+        "TestAttackContactsMalformedInputsAreAtomic"
+      ]
+    }
+  ],
+  "source_hashes": [
+    {
+      "path": "scripts/yuyuhakusho/capture_attack_contacts.py",
+      "sha256": "88f40da6dea0d9e2140f5cc34400b50119319be27d5834e16ac15d30ea5eb986"
+    },
+    {
+      "path": "scripts/yuyuhakusho/reference.py",
+      "sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81"
+    },
+    {
+      "path": "scripts/yuyuhakusho/hook_filter.c",
+      "sha256": "5320b2763215d032ce7eb5aaabcf0be2cfaa3b41eb49398d7c33933ce9f8c874"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/attack_contacts.go",
+      "sha256": "1bc022b3649e4765ad7b33f8e08c91ca909e3097b714c24555ee4a64fac0d880"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/attack_contacts_test.go",
+      "sha256": "a7398b4e96c22d89801e3974637f83562c39155020a901214aea9005ee4c386a"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/effects.go",
+      "sha256": "6a0916fbc4051a0e67988b9cad99e41d9ef778e0e78a7f63d65f5fb35d2f6b18"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/attack-contacts-helpers.txt",
+      "sha256": "897545da1a78d388d71276344be9c1dba863c3796a08da83a522bee0d122cca5"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/attack-contacts-allocator.txt",
+      "sha256": "13b8be349006669577b7dd025a2b56377001c85d04a6293a2482756473ebda1b"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/collision-consumers.txt",
+      "sha256": "7266c083322efd456e9e16450c1d6fe054437c4a6e5fdd6a1dc956f99e05db11"
+    }
+  ],
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "baseline_frames": 3600,
+  "frames_match_original_core": true,
+  "external_change_calls": 0,
+  "limits": [
+    "Natural input contains 11 hits and no guard/KO; guard and KO are explicitly isolated CPU evidence",
+    "All 11 reaction constructors covered, but subsequent reaction motion/effect lifetimes and full KO lifecycle remain separate",
+    "Not continuous independent gameplay, all-character action/AI, renderer, platform integration or complete matches",
+    "REA raw 68000 unsupported; direct Ghidra static analysis plus original CPU execution"
+  ]
+}

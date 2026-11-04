@@ -1,0 +1,84 @@
+{
+  "scope": "Full ordered attack-clash consumer and effect allocation/initialization only",
+  "goal_complete": false,
+  "release_ready": false,
+  "test_first": "Actual undefined types/function build failure was saved before implementation",
+  "logs": [
+    {
+      "phase": "red",
+      "path": "games/yuyuhakusho/verification/clash-red.jsonl",
+      "sha256": "2ba2bd007d8068ae7e5cc26db4a8c20a035dd328a04f416ee16e0064291621f5",
+      "result": "fail",
+      "passed_tests": []
+    },
+    {
+      "phase": "green",
+      "path": "games/yuyuhakusho/verification/clash-green.jsonl",
+      "sha256": "c9688186cdb36fe17c95aef0a490bfb91a6918093bd471b4ea8e5d17182cb5fb",
+      "result": "pass",
+      "passed_tests": [
+        "TestClashOriginalCompleteCalls/clash-oracle",
+        "TestClashOriginalCompleteCalls/clash-boundaries",
+        "TestClashOriginalCompleteCalls",
+        "TestClashInvalidStateIsAtomic"
+      ]
+    },
+    {
+      "phase": "wasm",
+      "path": "games/yuyuhakusho/verification/clash-wasm.jsonl",
+      "sha256": "37e3df7e0a0016ce559ccd6f371e843d40d0580f615e03b7bda9bcca60c9d152",
+      "result": "pass",
+      "passed_tests": [
+        "TestClashOriginalCompleteCalls/clash-oracle",
+        "TestClashOriginalCompleteCalls/clash-boundaries",
+        "TestClashOriginalCompleteCalls",
+        "TestClashInvalidStateIsAtomic"
+      ]
+    }
+  ],
+  "fixtures": [
+    {
+      "manifest": "games/yuyuhakusho/engine/testdata/clash-oracle-manifest.json",
+      "sha256": "482f8a3ff7dd2d2a9e0333a9f8ecfbd87d23562ef5ce101eb842eddef6c3ff2b",
+      "records": 2068,
+      "contacts": 0,
+      "fixture_sha256": "fa1fe0b033085a2be4a5455586e5eafa9519e0d863c5cb0af996a6e65964d78c",
+      "gzip_sha256": "a2ebe859978bb51ead791eb6d1b32487c7cbf6bced84d3ee68e07d4a965fa268"
+    },
+    {
+      "manifest": "games/yuyuhakusho/engine/testdata/clash-boundaries-manifest.json",
+      "sha256": "324516188aac54e2c430695be120134cdac46a16f21946b8e97a16b35138bda6",
+      "records": 159,
+      "contacts": 140,
+      "fixture_sha256": "91b5e784b2f66a56cee1214998b9dd3abd49a4ab95f032ce3064e99b4e4676e2",
+      "gzip_sha256": "0629c0781fb74176a4baf8eeb10aa9ec2b9a29b0ac62c752122a56415eb43c2e"
+    }
+  ],
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/engine/clash.go",
+      "sha256": "221f85a59c4765b8bece6a036d0e7d619087b33044ab5b6689efc9d7e40d0f9b"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/clash_test.go",
+      "sha256": "5e2cecf8be814af91cc65156acd9b56ca738b15b2b77a2fa454dee62f61b1e69"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_clash.py",
+      "sha256": "ad61832fde63256b50ce801d7b4c0c4adc981ab349684e9579b0ee08ee2aeb45"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/collision-consumers.txt",
+      "sha256": "7266c083322efd456e9e16450c1d6fe054437c4a6e5fdd6a1dc956f99e05db11"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/collision-helpers.txt",
+      "sha256": "a5f0636552003534d1d6f84ec3822549710dc6edcaf02437e86adea0dcbc0cfc"
+    }
+  ],
+  "limitations": [
+    "Natural sample has 143 single-record calls and 1925 empty calls, zero actual clash contacts",
+    "All 140 contact executions are explicitly isolated original-CPU cases",
+    "No full character/world timeline, effect lifetime or complete match is verified"
+  ]
+}

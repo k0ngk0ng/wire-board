@@ -1,0 +1,27 @@
+{
+  "scope": "Complete passive original calls",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "records": 2068,
+  "contacts": 0,
+  "capture_sha256": "ad61832fde63256b50ce801d7b4c0c4adc981ab349684e9579b0ee08ee2aeb45",
+  "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+  "fixture_sha256": "fa1fe0b033085a2be4a5455586e5eafa9519e0d863c5cb0af996a6e65964d78c",
+  "gzip_sha256": "a2ebe859978bb51ead791eb6d1b32487c7cbf6bced84d3ee68e07d4a965fa268",
+  "frames_match_original_core": true,
+  "incomplete_calls": 0,
+  "errors": [],
+  "pass": true,
+  "limits": [
+    "Full clash and allocation/initialization, not effect lifetime or complete matches",
+    "Private isolated original CPU inputs are deliberately replaced; natural frames are untouched"
+  ]
+}

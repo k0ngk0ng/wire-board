@@ -1,0 +1,11 @@
+{
+  "pass": true,
+  "characters": 11,
+  "frames": 4732,
+  "original_cpu_calls": 9464,
+  "verified_frames": 4732,
+  "catalog_sha256": "2da551e6ac6135d33337701eb8807fa9b5556265ac1890dbc8f795d3a466b8b7",
+  "oracle_sha256": "a430750a4dfde4134b302b1325e811cf67bec036879390641c0a1740691160d3",
+  "comparison": "Full 256-byte actor, 1,024-byte shape buffers, all four offsets, pending sound and four queue slots; no masks or expected-value injection",
+  "scope": "Isolated original-CPU animation submission calls; not complete character gameplay, graphics or matches"
+}

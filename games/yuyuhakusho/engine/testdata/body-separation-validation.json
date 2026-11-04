@@ -1,0 +1,80 @@
+{
+  "implementation_existed": false,
+  "exit_code": 1,
+  "reason": "Undefined BodySeparationState, BodySeparationActor and SeparateBodies",
+  "red_output_sha256": "c714e6281077fa8ded9430287a4dc1d1aee9a26d7034fef900e1ccd91df3ee35",
+  "test_sha256": "1215c545d50ee4b851aec12eb1edec3eb03bcbb30c95daa77d11c45a44cc8e6f",
+  "fixture_sha256": {
+    "body-separation-oracle": "e925b005044ed00dc34c1df31cd922491f78b4aa03a9ebd267b6ed92404e8e7f",
+    "body-separation-boundaries": "7267d3fbe938045e12495869a555fd97fc5ced0b0bfef0d17c124da3143ef889"
+  },
+  "red_phase": {
+    "phase": "red-before-implementation",
+    "implementation_existed": false,
+    "exit_code": 1,
+    "reason": "Undefined BodySeparationState, BodySeparationActor and SeparateBodies",
+    "red_output_sha256": "c714e6281077fa8ded9430287a4dc1d1aee9a26d7034fef900e1ccd91df3ee35",
+    "test_sha256": "1215c545d50ee4b851aec12eb1edec3eb03bcbb30c95daa77d11c45a44cc8e6f",
+    "fixture_sha256": {
+      "body-separation-oracle": "e925b005044ed00dc34c1df31cd922491f78b4aa03a9ebd267b6ed92404e8e7f",
+      "body-separation-boundaries": "7267d3fbe938045e12495869a555fd97fc5ced0b0bfef0d17c124da3143ef889"
+    }
+  },
+  "phase": "green-after-implementation",
+  "current_source_sha256": {
+    "games/yuyuhakusho/engine/body_separation.go": "89c49a0f1a8e68f38b9d3db111159935e2c1c7a222758399360b9cab60fd7a25",
+    "games/yuyuhakusho/engine/body_separation_test.go": "713753e17965df40b2cfb511bf2a6d4c2a9de7b764d49983a367fa1f0e198d6b",
+    "scripts/yuyuhakusho/capture_body_separation.py": "83a7d8b4f085c2e72da14e2af0c6b63742508134f678963714bda0d39aee4be9"
+  },
+  "capture_hook_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+  "capture_command": "PYTHONDONTWRITEBYTECODE=1 python3 scripts/yuyuhakusho/capture_body_separation.py --out .local/md-yuyuhakusho/body-separation",
+  "tests": {
+    "native_race": {
+      "pass": true,
+      "output_sha256": "544492ad1702ea4f45a0ae85e382a195552e00d82bb297ada1d9bf1d12c832e5",
+      "passed_tests": [
+        "TestBodySeparationAgainstOriginal/body-separation-oracle",
+        "TestBodySeparationAgainstOriginal/body-separation-boundaries",
+        "TestBodySeparationAgainstOriginal",
+        "TestBodySeparationValidationIsAtomic"
+      ]
+    },
+    "node_wasm": {
+      "pass": true,
+      "output_sha256": "67e2e97c49a6a043712262355f61e850961bc6d88f12842bb475115b238fdb92",
+      "passed_tests": [
+        "TestBodySeparationAgainstOriginal/body-separation-oracle",
+        "TestBodySeparationAgainstOriginal/body-separation-boundaries",
+        "TestBodySeparationAgainstOriginal",
+        "TestBodySeparationValidationIsAtomic"
+      ]
+    }
+  },
+  "counts": {
+    "natural_calls": 2068,
+    "natural_nonempty": 2066,
+    "natural_owner_changed": 249,
+    "natural_record_changed": 0,
+    "isolated_cases": 159,
+    "unchanged_baseline_frames": 3600,
+    "external_change_calls": 0
+  },
+  "scope": "Full body-separation calls only; not a full actor/world timeline or match",
+  "preserved_logs": [
+    {
+      "phase": "red",
+      "path": "games/yuyuhakusho/verification/body-separation-red.jsonl",
+      "sha256": "c714e6281077fa8ded9430287a4dc1d1aee9a26d7034fef900e1ccd91df3ee35"
+    },
+    {
+      "phase": "green",
+      "path": "games/yuyuhakusho/verification/body-separation-green.jsonl",
+      "sha256": "544492ad1702ea4f45a0ae85e382a195552e00d82bb297ada1d9bf1d12c832e5"
+    },
+    {
+      "phase": "wasm",
+      "path": "games/yuyuhakusho/verification/body-separation-wasm.jsonl",
+      "sha256": "67e2e97c49a6a043712262355f61e850961bc6d88f12842bb475115b238fdb92"
+    }
+  ]
+}

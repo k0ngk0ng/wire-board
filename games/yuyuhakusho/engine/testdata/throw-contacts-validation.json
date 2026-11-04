@@ -1,0 +1,96 @@
+{
+  "verified_at_utc": "2026-11-04T07:08:15.373174+00:00",
+  "scope": "Complete original grab-contact consumer 0x1eee2..0x1f08e and layer helper only",
+  "pass": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "original_capture_rerun_this_pass": true,
+  "coverage": {
+    "natural_complete_calls": 2068,
+    "natural_nonempty_calls": 9,
+    "natural_contacts": 18,
+    "natural_actor_change_calls": 6,
+    "isolated_complete_calls": 278,
+    "isolated_contacts": 359,
+    "isolated_actor_change_calls": 173,
+    "original_frames_ram_video_unchanged": 3600,
+    "actor_bytes_per_owner": 256,
+    "grab_bytes_compared_per_call": 512,
+    "hurt_bytes_compared_per_call": 256,
+    "four_person_orderings": 24,
+    "max_natural_grab_offset": 32,
+    "max_isolated_grab_offset": 512
+  },
+  "verification": [
+    {
+      "environment": "preimplementation missing types/functions",
+      "path": "games/yuyuhakusho/engine/testdata/throw-contacts-red.jsonl",
+      "sha256": "933b2e690b8d884df6aceebbd7b65885b14c6c28b1c0058ad971990872c467d1",
+      "result": "expected build failure"
+    },
+    {
+      "environment": "Go native race, explicit production source files",
+      "path": "games/yuyuhakusho/engine/testdata/throw-contacts-native.jsonl",
+      "sha256": "f3366e9a73b8d82bc3b6f457ae8b5a3a5b871e89cd8bd9411077ded44c8f868b",
+      "result": "passed"
+    },
+    {
+      "environment": "Node/Wasm, explicit production source files",
+      "path": "games/yuyuhakusho/engine/testdata/throw-contacts-wasm.jsonl",
+      "sha256": "9b5b891d680923580b69741d75168356abea34853040b790b03cba1f9fb615d2",
+      "result": "passed"
+    }
+  ],
+  "fixtures": [
+    {
+      "manifest": "games/yuyuhakusho/engine/testdata/throw-contacts-oracle-manifest.json",
+      "manifest_sha256": "d036c494827f12e75fac1e4acf515e324145dc44be24987b7b8f388463d57418",
+      "records": 2068,
+      "contacts": 18,
+      "nonempty_calls": 9,
+      "fixture_sha256": "3ed4ca6c22d0d5cd7e50a36be54917e0688d0274eec17ecabe624a702dd71157",
+      "gzip_sha256": "e919d8bcdc197d2431447ed8a48f4236d6af75c715ebb16ae90e5586aa1d2f8a"
+    },
+    {
+      "manifest": "games/yuyuhakusho/engine/testdata/throw-contacts-boundaries-manifest.json",
+      "manifest_sha256": "a812bdc43f0e8776195284c0c10bc019650286cb802b8c87714dccdae9637d67",
+      "records": 278,
+      "contacts": 359,
+      "nonempty_calls": 275,
+      "fixture_sha256": "8ae38d6e3eea21e574fa8d3edcad8805a7c9234fe81e9da526d8526618cc819b",
+      "gzip_sha256": "c437cba2afdd281bea931940e79469f1db22f057847c7c6f5ae0b9bbac425ec4"
+    }
+  ],
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/engine/throw_contacts.go",
+      "sha256": "0b433935245fa97df63841e9d76cd109d53d848d6c816dc93a7a1a33922a3ffb"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/throw_contacts_test.go",
+      "sha256": "5e5ed29d8866de57ad4b5610f8fe6c19e409263eb4fd4b9b19b7a03cc018962b"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/THROW_CONTACTS_VERIFICATION.md",
+      "sha256": "1e295fda7f8244a23b67304d6ca0275fd22778218b7f83f6bae06ac507adcb06"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_throw_contacts.py",
+      "sha256": "ef7908d24a1b6e4e8bafe1aa86f1ef0a70829ace4cd952acc5abef3b895e100b"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/collision-consumers.txt",
+      "sha256": "7266c083322efd456e9e16450c1d6fe054437c4a6e5fdd6a1dc956f99e05db11"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/collision-helpers.txt",
+      "sha256": "a5f0636552003534d1d6f84ec3822549710dc6edcaf02437e86adea0dcbc0cfc"
+    }
+  ],
+  "limitations": [
+    "A600 producer and its true capacity remain unrecovered; isolated 512-byte sample is not a claimed original capacity",
+    "Subsequent throw motion, damage, complete collision scheduling and matches are not validated here",
+    "Passed tests used explicit production source files because a concurrent attack test-first stage temporarily lacked implementation; whole-package gate belongs to integration",
+    "These full original CPU consumer comparisons are not platform E2E tests"
+  ]
+}

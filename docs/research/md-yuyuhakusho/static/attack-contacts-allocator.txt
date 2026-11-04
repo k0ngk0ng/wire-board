@@ -1,0 +1,23 @@
+route=direct-ghidra-headless; REA raw 68000 unsupported
+language=68000:BE:32:default
+source=MD Yu Yu Hakusho Japan; static reachable instructions only
+
+seeds=1faae scope=0x1faae..0x1faf0
+0001faae move.l #0x14930,D0
+0001fab4 move.b #0x10,D1b
+0001fab8 subq.b #0x1,D1b
+0001faba tst.b D1b
+0001fabc beq.b 0x0001fae8
+0001fabe addi.w #0x80,(0xffffa036).w
+0001fac4 andi.w #0x7ff,(0xffffa036).w
+0001faca movea.w (0xffffa036).w,A0
+0001face adda.w #-0x6c00,A0
+0001fad2 tst.w (0x4,A0)
+0001fad6 bne.b 0x0001fab8
+0001fad8 move.l D0,(0x0,A0)
+0001fadc move.w #0x80,(0x4,A0)
+0001fae2 clr.w (0x6,A0)
+0001fae6 rts
+0001fae8 movea.l #0x0,A0
+0001faee rts
+printed_instructions=17
