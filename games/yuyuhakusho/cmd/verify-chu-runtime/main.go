@@ -18,6 +18,8 @@ import (
 	"path/filepath"
 	"reflect"
 	"runtime"
+	"strconv"
+	"strings"
 
 	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine"
 	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/runtimebridge"
@@ -28,6 +30,7 @@ type report struct {
 	Complete        bool   `json:"complete"`
 	Environment     string `json:"environment"`
 	Players         int    `json:"players"`
+	Characters      []int  `json:"characters,omitempty"`
 	Team            bool   `json:"team"`
 	Ticks           uint64 `json:"ticks"`
 	Restored        int    `json:"restored_pixel_frames"`
@@ -59,11 +62,29 @@ func digest(raw []byte) string { sum := sha256.Sum256(raw); return hex.EncodeToS
 
 func run() error {
 	players := flag.Int("players", 2, "active players,2 or4")
+	selection := flag.String("characters", "", "comma-separated source IDs,9 or10; defaults to all9")
 	team := flag.Bool("team", false, "four-player teams")
 	out := flag.String("output", ".local/md-yuyuhakusho/runtime-preview", "PNG output inside the worktree")
 	flag.Parse()
 	if *players != 2 && *players != 4 {
 		return errors.New("players must be2 or4")
+	}
+	characters := make([]uint8, *players)
+	for i := range characters {
+		characters[i] = 9
+	}
+	if *selection != "" {
+		parts := strings.Split(*selection, ",")
+		if len(parts) != *players {
+			return errors.New("one character ID is required for each player")
+		}
+		for i, part := range parts {
+			id, err := strconv.ParseUint(strings.TrimSpace(part), 10, 8)
+			if err != nil || (id != 9 && id != 10) {
+				return fmt.Errorf("unsupported character ID %q", part)
+			}
+			characters[i] = uint8(id)
+		}
 	}
 	rules, err := readAsset("chu-world-rules")
 	if err != nil {
@@ -91,13 +112,18 @@ func run() error {
 		slots = []uint8{0, 1, 2, 3}
 	}
 	for i, slot := range slots {
-		options.Players = append(options.Players, engine.ChuSessionPlayer{Slot: slot, CharacterID: 9, Color: uint8(i), Computer: true})
+		options.Players = append(options.Players, engine.ChuSessionPlayer{Slot: slot, CharacterID: characters[i], Color: uint8(i), Computer: true})
 	}
 	session, err := runtimebridge.NewSession(options, assets)
 	if err != nil {
 		return err
 	}
 	r := report{Environment: runtime.GOOS + "/" + runtime.GOARCH, Players: *players, Team: *team}
+	if *selection != "" {
+		for _, character := range characters {
+			r.Characters = append(r.Characters, int(character))
+		}
+	}
 	before, err := session.Save()
 	if err != nil {
 		return err
@@ -134,7 +160,7 @@ func run() error {
 	}
 	pixels, stateTrace := sha256.New(), sha256.New()
 	var restored *runtimebridge.Session
-	for tick := 1; tick <= 10000; tick++ {
+	for tick := 1; tick <= 20000; tick++ {
 		frame, stepErr := session.Step([8]engine.Buttons{})
 		if stepErr != nil {
 			return fmt.Errorf("tick%d: %w", tick, stepErr)

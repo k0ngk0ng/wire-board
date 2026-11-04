@@ -205,6 +205,8 @@ func visitChuWorldTest(t *testing.T, handle func(chuWorldOriginalPass), fixtureN
 		name = fixtureName[0]
 		if name == "chu-world-special" {
 			wantRecords, wantFrames = 1801, 3600
+		} else if name == "chu-world-fighter10" {
+			wantRecords, wantFrames = 2789, 5500
 		}
 	}
 	zipped, err := os.ReadFile("testdata/" + name + ".json.gz")
@@ -254,7 +256,13 @@ func visitChuWorldTest(t *testing.T, handle func(chuWorldOriginalPass), fixtureN
 		if err := d.Decode(&row); err != nil {
 			t.Fatal(err)
 		}
-		if count == 0 && len(row.DriverEntries) != 0 || count != 0 && (len(row.DriverEntries) != 1 || row.DriverEntries[0] < row.Frame-1 || row.DriverEntries[0] > row.Frame) {
+		firstEntries := 0
+		if name == "chu-world-fighter10" {
+			// This input reaches the first captured pass after3a2e in the
+			// same video label. The older inputs cross that boundary earlier.
+			firstEntries = 1
+		}
+		if count == 0 && (len(row.DriverEntries) != firstEntries || firstEntries == 1 && row.DriverEntries[0] != row.Frame) || count != 0 && (len(row.DriverEntries) != 1 || row.DriverEntries[0] < row.Frame-1 || row.DriverEntries[0] > row.Frame) {
 			t.Fatal("original pass driver-entry coverage differs", row.Frame, row.DriverEntries)
 		}
 		handle(row)

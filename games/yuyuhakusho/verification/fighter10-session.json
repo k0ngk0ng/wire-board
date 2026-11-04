@@ -1,0 +1,1824 @@
+{
+  "verified_at_utc": "2026-11-04T18:03:04.091115+00:00",
+  "baseline_commit": "149cc02d",
+  "stage": "Source10 complete independent fighter, shared rules and mixed-character sessions",
+  "pass": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "overall_progress_estimate_percent": 48,
+  "integration_checks": [
+    {
+      "path": "games/yuyuhakusho/verification/fighter10-engine-native.jsonl",
+      "sha256": "7d4fbdfbab521f90f212c7949b105ef48897a3970fdab7d428275567ba58376a",
+      "pass": true,
+      "top_level_tests": [
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestActionPreludeOriginalCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestAnimationClockBoundaries"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestAnimationRecordsAgainstOriginal"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestAttachedEffectsOriginalRules"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestAttachedEffectsErrorsAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestAttackContactsMalformedInputsAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestBodySeparationValidationIsAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestCharacterCommandsSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuActionOriginalCompleteCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuActionErrorsAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuActorSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuAIOriginalCompleteCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuAIInvalidStateIsAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuAttachmentsSingleInitialLifetimes"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuAttacksOriginalFullCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuAttacksInvalidInputIsAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuInputSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuProjectileOriginalRules"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuProjectileErrorsAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuSessionReadinessAndStartup"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuSessionInvalidInputsAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuSpecialMotionSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuTailOriginalFullCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuTailErrorsAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuWorldStartCellsBoundaries"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuWorldOriginalObjectPasses"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuWorldFutureSlotsAndSavedStride"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuWorldRuleBundle"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestClashInvalidStateIsAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestCollisionManagerSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestCommandsOriginalCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestCommandsMalformedInputsAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestDefaultArenaSingleInitialStreams"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestEffectMotionOriginalRules"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestEffectMotionErrorsAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestEffectPoolRejectsUnalignedCursorWithoutMutation"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighter10AttacksSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighter10CompositionOriginalActions"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighter10CompositionOriginalActors"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighter10CompositionInputAndActorStreams"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighter10MotionOriginalPhases"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighter10MotionRetreatPoseRange"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighterAIOriginalCompleteCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighterAIInvalidStateIsAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighterBoundsSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighterEnvelopeOriginalCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighterEnvelopeMalformedStorageIsAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighterSpecsConsumedMovementSources"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighterInitializationErrorsAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighterPreparationOriginalCompleteCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighterWorldSource10OriginalPasses"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighterSessionFreshMixedMatches"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestGroundUnknownTransitionDoesNotChangeState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestGroundControlInvalidPoolIsAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestGroundIdleErrorsAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestControllerRejectsUnsupportedInputs"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestJumpOriginalCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestLaneMotionOriginalCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestLaneMotionRejectsWrongAction"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestLaneSwitchInvalidPoolIsAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestMatchLifecycleSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestMatchOverlaysOriginalCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestMatchOverlaysErrorsAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestMatchStartSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestOriginalMotionStages"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestReactionMotionOriginalPhases"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestReactionMotionErrorsAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestSoundQueueSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestThrowContactsInvalidStateIsAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuThrowSubmissionInvalidStorageIsAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestWorldClockSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestWorldDrawFieldsAndValueOwnership"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestWorldFrameOriginalBoundaries"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestWorldFrameErrorsAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestWorldObjectsIndependentComponentViews"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestWorldObjectsParentAndAllocatorOwnership"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestWorldObjectsFirst64PresentableViews"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestWorldObjectsSkyRulesAgainstOriginal"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestAnimationAndDriftAgainstOriginalCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestResidualMotionBoundaries"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestAnimationRecordsRejectMissingOrMalformedDataAtomically"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestAttachedEffectsSingleInitialLifetimes"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestAttackContactsOriginalCompleteCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestBodySeparationAgainstOriginal"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestCharacterCommandsOriginalCompleteCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestCharacterCommandsInvalidInputsAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuActionSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuActorOriginalRules"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuActorLateFailureIsAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuAISingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuAttachmentsOriginalRules"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuAttachmentsErrorsAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuAttacksSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuInputOriginalCompleteCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuInputControlsAndFailuresAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuProjectileSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuSessionDefaultResourceSource"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuSessionFreshAICompleteAndRestore"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuSpecialMotionOriginalPhases"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuSpecialMotionErrorsAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuTailSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuWorldStartCellsOriginal"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuWorldStartCellsManagerIntegration"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuWorldSingleInitialMatch"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuWorldErrorsAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestClashOriginalCompleteCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestCollisionManagerOriginalCompleteCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestCollisionManagerPausedAndInvalidStates"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestCommandsSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestDefaultArenaOriginalCompleteRules"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestDefaultArenaInvalidDataIsAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestEffectMotionSingleInitialLifetimes"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestEffectPoolOriginalCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighter10AttacksOriginalFullCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighter10AttacksInvalidInputIsAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighter10CompositionOriginalInputs"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighter10CompositionActionStreams"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighter10CompositionFailuresAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighter10MotionSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighter10MotionErrorsAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighterAISingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighterBoundsOriginalCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighterBoundsInvalidLowOffsetsAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighterEnvelopeSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighterInitializationAgainstOriginal"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighterInitializationPreservesUnownedState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighterInputAgainstOriginal"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighterPreparationSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighterWorldSource10SingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestGroundConstructorsAgainstOriginal"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestGroundControlAgainstOriginal"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestGroundIdleOriginalCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestControllerAgainstOriginalCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestControllerBoundaryEdges"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestJumpInvalidPoolDoesNotPartiallyModifyState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestLaneMotionSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestLaneSwitchAgainstOriginal"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestMatchLifecycleOriginalStages"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestMatchLifecycleBoundariesAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestMatchOverlaysSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestMatchStartOriginalRules"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestMatchStartAtomicErrors"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestOriginalRandomContinuousChains"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestReactionMotionSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestSoundQueueAgainstOriginal"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestThrowContactsOriginalCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuThrowSubmissionAgainstOriginal"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestWorldClockOriginalCompleteCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestWorldClockInvalidInputIsAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestWorldDrawCaptureOnlyActualRequests"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestWorldFrameSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestWorldObjectsClearAgainstOriginal"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestWorldObjectsRoundTripsAndIdentityErrors"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestWorldObjectsCollisionResultsAgainstOriginal"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestWorldObjectsOverlayRulesAgainstOriginal"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-animation-catalog",
+          "test": "TestVerifyAllCatalogFramesAgainstOriginalCPU"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-animation-catalog",
+          "test": "TestCatalogVerifierRejectsIndependentCorruption"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-animation-catalog",
+          "test": "TestCatalogVerifierRequiresFullStateAndUniqueCoverage"
+        }
+      ],
+      "package_seconds_sum_of_invocations": {
+        "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine": 742.31,
+        "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-animation-catalog": 13.248
+      },
+      "invocations": [
+        {
+          "path": "games/yuyuhakusho/verification/fighter10-native-shard-0.jsonl",
+          "sha256": "ad454332f7798e7eb40929d94501e2922a267542464a89f5465b9260c97ad959"
+        },
+        {
+          "path": "games/yuyuhakusho/verification/fighter10-native-shard-1.jsonl",
+          "sha256": "60f8d0d0040aa8658b120d17e7ef46ee12ec1e20d68d90671e56e1a37617fc7d"
+        },
+        {
+          "path": "games/yuyuhakusho/verification/fighter10-native-animation.jsonl",
+          "sha256": "87c91c03671868f959380187602a049d06e9b58865e30d8646ddafef0cce4ea3"
+        }
+      ]
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fighter10-engine-wasm.jsonl",
+      "sha256": "b0dececd0b53606479d6703e2dc55b6dd74d7df34b10d9bcab907a46761275d0",
+      "pass": true,
+      "top_level_tests": [
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestActionPreludeOriginalCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestAnimationAndDriftAgainstOriginalCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestAnimationClockBoundaries"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestResidualMotionBoundaries"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestAnimationRecordsAgainstOriginal"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestAnimationRecordsRejectMissingOrMalformedDataAtomically"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-animation-catalog",
+          "test": "TestVerifyAllCatalogFramesAgainstOriginalCPU"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestAttachedEffectsOriginalRules"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-animation-catalog",
+          "test": "TestCatalogVerifierRejectsIndependentCorruption"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestAttachedEffectsSingleInitialLifetimes"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestAttachedEffectsErrorsAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestAttackContactsOriginalCompleteCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestAttackContactsMalformedInputsAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestBodySeparationAgainstOriginal"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestBodySeparationValidationIsAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-animation-catalog",
+          "test": "TestCatalogVerifierRequiresFullStateAndUniqueCoverage"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestCharacterCommandsOriginalCompleteCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestCharacterCommandsSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestCharacterCommandsInvalidInputsAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuActionOriginalCompleteCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuActionSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuActionErrorsAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuActorOriginalRules"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuActorSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuActorLateFailureIsAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuAIOriginalCompleteCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuAISingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuAIInvalidStateIsAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuAttachmentsOriginalRules"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuAttachmentsSingleInitialLifetimes"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuAttachmentsErrorsAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuAttacksOriginalFullCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuAttacksSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuAttacksInvalidInputIsAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuInputOriginalCompleteCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuInputSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuInputControlsAndFailuresAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuProjectileOriginalRules"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuProjectileSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuProjectileErrorsAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuSessionDefaultResourceSource"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuSessionReadinessAndStartup"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuSessionFreshAICompleteAndRestore"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuSessionInvalidInputsAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuSpecialMotionOriginalPhases"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuSpecialMotionSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuSpecialMotionErrorsAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuTailOriginalFullCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuTailSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuTailErrorsAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuWorldStartCellsOriginal"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuWorldStartCellsBoundaries"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuWorldStartCellsManagerIntegration"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuWorldOriginalObjectPasses"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuWorldSingleInitialMatch"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuWorldFutureSlotsAndSavedStride"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuWorldErrorsAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuWorldRuleBundle"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestClashOriginalCompleteCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestClashInvalidStateIsAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestCollisionManagerOriginalCompleteCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestCollisionManagerSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestCollisionManagerPausedAndInvalidStates"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestCommandsOriginalCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestCommandsSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestCommandsMalformedInputsAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestDefaultArenaOriginalCompleteRules"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestDefaultArenaSingleInitialStreams"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestDefaultArenaInvalidDataIsAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestEffectMotionOriginalRules"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestEffectMotionSingleInitialLifetimes"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestEffectMotionErrorsAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestEffectPoolOriginalCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestEffectPoolRejectsUnalignedCursorWithoutMutation"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighter10AttacksOriginalFullCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighter10AttacksSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighter10AttacksInvalidInputIsAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighter10CompositionOriginalActions"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighter10CompositionOriginalInputs"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighter10CompositionOriginalActors"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighter10CompositionActionStreams"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighter10CompositionInputAndActorStreams"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighter10CompositionFailuresAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighter10MotionOriginalPhases"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighter10MotionSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighter10MotionRetreatPoseRange"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighter10MotionErrorsAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighterAIOriginalCompleteCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighterAISingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighterAIInvalidStateIsAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighterBoundsOriginalCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighterBoundsSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighterBoundsInvalidLowOffsetsAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighterEnvelopeOriginalCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighterEnvelopeSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighterEnvelopeMalformedStorageIsAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighterInitializationAgainstOriginal"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighterSpecsConsumedMovementSources"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighterInitializationPreservesUnownedState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighterInitializationErrorsAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighterInputAgainstOriginal"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighterPreparationOriginalCompleteCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighterPreparationSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighterWorldSource10OriginalPasses"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighterWorldSource10SingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestFighterSessionFreshMixedMatches"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestGroundConstructorsAgainstOriginal"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestGroundUnknownTransitionDoesNotChangeState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestGroundControlAgainstOriginal"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestGroundControlInvalidPoolIsAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestGroundIdleOriginalCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestGroundIdleErrorsAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestControllerAgainstOriginalCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestControllerRejectsUnsupportedInputs"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestControllerBoundaryEdges"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestJumpOriginalCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestJumpInvalidPoolDoesNotPartiallyModifyState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestLaneMotionOriginalCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestLaneMotionSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestLaneMotionRejectsWrongAction"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestLaneSwitchAgainstOriginal"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestLaneSwitchInvalidPoolIsAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestMatchLifecycleOriginalStages"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestMatchLifecycleSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestMatchLifecycleBoundariesAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestMatchOverlaysOriginalCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestMatchOverlaysSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestMatchOverlaysErrorsAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestMatchStartOriginalRules"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestMatchStartSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestMatchStartAtomicErrors"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestOriginalMotionStages"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestOriginalRandomContinuousChains"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestReactionMotionOriginalPhases"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestReactionMotionSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestReactionMotionErrorsAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestSoundQueueAgainstOriginal"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestSoundQueueSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestThrowContactsOriginalCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestThrowContactsInvalidStateIsAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuThrowSubmissionAgainstOriginal"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestChuThrowSubmissionInvalidStorageIsAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestWorldClockOriginalCompleteCalls"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestWorldClockSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestWorldClockInvalidInputIsAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestWorldDrawFieldsAndValueOwnership"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestWorldDrawCaptureOnlyActualRequests"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestWorldFrameOriginalBoundaries"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestWorldFrameSingleInitialState"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestWorldFrameErrorsAreAtomic"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestWorldObjectsClearAgainstOriginal"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestWorldObjectsIndependentComponentViews"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestWorldObjectsRoundTripsAndIdentityErrors"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestWorldObjectsParentAndAllocatorOwnership"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestWorldObjectsCollisionResultsAgainstOriginal"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestWorldObjectsFirst64PresentableViews"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestWorldObjectsOverlayRulesAgainstOriginal"
+        },
+        {
+          "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+          "test": "TestWorldObjectsSkyRulesAgainstOriginal"
+        }
+      ],
+      "package_seconds_sum_of_invocations": {
+        "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-animation-catalog": 4.383,
+        "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine": 204.542
+      },
+      "invocations": []
+    }
+  ],
+  "fresh_matches": [
+    {
+      "case": "rules/ten-ten",
+      "native": {
+        "path": "games/yuyuhakusho/verification/fighter10-e2e/native/rules/ten-ten.json",
+        "sha256": "97548fa7de22e1215b52ce42893159f514ac50406511bef134e67c316cbe39ea"
+      },
+      "wasm": {
+        "path": "games/yuyuhakusho/verification/fighter10-e2e/wasm/rules/ten-ten.json",
+        "sha256": "9b404ac301899ad1984ed0297e03b1a9d2d2175defc467f60f1edf434d29f9af"
+      },
+      "ticks": 3058,
+      "characters": [
+        10,
+        10
+      ],
+      "final_state_sha256": "9fdab06272aff913514391938125569804eb702367dca32009c329168f8816ef",
+      "trace_sha256": "b0b376e830ccdc49a1931321973e54b9aabcf25c5c90a38283b39fe24ad61da0"
+    },
+    {
+      "case": "rules/ten-chu",
+      "native": {
+        "path": "games/yuyuhakusho/verification/fighter10-e2e/native/rules/ten-chu.json",
+        "sha256": "0b5abb7a84d0022fbfa9a2668e4fe9015b5b298e20d51f583e6a10c793da3ee4"
+      },
+      "wasm": {
+        "path": "games/yuyuhakusho/verification/fighter10-e2e/wasm/rules/ten-chu.json",
+        "sha256": "34f28d88b39c97c2aec20cbbcd915136e49bd129254f5329ef8274c0a77543f4"
+      },
+      "ticks": 3351,
+      "characters": [
+        10,
+        9
+      ],
+      "final_state_sha256": "65ece9f5d052241d83f930e43e4824cb3b67943c4be40acb71c60c8739a43b75",
+      "trace_sha256": "1a9b26bea0ef66c4e206688333e81ed7fc7e1aaab2d620229daedbf73a3e26e1"
+    },
+    {
+      "case": "rules/chu-ten",
+      "native": {
+        "path": "games/yuyuhakusho/verification/fighter10-e2e/native/rules/chu-ten.json",
+        "sha256": "cbb8763a377a3eb5358e1af1dc910f66174723045ab77d2e329ef96f40b57615"
+      },
+      "wasm": {
+        "path": "games/yuyuhakusho/verification/fighter10-e2e/wasm/rules/chu-ten.json",
+        "sha256": "9ae584af4364cba81796b5d0550233507e54e33a39670193d28b70eb731e64b2"
+      },
+      "ticks": 2807,
+      "characters": [
+        9,
+        10
+      ],
+      "final_state_sha256": "9dd87f65e85fa70389db1eed9ba33118e741fbfa272a1a0ead4c6b9d30307fdf",
+      "trace_sha256": "1ad9eb7d76de8cbcf8f2e03a62709c6e8334ad5c6b907fd47e12516d9a49e7bd"
+    },
+    {
+      "case": "rules/three",
+      "native": {
+        "path": "games/yuyuhakusho/verification/fighter10-e2e/native/rules/three.json",
+        "sha256": "ac5b80df0891b2885f15d086c5d45cf94b41a4e94093a2d3869e8471d37f4423"
+      },
+      "wasm": {
+        "path": "games/yuyuhakusho/verification/fighter10-e2e/wasm/rules/three.json",
+        "sha256": "0f6adab87f88aaa0ca5ae934fcaf15adaab387f267b60707779be8c9b0e3d8cd"
+      },
+      "ticks": 3966,
+      "characters": [
+        10,
+        9,
+        10
+      ],
+      "final_state_sha256": "9c847dd083cd8d3873602207dde1349ba9e138a9a1dacbd7ad9840fa79d09182",
+      "trace_sha256": "e13ad85fa2bf893425aa2f43e99419be418c1b6b238d27e48d74d2469df02620"
+    },
+    {
+      "case": "rules/four",
+      "native": {
+        "path": "games/yuyuhakusho/verification/fighter10-e2e/native/rules/four.json",
+        "sha256": "cce2e6919847cf6b0ff947feadc5f0d22c55f130bc42f70ef4445d6441aad10c"
+      },
+      "wasm": {
+        "path": "games/yuyuhakusho/verification/fighter10-e2e/wasm/rules/four.json",
+        "sha256": "ac9be1f3c2d47ea434c8361bb32f6fc8d7497f4f51c733634719c0d530a392f7"
+      },
+      "ticks": 4151,
+      "characters": [
+        10,
+        9,
+        10,
+        9
+      ],
+      "final_state_sha256": "3b45255c48e21b321a644556fe557b6c37a205072e79153590c0b3af66acc3d8",
+      "trace_sha256": "dba7b3391b8ae3322e8bff0c7a696d74d29a2768a75d2792baeae2002b4559dd"
+    },
+    {
+      "case": "rules/team",
+      "native": {
+        "path": "games/yuyuhakusho/verification/fighter10-e2e/native/rules/team.json",
+        "sha256": "5f46b8d26e05d9c0590189768aaa16e4035ffc5f0613fe8394133d66d2c71b82"
+      },
+      "wasm": {
+        "path": "games/yuyuhakusho/verification/fighter10-e2e/wasm/rules/team.json",
+        "sha256": "84d9282232d12cf7bb1e40b9d1fc3861299a481fd3911e3f082516eecbf7ec0b"
+      },
+      "ticks": 5074,
+      "characters": [
+        10,
+        9,
+        10,
+        9
+      ],
+      "final_state_sha256": "10ff977465bfd7ff5e5472ab25b12fba6f2049d35d301b49ac858a2021bdb1a1",
+      "trace_sha256": "4f39cfc7b36dc1cfd30e2df0a8797a7b9798ae7596ebfcb99b0a0f9249c15d8f"
+    },
+    {
+      "case": "rules/human-idle",
+      "native": {
+        "path": "games/yuyuhakusho/verification/fighter10-e2e/native/rules/human-idle.json",
+        "sha256": "a78bf24f46f08970a95fc68e477ecf96e76619be67ab824a9c36cd36e9d1bd10"
+      },
+      "wasm": {
+        "path": "games/yuyuhakusho/verification/fighter10-e2e/wasm/rules/human-idle.json",
+        "sha256": "b5a5854cee8b0dede142beaaff8ee8c77ad2ca78be3400f1eda706906c3815e3"
+      },
+      "ticks": 2432,
+      "characters": [
+        10,
+        9
+      ],
+      "final_state_sha256": "b70640b1e2e65ac6dd57716a5fcabbf376eb9217ee0d0e987c86087ed51f70b0",
+      "trace_sha256": "f2298182d1615edfbaf574d81e265f8f2ed2a639c6504599aff4cec1f7effa3a"
+    },
+    {
+      "case": "render/ten-ten",
+      "native": {
+        "path": "games/yuyuhakusho/verification/fighter10-e2e/native/render/ten-ten.json",
+        "sha256": "62553070168d3794bdf2e5f63824c19b527a3879b91e4df707e01173bbe9161f"
+      },
+      "wasm": {
+        "path": "games/yuyuhakusho/verification/fighter10-e2e/wasm/render/ten-ten.json",
+        "sha256": "b468c78dc77e499b23c01d43bf0b934905ea4b4bfd551fa8ab60df2c02f65a75"
+      },
+      "ticks": 3058,
+      "characters": [
+        10,
+        10
+      ],
+      "final_state_sha256": "17edb4fb4e54df07b2bac2f218f868a9df7a16c991f4402fb6b085d2264eeac7",
+      "pixel_trace_sha256": "e740893c3abf4331a27f424b4048893edc0a94226681d2c08a80076037e18fc4"
+    },
+    {
+      "case": "render/ten-chu",
+      "native": {
+        "path": "games/yuyuhakusho/verification/fighter10-e2e/native/render/ten-chu.json",
+        "sha256": "985ae0681f37defd261b3a1b5f5e1e8a280dab5af593912fd65c780bf96aa8f0"
+      },
+      "wasm": {
+        "path": "games/yuyuhakusho/verification/fighter10-e2e/wasm/render/ten-chu.json",
+        "sha256": "cdcceeb3239017393711317b68f0ebbbca1cb9e067226d09f312f090d0111586"
+      },
+      "ticks": 3351,
+      "characters": [
+        10,
+        9
+      ],
+      "final_state_sha256": "6c72243013c823236e1dea61e3a1948e4429d3dc83d874b5b72c541833d0f687",
+      "pixel_trace_sha256": "b3fc297f10265c98597aaa01be63a1ddb3267328d0620b056b38bb41e69e4189"
+    },
+    {
+      "case": "render/four",
+      "native": {
+        "path": "games/yuyuhakusho/verification/fighter10-e2e/native/render/four.json",
+        "sha256": "4292efd6ffb53c6bb3e4c57786a78155b97187c12a558ecd12ecac98a8cc09e5"
+      },
+      "wasm": {
+        "path": "games/yuyuhakusho/verification/fighter10-e2e/wasm/render/four.json",
+        "sha256": "a534f8bcbba7f0b3ba9ec35e22175f606d5147fd6b907c7d7a18f30ee706e61d"
+      },
+      "ticks": 4151,
+      "characters": [
+        10,
+        9,
+        10,
+        9
+      ],
+      "final_state_sha256": "c51ec7aefa561cabf037222201f79c4b09b31fd8531ade16e054bc0b96c72933",
+      "pixel_trace_sha256": "b78d62608f818b0307f50c9bef725d2c19778d2378b9524fb737c808c94012dd"
+    },
+    {
+      "case": "render/team",
+      "native": {
+        "path": "games/yuyuhakusho/verification/fighter10-e2e/native/render/team.json",
+        "sha256": "9b32a159299d34fb3f8c49bd3fae826c602790bc0a8ab12d40202018fce4c9e1"
+      },
+      "wasm": {
+        "path": "games/yuyuhakusho/verification/fighter10-e2e/wasm/render/team.json",
+        "sha256": "19592a499a3412210adddd95ce79e5ee1ffa00eff7110f4137d72180f858faf8"
+      },
+      "ticks": 5074,
+      "characters": [
+        10,
+        9,
+        10,
+        9
+      ],
+      "final_state_sha256": "8a48994cfbaa42ee673924edcecddf6243384e6c85462aa0ea748f04138612f4",
+      "pixel_trace_sha256": "73fab34d9967308f12307bb82d4f3761fbc0130de7818fad0ab342e85235118c"
+    }
+  ],
+  "legacy_regression": {
+    "path": "games/yuyuhakusho/verification/fighter10-legacy-regression.json",
+    "sha256": "4c82f371235b3bb7cbaaefc0bad091a9cc4e13b9148e8bbd92514481228a485d"
+  },
+  "browser_e2e": {
+    "path": "games/yuyuhakusho/verification/fighter10-local-player/result.json",
+    "sha256": "97d0e574db95e7b95c0133e9db2595dd35d0fcc7ad90e3ffad1024850222ec67"
+  },
+  "targeted_checks": [
+    {
+      "path": "games/yuyuhakusho/verification/fighter-vet.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "pass": true
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fighter-wasm-vet.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "pass": true
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fighter-player-tsc.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "pass": true
+    }
+  ],
+  "test_first_evidence": [
+    {
+      "path": "games/yuyuhakusho/verification/fighter-world-red.jsonl",
+      "sha256": "03a140c9a2b00dab4faa3a2da56ef820289908620d45fb25fe55fba91d97d022"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fighter-session-cli-red.txt",
+      "sha256": "42f9280060fc6263d362cc95c4e885a205f95cb2e84d09d293f274808a94ddfe",
+      "raw_log_sha256": "61717db2cd267121ebbf2cfe9aa38e1d67dbc6718f6e2669c9bc98f7ca87ebdd",
+      "display_formatting": "Expanded tabs and removed surplus trailing blank lines; diagnostic text unchanged"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fighter-player-ui-red.txt",
+      "sha256": "eaf2fb693d465df368ada57185e151cdf9151e015131fc61e54b2d4702b4eaab",
+      "raw_log_sha256": "5d1c67f2e33293205d12c31945092ef1a20a2402b4967192226b7f46a3a41be3",
+      "display_formatting": "Expanded tabs and removed surplus trailing blank lines; diagnostic text unchanged"
+    }
+  ],
+  "original_world": {
+    "passes": 2789,
+    "callbacks": 36871,
+    "first_video_label": 1800,
+    "clear_video_label": 4590,
+    "single_initial_state": true
+  },
+  "supporting_evidence": [
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter10-attacks-validation.json",
+      "sha256": "cb1a8d6ad266f112ea6aa99cf4942b7e3abc1fab8ec0c9132f562410948795f3"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter10-motion-validation.json",
+      "sha256": "137a0d226c6d46af1045ae2a1aff9f13dd9bb4f0171c2b76506b383abe131826"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter10-composition-validation.json",
+      "sha256": "290319df5e72f1dfcef03f8c931900354283f8ab39298f5ba22fd756846d107b"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter10-composition-input-view-correction.json",
+      "sha256": "59c0414d394ed9a711ce51d11d61ae92be8c2592d9ee534e47161c2f8fd81380"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/chu-world-fighter10-manifest.json",
+      "sha256": "5bff14e814fbc5207b98c40e090d46bcffc4da04783c4bc9d5fa0194ab01d06a"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter10-inputs.json",
+      "sha256": "d7859f794df2a2a9cf356eae01d239bf658632f58e69cee0cc5abb979ad3776e"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fighter10-cleanup.json",
+      "sha256": "20c4cea391c0d415a3ac89341eba962daaee48788d1e6c67eb27eb657b8d0869"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fighter10-native-shards.json",
+      "sha256": "7ff6864d396f6aab7de768d99462b5bca55b4d3af68c62b5d9ba96ae5525b0f7"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fighter10-native-timeout.json",
+      "sha256": "4cdae87a306bd6ea293066595640c542458308caf6fc4b0ec9222787fd3a4eef"
+    }
+  ],
+  "current_source_sha256": {
+    "games/yuyuhakusho/engine/action_prelude.go": "418ba409a5fbad95345b591553421e29c38d62452cb64305b498bd10d0606f1f",
+    "games/yuyuhakusho/engine/action_prelude_test.go": "c6f44cd104e2baedde9a323a774079ce6b71bd98a2a8f9bd3e7da78d3e5c7d55",
+    "games/yuyuhakusho/engine/animation_clock.go": "fa868c5c160fa22fba71520d80c18e8d1f40217ff9a64c6d90a231eab65f28a4",
+    "games/yuyuhakusho/engine/animation_clock_test.go": "38f65f67172a49be0a1b0f735f023804bf40f37b8b2ec89b511688a0b2f6e6b2",
+    "games/yuyuhakusho/engine/animation_records.go": "15e3eb6b849d7d29f8b3b55f9c843b36c9ce38fbf3fa4ffa71a9672593d13cbe",
+    "games/yuyuhakusho/engine/animation_records_test.go": "1d4941c79f4d3dd5d51e906ce39edde2e9d21a64d4379604a1ae15085a6f2630",
+    "games/yuyuhakusho/engine/attached_effects.go": "360b0dbd71f9ad049cab4710640fc1b9d0507c380cd0b5cb15b19f57fb093071",
+    "games/yuyuhakusho/engine/attached_effects_test.go": "06898f374768bbb2d7a8b47373f0a7bb2d3da7281e67fc3a70a76d8dda847eda",
+    "games/yuyuhakusho/engine/attack_contacts.go": "1bc022b3649e4765ad7b33f8e08c91ca909e3097b714c24555ee4a64fac0d880",
+    "games/yuyuhakusho/engine/attack_contacts_test.go": "a7398b4e96c22d89801e3974637f83562c39155020a901214aea9005ee4c386a",
+    "games/yuyuhakusho/engine/body_separation.go": "89c49a0f1a8e68f38b9d3db111159935e2c1c7a222758399360b9cab60fd7a25",
+    "games/yuyuhakusho/engine/body_separation_test.go": "713753e17965df40b2cfb511bf2a6d4c2a9de7b764d49983a367fa1f0e198d6b",
+    "games/yuyuhakusho/engine/character_commands.go": "6f67aa187c0e48fd7787b00b38c41b6a7105a2a72553f1aa899fb9fed9665e5c",
+    "games/yuyuhakusho/engine/character_commands_test.go": "39f5508d620680c82875008d3070511fb509649ae9c72f89cca636dff37e61f7",
+    "games/yuyuhakusho/engine/chu_action.go": "fea1830fc480f5324c9bedd0ae81f5859af9b7b94720e56cd5fb1e5be2e40a9a",
+    "games/yuyuhakusho/engine/chu_action_test.go": "a3ee2a1eb0863eaefec00c99381fa1f21ccd3284b67d2296cdb06cb743237940",
+    "games/yuyuhakusho/engine/chu_actor.go": "786a3b6580be71f7958d03f91b327b97513eb19c88b144aca656d2ca90bcac13",
+    "games/yuyuhakusho/engine/chu_actor_test.go": "64cbd90975e93b8ca9e44fe034bca3d177de4e15f45939248256c5823e44c0e7",
+    "games/yuyuhakusho/engine/chu_ai.go": "63ee0b171558e51b45cb793eb9d0aabe5d5b6bf5a92286c66a1c77bf33f0ea61",
+    "games/yuyuhakusho/engine/chu_ai_test.go": "e5c07393a7051e6917e7a460b0bd7ca3e9bd0e2fdad8913b5c0e43dc4b780dd1",
+    "games/yuyuhakusho/engine/chu_attachments.go": "7aac1a6716a25445e4c9f6302af4b810d1cb6e421f425e6aec15c29100efb48c",
+    "games/yuyuhakusho/engine/chu_attachments_test.go": "d2b54bd9dab19498c5df0217d1de75f536d66da0d499c0e68066c25c62c7b375",
+    "games/yuyuhakusho/engine/chu_attacks.go": "108d7a4a72ab06cd9c2950c6830e861c063f937a968499f554cd633062f434a6",
+    "games/yuyuhakusho/engine/chu_attacks_test.go": "ff4bd0fb65a690923fe3b06821af51363b12b8f2449ce2a39c14341606d8c4a8",
+    "games/yuyuhakusho/engine/chu_input.go": "a9d14993c78d4ae89403824254d72edc3a6315f61928c65129e8b67ac870e294",
+    "games/yuyuhakusho/engine/chu_input_test.go": "5c6de3c3ef929886adf9f42cf073624542e2b3767a633c9f0e24c078916eda31",
+    "games/yuyuhakusho/engine/chu_projectile.go": "b6b6f115b819c74cb771707f04e18a801d382b2e5a152d5f4c10b01d7bf79363",
+    "games/yuyuhakusho/engine/chu_projectile_test.go": "6a5b4141b7a1294c57edec969f3ffb04dcc826cddc648a16b1a5cf57a131b0f9",
+    "games/yuyuhakusho/engine/chu_session.go": "f0d20e621dd3fe67d31c55f8562d5f7231e8e15737312895dbad8c55a2d918cc",
+    "games/yuyuhakusho/engine/chu_session_test.go": "e90e031fac8eebcb530915f9f3032cb3bae41b388b7714c4ea7a6562978b9e17",
+    "games/yuyuhakusho/engine/chu_special_motion.go": "5c37d35003f4f983010232d495b6e45143553a36b347edbaf2aa494006839c98",
+    "games/yuyuhakusho/engine/chu_special_motion_test.go": "dfd3cf4c7e19b5a4e7e6653744a4160732f14415f78b1b997124660675f7d269",
+    "games/yuyuhakusho/engine/chu_tail.go": "92dbdac771943f62ced246f7519bbf1976e56a89be49a1a11825fc387f2dfd99",
+    "games/yuyuhakusho/engine/chu_tail_test.go": "9719c48f40c4b372083132be62f680089a59c5f03300d087d3f15e509c2ac143",
+    "games/yuyuhakusho/engine/chu_world.go": "ccc94ecc6ccf1ae9d26c899d146a38e90d2a2b40f46e32a1258ae550ce86fc82",
+    "games/yuyuhakusho/engine/chu_world_start_cells_test.go": "2134c1c065c9567d2571063e2fbd480a78522a637ec0b0ba86b879fc850942e7",
+    "games/yuyuhakusho/engine/chu_world_test.go": "8977c5825f9bb93fc1dd7ee0ec9e24b54d572831c62171f9e6be4392a862906c",
+    "games/yuyuhakusho/engine/clash.go": "221f85a59c4765b8bece6a036d0e7d619087b33044ab5b6689efc9d7e40d0f9b",
+    "games/yuyuhakusho/engine/clash_test.go": "5e2cecf8be814af91cc65156acd9b56ca738b15b2b77a2fa454dee62f61b1e69",
+    "games/yuyuhakusho/engine/collision_manager.go": "8dee73e990a50667007be0b8bdc0d06671f14f64a22abfa6d78e8091cd0b312d",
+    "games/yuyuhakusho/engine/collision_manager_test.go": "ce7dc6608a8cc29e9f70a2bf398df47f9ac5d181b9e3f06ea8c24bac3a33cb07",
+    "games/yuyuhakusho/engine/commands.go": "fd0c39b62a11345e35a2f41e01a545da4dc13f24eb45853dc51ef8be6ac5439e",
+    "games/yuyuhakusho/engine/commands_test.go": "0e57d8056d0b422ccec3bbf0792f433bb238e7075c8802b2c22214f5177187ad",
+    "games/yuyuhakusho/engine/default_arena.go": "e4c44bc532b0103b95c7c522733eeea44d8aedded58a1de6ef7b657df4499d38",
+    "games/yuyuhakusho/engine/default_arena_test.go": "4f60c850e95f48d9b790daf0851d8332b0d7ad837aaf3935831e6aef575e1045",
+    "games/yuyuhakusho/engine/effect_motion.go": "0be7ed205b89d5099d17b543acaf9cc5887e3b6a3d2c5749b139cb8dc776e13a",
+    "games/yuyuhakusho/engine/effect_motion_test.go": "a390f243ab256c26c04500b0a07d0d352c4ad728dfa502405d45c1759c0bc01a",
+    "games/yuyuhakusho/engine/effects.go": "6a0916fbc4051a0e67988b9cad99e41d9ef778e0e78a7f63d65f5fb35d2f6b18",
+    "games/yuyuhakusho/engine/effects_test.go": "25b7abb54ed803a4802b3bbe3a9c718d0343270c6f0a6150e187fef4c5c11fb0",
+    "games/yuyuhakusho/engine/fighter10_attacks.go": "3be75d818323df1d8097cd337a435b66bb31b03747966c1aaa078557b43822b1",
+    "games/yuyuhakusho/engine/fighter10_attacks_test.go": "60eecad927f55c5996fefd61a8ca2c08a581f7d0194508b3e37f31eb08349f54",
+    "games/yuyuhakusho/engine/fighter10_composition_test.go": "a2cab7998fabdc560562ad006f3df139718a1eddb8996bb4dc9578637094abcf",
+    "games/yuyuhakusho/engine/fighter10_motion.go": "120bf695e1e02406d6ba94493d373b59782e606ba939fbfe284bd17b99b8e427",
+    "games/yuyuhakusho/engine/fighter10_motion_test.go": "5a4dd4a1e0a651b6f960d42321f815150445bddc1b382051847915be5617ef42",
+    "games/yuyuhakusho/engine/fighter_ai.go": "10401486da28a33f95fc5427b6cc5d7f00a90a86b6914f9a7d3d8fd723c29c93",
+    "games/yuyuhakusho/engine/fighter_ai_test.go": "4ee71b0c659fa350fb3b5552608dbefadcc075ee74453d9b9023d13bda95f477",
+    "games/yuyuhakusho/engine/fighter_bounds.go": "065c32dff3bbad040988cadad753661447f7ed3508dacab9b19f34d9ff6da310",
+    "games/yuyuhakusho/engine/fighter_bounds_test.go": "7eee8f33f9c3c91afc230a5aaafbdf94775f6ab4d6ffbc8e46b379fca1ffad0d",
+    "games/yuyuhakusho/engine/fighter_envelope.go": "f0cba93adb159eea905cc66ed976843c24ba1d7cec34a50423c356c303156453",
+    "games/yuyuhakusho/engine/fighter_envelope_test.go": "328f0ec88c017fa4e032577d9419206ca288d84e24e00845d4ad7e8e5b925a48",
+    "games/yuyuhakusho/engine/fighter_initialization.go": "52f5c58440b000688a9508e8b419cf0d36e88b4b05250742692e21a4c741f8ad",
+    "games/yuyuhakusho/engine/fighter_initialization_test.go": "a9df6e8c1bf54784c600762592f551b7836fe2ffb60a4ac6fd23a535c6689869",
+    "games/yuyuhakusho/engine/fighter_input.go": "da1cee3d5fffe0a78f97b31fb9ae9f81ba3b44a6f0a79e4f3148027ca3596c9a",
+    "games/yuyuhakusho/engine/fighter_input_test.go": "e3ffe6543295d40e9cfbd6a6ac21961c95ddf0e30d821778ed9d08f8f907e8dc",
+    "games/yuyuhakusho/engine/fighter_preparation.go": "f7bb17f5f381afe2992cae99e7aecb5e3e7a5ba3cd95883a16c4925fa03bc622",
+    "games/yuyuhakusho/engine/fighter_preparation_test.go": "7a372d8ba24cf4dd9085407780fd07d87398498764d057b53a2e19d9d4b4804e",
+    "games/yuyuhakusho/engine/fighter_world_test.go": "17191267b233a0f5e53f8c233312b1aff1e3d266641241cf2cf34333fc4ac93f",
+    "games/yuyuhakusho/engine/ground_actions.go": "cc6106a696c63bb39293694ed8cc63e04586ceb89e6b04454fb08970aedca80c",
+    "games/yuyuhakusho/engine/ground_actions_test.go": "21cb4d3d5c25d133d5372c22dd8a8c448d1449ccf7601147f90db8c25079afdb",
+    "games/yuyuhakusho/engine/ground_control.go": "c5c1d71729abb591b4fb2bcd6de7b18985f2f08da4c2ac472771039dc265b2c5",
+    "games/yuyuhakusho/engine/ground_control_test.go": "6c2fe49202851db071298350623d61496d733cbeffde9b6bc4f1ca4d5af4ce9e",
+    "games/yuyuhakusho/engine/ground_idle.go": "25b8ded1e1fe806808b776eaec9b0b64648fe502d1fbb6c58871ad6f95ae7020",
+    "games/yuyuhakusho/engine/ground_idle_test.go": "f348395352f8db2a74106208f37bd6c24966311544ecce31a89139bf45a6f2bb",
+    "games/yuyuhakusho/engine/input.go": "38e957231a29fd08c889709e0e7a39661284258800521467ba41fcdc9dfa12e2",
+    "games/yuyuhakusho/engine/input_test.go": "8c17bd14d1f2c626a8c21270f364c5ad2307dd15e136deb54e4786a186c6fa77",
+    "games/yuyuhakusho/engine/jump.go": "4d04cd8fc08edde75a5793d6be21644e058e7b2caf4e7c3c6c7b15f18fa39605",
+    "games/yuyuhakusho/engine/jump_test.go": "9dd7ebb41549fb7c0528fe11e19b0a230157b1515ebbe46fe690847a46ee81d7",
+    "games/yuyuhakusho/engine/lane_motion.go": "34e91c5756878c15efd3fa598dc4f4ae1de9744762e6eceb2b3a0502503ad7cf",
+    "games/yuyuhakusho/engine/lane_motion_test.go": "1ce015651231e59d4134999e02c9af300a7bfc5ca65da658778b96c8a506868e",
+    "games/yuyuhakusho/engine/lane_switch.go": "a4b2079963327c84f85eda85553e70555fa1273e54ba082bd3bc706683140280",
+    "games/yuyuhakusho/engine/lane_switch_test.go": "a41b2d4f67ff2d8c5c18261c8e9db8f903310d319129ccfaa097ad5fc11b9463",
+    "games/yuyuhakusho/engine/match_lifecycle.go": "1121ba3d339b266c46a5af08c157741a21e5feb5f8872cb287a14a369c8753dc",
+    "games/yuyuhakusho/engine/match_lifecycle_test.go": "2f5cd48499f5f5decc1bba5d2142db9994ca4e237fdc98723cb29da1b7e6c4d7",
+    "games/yuyuhakusho/engine/match_overlays.go": "9d00e02470cacbfddebb36598fc797d86f97ca39fc509870022629435de94851",
+    "games/yuyuhakusho/engine/match_overlays_test.go": "cc2477905bfeba33596e1f407a24bdfe16a7c3e192bc3135d54ab5c5cfc2e39f",
+    "games/yuyuhakusho/engine/match_start.go": "055f98de7c8666ba0c68504e3cb3f31601d0d2496bd2fe79fabb2bec6e5563ad",
+    "games/yuyuhakusho/engine/match_start_test.go": "d8d9db5de78374b91472291ba85c2f75972a1d56acfe1cf46edf74eec8b146ba",
+    "games/yuyuhakusho/engine/motion.go": "35dc27314a13afdff39d96d2d21911c5ba5030baf00ea81d1daf8f9feb5f8878",
+    "games/yuyuhakusho/engine/motion_test.go": "346dfa14efb76f28b3303798c3d467191f6a0d4f82da0ee24225dad0d0748da0",
+    "games/yuyuhakusho/engine/random.go": "c9fe3edc3ff9bee0725b78e7a38f2c4517592ddf99e52fec98e8904eb77a2056",
+    "games/yuyuhakusho/engine/reaction_motion.go": "12f7ef77773aef729bf5891f05a0589ed343cad4d4a0231e3a89b757e2268ceb",
+    "games/yuyuhakusho/engine/reaction_motion_test.go": "e31bec2a908b27c158c5f4fbe9acf1a2280877fcb905c51c008ea2c410b09973",
+    "games/yuyuhakusho/engine/sound_queue.go": "156b7d1484afd423e2e116aef0cea5aa897cd8c2c34dc707c012efa7360d978e",
+    "games/yuyuhakusho/engine/sound_queue_test.go": "49df1cb8f5a63fbd75824d3382e24958853b9219e14c05ad49d2bf9ccd6130c9",
+    "games/yuyuhakusho/engine/throw_contacts.go": "0b433935245fa97df63841e9d76cd109d53d848d6c816dc93a7a1a33922a3ffb",
+    "games/yuyuhakusho/engine/throw_contacts_test.go": "5e5ed29d8866de57ad4b5610f8fe6c19e409263eb4fd4b9b19b7a03cc018962b",
+    "games/yuyuhakusho/engine/throw_records.go": "ce5f9c6c77a8d7ebc298f30e9f99fb9686ad436bc4cc716960c3c0542480b34f",
+    "games/yuyuhakusho/engine/throw_records_test.go": "93f2497b4f5ace8bccc706c033f2f0c475a0f14f85bf9d2fbab35fedfd619a57",
+    "games/yuyuhakusho/engine/world_clock.go": "6da632fe858e2ad43104975d74d1e945d6886f306c142fa324edbbf9a4829cd9",
+    "games/yuyuhakusho/engine/world_clock_test.go": "04f9de14ddefa43d4ffa2092c0285a8c5a95080137a0055acf306dff0ea855a7",
+    "games/yuyuhakusho/engine/world_draw.go": "e623738a8fad5eb5605c5e83356858d9fa0175a34b325405dbc34aef78fb8328",
+    "games/yuyuhakusho/engine/world_draw_test.go": "028f80f97ce5bbdde1f5aa2e3d26cbc9ed84bd5144a39c1f175330c549d0ee0f",
+    "games/yuyuhakusho/engine/world_frame.go": "cce900e855b54cf9b6dcadeffe9a4454cdaf7ee2c9b495915a918dc0f3272d5e",
+    "games/yuyuhakusho/engine/world_frame_test.go": "0218dbb9fcc750332763c71d970453053186d3101c1dadeb1b42d5aac02418a3",
+    "games/yuyuhakusho/engine/world_objects.go": "77d3ba95ae9d44f26465e854a75886004e4550ffdc6cbde14e6a49dda8a546b1",
+    "games/yuyuhakusho/engine/world_objects_test.go": "be37d61ae8dd40dc85a63efe4846118aa71f3ddf0d92333a89f4b0be9483e719",
+    "games/yuyuhakusho/engine/world_presentable.go": "0f724ad3e2c393c16650342a0ada34cbd8b665b9b6b8a3a333917dbbaf373220",
+    "games/yuyuhakusho/engine/world_presentable_test.go": "8d637be943cd2b9ce05e787782faeea8424c8f3fef672986f617d48adf308117",
+    "games/yuyuhakusho/runtimebridge/session.go": "743c46f752dfeeaa6b12b0b59da983d512a442e196468b314eb50bfa73b62ee7",
+    "games/yuyuhakusho/cmd/local-player-wasm/main_js.go": "61d4d2b2ff20f773dfb07ac1a1e178e95570980a4a7aa6240bea120b3d44decf",
+    "games/yuyuhakusho/cmd/verify-animation-catalog/main.go": "a56f209da98717f8f1fd06a4b2c503ed4ac2dcaee3f72d2a60ca63085a978a56",
+    "games/yuyuhakusho/cmd/verify-animation-catalog/main_test.go": "49b3613fab1e939dd9bfce476a3acf87126063ae8be7656ade12a3939f9ab0bb",
+    "games/yuyuhakusho/cmd/verify-arena-assets/catalog.go": "91db0adf3094d9c100fe1ad348373c73358ec7fcdf574645f2e2c1dd4cbde3ba",
+    "games/yuyuhakusho/cmd/verify-arena-assets/main.go": "eeaf39f9b5529d3a25d95305ab12eee3577f064750d59534f71191afac6af7c3",
+    "games/yuyuhakusho/cmd/verify-arena-assets/main_test.go": "c50a9d444165aa677eda3b20e27d4820f8b17a46da4f833b00f7c92367362e3b",
+    "games/yuyuhakusho/cmd/verify-character-assets/main.go": "7d2f6ecbe6689cadc7a70b983faeda0acafef53a964fbcc24037bfee34d187df",
+    "games/yuyuhakusho/cmd/verify-character-assets/main_test.go": "063fcd466c7e78392d9d1cb9a34ab14169bf368aa3ee23e5d986eef5c3b4f0d6",
+    "games/yuyuhakusho/cmd/verify-chu-runtime/main.go": "442de52648ca3fea2708f6c77f1318c07c52c25e96c9e3afd32843cb820dd99a",
+    "games/yuyuhakusho/cmd/verify-chu-session/main.go": "a92e7019ab9914adff14a2c4218b6e8922a65b15ca4eced04bd266f82897c064",
+    "games/yuyuhakusho/cmd/verify-sprites/main.go": "25435884b8845dcd6d46e487f1c359b6224eb4e828e9a737384b03cf8f17813b",
+    "games/yuyuhakusho/cmd/verify-sprites/main_test.go": "d53ea303bb8857486736ee1a50243b5930d941a0d8cb82e925053524fa29d533",
+    "games/yuyuhakusho/cmd/verify-sprites/pixels.go": "660cf31429ebd3bfe0716de09ae4b6a07ab3ba772c0ec646ec6ee33ba14a0d98",
+    "games/yuyuhakusho/cmd/verify-sprites/pixels_test.go": "2a943aa670bebc25cdee72949791e719c895b30abac340df7338db262d5d564f",
+    "scripts/yuyuhakusho/accept_reference.py": "a45fcba92beb19fb316e9ca9346e1843d54033ec4c02eb56f90d9eb6cb6d2509",
+    "scripts/yuyuhakusho/analyze_audio_loops.py": "759fbe55db4e52a18c3be2f8a73d0c5698326d03c1331a059e617f25466958bc",
+    "scripts/yuyuhakusho/capture_action_prelude.py": "e7741c558abb0258c2b0e2afedadb681c6130180b27492cc82b472713509817e",
+    "scripts/yuyuhakusho/capture_animation.py": "a5745cf4f89f23bdb2f3be2101213ff922e594ec2db0aa544104c81e05399dd1",
+    "scripts/yuyuhakusho/capture_animation_records.py": "9ed4d8019c29cdf4272cdc54636047b6325c45b2d5d9b9b16efd74e1eb1c3208",
+    "scripts/yuyuhakusho/capture_attached_effects.py": "fe373d9f612c32283c736f2cabb26d2e053503533c48a307118189ccdbcccf1a",
+    "scripts/yuyuhakusho/capture_attack_contacts.py": "88f40da6dea0d9e2140f5cc34400b50119319be27d5834e16ac15d30ea5eb986",
+    "scripts/yuyuhakusho/capture_body_separation.py": "83a7d8b4f085c2e72da14e2af0c6b63742508134f678963714bda0d39aee4be9",
+    "scripts/yuyuhakusho/capture_character_commands.py": "f79eea8de393b320705a440299f9ac395f50ed64b7a96644af2d83aecc0eb9e7",
+    "scripts/yuyuhakusho/capture_chu_action.py": "0219cf3d8c7176b202a5c1ab628761c74434723fc2bff113de7ce2ec33df6f4d",
+    "scripts/yuyuhakusho/capture_chu_actor.py": "d90107daec842d386170bfb26d986d09254a6dc7f7b6c31593aa36c8a5d2187c",
+    "scripts/yuyuhakusho/capture_chu_ai.py": "c4803b501d7450467f44a7ae0a3be1337da8c18e92708eec8b0de303bc1cfe52",
+    "scripts/yuyuhakusho/capture_chu_attachments.py": "229b57f44120e6e4e27464caafef3a7569334d58c28883b0f5c5076bb4c025e7",
+    "scripts/yuyuhakusho/capture_chu_attacks.py": "f3d42a7d04267fcdbdea9e67963a70bb34920b861676358d67ab607e563eb580",
+    "scripts/yuyuhakusho/capture_chu_input.py": "b5ab29cd810845a213b470ead845a35727ad821081ed25202ea70599f8cae7e3",
+    "scripts/yuyuhakusho/capture_chu_projectile.py": "2b07eee725800a8b9e5082abb4cadcf1f68ab0adc19c1ea8f3589ab5b8df1086",
+    "scripts/yuyuhakusho/capture_chu_special_motion.py": "59b5a880432e384bc123245ae1f7da815a2b27d19a918e9ee58c39183113cc8e",
+    "scripts/yuyuhakusho/capture_chu_tail.py": "2ca411fa0792b7a8ba03fdf0f71f6839977cf9c8fb0143f79ac8fac707d09997",
+    "scripts/yuyuhakusho/capture_chu_world.py": "d27cadf136c3e3334b31158306522fa323432b579f988f2c35e6108645172511",
+    "scripts/yuyuhakusho/capture_clash.py": "ad61832fde63256b50ce801d7b4c0c4adc981ab349684e9579b0ee08ee2aeb45",
+    "scripts/yuyuhakusho/capture_collision_manager.py": "0422fbefc0ab2184bc5ad4045e2a255d8b047ef5c4a9d7a1d06c95a83e474af9",
+    "scripts/yuyuhakusho/capture_commands.py": "bd61798278a6efef548643cc9fc4cb5b80a596773f65f3689367cbea5a20f33e",
+    "scripts/yuyuhakusho/capture_default_arena.py": "b73e4d01d3bc0149600d2bedbd14f61da61e210a7b86cdc57023e5fa15d842b0",
+    "scripts/yuyuhakusho/capture_effect_motion.py": "34ea05d6f7d779e46d6bac891a9371e43b0c429fa62ebb9e40d2464488f5940d",
+    "scripts/yuyuhakusho/capture_effect_pool.py": "b9c753d1c9b6380ac64ee16f2c10cdcf8560654e493e770b31552b1781354f46",
+    "scripts/yuyuhakusho/capture_fighter10_attacks.py": "96f30a1def964ebda4e11b5eaa56811b11de19559302300089b19b4f7dee4372",
+    "scripts/yuyuhakusho/capture_fighter10_composition.py": "8c6c5362889ff3cf34645c3118e18462379f03ed5fc4d16589de945415a82f37",
+    "scripts/yuyuhakusho/capture_fighter10_motion.py": "5ab816b3a450d9940d16cf357533dea2e4b7fd2fc45e99a96ebc498af92ad43f",
+    "scripts/yuyuhakusho/capture_fighter_ai.py": "aa8c4302f8cd9200cfa9184ee22f9e664ed3c06bf1cb0c8b7989c93957c9c545",
+    "scripts/yuyuhakusho/capture_fighter_bounds.py": "37fc748c88ae1f427d2bdacf0056bc43eeba0bac691de286689767494d71e3fa",
+    "scripts/yuyuhakusho/capture_fighter_envelope.py": "61e1685b44663ffdd36037dac176787352547f0e598e45ead8f018a3a4ce5598",
+    "scripts/yuyuhakusho/capture_fighter_initialization.py": "3753800b3bdf4a3520224953a8bdafef6c6f4053ef07b8e3fa6a10f421d4bb8c",
+    "scripts/yuyuhakusho/capture_fighter_input.py": "d639b198c7a534413dc092769a1bfbe5d8182c9446c857539fa543dcdf75048b",
+    "scripts/yuyuhakusho/capture_fighter_input_boundaries.py": "99cd4b254f402f50c61c0f5f4ebe8b6afb5150b6d938be67526aa2f27c5fa52f",
+    "scripts/yuyuhakusho/capture_fighter_preparation.py": "cc17f0a2f02ccc3887979917340167a7abf3b3cee486fa01f107a9992bc8a56f",
+    "scripts/yuyuhakusho/capture_ground_actions.py": "25076eebbcbb4192ccf4111330b49693e9adf1a5c95c8f5d5f1fd02e3cd70f0a",
+    "scripts/yuyuhakusho/capture_ground_control.py": "3943012dd0f232674255cbaf5f13e19a6b3fd02b9f50020a1e62dae6ad5174ec",
+    "scripts/yuyuhakusho/capture_ground_idle.py": "01d4798e937fa01946b7612fbc4fa7418dda97ec3411db4beb4629975614ba1d",
+    "scripts/yuyuhakusho/capture_inputs.py": "3630f59fe1d8bcc0f1ef7c4607fc178016790b7e231dbfea5d55882a0088ff5c",
+    "scripts/yuyuhakusho/capture_jump.py": "21017876cd34f9263b6efa11e376ebf84b31d5fc82664c7c8b208213d1ecd8ab",
+    "scripts/yuyuhakusho/capture_lane_motion.py": "a930f3bcf09402c0e80544819d9baf6a323b841c402c05dd6a7e6cdb5f5b526e",
+    "scripts/yuyuhakusho/capture_lane_switch.py": "01ac745b422525640efda9bac183508e91437e7d92b9bfc465c7afd03e670687",
+    "scripts/yuyuhakusho/capture_match_lifecycle.py": "042aa6c80fa04535d51844caccf88f7f03c9c448019173f13d416b802af938e6",
+    "scripts/yuyuhakusho/capture_match_overlays.py": "dad5828bfd1d0fceb5e91d8fd75048e5592c1488e7716bd4fe5cd49a4dd425a1",
+    "scripts/yuyuhakusho/capture_match_start.py": "76e30439fe1d84f17e4f3e0f298984c81b49d4f1a096918b6c9ba7c6132a2f4b",
+    "scripts/yuyuhakusho/capture_match_start_cells.py": "d26ac278754cbbbe0298ee06196780477be4b4cb2094d1a5dbcd0226eff61c93",
+    "scripts/yuyuhakusho/capture_motion.py": "e4af350e38ec0c979ea43ecc8733d6be8c9f1826f891ebcca3804e9821768ad3",
+    "scripts/yuyuhakusho/capture_motion_boundaries.py": "5ee45f08726e4ada9fc0cd2895bb9aacc92d45426e5ffad32132eb9477c67f1d",
+    "scripts/yuyuhakusho/capture_reaction_motion.py": "50a991819ccc01b1ed059d18aeb94435d1ce53fa40ae5200947f916a13bc953f",
+    "scripts/yuyuhakusho/capture_sound_queue.py": "9f591ab2cd4d4865aa6f938677e231e2b3c7637f1b2dc55fc7a92eeee87f3480",
+    "scripts/yuyuhakusho/capture_throw_contacts.py": "ef7908d24a1b6e4e8bafe1aa86f1ef0a70829ace4cd952acc5abef3b895e100b",
+    "scripts/yuyuhakusho/capture_throw_records.py": "6cc5deab638c65ca7953114dc1f53067f5faa0e78352ceae7fe00006a1e1e171",
+    "scripts/yuyuhakusho/capture_world_clock.py": "daa9eec8b11af22aa6dce9430795b1fcfe60f5fca667a4cc0524c24c64c3c264",
+    "scripts/yuyuhakusho/capture_world_frame.py": "18693d1b13e914105c3a1ca40a99ba81af328b83b0293013caec6ccd8714e76f",
+    "scripts/yuyuhakusho/capture_world_frame_irq.py": "e88f6a5c02d0ad43823ef44f0e5e965b5d6192183ed04e50c28303407c5585c5",
+    "scripts/yuyuhakusho/capture_world_objects.py": "213f5beb4cf596fbee29c14fd09b9eb7abe6dab71c707e14b1a824285892d455",
+    "scripts/yuyuhakusho/check_fighter_player.py": "dde0907579240253a2655deb579a61ab006d381f2a10fc1662ebbc75381e1bc1",
+    "scripts/yuyuhakusho/check_local_player.py": "78188f002eb0ec9e97d03cec05c5fe99e7b73a832dec9c9d573d00df3339c8dc",
+    "scripts/yuyuhakusho/derive_world_object_views.py": "017f97f585d988bbfd96b683c346e94eb2dda7293ffc43a5bdc4f07c9b249412",
+    "scripts/yuyuhakusho/export_chu_world_rules.py": "c1e98af496f95ade822d440329726165fad41c6ae3549459da8902e98c234811",
+    "scripts/yuyuhakusho/extract_animation_catalog.py": "5959c2693068d610c7d25ea2c4c51165b1c60cbfdca5d3a891e0ce21563f9bd2",
+    "scripts/yuyuhakusho/extract_arena_assets.py": "f003119c665edaeffecec06ff99f77625d14a5345e82956d10ab8dc165e9a13a",
+    "scripts/yuyuhakusho/extract_audio_assets.py": "e8a59cb97a15b02d930b2335175eca9fb17600a778ce93d779449cdac3775f56",
+    "scripts/yuyuhakusho/extract_character_assets.py": "5fc7098265fbb4439c7a8e43489a22ab6b62a732c202fb625596b2c25854aa26",
+    "scripts/yuyuhakusho/extract_hud_assets.py": "df8c8fff4f3b1d9b2f8d9e556b2b861527d4d033802874bd3d24a2892955817a",
+    "scripts/yuyuhakusho/extract_sprites.py": "6086e9a59a10f50589fb7cd9a658445b545dbe94b47c8867878173d08f4b59d3",
+    "scripts/yuyuhakusho/extract_world_sprites.py": "1c762f291582382188a680beb8f507a961819c1a589400bac4a94a964cff6554",
+    "scripts/yuyuhakusho/local_player.css": "984d62cb8ba886da12efa2fd3d264eaf8df0dfa5b8aab12726d8893cfc525e3c",
+    "scripts/yuyuhakusho/local_player.tsx": "72fb2d0a76be2fce2225a659b7d2977a33d22b5bd33257812b622a914e831e68",
+    "scripts/yuyuhakusho/native_player_input.mjs": "911f7fea56117788d47f3bf3c38cb4a8b8d5e420b86ee2abf6ea937adad9894b",
+    "scripts/yuyuhakusho/reference.py": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "scripts/yuyuhakusho/research_audio_loops.py": "854c259284e11c59a21be9560f0beca26f15ffebe132d18d64dce6fbed5e22f4",
+    "scripts/yuyuhakusho/serve_local_player.py": "5d8cd5a9d63de99a8ae6239ae64e33ba9d81f33f3cb35d07ede0c793ba159e72",
+    "scripts/yuyuhakusho/summarize_fighter10.py": "a91b6f930a01458eb2b1d0f26fc50208361df15237abb9d684af9e9b3308b351",
+    "scripts/yuyuhakusho/summarize_independent_session.py": "3b0e8476c286c2afa4345d786e2440ce1b3f817381e621a86532aa0dd988c5ce",
+    "scripts/yuyuhakusho/trace_match_lifecycle.py": "6cac316346e0cc8ef76f60a9c206f7b313e87ebe3f2c6fe599bed43091416a91",
+    "scripts/yuyuhakusho/trace_match_lifecycle_stack.py": "4388e5dee043a33446f48b7181f165cf1f369144efb2456be34968ad2c794015",
+    "scripts/yuyuhakusho/trace_shape_consumers.py": "8ff18454f67fe7ebaf6e8293669f341c0d1574804850122a0d4b2ffd254d3a9b",
+    "scripts/yuyuhakusho/trace_sprite_consumers.py": "63f455aabaed35c3b4b7b61954dd640f502d7916a58ff2d978bd053d0ad90ec8",
+    "scripts/yuyuhakusho/trace_throw_records.py": "6de925e6d0d43ee6e049a1ced8a5e4e813d409e7f0163d838d211e9503103ae0",
+    "scripts/yuyuhakusho/tsconfig.json": "884a82221e876d56f19ce39f1f87120b14738d8be2a1e02c7747b174c8ac1d82",
+    "scripts/yuyuhakusho/verify_chu_runtime.sh": "0ddb222043a23f4ce294e2a5be4b093a2220e9f109b7b90d5112716df96a0e34",
+    "scripts/yuyuhakusho/verify_chu_sessions.sh": "14031d45b5aeea2f795a865b2ef58d818a75b9dcb4ed0ceafec7198310cabb99",
+    "scripts/yuyuhakusho/verify_fighter_sessions.sh": "3ec7f249ea3bed95d264d3f1a7ef574b6bf8964cc3ba0ed6dceeb9687bd18f04"
+  },
+  "limits": [
+    "Playable source IDs9/10 and the default arena only; the remaining nine characters and seven arenas are unfinished.",
+    "Natural source10 evidence is human10 versus original AI9; source10 AI has original private input/actor evidence and fresh independent matches, not a natural source10 AI recording.",
+    "Private full-action streams use original animation submission and run all five added slots to recovery; this does not turn isolated runs into natural gameplay.",
+    "No platform room/network/prediction/takeover integration or audio playback acceptance yet; no publishing or deployment."
+  ]
+}

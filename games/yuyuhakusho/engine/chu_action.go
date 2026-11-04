@@ -32,11 +32,20 @@ type ChuActionState struct {
 // newly advanced clock exactly once, then enters the complete shared tail.
 // Input latching, AI, child objects and other world scheduling are separate.
 func StepChuAction(state ChuActionState, parameters ChuActionParameters, commands CommandLibrary, animations AnimationLibrary) (ChuActionState, error) {
+	return StepFighterAction(state, 9, parameters, commands, animations)
+}
+
+// StepFighterAction keeps one copy of the complete action driver for the
+// restored sources9/10. AlternateVelocity remains the sole +48 long owner.
+func StepFighterAction(state ChuActionState, characterID uint8, parameters ChuActionParameters, commands CommandLibrary, animations AnimationLibrary) (ChuActionState, error) {
 	original := state
+	if characterID != 9 && characterID != 10 {
+		return original, errors.New("unsupported complete fighter action source")
+	}
 	command := CommandState{RawHeld: state.Controls.RawHeld, Facing: state.Body.Facing, Request: state.Body.Request}
 	copy(command.Timeouts[:], state.Body.Commands[:8])
 	copy(command.Indices[:], state.Body.Commands[8:])
-	command, err := PrepareCharacterCommands(9, command, commands)
+	command, err := PrepareCharacterCommands(characterID, command, commands)
 	if err != nil {
 		return original, err
 	}
@@ -98,6 +107,16 @@ func StepChuAction(state ChuActionState, parameters ChuActionParameters, command
 			state.Body, state.Pool, state.Children = special.Body, special.Pool, special.Children
 			state.setActionEnergy(special.Energy)
 			state.Power, state.AlternateVelocity, state.ContactFlags = special.Power, special.AlternateVelocity, special.ContactFlags
+		case 0x11, 0x2d, 0x47, 0x48, 0x49:
+			if characterID != 10 {
+				return original, errors.New("unsupported Chu action")
+			}
+			motion, actionErr := StepFighter10Motion(Fighter10MotionState{ObjectID: state.ObjectID, Body: state.Body,
+				Controls: state.Controls, Aux48: state.AlternateVelocity, ContactFlags: state.ContactFlags, Pool: state.Pool}, parameters.JumpParameters)
+			if actionErr != nil {
+				return original, actionErr
+			}
+			state.Body, state.Pool, state.AlternateVelocity, state.ContactFlags = motion.Body, motion.Pool, motion.Aux48, motion.ContactFlags
 		default:
 			return original, errors.New("unsupported Chu action")
 		}
@@ -105,11 +124,11 @@ func StepChuAction(state ChuActionState, parameters ChuActionParameters, command
 	// Child creation earlier in this same call changes the later availability
 	// gate. The child's size is authoritative, rather than its old input copy.
 	state.ChildSize = state.Children[0].Size
-	tail, err := StepChuActionTail(state.ChuTailState, parameters.ChuTailParameters, animations, mode)
+	tail, aux48, err := stepFighterActionTail(state.ChuTailState, characterID, state.AlternateVelocity, state.EnergyFraction, parameters.ChuTailParameters, animations, mode)
 	if err != nil {
 		return original, err
 	}
-	state.ChuTailState = tail
+	state.ChuTailState, state.AlternateVelocity = tail, aux48
 	return state, nil
 }
 

@@ -1,0 +1,13 @@
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"# command-line-arguments [command-line-arguments.test]\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter10_attacks_test.go:49:82: undefined: Fighter10AttackState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter10_attacks_test.go:59:11: undefined: Fighter10AttackState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter10_attacks_test.go:70:48: undefined: Fighter10AttackState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter10_attacks_test.go:161:18: undefined: SelectFighter10Attack\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter10_attacks_test.go:219:18: undefined: SelectFighter10Attack\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter10_attacks_test.go:235:11: undefined: Fighter10AttackState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter10_attacks_test.go:254:15: undefined: SelectFighter10Attack\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter10_attacks_test.go:265:16: undefined: SelectFighter10Attack\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-fail"}
+{"Time":"2026-11-05T00:45:20.592602+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-05T00:45:20.592643+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\tcommand-line-arguments [build failed]\n"}
+{"Time":"2026-11-05T00:45:20.59265+08:00","Action":"fail","Package":"command-line-arguments","Elapsed":0,"FailedBuild":"command-line-arguments [command-line-arguments.test]"}

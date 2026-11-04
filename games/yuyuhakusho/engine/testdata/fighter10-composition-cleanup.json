@@ -1,0 +1,530 @@
+{
+  "schema": 1,
+  "scope": "Only duplicate/intermediate outputs owned by this source10 composition capture; all normative fixtures/manifests and true API red/final tests retained",
+  "deleted_files": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition/boundaries-action.jsonl",
+      "bytes": 4058258,
+      "sha256": "0f13625a0051a00f4560a385a97ed9a4ff3219e90d8078f637dda9025a584cd0"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition/boundaries-actor.jsonl",
+      "bytes": 4085210,
+      "sha256": "d00038485d1053d921d39b4272a1e868e448d0bb13e3d3afb08f6998f42f9175"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition/boundaries-input.jsonl",
+      "bytes": 1213376,
+      "sha256": "bd48aae7f5ce14f574f05129ebaeb2b0d578cade80a88d186b6308ed20273efe"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition/fighter10-composition-action-boundaries-manifest.json",
+      "bytes": 2720,
+      "sha256": "011b8b6d7523ba735fa472f35138cc95295e0d3aa4f1186e8ed2d6b8b1c62ef6"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition/fighter10-composition-action-boundaries.json.gz",
+      "bytes": 111673,
+      "sha256": "d55cf2cc049103916ef948451e7ddd9d19ed861a34cf30ac4db8bbe52230c441"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition/fighter10-composition-action-natural-manifest.json",
+      "bytes": 2509,
+      "sha256": "d93046bd4b7d71a3978e67fb960d99a6436cb98be0b860457aae3f054000cb2f"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition/fighter10-composition-action-natural.json.gz",
+      "bytes": 614355,
+      "sha256": "d39fe1324a97b8bc511853e460b940b47dd77d760fe25debb18399f542d89fea"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition/fighter10-composition-action-sequences-manifest.json",
+      "bytes": 2164,
+      "sha256": "f3ba5ec7c58caab2ccbec61b8de6baafc865f48509794fe00f1693e5ef85577d"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition/fighter10-composition-action-sequences.json.gz",
+      "bytes": 79823,
+      "sha256": "2cf009b6980b7949a2ebf7f1a3365c5f1d867457eb3a7481a87fa556de8649a7"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition/fighter10-composition-actor-boundaries-manifest.json",
+      "bytes": 2482,
+      "sha256": "60b4f753e8009cf76abfbc30548760707a21c412defc9d6b0030196ece3bf9dd"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition/fighter10-composition-actor-boundaries.json.gz",
+      "bytes": 98534,
+      "sha256": "0308372740ed7afa83fcb369a09fc3b42a2cb04eff97b7869cf51cc84216d9f7"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition/fighter10-composition-actor-natural-manifest.json",
+      "bytes": 2508,
+      "sha256": "ce2b0be67884b5b063e8ad9eeca063b94b3c40562d3ae29cca5528a71b561b45"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition/fighter10-composition-actor-natural.json.gz",
+      "bytes": 1989928,
+      "sha256": "a55a421308e84033d3aa3df0955d57a732773e79a73fed2e8f7adc3931cb4bd7"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition/fighter10-composition-actor-sequences-manifest.json",
+      "bytes": 2161,
+      "sha256": "b104024e7b3666533e40a098a274a8224c2187f4983907d9d702649545921a1b"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition/fighter10-composition-actor-sequences.json.gz",
+      "bytes": 89806,
+      "sha256": "f446e337fc2b44a24c5542cb07b4ff9b02adfa01ce2253e4bdbd08192259c82a"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition/fighter10-composition-input-boundaries-manifest.json",
+      "bytes": 2604,
+      "sha256": "a7814b8ce73993f0bb618fa4c7a5189a8f4b16d6c920e7d4c892b4aa97c2778f"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition/fighter10-composition-input-boundaries.json.gz",
+      "bytes": 32307,
+      "sha256": "eb04346ef505fd1e20707b7b4817239f27c6c5ab50bc9850bbcbfbdd5676e51b"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition/fighter10-composition-input-natural-manifest.json",
+      "bytes": 2390,
+      "sha256": "4dadcd979f37e7ca31329783c63dc061e7c44659e8a2d20a4f46e2c3f702035d"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition/fighter10-composition-input-natural.json.gz",
+      "bytes": 348937,
+      "sha256": "ee1b9061b1ac223beab0dceb62510a4c3bd0b0f1e4491058f7b5daab8eeef3fe"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition/fighter10-composition-input-sequences-manifest.json",
+      "bytes": 2161,
+      "sha256": "5133f47b463b2df5573186b2c17b33b30ae1d8d238bc2aecef94fcd7348ef5ca"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition/fighter10-composition-input-sequences.json.gz",
+      "bytes": 17546,
+      "sha256": "588ebb2661698b578c2e5b0ff5f9c6dc7b889e98d33b9007b5ba5a6b96631d5f"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition/natural-action.jsonl",
+      "bytes": 51365625,
+      "sha256": "c0d17e0f82a4c2417d84e35497df94bf85d746e51141b453fad86837cce09834"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition/natural-actor.jsonl",
+      "bytes": 131781000,
+      "sha256": "83efc5399af85475ecaedf440e86c5fdf0b8b721768195e15f1c4cca3bcdbda5"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition/natural-input.jsonl",
+      "bytes": 48168817,
+      "sha256": "9a4025cb5da88ed4e9a916fa706bbef8b9697ba8de17b42e3a6889a306b59227"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final/boundaries-action.jsonl",
+      "bytes": 4058258,
+      "sha256": "0f13625a0051a00f4560a385a97ed9a4ff3219e90d8078f637dda9025a584cd0"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final/boundaries-actor.jsonl",
+      "bytes": 4085210,
+      "sha256": "d00038485d1053d921d39b4272a1e868e448d0bb13e3d3afb08f6998f42f9175"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final/boundaries-input.jsonl",
+      "bytes": 1213376,
+      "sha256": "bd48aae7f5ce14f574f05129ebaeb2b0d578cade80a88d186b6308ed20273efe"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final/fighter10-composition-action-boundaries-manifest.json",
+      "bytes": 2720,
+      "sha256": "131f951762db09a15f38f38ff8fc2f8cf0f9344bfe44248eab6f487ee97afe02"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final/fighter10-composition-action-boundaries.json.gz",
+      "bytes": 111673,
+      "sha256": "d55cf2cc049103916ef948451e7ddd9d19ed861a34cf30ac4db8bbe52230c441"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final/fighter10-composition-action-natural-manifest.json",
+      "bytes": 2509,
+      "sha256": "005c4cdad4622eb02978b48f171dc0f0835de2cefbff617f1fbf28284aa1faeb"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final/fighter10-composition-action-natural.json.gz",
+      "bytes": 614355,
+      "sha256": "d39fe1324a97b8bc511853e460b940b47dd77d760fe25debb18399f542d89fea"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final/fighter10-composition-action-sequences-manifest.json",
+      "bytes": 2164,
+      "sha256": "66ab3f59db4366859f6525778f6fb5a2c32e427d78933247c95e64c6ecc08708"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final/fighter10-composition-action-sequences.json.gz",
+      "bytes": 79823,
+      "sha256": "2cf009b6980b7949a2ebf7f1a3365c5f1d867457eb3a7481a87fa556de8649a7"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final/fighter10-composition-actor-boundaries-manifest.json",
+      "bytes": 2482,
+      "sha256": "10df4e769aa3026670abe140ecd5d317c0614f342f1631f1cf4d09a330bfba34"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final/fighter10-composition-actor-boundaries.json.gz",
+      "bytes": 98534,
+      "sha256": "0308372740ed7afa83fcb369a09fc3b42a2cb04eff97b7869cf51cc84216d9f7"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final/fighter10-composition-actor-natural-manifest.json",
+      "bytes": 2508,
+      "sha256": "0f891eed2a5b575b331eacbf48d271ccd7a7d6ab65f65ac455c9461b22c6882f"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final/fighter10-composition-actor-natural.json.gz",
+      "bytes": 1989928,
+      "sha256": "a55a421308e84033d3aa3df0955d57a732773e79a73fed2e8f7adc3931cb4bd7"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final/fighter10-composition-actor-sequences-manifest.json",
+      "bytes": 2161,
+      "sha256": "0cdb634585574d0fe1649b3f6b6377413e3ceb27f9e164a0fe6e32aa46992eda"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final/fighter10-composition-actor-sequences.json.gz",
+      "bytes": 89806,
+      "sha256": "f446e337fc2b44a24c5542cb07b4ff9b02adfa01ce2253e4bdbd08192259c82a"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final/fighter10-composition-input-boundaries-manifest.json",
+      "bytes": 2604,
+      "sha256": "a58199886ed38e32770c4ea3b165bc982a760421314425bf63cd62e34bf0e856"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final/fighter10-composition-input-boundaries.json.gz",
+      "bytes": 32307,
+      "sha256": "eb04346ef505fd1e20707b7b4817239f27c6c5ab50bc9850bbcbfbdd5676e51b"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final/fighter10-composition-input-natural-manifest.json",
+      "bytes": 2390,
+      "sha256": "59422540358c65fe5134191416a311e9bdf99b594bd80245c8ce9516e287f3be"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final/fighter10-composition-input-natural.json.gz",
+      "bytes": 348937,
+      "sha256": "ee1b9061b1ac223beab0dceb62510a4c3bd0b0f1e4491058f7b5daab8eeef3fe"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final/fighter10-composition-input-sequences-manifest.json",
+      "bytes": 2161,
+      "sha256": "3be17cc04c50717bd1c33dd03926f607df52532be58b0fee4e24d553d56b2e03"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final/fighter10-composition-input-sequences.json.gz",
+      "bytes": 17492,
+      "sha256": "6c440d3d0ae2a3257bcf6ff9f4199f8f147915804cc710ab425563f464e99bbc"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final/natural-action.jsonl",
+      "bytes": 51365625,
+      "sha256": "c0d17e0f82a4c2417d84e35497df94bf85d746e51141b453fad86837cce09834"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final/natural-actor.jsonl",
+      "bytes": 131781000,
+      "sha256": "83efc5399af85475ecaedf440e86c5fdf0b8b721768195e15f1c4cca3bcdbda5"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final/natural-input.jsonl",
+      "bytes": 48168817,
+      "sha256": "9a4025cb5da88ed4e9a916fa706bbef8b9697ba8de17b42e3a6889a306b59227"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-complete/boundaries-action.jsonl",
+      "bytes": 4058258,
+      "sha256": "0f13625a0051a00f4560a385a97ed9a4ff3219e90d8078f637dda9025a584cd0"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-complete/boundaries-actor.jsonl",
+      "bytes": 4085210,
+      "sha256": "d00038485d1053d921d39b4272a1e868e448d0bb13e3d3afb08f6998f42f9175"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-complete/boundaries-input.jsonl",
+      "bytes": 1213376,
+      "sha256": "bd48aae7f5ce14f574f05129ebaeb2b0d578cade80a88d186b6308ed20273efe"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-complete/fighter10-composition-action-boundaries-manifest.json",
+      "bytes": 2720,
+      "sha256": "1c5460140ff682a87533b861bf9de9a04167590157abda0b3537e67090530a99"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-complete/fighter10-composition-action-boundaries.json.gz",
+      "bytes": 111878,
+      "sha256": "14fc1115afc5d199d3790d07d06a52f7f9264d3ec71414a7035d659f8d7cd5f3"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-complete/fighter10-composition-action-natural-manifest.json",
+      "bytes": 2509,
+      "sha256": "ce3c8a1fe7f59f08df0ba57657dd19508e7573f614accbb5813243399526da6e"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-complete/fighter10-composition-action-natural.json.gz",
+      "bytes": 614559,
+      "sha256": "2fe4f07b589b9b88d232ab011d7a1b4171803583759bc1a3d4dcda79173c5d21"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-complete/fighter10-composition-action-sequences-manifest.json",
+      "bytes": 2164,
+      "sha256": "dd999fe9c17c7d68c0148fffabdc8eb7cfad1e0096eea5bb473916f30b4caa9f"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-complete/fighter10-composition-action-sequences.json.gz",
+      "bytes": 122024,
+      "sha256": "93fbfd05b309e323eba821ae82fbe72b4d7316bdaac84a9fde3eaf6621111bfd"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-complete/fighter10-composition-actor-boundaries-manifest.json",
+      "bytes": 2482,
+      "sha256": "15e9dd9f4d3ded7b7b21de96b772817bc8ffa51579ad6d99791dc922c8b8b67b"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-complete/fighter10-composition-actor-boundaries.json.gz",
+      "bytes": 98719,
+      "sha256": "8b9410f7a7a647db3cb24d07593864f6226745f7ae989987ebbc2400e2dfcb08"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-complete/fighter10-composition-actor-natural-manifest.json",
+      "bytes": 2508,
+      "sha256": "ff0e8f221b77c9395fb7244aa5de19db7d0017e750bb214840e2cbac09662fe4"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-complete/fighter10-composition-actor-natural.json.gz",
+      "bytes": 1990125,
+      "sha256": "c952af23e3c8549296d9ea57406579614cedce7246515951bf698cd88488e106"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-complete/fighter10-composition-actor-sequences-manifest.json",
+      "bytes": 2161,
+      "sha256": "bde2dd0b6459aeccb608a9de36f3545c65abad8babc1845055021bbe78d4264f"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-complete/fighter10-composition-actor-sequences.json.gz",
+      "bytes": 89988,
+      "sha256": "81696281c6172157953737599becde17bb8510fef4027be659061468bdbecc97"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-complete/fighter10-composition-input-boundaries-manifest.json",
+      "bytes": 2604,
+      "sha256": "7ddfec3e2dc748ab4f909da5eb78a714ff330394bf07a239b3a8a0439728293b"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-complete/fighter10-composition-input-boundaries.json.gz",
+      "bytes": 32515,
+      "sha256": "b3f9b3a4ab413d23055244ee95cadc5ba2ac436d7ad0393e9b8f87bfd5e1f1ec"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-complete/fighter10-composition-input-natural-manifest.json",
+      "bytes": 2390,
+      "sha256": "83deb281734dc12504faca2353041ec790a0d3df05ff75bbec5e38e77e5c3765"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-complete/fighter10-composition-input-natural.json.gz",
+      "bytes": 349132,
+      "sha256": "9f315ba22e299df8d287753f0d44086146d6842812ce159383ca231ffedb684c"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-complete/fighter10-composition-input-sequences-manifest.json",
+      "bytes": 2161,
+      "sha256": "4dfe467713c5ce6a571dfa58f244545b075f2df64690ecafad606d5c722cb33d"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-complete/fighter10-composition-input-sequences.json.gz",
+      "bytes": 17687,
+      "sha256": "ee2f4fc7fa4b2f777be40c5bba7f54d08f11bf2858cbebf051ad76aea6bb086d"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-complete/natural-action.jsonl",
+      "bytes": 51365625,
+      "sha256": "c0d17e0f82a4c2417d84e35497df94bf85d746e51141b453fad86837cce09834"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-complete/natural-actor.jsonl",
+      "bytes": 131781000,
+      "sha256": "83efc5399af85475ecaedf440e86c5fdf0b8b721768195e15f1c4cca3bcdbda5"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-complete/natural-input.jsonl",
+      "bytes": 48168817,
+      "sha256": "9a4025cb5da88ed4e9a916fa706bbef8b9697ba8de17b42e3a6889a306b59227"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final-complete/boundaries-action.jsonl",
+      "bytes": 4357102,
+      "sha256": "b4ea6c2620f4eb5e2eed6aae023295c978295f36d46d4951ef6749c469cb9f13"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final-complete/boundaries-actor.jsonl",
+      "bytes": 4085177,
+      "sha256": "af699e96701aa571f1ef184816b989bb2d6b23316829089d18c8a496d90638f3"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final-complete/boundaries-input.jsonl",
+      "bytes": 1213376,
+      "sha256": "8d3b81a617c27f61be8a8b44ab2e28cf7f909901651e12d7a4375fe6fe056140"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final-complete/fighter10-composition-action-boundaries-manifest.json",
+      "bytes": 2720,
+      "sha256": "c2f9f67ac2ceda9576d4fe5965b0d7682686657a2f2b7485c1e40c1e1027deb9"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final-complete/fighter10-composition-action-boundaries.json.gz",
+      "bytes": 119815,
+      "sha256": "2228b6ddfbaffa28608f43f41fa60d41acd054bf7a2bb6125a4b11f4249e9340"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final-complete/fighter10-composition-action-natural-manifest.json",
+      "bytes": 2509,
+      "sha256": "c5f155b1466d8c1380c06800694eff559fa63bdda816ab5dee8f0e2f7c00adf2"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final-complete/fighter10-composition-action-natural.json.gz",
+      "bytes": 614761,
+      "sha256": "213da150ce81d6cd377047193355b754669816a526a9f7996ceccb165eea9426"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final-complete/fighter10-composition-action-sequences-manifest.json",
+      "bytes": 2164,
+      "sha256": "b213d396fb01962d620277b8253ba18bf9ad9f88e854f1627b935d8f9bc749c7"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final-complete/fighter10-composition-action-sequences.json.gz",
+      "bytes": 122261,
+      "sha256": "05508b32ec3205399f148be0fcd7670cc5ed4a038599de8c9b134db1f3c7de07"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final-complete/fighter10-composition-actor-boundaries-manifest.json",
+      "bytes": 2482,
+      "sha256": "6ac506066f640a09f1af112c2518a50a85d093c01058ab51c4581801716dff26"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final-complete/fighter10-composition-actor-boundaries.json.gz",
+      "bytes": 98825,
+      "sha256": "c4e3fa155148d2f10fd9c576d8926704ec89ff21bb5e4188e2b03d60fe3a7391"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final-complete/fighter10-composition-actor-natural-manifest.json",
+      "bytes": 2508,
+      "sha256": "f5e494b88a42b69fcde80ea59abd8879c3bbd785deb5b6a91adb94d5bf854e27"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final-complete/fighter10-composition-actor-natural.json.gz",
+      "bytes": 1990294,
+      "sha256": "f3b49ba50576bed566ac30390c09fa1bbf5439b3a6df3ce0c33e4bcbe5e4dffa"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final-complete/fighter10-composition-actor-sequences-manifest.json",
+      "bytes": 2161,
+      "sha256": "8707dec5b3eb897a19004ba9f200daa677a0bdd2f95fc80fe95a98f02f4474d2"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final-complete/fighter10-composition-actor-sequences.json.gz",
+      "bytes": 90136,
+      "sha256": "2ff24532f5a75b5bbfa01b4f9a0437379c5c0f5df5f3a430e1429bdeafd0d047"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final-complete/fighter10-composition-input-boundaries-manifest.json",
+      "bytes": 2604,
+      "sha256": "af69fa017aaeac238d6f823e65fba8b78974b18f2ca29b5ebe93e224bc1cd411"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final-complete/fighter10-composition-input-boundaries.json.gz",
+      "bytes": 32677,
+      "sha256": "637b4fba24d9a14e2c2986c000f7087d531127d45bc47825f22da522dba998e5"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final-complete/fighter10-composition-input-natural-manifest.json",
+      "bytes": 2390,
+      "sha256": "b937dae58ef2a160062cb5c1d9e784b746c7e5d44b67b5bb2ae42237663fc1b3"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final-complete/fighter10-composition-input-natural.json.gz",
+      "bytes": 349329,
+      "sha256": "257d40e4cd82d6786d1c57cb4d7e0f54d3f0cfe9e746e60e3efc94b47427c4ef"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final-complete/fighter10-composition-input-sequences-manifest.json",
+      "bytes": 2161,
+      "sha256": "f4e7de6aaad1243a00bf93c1ae4eeb17642acce249b186db09fc2b647b52cb33"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final-complete/fighter10-composition-input-sequences.json.gz",
+      "bytes": 17877,
+      "sha256": "e607d593007c39a03fe92a7746a0d2ebc4fdf85e52c146263d590d02108639c3"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final-complete/natural-action.jsonl",
+      "bytes": 51365625,
+      "sha256": "c0d17e0f82a4c2417d84e35497df94bf85d746e51141b453fad86837cce09834"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final-complete/natural-actor.jsonl",
+      "bytes": 131781000,
+      "sha256": "83efc5399af85475ecaedf440e86c5fdf0b8b721768195e15f1c4cca3bcdbda5"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final-complete/natural-input.jsonl",
+      "bytes": 48168817,
+      "sha256": "9a4025cb5da88ed4e9a916fa706bbef8b9697ba8de17b42e3a6889a306b59227"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-capture.txt",
+      "bytes": 2429,
+      "sha256": "d896284467bbe2d23ae603262f8bfe2356257d693767eebd4a060ea50c58115e"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final-capture.txt",
+      "bytes": 2429,
+      "sha256": "d896284467bbe2d23ae603262f8bfe2356257d693767eebd4a060ea50c58115e"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-complete-capture.txt",
+      "bytes": 2429,
+      "sha256": "403604766efab57004f2032d4ed73de68dc13161d845584ae6a0dae01a2ef21d"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-final-complete-capture.txt",
+      "bytes": 2429,
+      "sha256": "db2cf7b369e254ba8af587ebe02fdb1c96fd96c379f4f5360119b6dc8146ca9d"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-stream-diagnostic.jsonl",
+      "bytes": 2403,
+      "sha256": "f6ae6b17c07d693ea336d0a8d96c698b539b265d5dacd7e58cd932473effb804"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-composition-stream-fixed.jsonl",
+      "bytes": 1823,
+      "sha256": "d75852c8b053e2c7f6ef079af7401acd841e3278ebc235a624362dbfa46b8316"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter10-composition-pre-correction-native.jsonl",
+      "bytes": 8459,
+      "sha256": "b643783108a52613645d27e93331510a397690e05b61f4b1e4c29844f420f103"
+    }
+  ],
+  "deleted_bytes": 976725518,
+  "preserved": [
+    "games/yuyuhakusho/engine/testdata/fighter10-composition-* normative evidence",
+    "original core, ROM, source10 baseline and inputs",
+    "shared Go cache/modules and active worktree",
+    "other agents and game files"
+  ],
+  "shared_cache_deleted": false,
+  "files_outside_worktree_changed": false
+}

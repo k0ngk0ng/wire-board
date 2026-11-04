@@ -12,6 +12,16 @@ type ChuInputState struct {
 // single shared control state; AI-only counters and world RNG advance only
 // when the original route calls that strategy. Both states roll back on error.
 func StepChuInput(state ChuInputState) (ChuInputState, error) {
+	return stepFighterInput(state, StepChuAI)
+}
+
+// StepFighterInput uses the same complete envelope and recording continuation
+// with the recovered character-specific AI. Human input never calls a strategy.
+func StepFighterInput(state ChuInputState) (ChuInputState, error) {
+	return stepFighterInput(state, StepFighterAI)
+}
+
+func stepFighterInput(state ChuInputState, strategy func(ChuAIState) (ChuAIState, error)) (ChuInputState, error) {
 	original := state
 	envelope, route, err := PrepareFighterInputEnvelope(state.Envelope)
 	if err != nil {
@@ -23,7 +33,7 @@ func StepChuInput(state ChuInputState) (ChuInputState, error) {
 	case FighterInputComplete:
 		return state, nil
 	case FighterInputNeedsAI, FighterInputNeedsAIThenRecord:
-		ai, err := StepChuAI(state.AI)
+		ai, err := strategy(state.AI)
 		if err != nil {
 			return original, err
 		}

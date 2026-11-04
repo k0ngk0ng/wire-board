@@ -60,6 +60,7 @@ type Session struct {
 
 type PlayerView struct {
 	Slot         uint8 `json:"slot"`
+	CharacterID  uint8 `json:"character_id"`
 	Computer     bool  `json:"computer"`
 	InputChannel uint8 `json:"input_channel"`
 	Active       bool  `json:"active"`
@@ -126,10 +127,12 @@ func sessionView(saved snapshot) View {
 	for _, player := range saved.Options.Players {
 		o := w.Objects[0x8400+uint16(player.Slot)*0x400]
 		computer := player.Computer
+		character := player.CharacterID
 		if o.Header.Behavior == 0x12668 {
 			computer = o.InputChannel == 255
+			character = o.Tag
 		}
-		v.Players = append(v.Players, PlayerView{Slot: player.Slot, Computer: computer, InputChannel: o.InputChannel,
+		v.Players = append(v.Players, PlayerView{Slot: player.Slot, CharacterID: character, Computer: computer, InputChannel: o.InputChannel,
 			Active: o.Header.Behavior == 0x12668, Health: o.Body.Health, Energy: int16(o.Energy >> 16),
 			X: int16(o.Body.X >> 16), Y: int16(o.Body.Y >> 16), Pose: o.Body.Pose, Action: o.Body.ActionKind})
 	}

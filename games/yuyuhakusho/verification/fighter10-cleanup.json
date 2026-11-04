@@ -1,0 +1,93 @@
+{
+  "at_utc": "2026-11-04T18:01:12.182023+00:00",
+  "scope": "Root-owned two-character integration scratch only",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter-browser",
+      "files": 214,
+      "bytes": 9345965,
+      "reason": "Superseded probes/retries, completed browser profile or acceptance builds; canonical proof retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source10-menu-probe",
+      "files": 20,
+      "bytes": 214822,
+      "reason": "Superseded probes/retries, completed browser profile or acceptance builds; canonical proof retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source0-menu-probe",
+      "files": 4,
+      "bytes": 32902,
+      "reason": "Superseded probes/retries, completed browser profile or acceptance builds; canonical proof retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter-legacy-regression",
+      "files": 10,
+      "bytes": 6591,
+      "reason": "Superseded probes/retries, completed browser profile or acceptance builds; canonical proof retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-session",
+      "files": 1,
+      "bytes": 4024866,
+      "reason": "Superseded probes/retries, completed browser profile or acceptance builds; canonical proof retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-session.wasm",
+      "files": 1,
+      "bytes": 4594427,
+      "reason": "Superseded probes/retries, completed browser profile or acceptance builds; canonical proof retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-render",
+      "files": 1,
+      "bytes": 4467042,
+      "reason": "Superseded probes/retries, completed browser profile or acceptance builds; canonical proof retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-render.wasm",
+      "files": 1,
+      "bytes": 5155460,
+      "reason": "Superseded probes/retries, completed browser profile or acceptance builds; canonical proof retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter-session-cli-native.txt",
+      "files": 1,
+      "bytes": 139,
+      "reason": "Superseded probes/retries, completed browser profile or acceptance builds; canonical proof retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter-world-native.jsonl",
+      "files": 1,
+      "bytes": 12617,
+      "reason": "Superseded probes/retries, completed browser profile or acceptance builds; canonical proof retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter-world-wasm.jsonl",
+      "files": 1,
+      "bytes": 12622,
+      "reason": "Superseded probes/retries, completed browser profile or acceptance builds; canonical proof retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter-composition-first.jsonl",
+      "files": 1,
+      "bytes": 7699,
+      "reason": "Superseded probes/retries, completed browser profile or acceptance builds; canonical proof retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter-integration-native.jsonl",
+      "files": 1,
+      "bytes": 201241,
+      "reason": "Superseded probes/retries, completed browser profile or acceptance builds; canonical proof retained"
+    }
+  ],
+  "total_bytes": 28076393,
+  "preserved": [
+    "canonical fixtures/red/final logs/manifests/screenshots",
+    "running local player assets and server",
+    "original ROM/core/source/tools/IRQ evidence/audio",
+    "source0 original menu input/screenshot/discovery metadata",
+    "shared Go caches for the active goal",
+    "active worktree/main/other games"
+  ]
+}

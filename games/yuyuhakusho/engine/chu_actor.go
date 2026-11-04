@@ -87,7 +87,16 @@ type ChuActorEmissions struct {
 // ending immediately before0x1580 sprite emission. Initialization, child
 // callbacks, collision-manager timing and the world loop remain caller stages.
 func StepChuActor(state ChuActorState, view ChuActorView, commands CommandLibrary, animations AnimationLibrary) (ChuActorState, ChuActorEmissions, error) {
+	return StepFighterActor(state, 9, view, commands, animations)
+}
+
+// StepFighterActor shares the original complete active-rule callback between
+// sources9/10; drawing, source identity and other callbacks remain caller-owned.
+func StepFighterActor(state ChuActorState, characterID uint8, view ChuActorView, commands CommandLibrary, animations AnimationLibrary) (ChuActorState, ChuActorEmissions, error) {
 	original := state
+	if characterID != 9 && characterID != 10 {
+		return original, ChuActorEmissions{}, errors.New("unsupported complete fighter actor source")
+	}
 	self, ok := chuAIIndex(state.Fighter.ObjectID)
 	if !ok {
 		return original, ChuActorEmissions{}, errors.New("unsupported Chu actor object")
@@ -101,14 +110,14 @@ func StepChuActor(state ChuActorState, view ChuActorView, commands CommandLibrar
 		f, w := &state.Fighter, &state.World
 		view.Fighters[self] = ChuAIFighter{Size: f.Size, Team: f.Body.Team, Health: f.Body.Health, X: int16(f.Body.X >> 16), Y: int16(f.Body.Y >> 16), Ground: int16(f.Body.Ground >> 16),
 			FrameFlags: f.Body.Clock.Flags, AttackFlags: f.Body.Auxiliary64, ChildX: int16(f.Children[0].X >> 16), ChildY: int16(f.Children[0].Y >> 16),
-			ChildGround: int16(f.Children[0].Ground >> 16), ChildAttackFlags: f.ChildAttackFlags[0]}
+			ChildGround: int16(f.Children[0].Ground >> 16), ChildAttackFlags: f.ChildAttackFlags[0], ChildAttackValue: view.Fighters[self].ChildAttackValue}
 		input := ControllerFrame{}
 		if f.InputChannel < 8 {
 			input = view.Controllers[f.InputChannel]
 		}
-		inputState, inputErr := StepChuInput(ChuInputState{Envelope: FighterInputEnvelopeState{Controls: f.Controls, Mode: f.InputMode, Channel: f.InputChannel,
+		inputState, inputErr := StepFighterInput(ChuInputState{Envelope: FighterInputEnvelopeState{Controls: f.Controls, Mode: f.InputMode, Channel: f.InputChannel,
 			Disabled: view.Disabled, Stopped: w.Stopped, Position: f.StreamPosition, StreamBase: view.StreamBase, Stream: w.Stream, Input: input, EndMarkers: w.EndMarkers},
-			AI: ChuAIState{ObjectID: f.ObjectID, Actor: ChuAIActor{CharacterID: 9, Facing: f.Body.Facing, Pose: f.Body.Pose, Energy: int16(f.Energy >> 16), Controls: f.Controls,
+			AI: ChuAIState{ObjectID: f.ObjectID, Actor: ChuAIActor{CharacterID: characterID, Facing: f.Body.Facing, Pose: f.Body.Pose, Energy: int16(f.Energy >> 16), Controls: f.Controls,
 				Request: f.Body.Request, Behavior: f.AIBehavior, TargetCursor: f.AITargetCursor, Countdown: f.AICountdown, Elapsed: f.AIElapsed, FollowTarget: f.AIFollowTarget},
 				Fighters: view.Fighters, Difficulty: view.Difficulty, RandomSeed: w.RandomSeed, ArenaLeft: view.ArenaLeft, ArenaRight: view.ArenaRight}})
 		if inputErr != nil {
@@ -123,7 +132,7 @@ func StepChuActor(state ChuActorState, view ChuActorView, commands CommandLibrar
 		if actionErr != nil {
 			return original, ChuActorEmissions{}, actionErr
 		}
-		action, actionErr = StepChuAction(action, view.Parameters, commands, animations)
+		action, actionErr = StepFighterAction(action, characterID, view.Parameters, commands, animations)
 		if actionErr != nil {
 			return original, ChuActorEmissions{}, actionErr
 		}

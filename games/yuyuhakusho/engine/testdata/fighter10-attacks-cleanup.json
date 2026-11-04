@@ -1,0 +1,103 @@
+{
+  "verified_at_utc": "2026-11-04T16:56:19.487129+00:00",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-attacks",
+      "files": 11,
+      "bytes": 396866244
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-attacks-natural",
+      "files": 5,
+      "bytes": 68124183
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-attacks-natural-baseline",
+      "files": 0,
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-attacks-red.jsonl",
+      "files": 1,
+      "bytes": 2080
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-attacks-native.jsonl",
+      "files": 1,
+      "bytes": 10518
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-attacks-wasm.jsonl",
+      "files": 1,
+      "bytes": 10514
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-attacks-native-private.jsonl",
+      "files": 1,
+      "bytes": 10468
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter10-attacks-natural-capture.json",
+      "files": 1,
+      "bytes": 1135
+    }
+  ],
+  "bytes_removed": 465025142,
+  "canonical_fixtures_manifests_and_logs_verified_before_removal": [
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter10-attacks-natural.json.gz",
+      "sha256": "a33e7627f50095217b2682d9401ad3c4b5991ac6f29269203a118b9ed96e5fee"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter10-attacks-natural-manifest.json",
+      "sha256": "b9eef9472de0da37d48052cc82c0f0addadd01cb5c5caadfb501c0c6ba217511"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter10-attacks-oracle.json.gz",
+      "sha256": "9e180042f12a3331f8955cf15e764177b77ee5826f5611afd2b1a990e42b6c12"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter10-attacks-oracle-manifest.json",
+      "sha256": "c1672db31808f30660821a9f7bd3f1058a1575f883e33b3cb44edfbeb3dcaeed"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter10-attacks-boundaries.json.gz",
+      "sha256": "002099f14940ec18f749973e9900edc620714f8603f5e0e8ceee462b66fed6e1"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter10-attacks-boundaries-manifest.json",
+      "sha256": "fc1e347ef3675cb19c769b05645954eb6c4e7caff62b1127f6ae69b2f52c4628"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter10-attacks-sequences.json.gz",
+      "sha256": "930dc7c5c7ca4e10cc9a8053d4a492f08d59b52b14c1e47fac0d253753b931a8"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter10-attacks-sequences-manifest.json",
+      "sha256": "2476bcc21f0910e5682d651dc172e21954717b641f21d8bbc489ab32a417edad"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter10-attacks-source9-baseline.json.gz",
+      "sha256": "faf0cba279f4e6defc701dee89c549801f9af39a6c182f36fc69e2d99277dcf7"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter10-attacks-source9-baseline-manifest.json",
+      "sha256": "f61a1ff248a19a7760b7c42e11a826e11cc058543a417c1a6da4538d67dc81bd"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter10-attacks-red.jsonl",
+      "sha256": "c6fd6a6271427b04f0d93644e4b065bb592b6f512e221980b3bd392ac08b6d69"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter10-attacks-native.jsonl",
+      "sha256": "c97797274daf3ac51850fc4a275c068f3f16ad25645d25ebfadfaaa3a90f359f"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter10-attacks-wasm.jsonl",
+      "sha256": "ee1a71db4fc360c0d3edfa4abaa60ffe2a05a43a4a99ee1c7649691433b4c8c2"
+    }
+  ],
+  "shared_go_caches_untouched": true,
+  "other_agents_files_and_inputs_untouched": true,
+  "existing_chu_sources_and_reports_untouched": true
+}

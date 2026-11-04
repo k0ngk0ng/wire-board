@@ -53,10 +53,16 @@ type ChuTailState struct {
 // later handlers. World input preparation, movement and audio-consumer timing
 // are separate caller stages, not simulated inside this atomic rule function.
 func StepChuActionTail(state ChuTailState, parameters ChuTailParameters, library AnimationLibrary, mode ChuTailMode) (ChuTailState, error) {
+	state, _, err := stepFighterActionTail(state, 9, 0, 0, parameters, library, mode)
+	return state, err
+}
+
+func stepFighterActionTail(state ChuTailState, characterID uint8, aux48 int32, energyFraction uint16, parameters ChuTailParameters, library AnimationLibrary, mode ChuTailMode) (ChuTailState, int32, error) {
 	if mode != ChuTailNormal && mode != ChuTailHitStop {
-		return state, errors.New("unsupported shared-tail entry")
+		return state, aux48, errors.New("unsupported shared-tail entry")
 	}
 	original := state
+	originalAux48 := aux48
 	state.OtherFighters = make(map[uint16]TailFighterEnergy, len(original.OtherFighters))
 	for id, fighter := range original.OtherFighters {
 		state.OtherFighters[id] = fighter
@@ -69,7 +75,7 @@ func StepChuActionTail(state ChuTailState, parameters ChuTailParameters, library
 		if state.Body.EnabledStages&1 != 0 {
 			body, pool, occupied, _, err := StepGroundControl(state.Body, state.Pool, state.OccupiedLanes, state.Controls)
 			if err != nil {
-				return original, err
+				return original, originalAux48, err
 			}
 			state.Body, state.Pool, state.OccupiedLanes = body, pool, occupied
 		}
@@ -83,7 +89,7 @@ func StepChuActionTail(state ChuTailState, parameters ChuTailParameters, library
 			if stage.mode == ChuGroundAttack {
 				if state.Controls.Changed&0x70 == 0x70 {
 					if err := drainChuOpponents(&state, parameters.EnergyDrain); err != nil {
-						return original, err
+						return original, originalAux48, err
 					}
 					state.Body.ActionKind, state.Body.Pose, state.Body.EnabledStages = 0, 0x14, 0
 					state.Body.GroundActionState = ResetActionState(state.Body.GroundActionState)
@@ -99,10 +105,21 @@ func StepChuActionTail(state ChuTailState, parameters ChuTailParameters, library
 			if stage.mode == ChuAirAttack && state.Body.ExtraJump == 0 && state.Controls.Pressed&ButtonUp != 0 {
 				beginChuExtraJump(&state, parameters.JumpParameters)
 			}
-			selection, err := SelectChuAttack(ChuAttackState{Body: state.Body, Controls: state.Controls, ObjectID: state.ObjectID,
-				Energy: state.Energy, ChildSize: state.ChildSize, GravityParameter: parameters.Gravity, Pool: state.Pool, Throws: state.Throws}, stage.mode)
+			selection := ChuAttackState{Body: state.Body, Controls: state.Controls, ObjectID: state.ObjectID,
+				Energy: state.Energy, ChildSize: state.ChildSize, GravityParameter: parameters.Gravity, Pool: state.Pool, Throws: state.Throws}
+			var err error
+			if characterID == 9 {
+				selection, err = SelectChuAttack(selection, stage.mode)
+			} else {
+				var selected Fighter10AttackState
+				selected, err = SelectFighter10Attack(Fighter10AttackState{ChuAttackState: selection, Aux48High: uint8(uint32(aux48) >> 24),
+					EnergyFraction: energyFraction, RandomSeed: state.RandomSeed}, stage.mode)
+				selection = selected.ChuAttackState
+				aux48 = int32(uint32(aux48)&0x00ffffff | uint32(selected.Aux48High)<<24)
+				state.RandomSeed = selected.RandomSeed
+			}
 			if err != nil {
-				return original, err
+				return original, originalAux48, err
 			}
 			state.Body, state.Pool, state.Throws, state.Energy = selection.Body, selection.Pool, selection.Throws, selection.Energy
 		}
@@ -124,7 +141,7 @@ func StepChuActionTail(state ChuTailState, parameters ChuTailParameters, library
 		Value65: state.AttackValue, Value66: state.StunDamage, Value67: state.EffectKind, Value68: state.Reaction},
 		Buffers: state.Buffers, PendingSound: state.PendingSound, SoundQueue: state.SoundQueue}, library)
 	if err != nil {
-		return original, err
+		return original, originalAux48, err
 	}
 	a := animation.Actor
 	state.Body.Clock, state.Body.EnabledStages, state.Body.Attributes, state.Body.Auxiliary64 = a.Clock, a.EnabledStages, a.Attributes, a.Auxiliary64
@@ -133,7 +150,7 @@ func StepChuActionTail(state ChuTailState, parameters ChuTailParameters, library
 	state.Buffers, state.PendingSound, state.SoundQueue = animation.Buffers, animation.PendingSound, animation.SoundQueue
 	randomized := RandomizeAttackValue(AttackValueState{Seed: state.RandomSeed, Scale: state.AttackScale, Value: state.AttackValue})
 	state.RandomSeed, state.AttackValue = randomized.Seed, randomized.Value
-	return state, nil
+	return state, aux48, nil
 }
 
 func drainChuOpponents(state *ChuTailState, amount int16) error {

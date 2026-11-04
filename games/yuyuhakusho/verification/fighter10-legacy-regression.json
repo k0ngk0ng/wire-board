@@ -1,0 +1,96 @@
+{
+  "scope": "Legacy source9 default configurations after shared source9/source10 driver extraction",
+  "pass": true,
+  "checks": [
+    {
+      "environment": "native",
+      "case": "two-ai",
+      "pass": true,
+      "identical_json_bytes": true,
+      "expected_path": "games/yuyuhakusho/verification/session-e2e/native/two-ai.json",
+      "expected_sha256": "c1e8e816ef9fdee90c5051e19b08b525f34d865e97e78d0afdf83db492352e33",
+      "actual_sha256": "c1e8e816ef9fdee90c5051e19b08b525f34d865e97e78d0afdf83db492352e33"
+    },
+    {
+      "environment": "native",
+      "case": "three-ai",
+      "pass": true,
+      "identical_json_bytes": true,
+      "expected_path": "games/yuyuhakusho/verification/session-e2e/native/three-ai.json",
+      "expected_sha256": "596b984fa8eee41e639ac61c44603d39ff850386a8e27c8dda7bd645b33c466c",
+      "actual_sha256": "596b984fa8eee41e639ac61c44603d39ff850386a8e27c8dda7bd645b33c466c"
+    },
+    {
+      "environment": "native",
+      "case": "four-ai",
+      "pass": true,
+      "identical_json_bytes": true,
+      "expected_path": "games/yuyuhakusho/verification/session-e2e/native/four-ai.json",
+      "expected_sha256": "1a344dfe65bd02dcff430d82a9ee242600a31dfdaf296cd13725f5572efe4f79",
+      "actual_sha256": "1a344dfe65bd02dcff430d82a9ee242600a31dfdaf296cd13725f5572efe4f79"
+    },
+    {
+      "environment": "native",
+      "case": "team-ai",
+      "pass": true,
+      "identical_json_bytes": true,
+      "expected_path": "games/yuyuhakusho/verification/session-e2e/native/team-ai.json",
+      "expected_sha256": "8111626c7099dcdd050ffdc567ff5e70ef8fc0d0940087f125f230a2b5d42f97",
+      "actual_sha256": "8111626c7099dcdd050ffdc567ff5e70ef8fc0d0940087f125f230a2b5d42f97"
+    },
+    {
+      "environment": "native",
+      "case": "mixed-idle",
+      "pass": true,
+      "identical_json_bytes": true,
+      "expected_path": "games/yuyuhakusho/verification/session-e2e/native/mixed-idle.json",
+      "expected_sha256": "88bcb91b3edf1f5e199b21403f65e5e9f878842c124b0743ef5c069e1f910a40",
+      "actual_sha256": "88bcb91b3edf1f5e199b21403f65e5e9f878842c124b0743ef5c069e1f910a40"
+    },
+    {
+      "environment": "wasm",
+      "case": "two-ai",
+      "pass": true,
+      "identical_json_bytes": true,
+      "expected_path": "games/yuyuhakusho/verification/session-e2e/wasm/two-ai.json",
+      "expected_sha256": "ce0e15cc0156ad0b0d84f201531037b77de4788be3f0335397cbbca591bd6205",
+      "actual_sha256": "ce0e15cc0156ad0b0d84f201531037b77de4788be3f0335397cbbca591bd6205"
+    },
+    {
+      "environment": "wasm",
+      "case": "three-ai",
+      "pass": true,
+      "identical_json_bytes": true,
+      "expected_path": "games/yuyuhakusho/verification/session-e2e/wasm/three-ai.json",
+      "expected_sha256": "bbc76f3f503d4a9d70c7f67c9a314b02c25268bd758594754c1617c9a92ad011",
+      "actual_sha256": "bbc76f3f503d4a9d70c7f67c9a314b02c25268bd758594754c1617c9a92ad011"
+    },
+    {
+      "environment": "wasm",
+      "case": "four-ai",
+      "pass": true,
+      "identical_json_bytes": true,
+      "expected_path": "games/yuyuhakusho/verification/session-e2e/wasm/four-ai.json",
+      "expected_sha256": "b11c7f6fd5a8329a37ba97e37508598a6bd6e053b78b1bce8e6d35f3cb0a3ad3",
+      "actual_sha256": "b11c7f6fd5a8329a37ba97e37508598a6bd6e053b78b1bce8e6d35f3cb0a3ad3"
+    },
+    {
+      "environment": "wasm",
+      "case": "team-ai",
+      "pass": true,
+      "identical_json_bytes": true,
+      "expected_path": "games/yuyuhakusho/verification/session-e2e/wasm/team-ai.json",
+      "expected_sha256": "4c39b74b81dead66f94ab4ed18059c08277d2b7dc70a326be9b4cf4f9dd32b53",
+      "actual_sha256": "4c39b74b81dead66f94ab4ed18059c08277d2b7dc70a326be9b4cf4f9dd32b53"
+    },
+    {
+      "environment": "wasm",
+      "case": "mixed-idle",
+      "pass": true,
+      "identical_json_bytes": true,
+      "expected_path": "games/yuyuhakusho/verification/session-e2e/wasm/mixed-idle.json",
+      "expected_sha256": "a9aa5e86f2a646e32d9b0cb555f303af470306a1ed5cc6f76fed67f15c93f9b4",
+      "actual_sha256": "a9aa5e86f2a646e32d9b0cb555f303af470306a1ed5cc6f76fed67f15c93f9b4"
+    }
+  ]
+}

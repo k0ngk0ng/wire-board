@@ -1,0 +1,49 @@
+{
+  "pass": true,
+  "scope": "input source10 complete original API returns; actor stops before sprites",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "8c6c5362889ff3cf34645c3118e18462379f03ed5fc4d16589de945415a82f37",
+  "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+  "records": 3,
+  "calls": 48,
+  "frames_match_original_core": true,
+  "external_queue_calls": 0,
+  "fixture_sha256": "5249fd2ae961fb681e78fcdf9d47a52e108b9281690e974d0e60ca07c31f030b",
+  "gzip_sha256": "e607d593007c39a03fe92a7746a0d2ebc4fdf85e52c146263d590d02108639c3",
+  "binding": {
+    "source_tag": 10,
+    "source_object": "0x8400",
+    "checkpoint_video_label": 2400,
+    "animation_set": 882554,
+    "shape_set": 886186,
+    "parameter_pointer": 75338,
+    "source_actor_sha256": "aeab7b4a8eb2ef787ad437214488217f86eb29f04f6821faecd1ddaf11057303"
+  },
+  "library_frames": 130,
+  "baseline_path": "games/yuyuhakusho/engine/testdata/fighter10-attacks-natural-reference-frames.json",
+  "baseline_sha256": "1aa1048464a6f2d1cfb079d8c3d9646c81c96ac507cf0fe5c90a6c446dd486af",
+  "baseline_manifest_sha256": "b022fb615ef8bcbce4931dcf5111dcd8d466e00af1f3f1b59129ea472b0dd7f1",
+  "input_path": "games/yuyuhakusho/engine/testdata/fighter10-inputs.json",
+  "input_sha256": "d7859f794df2a2a9cf356eae01d239bf658632f58e69cee0cc5abb979ad3776e",
+  "canonical_source_registers": true,
+  "private_unknown_ram_writes": 0,
+  "incomplete_calls": 0,
+  "errors": [],
+  "statistics": {
+    "calls": 48
+  },
+  "limits": [
+    "Natural source10 actor is human; source10 AI is private evidence only.",
+    "Actor excludes sprite, child, collision-manager and world callbacks.",
+    "Independent audio consumer exclusions require observed PC/address markers."
+  ]
+}

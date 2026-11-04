@@ -346,8 +346,8 @@ func stepChuWorldArena(state *ChuWorldState, object WorldObject, library ArenaRu
 }
 
 func stepChuWorldFighter(state *ChuWorldState, object WorldObject, view ChuWorldView, library ChuWorldLibrary, hudCursor *uint16) ([]ChuWorldEvent, error) {
-	if _, ok := chuAIIndex(object.ObjectID); !ok || object.Tag != 9 {
-		return nil, errors.New("complete fighter action driver is only recovered for Chu")
+	if _, ok := chuAIIndex(object.ObjectID); !ok || (object.Tag != 9 && object.Tag != 10) {
+		return nil, errors.New("complete fighter action source is not recovered")
 	}
 	switch object.Header.Stage {
 	case 0:
@@ -401,12 +401,12 @@ func stepChuWorldFighter(state *ChuWorldState, object WorldObject, view ChuWorld
 		o, _ := LookupWorldObject(state.Objects, id)
 		child, _ := LookupWorldObject(state.Objects, id+256)
 		v.Fighters[i] = ChuAIFighter{Size: o.Header.Size, Team: o.Body.Team, Health: o.Body.Health, X: int16(o.Body.X >> 16), Y: int16(o.Body.Y >> 16), Ground: int16(o.Body.Ground >> 16),
-			FrameFlags: o.Body.Clock.Flags, AttackFlags: o.Body.Auxiliary64, ChildX: int16(child.Body.X >> 16), ChildY: int16(child.Body.Y >> 16), ChildGround: int16(child.Body.Ground >> 16), ChildAttackFlags: child.Body.Auxiliary64}
+			FrameFlags: o.Body.Clock.Flags, AttackFlags: o.Body.Auxiliary64, ChildX: int16(child.Body.X >> 16), ChildY: int16(child.Body.Y >> 16), ChildGround: int16(child.Body.Ground >> 16), ChildAttackFlags: child.Body.Auxiliary64, ChildAttackValue: child.AttackValue}
 		if id != object.ObjectID {
 			w.OtherEnergy[id] = int16(o.Energy >> 16)
 		}
 	}
-	next, out, err := StepChuActor(ChuActorState{Fighter: fighter, World: w}, v, library.Commands, library.Animations)
+	next, out, err := StepFighterActor(ChuActorState{Fighter: fighter, World: w}, object.Tag, v, library.Commands, library.Animations)
 	if err != nil {
 		return nil, err
 	}

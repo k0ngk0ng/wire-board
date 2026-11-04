@@ -1,0 +1,134 @@
+{
+  "schema": 1,
+  "pass": true,
+  "scope": "Same private matrix rerun after real-menu source10 selection, independently of the original source9 checkpoint",
+  "natural_inputs_sha256": "d7859f794df2a2a9cf356eae01d239bf658632f58e69cee0cc5abb979ad3776e",
+  "private_contexts": [
+    {
+      "name": "fighter10-motion-boundaries",
+      "identical_complete_gzip_bytes": true,
+      "existing_fixture_gzip_sha256": "bcfc1a23f5e1c5b721b37c28e32c69df45036fdcd143110a59d63a3a455c0d9c",
+      "new_context_gzip_sha256": "bcfc1a23f5e1c5b721b37c28e32c69df45036fdcd143110a59d63a3a455c0d9c",
+      "existing_manifest_sha256": "6773f5697b8a2b98623a1fd58622562777c18b71b1fb8224913d60e73e014de5",
+      "new_context_manifest": {
+        "scope": "Explicit source10 private phase inputs, full parent/child/pool writes",
+        "identity": {
+          "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+          "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+          "core_name": "Genesis Plus GX",
+          "core_version": "v1.7.460bee4c",
+          "fps": 59.92274340431231,
+          "ram_bytes": 65536,
+          "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+          "teamplayer": false
+        },
+        "unobserved_identity": {
+          "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+          "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+          "core_name": "Genesis Plus GX",
+          "core_version": "v1.7.4 60bee4c",
+          "fps": 59.92274340431231,
+          "ram_bytes": 65536,
+          "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+          "teamplayer": false
+        },
+        "capture_sha256": "5ab816b3a450d9940d16cf357533dea2e4b7fd2fc45e99a96ebc498af92ad43f",
+        "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+        "inputs_sha256": "d7859f794df2a2a9cf356eae01d239bf658632f58e69cee0cc5abb979ad3776e",
+        "video_steps": 3600,
+        "records": 8586,
+        "calls": 8586,
+        "kind_counts": {
+          "17": 1152,
+          "45": 630,
+          "71": 3856,
+          "72": 1636,
+          "73": 1312
+        },
+        "character_counts": {
+          "10": 8586
+        },
+        "allocation_attempts": 1920,
+        "fixture_sha256": "55576448af8e4fe8dca23ecd9ef8908c54c7725dd450ebd663fc224b022c9480",
+        "gzip_sha256": "bcfc1a23f5e1c5b721b37c28e32c69df45036fdcd143110a59d63a3a455c0d9c",
+        "frames_match_original_core": true,
+        "incomplete_calls": 0,
+        "errors": [],
+        "retreat_table": {
+          "address": "0x1cb20",
+          "bytes": "0044000e000c000a0008000600380036",
+          "sha256": "90d3194cc32e779669f42bcad69a4b481c047f2d72823df8d6cb8a9a2b12c2ae"
+        },
+        "pass": true,
+        "limits": [
+          "Motion stops before shared action tail; no animation record refresh or FX lifecycle.",
+          "Private timing trajectories are not natural full-attack or match evidence.",
+          "Retreat frame7 is a CPU-verified structural entry; source10 normal pose has only frames0..6."
+        ]
+      }
+    },
+    {
+      "name": "fighter10-motion-sequences",
+      "identical_complete_gzip_bytes": true,
+      "existing_fixture_gzip_sha256": "b3d5da6a014e9c76d6e94d63d361dccb2838e818de794c492245c6e38e6394cc",
+      "new_context_gzip_sha256": "b3d5da6a014e9c76d6e94d63d361dccb2838e818de794c492245c6e38e6394cc",
+      "existing_manifest_sha256": "4e02a13918876098e26ddb3735b489e873ef92ec037624c6720973841fcfa2e2",
+      "new_context_manifest": {
+        "scope": "Single-initial-state isolated original-clock trajectories with declared milestones",
+        "identity": {
+          "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+          "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+          "core_name": "Genesis Plus GX",
+          "core_version": "v1.7.460bee4c",
+          "fps": 59.92274340431231,
+          "ram_bytes": 65536,
+          "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+          "teamplayer": false
+        },
+        "unobserved_identity": {
+          "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+          "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+          "core_name": "Genesis Plus GX",
+          "core_version": "v1.7.4 60bee4c",
+          "fps": 59.92274340431231,
+          "ram_bytes": 65536,
+          "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+          "teamplayer": false
+        },
+        "capture_sha256": "5ab816b3a450d9940d16cf357533dea2e4b7fd2fc45e99a96ebc498af92ad43f",
+        "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+        "inputs_sha256": "d7859f794df2a2a9cf356eae01d239bf658632f58e69cee0cc5abb979ad3776e",
+        "video_steps": 3600,
+        "records": 27,
+        "calls": 285,
+        "kind_counts": {
+          "17": 48,
+          "45": 93,
+          "71": 36,
+          "72": 12,
+          "73": 96
+        },
+        "character_counts": {
+          "10": 285
+        },
+        "allocation_attempts": 36,
+        "fixture_sha256": "63611067ce0898813f9955222969a4f9bed46b7e01b7be894e71e07e92a8bca5",
+        "gzip_sha256": "b3d5da6a014e9c76d6e94d63d361dccb2838e818de794c492245c6e38e6394cc",
+        "frames_match_original_core": true,
+        "incomplete_calls": 0,
+        "errors": [],
+        "retreat_table": {
+          "address": "0x1cb20",
+          "bytes": "0044000e000c000a0008000600380036",
+          "sha256": "90d3194cc32e779669f42bcad69a4b481c047f2d72823df8d6cb8a9a2b12c2ae"
+        },
+        "pass": true,
+        "limits": [
+          "Motion stops before shared action tail; no animation record refresh or FX lifecycle.",
+          "Private timing trajectories are not natural full-attack or match evidence.",
+          "Retreat frame7 is a CPU-verified structural entry; source10 normal pose has only frames0..6."
+        ]
+      }
+    }
+  ]
+}
