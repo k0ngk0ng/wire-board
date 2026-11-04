@@ -1,0 +1,97 @@
+route=direct-ghidra-headless; REA raw 68000 unsupported
+language=68000:BE:32:default
+source=MD Yu Yu Hakusho Japan; static reachable instructions only
+
+seeds=17cc scope=0x17cc..0x18e1
+000017cc tst.b (0xfffff54f).w
+000017d0 bpl.b 0x000017fe
+000017d2 move.w (0x8,A5),D2w
+000017d6 add.w (0x28,A5),D2w
+000017da move.w D2w,D0w
+000017dc subi.w #0x40,D0w
+000017e0 beq.b 0x000017fe
+000017e2 cmpi.w #0x1c0,D0w
+000017e6 bcc.b 0x000017fe
+000017e8 move.w (0xc,A5),D3w
+000017ec add.w (0x2a,A5),D3w
+000017f0 move.w D3w,D0w
+000017f2 subi.w #0x40,D0w
+000017f6 beq.b 0x000017fe
+000017f8 cmpi.w #0x160,D0w
+000017fc bcs.b 0x00001800
+000017fe rts
+00001800 movea.l (0x1c,A5),A4
+00001804 move.w (0x3c,A5),D0w
+00001808 adda.w (0x0,A4,D0w*0x1),A4
+0000180c tst.b (0x27,A5)
+00001810 beq.b 0x0000181e
+00001812 move.w #0x3,D6w
+00001816 tst.l (A4)+
+00001818 dbmi D6w,0x00001816
+0000181c bra.b 0x0000182a
+0000181e movea.w D2w,A2
+00001820 movea.w D3w,A3
+00001822 bsr.w 0x000018e2
+00001826 move.w A2w,D2w
+00001828 move.w A3w,D3w
+0000182a move.w (0xfffff578).w,D0w
+0000182e movea.w (0xfffff57c).w,A3
+00001832 move.b (0x26,A5),D4b
+00001836 andi.w #0xfc,D4w
+0000183a movea.w D4w,A2
+0000183c movea.w (-0xcfe,A2),A0
+00001840 move.b D0b,(-0x5,A0)
+00001844 move.w A2w,-(SP)
+00001846 move.w (0x24,A5),D1w
+0000184a move.b (0x24,A5),D4b
+0000184e andi.w #0x18,D4w
+00001852 lsr.w #0x1,D4w
+00001854 lea (0x35e,PC),A2
+00001858 movea.l (0x0,A2,D4w*0x1),A0
+0000185c movea.l (0x10,A2,D4w*0x1),A1
+00001860 lea (0xf2,PC),A2
+00001864 move.l (A4)+,D4
+00001866 move.l D4,D5
+00001868 move.l D4,D6
+0000186a move.l D4,D7
+0000186c lsr.w #0x7,D7w
+0000186e andi.w #0x1e,D7w
+00001872 swap D4
+00001874 andi.w #0x7f,D4w
+00001878 add.w D4w,D4w
+0000187a move.w (0x0,A1,D4w*0x1),D4w
+0000187e sub.w (0x20,A2,D7w*0x1),D4w
+00001882 add.w D3w,D4w
+00001884 move.w D4w,(A3)+
+00001886 andi.w #-0x100,D5w
+0000188a addq.b #0x1,D0b
+0000188c move.b D0b,D5b
+0000188e move.w D5w,(A3)+
+00001890 andi.w #-0x1000,D5w
+00001894 lsr.w #0x1,D5w
+00001896 andi.w #0xff,D6w
+0000189a add.w D1w,D6w
+0000189c move.w D5w,D4w
+0000189e andi.w #0x6000,D4w
+000018a2 beq.b 0x000018a8
+000018a4 andi.w #-0x6001,D6w
+000018a8 eor.w D5w,D6w
+000018aa move.w D6w,(A3)+
+000018ac swap D5
+000018ae lsr.w #0x7,D5w
+000018b0 andi.w #0xfe,D5w
+000018b4 move.w (0x0,A0,D5w*0x1),D5w
+000018b8 sub.w (0x0,A2,D7w*0x1),D5w
+000018bc add.w D2w,D5w
+000018be move.w D5w,(A3)+
+000018c0 tst.w (-0x4,A4)
+000018c4 bmi.b 0x000018d2
+000018c6 cmpi.w #0x50,D0w
+000018ca bcs.b 0x00001864
+000018cc move.b #0x1,(0xfffff54f).w
+000018d2 movea.w (SP)+,A2
+000018d4 move.w A3w,(-0xcfe,A2)
+000018d8 move.w A3w,(0xfffff57c).w
+000018dc move.w D0w,(0xfffff578).w
+000018e0 rts
+printed_instructions=91

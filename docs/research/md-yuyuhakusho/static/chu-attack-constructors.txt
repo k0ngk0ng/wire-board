@@ -1,0 +1,82 @@
+route=direct-ghidra-headless; REA raw 68000 unsupported
+language=68000:BE:32:default
+source=MD Yu Yu Hakusho Japan; static reachable instructions only
+
+seeds=18812,18828,1883e,18854,1886a,18880,188d8,188ee,18930 scope=0x18812..0x18945
+00018812 move.b #0x3,(0x5d,A5)
+00018818 move.b #-0x80,(0x5f,A5)
+0001881e move.b #0x0,(0x6c,A5)
+00018824 bra.w 0x00019c00
+00018828 move.b #0x3,(0x5d,A5)
+0001882e move.b #-0x7e,(0x5f,A5)
+00018834 move.b #0x0,(0x6c,A5)
+0001883a bra.w 0x00019c00
+0001883e move.b #0x3,(0x5d,A5)
+00018844 move.b #-0x7f,(0x5f,A5)
+0001884a move.b #0x0,(0x6c,A5)
+00018850 bra.w 0x00019c00
+00018854 move.b #0x3,(0x5d,A5)
+0001885a move.b #-0x7d,(0x5f,A5)
+00018860 move.b #0x0,(0x6c,A5)
+00018866 bra.w 0x00019c00
+0001886a move.b #0x3,(0x5d,A5)
+00018870 move.b #-0x7c,(0x5f,A5)
+00018876 move.b #0x0,(0x6c,A5)
+0001887c bra.w 0x00019c00
+00018880 move.b #0x3,(0x5d,A5)
+00018886 move.b #-0x7a,(0x5f,A5)
+0001888c move.b #0x0,(0x6c,A5)
+00018892 bra.w 0x00019c00
+000188d8 move.b #0x2,(0x5d,A5)
+000188de move.b #-0x6c,(0x5f,A5)
+000188e4 move.b #0x10,(0x6c,A5)
+000188ea bra.w 0x00019c1c
+000188ee move.b #0x2,(0x5d,A5)
+000188f4 move.b #-0x70,(0x5f,A5)
+000188fa move.b #0x10,(0x6c,A5)
+00018900 bra.w 0x00019c1c
+00018930 move.b #0x2,(0x5d,A5)
+00018936 move.b #-0x6b,(0x5f,A5)
+0001893c move.b #0x10,(0x6c,A5)
+00018942 bra.w 0x00019c1c
+printed_instructions=36
+
+seeds=1fb4c,1fb50,1fb56 scope=0x1fb4c..0x1fba9
+0001fb4c bsr.w 0x0001fa96
+0001fb50 cmpa.w #0x0,A0
+0001fb54 beq.b 0x0001fba8
+0001fb56 move.b #0x10,(0x58,A0)
+0001fb5c cmpi.b #0x0,(0x61,A5)
+0001fb62 bne.b 0x0001fb72
+0001fb64 move.l #0x10000,(0x10,A0)
+0001fb6c jmp 0x0001fb7a.l
+0001fb72 move.l #-0x10000,(0x10,A0)
+0001fb7a move.l (0x40,A5),(0x40,A0)
+0001fb80 move.l (0x44,A5),(0x44,A0)
+0001fb86 move.b (0x24,A5),(0x24,A0)
+0001fb8c andi.w #-0x6800,(0x24,A0)
+0001fb92 ori.b #0x20,(0x24,A0)
+0001fb98 move.w (0x3e,A5),(0x3e,A0)
+0001fb9e move.b (0x26,A5),(0x26,A0)
+0001fba4 subq.b #0x4,(0x26,A0)
+0001fba8 rts
+printed_instructions=18
+
+seeds=19c00 scope=0x19c00..0x19c44
+00019c00 btst.b #0x3,(0x71,A5)
+00019c06 beq.b 0x00019c0e
+00019c08 clr.b (0x61,A5)
+00019c0c bra.b 0x00019c1c
+00019c0e btst.b #0x2,(0x71,A5)
+00019c14 beq.b 0x00019c1c
+00019c16 move.b #0x1,(0x61,A5)
+00019c1c clr.b (0x59,A5)
+00019c20 move.b #0x8,(0x5a,A5)
+00019c26 move.b #-0x1,(0x5b,A5)
+00019c2c clr.b (0x60,A5)
+00019c30 clr.b (0x64,A5)
+00019c34 move.b #0x0,(0x6d,A5)
+00019c3a clr.b (0x77,A5)
+00019c3e move.b (0x6f,A5),(0x6e,A5)
+00019c44 rts
+printed_instructions=16

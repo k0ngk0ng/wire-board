@@ -1,0 +1,183 @@
+{
+  "verified_at_utc": "2026-11-04T08:09:16.376357+00:00",
+  "scope": "Bounded original sprite frame decoding/composition and selected natural high-priority sprite pixels",
+  "pass": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "test_first": "Actual missing spriteFixture/verifySpriteFixture and later missing spritePixelFrame/verifyNaturalSpritePixels outputs retained before the respective implementations; test copies were subsequently optimized without changing assertions",
+  "coverage": {
+    "source_characters": 11,
+    "referenced_graphic_keys": 1133,
+    "graphic_keys_by_character": {
+      "0": 126,
+      "1": 100,
+      "2": 121,
+      "3": 97,
+      "4": 113,
+      "5": 94,
+      "6": 108,
+      "7": 87,
+      "8": 103,
+      "9": 101,
+      "10": 83
+    },
+    "original_cpu_complete_calls": 9218,
+    "per_key_core_variants": 8,
+    "additional_boundaries": 154,
+    "natural_baseline_frames_unchanged": 3600,
+    "natural_pixel_state_frames": 20,
+    "high_priority_opaque_pixels": 71646,
+    "character_pixels": 53185,
+    "pixel_mismatches": 0,
+    "rom_to_vram_transfers": 41,
+    "rom_to_vram_bytes": 50784,
+    "natural_pixel_source_character_ids": [
+      9
+    ]
+  },
+  "timing": {
+    "state_frame": "f",
+    "matched_video_frame": "f+1",
+    "same_frame_video_retained": true,
+    "wrong_timing_negative_control": "passed"
+  },
+  "fixtures": [
+    {
+      "path": "games/yuyuhakusho/data/sprite-oracle.json.gz",
+      "sha256": "74952eb9b961fe51227156c443944a97fcdc025c52941420cd1bbea9387fc516"
+    },
+    {
+      "path": "games/yuyuhakusho/data/sprite-oracle-manifest.json",
+      "sha256": "841c6cedfb503da0b7c2c6d0f6bcc28d0cdb1c69d159201436fba7797611c4e5"
+    },
+    {
+      "path": "games/yuyuhakusho/data/sprite-pixel-reference.json.gz",
+      "sha256": "ace439d0ced22f44901e50df04637070055558b89af16a2b056c4bb9418ad31f"
+    },
+    {
+      "path": "games/yuyuhakusho/data/sprite-consumers.json",
+      "sha256": "d0287b877883e902f5aecab51e5a9fe82a1f97d01f51996eda8bc55c3e0af389"
+    },
+    {
+      "path": "games/yuyuhakusho/data/sprite-go-comparison.json",
+      "sha256": "bc6a98f5fd90239b9f31080234615cf343f2b9f878f542ed72a518ff2b251ffb"
+    }
+  ],
+  "logs": [
+    {
+      "phase": "sprite-red",
+      "path": "games/yuyuhakusho/data/sprite-red.jsonl",
+      "sha256": "961e7509109c6676ba429a63df014937c8f65a3e01861f3b71f10a1f29bf4dbb",
+      "result": "fail",
+      "elapsed_seconds": 0,
+      "top_level_tests": []
+    },
+    {
+      "phase": "sprite-pixels-red",
+      "path": "games/yuyuhakusho/data/sprite-pixels-red.jsonl",
+      "sha256": "45571ef60d608ecacefa3c23c53caaa21f5ae204763ebdfd15164ed7347d85a5",
+      "result": "fail",
+      "elapsed_seconds": 0,
+      "top_level_tests": []
+    },
+    {
+      "phase": "sprite-native",
+      "path": "games/yuyuhakusho/data/sprite-native.jsonl",
+      "sha256": "37213daaad1e7a3e4ab16e08240b05886be047416011a171838908d78596732e",
+      "result": "pass",
+      "elapsed_seconds": 51.138,
+      "top_level_tests": [
+        "TestNaturalSpritePixelsAgainstVideo",
+        "TestSpriteMalformedInputsAreAtomic",
+        "TestSpritePixelsRejectWrongTimingOrData",
+        "TestSpritesAgainstOriginalCPU",
+        "TestSpritesRejectCorruptedOriginalEvidence"
+      ]
+    },
+    {
+      "phase": "sprite-wasm",
+      "path": "games/yuyuhakusho/data/sprite-wasm.jsonl",
+      "sha256": "145848f3c3fdb35aca55cb284a5de6b87c6b91174035f55cf34d48306707b800",
+      "result": "pass",
+      "elapsed_seconds": 14.93,
+      "top_level_tests": [
+        "TestNaturalSpritePixelsAgainstVideo",
+        "TestSpriteMalformedInputsAreAtomic",
+        "TestSpritePixelsRejectWrongTimingOrData",
+        "TestSpritesAgainstOriginalCPU",
+        "TestSpritesRejectCorruptedOriginalEvidence"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "path": "scripts/yuyuhakusho/extract_sprites.py",
+      "sha256": "6086e9a59a10f50589fb7cd9a658445b545dbe94b47c8867878173d08f4b59d3"
+    },
+    {
+      "path": "scripts/yuyuhakusho/trace_sprite_consumers.py",
+      "sha256": "63f455aabaed35c3b4b7b61954dd640f502d7916a58ff2d978bd053d0ad90ec8"
+    },
+    {
+      "path": "games/yuyuhakusho/cmd/verify-sprites/main.go",
+      "sha256": "25435884b8845dcd6d46e487f1c359b6224eb4e828e9a737384b03cf8f17813b"
+    },
+    {
+      "path": "games/yuyuhakusho/cmd/verify-sprites/main_test.go",
+      "sha256": "d53ea303bb8857486736ee1a50243b5930d941a0d8cb82e925053524fa29d533"
+    },
+    {
+      "path": "games/yuyuhakusho/cmd/verify-sprites/pixels.go",
+      "sha256": "660cf31429ebd3bfe0716de09ae4b6a07ab3ba772c0ec646ec6ee33ba14a0d98"
+    },
+    {
+      "path": "games/yuyuhakusho/cmd/verify-sprites/pixels_test.go",
+      "sha256": "2a943aa670bebc25cdee72949791e719c895b30abac340df7338db262d5d564f"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/sprite-consumers.txt",
+      "sha256": "63cfb714692e460a839139efdb3ac21553b68c726171be264679e14af6c6e53e"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/sprite-depth-d8.txt",
+      "sha256": "e8bffb8b93e96d88177db3b983748a73cd7f05fe90c3faf5450c43c2cbcdd07d"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/sprite-submit.txt",
+      "sha256": "9eb200a81fe7539b57e15fbd969231758ee7fa4dbc0d44aa0aad016800eedda3"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/SPRITE_RESEARCH.md",
+      "sha256": "814fe533e2b7465b71a9c292ecfd8bc9cd791a7e5fd4641502d551459568acf8"
+    }
+  ],
+  "local_visual_sample": {
+    "directory": ".local/md-yuyuhakusho/sprite-pixels",
+    "state_frame": 1855,
+    "video_frame": 1856,
+    "files": [
+      "1855-high-sprites.png",
+      "1856-reference-video.png",
+      "sample.json"
+    ],
+    "published": false
+  },
+  "limitations": [
+    "Verifier is a research/presentation-data tool, not a registered independent game renderer",
+    "Referenced graphic keys do not prove normal gameplay reachability or complete character actions",
+    "Natural pixels cover only source ID9; palette source/variant bindings for all11 remain unverified",
+    "Pixel comparison covers normal-mode opaque high-priority sprites only, not backgrounds/low-priority merging/scanline overflow/shadow-highlight or all VDP modes",
+    "Final palette-indexed atlas/tilebank format, resource publication and platform rendering remain incomplete",
+    "Research uses original ROM/core; independent comparison code executes neither and no emulator is shipped"
+  ]
+}

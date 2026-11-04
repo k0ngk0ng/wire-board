@@ -1,0 +1,63 @@
+{
+  "scope": "Full Chu attack selectors/constructors",
+  "pass": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "test_first": {
+    "path": "games/yuyuhakusho/verification/chu-attacks-red.jsonl",
+    "sha256": "f046f76f8e3d1ee1cd07d9411ccc07df2553c07790e75f06be49a867163a0e6e",
+    "reason": "Actual undefined semantic types/functions before production implementation"
+  },
+  "integration_logs": [
+    {
+      "path": "games/yuyuhakusho/verification/actor-pipeline-native.jsonl",
+      "sha256": "3b0e53c5e5b01c56b1337f5781d000ec1d6888215317d6166dd5b155410fdc2f",
+      "environment": "Go native race"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/actor-pipeline-wasm.jsonl",
+      "sha256": "67556cba82e90fff53a950553f8acbe0220731be152a015e7792dad96e3d35d5",
+      "environment": "Node/Wasm"
+    }
+  ],
+  "fixtures": [
+    {
+      "manifest": "games/yuyuhakusho/engine/testdata/chu-attacks-boundaries-manifest.json",
+      "sha256": "665208209234804800e9ddd95839df6ff6f36deeddc468504019e127891312f6",
+      "records": 4596,
+      "fixture_sha256": "698582b7d9fada8cb8a6becad3d4c9b16e2e2b0282d04074e69c2dfa51280768",
+      "gzip_sha256": "a807386fa884fc5a423b7de33b2814616ea11140288d8a627ec96feb2b678412"
+    },
+    {
+      "manifest": "games/yuyuhakusho/engine/testdata/chu-attacks-oracle-manifest.json",
+      "sha256": "acc2ee3c28313878562a06eac67458d197a797e2ce981a86f3865a45dfd7f21d",
+      "records": 4348,
+      "fixture_sha256": "8abaf688c0b3305982ed6c5b62fff18baadeea8c2ae11dae9338d90c76b9f2cf",
+      "gzip_sha256": "5f27b40cdd2523bae9c2f0a2fde985be85c2dfd746aedba960cb1ea73d76c279"
+    },
+    {
+      "manifest": "games/yuyuhakusho/engine/testdata/chu-attacks-sequences-manifest.json",
+      "sha256": "a7840c7a366d6745621f5fe78d3c0b9e38e3ea3c117123de20da0360b7ef9fb8",
+      "records": 4,
+      "fixture_sha256": "56efa583410d24fd9dd5bb36eb74e7ca5dc5eaf78d6c7fc06aa1f3e4835cfba1",
+      "gzip_sha256": "77c852e1d83946df50be80c3471fda1d26e0a427921c5189a806d68d010ade35"
+    }
+  ],
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/engine/chu_attacks.go",
+      "sha256": "108d7a4a72ab06cd9c2950c6830e861c063f937a968499f554cd633062f434a6"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_attacks_test.go",
+      "sha256": "ff4bd0fb65a690923fe3b06821af51363b12b8f2449ce2a39c14341606d8c4a8"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_chu_attacks.py",
+      "sha256": "f3d42a7d04267fcdbdea9e67963a70bb34920b861676358d67ab607e563eb580"
+    }
+  ],
+  "limits": [
+    "Function-stage evidence, not full actor/world steps or complete matches"
+  ]
+}

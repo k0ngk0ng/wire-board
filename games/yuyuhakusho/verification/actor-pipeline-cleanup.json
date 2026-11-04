@@ -1,0 +1,231 @@
+{
+  "scope": "Task-owned worktree caches, superseded/duplicate reference captures, temporary static projects and redundant intermediate logs only",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/chu-tail-expanded",
+      "bytes": 1543114
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-special-motion-native.jsonl",
+      "bytes": 5836
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter-preparation-native.jsonl",
+      "bytes": 5427
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-tail-native.jsonl",
+      "bytes": 5400
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-tail-native-fixed.jsonl",
+      "bytes": 5395
+    },
+    {
+      "path": ".local/md-yuyuhakusho/throw-records-static",
+      "bytes": 249034
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-tail",
+      "bytes": 1484702
+    },
+    {
+      "path": ".local/md-yuyuhakusho/actor-pipeline-wasm.jsonl",
+      "bytes": 130957
+    },
+    {
+      "path": ".local/md-yuyuhakusho/reaction-motion-capture.jsonl",
+      "bytes": 3388
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-attacks-red.jsonl",
+      "bytes": 3835
+    },
+    {
+      "path": ".local/md-yuyuhakusho/reaction-motion",
+      "bytes": 341826
+    },
+    {
+      "path": ".local/md-yuyuhakusho/character-commands-focused-wasm.jsonl",
+      "bytes": 5412
+    },
+    {
+      "path": ".local/md-yuyuhakusho/throw-records-wasm.jsonl",
+      "bytes": 4156
+    },
+    {
+      "path": ".local/md-yuyuhakusho/throw-records-green.jsonl",
+      "bytes": 4151
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sound-queue",
+      "bytes": 436635
+    },
+    {
+      "path": ".local/md-yuyuhakusho/actor-pipeline-native.jsonl",
+      "bytes": 130972
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-attacks-native.jsonl",
+      "bytes": 5522
+    },
+    {
+      "path": ".local/md-yuyuhakusho/character-commands-wasm.jsonl",
+      "bytes": 3921
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sound-queue-static",
+      "bytes": 229626
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-special-motion",
+      "bytes": 1334601
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sound-queue-wasm.jsonl",
+      "bytes": 3883
+    },
+    {
+      "path": ".local/md-yuyuhakusho/character-commands-static",
+      "bytes": 230295
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter-preparation-red.jsonl",
+      "bytes": 2133
+    },
+    {
+      "path": ".local/md-yuyuhakusho/character-commands-native.jsonl",
+      "bytes": 6336
+    },
+    {
+      "path": ".local/md-yuyuhakusho/reaction-motion-native.jsonl",
+      "bytes": 4806
+    },
+    {
+      "path": ".local/md-yuyuhakusho/throw-records",
+      "bytes": 161178
+    },
+    {
+      "path": ".local/md-yuyuhakusho/reaction-motion-wasm.jsonl",
+      "bytes": 4800
+    },
+    {
+      "path": ".local/md-yuyuhakusho/character-commands-red.jsonl",
+      "bytes": 2418
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-special-motion-wasm.jsonl",
+      "bytes": 5836
+    },
+    {
+      "path": ".local/md-yuyuhakusho/throw-records-trace",
+      "bytes": 38140
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sound-queue-native.jsonl",
+      "bytes": 3879
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-special-static",
+      "bytes": 268481
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-tail-red.jsonl",
+      "bytes": 3799
+    },
+    {
+      "path": ".local/md-yuyuhakusho/reaction-motion-red.jsonl",
+      "bytes": 3923
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sound-queue-red.jsonl",
+      "bytes": 2663
+    },
+    {
+      "path": ".local/md-yuyuhakusho/throw-records-red.jsonl",
+      "bytes": 1840
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter-preparation-capture",
+      "bytes": 518556
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter-preparation-static",
+      "bytes": 229942
+    },
+    {
+      "path": ".local/md-yuyuhakusho/character-commands-capture",
+      "bytes": 670218
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-special-motion-capture.jsonl",
+      "bytes": 7093
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter-preparation-wasm.jsonl",
+      "bytes": 5430
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-special-motion-red.jsonl",
+      "bytes": 3971
+    },
+    {
+      "path": ".local/md-yuyuhakusho/reaction-static",
+      "bytes": 267918
+    },
+    {
+      "path": ".local/md-yuyuhakusho/chu-attacks",
+      "bytes": 2005943
+    },
+    {
+      "path": ".local/go-cache",
+      "bytes": 211778362
+    },
+    {
+      "path": ".local/md-yuyuhakusho/static",
+      "bytes": 261010
+    },
+    {
+      "path": ".local/md-yuyuhakusho/tmp",
+      "bytes": 0
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/throw-records-work",
+      "bytes": 0
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static-work",
+      "bytes": 0
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/character-commands-work",
+      "bytes": 0
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/chu-special-work",
+      "bytes": 0
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/reaction-work",
+      "bytes": 0
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/fighter-preparation-work",
+      "bytes": 0
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/sound-queue-work",
+      "bytes": 0
+    }
+  ],
+  "bytes_removed": 222426763,
+  "preserved": [
+    "Original ROM/reference core/source and tools",
+    "Current independent game sources/worktree",
+    "Canonical fixtures, alternate special-motion inputs and evidence/red/native/Wasm logs",
+    "Sprite visual comparison pair and sample metadata",
+    "Other games and unrelated prior research"
+  ],
+  "sprite_agent_cleanup": "games/yuyuhakusho/data/sprite-cleanup.json",
+  "no_paths_outside_worktree_modified": true
+}

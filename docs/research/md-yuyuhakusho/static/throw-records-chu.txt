@@ -1,0 +1,30 @@
+route=direct-ghidra-headless; REA raw 68000 unsupported
+language=68000:BE:32:default
+source=MD Yu Yu Hakusho Japan; static reachable instructions only
+
+seeds=17ec0 scope=0x17e98..0x17f53
+00017ec0 beq.b 0x00017f38
+00017ec2 movea.l #0x0,A1
+00017ec8 movea.w (0xffffa00c).w,A1
+00017ecc move.w A5w,(-0x59f4,A1)
+00017ed0 move.w (0x40,A5),(-0x5a00,A1)
+00017ed6 cmpi.b #0x0,(0x61,A5)
+00017edc bne.b 0x00017ee6
+00017ede addi.w #0x0,(-0x5a00,A1)
+00017ee4 bra.b 0x00017eec
+00017ee6 subi.w #0x0,(-0x5a00,A1)
+00017eec move.w (0x44,A5),(-0x59fe,A1)
+00017ef2 subi.w #0x28,(-0x59fe,A1)
+00017ef8 move.b #0x18,(-0x59fc,A1)
+00017efe move.b #0x28,(-0x59fb,A1)
+00017f04 move.b #-0x48,(-0x59fa,A1)
+00017f0a move.b #0x3,(-0x59f8,A1)
+00017f10 move.b #0x40,(-0x59f9,A1)
+00017f16 move.b #0x3,(-0x59f7,A1)
+00017f1c move.w #0x18,(-0x59f0,A1)
+00017f22 move.w #0x0,(-0x59ee,A1)
+00017f28 move.b #0x1,(-0x59f6,A1)
+00017f2e addi.w #0x20,(0xffffa00c).w
+00017f34 bra.w 0x00018854
+00017f38 bra.w 0x00015e26
+printed_instructions=24

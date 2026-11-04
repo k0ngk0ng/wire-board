@@ -1,0 +1,22 @@
+{"Time":"2026-11-04T15:37:25.619399+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-04T15:37:25.669551+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuThrowSubmissionAgainstOriginal"}
+{"Time":"2026-11-04T15:37:25.669589+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuThrowSubmissionAgainstOriginal","Output":"=== RUN   TestChuThrowSubmissionAgainstOriginal\n"}
+{"Time":"2026-11-04T15:37:25.671048+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuThrowSubmissionAgainstOriginal/throw-records-oracle"}
+{"Time":"2026-11-04T15:37:25.671062+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuThrowSubmissionAgainstOriginal/throw-records-oracle","Output":"=== RUN   TestChuThrowSubmissionAgainstOriginal/throw-records-oracle\n"}
+{"Time":"2026-11-04T15:37:25.686387+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuThrowSubmissionAgainstOriginal/throw-records-oracle","Output":"    throw_records_test.go:135: Complete original Chu throw submissions=9\n"}
+{"Time":"2026-11-04T15:37:25.687463+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuThrowSubmissionAgainstOriginal/throw-records-oracle","Output":"--- PASS: TestChuThrowSubmissionAgainstOriginal/throw-records-oracle (0.02s)\n"}
+{"Time":"2026-11-04T15:37:25.687849+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestChuThrowSubmissionAgainstOriginal/throw-records-oracle","Elapsed":0.02}
+{"Time":"2026-11-04T15:37:25.687965+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuThrowSubmissionAgainstOriginal/throw-records-boundaries"}
+{"Time":"2026-11-04T15:37:25.687972+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuThrowSubmissionAgainstOriginal/throw-records-boundaries","Output":"=== RUN   TestChuThrowSubmissionAgainstOriginal/throw-records-boundaries\n"}
+{"Time":"2026-11-04T15:37:25.877107+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuThrowSubmissionAgainstOriginal/throw-records-boundaries","Output":"    throw_records_test.go:135: Complete original Chu throw submissions=1536\n"}
+{"Time":"2026-11-04T15:37:25.880038+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuThrowSubmissionAgainstOriginal/throw-records-boundaries","Output":"--- PASS: TestChuThrowSubmissionAgainstOriginal/throw-records-boundaries (0.19s)\n"}
+{"Time":"2026-11-04T15:37:25.88023+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestChuThrowSubmissionAgainstOriginal/throw-records-boundaries","Elapsed":0.19}
+{"Time":"2026-11-04T15:37:25.880353+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuThrowSubmissionAgainstOriginal","Output":"--- PASS: TestChuThrowSubmissionAgainstOriginal (0.21s)\n"}
+{"Time":"2026-11-04T15:37:25.880436+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestChuThrowSubmissionAgainstOriginal","Elapsed":0.21}
+{"Time":"2026-11-04T15:37:25.880503+08:00","Action":"run","Package":"command-line-arguments","Test":"TestChuThrowSubmissionInvalidStorageIsAtomic"}
+{"Time":"2026-11-04T15:37:25.880514+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuThrowSubmissionInvalidStorageIsAtomic","Output":"=== RUN   TestChuThrowSubmissionInvalidStorageIsAtomic\n"}
+{"Time":"2026-11-04T15:37:25.880709+08:00","Action":"output","Package":"command-line-arguments","Test":"TestChuThrowSubmissionInvalidStorageIsAtomic","Output":"--- PASS: TestChuThrowSubmissionInvalidStorageIsAtomic (0.00s)\n"}
+{"Time":"2026-11-04T15:37:25.880758+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestChuThrowSubmissionInvalidStorageIsAtomic","Elapsed":0}
+{"Time":"2026-11-04T15:37:25.881225+08:00","Action":"output","Package":"command-line-arguments","Output":"PASS\n"}
+{"Time":"2026-11-04T15:37:25.883628+08:00","Action":"output","Package":"command-line-arguments","Output":"ok  \tcommand-line-arguments\t0.264s\n"}
+{"Time":"2026-11-04T15:37:25.883638+08:00","Action":"pass","Package":"command-line-arguments","Elapsed":0.264}

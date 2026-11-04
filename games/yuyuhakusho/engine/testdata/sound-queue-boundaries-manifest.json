@@ -1,0 +1,35 @@
+{
+  "scope": "Declared originalCPU complete consumer boundary calls",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "records": 12156,
+  "calls": 12156,
+  "capture_sha256": "9f591ab2cd4d4865aa6f938677e231e2b3c7637f1b2dc55fc7a92eeee87f3480",
+  "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+  "fixture_sha256": "1b71e6d48cea76c5f017cc35f977957b2bf60bbc36525d785026b180592c2a3f",
+  "gzip_sha256": "325ae32e6041312c002885b5825a44c6cddae0939d3ee992b0640af3152264c1",
+  "priority_data_sha256": "216eb3a873be8e507e1998edb50f37973bc4447cb4ce26d570f2fe7402a23e35",
+  "frames_match_original_core": true,
+  "nonempty_calls": 11899,
+  "special_branch_calls": 5619,
+  "interrupted_animation_calls": 0,
+  "exit_counts": {
+    "0x37c8e": 6537,
+    "0x37cb2": 5619
+  },
+  "incomplete_calls": 0,
+  "errors": [],
+  "pass": true,
+  "limits": [
+    "Full priority consumer only, not its scheduler, playback or sound synthesis",
+    "All255 nonzero byte codes are indexable inputs, not255 established playable sounds"
+  ]
+}

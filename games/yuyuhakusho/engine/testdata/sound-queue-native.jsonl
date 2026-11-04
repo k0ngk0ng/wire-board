@@ -1,0 +1,22 @@
+{"Time":"2026-11-04T15:55:50.97069+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-04T15:55:51.6132+08:00","Action":"run","Package":"command-line-arguments","Test":"TestSoundQueueAgainstOriginal"}
+{"Time":"2026-11-04T15:55:51.613324+08:00","Action":"output","Package":"command-line-arguments","Test":"TestSoundQueueAgainstOriginal","Output":"=== RUN   TestSoundQueueAgainstOriginal\n"}
+{"Time":"2026-11-04T15:55:51.613421+08:00","Action":"run","Package":"command-line-arguments","Test":"TestSoundQueueAgainstOriginal/sound-queue-oracle"}
+{"Time":"2026-11-04T15:55:51.613444+08:00","Action":"output","Package":"command-line-arguments","Test":"TestSoundQueueAgainstOriginal/sound-queue-oracle","Output":"=== RUN   TestSoundQueueAgainstOriginal/sound-queue-oracle\n"}
+{"Time":"2026-11-04T15:55:51.643863+08:00","Action":"output","Package":"command-line-arguments","Test":"TestSoundQueueAgainstOriginal/sound-queue-oracle","Output":"    sound_queue_test.go:120: complete original sound consumers=79\n"}
+{"Time":"2026-11-04T15:55:51.643897+08:00","Action":"output","Package":"command-line-arguments","Test":"TestSoundQueueAgainstOriginal/sound-queue-oracle","Output":"--- PASS: TestSoundQueueAgainstOriginal/sound-queue-oracle (0.03s)\n"}
+{"Time":"2026-11-04T15:55:51.643905+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestSoundQueueAgainstOriginal/sound-queue-oracle","Elapsed":0.03}
+{"Time":"2026-11-04T15:55:51.64392+08:00","Action":"run","Package":"command-line-arguments","Test":"TestSoundQueueAgainstOriginal/sound-queue-boundaries"}
+{"Time":"2026-11-04T15:55:51.643926+08:00","Action":"output","Package":"command-line-arguments","Test":"TestSoundQueueAgainstOriginal/sound-queue-boundaries","Output":"=== RUN   TestSoundQueueAgainstOriginal/sound-queue-boundaries\n"}
+{"Time":"2026-11-04T15:55:53.505806+08:00","Action":"output","Package":"command-line-arguments","Test":"TestSoundQueueAgainstOriginal/sound-queue-boundaries","Output":"    sound_queue_test.go:120: complete original sound consumers=12156\n"}
+{"Time":"2026-11-04T15:55:53.505864+08:00","Action":"output","Package":"command-line-arguments","Test":"TestSoundQueueAgainstOriginal/sound-queue-boundaries","Output":"--- PASS: TestSoundQueueAgainstOriginal/sound-queue-boundaries (1.86s)\n"}
+{"Time":"2026-11-04T15:55:53.50587+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestSoundQueueAgainstOriginal/sound-queue-boundaries","Elapsed":1.86}
+{"Time":"2026-11-04T15:55:53.505876+08:00","Action":"output","Package":"command-line-arguments","Test":"TestSoundQueueAgainstOriginal","Output":"--- PASS: TestSoundQueueAgainstOriginal (1.89s)\n"}
+{"Time":"2026-11-04T15:55:53.505891+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestSoundQueueAgainstOriginal","Elapsed":1.89}
+{"Time":"2026-11-04T15:55:53.505903+08:00","Action":"run","Package":"command-line-arguments","Test":"TestSoundQueueSingleInitialState"}
+{"Time":"2026-11-04T15:55:53.505908+08:00","Action":"output","Package":"command-line-arguments","Test":"TestSoundQueueSingleInitialState","Output":"=== RUN   TestSoundQueueSingleInitialState\n"}
+{"Time":"2026-11-04T15:55:53.525519+08:00","Action":"output","Package":"command-line-arguments","Test":"TestSoundQueueSingleInitialState","Output":"--- PASS: TestSoundQueueSingleInitialState (0.02s)\n"}
+{"Time":"2026-11-04T15:55:53.525526+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestSoundQueueSingleInitialState","Elapsed":0.02}
+{"Time":"2026-11-04T15:55:53.525547+08:00","Action":"output","Package":"command-line-arguments","Output":"PASS\n"}
+{"Time":"2026-11-04T15:55:54.5587+08:00","Action":"output","Package":"command-line-arguments","Output":"ok  \tcommand-line-arguments\t3.588s\n"}
+{"Time":"2026-11-04T15:55:54.558813+08:00","Action":"pass","Package":"command-line-arguments","Elapsed":3.588}

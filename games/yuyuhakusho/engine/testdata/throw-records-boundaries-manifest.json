@@ -1,0 +1,28 @@
+{
+  "scope": "Declared isolated original Chu submit branch and reset",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "records": 1536,
+  "capture_sha256": "6cc5deab638c65ca7953114dc1f53067f5faa0e78352ceae7fe00006a1e1e171",
+  "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+  "fixture_sha256": "5446139388ac8f87297b9b18f9e0a20279bf3cfc080e61aef7afb205d0a870ef",
+  "gzip_sha256": "02012cd306aa42b7b9e15c9f2f19c894501c4fd4ebdae2bd87451d72766bb681",
+  "frames_match_original_core": true,
+  "incomplete_calls": 0,
+  "errors": [],
+  "max_input_offset": 992,
+  "pass": true,
+  "limits": [
+    "Direct Chu submit branch, not its selector or all character producers",
+    "No capacity guard exists in the original branch; 1024-byte declared private capture is not original allocated-capacity proof",
+    "Not subsequent throw contact, motion or damage"
+  ]
+}

@@ -1,0 +1,26 @@
+{"Time":"2026-11-04T15:36:55.675347+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-04T15:36:55.7334+08:00","Action":"run","Package":"command-line-arguments","Test":"TestReactionMotionOriginalPhases"}
+{"Time":"2026-11-04T15:36:55.733444+08:00","Action":"output","Package":"command-line-arguments","Test":"TestReactionMotionOriginalPhases","Output":"=== RUN   TestReactionMotionOriginalPhases\n"}
+{"Time":"2026-11-04T15:36:55.734675+08:00","Action":"run","Package":"command-line-arguments","Test":"TestReactionMotionOriginalPhases/reaction-motion-oracle"}
+{"Time":"2026-11-04T15:36:55.73469+08:00","Action":"output","Package":"command-line-arguments","Test":"TestReactionMotionOriginalPhases/reaction-motion-oracle","Output":"=== RUN   TestReactionMotionOriginalPhases/reaction-motion-oracle\n"}
+{"Time":"2026-11-04T15:36:56.1224+08:00","Action":"output","Package":"command-line-arguments","Test":"TestReactionMotionOriginalPhases/reaction-motion-oracle","Output":"    reaction_motion_test.go:145: original complete phases=1486 kinds=map[3:840 4:31 5:432 6:144 12:39]\n"}
+{"Time":"2026-11-04T15:36:56.125065+08:00","Action":"output","Package":"command-line-arguments","Test":"TestReactionMotionOriginalPhases/reaction-motion-oracle","Output":"--- PASS: TestReactionMotionOriginalPhases/reaction-motion-oracle (0.39s)\n"}
+{"Time":"2026-11-04T15:36:56.125849+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestReactionMotionOriginalPhases/reaction-motion-oracle","Elapsed":0.39}
+{"Time":"2026-11-04T15:36:56.125939+08:00","Action":"run","Package":"command-line-arguments","Test":"TestReactionMotionOriginalPhases/reaction-motion-boundaries"}
+{"Time":"2026-11-04T15:36:56.125945+08:00","Action":"output","Package":"command-line-arguments","Test":"TestReactionMotionOriginalPhases/reaction-motion-boundaries","Output":"=== RUN   TestReactionMotionOriginalPhases/reaction-motion-boundaries\n"}
+{"Time":"2026-11-04T15:36:56.388073+08:00","Action":"output","Package":"command-line-arguments","Test":"TestReactionMotionOriginalPhases/reaction-motion-boundaries","Output":"    reaction_motion_test.go:145: original complete phases=1229 kinds=map[3:24 4:144 5:393 6:303 7:72 8:81 9:26 12:90 13:96]\n"}
+{"Time":"2026-11-04T15:36:56.38999+08:00","Action":"output","Package":"command-line-arguments","Test":"TestReactionMotionOriginalPhases/reaction-motion-boundaries","Output":"--- PASS: TestReactionMotionOriginalPhases/reaction-motion-boundaries (0.26s)\n"}
+{"Time":"2026-11-04T15:36:56.390055+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestReactionMotionOriginalPhases/reaction-motion-boundaries","Elapsed":0.26}
+{"Time":"2026-11-04T15:36:56.390152+08:00","Action":"output","Package":"command-line-arguments","Test":"TestReactionMotionOriginalPhases","Output":"--- PASS: TestReactionMotionOriginalPhases (0.66s)\n"}
+{"Time":"2026-11-04T15:36:56.390194+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestReactionMotionOriginalPhases","Elapsed":0.66}
+{"Time":"2026-11-04T15:36:56.390255+08:00","Action":"run","Package":"command-line-arguments","Test":"TestReactionMotionSingleInitialState"}
+{"Time":"2026-11-04T15:36:56.390261+08:00","Action":"output","Package":"command-line-arguments","Test":"TestReactionMotionSingleInitialState","Output":"=== RUN   TestReactionMotionSingleInitialState\n"}
+{"Time":"2026-11-04T15:36:56.47118+08:00","Action":"output","Package":"command-line-arguments","Test":"TestReactionMotionSingleInitialState","Output":"--- PASS: TestReactionMotionSingleInitialState (0.08s)\n"}
+{"Time":"2026-11-04T15:36:56.471221+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestReactionMotionSingleInitialState","Elapsed":0.08}
+{"Time":"2026-11-04T15:36:56.471241+08:00","Action":"run","Package":"command-line-arguments","Test":"TestReactionMotionErrorsAreAtomic"}
+{"Time":"2026-11-04T15:36:56.471245+08:00","Action":"output","Package":"command-line-arguments","Test":"TestReactionMotionErrorsAreAtomic","Output":"=== RUN   TestReactionMotionErrorsAreAtomic\n"}
+{"Time":"2026-11-04T15:36:56.471347+08:00","Action":"output","Package":"command-line-arguments","Test":"TestReactionMotionErrorsAreAtomic","Output":"--- PASS: TestReactionMotionErrorsAreAtomic (0.00s)\n"}
+{"Time":"2026-11-04T15:36:56.471369+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestReactionMotionErrorsAreAtomic","Elapsed":0}
+{"Time":"2026-11-04T15:36:56.471793+08:00","Action":"output","Package":"command-line-arguments","Output":"PASS\n"}
+{"Time":"2026-11-04T15:36:56.474707+08:00","Action":"output","Package":"command-line-arguments","Output":"ok  \tcommand-line-arguments\t0.799s\n"}
+{"Time":"2026-11-04T15:36:56.474716+08:00","Action":"pass","Package":"command-line-arguments","Elapsed":0.799}

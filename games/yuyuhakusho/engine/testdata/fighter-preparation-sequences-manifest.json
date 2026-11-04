@@ -1,0 +1,35 @@
+{
+  "scope": "Single-initial-state original input and randomization streams",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "cc17f0a2f02ccc3887979917340167a7abf3b3cee486fa01f107a9992bc8a56f",
+  "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+  "records": 7,
+  "fixture_sha256": "5b75340dd208dffb4db250203c19f6b888908ceca519b53bfeda97bf3ade8297",
+  "gzip_sha256": "4758cbd9738167bebff6cbb6f139b041bdb6c0781755a90ef2157fa6a0869fb6",
+  "frames_match_original_core": true,
+  "incomplete_calls": 0,
+  "errors": [],
+  "pass": true,
+  "kind_counts": {
+    "input": 3,
+    "random": 4
+  },
+  "step_counts": [
+    128,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128
+  ]
+}

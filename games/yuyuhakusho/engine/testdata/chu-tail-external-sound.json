@@ -1,0 +1,757 @@
+{
+  "scope": "Actual independent clear events inside wider shared-tail calls; never injected into Go",
+  "calls": [
+    {
+      "frame": 1814,
+      "object_id": 33792,
+      "mode": "normal",
+      "before_queue": [
+        163,
+        0,
+        0,
+        0
+      ],
+      "after_queue": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "observed_clears": [
+        {
+          "pc": "0x37c56",
+          "address": "0xf80d",
+          "before": 0,
+          "sr": 9988,
+          "sp": 4294966874
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80c",
+          "before": 0,
+          "sr": 10004,
+          "sp": 4294966874
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80b",
+          "before": 0,
+          "sr": 10004,
+          "sp": 4294966874
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80a",
+          "before": 163,
+          "sr": 10008,
+          "sp": 4294966874
+        }
+      ]
+    },
+    {
+      "frame": 1866,
+      "object_id": 33792,
+      "mode": "normal",
+      "before_queue": [
+        162,
+        0,
+        0,
+        0
+      ],
+      "after_queue": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "observed_clears": [
+        {
+          "pc": "0x37c56",
+          "address": "0xf80d",
+          "before": 0,
+          "sr": 9988,
+          "sp": 4294966874
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80c",
+          "before": 0,
+          "sr": 10004,
+          "sp": 4294966874
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80b",
+          "before": 0,
+          "sr": 10004,
+          "sp": 4294966874
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80a",
+          "before": 162,
+          "sr": 10008,
+          "sp": 4294966874
+        }
+      ]
+    },
+    {
+      "frame": 1878,
+      "object_id": 33792,
+      "mode": "normal",
+      "before_queue": [
+        163,
+        0,
+        0,
+        0
+      ],
+      "after_queue": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "observed_clears": [
+        {
+          "pc": "0x37c56",
+          "address": "0xf80d",
+          "before": 0,
+          "sr": 9988,
+          "sp": 4294966874
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80c",
+          "before": 0,
+          "sr": 10004,
+          "sp": 4294966874
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80b",
+          "before": 0,
+          "sr": 10004,
+          "sp": 4294966874
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80a",
+          "before": 163,
+          "sr": 10008,
+          "sp": 4294966874
+        }
+      ]
+    },
+    {
+      "frame": 1930,
+      "object_id": 33792,
+      "mode": "normal",
+      "before_queue": [
+        162,
+        0,
+        0,
+        0
+      ],
+      "after_queue": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "observed_clears": [
+        {
+          "pc": "0x37c56",
+          "address": "0xf80d",
+          "before": 0,
+          "sr": 9988,
+          "sp": 4294966874
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80c",
+          "before": 0,
+          "sr": 10004,
+          "sp": 4294966874
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80b",
+          "before": 0,
+          "sr": 10004,
+          "sp": 4294966874
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80a",
+          "before": 162,
+          "sr": 10008,
+          "sp": 4294966874
+        }
+      ]
+    },
+    {
+      "frame": 2003,
+      "object_id": 33792,
+      "mode": "normal",
+      "before_queue": [
+        116,
+        0,
+        0,
+        0
+      ],
+      "after_queue": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "observed_clears": [
+        {
+          "pc": "0x37c56",
+          "address": "0xf80d",
+          "before": 0,
+          "sr": 9988,
+          "sp": 4294966874
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80c",
+          "before": 0,
+          "sr": 10004,
+          "sp": 4294966874
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80b",
+          "before": 0,
+          "sr": 10004,
+          "sp": 4294966874
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80a",
+          "before": 116,
+          "sr": 10000,
+          "sp": 4294966874
+        }
+      ]
+    },
+    {
+      "frame": 2063,
+      "object_id": 33792,
+      "mode": "normal",
+      "before_queue": [
+        118,
+        0,
+        0,
+        0
+      ],
+      "after_queue": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "observed_clears": [
+        {
+          "pc": "0x37c56",
+          "address": "0xf80d",
+          "before": 0,
+          "sr": 9988,
+          "sp": 4294966878
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80c",
+          "before": 0,
+          "sr": 10004,
+          "sp": 4294966878
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80b",
+          "before": 0,
+          "sr": 10004,
+          "sp": 4294966878
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80a",
+          "before": 118,
+          "sr": 10000,
+          "sp": 4294966878
+        }
+      ]
+    },
+    {
+      "frame": 2175,
+      "object_id": 33792,
+      "mode": "normal",
+      "before_queue": [
+        118,
+        0,
+        0,
+        0
+      ],
+      "after_queue": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "observed_clears": [
+        {
+          "pc": "0x37c56",
+          "address": "0xf80d",
+          "before": 0,
+          "sr": 9988,
+          "sp": 4294966878
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80c",
+          "before": 0,
+          "sr": 10004,
+          "sp": 4294966878
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80b",
+          "before": 0,
+          "sr": 10004,
+          "sp": 4294966878
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80a",
+          "before": 118,
+          "sr": 10000,
+          "sp": 4294966878
+        }
+      ]
+    },
+    {
+      "frame": 2396,
+      "object_id": 33792,
+      "mode": "normal",
+      "before_queue": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "after_queue": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "observed_clears": [
+        {
+          "pc": "0x37c56",
+          "address": "0xf80d",
+          "before": 0,
+          "sr": 9988,
+          "sp": 4294966874
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80c",
+          "before": 0,
+          "sr": 10004,
+          "sp": 4294966874
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80b",
+          "before": 0,
+          "sr": 10004,
+          "sp": 4294966874
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80a",
+          "before": 125,
+          "sr": 10000,
+          "sp": 4294966874
+        }
+      ]
+    },
+    {
+      "frame": 2427,
+      "object_id": 33792,
+      "mode": "normal",
+      "before_queue": [
+        116,
+        0,
+        0,
+        0
+      ],
+      "after_queue": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "observed_clears": [
+        {
+          "pc": "0x37c56",
+          "address": "0xf80d",
+          "before": 0,
+          "sr": 9988,
+          "sp": 4294966870
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80c",
+          "before": 0,
+          "sr": 10004,
+          "sp": 4294966870
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80b",
+          "before": 0,
+          "sr": 10004,
+          "sp": 4294966870
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80a",
+          "before": 116,
+          "sr": 10000,
+          "sp": 4294966870
+        }
+      ]
+    },
+    {
+      "frame": 2443,
+      "object_id": 33792,
+      "mode": "normal",
+      "before_queue": [
+        116,
+        0,
+        0,
+        0
+      ],
+      "after_queue": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "observed_clears": [
+        {
+          "pc": "0x37c56",
+          "address": "0xf80d",
+          "before": 0,
+          "sr": 9988,
+          "sp": 4294966878
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80c",
+          "before": 0,
+          "sr": 10004,
+          "sp": 4294966878
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80b",
+          "before": 0,
+          "sr": 10004,
+          "sp": 4294966878
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80a",
+          "before": 116,
+          "sr": 10000,
+          "sp": 4294966878
+        }
+      ]
+    },
+    {
+      "frame": 2473,
+      "object_id": 33792,
+      "mode": "normal",
+      "before_queue": [
+        118,
+        0,
+        0,
+        0
+      ],
+      "after_queue": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "observed_clears": [
+        {
+          "pc": "0x37c56",
+          "address": "0xf80d",
+          "before": 0,
+          "sr": 9988,
+          "sp": 4294966878
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80c",
+          "before": 0,
+          "sr": 10004,
+          "sp": 4294966878
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80b",
+          "before": 0,
+          "sr": 10004,
+          "sp": 4294966878
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80a",
+          "before": 118,
+          "sr": 10000,
+          "sp": 4294966878
+        }
+      ]
+    },
+    {
+      "frame": 2477,
+      "object_id": 33792,
+      "mode": "normal",
+      "before_queue": [
+        59,
+        0,
+        0,
+        0
+      ],
+      "after_queue": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "observed_clears": [
+        {
+          "pc": "0x37c56",
+          "address": "0xf80d",
+          "before": 0,
+          "sr": 9988,
+          "sp": 4294966878
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80c",
+          "before": 0,
+          "sr": 10004,
+          "sp": 4294966878
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80b",
+          "before": 0,
+          "sr": 10004,
+          "sp": 4294966878
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80a",
+          "before": 59,
+          "sr": 10000,
+          "sp": 4294966878
+        }
+      ]
+    },
+    {
+      "frame": 2586,
+      "object_id": 33792,
+      "mode": "normal",
+      "before_queue": [
+        116,
+        0,
+        0,
+        0
+      ],
+      "after_queue": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "observed_clears": [
+        {
+          "pc": "0x37c56",
+          "address": "0xf80d",
+          "before": 0,
+          "sr": 9988,
+          "sp": 4294966874
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80c",
+          "before": 0,
+          "sr": 10004,
+          "sp": 4294966874
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80b",
+          "before": 0,
+          "sr": 10004,
+          "sp": 4294966874
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80a",
+          "before": 116,
+          "sr": 10000,
+          "sp": 4294966874
+        }
+      ]
+    },
+    {
+      "frame": 3029,
+      "object_id": 33792,
+      "mode": "normal",
+      "before_queue": [
+        118,
+        0,
+        0,
+        0
+      ],
+      "after_queue": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "observed_clears": [
+        {
+          "pc": "0x37c56",
+          "address": "0xf80d",
+          "before": 0,
+          "sr": 9988,
+          "sp": 4294966874
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80c",
+          "before": 0,
+          "sr": 10004,
+          "sp": 4294966874
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80b",
+          "before": 0,
+          "sr": 10004,
+          "sp": 4294966874
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80a",
+          "before": 118,
+          "sr": 10000,
+          "sp": 4294966874
+        }
+      ]
+    },
+    {
+      "frame": 3338,
+      "object_id": 33792,
+      "mode": "normal",
+      "before_queue": [
+        118,
+        0,
+        0,
+        0
+      ],
+      "after_queue": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "observed_clears": [
+        {
+          "pc": "0x37c56",
+          "address": "0xf80d",
+          "before": 0,
+          "sr": 9988,
+          "sp": 4294966874
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80c",
+          "before": 0,
+          "sr": 10004,
+          "sp": 4294966874
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80b",
+          "before": 0,
+          "sr": 10004,
+          "sp": 4294966874
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80a",
+          "before": 118,
+          "sr": 10000,
+          "sp": 4294966874
+        }
+      ]
+    },
+    {
+      "frame": 3585,
+      "object_id": 33792,
+      "mode": "normal",
+      "before_queue": [
+        118,
+        0,
+        0,
+        0
+      ],
+      "after_queue": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "observed_clears": [
+        {
+          "pc": "0x37c56",
+          "address": "0xf80d",
+          "before": 0,
+          "sr": 9988,
+          "sp": 4294966874
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80c",
+          "before": 0,
+          "sr": 10004,
+          "sp": 4294966874
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80b",
+          "before": 0,
+          "sr": 10004,
+          "sp": 4294966874
+        },
+        {
+          "pc": "0x37c56",
+          "address": "0xf80a",
+          "before": 118,
+          "sr": 10000,
+          "sp": 4294966874
+        }
+      ]
+    }
+  ]
+}

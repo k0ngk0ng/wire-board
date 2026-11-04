@@ -1,0 +1,180 @@
+route=direct-ghidra-headless; REA raw 68000 unsupported
+language=68000:BE:32:default
+source=MD Yu Yu Hakusho Japan; static reachable instructions only
+
+seeds=1faf0 scope=0x1faf0..0x1fb4b
+0001faf0 bsr.b 0x0001fa96
+0001faf2 cmpa.w #0x0,A0
+0001faf6 beq.b 0x0001fb4a
+0001faf8 move.b #0x10,(0x58,A0)
+0001fafe cmpi.b #0x0,(0x61,A5)
+0001fb04 bne.b 0x0001fb14
+0001fb06 move.l #-0x10000,(0x10,A0)
+0001fb0e jmp 0x0001fb1c.l
+0001fb14 move.l #0x10000,(0x10,A0)
+0001fb1c move.l (0x40,A5),(0x40,A0)
+0001fb22 move.l (0x44,A5),(0x44,A0)
+0001fb28 move.b (0x24,A5),(0x24,A0)
+0001fb2e andi.w #-0x6800,(0x24,A0)
+0001fb34 ori.b #0x20,(0x24,A0)
+0001fb3a move.w (0x3e,A5),(0x3e,A0)
+0001fb40 move.b (0x26,A5),(0x26,A0)
+0001fb46 subq.b #0x4,(0x26,A0)
+0001fb4a rts
+printed_instructions=18
+
+seeds=1860c scope=0x1860c..0x18681
+0001860c clr.b (0x87,A5)
+00018610 bsr.w 0x00019c1c
+00018614 movea.l (0x90,A5),A2
+00018618 move.l (0x8,A2),(0x4c,A5)
+0001861e clr.l (0x10,A5)
+00018622 clr.l (0x14,A5)
+00018626 move.b #0x2,(0x5d,A5)
+0001862c move.b #0x7,(0x5f,A5)
+00018632 move.b #0x14,(0x6c,A5)
+00018638 rts
+printed_instructions=10
+
+seeds=18946,1895e scope=0x18946..0x18975
+00018946 move.w #0x8,D0w
+0001894a bsr.w 0x00019c46
+0001894e cmpi.b #0x0,D0b
+00018952 beq.w 0x00019c44
+00018956 move.b #-0x60,(0x5f,A5)
+0001895c bra.b 0x00018974
+0001895e move.w #0xc,D0w
+00018962 bsr.w 0x00019c46
+00018966 cmpi.b #0x0,D0b
+0001896a beq.w 0x00019c44
+0001896e move.b #-0x5f,(0x5f,A5)
+00018974 move.b #0x0,(0x10,A5)
+printed_instructions=12
+
+seeds=20202 scope=0x20202..0x203f7
+00020202 bsr.w 0x0001fa96
+00020206 cmpa.w #0x0,A0
+0002020a beq.b 0x0002024e
+0002020c move.b #0x20,(0x58,A0)
+00020212 move.l (0x40,A5),(0x40,A0)
+00020218 move.l (0x9c,A5),(0x44,A0)
+0002021e move.w (0x3e,A5),(0x3e,A0)
+00020224 move.b (0x26,A5),(0x26,A0)
+0002022a subq.b #0x4,(0x26,A0)
+0002022e move.b (0x24,A5),(0x24,A0)
+00020234 andi.w #-0x8000,(0x24,A0)
+0002023a tst.b (0x61,A5)
+0002023e bne.b 0x00020248
+00020240 ori.b #0x40,(0x24,A0)
+00020246 rts
+00020248 ori.b #0x48,(0x24,A0)
+0002024e rts
+printed_instructions=17
+
+seeds=1c50a scope=0x1c50a..0x1c69f
+0001c50a cmpi.b #0x1,(0x60,A5)
+0001c510 beq.w 0x0001c694
+0001c514 tst.b (0x5b,A5)
+0001c518 bne.w 0x0001c69c
+0001c51c tst.b (0x59,A5)
+0001c520 beq.w 0x0001c5fc
+0001c524 cmpi.b #0x3,(0x59,A5)
+0001c52a beq.b 0x0001c530
+0001c52c bra.w 0x00015afc
+0001c530 movea.l A5,A1
+0001c532 adda.l #0x100,A1
+0001c538 cmpi.w #0x0,(0x4,A1)
+0001c53e bne.w 0x0001c69c
+0001c542 move.l #0x1313e,(0x0,A1)
+0001c54a move.w #0x100,(0x4,A1)
+0001c550 clr.w (0x6,A1)
+0001c554 move.b #-0x1,(0x76,A1)
+0001c55a move.b (0x6e,A5),(0x6e,A1)
+0001c560 move.b (0x70,A5),(0x70,A1)
+0001c566 addi.b #0x1,(0x70,A1)
+0001c56c move.w (0x24,A5),(0x24,A1)
+0001c572 addi.w #0x40,(0x24,A1)
+0001c578 andi.w #-0x6001,(0x24,A1)
+0001c57e ori.b #0x20,(0x24,A1)
+0001c584 move.w (0x9c,A5),(0x9c,A1)
+0001c58a move.l (0x44,A5),(0x44,A1)
+0001c590 move.w (0x14,A5),D0w
+0001c594 add.w D0w,(0x44,A1)
+0001c598 move.l (0x48,A5),(0x10,A1)
+0001c59e move.l (0x40,A5),(0x40,A1)
+0001c5a4 move.w (0x10,A5),D0w
+0001c5a8 move.b (0x61,A5),(0x61,A1)
+0001c5ae cmpi.b #0x0,(0x61,A5)
+0001c5b4 bne.b 0x0001c5bc
+0001c5b6 add.w D0w,(0x40,A1)
+0001c5ba bra.b 0x0001c5c4
+0001c5bc sub.w D0w,(0x40,A1)
+0001c5c0 neg.l (0x10,A1)
+0001c5c4 move.w (0x3e,A5),(0x3e,A1)
+0001c5ca move.b (0x26,A5),(0x26,A1)
+0001c5d0 subq.b #0x4,(0x26,A1)
+0001c5d4 move.l #-0x1,(0x94,A1)
+0001c5dc move.w (0x7c,A5),D0w
+0001c5e0 asr.w #0x5,D0w
+0001c5e2 move.w D0w,(0x7c,A1)
+0001c5e6 move.b (0x1c5f4,PC,D0w*0x1),(0x5f,A1)
+0001c5ec clr.w (0x7c,A5)
+0001c5f0 bra.w 0x00015afc
+0001c5fc movea.l A5,A1
+0001c5fe adda.l #0x300,A1
+0001c604 cmpi.w #0x0,(0x4,A1)
+0001c60a bne.w 0x0001c69c
+0001c60e move.l #0x1361e,(0x0,A1)
+0001c616 move.w #0x100,(0x4,A1)
+0001c61c clr.w (0x6,A1)
+0001c620 move.b #-0x1,(0x76,A1)
+0001c626 move.b (0x6e,A5),(0x6e,A1)
+0001c62c move.b (0x70,A5),(0x70,A1)
+0001c632 addi.b #0x1,(0x70,A1)
+0001c638 move.w (0x24,A5),(0x24,A1)
+0001c63e addi.w #0x60,(0x24,A1)
+0001c644 andi.w #-0x6001,(0x24,A1)
+0001c64a ori.b #0x20,(0x24,A1)
+0001c650 move.w (0x9c,A5),(0x9c,A1)
+0001c656 move.b (0x61,A5),(0x61,A1)
+0001c65c move.l (0x40,A5),(0x40,A1)
+0001c662 move.l (0x44,A5),(0x44,A1)
+0001c668 move.w (0x3e,A5),(0x3e,A1)
+0001c66e move.b (0x26,A5),(0x26,A1)
+0001c674 addq.b #0x4,(0x26,A1)
+0001c678 move.w (0x7c,A5),D0w
+0001c67c asr.w #0x5,D0w
+0001c67e move.w D0w,(0x7c,A1)
+0001c682 move.b (0x1c68c,PC,D0w*0x1),(0x5f,A1)
+0001c688 bra.w 0x00015afc
+0001c694 clr.b (0x60,A5)
+0001c698 bsr.w 0x00018440
+0001c69c bra.w 0x00015afc
+printed_instructions=78
+
+seeds=1cc28 scope=0x1cc28..0x1cc81
+0001cc28 cmpi.b #0x1,(0x60,A5)
+0001cc2e beq.b 0x0001cc6a
+0001cc30 tst.b (0x5b,A5)
+0001cc34 bne.b 0x0001cc3c
+0001cc36 jsr 0x0001faf0.l
+0001cc3c move.l (0x10,A5),D1
+0001cc40 btst.b #0x0,(0x61,A5)
+0001cc46 beq.b 0x0001cc4a
+0001cc48 neg.l D1
+0001cc4a add.l D1,(0x40,A5)
+0001cc4e cmpi.b #0x1,(0x59,A5)
+0001cc54 bcs.b 0x0001cc70
+0001cc56 tst.b (0x5b,A5)
+0001cc5a bne.b 0x0001cc70
+0001cc5c move.l (0x10,A5),D0
+0001cc60 asr.l #0x1,D0
+0001cc62 move.l D0,(0x10,A5)
+0001cc66 bra.w 0x00015afc
+0001cc6a clr.b (0x60,A5)
+0001cc6e bsr.b 0x0001cc74
+0001cc70 bra.w 0x00015afc
+0001cc74 btst.b #0x2,(0x5c,A5)
+0001cc7a bne.w 0x0001846a
+0001cc7e bra.w 0x00018440
+printed_instructions=24

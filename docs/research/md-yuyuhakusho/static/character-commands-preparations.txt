@@ -1,0 +1,275 @@
+route=direct-ghidra-headless; REA raw 68000 unsupported
+language=68000:BE:32:default
+source=MD Yu Yu Hakusho Japan; static reachable instructions only
+
+seeds=15f4a scope=0x15f4a..0x15fdb
+00015f4a movea.l #0x6,A1
+00015f50 movea.l #0x1eaa4,A2
+00015f56 jsr 0x0001e8d0.l
+00015f5c movea.l #0x7,A1
+00015f62 movea.l #0x1eaa9,A2
+00015f68 jsr 0x0001e8d0.l
+00015f6e movea.l #0x0,A1
+00015f74 movea.l #0x1eaf2,A2
+00015f7a jsr 0x0001e972.l
+00015f80 movea.l #0x1,A1
+00015f86 movea.l #0x1eaeb,A2
+00015f8c jsr 0x0001e972.l
+00015f92 movea.l #0x2,A1
+00015f98 movea.l #0x1ea9c,A2
+00015f9e jsr 0x0001e8d0.l
+00015fa4 movea.l #0x3,A1
+00015faa movea.l #0x1ead9,A2
+00015fb0 jsr 0x0001e8d0.l
+00015fb6 movea.l #0x4,A1
+00015fbc movea.l #0x1eab7,A2
+00015fc2 jsr 0x0001e8d0.l
+00015fc8 movea.l #0x5,A1
+00015fce movea.l #0x1eb1d,A2
+00015fd4 jsr 0x0001e8d0.l
+00015fda rts
+printed_instructions=25
+
+seeds=1637e scope=0x1637e..0x163fd
+0001637e movea.l #0x6,A1
+00016384 movea.l #0x1eaa4,A2
+0001638a jsr 0x0001e8d0.l
+00016390 movea.l #0x7,A1
+00016396 movea.l #0x1eaa9,A2
+0001639c jsr 0x0001e8d0.l
+000163a2 movea.l #0x0,A1
+000163a8 movea.l #0x1ea9c,A2
+000163ae jsr 0x0001e8d0.l
+000163b4 movea.l #0x1,A1
+000163ba movea.l #0x1ead9,A2
+000163c0 jsr 0x0001e8d0.l
+000163c6 movea.l #0x2,A1
+000163cc movea.l #0x1eb00,A2
+000163d2 jsr 0x0001e972.l
+000163d8 movea.l #0x3,A1
+000163de movea.l #0x1eab7,A2
+000163e4 jsr 0x0001e8d0.l
+000163ea movea.l #0x5,A1
+000163f0 movea.l #0x1eb12,A2
+000163f6 jsr 0x0001e8d0.l
+000163fc rts
+printed_instructions=22
+
+seeds=16694 scope=0x16694..0x16713
+00016694 movea.l #0x6,A1
+0001669a movea.l #0x1eaa4,A2
+000166a0 jsr 0x0001e8d0.l
+000166a6 movea.l #0x7,A1
+000166ac movea.l #0x1eaa9,A2
+000166b2 jsr 0x0001e8d0.l
+000166b8 movea.l #0x0,A1
+000166be movea.l #0x1eb00,A2
+000166c4 jsr 0x0001e972.l
+000166ca movea.l #0x2,A1
+000166d0 movea.l #0x1eab7,A2
+000166d6 jsr 0x0001e8d0.l
+000166dc movea.l #0x3,A1
+000166e2 movea.l #0x1ea9c,A2
+000166e8 jsr 0x0001e8d0.l
+000166ee movea.l #0x4,A1
+000166f4 movea.l #0x1ead9,A2
+000166fa jsr 0x0001e8d0.l
+00016700 movea.l #0x5,A1
+00016706 movea.l #0x1eb27,A2
+0001670c jsr 0x0001e8d0.l
+00016712 rts
+printed_instructions=22
+
+seeds=169c0 scope=0x169c0..0x16a3f
+000169c0 movea.l #0x6,A1
+000169c6 movea.l #0x1eaa4,A2
+000169cc jsr 0x0001e8d0.l
+000169d2 movea.l #0x7,A1
+000169d8 movea.l #0x1eaa9,A2
+000169de jsr 0x0001e8d0.l
+000169e4 movea.l #0x0,A1
+000169ea movea.l #0x1eaf2,A2
+000169f0 jsr 0x0001e972.l
+000169f6 movea.l #0x1,A1
+000169fc movea.l #0x1eaeb,A2
+00016a02 jsr 0x0001e972.l
+00016a08 movea.l #0x2,A1
+00016a0e movea.l #0x1eab7,A2
+00016a14 jsr 0x0001e8d0.l
+00016a1a movea.l #0x3,A1
+00016a20 movea.l #0x1ead9,A2
+00016a26 jsr 0x0001e8d0.l
+00016a2c movea.l #0x5,A1
+00016a32 movea.l #0x1eb1d,A2
+00016a38 jsr 0x0001e8d0.l
+00016a3e rts
+printed_instructions=22
+
+seeds=16d06 scope=0x16d06..0x16d85
+00016d06 movea.l #0x6,A1
+00016d0c movea.l #0x1eaa4,A2
+00016d12 jsr 0x0001e8d0.l
+00016d18 movea.l #0x7,A1
+00016d1e movea.l #0x1eaa9,A2
+00016d24 jsr 0x0001e8d0.l
+00016d2a movea.l #0x0,A1
+00016d30 movea.l #0x1eaae,A2
+00016d36 jsr 0x0001e8d0.l
+00016d3c movea.l #0x1,A1
+00016d42 movea.l #0x1eb00,A2
+00016d48 jsr 0x0001e972.l
+00016d4e movea.l #0x2,A1
+00016d54 movea.l #0x1ead9,A2
+00016d5a jsr 0x0001e8d0.l
+00016d60 movea.l #0x3,A1
+00016d66 movea.l #0x1eab7,A2
+00016d6c jsr 0x0001e8d0.l
+00016d72 movea.l #0x5,A1
+00016d78 movea.l #0x1eb0c,A2
+00016d7e jsr 0x0001e8d0.l
+00016d84 rts
+printed_instructions=22
+
+seeds=16fee scope=0x16fee..0x1705b
+00016fee movea.l #0x6,A1
+00016ff4 movea.l #0x1eaa4,A2
+00016ffa jsr 0x0001e8d0.l
+00017000 movea.l #0x7,A1
+00017006 movea.l #0x1eaa9,A2
+0001700c jsr 0x0001e8d0.l
+00017012 movea.l #0x0,A1
+00017018 movea.l #0x1eb00,A2
+0001701e jsr 0x0001e972.l
+00017024 movea.l #0x2,A1
+0001702a movea.l #0x1eab7,A2
+00017030 jsr 0x0001e8d0.l
+00017036 movea.l #0x3,A1
+0001703c movea.l #0x1ead9,A2
+00017042 jsr 0x0001e8d0.l
+00017048 movea.l #0x5,A1
+0001704e movea.l #0x1eb27,A2
+00017054 jsr 0x0001e8d0.l
+0001705a rts
+printed_instructions=19
+
+seeds=1730c scope=0x1730c..0x1738b
+0001730c movea.l #0x6,A1
+00017312 movea.l #0x1eaa4,A2
+00017318 jsr 0x0001e8d0.l
+0001731e movea.l #0x7,A1
+00017324 movea.l #0x1eaa9,A2
+0001732a jsr 0x0001e8d0.l
+00017330 movea.l #0x0,A1
+00017336 movea.l #0x1ead9,A2
+0001733c jsr 0x0001e8d0.l
+00017342 movea.l #0x1,A1
+00017348 movea.l #0x1ea9c,A2
+0001734e jsr 0x0001e8d0.l
+00017354 movea.l #0x2,A1
+0001735a movea.l #0x1eabc,A2
+00017360 jsr 0x0001e8d0.l
+00017366 movea.l #0x3,A1
+0001736c movea.l #0x1eab7,A2
+00017372 jsr 0x0001e8d0.l
+00017378 movea.l #0x5,A1
+0001737e movea.l #0x1eab7,A2
+00017384 jsr 0x0001e8d0.l
+0001738a rts
+printed_instructions=22
+
+seeds=17722 scope=0x17722..0x1778f
+00017722 movea.l #0x6,A1
+00017728 movea.l #0x1eaa4,A2
+0001772e jsr 0x0001e8d0.l
+00017734 movea.l #0x7,A1
+0001773a movea.l #0x1eaa9,A2
+00017740 jsr 0x0001e8d0.l
+00017746 movea.l #0x0,A1
+0001774c movea.l #0x1ead9,A2
+00017752 jsr 0x0001e8d0.l
+00017758 movea.l #0x1,A1
+0001775e movea.l #0x1eab7,A2
+00017764 jsr 0x0001e8d0.l
+0001776a movea.l #0x2,A1
+00017770 movea.l #0x1ea9c,A2
+00017776 jsr 0x0001e8d0.l
+0001777c movea.l #0x5,A1
+00017782 movea.l #0x1eb00,A2
+00017788 jsr 0x0001e972.l
+0001778e rts
+printed_instructions=19
+
+seeds=17a5c scope=0x17a5c..0x17adb
+00017a5c movea.l #0x6,A1
+00017a62 movea.l #0x1eaa4,A2
+00017a68 jsr 0x0001e8d0.l
+00017a6e movea.l #0x7,A1
+00017a74 movea.l #0x1eaa9,A2
+00017a7a jsr 0x0001e8d0.l
+00017a80 movea.l #0x0,A1
+00017a86 movea.l #0x1eb00,A2
+00017a8c jsr 0x0001e972.l
+00017a92 movea.l #0x1,A1
+00017a98 movea.l #0x1eab7,A2
+00017a9e jsr 0x0001e8d0.l
+00017aa4 movea.l #0x2,A1
+00017aaa movea.l #0x1ead9,A2
+00017ab0 jsr 0x0001e8d0.l
+00017ab6 movea.l #0x3,A1
+00017abc movea.l #0x1ea9c,A2
+00017ac2 jsr 0x0001e8d0.l
+00017ac8 movea.l #0x5,A1
+00017ace movea.l #0x1eb17,A2
+00017ad4 jsr 0x0001e8d0.l
+00017ada rts
+printed_instructions=22
+
+seeds=17d80 scope=0x17d80..0x17e11
+00017d80 movea.l #0x6,A1
+00017d86 movea.l #0x1eaa4,A2
+00017d8c jsr 0x0001e8d0.l
+00017d92 movea.l #0x7,A1
+00017d98 movea.l #0x1eaa9,A2
+00017d9e jsr 0x0001e8d0.l
+00017da4 movea.l #0x0,A1
+00017daa movea.l #0x1eaf2,A2
+00017db0 jsr 0x0001e972.l
+00017db6 movea.l #0x1,A1
+00017dbc movea.l #0x1eaeb,A2
+00017dc2 jsr 0x0001e972.l
+00017dc8 movea.l #0x2,A1
+00017dce movea.l #0x1eab7,A2
+00017dd4 jsr 0x0001e8d0.l
+00017dda movea.l #0x3,A1
+00017de0 movea.l #0x1eb00,A2
+00017de6 jsr 0x0001e972.l
+00017dec movea.l #0x4,A1
+00017df2 movea.l #0x1ead9,A2
+00017df8 jsr 0x0001e8d0.l
+00017dfe movea.l #0x5,A1
+00017e04 movea.l #0x1eacf,A2
+00017e0a jsr 0x0001e8d0.l
+00017e10 rts
+printed_instructions=25
+
+seeds=180f6 scope=0x180f6..0x18163
+000180f6 movea.l #0x6,A1
+000180fc movea.l #0x1eaa4,A2
+00018102 jsr 0x0001e8d0.l
+00018108 movea.l #0x7,A1
+0001810e movea.l #0x1eaa9,A2
+00018114 jsr 0x0001e8d0.l
+0001811a movea.l #0x0,A1
+00018120 movea.l #0x1eb00,A2
+00018126 jsr 0x0001e972.l
+0001812c movea.l #0x1,A1
+00018132 movea.l #0x1eab7,A2
+00018138 jsr 0x0001e8d0.l
+0001813e movea.l #0x2,A1
+00018144 movea.l #0x1ead9,A2
+0001814a jsr 0x0001e8d0.l
+00018150 movea.l #0x5,A1
+00018156 movea.l #0x1eb12,A2
+0001815c jsr 0x0001e8d0.l
+00018162 rts
+printed_instructions=19

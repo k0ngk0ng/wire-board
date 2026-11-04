@@ -1,0 +1,100 @@
+{
+  "scope": "Chu selected throw-record submission17ec2 plus tail-called18854/19c00/19c1c only",
+  "pass": true,
+  "goal_complete": false,
+  "native_race": "passed",
+  "node_wasm": "passed",
+  "test_first": "Failure scenarios and tests existed before implementation; preserved actual undefined state/function build failure",
+  "focused_tests": "Explicit source-file invocation to isolate from other parallel components at their red stage; parent must run whole package integration gate",
+  "logs": [
+    {
+      "phase": "red",
+      "path": "games/yuyuhakusho/engine/testdata/throw-records-red.jsonl",
+      "sha256": "1427e3e2f2d226b8b42fe0c7874894c6d4c29cc13e4dcea9febedf1b37aededc",
+      "result": "expected missing implementation failure",
+      "top_level_tests": []
+    },
+    {
+      "phase": "green",
+      "path": "games/yuyuhakusho/engine/testdata/throw-records-native.jsonl",
+      "sha256": "529710bc2a8c6fc3d7c4aef43793be05dff2f87c41b045ef16851a215ad6650d",
+      "result": "passed",
+      "top_level_tests": [
+        "TestChuThrowSubmissionAgainstOriginal",
+        "TestChuThrowSubmissionInvalidStorageIsAtomic"
+      ]
+    },
+    {
+      "phase": "wasm",
+      "path": "games/yuyuhakusho/engine/testdata/throw-records-wasm.jsonl",
+      "sha256": "b498d8f4d0b75041f74eb64195e57b9223732fa3b8cec7d2742469cbf2db1bb3",
+      "result": "passed",
+      "top_level_tests": [
+        "TestChuThrowSubmissionAgainstOriginal",
+        "TestChuThrowSubmissionInvalidStorageIsAtomic"
+      ]
+    }
+  ],
+  "fixtures": [
+    {
+      "name": "throw-records-oracle",
+      "records": 9,
+      "max_input_offset": 0,
+      "manifest_sha256": "92fb2395ca1ce11ee6c13ad83191d6606a95e34ab72b2ee3a600023ff3e3953b",
+      "fixture_sha256": "fc4b0f9e8bc90433b07913bd93305c0d3b31b8618561829963ee8cdb86345d15",
+      "gzip_sha256": "bcb95fe3baf907ff782f7c77aa7a2c33e7270f025e93888d060148cb95f20b5b"
+    },
+    {
+      "name": "throw-records-boundaries",
+      "records": 1536,
+      "max_input_offset": 992,
+      "manifest_sha256": "3f47971b92c2d679a18f6026cd63c1b79a6ffd7865e5f49ca54b56ab5b443e5f",
+      "fixture_sha256": "5446139388ac8f87297b9b18f9e0a20279bf3cfc080e61aef7afb205d0a870ef",
+      "gzip_sha256": "02012cd306aa42b7b9e15c9f2f19c894501c4fd4ebdae2bd87451d72766bb681"
+    }
+  ],
+  "write_trace": {
+    "path": "games/yuyuhakusho/engine/testdata/throw-records-write-trace.json",
+    "sha256": "a6ab971706cd62cdb5c80ccec872ab67ef7c5cab6cfa6b8c14a407be0b51d757",
+    "unique_pcs": 17,
+    "dropped": 0,
+    "frames_match_original_core": true
+  },
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/engine/throw_records.go",
+      "sha256": "ce5f9c6c77a8d7ebc298f30e9f99fb9686ad436bc4cc716960c3c0542480b34f"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/throw_records_test.go",
+      "sha256": "93f2497b4f5ace8bccc706c033f2f0c475a0f14f85bf9d2fbab35fedfd619a57"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/THROW_RECORDS_VERIFICATION.md",
+      "sha256": "6e38d3ec4b36fa2388e6f47f4e1fd66fa105f332fe75bcdfe21a463b1a6b33cf"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_throw_records.py",
+      "sha256": "6cc5deab638c65ca7953114dc1f53067f5faa0e78352ceae7fe00006a1e1e171"
+    },
+    {
+      "path": "scripts/yuyuhakusho/trace_throw_records.py",
+      "sha256": "6de925e6d0d43ee6e049a1ced8a5e4e813d409e7f0163d838d211e9503103ae0"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/throw-records-chu.txt",
+      "sha256": "d5887ee1b22f80058cb4e83876b95735213fe0c3d97a23807c0736aa816a49e6"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/throw-records-tail.txt",
+      "sha256": "7a0a06a53dbf3af4e6c3dee6b5fd7dc3aaf1795cb4c983c7146eab6580a3bec2"
+    }
+  ],
+  "limits": [
+    "Natural fixed-input trace observes only Chu producer; does not establish other-character coverage",
+    "Submission selector button/direction priority remains external to this API",
+    "Original branch has no capacity guard; caller-provided semantic storage boundary is not original allocation-capacity evidence",
+    "Natural entries all use offset0; offsets32..992 are deliberately isolated originalCPU inputs",
+    "No arbitrary corrupted-counter CPU address-alias semantics, later throw contact/motion/damage or complete match verified"
+  ]
+}

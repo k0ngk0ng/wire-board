@@ -79,3 +79,21 @@ go test -count=1 -json -exec "$(go env GOROOT)/lib/wasm/go_js_wasm_exec" \
 | `capture_collision_manager.py` | [完整管理器组合与尾段](../../games/yuyuhakusho/engine/COLLISION_MANAGER_VERIFICATION.md) |
 
 各夹具和来源摘要在 `games/yuyuhakusho/engine/testdata/`；本阶段整体测试与覆盖见 [collision-stage.json](../../games/yuyuhakusho/verification/collision-stage.json)。尚未恢复的招式分派、原版电脑、完整人物／世界步和呈现列在[进度记录](../../games/yuyuhakusho/PROGRESS.md)。
+
+## 角色管线后续阶段
+
+这些脚本沿用上面的固定 ROM、内核与 worktree 内输出目录。每阶段先保留原版夹具与测试失败，再加入独立规则；表中的“完整”仅指所列函数或阶段边界。
+
+| 脚本 | 验证范围 |
+| --- | --- |
+| `capture_character_commands.py` | [11 个来源角色的命令准备](../../games/yuyuhakusho/engine/CHARACTER_COMMANDS_VERIFICATION.md) |
+| `capture_fighter_preparation.py` | [共用输入准备及攻击值随机尾段](../../games/yuyuhakusho/engine/FIGHTER_PREPARATION_VERIFICATION.md) |
+| `capture_chu_attacks.py` | [酎四种攻击选择器及完整构造](../../games/yuyuhakusho/engine/CHU_ATTACK_VERIFICATION.md) |
+| `trace_throw_records.py`、`capture_throw_records.py` | [投技写入定位与酎完整提交](../../games/yuyuhakusho/engine/THROW_RECORDS_VERIFICATION.md) |
+| `capture_reaction_motion.py` | [攻击完成、受击及恢复阶段](../../games/yuyuhakusho/engine/REACTION_MOTION_VERIFICATION.md) |
+| `capture_chu_special_motion.py` | [酎持续特殊动作与三种子对象建立](../../games/yuyuhakusho/engine/CHU_SPECIAL_MOTION_VERIFICATION.md) |
+| `capture_chu_tail.py` | [正常／停顿共享尾段完整返回](../../games/yuyuhakusho/engine/CHU_TAIL_VERIFICATION.md) |
+| `capture_sound_queue.py` | [声音优先级消费者与历史差异关联](../../games/yuyuhakusho/engine/SOUND_QUEUE_VERIFICATION.md) |
+| `trace_sprite_consumers.py`、`extract_sprites.py` | [图形帧组合、图块与选定像素对照](../../docs/research/md-yuyuhakusho/SPRITE_RESEARCH.md) |
+
+本批独立规则使用上述 `engine` 与 `verify-animation-catalog` 回归命令。精灵验证器另运行 `go test -race -count=1 ./games/yuyuhakusho/cmd/verify-sprites`，Wasm 使用同一执行器；它覆盖研究数据组合与选定像素，尚未接入正式渲染器。测试日志、当前来源摘要和明确剩余工作见 [actor-pipeline.json](../../games/yuyuhakusho/verification/actor-pipeline.json)。

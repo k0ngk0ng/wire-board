@@ -1,0 +1,61 @@
+{
+  "scope": "Natural original special/dash phases with declared input pulses",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "unobserved_identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.4 60bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "59b5a880432e384bc123245ae1f7da815a2b27d19a918e9ee58c39183113cc8e",
+  "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+  "inputs_sha256": "a79710c3625aa205c048236efbec59c08d48aeefc183050a36b4d4923b1373a8",
+  "records": 311,
+  "calls": 311,
+  "kind_counts": {
+    "15": 77,
+    "21": 33,
+    "66": 164,
+    "67": 37
+  },
+  "character_counts": {
+    "9": 311
+  },
+  "allocation_attempts": 9,
+  "fixture_sha256": "8069af61a1bd968405a5296d7b27f69bd3e08427de955754d4a1024290ba1f4e",
+  "gzip_sha256": "62f49a4d0bc15a19dbae18866f019e480d5a82a1738312ad03c82afa4d389e2a",
+  "frames_match_original_core": true,
+  "incomplete_calls": 0,
+  "errors": [],
+  "pose_tables": [
+    {
+      "address": "0x1c5f4",
+      "bytes": "2121222304050607",
+      "sha256": "bf6f751b9538506e56d22a5b4a27bf45193eddd35e7691533b3ada8bb4b05ac5"
+    },
+    {
+      "address": "0x1c68c",
+      "bytes": "1a1a1b1c1d1e1f20",
+      "sha256": "eadf24a848aaa2f4916c720b4edf2f648e11b7c62624fc45db7e6fd058ce68f3"
+    }
+  ],
+  "pass": true,
+  "limits": [
+    "Child initialization only, not 1313e/132de/1361e subsequent object update",
+    "Trajectory clocks use declared private record timing; no animation record refresh or sharedtail",
+    "Projectile power lookup is validated only for original charge-derived values0..255"
+  ]
+}

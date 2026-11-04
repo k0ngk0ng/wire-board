@@ -1,0 +1,126 @@
+{
+  "scope": "Complete37c44 sound priority consumer, including both exits and all raw sound RAM writes",
+  "pass": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "native_race": "passed",
+  "node_wasm": "passed",
+  "test_first": "Failure scenarios, complete original fixtures and test source preceded implementation; actual missing state/table/function failure retained",
+  "focused_tests": "Explicit source-file tests; whole package gate belongs to parent integration",
+  "logs": [
+    {
+      "phase": "red",
+      "path": "games/yuyuhakusho/engine/testdata/sound-queue-red.jsonl",
+      "sha256": "4cde3d19345124e1c5db277c73135468c561889a1c37bc12c15808fcc1ea2bdf",
+      "result": "actual missing implementation failure",
+      "top_level_tests": []
+    },
+    {
+      "phase": "native",
+      "path": "games/yuyuhakusho/engine/testdata/sound-queue-native.jsonl",
+      "sha256": "4f97c69b90a0eae185fb431c209bbb340e631027685006bcad3fe141276ba594",
+      "result": "passed",
+      "top_level_tests": [
+        "TestSoundQueueAgainstOriginal",
+        "TestSoundQueueSingleInitialState"
+      ]
+    },
+    {
+      "phase": "wasm",
+      "path": "games/yuyuhakusho/engine/testdata/sound-queue-wasm.jsonl",
+      "sha256": "bbeb2ac8fec9af5112d0b3152408ccf58f9a8cd3375a7f42409fc5bde1604ae0",
+      "result": "passed",
+      "top_level_tests": [
+        "TestSoundQueueAgainstOriginal",
+        "TestSoundQueueSingleInitialState"
+      ]
+    }
+  ],
+  "fixtures": [
+    {
+      "name": "sound-queue-oracle",
+      "records": 79,
+      "calls": 79,
+      "nonempty_calls": 79,
+      "special_branch_calls": 28,
+      "interrupted_animation_calls": 8,
+      "manifest_sha256": "20d69cf0908e98a7ece9c66905a351f63aa8243f48e04edce323a47d55cb65a2",
+      "fixture_sha256": "88d1e2aa1ec44ed115f800ee92f0722696635a10a68f39f27cb75a927f8844eb",
+      "gzip_sha256": "bb49ccbeeeb2218ce174548137c091e6affb20e8384cf3a46248829222929cb5"
+    },
+    {
+      "name": "sound-queue-boundaries",
+      "records": 12156,
+      "calls": 12156,
+      "nonempty_calls": 11899,
+      "special_branch_calls": 5619,
+      "interrupted_animation_calls": 0,
+      "manifest_sha256": "e972b6ebfc448497e9e35895175dda898c2ba2f0404ae1a9f52f40d3c2a7f0eb",
+      "fixture_sha256": "1b71e6d48cea76c5f017cc35f977957b2bf60bbc36525d785026b180592c2a3f",
+      "gzip_sha256": "325ae32e6041312c002885b5825a44c6cddae0939d3ee992b0640af3152264c1"
+    },
+    {
+      "name": "sound-queue-sequences",
+      "records": 16,
+      "calls": 128,
+      "nonempty_calls": 46,
+      "special_branch_calls": 46,
+      "interrupted_animation_calls": 0,
+      "manifest_sha256": "26da4382c743947c364740554bbef43d73ea2ffa016b2ab4f73e37b53fc889ff",
+      "fixture_sha256": "bb9abca941eb17a3af5bc4fa3bf00d74882c5ea6c69f5191a4a0ac8366bf23e2",
+      "gzip_sha256": "28af9f1528f188fd13c4693826ffca5ceca44e605bc574661efabf8a5df9df68"
+    }
+  ],
+  "priority_library": {
+    "path": "games/yuyuhakusho/engine/testdata/sound-queue-priorities.json",
+    "file_sha256": "1886521bc06c33166bd8db7623b2cf9f46d3d1263b02230ad154ea711327fed6",
+    "bytes_sha256": "216eb3a873be8e507e1998edb50f37973bc4447cb4ce26d570f2fe7402a23e35",
+    "entries": 255,
+    "index_extent": [
+      0,
+      254
+    ],
+    "code_extent": [
+      1,
+      255
+    ]
+  },
+  "animation_links": {
+    "path": "games/yuyuhakusho/engine/testdata/sound-queue-animation-links.json",
+    "sha256": "5d82feb84495b1e7c9743d2d7f3e61bd4e15e0b4742edf5577f48e3fc299a711",
+    "matched_original_interleavings": 8
+  },
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/engine/sound_queue.go",
+      "sha256": "156b7d1484afd423e2e116aef0cea5aa897cd8c2c34dc707c012efa7360d978e"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/sound_queue_test.go",
+      "sha256": "49df1cb8f5a63fbd75824d3382e24958853b9219e14c05ad49d2bf9ccd6130c9"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/SOUND_QUEUE_VERIFICATION.md",
+      "sha256": "97926549d09caa72a8dfcd3cd1551a6c8aec6750e83ee1bb0e67573c6b88c21b"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_sound_queue.py",
+      "sha256": "9f591ab2cd4d4865aa6f938677e231e2b3c7637f1b2dc55fc7a92eeee87f3480"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/animation-records-consumer.txt",
+      "sha256": "ad170522e4bcb4f204bac6e7a28f9ab4e4595ff528d5782d87aba9258a307ffa"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/sound-queue-callsite.txt",
+      "sha256": "c2c1afb52dd6f65e44f32e3f9b0d4405b1864f0f8915bee0aff511065327a65c"
+    }
+  ],
+  "limits": [
+    "Consumer invocation schedule, driver helpers, synthesis, playback and platform audio remain incomplete",
+    "All255 nonzero codes are indexable byte inputs, not255 established playable sounds",
+    "79 natural callbacks all used return375d0, with both200x and270x SR states; no fixedIRQ timing inferred",
+    "Standalone animation rules are not fed the captured consumer outputs",
+    "No full match, worldstep or audio lifecycle is validated by these function tests"
+  ]
+}

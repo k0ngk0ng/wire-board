@@ -1,0 +1,132 @@
+{
+  "scope": "Full shared action3..9 and12/13 phases through entry into shared tail, not a full actor/world update",
+  "pass": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "test_first": "Actual undefined ReactionMotionState/ReactionEffectExtra/StepReactionMotion build failure was preserved before implementation",
+  "test_logs": [
+    {
+      "phase": "red",
+      "path": "games/yuyuhakusho/engine/testdata/reaction-motion-red.jsonl",
+      "sha256": "8eb412cfa8eca8bcda56562997207ab11204f6747c157fbfe9128e68c1a97223",
+      "final_action": "fail",
+      "top_level_tests": [],
+      "scope": "Package compile before reaction implementation"
+    },
+    {
+      "phase": "native",
+      "path": "games/yuyuhakusho/engine/testdata/reaction-motion-native.jsonl",
+      "sha256": "15f8c1669c16e5f6bf7cbd85233f57d6e0683ddf36c20f9fbd969b551137819a",
+      "final_action": "pass",
+      "top_level_tests": [
+        "TestReactionMotionOriginalPhases",
+        "TestReactionMotionSingleInitialState",
+        "TestReactionMotionErrorsAreAtomic"
+      ],
+      "scope": "Explicit production source files plus reaction_motion/effects/jump/lane_motion test files"
+    },
+    {
+      "phase": "wasm",
+      "path": "games/yuyuhakusho/engine/testdata/reaction-motion-wasm.jsonl",
+      "sha256": "7b98168734d89a0d6acee8cf837d0f37c5c409d19b2fa43e3eec3379752fb876",
+      "final_action": "pass",
+      "top_level_tests": [
+        "TestReactionMotionOriginalPhases",
+        "TestReactionMotionSingleInitialState",
+        "TestReactionMotionErrorsAreAtomic"
+      ],
+      "scope": "Explicit production source files plus reaction_motion/effects/jump/lane_motion test files"
+    }
+  ],
+  "fixtures": [
+    {
+      "name": "reaction-motion-oracle",
+      "records": 1486,
+      "calls": 1486,
+      "kind_counts": {
+        "3": 840,
+        "4": 31,
+        "5": 432,
+        "6": 144,
+        "12": 39
+      },
+      "allocation_attempts": 25,
+      "fixture_sha256": "9605439fd1c7a68599a28129191aaf4c90685a8050c135332f74a2dea24aad5a",
+      "gzip_sha256": "f4b43b582f87e63e7d809f3c0e51c361344263b9ce9c8b87b30f878b9d0fbe69"
+    },
+    {
+      "name": "reaction-motion-boundaries",
+      "records": 1229,
+      "calls": 1229,
+      "kind_counts": {
+        "3": 24,
+        "4": 144,
+        "5": 393,
+        "8": 81,
+        "6": 303,
+        "7": 72,
+        "9": 26,
+        "12": 90,
+        "13": 96
+      },
+      "allocation_attempts": 1257,
+      "fixture_sha256": "9353dfa49b7a6cc839079c0c7db71348568cb70eabd67b10d423acea96a54ea0",
+      "gzip_sha256": "5b1f7ece1c0934b4a1098b55cd4fc4d5f1a827208fecd7915bd33439d8b3c95f"
+    },
+    {
+      "name": "reaction-motion-sequences",
+      "records": 20,
+      "calls": 368,
+      "kind_counts": {
+        "4": 64,
+        "5": 132,
+        "6": 44,
+        "7": 4,
+        "12": 74,
+        "13": 46,
+        "9": 2,
+        "3": 2
+      },
+      "allocation_attempts": 12,
+      "fixture_sha256": "06af374c0852fd01820334289927146c21b6d282e6e395c95d0f2c6144004a0d",
+      "gzip_sha256": "a7244e789975cf634079e8d077dda1ed56e4c82ba25232f835eb6c7f0b5949bb"
+    }
+  ],
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/engine/reaction_motion.go",
+      "sha256": "12f7ef77773aef729bf5891f05a0589ed343cad4d4a0231e3a89b757e2268ceb"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/reaction_motion_test.go",
+      "sha256": "e31bec2a908b27c158c5f4fbe9acf1a2280877fcb905c51c008ea2c410b09973"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_reaction_motion.py",
+      "sha256": "50a991819ccc01b1ed059d18aeb94435d1ce53fa40ae5200947f916a13bc953f"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/REACTION_MOTION_VERIFICATION.md",
+      "sha256": "10243adb37a08e1976b06b2b48a391336f26215e7f7cbf03e2862d7600f87f59"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/reaction-motion-core.txt",
+      "sha256": "a1d423578df55842c380d4fbcd32e4b65fa3ef5a125d16981841edb97770e496"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/reaction-motion-helpers.txt",
+      "sha256": "7a761588c895fe465957b3b3c18edf8dd0161c61e02896fc5962691ed0fa1ed0"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/reaction-motion-allocator.txt",
+      "sha256": "e791fad5fe90ccae84cd526bf380bff73d358d9bbd2cecda5b87de3883152aa9"
+    }
+  ],
+  "limits": [
+    "Natural samples only contain actions3/4/5/6/12; actions7/8/9/13 are explicitly isolated originalCPU coverage",
+    "Trajectories stop on action transition and do not run sharedtail or animationclock",
+    "Effect initialization only, not effect lifetimes",
+    "Global F568/F56A fields preserve original source-offset names without claiming a complete feedback scheduler",
+    "Full game package integration gate remains parent work"
+  ]
+}

@@ -1,0 +1,220 @@
+{
+  "scope": "Cross-capture identity links for the8 previously observed animation interleavings",
+  "pass": true,
+  "animation_fixture_gzip_sha256": "427194c459465a14de58ac537ff6ce7583a0d7c226c7333c05df718fabc97fe7",
+  "consumer_fixture_gzip_sha256": "bb49ccbeeeb2218ce174548137c091e6affb20e8384cf3a46248829222929cb5",
+  "links": [
+    {
+      "animation_call": 938,
+      "consumer_call": 23,
+      "frame": 2003,
+      "actor": "0xff8400",
+      "animation_entry_sr": 8196,
+      "consumer_entry_sr": 9984,
+      "animation_stack": 4294966948,
+      "consumer_stack": 4294966874,
+      "queue_before": [
+        116,
+        0,
+        0,
+        0
+      ],
+      "queue_after": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "consumer_priority_before": 0,
+      "consumer_priority_after": 0,
+      "selected_before": 255,
+      "selected_after": 116
+    },
+    {
+      "animation_call": 1058,
+      "consumer_call": 26,
+      "frame": 2063,
+      "actor": "0xff8400",
+      "animation_entry_sr": 8212,
+      "consumer_entry_sr": 9984,
+      "animation_stack": 4294966952,
+      "consumer_stack": 4294966878,
+      "queue_before": [
+        118,
+        0,
+        0,
+        0
+      ],
+      "queue_after": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "consumer_priority_before": 0,
+      "consumer_priority_after": 0,
+      "selected_before": 255,
+      "selected_after": 118
+    },
+    {
+      "animation_call": 1282,
+      "consumer_call": 30,
+      "frame": 2175,
+      "actor": "0xff8400",
+      "animation_entry_sr": 8196,
+      "consumer_entry_sr": 9984,
+      "animation_stack": 4294966952,
+      "consumer_stack": 4294966878,
+      "queue_before": [
+        118,
+        0,
+        0,
+        0
+      ],
+      "queue_after": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "consumer_priority_before": 0,
+      "consumer_priority_after": 0,
+      "selected_before": 255,
+      "selected_after": 118
+    },
+    {
+      "animation_call": 1878,
+      "consumer_call": 44,
+      "frame": 2473,
+      "actor": "0xff8400",
+      "animation_entry_sr": 8196,
+      "consumer_entry_sr": 9984,
+      "animation_stack": 4294966952,
+      "consumer_stack": 4294966878,
+      "queue_before": [
+        118,
+        0,
+        0,
+        0
+      ],
+      "queue_after": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "consumer_priority_before": 0,
+      "consumer_priority_after": 0,
+      "selected_before": 255,
+      "selected_after": 118
+    },
+    {
+      "animation_call": 2104,
+      "consumer_call": 48,
+      "frame": 2586,
+      "actor": "0xff8400",
+      "animation_entry_sr": 8196,
+      "consumer_entry_sr": 9984,
+      "animation_stack": 4294966948,
+      "consumer_stack": 4294966874,
+      "queue_before": [
+        116,
+        0,
+        0,
+        0
+      ],
+      "queue_after": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "consumer_priority_before": 0,
+      "consumer_priority_after": 0,
+      "selected_before": 255,
+      "selected_after": 116
+    },
+    {
+      "animation_call": 2990,
+      "consumer_call": 62,
+      "frame": 3029,
+      "actor": "0xff8400",
+      "animation_entry_sr": 8196,
+      "consumer_entry_sr": 9984,
+      "animation_stack": 4294966948,
+      "consumer_stack": 4294966874,
+      "queue_before": [
+        118,
+        0,
+        0,
+        0
+      ],
+      "queue_after": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "consumer_priority_before": 0,
+      "consumer_priority_after": 0,
+      "selected_before": 255,
+      "selected_after": 118
+    },
+    {
+      "animation_call": 3608,
+      "consumer_call": 71,
+      "frame": 3338,
+      "actor": "0xff8400",
+      "animation_entry_sr": 8196,
+      "consumer_entry_sr": 9984,
+      "animation_stack": 4294966948,
+      "consumer_stack": 4294966874,
+      "queue_before": [
+        118,
+        0,
+        0,
+        0
+      ],
+      "queue_after": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "consumer_priority_before": 0,
+      "consumer_priority_after": 0,
+      "selected_before": 255,
+      "selected_after": 118
+    },
+    {
+      "animation_call": 4102,
+      "consumer_call": 76,
+      "frame": 3585,
+      "actor": "0xff8400",
+      "animation_entry_sr": 8196,
+      "consumer_entry_sr": 9984,
+      "animation_stack": 4294966948,
+      "consumer_stack": 4294966874,
+      "queue_before": [
+        118,
+        0,
+        0,
+        0
+      ],
+      "queue_after": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "consumer_priority_before": 0,
+      "consumer_priority_after": 0,
+      "selected_before": 255,
+      "selected_after": 118
+    }
+  ],
+  "limits": [
+    "Matched original runtime observations do not establish a standalone invocation schedule",
+    "The independent animation function is not fed these expected changes"
+  ]
+}
