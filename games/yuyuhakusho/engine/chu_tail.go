@@ -53,16 +53,17 @@ type ChuTailState struct {
 // later handlers. World input preparation, movement and audio-consumer timing
 // are separate caller stages, not simulated inside this atomic rule function.
 func StepChuActionTail(state ChuTailState, parameters ChuTailParameters, library AnimationLibrary, mode ChuTailMode) (ChuTailState, error) {
-	state, _, err := stepFighterActionTail(state, 9, 0, 0, parameters, library, mode)
+	state, _, _, err := stepFighterActionTail(state, 9, 0, 0, 0, parameters, library, mode)
 	return state, err
 }
 
-func stepFighterActionTail(state ChuTailState, characterID uint8, aux48 int32, energyFraction uint16, parameters ChuTailParameters, library AnimationLibrary, mode ChuTailMode) (ChuTailState, int32, error) {
+func stepFighterActionTail(state ChuTailState, characterID uint8, aux48 int32, power int16, energyFraction uint16, parameters ChuTailParameters, library AnimationLibrary, mode ChuTailMode) (ChuTailState, int32, int16, error) {
 	if mode != ChuTailNormal && mode != ChuTailHitStop {
-		return state, aux48, errors.New("unsupported shared-tail entry")
+		return state, aux48, power, errors.New("unsupported shared-tail entry")
 	}
 	original := state
 	originalAux48 := aux48
+	originalPower := power
 	state.OtherFighters = make(map[uint16]TailFighterEnergy, len(original.OtherFighters))
 	for id, fighter := range original.OtherFighters {
 		state.OtherFighters[id] = fighter
@@ -75,7 +76,7 @@ func stepFighterActionTail(state ChuTailState, characterID uint8, aux48 int32, e
 		if state.Body.EnabledStages&1 != 0 {
 			body, pool, occupied, _, err := StepGroundControl(state.Body, state.Pool, state.OccupiedLanes, state.Controls)
 			if err != nil {
-				return original, originalAux48, err
+				return original, originalAux48, originalPower, err
 			}
 			state.Body, state.Pool, state.OccupiedLanes = body, pool, occupied
 		}
@@ -89,7 +90,7 @@ func stepFighterActionTail(state ChuTailState, characterID uint8, aux48 int32, e
 			if stage.mode == ChuGroundAttack {
 				if state.Controls.Changed&0x70 == 0x70 {
 					if err := drainChuOpponents(&state, parameters.EnergyDrain); err != nil {
-						return original, originalAux48, err
+						return original, originalAux48, originalPower, err
 					}
 					state.Body.ActionKind, state.Body.Pose, state.Body.EnabledStages = 0, 0x14, 0
 					state.Body.GroundActionState = ResetActionState(state.Body.GroundActionState)
@@ -110,6 +111,10 @@ func stepFighterActionTail(state ChuTailState, characterID uint8, aux48 int32, e
 			var err error
 			if characterID == 0 {
 				selection, err = SelectFighter0Attack(selection, stage.mode)
+			} else if characterID == 1 {
+				var selected Fighter1AttackState
+				selected, err = SelectFighter1Attack(Fighter1AttackState{ChuAttackState: selection, Power: power}, stage.mode)
+				selection, power = selected.ChuAttackState, selected.Power
 			} else if characterID == 2 {
 				selection, err = SelectFighter2Attack(selection, stage.mode)
 			} else if characterID == 3 {
@@ -131,7 +136,7 @@ func stepFighterActionTail(state ChuTailState, characterID uint8, aux48 int32, e
 				state.RandomSeed = selected.RandomSeed
 			}
 			if err != nil {
-				return original, originalAux48, err
+				return original, originalAux48, originalPower, err
 			}
 			state.Body, state.Pool, state.Throws, state.Energy = selection.Body, selection.Pool, selection.Throws, selection.Energy
 		}
@@ -153,7 +158,7 @@ func stepFighterActionTail(state ChuTailState, characterID uint8, aux48 int32, e
 		Value65: state.AttackValue, Value66: state.StunDamage, Value67: state.EffectKind, Value68: state.Reaction},
 		Buffers: state.Buffers, PendingSound: state.PendingSound, SoundQueue: state.SoundQueue}, library)
 	if err != nil {
-		return original, originalAux48, err
+		return original, originalAux48, originalPower, err
 	}
 	a := animation.Actor
 	state.Body.Clock, state.Body.EnabledStages, state.Body.Attributes, state.Body.Auxiliary64 = a.Clock, a.EnabledStages, a.Attributes, a.Auxiliary64
@@ -162,7 +167,7 @@ func stepFighterActionTail(state ChuTailState, characterID uint8, aux48 int32, e
 	state.Buffers, state.PendingSound, state.SoundQueue = animation.Buffers, animation.PendingSound, animation.SoundQueue
 	randomized := RandomizeAttackValue(AttackValueState{Seed: state.RandomSeed, Scale: state.AttackScale, Value: state.AttackValue})
 	state.RandomSeed, state.AttackValue = randomized.Seed, randomized.Value
-	return state, aux48, nil
+	return state, aux48, power, nil
 }
 
 func drainChuOpponents(state *ChuTailState, amount int16) error {

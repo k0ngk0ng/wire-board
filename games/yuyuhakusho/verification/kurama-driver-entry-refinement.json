@@ -1,0 +1,30 @@
+{
+  "scope": "Correct source1 first-capture driver-entry binding from unmodified CPU fixtures; expected rule state and frozen source1 test cases unchanged",
+  "actual_evidence": [
+    {
+      "path": "games/yuyuhakusho/engine/testdata/chu-world-fighter1.json.gz",
+      "sha256": "cba8ff7f24703b311a6cd3b0751d9da5dac6b1a1ab3995f76de91914b731c1c2",
+      "first_frame": 1800,
+      "first_driver_entries": [
+        1800
+      ]
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/chu-world-fighter1-special.json.gz",
+      "sha256": "43867e7ce80e5a90a32a1df162ea5ee8cf51bcf1a203bc302bb9ff4f9f632f9f",
+      "first_frame": 1800,
+      "first_driver_entries": [
+        1800
+      ]
+    }
+  ],
+  "original_root_world_failure": "Fixture driver-entry assertion ran before unsupported1; separate original fresh-session and complete-composition tests already recorded actual unsupported1 before integration.",
+  "correction": "Use same explicit first-entry1 treatment as pre-existing source10 for the two source1 fixtures; no producer/fixture/production change.",
+  "baseline_replay": "Corrected helper and frozen source1 world cases run against b5723d24 production below.",
+  "baseline_regression_detected": true,
+  "baseline_replay_log": {
+    "path": ".local/md-yuyuhakusho/fighter1-corrected-test-baseline-red.jsonl",
+    "sha256": "529b2df061cf029e2561177f77448e1698cfb3a8556d7d0910c0ac66f338ddbd"
+  },
+  "corrected_helper_sha256": "f6adf463b88640e356364c108c6b48efd980a6383de3d628711370effafffdc1"
+}

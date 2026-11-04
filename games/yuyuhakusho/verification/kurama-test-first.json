@@ -1,0 +1,9 @@
+{
+  "baseline_commit": "b5723d24",
+  "scope": "Source1 full world,17 fresh rules and10 rendered cases,native browser specified before shared source1 integration",
+  "files": {
+    "games/yuyuhakusho/engine/fighter1_world_test.go": "a384d39588abbee3333192c7bf9adf33d1f67c3f9130128d1fba8daaf9908b29",
+    "scripts/yuyuhakusho/verify_kurama_sessions.sh": "f41c8658ace0070b487835cafaa1965f99e9dff4121f307a166d301dfdc13fdc",
+    "scripts/yuyuhakusho/check_kurama_player.py": "fc2c3727b52fe09e33b108cf887b7f7cd67099a05778bf5fc2888f53da50ef50"
+  }
+}

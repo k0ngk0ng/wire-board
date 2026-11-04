@@ -1,0 +1,107 @@
+{
+  "pass": true,
+  "scope": "Only this source1-composition duplicate JSONL/gzip/manifests/run summaries; canonical fixtures, original baselines/inputs, ROM/tools/shared caches and8799 assets retained",
+  "deleted": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-composition-natural",
+      "files": 12,
+      "bytes": 234562975
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-composition-natural-run.txt",
+      "files": 1,
+      "bytes": 913
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-composition-full",
+      "files": 24,
+      "bytes": 242702580
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-composition-full-run.txt",
+      "files": 1,
+      "bytes": 2403
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-composition-special",
+      "files": 12,
+      "bytes": 234628889
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-composition-special-run.txt",
+      "files": 1,
+      "bytes": 991
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-composition-full-fixed",
+      "files": 24,
+      "bytes": 242702571
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-composition-full-fixed-run.txt",
+      "files": 1,
+      "bytes": 2403
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-composition-natural-fixed",
+      "files": 12,
+      "bytes": 234562975
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-composition-natural-fixed-run.txt",
+      "files": 1,
+      "bytes": 913
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-composition-special-fixed",
+      "files": 12,
+      "bytes": 234628889
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-composition-special-fixed-run.txt",
+      "files": 1,
+      "bytes": 991
+    }
+  ],
+  "natural_library_checks": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-composition-full/fighter1-composition-action-natural.json.gz",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter1-composition-action-natural.json.gz",
+      "calls_sha256": "0ffc51e12f0a5a739eb9791b1cf9d8c382e2bf3022be12705ec6b0287df44f9b",
+      "difference": "Private-run library union larger; natural CPU calls byte-identical"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-composition-full/fighter1-composition-input-natural.json.gz",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter1-composition-input-natural.json.gz",
+      "calls_sha256": "8f6eaa82b108b8d74419798fe0e984ab5021d8961858f98ac4981270ccd66013",
+      "difference": "Private-run library union larger; natural CPU calls byte-identical"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-composition-full/fighter1-composition-actor-natural.json.gz",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter1-composition-actor-natural.json.gz",
+      "calls_sha256": "238f7f204e00dbb07db6f3ba8326383c42179db7e48a68216ea55fd0f99b0b1e",
+      "difference": "Private-run library union larger; natural CPU calls byte-identical"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-composition-full-fixed/fighter1-composition-action-natural.json.gz",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter1-composition-action-natural.json.gz",
+      "calls_sha256": "0ffc51e12f0a5a739eb9791b1cf9d8c382e2bf3022be12705ec6b0287df44f9b",
+      "difference": "Private-run immutable library larger; CPU calls unchanged"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-composition-full-fixed/fighter1-composition-input-natural.json.gz",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter1-composition-input-natural.json.gz",
+      "calls_sha256": "8f6eaa82b108b8d74419798fe0e984ab5021d8961858f98ac4981270ccd66013",
+      "difference": "Private-run immutable library larger; CPU calls unchanged"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-composition-full-fixed/fighter1-composition-actor-natural.json.gz",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter1-composition-actor-natural.json.gz",
+      "calls_sha256": "238f7f204e00dbb07db6f3ba8326383c42179db7e48a68216ea55fd0f99b0b1e",
+      "difference": "Private-run immutable library larger; CPU calls unchanged"
+    }
+  ],
+  "files_removed": 102,
+  "bytes_removed": 1423797493,
+  "metadata_correction_evidence_retained": true
+}

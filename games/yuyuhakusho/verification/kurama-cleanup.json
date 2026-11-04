@@ -1,0 +1,76 @@
+{
+  "scope": "Root-owned source1 duplicate selection/special/world captures,baseline replay clone and its symlinks,verified CLI builds and closed browser profile only",
+  "recorded_at_utc": "2026-11-04T23:37:57.725444+00:00",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-selection-discovery",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-special-discovery",
+      "bytes": 6164
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-combined-discovery",
+      "bytes": 8579
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-complete-discovery",
+      "bytes": 7962
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-world",
+      "bytes": 3355059
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-world-special",
+      "bytes": 2178345
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-preimplementation-replay",
+      "bytes": 1094852
+    },
+    {
+      "path": ".local/md-yuyuhakusho/kurama-browser",
+      "bytes": 9353962
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-session",
+      "bytes": 4147026
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-render",
+      "bytes": 4605746
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-session.wasm",
+      "bytes": 4740569
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-render.wasm",
+      "bytes": 5301898
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/kurama-legacy",
+      "bytes": 4147026
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/kurama-legacy.wasm",
+      "bytes": 4740569
+    }
+  ],
+  "removed_bytes": 43687757,
+  "preserved": [
+    "Canonical CPU fixtures/manifests/references/fixed inputs,original selection and fixed-input discovery evidence",
+    "Initial red,corrected old-b5723d24 regression log/replay-source hashes,driver-boundary refinement evidence and final logs",
+    "All120 prior actual reports,new native/Wasm27 cases,corrected-name screenshots and source bindings",
+    "ROM/reference cores/source/hooks/audio/IRQ/static evidence",
+    "Active worktree,loopback8799 current player build,shared Go caches and main-workspace user changes"
+  ],
+  "subtask_cleanup_reports": [
+    "games/yuyuhakusho/engine/testdata/fighter1-attacks-cleanup.json",
+    "games/yuyuhakusho/engine/testdata/fighter1-motion-cleanup.json",
+    "games/yuyuhakusho/engine/testdata/fighter1-projectile-cleanup.json",
+    "games/yuyuhakusho/engine/testdata/fighter1-composition-cleanup.json"
+  ]
+}

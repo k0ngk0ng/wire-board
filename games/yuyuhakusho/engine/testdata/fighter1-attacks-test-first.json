@@ -1,0 +1,59 @@
+{
+  "scope": "Source1 failures, complete original CPU fixtures and frozen tests precede new production",
+  "baseline_commit": "b5723d24",
+  "recorded_at": "2026-11-04T22:27:59.746919+00:00",
+  "production_present": false,
+  "red_exit_code": 1,
+  "red_reason": "Fighter1AttackState and SelectFighter1Attack undefined",
+  "special_fixture_pending": true,
+  "files": [
+    {
+      "path": "games/yuyuhakusho/engine/fighter1_attacks_test.go",
+      "sha256": "feea08162613cb478fa622d48212bb36471a1f813914623008f9793403345968"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/FIGHTER1_ATTACK_FAILURES.md",
+      "sha256": "c4a4eda87fc2c76eeaf00ee82c229b11c14ed35ac16eb024a9b9d09c8d153e27"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_fighter1_attacks.py",
+      "sha256": "a35d18313d318bead667f618b57144b70036fc997432b23665373a53c302783c"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter1-attacks-red.jsonl",
+      "sha256": "5d6e9a2532bfa645119990bbd309031a9bed2c4ee527cdc3432fabc544007262"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter1-attacks-natural.json.gz",
+      "sha256": "cab26084bb1f9539263ea2213128fb480f82f460b89aaa75eca685a46b611fa7"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter1-attacks-natural-manifest.json",
+      "sha256": "86676a5f7459434d50ec6c4561c41c3d3e8282382ef9f95eea5692843ea714f7"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter1-attacks-oracle.json.gz",
+      "sha256": "096199ece19f79efea327a056748d902fe603fa3995c7b99f5226a0cca891f2e"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter1-attacks-oracle-manifest.json",
+      "sha256": "c82dffbbd835b302ca1d6fc66b65da94b9c2238f1d90c65f021a6372b8686186"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter1-attacks-boundaries.json.gz",
+      "sha256": "69be847c9627bdf05bc09b9a4cbf8cd15adb32418bf3e64cdf7db713463a2010"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter1-attacks-boundaries-manifest.json",
+      "sha256": "8ca700bf07a034d6c1e3e2e6c28f70d6372bcee6a0267690bd15add1bac09846"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter1-attacks-sequences.json.gz",
+      "sha256": "77ea2e8a58f786acbe293487245fe9bbe0e175982e90853902ab003170365f92"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter1-attacks-sequences-manifest.json",
+      "sha256": "13ec6987e8fb393e5012629b6a5e18d98b7be76520690ded4a9875eec55501ef"
+    }
+  ]
+}

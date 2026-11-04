@@ -1,0 +1,340 @@
+{
+  "scope": "Legal physical source1 fixed input discovery; no RAM writes, shared cold baseline pending",
+  "actions": {
+    "0": 729,
+    "28": 59,
+    "27": 39,
+    "4": 101,
+    "26": 57,
+    "5": 308,
+    "6": 132,
+    "7": 25,
+    "12": 71,
+    "3": 84,
+    "13": 51,
+    "1": 6,
+    "15": 4,
+    "29": 137
+  },
+  "children": {
+    "0x1300c": 69,
+    "0x12ee8": 21,
+    "0x12dd4": 66
+  },
+  "first_actions": {
+    "0": 1800,
+    "28": 1816,
+    "27": 1989,
+    "4": 2030,
+    "26": 2089,
+    "5": 2193,
+    "6": 2262,
+    "7": 2364,
+    "12": 2492,
+    "3": 2563,
+    "13": 2713,
+    "1": 2923,
+    "15": 2974,
+    "29": 2978
+  },
+  "segments": [
+    {
+      "kind": 0,
+      "start": 1800,
+      "pose": 0,
+      "facing": 0,
+      "end": 1815
+    },
+    {
+      "kind": 28,
+      "start": 1816,
+      "pose": 160,
+      "facing": 0,
+      "end": 1874
+    },
+    {
+      "kind": 0,
+      "start": 1875,
+      "pose": 0,
+      "facing": 0,
+      "end": 1988
+    },
+    {
+      "kind": 27,
+      "start": 1989,
+      "pose": 162,
+      "facing": 0,
+      "end": 2027
+    },
+    {
+      "kind": 0,
+      "start": 2028,
+      "pose": 0,
+      "facing": 0,
+      "end": 2029
+    },
+    {
+      "kind": 4,
+      "start": 2030,
+      "pose": 32,
+      "facing": 0,
+      "end": 2060
+    },
+    {
+      "kind": 0,
+      "start": 2061,
+      "pose": 0,
+      "facing": 0,
+      "end": 2088
+    },
+    {
+      "kind": 26,
+      "start": 2089,
+      "pose": 163,
+      "facing": 0,
+      "end": 2145
+    },
+    {
+      "kind": 0,
+      "start": 2146,
+      "pose": 0,
+      "facing": 0,
+      "end": 2192
+    },
+    {
+      "kind": 5,
+      "start": 2193,
+      "pose": 37,
+      "facing": 0,
+      "end": 2261
+    },
+    {
+      "kind": 6,
+      "start": 2262,
+      "pose": 40,
+      "facing": 0,
+      "end": 2287
+    },
+    {
+      "kind": 0,
+      "start": 2288,
+      "pose": 41,
+      "facing": 0,
+      "end": 2363
+    },
+    {
+      "kind": 7,
+      "start": 2364,
+      "pose": 38,
+      "facing": 1,
+      "end": 2388
+    },
+    {
+      "kind": 5,
+      "start": 2389,
+      "pose": 37,
+      "facing": 0,
+      "end": 2415
+    },
+    {
+      "kind": 6,
+      "start": 2416,
+      "pose": 40,
+      "facing": 0,
+      "end": 2441
+    },
+    {
+      "kind": 0,
+      "start": 2442,
+      "pose": 41,
+      "facing": 0,
+      "end": 2491
+    },
+    {
+      "kind": 12,
+      "start": 2492,
+      "pose": 43,
+      "facing": 0,
+      "end": 2562
+    },
+    {
+      "kind": 3,
+      "start": 2563,
+      "pose": 64,
+      "facing": 0,
+      "end": 2583
+    },
+    {
+      "kind": 5,
+      "start": 2584,
+      "pose": 47,
+      "facing": 0,
+      "end": 2636
+    },
+    {
+      "kind": 6,
+      "start": 2637,
+      "pose": 40,
+      "facing": 0,
+      "end": 2662
+    },
+    {
+      "kind": 0,
+      "start": 2663,
+      "pose": 41,
+      "facing": 0,
+      "end": 2712
+    },
+    {
+      "kind": 13,
+      "start": 2713,
+      "pose": 19,
+      "facing": 0,
+      "end": 2763
+    },
+    {
+      "kind": 3,
+      "start": 2764,
+      "pose": 64,
+      "facing": 0,
+      "end": 2784
+    },
+    {
+      "kind": 5,
+      "start": 2785,
+      "pose": 47,
+      "facing": 0,
+      "end": 2837
+    },
+    {
+      "kind": 6,
+      "start": 2838,
+      "pose": 40,
+      "facing": 0,
+      "end": 2863
+    },
+    {
+      "kind": 0,
+      "start": 2864,
+      "pose": 41,
+      "facing": 0,
+      "end": 2922
+    },
+    {
+      "kind": 1,
+      "start": 2923,
+      "pose": 5,
+      "facing": 1,
+      "end": 2928
+    },
+    {
+      "kind": 4,
+      "start": 2929,
+      "pose": 32,
+      "facing": 0,
+      "end": 2963
+    },
+    {
+      "kind": 0,
+      "start": 2964,
+      "pose": 3,
+      "facing": 1,
+      "end": 2973
+    },
+    {
+      "kind": 15,
+      "start": 2974,
+      "pose": 11,
+      "facing": 1,
+      "end": 2977
+    },
+    {
+      "kind": 29,
+      "start": 2978,
+      "pose": 166,
+      "facing": 1,
+      "end": 3114
+    },
+    {
+      "kind": 0,
+      "start": 3115,
+      "pose": 0,
+      "facing": 1,
+      "end": 3215
+    },
+    {
+      "kind": 3,
+      "start": 3216,
+      "pose": 64,
+      "facing": 0,
+      "end": 3236
+    },
+    {
+      "kind": 5,
+      "start": 3237,
+      "pose": 47,
+      "facing": 0,
+      "end": 3289
+    },
+    {
+      "kind": 6,
+      "start": 3290,
+      "pose": 40,
+      "facing": 0,
+      "end": 3315
+    },
+    {
+      "kind": 0,
+      "start": 3316,
+      "pose": 41,
+      "facing": 0,
+      "end": 3366
+    },
+    {
+      "kind": 4,
+      "start": 3367,
+      "pose": 32,
+      "facing": 0,
+      "end": 3401
+    },
+    {
+      "kind": 0,
+      "start": 3402,
+      "pose": 0,
+      "facing": 0,
+      "end": 3526
+    },
+    {
+      "kind": 3,
+      "start": 3527,
+      "pose": 64,
+      "facing": 0,
+      "end": 3547
+    },
+    {
+      "kind": 5,
+      "start": 3548,
+      "pose": 47,
+      "facing": 0,
+      "end": 3600
+    },
+    {
+      "kind": 6,
+      "start": 3601,
+      "pose": 40,
+      "facing": 0,
+      "end": 3602
+    }
+  ],
+  "input_sha256": "4c4ebc2a611db9d98337010cc5d38eea6cabeaf2bf60826387a0f34733a1fd8d",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.4 60bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  }
+}

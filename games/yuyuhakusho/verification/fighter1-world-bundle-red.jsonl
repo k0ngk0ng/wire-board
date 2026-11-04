@@ -1,0 +1,9 @@
+{"Time":"2026-11-05T06:58:00.236333+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine"}
+{"Time":"2026-11-05T06:58:00.633725+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestChuWorldRuleBundle"}
+{"Time":"2026-11-05T06:58:00.633779+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestChuWorldRuleBundle","Output":"=== RUN   TestChuWorldRuleBundle\n"}
+{"Time":"2026-11-05T06:58:00.686471+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestChuWorldRuleBundle","Output":"    chu_world_test.go:662: semantic runtime bundle differs from independently decoded source libraries \u003cnil\u003e\n"}
+{"Time":"2026-11-05T06:58:00.686514+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestChuWorldRuleBundle","Output":"--- FAIL: TestChuWorldRuleBundle (0.05s)\n"}
+{"Time":"2026-11-05T06:58:00.686521+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestChuWorldRuleBundle","Elapsed":0.05}
+{"Time":"2026-11-05T06:58:00.68653+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"FAIL\n"}
+{"Time":"2026-11-05T06:58:00.686986+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine\t0.450s\n"}
+{"Time":"2026-11-05T06:58:00.687001+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Elapsed":0.451}

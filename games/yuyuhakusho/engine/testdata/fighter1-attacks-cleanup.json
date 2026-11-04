@@ -1,0 +1,93 @@
+{
+  "scope": "Remove this worker owned duplicate ordinary/special captures and compressed raw intermediates after canonical copies verified",
+  "files": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-attacks/boundaries.jsonl.gz",
+      "bytes": 11916971,
+      "sha256": "dbe501c5a46dcc4378832cc48bffbc807139829037b7d765e44c95046b4716fe"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-attacks/fighter1-attacks-boundaries-manifest.json",
+      "bytes": 3293,
+      "sha256": "8ca700bf07a034d6c1e3e2e6c28f70d6372bcee6a0267690bd15add1bac09846"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-attacks/fighter1-attacks-boundaries.json.gz",
+      "bytes": 11907044,
+      "sha256": "69be847c9627bdf05bc09b9a4cbf8cd15adb32418bf3e64cdf7db713463a2010"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-attacks/fighter1-attacks-natural-manifest.json",
+      "bytes": 2875,
+      "sha256": "86676a5f7459434d50ec6c4561c41c3d3e8282382ef9f95eea5692843ea714f7"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-attacks/fighter1-attacks-natural.json.gz",
+      "bytes": 583440,
+      "sha256": "cab26084bb1f9539263ea2213128fb480f82f460b89aaa75eca685a46b611fa7"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-attacks/fighter1-attacks-oracle-manifest.json",
+      "bytes": 3146,
+      "sha256": "c82dffbbd835b302ca1d6fc66b65da94b9c2238f1d90c65f021a6372b8686186"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-attacks/fighter1-attacks-oracle.json.gz",
+      "bytes": 22108,
+      "sha256": "096199ece19f79efea327a056748d902fe603fa3995c7b99f5226a0cca891f2e"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-attacks/fighter1-attacks-sequences-manifest.json",
+      "bytes": 2821,
+      "sha256": "13ec6987e8fb393e5012629b6a5e18d98b7be76520690ded4a9875eec55501ef"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-attacks/fighter1-attacks-sequences.json.gz",
+      "bytes": 479477,
+      "sha256": "77ea2e8a58f786acbe293487245fe9bbe0e175982e90853902ab003170365f92"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-attacks/natural.jsonl.gz",
+      "bytes": 584160,
+      "sha256": "f1bbdf0b75a1fe568904773a0643dd903698e0b2796c28dfa6659ce16009173b"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-attacks/oracle.jsonl.gz",
+      "bytes": 22106,
+      "sha256": "23900b95d3459302ec455f0c25d954af9a466cd3896d92a1f2b063ae3f42553d"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-attacks-special/boundaries.jsonl.gz",
+      "bytes": 42,
+      "sha256": "d98a8bd79120f4784ddd44548718f2c6b20dc0cc3ded49e05413b7aac4896585"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-attacks-special/fighter1-attacks-natural-manifest.json",
+      "bytes": 2890,
+      "sha256": "9aff0565bf6cbe09b434731445a9091792ce49782f95c8269fd17599fbee0fc9"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-attacks-special/fighter1-attacks-natural.json.gz",
+      "bytes": 561268,
+      "sha256": "64b7b8ab5f31fdde5cf2433d6a7a5ea955dc34f44c14c811e05da8ac40985acd"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-attacks-special/natural.jsonl.gz",
+      "bytes": 562002,
+      "sha256": "3b70fd0ae3a143ccfb7970aee95dc227b4ffa9e22fbca8ef0a8c3909f1ac6a5e"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter1-attacks-special/oracle.jsonl.gz",
+      "bytes": 38,
+      "sha256": "f03a33b0135a2eecc4d67cbdd894c02d716ab8bdb183a978bc37dd259a0ac72f"
+    }
+  ],
+  "bytes": 26653681,
+  "canonical_fixtures_preserved": true,
+  "other_workers_untouched": true,
+  "directories_removed": [
+    ".local/md-yuyuhakusho/fighter1-attacks",
+    ".local/md-yuyuhakusho/fighter1-attacks-special",
+    ".local/md-yuyuhakusho/fighter1-reference"
+  ]
+}

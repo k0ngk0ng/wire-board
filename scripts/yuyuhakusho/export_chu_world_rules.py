@@ -39,6 +39,7 @@ def main():
     arena = read(data + 'arena-runtime-rules.json')['library']
     fighter0_projectiles = read(data + 'fighter0-projectile-rules.json')
     fighter2_projectiles = read(data + 'fighter2-projectile-rules.json')
+    fighter1_projectiles = read(data + 'fighter1-projectile-rules.json')
 
     def animations(frames):
         output, seen = [], {}
@@ -52,7 +53,7 @@ def main():
         return output
 
     payload = {'schema': 2, 'rom_sha256': ROM_SHA, 'fighters': fighters, 'commands': commands,
-               'animations': animations(parents + projectiles + fighter0_projectiles['animations'] + fighter2_projectiles['animations']),
+               'animations': animations(parents + projectiles + fighter0_projectiles['animations'] + fighter2_projectiles['animations'] + fighter1_projectiles['animations']),
                'attachments': {'sequences': attachments['sequences'], 'animations': animations(attachments['animations'])},
                'effects': effects,
                'attached_effects': {key: attached[key] for key in ['sequences', 'orbit_x', 'orbit_y', 'offset_y']},
@@ -70,6 +71,7 @@ def main():
                            'attached_sequences': len(payload['attached_effects']['sequences']),
                            'fighter0_projectile_frames': len(fighter0_projectiles['animations']),
                            'fighter2_projectile_frames': len(fighter2_projectiles['animations']),
+                           'fighter1_projectile_frames': len(fighter1_projectiles['animations']),
                            'fighter0_release_sequences': len(fighter0_projectiles['sequences'])},
                 'bytes': len(raw), 'gzip_bytes': len(packed), 'sha256': sha(raw), 'gzip_sha256': sha(packed)}
     (ROOT / data / 'chu-world-rules-manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
