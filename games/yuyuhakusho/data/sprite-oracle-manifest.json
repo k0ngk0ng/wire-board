@@ -1,0 +1,30 @@
+{
+  "scope": "Isolated original sprite submission; raw natural VRAM/video references retained separately",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "producer_sha256": "6086e9a59a10f50589fb7cd9a658445b545dbe94b47c8867878173d08f4b59d3",
+  "library_frames": 1133,
+  "checked_frames": 1133,
+  "original_cpu_calls": 9218,
+  "all_library_frames_checked": true,
+  "fixture_sha256": "7351d685a4894f5fa790d92a2490c2dc8d169167a8aa42d3516444f54a1d38ba",
+  "gzip_sha256": "74952eb9b961fe51227156c443944a97fcdc025c52941420cd1bbea9387fc516",
+  "pixel_reference_sha256": "d066bf0f82c18261a95874b1cf7f90a16522ed5027e91fde88399ab49f0b699c",
+  "frames_match_original_core": true,
+  "natural_pixel_frames": 20,
+  "errors": [],
+  "pass": true,
+  "limits": [
+    "Pixel comparison remains a separate check",
+    "Isolated renderer state is not a complete natural presentation timeline",
+    "Raw graphics frames do not establish animation reachability or a production asset format"
+  ]
+}

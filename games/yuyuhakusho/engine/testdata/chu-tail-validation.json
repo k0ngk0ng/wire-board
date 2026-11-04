@@ -1,0 +1,72 @@
+{
+  "scope": "Full normal/hit-stop Chu shared-tail functions",
+  "pass": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "test_first": {
+    "path": "games/yuyuhakusho/verification/chu-tail-red.jsonl",
+    "sha256": "a0acc78f3925ab38ad54294de07955fe25d81efdf4d03ad0e8114225c89f09e7",
+    "reason": "Actual undefined semantic types/functions before production implementation"
+  },
+  "integration_logs": [
+    {
+      "path": "games/yuyuhakusho/verification/actor-pipeline-native.jsonl",
+      "sha256": "3b0e53c5e5b01c56b1337f5781d000ec1d6888215317d6166dd5b155410fdc2f",
+      "environment": "Go native race"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/actor-pipeline-wasm.jsonl",
+      "sha256": "67556cba82e90fff53a950553f8acbe0220731be152a015e7792dad96e3d35d5",
+      "environment": "Node/Wasm"
+    }
+  ],
+  "fixtures": [
+    {
+      "manifest": "games/yuyuhakusho/engine/testdata/chu-tail-boundaries-manifest.json",
+      "sha256": "e6ece3a8ee3833476ed9b4db64f33fdbe1281eca693681e78f2a896dd798ae71",
+      "records": 816,
+      "fixture_sha256": "23db14b17f04ded6900a0fea3290f781aa0cacc5b5610cdbe03b354f0dae8d10",
+      "gzip_sha256": "f3e36df3550f9cdb412f733bb6a2411fa631ce3e45fccf3cc6d5566a0066d309"
+    },
+    {
+      "manifest": "games/yuyuhakusho/engine/testdata/chu-tail-oracle-manifest.json",
+      "sha256": "9a0a19cbfb45d47b3f47d8e6ca9e5cd29067e786aaa22ae93aa671b5d93dd91c",
+      "records": 4134,
+      "fixture_sha256": "0b0ef490e2a0ba6bc46f7b651c98332e15574953f9ddc43add24bf5dc5fa6269",
+      "gzip_sha256": "adcf3a480318c1f0b40c2002c494b8dd7aa48fd4b849e15e8b0e26b17f74df95"
+    },
+    {
+      "manifest": "games/yuyuhakusho/engine/testdata/chu-tail-sequences-manifest.json",
+      "sha256": "765db3b295d3e28c697e3954a9712c68b9b9a45328c7966919b9e1d154191ead",
+      "records": 5,
+      "fixture_sha256": "4f6eec4c5d964c23fa48f6af504ed9853acae5f1aeb94bf32f4a2ed662f4d9cc",
+      "gzip_sha256": "6e84bca1a25fc775a1c00e2a4cec8f8ee004385518714c7dbc007d86c694d995"
+    }
+  ],
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/engine/chu_tail.go",
+      "sha256": "584532622708a4269adb8d4e9b253038a9cb58e2062eb26fd621a5b2d168cc07"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_tail_test.go",
+      "sha256": "9719c48f40c4b372083132be62f680089a59c5f03300d087d3f15e509c2ac143"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_chu_tail.py",
+      "sha256": "2ca411fa0792b7a8ba03fdf0f71f6839977cf9c8fb0143f79ac8fac707d09997"
+    }
+  ],
+  "limits": [
+    "Function-stage evidence, not full actor/world steps or complete matches",
+    "All four queue bytes excluded only on16 independently observed external-consumer rows; all other actor/global/buffer output compared",
+    "30 tail steps omit input preparation, action motion and animation-clock advancement"
+  ],
+  "natural_queue_comparison": {
+    "complete_queue_matches": 4118,
+    "external_queue_rows_excluded": 16,
+    "evidence": "games/yuyuhakusho/engine/testdata/chu-tail-external-sound.json",
+    "sha256": "02039fec2261c940b40d45339197cf5354456174ef69a911da80c18ef7a4d8e0",
+    "independent_consumer": "sound-queue-validation.json"
+  }
+}

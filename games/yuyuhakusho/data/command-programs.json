@@ -1,0 +1,630 @@
+{
+  "schema": 1,
+  "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+  "characters": [
+    {
+      "character_id": 0,
+      "entry": 89930,
+      "exit": 90074,
+      "bindings": [
+        {
+          "slot": 6,
+          "kind": "direction",
+          "program": 125604
+        },
+        {
+          "slot": 7,
+          "kind": "direction",
+          "program": 125609
+        },
+        {
+          "slot": 0,
+          "kind": "buttons",
+          "program": 125682
+        },
+        {
+          "slot": 1,
+          "kind": "buttons",
+          "program": 125675
+        },
+        {
+          "slot": 2,
+          "kind": "direction",
+          "program": 125596
+        },
+        {
+          "slot": 3,
+          "kind": "direction",
+          "program": 125657
+        },
+        {
+          "slot": 4,
+          "kind": "direction",
+          "program": 125623
+        },
+        {
+          "slot": 5,
+          "kind": "direction",
+          "program": 125725
+        }
+      ],
+      "instructions_sha256": "3f9853b4bb0e10c20c26b5c754817d3b412a0d18fb6237d8c668a9f03885093c"
+    },
+    {
+      "character_id": 1,
+      "entry": 91006,
+      "exit": 91132,
+      "bindings": [
+        {
+          "slot": 6,
+          "kind": "direction",
+          "program": 125604
+        },
+        {
+          "slot": 7,
+          "kind": "direction",
+          "program": 125609
+        },
+        {
+          "slot": 0,
+          "kind": "direction",
+          "program": 125596
+        },
+        {
+          "slot": 1,
+          "kind": "direction",
+          "program": 125657
+        },
+        {
+          "slot": 2,
+          "kind": "buttons",
+          "program": 125696
+        },
+        {
+          "slot": 3,
+          "kind": "direction",
+          "program": 125623
+        },
+        {
+          "slot": 5,
+          "kind": "direction",
+          "program": 125714
+        }
+      ],
+      "instructions_sha256": "756b042f91644d83db328c845d00cee2d664c6b7336d322901f9bf1582226e34"
+    },
+    {
+      "character_id": 2,
+      "entry": 91796,
+      "exit": 91922,
+      "bindings": [
+        {
+          "slot": 6,
+          "kind": "direction",
+          "program": 125604
+        },
+        {
+          "slot": 7,
+          "kind": "direction",
+          "program": 125609
+        },
+        {
+          "slot": 0,
+          "kind": "buttons",
+          "program": 125696
+        },
+        {
+          "slot": 2,
+          "kind": "direction",
+          "program": 125623
+        },
+        {
+          "slot": 3,
+          "kind": "direction",
+          "program": 125596
+        },
+        {
+          "slot": 4,
+          "kind": "direction",
+          "program": 125657
+        },
+        {
+          "slot": 5,
+          "kind": "direction",
+          "program": 125735
+        }
+      ],
+      "instructions_sha256": "4cbddd9411d6c46c8e4c784a7cbc3587b929c6634c98c916152b7bcaa6c4319a"
+    },
+    {
+      "character_id": 3,
+      "entry": 92608,
+      "exit": 92734,
+      "bindings": [
+        {
+          "slot": 6,
+          "kind": "direction",
+          "program": 125604
+        },
+        {
+          "slot": 7,
+          "kind": "direction",
+          "program": 125609
+        },
+        {
+          "slot": 0,
+          "kind": "buttons",
+          "program": 125682
+        },
+        {
+          "slot": 1,
+          "kind": "buttons",
+          "program": 125675
+        },
+        {
+          "slot": 2,
+          "kind": "direction",
+          "program": 125623
+        },
+        {
+          "slot": 3,
+          "kind": "direction",
+          "program": 125657
+        },
+        {
+          "slot": 5,
+          "kind": "direction",
+          "program": 125725
+        }
+      ],
+      "instructions_sha256": "3eebbf91ab80827a2aadda16a5b2f8b9791f0dae62ba25e302c32c30a730aea7"
+    },
+    {
+      "character_id": 4,
+      "entry": 93446,
+      "exit": 93572,
+      "bindings": [
+        {
+          "slot": 6,
+          "kind": "direction",
+          "program": 125604
+        },
+        {
+          "slot": 7,
+          "kind": "direction",
+          "program": 125609
+        },
+        {
+          "slot": 0,
+          "kind": "direction",
+          "program": 125614
+        },
+        {
+          "slot": 1,
+          "kind": "buttons",
+          "program": 125696
+        },
+        {
+          "slot": 2,
+          "kind": "direction",
+          "program": 125657
+        },
+        {
+          "slot": 3,
+          "kind": "direction",
+          "program": 125623
+        },
+        {
+          "slot": 5,
+          "kind": "direction",
+          "program": 125708
+        }
+      ],
+      "instructions_sha256": "b87f6063d89fba26c6fd5239262ca45741e1f0c80d3bbfcd8a7e0e7324f2844c"
+    },
+    {
+      "character_id": 5,
+      "entry": 94190,
+      "exit": 94298,
+      "bindings": [
+        {
+          "slot": 6,
+          "kind": "direction",
+          "program": 125604
+        },
+        {
+          "slot": 7,
+          "kind": "direction",
+          "program": 125609
+        },
+        {
+          "slot": 0,
+          "kind": "buttons",
+          "program": 125696
+        },
+        {
+          "slot": 2,
+          "kind": "direction",
+          "program": 125623
+        },
+        {
+          "slot": 3,
+          "kind": "direction",
+          "program": 125657
+        },
+        {
+          "slot": 5,
+          "kind": "direction",
+          "program": 125735
+        }
+      ],
+      "instructions_sha256": "7d8355fdfd7604399e3ca4d63ddccf5fb447ef75cbcf7c3409c47e2cb3b9b923"
+    },
+    {
+      "character_id": 6,
+      "entry": 94988,
+      "exit": 95114,
+      "bindings": [
+        {
+          "slot": 6,
+          "kind": "direction",
+          "program": 125604
+        },
+        {
+          "slot": 7,
+          "kind": "direction",
+          "program": 125609
+        },
+        {
+          "slot": 0,
+          "kind": "direction",
+          "program": 125657
+        },
+        {
+          "slot": 1,
+          "kind": "direction",
+          "program": 125596
+        },
+        {
+          "slot": 2,
+          "kind": "direction",
+          "program": 125628
+        },
+        {
+          "slot": 3,
+          "kind": "direction",
+          "program": 125623
+        },
+        {
+          "slot": 5,
+          "kind": "direction",
+          "program": 125623
+        }
+      ],
+      "instructions_sha256": "d5aa61fd6f53bd6dc1d1350357d8ad751894d15f893d77c32822d11a8a1ca1b8"
+    },
+    {
+      "character_id": 7,
+      "entry": 96034,
+      "exit": 96142,
+      "bindings": [
+        {
+          "slot": 6,
+          "kind": "direction",
+          "program": 125604
+        },
+        {
+          "slot": 7,
+          "kind": "direction",
+          "program": 125609
+        },
+        {
+          "slot": 0,
+          "kind": "direction",
+          "program": 125657
+        },
+        {
+          "slot": 1,
+          "kind": "direction",
+          "program": 125623
+        },
+        {
+          "slot": 2,
+          "kind": "direction",
+          "program": 125596
+        },
+        {
+          "slot": 5,
+          "kind": "buttons",
+          "program": 125696
+        }
+      ],
+      "instructions_sha256": "66a8cfeb3192ca8780babae5f7e2d1a652838fdec9c0cec629d0dfd5457f044d"
+    },
+    {
+      "character_id": 8,
+      "entry": 96860,
+      "exit": 96986,
+      "bindings": [
+        {
+          "slot": 6,
+          "kind": "direction",
+          "program": 125604
+        },
+        {
+          "slot": 7,
+          "kind": "direction",
+          "program": 125609
+        },
+        {
+          "slot": 0,
+          "kind": "buttons",
+          "program": 125696
+        },
+        {
+          "slot": 1,
+          "kind": "direction",
+          "program": 125623
+        },
+        {
+          "slot": 2,
+          "kind": "direction",
+          "program": 125657
+        },
+        {
+          "slot": 3,
+          "kind": "direction",
+          "program": 125596
+        },
+        {
+          "slot": 5,
+          "kind": "direction",
+          "program": 125719
+        }
+      ],
+      "instructions_sha256": "b6f0d06fcc51f55908c6724521c3e64a1a1c576f0c04910146f453b52659c590"
+    },
+    {
+      "character_id": 9,
+      "entry": 97664,
+      "exit": 97808,
+      "bindings": [
+        {
+          "slot": 6,
+          "kind": "direction",
+          "program": 125604
+        },
+        {
+          "slot": 7,
+          "kind": "direction",
+          "program": 125609
+        },
+        {
+          "slot": 0,
+          "kind": "buttons",
+          "program": 125682
+        },
+        {
+          "slot": 1,
+          "kind": "buttons",
+          "program": 125675
+        },
+        {
+          "slot": 2,
+          "kind": "direction",
+          "program": 125623
+        },
+        {
+          "slot": 3,
+          "kind": "buttons",
+          "program": 125696
+        },
+        {
+          "slot": 4,
+          "kind": "direction",
+          "program": 125657
+        },
+        {
+          "slot": 5,
+          "kind": "direction",
+          "program": 125647
+        }
+      ],
+      "instructions_sha256": "72136efd9335579e208a982e685b76ffbe15502d125c5eeb78e8a32424dafb86"
+    },
+    {
+      "character_id": 10,
+      "entry": 98550,
+      "exit": 98658,
+      "bindings": [
+        {
+          "slot": 6,
+          "kind": "direction",
+          "program": 125604
+        },
+        {
+          "slot": 7,
+          "kind": "direction",
+          "program": 125609
+        },
+        {
+          "slot": 0,
+          "kind": "buttons",
+          "program": 125696
+        },
+        {
+          "slot": 1,
+          "kind": "direction",
+          "program": 125623
+        },
+        {
+          "slot": 2,
+          "kind": "direction",
+          "program": 125657
+        },
+        {
+          "slot": 5,
+          "kind": "direction",
+          "program": 125714
+        }
+      ],
+      "instructions_sha256": "122a5bd7a7114ec6033687204184074065a5739e05f2ba0ea8b23b6030014497"
+    }
+  ],
+  "library": {
+    "125604": {
+      "window": 8,
+      "steps": [
+        8,
+        0,
+        8,
+        255
+      ]
+    },
+    "125609": {
+      "window": 8,
+      "steps": [
+        4,
+        0,
+        4,
+        255
+      ]
+    },
+    "125682": {
+      "window": 12,
+      "steps": [
+        16,
+        0,
+        16,
+        0,
+        16,
+        255
+      ]
+    },
+    "125675": {
+      "window": 8,
+      "steps": [
+        64,
+        0,
+        64,
+        0,
+        64,
+        255
+      ]
+    },
+    "125596": {
+      "window": 24,
+      "steps": [
+        2,
+        1,
+        255
+      ]
+    },
+    "125657": {
+      "window": 16,
+      "steps": [
+        2,
+        10,
+        8,
+        255
+      ]
+    },
+    "125623": {
+      "window": 8,
+      "steps": [
+        2,
+        0,
+        2,
+        255
+      ]
+    },
+    "125725": {
+      "window": 16,
+      "steps": [
+        8,
+        2,
+        8,
+        255
+      ]
+    },
+    "125696": {
+      "window": 8,
+      "steps": [
+        0,
+        80,
+        255
+      ]
+    },
+    "125714": {
+      "window": 16,
+      "steps": [
+        2,
+        8,
+        2,
+        255
+      ]
+    },
+    "125735": {
+      "window": 16,
+      "steps": [
+        2,
+        0,
+        2,
+        8,
+        255
+      ]
+    },
+    "125614": {
+      "window": 8,
+      "steps": [
+        8,
+        0,
+        8,
+        0,
+        8,
+        0,
+        8,
+        255
+      ]
+    },
+    "125708": {
+      "window": 16,
+      "steps": [
+        2,
+        8,
+        2,
+        8,
+        255
+      ]
+    },
+    "125628": {
+      "window": 8,
+      "steps": [
+        1,
+        0,
+        1,
+        255
+      ]
+    },
+    "125719": {
+      "window": 16,
+      "steps": [
+        8,
+        2,
+        8,
+        2,
+        255
+      ]
+    },
+    "125647": {
+      "window": 16,
+      "steps": [
+        2,
+        8,
+        9,
+        255
+      ]
+    }
+  },
+  "scope": "Original semantic command programs and preparation order only; no ROM execution"
+}

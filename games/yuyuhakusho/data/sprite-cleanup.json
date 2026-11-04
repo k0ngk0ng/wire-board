@@ -1,0 +1,72 @@
+{
+  "scope": "Only sprite task duplicate captures, temporary Ghidra/observer files and intermediate logs",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/sprite-catalog",
+      "bytes": 862165
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sprite-catalog-full",
+      "bytes": 3544656
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sprite-catalog-aligned",
+      "bytes": 3795743
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sprite-catalog-final",
+      "bytes": 3823288
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sprite-static",
+      "bytes": 244759
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sprite-consumers",
+      "bytes": 22366
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/sprite-static-work",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sprite-red.jsonl",
+      "bytes": 4285
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sprite-pixels-red.jsonl",
+      "bytes": 4341
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sprite-green.jsonl",
+      "bytes": 3611
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sprite-pixels-green.jsonl",
+      "bytes": 2796
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sprite-native.jsonl",
+      "bytes": 5724
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sprite-wasm.jsonl",
+      "bytes": 5715
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sprite-native-final.jsonl",
+      "bytes": 5721
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sprite-wasm-final.jsonl",
+      "bytes": 5715
+    }
+  ],
+  "bytes_removed": 12330885,
+  "kept": [
+    "Canonical sprite fixtures/source-bound manifests and red/native/Wasm logs",
+    "Verified local image pair in .local/md-yuyuhakusho/sprite-pixels",
+    "Original ROM/core/tools and shared active Go caches",
+    "Other agent files and captures"
+  ]
+}

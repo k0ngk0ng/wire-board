@@ -1,0 +1,126 @@
+{
+  "verified_at_utc": "2026-11-04T07:36:17.993199+00:00",
+  "scope": "Complete preparation functions for all eleven source character IDs; generic recognizers are reused",
+  "pass": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "test_first": {
+    "path": "games/yuyuhakusho/engine/testdata/character-commands-red-phase.jsonl",
+    "sha256": "b1c60a558f6d1614239c96fa76d0d70a2d32532870f30fc5530d075ce3b2ddba",
+    "reason": "PrepareCharacterCommands absent at actual red build; tests and original fixtures precede implementation"
+  },
+  "coverage": {
+    "source_characters": 11,
+    "immutable_programs": 16,
+    "natural_complete_calls": 4134,
+    "natural_source_ids": [
+      9
+    ],
+    "isolated_complete_calls": 14080,
+    "isolated_calls_per_source": 1280,
+    "single_initial_state_streams": 33,
+    "single_initial_state_steps": 3786,
+    "completed_request_steps": 2562,
+    "actor_bytes_compared_each_call": 256,
+    "unchanged_baseline_frames": 3600
+  },
+  "verification": [
+    {
+      "environment": "Go native race",
+      "scope": "Full engine package compiled, only TestCharacterCommands selected",
+      "pass": true,
+      "path": "games/yuyuhakusho/engine/testdata/character-commands-native.jsonl",
+      "sha256": "ef6c4d06c19bbfacb9d98a7c75af4d82af1df9fab210d5e3be52f3f925b8eef1",
+      "top_level_tests": [
+        "TestCharacterCommandsOriginalCompleteCalls",
+        "TestCharacterCommandsSingleInitialState",
+        "TestCharacterCommandsInvalidInputsAreAtomic"
+      ],
+      "elapsed_seconds": 5.58
+    },
+    {
+      "environment": "Node/Wasm",
+      "scope": "Explicit commands.go/commands_test.go/character_commands.go/character_commands_test.go compiled, only TestCharacterCommands selected",
+      "pass": true,
+      "path": "games/yuyuhakusho/engine/testdata/character-commands-wasm.jsonl",
+      "sha256": "1ef27db1b43dccc175354c43ae9c7079c3790b7050904212cab36cf268544cb1",
+      "top_level_tests": [
+        "TestCharacterCommandsOriginalCompleteCalls",
+        "TestCharacterCommandsSingleInitialState",
+        "TestCharacterCommandsInvalidInputsAreAtomic"
+      ],
+      "elapsed_seconds": 1.373
+    }
+  ],
+  "fixtures": [
+    {
+      "name": "character-commands-oracle",
+      "manifest_sha256": "e53d5cfc8f59691d00783973d867a7fe37a6bf6c050bca5ab7c714818acfb09b",
+      "records": 4134,
+      "fixture_sha256": "d24a14ecf62ef00610eda43d751ff647771d3529e6c946ba55bafb02f48532e8",
+      "gzip_sha256": "ede57ac4ae4cc1a3aef6b8b2885e7a53728cc49acc850e115cfbde1f6009c5fd"
+    },
+    {
+      "name": "character-commands-boundaries",
+      "manifest_sha256": "23912835d757190c765ba851d98c686b3df5622651fea788321d4a67dda99a39",
+      "records": 14080,
+      "fixture_sha256": "232a7e19ce7507aa5280f443a00e6c5bf5e930be3ff3a6c2239dc9afad18e74e",
+      "gzip_sha256": "7c8939d51695cda8e0d2e4aa42e565fb569f880726ff6a5b8167ff53ca8e6df1"
+    },
+    {
+      "name": "character-commands-sequences",
+      "manifest_sha256": "7f7124b37fa1c8cbffe121a8b53605873198d6edf86d17f44d195d303614b83a",
+      "records": 33,
+      "fixture_sha256": "4f676f2780c27ff339b2db7ca2ecdc20ad764fbea808944d703ee696b8f0da5b",
+      "gzip_sha256": "1914ad1f91d5981a49c141d7d2f7c1f49c7e319bdbece0a707ba778c002f4321"
+    }
+  ],
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/engine/character_commands.go",
+      "sha256": "6f67aa187c0e48fd7787b00b38c41b6a7105a2a72553f1aa899fb9fed9665e5c"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/character_commands_test.go",
+      "sha256": "39f5508d620680c82875008d3070511fb509649ae9c72f89cca636dff37e61f7"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_character_commands.py",
+      "sha256": "f79eea8de393b320705a440299f9ac395f50ed64b7a96644af2d83aecc0eb9e7"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/character-commands-preparations.txt",
+      "sha256": "27612acd36c94863db04ab8294104d3cb7c711ae67e46c02dfad3f09fbdb3fdc"
+    },
+    {
+      "path": "games/yuyuhakusho/data/command-programs.json",
+      "sha256": "ce50d443432dc1db6be7ecb95ea12bb8b44ba88216fc12c815c43b1d88ef9ec3"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/commands.go",
+      "sha256": "fd0c39b62a11345e35a2f41e01a545da4dc13f24eb45853dc51ef8be6ac5439e"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/commands_test.go",
+      "sha256": "0e57d8056d0b422ccec3bbf0792f433bb238e7075c8802b2c22214f5177187ad"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_commands.py",
+      "sha256": "bd61798278a6efef548643cc9fc4cb5b80a596773f65f3689367cbea5a20f33e"
+    },
+    {
+      "path": "scripts/yuyuhakusho/reference.py",
+      "sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/CHARACTER_COMMANDS_VERIFICATION.md",
+      "sha256": "a60bce9d51ae99c3a8677bb0afee9cdeb54dcc9be527cc19c9696fc500201197"
+    }
+  ],
+  "limitations": [
+    "Natural complete calls cover source ID9 only; other source IDs are original-CPU isolated coverage",
+    "Source IDs preserve original dispatch order, not player seats or verified Chinese character names",
+    "No command-to-attack dispatch, shared preparation tail, attack cancellation/energy restrictions, AI, full actor/world step or complete match is verified",
+    "Node/Wasm was focused explicit-source verification because another component was in its independent missing-implementation red phase; final package-level integration is a parent-stage gate"
+  ]
+}

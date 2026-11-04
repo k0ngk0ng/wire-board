@@ -1,0 +1,145 @@
+{
+  "scope": "Chu continuing special/dash actions0f/14/15/41/42/43/44/45/46 through sharedtail entry, including full three-child initialization",
+  "pass": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "test_first": "Actual undefined ChuSpecialMotionState/ChuSpecialChild/StepChuSpecialMotion build failure preserved before implementation",
+  "test_logs": [
+    {
+      "phase": "red",
+      "path": "games/yuyuhakusho/engine/testdata/chu-special-motion-red.jsonl",
+      "sha256": "7a6f179cf108f1df56d2f7b83cadad3644c3fdf1520ef806070b7cc607ba79de",
+      "final_action": "fail",
+      "top_level_tests": [],
+      "scope": "Package compile before implementation"
+    },
+    {
+      "phase": "native",
+      "path": "games/yuyuhakusho/engine/testdata/chu-special-motion-native.jsonl",
+      "sha256": "a82fc4ff4bf20df19ec0d94a57abc902c775cca52553687b82cbad0526f75620",
+      "final_action": "pass",
+      "top_level_tests": [
+        "TestChuSpecialMotionOriginalPhases",
+        "TestChuSpecialMotionSingleInitialState",
+        "TestChuSpecialMotionErrorsAreAtomic"
+      ],
+      "scope": "Focused TestChuSpecialMotion tests in whole engine package"
+    },
+    {
+      "phase": "wasm",
+      "path": "games/yuyuhakusho/engine/testdata/chu-special-motion-wasm.jsonl",
+      "sha256": "7e4eef33da1c9af9280c1aff330a7c6193635edcc383b0469e9b687598829abe",
+      "final_action": "pass",
+      "top_level_tests": [
+        "TestChuSpecialMotionOriginalPhases",
+        "TestChuSpecialMotionSingleInitialState",
+        "TestChuSpecialMotionErrorsAreAtomic"
+      ],
+      "scope": "Focused TestChuSpecialMotion tests in whole engine package"
+    }
+  ],
+  "fixtures": [
+    {
+      "name": "chu-special-motion-oracle",
+      "records": 311,
+      "calls": 311,
+      "kind_counts": {
+        "15": 77,
+        "21": 33,
+        "66": 164,
+        "67": 37
+      },
+      "character_counts": {
+        "9": 311
+      },
+      "allocation_attempts": 9,
+      "fixture_sha256": "8069af61a1bd968405a5296d7b27f69bd3e08427de955754d4a1024290ba1f4e",
+      "gzip_sha256": "62f49a4d0bc15a19dbae18866f019e480d5a82a1738312ad03c82afa4d389e2a"
+    },
+    {
+      "name": "chu-special-motion-boundaries",
+      "records": 13104,
+      "calls": 13104,
+      "kind_counts": {
+        "15": 480,
+        "20": 480,
+        "65": 480,
+        "68": 480,
+        "21": 120,
+        "66": 1522,
+        "67": 8192,
+        "69": 675,
+        "70": 675
+      },
+      "character_counts": {
+        "9": 13104
+      },
+      "allocation_attempts": 832,
+      "fixture_sha256": "b69c90e61431fb6bd735f712cfff7ba8363223e70f9b7322dc38b44538e9674f",
+      "gzip_sha256": "b49a0d231c55d9785c5d45439dc7234dbef74cb8243dd5f34b59edd99a3284b4"
+    },
+    {
+      "name": "chu-special-motion-sequences",
+      "records": 22,
+      "calls": 202,
+      "kind_counts": {
+        "15": 16,
+        "20": 8,
+        "21": 24,
+        "65": 10,
+        "68": 10,
+        "66": 14,
+        "67": 8,
+        "69": 14,
+        "70": 98
+      },
+      "character_counts": {
+        "9": 202
+      },
+      "allocation_attempts": 42,
+      "fixture_sha256": "aa3291958a8eea2952d149351ea722b2ddf0382d4fc193b35dff3d64ef2b46b1",
+      "gzip_sha256": "5984db9c85e96cee881bdfcf7d4dc23213ac7e5dbd287b86d64e628609446797"
+    }
+  ],
+  "inputs": {
+    "path": "games/yuyuhakusho/engine/testdata/chu-special-motion-inputs.json",
+    "sha256": "a79710c3625aa205c048236efbec59c08d48aeefc183050a36b4d4923b1373a8"
+  },
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/engine/chu_special_motion.go",
+      "sha256": "5c37d35003f4f983010232d495b6e45143553a36b347edbaf2aa494006839c98"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_special_motion_test.go",
+      "sha256": "dfd3cf4c7e19b5a4e7e6653744a4160732f14415f78b1b997124660675f7d269"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_chu_special_motion.py",
+      "sha256": "59b5a880432e384bc123245ae1f7da815a2b27d19a918e9ee58c39183113cc8e"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/CHU_SPECIAL_MOTION_VERIFICATION.md",
+      "sha256": "beff361a6bbf95ef0ccf4c94cd546fbef9dac06f94de7a897eea5b0bbf679da2"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/chu-special-motion-core.txt",
+      "sha256": "d80de4a0f93a640be0d5f0e2417c3029c53760b4f8079e6dedc83adc2ccb2099"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/chu-special-motion-helpers.txt",
+      "sha256": "0d25511d9b73b4723563a1dec541ce6715522451d75b96060f60ab0fb60959f0"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/chu-special-motion-costs.txt",
+      "sha256": "859b7863c61b207e8c110d40f7cdc287d597c3a6ece2e5a8015a9324ea2b570c"
+    }
+  ],
+  "limits": [
+    "Natural samples contain only source9 actions0f/15/42/43; remaining actions covered by isolated originalCPU calls",
+    "Three child initializers only; their1313e/132de/1361e subsequent updates and projectile contacts remain incomplete",
+    "Trajectory clock uses declared private record timing with no animation record refresh/sharedtail; not a full actor/world update",
+    "Projectile pose lookup covers original charge-derived power0..255; invalid out-of-range lookup states fail atomically",
+    "Full game package integration gate remains parent work"
+  ]
+}

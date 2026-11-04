@@ -1,0 +1,16 @@
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"# command-line-arguments [command-line-arguments.test]\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./sound_queue_test.go:15:2: undefined: SoundPriorityState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./sound_queue_test.go:19:69: undefined: SoundPriorityState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./sound_queue_test.go:25:17: raw.CurrentPriority undefined (type soundQueueSnapshot has no field or method CurrentPriority)\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./sound_queue_test.go:25:48: raw.SelectedSound undefined (type soundQueueSnapshot has no field or method SelectedSound)\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./sound_queue_test.go:25:92: raw.Queue undefined (type soundQueueSnapshot has no field or method Queue)\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./sound_queue_test.go:31:51: undefined: SoundPriorityState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./sound_queue_test.go:42:68: undefined: SoundPriorityTable\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./sound_queue_test.go:44:12: undefined: SoundPriorityTable\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./sound_queue_test.go:112:12: undefined: ConsumeSoundQueue\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./sound_queue_test.go:140:12: undefined: ConsumeSoundQueue\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./sound_queue_test.go:140:12: too many errors\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-fail"}
+{"Time":"2026-11-04T15:54:45.463685+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-04T15:54:45.463718+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\tcommand-line-arguments [build failed]\n"}
+{"Time":"2026-11-04T15:54:45.463726+08:00","Action":"fail","Package":"command-line-arguments","Elapsed":0,"FailedBuild":"command-line-arguments [command-line-arguments.test]"}

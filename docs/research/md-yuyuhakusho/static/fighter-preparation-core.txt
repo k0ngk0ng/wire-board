@@ -1,0 +1,46 @@
+route=direct-ghidra-headless; REA raw 68000 unsupported
+language=68000:BE:32:default
+source=MD Yu Yu Hakusho Japan; static reachable instructions only
+
+seeds=15bfe scope=0x15bfe..0x15c0e
+00015bfe jsr 0x00003982.l
+00015c04 mulu.w (0xc4,A5),D0
+00015c08 swap D0
+00015c0a add.b D0b,(0x65,A5)
+00015c0e rts
+printed_instructions=5
+
+seeds=15c36 scope=0x15c36..0x15cae
+00015c36 cmpi.w #0xdf,(0xb8,A5)
+00015c3c bge.b 0x00015c60
+00015c3e btst.b #0x6,(0x71,A5)
+00015c44 bne.b 0x00015c50
+00015c46 btst.b #0x4,(0x71,A5)
+00015c4c bne.b 0x00015c50
+00015c4e bra.b 0x00015c60
+00015c50 cmpi.b #0x40,(0xc7,A5)
+00015c56 bhi.b 0x00015c64
+00015c58 addi.b #0x1,(0xc7,A5)
+00015c5e bra.b 0x00015c64
+00015c60 clr.b (0xc7,A5)
+00015c64 btst.b #0x0,(0x61,A5)
+00015c6a bne.b 0x00015c7e
+00015c6c btst.b #0x0,(0xc1,A5)
+00015c72 bne.b 0x00015ca0
+00015c74 btst.b #0x2,(0xc1,A5)
+00015c7a bne.b 0x00015ca8
+00015c7c bra.b 0x00015c8e
+00015c7e btst.b #0x2,(0xc1,A5)
+00015c84 bne.b 0x00015ca0
+00015c86 btst.b #0x0,(0xc1,A5)
+00015c8c bne.b 0x00015ca8
+00015c8e btst.b #0x5,(0x71,A5)
+00015c94 beq.b 0x00015cae
+00015c96 btst.b #0x4,(0x72,A5)
+00015c9c bne.b 0x00015ca8
+00015c9e rts
+00015ca0 move.b #0x7,(0x6b,A5)
+00015ca6 rts
+00015ca8 move.b #0x8,(0x6b,A5)
+00015cae rts
+printed_instructions=32

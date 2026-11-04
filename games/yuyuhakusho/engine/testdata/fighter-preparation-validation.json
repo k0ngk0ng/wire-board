@@ -1,0 +1,121 @@
+{
+  "verified_at_utc": "2026-11-04T07:52:31.788536+00:00",
+  "scope": "Complete shared input-preparation and randomized attack-value tail routines only",
+  "pass": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "test_first": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter-preparation-red-phase.jsonl",
+    "sha256": "e831f7a0f788c9dea6b9e32aa194478d3349fb4d3ba022a50ad3cbd8b2fceb45",
+    "reason": "FighterPreparationState, AttackValueState, PrepareFighterInput and RandomizeAttackValue missing before implementation"
+  },
+  "coverage": {
+    "natural_input_calls": 4134,
+    "natural_random_calls": 4134,
+    "isolated_input_calls": 9074,
+    "isolated_random_calls": 540,
+    "single_initial_streams": 7,
+    "single_initial_steps": 896,
+    "input_streams": 3,
+    "random_streams": 4,
+    "actor_bytes_compared_each_call": 256,
+    "unchanged_baseline_frames": 3600
+  },
+  "verification": [
+    {
+      "environment": "Go native race",
+      "scope": "Full engine package compiled, TestFighterPreparation selected",
+      "pass": true,
+      "path": "games/yuyuhakusho/engine/testdata/fighter-preparation-native.jsonl",
+      "sha256": "52acf9a5da1ff07686d246cd9266535017a37442e2b93630fab678fe979a5a51",
+      "top_level_tests": [
+        "TestFighterPreparationOriginalCompleteCalls",
+        "TestFighterPreparationSingleInitialState"
+      ],
+      "elapsed_seconds": 3.45
+    },
+    {
+      "environment": "Node/Wasm",
+      "scope": "Full engine package compiled, TestFighterPreparation selected",
+      "pass": true,
+      "path": "games/yuyuhakusho/engine/testdata/fighter-preparation-wasm.jsonl",
+      "sha256": "47bacd6a57faafc3d73048994d9048ac612a215ec0bed2215b8ef7a9823f8471",
+      "top_level_tests": [
+        "TestFighterPreparationOriginalCompleteCalls",
+        "TestFighterPreparationSingleInitialState"
+      ],
+      "elapsed_seconds": 0.762
+    }
+  ],
+  "fixtures": [
+    {
+      "name": "fighter-preparation-oracle",
+      "records": 8268,
+      "kind_counts": {
+        "input": 4134,
+        "random": 4134
+      },
+      "manifest_sha256": "555f9c0c044c441f9d7057cb3e5f55947f48a27ffe424c3a9d70973df189c68b",
+      "fixture_sha256": "de7a9a56da1f9b80f2ca694c84360d06507fadb7504ea2b960c3b3c2ab0f50e0",
+      "gzip_sha256": "6455bf34af6ec155fff133ec0cba00235f8c8d404de0589a0c66fa7f7db16497"
+    },
+    {
+      "name": "fighter-preparation-boundaries",
+      "records": 9614,
+      "kind_counts": {
+        "input": 9074,
+        "random": 540
+      },
+      "manifest_sha256": "37a515326c3ae9ac3a831f672e4a8553e6204ef8894c47755f5da76a26bec9e8",
+      "fixture_sha256": "2e001e1c3e923f0133b83eb0faaaf3713848c1c095fbd090b9cdd5bb55fec13e",
+      "gzip_sha256": "55fa6dca6254ce1337b0bdbb28edb67b6e2821e866e6740e71d6b5418658cd0c"
+    },
+    {
+      "name": "fighter-preparation-sequences",
+      "records": 7,
+      "kind_counts": {
+        "input": 3,
+        "random": 4
+      },
+      "manifest_sha256": "51dcc66502ca62b827f5f1932a179eef657d3982e05dac9210ddfff1d5bd02f0",
+      "fixture_sha256": "5b75340dd208dffb4db250203c19f6b888908ceca519b53bfeda97bf3ade8297",
+      "gzip_sha256": "4758cbd9738167bebff6cbb6f139b041bdb6c0781755a90ef2157fa6a0869fb6"
+    }
+  ],
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/engine/fighter_preparation.go",
+      "sha256": "f7bb17f5f381afe2992cae99e7aecb5e3e7a5ba3cd95883a16c4925fa03bc622"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter_preparation_test.go",
+      "sha256": "7a372d8ba24cf4dd9085407780fd07d87398498764d057b53a2e19d9d4b4804e"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/FIGHTER_PREPARATION_VERIFICATION.md",
+      "sha256": "2eef9b96766cfbe30fe58a4e777f3f2623aa0271b56672e2d2ba656fb0947933"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_fighter_preparation.py",
+      "sha256": "cc17f0a2f02ccc3887979917340167a7abf3b3cee486fa01f107a9992bc8a56f"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-preparation-core.txt",
+      "sha256": "ec005c895157865a22d98dfad711be6ea731344eb4b24764169ab99a3839906b"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/random.go",
+      "sha256": "c9fe3edc3ff9bee0725b78e7a38f2c4517592ddf99e52fec98e8904eb77a2056"
+    },
+    {
+      "path": "scripts/yuyuhakusho/reference.py",
+      "sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81"
+    }
+  ],
+  "limitations": [
+    "Natural fixed input covers the same source-character9 battle sample; isolated states establish helper boundaries",
+    "Continuous preparation streams are isolated routines, not actor/world steps or complete matches",
+    "Shared RNG must be threaded through actual world caller order; this component does not own per-actor independent RNG",
+    "Character command-to-attack dispatch, shared-tail integration, AI and full game E2E remain outside this component"
+  ]
+}

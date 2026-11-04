@@ -1,0 +1,32 @@
+{
+  "scope": "Declared isolated full tails",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "2ca411fa0792b7a8ba03fdf0f71f6839977cf9c8fb0143f79ac8fac707d09997",
+  "records": 816,
+  "calls": 816,
+  "modes": {
+    "normal": 528,
+    "hit-stop": 288
+  },
+  "library_frames": 115,
+  "external_queue_calls": 0,
+  "frames_match_original_core": true,
+  "fixture_sha256": "23db14b17f04ded6900a0fea3290f781aa0cacc5b5610cdbe03b354f0dae8d10",
+  "gzip_sha256": "f3e36df3550f9cdb412f733bb6a2411fa631ce3e45fccf3cc6d5566a0066d309",
+  "incomplete_calls": 0,
+  "errors": [],
+  "pass": true,
+  "limits": [
+    "Complete shared-tail functions, not actor/world steps or matches",
+    "Natural external queue events are retained without rewriting expected output"
+  ]
+}

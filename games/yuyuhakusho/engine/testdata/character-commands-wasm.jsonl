@@ -1,0 +1,27 @@
+{"Time":"2026-11-04T15:35:00.90778+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-04T15:35:00.964815+08:00","Action":"run","Package":"command-line-arguments","Test":"TestCharacterCommandsOriginalCompleteCalls"}
+{"Time":"2026-11-04T15:35:00.964861+08:00","Action":"output","Package":"command-line-arguments","Test":"TestCharacterCommandsOriginalCompleteCalls","Output":"=== RUN   TestCharacterCommandsOriginalCompleteCalls\n"}
+{"Time":"2026-11-04T15:35:00.966119+08:00","Action":"run","Package":"command-line-arguments","Test":"TestCharacterCommandsOriginalCompleteCalls/character-commands-oracle"}
+{"Time":"2026-11-04T15:35:00.966134+08:00","Action":"output","Package":"command-line-arguments","Test":"TestCharacterCommandsOriginalCompleteCalls/character-commands-oracle","Output":"=== RUN   TestCharacterCommandsOriginalCompleteCalls/character-commands-oracle\n"}
+{"Time":"2026-11-04T15:35:01.247182+08:00","Action":"output","Package":"command-line-arguments","Test":"TestCharacterCommandsOriginalCompleteCalls/character-commands-oracle","Output":"    character_commands_test.go:57: complete original calls=4134, source-character counts=map[9:4134]\n"}
+{"Time":"2026-11-04T15:35:01.24969+08:00","Action":"output","Package":"command-line-arguments","Test":"TestCharacterCommandsOriginalCompleteCalls/character-commands-oracle","Output":"--- PASS: TestCharacterCommandsOriginalCompleteCalls/character-commands-oracle (0.28s)\n"}
+{"Time":"2026-11-04T15:35:01.25001+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestCharacterCommandsOriginalCompleteCalls/character-commands-oracle","Elapsed":0.28}
+{"Time":"2026-11-04T15:35:01.250131+08:00","Action":"run","Package":"command-line-arguments","Test":"TestCharacterCommandsOriginalCompleteCalls/character-commands-boundaries"}
+{"Time":"2026-11-04T15:35:01.250145+08:00","Action":"output","Package":"command-line-arguments","Test":"TestCharacterCommandsOriginalCompleteCalls/character-commands-boundaries","Output":"=== RUN   TestCharacterCommandsOriginalCompleteCalls/character-commands-boundaries\n"}
+{"Time":"2026-11-04T15:35:01.979552+08:00","Action":"output","Package":"command-line-arguments","Test":"TestCharacterCommandsOriginalCompleteCalls/character-commands-boundaries","Output":"    character_commands_test.go:57: complete original calls=14080, source-character counts=map[0:1280 1:1280 2:1280 3:1280 4:1280 5:1280 6:1280 7:1280 8:1280 9:1280 10:1280]\n"}
+{"Time":"2026-11-04T15:35:01.980146+08:00","Action":"output","Package":"command-line-arguments","Test":"TestCharacterCommandsOriginalCompleteCalls/character-commands-boundaries","Output":"--- PASS: TestCharacterCommandsOriginalCompleteCalls/character-commands-boundaries (0.73s)\n"}
+{"Time":"2026-11-04T15:35:01.980204+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestCharacterCommandsOriginalCompleteCalls/character-commands-boundaries","Elapsed":0.73}
+{"Time":"2026-11-04T15:35:01.980418+08:00","Action":"output","Package":"command-line-arguments","Test":"TestCharacterCommandsOriginalCompleteCalls","Output":"--- PASS: TestCharacterCommandsOriginalCompleteCalls (1.01s)\n"}
+{"Time":"2026-11-04T15:35:01.980473+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestCharacterCommandsOriginalCompleteCalls","Elapsed":1.01}
+{"Time":"2026-11-04T15:35:01.980535+08:00","Action":"run","Package":"command-line-arguments","Test":"TestCharacterCommandsSingleInitialState"}
+{"Time":"2026-11-04T15:35:01.980542+08:00","Action":"output","Package":"command-line-arguments","Test":"TestCharacterCommandsSingleInitialState","Output":"=== RUN   TestCharacterCommandsSingleInitialState\n"}
+{"Time":"2026-11-04T15:35:02.165585+08:00","Action":"output","Package":"command-line-arguments","Test":"TestCharacterCommandsSingleInitialState","Output":"    character_commands_test.go:102: single-initial-state streams=33 steps=3786\n"}
+{"Time":"2026-11-04T15:35:02.165666+08:00","Action":"output","Package":"command-line-arguments","Test":"TestCharacterCommandsSingleInitialState","Output":"--- PASS: TestCharacterCommandsSingleInitialState (0.19s)\n"}
+{"Time":"2026-11-04T15:35:02.165752+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestCharacterCommandsSingleInitialState","Elapsed":0.19}
+{"Time":"2026-11-04T15:35:02.165802+08:00","Action":"run","Package":"command-line-arguments","Test":"TestCharacterCommandsInvalidInputsAreAtomic"}
+{"Time":"2026-11-04T15:35:02.165809+08:00","Action":"output","Package":"command-line-arguments","Test":"TestCharacterCommandsInvalidInputsAreAtomic","Output":"=== RUN   TestCharacterCommandsInvalidInputsAreAtomic\n"}
+{"Time":"2026-11-04T15:35:02.273599+08:00","Action":"output","Package":"command-line-arguments","Test":"TestCharacterCommandsInvalidInputsAreAtomic","Output":"--- PASS: TestCharacterCommandsInvalidInputsAreAtomic (0.11s)\n"}
+{"Time":"2026-11-04T15:35:02.273637+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestCharacterCommandsInvalidInputsAreAtomic","Elapsed":0.11}
+{"Time":"2026-11-04T15:35:02.274096+08:00","Action":"output","Package":"command-line-arguments","Output":"PASS\n"}
+{"Time":"2026-11-04T15:35:02.280939+08:00","Action":"output","Package":"command-line-arguments","Output":"ok  \tcommand-line-arguments\t1.373s\n"}
+{"Time":"2026-11-04T15:35:02.280958+08:00","Action":"pass","Package":"command-line-arguments","Elapsed":1.373}

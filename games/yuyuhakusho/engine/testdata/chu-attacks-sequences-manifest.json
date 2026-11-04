@@ -1,0 +1,36 @@
+{
+  "scope": "Single-initial-state selector streams",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "f3d42a7d04267fcdbdea9e67963a70bb34920b861676358d67ab607e563eb580",
+  "records": 4,
+  "calls": 32,
+  "kind_counts": {
+    "ground-special": 24,
+    "air-special": 8
+  },
+  "constructor_counts": {
+    "0x1992e": 1,
+    "0x19980": 1,
+    "0x199be": 1,
+    "0x19a4a": 1
+  },
+  "fixture_sha256": "56efa583410d24fd9dd5bb36eb74e7ca5dc5eaf78d6c7fc06aa1f3e4835cfba1",
+  "gzip_sha256": "77c852e1d83946df50be80c3471fda1d26e0a427921c5189a806d68d010ade35",
+  "frames_match_original_core": true,
+  "incomplete_calls": 0,
+  "errors": [],
+  "pass": true,
+  "limits": [
+    "Selectors and initialization only, not complete moves or matches",
+    "All isolated inputs replace private reference-process data"
+  ]
+}
