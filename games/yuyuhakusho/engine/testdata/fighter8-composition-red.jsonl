@@ -1,0 +1,14 @@
+{"Time":"2026-11-05T05:27:46.866843+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-05T05:27:47.214212+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter8CompositionOriginalActions"}
+{"Time":"2026-11-05T05:27:47.214439+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter8CompositionOriginalActions","Output":"=== RUN   TestFighter8CompositionOriginalActions\n"}
+{"Time":"2026-11-05T05:27:47.219197+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter8CompositionOriginalActions","Output":"    fighter8_composition_test.go:139: full source8 action  kind=0 differs: unsupported complete fighter action source\n"}
+{"Time":"2026-11-05T05:27:47.219323+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter8CompositionOriginalActions","Output":"--- FAIL: TestFighter8CompositionOriginalActions (0.01s)\n"}
+{"Time":"2026-11-05T05:27:47.219364+08:00","Action":"fail","Package":"command-line-arguments","Test":"TestFighter8CompositionOriginalActions","Elapsed":0.01}
+{"Time":"2026-11-05T05:27:47.219401+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter8CompositionOriginalActors"}
+{"Time":"2026-11-05T05:27:47.219409+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter8CompositionOriginalActors","Output":"=== RUN   TestFighter8CompositionOriginalActors\n"}
+{"Time":"2026-11-05T05:27:47.224871+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter8CompositionOriginalActors","Output":"    fighter8_composition_test.go:196: full source8 actor  kind=0 differs: unsupported complete fighter actor source\n"}
+{"Time":"2026-11-05T05:27:47.224947+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter8CompositionOriginalActors","Output":"--- FAIL: TestFighter8CompositionOriginalActors (0.01s)\n"}
+{"Time":"2026-11-05T05:27:47.224971+08:00","Action":"fail","Package":"command-line-arguments","Test":"TestFighter8CompositionOriginalActors","Elapsed":0.01}
+{"Time":"2026-11-05T05:27:47.224996+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\n"}
+{"Time":"2026-11-05T05:27:47.226021+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\tcommand-line-arguments\t0.359s\n"}
+{"Time":"2026-11-05T05:27:47.226051+08:00","Action":"fail","Package":"command-line-arguments","Elapsed":0.359}

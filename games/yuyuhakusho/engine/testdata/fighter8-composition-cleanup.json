@@ -1,0 +1,68 @@
+{
+  "pass": true,
+  "scope": "Only this source8-composition duplicate/intermediate outputs; canonical fixtures, explicit legacy-context history/red, original baselines/inputs, ROM/tools/shared caches and8799 assets retained",
+  "deleted": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter8-composition-private",
+      "files": 18,
+      "bytes": 7849982
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter8-composition-private-run.txt",
+      "files": 1,
+      "bytes": 1488
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter8-composition-natural",
+      "files": 12,
+      "bytes": 234488525
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter8-composition-natural-run.txt",
+      "files": 1,
+      "bytes": 919
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter8-composition-full",
+      "files": 24,
+      "bytes": 242357541
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter8-composition-full-run.txt",
+      "files": 1,
+      "bytes": 2407
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter8-composition-special",
+      "files": 12,
+      "bytes": 234571678
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter8-composition-special-run.txt",
+      "files": 1,
+      "bytes": 951
+    }
+  ],
+  "natural_library_checks": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter8-composition-full/fighter8-composition-actor-natural.json.gz",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter8-composition-actor-natural.json.gz",
+      "calls_sha256": "be69aa7fef044f0ab99fb2152d8d070e0129d2ee5b0b71831f6055ec03882cad",
+      "difference": "Only private-run immutable library union is larger"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter8-composition-full/fighter8-composition-input-natural.json.gz",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter8-composition-input-natural.json.gz",
+      "calls_sha256": "a915b4a9543daa14ea926c3dd7c3bffa5bc09ccb0df50d8e17c524316432ce8a",
+      "difference": "Only private-run immutable library union is larger"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter8-composition-full/fighter8-composition-action-natural.json.gz",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter8-composition-action-natural.json.gz",
+      "calls_sha256": "e7c536d17370ab2c990662ae97479cca0377c309338dd0995f8311c7bd186535",
+      "difference": "Only private-run immutable library union is larger"
+    }
+  ],
+  "files_removed": 70,
+  "bytes_removed": 719273491
+}

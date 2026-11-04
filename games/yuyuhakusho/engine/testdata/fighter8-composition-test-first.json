@@ -1,0 +1,36 @@
+{
+  "stage": "Six source8 composition tests frozen before shared production support",
+  "recorded_at_utc": "2026-11-04T21:10:23.810047+00:00",
+  "test_top_levels": 6,
+  "files": [
+    {
+      "path": "games/yuyuhakusho/engine/fighter8_composition_test.go",
+      "sha256": "d7e2c3aab12de322f69f52d964d7b4374b44ee8d4e3ec610115b0b66a9a96098"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/FIGHTER8_COMPOSITION_VERIFICATION.md",
+      "sha256": "a9009b176540f370f58928488d64cc529a03287f83cd90eebe16079d4b1721eb"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_action.go",
+      "sha256": "8d722908fd4acf5d19ef9578ea18a3f835ada0faaee75db1e1dc578fa681a2ef"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_actor.go",
+      "sha256": "de23b3ff7bd9b736d3c15fe798b1d287bc9e7f590d3b92bbe2f28f8a15e17aed"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_input.go",
+      "sha256": "a9d14993c78d4ae89403824254d72edc3a6315f61928c65129e8b67ac870e294"
+    }
+  ],
+  "actual_natural_red": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter8-composition-red.jsonl",
+    "sha256": "04046a77e08e0686e57a53fca2024ba6ff714f4e3b0c3ad8327251facc6e79b4",
+    "executed": [
+      "TestFighter8CompositionOriginalActions",
+      "TestFighter8CompositionOriginalActors"
+    ],
+    "scope": "True source8 menu input, original3602 baseline; actual unsupported8 errors"
+  }
+}

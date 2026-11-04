@@ -1,0 +1,31 @@
+{
+  "pass": true,
+  "scope": "Source8 child animation/graphic key availability; actual rendered matches verified separately",
+  "animation_records": 4,
+  "distinct_required_graphics": 4,
+  "required_keys": [
+    {
+      "graphics_set": 856138,
+      "parameter": 2
+    },
+    {
+      "graphics_set": 856138,
+      "parameter": 266
+    },
+    {
+      "graphics_set": 856138,
+      "parameter": 268
+    },
+    {
+      "graphics_set": 856138,
+      "parameter": 270
+    }
+  ],
+  "all_required_graphics_already_decoded": true,
+  "runtime_rule_package_unchanged_from": "6cd41830",
+  "sources": {
+    "games/yuyuhakusho/data/animation-catalog.json.gz": "845e2f43179f831130b40c4b796843fdc0c3ae4c699d605e4326905800781495",
+    "games/yuyuhakusho/data/world-sprites.json.gz": "200e28e775a809de89c19df0dfef314d5697224fcb6a145853beb7344b5833ef",
+    "games/yuyuhakusho/data/chu-world-rules.json.gz": "f6fb7ec89cde87e3de2eba011614277a6e448049af9420a0ada2f82a3541dfca"
+  }
+}

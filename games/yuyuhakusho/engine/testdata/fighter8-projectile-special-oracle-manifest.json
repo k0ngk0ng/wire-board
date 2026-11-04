@@ -1,0 +1,58 @@
+{
+  "pass": true,
+  "baseline_verified": true,
+  "scope": "Actual source8 child callbacks from the declared real-menu input flow",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "17b30d4b67410b2fbbd8b8c7181068769ac89f407ff05f8a05ccfbe2bf7deb2d",
+  "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+  "records": 105,
+  "calls": 105,
+  "kind_counts": {
+    "child": 105
+  },
+  "library_frames": 4,
+  "fixture_sha256": "d752e36e04243551e8c4c874d546c827b175b1c8ecac2a091bea4f71be20906a",
+  "gzip_sha256": "e899bbb80f1f1e82bd4e21e008b333b2db0834379438781a2ae7b35041b564c0",
+  "baselines": [
+    {
+      "input": "games/yuyuhakusho/engine/testdata/fighter8-special-inputs.json",
+      "input_sha256": "b26515ad1e9f558fc54699fd0fe69c7c1cf7e3e081682f136bc8da1121121cce",
+      "reference": "games/yuyuhakusho/engine/testdata/fighter8-attacks-special-reference-frames.json",
+      "reference_raw_sha256": "2b89ca34886f651c41d27ad1fa9b4e8779991b5996c8651f299a08030fa78f3b",
+      "reference_manifest": "games/yuyuhakusho/engine/testdata/fighter8-attacks-special-reference-manifest.json",
+      "reference_manifest_sha256": "c58864474a025d082cc4c18f23ea4474375f82554bb75771f29e616193c44b35",
+      "video_steps": 3602,
+      "all_ram_video_match": true
+    }
+  ],
+  "binding": {
+    "source_tag": 8,
+    "source_actor_sha256": "5144b33c6dc8736456fb7820adba0c4863a51d7a7d26867b9f446079009360fc",
+    "animation_set": 859738,
+    "shape_set": 863338,
+    "movement_source": 75278
+  },
+  "frames_match_original_core": true,
+  "rng_calls": 0,
+  "external_queue_calls": 0,
+  "external_change_calls": 3,
+  "unexplained_change_calls": 0,
+  "interrupt_calls": 6,
+  "clears": 1,
+  "errors": [],
+  "incomplete_calls": 0,
+  "limits": [
+    "Zero natural records remain pass:false; no private context is labeled natural",
+    "Pre-tail/draw/completed-clear boundaries only; no full actor/world/collision/active FX simulation",
+    "Parent timing refreshes modify only Duration/Flags from own current immutable keys; no expected-state injection"
+  ]
+}

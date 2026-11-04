@@ -36,10 +36,10 @@ func StepChuAction(state ChuActionState, parameters ChuActionParameters, command
 }
 
 // StepFighterAction keeps one copy of the complete action driver for the
-// restored sources0/2/3/9/10. AlternateVelocity remains the sole +48 long owner.
+// restored sources0/2/3/8/9/10. AlternateVelocity remains the sole +48 long owner.
 func StepFighterAction(state ChuActionState, characterID uint8, parameters ChuActionParameters, commands CommandLibrary, animations AnimationLibrary) (ChuActionState, error) {
 	original := state
-	if characterID != 0 && characterID != 2 && characterID != 3 && characterID != 9 && characterID != 10 {
+	if characterID != 0 && characterID != 2 && characterID != 3 && characterID != 8 && characterID != 9 && characterID != 10 {
 		return original, errors.New("unsupported complete fighter action source")
 	}
 	command := CommandState{RawHeld: state.Controls.RawHeld, Facing: state.Body.Facing, Request: state.Body.Request}
@@ -133,7 +133,20 @@ func StepFighterAction(state ChuActionState, characterID uint8, parameters ChuAc
 			if actionErr := stepFighter2ActionMotion(&state, parameters.JumpParameters); actionErr != nil {
 				return original, actionErr
 			}
+		case 0x3e, 0x3f, 0x40:
+			if characterID != 8 {
+				return original, errors.New("unsupported fighter action source/slot")
+			}
+			if actionErr := stepFighter8ActionMotion(&state, parameters.JumpParameters); actionErr != nil {
+				return original, actionErr
+			}
 		case 15, 20, 21, 65, 66, 67, 68, 69, 70:
+			if characterID == 8 && state.Body.ActionKind == 15 {
+				if actionErr := stepFighter8ActionMotion(&state, parameters.JumpParameters); actionErr != nil {
+					return original, actionErr
+				}
+				break
+			}
 			if characterID == 2 && state.Body.ActionKind == 15 {
 				if actionErr := stepFighter2ActionMotion(&state, parameters.JumpParameters); actionErr != nil {
 					return original, actionErr
@@ -150,6 +163,12 @@ func StepFighterAction(state ChuActionState, characterID uint8, parameters ChuAc
 			state.setActionEnergy(special.Energy)
 			state.Power, state.AlternateVelocity, state.ContactFlags = special.Power, special.AlternateVelocity, special.ContactFlags
 		case 0x11, 0x2d, 0x47, 0x48, 0x49:
+			if characterID == 8 && state.Body.ActionKind == 0x11 {
+				if actionErr := stepFighter8ActionMotion(&state, parameters.JumpParameters); actionErr != nil {
+					return original, actionErr
+				}
+				break
+			}
 			if characterID == 2 && state.Body.ActionKind == 0x11 {
 				if actionErr := stepFighter2ActionMotion(&state, parameters.JumpParameters); actionErr != nil {
 					return original, actionErr
@@ -208,6 +227,15 @@ func stepFighter3ActionMotion(state *ChuActionState, parameters JumpParameters) 
 
 func stepFighter2ActionMotion(state *ChuActionState, parameters JumpParameters) error {
 	next, err := StepFighter2Motion(state.specialMotionView(), parameters)
+	if err != nil {
+		return err
+	}
+	state.acceptSpecialMotion(next)
+	return nil
+}
+
+func stepFighter8ActionMotion(state *ChuActionState, parameters JumpParameters) error {
+	next, err := StepFighter8Motion(state.specialMotionView(), parameters)
 	if err != nil {
 		return err
 	}

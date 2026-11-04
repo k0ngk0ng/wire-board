@@ -4,7 +4,7 @@
 
 ## 独立本地对局
 
-幻海、桑原、幽助、酎、户愚吕兄／默认场地已有独立浏览器研究页，运行与复跑命令见 [LOCAL_PLAYER.md](../../docs/research/md-yuyuhakusho/LOCAL_PLAYER.md)。`serve_local_player.py` 只在 loopback 提供独立 Wasm 和索引素材；它不提供 ROM 或模拟器。
+幻海、桑原、幽助、户愚吕兄、酎、户愚吕弟／默认场地已有独立浏览器研究页，运行与复跑命令见 [LOCAL_PLAYER.md](../../docs/research/md-yuyuhakusho/LOCAL_PLAYER.md)。`serve_local_player.py` 只在 loopback 提供独立 Wasm 和索引素材；它不提供 ROM 或模拟器。
 
 ```sh
 sh scripts/yuyuhakusho/verify_chu_sessions.sh both
@@ -18,7 +18,11 @@ sh scripts/yuyuhakusho/verify_yusuke_sessions.sh both
 PYTHONDONTWRITEBYTECODE=1 python3 scripts/yuyuhakusho/check_yusuke_player.py
 sh scripts/yuyuhakusho/verify_kuwabara_sessions.sh both
 PYTHONDONTWRITEBYTECODE=1 python3 scripts/yuyuhakusho/check_kuwabara_player.py
+sh scripts/yuyuhakusho/verify_elder_sessions.sh both
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/yuyuhakusho/check_elder_player.py
 ```
+
+来源 8／10 的兄弟姓名已按原 HUD 放大字形订正，旧阶段文件名保留历史标签，当前姓名以 [CHARACTER_IDS.md](../../docs/research/md-yuyuhakusho/CHARACTER_IDS.md) 为准。
 
 完成所需检查后，`summarize_independent_session.py` 核对原生／Wasm 报告、当前源码、测试日志和浏览器结果并生成绑定摘要；它本身不运行游戏或替代检查。
 

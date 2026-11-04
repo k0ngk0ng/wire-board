@@ -47,7 +47,7 @@
     },
     {
       "source_id": 8,
-      "display_name": "户愚吕弟"
+      "display_name": "户愚吕兄"
     },
     {
       "source_id": 9,
@@ -55,8 +55,17 @@
     },
     {
       "source_id": 10,
-      "display_name": "户愚吕兄"
+      "display_name": "户愚吕弟"
     }
   ],
-  "method": "Decode four32-byte4bpp tiles for each16x16 glyph referenced by MatchStartLibrary.Names; preserve source order"
+  "method": "Decode four32-byte4bpp tiles for each16x16 glyph referenced by MatchStartLibrary.Names; preserve source order",
+  "identity_correction": {
+    "date": "2026-11-05",
+    "previous_source8_name": "户愚吕弟",
+    "previous_source10_name": "户愚吕兄",
+    "corrected_source8_name": "户愚吕兄",
+    "corrected_source10_name": "户愚吕弟",
+    "method": "Reinspect enlarged original HUD glyph rows8/10 and actual original character appearance; no source-ID/rule/media change",
+    "previous_mapping_commit": "6cd41830"
+  }
 }

@@ -1,0 +1,234 @@
+{
+  "pass": true,
+  "scope": "Narrow147ae callback, original source8 creator/clock/child lifetime, real special input and existinga6 semantic equality",
+  "go_version": "go version go1.26.2 darwin/arm64",
+  "canonical_contract": {
+    "new_world_fields": 0,
+    "object_id_owner": "Animation.ObjectID",
+    "parent_dependency": false,
+    "velocity_power_hitstop_pool_inputs": false,
+    "clear_order": "ApplyObjectClearPrefix then merge Animation/Header/graphics/cache/health/shake/screen/shared buffers/sound",
+    "chu_projectile_state_used": false
+  },
+  "test_first": {
+    "own_missing_symbols_observed": true,
+    "private_cpu_and_all_tests_precede_rule_file": true,
+    "test_source_unchanged_since_red": true,
+    "original_private_fixtures_unchanged_since_red": true,
+    "special_natural_added_to_existing_prior_test": true
+  },
+  "evidence": {
+    "oracle": {
+      "path": "games/yuyuhakusho/engine/testdata/fighter8-projectile-oracle-manifest.json",
+      "manifest_sha256": "4e5494c4541249aa92ddfc85387a961115ca2def35db3155cd3063fc2f180bb3",
+      "pass": false,
+      "baseline_verified": true,
+      "records": 0,
+      "calls": 0,
+      "kind_counts": {},
+      "fixture_sha256": "a95d0e5d1f08801f60a4ef19f8e6cca84ad4350e61c7c8466a66d59f2c88b0a6",
+      "gzip_sha256": "5b7ffa245842012dae04cdc33bb35af8da7f47598a9d175a1f0881fe32fa7b2f",
+      "interrupt_calls": 0,
+      "external_change_calls": 0,
+      "unexplained_changes": 0
+    },
+    "boundaries": {
+      "path": "games/yuyuhakusho/engine/testdata/fighter8-projectile-boundaries-manifest.json",
+      "manifest_sha256": "47ae89f1520ce7b74dadd9e19b1d38c0e8a41b3d6758e4480b9db5cad57ac8f7",
+      "pass": true,
+      "baseline_verified": true,
+      "records": 3279,
+      "calls": 3279,
+      "kind_counts": {
+        "child": 3135,
+        "creator": 144
+      },
+      "fixture_sha256": "dc531520e544637060b30a81a1c9399791a1bebf85b705b5d0711eee4ae05cdd",
+      "gzip_sha256": "3e3c16920305d12f4bdfd95494d37c161bf6729287eb9105b62eb7978d7eaacf",
+      "interrupt_calls": 0,
+      "external_change_calls": 0,
+      "unexplained_changes": 0
+    },
+    "sequences": {
+      "path": "games/yuyuhakusho/engine/testdata/fighter8-projectile-sequences-manifest.json",
+      "manifest_sha256": "1e689be2cb39a9ae6f5e63e48335d77af1c64864206d3d6981e77a1749fa1b61",
+      "pass": true,
+      "baseline_verified": true,
+      "records": 24,
+      "calls": 7788,
+      "kind_counts": {
+        "clock": 1752,
+        "creator": 1752,
+        "record": 1752,
+        "child": 2532
+      },
+      "fixture_sha256": "4ccf4c72479c25cac8582c684bfc49350b0168e76f0f922c0415233e91046338",
+      "gzip_sha256": "6f917483cc4ab030c67cddb0334dd2855b3cfa61335202772bb5c1dfcb1898b2",
+      "interrupt_calls": 0,
+      "external_change_calls": 0,
+      "unexplained_changes": 0
+    },
+    "special-oracle": {
+      "path": "games/yuyuhakusho/engine/testdata/fighter8-projectile-special-oracle-manifest.json",
+      "manifest_sha256": "70fb3ed3f8bad675c3db91aaba048e27b5c55f30f088e0a599f2363590577272",
+      "pass": true,
+      "baseline_verified": true,
+      "records": 105,
+      "calls": 105,
+      "kind_counts": {
+        "child": 105
+      },
+      "fixture_sha256": "d752e36e04243551e8c4c874d546c827b175b1c8ecac2a091bea4f71be20906a",
+      "gzip_sha256": "e899bbb80f1f1e82bd4e21e008b333b2db0834379438781a2ae7b35041b564c0",
+      "interrupt_calls": 6,
+      "external_change_calls": 3,
+      "unexplained_changes": 0
+    }
+  },
+  "natural_lifecycle": {
+    "callbacks": 105,
+    "draws": 104,
+    "deletions": 1,
+    "first_video_step": 1817,
+    "clear_video_step": 1921,
+    "cleared_bytes": 256
+  },
+  "continuous": {
+    "streams": 24,
+    "stages": 7788,
+    "readonly_timing_refreshes": 1752,
+    "original_cpu_calls": 6036,
+    "child_calls": 2532,
+    "parent_move_flip_invariants": 24,
+    "all_created_children_deleted": true,
+    "no_expected_state_injection": true
+  },
+  "animation_data": {
+    "existing_child_records": 4,
+    "source_animation_set": "D1E5A",
+    "source_shape_set": "D2C6A",
+    "pose": "A6",
+    "durations": [
+      80,
+      8,
+      8,
+      8
+    ],
+    "existing_catalog_equal": true,
+    "runtime_data_bundle_or_schema_changes": false
+  },
+  "irq_attribution": [
+    {
+      "video_step": 1825,
+      "entry_registers": [
+        "0xfffff000",
+        "0xfffff000"
+      ],
+      "exits": [
+        "0xfff09a",
+        "0xfff0a8"
+      ],
+      "irq_delta_bytes": [
+        85,
+        1
+      ],
+      "outside_rule_final_bytes": 26,
+      "unexplained_bytes": 0
+    },
+    {
+      "video_step": 1826,
+      "entry_registers": [
+        "0xfffff000",
+        "0xfffff000"
+      ],
+      "exits": [
+        "0xfff09a",
+        "0xfff0a8"
+      ],
+      "irq_delta_bytes": [
+        84,
+        1
+      ],
+      "outside_rule_final_bytes": 25,
+      "unexplained_bytes": 0
+    },
+    {
+      "video_step": 1828,
+      "entry_registers": [
+        "0xfffff000",
+        "0xfffff000"
+      ],
+      "exits": [
+        "0xfff09a",
+        "0xfff0a8"
+      ],
+      "irq_delta_bytes": [
+        82,
+        1
+      ],
+      "outside_rule_final_bytes": 25,
+      "unexplained_bytes": 0
+    }
+  ],
+  "checks": {
+    "native": {
+      "pass": true,
+      "top_level_tests": 5,
+      "elapsed_seconds": 25.083,
+      "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+      "log": "games/yuyuhakusho/engine/testdata/fighter8-projectile-native.jsonl",
+      "log_sha256": "b0bb751f828277ec34d59da00ea97bfda46a54256f58aedc73e06fd665487f02",
+      "command": "go test -race -count=1 -json ./games/yuyuhakusho/engine -run ^TestFighter8Projectile"
+    },
+    "wasm": {
+      "pass": true,
+      "top_level_tests": 5,
+      "elapsed_seconds": 6.245,
+      "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+      "log": "games/yuyuhakusho/engine/testdata/fighter8-projectile-wasm.jsonl",
+      "log_sha256": "91d910b088381a78a3dfae276fba90f952f494fc71bacbc0466cbbc83218c850",
+      "command": "GOOS=js GOARCH=wasm go test -count=1 -json -exec <GOROOT>/lib/wasm/go_js_wasm_exec ./games/yuyuhakusho/engine -run ^TestFighter8Projectile"
+    },
+    "vet": {
+      "pass": true,
+      "command": "go vet ./games/yuyuhakusho/engine",
+      "excluded": [],
+      "log": "games/yuyuhakusho/engine/testdata/fighter8-projectile-vet.txt",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "source_sha256": {
+    "docs/research/md-yuyuhakusho/static/fighter8-projectile.txt": "1653e3b60e1de830a79d971510e2d05c24ca3315c6b03ee5aab7cc04175c856d",
+    "games/yuyuhakusho/data/animation-catalog.json.gz": "845e2f43179f831130b40c4b796843fdc0c3ae4c699d605e4326905800781495",
+    "games/yuyuhakusho/engine/FIGHTER8_PROJECTILE_VERIFICATION.md": "fad39207bff932fb18f55f7ede53429a0c81f1d6c2a97d47719e79b942f638b1",
+    "games/yuyuhakusho/engine/animation_clock.go": "fa868c5c160fa22fba71520d80c18e8d1f40217ff9a64c6d90a231eab65f28a4",
+    "games/yuyuhakusho/engine/animation_records.go": "15e3eb6b849d7d29f8b3b55f9c843b36c9ce38fbf3fa4ffa71a9672593d13cbe",
+    "games/yuyuhakusho/engine/fighter3_air_motion_test.go": "33ea38d6b6cd4ab568fe108be1d3baba972fe857ad55b3e9996af7ea20863d11",
+    "games/yuyuhakusho/engine/fighter8_motion.go": "4783a7fe4526a1aa558dca22b5849bcfa2dd45e615c81ee9635b644eae7d9f53",
+    "games/yuyuhakusho/engine/fighter8_projectile.go": "37e56a34b71a99ac28e13aa9659a19b0acadd6ed7b4c2ca8eb0c6602756d7138",
+    "games/yuyuhakusho/engine/fighter8_projectile_test.go": "c8c1104c6730a4d9974b044bee1911df75b138e56ee10a6199ff67c416fc6f31",
+    "games/yuyuhakusho/engine/motion.go": "35dc27314a13afdff39d96d2d21911c5ba5030baf00ea81d1daf8f9feb5f8878",
+    "games/yuyuhakusho/engine/testdata/fighter8-projectile-animation-validation.json": "82bbbf4a1389ca36aee519c4da685db48ec41fa79369b2b2283c2a6d1b0b8ca8",
+    "games/yuyuhakusho/engine/testdata/fighter8-projectile-cleanup.json": "0a30700afa35f9adc9ec4074883c363e1705784c41aeb449c0980079240782d1",
+    "games/yuyuhakusho/engine/testdata/fighter8-projectile-red.jsonl": "65247c92957dc45d18ba68081d1a41ae5cb7f40a3711ecf21a24d014ea2232bf",
+    "games/yuyuhakusho/engine/testdata/fighter8-projectile-special-animation-validation.json": "2ca4735e65f4346d019697c9c8e1d1ca9adeeca1863067f7dbc7a76967303751",
+    "games/yuyuhakusho/engine/testdata/fighter8-projectile-test-first.json": "dc9181e175f669354d798f37235ffe26ea07a5dfc8998e94a10da2f59d3e5e7d",
+    "games/yuyuhakusho/engine/world_objects_test.go": "be37d61ae8dd40dc85a63efe4846118aa71f3ddf0d92333a89f4b0be9483e719",
+    "scripts/yuyuhakusho/capture_fighter8_projectile.py": "17b30d4b67410b2fbbd8b8c7181068769ac89f407ff05f8a05ccfbe2bf7deb2d",
+    "scripts/yuyuhakusho/static/MdControlProbe.java": "44903c14bfe5a1ffc354e4fab1eb5893303081bbe55aa9f620808daf4ebe18a8"
+  },
+  "limits": [
+    "Ordinary real-menu flow verifies its complete baseline but has zero147ae calls, explicitly pass:false; only real special input is claimed natural callback evidence",
+    "Clock/motion/child/data-refresh boundaries are not full actor/world/collision/active FX or platform/browser E2E",
+    "Parent freezes after leaving3f while its child continues; timing refreshes modify only Duration/Flags from own current immutable keys",
+    "Existing whole-object fields outside the narrow view must be cleared by the outer canonical prefix operation",
+    "Direct Ghidra68000 static evidence is not REA decompilation; ROM/core remain research-only",
+    "No existing Go, runtime data/bundle/schema, PROGRESS, other reports or6cd41830 local service asset changes"
+  ],
+  "character": {
+    "source_id": 8,
+    "display_name": "户愚吕兄",
+    "original_hud_name": "戸愚呂(兄)",
+    "name_correction": "Earlier source8/source10 sibling labels were reversed; source IDs, code, original CPU bytes, baselines and initial red evidence remain unchanged."
+  }
+}

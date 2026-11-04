@@ -241,6 +241,10 @@ func visitChuWorldTest(t *testing.T, handle func(chuWorldOriginalPass), fixtureN
 			wantRecords, wantFrames = 3165, 5500
 		} else if name == "chu-world-fighter2-special" {
 			wantRecords, wantFrames = 1801, 3600
+		} else if name == "chu-world-fighter8" {
+			wantRecords, wantFrames = 3154, 5500
+		} else if name == "chu-world-fighter8-special" {
+			wantRecords, wantFrames = 1801, 3600
 		}
 	}
 	zipped, err := os.ReadFile("testdata/" + name + ".json.gz")

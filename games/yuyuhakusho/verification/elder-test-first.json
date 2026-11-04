@@ -1,0 +1,25 @@
+{
+  "baseline_commit": "6cd41830",
+  "scope": "Source8 full world, fresh CLI and native browser specifications before shared source8 implementation",
+  "files": {
+    "games/yuyuhakusho/engine/fighter8_world_test.go": "de3a9de07bc1d62620bd5aed772ade5400bfc53161754d1902c4cb215d55237b",
+    "scripts/yuyuhakusho/verify_elder_sessions.sh": "fc0a6126952e44542ae1b18a82a4d1252308f28db6fc37aeb578f656f8b8d316",
+    "scripts/yuyuhakusho/check_elder_player.py": "88c674fb899f7eaf2104a3682156ebe924ae1eceaf4d04829e41cb777b8da1fa"
+  },
+  "before_identity_correction_files": {
+    "games/yuyuhakusho/engine/fighter8_world_test.go": "de3a9de07bc1d62620bd5aed772ade5400bfc53161754d1902c4cb215d55237b",
+    "scripts/yuyuhakusho/verify_younger_sessions.sh": "348454dc52122920b556204b3f4b0b94b1aab1c64d285580238e60b765368fc9",
+    "scripts/yuyuhakusho/check_younger_player.py": "a92626261c03fdfe320befd0a9be2546b1d3f3d31b99b53502dd4c6c267c3a3f"
+  },
+  "identity_followup_test": {
+    "scope": "Name-correction assertions before UI fix; earlier original identity map is preserved as historical evidence",
+    "source8_correct_name": "户愚吕兄",
+    "source10_correct_name": "户愚吕弟",
+    "test_path_before_rename": "scripts/yuyuhakusho/check_younger_player.py",
+    "test_sha256_before_fix": "c7a564b7f08a9c51e498d2895d54a51709ef6802af093bef2e3da5ffd992d28d",
+    "ui_sha256_before_fix": "db7fae62d63da4b606335ca1aba6090c3743d3241cf7f884d460defbe24b1ed2",
+    "red_log_path": ".local/md-yuyuhakusho/toguro-name-red.txt",
+    "red_log_sha256": "b077062698786118f4789af259b593a52dcf8d34d2d295133604c3794af39133"
+  },
+  "path_label_refinement": "Corrected current source8 stage names/paths after re-reading original glyphs: source8 elder/source10 younger. All48 native/Wasm fresh report payloads preserved byte-for-byte, CLI numeric inputs/assertions unchanged; UI gained name assertions before display fix."
+}
