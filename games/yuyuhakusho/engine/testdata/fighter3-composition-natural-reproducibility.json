@@ -1,0 +1,66 @@
+{
+  "pass": true,
+  "scope": "Final sampler source rebinding after private-stimulus changes; both original natural flows and all CPU gzip data byte-identical, only producer SHA metadata differs",
+  "changes": [
+    {
+      "fixture": "fighter3-composition-action-natural",
+      "CPU_data_unchanged": true,
+      "differences": {
+        "capture_sha256": {
+          "before": "2d5bc90775b23b158b120337c1c7aa063aa978e66d9fd1e898c208b26e72a8a4",
+          "after": "135c5ae96cb72d986d94bb3089223e431568bd84a4658cc73c885778dc3a23b8"
+        }
+      }
+    },
+    {
+      "fixture": "fighter3-composition-input-natural",
+      "CPU_data_unchanged": true,
+      "differences": {
+        "capture_sha256": {
+          "before": "2d5bc90775b23b158b120337c1c7aa063aa978e66d9fd1e898c208b26e72a8a4",
+          "after": "135c5ae96cb72d986d94bb3089223e431568bd84a4658cc73c885778dc3a23b8"
+        }
+      }
+    },
+    {
+      "fixture": "fighter3-composition-actor-natural",
+      "CPU_data_unchanged": true,
+      "differences": {
+        "capture_sha256": {
+          "before": "2d5bc90775b23b158b120337c1c7aa063aa978e66d9fd1e898c208b26e72a8a4",
+          "after": "135c5ae96cb72d986d94bb3089223e431568bd84a4658cc73c885778dc3a23b8"
+        }
+      }
+    },
+    {
+      "fixture": "fighter3-composition-action-special",
+      "CPU_data_unchanged": true,
+      "differences": {
+        "capture_sha256": {
+          "before": "2d5bc90775b23b158b120337c1c7aa063aa978e66d9fd1e898c208b26e72a8a4",
+          "after": "135c5ae96cb72d986d94bb3089223e431568bd84a4658cc73c885778dc3a23b8"
+        }
+      }
+    },
+    {
+      "fixture": "fighter3-composition-input-special",
+      "CPU_data_unchanged": true,
+      "differences": {
+        "capture_sha256": {
+          "before": "2d5bc90775b23b158b120337c1c7aa063aa978e66d9fd1e898c208b26e72a8a4",
+          "after": "135c5ae96cb72d986d94bb3089223e431568bd84a4658cc73c885778dc3a23b8"
+        }
+      }
+    },
+    {
+      "fixture": "fighter3-composition-actor-special",
+      "CPU_data_unchanged": true,
+      "differences": {
+        "capture_sha256": {
+          "before": "2d5bc90775b23b158b120337c1c7aa063aa978e66d9fd1e898c208b26e72a8a4",
+          "after": "135c5ae96cb72d986d94bb3089223e431568bd84a4658cc73c885778dc3a23b8"
+        }
+      }
+    }
+  ]
+}

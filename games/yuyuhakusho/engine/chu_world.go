@@ -349,7 +349,7 @@ func stepChuWorldArena(state *ChuWorldState, object WorldObject, library ArenaRu
 }
 
 func stepChuWorldFighter(state *ChuWorldState, object WorldObject, view ChuWorldView, library ChuWorldLibrary, hudCursor *uint16) ([]ChuWorldEvent, error) {
-	if _, ok := chuAIIndex(object.ObjectID); !ok || (object.Tag != 0 && object.Tag != 9 && object.Tag != 10) {
+	if _, ok := chuAIIndex(object.ObjectID); !ok || (object.Tag != 0 && object.Tag != 3 && object.Tag != 9 && object.Tag != 10) {
 		return nil, errors.New("complete fighter action source is not recovered")
 	}
 	switch object.Header.Stage {

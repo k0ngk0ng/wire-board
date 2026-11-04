@@ -1,0 +1,195 @@
+{
+  "pass": true,
+  "scope": "Complete source3 air22+1863a and reused source3 child initialization/natural/family contexts; pre-tail/draw/prefix-clear boundaries",
+  "go_version": "go version go1.26.2 darwin/arm64",
+  "test_first": {
+    "own_missing_symbol_observed": true,
+    "test_unchanged_since_red": true,
+    "preimplementation_cpu_capture_preserved": ".local/md-yuyuhakusho/fighter3-air-motion",
+    "final_irq_annotation_recapture_rule_scopes_unchanged": true
+  },
+  "evidence": {
+    "oracle": {
+      "path": "games/yuyuhakusho/engine/testdata/fighter3-air-motion-oracle-manifest.json",
+      "sha256": "747b6935eb71a76a737f31afd8223723623133da95834b28dcd36748da7445b3",
+      "records": 175,
+      "calls": 175,
+      "kind_counts": {
+        "charge": 48,
+        "main": 77,
+        "release": 31,
+        "air": 19
+      },
+      "fixture_sha256": "09fc32506c3ec69149ed47c0ff8a3a7db426bb3e52f36a19ddace23e7e1905c0",
+      "gzip_sha256": "38a3c77d3c2fd12b7bfe93013ac0e5b7db99716e9402827b32693c98961cc91c",
+      "external_change_calls": 1,
+      "interrupt_calls": 2,
+      "unexplained_change_calls": 0
+    },
+    "boundaries": {
+      "path": "games/yuyuhakusho/engine/testdata/fighter3-air-motion-boundaries-manifest.json",
+      "sha256": "9dc1877ed91767e848a89745117181f29c6d1a89cd29623a3f37ef6ba9ed727e",
+      "records": 4908,
+      "calls": 4908,
+      "kind_counts": {
+        "air": 4764,
+        "main": 36,
+        "charge_motion": 36,
+        "charge": 36,
+        "release": 36
+      },
+      "fixture_sha256": "2feb6424bd54ec9a844b869c712e9453ce2dc319ae67cfc80e7f2095bdec354f",
+      "gzip_sha256": "b1af6c671f6d4a0046b7572f450c7f7ddfc4d477d7bbf5c17a0a98250b4e6bf2",
+      "external_change_calls": 0,
+      "interrupt_calls": 0,
+      "unexplained_change_calls": 0
+    },
+    "sequences": {
+      "path": "games/yuyuhakusho/engine/testdata/fighter3-air-motion-sequences-manifest.json",
+      "sha256": "00be23aabc20d3bae93d759d044f6dfc54c8a12713dba996f7cc5119e50fd185",
+      "records": 24,
+      "calls": 6272,
+      "kind_counts": {
+        "clock": 952,
+        "air": 304,
+        "record": 952,
+        "main": 2880,
+        "release": 264,
+        "charge_motion": 648,
+        "charge": 272
+      },
+      "fixture_sha256": "7a6a1b4286799e0eec19b372fdc33223974598a2928809cd3e5266ac29e758cb",
+      "gzip_sha256": "a622b84baaa5671785b701798a3f137a7e0d4c6a9feb3d60bf682dec4825236b",
+      "external_change_calls": 0,
+      "interrupt_calls": 0,
+      "unexplained_change_calls": 0
+    }
+  },
+  "continuous": {
+    "streams": 24,
+    "air_streams": 16,
+    "ground_charge_streams": 8,
+    "total_stages": 6272,
+    "readonly_timing_refreshes": 952,
+    "original_cpu_calls": 5320,
+    "parent_recovers": true,
+    "all_created_children_deleted": true
+  },
+  "irq_attribution": {
+    "video_step": 2565,
+    "callback": "1afc8/source3 slot22",
+    "entry_registers": [
+      "0xfffff000",
+      "0xfffff000"
+    ],
+    "entries": [
+      "0xfff000",
+      "0xfff000"
+    ],
+    "exits": [
+      "0xfff09a",
+      "0xfff0a8"
+    ],
+    "irq_changed_bytes": [
+      86,
+      1
+    ],
+    "outside_rule_final_changed_bytes": 26,
+    "unexplained_bytes": 0,
+    "F517_chain": [
+      {
+        "before": 0,
+        "after": 2
+      },
+      {
+        "before": 2,
+        "after": 4
+      }
+    ],
+    "comparison_policy": "All scoped family/FX/shape/RNG/sound bytes compared exactly; outside scoped bytes must form the observed IRQ write chain, no zeroing or expected-value injection"
+  },
+  "checks": {
+    "native": {
+      "pass": true,
+      "command": "go test -race -count=1 -json ./games/yuyuhakusho/engine -run ^TestFighter3AirMotion",
+      "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+      "top_level_tests": 3,
+      "elapsed_seconds": 22.714,
+      "log": "games/yuyuhakusho/engine/testdata/fighter3-air-motion-native.jsonl",
+      "log_sha256": "9a00748ffe28b913c486aadfab5a5176d36f2fa095fe05b8674dc338e2e2df5e"
+    },
+    "wasm": {
+      "pass": true,
+      "command": "GOOS=js GOARCH=wasm go test -count=1 -json -exec <GOROOT>/lib/wasm/go_js_wasm_exec ./games/yuyuhakusho/engine -run ^TestFighter3AirMotion",
+      "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+      "top_level_tests": 3,
+      "elapsed_seconds": 5.743,
+      "log": "games/yuyuhakusho/engine/testdata/fighter3-air-motion-wasm.jsonl",
+      "log_sha256": "12118436c7f142fed1552752234f4b76e40fb5929fb9e173dde2a3d9cd754e6d"
+    },
+    "vet": {
+      "pass": true,
+      "command": "go vet ./games/yuyuhakusho/engine",
+      "excluded": [],
+      "exit_code": 0,
+      "log": "games/yuyuhakusho/engine/testdata/fighter3-air-motion-vet.txt",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "source_sha256": {
+    "games/yuyuhakusho/engine/fighter3_air_motion.go": "8d7d87cee7ffa48644d275bff5a7aee8209c7825583928de1fd3e04777e622d4",
+    "games/yuyuhakusho/engine/fighter3_air_motion_test.go": "33ea38d6b6cd4ab568fe108be1d3baba972fe857ad55b3e9996af7ea20863d11",
+    "games/yuyuhakusho/engine/FIGHTER3_AIR_MOTION_VERIFICATION.md": "fecfd6b1f1eff5a7c189f02e19dabe6048a4f0f136181fb0bcc61c5859270f6b",
+    "scripts/yuyuhakusho/capture_fighter3_air_motion.py": "049552d0e9ccdc1fe7c29e3df3f98c30a1a69d794f20581871af2d55bc3d4cb1",
+    "games/yuyuhakusho/engine/fighter0_motion.go": "3fcd2c8280c1383f41198d87ffba62936aaad259acff8413713d4ba18b35cf71",
+    "games/yuyuhakusho/engine/chu_special_motion.go": "5c37d35003f4f983010232d495b6e45143553a36b347edbaf2aa494006839c98",
+    "games/yuyuhakusho/engine/chu_projectile.go": "b6b6f115b819c74cb771707f04e18a801d382b2e5a152d5f4c10b01d7bf79363",
+    "games/yuyuhakusho/engine/chu_attachments.go": "7aac1a6716a25445e4c9f6302af4b810d1cb6e421f425e6aec15c29100efb48c",
+    "games/yuyuhakusho/engine/fighter0_projectile.go": "75fd4602a62ced5944f8be174faa6f3906e295cd1e62f3f091de9593c02d1915",
+    "games/yuyuhakusho/engine/animation_clock.go": "fa868c5c160fa22fba71520d80c18e8d1f40217ff9a64c6d90a231eab65f28a4",
+    "games/yuyuhakusho/engine/ground_actions.go": "cc6106a696c63bb39293694ed8cc63e04586ceb89e6b04454fb08970aedca80c",
+    "games/yuyuhakusho/data/animation-catalog.json.gz": "845e2f43179f831130b40c4b796843fdc0c3ae4c699d605e4326905800781495",
+    "games/yuyuhakusho/data/chu-projectile-animation.json": "f6f72392d7e0010259659578f0ac70b94db67c255455e5378f64a61169467137",
+    "games/yuyuhakusho/data/fighter0-projectile-rules.json": "e621888c399662b8e3df190530f4712e5312e83b34074190dd2785a20b963d3f",
+    "games/yuyuhakusho/engine/testdata/chu-attachments-oracle.json.gz": "d65ec7ddef4ef34923e950bd3a8b48d27df53da69adea5a51f700d4654334475",
+    "docs/research/md-yuyuhakusho/static/fighter-action-slots-focused.txt": "c6a52e94bea31dc12e08c6cd76a282dc4ae51c56288f2df3e7bef40cd72a072d",
+    "docs/research/md-yuyuhakusho/static/fighter-action-constructors-focused.txt": "e43cec558dad5ba037b0ad39577ec0ebc8b9d9a6c6af0b667596d35e0ae44dad",
+    "docs/research/md-yuyuhakusho/static/world-frame-irq.txt": "15b00ba93c9aa7a4a0a6fed6d068e1d650a4b8765c3979060fa3bd704f9f1047",
+    "games/yuyuhakusho/engine/testdata/fighter3-air-motion-red.jsonl": "900388649bbfb07f6cdc20b110e2e5e061433d637cfd0eeb2457fd05b7a32eb2",
+    "games/yuyuhakusho/engine/testdata/fighter3-air-motion-test-first.json": "ba70651cb1513a5e1fa3132aa23444ec858e54144bbdf632d050c7f3f8990c5c",
+    "games/yuyuhakusho/engine/testdata/fighter3-air-motion-cleanup.json": "fc9dda03116061f2ced3b04435b5dc6bc7a647b14661c1e6aba640613106e4ac"
+  },
+  "reused_function_sha256": {
+    "stepChuWorldProjectile": {
+      "source": "games/yuyuhakusho/engine/chu_world.go",
+      "function_sha256": "edec004f48b42be3b4cc95500d37a0cb0b0cbed04c96641151c303e88ad9ead0"
+    },
+    "stepFighter0WorldProjectile": {
+      "source": "games/yuyuhakusho/engine/chu_world.go",
+      "function_sha256": "c59cb7c3a6af17e2f020071e356583f41541d4019e877fd6ada4e5a105f233ca"
+    },
+    "stepWorldProjectile": {
+      "source": "games/yuyuhakusho/engine/chu_world.go",
+      "function_sha256": "544482762528b561dd56438219a300d12c52e8d0960c82f2de0681cab70d993f"
+    },
+    "stepChuWorldAttachment": {
+      "source": "games/yuyuhakusho/engine/chu_world.go",
+      "function_sha256": "5a7549f693409006cd728dba3e5b602cf93c6d79c3b7cc383015a435c778bd4a"
+    },
+    "AsChuChild": {
+      "source": "games/yuyuhakusho/engine/world_objects.go",
+      "function_sha256": "aaa3e94a76a955852664b9116923b856415109c150a0875453376656dd4f34a5"
+    },
+    "MergeChuChild": {
+      "source": "games/yuyuhakusho/engine/world_objects.go",
+      "function_sha256": "99cb04e630beb261569a920d1144d3e6058cded7eed61694cebc6a8a4bb04b4f"
+    }
+  },
+  "limits": [
+    "Closed phases and parent/child families do not constitute complete actor/world, collision, FX lifetime or platform E2E",
+    "Parent freezes after leaving22/17 while remaining covered child callbacks continue; no ordinary air physics or new world clock is inferred",
+    "Read-only timing refreshes use each side own current pose/index and modify only Duration/Flags; no expected state or RNG reinjection",
+    "No new child implementation, canonical storage, semantic asset bundle, release or8799 service asset changes",
+    "Existing raw68000 instruction evidence is direct Ghidra; no REA decompilation claimed"
+  ]
+}

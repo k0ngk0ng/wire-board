@@ -1,0 +1,37 @@
+{
+  "stage": "six source3 composition tests written before source3 complete-driver support",
+  "recorded_at_utc": "2026-11-04T19:23:00.260990+00:00",
+  "expected_actual_gap": "StepFighterAction/Actor source3 unsupported; shared full Input may already pass",
+  "test_top_levels": 6,
+  "files": [
+    {
+      "path": "games/yuyuhakusho/engine/fighter3_composition_test.go",
+      "sha256": "cdf866c122e055536551fff602069d406e1170e874df0dded4263210771ed9fe"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/FIGHTER3_COMPOSITION_VERIFICATION.md",
+      "sha256": "1376b571f8570d3d7d58545422f4dce87c272d0786df61de757108fc334ad449"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_action.go",
+      "sha256": "93b0cc71556874fd33f94f8f2bcc8bb3bd30c8715ddf53b45397cce82ff2fd8f"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_actor.go",
+      "sha256": "e3d3f3db3f8935a27cc63df395bbacb55f1b70f0f10c12edc6a3e2c487a964cf"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_input.go",
+      "sha256": "a9d14993c78d4ae89403824254d72edc3a6315f61928c65129e8b67ac870e294"
+    }
+  ],
+  "actual_early_red": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter3-composition-red.jsonl",
+    "sha256": "1772094605fc1b020000d84a58a3ff490bce1d400703f7981a015ef85774edab",
+    "executed_tests": [
+      "TestFighter3CompositionOriginalActions",
+      "TestFighter3CompositionOriginalActors"
+    ],
+    "result": "Both actual source3 unsupported runtime errors; all six tests already written, private fixtures pending"
+  }
+}

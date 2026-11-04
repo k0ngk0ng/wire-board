@@ -1,0 +1,75 @@
+{
+  "pass": true,
+  "scope": "Single-initial-state original parent-clock/data and scheduled-child trajectories",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "049552d0e9ccdc1fe7c29e3df3f98c30a1a69d794f20581871af2d55bc3d4cb1",
+  "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+  "records": 24,
+  "calls": 6272,
+  "kind_counts": {
+    "clock": 952,
+    "air": 304,
+    "record": 952,
+    "main": 2880,
+    "release": 264,
+    "charge_motion": 648,
+    "charge": 272
+  },
+  "library_frames": 26,
+  "fixture_sha256": "7a6a1b4286799e0eec19b372fdc33223974598a2928809cd3e5266ac29e758cb",
+  "gzip_sha256": "a622b84baaa5671785b701798a3f137a7e0d4c6a9feb3d60bf682dec4825236b",
+  "baselines": [
+    {
+      "input": "docs/research/md-yuyuhakusho/source3-next-inputs.json",
+      "input_sha256": "3e787e19b0ddc2215823b85c69517ac10a6f91ca1864e6ba9dc964f2f97e1a84",
+      "reference": "games/yuyuhakusho/engine/testdata/fighter3-attacks-reference-frames.json",
+      "reference_raw_sha256": "a20e8029125446561c73d7c81f4882b31fc7177f7cd486bd303c8dc99f6ec529",
+      "reference_manifest": "games/yuyuhakusho/engine/testdata/fighter3-attacks-reference-manifest.json",
+      "reference_manifest_sha256": "e385f967f0dd440ded344e6808cdf9f88c5a105a893894cc2bf6516df6265673",
+      "video_steps": 3600,
+      "all_ram_video_match": true
+    },
+    {
+      "input": "games/yuyuhakusho/engine/testdata/fighter3-special-inputs.json",
+      "input_sha256": "1d917b7eb7749b40f16fb3ff306bc67550957184c1acef4d3f7447b3ca719f30",
+      "reference": "games/yuyuhakusho/engine/testdata/fighter3-attacks-special-reference-frames.json",
+      "reference_raw_sha256": "44ee6be0cb2b4d002f1c58770abe63f17e076d60c498d6764639f89e89ec37bf",
+      "reference_manifest": "games/yuyuhakusho/engine/testdata/fighter3-attacks-special-reference-manifest.json",
+      "reference_manifest_sha256": "b2c3d0ed4e5a0ed6aa9c4785ae000b16234a8269012e1624bdf1763880dbae4e",
+      "video_steps": 3602,
+      "all_ram_video_match": true
+    }
+  ],
+  "binding": {
+    "source_tag": 3,
+    "animation_set": 806634,
+    "shape_set": 810410,
+    "parameter_pointer": 75098,
+    "source_actor_sha256": "78387a97a717b2f0e0cea010064c49a26c57ab7f20346ad0f548a93be05dbda3"
+  },
+  "frames_match_original_core": true,
+  "rng_calls": 0,
+  "external_queue_calls": 0,
+  "external_change_calls": 0,
+  "interrupt_calls": 0,
+  "unexplained_change_calls": 0,
+  "draws": 3360,
+  "clears": 56,
+  "errors": [],
+  "incomplete_calls": 0,
+  "limits": [
+    "Callbacks stop before sprite emission or shared parent tail, or after prefix clear",
+    "Private parent timing records refresh only Duration/Flags from its actual immutable keys; not shape/tail outputs",
+    "Recovered parent freezes after leaving its covered motion while remaining child callbacks continue to deletion",
+    "No collision consumers, active FX callbacks, full actor/world or platform execution in these family streams"
+  ]
+}
