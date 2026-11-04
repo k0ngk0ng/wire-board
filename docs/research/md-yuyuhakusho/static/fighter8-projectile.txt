@@ -1,0 +1,37 @@
+route=direct-ghidra-headless; REA raw 68000 unsupported
+language=68000:BE:32:default
+source=MD Yu Yu Hakusho Japan; static reachable instructions only
+
+seeds=147ae scope=0x147ae..0x149ab
+000147ae move.w (0x6,A5),D0w
+000147b2 bne.b 0x0001480c
+000147b4 addq.w #0x2,(0x6,A5)
+000147b8 move.w #0x0,(0x28,A5)
+000147be move.w #0x0,(0x2a,A5)
+000147c4 clr.w (0x3c,A5)
+000147c8 clr.l (0x2c,A5)
+000147cc clr.l (0x30,A5)
+000147d0 clr.l (0x34,A5)
+000147d4 clr.l (0x38,A5)
+000147d8 move.l #0xd104a,(0x1c,A5)
+000147e0 move.l #0x1e0000,(0x20,A5)
+000147e8 move.l #0xd1e5a,(0x50,A5)
+000147f0 move.l #0xd2c6a,(0x8c,A5)
+000147f8 move.w (0xffffa03e).w,D0w
+000147fc or.w D0w,(0x24,A5)
+00014800 move.b #0x8,(0x5a,A5)
+00014806 move.b #-0x1,(0x5b,A5)
+0001480c move.w #0xff,(0x78,A5)
+00014812 tst.b (0xfffff550).w
+00014816 bmi.b 0x0001483e
+00014818 cmpi.b #0x0,(0xfffff55a).w
+0001481e bne.b 0x0001483e
+00014820 clr.b (0x6a,A5)
+00014824 jsr 0x00019c96.l
+0001482a cmpi.b #0x1,(0x60,A5)
+00014830 beq.b 0x0001487c
+00014832 jsr 0x0001eb40.l
+00014838 jsr 0x000156f0.l
+0001483e jmp 0x00001580.l
+0001487c jmp 0x00003556.l
+printed_instructions=31

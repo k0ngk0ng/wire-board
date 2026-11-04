@@ -1,6 +1,6 @@
-# 五角色／默认场地本地研究页
+# 六角色／默认场地本地研究页
 
-当前可以在浏览器选择幻海、桑原、幽助、酎或户愚吕兄，与原版恢复的电脑策略对战。支持 2／3／4 人混战和 4 人组队，提供电脑演示。人物、特效、默认场地及 HUD 使用独立索引素材；对局由独立 Go／Wasm 规则运行，不加载 ROM 或模拟器。
+当前可以在浏览器选择幻海、桑原、幽助、户愚吕兄、酎或户愚吕弟，与原版恢复的电脑策略对战。支持 2／3／4 人混战和 4 人组队，提供电脑演示。人物、特效、默认场地及 HUD 使用独立索引素材；对局由独立 Go／Wasm 规则运行，不加载 ROM 或模拟器。
 
 本页用于本地验收，尚未接入平台房间、网络同步、托管及音效。其他角色和场地没有开放。
 
@@ -41,3 +41,5 @@ node web/node_modules/typescript/bin/tsc -p scripts/yuyuhakusho/tsconfig.json
 幽助与四角色矩阵使用 `sh scripts/yuyuhakusho/verify_yusuke_sessions.sh both`，真实浏览器使用 `PYTHONDONTWRITEBYTECODE=1 python3 scripts/yuyuhakusho/check_yusuke_player.py`。幽助阶段的[桌面](../../../games/yuyuhakusho/verification/yusuke-local-player/desktop.png)、[320px](../../../games/yuyuhakusho/verification/yusuke-local-player/mobile-320.png)和[完整结果](../../../games/yuyuhakusho/verification/yusuke-session.json)独立保留。
 
 桑原与五角色矩阵使用 `sh scripts/yuyuhakusho/verify_kuwabara_sessions.sh both`；它覆盖 13 组全新规则对局和 7 组完整呈现。浏览器使用 `PYTHONDONTWRITEBYTECODE=1 python3 scripts/yuyuhakusho/check_kuwabara_player.py`，检查实际来源 2、前向攻击 `03/83`、原生键盘、320px 三指触屏、取消与后台释放，保留[桌面](../../../games/yuyuhakusho/verification/kuwabara-local-player/desktop.png)、[手机](../../../games/yuyuhakusho/verification/kuwabara-local-player/mobile-320.png)和[原生输入结果](../../../games/yuyuhakusho/verification/kuwabara-local-player/result.json)。
+
+来源 8「户愚吕兄」与六角色矩阵使用 `sh scripts/yuyuhakusho/verify_elder_sessions.sh both`，覆盖 15 组全新规则对局和 9 组完整呈现；原生浏览器使用 `PYTHONDONTWRITEBYTECODE=1 python3 scripts/yuyuhakusho/check_elder_player.py`，当前[桌面](../../../games/yuyuhakusho/verification/elder-local-player/desktop.png)、[320px](../../../games/yuyuhakusho/verification/elder-local-player/mobile-320.png)及[完整绑定](../../../games/yuyuhakusho/verification/elder-session.json)独立保存。来源 8／10 的姓名现已订正为兄／弟，详情见[原字形与历史说明](CHARACTER_IDS.md)；旧阶段名称不作为当前姓名依据，数字 ID 与原规则证据未变。

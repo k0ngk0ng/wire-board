@@ -1,0 +1,198 @@
+{
+  "pass": true,
+  "scope": "Rename source8 fresh-case labels only; all48 report bytes retained",
+  "files": [
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/native/rules/chu-elder.json",
+      "sha256": "ffe451e3b1dfb9a5a2b425f44dfec48ce01839dcc4ac0c9b58779c68bccbcfbd"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/native/rules/younger-elder.json",
+      "sha256": "e213982ec1d366544bc7947c3d270dadeebb0cca9e11afe0bacb95ac4dd64696"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/native/rules/four.json",
+      "sha256": "f5e48b5ad8895a138681c6a2c6d6fdb0fed469ad64c56a05eda1ecf31f6b28a8"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/native/rules/genkai-elder.json",
+      "sha256": "fea3e5cb105e724429dd56798b5156523a4bd72835c1034c4fcff5415018b2bd"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/native/rules/human-idle.json",
+      "sha256": "1bd29a9f85057a5c099d6b2d3446c152431df81818175cc65cfc7c55ab7aa7f8"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/native/rules/kuwabara-elder.json",
+      "sha256": "1aa941802635f0e972273ff126b301d63f5ff6404e74ee79255c9bf918aa4d78"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/native/rules/team.json",
+      "sha256": "09c8714edc9d787517335fe7552ac9d6c55ef1a1477a972cf297ee8222ab8295"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/native/rules/three.json",
+      "sha256": "2fb88000b837880df9765accb97de91555015052706e8f235d02b8172a3119e4"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/native/rules/elder-chu.json",
+      "sha256": "3eda674bb826c3789d92e728af4fb972ec7b5968c5fd0f25913ccf0dd99bbebd"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/native/rules/elder-younger.json",
+      "sha256": "937d7f67664586c15eb5c7b95a5e3ba36cfdb8176ef43259f303b300d5b40469"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/native/rules/elder-genkai.json",
+      "sha256": "49f90a70e42847f7b62c032da67c685c6cd9acc52225b7e37a9d6e7fa3986ae6"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/native/rules/elder-kuwabara.json",
+      "sha256": "0180b126f6d8af334f23099c9c1534a031281d7cc3b33c14c2466e4f41690c65"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/native/rules/elder-elder.json",
+      "sha256": "75e202ab583d63a4feca5160b8d4cb04021d5d2c8c86edd05d48fd24ce2c4e81"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/native/rules/elder-yusuke.json",
+      "sha256": "c94036f1af44f9ce7765471cfae8d1e35ee13a368f2008440d66c029b9945e3d"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/native/rules/yusuke-elder.json",
+      "sha256": "b7f77b53271f42ca036d8d024126e899b60d14764d41f64429eccf830bf02e2c"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/native/render/four.json",
+      "sha256": "3e036f0640b5301fe9e5a93f38e749061bcc0e5075283e5d9317ab30feca0164"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/native/render/team.json",
+      "sha256": "f1f90c97a8e1d77a63ed37939949757f0eac07d2c31b3f54725a78dd0ad6d084"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/native/render/three.json",
+      "sha256": "2d1767b07de1979d300fe4586dd45ba077a38040286096b6a40c71539fa95ac4"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/native/render/elder-chu.json",
+      "sha256": "d09e53edd24598ccab29c5764862486c47c10cc9b3ff434286113f3b06296a94"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/native/render/elder-younger.json",
+      "sha256": "da1a5e23c54e92a56913edc129cb29525f9c7e03c36a12faccc728182dd6657b"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/native/render/elder-genkai.json",
+      "sha256": "0884413037e38f4f615f9556c394ec669c08d97a892f15b57a8f62ab5eb4498b"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/native/render/elder-kuwabara.json",
+      "sha256": "c3a47d81abae0429f09b26ad520d5f25d76d0d5a98a85d16edeb0691b984a711"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/native/render/elder-elder.json",
+      "sha256": "bbb864605c3947fbacefcf4493210a5cbfe35397167337d0db14ee35001327cf"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/native/render/elder-yusuke.json",
+      "sha256": "7da9923a6123615ffd2745c2189fe002bedf7609dbe86fdfd13adff9550787a9"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/wasm/rules/chu-elder.json",
+      "sha256": "6ee98d3f07abe34c779ead96456d890db073852100b2b7b81536877f1d06e45c"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/wasm/rules/elder-genkai.json",
+      "sha256": "c6e546a6cf2890587098f711bdda18ed902dfed337e65026d8213c0f993da9a3"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/wasm/rules/elder-kuwabara.json",
+      "sha256": "f528f9dbcab10503f16d1a92dfb0d2438d9252d8df3967b647a1e086b063cfc1"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/wasm/rules/younger-elder.json",
+      "sha256": "d24cab0823f7940c980e53b921852cdebdc97647a92165347da9ba91971ab5b3"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/wasm/rules/four.json",
+      "sha256": "c7a956b168d2150cb8e6d8af23456b82e5c2c8bf0e7c86a954e02b581189a9b7"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/wasm/rules/genkai-elder.json",
+      "sha256": "3d1de0fdcdfee643a2bfd17d5318bac77fe6532d7a3db69966b42fcb5688783b"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/wasm/rules/human-idle.json",
+      "sha256": "bbcc33fb913e07b298dc04b0342935012a2398d3a213e333d1bf46ca92a3932c"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/wasm/rules/kuwabara-elder.json",
+      "sha256": "2aecf59b4abdcc3427c72bb6eff58f59f31704524fddd43ea3f51f7d802a78fe"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/wasm/rules/team.json",
+      "sha256": "95cfd67f40708d866e8f07686752aa6e5a2bb1be14d3c7e6cf9aa491056bbaa1"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/wasm/rules/three.json",
+      "sha256": "6dd6a7ebeba2988b7ce0e5c2f7006501d28633d495dd97f50d44495b52ad9186"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/wasm/rules/elder-chu.json",
+      "sha256": "ae1a1b5a99c1166380f4316d531b5a3f808eea271196f127ffaea3e8059b2c4d"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/wasm/rules/elder-younger.json",
+      "sha256": "dd98a640ab6850695d21b67f6b56214d5128dcea4d812ec94ee496d0a913abf2"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/wasm/rules/elder-elder.json",
+      "sha256": "0e7c79f7c64ba625dee4d57da4bb6b1b8151ae6dadd847e2a21034c4fdd2928e"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/wasm/rules/elder-yusuke.json",
+      "sha256": "b45255ed264817a9505df03029b75bab018b529954e8cc4960ae6b585d619447"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/wasm/rules/yusuke-elder.json",
+      "sha256": "313d33a054faefba4eab78d4327b5aab5a9a1b036a34cdb0e623102988aed1c5"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/wasm/render/elder-chu.json",
+      "sha256": "d2bbe5e13d2c4833cbccf573bfe0f64675124deb8164b2255c1101d036d1cfae"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/wasm/render/elder-elder.json",
+      "sha256": "55e22cecfd5b129d725494fda312595daf702a3ec4a68b8c1cda14b8d0fa1778"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/wasm/render/elder-genkai.json",
+      "sha256": "e6ac266ba6d4287fa5feaa7f8f5188488b61dffb28241df141e4d2f4b71ada86"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/wasm/render/elder-kuwabara.json",
+      "sha256": "e4461eded2539865cafe3155778984e9fbbaf32e9b31ca259fbfdf465a38cafb"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/wasm/render/elder-younger.json",
+      "sha256": "c416ec840156c908302c245138a7acbb3a56c9a8cae5dacfc79fd723f258ba63"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/wasm/render/elder-yusuke.json",
+      "sha256": "649e9b79010c80ecdeb5d0b44e84891085f5a94e0a95f57b8ba66660fee4d877"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/wasm/render/four.json",
+      "sha256": "c859e34e4213c57a673355f70582fc10e70f6e2e4af9fd54770ce362294ced5d"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/wasm/render/team.json",
+      "sha256": "658d88e3df0018df198b31ea5e4bbc2c342cc3125a96741a81f5a5ad875fc527"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/elder-e2e/wasm/render/three.json",
+      "sha256": "3bd899eb7bb9f855a68af8416636ccd61d60205aed8066146470f7b20be24f5e"
+    }
+  ]
+}

@@ -1,0 +1,1019 @@
+{
+  "verified_at_utc": "2026-11-04T21:53:26.401850+00:00",
+  "pass": true,
+  "cpu_capture_pass": true,
+  "test_first_pass": true,
+  "independent_rules_pass": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "scope": "Complete source8 input/action/active-actor original CPU composition, frozen six tests and final read-only shared-driver/world alias review; excludes full-world/platform acceptance",
+  "test_first": {
+    "stage": "Six source8 composition tests frozen before shared production support",
+    "recorded_at_utc": "2026-11-04T21:10:23.810047+00:00",
+    "test_top_levels": 6,
+    "files": [
+      {
+        "path": "games/yuyuhakusho/engine/fighter8_composition_test.go",
+        "sha256": "d7e2c3aab12de322f69f52d964d7b4374b44ee8d4e3ec610115b0b66a9a96098"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/FIGHTER8_COMPOSITION_VERIFICATION.md",
+        "sha256": "a9009b176540f370f58928488d64cc529a03287f83cd90eebe16079d4b1721eb"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/chu_action.go",
+        "sha256": "8d722908fd4acf5d19ef9578ea18a3f835ada0faaee75db1e1dc578fa681a2ef"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/chu_actor.go",
+        "sha256": "de23b3ff7bd9b736d3c15fe798b1d287bc9e7f590d3b92bbe2f28f8a15e17aed"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/chu_input.go",
+        "sha256": "a9d14993c78d4ae89403824254d72edc3a6315f61928c65129e8b67ac870e294"
+      }
+    ],
+    "actual_natural_red": {
+      "path": "games/yuyuhakusho/engine/testdata/fighter8-composition-red.jsonl",
+      "sha256": "04046a77e08e0686e57a53fca2024ba6ff714f4e3b0c3ad8327251facc6e79b4",
+      "executed": [
+        "TestFighter8CompositionOriginalActions",
+        "TestFighter8CompositionOriginalActors"
+      ],
+      "scope": "True source8 menu input, original3602 baseline; actual unsupported8 errors"
+    }
+  },
+  "coverage": {
+    "ordinary_video_steps": 3602,
+    "special_video_steps": 3602,
+    "accepted_entry_limit": 3600,
+    "natural_calls_each_API_each_flow": 2067,
+    "natural_source8_AI_calls": 0,
+    "special_actions": {
+      "0x3e": 80,
+      "0x3f": 73,
+      "0x40": 239
+    },
+    "special_parent_child_creations": {
+      "0x147ae": 1
+    },
+    "private_action_calls": 156,
+    "private_input_calls": 31,
+    "private_actor_calls": 43,
+    "private_action_slots": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      15,
+      17,
+      62,
+      63,
+      64
+    ],
+    "canonical_A5": [
+      "0xffff8400",
+      "0xffff8800",
+      "0xffff8c00",
+      "0xffff9000"
+    ],
+    "private_stack_below": "0xffffff00",
+    "private_unknown_RAM_writes": 0,
+    "action_streams": 9,
+    "action_stream_calls": 767,
+    "input_streams": 3,
+    "input_stream_calls": 48,
+    "actor_streams": 4,
+    "actor_stream_calls": 96,
+    "expected_intermediate_state_injected": false,
+    "children_advanced_in_streams": false,
+    "Aux48_counter_word": "high16; low16 preserved",
+    "observed_audio_clear_action_calls": 76,
+    "observed_audio_clear_actor_calls": 95,
+    "private_AI_input_calls": 8,
+    "private_AI_RNG_counts": [
+      4,
+      5
+    ],
+    "private_pause_or_slow_actor_calls": 12,
+    "wiring_review_findings": 0
+  },
+  "fixtures": [
+    {
+      "fixture": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter8-composition-action-boundaries.json.gz",
+        "sha256": "5c4fe9b8b9f245db693d1248a246649bbb5cdd4155ddaede60db16b927f613f3",
+        "bytes": 107645
+      },
+      "manifest": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter8-composition-action-boundaries-manifest.json",
+        "sha256": "56f20cc478ca0784cbb1345831618d9fe323bc3d97c4626bd571ae57b97ca915",
+        "bytes": 2884
+      },
+      "records": 156,
+      "calls": 156,
+      "external_queue_calls": 0,
+      "binding": {
+        "source_tag": 8,
+        "source_object": "0x8400",
+        "checkpoint_video_label": 2400,
+        "animation_set": 859738,
+        "shape_set": 863338,
+        "parameter_pointer": 75278,
+        "source_actor_sha256": "cb5aea95967677164e904d78b9764741016d3497d5186582d4661abf079ad6b2"
+      },
+      "statistics": {
+        "calls": 156,
+        "external": 0,
+        "threat_branches": 0,
+        "actions": {
+          "0": 51,
+          "1": 4,
+          "2": 7,
+          "3": 4,
+          "4": 4,
+          "5": 4,
+          "6": 4,
+          "7": 4,
+          "8": 4,
+          "9": 4,
+          "10": 4,
+          "11": 4,
+          "12": 4,
+          "13": 4,
+          "15": 4,
+          "17": 5,
+          "62": 13,
+          "63": 13,
+          "64": 15
+        },
+        "routes": {},
+        "rng_counts": {
+          "1": 156
+        },
+        "sources": {
+          "0xffff8400": 78,
+          "0xffff8800": 26,
+          "0xffff8c00": 26,
+          "0xffff9000": 26
+        }
+      }
+    },
+    {
+      "fixture": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter8-composition-action-natural.json.gz",
+        "sha256": "ebe40a73b3ffd9c4bdf4060991fe4c564ce8d65a86c22e1f1579a911a884bf1c",
+        "bytes": 611603
+      },
+      "manifest": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter8-composition-action-natural-manifest.json",
+        "sha256": "88773b5ec213a7e24502d4ec2bdf92764320db1654753d3b22e11252bdee3132",
+        "bytes": 2700
+      },
+      "records": 2067,
+      "calls": 2067,
+      "external_queue_calls": 35,
+      "binding": {
+        "source_tag": 8,
+        "source_object": "0x8400",
+        "checkpoint_video_label": 2400,
+        "animation_set": 859738,
+        "shape_set": 863338,
+        "parameter_pointer": 75278,
+        "source_actor_sha256": "cb5aea95967677164e904d78b9764741016d3497d5186582d4661abf079ad6b2"
+      },
+      "statistics": {
+        "calls": 2067,
+        "external": 35,
+        "threat_branches": 0,
+        "actions": {
+          "0": 1024,
+          "1": 104,
+          "3": 215,
+          "17": 66,
+          "11": 110,
+          "2": 51,
+          "5": 278,
+          "6": 104,
+          "4": 99,
+          "12": 16
+        },
+        "routes": {},
+        "rng_counts": {
+          "1": 2067
+        },
+        "sources": {
+          "0xffff8400": 2067
+        }
+      }
+    },
+    {
+      "fixture": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter8-composition-action-sequences.json.gz",
+        "sha256": "b4640d08f27a08638ac6af2a6c54dfbd65244401bf0f62a821dc727dca507328",
+        "bytes": 185427
+      },
+      "manifest": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter8-composition-action-sequences-manifest.json",
+        "sha256": "b823c1043c05059bd53acb8a09aad542862d7534b4664450735b665e434508eb",
+        "bytes": 2356
+      },
+      "records": 9,
+      "calls": 767,
+      "external_queue_calls": 0,
+      "binding": {
+        "source_tag": 8,
+        "source_object": "0x8400",
+        "checkpoint_video_label": 2400,
+        "animation_set": 859738,
+        "shape_set": 863338,
+        "parameter_pointer": 75278,
+        "source_actor_sha256": "cb5aea95967677164e904d78b9764741016d3497d5186582d4661abf079ad6b2"
+      },
+      "statistics": {
+        "calls": 767
+      }
+    },
+    {
+      "fixture": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter8-composition-action-special.json.gz",
+        "sha256": "6d98fa1d1b7d64b8c4c4d66d7d77f086525c9b85be1e12b0887dddce96e6fa9f",
+        "bytes": 633857
+      },
+      "manifest": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter8-composition-action-special-manifest.json",
+        "sha256": "807f0aa0b2705311e1237acace450a15ce97af88de51b36b2d75eac10f68a49a",
+        "bytes": 2745
+      },
+      "records": 2067,
+      "calls": 2067,
+      "external_queue_calls": 41,
+      "binding": {
+        "source_tag": 8,
+        "source_object": "0x8400",
+        "checkpoint_video_label": 2400,
+        "animation_set": 859738,
+        "shape_set": 863338,
+        "parameter_pointer": 75278,
+        "source_actor_sha256": "5144b33c6dc8736456fb7820adba0c4863a51d7a7d26867b9f446079009360fc"
+      },
+      "statistics": {
+        "calls": 2067,
+        "external": 41,
+        "threat_branches": 0,
+        "actions": {
+          "0": 891,
+          "63": 73,
+          "7": 57,
+          "5": 322,
+          "6": 104,
+          "4": 153,
+          "3": 42,
+          "12": 102,
+          "1": 3,
+          "64": 239,
+          "62": 80,
+          "2": 1
+        },
+        "routes": {},
+        "rng_counts": {
+          "1": 2067
+        },
+        "sources": {
+          "0xffff8400": 2067
+        }
+      }
+    },
+    {
+      "fixture": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter8-composition-actor-boundaries.json.gz",
+        "sha256": "c27bf97e74daa0ae412c6724d1a739db113cf7ccc27275758558700deaad0280",
+        "bytes": 67512
+      },
+      "manifest": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter8-composition-actor-boundaries-manifest.json",
+        "sha256": "85d0fbe9cab80b8239ef65f1a2822ee3aa3783a3bfdb1f79fe22e9979d8262ae",
+        "bytes": 2703
+      },
+      "records": 43,
+      "calls": 43,
+      "external_queue_calls": 0,
+      "binding": {
+        "source_tag": 8,
+        "source_object": "0x8400",
+        "checkpoint_video_label": 2400,
+        "animation_set": 859738,
+        "shape_set": 863338,
+        "parameter_pointer": 75278,
+        "source_actor_sha256": "cb5aea95967677164e904d78b9764741016d3497d5186582d4661abf079ad6b2"
+      },
+      "statistics": {
+        "calls": 43,
+        "external": 0,
+        "threat_branches": 0,
+        "actions": {
+          "0": 40,
+          "62": 1,
+          "63": 1,
+          "64": 1
+        },
+        "routes": {},
+        "rng_counts": {
+          "1": 23,
+          "5": 5,
+          "6": 3,
+          "0": 12
+        },
+        "sources": {
+          "0xffff8400": 13,
+          "0xffff8800": 10,
+          "0xffff8c00": 10,
+          "0xffff9000": 10
+        }
+      }
+    },
+    {
+      "fixture": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter8-composition-actor-natural.json.gz",
+        "sha256": "465ddd5c7908c12d941d65c58accde943207698f40ecd6406240c02d6be7c31a",
+        "bytes": 1977415
+      },
+      "manifest": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter8-composition-actor-natural-manifest.json",
+        "sha256": "2f372024c515daaa49fd39ebdd79b09337074f127622f82f7d8dcc9067b5b2e8",
+        "bytes": 2699
+      },
+      "records": 2067,
+      "calls": 2067,
+      "external_queue_calls": 44,
+      "binding": {
+        "source_tag": 8,
+        "source_object": "0x8400",
+        "checkpoint_video_label": 2400,
+        "animation_set": 859738,
+        "shape_set": 863338,
+        "parameter_pointer": 75278,
+        "source_actor_sha256": "cb5aea95967677164e904d78b9764741016d3497d5186582d4661abf079ad6b2"
+      },
+      "statistics": {
+        "calls": 2067,
+        "external": 44,
+        "threat_branches": 0,
+        "actions": {
+          "0": 1024,
+          "1": 104,
+          "3": 215,
+          "17": 66,
+          "11": 110,
+          "2": 51,
+          "5": 278,
+          "6": 104,
+          "4": 99,
+          "12": 16
+        },
+        "routes": {},
+        "rng_counts": {
+          "1": 2067
+        },
+        "sources": {
+          "0xffff8400": 2067
+        }
+      }
+    },
+    {
+      "fixture": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter8-composition-actor-sequences.json.gz",
+        "sha256": "abc437bf96a568f236dffb8c25e02be627c7690164828dedc803481f17f616c5",
+        "bytes": 90362
+      },
+      "manifest": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter8-composition-actor-sequences-manifest.json",
+        "sha256": "09004c39756acc3e6a90dad448e802d982f83ad73fdfdc99fea68a2391e60b4e",
+        "bytes": 2353
+      },
+      "records": 4,
+      "calls": 96,
+      "external_queue_calls": 0,
+      "binding": {
+        "source_tag": 8,
+        "source_object": "0x8400",
+        "checkpoint_video_label": 2400,
+        "animation_set": 859738,
+        "shape_set": 863338,
+        "parameter_pointer": 75278,
+        "source_actor_sha256": "cb5aea95967677164e904d78b9764741016d3497d5186582d4661abf079ad6b2"
+      },
+      "statistics": {
+        "calls": 96
+      }
+    },
+    {
+      "fixture": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter8-composition-actor-special.json.gz",
+        "sha256": "94244ca5b75be8479bca6a2c8d263c89f852b4b8abee47e0aa58d8e4dc46b126",
+        "bytes": 2015544
+      },
+      "manifest": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter8-composition-actor-special-manifest.json",
+        "sha256": "cebf88719b40f65a6120b54b0536d006d8294fa08d552214be04b26f76431e73",
+        "bytes": 2744
+      },
+      "records": 2067,
+      "calls": 2067,
+      "external_queue_calls": 51,
+      "binding": {
+        "source_tag": 8,
+        "source_object": "0x8400",
+        "checkpoint_video_label": 2400,
+        "animation_set": 859738,
+        "shape_set": 863338,
+        "parameter_pointer": 75278,
+        "source_actor_sha256": "5144b33c6dc8736456fb7820adba0c4863a51d7a7d26867b9f446079009360fc"
+      },
+      "statistics": {
+        "calls": 2067,
+        "external": 51,
+        "threat_branches": 0,
+        "actions": {
+          "0": 891,
+          "63": 73,
+          "7": 57,
+          "5": 322,
+          "6": 104,
+          "4": 153,
+          "3": 42,
+          "12": 102,
+          "1": 3,
+          "64": 239,
+          "62": 80,
+          "2": 1
+        },
+        "routes": {},
+        "rng_counts": {
+          "1": 2067
+        },
+        "sources": {
+          "0xffff8400": 2067
+        }
+      }
+    },
+    {
+      "fixture": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter8-composition-input-boundaries.json.gz",
+        "sha256": "2e7bd369495a9336a558d22b78c6a7a5e48d500c12a85987f4dfd0a86efac151",
+        "bytes": 22261
+      },
+      "manifest": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter8-composition-input-boundaries-manifest.json",
+        "sha256": "279e179def98f54593e1f05f58247fc7910414b0a169f2866e64a394ad7e5281",
+        "bytes": 2776
+      },
+      "records": 31,
+      "calls": 31,
+      "external_queue_calls": 0,
+      "binding": {
+        "source_tag": 8,
+        "source_object": "0x8400",
+        "checkpoint_video_label": 2400,
+        "animation_set": 859738,
+        "shape_set": 863338,
+        "parameter_pointer": 75278,
+        "source_actor_sha256": "cb5aea95967677164e904d78b9764741016d3497d5186582d4661abf079ad6b2"
+      },
+      "statistics": {
+        "calls": 31,
+        "external": 0,
+        "threat_branches": 0,
+        "actions": {},
+        "routes": {
+          "human": 7,
+          "ai": 4,
+          "human-record": 4,
+          "ai-record": 4,
+          "playback": 4,
+          "playback-stopped": 4,
+          "disabled": 4
+        },
+        "rng_counts": {
+          "0": 23,
+          "4": 5,
+          "5": 3
+        },
+        "sources": {
+          "0xffff8400": 10,
+          "0xffff8800": 7,
+          "0xffff8c00": 7,
+          "0xffff9000": 7
+        }
+      }
+    },
+    {
+      "fixture": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter8-composition-input-natural.json.gz",
+        "sha256": "c314fb2cc1b19db2d7f0967f7ceb8f540a178e261d9c2077e602fff278728d6e",
+        "bytes": 348304
+      },
+      "manifest": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter8-composition-input-natural-manifest.json",
+        "sha256": "90db4063a05cf515b3a73d148a75832a130d16470e4da6a02d1ee571ff4faa7e",
+        "bytes": 2581
+      },
+      "records": 2067,
+      "calls": 2067,
+      "external_queue_calls": 0,
+      "binding": {
+        "source_tag": 8,
+        "source_object": "0x8400",
+        "checkpoint_video_label": 2400,
+        "animation_set": 859738,
+        "shape_set": 863338,
+        "parameter_pointer": 75278,
+        "source_actor_sha256": "cb5aea95967677164e904d78b9764741016d3497d5186582d4661abf079ad6b2"
+      },
+      "statistics": {
+        "calls": 2067,
+        "external": 0,
+        "threat_branches": 0,
+        "actions": {},
+        "routes": {
+          "disabled": 273,
+          "human": 1794
+        },
+        "rng_counts": {
+          "0": 2067
+        },
+        "sources": {
+          "0xffff8400": 2067
+        }
+      }
+    },
+    {
+      "fixture": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter8-composition-input-sequences.json.gz",
+        "sha256": "a2b0309abc0858f88d517eed218eaca65b395f60d7efde4c92718886bd49b3ec",
+        "bytes": 17592
+      },
+      "manifest": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter8-composition-input-sequences-manifest.json",
+        "sha256": "98e70664b26913c2b1b5374005a369a2653b5bd84a01c252ab448eeb2cc66f8a",
+        "bytes": 2353
+      },
+      "records": 3,
+      "calls": 48,
+      "external_queue_calls": 0,
+      "binding": {
+        "source_tag": 8,
+        "source_object": "0x8400",
+        "checkpoint_video_label": 2400,
+        "animation_set": 859738,
+        "shape_set": 863338,
+        "parameter_pointer": 75278,
+        "source_actor_sha256": "cb5aea95967677164e904d78b9764741016d3497d5186582d4661abf079ad6b2"
+      },
+      "statistics": {
+        "calls": 48
+      }
+    },
+    {
+      "fixture": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter8-composition-input-special.json.gz",
+        "sha256": "202da8c5fa19979057ef67b91b673fa3610f6e7ac55611596c96710a2897676c",
+        "bytes": 349924
+      },
+      "manifest": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter8-composition-input-special-manifest.json",
+        "sha256": "7a3ea5705dbac8413401d7120ae5f4bccee0ff1186a7c37f2dd2a44416a78e4f",
+        "bytes": 2598
+      },
+      "records": 2067,
+      "calls": 2067,
+      "external_queue_calls": 5,
+      "binding": {
+        "source_tag": 8,
+        "source_object": "0x8400",
+        "checkpoint_video_label": 2400,
+        "animation_set": 859738,
+        "shape_set": 863338,
+        "parameter_pointer": 75278,
+        "source_actor_sha256": "5144b33c6dc8736456fb7820adba0c4863a51d7a7d26867b9f446079009360fc"
+      },
+      "statistics": {
+        "calls": 2067,
+        "external": 5,
+        "threat_branches": 0,
+        "actions": {},
+        "routes": {
+          "disabled": 273,
+          "human": 1794
+        },
+        "rng_counts": {
+          "0": 2067
+        },
+        "sources": {
+          "0xffff8400": 2067
+        }
+      }
+    }
+  ],
+  "logs": [
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter8-composition-red.jsonl",
+      "sha256": "04046a77e08e0686e57a53fca2024ba6ff714f4e3b0c3ad8327251facc6e79b4",
+      "bytes": 2456,
+      "phase": "red",
+      "result": "fail",
+      "elapsed_seconds": 0.359,
+      "tests": [
+        {
+          "name": "TestFighter8CompositionOriginalActions",
+          "result": "fail",
+          "seconds": 0.01
+        },
+        {
+          "name": "TestFighter8CompositionOriginalActors",
+          "result": "fail",
+          "seconds": 0.01
+        }
+      ],
+      "executed_by": "composition subtask"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter8-composition-private-red.jsonl",
+      "sha256": "7fd0e029d01b1e4144ce75ad09ea67ed210282d190db98217de8a0e41523be5b",
+      "bytes": 2475,
+      "phase": "private-red",
+      "result": "fail",
+      "elapsed_seconds": 0.601,
+      "tests": [
+        {
+          "name": "TestFighter8CompositionActionStreams",
+          "result": "fail",
+          "seconds": 0.01
+        },
+        {
+          "name": "TestFighter8CompositionInputAndActorStreams",
+          "result": "fail",
+          "seconds": 0.03
+        }
+      ],
+      "executed_by": "composition subtask"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter8-composition-native.jsonl",
+      "sha256": "8b48fe763eb4e86d0bddfeb9ae999dfdf4469dcb185429cac9cab2e13a7806b3",
+      "bytes": 9393,
+      "phase": "native",
+      "result": "pass",
+      "elapsed_seconds": 45.989,
+      "tests": [
+        {
+          "name": "TestFighter8CompositionOriginalActions",
+          "result": "pass",
+          "seconds": 12.03
+        },
+        {
+          "name": "TestFighter8CompositionOriginalInputs",
+          "result": "pass",
+          "seconds": 7.54
+        },
+        {
+          "name": "TestFighter8CompositionOriginalActors",
+          "result": "pass",
+          "seconds": 22.23
+        },
+        {
+          "name": "TestFighter8CompositionActionStreams",
+          "result": "pass",
+          "seconds": 1.8
+        },
+        {
+          "name": "TestFighter8CompositionInputAndActorStreams",
+          "result": "pass",
+          "seconds": 0.52
+        },
+        {
+          "name": "TestFighter8CompositionFailuresAreAtomic",
+          "result": "pass",
+          "seconds": 0.43
+        }
+      ],
+      "executed_by": "composition subtask"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter8-composition-wasm.jsonl",
+      "sha256": "9c390ad4212f64a112b777a252963bc2de53afee0f6b10e301971fcf05183c8f",
+      "bytes": 9386,
+      "phase": "wasm",
+      "result": "pass",
+      "elapsed_seconds": 11.532,
+      "tests": [
+        {
+          "name": "TestFighter8CompositionOriginalActions",
+          "result": "pass",
+          "seconds": 3.07
+        },
+        {
+          "name": "TestFighter8CompositionOriginalInputs",
+          "result": "pass",
+          "seconds": 1.87
+        },
+        {
+          "name": "TestFighter8CompositionOriginalActors",
+          "result": "pass",
+          "seconds": 5.75
+        },
+        {
+          "name": "TestFighter8CompositionActionStreams",
+          "result": "pass",
+          "seconds": 0.49
+        },
+        {
+          "name": "TestFighter8CompositionInputAndActorStreams",
+          "result": "pass",
+          "seconds": 0.15
+        },
+        {
+          "name": "TestFighter8CompositionFailuresAreAtomic",
+          "result": "pass",
+          "seconds": 0.13
+        }
+      ],
+      "executed_by": "composition subtask"
+    }
+  ],
+  "sources": [
+    {
+      "path": "scripts/yuyuhakusho/capture_fighter8_composition.py",
+      "sha256": "26480c1831d965efa5131910550081f62c59686fee961c16708008930b8bfe77",
+      "bytes": 31570
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter8_composition_test.go",
+      "sha256": "d7e2c3aab12de322f69f52d964d7b4374b44ee8d4e3ec610115b0b66a9a96098",
+      "bytes": 15235
+    },
+    {
+      "path": "games/yuyuhakusho/engine/FIGHTER8_COMPOSITION_VERIFICATION.md",
+      "sha256": "b1513b4428c704a5173246da109aee13e8c78563620dc86a30c7e9f51e7d681b",
+      "bytes": 10224
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_chu_action.py",
+      "sha256": "0219cf3d8c7176b202a5c1ab628761c74434723fc2bff113de7ce2ec33df6f4d",
+      "bytes": 15362
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_chu_actor.py",
+      "sha256": "d90107daec842d386170bfb26d986d09254a6dc7f7b6c31593aa36c8a5d2187c",
+      "bytes": 16893
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_chu_input.py",
+      "sha256": "b5ab29cd810845a213b470ead845a35727ad821081ed25202ea70599f8cae7e3",
+      "bytes": 12772
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_chu_tail.py",
+      "sha256": "2ca411fa0792b7a8ba03fdf0f71f6839977cf9c8fb0143f79ac8fac707d09997",
+      "bytes": 13691
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_animation_records.py",
+      "sha256": "9ed4d8019c29cdf4272cdc54636047b6325c45b2d5d9b9b16efd74e1eb1c3208",
+      "bytes": 15101
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_ground_idle.py",
+      "sha256": "01d4798e937fa01946b7612fbc4fa7418dda97ec3411db4beb4629975614ba1d",
+      "bytes": 6310
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_effect_pool.py",
+      "sha256": "b9c753d1c9b6380ac64ee16f2c10cdcf8560654e493e770b31552b1781354f46",
+      "bytes": 9332
+    },
+    {
+      "path": "scripts/yuyuhakusho/reference.py",
+      "sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "bytes": 8606
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_action_test.go",
+      "sha256": "a3ee2a1eb0863eaefec00c99381fa1f21ccd3284b67d2296cdb06cb743237940",
+      "bytes": 10184
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_actor_test.go",
+      "sha256": "64cbd90975e93b8ca9e44fe034bca3d177de4e15f45939248256c5823e44c0e7",
+      "bytes": 17003
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_input_test.go",
+      "sha256": "5c6de3c3ef929886adf9f42cf073624542e2b3767a633c9f0e24c078916eda31",
+      "bytes": 6548
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_special_motion_test.go",
+      "sha256": "dfd3cf4c7e19b5a4e7e6653744a4160732f14415f78b1b997124660675f7d269",
+      "bytes": 8962
+    }
+  ],
+  "validated_production_sources": [
+    {
+      "path": "games/yuyuhakusho/engine/chu_action.go",
+      "sha256": "2badb3912f4a8d922c2ff924f04f53e117897151dcd6e20d2f5f78b6d3372da6",
+      "bytes": 12163
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_tail.go",
+      "sha256": "292fe7f12591aee5b464eb879029075da33de0ae1778662c2034be9d664d7f02",
+      "bytes": 9001
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_actor.go",
+      "sha256": "4f72bee260f6ee6a1032985fb3fec5015e160af5ec2016e9d9e3b576d65d6ba9",
+      "bytes": 12060
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_input.go",
+      "sha256": "a9d14993c78d4ae89403824254d72edc3a6315f61928c65129e8b67ac870e294",
+      "bytes": 1729
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_world.go",
+      "sha256": "24980dde82dfed562556980320e92a9f3c01c5ecc5d447e665d2bc2624986fef",
+      "bytes": 43784
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_session.go",
+      "sha256": "ee66dae75a33ca6435c3844d91d474946fe9fb225f85f3d257f12ebfda9ede44",
+      "bytes": 6323
+    },
+    {
+      "path": "games/yuyuhakusho/engine/world_objects.go",
+      "sha256": "77d3ba95ae9d44f26465e854a75886004e4550ffdc6cbde14e6a49dda8a546b1",
+      "bytes": 27660
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter8_attacks.go",
+      "sha256": "066e13b12eb5a1e2fd8843b171dc198e7f718dc750583c095dea2aab17b52f75",
+      "bytes": 5525
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter8_motion.go",
+      "sha256": "4783a7fe4526a1aa558dca22b5849bcfa2dd45e615c81ee9635b644eae7d9f53",
+      "bytes": 3939
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter8_projectile.go",
+      "sha256": "37e56a34b71a99ac28e13aa9659a19b0acadd6ed7b4c2ca8eb0c6602756d7138",
+      "bytes": 4520
+    }
+  ],
+  "baselines": [
+    {
+      "path": "docs/research/md-yuyuhakusho/source8-next-inputs.json",
+      "sha256": "e70b955c9be3e197fd5ab91189e0621c6e8d251987a5a1d57cdffbf3f14ffb76",
+      "bytes": 3039
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter8-attacks-reference-frames.json",
+      "sha256": "fa63dd05758ee6cbc0ead8a4b4ad1e17c6d0f554f74aaa66d0410ff464847651",
+      "bytes": 668867
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter8-attacks-reference-manifest.json",
+      "sha256": "4d9eee795948e78e98dc70ad3776ee3e83f7e04827310f471f304be87d4cb032",
+      "bytes": 1192
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter8-special-inputs.json",
+      "sha256": "b26515ad1e9f558fc54699fd0fe69c7c1cf7e3e081682f136bc8da1121121cce",
+      "bytes": 2206
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter8-attacks-special-reference-frames.json",
+      "sha256": "2b89ca34886f651c41d27ad1fa9b4e8779991b5996c8651f299a08030fa78f3b",
+      "bytes": 668867
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter8-attacks-special-reference-manifest.json",
+      "sha256": "c58864474a025d082cc4c18f23ea4474375f82554bb75771f29e616193c44b35",
+      "bytes": 1029
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter-initialization-boundaries.json.gz",
+      "sha256": "9f14a0bf4c9eedf17b78ad316168a18b0b83520dd09d980624491f87169ff692",
+      "bytes": 200665
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter-initialization-boundaries-manifest.json",
+      "sha256": "b11ba72d7c8d24714e01a6d463927dfde116f4876d2d73696d9b4dc821501f55",
+      "bytes": 1381
+    }
+  ],
+  "diagnostics": [
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter8-composition-private-context-history.json",
+      "sha256": "131377901d1d6ac8e573d5928128ddab5dca49d682437529010e96186ba24254",
+      "bytes": 23402
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter8-composition-red-files.json",
+      "sha256": "01a747e3cb456ecad5affd69157e9da3247b7115c42157bdfbaf4645a82e19d1",
+      "bytes": 3849
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter8-composition-private-red-files.json",
+      "sha256": "687a7e00d7535c8cc8bf67a5f9adbc89a7295cbdfd60c9600c026b8adcc0d788",
+      "bytes": 3912
+    }
+  ],
+  "cleanup": {
+    "pass": true,
+    "scope": "Only this source8-composition duplicate/intermediate outputs; canonical fixtures, explicit legacy-context history/red, original baselines/inputs, ROM/tools/shared caches and8799 assets retained",
+    "deleted": [
+      {
+        "path": ".local/md-yuyuhakusho/fighter8-composition-private",
+        "files": 18,
+        "bytes": 7849982
+      },
+      {
+        "path": ".local/md-yuyuhakusho/fighter8-composition-private-run.txt",
+        "files": 1,
+        "bytes": 1488
+      },
+      {
+        "path": ".local/md-yuyuhakusho/fighter8-composition-natural",
+        "files": 12,
+        "bytes": 234488525
+      },
+      {
+        "path": ".local/md-yuyuhakusho/fighter8-composition-natural-run.txt",
+        "files": 1,
+        "bytes": 919
+      },
+      {
+        "path": ".local/md-yuyuhakusho/fighter8-composition-full",
+        "files": 24,
+        "bytes": 242357541
+      },
+      {
+        "path": ".local/md-yuyuhakusho/fighter8-composition-full-run.txt",
+        "files": 1,
+        "bytes": 2407
+      },
+      {
+        "path": ".local/md-yuyuhakusho/fighter8-composition-special",
+        "files": 12,
+        "bytes": 234571678
+      },
+      {
+        "path": ".local/md-yuyuhakusho/fighter8-composition-special-run.txt",
+        "files": 1,
+        "bytes": 951
+      }
+    ],
+    "natural_library_checks": [
+      {
+        "path": ".local/md-yuyuhakusho/fighter8-composition-full/fighter8-composition-actor-natural.json.gz",
+        "canonical": "games/yuyuhakusho/engine/testdata/fighter8-composition-actor-natural.json.gz",
+        "calls_sha256": "be69aa7fef044f0ab99fb2152d8d070e0129d2ee5b0b71831f6055ec03882cad",
+        "difference": "Only private-run immutable library union is larger"
+      },
+      {
+        "path": ".local/md-yuyuhakusho/fighter8-composition-full/fighter8-composition-input-natural.json.gz",
+        "canonical": "games/yuyuhakusho/engine/testdata/fighter8-composition-input-natural.json.gz",
+        "calls_sha256": "a915b4a9543daa14ea926c3dd7c3bffa5bc09ccb0df50d8e17c524316432ce8a",
+        "difference": "Only private-run immutable library union is larger"
+      },
+      {
+        "path": ".local/md-yuyuhakusho/fighter8-composition-full/fighter8-composition-action-natural.json.gz",
+        "canonical": "games/yuyuhakusho/engine/testdata/fighter8-composition-action-natural.json.gz",
+        "calls_sha256": "e7c536d17370ab2c990662ae97479cca0377c309338dd0995f8311c7bd186535",
+        "difference": "Only private-run immutable library union is larger"
+      }
+    ],
+    "files_removed": 70,
+    "bytes_removed": 719273491
+  },
+  "limits": [
+    "All final canonical private fixtures use true source8 checkpoint; earlier legacy-source2 checkpoint experiment remains explicitly private historical provenance, not natural source8 coverage",
+    "Natural source8 is human/disabled; private AI is not natural AI evidence",
+    "Nested natural input/action/actor counts overlap and do not multiply gameplay coverage",
+    "Only actual audio-consumer PC/address markers allow excluding four queue bytes; no expected queue or intermediate actor/animation/FX/RNG state enters Go",
+    "Actor endpoint precedes sprite submission; child/FX scheduling, collision-manager, full-world/fresh/browser/network acceptance are separate Root gates",
+    "147ae wiring review checks narrow canonical mapping and partial-clear ownership, not a replacement for lifecycle/world tests",
+    "Composition subtask wrote no production or bundle changes and did not modify frozen tests"
+  ]
+}

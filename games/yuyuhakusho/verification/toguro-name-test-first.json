@@ -1,0 +1,10 @@
+{
+  "scope": "Name-correction assertions before UI fix; earlier original identity map is preserved as historical evidence",
+  "source8_correct_name": "户愚吕兄",
+  "source10_correct_name": "户愚吕弟",
+  "test_path_before_rename": "scripts/yuyuhakusho/check_younger_player.py",
+  "test_sha256_before_fix": "c7a564b7f08a9c51e498d2895d54a51709ef6802af093bef2e3da5ffd992d28d",
+  "ui_sha256_before_fix": "db7fae62d63da4b606335ca1aba6090c3743d3241cf7f884d460defbe24b1ed2",
+  "red_log_path": ".local/md-yuyuhakusho/toguro-name-red.txt",
+  "red_log_sha256": "b077062698786118f4789af259b593a52dcf8d34d2d295133604c3794af39133"
+}

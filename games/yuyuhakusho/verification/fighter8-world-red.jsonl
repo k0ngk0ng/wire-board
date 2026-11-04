@@ -1,0 +1,13 @@
+{"Time":"2026-11-05T05:39:17.105801+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine"}
+{"Time":"2026-11-05T05:39:17.650473+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter8WorldOriginalPasses"}
+{"Time":"2026-11-05T05:39:17.650596+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter8WorldOriginalPasses","Output":"=== RUN   TestFighter8WorldOriginalPasses\n"}
+{"Time":"2026-11-05T05:39:17.650688+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter8WorldOriginalPasses/chu-world-fighter8"}
+{"Time":"2026-11-05T05:39:17.65071+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter8WorldOriginalPasses/chu-world-fighter8","Output":"=== RUN   TestFighter8WorldOriginalPasses/chu-world-fighter8\n"}
+{"Time":"2026-11-05T05:39:17.696804+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter8WorldOriginalPasses/chu-world-fighter8","Output":"    fighter8_world_test.go:32: source8 world pass 1800 object 8400 callback 12668 stage 2: complete fighter action source is not recovered\n"}
+{"Time":"2026-11-05T05:39:17.696851+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter8WorldOriginalPasses/chu-world-fighter8","Output":"--- FAIL: TestFighter8WorldOriginalPasses/chu-world-fighter8 (0.05s)\n"}
+{"Time":"2026-11-05T05:39:17.696858+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter8WorldOriginalPasses/chu-world-fighter8","Elapsed":0.05}
+{"Time":"2026-11-05T05:39:17.696873+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter8WorldOriginalPasses","Output":"--- FAIL: TestFighter8WorldOriginalPasses (0.05s)\n"}
+{"Time":"2026-11-05T05:39:17.696878+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter8WorldOriginalPasses","Elapsed":0.05}
+{"Time":"2026-11-05T05:39:17.696883+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"FAIL\n"}
+{"Time":"2026-11-05T05:39:17.697511+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine\t0.592s\n"}
+{"Time":"2026-11-05T05:39:17.697527+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Elapsed":0.592}

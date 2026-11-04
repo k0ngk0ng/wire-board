@@ -1,0 +1,104 @@
+{
+  "scope": "Root-owned source8 menu/discovery duplicates, verified CLI builds, closed browser profiles, superseded wrong-name UI outputs and private Ghidra project only",
+  "recorded_at_utc": "2026-11-04T22:11:10.560437+00:00",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter8-selection-discovery",
+      "bytes": 54744
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter8-special-discovery",
+      "bytes": 9115
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter8-all-motion-discovery",
+      "bytes": 5476
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter8-combined-discovery",
+      "bytes": 3274
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter8-world",
+      "bytes": 3554631
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter8-world-special",
+      "bytes": 2111751
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter8-menu-static",
+      "bytes": 280555
+    },
+    {
+      "path": ".local/md-yuyuhakusho/younger-browser",
+      "bytes": 9508984
+    },
+    {
+      "path": ".local/md-yuyuhakusho/elder-browser",
+      "bytes": 9232849
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-session",
+      "bytes": 4129074
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-render",
+      "bytes": 4554770
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-session.wasm",
+      "bytes": 4705745
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-render.wasm",
+      "bytes": 5267059
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/younger-legacy",
+      "bytes": 4129074
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/younger-legacy.wasm",
+      "bytes": 4705745
+    },
+    {
+      "path": ".local/md-yuyuhakusho/younger-player-final.txt",
+      "bytes": 1955
+    },
+    {
+      "path": ".local/md-yuyuhakusho/younger-player-tsc.txt",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source-8-name-enlarged.png",
+      "bytes": 8672
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source-10-name-enlarged.png",
+      "bytes": 8704
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static-work-source8-menu",
+      "bytes": 0
+    },
+    {
+      "path": "games/yuyuhakusho/verification/younger-local-player",
+      "bytes": 142257
+    }
+  ],
+  "removed_bytes": 52414434,
+  "preserved": [
+    "Canonical CPU fixtures/manifests/references/fixed inputs and source8 original selection/glyph/static evidence",
+    "Actual name regression red/test-first and all48 byte-identical renamed fresh reports",
+    "Final native/Wasm logs,90 prior actual reports,corrected browser screenshots/source bindings",
+    "ROM/reference cores/source/hooks/audio/IRQ evidence",
+    "Active worktree,loopback8799 independent player build,shared Go caches and original main user changes"
+  ],
+  "subtask_cleanup_reports": [
+    "games/yuyuhakusho/engine/testdata/fighter8-attacks-cleanup.json",
+    "games/yuyuhakusho/engine/testdata/fighter8-motion-cleanup.json",
+    "games/yuyuhakusho/engine/testdata/fighter8-projectile-cleanup.json",
+    "games/yuyuhakusho/engine/testdata/fighter8-composition-cleanup.json"
+  ]
+}

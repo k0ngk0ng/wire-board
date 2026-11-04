@@ -1,0 +1,17 @@
+{
+  "scope": "Real-source8 ordinary baseline/private creator-child CPU data and tests before narrow147ae implementation",
+  "implementation_present": false,
+  "own_missing_symbols_observed": true,
+  "natural_special_pending": true,
+  "source_sha256": {
+    "games/yuyuhakusho/engine/fighter8_projectile_test.go": "c8c1104c6730a4d9974b044bee1911df75b138e56ee10a6199ff67c416fc6f31",
+    "games/yuyuhakusho/engine/FIGHTER8_PROJECTILE_VERIFICATION.md": "b2ad275343560def0932d6c5ff8a905d4c06afddeb01f6774a304174869de8b5",
+    "scripts/yuyuhakusho/capture_fighter8_projectile.py": "17b30d4b67410b2fbbd8b8c7181068769ac89f407ff05f8a05ccfbe2bf7deb2d",
+    "games/yuyuhakusho/engine/testdata/fighter8-projectile-red.jsonl": "65247c92957dc45d18ba68081d1a41ae5cb7f40a3711ecf21a24d014ea2232bf"
+  },
+  "fixture_sha256": {
+    "fighter8-projectile-boundaries.json.gz": "3e3c16920305d12f4bdfd95494d37c161bf6729287eb9105b62eb7978d7eaacf",
+    "fighter8-projectile-oracle.json.gz": "5b7ffa245842012dae04cdc33bb35af8da7f47598a9d175a1f0881fe32fa7b2f",
+    "fighter8-projectile-sequences.json.gz": "6f917483cc4ab030c67cddb0334dd2855b3cfa61335202772bb5c1dfcb1898b2"
+  }
+}

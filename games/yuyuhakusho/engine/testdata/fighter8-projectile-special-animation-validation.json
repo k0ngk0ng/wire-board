@@ -1,0 +1,36 @@
+{
+  "pass": true,
+  "scope": "Existing source8 posea6 records independently exercised by147ae, no runtime-data/bundle change",
+  "frames": 4,
+  "keys": [
+    {
+      "animation_set": 859738,
+      "shape_set": 863338,
+      "pose": 166,
+      "index": 0
+    },
+    {
+      "animation_set": 859738,
+      "shape_set": 863338,
+      "pose": 166,
+      "index": 1
+    },
+    {
+      "animation_set": 859738,
+      "shape_set": 863338,
+      "pose": 166,
+      "index": 2
+    },
+    {
+      "animation_set": 859738,
+      "shape_set": 863338,
+      "pose": 166,
+      "index": 3
+    }
+  ],
+  "catalog": "games/yuyuhakusho/data/animation-catalog.json.gz",
+  "catalog_sha256": "845e2f43179f831130b40c4b796843fdc0c3ae4c699d605e4326905800781495",
+  "all_existing_records_equal": true,
+  "capture_sha256": "17b30d4b67410b2fbbd8b8c7181068769ac89f407ff05f8a05ccfbe2bf7deb2d",
+  "fixture": "fighter8-projectile-special-oracle.json.gz"
+}

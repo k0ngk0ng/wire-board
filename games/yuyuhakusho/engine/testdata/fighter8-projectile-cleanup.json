@@ -1,0 +1,46 @@
+{
+  "scope": "Only source8 projectile capture copies already verified against canonical fixtures/evidence, private Java cache and superseded private-only logs",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter8-projectile",
+      "files": 7,
+      "bytes": 1843338
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter8-projectile-special",
+      "files": 3,
+      "bytes": 25861
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter8-projectile-static",
+      "files": 19,
+      "bytes": 233731
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter8-projectile-capture.txt",
+      "files": 1,
+      "bytes": 384
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter8-projectile-special-capture.txt",
+      "files": 1,
+      "bytes": 116
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter8-projectile-private-native.jsonl",
+      "files": 1,
+      "bytes": 4078
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter8-projectile-private-wasm.jsonl",
+      "files": 1,
+      "bytes": 4076
+    }
+  ],
+  "removed_bytes": 2111584,
+  "preserved": [
+    "Canonical private/natural fixtures including ordinary zero-coverage pass:false, real red, five final native/Wasm tests and vet",
+    "Both animation/catalog equality reports, static listing, shared Root/selector inputs/baselines",
+    "Existing runtime data/bundle/schema, ROM/core/tools, shared Go caches, other agents/games/worktrees and6cd41830 service assets"
+  ]
+}

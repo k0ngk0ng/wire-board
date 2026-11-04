@@ -1,0 +1,472 @@
+{
+  "scope": "Initial explicitly private source8 resource fields on legacy source2 checkpoint, later replaced by same declared matrices on true source8 checkpoint; not natural evidence",
+  "versions": [
+    {
+      "name": "fighter8-composition-action-boundaries",
+      "early_private_gzip_sha256": "e86b5936aff77a28854216ad2c17ce70c3ca9898f05931e81dc130f34c94c7a2",
+      "early_manifest": {
+        "pass": true,
+        "scope": "action source8 complete original API returns; actor stops before sprites",
+        "identity": {
+          "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+          "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+          "core_name": "Genesis Plus GX",
+          "core_version": "v1.7.460bee4c",
+          "fps": 59.92274340431231,
+          "ram_bytes": 65536,
+          "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+          "teamplayer": false
+        },
+        "capture_sha256": "26480c1831d965efa5131910550081f62c59686fee961c16708008930b8bfe77",
+        "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+        "records": 156,
+        "calls": 156,
+        "frames_match_original_core": true,
+        "external_queue_calls": 0,
+        "fixture_sha256": "9cfb2a80a907acef6c07b8eaeb997e0943be7e5d5e8431a214c73a9ccdd364db",
+        "gzip_sha256": "e86b5936aff77a28854216ad2c17ce70c3ca9898f05931e81dc130f34c94c7a2",
+        "binding": {
+          "source_tag": 8,
+          "context": "Explicit private source8 calls on verified source2 battle checkpoint, no natural source8 claim",
+          "legacy_checkpoint_tag": 2,
+          "checkpoint_video_label": 2400,
+          "source_object": "0x8400",
+          "animation_set": 859738,
+          "shape_set": 863338,
+          "parameter_pointer": 75278,
+          "initializer_fixture_path": "games/yuyuhakusho/engine/testdata/fighter-initialization-boundaries.json.gz",
+          "initializer_fixture_sha256": "9f14a0bf4c9eedf17b78ad316168a18b0b83520dd09d980624491f87169ff692",
+          "initializer_manifest_sha256": "b11ba72d7c8d24714e01a6d463927dfde116f4876d2d73696d9b4dc821501f55",
+          "initializer_case": "character-8/dirty-0/mask-0/attributes-0",
+          "source_actor_sha256": "df76f80355931d8bd782cfa7e967279c7d1905c313e2d2f378ac0613bcb80670",
+          "source_initialization_fields_only": true
+        },
+        "library_frames": 80,
+        "baseline_path": "games/yuyuhakusho/engine/testdata/fighter2-attacks-reference-frames.json",
+        "baseline_sha256": "43c15a7d09b8244d4d6cea5b2b90a23673794ccd5f7effb33e66b39452d69338",
+        "baseline_manifest_sha256": "2a8fae219a3da333fa7cf1b6c572d57e411ce5baa4f0cddaf6c37ad9532620bf",
+        "input_path": "docs/research/md-yuyuhakusho/source2-next-inputs.json",
+        "input_sha256": "43a1cab4f2147616db4798cd5ab88d6c208f2311d5b99468816f3265d9fee596",
+        "private_only_legacy_context": true,
+        "natural_source8_observed": false,
+        "baseline_raw_sha256": "43c15a7d09b8244d4d6cea5b2b90a23673794ccd5f7effb33e66b39452d69338",
+        "accepted_entry_video_limit": 3600,
+        "canonical_source_registers": true,
+        "private_unknown_ram_writes": 0,
+        "incomplete_calls": 0,
+        "errors": [],
+        "statistics": {
+          "calls": 156,
+          "external": 0,
+          "threat_branches": 0,
+          "actions": {
+            "0": 51,
+            "1": 4,
+            "2": 7,
+            "3": 4,
+            "4": 4,
+            "5": 4,
+            "6": 4,
+            "7": 4,
+            "8": 4,
+            "9": 4,
+            "10": 4,
+            "11": 4,
+            "12": 4,
+            "13": 4,
+            "15": 4,
+            "17": 5,
+            "62": 13,
+            "63": 13,
+            "64": 15
+          },
+          "routes": {},
+          "rng_counts": {
+            "1": 156
+          },
+          "sources": {
+            "0xffff8400": 78,
+            "0xffff8800": 26,
+            "0xffff8c00": 26,
+            "0xffff9000": 26
+          }
+        },
+        "limits": [
+          "Natural source8 actor is human; source8 AI is private evidence only.",
+          "Actor excludes sprite, child, collision-manager and world callbacks.",
+          "Independent audio consumer exclusions require observed PC/address markers."
+        ]
+      },
+      "final_gzip_sha256": "5c4fe9b8b9f245db693d1248a246649bbb5cdd4155ddaede60db16b927f613f3"
+    },
+    {
+      "name": "fighter8-composition-action-sequences",
+      "early_private_gzip_sha256": "471e8272a8085742fb4e322148f295bb0c46e2e5b1f7ba87112b95bcac07c612",
+      "early_manifest": {
+        "pass": true,
+        "scope": "action source8 complete original API returns; actor stops before sprites",
+        "identity": {
+          "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+          "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+          "core_name": "Genesis Plus GX",
+          "core_version": "v1.7.460bee4c",
+          "fps": 59.92274340431231,
+          "ram_bytes": 65536,
+          "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+          "teamplayer": false
+        },
+        "capture_sha256": "26480c1831d965efa5131910550081f62c59686fee961c16708008930b8bfe77",
+        "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+        "records": 9,
+        "calls": 767,
+        "frames_match_original_core": true,
+        "external_queue_calls": 0,
+        "fixture_sha256": "9036b7760ae325bc68f3fce87163405e384ee0bf870935f4297e3bf68d0f5ec7",
+        "gzip_sha256": "471e8272a8085742fb4e322148f295bb0c46e2e5b1f7ba87112b95bcac07c612",
+        "binding": {
+          "source_tag": 8,
+          "context": "Explicit private source8 calls on verified source2 battle checkpoint, no natural source8 claim",
+          "legacy_checkpoint_tag": 2,
+          "checkpoint_video_label": 2400,
+          "source_object": "0x8400",
+          "animation_set": 859738,
+          "shape_set": 863338,
+          "parameter_pointer": 75278,
+          "initializer_fixture_path": "games/yuyuhakusho/engine/testdata/fighter-initialization-boundaries.json.gz",
+          "initializer_fixture_sha256": "9f14a0bf4c9eedf17b78ad316168a18b0b83520dd09d980624491f87169ff692",
+          "initializer_manifest_sha256": "b11ba72d7c8d24714e01a6d463927dfde116f4876d2d73696d9b4dc821501f55",
+          "initializer_case": "character-8/dirty-0/mask-0/attributes-0",
+          "source_actor_sha256": "df76f80355931d8bd782cfa7e967279c7d1905c313e2d2f378ac0613bcb80670",
+          "source_initialization_fields_only": true
+        },
+        "library_frames": 80,
+        "baseline_path": "games/yuyuhakusho/engine/testdata/fighter2-attacks-reference-frames.json",
+        "baseline_sha256": "43c15a7d09b8244d4d6cea5b2b90a23673794ccd5f7effb33e66b39452d69338",
+        "baseline_manifest_sha256": "2a8fae219a3da333fa7cf1b6c572d57e411ce5baa4f0cddaf6c37ad9532620bf",
+        "input_path": "docs/research/md-yuyuhakusho/source2-next-inputs.json",
+        "input_sha256": "43a1cab4f2147616db4798cd5ab88d6c208f2311d5b99468816f3265d9fee596",
+        "private_only_legacy_context": true,
+        "natural_source8_observed": false,
+        "baseline_raw_sha256": "43c15a7d09b8244d4d6cea5b2b90a23673794ccd5f7effb33e66b39452d69338",
+        "accepted_entry_video_limit": 3600,
+        "canonical_source_registers": true,
+        "private_unknown_ram_writes": 0,
+        "incomplete_calls": 0,
+        "errors": [],
+        "statistics": {
+          "calls": 767
+        },
+        "limits": [
+          "Natural source8 actor is human; source8 AI is private evidence only.",
+          "Actor excludes sprite, child, collision-manager and world callbacks.",
+          "Independent audio consumer exclusions require observed PC/address markers."
+        ]
+      },
+      "final_gzip_sha256": "b4640d08f27a08638ac6af2a6c54dfbd65244401bf0f62a821dc727dca507328"
+    },
+    {
+      "name": "fighter8-composition-input-boundaries",
+      "early_private_gzip_sha256": "04f84eb3183a28a4f796e2aaac15f14c9576d32a6650fc1137b0162a1f4f3b2d",
+      "early_manifest": {
+        "pass": true,
+        "scope": "input source8 complete original API returns; actor stops before sprites",
+        "identity": {
+          "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+          "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+          "core_name": "Genesis Plus GX",
+          "core_version": "v1.7.460bee4c",
+          "fps": 59.92274340431231,
+          "ram_bytes": 65536,
+          "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+          "teamplayer": false
+        },
+        "capture_sha256": "26480c1831d965efa5131910550081f62c59686fee961c16708008930b8bfe77",
+        "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+        "records": 31,
+        "calls": 31,
+        "frames_match_original_core": true,
+        "external_queue_calls": 0,
+        "fixture_sha256": "3e9ebac5cadcdbea9b754b88548cc9859bc6f2c478506c10cf78c41f84c0628a",
+        "gzip_sha256": "04f84eb3183a28a4f796e2aaac15f14c9576d32a6650fc1137b0162a1f4f3b2d",
+        "binding": {
+          "source_tag": 8,
+          "context": "Explicit private source8 calls on verified source2 battle checkpoint, no natural source8 claim",
+          "legacy_checkpoint_tag": 2,
+          "checkpoint_video_label": 2400,
+          "source_object": "0x8400",
+          "animation_set": 859738,
+          "shape_set": 863338,
+          "parameter_pointer": 75278,
+          "initializer_fixture_path": "games/yuyuhakusho/engine/testdata/fighter-initialization-boundaries.json.gz",
+          "initializer_fixture_sha256": "9f14a0bf4c9eedf17b78ad316168a18b0b83520dd09d980624491f87169ff692",
+          "initializer_manifest_sha256": "b11ba72d7c8d24714e01a6d463927dfde116f4876d2d73696d9b4dc821501f55",
+          "initializer_case": "character-8/dirty-0/mask-0/attributes-0",
+          "source_actor_sha256": "df76f80355931d8bd782cfa7e967279c7d1905c313e2d2f378ac0613bcb80670",
+          "source_initialization_fields_only": true
+        },
+        "library_frames": 80,
+        "baseline_path": "games/yuyuhakusho/engine/testdata/fighter2-attacks-reference-frames.json",
+        "baseline_sha256": "43c15a7d09b8244d4d6cea5b2b90a23673794ccd5f7effb33e66b39452d69338",
+        "baseline_manifest_sha256": "2a8fae219a3da333fa7cf1b6c572d57e411ce5baa4f0cddaf6c37ad9532620bf",
+        "input_path": "docs/research/md-yuyuhakusho/source2-next-inputs.json",
+        "input_sha256": "43a1cab4f2147616db4798cd5ab88d6c208f2311d5b99468816f3265d9fee596",
+        "private_only_legacy_context": true,
+        "natural_source8_observed": false,
+        "baseline_raw_sha256": "43c15a7d09b8244d4d6cea5b2b90a23673794ccd5f7effb33e66b39452d69338",
+        "accepted_entry_video_limit": 3600,
+        "canonical_source_registers": true,
+        "private_unknown_ram_writes": 0,
+        "incomplete_calls": 0,
+        "errors": [],
+        "statistics": {
+          "calls": 31,
+          "external": 0,
+          "threat_branches": 0,
+          "actions": {},
+          "routes": {
+            "human": 7,
+            "ai": 4,
+            "human-record": 4,
+            "ai-record": 4,
+            "playback": 4,
+            "playback-stopped": 4,
+            "disabled": 4
+          },
+          "rng_counts": {
+            "0": 23,
+            "4": 5,
+            "5": 3
+          },
+          "sources": {
+            "0xffff8400": 10,
+            "0xffff8800": 7,
+            "0xffff8c00": 7,
+            "0xffff9000": 7
+          }
+        },
+        "limits": [
+          "Natural source8 actor is human; source8 AI is private evidence only.",
+          "Actor excludes sprite, child, collision-manager and world callbacks.",
+          "Independent audio consumer exclusions require observed PC/address markers."
+        ]
+      },
+      "final_gzip_sha256": "2e7bd369495a9336a558d22b78c6a7a5e48d500c12a85987f4dfd0a86efac151"
+    },
+    {
+      "name": "fighter8-composition-input-sequences",
+      "early_private_gzip_sha256": "67447915e26fd1c1a1e4e30b2bc9ea42073544a6a9682316d6e70991c9909302",
+      "early_manifest": {
+        "pass": true,
+        "scope": "input source8 complete original API returns; actor stops before sprites",
+        "identity": {
+          "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+          "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+          "core_name": "Genesis Plus GX",
+          "core_version": "v1.7.460bee4c",
+          "fps": 59.92274340431231,
+          "ram_bytes": 65536,
+          "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+          "teamplayer": false
+        },
+        "capture_sha256": "26480c1831d965efa5131910550081f62c59686fee961c16708008930b8bfe77",
+        "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+        "records": 3,
+        "calls": 48,
+        "frames_match_original_core": true,
+        "external_queue_calls": 0,
+        "fixture_sha256": "887d5c07d9eccc7571527c261115fde6658c61a42e0f2266b4a5eb5023f42862",
+        "gzip_sha256": "67447915e26fd1c1a1e4e30b2bc9ea42073544a6a9682316d6e70991c9909302",
+        "binding": {
+          "source_tag": 8,
+          "context": "Explicit private source8 calls on verified source2 battle checkpoint, no natural source8 claim",
+          "legacy_checkpoint_tag": 2,
+          "checkpoint_video_label": 2400,
+          "source_object": "0x8400",
+          "animation_set": 859738,
+          "shape_set": 863338,
+          "parameter_pointer": 75278,
+          "initializer_fixture_path": "games/yuyuhakusho/engine/testdata/fighter-initialization-boundaries.json.gz",
+          "initializer_fixture_sha256": "9f14a0bf4c9eedf17b78ad316168a18b0b83520dd09d980624491f87169ff692",
+          "initializer_manifest_sha256": "b11ba72d7c8d24714e01a6d463927dfde116f4876d2d73696d9b4dc821501f55",
+          "initializer_case": "character-8/dirty-0/mask-0/attributes-0",
+          "source_actor_sha256": "df76f80355931d8bd782cfa7e967279c7d1905c313e2d2f378ac0613bcb80670",
+          "source_initialization_fields_only": true
+        },
+        "library_frames": 80,
+        "baseline_path": "games/yuyuhakusho/engine/testdata/fighter2-attacks-reference-frames.json",
+        "baseline_sha256": "43c15a7d09b8244d4d6cea5b2b90a23673794ccd5f7effb33e66b39452d69338",
+        "baseline_manifest_sha256": "2a8fae219a3da333fa7cf1b6c572d57e411ce5baa4f0cddaf6c37ad9532620bf",
+        "input_path": "docs/research/md-yuyuhakusho/source2-next-inputs.json",
+        "input_sha256": "43a1cab4f2147616db4798cd5ab88d6c208f2311d5b99468816f3265d9fee596",
+        "private_only_legacy_context": true,
+        "natural_source8_observed": false,
+        "baseline_raw_sha256": "43c15a7d09b8244d4d6cea5b2b90a23673794ccd5f7effb33e66b39452d69338",
+        "accepted_entry_video_limit": 3600,
+        "canonical_source_registers": true,
+        "private_unknown_ram_writes": 0,
+        "incomplete_calls": 0,
+        "errors": [],
+        "statistics": {
+          "calls": 48
+        },
+        "limits": [
+          "Natural source8 actor is human; source8 AI is private evidence only.",
+          "Actor excludes sprite, child, collision-manager and world callbacks.",
+          "Independent audio consumer exclusions require observed PC/address markers."
+        ]
+      },
+      "final_gzip_sha256": "a2b0309abc0858f88d517eed218eaca65b395f60d7efde4c92718886bd49b3ec"
+    },
+    {
+      "name": "fighter8-composition-actor-boundaries",
+      "early_private_gzip_sha256": "753e643d38bd022d1edb80552fb2012786a7bd96462c26ae1c7c8c23849b70ad",
+      "early_manifest": {
+        "pass": true,
+        "scope": "actor source8 complete original API returns; actor stops before sprites",
+        "identity": {
+          "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+          "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+          "core_name": "Genesis Plus GX",
+          "core_version": "v1.7.460bee4c",
+          "fps": 59.92274340431231,
+          "ram_bytes": 65536,
+          "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+          "teamplayer": false
+        },
+        "capture_sha256": "26480c1831d965efa5131910550081f62c59686fee961c16708008930b8bfe77",
+        "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+        "records": 43,
+        "calls": 43,
+        "frames_match_original_core": true,
+        "external_queue_calls": 0,
+        "fixture_sha256": "5a594181c9e62fef1cb8d63d65500542f1930d6ac83beb5daf95e8d90acc2db5",
+        "gzip_sha256": "753e643d38bd022d1edb80552fb2012786a7bd96462c26ae1c7c8c23849b70ad",
+        "binding": {
+          "source_tag": 8,
+          "context": "Explicit private source8 calls on verified source2 battle checkpoint, no natural source8 claim",
+          "legacy_checkpoint_tag": 2,
+          "checkpoint_video_label": 2400,
+          "source_object": "0x8400",
+          "animation_set": 859738,
+          "shape_set": 863338,
+          "parameter_pointer": 75278,
+          "initializer_fixture_path": "games/yuyuhakusho/engine/testdata/fighter-initialization-boundaries.json.gz",
+          "initializer_fixture_sha256": "9f14a0bf4c9eedf17b78ad316168a18b0b83520dd09d980624491f87169ff692",
+          "initializer_manifest_sha256": "b11ba72d7c8d24714e01a6d463927dfde116f4876d2d73696d9b4dc821501f55",
+          "initializer_case": "character-8/dirty-0/mask-0/attributes-0",
+          "source_actor_sha256": "df76f80355931d8bd782cfa7e967279c7d1905c313e2d2f378ac0613bcb80670",
+          "source_initialization_fields_only": true
+        },
+        "library_frames": 80,
+        "baseline_path": "games/yuyuhakusho/engine/testdata/fighter2-attacks-reference-frames.json",
+        "baseline_sha256": "43c15a7d09b8244d4d6cea5b2b90a23673794ccd5f7effb33e66b39452d69338",
+        "baseline_manifest_sha256": "2a8fae219a3da333fa7cf1b6c572d57e411ce5baa4f0cddaf6c37ad9532620bf",
+        "input_path": "docs/research/md-yuyuhakusho/source2-next-inputs.json",
+        "input_sha256": "43a1cab4f2147616db4798cd5ab88d6c208f2311d5b99468816f3265d9fee596",
+        "private_only_legacy_context": true,
+        "natural_source8_observed": false,
+        "baseline_raw_sha256": "43c15a7d09b8244d4d6cea5b2b90a23673794ccd5f7effb33e66b39452d69338",
+        "accepted_entry_video_limit": 3600,
+        "canonical_source_registers": true,
+        "private_unknown_ram_writes": 0,
+        "incomplete_calls": 0,
+        "errors": [],
+        "statistics": {
+          "calls": 43,
+          "external": 0,
+          "threat_branches": 0,
+          "actions": {
+            "0": 40,
+            "62": 1,
+            "63": 1,
+            "64": 1
+          },
+          "routes": {},
+          "rng_counts": {
+            "1": 23,
+            "5": 5,
+            "6": 3,
+            "0": 12
+          },
+          "sources": {
+            "0xffff8400": 13,
+            "0xffff8800": 10,
+            "0xffff8c00": 10,
+            "0xffff9000": 10
+          }
+        },
+        "limits": [
+          "Natural source8 actor is human; source8 AI is private evidence only.",
+          "Actor excludes sprite, child, collision-manager and world callbacks.",
+          "Independent audio consumer exclusions require observed PC/address markers."
+        ]
+      },
+      "final_gzip_sha256": "c27bf97e74daa0ae412c6724d1a739db113cf7ccc27275758558700deaad0280"
+    },
+    {
+      "name": "fighter8-composition-actor-sequences",
+      "early_private_gzip_sha256": "4efeea049e4a5a56c69e8725015f195dfa83c837d64424e98a24f274dc2f0cce",
+      "early_manifest": {
+        "pass": true,
+        "scope": "actor source8 complete original API returns; actor stops before sprites",
+        "identity": {
+          "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+          "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+          "core_name": "Genesis Plus GX",
+          "core_version": "v1.7.460bee4c",
+          "fps": 59.92274340431231,
+          "ram_bytes": 65536,
+          "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+          "teamplayer": false
+        },
+        "capture_sha256": "26480c1831d965efa5131910550081f62c59686fee961c16708008930b8bfe77",
+        "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+        "records": 4,
+        "calls": 96,
+        "frames_match_original_core": true,
+        "external_queue_calls": 0,
+        "fixture_sha256": "25cf8d6ce2cce51d36f3d0960b09694630b6647bb59ebf3e6f2934e272afad0f",
+        "gzip_sha256": "4efeea049e4a5a56c69e8725015f195dfa83c837d64424e98a24f274dc2f0cce",
+        "binding": {
+          "source_tag": 8,
+          "context": "Explicit private source8 calls on verified source2 battle checkpoint, no natural source8 claim",
+          "legacy_checkpoint_tag": 2,
+          "checkpoint_video_label": 2400,
+          "source_object": "0x8400",
+          "animation_set": 859738,
+          "shape_set": 863338,
+          "parameter_pointer": 75278,
+          "initializer_fixture_path": "games/yuyuhakusho/engine/testdata/fighter-initialization-boundaries.json.gz",
+          "initializer_fixture_sha256": "9f14a0bf4c9eedf17b78ad316168a18b0b83520dd09d980624491f87169ff692",
+          "initializer_manifest_sha256": "b11ba72d7c8d24714e01a6d463927dfde116f4876d2d73696d9b4dc821501f55",
+          "initializer_case": "character-8/dirty-0/mask-0/attributes-0",
+          "source_actor_sha256": "df76f80355931d8bd782cfa7e967279c7d1905c313e2d2f378ac0613bcb80670",
+          "source_initialization_fields_only": true
+        },
+        "library_frames": 80,
+        "baseline_path": "games/yuyuhakusho/engine/testdata/fighter2-attacks-reference-frames.json",
+        "baseline_sha256": "43c15a7d09b8244d4d6cea5b2b90a23673794ccd5f7effb33e66b39452d69338",
+        "baseline_manifest_sha256": "2a8fae219a3da333fa7cf1b6c572d57e411ce5baa4f0cddaf6c37ad9532620bf",
+        "input_path": "docs/research/md-yuyuhakusho/source2-next-inputs.json",
+        "input_sha256": "43a1cab4f2147616db4798cd5ab88d6c208f2311d5b99468816f3265d9fee596",
+        "private_only_legacy_context": true,
+        "natural_source8_observed": false,
+        "baseline_raw_sha256": "43c15a7d09b8244d4d6cea5b2b90a23673794ccd5f7effb33e66b39452d69338",
+        "accepted_entry_video_limit": 3600,
+        "canonical_source_registers": true,
+        "private_unknown_ram_writes": 0,
+        "incomplete_calls": 0,
+        "errors": [],
+        "statistics": {
+          "calls": 96
+        },
+        "limits": [
+          "Natural source8 actor is human; source8 AI is private evidence only.",
+          "Actor excludes sprite, child, collision-manager and world callbacks.",
+          "Independent audio consumer exclusions require observed PC/address markers."
+        ]
+      },
+      "final_gzip_sha256": "abc437bf96a568f236dffb8c25e02be627c7690164828dedc803481f17f616c5"
+    }
+  ]
+}

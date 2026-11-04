@@ -1,0 +1,74 @@
+{
+  "pass": true,
+  "scope": "actor source8 complete original API returns; actor stops before sprites",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "26480c1831d965efa5131910550081f62c59686fee961c16708008930b8bfe77",
+  "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+  "records": 2067,
+  "calls": 2067,
+  "frames_match_original_core": true,
+  "external_queue_calls": 44,
+  "fixture_sha256": "8822a284add0292c7d47073301f0610e0484f93bfa29626dece23369e47e44b1",
+  "gzip_sha256": "465ddd5c7908c12d941d65c58accde943207698f40ecd6406240c02d6be7c31a",
+  "binding": {
+    "source_tag": 8,
+    "source_object": "0x8400",
+    "checkpoint_video_label": 2400,
+    "animation_set": 859738,
+    "shape_set": 863338,
+    "parameter_pointer": 75278,
+    "source_actor_sha256": "cb5aea95967677164e904d78b9764741016d3497d5186582d4661abf079ad6b2"
+  },
+  "library_frames": 59,
+  "baseline_path": "games/yuyuhakusho/engine/testdata/fighter8-attacks-reference-frames.json",
+  "baseline_sha256": "fa63dd05758ee6cbc0ead8a4b4ad1e17c6d0f554f74aaa66d0410ff464847651",
+  "baseline_manifest_sha256": "4d9eee795948e78e98dc70ad3776ee3e83f7e04827310f471f304be87d4cb032",
+  "input_path": "docs/research/md-yuyuhakusho/source8-next-inputs.json",
+  "input_sha256": "e70b955c9be3e197fd5ab91189e0621c6e8d251987a5a1d57cdffbf3f14ffb76",
+  "private_only_legacy_context": false,
+  "natural_source8_observed": true,
+  "baseline_raw_sha256": "fa63dd05758ee6cbc0ead8a4b4ad1e17c6d0f554f74aaa66d0410ff464847651",
+  "accepted_entry_video_limit": 3600,
+  "canonical_source_registers": true,
+  "private_unknown_ram_writes": 0,
+  "incomplete_calls": 0,
+  "errors": [],
+  "statistics": {
+    "calls": 2067,
+    "external": 44,
+    "threat_branches": 0,
+    "actions": {
+      "0": 1024,
+      "1": 104,
+      "3": 215,
+      "17": 66,
+      "11": 110,
+      "2": 51,
+      "5": 278,
+      "6": 104,
+      "4": 99,
+      "12": 16
+    },
+    "routes": {},
+    "rng_counts": {
+      "1": 2067
+    },
+    "sources": {
+      "0xffff8400": 2067
+    }
+  },
+  "limits": [
+    "Natural source8 actor is human; source8 AI is private evidence only.",
+    "Actor excludes sprite, child, collision-manager and world callbacks.",
+    "Independent audio consumer exclusions require observed PC/address markers."
+  ]
+}

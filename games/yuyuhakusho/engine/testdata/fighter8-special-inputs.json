@@ -1,0 +1,206 @@
+[
+  {
+    "start": 180,
+    "end": 185,
+    "buttons": [
+      3
+    ]
+  },
+  {
+    "start": 360,
+    "end": 365,
+    "buttons": [
+      3
+    ]
+  },
+  {
+    "start": 650,
+    "end": 655,
+    "buttons": [
+      3
+    ]
+  },
+  {
+    "start": 800,
+    "end": 805,
+    "buttons": [
+      0
+    ]
+  },
+  {
+    "start": 950,
+    "end": 955,
+    "buttons": [
+      0
+    ]
+  },
+  {
+    "start": 1000,
+    "end": 1060,
+    "buttons": [
+      7
+    ]
+  },
+  {
+    "start": 1100,
+    "end": 1104,
+    "buttons": [
+      1
+    ]
+  },
+  {
+    "start": 1150,
+    "end": 1154,
+    "buttons": [
+      0
+    ]
+  },
+  {
+    "start": 1250,
+    "end": 1254,
+    "buttons": [
+      1
+    ]
+  },
+  {
+    "start": 1300,
+    "end": 1304,
+    "buttons": [
+      0
+    ]
+  },
+  {
+    "start": 1305,
+    "end": 1309,
+    "buttons": [
+      6
+    ]
+  },
+  {
+    "start": 1400,
+    "end": 1420,
+    "buttons": [
+      4
+    ]
+  },
+  {
+    "start": 1450,
+    "end": 1454,
+    "buttons": [
+      1
+    ]
+  },
+  {
+    "start": 1500,
+    "end": 1504,
+    "buttons": [
+      0
+    ]
+  },
+  {
+    "start": 1550,
+    "end": 1554,
+    "buttons": [
+      8
+    ]
+  },
+  {
+    "start": 1600,
+    "end": 1604,
+    "buttons": [
+      1
+    ]
+  },
+  {
+    "start": 1810,
+    "end": 1813,
+    "buttons": [
+      5
+    ]
+  },
+  {
+    "start": 1814,
+    "end": 1817,
+    "buttons": [
+      4
+    ]
+  },
+  {
+    "start": 1815,
+    "end": 1818,
+    "buttons": [
+      0
+    ]
+  },
+  {
+    "start": 2642,
+    "end": 2643,
+    "buttons": [
+      7
+    ]
+  },
+  {
+    "start": 2644,
+    "end": 2645,
+    "buttons": [
+      5
+    ]
+  },
+  {
+    "start": 2646,
+    "end": 2647,
+    "buttons": [
+      7
+    ]
+  },
+  {
+    "start": 2648,
+    "end": 2649,
+    "buttons": [
+      5
+    ]
+  },
+  {
+    "start": 2651,
+    "end": 2654,
+    "buttons": [
+      1
+    ]
+  },
+  {
+    "start": 2653,
+    "end": 2891,
+    "buttons": [
+      6
+    ]
+  },
+  {
+    "start": 2901,
+    "end": 2902,
+    "buttons": [
+      5
+    ]
+  },
+  {
+    "start": 2903,
+    "end": 2904,
+    "buttons": [
+      5,
+      6
+    ]
+  },
+  {
+    "start": 2905,
+    "end": 2906,
+    "buttons": [
+      6
+    ]
+  },
+  {
+    "start": 2908,
+    "end": 2911,
+    "buttons": [
+      0
+    ]
+  }
+]
