@@ -1,0 +1,13 @@
+{
+  "scope": "Resource ownership, descriptor source/closed command domains and full-payload original mother-table decoding; no runtime implementation exists yet",
+  "test_sha256": "c757cb50a0e03e58c90eef26e4cb5c2f61d469307926cea129cbd4cf6fe99b2b",
+  "failure_inventory_sha256": "66418803b3b394e89fe35d733e1221822961a2d3669f6133e74b18f7c0f3f9ef",
+  "actual_red_sha256": "c075872263614de20d6a6a8397583c1973347ac3e4426a0a77b3ccc3c7596dd5",
+  "expected_missing_api": [
+    "Descriptor",
+    "Catalog",
+    "Decode",
+    "OrdinaryPCM",
+    "TrackPanPCM"
+  ]
+}

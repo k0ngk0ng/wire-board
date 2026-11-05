@@ -1,0 +1,34 @@
+{
+  "pass": true,
+  "checks": [
+    {
+      "original": "games/yuyuhakusho/data/audio-pcm-payloads.json.gz",
+      "repeat": ".local/md-yuyuhakusho/pcm-payload/repeat-data/audio-pcm-payloads.json.gz",
+      "bytes": 415208,
+      "sha256": "dbfa09e9893dcd9c661ef085f8d5215a202c502ae4277c6b9f9992a3384827de",
+      "byte_equal": true
+    },
+    {
+      "original": "games/yuyuhakusho/data/audio-pcm-payloads-manifest.json",
+      "repeat": ".local/md-yuyuhakusho/pcm-payload/repeat-data/audio-pcm-payloads-manifest.json",
+      "bytes": 1136,
+      "sha256": "c17e829faf813cce3d82b46a136d18ced5d8a68daf931d1e22b2636e450342e0",
+      "byte_equal": true
+    },
+    {
+      "original": "games/yuyuhakusho/verification/pcm-payload/export-provenance.json",
+      "repeat": ".local/md-yuyuhakusho/pcm-payload/repeat-proof/export-provenance.json",
+      "bytes": 78005,
+      "sha256": "10847e6d3891f5704d3d40a010511465af3bb48304e51bfb66ce08de33777d9a",
+      "byte_equal": true
+    },
+    {
+      "original": "games/yuyuhakusho/audio/pcmassets/testdata/expected.json",
+      "repeat": ".local/md-yuyuhakusho/pcm-payload/repeat-fixture/expected.json",
+      "bytes": 74461,
+      "sha256": "1e0546425b68e7779f8d77f1aacab47d9fc70b056145dfef7a5560268792c04e",
+      "byte_equal": true
+    }
+  ],
+  "fixture_provenance_note": "Independent expected.json is byte equal; its diagnostic production_implementation_present changed from false to true, so provenance JSON is not claimed byte equal"
+}

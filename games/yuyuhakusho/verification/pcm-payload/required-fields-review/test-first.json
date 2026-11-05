@@ -1,0 +1,5 @@
+{
+  "scope": "Zero-valued required music flags: missing/null must not silently equal0",
+  "implementation_before_sha256": "a88763cc218429976878f576d9e1d3376d963afbbf1c4d686d1e3dd4b8d1bb67",
+  "test_sha256": "079c4e0dca409cbe5b28526233537ace7893d650dd9ac9a72cf0c5ae02d57763"
+}

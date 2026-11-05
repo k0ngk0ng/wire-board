@@ -1,0 +1,2590 @@
+{
+  "schema": 1,
+  "scope": "Original source descriptors and complete decoder bytes using already verified native mother tables, not a new native timing or DSP oracle",
+  "rows": [
+    {
+      "domain": "ordinary",
+      "code": 6,
+      "descriptor": {
+        "id": "descriptor-ac63deae129cdee66afd",
+        "sample_id": "6febe130d690f5edd62d4b997afd8dffb55d1c77300be6212248395bb8a849e1",
+        "native_rate": 20,
+        "flags": 1,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 2570,
+      "decoded_sha256": "d6c21487d7022d2dfd060b80a9162972c17cb08aa90774c4a9b5b6d408213b32",
+      "final_accumulator": 141,
+      "last_encoded": 3,
+      "last_decoded": [
+        137,
+        141
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 7,
+      "descriptor": {
+        "id": "descriptor-f27bc24ffd85415d38ea",
+        "sample_id": "17849a94f5e572281f3790e29f2b2cb696d130ae0de76875f26d9bffc7869722",
+        "native_rate": 20,
+        "flags": 1,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 1897,
+      "decoded_sha256": "af572a5f163564283fb31aafafbc32aeff34135e7b3c0bddaf47265ecddbc0f1",
+      "final_accumulator": 129,
+      "last_encoded": 32,
+      "last_decoded": [
+        129,
+        129
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 8,
+      "descriptor": {
+        "id": "descriptor-cecf98da6fdff7b46e2f",
+        "sample_id": "0c22951b02f50a122fe729d9b78490ba60a390f125513ab56bb74079e19e3a90",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 5306,
+      "decoded_sha256": "b39681409f700424f46c73478ec78debfcd90bd7191389117e3fd1cd024d7b7e",
+      "final_accumulator": 128,
+      "last_encoded": 0,
+      "last_decoded": [
+        128,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 9,
+      "descriptor": {
+        "id": "descriptor-cb4ea71afaf5696b7017",
+        "sample_id": "27a2c064c92e478458ffc65bf4c1878b78b61e7ba215e21accbb33863e02daa5",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 3630,
+      "decoded_sha256": "54b2970366e9822c48a2f06fccd859dec134cc91e6e5cf597e7a630a6ebbab24",
+      "final_accumulator": 128,
+      "last_encoded": 0,
+      "last_decoded": [
+        128,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 10,
+      "descriptor": {
+        "id": "descriptor-3d62411ddda574ec088f",
+        "sample_id": "005ecb1daa77c4ae2716a067918bf9df708042e72c24360b5970eddd88deca32",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 5457,
+      "decoded_sha256": "a12043d81d316e8855e17b3f221d564d4e50c487560c4a81df1326aee12388b7",
+      "final_accumulator": 128,
+      "last_encoded": 16,
+      "last_decoded": [
+        128,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 11,
+      "descriptor": {
+        "id": "descriptor-a3cb8b44ecff9982f682",
+        "sample_id": "71a227987372a4bd8af86229b8beccfcc6a326bab01237623ce5ded83356976b",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 64
+      },
+      "encoded_bytes": 3615,
+      "decoded_sha256": "8b7df0f27cea88e24c1f53fa72619d9dd01fdeb94157dd7c65106cb99dd1dd16",
+      "final_accumulator": 127,
+      "last_encoded": 144,
+      "last_decoded": [
+        127,
+        127
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 12,
+      "descriptor": {
+        "id": "descriptor-31db63c034fce1732a63",
+        "sample_id": "a528ab938edac534277573e9adead12ac44e2a6aaeca3a415b3872258e23db1f",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 192
+      },
+      "encoded_bytes": 4546,
+      "decoded_sha256": "1ee0ccde217201131f6bb7cd2f69ec30fb235c993b7b31750d405a4a3cbcb633",
+      "final_accumulator": 128,
+      "last_encoded": 0,
+      "last_decoded": [
+        128,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 13,
+      "descriptor": {
+        "id": "descriptor-9af6d3723f149fb111e6",
+        "sample_id": "8a21fa499b5dbad3f2abca6a70b448737d90ce5be59be26bbea83bad6cde3bd7",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 192
+      },
+      "encoded_bytes": 1950,
+      "decoded_sha256": "e03b5a9283aa333204fb8399a3b2f5eadfab2cb2672310b31fc54d674a3450d2",
+      "final_accumulator": 127,
+      "last_encoded": 0,
+      "last_decoded": [
+        127,
+        127
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 14,
+      "descriptor": {
+        "id": "descriptor-2be3d8561ae5740ee7b1",
+        "sample_id": "a9da3b20951fe78dc5734501efb311f3d80558a3b198b20af6e9ca70c2b868e2",
+        "native_rate": 20,
+        "flags": 1,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 3850,
+      "decoded_sha256": "8bdf9a6b902f0735d681d045773f86ec87bf201ed5ca233e1c78ea65ec60f0f3",
+      "final_accumulator": 127,
+      "last_encoded": 9,
+      "last_decoded": [
+        128,
+        127
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 15,
+      "descriptor": {
+        "id": "descriptor-c08b9c4a2e795f0bf4af",
+        "sample_id": "21d8ea7b0332ea8ca625bf305a732858b2059dbd7d0917623922ba735fe3e5af",
+        "native_rate": 20,
+        "flags": 1,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 3428,
+      "decoded_sha256": "99b391e5ed7d1707195eb76cfc9176513f06723b0a918704bfaa9fe289f8a62c",
+      "final_accumulator": 128,
+      "last_encoded": 0,
+      "last_decoded": [
+        128,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 16,
+      "descriptor": {
+        "id": "descriptor-eb19e215549fab134891",
+        "sample_id": "bd03c90cf60665311179cd90a96823b6e3fc538f57d669a34e51e4d3993d4fb7",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 3414,
+      "decoded_sha256": "4b0519eaf8d4c050cdfb028d04cbd0be9ef5ebb97acf9a8f4e32f4a759ec7495",
+      "final_accumulator": 126,
+      "last_encoded": 188,
+      "last_decoded": [
+        134,
+        126
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 17,
+      "descriptor": {
+        "id": "descriptor-c26ba4901dcd4b24eb05",
+        "sample_id": "e42c07b452431be9b0bdce699a1032524535e09aa5ee98fff841f3e707948b78",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 3797,
+      "decoded_sha256": "ffe764086262902869efb3da99797158cd779433e5b993210f28b61f23502e91",
+      "final_accumulator": 127,
+      "last_encoded": 0,
+      "last_decoded": [
+        127,
+        127
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 18,
+      "descriptor": {
+        "id": "descriptor-f09b701a8ffa5152b220",
+        "sample_id": "ac2eebbf07fea79a531d93b85e25a86a395d40e8ff1edfc320feec13b7a17f1f",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 1873,
+      "decoded_sha256": "5549ee7c3fc8357ea6a4b416a4460eff48ee19e57f17f750cb3c7815fdc8a91f",
+      "final_accumulator": 128,
+      "last_encoded": 0,
+      "last_decoded": [
+        128,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 19,
+      "descriptor": {
+        "id": "descriptor-46b63109141513f49220",
+        "sample_id": "dab851b9af707b5a6bded1aa5e01742cd7da31785782f558f1752d828191af4f",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 64
+      },
+      "encoded_bytes": 3490,
+      "decoded_sha256": "a3c49008aa9a2a06e29a802ed8acba841fe77ea57875c7504f88630c4e3993a5",
+      "final_accumulator": 128,
+      "last_encoded": 16,
+      "last_decoded": [
+        128,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 20,
+      "descriptor": {
+        "id": "descriptor-577df3f87e9d41c12f45",
+        "sample_id": "fc7a74d40c0918d7a94f0d208073848c0fbe0702a346e7b2672c3f86e605c0f8",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 192
+      },
+      "encoded_bytes": 3943,
+      "decoded_sha256": "cc826013cc73ac3e991b83e347f3e7f73f9b4d0e468ae5ed5a087db3976e47c1",
+      "final_accumulator": 127,
+      "last_encoded": 0,
+      "last_decoded": [
+        127,
+        127
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 21,
+      "descriptor": {
+        "id": "descriptor-63ab4f5e43dcbfd902cc",
+        "sample_id": "f6f42cf92189920524a969fd2c763d854ca514d7b5391bcbc710143f6438592b",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 192
+      },
+      "encoded_bytes": 2919,
+      "decoded_sha256": "2826c7c7838c07ca3699ed0c3eeb4b36622bbfcf574ad8efaeb3790ca8091769",
+      "final_accumulator": 128,
+      "last_encoded": 9,
+      "last_decoded": [
+        129,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 22,
+      "descriptor": {
+        "id": "descriptor-6a20a84b767e758fe82c",
+        "sample_id": "55e46816f12ca69145f45636d2b97adb202b7f0378549e8d97cd1bb40e264d90",
+        "native_rate": 20,
+        "flags": 1,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 834,
+      "decoded_sha256": "1df2f1fe05d4f8d4e875ebcdbc966800b93d4dff378556e9b5328326936d60e2",
+      "final_accumulator": 120,
+      "last_encoded": 59,
+      "last_decoded": [
+        124,
+        120
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 23,
+      "descriptor": {
+        "id": "descriptor-d9dda628a4f9abe2d6cd",
+        "sample_id": "a7e3d3b45ec895e01aeee93ba6929bc1f67bbf7da91b1af75be70032937b4202",
+        "native_rate": 20,
+        "flags": 1,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 1976,
+      "decoded_sha256": "2e3dcbb8bef80a9e7add420047b26de8dd5447262507596803660959632ed86f",
+      "final_accumulator": 128,
+      "last_encoded": 26,
+      "last_decoded": [
+        130,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 24,
+      "descriptor": {
+        "id": "descriptor-aac1031abd53a09963b1",
+        "sample_id": "c68a4df4f699d02174614c36a38bef1aea2a840a40118f1fc9a4f07fb5c96339",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 5152,
+      "decoded_sha256": "8876e66ee2c9380fa388c91f9876dc86a3e09b466e1631efa460a84f5dad72f1",
+      "final_accumulator": 127,
+      "last_encoded": 0,
+      "last_decoded": [
+        127,
+        127
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 25,
+      "descriptor": {
+        "id": "descriptor-568417a82a766cf4db7e",
+        "sample_id": "c8f4416eac199811871c2edf68b9cb8b3c888d969060ee222dad2d4ae97698fb",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 64
+      },
+      "encoded_bytes": 3315,
+      "decoded_sha256": "d002dec538509000d96aa2fa4a80b1fb14e77b10dafaafd3592cc63424bf9a05",
+      "final_accumulator": 129,
+      "last_encoded": 16,
+      "last_decoded": [
+        129,
+        129
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 26,
+      "descriptor": {
+        "id": "descriptor-0b556c5d7a5f38238150",
+        "sample_id": "ee083843240c162d594ef7ff3ca3eb1521bf3765df645d03e1fcdeffe0c0e901",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 192
+      },
+      "encoded_bytes": 814,
+      "decoded_sha256": "f20b00c62dc25782f603c70c16b868701de71b02f4f3e01a1a4c60e59a382adf",
+      "final_accumulator": 131,
+      "last_encoded": 172,
+      "last_decoded": [
+        139,
+        131
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 27,
+      "descriptor": {
+        "id": "descriptor-60d93ff0f5e340f7e7df",
+        "sample_id": "a32ebd3f36c89ded16cc3d4ca729df023cb36cfd2d043a7f2595028a87ca724a",
+        "native_rate": 20,
+        "flags": 1,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 1081,
+      "decoded_sha256": "b92c6ca5ffa5c0f1ae83c269f748c4c0402b78db9375775d11248bf4081d1abf",
+      "final_accumulator": 127,
+      "last_encoded": 144,
+      "last_decoded": [
+        127,
+        127
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 28,
+      "descriptor": {
+        "id": "descriptor-69e30fdd82d1e3b9eda4",
+        "sample_id": "91092a7948cd62871dfea72bee1f889ab6fdf7ad1b59bda1a7574aecf9a8e028",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 5506,
+      "decoded_sha256": "55f75e0c253d1075b0373f979c6b11387777a029a1ff8f880bb9fde4172774fc",
+      "final_accumulator": 125,
+      "last_encoded": 9,
+      "last_decoded": [
+        126,
+        125
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 29,
+      "descriptor": {
+        "id": "descriptor-65e8e391bc12138eb221",
+        "sample_id": "bf267a391e9a416416e7a31d42f6bf41dc385f656211bc3a6023d104f355f608",
+        "native_rate": 20,
+        "flags": 1,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 1067,
+      "decoded_sha256": "9e708ea4bc11ed24f1fa29b06a3ee5d98260d84ab57ff400d2c6e050ce2aaa4c",
+      "final_accumulator": 128,
+      "last_encoded": 16,
+      "last_decoded": [
+        128,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 30,
+      "descriptor": {
+        "id": "descriptor-424222ac31c76ba15ee3",
+        "sample_id": "8407bf4bcac4c768db4989aae60b9975d8c703009f731a72695571ecf22a5f0e",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 6918,
+      "decoded_sha256": "eb14697398836706b80d39028724898ac3a16dc97d6b0729ec004eff6481a1de",
+      "final_accumulator": 130,
+      "last_encoded": 144,
+      "last_decoded": [
+        130,
+        130
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 31,
+      "descriptor": {
+        "id": "descriptor-fea3f3414c3faaf8dced",
+        "sample_id": "e2d05cb997378aae19e082df0fd48dcebdf2adea3e9a29f322bd796c60c271f1",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 7416,
+      "decoded_sha256": "c173509a6c7ad1f0edfdc24f3d1e67543555a3234ed78dcf096d5214d5540107",
+      "final_accumulator": 128,
+      "last_encoded": 1,
+      "last_decoded": [
+        127,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 32,
+      "descriptor": {
+        "id": "descriptor-c0a4416507d41aa9cc27",
+        "sample_id": "ed5a52646eceb9d7d0fa8d5db8a6ca4f8167148576c5f89857332d36e1859e53",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 192
+      },
+      "encoded_bytes": 3971,
+      "decoded_sha256": "6ad61225f58c5d4f514bd6ac22552e05c580946a076bc8ffe58e2fbd09bdeb22",
+      "final_accumulator": 127,
+      "last_encoded": 9,
+      "last_decoded": [
+        128,
+        127
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 33,
+      "descriptor": {
+        "id": "descriptor-2fbd32684ce258e7f7dc",
+        "sample_id": "f3d595375833260cb00e194e16107ae597dc6d776c5fc3f69ae8387b377c8ffb",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 64
+      },
+      "encoded_bytes": 1927,
+      "decoded_sha256": "4e45b34cb291bcb92105f684e24299884b383f1353a85627e2bdc874142ca40a",
+      "final_accumulator": 128,
+      "last_encoded": 2,
+      "last_decoded": [
+        126,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 34,
+      "descriptor": {
+        "id": "descriptor-45c8ade52d100427bf46",
+        "sample_id": "e0b8e6c8bb55958d39efc2873759146a459fb00fbcea5d461d8c9da05fdee5ee",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 192
+      },
+      "encoded_bytes": 1051,
+      "decoded_sha256": "911f39a224fe7af60f1abbd38be2d8015c21dc83ccf92139a8524a26c5a3c74c",
+      "final_accumulator": 127,
+      "last_encoded": 0,
+      "last_decoded": [
+        127,
+        127
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 35,
+      "descriptor": {
+        "id": "descriptor-039b528482c66e091482",
+        "sample_id": "c1be4003fef651620a72f596ee6171155b705909d526774b053496cdaf81118c",
+        "native_rate": 20,
+        "flags": 1,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 1073,
+      "decoded_sha256": "f7a8ae5ba6fb066ef2f9d6bff530c1fb72be793cd10754e89cddeef053dfafc8",
+      "final_accumulator": 126,
+      "last_encoded": 169,
+      "last_decoded": [
+        127,
+        126
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 36,
+      "descriptor": {
+        "id": "descriptor-f3654677ab1952c66ab6",
+        "sample_id": "c3883ed5527b16d1672814123ac77630d324c94ca660fd3e22c852b7ab47d4a3",
+        "native_rate": 20,
+        "flags": 1,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 1309,
+      "decoded_sha256": "986716316d52043a13888b0eaac7a797bbf5df5a4a8b78380fe7e8bb6f22d3fc",
+      "final_accumulator": 128,
+      "last_encoded": 16,
+      "last_decoded": [
+        128,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 37,
+      "descriptor": {
+        "id": "descriptor-fe4bb4e50b4bcb9d0413",
+        "sample_id": "cdb84efcfb8a0bf1138296c2f287675241670908987c7c123feaa4217f780aa1",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 4864,
+      "decoded_sha256": "62a34c4c9b81003019a84d82d1d337ee747bfd71e71d147b786430da9dce709e",
+      "final_accumulator": 127,
+      "last_encoded": 144,
+      "last_decoded": [
+        127,
+        127
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 38,
+      "descriptor": {
+        "id": "descriptor-a4f1ae06d3b325f7247c",
+        "sample_id": "e5eb30ae13cab4973e7569c15782b349390d1e111ffd4fb3e5c4f6d8dca5a56c",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 3045,
+      "decoded_sha256": "1424becd74049a84e9222b0dc26d8359e2759836e23d45909d13f2c70da1473f",
+      "final_accumulator": 128,
+      "last_encoded": 0,
+      "last_decoded": [
+        128,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 39,
+      "descriptor": {
+        "id": "descriptor-4ebc0580a83828e8e0a7",
+        "sample_id": "064ebd1cab42317498900b87fd3e3433783a84ed68787c82c3f84975e4313eb9",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 5115,
+      "decoded_sha256": "ea1ff473778fcc8d3720f7aa5cfe18b0180d3d6e5b17e57c350e66a5dcd74d3a",
+      "final_accumulator": 130,
+      "last_encoded": 17,
+      "last_decoded": [
+        129,
+        130
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 40,
+      "descriptor": {
+        "id": "descriptor-e9390db598596998371d",
+        "sample_id": "78cd5555b1f6344013b7f11d552a81160f2509b6ad5cfec35305381994992807",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 4816,
+      "decoded_sha256": "c97e7fb43f249a958190c5c7d28c0342d0ef0ec590bd99ab5d059fdf0be179c3",
+      "final_accumulator": 128,
+      "last_encoded": 16,
+      "last_decoded": [
+        128,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 41,
+      "descriptor": {
+        "id": "descriptor-ada22f61f31c4791156b",
+        "sample_id": "b0c306730c82b1bf35a3263826058d289442a00899a2eb6bec7b1b7061772965",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 64
+      },
+      "encoded_bytes": 3377,
+      "decoded_sha256": "4514e463e00618cc5d43846fbb4f425d55deeda3bef4a240b070aeda2c300723",
+      "final_accumulator": 126,
+      "last_encoded": 160,
+      "last_decoded": [
+        126,
+        126
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 42,
+      "descriptor": {
+        "id": "descriptor-3ba8c14f7d71b8060fa5",
+        "sample_id": "84fd4be700d09f2899b611b8ad1a072ca647085a215d1f722e93990df65d4428",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 192
+      },
+      "encoded_bytes": 6060,
+      "decoded_sha256": "fc5e4c6599d660a746692af1f3a529e47a43efadaad983849a595a872e2a7143",
+      "final_accumulator": 128,
+      "last_encoded": 144,
+      "last_decoded": [
+        128,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 43,
+      "descriptor": {
+        "id": "descriptor-871b2740ce9304f71bbf",
+        "sample_id": "060861d7d28332e93260d2135ad361a6e502f4bf62f4a92dbc257ae8ea69d911",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 192
+      },
+      "encoded_bytes": 3913,
+      "decoded_sha256": "64877e58f1e94ad032bfa7d80d374fd0f45023638dd0164c90c3238ed8fe927e",
+      "final_accumulator": 128,
+      "last_encoded": 33,
+      "last_decoded": [
+        127,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 44,
+      "descriptor": {
+        "id": "descriptor-ddc195c386fb5fe94cbb",
+        "sample_id": "19935a931da31fc2f883255530f07bb0f60790bef4ca4da846f834bfc653f2b1",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 192
+      },
+      "encoded_bytes": 5477,
+      "decoded_sha256": "aa9772d2085b043cdf217a6100cba9c2618c301bc04d12d861027925cc1f891a",
+      "final_accumulator": 128,
+      "last_encoded": 17,
+      "last_decoded": [
+        127,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 45,
+      "descriptor": {
+        "id": "descriptor-4c140eda7447a667fc7c",
+        "sample_id": "8ff7c313f870ad9513d232b7854a08dc9676d34b7b5fe5874c70803695d0dcde",
+        "native_rate": 20,
+        "flags": 1,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 1799,
+      "decoded_sha256": "c6b537b92a41880b99235fdc9f949613166aaa253b0ae0bbc616c86bfc6f087f",
+      "final_accumulator": 121,
+      "last_encoded": 187,
+      "last_decoded": [
+        125,
+        121
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 46,
+      "descriptor": {
+        "id": "descriptor-24f5c98a5d2ef8524598",
+        "sample_id": "45f1c9f8e1f1b7ea3b0d6a85e4463d913def841b84a00d8b9ee224129cc666c0",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 5423,
+      "decoded_sha256": "99add633d81d1b5fbc8b48d8f40b31681a5ccaa566387be9afc51eb0879050e8",
+      "final_accumulator": 120,
+      "last_encoded": 1,
+      "last_decoded": [
+        119,
+        120
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 47,
+      "descriptor": {
+        "id": "descriptor-0d51417bd4d17d366932",
+        "sample_id": "38492810d34b5300813ccd4e6b2f8b65b87b044d9f7b2740d9c66fde5b40b07e",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 5651,
+      "decoded_sha256": "b0007771b3ba1c7d96ad3868559a7e66a05d8206d5d3aef3f18a22ba7c0a995b",
+      "final_accumulator": 127,
+      "last_encoded": 16,
+      "last_decoded": [
+        127,
+        127
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 48,
+      "descriptor": {
+        "id": "descriptor-9ebe5cb9b54ce878efaf",
+        "sample_id": "42d4e54778119a8b41ddc0d5e3d48cab50be53d1100cda24dae49bf45c528a03",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 4592,
+      "decoded_sha256": "4e252a320941c6b5c9b5892e667a29163fe4579fa296f31166ee715c84d74845",
+      "final_accumulator": 128,
+      "last_encoded": 0,
+      "last_decoded": [
+        128,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 49,
+      "descriptor": {
+        "id": "descriptor-17f9ed3a7b4e14021485",
+        "sample_id": "214858aef1cd20d614dbe1f1953b3926d829bc23cd922eb3d65560756f447de9",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 192
+      },
+      "encoded_bytes": 3314,
+      "decoded_sha256": "6a43577ed1d245512bf6b568d80fc9a1f5f4a0a54214b1694c5c7978e36ca715",
+      "final_accumulator": 127,
+      "last_encoded": 0,
+      "last_decoded": [
+        127,
+        127
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 50,
+      "descriptor": {
+        "id": "descriptor-054714436f9cee2e060b",
+        "sample_id": "bf9eaf3c3bde126a887137e713cfc70e1cb3d9e1637060d436db89db898c3ae3",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 64
+      },
+      "encoded_bytes": 4274,
+      "decoded_sha256": "4fb27a61c9a8bdf1128de9336d2360ffde7fbe1641b35dedc2033d293b5ca61d",
+      "final_accumulator": 128,
+      "last_encoded": 145,
+      "last_decoded": [
+        127,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 51,
+      "descriptor": {
+        "id": "descriptor-8f92918c01593c9bb168",
+        "sample_id": "9af9006ca367437c3776d8e429ff00ec9cb61a54c5983e63b18cdb4efcbf561d",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 192
+      },
+      "encoded_bytes": 4099,
+      "decoded_sha256": "ce164eb36328a93d945359708f150ecc8888283984b799db47da6e1e67eaad67",
+      "final_accumulator": 128,
+      "last_encoded": 145,
+      "last_decoded": [
+        127,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 52,
+      "descriptor": {
+        "id": "descriptor-ae24c4bab15d386ef3c7",
+        "sample_id": "91da6198c479162c0c1645af65c5ef287985fabb32c23d511a8cbe2b682c67de",
+        "native_rate": 20,
+        "flags": 1,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 1156,
+      "decoded_sha256": "2635281bfda4c6776146fd6e22ba9e1091ee8e6d824b6a7e6871411b1f41f20e",
+      "final_accumulator": 126,
+      "last_encoded": 153,
+      "last_decoded": [
+        127,
+        126
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 53,
+      "descriptor": {
+        "id": "descriptor-e6033929d2485afb5ba0",
+        "sample_id": "2ede6f74165f39ac47c0cea175010662eb9d1c8a22b93f00b1e14cff13061f3a",
+        "native_rate": 20,
+        "flags": 1,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 1102,
+      "decoded_sha256": "e838ab7e2bbf05f95676c4c391f7f4085f09821c889e59c27020ed6e39c73cda",
+      "final_accumulator": 129,
+      "last_encoded": 144,
+      "last_decoded": [
+        129,
+        129
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 54,
+      "descriptor": {
+        "id": "descriptor-964d0e42516892a7edc6",
+        "sample_id": "4c8825dce00c8ebd1850122e5b90a910094b05c78183c172d750c8442b105597",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 3876,
+      "decoded_sha256": "f08bbd7be17dbd88f938687750147526d4a411c9a121943c41da986b617d6095",
+      "final_accumulator": 128,
+      "last_encoded": 0,
+      "last_decoded": [
+        128,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 55,
+      "descriptor": {
+        "id": "descriptor-99127e2ff2bde1c81cc0",
+        "sample_id": "360f720e2fe3aaf524482c1928e1acd60a3a8aeac3d439535ebe7d381e6935b5",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 6094,
+      "decoded_sha256": "314710514d381fe1c0960f0563f243206baf42143673e0acc134aa2ba46722b6",
+      "final_accumulator": 128,
+      "last_encoded": 0,
+      "last_decoded": [
+        128,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 56,
+      "descriptor": {
+        "id": "descriptor-efdf21c4cbfd8cc610ea",
+        "sample_id": "3ef272583ac48e7a3106940cd2dd2d0cc0357ad39f60d7d6256d126792d2aa03",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 192
+      },
+      "encoded_bytes": 2258,
+      "decoded_sha256": "43565d6afba6313d12e3d46b6752e580b303ec4feb8ba7ed46e19ecb5ff6cc60",
+      "final_accumulator": 130,
+      "last_encoded": 52,
+      "last_decoded": [
+        122,
+        130
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 57,
+      "descriptor": {
+        "id": "descriptor-a96218438fa826ef8587",
+        "sample_id": "a4b35d4c8d1c13a4ee3e69cefa81e54169cf951e2aa1fe100989755d2d4c5c05",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 64
+      },
+      "encoded_bytes": 3528,
+      "decoded_sha256": "953fc46ec0806526edbe59c59720b6921e9d91ca301c559d2364727076aa35ed",
+      "final_accumulator": 126,
+      "last_encoded": 170,
+      "last_decoded": [
+        128,
+        126
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 58,
+      "descriptor": {
+        "id": "descriptor-5a9870f04733eac69f7f",
+        "sample_id": "8f6c9aa30956e4702e3b84f177f52e5dc9c41cb907bbabdcaad40aaf2517d1e2",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 192
+      },
+      "encoded_bytes": 4387,
+      "decoded_sha256": "0fabb884334bef864930d606bdca6c3e566148b692850fd287f1d06c496d2ae6",
+      "final_accumulator": 128,
+      "last_encoded": 16,
+      "last_decoded": [
+        128,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 59,
+      "descriptor": {
+        "id": "descriptor-b2f3c054a27f3a979ce2",
+        "sample_id": "a87a6e65548cb34e98b60456a73b6de93b40f939377260ad104db4f9d3bd67bc",
+        "native_rate": 20,
+        "flags": 1,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 3238,
+      "decoded_sha256": "a27f40ef839d70234f6bbe8c1b56eb9ad2e69d486518243b8942ee1f82b7fb72",
+      "final_accumulator": 127,
+      "last_encoded": 1,
+      "last_decoded": [
+        126,
+        127
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 60,
+      "descriptor": {
+        "id": "descriptor-14b289dce627a9d9cf69",
+        "sample_id": "49ac5b27672cdb475682a4ba5908ecc5827319bf7c0a6b60f365b94ddcb0ed4b",
+        "native_rate": 20,
+        "flags": 1,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 2732,
+      "decoded_sha256": "7736013e697d5380ae20739ea7438388d593d815b93849312a3d5d079e5d9651",
+      "final_accumulator": 129,
+      "last_encoded": 0,
+      "last_decoded": [
+        129,
+        129
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 61,
+      "descriptor": {
+        "id": "descriptor-a83161a1bff1186cc300",
+        "sample_id": "3065d52241702c1ef1eabe3a466386ef1f6e5ebcaa4819798028e0dd164abd4f",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 4681,
+      "decoded_sha256": "2a27f8a81b4257577a948b5987fc2293f71e067adebfca38375bc7fee11b8c30",
+      "final_accumulator": 130,
+      "last_encoded": 0,
+      "last_decoded": [
+        130,
+        130
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 62,
+      "descriptor": {
+        "id": "descriptor-41bd1c384b3845ce2f4e",
+        "sample_id": "6be64260c9b64e3a4401a0a56730a27cdc369d5e1a1b388f9d4f0408b8f332d5",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 5986,
+      "decoded_sha256": "a3e897636b8c99ed7438205b449576383bee2b9d84f55f71e807cec5dd47e6da",
+      "final_accumulator": 129,
+      "last_encoded": 41,
+      "last_decoded": [
+        130,
+        129
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 63,
+      "descriptor": {
+        "id": "descriptor-358ca8e3770b837b0689",
+        "sample_id": "56fe5a763af148cad761ceec51df186ddcabfbcbafc4023da05223d7e3f8fe23",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 64
+      },
+      "encoded_bytes": 7091,
+      "decoded_sha256": "d2f18d4395aa505966ddf352eb1c75710d8938155481688ea96df62153d3679a",
+      "final_accumulator": 128,
+      "last_encoded": 0,
+      "last_decoded": [
+        128,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 64,
+      "descriptor": {
+        "id": "descriptor-be65c0099253febce3b0",
+        "sample_id": "4a7404ba021eb547e29a3be290b3663495d68b896cbf9e0ad7f0901d9e82f622",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 192
+      },
+      "encoded_bytes": 5440,
+      "decoded_sha256": "e299eb8b9ce8d54b3eadbb59ab60146de16a1fd4910ce55ffcf8719dda0e1a8d",
+      "final_accumulator": 127,
+      "last_encoded": 9,
+      "last_decoded": [
+        128,
+        127
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 65,
+      "descriptor": {
+        "id": "descriptor-ecd3d17e03205e4d9168",
+        "sample_id": "037c0a272c0e34571a6ce2498346e1e45174b24b7a68fcd6ac96880253f1fc97",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 192
+      },
+      "encoded_bytes": 5209,
+      "decoded_sha256": "711299ef91b61d0f8395cb1654ac01fdf4f2f56b66be46814bd2346705fb03e4",
+      "final_accumulator": 129,
+      "last_encoded": 144,
+      "last_decoded": [
+        129,
+        129
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 66,
+      "descriptor": {
+        "id": "descriptor-0aa28358d55f40c357d5",
+        "sample_id": "e24034fe6aa178f065040602428b6336f9a8f415878681b9d805e759ee160704",
+        "native_rate": 20,
+        "flags": 1,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 1009,
+      "decoded_sha256": "a936a957f7fa7e1cfcd152c25cc4aafbbd6910c562fc24dd69db25d9b5df0177",
+      "final_accumulator": 128,
+      "last_encoded": 0,
+      "last_decoded": [
+        128,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 67,
+      "descriptor": {
+        "id": "descriptor-00454306c0d496087c49",
+        "sample_id": "6c88e744c045deb381a3662d009eb875e04bc7cf143104c927f8cb963690e218",
+        "native_rate": 20,
+        "flags": 1,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 1247,
+      "decoded_sha256": "90304580f2334db996f58dcdb2d4c18c86c8b2f4011053822c27784991233954",
+      "final_accumulator": 128,
+      "last_encoded": 42,
+      "last_decoded": [
+        130,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 68,
+      "descriptor": {
+        "id": "descriptor-2b8669382e1b11e335c4",
+        "sample_id": "b5534d83f5e7a17e8c3afbe67150b29df7d70cb6fab28cee9b1375e47d0155fa",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 3981,
+      "decoded_sha256": "4f4fb10b7c2355dee2aedbc6bcb0978cf7ea3e220623bdd9e69550e4052b4f57",
+      "final_accumulator": 128,
+      "last_encoded": 0,
+      "last_decoded": [
+        128,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 69,
+      "descriptor": {
+        "id": "descriptor-3d30cdd313152903c5ed",
+        "sample_id": "943c85a721a478d134dd340a9febab2226bc1504c0ae3bad4a20ac18e58746a2",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 2462,
+      "decoded_sha256": "b72a89714e116a7e5264c318d37ac7a20c234589c74131afde8fdb1eb70bbbed",
+      "final_accumulator": 128,
+      "last_encoded": 50,
+      "last_decoded": [
+        126,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 70,
+      "descriptor": {
+        "id": "descriptor-993d43703f40bfa45060",
+        "sample_id": "929ccd49f7417aad8ace51ae7fd3e405ff23e3f1e85dda325f28366a737aa01b",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 6635,
+      "decoded_sha256": "5e5dcb883a85ccb3d05480902a2b5902c0c4eac2e95a22b734279b28c11cdaf9",
+      "final_accumulator": 128,
+      "last_encoded": 0,
+      "last_decoded": [
+        128,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 71,
+      "descriptor": {
+        "id": "descriptor-3d7b47ef70fe20def381",
+        "sample_id": "2e1bb8809ada8b66b72a3c5b681e8730c60159122d93fe1e8bf50a9de65e5fd9",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 192
+      },
+      "encoded_bytes": 3713,
+      "decoded_sha256": "ee3185e49d6a9b717cee8a53c95c716ec8088c4c3e0af8b89c4e97bb94ebd513",
+      "final_accumulator": 128,
+      "last_encoded": 0,
+      "last_decoded": [
+        128,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 72,
+      "descriptor": {
+        "id": "descriptor-ca889df34b5b3bbfaf12",
+        "sample_id": "13884fac4045056793e7a204c6f4d83488b79fec3b91656566610b4da68b7136",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 64
+      },
+      "encoded_bytes": 3927,
+      "decoded_sha256": "57323bfbc32b52dd715cffce864643430ffbe218483239520ddcb020b4cb252a",
+      "final_accumulator": 128,
+      "last_encoded": 16,
+      "last_decoded": [
+        128,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 73,
+      "descriptor": {
+        "id": "descriptor-8c02fc0ed6398ea40d8a",
+        "sample_id": "e86903b777f072ce2ffaa8704454d1b2afd79965a88bbe276c53c5cb7d686135",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 192
+      },
+      "encoded_bytes": 5025,
+      "decoded_sha256": "15de734cd2a5089ba43a399fb2ec9104dc4c7f75bb309d8152423af6bfbd7082",
+      "final_accumulator": 128,
+      "last_encoded": 145,
+      "last_decoded": [
+        127,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 74,
+      "descriptor": {
+        "id": "descriptor-bf2c4d2ea68ecb6b80c0",
+        "sample_id": "b0c786d0ac20fad0fd55c91868a8114aaaadd3aad7eb8d1936a47e589049633e",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 192
+      },
+      "encoded_bytes": 4168,
+      "decoded_sha256": "fdb3853859e07696d1ce3ed769e46276d23de97dce560c48637c127aa2a5a30c",
+      "final_accumulator": 127,
+      "last_encoded": 9,
+      "last_decoded": [
+        128,
+        127
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 75,
+      "descriptor": {
+        "id": "descriptor-553f5b4609c2af28bf80",
+        "sample_id": "60b998dc0c80e736ecb42b095736a72812b10ce217241851400268a090cfbb8d",
+        "native_rate": 20,
+        "flags": 1,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 1762,
+      "decoded_sha256": "97f64535d789040bf65a3b754117d6eb3cd54ebf5b77f4b9a5858a7fcadde0ee",
+      "final_accumulator": 131,
+      "last_encoded": 170,
+      "last_decoded": [
+        133,
+        131
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 76,
+      "descriptor": {
+        "id": "descriptor-efb127782a64549242e7",
+        "sample_id": "491ffb40ac9210b4be53b763fab622a9132e4b907b07d47d2b4d8c20b22a3bc0",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 5090,
+      "decoded_sha256": "32ac462349480a3b1aab4830aa46f1681bf573ff7cf566718eb58251e305f95c",
+      "final_accumulator": 128,
+      "last_encoded": 0,
+      "last_decoded": [
+        128,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 77,
+      "descriptor": {
+        "id": "descriptor-59c3292bdbc037cbde45",
+        "sample_id": "767d6688f7364d133172a065e646efaa4e11b9363878b003d2e856e1017084f7",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 64
+      },
+      "encoded_bytes": 4379,
+      "decoded_sha256": "f5bdf5dbeedbd7ab09ec57adf5e689f075ebb1cbcdf09e025ea1cfe44450c1ef",
+      "final_accumulator": 127,
+      "last_encoded": 9,
+      "last_decoded": [
+        128,
+        127
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 78,
+      "descriptor": {
+        "id": "descriptor-76e2495e3fd85d028e55",
+        "sample_id": "94774a31ab1797609064097109429fe79480b9b7df0ae501daa4cae8f199cd87",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 192
+      },
+      "encoded_bytes": 1062,
+      "decoded_sha256": "d1a1d039a81b006312fbce7a2b1b992258980cfd8f2772a2e88c334b25f97fc8",
+      "final_accumulator": 127,
+      "last_encoded": 41,
+      "last_decoded": [
+        128,
+        127
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 79,
+      "descriptor": {
+        "id": "descriptor-befb9f373c4e263b3a05",
+        "sample_id": "09b451f64fb22494a41fb45a5acca6396181bc3c70b097efbecc8d13543cb8ab",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 192
+      },
+      "encoded_bytes": 1116,
+      "decoded_sha256": "e743a31562ea1bd1ccaad6314cc327f2b14c15d2830ce6051c7b8cce09157622",
+      "final_accumulator": 124,
+      "last_encoded": 33,
+      "last_decoded": [
+        123,
+        124
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 80,
+      "descriptor": {
+        "id": "descriptor-795169f2aebe1df29dbb",
+        "sample_id": "f02242176294ba190c34815866c263fc97d04086ae6c11ad340fd4d3d120395e",
+        "native_rate": 20,
+        "flags": 1,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 1939,
+      "decoded_sha256": "bbc8b43d37d193fdd49f496c9444eef91eb36e6077a26c1a20cb8fedf1934a90",
+      "final_accumulator": 128,
+      "last_encoded": 0,
+      "last_decoded": [
+        128,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 81,
+      "descriptor": {
+        "id": "descriptor-85cc199441f3aecffaf7",
+        "sample_id": "13bffe11443365dc5cf7b5d2d332f5086641b9891f6847fef5f426c8f54745a0",
+        "native_rate": 20,
+        "flags": 1,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 1305,
+      "decoded_sha256": "ee5a33b0dbbe622d7917a4a6ca0908137d498c29815534008460fb81aff5744b",
+      "final_accumulator": 127,
+      "last_encoded": 18,
+      "last_decoded": [
+        125,
+        127
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 82,
+      "descriptor": {
+        "id": "descriptor-822c33af27bd4c9e0746",
+        "sample_id": "649a29418af19c209753a363cbc4a8e5a60e6387a27188ae81175432bf04f7c1",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 5180,
+      "decoded_sha256": "600d163c3ff8a72ccbddd72a9a9595424e7137693fe5744a7832118ae6414164",
+      "final_accumulator": 129,
+      "last_encoded": 1,
+      "last_decoded": [
+        128,
+        129
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 83,
+      "descriptor": {
+        "id": "descriptor-cfb8b1e334cd96a69efb",
+        "sample_id": "ee6622e9b78f256ca9afabfd02f4e376f63c26befa21a186431f53a0e4e6cfae",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 5912,
+      "decoded_sha256": "d02fa7a85d237bb183f6f195bbd743784d21e9100a3a54c3aee9ba4848ee8aac",
+      "final_accumulator": 128,
+      "last_encoded": 0,
+      "last_decoded": [
+        128,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 84,
+      "descriptor": {
+        "id": "descriptor-3d1d1f369b947955549d",
+        "sample_id": "2605a52f8af6f68ccfa784e6abfbc1491c36f1b1ee54ebd80d8efb60ae7d8189",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 5104,
+      "decoded_sha256": "0f95ab8350219f44c309c8746c9c953d3201e926d36361de1ec0ad4e95cde3bb",
+      "final_accumulator": 127,
+      "last_encoded": 144,
+      "last_decoded": [
+        127,
+        127
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 85,
+      "descriptor": {
+        "id": "descriptor-d48ce48585ff1c0b2c74",
+        "sample_id": "8fd092b9d24e7ca0c2fd3de7263179f7294e82a648b0adfb493fa588de4b7a63",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 64
+      },
+      "encoded_bytes": 4069,
+      "decoded_sha256": "684d90e9231e5a6a1e8e7e2be393f8959f6f8df3810ba73aab249c973c3223f7",
+      "final_accumulator": 129,
+      "last_encoded": 1,
+      "last_decoded": [
+        128,
+        129
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 86,
+      "descriptor": {
+        "id": "descriptor-e28a45fb811af4a4b37d",
+        "sample_id": "1fafb55f74f973a8705ad77b940bf83c5269833e1f590193e84a631b5ee59926",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 192
+      },
+      "encoded_bytes": 3874,
+      "decoded_sha256": "fac2618c25a77e93f11474c961716bdc82152f496bbe355efeb6effed61b088b",
+      "final_accumulator": 128,
+      "last_encoded": 145,
+      "last_decoded": [
+        127,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 87,
+      "descriptor": {
+        "id": "descriptor-49cfc95ebdeab438df98",
+        "sample_id": "5f970c90c005e55ed6236aea7b68101288be4b7180ee0b98282782550e58d989",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 192
+      },
+      "encoded_bytes": 3432,
+      "decoded_sha256": "429b4c1b9c27f87376a8fff68057b5a88b933ad09d9e406ffc41b994c990b3ed",
+      "final_accumulator": 130,
+      "last_encoded": 74,
+      "last_decoded": [
+        132,
+        130
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 88,
+      "descriptor": {
+        "id": "descriptor-df793adee2442f881ff4",
+        "sample_id": "8a98e6ddad07ad3d4d1e8fb8c226fac190349ef3fff39ae8c143f7e96460054c",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 2175,
+      "decoded_sha256": "330e96ca197a66e7f1991ba806f408787bbd9d09b0bec79ed6f62a8442e5e9a5",
+      "final_accumulator": 126,
+      "last_encoded": 0,
+      "last_decoded": [
+        126,
+        126
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 89,
+      "descriptor": {
+        "id": "descriptor-e21202a453af610e3798",
+        "sample_id": "c78a72b039e7829cba74007aa810316db90bba4fef136bb1ac919812b84acd1c",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 2034,
+      "decoded_sha256": "2a4d0b052eb2fed2d7def31124ddd8de82295ce31fa89d5bbe6438629bf851c3",
+      "final_accumulator": 125,
+      "last_encoded": 43,
+      "last_decoded": [
+        129,
+        125
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 90,
+      "descriptor": {
+        "id": "descriptor-0635736a94bf5d8ed463",
+        "sample_id": "d1e73f3da615be8739b052eab1805a892deb6a47cb1f1fdda3af6a8920dccb70",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 3340,
+      "decoded_sha256": "66a80f9e2ff9ba83e12ec668dbd89e0ec86ca43ee0f0abcafaf094c7295927f2",
+      "final_accumulator": 128,
+      "last_encoded": 1,
+      "last_decoded": [
+        127,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 91,
+      "descriptor": {
+        "id": "descriptor-5936a1c08197f184441b",
+        "sample_id": "3dbce5be97874d9a9b1b5e13cfd3d7155d2363e4101d2177be27136876d424bd",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 3120,
+      "decoded_sha256": "413a3cee915f657b5be9b3bde8113647b6f544a092a88d8a954c7afafd5d2eb9",
+      "final_accumulator": 128,
+      "last_encoded": 1,
+      "last_decoded": [
+        127,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 92,
+      "descriptor": {
+        "id": "descriptor-0e1fd27dfc83bb48f16f",
+        "sample_id": "8c27fa8f5eff5b7df539d2663948275f062ca952774956336530f2cfefbb46ac",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 4144,
+      "decoded_sha256": "5ca4d0b36360906862e4c74680e7af23ce4d90864548610156d571f7463d379e",
+      "final_accumulator": 126,
+      "last_encoded": 1,
+      "last_decoded": [
+        125,
+        126
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 93,
+      "descriptor": {
+        "id": "descriptor-cbe37cd32eeebc326113",
+        "sample_id": "fc0aa36e0a9fb9e8c9804188ad90b1e8b1e4bb067a0d2a5ed1c589ed04487600",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 5152,
+      "decoded_sha256": "e3800207c7c96e8050196b9b4c3239d3e574bc441457463463edaa18b04d6be7",
+      "final_accumulator": 129,
+      "last_encoded": 33,
+      "last_decoded": [
+        128,
+        129
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 94,
+      "descriptor": {
+        "id": "descriptor-f3d3fbb5f3a5b80ed5f4",
+        "sample_id": "fcf8d41074f75cfb410223182222e31689695322f0e625e8056b788358e08fde",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 1556,
+      "decoded_sha256": "2beb390856a57bc6497dceb5c4c1e9575eb6788d41c3b0dd6d590532c4732ecb",
+      "final_accumulator": 128,
+      "last_encoded": 41,
+      "last_decoded": [
+        129,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 95,
+      "descriptor": {
+        "id": "descriptor-9051452e143479657c32",
+        "sample_id": "3a97008f969aaec2efd86bbb0228c2e3f13af206498b7008e976649ac830a61c",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 1820,
+      "decoded_sha256": "9ed20daa91c2537cb4ebbf8c1a1204437d4da536b7af7bbd2b31758981316174",
+      "final_accumulator": 127,
+      "last_encoded": 42,
+      "last_decoded": [
+        129,
+        127
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 96,
+      "descriptor": {
+        "id": "descriptor-1abef6740d549c08a1d4",
+        "sample_id": "f1b5d18ac12d63d1f28aff34241ca5e9edb8e4325083e1061fe833b8b8bc4ba5",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 2269,
+      "decoded_sha256": "191263cdcfbcdfc947417642d0375e158deb18865d933eee7ca653ba9262d782",
+      "final_accumulator": 127,
+      "last_encoded": 161,
+      "last_decoded": [
+        126,
+        127
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 97,
+      "descriptor": {
+        "id": "descriptor-d0883b1672cbe13d1d7a",
+        "sample_id": "a05646bc96accabb80832add431ea3f448ab40edd2aee0cb2547bccdb47a2b59",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 2260,
+      "decoded_sha256": "a435b267e83fd67600448eb2c62e8316c37e2e1f5caace6c5a1477be55642fd9",
+      "final_accumulator": 126,
+      "last_encoded": 153,
+      "last_decoded": [
+        127,
+        126
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 98,
+      "descriptor": {
+        "id": "descriptor-ed8582a2784d28e3ee5a",
+        "sample_id": "5a63c6c3edbacff6cb3226d58501eb501cfc55fa8afc205baf15b9e8f262695a",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 1822,
+      "decoded_sha256": "bd226a2e3a57ba882f9c1462f5e59d903c55816af23478e71b87244d7c5f6a96",
+      "final_accumulator": 128,
+      "last_encoded": 16,
+      "last_decoded": [
+        128,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 99,
+      "descriptor": {
+        "id": "descriptor-faf0e7136b10d458671b",
+        "sample_id": "9d1d0c2d8f60b03c9fa18d691f4c9770cb033c8aa8abaf0b006af2b410b93fe3",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 1518,
+      "decoded_sha256": "c4463e98b073e25b2d4aa692fea6536b5da74732ca4b3228c234fba64fcbd539",
+      "final_accumulator": 127,
+      "last_encoded": 144,
+      "last_decoded": [
+        127,
+        127
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 100,
+      "descriptor": {
+        "id": "descriptor-f7e22ca3492a8054b9d5",
+        "sample_id": "b35592c38a49ec792147f067094cf9ca7444f4f7c705cdae09186ac869071f58",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 2161,
+      "decoded_sha256": "4d9bb83414287846261699c82d2d57de68b5e61ba0ce4a459d1a9d5b2080364c",
+      "final_accumulator": 127,
+      "last_encoded": 9,
+      "last_decoded": [
+        128,
+        127
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 101,
+      "descriptor": {
+        "id": "descriptor-3b4f36f78a594554a55f",
+        "sample_id": "d5f942d376df91119e56922102243d6b4fffe8c5e85c5db351a35a06688d6e8a",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 2016,
+      "decoded_sha256": "1377191ec8abfa1b00bc8285ac750ca22150fc31e0b64ea823bc4dc5e2327715",
+      "final_accumulator": 128,
+      "last_encoded": 0,
+      "last_decoded": [
+        128,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 102,
+      "descriptor": {
+        "id": "descriptor-d04a4654de9bb9157e45",
+        "sample_id": "69f1fbe9a6fa15a9c5da3ebe8f724869267fa21b89e4343b847c012ce4818e26",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 3168,
+      "decoded_sha256": "4bddc6335ad09aa88cb6f4508e20a4b0f61969629402038b6fd3f361ff3e52c0",
+      "final_accumulator": 130,
+      "last_encoded": 18,
+      "last_decoded": [
+        128,
+        130
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 103,
+      "descriptor": {
+        "id": "descriptor-b1d8e7fbb0385b6dd657",
+        "sample_id": "096bae0e40b4e906d5b1ab9c5bc735ebde792b003e570bd5961b79bd0911ec5e",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 3712,
+      "decoded_sha256": "d3743f9904d823f879ffbe4f1f02c3f719119bb3b83e7379bd1024bf2d427582",
+      "final_accumulator": 128,
+      "last_encoded": 144,
+      "last_decoded": [
+        128,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 104,
+      "descriptor": {
+        "id": "descriptor-914741b602fb4d52b8c1",
+        "sample_id": "aa50537db2503d99451ecdc1cbaff92040cf222f9cb70260218d9132b24b548c",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 4266,
+      "decoded_sha256": "4877d76308964163fbe27e042ef379a958387a654258f7dae0301f74c83d8c53",
+      "final_accumulator": 128,
+      "last_encoded": 17,
+      "last_decoded": [
+        127,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 105,
+      "descriptor": {
+        "id": "descriptor-2b8ab82cd140608605ac",
+        "sample_id": "f5abdcdec5f4009f148c9be6f272ed5e1a64025eeae42bc378df2d5ad8cec728",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 3670,
+      "decoded_sha256": "8de88f2c83234daf3a9d036cb9551e25f545f75f5cdbc7a105426029dcc7191c",
+      "final_accumulator": 126,
+      "last_encoded": 144,
+      "last_decoded": [
+        126,
+        126
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 106,
+      "descriptor": {
+        "id": "descriptor-749f4faea931b979eb4f",
+        "sample_id": "8c4b76aafa7570770788fb0b90c2a94bb9f08e5517ca37af838d0ce480c39e4c",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 3040,
+      "decoded_sha256": "2f15345d99a902424c5a53616b5acd097f0fe525eaaea86f73366a313eda4f05",
+      "final_accumulator": 130,
+      "last_encoded": 1,
+      "last_decoded": [
+        129,
+        130
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 107,
+      "descriptor": {
+        "id": "descriptor-d8fbce2c5d8d04956090",
+        "sample_id": "eaade730c8578b1bc24d92fba4bf00ffc9572b75169ab65917cac23c150e5364",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 3690,
+      "decoded_sha256": "17c806c3baf7862e2a923b8f6779858edae078e1e7b09fd8d8731fd2f24940e3",
+      "final_accumulator": 125,
+      "last_encoded": 32,
+      "last_decoded": [
+        125,
+        125
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 108,
+      "descriptor": {
+        "id": "descriptor-6b27cdf97ad2c81295e3",
+        "sample_id": "fe602c3113addc74f72261bcbb2454ea2afee02744d04252c2277e0aab8863db",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 2587,
+      "decoded_sha256": "1f815fc26f2d4ce66ba1774e533acf79f20d401f55d616bff75dc467a945a65f",
+      "final_accumulator": 127,
+      "last_encoded": 144,
+      "last_decoded": [
+        127,
+        127
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 109,
+      "descriptor": {
+        "id": "descriptor-e41336a1e5e5d4b5dd49",
+        "sample_id": "97a5f01e7ab4e53ec96b0cfeb6c07b4c607ceb5b4406f8045cce776eb0b1a221",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 4513,
+      "decoded_sha256": "3ed6bca092c29026654ab1af882419cd4a3667afd6017739897cbaf861987500",
+      "final_accumulator": 126,
+      "last_encoded": 161,
+      "last_decoded": [
+        125,
+        126
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 110,
+      "descriptor": {
+        "id": "descriptor-eecceeddbfb64d17c90d",
+        "sample_id": "9f0729445d307e665b27340776e7cbf7cb6096a49ac3dec07d4377bf84c20a6a",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 3023,
+      "decoded_sha256": "0e7fd43753bf8af7eced90ea343be018d7f3caaed4aae4560a3142979592a77b",
+      "final_accumulator": 126,
+      "last_encoded": 0,
+      "last_decoded": [
+        126,
+        126
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 111,
+      "descriptor": {
+        "id": "descriptor-6076fb588925b26ebd01",
+        "sample_id": "6c77ad8bbb3402671126ced4c4a0e9aa8579ca2f1bdd3f3ab1192fae86fb47ea",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 2936,
+      "decoded_sha256": "f22c21393dba1d430cd752e2f70f3328163d17cad1072ca05a8a4fe43f7b460e",
+      "final_accumulator": 129,
+      "last_encoded": 17,
+      "last_decoded": [
+        128,
+        129
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 112,
+      "descriptor": {
+        "id": "descriptor-6471aeeb6193d7242df0",
+        "sample_id": "2899a5674a88d33e4564beb0b47dc0c0616d34f653bc40c7295a76a97a7d9c21",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 3610,
+      "decoded_sha256": "6850fbbad085ec478fdeb59dea0b595f94c00cd9912cd21e7eb1bbff184b9380",
+      "final_accumulator": 126,
+      "last_encoded": 9,
+      "last_decoded": [
+        127,
+        126
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 113,
+      "descriptor": {
+        "id": "descriptor-22a192b23eb1bf0f88da",
+        "sample_id": "819533ac109d24ad954a44055abb16a706aa5aece363b899db0917e6ac8e6af0",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 3920,
+      "decoded_sha256": "6b9a9549329f7495bb21aaf3993beee118e35ff94c6d60f4f1ff943d4abbd0e8",
+      "final_accumulator": 128,
+      "last_encoded": 0,
+      "last_decoded": [
+        128,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 114,
+      "descriptor": {
+        "id": "descriptor-43e808b7776a17ad265c",
+        "sample_id": "edc61293cadd6613fe90ba6e22584fae392c63edf3c69f5fec46d9f514f0a178",
+        "native_rate": 20,
+        "flags": 193,
+        "protocol": "ordinary",
+        "routing_or_pan": 128
+      },
+      "encoded_bytes": 3870,
+      "decoded_sha256": "c3b0e3521f8337683c365731f05078fed7a7883336f4f537df48d5e97ef9c311",
+      "final_accumulator": 129,
+      "last_encoded": 41,
+      "last_decoded": [
+        130,
+        129
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 115,
+      "descriptor": {
+        "id": "descriptor-1a678149d80e2e386fad",
+        "sample_id": "8ec1fafc6dee0756851f70ff13b9b8436458df329606f3e907b1bddf65122248",
+        "native_rate": 3,
+        "flags": 128,
+        "protocol": "ordinary",
+        "routing_or_pan": 192
+      },
+      "encoded_bytes": 7788,
+      "decoded_sha256": "5e275906c1a74347aceb3bf3c58c544ea5be3047ece34440750e8a7ae18fe6be",
+      "final_accumulator": 128,
+      "last_encoded": 0,
+      "last_decoded": [
+        128,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 116,
+      "descriptor": {
+        "id": "descriptor-6b8612dd887e20a872d7",
+        "sample_id": "15ffe471db8dcabd16c27e24e890d56db922c6fad2d68fd44eeeb68a0f1641f3",
+        "native_rate": 20,
+        "flags": 1,
+        "protocol": "ordinary",
+        "routing_or_pan": 64
+      },
+      "encoded_bytes": 700,
+      "decoded_sha256": "f8c849c78256d983c409e9b3beb242acca5960218c36d939f7ee9e7e0479b68e",
+      "final_accumulator": 128,
+      "last_encoded": 32,
+      "last_decoded": [
+        128,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 117,
+      "descriptor": {
+        "id": "descriptor-94177d08050fbe2544c0",
+        "sample_id": "2b1ea845fe4c54bb57ffe1090649ca9432ee94f9f7e9624662000dc2893dfba0",
+        "native_rate": 20,
+        "flags": 1,
+        "protocol": "ordinary",
+        "routing_or_pan": 64
+      },
+      "encoded_bytes": 1340,
+      "decoded_sha256": "319dc36b49d849fb595a27c684917ab834e72cb190633b888e477bc2dcc0397d",
+      "final_accumulator": 126,
+      "last_encoded": 10,
+      "last_decoded": [
+        128,
+        126
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 118,
+      "descriptor": {
+        "id": "descriptor-6acb6f4e69ddbb4e51ac",
+        "sample_id": "bce11c406e1c8a97d9b584dd1214b21fd4f0113fd3de8c01770ec9948c2cba5d",
+        "native_rate": 20,
+        "flags": 1,
+        "protocol": "ordinary",
+        "routing_or_pan": 64
+      },
+      "encoded_bytes": 3135,
+      "decoded_sha256": "89e9ee0194d01b66eca35602ab3349789ab121f7abcb0c5be7c0edac2502bca0",
+      "final_accumulator": 127,
+      "last_encoded": 0,
+      "last_decoded": [
+        127,
+        127
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 119,
+      "descriptor": {
+        "id": "descriptor-26449fa8539f685d6be8",
+        "sample_id": "6d940aed1f9465c2e974dd7233044f51b449cd5a0adaf396cb326274220690a1",
+        "native_rate": 20,
+        "flags": 1,
+        "protocol": "ordinary",
+        "routing_or_pan": 64
+      },
+      "encoded_bytes": 1506,
+      "decoded_sha256": "9447ce43d8f65620c7226f32af27f7aef4b52948b6194fd9e240030d98cf5a68",
+      "final_accumulator": 127,
+      "last_encoded": 0,
+      "last_decoded": [
+        127,
+        127
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 120,
+      "descriptor": {
+        "id": "descriptor-113869be8c848005d296",
+        "sample_id": "d125470da45790daac4e6a8f10bcd24e4469e9f69e3224f094ba39155c8f01ef",
+        "native_rate": 20,
+        "flags": 1,
+        "protocol": "ordinary",
+        "routing_or_pan": 64
+      },
+      "encoded_bytes": 1320,
+      "decoded_sha256": "1f327cd2958604165009a9834ec62f6c10b32c789d03aca78f44c397ce2d5cec",
+      "final_accumulator": 123,
+      "last_encoded": 194,
+      "last_decoded": [
+        121,
+        123
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 121,
+      "descriptor": {
+        "id": "descriptor-9ad8a40af19907a7354c",
+        "sample_id": "1407bfe711a8355cf2d99c176c01807696eaf3c108a9316d6a3168b0a4b3c87a",
+        "native_rate": 20,
+        "flags": 129,
+        "protocol": "ordinary",
+        "routing_or_pan": 64
+      },
+      "encoded_bytes": 6897,
+      "decoded_sha256": "18a85deb5adabe25e7e084fe1842929adfc7722823028e44a02547748e92f6ee",
+      "final_accumulator": 128,
+      "last_encoded": 0,
+      "last_decoded": [
+        128,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 122,
+      "descriptor": {
+        "id": "descriptor-dcd5f10e5e85af78a3eb",
+        "sample_id": "4dee82f17d4dedad46a97b06f70d2e34881154b5e3d0f6b4acacd0488e66ce72",
+        "native_rate": 20,
+        "flags": 65,
+        "protocol": "ordinary",
+        "routing_or_pan": 64
+      },
+      "encoded_bytes": 1075,
+      "decoded_sha256": "117ab47de471896722f0f92a848f0a0d3c00bc023d44c1305d531ee257fb0369",
+      "final_accumulator": 127,
+      "last_encoded": 1,
+      "last_decoded": [
+        126,
+        127
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 123,
+      "descriptor": {
+        "id": "descriptor-376796b736feea8aa61f",
+        "sample_id": "e6dcab83dc15d36677bd05ab6c761db4cd2dd2dd09c92f77f07063748c1cd9df",
+        "native_rate": 20,
+        "flags": 65,
+        "protocol": "ordinary",
+        "routing_or_pan": 64
+      },
+      "encoded_bytes": 1323,
+      "decoded_sha256": "dcf54021d3296239c60505d4a24c59b24adb49e672319afeff53a77c73469ef5",
+      "final_accumulator": 128,
+      "last_encoded": 160,
+      "last_decoded": [
+        128,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 124,
+      "descriptor": {
+        "id": "descriptor-78ac0c17895983ae9d82",
+        "sample_id": "5ba496b86b60f75774f0272515a619697787ed142077971743816912ed52839b",
+        "native_rate": 20,
+        "flags": 65,
+        "protocol": "ordinary",
+        "routing_or_pan": 64
+      },
+      "encoded_bytes": 1633,
+      "decoded_sha256": "8ed3e9e7912b032ab815399fa0027100a0edc945254800648b96d10ad9c55869",
+      "final_accumulator": 129,
+      "last_encoded": 25,
+      "last_decoded": [
+        130,
+        129
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 125,
+      "descriptor": {
+        "id": "descriptor-f3581e0875fedc167327",
+        "sample_id": "2f0e89155f858898be7d3ea4d5982272389c7a171e130ca2bb9fadcf1394d2e0",
+        "native_rate": 20,
+        "flags": 1,
+        "protocol": "ordinary",
+        "routing_or_pan": 64
+      },
+      "encoded_bytes": 3084,
+      "decoded_sha256": "fb60b05eb3d9aface324fa24398a8e4629511516c59fdadc5e8b9119ce60aab6",
+      "final_accumulator": 128,
+      "last_encoded": 0,
+      "last_decoded": [
+        128,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 126,
+      "descriptor": {
+        "id": "descriptor-d0bf1c350f2b291d423d",
+        "sample_id": "a7d725a02c94c5ebf75eaae977d5c471366bc4d80da095b811ffe63015786b59",
+        "native_rate": 20,
+        "flags": 1,
+        "protocol": "ordinary",
+        "routing_or_pan": 64
+      },
+      "encoded_bytes": 1645,
+      "decoded_sha256": "9890fdd1cba889a3f3ff97e4089f0323c9330b3d68945435e75a258a083368c9",
+      "final_accumulator": 128,
+      "last_encoded": 0,
+      "last_decoded": [
+        128,
+        128
+      ]
+    },
+    {
+      "domain": "ordinary",
+      "code": 240,
+      "descriptor": {
+        "id": "descriptor-19fe38745a0ef762bab1",
+        "sample_id": "c6409ebd28c594205970069fbc3233241cf15dc08ce8b847a5fa118b3e1a5382",
+        "native_rate": 20,
+        "flags": 129,
+        "protocol": "ordinary",
+        "routing_or_pan": 64
+      },
+      "encoded_bytes": 6670,
+      "decoded_sha256": "dfed9ec983937f350ec14213b6e8bba437b394e22329f05c9e1b7678623b2abc",
+      "final_accumulator": 127,
+      "last_encoded": 178,
+      "last_decoded": [
+        125,
+        127
+      ]
+    },
+    {
+      "domain": "diagnostic",
+      "code": 127,
+      "descriptor": {
+        "id": "descriptor-d25157654321e372a826",
+        "sample_id": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+        "native_rate": 20,
+        "flags": 224,
+        "protocol": "ordinary",
+        "routing_or_pan": 192
+      },
+      "encoded_bytes": 1,
+      "decoded_sha256": "af472cf2977dbfccc45851e12525627fc9ecc03f274f108a865b18a672f38ba6",
+      "final_accumulator": 128,
+      "last_encoded": 0,
+      "last_decoded": [
+        128,
+        128
+      ]
+    },
+    {
+      "domain": "music",
+      "code": 0,
+      "descriptor": {
+        "id": "descriptor-2b55232930ec7f38f6ca",
+        "sample_id": "428b2070d7891ab7394fa370adead6cbed3c59fb221b277f5044452688ba0c65",
+        "native_rate": 3,
+        "flags": 0,
+        "protocol": "track-pan",
+        "routing_or_pan": 0
+      },
+      "encoded_bytes": 5846,
+      "decoded_sha256": "6f25ff5e7f0cbc279d992e051f2ec28edc8b8c31b2c102c59a5d7846ffadca65",
+      "final_accumulator": 128,
+      "last_encoded": 1,
+      "last_decoded": [
+        127,
+        128
+      ]
+    },
+    {
+      "domain": "music",
+      "code": 0,
+      "descriptor": {
+        "id": "descriptor-7a185ee9f8801e5cb536",
+        "sample_id": "1333edc5cf0627db571bee02182dc73c2253da227842662cb3bbbab406957d43",
+        "native_rate": 3,
+        "flags": 0,
+        "protocol": "track-pan",
+        "routing_or_pan": 0
+      },
+      "encoded_bytes": 2005,
+      "decoded_sha256": "d6d68c08eb74269458a9f41a6841bc387e769e5b7025870fb5c605d000dfc514",
+      "final_accumulator": 129,
+      "last_encoded": 0,
+      "last_decoded": [
+        129,
+        129
+      ]
+    },
+    {
+      "domain": "music",
+      "code": 0,
+      "descriptor": {
+        "id": "descriptor-a30931b829ea5df439e8",
+        "sample_id": "fef1e408dfa6247f3001c10398bfeb35922ed3e7e055b8d09b9320ad6a7680b0",
+        "native_rate": 3,
+        "flags": 0,
+        "protocol": "track-pan",
+        "routing_or_pan": 0
+      },
+      "encoded_bytes": 4619,
+      "decoded_sha256": "db95d65af9a329bceb9e46227a07707df5188cda6b2082a55dbbd5da4ed102ad",
+      "final_accumulator": 128,
+      "last_encoded": 0,
+      "last_decoded": [
+        128,
+        128
+      ]
+    },
+    {
+      "domain": "music",
+      "code": 0,
+      "descriptor": {
+        "id": "descriptor-a7d9b1f41e6dff5c541d",
+        "sample_id": "6a0a7407554064a41728499c0383977a5c1ae24d84242c7d3a0adb6294ed18b3",
+        "native_rate": 3,
+        "flags": 0,
+        "protocol": "track-pan",
+        "routing_or_pan": 0
+      },
+      "encoded_bytes": 4980,
+      "decoded_sha256": "b223aea827ff1773c1fc1e72762d32695906607277ad4f0134f8b53ffb17aba6",
+      "final_accumulator": 128,
+      "last_encoded": 1,
+      "last_decoded": [
+        127,
+        128
+      ]
+    },
+    {
+      "domain": "music",
+      "code": 0,
+      "descriptor": {
+        "id": "descriptor-f0d46ba2c9f2c246d91b",
+        "sample_id": "5eb5595d87b5f034c59727af7b185efacff0bb222b773e500049068673c83618",
+        "native_rate": 27,
+        "flags": 0,
+        "protocol": "track-pan",
+        "routing_or_pan": 0
+      },
+      "encoded_bytes": 768,
+      "decoded_sha256": "eb441bef4680648b2511345b09fcdd7479b817e060102aa9db52e570da8f0bfe",
+      "final_accumulator": 129,
+      "last_encoded": 32,
+      "last_decoded": [
+        129,
+        129
+      ]
+    },
+    {
+      "domain": "music",
+      "code": 0,
+      "descriptor": {
+        "id": "descriptor-fe5d2799accb40a5907e",
+        "sample_id": "01902c267719226d4a29e3c00ca43bd171e320110d52811e91742a4eff27a9d5",
+        "native_rate": 12,
+        "flags": 0,
+        "protocol": "track-pan",
+        "routing_or_pan": 0
+      },
+      "encoded_bytes": 2130,
+      "decoded_sha256": "5a4fdb1da1578a0a1fb388ee22c83a57529790f31d244ce0c3614984c5ac116a",
+      "final_accumulator": 127,
+      "last_encoded": 2,
+      "last_decoded": [
+        125,
+        127
+      ]
+    }
+  ],
+  "encoded_bytes": 437940,
+  "decoded_bytes": 875880,
+  "music_raw_sha256": "735d012d3d3140e76f8f756f0ca757bdc4b8deeb5a66750dd4610e41e06af830",
+  "original_table_sha256": "be79e4eb4329b2f21dfda3d284a5b03afbd2dd8b1694c4366190072de0ef0fe8"
+}

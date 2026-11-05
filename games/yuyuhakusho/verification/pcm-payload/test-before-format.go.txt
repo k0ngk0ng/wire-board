@@ -1,0 +1,141 @@
+package pcmassets
+
+import (
+	"bytes"
+	"compress/gzip"
+	"crypto/sha256"
+	"encoding/hex"
+	"encoding/json"
+	"errors"
+	"io"
+	"os"
+	"reflect"
+	"sort"
+	"strings"
+	"testing"
+
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcm"
+)
+
+type sourceRow struct {
+	Domain string `json:"domain"`
+	Code uint8 `json:"code"`
+	Descriptor Descriptor `json:"descriptor"`
+	Bytes int `json:"encoded_bytes"`
+	DecodedSHA string `json:"decoded_sha256"`
+	Final uint8 `json:"final_accumulator"`
+	LastEncoded uint8 `json:"last_encoded"`
+	LastDecoded [2]uint8 `json:"last_decoded"`
+}
+type sourceFixture struct {
+	Rows []sourceRow `json:"rows"`
+	EncodedTotal int `json:"encoded_bytes"`
+	DecodedTotal int `json:"decoded_bytes"`
+	MusicRawSHA string `json:"music_raw_sha256"`
+	OriginalTableSHA string `json:"original_table_sha256"`
+}
+func unpack(t *testing.T,path string) []byte {
+	t.Helper(); raw,e:=os.ReadFile(path);if e!=nil{t.Fatal(e)}
+	z,e:=gzip.NewReader(bytes.NewReader(raw));if e!=nil{t.Fatal(e)};defer z.Close()
+	decoded,e:=io.ReadAll(z);if e!=nil{t.Fatal(e)};return decoded
+}
+func sources(t *testing.T)([]byte,[]byte,sourceFixture){
+	t.Helper();catalog:=unpack(t,"../../data/audio-pcm-payloads.json.gz");music:=unpack(t,"../../data/audio-score.json.gz")
+	raw,e:=os.ReadFile("testdata/expected.json");if e!=nil{t.Fatal(e)}
+	var expected sourceFixture;if e=json.Unmarshal(raw,&expected);e!=nil{t.Fatal(e)}
+	if len(expected.Rows)!=129||expected.OriginalTableSHA!="be79e4eb4329b2f21dfda3d284a5b03afbd2dd8b1694c4366190072de0ef0fe8"{t.Fatal("source fixture profile differs")}
+	sum:=sha256.Sum256(music);if hex.EncodeToString(sum[:])!=expected.MusicRawSHA{t.Fatal("source music identity differs")};return catalog,music,expected
+}
+func load(t *testing.T)(*Catalog,[]byte,[]byte,sourceFixture){
+	t.Helper();raw,music,expected:=sources(t);c,e:=Decode(bytes.NewReader(raw),music);if e!=nil{t.Fatal(e)};return c,raw,music,expected
+}
+func TestAllPCMResourcesAgainstOriginalDescriptorsAndCodec(t *testing.T){
+	c,_,_,expected:=load(t)
+	ordinary,music,diagnostic,payloads:=c.Counts();if ordinary!=122||music!=6||diagnostic!=1||payloads!=129{t.Fatal("wrong catalog domains",ordinary,music,diagnostic,payloads)}
+	encodedTotal,decodedTotal:=0,0;proof:=sha256.New()
+	for _,row:=range expected.Rows{
+		var got Descriptor;var ok bool
+		switch row.Domain{case "ordinary":got,ok=c.Ordinary(row.Code);case "music":got,ok=c.Music(row.Descriptor.ID);case "diagnostic":got,ok=c.Diagnostic(row.Code);default:t.Fatal("unknown fixture domain")}
+		if !ok||got!=row.Descriptor{t.Fatal("original descriptor differs",row.Domain,row.Code,got,row.Descriptor)}
+		if generic,found:=c.Descriptor(got.ID);!found||generic!=got{t.Fatal("descriptor lookup differs")}
+		p,ok:=c.Payload(got.SampleID);if !ok||p.Len()!=row.Bytes||p.ID()!=got.SampleID{t.Fatal("payload identity/length differs",row.Code)}
+		raw:=p.Bytes();sum:=sha256.Sum256(raw);if hex.EncodeToString(sum[:])!=got.SampleID{t.Fatal("complete original encoded bytes differ",row.Code)}
+		if n,found:=c.PayloadLength(got.SampleID);!found||n!=len(raw){t.Fatal("length adapter differs")}
+		state:=pcm.NewDecoder();decoded:=make([]byte,0,len(raw)*2);var last [2]uint8
+		for i,b:=range raw{
+			value,found:=p.ByteAt(i);viaCatalog,also:=c.PayloadByte(got.SampleID,i);if !found||!also||value!=b||viaCatalog!=b{t.Fatal("original byte lookup differs",i)}
+			state,last=pcm.DecodeByte(state,b);decoded=append(decoded,last[:]...)
+		}
+		sum=sha256.Sum256(decoded);if hex.EncodeToString(sum[:])!=row.DecodedSHA||state.Accumulator!=row.Final||raw[len(raw)-1]!=row.LastEncoded||last!=row.LastDecoded{t.Fatal("original mother-table full decode/tail differs",row.Code)}
+		if _,found:=p.ByteAt(-1);found{t.Fatal("negative read accepted")};if _,found:=p.ByteAt(len(raw));found{t.Fatal("tail padding invented")}
+		proof.Write([]byte(got.ID));proof.Write(decoded);encodedTotal+=len(raw);decodedTotal+=len(decoded)
+	}
+	if encodedTotal!=expected.EncodedTotal||decodedTotal!=expected.DecodedTotal{t.Fatal("source coverage totals differ",encodedTotal,decodedTotal)}
+	t.Logf("PCM_PAYLOAD_PROOF rows=%d encoded=%d decoded=%d sha256=%x",len(expected.Rows),encodedTotal,decodedTotal,proof.Sum(nil))
+}
+func TestClosedCommandDomainsAndImmutableViews(t *testing.T){
+	c,_,_,_:=load(t)
+	for code:=0;code<256;code++{
+		_,ok:=c.Ordinary(uint8(code));want:=code>=6&&code<=126||code==240;if ok!=want{t.Fatal("ordinary command domain differs",code)}
+		_,ok=c.Diagnostic(uint8(code));if ok!=(code==127){t.Fatal("diagnostic domain differs",code)}
+	}
+	d,ok:=c.Diagnostic(127);if !ok||d.Protocol!=OrdinaryPCM{t.Fatal("silent descriptor lost ordinary protocol")}
+	p,_:=c.Payload(d.SampleID);if p.Len()!=1{t.Fatal("7f declared byte length changed")}
+	for offset:=1;offset<129;offset++{if _,ok:=p.ByteAt(offset);ok{t.Fatal("unproven 7f prefetch became payload",offset)}}
+	copy:=p.Bytes();first,_:=p.ByteAt(0);copy[0]^=255;again,_:=p.ByteAt(0);if first!=again{t.Fatal("caller mutated canonical payload")}
+	for _,id:=range []string{"","missing",strings.Repeat("0",64)}{if _,ok:=c.Payload(id);ok{t.Fatal("unknown payload accepted")};if _,ok:=c.Descriptor(id);ok{t.Fatal("unknown descriptor accepted")}}
+	var nilCatalog *Catalog;if _,ok:=nilCatalog.Payload("missing");ok{t.Fatal("nil catalog lookup accepted")}
+	if _,ok:=nilCatalog.Ordinary(6);ok{t.Fatal("nil ordinary lookup accepted")}
+}
+func object(t *testing.T,raw []byte)map[string]any{t.Helper();var v map[string]any;if e:=json.Unmarshal(raw,&v);e!=nil{t.Fatal(e)};return v}
+func encode(t *testing.T,v any)[]byte{t.Helper();raw,e:=json.Marshal(v);if e!=nil{t.Fatal(e)};return raw}
+func expectRejected(t *testing.T,raw,music []byte){t.Helper();c,e:=Decode(bytes.NewReader(raw),music);if e==nil||c!=nil{t.Fatal("malformed resource produced a usable catalog",e)}}
+func TestMalformedOrdinaryResourcesRejectAtomically(t *testing.T){
+	_,raw,music,_:=load(t)
+	cases:=map[string]func(map[string]any){
+		"schema":func(v map[string]any){v["schema"]=2},
+		"unknown":func(v map[string]any){v["ROM"]="forbidden"},
+		"missing ordinary":func(v map[string]any){delete(v,"ordinary")},
+		"null ordinary":func(v map[string]any){v["ordinary"]=nil},
+		"duplicate command":func(v map[string]any){a:=v["ordinary"].([]any);a[1]=a[0]},
+		"control as sample":func(v map[string]any){v["ordinary"].([]any)[0].(map[string]any)["code"]=2},
+		"diagnostic in ordinary":func(v map[string]any){v["ordinary"].([]any)[0].(map[string]any)["code"]=127},
+		"unproved f1":func(v map[string]any){v["ordinary"].([]any)[0].(map[string]any)["code"]=241},
+		"remap missing":func(v map[string]any){a:=v["ordinary"].([]any);for _,r:=range a{m:=r.(map[string]any);if m["code"]==float64(240){m["route"]="direct"}}},
+		"missing diagnostic":func(v map[string]any){delete(v,"diagnostics")},
+		"payload ID":func(v map[string]any){v["payloads"].([]any)[0].(map[string]any)["id"]=strings.Repeat("0",64)},
+		"payload codec":func(v map[string]any){v["payloads"].([]any)[0].(map[string]any)["codec"]="wav"},
+		"noncanonical base64":func(v map[string]any){m:=v["payloads"].([]any)[0].(map[string]any);m["data_base64"]="\n"+m["data_base64"].(string)},
+		"empty payload":func(v map[string]any){v["payloads"].([]any)[0].(map[string]any)["data_base64"]=""},
+		"duplicate payload":func(v map[string]any){a:=v["payloads"].([]any);a[1]=a[0]},
+		"missing music imports":func(v map[string]any){delete(v,"music_import")},
+		"music digest":func(v map[string]any){v["music_import"].(map[string]any)["raw_json_sha256"]=strings.Repeat("0",64)},
+		"music duplicate ID":func(v map[string]any){a:=v["music_import"].(map[string]any)["descriptors"].([]any);a[1]=a[0]},
+	}
+	names:=make([]string,0,len(cases));for name:=range cases{names=append(names,name)};sort.Strings(names)
+	for _,name:=range names{t.Run(name,func(t *testing.T){v:=object(t,raw);cases[name](v);expectRejected(t,encode(t,v),music)})}
+	for _,bad:=range [][]byte{nil,[]byte("null"),append(append([]byte{},raw...),[]byte(" {}")...),[]byte(`{"schema":1,"schema":1}`)}{expectRejected(t,bad,music)}
+}
+func TestMusicIdentityAndProtocolSeparation(t *testing.T){
+	c,raw,music,expected:=load(t)
+	expectRejected(t,raw,nil);expectRejected(t,raw,append(append([]byte{},music...),byte('\n')))
+	for _,row:=range expected.Rows{if row.Domain!="music"{continue};d,ok:=c.Music(row.Descriptor.ID);if !ok||d.Protocol!=TrackPanPCM||d.RoutingOrPan!=0{t.Fatal("music six-byte protocol confused with ordinary routing")}}
+	mutations:=map[string]func(map[string]any){
+		"codec":func(v map[string]any){v["dac_payloads"].([]any)[0].(map[string]any)["codec"]="wav"},
+		"routing":func(v map[string]any){v["dac_descriptors"].([]any)[0].(map[string]any)["routing"]="ordinary"},
+		"duplicate":func(v map[string]any){a:=v["dac_payloads"].([]any);a[1]=a[0]},
+		"bad descriptor ID":func(v map[string]any){v["dac_descriptors"].([]any)[0].(map[string]any)["native_rate"]=99},
+	}
+	for name,mutation:=range mutations{t.Run(name,func(t *testing.T){v:=object(t,music);mutation(v);changed:=encode(t,v);ordinary:=object(t,raw);sum:=sha256.Sum256(changed);imp:=ordinary["music_import"].(map[string]any);imp["raw_json_sha256"]=hex.EncodeToString(sum[:]);imp["raw_json_bytes"]=len(changed);expectRejected(t,encode(t,ordinary),changed)})}
+}
+type brokenReader struct{}
+func(brokenReader)Read([]byte)(int,error){return 0,errors.New("declared source failure")}
+func TestReaderLimitsAndFailure(t *testing.T){
+	_,raw,music,_:=load(t)
+	if c,e:=Decode(brokenReader{},music);e==nil||c!=nil{t.Fatal("reader failure swallowed")}
+	expectRejected(t,bytes.Repeat([]byte(" "),(2<<20)+1),music)
+	expectRejected(t,raw,bytes.Repeat([]byte(" "),(16<<20)+1))
+	// Constructors consume source bytes; later edits cannot mutate the catalog.
+	copyRaw,copyMusic:=append([]byte{},raw...),append([]byte{},music...);c,e:=Decode(bytes.NewReader(copyRaw),copyMusic);if e!=nil{t.Fatal(e)}
+	copyRaw[0]^=255;copyMusic[0]^=255;d,_:=c.Ordinary(6);p,_:=c.Payload(d.SampleID);a:=p.Bytes();b:=p.Bytes();if !reflect.DeepEqual(a,b){t.Fatal("source input alias leaked")}
+}

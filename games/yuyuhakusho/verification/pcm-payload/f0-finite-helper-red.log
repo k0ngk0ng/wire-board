@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/pcm-payload-export.py", line 43, in <module>
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--out',type=Path,required=True);parser.add_argument('--proof',type=Path,required=True);args=parser.parse_args();main(args.out,args.proof)
+                                                                                                                                                                                             ~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/pcm-payload-export.py", line 30, in main
+    f0=sample_descriptor(rom,128)
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/extract_audio_assets.py", line 96, in sample_descriptor
+    assert 6 <= code <= 127
+           ^^^^^^^^^^^^^^^^
+AssertionError

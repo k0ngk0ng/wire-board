@@ -1,0 +1,7 @@
+{
+  "scope": "Executor environment only, no catalog/code/oracle assertion changed",
+  "reason": "The shortened PATH omitted the installed Node directory; go_js_wasm_exec reported exec node not found. Resolve the existing Node path without installing anything.",
+  "old_runner_sha256": "1a08badd1a384fc3635e48cd9c79cf8af96ca5c1912fdae6feafa0f999c97899",
+  "failed_log": "final/wasm.jsonl",
+  "native_race_before_setup_correction": "final/native-race.jsonl"
+}

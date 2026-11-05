@@ -1,0 +1,1739 @@
+{
+  "schema": 1,
+  "scope": "Read-only request/path audit; frozen revision92f27271 unchanged",
+  "pass": true,
+  "runtime_coverage_complete": false,
+  "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+  "resource_index": {
+    "path": "docs/research/md-yuyuhakusho/AUDIO_GAME_DISPATCH_RESOURCES_INDEX.json",
+    "sha256": "5b92548e9cbef2f4e146387cd73d8eb5c5ecb3d7eb2d6d158f1450e95d9e54be",
+    "bytes": 237491
+  },
+  "resource_nonzero_ids": [
+    6,
+    7,
+    8,
+    9,
+    10,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    20,
+    21,
+    22,
+    23,
+    24,
+    26,
+    28,
+    29,
+    30,
+    31,
+    32,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    51,
+    52,
+    53,
+    54,
+    55,
+    58,
+    59,
+    60,
+    61,
+    62,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    73,
+    74,
+    75,
+    76,
+    78,
+    79,
+    80,
+    81,
+    82,
+    83,
+    84,
+    86,
+    87,
+    94,
+    95,
+    96,
+    97,
+    98,
+    99,
+    100,
+    101,
+    103,
+    104,
+    105,
+    106,
+    107,
+    108,
+    111,
+    112,
+    113,
+    114,
+    116,
+    117,
+    118,
+    121,
+    123,
+    126,
+    162,
+    163,
+    164,
+    165,
+    166,
+    169,
+    170
+  ],
+  "original_driver_index": {
+    "path": "docs/research/md-yuyuhakusho/AUDIO_GAME_DISPATCH_ORIGINAL_IDS.json",
+    "sha256": "c6ff8cd7b1f83b6f43bc9c8c1cc64d687617f385b5c5a048ec6806182efcb55a",
+    "bytes": 223700
+  },
+  "original_dispatch_id_count": 256,
+  "original_distinct_music_headers": 22,
+  "original_control_path_audit": {
+    "hardware_lfo_music_ids": [
+      150
+    ],
+    "fm3_control_music_ids": [],
+    "pitch_envelope_music_ids": [],
+    "hardware_lfo_primary_ids": [],
+    "fm3_control_primary_ids": [],
+    "pitch_envelope_primary_ids": [],
+    "enqueue_links": [
+      {
+        "from_id": 146,
+        "voice": 4,
+        "quanta": 142,
+        "to_id": 147
+      },
+      {
+        "from_id": 147,
+        "voice": 5,
+        "quanta": 786,
+        "to_id": 125
+      }
+    ],
+    "direct_ym_music": [],
+    "direct_ym_primary": [],
+    "hardware_lfo_details": [
+      {
+        "id": 150,
+        "voice": 2,
+        "quanta": 99,
+        "parameters": {
+          "am_enable_slots": [
+            1
+          ],
+          "lfo_enabled": true,
+          "lfo_rate": 1,
+          "ams": 3,
+          "fms": 5,
+          "enable_left": false,
+          "enable_right": false
+        },
+        "evidence": "static-data-path only; natural selection does not prove this command executed"
+      },
+      {
+        "id": 150,
+        "voice": 3,
+        "quanta": 99,
+        "parameters": {
+          "am_enable_slots": [
+            1
+          ],
+          "lfo_enabled": true,
+          "lfo_rate": 1,
+          "ams": 3,
+          "fms": 5,
+          "enable_left": false,
+          "enable_right": false
+        },
+        "evidence": "static-data-path only; natural selection does not prove this command executed"
+      },
+      {
+        "id": 150,
+        "voice": 5,
+        "quanta": 105,
+        "parameters": {
+          "am_enable_slots": [
+            1
+          ],
+          "lfo_enabled": true,
+          "lfo_rate": 1,
+          "ams": 3,
+          "fms": 5,
+          "enable_left": false,
+          "enable_right": false
+        },
+        "evidence": "static-data-path only; natural selection does not prove this command executed"
+      }
+    ],
+    "initial_music_pitch_nonzero": [],
+    "initial_primary_pitch_control": "zero from native row clear",
+    "scope": "All unique music and primary headers under bounded deterministic score-data grammar; not new runtime observation"
+  },
+  "group2_normal_dispatch_initialization_ids": [],
+  "engine_bindings": [
+    {
+      "source": {
+        "path": "games/yuyuhakusho/engine/match_start.go",
+        "sha256": "055f98de7c8666ba0c68504e3cb3f31601d0d2496bd2fe79fabb2bec6e5563ad",
+        "bytes": 10197
+      },
+      "line": 88,
+      "anchor": "startSound(&state, 4)",
+      "request_ids": [
+        4
+      ],
+      "request_ids_hex": [
+        "04"
+      ],
+      "reason": "Battle scene initialization clears the sound driver."
+    },
+    {
+      "source": {
+        "path": "games/yuyuhakusho/engine/match_start.go",
+        "sha256": "055f98de7c8666ba0c68504e3cb3f31601d0d2496bd2fe79fabb2bec6e5563ad",
+        "bytes": 10197
+      },
+      "line": 163,
+      "anchor": "music := [8]uint8",
+      "request_ids": [
+        130,
+        134,
+        131,
+        149,
+        133,
+        138,
+        136,
+        141
+      ],
+      "request_ids_hex": [
+        "82",
+        "86",
+        "83",
+        "95",
+        "85",
+        "8a",
+        "88",
+        "8d"
+      ],
+      "reason": "Eight validated arena indices 0..7."
+    },
+    {
+      "source": {
+        "path": "games/yuyuhakusho/engine/match_start.go",
+        "sha256": "055f98de7c8666ba0c68504e3cb3f31601d0d2496bd2fe79fabb2bec6e5563ad",
+        "bytes": 10197
+      },
+      "line": 166,
+      "anchor": "music = 0x87",
+      "request_ids": [
+        135
+      ],
+      "request_ids_hex": [
+        "87"
+      ],
+      "reason": "Rule0 and original character slot4=10 override."
+    },
+    {
+      "source": {
+        "path": "games/yuyuhakusho/engine/match_start.go",
+        "sha256": "055f98de7c8666ba0c68504e3cb3f31601d0d2496bd2fe79fabb2bec6e5563ad",
+        "bytes": 10197
+      },
+      "line": 168,
+      "anchor": "music = 0x84",
+      "request_ids": [
+        132
+      ],
+      "request_ids_hex": [
+        "84"
+      ],
+      "reason": "Rule0 and original character slot4=7 override."
+    },
+    {
+      "source": {
+        "path": "games/yuyuhakusho/engine/match_lifecycle.go",
+        "sha256": "1121ba3d339b266c46a5af08c157741a21e5feb5f8872cb287a14a369c8753dc",
+        "bytes": 10793
+      },
+      "line": 67,
+      "anchor": "queueMatchSound(&state, 1)",
+      "request_ids": [
+        1
+      ],
+      "request_ids_hex": [
+        "01"
+      ],
+      "reason": "Abort uses original fade control."
+    },
+    {
+      "source": {
+        "path": "games/yuyuhakusho/engine/match_lifecycle.go",
+        "sha256": "1121ba3d339b266c46a5af08c157741a21e5feb5f8872cb287a14a369c8753dc",
+        "bytes": 10793
+      },
+      "line": 126,
+      "anchor": "queueMatchSound(&state, 5)",
+      "request_ids": [
+        5
+      ],
+      "request_ids_hex": [
+        "05"
+      ],
+      "reason": "KO transition uses original fade control."
+    },
+    {
+      "source": {
+        "path": "games/yuyuhakusho/engine/match_lifecycle.go",
+        "sha256": "1121ba3d339b266c46a5af08c157741a21e5feb5f8872cb287a14a369c8753dc",
+        "bytes": 10793
+      },
+      "line": 371,
+      "anchor": "queueMatchSound(state, 0x8f)",
+      "request_ids": [
+        143
+      ],
+      "request_ids_hex": [
+        "8f"
+      ],
+      "reason": "Bounded character result/taunt trigger."
+    },
+    {
+      "source": {
+        "path": "games/yuyuhakusho/engine/match_overlays.go",
+        "sha256": "9d00e02470cacbfddebb36598fc797d86f97ca39fc509870022629435de94851",
+        "bytes": 15360
+      },
+      "line": 156,
+      "anchor": "sound, first :=",
+      "request_ids": [
+        88,
+        89
+      ],
+      "request_ids_hex": [
+        "58",
+        "59"
+      ],
+      "reason": "Intro branch selects one of two requests."
+    },
+    {
+      "source": {
+        "path": "games/yuyuhakusho/engine/match_overlays.go",
+        "sha256": "9d00e02470cacbfddebb36598fc797d86f97ca39fc509870022629435de94851",
+        "bytes": 15360
+      },
+      "line": 223,
+      "anchor": "sound, x, parameter :=",
+      "request_ids": [
+        92,
+        93
+      ],
+      "request_ids_hex": [
+        "5c",
+        "5d"
+      ],
+      "reason": "Result branch selects one of two requests."
+    },
+    {
+      "source": {
+        "path": "games/yuyuhakusho/engine/match_overlays.go",
+        "sha256": "9d00e02470cacbfddebb36598fc797d86f97ca39fc509870022629435de94851",
+        "bytes": 15360
+      },
+      "line": 317,
+      "anchor": "parameter, sound, timer :=",
+      "request_ids": [
+        90,
+        91
+      ],
+      "request_ids_hex": [
+        "5a",
+        "5b"
+      ],
+      "reason": "Result branch selects one of two requests."
+    },
+    {
+      "source": {
+        "path": "games/yuyuhakusho/engine/match_overlays.go",
+        "sha256": "9d00e02470cacbfddebb36598fc797d86f97ca39fc509870022629435de94851",
+        "bytes": 15360
+      },
+      "line": 294,
+      "anchor": "overlaySound(&state.SoundQueue, 0x6e)",
+      "request_ids": [
+        109,
+        110,
+        102
+      ],
+      "request_ids_hex": [
+        "6d",
+        "6e",
+        "66"
+      ],
+      "reason": "Result overlay count/team branches."
+    },
+    {
+      "source": {
+        "path": "games/yuyuhakusho/engine/match_overlays.go",
+        "sha256": "9d00e02470cacbfddebb36598fc797d86f97ca39fc509870022629435de94851",
+        "bytes": 15360
+      },
+      "line": 360,
+      "anchor": "sounds := [11]uint8",
+      "request_ids": [
+        107,
+        105,
+        104,
+        103,
+        106,
+        113,
+        112,
+        114,
+        108,
+        111,
+        108
+      ],
+      "request_ids_hex": [
+        "6b",
+        "69",
+        "68",
+        "67",
+        "6a",
+        "71",
+        "70",
+        "72",
+        "6c",
+        "6f",
+        "6c"
+      ],
+      "reason": "Validated character IDs1..11."
+    },
+    {
+      "source": {
+        "path": "games/yuyuhakusho/engine/match_overlays.go",
+        "sha256": "9d00e02470cacbfddebb36598fc797d86f97ca39fc509870022629435de94851",
+        "bytes": 15360
+      },
+      "line": 375,
+      "anchor": "uint8(0x5e+title-1)",
+      "request_ids": [
+        94,
+        95,
+        96,
+        97,
+        98,
+        99,
+        100,
+        101
+      ],
+      "request_ids_hex": [
+        "5e",
+        "5f",
+        "60",
+        "61",
+        "62",
+        "63",
+        "64",
+        "65"
+      ],
+      "reason": "Validated team title IDs1..8."
+    },
+    {
+      "source": {
+        "path": "games/yuyuhakusho/engine/attack_contacts.go",
+        "sha256": "1bc022b3649e4765ad7b33f8e08c91ca909e3097b714c24555ee4a64fac0d880",
+        "bytes": 10016
+      },
+      "line": 170,
+      "anchor": "effect, sound := strength",
+      "request_ids": [
+        122,
+        123,
+        124,
+        120
+      ],
+      "request_ids_hex": [
+        "7a",
+        "7b",
+        "7c",
+        "78"
+      ],
+      "reason": "Strength is attackFlags&3 and this branch requires strength<3."
+    },
+    {
+      "source": {
+        "path": "games/yuyuhakusho/engine/attack_contacts.go",
+        "sha256": "1bc022b3649e4765ad7b33f8e08c91ca909e3097b714c24555ee4a64fac0d880",
+        "bytes": 10016
+      },
+      "line": 194,
+      "anchor": "state.PendingSound = [...]uint8",
+      "request_ids": [
+        41,
+        25,
+        19,
+        11,
+        33,
+        57,
+        85,
+        77,
+        50,
+        63,
+        72
+      ],
+      "request_ids_hex": [
+        "29",
+        "19",
+        "13",
+        "0b",
+        "21",
+        "39",
+        "55",
+        "4d",
+        "32",
+        "3f",
+        "48"
+      ],
+      "reason": "KO voices indexed by validated character0..10."
+    },
+    {
+      "source": {
+        "path": "games/yuyuhakusho/engine/clash.go",
+        "sha256": "221f85a59c4765b8bece6a036d0e7d619087b33044ab5b6689efc9d7e40d0f9b",
+        "bytes": 3873
+      },
+      "line": 76,
+      "anchor": "state.PendingSound = 0x77",
+      "request_ids": [
+        119
+      ],
+      "request_ids_hex": [
+        "77"
+      ],
+      "reason": "Clash/guard branch."
+    },
+    {
+      "source": {
+        "path": "games/yuyuhakusho/engine/reaction_motion.go",
+        "sha256": "12f7ef77773aef729bf5891f05a0589ed343cad4d4a0231e3a89b757e2268ceb",
+        "bytes": 7654
+      },
+      "line": 96,
+      "anchor": "= 0x7d,",
+      "request_ids": [
+        125
+      ],
+      "request_ids_hex": [
+        "7d"
+      ],
+      "reason": "Landing/reaction branches."
+    },
+    {
+      "source": {
+        "path": "games/yuyuhakusho/engine/fighter0_motion.go",
+        "sha256": "3fcd2c8280c1383f41198d87ffba62936aaad259acff8413713d4ba18b35cf71",
+        "bytes": 9425
+      },
+      "line": 249,
+      "anchor": "state.PendingSound = 0xa6",
+      "request_ids": [
+        166
+      ],
+      "request_ids_hex": [
+        "a6"
+      ],
+      "reason": "Yusuke charge clock&3 ==0."
+    },
+    {
+      "source": {
+        "path": "games/yuyuhakusho/engine/fighter4_projectile.go",
+        "sha256": "19efda7fa74f13d239d5552c6a7a580875661257567bdcaba76ccd04861db677",
+        "bytes": 14427
+      },
+      "line": 87,
+      "anchor": "v.PendingSound = 0xf0",
+      "request_ids": [
+        240
+      ],
+      "request_ids_hex": [
+        "f0"
+      ],
+      "reason": "Hiei dragon head SoundClock==0; counter wraps modulo256."
+    }
+  ],
+  "engine_ids": [
+    1,
+    4,
+    5,
+    11,
+    19,
+    25,
+    33,
+    41,
+    50,
+    57,
+    63,
+    72,
+    77,
+    85,
+    88,
+    89,
+    90,
+    91,
+    92,
+    93,
+    94,
+    95,
+    96,
+    97,
+    98,
+    99,
+    100,
+    101,
+    102,
+    103,
+    104,
+    105,
+    106,
+    107,
+    108,
+    109,
+    110,
+    111,
+    112,
+    113,
+    114,
+    119,
+    120,
+    122,
+    123,
+    124,
+    125,
+    130,
+    131,
+    132,
+    133,
+    134,
+    135,
+    136,
+    138,
+    141,
+    143,
+    149,
+    166,
+    240
+  ],
+  "platform_fight_candidate_ids": [
+    1,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    90,
+    91,
+    92,
+    93,
+    94,
+    95,
+    96,
+    97,
+    98,
+    99,
+    100,
+    101,
+    102,
+    103,
+    104,
+    105,
+    106,
+    107,
+    108,
+    109,
+    110,
+    111,
+    112,
+    113,
+    114,
+    116,
+    117,
+    118,
+    119,
+    120,
+    121,
+    122,
+    123,
+    124,
+    125,
+    126,
+    130,
+    131,
+    132,
+    133,
+    134,
+    135,
+    136,
+    138,
+    141,
+    143,
+    149,
+    162,
+    163,
+    164,
+    165,
+    166,
+    169,
+    170,
+    240
+  ],
+  "platform_fight_candidate_ids_hex": [
+    "01",
+    "04",
+    "05",
+    "06",
+    "07",
+    "08",
+    "09",
+    "0a",
+    "0b",
+    "0c",
+    "0d",
+    "0e",
+    "0f",
+    "10",
+    "11",
+    "13",
+    "14",
+    "15",
+    "16",
+    "17",
+    "18",
+    "19",
+    "1a",
+    "1c",
+    "1d",
+    "1e",
+    "1f",
+    "20",
+    "21",
+    "22",
+    "23",
+    "24",
+    "25",
+    "26",
+    "27",
+    "28",
+    "29",
+    "2a",
+    "2b",
+    "2c",
+    "2d",
+    "2e",
+    "2f",
+    "30",
+    "31",
+    "32",
+    "33",
+    "34",
+    "35",
+    "36",
+    "37",
+    "39",
+    "3a",
+    "3b",
+    "3c",
+    "3d",
+    "3e",
+    "3f",
+    "40",
+    "41",
+    "42",
+    "43",
+    "44",
+    "45",
+    "46",
+    "47",
+    "48",
+    "49",
+    "4a",
+    "4b",
+    "4c",
+    "4d",
+    "4e",
+    "4f",
+    "50",
+    "51",
+    "52",
+    "53",
+    "54",
+    "55",
+    "56",
+    "57",
+    "58",
+    "59",
+    "5a",
+    "5b",
+    "5c",
+    "5d",
+    "5e",
+    "5f",
+    "60",
+    "61",
+    "62",
+    "63",
+    "64",
+    "65",
+    "66",
+    "67",
+    "68",
+    "69",
+    "6a",
+    "6b",
+    "6c",
+    "6d",
+    "6e",
+    "6f",
+    "70",
+    "71",
+    "72",
+    "74",
+    "75",
+    "76",
+    "77",
+    "78",
+    "79",
+    "7a",
+    "7b",
+    "7c",
+    "7d",
+    "7e",
+    "82",
+    "83",
+    "84",
+    "85",
+    "86",
+    "87",
+    "88",
+    "8a",
+    "8d",
+    "8f",
+    "95",
+    "a2",
+    "a3",
+    "a4",
+    "a5",
+    "a6",
+    "a9",
+    "aa",
+    "f0"
+  ],
+  "fight_music_ids": [
+    130,
+    131,
+    132,
+    133,
+    134,
+    135,
+    136,
+    138,
+    141,
+    143,
+    149
+  ],
+  "fight_music_catalog_closed": true,
+  "score_nested_enqueue": [
+    {
+      "score_id": 171,
+      "voice_id": 2,
+      "event": {
+        "at": 6,
+        "kind": "enqueue-replace-first",
+        "sound_id": 125
+      }
+    }
+  ],
+  "score_nested_queue_introduces_uncovered_music": false,
+  "game_control_ids": [
+    1,
+    4,
+    5
+  ],
+  "controls_are_not_pcm_or_score_assets": true,
+  "coverage_gaps_against_121_pcm_plus_23_score": [
+    240
+  ],
+  "f0": {
+    "descriptor_index": 122,
+    "descriptor_address": 230520,
+    "descriptor_hex": "0b80008014814000",
+    "sample_address": 753688,
+    "encoded_bytes": 6670,
+    "encoded_sha256": "c6409ebd28c594205970069fbc3233241cf15dc08ce8b847a5fa118b3e1a5382",
+    "rate": 20,
+    "flags": 129,
+    "routing": 64,
+    "natural_original_queue_writes": [
+      {
+        "json_pointer": "/calls/0",
+        "frame": 3481,
+        "scenario": "docs/research/md-yuyuhakusho/source4-special-discovery-inputs.json",
+        "object_id": 34048,
+        "before_queue": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "after_queue": [
+          240,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "json_pointer": "/calls/2",
+        "frame": 3479,
+        "scenario": "docs/research/md-yuyuhakusho/source4-special-discovery-duo-inputs.json",
+        "object_id": 37120,
+        "before_queue": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "after_queue": [
+          240,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "normal_game_reachability": "Original head callbacks from declared legal physical menu/game inputs, plus source branch.",
+    "not_equivalent_to_ordinary_7a": true
+  },
+  "payload_owner": {
+    "ordinary_non_diagnostic": 121,
+    "music_payloads": 6,
+    "ordinary_music_overlap": [],
+    "additional_legal_f0_payload": 1,
+    "required_non_diagnostic_distinct_minimum": 128,
+    "frozen_score_gzip_sha256": "deaf3a70eac46c199335445d186f77d51f185bdaad4d95443d09b2f1d7054d71",
+    "frozen_score_json_sha256": "735d012d3d3140e76f8f756f0ca757bdc4b8deeb5a66750dd4610e41e06af830",
+    "migration": "New pcmassets imports frozen schema2 music payloads; no schema2 edit in this audit."
+  },
+  "original_menu_observed_uncovered_music_ids": [
+    142,
+    144,
+    146,
+    147,
+    150
+  ],
+  "original_menu_examples": {
+    "8e": {
+      "request": [
+        {
+          "frame": 835,
+          "pc": "0x21960",
+          "caller": "0x8710",
+          "sr": 8200,
+          "stack": 4294966956,
+          "a5": 4294934528,
+          "code": 142,
+          "queue_before": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "dispatch": [
+        {
+          "frame": 836,
+          "pc": "0x37cb4",
+          "caller": "0x375d4",
+          "sr": 8200,
+          "stack": 4294966950,
+          "a5": 4294966128,
+          "code": 142,
+          "priority": 85
+        }
+      ]
+    },
+    "90": {
+      "request": [
+        {
+          "frame": 4969,
+          "pc": "0x21960",
+          "caller": "0x118e4",
+          "sr": 8200,
+          "stack": 4294966952,
+          "a5": 4294934592,
+          "code": 144,
+          "queue_before": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "dispatch": [
+        {
+          "frame": 4970,
+          "pc": "0x37cb4",
+          "caller": "0x375d4",
+          "sr": 8200,
+          "stack": 4294966962,
+          "a5": 4294966128,
+          "code": 144,
+          "priority": 0
+        }
+      ]
+    },
+    "92": {
+      "request": [
+        {
+          "frame": 375,
+          "pc": "0x21960",
+          "caller": "0x4d14",
+          "sr": 8200,
+          "stack": 4294966952,
+          "a5": 4294934528,
+          "code": 146,
+          "queue_before": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "dispatch": [
+        {
+          "frame": 377,
+          "pc": "0x37cb4",
+          "caller": "0x375d4",
+          "sr": 8200,
+          "stack": 4294966958,
+          "a5": 4294966128,
+          "code": 146,
+          "priority": 0
+        }
+      ]
+    },
+    "93": {
+      "request": [],
+      "dispatch": [
+        {
+          "frame": 557,
+          "pc": "0x37cb4",
+          "caller": "0x375d4",
+          "sr": 8200,
+          "stack": 4294966958,
+          "a5": 4294966128,
+          "code": 147,
+          "priority": 0
+        }
+      ]
+    },
+    "96": {
+      "request": [
+        {
+          "frame": 1465,
+          "pc": "0x21960",
+          "caller": "0xdede",
+          "sr": 8200,
+          "stack": 4294966956,
+          "a5": 4294934592,
+          "code": 150,
+          "queue_before": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "dispatch": [
+        {
+          "frame": 1466,
+          "pc": "0x37cb4",
+          "caller": "0x375d4",
+          "sr": 8200,
+          "stack": 4294966950,
+          "a5": 4294966128,
+          "code": 150,
+          "priority": 85
+        }
+      ]
+    }
+  },
+  "request_and_dispatch_counts": {
+    "frames": 5500,
+    "requests": 109,
+    "dispatches": 107
+  },
+  "source_bindings": [
+    {
+      "path": "games/yuyuhakusho/data/audio-score.json.gz",
+      "sha256": "deaf3a70eac46c199335445d186f77d51f185bdaad4d95443d09b2f1d7054d71",
+      "bytes": 196368
+    },
+    {
+      "path": "games/yuyuhakusho/data/audio-assets.json",
+      "sha256": "617737f8ef07043401fa74f7f48ba551a64dd91cedd3a94dbfcf4883e0ff1541",
+      "bytes": 271838
+    },
+    {
+      "path": "games/yuyuhakusho/data/audio-natural-events.json.gz",
+      "sha256": "8d445cd35d2c70ad850a8ca1de479d97d96dc43878e2502f7c9f228d683e580c",
+      "bytes": 198364
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter4-projectile-oracle.json.gz",
+      "sha256": "b8a48d382472e39a158916821c6a9eef7f58e274d84eb2002e14572979e87612",
+      "bytes": 489573
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter4-projectile-oracle-manifest.json",
+      "sha256": "1bb427b1a39302bab431264cc9f2ee896aec8e55bdd3c7c8e9f30691bd11b998",
+      "bytes": 3811
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_GAME_DISPATCH_RESOURCES_INDEX.json",
+      "sha256": "5b92548e9cbef2f4e146387cd73d8eb5c5ecb3d7eb2d6d158f1450e95d9e54be",
+      "bytes": 237491
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_GAME_DISPATCH_ORIGINAL_IDS.json",
+      "sha256": "c6ff8cd7b1f83b6f43bc9c8c1cc64d687617f385b5c5a048ec6806182efcb55a",
+      "bytes": 223700
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-score-driver/frozen-sources.json",
+      "sha256": "b60489d0fc1f4e883ca04beb715f85aaf74bc8b42bd480c4951c7f85c859021e",
+      "bytes": 1408
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_GAME_DISPATCH_ORIGINAL_EVIDENCE.json",
+      "sha256": "2407418770673f172b64fecb78def5b731907aef7bbac5043bb430d71524f483",
+      "bytes": 6183
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_GAME_DISPATCH_ORIGINAL_RESULTS.md",
+      "sha256": "f8d4a5497e8273b6288f17a8fd10f3afd1547b4bf0632f53ae3f203150305000",
+      "bytes": 8691
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_GAME_DISPATCH_RESOURCES_RESULTS.md",
+      "sha256": "bd8cd6e4cdbfa3cce20fd1182fec06704ba10860562185dc95382fcd7762efa9",
+      "bytes": 5870
+    },
+    {
+      "path": "games/yuyuhakusho/engine/world_clock.go",
+      "sha256": "6da632fe858e2ad43104975d74d1e945d6886f306c142fa324edbbf9a4829cd9",
+      "bytes": 3780
+    },
+    {
+      "path": "games/yuyuhakusho/engine/sound_scheduler.go",
+      "sha256": "0876d32403872b95e38b094e23c7167d8f5b7bf97e10ccec366a6ee026f6fb7a",
+      "bytes": 1916
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/audio-dispatch.txt",
+      "sha256": "1293e212c85faa1a1aa8800257c594d560bb9f698b4177bf5919e0423dfafd02",
+      "bytes": 4693
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/audio-control.txt",
+      "sha256": "87cc908286681bfe2d9e76b42e9f6ea2750ae1dd0f9e543507eb1df4ffc53505",
+      "bytes": 12031
+    }
+  ],
+  "all_engine_file_bindings": [
+    {
+      "path": "games/yuyuhakusho/engine/action_prelude.go",
+      "sha256": "418ba409a5fbad95345b591553421e29c38d62452cb64305b498bd10d0606f1f",
+      "bytes": 1676
+    },
+    {
+      "path": "games/yuyuhakusho/engine/animation_clock.go",
+      "sha256": "fa868c5c160fa22fba71520d80c18e8d1f40217ff9a64c6d90a231eab65f28a4",
+      "bytes": 1529
+    },
+    {
+      "path": "games/yuyuhakusho/engine/animation_records.go",
+      "sha256": "15e3eb6b849d7d29f8b3b55f9c843b36c9ce38fbf3fa4ffa71a9672593d13cbe",
+      "bytes": 6203
+    },
+    {
+      "path": "games/yuyuhakusho/engine/arena_a.go",
+      "sha256": "fc5ad9e205bc9bd4a6339fb39deb99be74061bdaf6c9e82fc110f22a8d97ce0c",
+      "bytes": 2253
+    },
+    {
+      "path": "games/yuyuhakusho/engine/arena_a_child.go",
+      "sha256": "6d9d426e443b67c459a620c08ce2ed69f4a680ca85f3c690ce49a3d2dcd93bf9",
+      "bytes": 2070
+    },
+    {
+      "path": "games/yuyuhakusho/engine/arena_scene.go",
+      "sha256": "1b037f82ffe3f7f4b4ddbc7e7efb5c52f6a362d016e74374d7c151ece9200309",
+      "bytes": 1771
+    },
+    {
+      "path": "games/yuyuhakusho/engine/arenas_2_6_8.go",
+      "sha256": "2a45e57ec7d5c930eeabf3631d2e17a5bccf41a9ae45fdce86cd358438f6a534",
+      "bytes": 7207
+    },
+    {
+      "path": "games/yuyuhakusho/engine/arenas_4_c_e.go",
+      "sha256": "d2c718275a676b86e83e6d570330ef50c9042feea55b1eda015602e02d4e6094",
+      "bytes": 6484
+    },
+    {
+      "path": "games/yuyuhakusho/engine/attached_effects.go",
+      "sha256": "360b0dbd71f9ad049cab4710640fc1b9d0507c380cd0b5cb15b19f57fb093071",
+      "bytes": 7932
+    },
+    {
+      "path": "games/yuyuhakusho/engine/attack_contacts.go",
+      "sha256": "1bc022b3649e4765ad7b33f8e08c91ca909e3097b714c24555ee4a64fac0d880",
+      "bytes": 10016
+    },
+    {
+      "path": "games/yuyuhakusho/engine/body_separation.go",
+      "sha256": "89c49a0f1a8e68f38b9d3db111159935e2c1c7a222758399360b9cab60fd7a25",
+      "bytes": 2467
+    },
+    {
+      "path": "games/yuyuhakusho/engine/character_commands.go",
+      "sha256": "6f67aa187c0e48fd7787b00b38c41b6a7105a2a72553f1aa899fb9fed9665e5c",
+      "bytes": 3825
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_action.go",
+      "sha256": "acdbd600734a31b96876d6b1e626f297bd347f5e6aaf83e0e3ee019c537a71c3",
+      "bytes": 19452
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_actor.go",
+      "sha256": "3f4959145936e3449599e2eb4769f7495ab2aa68c87cb249496e2d0b53423856",
+      "bytes": 13558
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_ai.go",
+      "sha256": "63ee0b171558e51b45cb793eb9d0aabe5d5b6bf5a92286c66a1c77bf33f0ea61",
+      "bytes": 12280
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_attachments.go",
+      "sha256": "7aac1a6716a25445e4c9f6302af4b810d1cb6e421f425e6aec15c29100efb48c",
+      "bytes": 8516
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_attacks.go",
+      "sha256": "108d7a4a72ab06cd9c2950c6830e861c063f937a968499f554cd633062f434a6",
+      "bytes": 6595
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_input.go",
+      "sha256": "a9d14993c78d4ae89403824254d72edc3a6315f61928c65129e8b67ac870e294",
+      "bytes": 1729
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_projectile.go",
+      "sha256": "b6b6f115b819c74cb771707f04e18a801d382b2e5a152d5f4c10b01d7bf79363",
+      "bytes": 8276
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_session.go",
+      "sha256": "61132bc4125ed99b3dc4ee6c04bd3002438d350e49f3287c45476e8603dd67b0",
+      "bytes": 9406
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_special_motion.go",
+      "sha256": "5c37d35003f4f983010232d495b6e45143553a36b347edbaf2aa494006839c98",
+      "bytes": 11179
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_tail.go",
+      "sha256": "89841755614b08cbd26f3e337c07b638ee2b1beee23502296075d86904ae523b",
+      "bytes": 10326
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_world.go",
+      "sha256": "0b3078671394ff314881417ed07de23eaf423d44ae65af31086bda5ee89f15c3",
+      "bytes": 57981
+    },
+    {
+      "path": "games/yuyuhakusho/engine/clash.go",
+      "sha256": "221f85a59c4765b8bece6a036d0e7d619087b33044ab5b6689efc9d7e40d0f9b",
+      "bytes": 3873
+    },
+    {
+      "path": "games/yuyuhakusho/engine/collision_manager.go",
+      "sha256": "8dee73e990a50667007be0b8bdc0d06671f14f64a22abfa6d78e8091cd0b312d",
+      "bytes": 5618
+    },
+    {
+      "path": "games/yuyuhakusho/engine/commands.go",
+      "sha256": "fd0c39b62a11345e35a2f41e01a545da4dc13f24eb45853dc51ef8be6ac5439e",
+      "bytes": 3393
+    },
+    {
+      "path": "games/yuyuhakusho/engine/default_arena.go",
+      "sha256": "33e077a686873f40926584efe3e8fa7510c3e19fb35110edbcc8f2b05957ade8",
+      "bytes": 13368
+    },
+    {
+      "path": "games/yuyuhakusho/engine/effect_motion.go",
+      "sha256": "0be7ed205b89d5099d17b543acaf9cc5887e3b6a3d2c5749b139cb8dc776e13a",
+      "bytes": 7166
+    },
+    {
+      "path": "games/yuyuhakusho/engine/effects.go",
+      "sha256": "6a0916fbc4051a0e67988b9cad99e41d9ef778e0e78a7f63d65f5fb35d2f6b18",
+      "bytes": 2801
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter0_attacks.go",
+      "sha256": "2bd06c5b399bc916daa06eb59e0ef5723a47cf636b2e9ffe1c57607c0dd6e071",
+      "bytes": 6710
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter0_motion.go",
+      "sha256": "3fcd2c8280c1383f41198d87ffba62936aaad259acff8413713d4ba18b35cf71",
+      "bytes": 9425
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter0_projectile.go",
+      "sha256": "75fd4602a62ced5944f8be174faa6f3906e295cd1e62f3f091de9593c02d1915",
+      "bytes": 6584
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter10_attacks.go",
+      "sha256": "3be75d818323df1d8097cd337a435b66bb31b03747966c1aaa078557b43822b1",
+      "bytes": 5831
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter10_motion.go",
+      "sha256": "120bf695e1e02406d6ba94493d373b59782e606ba939fbfe284bd17b99b8e427",
+      "bytes": 4238
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter1_attacks.go",
+      "sha256": "e0cdcd4bdac9e6fe2ee2696d98cecdf8ed8f23affae4265bab33b5e192bced4a",
+      "bytes": 4770
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter1_motion.go",
+      "sha256": "e4885d77e4f90dc710569e6526a1698cde5ecf57eaba643d5de173c8e0cc4199",
+      "bytes": 4925
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter1_projectile.go",
+      "sha256": "d787fa12dd5a6c86957206201890e16cb457217e0b25c1ef6679993d6e37d505",
+      "bytes": 5859
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter2_attacks.go",
+      "sha256": "01c1f021357443798343c35a38e2bbaab5bdb0eb1ef22bcb9e7d54c7bae5d94b",
+      "bytes": 5391
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter2_motion.go",
+      "sha256": "b67ef2363472157538ae898e3240a0e2492045eda064d0d4c3044d5dabed2672",
+      "bytes": 3455
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter2_projectile.go",
+      "sha256": "2bc1bb203157a57a35f5c26c77054250eac7621fd2a4c62754da64a903d556d4",
+      "bytes": 2936
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter3_air_motion.go",
+      "sha256": "8d7d87cee7ffa48644d275bff5a7aee8209c7825583928de1fd3e04777e622d4",
+      "bytes": 2192
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter3_attacks.go",
+      "sha256": "39b112a2bb9d6a7d2fa5614ad26e5bb971b489fe044513ff89e8bb20cdabcae2",
+      "bytes": 6133
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter3_motion.go",
+      "sha256": "14288bf20eb1c378d5c23a14a4f7e2c6a39ac28f1998f21e2d323b01e42e72b3",
+      "bytes": 3698
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter4_attacks.go",
+      "sha256": "ca87b180ace1aaff0c9e48ec2cc21f51c21d67351f88f5fe7eab1dd8753c54a6",
+      "bytes": 5208
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter4_motion.go",
+      "sha256": "a236eac8bded286b9b35241c206d0de35e763d5097651862f14476f7f787f154",
+      "bytes": 8960
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter4_projectile.go",
+      "sha256": "19efda7fa74f13d239d5552c6a7a580875661257567bdcaba76ccd04861db677",
+      "bytes": 14427
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter4_world.go",
+      "sha256": "4f629e3017d1bc56ad56ec1394a3fca6e36527681d2a6b5a464f4c91578b1e5f",
+      "bytes": 6413
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter5_attacks.go",
+      "sha256": "c92ece3a1159fb48e91f37566f3e6c942764a4ad4439f392e0af056f49c0760b",
+      "bytes": 6902
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter5_motion.go",
+      "sha256": "a09add7c76bb4ede0f21fc1b3c7ef7a55bc8da9913671fded7ea170d13205506",
+      "bytes": 4467
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter5_projectile.go",
+      "sha256": "f6d72694b6eb2096dadf4611f3eed552f3c0c592b2294167dae52ba8ba6bf8e0",
+      "bytes": 11303
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter5_world.go",
+      "sha256": "b371911287b66c52520f3f020b840f4f10afa5d7cce8a256978a0c6e2478ed44",
+      "bytes": 3052
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter6_attacks.go",
+      "sha256": "f4c4b0e5cfcdb6b3693347baf18b20d922513a2beed45c6fd9047d1d0a37d14d",
+      "bytes": 6212
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter6_motion.go",
+      "sha256": "334b3d5cdc4e6d61dd1a62c8b664ad106fd3bca26ab3aa4625105eca5dd07ca1",
+      "bytes": 3628
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter6_support_motion.go",
+      "sha256": "a1c4cbb25a8583c5de280c94934f8816d8f2e74ae7d421124d1a24e808c74d71",
+      "bytes": 2239
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter7_attacks.go",
+      "sha256": "b33c38737e5b8ad01629d5f2cad911861bead841933c8d92fcdc68a3ed9dcb22",
+      "bytes": 6239
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter7_children.go",
+      "sha256": "8e55ee9aeb37507b9b3ba1b8bf4d39547ebae207fcd61d5d400bbec065e5055b",
+      "bytes": 13820
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter7_motion.go",
+      "sha256": "cfb8334a40adb24ceaf5232f09cf06a14fdc948c83f3e71308cf0cf746c26004",
+      "bytes": 5325
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter7_world.go",
+      "sha256": "c887bcf46ce9bff274f7d943e3d274f1357f0e10f324f39ccf81b2b38b2f283d",
+      "bytes": 4233
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter8_attacks.go",
+      "sha256": "066e13b12eb5a1e2fd8843b171dc198e7f718dc750583c095dea2aab17b52f75",
+      "bytes": 5525
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter8_motion.go",
+      "sha256": "4783a7fe4526a1aa558dca22b5849bcfa2dd45e615c81ee9635b644eae7d9f53",
+      "bytes": 3939
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter8_projectile.go",
+      "sha256": "37e56a34b71a99ac28e13aa9659a19b0acadd6ed7b4c2ca8eb0c6602756d7138",
+      "bytes": 4520
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter_ai.go",
+      "sha256": "10401486da28a33f95fc5427b6cc5d7f00a90a86b6914f9a7d3d8fd723c29c93",
+      "bytes": 14857
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter_bounds.go",
+      "sha256": "065c32dff3bbad040988cadad753661447f7ed3508dacab9b19f34d9ff6da310",
+      "bytes": 998
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter_envelope.go",
+      "sha256": "f0cba93adb159eea905cc66ed976843c24ba1d7cec34a50423c356c303156453",
+      "bytes": 7063
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter_initialization.go",
+      "sha256": "52f5c58440b000688a9508e8b419cf0d36e88b4b05250742692e21a4c741f8ad",
+      "bytes": 3598
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter_input.go",
+      "sha256": "da1cee3d5fffe0a78f97b31fb9ae9f81ba3b44a6f0a79e4f3148027ca3596c9a",
+      "bytes": 1411
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter_preparation.go",
+      "sha256": "f7bb17f5f381afe2992cae99e7aecb5e3e7a5ba3cd95883a16c4925fa03bc622",
+      "bytes": 1937
+    },
+    {
+      "path": "games/yuyuhakusho/engine/ground_actions.go",
+      "sha256": "cc6106a696c63bb39293694ed8cc63e04586ceb89e6b04454fb08970aedca80c",
+      "bytes": 2862
+    },
+    {
+      "path": "games/yuyuhakusho/engine/ground_control.go",
+      "sha256": "c5c1d71729abb591b4fb2bcd6de7b18985f2f08da4c2ac472771039dc265b2c5",
+      "bytes": 2313
+    },
+    {
+      "path": "games/yuyuhakusho/engine/ground_idle.go",
+      "sha256": "25b8ded1e1fe806808b776eaec9b0b64648fe502d1fbb6c58871ad6f95ae7020",
+      "bytes": 1651
+    },
+    {
+      "path": "games/yuyuhakusho/engine/input.go",
+      "sha256": "38e957231a29fd08c889709e0e7a39661284258800521467ba41fcdc9dfa12e2",
+      "bytes": 2381
+    },
+    {
+      "path": "games/yuyuhakusho/engine/jump.go",
+      "sha256": "4d04cd8fc08edde75a5793d6be21644e058e7b2caf4e7c3c6c7b15f18fa39605",
+      "bytes": 3784
+    },
+    {
+      "path": "games/yuyuhakusho/engine/lane_motion.go",
+      "sha256": "34e91c5756878c15efd3fa598dc4f4ae1de9744762e6eceb2b3a0502503ad7cf",
+      "bytes": 1787
+    },
+    {
+      "path": "games/yuyuhakusho/engine/lane_switch.go",
+      "sha256": "a4b2079963327c84f85eda85553e70555fa1273e54ba082bd3bc706683140280",
+      "bytes": 1323
+    },
+    {
+      "path": "games/yuyuhakusho/engine/match_lifecycle.go",
+      "sha256": "1121ba3d339b266c46a5af08c157741a21e5feb5f8872cb287a14a369c8753dc",
+      "bytes": 10793
+    },
+    {
+      "path": "games/yuyuhakusho/engine/match_overlays.go",
+      "sha256": "9d00e02470cacbfddebb36598fc797d86f97ca39fc509870022629435de94851",
+      "bytes": 15360
+    },
+    {
+      "path": "games/yuyuhakusho/engine/match_start.go",
+      "sha256": "055f98de7c8666ba0c68504e3cb3f31601d0d2496bd2fe79fabb2bec6e5563ad",
+      "bytes": 10197
+    },
+    {
+      "path": "games/yuyuhakusho/engine/motion.go",
+      "sha256": "35dc27314a13afdff39d96d2d21911c5ba5030baf00ea81d1daf8f9feb5f8878",
+      "bytes": 2362
+    },
+    {
+      "path": "games/yuyuhakusho/engine/random.go",
+      "sha256": "c9fe3edc3ff9bee0725b78e7a38f2c4517592ddf99e52fec98e8904eb77a2056",
+      "bytes": 543
+    },
+    {
+      "path": "games/yuyuhakusho/engine/raster_input_storage.go",
+      "sha256": "7c3783a3816745e0088d2e9a2df702fc763ad4e232c64e8b566da103f3ac304a",
+      "bytes": 5292
+    },
+    {
+      "path": "games/yuyuhakusho/engine/reaction_motion.go",
+      "sha256": "12f7ef77773aef729bf5891f05a0589ed343cad4d4a0231e3a89b757e2268ceb",
+      "bytes": 7654
+    },
+    {
+      "path": "games/yuyuhakusho/engine/sound_pcm_arbitration.go",
+      "sha256": "ace412910e7c9cc3baf59a8602d65d5e500b0837fae6a2eda02818954f9e540a",
+      "bytes": 2790
+    },
+    {
+      "path": "games/yuyuhakusho/engine/sound_queue.go",
+      "sha256": "156b7d1484afd423e2e116aef0cea5aa897cd8c2c34dc707c012efa7360d978e",
+      "bytes": 1626
+    },
+    {
+      "path": "games/yuyuhakusho/engine/sound_scheduler.go",
+      "sha256": "0876d32403872b95e38b094e23c7167d8f5b7bf97e10ccec366a6ee026f6fb7a",
+      "bytes": 1916
+    },
+    {
+      "path": "games/yuyuhakusho/engine/throw_contacts.go",
+      "sha256": "0b433935245fa97df63841e9d76cd109d53d848d6c816dc93a7a1a33922a3ffb",
+      "bytes": 5094
+    },
+    {
+      "path": "games/yuyuhakusho/engine/throw_records.go",
+      "sha256": "ce5f9c6c77a8d7ebc298f30e9f99fb9686ad436bc4cc716960c3c0542480b34f",
+      "bytes": 1412
+    },
+    {
+      "path": "games/yuyuhakusho/engine/world_clock.go",
+      "sha256": "6da632fe858e2ad43104975d74d1e945d6886f306c142fa324edbbf9a4829cd9",
+      "bytes": 3780
+    },
+    {
+      "path": "games/yuyuhakusho/engine/world_draw.go",
+      "sha256": "e623738a8fad5eb5605c5e83356858d9fa0175a34b325405dbc34aef78fb8328",
+      "bytes": 905
+    },
+    {
+      "path": "games/yuyuhakusho/engine/world_frame.go",
+      "sha256": "cce900e855b54cf9b6dcadeffe9a4454cdaf7ee2c9b495915a918dc0f3272d5e",
+      "bytes": 2418
+    },
+    {
+      "path": "games/yuyuhakusho/engine/world_objects.go",
+      "sha256": "cbf695846c36a00c57bdc1b1922a5df8f6fd581c121f9e88006ea266ca386cb1",
+      "bytes": 28848
+    },
+    {
+      "path": "games/yuyuhakusho/engine/world_presentable.go",
+      "sha256": "0f724ad3e2c393c16650342a0ada34cbd8b665b9b6b8a3a333917dbbaf373220",
+      "bytes": 4407
+    }
+  ],
+  "audit_script": {
+    "path": "docs/research/md-yuyuhakusho/AUDIO_GAME_DISPATCH_COVERAGE_AUDIT.py",
+    "sha256": "b0b5bc34ab56ce5906d21c16705f8d97f1c06238111b3c8e44f4b27bf33bc5d6",
+    "bytes": 15041
+  },
+  "limits": [
+    "Resource sound fields are candidate requests, not a claim that every entry is naturally reached.",
+    "Queue request, dispatcher selection and actual chip output are different observation layers.",
+    "Original menus are skipped by the platform preparation/battle flow; this does not make their five observed music IDs diagnostic.",
+    "Group2 guard, all22-header controls and bypass-candidate scope are supplied by the separate original-driver audit.",
+    "This audit does not implement controls/fade, payload migration, master-cycle scheduling or DSP.",
+    "No production source, frozen catalog, portable golden or prior proof is modified."
+  ],
+  "report": {
+    "path": "docs/research/md-yuyuhakusho/AUDIO_GAME_DISPATCH_COVERAGE.md",
+    "sha256": "58aab01beb32a6e9cb41b6483eadae99f7f0cf32971b2dd89b3422decf2f8964",
+    "bytes": 9706
+  },
+  "audit_verified_sources_unchanged": true
+}

@@ -1,0 +1,4 @@
+{"Time":"2026-11-06T02:30:13.731937+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcmassets"}
+{"Time":"2026-11-06T02:30:13.739627+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcmassets","Output":"/opt/homebrew/Cellar/go/1.26.2/libexec/lib/wasm/go_js_wasm_exec: line 17: exec: node: not found\n"}
+{"Time":"2026-11-06T02:30:13.739837+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcmassets","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcmassets\t0.008s\n"}
+{"Time":"2026-11-06T02:30:13.739852+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcmassets","Elapsed":0.008}

@@ -1,0 +1,9 @@
+games/yuyuhakusho/audio/pcmassets
+games/yuyuhakusho/data/audio-pcm-payloads.json.gz
+games/yuyuhakusho/data/audio-pcm-payloads-manifest.json
+docs/research/md-yuyuhakusho/AUDIO_PCM_PAYLOADS.md
+games/yuyuhakusho/verification/pcm-payload
+scripts/yuyuhakusho/pcm-payload-verify.py
+scripts/yuyuhakusho/pcm-payload-audit.py
+scripts/yuyuhakusho/pcm-payload-fixture.py
+scripts/yuyuhakusho/pcm-payload-export.py
