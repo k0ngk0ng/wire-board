@@ -1,0 +1,334 @@
+{
+  "scope": "Actual whole3592 ready-match passes; no Go execution or world completion claim",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "7b6b89d6e79fa4bb534099b798441bea99c1f11d4dfc75c59a8b52388f54a891",
+  "inputs_sha256": "e6ca2bbb16821f13c2508661b3b1b4ebddcad141f40ed7ef99fac0fea2f54af9",
+  "inputs_path": "docs/research/md-yuyuhakusho/source5-special-discovery-inputs.json",
+  "baseline_sha256": "8f813685d06dfbe1ca8d9615cd027aef04b130790efe5e6dd66b8395d795bed3",
+  "baseline_path": "games/yuyuhakusho/engine/testdata/fighter5-attacks-special-reference-frames.json",
+  "frames_checked": 3602,
+  "entry_end": 3600,
+  "drain_frames": 2,
+  "records": 1801,
+  "first_frame": 1800,
+  "last_frame": 3600,
+  "draws": 12058,
+  "typed_history": true,
+  "object_calls": 24007,
+  "kinds": [
+    {
+      "behavior": 39632,
+      "calls": 1801,
+      "ids": [
+        32768
+      ],
+      "stages": [
+        20
+      ],
+      "first_frame": 1800,
+      "last_frame": 3600
+    },
+    {
+      "behavior": 62116,
+      "calls": 1801,
+      "ids": [
+        32832
+      ],
+      "stages": [
+        10,
+        12,
+        14
+      ],
+      "first_frame": 1800,
+      "last_frame": 3600
+    },
+    {
+      "behavior": 65144,
+      "calls": 1801,
+      "ids": [
+        33280
+      ],
+      "stages": [
+        2
+      ],
+      "first_frame": 1800,
+      "last_frame": 3600
+    },
+    {
+      "behavior": 65202,
+      "calls": 1801,
+      "ids": [
+        33088
+      ],
+      "stages": [
+        2
+      ],
+      "first_frame": 1800,
+      "last_frame": 3600
+    },
+    {
+      "behavior": 65672,
+      "calls": 1801,
+      "ids": [
+        33344
+      ],
+      "stages": [
+        2
+      ],
+      "first_frame": 1800,
+      "last_frame": 3600
+    },
+    {
+      "behavior": 66034,
+      "calls": 15,
+      "ids": [
+        33536
+      ],
+      "stages": [
+        10,
+        12
+      ],
+      "first_frame": 1800,
+      "last_frame": 1814
+    },
+    {
+      "behavior": 66352,
+      "calls": 26,
+      "ids": [
+        33600,
+        33664
+      ],
+      "stages": [
+        6,
+        8
+      ],
+      "first_frame": 1800,
+      "last_frame": 1812
+    },
+    {
+      "behavior": 75368,
+      "calls": 3602,
+      "ids": [
+        33792,
+        36864
+      ],
+      "stages": [
+        2
+      ],
+      "first_frame": 1800,
+      "last_frame": 3600
+    },
+    {
+      "behavior": 78142,
+      "calls": 10,
+      "ids": [
+        37120
+      ],
+      "stages": [
+        0,
+        2
+      ],
+      "first_frame": 2375,
+      "last_frame": 3600
+    },
+    {
+      "behavior": 78558,
+      "calls": 85,
+      "ids": [
+        37376
+      ],
+      "stages": [
+        0,
+        2
+      ],
+      "first_frame": 1974,
+      "last_frame": 3583
+    },
+    {
+      "behavior": 79390,
+      "calls": 26,
+      "ids": [
+        37632
+      ],
+      "stages": [
+        0,
+        2
+      ],
+      "first_frame": 2363,
+      "last_frame": 3596
+    },
+    {
+      "behavior": 82254,
+      "calls": 139,
+      "ids": [
+        34048
+      ],
+      "stages": [
+        0,
+        2
+      ],
+      "first_frame": 2056,
+      "last_frame": 2276
+    },
+    {
+      "behavior": 82916,
+      "calls": 14,
+      "ids": [
+        34048
+      ],
+      "stages": [
+        0,
+        2
+      ],
+      "first_frame": 3420,
+      "last_frame": 3433
+    },
+    {
+      "behavior": 83642,
+      "calls": 38,
+      "ids": [
+        34304
+      ],
+      "stages": [
+        0,
+        2
+      ],
+      "first_frame": 3336,
+      "last_frame": 3419
+    },
+    {
+      "behavior": 84098,
+      "calls": 1801,
+      "ids": [
+        39936
+      ],
+      "stages": [
+        2
+      ],
+      "first_frame": 1800,
+      "last_frame": 3600
+    },
+    {
+      "behavior": 84272,
+      "calls": 32,
+      "ids": [
+        38528
+      ],
+      "stages": [
+        0,
+        2
+      ],
+      "first_frame": 3433,
+      "last_frame": 3464
+    },
+    {
+      "behavior": 84396,
+      "calls": 1386,
+      "ids": [
+        37888,
+        38016,
+        38144,
+        38272,
+        38400,
+        38528,
+        38656,
+        38784,
+        38912,
+        39040,
+        39168,
+        39296,
+        39424,
+        39552,
+        39680,
+        39808
+      ],
+      "stages": [
+        0,
+        2
+      ],
+      "first_frame": 1812,
+      "last_frame": 3547
+    },
+    {
+      "behavior": 85702,
+      "calls": 624,
+      "ids": [
+        37888,
+        39680,
+        39808
+      ],
+      "stages": [
+        0,
+        2
+      ],
+      "first_frame": 2838,
+      "last_frame": 3045
+    },
+    {
+      "behavior": 86218,
+      "calls": 1801,
+      "ids": [
+        40064
+      ],
+      "stages": [
+        2
+      ],
+      "first_frame": 1800,
+      "last_frame": 3600
+    },
+    {
+      "behavior": 86622,
+      "calls": 1801,
+      "ids": [
+        40192
+      ],
+      "stages": [
+        2
+      ],
+      "first_frame": 1800,
+      "last_frame": 3600
+    },
+    {
+      "behavior": 126380,
+      "calls": 1801,
+      "ids": [
+        33024
+      ],
+      "stages": [
+        0
+      ],
+      "first_frame": 1800,
+      "last_frame": 3600
+    },
+    {
+      "behavior": 133400,
+      "calls": 1801,
+      "ids": [
+        33152
+      ],
+      "stages": [
+        2
+      ],
+      "first_frame": 1800,
+      "last_frame": 3600
+    }
+  ],
+  "queue_interleaved_passes": 86,
+  "closed_after_clear": false,
+  "fixture_sha256": "4a0098f9f4444db352b9121898f865ed4f82fcff05d5bb0a091fee61e46fb747",
+  "gzip_sha256": "6cc9ef411a65768a49579d8526b49c9d9567878b4009fca673ff10b181977e17",
+  "frames_match_original_core": true,
+  "incomplete_calls": 0,
+  "errors": [],
+  "allow_open_end": true,
+  "pass": true
+}

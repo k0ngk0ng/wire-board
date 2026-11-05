@@ -1,0 +1,25 @@
+{
+  "scope": "Six source5 complete API wrappers frozen before schema view and production source5 support",
+  "phase": "schema compile red",
+  "command": "GOCACHE=$PWD/.local/go-cache GOMODCACHE=$PWD/.local/go-mod GOTMPDIR=$PWD/.local/md-yuyuhakusho/tmp TMPDIR=$PWD/.local/md-yuyuhakusho/tmp go test -json -run ^TestFighter5Composition ./games/yuyuhakusho/engine",
+  "exit_code": 1,
+  "expected_missing_contract": "ChuActionState/ChuActorFighter.Fighter5ChildExtras [3]Fighter5ChildExtra{Gravity int32, Owner uint16}",
+  "tests_frozen": true,
+  "six_tests": [
+    "TestFighter5CompositionOriginalActions",
+    "TestFighter5CompositionOriginalInputs",
+    "TestFighter5CompositionOriginalActors",
+    "TestFighter5CompositionActionStreams",
+    "TestFighter5CompositionInputAndActorStreams",
+    "TestFighter5CompositionFailuresAreAtomic"
+  ],
+  "files": {
+    "games/yuyuhakusho/engine/fighter5_composition_test.go": "34016fa0083cdf3e67ab5676de4b5c6e6bd19312029121ac9eb961fe0319926d",
+    "games/yuyuhakusho/engine/FIGHTER5_COMPOSITION_VERIFICATION.md": "2511817e4beb5ad70b011d70dd16d6de9dce2b5e546996e62d4929c42b09076c",
+    "games/yuyuhakusho/engine/testdata/fighter5-composition-schema-red.jsonl": "8e008246591ea6add81713176f7e83f7e774a0384d3d3158d9a86038fccfb532",
+    "games/yuyuhakusho/engine/chu_action.go": "803b5715e89cbb47ad5bde74ad17afcf300a6b86025c085271d62f283f095119",
+    "games/yuyuhakusho/engine/chu_actor.go": "39bd3d13ee04220e50600a1e507858fa72c4591b7a4ac45a4ce2797c0cde2717",
+    "games/yuyuhakusho/engine/chu_action_test.go": "ce29ef76b272029224a90418ea6a53726e19e529051b4861987eed97cf915953",
+    "games/yuyuhakusho/engine/chu_actor_test.go": "09cdf2a78e0fe0b532b4555f7116e756db99441bbf518783729ace02f07d8355"
+  }
+}

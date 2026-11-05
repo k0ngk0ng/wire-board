@@ -156,3 +156,15 @@ python3 scripts/yuyuhakusho/audit_fighter4_dragon_assets.py --out games/yuyuhaku
 矩阵为 21 组规则配置和 12 组完整呈现；旧角色回归使用 `verify_hiei_legacy.py native` 和 `verify_hiei_legacy.py wasm`，共 192 份结果。全量规则／目录检查集合、四个原生分片和来源 SHA 在 `verification/hiei-native-shards.json`；版本元数据兼容复跑及全部原始日志由 [hiei-session.json](../../games/yuyuhakusho/verification/hiei-session.json)绑定。使用相同规则包，原生和 Wasm 的完整状态、事件和像素轨迹一致。
 
 飞影特殊原世界使用 `capture_fighter4_world.py`，双真人练习就绪世界使用 `capture_fighter4_duo_world.py`。两者必须通过 `--reference`、`--reference-manifest` 复用已冻结原 core 控制组，不重新产生第二份控制组；还需显式传入 `--inputs`、`--out`、`--start`、`--end`、`--allow-open-end` 和 `--name`。九根场景是 `1800..3600`、3602 控制步，Duo 是实际 `a01e/stage32` 的 `2500..5500`、5502 控制步。各自 manifest 保存唯一输入／控制组路径和 SHA；原版菜单早期状态不属于已验证 Go 等待阶段。
+
+仙水／十角色最新检查点：
+
+```sh
+sh scripts/yuyuhakusho/verify_sensui_sessions.sh both
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/yuyuhakusho/check_sensui_player.py
+python3 scripts/yuyuhakusho/audit_fighter5_projectile_assets.py --out games/yuyuhakusho/verification/fighter5-projectile-assets.json
+```
+
+矩阵为 23 组规则配置和 13 组完整呈现。旧九角色回归使用 `verify_sensui_legacy.py native` 和 `verify_sensui_legacy.py wasm`，共 234 份结果。完整 351 引擎＋3 目录测试的来源／分片在 `verification/sensui-native-shards.json`；Wasm 初次达到20分钟限制后，仅对剩余75项续跑，精确清单、压缩正则、最小环境和原始日志在 `sensui-wasm-continuation.json`。GoWasm 的 argv＋环境有8KiB启动区，长正则与无关宿主变量可能超过上限，不把没有执行测试的启动失败当作规则失败。完整通过集合与原始记录由 [sensui-session.json](../../games/yuyuhakusho/verification/sensui-session.json)绑定。
+
+Source5 普通世界沿用未修改的 `capture_chu_world.py`，特殊世界使用 `capture_fighter5_world.py` 及唯一原 core3602控制组。两条输入／原 SHA 均在对应 manifest；特殊采样范围为1800..3600，另两步排空。固定输入的发现与复放说明见 [SOURCE5_SPECIAL_DISCOVERY.md](../../docs/research/md-yuyuhakusho/SOURCE5_SPECIAL_DISCOVERY.md)。

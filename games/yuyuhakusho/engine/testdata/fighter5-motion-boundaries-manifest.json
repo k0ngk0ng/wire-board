@@ -1,0 +1,75 @@
+{
+  "pass": true,
+  "scope": "Explicit source5 MAIN private contexts; complete 64KiB write audit",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "1c9621358e8621e3d3e74525f90da7c9ffd9b03d0f466afab218409c857e26cd",
+  "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+  "records": 5474,
+  "calls": 5474,
+  "kind_counts": {
+    "17": 1152,
+    "45": 630,
+    "46": 512,
+    "47": 708,
+    "48": 708,
+    "50": 708,
+    "49": 1056
+  },
+  "character_counts": {
+    "5": 5474
+  },
+  "allocation_attempts": 0,
+  "external_queue_calls": 0,
+  "interrupt_calls": 0,
+  "external_change_calls": 0,
+  "fixture_sha256": "08e31f6cdf5a987f803c6c018b505984f819f2100a5a504a16a7349c2e34a8a5",
+  "gzip_sha256": "3a889a1d22aab1ace650b5cb21b58d437a28177434b7dda1633dc389d274a3af",
+  "baselines": [
+    {
+      "input": "docs/research/md-yuyuhakusho/source5-next-inputs.json",
+      "input_sha256": "6dd2eea8f585b62ad886da67d1123c61e06bedb97da4fdd9fd768b8441969601",
+      "reference": "games/yuyuhakusho/engine/testdata/fighter5-attacks-reference-frames.json",
+      "reference_raw_sha256": "f43682106819d7847243a459c9bac6b60ddc63d5f5f9bb9a58c633a8154d7c2b",
+      "reference_manifest": "games/yuyuhakusho/engine/testdata/fighter5-attacks-reference-manifest.json",
+      "reference_manifest_sha256": "3d6c5106dd33076f242c8d3468a0c840e9547e313060e6dcae665c511b280a4c",
+      "video_steps": 3602,
+      "entry_frame_limit": 3600,
+      "all_ram_video_match": true
+    }
+  ],
+  "frames_match_original_core": true,
+  "rng_calls": 0,
+  "unexplained_change_calls": 0,
+  "private_unknown_ram_writes": 0,
+  "errors": [],
+  "incomplete_calls": 0,
+  "retreat_table": {
+    "address": "0x1cb20",
+    "bytes": "0044000e000c000a0008000600380036",
+    "sha256": "90d3194cc32e779669f42bcad69a4b481c047f2d72823df8d6cb8a9a2b12c2ae"
+  },
+  "limits": [
+    "MAIN stops before15afc; no shared tail, child/FX callbacks or world scheduling.",
+    "Only Duration/Flags are refreshed from actual immutable animation records; no intermediate state injection."
+  ],
+  "binding": {
+    "source_tag": 5,
+    "animation_set": 829146,
+    "shape_set": 832394,
+    "parameter_pointer": 75188,
+    "checkpoint_frame": 2400,
+    "source_header": "0001266801000002",
+    "source_actor_sha256": "f8e504643ddac35fc263dee641b4145f1f32b15f34878a89f4ae88aed0aea327"
+  },
+  "movement_parameters_sha256": "0272e897f6c72823bb5228039b04d03e1eaf95f046d1624d08128a9c09b49475",
+  "library_frames": 57
+}

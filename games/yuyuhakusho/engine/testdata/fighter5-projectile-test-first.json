@@ -1,0 +1,63 @@
+{
+  "frozen_before_production": true,
+  "production_absent": true,
+  "go": "go1.26.2 darwin/arm64",
+  "red_command": "go test -gcflags=all=-e -run ^TestFighter5Projectile -count=1 -json ./games/yuyuhakusho/engine",
+  "own_symbol_red_confirmed": true,
+  "scope": "Failure scenarios -> original full64KB natural191/boundaries6363/single-initial16streams3596 -> frozen tests -> actual own-symbol build red -> implementation",
+  "files": {
+    "games/yuyuhakusho/engine/fighter5_projectile_test.go": "276b79212a2c31a3187a7bbe0e1274898841516ede1a053770054d4308767750",
+    "games/yuyuhakusho/engine/FIGHTER5_PROJECTILE_FAILURES.md": "2689a11c07714986a86b88798e5ff2a055f92deb8a950a7be3f9cf689eb2a93e",
+    "scripts/yuyuhakusho/capture_fighter5_projectile.py": "78554b8a9292a64d9a82902ed406da6b3891524bac025f48a0a96f88784f8716",
+    "games/yuyuhakusho/engine/testdata/fighter5-projectile-frozen-red.jsonl": "d67c3c1fad75fb2c555980b498fb8e42d6da829e6e40a71b1347bcf3a45bcef2",
+    "games/yuyuhakusho/engine/testdata/fighter5-projectile-data.json": "3224a4874868b8a609115b903604449824107de8901ba7cc688dfcd7d6a418c5",
+    "docs/research/md-yuyuhakusho/static/fighter5-projectile-manifest.json": "0324a2bd137331cfcea1f03b0886c377afd85eec271f5c62d904540425c0a378",
+    "games/yuyuhakusho/engine/testdata/fighter5-projectile-oracle.json.gz": "bd10303bf506d5cb4320b5860232c6473bcce6d8b21cfc4acd640b6e3e130d8d",
+    "games/yuyuhakusho/engine/testdata/fighter5-projectile-oracle-manifest.json": "2ca17563ae6184023883a7958a7a3d6b1e3544b2235e5d046b2b8ac2cc6d688c",
+    "games/yuyuhakusho/engine/testdata/fighter5-projectile-boundaries.json.gz": "39a5f020f5156075043ecd7047b8a042fa3e8cbd4645b7a62b1744190446d15e",
+    "games/yuyuhakusho/engine/testdata/fighter5-projectile-boundaries-manifest.json": "fd8699c329e54a8f546a1e52817729119b5b34dd1add98659538f8be2e9ff17d",
+    "games/yuyuhakusho/engine/testdata/fighter5-projectile-sequences.json.gz": "cf18555c0e1850420e6bab83512e9664245c08bc561425b258332bd626793fe5",
+    "games/yuyuhakusho/engine/testdata/fighter5-projectile-sequences-manifest.json": "6aaca7970647a6d11a530ec786467e1bd1911778f58bc18d34c8f27db8b261a7"
+  },
+  "fixtures": {
+    "fighter5-projectile-oracle": {
+      "calls": 191,
+      "records": 191,
+      "kind_counts": {
+        "linear": 139,
+        "follower": 38,
+        "steered": 14
+      },
+      "unexplained": 0
+    },
+    "fighter5-projectile-boundaries": {
+      "calls": 6363,
+      "records": 6363,
+      "kind_counts": {
+        "linear": 2763,
+        "linear_stop": 64,
+        "steered": 2833,
+        "steered_stop": 64,
+        "follower": 639
+      },
+      "unexplained": 0
+    },
+    "fighter5-projectile-sequences": {
+      "calls": 3596,
+      "records": 16,
+      "kind_counts": {
+        "clock": 880,
+        "creator47": 212,
+        "record": 880,
+        "linear": 592,
+        "creator48": 116,
+        "creator49": 128,
+        "follower": 130,
+        "creator50": 424,
+        "steered": 234
+      },
+      "unexplained": 0
+    }
+  },
+  "policy": "Frozen test source and CPU expected states must remain unchanged while implementation turns these tests green"
+}

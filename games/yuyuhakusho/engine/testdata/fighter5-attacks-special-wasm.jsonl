@@ -1,0 +1,13 @@
+{"Time":"2026-11-05T11:58:10.63941+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-05T11:58:10.711168+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter5AttacksOriginalFullCalls"}
+{"Time":"2026-11-05T11:58:10.711305+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter5AttacksOriginalFullCalls","Output":"=== RUN   TestFighter5AttacksOriginalFullCalls\n"}
+{"Time":"2026-11-05T11:58:10.713037+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter5AttacksOriginalFullCalls/fighter5-attacks-special-natural"}
+{"Time":"2026-11-05T11:58:10.713082+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter5AttacksOriginalFullCalls/fighter5-attacks-special-natural","Output":"=== RUN   TestFighter5AttacksOriginalFullCalls/fighter5-attacks-special-natural\n"}
+{"Time":"2026-11-05T11:58:12.031982+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter5AttacksOriginalFullCalls/fighter5-attacks-special-natural","Output":"    fighter5_attacks_test.go:303: complete original source5 calls=1462 modes=map[air:65 air-special:66 final-2:1 ground:661 ground-special:669] objects=map[33792:1462] IRQs=96\n"}
+{"Time":"2026-11-05T11:58:12.033962+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter5AttacksOriginalFullCalls/fighter5-attacks-special-natural","Output":"--- PASS: TestFighter5AttacksOriginalFullCalls/fighter5-attacks-special-natural (1.32s)\n"}
+{"Time":"2026-11-05T11:58:12.034361+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighter5AttacksOriginalFullCalls/fighter5-attacks-special-natural","Elapsed":1.32}
+{"Time":"2026-11-05T11:58:12.034593+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter5AttacksOriginalFullCalls","Output":"--- PASS: TestFighter5AttacksOriginalFullCalls (1.32s)\n"}
+{"Time":"2026-11-05T11:58:12.034661+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighter5AttacksOriginalFullCalls","Elapsed":1.32}
+{"Time":"2026-11-05T11:58:12.035224+08:00","Action":"output","Package":"command-line-arguments","Output":"PASS\n"}
+{"Time":"2026-11-05T11:58:12.037742+08:00","Action":"output","Package":"command-line-arguments","Output":"ok  \tcommand-line-arguments\t1.398s\n"}
+{"Time":"2026-11-05T11:58:12.037756+08:00","Action":"pass","Package":"command-line-arguments","Elapsed":1.3980000000000001}

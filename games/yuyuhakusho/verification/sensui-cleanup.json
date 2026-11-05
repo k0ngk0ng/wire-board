@@ -1,0 +1,84 @@
+{
+  "scope": "Only completed source5 menu/discovery/capture duplicates, closed browser profile, replaced CLI binaries and temporary regression copies",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/source5-menu",
+      "files": 3,
+      "bytes": 20282
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source5-discovery",
+      "files": 3,
+      "bytes": 26924
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-reference",
+      "files": 0,
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-world",
+      "files": 3,
+      "bytes": 3543147
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-special-world",
+      "files": 2,
+      "bytes": 7236146
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sensui-browser",
+      "files": 213,
+      "bytes": 9336849
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-session",
+      "files": 1,
+      "bytes": 4301042
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-session.wasm",
+      "files": 1,
+      "bytes": 4871617
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-render",
+      "files": 1,
+      "bytes": 4726834
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-render.wasm",
+      "files": 1,
+      "bytes": 5433323
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/sensui-legacy",
+      "files": 1,
+      "bytes": 4301042
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/sensui-legacy.wasm",
+      "files": 1,
+      "bytes": 4871617
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sensui-legacy-native.json.gz",
+      "files": 1,
+      "bytes": 21423
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sensui-legacy-wasm.json.gz",
+      "files": 1,
+      "bytes": 21419
+    }
+  ],
+  "files": 232,
+  "bytes": 48711665,
+  "retained": [
+    "Canonical fixtures/controls/SHA/raw failures/final logs/screenshots",
+    "Active8799 local player and its assets",
+    "Original ROM/core/tools and shared Go caches",
+    "All running full-check logs and test temporary paths",
+    "Other agents/main-workspace user changes/current worktree"
+  ]
+}

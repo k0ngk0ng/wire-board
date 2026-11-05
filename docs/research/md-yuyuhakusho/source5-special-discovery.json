@@ -1,0 +1,595 @@
+{
+  "scope": "Original source5 legal physical-input discovery and fixed cold replay, independently checked by component CPU producers",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "inputs_sha256": "e6ca2bbb16821f13c2508661b3b1b4ebddcad141f40ed7ef99fac0fea2f54af9",
+  "completed": [
+    {
+      "task": "r1",
+      "frame": 1808
+    },
+    {
+      "task": "r1down",
+      "frame": 1879
+    },
+    {
+      "task": "r3",
+      "frame": 1953
+    },
+    {
+      "task": "r4a",
+      "frame": 2055
+    },
+    {
+      "task": "r4b",
+      "frame": 2117
+    },
+    {
+      "task": "r4c",
+      "frame": 2181
+    },
+    {
+      "task": "air4",
+      "frame": 2247
+    },
+    {
+      "task": "r6a",
+      "frame": 3179
+    },
+    {
+      "task": "r6b",
+      "frame": 3335
+    },
+    {
+      "task": "r6c",
+      "frame": 3387
+    }
+  ],
+  "hits": [
+    {
+      "frame": 1808,
+      "pc": "0x19240",
+      "hp": 223,
+      "energy": 223,
+      "facing": 0
+    },
+    {
+      "frame": 1879,
+      "pc": "0x19284",
+      "hp": 223,
+      "energy": 207,
+      "facing": 0
+    },
+    {
+      "frame": 1953,
+      "pc": "0x19216",
+      "hp": 223,
+      "energy": 191,
+      "facing": 0
+    },
+    {
+      "frame": 2055,
+      "pc": "0x192c8",
+      "hp": 223,
+      "energy": 183,
+      "facing": 0
+    },
+    {
+      "frame": 2056,
+      "pc": "0x1414e",
+      "object": "0x8500"
+    },
+    {
+      "frame": 2117,
+      "pc": "0x192f6",
+      "hp": 223,
+      "energy": 179,
+      "facing": 0
+    },
+    {
+      "frame": 2118,
+      "pc": "0x1414e",
+      "object": "0x8500"
+    },
+    {
+      "frame": 2181,
+      "pc": "0x19324",
+      "hp": 223,
+      "energy": 175,
+      "facing": 0
+    },
+    {
+      "frame": 2182,
+      "pc": "0x1414e",
+      "object": "0x8500"
+    },
+    {
+      "frame": 2247,
+      "pc": "0x19364",
+      "hp": 223,
+      "energy": 171,
+      "facing": 0
+    },
+    {
+      "frame": 2248,
+      "pc": "0x1414e",
+      "object": "0x8500"
+    },
+    {
+      "frame": 3179,
+      "pc": "0x193a4",
+      "hp": 93,
+      "energy": 167,
+      "facing": 0
+    },
+    {
+      "frame": 3335,
+      "pc": "0x193bc",
+      "hp": 70,
+      "energy": 117,
+      "facing": 0
+    },
+    {
+      "frame": 3336,
+      "pc": "0x146ba",
+      "object": "0x8600"
+    },
+    {
+      "frame": 3387,
+      "pc": "0x193d4",
+      "hp": 51,
+      "energy": 67,
+      "facing": 0
+    },
+    {
+      "frame": 3388,
+      "pc": "0x146ba",
+      "object": "0x8600"
+    },
+    {
+      "frame": 3419,
+      "pc": "0x19444",
+      "hp": 51,
+      "energy": 17,
+      "facing": 0
+    },
+    {
+      "frame": 3419,
+      "pc": "0x146ba",
+      "object": "0x8600"
+    },
+    {
+      "frame": 3420,
+      "pc": "0x143e4",
+      "object": "0x8500"
+    }
+  ],
+  "states": [
+    {
+      "frame": 1800,
+      "task_index": 0,
+      "hp": 223,
+      "energy": 223,
+      "action": "0x0",
+      "pose": "0x0",
+      "stages": "0xb",
+      "x": 944,
+      "y": 320,
+      "facing": 0,
+      "child_size": 0
+    },
+    {
+      "frame": 1808,
+      "task_index": 0,
+      "hp": 223,
+      "energy": 207,
+      "action": "0x2e",
+      "pose": "0xa4",
+      "stages": "0x0",
+      "x": 944,
+      "y": 320,
+      "facing": 0,
+      "child_size": 0
+    },
+    {
+      "frame": 1879,
+      "task_index": 1,
+      "hp": 223,
+      "energy": 191,
+      "action": "0x2e",
+      "pose": "0xa6",
+      "stages": "0x0",
+      "x": 944,
+      "y": 320,
+      "facing": 0,
+      "child_size": 0
+    },
+    {
+      "frame": 1900,
+      "task_index": 2,
+      "hp": 223,
+      "energy": 191,
+      "action": "0x2e",
+      "pose": "0xa6",
+      "stages": "0x0",
+      "x": 944,
+      "y": 320,
+      "facing": 0,
+      "child_size": 0
+    },
+    {
+      "frame": 1953,
+      "task_index": 2,
+      "hp": 223,
+      "energy": 183,
+      "action": "0x2d",
+      "pose": "0xa8",
+      "stages": "0x0",
+      "x": 944,
+      "y": 320,
+      "facing": 0,
+      "child_size": 0
+    },
+    {
+      "frame": 2000,
+      "task_index": 3,
+      "hp": 223,
+      "energy": 183,
+      "action": "0x2d",
+      "pose": "0xa8",
+      "stages": "0x0",
+      "x": 944,
+      "y": 320,
+      "facing": 0,
+      "child_size": 0
+    },
+    {
+      "frame": 2055,
+      "task_index": 3,
+      "hp": 223,
+      "energy": 179,
+      "action": "0x2f",
+      "pose": "0xa0",
+      "stages": "0x0",
+      "x": 945,
+      "y": 320,
+      "facing": 0,
+      "child_size": 0
+    },
+    {
+      "frame": 2100,
+      "task_index": 4,
+      "hp": 223,
+      "energy": 179,
+      "action": "0x2f",
+      "pose": "0xa0",
+      "stages": "0x0",
+      "x": 937,
+      "y": 320,
+      "facing": 0,
+      "child_size": 0
+    },
+    {
+      "frame": 2117,
+      "task_index": 4,
+      "hp": 223,
+      "energy": 175,
+      "action": "0x2f",
+      "pose": "0xa1",
+      "stages": "0x0",
+      "x": 939,
+      "y": 320,
+      "facing": 0,
+      "child_size": 0
+    },
+    {
+      "frame": 2181,
+      "task_index": 5,
+      "hp": 223,
+      "energy": 171,
+      "action": "0x2f",
+      "pose": "0xa2",
+      "stages": "0x0",
+      "x": 933,
+      "y": 320,
+      "facing": 0,
+      "child_size": 0
+    },
+    {
+      "frame": 2200,
+      "task_index": 6,
+      "hp": 223,
+      "energy": 171,
+      "action": "0x2f",
+      "pose": "0xa2",
+      "stages": "0x0",
+      "x": 925,
+      "y": 320,
+      "facing": 0,
+      "child_size": 256
+    },
+    {
+      "frame": 2247,
+      "task_index": 6,
+      "hp": 223,
+      "energy": 167,
+      "action": "0x30",
+      "pose": "0xac",
+      "stages": "0x80",
+      "x": 925,
+      "y": 267,
+      "facing": 0,
+      "child_size": 0
+    },
+    {
+      "frame": 2300,
+      "task_index": 7,
+      "hp": 223,
+      "energy": 167,
+      "action": "0x2",
+      "pose": "0x7",
+      "stages": "0x94",
+      "x": 876,
+      "y": 225,
+      "facing": 0,
+      "child_size": 0
+    },
+    {
+      "frame": 2400,
+      "task_index": 7,
+      "hp": 175,
+      "energy": 167,
+      "action": "0x5",
+      "pose": "0x25",
+      "stages": "0xa0",
+      "x": 816,
+      "y": 288,
+      "facing": 0,
+      "child_size": 0
+    },
+    {
+      "frame": 2500,
+      "task_index": 7,
+      "hp": 175,
+      "energy": 167,
+      "action": "0x0",
+      "pose": "0x2a",
+      "stages": "0x0",
+      "x": 760,
+      "y": 320,
+      "facing": 0,
+      "child_size": 0
+    },
+    {
+      "frame": 2600,
+      "task_index": 7,
+      "hp": 155,
+      "energy": 167,
+      "action": "0x0",
+      "pose": "0x0",
+      "stages": "0xb",
+      "x": 760,
+      "y": 320,
+      "facing": 0,
+      "child_size": 0
+    },
+    {
+      "frame": 2700,
+      "task_index": 7,
+      "hp": 137,
+      "energy": 167,
+      "action": "0x5",
+      "pose": "0x2f",
+      "stages": "0x80",
+      "x": 760,
+      "y": 254,
+      "facing": 0,
+      "child_size": 0
+    },
+    {
+      "frame": 2800,
+      "task_index": 7,
+      "hp": 137,
+      "energy": 167,
+      "action": "0x0",
+      "pose": "0x0",
+      "stages": "0xb",
+      "x": 760,
+      "y": 320,
+      "facing": 0,
+      "child_size": 0
+    },
+    {
+      "frame": 2900,
+      "task_index": 7,
+      "hp": 116,
+      "energy": 167,
+      "action": "0x6",
+      "pose": "0x28",
+      "stages": "0x80",
+      "x": 760,
+      "y": 316,
+      "facing": 0,
+      "child_size": 0
+    },
+    {
+      "frame": 3000,
+      "task_index": 7,
+      "hp": 116,
+      "energy": 167,
+      "action": "0xc",
+      "pose": "0x2b",
+      "stages": "0x0",
+      "x": 760,
+      "y": 320,
+      "facing": 0,
+      "child_size": 0
+    },
+    {
+      "frame": 3100,
+      "task_index": 7,
+      "hp": 93,
+      "energy": 167,
+      "action": "0x6",
+      "pose": "0x28",
+      "stages": "0x0",
+      "x": 760,
+      "y": 320,
+      "facing": 0,
+      "child_size": 0
+    },
+    {
+      "frame": 3179,
+      "task_index": 7,
+      "hp": 93,
+      "energy": 117,
+      "action": "0x31",
+      "pose": "0xa3",
+      "stages": "0x0",
+      "x": 760,
+      "y": 320,
+      "facing": 0,
+      "child_size": 0
+    },
+    {
+      "frame": 3200,
+      "task_index": 8,
+      "hp": 93,
+      "energy": 117,
+      "action": "0x3",
+      "pose": "0x40",
+      "stages": "0x0",
+      "x": 760,
+      "y": 320,
+      "facing": 0,
+      "child_size": 0
+    },
+    {
+      "frame": 3300,
+      "task_index": 8,
+      "hp": 70,
+      "energy": 117,
+      "action": "0x0",
+      "pose": "0x29",
+      "stages": "0x0",
+      "x": 760,
+      "y": 320,
+      "facing": 0,
+      "child_size": 0
+    },
+    {
+      "frame": 3335,
+      "task_index": 8,
+      "hp": 70,
+      "energy": 67,
+      "action": "0x31",
+      "pose": "0xa3",
+      "stages": "0x0",
+      "x": 760,
+      "y": 320,
+      "facing": 0,
+      "child_size": 0
+    },
+    {
+      "frame": 3387,
+      "task_index": 9,
+      "hp": 51,
+      "energy": 17,
+      "action": "0x31",
+      "pose": "0xa3",
+      "stages": "0x0",
+      "x": 760,
+      "y": 320,
+      "facing": 0,
+      "child_size": 0
+    },
+    {
+      "frame": 3400,
+      "task_index": 10,
+      "hp": 51,
+      "energy": 17,
+      "action": "0x31",
+      "pose": "0xa3",
+      "stages": "0x0",
+      "x": 760,
+      "y": 320,
+      "facing": 0,
+      "child_size": 0
+    },
+    {
+      "frame": 3500,
+      "task_index": 10,
+      "hp": 51,
+      "energy": 17,
+      "action": "0x0",
+      "pose": "0x0",
+      "stages": "0xb",
+      "x": 760,
+      "y": 320,
+      "facing": 0,
+      "child_size": 0
+    },
+    {
+      "frame": 3600,
+      "task_index": 10,
+      "hp": 51,
+      "energy": 17,
+      "action": "0x0",
+      "pose": "0x0",
+      "stages": "0xb",
+      "x": 760,
+      "y": 320,
+      "facing": 0,
+      "child_size": 0
+    },
+    {
+      "frame": 3700,
+      "task_index": 10,
+      "hp": 25,
+      "energy": 17,
+      "action": "0x6",
+      "pose": "0x28",
+      "stages": "0x80",
+      "x": 774,
+      "y": 312,
+      "facing": 0,
+      "child_size": 0
+    }
+  ],
+  "errors": [],
+  "cold_fixed_replay_verified": true,
+  "adaptive_observation_frames": 3788,
+  "fixed_control_frames": 3602,
+  "fixed_replay_evidence": [
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-attacks-special-natural-manifest.json",
+      "sha256": "e792347df03696cab6d9e8b5a61dbb8ab4315e0b41652a03b1071f472642353f"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-projectile-oracle-manifest.json",
+      "sha256": "2ca17563ae6184023883a7958a7a3d6b1e3544b2235e5d046b2b8ac2cc6d688c"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-action-special-manifest.json",
+      "sha256": "e3918134666105ce79758699aec54ec1490eae24597fdf219451f13c73c298c5"
+    }
+  ],
+  "control_path": "games/yuyuhakusho/engine/testdata/fighter5-attacks-special-reference-manifest.json",
+  "control_sha256": "7f60dea78eeee80ff7dadfc272f55ef4d85acc016e37d091747a719e323e80e3",
+  "original_input_path": "docs/research/md-yuyuhakusho/source5-special-discovery-inputs.json",
+  "independent_go_world_acceptance": false,
+  "limits": [
+    "Adaptive observation is input discovery, not a frozen control. Independent no-observer original3602 control is bound separately.",
+    "Ten selector roots succeeded; only final-C19444 was observed as a complete followup. Other four followups use private/clock evidence.",
+    "Three child callback classes were observed naturally; slave continuations were not observed.",
+    "World Go acceptance is tracked separately by the actual world E2E."
+  ]
+}

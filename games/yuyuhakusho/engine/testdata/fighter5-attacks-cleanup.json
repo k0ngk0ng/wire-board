@@ -1,0 +1,93 @@
+{
+  "scope": "Source5 attacks own ordinary and special collector scratch only",
+  "deleted": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-attacks-capture/boundaries.jsonl.gz",
+      "bytes": 33452413,
+      "sha256": "4e3315484f6ddc75b6a39a40aec53d8243d4f4de94cbefa46d993b81849a39a8"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-attacks-capture/fighter5-attacks-boundaries-manifest.json",
+      "bytes": 4830,
+      "sha256": "0b5212ce31270694e3e6a87560fcba802f2ded2ad3ed2da46affac4f481146ef"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-attacks-capture/fighter5-attacks-boundaries.json.gz",
+      "bytes": 33394446,
+      "sha256": "c9a331f71bde253d8fb4bd9cb1ca7fecc94ef88c22eeb386f0d696b8b884009a"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-attacks-capture/fighter5-attacks-natural-manifest.json",
+      "bytes": 3873,
+      "sha256": "8171da839a380bc579c26d2b0334ec3ed71c8e1da289703bcadd05dd77d9c566"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-attacks-capture/fighter5-attacks-natural.json.gz",
+      "bytes": 927017,
+      "sha256": "9a3ad6a0814bd55900e0a566e6a6ed1ceb0783a7e49a62ea6ab5db2773600e63"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-attacks-capture/fighter5-attacks-oracle-manifest.json",
+      "bytes": 4606,
+      "sha256": "9f92c121456d0c306e379464859853babfa0c81fc638957aeccdf5795b2e3ae3"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-attacks-capture/fighter5-attacks-oracle.json.gz",
+      "bytes": 37967,
+      "sha256": "3b0b7ee483a9dbf60fff3ce14a47622c6ae37b4f3d59d499e827d8269aad70b9"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-attacks-capture/fighter5-attacks-sequences-manifest.json",
+      "bytes": 3902,
+      "sha256": "3b810a4212b458495dd331ced934c7ca39419014c753693503befc622a3a07e3"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-attacks-capture/fighter5-attacks-sequences.json.gz",
+      "bytes": 1033329,
+      "sha256": "4344801c37663a4931fd2dc302c3f642cfe0d340d2ec7996f6a57e00110efec0"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-attacks-capture/natural.jsonl.gz",
+      "bytes": 927770,
+      "sha256": "e1fb3440bf1eb6db2943d428666d113f87cf1de950fca3eee2abf0a39dc48d05"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-attacks-capture/oracle.jsonl.gz",
+      "bytes": 38030,
+      "sha256": "0fb4953d952fb8aaefcaffba006379f43b53587041b2b95f40e94fe9c5a606db"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-attacks-special-capture/boundaries.jsonl.gz",
+      "bytes": 42,
+      "sha256": "1a1820bf4308962b2a19b5b89ec12d3ea4877e63e4d366e5276d73f09366c962"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-attacks-special-capture/fighter5-attacks-special-natural-manifest.json",
+      "bytes": 4298,
+      "sha256": "e792347df03696cab6d9e8b5a61dbb8ab4315e0b41652a03b1071f472642353f"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-attacks-special-capture/fighter5-attacks-special-natural.json.gz",
+      "bytes": 710429,
+      "sha256": "4c1a854ef477fdcd8b38f5ff528cb52b565d75ca2bb42d0da69ea3bdc4cb3d7f"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-attacks-special-capture/natural.jsonl.gz",
+      "bytes": 711035,
+      "sha256": "065b69a0b59e1ac83e49dc3a6dbb7d54f31335c5313c385c9f092cefb0acf898"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-attacks-special-capture/oracle.jsonl.gz",
+      "bytes": 38,
+      "sha256": "5661d0d0838b1e27dac43697364fbaca1ad8fe0248820e0f4165b18b90251057"
+    }
+  ],
+  "deleted_bytes": 71254025,
+  "retained": [
+    "Canonical source5 attack fixtures and manifests",
+    "Frozen tests, first red and own-symbol red",
+    "Native race and Wasm logs/commands",
+    "Shared Go caches, reference core, ROM, peer files"
+  ],
+  "shared_caches_deleted": false
+}

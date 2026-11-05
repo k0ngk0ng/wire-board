@@ -1,0 +1,22 @@
+{
+  "pass": true,
+  "scope": "Full private producer replay reproduces the three frozen natural CPU fixtures byte for byte",
+  "capture_sha256": "cc812b2608f5f9babbe2f6110814751f9bf018fae3d45854793dfab4131a46f4",
+  "checks": [
+    {
+      "name": "fighter5-composition-action-natural.json.gz",
+      "same_bytes": true,
+      "sha256": "684e06425b8808f74c7194434ad3f0fb875ff7a21757823c25e1b0e3aca8f4a8"
+    },
+    {
+      "name": "fighter5-composition-actor-natural.json.gz",
+      "same_bytes": true,
+      "sha256": "ce3ae6c707aa799c4d23022799ac75a196f7d9210d05b1885e231a87ad7af3ef"
+    },
+    {
+      "name": "fighter5-composition-input-natural.json.gz",
+      "same_bytes": true,
+      "sha256": "645013a0d23e654af086a39d1a9f6bbf917475d8bbbc6fd9d73219fddeb6a10d"
+    }
+  ]
+}

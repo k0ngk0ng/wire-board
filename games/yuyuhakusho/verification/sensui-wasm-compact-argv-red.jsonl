@@ -1,0 +1,6 @@
+{"Time":"2026-11-05T12:51:27.795954+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine"}
+{"Time":"2026-11-05T12:51:27.8345+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"Error: total length of command line and environment variables exceeds limit\n"}
+{"Time":"2026-11-05T12:51:27.834561+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"    at globalThis.Go.run (/opt/homebrew/Cellar/go/1.26.2/libexec/lib/wasm/wasm_exec.js:545:11)\n"}
+{"Time":"2026-11-05T12:51:27.834568+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"    at /opt/homebrew/Cellar/go/1.26.2/libexec/lib/wasm/wasm_exec_node.js:36:12\n"}
+{"Time":"2026-11-05T12:51:27.835753+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine\t0.040s\n"}
+{"Time":"2026-11-05T12:51:27.83577+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Elapsed":0.04}

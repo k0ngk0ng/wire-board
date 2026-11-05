@@ -1,0 +1,263 @@
+{
+  "pass": true,
+  "scope": "Only this composition producer temporary raw/duplicate output directories removed after canonical fixture integrity validation",
+  "retained": "All 12 canonical complete CPU fixture gzip files/manifests; natural/private/special capture logs; compile/runtime red logs and binding reports; original control and shared tools unchanged",
+  "removed_bytes": 712226620,
+  "removed_files": [
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-natural/boundaries-action.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-natural/boundaries-actor.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-natural/boundaries-input.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-natural/fighter5-composition-action-natural-manifest.json",
+      "bytes": 2638,
+      "sha256": "5d5f77e52d26122c125aee3a3190a4cd8ca7ee1aa8784e2c6150aaae2fe10e42"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-natural/fighter5-composition-action-natural.json.gz",
+      "bytes": 617444,
+      "sha256": "684e06425b8808f74c7194434ad3f0fb875ff7a21757823c25e1b0e3aca8f4a8"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-natural/fighter5-composition-actor-natural-manifest.json",
+      "bytes": 2637,
+      "sha256": "4fdc46834b364fb0f1f4b8b6bae4729559a451f225ca23e3b792655f2d9c70a2"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-natural/fighter5-composition-actor-natural.json.gz",
+      "bytes": 2002652,
+      "sha256": "ce3ae6c707aa799c4d23022799ac75a196f7d9210d05b1885e231a87ad7af3ef"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-natural/fighter5-composition-input-natural-manifest.json",
+      "bytes": 2505,
+      "sha256": "34e29bf9615d5afdcabc97344ee45f0320b11b7c89183ab236d7e2b3cedbac2e"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-natural/fighter5-composition-input-natural.json.gz",
+      "bytes": 343835,
+      "sha256": "645013a0d23e654af086a39d1a9f6bbf917475d8bbbc6fd9d73219fddeb6a10d"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-natural/fighter5-composition-movement-rules.json",
+      "bytes": 675,
+      "sha256": "134aca3f9f36bbba49a9435b3b7e4a01255dbac681f165078b4c94f6c5d39243"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-natural/natural-action.jsonl",
+      "bytes": 51483206,
+      "sha256": "abc0fdfa943c3b78670eeab730c319590ff629269a19b4a7d5ac115fbd69ca00"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-natural/natural-actor.jsonl",
+      "bytes": 131975863,
+      "sha256": "06dcb432d55c5f3db5a19e3173d6b9568509b4f5261edaf0a42392d539f701f5"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-natural/natural-input.jsonl",
+      "bytes": 48213712,
+      "sha256": "7349a9b324503b6c454af99659637c13eef037a84c4a917cc55b87202dfa1799"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-private/boundaries-action.jsonl",
+      "bytes": 4113742,
+      "sha256": "20f4b1ad9d1fbafae7f27aac44fcd152bb5b28830f08c2b5488d29bd10f7add1"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-private/boundaries-actor.jsonl",
+      "bytes": 2746178,
+      "sha256": "d3b64cf5b8e5cff6d9c49d3e5bc9f0d9c14120a56c504146a274c3ba73e93145"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-private/boundaries-input.jsonl",
+      "bytes": 723429,
+      "sha256": "ded405ce5629200b60caff182ebd99cf2704d258ff78b95a675b677e6f189cd8"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-private/fighter5-composition-action-boundaries-manifest.json",
+      "bytes": 2850,
+      "sha256": "ab1fb3c36cea6238b4e5e72f1578d5a8be8171b1688ed33acf2222f004069dc4"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-private/fighter5-composition-action-boundaries.json.gz",
+      "bytes": 113576,
+      "sha256": "04fe441d7a25b5d7b6f0ac1646e864c66ff85fff3bb3cf1ff99882203b4c64cd"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-private/fighter5-composition-action-natural-manifest.json",
+      "bytes": 2638,
+      "sha256": "5d5f77e52d26122c125aee3a3190a4cd8ca7ee1aa8784e2c6150aaae2fe10e42"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-private/fighter5-composition-action-natural.json.gz",
+      "bytes": 617444,
+      "sha256": "684e06425b8808f74c7194434ad3f0fb875ff7a21757823c25e1b0e3aca8f4a8"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-private/fighter5-composition-action-sequences-manifest.json",
+      "bytes": 2280,
+      "sha256": "d0d24e589614c2eaa8feec85bdacf6c40be0407f409d63fd3fd62b5e06cc8f1e"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-private/fighter5-composition-action-sequences.json.gz",
+      "bytes": 281793,
+      "sha256": "f5d2a1ae397377bbaa8e895881268102bf3b1576dc63b009ff74ce3500471209"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-private/fighter5-composition-actor-boundaries-manifest.json",
+      "bytes": 2626,
+      "sha256": "01c961eeb882ff31f2ffab16ebc01ad0851914014ae84124a9120086c040156c"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-private/fighter5-composition-actor-boundaries.json.gz",
+      "bytes": 65802,
+      "sha256": "c287094e43e7c7fe0f435332d2fcfe02db1fc858a327c493eb8579b260b43a66"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-private/fighter5-composition-actor-natural-manifest.json",
+      "bytes": 2637,
+      "sha256": "4fdc46834b364fb0f1f4b8b6bae4729559a451f225ca23e3b792655f2d9c70a2"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-private/fighter5-composition-actor-natural.json.gz",
+      "bytes": 2002652,
+      "sha256": "ce3ae6c707aa799c4d23022799ac75a196f7d9210d05b1885e231a87ad7af3ef"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-private/fighter5-composition-actor-sequences-manifest.json",
+      "bytes": 2276,
+      "sha256": "fff1c239a2154282538c50cb1f2a277f3cbec3bf0e4f4691996ae841536aefb1"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-private/fighter5-composition-actor-sequences.json.gz",
+      "bytes": 106906,
+      "sha256": "3f365716242b48abf57c16bdb2dd6b827b4d29f44fca5948b9339401a1ea7c28"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-private/fighter5-composition-input-boundaries-manifest.json",
+      "bytes": 2699,
+      "sha256": "419f6961a89a4c15199d82ba687aad4debe4fe4b0654775b9708dbbf7eed02a2"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-private/fighter5-composition-input-boundaries.json.gz",
+      "bytes": 20410,
+      "sha256": "f711bec284598e01c4985eb0375d27a242361db80755bf249d22014f230638c6"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-private/fighter5-composition-input-natural-manifest.json",
+      "bytes": 2505,
+      "sha256": "34e29bf9615d5afdcabc97344ee45f0320b11b7c89183ab236d7e2b3cedbac2e"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-private/fighter5-composition-input-natural.json.gz",
+      "bytes": 343835,
+      "sha256": "645013a0d23e654af086a39d1a9f6bbf917475d8bbbc6fd9d73219fddeb6a10d"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-private/fighter5-composition-input-sequences-manifest.json",
+      "bytes": 2276,
+      "sha256": "ac0409fe8307f1af255972855e21e747ee18514027a0da9be10244214fdb2368"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-private/fighter5-composition-input-sequences.json.gz",
+      "bytes": 20875,
+      "sha256": "502999dc6c5223624e4ca40f72befde5ccde06081354fbfc596ef08990c34073"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-private/fighter5-composition-movement-rules.json",
+      "bytes": 675,
+      "sha256": "134aca3f9f36bbba49a9435b3b7e4a01255dbac681f165078b4c94f6c5d39243"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-private/natural-action.jsonl",
+      "bytes": 51483206,
+      "sha256": "abc0fdfa943c3b78670eeab730c319590ff629269a19b4a7d5ac115fbd69ca00"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-private/natural-actor.jsonl",
+      "bytes": 131975863,
+      "sha256": "06dcb432d55c5f3db5a19e3173d6b9568509b4f5261edaf0a42392d539f701f5"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-private/natural-input.jsonl",
+      "bytes": 48213712,
+      "sha256": "7349a9b324503b6c454af99659637c13eef037a84c4a917cc55b87202dfa1799"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-special/boundaries-action.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-special/boundaries-actor.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-special/boundaries-input.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-special/fighter5-composition-action-special-manifest.json",
+      "bytes": 2706,
+      "sha256": "e3918134666105ce79758699aec54ec1490eae24597fdf219451f13c73c298c5"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-special/fighter5-composition-action-special.json.gz",
+      "bytes": 634158,
+      "sha256": "b637d09a45189e65482267ea022f0bde05c3c8979ec64c49bc22d62ee69cc486"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-special/fighter5-composition-actor-special-manifest.json",
+      "bytes": 2705,
+      "sha256": "b76565621fbff309a8b198801d15740030182b99e6ad7dbe1cd0067fddf60fbf"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-special/fighter5-composition-actor-special.json.gz",
+      "bytes": 2035537,
+      "sha256": "0447cca552a76e7eeb7f33dd818ad2638e8a23265980b734b8e4b4f5f62d0914"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-special/fighter5-composition-input-special-manifest.json",
+      "bytes": 2526,
+      "sha256": "e2980d2c9e98ba8e0da159c714c43b719686ab182f11544814dfa9e07214edac"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-special/fighter5-composition-input-special.json.gz",
+      "bytes": 358972,
+      "sha256": "44854ef5e8f4520048b0ff43a3f8b3b80a6e2138d6b060b2dee524bb6f0cbfc5"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-special/fighter5-composition-movement-rules.json",
+      "bytes": 675,
+      "sha256": "134aca3f9f36bbba49a9435b3b7e4a01255dbac681f165078b4c94f6c5d39243"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-special/special-action.jsonl",
+      "bytes": 51493222,
+      "sha256": "478bae0eeecff739d2118a652d16e4769da359aafae3bd902a0a6f080c94b0dc"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-special/special-actor.jsonl",
+      "bytes": 131985183,
+      "sha256": "75531111d23e385ba84bf7937ed1854f19aa902f38232d97e5de1b7d00ebbb87"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-composition-capture-special/special-input.jsonl",
+      "bytes": 48212884,
+      "sha256": "502de3e421a80ff857825dab8e715b5bb9c2866dddce6faa668fb4464a57d7fc"
+    }
+  ]
+}

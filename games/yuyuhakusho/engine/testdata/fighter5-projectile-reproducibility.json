@@ -1,0 +1,49 @@
+{
+  "pass": true,
+  "scope": "Independent final collector cold replays of both frozen original3602 controls; original core not recaptured; canonical fixtures unchanged",
+  "capture_sha256": "78554b8a9292a64d9a82902ed406da6b3891524bac025f48a0a96f88784f8716",
+  "files": [
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-projectile-oracle.json.gz",
+      "sha256": "bd10303bf506d5cb4320b5860232c6473bcce6d8b21cfc4acd640b6e3e130d8d",
+      "repeat_sha256": "bd10303bf506d5cb4320b5860232c6473bcce6d8b21cfc4acd640b6e3e130d8d",
+      "byte_identical": true
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-projectile-oracle-manifest.json",
+      "sha256": "2ca17563ae6184023883a7958a7a3d6b1e3544b2235e5d046b2b8ac2cc6d688c",
+      "repeat_sha256": "2ca17563ae6184023883a7958a7a3d6b1e3544b2235e5d046b2b8ac2cc6d688c",
+      "byte_identical": true
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-projectile-boundaries.json.gz",
+      "sha256": "39a5f020f5156075043ecd7047b8a042fa3e8cbd4645b7a62b1744190446d15e",
+      "repeat_sha256": "39a5f020f5156075043ecd7047b8a042fa3e8cbd4645b7a62b1744190446d15e",
+      "byte_identical": true
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-projectile-boundaries-manifest.json",
+      "sha256": "fd8699c329e54a8f546a1e52817729119b5b34dd1add98659538f8be2e9ff17d",
+      "repeat_sha256": "fd8699c329e54a8f546a1e52817729119b5b34dd1add98659538f8be2e9ff17d",
+      "byte_identical": true
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-projectile-sequences.json.gz",
+      "sha256": "cf18555c0e1850420e6bab83512e9664245c08bc561425b258332bd626793fe5",
+      "repeat_sha256": "cf18555c0e1850420e6bab83512e9664245c08bc561425b258332bd626793fe5",
+      "byte_identical": true
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-projectile-sequences-manifest.json",
+      "sha256": "6aaca7970647a6d11a530ec786467e1bd1911778f58bc18d34c8f27db8b261a7",
+      "repeat_sha256": "6aaca7970647a6d11a530ec786467e1bd1911778f58bc18d34c8f27db8b261a7",
+      "byte_identical": true
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-projectile-data.json",
+      "sha256": "3224a4874868b8a609115b903604449824107de8901ba7cc688dfcd7d6a418c5",
+      "repeat_sha256": "3224a4874868b8a609115b903604449824107de8901ba7cc688dfcd7d6a418c5",
+      "byte_identical": true
+    }
+  ]
+}

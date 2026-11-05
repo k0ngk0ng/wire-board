@@ -1,0 +1,102 @@
+{
+  "pass": true,
+  "scope": "All 12 complete ordinary/special/private/sequence CPU fixtures verified against raw and gzip SHA-256",
+  "checks": [
+    {
+      "fixture": "fighter5-composition-action-boundaries.json.gz",
+      "records": 165,
+      "calls": 165,
+      "gzip_sha256": "04fe441d7a25b5d7b6f0ac1646e864c66ff85fff3bb3cf1ff99882203b4c64cd",
+      "fixture_sha256": "c6c52da7353a5c8a7865323a395d70c9e943a6b5bd9742b5566c6791e99daade",
+      "pass": true
+    },
+    {
+      "fixture": "fighter5-composition-action-natural.json.gz",
+      "records": 2067,
+      "calls": 2067,
+      "gzip_sha256": "684e06425b8808f74c7194434ad3f0fb875ff7a21757823c25e1b0e3aca8f4a8",
+      "fixture_sha256": "ee4959235c161811a9d13c0b894f9a7ba37393065459d316964d8a7c4328ca1e",
+      "pass": true
+    },
+    {
+      "fixture": "fighter5-composition-action-sequences.json.gz",
+      "records": 16,
+      "calls": 923,
+      "gzip_sha256": "f5d2a1ae397377bbaa8e895881268102bf3b1576dc63b009ff74ce3500471209",
+      "fixture_sha256": "90ad1d588ea6f821c71110c73053b30527f41e5f46eb0a068d9b09b5d2cd35b3",
+      "pass": true
+    },
+    {
+      "fixture": "fighter5-composition-action-special.json.gz",
+      "records": 2067,
+      "calls": 2067,
+      "gzip_sha256": "b637d09a45189e65482267ea022f0bde05c3c8979ec64c49bc22d62ee69cc486",
+      "fixture_sha256": "776fd83ca4d2a5d970bf2222b712276005659d5c1821c77b1494578f42085417",
+      "pass": true
+    },
+    {
+      "fixture": "fighter5-composition-actor-boundaries.json.gz",
+      "records": 43,
+      "calls": 43,
+      "gzip_sha256": "c287094e43e7c7fe0f435332d2fcfe02db1fc858a327c493eb8579b260b43a66",
+      "fixture_sha256": "a2218a4e82e66cad0140c51460c972eb1999543c1f21bdf00d0b1ecfdd642683",
+      "pass": true
+    },
+    {
+      "fixture": "fighter5-composition-actor-natural.json.gz",
+      "records": 2067,
+      "calls": 2067,
+      "gzip_sha256": "ce3ae6c707aa799c4d23022799ac75a196f7d9210d05b1885e231a87ad7af3ef",
+      "fixture_sha256": "14d0653d81d40ee687d586a125cf72420d96f89b2147919a890aeaf11916abd6",
+      "pass": true
+    },
+    {
+      "fixture": "fighter5-composition-actor-sequences.json.gz",
+      "records": 4,
+      "calls": 96,
+      "gzip_sha256": "3f365716242b48abf57c16bdb2dd6b827b4d29f44fca5948b9339401a1ea7c28",
+      "fixture_sha256": "a3dcd6bad279d0faae2ae0d0bcb9acadcefa9901ef33ebc773a3a616d0c745d1",
+      "pass": true
+    },
+    {
+      "fixture": "fighter5-composition-actor-special.json.gz",
+      "records": 2067,
+      "calls": 2067,
+      "gzip_sha256": "0447cca552a76e7eeb7f33dd818ad2638e8a23265980b734b8e4b4f5f62d0914",
+      "fixture_sha256": "73f71d30bdbbdb9b7a408099d8df26402fede0f665985462fb943287865a039e",
+      "pass": true
+    },
+    {
+      "fixture": "fighter5-composition-input-boundaries.json.gz",
+      "records": 31,
+      "calls": 31,
+      "gzip_sha256": "f711bec284598e01c4985eb0375d27a242361db80755bf249d22014f230638c6",
+      "fixture_sha256": "b418d877d22418a096aa6227f5d20bf0945715c5607b7d77048eba68f41916ac",
+      "pass": true
+    },
+    {
+      "fixture": "fighter5-composition-input-natural.json.gz",
+      "records": 2067,
+      "calls": 2067,
+      "gzip_sha256": "645013a0d23e654af086a39d1a9f6bbf917475d8bbbc6fd9d73219fddeb6a10d",
+      "fixture_sha256": "b59734fb24a8a3ecfc30ee725b5a6d7ecc26ace53b6d872a2ff0b677ef609fce",
+      "pass": true
+    },
+    {
+      "fixture": "fighter5-composition-input-sequences.json.gz",
+      "records": 3,
+      "calls": 48,
+      "gzip_sha256": "502999dc6c5223624e4ca40f72befde5ccde06081354fbfc596ef08990c34073",
+      "fixture_sha256": "43d7927fd96674fe0115dfc980c0449c7e0c9da7f9c7ab19e3101b431aa7e21f",
+      "pass": true
+    },
+    {
+      "fixture": "fighter5-composition-input-special.json.gz",
+      "records": 2067,
+      "calls": 2067,
+      "gzip_sha256": "44854ef5e8f4520048b0ff43a3f8b3b80a6e2138d6b060b2dee524bb6f0cbfc5",
+      "fixture_sha256": "ed107e9f8d59472066a6cf1fa14ec4b5a259eecf8c52765e32ff3e003afdf02a",
+      "pass": true
+    }
+  ]
+}

@@ -42,6 +42,10 @@ func decodeChuAction(t *testing.T, raw chuActionSnapshot, id uint16) ChuActionSt
 	for i := range s.ChildExtras {
 		b := childBytes[i*256:]
 		s.ChildExtras[i] = Fighter4ChildExtra{Direction: int32(binary.BigEndian.Uint32(b[0x48:])), Held: b[0x71], Pressed: b[0x72], ContactFlags: b[0x89], DragonBank: binary.BigEndian.Uint16(b[0xfe:])}
+		if a[0x58] == 5 {
+			s.ChildExtras[i].DragonBank = 0
+			s.Fighter5ChildExtras[i] = Fighter5ChildExtra{Gravity: int32(binary.BigEndian.Uint32(b[0x4c:])), Owner: binary.BigEndian.Uint16(b[0xfe:])}
+		}
 	}
 	for i := range s.EffectExtras {
 		b := pool[i*128:]
@@ -68,6 +72,10 @@ func encodeChuAction(t *testing.T, s ChuActionState, previous chuActionSnapshot)
 		binary.BigEndian.PutUint32(b[0x48:], uint32(extra.Direction))
 		b[0x71], b[0x72], b[0x89] = extra.Held, extra.Pressed, extra.ContactFlags
 		binary.BigEndian.PutUint16(b[0xfe:], extra.DragonBank)
+		if a[0x58] == 5 {
+			binary.BigEndian.PutUint32(b[0x4c:], uint32(s.Fighter5ChildExtras[i].Gravity))
+			binary.BigEndian.PutUint16(b[0xfe:], s.Fighter5ChildExtras[i].Owner)
+		}
 	}
 	for i, e := range s.EffectExtras {
 		b := pool[i*128:]

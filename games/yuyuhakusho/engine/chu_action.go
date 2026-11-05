@@ -26,6 +26,7 @@ type ChuActionState struct {
 	DragonBankCursor       uint16
 	Children               [3]ChuSpecialChild
 	ChildExtras            [3]Fighter4ChildExtra
+	Fighter5ChildExtras    [3]Fighter5ChildExtra
 	EffectExtras           [16]ReactionEffectExtra
 	GlobalF568, GlobalF56A uint16
 	Left, Right            int16
@@ -40,10 +41,10 @@ func StepChuAction(state ChuActionState, parameters ChuActionParameters, command
 }
 
 // StepFighterAction keeps one copy of the complete action driver for the
-// restored sources0/1/2/3/4/6/8/9/10. AlternateVelocity remains the sole +48 long owner.
+// restored sources0/1/2/3/4/5/6/8/9/10. AlternateVelocity remains the sole +48 long owner.
 func StepFighterAction(state ChuActionState, characterID uint8, parameters ChuActionParameters, commands CommandLibrary, animations AnimationLibrary) (ChuActionState, error) {
 	original := state
-	if characterID != 0 && characterID != 1 && characterID != 2 && characterID != 3 && characterID != 4 && characterID != 6 && characterID != 8 && characterID != 9 && characterID != 10 {
+	if characterID != 0 && characterID != 1 && characterID != 2 && characterID != 3 && characterID != 4 && characterID != 5 && characterID != 6 && characterID != 8 && characterID != 9 && characterID != 10 {
 		return original, errors.New("unsupported complete fighter action source")
 	}
 	var err error
@@ -160,6 +161,13 @@ func StepFighterAction(state ChuActionState, characterID uint8, parameters ChuAc
 			if actionErr := stepFighter4ActionMotion(&state, parameters.JumpParameters); actionErr != nil {
 				return original, actionErr
 			}
+		case 0x2e, 0x2f, 0x30, 0x31, 0x32:
+			if characterID != 5 {
+				return original, errors.New("unsupported fighter action source/slot")
+			}
+			if actionErr := stepFighter5ActionMotion(&state, parameters.JumpParameters); actionErr != nil {
+				return original, actionErr
+			}
 		case 0x1e, 0x1f, 0x20:
 			if characterID != 2 {
 				return original, errors.New("unsupported fighter action source/slot")
@@ -223,6 +231,12 @@ func StepFighterAction(state ChuActionState, characterID uint8, parameters ChuAc
 			state.setActionEnergy(special.Energy)
 			state.Power, state.AlternateVelocity, state.ContactFlags = special.Power, special.AlternateVelocity, special.ContactFlags
 		case 0x11, 0x2d, 0x47, 0x48, 0x49:
+			if characterID == 5 && (state.Body.ActionKind == 0x11 || state.Body.ActionKind == 0x2d) {
+				if actionErr := stepFighter5ActionMotion(&state, parameters.JumpParameters); actionErr != nil {
+					return original, actionErr
+				}
+				break
+			}
 			if characterID == 6 && state.Body.ActionKind == 0x11 {
 				if actionErr := stepFighter6ActionMotion(&state, parameters.JumpParameters); actionErr != nil {
 					return original, actionErr
@@ -302,6 +316,16 @@ func stepFighter4ActionMotion(state *ChuActionState, parameters JumpParameters) 
 	}
 	state.acceptSpecialMotion(next.ChuSpecialMotionState)
 	state.MovementSource, state.DragonBankCursor, state.ChildExtras, state.EffectExtras = next.MovementSource, next.DragonBankCursor, next.ChildExtras, next.EffectExtras
+	return nil
+}
+
+func stepFighter5ActionMotion(state *ChuActionState, parameters JumpParameters) error {
+	next, err := StepFighter5Motion(Fighter5MotionState{ChuSpecialMotionState: state.specialMotionView(), ChildExtras: state.Fighter5ChildExtras}, parameters)
+	if err != nil {
+		return err
+	}
+	state.acceptSpecialMotion(next.ChuSpecialMotionState)
+	state.Fighter5ChildExtras = next.ChildExtras
 	return nil
 }
 

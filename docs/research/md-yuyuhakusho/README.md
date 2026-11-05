@@ -205,3 +205,5 @@ PATH="/opt/homebrew/Cellar/openjdk/26.0.1/libexec/openjdk.jdk/Contents/Home/bin:
 阵已进一步开放，八角色规则／呈现与三条原世界见[八角色验收](../../../games/yuyuhakusho/verification/jin-session.json)。取得真正电脑阵的 1,110 次原 AI 返回，并独立以 Go 单初态完整重建至练习战清场；原容器 `a01e/32` 的等待体与旧等待体逐 byte 相同，未把原 header 改写为其他模式。人类 DD 请求覆盖关系及未自然成功的 `34` 仍按原版边界声明。
 
 飞影已进一步开放。当前九角色验收见[完整摘要](../../../games/yuyuhakusho/verification/hiei-session.json)：普通对战至清场、九种特殊选择根、双真人吞龙强化三条原版流共 7,834 轮，与独立 Go 逐轮／单初态运行一致。强化耗尽、父体参数恢复及七段独立身体绘制均已验证；schema3 增加九条公共 AN、原 signed-word 曲线和强化参数，schema1/2 仍可读取。默认场地之外的七个场地、仙水和树、平台房间及网络／音频播放仍未完成。
+
+仙水已进一步开放，当前为十个可玩人物／默认场地，详见[十角色验收](../../../games/yuyuhakusho/verification/sensui-session.json)。新增普通与特殊原世界 4,917 轮、65,195 回调，普通清场、反射父体修改、三个子对象和特殊有序绘制均与独立规则对照。23 组规则对局和 13 组完整呈现跨原生／Wasm 一致；旧九角色 234 份对局报告保持世界、事件与生命周期。剩余人物为树，七个其他场地、音频播放与平台房间／网络仍未完成。

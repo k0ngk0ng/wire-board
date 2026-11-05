@@ -1,0 +1,34 @@
+{
+  "scope": "Commands actually used for the three original-CPU captures and complete six-wrapper final verification",
+  "capture": [
+    {
+      "kind": "ordinary natural only",
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 scripts/yuyuhakusho/capture_fighter5_composition.py --out games/yuyuhakusho/engine/testdata/fighter5-composition-capture-natural --natural-only",
+      "exit_code": 0
+    },
+    {
+      "kind": "ordinary/private/independent streams",
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 scripts/yuyuhakusho/capture_fighter5_composition.py --out games/yuyuhakusho/engine/testdata/fighter5-composition-capture-private",
+      "exit_code": 0
+    },
+    {
+      "kind": "special natural only",
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 scripts/yuyuhakusho/capture_fighter5_composition.py --out games/yuyuhakusho/engine/testdata/fighter5-composition-capture-special --inputs docs/research/md-yuyuhakusho/source5-special-discovery-inputs.json --baseline games/yuyuhakusho/engine/testdata/fighter5-attacks-special-reference-frames.json --baseline-manifest games/yuyuhakusho/engine/testdata/fighter5-attacks-special-reference-manifest.json --natural-label special --natural-only",
+      "exit_code": 0
+    }
+  ],
+  "verification": [
+    {
+      "kind": "native-race",
+      "command": "GOCACHE=\"$PWD/.local/go-cache\" GOMODCACHE=\"$PWD/.local/go-mod\" GOTMPDIR=\"$PWD/.local/md-yuyuhakusho/tmp\" TMPDIR=\"$PWD/.local/md-yuyuhakusho/tmp\" go test -race -count=1 -json -run '^TestFighter5Composition' ./games/yuyuhakusho/engine",
+      "log": "games/yuyuhakusho/engine/testdata/fighter5-composition-native.jsonl",
+      "exit_code": 0
+    },
+    {
+      "kind": "node-wasm",
+      "command": "GOCACHE=\"$PWD/.local/go-cache\" GOMODCACHE=\"$PWD/.local/go-mod\" GOTMPDIR=\"$PWD/.local/md-yuyuhakusho/tmp\" TMPDIR=\"$PWD/.local/md-yuyuhakusho/tmp\" GOOS=js GOARCH=wasm go test -count=1 -json -exec \"$(go env GOROOT)/lib/wasm/go_js_wasm_exec\" -run '^TestFighter5Composition' ./games/yuyuhakusho/engine",
+      "log": "games/yuyuhakusho/engine/testdata/fighter5-composition-wasm.jsonl",
+      "exit_code": 0
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{"Time":"2026-11-05T12:17:53.11466+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine"}
+{"Time":"2026-11-05T12:17:53.67767+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter5WorldChildCallbacks"}
+{"Time":"2026-11-05T12:17:53.677707+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter5WorldChildCallbacks","Output":"=== RUN   TestFighter5WorldChildCallbacks\n"}
+{"Time":"2026-11-05T12:17:53.682252+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter5WorldChildCallbacks","Output":"    fighter5_child_world_test.go:34: source5 child world dispatch clock-linear-0 object callback is not recovered\n"}
+{"Time":"2026-11-05T12:17:53.682323+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter5WorldChildCallbacks","Output":"--- FAIL: TestFighter5WorldChildCallbacks (0.00s)\n"}
+{"Time":"2026-11-05T12:17:53.682336+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter5WorldChildCallbacks","Elapsed":0}
+{"Time":"2026-11-05T12:17:53.682351+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"FAIL\n"}
+{"Time":"2026-11-05T12:17:53.682808+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine\t0.568s\n"}
+{"Time":"2026-11-05T12:17:53.68287+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Elapsed":0.568}

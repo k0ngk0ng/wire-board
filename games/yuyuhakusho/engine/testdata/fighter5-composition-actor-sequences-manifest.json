@@ -1,0 +1,51 @@
+{
+  "pass": true,
+  "scope": "actor source5 complete original API returns; actor stops before sprites",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "cc812b2608f5f9babbe2f6110814751f9bf018fae3d45854793dfab4131a46f4",
+  "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+  "records": 4,
+  "calls": 96,
+  "frames_match_original_core": true,
+  "external_queue_calls": 0,
+  "fixture_sha256": "a3dcd6bad279d0faae2ae0d0bcb9acadcefa9901ef33ebc773a3a616d0c745d1",
+  "gzip_sha256": "3f365716242b48abf57c16bdb2dd6b827b4d29f44fca5948b9339401a1ea7c28",
+  "binding": {
+    "source_tag": 5,
+    "source_object": "0x8400",
+    "checkpoint_video_label": 2400,
+    "animation_set": 829146,
+    "shape_set": 832394,
+    "parameter_pointer": 75188,
+    "source_actor_sha256": "f8e504643ddac35fc263dee641b4145f1f32b15f34878a89f4ae88aed0aea327"
+  },
+  "library_frames": 80,
+  "baseline_path": "games/yuyuhakusho/engine/testdata/fighter5-attacks-reference-frames.json",
+  "baseline_sha256": "f43682106819d7847243a459c9bac6b60ddc63d5f5f9bb9a58c633a8154d7c2b",
+  "baseline_manifest_sha256": "3d6c5106dd33076f242c8d3468a0c840e9547e313060e6dcae665c511b280a4c",
+  "input_path": "docs/research/md-yuyuhakusho/source5-next-inputs.json",
+  "input_sha256": "6dd2eea8f585b62ad886da67d1123c61e06bedb97da4fdd9fd768b8441969601",
+  "baseline_raw_sha256": "f43682106819d7847243a459c9bac6b60ddc63d5f5f9bb9a58c633a8154d7c2b",
+  "accepted_entry_video_limit": 3600,
+  "canonical_source_registers": true,
+  "private_unknown_ram_writes": 0,
+  "incomplete_calls": 0,
+  "errors": [],
+  "statistics": {
+    "calls": 96
+  },
+  "limits": [
+    "Natural source5 actor is human; source5 AI is private evidence only.",
+    "Actor excludes sprite, child, collision-manager and world callbacks.",
+    "Independent audio consumer exclusions require observed PC/address markers."
+  ]
+}

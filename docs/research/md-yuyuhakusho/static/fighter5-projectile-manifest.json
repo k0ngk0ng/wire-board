@@ -1,0 +1,39 @@
+{
+  "route": "direct-ghidra-headless",
+  "limitation": "REA raw-binary supports no big-endian68000; static disassembly is not runtime observation",
+  "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+  "language": "68000:BE:32:default",
+  "ghidra": "12.1.4_PUBLIC",
+  "analyze_headless_sha256": "302880328a0024ee24cfe0326d4d9a61c2237116d95f2e0e0df090f747f95e30",
+  "jdk_release_sha256": "e0c4ec3d588a773b6e9fe9c80f6bcd3aae4f128e433e118105da436ee91487be",
+  "files": {
+    "docs/research/md-yuyuhakusho/static/fighter5-projectile.txt": "c591ef22c913f0149f212922fd904bb17dd94394a8f6d1f0f5b43b6d4aeb2991",
+    "docs/research/md-yuyuhakusho/static/fighter5-projectile-follow.txt": "0cb9370ea8a7dc146bec2ab63a6bbe4672ba52e2d0e45d25513f2efc3f486c16",
+    "docs/research/md-yuyuhakusho/static/fighter5-projectile-slave.txt": "8512239051fc5f3e861242f4adf66814ed7082a9060f2221c0c80853d5e7cd4b",
+    "scripts/yuyuhakusho/static/MdControlProbe.java": "44903c14bfe5a1ffc354e4fab1eb5893303081bbe55aa9f620808daf4ebe18a8"
+  },
+  "ranges": [
+    "1414e..147ad",
+    "20250..202cf",
+    "1fdbe..1fdf9",
+    "1eb40..1eb75",
+    "142b4..145bf"
+  ],
+  "bounded_direct_long_pointer_search": {
+    "0x1414e": [
+      "0x1b738",
+      "0x1b836"
+    ],
+    "0x142b4": [],
+    "0x143e4": [
+      "0x1b9f0"
+    ],
+    "0x1458a": [],
+    "0x146ba": [
+      "0x1b918"
+    ]
+  },
+  "project_deleted": true,
+  "own_tmp_directory": ".local/md-yuyuhakusho/fighter5-projectile-static",
+  "bounded_direct_long_pointer_search_limitation": "Only literal32bit big-endian constants across this exact ROM; zero matches does not establish unreachable code or absence of relative/indirect dispatch"
+}

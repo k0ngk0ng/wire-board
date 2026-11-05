@@ -1,0 +1,14 @@
+{"Time":"2026-11-05T12:17:53.981826+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine"}
+{"Time":"2026-11-05T12:17:54.406539+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestChuWorldRuleBundle"}
+{"Time":"2026-11-05T12:17:54.406679+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestChuWorldRuleBundle","Output":"=== RUN   TestChuWorldRuleBundle\n"}
+{"Time":"2026-11-05T12:17:54.487959+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestChuWorldRuleBundle","Output":"    chu_world_test.go:734: semantic runtime bundle differs from independently decoded source libraries \u003cnil\u003e\n"}
+{"Time":"2026-11-05T12:17:54.488001+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestChuWorldRuleBundle","Output":"--- FAIL: TestChuWorldRuleBundle (0.08s)\n"}
+{"Time":"2026-11-05T12:17:54.488012+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestChuWorldRuleBundle","Elapsed":0.08}
+{"Time":"2026-11-05T12:17:54.48802+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter5WorldRuleFrames"}
+{"Time":"2026-11-05T12:17:54.488023+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter5WorldRuleFrames","Output":"=== RUN   TestFighter5WorldRuleFrames\n"}
+{"Time":"2026-11-05T12:17:54.50625+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter5WorldRuleFrames","Output":"    fighter5_rules_test.go:25: source5 typed frame omitted or altered {889546 891450 23 0}\n"}
+{"Time":"2026-11-05T12:17:54.506259+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter5WorldRuleFrames","Output":"--- FAIL: TestFighter5WorldRuleFrames (0.02s)\n"}
+{"Time":"2026-11-05T12:17:54.506268+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter5WorldRuleFrames","Elapsed":0.02}
+{"Time":"2026-11-05T12:17:54.506276+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"FAIL\n"}
+{"Time":"2026-11-05T12:17:54.506766+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine\t0.525s\n"}
+{"Time":"2026-11-05T12:17:54.506773+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Elapsed":0.525}

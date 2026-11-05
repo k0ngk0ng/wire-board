@@ -1,0 +1,48 @@
+{
+  "scope": "Actual whole3592 ready-match passes; no Go execution or world completion claim",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "d27cadf136c3e3334b31158306522fa323432b579f988f2c35e6108645172511",
+  "inputs_sha256": "6dd2eea8f585b62ad886da67d1123c61e06bedb97da4fdd9fd768b8441969601",
+  "inputs_path": "docs/research/md-yuyuhakusho/source5-next-inputs.json",
+  "baseline_sha256": "a2eac07dec547d39f8fc814217ee4a39d1d7a90adac335b8a61d400175211074",
+  "frames_checked": 5500,
+  "records": 3116,
+  "first_frame": 1800,
+  "last_frame": 4916,
+  "object_calls": 41188,
+  "queue_interleaved_passes": 98,
+  "closed_after_clear": true,
+  "fixture_sha256": "ee46935c2a2f6f86bb53a10874cd35ebc6287cad4eb9ddf2f6e2219532f5da37",
+  "gzip_sha256": "8ccdd3910b5d99231addf38fd4bd0b3143c7a39d85b766f14ebae3f9176b51fd",
+  "frames_match_original_core": true,
+  "incomplete_calls": 0,
+  "errors": [],
+  "allow_open_end": true,
+  "pass": true
+}
+0x9ad0 3116 ['0x8000'] [20]
+0xf2a4 3116 ['0x8040'] [10, 12, 14, 16, 18, 20, 22, 24, 26]
+0xfe78 3115 ['0x8200'] [2]
+0xfeb2 3115 ['0x8140'] [2]
+0x10088 3115 ['0x8240'] [2]
+0x101f2 15 ['0x8300'] [10, 12]
+0x10330 26 ['0x8340', '0x8380'] [6, 8]
+0x104ac 464 ['0x8300'] [0, 2, 4, 6]
+0x10522 464 ['0x8340'] [0, 2, 4, 6, 8, 10]
+0x12668 6230 ['0x8400', '0x9000'] [2]
+0x14882 3115 ['0x9c00'] [2]
+0x149ac 1979 ['0x9400', '0x9480', '0x9500', '0x9580', '0x9600', '0x9680', '0x9700', '0x9780', '0x9800', '0x9880', '0x9900', '0x9980', '0x9a00', '0x9a80', '0x9b00', '0x9b80'] [0, 2]
+0x14ec6 858 ['0x9400', '0x9480', '0x9a80', '0x9b00', '0x9b80'] [0, 2]
+0x150ca 3115 ['0x9c80'] [2]
+0x1525e 3115 ['0x9d00'] [2]
+0x1edac 3115 ['0x8100'] [0]
+0x20918 3115 ['0x8180'] [2]

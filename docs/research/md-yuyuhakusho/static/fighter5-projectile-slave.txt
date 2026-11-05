@@ -1,0 +1,33 @@
+route=direct-ghidra-headless; REA raw 68000 unsupported
+language=68000:BE:32:default
+source=MD Yu Yu Hakusho Japan; static reachable instructions only
+
+seeds=142b4,1458a scope=0x142b4..0x145bf
+000142b4 subi.b #0x1,(0x69,A5)
+000142ba cmpi.b #0x1,(0x6a,A5)
+000142c0 bls.b 0x000142c8
+000142c2 subi.b #0x1,(0x6a,A5)
+000142c8 moveq 0x0,D0
+000142ca move.b (0x6a,A5),D0b
+000142ce btst.b #0x0,(0x69,A5)
+000142d4 bne.b 0x000142e0
+000142d6 add.w D0w,(0x54,A5)
+000142da jmp 0x000142e4.l
+000142e0 sub.w D0w,(0x54,A5)
+000142e4 jmp 0x000142a0.l
+00014576 jsr 0x0001eb40.l
+0001457c jsr 0x000156f0.l
+00014582 jmp 0x00001580.l
+0001458a subi.b #0x1,(0x69,A5)
+00014590 cmpi.b #0x1,(0x6a,A5)
+00014596 bls.b 0x0001459e
+00014598 subi.b #0x1,(0x6a,A5)
+0001459e moveq 0x0,D0
+000145a0 move.b (0x6a,A5),D0b
+000145a4 btst.b #0x0,(0x69,A5)
+000145aa bne.b 0x000145b6
+000145ac add.w D0w,(0x54,A5)
+000145b0 jmp 0x000145ba.l
+000145b6 sub.w D0w,(0x54,A5)
+000145ba jmp 0x00014576.l
+printed_instructions=27

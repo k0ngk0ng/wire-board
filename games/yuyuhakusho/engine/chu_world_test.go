@@ -223,6 +223,11 @@ func chuWorldLibrariesTest(t *testing.T) ChuWorldLibrary {
 		library.Animations[frame.Key] = frame.Data
 	}
 	library.Fighter4Dragon = Fighter4DragonLibrary{Animations: library.Animations, Curve: fighter4.Curve}
+	var fighter5 struct{ Frames []chuWorldAnimationRule }
+	read("testdata/fighter5-projectile-data.json", &fighter5)
+	for _, frame := range fighter5.Frames {
+		library.Animations[frame.Key] = frame.Data
+	}
 	library.Fighter0Projectiles = Fighter0ProjectileLibrary{Animations: library.Animations, Sequences: make(map[uint32][]ChuAttachmentFrame)}
 	for _, sequence := range fighter0.Sequences {
 		library.Fighter0Projectiles.Sequences[sequence.Identity] = sequence.Frames
@@ -285,6 +290,10 @@ func visitChuWorldTest(t *testing.T, handle func(chuWorldOriginalPass), fixtureN
 			wantRecords, wantFrames = 1801, 3602
 		} else if name == "chu-world-fighter4-duo" {
 			wantRecords, wantFrames = 3001, 5502
+		} else if name == "chu-world-fighter5" {
+			wantRecords, wantFrames = 3116, 5500
+		} else if name == "chu-world-fighter5-special" {
+			wantRecords, wantFrames = 1801, 3602
 		}
 	}
 	zipped, err := os.ReadFile("testdata/" + name + ".json.gz")
@@ -315,6 +324,9 @@ func visitChuWorldTest(t *testing.T, handle func(chuWorldOriginalPass), fixtureN
 	}
 	if name == "chu-world-fighter4-duo" {
 		captureName = "capture_fighter4_duo_world.py"
+	}
+	if name == "chu-world-fighter5-special" {
+		captureName = "capture_fighter5_world.py"
 	}
 	if name == "chu-world-fighter6-ai" {
 		captureName = "capture_fighter6_ai_world.py"

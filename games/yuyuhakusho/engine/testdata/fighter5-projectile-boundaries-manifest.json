@@ -1,0 +1,73 @@
+{
+  "pass": true,
+  "scope": "Dirty original callbacks derived from a proven source5 checkpoint",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "78554b8a9292a64d9a82902ed406da6b3891524bac025f48a0a96f88784f8716",
+  "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+  "records": 6363,
+  "calls": 6363,
+  "kind_counts": {
+    "linear": 2763,
+    "linear_stop": 64,
+    "steered": 2833,
+    "steered_stop": 64,
+    "follower": 639
+  },
+  "fixture_sha256": "20868b5a25337bacf8ca051c7d720602d8b141c5225afacdf860f545858aac42",
+  "gzip_sha256": "39a5f020f5156075043ecd7047b8a042fa3e8cbd4645b7a62b1744190446d15e",
+  "frames_match_original_core": true,
+  "baselines": [
+    {
+      "input": "docs/research/md-yuyuhakusho/source5-next-inputs.json",
+      "input_sha256": "6dd2eea8f585b62ad886da67d1123c61e06bedb97da4fdd9fd768b8441969601",
+      "reference": "games/yuyuhakusho/engine/testdata/fighter5-attacks-reference-frames.json",
+      "reference_raw_sha256": "f43682106819d7847243a459c9bac6b60ddc63d5f5f9bb9a58c633a8154d7c2b",
+      "reference_manifest": "games/yuyuhakusho/engine/testdata/fighter5-attacks-reference-manifest.json",
+      "reference_manifest_sha256": "3d6c5106dd33076f242c8d3468a0c840e9547e313060e6dcae665c511b280a4c",
+      "video_steps": 3602,
+      "all_ram_video_match": true
+    },
+    {
+      "input": "docs/research/md-yuyuhakusho/source5-special-discovery-inputs.json",
+      "input_sha256": "e6ca2bbb16821f13c2508661b3b1b4ebddcad141f40ed7ef99fac0fea2f54af9",
+      "reference": "games/yuyuhakusho/engine/testdata/fighter5-attacks-special-reference-frames.json",
+      "reference_raw_sha256": "8f813685d06dfbe1ca8d9615cd027aef04b130790efe5e6dd66b8395d795bed3",
+      "reference_manifest": "games/yuyuhakusho/engine/testdata/fighter5-attacks-special-reference-manifest.json",
+      "reference_manifest_sha256": "7f60dea78eeee80ff7dadfc272f55ef4d85acc016e37d091747a719e323e80e3",
+      "video_steps": 3602,
+      "all_ram_video_match": true
+    }
+  ],
+  "binding": {
+    "source_tag": 5,
+    "checkpoint_frame": 2400,
+    "source_actor_sha256": "f8e504643ddac35fc263dee641b4145f1f32b15f34878a89f4ae88aed0aea327",
+    "animation_set": 829146,
+    "shape_set": 832394,
+    "movement_source": 75188
+  },
+  "library_frames": 33,
+  "unexplained_change_calls": 0,
+  "external_change_calls": 0,
+  "rng_calls": 0,
+  "clears": 1269,
+  "draws": 4966,
+  "interrupt_calls": 0,
+  "incomplete_calls": 0,
+  "errors": [],
+  "limits": [
+    "No private context is called natural; zero natural callbacks is pass:false",
+    "Full64KB deltas retained and outside writes individually attributed",
+    "Hit-stop slave natural reachability only established when actually observed",
+    "Typed animation data only; originalCPU/ROM is research-only"
+  ]
+}

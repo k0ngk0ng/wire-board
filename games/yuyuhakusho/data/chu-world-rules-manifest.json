@@ -58,13 +58,17 @@
     {
       "path": "games/yuyuhakusho/engine/testdata/fighter4-composition-movement-rules.json",
       "sha256": "7dd4aeb5449d08470690a1f5e89635309bc9e0641a659564c1667dd1c2d6b806"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-projectile-data.json",
+      "sha256": "3224a4874868b8a609115b903604449824107de8901ba7cc688dfcd7d6a418c5"
     }
   ],
-  "exporter_sha256": "55b6858ccbcf64d6aed474695a9875b0971e6552f4b08c0ff949b91d59a78292",
+  "exporter_sha256": "f5c922cf98193aec8994fe983425fec2fe2528ef508d757be4fa10262c5a4254",
   "counts": {
     "fighters": 11,
     "command_programs": 16,
-    "animations": 4797,
+    "animations": 4813,
     "charge_sequences": 8,
     "release_animations": 21,
     "effect_types": 37,
@@ -74,12 +78,13 @@
     "fighter2_projectile_frames": 23,
     "fighter1_projectile_frames": 8,
     "fighter4_projectile_frames": 9,
+    "fighter5_projectile_frames": 33,
     "fighter4_curve_words": 1344,
     "alternate_movements": 1,
     "fighter0_release_sequences": 8
   },
-  "bytes": 1905921,
-  "gzip_bytes": 90757,
-  "sha256": "f1b0b0dba3aebd98f42898f90b0a39a14fa3ef10b34470615b06b4161f8d6362",
-  "gzip_sha256": "cfb16b469485da42d2efcaf44031a44cf418f0f3d13b185dbd746be5f58ebe34"
+  "bytes": 1911436,
+  "gzip_bytes": 90982,
+  "sha256": "f299e09c380a827d4829679294e7856b9487ab8f431bb2aad628ba6261c6ce69",
+  "gzip_sha256": "b3297c3ed827816ae475df6b82f2b4f032e289a825efa7d7a953a6764094350f"
 }

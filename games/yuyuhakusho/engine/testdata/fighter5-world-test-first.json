@@ -1,0 +1,13 @@
+{
+  "world_support_and_data_export_changed": false,
+  "files": {
+    "fighter5_world_test.go": "de0285be89cbfc0bd58345ae9669fcacca4e7af761b4bb06b7a045a6f0c666ca",
+    "fighter5_special_world_test.go": "463d78cc713caf648c753398d2ef487f05f455cebc2c316c96c602baa7cb8fd3",
+    "fighter5_child_world_test.go": "97b71c94d5682e77c7691699b09da28c0af4fbd172347205b1c0f3e37f4c213c",
+    "fighter5_rules_test.go": "1e8183975e7af79dbf4902a36bad5ed188b5671d2991f6866ec6bc3556514593",
+    "FIGHTER5_WORLD_FAILURES.md": "8323f263a0092185dd421db3f5aa443b09f3c0305d370bd398df8d488a5531e2",
+    "testdata/fighter5-world-red.jsonl": "70c9135d031ec8b1672795d3a52ee4ba470e913f091eb9ff8b3be29899235208",
+    "testdata/fighter5-child-world-red.jsonl": "1417339ad9c845e3992257603eaed20c93c70f09df76f6bd193c831804d4e742",
+    "testdata/fighter5-rules-red.jsonl": "1d269f0480ab00b03439e7480b7c7818942441a995b81d6445c10e373d1f99ad"
+  }
+}
