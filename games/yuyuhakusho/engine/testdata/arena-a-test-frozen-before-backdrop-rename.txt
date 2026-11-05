@@ -1,0 +1,344 @@
+package engine
+
+import (
+	"bytes"
+	"compress/gzip"
+	"crypto/sha256"
+	"encoding/binary"
+	"encoding/hex"
+	"encoding/json"
+	"io"
+	"os"
+	"reflect"
+	"testing"
+)
+
+type arenaASnapshot struct {
+	Parent, Child, Camera, Samples, Cells, Stream, Vertical, Sources string
+	ScrollMode                                                       uint8 `json:"scroll_mode"`
+	ColumnMode                                                       uint8 `json:"column_mode"`
+	Pause, Slow                                                      uint8
+	Shake, Pan                                                       int16
+}
+
+type arenaADelta [3]json.RawMessage
+
+type arenaAOriginalDraw struct {
+	Descriptor    string
+	Delta         []arenaADelta
+	Count, Cursor uint16
+	AfterCount    uint16 `json:"after_count"`
+	AfterCursor   uint16 `json:"after_cursor"`
+}
+
+type arenaAOriginalCall struct {
+	Kind, Name      string
+	Before, After   arenaASnapshot
+	Draws           []arenaAOriginalDraw
+	Delta           []arenaADelta
+	UnknownDelta    []int            `json:"unknown_delta"`
+	DeltaOwners     map[string][]int `json:"delta_owners"`
+	BeforeRAMSHA256 string           `json:"before_ram_sha256"`
+	AfterRAMSHA256  string           `json:"after_ram_sha256"`
+	ExternalInput   *struct {
+		Pause, Slow uint8
+		Shake, Pan  int16
+		SamplesX    []uint32 `json:"samples_x"`
+		SamplesY    []uint32 `json:"samples_y"`
+	} `json:"external_input"`
+}
+
+type arenaAOriginalLibrary struct {
+	LinearRows map[int16][]int16 `json:"linear_rows"`
+	Tiles      []uint16
+	Ys, Xs     []int16
+}
+
+func arenaAReadFixture(t *testing.T, name string, target any) arenaAOriginalLibrary {
+	t.Helper()
+	compressed, err := os.ReadFile("testdata/" + name + ".json.gz")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var manifest struct {
+		FixtureSHA256 string `json:"fixture_sha256"`
+		GzipSHA256    string `json:"gzip_sha256"`
+		FramesMatch   bool   `json:"frames_match_original_control"`
+		UnknownDelta  int    `json:"unknown_delta"`
+		Pass          bool
+		Identity      struct {
+			ROMSHA256  string `json:"rom_sha256"`
+			CoreSHA256 string `json:"core_sha256"`
+		}
+	}
+	m, err := os.ReadFile("testdata/" + name + "-manifest.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err = json.Unmarshal(m, &manifest); err != nil {
+		t.Fatal(err)
+	}
+	zsum := sha256.Sum256(compressed)
+	if hex.EncodeToString(zsum[:]) != manifest.GzipSHA256 || !manifest.Pass || !manifest.FramesMatch || manifest.UnknownDelta != 0 ||
+		manifest.Identity.ROMSHA256 != "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06" ||
+		manifest.Identity.CoreSHA256 != "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306" {
+		t.Fatal("unverified original arena A capture")
+	}
+	z, err := gzip.NewReader(bytes.NewReader(compressed))
+	if err != nil {
+		t.Fatal(err)
+	}
+	raw, err := io.ReadAll(z)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err = z.Close(); err != nil {
+		t.Fatal(err)
+	}
+	sum := sha256.Sum256(raw)
+	if hex.EncodeToString(sum[:]) != manifest.FixtureSHA256 {
+		t.Fatal("arena A fixture digest mismatch")
+	}
+	var bundle struct {
+		Library arenaAOriginalLibrary
+		Calls   json.RawMessage
+	}
+	if err = json.Unmarshal(raw, &bundle); err != nil {
+		t.Fatal(err)
+	}
+	if err = json.Unmarshal(bundle.Calls, target); err != nil {
+		t.Fatal(err)
+	}
+	if len(bundle.Library.LinearRows) != 241 || !reflect.DeepEqual(bundle.Library.Tiles, []uint16{0x5d0, 0x5d0, 0x5e0, 0x5e0, 0x5f0, 0x5f0}) ||
+		!reflect.DeepEqual(bundle.Library.Ys, []int16{144, 176, 144, 176, 144, 176}) || !reflect.DeepEqual(bundle.Library.Xs, []int16{224, 224, 256, 256, 496, 496}) {
+		t.Fatal("invalid arena A original tables")
+	}
+	for _, r := range bundle.Library.LinearRows {
+		if len(r) != 128 {
+			t.Fatal("incomplete original linear row")
+		}
+	}
+	return bundle.Library
+}
+
+func decodeArenaATest(t *testing.T, s arenaASnapshot) (ArenaSceneState, WorldObject, DefaultArenaView) {
+	t.Helper()
+	r := ArenaSceneState{Object: decodeWorldObjectTest(t, 0x8180, s.Parent), Camera: decodeArenaCamera(t, defaultArenaSnapshot{Camera: s.Camera, Samples: s.Samples}), Mode: s.ScrollMode, VideoFlags: s.ColumnMode}
+	child := decodeWorldObjectTest(t, 0x9e00, s.Child)
+	cells := arenaWords(t, s.Cells, 768)
+	copy(r.RowsA[:], cells[256:512])
+	copy(r.RowsB[:], cells[512:768])
+	stream := arenaBytes(t, s.Stream, 1024)
+	for i := 0; i < 224; i++ {
+		r.PanA[i] = int16(binary.BigEndian.Uint16(stream[i*2:]))
+		r.PanB[i] = int16(binary.BigEndian.Uint16(stream[512+i*2:]))
+	}
+	v := arenaBytes(t, s.Vertical, 64)
+	r.Vertical = [2]int16{int16(binary.BigEndian.Uint16(v)), int16(binary.BigEndian.Uint16(v[40:]))}
+	sources := arenaBytes(t, s.Sources, 8)
+	r.SourceA = int32(binary.BigEndian.Uint32(sources))
+	r.SourceB = int32(binary.BigEndian.Uint32(sources[4:]))
+	view := DefaultArenaView{PauseFlags: s.Pause, SlowFlag: s.Slow, Shake: s.Shake, Pan: s.Pan}
+	copy(view.HUDPrefix[:], cells[:256])
+	return r, child, view
+}
+
+func encodeArenaATest(t *testing.T, s arenaASnapshot, r ArenaSceneState, child WorldObject) arenaASnapshot {
+	t.Helper()
+	s.Parent = encodeWorldObjectTest(t, r.Object, s.Parent, 0)
+	s.Child = encodeWorldObjectTest(t, child, s.Child, 0)
+	c := encodeArenaCamera(defaultArenaSnapshot{}, r.Camera)
+	s.Camera, s.Samples = c.Camera, c.Samples
+	s.ScrollMode, s.ColumnMode = r.Mode, r.VideoFlags
+	cells := arenaWords(t, s.Cells, 768)
+	copy(cells[256:512], r.RowsA[:])
+	copy(cells[512:768], r.RowsB[:])
+	s.Cells = arenaWordString(cells)
+	stream := arenaBytes(t, s.Stream, 1024)
+	for i := 0; i < 224; i++ {
+		binary.BigEndian.PutUint16(stream[i*2:], uint16(r.PanA[i]))
+		binary.BigEndian.PutUint16(stream[512+i*2:], uint16(r.PanB[i]))
+	}
+	s.Stream = hex.EncodeToString(stream)
+	v := arenaBytes(t, s.Vertical, 64)
+	binary.BigEndian.PutUint16(v, uint16(r.Vertical[0]))
+	binary.BigEndian.PutUint16(v[40:], uint16(r.Vertical[1]))
+	s.Vertical = hex.EncodeToString(v)
+	sources := make([]byte, 8)
+	binary.BigEndian.PutUint32(sources, uint32(r.SourceA))
+	binary.BigEndian.PutUint32(sources[4:], uint32(r.SourceB))
+	s.Sources = hex.EncodeToString(sources)
+	return s
+}
+
+func arenaAValidateDeltaTest(t *testing.T, c arenaAOriginalCall) {
+	t.Helper()
+	if len(c.UnknownDelta) != 0 || len(c.BeforeRAMSHA256) != 64 || len(c.AfterRAMSHA256) != 64 {
+		t.Fatal("incomplete full-RAM evidence")
+	}
+	changed := map[int]bool{}
+	for _, d := range c.Delta {
+		var p int
+		var a, b string
+		if json.Unmarshal(d[0], &p) != nil || json.Unmarshal(d[1], &a) != nil || json.Unmarshal(d[2], &b) != nil {
+			t.Fatal("bad actual delta")
+		}
+		old, new := arenaBytes(t, a, len(a)/2), arenaBytes(t, b, len(b)/2)
+		if len(old) != len(new) || p < 0 || p+len(old) > 65536 {
+			t.Fatal("out-of-RAM delta")
+		}
+		for i := range old {
+			if old[i] == new[i] || changed[p+i] {
+				t.Fatal("unfaithful actual byte delta")
+			}
+			changed[p+i] = true
+		}
+	}
+	owned := map[int]bool{}
+	for _, v := range c.DeltaOwners {
+		for _, p := range v {
+			if owned[p] || !changed[p] {
+				t.Fatal("unfaithful delta ownership")
+			}
+			owned[p] = true
+		}
+	}
+	if !reflect.DeepEqual(changed, owned) {
+		t.Fatal("actual full-RAM delta has missing owner")
+	}
+}
+
+func arenaARunCallTest(t *testing.T, s arenaASnapshot, c arenaAOriginalCall, library arenaAOriginalLibrary) arenaASnapshot {
+	t.Helper()
+	r, child, view := decodeArenaATest(t, s)
+	var requests []ArenaASprite
+	var err error
+	if c.Kind == "arena" {
+		r, child, err = StepArenaA(r, child, view, ArenaSceneLibrary{LinearRows: library.LinearRows})
+	} else if c.Kind == "child" {
+		child, requests, err = StepArenaAChild(child, r.Object, ArenaAChildView{PauseFlags: s.Pause, SlowFlag: s.Slow, CameraY: r.Camera.Y, Shake: s.Shake, Pan: s.Pan})
+	} else {
+		t.Fatalf("unexpected callback %q", c.Kind)
+	}
+	if err != nil {
+		t.Fatal(c.Name, err)
+	}
+	if len(requests) != len(c.Draws) {
+		t.Fatalf("%s submits %d/%d", c.Name, len(requests), len(c.Draws))
+	}
+	for i, request := range requests {
+		b := arenaBytes(t, c.Draws[i].Descriptor, 10)
+		want := ArenaASprite{Y: binary.BigEndian.Uint16(b), SizeLink: binary.BigEndian.Uint16(b[2:]), Tile: binary.BigEndian.Uint16(b[4:]), X: binary.BigEndian.Uint16(b[6:])}
+		if request != want {
+			t.Fatalf("%s submit%d got%+v want%+v", c.Name, i, request, want)
+		}
+	}
+	got := encodeArenaATest(t, s, r, child)
+	if !reflect.DeepEqual(got, c.After) {
+		t.Fatalf("%s %s callback output differs from original\ngot %+v\nwant %+v", c.Kind, c.Name, got, c.After)
+	}
+	arenaAValidateDeltaTest(t, c)
+	return got
+}
+
+func TestArenaAOriginalBoundaries(t *testing.T) {
+	var calls []arenaAOriginalCall
+	library := arenaAReadFixture(t, "arena-a-boundaries", &calls)
+	if len(calls) < 3520 {
+		t.Fatal("missing boundary coverage")
+	}
+	for _, c := range calls {
+		arenaARunCallTest(t, c.Before, c, library)
+	}
+}
+
+func TestArenaAOriginalNatural(t *testing.T) {
+	var calls []arenaAOriginalCall
+	library := arenaAReadFixture(t, "arena-a-natural", &calls)
+	counts := map[string]int{}
+	for _, c := range calls {
+		counts[c.Kind]++
+		arenaARunCallTest(t, c.Before, c, library)
+	}
+	if counts["arena"] == 0 || counts["child"] == 0 {
+		t.Fatal("missing legal arena A natural callbacks")
+	}
+}
+
+func TestArenaAOriginalCreatorClock(t *testing.T) {
+	var sequences []struct {
+		Kind    string
+		Initial arenaASnapshot
+		Calls   []arenaAOriginalCall
+	}
+	library := arenaAReadFixture(t, "arena-a-sequences", &sequences)
+	if len(sequences) != 1 || len(sequences[0].Calls) != 384 {
+		t.Fatal("missing creator-clock sequence")
+	}
+	for _, sequence := range sequences {
+		live := sequence.Initial
+		for _, c := range sequence.Calls {
+			if e := c.ExternalInput; e != nil {
+				live.Pause, live.Slow, live.Shake, live.Pan = e.Pause, e.Slow, e.Shake, e.Pan
+				cam := decodeArenaCamera(t, defaultArenaSnapshot{Camera: live.Camera, Samples: live.Samples})
+				cam.Used = uint16(len(e.SamplesX) * 4)
+				for i := range e.SamplesX {
+					cam.SamplesX[i], cam.SamplesY[i] = int32(e.SamplesX[i]), int32(e.SamplesY[i])
+				}
+				encoded := encodeArenaCamera(defaultArenaSnapshot{}, cam)
+				live.Camera, live.Samples = encoded.Camera, encoded.Samples
+			}
+			if !reflect.DeepEqual(live, c.Before) {
+				t.Fatalf("%s continuous input state differs; state must not be reinjected", c.Name)
+			}
+			live = arenaARunCallTest(t, live, c, library)
+		}
+	}
+}
+
+func TestArenaAAtomicInputs(t *testing.T) {
+	var calls []arenaAOriginalCall
+	library := arenaAReadFixture(t, "arena-a-boundaries", &calls)
+	var initial arenaASnapshot
+	for _, c := range calls {
+		if c.Kind == "arena" && c.Before.Pause == 0 && c.Before.Slow == 0 {
+			initial = c.Before
+			break
+		}
+	}
+	s, child, v := decodeArenaATest(t, initial)
+	for _, bad := range []ArenaSceneLibrary{{}, {LinearRows: map[int16][]int16{s.Camera.X: {1, 2}}}} {
+		next, nextChild, err := StepArenaA(s, child, v, bad)
+		if err == nil || !reflect.DeepEqual(next, s) || nextChild != child {
+			t.Fatal("invalid source must roll back scene and child")
+		}
+	}
+	invalid := s
+	invalid.Camera.Used = 65
+	if next, nextChild, err := StepArenaA(invalid, child, v, ArenaSceneLibrary{LinearRows: library.LinearRows}); err == nil || !reflect.DeepEqual(next, invalid) || nextChild != child {
+		t.Fatal("invalid camera consumed scene")
+	}
+	for _, gate := range []DefaultArenaView{{PauseFlags: 128}, {SlowFlag: 1}} {
+		next, nextChild, err := StepArenaA(s, child, gate, ArenaSceneLibrary{})
+		if err != nil || !reflect.DeepEqual(next, s) || nextChild != child {
+			t.Fatal("gated main accessed unused resources")
+		}
+	}
+	for _, gate := range []ArenaAChildView{{PauseFlags: 128}, {SlowFlag: 1}} {
+		next, draws, err := StepArenaAChild(child, WorldObject{}, gate)
+		if err != nil || len(draws) != 6 || next.Header.Stage != child.Header.Stage || next.Aux18 != child.Aux18 || next.GraphicsSet != child.GraphicsSet {
+			t.Fatal("gated child must submit cached descriptors without parent lookup")
+		}
+	}
+	if next, draws, err := StepArenaAChild(child, WorldObject{}, ArenaAChildView{}); err == nil || next != child || len(draws) != 0 {
+		t.Fatal("missing active parent must fail atomically")
+	}
+	unbounded := child
+	unbounded.Header.Stage = 2
+	unbounded.GraphicOffsetX = 0
+	for _, view := range []ArenaAChildView{{}, {PauseFlags: 128}, {SlowFlag: 1}} {
+		if next, draws, err := StepArenaAChild(unbounded, s.Object, view); err == nil || next != unbounded || len(draws) != 0 {
+			t.Fatal("unbounded dirty descriptor must fail atomically")
+		}
+	}
+}

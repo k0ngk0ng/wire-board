@@ -1,0 +1,27 @@
+{
+  "pass": true,
+  "complete": true,
+  "environment": "darwin/arm64",
+  "players": 4,
+  "characters": [
+    5,
+    6,
+    7,
+    8
+  ],
+  "team": false,
+  "ticks": 4894,
+  "restored_pixel_frames": 30,
+  "sprite_frames": 4893,
+  "max_draw_requests": 24,
+  "unready_tick_blocked": true,
+  "invalid_input_atomic": true,
+  "asset_version_checked": true,
+  "reference_state_loaded": false,
+  "hud_window_complete": true,
+  "final_state_sha256": "f547cbbab81422f94c3a07512c5dbf5935580f8e57006160abe165b9349248f4",
+  "pixel_trace_sha256": "f3bd370382bfa4505de1f92ed41ec273948ade29d6573551cef07730194b199e",
+  "state_trace_sha256": "74d1493157f2676562e5379f656f6c022943da7ef2e0686d0670fef25e335165",
+  "arena": 10,
+  "arena_sprite_requests": 29358
+}

@@ -1,0 +1,6 @@
+# command-line-arguments [command-line-arguments.test]
+./arenas_2_6_8_test.go:193:10: undefined: StepArena2
+./arenas_2_6_8_test.go:195:10: undefined: StepArena6
+./arenas_2_6_8_test.go:197:10: undefined: StepArena8
+FAIL	command-line-arguments [build failed]
+FAIL

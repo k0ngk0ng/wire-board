@@ -1,0 +1,228 @@
+{
+  "pass": true,
+  "scope": "Passive arenaa original VDP/video references; selected samples only",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "original_control": {
+    "path": "games/yuyuhakusho/engine/testdata/arena-a-reference-manifest.json",
+    "sha256": "9be3ecf9e725c4989de749f2bcb30cf27c6aa02d4e7bccb86511d8ce6cda71af",
+    "frames": 3602,
+    "input_sha256": "94abff0831b64713c449beca0743f164be572d6085b21d651df51b00e641db60",
+    "output_sha256": "4d68f40cf741adeb7eb047d3d71a9d3b7681c3dd5dc3ec8c4aac5e9f23f09b14"
+  },
+  "producer_sha256": "fd0fa82ce5c978e13ad94a13151f48f04eec76ff3d48d1c74cd3732ed684ff83",
+  "observer_source_sha256": "e295b30cc63b5937bff7e9a8900e50a2f50c4f14a040aa94e7180de00999a56e",
+  "observer_sha256": "cc7a69918ecfdfc719a8e2d1b702b488075e76939b265355c1dbfe3252d41fa9",
+  "observer_route": "Actual background-render entry wrapper calls original exactly once; CPU observation tracks palette/blank/redraw bindings",
+  "render_function_rebindings": 3290,
+  "records": 20,
+  "observed_loads": [
+    {
+      "frame": 1612,
+      "resource_list": 136992
+    },
+    {
+      "frame": 1760,
+      "resource_list": 137380
+    },
+    {
+      "frame": 1860,
+      "resource_list": 137328
+    },
+    {
+      "frame": 1961,
+      "resource_list": 137268
+    },
+    {
+      "frame": 2377,
+      "resource_list": 137268
+    }
+  ],
+  "selected_resource_load": {
+    "frame": 2377,
+    "resource_list": 137268
+  },
+  "earlier_menu_resource_loads": [
+    {
+      "frame": 1612,
+      "resource_list": 136992
+    },
+    {
+      "frame": 1760,
+      "resource_list": 137380
+    },
+    {
+      "frame": 1860,
+      "resource_list": 137328
+    },
+    {
+      "frame": 1961,
+      "resource_list": 137268
+    }
+  ],
+  "initial_scene_palette_observation": {
+    "frame": 2397,
+    "pc": 2108,
+    "ram_address": 57472,
+    "bytes": "00000eee0aa80686046402420220020002020224024602680086006400420020",
+    "sha256": "8dee614071955eb43e1dd7feb1f30a10203eba52cf22a07b0bbd97b71f46be9e"
+  },
+  "frames_match_original_core": 3602,
+  "control_mismatches": 0,
+  "active_line_observations": 4480,
+  "active_background_vram_changed_frames": [],
+  "active_vram_change_rows": 0,
+  "fixture_sha256": "874f5d1314556a091037de4cb510a1b334bb7e5be211707b2ec24333ce0a19ec",
+  "gzip_sha256": "85a75910ca8f85a9fcb10e134bb233d503494d787c6e12d979887f5b9ec4be0c",
+  "gzip_bytes": 1749829,
+  "register_states": [
+    [
+      20,
+      36,
+      48,
+      52,
+      7,
+      122,
+      0,
+      0,
+      0,
+      0,
+      223,
+      3,
+      129,
+      60,
+      0,
+      2,
+      1,
+      0,
+      6,
+      0,
+      0,
+      149,
+      242,
+      127,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      20,
+      52,
+      48,
+      52,
+      7,
+      122,
+      0,
+      0,
+      0,
+      0,
+      223,
+      3,
+      129,
+      60,
+      0,
+      4,
+      1,
+      0,
+      6,
+      224,
+      0,
+      27,
+      245,
+      127,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      20,
+      52,
+      48,
+      52,
+      7,
+      122,
+      0,
+      0,
+      0,
+      0,
+      223,
+      3,
+      129,
+      60,
+      0,
+      4,
+      1,
+      0,
+      6,
+      224,
+      0,
+      30,
+      245,
+      127,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      20,
+      52,
+      48,
+      52,
+      7,
+      122,
+      0,
+      0,
+      0,
+      0,
+      223,
+      3,
+      129,
+      60,
+      0,
+      4,
+      1,
+      0,
+      6,
+      224,
+      0,
+      32,
+      245,
+      127,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  ],
+  "limits": [
+    "Original references are development-only, not runtime assets",
+    "Selected fixed-input samples do not prove unobserved dynamic material states"
+  ]
+}

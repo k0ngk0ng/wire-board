@@ -62,6 +62,7 @@ type ChuWorldState struct {
 	ResourceBusy                                      uint8
 	Match                                             ChuWorldMatch
 	MatchComplete                                     bool
+	BackdropColor                                     uint8 `json:",omitempty"`
 }
 
 type ChuWorldView struct {
@@ -78,6 +79,8 @@ type ChuWorldLibrary struct {
 	AttachedEffects     AttachedEffectLibrary
 	MatchStart          MatchStartLibrary
 	Arena               ArenaRuntimeLibrary
+	ArenaScenes         ArenaSceneLibrary
+	ArenaResources      map[uint16]ChuSessionResource
 	Fighter0Projectiles Fighter0ProjectileLibrary
 	Fighter4Dragon      Fighter4DragonLibrary
 }
@@ -86,14 +89,15 @@ type ChuWorldLibrary struct {
 // and saved stride; draw/HUD/start events are semantic renderer operations.
 // Physical sprite caches, VDP commands and F518 DMA cursors are not rules.
 type ChuWorldEvent struct {
-	Kind         string
-	ObjectID     uint16
-	Header       MatchObjectHeader
-	Stride       uint16
-	ClearedBytes uint16
-	HUD          FighterBarTransfer
-	Start        MatchStartEvent
-	Draw         *WorldDraw `json:",omitempty"`
+	Kind           string
+	ObjectID       uint16
+	Header         MatchObjectHeader
+	Stride         uint16
+	ClearedBytes   uint16
+	HUD            FighterBarTransfer
+	Start          MatchStartEvent
+	Draw           *WorldDraw    `json:",omitempty"`
+	RawArenaSprite *ArenaASprite `json:",omitempty"`
 }
 
 // StepChuWorldObjects recovers one ready-match 3592 pass. A future slot created
@@ -174,6 +178,10 @@ func stepChuWorldObject(state *ChuWorldState, object WorldObject, view ChuWorldV
 		return nil, stepChuWorldCollision(state)
 	case 0x20918:
 		return nil, stepChuWorldArena(state, object, library.Arena)
+	case 0x20ae0, 0x20cb2, 0x20e28, 0x20fb4, 0x21126, 0x212f8, 0x21412:
+		return nil, stepChuWorldArenaScene(state, object, library.ArenaScenes)
+	case 0x21258:
+		return stepChuWorldArenaAChild(state, object)
 	case 0x12668:
 		return stepChuWorldFighter(state, object, view, library, hudCursor)
 	case 0x1313e:
@@ -357,7 +365,7 @@ func stepChuWorldArena(state *ChuWorldState, object WorldObject, library ArenaRu
 	s := DefaultArenaState{Stage: object.Header.Stage, Offsets: [3]int16{object.ScreenX, object.ScreenY, int16(object.Body.VelocityX >> 16)},
 		Drifts: [2]int32{object.Body.VerticalVelocity, object.Aux18}, Phases: [2]uint16{uint16(object.TilesBase >> 16), uint16(object.TilesBase)},
 		Camera: state.Camera, Mode: state.ScrollMode, Vertical: state.Vertical, PanA: state.PanRows(0), PanB: state.PanRows(1), SourceA: state.ScrollSources[0], SourceB: state.ScrollSources[1]}
-	v := DefaultArenaView{PauseFlags: state.Clock.PauseFlags, SlowFlag: state.Clock.SlowFlag, Shake: int16(state.Clock.ScreenShake), Pan: int16(state.Clock.PanOffset)}
+	v := DefaultArenaView{PauseFlags: state.Clock.PauseFlags, SlowFlag: state.Clock.SlowFlag, FrameCounter: uint8(state.Clock.LogicFrame), Shake: int16(state.Clock.ScreenShake), Pan: int16(state.Clock.PanOffset)}
 	for i := range s.RowsA {
 		s.RowsA[i], s.RowsB[i], v.HUDPrefix[i] = int16(state.Cells[256+i]), int16(state.Cells[512+i]), int16(state.Cells[i])
 	}
@@ -381,6 +389,76 @@ func stepChuWorldArena(state *ChuWorldState, object WorldObject, library ArenaRu
 		state.Cells[256+i], state.Cells[512+i] = uint16(next.RowsA[i]), uint16(next.RowsB[i])
 	}
 	return nil
+}
+
+func stepChuWorldArenaScene(state *ChuWorldState, object WorldObject, library ArenaSceneLibrary) error {
+	scene := ArenaSceneState{Object: object, Camera: state.Camera, Mode: state.ScrollMode, BackdropColor: state.BackdropColor,
+		Vertical: state.Vertical, PanA: state.PanRows(0), PanB: state.PanRows(1), SourceA: state.ScrollSources[0], SourceB: state.ScrollSources[1]}
+	view := DefaultArenaView{PauseFlags: state.Clock.PauseFlags, SlowFlag: state.Clock.SlowFlag, FrameCounter: uint8(state.Clock.LogicFrame), Shake: int16(state.Clock.ScreenShake), Pan: int16(state.Clock.PanOffset)}
+	for i := range scene.RowsA {
+		scene.RowsA[i], scene.RowsB[i], view.HUDPrefix[i] = int16(state.Cells[256+i]), int16(state.Cells[512+i]), int16(state.Cells[i])
+	}
+	var err error
+	switch object.Header.Behavior {
+	case 0x20ae0:
+		scene, err = StepArena2(scene, view, library)
+	case 0x20cb2:
+		var palette ArenaPaletteState
+		scene, palette, err = StepArena4(scene, view, state.Palette, library)
+		if err == nil {
+			copy(state.Palette.Primary[9:12], palette.Primary[9:12])
+		}
+	case 0x20e28:
+		scene, err = StepArena6(scene, view, library)
+	case 0x20fb4:
+		scene, err = StepArena8(scene, view, library)
+	case 0x21126:
+		child, lookupErr := LookupWorldObject(state.Objects, 0x9e00)
+		if lookupErr != nil {
+			return lookupErr
+		}
+		scene, child, err = StepArenaA(scene, child, view, library)
+		if err == nil {
+			state.Objects[child.ObjectID] = child
+		}
+	case 0x212f8:
+		scene, err = StepArenaC(scene, view, library)
+	case 0x21412:
+		scene, err = StepArenaE(scene, view, library)
+	}
+	if err != nil {
+		return err
+	}
+	if view.Pan != 0 && view.PauseFlags&128 == 0 && view.SlowFlag == 0 {
+		if err := state.storePanRows(scene.PanA, scene.PanB); err != nil {
+			return err
+		}
+	}
+	state.Objects[object.ObjectID] = scene.Object
+	state.Camera, state.ScrollMode, state.BackdropColor, state.Vertical = scene.Camera, scene.Mode, scene.BackdropColor, scene.Vertical
+	state.ScrollSources = [2]int32{scene.SourceA, scene.SourceB}
+	for i := range scene.RowsA {
+		state.Cells[256+i], state.Cells[512+i] = uint16(scene.RowsA[i]), uint16(scene.RowsB[i])
+	}
+	return nil
+}
+
+func stepChuWorldArenaAChild(state *ChuWorldState, object WorldObject) ([]ChuWorldEvent, error) {
+	parent, err := LookupWorldObject(state.Objects, uint16(object.Aux18))
+	if err != nil {
+		return nil, err
+	}
+	next, sprites, err := StepArenaAChild(object, parent, ArenaAChildView{PauseFlags: state.Clock.PauseFlags, SlowFlag: state.Clock.SlowFlag,
+		CameraY: state.Camera.Y, Shake: int16(state.Clock.ScreenShake), Pan: int16(state.Clock.PanOffset)})
+	if err != nil {
+		return nil, err
+	}
+	state.Objects[object.ObjectID] = next
+	events := make([]ChuWorldEvent, len(sprites))
+	for i := range sprites {
+		events[i] = ChuWorldEvent{Kind: "arena-sprite", ObjectID: object.ObjectID, RawArenaSprite: &sprites[i]}
+	}
+	return events, nil
 }
 
 func stepChuWorldFighter(state *ChuWorldState, object WorldObject, view ChuWorldView, library ChuWorldLibrary, hudCursor *uint16) ([]ChuWorldEvent, error) {
@@ -928,6 +1006,8 @@ type chuWorldRules struct {
 	} `json:"attached_effects"`
 	MatchStart          MatchStartLibrary   `json:"match_start"`
 	Arena               ArenaRuntimeLibrary `json:"arena"`
+	ArenaScenes         json.RawMessage     `json:"arena_scenes"`
+	ArenaResources      json.RawMessage     `json:"arena_resources"`
 	Fighter0Projectiles struct {
 		Sequences []struct {
 			Identity uint32               `json:"identity"`
@@ -1018,5 +1098,98 @@ func DecodeChuWorldRules(raw []byte) (ChuWorldLibrary, error) {
 		}
 		library.AttachedEffects.Sequences[sequence.ID] = sequence.Frames
 	}
+	var err error
+	library.ArenaScenes, library.ArenaResources, err = decodeChuArenaExtension(rules.ArenaScenes, rules.ArenaResources, library.Arena, library.MatchStart)
+	if err != nil {
+		return empty, err
+	}
+	if library.ArenaScenes.LinearRows != nil {
+		// The default callback consumes a slice of the same immutable rows.
+		// Discard the redundant decoded tail allocations after checking them.
+		for x, row := range library.ArenaScenes.LinearRows {
+			library.Arena.Tails[x] = row[40:96]
+		}
+	}
 	return library, nil
+}
+
+func decodeChuArenaExtension(scenesRaw, resourcesRaw json.RawMessage, base ArenaRuntimeLibrary, start MatchStartLibrary) (ArenaSceneLibrary, map[uint16]ChuSessionResource, error) {
+	var empty ArenaSceneLibrary
+	if len(scenesRaw) == 0 && len(resourcesRaw) == 0 {
+		return empty, nil, nil
+	}
+	var scenes struct {
+		WaveX        []int8            `json:"wave_x"`
+		LinearRows   map[int16][]int16 `json:"linear_rows"`
+		Arena4Rows   map[uint8][]int16 `json:"arena4_rows"`
+		Arena4Colors [][]uint16        `json:"arena4_colors"`
+	}
+	var resources []struct {
+		Arena    uint16   `json:"arena"`
+		Source   uint32   `json:"source"`
+		Palette0 []uint16 `json:"palette_0"`
+	}
+	if len(scenesRaw) == 0 || len(resourcesRaw) == 0 || json.Unmarshal(scenesRaw, &scenes) != nil || json.Unmarshal(resourcesRaw, &resources) != nil ||
+		len(scenes.LinearRows) != 241 || len(scenes.Arena4Rows) != 64 || len(scenes.Arena4Colors) != 4 || len(resources) != 8 {
+		return empty, nil, errors.New("incomplete Chu arena scene/resource extension")
+	}
+	if scenes.WaveX != nil {
+		if len(scenes.WaveX) != len(base.WaveX) {
+			return empty, nil, errors.New("arena waveform conflicts with its shared owner")
+		}
+		for i, value := range scenes.WaveX {
+			if value != base.WaveX[i] {
+				return empty, nil, errors.New("arena waveform conflicts with its shared owner")
+			}
+		}
+	}
+	for x := int16(744); x <= 984; x++ {
+		row, tail := scenes.LinearRows[x], base.Tails[x]
+		if len(row) != 128 || len(tail) != 56 {
+			return empty, nil, errors.New("arena linear row or shared default tail is incomplete")
+		}
+		for i, value := range tail {
+			if value != row[40+i] {
+				return empty, nil, errors.New("arena linear row conflicts with the default tail")
+			}
+		}
+	}
+	for x := uint8(0); x < 64; x++ {
+		if len(scenes.Arena4Rows[x]) != 112 {
+			return empty, nil, errors.New("arena4 scrolling row is incomplete")
+		}
+	}
+	library := ArenaSceneLibrary{WaveX: base.WaveX, LinearRows: scenes.LinearRows, Arena4Rows: scenes.Arena4Rows}
+	for phase, colors := range scenes.Arena4Colors {
+		if len(colors) != 3 {
+			return empty, nil, errors.New("arena4 palette phase is incomplete")
+		}
+		for i, color := range colors {
+			if color&^0x0eee != 0 {
+				return empty, nil, errors.New("arena4 palette color is invalid")
+			}
+			library.Arena4Colors[phase][i] = color
+		}
+	}
+	registry := make(map[uint16]ChuSessionResource, 8)
+	for _, entry := range resources {
+		if entry.Arena > 14 || entry.Arena&1 != 0 || len(entry.Palette0) != 16 || entry.Source == 0 || start.ArenaResources[entry.Arena/2] != entry.Source || start.ArenaBehaviors[entry.Arena/2] != chuArenaBehaviors[entry.Arena/2] {
+			return empty, nil, errors.New("arena resource does not match its recovered scene binding")
+		}
+		if _, found := registry[entry.Arena]; found {
+			return empty, nil, errors.New("duplicate arena resource identity")
+		}
+		resource := ChuSessionResource{Source: entry.Source}
+		for i, color := range entry.Palette0 {
+			if color&^0x0eee != 0 {
+				return empty, nil, errors.New("arena resource palette is invalid")
+			}
+			resource.Palette0[i] = color
+		}
+		if entry.Arena == 0 && resource != DefaultChuSessionResource() {
+			return empty, nil, errors.New("default arena resource differs from its verified palette")
+		}
+		registry[entry.Arena] = resource
+	}
+	return library, registry, nil
 }

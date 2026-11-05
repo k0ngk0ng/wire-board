@@ -1,0 +1,34 @@
+{
+  "scope": "Arena a auxiliary48 indexed tiles source and loaded original verification",
+  "verifier_sha256": "0efd1d0a62deb40da5996973c3432cdd3320bc98f5a272c0add120632d02d833",
+  "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+  "pass": true,
+  "catalog_sha256": "7e027f867927094ba71d4f172ef262938e247cbe8a2aeb719767979d61497830",
+  "gzip_sha256": "3eb8fd42cf1e675c91140f406833af7fde38968109749e0702a31f1471aa75b4",
+  "tiles": 48,
+  "loaded_original_frames": [
+    2700,
+    2720,
+    2740,
+    2760,
+    2780,
+    2800,
+    2820,
+    2850,
+    2880,
+    2910,
+    2940,
+    2970,
+    3000,
+    3050,
+    3100,
+    3150,
+    3250,
+    3350,
+    3450,
+    3550
+  ],
+  "limits": [
+    "This checks auxiliary indexed source, not sprite/plane final composition"
+  ]
+}

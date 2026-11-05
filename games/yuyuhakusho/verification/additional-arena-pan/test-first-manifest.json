@@ -1,0 +1,13 @@
+{
+  "scope": "Independent dynamic-pan E2E acceptance script and failure checklist preceded the verifier command; real legal-input damage failure retained before test-controller direction correction",
+  "missing_harness_red": true,
+  "real_legal_input_pan_red": true,
+  "production_source_modified": false,
+  "sha256": {
+    "games/yuyuhakusho/verification/additional-arena-pan/missing-harness-red.json": "a32e48ec56c204c380884058ec3591975a2a5f0d91901707b81fef8a316d6dbe",
+    "games/yuyuhakusho/verification/additional-arena-pan/missing-harness-script.py.txt": "7d0c78b234c475ed4aadf72f029d359a7c70fb1c7a610f1a787e043391f40554",
+    "games/yuyuhakusho/verification/additional-arena-pan/damage-control-red.json": "e029cd4850048c7fa72cdae9993f75c1e8ef6c25fa09898382227b6452311477",
+    "games/yuyuhakusho/verification/additional-arena-pan/native/arena-2-discovery-failure.json": "ec38612f14830875ea8075d22c1985e48742bf7047701c618cfac2f260013e35",
+    "games/yuyuhakusho/verification/ARENA_PAN_FAILURES.md": "f2d54bda4668685053e93887640942da590b7d6706272750ccefa67dc095da73"
+  }
+}

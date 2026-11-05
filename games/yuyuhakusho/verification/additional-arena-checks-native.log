@@ -1,0 +1,15 @@
+native verify-animation-catalog-0 3 pass 15.744 seconds
+native verify-arena-assets-0 4 pass 17.826 seconds
+native verify-sprites-0 5 pass 63.064 seconds
+native verify-character-assets-0 4 pass 95.995 seconds
+native engine-0 51 pass 465.142 seconds
+native engine-2 51 pass 640.336 seconds
+native engine-1 51 pass 846.775 seconds
+native engine-3 51 pass 672.5 seconds
+native engine-4 50 pass 818.107 seconds
+native engine-5 50 pass 642.063 seconds
+native presentation-0 22 pass 60.061 seconds
+native runtimebridge-0 3 pass 76.22 seconds
+native engine-6 50 pass 627.46 seconds
+native engine-7 50 pass 504.104 seconds
+native 445 exact top-level tests pass

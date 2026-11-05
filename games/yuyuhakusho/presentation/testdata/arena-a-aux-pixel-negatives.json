@@ -1,0 +1,270 @@
+{
+  "pass": true,
+  "first_orchestration_correction": "Initial driver expected one total bad-expected mismatch; mode deliberately flips one pixel per frame, so corrected total is20. Production oracle/harness unchanged.",
+  "checks": [
+    {
+      "platform": "native",
+      "mode": "no-aux",
+      "argv": [
+        "/opt/homebrew/Cellar/go/1.26.2/libexec/bin/go",
+        "run",
+        "./cmd/verify-yuyu-arena-aux",
+        "-mode",
+        "no-aux"
+      ],
+      "exit_code": 1,
+      "elapsed_seconds": null,
+      "reused_first_negative_report": true,
+      "rejected": true,
+      "pixel_mismatches": 28224,
+      "aux_visibility_mismatches": 29063,
+      "error": null,
+      "report": "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-negative-native-no-aux.json",
+      "report_sha256": "e921464cc79f183ab8e6aa49eb071171d4f76459dc26a813b13e32e726c7b9ac",
+      "stderr": "exit status 1\n"
+    },
+    {
+      "platform": "native",
+      "mode": "wrong-bank",
+      "argv": [
+        "/opt/homebrew/Cellar/go/1.26.2/libexec/bin/go",
+        "run",
+        "./cmd/verify-yuyu-arena-aux",
+        "-mode",
+        "wrong-bank"
+      ],
+      "exit_code": 1,
+      "elapsed_seconds": null,
+      "reused_first_negative_report": true,
+      "rejected": true,
+      "pixel_mismatches": 0,
+      "aux_visibility_mismatches": 0,
+      "error": "frame 2700: sprite references unavailable arena auxiliary tiles",
+      "report": "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-negative-native-wrong-bank.json",
+      "report_sha256": "2f02fea194de6de7917605f4fcfdb622517b52ba8d32d4197ae573c247872721",
+      "stderr": "exit status 1\n"
+    },
+    {
+      "platform": "native",
+      "mode": "bad-x",
+      "argv": [
+        "/opt/homebrew/Cellar/go/1.26.2/libexec/bin/go",
+        "run",
+        "./cmd/verify-yuyu-arena-aux",
+        "-mode",
+        "bad-x"
+      ],
+      "exit_code": 1,
+      "elapsed_seconds": null,
+      "reused_first_negative_report": true,
+      "rejected": true,
+      "pixel_mismatches": 14089,
+      "aux_visibility_mismatches": 1242,
+      "error": null,
+      "report": "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-negative-native-bad-x.json",
+      "report_sha256": "bca337019a75bc8b543b8eeda7e08bc933c0ecedfdc41720d952fec7212f9a57",
+      "stderr": "exit status 1\n"
+    },
+    {
+      "platform": "native",
+      "mode": "bad-tile",
+      "argv": [
+        "/opt/homebrew/Cellar/go/1.26.2/libexec/bin/go",
+        "run",
+        "./cmd/verify-yuyu-arena-aux",
+        "-mode",
+        "bad-tile"
+      ],
+      "exit_code": 1,
+      "elapsed_seconds": null,
+      "reused_first_negative_report": true,
+      "rejected": true,
+      "pixel_mismatches": 23081,
+      "aux_visibility_mismatches": 6490,
+      "error": null,
+      "report": "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-negative-native-bad-tile.json",
+      "report_sha256": "b1b6dd688d3b239b9a712ea808a9ea0797b903dfa939115f823f89fa4748f497",
+      "stderr": "exit status 1\n"
+    },
+    {
+      "platform": "native",
+      "mode": "mask-all",
+      "argv": [
+        "/opt/homebrew/Cellar/go/1.26.2/libexec/bin/go",
+        "run",
+        "./cmd/verify-yuyu-arena-aux",
+        "-mode",
+        "mask-all"
+      ],
+      "exit_code": 1,
+      "elapsed_seconds": null,
+      "reused_first_negative_report": true,
+      "rejected": true,
+      "pixel_mismatches": 0,
+      "aux_visibility_mismatches": 0,
+      "error": "frame 2700: exclusion mask covers an original-visible auxiliary pixel",
+      "report": "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-negative-native-mask-all.json",
+      "report_sha256": "72cbf519605640f82bb0ee71d54eae2ce650735f96a4a1df1fadc6ea43fd76f2",
+      "stderr": "exit status 1\n"
+    },
+    {
+      "platform": "native",
+      "mode": "bad-expected",
+      "argv": [
+        "/opt/homebrew/Cellar/go/1.26.2/libexec/bin/go",
+        "run",
+        "./cmd/verify-yuyu-arena-aux",
+        "-mode",
+        "bad-expected"
+      ],
+      "exit_code": 1,
+      "elapsed_seconds": 0.21642779186367989,
+      "reused_first_negative_report": false,
+      "rejected": true,
+      "pixel_mismatches": 20,
+      "aux_visibility_mismatches": 0,
+      "error": null,
+      "report": "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-negative-native-bad-expected.json",
+      "report_sha256": "8fbaee37cf64a1e1346959e1c8e3fccd7a72b50220f61b0b869dca61bb658231",
+      "stderr": "exit status 1\n"
+    },
+    {
+      "platform": "wasm",
+      "mode": "no-aux",
+      "argv": [
+        "/opt/homebrew/Cellar/go/1.26.2/libexec/bin/go",
+        "run",
+        "-exec",
+        "/opt/homebrew/Cellar/go/1.26.2/libexec/lib/wasm/go_js_wasm_exec",
+        "./cmd/verify-yuyu-arena-aux",
+        "-mode",
+        "no-aux"
+      ],
+      "exit_code": 1,
+      "elapsed_seconds": 0.9254954997450113,
+      "reused_first_negative_report": false,
+      "rejected": true,
+      "pixel_mismatches": 28224,
+      "aux_visibility_mismatches": 29063,
+      "error": null,
+      "report": "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-negative-wasm-no-aux.json",
+      "report_sha256": "e921464cc79f183ab8e6aa49eb071171d4f76459dc26a813b13e32e726c7b9ac",
+      "stderr": "exit status 1\n"
+    },
+    {
+      "platform": "wasm",
+      "mode": "wrong-bank",
+      "argv": [
+        "/opt/homebrew/Cellar/go/1.26.2/libexec/bin/go",
+        "run",
+        "-exec",
+        "/opt/homebrew/Cellar/go/1.26.2/libexec/lib/wasm/go_js_wasm_exec",
+        "./cmd/verify-yuyu-arena-aux",
+        "-mode",
+        "wrong-bank"
+      ],
+      "exit_code": 1,
+      "elapsed_seconds": 0.8573642503470182,
+      "reused_first_negative_report": false,
+      "rejected": true,
+      "pixel_mismatches": 0,
+      "aux_visibility_mismatches": 0,
+      "error": "frame 2700: sprite references unavailable arena auxiliary tiles",
+      "report": "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-negative-wasm-wrong-bank.json",
+      "report_sha256": "2f02fea194de6de7917605f4fcfdb622517b52ba8d32d4197ae573c247872721",
+      "stderr": "exit status 1\n"
+    },
+    {
+      "platform": "wasm",
+      "mode": "bad-x",
+      "argv": [
+        "/opt/homebrew/Cellar/go/1.26.2/libexec/bin/go",
+        "run",
+        "-exec",
+        "/opt/homebrew/Cellar/go/1.26.2/libexec/lib/wasm/go_js_wasm_exec",
+        "./cmd/verify-yuyu-arena-aux",
+        "-mode",
+        "bad-x"
+      ],
+      "exit_code": 1,
+      "elapsed_seconds": 0.9364294167608023,
+      "reused_first_negative_report": false,
+      "rejected": true,
+      "pixel_mismatches": 14089,
+      "aux_visibility_mismatches": 1242,
+      "error": null,
+      "report": "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-negative-wasm-bad-x.json",
+      "report_sha256": "bca337019a75bc8b543b8eeda7e08bc933c0ecedfdc41720d952fec7212f9a57",
+      "stderr": "exit status 1\n"
+    },
+    {
+      "platform": "wasm",
+      "mode": "bad-tile",
+      "argv": [
+        "/opt/homebrew/Cellar/go/1.26.2/libexec/bin/go",
+        "run",
+        "-exec",
+        "/opt/homebrew/Cellar/go/1.26.2/libexec/lib/wasm/go_js_wasm_exec",
+        "./cmd/verify-yuyu-arena-aux",
+        "-mode",
+        "bad-tile"
+      ],
+      "exit_code": 1,
+      "elapsed_seconds": 0.9363922085613012,
+      "reused_first_negative_report": false,
+      "rejected": true,
+      "pixel_mismatches": 23081,
+      "aux_visibility_mismatches": 6490,
+      "error": null,
+      "report": "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-negative-wasm-bad-tile.json",
+      "report_sha256": "b1b6dd688d3b239b9a712ea808a9ea0797b903dfa939115f823f89fa4748f497",
+      "stderr": "exit status 1\n"
+    },
+    {
+      "platform": "wasm",
+      "mode": "mask-all",
+      "argv": [
+        "/opt/homebrew/Cellar/go/1.26.2/libexec/bin/go",
+        "run",
+        "-exec",
+        "/opt/homebrew/Cellar/go/1.26.2/libexec/lib/wasm/go_js_wasm_exec",
+        "./cmd/verify-yuyu-arena-aux",
+        "-mode",
+        "mask-all"
+      ],
+      "exit_code": 1,
+      "elapsed_seconds": 0.8434946658089757,
+      "reused_first_negative_report": false,
+      "rejected": true,
+      "pixel_mismatches": 0,
+      "aux_visibility_mismatches": 0,
+      "error": "frame 2700: exclusion mask covers an original-visible auxiliary pixel",
+      "report": "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-negative-wasm-mask-all.json",
+      "report_sha256": "72cbf519605640f82bb0ee71d54eae2ce650735f96a4a1df1fadc6ea43fd76f2",
+      "stderr": "exit status 1\n"
+    },
+    {
+      "platform": "wasm",
+      "mode": "bad-expected",
+      "argv": [
+        "/opt/homebrew/Cellar/go/1.26.2/libexec/bin/go",
+        "run",
+        "-exec",
+        "/opt/homebrew/Cellar/go/1.26.2/libexec/lib/wasm/go_js_wasm_exec",
+        "./cmd/verify-yuyu-arena-aux",
+        "-mode",
+        "bad-expected"
+      ],
+      "exit_code": 1,
+      "elapsed_seconds": 0.9404922919347882,
+      "reused_first_negative_report": false,
+      "rejected": true,
+      "pixel_mismatches": 20,
+      "aux_visibility_mismatches": 0,
+      "error": null,
+      "report": "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-negative-wasm-bad-expected.json",
+      "report_sha256": "8fbaee37cf64a1e1346959e1c8e3fccd7a72b50220f61b0b869dca61bb658231",
+      "stderr": "exit status 1\n"
+    }
+  ]
+}

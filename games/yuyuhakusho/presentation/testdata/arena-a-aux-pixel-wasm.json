@@ -1,0 +1,218 @@
+{
+  "pass": true,
+  "mode": "restored",
+  "frames": [
+    {
+      "frame": 2700,
+      "first_count": 30,
+      "compared_pixels": 67950,
+      "non_aux_excluded_pixels": 3730,
+      "aux_visible_pixels": 1913,
+      "aux_distinct_from_background": 1908,
+      "pixel_mismatches": 0,
+      "aux_visibility_mismatches": 0
+    },
+    {
+      "frame": 2720,
+      "first_count": 32,
+      "compared_pixels": 66402,
+      "non_aux_excluded_pixels": 5278,
+      "aux_visible_pixels": 1913,
+      "aux_distinct_from_background": 1908,
+      "pixel_mismatches": 0,
+      "aux_visibility_mismatches": 0
+    },
+    {
+      "frame": 2740,
+      "first_count": 27,
+      "compared_pixels": 67704,
+      "non_aux_excluded_pixels": 3976,
+      "aux_visible_pixels": 1858,
+      "aux_distinct_from_background": 1850,
+      "pixel_mismatches": 0,
+      "aux_visibility_mismatches": 0
+    },
+    {
+      "frame": 2760,
+      "first_count": 22,
+      "compared_pixels": 68507,
+      "non_aux_excluded_pixels": 3173,
+      "aux_visible_pixels": 1803,
+      "aux_distinct_from_background": 1787,
+      "pixel_mismatches": 0,
+      "aux_visibility_mismatches": 0
+    },
+    {
+      "frame": 2780,
+      "first_count": 24,
+      "compared_pixels": 68026,
+      "non_aux_excluded_pixels": 3654,
+      "aux_visible_pixels": 1994,
+      "aux_distinct_from_background": 1991,
+      "pixel_mismatches": 0,
+      "aux_visibility_mismatches": 0
+    },
+    {
+      "frame": 2800,
+      "first_count": 30,
+      "compared_pixels": 67305,
+      "non_aux_excluded_pixels": 4375,
+      "aux_visible_pixels": 1841,
+      "aux_distinct_from_background": 1827,
+      "pixel_mismatches": 0,
+      "aux_visibility_mismatches": 0
+    },
+    {
+      "frame": 2820,
+      "first_count": 21,
+      "compared_pixels": 67792,
+      "non_aux_excluded_pixels": 3888,
+      "aux_visible_pixels": 1655,
+      "aux_distinct_from_background": 1626,
+      "pixel_mismatches": 0,
+      "aux_visibility_mismatches": 0
+    },
+    {
+      "frame": 2850,
+      "first_count": 20,
+      "compared_pixels": 69238,
+      "non_aux_excluded_pixels": 2442,
+      "aux_visible_pixels": 1607,
+      "aux_distinct_from_background": 1578,
+      "pixel_mismatches": 0,
+      "aux_visibility_mismatches": 0
+    },
+    {
+      "frame": 2880,
+      "first_count": 18,
+      "compared_pixels": 68766,
+      "non_aux_excluded_pixels": 2914,
+      "aux_visible_pixels": 1896,
+      "aux_distinct_from_background": 1891,
+      "pixel_mismatches": 0,
+      "aux_visibility_mismatches": 0
+    },
+    {
+      "frame": 2910,
+      "first_count": 21,
+      "compared_pixels": 68229,
+      "non_aux_excluded_pixels": 3451,
+      "aux_visible_pixels": 1984,
+      "aux_distinct_from_background": 1978,
+      "pixel_mismatches": 0,
+      "aux_visibility_mismatches": 0
+    },
+    {
+      "frame": 2940,
+      "first_count": 18,
+      "compared_pixels": 68673,
+      "non_aux_excluded_pixels": 3007,
+      "aux_visible_pixels": 2635,
+      "aux_distinct_from_background": 2613,
+      "pixel_mismatches": 0,
+      "aux_visibility_mismatches": 0
+    },
+    {
+      "frame": 2970,
+      "first_count": 18,
+      "compared_pixels": 68735,
+      "non_aux_excluded_pixels": 2945,
+      "aux_visible_pixels": 1357,
+      "aux_distinct_from_background": 1353,
+      "pixel_mismatches": 0,
+      "aux_visibility_mismatches": 0
+    },
+    {
+      "frame": 3000,
+      "first_count": 16,
+      "compared_pixels": 69404,
+      "non_aux_excluded_pixels": 2276,
+      "aux_visible_pixels": 516,
+      "aux_distinct_from_background": 483,
+      "pixel_mismatches": 0,
+      "aux_visibility_mismatches": 0
+    },
+    {
+      "frame": 3050,
+      "first_count": 16,
+      "compared_pixels": 68653,
+      "non_aux_excluded_pixels": 3027,
+      "aux_visible_pixels": 537,
+      "aux_distinct_from_background": 481,
+      "pixel_mismatches": 0,
+      "aux_visibility_mismatches": 0
+    },
+    {
+      "frame": 3100,
+      "first_count": 19,
+      "compared_pixels": 68803,
+      "non_aux_excluded_pixels": 2877,
+      "aux_visible_pixels": 795,
+      "aux_distinct_from_background": 708,
+      "pixel_mismatches": 0,
+      "aux_visibility_mismatches": 0
+    },
+    {
+      "frame": 3150,
+      "first_count": 18,
+      "compared_pixels": 68466,
+      "non_aux_excluded_pixels": 3214,
+      "aux_visible_pixels": 795,
+      "aux_distinct_from_background": 708,
+      "pixel_mismatches": 0,
+      "aux_visibility_mismatches": 0
+    },
+    {
+      "frame": 3250,
+      "first_count": 18,
+      "compared_pixels": 68985,
+      "non_aux_excluded_pixels": 2695,
+      "aux_visible_pixels": 1187,
+      "aux_distinct_from_background": 1059,
+      "pixel_mismatches": 0,
+      "aux_visibility_mismatches": 0
+    },
+    {
+      "frame": 3350,
+      "first_count": 20,
+      "compared_pixels": 68975,
+      "non_aux_excluded_pixels": 2705,
+      "aux_visible_pixels": 795,
+      "aux_distinct_from_background": 708,
+      "pixel_mismatches": 0,
+      "aux_visibility_mismatches": 0
+    },
+    {
+      "frame": 3450,
+      "first_count": 17,
+      "compared_pixels": 69036,
+      "non_aux_excluded_pixels": 2644,
+      "aux_visible_pixels": 1187,
+      "aux_distinct_from_background": 1059,
+      "pixel_mismatches": 0,
+      "aux_visibility_mismatches": 0
+    },
+    {
+      "frame": 3550,
+      "first_count": 19,
+      "compared_pixels": 69205,
+      "non_aux_excluded_pixels": 2475,
+      "aux_visible_pixels": 795,
+      "aux_distinct_from_background": 708,
+      "pixel_mismatches": 0,
+      "aux_visibility_mismatches": 0
+    }
+  ],
+  "compared_pixels": 1368854,
+  "non_aux_excluded_pixels": 64746,
+  "aux_visible_pixels": 29063,
+  "aux_distinct_from_background": 28224,
+  "pixel_mismatches": 0,
+  "aux_visibility_mismatches": 0,
+  "source_gzip_sha256": {
+    "games/yuyuhakusho/data/arena-a-aux-assets.json.gz": "3eb8fd42cf1e675c91140f406833af7fde38968109749e0702a31f1471aa75b4",
+    "games/yuyuhakusho/data/arena-assets-a.json.gz": "fc95e4147eba1f158ef79a5e31374123e9f0d0359dd3041e7e0261f5f99743da",
+    "games/yuyuhakusho/presentation/testdata/additional-arena-presentation-reference.json.gz": "b9c135c02699e87b3a92c97ed8853fbe6afa6b0ca0faaf488172a3d9cdf78af8",
+    "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-reference.json.gz": "6d64523e849ea5f22432fad8c110c45f67ac0a795175b9e8189d710361339b28"
+  }
+}

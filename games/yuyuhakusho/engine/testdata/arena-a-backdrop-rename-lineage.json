@@ -1,0 +1,18 @@
+[
+  {
+    "path": "games/yuyuhakusho/engine/arena_a.go",
+    "before_sha256": "9ee526603a4161a10f26a3c0b637aadca76ccd66ff4da9bcf3b95bde765a553e",
+    "after_sha256": "d3623a14c7414838bbfcf1d0809a763f2223097e8723d990738a740aa99db86b",
+    "replacement": "VideoFlags -> BackdropColor; test ColumnMode -> BackdropColor; existing JSON key column_mode retained; values and assertions unchanged",
+    "current_public_feedback_sha256": "fc5ad9e205bc9bd4a6339fb39deb99be74061bdaf6c9e82fc110f22a8d97ce0c",
+    "post_rename_change": "Replace private arenaAFeedback with the shared ApplyArenaSceneFeedback; frozen assertions unchanged"
+  },
+  {
+    "path": "games/yuyuhakusho/engine/arena_a_test.go",
+    "before_sha256": "6f4e47ff0024c250967429b2c473529a16c5f9f5b53dff4fde03f4f82998ddf3",
+    "after_sha256": "b50e67901d506bed9d3d10372335494c96431d775f9562dd4a18a899e32a57af",
+    "replacement": "VideoFlags -> BackdropColor; test ColumnMode -> BackdropColor; existing JSON key column_mode retained; values and assertions unchanged",
+    "after_gofmt_sha256": "7b86f64c4dae54ec5693b3ff1bb99deb4f3c48349711ee8084dd7160196b7797",
+    "mechanical_only_verified": true
+  }
+]

@@ -1,0 +1,60 @@
+{
+  "scope": "Cold actual 3592 practice-ready whole-object passes against unique supplied original3602 control",
+  "arena": 4,
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture": {
+    "path": "scripts/yuyuhakusho/capture_arena_world_sessions.py",
+    "sha256": "2ff6006de45746d35806a29b6500b27eec8d84e2a03e654082232ebe3b1a5f42"
+  },
+  "inputs": {
+    "path": "docs/research/md-yuyuhakusho/arena-4-inputs.json",
+    "sha256": "a7cc2c1ba724533606bce8c102de9c012f2b3f0eeaf094519cfed9ca753a9365"
+  },
+  "control": {
+    "path": "games/yuyuhakusho/engine/testdata/arena-4-reference-frames.json",
+    "sha256": "f8c0cdbc1d4eeb3777118078674023da5702a9bb90bbd3b3ab839805b514ccfa"
+  },
+  "control_manifest": {
+    "path": "games/yuyuhakusho/engine/testdata/arena-4-reference-manifest.json",
+    "sha256": "d0a2c9df9922759a8d4a9ded2c5dae797c91dfc547113b6209273472a1cfaeb7"
+  },
+  "frames_checked": 3602,
+  "frames_match_original_control": true,
+  "checkpoint_restore": false,
+  "emulated_ram_writes": false,
+  "direct_cpu_calls": false,
+  "entry_frame_limit": 3600,
+  "drain_frames": 2,
+  "first_frame": 2700,
+  "last_frame": 3600,
+  "records": 901,
+  "object_calls": 8091,
+  "callbacks": {
+    "40990": 901,
+    "62116": 901,
+    "65144": 901,
+    "75368": 1802,
+    "82254": 19,
+    "84098": 901,
+    "84272": 64,
+    "84396": 452,
+    "85702": 348,
+    "126380": 901,
+    "134322": 901
+  },
+  "raw_arena_sprites": 0,
+  "fixture_sha256": "3e08ff4c3bc774df254959e6621bb36ba13af8cdd49aeaa86540d79f9bb98bca",
+  "gzip_sha256": "107306bc75aaf2f1f5d89a567c3c9fb62faf00de243060115ee71ca0e519802e",
+  "incomplete_calls": 0,
+  "errors": [],
+  "pass": true
+}

@@ -9,7 +9,7 @@ BUILD=ROOT/'.local/md-yuyuhakusho/local-player'
 def build():
     BUILD.mkdir(parents=True,exist_ok=True)
     temp=ROOT/'.local/md-yuyuhakusho/tmp';temp.mkdir(parents=True,exist_ok=True)
-    env=dict(os.environ,GOCACHE=str(ROOT/'.local/go-cache'),GOMODCACHE=str(ROOT/'.local/go-mod'),GOTMPDIR=str(temp),TMPDIR=str(temp))
+    env=dict(os.environ,GOCACHE=str(ROOT/'.local/go-cache'),GOMODCACHE=str(ROOT/'.local/go-mod'),GOTMPDIR=str(temp),TMPDIR=str(temp),TEST_TELEMETRY_DIR=str(ROOT/'.local/go-telemetry'))
     goroot=subprocess.run(['go','env','GOROOT'],cwd=ROOT,env=env,text=True,capture_output=True,check=True).stdout.strip()
     subprocess.run(['go','build','-o',str(BUILD/'player.wasm'),'./games/yuyuhakusho/cmd/local-player-wasm'],cwd=ROOT,env=dict(env,GOOS='js',GOARCH='wasm'),check=True)
     shutil.copyfile(Path(goroot)/'lib/wasm/wasm_exec.js',BUILD/'wasm_exec.js')
@@ -26,6 +26,8 @@ class PlayerHandler(BaseHTTPRequestHandler):
             mime='text/html; charset=utf-8'
         else:
             assets={'/rules.json.gz':'chu-world-rules.json.gz','/sprites.json.gz':'world-sprites.json.gz','/arena.json.gz':'arena-assets-default.json.gz','/hud.json.gz':'hud-assets.json.gz'}
+            assets.update({f'/arena-{arena:x}.json.gz':f'arena-assets-{arena:x}.json.gz' for arena in (2,4,6,8,10,12,14)})
+            assets['/arena-a-aux.json.gz']='arena-a-aux-assets.json.gz'
             if path in assets:
                 source=ROOT/'games/yuyuhakusho/data'/assets[path]
             else:

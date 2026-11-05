@@ -1,0 +1,17 @@
+{
+  "command": [
+    "/opt/homebrew/bin/go",
+    "test",
+    "-json",
+    "-exec",
+    "/opt/homebrew/Cellar/go/1.26.2/libexec/lib/wasm/go_js_wasm_exec",
+    "./games/yuyuhakusho/runtimebridge",
+    "./games/yuyuhakusho/presentation",
+    "./games/yuyuhakusho/engine",
+    "-run",
+    "^(TestAdditionalArena.*|TestArenaSceneFrameRejectsTruncatedSources|TestArenaBackdropJSONPreservesCanonicalValue|TestArenaAuxSprite.*|TestRasterInputStorageLegacyJSON)$",
+    "-count=1"
+  ],
+  "exit_code": 0,
+  "log_sha256": "085db923cced9da315ab772732ddbbc3880f2168bb14729c0ec99bec46b1fd53"
+}

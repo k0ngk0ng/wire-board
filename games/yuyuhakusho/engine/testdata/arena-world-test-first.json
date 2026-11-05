@@ -1,0 +1,35 @@
+{
+  "scope": "Tests and CPU whole-pass fixtures frozen before world/session integration production edits",
+  "frozen_at": "2026-11-05T08:13:40.911904+00:00",
+  "unsupported_callback_red": true,
+  "new_contract_symbols_red": true,
+  "sha256": {
+    "games/yuyuhakusho/engine/ARENA_WORLD_SESSIONS_FAILURES.md": "18e25351939c3d248aa3f15bd6b8c0f267f397ba9bffb58b8e8d8db159e28ee0",
+    "games/yuyuhakusho/engine/arena_world_sessions_test.go": "964f987eb76a69cfcbe759dc96d1998117eaef8613be84a2d002b15464e86e6c",
+    "games/yuyuhakusho/engine/arena_world_rules_sessions_test.go": "94c469fae0df95e0adc4777cf1008b1014a35f7f5a82e0f620da13b395003eb6",
+    "games/yuyuhakusho/engine/arena_world_boundaries_test.go": "04a9755e50149ef468f6e43c303d99d4ff6e5c486a35b4ba0c87b51bd52bf9fd",
+    "games/yuyuhakusho/engine/chu_world_test.go": "ee4028a17220b9f137035eab46b70040ce722458d243174289d9b01b3255c48d",
+    "games/yuyuhakusho/engine/chu_world.go": "978702b89b4108d3334420a2099feddb04a93ce83af0f97da6dcb72ff4c4719f",
+    "games/yuyuhakusho/engine/chu_session.go": "93d0c55a3447a0c9cd97c9d64a5f14403be462e68531259dd60091ecd3c77c38",
+    "scripts/yuyuhakusho/export_chu_world_rules.py": "5e59c171f5ebaed7fdd07c733949f84e3c97f779ee34efcdccc2904d0bd643be",
+    "scripts/yuyuhakusho/capture_arena_world_sessions.py": "2ff6006de45746d35806a29b6500b27eec8d84e2a03e654082232ebe3b1a5f42",
+    "games/yuyuhakusho/engine/testdata/arena-world-unsupported-red.jsonl": "336438295e8e13fa1bb4279a1df8ae49c887a34d026e327a99dfd458ab288e6a",
+    "games/yuyuhakusho/engine/testdata/arena-world-contract-symbols-red.txt": "1ca6eeda6f392155d845971d3d841ffd802f2d96ff965756a492dc7ae600e3d9",
+    "games/yuyuhakusho/engine/testdata/arena-world-2-manifest.json": "cdf0d1766490bd21c0c08f33344aac286a03fb314197eebd025961a8a87b5519",
+    "games/yuyuhakusho/engine/testdata/arena-world-4-manifest.json": "8e7504fb6f7b70c8ade6e8a3df23a4c6c2186cf5c2b2c16abe68f589c1083eda",
+    "games/yuyuhakusho/engine/testdata/arena-world-6-manifest.json": "e8fb074becb7fd8ecf9d7c7099ff9b64580b7b6a9bfc395dc2da82db57db2361",
+    "games/yuyuhakusho/engine/testdata/arena-world-8-manifest.json": "6bdbacdb751a631efdaa698ee1467f44ba0b655717064864586bfeab7c79ab22",
+    "games/yuyuhakusho/engine/testdata/arena-world-a-manifest.json": "3bbc39b02935a93725b482067680258f44e88c7a3a42cf106115e8d0efdfddd5",
+    "games/yuyuhakusho/engine/testdata/arena-world-c-manifest.json": "67711c6e977cae360ef4b00ca77b9b5b295ad8a823fcb06d182d0dbc7181f3ac",
+    "games/yuyuhakusho/engine/testdata/arena-world-e-manifest.json": "735798be5f35c239587cbd0a0bb497e6fc96dcc7535254de5a07d460487aed7c"
+  },
+  "adapter_corrections": [
+    {
+      "path": "games/yuyuhakusho/engine/arena_world_boundaries_test.go",
+      "before_sha256": "04a9755e50149ef468f6e43c303d99d4ff6e5c486a35b4ba0c87b51bd52bf9fd",
+      "after_sha256": "914967c118bbdce61062ecdb11c332918b63eefc86a10ee76705719076ee3419",
+      "reason": "Existing CPU fixture explicitly marks reference_only feedback reads outside represented HUD/row storage; integration adapter now requires atomic rejection, matching the pre-existing callback test contract. No production boundary or fixture changed.",
+      "failure_log": "games/yuyuhakusho/engine/testdata/arena-world-boundary-adapter-red.jsonl"
+    }
+  ]
+}

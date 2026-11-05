@@ -1,0 +1,26 @@
+{"Time":"2026-11-05T15:50:31.72141+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-05T15:50:32.100411+08:00","Action":"run","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow"}
+{"Time":"2026-11-05T15:50:32.100463+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow","Output":"=== RUN   TestArenaSceneFeedbackRejectsLongOverflow\n"}
+{"Time":"2026-11-05T15:50:32.100475+08:00","Action":"run","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow/2147483646"}
+{"Time":"2026-11-05T15:50:32.100481+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow/2147483646","Output":"=== RUN   TestArenaSceneFeedbackRejectsLongOverflow/2147483646\n"}
+{"Time":"2026-11-05T15:50:32.100489+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow/2147483646","Output":"    arena_feedback_overflow_test.go:14: feedback panicked on unowned long source 2147483646: runtime error: index out of range [-1073738497]\n"}
+{"Time":"2026-11-05T15:50:32.100502+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow/2147483646","Output":"--- FAIL: TestArenaSceneFeedbackRejectsLongOverflow/2147483646 (0.00s)\n"}
+{"Time":"2026-11-05T15:50:32.100505+08:00","Action":"fail","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow/2147483646","Elapsed":0}
+{"Time":"2026-11-05T15:50:32.100509+08:00","Action":"run","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow/2147483392"}
+{"Time":"2026-11-05T15:50:32.100511+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow/2147483392","Output":"=== RUN   TestArenaSceneFeedbackRejectsLongOverflow/2147483392\n"}
+{"Time":"2026-11-05T15:50:32.100513+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow/2147483392","Output":"    arena_feedback_overflow_test.go:14: feedback panicked on unowned long source 2147483392: runtime error: index out of range [-1073738624]\n"}
+{"Time":"2026-11-05T15:50:32.100515+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow/2147483392","Output":"--- FAIL: TestArenaSceneFeedbackRejectsLongOverflow/2147483392 (0.00s)\n"}
+{"Time":"2026-11-05T15:50:32.100518+08:00","Action":"fail","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow/2147483392","Elapsed":0}
+{"Time":"2026-11-05T15:50:32.10052+08:00","Action":"run","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow/-2147483648"}
+{"Time":"2026-11-05T15:50:32.100522+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow/-2147483648","Output":"=== RUN   TestArenaSceneFeedbackRejectsLongOverflow/-2147483648\n"}
+{"Time":"2026-11-05T15:50:32.100524+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow/-2147483648","Output":"--- PASS: TestArenaSceneFeedbackRejectsLongOverflow/-2147483648 (0.00s)\n"}
+{"Time":"2026-11-05T15:50:32.100526+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow/-2147483648","Elapsed":0}
+{"Time":"2026-11-05T15:50:32.100528+08:00","Action":"run","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow/-2147483646"}
+{"Time":"2026-11-05T15:50:32.10053+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow/-2147483646","Output":"=== RUN   TestArenaSceneFeedbackRejectsLongOverflow/-2147483646\n"}
+{"Time":"2026-11-05T15:50:32.100532+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow/-2147483646","Output":"--- PASS: TestArenaSceneFeedbackRejectsLongOverflow/-2147483646 (0.00s)\n"}
+{"Time":"2026-11-05T15:50:32.10054+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow/-2147483646","Elapsed":0}
+{"Time":"2026-11-05T15:50:32.100543+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow","Output":"--- FAIL: TestArenaSceneFeedbackRejectsLongOverflow (0.00s)\n"}
+{"Time":"2026-11-05T15:50:32.100544+08:00","Action":"fail","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow","Elapsed":0}
+{"Time":"2026-11-05T15:50:32.100546+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\n"}
+{"Time":"2026-11-05T15:50:32.100766+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\tcommand-line-arguments\t0.379s\n"}
+{"Time":"2026-11-05T15:50:32.100778+08:00","Action":"fail","Package":"command-line-arguments","Elapsed":0.379}

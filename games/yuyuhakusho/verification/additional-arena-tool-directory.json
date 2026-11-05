@@ -1,0 +1,10 @@
+{
+  "scope": "Local Go telemetry directory containment; no further global configuration writes without user approval",
+  "workspace_directory": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+  "mode": "off",
+  "global_mode_path": "/Users/jason/Library/Application Support/go/telemetry/mode",
+  "observed_prior_mode": "local",
+  "accidental_mode": "off",
+  "restoration_authorization": "pending user response",
+  "note": "GOTELEMETRY=off is not a supported environment override in this Go build. TEST_TELEMETRY_DIR redirects normal tool data but does not scope the special go telemetry subcommand; do not invoke that subcommand for workspace-only setup."
+}

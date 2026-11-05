@@ -1,0 +1,218 @@
+[
+  {
+    "start": 180,
+    "end": 185,
+    "buttons": [
+      3
+    ],
+    "port": 0
+  },
+  {
+    "start": 360,
+    "end": 365,
+    "buttons": [
+      3
+    ],
+    "port": 0
+  },
+  {
+    "start": 650,
+    "end": 655,
+    "buttons": [
+      3
+    ],
+    "port": 0
+  },
+  {
+    "start": 800,
+    "end": 805,
+    "buttons": [
+      0
+    ],
+    "port": 0
+  },
+  {
+    "start": 910,
+    "end": 912,
+    "buttons": [
+      5
+    ],
+    "port": 0
+  },
+  {
+    "start": 950,
+    "end": 955,
+    "buttons": [
+      0
+    ],
+    "port": 0
+  },
+  {
+    "start": 1000,
+    "end": 1060,
+    "buttons": [
+      7
+    ],
+    "port": 0
+  },
+  {
+    "start": 1100,
+    "end": 1104,
+    "buttons": [
+      1
+    ],
+    "port": 0
+  },
+  {
+    "start": 1150,
+    "end": 1154,
+    "buttons": [
+      0
+    ],
+    "port": 0
+  },
+  {
+    "start": 1250,
+    "end": 1254,
+    "buttons": [
+      1
+    ],
+    "port": 0
+  },
+  {
+    "start": 1300,
+    "end": 1304,
+    "buttons": [
+      3
+    ],
+    "port": 0
+  },
+  {
+    "start": 1600,
+    "end": 1604,
+    "buttons": [
+      0
+    ],
+    "port": 0
+  },
+  {
+    "start": 1720,
+    "end": 1722,
+    "buttons": [
+      6
+    ],
+    "port": 0
+  },
+  {
+    "start": 1820,
+    "end": 1822,
+    "buttons": [
+      6
+    ],
+    "port": 0
+  },
+  {
+    "start": 2120,
+    "end": 2124,
+    "buttons": [
+      0
+    ],
+    "port": 0
+  },
+  {
+    "start": 2750,
+    "end": 2840,
+    "buttons": [
+      7
+    ],
+    "port": 0
+  },
+  {
+    "start": 2900,
+    "end": 2904,
+    "buttons": [
+      1
+    ],
+    "port": 0
+  },
+  {
+    "start": 2950,
+    "end": 2954,
+    "buttons": [
+      0
+    ],
+    "port": 0
+  },
+  {
+    "start": 3000,
+    "end": 3004,
+    "buttons": [
+      8
+    ],
+    "port": 0
+  },
+  {
+    "start": 3050,
+    "end": 3054,
+    "buttons": [
+      4
+    ],
+    "port": 0
+  },
+  {
+    "start": 3100,
+    "end": 3190,
+    "buttons": [
+      6
+    ],
+    "port": 0
+  },
+  {
+    "start": 3250,
+    "end": 3254,
+    "buttons": [
+      1
+    ],
+    "port": 0
+  },
+  {
+    "start": 3300,
+    "end": 3304,
+    "buttons": [
+      0
+    ],
+    "port": 0
+  },
+  {
+    "start": 3350,
+    "end": 3354,
+    "buttons": [
+      8
+    ],
+    "port": 0
+  },
+  {
+    "start": 3400,
+    "end": 3404,
+    "buttons": [
+      4
+    ],
+    "port": 0
+  },
+  {
+    "start": 3450,
+    "end": 3500,
+    "buttons": [
+      7
+    ],
+    "port": 0
+  },
+  {
+    "start": 3550,
+    "end": 3554,
+    "buttons": [
+      0
+    ],
+    "port": 0
+  }
+]

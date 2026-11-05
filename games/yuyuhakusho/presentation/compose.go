@@ -48,6 +48,7 @@ type Part struct {
 	Palette                    uint8
 	FlipX, FlipY, HighPriority bool
 	SourceXor                  uint16 // Source variant flags retained for exact queue adapters.
+	ArenaAux                   bool   `json:",omitempty"` // Selected arena's immutable local tile bank.
 }
 
 type TileTransfer struct {

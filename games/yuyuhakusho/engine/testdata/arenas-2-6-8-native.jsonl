@@ -1,0 +1,61 @@
+{"Time":"2026-11-05T15:52:36.326888+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-05T15:52:36.868665+08:00","Action":"run","Package":"command-line-arguments","Test":"TestArena268OriginalCallbacks"}
+{"Time":"2026-11-05T15:52:36.868811+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArena268OriginalCallbacks","Output":"=== RUN   TestArena268OriginalCallbacks\n"}
+{"Time":"2026-11-05T15:52:36.868841+08:00","Action":"run","Package":"command-line-arguments","Test":"TestArena268OriginalCallbacks/arena2-oracle"}
+{"Time":"2026-11-05T15:52:36.86886+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArena268OriginalCallbacks/arena2-oracle","Output":"=== RUN   TestArena268OriginalCallbacks/arena2-oracle\n"}
+{"Time":"2026-11-05T15:52:39.991259+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArena268OriginalCallbacks/arena2-oracle","Output":"    arenas_2_6_8_test.go:462: arena2-oracle: 1205 complete original CPU callbacks\n"}
+{"Time":"2026-11-05T15:52:39.99128+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArena268OriginalCallbacks/arena2-oracle","Output":"--- PASS: TestArena268OriginalCallbacks/arena2-oracle (3.12s)\n"}
+{"Time":"2026-11-05T15:52:39.991283+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestArena268OriginalCallbacks/arena2-oracle","Elapsed":3.12}
+{"Time":"2026-11-05T15:52:39.991307+08:00","Action":"run","Package":"command-line-arguments","Test":"TestArena268OriginalCallbacks/arena2-boundaries"}
+{"Time":"2026-11-05T15:52:39.991308+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArena268OriginalCallbacks/arena2-boundaries","Output":"=== RUN   TestArena268OriginalCallbacks/arena2-boundaries\n"}
+{"Time":"2026-11-05T15:52:46.541498+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArena268OriginalCallbacks/arena2-boundaries","Output":"    arenas_2_6_8_test.go:462: arena2-boundaries: 364 complete original CPU callbacks\n"}
+{"Time":"2026-11-05T15:52:46.541515+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArena268OriginalCallbacks/arena2-boundaries","Output":"--- PASS: TestArena268OriginalCallbacks/arena2-boundaries (6.55s)\n"}
+{"Time":"2026-11-05T15:52:46.541524+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestArena268OriginalCallbacks/arena2-boundaries","Elapsed":6.55}
+{"Time":"2026-11-05T15:52:46.541553+08:00","Action":"run","Package":"command-line-arguments","Test":"TestArena268OriginalCallbacks/arena6-oracle"}
+{"Time":"2026-11-05T15:52:46.541556+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArena268OriginalCallbacks/arena6-oracle","Output":"=== RUN   TestArena268OriginalCallbacks/arena6-oracle\n"}
+{"Time":"2026-11-05T15:52:48.717954+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArena268OriginalCallbacks/arena6-oracle","Output":"    arenas_2_6_8_test.go:462: arena6-oracle: 1205 complete original CPU callbacks\n"}
+{"Time":"2026-11-05T15:52:48.71797+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArena268OriginalCallbacks/arena6-oracle","Output":"--- PASS: TestArena268OriginalCallbacks/arena6-oracle (2.18s)\n"}
+{"Time":"2026-11-05T15:52:48.717973+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestArena268OriginalCallbacks/arena6-oracle","Elapsed":2.18}
+{"Time":"2026-11-05T15:52:48.71799+08:00","Action":"run","Package":"command-line-arguments","Test":"TestArena268OriginalCallbacks/arena6-boundaries"}
+{"Time":"2026-11-05T15:52:48.717992+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArena268OriginalCallbacks/arena6-boundaries","Output":"=== RUN   TestArena268OriginalCallbacks/arena6-boundaries\n"}
+{"Time":"2026-11-05T15:52:55.529297+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArena268OriginalCallbacks/arena6-boundaries","Output":"    arenas_2_6_8_test.go:462: arena6-boundaries: 364 complete original CPU callbacks\n"}
+{"Time":"2026-11-05T15:52:55.529309+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArena268OriginalCallbacks/arena6-boundaries","Output":"--- PASS: TestArena268OriginalCallbacks/arena6-boundaries (6.81s)\n"}
+{"Time":"2026-11-05T15:52:55.529311+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestArena268OriginalCallbacks/arena6-boundaries","Elapsed":6.81}
+{"Time":"2026-11-05T15:52:55.52933+08:00","Action":"run","Package":"command-line-arguments","Test":"TestArena268OriginalCallbacks/arena8-oracle"}
+{"Time":"2026-11-05T15:52:55.529332+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArena268OriginalCallbacks/arena8-oracle","Output":"=== RUN   TestArena268OriginalCallbacks/arena8-oracle\n"}
+{"Time":"2026-11-05T15:52:57.9092+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArena268OriginalCallbacks/arena8-oracle","Output":"    arenas_2_6_8_test.go:462: arena8-oracle: 1204 complete original CPU callbacks\n"}
+{"Time":"2026-11-05T15:52:57.909217+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArena268OriginalCallbacks/arena8-oracle","Output":"--- PASS: TestArena268OriginalCallbacks/arena8-oracle (2.38s)\n"}
+{"Time":"2026-11-05T15:52:57.90922+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestArena268OriginalCallbacks/arena8-oracle","Elapsed":2.38}
+{"Time":"2026-11-05T15:52:57.909238+08:00","Action":"run","Package":"command-line-arguments","Test":"TestArena268OriginalCallbacks/arena8-boundaries"}
+{"Time":"2026-11-05T15:52:57.90924+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArena268OriginalCallbacks/arena8-boundaries","Output":"=== RUN   TestArena268OriginalCallbacks/arena8-boundaries\n"}
+{"Time":"2026-11-05T15:53:05.015444+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArena268OriginalCallbacks/arena8-boundaries","Output":"    arenas_2_6_8_test.go:462: arena8-boundaries: 364 complete original CPU callbacks\n"}
+{"Time":"2026-11-05T15:53:05.01547+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArena268OriginalCallbacks/arena8-boundaries","Output":"--- PASS: TestArena268OriginalCallbacks/arena8-boundaries (7.11s)\n"}
+{"Time":"2026-11-05T15:53:05.015472+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestArena268OriginalCallbacks/arena8-boundaries","Elapsed":7.11}
+{"Time":"2026-11-05T15:53:05.015484+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArena268OriginalCallbacks","Output":"--- PASS: TestArena268OriginalCallbacks (28.15s)\n"}
+{"Time":"2026-11-05T15:53:05.015516+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestArena268OriginalCallbacks","Elapsed":28.15}
+{"Time":"2026-11-05T15:53:05.015519+08:00","Action":"run","Package":"command-line-arguments","Test":"TestArena268SingleInitialStreams"}
+{"Time":"2026-11-05T15:53:05.015521+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArena268SingleInitialStreams","Output":"=== RUN   TestArena268SingleInitialStreams\n"}
+{"Time":"2026-11-05T15:53:05.015546+08:00","Action":"run","Package":"command-line-arguments","Test":"TestArena268SingleInitialStreams/arena2-sequences"}
+{"Time":"2026-11-05T15:53:05.015548+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArena268SingleInitialStreams/arena2-sequences","Output":"=== RUN   TestArena268SingleInitialStreams/arena2-sequences\n"}
+{"Time":"2026-11-05T15:53:09.298981+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArena268SingleInitialStreams/arena2-sequences","Output":"    arenas_2_6_8_test.go:496: arena2-sequences: 960 original steps from three initial states\n"}
+{"Time":"2026-11-05T15:53:09.299008+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArena268SingleInitialStreams/arena2-sequences","Output":"--- PASS: TestArena268SingleInitialStreams/arena2-sequences (4.28s)\n"}
+{"Time":"2026-11-05T15:53:09.29901+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestArena268SingleInitialStreams/arena2-sequences","Elapsed":4.28}
+{"Time":"2026-11-05T15:53:09.299084+08:00","Action":"run","Package":"command-line-arguments","Test":"TestArena268SingleInitialStreams/arena6-sequences"}
+{"Time":"2026-11-05T15:53:09.299087+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArena268SingleInitialStreams/arena6-sequences","Output":"=== RUN   TestArena268SingleInitialStreams/arena6-sequences\n"}
+{"Time":"2026-11-05T15:53:14.482212+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArena268SingleInitialStreams/arena6-sequences","Output":"    arenas_2_6_8_test.go:496: arena6-sequences: 960 original steps from three initial states\n"}
+{"Time":"2026-11-05T15:53:14.482228+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArena268SingleInitialStreams/arena6-sequences","Output":"--- PASS: TestArena268SingleInitialStreams/arena6-sequences (5.18s)\n"}
+{"Time":"2026-11-05T15:53:14.482245+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestArena268SingleInitialStreams/arena6-sequences","Elapsed":5.18}
+{"Time":"2026-11-05T15:53:14.482282+08:00","Action":"run","Package":"command-line-arguments","Test":"TestArena268SingleInitialStreams/arena8-sequences"}
+{"Time":"2026-11-05T15:53:14.482284+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArena268SingleInitialStreams/arena8-sequences","Output":"=== RUN   TestArena268SingleInitialStreams/arena8-sequences\n"}
+{"Time":"2026-11-05T15:53:18.636054+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArena268SingleInitialStreams/arena8-sequences","Output":"    arenas_2_6_8_test.go:496: arena8-sequences: 960 original steps from three initial states\n"}
+{"Time":"2026-11-05T15:53:18.636067+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArena268SingleInitialStreams/arena8-sequences","Output":"--- PASS: TestArena268SingleInitialStreams/arena8-sequences (4.15s)\n"}
+{"Time":"2026-11-05T15:53:18.636077+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestArena268SingleInitialStreams/arena8-sequences","Elapsed":4.15}
+{"Time":"2026-11-05T15:53:18.636089+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArena268SingleInitialStreams","Output":"--- PASS: TestArena268SingleInitialStreams (13.62s)\n"}
+{"Time":"2026-11-05T15:53:18.636098+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestArena268SingleInitialStreams","Elapsed":13.62}
+{"Time":"2026-11-05T15:53:18.636114+08:00","Action":"run","Package":"command-line-arguments","Test":"TestArena268InvalidDataIsAtomic"}
+{"Time":"2026-11-05T15:53:18.636116+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArena268InvalidDataIsAtomic","Output":"=== RUN   TestArena268InvalidDataIsAtomic\n"}
+{"Time":"2026-11-05T15:53:24.878071+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArena268InvalidDataIsAtomic","Output":"--- PASS: TestArena268InvalidDataIsAtomic (6.24s)\n"}
+{"Time":"2026-11-05T15:53:24.878085+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestArena268InvalidDataIsAtomic","Elapsed":6.24}
+{"Time":"2026-11-05T15:53:24.878089+08:00","Action":"output","Package":"command-line-arguments","Output":"PASS\n"}
+{"Time":"2026-11-05T15:53:25.908659+08:00","Action":"output","Package":"command-line-arguments","Output":"ok  \tcommand-line-arguments\t49.582s\n"}
+{"Time":"2026-11-05T15:53:25.908695+08:00","Action":"pass","Package":"command-line-arguments","Elapsed":49.582}

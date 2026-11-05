@@ -1,0 +1,337 @@
+{
+  "pass": true,
+  "scope": "Arena offset2 ROM-bound static A/B indexed material; scene rules and HUD are separate",
+  "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+  "arena_offset": 2,
+  "producer_sha256": "5e8916289bce45697a89327c7a1f681e81a5a88ccb7bae00501b61e7635f8c32",
+  "compression_decoder_sha256": "df8c8fff4f3b1d9b2f8d9e556b2b861527d4d033802874bd3d24a2892955817a",
+  "reference_sha256": "a39b6cdf510da95b1ea9a532bccdb0dae67f3027d60f681b609f16de3893ae41",
+  "reference_gzip_sha256": "34d1f1754bb551ff24a9cd1a3fe60c452a97e8b9315889353dccac4f82f3ab16",
+  "catalog_sha256": "a066b38c515b10b69c606cf5bb64d8cfbb73f03e7248e0dbfc32e3032c167fdb",
+  "gzip_sha256": "baf59b615e155f791e409b60e87cbe44ea43ce997230d426675c5cf6302709f5",
+  "gzip_bytes": 12093,
+  "tiles": 480,
+  "plane_cells": 4096,
+  "limits": [
+    "Selected original static A/B material only",
+    "Natural pixel validation is reported separately",
+    "Camera, dynamic palettes and HUD are independent runtime inputs"
+  ],
+  "resource_binding": {
+    "arena_offset": 2,
+    "scene_behavior": 133856,
+    "resource_list": 137052,
+    "list_sha256": "8f5e33bb4959f35228574e2cd3b4bad372dfbcbfc30aa63c3a9996b8fb56b9da",
+    "resources": [
+      {
+        "kind": 6,
+        "source": 2612096,
+        "destination": 0,
+        "encoded_bytes": 305,
+        "encoded_sha256": "e8c8053c38485b230756ef379958426112e50623c5a6cb9a6a415d7d7e194fa5"
+      },
+      {
+        "kind": 6,
+        "source": 2612404,
+        "destination": 6144,
+        "encoded_bytes": 6498,
+        "encoded_sha256": "6f8346b2486b2bdf2ec22c312de4264a660d3261089ed4cf313d5865b354e782"
+      },
+      {
+        "kind": 6,
+        "source": 2665874,
+        "destination": 32768,
+        "encoded_bytes": 4179,
+        "encoded_sha256": "6babd8519f4fccf62eb16fd8d4c11937384e29cfa49e24cb198450e216b813a2"
+      },
+      {
+        "kind": 6,
+        "source": 2670056,
+        "destination": 40960,
+        "encoded_bytes": 4531,
+        "encoded_sha256": "f994db4220198b592a8807da4845e239ef85c1215880dc3c44e3d392c8c30683"
+      },
+      {
+        "kind": 6,
+        "source": 2674590,
+        "destination": 49152,
+        "encoded_bytes": 1159,
+        "encoded_sha256": "5204af94932773eb47c0578dd8488e58f917c0b40d7d177e5ccbf3e93d70c281"
+      },
+      {
+        "kind": 6,
+        "source": 2675752,
+        "destination": 57344,
+        "encoded_bytes": 1224,
+        "encoded_sha256": "3f483888b6354212c61beb635f20ee7899dc501b1457a06a75cfe4af7be8df92"
+      },
+      {
+        "kind": 0,
+        "source": 2676978,
+        "destination": 57472,
+        "length": 32
+      }
+    ]
+  },
+  "decoded_resources": [
+    {
+      "source": 2612096,
+      "destination": 0,
+      "decoded_bytes": 512,
+      "decoded_sha256": "907e590de5a1ab9522d62e29f307b3d2cd84dd15fa97baf9796e9f2f8e2a49f8",
+      "token_counts": [
+        37,
+        7,
+        2,
+        4,
+        72,
+        2,
+        0,
+        1
+      ],
+      "encoded_bytes": 305,
+      "encoded_sha256": "e8c8053c38485b230756ef379958426112e50623c5a6cb9a6a415d7d7e194fa5"
+    },
+    {
+      "source": 2612404,
+      "destination": 6144,
+      "decoded_bytes": 10176,
+      "decoded_sha256": "26b68ec6f0b880e4eca3880bbf2a07df732563391d39b3c606ad4ea6090951d7",
+      "token_counts": [
+        656,
+        128,
+        25,
+        61,
+        1933,
+        60,
+        23,
+        12
+      ],
+      "encoded_bytes": 6498,
+      "encoded_sha256": "6f8346b2486b2bdf2ec22c312de4264a660d3261089ed4cf313d5865b354e782"
+    },
+    {
+      "source": 2665874,
+      "destination": 32768,
+      "decoded_bytes": 8192,
+      "decoded_sha256": "e81997b9f5de960e1a35797ec827111609f5a7b949d1658b0cb3b78a04b0ce28",
+      "token_counts": [
+        358,
+        161,
+        6,
+        41,
+        1072,
+        106,
+        28,
+        8
+      ],
+      "encoded_bytes": 4179,
+      "encoded_sha256": "6babd8519f4fccf62eb16fd8d4c11937384e29cfa49e24cb198450e216b813a2"
+    },
+    {
+      "source": 2670056,
+      "destination": 40960,
+      "decoded_bytes": 8192,
+      "decoded_sha256": "d82b6bf5f83b6ecfb0bad52cd048c3523f108df3e0658a70ae3b61d9befeeb92",
+      "token_counts": [
+        370,
+        92,
+        22,
+        51,
+        1374,
+        45,
+        15,
+        4
+      ],
+      "encoded_bytes": 4531,
+      "encoded_sha256": "f994db4220198b592a8807da4845e239ef85c1215880dc3c44e3d392c8c30683"
+    },
+    {
+      "source": 2674590,
+      "destination": 49152,
+      "decoded_bytes": 4096,
+      "decoded_sha256": "058fd58c55ac3a3234541c1ea120d0ff51b16b86ad7e2a9c545b42fbb9e2f483",
+      "token_counts": [
+        26,
+        0,
+        39,
+        63,
+        78,
+        15,
+        9,
+        9
+      ],
+      "encoded_bytes": 1159,
+      "encoded_sha256": "5204af94932773eb47c0578dd8488e58f917c0b40d7d177e5ccbf3e93d70c281"
+    },
+    {
+      "source": 2675752,
+      "destination": 57344,
+      "decoded_bytes": 4096,
+      "decoded_sha256": "897c87865131e1fa5d319cbbd632d984f9bc0acbbb47dae3ff84c4c02b50af96",
+      "token_counts": [
+        40,
+        0,
+        36,
+        75,
+        27,
+        3,
+        2,
+        38
+      ],
+      "encoded_bytes": 1224,
+      "encoded_sha256": "3f483888b6354212c61beb635f20ee7899dc501b1457a06a75cfe4af7be8df92"
+    }
+  ],
+  "unwritten_map_ranges": [],
+  "loaded_original_frames": [
+    {
+      "frame": 2700,
+      "video_next_frame": 2701,
+      "active_vram_sha256": "685028c904ca54b2d127bc084df4f5fdc0cfbc86868027bc9c2b48045573aabe",
+      "ram_sha256": "121800e599c492cedb736fd07bbd608756a8a5eee6e6fd810ff216ea6ea60cce",
+      "video_next_sha256": "1006abb640b1680e374bfa563b28f7a1964919f37af56d91811177f253f2e563"
+    },
+    {
+      "frame": 2720,
+      "video_next_frame": 2721,
+      "active_vram_sha256": "cc3abc6b7888ded7125cdd7bd9aa67c6caa6a2e9f9eefc4b9267728622e63177",
+      "ram_sha256": "d8a33c64bf80cdcd6f35c25d17ed25479ac122a10a2c06163e80527d5f7f271c",
+      "video_next_sha256": "1f26f3e94751d9fb3dae252ba2f0a4ae58b16010d917925212c86e864cd9bfff"
+    },
+    {
+      "frame": 2740,
+      "video_next_frame": 2741,
+      "active_vram_sha256": "41e23cfc986daf60f17949b8cf82e68619839e955efd736c0911cb1c7c68543b",
+      "ram_sha256": "c21520c53dd36da5f96335aa98df5cf353890c03ad85fd1a33853ac9fcdf456a",
+      "video_next_sha256": "7af730c9c8a855d37efcc9456ca951a865a7e5f90de61061a204b6ce744785a7"
+    },
+    {
+      "frame": 2760,
+      "video_next_frame": 2761,
+      "active_vram_sha256": "343e08500907069c4d9454e263a2a00dcd4c057582353ffab1ef73423862e0db",
+      "ram_sha256": "431e45bbc5b1d7903b0b643ee2ac254cb1637870e07fc92a881292dc5936f1eb",
+      "video_next_sha256": "183b6dfd61fa39a25f1586545b35dd96124a63134f25ca852188d44fbf3631f4"
+    },
+    {
+      "frame": 2780,
+      "video_next_frame": 2781,
+      "active_vram_sha256": "77df29319001e8188046baa0eb06ad29c351dafe510d21d1f93a257f4892c774",
+      "ram_sha256": "c3fa10171aebd74e0dd85557f65cce266ed6ae1d731e82a0646a91c719954aab",
+      "video_next_sha256": "5bd8315c169f9be6afa2e14a52cd525d4a5469855a40a32069a66fa4f46b1bbd"
+    },
+    {
+      "frame": 2800,
+      "video_next_frame": 2801,
+      "active_vram_sha256": "2ec1f07b6796c46ba8f6c60d06b433b76a562764a58d2344eda7728dab0d22d8",
+      "ram_sha256": "986983e797d99a1b1e54fa262804646f33e9d22b61d2cb2d3a4a07c41a24627a",
+      "video_next_sha256": "0c283db4203541819c0776d9b8e07c00ceca02df7131fe12ba1dae48dba3bb04"
+    },
+    {
+      "frame": 2820,
+      "video_next_frame": 2821,
+      "active_vram_sha256": "e24426e4e80bd9aacceec8f876a4ceed42028d31101abf9ea34a4e2443a7ab26",
+      "ram_sha256": "28aa9f48e617f2ce06cd9bbe01048bf678ff8a9b91557988aae16a98859e7bac",
+      "video_next_sha256": "96a48b94494a2c7058428d819a5de4de545f1ccb8f173369d5515257ec949f1f"
+    },
+    {
+      "frame": 2850,
+      "video_next_frame": 2851,
+      "active_vram_sha256": "25d364aeac867a5b4134d5425b4db6db46c9d4f53825f70734f9231088881498",
+      "ram_sha256": "3da097a106f41d3292acbf9248a361c6b63b73dc7adfbfb48d92c331d6777373",
+      "video_next_sha256": "627e65acf13469fc273dd6a960c5087ee385384b18abbeaa0e1898eaf89a1765"
+    },
+    {
+      "frame": 2880,
+      "video_next_frame": 2881,
+      "active_vram_sha256": "8f45088c68310f51277f0dd2378a46f179ba3499ede98361b3b86905e1da6757",
+      "ram_sha256": "c2f39f7b95a4ba4424dc56d4ff8d3bce413be0d1ebe099bafe7daed04fbb2174",
+      "video_next_sha256": "9bedb7f18f75de8b7193ffcf4fd20c899c4bd1042ff3806a3051a7dc5e5eade4"
+    },
+    {
+      "frame": 2910,
+      "video_next_frame": 2911,
+      "active_vram_sha256": "720baaed0187695583d00ef0d38319b140bfc2202d42308ae32166c1ebbb0269",
+      "ram_sha256": "ef1aab1753265ab8e63692ec9dfe6f91fe47a7036b0e3dfd4aa177c7039dcdee",
+      "video_next_sha256": "c22adfa90d66418a891937f1619c0ee5c5fd773798e8233516e89bee6be75400"
+    },
+    {
+      "frame": 2940,
+      "video_next_frame": 2941,
+      "active_vram_sha256": "a8889dc2fa8e6c36bb164c9bf5c23664c5ffa756a6a70a25d49bf9381971aba0",
+      "ram_sha256": "e444a62c40ca7005340f8a87894832afa60af5b93f37aea79e8e14ad00478906",
+      "video_next_sha256": "209daa65af9be762ad0141dddac64ef0214dd3f22992c2a137e92c211c6f8072"
+    },
+    {
+      "frame": 2970,
+      "video_next_frame": 2971,
+      "active_vram_sha256": "3576aa8c17a3ce78c6b0a1554d49d1863d77c89332898194b7fa6dfb8dc6cf1f",
+      "ram_sha256": "bbb490ec984708c1981a89bd5aa99370391be394ff510fb8ddae66b1d044c6c8",
+      "video_next_sha256": "8e63f0441759d0bf17084a7c5c8e754d694aa5da9bb79dcd142453c38a88bc28"
+    },
+    {
+      "frame": 3000,
+      "video_next_frame": 3001,
+      "active_vram_sha256": "a93d6d053e7a975b845ccc1e9255d3a80dfefc00d3d83e8174c148e2cfc614ec",
+      "ram_sha256": "7fd1e19336e1b0b96a0e4addab1cee2d79b0efcc0edffdf16fbc064cefc1c467",
+      "video_next_sha256": "cae0a91dc529f7b2a16f2cae5ce707548afd20c982ceebdfc8bb9be8cf4eda9b"
+    },
+    {
+      "frame": 3050,
+      "video_next_frame": 3051,
+      "active_vram_sha256": "368ad90ea167e138981dfb15168e350e2c8ca3856fca955701b4001d0bc52d06",
+      "ram_sha256": "f4455896f453cde028aff8bccb1e7a5c01d5be11f3aea8696488dd90a74f27c1",
+      "video_next_sha256": "e081a4d0b50cf55ba2e89bb22963689208c2d47c48b76c14ce674d21f9a5580a"
+    },
+    {
+      "frame": 3100,
+      "video_next_frame": 3101,
+      "active_vram_sha256": "e0ffb215c9dae69fa66449c89727ab813fb45843fd5aff6c1189715f679949b9",
+      "ram_sha256": "3d46104497e3705fbf982db541ffd48b0179202bf56ceed087633f56efd0d6d2",
+      "video_next_sha256": "9d04a321973f287a6b9804308ba5ff3dad971e8201f8ff8447b0de98686c8be8"
+    },
+    {
+      "frame": 3150,
+      "video_next_frame": 3151,
+      "active_vram_sha256": "758434b8bb110cd18ce876f1245f76a89956f0ed0818f9be6f68f36ad7fb0aea",
+      "ram_sha256": "a308e9745dd95cd9547a11719a26df04eab16852282543a630710a0e325920dc",
+      "video_next_sha256": "781f97948392476dabbdf71d3bce3ff290aa595765811dfe327cc7fd38825e2d"
+    },
+    {
+      "frame": 3250,
+      "video_next_frame": 3251,
+      "active_vram_sha256": "b27637eac26e7f5bb86c8a1e72f8c8ce3622f77696d3978f6d6dd1eadeb4fc8f",
+      "ram_sha256": "99fa2748a6da1d79b2842a6778efb6cb3f1f569021959bb918612f4c372c8dfb",
+      "video_next_sha256": "a500c701e01a610ec6bde7c16cb6041d68f094d72ab746cbf4654837c58d903c"
+    },
+    {
+      "frame": 3350,
+      "video_next_frame": 3351,
+      "active_vram_sha256": "74eaaa91322be7f6e4e3a8e6e4cfc552163219926649c37b64709669fb4889df",
+      "ram_sha256": "906115759da482186321f4df3d8568b2c7c5bfea07c3cda72296c57f7f6a277a",
+      "video_next_sha256": "963adf0b37ac394875e5e90870ffc7a741e9efdef3f37a8bb340d119f3e5fbcf"
+    },
+    {
+      "frame": 3450,
+      "video_next_frame": 3451,
+      "active_vram_sha256": "27ccb8d4a330682228e9820a67d326aeec5c813c8f3c1ab0fc5a9faa7c787a63",
+      "ram_sha256": "cc2691b7158b832292d6f2191f249d5cc4ccb30fa214171da6515e485055b542",
+      "video_next_sha256": "4e432655454591e3ddcb613392c8cbdb0e05c8598b1f76f6c103fa92a2c862d4"
+    },
+    {
+      "frame": 3550,
+      "video_next_frame": 3551,
+      "active_vram_sha256": "ce8114658c6600767d5b8afb85932bbd937c79c71d444b92e277a0237d3c14e6",
+      "ram_sha256": "5e88a7676e01bfa4714292fde1093c0f2564c6189ce3a2d43fa3dedcbe4304d9",
+      "video_next_sha256": "05f8a3280eba112d89ae7082d9c970bb28fc124ca220251f9b800e13c7c5d86d"
+    }
+  ],
+  "initial_scene_palette_observed": true,
+  "initial_scene_palette_observation": {
+    "frame": 2396,
+    "pc": 2108,
+    "ram_address": 57472,
+    "bytes": "0cac0a6a08280624040208220a440c660ea60eca04ac028c026a004800020eec",
+    "sha256": "54dca4a68c1671b0c738758cd9fa964486219bd4299872e82dfcd924b448d2d9"
+  }
+}

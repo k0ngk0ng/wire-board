@@ -1,0 +1,6 @@
+{
+  "pass": false,
+  "phase": "red",
+  "cases": [],
+  "error": "AssertionError('eight-arena selector is unavailable')"
+}

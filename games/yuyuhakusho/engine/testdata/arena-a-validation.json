@@ -1,0 +1,289 @@
+{
+  "scope": "Original arena 0a callbacks 21126/21258, canonical object fields and immediate 14d0 sprite intents",
+  "pass": true,
+  "tests": {
+    "native": {
+      "pass": true,
+      "tests": [
+        "TestArenaAAtomicInputs",
+        "TestArenaAOriginalBoundaries",
+        "TestArenaAOriginalCreatorClock",
+        "TestArenaAOriginalNatural"
+      ],
+      "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+      "elapsed_seconds": 22.435,
+      "sha256": "fe2e2de60e2595a797f5333971537c9972c1c6e5aaf74f34dd9291f433589225",
+      "race": true
+    },
+    "wasm": {
+      "pass": true,
+      "tests": [
+        "TestArenaAAtomicInputs",
+        "TestArenaAOriginalBoundaries",
+        "TestArenaAOriginalCreatorClock",
+        "TestArenaAOriginalNatural"
+      ],
+      "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+      "elapsed_seconds": 7.538,
+      "sha256": "059d2abf7e74f76ed1db7de10fd09e3456c9ac10e204d74b6823d485667d3bf0",
+      "race": false,
+      "environment": {
+        "PATH": "/opt/homebrew/bin:/Users/jason/.nvm/versions/node/v24.15.0/bin:/usr/bin:/bin",
+        "GOROOT": "/opt/homebrew/Cellar/go/1.26.2/libexec",
+        "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+        "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+        "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+        "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+        "GOPATH": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-path",
+        "GOENV": "off",
+        "GOTOOLCHAIN": "local",
+        "GOOS": "js",
+        "GOARCH": "wasm",
+        "CGO_ENABLED": "0"
+      },
+      "node_version": "v24.15.0"
+    }
+  },
+  "original_control_owner": "menu-controls; no second original control acquired",
+  "primary_private_fixture_frozen_before_implementation": true,
+  "natural_test_written_before_implementation": true,
+  "natural_fixture_frozen_before_implementation": false,
+  "test_assertions_after_implementation": "unchanged; verified original text differs only by BackdropColor mechanical names and gofmt",
+  "primary_private_control": "existing default 3600 frame bootstrap; not legal arena A natural evidence",
+  "legal_reference": {
+    "scope": "Arena 0a callbacks 21126/21258 through true return and six 14d0 consumers",
+    "identity": {
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+      "core_name": "Genesis Plus GX",
+      "core_version": "v1.7.460bee4c",
+      "fps": 59.92274340431231,
+      "ram_bytes": 65536,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "teamplayer": false
+    },
+    "records": 2406,
+    "calls": 2406,
+    "kind_counts": {
+      "arena": 1203,
+      "child": 1203
+    },
+    "draws": 7218,
+    "interrupts": 6,
+    "audio_entries": 6,
+    "rng_entries": 0,
+    "unknown_delta": 0,
+    "audio_clears": 4,
+    "full_ram_timeline_replayed": true,
+    "inputs_sha256": "94abff0831b64713c449beca0743f164be572d6085b21d651df51b00e641db60",
+    "control_sha256": "4d68f40cf741adeb7eb047d3d71a9d3b7681c3dd5dc3ec8c4aac5e9f23f09b14",
+    "capture_sha256": "2515ae53a9654df912499b92e99e6e9c12abfbf4f202dc2edabf74e6fe438f34",
+    "fixture_sha256": "a34ce9771a1ac3654b350f03f5fa0dd6ae8189a313f5b87fbdb08874db806416",
+    "gzip_sha256": "cd0a25b17f817274d4082660f12cadbe79f8deb6bf004cc46a369607e2a69468",
+    "frames_match_original_control": true,
+    "errors": [],
+    "pass": true,
+    "legal_arena_a_natural": true,
+    "excluded_menu_contexts": [
+      {
+        "callback": 135462,
+        "object_id": 33664,
+        "parent_id": 0,
+        "calls": 170,
+        "first_frame": 1961,
+        "last_frame": 2130
+      },
+      {
+        "callback": 135768,
+        "object_id": 40448,
+        "parent_id": 33664,
+        "calls": 170,
+        "first_frame": 1961,
+        "last_frame": 2130
+      }
+    ]
+  },
+  "additional_legal_replay_artifacts": {
+    "arena-a-boundaries": {
+      "scope": "Arena 0a callbacks 21126/21258 through true return and six 14d0 consumers",
+      "identity": {
+        "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+        "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+        "core_name": "Genesis Plus GX",
+        "core_version": "v1.7.460bee4c",
+        "fps": 59.92274340431231,
+        "ram_bytes": 65536,
+        "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+        "teamplayer": false
+      },
+      "records": 3720,
+      "calls": 3720,
+      "kind_counts": {
+        "arena": 2592,
+        "child": 1128
+      },
+      "draws": 6768,
+      "interrupts": 0,
+      "audio_entries": 0,
+      "rng_entries": 0,
+      "unknown_delta": 0,
+      "audio_clears": 0,
+      "full_ram_timeline_replayed": true,
+      "inputs_sha256": "94abff0831b64713c449beca0743f164be572d6085b21d651df51b00e641db60",
+      "control_sha256": "4d68f40cf741adeb7eb047d3d71a9d3b7681c3dd5dc3ec8c4aac5e9f23f09b14",
+      "capture_sha256": "2515ae53a9654df912499b92e99e6e9c12abfbf4f202dc2edabf74e6fe438f34",
+      "fixture_sha256": "dd4f5510d574727a012ae2458ae5a000871116d8fc86e639ca8f8991a40239cd",
+      "gzip_sha256": "247a398d8ecbae52dd694d40b331c848361439f5e542050d3c1af36728c4b044",
+      "frames_match_original_control": true,
+      "errors": [],
+      "pass": true,
+      "legal_arena_a_natural": true,
+      "excluded_menu_contexts": [
+        {
+          "callback": 135462,
+          "object_id": 33664,
+          "parent_id": 0,
+          "calls": 170,
+          "first_frame": 1961,
+          "last_frame": 2130
+        },
+        {
+          "callback": 135768,
+          "object_id": 40448,
+          "parent_id": 33664,
+          "calls": 170,
+          "first_frame": 1961,
+          "last_frame": 2130
+        }
+      ]
+    },
+    "arena-a-sequences": {
+      "scope": "Arena 0a callbacks 21126/21258 through true return and six 14d0 consumers",
+      "identity": {
+        "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+        "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+        "core_name": "Genesis Plus GX",
+        "core_version": "v1.7.460bee4c",
+        "fps": 59.92274340431231,
+        "ram_bytes": 65536,
+        "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+        "teamplayer": false
+      },
+      "records": 1,
+      "calls": 384,
+      "kind_counts": {
+        "arena": 192,
+        "child": 192
+      },
+      "draws": 1152,
+      "interrupts": 0,
+      "audio_entries": 0,
+      "rng_entries": 0,
+      "unknown_delta": 0,
+      "audio_clears": 0,
+      "full_ram_timeline_replayed": true,
+      "inputs_sha256": "94abff0831b64713c449beca0743f164be572d6085b21d651df51b00e641db60",
+      "control_sha256": "4d68f40cf741adeb7eb047d3d71a9d3b7681c3dd5dc3ec8c4aac5e9f23f09b14",
+      "capture_sha256": "2515ae53a9654df912499b92e99e6e9c12abfbf4f202dc2edabf74e6fe438f34",
+      "fixture_sha256": "184359ce6f5e9c1b8f6498b235493278b265b38fba8b6201bcbedcb7140a92ee",
+      "gzip_sha256": "355322f14aac8438568cdfdb41056172361fdc94d95da75d9c9ad5b1e6f93f29",
+      "frames_match_original_control": true,
+      "errors": [],
+      "pass": true,
+      "legal_arena_a_natural": true,
+      "excluded_menu_contexts": [
+        {
+          "callback": 135462,
+          "object_id": 33664,
+          "parent_id": 0,
+          "calls": 170,
+          "first_frame": 1961,
+          "last_frame": 2130
+        },
+        {
+          "callback": 135768,
+          "object_id": 40448,
+          "parent_id": 33664,
+          "calls": 170,
+          "first_frame": 1961,
+          "last_frame": 2130
+        }
+      ]
+    }
+  },
+  "files_sha256": {
+    "games/yuyuhakusho/engine/arena_a.go": "fc5ad9e205bc9bd4a6339fb39deb99be74061bdaf6c9e82fc110f22a8d97ce0c",
+    "games/yuyuhakusho/engine/arena_a_child.go": "6d9d426e443b67c459a620c08ce2ed69f4a680ca85f3c690ce49a3d2dcd93bf9",
+    "games/yuyuhakusho/engine/arena_a_test.go": "7b86f64c4dae54ec5693b3ff1bb99deb4f3c48349711ee8084dd7160196b7797",
+    "games/yuyuhakusho/engine/arena_scene.go": "1b037f82ffe3f7f4b4ddbc7e7efb5c52f6a362d016e74374d7c151ece9200309",
+    "scripts/yuyuhakusho/capture_arena_a.py": "2515ae53a9654df912499b92e99e6e9c12abfbf4f202dc2edabf74e6fe438f34",
+    "docs/research/md-yuyuhakusho/static/arena-a-full.txt": "bfde05ab04103fdf0b22dea16e9bd9ecf1a29595fa43dba7a4d8850c49eac0c0",
+    "docs/research/md-yuyuhakusho/static/arena-a-draw.txt": "4d43542a296b30eb6334090db6f9845a23944db02783020dba0a0131d350c011",
+    "docs/research/md-yuyuhakusho/static/arena-a-consumers.txt": "6dfbdf1c77d79ccf0ebbbe6e7efc066175a2845f1a517118989cde708c5b6862",
+    "games/yuyuhakusho/engine/testdata/arena-a-boundaries.json.gz": "e27886571653cf079b782b4c697777bb58c34a99b8cd3c87195b059ba2a9b9a2",
+    "games/yuyuhakusho/engine/testdata/arena-a-boundaries-manifest.json": "1f4989c2f81f0389488847d754b1e09874dd9a466e3fa0520d0f63f22c6fa7de",
+    "games/yuyuhakusho/engine/testdata/arena-a-sequences.json.gz": "7270a8a58f8c8e49b828e90d028f6cb8bafca8306e6c85d883f94e6671a83ac8",
+    "games/yuyuhakusho/engine/testdata/arena-a-sequences-manifest.json": "4884e25965bba8813551d9073d5d1dca9b0db2ec25dd253b28227baa314f682b",
+    "games/yuyuhakusho/engine/testdata/arena-a-natural.json.gz": "cd0a25b17f817274d4082660f12cadbe79f8deb6bf004cc46a369607e2a69468",
+    "games/yuyuhakusho/engine/testdata/arena-a-natural-manifest.json": "a69cd2ab55ab2760dee8a520570c435e437ba20932606c5ef1dad56482ebdf2d",
+    "games/yuyuhakusho/engine/testdata/arena-a-frozen-symbols-red.txt": "9c02c409c5d496a71a871fcb8be48db0ff3ae553fe230c5f46bfdcb22e3f5812",
+    "games/yuyuhakusho/engine/testdata/arena-a-test-frozen-before-backdrop-rename.txt": "6f4e47ff0024c250967429b2c473529a16c5f9f5b53dff4fde03f4f82998ddf3",
+    "games/yuyuhakusho/engine/testdata/arena-a-backdrop-rename-lineage.json": "d82b2c29e115dd0ef8901894c1bd2a17ce0150662a3390ecaabe6f6bfc857591",
+    "games/yuyuhakusho/engine/testdata/arena-a-capture-private-frozen.py.txt": "639a7036b335b6108394f32089bb72382882ef53a479c014346373515049ed50"
+  },
+  "cleanup": {
+    "removed": [
+      ".local/md-yuyuhakusho/arena-a-private",
+      ".local/md-yuyuhakusho/arena-a-private-capture.jsonl",
+      ".local/md-yuyuhakusho/arena-a-private-final",
+      ".local/md-yuyuhakusho/arena-a-private-final-capture.jsonl",
+      ".local/md-yuyuhakusho/arena-a-private-strict",
+      ".local/md-yuyuhakusho/arena-a-private-strict-capture.jsonl",
+      ".local/md-yuyuhakusho/arena-a-private-frozen",
+      ".local/md-yuyuhakusho/arena-a-private-frozen-capture.jsonl",
+      ".local/md-yuyuhakusho/arena-a-legal",
+      ".local/md-yuyuhakusho/arena-a-legal-capture.jsonl",
+      ".local/md-yuyuhakusho/arena-a-legal-diagnose",
+      ".local/md-yuyuhakusho/arena-a-legal-diagnose-capture.jsonl",
+      ".local/md-yuyuhakusho/arena-a-legal-owned",
+      ".local/md-yuyuhakusho/arena-a-legal-owned-capture.jsonl",
+      ".local/md-yuyuhakusho/arena-a-legal-irq",
+      ".local/md-yuyuhakusho/arena-a-legal-irq-capture.jsonl",
+      ".local/md-yuyuhakusho/arena-a-private-verify.jsonl",
+      ".local/md-yuyuhakusho/arena-a-static/config",
+      ".local/md-yuyuhakusho/arena-a-static/cache",
+      ".local/md-yuyuhakusho/arena-a-static/tmp",
+      "docs/research/md-yuyuhakusho/static-work-private/arena-a",
+      "games/yuyuhakusho/engine/testdata/arena-a-red.txt",
+      "games/yuyuhakusho/engine/testdata/arena-a-frozen-red.txt"
+    ],
+    "retained": [
+      ".local/md-yuyuhakusho/arena-a-final",
+      ".local/md-yuyuhakusho/arena-a-final-capture.jsonl",
+      ".local/md-yuyuhakusho/arena-a-static/*.log",
+      "engine/testdata frozen fixtures, source, original red, package native and Wasm logs"
+    ],
+    "shared_go_caches_removed": false
+  },
+  "outside_scope": [
+    "world dispatch and save schema integration",
+    "raw sprite presentation and 48-tile auxiliary asset",
+    "platform options/resource-ready",
+    "full scene pixel acceptance"
+  ],
+  "supplemental_aux_order_audit": {
+    "path": "games/yuyuhakusho/data/arena-a-aux-order-audit.json",
+    "sha256": "a7eb2b4253a358ea914efb2aa173afe0136e96d8d82e2a49211c5c92a366f401",
+    "producer": "scripts/yuyuhakusho/audit_arena_a_aux.py",
+    "producer_sha256": "30b42cdc4d5be9e900f35ac2c7e8f8412de1c654356018902bc651c5fb4e2bc9",
+    "pass": true,
+    "actual_sat_samples": 20,
+    "matched_immediate_descriptors": 120,
+    "equal_aux_vram_snapshots": 40,
+    "ordinary_descriptor_aux_overlap": 0,
+    "deterministic_repeat_sha256": "a7eb2b4253a358ea914efb2aa173afe0136e96d8d82e2a49211c5c92a366f401",
+    "new_original_execution": false,
+    "shared_presentation_modified": false,
+    "source_bindings": "Audit JSON sources retain each input path, compressed/payload SHA and source manifest SHA"
+  }
+}

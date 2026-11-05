@@ -1,0 +1,62 @@
+{
+  "created_at_utc": "2026-11-05T09:16:09.247207+00:00",
+  "scope": "Root-owned completed arena verifier binaries, repeated legacy PNG previews, closed browser profile, Python bytecode and empty Ghidra project directory",
+  "paths": [
+    {
+      "path": ".local/md-yuyuhakusho/arena-legacy-previews",
+      "bytes": 2178062
+    },
+    {
+      "path": ".local/md-yuyuhakusho/arena-browser",
+      "bytes": 9550438
+    },
+    {
+      "path": "scripts/yuyuhakusho/__pycache__",
+      "bytes": 17442
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static-work-private",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/arena-legacy-render",
+      "bytes": 4898274
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/arena-legacy-render.wasm",
+      "bytes": 5589621
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/arena-legacy-rules",
+      "bytes": 4421810
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/arena-legacy-rules.wasm",
+      "bytes": 5006942
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/arena-render",
+      "bytes": 4898274
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/arena-render.wasm",
+      "bytes": 5589621
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/arena-rules",
+      "bytes": 4421810
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/arena-rules.wasm",
+      "bytes": 5006942
+    }
+  ],
+  "total_bytes_removed": 51579236,
+  "preserved": [
+    "All canonical fixtures, actual red/final logs and manifests",
+    "New arena native/Wasm PNGs and pan nonzero saves/input traces",
+    "Fixed ROM/core and required original references",
+    "Active8799 local player build/server",
+    "Shared workspace Go caches and local telemetry mode for ongoing goal"
+  ]
+}

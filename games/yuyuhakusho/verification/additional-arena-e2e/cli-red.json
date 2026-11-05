@@ -1,0 +1,17 @@
+{
+  "test_first": true,
+  "command": [
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/build/arena-rules",
+    "-arena",
+    "2",
+    "-players",
+    "2",
+    "-characters",
+    "0,1"
+  ],
+  "exit_code": 2,
+  "stdout": "",
+  "stderr": "flag provided but not defined: -arena\nUsage of /Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/build/arena-rules:\n  -characters string\n    \tcomma-separated source IDs,0..10; defaults to all9\n  -human-idle\n    \tkeep slot0 explicitly human with neutral input\n  -max-ticks int\n    \tmaximum complete logical ticks (default 20000)\n  -players int\n    \tnumber of active original slots,2..4 (default 2)\n  -rules string\n    \tsemantic rules only (default \"games/yuyuhakusho/data/chu-world-rules.json.gz\")\n  -seed uint\n    \tshared32-bit initial rule seed (default 305419896)\n  -team\n    \tuse original four-player1/1/4/4 teams\n",
+  "expected_missing_flag": true,
+  "producer_sha256": "f86267439e8c64f015d8806bb6a26911c4c6bae9a6b8e502448a2be491b7e2b4"
+}

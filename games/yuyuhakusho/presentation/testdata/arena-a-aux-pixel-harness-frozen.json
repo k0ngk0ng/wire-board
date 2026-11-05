@@ -1,0 +1,8 @@
+{
+  "scope": "Independent end-to-end oracle; production parent has separate test-first record",
+  "files": {
+    "games/yuyuhakusho/presentation/ARENA_A_AUX_PIXELS_FAILURES.md": "4905d61e99bd215e7987cd8a5057bb34cdb94eaa9f7d5ca4d11d331ff35b2ba0",
+    "cmd/verify-yuyu-arena-aux/main.go": "61ef80c2881c2d52ead2adcbbaee2c1dbde68865a1ebe27c6313a7da5409df6a",
+    "scripts/yuyuhakusho/build_arena_a_aux_pixel_fixture.py": "0058b03d8208ecfa2dfcb9528143d95201de2eac32c88a7169d9281163a6cd3d"
+  }
+}

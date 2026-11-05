@@ -1,15 +1,15 @@
 # 《幽游白书：魔强统一战》复刻进度
 
-更新：2026-11-05。整体约 **77%**（工程估算）。独立 worktree 为 `worktrees/yuyuhakusho`，分支为 `codex/yuyuhakusho`。当前已有可操作的幻海、藏马、桑原、幽助、飞影、仙水、阵、树、户愚吕兄、酎、户愚吕弟／默认场地本地研究页；游戏尚未注册到平台，未上传资源、发布或部署。main 工作区的其他改动未导入或覆盖。
+更新：2026-11-05。整体约 **81%**（工程估算）。独立 worktree 为 `worktrees/yuyuhakusho`，分支为 `codex/yuyuhakusho`。当前已有可操作的幻海、藏马、桑原、幽助、飞影、仙水、阵、树、户愚吕兄、酎、户愚吕弟／8 场地本地研究页；游戏尚未注册到平台，未上传资源、发布或部署。main 工作区的其他改动未导入或覆盖。
 
 ## 当前可运行范围
 
-- 从空对象和明确配置创建对局，支持 2／3／4 人混战、4 人组队，以及真人与显式电脑混合。当前开放来源 ID 0「幻海」、1「藏马」、2「桑原」、3「幽助」、4「飞影」、5「仙水」、6「阵」、7「树」、8「户愚吕兄」、9「酎」和 10「户愚吕弟」，场地只开放默认场地。
+- 从空对象和明确配置创建对局，支持 2／3／4 人混战、4 人组队，以及真人与显式电脑混合。当前开放来源 ID 0「幻海」、1「藏马」、2「桑原」、3「幽助」、4「飞影」、5「仙水」、6「阵」、7「树」、8「户愚吕兄」、9「酎」和 10「户愚吕弟」，场地开放默认场地、灵界、亚空间 1、魔界、洞窟、魔性之森、亚空间 2 和山顶。
 - 独立 Go／Wasm 规则驱动输入、真实原版 AI、动作、子对象、特效、碰撞、退场、判胜和清场；运行时不读取 ROM、不执行模拟器，不逐帧载入参考状态。
 - 独立索引素材呈现人物、特效、动态背景、色盘、滚动、原版姓名／头像／生命与能量条。浏览器页复用公共 MD 手柄，支持键盘和触屏；当前页面没有接入声音播放。
 - 资源解码、Wasm 和 Canvas 就绪后才开始推进。存档保留规则状态、图块映射与呈现缓存；出错时不提交半帧状态。
 
-启动方式和截图见[本地研究页](../../docs/research/md-yuyuhakusho/LOCAL_PLAYER.md)。本轮完整摘要见[全十一角色对局验收](verification/itsuki-session.json)；既有[十角色验收](verification/sensui-session.json)、[九角色验收](verification/hiei-session.json)、[八角色验收](verification/jin-session.json)、[七角色验收](verification/kurama-session.json)、[六角色验收](verification/elder-session.json)、[五角色验收](verification/kuwabara-session.json)、[四角色验收](verification/yusuke-session.json)、[三角色验收](verification/genkai-session.json)、[双角色验收](verification/fighter10-session.json)和[独立对局／素材验收](verification/independent-session.json)保留各自提交时的绑定。
+启动方式和截图见[本地研究页](../../docs/research/md-yuyuhakusho/LOCAL_PLAYER.md)。本轮完整摘要见[八场地整体验收](verification/additional-arenas-session.json)，接口、证据边界和复跑见[七场地接入](../../docs/research/md-yuyuhakusho/ADDITIONAL_ARENA_SESSIONS.md)。上一检查点的[全十一角色对局验收](verification/itsuki-session.json)；既有[十角色验收](verification/sensui-session.json)、[九角色验收](verification/hiei-session.json)、[八角色验收](verification/jin-session.json)、[七角色验收](verification/kurama-session.json)、[六角色验收](verification/elder-session.json)、[五角色验收](verification/kuwabara-session.json)、[四角色验收](verification/yusuke-session.json)、[三角色验收](verification/genkai-session.json)、[双角色验收](verification/fighter10-session.json)和[独立对局／素材验收](verification/independent-session.json)保留各自提交时的绑定。
 
 姓名订正：此前把来源 8／10 的兄弟标注读反。重新放大原 HUD 字形并核对造型后，确认为 **8「兄」、10「弟」**；当前界面、[姓名映射](../../docs/research/md-yuyuhakusho/CHARACTER_IDS.md)和本页已修正，旧阶段报告按历史提交保留。角色编号、规则、原始 CPU 证据与素材均未变，名称修复另有先行界面失败与通过结果。
 
@@ -18,29 +18,27 @@
 | 项目 | 证据 | 当前边界 |
 | --- | --- | --- |
 | 原版运行与恢复 | 固定日版 ROM、内核和输入；3,600 帧冷启动基线；恢复 sidecar 补齐原内核未保存的 `m68k.refresh_cycles` 后，1,200 帧 RAM／寄存器／视频一致 | 原版工具仅用于开发对照；不把模拟器源码许可视为游戏素材许可 |
-| 输入、共享规则与完整人物 | 11 个人物共用 input／action／actor 驱动；树的四 selector、五专属 MAIN、三个子回调及跨父体停顿／生命视图已恢复，14 个玩家可达特殊根自然成功 | 人物已全部开放，但仍只有默认场地；R4 无玩家命令绑定仅私有证明，自然回血分支未产生生命增量，见[树世界](engine/FIGHTER7_WORLD_VERIFICATION.md)和[组合](engine/FIGHTER7_COMPOSITION_VERIFICATION.md) |
+| 输入、共享规则与完整人物 | 11 个人物共用 input／action／actor 驱动；树的四 selector、五专属 MAIN、三个子回调及跨父体停顿／生命视图已恢复，14 个玩家可达特殊根自然成功 | 人物已全部开放；人物本身的原版对照范围与八场地新建对局矩阵分别验收；R4 无玩家命令绑定仅私有证明，自然回血分支未产生生命增量，见[树世界](engine/FIGHTER7_WORLD_VERIFICATION.md)和[组合](engine/FIGHTER7_COMPOSITION_VERIFICATION.md) |
 | 幻海完整人物与父子对象 | 四 selector、12 特殊构造、五持续槽、散射弹／释放光效；完整三层各 4,133 次自然调用；原 CPU 私有与真实动画流通过 | `15/16/19` 自然仍未覆盖，私有／连续已覆盖；该阶段自然 AI 仅为酎，见[幻海世界与完整组合](engine/FIGHTER0_WORLD_VERIFICATION.md) |
 | 全角色准备、AI 与素材目录 | 11 个来源角色的命令准备、动画／形状目录及真实 AI；AI 新增 37,056 次隔离调用、1,794 次酎自然调用和 33 条连续流 | 自然原 AI 调用与完整独立世界现覆盖酎／阵；其余来源仍有隔离／全新对局证据，全角色素材不能代替招式验证，见 [AI 验证](engine/FIGHTER_AI_VERIFICATION.md) |
-| 开局、覆盖层与场地 | 开局阶段 0／2、14 类覆盖层、默认场地 camera／滚动／色盘／天空对象恢复；自然、隔离与连续流通过 | 其他七个场地及原菜单／全部赛制没有开放，见[开局](engine/MATCH_START_VERIFICATION.md)、[覆盖层](engine/MATCH_OVERLAYS_VERIFICATION.md)和[场地](engine/DEFAULT_ARENA_VERIFICATION.md) |
+| 开局、覆盖层与场地 | 八场 camera／滚动／色盘规则；ID 4 三色循环、ID a 子对象六条即时精灵事件恢复；七场合法菜单各 3,602 帧完整复验 | 原菜单其他赛制未自动开放；场地单回调和完整轮次分别对照，见[场地世界](engine/ARENA_WORLD_SESSIONS_VERIFICATION.md)与[合法菜单](../../docs/research/md-yuyuhakusho/ARENA_MENU_CONTROLS.md) |
 | 唯一对象状态与完整轮次 | 二十三条原版流合计 58,739 轮、768,187 回调逐轮及单初态连续一致；树新增 6,844 轮、91,803 回调，特殊场景另比较 24,968 个有序 Draw | 普通树场景证明4944清场，特殊场景只证明保留区间；真实世界4个状态及三类 callback 各8个状态恢复通过，见[树世界](engine/FIGHTER7_WORLD_VERIFICATION.md) |
 | 帧前后阶段与 IRQ | 6,576 次自然前后调用、1,440 次隔离、4 流 320 次连续调用；另从冷启动复跑 2,400 视频步取得相同 RAM IRQ | 视频标签不能当作逻辑 tick；硬件采样的 F554 游标明确在边界外，见[帧验证](engine/WORLD_FRAME_VERIFICATION.md) |
-| 全新独立对局 | 新增 25 组树／全11人物规则配置及 14 组完整呈现，原生／Wasm 全状态／像素轨迹一致；旧十角色 280 份报告保持世界／事件／生命周期 | schema3 增加94条 AN／shape，索引媒体不变；共享滚动／录制输入已统一 owner，见[全人物验收](verification/itsuki-session.json) |
+| 全新独立对局 | 新增七场每环境 35 组规则对局、28 组完整呈现，覆盖每场全部 11 人物及 2／3／4 人、组队；原生／Wasm 完整状态与像素轨迹一致 | 165 份默认规则及 14 份默认呈现报告在两端保持既有世界／事件／生命周期与像素，共 358 份，见[整体验收](verification/additional-arenas-session.json) |
 | 世界精灵 | 1,500 图形键、34,520 去重图块、12,238 原 CPU 提交；83 个自然帧的 355,914 个高优先级精灵像素零差异 | 有界普通显示模式；逐扫描线溢出与影亮模式未模拟，见[精灵呈现](../../docs/research/md-yuyuhakusho/WORLD_PRESENTATION.md) |
-| 默认背景与 HUD | 20 原帧背景 1,354,388 像素、完整图层合成 1,433,600 像素零差异；空 HUD 加原资源和有序事件重建的 91,756 窗口像素零差异 | 这些原帧对照与全新对局的跨运行时一致性分别验收；三人使用原槽 0／1／3，见[背景](presentation/ARENA_VERIFICATION.md)和[HUD](presentation/HUD_VERIFICATION.md) |
-| 完整呈现与存档 | 树单角色、混合、三人、四人、组队十四组完整呈现，恢复后30帧全等；六份旧JSON字节及录制／滚动共用数据相互可见性通过 | 全11人物／默认场地，规则包4,907条 AN，schema1/2/3兼容；其他场地尚未开放，见[完整矩阵](verification/itsuki-session.json) |
-| 浏览器与 MD 控制器 | 可选全11人物；实际 tag7、前向 `03/83`、键盘移动、三指触屏／取消、后台释放、桌面／320px通过 | 本地页未接平台房间／网络，公共配置既有验收见[控制器记录](../../docs/verification/md-controller/README.md) |
+| 八场背景与 HUD | 新增 140 原样本、9,535,530 个背景像素零差异；魔性之森最终合成 1,368,854 像素及 29,063 个 aux 可见像素逐位置相等；共享 HUD 独立重建沿用原验证 | ID 4 空白行未使用颜色 9～11 的相位不同，实际可见色与像素相等；aux 原样本窗口仍是参考 adapter，独立 HUD 由新建对局另验，见[呈现](presentation/ARENA_PROFILES_VERIFICATION.md)和[附加精灵](presentation/ARENA_A_AUX_PIXELS_VERIFICATION.md) |
+| 完整呈现与存档 | 七场普通对局恢复后各 30 帧全等；合法真人输入触发每场 232 帧非零 Pan，非零存档恢复后 360 帧规则和画面全等；默认六份旧 JSON 字节兼容 | schema 1／2／3 无场地扩展仍只开放默认；新增成对扩展严格校验；背景与 aux 摘要绑定存档，见[动态 Pan](verification/ARENA_PAN_VERIFICATION.md) |
+| 浏览器与 MD 控制器 | 七个新增场地逐一实际呈现；魔性之森原生键盘移动、320 px 三指触屏／取消通过；场地按需加载，选择草稿不改变正在运行的对局 | 本地页未接平台房间／网络；见[当前浏览器结果](verification/additional-arena-player/final/result.json)与[控制器记录](../../docs/verification/md-controller/README.md) |
 | 音频采集 | 134 个有限 WAV，覆盖动画使用的 78 个声音编号，双次完整 PCM 一致；另确认 `82/87` 的完整音序周期 | 精确 PCM 循环、原版混音和平台播放未完成，见[音频采集](../../docs/research/md-yuyuhakusho/AUDIO_RESEARCH.md)与[循环研究](../../docs/research/md-yuyuhakusho/AUDIO_LOOPS.md) |
 
-本轮原生竞态和 Wasm 分别完成 **383 项规则／目录顶层检查**与 **27 项素材／呈现检查**。380 项引擎测试按 95／95／95／95 四片，另有3项目录检查；Wasm四片全部通过。原生三片在319项引擎通过后达到各自20分钟时限，仅对剩余61项以相同冻结源码续跑通过，完整并集与Wasm一致，未跳过未完成项，原始超时日志保留。`go vet`、Wasm检查和本地页TypeScript检查通过。v1音频边界原失败、v2精确投影、单一滚动／输入owner与存档兼容证据由[全人物验收](verification/itsuki-session.json)绑定，没有运行其他游戏矩阵。
+本轮原生竞态和 Wasm 各完成 **445 项顶层检查**：404 项引擎、22 项呈现、3 项 bridge 与 16 项目录／素材命令检查。引擎按 8 片运行，所有分片退出码为 0。`go vet` 和本地页 TypeScript 检查通过。首轮每端 63 个普通完整对局均通过，但未触发非零 Pan，最后专项断言真实失败；保留该日志后，新增每端 7 个合法双真人输入专项，在非零反馈、暂停和恢复全部通过后仅续汇总，未删除动态断言或重采 original。原生／Wasm 的 126 个完整对局、14 个 Pan 专项和 358 份历史报告由[整体验收](verification/additional-arenas-session.json)绑定，没有运行其他游戏矩阵。
 
 ## 后续工作
 
-1. 恢复其他七个场地及拟开放赛制，补各自持续规则、动态背景、特殊子对象、准备／资源就绪与完整画面，见[场地恢复起点](../../docs/research/md-yuyuhakusho/OTHER_ARENAS_PLAN.md)。人物已全部恢复；默认场地的通过结果不代替其他场地验收。
-
-2. 恢复声音播放时基、BGM 循环和原版混音语义，再接入平台 `BoardProps.audio`。
-3. 接入统一房间准备、席位／角色映射、显式电脑和主动托管、公共加载、MD 控制器与全屏。
-4. 完成权威同步、本地预测、回滚、输入确认、慢连接隔离及真实操作延迟验收；常规网络仅传必要输入和确认，存档与网络负载分离。
-5. 验收所有开放人物／场地／模式、恢复存档、托管、PC／320px 触屏和网络干扰，再准备不可变资源及应用发布。
+1. 恢复声音请求、消费与分派时基，补齐八场所需 BGM 的连续周期、PCM 循环和混音，再接入平台 `BoardProps.audio`。现有 `82/87` 序列周期已确认，但 PCM 精确循环未通过；新增场地其他音乐不能用这两首替代。
+2. 接入统一房间准备、席位／角色映射、显式电脑和主动托管、公共加载、MD 控制器与全屏。
+3. 完成权威同步、本地预测、回滚、输入确认、慢连接隔离及真实操作延迟验收；常规网络仅传必要输入和确认，存档与网络负载分离。
+4. 按平台最终拟开放范围研究其余赛制，并验收人物／场地／模式、托管、PC／320 px 触屏和网络干扰，再准备不可变资源及应用发布。
 
 ## 复跑与工作区
 
@@ -65,3 +63,5 @@
 仙水阶段另清理父任务 232 个临时／重复文件，共 48,711,665 bytes，见[仙水清理记录](verification/sensui-cleanup.json)。保留原世界／控制组、组件冻结证据、全量与续跑日志、234 份旧对局结果和截图。活动试玩页、原工具、共享 Go 缓存与树的后续工作继续保留。
 
 树与共享存储修复阶段另清理父任务283个临时／重复文件，共57,585,144 bytes，见[本轮清理记录](verification/itsuki-cleanup.json)。保留原CPU／输入控制、音频v1/v2真实失败链、光栅owner先行测试与兼容JSON、全部最终分片／续跑日志、280份旧对局结果、截图及当前试玩页。各子任务清理范围独立保留；原工具、共享Go缓存和活动worktree继续用于后续七场地与平台接入。
+
+七场地阶段另清理父任务 12 个临时路径，共 51,579,236 bytes，见[场地清理记录](verification/additional-arena-cleanup.json)。保留原版控制、完整 CPU 与像素夹具、原始失败／最终日志、新场地截图、非零震动存档和活动 8799 研究页；共享 Go 缓存、工具与 worktree 继续用于音频和平台接入。

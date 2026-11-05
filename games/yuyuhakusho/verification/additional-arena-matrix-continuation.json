@@ -1,0 +1,16 @@
+{
+  "reason": "The original63-case matrices completed every match but genuinely generated no pan. Preserve that failure and add seven separate legal-input pan scenarios; all seven must pass including nonzero restore/feedback/pause, and the original nonzero-pan assertion remains applied to the combined observed checks.",
+  "original_producer": "games/yuyuhakusho/verification/additional-arena-matrix-before-pan.py.txt",
+  "original_producer_sha256": "f86267439e8c64f015d8806bb6a26911c4c6bae9a6b8e502448a2be491b7e2b4",
+  "continued_producer": "scripts/yuyuhakusho/verify_arena_sessions.py",
+  "continued_producer_sha256": "50e1ffff5582c9789d8c9c0c8c7d9d5614b93d95cb3b20e864d2a86e4dd995be",
+  "prior_completed_matches_per_environment": 63,
+  "required_additional_pan_scenarios_per_environment": 7,
+  "failure_logs": [
+    "games/yuyuhakusho/verification/additional-arena-e2e-native.log",
+    "games/yuyuhakusho/verification/additional-arena-e2e-wasm.log"
+  ],
+  "pre_telemetry_continued_producer": "games/yuyuhakusho/verification/additional-arena-matrix-after-pan.py.txt",
+  "pre_telemetry_continued_producer_sha256": "99abc547e53c3cc178229e85928d9fe5fba978d4eba3b93fc7e680f6f20f1004",
+  "environment_followup": "Normal Go invocations now redirect telemetry data into worktree .local; no rule, renderer or test assertion changes."
+}

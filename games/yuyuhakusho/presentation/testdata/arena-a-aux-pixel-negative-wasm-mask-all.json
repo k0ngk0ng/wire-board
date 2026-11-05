@@ -1,0 +1,18 @@
+{
+  "pass": false,
+  "mode": "mask-all",
+  "error": "frame 2700: exclusion mask covers an original-visible auxiliary pixel",
+  "frames": null,
+  "compared_pixels": 0,
+  "non_aux_excluded_pixels": 0,
+  "aux_visible_pixels": 0,
+  "aux_distinct_from_background": 0,
+  "pixel_mismatches": 0,
+  "aux_visibility_mismatches": 0,
+  "source_gzip_sha256": {
+    "games/yuyuhakusho/data/arena-a-aux-assets.json.gz": "3eb8fd42cf1e675c91140f406833af7fde38968109749e0702a31f1471aa75b4",
+    "games/yuyuhakusho/data/arena-assets-a.json.gz": "fc95e4147eba1f158ef79a5e31374123e9f0d0359dd3041e7e0261f5f99743da",
+    "games/yuyuhakusho/presentation/testdata/additional-arena-presentation-reference.json.gz": "b9c135c02699e87b3a92c97ed8853fbe6afa6b0ca0faaf488172a3d9cdf78af8",
+    "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-reference.json.gz": "6d64523e849ea5f22432fad8c110c45f67ac0a795175b9e8189d710361339b28"
+  }
+}

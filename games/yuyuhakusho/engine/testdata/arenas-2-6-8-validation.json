@@ -1,0 +1,355 @@
+{
+  "schema": 1,
+  "pass": true,
+  "scope": "complete ready-match FF8180 callbacks 20ae0/20e28/20fb4 with camera21556 and feedback21690; resource/pixel/world integration owned by root",
+  "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+  "arena_ids": [
+    2,
+    6,
+    8
+  ],
+  "complete_returns": 7586,
+  "supported_returns": 7526,
+  "reference_only_view_failures": 60,
+  "natural_video_steps": 10806,
+  "natural_all_ram_video_match": true,
+  "complete_64k_delta": true,
+  "ordered_64k_replay": true,
+  "unexplained_changes": 0,
+  "test_source_sha256": "dfc1c6463ae21c4a1d39e361cb4885a78078fde868bd9fc1ca12adc42d631b5f",
+  "frozen_test_source_unchanged_from_real_red": true,
+  "production_source_sha256": "2a45e57ec7d5c930eeabf3631d2e17a5bccf41a9ae45fdce86cd358438f6a534",
+  "capture_source_sha256": "aace0b05bd53dea21db31fbab80d9b30ce703b6e2984bd1d87b5d57cf55488a7",
+  "failure_list_sha256": "d2bf00025cd25f4092889425e2c346ab23f86fbde0fbc5eb8be46a421d802949",
+  "red": {
+    "record": "games/yuyuhakusho/engine/testdata/arenas-2-6-8-red.json",
+    "record_sha256": "f7e6266f812300d9abdc6ce3c40abe45d71e821533cd0c65826e24b6c6dbb9f1",
+    "log_sha256": "a2d55bb0ae769128cb1a944e910c0a32426a65f901960248a376d47696c75940"
+  },
+  "linear_rows": {
+    "pass": true,
+    "kind": "static typed table extraction; not CPU or stage acceptance",
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "output": "games/yuyuhakusho/data/arena-scene-linear-rows.json.gz",
+    "rows": 241,
+    "words_per_row": 128,
+    "source_bytes": 61696,
+    "source_sha256": "ff195c2bf95112ebf7725daed9d623115a0584d231ca5501fdfd62780b6c7c3d",
+    "raw_sha256": "59118feb31b0edaeeeccc74c3a20420fc0a43a6a16feb2e713e4af7b58bc3874",
+    "gzip_sha256": "0ff3d50945efbc81d8b72c896cba729fba1a279133cfe4af73356b2b00f120b7",
+    "gzip_bytes": 10233,
+    "all_default_tail_slices_match": true,
+    "all_wave_bytes_match_existing_library": true,
+    "extractor": "scripts/yuyuhakusho/capture_arenas_2_6_8.py",
+    "extractor_sha256": "aace0b05bd53dea21db31fbab80d9b30ce703b6e2984bd1d87b5d57cf55488a7"
+  },
+  "native_race": {
+    "pass": true,
+    "log": "games/yuyuhakusho/engine/testdata/arenas-2-6-8-native.jsonl",
+    "log_sha256": "07c217abd08b3b124ed9fe6f0219800fa935904b5aae3a55b197d4f7232ba360",
+    "elapsed_seconds": 49.582,
+    "top_level_tests": [
+      "TestArena268OriginalCallbacks",
+      "TestArena268SingleInitialStreams",
+      "TestArena268InvalidDataIsAtomic"
+    ],
+    "actual_scope": "all non-test engine .go sources plus arenas_2_6_8_test.go; regex ^TestArena268"
+  },
+  "node_wasm": {
+    "pass": true,
+    "log": "games/yuyuhakusho/engine/testdata/arenas-2-6-8-wasm.jsonl",
+    "log_sha256": "18f3cce893cee140ccb0b01d6e31035da410ed71f69490456e87b943079e507c",
+    "elapsed_seconds": 15.876,
+    "top_level_tests": [
+      "TestArena268OriginalCallbacks",
+      "TestArena268SingleInitialStreams",
+      "TestArena268InvalidDataIsAtomic"
+    ],
+    "actual_scope": "all non-test engine .go sources plus arenas_2_6_8_test.go; regex ^TestArena268"
+  },
+  "vet": {
+    "pass": true,
+    "record": "games/yuyuhakusho/engine/testdata/arenas-2-6-8-vet.json",
+    "record_sha256": "4c2e6bb76ce466e3078644be0efe285cb64dac81af93b129317c0c3b35c4cdfb"
+  },
+  "fixtures": [
+    {
+      "name": "arena2-oracle",
+      "calls": 1205,
+      "reference_only": 0,
+      "gzip_bytes": 1153366,
+      "gzip_sha256": "3b3f8fc7e95837abe7a03aa9c933c9743f8606d1783c8f09de610fee5dda4c26",
+      "raw_sha256": "ec28bdc9c9a92dad0856fffe6ec32a54c8abcc2af6fa51d119e5a0391323072e",
+      "manifest_sha256": "4c57e85d0f283b52dfd067a26ff3368c38baec3dbadc3b802a7a582eb62a8d2f",
+      "timeline_owners": {
+        "arena": 1339,
+        "irq-entry": 134,
+        "audio-clear-entry": 68,
+        "audio-clear-exit": 68,
+        "irq": 134,
+        "irq-exit": 134
+      },
+      "other_menu_contexts": 371,
+      "baseline": {
+        "input": "docs/research/md-yuyuhakusho/arena-2-inputs.json",
+        "input_sha256": "77cc5359c10b6789889ccb9fd5e89c05b5fe4c759135b1d40ce2f91aa637de4c",
+        "reference": "games/yuyuhakusho/engine/testdata/arena-2-reference-frames.json",
+        "reference_sha256": "963ba802317e664c73a3f7639d5865ae777d94e029588196669865ed1b6b5f89",
+        "manifest": "games/yuyuhakusho/engine/testdata/arena-2-reference-manifest.json",
+        "manifest_sha256": "89b23c4827db3b643a6810e185ae627688033148959765f29823c6e279b29088",
+        "video_steps": 3602,
+        "all_ram_video_match": true
+      }
+    },
+    {
+      "name": "arena2-boundaries",
+      "calls": 364,
+      "reference_only": 24,
+      "gzip_bytes": 5084720,
+      "gzip_sha256": "a58a83191bd3740c98e6f9e0b5717982f684a9c7f6a8a5a71983f223579f0bef",
+      "raw_sha256": "451a5dd3fc2d300e4f69763d4897c9c2f4b220a9a68dcbde20fb056e34077b61",
+      "manifest_sha256": "8d060748c3e155db1d4f7c3207125adb79730b4527dfd3db02656c85d246d290",
+      "timeline_owners": {
+        "arena": 364
+      },
+      "other_menu_contexts": 0,
+      "baseline": {
+        "input": "docs/research/md-yuyuhakusho/arena-2-inputs.json",
+        "input_sha256": "77cc5359c10b6789889ccb9fd5e89c05b5fe4c759135b1d40ce2f91aa637de4c",
+        "reference": "games/yuyuhakusho/engine/testdata/arena-2-reference-frames.json",
+        "reference_sha256": "963ba802317e664c73a3f7639d5865ae777d94e029588196669865ed1b6b5f89",
+        "manifest": "games/yuyuhakusho/engine/testdata/arena-2-reference-manifest.json",
+        "manifest_sha256": "89b23c4827db3b643a6810e185ae627688033148959765f29823c6e279b29088",
+        "video_steps": 3602,
+        "all_ram_video_match": true
+      }
+    },
+    {
+      "name": "arena2-sequences",
+      "calls": 960,
+      "reference_only": 0,
+      "gzip_bytes": 2185408,
+      "gzip_sha256": "daef8f2544cceea21520bcad5870a22f994c5688e560a6f242c9f5ed7f7a6b0d",
+      "raw_sha256": "056ab8402c6cc62da37c792658508c5caa95a6ba9ef40c42df839adfd599dc33",
+      "manifest_sha256": "4455a61d4ead187d012696759bc28d9b523abece4cbfa5f79b200e8218777c4f",
+      "timeline_owners": {
+        "arena": 960
+      },
+      "other_menu_contexts": 0,
+      "baseline": {
+        "input": "docs/research/md-yuyuhakusho/arena-2-inputs.json",
+        "input_sha256": "77cc5359c10b6789889ccb9fd5e89c05b5fe4c759135b1d40ce2f91aa637de4c",
+        "reference": "games/yuyuhakusho/engine/testdata/arena-2-reference-frames.json",
+        "reference_sha256": "963ba802317e664c73a3f7639d5865ae777d94e029588196669865ed1b6b5f89",
+        "manifest": "games/yuyuhakusho/engine/testdata/arena-2-reference-manifest.json",
+        "manifest_sha256": "89b23c4827db3b643a6810e185ae627688033148959765f29823c6e279b29088",
+        "video_steps": 3602,
+        "all_ram_video_match": true
+      }
+    },
+    {
+      "name": "arena6-oracle",
+      "calls": 1205,
+      "reference_only": 0,
+      "gzip_bytes": 542874,
+      "gzip_sha256": "abbc8b21ee9056e295bbc286ce5bfb3c8adeca70e22e71f32196edb06d906998",
+      "raw_sha256": "0a7be1613251d015b0786189484d4cb4f21607606f52fb7454d88ee697d4b23f",
+      "manifest_sha256": "c8a35628ba0e56b6b183a0d891033d2ba3f5516cd0da2842274d5ac2596686ca",
+      "timeline_owners": {
+        "arena": 1211,
+        "irq-entry": 6,
+        "audio-clear-entry": 12,
+        "audio-clear-exit": 12,
+        "irq": 6,
+        "irq-exit": 6
+      },
+      "other_menu_contexts": 170,
+      "baseline": {
+        "input": "docs/research/md-yuyuhakusho/arena-6-inputs.json",
+        "input_sha256": "ccb1f5560fb983f00c05c19e13b947dc067167d258f37a4d5b7d8a12258bb6ee",
+        "reference": "games/yuyuhakusho/engine/testdata/arena-6-reference-frames.json",
+        "reference_sha256": "6ddda9cb56749653259e1d993d428a761912c5af7c279dabe68635eb729e570f",
+        "manifest": "games/yuyuhakusho/engine/testdata/arena-6-reference-manifest.json",
+        "manifest_sha256": "434e737ceb89e233f3a9091abae64c6fc01167d2b3d017440bcd2460eae882b1",
+        "video_steps": 3602,
+        "all_ram_video_match": true
+      }
+    },
+    {
+      "name": "arena6-boundaries",
+      "calls": 364,
+      "reference_only": 18,
+      "gzip_bytes": 5089725,
+      "gzip_sha256": "f8be7924ca6c0a56ae6954a073b1c83d76d68d1df8eea8a0a571035d07260e3e",
+      "raw_sha256": "cb4a4f91f80426907b257c4f59764846ef1ebf49e48f314842ed087930a4ceb5",
+      "manifest_sha256": "a8ace57566306d83f90d307c2763b4b8c40de573da9b4476ef5d81867442a4ed",
+      "timeline_owners": {
+        "arena": 364
+      },
+      "other_menu_contexts": 0,
+      "baseline": {
+        "input": "docs/research/md-yuyuhakusho/arena-6-inputs.json",
+        "input_sha256": "ccb1f5560fb983f00c05c19e13b947dc067167d258f37a4d5b7d8a12258bb6ee",
+        "reference": "games/yuyuhakusho/engine/testdata/arena-6-reference-frames.json",
+        "reference_sha256": "6ddda9cb56749653259e1d993d428a761912c5af7c279dabe68635eb729e570f",
+        "manifest": "games/yuyuhakusho/engine/testdata/arena-6-reference-manifest.json",
+        "manifest_sha256": "434e737ceb89e233f3a9091abae64c6fc01167d2b3d017440bcd2460eae882b1",
+        "video_steps": 3602,
+        "all_ram_video_match": true
+      }
+    },
+    {
+      "name": "arena6-sequences",
+      "calls": 960,
+      "reference_only": 0,
+      "gzip_bytes": 2427028,
+      "gzip_sha256": "e7791cf3647e2c497b5ffc55e890658e6747d41d375ea25f4bdf8d8d933098be",
+      "raw_sha256": "999874e8463b51dc585087e516b731a1d52547d42fd06d96fc55b3121617fc26",
+      "manifest_sha256": "133f062367b5fc35043d2c8b59de64659ce2b2477ccba1306a4ad0bb4a586b5c",
+      "timeline_owners": {
+        "arena": 960
+      },
+      "other_menu_contexts": 0,
+      "baseline": {
+        "input": "docs/research/md-yuyuhakusho/arena-6-inputs.json",
+        "input_sha256": "ccb1f5560fb983f00c05c19e13b947dc067167d258f37a4d5b7d8a12258bb6ee",
+        "reference": "games/yuyuhakusho/engine/testdata/arena-6-reference-frames.json",
+        "reference_sha256": "6ddda9cb56749653259e1d993d428a761912c5af7c279dabe68635eb729e570f",
+        "manifest": "games/yuyuhakusho/engine/testdata/arena-6-reference-manifest.json",
+        "manifest_sha256": "434e737ceb89e233f3a9091abae64c6fc01167d2b3d017440bcd2460eae882b1",
+        "video_steps": 3602,
+        "all_ram_video_match": true
+      }
+    },
+    {
+      "name": "arena8-oracle",
+      "calls": 1204,
+      "reference_only": 0,
+      "gzip_bytes": 676827,
+      "gzip_sha256": "7776828287baafe06b86a9c5364b3246ecb8368f05927f18d08c45d4187fe7c7",
+      "raw_sha256": "9a479c24d44cab753d36c99a2d0a1d192b9ce9329979bdbe18672fb870f05e1d",
+      "manifest_sha256": "67bffd4c740184fbf5cec1b2fa10e014b629ad1d560a79d8525463ea0602a9b4",
+      "timeline_owners": {
+        "arena": 1282,
+        "irq-entry": 78,
+        "audio-clear-entry": 24,
+        "audio-clear-exit": 24,
+        "irq": 78,
+        "irq-exit": 78
+      },
+      "other_menu_contexts": 71,
+      "baseline": {
+        "input": "docs/research/md-yuyuhakusho/arena-8-inputs.json",
+        "input_sha256": "677caf4398b4525ec306392150c38ab05eec20c31983ccc59ca6b135ea92a3b4",
+        "reference": "games/yuyuhakusho/engine/testdata/arena-8-reference-frames.json",
+        "reference_sha256": "cb555178ff1d43e739097ccf23967125fb9f87778010567bda81c392989ef301",
+        "manifest": "games/yuyuhakusho/engine/testdata/arena-8-reference-manifest.json",
+        "manifest_sha256": "f120164fb3c17df66709bc77c192ec3f8ae5a3c1dba198df0e06cbd429e4ac02",
+        "video_steps": 3602,
+        "all_ram_video_match": true
+      }
+    },
+    {
+      "name": "arena8-boundaries",
+      "calls": 364,
+      "reference_only": 18,
+      "gzip_bytes": 5340648,
+      "gzip_sha256": "a1de2037e4ed468bf5876b6007a7a6222b5ac7bee36675e01c974c34835e8693",
+      "raw_sha256": "e57424265547f5ac2e4a5fce0ea9822ab3c981974902d87aa2aea4368e8781df",
+      "manifest_sha256": "9fb14f7d5cf2b19b2d5b17047087f76d86d7bc71cff1e59a7a0deb874e2c93af",
+      "timeline_owners": {
+        "arena": 364
+      },
+      "other_menu_contexts": 0,
+      "baseline": {
+        "input": "docs/research/md-yuyuhakusho/arena-8-inputs.json",
+        "input_sha256": "677caf4398b4525ec306392150c38ab05eec20c31983ccc59ca6b135ea92a3b4",
+        "reference": "games/yuyuhakusho/engine/testdata/arena-8-reference-frames.json",
+        "reference_sha256": "cb555178ff1d43e739097ccf23967125fb9f87778010567bda81c392989ef301",
+        "manifest": "games/yuyuhakusho/engine/testdata/arena-8-reference-manifest.json",
+        "manifest_sha256": "f120164fb3c17df66709bc77c192ec3f8ae5a3c1dba198df0e06cbd429e4ac02",
+        "video_steps": 3602,
+        "all_ram_video_match": true
+      }
+    },
+    {
+      "name": "arena8-sequences",
+      "calls": 960,
+      "reference_only": 0,
+      "gzip_bytes": 1915612,
+      "gzip_sha256": "568ef778576628999f31e5dd380aee65a234d4498bee54c4d0ac2100a9faa4a5",
+      "raw_sha256": "58686a1ae52931a7923d7beac2bc5810b36dbb0dcee02f44da3bdb96e8c80ecb",
+      "manifest_sha256": "413fc19013ab119d8b1de1c5dcc9434372476a490d935d0af813514bda5bff54",
+      "timeline_owners": {
+        "arena": 960
+      },
+      "other_menu_contexts": 0,
+      "baseline": {
+        "input": "docs/research/md-yuyuhakusho/arena-8-inputs.json",
+        "input_sha256": "677caf4398b4525ec306392150c38ab05eec20c31983ccc59ca6b135ea92a3b4",
+        "reference": "games/yuyuhakusho/engine/testdata/arena-8-reference-frames.json",
+        "reference_sha256": "cb555178ff1d43e739097ccf23967125fb9f87778010567bda81c392989ef301",
+        "manifest": "games/yuyuhakusho/engine/testdata/arena-8-reference-manifest.json",
+        "manifest_sha256": "f120164fb3c17df66709bc77c192ec3f8ae5a3c1dba198df0e06cbd429e4ac02",
+        "video_steps": 3602,
+        "all_ram_video_match": true
+      }
+    }
+  ],
+  "cleanup": {
+    "removed": [
+      {
+        "path": ".local/md-yuyuhakusho/arena-2-rules",
+        "bytes": 0,
+        "reason": "own duplicate captured fixtures or empty failed observer output; canonical testdata and unique controls retained"
+      },
+      {
+        "path": ".local/md-yuyuhakusho/arena-6-rules",
+        "bytes": 0,
+        "reason": "own duplicate captured fixtures or empty failed observer output; canonical testdata and unique controls retained"
+      },
+      {
+        "path": ".local/md-yuyuhakusho/arena-8-rules",
+        "bytes": 0,
+        "reason": "own duplicate captured fixtures or empty failed observer output; canonical testdata and unique controls retained"
+      },
+      {
+        "path": ".local/md-yuyuhakusho/arena-2-rules-diagnostic",
+        "bytes": 0,
+        "reason": "own duplicate captured fixtures or empty failed observer output; canonical testdata and unique controls retained"
+      },
+      {
+        "path": ".local/md-yuyuhakusho/arena-2-rules-v2",
+        "bytes": 8676212,
+        "reason": "own duplicate captured fixtures or empty failed observer output; canonical testdata and unique controls retained"
+      },
+      {
+        "path": ".local/md-yuyuhakusho/arena-6-rules-v2",
+        "bytes": 8253848,
+        "reason": "own duplicate captured fixtures or empty failed observer output; canonical testdata and unique controls retained"
+      },
+      {
+        "path": ".local/md-yuyuhakusho/arena-8-rules-v2",
+        "bytes": 8098502,
+        "reason": "own duplicate captured fixtures or empty failed observer output; canonical testdata and unique controls retained"
+      },
+      {
+        "path": ".local/md-yuyuhakusho/arenas-2-6-8-linear-replay",
+        "bytes": 11089,
+        "reason": "own duplicate captured fixtures or empty failed observer output; canonical testdata and unique controls retained"
+      },
+      {
+        "path": ".local/md-yuyuhakusho/arena-linear-final",
+        "bytes": 11081,
+        "reason": "own duplicate captured fixtures or empty failed observer output; canonical testdata and unique controls retained"
+      }
+    ],
+    "removed_bytes": 25050732,
+    "shared_caches_and_other_agent_outputs_preserved": true
+  },
+  "limitations": [
+    "same-PC FF8380 menu previews retain entry context only and are not counted as ready-match complete returns",
+    "60 original CPU feedback reads outside the proved HUD/row view are reference-only; independent callbacks reject atomically",
+    "background assets, pixels, world scheduling, bundle, UI and full-match acceptance are outside this callback batch"
+  ]
+}

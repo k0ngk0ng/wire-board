@@ -40,12 +40,15 @@ type verification struct {
 	RulesSHA             string `json:"rules_sha256"`
 	FinalSHA             string `json:"final_state_sha256"`
 	TraceSHA             string `json:"trace_sha256"`
+	Arena                uint16 `json:"arena,omitempty"`
+	PanFrames            int    `json:"pan_frames,omitempty"`
 }
 
 func digest(raw []byte) string { sum := sha256.Sum256(raw); return hex.EncodeToString(sum[:]) }
 
 func run() error {
 	players := flag.Int("players", 2, "number of active original slots,2..4")
+	arena := flag.Uint("arena", 0, "recovered arena offset, even0..14")
 	selection := flag.String("characters", "", "comma-separated source IDs,0..10; defaults to all9")
 	team := flag.Bool("team", false, "use original four-player1/1/4/4 teams")
 	human := flag.Bool("human-idle", false, "keep slot0 explicitly human with neutral input")
@@ -53,7 +56,7 @@ func run() error {
 	max := flag.Int("max-ticks", 20000, "maximum complete logical ticks")
 	path := flag.String("rules", "games/yuyuhakusho/data/chu-world-rules.json.gz", "semantic rules only")
 	flag.Parse()
-	if *players < 2 || *players > 4 || *seed > 0xffffffff || *max < 1 {
+	if *players < 2 || *players > 4 || *seed > 0xffffffff || *max < 1 || *arena > 14 || *arena&1 != 0 {
 		return fmt.Errorf("invalid players/seed/tick limit")
 	}
 	characters := make([]uint8, *players)
@@ -91,7 +94,7 @@ func run() error {
 	if err != nil {
 		return err
 	}
-	options := engine.ChuSessionOptions{Seed: uint32(*seed), Difficulty: 6, TeamBattle: *team}
+	options := engine.ChuSessionOptions{Seed: uint32(*seed), Difficulty: 6, TeamBattle: *team, Arena: uint16(*arena)}
 	slots := []uint8{0, 3}
 	if *players == 3 {
 		slots = []uint8{0, 1, 3}
@@ -105,11 +108,15 @@ func run() error {
 	if err != nil {
 		return err
 	}
-	state, err = engine.CompleteChuSessionResource(state, engine.DefaultChuSessionResource())
+	resource, err := engine.ChuSessionResourceForArena(uint16(*arena), library)
 	if err != nil {
 		return err
 	}
-	report := verification{Seed: uint32(*seed), Players: *players, Team: *team, HumanIdle: *human, Environment: runtime.GOOS + "/" + runtime.GOARCH, RulesSHA: digest(raw)}
+	state, err = engine.CompleteChuSessionResource(state, resource, library)
+	if err != nil {
+		return err
+	}
+	report := verification{Seed: uint32(*seed), Players: *players, Team: *team, HumanIdle: *human, Environment: runtime.GOOS + "/" + runtime.GOARCH, RulesSHA: digest(raw), Arena: uint16(*arena)}
 	if *selection != "" {
 		for _, character := range characters {
 			report.Characters = append(report.Characters, int(character))
@@ -123,6 +130,9 @@ func run() error {
 			return fmt.Errorf("logical tick%d: %w", tick, err)
 		}
 		report.Ticks = tick
+		if *arena != 0 && state.Clock.PanOffset != 0 {
+			report.PanFrames++
+		}
 		for _, event := range events {
 			if event.Kind == "callback" {
 				report.Callbacks++

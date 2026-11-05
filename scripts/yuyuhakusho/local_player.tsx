@@ -5,7 +5,7 @@ import { KeyboardController, type ControllerProfile } from "../../web/src/contro
 import "./local_player.css";
 
 type Player = { slot: number; character_id: number; computer: boolean; input_channel: number; active: boolean; health: number; energy: number; X: number; Y: number; Pose: number; Action: number };
-type View = { tick: number; logic_frame: number; ready: boolean; paused: boolean; completed: boolean; winner: number; window_complete: boolean; players: Player[] };
+type View = { tick: number; logic_frame: number; ready: boolean; paused: boolean; completed: boolean; winner: number; window_complete: boolean; players: Player[]; arena?: number };
 type Reply = { ok: boolean; error?: string; view?: View; snapshot?: string; sprite_pixels?: number };
 declare global {
   interface Window {
@@ -23,6 +23,7 @@ const keyboard = new KeyboardController(profile);
 const pointers = new Map<number, readonly string[]>();
 const bits: Record<string, number> = { up: 1, down: 2, left: 4, right: 8, b: 16, c: 32, a: 64, start: 128, z: 256, y: 512, x: 1024, mode: 2048 };
 const characterNames: Record<number, string> = { 0: "幻海", 1: "藏马", 2: "桑原", 3: "幽助", 4: "飞影", 5: "仙水", 6: "阵", 7: "树", 8: "户愚吕兄", 9: "酎", 10: "户愚吕弟" };
+const arenaNames: Record<number, string> = { 0: "默认场地", 2: "灵界", 4: "亚空间 1", 6: "魔界", 8: "洞窟", 10: "魔性之森", 12: "亚空间 2", 14: "山顶" };
 function sample() {
   const held = keyboard.sample(performance.now());
   for (const buttons of pointers.values()) for (const button of buttons) held.add(button);
@@ -54,12 +55,15 @@ function signature(bytes: Uint8Array) {
 function App() {
   const canvas = useRef<HTMLCanvasElement>(null);
   const running = useRef(false);
+  const loadArena = useRef<((arena: number) => Promise<void>) | null>(null);
   const [ready, setReady] = useState(false);
+  const [preparing, setPreparing] = useState(false);
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState("");
   const [players, setPlayers] = useState(2);
   const [character, setCharacter] = useState(9);
   const [opponent, setOpponent] = useState(9);
+  const [arena, setArena] = useState(0);
   const [team, setTeam] = useState(false);
   const [watch, setWatch] = useState(false);
   const [view, setView] = useState<View | null>(null);
@@ -131,6 +135,26 @@ function App() {
         void go.run(instance).catch(fail);
         if (typeof window.yuyuhakushoWasm !== "function") throw Error("比赛程序未完成初始化");
         call({ Op: "load", Rules: rules, Sprites: sprites, Arena: arena, HUD: hud });
+        const cached = new Map<number, { arena: unknown; auxiliary?: unknown }>([[0, { arena }]]);
+        let loadedArena = 0;
+        loadArena.current = async (selected: number) => {
+          if (loadedArena === selected) return;
+          let media = cached.get(selected);
+          if (!media) {
+            for (const key of Object.keys(downloaded)) delete downloaded[key];
+            if (mounted) setProgress(0);
+            const [background, auxiliary] = await Promise.all([
+              asset(`/arena-${selected.toString(16)}.json.gz`).then(unpack),
+              selected === 10 ? asset("/arena-a-aux.json.gz").then(unpack) : Promise.resolve(undefined),
+            ]);
+            media = { arena: background, auxiliary };
+            cached.set(selected, media);
+          }
+          if (!mounted) return;
+          call({ Op: "load", Rules: rules, Sprites: sprites, Arena: media.arena, ArenaAux: media.auxiliary, HUD: hud, Options: { Arena: selected } });
+          loadedArena = selected;
+          setProgress(100);
+        };
         if (mounted) { research.assetsReady = true; setProgress(100); setReady(true); }
       } catch (reason) { fail(reason); }
     })();
@@ -164,24 +188,29 @@ function App() {
     };
     frameID = requestAnimationFrame(loop);
     return () => {
-      mounted = false; running.current = false; clearInput(); cancelAnimationFrame(frameID);
+      mounted = false; running.current = false; loadArena.current = null; clearInput(); cancelAnimationFrame(frameID);
       window.removeEventListener("keydown", down); window.removeEventListener("keyup", up);
       window.removeEventListener("blur", clearInput); window.removeEventListener("focusin", focus);
       window.removeEventListener("pointerdown", trusted); document.removeEventListener("visibilitychange", visibility);
     };
   }, []);
 
-  function start() {
-    clearInput();
+  async function start() {
+    clearInput(); running.current = false; setPreparing(true); setError("");
     try {
+      if (!loadArena.current) throw Error("比赛资源尚未就绪");
+      await loadArena.current(arena);
       const slots = players === 2 ? [0, 3] : players === 3 ? [0, 1, 3] : [0, 1, 2, 3];
-      call({ Op: "prepare", Options: { Seed: 0x12345678, Difficulty: 6, TeamBattle: team && players === 4,
+      call({ Op: "prepare", Options: { Arena: arena, Seed: 0x12345678, Difficulty: 6, TeamBattle: team && players === 4,
         Players: slots.map((slot, color) => ({ Slot: slot, CharacterID: slot === 0 ? character : opponent, Color: color, Computer: watch || slot !== 0, HumanChannel: 0 })),
       } });
       const response = call({ Op: "ready" });
-      setView(response.view ?? null); setError(""); running.current = true;
+      setView(response.view ?? null); setPreparing(false); running.current = true;
       canvas.current?.focus();
-    } catch (reason) { setError(reason instanceof Error ? reason.message : String(reason)); }
+    } catch (reason) {
+      const message = reason instanceof Error ? reason.message : String(reason);
+      research.errors.push(message); setError(message); setPreparing(false);
+    }
   }
   const colors = ["#476689", "#b17742", "#4f8269", "#8a5681"];
   return <main className="yy-player">
@@ -190,13 +219,14 @@ function App() {
       <label>人数<select aria-label="人数" value={players} onChange={event => { setPlayers(Number(event.target.value)); clearInput(); }}><option value={2}>2 人</option><option value={3}>3 人</option><option value={4}>4 人</option></select></label>
       <label>角色<select id="player-character" aria-label="角色" value={character} onChange={event => { setCharacter(Number(event.target.value)); clearInput(); }}>{Object.entries(characterNames).map(([id, name]) => <option key={id} value={id}>{name}</option>)}</select></label>
       <label>电脑<select id="opponent-character" aria-label="电脑角色" value={opponent} onChange={event => { setOpponent(Number(event.target.value)); clearInput(); }}>{Object.entries(characterNames).map(([id, name]) => <option key={id} value={id}>{name}</option>)}</select></label>
+      <label>场地<select id="arena-select" aria-label="场地" value={arena} onChange={event => { setArena(Number(event.target.value)); clearInput(); }}>{Object.entries(arenaNames).map(([id, name]) => <option key={id} value={id}>{name}</option>)}</select></label>
       {players === 4 && <label className="yy-check"><input type="checkbox" checked={team} onChange={event => setTeam(event.target.checked)} />组队</label>}
       <label className="yy-check"><input type="checkbox" checked={watch} onChange={event => setWatch(event.target.checked)} />电脑演示</label>
-      <button id="start-match" type="button" onClick={start} disabled={!ready}>{view ? "重新开始" : "开始对局"}</button>
+      <button id="start-match" type="button" onClick={start} disabled={!ready || preparing}>{view ? "重新开始" : "开始对局"}</button>
     </div>
     <section className="yy-display">
       <canvas ref={canvas} width={320} height={224} tabIndex={0} aria-label="魔强统一战比赛画面" />
-      {!ready && !error && <div className="yy-loading"><progress value={progress} max={100} /><span>{progress === 95 ? "正在初始化" : `加载中 ${progress}%`}</span></div>}
+      {(!ready || preparing) && !error && <div className="yy-loading"><progress value={progress} max={100} /><span>{progress >= 95 ? "正在初始化" : `加载中 ${progress}%`}</span></div>}
     </section>
     {error && <div className="yy-error" role="alert">{error}<button onClick={() => location.reload()}>重新加载</button></div>}
     {view && <div className="yy-players">{view.players.map((player, index) => <div className="yy-player-card" key={player.slot} style={{ borderTopColor: colors[index] }}>
@@ -205,7 +235,7 @@ function App() {
     </div>)}</div>}
     {view?.paused && <p className="yy-status">已暂停</p>}
     {view?.completed && <p className="yy-status">对局结束</p>}
-    <div className="yy-pad"><MDController profile={profile} mode="play" sink={sink} disabled={!ready || !view || view.completed} /></div>
+    <div className="yy-pad"><MDController profile={profile} mode="play" sink={sink} disabled={!ready || preparing || !view || view.completed} /></div>
   </main>;
 }
 

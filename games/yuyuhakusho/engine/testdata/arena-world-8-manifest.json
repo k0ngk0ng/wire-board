@@ -1,0 +1,59 @@
+{
+  "scope": "Cold actual 3592 practice-ready whole-object passes against unique supplied original3602 control",
+  "arena": 8,
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture": {
+    "path": "scripts/yuyuhakusho/capture_arena_world_sessions.py",
+    "sha256": "2ff6006de45746d35806a29b6500b27eec8d84e2a03e654082232ebe3b1a5f42"
+  },
+  "inputs": {
+    "path": "docs/research/md-yuyuhakusho/arena-8-inputs.json",
+    "sha256": "677caf4398b4525ec306392150c38ab05eec20c31983ccc59ca6b135ea92a3b4"
+  },
+  "control": {
+    "path": "games/yuyuhakusho/engine/testdata/arena-8-reference-frames.json",
+    "sha256": "cb555178ff1d43e739097ccf23967125fb9f87778010567bda81c392989ef301"
+  },
+  "control_manifest": {
+    "path": "games/yuyuhakusho/engine/testdata/arena-8-reference-manifest.json",
+    "sha256": "f120164fb3c17df66709bc77c192ec3f8ae5a3c1dba198df0e06cbd429e4ac02"
+  },
+  "frames_checked": 3602,
+  "frames_match_original_control": true,
+  "checkpoint_restore": false,
+  "emulated_ram_writes": false,
+  "direct_cpu_calls": false,
+  "entry_frame_limit": 3600,
+  "drain_frames": 2,
+  "first_frame": 2700,
+  "last_frame": 3600,
+  "records": 901,
+  "object_calls": 8536,
+  "callbacks": {
+    "40990": 901,
+    "62116": 901,
+    "65144": 901,
+    "75368": 1802,
+    "77268": 120,
+    "77836": 72,
+    "84098": 901,
+    "84396": 1136,
+    "126380": 901,
+    "135092": 901
+  },
+  "raw_arena_sprites": 0,
+  "fixture_sha256": "bff24de8618ca83b18e93cabd25dea237c9c271e8b296ddc5f960085338d5d0c",
+  "gzip_sha256": "6d8b13fe32a725d9c26e9ad8c381e0545747719097d4d6daf95b2e20792e1cbf",
+  "incomplete_calls": 0,
+  "errors": [],
+  "pass": true
+}

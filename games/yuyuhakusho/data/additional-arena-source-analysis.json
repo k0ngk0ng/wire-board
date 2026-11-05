@@ -1,0 +1,1202 @@
+{
+  "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+  "producer_sha256": "5e8916289bce45697a89327c7a1f681e81a5a88ccb7bae00501b61e7635f8c32",
+  "scope": "Original static source binding inventory; no natural pixel acceptance implied",
+  "arenas": [
+    {
+      "arena_offset": 2,
+      "resource_binding": {
+        "arena_offset": 2,
+        "scene_behavior": 133856,
+        "resource_list": 137052,
+        "list_sha256": "8f5e33bb4959f35228574e2cd3b4bad372dfbcbfc30aa63c3a9996b8fb56b9da",
+        "resources": [
+          {
+            "kind": 6,
+            "source": 2612096,
+            "destination": 0,
+            "encoded_bytes": 305,
+            "encoded_sha256": "e8c8053c38485b230756ef379958426112e50623c5a6cb9a6a415d7d7e194fa5"
+          },
+          {
+            "kind": 6,
+            "source": 2612404,
+            "destination": 6144,
+            "encoded_bytes": 6498,
+            "encoded_sha256": "6f8346b2486b2bdf2ec22c312de4264a660d3261089ed4cf313d5865b354e782"
+          },
+          {
+            "kind": 6,
+            "source": 2665874,
+            "destination": 32768,
+            "encoded_bytes": 4179,
+            "encoded_sha256": "6babd8519f4fccf62eb16fd8d4c11937384e29cfa49e24cb198450e216b813a2"
+          },
+          {
+            "kind": 6,
+            "source": 2670056,
+            "destination": 40960,
+            "encoded_bytes": 4531,
+            "encoded_sha256": "f994db4220198b592a8807da4845e239ef85c1215880dc3c44e3d392c8c30683"
+          },
+          {
+            "kind": 6,
+            "source": 2674590,
+            "destination": 49152,
+            "encoded_bytes": 1159,
+            "encoded_sha256": "5204af94932773eb47c0578dd8488e58f917c0b40d7d177e5ccbf3e93d70c281"
+          },
+          {
+            "kind": 6,
+            "source": 2675752,
+            "destination": 57344,
+            "encoded_bytes": 1224,
+            "encoded_sha256": "3f483888b6354212c61beb635f20ee7899dc501b1457a06a75cfe4af7be8df92"
+          },
+          {
+            "kind": 0,
+            "source": 2676978,
+            "destination": 57472,
+            "length": 32
+          }
+        ]
+      },
+      "decoded_resources": [
+        {
+          "source": 2612096,
+          "destination": 0,
+          "decoded_bytes": 512,
+          "decoded_sha256": "907e590de5a1ab9522d62e29f307b3d2cd84dd15fa97baf9796e9f2f8e2a49f8",
+          "token_counts": [
+            37,
+            7,
+            2,
+            4,
+            72,
+            2,
+            0,
+            1
+          ],
+          "encoded_bytes": 305,
+          "encoded_sha256": "e8c8053c38485b230756ef379958426112e50623c5a6cb9a6a415d7d7e194fa5"
+        },
+        {
+          "source": 2612404,
+          "destination": 6144,
+          "decoded_bytes": 10176,
+          "decoded_sha256": "26b68ec6f0b880e4eca3880bbf2a07df732563391d39b3c606ad4ea6090951d7",
+          "token_counts": [
+            656,
+            128,
+            25,
+            61,
+            1933,
+            60,
+            23,
+            12
+          ],
+          "encoded_bytes": 6498,
+          "encoded_sha256": "6f8346b2486b2bdf2ec22c312de4264a660d3261089ed4cf313d5865b354e782"
+        },
+        {
+          "source": 2665874,
+          "destination": 32768,
+          "decoded_bytes": 8192,
+          "decoded_sha256": "e81997b9f5de960e1a35797ec827111609f5a7b949d1658b0cb3b78a04b0ce28",
+          "token_counts": [
+            358,
+            161,
+            6,
+            41,
+            1072,
+            106,
+            28,
+            8
+          ],
+          "encoded_bytes": 4179,
+          "encoded_sha256": "6babd8519f4fccf62eb16fd8d4c11937384e29cfa49e24cb198450e216b813a2"
+        },
+        {
+          "source": 2670056,
+          "destination": 40960,
+          "decoded_bytes": 8192,
+          "decoded_sha256": "d82b6bf5f83b6ecfb0bad52cd048c3523f108df3e0658a70ae3b61d9befeeb92",
+          "token_counts": [
+            370,
+            92,
+            22,
+            51,
+            1374,
+            45,
+            15,
+            4
+          ],
+          "encoded_bytes": 4531,
+          "encoded_sha256": "f994db4220198b592a8807da4845e239ef85c1215880dc3c44e3d392c8c30683"
+        },
+        {
+          "source": 2674590,
+          "destination": 49152,
+          "decoded_bytes": 4096,
+          "decoded_sha256": "058fd58c55ac3a3234541c1ea120d0ff51b16b86ad7e2a9c545b42fbb9e2f483",
+          "token_counts": [
+            26,
+            0,
+            39,
+            63,
+            78,
+            15,
+            9,
+            9
+          ],
+          "encoded_bytes": 1159,
+          "encoded_sha256": "5204af94932773eb47c0578dd8488e58f917c0b40d7d177e5ccbf3e93d70c281"
+        },
+        {
+          "source": 2675752,
+          "destination": 57344,
+          "decoded_bytes": 4096,
+          "decoded_sha256": "897c87865131e1fa5d319cbbd632d984f9bc0acbbb47dae3ff84c4c02b50af96",
+          "token_counts": [
+            40,
+            0,
+            36,
+            75,
+            27,
+            3,
+            2,
+            38
+          ],
+          "encoded_bytes": 1224,
+          "encoded_sha256": "3f483888b6354212c61beb635f20ee7899dc501b1457a06a75cfe4af7be8df92"
+        }
+      ],
+      "unwritten_map_ranges": [],
+      "loaded_original_required": true,
+      "limits": [
+        "Static resource decoding does not establish natural video or dynamic material behavior"
+      ]
+    },
+    {
+      "arena_offset": 4,
+      "resource_binding": {
+        "arena_offset": 4,
+        "scene_behavior": 134322,
+        "resource_list": 137112,
+        "list_sha256": "5eb72e9dbdcec5f6c9c8bf0be14ec4c8fd3f339b23b1c737358371f2875e4d81",
+        "resources": [
+          {
+            "kind": 6,
+            "source": 2612096,
+            "destination": 0,
+            "encoded_bytes": 305,
+            "encoded_sha256": "e8c8053c38485b230756ef379958426112e50623c5a6cb9a6a415d7d7e194fa5"
+          },
+          {
+            "kind": 6,
+            "source": 2612404,
+            "destination": 6144,
+            "encoded_bytes": 6498,
+            "encoded_sha256": "6f8346b2486b2bdf2ec22c312de4264a660d3261089ed4cf313d5865b354e782"
+          },
+          {
+            "kind": 6,
+            "source": 2677010,
+            "destination": 32768,
+            "encoded_bytes": 3844,
+            "encoded_sha256": "2eb3c6191f3cb9a26e9492d4cc71e9b87167957125533d7f35a5516de3b0711e"
+          },
+          {
+            "kind": 6,
+            "source": 2680856,
+            "destination": 49408,
+            "encoded_bytes": 901,
+            "encoded_sha256": "a61f1ebce17a0f7c4f3a2014d34cf5ad06a64d94d71e6f1f4d548ad295ced083"
+          },
+          {
+            "kind": 6,
+            "source": 2681760,
+            "destination": 57600,
+            "encoded_bytes": 1899,
+            "encoded_sha256": "48db0f3ba3d79b09890019a8b70b200c288b285d939c1950012b1a5bcb408b7d"
+          },
+          {
+            "kind": 0,
+            "source": 2683662,
+            "destination": 57472,
+            "length": 32
+          }
+        ]
+      },
+      "decoded_resources": [
+        {
+          "source": 2612096,
+          "destination": 0,
+          "decoded_bytes": 512,
+          "decoded_sha256": "907e590de5a1ab9522d62e29f307b3d2cd84dd15fa97baf9796e9f2f8e2a49f8",
+          "token_counts": [
+            37,
+            7,
+            2,
+            4,
+            72,
+            2,
+            0,
+            1
+          ],
+          "encoded_bytes": 305,
+          "encoded_sha256": "e8c8053c38485b230756ef379958426112e50623c5a6cb9a6a415d7d7e194fa5"
+        },
+        {
+          "source": 2612404,
+          "destination": 6144,
+          "decoded_bytes": 10176,
+          "decoded_sha256": "26b68ec6f0b880e4eca3880bbf2a07df732563391d39b3c606ad4ea6090951d7",
+          "token_counts": [
+            656,
+            128,
+            25,
+            61,
+            1933,
+            60,
+            23,
+            12
+          ],
+          "encoded_bytes": 6498,
+          "encoded_sha256": "6f8346b2486b2bdf2ec22c312de4264a660d3261089ed4cf313d5865b354e782"
+        },
+        {
+          "source": 2677010,
+          "destination": 32768,
+          "decoded_bytes": 9952,
+          "decoded_sha256": "53a89a8d4658dee044c9a4106e2017d75158eb3c3a972cb32813819d0e45db7e",
+          "token_counts": [
+            255,
+            100,
+            4,
+            30,
+            1212,
+            133,
+            54,
+            20
+          ],
+          "encoded_bytes": 3844,
+          "encoded_sha256": "2eb3c6191f3cb9a26e9492d4cc71e9b87167957125533d7f35a5516de3b0711e"
+        },
+        {
+          "source": 2680856,
+          "destination": 49408,
+          "decoded_bytes": 3584,
+          "decoded_sha256": "cc9213c3b52b48a6f677c0220d21a73a0bccb594a13aadd8d1353dae639b895d",
+          "token_counts": [
+            71,
+            2,
+            25,
+            44,
+            110,
+            21,
+            3,
+            39
+          ],
+          "encoded_bytes": 901,
+          "encoded_sha256": "a61f1ebce17a0f7c4f3a2014d34cf5ad06a64d94d71e6f1f4d548ad295ced083"
+        },
+        {
+          "source": 2681760,
+          "destination": 57600,
+          "decoded_bytes": 3584,
+          "decoded_sha256": "dc971aa95e85de01b2b03eabb0c8bcefc948b7f226bc7c59ffecf1d6d1c04be4",
+          "token_counts": [
+            107,
+            3,
+            5,
+            104,
+            166,
+            42,
+            1,
+            6
+          ],
+          "encoded_bytes": 1899,
+          "encoded_sha256": "48db0f3ba3d79b09890019a8b70b200c288b285d939c1950012b1a5bcb408b7d"
+        }
+      ],
+      "unwritten_map_ranges": [
+        {
+          "start": 49152,
+          "end": 49408
+        },
+        {
+          "start": 52992,
+          "end": 53248
+        },
+        {
+          "start": 57344,
+          "end": 57600
+        },
+        {
+          "start": 61184,
+          "end": 61440
+        }
+      ],
+      "loaded_original_required": true,
+      "limits": [
+        "Static resource decoding does not establish natural video or dynamic material behavior"
+      ]
+    },
+    {
+      "arena_offset": 6,
+      "resource_binding": {
+        "arena_offset": 6,
+        "scene_behavior": 134696,
+        "resource_list": 137164,
+        "list_sha256": "ac7658c08d1f700dc37022a3b861809787c6beaa44e59f50bcd70068a3c37071",
+        "resources": [
+          {
+            "kind": 6,
+            "source": 2612096,
+            "destination": 0,
+            "encoded_bytes": 305,
+            "encoded_sha256": "e8c8053c38485b230756ef379958426112e50623c5a6cb9a6a415d7d7e194fa5"
+          },
+          {
+            "kind": 6,
+            "source": 2612404,
+            "destination": 6144,
+            "encoded_bytes": 6498,
+            "encoded_sha256": "6f8346b2486b2bdf2ec22c312de4264a660d3261089ed4cf313d5865b354e782"
+          },
+          {
+            "kind": 6,
+            "source": 2683694,
+            "destination": 32768,
+            "encoded_bytes": 8465,
+            "encoded_sha256": "dfc5a1e833b7f95310679fc46a637c2a6ee2ad125352765e34972afbe79975de"
+          },
+          {
+            "kind": 6,
+            "source": 2692162,
+            "destination": 49408,
+            "encoded_bytes": 1012,
+            "encoded_sha256": "872163617acf9a6f181dc8da3420507d3b0468e7edc7781c7508582beb088f41"
+          },
+          {
+            "kind": 6,
+            "source": 2693176,
+            "destination": 57600,
+            "encoded_bytes": 1287,
+            "encoded_sha256": "ad27a4825ee61078ce5970fb18a2a58633a1987f997586cdc0d40d61a1d7974c"
+          },
+          {
+            "kind": 0,
+            "source": 2694466,
+            "destination": 57472,
+            "length": 32
+          }
+        ]
+      },
+      "decoded_resources": [
+        {
+          "source": 2612096,
+          "destination": 0,
+          "decoded_bytes": 512,
+          "decoded_sha256": "907e590de5a1ab9522d62e29f307b3d2cd84dd15fa97baf9796e9f2f8e2a49f8",
+          "token_counts": [
+            37,
+            7,
+            2,
+            4,
+            72,
+            2,
+            0,
+            1
+          ],
+          "encoded_bytes": 305,
+          "encoded_sha256": "e8c8053c38485b230756ef379958426112e50623c5a6cb9a6a415d7d7e194fa5"
+        },
+        {
+          "source": 2612404,
+          "destination": 6144,
+          "decoded_bytes": 10176,
+          "decoded_sha256": "26b68ec6f0b880e4eca3880bbf2a07df732563391d39b3c606ad4ea6090951d7",
+          "token_counts": [
+            656,
+            128,
+            25,
+            61,
+            1933,
+            60,
+            23,
+            12
+          ],
+          "encoded_bytes": 6498,
+          "encoded_sha256": "6f8346b2486b2bdf2ec22c312de4264a660d3261089ed4cf313d5865b354e782"
+        },
+        {
+          "source": 2683694,
+          "destination": 32768,
+          "decoded_bytes": 14784,
+          "decoded_sha256": "ab3d28cffba278b27e788707c28aae8cbe8dd5bbb882d3a36cace7442d45af8a",
+          "token_counts": [
+            587,
+            335,
+            31,
+            113,
+            2622,
+            102,
+            27,
+            7
+          ],
+          "encoded_bytes": 8465,
+          "encoded_sha256": "dfc5a1e833b7f95310679fc46a637c2a6ee2ad125352765e34972afbe79975de"
+        },
+        {
+          "source": 2692162,
+          "destination": 49408,
+          "decoded_bytes": 3584,
+          "decoded_sha256": "85b2ab7abfb8e0fb0df2c74530f40048eeb54e5526b3a6060dda3cb54cc42b83",
+          "token_counts": [
+            40,
+            0,
+            28,
+            50,
+            56,
+            4,
+            7,
+            7
+          ],
+          "encoded_bytes": 1012,
+          "encoded_sha256": "872163617acf9a6f181dc8da3420507d3b0468e7edc7781c7508582beb088f41"
+        },
+        {
+          "source": 2693176,
+          "destination": 57600,
+          "decoded_bytes": 3584,
+          "decoded_sha256": "4439a17c32daf304baf3c643f5abc8b9b2b4af807099ff8917e527806de738d3",
+          "token_counts": [
+            58,
+            0,
+            17,
+            53,
+            140,
+            5,
+            10,
+            24
+          ],
+          "encoded_bytes": 1287,
+          "encoded_sha256": "ad27a4825ee61078ce5970fb18a2a58633a1987f997586cdc0d40d61a1d7974c"
+        }
+      ],
+      "unwritten_map_ranges": [
+        {
+          "start": 49152,
+          "end": 49408
+        },
+        {
+          "start": 52992,
+          "end": 53248
+        },
+        {
+          "start": 57344,
+          "end": 57600
+        },
+        {
+          "start": 61184,
+          "end": 61440
+        }
+      ],
+      "loaded_original_required": true,
+      "limits": [
+        "Static resource decoding does not establish natural video or dynamic material behavior"
+      ]
+    },
+    {
+      "arena_offset": 8,
+      "resource_binding": {
+        "arena_offset": 8,
+        "scene_behavior": 135092,
+        "resource_list": 137216,
+        "list_sha256": "ba8b173e174375cb468617bd4b817a2cabad86f60ef41091c52262fd1d67c2c5",
+        "resources": [
+          {
+            "kind": 6,
+            "source": 2612096,
+            "destination": 0,
+            "encoded_bytes": 305,
+            "encoded_sha256": "e8c8053c38485b230756ef379958426112e50623c5a6cb9a6a415d7d7e194fa5"
+          },
+          {
+            "kind": 6,
+            "source": 2612404,
+            "destination": 6144,
+            "encoded_bytes": 6498,
+            "encoded_sha256": "6f8346b2486b2bdf2ec22c312de4264a660d3261089ed4cf313d5865b354e782"
+          },
+          {
+            "kind": 6,
+            "source": 2694498,
+            "destination": 32768,
+            "encoded_bytes": 9332,
+            "encoded_sha256": "ecd12d651ef458d62ec37655584202fe49e0b204dafeb57ae3c533a9a4d6b3db"
+          },
+          {
+            "kind": 6,
+            "source": 2703832,
+            "destination": 49408,
+            "encoded_bytes": 1166,
+            "encoded_sha256": "8566973f9c762fc94a03ac01c20c50810b947d4455eea89692276306174ebcdb"
+          },
+          {
+            "kind": 6,
+            "source": 2705000,
+            "destination": 57600,
+            "encoded_bytes": 2132,
+            "encoded_sha256": "25b07405f89824fa62313b3b9d99780a692763aba7afe357151e92c444f9eb43"
+          },
+          {
+            "kind": 0,
+            "source": 2707134,
+            "destination": 57472,
+            "length": 32
+          }
+        ]
+      },
+      "decoded_resources": [
+        {
+          "source": 2612096,
+          "destination": 0,
+          "decoded_bytes": 512,
+          "decoded_sha256": "907e590de5a1ab9522d62e29f307b3d2cd84dd15fa97baf9796e9f2f8e2a49f8",
+          "token_counts": [
+            37,
+            7,
+            2,
+            4,
+            72,
+            2,
+            0,
+            1
+          ],
+          "encoded_bytes": 305,
+          "encoded_sha256": "e8c8053c38485b230756ef379958426112e50623c5a6cb9a6a415d7d7e194fa5"
+        },
+        {
+          "source": 2612404,
+          "destination": 6144,
+          "decoded_bytes": 10176,
+          "decoded_sha256": "26b68ec6f0b880e4eca3880bbf2a07df732563391d39b3c606ad4ea6090951d7",
+          "token_counts": [
+            656,
+            128,
+            25,
+            61,
+            1933,
+            60,
+            23,
+            12
+          ],
+          "encoded_bytes": 6498,
+          "encoded_sha256": "6f8346b2486b2bdf2ec22c312de4264a660d3261089ed4cf313d5865b354e782"
+        },
+        {
+          "source": 2694498,
+          "destination": 32768,
+          "decoded_bytes": 15296,
+          "decoded_sha256": "f800578d61faf30858fbc23505435df5f1e6d26324b7ae23f1d0c66e3a236098",
+          "token_counts": [
+            672,
+            333,
+            19,
+            83,
+            3095,
+            83,
+            23,
+            2
+          ],
+          "encoded_bytes": 9332,
+          "encoded_sha256": "ecd12d651ef458d62ec37655584202fe49e0b204dafeb57ae3c533a9a4d6b3db"
+        },
+        {
+          "source": 2703832,
+          "destination": 49408,
+          "decoded_bytes": 3584,
+          "decoded_sha256": "6518c7b379b8d0cd31f447365ad97c723fbece1c8ab49e666e0973d280ea9b61",
+          "token_counts": [
+            48,
+            0,
+            21,
+            53,
+            88,
+            1,
+            2,
+            18
+          ],
+          "encoded_bytes": 1166,
+          "encoded_sha256": "8566973f9c762fc94a03ac01c20c50810b947d4455eea89692276306174ebcdb"
+        },
+        {
+          "source": 2705000,
+          "destination": 57600,
+          "decoded_bytes": 3584,
+          "decoded_sha256": "4838460a5a6a300f120dd7879a8448dcfc6cc2e8037d99b2c15fa6769a8039a6",
+          "token_counts": [
+            185,
+            2,
+            28,
+            128,
+            327,
+            32,
+            3,
+            2
+          ],
+          "encoded_bytes": 2132,
+          "encoded_sha256": "25b07405f89824fa62313b3b9d99780a692763aba7afe357151e92c444f9eb43"
+        }
+      ],
+      "unwritten_map_ranges": [
+        {
+          "start": 49152,
+          "end": 49408
+        },
+        {
+          "start": 52992,
+          "end": 53248
+        },
+        {
+          "start": 57344,
+          "end": 57600
+        },
+        {
+          "start": 61184,
+          "end": 61440
+        }
+      ],
+      "loaded_original_required": true,
+      "limits": [
+        "Static resource decoding does not establish natural video or dynamic material behavior"
+      ]
+    },
+    {
+      "arena_offset": 10,
+      "resource_binding": {
+        "arena_offset": 10,
+        "scene_behavior": 135462,
+        "resource_list": 137268,
+        "list_sha256": "12380ed0db7d96af7e655e5b066e7b69f21a66121741ef3c8a66a3b4cedeccfb",
+        "resources": [
+          {
+            "kind": 6,
+            "source": 2612096,
+            "destination": 0,
+            "encoded_bytes": 305,
+            "encoded_sha256": "e8c8053c38485b230756ef379958426112e50623c5a6cb9a6a415d7d7e194fa5"
+          },
+          {
+            "kind": 6,
+            "source": 2612404,
+            "destination": 6144,
+            "encoded_bytes": 6498,
+            "encoded_sha256": "6f8346b2486b2bdf2ec22c312de4264a660d3261089ed4cf313d5865b354e782"
+          },
+          {
+            "kind": 6,
+            "source": 2707166,
+            "destination": 32768,
+            "encoded_bytes": 8565,
+            "encoded_sha256": "19ce5f0c8c28b25aaa9c7473991635c2477b8be5a88a7f556a23ef01b68f76e8"
+          },
+          {
+            "kind": 6,
+            "source": 2715734,
+            "destination": 47616,
+            "encoded_bytes": 380,
+            "encoded_sha256": "7380e621dd34e6025dca20cbf6a42a6f7d79da74a4ff125a2be39360e49fe6f0"
+          },
+          {
+            "kind": 6,
+            "source": 2716116,
+            "destination": 49408,
+            "encoded_bytes": 1330,
+            "encoded_sha256": "eb61239d3871225be87d6a9c508644eefb12835180df16c0c650f522bd2015c4"
+          },
+          {
+            "kind": 6,
+            "source": 2717448,
+            "destination": 57600,
+            "encoded_bytes": 2135,
+            "encoded_sha256": "f4ceb608108fac359a96dc569a5585252c3c713890a16e4667c8221ec4c240ee"
+          },
+          {
+            "kind": 0,
+            "source": 2719586,
+            "destination": 57472,
+            "length": 32
+          }
+        ]
+      },
+      "decoded_resources": [
+        {
+          "source": 2612096,
+          "destination": 0,
+          "decoded_bytes": 512,
+          "decoded_sha256": "907e590de5a1ab9522d62e29f307b3d2cd84dd15fa97baf9796e9f2f8e2a49f8",
+          "token_counts": [
+            37,
+            7,
+            2,
+            4,
+            72,
+            2,
+            0,
+            1
+          ],
+          "encoded_bytes": 305,
+          "encoded_sha256": "e8c8053c38485b230756ef379958426112e50623c5a6cb9a6a415d7d7e194fa5"
+        },
+        {
+          "source": 2612404,
+          "destination": 6144,
+          "decoded_bytes": 10176,
+          "decoded_sha256": "26b68ec6f0b880e4eca3880bbf2a07df732563391d39b3c606ad4ea6090951d7",
+          "token_counts": [
+            656,
+            128,
+            25,
+            61,
+            1933,
+            60,
+            23,
+            12
+          ],
+          "encoded_bytes": 6498,
+          "encoded_sha256": "6f8346b2486b2bdf2ec22c312de4264a660d3261089ed4cf313d5865b354e782"
+        },
+        {
+          "source": 2707166,
+          "destination": 32768,
+          "decoded_bytes": 14560,
+          "decoded_sha256": "42ca1e055568e1fb1364d62add413e8cd7197b6d6346ea276a665534db1e2f20",
+          "token_counts": [
+            611,
+            244,
+            37,
+            124,
+            2594,
+            113,
+            20,
+            3
+          ],
+          "encoded_bytes": 8565,
+          "encoded_sha256": "19ce5f0c8c28b25aaa9c7473991635c2477b8be5a88a7f556a23ef01b68f76e8"
+        },
+        {
+          "source": 2715734,
+          "destination": 47616,
+          "decoded_bytes": 1536,
+          "decoded_sha256": "43993f1d01e867cbd11750e7526ec6ce33e8d395f3445ff9b0643d47ebbb9343",
+          "token_counts": [
+            15,
+            24,
+            8,
+            1,
+            102,
+            12,
+            2,
+            19
+          ],
+          "encoded_bytes": 380,
+          "encoded_sha256": "7380e621dd34e6025dca20cbf6a42a6f7d79da74a4ff125a2be39360e49fe6f0"
+        },
+        {
+          "source": 2716116,
+          "destination": 49408,
+          "decoded_bytes": 3584,
+          "decoded_sha256": "680d983d6d74b8fafcb01aa11ed9b5ba8779716101779f3c02d882c2156283f5",
+          "token_counts": [
+            69,
+            0,
+            29,
+            70,
+            142,
+            6,
+            2,
+            4
+          ],
+          "encoded_bytes": 1330,
+          "encoded_sha256": "eb61239d3871225be87d6a9c508644eefb12835180df16c0c650f522bd2015c4"
+        },
+        {
+          "source": 2717448,
+          "destination": 57600,
+          "decoded_bytes": 3584,
+          "decoded_sha256": "b3047866f99700595f8ce47ff96cbd95641edd50cf5b7c47591e90f04f455a19",
+          "token_counts": [
+            198,
+            4,
+            14,
+            114,
+            396,
+            12,
+            7,
+            2
+          ],
+          "encoded_bytes": 2135,
+          "encoded_sha256": "f4ceb608108fac359a96dc569a5585252c3c713890a16e4667c8221ec4c240ee"
+        }
+      ],
+      "unwritten_map_ranges": [
+        {
+          "start": 49152,
+          "end": 49408
+        },
+        {
+          "start": 52992,
+          "end": 53248
+        },
+        {
+          "start": 57344,
+          "end": 57600
+        },
+        {
+          "start": 61184,
+          "end": 61440
+        }
+      ],
+      "loaded_original_required": true,
+      "limits": [
+        "Static resource decoding does not establish natural video or dynamic material behavior"
+      ]
+    },
+    {
+      "arena_offset": 12,
+      "resource_binding": {
+        "arena_offset": 12,
+        "scene_behavior": 135928,
+        "resource_list": 137328,
+        "list_sha256": "59575828197fb4748ff4457dbaa491a9bfb2e2548c41e4bb97ccff5628e42f1d",
+        "resources": [
+          {
+            "kind": 6,
+            "source": 2612096,
+            "destination": 0,
+            "encoded_bytes": 305,
+            "encoded_sha256": "e8c8053c38485b230756ef379958426112e50623c5a6cb9a6a415d7d7e194fa5"
+          },
+          {
+            "kind": 6,
+            "source": 2612404,
+            "destination": 6144,
+            "encoded_bytes": 6498,
+            "encoded_sha256": "6f8346b2486b2bdf2ec22c312de4264a660d3261089ed4cf313d5865b354e782"
+          },
+          {
+            "kind": 6,
+            "source": 2719618,
+            "destination": 32768,
+            "encoded_bytes": 8080,
+            "encoded_sha256": "66847f03a0aca9e3634795e77e2a52324020249635db993d63c811a2ac83eae3"
+          },
+          {
+            "kind": 6,
+            "source": 2727700,
+            "destination": 49408,
+            "encoded_bytes": 1374,
+            "encoded_sha256": "ef71079e2201264907a459a3f41a14ff8030aa3a099bf91a67e4df7b18f8c4f1"
+          },
+          {
+            "kind": 6,
+            "source": 2729076,
+            "destination": 57600,
+            "encoded_bytes": 1692,
+            "encoded_sha256": "fef67caf05cd3bd86fc179a982ac3979d43a9aa6807996ee7e7da9cf2aa1ef72"
+          },
+          {
+            "kind": 0,
+            "source": 2730770,
+            "destination": 57472,
+            "length": 32
+          }
+        ]
+      },
+      "decoded_resources": [
+        {
+          "source": 2612096,
+          "destination": 0,
+          "decoded_bytes": 512,
+          "decoded_sha256": "907e590de5a1ab9522d62e29f307b3d2cd84dd15fa97baf9796e9f2f8e2a49f8",
+          "token_counts": [
+            37,
+            7,
+            2,
+            4,
+            72,
+            2,
+            0,
+            1
+          ],
+          "encoded_bytes": 305,
+          "encoded_sha256": "e8c8053c38485b230756ef379958426112e50623c5a6cb9a6a415d7d7e194fa5"
+        },
+        {
+          "source": 2612404,
+          "destination": 6144,
+          "decoded_bytes": 10176,
+          "decoded_sha256": "26b68ec6f0b880e4eca3880bbf2a07df732563391d39b3c606ad4ea6090951d7",
+          "token_counts": [
+            656,
+            128,
+            25,
+            61,
+            1933,
+            60,
+            23,
+            12
+          ],
+          "encoded_bytes": 6498,
+          "encoded_sha256": "6f8346b2486b2bdf2ec22c312de4264a660d3261089ed4cf313d5865b354e782"
+        },
+        {
+          "source": 2719618,
+          "destination": 32768,
+          "decoded_bytes": 13440,
+          "decoded_sha256": "7e3465f541f6d2e75fc213f65c9915b6c90ffb881d2f45b46e9acae33efd2611",
+          "token_counts": [
+            754,
+            197,
+            17,
+            103,
+            2322,
+            104,
+            25,
+            6
+          ],
+          "encoded_bytes": 8080,
+          "encoded_sha256": "66847f03a0aca9e3634795e77e2a52324020249635db993d63c811a2ac83eae3"
+        },
+        {
+          "source": 2727700,
+          "destination": 49408,
+          "decoded_bytes": 3584,
+          "decoded_sha256": "8884828a89a1c69e048bbfb00f66806f6507e9d0baa8ad4590c7cc0ecd14a970",
+          "token_counts": [
+            97,
+            1,
+            24,
+            102,
+            135,
+            31,
+            7,
+            3
+          ],
+          "encoded_bytes": 1374,
+          "encoded_sha256": "ef71079e2201264907a459a3f41a14ff8030aa3a099bf91a67e4df7b18f8c4f1"
+        },
+        {
+          "source": 2729076,
+          "destination": 57600,
+          "decoded_bytes": 3584,
+          "decoded_sha256": "355725443625cfcd521da408016f9b168c3c5d2e95487964a5920ba4b237b751",
+          "token_counts": [
+            120,
+            0,
+            12,
+            75,
+            356,
+            36,
+            2,
+            25
+          ],
+          "encoded_bytes": 1692,
+          "encoded_sha256": "fef67caf05cd3bd86fc179a982ac3979d43a9aa6807996ee7e7da9cf2aa1ef72"
+        }
+      ],
+      "unwritten_map_ranges": [
+        {
+          "start": 49152,
+          "end": 49408
+        },
+        {
+          "start": 52992,
+          "end": 53248
+        },
+        {
+          "start": 57344,
+          "end": 57600
+        },
+        {
+          "start": 61184,
+          "end": 61440
+        }
+      ],
+      "loaded_original_required": true,
+      "limits": [
+        "Static resource decoding does not establish natural video or dynamic material behavior"
+      ]
+    },
+    {
+      "arena_offset": 14,
+      "resource_binding": {
+        "arena_offset": 14,
+        "scene_behavior": 136210,
+        "resource_list": 137380,
+        "list_sha256": "fa431e18dc33b5b2e004ec476a6f13c502355c33a40530d546d886b64a8c6a3c",
+        "resources": [
+          {
+            "kind": 6,
+            "source": 2612096,
+            "destination": 0,
+            "encoded_bytes": 305,
+            "encoded_sha256": "e8c8053c38485b230756ef379958426112e50623c5a6cb9a6a415d7d7e194fa5"
+          },
+          {
+            "kind": 6,
+            "source": 2612404,
+            "destination": 6144,
+            "encoded_bytes": 6498,
+            "encoded_sha256": "6f8346b2486b2bdf2ec22c312de4264a660d3261089ed4cf313d5865b354e782"
+          },
+          {
+            "kind": 6,
+            "source": 2730802,
+            "destination": 32768,
+            "encoded_bytes": 8147,
+            "encoded_sha256": "dff5c25a5658267db086e471529c4120efdd8036e943fe9e6d665a9e5989de27"
+          },
+          {
+            "kind": 6,
+            "source": 2738952,
+            "destination": 49408,
+            "encoded_bytes": 1028,
+            "encoded_sha256": "d2b2cce4e2b17121cb6735b632e98c7c742c545515e0a7f111045c5da8ca5a43"
+          },
+          {
+            "kind": 6,
+            "source": 2739982,
+            "destination": 57600,
+            "encoded_bytes": 1312,
+            "encoded_sha256": "2e956b68d92b7eaf80a2cafa41d064da7e457df66466d03decfc7f81e39152ab"
+          },
+          {
+            "kind": 0,
+            "source": 2741296,
+            "destination": 57472,
+            "length": 32
+          }
+        ]
+      },
+      "decoded_resources": [
+        {
+          "source": 2612096,
+          "destination": 0,
+          "decoded_bytes": 512,
+          "decoded_sha256": "907e590de5a1ab9522d62e29f307b3d2cd84dd15fa97baf9796e9f2f8e2a49f8",
+          "token_counts": [
+            37,
+            7,
+            2,
+            4,
+            72,
+            2,
+            0,
+            1
+          ],
+          "encoded_bytes": 305,
+          "encoded_sha256": "e8c8053c38485b230756ef379958426112e50623c5a6cb9a6a415d7d7e194fa5"
+        },
+        {
+          "source": 2612404,
+          "destination": 6144,
+          "decoded_bytes": 10176,
+          "decoded_sha256": "26b68ec6f0b880e4eca3880bbf2a07df732563391d39b3c606ad4ea6090951d7",
+          "token_counts": [
+            656,
+            128,
+            25,
+            61,
+            1933,
+            60,
+            23,
+            12
+          ],
+          "encoded_bytes": 6498,
+          "encoded_sha256": "6f8346b2486b2bdf2ec22c312de4264a660d3261089ed4cf313d5865b354e782"
+        },
+        {
+          "source": 2730802,
+          "destination": 32768,
+          "decoded_bytes": 14816,
+          "decoded_sha256": "82670fe559c26b55defd5311c5808136a1a9ff7013e15e7e6f85e0e1a6a3d606",
+          "token_counts": [
+            562,
+            288,
+            19,
+            99,
+            2541,
+            105,
+            30,
+            7
+          ],
+          "encoded_bytes": 8147,
+          "encoded_sha256": "dff5c25a5658267db086e471529c4120efdd8036e943fe9e6d665a9e5989de27"
+        },
+        {
+          "source": 2738952,
+          "destination": 49408,
+          "decoded_bytes": 3584,
+          "decoded_sha256": "07ff2b372e4028592fa07dbbd0042f47059f91752a139f9d5c0f93a372a4454b",
+          "token_counts": [
+            26,
+            1,
+            22,
+            36,
+            75,
+            12,
+            3,
+            21
+          ],
+          "encoded_bytes": 1028,
+          "encoded_sha256": "d2b2cce4e2b17121cb6735b632e98c7c742c545515e0a7f111045c5da8ca5a43"
+        },
+        {
+          "source": 2739982,
+          "destination": 57600,
+          "decoded_bytes": 3584,
+          "decoded_sha256": "331df9f71fd1c7d7c71a59fa27d4a762d0064b4a9b0e43625db8aa1a1d762d17",
+          "token_counts": [
+            85,
+            1,
+            24,
+            77,
+            188,
+            31,
+            16,
+            8
+          ],
+          "encoded_bytes": 1312,
+          "encoded_sha256": "2e956b68d92b7eaf80a2cafa41d064da7e457df66466d03decfc7f81e39152ab"
+        }
+      ],
+      "unwritten_map_ranges": [
+        {
+          "start": 49152,
+          "end": 49408
+        },
+        {
+          "start": 52992,
+          "end": 53248
+        },
+        {
+          "start": 57344,
+          "end": 57600
+        },
+        {
+          "start": 61184,
+          "end": 61440
+        }
+      ],
+      "loaded_original_required": true,
+      "limits": [
+        "Static resource decoding does not establish natural video or dynamic material behavior"
+      ]
+    }
+  ]
+}

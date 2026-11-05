@@ -1,0 +1,55 @@
+{
+  "pass": false,
+  "scope": "Observed7x4480 rows against current RAM palette, F140 CRAM0 upload, visible14..207, window<48, zero back color bands and normal color mode",
+  "results": [
+    {
+      "arena_offset": 2,
+      "frames": 20,
+      "rows": 4480,
+      "errors": 0,
+      "pass": true
+    },
+    {
+      "arena_offset": 4,
+      "frames": 20,
+      "rows": 4480,
+      "errors": 48,
+      "pass": false
+    },
+    {
+      "arena_offset": 6,
+      "frames": 20,
+      "rows": 4480,
+      "errors": 0,
+      "pass": true
+    },
+    {
+      "arena_offset": 8,
+      "frames": 20,
+      "rows": 4480,
+      "errors": 0,
+      "pass": true
+    },
+    {
+      "arena_offset": 10,
+      "frames": 20,
+      "rows": 4480,
+      "errors": 0,
+      "pass": true
+    },
+    {
+      "arena_offset": 12,
+      "frames": 20,
+      "rows": 4480,
+      "errors": 0,
+      "pass": true
+    },
+    {
+      "arena_offset": 14,
+      "frames": 20,
+      "rows": 4480,
+      "errors": 0,
+      "pass": true
+    }
+  ]
+}

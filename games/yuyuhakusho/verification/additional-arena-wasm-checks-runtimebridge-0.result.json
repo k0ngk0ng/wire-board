@@ -1,0 +1,31 @@
+{
+  "label": "runtimebridge-0",
+  "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/runtimebridge",
+  "command": [
+    "/opt/homebrew/bin/go",
+    "test",
+    "-exec",
+    "/opt/homebrew/Cellar/go/1.26.2/libexec/lib/wasm/go_js_wasm_exec",
+    "-json",
+    "-count=1",
+    "-timeout=40m",
+    "-run",
+    "^TestA(?:dditionalArena(?:AssetsAndSaveBinding|PrepareRenderAndRestore)|renaSceneFrameRejectsTruncatedSources)$",
+    "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/runtimebridge"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 35.688,
+  "expected": [
+    "TestAdditionalArenaAssetsAndSaveBinding",
+    "TestAdditionalArenaPrepareRenderAndRestore",
+    "TestArenaSceneFrameRejectsTruncatedSources"
+  ],
+  "passed": [
+    "TestAdditionalArenaAssetsAndSaveBinding",
+    "TestAdditionalArenaPrepareRenderAndRestore",
+    "TestArenaSceneFrameRejectsTruncatedSources"
+  ],
+  "failed": [],
+  "log": "games/yuyuhakusho/verification/additional-arena-wasm-checks-runtimebridge-0.jsonl",
+  "log_sha256": "dbc411b9ca58fbbb611c9e6529ce00391bdc9f6eee8492509fc78d772905c08a"
+}

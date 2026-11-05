@@ -1,0 +1,60 @@
+{
+  "scope": "Cold actual 3592 practice-ready whole-object passes against unique supplied original3602 control",
+  "arena": 10,
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture": {
+    "path": "scripts/yuyuhakusho/capture_arena_world_sessions.py",
+    "sha256": "2ff6006de45746d35806a29b6500b27eec8d84e2a03e654082232ebe3b1a5f42"
+  },
+  "inputs": {
+    "path": "docs/research/md-yuyuhakusho/arena-a-inputs.json",
+    "sha256": "94abff0831b64713c449beca0743f164be572d6085b21d651df51b00e641db60"
+  },
+  "control": {
+    "path": "games/yuyuhakusho/engine/testdata/arena-a-reference-frames.json",
+    "sha256": "4d68f40cf741adeb7eb047d3d71a9d3b7681c3dd5dc3ec8c4aac5e9f23f09b14"
+  },
+  "control_manifest": {
+    "path": "games/yuyuhakusho/engine/testdata/arena-a-reference-manifest.json",
+    "sha256": "9be3ecf9e725c4989de749f2bcb30cf27c6aa02d4e7bccb86511d8ce6cda71af"
+  },
+  "frames_checked": 3602,
+  "frames_match_original_control": true,
+  "checkpoint_restore": false,
+  "emulated_ram_writes": false,
+  "direct_cpu_calls": false,
+  "entry_frame_limit": 3600,
+  "drain_frames": 2,
+  "first_frame": 2700,
+  "last_frame": 3600,
+  "records": 901,
+  "object_calls": 9444,
+  "callbacks": {
+    "40990": 901,
+    "62116": 901,
+    "65144": 901,
+    "75368": 1802,
+    "77268": 121,
+    "77836": 72,
+    "84098": 901,
+    "84396": 1142,
+    "126380": 901,
+    "135462": 901,
+    "135768": 901
+  },
+  "raw_arena_sprites": 5406,
+  "fixture_sha256": "e4801764b9cce6f2f61fa3999976b3afeeca5fe2dc1b2fa4c5c8169bfa9784de",
+  "gzip_sha256": "8738192f2aeb2133d2f996162bbc795aa516caaa8b5c5965bb1e45fcef98b844",
+  "incomplete_calls": 0,
+  "errors": [],
+  "pass": true
+}

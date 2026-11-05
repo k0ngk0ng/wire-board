@@ -1,0 +1,39 @@
+{
+  "scope": "Unique unobserved original arena c real-menu3602 control",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.4 60bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "input": {
+    "path": "docs/research/md-yuyuhakusho/arena-c-inputs.json",
+    "sha256": "18a8ea0adeeed22186d12bc7f79b67cc9b0dc0feb26ecc0ae9ee6cb11306367c"
+  },
+  "output": {
+    "path": "games/yuyuhakusho/engine/testdata/arena-c-reference-frames.json",
+    "sha256": "9b7c05e532f03cc63aabcb16f4a73497f62639be2ce6b1a1ca7c29e29d828b31"
+  },
+  "frames": 3602,
+  "entry_frame_limit": 3600,
+  "drain_frames": 2,
+  "observer_attached": false,
+  "capture": {
+    "path": "scripts/yuyuhakusho/capture_arena_menu_reference.py",
+    "sha256": "9157cfb83b9bdfd2504ebcf3f88e9bf83f3bfedf7e71c6c7f11c3ba38771eb05"
+  },
+  "capture_sha256": "9157cfb83b9bdfd2504ebcf3f88e9bf83f3bfedf7e71c6c7f11c3ba38771eb05",
+  "selection_discovery": {
+    "path": "docs/research/md-yuyuhakusho/arena-c-selection.json",
+    "sha256": "cca6c537259ecc17738b212483890d60cacda1980007585e4debcb44124add1f"
+  },
+  "coldproof": {
+    "path": "docs/research/md-yuyuhakusho/arena-c-coldproof.json",
+    "sha256": "878b146de3031c49c22cac39ac26a5088993b2f3a7a50f7dab85d4945d74b61f"
+  },
+  "cold_replay_verified": true
+}

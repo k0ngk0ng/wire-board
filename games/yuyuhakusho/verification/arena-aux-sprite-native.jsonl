@@ -1,0 +1,12 @@
+{"Time":"2026-11-05T16:20:39.746209+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation"}
+{"Time":"2026-11-05T16:20:40.306532+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation","Test":"TestArenaAuxSpriteSubmissionOrderAndBudget"}
+{"Time":"2026-11-05T16:20:40.306677+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation","Test":"TestArenaAuxSpriteSubmissionOrderAndBudget","Output":"=== RUN   TestArenaAuxSpriteSubmissionOrderAndBudget\n"}
+{"Time":"2026-11-05T16:20:40.316483+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation","Test":"TestArenaAuxSpriteSubmissionOrderAndBudget","Output":"--- PASS: TestArenaAuxSpriteSubmissionOrderAndBudget (0.01s)\n"}
+{"Time":"2026-11-05T16:20:40.316535+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation","Test":"TestArenaAuxSpriteSubmissionOrderAndBudget","Elapsed":0.01}
+{"Time":"2026-11-05T16:20:40.31656+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation","Test":"TestArenaAuxSpriteIndependentTileBank"}
+{"Time":"2026-11-05T16:20:40.31657+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation","Test":"TestArenaAuxSpriteIndependentTileBank","Output":"=== RUN   TestArenaAuxSpriteIndependentTileBank\n"}
+{"Time":"2026-11-05T16:20:40.317489+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation","Test":"TestArenaAuxSpriteIndependentTileBank","Output":"--- PASS: TestArenaAuxSpriteIndependentTileBank (0.00s)\n"}
+{"Time":"2026-11-05T16:20:40.317504+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation","Test":"TestArenaAuxSpriteIndependentTileBank","Elapsed":0}
+{"Time":"2026-11-05T16:20:40.317615+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation","Output":"PASS\n"}
+{"Time":"2026-11-05T16:20:41.330821+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation\t1.584s\n"}
+{"Time":"2026-11-05T16:20:41.331074+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation","Elapsed":1.585}

@@ -1,0 +1,12 @@
+{
+  "command": [
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/build/verify-arena-pan",
+    "-arena",
+    "2",
+    "-output",
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/arena-pan-discovery/arena-2"
+  ],
+  "exit_code": 1,
+  "stdout": "{\n  \"pass\": false,\n  \"environment\": \"darwin/arm64\",\n  \"arena\": 2,\n  \"players\": 2,\n  \"characters\": [\n    7,\n    9\n  ],\n  \"ticks\": 6000,\n  \"reference_state_loaded\": false,\n  \"human_auto_takeovers\": 0,\n  \"pan_child_first_tick\": 0,\n  \"first_pan_tick\": 0,\n  \"pan_frames\": 0,\n  \"max_abs_pan\": 0,\n  \"feedback_frames\": 0,\n  \"restored_pan_frames\": 0,\n  \"restored_pixel_frames\": 0,\n  \"restored_state_frames\": 0,\n  \"pause_pan_frames\": 0,\n  \"sprite_frames\": 5999,\n  \"pan_save_tick\": 0,\n  \"arena_sprite_requests\": 0,\n  \"hud_window_complete\": true,\n  \"rgba_frames_complete\": true,\n  \"rules_match_runtime\": true,\n  \"feedback_stream_gaps_preserved\": true,\n  \"pan_returned_to_zero\": false,\n  \"pan_child_cleared\": true,\n  \"damage_gate_tick\": 0,\n  \"damage_gate_health\": 0,\n  \"command_tick\": 0,\n  \"command_health\": 0,\n  \"command_energy\": 0,\n  \"held_trace_sha256\": \"493376c3c7a86a3e69a795ed7e09951186865bccf7e9bdc96b35d03d69116d3c\",\n  \"rules_trace_sha256\": \"f2ef6b15ce7dd7bd82d11fe3747cab8ce735f0cdfae40a08e4fe0a5722637341\",\n  \"state_trace_sha256\": \"8fc3962058edbde3976e49901d60ed9ba72f2fb3ff41d14f4ccd40578920452b\",\n  \"pixel_trace_sha256\": \"28dbef2a37eb618a4d982bfac8bf3d81c15583712dd87831edf8847aa8ae2f9a\",\n  \"final_state_sha256\": \"e7fd0e8f83c54e17ed55bcf5a596e0eb186bd7fae2fb73d0d2306debb387f731\",\n  \"artifacts\": null\n}\n",
+  "stderr": "legal human inputs did not complete source7 dynamic pan in arena2 within6000 ticks (health=145 energy=223 phase=0)\n"
+}

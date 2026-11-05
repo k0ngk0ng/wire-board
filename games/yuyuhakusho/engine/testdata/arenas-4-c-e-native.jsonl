@@ -1,0 +1,62 @@
+{"Time":"2026-11-05T15:49:58.128944+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-05T15:49:58.554759+08:00","Action":"run","Package":"command-line-arguments","Test":"TestArenas4CEOriginalReturns"}
+{"Time":"2026-11-05T15:49:58.554788+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenas4CEOriginalReturns","Output":"=== RUN   TestArenas4CEOriginalReturns\n"}
+{"Time":"2026-11-05T15:49:58.602971+08:00","Action":"run","Package":"command-line-arguments","Test":"TestArenas4CEOriginalReturns/4/natural"}
+{"Time":"2026-11-05T15:49:58.602995+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenas4CEOriginalReturns/4/natural","Output":"=== RUN   TestArenas4CEOriginalReturns/4/natural\n"}
+{"Time":"2026-11-05T15:50:21.770786+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenas4CEOriginalReturns/4/natural","Output":"    arenas_4_c_e_test.go:226: 2418 complete original returns; exact 65536-byte trace replay\n"}
+{"Time":"2026-11-05T15:50:21.770836+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenas4CEOriginalReturns/4/natural","Output":"--- PASS: TestArenas4CEOriginalReturns/4/natural (23.17s)\n"}
+{"Time":"2026-11-05T15:50:21.770845+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestArenas4CEOriginalReturns/4/natural","Elapsed":23.17}
+{"Time":"2026-11-05T15:50:21.770857+08:00","Action":"run","Package":"command-line-arguments","Test":"TestArenas4CEOriginalReturns/4/boundaries"}
+{"Time":"2026-11-05T15:50:21.770865+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenas4CEOriginalReturns/4/boundaries","Output":"=== RUN   TestArenas4CEOriginalReturns/4/boundaries\n"}
+{"Time":"2026-11-05T15:50:40.273616+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenas4CEOriginalReturns/4/boundaries","Output":"    arenas_4_c_e_test.go:226: 1899 complete original returns; exact 65536-byte trace replay\n"}
+{"Time":"2026-11-05T15:50:40.273654+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenas4CEOriginalReturns/4/boundaries","Output":"--- PASS: TestArenas4CEOriginalReturns/4/boundaries (18.50s)\n"}
+{"Time":"2026-11-05T15:50:40.273659+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestArenas4CEOriginalReturns/4/boundaries","Elapsed":18.5}
+{"Time":"2026-11-05T15:50:40.273686+08:00","Action":"run","Package":"command-line-arguments","Test":"TestArenas4CEOriginalReturns/c/natural"}
+{"Time":"2026-11-05T15:50:40.27369+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenas4CEOriginalReturns/c/natural","Output":"=== RUN   TestArenas4CEOriginalReturns/c/natural\n"}
+{"Time":"2026-11-05T15:50:53.241493+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenas4CEOriginalReturns/c/natural","Output":"    arenas_4_c_e_test.go:226: 1204 complete original returns; exact 65536-byte trace replay\n"}
+{"Time":"2026-11-05T15:50:53.241529+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenas4CEOriginalReturns/c/natural","Output":"--- PASS: TestArenas4CEOriginalReturns/c/natural (12.97s)\n"}
+{"Time":"2026-11-05T15:50:53.241534+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestArenas4CEOriginalReturns/c/natural","Elapsed":12.97}
+{"Time":"2026-11-05T15:50:53.24154+08:00","Action":"run","Package":"command-line-arguments","Test":"TestArenas4CEOriginalReturns/c/boundaries"}
+{"Time":"2026-11-05T15:50:53.241543+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenas4CEOriginalReturns/c/boundaries","Output":"=== RUN   TestArenas4CEOriginalReturns/c/boundaries\n"}
+{"Time":"2026-11-05T15:51:09.285143+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenas4CEOriginalReturns/c/boundaries","Output":"    arenas_4_c_e_test.go:226: 1551 complete original returns; exact 65536-byte trace replay\n"}
+{"Time":"2026-11-05T15:51:09.285183+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenas4CEOriginalReturns/c/boundaries","Output":"--- PASS: TestArenas4CEOriginalReturns/c/boundaries (16.04s)\n"}
+{"Time":"2026-11-05T15:51:09.285198+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestArenas4CEOriginalReturns/c/boundaries","Elapsed":16.04}
+{"Time":"2026-11-05T15:51:09.285216+08:00","Action":"run","Package":"command-line-arguments","Test":"TestArenas4CEOriginalReturns/e/natural"}
+{"Time":"2026-11-05T15:51:09.285219+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenas4CEOriginalReturns/e/natural","Output":"=== RUN   TestArenas4CEOriginalReturns/e/natural\n"}
+{"Time":"2026-11-05T15:51:21.506254+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenas4CEOriginalReturns/e/natural","Output":"    arenas_4_c_e_test.go:226: 1201 complete original returns; exact 65536-byte trace replay\n"}
+{"Time":"2026-11-05T15:51:21.506287+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenas4CEOriginalReturns/e/natural","Output":"--- PASS: TestArenas4CEOriginalReturns/e/natural (12.22s)\n"}
+{"Time":"2026-11-05T15:51:21.506292+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestArenas4CEOriginalReturns/e/natural","Elapsed":12.22}
+{"Time":"2026-11-05T15:51:21.506297+08:00","Action":"run","Package":"command-line-arguments","Test":"TestArenas4CEOriginalReturns/e/boundaries"}
+{"Time":"2026-11-05T15:51:21.5063+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenas4CEOriginalReturns/e/boundaries","Output":"=== RUN   TestArenas4CEOriginalReturns/e/boundaries\n"}
+{"Time":"2026-11-05T15:51:37.135762+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenas4CEOriginalReturns/e/boundaries","Output":"    arenas_4_c_e_test.go:226: 1551 complete original returns; exact 65536-byte trace replay\n"}
+{"Time":"2026-11-05T15:51:37.135812+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenas4CEOriginalReturns/e/boundaries","Output":"--- PASS: TestArenas4CEOriginalReturns/e/boundaries (15.63s)\n"}
+{"Time":"2026-11-05T15:51:37.135819+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestArenas4CEOriginalReturns/e/boundaries","Elapsed":15.63}
+{"Time":"2026-11-05T15:51:37.135825+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenas4CEOriginalReturns","Output":"--- PASS: TestArenas4CEOriginalReturns (98.58s)\n"}
+{"Time":"2026-11-05T15:51:37.135829+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestArenas4CEOriginalReturns","Elapsed":98.58}
+{"Time":"2026-11-05T15:51:37.135832+08:00","Action":"run","Package":"command-line-arguments","Test":"TestArenas4CESingleInitialStateSequences"}
+{"Time":"2026-11-05T15:51:37.135835+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenas4CESingleInitialStateSequences","Output":"=== RUN   TestArenas4CESingleInitialStateSequences\n"}
+{"Time":"2026-11-05T15:51:40.454152+08:00","Action":"run","Package":"command-line-arguments","Test":"TestArenas4CESingleInitialStateSequences/4/arena"}
+{"Time":"2026-11-05T15:51:40.45419+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenas4CESingleInitialStateSequences/4/arena","Output":"=== RUN   TestArenas4CESingleInitialStateSequences/4/arena\n"}
+{"Time":"2026-11-05T15:51:40.71051+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenas4CESingleInitialStateSequences/4/arena","Output":"--- PASS: TestArenas4CESingleInitialStateSequences/4/arena (0.26s)\n"}
+{"Time":"2026-11-05T15:51:40.710543+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestArenas4CESingleInitialStateSequences/4/arena","Elapsed":0.26}
+{"Time":"2026-11-05T15:51:40.71055+08:00","Action":"run","Package":"command-line-arguments","Test":"TestArenas4CESingleInitialStateSequences/4/palette"}
+{"Time":"2026-11-05T15:51:40.710553+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenas4CESingleInitialStateSequences/4/palette","Output":"=== RUN   TestArenas4CESingleInitialStateSequences/4/palette\n"}
+{"Time":"2026-11-05T15:51:40.964972+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenas4CESingleInitialStateSequences/4/palette","Output":"--- PASS: TestArenas4CESingleInitialStateSequences/4/palette (0.25s)\n"}
+{"Time":"2026-11-05T15:51:40.965006+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestArenas4CESingleInitialStateSequences/4/palette","Elapsed":0.25}
+{"Time":"2026-11-05T15:51:42.894762+08:00","Action":"run","Package":"command-line-arguments","Test":"TestArenas4CESingleInitialStateSequences/c/arena"}
+{"Time":"2026-11-05T15:51:42.894788+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenas4CESingleInitialStateSequences/c/arena","Output":"=== RUN   TestArenas4CESingleInitialStateSequences/c/arena\n"}
+{"Time":"2026-11-05T15:51:43.150952+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenas4CESingleInitialStateSequences/c/arena","Output":"--- PASS: TestArenas4CESingleInitialStateSequences/c/arena (0.26s)\n"}
+{"Time":"2026-11-05T15:51:43.150983+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestArenas4CESingleInitialStateSequences/c/arena","Elapsed":0.26}
+{"Time":"2026-11-05T15:51:45.029572+08:00","Action":"run","Package":"command-line-arguments","Test":"TestArenas4CESingleInitialStateSequences/e/arena"}
+{"Time":"2026-11-05T15:51:45.029602+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenas4CESingleInitialStateSequences/e/arena","Output":"=== RUN   TestArenas4CESingleInitialStateSequences/e/arena\n"}
+{"Time":"2026-11-05T15:51:45.286027+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenas4CESingleInitialStateSequences/e/arena","Output":"--- PASS: TestArenas4CESingleInitialStateSequences/e/arena (0.26s)\n"}
+{"Time":"2026-11-05T15:51:45.286058+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestArenas4CESingleInitialStateSequences/e/arena","Elapsed":0.26}
+{"Time":"2026-11-05T15:51:45.286064+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenas4CESingleInitialStateSequences","Output":"--- PASS: TestArenas4CESingleInitialStateSequences (8.15s)\n"}
+{"Time":"2026-11-05T15:51:45.286068+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestArenas4CESingleInitialStateSequences","Elapsed":8.15}
+{"Time":"2026-11-05T15:51:45.286072+08:00","Action":"run","Package":"command-line-arguments","Test":"TestArenas4CEAtomicErrorsAndGates"}
+{"Time":"2026-11-05T15:51:45.286075+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenas4CEAtomicErrorsAndGates","Output":"=== RUN   TestArenas4CEAtomicErrorsAndGates\n"}
+{"Time":"2026-11-05T15:51:45.336417+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenas4CEAtomicErrorsAndGates","Output":"--- PASS: TestArenas4CEAtomicErrorsAndGates (0.05s)\n"}
+{"Time":"2026-11-05T15:51:45.336453+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestArenas4CEAtomicErrorsAndGates","Elapsed":0.05}
+{"Time":"2026-11-05T15:51:45.33646+08:00","Action":"output","Package":"command-line-arguments","Output":"PASS\n"}
+{"Time":"2026-11-05T15:51:46.369126+08:00","Action":"output","Package":"command-line-arguments","Output":"ok  \tcommand-line-arguments\t108.241s\n"}
+{"Time":"2026-11-05T15:51:46.369198+08:00","Action":"pass","Package":"command-line-arguments","Elapsed":108.241}

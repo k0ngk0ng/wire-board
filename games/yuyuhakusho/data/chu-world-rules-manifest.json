@@ -40,6 +40,46 @@
       "sha256": "4d042ce63dd009836165dd22d58ad28b67ecac36ad1923c465e8a8b78a5dc302"
     },
     {
+      "path": "games/yuyuhakusho/data/arena-scene-linear-rows.json.gz",
+      "sha256": "0ff3d50945efbc81d8b72c896cba729fba1a279133cfe4af73356b2b00f120b7"
+    },
+    {
+      "path": "games/yuyuhakusho/data/arena-scene-4-tables.json.gz",
+      "sha256": "7c5a79efa8b6dc52298f530e4433f595641e13e29516be4bf1406dfa6d36509f"
+    },
+    {
+      "path": "games/yuyuhakusho/data/arena-assets-default.json.gz",
+      "sha256": "8b3626b608d90ac990176370f665b42499dc404546f955aafd0beeee5cd35542"
+    },
+    {
+      "path": "games/yuyuhakusho/data/arena-assets-2.json.gz",
+      "sha256": "baf59b615e155f791e409b60e87cbe44ea43ce997230d426675c5cf6302709f5"
+    },
+    {
+      "path": "games/yuyuhakusho/data/arena-assets-4.json.gz",
+      "sha256": "a8e9906e78ff660650413ce94adc9b1c425f384638956ed304877bf69d12133a"
+    },
+    {
+      "path": "games/yuyuhakusho/data/arena-assets-6.json.gz",
+      "sha256": "7fa944acfdc4f9f0af3c6c131cf388fbd70bf7760da9e559b14c16174e304139"
+    },
+    {
+      "path": "games/yuyuhakusho/data/arena-assets-8.json.gz",
+      "sha256": "dc4b52569a636e5e6c4103399ae668527ec98363513bbc547c749bc5303fb737"
+    },
+    {
+      "path": "games/yuyuhakusho/data/arena-assets-a.json.gz",
+      "sha256": "fc95e4147eba1f158ef79a5e31374123e9f0d0359dd3041e7e0261f5f99743da"
+    },
+    {
+      "path": "games/yuyuhakusho/data/arena-assets-c.json.gz",
+      "sha256": "2e1b28e6dfd4e975c4ace5ae9f350af242907e34437d9c07611633eb8fe4cb51"
+    },
+    {
+      "path": "games/yuyuhakusho/data/arena-assets-e.json.gz",
+      "sha256": "a5fa5b72544edd249393e8eba4dedec4fc3b63771494e00d2ff09c07c79f41f6"
+    },
+    {
       "path": "games/yuyuhakusho/data/fighter0-projectile-rules.json",
       "sha256": "e621888c399662b8e3df190530f4712e5312e83b34074190dd2785a20b963d3f"
     },
@@ -68,7 +108,7 @@
       "sha256": "72d54890df9bbb66b7a70e0f026e343dc749d971b9450979d103324e65d16aec"
     }
   ],
-  "exporter_sha256": "5e59c171f5ebaed7fdd07c733949f84e3c97f779ee34efcdccc2904d0bd643be",
+  "exporter_sha256": "99a0ccaab0e0698b83a5c82ed94695fcfa7bd591fd74c674f59bb186a2cd4018",
   "counts": {
     "fighters": 11,
     "command_programs": 16,
@@ -86,10 +126,16 @@
     "fighter7_children_frames": 94,
     "fighter4_curve_words": 1344,
     "alternate_movements": 1,
+    "arena_resources": 8,
+    "arena_linear_rows": 241,
+    "arena_linear_words": 30848,
+    "arena4_rows": 64,
+    "arena4_words": 7168,
+    "arena4_palette_words": 12,
     "fighter0_release_sequences": 8
   },
-  "bytes": 1935167,
-  "gzip_bytes": 91692,
-  "sha256": "f262dc3fb72badd414eb05bad47319c99ad245b6387078d03868e692d6033078",
-  "gzip_sha256": "a5ef69c86b4828e17ea44b925a9830e5772d81481391e995fa2e17531c75bef6"
+  "bytes": 2103508,
+  "gzip_bytes": 103902,
+  "sha256": "8c40c6551a8a7f2b99d33d8af37476f0cfeb8b83ecc7550208e0327ca7a0661b",
+  "gzip_sha256": "fac9146e529ca2d191847d1cbba339c2b14e29b5c5a44fdf9a01df27cede1c5b"
 }

@@ -1,0 +1,1641 @@
+{
+  "pass": true,
+  "environment": "native",
+  "reports": 179,
+  "rule_reports": 165,
+  "render_reports": 14,
+  "unique_configurations_executed": 179,
+  "checks": [
+    {
+      "expected_path": "games/yuyuhakusho/verification/elder-e2e/native/rules/chu-elder.json",
+      "expected_sha256": "ffe451e3b1dfb9a5a2b425f44dfec48ce01839dcc4ac0c9b58779c68bccbcfbd",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/elder-e2e/native/rules/elder-chu.json",
+      "expected_sha256": "3eda674bb826c3789d92e728af4fb972ec7b5968c5fd0f25913ccf0dd99bbebd",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/elder-e2e/native/rules/elder-elder.json",
+      "expected_sha256": "75e202ab583d63a4feca5160b8d4cb04021d5d2c8c86edd05d48fd24ce2c4e81",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/elder-e2e/native/rules/elder-genkai.json",
+      "expected_sha256": "49f90a70e42847f7b62c032da67c685c6cd9acc52225b7e37a9d6e7fa3986ae6",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/elder-e2e/native/rules/elder-kuwabara.json",
+      "expected_sha256": "0180b126f6d8af334f23099c9c1534a031281d7cc3b33c14c2466e4f41690c65",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/elder-e2e/native/rules/elder-younger.json",
+      "expected_sha256": "937d7f67664586c15eb5c7b95a5e3ba36cfdb8176ef43259f303b300d5b40469",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/elder-e2e/native/rules/elder-yusuke.json",
+      "expected_sha256": "c94036f1af44f9ce7765471cfae8d1e35ee13a368f2008440d66c029b9945e3d",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/elder-e2e/native/rules/four.json",
+      "expected_sha256": "f5e48b5ad8895a138681c6a2c6d6fdb0fed469ad64c56a05eda1ecf31f6b28a8",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/elder-e2e/native/rules/genkai-elder.json",
+      "expected_sha256": "fea3e5cb105e724429dd56798b5156523a4bd72835c1034c4fcff5415018b2bd",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/elder-e2e/native/rules/human-idle.json",
+      "expected_sha256": "1bd29a9f85057a5c099d6b2d3446c152431df81818175cc65cfc7c55ab7aa7f8",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/elder-e2e/native/rules/kuwabara-elder.json",
+      "expected_sha256": "1aa941802635f0e972273ff126b301d63f5ff6404e74ee79255c9bf918aa4d78",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/elder-e2e/native/rules/team.json",
+      "expected_sha256": "09c8714edc9d787517335fe7552ac9d6c55ef1a1477a972cf297ee8222ab8295",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/elder-e2e/native/rules/three.json",
+      "expected_sha256": "2fb88000b837880df9765accb97de91555015052706e8f235d02b8172a3119e4",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/elder-e2e/native/rules/younger-elder.json",
+      "expected_sha256": "e213982ec1d366544bc7947c3d270dadeebb0cca9e11afe0bacb95ac4dd64696",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/elder-e2e/native/rules/yusuke-elder.json",
+      "expected_sha256": "b7f77b53271f42ca036d8d024126e899b60d14764d41f64429eccf830bf02e2c",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/fighter10-e2e/native/rules/chu-ten.json",
+      "expected_sha256": "cbb8763a377a3eb5358e1af1dc910f66174723045ab77d2e329ef96f40b57615",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/fighter10-e2e/native/rules/four.json",
+      "expected_sha256": "cce2e6919847cf6b0ff947feadc5f0d22c55f130bc42f70ef4445d6441aad10c",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/fighter10-e2e/native/rules/human-idle.json",
+      "expected_sha256": "a78bf24f46f08970a95fc68e477ecf96e76619be67ab824a9c36cd36e9d1bd10",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/fighter10-e2e/native/rules/team.json",
+      "expected_sha256": "5f46b8d26e05d9c0590189768aaa16e4035ffc5f0613fe8394133d66d2c71b82",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/fighter10-e2e/native/rules/ten-chu.json",
+      "expected_sha256": "0b5abb7a84d0022fbfa9a2668e4fe9015b5b298e20d51f583e6a10c793da3ee4",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/fighter10-e2e/native/rules/ten-ten.json",
+      "expected_sha256": "97548fa7de22e1215b52ce42893159f514ac50406511bef134e67c316cbe39ea",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/fighter10-e2e/native/rules/three.json",
+      "expected_sha256": "ac5b80df0891b2885f15d086c5d45cf94b41a4e94093a2d3869e8471d37f4423",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/genkai-e2e/native/rules/chu-zero.json",
+      "expected_sha256": "834e88a63fedd80b0085a977bbebe0bcdf17614d0d18148b2ef05bf810d59248",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/genkai-e2e/native/rules/four.json",
+      "expected_sha256": "32b291f6bd5d77f62b3a67c94f2c7a303b7f120c8d04718436982c41f27d296b",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/genkai-e2e/native/rules/human-idle.json",
+      "expected_sha256": "450adb73f4595ca607e585190c9d8dd455fc2735f759b2db41546392866ecaa3",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/genkai-e2e/native/rules/team.json",
+      "expected_sha256": "f037c4dcdd6b465fff4643323987c045067bb62c24ba78bef637fe0c8f943714",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/genkai-e2e/native/rules/ten-zero.json",
+      "expected_sha256": "7e311c08e539ae8fe95878e28b5a3bb15d980615fd5f915a95b0367bd515bd4e",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/genkai-e2e/native/rules/three.json",
+      "expected_sha256": "28b357a1902e1a419f00e85045edb30734bab6da1aed2876f28720aa95240c5d",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/genkai-e2e/native/rules/zero-chu.json",
+      "expected_sha256": "fb9f5cd886f20386b266672ddd9d1b9e600ad1b4ee97a629ad6098d5ecb2e277",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/genkai-e2e/native/rules/zero-ten.json",
+      "expected_sha256": "b7646974c717dd620348e5ddd2a73149e3a67c48245f50ac09ae9f36dd246349",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/genkai-e2e/native/rules/zero-zero.json",
+      "expected_sha256": "ea19eea26b87d538c822c6cfc8aff2ecb637ca7bebf53d3d093f13dc7250484e",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/hiei-e2e/native/rules/chu-hiei.json",
+      "expected_sha256": "b7952229d401d624fe2a7b97614cdd068a08409478e43baaae79787b925d5e8c",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/hiei-e2e/native/rules/elder-hiei.json",
+      "expected_sha256": "29312bec02ffde0989e71355bd17c482802c424d78dd780bcd6575300a64f421",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/hiei-e2e/native/rules/four.json",
+      "expected_sha256": "c8de443fd2fc11918a92ad4163b13f9d96b5883b80ec985a583d98f2cf0ad154",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/hiei-e2e/native/rules/genkai-hiei.json",
+      "expected_sha256": "f05ce4e6d79792ec046ac05ed446d88fb69b88a3a92eb2a547fe77471f6bbce4",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/hiei-e2e/native/rules/hiei-chu.json",
+      "expected_sha256": "a06d379f2b006e5149c8b677d602e41ffe05f7182935523057f43aa2d24abd37",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/hiei-e2e/native/rules/hiei-elder.json",
+      "expected_sha256": "97e094001643341508a6edbc50a06aab1bc2d48292384cafc9c09ea695c4599b",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/hiei-e2e/native/rules/hiei-genkai.json",
+      "expected_sha256": "483f3f4b0150ffc84879cc3bd24008fe3a493143d2f69610095d5709a0160518",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/hiei-e2e/native/rules/hiei-hiei.json",
+      "expected_sha256": "4c4f8f6ca3afe2a02e86adf7c9ed9d6006ef0085f4dabc371404e75a5e70f138",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/hiei-e2e/native/rules/hiei-jin.json",
+      "expected_sha256": "ff54ac073dd7d929a23cd2c9ca8b2b45658398e19671438402e7771743bc41c7",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/hiei-e2e/native/rules/hiei-kurama.json",
+      "expected_sha256": "8f34d7097e60048bf562f49087aab01d780a25d742f6df0f055ceb1f1fdd9abe",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/hiei-e2e/native/rules/hiei-kuwabara.json",
+      "expected_sha256": "c699268e5083b2ba74f71bc594b8a5d1f7eaf0ddc8bf4ccb1d3d3ade93819c67",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/hiei-e2e/native/rules/hiei-younger.json",
+      "expected_sha256": "776ef4b500d8265f597e542f36416bcd3b8ea2c3093872895861178d97cab198",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/hiei-e2e/native/rules/hiei-yusuke.json",
+      "expected_sha256": "7f31502505db62af5701abe54678cc08fe0f93ea59f6ab13debd93113fb61c2f",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/hiei-e2e/native/rules/human-idle.json",
+      "expected_sha256": "b5d233008e26694b92fbe683349ee48f7d369a712dfa6ca26abe470234125dbe",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/hiei-e2e/native/rules/jin-hiei.json",
+      "expected_sha256": "bc086f17f3eee2328842649d2d8be9de0e0939ad43db52c180c6da2aa6814cfa",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/hiei-e2e/native/rules/kurama-hiei.json",
+      "expected_sha256": "2d644508acb467944a919291074b3c859257caed2acc8d125bb57eaf749c6a04",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/hiei-e2e/native/rules/kuwabara-hiei.json",
+      "expected_sha256": "baa6fb7c5cc1bae2e8de9163d97f67947e53971765e2d8954892ed5d4af46302",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/hiei-e2e/native/rules/team.json",
+      "expected_sha256": "598ecf7a7010d7b443e72a11736ac21cc20392d275fb99ca26fb6a5d3bdd2649",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/hiei-e2e/native/rules/three.json",
+      "expected_sha256": "5d86323013270b67071ccbbd2d800a01f20e20e19b28a81fb305705a7acb838c",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/hiei-e2e/native/rules/younger-hiei.json",
+      "expected_sha256": "75ec051a493c410956a0b13400de087e2e8c727096dbedf72a4c5cd7e1bb1b2a",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/hiei-e2e/native/rules/yusuke-hiei.json",
+      "expected_sha256": "4e74880e7860a789fd72847cadb5767dc504fb7da927d64a264c51e42eecaa76",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/itsuki-e2e/native/render/four.json",
+      "expected_sha256": "e2f8ec654cb4393c55249f2c187dd3ad4a91c6153492d2499ed2346b4532561f",
+      "kind": "render",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "final_state_sha256",
+        "state_trace_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/itsuki-e2e/native/render/itsuki-chu.json",
+      "expected_sha256": "6cc9e3f0f6f2633f8c03cf46339d3f0b9ff5349b1d38c394108ae7e930d3fbf1",
+      "kind": "render",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "final_state_sha256",
+        "state_trace_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/itsuki-e2e/native/render/itsuki-elder.json",
+      "expected_sha256": "c32bccdf07d4e02b897ba9c3034d71fd89f4ab243574f7c33ea243da15c47ca4",
+      "kind": "render",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "final_state_sha256",
+        "state_trace_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/itsuki-e2e/native/render/itsuki-genkai.json",
+      "expected_sha256": "d25e1e6cfdb0ebc941ff6bb7565564449fa78eb9ac9646e3a01793915285130c",
+      "kind": "render",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "final_state_sha256",
+        "state_trace_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/itsuki-e2e/native/render/itsuki-hiei.json",
+      "expected_sha256": "026e4333504838b7ec8814b14ee96371dbfe8d86aab0e52bbe1e4539bce25719",
+      "kind": "render",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "final_state_sha256",
+        "state_trace_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/itsuki-e2e/native/render/itsuki-itsuki.json",
+      "expected_sha256": "ebefdefad85805c2fd149f7b48eb7cb2d79e6f47ee470f441f7fe2be8ec587b6",
+      "kind": "render",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "final_state_sha256",
+        "state_trace_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/itsuki-e2e/native/render/itsuki-jin.json",
+      "expected_sha256": "dc0407d0e849eb60145c26a7db298caffaa319d0f46c64609c816fe8e6202780",
+      "kind": "render",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "final_state_sha256",
+        "state_trace_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/itsuki-e2e/native/render/itsuki-kurama.json",
+      "expected_sha256": "5c4ecae1caefb8dcf88fb6e81de8c6c9d39fd5d4407cf3b9e69c30faee818175",
+      "kind": "render",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "final_state_sha256",
+        "state_trace_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/itsuki-e2e/native/render/itsuki-kuwabara.json",
+      "expected_sha256": "150069717847fa9c57604ef4214a8076d7050ec18aa636e3ca4c079c2ad6857b",
+      "kind": "render",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "final_state_sha256",
+        "state_trace_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/itsuki-e2e/native/render/itsuki-sensui.json",
+      "expected_sha256": "d1477919a56a229c7c2d6706220dc457f9ac7b0df48257dcb066d52223d23957",
+      "kind": "render",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "final_state_sha256",
+        "state_trace_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/itsuki-e2e/native/render/itsuki-younger.json",
+      "expected_sha256": "ab9ffa9de68e27e0c5b62c335e4f991d63413aa3bf9b143165bc1846b493885c",
+      "kind": "render",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "final_state_sha256",
+        "state_trace_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/itsuki-e2e/native/render/itsuki-yusuke.json",
+      "expected_sha256": "6ab4cad793f813cf4bec91a330175a84fcf2a27ded3cc713a6d13d5e6dae6027",
+      "kind": "render",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "final_state_sha256",
+        "state_trace_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/itsuki-e2e/native/render/team.json",
+      "expected_sha256": "2e475bc4a47a5e0f090fa2677c591d80914e9a25b0685fe42d1bb7a6cc2f7df8",
+      "kind": "render",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "final_state_sha256",
+        "state_trace_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/itsuki-e2e/native/render/three.json",
+      "expected_sha256": "a1b3169343d4784f4c7c728ef5f1cd90b33b6cbe1dbcdb54d5afd94f0c20f15a",
+      "kind": "render",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "final_state_sha256",
+        "state_trace_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/itsuki-e2e/native/rules/chu-itsuki.json",
+      "expected_sha256": "8e9f19d75029b04a95ab12c50867eccfd855dbac8d3f3d4b01448a2df8af5640",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/itsuki-e2e/native/rules/elder-itsuki.json",
+      "expected_sha256": "fa4d7f36941e5024e4beac2106b08f5ffe9a766a2c744b4395325ff3b1f90064",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/itsuki-e2e/native/rules/four.json",
+      "expected_sha256": "d73bbd2a2c638075d2e9c8890bae8fa6d57a838ef1866590e8c2a0721df06fbc",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/itsuki-e2e/native/rules/genkai-itsuki.json",
+      "expected_sha256": "b8b098be20a73b107667dcecbfb5e909bff260e3ee035cc0adec93bc365ee42d",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/itsuki-e2e/native/rules/hiei-itsuki.json",
+      "expected_sha256": "c05cf443cb27de9d450d3f0efc4f0f342b004496633ce43d732578c6d9275f7f",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/itsuki-e2e/native/rules/human-idle.json",
+      "expected_sha256": "84b2e44933c0280847ddc7503d941109087544c824fb4fdf9f3fb04f3f1be6ce",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/itsuki-e2e/native/rules/itsuki-chu.json",
+      "expected_sha256": "613d80b3f9c021f2bb9e30bacb8a8ccc1d3a8aabc090f114e644651d065ca4ed",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/itsuki-e2e/native/rules/itsuki-elder.json",
+      "expected_sha256": "96cf1d983aebdc4b2ab326024e9e69fd15b732e52ca1e7ccf289491b51d9adb4",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/itsuki-e2e/native/rules/itsuki-genkai.json",
+      "expected_sha256": "5fda2a8de07102f4ee43ea5800763aff9d070339046dc58484b4559aaa6c8d63",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/itsuki-e2e/native/rules/itsuki-hiei.json",
+      "expected_sha256": "dba44fc85e8584e4a1a80b2590ac9f8f0260c2344abeb44d3854af3a5c9b39ae",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/itsuki-e2e/native/rules/itsuki-itsuki.json",
+      "expected_sha256": "37412032dd71df2f4f6b98d22546588a2d40f911ddb6e023d663110ab1c42665",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/itsuki-e2e/native/rules/itsuki-jin.json",
+      "expected_sha256": "294ff8b05de44f3fab1a5543bfe9b9449e182d83edc4bc75abec6683306f7610",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/itsuki-e2e/native/rules/itsuki-kurama.json",
+      "expected_sha256": "bf26c4a70cb3dda13a4e68d2c770fc14ebc8cac02eb2d7599eb4e1729608ae6f",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/itsuki-e2e/native/rules/itsuki-kuwabara.json",
+      "expected_sha256": "d355dceb907034448ccefb63039db754aac1252343fa9c589fd7b95399f9616b",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/itsuki-e2e/native/rules/itsuki-sensui.json",
+      "expected_sha256": "d483a9674af91cca1b9e91acef5aeaf84d7fc5bf4bfdda527253864458c45743",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/itsuki-e2e/native/rules/itsuki-younger.json",
+      "expected_sha256": "6ede44239ad7e47a2209bbc19981ba2874eef400725e45a0cea2e8936992ef3e",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/itsuki-e2e/native/rules/itsuki-yusuke.json",
+      "expected_sha256": "a94582745663a10f6a62b5daff0608a8100d9c8390fcaddd9000184959a5f167",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/itsuki-e2e/native/rules/jin-itsuki.json",
+      "expected_sha256": "02efe42a69e48812d8956c00816dead92048c1065f916c197827a17bf9a2d85b",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/itsuki-e2e/native/rules/kurama-itsuki.json",
+      "expected_sha256": "842f61646dd70a8ac8963f2be888aa0eb76dc143bced6f85504a2047ce98996e",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/itsuki-e2e/native/rules/kuwabara-itsuki.json",
+      "expected_sha256": "4b43b45f4c162b8cc32e9e55e8e790b7552beacc2964b0bd9ea281e76af770c3",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/itsuki-e2e/native/rules/sensui-itsuki.json",
+      "expected_sha256": "9dd3f84cbed54b84ef56f7721edf8b02905595581f119de3d25adcab3eaf48b2",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/itsuki-e2e/native/rules/team.json",
+      "expected_sha256": "2455f53d64e867bf6d6f56cf5a5f27b875850c9bee359f85d9fa1b9321e7a4a8",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/itsuki-e2e/native/rules/three.json",
+      "expected_sha256": "17b66488e3195ce0af96541e02b5168f993011e7ac6e3f26a65c40ed99d61db9",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/itsuki-e2e/native/rules/younger-itsuki.json",
+      "expected_sha256": "ae7feb10684a7758280f471617d4cee8428a6175faa13bde0c9f05d2cf630a09",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/itsuki-e2e/native/rules/yusuke-itsuki.json",
+      "expected_sha256": "7d25bf9332220d7ca8e08163933aade94e4fc3e8bbf83773cacf61788ce244ea",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/jin-e2e/native/rules/chu-jin.json",
+      "expected_sha256": "587402408202f11c5d14f160867fe3b64217039ce64d3af7e50ea8eb5d19d198",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/jin-e2e/native/rules/elder-jin.json",
+      "expected_sha256": "860ee68ceb557c6ba6f5149c5898399a4ce9caa16e2bd4d09eb43113d9f4a19d",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/jin-e2e/native/rules/four.json",
+      "expected_sha256": "0e598b60ce4f40c320a06533b80584b0e68cf37500be3edb666c3b0331d0290a",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/jin-e2e/native/rules/genkai-jin.json",
+      "expected_sha256": "403da26e80023e89d6e6d30c4d66d35dce1524a9197160abb6770861220af4eb",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/jin-e2e/native/rules/human-idle.json",
+      "expected_sha256": "67d1e2372f422cd49d75039fd5c628f3775e4fac3aace36a60e98520ed1ce566",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/jin-e2e/native/rules/jin-chu.json",
+      "expected_sha256": "004cf60bd7f957a1655e6618bdd5ecc90bf785b39895a7973559e62f97f5a4f4",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/jin-e2e/native/rules/jin-elder.json",
+      "expected_sha256": "0484ba7f33a1fe8737697ecfef6cd87ad5cf01cfe27b1fb603a1cfa3d4ec4776",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/jin-e2e/native/rules/jin-genkai.json",
+      "expected_sha256": "c42dcbca53af815a4b53926fd40046cc9f0fc684e185b1257ba27361a76141e7",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/jin-e2e/native/rules/jin-jin.json",
+      "expected_sha256": "4081070ad7f61092f45ecfbce91e72a8ebf29dffe0063f217440b4483f94c598",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/jin-e2e/native/rules/jin-kurama.json",
+      "expected_sha256": "794b421f22da82142b8f3386992171bbbcda52e7252032722debe885d9b0600a",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/jin-e2e/native/rules/jin-kuwabara.json",
+      "expected_sha256": "608b811c6bb79a74e4f1237d9eb731ea8a926de68845a08d06d9bbfa9260d9ad",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/jin-e2e/native/rules/jin-younger.json",
+      "expected_sha256": "e75df70f68dd74f5a418815437b96bb56dbcb8e379a192e15e5736843270d6e4",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/jin-e2e/native/rules/jin-yusuke.json",
+      "expected_sha256": "1f6979e0d3de298ebf759e5e4e24c6c2f5cfca46b5c78f89ea5fe13bfcfaf425",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/jin-e2e/native/rules/kurama-jin.json",
+      "expected_sha256": "27b6ea03a0cc8335d452df562f77c39a4d30ba15cfd60cf8a227a5054b7706ff",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/jin-e2e/native/rules/kuwabara-jin.json",
+      "expected_sha256": "aa18a24c42378bd9148ce53dfc50331831374871b3ac16df9fcb2230695cfd3c",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/jin-e2e/native/rules/team.json",
+      "expected_sha256": "aca790e8b7973e03e70ce8ef92149798d149ad7e29f4ade7914fd08d2eb1dd97",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/jin-e2e/native/rules/three.json",
+      "expected_sha256": "2d798d24edf1c118520694cde5427ba24c150a95b8f6f6849b3f985ab392471b",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/jin-e2e/native/rules/younger-jin.json",
+      "expected_sha256": "119fd98c252df24043052bb8a627e97a306924979083907890ec514f40418b67",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/jin-e2e/native/rules/yusuke-jin.json",
+      "expected_sha256": "67612fee6cd6ca1d4d44da660a59b5b5e4d1c8ecddff07e8fd83df2b32859086",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/kurama-e2e/native/rules/chu-kurama.json",
+      "expected_sha256": "e9891fc4213805470163cef0f2ed06ff98e999a81a351f92f73426807744e3ee",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/kurama-e2e/native/rules/elder-kurama.json",
+      "expected_sha256": "8a705ac5208fd69eccbe02ddde075c2ae6e097d5571d32fdcc2f0c59330b5428",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/kurama-e2e/native/rules/four.json",
+      "expected_sha256": "e4a416ddd5ad2a3dba3f6731dbc2e69aaf0332e82bb939c6a22436096e0e8f44",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/kurama-e2e/native/rules/genkai-kurama.json",
+      "expected_sha256": "d58e1fc4a085c53d0b4df3e5e397d7e74ab45ed96e11c0ba21690e2dcffb6f4e",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/kurama-e2e/native/rules/human-idle.json",
+      "expected_sha256": "51d16e819693402feeed7ca9f4079067063978525b430e0846c087a2d44912b9",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/kurama-e2e/native/rules/kurama-chu.json",
+      "expected_sha256": "aa87712ae0a86948860d9aa2be6c54f8f4478cd44152cfd43020ceb69e261375",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/kurama-e2e/native/rules/kurama-elder.json",
+      "expected_sha256": "58fee7c94e9260aa17400c6195933a414f9bd2c3f6eecb5e67f28a960837124c",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/kurama-e2e/native/rules/kurama-genkai.json",
+      "expected_sha256": "5e6135aa0a8711df9686ed48c2935bed85ef51fff313dbce4c99261dba104c44",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/kurama-e2e/native/rules/kurama-kurama.json",
+      "expected_sha256": "3c29219d50955662c3125b10045a7939a619c74f102b3831ebee9d4eed36d93b",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/kurama-e2e/native/rules/kurama-kuwabara.json",
+      "expected_sha256": "f88cb6ee609eabe992808c791d676e3a263b5c551c312966bad7951576e82401",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/kurama-e2e/native/rules/kurama-younger.json",
+      "expected_sha256": "4620b9a95d4eca5cb5ad50225f83cd1bcfebdcfa479f2e231190ec883939cb9f",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/kurama-e2e/native/rules/kurama-yusuke.json",
+      "expected_sha256": "31a54fdd197ef0df12366235c4d0eb455447800f2e69b2643ec110682a229524",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/kurama-e2e/native/rules/kuwabara-kurama.json",
+      "expected_sha256": "3fd6ee978d018c845a2873c14cb0b3fe39fde8c530a1d72c98686300e6aa2ec2",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/kurama-e2e/native/rules/team.json",
+      "expected_sha256": "2869edeb495baf897401aab0fcc321d4f8fb5f2753b86cba3b2794754b2ca04d",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/kurama-e2e/native/rules/three.json",
+      "expected_sha256": "b06854d5cb04e6e9bb2f6217b028ca1e4832bd4651de60740fb1edbb4ac7cf57",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/kurama-e2e/native/rules/younger-kurama.json",
+      "expected_sha256": "93922f34fbd520bd03d17ab49ff25248a6ecb5ef259ebd6de47a0fc87e7de1a1",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/kurama-e2e/native/rules/yusuke-kurama.json",
+      "expected_sha256": "680d9a202320b9c62aa6f8027df6b4491d420462da00d08141aa8ad3e25e207f",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/kuwabara-e2e/native/rules/chu-kuwabara.json",
+      "expected_sha256": "c082c6f039d6167aca48b403751b41f7d5bcef5da991ee2ff377e77952703e57",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/kuwabara-e2e/native/rules/elder-kuwabara.json",
+      "expected_sha256": "7041246d514a73c795ec6bb1481576c69db6b11760e7a8283025078326191d7d",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/kuwabara-e2e/native/rules/four.json",
+      "expected_sha256": "30c3869a384a888afac72347a47a73dc187888b6bad5bf6b502dd7891db78eb7",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/kuwabara-e2e/native/rules/genkai-kuwabara.json",
+      "expected_sha256": "7b30cf1ad059a2e448d72de731ad97b30868dceda5ff89266401b28cb0fb66ed",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/kuwabara-e2e/native/rules/human-idle.json",
+      "expected_sha256": "e4770ad39f9f367495aee96e5eb64ed4c5e152d70d99895e119a0189cc6900de",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/kuwabara-e2e/native/rules/kuwabara-chu.json",
+      "expected_sha256": "2be18f3216e5d0fc553fcc8524b35afa2a1f35c0cdd35197fa7c42beae92daf4",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/kuwabara-e2e/native/rules/kuwabara-elder.json",
+      "expected_sha256": "7ac924f7041c27afc4d36dd46ce3884af33f9d7668ffafce9db9557a5f93d1da",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/kuwabara-e2e/native/rules/kuwabara-genkai.json",
+      "expected_sha256": "daec20dd7af237079e1317ed3f790a2a66ccb35d36557a5a2c3d5ba69c3cf8dc",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/kuwabara-e2e/native/rules/kuwabara-kuwabara.json",
+      "expected_sha256": "9c18efc9e8018259e232e8bb9748f5678baebb6aa3c839c483b434899cea41a6",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/kuwabara-e2e/native/rules/kuwabara-yusuke.json",
+      "expected_sha256": "09c7afdb07ab9680205999ca7ae11178f07ffa7615d70442c34a9c540535297d",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/kuwabara-e2e/native/rules/team.json",
+      "expected_sha256": "da720badf6d604f9bae209f5ade5b2bf62ea4d9f4dc2cbdd84f73fb316762bd2",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/kuwabara-e2e/native/rules/three.json",
+      "expected_sha256": "3dcf7dace9a9267836623d891c9e741a9b0619a32f8e6e64285055751f8939dd",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/kuwabara-e2e/native/rules/yusuke-kuwabara.json",
+      "expected_sha256": "9f988dd233b1c0ff3e82365c5db2b9824ea6aed07d6520d7fe70f563b760ed65",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/sensui-e2e/native/rules/chu-sensui.json",
+      "expected_sha256": "c6bd6fbc8816037c7363777cfe1df3dc800a6ab5da09c23b103aaedd2f359182",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/sensui-e2e/native/rules/elder-sensui.json",
+      "expected_sha256": "610914e9e52a8bbb9302caa2268a7aa8270571b9f5b522bfb0604fc5478d3b36",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/sensui-e2e/native/rules/four.json",
+      "expected_sha256": "2989ccfc42498f80635602bf97acfb577b3f60c2d87736faa67eb474fbe436a9",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/sensui-e2e/native/rules/genkai-sensui.json",
+      "expected_sha256": "6f9901f6fabb9030211acdf43bb3c29f671c82e6163f000441ccf822af8dcf3f",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/sensui-e2e/native/rules/hiei-sensui.json",
+      "expected_sha256": "613ddde87f4aaf7e59b92965da6cc672ec9d446cbed6453d991bb2ed1d85acd0",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/sensui-e2e/native/rules/human-idle.json",
+      "expected_sha256": "aafb2855a70c9c2373e1973a25b7b400fb8df25850cbcb9659d9df984f963a04",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/sensui-e2e/native/rules/jin-sensui.json",
+      "expected_sha256": "08b39c05112b5dbe624d29f3379be414a35520e2af0fe7104fd6587179ab7e98",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/sensui-e2e/native/rules/kurama-sensui.json",
+      "expected_sha256": "d13a60882b395cdbed3e145c14aece6314a10be0f456d1c9dc696a9a9a090a62",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/sensui-e2e/native/rules/kuwabara-sensui.json",
+      "expected_sha256": "ed48ba21c17278720a84baf99bef37371f1976cf27aa21e43d917ed2ec1d7f8c",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/sensui-e2e/native/rules/sensui-chu.json",
+      "expected_sha256": "b5da675aebc0d949daf4dd17c0623890fc88a2dcad041049d26c24047a7f6f21",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/sensui-e2e/native/rules/sensui-elder.json",
+      "expected_sha256": "e26bd0298004fc4e3420bf25955df04287c0aecb236eec8ec8a233e4db46e3bd",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/sensui-e2e/native/rules/sensui-genkai.json",
+      "expected_sha256": "5d295e72782e90884d8506ec38fe3377726094a08e72301beee898c8a141e80d",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/sensui-e2e/native/rules/sensui-hiei.json",
+      "expected_sha256": "a3a14acef933e71e6606055430e0fcd092fb7b14a8d112c25c3e73bf5b18e5d8",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/sensui-e2e/native/rules/sensui-jin.json",
+      "expected_sha256": "67862de10a03868a2a8e1e5cd7d0271f918155f2765bcd8ecf25efd68f12e3dd",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/sensui-e2e/native/rules/sensui-kurama.json",
+      "expected_sha256": "071fd7b014edbe6ee94b8a590408677c9fd2e8c97cca23f67164868953567065",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/sensui-e2e/native/rules/sensui-kuwabara.json",
+      "expected_sha256": "f89821e2e93ae3d09121156cf34f70302570a77bc93b52de9c06cabc65e69dcd",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/sensui-e2e/native/rules/sensui-sensui.json",
+      "expected_sha256": "c2126beac12b24d8491e6feab0322469653ba27b1b806b5038ec33570d95bf8a",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/sensui-e2e/native/rules/sensui-younger.json",
+      "expected_sha256": "395bc03934e37a71bab21e369e99786354157f90c2c33c4376906287b832f664",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/sensui-e2e/native/rules/sensui-yusuke.json",
+      "expected_sha256": "7f5d9e5752d9ed96a94836aecfb0184d7d80f029f71692d15b4ea33250b4f194",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/sensui-e2e/native/rules/team.json",
+      "expected_sha256": "d9e06a229b94a5a85ac99bf8dc14d2a3273dcad448b8e6379e04d2fec2058ebc",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/sensui-e2e/native/rules/three.json",
+      "expected_sha256": "c68edac370f820e4b2df14b06c17bed024b2c6340a63297f65beea86c5fd6470",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/sensui-e2e/native/rules/younger-sensui.json",
+      "expected_sha256": "da0ac34965297aa509f8ab12b2c076e5cb90a03c0808b8927757e6f62e981056",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/sensui-e2e/native/rules/yusuke-sensui.json",
+      "expected_sha256": "baf508b335a98cb60439dad590ac694dc764c3e4ca64e3f6c968751561461191",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/session-e2e/native/four-ai.json",
+      "expected_sha256": "1a344dfe65bd02dcff430d82a9ee242600a31dfdaf296cd13725f5572efe4f79",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/session-e2e/native/mixed-idle.json",
+      "expected_sha256": "88bcb91b3edf1f5e199b21403f65e5e9f878842c124b0743ef5c069e1f910a40",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/session-e2e/native/team-ai.json",
+      "expected_sha256": "8111626c7099dcdd050ffdc567ff5e70ef8fc0d0940087f125f230a2b5d42f97",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/session-e2e/native/three-ai.json",
+      "expected_sha256": "596b984fa8eee41e639ac61c44603d39ff850386a8e27c8dda7bd645b33c466c",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/session-e2e/native/two-ai.json",
+      "expected_sha256": "c1e8e816ef9fdee90c5051e19b08b525f34d865e97e78d0afdf83db492352e33",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/yusuke-e2e/native/rules/chu-yusuke.json",
+      "expected_sha256": "5e574913ce7682a24577fb2f4a8fdcdf7dc65cda4ee540563caf54b95b99ac5b",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/yusuke-e2e/native/rules/elder-yusuke.json",
+      "expected_sha256": "efbe86c88984057f0012fc8aee74709aceb2c74d885a1ee6419f7005a621d709",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/yusuke-e2e/native/rules/four.json",
+      "expected_sha256": "d4f729f0c6b5614adaa1c9add68fc073c98c7f7c7fe095c358748d234d11eac5",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/yusuke-e2e/native/rules/genkai-yusuke.json",
+      "expected_sha256": "5672e9e3e4dc8830e1006632aa7f2f215adc549904a2275586a8042a1af55195",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/yusuke-e2e/native/rules/human-idle.json",
+      "expected_sha256": "f7b46f94d8201ee38e449968849ba5ef5c7114b6c18cdde9c429faa6fc05190a",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/yusuke-e2e/native/rules/team.json",
+      "expected_sha256": "0d85c6b05509b869b90163f1ad98a417987a79eeedd36790d8682f3928cd1e3b",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/yusuke-e2e/native/rules/three.json",
+      "expected_sha256": "941515792ee13b936ce2e68ea89df554bf96ceeeec61fbf6171e7235128a4f48",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/yusuke-e2e/native/rules/yusuke-chu.json",
+      "expected_sha256": "29facd07657f6208b60286f2f4b2caf24c0edc2b35671874c5f6dbfec13cc6c9",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/yusuke-e2e/native/rules/yusuke-elder.json",
+      "expected_sha256": "0aa49ba7ca6c4cde24a33bcf0f18581ca8db036b98bd3996ec630e09413059d8",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/yusuke-e2e/native/rules/yusuke-genkai.json",
+      "expected_sha256": "fbe590ebf58d407f4a957a638d3d7ced52f5e9b4ca7ab47a7c418bd7613640be",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    },
+    {
+      "expected_path": "games/yuyuhakusho/verification/yusuke-e2e/native/rules/yusuke-yusuke.json",
+      "expected_sha256": "31d5c07c1984e89a978e0099bf3bca3c590e121eb3c571456ba628a0bb5470e3",
+      "kind": "rules",
+      "pass": true,
+      "excluded_version_bound_fields": [
+        "rules_sha256"
+      ]
+    }
+  ],
+  "actual_reports_path": "games/yuyuhakusho/verification/additional-arena-legacy-native-actual.json.gz",
+  "actual_reports_sha256": "ccce4793bd34ff9db37a21caf18b43d8e3e96ccaed87aca4bec21d9dde4b84f3",
+  "actual_reports_gzip_sha256": "4bb6cdce037a24b67d77603b6cbcd876893f16b2a06dacd5ec26324be78c9019",
+  "limits": [
+    "Rule reports preserve complete final world/event/lifecycle traces; only rule-data digest may change. Render reports preserve complete pixel traces and lifecycle checks; snapshot hashes embed the deliberately changed rules asset digest and are compared separately by unchanged legacy JSON fixtures and native/Wasm equality."
+  ]
+}

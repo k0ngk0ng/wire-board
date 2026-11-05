@@ -1,0 +1,53 @@
+{
+  "scope": "Arena 0a callbacks 21126/21258 through true return and six 14d0 consumers",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "records": 2406,
+  "calls": 2406,
+  "kind_counts": {
+    "arena": 1203,
+    "child": 1203
+  },
+  "draws": 7218,
+  "interrupts": 6,
+  "audio_entries": 6,
+  "rng_entries": 0,
+  "unknown_delta": 0,
+  "audio_clears": 4,
+  "full_ram_timeline_replayed": true,
+  "inputs_sha256": "94abff0831b64713c449beca0743f164be572d6085b21d651df51b00e641db60",
+  "control_sha256": "4d68f40cf741adeb7eb047d3d71a9d3b7681c3dd5dc3ec8c4aac5e9f23f09b14",
+  "capture_sha256": "2515ae53a9654df912499b92e99e6e9c12abfbf4f202dc2edabf74e6fe438f34",
+  "fixture_sha256": "a34ce9771a1ac3654b350f03f5fa0dd6ae8189a313f5b87fbdb08874db806416",
+  "gzip_sha256": "cd0a25b17f817274d4082660f12cadbe79f8deb6bf004cc46a369607e2a69468",
+  "frames_match_original_control": true,
+  "errors": [],
+  "pass": true,
+  "legal_arena_a_natural": true,
+  "excluded_menu_contexts": [
+    {
+      "callback": 135462,
+      "object_id": 33664,
+      "parent_id": 0,
+      "calls": 170,
+      "first_frame": 1961,
+      "last_frame": 2130
+    },
+    {
+      "callback": 135768,
+      "object_id": 40448,
+      "parent_id": 33664,
+      "calls": 170,
+      "first_frame": 1961,
+      "last_frame": 2130
+    }
+  ]
+}
