@@ -1,0 +1,1853 @@
+{
+  "scope": "Fighter4 head13bb6/trail13e9a/boost13fc8 saved indexed-asset coverage; callback draw-time boundary",
+  "pass": true,
+  "direct_catalog_reuse": true,
+  "missing_assets": [],
+  "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+  "audit_script_sha256": "26dd79425b4cfc2f8b5d9009b8eb9c40bc7d2d022899ba843bd14a7e64686059",
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/data/world-sprites.json.gz",
+      "sha256": "200e28e775a809de89c19df0dfef314d5697224fcb6a145853beb7344b5833ef",
+      "bytes": 639790
+    },
+    {
+      "path": "games/yuyuhakusho/data/world-sprites-manifest.json",
+      "sha256": "3c4292154c2135e5fed203d3a39d9ce19b3f4554533dfa178568e14991448dc0",
+      "bytes": 3076
+    },
+    {
+      "path": "games/yuyuhakusho/data/world-sprites-oracle.json.gz",
+      "sha256": "3f5100d1d96ecab5512b6bef45f57e6757fc70ba1be1f9ba0d9d558022c81915",
+      "bytes": 5372052
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter4-projectile-rules.json",
+      "sha256": "e1ce7f3a7153b2a97b4370c29daa9b3ef8ecb8f1b0a3521e9120e8491ef6f641",
+      "bytes": 10850
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter4-projectile-boundaries.json.gz",
+      "sha256": "461828c02e995ec7cc0bd27d918413a48ea41dee1df8cf88130bb1bbdfcb04c9",
+      "bytes": 1946057
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter4-projectile-sequences.json.gz",
+      "sha256": "92c42ebff0897c55a256bd1c551c02dec7b0299a4c976ee37b320c2f676eea8b",
+      "bytes": 2055039
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter4-projectile-oracle.json.gz",
+      "sha256": "b8a48d382472e39a158916821c6a9eef7f58e274d84eb2002e14572979e87612",
+      "bytes": 489573
+    }
+  ],
+  "catalog_graphic_keys": 1500,
+  "catalog_tiles": 34520,
+  "required_graphic_keys": 13,
+  "required_unique_indexed_tiles": 292,
+  "animations": [
+    {
+      "animation_set": "0xd92ca",
+      "shape_set": "0xd9a3a",
+      "pose": 14,
+      "index": 0,
+      "parameter": 84
+    },
+    {
+      "animation_set": "0xd92ca",
+      "shape_set": "0xd9a3a",
+      "pose": 15,
+      "index": 0,
+      "parameter": 82
+    },
+    {
+      "animation_set": "0xd92ca",
+      "shape_set": "0xd9a3a",
+      "pose": 16,
+      "index": 0,
+      "parameter": 76
+    },
+    {
+      "animation_set": "0xd92ca",
+      "shape_set": "0xd9a3a",
+      "pose": 17,
+      "index": 0,
+      "parameter": 78
+    },
+    {
+      "animation_set": "0xd92ca",
+      "shape_set": "0xd9a3a",
+      "pose": 18,
+      "index": 0,
+      "parameter": 80
+    },
+    {
+      "animation_set": "0xd92ca",
+      "shape_set": "0xd9a3a",
+      "pose": 19,
+      "index": 0,
+      "parameter": 92
+    },
+    {
+      "animation_set": "0xd92ca",
+      "shape_set": "0xd9a3a",
+      "pose": 19,
+      "index": 1,
+      "parameter": 94
+    },
+    {
+      "animation_set": "0xd92ca",
+      "shape_set": "0xd9a3a",
+      "pose": 19,
+      "index": 2,
+      "parameter": 96
+    },
+    {
+      "animation_set": "0xd92ca",
+      "shape_set": "0xd9a3a",
+      "pose": 19,
+      "index": 3,
+      "parameter": 98
+    }
+  ],
+  "body_angle_table": {
+    "source_address": "0x13f76",
+    "direct_parameters": [
+      90,
+      88,
+      86,
+      88,
+      90,
+      88,
+      86,
+      88
+    ],
+    "parameter_scaling": 1
+  },
+  "fixtures": [
+    {
+      "fixture": "boundaries",
+      "callbacks": 2607,
+      "draw_requests": 2043,
+      "covered_draw_requests": 1989,
+      "retained_dirty_paused_requests": 54
+    },
+    {
+      "fixture": "sequences",
+      "callbacks": 8596,
+      "draw_requests": 8520,
+      "covered_draw_requests": 8520,
+      "retained_dirty_paused_requests": 0
+    },
+    {
+      "fixture": "oracle",
+      "callbacks": 1592,
+      "draw_requests": 1582,
+      "covered_draw_requests": 1582,
+      "retained_dirty_paused_requests": 0
+    }
+  ],
+  "frames": [
+    {
+      "graphics_set": "0xd8f1a",
+      "tile_bank": "0x240000",
+      "parameter": 0,
+      "covered": true,
+      "preloaded_only": false,
+      "source_frame_address": "0xd8f92",
+      "source_payload_sha256": "c2a31eee153c81ddae91531d2d067ee5eb60777f54bdf308241a0807326bec15",
+      "piece_count": 1,
+      "used_relative_slots": [
+        0
+      ],
+      "opaque_piece_pixels": 0,
+      "transfers": [
+        {
+          "stamp": 14155777,
+          "rom_first_tile_address": "0x241b00",
+          "tile_count": 1,
+          "rom_tiles_sha256": "66687aadf862bd776c8fc18b8e9f8e20089714856ee233b3902a591d0d5f2925",
+          "catalog_tile_ids": [
+            6
+          ]
+        }
+      ],
+      "consumers": [
+        {
+          "kind": "boost",
+          "fixture": "boundaries",
+          "draw_requests": 18
+        },
+        {
+          "kind": "head",
+          "fixture": "boundaries",
+          "draw_requests": 18
+        },
+        {
+          "kind": "trail",
+          "fixture": "boundaries",
+          "draw_requests": 18
+        }
+      ]
+    },
+    {
+      "graphics_set": "0xd8f1a",
+      "tile_bank": "0x240000",
+      "parameter": 76,
+      "covered": true,
+      "preloaded_only": false,
+      "source_frame_address": "0xd918a",
+      "source_payload_sha256": "214470fc1f982d9227d9fa813198afa6e73ca63e45a7c3545ec2fdec5826a288",
+      "piece_count": 2,
+      "used_relative_slots": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "opaque_piece_pixels": 500,
+      "transfers": [
+        {
+          "stamp": 32964632,
+          "rom_first_tile_address": "0x243ee0",
+          "tile_count": 24,
+          "rom_tiles_sha256": "16424f2014a9c40122e61074a08c4abca2fbe6e3002bb13d29d171d74c8a233a",
+          "catalog_tile_ids": [
+            6,
+            6,
+            32978,
+            32979,
+            32980,
+            32981,
+            32982,
+            32983,
+            6,
+            32984,
+            32985,
+            32986,
+            32987,
+            32988,
+            32989,
+            32990,
+            32991,
+            32992,
+            32993,
+            32994,
+            32995,
+            32996,
+            32997,
+            32998
+          ]
+        }
+      ],
+      "consumers": [
+        {
+          "kind": "head",
+          "fixture": "boundaries",
+          "draw_requests": 380
+        },
+        {
+          "kind": "head",
+          "fixture": "oracle",
+          "draw_requests": 46
+        },
+        {
+          "kind": "head",
+          "fixture": "sequences",
+          "draw_requests": 640
+        }
+      ]
+    },
+    {
+      "graphics_set": "0xd8f1a",
+      "tile_bank": "0x240000",
+      "parameter": 78,
+      "covered": true,
+      "preloaded_only": false,
+      "source_frame_address": "0xd9196",
+      "source_payload_sha256": "07ea4f11d8564b4ab3039e3784e55fd6bae3f375f83cfbc322455f8c5ce82d3a",
+      "piece_count": 3,
+      "used_relative_slots": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "opaque_piece_pixels": 461,
+      "transfers": [
+        {
+          "stamp": 34537493,
+          "rom_first_tile_address": "0x2441e0",
+          "tile_count": 21,
+          "rom_tiles_sha256": "6171406addd6792ec83f258e6260fe823229d36266de119bde18884619e238a6",
+          "catalog_tile_ids": [
+            32999,
+            33000,
+            33001,
+            33002,
+            33003,
+            33004,
+            33005,
+            33006,
+            33007,
+            33008,
+            33009,
+            33010,
+            33011,
+            33012,
+            33013,
+            33014,
+            33015,
+            33016,
+            33017,
+            6,
+            33018
+          ]
+        }
+      ],
+      "consumers": [
+        {
+          "kind": "head",
+          "fixture": "boundaries",
+          "draw_requests": 2
+        },
+        {
+          "kind": "head",
+          "fixture": "oracle",
+          "draw_requests": 26
+        }
+      ]
+    },
+    {
+      "graphics_set": "0xd8f1a",
+      "tile_bank": "0x240000",
+      "parameter": 80,
+      "covered": true,
+      "preloaded_only": false,
+      "source_frame_address": "0xd91a6",
+      "source_payload_sha256": "bbaf395d1fa888c38f84ab0c4df13bca28f9d053f643aae7a68b379c5c447112",
+      "piece_count": 3,
+      "used_relative_slots": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21
+      ],
+      "opaque_piece_pixels": 513,
+      "transfers": [
+        {
+          "stamp": 35913750,
+          "rom_first_tile_address": "0x244480",
+          "tile_count": 22,
+          "rom_tiles_sha256": "7578fa198753d3e780259b726245f23b7c8aaa3305dff345796d932611adaa8f",
+          "catalog_tile_ids": [
+            33019,
+            33020,
+            33021,
+            33022,
+            33023,
+            33024,
+            33025,
+            33026,
+            33027,
+            33028,
+            33029,
+            33030,
+            33031,
+            33032,
+            33033,
+            33034,
+            33035,
+            33036,
+            33037,
+            33038,
+            33039,
+            33040
+          ]
+        }
+      ],
+      "consumers": [
+        {
+          "kind": "head",
+          "fixture": "boundaries",
+          "draw_requests": 241
+        },
+        {
+          "kind": "head",
+          "fixture": "oracle",
+          "draw_requests": 9
+        }
+      ]
+    },
+    {
+      "graphics_set": "0xd8f1a",
+      "tile_bank": "0x240000",
+      "parameter": 82,
+      "covered": true,
+      "preloaded_only": false,
+      "source_frame_address": "0xd91b6",
+      "source_payload_sha256": "6c27d435994eaea81e1e3f0c3e8850ef8d1514b216ab2e386a1ad42d78f0b0e9",
+      "piece_count": 3,
+      "used_relative_slots": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "opaque_piece_pixels": 487,
+      "transfers": [
+        {
+          "stamp": 37355541,
+          "rom_first_tile_address": "0x244740",
+          "tile_count": 21,
+          "rom_tiles_sha256": "29a838a9029a0cb07780d3d7a6a6c7f69d6edf5ceedd5eda646cf2ef47fbae9f",
+          "catalog_tile_ids": [
+            33041,
+            33042,
+            33043,
+            33044,
+            33045,
+            33046,
+            33047,
+            33048,
+            33049,
+            33050,
+            33051,
+            33052,
+            33053,
+            33054,
+            33055,
+            6,
+            33056,
+            33057,
+            33058,
+            33059,
+            33060
+          ]
+        }
+      ],
+      "consumers": [
+        {
+          "kind": "head",
+          "fixture": "boundaries",
+          "draw_requests": 2
+        },
+        {
+          "kind": "head",
+          "fixture": "oracle",
+          "draw_requests": 22
+        }
+      ]
+    },
+    {
+      "graphics_set": "0xd8f1a",
+      "tile_bank": "0x240000",
+      "parameter": 84,
+      "covered": true,
+      "preloaded_only": false,
+      "source_frame_address": "0xd91c6",
+      "source_payload_sha256": "733237f6525b12b95c5a30e5ebc1948d8730aad856cbe87d0d109d3289f2023a",
+      "piece_count": 3,
+      "used_relative_slots": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21
+      ],
+      "opaque_piece_pixels": 472,
+      "transfers": [
+        {
+          "stamp": 38731798,
+          "rom_first_tile_address": "0x2449e0",
+          "tile_count": 22,
+          "rom_tiles_sha256": "812a542cef57df3b9976a760b04a2bdc22777fa93ce0578ec9122d2e50f60c5c",
+          "catalog_tile_ids": [
+            33061,
+            33062,
+            33063,
+            33064,
+            33065,
+            33066,
+            33067,
+            33068,
+            33069,
+            33070,
+            33071,
+            33072,
+            33073,
+            33074,
+            33075,
+            33076,
+            33077,
+            33078,
+            33079,
+            33080,
+            33081,
+            33082
+          ]
+        }
+      ],
+      "consumers": [
+        {
+          "kind": "head",
+          "fixture": "boundaries",
+          "draw_requests": 246
+        },
+        {
+          "kind": "head",
+          "fixture": "oracle",
+          "draw_requests": 8
+        }
+      ]
+    },
+    {
+      "graphics_set": "0xd8f1a",
+      "tile_bank": "0x240000",
+      "parameter": 86,
+      "covered": true,
+      "preloaded_only": false,
+      "source_frame_address": "0xd91d6",
+      "source_payload_sha256": "c8ac2caed40b9c51f7f8052cedf33e6f5da5b5bd62141ae5a86b68a430ebd508",
+      "piece_count": 1,
+      "used_relative_slots": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "opaque_piece_pixels": 334,
+      "transfers": [
+        {
+          "stamp": 40173595,
+          "rom_first_tile_address": "0x244ca0",
+          "tile_count": 27,
+          "rom_tiles_sha256": "4c9b4ab2ebda0887cefffb1d969f71f961e9c0ef2ac00bc58fb6e6176346331f",
+          "catalog_tile_ids": [
+            33083,
+            33084,
+            33085,
+            33086,
+            33087,
+            33088,
+            33089,
+            33090,
+            33091,
+            33092,
+            33093,
+            33094,
+            33095,
+            33096,
+            33097,
+            33098,
+            33099,
+            33100,
+            33101,
+            33102,
+            33103,
+            33104,
+            33105,
+            33106,
+            33107,
+            33108,
+            33109
+          ]
+        }
+      ],
+      "consumers": [
+        {
+          "kind": "trail",
+          "fixture": "boundaries",
+          "draw_requests": 197
+        },
+        {
+          "kind": "trail",
+          "fixture": "oracle",
+          "draw_requests": 315
+        },
+        {
+          "kind": "trail",
+          "fixture": "sequences",
+          "draw_requests": 2107
+        }
+      ]
+    },
+    {
+      "graphics_set": "0xd8f1a",
+      "tile_bank": "0x240000",
+      "parameter": 88,
+      "covered": true,
+      "preloaded_only": false,
+      "source_frame_address": "0xd91de",
+      "source_payload_sha256": "949d695cef550942985a10cc1a1a484494afc4e485b66aaf1280b1f89ce245d0",
+      "piece_count": 1,
+      "used_relative_slots": [
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26
+      ],
+      "opaque_piece_pixels": 346,
+      "transfers": [
+        {
+          "stamp": 40173595,
+          "rom_first_tile_address": "0x244ca0",
+          "tile_count": 27,
+          "rom_tiles_sha256": "4c9b4ab2ebda0887cefffb1d969f71f961e9c0ef2ac00bc58fb6e6176346331f",
+          "catalog_tile_ids": [
+            33083,
+            33084,
+            33085,
+            33086,
+            33087,
+            33088,
+            33089,
+            33090,
+            33091,
+            33092,
+            33093,
+            33094,
+            33095,
+            33096,
+            33097,
+            33098,
+            33099,
+            33100,
+            33101,
+            33102,
+            33103,
+            33104,
+            33105,
+            33106,
+            33107,
+            33108,
+            33109
+          ]
+        }
+      ],
+      "consumers": [
+        {
+          "kind": "trail",
+          "fixture": "boundaries",
+          "draw_requests": 51
+        },
+        {
+          "kind": "trail",
+          "fixture": "oracle",
+          "draw_requests": 336
+        },
+        {
+          "kind": "trail",
+          "fixture": "sequences",
+          "draw_requests": 94
+        }
+      ]
+    },
+    {
+      "graphics_set": "0xd8f1a",
+      "tile_bank": "0x240000",
+      "parameter": 90,
+      "covered": true,
+      "preloaded_only": false,
+      "source_frame_address": "0xd91e6",
+      "source_payload_sha256": "6de1fee68d998e6d25ae1e3f9f1a6e0d8faaf2680185f118a1ef1aa38e6f80f7",
+      "piece_count": 1,
+      "used_relative_slots": [
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ],
+      "opaque_piece_pixels": 334,
+      "transfers": [
+        {
+          "stamp": 40173595,
+          "rom_first_tile_address": "0x244ca0",
+          "tile_count": 27,
+          "rom_tiles_sha256": "4c9b4ab2ebda0887cefffb1d969f71f961e9c0ef2ac00bc58fb6e6176346331f",
+          "catalog_tile_ids": [
+            33083,
+            33084,
+            33085,
+            33086,
+            33087,
+            33088,
+            33089,
+            33090,
+            33091,
+            33092,
+            33093,
+            33094,
+            33095,
+            33096,
+            33097,
+            33098,
+            33099,
+            33100,
+            33101,
+            33102,
+            33103,
+            33104,
+            33105,
+            33106,
+            33107,
+            33108,
+            33109
+          ]
+        }
+      ],
+      "consumers": [
+        {
+          "kind": "trail",
+          "fixture": "boundaries",
+          "draw_requests": 388
+        },
+        {
+          "kind": "trail",
+          "fixture": "oracle",
+          "draw_requests": 119
+        },
+        {
+          "kind": "trail",
+          "fixture": "sequences",
+          "draw_requests": 47
+        }
+      ]
+    },
+    {
+      "graphics_set": "0xd8f1a",
+      "tile_bank": "0x240000",
+      "parameter": 92,
+      "covered": true,
+      "preloaded_only": false,
+      "source_frame_address": "0xd91ee",
+      "source_payload_sha256": "1989cbcf957f02271bcca8ff8b5963e663cc882bc2358e6bdfe65ddf774d8f21",
+      "piece_count": 7,
+      "used_relative_slots": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42
+      ],
+      "opaque_piece_pixels": 654,
+      "transfers": [
+        {
+          "stamp": 42336299,
+          "rom_first_tile_address": "0x2450c0",
+          "tile_count": 43,
+          "rom_tiles_sha256": "cbf08655d5a14669713055e6bb595b2e6af2385b5ec9f31ddf4b18b8362bf039",
+          "catalog_tile_ids": [
+            5359,
+            33110,
+            33111,
+            33112,
+            33113,
+            33114,
+            33115,
+            33116,
+            33117,
+            33118,
+            6,
+            33119,
+            33120,
+            33121,
+            33122,
+            33123,
+            33124,
+            33125,
+            6,
+            33126,
+            33127,
+            33128,
+            33129,
+            33130,
+            33131,
+            33132,
+            33133,
+            33134,
+            33135,
+            33136,
+            33137,
+            33138,
+            33139,
+            33140,
+            33141,
+            33142,
+            33143,
+            33144,
+            33145,
+            6,
+            33146,
+            33147,
+            33148
+          ]
+        }
+      ],
+      "consumers": [
+        {
+          "kind": "boost",
+          "fixture": "boundaries",
+          "draw_requests": 428
+        },
+        {
+          "kind": "boost",
+          "fixture": "oracle",
+          "draw_requests": 176
+        },
+        {
+          "kind": "boost",
+          "fixture": "sequences",
+          "draw_requests": 1432
+        }
+      ]
+    },
+    {
+      "graphics_set": "0xd8f1a",
+      "tile_bank": "0x240000",
+      "parameter": 94,
+      "covered": true,
+      "preloaded_only": false,
+      "source_frame_address": "0xd920e",
+      "source_payload_sha256": "5be71dfc7f7bef5a55bd09648c34dd768d4ba8045a233740fdf36de6b8869e91",
+      "piece_count": 8,
+      "used_relative_slots": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47
+      ],
+      "opaque_piece_pixels": 736,
+      "transfers": [
+        {
+          "stamp": 45154352,
+          "rom_first_tile_address": "0x245620",
+          "tile_count": 48,
+          "rom_tiles_sha256": "ad36c91bc8fce961fb17a18fe1ec344d5b5796a4dbba8616f4f7ed1a74a6a028",
+          "catalog_tile_ids": [
+            33149,
+            33150,
+            5359,
+            33151,
+            33152,
+            33153,
+            33154,
+            33155,
+            33156,
+            33157,
+            33158,
+            33159,
+            33160,
+            33161,
+            33162,
+            33163,
+            33164,
+            33165,
+            6,
+            33166,
+            12203,
+            33167,
+            33168,
+            33169,
+            33170,
+            33171,
+            33172,
+            33173,
+            33174,
+            33175,
+            33176,
+            33177,
+            33178,
+            33179,
+            33180,
+            12200,
+            33181,
+            33182,
+            13945,
+            33183,
+            6,
+            33184,
+            33185,
+            33186,
+            33187,
+            33188,
+            33189,
+            33190
+          ]
+        }
+      ],
+      "consumers": [
+        {
+          "kind": "boost",
+          "fixture": "oracle",
+          "draw_requests": 175
+        },
+        {
+          "kind": "boost",
+          "fixture": "sequences",
+          "draw_requests": 1400
+        }
+      ]
+    },
+    {
+      "graphics_set": "0xd8f1a",
+      "tile_bank": "0x240000",
+      "parameter": 96,
+      "covered": true,
+      "preloaded_only": false,
+      "source_frame_address": "0xd9232",
+      "source_payload_sha256": "e3d9dda781cbbc0cc5ff6de521f2953688cd3eb2e0d08b07254becb46cb45bc2",
+      "piece_count": 6,
+      "used_relative_slots": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34
+      ],
+      "opaque_piece_pixels": 656,
+      "transfers": [
+        {
+          "stamp": 48300067,
+          "rom_first_tile_address": "0x245c20",
+          "tile_count": 35,
+          "rom_tiles_sha256": "709be01474a9bc27d8a92c9d66bc22f5aa5547018e641d8254be3936e806ec3f",
+          "catalog_tile_ids": [
+            33191,
+            33192,
+            33193,
+            33194,
+            33195,
+            33196,
+            33197,
+            33198,
+            33199,
+            33200,
+            33201,
+            33202,
+            33203,
+            33204,
+            33205,
+            33206,
+            33207,
+            33208,
+            33209,
+            33210,
+            33211,
+            33212,
+            33213,
+            33214,
+            33215,
+            33216,
+            33217,
+            33218,
+            33219,
+            33220,
+            33221,
+            33222,
+            33223,
+            33224,
+            33225
+          ]
+        }
+      ],
+      "consumers": [
+        {
+          "kind": "boost",
+          "fixture": "oracle",
+          "draw_requests": 175
+        },
+        {
+          "kind": "boost",
+          "fixture": "sequences",
+          "draw_requests": 1400
+        }
+      ]
+    },
+    {
+      "graphics_set": "0xd8f1a",
+      "tile_bank": "0x240000",
+      "parameter": 98,
+      "covered": true,
+      "preloaded_only": false,
+      "source_frame_address": "0xd924e",
+      "source_payload_sha256": "7297148f9e002dd25123c8c599143d767a2f9f06067ac1db9c1842296958312d",
+      "piece_count": 8,
+      "used_relative_slots": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41
+      ],
+      "opaque_piece_pixels": 673,
+      "transfers": [
+        {
+          "stamp": 50593834,
+          "rom_first_tile_address": "0x246080",
+          "tile_count": 42,
+          "rom_tiles_sha256": "e687802b0e6142b1327098549dcaf907ddee9d19f32cb2e001cad68219a0c1f3",
+          "catalog_tile_ids": [
+            6,
+            33226,
+            33227,
+            12203,
+            33228,
+            33229,
+            12200,
+            33230,
+            33231,
+            33232,
+            33233,
+            33234,
+            33235,
+            33236,
+            33237,
+            33238,
+            33239,
+            33240,
+            33241,
+            33242,
+            33243,
+            33244,
+            33245,
+            33246,
+            33247,
+            33248,
+            33249,
+            33250,
+            33251,
+            33252,
+            33253,
+            33254,
+            33255,
+            33256,
+            33257,
+            33258,
+            33259,
+            33260,
+            33261,
+            33262,
+            33263,
+            33264
+          ]
+        }
+      ],
+      "consumers": [
+        {
+          "kind": "boost",
+          "fixture": "oracle",
+          "draw_requests": 175
+        },
+        {
+          "kind": "boost",
+          "fixture": "sequences",
+          "draw_requests": 1400
+        }
+      ]
+    }
+  ],
+  "retained_dirty_paused_requests": [
+    {
+      "name": "gates-head-2-0-255-0",
+      "kind": "head",
+      "parameter": 15493,
+      "stage": 2,
+      "pause_flags": 0,
+      "slow_flag": 255,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-head-2-0-255-1",
+      "kind": "head",
+      "parameter": 22946,
+      "stage": 2,
+      "pause_flags": 0,
+      "slow_flag": 255,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-head-2-0-255-2",
+      "kind": "head",
+      "parameter": 30399,
+      "stage": 2,
+      "pause_flags": 0,
+      "slow_flag": 255,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-head-2-127-255-0",
+      "kind": "head",
+      "parameter": 59955,
+      "stage": 2,
+      "pause_flags": 127,
+      "slow_flag": 255,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-head-2-127-255-1",
+      "kind": "head",
+      "parameter": 1872,
+      "stage": 2,
+      "pause_flags": 127,
+      "slow_flag": 255,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-head-2-127-255-2",
+      "kind": "head",
+      "parameter": 9325,
+      "stage": 2,
+      "pause_flags": 127,
+      "slow_flag": 255,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-head-2-128-0-0",
+      "kind": "head",
+      "parameter": 16778,
+      "stage": 2,
+      "pause_flags": 128,
+      "slow_flag": 0,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-head-2-128-0-1",
+      "kind": "head",
+      "parameter": 24231,
+      "stage": 2,
+      "pause_flags": 128,
+      "slow_flag": 0,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-head-2-128-0-2",
+      "kind": "head",
+      "parameter": 31684,
+      "stage": 2,
+      "pause_flags": 128,
+      "slow_flag": 0,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-head-2-128-255-0",
+      "kind": "head",
+      "parameter": 39137,
+      "stage": 2,
+      "pause_flags": 128,
+      "slow_flag": 255,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-head-2-128-255-1",
+      "kind": "head",
+      "parameter": 46590,
+      "stage": 2,
+      "pause_flags": 128,
+      "slow_flag": 255,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-head-2-128-255-2",
+      "kind": "head",
+      "parameter": 53787,
+      "stage": 2,
+      "pause_flags": 128,
+      "slow_flag": 255,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-head-2-255-0-0",
+      "kind": "head",
+      "parameter": 61240,
+      "stage": 2,
+      "pause_flags": 255,
+      "slow_flag": 0,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-head-2-255-0-1",
+      "kind": "head",
+      "parameter": 3157,
+      "stage": 2,
+      "pause_flags": 255,
+      "slow_flag": 0,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-head-2-255-0-2",
+      "kind": "head",
+      "parameter": 10610,
+      "stage": 2,
+      "pause_flags": 255,
+      "slow_flag": 0,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-head-2-255-255-0",
+      "kind": "head",
+      "parameter": 18063,
+      "stage": 2,
+      "pause_flags": 255,
+      "slow_flag": 255,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-head-2-255-255-1",
+      "kind": "head",
+      "parameter": 25516,
+      "stage": 2,
+      "pause_flags": 255,
+      "slow_flag": 255,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-head-2-255-255-2",
+      "kind": "head",
+      "parameter": 32969,
+      "stage": 2,
+      "pause_flags": 255,
+      "slow_flag": 255,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-trail-2-0-255-0",
+      "kind": "trail",
+      "parameter": 48353,
+      "stage": 2,
+      "pause_flags": 0,
+      "slow_flag": 255,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-trail-2-0-255-1",
+      "kind": "trail",
+      "parameter": 55806,
+      "stage": 2,
+      "pause_flags": 0,
+      "slow_flag": 255,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-trail-2-0-255-2",
+      "kind": "trail",
+      "parameter": 63003,
+      "stage": 2,
+      "pause_flags": 0,
+      "slow_flag": 255,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-trail-2-127-255-0",
+      "kind": "trail",
+      "parameter": 27279,
+      "stage": 2,
+      "pause_flags": 127,
+      "slow_flag": 255,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-trail-2-127-255-1",
+      "kind": "trail",
+      "parameter": 34732,
+      "stage": 2,
+      "pause_flags": 127,
+      "slow_flag": 255,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-trail-2-127-255-2",
+      "kind": "trail",
+      "parameter": 42185,
+      "stage": 2,
+      "pause_flags": 127,
+      "slow_flag": 255,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-trail-2-128-0-0",
+      "kind": "trail",
+      "parameter": 49638,
+      "stage": 2,
+      "pause_flags": 128,
+      "slow_flag": 0,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-trail-2-128-0-1",
+      "kind": "trail",
+      "parameter": 56835,
+      "stage": 2,
+      "pause_flags": 128,
+      "slow_flag": 0,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-trail-2-128-0-2",
+      "kind": "trail",
+      "parameter": 64288,
+      "stage": 2,
+      "pause_flags": 128,
+      "slow_flag": 0,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-trail-2-128-255-0",
+      "kind": "trail",
+      "parameter": 6205,
+      "stage": 2,
+      "pause_flags": 128,
+      "slow_flag": 255,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-trail-2-128-255-1",
+      "kind": "trail",
+      "parameter": 13658,
+      "stage": 2,
+      "pause_flags": 128,
+      "slow_flag": 255,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-trail-2-128-255-2",
+      "kind": "trail",
+      "parameter": 21111,
+      "stage": 2,
+      "pause_flags": 128,
+      "slow_flag": 255,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-trail-2-255-0-0",
+      "kind": "trail",
+      "parameter": 28564,
+      "stage": 2,
+      "pause_flags": 255,
+      "slow_flag": 0,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-trail-2-255-0-1",
+      "kind": "trail",
+      "parameter": 36017,
+      "stage": 2,
+      "pause_flags": 255,
+      "slow_flag": 0,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-trail-2-255-0-2",
+      "kind": "trail",
+      "parameter": 43470,
+      "stage": 2,
+      "pause_flags": 255,
+      "slow_flag": 0,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-trail-2-255-255-0",
+      "kind": "trail",
+      "parameter": 50923,
+      "stage": 2,
+      "pause_flags": 255,
+      "slow_flag": 255,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-trail-2-255-255-1",
+      "kind": "trail",
+      "parameter": 58120,
+      "stage": 2,
+      "pause_flags": 255,
+      "slow_flag": 255,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-trail-2-255-255-2",
+      "kind": "trail",
+      "parameter": 37,
+      "stage": 2,
+      "pause_flags": 255,
+      "slow_flag": 255,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-boost-2-0-255-0",
+      "kind": "boost",
+      "parameter": 7269,
+      "stage": 2,
+      "pause_flags": 0,
+      "slow_flag": 255,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-boost-2-0-255-1",
+      "kind": "boost",
+      "parameter": 14722,
+      "stage": 2,
+      "pause_flags": 0,
+      "slow_flag": 255,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-boost-2-0-255-2",
+      "kind": "boost",
+      "parameter": 22175,
+      "stage": 2,
+      "pause_flags": 0,
+      "slow_flag": 255,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-boost-2-127-255-0",
+      "kind": "boost",
+      "parameter": 51731,
+      "stage": 2,
+      "pause_flags": 127,
+      "slow_flag": 255,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-boost-2-127-255-1",
+      "kind": "boost",
+      "parameter": 59184,
+      "stage": 2,
+      "pause_flags": 127,
+      "slow_flag": 255,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-boost-2-127-255-2",
+      "kind": "boost",
+      "parameter": 1101,
+      "stage": 2,
+      "pause_flags": 127,
+      "slow_flag": 255,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-boost-2-128-0-0",
+      "kind": "boost",
+      "parameter": 8554,
+      "stage": 2,
+      "pause_flags": 128,
+      "slow_flag": 0,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-boost-2-128-0-1",
+      "kind": "boost",
+      "parameter": 16007,
+      "stage": 2,
+      "pause_flags": 128,
+      "slow_flag": 0,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-boost-2-128-0-2",
+      "kind": "boost",
+      "parameter": 23460,
+      "stage": 2,
+      "pause_flags": 128,
+      "slow_flag": 0,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-boost-2-128-255-0",
+      "kind": "boost",
+      "parameter": 30913,
+      "stage": 2,
+      "pause_flags": 128,
+      "slow_flag": 255,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-boost-2-128-255-1",
+      "kind": "boost",
+      "parameter": 38366,
+      "stage": 2,
+      "pause_flags": 128,
+      "slow_flag": 255,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-boost-2-128-255-2",
+      "kind": "boost",
+      "parameter": 45819,
+      "stage": 2,
+      "pause_flags": 128,
+      "slow_flag": 255,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-boost-2-255-0-0",
+      "kind": "boost",
+      "parameter": 53016,
+      "stage": 2,
+      "pause_flags": 255,
+      "slow_flag": 0,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-boost-2-255-0-1",
+      "kind": "boost",
+      "parameter": 60469,
+      "stage": 2,
+      "pause_flags": 255,
+      "slow_flag": 0,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-boost-2-255-0-2",
+      "kind": "boost",
+      "parameter": 2386,
+      "stage": 2,
+      "pause_flags": 255,
+      "slow_flag": 0,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-boost-2-255-255-0",
+      "kind": "boost",
+      "parameter": 9839,
+      "stage": 2,
+      "pause_flags": 255,
+      "slow_flag": 255,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-boost-2-255-255-1",
+      "kind": "boost",
+      "parameter": 17292,
+      "stage": 2,
+      "pause_flags": 255,
+      "slow_flag": 255,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    },
+    {
+      "name": "gates-boost-2-255-255-2",
+      "kind": "boost",
+      "parameter": 24745,
+      "stage": 2,
+      "pause_flags": 255,
+      "slow_flag": 255,
+      "entire_draw_unchanged": true,
+      "asset_coverage": false
+    }
+  ],
+  "limitations": [
+    "The 54 retained dirty stage-two paused requests are explicitly outside asset coverage, not missing runtime assets.",
+    "Parameter0 is a legitimate transparent ROM frame used after initialization under pause; no fallback is consulted.",
+    "This audit validates saved descriptors, pieces, indexed tiles, and original callback requests; it does not execute CPU code or claim decompilation.",
+    "Presentation-owned cache/skip/global slot persistence, palette timing, full natural frame composition, and scanline behavior require their own acceptance evidence.",
+    "The raw 68000 ROM is development-only; neither ROM nor emulator core is an output of this audit."
+  ]
+}

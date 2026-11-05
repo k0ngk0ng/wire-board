@@ -1,0 +1,194 @@
+{
+  "schema": 1,
+  "scope": "Only source4 MAIN duplicate collector output and owned private Ghidra scratch",
+  "deleted_files": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-motion/fighter4-motion-boundaries-manifest.json",
+      "bytes": 2687,
+      "sha256": "4c80c078c32e91e383391c7de21e7e79f114ad8f10af3f37b4b3d5d546fbc597",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter4-motion-boundaries-manifest.json"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-motion/fighter4-motion-boundaries.json.gz",
+      "bytes": 406477,
+      "sha256": "e6d30015dc174e38eaa417668e0a6e1f172958e268beb8cb3d523bf6389810de",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter4-motion-boundaries.json.gz"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-motion/fighter4-motion-oracle-manifest.json",
+      "bytes": 2579,
+      "sha256": "c741c167858f7c5aa38c84cca80f9f3316ff80597dec8d005fdaeca102626ae6",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter4-motion-oracle-manifest.json"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-motion/fighter4-motion-oracle.json.gz",
+      "bytes": 13897,
+      "sha256": "f461e39e8b414d50bd4c8aaecd0c7d72c87b5466942a4c6d411f9a3f47c0c481",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter4-motion-oracle.json.gz"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-motion/fighter4-motion-parameters.json",
+      "bytes": 540,
+      "sha256": "41c95d7995a5862d96596bdc3c2cd32f8e9d076a08f831a0a30388b9376144a3",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter4-motion-parameters.json"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-motion/fighter4-motion-sequences-manifest.json",
+      "bytes": 2720,
+      "sha256": "2f695990689f8055e68e425018fd5353bed106af43c475d3179d46b38013c346",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter4-motion-sequences-manifest.json"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-motion/fighter4-motion-sequences.json.gz",
+      "bytes": 499390,
+      "sha256": "35dcdd2736da0bdc0154b48b35a163e1101b1c1885353a340e7661b3837ade9a",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter4-motion-sequences.json.gz"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-motion-capture.log",
+      "bytes": 514,
+      "sha256": "5a912fab4bbbd7a59655ea8405d94981dde7989725d77cc9ed5316c75d91df77",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter4-motion-capture.log"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-main-static/console.log",
+      "bytes": 11667,
+      "sha256": "9a7853b8ddb46efa41eb4fe4f9fb1b91b4486140f43d092322fb3122a08e0e1c",
+      "reason": "Owned private Ghidra log/cache; focused listing and command console retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-main-static/ghidra.log",
+      "bytes": 8352,
+      "sha256": "514b3d60e485b4aa2c2952cff6ea5fd82a42c76bb1c452b0200c2cf237e4707b",
+      "reason": "Owned private Ghidra log/cache; focused listing and command console retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-main-static/script.log",
+      "bytes": 191,
+      "sha256": "db275a9af56ade9fff537ea9fa2371d8ebac5afe0d20e8629d8b33355c7858dc",
+      "reason": "Owned private Ghidra log/cache; focused listing and command console retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-main-static/tmp/cache/jason-ghidra/fscache2/.lastmaint",
+      "bytes": 46,
+      "sha256": "0bee8f71256f898e4a11fbeb2e13e9c988b45ef9971d05f0f59b40bb2f1b1f8f",
+      "reason": "Owned private Ghidra log/cache; focused listing and command console retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-main-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/osgi/compiled-bundles/d5ce2b6/GeneratedActivator.class",
+      "bytes": 608,
+      "sha256": "f55703662e3acd9ac4e5238005621103e5a86c70079b9772301b78e32c030e88",
+      "reason": "Owned private Ghidra log/cache; focused listing and command console retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-main-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/osgi/compiled-bundles/d5ce2b6/GeneratedActivator.java",
+      "bytes": 407,
+      "sha256": "2a604f29202d03de20281e95e9e9cf25d51350a7f0bcebdff63c06b6207b6658",
+      "reason": "Owned private Ghidra log/cache; focused listing and command console retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-main-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/osgi/compiled-bundles/d5ce2b6/META-INF/MANIFEST.MF",
+      "bytes": 603,
+      "sha256": "7861a1f118ae10a53a590c0544a8006f919dbcbe90e40e11bea4e9fec95ac687",
+      "reason": "Owned private Ghidra log/cache; focused listing and command console retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-main-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/osgi/compiled-bundles/d5ce2b6/MdControlProbe.class",
+      "bytes": 4688,
+      "sha256": "72396de71c5a18dfbf54d60d1d021e676b0fe24dbdccf11262681f4582e7ec74",
+      "reason": "Owned private Ghidra log/cache; focused listing and command console retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-main-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/osgi/compiled-bundles/d5ce2b6/MdRamFrameProbe.class",
+      "bytes": 3723,
+      "sha256": "c7db65cc8425c8b9e099a1ecbcf8a22f9a724d299948900796a90ec0add3ebb3",
+      "reason": "Owned private Ghidra log/cache; focused listing and command console retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-main-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/osgi/felixcache/bundle0/bundle.id",
+      "bytes": 1,
+      "sha256": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+      "reason": "Owned private Ghidra log/cache; focused listing and command console retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-main-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/osgi/felixcache/bundle0/last.java.version",
+      "bytes": 3,
+      "sha256": "20d2add851bf39edcc6b5e830930f962db7e19dffa2cab8610eed551eda6c302",
+      "reason": "Owned private Ghidra log/cache; focused listing and command console retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-main-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/osgi/felixcache/bundle1/bundle.info",
+      "bytes": 232,
+      "sha256": "9527db39244df3936925626a1294f7fb6098f1e879709f05db168671a398d4ba",
+      "reason": "Owned private Ghidra log/cache; focused listing and command console retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-main-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/osgi/felixcache/bundle1/version0.0/revision.location",
+      "bytes": 208,
+      "sha256": "5bf43e05a90c2715e2afb088d572bdf2f11fb6d893c1ed52318e971835ea35fc",
+      "reason": "Owned private Ghidra log/cache; focused listing and command console retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-main-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/osgi/parallel.lock",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "reason": "Owned private Ghidra log/cache; focused listing and command console retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-main-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/tools/_code_browser.tcd",
+      "bytes": 38435,
+      "sha256": "7f3b72bbcccef22e476da60f88101885b1ec625fae79a58cbb78a9a81dacbd0d",
+      "reason": "Owned private Ghidra log/cache; focused listing and command console retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-main-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/tools/_debugger.tcd",
+      "bytes": 46088,
+      "sha256": "efa89df0d486fe15de6c1abdbfb3a1fbcde70596c7f6c96fd9fd547cd1477ed4",
+      "reason": "Owned private Ghidra log/cache; focused listing and command console retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-main-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/tools/_emulator.tcd",
+      "bytes": 116623,
+      "sha256": "bdc4262723f9b714ef8e2038f39c09b1aa567fb57acb9edf3d597b4bd892385a",
+      "reason": "Owned private Ghidra log/cache; focused listing and command console retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-main-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/tools/_version _tracking.tcd",
+      "bytes": 1656,
+      "sha256": "42a672303407e4d56e3042c396cc9d37a72965c653aa6aec62160cadcd98e1c0",
+      "reason": "Owned private Ghidra log/cache; focused listing and command console retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-main-static/tmp/java-home/Library/ghidra/ghidra_12.1.4_PUBLIC/java_home.save",
+      "bytes": 70,
+      "sha256": "d96a6f882c80576492a97eff2df6c0d6a3a0859cea48cb43924276776fd56342",
+      "reason": "Owned private Ghidra log/cache; focused listing and command console retained"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-motion-special-append/fighter4-motion-oracle-manifest.json",
+      "bytes": 4413,
+      "sha256": "4136780b64f9e4ce2c828ac9c435d9113b0dbef13823740d50501e1048e91dfd",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter4-motion-oracle-manifest.json",
+      "round": "special-natural-only-append"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-motion-special-append/fighter4-motion-oracle.json.gz",
+      "bytes": 73424,
+      "sha256": "88d00869ca82c6c1072ac067e5a11f31e3f9f26fd6f324fa9f26ffdc677c4754",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter4-motion-oracle.json.gz",
+      "round": "special-natural-only-append"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-motion-special-append.log",
+      "bytes": 179,
+      "sha256": "b56069678ea05b2efa765cb82a0ddd53525bbd0408849d1a0f9d9744003f4c2a",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter4-motion-capture.log",
+      "round": "special-natural-only-append"
+    }
+  ],
+  "deleted_bytes": 1240421,
+  "canonical_fixture_bytes_verified_equal_before_deletion": true,
+  "actual_red_native_and_wasm_preserved": true,
+  "shared_caches_other_agents_and_8799_assets_changed": false,
+  "initial_capture_source_and_green_logs_preserved_for_version_binding": true
+}

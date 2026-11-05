@@ -21,6 +21,7 @@ type chuActionSnapshot struct {
 	Right      int16
 	GlobalF568 uint16 `json:"global_f568"`
 	GlobalF56A uint16 `json:"global_f56a"`
+	GlobalA038 uint16 `json:"global_a038"`
 }
 
 func decodeChuAction(t *testing.T, raw chuActionSnapshot, id uint16) ChuActionState {
@@ -30,12 +31,18 @@ func decodeChuAction(t *testing.T, raw chuActionSnapshot, id uint16) ChuActionSt
 	s := ChuActionState{ChuTailState: tail, EnergyFraction: binary.BigEndian.Uint16(a[0xba:]), HitStopTicks: a[0x69], Shake: a[0x6a],
 		ScreenOffsetX: int16(binary.BigEndian.Uint16(a[0x54:])), StatusDelay: a[0x86], Residual: int32(binary.BigEndian.Uint32(a[0x98:])),
 		StunTicks: binary.BigEndian.Uint16(a[0x84:]), TargetBit: a[0x70], Power: int16(binary.BigEndian.Uint16(a[0x7c:])),
-		AlternateVelocity: int32(binary.BigEndian.Uint32(a[0x48:])), GlobalF568: raw.GlobalF568, GlobalF56A: raw.GlobalF56A, Left: raw.Left, Right: raw.Right}
+		AlternateVelocity: int32(binary.BigEndian.Uint32(a[0x48:])), GlobalF568: raw.GlobalF568, GlobalF56A: raw.GlobalF56A, Left: raw.Left, Right: raw.Right,
+		MovementSource: binary.BigEndian.Uint32(a[0x90:]), DragonBankCursor: raw.GlobalA038}
 	fullEnergy := int32(binary.BigEndian.Uint32(a[0xb8:]))
 	special, _, _, pool := decodeChuSpecialMotion(t, chuSpecialMotionSnapshot{ObjectID: id, Body: s.Body, ActorBytes: raw.Tail.ActorBytes,
 		Controls: s.Controls, Energy: fullEnergy, Power: s.Power, AlternateVelocity: s.AlternateVelocity, ContactFlags: s.ContactFlags,
 		Children: raw.Children, Pool: raw.Tail.Pool})
 	s.Children = special.Children
+	childBytes := attackContactBytes(t, raw.Children, 768)
+	for i := range s.ChildExtras {
+		b := childBytes[i*256:]
+		s.ChildExtras[i] = Fighter4ChildExtra{Direction: int32(binary.BigEndian.Uint32(b[0x48:])), Held: b[0x71], Pressed: b[0x72], ContactFlags: b[0x89], DragonBank: binary.BigEndian.Uint16(b[0xfe:])}
+	}
 	for i := range s.EffectExtras {
 		b := pool[i*128:]
 		s.EffectExtras[i] = ReactionEffectExtra{Owner: binary.BigEndian.Uint16(b[0x48:]), OffsetY: int16(binary.BigEndian.Uint16(b[0x56:])), Phase: b[0x5a]}
@@ -55,6 +62,13 @@ func encodeChuAction(t *testing.T, s ChuActionState, previous chuActionSnapshot)
 	binary.BigEndian.PutUint16(a[0x54:], uint16(s.ScreenOffsetX))
 	binary.BigEndian.PutUint32(a[0x98:], uint32(s.Residual))
 	binary.BigEndian.PutUint16(a[0x84:], s.StunTicks)
+	binary.BigEndian.PutUint32(a[0x90:], s.MovementSource)
+	for i, extra := range s.ChildExtras {
+		b := children[i*256:]
+		binary.BigEndian.PutUint32(b[0x48:], uint32(extra.Direction))
+		b[0x71], b[0x72], b[0x89] = extra.Held, extra.Pressed, extra.ContactFlags
+		binary.BigEndian.PutUint16(b[0xfe:], extra.DragonBank)
+	}
 	for i, e := range s.EffectExtras {
 		b := pool[i*128:]
 		binary.BigEndian.PutUint16(b[0x48:], e.Owner)
@@ -65,6 +79,18 @@ func encodeChuAction(t *testing.T, s ChuActionState, previous chuActionSnapshot)
 	raw.Tail.ChildBytes = hex.EncodeToString(children[:256])
 	raw.Tail.Pool.Bytes = hex.EncodeToString(pool)
 	raw.GlobalF568, raw.GlobalF56A, raw.Left, raw.Right = s.GlobalF568, s.GlobalF56A, s.Left, s.Right
+	raw.GlobalA038 = s.DragonBankCursor
+	// Parameter metadata is a read-only view of the current source, just like
+	// the original snapshot producer. It is not retained fighter state.
+	oldSource := binary.BigEndian.Uint32(attackContactBytes(t, previous.Tail.ActorBytes, 256)[0x90:])
+	if s.MovementSource != 0 && s.MovementSource != oldSource {
+		movement, found := fighter4CompositionMovements(t)[s.MovementSource]
+		if !found {
+			t.Fatal("test snapshot movement metadata is unavailable", s.MovementSource)
+		}
+		raw.WalkSpeed = movement.WalkSpeed
+		raw.Tail.Parameters = ChuTailParameters{JumpParameters: movement.JumpParameters, BurstSpeed: movement.BurstSpeed, EnergyDrain: movement.EnergyDrain}
+	}
 	return raw
 }
 

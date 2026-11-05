@@ -1,0 +1,97 @@
+{
+  "pass": true,
+  "scope": "action natural source4 two-human complete original API return; excludes world callbacks",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "82d8be1bf44956b513bf50100984ce40a1625795d9a20b00c22009be58da6bef",
+  "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+  "records": 3316,
+  "calls": 3316,
+  "frames_match_original_core": true,
+  "video_steps": 5502,
+  "external_queue_calls": 0,
+  "fixture_sha256": "b688aed24d429308ac997500dd85dbcb15af7b100f0622d44169d4e10d6a6339",
+  "gzip_sha256": "21b3b9fc84eb73465891ddd12b8f75e09c36b46e7996be016ec8463b5f412079",
+  "binding": {
+    "source_tag": 4,
+    "source_object": "0x9000",
+    "input_channel": 1,
+    "input_mode": 0,
+    "other_source_tag": 3,
+    "other_source_object": "0x8400",
+    "other_input_channel": 0,
+    "other_input_mode": 0,
+    "checkpoint_video_label": 2400,
+    "animation_set": 818330,
+    "shape_set": 822250,
+    "parameter_pointer": 75128,
+    "source_actor_sha256": "859f8080f296871edfda632404318e2c89b3602a01b3e77324c515cacef2f3a2"
+  },
+  "library_frames": 62,
+  "baseline_path": "games/yuyuhakusho/engine/testdata/fighter4-attacks-duo-reference-frames.json",
+  "baseline_sha256": "9f282f53a016d184d45052b30eaf8c482d4b568132f7979f7eebff4a7faa5917",
+  "baseline_manifest_sha256": "da7b399421593ad938377c99898e1734f5f61297efad133476c1802f1dc3ba80",
+  "input_path": "docs/research/md-yuyuhakusho/source4-special-discovery-duo-inputs.json",
+  "input_sha256": "b303ca8622f90747052902f81b2b7f2bdde39f59e47feb6f36a6bf8287a6ac34",
+  "accepted_entry_video_limit": 5500,
+  "drain_video_steps": 2,
+  "canonical_source_registers": true,
+  "natural_only": true,
+  "no_ram_writes": true,
+  "incomplete_calls": 0,
+  "errors": [],
+  "statistics": {
+    "calls": 3316,
+    "external": 0,
+    "threat_branches": 0,
+    "ai_calls": 0,
+    "record_calls": 0,
+    "actions": {
+      "0": 2245,
+      "4": 412,
+      "5": 133,
+      "6": 52,
+      "12": 259,
+      "1": 1,
+      "41": 55,
+      "42": 102,
+      "43": 57
+    },
+    "routes": {},
+    "rng_counts": {
+      "1": 3316
+    },
+    "sources": {
+      "0xffff9000": 3316
+    }
+  },
+  "natural_lifecycle": {
+    "first_boost_frame": 3589,
+    "last_boost_frame": 4299,
+    "boost_rows": 711,
+    "source_transition_rows": [
+      {
+        "frame": 3589,
+        "before": "0x12578",
+        "after": "0x15946",
+        "action_before": 42,
+        "action_after": 43
+      }
+    ],
+    "first_default_negative_energy_idle_child_empty_frame": 4379,
+    "recovered_rows": 866
+  },
+  "limits": [
+    "Two human controls; no natural source4 AI.",
+    "Rows are independent complete fighter API observations; child/world scheduling is external.",
+    "Only observed audio consumer PC/address markers permit narrow queue exclusions."
+  ]
+}

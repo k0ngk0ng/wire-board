@@ -1,0 +1,303 @@
+{
+  "scope": "Own duplicate source4 selector captures and exploratory recordings after fixed canonical evidence retained",
+  "files": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-attacks/boundaries.jsonl.gz",
+      "bytes": 17326929,
+      "sha256": "243cae00f43e7f143222deb50074c00f600e812c032288c79d6dac41ac2d1782"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-attacks/fighter4-attacks-boundaries-manifest.json",
+      "bytes": 3353,
+      "sha256": "48f4862424b6e2990ae99473ed85aeb47fa13e5804af80e35380fd898d8d8944"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-attacks/fighter4-attacks-boundaries.json.gz",
+      "bytes": 17311858,
+      "sha256": "bc3be6b363925badbcb28e1398c5d2483bc74293b9af7bfff9861a3035bccb49"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-attacks/fighter4-attacks-natural-manifest.json",
+      "bytes": 2875,
+      "sha256": "5594d8edc0575050b86dbc61c51643aa7e3f7fd6f4e7943f2a62e4508a8332b3"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-attacks/fighter4-attacks-natural.json.gz",
+      "bytes": 681359,
+      "sha256": "468b6603e7060df8a53d69d4468e7b0465b0f79987472a2e5006da8b7ffecdb5"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-attacks/fighter4-attacks-oracle-manifest.json",
+      "bytes": 3194,
+      "sha256": "d33b022ee8fd03a3c8a23c88216494d997865cae512b9a0b3e24ee206f341af5"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-attacks/fighter4-attacks-oracle.json.gz",
+      "bytes": 24376,
+      "sha256": "25e2a26c1e5f8fa8c6c19b343e24fbf7602d811b6ec9f63a1d95512c50a5e930"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-attacks/fighter4-attacks-sequences-manifest.json",
+      "bytes": 2870,
+      "sha256": "934b619226c7200800ce1123490037aefc0fe0f0d0cc0aba5bff5af3657b3ab6"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-attacks/fighter4-attacks-sequences.json.gz",
+      "bytes": 628053,
+      "sha256": "db68b332039c7b157da1ad31f76f86125e99260dbffaf7d8d5f094af44d1e4ae"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-attacks/natural.jsonl.gz",
+      "bytes": 682207,
+      "sha256": "449969d0771e508856448af11f77c0454d4baacb3c41bc75de5b25dd9ebd2ff7"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-attacks/oracle.jsonl.gz",
+      "bytes": 24378,
+      "sha256": "c86046895a718eae671cde7971ad0cbac270158f2e53374b9432b527335a9e62"
+    },
+    {
+      "path": "scripts/yuyuhakusho/source4-special-discovery-r6.py",
+      "bytes": 5309,
+      "sha256": "5f1c12f0a79ec2e8cce171a7bf7bcb60366b5191182de2f7dff37092e210f0c3"
+    },
+    {
+      "path": "scripts/yuyuhakusho/source4-special-discovery-duo.py",
+      "bytes": 4934,
+      "sha256": "4071f16f85a77ab3c5b31f8b95e985dc967bd5557ba6391c9f6a9435fb614e0d"
+    },
+    {
+      "path": "scripts/yuyuhakusho/source4-special-discovery-duo-early.py",
+      "bytes": 4940,
+      "sha256": "2b077170fa4bc1b2e34ce9fd2463ebc3859743f81410942317396e257128d6c9"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-attacks-special/boundaries.jsonl.gz",
+      "bytes": 42,
+      "sha256": "83ce7d577d40f0211cf1cc1a32801363a6810f02e1667a1b5adde86b818d4dee"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-attacks-special/fighter4-attacks-natural-manifest.json",
+      "bytes": 3040,
+      "sha256": "41b57e89a9ba1ce37688bc16a3510afa1257ca0117c5627cbe802c722f25ba51"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-attacks-special/fighter4-attacks-natural.json.gz",
+      "bytes": 448929,
+      "sha256": "b66280108c6e2068f7bcfc3d6d60ddb0169beada8afb49dd63e66bf862c79061"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-attacks-special/natural.jsonl.gz",
+      "bytes": 449479,
+      "sha256": "cd45124ff06ee5f58288c2d565d933e11333c2016976cfe21826a81f17736f8f"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-attacks-special/oracle.jsonl.gz",
+      "bytes": 38,
+      "sha256": "6529ec9e549520f2c5dc0de3dac964e1115e3da2d7a199f9e143ef74433adc7a"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source4-special-discovery/active/source4-special-discovery-active-final.png",
+      "bytes": 12566,
+      "sha256": "506de82d425e046f82e9963918f67a1b9d3e29555d2495aad5fa1c1f737cfa29"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source4-special-discovery/active/source4-special-discovery-active-inputs.json",
+      "bytes": 4227,
+      "sha256": "5ba6b13d2bb0b285c4307981a5e903d75a7936de3d2632a9f1bf449189650424"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source4-special-discovery/active/source4-special-discovery-active-report.json",
+      "bytes": 70520,
+      "sha256": "75c639fc2ba0e421e7ed1de10bd0ab12601ff281263c26643dd17d23d028888b"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source4-special-discovery/cold-fixed/source4-special-discovery-final.png",
+      "bytes": 12768,
+      "sha256": "2727305a67d5b991df23aa15c5b4677b9044a0b54b71cc5fb52edacf263d8424"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source4-special-discovery/cold-fixed/source4-special-discovery-report.json",
+      "bytes": 72234,
+      "sha256": "b36c9171fe7bc3932c9460d8f625295d994216d7593e2c307713c49cdf424d73"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source4-special-discovery/duo/source4-special-discovery-duo-final.png",
+      "bytes": 13009,
+      "sha256": "9741f4c613b21224fcc438851c5445afd16efb9c707acc5e622c34b521060131"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source4-special-discovery/duo/source4-special-discovery-duo-inputs.json",
+      "bytes": 7034,
+      "sha256": "0e573e5c4de0c35d850a9de8c564b705e82fbf4f65dabf6f53dd0ed8b2770adb"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source4-special-discovery/duo/source4-special-discovery-duo-report.json",
+      "bytes": 149491,
+      "sha256": "ceac69f40fd1579b42d8e4c00295f8aa46df21b0c3f9471cfa49558109850b9b"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source4-special-discovery/duo-cold/source4-special-discovery-final.png",
+      "bytes": 12932,
+      "sha256": "07dbf6c6d53e42ddc00ae48543377a321403b67648733d8ee76698e46dee638b"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source4-special-discovery/duo-cold/source4-special-discovery-report.json",
+      "bytes": 693085,
+      "sha256": "e5db1cbad30ed891e99c9d5759f9236adc30be5593e505cfb20ccc1efc349875"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source4-special-discovery/duo-early/source4-special-discovery-duo-final.png",
+      "bytes": 13009,
+      "sha256": "9741f4c613b21224fcc438851c5445afd16efb9c707acc5e622c34b521060131"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source4-special-discovery/duo-early/source4-special-discovery-duo-inputs.json",
+      "bytes": 7034,
+      "sha256": "37be65ff68e8c75f1933f9ff29d8b8ca4c978ef0ca956fe136449f1c86e132aa"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source4-special-discovery/duo-early/source4-special-discovery-duo-report.json",
+      "bytes": 150673,
+      "sha256": "00573a9bef7e3bf2fcfc778efb19990117968ae5435adcbf3be3d57833236d3a"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source4-special-discovery/duo-fast/source4-special-discovery-duo-final.png",
+      "bytes": 13172,
+      "sha256": "86bb338c9febf6018a6e7412b34fe96c8b751e036832f037209db5aa7ab4d0ec"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source4-special-discovery/duo-fast/source4-special-discovery-duo-inputs.json",
+      "bytes": 6943,
+      "sha256": "b303ca8622f90747052902f81b2b7f2bdde39f59e47feb6f36a6bf8287a6ac34"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source4-special-discovery/duo-fast/source4-special-discovery-duo-report.json",
+      "bytes": 148763,
+      "sha256": "f6ced56c6ec78d3a301f90da714b3b9e4ac4eedb9233a42146029efa3a8ac9a8"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source4-special-discovery/duo-fast-cold/source4-special-discovery-final.png",
+      "bytes": 13583,
+      "sha256": "b9892e7c913746e4301e7c0768bb4f22cc95cec08edf50aabe8317f6e54c307c"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source4-special-discovery/duo-fast-cold/source4-special-discovery-report.json",
+      "bytes": 401569,
+      "sha256": "9a5205e2df68ccc0cb16ffcb3e68f8898d2a1f4293dbe322f91a2e68ca2a676a"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source4-special-discovery/duo-full-cold/source4-special-discovery-final.png",
+      "bytes": 12198,
+      "sha256": "5d7c52eaabe285196e576ad042c95058164c2721e3ed942fb3ab55db60510686"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source4-special-discovery/duo-full-cold/source4-special-discovery-report.json",
+      "bytes": 797781,
+      "sha256": "209d02c3ba587e503ab0866619714e6c45b2930c4162d275d482a665e7928d0d"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source4-special-discovery/duo-lifecycle/source4-special-discovery-duo-complete.png",
+      "bytes": 12198,
+      "sha256": "5d7c52eaabe285196e576ad042c95058164c2721e3ed942fb3ab55db60510686"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source4-special-discovery/duo-lifecycle/source4-special-discovery-duo-lifecycle.json",
+      "bytes": 80912,
+      "sha256": "ad6e4aef07d85e6d0b267214e32c92fe88578a19d34213d4dc64b1c111683d86"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source4-special-discovery/expanded-fixed/source4-special-discovery-final.png",
+      "bytes": 12768,
+      "sha256": "2727305a67d5b991df23aa15c5b4677b9044a0b54b71cc5fb52edacf263d8424"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source4-special-discovery/expanded-fixed/source4-special-discovery-report.json",
+      "bytes": 72201,
+      "sha256": "c8dc21fc3882f6f38d6702e4d2ec253cd8fd2f13c3479f552f4ed01ad3a37d1c"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source4-special-discovery/first/source4-special-discovery-final.png",
+      "bytes": 13065,
+      "sha256": "597086b317745fc1a6705574a7317e4b37ef64dda0ccf1206fe482e67e818703"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source4-special-discovery/first/source4-special-discovery-report.json",
+      "bytes": 33635,
+      "sha256": "11d40888869365bd21d8a93249195bdd3e77aeb9c82a214dcee0a47c06ca9b34"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source4-special-discovery/r6only/source4-special-discovery-active-final.png",
+      "bytes": 12514,
+      "sha256": "267266e1b6acc4fea2b7468fc54d82597c1908b5a0e68f85c1cf71f2ec2cd6b0"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source4-special-discovery/r6only/source4-special-discovery-r6-inputs.json",
+      "bytes": 1674,
+      "sha256": "61232f157b3e76cb7f8423900ac3605a58ea83e8ff1058a92b8c9e6f960bd86a"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source4-special-discovery/r6only/source4-special-discovery-r6-report.json",
+      "bytes": 19706,
+      "sha256": "fdf09b9562a2ab9b2ddf2baa57a8220f3f3b77970ff06489aefbb5784335a6b1"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source4-special-discovery/source4-special-discovery-duo-cold.log",
+      "bytes": 648,
+      "sha256": "280957954c99f6c2916444bf297e21e78413d560971a635268998ce5dfd0945b"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source4-special-discovery/source4-special-discovery-duo-control.log",
+      "bytes": 1411,
+      "sha256": "da7b399421593ad938377c99898e1734f5f61297efad133476c1802f1dc3ba80"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source4-special-discovery/source4-special-discovery-duo-fast-cold.log",
+      "bytes": 649,
+      "sha256": "a174d8ca11e918db56a398647f991b5961817009b7fdc873b5eb1f0d4cca9c0d"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source4-special-discovery/source4-special-discovery-duo-full-cold.log",
+      "bytes": 650,
+      "sha256": "fe114b3caf65dbb874857e119193af3e7095a66d1e05c67d838db943a4b0f173"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source4-special-discovery/source4-special-discovery-duo-lifecycle-final.log",
+      "bytes": 13483,
+      "sha256": "4c29571ff131d380f2020a0c3d55718e7871beb645f74833341b2ba5b7eee2b3"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source4-special-discovery/source4-special-discovery-expanded.log",
+      "bytes": 1080,
+      "sha256": "c4b4d634f50ca4ff701b25cb90bebd413ba6ee57e04d32d2f5d3d97bfd8441cc"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source4-special-discovery/source4-special-discovery-first-inputs.json",
+      "bytes": 3914,
+      "sha256": "803fde9946b761ae0823029c9005cf55c3873bed6016a1c9a5e6f3af737d4351"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source4-special-discovery/two-human-menu/source4-special-discovery-two-human-inputs.json",
+      "bytes": 1389,
+      "sha256": "ba85e9767c4163ea26b03e9f2b49707d09e4673c4c14aff61fd4d466963d8a38"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source4-special-discovery/two-human-menu/source4-special-discovery-two-human-menu.json",
+      "bytes": 1161,
+      "sha256": "769b41d85127f3f9c680530011309a9580607efb4f87e4eb367be6f8ad14cdcd"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source4-special-discovery/two-human-menu/source4-special-discovery-two-human.png",
+      "bytes": 12186,
+      "sha256": "eeb5c3fc0ac78cc3128b88dfbb43302aa00a386b72ba383abce898fd636b9085"
+    }
+  ],
+  "bytes": 40515998,
+  "directories_removed": [
+    ".local/md-yuyuhakusho/fighter4-attacks",
+    ".local/md-yuyuhakusho/fighter4-attacks-special",
+    ".local/md-yuyuhakusho/source4-special-discovery",
+    ".local/md-yuyuhakusho/fighter4-reference"
+  ],
+  "shared_caches_and_other_workers_untouched": true
+}

@@ -17,6 +17,7 @@ import (
 // adapters exist only in tests; production never executes or rehydrates RAM.
 type chuWorldRaw struct {
 	Objects, Globals, Shapes, Stream, Clock string
+	DragonHistory                           string `json:"dragon_history,omitempty"`
 	Seed                                    uint32
 	PaletteRegisters                        string `json:"palette_registers"`
 	Palettes, Cells, Samples, Registration  string
@@ -60,6 +61,7 @@ type chuWorldOriginalPass struct {
 	Frame         int
 	DriverEntries []int `json:"driver_entries"`
 	Calls         []chuWorldOriginalCall
+	Draws         []WorldDraw
 	Before, After chuWorldRaw
 	Cleared       bool `json:"cleared_world"`
 	QueueClears   []struct {
@@ -93,7 +95,7 @@ func decodeChuWorldTest(t *testing.T, raw chuWorldRaw) ChuWorldState {
 		Clock: WorldClockState{PauseFlags: c[0], PauseMask: c[1], ControllerCount: w(c, 2), AudioPause: raw.AudioPause, SlowFlag: c[10],
 			ScreenShake: w(c, 22), DurationRequest: w(c, 24), AmplitudeRequest: w(c, 26), Amplitude: w(c, 28), Decay: w(c, 30), PanAmplitude: w(c, 32), PanOffset: w(c, 34),
 			Frame: w(c, 52), FrameDelay: w(c, 54), LogicFrame: w(c, 56), LogicDelay: w(c, 58)},
-		SlowGate: c[11], SlowTicks: w(c, 8), EffectCursor: w(g, 0x36), EffectTileCursor: g[0x31], OccupiedLanes: g[0x42], ComboFlags: g[0xa4],
+		SlowGate: c[11], SlowTicks: w(c, 8), EffectCursor: w(g, 0x36), EffectTileCursor: g[0x31], OccupiedLanes: g[0x42], ComboFlags: g[0xa4], DragonBankCursor: w(g, 0x38),
 		PendingSound: g[0x30], SoundQueue: raw.Queue, Stream: attackContactBytes(t, raw.Stream, 1024), Stopped: g[0x9a],
 		Difficulty: w(options, 2), ResetEnabled: options[7], SceneMode: w(c, 48), SceneRequest: w(c, 50), InterruptMode: w(p, 16), VideoMode: w(p, 18),
 		ScrollMode: raw.ScrollMode, ResourceList: raw.ResourceList, ResourceBusy: raw.ResourceBusy,
@@ -120,6 +122,15 @@ func decodeChuWorldTest(t *testing.T, raw chuWorldRaw) ChuWorldState {
 	copy(s.Match.Colors[:], g[0x108:0x10c])
 	copy(s.Match.BaseTeams[:], g[0x10c:0x110])
 	copy(s.Match.Options[:], options[4:7])
+	if raw.DragonHistory != "" {
+		history := attackContactBytes(t, raw.DragonHistory, 2048)
+		for bank := range s.DragonHistory {
+			for i := range s.DragonHistory[bank] {
+				b := history[bank*512+i*2:]
+				s.DragonHistory[bank][i] = Fighter4DragonSample{X: int16(w(b, 0)), Y: int16(w(b, 0x40)), Angle: w(b, 0x80), Depth: w(b, 0xc0), Layer: b[0x100], SkipGraphics: b[0x101], Status: b[0x140]}
+			}
+		}
+	}
 	shapes := attackContactBytes(t, raw.Shapes, 1536)
 	for group := range s.Buffers {
 		s.Buffers[group].Offset = w(g, 4+group*2)
@@ -164,8 +175,12 @@ func chuWorldLibrariesTest(t *testing.T) ChuWorldLibrary {
 			t.Fatal(path, err)
 		}
 	}
-	library := ChuWorldLibrary{Animations: make(AnimationLibrary)}
+	library := ChuWorldLibrary{Animations: make(AnimationLibrary), MovementSources: make(map[uint32]FighterMovementSpec)}
 	library.Fighters, _ = initializationSpecs(t)
+	for _, spec := range library.Fighters {
+		library.MovementSources[spec.MovementSource] = spec.Movement
+	}
+	library.MovementSources[0x15946] = fighter4CompositionMovements(t)[0x15946]
 	var commands struct{ Library CommandLibrary }
 	read("../data/command-programs.json", &commands)
 	library.Commands = commands.Library
@@ -199,6 +214,15 @@ func chuWorldLibrariesTest(t *testing.T) ChuWorldLibrary {
 	for _, frame := range fighter0.Animations {
 		library.Animations[frame.Key] = frame.Data
 	}
+	var fighter4 struct {
+		Animations []chuWorldAnimationRule
+		Curve      Fighter4DragonCurve
+	}
+	read("testdata/fighter4-projectile-rules.json", &fighter4)
+	for _, frame := range fighter4.Animations {
+		library.Animations[frame.Key] = frame.Data
+	}
+	library.Fighter4Dragon = Fighter4DragonLibrary{Animations: library.Animations, Curve: fighter4.Curve}
 	library.Fighter0Projectiles = Fighter0ProjectileLibrary{Animations: library.Animations, Sequences: make(map[uint32][]ChuAttachmentFrame)}
 	for _, sequence := range fighter0.Sequences {
 		library.Fighter0Projectiles.Sequences[sequence.Identity] = sequence.Frames
@@ -255,6 +279,12 @@ func visitChuWorldTest(t *testing.T, handle func(chuWorldOriginalPass), fixtureN
 			wantRecords, wantFrames = 2401, 4200
 		} else if name == "chu-world-fighter6-ai" {
 			wantRecords, wantFrames = 2280, 5500
+		} else if name == "chu-world-fighter4" {
+			wantRecords, wantFrames = 3032, 5500
+		} else if name == "chu-world-fighter4-special" {
+			wantRecords, wantFrames = 1801, 3602
+		} else if name == "chu-world-fighter4-duo" {
+			wantRecords, wantFrames = 3001, 5502
 		}
 	}
 	zipped, err := os.ReadFile("testdata/" + name + ".json.gz")
@@ -280,6 +310,12 @@ func visitChuWorldTest(t *testing.T, handle func(chuWorldOriginalPass), fixtureN
 	}
 	zh := sha256.Sum256(zipped)
 	captureName := "capture_chu_world.py"
+	if name == "chu-world-fighter4-special" {
+		captureName = "capture_fighter4_world.py"
+	}
+	if name == "chu-world-fighter4-duo" {
+		captureName = "capture_fighter4_duo_world.py"
+	}
 	if name == "chu-world-fighter6-ai" {
 		captureName = "capture_fighter6_ai_world.py"
 	}
@@ -309,7 +345,7 @@ func visitChuWorldTest(t *testing.T, handle func(chuWorldOriginalPass), fixtureN
 			t.Fatal(err)
 		}
 		firstEntries := 0
-		if name == "chu-world-fighter10" || name == "chu-world-fighter1" || name == "chu-world-fighter1-special" || name == "chu-world-fighter6" || name == "chu-world-fighter6-special" || name == "chu-world-fighter6-ai" {
+		if name == "chu-world-fighter10" || name == "chu-world-fighter1" || name == "chu-world-fighter1-special" || name == "chu-world-fighter6" || name == "chu-world-fighter6-special" || name == "chu-world-fighter6-ai" || name == "chu-world-fighter4-duo" {
 			// These inputs reach the first captured pass after3a2e in the
 			// same video label. The other inputs cross that boundary earlier.
 			firstEntries = 1
@@ -414,6 +450,20 @@ func compareChuWorldBytesTest(t *testing.T, state ChuWorldState, row chuWorldOri
 		}
 	}
 	assertBytes("objects", objects, wantObjects)
+	if row.Before.DragonHistory != "" {
+		history := attackContactBytes(t, row.Before.DragonHistory, 2048)
+		for bank := range state.DragonHistory {
+			for i, sample := range state.DragonHistory[bank] {
+				b := history[bank*512+i*2:]
+				binary.BigEndian.PutUint16(b, uint16(sample.X))
+				binary.BigEndian.PutUint16(b[0x40:], uint16(sample.Y))
+				binary.BigEndian.PutUint16(b[0x80:], sample.Angle)
+				binary.BigEndian.PutUint16(b[0xc0:], sample.Depth)
+				b[0x100], b[0x101], b[0x140] = sample.Layer, sample.SkipGraphics, sample.Status
+			}
+		}
+		assertBytes("dragon-history", history, attackContactBytes(t, row.After.DragonHistory, 2048))
+	}
 	g := attackContactBytes(t, row.Before.Globals, 512)
 	w := func(b []byte, o int, v uint16) { binary.BigEndian.PutUint16(b[o:], v) }
 	for i, buffer := range state.Buffers {
@@ -423,7 +473,7 @@ func compareChuWorldBytesTest(t *testing.T, state ChuWorldState, row chuWorldOri
 		o int
 		v uint16
 	}{{0xc, state.Throws.Offset}, {0xe, state.Camera.Used}, {0x10, uint16(state.Camera.Left)}, {0x12, uint16(state.Camera.Right)}, {0x14, uint16(state.Camera.X)}, {0x16, uint16(state.Camera.Y)}, {0x18, uint16(state.Camera.TargetX)}, {0x1a, uint16(state.Camera.TargetY)},
-		{0x34, state.Registration.Used}, {0x36, state.EffectCursor}, {0x3a, state.Match.ResultTicks}, {0x3c, state.Match.OpeningTicks}, {0x3e, state.Match.AttributeMask},
+		{0x34, state.Registration.Used}, {0x36, state.EffectCursor}, {0x38, state.DragonBankCursor}, {0x3a, state.Match.ResultTicks}, {0x3c, state.Match.OpeningTicks}, {0x3e, state.Match.AttributeMask},
 		{0x60, state.Match.Arena}, {0x62, state.Match.Rule}, {0x64, state.Match.Selected}, {0x6a, uint16(state.Match.RoundIndex)}, {0x70, state.Match.Layout}, {0x72, state.Match.RoundPair}, {0x74, uint16(state.Match.WinnerCode)}, {0x7e, state.Match.Round}, {0x84, state.Match.TeamTitles[0]}, {0x86, state.Match.TeamTitles[1]}, {0x88, state.Match.Grouping}} {
 		w(g, field.o, field.v)
 	}

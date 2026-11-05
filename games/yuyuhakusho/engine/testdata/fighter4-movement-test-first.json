@@ -1,0 +1,8 @@
+{
+  "implementation_changed": false,
+  "files": {
+    "fighter4_movement_test.go": "e8107e11cb69cd51beea915e8c134717fe8425cb506af8d97f0f933197c77997",
+    "FIGHTER4_MOVEMENT_FAILURES.md": "c40d128d000187ade56430a049dd25175c90da18b3a56642bfd375476a64aeb1",
+    "testdata/fighter4-movement-red.jsonl": "aabda1da48125307834e4d8605a5e4dbcc39563b3f89e84561a6b88bbaf9fc9d"
+  }
+}

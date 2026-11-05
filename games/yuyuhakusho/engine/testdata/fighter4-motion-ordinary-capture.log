@@ -1,0 +1,3 @@
+{"name": "fighter4-motion-oracle", "records": 45, "calls": 45, "kinds": {"18": 39, "14": 6}, "pass": true}
+{"name": "fighter4-motion-boundaries", "records": 3818, "calls": 3818, "kinds": {"14": 72, "18": 384, "37": 180, "38": 361, "39": 553, "40": 64, "41": 296, "42": 432, "43": 240, "44": 1236}, "pass": true}
+{"name": "fighter4-motion-sequences", "records": 40, "calls": 3224, "kinds": {"14": 132, "18": 156, "37": 46, "38": 86, "39": 138, "40": 120, "41": 220, "42": 700, "43": 456, "44": 1170}, "pass": true}

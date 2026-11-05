@@ -1,0 +1,53 @@
+{
+  "pass": true,
+  "scope": "Original creator/clock/head/trail/history/clear single-initial-state flows",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "a1f37ef03fb10ba16f9f933db5e0570cf7efdc273abea8d517e82b063fea5686",
+  "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+  "records": 16,
+  "calls": 8596,
+  "kind_counts": {
+    "clock": 16,
+    "creator_head": 8,
+    "head": 648,
+    "trail": 2276,
+    "creator_boost": 8,
+    "boost": 5640
+  },
+  "library_frames": 9,
+  "fixture_sha256": "4649cdd0a0e51cb4632d7e95ab94e762c6980c5d4d5a318562bf404dce0f33c9",
+  "gzip_sha256": "92c42ebff0897c55a256bd1c551c02dec7b0299a4c976ee37b320c2f676eea8b",
+  "baselines": [
+    {
+      "input": "docs/research/md-yuyuhakusho/source4-next-inputs.json",
+      "input_sha256": "e00525d883a103b4631332ac793b2569ff0ee384134e8fd58407bbc4123d0352",
+      "reference": "games/yuyuhakusho/engine/testdata/fighter4-attacks-reference-frames.json",
+      "reference_raw_sha256": "891f1e493f3e3d8bd34e6bf4789739364c6a3f3dc3d318d846d3b797f581d658",
+      "reference_manifest": "games/yuyuhakusho/engine/testdata/fighter4-attacks-reference-manifest.json",
+      "reference_manifest_sha256": "222e0c20466f492035438421bcc835d356985a19973947ea654e4da0f8b553c7",
+      "video_steps": 3602,
+      "all_ram_video_match": true
+    }
+  ],
+  "frames_match_original_core": true,
+  "curve_read_count": 4581,
+  "curve_min_index": -32,
+  "curve_max_index": 1311,
+  "rng_calls": 0,
+  "unexplained_change_calls": 0,
+  "errors": [],
+  "limits": [
+    "Draw is captured at1580 entry; hardware sprite consumers are outside callback scope.",
+    "Non-dragon impact/dust callbacks are not scheduled in isolated flows.",
+    "Only declared pause/contact external inputs; no intermediate state/clock/AN reinjection."
+  ]
+}

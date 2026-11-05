@@ -1,0 +1,13 @@
+{"Time":"2026-11-05T10:04:37.259103+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine"}
+{"Time":"2026-11-05T10:04:37.678594+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter4RulesSchema3AndLegacy"}
+{"Time":"2026-11-05T10:04:37.678923+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter4RulesSchema3AndLegacy","Output":"=== RUN   TestFighter4RulesSchema3AndLegacy\n"}
+{"Time":"2026-11-05T10:04:37.740712+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter4RulesSchema3AndLegacy","Output":"    fighter4_rules_test.go:61: valid schema3 rules rejected incomplete or unsupported Chu world rules\n"}
+{"Time":"2026-11-05T10:04:37.740756+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter4RulesSchema3AndLegacy","Output":"--- FAIL: TestFighter4RulesSchema3AndLegacy (0.06s)\n"}
+{"Time":"2026-11-05T10:04:37.740762+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter4RulesSchema3AndLegacy","Elapsed":0.06}
+{"Time":"2026-11-05T10:04:37.740776+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter4DragonCanonicalSave"}
+{"Time":"2026-11-05T10:04:37.740779+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter4DragonCanonicalSave","Output":"=== RUN   TestFighter4DragonCanonicalSave\n"}
+{"Time":"2026-11-05T10:04:37.741278+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter4DragonCanonicalSave","Output":"--- PASS: TestFighter4DragonCanonicalSave (0.00s)\n"}
+{"Time":"2026-11-05T10:04:37.741284+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter4DragonCanonicalSave","Elapsed":0}
+{"Time":"2026-11-05T10:04:37.741288+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"FAIL\n"}
+{"Time":"2026-11-05T10:04:37.74186+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine\t0.483s\n"}
+{"Time":"2026-11-05T10:04:37.741876+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Elapsed":0.483}

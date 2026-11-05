@@ -1,0 +1,33 @@
+{
+  "pass": true,
+  "scope": "Independent source4 default and original15946 boosted immutable movement parameter data, not Go bundle",
+  "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+  "rules": [
+    {
+      "source": 75128,
+      "movement": {
+        "walk_speed": 139264,
+        "vertical_velocity": -393216,
+        "gravity": 17408,
+        "horizontal_velocity": 114688,
+        "burst_speed": 65536,
+        "energy_drain": 48
+      },
+      "source_bytes": "00022000fffa0000000044000001c0000000060000002000000100000030",
+      "source_sha256": "a1921b891888c291cb9e823019f2d39ed9324c05a10198f2b451439e9442a62b"
+    },
+    {
+      "source": 88390,
+      "movement": {
+        "walk_speed": 196608,
+        "vertical_velocity": -450560,
+        "gravity": 24576,
+        "horizontal_velocity": 114688,
+        "burst_speed": 65536,
+        "energy_drain": 48
+      },
+      "source_bytes": "00030000fff92000000060000001c0000000060000002000000100000030",
+      "source_sha256": "07d25b1130f679d3bea452b6e171b9dc12019630dcc8c57890d8d1e1cabdaa58"
+    }
+  ]
+}

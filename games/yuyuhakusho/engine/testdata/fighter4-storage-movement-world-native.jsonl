@@ -1,0 +1,38 @@
+{"Time":"2026-11-05T10:00:52.791992+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-05T10:00:55.977816+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter4MovementSourcesDriveCompleteAction"}
+{"Time":"2026-11-05T10:00:55.977908+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter4MovementSourcesDriveCompleteAction","Output":"=== RUN   TestFighter4MovementSourcesDriveCompleteAction\n"}
+{"Time":"2026-11-05T10:01:16.482058+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter4MovementSourcesDriveCompleteAction","Output":"--- PASS: TestFighter4MovementSourcesDriveCompleteAction (20.50s)\n"}
+{"Time":"2026-11-05T10:01:16.482293+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighter4MovementSourcesDriveCompleteAction","Elapsed":20.5}
+{"Time":"2026-11-05T10:01:16.482315+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter4MissingMovementSourceIsAtomic"}
+{"Time":"2026-11-05T10:01:16.482325+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter4MissingMovementSourceIsAtomic","Output":"=== RUN   TestFighter4MissingMovementSourceIsAtomic\n"}
+{"Time":"2026-11-05T10:01:36.744984+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter4MissingMovementSourceIsAtomic","Output":"--- PASS: TestFighter4MissingMovementSourceIsAtomic (20.26s)\n"}
+{"Time":"2026-11-05T10:01:36.745162+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighter4MissingMovementSourceIsAtomic","Elapsed":20.26}
+{"Time":"2026-11-05T10:01:36.745173+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter4CanonicalChildViews"}
+{"Time":"2026-11-05T10:01:36.745178+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter4CanonicalChildViews","Output":"=== RUN   TestFighter4CanonicalChildViews\n"}
+{"Time":"2026-11-05T10:01:36.745304+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter4CanonicalChildViews","Output":"--- PASS: TestFighter4CanonicalChildViews (0.00s)\n"}
+{"Time":"2026-11-05T10:01:36.74532+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighter4CanonicalChildViews","Elapsed":0}
+{"Time":"2026-11-05T10:01:36.745325+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter4CanonicalActionView"}
+{"Time":"2026-11-05T10:01:36.745329+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter4CanonicalActionView","Output":"=== RUN   TestFighter4CanonicalActionView\n"}
+{"Time":"2026-11-05T10:01:36.745377+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter4CanonicalActionView","Output":"--- PASS: TestFighter4CanonicalActionView (0.00s)\n"}
+{"Time":"2026-11-05T10:01:36.745384+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighter4CanonicalActionView","Elapsed":0}
+{"Time":"2026-11-05T10:01:36.745397+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter4CanonicalObjectCodec"}
+{"Time":"2026-11-05T10:01:36.745402+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter4CanonicalObjectCodec","Output":"=== RUN   TestFighter4CanonicalObjectCodec\n"}
+{"Time":"2026-11-05T10:01:36.745534+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter4CanonicalObjectCodec","Output":"--- PASS: TestFighter4CanonicalObjectCodec (0.00s)\n"}
+{"Time":"2026-11-05T10:01:36.745539+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighter4CanonicalObjectCodec","Elapsed":0}
+{"Time":"2026-11-05T10:01:36.745554+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter4CanonicalActionCodec"}
+{"Time":"2026-11-05T10:01:36.745557+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter4CanonicalActionCodec","Output":"=== RUN   TestFighter4CanonicalActionCodec\n"}
+{"Time":"2026-11-05T10:01:57.199988+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter4CanonicalActionCodec","Output":"--- PASS: TestFighter4CanonicalActionCodec (20.45s)\n"}
+{"Time":"2026-11-05T10:01:57.200373+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighter4CanonicalActionCodec","Elapsed":20.45}
+{"Time":"2026-11-05T10:01:57.200394+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter4WorldOriginalPasses"}
+{"Time":"2026-11-05T10:01:57.200404+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter4WorldOriginalPasses","Output":"=== RUN   TestFighter4WorldOriginalPasses\n"}
+{"Time":"2026-11-05T10:02:30.125179+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter4WorldOriginalPasses","Output":"    fighter4_world_test.go:51: source4 ordinary continuous=false passes=3032 callbacks=39782 cleared=true\n"}
+{"Time":"2026-11-05T10:02:30.125432+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter4WorldOriginalPasses","Output":"--- PASS: TestFighter4WorldOriginalPasses (32.93s)\n"}
+{"Time":"2026-11-05T10:02:30.125441+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighter4WorldOriginalPasses","Elapsed":32.93}
+{"Time":"2026-11-05T10:02:30.125447+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter4WorldSingleInitialState"}
+{"Time":"2026-11-05T10:02:30.12545+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter4WorldSingleInitialState","Output":"=== RUN   TestFighter4WorldSingleInitialState\n"}
+{"Time":"2026-11-05T10:03:00.624866+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter4WorldSingleInitialState","Output":"    fighter4_world_test.go:53: source4 ordinary continuous=true passes=3032 callbacks=39782 cleared=true\n"}
+{"Time":"2026-11-05T10:03:00.625612+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter4WorldSingleInitialState","Output":"--- PASS: TestFighter4WorldSingleInitialState (30.50s)\n"}
+{"Time":"2026-11-05T10:03:00.625638+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighter4WorldSingleInitialState","Elapsed":30.5}
+{"Time":"2026-11-05T10:03:00.62629+08:00","Action":"output","Package":"command-line-arguments","Output":"PASS\n"}
+{"Time":"2026-11-05T10:03:01.677624+08:00","Action":"output","Package":"command-line-arguments","Output":"ok  \tcommand-line-arguments\t128.886s\n"}
+{"Time":"2026-11-05T10:03:01.677674+08:00","Action":"pass","Package":"command-line-arguments","Elapsed":128.886}

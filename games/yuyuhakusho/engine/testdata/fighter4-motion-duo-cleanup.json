@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "scope": "Only source4 MAIN Duo duplicate observation output",
+  "deleted_files": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-main-duo-evidence/fighter4-motion-duo-natural-manifest.json",
+      "bytes": 2629,
+      "sha256": "8df2cbe50648d885cbf4584f3289e951cf554fa947461a2baaceac03d9098271",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter4-motion-duo-natural-manifest.json"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-main-duo-evidence/fighter4-motion-duo-natural.json.gz",
+      "bytes": 63185,
+      "sha256": "1c9f053258fb6879c0a158c6c24c7a3b0cfa3e07a143fb9bb22d899862632b05",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter4-motion-duo-natural.json.gz"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-main-duo-capture.log",
+      "bytes": 238,
+      "sha256": "9d9467d9915e7c1ebb72a9aa9cc730f92563e9e642f9f803e1cc5c18a85e6ed9",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter4-motion-duo-capture.log"
+    }
+  ],
+  "deleted_bytes": 66052,
+  "canonical_bytes_verified_equal_before_deletion": true,
+  "old_corpus_and_test_logs_untouched": true,
+  "shared_cache_other_agents_and_8799_assets_changed": false
+}

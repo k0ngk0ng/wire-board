@@ -1,0 +1,32 @@
+{
+  "started_at_utc": "2026-11-05T02:36:29.011312+00:00",
+  "scope": "Three frozen Duo-only complete API tests; no original six fixture/sampler edits",
+  "files_before": {
+    "games/yuyuhakusho/engine/fighter4_duo_composition_test.go": "cf4990b5493177c9b5c936a85fb61377baf252672c0dc4d870676b44b7c2b4b4",
+    "games/yuyuhakusho/engine/fighter4_composition_test.go": "a29fcbeaa0fa2049d32bec75ba875c155c78b1675cd0c57b9114d8b6cb68f2a3",
+    "games/yuyuhakusho/engine/chu_action.go": "eea7322db1d75bcdb783130be4bcdf13ece6d742fafcdf951721338fb56f8c02",
+    "games/yuyuhakusho/engine/chu_actor.go": "a83e694c614f149772af5e085ecef80894e5a053c101289f72a5659849cffac2",
+    "games/yuyuhakusho/engine/chu_input.go": "a9d14993c78d4ae89403824254d72edc3a6315f61928c65129e8b67ac870e294",
+    "games/yuyuhakusho/engine/chu_tail.go": "96027a0b041983ece6fee7b553ae286085b7e428d6f8767393ac39ececcdc038",
+    "games/yuyuhakusho/engine/fighter4_attacks.go": "ca87b180ace1aaff0c9e48ec2cc21f51c21d67351f88f5fe7eab1dd8753c54a6",
+    "games/yuyuhakusho/engine/fighter4_motion.go": "a236eac8bded286b9b35241c206d0de35e763d5097651862f14476f7f787f154",
+    "games/yuyuhakusho/engine/chu_action_test.go": "ce29ef76b272029224a90418ea6a53726e19e529051b4861987eed97cf915953",
+    "games/yuyuhakusho/engine/chu_actor_test.go": "09cdf2a78e0fe0b532b4555f7116e756db99441bbf518783729ace02f07d8355"
+  },
+  "native_command": "GOCACHE=\"$PWD/.local/go-cache\" GOMODCACHE=\"$PWD/.local/go-mod\" GOTMPDIR=\"$PWD/.local/md-yuyuhakusho/tmp\" go test -race -count=1 -json -run '^TestFighter4DuoComposition' ./games/yuyuhakusho/engine",
+  "wasm_command": "GOCACHE=\"$PWD/.local/go-cache\" GOMODCACHE=\"$PWD/.local/go-mod\" GOTMPDIR=\"$PWD/.local/md-yuyuhakusho/tmp\" GOOS=js GOARCH=wasm go test -count=1 -json -exec \"$(go env GOROOT)/lib/wasm/go_js_wasm_exec\" -run '^TestFighter4DuoComposition' ./games/yuyuhakusho/engine",
+  "completed_at_utc": "2026-11-05T02:44:03.573256+00:00",
+  "files_after": {
+    "games/yuyuhakusho/engine/fighter4_duo_composition_test.go": "cf4990b5493177c9b5c936a85fb61377baf252672c0dc4d870676b44b7c2b4b4",
+    "games/yuyuhakusho/engine/fighter4_composition_test.go": "a29fcbeaa0fa2049d32bec75ba875c155c78b1675cd0c57b9114d8b6cb68f2a3",
+    "games/yuyuhakusho/engine/chu_action.go": "eea7322db1d75bcdb783130be4bcdf13ece6d742fafcdf951721338fb56f8c02",
+    "games/yuyuhakusho/engine/chu_actor.go": "a83e694c614f149772af5e085ecef80894e5a053c101289f72a5659849cffac2",
+    "games/yuyuhakusho/engine/chu_input.go": "a9d14993c78d4ae89403824254d72edc3a6315f61928c65129e8b67ac870e294",
+    "games/yuyuhakusho/engine/chu_tail.go": "96027a0b041983ece6fee7b553ae286085b7e428d6f8767393ac39ececcdc038",
+    "games/yuyuhakusho/engine/fighter4_attacks.go": "ca87b180ace1aaff0c9e48ec2cc21f51c21d67351f88f5fe7eab1dd8753c54a6",
+    "games/yuyuhakusho/engine/fighter4_motion.go": "a236eac8bded286b9b35241c206d0de35e763d5097651862f14476f7f787f154",
+    "games/yuyuhakusho/engine/chu_action_test.go": "ce29ef76b272029224a90418ea6a53726e19e529051b4861987eed97cf915953",
+    "games/yuyuhakusho/engine/chu_actor_test.go": "09cdf2a78e0fe0b532b4555f7116e756db99441bbf518783729ace02f07d8355"
+  },
+  "all_tested_dependencies_unchanged": true
+}

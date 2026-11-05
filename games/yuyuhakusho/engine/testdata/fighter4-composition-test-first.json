@@ -1,0 +1,31 @@
+{
+  "stage": "Six source4 tests and alias mutation/encoding probes frozen before schema/views and shared support",
+  "recorded_at_utc": "2026-11-05T01:50:46.942849+00:00",
+  "test_top_levels": 6,
+  "files": [
+    {
+      "path": "games/yuyuhakusho/engine/fighter4_composition_test.go",
+      "sha256": "a29fcbeaa0fa2049d32bec75ba875c155c78b1675cd0c57b9114d8b6cb68f2a3"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/FIGHTER4_COMPOSITION_VERIFICATION.md",
+      "sha256": "1f01473a1d0ec975d8b310d59a1a752798aac0237202b4614f74abca7f5ccd04"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_action.go",
+      "sha256": "71c45bf2964a6a06b2a1c2b6f0bbbc8429ecc58489e99ccd6c51efc1e596ad7a"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_actor.go",
+      "sha256": "c71371b9b18571e176b0c525c70079ff23ec1f03eec855ddd8322fc28cc131c4"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_action_test.go",
+      "sha256": "a3ee2a1eb0863eaefec00c99381fa1f21ccd3284b67d2296cdb06cb743237940"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_actor_test.go",
+      "sha256": "64cbd90975e93b8ca9e44fe034bca3d177de4e15f45939248256c5823e44c0e7"
+    }
+  ]
+}

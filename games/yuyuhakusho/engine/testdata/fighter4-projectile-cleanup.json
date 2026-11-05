@@ -1,0 +1,8 @@
+{
+  "scope": "Only duplicate/intermediate outputs created by the dragon worker in its private capture directory",
+  "files": 10,
+  "bytes": 6698932,
+  "removed_directory": ".local/md-yuyuhakusho/fighter4-projectile-capture",
+  "retained": "Original CPU fixtures/manifests, capture log, exact red/native/Wasm/vet results and SHA bindings remain in engine/testdata",
+  "shared_caches_removed": false
+}

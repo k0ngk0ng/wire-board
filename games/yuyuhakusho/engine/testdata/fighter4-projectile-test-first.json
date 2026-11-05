@@ -1,0 +1,33 @@
+{
+  "phase": "complete tests and original CPU fixtures frozen before behavior implementation",
+  "own_symbols_missing": [
+    "StepFighter4DragonHead",
+    "StepFighter4DragonTrail",
+    "StepFighter4Boost"
+  ],
+  "red_command": "go test ./games/yuyuhakusho/engine -run ^TestFighter4Dragon -count=1 -json",
+  "boundary_calls": 2607,
+  "creator_flows": 16,
+  "flow_calls": 8596,
+  "natural_calls": 0,
+  "natural_limit": "ordinary legal inputs do not invoke dragon; special baseline pending",
+  "curve_actual_index_range": [
+    -32,
+    1311
+  ],
+  "sha256": {
+    "games/yuyuhakusho/engine/FIGHTER4_DRAGON_FAILURES.md": "c9bae46142a7282e2f4affbf2a8ce910811bdf45e6307e52ffba8386464b0438",
+    "games/yuyuhakusho/engine/fighter4_projectile_test.go": "aaa6c8ee815b7e10f5799814874106ca9c02fd68a3283a2ec03619d7a5c90615",
+    "games/yuyuhakusho/engine/fighter4_projectile.go": "363c6a2799e4682fe1b0a8639ac068b88620e72b0a02a6287de59926be838513",
+    "scripts/yuyuhakusho/capture_fighter4_projectile.py": "a1f37ef03fb10ba16f9f933db5e0570cf7efdc273abea8d517e82b063fea5686",
+    "games/yuyuhakusho/engine/testdata/fighter4-projectile-boundaries-manifest.json": "82a5b1639a2afd3288c60ea0979d5b7f4384197fa027c27215e7ef79603c7f4f",
+    "games/yuyuhakusho/engine/testdata/fighter4-projectile-boundaries.json.gz": "461828c02e995ec7cc0bd27d918413a48ea41dee1df8cf88130bb1bbdfcb04c9",
+    "games/yuyuhakusho/engine/testdata/fighter4-projectile-oracle-manifest.json": "f25a6e4c438bd6cf232646ebdcd60fc609a1bfd7449beb164480d619b094ce06",
+    "games/yuyuhakusho/engine/testdata/fighter4-projectile-oracle.json.gz": "42c631ee1de2a82f1e9eeed8d6b8200df77bb62e8a22a6143f8f2086072a57f5",
+    "games/yuyuhakusho/engine/testdata/fighter4-projectile-red.jsonl": "db9c89b0883c49d1cfc9a863d61a55becdc2e773568dccdd16c89f7870884da3",
+    "games/yuyuhakusho/engine/testdata/fighter4-projectile-rules-manifest.json": "2511af7195eb018144e40bc1c8342a99427e1e132212c4e517965572a197fb3b",
+    "games/yuyuhakusho/engine/testdata/fighter4-projectile-rules.json": "e1ce7f3a7153b2a97b4370c29daa9b3ef8ecb8f1b0a3521e9120e8491ef6f641",
+    "games/yuyuhakusho/engine/testdata/fighter4-projectile-sequences-manifest.json": "b6458d4d63bf97973005d743233f2be87823e981d2cf3ee58bfd6872a1a9dd9e",
+    "games/yuyuhakusho/engine/testdata/fighter4-projectile-sequences.json.gz": "92c42ebff0897c55a256bd1c551c02dec7b0299a4c976ee37b320c2f676eea8b"
+  }
+}

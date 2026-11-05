@@ -1,0 +1,2 @@
+# Preserve the external Ghidra log byte-for-byte for its recorded SHA.
+fighter4-motion-static.log -text -diff

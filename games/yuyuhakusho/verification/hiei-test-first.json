@@ -1,0 +1,11 @@
+{
+  "session_cli_ui_admission_implementation_changed": false,
+  "files": {
+    "scripts/yuyuhakusho/check_hiei_player.py": "fc4ebcb264527eeff939d35ee0506496ccf5c2014dba8287ffd95bd1145c133b",
+    "scripts/yuyuhakusho/verify_hiei_sessions.sh": "67d055e308144231c3cd70a883b6ca601a07167060ddc9e53a872013d8837c84",
+    "games/yuyuhakusho/engine/fighter4_sessions_test.go": "1e590a1d82fdc7bf9ce3fdbb90f9fc09756c0478ba6bc3034cee5e4f003e1848",
+    "games/yuyuhakusho/engine/testdata/fighter4-session-admission-red.jsonl": "718df3b8d6e94fe2328918d88b551f9be29031444182957f0e2c3591f9cb4b8b",
+    "games/yuyuhakusho/verification/hiei-session-cli-red.txt": "224eb4ede2d8611ddd757d145a2fefe6931ae62c200f3aefa40ce328dd8754af",
+    "games/yuyuhakusho/verification/hiei-player-ui-red.txt": "6069652553208de52408c21a308b3904f5b95e7c77bb1bcd96e5b4cfe97be2bf"
+  }
+}

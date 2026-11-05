@@ -1,0 +1,8 @@
+{
+  "scope": "Only new natural-only dragon capture private outputs after verified copies",
+  "removed_directory": ".local/md-yuyuhakusho/fighter4-dragon-natural",
+  "files": 4,
+  "bytes": 13819,
+  "retained": "Oracle, manifest, original-empty manifest snapshot, natural capture log and final native/Wasm logs in engine/testdata",
+  "shared_caches_removed": false
+}

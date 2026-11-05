@@ -1,0 +1,10 @@
+{
+  "pass": true,
+  "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+  "rules_sha256": "e1ce7f3a7153b2a97b4370c29daa9b3ef8ecb8f1b0a3521e9120e8491ef6f641",
+  "animations": 9,
+  "curve_words": 1344,
+  "curve_cpu_min_index": -32,
+  "curve_cpu_max_index": 1311,
+  "capture_sha256": "a1f37ef03fb10ba16f9f933db5e0570cf7efdc273abea8d517e82b063fea5686"
+}

@@ -1,0 +1,59 @@
+{
+  "scope": "Source4 failure list, full CPU return fixtures, frozen tests and actual missing-symbol red precede production",
+  "base_commit": "605efb55",
+  "recorded_at_utc": "2026-11-05T01:34:23.912783+00:00",
+  "production_present": false,
+  "red_exit_code": 1,
+  "red_reason": "SelectFighter4Attack/FinishFighter4Rush/BeginFighter4DragonFollowup undefined",
+  "special_natural_pending": true,
+  "files": [
+    {
+      "path": "games/yuyuhakusho/engine/fighter4_attacks_test.go",
+      "sha256": "946cdf969aa7b6fedd85cac2b44201e9331a4a9470bf54cc30a96053e45ba9e6"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/FIGHTER4_ATTACK_FAILURES.md",
+      "sha256": "e5005103b9ada3e3d9782694c3cb8cf63076abf7fbeddd98bef1a0f52e539fe1"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_fighter4_attacks.py",
+      "sha256": "a5f9bcd2726051f1d744ca7444a3d5798a7c9ce9d76a8e5f7380d1c0a5718eb5"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter4-attacks-red.jsonl",
+      "sha256": "8539f5eb5a59082f2f8a8dae77b19d0fdd61353f9b2228239deb4d2ea72c3007"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter4-attacks-natural.json.gz",
+      "sha256": "468b6603e7060df8a53d69d4468e7b0465b0f79987472a2e5006da8b7ffecdb5"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter4-attacks-natural-manifest.json",
+      "sha256": "5594d8edc0575050b86dbc61c51643aa7e3f7fd6f4e7943f2a62e4508a8332b3"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter4-attacks-oracle.json.gz",
+      "sha256": "25e2a26c1e5f8fa8c6c19b343e24fbf7602d811b6ec9f63a1d95512c50a5e930"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter4-attacks-oracle-manifest.json",
+      "sha256": "d33b022ee8fd03a3c8a23c88216494d997865cae512b9a0b3e24ee206f341af5"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter4-attacks-boundaries.json.gz",
+      "sha256": "bc3be6b363925badbcb28e1398c5d2483bc74293b9af7bfff9861a3035bccb49"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter4-attacks-boundaries-manifest.json",
+      "sha256": "48f4862424b6e2990ae99473ed85aeb47fa13e5804af80e35380fd898d8d8944"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter4-attacks-sequences.json.gz",
+      "sha256": "db68b332039c7b157da1ad31f76f86125e99260dbffaf7d8d5f094af44d1e4ae"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter4-attacks-sequences-manifest.json",
+      "sha256": "934b619226c7200800ce1123490037aefc0fe0f0d0cc0aba5bff5af3657b3ab6"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "scope": "Initial E2E exposed missing typed-history verification adapter; gameplay and frozen assertions unchanged",
+  "files": {
+    "fighter4_special_world_test.go": "60fb307ff08471d0474016f22b91ee40cb4ed4cba2e23951954a82b7f56c8877",
+    "testdata/fighter4-special-world-initial.jsonl": "5e99e95a36c2f2c6a5e8d565d4a147fde8d25a152b774220fbec2a1551cd9ed6"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "recorded_at_utc": "2026-11-05T02:31:56.755032+00:00",
+  "scope": "Duo original5502/channel1/9000 complete-API natural evidence; separate from frozen six and old12",
+  "test_top_levels": 3,
+  "frozen_test_path": "games/yuyuhakusho/engine/fighter4_duo_composition_test.go",
+  "frozen_test_sha256": "cf4990b5493177c9b5c936a85fb61377baf252672c0dc4d870676b44b7c2b4b4",
+  "actual_missing_fixtures_red": true,
+  "red_path": "games/yuyuhakusho/engine/testdata/fighter4-duo-composition-red.jsonl",
+  "red_sha256": "f6e779bcba3f2504a9e7ac42efd891c7545619c0571cba7efd709a77f620220f",
+  "failed_tests": [
+    "TestFighter4DuoCompositionOriginalActions",
+    "TestFighter4DuoCompositionOriginalInputs",
+    "TestFighter4DuoCompositionOriginalActors"
+  ],
+  "producer_absent_at_red": "scripts/yuyuhakusho/capture_fighter4_duo_composition.py",
+  "CPU_fixtures_absent_at_red": true,
+  "original_six_sha256": "a29fcbeaa0fa2049d32bec75ba875c155c78b1675cd0c57b9114d8b6cb68f2a3",
+  "old12_validation_path": "games/yuyuhakusho/engine/testdata/fighter4-composition-validation.json",
+  "old12_validation_sha256": "57df0fc0f94889e8773129110357026de2ffee2bd8554b6690846d4b8fcf2c2f",
+  "files": {
+    "games/yuyuhakusho/engine/fighter4_duo_composition_test.go": "cf4990b5493177c9b5c936a85fb61377baf252672c0dc4d870676b44b7c2b4b4",
+    "games/yuyuhakusho/engine/FIGHTER4_DUO_COMPOSITION_VERIFICATION.md": "d2a2303a656da90c8438a2bcc484b9ba3c6fabc33cb1977524c656a741cd020c",
+    "games/yuyuhakusho/engine/fighter4_composition_test.go": "a29fcbeaa0fa2049d32bec75ba875c155c78b1675cd0c57b9114d8b6cb68f2a3",
+    "scripts/yuyuhakusho/capture_fighter4_composition.py": "28bf51af0722b8abd8ecaa50d8130c43924294fd018e40e4562590ad39dc6b23",
+    "games/yuyuhakusho/engine/chu_action.go": "eea7322db1d75bcdb783130be4bcdf13ece6d742fafcdf951721338fb56f8c02",
+    "games/yuyuhakusho/engine/chu_actor.go": "a83e694c614f149772af5e085ecef80894e5a053c101289f72a5659849cffac2",
+    "games/yuyuhakusho/engine/chu_action_test.go": "ce29ef76b272029224a90418ea6a53726e19e529051b4861987eed97cf915953",
+    "games/yuyuhakusho/engine/chu_actor_test.go": "09cdf2a78e0fe0b532b4555f7116e756db99441bbf518783729ace02f07d8355"
+  },
+  "initial_compile_correction_before_freeze": "Added actual ai_calls field to local actor row wrapper before executable missing-fixture red; original failed compile log preserved."
+}

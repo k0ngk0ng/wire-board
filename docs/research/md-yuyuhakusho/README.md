@@ -203,3 +203,5 @@ PATH="/opt/homebrew/Cellar/openjdk/26.0.1/libexec/openjdk.jdk/Contents/Home/bin:
 藏马现已完成，七角色完整 input／action／actor、原世界、新建对局及呈现验证见[七角色验收](../../../games/yuyuhakusho/verification/kurama-session.json)。两种新子对象使用原有字段的临时窄视图，公共姿态 10／11 新增 8 条 AN，索引图形与波表沿用已验资源。原版首采样帧的 driver-entry 边界已依据未改动 CPU 记录纠正，并以旧 `b5723d24` 实现回放确认回归测试能识别来源 1 未实现。
 
 阵已进一步开放，八角色规则／呈现与三条原世界见[八角色验收](../../../games/yuyuhakusho/verification/jin-session.json)。取得真正电脑阵的 1,110 次原 AI 返回，并独立以 Go 单初态完整重建至练习战清场；原容器 `a01e/32` 的等待体与旧等待体逐 byte 相同，未把原 header 改写为其他模式。人类 DD 请求覆盖关系及未自然成功的 `34` 仍按原版边界声明。
+
+飞影已进一步开放。当前九角色验收见[完整摘要](../../../games/yuyuhakusho/verification/hiei-session.json)：普通对战至清场、九种特殊选择根、双真人吞龙强化三条原版流共 7,834 轮，与独立 Go 逐轮／单初态运行一致。强化耗尽、父体参数恢复及七段独立身体绘制均已验证；schema3 增加九条公共 AN、原 signed-word 曲线和强化参数，schema1/2 仍可读取。默认场地之外的七个场地、仙水和树、平台房间及网络／音频播放仍未完成。

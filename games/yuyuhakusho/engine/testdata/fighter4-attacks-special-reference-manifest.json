@@ -1,0 +1,33 @@
+{
+  "scope": "Shared unobserved original source4 real-menu3602 baseline; entries<=3600+2drain, not Go acceptance",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.4 60bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "input": {
+    "path": "docs/research/md-yuyuhakusho/source4-special-discovery-inputs.json",
+    "sha256": "5ba6b13d2bb0b285c4307981a5e903d75a7936de3d2632a9f1bf449189650424"
+  },
+  "frames": 3602,
+  "entry_frame_limit": 3600,
+  "drain_frames": 2,
+  "output": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter4-attacks-special-reference-frames.json",
+    "sha256": "666c2a9fff6c47b3b0540275beae5a7a1c0f6ada1e1d690d6a67d1596617b22e"
+  },
+  "observer_attached": false,
+  "capture": {
+    "path": "scripts/yuyuhakusho/capture_fighter4_reference.py",
+    "sha256": "1dd2f1015378236e7c3239967b3c6920afba82155004afb4a1c95392e35014d3"
+  },
+  "selection_discovery": {
+    "path": "docs/research/md-yuyuhakusho/source4-next-selection.json",
+    "sha256": "8eee239689cde830a3d8e50bd1e4d3a4403494e10428c2d1be3547e2f392306c"
+  }
+}

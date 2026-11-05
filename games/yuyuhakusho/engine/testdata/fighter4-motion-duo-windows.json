@@ -1,0 +1,78 @@
+{
+  "schema": 1,
+  "scope": "Actual9000 Duo original CPU pre-tail windows,not standalone Go acceptance",
+  "frames": 5502,
+  "entry_frame_limit": 5500,
+  "drain_frames": 2,
+  "windows": [
+    {
+      "action_hex": "2a",
+      "first_frame": 3488,
+      "last_frame": 3589,
+      "calls": 102,
+      "last_action_hex": "2b",
+      "last_pose_hex": "ab",
+      "last_source_hex": "15946"
+    },
+    {
+      "action_hex": "2b",
+      "first_frame": 3590,
+      "last_frame": 3646,
+      "calls": 57,
+      "last_action_hex": "00",
+      "last_pose_hex": "00",
+      "last_source_hex": "15946"
+    }
+  ],
+  "swallow": [
+    {
+      "frame": 3589,
+      "before_source_hex": "12578",
+      "after_source_hex": "15946",
+      "energy_high_after": 223,
+      "source_register": "0xffff9000"
+    }
+  ],
+  "child_creations": [
+    {
+      "frame": 3598,
+      "before_child_behavior_hex": "0",
+      "after_child_behavior_hex": "13fc8"
+    }
+  ],
+  "source_video_runs": [
+    {
+      "first_frame": 2182,
+      "last_frame": 3588,
+      "source": 75128
+    },
+    {
+      "first_frame": 3589,
+      "last_frame": 4298,
+      "source": 88390
+    },
+    {
+      "first_frame": 4299,
+      "last_frame": 5502,
+      "source": 75128
+    }
+  ],
+  "child13fc8": {
+    "first_frame": 3598,
+    "last_frame": 4299,
+    "calls": 702
+  },
+  "final_original_scene": {
+    "movement_source": 75128,
+    "energy_high": -1,
+    "action": 0,
+    "child_size": 0
+  },
+  "fixture_path": "games/yuyuhakusho/engine/testdata/fighter4-motion-duo-natural.json.gz",
+  "fixture_sha256": "31c79055a360d03608602c4cc8517f683aea9124b301b08025c11909c1db00f9",
+  "gzip_sha256": "1c9f053258fb6879c0a158c6c24c7a3b0cfa3e07a143fb9bb22d899862632b05",
+  "manifest_path": "games/yuyuhakusho/engine/testdata/fighter4-motion-duo-natural-manifest.json",
+  "manifest_sha256": "8df2cbe50648d885cbf4584f3289e951cf554fa947461a2baaceac03d9098271",
+  "old_four_tests_consume_new_data": false,
+  "first_original_idle_default_negative_energy_child_empty_frame": 4379
+}

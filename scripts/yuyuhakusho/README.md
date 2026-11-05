@@ -144,3 +144,15 @@ go test -count=1 -json -exec "$(go env GOROOT)/lib/wasm/go_js_wasm_exec" \
 角色／背景验证分别运行 `go test -race -count=1 ./games/yuyuhakusho/cmd/verify-character-assets` 和 `go test -race -count=1 ./games/yuyuhakusho/cmd/verify-arena-assets`，Wasm 采用前述执行器。已验证的客户端索引资产仍是本地研究／接入材料，本阶段不上传 OSS、不发布应用，也不把它们嵌入服务器。
 
 整体结果与来源绑定见 [world-foundations.json](../../games/yuyuhakusho/verification/world-foundations.json)。仍未完成世界循环、完整独立对局和平台 E2E；这些门槛保留在进度记录中。
+
+飞影／九角色检查点的完整规则与呈现矩阵：
+
+```sh
+sh scripts/yuyuhakusho/verify_hiei_sessions.sh both
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/yuyuhakusho/check_hiei_player.py
+python3 scripts/yuyuhakusho/audit_fighter4_dragon_assets.py --out games/yuyuhakusho/verification/fighter4-dragon-assets.json
+```
+
+矩阵为 21 组规则配置和 12 组完整呈现；旧角色回归使用 `verify_hiei_legacy.py native` 和 `verify_hiei_legacy.py wasm`，共 192 份结果。全量规则／目录检查集合、四个原生分片和来源 SHA 在 `verification/hiei-native-shards.json`；版本元数据兼容复跑及全部原始日志由 [hiei-session.json](../../games/yuyuhakusho/verification/hiei-session.json)绑定。使用相同规则包，原生和 Wasm 的完整状态、事件和像素轨迹一致。
+
+飞影特殊原世界使用 `capture_fighter4_world.py`，双真人练习就绪世界使用 `capture_fighter4_duo_world.py`。两者必须通过 `--reference`、`--reference-manifest` 复用已冻结原 core 控制组，不重新产生第二份控制组；还需显式传入 `--inputs`、`--out`、`--start`、`--end`、`--allow-open-end` 和 `--name`。九根场景是 `1800..3600`、3602 控制步，Duo 是实际 `a01e/stage32` 的 `2500..5500`、5502 控制步。各自 manifest 保存唯一输入／控制组路径和 SHA；原版菜单早期状态不属于已验证 Go 等待阶段。

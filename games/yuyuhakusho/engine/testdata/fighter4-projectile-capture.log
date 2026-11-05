@@ -1,0 +1,3 @@
+{"name": "fighter4-projectile-oracle", "records": 0, "calls": 0, "kinds": {}, "pass": true}
+{"name": "fighter4-projectile-boundaries", "records": 2607, "calls": 2607, "kinds": {"head": 923, "trail": 1098, "boost": 586}, "pass": true}
+{"name": "fighter4-projectile-sequences", "records": 16, "calls": 8596, "kinds": {"clock": 16, "creator_head": 8, "head": 648, "trail": 2276, "creator_boost": 8, "boost": 5640}, "pass": true}

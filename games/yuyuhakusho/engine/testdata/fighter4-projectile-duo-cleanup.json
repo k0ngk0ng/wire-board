@@ -1,0 +1,8 @@
+{
+  "scope": "Only private duo natural capture duplicate outputs and first non-race intermediate log",
+  "removed_directory": ".local/md-yuyuhakusho/fighter4-dragon-duo",
+  "files": 5,
+  "bytes": 4625118,
+  "retained": "Oracle and manifest, recursive prior-version ledger snapshots, duo capture log, final native/Wasm logs and validation in engine/testdata",
+  "shared_caches_removed": false
+}

@@ -1,0 +1,12 @@
+{
+  "scope": "Legacy source0 version metadata guard accepts schema2/3; all malformed-sequence and schema1 checks remain byte-for-byte unchanged",
+  "test": "TestFighter0RuleVersionAndInvalidSequences",
+  "source_path": "games/yuyuhakusho/engine/fighter0_rules_test.go",
+  "source_before_sha256": "d4248a24c50373d1016d73126fec2d04789831653e75eed5335fd99213d6202d",
+  "source_after_sha256": "0c2d027dbc04633560524c3f528333ca6b08290173ce1b0514517cd7ab08d441",
+  "exact_replacement": {
+    "before": "if data[\"schema\"] != float64(2) {",
+    "after": "if data[\"schema\"] != float64(2) && data[\"schema\"] != float64(3) {"
+  },
+  "production_changed": false
+}

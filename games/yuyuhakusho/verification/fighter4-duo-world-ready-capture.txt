@@ -1,0 +1,51 @@
+{
+  "scope": "Actual whole3592 ready-match passes; no Go execution or world completion claim",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "0af40ab5103f66d411d072830e8060feb840ae150607336548782c2d298861b8",
+  "inputs_sha256": "b303ca8622f90747052902f81b2b7f2bdde39f59e47feb6f36a6bf8287a6ac34",
+  "inputs_path": "docs/research/md-yuyuhakusho/source4-special-discovery-duo-inputs.json",
+  "baseline_sha256": "9f282f53a016d184d45052b30eaf8c482d4b568132f7979f7eebff4a7faa5917",
+  "baseline_path": "games/yuyuhakusho/engine/testdata/fighter4-attacks-duo-reference-frames.json",
+  "frames_checked": 5502,
+  "entry_end": 5500,
+  "drain_frames": 2,
+  "records": 3001,
+  "first_frame": 2500,
+  "last_frame": 5500,
+  "draws": 18901,
+  "typed_history": true,
+  "object_calls": 34236,
+  "queue_interleaved_passes": 47,
+  "closed_after_clear": false,
+  "fixture_sha256": "d8182ea412590b763426a1a9558ae84d1e76c44f86c44b19d8884abbbab21737",
+  "gzip_sha256": "9e26784dee794dd87a575f23295af42ce6b977c58d61b103ff6488dc78c06312",
+  "frames_match_original_core": true,
+  "incomplete_calls": 0,
+  "errors": [],
+  "allow_open_end": true,
+  "pass": true
+}
+0xa01e 3001 ['0x8000'] [32]
+0xf2a4 3001 ['0x8040'] [14]
+0xfe78 3001 ['0x8200'] [2]
+0x12668 6002 ['0x8400', '0x9000'] [2]
+0x13bb6 111 ['0x9100'] [0, 2]
+0x13e9a 777 ['0x9700', '0x9780', '0x9800', '0x9880', '0x9900', '0x9980', '0x9a00'] [0, 2]
+0x13fc8 702 ['0x9100'] [0, 2]
+0x14882 3001 ['0x9c00'] [2]
+0x14930 160 ['0x9400', '0x9500', '0x9700', '0x9780', '0x9b00'] [0, 2]
+0x149ac 883 ['0x9400', '0x9480', '0x9500', '0x9580', '0x9600', '0x9680', '0x9700', '0x9780', '0x9800', '0x9880', '0x9900', '0x9980', '0x9a00', '0x9a80', '0x9b00', '0x9b80'] [0, 2]
+0x14ec6 1593 ['0x9400', '0x9480', '0x9580', '0x9600', '0x9680', '0x9800', '0x9880', '0x9900', '0x9b80'] [0, 2]
+0x150ca 3001 ['0x9c80'] [2]
+0x1525e 3001 ['0x9d00'] [2]
+0x1edac 3001 ['0x8100'] [0]
+0x20918 3001 ['0x8180'] [2]
