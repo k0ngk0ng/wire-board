@@ -1,0 +1,2 @@
+{"scenario": "baseline", "frame": 1000, "retained_events": 80132, "bus_transactions": 67752}
+{"pass": true, "scenario": "baseline", "frames": 1600, "bus_transactions": 141881}

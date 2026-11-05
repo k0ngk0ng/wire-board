@@ -1,0 +1,17 @@
+{"Time":"2026-11-06T00:53:50.686285+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/phaseclock"}
+{"Time":"2026-11-06T00:53:50.803969+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/phaseclock","Test":"TestOriginalBankTransactions"}
+{"Time":"2026-11-06T00:53:50.804032+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/phaseclock","Test":"TestOriginalBankTransactions","Output":"=== RUN   TestOriginalBankTransactions\n"}
+{"Time":"2026-11-06T00:53:51.033504+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/phaseclock","Test":"TestOriginalBankTransactions","Output":"    bus_test.go:68: 851037 observed transactions; 357 DMA stalls; 486206 absolute-phase counterexamples\n"}
+{"Time":"2026-11-06T00:53:51.034368+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/phaseclock","Test":"TestOriginalBankTransactions","Output":"--- PASS: TestOriginalBankTransactions (0.23s)\n"}
+{"Time":"2026-11-06T00:53:51.034652+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/phaseclock","Test":"TestOriginalBankTransactions","Elapsed":0.23}
+{"Time":"2026-11-06T00:53:51.034778+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/phaseclock","Test":"TestReferenceBankBoundaries"}
+{"Time":"2026-11-06T00:53:51.034786+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/phaseclock","Test":"TestReferenceBankBoundaries","Output":"=== RUN   TestReferenceBankBoundaries\n"}
+{"Time":"2026-11-06T00:53:51.034945+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/phaseclock","Test":"TestReferenceBankBoundaries","Output":"--- PASS: TestReferenceBankBoundaries (0.00s)\n"}
+{"Time":"2026-11-06T00:53:51.035031+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/phaseclock","Test":"TestReferenceBankBoundaries","Elapsed":0}
+{"Time":"2026-11-06T00:53:51.035098+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/phaseclock","Test":"TestReferenceBankRejectsInvalidWithoutEffect"}
+{"Time":"2026-11-06T00:53:51.035103+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/phaseclock","Test":"TestReferenceBankRejectsInvalidWithoutEffect","Output":"=== RUN   TestReferenceBankRejectsInvalidWithoutEffect\n"}
+{"Time":"2026-11-06T00:53:51.035237+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/phaseclock","Test":"TestReferenceBankRejectsInvalidWithoutEffect","Output":"--- PASS: TestReferenceBankRejectsInvalidWithoutEffect (0.00s)\n"}
+{"Time":"2026-11-06T00:53:51.035289+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/phaseclock","Test":"TestReferenceBankRejectsInvalidWithoutEffect","Elapsed":0}
+{"Time":"2026-11-06T00:53:51.035722+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/phaseclock","Output":"PASS\n"}
+{"Time":"2026-11-06T00:53:51.039237+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/phaseclock","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/phaseclock\t0.353s\n"}
+{"Time":"2026-11-06T00:53:51.039247+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/phaseclock","Elapsed":0.353}

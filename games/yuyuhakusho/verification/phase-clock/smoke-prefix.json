@@ -1,0 +1,7 @@
+{
+  "pass": true,
+  "frames": 1600,
+  "smoke_source_sha256": "701635392725c21470ad5edb1cee23e1b1bc50188a73a2b8bb7ad852bf6ff128",
+  "canonical_source_sha256": "25e1d06e9802528319224c7ba1b516f6c28a121c63bd5499f9db836338ffbb94",
+  "all_event_and_bus_rows_equal": true
+}

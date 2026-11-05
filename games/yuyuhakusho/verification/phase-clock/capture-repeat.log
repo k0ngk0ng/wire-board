@@ -1,0 +1,10 @@
+{"scenario": "baseline", "frame": 1000, "retained_events": 80132, "bus_transactions": 67752}
+{"scenario": "baseline", "frame": 2000, "retained_events": 250865, "bus_transactions": 181526}
+{"scenario": "baseline", "frame": 3000, "retained_events": 403493, "bus_transactions": 269652}
+{"scenario": "baseline", "frame": 4000, "retained_events": 581033, "bus_transactions": 383551}
+{"scenario": "baseline", "frame": 5000, "retained_events": 707404, "bus_transactions": 456297}
+{"pass": true, "scenario": "baseline", "frames": 5500, "bus_transactions": 512657}
+{"scenario": "pause", "frame": 1000, "retained_events": 80132, "bus_transactions": 67752}
+{"scenario": "pause", "frame": 2000, "retained_events": 250865, "bus_transactions": 181526}
+{"scenario": "pause", "frame": 3000, "retained_events": 403493, "bus_transactions": 269652}
+{"pass": true, "scenario": "pause", "frames": 3602, "bus_transactions": 338380}
