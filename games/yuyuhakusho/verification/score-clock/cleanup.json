@@ -1,0 +1,57 @@
+{
+  "scope": "Only own generated observers/caches/reference output directories, exact full repeated capture and verified smoke prefix; canonical native service and natural-window data remain",
+  "paths": [
+    {
+      "path": ".local/md-yuyuhakusho/score-clock-smoke",
+      "files": 1,
+      "bytes": 18000
+    },
+    {
+      "path": ".local/md-yuyuhakusho/score-clock-smoke-rebuilt",
+      "files": 3,
+      "bytes": 21139
+    },
+    {
+      "path": ".local/md-yuyuhakusho/score-clock-native-repeat",
+      "files": 3,
+      "bytes": 30620
+    },
+    {
+      "path": ".local/md-yuyuhakusho/score-clock-native/score-clock.dylib",
+      "files": 1,
+      "bytes": 18000
+    },
+    {
+      "path": ".local/md-yuyuhakusho/score-clock-native/tmp",
+      "files": 0,
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/score-clock-native/core-original",
+      "files": 0,
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/score-clock-native/core-hook",
+      "files": 0,
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/score-clock-natural/natural.dylib",
+      "files": 1,
+      "bytes": 18160
+    },
+    {
+      "path": ".local/md-yuyuhakusho/score-clock-natural/tmp",
+      "files": 0,
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/score-clock-natural/native-core",
+      "files": 0,
+      "bytes": 0
+    }
+  ],
+  "bytes_removed": 105919,
+  "native_restore_failure_and_old_source_retained": true
+}

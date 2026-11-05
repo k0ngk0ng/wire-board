@@ -1,0 +1,7 @@
+{
+  "pass": true,
+  "native_service_recapture_byte_identical": true,
+  "source_sha256": "c8bf595aad4bbe770974ef249b10e1b368ea46b07c5aaa31bd0266fc51e29bda",
+  "bytes": 11206,
+  "case_count": 48
+}

@@ -1,0 +1,234 @@
+{
+  "pass": true,
+  "scope": "Static architectural costs for fixed named semantic service operations, not an executable opcode/timing table",
+  "operations": [
+    {
+      "semantic_operation": "range-high",
+      "source_pc": 232238,
+      "source_opcode": 3072,
+      "native_handler": "m68k_op_cmpi_8_d",
+      "cpu_cycles": 8
+    },
+    {
+      "semantic_operation": "range-high-branch",
+      "source_pc": 232242,
+      "source_opcode": 25600,
+      "native_handler": "m68k_op_bcc_16",
+      "cpu_cycles": 10
+    },
+    {
+      "semantic_operation": "range-low",
+      "source_pc": 232246,
+      "source_opcode": 3072,
+      "native_handler": "m68k_op_cmpi_8_d",
+      "cpu_cycles": 8
+    },
+    {
+      "semantic_operation": "range-low-branch",
+      "source_pc": 232250,
+      "source_opcode": 25856,
+      "native_handler": "m68k_op_bcs_16",
+      "cpu_cycles": 10
+    },
+    {
+      "semantic_operation": "normalize-level-register",
+      "source_pc": 232254,
+      "source_opcode": 576,
+      "native_handler": "m68k_op_andi_16_d",
+      "cpu_cycles": 8
+    },
+    {
+      "semantic_operation": "select-level-cache",
+      "source_pc": 232258,
+      "source_opcode": 16888,
+      "native_handler": "m68k_op_lea_32_aw",
+      "cpu_cycles": 8
+    },
+    {
+      "semantic_operation": "write-level-cache",
+      "source_pc": 232262,
+      "source_opcode": 4481,
+      "native_handler": "m68k_op_move_8_ix_d",
+      "cpu_cycles": 14
+    },
+    {
+      "semantic_operation": "select-ports",
+      "source_pc": 232266,
+      "source_opcode": 16889,
+      "native_handler": "m68k_op_lea_32_al",
+      "cpu_cycles": 12
+    },
+    {
+      "semantic_operation": "save-mask",
+      "source_pc": 232272,
+      "source_opcode": 16615,
+      "native_handler": "m68k_op_move_16_frs_pd",
+      "cpu_cycles": 14
+    },
+    {
+      "semantic_operation": "mask-interrupts",
+      "source_pc": 232274,
+      "source_opcode": 124,
+      "native_handler": "m68k_op_ori_16_tos",
+      "cpu_cycles": 20
+    },
+    {
+      "semantic_operation": "request-bus",
+      "source_pc": 232278,
+      "source_opcode": 13308,
+      "native_handler": "m68k_op_move_16_al_i",
+      "cpu_cycles": 20
+    },
+    {
+      "semantic_operation": "confirm-bus",
+      "source_pc": 232286,
+      "source_opcode": 2297,
+      "native_handler": "m68k_op_bset_8_s_al",
+      "cpu_cycles": 24
+    },
+    {
+      "semantic_operation": "confirm-bus-branch",
+      "source_pc": 232294,
+      "source_opcode": 26358,
+      "native_handler": "m68k_op_bne_8",
+      "cpu_cycles": 10
+    },
+    {
+      "semantic_operation": "read-mailbox",
+      "source_pc": 232296,
+      "source_opcode": 19001,
+      "native_handler": "m68k_op_tst_8_al",
+      "cpu_cycles": 16
+    },
+    {
+      "semantic_operation": "mailbox-branch",
+      "source_pc": 232302,
+      "source_opcode": 26382,
+      "native_handler": "m68k_op_beq_8",
+      "cpu_cycles": 10
+    },
+    {
+      "semantic_operation": "release-for-retry",
+      "source_pc": 232304,
+      "source_opcode": 13308,
+      "native_handler": "m68k_op_move_16_al_i",
+      "cpu_cycles": 20
+    },
+    {
+      "semantic_operation": "invoke-retry-delay",
+      "source_pc": 232312,
+      "source_opcode": 24832,
+      "native_handler": "m68k_op_bsr_16",
+      "cpu_cycles": 18
+    },
+    {
+      "semantic_operation": "repeat-acquire",
+      "source_pc": 232316,
+      "source_opcode": 24792,
+      "native_handler": "m68k_op_bra_8",
+      "cpu_cycles": 10
+    },
+    {
+      "semantic_operation": "status-before-address",
+      "source_pc": 232318,
+      "source_opcode": 18960,
+      "native_handler": "m68k_op_tst_8_ai",
+      "cpu_cycles": 8
+    },
+    {
+      "semantic_operation": "status-branch",
+      "source_pc": 232320,
+      "source_opcode": 27644,
+      "native_handler": "m68k_op_bmi_8",
+      "cpu_cycles": 10
+    },
+    {
+      "semantic_operation": "write-address",
+      "source_pc": 232322,
+      "source_opcode": 4416,
+      "native_handler": "m68k_op_move_8_di_d",
+      "cpu_cycles": 12
+    },
+    {
+      "semantic_operation": "address-data-separator",
+      "source_pc": 232326,
+      "source_opcode": 20081,
+      "native_handler": "m68k_op_nop",
+      "cpu_cycles": 4
+    },
+    {
+      "semantic_operation": "status-before-data",
+      "source_pc": 232328,
+      "source_opcode": 18960,
+      "native_handler": "m68k_op_tst_8_ai",
+      "cpu_cycles": 8
+    },
+    {
+      "semantic_operation": "status-branch",
+      "source_pc": 232330,
+      "source_opcode": 27644,
+      "native_handler": "m68k_op_bmi_8",
+      "cpu_cycles": 10
+    },
+    {
+      "semantic_operation": "write-data",
+      "source_pc": 232332,
+      "source_opcode": 4417,
+      "native_handler": "m68k_op_move_8_di_d",
+      "cpu_cycles": 12
+    },
+    {
+      "semantic_operation": "release-bus",
+      "source_pc": 232336,
+      "source_opcode": 13308,
+      "native_handler": "m68k_op_move_16_al_i",
+      "cpu_cycles": 20
+    },
+    {
+      "semantic_operation": "restore-mask",
+      "source_pc": 232344,
+      "source_opcode": 18143,
+      "native_handler": "m68k_op_move_16_tos_pi",
+      "cpu_cycles": 16
+    },
+    {
+      "semantic_operation": "return-service",
+      "source_pc": 232346,
+      "source_opcode": 20085,
+      "native_handler": "m68k_op_rts_32",
+      "cpu_cycles": 16
+    },
+    {
+      "semantic_operation": "retry-delay-quantum",
+      "source_pc": 232460,
+      "source_opcode": 20081,
+      "native_handler": "m68k_op_nop",
+      "cpu_cycles": 4
+    },
+    {
+      "semantic_operation": "return-retry-delay",
+      "source_pc": 232492,
+      "source_opcode": 20085,
+      "native_handler": "m68k_op_rts_32",
+      "cpu_cycles": 16
+    }
+  ],
+  "short_branch_not_taken_cpu_cycles": 8,
+  "long_branch_not_taken_cpu_cycles": 12,
+  "retry_delay_quanta": 16,
+  "refresh_master": {
+    "deadline_after_current_boundary": 896,
+    "delay": 14
+  },
+  "Z80_memory_access_extra_master": 7,
+  "source_sha256": {
+    ".local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/core/m68k/m68kops.h": "d3ff2631658e589813d2915ba3dc03b9fd2097761f6eb221fc6264a4b8d1d6f0",
+    ".local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/core/m68k/m68kcpu.h": "6f2fc0979153d994b4ba539aa51bc0da4b8ff089e174d4cc07aee1f537643827",
+    ".local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/core/m68k/m68kcpu.c": "8c09b9d86e8c77366eff430f62c3b5742adce1ccdee849c246e24dcba74fcf15",
+    ".local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/core/mem68k.c": "5a16c625ea77934fee90cf5d5eaa72cf92fc478811e20cb0af3138b247e9f022",
+    ".local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/core/genesis.c": "280fc4da41dbb0800c7e579a765e8013eb5af1f6f5059709fbb66d3a9a8a61a6",
+    ".local/md-yuyuhakusho/downloads/yuyuhakusho-jp.bin": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06"
+  },
+  "producer_sha256": "7ca0ee6f3c83780e7d014a6221b048401867296307c8ccf9d6c1e07acb93e0aa",
+  "production_uses_source_addresses_or_opcodes": false
+}

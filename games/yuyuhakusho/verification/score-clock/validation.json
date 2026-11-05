@@ -1,0 +1,89 @@
+{
+  "schema": 1,
+  "pass": true,
+  "at_utc": "2026-11-05T18:28:30.123528+00:00",
+  "scope": "Given canonical YM request origin, refresh phase and detached external owners: fixed semantic service costs and actual busy/port ordering; plus bounded original pause/priority IO windows",
+  "whole_goal_complete": false,
+  "complete_driver_tick_cycle_assignment_verified": false,
+  "global_independent_world_IRQ_schedule_solved": false,
+  "runtime_integrated": false,
+  "canonical_YM_service_verified": true,
+  "canonical_private_cases": 48,
+  "native_builds": 2,
+  "recorder_on_off_native_service_invocations": 192,
+  "actual_Interactive_chip_owner_used": true,
+  "ordered_IO_accesses": 472,
+  "actual_busy_polls": 40,
+  "level_cache_effects": 16,
+  "go_validation": {
+    "native-race-first.jsonl": {
+      "top_level_tests": [
+        "TestNativeCanonicalYMServiceWithInteractiveChips",
+        "TestServiceRejectsInvalidBeforeExternalIO",
+        "TestUnreadyBusAndMailboxHaveFiniteBudget",
+        "TestExternalBusFailurePropagates"
+      ],
+      "native_subscenarios": 48,
+      "log_sha256": "16db51f152434b63b0a6ea1d6f367698a892a27c778b0e67a10e2787a8e0bbda"
+    },
+    "wasm.jsonl": {
+      "top_level_tests": [
+        "TestNativeCanonicalYMServiceWithInteractiveChips",
+        "TestServiceRejectsInvalidBeforeExternalIO",
+        "TestUnreadyBusAndMailboxHaveFiniteBudget",
+        "TestExternalBusFailurePropagates"
+      ],
+      "native_subscenarios": 48,
+      "log_sha256": "e66aaca72ad125d263833a7736b94ee5369525a5d7fb9ce89a92e1ad4941a908"
+    }
+  },
+  "vet_pass": true,
+  "original_natural_steps_equal": 3602,
+  "natural_window_frames": 54,
+  "natural_IO_state_events": 9688,
+  "paused_FF_main_YM_silent_ticks": 39,
+  "source_sha256": {
+    "games/yuyuhakusho/audio/scoreclock/API.md": "636b0588a50a5ffc7300d31bf6d4580197a8d2da11f6b698b8fb417a7057079b",
+    "games/yuyuhakusho/audio/scoreclock/service.go": "3ba87dba2a672c351c2e5c41065b6a42236656f58e7e7bd37b99af6849911aee",
+    "games/yuyuhakusho/audio/scoreclock/service_test.go": "15a831c2ee1314a9d02f93c05d4910f775fb8743ef08b489b9e408e5d44e9589",
+    "games/yuyuhakusho/audio/scoreclock/testdata/native-manifest.json": "6f651fa3178149ed3b6f912635f2eeeb770379f1ee6aea64ab700af363250c97",
+    "games/yuyuhakusho/audio/scoreclock/testdata/native-services.json.gz": "3d01fa573adc582e0da407fb908287532eaa10a1b63d9f1becdc5fa638c5acd2",
+    "docs/research/md-yuyuhakusho/SCORE_CLOCK.md": "f86b89313d40a73897d595d8a9a22eb1af8a2ae8274487a8f314e04eb0b27ff1",
+    "docs/research/md-yuyuhakusho/SCORE_CLOCK_FAILURES.md": "4d7215dfa742d23598f61aff3cd5ab8d36b81bd34d64849c4eaca5b7b7a63ea1",
+    "scripts/yuyuhakusho/score-clock-analyze-windows.py": "3d1f675003b4dbb358b9bba5dd2ef6a1592709660569e2a4d87d202a59df01b0",
+    "scripts/yuyuhakusho/score-clock-bridge.c": "d00bda0e284c030affc1ce2224a61058351a2990799ea9c5964eed58dabb0c91",
+    "scripts/yuyuhakusho/score-clock-capture.py": "184e6656e97442ef4e24f7613f1c98661550530ba9bbe890ea3822d2e20c37e6",
+    "scripts/yuyuhakusho/score-clock-check-intents.py": "36b50225b8c1e1f1bb151699d174a1743c685d9c5ea50f899d89ee86e2f72156",
+    "scripts/yuyuhakusho/score-clock-cost-source.py": "7ca0ee6f3c83780e7d014a6221b048401867296307c8ccf9d6c1e07acb93e0aa",
+    "scripts/yuyuhakusho/score-clock-export.py": "6dc5ee8049553bfea75e7ef88686a8b33b20746e134ffbcc43bef9d7ce6302e9",
+    "scripts/yuyuhakusho/score-clock-natural-bridge.c": "6c091f1bf8771cc75dfd7adf15ffaeca74c1d631ae9d280f140c5e995f4ffb73",
+    "scripts/yuyuhakusho/score-clock-natural.py": "369fe90742756701fde073b72252b167fd2607a2de222c698e6d82b45dc194be"
+  },
+  "dependency_sha256": {
+    "scripts/yuyuhakusho/reference.py": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "scripts/yuyuhakusho/extract_audio_assets.py": "e8a59cb97a15b02d930b2335175eca9fb17600a778ce93d779449cdac3775f56",
+    "scripts/yuyuhakusho/research_audio_loops.py": "854c259284e11c59a21be9560f0beca26f15ffebe132d18d64dce6fbed5e22f4",
+    "scripts/yuyuhakusho/inspect_dac_dsp_state.py": "008576cb72b0ef5feab4e566dda23e9d2841a6340a66c93a4ba04de07284d82f",
+    "games/yuyuhakusho/audio/chips/interactive.go": "44b2f607d2bf405b5e693c1cf9000f0a3d07571c4f67bf51c929914e4dade824",
+    "games/yuyuhakusho/audio/chips/stream.go": "91d0be1cc1412a1416dfebf5bf8cf78a2901ae08f782de6c456b7a3f836ad3e0",
+    "games/yuyuhakusho/audio/chips/ym.go": "c2a893762a202145ef03a97cfd08762119378604d9aef3f69a48487020b17b62",
+    "games/yuyuhakusho/audio/chips/ym_tables.go": "d9a1b020866cdf687790b3013a3bca72ecead5fcceadb1654acda4d78438344a"
+  },
+  "native_recapture_byte_identical": true,
+  "cleanup": {
+    "path": "games/yuyuhakusho/verification/score-clock/cleanup.json",
+    "sha256": "bfebbcf2f8d2bd7d71c03f8c67e25ac211a83b149c3c8909839a24d7b9c1b70d",
+    "bytes_removed": 105919
+  },
+  "limits": [
+    "Private native service profile begins with bus held, mailbox clear and no IRQ inserted after mask restore; successful mailbox-retry and external PCM steal profiles remain unverified",
+    "Budget and external-error paths are tested, but callers must discard detached owners after any partial external IO error",
+    "No PSG store cost, full parser flow/tempo/voice/claim/restore cost, or pause transaction is yet implemented",
+    "The current score catalog eliminated finite loop/call/return paths; before/after state and flat intents cannot recover their costs",
+    "ClearPrimaryPriority requires a future ordered semantic store marker rather than one tick summary timestamp",
+    "PCM feedback read stages must query the independent PCM owner at their actual semantic times",
+    "Native raw source PCs/opcodes are research provenance only; the Go service contains no ROM, CPU VM, arbitrary instructions or RAM/register mirror",
+    "No PCM/speaker equivalence or actual platform sound playback is claimed by this scope"
+  ],
+  "no_commits_uploads_or_deployment": true
+}

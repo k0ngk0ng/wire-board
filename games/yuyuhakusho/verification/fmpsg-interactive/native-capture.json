@@ -1,0 +1,15 @@
+{
+  "scope": "Private cold original chip resets, immediate native port/status feedback and non-mutating in-flight FIR projection; no CPU or real driver phase-cost claim",
+  "cases": 5,
+  "events": 1109,
+  "frames": 13,
+  "stereo_frames": 9563,
+  "original_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+  "observed_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+  "projection_nochange_checks_per_core": 1127,
+  "producer_sha256": "46feba71e21f05e910951d118868f52e4092d2d3c2241708e7f83aa4c33c81bc",
+  "json_sha256": "56ef95a93dd323ed437b175edefeb0ffbaa5b2882468ba0fbaeee23b7a1d3ca8",
+  "gzip_sha256": "52e11e14baf8db047142dc5e7a2a9cee89265508c2540c1fbdc7a0c594f7df4b",
+  "gzip_bytes": 206837,
+  "pass": true
+}

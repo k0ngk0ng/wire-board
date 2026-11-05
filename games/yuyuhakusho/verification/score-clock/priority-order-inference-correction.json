@@ -1,0 +1,15 @@
+{
+  "previous_inference": "Music initialization clears priority before the first YM write",
+  "status": "withdrawn",
+  "reason": "Different cleanup paths store priority at different semantic positions; the raw 38a2c path first writes YM27 then clears the driver area",
+  "source": "games/yuyuhakusho/verification/score-clock/natural-boundaries.json",
+  "source_sha256": "b62ed273bd18a6edb1e4a596818fcaa1dcea66c5a9b50e72a8cc6d84842070e4",
+  "observed_priority_PCs": [
+    231432,
+    231996,
+    232038,
+    232046,
+    233718
+  ],
+  "reliable_conclusion": "ClearPrimaryPriority boolean alone has no unique timestamp; require each ordered semantic store"
+}

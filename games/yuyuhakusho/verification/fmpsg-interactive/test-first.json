@@ -1,0 +1,12 @@
+{
+  "test_before_implementation": true,
+  "new_interactive_production_exists": false,
+  "old_stream_sha256": "cad1f5f08a768403620fb014a37fe770af37233d80f3c2ee4538338159d8fc65",
+  "files": {
+    "docs/research/md-yuyuhakusho/FMPSG_INTERACTIVE_FAILURES.md": "d7c51160d1ad9f378b59fe638ad5a7f480b4399fa205637685b2f919670d4512",
+    "games/yuyuhakusho/audio/chips/interactive_test.go": "c09ea7a4f9010360ad655df42e687b7afae894bdb2fa87dc92a0f8abf7d111f8",
+    "scripts/yuyuhakusho/fmpsg_capture_interactive.py": "46feba71e21f05e910951d118868f52e4092d2d3c2241708e7f83aa4c33c81bc",
+    "games/yuyuhakusho/audio/chips/stream.go": "cad1f5f08a768403620fb014a37fe770af37233d80f3c2ee4538338159d8fc65",
+    "games/yuyuhakusho/verification/fmpsg-interactive/native-interface-red.jsonl": "04f0fad3ad8e9b6c3d2fe41114fb15a569186df141bdf39fc9864a29a2a28f96"
+  }
+}
