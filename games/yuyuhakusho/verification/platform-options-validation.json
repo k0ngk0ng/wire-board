@@ -1,0 +1,57 @@
+{
+  "verified_at_utc": "2026-11-05T14:30:38.294130+00:00",
+  "pass": true,
+  "scope": "Pure platform waiting-room config/preparation and original-slot/controller projection only",
+  "full_platform_module_integrated": false,
+  "registry_modified": false,
+  "goal_complete": false,
+  "test_first": {
+    "frozen_at_utc": "2026-11-05T14:04:40.483933+00:00",
+    "test_first": true,
+    "scope": "Pure waiting-room config/preparation and seat/original-slot projection only; not full platform integration",
+    "files": {
+      "games/yuyuhakusho/server/options_test.go": "8e162d46474f9e9b7de7e93426afd684bc32f65bfedd55eee99b6e6e63b0722d",
+      "games/yuyuhakusho/server/WAITING_OPTIONS_FAILURES.md": "7464ba6326f80cb470f4eed224256330726aa1c1f28f805e16890d17b4f658a7"
+    },
+    "red": "games/yuyuhakusho/verification/platform-options-frozen-symbol-red.jsonl"
+  },
+  "checks": [
+    {
+      "environment": "native",
+      "pass": true,
+      "tests": [
+        "TestWaitingOptionsCapacityArenaAndCharacters",
+        "TestWaitingOptionsInvalidRequestsAreAtomic",
+        "TestWaitingPreparationSeatOwnershipAndHostRules",
+        "TestWaitingOriginalSlotAndControllerProjection"
+      ],
+      "path": "games/yuyuhakusho/verification/platform-options-native.jsonl",
+      "sha256": "9aff203434f6dbf396c853323defdc2cd394dd168ff90ea3688087394bd0f00e"
+    },
+    {
+      "environment": "wasm",
+      "pass": true,
+      "tests": [
+        "TestWaitingOptionsCapacityArenaAndCharacters",
+        "TestWaitingOptionsInvalidRequestsAreAtomic",
+        "TestWaitingPreparationSeatOwnershipAndHostRules",
+        "TestWaitingOriginalSlotAndControllerProjection"
+      ],
+      "path": "games/yuyuhakusho/verification/platform-options-wasm.jsonl",
+      "sha256": "6a8568d6d9fe29ac98cd92ae82f9eefe330c6887f6319cdc6d366768c215edc8"
+    }
+  ],
+  "coverage": [
+    "All2/3/4 capacity layouts",
+    "All8 arenas and11 source characters",
+    "Team mode only4 players",
+    "Exact platform seat to0/3,0/1/3,0/1/2/3 slots andhuman inputchannels",
+    "Self-role authorization,host occupied-bot role selection,host arena/mode changes",
+    "Reject empty seats,foreign human seat changes,malformed orduplicate/trailingJSON atomically"
+  ],
+  "source_sha256": {
+    "games/yuyuhakusho/server/options.go": "8d12ca90fd64c196feec4d5e4eb01f7f18966733fe2163b966479657fe8cf48d",
+    "games/yuyuhakusho/server/options_test.go": "8e162d46474f9e9b7de7e93426afd684bc32f65bfedd55eee99b6e6e63b0722d",
+    "games/yuyuhakusho/server/WAITING_OPTIONS_FAILURES.md": "7464ba6326f80cb470f4eed224256330726aa1c1f28f805e16890d17b4f658a7"
+  }
+}
