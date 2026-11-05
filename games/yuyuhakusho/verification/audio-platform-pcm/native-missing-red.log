@@ -1,0 +1,9 @@
+
+  .local/audio-platform-pcm/harness.js  45.7kb
+
+⚡ Done in 11ms
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/check_audio_pcm_platform.py", line 44, in <module>
+    (OUT/'observed.json').write_text(json.dumps(r,indent=2)+'\n');assert not r['error'],r['error'];assert not r['forbidden'];assert r['firstPlaying']and r['firstPlaying']['status']['nativePlayedSamples']is None and r['firstPlaying']['status']['nativeDroppedSamples']is None
+                                                                         ^^^^^^^^^^^^^^
+AssertionError: Error: platform openPCMStream method is unavailable

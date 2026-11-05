@@ -1,0 +1,106 @@
+✖ late pre-pause play success cannot pause the same element after resume (2.049709ms)
+✖ cleanup pause exception attempts peers and released remains observable without unhandled (1.861291ms)
+✖ cleanup clear exception attempts peers and released remains observable without unhandled (0.442958ms)
+✖ cleanup remove exception attempts peers and released remains observable without unhandled (0.420042ms)
+✖ cleanup track exception attempts peers and released remains observable without unhandled (0.349958ms)
+✖ failed preparation still attempts remove/track cleanup when its pause throws (0.23875ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 0
+ℹ fail 6
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 90.324917
+
+✖ failing tests:
+
+test at web/tests/platform-audio-pcm-review.test.mjs:14:1
+✖ late pre-pause play success cannot pause the same element after resume (2.049709ms)
+  AssertionError [ERR_ASSERTION]: old successful play paused the current resumed generation
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/tests/platform-audio-pcm-review.test.mjs:14:382)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at web/tests/platform-audio-pcm-review.test.mjs:15:54
+✖ cleanup pause exception attempts peers and released remains observable without unhandled (1.861291ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/tests/platform-audio-pcm-review.test.mjs:15:580)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /injected/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at web/tests/platform-audio-pcm-review.test.mjs:15:54
+✖ cleanup clear exception attempts peers and released remains observable without unhandled (0.442958ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/tests/platform-audio-pcm-review.test.mjs:15:580)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /injected/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at web/tests/platform-audio-pcm-review.test.mjs:15:54
+✖ cleanup remove exception attempts peers and released remains observable without unhandled (0.420042ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/tests/platform-audio-pcm-review.test.mjs:15:580)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /injected/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at web/tests/platform-audio-pcm-review.test.mjs:15:54
+✖ cleanup track exception attempts peers and released remains observable without unhandled (0.349958ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/tests/platform-audio-pcm-review.test.mjs:15:580)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /injected/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at web/tests/platform-audio-pcm-review.test.mjs:16:1
+✖ failed preparation still attempts remove/track cleanup when its pause throws (0.23875ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/tests/platform-audio-pcm-review.test.mjs:16:190)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

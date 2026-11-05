@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/check_audio_pcm_native_probe.py", line 104, in <module>
+    browser('wait','--fn','pcmNativeProbe.complete || !!pcmNativeProbe.error')
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/check_audio_pcm_native_probe.py", line 67, in browser
+    if result.returncode:raise RuntimeError(result.stdout+result.stderr)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: {"success":false,"data":null,"error":"Wait timed out after 25000ms"}
+

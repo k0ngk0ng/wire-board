@@ -1,0 +1,640 @@
+import type {
+  GameAudioPCMStreamConfig,
+  GameAudioPCMStreamHandle,
+  GameAudioPCMStreamPacket,
+  GameAudioPCMStreamStatus,
+} from "./game-api/audio-pcm-stream";
+
+type Bytes = Uint8Array<ArrayBuffer>;
+type Frame = { close(): void };
+type Track = MediaStreamTrack & { writable: WritableStream<Frame> };
+type FrameConstructor = new (input: {
+  format: "s16";
+  sampleRate: number;
+  numberOfFrames: number;
+  numberOfChannels: number;
+  timestamp: number;
+  data: Bytes;
+}) => Frame;
+type TrackConstructor = new (input: { kind: "audio" }) => Track;
+type Config = {
+  playbackID: string;
+  sampleRate: 44100;
+  channels: 2;
+  format: "s16le";
+  maxAheadSamples: number;
+};
+type Packet = GameAudioPCMStreamPacket & { bytes: Bytes };
+type Pending = {
+  packet: Packet;
+  promise: Promise<boolean>;
+  resolve(value: boolean): void;
+};
+const RATE = 44100,
+  MAX_LATE = 4410;
+function timestamp(sample: number) {
+  return (
+    Math.floor(sample / RATE) * 1000000 +
+    Math.floor(((sample % RATE) * 1000000) / RATE)
+  );
+}
+function equal(a: Packet, b: GameAudioPCMStreamPacket) {
+  return (
+    a.sequence === b.sequence &&
+    a.startSample === b.startSample &&
+    a.sampleFrames === b.sampleFrames &&
+    a.bytes.length === b.bytes.length &&
+    a.bytes.every((x, i) => x === b.bytes[i])
+  );
+}
+export function normalizePCMConfig(
+  input: GameAudioPCMStreamConfig,
+): Config | undefined {
+  if (
+    !input ||
+    typeof input.playbackID !== "string" ||
+    !input.playbackID.trim() ||
+    input.playbackID.length > 256 ||
+    input.sampleRate !== RATE ||
+    input.channels !== 2 ||
+    input.format !== "s16le"
+  )
+    return;
+  const maxAheadSamples = input.maxAheadSamples ?? 2048;
+  if (
+    !Number.isSafeInteger(maxAheadSamples) ||
+    maxAheadSamples < 1 ||
+    maxAheadSamples > 2048
+  )
+    return;
+  return {
+    playbackID: input.playbackID,
+    sampleRate: RATE,
+    channels: 2,
+    format: "s16le",
+    maxAheadSamples,
+  };
+}
+
+// Owns one generated native audio epoch. Its performance-based source clock
+// is admission only; no native played/dropped sample counter is available.
+export class NativePCMStream implements GameAudioPCMStreamHandle {
+  readonly ready: Promise<boolean>;
+  readonly released: Promise<void>;
+  private resolveReady!: (value: boolean) => void;
+  private resolveReleased!: () => void;
+  private rejectReleased!: (reason: unknown) => void;
+  private readonly cancelled: Promise<void>;
+  private cancel!: () => void;
+  private initialized = false;
+  private closed = false;
+  private paused = false;
+  private inputEnding = false;
+  private inputEnded = false;
+  private writerClosed = false;
+  private failure?: string;
+  private rejection?: string;
+  private acceptedEndSample = 0;
+  private nextSeq = 1;
+  private pending?: Pending;
+  private last?: Packet;
+  private pump?: Promise<void>;
+  private ending?: Promise<boolean>;
+  private nativePlaying = false;
+  private playGeneration = 0;
+  private sourceOrigin?: number;
+  private pauseAt?: number;
+  private pausedTotal = 0;
+  private clockStoppedAt?: number;
+  private watchdog?: ReturnType<typeof setTimeout>;
+  private readonly waiters = new Set<() => void>();
+  private readonly listeners: (() => void)[] = [];
+  private readonly config: Config;
+  private readonly track: Track;
+  private readonly writer: WritableStreamDefaultWriter<Frame>;
+  private readonly media: HTMLAudioElement;
+  private readonly frame: FrameConstructor;
+  private readonly available: () => boolean;
+  private readonly release: () => void;
+  private constructor(
+    config: Config,
+    track: Track,
+    writer: WritableStreamDefaultWriter<Frame>,
+    media: HTMLAudioElement,
+    frame: FrameConstructor,
+    available: () => boolean,
+    release: () => void,
+  ) {
+    this.config = config;
+    this.track = track;
+    this.writer = writer;
+    this.media = media;
+    this.frame = frame;
+    this.available = available;
+    this.release = release;
+    this.ready = new Promise((resolve) => {
+      this.resolveReady = resolve;
+    });
+    this.released = new Promise((resolve, reject) => {
+      this.resolveReleased = resolve;
+      this.rejectReleased = reject;
+    });
+    void this.released.catch(() => {});
+    this.cancelled = new Promise((resolve) => {
+      this.cancel = resolve;
+    });
+  }
+  static prepare(
+    config: Config,
+    factory: () => HTMLAudioElement,
+    available: () => boolean,
+    release: () => void,
+  ): NativePCMStream | undefined {
+    const globals = globalThis as unknown as {
+      AudioData?: FrameConstructor;
+      MediaStreamTrackGenerator?: TrackConstructor;
+    };
+    if (
+      typeof globals.AudioData !== "function" ||
+      typeof globals.MediaStreamTrackGenerator !== "function" ||
+      typeof MediaStream !== "function"
+    )
+      return;
+    let track: Track | undefined,
+      writer: WritableStreamDefaultWriter<Frame> | undefined,
+      media: HTMLAudioElement | undefined;
+    try {
+      track = new globals.MediaStreamTrackGenerator({ kind: "audio" });
+      writer = track.writable.getWriter();
+      void writer.closed.catch(() => {});
+      void writer.ready.catch(() => {});
+      const stream = new MediaStream([track]);
+      media = factory();
+      media.dataset.platformPCMStream = "";
+      media.loop = false;
+      media.srcObject = stream;
+      return new NativePCMStream(
+        config,
+        track,
+        writer,
+        media,
+        globals.AudioData,
+        available,
+        release,
+      );
+    } catch {
+      try {
+        media?.pause();
+        if (media) media.srcObject = null;
+        media?.remove();
+        track?.stop();
+      } catch {
+        /* Release everything that was established. */
+      }
+      if (writer) {
+        const own = writer;
+        void own
+          .abort()
+          .catch(() => {})
+          .then(() => {
+            try {
+              own.releaseLock();
+            } catch {
+              /* Failed preparation owns no public handle. */
+            }
+          });
+      }
+      return;
+    }
+  }
+  matches(other: Config) {
+    const own = this.config;
+    return (
+      own.playbackID === other.playbackID &&
+      own.sampleRate === other.sampleRate &&
+      own.channels === other.channels &&
+      own.format === other.format &&
+      own.maxAheadSamples === other.maxAheadSamples
+    );
+  }
+  begin() {
+    const listen = (target: EventTarget, name: string, fn: EventListener) => {
+      target.addEventListener(name, fn);
+      this.listeners.push(() => target.removeEventListener(name, fn));
+    };
+    listen(this.media, "playing", () => {
+      if (this.closed || this.paused || !this.available()) {
+        this.media.pause();
+        return;
+      }
+      this.nativePlaying = true;
+    });
+    listen(this.media, "pause", () => {
+      this.nativePlaying = false;
+    });
+    listen(this.media, "error", () => this.fail("native-media-error"));
+    listen(this.track, "ended", () => {
+      if (!this.closed && !this.inputEnding) this.fail("native-track-ended");
+    });
+    void this.writer.closed.then(
+      () => {
+        if (!this.closed && !this.inputEnding)
+          this.fail("native-writer-closed");
+      },
+      () => {
+        if (!this.closed && !this.inputEnding) this.fail("native-writer-error");
+      },
+    );
+    queueMicrotask(() => {
+      if (this.closed) return;
+      this.initialized = true;
+      this.resolveReady(true);
+      this.play();
+    });
+  }
+  private play() {
+    if (this.closed || this.paused || !this.available()) return;
+    const generation = ++this.playGeneration;
+    try {
+      void this.media.play().then(
+        () => {
+          if (
+            this.closed ||
+            this.paused ||
+            !this.available() ||
+            generation !== this.playGeneration
+          )
+            this.media.pause();
+        },
+        () => {
+          if (
+            !this.closed &&
+            !this.paused &&
+            generation === this.playGeneration
+          )
+            this.fail("native-play-failed");
+        },
+      );
+    } catch {
+      this.fail("native-play-failed");
+    }
+  }
+  private clock() {
+    if (this.sourceOrigin === undefined) return 0;
+    const at =
+      this.clockStoppedAt ??
+      (this.paused ? (this.pauseAt ?? performance.now()) : performance.now());
+    return Math.max(
+      0,
+      Math.floor(((at - this.sourceOrigin - this.pausedTotal) * RATE) / 1000),
+    );
+  }
+  private freezeClock() {
+    if (this.sourceOrigin !== undefined && this.clockStoppedAt === undefined)
+      this.clockStoppedAt = this.paused
+        ? (this.pauseAt ?? performance.now())
+        : performance.now();
+  }
+  private wait(ms?: number) {
+    return new Promise<void>((resolve) => {
+      let timer: ReturnType<typeof setTimeout> | undefined;
+      let done = false;
+      const finish = () => {
+        if (done) return;
+        done = true;
+        if (timer !== undefined) clearTimeout(timer);
+        this.waiters.delete(finish);
+        resolve();
+      };
+      this.waiters.add(finish);
+      if (ms !== undefined) timer = setTimeout(finish, Math.max(1, ms));
+      if (this.closed) finish();
+    });
+  }
+  private wake() {
+    for (const finish of [...this.waiters]) finish();
+  }
+  private armWatch() {
+    if (this.watchdog !== undefined) clearTimeout(this.watchdog);
+    this.watchdog = undefined;
+    if (
+      this.closed ||
+      this.paused ||
+      this.sourceOrigin === undefined ||
+      this.inputEnded ||
+      (this.inputEnding && !this.pending)
+    )
+      return;
+    const clock = this.clock();
+    if (
+      !Number.isSafeInteger(clock) ||
+      clock - this.acceptedEndSample > MAX_LATE
+    ) {
+      this.fail("source-too-late");
+      return;
+    }
+    this.watchdog = setTimeout(
+      () => {
+        this.watchdog = undefined;
+        this.armWatch();
+      },
+      Math.max(
+        1,
+        Math.ceil(
+          ((this.acceptedEndSample + MAX_LATE + 1 - clock) * 1000) / RATE,
+        ),
+      ),
+    );
+  }
+  private reject(reason: string) {
+    this.rejection = reason;
+    return Promise.resolve(false);
+  }
+  append(input: GameAudioPCMStreamPacket): Promise<boolean> {
+    if (
+      !input ||
+      !Number.isSafeInteger(input.sequence) ||
+      input.sequence < 1 ||
+      input.sequence > 0xffffffff ||
+      !Number.isSafeInteger(input.startSample) ||
+      input.startSample < 0 ||
+      !Number.isSafeInteger(input.sampleFrames) ||
+      input.sampleFrames < 1 ||
+      input.sampleFrames > 1024 ||
+      !Number.isSafeInteger(input.startSample + input.sampleFrames) ||
+      !Number.isSafeInteger(
+        timestamp(input.startSample + input.sampleFrames),
+      ) ||
+      !(input.bytes instanceof Uint8Array) ||
+      input.bytes.byteLength !== input.sampleFrames * 4
+    )
+      return this.reject("invalid-packet");
+    if (this.closed || !this.available()) return this.reject("unavailable");
+    if (this.pending)
+      return equal(this.pending.packet, input)
+        ? this.pending.promise
+        : this.reject("busy");
+    if (this.inputEnding || this.inputEnded) return this.reject("input-closed");
+    if (this.last && equal(this.last, input)) return Promise.resolve(true);
+    if (
+      input.sequence !== this.nextSeq ||
+      input.startSample !== this.acceptedEndSample
+    )
+      return this.reject("sequence");
+    let packet: Packet;
+    try {
+      const bytes = new Uint8Array(input.bytes.length);
+      bytes.set(input.bytes);
+      packet = {
+        sequence: input.sequence,
+        startSample: input.startSample,
+        sampleFrames: input.sampleFrames,
+        bytes,
+      };
+    } catch {
+      return this.reject("packet-copy");
+    }
+    if (this.sourceOrigin === undefined) {
+      this.sourceOrigin = performance.now();
+      this.pausedTotal = 0;
+      if (this.paused) this.pauseAt = this.sourceOrigin;
+    }
+    let resolve!: (value: boolean) => void;
+    const promise = new Promise<boolean>((done) => {
+      resolve = done;
+    });
+    const pending = { packet, promise, resolve };
+    this.pending = pending;
+    this.rejection = undefined;
+    this.armWatch();
+    this.pump = this.commit(pending);
+    return promise;
+  }
+  private async usable(promise: Promise<unknown>) {
+    return Promise.race([
+      promise.then(() => true),
+      this.cancelled.then(() => false),
+    ]);
+  }
+  private async commit(pending: Pending) {
+    let data: Frame | undefined,
+      accepted = false;
+    try {
+      if (!(await this.ready) || this.closed) return;
+      while (!this.closed && this.pending === pending) {
+        if (this.paused) {
+          await this.wait();
+          continue;
+        }
+        const clock = this.clock();
+        if (clock - pending.packet.startSample > MAX_LATE) {
+          this.fail("source-too-late");
+          return;
+        }
+        const ahead =
+          pending.packet.startSample +
+          pending.packet.sampleFrames -
+          clock -
+          this.config.maxAheadSamples;
+        if (ahead > 0) {
+          await this.wait(Math.ceil((ahead * 1000) / RATE));
+          continue;
+        }
+        if (!(await this.usable(this.writer.ready)) || this.closed) return;
+        if (this.paused) continue;
+        const nextClock = this.clock();
+        if (nextClock - pending.packet.startSample > MAX_LATE) {
+          this.fail("source-too-late");
+          return;
+        }
+        data = new this.frame({
+          format: "s16",
+          sampleRate: RATE,
+          numberOfChannels: 2,
+          numberOfFrames: pending.packet.sampleFrames,
+          timestamp: timestamp(pending.packet.startSample),
+          data: pending.packet.bytes,
+        });
+        if (
+          !(await this.usable(this.writer.write(data))) ||
+          this.closed ||
+          this.pending !== pending
+        )
+          return;
+        if (this.clock() - pending.packet.startSample > MAX_LATE) {
+          this.fail("source-too-late");
+          return;
+        }
+        this.acceptedEndSample =
+          pending.packet.startSample + pending.packet.sampleFrames;
+        this.nextSeq++;
+        this.last = pending.packet;
+        accepted = true;
+        return;
+      }
+    } catch {
+      if (!this.closed) this.fail("native-frame-write-failed");
+    } finally {
+      try {
+        data?.close();
+      } catch {
+        if (!this.closed) this.fail("native-frame-close-failed");
+      }
+      if (this.pending === pending) this.pending = undefined;
+      pending.resolve(accepted && !this.closed);
+      this.armWatch();
+    }
+  }
+  pause() {
+    if (this.closed || this.paused) return;
+    this.paused = true;
+    if (this.sourceOrigin !== undefined) this.pauseAt = performance.now();
+    this.playGeneration++;
+    this.nativePlaying = false;
+    this.media.pause();
+    this.armWatch();
+    this.wake();
+  }
+  resume(): Promise<boolean> {
+    if (this.closed || !this.paused || !this.available())
+      return Promise.resolve(false);
+    if (this.pauseAt !== undefined)
+      this.pausedTotal += performance.now() - this.pauseAt;
+    this.pauseAt = undefined;
+    this.paused = false;
+    this.wake();
+    this.armWatch();
+    this.play();
+    return Promise.resolve(!this.closed);
+  }
+  setVolume(value: number) {
+    this.media.volume = value;
+  }
+  endInput(): Promise<boolean> {
+    if (this.ending) return this.ending;
+    if (this.closed) return Promise.resolve(false);
+    this.inputEnding = true;
+    this.armWatch();
+    const pending = this.pending?.promise;
+    this.ending = (async () => {
+      try {
+        if (!(await this.ready) || this.closed || (pending && !(await pending)))
+          return false;
+        this.armWatch();
+        while (!this.closed && this.clock() < this.acceptedEndSample) {
+          if (this.paused) await this.wait();
+          else
+            await this.wait(
+              Math.ceil(
+                ((this.acceptedEndSample - this.clock()) * 1000) / RATE,
+              ),
+            );
+        }
+        if (this.closed) return false;
+        if (!(await this.usable(this.writer.close())) || this.closed)
+          return false;
+        this.writerClosed = true;
+        this.inputEnded = true;
+        this.freezeClock();
+        this.armWatch();
+        return true;
+      } catch {
+        if (!this.closed) this.fail("native-input-close-failed");
+        return false;
+      }
+    })();
+    return this.ending;
+  }
+  status(): GameAudioPCMStreamStatus {
+    const clock = this.clock();
+    let current: number | null = null;
+    try {
+      if (!this.closed && Number.isFinite(this.media.currentTime))
+        current = this.media.currentTime;
+    } catch {
+      /* Native observer can be unavailable after cleanup. */
+    }
+    return {
+      phase: this.failure
+        ? "failed"
+        : this.closed
+          ? "stopped"
+          : this.inputEnded
+            ? "input-ended"
+            : this.paused
+              ? "paused"
+              : this.inputEnding
+                ? "ending-input"
+                : !this.initialized
+                  ? "opening"
+                  : this.sourceOrigin !== undefined
+                    ? "feeding"
+                    : "ready",
+      playbackID: this.config.playbackID,
+      sampleRate: RATE,
+      channels: 2,
+      format: "s16le",
+      maxAheadSamples: this.config.maxAheadSamples,
+      maxLateSamples: MAX_LATE,
+      acceptedEndSample: this.acceptedEndSample,
+      nextSeq: this.nextSeq,
+      pendingSequence: this.pending?.packet.sequence ?? null,
+      pendingBytes: this.pending?.packet.bytes.byteLength ?? 0,
+      sourceClockSamples: clock,
+      sourceLateSamples: Math.max(0, clock - this.acceptedEndSample),
+      nativePlaying: this.nativePlaying,
+      nativeTrackState: this.track.readyState,
+      nativeCurrentTimeSeconds: current,
+      nativePlayedSamples: null,
+      nativeDroppedSamples: null,
+      ...(this.rejection ? { lastRejection: this.rejection } : {}),
+      ...(this.failure ? { error: this.failure } : {}),
+    };
+  }
+  private fail(reason: string) {
+    if (this.closed) return;
+    this.failure = reason;
+    this.stop();
+  }
+  stop() {
+    if (this.closed) return;
+    this.freezeClock();
+    this.closed = true;
+    this.playGeneration++;
+    this.nativePlaying = false;
+    this.cancel();
+    this.resolveReady(false);
+    this.pending?.resolve(false);
+    this.pending = undefined;
+    this.armWatch();
+    this.wake();
+    for (const dispose of this.listeners.splice(0)) dispose();
+    try {
+      this.media.pause();
+      this.media.srcObject = null;
+      this.media.remove();
+      this.track.stop();
+    } catch {
+      this.failure ??= "native-release-failed";
+    }
+    this.last = undefined;
+    this.release();
+    const pump = this.pump;
+    void (async () => {
+      try {
+        if (!this.writerClosed)
+          try {
+            await this.writer.abort();
+          } catch {
+            /* Abort can race a completed close. */
+          }
+        if (pump) await pump;
+        this.writer.releaseLock();
+        this.resolveReleased();
+      } catch (error) {
+        this.failure ??= "native-release-failed";
+        this.rejectReleased(error);
+      }
+    })();
+  }
+}

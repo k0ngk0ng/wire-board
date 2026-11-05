@@ -1,0 +1,71 @@
+{
+  "pass": true,
+  "scope": "Only private PCM-prefix copies, own Chrome profile/cache/config/socket/tmp, and duplicate successful observed.json records",
+  "remaining_owned_chrome_processes": [],
+  "removed": [
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-native-probe/smoke-1024-12s-final/observed.json",
+      "files": 1,
+      "bytes": 588586
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-native-probe/smoke-441-12s-final/observed.json",
+      "files": 1,
+      "bytes": 927650
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-native-probe/jitter-441-4s/observed.json",
+      "files": 1,
+      "bytes": 321436
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-native-probe/pause-441-4s/observed.json",
+      "files": 1,
+      "bytes": 334187
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-native-probe/mute-441-4s/observed.json",
+      "files": 1,
+      "bytes": 49963
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-native-probe/stop-441-4s/observed.json",
+      "files": 1,
+      "bytes": 49497
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-native-probe/hidden-441-4s-owned-target/observed.json",
+      "files": 1,
+      "bytes": 54473
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-native-probe/smoke-1024-2s-fixed/observed.json",
+      "files": 1,
+      "bytes": 104319
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-native-probe/smoke-1024-12s/observed.json",
+      "files": 1,
+      "bytes": 580566
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-native-probe/smoke-441-12s-ahead1/observed.json",
+      "files": 1,
+      "bytes": 926823
+    },
+    {
+      "path": ".local/audio-pcm-native-probe",
+      "files": 299,
+      "bytes": 60383327
+    }
+  ],
+  "removed_files": 309,
+  "removed_bytes": 64320827,
+  "preserved": [
+    "Original82 WAV and existing MSE/Go/DSP evidence",
+    "All successful full result.json packet/clock traces and screenshots",
+    "Initial missing implementation reds and observer/binding failures",
+    "Source archives, test-first index, scripts and documents",
+    "Other profiles, shared caches and worktrees"
+  ]
+}

@@ -1,0 +1,168 @@
+{
+  "required_independent_finite_voices": 2,
+  "observed_independent_finite_voices": 1,
+  "satisfied": false,
+  "evidence": {
+    "actualIndependentFiniteVoices": 1,
+    "events": [
+      {
+        "at": 292.0999994277954,
+        "duration": null,
+        "ended": false,
+        "id": 0,
+        "kind": "play",
+        "loop": false,
+        "paused": false,
+        "rate": 1,
+        "src": "http://127.0.0.1:55428/audio/1f.wav",
+        "time": 0
+      },
+      {
+        "at": 292.0999994277954,
+        "duration": null,
+        "ended": false,
+        "id": 0,
+        "kind": "waiting",
+        "loop": false,
+        "paused": false,
+        "rate": 1,
+        "src": "http://127.0.0.1:55428/audio/1f.wav",
+        "time": 0
+      },
+      {
+        "at": 292.0999994277954,
+        "duration": null,
+        "ended": false,
+        "id": 0,
+        "kind": "loadstart",
+        "loop": false,
+        "paused": false,
+        "rate": 1,
+        "src": "http://127.0.0.1:55428/audio/1f.wav",
+        "time": 0
+      },
+      {
+        "at": 300.79999923706055,
+        "duration": 2.11941,
+        "ended": false,
+        "id": 0,
+        "kind": "loadedmetadata",
+        "loop": false,
+        "paused": false,
+        "rate": 1,
+        "src": "http://127.0.0.1:55428/audio/1f.wav",
+        "time": 0
+      },
+      {
+        "at": 301.19999980926514,
+        "duration": 2.11941,
+        "ended": false,
+        "id": 0,
+        "kind": "playing",
+        "loop": false,
+        "paused": false,
+        "rate": 1,
+        "src": "http://127.0.0.1:55428/audio/1f.wav",
+        "time": 0
+      },
+      {
+        "at": 512.5999994277954,
+        "duration": null,
+        "ended": false,
+        "id": 0,
+        "kind": "play",
+        "loop": false,
+        "paused": false,
+        "rate": 1,
+        "src": "http://127.0.0.1:55428/audio/3f.wav",
+        "time": 0
+      },
+      {
+        "at": 512.5999994277954,
+        "duration": null,
+        "ended": false,
+        "id": 0,
+        "kind": "waiting",
+        "loop": false,
+        "paused": false,
+        "rate": 1,
+        "src": "http://127.0.0.1:55428/audio/3f.wav",
+        "time": 0
+      },
+      {
+        "at": 512.5999994277954,
+        "duration": null,
+        "ended": false,
+        "id": 0,
+        "kind": "loadstart",
+        "loop": false,
+        "paused": false,
+        "rate": 1,
+        "src": "http://127.0.0.1:55428/audio/3f.wav",
+        "time": 0
+      },
+      {
+        "at": 516.3999996185303,
+        "duration": 2.035964,
+        "ended": false,
+        "id": 0,
+        "kind": "loadedmetadata",
+        "loop": false,
+        "paused": false,
+        "rate": 1,
+        "src": "http://127.0.0.1:55428/audio/3f.wav",
+        "time": 0
+      },
+      {
+        "at": 528.1999998092651,
+        "duration": 2.035964,
+        "ended": false,
+        "id": 0,
+        "kind": "playing",
+        "loop": false,
+        "paused": false,
+        "rate": 1,
+        "src": "http://127.0.0.1:55428/audio/3f.wav",
+        "time": 0
+      }
+    ],
+    "expectedIndependentFiniteVoices": 2,
+    "first": [
+      {
+        "attribute": "/audio/1f.wav",
+        "connected": true,
+        "duration": 2.11941,
+        "ended": false,
+        "id": 0,
+        "loop": false,
+        "loopKey": null,
+        "music": false,
+        "muted": false,
+        "paused": false,
+        "platform": true,
+        "rate": 1,
+        "src": "http://127.0.0.1:55428/audio/1f.wav",
+        "time": 0.132429
+      }
+    ],
+    "second": [
+      {
+        "attribute": "/audio/3f.wav",
+        "connected": true,
+        "duration": 2.035964,
+        "ended": false,
+        "id": 0,
+        "loop": false,
+        "loopKey": null,
+        "music": false,
+        "muted": false,
+        "paused": false,
+        "platform": true,
+        "rate": 1,
+        "src": "http://127.0.0.1:55428/audio/3f.wav",
+        "time": 0.081068
+      }
+    ]
+  },
+  "shared_implementation_modified": false
+}

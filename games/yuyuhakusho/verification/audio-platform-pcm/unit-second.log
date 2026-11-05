@@ -1,0 +1,24 @@
+✔ PCM ready never waits play and unobservable output counters stay null (1.649208ms)
+✔ PCM copies pending metadata/bytes and shares only the exact in-flight Promise (1.678291ms)
+✔ PCM admission uses source performance clock rather than native currentTime (0.907416ms)
+✔ pause freezes source clock and one pending packet; resume does not catch wall-clock debt (0.861459ms)
+✔ source gap watchdog fails after100ms without inventing drops or skipping samples (0.439416ms)
+✔ pending native write is bounded by lateness and late completion cannot revive it (0.423583ms)
+✔ endInput waits nominal source end, closes input not media drain, hoststop releases (0.487458ms)
+✔ endInput waits pending, pause freezes nominal close and stop cancels all paths (0.823125ms)
+✔ invalid PCM configs/packets are atomic and do not reset source anchor (0.722708ms)
+✔ PCM and MSE replace mixed modes only after successful resource prepare (0.557209ms)
+✔ native frame failure/cleanup closes every owned resource (0.222875ms)
+✔ native write failure/cleanup closes every owned resource (0.19675ms)
+✔ native mute failure/cleanup closes every owned resource (0.173667ms)
+✔ native hidden failure/cleanup closes every owned resource (0.170542ms)
+✔ native volume failure/cleanup closes every owned resource (0.179166ms)
+✔ late native play success after stop stays cancelled and cannot pause a successor (0.258166ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 76.709458

@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/check_audio_pcm_native_probe.py", line 105, in <module>
+    result=js('pcmNativeProbe.result()');(OUT/'observed.json').write_text(json.dumps(result,indent=2)+'\n')
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/check_audio_pcm_native_probe.py", line 71, in js
+    def js(expression):return browser('eval',expression)['result']
+                              ~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/check_audio_pcm_native_probe.py", line 67, in browser
+    if result.returncode:raise RuntimeError(result.stdout+result.stderr)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: {"success":false,"data":null,"error":"Evaluation error: TypeError: Failed to read the 'desiredSize' property from 'WritableStreamDefaultWriter': This writable stream writer has been released and cannot be used to get the desiredSize\n    at snapshot (http://127.0.0.1:52356/probe.js:18:89)\n    at probe.result (http://127.0.0.1:52356/probe.js:128:24)\n    at <anonymous>:1:16"}
+

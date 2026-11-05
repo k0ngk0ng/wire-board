@@ -1,0 +1,57 @@
+{
+  "targetId": "8DF79B51F52C55E89EAB4393B2A0487A",
+  "before": {
+    "hidden": false,
+    "visibility": "visible",
+    "focused": true,
+    "href": "http://127.0.0.1:53771/"
+  },
+  "after": {
+    "hidden": false,
+    "visibility": "visible",
+    "focused": true,
+    "href": "http://127.0.0.1:53771/"
+  },
+  "version": {
+    "protocolVersion": "1.3",
+    "product": "Chrome/157.0.8103.38",
+    "revision": "@a733b5afbb3ba618844ff8876b89ad1a774b2f18",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
+    "jsVersion": "15.7.112.23"
+  },
+  "commandLine": {
+    "arguments": [
+      "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+      "--remote-debugging-port=0",
+      "--no-first-run",
+      "--no-default-browser-check",
+      "--disable-background-networking",
+      "--disable-backgrounding-occluded-windows",
+      "--disable-component-update",
+      "--disable-default-apps",
+      "--disable-hang-monitor",
+      "--disable-popup-blocking",
+      "--disable-prompt-on-repost",
+      "--disable-sync",
+      "--disable-features=Translate",
+      "--enable-features=NetworkService,NetworkServiceInProcess,WebMCPTesting,DevToolsWebMCPSupport",
+      "--metrics-recording-only",
+      "--password-store=basic",
+      "--use-mock-keychain",
+      "--headless=new",
+      "--hide-scrollbars",
+      "--enable-unsafe-swiftshader",
+      "--user-data-dir=/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/audio-pcm-native-probe/profile",
+      "--window-size=1280,720",
+      "--disk-cache-dir=/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/audio-pcm-native-probe/cache",
+      "--disable-component-update",
+      "--no-first-run",
+      "--no-default-browser-check",
+      "--enable-automation",
+      "--noerrdialogs",
+      "--flag-switches-begin",
+      "--flag-switches-end",
+      "--enable-unsafe-swiftshader"
+    ]
+  }
+}

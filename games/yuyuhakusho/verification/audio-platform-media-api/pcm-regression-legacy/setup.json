@@ -1,0 +1,71 @@
+{
+  "after_open": {
+    "focused": true,
+    "hidden": false,
+    "href": "http://127.0.0.1:55428/",
+    "readyState": "complete",
+    "userActivation": {
+      "active": false,
+      "ever": false
+    },
+    "visibility": "visible"
+  },
+  "tabs": {
+    "lifecycle": {
+      "effectiveLaunch": {
+        "browserLaunched": true,
+        "engine": "chrome",
+        "launchHash": 7789919054118900409
+      },
+      "launched": false,
+      "relaunchedBrowser": false,
+      "restartedBackground": false,
+      "restoreStatus": "not_configured",
+      "reused": true,
+      "saveStatus": "not_attempted"
+    },
+    "tabs": [
+      {
+        "active": true,
+        "label": null,
+        "tabId": "t1",
+        "targetId": "E8D142F2189ADADEAD483BA2FBA6701A",
+        "title": "127.0.0.1:55428",
+        "type": "page",
+        "url": "http://127.0.0.1:55428/"
+      },
+      {
+        "active": false,
+        "label": null,
+        "tabId": "t2",
+        "targetId": "416788A3140968C5A44276DEAC8171F1",
+        "title": "127.0.0.1:55209/blank",
+        "type": "page",
+        "url": "http://127.0.0.1:55209/blank"
+      }
+    ]
+  },
+  "native_activation": {
+    "targetId": "E8D142F2189ADADEAD483BA2FBA6701A",
+    "before": {
+      "hidden": false,
+      "visibility": "visible",
+      "focused": true,
+      "href": "http://127.0.0.1:55428/",
+      "readyState": "complete"
+    },
+    "after": {
+      "hidden": false,
+      "visibility": "visible",
+      "focused": true,
+      "href": "http://127.0.0.1:55428/",
+      "readyState": "complete"
+    }
+  },
+  "before_gesture": {
+    "focused": true,
+    "hidden": false,
+    "href": "http://127.0.0.1:55428/",
+    "visibility": "visible"
+  }
+}

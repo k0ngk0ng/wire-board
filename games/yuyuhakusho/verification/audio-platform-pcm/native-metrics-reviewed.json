@@ -1,0 +1,357 @@
+{
+  "rows": [
+    {
+      "label": "smoke-1024-12s-reviewed",
+      "scenario": "smoke",
+      "accepted": 529200,
+      "click_handler_to_playing_ms": 97.5,
+      "first_append_to_playing_ms": 1.3000001907348349,
+      "max_ahead_samples": 2026,
+      "max_source_late_observed_samples": 83,
+      "reason": "input-ended",
+      "input_ended": {
+        "released": false,
+        "resources": {
+          "framesClosed": 517,
+          "framesCreated": 517,
+          "media": [
+            {
+              "paused": true,
+              "removed": false,
+              "srcObjectCleared": true
+            },
+            {
+              "paused": false,
+              "removed": false,
+              "srcObjectCleared": false
+            }
+          ],
+          "tracks": [
+            {
+              "locked": true,
+              "state": "ended"
+            }
+          ]
+        },
+        "status": {
+          "acceptedEndSample": 529200,
+          "channels": 2,
+          "format": "s16le",
+          "lastRejection": "input-closed",
+          "maxAheadSamples": 2048,
+          "maxLateSamples": 4410,
+          "nativeCurrentTimeSeconds": 12.081419,
+          "nativeDroppedSamples": null,
+          "nativePlayedSamples": null,
+          "nativePlaying": true,
+          "nativeTrackState": "ended",
+          "nextSeq": 518,
+          "pendingBytes": 0,
+          "pendingSequence": null,
+          "phase": "input-ended",
+          "playbackID": "main-smoke",
+          "sampleRate": 44100,
+          "sourceClockSamples": 529283,
+          "sourceLateSamples": 83
+        }
+      }
+    },
+    {
+      "label": "smoke-441-12s-reviewed",
+      "scenario": "smoke",
+      "accepted": 529200,
+      "click_handler_to_playing_ms": 74.89999961853027,
+      "first_append_to_playing_ms": 0.8000001907348633,
+      "max_ahead_samples": 428,
+      "max_source_late_observed_samples": 123,
+      "reason": "input-ended",
+      "input_ended": {
+        "released": false,
+        "resources": {
+          "framesClosed": 1200,
+          "framesCreated": 1200,
+          "media": [
+            {
+              "paused": true,
+              "removed": false,
+              "srcObjectCleared": true
+            },
+            {
+              "paused": false,
+              "removed": false,
+              "srcObjectCleared": false
+            }
+          ],
+          "tracks": [
+            {
+              "locked": true,
+              "state": "ended"
+            }
+          ]
+        },
+        "status": {
+          "acceptedEndSample": 529200,
+          "channels": 2,
+          "format": "s16le",
+          "lastRejection": "input-closed",
+          "maxAheadSamples": 441,
+          "maxLateSamples": 4410,
+          "nativeCurrentTimeSeconds": 12.0832,
+          "nativeDroppedSamples": null,
+          "nativePlayedSamples": null,
+          "nativePlaying": true,
+          "nativeTrackState": "ended",
+          "nextSeq": 1201,
+          "pendingBytes": 0,
+          "pendingSequence": null,
+          "phase": "input-ended",
+          "playbackID": "main-smoke",
+          "sampleRate": 44100,
+          "sourceClockSamples": 529323,
+          "sourceLateSamples": 123
+        }
+      }
+    },
+    {
+      "label": "contract-1024-2s-reviewed",
+      "scenario": "contract",
+      "accepted": 88200,
+      "click_handler_to_playing_ms": 88.69999980926514,
+      "first_append_to_playing_ms": 0.5999994277953533,
+      "max_ahead_samples": 2031,
+      "max_source_late_observed_samples": 136,
+      "reason": "input-ended",
+      "input_ended": {
+        "released": false,
+        "resources": {
+          "framesClosed": 88,
+          "framesCreated": 88,
+          "media": [
+            {
+              "paused": true,
+              "removed": false,
+              "srcObjectCleared": true
+            },
+            {
+              "paused": true,
+              "removed": true,
+              "srcObjectCleared": true
+            },
+            {
+              "paused": true,
+              "removed": true,
+              "srcObjectCleared": true
+            },
+            {
+              "paused": true,
+              "removed": true,
+              "srcObjectCleared": true
+            },
+            {
+              "paused": true,
+              "removed": true,
+              "srcObjectCleared": true
+            },
+            {
+              "paused": false,
+              "removed": false,
+              "srcObjectCleared": false
+            }
+          ],
+          "tracks": [
+            {
+              "locked": false,
+              "state": "ended"
+            },
+            {
+              "locked": false,
+              "state": "ended"
+            },
+            {
+              "locked": true,
+              "state": "ended"
+            }
+          ]
+        },
+        "status": {
+          "acceptedEndSample": 88200,
+          "channels": 2,
+          "format": "s16le",
+          "lastRejection": "input-closed",
+          "maxAheadSamples": 2048,
+          "maxLateSamples": 4410,
+          "nativeCurrentTimeSeconds": 2.083526,
+          "nativeDroppedSamples": null,
+          "nativePlayedSamples": null,
+          "nativePlaying": true,
+          "nativeTrackState": "ended",
+          "nextSeq": 88,
+          "pendingBytes": 0,
+          "pendingSequence": null,
+          "phase": "input-ended",
+          "playbackID": "main-contract",
+          "sampleRate": 44100,
+          "sourceClockSamples": 88336,
+          "sourceLateSamples": 136
+        }
+      }
+    },
+    {
+      "label": "jitter-441-4s-reviewed",
+      "scenario": "jitter",
+      "accepted": 176400,
+      "click_handler_to_playing_ms": 67.19999980926514,
+      "first_append_to_playing_ms": 0.9000005722045898,
+      "max_ahead_samples": 437,
+      "max_source_late_observed_samples": 842,
+      "reason": "input-ended",
+      "input_ended": {
+        "released": false,
+        "resources": {
+          "framesClosed": 400,
+          "framesCreated": 400,
+          "media": [
+            {
+              "paused": true,
+              "removed": false,
+              "srcObjectCleared": true
+            },
+            {
+              "paused": false,
+              "removed": false,
+              "srcObjectCleared": false
+            }
+          ],
+          "tracks": [
+            {
+              "locked": true,
+              "state": "ended"
+            }
+          ]
+        },
+        "status": {
+          "acceptedEndSample": 176400,
+          "channels": 2,
+          "format": "s16le",
+          "lastRejection": "input-closed",
+          "maxAheadSamples": 441,
+          "maxLateSamples": 4410,
+          "nativeCurrentTimeSeconds": 4.083089,
+          "nativeDroppedSamples": null,
+          "nativePlayedSamples": null,
+          "nativePlaying": true,
+          "nativeTrackState": "ended",
+          "nextSeq": 401,
+          "pendingBytes": 0,
+          "pendingSequence": null,
+          "phase": "input-ended",
+          "playbackID": "main-jitter",
+          "sampleRate": 44100,
+          "sourceClockSamples": 176514,
+          "sourceLateSamples": 114
+        }
+      }
+    },
+    {
+      "label": "pause-441-4s-reviewed",
+      "scenario": "pause",
+      "accepted": 176400,
+      "click_handler_to_playing_ms": 76.19999980926514,
+      "first_append_to_playing_ms": 0.9000005722045898,
+      "max_ahead_samples": 433,
+      "max_source_late_observed_samples": 119,
+      "reason": "input-ended",
+      "input_ended": {
+        "released": false,
+        "resources": {
+          "framesClosed": 400,
+          "framesCreated": 400,
+          "media": [
+            {
+              "paused": true,
+              "removed": false,
+              "srcObjectCleared": true
+            },
+            {
+              "paused": false,
+              "removed": false,
+              "srcObjectCleared": false
+            }
+          ],
+          "tracks": [
+            {
+              "locked": true,
+              "state": "ended"
+            }
+          ]
+        },
+        "status": {
+          "acceptedEndSample": 176400,
+          "channels": 2,
+          "format": "s16le",
+          "lastRejection": "input-closed",
+          "maxAheadSamples": 441,
+          "maxLateSamples": 4410,
+          "nativeCurrentTimeSeconds": 4.083754,
+          "nativeDroppedSamples": null,
+          "nativePlayedSamples": null,
+          "nativePlaying": true,
+          "nativeTrackState": "ended",
+          "nextSeq": 401,
+          "pendingBytes": 0,
+          "pendingSequence": null,
+          "phase": "input-ended",
+          "playbackID": "main-pause",
+          "sampleRate": 44100,
+          "sourceClockSamples": 176519,
+          "sourceLateSamples": 119
+        }
+      }
+    },
+    {
+      "label": "mute-441-4s-reviewed",
+      "scenario": "mute",
+      "accepted": 21609,
+      "click_handler_to_playing_ms": 70.70000076293945,
+      "first_append_to_playing_ms": 0.8000001907348633,
+      "max_ahead_samples": 428,
+      "max_source_late_observed_samples": 0,
+      "reason": "mute",
+      "input_ended": null
+    },
+    {
+      "label": "stop-441-4s-reviewed",
+      "scenario": "stop",
+      "accepted": 24696,
+      "click_handler_to_playing_ms": 81.5,
+      "first_append_to_playing_ms": 0.8999996185302734,
+      "max_ahead_samples": 424,
+      "max_source_late_observed_samples": 52,
+      "reason": "stop",
+      "input_ended": null
+    },
+    {
+      "label": "hidden-441-4s-reviewed",
+      "scenario": "hidden",
+      "accepted": 23814,
+      "click_handler_to_playing_ms": 75,
+      "first_append_to_playing_ms": 0.8000001907348633,
+      "max_ahead_samples": 433,
+      "max_source_late_observed_samples": 0,
+      "reason": "hidden",
+      "input_ended": null
+    },
+    {
+      "label": "late-441-4s-reviewed",
+      "scenario": "late",
+      "accepted": 26460,
+      "click_handler_to_playing_ms": 87.09999942779541,
+      "first_append_to_playing_ms": 0.8000001907348633,
+      "max_ahead_samples": 428,
+      "max_source_late_observed_samples": 4471,
+      "reason": "late",
+      "input_ended": null
+    }
+  ],
+  "scope": "Native playing event timing; excludes speaker/nonzero-onset claims. Cold click includes platform unlock."
+}

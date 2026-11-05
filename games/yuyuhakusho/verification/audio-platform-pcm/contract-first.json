@@ -1,0 +1,8 @@
+{
+  "created_at_utc": "2026-11-05T14:37:26.988032+00:00",
+  "phase": "Pure public contract and failure scope before runtime",
+  "sha256": {
+    "web/src/game-api/audio-pcm-stream.ts": "169f243b6acee1d3e1c18d91abd6aa0d4023198b25de9f689a6a7ca3fe4f7afe",
+    "docs/research/md-yuyuhakusho/AUDIO_PLATFORM_PCM_FAILURES.md": "a68963cdcc748e5b33aafd91965dba89c0c4981041cb26b197a58598f1cbe1ba"
+  }
+}

@@ -1,0 +1,15 @@
+"""Serial native public PCM scenarios with current-source result binding."""
+from pathlib import Path
+import hashlib,json,os,subprocess
+ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'games/yuyuhakusho/verification/audio-platform-pcm';env=dict(os.environ,PYTHONDONTWRITEBYTECODE='1')
+cases=[('smoke-1024-12s','smoke',12,1024,2048),('smoke-441-12s','smoke',12,441,441),('contract-1024-2s','contract',2,1024,2048),('jitter-441-4s','jitter',4,441,441),('pause-441-4s','pause',4,441,441),('mute-441-4s','mute',4,441,441),('stop-441-4s','stop',4,441,441),('hidden-441-4s','hidden',4,441,441),('late-441-4s','late',4,441,441)]
+checks=[]
+for label,scenario,seconds,chunk,ahead in cases:
+ command=['python3','scripts/yuyuhakusho/check_audio_pcm_platform.py','--label',label,'--scenario',scenario,'--seconds',str(seconds),'--chunk',str(chunk),'--ahead',str(ahead)]
+ log=OUT/(label+'.log')
+ with log.open('w')as output:result=subprocess.run(command,cwd=ROOT,env=env,stdout=output,stderr=subprocess.STDOUT)
+ assert result.returncode==0,(label,result.returncode,log.read_text()[-2500:])
+ path=OUT/label/'result.json';r=json.loads(path.read_text());assert r['pass']and not r['speaker_bit_exact']and not r['original_mix_equivalent']
+ checks.append({'label':label,'scenario':scenario,'result':str(path.relative_to(ROOT)),'sha256':hashlib.sha256(path.read_bytes()).hexdigest(),'firstPlayingMs':r['firstPlaying']['gestureDelayMs'],'sourceAccepted':sum(x['frames']for x in r['packets']if x['accepted']),'pass':True})
+ print(label,'pass',checks[-1]['sourceAccepted'],checks[-1]['firstPlayingMs'],flush=True)
+(OUT/'native-matrix.json').write_text(json.dumps({'pass':True,'checks':checks,'source_sha256':{x:hashlib.sha256((ROOT/x).read_bytes()).hexdigest()for x in ['web/src/audio-pcm-stream.ts','web/src/audio.ts','web/src/game-api/module.ts','scripts/yuyuhakusho/audio_pcm_platform_harness.ts','scripts/yuyuhakusho/check_audio_pcm_platform.py','scripts/yuyuhakusho/verify_audio_pcm_platform.py']}},indent=2)+'\n')

@@ -1,0 +1,42 @@
+{
+  "before": {
+    "acceptedEndSample": 21609,
+    "channels": 2,
+    "format": "s16le",
+    "maxAheadSamples": 441,
+    "maxLateSamples": 4410,
+    "nativeCurrentTimeSeconds": 0.486541,
+    "nativeDroppedSamples": null,
+    "nativePlayedSamples": null,
+    "nativePlaying": false,
+    "nativeTrackState": "live",
+    "nextSeq": 50,
+    "pendingBytes": 1764,
+    "pendingSequence": 50,
+    "phase": "paused",
+    "playbackID": "main-pause",
+    "sampleRate": 44100,
+    "sourceClockSamples": 21485,
+    "sourceLateSamples": 0
+  },
+  "after": {
+    "acceptedEndSample": 21609,
+    "channels": 2,
+    "format": "s16le",
+    "maxAheadSamples": 441,
+    "maxLateSamples": 4410,
+    "nativeCurrentTimeSeconds": 0.486541,
+    "nativeDroppedSamples": null,
+    "nativePlayedSamples": null,
+    "nativePlaying": false,
+    "nativeTrackState": "live",
+    "nextSeq": 50,
+    "pendingBytes": 1764,
+    "pendingSequence": 50,
+    "phase": "paused",
+    "playbackID": "main-pause",
+    "sampleRate": 44100,
+    "sourceClockSamples": 21485,
+    "sourceLateSamples": 0
+  }
+}

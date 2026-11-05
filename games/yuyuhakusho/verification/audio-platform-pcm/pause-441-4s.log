@@ -1,0 +1,5 @@
+
+  .local/audio-platform-pcm/harness.js  61.9kb
+
+⚡ Done in 3ms
+{"pass": true, "scenario": "pause", "accepted": 176400, "firstPlayingMs": 74.89999961853027}

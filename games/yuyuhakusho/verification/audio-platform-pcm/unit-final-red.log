@@ -1,0 +1,196 @@
+✖ PCM ready never waits play and unobservable output counters stay null (1.301ms)
+✖ PCM copies pending metadata/bytes and shares only the exact in-flight Promise (0.302125ms)
+✖ PCM admission uses source performance clock rather than native currentTime (0.227875ms)
+✖ pause freezes source clock and one pending packet; resume does not catch wall-clock debt (0.839875ms)
+✖ source gap watchdog fails after100ms without inventing drops or skipping samples (0.256ms)
+✖ pending native write is bounded by lateness and late completion cannot revive it (0.180125ms)
+✖ endInput waits nominal source end, closes input not media drain, hoststop releases (0.144708ms)
+✖ endInput waits pending, pause freezes nominal close and stop cancels all paths (0.157458ms)
+✖ invalid PCM configs/packets are atomic and do not reset source anchor (0.209542ms)
+✖ PCM and MSE replace mixed modes only after successful resource prepare (1.75175ms)
+✖ native frame failure/cleanup closes every owned resource (0.402875ms)
+✖ native write failure/cleanup closes every owned resource (0.353959ms)
+✖ native mute failure/cleanup closes every owned resource (0.22725ms)
+✖ native hidden failure/cleanup closes every owned resource (0.268167ms)
+✖ native volume failure/cleanup closes every owned resource (0.253459ms)
+✖ late native play success after stop stays cancelled and cannot pause a successor (0.166208ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 0
+ℹ fail 16
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 57.362959
+
+✖ failing tests:
+
+test at web/tests/platform-audio-pcm.test.mjs:29:1
+✖ PCM ready never waits play and unobservable output counters stay null (1.301ms)
+  TypeError: x.p.openPCMStream is not a function
+      at TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/tests/platform-audio-pcm.test.mjs:29:138)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.start (node:internal/test_runner/test:1096:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17)
+
+test at web/tests/platform-audio-pcm.test.mjs:30:1
+✖ PCM copies pending metadata/bytes and shares only the exact in-flight Promise (0.302125ms)
+  TypeError: x.p.openPCMStream is not a function
+      at TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/tests/platform-audio-pcm.test.mjs:30:119)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3)
+
+test at web/tests/platform-audio-pcm.test.mjs:31:1
+✖ PCM admission uses source performance clock rather than native currentTime (0.227875ms)
+  TypeError: x.p.openPCMStream is not a function
+      at TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/tests/platform-audio-pcm.test.mjs:31:116)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)
+
+test at web/tests/platform-audio-pcm.test.mjs:32:1
+✖ pause freezes source clock and one pending packet; resume does not catch wall-clock debt (0.839875ms)
+  TypeError: x.p.openPCMStream is not a function
+      at TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/tests/platform-audio-pcm.test.mjs:32:130)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)
+
+test at web/tests/platform-audio-pcm.test.mjs:33:1
+✖ source gap watchdog fails after100ms without inventing drops or skipping samples (0.256ms)
+  TypeError: x.p.openPCMStream is not a function
+      at TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/tests/platform-audio-pcm.test.mjs:33:122)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)
+
+test at web/tests/platform-audio-pcm.test.mjs:34:1
+✖ pending native write is bounded by lateness and late completion cannot revive it (0.180125ms)
+  TypeError: x.p.openPCMStream is not a function
+      at TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/tests/platform-audio-pcm.test.mjs:34:152)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)
+
+test at web/tests/platform-audio-pcm.test.mjs:35:1
+✖ endInput waits nominal source end, closes input not media drain, hoststop releases (0.144708ms)
+  TypeError: x.p.openPCMStream is not a function
+      at TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/tests/platform-audio-pcm.test.mjs:35:124)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)
+
+test at web/tests/platform-audio-pcm.test.mjs:36:1
+✖ endInput waits pending, pause freezes nominal close and stop cancels all paths (0.157458ms)
+  TypeError: x.p.openPCMStream is not a function
+      at TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/tests/platform-audio-pcm.test.mjs:36:148)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)
+
+test at web/tests/platform-audio-pcm.test.mjs:37:1
+✖ invalid PCM configs/packets are atomic and do not reset source anchor (0.209542ms)
+  TypeError: x.p.openPCMStream is not a function
+      at TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/tests/platform-audio-pcm.test.mjs:37:111)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)
+
+test at web/tests/platform-audio-pcm.test.mjs:38:1
+✖ PCM and MSE replace mixed modes only after successful resource prepare (1.75175ms)
+  TypeError: x.p.openPCMStream is not a function
+      at TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/tests/platform-audio-pcm.test.mjs:38:200)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)
+
+test at web/tests/platform-audio-pcm.test.mjs:39:62
+✖ native frame failure/cleanup closes every owned resource (0.402875ms)
+  TypeError: x.p.openPCMStream is not a function
+      at TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/tests/platform-audio-pcm.test.mjs:39:168)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)
+
+test at web/tests/platform-audio-pcm.test.mjs:39:62
+✖ native write failure/cleanup closes every owned resource (0.353959ms)
+  TypeError: x.p.openPCMStream is not a function
+      at TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/tests/platform-audio-pcm.test.mjs:39:168)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)
+
+test at web/tests/platform-audio-pcm.test.mjs:39:62
+✖ native mute failure/cleanup closes every owned resource (0.22725ms)
+  TypeError: x.p.openPCMStream is not a function
+      at TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/tests/platform-audio-pcm.test.mjs:39:168)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)
+
+test at web/tests/platform-audio-pcm.test.mjs:39:62
+✖ native hidden failure/cleanup closes every owned resource (0.268167ms)
+  TypeError: x.p.openPCMStream is not a function
+      at TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/tests/platform-audio-pcm.test.mjs:39:168)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)
+
+test at web/tests/platform-audio-pcm.test.mjs:39:62
+✖ native volume failure/cleanup closes every owned resource (0.253459ms)
+  TypeError: x.p.openPCMStream is not a function
+      at TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/tests/platform-audio-pcm.test.mjs:39:168)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)
+
+test at web/tests/platform-audio-pcm.test.mjs:40:1
+✖ late native play success after stop stays cancelled and cannot pause a successor (0.166208ms)
+  TypeError: x.p.openPCMStream is not a function
+      at TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/tests/platform-audio-pcm.test.mjs:40:149)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)

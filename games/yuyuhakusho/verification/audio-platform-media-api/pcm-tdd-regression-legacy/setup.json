@@ -1,0 +1,89 @@
+{
+  "after_open": {
+    "focused": false,
+    "hidden": true,
+    "href": "http://127.0.0.1:56973/",
+    "readyState": "complete",
+    "userActivation": {
+      "active": false,
+      "ever": false
+    },
+    "visibility": "hidden"
+  },
+  "tabs": {
+    "lifecycle": {
+      "effectiveLaunch": {
+        "browserLaunched": true,
+        "engine": "chrome",
+        "launchHash": 7789919054118900409
+      },
+      "launched": false,
+      "relaunchedBrowser": false,
+      "restartedBackground": false,
+      "restoreStatus": "not_configured",
+      "reused": true,
+      "saveStatus": "not_attempted"
+    },
+    "tabs": [
+      {
+        "active": true,
+        "label": null,
+        "tabId": "t1",
+        "targetId": "D5AC82D9C7BDC65F2B0620EFAC0154D9",
+        "title": "127.0.0.1:56973",
+        "type": "page",
+        "url": "http://127.0.0.1:56973/"
+      },
+      {
+        "active": false,
+        "label": null,
+        "tabId": "t2",
+        "targetId": "2BB9081ACEE95CB1C34FB65FE0F18DB6",
+        "title": "127.0.0.1:56658/blank",
+        "type": "page",
+        "url": "http://127.0.0.1:56658/blank"
+      },
+      {
+        "active": false,
+        "label": null,
+        "tabId": "t3",
+        "targetId": "4848021DAF7CF565A116EF660EF16942",
+        "title": "127.0.0.1:56658",
+        "type": "page",
+        "url": ""
+      },
+      {
+        "active": false,
+        "label": null,
+        "tabId": "t4",
+        "targetId": "9069C5B7C378AE8E2E5A6BC5AA12E28E",
+        "title": "127.0.0.1:55209/blank",
+        "type": "page",
+        "url": "http://127.0.0.1:55209/blank"
+      }
+    ]
+  },
+  "native_activation": {
+    "targetId": "D5AC82D9C7BDC65F2B0620EFAC0154D9",
+    "before": {
+      "hidden": true,
+      "visibility": "hidden",
+      "focused": false,
+      "href": "http://127.0.0.1:56973/",
+      "readyState": "complete"
+    },
+    "after": {
+      "hidden": false,
+      "visibility": "visible",
+      "focused": true,
+      "href": "http://127.0.0.1:56973/",
+      "readyState": "complete"
+    }
+  },
+  "before_gesture": {
+    "focused": true,
+    "hidden": false,
+    "href": "http://127.0.0.1:56973/",
+    "visibility": "visible"
+  }
+}

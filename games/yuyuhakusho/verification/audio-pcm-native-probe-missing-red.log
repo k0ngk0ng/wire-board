@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/check_audio_pcm_native_probe.py", line 87, in <module>
+    expect(exists,'Missing native generated-track probe implementation')
+    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/check_audio_pcm_native_probe.py", line 78, in expect
+    if not value:raise AssertionError(message)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Missing native generated-track probe implementation
