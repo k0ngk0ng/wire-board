@@ -1,0 +1,49 @@
+{
+  "pass": true,
+  "scenario": "baseline",
+  "frames": 5500,
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "control": {
+    "path": "games/yuyuhakusho/engine/testdata/audio-timing-baseline-original.json.gz",
+    "sha256": "17856c6293e27590544dc338f2a3cecae1aab4dc40112873e939f277ab0ce064"
+  },
+  "old_phase_ledger": {
+    "path": "docs/research/md-yuyuhakusho/audio-phase-budget/compact/audio-phase-baseline.json.gz",
+    "sha256": "735833ae6e4ac55d8094ffe5827ecd33b92433b21b1135250ccab037f27b8402",
+    "projected_events_equal": 267672
+  },
+  "all_frame_ram_video_pcm_equal": true,
+  "full_old_sound_irq_semantic_ledger_equal": true,
+  "observer_overflows": 0,
+  "raw_ledger_count": 2914412,
+  "retained_ledger_count": 780329,
+  "bank_transaction_count": 512657,
+  "kinds": {
+    "13": 512657
+  },
+  "artifacts": [
+    {
+      "path": ".local/md-yuyuhakusho/phase-clock-native/phase-clock-baseline.json.gz",
+      "json_sha256": "ddf8f2f155ee01399ef959861cf8412a0b182772dbaba5a3a62789d51073fbae",
+      "gzip_sha256": "25e1d06e9802528319224c7ba1b516f6c28a121c63bd5499f9db836338ffbb94",
+      "json_bytes": 119336426,
+      "gzip_bytes": 28537511
+    },
+    {
+      "path": ".local/md-yuyuhakusho/phase-clock-native/phase-clock-baseline-frames.json.gz",
+      "json_sha256": "e9eecfb12bc54d3201b882853f55135a62171301005ec933ed72eca1f9d5c334",
+      "gzip_sha256": "217d8f07f13505251815f554fc6f3844c0cfa23ad50812c54bd9eeb3c069f3a8",
+      "json_bytes": 1116951,
+      "gzip_bytes": 224653
+    }
+  ]
+}

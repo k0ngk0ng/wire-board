@@ -1,0 +1,61 @@
+{
+  "scope": "Only this worker duplicate full recapture, verified smoke prefix, private handler output copied to evidence, compiled observer/cache and empty reference output directories; canonical full native observations remain",
+  "paths": [
+    {
+      "path": ".local/md-yuyuhakusho/phase-clock-smoke",
+      "files": 5,
+      "bytes": 7639936
+    },
+    {
+      "path": ".local/md-yuyuhakusho/phase-clock-native-repeat",
+      "files": 8,
+      "bytes": 47688138
+    },
+    {
+      "path": ".local/md-yuyuhakusho/phase-clock-boundaries",
+      "files": 1,
+      "bytes": 5454
+    },
+    {
+      "path": ".local/md-yuyuhakusho/phase-clock-native/phase-clock.dylib",
+      "files": 1,
+      "bytes": 18576
+    },
+    {
+      "path": ".local/md-yuyuhakusho/phase-clock-native/tmp",
+      "files": 0,
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/phase-clock-native/core-baseline",
+      "files": 0,
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/phase-clock-native/core-pause",
+      "files": 0,
+      "bytes": 0
+    }
+  ],
+  "bytes_removed": 55352104,
+  "failed_report_archives": [
+    {
+      "original_path": "games/yuyuhakusho/verification/phase-clock/missing-direct-bus-red.json",
+      "raw_bytes": 12203779,
+      "raw_sha256": "41cde88eeb537a33acb13cddabd3d2554f9302d881c0e8dfe6c72dfc8425bfff",
+      "archive_path": "games/yuyuhakusho/verification/phase-clock/missing-direct-bus-red.json.gz",
+      "gzip_bytes": 176102,
+      "gzip_sha256": "473378935a0b002290c5d3ddfaa2ed5987524400d69551d93d39617544cce3f0",
+      "decompressed_bytes_equal": true
+    },
+    {
+      "original_path": "games/yuyuhakusho/verification/phase-clock/missing-direct-bus-pause-red.json",
+      "raw_bytes": 7929675,
+      "raw_sha256": "725b28b2b0b1d12b9eea2aecd552433281d69c43f8164a08f8f583655106c073",
+      "archive_path": "games/yuyuhakusho/verification/phase-clock/missing-direct-bus-pause-red.json.gz",
+      "gzip_bytes": 117147,
+      "gzip_sha256": "26edf2cc2d9cd73d473139ce983e6d7f34b758d512ca3f137ba69c2e4301b446",
+      "decompressed_bytes_equal": true
+    }
+  ]
+}

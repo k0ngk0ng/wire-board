@@ -1,0 +1,3628 @@
+{
+  "pass": true,
+  "scope": "Original-ROM bank values and joined IRQ/callback/arena context only; these contexts do not infer future interrupt or producer timing",
+  "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+  "reports": [
+    {
+      "scenario": "baseline",
+      "source": {
+        "path": ".local/md-yuyuhakusho/phase-clock-native/phase-clock-baseline.json.gz",
+        "sha256": "25e1d06e9802528319224c7ba1b516f6c28a121c63bd5499f9db836338ffbb94"
+      },
+      "bank_read_count": 512657,
+      "mapped_rom_min": 294912,
+      "mapped_rom_max": 748814,
+      "all_observed_bank_values_match_exact_ROM": true,
+      "bank_writes_observed": 0,
+      "markers_during_irq": 300473,
+      "markers_during_world_callback": 185813,
+      "markers_during_default_arena": 21517,
+      "reads_started_at_or_after_video_frame_end": 175,
+      "DMA_modes": {
+        "1": 191716,
+        "0": 320941
+      },
+      "zstate_before": {
+        "1": 512657
+      },
+      "DMA_waits": [
+        {
+          "bus_index": 1248,
+          "frame": 382,
+          "ordinal": 50133,
+          "before": 8775,
+          "after": 9857,
+          "dma_end": 9812,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 1817,
+          "frame": 385,
+          "ordinal": 52494,
+          "before": 8835,
+          "after": 9940,
+          "dma_end": 9895,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 2012,
+          "frame": 386,
+          "ordinal": 53356,
+          "before": 8940,
+          "after": 9935,
+          "dma_end": 9890,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 3155,
+          "frame": 392,
+          "ordinal": 58390,
+          "before": 7335,
+          "after": 12045,
+          "dma_end": 12000,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 3728,
+          "frame": 395,
+          "ordinal": 61153,
+          "before": 8940,
+          "after": 9866,
+          "dma_end": 9821,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 5660,
+          "frame": 405,
+          "ordinal": 70589,
+          "before": 7515,
+          "after": 9858,
+          "dma_end": 9813,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 7592,
+          "frame": 415,
+          "ordinal": 80027,
+          "before": 7380,
+          "after": 9997,
+          "dma_end": 9952,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 8173,
+          "frame": 418,
+          "ordinal": 82858,
+          "before": 8025,
+          "after": 9919,
+          "dma_end": 9874,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 8754,
+          "frame": 421,
+          "ordinal": 85694,
+          "before": 8205,
+          "after": 9869,
+          "dma_end": 9824,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 9335,
+          "frame": 424,
+          "ordinal": 88467,
+          "before": 8400,
+          "after": 11042,
+          "dma_end": 10997,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 10494,
+          "frame": 430,
+          "ordinal": 94124,
+          "before": 7515,
+          "after": 9858,
+          "dma_end": 9813,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 11461,
+          "frame": 559,
+          "ordinal": 193407,
+          "before": 11775,
+          "after": 13947,
+          "dma_end": 13902,
+          "dma_remaining": 0,
+          "dma_mode": 0
+        },
+        {
+          "bus_index": 12093,
+          "frame": 564,
+          "ordinal": 197757,
+          "before": 12120,
+          "after": 13880,
+          "dma_end": 13835,
+          "dma_remaining": 0,
+          "dma_mode": 0
+        },
+        {
+          "bus_index": 13112,
+          "frame": 572,
+          "ordinal": 204865,
+          "before": 8130,
+          "after": 9721,
+          "dma_end": 9676,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 13615,
+          "frame": 575,
+          "ordinal": 207628,
+          "before": 8385,
+          "after": 9790,
+          "dma_end": 9745,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 13743,
+          "frame": 576,
+          "ordinal": 208518,
+          "before": 11520,
+          "after": 13876,
+          "dma_end": 13831,
+          "dma_remaining": 0,
+          "dma_mode": 0
+        },
+        {
+          "bus_index": 14626,
+          "frame": 582,
+          "ordinal": 213945,
+          "before": 8595,
+          "after": 9790,
+          "dma_end": 9745,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 14754,
+          "frame": 583,
+          "ordinal": 214834,
+          "before": 11595,
+          "after": 13932,
+          "dma_end": 13887,
+          "dma_remaining": 0,
+          "dma_mode": 0
+        },
+        {
+          "bus_index": 17166,
+          "frame": 596,
+          "ordinal": 226560,
+          "before": 8400,
+          "after": 9864,
+          "dma_end": 9819,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 17361,
+          "frame": 597,
+          "ordinal": 227509,
+          "before": 7515,
+          "after": 9859,
+          "dma_end": 9814,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 17556,
+          "frame": 598,
+          "ordinal": 228457,
+          "before": 7500,
+          "after": 9861,
+          "dma_end": 9816,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 17751,
+          "frame": 599,
+          "ordinal": 229406,
+          "before": 7515,
+          "after": 9863,
+          "dma_end": 9818,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 17946,
+          "frame": 600,
+          "ordinal": 230350,
+          "before": 7590,
+          "after": 9928,
+          "dma_end": 9883,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 21734,
+          "frame": 632,
+          "ordinal": 257872,
+          "before": 8190,
+          "after": 9865,
+          "dma_end": 9820,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 22317,
+          "frame": 635,
+          "ordinal": 260699,
+          "before": 7260,
+          "after": 9857,
+          "dma_end": 9812,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 22512,
+          "frame": 636,
+          "ordinal": 261650,
+          "before": 7575,
+          "after": 9929,
+          "dma_end": 9884,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 22707,
+          "frame": 637,
+          "ordinal": 262599,
+          "before": 7605,
+          "after": 9861,
+          "dma_end": 9816,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 22902,
+          "frame": 638,
+          "ordinal": 263549,
+          "before": 7515,
+          "after": 9933,
+          "dma_end": 9888,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 23097,
+          "frame": 639,
+          "ordinal": 264499,
+          "before": 7575,
+          "after": 9914,
+          "dma_end": 9869,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 23292,
+          "frame": 640,
+          "ordinal": 265449,
+          "before": 7575,
+          "after": 9930,
+          "dma_end": 9885,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 23487,
+          "frame": 641,
+          "ordinal": 266398,
+          "before": 7575,
+          "after": 9932,
+          "dma_end": 9887,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 23682,
+          "frame": 642,
+          "ordinal": 267344,
+          "before": 7605,
+          "after": 9857,
+          "dma_end": 9812,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 24016,
+          "frame": 657,
+          "ordinal": 277797,
+          "before": 8100,
+          "after": 9939,
+          "dma_end": 9894,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 26456,
+          "frame": 669,
+          "ordinal": 288813,
+          "before": 8475,
+          "after": 9927,
+          "dma_end": 9882,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 26891,
+          "frame": 671,
+          "ordinal": 290462,
+          "before": 12210,
+          "after": 13544,
+          "dma_end": 13499,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 28158,
+          "frame": 681,
+          "ordinal": 298881,
+          "before": 9300,
+          "after": 9719,
+          "dma_end": 9674,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 28286,
+          "frame": 682,
+          "ordinal": 299734,
+          "before": 10590,
+          "after": 13791,
+          "dma_end": 13746,
+          "dma_remaining": 0,
+          "dma_mode": 0
+        },
+        {
+          "bus_index": 31890,
+          "frame": 702,
+          "ordinal": 317525,
+          "before": 8400,
+          "after": 9857,
+          "dma_end": 9812,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 32085,
+          "frame": 703,
+          "ordinal": 318452,
+          "before": 8415,
+          "after": 9873,
+          "dma_end": 9828,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 35586,
+          "frame": 731,
+          "ordinal": 342184,
+          "before": 7590,
+          "after": 11815,
+          "dma_end": 11770,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 38968,
+          "frame": 751,
+          "ordinal": 360145,
+          "before": 7950,
+          "after": 10007,
+          "dma_end": 9962,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 39163,
+          "frame": 752,
+          "ordinal": 361077,
+          "before": 8610,
+          "after": 9869,
+          "dma_end": 9824,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 39358,
+          "frame": 753,
+          "ordinal": 362010,
+          "before": 7680,
+          "after": 9857,
+          "dma_end": 9812,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 39553,
+          "frame": 754,
+          "ordinal": 362938,
+          "before": 8250,
+          "after": 9929,
+          "dma_end": 9884,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 39878,
+          "frame": 769,
+          "ordinal": 374348,
+          "before": 8925,
+          "after": 9856,
+          "dma_end": 9811,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 40460,
+          "frame": 772,
+          "ordinal": 377126,
+          "before": 8415,
+          "after": 9869,
+          "dma_end": 9824,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 40655,
+          "frame": 773,
+          "ordinal": 378052,
+          "before": 8475,
+          "after": 12046,
+          "dma_end": 12001,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 41043,
+          "frame": 775,
+          "ordinal": 379907,
+          "before": 8190,
+          "after": 9857,
+          "dma_end": 9812,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 41350,
+          "frame": 776,
+          "ordinal": 380904,
+          "before": 8325,
+          "after": 10006,
+          "dma_end": 9961,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 41545,
+          "frame": 777,
+          "ordinal": 381835,
+          "before": 7860,
+          "after": 9868,
+          "dma_end": 9823,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 44037,
+          "frame": 793,
+          "ordinal": 395935,
+          "before": 8325,
+          "after": 9720,
+          "dma_end": 9675,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 44165,
+          "frame": 794,
+          "ordinal": 396800,
+          "before": 11550,
+          "after": 13883,
+          "dma_end": 13838,
+          "dma_remaining": 0,
+          "dma_mode": 0
+        },
+        {
+          "bus_index": 45300,
+          "frame": 800,
+          "ordinal": 402216,
+          "before": 8415,
+          "after": 9870,
+          "dma_end": 9825,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 45495,
+          "frame": 801,
+          "ordinal": 403150,
+          "before": 7680,
+          "after": 9928,
+          "dma_end": 9883,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 45690,
+          "frame": 802,
+          "ordinal": 404000,
+          "before": 8625,
+          "after": 11979,
+          "dma_end": 11934,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 47508,
+          "frame": 845,
+          "ordinal": 428659,
+          "before": 8205,
+          "after": 17198,
+          "dma_end": 17153,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 48638,
+          "frame": 854,
+          "ordinal": 435138,
+          "before": 12510,
+          "after": 17404,
+          "dma_end": 17359,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 50629,
+          "frame": 867,
+          "ordinal": 445210,
+          "before": 12510,
+          "after": 17408,
+          "dma_end": 17363,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 51060,
+          "frame": 869,
+          "ordinal": 446878,
+          "before": 8535,
+          "after": 17482,
+          "dma_end": 17437,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 51637,
+          "frame": 872,
+          "ordinal": 449310,
+          "before": 7155,
+          "after": 17337,
+          "dma_end": 17292,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 52904,
+          "frame": 878,
+          "ordinal": 454241,
+          "before": 8190,
+          "after": 17338,
+          "dma_end": 17293,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 54326,
+          "frame": 885,
+          "ordinal": 459676,
+          "before": 7860,
+          "after": 17334,
+          "dma_end": 17289,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 57990,
+          "frame": 930,
+          "ordinal": 490841,
+          "before": 12525,
+          "after": 17417,
+          "dma_end": 17372,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 61244,
+          "frame": 956,
+          "ordinal": 509205,
+          "before": 8100,
+          "after": 12046,
+          "dma_end": 12001,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 61628,
+          "frame": 958,
+          "ordinal": 510655,
+          "before": 8415,
+          "after": 17348,
+          "dma_end": 17303,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 63390,
+          "frame": 970,
+          "ordinal": 515148,
+          "before": 331470,
+          "after": 331785,
+          "dma_end": 331740,
+          "dma_remaining": 364,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 63420,
+          "frame": 970,
+          "ordinal": 515179,
+          "before": 478545,
+          "after": 478845,
+          "dma_end": 478800,
+          "dma_remaining": 392,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 63450,
+          "frame": 970,
+          "ordinal": 515210,
+          "before": 626550,
+          "after": 629325,
+          "dma_end": 629280,
+          "dma_remaining": 319,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 63489,
+          "frame": 970,
+          "ordinal": 515250,
+          "before": 814635,
+          "after": 817425,
+          "dma_end": 817380,
+          "dma_remaining": 345,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 63774,
+          "frame": 972,
+          "ordinal": 515574,
+          "before": 399450,
+          "after": 400185,
+          "dma_end": 400140,
+          "dma_remaining": 330,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 63849,
+          "frame": 972,
+          "ordinal": 515651,
+          "before": 760005,
+          "after": 762705,
+          "dma_end": 762660,
+          "dma_remaining": 298,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 67503,
+          "frame": 999,
+          "ordinal": 530252,
+          "before": 12510,
+          "after": 17404,
+          "dma_end": 17359,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 68252,
+          "frame": 1005,
+          "ordinal": 533704,
+          "before": 10650,
+          "after": 17339,
+          "dma_end": 17294,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 69298,
+          "frame": 1025,
+          "ordinal": 544006,
+          "before": 7335,
+          "after": 17408,
+          "dma_end": 17363,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 72819,
+          "frame": 1067,
+          "ordinal": 567713,
+          "before": 7605,
+          "after": 17195,
+          "dma_end": 17150,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 73574,
+          "frame": 1073,
+          "ordinal": 571358,
+          "before": 7395,
+          "after": 17186,
+          "dma_end": 17141,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 75894,
+          "frame": 1095,
+          "ordinal": 584312,
+          "before": 7665,
+          "after": 17335,
+          "dma_end": 17290,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 76582,
+          "frame": 1098,
+          "ordinal": 586398,
+          "before": 7260,
+          "after": 17334,
+          "dma_end": 17289,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 78117,
+          "frame": 1106,
+          "ordinal": 591759,
+          "before": 8325,
+          "after": 17476,
+          "dma_end": 17431,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 79978,
+          "frame": 1119,
+          "ordinal": 599773,
+          "before": 8670,
+          "after": 17404,
+          "dma_end": 17359,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 81324,
+          "frame": 1126,
+          "ordinal": 604514,
+          "before": 8940,
+          "after": 17341,
+          "dma_end": 17296,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 82476,
+          "frame": 1137,
+          "ordinal": 610925,
+          "before": 7185,
+          "after": 17195,
+          "dma_end": 17150,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 82854,
+          "frame": 1140,
+          "ordinal": 612725,
+          "before": 8085,
+          "after": 17264,
+          "dma_end": 17219,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 84619,
+          "frame": 1150,
+          "ordinal": 619249,
+          "before": 8400,
+          "after": 17340,
+          "dma_end": 17295,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 85577,
+          "frame": 1155,
+          "ordinal": 622549,
+          "before": 8685,
+          "after": 17406,
+          "dma_end": 17361,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 86463,
+          "frame": 1169,
+          "ordinal": 630033,
+          "before": 7140,
+          "after": 17322,
+          "dma_end": 17277,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 86846,
+          "frame": 1171,
+          "ordinal": 631356,
+          "before": 7530,
+          "after": 17410,
+          "dma_end": 17365,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 87613,
+          "frame": 1175,
+          "ordinal": 634006,
+          "before": 8925,
+          "after": 17411,
+          "dma_end": 17366,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 87996,
+          "frame": 1177,
+          "ordinal": 635330,
+          "before": 7515,
+          "after": 17408,
+          "dma_end": 17363,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 88571,
+          "frame": 1180,
+          "ordinal": 637325,
+          "before": 7410,
+          "after": 17477,
+          "dma_end": 17432,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 88951,
+          "frame": 1182,
+          "ordinal": 638572,
+          "before": 8190,
+          "after": 17341,
+          "dma_end": 17296,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 89254,
+          "frame": 1205,
+          "ordinal": 649821,
+          "before": 11355,
+          "after": 17338,
+          "dma_end": 17293,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 89631,
+          "frame": 1208,
+          "ordinal": 651622,
+          "before": 8310,
+          "after": 17197,
+          "dma_end": 17152,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 90008,
+          "frame": 1211,
+          "ordinal": 653419,
+          "before": 7800,
+          "after": 17196,
+          "dma_end": 17151,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 90385,
+          "frame": 1214,
+          "ordinal": 655221,
+          "before": 8565,
+          "after": 17265,
+          "dma_end": 17220,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 94710,
+          "frame": 1240,
+          "ordinal": 671522,
+          "before": 7665,
+          "after": 17338,
+          "dma_end": 17293,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 95282,
+          "frame": 1243,
+          "ordinal": 673439,
+          "before": 7695,
+          "after": 17407,
+          "dma_end": 17362,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 95665,
+          "frame": 1245,
+          "ordinal": 674758,
+          "before": 7335,
+          "after": 17404,
+          "dma_end": 17359,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 97919,
+          "frame": 1266,
+          "ordinal": 686814,
+          "before": 7575,
+          "after": 17474,
+          "dma_end": 17429,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 98494,
+          "frame": 1269,
+          "ordinal": 688798,
+          "before": 7140,
+          "after": 17340,
+          "dma_end": 17295,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 99337,
+          "frame": 1277,
+          "ordinal": 693133,
+          "before": 9345,
+          "after": 17251,
+          "dma_end": 17206,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 99714,
+          "frame": 1280,
+          "ordinal": 694936,
+          "before": 8310,
+          "after": 17180,
+          "dma_end": 17135,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 100091,
+          "frame": 1283,
+          "ordinal": 696736,
+          "before": 7800,
+          "after": 17200,
+          "dma_end": 17155,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 100468,
+          "frame": 1286,
+          "ordinal": 698542,
+          "before": 7800,
+          "after": 17199,
+          "dma_end": 17154,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 101094,
+          "frame": 1291,
+          "ordinal": 701474,
+          "before": 8955,
+          "after": 17251,
+          "dma_end": 17206,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 101345,
+          "frame": 1293,
+          "ordinal": 702661,
+          "before": 8595,
+          "after": 17269,
+          "dma_end": 17224,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 101970,
+          "frame": 1298,
+          "ordinal": 705611,
+          "before": 7185,
+          "after": 17195,
+          "dma_end": 17150,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 103937,
+          "frame": 1321,
+          "ordinal": 718274,
+          "before": 8100,
+          "after": 17409,
+          "dma_end": 17364,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 104893,
+          "frame": 1326,
+          "ordinal": 721548,
+          "before": 8205,
+          "after": 17342,
+          "dma_end": 17297,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 106056,
+          "frame": 1356,
+          "ordinal": 737385,
+          "before": 8970,
+          "after": 17255,
+          "dma_end": 17210,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 107435,
+          "frame": 1364,
+          "ordinal": 742520,
+          "before": 8400,
+          "after": 17339,
+          "dma_end": 17294,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 109679,
+          "frame": 1379,
+          "ordinal": 751850,
+          "before": 8610,
+          "after": 17328,
+          "dma_end": 17283,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 112172,
+          "frame": 1392,
+          "ordinal": 760529,
+          "before": 8760,
+          "after": 17326,
+          "dma_end": 17281,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 112499,
+          "frame": 1403,
+          "ordinal": 766216,
+          "before": 8310,
+          "after": 17474,
+          "dma_end": 17429,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 114224,
+          "frame": 1412,
+          "ordinal": 772246,
+          "before": 8265,
+          "after": 17415,
+          "dma_end": 17370,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 116949,
+          "frame": 1433,
+          "ordinal": 785120,
+          "before": 7935,
+          "after": 17415,
+          "dma_end": 17370,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 118680,
+          "frame": 1442,
+          "ordinal": 791202,
+          "before": 8400,
+          "after": 17335,
+          "dma_end": 17290,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 119448,
+          "frame": 1446,
+          "ordinal": 793897,
+          "before": 8250,
+          "after": 17406,
+          "dma_end": 17361,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 120330,
+          "frame": 1460,
+          "ordinal": 800682,
+          "before": 8265,
+          "after": 17413,
+          "dma_end": 17368,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 121466,
+          "frame": 1465,
+          "ordinal": 805106,
+          "before": 742410,
+          "after": 745605,
+          "dma_end": 745560,
+          "dma_remaining": 447,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 121645,
+          "frame": 1466,
+          "ordinal": 805318,
+          "before": 806865,
+          "after": 807165,
+          "dma_end": 807120,
+          "dma_remaining": 413,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 122184,
+          "frame": 1469,
+          "ordinal": 805917,
+          "before": 874500,
+          "after": 875565,
+          "dma_end": 875520,
+          "dma_remaining": 370,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 122678,
+          "frame": 1473,
+          "ordinal": 807649,
+          "before": 11475,
+          "after": 17338,
+          "dma_end": 17293,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 124425,
+          "frame": 1485,
+          "ordinal": 815073,
+          "before": 12495,
+          "after": 17404,
+          "dma_end": 17359,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 124731,
+          "frame": 1486,
+          "ordinal": 815904,
+          "before": 8940,
+          "after": 17413,
+          "dma_end": 17368,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 126325,
+          "frame": 1494,
+          "ordinal": 821788,
+          "before": 10155,
+          "after": 17268,
+          "dma_end": 17223,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 127960,
+          "frame": 1504,
+          "ordinal": 828415,
+          "before": 8190,
+          "after": 17337,
+          "dma_end": 17292,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 129625,
+          "frame": 1512,
+          "ordinal": 834431,
+          "before": 531510,
+          "after": 533565,
+          "dma_end": 533520,
+          "dma_remaining": 84,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 129798,
+          "frame": 1513,
+          "ordinal": 834650,
+          "before": 574350,
+          "after": 574605,
+          "dma_end": 574560,
+          "dma_remaining": 488,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 129932,
+          "frame": 1514,
+          "ordinal": 834808,
+          "before": 298290,
+          "after": 301005,
+          "dma_end": 300960,
+          "dma_remaining": 378,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 130087,
+          "frame": 1515,
+          "ordinal": 834972,
+          "before": 114165,
+          "after": 126585,
+          "dma_end": 126540,
+          "dma_remaining": 58,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 130231,
+          "frame": 1515,
+          "ordinal": 835132,
+          "before": 768810,
+          "after": 769545,
+          "dma_end": 769500,
+          "dma_remaining": 352,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 130258,
+          "frame": 1516,
+          "ordinal": 835166,
+          "before": 8010,
+          "after": 9297,
+          "dma_end": 9252,
+          "dma_remaining": 0,
+          "dma_mode": 0
+        },
+        {
+          "bus_index": 130367,
+          "frame": 1516,
+          "ordinal": 835292,
+          "before": 496710,
+          "after": 499365,
+          "dma_end": 499320,
+          "dma_remaining": 453,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 130545,
+          "frame": 1517,
+          "ordinal": 835494,
+          "before": 414150,
+          "after": 417285,
+          "dma_end": 417240,
+          "dma_remaining": 426,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 130676,
+          "frame": 1518,
+          "ordinal": 835634,
+          "before": 125730,
+          "after": 126585,
+          "dma_end": 126540,
+          "dma_remaining": 364,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 130776,
+          "frame": 1518,
+          "ordinal": 835750,
+          "before": 586455,
+          "after": 588285,
+          "dma_end": 588240,
+          "dma_remaining": 488,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 131303,
+          "frame": 1521,
+          "ordinal": 836350,
+          "before": 332025,
+          "after": 335205,
+          "dma_end": 335160,
+          "dma_remaining": 432,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 131874,
+          "frame": 1524,
+          "ordinal": 836995,
+          "before": 272520,
+          "after": 273645,
+          "dma_end": 273600,
+          "dma_remaining": 491,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 131982,
+          "frame": 1524,
+          "ordinal": 837104,
+          "before": 770610,
+          "after": 772965,
+          "dma_end": 772920,
+          "dma_remaining": 434,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 132128,
+          "frame": 1525,
+          "ordinal": 837274,
+          "before": 548115,
+          "after": 550665,
+          "dma_end": 550620,
+          "dma_remaining": 455,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 132367,
+          "frame": 1526,
+          "ordinal": 837538,
+          "before": 753330,
+          "after": 755865,
+          "dma_end": 755820,
+          "dma_remaining": 456,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 132514,
+          "frame": 1527,
+          "ordinal": 837709,
+          "before": 544935,
+          "after": 547245,
+          "dma_end": 547200,
+          "dma_remaining": 315,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 132843,
+          "frame": 1529,
+          "ordinal": 838090,
+          "before": 323145,
+          "after": 324945,
+          "dma_end": 324900,
+          "dma_remaining": 320,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 133027,
+          "frame": 1530,
+          "ordinal": 838300,
+          "before": 292755,
+          "after": 294165,
+          "dma_end": 294120,
+          "dma_remaining": 500,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 133533,
+          "frame": 1532,
+          "ordinal": 839810,
+          "before": 834345,
+          "after": 834525,
+          "dma_end": 834480,
+          "dma_remaining": 32,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 456051,
+          "frame": 4999,
+          "ordinal": 2618010,
+          "before": 9375,
+          "after": 11903,
+          "dma_end": 11858,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 456666,
+          "frame": 5004,
+          "ordinal": 2621033,
+          "before": 9945,
+          "after": 11902,
+          "dma_end": 11857,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 457035,
+          "frame": 5007,
+          "ordinal": 2622831,
+          "before": 12270,
+          "after": 14830,
+          "dma_end": 14785,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 457281,
+          "frame": 5009,
+          "ordinal": 2624036,
+          "before": 10965,
+          "after": 14834,
+          "dma_end": 14789,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 457773,
+          "frame": 5013,
+          "ordinal": 2626423,
+          "before": 12510,
+          "after": 14900,
+          "dma_end": 14855,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 458020,
+          "frame": 5015,
+          "ordinal": 2627627,
+          "before": 11760,
+          "after": 14905,
+          "dma_end": 14860,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 459696,
+          "frame": 5028,
+          "ordinal": 2635671,
+          "before": 7965,
+          "after": 11973,
+          "dma_end": 11928,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 461011,
+          "frame": 5035,
+          "ordinal": 2640343,
+          "before": 8940,
+          "after": 11981,
+          "dma_end": 11936,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 461660,
+          "frame": 5050,
+          "ordinal": 2648468,
+          "before": 10065,
+          "after": 11829,
+          "dma_end": 11784,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 462151,
+          "frame": 5054,
+          "ordinal": 2650907,
+          "before": 8205,
+          "after": 11835,
+          "dma_end": 11790,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 462770,
+          "frame": 5059,
+          "ordinal": 2654010,
+          "before": 7410,
+          "after": 11835,
+          "dma_end": 11790,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 463513,
+          "frame": 5065,
+          "ordinal": 2657762,
+          "before": 7605,
+          "after": 11835,
+          "dma_end": 11790,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 466909,
+          "frame": 5088,
+          "ordinal": 2671725,
+          "before": 7260,
+          "after": 11971,
+          "dma_end": 11926,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 468131,
+          "frame": 5108,
+          "ordinal": 2682464,
+          "before": 9090,
+          "after": 11819,
+          "dma_end": 11774,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 469113,
+          "frame": 5116,
+          "ordinal": 2687326,
+          "before": 11715,
+          "after": 14840,
+          "dma_end": 14795,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 469485,
+          "frame": 5119,
+          "ordinal": 2689174,
+          "before": 11910,
+          "after": 14829,
+          "dma_end": 14784,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 469977,
+          "frame": 5123,
+          "ordinal": 2691566,
+          "before": 11025,
+          "after": 14884,
+          "dma_end": 14839,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 471911,
+          "frame": 5137,
+          "ordinal": 2700232,
+          "before": 8865,
+          "after": 11956,
+          "dma_end": 11911,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 473861,
+          "frame": 5161,
+          "ordinal": 2713693,
+          "before": 9750,
+          "after": 11901,
+          "dma_end": 11856,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 474228,
+          "frame": 5164,
+          "ordinal": 2715480,
+          "before": 8520,
+          "after": 11832,
+          "dma_end": 11787,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 474474,
+          "frame": 5166,
+          "ordinal": 2716698,
+          "before": 8205,
+          "after": 11834,
+          "dma_end": 11789,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 474844,
+          "frame": 5169,
+          "ordinal": 2718518,
+          "before": 12120,
+          "after": 14835,
+          "dma_end": 14790,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 475571,
+          "frame": 5175,
+          "ordinal": 2721682,
+          "before": 12060,
+          "after": 14968,
+          "dma_end": 14923,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 475818,
+          "frame": 5177,
+          "ordinal": 2722892,
+          "before": 7605,
+          "after": 11833,
+          "dma_end": 11788,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 476310,
+          "frame": 5182,
+          "ordinal": 2725630,
+          "before": 7860,
+          "after": 11973,
+          "dma_end": 11928,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 477055,
+          "frame": 5186,
+          "ordinal": 2728178,
+          "before": 8880,
+          "after": 11969,
+          "dma_end": 11924,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 477617,
+          "frame": 5189,
+          "ordinal": 2730133,
+          "before": 7260,
+          "after": 11970,
+          "dma_end": 11925,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 478854,
+          "frame": 5207,
+          "ordinal": 2739956,
+          "before": 10140,
+          "after": 11891,
+          "dma_end": 11846,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 479470,
+          "frame": 5212,
+          "ordinal": 2743022,
+          "before": 11025,
+          "after": 14829,
+          "dma_end": 14784,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 479717,
+          "frame": 5214,
+          "ordinal": 2744247,
+          "before": 8130,
+          "after": 11832,
+          "dma_end": 11787,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 480210,
+          "frame": 5218,
+          "ordinal": 2746720,
+          "before": 7665,
+          "after": 11887,
+          "dma_end": 11842,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 480580,
+          "frame": 5221,
+          "ordinal": 2748554,
+          "before": 8505,
+          "after": 11819,
+          "dma_end": 11774,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 481072,
+          "frame": 5225,
+          "ordinal": 2750994,
+          "before": 8580,
+          "after": 11901,
+          "dma_end": 11856,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 481567,
+          "frame": 5229,
+          "ordinal": 2753475,
+          "before": 8085,
+          "after": 11904,
+          "dma_end": 11859,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 482247,
+          "frame": 5235,
+          "ordinal": 2757084,
+          "before": 7200,
+          "after": 11905,
+          "dma_end": 11860,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 483564,
+          "frame": 5242,
+          "ordinal": 2761809,
+          "before": 8190,
+          "after": 11982,
+          "dma_end": 11937,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 484832,
+          "frame": 5262,
+          "ordinal": 2773029,
+          "before": 8505,
+          "after": 11830,
+          "dma_end": 11785,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 485931,
+          "frame": 5271,
+          "ordinal": 2778088,
+          "before": 7605,
+          "after": 11832,
+          "dma_end": 11787,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 486177,
+          "frame": 5273,
+          "ordinal": 2779290,
+          "before": 7395,
+          "after": 11829,
+          "dma_end": 11784,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 487158,
+          "frame": 5281,
+          "ordinal": 2783998,
+          "before": 10455,
+          "after": 11831,
+          "dma_end": 11786,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 488901,
+          "frame": 5293,
+          "ordinal": 2791289,
+          "before": 7995,
+          "after": 12122,
+          "dma_end": 12077,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 490560,
+          "frame": 5314,
+          "ordinal": 2803289,
+          "before": 8205,
+          "after": 11834,
+          "dma_end": 11789,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 491052,
+          "frame": 5318,
+          "ordinal": 2805742,
+          "before": 7260,
+          "after": 11899,
+          "dma_end": 11854,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 491546,
+          "frame": 5322,
+          "ordinal": 2808214,
+          "before": 8970,
+          "after": 11905,
+          "dma_end": 11860,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 491915,
+          "frame": 5325,
+          "ordinal": 2810049,
+          "before": 7260,
+          "after": 11900,
+          "dma_end": 11855,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 492410,
+          "frame": 5329,
+          "ordinal": 2812524,
+          "before": 8910,
+          "after": 11829,
+          "dma_end": 11784,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 492902,
+          "frame": 5333,
+          "ordinal": 2814957,
+          "before": 8505,
+          "after": 11831,
+          "dma_end": 11786,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 496073,
+          "frame": 5359,
+          "ordinal": 2830835,
+          "before": 7575,
+          "after": 12044,
+          "dma_end": 11999,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 498035,
+          "frame": 5372,
+          "ordinal": 2838645,
+          "before": 8070,
+          "after": 11820,
+          "dma_end": 11775,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 498154,
+          "frame": 5373,
+          "ordinal": 2839154,
+          "before": 7485,
+          "after": 11905,
+          "dma_end": 11860,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 498397,
+          "frame": 5375,
+          "ordinal": 2840284,
+          "before": 11550,
+          "after": 14902,
+          "dma_end": 14857,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 498957,
+          "frame": 5380,
+          "ordinal": 2843256,
+          "before": 10890,
+          "after": 14694,
+          "dma_end": 14649,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 499546,
+          "frame": 5386,
+          "ordinal": 2846612,
+          "before": 11265,
+          "after": 14828,
+          "dma_end": 14783,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 501377,
+          "frame": 5397,
+          "ordinal": 2853490,
+          "before": 8250,
+          "after": 12039,
+          "dma_end": 11994,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 503166,
+          "frame": 5420,
+          "ordinal": 2866377,
+          "before": 12060,
+          "after": 14978,
+          "dma_end": 14933,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 503901,
+          "frame": 5426,
+          "ordinal": 2869978,
+          "before": 9375,
+          "after": 11903,
+          "dma_end": 11858,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 504144,
+          "frame": 5428,
+          "ordinal": 2871117,
+          "before": 11355,
+          "after": 14832,
+          "dma_end": 14787,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 504881,
+          "frame": 5434,
+          "ordinal": 2874718,
+          "before": 9570,
+          "after": 11904,
+          "dma_end": 11859,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 505127,
+          "frame": 5436,
+          "ordinal": 2875899,
+          "before": 11985,
+          "after": 14911,
+          "dma_end": 14866,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 508060,
+          "frame": 5455,
+          "ordinal": 2888076,
+          "before": 7965,
+          "after": 11970,
+          "dma_end": 11925,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 509004,
+          "frame": 5473,
+          "ordinal": 2897269,
+          "before": 10320,
+          "after": 11886,
+          "dma_end": 11841,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 509621,
+          "frame": 5478,
+          "ordinal": 2900329,
+          "before": 8400,
+          "after": 11903,
+          "dma_end": 11858,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 509740,
+          "frame": 5479,
+          "ordinal": 2900834,
+          "before": 7185,
+          "after": 11820,
+          "dma_end": 11775,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 510107,
+          "frame": 5482,
+          "ordinal": 2902589,
+          "before": 11250,
+          "after": 14831,
+          "dma_end": 14786,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 510848,
+          "frame": 5488,
+          "ordinal": 2906283,
+          "before": 7590,
+          "after": 11835,
+          "dma_end": 11790,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        }
+      ]
+    },
+    {
+      "scenario": "pause",
+      "source": {
+        "path": ".local/md-yuyuhakusho/phase-clock-native/phase-clock-pause.json.gz",
+        "sha256": "d82f48c09888d4d63a2260ff0d1dc0d93a2626f2cf184a94283f48d316b1b271"
+      },
+      "bank_read_count": 338380,
+      "mapped_rom_min": 294912,
+      "mapped_rom_max": 663046,
+      "all_observed_bank_values_match_exact_ROM": true,
+      "bank_writes_observed": 0,
+      "markers_during_irq": 194368,
+      "markers_during_world_callback": 118213,
+      "markers_during_default_arena": 14106,
+      "reads_started_at_or_after_video_frame_end": 106,
+      "DMA_modes": {
+        "1": 131961,
+        "0": 206419
+      },
+      "zstate_before": {
+        "1": 338380
+      },
+      "DMA_waits": [
+        {
+          "bus_index": 1248,
+          "frame": 382,
+          "ordinal": 50133,
+          "before": 8775,
+          "after": 9857,
+          "dma_end": 9812,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 1817,
+          "frame": 385,
+          "ordinal": 52494,
+          "before": 8835,
+          "after": 9940,
+          "dma_end": 9895,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 2012,
+          "frame": 386,
+          "ordinal": 53356,
+          "before": 8940,
+          "after": 9935,
+          "dma_end": 9890,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 3155,
+          "frame": 392,
+          "ordinal": 58390,
+          "before": 7335,
+          "after": 12045,
+          "dma_end": 12000,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 3728,
+          "frame": 395,
+          "ordinal": 61153,
+          "before": 8940,
+          "after": 9866,
+          "dma_end": 9821,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 5660,
+          "frame": 405,
+          "ordinal": 70589,
+          "before": 7515,
+          "after": 9858,
+          "dma_end": 9813,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 7592,
+          "frame": 415,
+          "ordinal": 80027,
+          "before": 7380,
+          "after": 9997,
+          "dma_end": 9952,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 8173,
+          "frame": 418,
+          "ordinal": 82858,
+          "before": 8025,
+          "after": 9919,
+          "dma_end": 9874,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 8754,
+          "frame": 421,
+          "ordinal": 85694,
+          "before": 8205,
+          "after": 9869,
+          "dma_end": 9824,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 9335,
+          "frame": 424,
+          "ordinal": 88467,
+          "before": 8400,
+          "after": 11042,
+          "dma_end": 10997,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 10494,
+          "frame": 430,
+          "ordinal": 94124,
+          "before": 7515,
+          "after": 9858,
+          "dma_end": 9813,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 11461,
+          "frame": 559,
+          "ordinal": 193407,
+          "before": 11775,
+          "after": 13947,
+          "dma_end": 13902,
+          "dma_remaining": 0,
+          "dma_mode": 0
+        },
+        {
+          "bus_index": 12093,
+          "frame": 564,
+          "ordinal": 197757,
+          "before": 12120,
+          "after": 13880,
+          "dma_end": 13835,
+          "dma_remaining": 0,
+          "dma_mode": 0
+        },
+        {
+          "bus_index": 13112,
+          "frame": 572,
+          "ordinal": 204865,
+          "before": 8130,
+          "after": 9721,
+          "dma_end": 9676,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 13615,
+          "frame": 575,
+          "ordinal": 207628,
+          "before": 8385,
+          "after": 9790,
+          "dma_end": 9745,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 13743,
+          "frame": 576,
+          "ordinal": 208518,
+          "before": 11520,
+          "after": 13876,
+          "dma_end": 13831,
+          "dma_remaining": 0,
+          "dma_mode": 0
+        },
+        {
+          "bus_index": 14626,
+          "frame": 582,
+          "ordinal": 213945,
+          "before": 8595,
+          "after": 9790,
+          "dma_end": 9745,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 14754,
+          "frame": 583,
+          "ordinal": 214834,
+          "before": 11595,
+          "after": 13932,
+          "dma_end": 13887,
+          "dma_remaining": 0,
+          "dma_mode": 0
+        },
+        {
+          "bus_index": 17166,
+          "frame": 596,
+          "ordinal": 226560,
+          "before": 8400,
+          "after": 9864,
+          "dma_end": 9819,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 17361,
+          "frame": 597,
+          "ordinal": 227509,
+          "before": 7515,
+          "after": 9859,
+          "dma_end": 9814,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 17556,
+          "frame": 598,
+          "ordinal": 228457,
+          "before": 7500,
+          "after": 9861,
+          "dma_end": 9816,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 17751,
+          "frame": 599,
+          "ordinal": 229406,
+          "before": 7515,
+          "after": 9863,
+          "dma_end": 9818,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 17946,
+          "frame": 600,
+          "ordinal": 230350,
+          "before": 7590,
+          "after": 9928,
+          "dma_end": 9883,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 21734,
+          "frame": 632,
+          "ordinal": 257872,
+          "before": 8190,
+          "after": 9865,
+          "dma_end": 9820,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 22317,
+          "frame": 635,
+          "ordinal": 260699,
+          "before": 7260,
+          "after": 9857,
+          "dma_end": 9812,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 22512,
+          "frame": 636,
+          "ordinal": 261650,
+          "before": 7575,
+          "after": 9929,
+          "dma_end": 9884,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 22707,
+          "frame": 637,
+          "ordinal": 262599,
+          "before": 7605,
+          "after": 9861,
+          "dma_end": 9816,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 22902,
+          "frame": 638,
+          "ordinal": 263549,
+          "before": 7515,
+          "after": 9933,
+          "dma_end": 9888,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 23097,
+          "frame": 639,
+          "ordinal": 264499,
+          "before": 7575,
+          "after": 9914,
+          "dma_end": 9869,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 23292,
+          "frame": 640,
+          "ordinal": 265449,
+          "before": 7575,
+          "after": 9930,
+          "dma_end": 9885,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 23487,
+          "frame": 641,
+          "ordinal": 266398,
+          "before": 7575,
+          "after": 9932,
+          "dma_end": 9887,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 23682,
+          "frame": 642,
+          "ordinal": 267344,
+          "before": 7605,
+          "after": 9857,
+          "dma_end": 9812,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 24016,
+          "frame": 657,
+          "ordinal": 277797,
+          "before": 8100,
+          "after": 9939,
+          "dma_end": 9894,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 26456,
+          "frame": 669,
+          "ordinal": 288813,
+          "before": 8475,
+          "after": 9927,
+          "dma_end": 9882,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 26891,
+          "frame": 671,
+          "ordinal": 290462,
+          "before": 12210,
+          "after": 13544,
+          "dma_end": 13499,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 28158,
+          "frame": 681,
+          "ordinal": 298881,
+          "before": 9300,
+          "after": 9719,
+          "dma_end": 9674,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 28286,
+          "frame": 682,
+          "ordinal": 299734,
+          "before": 10590,
+          "after": 13791,
+          "dma_end": 13746,
+          "dma_remaining": 0,
+          "dma_mode": 0
+        },
+        {
+          "bus_index": 31890,
+          "frame": 702,
+          "ordinal": 317525,
+          "before": 8400,
+          "after": 9857,
+          "dma_end": 9812,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 32085,
+          "frame": 703,
+          "ordinal": 318452,
+          "before": 8415,
+          "after": 9873,
+          "dma_end": 9828,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 35586,
+          "frame": 731,
+          "ordinal": 342184,
+          "before": 7590,
+          "after": 11815,
+          "dma_end": 11770,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 38968,
+          "frame": 751,
+          "ordinal": 360145,
+          "before": 7950,
+          "after": 10007,
+          "dma_end": 9962,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 39163,
+          "frame": 752,
+          "ordinal": 361077,
+          "before": 8610,
+          "after": 9869,
+          "dma_end": 9824,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 39358,
+          "frame": 753,
+          "ordinal": 362010,
+          "before": 7680,
+          "after": 9857,
+          "dma_end": 9812,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 39553,
+          "frame": 754,
+          "ordinal": 362938,
+          "before": 8250,
+          "after": 9929,
+          "dma_end": 9884,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 39878,
+          "frame": 769,
+          "ordinal": 374348,
+          "before": 8925,
+          "after": 9856,
+          "dma_end": 9811,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 40460,
+          "frame": 772,
+          "ordinal": 377126,
+          "before": 8415,
+          "after": 9869,
+          "dma_end": 9824,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 40655,
+          "frame": 773,
+          "ordinal": 378052,
+          "before": 8475,
+          "after": 12046,
+          "dma_end": 12001,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 41043,
+          "frame": 775,
+          "ordinal": 379907,
+          "before": 8190,
+          "after": 9857,
+          "dma_end": 9812,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 41350,
+          "frame": 776,
+          "ordinal": 380904,
+          "before": 8325,
+          "after": 10006,
+          "dma_end": 9961,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 41545,
+          "frame": 777,
+          "ordinal": 381835,
+          "before": 7860,
+          "after": 9868,
+          "dma_end": 9823,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 44037,
+          "frame": 793,
+          "ordinal": 395935,
+          "before": 8325,
+          "after": 9720,
+          "dma_end": 9675,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 44165,
+          "frame": 794,
+          "ordinal": 396800,
+          "before": 11550,
+          "after": 13883,
+          "dma_end": 13838,
+          "dma_remaining": 0,
+          "dma_mode": 0
+        },
+        {
+          "bus_index": 45300,
+          "frame": 800,
+          "ordinal": 402216,
+          "before": 8415,
+          "after": 9870,
+          "dma_end": 9825,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 45495,
+          "frame": 801,
+          "ordinal": 403150,
+          "before": 7680,
+          "after": 9928,
+          "dma_end": 9883,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 45690,
+          "frame": 802,
+          "ordinal": 404000,
+          "before": 8625,
+          "after": 11979,
+          "dma_end": 11934,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 47508,
+          "frame": 845,
+          "ordinal": 428659,
+          "before": 8205,
+          "after": 17198,
+          "dma_end": 17153,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 48638,
+          "frame": 854,
+          "ordinal": 435138,
+          "before": 12510,
+          "after": 17404,
+          "dma_end": 17359,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 50629,
+          "frame": 867,
+          "ordinal": 445210,
+          "before": 12510,
+          "after": 17408,
+          "dma_end": 17363,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 51060,
+          "frame": 869,
+          "ordinal": 446878,
+          "before": 8535,
+          "after": 17482,
+          "dma_end": 17437,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 51637,
+          "frame": 872,
+          "ordinal": 449310,
+          "before": 7155,
+          "after": 17337,
+          "dma_end": 17292,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 52904,
+          "frame": 878,
+          "ordinal": 454241,
+          "before": 8190,
+          "after": 17338,
+          "dma_end": 17293,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 54326,
+          "frame": 885,
+          "ordinal": 459676,
+          "before": 7860,
+          "after": 17334,
+          "dma_end": 17289,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 57990,
+          "frame": 930,
+          "ordinal": 490841,
+          "before": 12525,
+          "after": 17417,
+          "dma_end": 17372,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 61244,
+          "frame": 956,
+          "ordinal": 509205,
+          "before": 8100,
+          "after": 12046,
+          "dma_end": 12001,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 61628,
+          "frame": 958,
+          "ordinal": 510655,
+          "before": 8415,
+          "after": 17348,
+          "dma_end": 17303,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 63390,
+          "frame": 970,
+          "ordinal": 515148,
+          "before": 331470,
+          "after": 331785,
+          "dma_end": 331740,
+          "dma_remaining": 364,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 63420,
+          "frame": 970,
+          "ordinal": 515179,
+          "before": 478545,
+          "after": 478845,
+          "dma_end": 478800,
+          "dma_remaining": 392,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 63450,
+          "frame": 970,
+          "ordinal": 515210,
+          "before": 626550,
+          "after": 629325,
+          "dma_end": 629280,
+          "dma_remaining": 319,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 63489,
+          "frame": 970,
+          "ordinal": 515250,
+          "before": 814635,
+          "after": 817425,
+          "dma_end": 817380,
+          "dma_remaining": 345,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 63774,
+          "frame": 972,
+          "ordinal": 515574,
+          "before": 399450,
+          "after": 400185,
+          "dma_end": 400140,
+          "dma_remaining": 330,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 63849,
+          "frame": 972,
+          "ordinal": 515651,
+          "before": 760005,
+          "after": 762705,
+          "dma_end": 762660,
+          "dma_remaining": 298,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 67503,
+          "frame": 999,
+          "ordinal": 530252,
+          "before": 12510,
+          "after": 17404,
+          "dma_end": 17359,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 68252,
+          "frame": 1005,
+          "ordinal": 533704,
+          "before": 10650,
+          "after": 17339,
+          "dma_end": 17294,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 69298,
+          "frame": 1025,
+          "ordinal": 544006,
+          "before": 7335,
+          "after": 17408,
+          "dma_end": 17363,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 72819,
+          "frame": 1067,
+          "ordinal": 567713,
+          "before": 7605,
+          "after": 17195,
+          "dma_end": 17150,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 73574,
+          "frame": 1073,
+          "ordinal": 571358,
+          "before": 7395,
+          "after": 17186,
+          "dma_end": 17141,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 75894,
+          "frame": 1095,
+          "ordinal": 584312,
+          "before": 7665,
+          "after": 17335,
+          "dma_end": 17290,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 76582,
+          "frame": 1098,
+          "ordinal": 586398,
+          "before": 7260,
+          "after": 17334,
+          "dma_end": 17289,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 78117,
+          "frame": 1106,
+          "ordinal": 591759,
+          "before": 8325,
+          "after": 17476,
+          "dma_end": 17431,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 79978,
+          "frame": 1119,
+          "ordinal": 599773,
+          "before": 8670,
+          "after": 17404,
+          "dma_end": 17359,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 81324,
+          "frame": 1126,
+          "ordinal": 604514,
+          "before": 8940,
+          "after": 17341,
+          "dma_end": 17296,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 82476,
+          "frame": 1137,
+          "ordinal": 610925,
+          "before": 7185,
+          "after": 17195,
+          "dma_end": 17150,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 82854,
+          "frame": 1140,
+          "ordinal": 612725,
+          "before": 8085,
+          "after": 17264,
+          "dma_end": 17219,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 84619,
+          "frame": 1150,
+          "ordinal": 619249,
+          "before": 8400,
+          "after": 17340,
+          "dma_end": 17295,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 85577,
+          "frame": 1155,
+          "ordinal": 622549,
+          "before": 8685,
+          "after": 17406,
+          "dma_end": 17361,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 86463,
+          "frame": 1169,
+          "ordinal": 630033,
+          "before": 7140,
+          "after": 17322,
+          "dma_end": 17277,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 86846,
+          "frame": 1171,
+          "ordinal": 631356,
+          "before": 7530,
+          "after": 17410,
+          "dma_end": 17365,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 87613,
+          "frame": 1175,
+          "ordinal": 634006,
+          "before": 8925,
+          "after": 17411,
+          "dma_end": 17366,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 87996,
+          "frame": 1177,
+          "ordinal": 635330,
+          "before": 7515,
+          "after": 17408,
+          "dma_end": 17363,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 88571,
+          "frame": 1180,
+          "ordinal": 637325,
+          "before": 7410,
+          "after": 17477,
+          "dma_end": 17432,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 88951,
+          "frame": 1182,
+          "ordinal": 638572,
+          "before": 8190,
+          "after": 17341,
+          "dma_end": 17296,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 89254,
+          "frame": 1205,
+          "ordinal": 649821,
+          "before": 11355,
+          "after": 17338,
+          "dma_end": 17293,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 89631,
+          "frame": 1208,
+          "ordinal": 651622,
+          "before": 8310,
+          "after": 17197,
+          "dma_end": 17152,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 90008,
+          "frame": 1211,
+          "ordinal": 653419,
+          "before": 7800,
+          "after": 17196,
+          "dma_end": 17151,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 90385,
+          "frame": 1214,
+          "ordinal": 655221,
+          "before": 8565,
+          "after": 17265,
+          "dma_end": 17220,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 94710,
+          "frame": 1240,
+          "ordinal": 671522,
+          "before": 7665,
+          "after": 17338,
+          "dma_end": 17293,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 95282,
+          "frame": 1243,
+          "ordinal": 673439,
+          "before": 7695,
+          "after": 17407,
+          "dma_end": 17362,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 95665,
+          "frame": 1245,
+          "ordinal": 674758,
+          "before": 7335,
+          "after": 17404,
+          "dma_end": 17359,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 97919,
+          "frame": 1266,
+          "ordinal": 686814,
+          "before": 7575,
+          "after": 17474,
+          "dma_end": 17429,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 98494,
+          "frame": 1269,
+          "ordinal": 688798,
+          "before": 7140,
+          "after": 17340,
+          "dma_end": 17295,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 99337,
+          "frame": 1277,
+          "ordinal": 693133,
+          "before": 9345,
+          "after": 17251,
+          "dma_end": 17206,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 99714,
+          "frame": 1280,
+          "ordinal": 694936,
+          "before": 8310,
+          "after": 17180,
+          "dma_end": 17135,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 100091,
+          "frame": 1283,
+          "ordinal": 696736,
+          "before": 7800,
+          "after": 17200,
+          "dma_end": 17155,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 100468,
+          "frame": 1286,
+          "ordinal": 698542,
+          "before": 7800,
+          "after": 17199,
+          "dma_end": 17154,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 101094,
+          "frame": 1291,
+          "ordinal": 701474,
+          "before": 8955,
+          "after": 17251,
+          "dma_end": 17206,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 101345,
+          "frame": 1293,
+          "ordinal": 702661,
+          "before": 8595,
+          "after": 17269,
+          "dma_end": 17224,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 101970,
+          "frame": 1298,
+          "ordinal": 705611,
+          "before": 7185,
+          "after": 17195,
+          "dma_end": 17150,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 103937,
+          "frame": 1321,
+          "ordinal": 718274,
+          "before": 8100,
+          "after": 17409,
+          "dma_end": 17364,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 104893,
+          "frame": 1326,
+          "ordinal": 721548,
+          "before": 8205,
+          "after": 17342,
+          "dma_end": 17297,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 106056,
+          "frame": 1356,
+          "ordinal": 737385,
+          "before": 8970,
+          "after": 17255,
+          "dma_end": 17210,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 107435,
+          "frame": 1364,
+          "ordinal": 742520,
+          "before": 8400,
+          "after": 17339,
+          "dma_end": 17294,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 109679,
+          "frame": 1379,
+          "ordinal": 751850,
+          "before": 8610,
+          "after": 17328,
+          "dma_end": 17283,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 112172,
+          "frame": 1392,
+          "ordinal": 760529,
+          "before": 8760,
+          "after": 17326,
+          "dma_end": 17281,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 112499,
+          "frame": 1403,
+          "ordinal": 766216,
+          "before": 8310,
+          "after": 17474,
+          "dma_end": 17429,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 114224,
+          "frame": 1412,
+          "ordinal": 772246,
+          "before": 8265,
+          "after": 17415,
+          "dma_end": 17370,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 116949,
+          "frame": 1433,
+          "ordinal": 785120,
+          "before": 7935,
+          "after": 17415,
+          "dma_end": 17370,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 118680,
+          "frame": 1442,
+          "ordinal": 791202,
+          "before": 8400,
+          "after": 17335,
+          "dma_end": 17290,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 119448,
+          "frame": 1446,
+          "ordinal": 793897,
+          "before": 8250,
+          "after": 17406,
+          "dma_end": 17361,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 120330,
+          "frame": 1460,
+          "ordinal": 800682,
+          "before": 8265,
+          "after": 17413,
+          "dma_end": 17368,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 121466,
+          "frame": 1465,
+          "ordinal": 805106,
+          "before": 742410,
+          "after": 745605,
+          "dma_end": 745560,
+          "dma_remaining": 447,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 121645,
+          "frame": 1466,
+          "ordinal": 805318,
+          "before": 806865,
+          "after": 807165,
+          "dma_end": 807120,
+          "dma_remaining": 413,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 122184,
+          "frame": 1469,
+          "ordinal": 805917,
+          "before": 874500,
+          "after": 875565,
+          "dma_end": 875520,
+          "dma_remaining": 370,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 122678,
+          "frame": 1473,
+          "ordinal": 807649,
+          "before": 11475,
+          "after": 17338,
+          "dma_end": 17293,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 124425,
+          "frame": 1485,
+          "ordinal": 815073,
+          "before": 12495,
+          "after": 17404,
+          "dma_end": 17359,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 124731,
+          "frame": 1486,
+          "ordinal": 815904,
+          "before": 8940,
+          "after": 17413,
+          "dma_end": 17368,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 126325,
+          "frame": 1494,
+          "ordinal": 821788,
+          "before": 10155,
+          "after": 17268,
+          "dma_end": 17223,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 127960,
+          "frame": 1504,
+          "ordinal": 828415,
+          "before": 8190,
+          "after": 17337,
+          "dma_end": 17292,
+          "dma_remaining": 0,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 129625,
+          "frame": 1512,
+          "ordinal": 834431,
+          "before": 531510,
+          "after": 533565,
+          "dma_end": 533520,
+          "dma_remaining": 84,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 129798,
+          "frame": 1513,
+          "ordinal": 834650,
+          "before": 574350,
+          "after": 574605,
+          "dma_end": 574560,
+          "dma_remaining": 488,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 129932,
+          "frame": 1514,
+          "ordinal": 834808,
+          "before": 298290,
+          "after": 301005,
+          "dma_end": 300960,
+          "dma_remaining": 378,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 130087,
+          "frame": 1515,
+          "ordinal": 834972,
+          "before": 114165,
+          "after": 126585,
+          "dma_end": 126540,
+          "dma_remaining": 58,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 130231,
+          "frame": 1515,
+          "ordinal": 835132,
+          "before": 768810,
+          "after": 769545,
+          "dma_end": 769500,
+          "dma_remaining": 352,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 130258,
+          "frame": 1516,
+          "ordinal": 835166,
+          "before": 8010,
+          "after": 9297,
+          "dma_end": 9252,
+          "dma_remaining": 0,
+          "dma_mode": 0
+        },
+        {
+          "bus_index": 130367,
+          "frame": 1516,
+          "ordinal": 835292,
+          "before": 496710,
+          "after": 499365,
+          "dma_end": 499320,
+          "dma_remaining": 453,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 130545,
+          "frame": 1517,
+          "ordinal": 835494,
+          "before": 414150,
+          "after": 417285,
+          "dma_end": 417240,
+          "dma_remaining": 426,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 130676,
+          "frame": 1518,
+          "ordinal": 835634,
+          "before": 125730,
+          "after": 126585,
+          "dma_end": 126540,
+          "dma_remaining": 364,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 130776,
+          "frame": 1518,
+          "ordinal": 835750,
+          "before": 586455,
+          "after": 588285,
+          "dma_end": 588240,
+          "dma_remaining": 488,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 131303,
+          "frame": 1521,
+          "ordinal": 836350,
+          "before": 332025,
+          "after": 335205,
+          "dma_end": 335160,
+          "dma_remaining": 432,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 131874,
+          "frame": 1524,
+          "ordinal": 836995,
+          "before": 272520,
+          "after": 273645,
+          "dma_end": 273600,
+          "dma_remaining": 491,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 131982,
+          "frame": 1524,
+          "ordinal": 837104,
+          "before": 770610,
+          "after": 772965,
+          "dma_end": 772920,
+          "dma_remaining": 434,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 132128,
+          "frame": 1525,
+          "ordinal": 837274,
+          "before": 548115,
+          "after": 550665,
+          "dma_end": 550620,
+          "dma_remaining": 455,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 132367,
+          "frame": 1526,
+          "ordinal": 837538,
+          "before": 753330,
+          "after": 755865,
+          "dma_end": 755820,
+          "dma_remaining": 456,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 132514,
+          "frame": 1527,
+          "ordinal": 837709,
+          "before": 544935,
+          "after": 547245,
+          "dma_end": 547200,
+          "dma_remaining": 315,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 132843,
+          "frame": 1529,
+          "ordinal": 838090,
+          "before": 323145,
+          "after": 324945,
+          "dma_end": 324900,
+          "dma_remaining": 320,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 133027,
+          "frame": 1530,
+          "ordinal": 838300,
+          "before": 292755,
+          "after": 294165,
+          "dma_end": 294120,
+          "dma_remaining": 500,
+          "dma_mode": 1
+        },
+        {
+          "bus_index": 133533,
+          "frame": 1532,
+          "ordinal": 839810,
+          "before": 834345,
+          "after": 834525,
+          "dma_end": 834480,
+          "dma_remaining": 32,
+          "dma_mode": 1
+        }
+      ]
+    }
+  ],
+  "producer_sha256": "ff869ba7f151b4f41c8603817e166b0a6414f6f0e1d86c2ffea6a130150ec721"
+}

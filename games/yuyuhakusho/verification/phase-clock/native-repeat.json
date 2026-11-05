@@ -1,0 +1,30 @@
+{
+  "pass": true,
+  "scope": "Separate native capture repeated both full scenarios, exact compressed event+PCM/frame evidence bytes equal",
+  "artifacts": [
+    {
+      "file": "phase-clock-baseline.json.gz",
+      "sha256": "25e1d06e9802528319224c7ba1b516f6c28a121c63bd5499f9db836338ffbb94",
+      "bytes": 28537511,
+      "repeat_byte_identical": true
+    },
+    {
+      "file": "phase-clock-baseline-frames.json.gz",
+      "sha256": "217d8f07f13505251815f554fc6f3844c0cfa23ad50812c54bd9eeb3c069f3a8",
+      "bytes": 224653,
+      "repeat_byte_identical": true
+    },
+    {
+      "file": "phase-clock-pause.json.gz",
+      "sha256": "d82f48c09888d4d63a2260ff0d1dc0d93a2626f2cf184a94283f48d316b1b271",
+      "bytes": 18753440,
+      "repeat_byte_identical": true
+    },
+    {
+      "file": "phase-clock-pause-frames.json.gz",
+      "sha256": "5f51c64491b4645ac2762fb8216edcdedcc1162441c1fe174a203a36e896f2b4",
+      "bytes": 145134,
+      "repeat_byte_identical": true
+    }
+  ]
+}

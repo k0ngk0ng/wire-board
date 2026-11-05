@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "scope": "Every original input and observed output from both complete native captures; no predicted or fitted expected values",
+  "count": 851037,
+  "record_bytes": 20,
+  "byte_order": "big",
+  "header": "YYHBUS1 newline + uint32 record count",
+  "fields": [
+    "frame_relative_z80_before:u32",
+    "dma_end:u32",
+    "dma_type:u8",
+    "dma_length:u32",
+    "observed_z80_after:u32",
+    "observed_m68k_delta:u8",
+    "zstate_before:u8",
+    "zstate_after:u8"
+  ],
+  "sources": [
+    {
+      "path": ".local/md-yuyuhakusho/phase-clock-native/phase-clock-baseline.json.gz",
+      "sha256": "25e1d06e9802528319224c7ba1b516f6c28a121c63bd5499f9db836338ffbb94",
+      "count": 512657
+    },
+    {
+      "path": ".local/md-yuyuhakusho/phase-clock-native/phase-clock-pause.json.gz",
+      "sha256": "d82f48c09888d4d63a2260ff0d1dc0d93a2626f2cf184a94283f48d316b1b271",
+      "count": 338380
+    }
+  ],
+  "output": {
+    "path": "games/yuyuhakusho/audio/phaseclock/testdata/native-bus.bin.gz",
+    "jsonless_raw_sha256": "3ace2ed14ae7bc528a62a34363fbad188a92f6e3d607e20fc4ef259991bcaedc",
+    "gzip_sha256": "94543c3b2fd5848ab1ae5d4a43529a2ded32b22e3f98225e5aa9a37310309966",
+    "raw_bytes": 17020752,
+    "gzip_bytes": 6333130
+  },
+  "producer_sha256": "fe9600b0828dff302595591a368c33f041cc3934ccd4d22c7986498924d87a9c"
+}

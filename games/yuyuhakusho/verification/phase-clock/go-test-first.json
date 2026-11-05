@@ -1,0 +1,12 @@
+{
+  "test_first": true,
+  "at_utc": "2026-11-05T16:52:55.543858+00:00",
+  "files": {
+    "games/yuyuhakusho/audio/phaseclock/bus_test.go": "2dd00bf7f236cd3129435e2d1e33e25ce7bdcd41fce1e2f5a8f65a11b08edc66",
+    "games/yuyuhakusho/audio/phaseclock/PHASECLOCK_FAILURES.md": "6fecfe7be5e6a7eb252d5c778374c8a36630334e8e048ee68a047926c1c91fdd",
+    "games/yuyuhakusho/audio/phaseclock/testdata/native-bus.bin.gz": "94543c3b2fd5848ab1ae5d4a43529a2ded32b22e3f98225e5aa9a37310309966",
+    "games/yuyuhakusho/audio/phaseclock/testdata/native-bus-manifest.json": "155f31a070238a23df8888a6f5ae25a3eba2b1174dfc35810cb11e09f021c6c7"
+  },
+  "red": "games/yuyuhakusho/verification/phase-clock/go-missing-helper-red.jsonl",
+  "production_exists": false
+}

@@ -1,0 +1,17 @@
+{
+  "test_first": true,
+  "frozen_at_utc": "2026-11-05T16:44:40.633303+00:00",
+  "files": {
+    "scripts/yuyuhakusho/check_phase_clock.py": "733c52eee08e28915203feadd1f56cd58e48c503d86df7aa2577649a009facda",
+    "docs/research/md-yuyuhakusho/AUDIO_PHASE_CLOCK_FAILURES.md": "c35106622904e59c53b4434dbdf77ff6c5851f16a46be45d1c565af3662c1262"
+  },
+  "red": [
+    "games/yuyuhakusho/verification/phase-clock/missing-direct-bus-red.json",
+    "games/yuyuhakusho/verification/phase-clock/missing-direct-bus-pause-red.json"
+  ],
+  "intent": "Direct transactions unavailable in old complete phase ledger; checker must reject unsupported attribution",
+  "checker_before_output_compaction_sha256": "1c3c5b08e0ce2d94e0dcc46539fc9db0df99d29673b8c72a82037bb5558277e2",
+  "final_checker_frozen_at_utc": "2026-11-05T16:45:23.886351+00:00",
+  "final_checker_red": "games/yuyuhakusho/verification/phase-clock/missing-direct-bus-final-checker-red.json.gz",
+  "compaction_reason": "Raw bus transactions remain source-owned; report retains every failure and ordered all-check digest, gzip avoids duplicating large source records."
+}

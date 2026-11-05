@@ -1,0 +1,191 @@
+{
+  "pass": true,
+  "scope": "Declared private native ROM handler states validating prior boundary expectations; not natural DMA-mode coverage or autonomous scheduling",
+  "cases_per_core": 11,
+  "both_native_builds_equal": true,
+  "rows": [
+    {
+      "case": 0,
+      "cycle": 0,
+      "dma_end": 0,
+      "dma_mode": 0,
+      "dma_remaining": 0,
+      "zstate_before": 1,
+      "data": 35,
+      "z80_after": 45,
+      "m68k_delta": 70,
+      "zstate_after": 1,
+      "RAM_and_registers_unchanged": true
+    },
+    {
+      "case": 1,
+      "cycle": 5,
+      "dma_end": 0,
+      "dma_mode": 0,
+      "dma_remaining": 0,
+      "zstate_before": 1,
+      "data": 35,
+      "z80_after": 50,
+      "m68k_delta": 77,
+      "zstate_after": 1,
+      "RAM_and_registers_unchanged": true
+    },
+    {
+      "case": 2,
+      "cycle": 6,
+      "dma_end": 0,
+      "dma_mode": 0,
+      "dma_remaining": 0,
+      "zstate_before": 1,
+      "data": 35,
+      "z80_after": 51,
+      "m68k_delta": 77,
+      "zstate_after": 1,
+      "RAM_and_registers_unchanged": true
+    },
+    {
+      "case": 3,
+      "cycle": 0,
+      "dma_end": 5,
+      "dma_mode": 0,
+      "dma_remaining": 1,
+      "zstate_before": 1,
+      "data": 35,
+      "z80_after": 50,
+      "m68k_delta": 77,
+      "zstate_after": 5,
+      "RAM_and_registers_unchanged": true
+    },
+    {
+      "case": 4,
+      "cycle": 0,
+      "dma_end": 5,
+      "dma_mode": 1,
+      "dma_remaining": 0,
+      "zstate_before": 1,
+      "data": 35,
+      "z80_after": 50,
+      "m68k_delta": 77,
+      "zstate_after": 1,
+      "RAM_and_registers_unchanged": true
+    },
+    {
+      "case": 5,
+      "cycle": 0,
+      "dma_end": 5,
+      "dma_mode": 2,
+      "dma_remaining": 1,
+      "zstate_before": 1,
+      "data": 35,
+      "z80_after": 45,
+      "m68k_delta": 70,
+      "zstate_after": 1,
+      "RAM_and_registers_unchanged": true
+    },
+    {
+      "case": 6,
+      "cycle": 0,
+      "dma_end": 5,
+      "dma_mode": 3,
+      "dma_remaining": 1,
+      "zstate_before": 1,
+      "data": 35,
+      "z80_after": 45,
+      "m68k_delta": 70,
+      "zstate_after": 1,
+      "RAM_and_registers_unchanged": true
+    },
+    {
+      "case": 7,
+      "cycle": 5,
+      "dma_end": 5,
+      "dma_mode": 0,
+      "dma_remaining": 1,
+      "zstate_before": 1,
+      "data": 35,
+      "z80_after": 50,
+      "m68k_delta": 77,
+      "zstate_after": 1,
+      "RAM_and_registers_unchanged": true
+    },
+    {
+      "case": 8,
+      "cycle": 4294967250,
+      "dma_end": 0,
+      "dma_mode": 0,
+      "dma_remaining": 0,
+      "zstate_before": 1,
+      "data": 35,
+      "z80_after": 4294967295,
+      "m68k_delta": 70,
+      "zstate_after": 1,
+      "RAM_and_registers_unchanged": true
+    },
+    {
+      "case": 9,
+      "cycle": 0,
+      "dma_end": 5,
+      "dma_mode": 0,
+      "dma_remaining": 1,
+      "zstate_before": 5,
+      "data": 35,
+      "z80_after": 50,
+      "m68k_delta": 77,
+      "zstate_after": 5,
+      "RAM_and_registers_unchanged": true
+    },
+    {
+      "case": 10,
+      "cycle": 0,
+      "dma_end": 0,
+      "dma_mode": 0,
+      "dma_remaining": 0,
+      "zstate_before": 5,
+      "data": 35,
+      "z80_after": 45,
+      "m68k_delta": 70,
+      "zstate_after": 5,
+      "RAM_and_registers_unchanged": true
+    }
+  ],
+  "identity": {
+    "original": {
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+      "core_name": "Genesis Plus GX",
+      "core_version": "v1.7.4 60bee4c",
+      "fps": 59.92274340431231,
+      "ram_bytes": 65536,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "teamplayer": false
+    },
+    "hook": {
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+      "core_name": "Genesis Plus GX",
+      "core_version": "v1.7.460bee4c",
+      "fps": 59.92274340431231,
+      "ram_bytes": 65536,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "teamplayer": false
+    }
+  },
+  "prior_test_first": {
+    "test_first": true,
+    "at_utc": "2026-11-05T16:52:55.543858+00:00",
+    "files": {
+      "games/yuyuhakusho/audio/phaseclock/bus_test.go": "2dd00bf7f236cd3129435e2d1e33e25ce7bdcd41fce1e2f5a8f65a11b08edc66",
+      "games/yuyuhakusho/audio/phaseclock/PHASECLOCK_FAILURES.md": "6fecfe7be5e6a7eb252d5c778374c8a36630334e8e048ee68a047926c1c91fdd",
+      "games/yuyuhakusho/audio/phaseclock/testdata/native-bus.bin.gz": "94543c3b2fd5848ab1ae5d4a43529a2ded32b22e3f98225e5aa9a37310309966",
+      "games/yuyuhakusho/audio/phaseclock/testdata/native-bus-manifest.json": "155f31a070238a23df8888a6f5ae25a3eba2b1174dfc35810cb11e09f021c6c7"
+    },
+    "red": "games/yuyuhakusho/verification/phase-clock/go-missing-helper-red.jsonl",
+    "production_exists": false
+  },
+  "producer_sha256": "a8b04d13413cba35eb194180ee9ef399b71db788e3487fcb29078d46fcccf642",
+  "test_sha256_unchanged": "2dd00bf7f236cd3129435e2d1e33e25ce7bdcd41fce1e2f5a8f65a11b08edc66",
+  "limits": [
+    "Mode 2/3 and nonzero remaining/wait-flag cases are private observations; the natural two streams only reached DMA modes 0/1 and prior zstate 1",
+    "Invalid arithmetic inputs are rejected by the independent helper; uint32 wrap is not accepted as a profile effect"
+  ]
+}
