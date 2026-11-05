@@ -1,0 +1,15 @@
+{
+  "created_at_utc": "2026-11-05T09:45:25.718059+00:00",
+  "phase": "Refined proposed E2E before any shared implementation; do not require one particular media reuse/cleanup architecture",
+  "sha256": {
+    "docs/research/md-yuyuhakusho/AUDIO_PLATFORM_FINITE_LANES_FAILURES.md": "951f15d7441d970bda9282335d1c50f6ad0d8046e128fa8ec3bc4b1d6c27c8bf",
+    "scripts/yuyuhakusho/audio_finite_lanes_harness.ts": "94c125b84f4f5c9df26717bfb5b1548b0020ff74088c2dc8e61fadac402455a3",
+    "scripts/yuyuhakusho/check_audio_media_api.py": "86ab19dbbf272637d19eeefce9798d6d575dd52f2be13f16ec863ca9cb8d849a"
+  },
+  "prior_freeze": "finite-lanes-test-first.json",
+  "prior_contract_archives": [
+    "initial-finite-lanes-harness.ts.txt",
+    "initial-finite-checker.py.txt"
+  ],
+  "reason": "Do not assume a finite lane reuses the same HTMLAudioElement after replacement or keeps a completed element/source attached. Observe actual ended events plus live voices. Add the declared350ms HTTP source delay so the replacement case is a real delayed source, not404. The DOM selector ignores detached/cleared/paused obsolete elements so implementations may release rather than reuse them."
+}

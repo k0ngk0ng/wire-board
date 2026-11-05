@@ -1,0 +1,111 @@
+"""Real native-media compatibility evidence; no shared implementation edits."""
+from pathlib import Path
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from urllib.parse import urlsplit
+import argparse, base64, datetime, hashlib, json, math, os, re, struct, subprocess, threading, wave
+
+ROOT=Path(__file__).resolve().parents[2]
+parser=argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--require-finite-lanes',action='store_true')
+parser.add_argument('--label',default='native')
+args=parser.parse_args()
+OUT=ROOT/'games/yuyuhakusho/verification/audio-platform-media-api'/args.label
+TMP=ROOT/'.local/md-yuyuhakusho/audio-media-api'
+for path in (OUT,TMP,TMP/'tmp',ROOT/'.local/ym'):path.mkdir(parents=True,exist_ok=True)
+env=dict(os.environ,TMPDIR=str(TMP/'tmp'),AGENT_BROWSER_SOCKET_DIR=str(ROOT/'.local/ym'))
+session=subprocess.check_output(['agent-browser','session','id','--scope','worktree','--prefix','yy-audio'],cwd=ROOT,env=env,text=True).strip()
+env['AGENT_BROWSER_SESSION']='am'+session.rsplit('-',1)[-1][:6]
+metadata=json.loads((ROOT/'games/yuyuhakusho/data/audio-assets.json').read_text())
+assets={}
+asset_records=[]
+for code in (0x1f,0x3f,0x8f):
+ item=next(item for item in metadata['assets']if item['code']==code)
+ path=ROOT/item['media_file'];raw=path.read_bytes()
+ assert hashlib.sha256(raw).hexdigest()==item['wav_sha256']
+ with wave.open(str(path),'rb')as audio:
+  pcm=audio.readframes(audio.getnframes())
+  assert audio.getnchannels()==2 and audio.getframerate()==44100 and audio.getsampwidth()==2
+  assert hashlib.sha256(pcm).hexdigest()==item['pcm_sha256']
+ assets[f'/audio/{code:02x}.wav']=path
+ asset_records.append({'code':code,'path':item['media_file'],'file_sha256':item['wav_sha256'],'pcm_sha256':item['pcm_sha256'],'duration_seconds':item['duration_seconds']})
+diagnostic=TMP/'diagnostic-loop.wav'
+frames=[]
+for index in range(3*44100):
+ frequency=882 if index<44100 else 441
+ value=round(8192*math.sin(2*math.pi*frequency*index/44100))
+ frames.append(struct.pack('<hh',value,value))
+with wave.open(str(diagnostic),'wb')as audio:
+ audio.setnchannels(2);audio.setsampwidth(2);audio.setframerate(44100);audio.writeframes(b''.join(frames))
+assets['/diagnostic-loop.wav']=diagnostic
+subprocess.run([str(ROOT/'web/node_modules/.bin/esbuild'),'scripts/yuyuhakusho/audio_media_api_harness.ts','--bundle','--format=esm','--target=es2022','--outfile='+str(TMP/'harness.js')],cwd=ROOT,env=env,check=True)
+requests=[]
+class Handler(BaseHTTPRequestHandler):
+ def log_message(self,*args):pass
+ def do_GET(self):
+  route=urlsplit(self.path).path
+  requests.append({'path':route,'range':self.headers.get('Range')})
+  if route=='/':raw=b'<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Native audio API verification</title><style>body{font:16px system-ui;background:#f1f0e9;color:#263635;padding:20px;max-width:840px;margin:auto}button{font:inherit;background:#365e58;color:#fff;padding:12px;border:0;border-radius:6px}pre{white-space:pre-wrap}</style><h1>Native media verification</h1><button id="start">Run native media checks</button><pre>Ready</pre><script type="module" src="/harness.js"></script></html>';mime='text/html'
+  elif route=='/blank':raw=b'<!doctype html><title>Native visibility check</title>Native visibility check';mime='text/html'
+  elif route=='/harness.js':raw=(TMP/'harness.js').read_bytes();mime='text/javascript'
+  elif route in assets:raw=assets[route].read_bytes();mime='audio/wav'
+  else:self.send_error(404);return
+  size=len(raw);first=0;last=size-1
+  match=re.fullmatch(r'bytes=(\d+)-(\d*)',self.headers.get('Range',''))
+  if match:first=int(match[1]);last=min(last,int(match[2])if match[2]else last)
+  if first>last:self.send_error(416);return
+  self.send_response(206 if match else 200);self.send_header('Content-Type',mime);self.send_header('Cache-Control','no-store');self.send_header('Content-Length',str(last-first+1));self.send_header('Accept-Ranges','bytes')
+  if match:self.send_header('Content-Range',f'bytes {first}-{last}/{size}')
+  self.end_headers()
+  try:self.wfile.write(raw[first:last+1])
+  except(BrokenPipeError,ConnectionResetError):pass
+server=ThreadingHTTPServer(('127.0.0.1',0),Handler)
+thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
+url=f'http://127.0.0.1:{server.server_port}/'
+def browser(*items):
+ result=subprocess.run(['agent-browser',*items,'--json'],cwd=ROOT,env=env,text=True,capture_output=True,timeout=45)
+ if result.returncode:raise RuntimeError(result.stdout+result.stderr)
+ data=json.loads(result.stdout);assert data['success'],data
+ return data['data']
+def js(code):return browser('eval',code)['result']
+opened=False
+try:
+ browser('--profile',str(TMP/'profile'),'open',url);opened=True
+ browser('set','viewport','960','760');browser('snapshot','-i');browser('click','#start')
+ browser('wait','--fn','yuyuMediaAPI.complete || !!yuyuMediaAPI.error')
+ error=js('yuyuMediaAPI.error');assert not error,error
+ report=js('({checks:yuyuMediaAPI.checks,overlap:yuyuMediaAPI.overlap,state:yuyuMediaAPI.snapshot(),events:yuyuMediaAPI.events,captureSupported:yuyuMediaAPI.captureSupported,captureError:yuyuMediaAPI.captureError,userAgent:navigator.userAgent,AudioSession:!!navigator.audioSession,AudioContextCreated:false})')
+ recording=js('yuyuMediaAPI.recording')
+ if recording:
+  raw=base64.b64decode(recording.pop('data'))
+  path=OUT/'native-suffix-capture.webm';path.write_bytes(raw)
+  report['native_capture']={**recording,'path':str(path.relative_to(ROOT)),'sha256':hashlib.sha256(raw).hexdigest()}
+ tabs=browser('tab');active_tab=next(tab['tabId']for tab in tabs['tabs']if tab['active'])
+ browser('tab','new',url+'blank');browser('tab',active_tab)
+ visibility=js('({visibility:yuyuMediaAPI.visibility,state:yuyuMediaAPI.snapshot()})')
+ assert any(item['hidden']for item in visibility['visibility']),visibility
+ assert all(not item['attribute']and item['paused']for item in visibility['state']),visibility
+ report['checks'].append({'kind':'actual-tab-hidden-cancellation',**visibility})
+ js('yuyuMediaAPI.platform.dispose()')
+ report['after_dispose']=js('yuyuMediaAPI.snapshot()')
+ assert all(not item['connected']and not item['attribute']and item['paused']for item in report['after_dispose'])
+ browser('screenshot',str(OUT/'desktop.png'))
+ browser('set','viewport','320','740');assert not js('document.documentElement.scrollWidth > innerWidth')
+ browser('screenshot',str(OUT/'mobile-320.png'))
+ report.update(pass_=True,scope='Production GameAudio with real Chromium HTMLAudioElements, original finite WAV lifecycle and generated three-second suffix diagnostic; no engine scheduler or original mix integration',finite_overlap_supported=report['overlap']['actualIndependentFiniteVoices']==2,original_media=asset_records,diagnostic_media={'path':str(diagnostic.relative_to(ROOT)),'sha256':hashlib.sha256(diagnostic.read_bytes()).hexdigest(),'sample_rate':44100,'stereo_frames':132300,'prefix_frames':44100,'suffix_frames':88200,'generated':True,'original_bgm':False},sample_gapless_verified=False,speaker_output_verified=False,original_mix_equivalent=False,fake_media=False,requests=requests,source_sha256={name:hashlib.sha256((ROOT/name).read_bytes()).hexdigest()for name in ['web/src/audio.ts','web/src/game-api/module.ts','scripts/yuyuhakusho/audio_media_api_harness.ts','scripts/yuyuhakusho/check_audio_media_api.py','docs/research/md-yuyuhakusho/AUDIO_PLATFORM_MEDIA_FAILURES.md']})
+ report['pass']=report.pop('pass_')
+ (OUT/'result.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+ red={'required_independent_finite_voices':2,'observed_independent_finite_voices':report['overlap']['actualIndependentFiniteVoices'],'satisfied':report['finite_overlap_supported'],'evidence':report['overlap'],'shared_implementation_modified':False}
+ (OUT/'finite-overlap-capability.json').write_text(json.dumps(red,ensure_ascii=False,indent=2)+'\n')
+ print(json.dumps({'pass':True,'checks':len(report['checks']),'finite_overlap_supported':report['finite_overlap_supported'],'capture_supported':report['captureSupported'],'sample_gapless_verified':False},ensure_ascii=False))
+ if args.require_finite_lanes:assert report['finite_overlap_supported'],'production native media has only one finite effect voice; two-lane capability is not implemented'
+except Exception as error:
+ (OUT/'failure.json').write_text(json.dumps({'error':repr(error),'requests':requests},indent=2)+'\n')
+ if opened:
+  try:
+   (OUT/'failure-state.json').write_text(json.dumps(js('typeof yuyuMediaAPI!=="undefined"?{error:yuyuMediaAPI.error,checks:yuyuMediaAPI.checks,events:yuyuMediaAPI.events,state:yuyuMediaAPI.snapshot()}:null'),ensure_ascii=False,indent=2)+'\n')
+   browser('screenshot',str(OUT/'failure.png'))
+  except Exception:pass
+ raise
+finally:
+ if opened:browser('close')
+ server.shutdown();server.server_close();thread.join(timeout=5)

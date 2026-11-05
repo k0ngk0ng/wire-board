@@ -1,0 +1,115 @@
+"""Bounded original dispatch/PCM arbitration observations; research only.
+
+No game/driver instructions are modified. Private inputs clear world producers
+as in the accepted acquisition, then submit commands through the real queue.
+"""
+from pathlib import Path
+from array import array
+import argparse, ctypes as C, gzip, json, sys
+from extract_audio_assets import AudioSession, queue_command, write_wave
+from research_audio_loops import quiet_checkpoint
+from reference import ROOT, sha
+
+ORIGINAL=ROOT/'.local/md-yuyuhakusho/tools/genesis_plus_gx_libretro.dylib'
+OBSERVED=ROOT/'.local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/genesis_plus_gx_libretro.dylib'
+BRIDGE=ROOT/'.local/md-yuyuhakusho/tools/hook_filter.dylib'
+CASES=[
+ ('single-a',[(0,0x1f)]),('single-b',[(0,0x3f)]),('single-b-late',[(8,0x3f)]),
+ ('pair-a-b',[(0,0x1f),(8,0x3f)]),('pair-a-low-drop',[(0,0x1f),(8,6)]),
+ ('pair-a-same',[(0,0x1f),(8,0x1f)]),('pair-a-high',[(0,6),(8,0x1f)]),
+ ('pair-b-low-drop',[(0,0x79),(8,0x7a)]),('pair-b-high',[(0,0x7a),(8,0x79)]),
+ ('auto-tie',[(0,0x0c),(8,0x0d),(16,0x0c)]),('single-mode',[(0,0x73)]),
+ ('single-to-dual',[(0,0x73),(8,0x1f)]),('dual-to-single',[(0,0x1f),(8,0x73)]),
+ ('silent-high',[(0,0x7f)]),('stop-primary',[(0,0x1f),(8,0x3f),(16,2)]),
+ ('stop-secondary',[(0,0x1f),(8,0x3f),(16,3)]),('clear-driver',[(0,0x1f),(8,0x3f),(16,4)]),
+ ('reset-driver',[(0,0x1f),(8,0x3f),(16,0)]),('special-f0',[(0,0xf0)]),
+ ('fm-stop-primary',[(0,0xa0),(8,2)]),('fm-stop-secondary',[(0,0xa0),(8,3)]),
+ ('fade-primary',[(0,0x82),(32,1)]),('fade-secondary',[(0,0x82),(32,5)]),
+]
+POINTS=[0x37cb4,0x37da4,0x37e9e,0x37dd8,0x37f1e,0x37fce,0x37dc0,0x37dd6,
+ 0x37ee2,0x37eea,0x37f0e,0x37f1c,0x37e5c,0x37fcc,0x3807c,0x375d4,0x219e4,0x219fc,0x38a]
+
+def write_json(path,value):path.write_text(json.dumps(value,indent=2)+'\n')
+def write_gzip(path,value):
+ raw=(json.dumps(value,separators=(',',':'))+'\n').encode();path.write_bytes(gzip.compress(raw,mtime=0));return sha(raw)
+def snapshot(ref):
+ ram=ref.ram_cpu();z=bytes((C.c_ubyte*0x2000).in_dll(ref.lib,'zram'))
+ return {'mode_flags':z[0x1ffc],'start_request':z[0x1ffd],'rate_request':z[0x1ffe],
+  'slot_busy':[z[0x1f86],z[0x1fa6]],'slot_flags':[z[0x1f87],z[0x1fa7]],
+  'slot_choice_bits':ram[0xf82c],'duck_mode':ram[0xf82b],
+  'driver_controls':ram[0xf800:0xf830].hex(),'effect_rows':ram[0xfa20:0xfba0].hex(),
+  'z80_requests':z[0x1f80:0x2000].hex(),'z80_ram_sha256':sha(z),
+  'driver_sha256':sha(ram[0xf800:0xfba0])}
+
+def main():
+ p=argparse.ArgumentParser(description=__doc__);p.add_argument('--out',type=Path,required=True);p.add_argument('--frames',type=int,default=190);args=p.parse_args()
+ out=args.out.resolve();assert out.is_relative_to(ROOT)and 150<=args.frames<=240;out.mkdir(parents=True,exist_ok=True)
+ plan={'cases':[{'name':n,'commands':[{'step':s,'code':c}for s,c in cmds],'frames':args.frames}for n,cmds in CASES], 'producer_sha256':sha(Path(__file__).read_bytes())}
+ write_json(out/'plan.json',plan)
+ bridge=C.CDLL(str(BRIDGE));cbtype=C.CFUNCTYPE(None,C.c_int,C.c_int,C.c_uint,C.c_uint)
+ bridge.yyh_set_observer.argtypes=[cbtype,C.POINTER(C.c_uint),C.c_size_t];bridge.yyh_set_observer.restype=C.c_int
+ points=(C.c_uint*len(POINTS))(*POINTS)
+ controls={};identities={};summaries=[]
+ for mode,core in [('original',ORIGINAL),('observed',OBSERVED)]:
+  with AudioSession(ROOT,out/mode,core=core)as ref:
+   checkpoint=quiet_checkpoint(ref);identities[mode]=ref.identity
+   for name,commands in CASES:
+    ref.restore(checkpoint,restore_refresh_cycles=True)
+    schedule=dict(commands);rows=[];pcm_parts=[];calls=[];pending=None;errors=[];ordinal=0;step=-1
+    @cbtype
+    def observe(kind,width,raw_pc,value):
+     nonlocal pending,ordinal
+     try:
+      pc=raw_pc&0xffffff;ordinal+=1
+      if pc==0x37cb4:
+       code=ref.ram_cpu()[0xf809]
+       if code==255:return
+       assert pending is None,('overlapping dispatch',pending,pc)
+       pending={'code':code,'step':step,'ordinal':ordinal,'entry_sp':ref.get_register(15),'before':snapshot(ref),'samples':[],'branches':[]}
+      elif pending is not None:
+       if pc in(0x37da4,0x37e9e):
+        ram=ref.ram_cpu();a0=ref.get_register(8)&0xffffff
+        assert a0+8<=len(rom),('descriptor bounds',a0)
+        regs=[ref.get_register(i)&255 for i in range(7)]
+        sample={'pc':hex(pc),'ordinal':ordinal,'cycles':ref.cpu.cycles,'flags':rom[a0+5],'routing':rom[a0+6],'rate':rom[a0+4],'descriptor':rom[a0:a0+8].hex(),
+         'mode_flags':regs[1],'slot_flags':regs[2:4],'slot_busy':regs[4:6]if pc==0x37e9e else None,'slot_choice_bits':ram[0xf82c],'duck_mode':ram[0xf82b]}
+        pending['samples'].append(sample)
+       elif pc in(0x37dd8,0x37f1e,0x37fce,0x37dc0,0x37dd6,0x37ee2,0x37eea,0x37f0e,0x37f1c,0x37e5c,0x37fcc,0x3807c):
+        pending['branches'].append({'pc':hex(pc),'ordinal':ordinal})
+       elif pc in(0x375d4,0x219e4,0x219fc,0x38a):
+        sp=ref.get_register(15)
+        assert sp==pending['entry_sp']+(4 if pc==0x375d4 else 8),('dispatch return stack',name,pending['code'],hex(pc),hex(sp),hex(pending['entry_sp']))
+        pending.update(after=snapshot(ref),exit_pc=hex(pc),exit_sp=sp,exit_ordinal=ordinal);calls.append(pending);pending=None
+     except Exception as error:errors.append(repr(error))
+    if mode=='observed':
+     assert bridge.yyh_set_observer(observe,points,len(points));ref.api('set_cpu_hook',None,C.c_void_p)(C.cast(bridge.yyh_cpu_hook,C.c_void_p))
+    for step in range(args.frames):
+     if step in schedule:queue_command(ref,schedule[step])
+     result,pcm=ref.step_audio(ref.frame+1,[0]*8);pcm_parts.append(pcm)
+     row={'step':step,'reference':result['reference'],'stereo_frames':len(pcm)//4,'pcm_sha256':sha(pcm),'state':snapshot(ref)};rows.append(row)
+     if mode=='observed':assert row==controls[name]['rows'][step],('original/observed mismatch',name,step)
+     assert not errors,errors[:3]
+    if mode=='observed':ref.api('set_cpu_hook',None,C.c_void_p)(None)
+    assert pending is None and not errors,(name,pending,errors)
+    pcm=b''.join(pcm_parts);wav=out/f'{name}-{mode}.wav';write_wave(wav,pcm,ref.sample_rate)
+    payload={'name':name,'mode':mode,'commands':commands,'rows':rows,'dispatches':calls}
+    fixture=out/f'{name}-{mode}.json.gz';write_gzip(fixture,payload)
+    if mode=='original':controls[name]={'rows':rows,'pcm':pcm}
+    else:
+     assert pcm==controls[name]['pcm'];assert len(calls)>=len(commands),(name,len(calls),len(commands))
+     files=[{'path':str(path.relative_to(ROOT)),'sha256':sha(path.read_bytes())}for path in [fixture,wav,out/f'{name}-original.json.gz',out/f'{name}-original.wav']]
+     summaries.append({'name':name,'frames':len(rows),'frames_match':True,'commands':commands,'dispatches':len(calls),'unknown_boundaries':len(errors),'files':files})
+    print(json.dumps({'mode':mode,'case':name,'frames':len(rows),'dispatches':len(calls)}),flush=True)
+ # This compares same checkpoint/timebase runs, including the late-only request.
+ a=array('h');a.frombytes(controls['single-a']['pcm']);b=array('h');b.frombytes(controls['single-b-late']['pcm']);paired=array('h');paired.frombytes(controls['pair-a-b']['pcm'])
+ if sys.byteorder!='little':a.byteswap();b.byteswap();paired.byteswap()
+ assert len(a)==len(b)==len(paired)
+ naive=[max(-32768,min(32767,x+y))for x,y in zip(a,b)]
+ different=sum(x!=y for x,y in zip(naive,paired));both=sum(x!=0 and y!=0 for x,y in zip(a,b))
+ linear={'comparison':'Unmodified signed16 saturating sum of same-checkpoint isolated A and late-only B; no arbitrary waveform realignment','compared_stereo_frames':len(paired)//2,'different_samples':different,'both_nonzero_sample_values':both,'max_absolute_error':max(abs(x-y)for x,y in zip(naive,paired)), 'sum_saturation_samples':sum(not -32768<=x+y<=32767 for x,y in zip(a,b)), 'sample_shift_search_performed':False}
+ record={'pass':True,'scope':'Private real queue commands, native dispatch boundaries and paired PCM; no production scheduler/mixer claim','identity':identities,'all_original_observed_frames_equal':True,'case_count':len(summaries),'cases':summaries,'linear_mix':linear,'producer_sha256':sha(Path(__file__).read_bytes()),'plan_sha256':sha((out/'plan.json').read_bytes()),'limits':['All command schedules are declared private reference inputs after clearing the world; not natural gameplay reachability','Post-dispatch Z80 bytes include autonomous Z80 execution; sampled decision registers identify the actual arbitration reads','Single captures preserve original delay and gain; mismatch does not by itself isolate one hardware/filter/phase cause']}
+ write_json(out/'capture.json',record);print(json.dumps({'pass':True,'cases':len(summaries),'linear_mix':linear}),flush=True)
+
+rom=(ROOT/'.local/md-yuyuhakusho/downloads/yuyuhakusho-jp.bin').read_bytes()
+assert sha(rom)=='c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06'
+if __name__=='__main__':main()

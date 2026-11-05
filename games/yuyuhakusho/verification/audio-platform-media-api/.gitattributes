@@ -1,0 +1,2 @@
+# Preserve actual terminal failure output byte-for-byte for its recorded SHA.
+finite-hidden-precondition.log -text -diff

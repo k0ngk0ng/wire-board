@@ -1,0 +1,39 @@
+{
+  "pass": true,
+  "scope": "Frozen carrier harness rejects source/packet metadata corruption and unsupported native codec",
+  "checks": [
+    {
+      "mode": "sample-gap",
+      "exit_code": 1,
+      "log": ".local/md-yuyuhakusho/audio-music-carrier/negatives/sample-gap/rejection.txt",
+      "sha256": "0afdea9c321ef00b82c1aea95a5d092c1243ea6e76a237073896252fc21d510a",
+      "rejected": true
+    },
+    {
+      "mode": "changed-pcm",
+      "exit_code": 1,
+      "log": ".local/md-yuyuhakusho/audio-music-carrier/negatives/changed-pcm/rejection.txt",
+      "sha256": "1075258eeaa21ac9fe75ace6979be6c5f2948aee9ec83f20e0866ee4cbc6c175",
+      "rejected": true
+    },
+    {
+      "mode": "changed-fragment",
+      "exit_code": 1,
+      "log": ".local/md-yuyuhakusho/audio-music-carrier/negatives/changed-fragment/rejection.txt",
+      "sha256": "cc784f396f4d4f45104ef29f16d64a8d2a74fbe05280c338000524adf573570c",
+      "rejected": true
+    },
+    {
+      "mode": "unsupported-mime",
+      "exit_code": 1,
+      "log": ".local/md-yuyuhakusho/audio-music-carrier/negatives/unsupported-mime/rejection.txt",
+      "sha256": "b0d27e420f6033dde1f0ed02aa631d2279b610f1dd1cf1fedf7fea2ac2f6c184",
+      "rejected": true
+    }
+  ],
+  "harness_sha256": "37ec0dcc344d127b4dc55660ddde28be198fbe52460cb144fdaa7e5559fd383d",
+  "source_sha256": "07f58e4528a9ecca03bfddc43c398dec4d851104c111a0d5c6b9cfab11d2e856",
+  "limits": [
+    "Three integrity mutations reject before browser playback; unsupported MIME is exercised in the actual native browser"
+  ]
+}

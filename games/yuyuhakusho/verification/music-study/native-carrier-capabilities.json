@@ -1,0 +1,114 @@
+{
+  "audioContextCreated": false,
+  "audioData": "function",
+  "audioEncoder": "function",
+  "encoders": [
+    {
+      "codec": "flac",
+      "config": {
+        "bitrateMode": "variable",
+        "codec": "flac",
+        "numberOfChannels": 2,
+        "sampleRate": 44100
+      },
+      "supported": false
+    },
+    {
+      "codec": "alac",
+      "config": {
+        "bitrateMode": "variable",
+        "codec": "alac",
+        "numberOfChannels": 2,
+        "sampleRate": 44100
+      },
+      "supported": false
+    },
+    {
+      "codec": "opus",
+      "config": {
+        "bitrateMode": "variable",
+        "codec": "opus",
+        "numberOfChannels": 2,
+        "sampleRate": 44100
+      },
+      "supported": true
+    },
+    {
+      "codec": "mp4a.40.2",
+      "config": {
+        "bitrateMode": "variable",
+        "codec": "mp4a.40.2",
+        "numberOfChannels": 2,
+        "sampleRate": 44100
+      },
+      "supported": true
+    },
+    {
+      "codec": "pcm-s16",
+      "config": {
+        "bitrateMode": "variable",
+        "codec": "pcm-s16",
+        "numberOfChannels": 2,
+        "sampleRate": 44100
+      },
+      "supported": false
+    }
+  ],
+  "managedMediaSource": "undefined",
+  "mediaSource": "function",
+  "mediaStreamTrackGenerator": "function",
+  "rows": [
+    {
+      "error": null,
+      "htmlAudio": "maybe",
+      "mediaSource": false,
+      "type": "audio/wav"
+    },
+    {
+      "error": null,
+      "htmlAudio": "probably",
+      "mediaSource": false,
+      "type": "audio/wav; codecs=\"1\""
+    },
+    {
+      "error": null,
+      "htmlAudio": "probably",
+      "mediaSource": false,
+      "type": "audio/flac"
+    },
+    {
+      "error": null,
+      "htmlAudio": "probably",
+      "mediaSource": true,
+      "type": "audio/mp4; codecs=\"fLaC\""
+    },
+    {
+      "error": null,
+      "htmlAudio": "",
+      "mediaSource": false,
+      "type": "audio/mp4; codecs=\"alac\""
+    },
+    {
+      "error": null,
+      "htmlAudio": "probably",
+      "mediaSource": true,
+      "type": "audio/mp4; codecs=\"mp4a.40.2\""
+    },
+    {
+      "error": null,
+      "htmlAudio": "probably",
+      "mediaSource": true,
+      "type": "audio/webm; codecs=\"opus\""
+    },
+    {
+      "error": null,
+      "htmlAudio": "probably",
+      "mediaSource": false,
+      "type": "audio/ogg; codecs=\"flac\""
+    }
+  ],
+  "scope": "Capability declarations only; no playback or continuity proof",
+  "secureContext": true,
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+  "source_sha256": "f463d1b70c22ae4803bc6cf0136c718ba4bbaac443c19d6d87e11555482e713f"
+}

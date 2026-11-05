@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/capture_audio_timing.py", line 299, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/capture_audio_timing.py", line 295, in main
+    if args.mode in ['private','all']:reports.append(capture_private(out))
+                                                     ~~~~~~~~~~~~~~~^^^^^
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/capture_audio_timing.py", line 265, in capture_private
+    call('interrupt',f'interrupt-{seed}')
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/capture_audio_timing.py", line 259, in call
+    assert ref.get_register(15)==0xffff04,('private stack differs',name,ref.get_register(15))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('private stack differs', 'interrupt-0', 16776960)

@@ -1,0 +1,8 @@
+{
+  "phase": "v2 reference harness repair before scheduler production",
+  "v1": "games/yuyuhakusho/engine/testdata/audio-timing-capture-v1.py.txt",
+  "v1_sha256": "3f33ae48e25701eb1de02589e32a38ca793e8d7040707140db2c871d43e04777",
+  "v2_sha256": "cc777c7862e4907d5f3a7c9c31f1582867df89844a56835b23db6ed0650661bb",
+  "actual_red": "games/yuyuhakusho/engine/testdata/audio-timing-private-capture-red.txt",
+  "repair": "Record return SP at the stop marker because the sentinel3d8 itself executesJSR after the callback; add explicit begin/finish instruction-boundary calls and continuous nested scheduler phases. Natural raw5500/paused3602 data remains from unchanged v1 and keeps its own SHA. Avoid recording each219ea loop iteration as a new function entry."
+}

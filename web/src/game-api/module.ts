@@ -45,6 +45,14 @@ export type GameAudioPort = {
   play: (sources: readonly string[]) => Promise<boolean>;
   // Alternatives for one clip; unlike play(), these are not a playlist.
   playWithFallback: (sources: readonly string[]) => Promise<boolean>;
+  // Finite native voices: at most16 stable lanes/owner and32/platform.
+  // IDs identify instances, not lanes; identical updates never restart a clip.
+  effect: (
+    lane: string,
+    sources: readonly string[],
+    options: { playbackID: string; startOffset?: number },
+  ) => Promise<boolean>;
+  stopEffect: (lane: string, expectedPlaybackID?: string) => void;
   stop: () => void;
   // Pause preserves this owner's media positions; stop/mute/cleanup cancels them.
   pause: () => void;

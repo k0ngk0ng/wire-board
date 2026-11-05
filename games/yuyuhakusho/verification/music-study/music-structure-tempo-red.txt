@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/check_music_score_structure.py", line 43, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/check_music_score_structure.py", line 16, in main
+    score=derive_song(rom,code)
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/music_score_structure.py", line 107, in derive_song
+    raise ValueError('Tempo/queue-producing commands need explicit cross-track recovery')
+ValueError: Tempo/queue-producing commands need explicit cross-track recovery

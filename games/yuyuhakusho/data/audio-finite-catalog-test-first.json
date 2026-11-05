@@ -1,0 +1,14 @@
+{
+  "phase": "tests precede exporter and production decoder",
+  "head": "aa617e23",
+  "pass": true,
+  "missing_catalog_red": true,
+  "go_missing_implementation_red": true,
+  "files": {
+    "games/yuyuhakusho/audio/FAILURES.md": "a9f9df8cb200670ffa5cb58662a7819a63bd7c2aff59f2ae895cd1c718e4a7c9",
+    "games/yuyuhakusho/audio/catalog_test.go": "8cfbb4fd0d2e698dca5744bf8181237665ea000e87c57ecfda539e77550d1f19",
+    "scripts/yuyuhakusho/verify_finite_audio_catalog.py": "0104c7d79717a1b2f01a58c1d0dd877a64ba145801e40b69eb6369fb4a4f75bc",
+    "games/yuyuhakusho/data/audio-finite-catalog-missing-red.json": "afd36072ee1a4e0a46c7113419b419d3ac63191356e8a3b916ea3c9d3f7f6a67",
+    "games/yuyuhakusho/data/audio-finite-catalog-go-red.jsonl": "e22a7d54c0ba6aecba0d37fdf9878251ebd732b474c6287dbd993d83cb28411d"
+  }
+}

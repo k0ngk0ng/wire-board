@@ -1,0 +1,152 @@
+{
+  "after_open": {
+    "focused": false,
+    "hidden": true,
+    "href": "http://127.0.0.1:50729/",
+    "readyState": "complete",
+    "userActivation": {
+      "active": false,
+      "ever": false
+    },
+    "visibility": "hidden"
+  },
+  "tabs": {
+    "lifecycle": {
+      "effectiveLaunch": {
+        "browserLaunched": true,
+        "engine": "chrome",
+        "launchHash": 7789919054118900409
+      },
+      "launched": false,
+      "relaunchedBrowser": false,
+      "restartedBackground": false,
+      "restoreStatus": "not_configured",
+      "reused": true,
+      "saveStatus": "not_attempted"
+    },
+    "tabs": [
+      {
+        "active": true,
+        "label": null,
+        "tabId": "t1",
+        "targetId": "5D0FEFD42DE5F62BB6A0A7322BA722F3",
+        "title": "127.0.0.1:50729",
+        "type": "page",
+        "url": "http://127.0.0.1:50729/"
+      },
+      {
+        "active": false,
+        "label": null,
+        "tabId": "t2",
+        "targetId": "7757A4FEF83839E81BE0B4153C0837EB",
+        "title": "Native audio API verification",
+        "type": "page",
+        "url": ""
+      },
+      {
+        "active": false,
+        "label": null,
+        "tabId": "t3",
+        "targetId": "DF5B24FA819B4AE0384BC0F1AB53CB44",
+        "title": "127.0.0.1:50519/blank",
+        "type": "page",
+        "url": "http://127.0.0.1:50519/blank"
+      },
+      {
+        "active": false,
+        "label": null,
+        "tabId": "t4",
+        "targetId": "2193B90A82774142114FEE14EF5D3331",
+        "title": "127.0.0.1:49935/blank",
+        "type": "page",
+        "url": "http://127.0.0.1:49935/blank"
+      },
+      {
+        "active": false,
+        "label": null,
+        "tabId": "t5",
+        "targetId": "2285F828F49B8DD666DE67B07457466D",
+        "title": "127.0.0.1:50604/blank",
+        "type": "page",
+        "url": "http://127.0.0.1:50604/blank"
+      },
+      {
+        "active": false,
+        "label": null,
+        "tabId": "t6",
+        "targetId": "208AED6D7A15765AA2B3BAA15B160ADF",
+        "title": "127.0.0.1:49882/blank",
+        "type": "page",
+        "url": "http://127.0.0.1:49882/blank"
+      }
+    ]
+  },
+  "native_activation": {
+    "targetId": "5D0FEFD42DE5F62BB6A0A7322BA722F3",
+    "before": {
+      "hidden": true,
+      "visibility": "hidden",
+      "focused": false,
+      "href": "http://127.0.0.1:50729/",
+      "readyState": "complete"
+    },
+    "hiddenControl": {
+      "before": {
+        "hidden": true,
+        "visibility": "hidden",
+        "focused": false,
+        "href": "http://127.0.0.1:50729/",
+        "readyState": "complete"
+      },
+      "after": {
+        "hidden": true,
+        "visibility": "hidden",
+        "focused": true,
+        "href": "http://127.0.0.1:50729/",
+        "readyState": "complete"
+      },
+      "probe": {
+        "error": "Error: independent music fixture failed",
+        "events": [],
+        "state": [
+          {
+            "id": 0,
+            "connected": true,
+            "src": "",
+            "attribute": null,
+            "time": 0,
+            "duration": null,
+            "paused": true,
+            "muted": true,
+            "ended": false,
+            "loop": false,
+            "rate": 1,
+            "platform": true,
+            "music": false,
+            "loopKey": null
+          }
+        ],
+        "click": [
+          {
+            "trusted": true,
+            "hidden": true,
+            "visibility": "hidden"
+          }
+        ]
+      }
+    },
+    "after": {
+      "hidden": false,
+      "visibility": "visible",
+      "focused": true,
+      "href": "http://127.0.0.1:50729/",
+      "readyState": "complete"
+    }
+  },
+  "before_gesture": {
+    "focused": true,
+    "hidden": false,
+    "href": "http://127.0.0.1:50729/",
+    "visibility": "visible"
+  }
+}

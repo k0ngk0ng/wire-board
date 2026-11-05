@@ -1,0 +1,178 @@
+{
+  "pass": true,
+  "scope": "Full CLI rejects missing/incorrect caller authentication, changed metadata/source and changed media",
+  "cases": [
+    {
+      "name": "missing-trusted-manifest",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "run",
+        "./games/yuyuhakusho/cmd/verify-finite-audio"
+      ],
+      "exit_code": 1,
+      "report": {
+        "pass": false,
+        "scope": "Complete134 finite original WAVs, immutable catalog digest and source-character AN references only",
+        "goos": "darwin",
+        "goarch": "arm64",
+        "validated_clips": 0,
+        "validated_wav_bytes": 0,
+        "animation_characters": 0,
+        "animation_unique_codes": 0,
+        "error": "a trusted immutable manifest SHA-256 is required",
+        "limits": [
+          "Trusted manifest SHA must be supplied by the caller, not learned from untrusted adjacent metadata",
+          "No sound timing, mixing, browser playback, BGM loop or publication acceptance"
+        ]
+      }
+    },
+    {
+      "name": "wrong-trusted-manifest",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "run",
+        "./games/yuyuhakusho/cmd/verify-finite-audio",
+        "-manifest-sha256",
+        "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+      ],
+      "exit_code": 1,
+      "report": {
+        "pass": false,
+        "scope": "Complete134 finite original WAVs, immutable catalog digest and source-character AN references only",
+        "goos": "darwin",
+        "goarch": "arm64",
+        "manifest_sha256": "35d818bf7790df1d8d5cf19e77ef1d23330672eb3c3c2514123f6887220bd620",
+        "validated_clips": 0,
+        "validated_wav_bytes": 0,
+        "animation_characters": 0,
+        "animation_unique_codes": 0,
+        "error": "immutable finite manifest SHA differs",
+        "limits": [
+          "Trusted manifest SHA must be supplied by the caller, not learned from untrusted adjacent metadata",
+          "No sound timing, mixing, browser playback, BGM loop or publication acceptance"
+        ]
+      }
+    },
+    {
+      "name": "changed-catalog",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "run",
+        "./games/yuyuhakusho/cmd/verify-finite-audio",
+        "-manifest-sha256",
+        "35d818bf7790df1d8d5cf19e77ef1d23330672eb3c3c2514123f6887220bd620",
+        "-catalog",
+        ".local/md-yuyuhakusho/audio-finite/cli-negative/catalog.json"
+      ],
+      "exit_code": 1,
+      "report": {
+        "pass": false,
+        "scope": "Complete134 finite original WAVs, immutable catalog digest and source-character AN references only",
+        "goos": "darwin",
+        "goarch": "arm64",
+        "catalog_sha256": "6e07d736e75a091cfb43ff1a976e2945476c7c64ffe6cfbb00f332055319a3c6",
+        "manifest_sha256": "35d818bf7790df1d8d5cf19e77ef1d23330672eb3c3c2514123f6887220bd620",
+        "validated_clips": 0,
+        "validated_wav_bytes": 0,
+        "animation_characters": 0,
+        "animation_unique_codes": 0,
+        "error": "finite catalog differs from immutable manifest",
+        "limits": [
+          "Trusted manifest SHA must be supplied by the caller, not learned from untrusted adjacent metadata",
+          "No sound timing, mixing, browser playback, BGM loop or publication acceptance"
+        ]
+      }
+    },
+    {
+      "name": "changed-manifest",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "run",
+        "./games/yuyuhakusho/cmd/verify-finite-audio",
+        "-manifest-sha256",
+        "35d818bf7790df1d8d5cf19e77ef1d23330672eb3c3c2514123f6887220bd620",
+        "-manifest",
+        ".local/md-yuyuhakusho/audio-finite/cli-negative/manifest.json"
+      ],
+      "exit_code": 1,
+      "report": {
+        "pass": false,
+        "scope": "Complete134 finite original WAVs, immutable catalog digest and source-character AN references only",
+        "goos": "darwin",
+        "goarch": "arm64",
+        "manifest_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+        "validated_clips": 0,
+        "validated_wav_bytes": 0,
+        "animation_characters": 0,
+        "animation_unique_codes": 0,
+        "error": "immutable finite manifest SHA differs",
+        "limits": [
+          "Trusted manifest SHA must be supplied by the caller, not learned from untrusted adjacent metadata",
+          "No sound timing, mixing, browser playback, BGM loop or publication acceptance"
+        ]
+      }
+    },
+    {
+      "name": "changed-original-source",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "run",
+        "./games/yuyuhakusho/cmd/verify-finite-audio",
+        "-manifest-sha256",
+        "35d818bf7790df1d8d5cf19e77ef1d23330672eb3c3c2514123f6887220bd620",
+        "-source-catalog",
+        ".local/md-yuyuhakusho/audio-finite/cli-negative/source.json"
+      ],
+      "exit_code": 1,
+      "report": {
+        "pass": false,
+        "scope": "Complete134 finite original WAVs, immutable catalog digest and source-character AN references only",
+        "goos": "darwin",
+        "goarch": "arm64",
+        "catalog_sha256": "017d1242e89bc6de78de1b6c4acdf89f6af4dccee92b12ba4aad7e5625be0f27",
+        "manifest_sha256": "35d818bf7790df1d8d5cf19e77ef1d23330672eb3c3c2514123f6887220bd620",
+        "source_catalog_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+        "validated_clips": 0,
+        "validated_wav_bytes": 0,
+        "animation_characters": 0,
+        "animation_unique_codes": 0,
+        "error": "immutable original source catalog differs",
+        "limits": [
+          "Trusted manifest SHA must be supplied by the caller, not learned from untrusted adjacent metadata",
+          "No sound timing, mixing, browser playback, BGM loop or publication acceptance"
+        ]
+      }
+    },
+    {
+      "name": "changed-original-wav",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "run",
+        "./games/yuyuhakusho/cmd/verify-finite-audio",
+        "-manifest-sha256",
+        "35d818bf7790df1d8d5cf19e77ef1d23330672eb3c3c2514123f6887220bd620",
+        "-media-root",
+        ".local/md-yuyuhakusho/audio-finite/cli-negative/media"
+      ],
+      "exit_code": 1,
+      "report": {
+        "pass": false,
+        "scope": "Complete134 finite original WAVs, immutable catalog digest and source-character AN references only",
+        "goos": "darwin",
+        "goarch": "arm64",
+        "catalog_sha256": "017d1242e89bc6de78de1b6c4acdf89f6af4dccee92b12ba4aad7e5625be0f27",
+        "manifest_sha256": "35d818bf7790df1d8d5cf19e77ef1d23330672eb3c3c2514123f6887220bd620",
+        "source_catalog_sha256": "617737f8ef07043401fa74f7f48ba551a64dd91cedd3a94dbfcf4883e0ff1541",
+        "validated_clips": 0,
+        "validated_wav_bytes": 0,
+        "animation_characters": 0,
+        "animation_unique_codes": 0,
+        "error": "original06 media failed: finite WAV file SHA differs",
+        "limits": [
+          "Trusted manifest SHA must be supplied by the caller, not learned from untrusted adjacent metadata",
+          "No sound timing, mixing, browser playback, BGM loop or publication acceptance"
+        ]
+      }
+    }
+  ]
+}

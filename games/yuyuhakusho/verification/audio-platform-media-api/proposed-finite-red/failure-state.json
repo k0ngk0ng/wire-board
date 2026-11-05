@@ -1,0 +1,96 @@
+{
+  "checks": [],
+  "error": "Error: proposed finite-lane effect/stopEffect methods are unavailable",
+  "events": [
+    {
+      "at": 115,
+      "duration": null,
+      "ended": false,
+      "id": 0,
+      "kind": "play",
+      "loop": false,
+      "paused": false,
+      "rate": 1,
+      "src": "data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQIAAACAgA==",
+      "time": 0
+    },
+    {
+      "at": 115,
+      "duration": null,
+      "ended": false,
+      "id": 0,
+      "kind": "waiting",
+      "loop": false,
+      "paused": false,
+      "rate": 1,
+      "src": "data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQIAAACAgA==",
+      "time": 0
+    },
+    {
+      "at": 115,
+      "duration": null,
+      "ended": false,
+      "id": 0,
+      "kind": "loadstart",
+      "loop": false,
+      "paused": false,
+      "rate": 1,
+      "src": "data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQIAAACAgA==",
+      "time": 0
+    },
+    {
+      "at": 115.5,
+      "duration": 0.00025,
+      "ended": false,
+      "id": 0,
+      "kind": "loadedmetadata",
+      "loop": false,
+      "paused": false,
+      "rate": 1,
+      "src": "data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQIAAACAgA==",
+      "time": 0
+    },
+    {
+      "at": 179.5,
+      "duration": 0.00025,
+      "ended": false,
+      "id": 0,
+      "kind": "playing",
+      "loop": false,
+      "paused": false,
+      "rate": 1,
+      "src": "data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQIAAACAgA==",
+      "time": 7.5e-05
+    },
+    {
+      "at": 180,
+      "duration": null,
+      "ended": false,
+      "id": 0,
+      "kind": "timeupdate",
+      "loop": false,
+      "paused": true,
+      "rate": 1,
+      "src": "data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQIAAACAgA==",
+      "time": 0
+    }
+  ],
+  "state": [
+    {
+      "attribute": null,
+      "connected": true,
+      "duration": null,
+      "ended": false,
+      "id": 0,
+      "loop": false,
+      "loopKey": null,
+      "music": false,
+      "muted": true,
+      "paused": true,
+      "platform": true,
+      "rate": 1,
+      "src": "data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQIAAACAgA==",
+      "time": 0
+    }
+  ]
+}

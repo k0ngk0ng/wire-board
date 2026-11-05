@@ -1,0 +1,5 @@
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio","Action":"build-output","Output":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio: no non-test Go files in /Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/games/yuyuhakusho/audio\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio","Action":"build-fail"}
+{"Time":"2026-11-05T18:11:03.13986+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio"}
+{"Time":"2026-11-05T18:11:03.139901+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio [build failed]\n"}
+{"Time":"2026-11-05T18:11:03.139908+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio","Elapsed":0,"FailedBuild":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio"}

@@ -1,0 +1,139 @@
+{
+  "pass": true,
+  "verified_at_utc": "2026-11-05T11:20:33.803483+00:00",
+  "baseline_head": "aa617e23",
+  "scope": "Pure original PCM arbitration intent helper, paired native/control observations and fixed-WAV mixing counterexample",
+  "pcm_arbitration_helper_complete": true,
+  "full_audio_dispatch_complete": false,
+  "world_audio_integrated": false,
+  "original_mixed_pcm_restored": false,
+  "release_ready": false,
+  "test_first": {
+    "record": "games/yuyuhakusho/verification/audio-dispatch/test-first.json",
+    "sha256": "34071f3927ceaa73e8d27cb0d32654444323c82af11bb00e3b9b66113591f8fe",
+    "frozen_sources_unchanged": true,
+    "actual_reds": [
+      {
+        "path": "games/yuyuhakusho/verification/audio-dispatch/missing-red.json",
+        "sha256": "8ba759cfc8801ffa144778cbff7eda3e04de5f36542cbae61f20b64d3647fe71"
+      },
+      {
+        "path": "games/yuyuhakusho/verification/audio-dispatch/go-final-symbol-red.jsonl",
+        "sha256": "cfabe082ec5c7989a25273b26bcad866bdfc9e12edf40f08124ceeabeb5af3b8"
+      },
+      {
+        "path": "games/yuyuhakusho/verification/audio-dispatch/linear-sum-red.json",
+        "sha256": "2cad2064a8302ac632096a95a2efe6765ee74031ee3aeb07ff01c26b050e1508"
+      },
+      {
+        "path": "games/yuyuhakusho/verification/audio-dispatch/retained-linear-red.json",
+        "sha256": "5cb44fc155b6ef15a312915058fc653e14c9720601701bd88fcf6c0c378c8dc0"
+      }
+    ]
+  },
+  "tests": {
+    "native": {
+      "path": "games/yuyuhakusho/verification/audio-dispatch/native.jsonl",
+      "sha256": "0edbaef543112aaea6682d4cffc85aaafd78ac82cfcdb64410cc31a6161d895a",
+      "tests": [
+        "TestPCMArbitrationOriginalBoundaries",
+        "TestPCMArbitrationObservedPairCommands",
+        "TestPCMArbitrationSingleInitialDecisionStreams",
+        "TestPCMArbitrationTemporaryViewsAndRejectedIntent"
+      ],
+      "package_elapsed_seconds": 3.703,
+      "pass": true
+    },
+    "wasm": {
+      "path": "games/yuyuhakusho/verification/audio-dispatch/wasm.jsonl",
+      "sha256": "06a68fef08b129c77ae80f53a2a8eea96ab5ed3ac25056f57e80bd189deb2a19",
+      "tests": [
+        "TestPCMArbitrationOriginalBoundaries",
+        "TestPCMArbitrationObservedPairCommands",
+        "TestPCMArbitrationSingleInitialDecisionStreams",
+        "TestPCMArbitrationTemporaryViewsAndRejectedIntent"
+      ],
+      "package_elapsed_seconds": 0.875,
+      "pass": true
+    }
+  },
+  "wasm_command": {
+    "path": "games/yuyuhakusho/verification/audio-dispatch/wasm-command.json",
+    "sha256": "7d69040989325a3991c577a40afcde444ae5df3de8619e045d5cec59d0144430"
+  },
+  "vet": {
+    "path": "games/yuyuhakusho/verification/audio-dispatch/vet.txt",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "pass": true
+  },
+  "coverage": {
+    "private_original_calls": 13036,
+    "all_real_descriptors": 123,
+    "all_descriptor_calls": 492,
+    "private_boundary_calls": 12288,
+    "private_continuous_calls": 256,
+    "sampled_real_queue_pcm_decisions": 33,
+    "original_hook_cases": 23,
+    "video_steps_per_core": 4370,
+    "unknown_private_m68k_ram_writes": 0,
+    "m68k_ram_bytes_per_private_call": 65536
+  },
+  "original_paired_study": {
+    "path": ".local/md-yuyuhakusho/audio-dispatch-study/capture.json",
+    "sha256": "fc1e3c2e3ea816ddea0aad094772cee1fb370697dc6a08a762ca1798d6c85754",
+    "all_original_observed_frames_equal": true
+  },
+  "mix_counterexample": {
+    "path": "games/yuyuhakusho/verification/audio-dispatch/pcm-mix-analysis.json",
+    "sha256": "16f52fa2f6f97ab3e6745daa0afb8a796f21790a7c7381332cf349cb81ddf2f1",
+    "stereo_frames": 139831,
+    "unmodified_sum_different_sample_values": 161234,
+    "same_alignment_fixed_gain_nonzero_rational_residual_values": 173016,
+    "second_request_sample_frame": 5888,
+    "sample_shift_search_performed": false
+  },
+  "source_sha256": {
+    "games/yuyuhakusho/engine/sound_pcm_arbitration.go": "ace412910e7c9cc3baf59a8602d65d5e500b0837fae6a2eda02818954f9e540a",
+    "games/yuyuhakusho/engine/sound_pcm_arbitration_test.go": "3bd23ae3cc5d517ed9dc43928c1f4099b3432465e53b7f4fc8bacfe6d1ac0d1e",
+    "games/yuyuhakusho/engine/testdata/pcm-arbitration-private.json.gz": "c7c3bab06315326ace92f5fea93ff893547ba21cac5d89b4124ff6c9b3737f4d",
+    "games/yuyuhakusho/engine/testdata/pcm-arbitration-private-manifest.json": "9e2af198db223c87ad0e8c172f532d44ae57eb776b40eddc9fbf635f9377f7dd",
+    "games/yuyuhakusho/engine/testdata/pcm-arbitration-sampled.json.gz": "640317e0a66710c6d4b4f841483eb9874d967802b67c923f60ba5850b42ee395",
+    "games/yuyuhakusho/engine/testdata/pcm-arbitration-sampled-manifest.json": "18389a5ed62bf2874f2809ec8959524965e78e0e291bc27cdfe97c420a5a6f7f",
+    "docs/research/md-yuyuhakusho/AUDIO_DISPATCH_FAILURES.md": "e98dbbfa7ef88ad1a0b87cd80914a8643aa4f2dad2399c29b9dd8f1c340778fa",
+    "docs/research/md-yuyuhakusho/AUDIO_DISPATCH_RESEARCH.md": "621f14414623a021937ee59caae6dc661ac27703007d4f1436f56e6fbdfabcf8",
+    "scripts/yuyuhakusho/capture_audio_dispatch.py": "7d8d2dea019ca3e703e594b87f8d8d31bf41430841d6a23723660f93480e5abe",
+    "scripts/yuyuhakusho/capture_pcm_arbitration.py": "44b8a326aeb63ff4abc7c2887ae7bef1a69234bdeb03ff538c5fd776b2356e2e",
+    "scripts/yuyuhakusho/export_pcm_arbitration_evidence.py": "255fa635f5cfba3748da6d883b800b9f7102fe1045445527b713b16079fb4de0",
+    "scripts/yuyuhakusho/verify_audio_dispatch_study.py": "10836a6b1499f6e267b7018ae6017c94ea851c217d95c9af479bd3da347c53c4",
+    "scripts/yuyuhakusho/analyze_pcm_mix_counterexample.py": "2b83cd0706c05077ba7d3a356e12995e27942dfca3809fa8a02703a560c1bf5a",
+    "scripts/yuyuhakusho/reference.py": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "scripts/yuyuhakusho/extract_audio_assets.py": "e8a59cb97a15b02d930b2335175eca9fb17600a778ce93d779449cdac3775f56",
+    "scripts/yuyuhakusho/research_audio_loops.py": "854c259284e11c59a21be9560f0beca26f15ffebe132d18d64dce6fbed5e22f4"
+  },
+  "protected_sources_sha256": {
+    "games/yuyuhakusho/data/audio-assets.json": "617737f8ef07043401fa74f7f48ba551a64dd91cedd3a94dbfcf4883e0ff1541",
+    "games/yuyuhakusho/data/audio-acquisition.json.gz": "e7df8b55df7814233dd7252fa8e3eff8bfce3f1903c0885c2aca864597f3ddd7",
+    "docs/research/md-yuyuhakusho/static/audio-dispatch.txt": "1293e212c85faa1a1aa8800257c594d560bb9f698b4177bf5919e0423dfafd02",
+    "docs/research/md-yuyuhakusho/static/audio-control.txt": "87cc908286681bfe2d9e76b42e9f6ea2750ae1dd0f9e543507eb1df4ffc53505",
+    "docs/research/md-yuyuhakusho/static/audio-z80.txt": "6de7db3bc1660869bd228d8d09ea990a4ae4da12bfd35c2bed74523f05cc8e0a",
+    "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt": "9f81bd47bfe322110bc11339992f0e570b704077ccff22493940b75af7837152"
+  },
+  "limits": [
+    "Decision is a typed intent, not Z80 acknowledgement or native-media playback",
+    "Whole64KiB private RAM changes audited; autonomous Z80/DSP memory and hardware remain outside the helper",
+    "02/03/04 do not stop active PCM in these paired streams; live FM/PSG group takeover/restoration is not completed",
+    "Queue00 is empty; reset case uses explicitly private SelectedSound=00, not a normal queue request",
+    "F0 uses one extra descriptor outside the finite134 media registry; no arbitrary WAV alias provided",
+    "Same-timebase fixed-WAV sum and arbitrary constant gains fail; no arbitrary phase shift search or general DSP impossibility claim",
+    "Original timing/callback IRQ insertion, complete control/duck/fade, synthesis, mixing and platform integration still need separate evidence",
+    "No existing production world/scheduler/queue/bridge/web/old audio metadata or media modified by this owner"
+  ],
+  "determinism": {
+    "path": "games/yuyuhakusho/verification/audio-dispatch/determinism.json",
+    "sha256": "e68540c0311a77d8433a2e6b4cc5cfc28ca18c25663e8e2431ac152967143581"
+  },
+  "cleanup": {
+    "path": "games/yuyuhakusho/verification/audio-dispatch/cleanup.json",
+    "sha256": "fb1fbae69cff8a2042b3fe37c03ab5dce71518096af17681280ffff05bc53866"
+  }
+}

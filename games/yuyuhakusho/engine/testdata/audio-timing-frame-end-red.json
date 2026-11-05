@@ -1,0 +1,71 @@
+{
+  "pass": false,
+  "hypothesis": "All queue consumers occur only after object callbacks; a frame-end-only playback adapter suffices",
+  "counterexample_consumers_inside_callbacks": 145,
+  "summaries": [
+    {
+      "scenario": "baseline",
+      "video_steps": 5500,
+      "scheduler_closed_calls": 5192,
+      "driver_ticks": 5195,
+      "queue_consumers": 108,
+      "non_ff_dispatches": 107,
+      "requests": 109,
+      "ticks_in_object_callback": 3163,
+      "consumers_in_object_callback": 83,
+      "consumer_callback_behaviors": {
+        "0x20918": 8,
+        "0x10330": 2,
+        "0x12668": 62,
+        "0x10088": 8,
+        "0x104ac": 1,
+        "0x10522": 2
+      },
+      "driver_pause_entries": {
+        "0": 5195
+      },
+      "max_irq_depth": 3,
+      "max_backlog": 0,
+      "pause_entry_consumers": 0,
+      "driver_cycles_min": 6837,
+      "driver_cycles_max": 373005,
+      "phase_records": 10384,
+      "consumer_records": 108,
+      "source_manifest": ".local/md-yuyuhakusho/audio-timing-first/audio-timing-baseline-manifest.json",
+      "source_manifest_sha256": "a88ee25bac566f2b05a36f22826919f0ffdf1a95fd3d36fa234111602a424e8e"
+    },
+    {
+      "scenario": "pause",
+      "video_steps": 3602,
+      "scheduler_closed_calls": 3295,
+      "driver_ticks": 3298,
+      "queue_consumers": 77,
+      "non_ff_dispatches": 76,
+      "requests": 76,
+      "ticks_in_object_callback": 2042,
+      "consumers_in_object_callback": 62,
+      "consumer_callback_behaviors": {
+        "0x20918": 5,
+        "0x10330": 2,
+        "0x12668": 49,
+        "0x10088": 6
+      },
+      "driver_pause_entries": {
+        "0": 3257,
+        "1": 1,
+        "255": 39,
+        "128": 1
+      },
+      "max_irq_depth": 3,
+      "max_backlog": 0,
+      "pause_entry_consumers": 0,
+      "driver_cycles_min": 6837,
+      "driver_cycles_max": 373005,
+      "phase_records": 6590,
+      "consumer_records": 77,
+      "source_manifest": ".local/md-yuyuhakusho/audio-timing-pause/audio-timing-pause-manifest.json",
+      "source_manifest_sha256": "5a6ecdfdfb4600a61a5fbc793a446c16fa9a30d17ff4dc4e4ef51a243cd5dcbb"
+    }
+  ],
+  "producer_sha256": "2d016e1f825fc12c4a3edf72109bd888ee10432def9813fabd139b7726b8e796"
+}

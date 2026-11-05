@@ -1,0 +1,18 @@
+{
+  "recorded_at_utc": "2026-11-05T10:36:36.528210+00:00",
+  "scope": "Read-only browser setup observations for an intermittent unavailable-before-first-music failure; no media assertions or production changes",
+  "old_checker": "checker-before-visibility-setup.py.txt",
+  "old_sha256": "86ab19dbbf272637d19eeefce9798d6d575dd52f2be13f16ec863ca9cb8d849a",
+  "diagnostic_checker_sha256": "bbb105b076d6c842b485ff833659ab5fff8c824d0b7319212b47e65587ddf348",
+  "harness_sha256": {
+    "scripts/yuyuhakusho/audio_finite_lanes_harness.ts": "94c125b84f4f5c9df26717bfb5b1548b0020ff74088c2dc8e61fadac402455a3",
+    "scripts/yuyuhakusho/audio_media_api_harness.ts": "abcee3a7cbd3261c8c90160b6f30c6408f79fa578983f97f02b370bb7562d10a"
+  },
+  "diagnostic_run": "finite-visibility-diagnostic1",
+  "diagnostic_result": "Visible after_open; all8 passed; profile reused5 stale tabs, so initial activation was previously unverified",
+  "fixed_checker_sha256": "958258b19a132b8c2e452a21591145e7d3d90770bc87858bf0fa979c539f8eb3",
+  "activation_helper": "scripts/yuyuhakusho/activate_audio_media_page.mjs",
+  "activation_helper_sha256": "be175caaed1be418b82892ae56c53fefe3b8c56ceff208f94de997923a508ae8",
+  "fix_scope": "Only browser setup: activate exact owned URL via native Target.activateTarget/Page.bringToFront, await actual visible state, record trusted click visibility. Optional controlled background-click reproducer; no document.hidden override and no TS harness assertion changes.",
+  "controlled_probe_context_failure": "finite-hidden-precondition.log retained: optional external CDP reload completed but agent-browser cached target context could not evaluate it. Navigation now goes through documented agent-browser open after explicit target rebinding; the foreground helper only activates targets."
+}

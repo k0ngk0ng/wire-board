@@ -1,0 +1,457 @@
+{
+  "complete": true,
+  "rows": [
+    {
+      "at": 161.30000019073486,
+      "id": "30278e52-b2f0-4408-b85e-a2275c6a0019",
+      "kind": "track-observed",
+      "readyState": "live",
+      "settings": {
+        "deviceId": "33895791-39b1-4d10-be07-602b071526ff",
+        "sampleSize": 16
+      }
+    },
+    {
+      "at": 161.30000019073486,
+      "kind": "before-record-start",
+      "mediaTime": 0,
+      "tracks": [
+        {
+          "id": "30278e52-b2f0-4408-b85e-a2275c6a0019",
+          "kind": "audio",
+          "muted": false,
+          "readyState": "live",
+          "settings": {
+            "deviceId": "33895791-39b1-4d10-be07-602b071526ff",
+            "sampleSize": 16
+          }
+        }
+      ]
+    },
+    {
+      "at": 162,
+      "id": "30278e52-b2f0-4408-b85e-a2275c6a0019",
+      "kind": "stream-addtrack",
+      "tracks": [
+        {
+          "id": "30278e52-b2f0-4408-b85e-a2275c6a0019",
+          "kind": "audio",
+          "muted": false,
+          "readyState": "live",
+          "settings": {
+            "deviceId": "33895791-39b1-4d10-be07-602b071526ff",
+            "sampleSize": 16
+          }
+        }
+      ]
+    },
+    {
+      "at": 162,
+      "id": "30278e52-b2f0-4408-b85e-a2275c6a0019",
+      "kind": "track-observed",
+      "readyState": "live",
+      "settings": {
+        "deviceId": "33895791-39b1-4d10-be07-602b071526ff",
+        "sampleSize": 16
+      }
+    },
+    {
+      "at": 162,
+      "kind": "stream-active",
+      "tracks": [
+        {
+          "id": "30278e52-b2f0-4408-b85e-a2275c6a0019",
+          "kind": "audio",
+          "muted": false,
+          "readyState": "live",
+          "settings": {
+            "deviceId": "33895791-39b1-4d10-be07-602b071526ff",
+            "sampleSize": 16
+          }
+        }
+      ]
+    },
+    {
+      "at": 237.4000005722046,
+      "kind": "recorder-start",
+      "mediaTime": 0.001241,
+      "state": "recording",
+      "tracks": [
+        {
+          "id": "30278e52-b2f0-4408-b85e-a2275c6a0019",
+          "kind": "audio",
+          "muted": false,
+          "readyState": "live",
+          "settings": {
+            "channelCount": 2,
+            "deviceId": "33895791-39b1-4d10-be07-602b071526ff",
+            "latency": 0.011609,
+            "sampleRate": 44100,
+            "sampleSize": 16
+          }
+        }
+      ]
+    },
+    {
+      "at": 420.80000019073486,
+      "ended": false,
+      "kind": "media-timeupdate",
+      "paused": false,
+      "time": 0.185142
+    },
+    {
+      "at": 688.1000003814697,
+      "ended": false,
+      "kind": "media-timeupdate",
+      "paused": false,
+      "time": 0.453742
+    },
+    {
+      "at": 958.6999998092653,
+      "ended": false,
+      "kind": "media-timeupdate",
+      "paused": false,
+      "time": 0.723782
+    },
+    {
+      "at": 1217.9000005722046,
+      "ended": false,
+      "kind": "media-timeupdate",
+      "paused": false,
+      "time": 0.982428
+    },
+    {
+      "at": 1491.6999998092651,
+      "ended": false,
+      "kind": "media-timeupdate",
+      "paused": false,
+      "time": 1.257553
+    },
+    {
+      "at": 1754.8000001907349,
+      "ended": false,
+      "kind": "media-timeupdate",
+      "paused": false,
+      "time": 1.521788
+    },
+    {
+      "at": 2014.6000003814695,
+      "ended": false,
+      "kind": "media-timeupdate",
+      "paused": false,
+      "time": 1.781074
+    },
+    {
+      "at": 2285,
+      "ended": false,
+      "kind": "media-timeupdate",
+      "paused": false,
+      "time": 2.052786
+    },
+    {
+      "at": 2549.199999809265,
+      "ended": false,
+      "kind": "media-timeupdate",
+      "paused": false,
+      "time": 2.316361
+    },
+    {
+      "at": 2814.1000003814697,
+      "ended": false,
+      "kind": "media-timeupdate",
+      "paused": false,
+      "time": 2.580723
+    },
+    {
+      "at": 3083.800000190735,
+      "ended": false,
+      "kind": "media-timeupdate",
+      "paused": false,
+      "time": 2.851844
+    },
+    {
+      "at": 3245.4000005722046,
+      "ended": true,
+      "kind": "media-timeupdate",
+      "paused": true,
+      "time": 3
+    },
+    {
+      "at": 3245.5,
+      "ended": true,
+      "kind": "media-pause",
+      "paused": true,
+      "time": 3
+    },
+    {
+      "at": 3245.6000003814697,
+      "ended": true,
+      "kind": "media-ended",
+      "paused": true,
+      "time": 3
+    },
+    {
+      "at": 3246.9000005722046,
+      "ended": false,
+      "kind": "media-seeking",
+      "paused": false,
+      "time": 0
+    },
+    {
+      "at": 3247,
+      "ended": false,
+      "kind": "media-waiting",
+      "paused": false,
+      "time": 0
+    },
+    {
+      "at": 3247.9000005722046,
+      "kind": "stream-inactive",
+      "tracks": []
+    },
+    {
+      "at": 3248,
+      "id": "30278e52-b2f0-4408-b85e-a2275c6a0019",
+      "kind": "stream-removetrack",
+      "tracks": []
+    },
+    {
+      "at": 3248.300000190735,
+      "bytes": 48596,
+      "kind": "recorder-dataavailable",
+      "mediaTime": 0,
+      "state": "inactive"
+    },
+    {
+      "at": 3248.300000190735,
+      "kind": "recorder-stop",
+      "mediaTime": 0,
+      "state": "inactive",
+      "tracks": []
+    },
+    {
+      "at": 3248.4000005722046,
+      "ended": false,
+      "kind": "media-timeupdate",
+      "paused": false,
+      "time": 0
+    },
+    {
+      "at": 3248.4000005722046,
+      "ended": false,
+      "kind": "media-seeked",
+      "paused": false,
+      "time": 0
+    },
+    {
+      "at": 3248.4000005722046,
+      "ended": false,
+      "kind": "media-playing",
+      "paused": false,
+      "time": 0
+    },
+    {
+      "at": 3501,
+      "ended": false,
+      "kind": "media-timeupdate",
+      "paused": false,
+      "time": 0.193222
+    },
+    {
+      "at": 3766.800000190735,
+      "ended": false,
+      "kind": "media-timeupdate",
+      "paused": false,
+      "time": 0.46041
+    },
+    {
+      "at": 4038.5,
+      "ended": false,
+      "kind": "media-timeupdate",
+      "paused": false,
+      "time": 0.733348
+    },
+    {
+      "at": 4295.900000572205,
+      "ended": false,
+      "kind": "media-timeupdate",
+      "paused": false,
+      "time": 0.99023
+    },
+    {
+      "at": 4561.699999809265,
+      "ended": false,
+      "kind": "media-timeupdate",
+      "paused": false,
+      "time": 1.255336
+    },
+    {
+      "at": 4826.800000190735,
+      "ended": false,
+      "kind": "media-timeupdate",
+      "paused": false,
+      "time": 1.521888
+    },
+    {
+      "at": 5094.199999809265,
+      "ended": false,
+      "kind": "media-timeupdate",
+      "paused": false,
+      "time": 1.788608
+    },
+    {
+      "at": 5360.800000190735,
+      "ended": false,
+      "kind": "media-timeupdate",
+      "paused": false,
+      "time": 2.056683
+    },
+    {
+      "at": 5626.199999809265,
+      "ended": false,
+      "kind": "media-timeupdate",
+      "paused": false,
+      "time": 2.321358
+    },
+    {
+      "at": 5889.60000038147,
+      "ended": false,
+      "kind": "media-timeupdate",
+      "paused": false,
+      "time": 2.584167
+    },
+    {
+      "at": 6158.60000038147,
+      "ended": false,
+      "kind": "media-timeupdate",
+      "paused": false,
+      "time": 2.854634
+    },
+    {
+      "at": 6317.199999809265,
+      "ended": true,
+      "kind": "media-timeupdate",
+      "paused": true,
+      "time": 3
+    },
+    {
+      "at": 6317.300000190735,
+      "ended": true,
+      "kind": "media-pause",
+      "paused": true,
+      "time": 3
+    },
+    {
+      "at": 6317.400000572205,
+      "ended": true,
+      "kind": "media-ended",
+      "paused": true,
+      "time": 3
+    },
+    {
+      "at": 6318,
+      "ended": false,
+      "kind": "media-seeking",
+      "paused": false,
+      "time": 0
+    },
+    {
+      "at": 6318.10000038147,
+      "ended": false,
+      "kind": "media-waiting",
+      "paused": false,
+      "time": 0
+    },
+    {
+      "at": 6318.5,
+      "ended": false,
+      "kind": "media-timeupdate",
+      "paused": false,
+      "time": 0
+    },
+    {
+      "at": 6318.60000038147,
+      "ended": false,
+      "kind": "media-seeked",
+      "paused": false,
+      "time": 0
+    },
+    {
+      "at": 6318.60000038147,
+      "ended": false,
+      "kind": "media-playing",
+      "paused": false,
+      "time": 0
+    },
+    {
+      "at": 6582,
+      "ended": false,
+      "kind": "media-timeupdate",
+      "paused": false,
+      "time": 0.204207
+    },
+    {
+      "at": 6850.400000572205,
+      "ended": false,
+      "kind": "media-timeupdate",
+      "paused": false,
+      "time": 0.473904
+    },
+    {
+      "at": 7111.900000572205,
+      "ended": false,
+      "kind": "media-timeupdate",
+      "paused": false,
+      "time": 0.734753
+    },
+    {
+      "at": 7373.900000572205,
+      "ended": false,
+      "kind": "media-timeupdate",
+      "paused": false,
+      "time": 0.996193
+    },
+    {
+      "at": 7530.5,
+      "duration": 3,
+      "kind": "after-two-media-boundaries",
+      "loop": false,
+      "mediaTime": 1.154479,
+      "rate": 1,
+      "state": "inactive",
+      "tracks": []
+    }
+  ],
+  "supported": true,
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+  "capture": {
+    "bytes": 48596,
+    "mime": "audio/webm;codecs=opus",
+    "path": "games/yuyuhakusho/verification/audio-platform-media-api/capture-boundary/native-recording.webm",
+    "sha256": "7ac186405d47694141ceb8899d9221d5790ae23a433788fbbc5b886d2ace20aa"
+  },
+  "decoded": {
+    "sample_rate": 48000,
+    "stereo_frames": 144000,
+    "seconds": 3.0,
+    "pcm_sha256": "3f6e455fc81d8af5ada5fccf88e43663c4dd77c0efb73eb11987ed432c22dd47"
+  },
+  "baseline_source_sha256": {
+    "aa617e23:web/src/audio.ts": "0901dad46773da863c3889788dd5f4ce8bc215360d384f83d3a32bf9f347dfb7",
+    "aa617e23:web/src/audio-tones.ts": "8cf8ebc0fcdd036e9abb5bfa9deebf32294584d1e0d08eb4a9689ca818ad41a3"
+  },
+  "diagnostic_sha256": "04d3d2aa64dae8d7015f0730fe959578aa0e02fe687c5afdfb76b3cafc201be1",
+  "actual_media_boundaries": 2,
+  "recording_span_seconds": 3.0,
+  "media_boundary_span_seconds": 6.156100000381469,
+  "recorder_stopped_before_explicit_request": true,
+  "cross_boundary_capture_verified": false,
+  "sample_gapless_verified": false,
+  "speaker_output_verified": false,
+  "scope": "Committed GameAudio baseline; real native captureStream/MediaRecorder observation across two actual suffix endings, no output-device timing proof",
+  "pass": true,
+  "source_sha256": {
+    "scripts/yuyuhakusho/audio_capture_boundary_harness.ts": "16d0c73519534accbbce52589c40bd849c2d6f577c6439e5f5068fe479cdf970",
+    "scripts/yuyuhakusho/check_audio_capture_boundary.py": "7d285e76f3d288249c133146d5cfdb7b8633413fdf6027ee1721d272bb43a676"
+  }
+}

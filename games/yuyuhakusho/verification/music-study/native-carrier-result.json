@@ -1,0 +1,42 @@
+{
+  "pass": true,
+  "scope": "Native Chromium HTMLAudio/MSE lossless-container fragment feasibility; not independent DSP or infinite BGM",
+  "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+  "source_pcm_roundtrip_exact": true,
+  "source_pcm_sha256": "7801d4c5f7ae515e7819c69637f3974ed2feedfc0362df2370ec28f5b8d55f4c",
+  "stereo_frames": 529200,
+  "fragment_count": 12,
+  "observed_boundaries": 11,
+  "native_waiting_after_play": 0,
+  "source_changes": 1,
+  "audio_context_created": false,
+  "capture_ended_before_final_boundary": false,
+  "requests": [
+    "/",
+    "/favicon.ico",
+    "/manifest",
+    "/init",
+    "/fragment/0",
+    "/fragment/1",
+    "/favicon.ico",
+    "/fragment/2",
+    "/fragment/3",
+    "/fragment/4",
+    "/fragment/5",
+    "/fragment/6",
+    "/fragment/7",
+    "/fragment/8",
+    "/fragment/9",
+    "/fragment/10",
+    "/fragment/11"
+  ],
+  "manifest_sha256": "b5fbf92fcf11eb004d787389413095d8713a1af1cc1429f9d76c7061a3d2256f",
+  "observed_sha256": "014ab2baa8aebd0664cafce19561df7a7b060e3e141e35a8cd6a6afdbc3213f6",
+  "harness_sha256": "37ec0dcc344d127b4dc55660ddde28be198fbe52460cb144fdaa7e5559fd383d",
+  "limits": [
+    "Container decoded PCM roundtrip is exact; native speaker output is not separately captured sample-for-sample",
+    "Any native WebM capture is lossy48kHz timing evidence, not original44.1kHz PCM proof",
+    "Only this Chromium build is tested; Safari/mobile remain unverified",
+    "Source is a finite original excerpt to test transport; no BGM looping or independent synthesis is claimed"
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "pass": true,
+  "scope": "Only this finite-catalog worker private repeat export, intentionally corrupted CLI fixtures, duplicate console output and empty test/tmp directories",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/audio-finite/repeat",
+      "files": 2,
+      "bytes": 38953
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-finite/cli-negative",
+      "files": 4,
+      "bytes": 37163
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-finite/test-first",
+      "files": 0,
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-finite/tmp",
+      "files": 0,
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-finite/export.json",
+      "files": 1,
+      "bytes": 1819
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-finite/source-verification.json",
+      "files": 1,
+      "bytes": 47825
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-finite/repeat-export.json",
+      "files": 1,
+      "bytes": 1819
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-finite/test-summary.json",
+      "files": 1,
+      "bytes": 13261
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-finite",
+      "files": 0,
+      "bytes": 0
+    }
+  ],
+  "removed_files": 10,
+  "removed_bytes": 140840,
+  "preserved": [
+    "All137 canonical original WAVs",
+    "Old audio metadata/acquisition/loop evidence",
+    "New runtime metadata, scripts, API/tests, CLI, documentation and verification reports",
+    "Shared worktree Go caches and pre-existing off telemetry directory",
+    "Other workers files and active worktree"
+  ]
+}

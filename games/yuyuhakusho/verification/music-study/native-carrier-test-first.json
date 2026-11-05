@@ -1,0 +1,10 @@
+{
+  "created_at_utc": "2026-11-05T10:12:34.597583+00:00",
+  "scope": "Native carrier E2E authored before new lossless fixture builder",
+  "files": {
+    "scripts/yuyuhakusho/check_music_native_carrier.py": "37ec0dcc344d127b4dc55660ddde28be198fbe52460cb144fdaa7e5559fd383d",
+    "docs/research/md-yuyuhakusho/AUDIO_MUSIC_NATIVE_CARRIER_FAILURES.md": "48b3cb5c6f634a3c10072cc24b57cf3b455ce4cd0279a805cc93225a5edfaeca"
+  },
+  "red": ".local/md-yuyuhakusho/audio-music-carrier/missing-red.txt",
+  "exit_code": 1
+}

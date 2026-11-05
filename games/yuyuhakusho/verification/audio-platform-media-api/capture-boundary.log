@@ -1,0 +1,9 @@
+
+  .local/md-yuyuhakusho/audio-capture-boundary/baseline-audio.js  19.6kb
+
+⚡ Done in 2ms
+
+  .local/md-yuyuhakusho/audio-capture-boundary/harness.js  5.1kb
+
+⚡ Done in 1ms
+{"pass": true, "actual_media_boundaries": 2, "recording_span_seconds": 3.0, "media_boundary_span_seconds": 5.1535, "recorder_stopped_before_explicit_request": true, "cross_boundary_capture_verified": false}

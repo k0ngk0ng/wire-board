@@ -1,0 +1,76 @@
+{
+  "required_independent_finite_voices": 2,
+  "observed_independent_finite_voices": 2,
+  "satisfied": true,
+  "evidence": {
+    "actualIndependentFiniteVoices": 2,
+    "expectedIndependentFiniteVoices": 2,
+    "state": [
+      {
+        "attribute": null,
+        "connected": true,
+        "duration": null,
+        "ended": false,
+        "id": 0,
+        "loop": false,
+        "loopKey": null,
+        "music": false,
+        "muted": true,
+        "paused": true,
+        "platform": true,
+        "rate": 1,
+        "src": "data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQIAAACAgA==",
+        "time": 0
+      },
+      {
+        "attribute": "/audio/8f.wav",
+        "connected": true,
+        "duration": 4.172041,
+        "ended": false,
+        "id": 1,
+        "loop": false,
+        "loopKey": null,
+        "music": true,
+        "muted": false,
+        "paused": false,
+        "platform": true,
+        "rate": 1,
+        "src": "http://127.0.0.1:50604/audio/8f.wav",
+        "time": 0.153802
+      },
+      {
+        "attribute": "/audio/1f.wav",
+        "connected": true,
+        "duration": 2.11941,
+        "ended": false,
+        "id": 2,
+        "loop": false,
+        "loopKey": null,
+        "music": false,
+        "muted": false,
+        "paused": false,
+        "platform": true,
+        "rate": 1,
+        "src": "http://127.0.0.1:50604/audio/1f.wav",
+        "time": 0.130577
+      },
+      {
+        "attribute": "/audio/3f.wav",
+        "connected": true,
+        "duration": 2.035964,
+        "ended": false,
+        "id": 3,
+        "loop": false,
+        "loopKey": null,
+        "music": false,
+        "muted": false,
+        "paused": false,
+        "platform": true,
+        "rate": 1,
+        "src": "http://127.0.0.1:50604/audio/3f.wav",
+        "time": 0.130574
+      }
+    ]
+  },
+  "shared_implementation_modified": false
+}

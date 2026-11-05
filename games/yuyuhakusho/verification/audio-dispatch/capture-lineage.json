@@ -1,0 +1,7 @@
+{
+  "reason": "First real sampler failed reset-driver: queue00 is empty and did not dispatch. The reset case now explicitly sets SelectedSound=00 as a private dispatcher input, never claims RequestSound(00) can reset the driver.",
+  "old_capture": "capture-v1.py.txt",
+  "old_sha256": "8131982edc886daeb6786c07023150dbba33d239a8ee4e5f81f9765fa814677b",
+  "old_failure": "capture-v1-failure.log",
+  "new_sha256": "7d8d2dea019ca3e703e594b87f8d8d31bf41430841d6a23723660f93480e5abe"
+}

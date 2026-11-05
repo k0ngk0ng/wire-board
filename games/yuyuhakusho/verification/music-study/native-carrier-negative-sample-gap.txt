@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/check_music_native_carrier.py", line 111, in <module>
+    args=parser.parse_args();out=args.out.resolve();fixture=args.fixture.resolve();assert out.is_relative_to(ROOT/'.local')and fixture.is_relative_to(ROOT/'.local');out.mkdir(parents=True,exist_ok=True);main(out,fixture)
+                                                                                                                                                                                                           ~~~~^^^^^^^^^^^^^
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/check_music_native_carrier.py", line 44, in main
+    assert fragment['start_sample']==cursor and fragment['sample_frames']>0
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

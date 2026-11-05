@@ -1,0 +1,26 @@
+{
+  "created_at_utc": "2026-11-05T11:11:31.794173+00:00",
+  "scope": "Root-owned completed native audio verifier closed Chromium profile, temporary files and regenerated JS bundle",
+  "paths": [
+    {
+      "path": ".local/md-yuyuhakusho/audio-media-api/profile",
+      "bytes": 10336278
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-media-api/tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-media-api/harness.js",
+      "bytes": 34412
+    }
+  ],
+  "total_bytes_removed": 10370690,
+  "preserved": [
+    "Original WAVs, ROM/cores and necessary native capture evidence",
+    "All actual red/final browser records, hashes and screenshots",
+    "Reproducible diagnostic WAV referenced by the media reports",
+    "Active8799 player and shared Go caches/workspace telemetry mode",
+    "Ongoing audio arbitration and semantic budget research directories"
+  ]
+}

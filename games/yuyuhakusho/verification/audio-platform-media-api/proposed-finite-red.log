@@ -1,0 +1,9 @@
+
+  .local/md-yuyuhakusho/audio-media-api/harness.js  38.9kb
+
+⚡ Done in 3ms
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/check_audio_media_api.py", line 77, in <module>
+    error=js('yuyuMediaAPI.error');assert not error,error
+                                          ^^^^^^^^^
+AssertionError: Error: proposed finite-lane effect/stopEffect methods are unavailable

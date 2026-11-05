@@ -1,0 +1,22 @@
+{
+  "error": "AssertionError('Error: independent music fixture failed')",
+  "requests": [
+    {
+      "path": "/",
+      "range": null,
+      "requested_at": 5217003.265377333,
+      "response_at": 5217003.265586916
+    },
+    {
+      "path": "/harness.js",
+      "range": null,
+      "requested_at": 5217003.278183125,
+      "response_at": 5217003.278403708
+    },
+    {
+      "path": "/favicon.ico",
+      "range": null,
+      "requested_at": 5217003.2909415
+    }
+  ]
+}

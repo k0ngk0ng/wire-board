@@ -1,0 +1,18 @@
+{
+  "pass": true,
+  "scope": "Retained original dispatch/mix evidence only; not production playback completion",
+  "capture_path": ".local/md-yuyuhakusho/audio-dispatch-study/capture.json",
+  "capture_sha256": "fc1e3c2e3ea816ddea0aad094772cee1fb370697dc6a08a762ca1798d6c85754",
+  "cases": 23,
+  "frames": 4370,
+  "linear_mix": {
+    "comparison": "Unmodified signed16 saturating sum of same-checkpoint isolated A and late-only B; no arbitrary waveform realignment",
+    "compared_stereo_frames": 139831,
+    "different_samples": 161234,
+    "both_nonzero_sample_values": 156400,
+    "max_absolute_error": 23063,
+    "sum_saturation_samples": 0,
+    "sample_shift_search_performed": false
+  },
+  "verifier_sha256": "10836a6b1499f6e267b7018ae6017c94ea851c217d95c9af479bd3da347c53c4"
+}

@@ -1,0 +1,122 @@
+{
+  "pass": true,
+  "scope": "Original219ac begin/finish phase and37c44 actual consumer projections; normal driver synthesis is outside these pure helpers",
+  "summaries": [
+    {
+      "scenario": "baseline",
+      "video_steps": 5500,
+      "scheduler_closed_calls": 5192,
+      "driver_ticks": 5195,
+      "queue_consumers": 108,
+      "non_ff_dispatches": 107,
+      "requests": 109,
+      "ticks_in_object_callback": 3163,
+      "consumers_in_object_callback": 83,
+      "consumer_callback_behaviors": {
+        "0x20918": 8,
+        "0x10330": 2,
+        "0x12668": 62,
+        "0x10088": 8,
+        "0x104ac": 1,
+        "0x10522": 2
+      },
+      "driver_pause_entries": {
+        "0": 5195
+      },
+      "max_irq_depth": 3,
+      "max_backlog": 0,
+      "pause_entry_consumers": 0,
+      "driver_cycles_min": 6837,
+      "driver_cycles_max": 373005,
+      "phase_records": 10384,
+      "consumer_records": 108,
+      "source_manifest": ".local/md-yuyuhakusho/audio-timing-first/audio-timing-baseline-manifest.json",
+      "source_manifest_sha256": "a88ee25bac566f2b05a36f22826919f0ffdf1a95fd3d36fa234111602a424e8e"
+    },
+    {
+      "scenario": "pause",
+      "video_steps": 3602,
+      "scheduler_closed_calls": 3295,
+      "driver_ticks": 3298,
+      "queue_consumers": 77,
+      "non_ff_dispatches": 76,
+      "requests": 76,
+      "ticks_in_object_callback": 2042,
+      "consumers_in_object_callback": 62,
+      "consumer_callback_behaviors": {
+        "0x20918": 5,
+        "0x10330": 2,
+        "0x12668": 49,
+        "0x10088": 6
+      },
+      "driver_pause_entries": {
+        "0": 3257,
+        "1": 1,
+        "255": 39,
+        "128": 1
+      },
+      "max_irq_depth": 3,
+      "max_backlog": 0,
+      "pause_entry_consumers": 0,
+      "driver_cycles_min": 6837,
+      "driver_cycles_max": 373005,
+      "phase_records": 6590,
+      "consumer_records": 77,
+      "source_manifest": ".local/md-yuyuhakusho/audio-timing-pause/audio-timing-pause-manifest.json",
+      "source_manifest_sha256": "5a6ecdfdfb4600a61a5fbc793a446c16fa9a30d17ff4dc4e4ef51a243cd5dcbb"
+    }
+  ],
+  "phase_records": 16974,
+  "consumer_records": 185,
+  "fixture_json_sha256": "414b9a443552c18aade14cae546ac81b3ad5fe680b2fd6905404af4228c8c35c",
+  "fixture_gzip_sha256": "3e7bc4390414e649eee8e671f2ebc00847253b04c47349cfd94ee17f87961c91",
+  "producer_sha256": "2d016e1f825fc12c4a3edf72109bd888ee10432def9813fabd139b7726b8e796",
+  "original_sources": [
+    {
+      "source": ".local/md-yuyuhakusho/audio-timing-first/audio-timing-baseline.json.gz",
+      "path": "games/yuyuhakusho/engine/testdata/audio-timing-baseline.json.gz",
+      "sha256": "18c2d3ae0463ae7049bacef9fa37c35d3963fc2000e438b389e84b1f7c460589"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/audio-timing-first/audio-timing-baseline-manifest.json",
+      "path": "games/yuyuhakusho/engine/testdata/audio-timing-baseline-manifest.json",
+      "sha256": "a88ee25bac566f2b05a36f22826919f0ffdf1a95fd3d36fa234111602a424e8e"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/audio-timing-first/audio-timing-baseline-original.json.gz",
+      "path": "games/yuyuhakusho/engine/testdata/audio-timing-baseline-original.json.gz",
+      "sha256": "17856c6293e27590544dc338f2a3cecae1aab4dc40112873e939f277ab0ce064"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/audio-timing-pause/audio-timing-pause.json.gz",
+      "path": "games/yuyuhakusho/engine/testdata/audio-timing-pause.json.gz",
+      "sha256": "3e05e3633373c15651bb9fcbb773d4302fc7206cd5c750748675706899d2aa37"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/audio-timing-pause/audio-timing-pause-manifest.json",
+      "path": "games/yuyuhakusho/engine/testdata/audio-timing-pause-manifest.json",
+      "sha256": "5a6ecdfdfb4600a61a5fbc793a446c16fa9a30d17ff4dc4e4ef51a243cd5dcbb"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/audio-timing-pause/audio-timing-pause-original.json.gz",
+      "path": "games/yuyuhakusho/engine/testdata/audio-timing-pause-original.json.gz",
+      "sha256": "0f0ad241ac11771222be388b66894efa7f919deabbc3bd42122359f0157a56c2"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/audio-timing-private-v2/audio-timing-boundaries.json.gz",
+      "path": "games/yuyuhakusho/engine/testdata/audio-timing-boundaries.json.gz",
+      "sha256": "2b22c2806e6e373a59306c54e1d274de3ba05eb81068eefa836b0ded8cbcd669"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/audio-timing-private-v2/audio-timing-boundaries-manifest.json",
+      "path": "games/yuyuhakusho/engine/testdata/audio-timing-boundaries-manifest.json",
+      "sha256": "942f073e4e3f24f0dd235541afde756b74017b8bbbea1382ba8a13e168d99528"
+    }
+  ],
+  "priority_bytes_sha256": "216eb3a873be8e507e1998edb50f37973bc4447cb4ce26d570f2fe7402a23e35",
+  "limits": [
+    "No natural catchup/backlog nonzero was observed; private original phased streams prove that mechanism separately",
+    "Current219ac frame-end-only hypothesis is genuinely rejected; CPU cycles retain raw units, not PCM positions",
+    "Normal driver-side phase changes are separate external inputs to individual finish helper comparisons; no expected snapshots are injected into a claimed complete independent driver"
+  ]
+}

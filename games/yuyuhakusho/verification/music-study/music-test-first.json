@@ -1,0 +1,14 @@
+{
+  "created_at_utc": "2026-11-05T09:30:51.118546+00:00",
+  "scope": "New research evidence acceptance contract frozen before new producer",
+  "files": {
+    "docs/research/md-yuyuhakusho/AUDIO_MUSIC_FAILURES.md": "f68a2870ac756b2d680f88a3ef446eebb1dadf5d0eeb64ab656090117f8b8a5d",
+    "docs/research/md-yuyuhakusho/AUDIO_MUSIC_PLAN.md": "d07d4f50d2f6a65782f8ebff9882174c6f852648837ed7882193549358a16da4",
+    "scripts/yuyuhakusho/validate_music_survey.py": "2d3df4cf9b4d3bd0f31b2545ed9e8221da6e4571e9a98e07080929d6c96f4aad"
+  },
+  "red": {
+    "path": ".local/md-yuyuhakusho/audio-music-survey/missing-red.txt",
+    "exit_code": 1,
+    "reason": "New eight-song survey evidence does not exist yet; this is not a production implementation red"
+  }
+}

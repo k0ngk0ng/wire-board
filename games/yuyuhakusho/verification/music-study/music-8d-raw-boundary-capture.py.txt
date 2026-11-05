@@ -1,0 +1,11 @@
+from pathlib import Path
+import json,sys
+ROOT=Path.cwd();sys.path.insert(0,str(ROOT/'scripts/yuyuhakusho'))
+from survey_music_sequences import run
+prior=json.loads((ROOT/'.local/md-yuyuhakusho/audio-music-survey/extended-8d/survey.json').read_text())['songs'][0]
+recurrence=prior['raw_driver_recurrence'];assert not recurrence['verified']and recurrence['period_frames']==3367
+bound=recurrence['first_equal_after_step']+1+2*recurrence['period_frames']+128
+assert bound==9335
+out=ROOT/'.local/md-yuyuhakusho/audio-music-survey/raw-proof-8d';out.mkdir(exist_ok=True)
+report=run(out,bound,[0x8d]);assert report['songs'][0]['raw_driver_recurrence']['verified']
+print(json.dumps({'derived_bound':bound,'raw':report['songs'][0]['raw_driver_recurrence'],'pcm':report['songs'][0]['pcm_recurrence']},indent=2))

@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "scope": "Only three original private input WAVs retained for independent paired-mix counterexample; not production assets",
+  "sample_rate": 44100,
+  "channels": 2,
+  "sample_width_bytes": 2,
+  "commands": {
+    "single-a": [
+      [
+        0,
+        31
+      ]
+    ],
+    "single-b-late": [
+      [
+        8,
+        63
+      ]
+    ],
+    "pair-a-b": [
+      [
+        0,
+        31
+      ],
+      [
+        8,
+        63
+      ]
+    ]
+  },
+  "second_request_stereo_frame": 5888,
+  "files": {
+    "single-a": {
+      "source_path": ".local/md-yuyuhakusho/audio-dispatch-study/single-a-original.wav",
+      "wav_sha256": "1650584f773b8e47fd7a656dff1ab05cc74cae3bcd5e21eb85c4437c37da3932",
+      "pcm_sha256": "71b7d9922b86822614938777d1feac574e89724994c1cb73b69eecbef73e0196",
+      "stereo_frames": 139831
+    },
+    "single-b-late": {
+      "source_path": ".local/md-yuyuhakusho/audio-dispatch-study/single-b-late-original.wav",
+      "wav_sha256": "a2118c943820eaf7c2ebd69ded57ce8bf2865b4ab0e8bef18f4886f2c878a907",
+      "pcm_sha256": "298bf46e40be97bc52436a5e2ff3bfcb8ce21d973412e6ac11dd3db9bf910d34",
+      "stereo_frames": 139831
+    },
+    "pair-a-b": {
+      "source_path": ".local/md-yuyuhakusho/audio-dispatch-study/pair-a-b-original.wav",
+      "wav_sha256": "06341b7ec4bf584a4a15220a91110488c16df2f4639cd5649f6227da72d57877",
+      "pcm_sha256": "c2187f94a24f69b2b310092ecd592d5f265d63181e24c90274f1b8e4074d9773",
+      "stereo_frames": 139831
+    }
+  },
+  "source_capture_sha256": "fc1e3c2e3ea816ddea0aad094772cee1fb370697dc6a08a762ca1798d6c85754",
+  "source_pcm_observed_core_equal": true
+}

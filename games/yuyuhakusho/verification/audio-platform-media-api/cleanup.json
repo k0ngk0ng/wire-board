@@ -1,0 +1,21 @@
+{
+  "recorded_at_utc": "2026-11-05T10:11:55.875841+00:00",
+  "scope": "Only this observer private closed browser profile, pinned-source/build copies and decoded PCM repeat; Root-shared finite-lane probe profile/build/diagnostic media intentionally kept",
+  "paths": [
+    {
+      "path": ".local/md-yuyuhakusho/audio-capture-boundary",
+      "bytes": 11182626
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-media-api/native-capture-decoded.wav",
+      "bytes": 576078
+    }
+  ],
+  "total_bytes_removed": 11758704,
+  "kept": [
+    "All source/failure inventories/frozen contracts and raw red/final evidence",
+    "Original finite WAVs and existing ROM/core",
+    "Native WebM captures and stream lifecycle JSON",
+    "Root-shared .local/md-yuyuhakusho/audio-media-api profile/build/media for pending extension E2E"
+  ]
+}

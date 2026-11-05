@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/check_music_score_structure.py", line 4, in <module>
+    from music_score_structure import derive_song, project_commands, walk_track
+ModuleNotFoundError: No module named 'music_score_structure'

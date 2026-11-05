@@ -1,0 +1,23 @@
+{
+  "checks": [],
+  "error": "Error: independent music fixture failed",
+  "events": [],
+  "state": [
+    {
+      "attribute": null,
+      "connected": true,
+      "duration": null,
+      "ended": false,
+      "id": 0,
+      "loop": false,
+      "loopKey": null,
+      "music": false,
+      "muted": false,
+      "paused": true,
+      "platform": true,
+      "rate": 1,
+      "src": "",
+      "time": 0
+    }
+  ]
+}

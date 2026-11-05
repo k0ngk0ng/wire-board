@@ -1,0 +1,7 @@
+{
+  "path": "scripts/yuyuhakusho/capture_music_tracks.py",
+  "sha256": "e8e72a1457957947fd3f3b17eb8ef5867dd3dc882d73b42d6d3e1fadc82f2f55",
+  "clock_model_sha256": "7738e3fba39ba570101d73c454756b8b4949a5e31bd9f65ba6f40551fd59b1a2",
+  "maximum_per_track_capture": 20000,
+  "no_whole_long_lcm_capture": true
+}

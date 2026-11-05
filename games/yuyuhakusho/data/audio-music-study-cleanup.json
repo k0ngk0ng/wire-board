@@ -1,0 +1,154 @@
+{
+  "created_at_utc": "2026-11-05T10:38:55.796070+00:00",
+  "scope": "This owner only: closed browser profiles/tmp, temporary negative fixture copies, empty reference output directories, owned bytecode, irrelevant syntax diagnostics",
+  "paths": [
+    {
+      "path": ".local/md-yuyuhakusho/audio-music-carrier/profile",
+      "bytes": 8900893
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-music-carrier/tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-music-carrier/e2e/profile",
+      "bytes": 10439184
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-music-carrier/e2e/tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-music-carrier/missing",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-music-carrier/builder-syntax-red.txt",
+      "bytes": 425
+    },
+    {
+      "path": "games/yuyuhakusho/verification/music-study/native-carrier-builder-syntax-red.txt",
+      "bytes": 425
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-music-carrier/negatives/sample-gap-fixture",
+      "bytes": 3313991
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-music-carrier/negatives/changed-pcm-fixture",
+      "bytes": 3313991
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-music-carrier/negatives/changed-fragment-fixture",
+      "bytes": 3313991
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-music-carrier/negatives/unsupported-mime-fixture",
+      "bytes": 3313991
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-music-carrier/negatives/unsupported-mime/profile",
+      "bytes": 8909869
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-music-carrier/negatives/unsupported-mime/tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-music-survey/extended-95/observed-core",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-music-survey/extended-95/control-core",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-music-survey/extended-8a/observed-core",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-music-survey/extended-8a/control-core",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-music-survey/extended-88/observed-core",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-music-survey/extended-88/control-core",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-music-survey/extended-86/observed-core",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-music-survey/extended-86/control-core",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-music-survey/raw-proof-8d/observed-core",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-music-survey/raw-proof-8d/control-core",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-music-survey/extended-85/observed-core",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-music-survey/extended-85/control-core",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-music-survey/extended-83/observed-core",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-music-survey/extended-83/control-core",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-music-survey/probe/observed-core",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-music-survey/probe/control-core",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-music-survey/extended-84/observed-core",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-music-survey/extended-84/control-core",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-music-survey/extended-8d/observed-core",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-music-survey/extended-8d/control-core",
+      "bytes": 0
+    },
+    {
+      "path": "scripts/yuyuhakusho/__pycache__/music_score_structure.cpython-314.pyc",
+      "bytes": 9692
+    },
+    {
+      "path": "scripts/yuyuhakusho/__pycache__/survey_music_sequences.cpython-314.pyc",
+      "bytes": 25270
+    }
+  ],
+  "total_bytes_removed": 41541722,
+  "preserved": [
+    "All canonical raw/music step evidence and WAVs",
+    "Frozen tests, real unsupported-tempo/missing evidence reds and final results",
+    "NativeFLAC fragments and raw PCM roundtrip",
+    "Native captureStream/MediaRecorder recording",
+    "Original ROM/core/oldmedia and other owners"
+  ]
+}

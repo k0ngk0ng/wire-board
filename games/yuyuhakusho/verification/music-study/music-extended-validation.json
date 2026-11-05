@@ -1,0 +1,369 @@
+{
+  "pass": true,
+  "scope": "Eight songs, all72 track returns and shared tempo clock against extended original events",
+  "songs": [
+    {
+      "code": 131,
+      "pass": true,
+      "steps": 8715,
+      "sequence_events_compared": 1199,
+      "tracks_with_repeated_f6": 9,
+      "common_rhythm_quanta": 3768,
+      "common_rhythm_tempo_frames": 4239,
+      "has_mid_song_tempo_changes": false,
+      "raw_driver_recurrence": {
+        "verified": true,
+        "first_equal_after_step": 14,
+        "equal_pairs": 4462,
+        "period_frames": 4239,
+        "complete_raw_driver_bytes": 928,
+        "reason": "Full raw driver recurrence"
+      },
+      "selected_event_recurrence": {
+        "verified": true,
+        "events_first": 31495,
+        "events_second": 31495,
+        "first_sha256": "b145fb951f7e4d98e377cd6e99076e819f0e5a872df689030c8be0654b1e31a2",
+        "second_sha256": "b145fb951f7e4d98e377cd6e99076e819f0e5a872df689030c8be0654b1e31a2",
+        "limits": [
+          "Selected sequence/YM/DAC order and relative video steps only, not all chip writes at exact clocks"
+        ]
+      },
+      "pcm_recurrence": {
+        "verified": true,
+        "video_steps_completed": [
+          15,
+          4254,
+          8493
+        ],
+        "stereo_sample_offsets": [
+          11040,
+          3130722,
+          6250404
+        ],
+        "period_stereo_frames": [
+          3119682,
+          3119682
+        ],
+        "comparison": {
+          "same_length": true,
+          "pcm_bytes_equal": false,
+          "compared_sample_values": 6239364,
+          "different_sample_values": 6229127,
+          "max_absolute_difference": 16397,
+          "rms_difference": 1274.2367302037762
+        },
+        "first_100ms_comparison": {
+          "same_length": true,
+          "pcm_bytes_equal": false,
+          "compared_sample_values": 8820,
+          "different_sample_values": 8817,
+          "max_absolute_difference": 7360,
+          "rms_difference": 1399.2357268836995
+        },
+        "psg_noise_at_boundaries": [
+          4131,
+          8672,
+          41958
+        ],
+        "ym_context_sha256_at_boundaries": [
+          "b2d85b3e519908b477dde31085b9774888312d56b01c35183f889d84ef44af33",
+          "604e2e97fad9a8f358a260092110bfdf5a054ae736ad15157a23e53071a228d9",
+          "df3973bb6c1737d78f41e1725fe442d5cb5bcc32d4d89a0e023dcb81ce800308"
+        ],
+        "exact_media_loop_accepted": false,
+        "limits": [
+          "Video-step boundaries are not precise intra-frame sample cut points",
+          "This bounded comparison does not prove that no longer PCM period exists"
+        ]
+      },
+      "capture": ".local/md-yuyuhakusho/audio-music-survey/extended-83/survey.json",
+      "capture_sha256": "5d74fd57aca4efc5dbd0387e3f5c45275a0c7595f33cf22c88b6bb5e794cd2cc"
+    },
+    {
+      "code": 132,
+      "pass": true,
+      "steps": 9830,
+      "sequence_events_compared": 2258,
+      "tracks_with_repeated_f6": 9,
+      "common_rhythm_quanta": 3840,
+      "common_rhythm_tempo_frames": 76800,
+      "has_mid_song_tempo_changes": false,
+      "raw_driver_recurrence": {
+        "verified": false,
+        "reason": "All active rows do not yet have a repeated F6"
+      },
+      "selected_event_recurrence": {
+        "verified": false
+      },
+      "pcm_recurrence": {
+        "verified": false,
+        "reason": "No complete raw-state boundary proved"
+      },
+      "capture": ".local/md-yuyuhakusho/audio-music-survey/extended-84/survey.json",
+      "capture_sha256": "30d364f27ac1a24baac81ddeb508843e5e1e6124e69c9ae5d4d901bf5e589649"
+    },
+    {
+      "code": 133,
+      "pass": true,
+      "steps": 9075,
+      "sequence_events_compared": 897,
+      "tracks_with_repeated_f6": 9,
+      "common_rhythm_quanta": 2784,
+      "common_rhythm_tempo_frames": 4176,
+      "has_mid_song_tempo_changes": false,
+      "raw_driver_recurrence": {
+        "verified": true,
+        "first_equal_after_step": 595,
+        "equal_pairs": 4304,
+        "period_frames": 4176,
+        "complete_raw_driver_bytes": 928,
+        "reason": "Full raw driver recurrence"
+      },
+      "selected_event_recurrence": {
+        "verified": true,
+        "events_first": 32329,
+        "events_second": 32329,
+        "first_sha256": "28a57833f8c97c4737e780f6bf31011cbcb05988f47d04ea9c53ca0a95b4dcab",
+        "second_sha256": "28a57833f8c97c4737e780f6bf31011cbcb05988f47d04ea9c53ca0a95b4dcab",
+        "limits": [
+          "Selected sequence/YM/DAC order and relative video steps only, not all chip writes at exact clocks"
+        ]
+      },
+      "pcm_recurrence": {
+        "verified": true,
+        "video_steps_completed": [
+          596,
+          4772,
+          8948
+        ],
+        "stereo_sample_offsets": [
+          438625,
+          3511942,
+          6585260
+        ],
+        "period_stereo_frames": [
+          3073317,
+          3073318
+        ],
+        "comparison": {
+          "same_length": false,
+          "pcm_bytes_equal": false,
+          "compared_sample_values": 6146634,
+          "different_sample_values": 6136271,
+          "max_absolute_difference": 11050,
+          "rms_difference": 1848.5442528612111
+        },
+        "first_100ms_comparison": {
+          "same_length": true,
+          "pcm_bytes_equal": false,
+          "compared_sample_values": 8820,
+          "different_sample_values": 8820,
+          "max_absolute_difference": 5618,
+          "rms_difference": 2250.6966169783977
+        },
+        "psg_noise_at_boundaries": [
+          46467,
+          35192,
+          64167
+        ],
+        "ym_context_sha256_at_boundaries": [
+          "27d3236f8bfeadc86f314c727f81b37cfa183ef6ccdd3e56979432d8eb4f5c1c",
+          "0150940ec773121265cbf65f4aa7f9ca64cafc81f7167876dfc3d4a5b94fcb67",
+          "659147c8cdd0ca9d1209c3e83e00ef8f73aacc29cdcea50fa7db00910db7d70e"
+        ],
+        "exact_media_loop_accepted": false,
+        "limits": [
+          "Video-step boundaries are not precise intra-frame sample cut points",
+          "This bounded comparison does not prove that no longer PCM period exists"
+        ]
+      },
+      "capture": ".local/md-yuyuhakusho/audio-music-survey/extended-85/survey.json",
+      "capture_sha256": "5af4952f51c9717acc3a2e30fecda7a82d6a06271fb6dd8ebc0febd9e7d841ad"
+    },
+    {
+      "code": 134,
+      "pass": true,
+      "steps": 11001,
+      "sequence_events_compared": 1202,
+      "tracks_with_repeated_f6": 9,
+      "common_rhythm_quanta": 1082040,
+      "common_rhythm_tempo_frames": 1623060,
+      "has_mid_song_tempo_changes": false,
+      "raw_driver_recurrence": {
+        "verified": false,
+        "reason": "All active rows do not yet have a repeated F6"
+      },
+      "selected_event_recurrence": {
+        "verified": false
+      },
+      "pcm_recurrence": {
+        "verified": false,
+        "reason": "No complete raw-state boundary proved"
+      },
+      "capture": ".local/md-yuyuhakusho/audio-music-survey/extended-86/survey.json",
+      "capture_sha256": "8a15e555745936641d453d9ee36080e7fab4d04e508aa556912af2be738de59a"
+    },
+    {
+      "code": 136,
+      "pass": true,
+      "steps": 12751,
+      "sequence_events_compared": 1438,
+      "tracks_with_repeated_f6": 9,
+      "common_rhythm_quanta": 5172,
+      "common_rhythm_tempo_frames": 21981,
+      "has_mid_song_tempo_changes": false,
+      "raw_driver_recurrence": {
+        "verified": false,
+        "reason": "All active rows do not yet have a repeated F6"
+      },
+      "selected_event_recurrence": {
+        "verified": false
+      },
+      "pcm_recurrence": {
+        "verified": false,
+        "reason": "No complete raw-state boundary proved"
+      },
+      "capture": ".local/md-yuyuhakusho/audio-music-survey/extended-88/survey.json",
+      "capture_sha256": "3e96196779a5e69fb0fc979b1240a7d447662f9dced58c909c335d3aae2c1b98"
+    },
+    {
+      "code": 138,
+      "pass": true,
+      "steps": 12090,
+      "sequence_events_compared": 1993,
+      "tracks_with_repeated_f6": 9,
+      "common_rhythm_quanta": 5568,
+      "common_rhythm_tempo_frames": 41760,
+      "has_mid_song_tempo_changes": false,
+      "raw_driver_recurrence": {
+        "verified": false,
+        "reason": "All active rows do not yet have a repeated F6"
+      },
+      "selected_event_recurrence": {
+        "verified": false
+      },
+      "pcm_recurrence": {
+        "verified": false,
+        "reason": "No complete raw-state boundary proved"
+      },
+      "capture": ".local/md-yuyuhakusho/audio-music-survey/extended-8a/survey.json",
+      "capture_sha256": "00637a5a15e522741b73c651556b555a660cb875e366eead7a6348df3527d1ef"
+    },
+    {
+      "code": 141,
+      "pass": true,
+      "steps": 8431,
+      "sequence_events_compared": 2023,
+      "tracks_with_repeated_f6": 9,
+      "common_rhythm_quanta": 2886,
+      "common_rhythm_tempo_frames": 3367,
+      "has_mid_song_tempo_changes": false,
+      "raw_driver_recurrence": {
+        "verified": false,
+        "first_equal_after_step": 2472,
+        "equal_pairs": 2592,
+        "period_frames": 3367,
+        "complete_raw_driver_bytes": 928,
+        "reason": "Insufficient complete recurrence window; no state bytes excluded"
+      },
+      "selected_event_recurrence": {
+        "verified": false
+      },
+      "pcm_recurrence": {
+        "verified": false,
+        "reason": "No complete raw-state boundary proved"
+      },
+      "capture": ".local/md-yuyuhakusho/audio-music-survey/extended-8d/survey.json",
+      "capture_sha256": "e68ea6dbeaa1b21386c0d4d8e5a47b212cec2d85b13ed32aea6ab3912d2ea428"
+    },
+    {
+      "code": 149,
+      "pass": true,
+      "steps": 16484,
+      "sequence_events_compared": 10137,
+      "tracks_with_repeated_f6": 9,
+      "common_rhythm_quanta": 3408,
+      "common_rhythm_tempo_frames": null,
+      "has_mid_song_tempo_changes": true,
+      "raw_driver_recurrence": {
+        "verified": true,
+        "first_equal_after_step": 6327,
+        "equal_pairs": 6390,
+        "period_frames": 3767,
+        "complete_raw_driver_bytes": 928,
+        "reason": "Full raw driver recurrence"
+      },
+      "selected_event_recurrence": {
+        "verified": true,
+        "events_first": 32958,
+        "events_second": 32958,
+        "first_sha256": "7a452311980ab895c3e58aaa6aff54f5f38d3fbc2501f9d1809eb08a875d9457",
+        "second_sha256": "7a452311980ab895c3e58aaa6aff54f5f38d3fbc2501f9d1809eb08a875d9457",
+        "limits": [
+          "Selected sequence/YM/DAC order and relative video steps only, not all chip writes at exact clocks"
+        ]
+      },
+      "pcm_recurrence": {
+        "verified": true,
+        "video_steps_completed": [
+          6328,
+          10095,
+          13862
+        ],
+        "stereo_sample_offsets": [
+          4657077,
+          7429392,
+          10201706
+        ],
+        "period_stereo_frames": [
+          2772315,
+          2772314
+        ],
+        "comparison": {
+          "same_length": false,
+          "pcm_bytes_equal": false,
+          "compared_sample_values": 5544628,
+          "different_sample_values": 5531303,
+          "max_absolute_difference": 14366,
+          "rms_difference": 1431.317546216625
+        },
+        "first_100ms_comparison": {
+          "same_length": true,
+          "pcm_bytes_equal": false,
+          "compared_sample_values": 8820,
+          "different_sample_values": 8817,
+          "max_absolute_difference": 3891,
+          "rms_difference": 885.2615073494147
+        },
+        "psg_noise_at_boundaries": [
+          41612,
+          41612,
+          41612
+        ],
+        "ym_context_sha256_at_boundaries": [
+          "f940ea211afc2dfc51028c769c6b53cf177dfbdfccbdbe66742bcbe025c79dfd",
+          "cd54f8bed4d79095cc0734ec39224fd0d22ebb174fe6bfe1a7867b5d98513dbd",
+          "892d9b5e6fba017c4067d578f56b0b70515d98a09a1115149b2626f09c5b66f6"
+        ],
+        "exact_media_loop_accepted": false,
+        "limits": [
+          "Video-step boundaries are not precise intra-frame sample cut points",
+          "This bounded comparison does not prove that no longer PCM period exists"
+        ]
+      },
+      "capture": ".local/md-yuyuhakusho/audio-music-survey/extended-95/survey.json",
+      "capture_sha256": "85b5fb9bffbcf37cbfcd43057cc5ae0f2d5180b59e060c5c1e99fc5d399ee839"
+    }
+  ],
+  "original_steps_compared": 88377,
+  "sequence_events_compared": 21147,
+  "source_sha256": {
+    "scripts/yuyuhakusho/check_music_survey_full.py": "78d691614f9cffcf037620e6948fd5fc42eabaf646c1026475e7acc3d6817fcc",
+    "scripts/yuyuhakusho/music_score_structure.py": "7738e3fba39ba570101d73c454756b8b4949a5e31bd9f65ba6f40551fd59b1a2"
+  },
+  "limits": [
+    "Per-track two-cycle bounds; long all-track/common-tempo recurrence is not falsely claimed where not captured",
+    "No synth, exactPCMloop or browser playback acceptance is inferred from rhythmic control validation"
+  ]
+}

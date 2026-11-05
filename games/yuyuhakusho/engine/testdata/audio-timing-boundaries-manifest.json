@@ -1,0 +1,26 @@
+{
+  "pass": true,
+  "scope": "Private original219ac/219ea calls with paused255 driver; no CPU/Golang implementation comparison yet",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "boundary_calls": 1332,
+  "stream_calls": 260,
+  "calls": 1592,
+  "unknown_writes": 0,
+  "fixture_path": ".local/md-yuyuhakusho/audio-timing-private-v2/audio-timing-boundaries.json.gz",
+  "fixture_json_sha256": "7fcef384c57dcef248ef8bf3448debda2dd160a09a1b4f784ea26b24b9d8bb15",
+  "fixture_gzip_sha256": "2b22c2806e6e373a59306c54e1d274de3ba05eb81068eefa836b0ded8cbcd669",
+  "capture_sha256": "cc777c7862e4907d5f3a7c9c31f1582867df89844a56835b23db6ed0650661bb",
+  "limits": [
+    "Pause255 makes the actual driver return without synthesis; normal/pause-transition driver state has separate natural evidence",
+    "PrivateSR2700 isolates scheduler boundaries; IRQ interleaving is not inferred from these calls"
+  ]
+}

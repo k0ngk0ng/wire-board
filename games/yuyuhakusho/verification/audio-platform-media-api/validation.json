@@ -1,0 +1,425 @@
+{
+  "created_at_utc": "2026-11-05T10:09:51.474323+00:00",
+  "pass": true,
+  "scope": "Baseline native media capability/limits and frozen future finite-lane E2E; shared implementation owned by Root",
+  "baseline_commit": "aa617e23",
+  "baseline_audio_sha256": "0901dad46773da863c3889788dd5f4ce8bc215360d384f83d3a32bf9f347dfb7",
+  "production_modified_by_this_scope": false,
+  "baseline_finite_lanes_supported": false,
+  "future_extension_acceptance": "Root finite API implemented; current source passed8 real native-media checks, separately linked by visibility setup followup. Baseline red and legacy one-task semantics retained.",
+  "real_media_compatibility_checks_each_run": 10,
+  "real_media_runs": 2,
+  "legacy_mock_media_tests": 67,
+  "actual_exit_codes": {
+    "first-red": 1,
+    "repeat": 0,
+    "proposed-finite-final-red": 1,
+    "capture-boundary": 0,
+    "capture-http-red": 1
+  },
+  "test_first_records": [
+    "test-first.json",
+    "finite-lanes-final-test-first.json"
+  ],
+  "finite_source_assets": [
+    {
+      "code": 31,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/1f.wav",
+      "file_sha256": "ec13f289239262317673ee344ed1f139f714b273fc5cdf806f90c0fa3723e351",
+      "pcm_sha256": "e7b52b754712ba0f68865722b92ba6bcd50158414ad657ec9ebd65d3db8d02a0",
+      "duration_seconds": 2.119410430839002
+    },
+    {
+      "code": 63,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/3f.wav",
+      "file_sha256": "480805b361927ccb6e32c75f45b783dff1e734931be77bb064c980b26afa911d",
+      "pcm_sha256": "ee9fd8e26f3f5f05cd810e4b05dbaadad822111fe0bc378abddf5a89090a5108",
+      "duration_seconds": 2.0359637188208617
+    },
+    {
+      "code": 143,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/music-excerpts/8f.wav",
+      "file_sha256": "854deca3e7a5c480345d30334ef2da2f2405a92d37c7adadcdd954299b4c3ff2",
+      "pcm_sha256": "54ffaf24773e51c30b55247cb0dc018a6a5c8cf8b0f25282dffb5eec07eeab14",
+      "duration_seconds": 4.172040816326531
+    }
+  ],
+  "suffix_event_gaps_ms": [
+    [
+      3.40000057220459,
+      1.4000005722045898
+    ],
+    [
+      2.90000057220459,
+      1
+    ]
+  ],
+  "capture_stream_cross_boundary_verified": false,
+  "captured_seconds": 3.0,
+  "sample_gapless_verified": false,
+  "speaker_output_verified": false,
+  "original_mix_equivalent": false,
+  "webkit_tested": false,
+  "webkit_availability_boundary": "Installed agent-browser CLI engines/providers and empty plugin list; no Playwright,playwright-core or @playwright/test resolved in worktree. No install or external profile attempted.",
+  "artifacts": [
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/activation-before-context-rebind.mjs.txt",
+      "sha256": "a64771f25b4ca53b03858c3a98b524ad4e5f98366462562121b00956b71d9d84"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/capture-boundary/failure.json",
+      "sha256": "2108be8b550da404b96d225c0423b9af42b25aa0d73b626c42d6e5d072cc75c4"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/capture-boundary/initial-http-result.json",
+      "sha256": "8c2fc07aa1e1739353f34d8c94a276a9d679aeab30be1a612307b23ade79fa30"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/capture-boundary/native-recording.webm",
+      "sha256": "63f174d317c3612e8120ad564ae8a4140ebb5a6e5ea48ad45d98bf56aae918cf"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/capture-boundary/result.json",
+      "sha256": "ccd3ac110615f31f44b42c37028b207be7cf7e8fa1aff06a471ffc0d96b0e459"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/capture-boundary/verified.png",
+      "sha256": "097806fbe0fd2eb30ebafcf02fd5996ac4d4f774b7b33ca263e682dcbd0d53d2"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/capture-boundary.log",
+      "sha256": "351a0bd3eced581aab0cb50f92bbe8b06530bc226c9c4f9acfabb7f01ae8e32d"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/capture-http-red.log",
+      "sha256": "beb968aec506bd0db85b58a5cca003d6dc2b5df1d426db4bdcc97be8e5d6e9a3"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/capture-initial-checker.py.txt",
+      "sha256": "7d285e76f3d288249c133146d5cfdb7b8633413fdf6027ee1721d272bb43a676"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/capture-initial-harness.ts.txt",
+      "sha256": "16d0c73519534accbbce52589c40bd849c2d6f577c6439e5f5068fe479cdf970"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/capture-observer-lineage.json",
+      "sha256": "3ab2e86f113bbf5ba3368d744947c236640e9a212cbc60022dbee00de42534d4"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/checker-before-native-context-rebind.py.txt",
+      "sha256": "7a896ac9a7e02e515b9a5a8d26588bf5ce5ba99803446060d9e38abe6dd085f7"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/checker-before-visibility-setup.py.txt",
+      "sha256": "86ab19dbbf272637d19eeefce9798d6d575dd52f2be13f16ec863ca9cb8d849a"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/checker-visibility-diagnostic.py.txt",
+      "sha256": "bbb105b076d6c842b485ff833659ab5fff8c824d0b7319212b47e65587ddf348"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/cleanup.json",
+      "sha256": "1fb63393715f1812ecb4b2735d73329b4473338f05a64b453e95dc2e2c0a27bd"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-harness-before-active-selector.ts.txt",
+      "sha256": "b9c905d57d095a9d5f3c13cbbc800f67ab564788af40028ebc0b4ecdecfe9067"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-hidden-precondition/failure-state.json",
+      "sha256": "38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-hidden-precondition/failure-visibility.json",
+      "sha256": "7b9c34df98b3a0a9cf4c317d9afdfbe5bb5ffc0c012c270f2dc1242a383fd1d1"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-hidden-precondition/failure.json",
+      "sha256": "1ca65dcb113acea30252f089b309124bca0c67cd5460c593499c1d17174a2f40"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-hidden-precondition/failure.png",
+      "sha256": "79b8daa8d0211bfd17f5807c87ce551d69bf3a59f84f33a6332ced8325969543"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-hidden-precondition.log",
+      "sha256": "53d1aa3c40d980401cbd9f53313c82fd163749cc6b37abf457e5922ed0ce827d"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-hidden-precondition2/desktop.png",
+      "sha256": "99fa117d99fcf637fd24602c93ba5de309efb8953a3e4fd20240a875d8cdead6"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-hidden-precondition2/finite-overlap-capability.json",
+      "sha256": "3f61a76c62cf7664fa1551d8a34ce5691ad774193c20aea6b976e9cbd1da2d1c"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-hidden-precondition2/mobile-320.png",
+      "sha256": "69588c656a60a7fd66d9ed042c61d2fdba4c97c88fd2216fcb1e3ef5189e6cd8"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-hidden-precondition2/result.json",
+      "sha256": "9570c9951caeaa6f3c01bc9f2121921bad8debe024e5e992a5fa8456b124c5db"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-hidden-precondition2/setup.json",
+      "sha256": "9ffd8d19d0d931927d1d4ac27e96ba54f5bef80082cd2c1305220e58a244fadb"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-hidden-precondition2.log",
+      "sha256": "84d488ed7a136ac9b92c5abc854ff66c80238187e2839eb580ec0c65ebf5a55d"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-lanes-before-active-selector.json",
+      "sha256": "36201a0382edf132fd824ff8d03d0e5f3a7578eb6bac98efa70e4299e9af0572"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-lanes-final-test-first.json",
+      "sha256": "e918437d9d0d379d6d0b5b48571a3cbe6357bea5bedc55b486a6808d54927008"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-lanes-test-first.json",
+      "sha256": "aa6893e08576dfd17846f269412213552f6325ae84f4307627bdfa91d7bc3f94"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-legacy-compatible/desktop.png",
+      "sha256": "4a6e4087d7f6b92b8e85eaa2d126933a54253881228f738f5b0e3c922751275c"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-legacy-compatible/finite-overlap-capability.json",
+      "sha256": "91ade8b18e20d6b628264bce8f6ea6f73bc725380183cc2fe835bd6b2d422da6"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-legacy-compatible/mobile-320.png",
+      "sha256": "462fa6b06a4d3c9f27bc86fb154cc1737fb90a7d511c071f97577700a287bb53"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-legacy-compatible/native-suffix-capture.webm",
+      "sha256": "a91644955db34c0e216b3fa2a94dda552b85e610f72a7084216f1ca072a549dd"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-legacy-compatible/result.json",
+      "sha256": "6e4d7a8375b1a520953e2b50f22c0813ec0bb3ec5cb3168b84a3010d18088367"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-restored/desktop.png",
+      "sha256": "99fa117d99fcf637fd24602c93ba5de309efb8953a3e4fd20240a875d8cdead6"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-restored/failure-state.json",
+      "sha256": "9c2443f267d461bf8ea6d065f94a2abee53d27aae1d1d589e7e9a300326c0a86"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-restored/failure.json",
+      "sha256": "3b5a421bbd05c7717adc26343fe2b372dc17ae8f33efb750509887ec76d5623b"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-restored/failure.png",
+      "sha256": "3e8ece86a9ebae2a3aa001621223acdb1091fe488aee2e90f5f3b6786e255ced"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-restored/finite-overlap-capability.json",
+      "sha256": "3e5a9cdfe84031455ceb25c3171c96f492421cf072698ae41a566a9a2127c9cb"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-restored/mobile-320.png",
+      "sha256": "69588c656a60a7fd66d9ed042c61d2fdba4c97c88fd2216fcb1e3ef5189e6cd8"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-restored/result.json",
+      "sha256": "54d9758739f61f9c867ee2a28c0588695b8d8d3b80c7fcd4e444c361ee32845e"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-restored-final1/desktop.png",
+      "sha256": "99fa117d99fcf637fd24602c93ba5de309efb8953a3e4fd20240a875d8cdead6"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-restored-final1/finite-overlap-capability.json",
+      "sha256": "2ac74b0732344e13f7468241eb35dbab19cb211885ab2dd242d44400549a0c26"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-restored-final1/mobile-320.png",
+      "sha256": "69588c656a60a7fd66d9ed042c61d2fdba4c97c88fd2216fcb1e3ef5189e6cd8"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-restored-final1/result.json",
+      "sha256": "bd5286155995914481d8b210ea339a9724575e2c09c14f4775f12b62be5fd978"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-restored-final1/setup.json",
+      "sha256": "67444bbe5e6ee13ed8af3043653688ebcbb9db77bd55267db288b5e621c53ae8"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-restored-final1.log",
+      "sha256": "f3b735aeb2aeb999d602ae9363ce13c67666a55cf301d6327b0696fe1224d542"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-visibility-diagnostic1/desktop.png",
+      "sha256": "99fa117d99fcf637fd24602c93ba5de309efb8953a3e4fd20240a875d8cdead6"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-visibility-diagnostic1/finite-overlap-capability.json",
+      "sha256": "6e15810d06062f15798abc7d6ea17be279cb0ce67f9e46ec5ba58a960bf6c3ed"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-visibility-diagnostic1/mobile-320.png",
+      "sha256": "69588c656a60a7fd66d9ed042c61d2fdba4c97c88fd2216fcb1e3ef5189e6cd8"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-visibility-diagnostic1/result.json",
+      "sha256": "f4c67051ffa01808293aaafcc68bd18bd68662350e7351835106a70c5a9bd4e5"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-visibility-diagnostic1/setup.json",
+      "sha256": "6f32e78beb03aafb3afb588f78a6f61288f1d9042f8d0d6279cbd033e3553102"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-visibility-diagnostic1.log",
+      "sha256": "f3b735aeb2aeb999d602ae9363ce13c67666a55cf301d6327b0696fe1224d542"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/first-red/desktop.png",
+      "sha256": "4a6e4087d7f6b92b8e85eaa2d126933a54253881228f738f5b0e3c922751275c"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/first-red/failure-state.json",
+      "sha256": "9ad07b16c417858e1a5c9c90dc07aaa7ba8f43d448e0b1cb4b0aa67fdeea1e3c"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/first-red/failure.json",
+      "sha256": "5dd237c28282a2720e9406e7a8eca9d1588ad301ef679102811cd19de23cedc8"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/first-red/failure.png",
+      "sha256": "462fa6b06a4d3c9f27bc86fb154cc1737fb90a7d511c071f97577700a287bb53"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/first-red/finite-overlap-capability.json",
+      "sha256": "fac1232e2e661ce89b9aa176a3133798442354fd964f084660dbb2d68d8a96ee"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/first-red/mobile-320.png",
+      "sha256": "462fa6b06a4d3c9f27bc86fb154cc1737fb90a7d511c071f97577700a287bb53"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/first-red/native-suffix-capture.webm",
+      "sha256": "101bd0488cf44e2e7e593125ab28d7dfc7479014d0c8ac83fdf65c1a2df6f359"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/first-red/result.json",
+      "sha256": "279e41039f1d2dd6cbc147da1d3c8a481d9434927f5f669de7cf9a5f63c65b63"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/first-red.log",
+      "sha256": "a731d216ef8e4148976a0edf22bc99f2fa3907287b3b567271b0e27e1590dc22"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/initial-checker.py.txt",
+      "sha256": "559c078c5c277d28bcaa8aed6a193473cba7cb30c905e93077ff51a7175049ba"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/initial-finite-checker.py.txt",
+      "sha256": "c3219defba49f73c86bceccdcd94b7cdabd177fa5cab769fb434ada25709b768"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/initial-finite-lanes-harness.ts.txt",
+      "sha256": "23322d9ac517f0962b48666f0e1c710683a630ebea5cb823bf74cdf42daa7e93"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/native-capture-analysis.json",
+      "sha256": "d15b4969c68bb31202b8310fac2c4a17d9b2bb761fe3c2257d6d143890bf5ab4"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/node-compatibility.tap",
+      "sha256": "43c6b6c0f3ef7e58b9bd8775345b44e1483ee769cd990960370ae7dc41fbf52d"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/proposed-finite-final-red/failure-state.json",
+      "sha256": "aa232387408e3643105a7758b405539cae217b9478eabb62b3275d180c590b9e"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/proposed-finite-final-red/failure.json",
+      "sha256": "fce1ce9d716661b8249f3dc64e35c63420339a3245d99756e70ba688f966dc73"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/proposed-finite-final-red/failure.png",
+      "sha256": "887e8521c75bfabe47f67ba27f6fccfe2c9368ce507668f8bddce03e4dd1c0fb"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/proposed-finite-final-red.log",
+      "sha256": "a7002152a19764ebca7390fc6960430839cd0e018f4e24daee965e95cc2200a7"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/proposed-finite-red/failure-state.json",
+      "sha256": "55e47ab64b5dda9f4c535e169aaf5754afa324ccfcbd9f5e46f0cc526923da56"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/proposed-finite-red/failure.json",
+      "sha256": "8ee3d16f3d20e7a82d1ca400a77886c5ead7cacfd5b481b0673de9b3c7f55a19"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/proposed-finite-red/failure.png",
+      "sha256": "887e8521c75bfabe47f67ba27f6fccfe2c9368ce507668f8bddce03e4dd1c0fb"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/proposed-finite-red.log",
+      "sha256": "f7a7831f585a75d7c96ba7326b1ed42434748d594fc526240e118536c3d0c1b1"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/repeat/desktop.png",
+      "sha256": "4a6e4087d7f6b92b8e85eaa2d126933a54253881228f738f5b0e3c922751275c"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/repeat/finite-overlap-capability.json",
+      "sha256": "096ad384cee04329d90792920885c4188528ee4397a5f16c772c4bb7cec316d3"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/repeat/mobile-320.png",
+      "sha256": "462fa6b06a4d3c9f27bc86fb154cc1737fb90a7d511c071f97577700a287bb53"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/repeat/native-suffix-capture.webm",
+      "sha256": "9bcf2ba0fb339fa4a2df2fbc22dad81bce4cb995b1d197176d0fcf94968dcb7b"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/repeat/result.json",
+      "sha256": "e758e16b28bdf51d04b9692a907f0def79273b7d5286171846781faee5845f0d"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/repeat.log",
+      "sha256": "133425399c1842af20d02c44e44be4e0edddea59b58262ad0c33bc54b1aa0a55"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/test-first.json",
+      "sha256": "be1588707d407e4d0170b5782ffa110150303f886714a8737c57b91fbd9c1a34"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/visibility-setup-lineage.json",
+      "sha256": "2c12dcd5f7c9a3429d3fc32d18836b9190b94aca4635b9caf9e8c9a06fcb95e8"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/visibility-setup-validation.json",
+      "sha256": "cb8ec88288902b65dacfa4d5a2ea35a99f74d55c4bf63a2d663c63a061f2e3c9"
+    }
+  ],
+  "source_sha256": {
+    "scripts/yuyuhakusho/audio_media_api_harness.ts": "abcee3a7cbd3261c8c90160b6f30c6408f79fa578983f97f02b370bb7562d10a",
+    "scripts/yuyuhakusho/audio_finite_lanes_harness.ts": "94c125b84f4f5c9df26717bfb5b1548b0020ff74088c2dc8e61fadac402455a3",
+    "scripts/yuyuhakusho/check_audio_media_api.py": "958258b19a132b8c2e452a21591145e7d3d90770bc87858bf0fa979c539f8eb3",
+    "scripts/yuyuhakusho/audio_capture_boundary_harness.ts": "5df66943e1c9be37c77cccc035955b9e8706bfb007d1e9c7715c7b62fe582935",
+    "scripts/yuyuhakusho/check_audio_capture_boundary.py": "713c12b9c540fad5ae173005ff87e758c0d24f347ad6fbf138487336ff57bcac",
+    "docs/research/md-yuyuhakusho/AUDIO_PLATFORM_MEDIA_FAILURES.md": "d099352ac26666d92919c9128e3875fab63204dd122d22590fec71957764d4e8",
+    "docs/research/md-yuyuhakusho/AUDIO_PLATFORM_FINITE_LANES_FAILURES.md": "951f15d7441d970bda9282335d1c50f6ad0d8046e128fa8ec3bc4b1d6c27c8bf",
+    "docs/research/md-yuyuhakusho/AUDIO_PLATFORM_MEDIA_API.md": "14fdc4e6e0ef5d340c7cf67583341deed34283ed670ed1bbc1cf9bf5b17dde5b",
+    "scripts/yuyuhakusho/activate_audio_media_page.mjs": "be175caaed1be418b82892ae56c53fefe3b8c56ceff208f94de997923a508ae8"
+  },
+  "cleanup": {
+    "path": "games/yuyuhakusho/verification/audio-platform-media-api/cleanup.json",
+    "bytes_removed": 11758704
+  },
+  "extension_followup": {
+    "path": "games/yuyuhakusho/verification/audio-platform-media-api/visibility-setup-validation.json",
+    "sha256": "cb8ec88288902b65dacfa4d5a2ea35a99f74d55c4bf63a2d663c63a061f2e3c9"
+  }
+}

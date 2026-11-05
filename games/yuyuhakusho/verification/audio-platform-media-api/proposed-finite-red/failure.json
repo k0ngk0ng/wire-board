@@ -1,0 +1,17 @@
+{
+  "error": "AssertionError('Error: proposed finite-lane effect/stopEffect methods are unavailable')",
+  "requests": [
+    {
+      "path": "/",
+      "range": null
+    },
+    {
+      "path": "/harness.js",
+      "range": null
+    },
+    {
+      "path": "/favicon.ico",
+      "range": null
+    }
+  ]
+}

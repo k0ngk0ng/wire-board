@@ -1,0 +1,118 @@
+import "./audio_media_api_harness";
+import type { GameAudio } from "../../web/src/audio";
+
+type EffectPort = {
+  effect(lane: string, sources: readonly string[], options: { playbackID: string; startOffset?: number }): Promise<boolean>;
+  stopEffect(lane: string, expectedPlaybackID?: string): void;
+};
+type State = {
+  platform: GameAudio; port: ReturnType<GameAudio["channel"]>; other: ReturnType<GameAudio["channel"]>;
+  running: boolean; complete: boolean; error: string; checks: unknown[]; overlap: unknown;
+  events: {kind: string; at: number; src: string}[];
+  snapshot(): { id: number; connected: boolean; attribute: string | null; paused: boolean; music: boolean; time: number }[];
+};
+const h = (window as unknown as { yuyuMediaAPI: State }).yuyuMediaAPI;
+const p = h.port as typeof h.port & EffectPort;
+const other = h.other as typeof h.other & EffectPort;
+const wait = async (predicate: () => boolean, limit = 10000) => {
+  const started = performance.now();
+  while (!predicate()) { if (performance.now() - started > limit) throw Error("finite lane native media predicate timed out"); await new Promise((resolve) => setTimeout(resolve, 10)); }
+};
+const assert = (value: unknown, message: string) => { if (!value) throw Error(message); };
+const all = () => [...document.querySelectorAll<HTMLAudioElement>("audio[data-platform-audio]")];
+const effect = (code: string) => all().find((media) => !media.hasAttribute("data-platform-music") && media.currentSrc.endsWith("/" + code + ".wav"))!;
+const music = () => all().find((media) => media.hasAttribute("data-platform-music"))!;
+const live = () => h.snapshot().filter((row) => row.attribute && !row.paused);
+const check = (kind: string, result: object) => h.checks.push({ kind, ...result });
+
+document.querySelector<HTMLButtonElement>("#start")!.onclick = async () => {
+  h.running = true;
+  try {
+    await h.platform.unlock();
+    assert(typeof p.effect === "function" && typeof p.stopEffect === "function", "proposed finite-lane effect/stopEffect methods are unavailable");
+    assert(await h.port.music(["/audio/8f.wav"], { loop: false, playbackID: "lanes-music" }), "independent music fixture failed");
+    const both = await Promise.all([
+      p.effect("pcm-main", ["/audio/1f.wav"], { playbackID: "a1" }),
+      p.effect("pcm-alt", ["/audio/3f.wav"], { playbackID: "b1" }),
+    ]);
+    assert(both.every(Boolean), "independent finite lanes failed to start");
+    await wait(() => live().length === 3 && effect("1f").currentTime > 0.12 && effect("3f").currentTime > 0.12);
+    const a = effect("1f"), b = effect("3f"), m = music();
+    assert(a !== b && a !== m && b !== m && !a.loop && !b.loop && !m.loop, "finite lanes reuse a media element or loop");
+    h.overlap = { expectedIndependentFiniteVoices: 2, actualIndependentFiniteVoices: live().filter((row) => !row.music).length, state: h.snapshot() };
+    check("independent-finite-lanes-and-music", { state: h.snapshot() });
+
+    const same = a.currentTime, source = a.getAttribute("src");
+    assert(await p.effect("pcm-main", ["/audio/1f.wav"], { playbackID: "a1", startOffset: 0 }), "same live instance refresh failed");
+    assert(a.getAttribute("src") === source && a.currentTime >= same, "same instance rewound or replaced native media");
+    assert(!await p.effect("pcm-main", ["/audio/3f.wav"], { playbackID: "a1" }), "same instance accepted conflicting asset identity");
+    assert(a.getAttribute("src") === source && !a.paused, "conflicting instance asset cancelled valid current media");
+    assert(await p.effect("pcm-main", ["/audio/1f.wav"], { playbackID: "a2" }), "new instance of same source was deduplicated");
+    const currentA = effect("1f");
+    assert(currentA.currentTime < 0.2 && !currentA.paused && !b.paused && !m.paused, "new same-source instance did not restart only its lane");
+    p.stopEffect("pcm-main", "a1");
+    assert(!currentA.paused && currentA.getAttribute("src") === source, "stale expected instance stopped its successor");
+    p.stopEffect("pcm-alt", "b1");
+    assert(b.paused && !b.getAttribute("src") && !currentA.paused && !m.paused, "targeted finite stop affected a peer or music");
+    check("instance-identity-and-targeted-stop", { state: h.snapshot() });
+
+    assert(await p.effect("pcm-alt", ["/missing/3f.wav", "/audio/3f.wav"], { playbackID: "b2", startOffset: 0.5 }), "finite native fallback failed");
+    const restoredB = effect("3f");
+    assert(restoredB.currentTime >= 0.5 && restoredB.currentTime < 0.8 && !restoredB.loop && !currentA.paused && !m.paused, "finite fallback lost its offset or affected another lane");
+    const prior = h.snapshot();
+    assert(!await p.effect("invalid", ["/audio/1f.wav"], { playbackID: "invalid", startOffset: NaN }), "invalid offset accepted");
+    assert(prior.filter((row) => row.attribute).every((row) => live().some((now) => now.id === row.id)), "invalid offset cancelled an active peer");
+    const expired = await p.effect("pcm-alt", ["/audio/3f.wav"], { playbackID: "b3", startOffset: 90 });
+    assert(!expired && !currentA.paused && !m.paused, "expired finite restore played or cancelled a peer");
+    assert(!h.snapshot().some((row) => row.attribute?.endsWith("/3f.wav") && !row.paused), "expired finite restore restarted its clip");
+    check("finite-offset-fallback-expiry", { state: h.snapshot() });
+    h.port.stop();
+
+    const slow = p.effect("pcm-main", ["/slow/1f.wav"], { playbackID: "slow" });
+    await new Promise((resolve) => setTimeout(resolve, 25));
+    const newer = await p.effect("pcm-main", ["/audio/3f.wav"], { playbackID: "newer" });
+    const older = await slow;
+    assert(newer && !older, "late old playback was accepted or cancelled its successor");
+    assert(!effect("3f").paused && effect("3f").getAttribute("src")?.endsWith("/3f.wav"), "late old source metadata or Promise changed the successor");
+    check("late-native-source-replacement", { state: h.snapshot() });
+    h.port.stop();
+
+    const endedStart = performance.now();
+    assert(await p.effect("pcm-main", ["/audio/1f.wav"], { playbackID: "ended-once" }), "ended fixture did not play");
+    await wait(() => h.events.some((row) => row.kind === "ended" && row.at >= endedStart && row.src.endsWith("/1f.wav")));
+    await p.effect("pcm-main", ["/audio/1f.wav"], { playbackID: "ended-once" });
+    assert(!live().some((row) => !row.music), "already-ended instance replayed from a repeated snapshot");
+    assert(await p.effect("pcm-main", ["/audio/1f.wav"], { playbackID: "after-ended" }), "new instance after ended did not play");
+    assert(effect("1f").currentTime < 0.2 && !effect("1f").paused, "new ended successor did not start normally");
+    check("native-ended-instance-deduplication", { state: h.snapshot() });
+
+    assert(await h.port.music(["/audio/8f.wav"], { loop: false, playbackID: "pause-lanes" }), "paused music fixture failed");
+    assert(await p.effect("pcm-alt", ["/audio/3f.wav"], { playbackID: "pause-peer" }), "paused peer fixture failed");
+    await wait(() => live().length === 3 && effect("3f").currentTime > 0.1);
+    h.port.pause(); const paused = h.snapshot();
+    await new Promise((resolve) => setTimeout(resolve, 250));
+    const still = h.snapshot();
+    assert(paused.filter((row) => row.attribute).every((row) => { const next = still.find((candidate) => candidate.id === row.id)!; return next.paused && Math.abs(next.time - row.time) < 0.001; }), "owner pause lost a finite lane position");
+    assert(await h.port.resume(), "owner finite-lane resume failed");
+    assert(paused.filter((row) => row.attribute).every((row) => { const next = h.snapshot().find((candidate) => candidate.id === row.id)!; return !next.paused && next.attribute === row.attribute && Math.abs(next.time - row.time) < 0.15; }), "owner resume restarted a finite lane");
+    check("native-lane-pause-resume", { paused, state: h.snapshot() });
+
+    const stale = all().map((media) => ({ media, ended: media.onended }));
+    h.platform.setEnabled(false);
+    for (const item of stale) item.ended?.call(item.media, new Event("ended"));
+    assert(h.snapshot().every((row) => row.paused && !row.attribute), "mute retained or revived a finite lane");
+    h.platform.setEnabled(true);
+    for (const item of stale) item.ended?.call(item.media, new Event("ended"));
+    assert(h.snapshot().every((row) => row.paused && !row.attribute), "unmute replayed a stale finite instance");
+    check("native-lane-mute-stale-ended", { state: h.snapshot() });
+
+    assert(await other.effect("pcm-main", ["/audio/1f.wav"], { playbackID: "new-room" }), "new owner finite lane did not start");
+    h.port.stop();
+    assert(!effect("1f").paused && effect("1f").getAttribute("src"), "old owner cleanup cancelled new owner finite lane");
+    h.other.stop();
+    assert(await h.port.music(["/diagnostic-loop.wav"], { playbackID: "visibility-new-lanes" }), "finite suite visibility fixture failed");
+    h.complete = true;
+    document.querySelector("pre")!.textContent = JSON.stringify({ complete: true, checks: h.checks.length, finiteLanesSupported: true, sampleGaplessVerified: false }, null, 2);
+  } catch (error) { h.error = String(error); document.querySelector("pre")!.textContent = h.error; }
+  finally { h.running = false; }
+};

@@ -1,0 +1,27 @@
+{
+  "pass": true,
+  "pairs": [
+    {
+      "canonical": ".local/md-yuyuhakusho/audio-dispatch-private/pcm-arbitration-private.json.gz",
+      "repeat": ".local/md-yuyuhakusho/audio-dispatch-private-repeat/pcm-arbitration-private.json.gz",
+      "gzip_byte_identical": true,
+      "sha256": "c7c3bab06315326ace92f5fea93ff893547ba21cac5d89b4124ff6c9b3737f4d",
+      "bytes": 160389
+    },
+    {
+      "canonical": "games/yuyuhakusho/engine/testdata/pcm-arbitration-private.json.gz",
+      "repeat": ".local/md-yuyuhakusho/audio-dispatch-export-repeat/pcm-arbitration-private.json.gz",
+      "gzip_byte_identical": true,
+      "sha256": "c7c3bab06315326ace92f5fea93ff893547ba21cac5d89b4124ff6c9b3737f4d",
+      "bytes": 160389
+    },
+    {
+      "canonical": "games/yuyuhakusho/engine/testdata/pcm-arbitration-sampled.json.gz",
+      "repeat": ".local/md-yuyuhakusho/audio-dispatch-export-repeat/pcm-arbitration-sampled.json.gz",
+      "gzip_byte_identical": true,
+      "sha256": "640317e0a66710c6d4b4f841483eb9874d967802b67c923f60ba5850b42ee395",
+      "bytes": 707
+    }
+  ],
+  "limits": "Output paths differ in manifests; complete canonical private payload and both exported fixture gzip bytes match exactly."
+}

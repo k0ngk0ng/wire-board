@@ -1,0 +1,15 @@
+{
+  "producer": "scripts/yuyuhakusho/survey_music_sequences.py",
+  "sha256": "8226ccd4892605dd4ed04df8baa4f7bbee4d6628c9d37fd1004aeea31d22c570",
+  "maximum_steps_per_song": 4096,
+  "codes": [
+    131,
+    132,
+    133,
+    134,
+    136,
+    138,
+    141,
+    149
+  ]
+}

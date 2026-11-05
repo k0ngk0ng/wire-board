@@ -1,0 +1,18 @@
+{
+  "frozen_at_utc": "2026-11-05T11:11:19.915883+00:00",
+  "phase": "Failure list and original captures/Go tests frozen before new engine helper implementation",
+  "sha256": {
+    "docs/research/md-yuyuhakusho/AUDIO_DISPATCH_FAILURES.md": "e98dbbfa7ef88ad1a0b87cd80914a8643aa4f2dad2399c29b9dd8f1c340778fa",
+    "games/yuyuhakusho/engine/sound_pcm_arbitration_test.go": "3bd23ae3cc5d517ed9dc43928c1f4099b3432465e53b7f4fc8bacfe6d1ac0d1e",
+    "scripts/yuyuhakusho/verify_audio_dispatch_study.py": "10836a6b1499f6e267b7018ae6017c94ea851c217d95c9af479bd3da347c53c4",
+    "scripts/yuyuhakusho/capture_audio_dispatch.py": "7d8d2dea019ca3e703e594b87f8d8d31bf41430841d6a23723660f93480e5abe",
+    "scripts/yuyuhakusho/capture_pcm_arbitration.py": "44b8a326aeb63ff4abc7c2887ae7bef1a69234bdeb03ff538c5fd776b2356e2e",
+    "scripts/yuyuhakusho/export_pcm_arbitration_evidence.py": "255fa635f5cfba3748da6d883b800b9f7102fe1045445527b713b16079fb4de0"
+  },
+  "actual_reds": [
+    "missing-red.json",
+    "go-final-symbol-red.jsonl",
+    "linear-sum-red.json"
+  ],
+  "note": "Initial sampled call count transcription35 was corrected to actual33 before this implementation freeze; the earlier compile-only red never reached that assertion."
+}

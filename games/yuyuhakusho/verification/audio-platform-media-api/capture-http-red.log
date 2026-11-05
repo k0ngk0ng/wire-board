@@ -1,0 +1,13 @@
+
+  .local/md-yuyuhakusho/audio-capture-boundary/baseline-audio.js  19.6kb
+
+⚡ Done in 1ms
+
+  .local/md-yuyuhakusho/audio-capture-boundary/harness.js  5.1kb
+
+⚡ Done in 1ms
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/check_audio_capture_boundary.py", line 41, in <module>
+    assert not js('nativeCaptureBoundary.error'),js('nativeCaptureBoundary.error')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Error: diagnostic source restarted its intro; suffix was not actually preserved
