@@ -1,0 +1,9 @@
+{"Time":"2026-11-06T00:52:21.57035+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcmplayer"}
+{"Time":"2026-11-06T00:52:21.977539+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcmplayer","Test":"TestInitializedSingleProfileRejectsUnprovenBankWindow"}
+{"Time":"2026-11-06T00:52:21.977668+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcmplayer","Test":"TestInitializedSingleProfileRejectsUnprovenBankWindow","Output":"=== RUN   TestInitializedSingleProfileRejectsUnprovenBankWindow\n"}
+{"Time":"2026-11-06T00:52:21.977778+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcmplayer","Test":"TestInitializedSingleProfileRejectsUnprovenBankWindow","Output":"    player_profile_test.go:9: unproven single dummy bank window accepted\n"}
+{"Time":"2026-11-06T00:52:21.9778+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcmplayer","Test":"TestInitializedSingleProfileRejectsUnprovenBankWindow","Output":"--- FAIL: TestInitializedSingleProfileRejectsUnprovenBankWindow (0.00s)\n"}
+{"Time":"2026-11-06T00:52:21.97781+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcmplayer","Test":"TestInitializedSingleProfileRejectsUnprovenBankWindow","Elapsed":0}
+{"Time":"2026-11-06T00:52:21.977831+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcmplayer","Output":"FAIL\n"}
+{"Time":"2026-11-06T00:52:21.97857+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcmplayer","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcmplayer\t0.408s\n"}
+{"Time":"2026-11-06T00:52:21.97865+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcmplayer","Elapsed":0.408}

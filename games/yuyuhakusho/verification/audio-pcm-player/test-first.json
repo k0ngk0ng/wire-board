@@ -1,0 +1,8 @@
+{
+  "test_first": true,
+  "actual_missing_api_failure": true,
+  "test_sha256": "bd7dce35e332fcd1fed66ee5337cede6fef50b6de4a2c3d9fe11090646cde326",
+  "red_sha256": "e8086b6e9c87633af070af9914f83260cc6aea2c0cf9b339b61b1804947267a1",
+  "expected_oracle": "testdata/original-player.json.gz",
+  "implementation_absent": true
+}

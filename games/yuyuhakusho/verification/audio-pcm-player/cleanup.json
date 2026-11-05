@@ -1,0 +1,16 @@
+{
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/pcm-player-private-smoke",
+      "files": 2,
+      "bytes": 839387
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-player-native-audible-repeat",
+      "files": 13,
+      "bytes": 7943286
+    }
+  ],
+  "bytes": 8782673,
+  "kept": "Canonical first/edge player raw events, audible original events/PCM/state, three portable original oracles, actual red and final logs. No other owners or external paths modified."
+}

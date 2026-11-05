@@ -1,0 +1,91 @@
+{
+  "pass": true,
+  "note": "Original audible capture serialized initial_dsp earlier; current capture appends it. Object key order differs; entire parsed JSON including all original player events, PCM and typed DSP states is equal. Frozen original oracle was not rewritten.",
+  "cases": [
+    {
+      "name": "dual-a.json.gz",
+      "original_sha256": "501cb3ccd385b1cdf0b2a94ff31b39409a418dd0256b16e065fab0e2b0b3689b",
+      "repeat_sha256": "fcc6fe6a76596dcefd3f10d92007e6fe0fec6382c61e6cca56dcce3b7360a3bc",
+      "semantic_canonical_sha256": "cc5e3e6c1f67f0ab48eea0ec447c84477cac0a6a480de1454801eb27c6697558",
+      "full_json_equal": true
+    },
+    {
+      "name": "dual-b.json.gz",
+      "original_sha256": "30b6d4c7fa8f052e46790a1d6110000572754007c8cb8159bda17b2993bbc889",
+      "repeat_sha256": "2ea4b2bfb2b7282a1232a711185604a0cc5488a805f72779d90fde516b9193e0",
+      "semantic_canonical_sha256": "fd895b60429ee5fef40eb89af7d2ff1b1cb40e8824023287fb5424a1262f789d",
+      "full_json_equal": true
+    },
+    {
+      "name": "dual-min69.json.gz",
+      "original_sha256": "6e89f2c07d13037470b1cb03695adda5f99b090b3848fd91a5fd1208b13c83f0",
+      "repeat_sha256": "c2da6ab0ea6b2c1cf4c263d2be40033833b54042a3296567aa0a0198290f24a9",
+      "semantic_canonical_sha256": "7b024fffbb037b1508d1ffacf1344d9d6f44d6e47a0f574854d9ac74a95fcb40",
+      "full_json_equal": true
+    },
+    {
+      "name": "dual-odd-tail.json.gz",
+      "original_sha256": "908d119df1c78d2010740b15635ff5a8e974b704e419202d769655b6b711a6fa",
+      "repeat_sha256": "158a4cbea3f18e069c6f7fbf7c52542dbeda201875ff1b96fc8083b8e87ef22c",
+      "semantic_canonical_sha256": "9d421a3b86c879b31ce43ba5115844d54513fcfbc36cd99feb92eeebe4c33346",
+      "full_json_equal": true
+    },
+    {
+      "name": "dual-pair.json.gz",
+      "original_sha256": "b09fb3ac1454f75f17c3e15c0d0b4226cfd8e2dff85855621998a38065eeb475",
+      "repeat_sha256": "82600fd6ca227889c77c277eb6ef96006e67fb4b9fb65cdd9ab7c5455e27384c",
+      "semantic_canonical_sha256": "d7b104f12f4ec1f993e7f62ea58b6fa57c52ea69506091f1c29bedd69fa72fe1",
+      "full_json_equal": true
+    },
+    {
+      "name": "single-native.json.gz",
+      "original_sha256": "ca555faf52d998f05d2f9a9ef193f743b15a0f5423e4349071c887e33c27681d",
+      "repeat_sha256": "40ee65b37a04416d9731499a15063dee4cc383d32a0a6981c8a1cd72e54ccb38",
+      "semantic_canonical_sha256": "f8ee81e698da946dfde5e581b6bf23e45479f091272a02b98a0046e37aa084fd",
+      "full_json_equal": true
+    },
+    {
+      "name": "single-rate000.json.gz",
+      "original_sha256": "d9356a1d8e66d9a968ed043dfbe8da10150522e5fc0cb5e27563ed33cd29d366",
+      "repeat_sha256": "e085470308fdd4580f3f77c347701da50265a41d4ecf1b3fe5a510b01c1e8757",
+      "semantic_canonical_sha256": "0bb1d257e05324d79b34c00231d63499557693a87859ef8f8c1709dbcad89b6a",
+      "full_json_equal": true
+    },
+    {
+      "name": "single-rate001.json.gz",
+      "original_sha256": "7b943f411c69597f7db931658a6bb0351ba61f28627cc7548e0023af5001d830",
+      "repeat_sha256": "3345095e2d43b775724a92afb00ecc051cbbe180840c40cb4601a2351fe060b9",
+      "semantic_canonical_sha256": "d5bc1fe97b352024b95c4e0e978e186b7721dea5aba922d85c9cad8cf9b83c1e",
+      "full_json_equal": true
+    },
+    {
+      "name": "single-rate020.json.gz",
+      "original_sha256": "8fd9a71056e16ba02f389589bd2f615dcaa1af4b5b87ec841c4325d5a481a9d1",
+      "repeat_sha256": "5bc7e0ce955daeca5cd9d7f6a82e2ab1b0b15402d4f214211dbb26a3f82befa2",
+      "semantic_canonical_sha256": "73c8fc1b4e196c3c9177bfe9fb3720db502af9fd1d4ac57ef93e184667f551d4",
+      "full_json_equal": true
+    },
+    {
+      "name": "single-rate255.json.gz",
+      "original_sha256": "eefd04294e69b6e94364e99e91699033d1e48221023157d0c41282f506aca153",
+      "repeat_sha256": "7c3bc85f3254ac3cb9823fa788426afa60b16e4dccb777f748ef13fed30ed38a",
+      "semantic_canonical_sha256": "8617eb4d630df3f7d7e5a006f747f7499245731a4a79692ada9201c97831953c",
+      "full_json_equal": true
+    },
+    {
+      "name": "single-tail129.json.gz",
+      "original_sha256": "a161a915854f7bdf7e76cdf223b6eeb3ecdfc80af27a3e3221f2683c81ac22f4",
+      "repeat_sha256": "622950d8e51de9fbcb554b607b33737a5b7530c0f62936d036f045894a493f27",
+      "semantic_canonical_sha256": "8d02556d380a6be1c75a9f3315eb0e2a61c1f20c2dd33611250eab82670a65ae",
+      "full_json_equal": true
+    },
+    {
+      "name": "single-tail257.json.gz",
+      "original_sha256": "9150cc834325cb90b5f0c1adfecb8dd3d6c33886e2dc9a2a8f011d7440c1c6dd",
+      "repeat_sha256": "3a49e5f06fb37bda2bc15432dc66f8614125ed5b4fa628918433d642ee3c231d",
+      "semantic_canonical_sha256": "d60d931cdf8add649429bf43d7778900f09f50c3379fa2857fbf23a2c6a6b8c9",
+      "full_json_equal": true
+    }
+  ],
+  "repeat_producer_sha256": "8ed416b0510f695d6e32f12f49a697395c86769e0499cf35aebada1d577146e0"
+}
