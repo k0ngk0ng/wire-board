@@ -1,0 +1,153 @@
+{
+  "schema": 1,
+  "scope": "typed-Go-score-parameters",
+  "pass": true,
+  "parameter_api_ready": true,
+  "full_driver_implemented": false,
+  "dsp_implemented": false,
+  "created_at_utc": "2026-11-05T16:45:31.331183+00:00",
+  "fixture": {
+    "path": "games/yuyuhakusho/audio/score/param/testdata/source.json.gz",
+    "sha256": "4147e1607d241dd1510dbabaa484f6f6ea4b73b2230319e6923b3084aa2b8cbb",
+    "bytes": 312236
+  },
+  "counts": {
+    "patch_loads": 2525,
+    "actual_patch_requests": 63125,
+    "level_cases": 25600,
+    "pitch_ticks": 4270,
+    "volume_ticks": 22528,
+    "pan_calls": 52200
+  },
+  "native_and_wasm_same_frozen_fixture": true,
+  "runs": {
+    "native": {
+      "tests": [
+        "TestArithmeticAndInvalidParameters",
+        "TestOriginalPatchRequestsAndAllLevels",
+        "TestPanSourceDispatch",
+        "TestSourceEnvelopeSequences"
+      ],
+      "command": {
+        "path": "games/yuyuhakusho/verification/audio-score-param/native-first-command.json",
+        "sha256": "4c07e42015dfe8b777d137f7d0f55d8dcb0b51165bd559ca12583b1a5a0cd2e7",
+        "bytes": 1352
+      },
+      "log": {
+        "path": "games/yuyuhakusho/verification/audio-score-param/native-first.jsonl",
+        "sha256": "95802840c06fed3220b748def96edec054c8bb133a510fead5a57263c5fd1d1c",
+        "bytes": 4082
+      }
+    },
+    "wasm": {
+      "tests": [
+        "TestArithmeticAndInvalidParameters",
+        "TestOriginalPatchRequestsAndAllLevels",
+        "TestPanSourceDispatch",
+        "TestSourceEnvelopeSequences"
+      ],
+      "command": {
+        "path": "games/yuyuhakusho/verification/audio-score-param/wasm-command.json",
+        "sha256": "396799fa8bf883dfa6b9c3bf12a5287d5f496c0561642eeaa2b33f84eac7b093",
+        "bytes": 1053
+      },
+      "log": {
+        "path": "games/yuyuhakusho/verification/audio-score-param/wasm.jsonl",
+        "sha256": "45668f99c3bed54f503b803d91d33ad765cd1ebae864ae314ef0c00146387b5b",
+        "bytes": 4095
+      }
+    },
+    "vet": {
+      "command": {
+        "path": "games/yuyuhakusho/verification/audio-score-param/vet-command.json",
+        "sha256": "475d277aa9b21d930e4635405fdf4758adfafef777f788b5c65dc071c44dcfc9",
+        "bytes": 899
+      },
+      "log": {
+        "path": "games/yuyuhakusho/verification/audio-score-param/vet.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    }
+  },
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/audio/score/param/envelope.go",
+      "sha256": "a200e87f05eca67f1998f4956fb22b625fbf76c5d52567b15fc31f383bc6cb1b",
+      "bytes": 5029
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/param/fm.go",
+      "sha256": "e325442cf55374d110eea7cd9f13cb5a2c4bf966bbe8444be563cbc98594f220",
+      "bytes": 5006
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/param/pan.go",
+      "sha256": "ef19d52ff80914af2d2eb1356d478a22ba071157eac7d37e17f42441d10da754",
+      "bytes": 3278
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/param/param_test.go",
+      "sha256": "4e9a718127173f0265411a6572ffe290fc47834f5bc11a0b0db8a0ad9e59c84c",
+      "bytes": 6792
+    },
+    {
+      "path": "scripts/yuyuhakusho/score_param_fixture.py",
+      "sha256": "918af5a3f5848caaa907dfc036baa153ed3d4063494335074b00eb53746d360c",
+      "bytes": 8111
+    },
+    {
+      "path": "scripts/yuyuhakusho/score_param_selection_audit.py",
+      "sha256": "7b07540b02fc0bdd9f30f29da97e09b0a78a72b6906f2d3210cffcae5820e9dd",
+      "bytes": 2823
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_SCORE_PARAM_GO_FAILURES.md",
+      "sha256": "a2192f72ec2943b04a1240087a8092c05bf5fa8590dfb2e2dab234c81924f1d9",
+      "bytes": 2133
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_SCORE_PARAM_GO_RESULTS.md",
+      "sha256": "7d8f1099ee317266e0dbbf17514f72051cfe108e66d3941a34d9cbae83f8c3a5",
+      "bytes": 7094
+    }
+  ],
+  "test_first": {
+    "path": "games/yuyuhakusho/verification/audio-score-param/test-first.json",
+    "sha256": "eb7069f0e70a11912e653a9a8651c50e087834c40250877b9f296ed0867a924c",
+    "bytes": 1516
+  },
+  "missing_implementation_red": {
+    "path": "games/yuyuhakusho/verification/audio-score-param/missing-red.jsonl",
+    "sha256": "ae08f57dec608b1efe48091b47acc8bd4669d34eb3b9b3d75bd76f4edccb3466",
+    "bytes": 4232
+  },
+  "test_formatting_since_red": "gofmt only; assertions and expected values unchanged",
+  "fixture_provenance": {
+    "path": "games/yuyuhakusho/verification/audio-score-param/fixture.json",
+    "sha256": "cfd98f1a3481fdda760e668e0a994cb0dd31e4d59751533f35bee07d92a6a247",
+    "bytes": 6358
+  },
+  "selection_boundary_audit": {
+    "path": "games/yuyuhakusho/verification/audio-score-param/selection-audit.json",
+    "sha256": "e881473c0bec42f3ef924e87216b93656511c0a47377e838cf2238ba05405d1a",
+    "bytes": 520
+  },
+  "chip_effective_register_masks": {
+    "0x30": "0x7f",
+    "0x40": "0x7f",
+    "0x50": "0xdf",
+    "0x60": "0x9f",
+    "0x70": "0x1f",
+    "0x80": "0xff",
+    "0xb0": "0x3f"
+  },
+  "limits": [
+    "Full ordered raw request count is preserved but values project exactly the declared hardware ignored bits; this is not full-byte raw reconstruction.",
+    "Pitch source sequences are static/independent-interpreter evidence because no actual pitch envelope read occurred in these 23 definitions.",
+    "PSG volume/pan source sequences are parameter helper evidence; complete driver gating, mixed claim/restore and chip intent order belong to parent continuous tests.",
+    "E9/FM3 remain existing Python static/synthetic evidence, without new Go production APIs in this scope.",
+    "Envelope definition changes while preserving phase were not reached after F5 in the supplied native traces."
+  ],
+  "cleanup": "No disposable profiles, worktrees, raw fixture copies or Python bytecode were emitted; active shared worktree Go caches retained."
+}

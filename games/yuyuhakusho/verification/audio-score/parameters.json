@@ -1,0 +1,174 @@
+{
+  "pass": true,
+  "scope": "actual source parameter reads and ordered raw/effective patch requests; not a continuous score or DSP proof",
+  "counts": {
+    "probe_patch_reads": 7,
+    "driver_ticks": 122810,
+    "header_voices": 115,
+    "native_patch_reads": 2525,
+    "raw_patch_ym_requests": 63125,
+    "actual_patch_level_boundaries": 646400,
+    "volume-envelope-read": 175674,
+    "volume_ordered_write_outcomes": 175674,
+    "volume_actual_writes": 116384,
+    "volume_special_131": 21438,
+    "volume_actual_no_write": 59290,
+    "events_checked": 2941523,
+    "definitions_checked": 23,
+    "pan_control_definitions": 242,
+    "pan_actual_definition_projection_calls": 16200,
+    "pan_ordered_write_outcomes": 79435,
+    "pan_pattern_reads": 79435,
+    "volume_special_129": 3797
+  },
+  "coverage": {
+    "pitch_envelope_ids": [],
+    "volume_envelope_ids": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      10,
+      11
+    ],
+    "pan_modes": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "pan_patterns": [
+      1,
+      2,
+      3
+    ],
+    "fm3_domains": []
+  },
+  "unique_bank_index_patches": 113,
+  "raw_request_full_byte_reconstruction_claimed_from_typed": false,
+  "inputs": [
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-source/full/82-reads.json.gz",
+      "sha256": "fe10729cf414f56fb3c66a957d06c1b6435e7b2154643187c77196d3935c1c18"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-source/full/83-reads.json.gz",
+      "sha256": "c44ad93f2ace73f4f8f3a891d5edcae3fd39b96983dcd41d8765d74a2a6d16b3"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-source/full/84-reads.json.gz",
+      "sha256": "4d878b86ef702985c8d14f4807826a2332e634228227d4365127c3bc0f4bec41"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-source/full/85-reads.json.gz",
+      "sha256": "1afbb142c36ad5cd1f5802a8977b1c76c08416ecd25ffdaa41f226faf9da5916"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-source/full/86-reads.json.gz",
+      "sha256": "7730d30d44f85f985cfc7e02fb6d7469d914b56f0785c33d6064998488e96c16"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-source/full/87-reads.json.gz",
+      "sha256": "75f697473a1d7e4a27076caed74ad37f7795e2f7085c5bf6b55c46d5aba9e081"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-source/full/88-reads.json.gz",
+      "sha256": "2605322b12f6b9ca2b055c4466b9b4dbf5aee69ea62dafce29fd873e9d303d35"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-source/full/8a-reads.json.gz",
+      "sha256": "330536a31f26eeaa4d34a7c26c75052d375d316673613aabaa5cd67e72b435b9"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-source/full/8d-reads.json.gz",
+      "sha256": "a200f41d29fbe91d9ee5c11f570625942bfc9076ff76cd52f52a1ee8a5a65496"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-source/full/95-reads.json.gz",
+      "sha256": "91b490c944a9f7d2ac96fc7050f6f7c1677a9eabde8a3593deeb24e025df8a7d"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-source/full/8f-reads.json.gz",
+      "sha256": "7f9acee0f1724e436a7c77e4ff6f4f5f00bfb850fb72e2b10effc7397184e2ef"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-source/full/a0-reads.json.gz",
+      "sha256": "5a845ce1036c7c9cd1a069d7e99d0ffe610c884a9022c17c616857355aa4ccbe"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-source/full/a1-reads.json.gz",
+      "sha256": "07bf86fc4c10d15794cc7b97903a676ef4300af7f4c53e1e4d5b74eedbf315fe"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-source/full/a2-reads.json.gz",
+      "sha256": "c51a0b0760a4919b5f618c47ca0b2a295fa43b6811913c71bf81e845ab69e252"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-source/full/a3-reads.json.gz",
+      "sha256": "e2ac597806dbe9cf171dec9b33ccad41ef8e6deb3fa0f12c0815e4544646ea5d"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-source/full/a4-reads.json.gz",
+      "sha256": "053d81dc0ce4552412172d68d0e4ce2c3eefa7c67782a4125623ae882bffe7f8"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-source/full/a5-reads.json.gz",
+      "sha256": "0eb49516111525f2431f51bb41f8ac922b19dce7141da524982560bc8bc13a50"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-source/full/a6-reads.json.gz",
+      "sha256": "29281bb4125653098af99bca88adaf09fd87bd46056ec7110f411707228dccb2"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-source/full/a7-reads.json.gz",
+      "sha256": "432aac526920a35e3799b3dd3894098f162c9a56ce29309b147560360009a569"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-source/full/a8-reads.json.gz",
+      "sha256": "dc28aef3addd832a0fc36988c9cb6e31af5f6cf98a89bd95a95be23fe009fae2"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-source/full/a9-reads.json.gz",
+      "sha256": "5c9cf4709b8013b6cf0cb181f5f1a19c63c4d7ad76df6a36d330bbf711bface8"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-source/full/aa-reads.json.gz",
+      "sha256": "607453c64b8515edd781b09724c5e9d56d9060e6d1bbd8e243c0277690d41e46"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-source/full/ab-reads.json.gz",
+      "sha256": "6d2508f6924fe60564b0067e8aa3061d93397f1a21abd6749b313e747aac5d3c"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-source/probe-patch-reads.json",
+      "sha256": "84c8fb1d7b740325b55052ee391e7b2db8e555836f188daf37cd137506d5d147"
+    }
+  ],
+  "not_reached_in_supplied_reads": [
+    "pitch-envelope",
+    "E9",
+    "FM3"
+  ],
+  "not_reached_volume_envelope_ids": [
+    6,
+    7,
+    8,
+    9
+  ],
+  "native_read_index": {
+    "path": ".local/md-yuyuhakusho/audio-score-source/full/index.json",
+    "sha256": "c23c42be66c3cad068d6f7710aaedb8de763e66d856b9dec9eeca0f405bdfa81"
+  },
+  "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+  "synthetic_patch_cases": 2048,
+  "checker": {
+    "path": "scripts/yuyuhakusho/check_audio_score_parameters.py",
+    "sha256": "ce00622d6fa853c5edc8f79f276a59ef1374b6a0a26c6041263202da3bae7c9f"
+  },
+  "helper": {
+    "path": "scripts/yuyuhakusho/score_parameter_tables.py",
+    "sha256": "edb4f38a19b07812cdab2629aa70cf9bf9d453d10b2f3c3a8d279876b3152593"
+  }
+}

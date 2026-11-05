@@ -1,0 +1,24 @@
+{
+  "pass": true,
+  "official_catalog_reexport_equal": true,
+  "provenance_reexport_equal": true,
+  "bindings": [
+    {
+      "name": "catalog.json.gz",
+      "retained_path": ".local/md-yuyuhakusho/audio-score-driver/official-with-fallback/catalog.json.gz",
+      "sha256": "deaf3a70eac46c199335445d186f77d51f185bdaad4d95443d09b2f1d7054d71",
+      "bytes": 196368
+    },
+    {
+      "name": "provenance.json",
+      "retained_path": ".local/md-yuyuhakusho/audio-score-driver/official-with-fallback/provenance.json",
+      "sha256": "7729ceb0d19dd2b94527c7e85b5f9ad19a1650579ff2775075edd621458d3a70",
+      "bytes": 5124947
+    }
+  ],
+  "cleanup": {
+    "removed_path": ".local/md-yuyuhakusho/audio-score-driver/reproduce",
+    "bytes": 5321315,
+    "scope": "Only this continuation second identical export; original, failures, canonical oracle and retained provenance preserved."
+  }
+}

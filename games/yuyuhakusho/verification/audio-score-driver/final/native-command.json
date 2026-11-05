@@ -1,0 +1,38 @@
+{
+  "mode": "native",
+  "pass": true,
+  "exit_code": 0,
+  "elapsed_seconds": 774.1972116250545,
+  "command": [
+    "/opt/homebrew/bin/go",
+    "test",
+    "-json",
+    "-count=1",
+    "-timeout=30m",
+    "-race",
+    "./games/yuyuhakusho/audio/score"
+  ],
+  "environment": {
+    "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+    "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+    "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+    "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp"
+  },
+  "source_sha256": {
+    "games/yuyuhakusho/audio/score/catalog.go": "24f39bcf0598e33029d7dc9c432d56dc4b79fc1459912972ed74d3eb1b302a81",
+    "games/yuyuhakusho/audio/score/restore_contract_test.go": "fc40f87f1e6cf1c8876da77da738dce179ef72df521632789aff27fdb953b55e",
+    "games/yuyuhakusho/audio/score/state.go": "611dc7cb1b45e31ffcc539eb8831e0fe824a7098583837ce1cb0e6fbc351f96f",
+    "games/yuyuhakusho/audio/score/driver.go": "3d23f1973d97297a9f9faf8783b4e32559c46dcd4a537c3dce798051fb63a70a",
+    "games/yuyuhakusho/audio/score/driver_test.go": "d3f09a267d736a82c6e787de8cc3dca9a46c1ca0482dbe1a689c1573346fd595",
+    "games/yuyuhakusho/audio/score/param/param_test.go": "4e9a718127173f0265411a6572ffe290fc47834f5bc11a0b0db8a0ad9e59c84c",
+    "games/yuyuhakusho/audio/score/param/fm.go": "e325442cf55374d110eea7cd9f13cb5a2c4bf966bbe8444be563cbc98594f220",
+    "games/yuyuhakusho/audio/score/param/envelope.go": "a200e87f05eca67f1998f4956fb22b625fbf76c5d52567b15fc31f383bc6cb1b",
+    "games/yuyuhakusho/audio/score/param/pan.go": "ef19d52ff80914af2d2eb1356d478a22ba071157eac7d37e17f42441d10da754",
+    "games/yuyuhakusho/data/audio-score.json.gz": "deaf3a70eac46c199335445d186f77d51f185bdaad4d95443d09b2f1d7054d71",
+    "games/yuyuhakusho/audio/score/testdata/original-index.json": "1972cf3e2a31ca1cfb30d0b25a227ad4d3ac662d072cdbd92fdc1ad177c3124a"
+  },
+  "fixture_cases": 42,
+  "fixture_frames": 126141,
+  "log_sha256": "08c850232e177a2479a4b76f8cdce0d95b754f60c05561f797cb2a9f16d3ae57"
+}

@@ -1,0 +1,9 @@
+{
+  "pass": true,
+  "definitions": 23,
+  "header_voices": 115,
+  "actual_note_outcomes": 127691,
+  "actual_patch_reads": 2525,
+  "actual_parameter_reads": 255109,
+  "dsp_implemented": false
+}

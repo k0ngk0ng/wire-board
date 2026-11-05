@@ -1,0 +1,9 @@
+{
+  "pass": true,
+  "definitions": 23,
+  "voices": 115,
+  "typed_note_definitions": 31875,
+  "continuous_note_outcomes": 127691,
+  "fm_patches": 100,
+  "dsp_implemented": false
+}
