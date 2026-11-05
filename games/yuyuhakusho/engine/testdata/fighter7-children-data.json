@@ -1,0 +1,2513 @@
+{
+  "source_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+  "frames": [
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 62,
+        "index": 0
+      },
+      "data": {
+        "duration": 1,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -4,
+        "offset_y": -23,
+        "graphic_parameter": 114,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd97ea",
+        "animation_bytes": "0149000000007c89",
+        "directory_bytes": "003903d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 60,
+        "index": 0
+      },
+      "data": {
+        "duration": 1,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -5,
+        "offset_y": -32,
+        "graphic_parameter": 108,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd972a",
+        "animation_bytes": "0146000000007b80",
+        "directory_bytes": "003603d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 62,
+        "index": 1
+      },
+      "data": {
+        "duration": 4,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -4,
+        "offset_y": -23,
+        "graphic_parameter": 0,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd97f2",
+        "animation_bytes": "0454000000007c89",
+        "directory_bytes": "00000404",
+        "shape_address": "0xd9e3e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 60,
+        "index": 1
+      },
+      "data": {
+        "duration": 4,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -5,
+        "offset_y": -32,
+        "graphic_parameter": 0,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd9732",
+        "animation_bytes": "0454000000007b80",
+        "directory_bytes": "00000404",
+        "shape_address": "0xd9e3e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 62,
+        "index": 2
+      },
+      "data": {
+        "duration": 1,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -4,
+        "offset_y": -23,
+        "graphic_parameter": 114,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd97fa",
+        "animation_bytes": "0149000000007c89",
+        "directory_bytes": "003903d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 60,
+        "index": 2
+      },
+      "data": {
+        "duration": 1,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -5,
+        "offset_y": -32,
+        "graphic_parameter": 108,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd973a",
+        "animation_bytes": "0146000000007b80",
+        "directory_bytes": "003603d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 62,
+        "index": 3
+      },
+      "data": {
+        "duration": 4,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -4,
+        "offset_y": -23,
+        "graphic_parameter": 0,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd9802",
+        "animation_bytes": "0454000000007c89",
+        "directory_bytes": "00000404",
+        "shape_address": "0xd9e3e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 60,
+        "index": 3
+      },
+      "data": {
+        "duration": 4,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -5,
+        "offset_y": -32,
+        "graphic_parameter": 0,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd9742",
+        "animation_bytes": "0454000000007b80",
+        "directory_bytes": "00000404",
+        "shape_address": "0xd9e3e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 62,
+        "index": 4
+      },
+      "data": {
+        "duration": 2,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -4,
+        "offset_y": -23,
+        "graphic_parameter": 114,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd980a",
+        "animation_bytes": "0249000000007c89",
+        "directory_bytes": "003903d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 60,
+        "index": 4
+      },
+      "data": {
+        "duration": 2,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -5,
+        "offset_y": -32,
+        "graphic_parameter": 108,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd974a",
+        "animation_bytes": "0246000000007b80",
+        "directory_bytes": "003603d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 62,
+        "index": 5
+      },
+      "data": {
+        "duration": 2,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -4,
+        "offset_y": -23,
+        "graphic_parameter": 0,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd9812",
+        "animation_bytes": "0254000000007c89",
+        "directory_bytes": "00000404",
+        "shape_address": "0xd9e3e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 60,
+        "index": 5
+      },
+      "data": {
+        "duration": 2,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -5,
+        "offset_y": -32,
+        "graphic_parameter": 0,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd9752",
+        "animation_bytes": "0254000000007b80",
+        "directory_bytes": "00000404",
+        "shape_address": "0xd9e3e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 62,
+        "index": 6
+      },
+      "data": {
+        "duration": 2,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -4,
+        "offset_y": -23,
+        "graphic_parameter": 114,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd981a",
+        "animation_bytes": "0249000000007c89",
+        "directory_bytes": "003903d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 60,
+        "index": 6
+      },
+      "data": {
+        "duration": 2,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -5,
+        "offset_y": -32,
+        "graphic_parameter": 108,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd975a",
+        "animation_bytes": "0246000000007b80",
+        "directory_bytes": "003603d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 62,
+        "index": 7
+      },
+      "data": {
+        "duration": 2,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -4,
+        "offset_y": -23,
+        "graphic_parameter": 0,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd9822",
+        "animation_bytes": "0254000000007c89",
+        "directory_bytes": "00000404",
+        "shape_address": "0xd9e3e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 60,
+        "index": 7
+      },
+      "data": {
+        "duration": 2,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -5,
+        "offset_y": -32,
+        "graphic_parameter": 0,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd9762",
+        "animation_bytes": "0254000000007b80",
+        "directory_bytes": "00000404",
+        "shape_address": "0xd9e3e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 62,
+        "index": 8
+      },
+      "data": {
+        "duration": 4,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -4,
+        "offset_y": -23,
+        "graphic_parameter": 114,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd982a",
+        "animation_bytes": "0449000000007c89",
+        "directory_bytes": "003903d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 60,
+        "index": 8
+      },
+      "data": {
+        "duration": 4,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -5,
+        "offset_y": -32,
+        "graphic_parameter": 108,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd976a",
+        "animation_bytes": "0446000000007b80",
+        "directory_bytes": "003603d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 62,
+        "index": 9
+      },
+      "data": {
+        "duration": 1,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -4,
+        "offset_y": -23,
+        "graphic_parameter": 0,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd9832",
+        "animation_bytes": "0154000000007c89",
+        "directory_bytes": "00000404",
+        "shape_address": "0xd9e3e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 60,
+        "index": 9
+      },
+      "data": {
+        "duration": 1,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -5,
+        "offset_y": -32,
+        "graphic_parameter": 0,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd9772",
+        "animation_bytes": "0154000000007b80",
+        "directory_bytes": "00000404",
+        "shape_address": "0xd9e3e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 62,
+        "index": 10
+      },
+      "data": {
+        "duration": 4,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -4,
+        "offset_y": -23,
+        "graphic_parameter": 114,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd983a",
+        "animation_bytes": "0449000000007c89",
+        "directory_bytes": "003903d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 60,
+        "index": 10
+      },
+      "data": {
+        "duration": 4,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -5,
+        "offset_y": -32,
+        "graphic_parameter": 108,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd977a",
+        "animation_bytes": "0446000000007b80",
+        "directory_bytes": "003603d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 62,
+        "index": 11
+      },
+      "data": {
+        "duration": 1,
+        "flags": 128,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -4,
+        "offset_y": -23,
+        "graphic_parameter": 0,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd9842",
+        "animation_bytes": "0154800000007c89",
+        "directory_bytes": "00000404",
+        "shape_address": "0xd9e3e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 60,
+        "index": 11
+      },
+      "data": {
+        "duration": 1,
+        "flags": 128,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -5,
+        "offset_y": -32,
+        "graphic_parameter": 0,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd9782",
+        "animation_bytes": "0154800000007b80",
+        "directory_bytes": "00000404",
+        "shape_address": "0xd9e3e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 65,
+        "index": 0
+      },
+      "data": {
+        "duration": 4,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -4,
+        "offset_y": -23,
+        "graphic_parameter": 114,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd98ea",
+        "animation_bytes": "0449000000007c89",
+        "directory_bytes": "003903d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 64,
+        "index": 0
+      },
+      "data": {
+        "duration": 4,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -5,
+        "offset_y": -32,
+        "graphic_parameter": 108,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd98aa",
+        "animation_bytes": "0446000000007b80",
+        "directory_bytes": "003603d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 69,
+        "index": 0
+      },
+      "data": {
+        "duration": 4,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 169,
+        "offset_x": -5,
+        "offset_y": -32,
+        "graphic_parameter": 108,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd99ca",
+        "animation_bytes": "0446000081007b80",
+        "directory_bytes": "003603d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 129
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 65,
+        "index": 1
+      },
+      "data": {
+        "duration": 4,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -4,
+        "offset_y": -25,
+        "graphic_parameter": 114,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd98f2",
+        "animation_bytes": "0449000000007c87",
+        "directory_bytes": "003903d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 69,
+        "index": 1
+      },
+      "data": {
+        "duration": 4,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -5,
+        "offset_y": -39,
+        "graphic_parameter": 108,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd99d2",
+        "animation_bytes": "0446000000007b79",
+        "directory_bytes": "003603d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 65,
+        "index": 2
+      },
+      "data": {
+        "duration": 4,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -4,
+        "offset_y": -26,
+        "graphic_parameter": 116,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd98fa",
+        "animation_bytes": "044a000000007c86",
+        "directory_bytes": "003a03d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 69,
+        "index": 2
+      },
+      "data": {
+        "duration": 4,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -4,
+        "offset_y": -44,
+        "graphic_parameter": 110,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd99da",
+        "animation_bytes": "0447000000007c74",
+        "directory_bytes": "003703d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 65,
+        "index": 3
+      },
+      "data": {
+        "duration": 4,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -4,
+        "offset_y": -25,
+        "graphic_parameter": 116,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd9902",
+        "animation_bytes": "044a000000007c87",
+        "directory_bytes": "003a03d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 69,
+        "index": 3
+      },
+      "data": {
+        "duration": 4,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -4,
+        "offset_y": -46,
+        "graphic_parameter": 110,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd99e2",
+        "animation_bytes": "0447000000007c72",
+        "directory_bytes": "003703d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 65,
+        "index": 4
+      },
+      "data": {
+        "duration": 4,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -4,
+        "offset_y": -23,
+        "graphic_parameter": 118,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd990a",
+        "animation_bytes": "044b000000007c89",
+        "directory_bytes": "003b03d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 69,
+        "index": 4
+      },
+      "data": {
+        "duration": 4,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -4,
+        "offset_y": -48,
+        "graphic_parameter": 112,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd99ea",
+        "animation_bytes": "0448000000007c70",
+        "directory_bytes": "003803d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 65,
+        "index": 5
+      },
+      "data": {
+        "duration": 4,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -4,
+        "offset_y": -22,
+        "graphic_parameter": 118,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd9912",
+        "animation_bytes": "044b000000007c8a",
+        "directory_bytes": "003b03d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 69,
+        "index": 5
+      },
+      "data": {
+        "duration": 4,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -4,
+        "offset_y": -49,
+        "graphic_parameter": 112,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd99f2",
+        "animation_bytes": "0448000000007c6f",
+        "directory_bytes": "003803d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 65,
+        "index": 6
+      },
+      "data": {
+        "duration": 4,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -4,
+        "offset_y": -20,
+        "graphic_parameter": 116,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd991a",
+        "animation_bytes": "044a000000007c8c",
+        "directory_bytes": "003a03d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 69,
+        "index": 6
+      },
+      "data": {
+        "duration": 4,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -4,
+        "offset_y": -47,
+        "graphic_parameter": 112,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd99fa",
+        "animation_bytes": "0448000000007c71",
+        "directory_bytes": "003803d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 65,
+        "index": 7
+      },
+      "data": {
+        "duration": 4,
+        "flags": 128,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -4,
+        "offset_y": -22,
+        "graphic_parameter": 116,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd9922",
+        "animation_bytes": "044a800000007c8a",
+        "directory_bytes": "003a03d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 69,
+        "index": 7
+      },
+      "data": {
+        "duration": 4,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -4,
+        "offset_y": -43,
+        "graphic_parameter": 110,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd9a02",
+        "animation_bytes": "0447000000007c75",
+        "directory_bytes": "003703d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 69,
+        "index": 8
+      },
+      "data": {
+        "duration": 4,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -4,
+        "offset_y": -39,
+        "graphic_parameter": 110,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd9a0a",
+        "animation_bytes": "0447000000007c79",
+        "directory_bytes": "003703d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 63,
+        "index": 0
+      },
+      "data": {
+        "duration": 4,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -4,
+        "offset_y": -23,
+        "graphic_parameter": 114,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd984a",
+        "animation_bytes": "0449000000007c89",
+        "directory_bytes": "003903d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 61,
+        "index": 0
+      },
+      "data": {
+        "duration": 4,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -5,
+        "offset_y": -32,
+        "graphic_parameter": 108,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd978a",
+        "animation_bytes": "0446000000007b80",
+        "directory_bytes": "003603d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 63,
+        "index": 1
+      },
+      "data": {
+        "duration": 1,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -4,
+        "offset_y": -23,
+        "graphic_parameter": 0,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd9852",
+        "animation_bytes": "0154000000007c89",
+        "directory_bytes": "00000404",
+        "shape_address": "0xd9e3e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 61,
+        "index": 1
+      },
+      "data": {
+        "duration": 1,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -5,
+        "offset_y": -32,
+        "graphic_parameter": 0,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd9792",
+        "animation_bytes": "0154000000007b80",
+        "directory_bytes": "00000404",
+        "shape_address": "0xd9e3e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 63,
+        "index": 2
+      },
+      "data": {
+        "duration": 4,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -4,
+        "offset_y": -23,
+        "graphic_parameter": 114,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd985a",
+        "animation_bytes": "0449000000007c89",
+        "directory_bytes": "003903d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 61,
+        "index": 2
+      },
+      "data": {
+        "duration": 4,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -5,
+        "offset_y": -32,
+        "graphic_parameter": 108,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd979a",
+        "animation_bytes": "0446000000007b80",
+        "directory_bytes": "003603d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 63,
+        "index": 3
+      },
+      "data": {
+        "duration": 1,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -4,
+        "offset_y": -23,
+        "graphic_parameter": 0,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd9862",
+        "animation_bytes": "0154000000007c89",
+        "directory_bytes": "00000404",
+        "shape_address": "0xd9e3e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 61,
+        "index": 3
+      },
+      "data": {
+        "duration": 1,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -5,
+        "offset_y": -32,
+        "graphic_parameter": 0,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd97a2",
+        "animation_bytes": "0154000000007b80",
+        "directory_bytes": "00000404",
+        "shape_address": "0xd9e3e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 63,
+        "index": 4
+      },
+      "data": {
+        "duration": 2,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -4,
+        "offset_y": -23,
+        "graphic_parameter": 114,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd986a",
+        "animation_bytes": "0249000000007c89",
+        "directory_bytes": "003903d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 61,
+        "index": 4
+      },
+      "data": {
+        "duration": 2,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -5,
+        "offset_y": -32,
+        "graphic_parameter": 108,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd97aa",
+        "animation_bytes": "0246000000007b80",
+        "directory_bytes": "003603d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 63,
+        "index": 5
+      },
+      "data": {
+        "duration": 2,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -4,
+        "offset_y": -23,
+        "graphic_parameter": 0,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd9872",
+        "animation_bytes": "0254000000007c89",
+        "directory_bytes": "00000404",
+        "shape_address": "0xd9e3e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 61,
+        "index": 5
+      },
+      "data": {
+        "duration": 2,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -5,
+        "offset_y": -32,
+        "graphic_parameter": 0,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd97b2",
+        "animation_bytes": "0254000000007b80",
+        "directory_bytes": "00000404",
+        "shape_address": "0xd9e3e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 63,
+        "index": 6
+      },
+      "data": {
+        "duration": 2,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -4,
+        "offset_y": -23,
+        "graphic_parameter": 114,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd987a",
+        "animation_bytes": "0249000000007c89",
+        "directory_bytes": "003903d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 61,
+        "index": 6
+      },
+      "data": {
+        "duration": 2,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -5,
+        "offset_y": -32,
+        "graphic_parameter": 108,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd97ba",
+        "animation_bytes": "0246000000007b80",
+        "directory_bytes": "003603d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 63,
+        "index": 7
+      },
+      "data": {
+        "duration": 2,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -4,
+        "offset_y": -23,
+        "graphic_parameter": 0,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd9882",
+        "animation_bytes": "0254000000007c89",
+        "directory_bytes": "00000404",
+        "shape_address": "0xd9e3e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 61,
+        "index": 7
+      },
+      "data": {
+        "duration": 2,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -5,
+        "offset_y": -32,
+        "graphic_parameter": 0,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd97c2",
+        "animation_bytes": "0254000000007b80",
+        "directory_bytes": "00000404",
+        "shape_address": "0xd9e3e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 63,
+        "index": 8
+      },
+      "data": {
+        "duration": 1,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -4,
+        "offset_y": -23,
+        "graphic_parameter": 114,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd988a",
+        "animation_bytes": "0149000000007c89",
+        "directory_bytes": "003903d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 61,
+        "index": 8
+      },
+      "data": {
+        "duration": 1,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -5,
+        "offset_y": -32,
+        "graphic_parameter": 108,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd97ca",
+        "animation_bytes": "0146000000007b80",
+        "directory_bytes": "003603d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 63,
+        "index": 9
+      },
+      "data": {
+        "duration": 4,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -4,
+        "offset_y": -23,
+        "graphic_parameter": 0,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd9892",
+        "animation_bytes": "0454000000007c89",
+        "directory_bytes": "00000404",
+        "shape_address": "0xd9e3e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 61,
+        "index": 9
+      },
+      "data": {
+        "duration": 4,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -5,
+        "offset_y": -32,
+        "graphic_parameter": 0,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd97d2",
+        "animation_bytes": "0454000000007b80",
+        "directory_bytes": "00000404",
+        "shape_address": "0xd9e3e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 63,
+        "index": 10
+      },
+      "data": {
+        "duration": 1,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -4,
+        "offset_y": -23,
+        "graphic_parameter": 114,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd989a",
+        "animation_bytes": "0149000000007c89",
+        "directory_bytes": "003903d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 61,
+        "index": 10
+      },
+      "data": {
+        "duration": 1,
+        "flags": 0,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -5,
+        "offset_y": -32,
+        "graphic_parameter": 108,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd97da",
+        "animation_bytes": "0146000000007b80",
+        "directory_bytes": "003603d4",
+        "shape_address": "0xd9e0e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 63,
+        "index": 11
+      },
+      "data": {
+        "duration": 4,
+        "flags": 128,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -4,
+        "offset_y": -23,
+        "graphic_parameter": 0,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd98a2",
+        "animation_bytes": "0454800000007c89",
+        "directory_bytes": "00000404",
+        "shape_address": "0xd9e3e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    },
+    {
+      "key": {
+        "animation_set": 889546,
+        "shape_set": 891450,
+        "pose": 61,
+        "index": 11
+      },
+      "data": {
+        "duration": 4,
+        "flags": 128,
+        "enabled_stages": 0,
+        "sound": 0,
+        "offset_x": -5,
+        "offset_y": -32,
+        "graphic_parameter": 0,
+        "shape_flags": 0,
+        "metadata": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "groups": [
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "source": {
+        "animation_address": "0xd97e2",
+        "animation_bytes": "0454800000007b80",
+        "directory_bytes": "00000404",
+        "shape_address": "0xd9e3e",
+        "shape_bytes": "",
+        "sound_index": 0
+      }
+    }
+  ]
+}

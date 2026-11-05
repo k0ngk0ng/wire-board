@@ -19,3 +19,5 @@
 已见 MAIN 使用现有 VX／VY／Gravity、Aux48、Energy、TargetMask 与 HitStopTicks owners，没有证明新的 FE 语义。跨人物 `+69` 改写需要明确临时传递和原子合并，不得误用 `+84` 的 StunTicks 或复制另一份计数。物理 FE 继续保持唯一 slot word，只有 callback 正文证明需要时才增加对应临时解释。
 
 来源为 [选择器静态](static/fighter-action-selectors-focused.txt)、[构造静态](static/fighter-action-constructors-focused.txt)、[动作静态](static/fighter-action-slots-focused.txt)、[分派覆盖](static/fighter-action-coverage.json)及当前 `engine` 公共实现。下一步先补三个 callback 正文并确认最小字段，再沿失败清单、原 CPU、先行冻结测试与真实 red 的顺序恢复。
+
+本页静态起点现已完成后续原CPU与独立规则验证：所有人物包括树均已开放。实际实现与限制以[树世界验收](../../../games/yuyuhakusho/engine/FIGHTER7_WORLD_VERIFICATION.md)为准；这里保留当时未知callback、跨人字段与恢复顺序，不能把这些静态描述替代后续执行证据。

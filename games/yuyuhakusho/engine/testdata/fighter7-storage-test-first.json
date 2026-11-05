@@ -1,0 +1,8 @@
+{
+  "peer_storage_implementation_changed": false,
+  "files": {
+    "fighter7_storage_test.go": "eaf70394f76350e9ebcb4e157d883881ebded1f62306762dd352017e4fec48d6",
+    "FIGHTER7_STORAGE_FAILURES.md": "06f759e5086fdbd3d94d3de0bc6fcb48c17bde9a0c693a4cd635465197f5f814",
+    "testdata/fighter7-storage-schema-red.jsonl": "534e1fed4acbe4d8fc0b9b182ebf06e567018459eab2b4b155de1b9390c6cbfe"
+  }
+}

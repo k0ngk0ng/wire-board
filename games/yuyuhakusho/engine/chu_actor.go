@@ -44,6 +44,7 @@ type ChuActorWorld struct {
 	Pool                   EffectPool
 	EffectExtras           [16]ReactionEffectExtra
 	OtherEnergy            map[uint16]int16
+	OtherHitStopTicks      map[uint16]uint8
 	OccupiedLanes          uint8
 	Buffers                [4]AnimationShapeBuffer
 	Throws                 ThrowContactBuffer
@@ -95,11 +96,27 @@ func StepChuActor(state ChuActorState, view ChuActorView, commands CommandLibrar
 }
 
 // StepFighterActor shares the original complete active-rule callback between
-// sources0/1/2/3/4/5/6/8/9/10; drawing, source identity and other callbacks remain caller-owned.
+// sources0..10; drawing, source identity and other callbacks remain caller-owned.
 func StepFighterActor(state ChuActorState, characterID uint8, view ChuActorView, commands CommandLibrary, animations AnimationLibrary) (ChuActorState, ChuActorEmissions, error) {
 	original := state
-	if characterID != 0 && characterID != 1 && characterID != 2 && characterID != 3 && characterID != 4 && characterID != 5 && characterID != 6 && characterID != 8 && characterID != 9 && characterID != 10 {
+	if characterID != 0 && characterID != 1 && characterID != 2 && characterID != 3 && characterID != 4 && characterID != 5 && characterID != 6 && characterID != 7 && characterID != 8 && characterID != 9 && characterID != 10 {
 		return original, ChuActorEmissions{}, errors.New("unsupported complete fighter actor source")
+	}
+	if characterID == 7 {
+		if len(state.World.OtherEnergy) != 3 || len(state.World.OtherHitStopTicks) != 3 {
+			return original, ChuActorEmissions{}, errors.New("source7 actor peer views are incomplete")
+		}
+		for _, id := range [...]uint16{0x8400, 0x8800, 0x8c00, 0x9000} {
+			if id == state.Fighter.ObjectID {
+				continue
+			}
+			if _, found := state.World.OtherEnergy[id]; !found {
+				return original, ChuActorEmissions{}, errors.New("source7 actor peer energy is unavailable")
+			}
+			if _, found := state.World.OtherHitStopTicks[id]; !found {
+				return original, ChuActorEmissions{}, errors.New("source7 actor peer stop is unavailable")
+			}
+		}
 	}
 	self, ok := chuAIIndex(state.Fighter.ObjectID)
 	if !ok {
@@ -174,7 +191,7 @@ func (state ChuActorState) actorAction(view ChuActorView) (ChuActionState, error
 			return ChuActionState{}, errors.New("other fighter resource identity is unavailable")
 		}
 		visible := view.Fighters[index]
-		resources[id] = TailFighterEnergy{Size: visible.Size, Team: visible.Team, Health: visible.Health, Energy: energy}
+		resources[id] = TailFighterEnergy{Size: visible.Size, Team: visible.Team, Health: visible.Health, Energy: energy, HitStopTicks: w.OtherHitStopTicks[id]}
 	}
 	return ChuActionState{ChuTailState: ChuTailState{Body: f.Body, Controls: f.Controls, ObjectID: f.ObjectID, Energy: int16(f.Energy >> 16), ChildSize: f.Children[0].Size,
 		Pool: w.Pool, Throws: w.Throws, OtherFighters: resources, ChargeTicks: f.ChargeTicks, OccupiedLanes: w.OccupiedLanes, BattleState: view.BattleState,
@@ -201,8 +218,10 @@ func (state *ChuActorState) acceptActorAction(a ChuActionState) {
 	f.Fighter5ChildExtras = a.Fighter5ChildExtras
 	w.Pool, w.EffectExtras, w.Throws = a.Pool, a.EffectExtras, a.Throws
 	w.OtherEnergy = make(map[uint16]int16, len(a.OtherFighters))
+	w.OtherHitStopTicks = make(map[uint16]uint8, len(a.OtherFighters))
 	for id, resource := range a.OtherFighters {
 		w.OtherEnergy[id] = resource.Energy
+		w.OtherHitStopTicks[id] = resource.HitStopTicks
 	}
 	w.OccupiedLanes, w.Buffers, w.PendingSound, w.SoundQueue, w.RandomSeed = a.OccupiedLanes, a.Buffers, a.PendingSound, a.SoundQueue, a.RandomSeed
 	w.GlobalF568, w.GlobalF56A = a.GlobalF568, a.GlobalF56A

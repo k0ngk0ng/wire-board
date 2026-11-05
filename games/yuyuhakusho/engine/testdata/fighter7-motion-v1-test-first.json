@@ -1,0 +1,21 @@
+{
+  "phase": "tests and original CPU evidence frozen before production implementation",
+  "utc": "2026-11-05T05:17:44.713911+00:00",
+  "production_exists": false,
+  "files": {
+    "games/yuyuhakusho/engine/fighter7_motion_test.go": "fb9b7143bce96d06aae26a6edb9d8f5fd0bf12f587f4b2011c08d6f1c17495e1",
+    "games/yuyuhakusho/engine/FIGHTER7_MOTION_FAILURES.md": "edce7f1f9a0e9f7af12b87f0fe161d325f0d91ffd3d4933e3ad42e6e5611d3db",
+    "scripts/yuyuhakusho/capture_fighter7_motion.py": "d527595497364d856ce62214ab74a4a6229c37bb2559d586656d0bada1e8bb8e",
+    "games/yuyuhakusho/engine/testdata/fighter7-motion-oracle.json.gz": "4494df344e14230f985553d9e54208e6c906c74518ea6842c66214ce90e3dcb3",
+    "games/yuyuhakusho/engine/testdata/fighter7-motion-oracle-manifest.json": "72f936acc325091498eee4f57d039ae2a62d752c8722a555f7d81c4f0a958925",
+    "games/yuyuhakusho/engine/testdata/fighter7-motion-boundaries.json.gz": "c397ff2e173b0aef7a1022ea15e36fc9786e6e5068f160b89fc45aa0eda783a1",
+    "games/yuyuhakusho/engine/testdata/fighter7-motion-boundaries-manifest.json": "830aea7938ae110440548fac90f08f67b9b4dc2abd343273b4a96ac3033b708a",
+    "games/yuyuhakusho/engine/testdata/fighter7-motion-sequences.json.gz": "61aef86f8e1dd3f8036d66bb3e87dae37faef8e4a722bd8718135493a3395bf5",
+    "games/yuyuhakusho/engine/testdata/fighter7-motion-sequences-manifest.json": "68d8b2c152498657c6feb91416968b0749cc0cb5acddffa02a58aea3d915f3f8"
+  },
+  "command": "go test -json ./games/yuyuhakusho/engine -run ^TestFighter7Motion -count=1",
+  "expected_red": [
+    "undefined: Fighter7MotionState",
+    "undefined: StepFighter7Motion"
+  ]
+}

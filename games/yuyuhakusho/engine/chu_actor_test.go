@@ -76,13 +76,14 @@ func decodeChuActor(t *testing.T, raw chuActorSnapshot, id uint16) ChuActorState
 	for i := range f.ChildAttackFlags {
 		f.ChildAttackFlags[i] = family[index+256*(i+1)+0x64]
 	}
-	w := ChuActorWorld{Pool: a.Pool, EffectExtras: a.EffectExtras, OtherEnergy: make(map[uint16]int16), OccupiedLanes: a.OccupiedLanes, Buffers: a.Buffers, Throws: a.Throws,
+	w := ChuActorWorld{Pool: a.Pool, EffectExtras: a.EffectExtras, OtherEnergy: make(map[uint16]int16), OtherHitStopTicks: make(map[uint16]uint8), OccupiedLanes: a.OccupiedLanes, Buffers: a.Buffers, Throws: a.Throws,
 		PendingSound: a.PendingSound, SoundQueue: a.SoundQueue, RandomSeed: a.RandomSeed, GlobalF568: a.GlobalF568, GlobalF56A: a.GlobalF56A, DragonBankCursor: a.DragonBankCursor,
 		Stream: attackContactBytes(t, raw.Stream, 1024), Stopped: raw.Stopped, EndMarkers: raw.Markers,
 		Registration: FighterRegistrationState{Used: raw.RegistrationUsed, Owners: envelopeWords(t, raw.Registration, 128)},
 		SampleUsed:   raw.SamplesUsed, HUDCells: envelopeWords(t, raw.HUDCells, 1024), HUDCursor: raw.HUDCursor}
 	for id, resource := range a.OtherFighters {
 		w.OtherEnergy[id] = resource.Energy
+		w.OtherHitStopTicks[id] = resource.HitStopTicks
 	}
 	samples := attackContactBytes(t, raw.Samples, 128)
 	for i := range w.SamplesX {
@@ -100,7 +101,7 @@ func encodeChuActor(t *testing.T, state ChuActorState, view ChuActorView, emitte
 	for id, energy := range w.OtherEnergy {
 		i := (int(id) - 0x8400) / 1024
 		v := view.Fighters[i]
-		resources[id] = TailFighterEnergy{Size: v.Size, Team: v.Team, Health: v.Health, Energy: energy}
+		resources[id] = TailFighterEnergy{Size: v.Size, Team: v.Team, Health: v.Health, Energy: energy, HitStopTicks: w.OtherHitStopTicks[id]}
 	}
 	action := ChuActionState{ChuTailState: ChuTailState{Body: f.Body, Controls: f.Controls, ObjectID: f.ObjectID, Energy: int16(f.Energy >> 16), ChildSize: f.Children[0].Size,
 		Pool: w.Pool, Throws: w.Throws, OtherFighters: resources, ChargeTicks: f.ChargeTicks, OccupiedLanes: w.OccupiedLanes, BattleState: view.BattleState,

@@ -1,0 +1,13 @@
+{
+  "head": "4b1a5c1553075d47831b56c1a31b248452602a39",
+  "files": {
+    "games/yuyuhakusho/engine/chu_world.go": "d0f6c5875464ebf2cde05667d1c185c05253d3175f23cdd3c5edda49dd661e4e",
+    "games/yuyuhakusho/engine/chu_world_test.go": "ea599c9125da5650581eab6e10434de75f50ba3ac493bf38e5bdea75845596d2",
+    "games/yuyuhakusho/runtimebridge/session.go": "743c46f752dfeeaa6b12b0b59da983d512a442e196468b314eb50bfa73b62ee7",
+    "games/yuyuhakusho/engine/fighter7_special_world_test.go": "88010377a7f28eb43c270144d9e15271583e712b2f456a77dac2ee628750792e",
+    "games/yuyuhakusho/engine/testdata/chu-world-fighter7-special.json.gz": "b2c549179c0c96d6cea4c6878d544f5928c4520bee096ca48bdc3b968c2d7c7c",
+    "games/yuyuhakusho/engine/testdata/chu-world-fighter7-special-manifest.json": "5a7f55f23fc91af430f4d871cbf2d3d292dd620120e9056781881a22e782e839",
+    "games/yuyuhakusho/engine/testdata/fighter7-world-native.jsonl": "b16244f59ac273c49231c5d08613bbb6c341207d269bb7d7ff1a44cbc8dc2f38"
+  },
+  "preserved_red": "games/yuyuhakusho/engine/testdata/raster-input-preexisting-world-red.jsonl"
+}

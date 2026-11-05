@@ -1,0 +1,43 @@
+{
+  "route": "direct-ghidra-headless; REA raw68000 unsupported",
+  "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+  "language": "68000:BE:32:default",
+  "ghidra": "12.1.4_PUBLIC",
+  "probe": "scripts/yuyuhakusho/static/MdControlProbe.java",
+  "probe_sha256": "44903c14bfe5a1ffc354e4fab1eb5893303081bbe55aa9f620808daf4ebe18a8",
+  "loader": "BinaryLoader",
+  "base_address": 0,
+  "analysis": false,
+  "listings": {
+    "fighter7-children-focused.txt": {
+      "specifications": [
+        "136e6:136e6:1391d",
+        "1391e:1391e:13bff",
+        "15094:15094:156ff"
+      ],
+      "sha256": "5e4cbc677e2a18fd0821c73324c9a85d8428e20e1240d09a86de44426c450dee"
+    },
+    "fighter7-children-chain.txt": {
+      "specifications": [
+        "13792,13828,13848,13854:13792:1391d",
+        "139c0,13a3c,13a5a,13a66:139c0:13bb5",
+        "19cc4:19cc4:19ced",
+        "3a14:3a14:3a90"
+      ],
+      "sha256": "82011cb5e4c1c78f6a8b380cfe33f92d9e32ea0924198b81ee7ac9d680fca1fa"
+    },
+    "fighter7-children-helper-full.txt": {
+      "specifications": [
+        "20666:20666:20aff"
+      ],
+      "sha256": "ffe2b22b8ba79e9a46ce624f9c2877dd83ac65fe7073e9d3be7e9461e6e36c2c"
+    }
+  },
+  "complete_helper_return": "0x208d6",
+  "helper_allocations": 8,
+  "limits": [
+    "Static reachable instructions, not execution evidence",
+    "Indirect action dispatch tables supplied with decoded entry seeds",
+    "No newFE write in the three callback bodies"
+  ]
+}

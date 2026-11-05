@@ -1,0 +1,26 @@
+{
+  "pass": true,
+  "completed": true,
+  "reference_state_loaded": false,
+  "environment": "darwin/arm64",
+  "seed": 305419896,
+  "players": 2,
+  "team": false,
+  "human_idle": false,
+  "characters": [
+    7,
+    9
+  ],
+  "ticks": 3409,
+  "callbacks": 39583,
+  "first_damage_tick": 362,
+  "first_ko_tick": 2701,
+  "retirement_tick": 2878,
+  "result_tick": 2945,
+  "clear_tick": 3409,
+  "winner_code": 4,
+  "human_auto_takeovers": 0,
+  "rules_sha256": "f262dc3fb72badd414eb05bad47319c99ad245b6387078d03868e692d6033078",
+  "final_state_sha256": "4042202210c4e5a60b0b4e0fb799136bb800338f235f7dec1df6c71b396134f6",
+  "trace_sha256": "edd019bd67a957b0179b03bef47c9f05d71efec767c80bb5493eef1a469fe37e"
+}

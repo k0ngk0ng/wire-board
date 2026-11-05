@@ -1,0 +1,67 @@
+{
+  "pass": true,
+  "scope": "Dirty original callbacks derived from the proven source7 checkpoint",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "f4f7a801815bda5bdcf4861d0bab7e8c287692a61bf997db55c6b08aeed9e8f6",
+  "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+  "records": 11323,
+  "calls": 11323,
+  "kind_counts": {
+    "first": 4321,
+    "second": 6497,
+    "pan": 505
+  },
+  "fixture_sha256": "73c8aff29c16f1c487bb32b2e5c0fa04c837b33609cae0040022e1ade7d9ef6b",
+  "gzip_sha256": "f2996cdb66613a0ba8a3370c85a1ad84baa635d11ca16c3a048f610f34cd68f1",
+  "frames_match_original_core": true,
+  "baselines": [
+    {
+      "input": "docs/research/md-yuyuhakusho/source7-next-inputs.json",
+      "input_sha256": "fed38aa84737d5d17bdf7d02f78f109ec0836f1cb244de6e2def47a8b9fc904f",
+      "reference": "games/yuyuhakusho/engine/testdata/fighter7-attacks-reference-frames.json",
+      "reference_raw_sha256": "ffebd6741b4a5a44a76832fc658045e144fd3607fec5fefd563a01be1809a65d",
+      "reference_manifest": "games/yuyuhakusho/engine/testdata/fighter7-attacks-reference-manifest.json",
+      "reference_manifest_sha256": "7be398c41e00a3bb161b78bd947efcc5c03dfd670bf9b2281ac092b8ce7bc207",
+      "video_steps": 3602,
+      "all_ram_video_match": true
+    }
+  ],
+  "binding": {
+    "source_tag": 7,
+    "checkpoint_frame": 2400,
+    "source_actor_sha256": "eaec8cd0b3614f03d890b7e448e47d4d8e7baf87872475a406a06a9222230559",
+    "animation_set": 850330,
+    "shape_set": 853658,
+    "movement_source": 75248
+  },
+  "library_frames": 104,
+  "unexplained_change_calls": 0,
+  "external_change_calls": 0,
+  "rng_calls": 0,
+  "clears": 2094,
+  "draws": 8752,
+  "interrupt_calls": 0,
+  "paths": {
+    "first_hit_stop": 48,
+    "heal": 1809,
+    "healing_fx": 1809,
+    "second_hit_stop": 48
+  },
+  "incomplete_calls": 0,
+  "errors": [],
+  "limits": [
+    "Private cases are never called natural; zero natural callbacks is pass:false",
+    "Full64KB deltas retained; four raw parents andF570 captured separately from theP1 family",
+    "Each draw is captured at its own1580 boundary",
+    "Typed data only; originalCPU andROM remain research-only"
+  ]
+}

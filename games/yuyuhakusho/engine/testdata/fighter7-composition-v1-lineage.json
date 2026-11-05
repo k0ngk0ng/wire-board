@@ -1,0 +1,108 @@
+{
+  "scope": "Original six-wrapper v1 and all twelve original CPU fixtures/manifests before the approved exact external-audio projection repair",
+  "frozen_test_source": "fighter7-composition-v1-test.go.txt",
+  "frozen_test_sha256": "7e1477727855f72ab03efd31bc6350d5399def191c0487d936b3daeab8083f29",
+  "initial_native_failure": "fighter7-composition-v1-native-audio-failure.jsonl",
+  "initial_wasm_failure": "fighter7-composition-v1-wasm-audio-failure.jsonl",
+  "original_special_capture_sha256": "2ab92e48e874800ca0979a4850740e1f7c5ffc3a67d50ca77f1c4d5a44e8edea",
+  "reason": "Observed IRQ clears a2 at f80a before the owned producer re-enqueues a6 into that slot; v1 only admitted a final zero for a consumed slot. No business-rule change is authorized by this repair.",
+  "approval": "Root explicitly authorized preserving v1 and validating exact ordered CPU requests/writes/clears against all four CPU slots and a synchronous Go projection.",
+  "files": [
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-v1/fighter7-composition-action-boundaries.json.gz",
+      "sha256": "fa247c0eab48733db52da977d7530ee8fb71664e3dfc9a723856a918981387ed"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-v1/fighter7-composition-action-boundaries-manifest.json",
+      "sha256": "c45991f4837394f2417f022d5f07a11da1115e3f85a8151c56915ba87c73bb9d"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-v1/fighter7-composition-action-natural.json.gz",
+      "sha256": "f600caed6b4927b31e3ed24877ae6f2e06e0e1d84920d2ffe5c13ef2a9708872"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-v1/fighter7-composition-action-natural-manifest.json",
+      "sha256": "4ba5d849100588e392cf9d95a291e991fb3e43c8b8d23affdda3fe701ff0c45f"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-v1/fighter7-composition-action-sequences.json.gz",
+      "sha256": "0bd26ba88ce3067a6088aef38d8f35d32c4dd310bc5c3a9afa89f8d85765949b"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-v1/fighter7-composition-action-sequences-manifest.json",
+      "sha256": "ae40c8791bd129bf6ca84f9126b5d838e3f1b7900c7795d49496eec0510458f9"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-v1/fighter7-composition-action-special.json.gz",
+      "sha256": "e0c4751c69b49f00659b4c40d7cc24c3dd6cd9fdeab4abf6799447c2058e231a"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-v1/fighter7-composition-action-special-manifest.json",
+      "sha256": "9c64eecfefc16c5e0c1ff70b70b51275f0e0e72e64be825c615137193b73f02c"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-v1/fighter7-composition-actor-boundaries.json.gz",
+      "sha256": "62403d289a376451c1cd46855f1a32b3de26e2a0d86ff8ea32d9ece2159aafa3"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-v1/fighter7-composition-actor-boundaries-manifest.json",
+      "sha256": "d8ee55e9247e58edf4d2cbd7d05cb8e78f872f571da1ec6f14462664d79d0b3f"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-v1/fighter7-composition-actor-natural.json.gz",
+      "sha256": "752d059b283c4b01118e2c8488af6fb6ec2b2630f8e7ae0907b93e3c18008d22"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-v1/fighter7-composition-actor-natural-manifest.json",
+      "sha256": "efe7a0dbef446bb390927743232897b97e755271d6452b3a92fef152ef946298"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-v1/fighter7-composition-actor-sequences.json.gz",
+      "sha256": "75735c7d8c13815c7ff3b7f6cb622a1aaed9136b6db9f6a8ee2f0b88f8dd95c1"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-v1/fighter7-composition-actor-sequences-manifest.json",
+      "sha256": "5f2e3c93cd7a710c3d7f6b00fb750440ed15fae0bb456b155380ba511db42474"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-v1/fighter7-composition-actor-special.json.gz",
+      "sha256": "c8171460a86cfd1f1393d8b8d9c3717cbe792f876e8fe2ac9660fd820c9077cc"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-v1/fighter7-composition-actor-special-manifest.json",
+      "sha256": "ecbbe708325d1a0711e541d179e23573c81d87f6ba63fe2efef3d18f783d46d8"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-v1/fighter7-composition-input-boundaries.json.gz",
+      "sha256": "d163c2f7964f34be01f7fff3e62e54c4856ae4a4f187bd391c9c0c8571de2e74"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-v1/fighter7-composition-input-boundaries-manifest.json",
+      "sha256": "367db6fe0a2a7425392e5f965618de32a42f6b30404a23a7f5ddb0cf251596dc"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-v1/fighter7-composition-input-natural.json.gz",
+      "sha256": "92b832a799d63421ec6793f8ddbfed04899a214bfb20e62b4e008b2e93d34bfe"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-v1/fighter7-composition-input-natural-manifest.json",
+      "sha256": "7f87590277cd33db2ae9c3376aa2f2ed04c0a44e62922d538cf2d3bdb70b71ea"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-v1/fighter7-composition-input-sequences.json.gz",
+      "sha256": "7c24334bff0b42fefc3a9ee862a3c830b2603ad572d0c66fe0a8e95f56d84981"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-v1/fighter7-composition-input-sequences-manifest.json",
+      "sha256": "ec72e69b3fad3cfceb3a39e5ec98aca5fa8f11880837fbfb92d2614d45ce8bc0"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-v1/fighter7-composition-input-special.json.gz",
+      "sha256": "9bc01d852883f07eda53b64afe929920596cb371474f2fa47130473524b13b51"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-v1/fighter7-composition-input-special-manifest.json",
+      "sha256": "8242a170e2acdf313394f748eedf7b1b538eccfde7ed644a50e74045868d7643"
+    }
+  ]
+}

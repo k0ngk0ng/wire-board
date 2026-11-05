@@ -1,0 +1,20 @@
+=== RUN   TestFighter7AttacksOriginalFullCalls
+=== RUN   TestFighter7AttacksOriginalFullCalls/fighter7-attacks-natural
+    fighter7_attacks_test.go:366: complete original source7 calls=1681 modes=map[air:103 air-special:103 ground:722 ground-special:753] objects=map[33792:1681]
+=== RUN   TestFighter7AttacksOriginalFullCalls/fighter7-attacks-oracle
+    fighter7_attacks_test.go:366: complete original source7 calls=57 modes=map[air:3 air-special:16 ground:5 ground-special:33] objects=map[33792:14 34816:15 35840:14 36864:14]
+=== RUN   TestFighter7AttacksOriginalFullCalls/fighter7-attacks-boundaries
+    fighter7_attacks_test.go:366: complete original source7 calls=11164 modes=map[air:1280 air-special:3216 ground:2432 ground-special:4236] objects=map[33792:2791 34816:2791 35840:2791 36864:2791]
+=== RUN   TestFighter7AttacksOriginalFullCalls/fighter7-attacks-special-natural
+    fighter7_attacks_test.go:366: complete original source7 calls=2124 modes=map[air:46 air-special:51 ground:862 ground-special:1165] objects=map[33792:2124]
+--- PASS: TestFighter7AttacksOriginalFullCalls (57.94s)
+    --- PASS: TestFighter7AttacksOriginalFullCalls/fighter7-attacks-natural (6.42s)
+    --- PASS: TestFighter7AttacksOriginalFullCalls/fighter7-attacks-oracle (0.23s)
+    --- PASS: TestFighter7AttacksOriginalFullCalls/fighter7-attacks-boundaries (43.33s)
+    --- PASS: TestFighter7AttacksOriginalFullCalls/fighter7-attacks-special-natural (7.96s)
+=== RUN   TestFighter7AttacksSingleInitialState
+--- PASS: TestFighter7AttacksSingleInitialState (3.31s)
+=== RUN   TestFighter7AttacksInvalidInputIsAtomic
+--- PASS: TestFighter7AttacksInvalidInputIsAtomic (0.11s)
+PASS
+ok  	github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine	62.930s

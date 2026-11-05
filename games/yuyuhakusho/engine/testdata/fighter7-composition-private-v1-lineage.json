@@ -1,0 +1,56 @@
+{
+  "scope": "Prior real complete-CPU private fixture lineage before strengthening the first ai-record Actor row to 3d; frozen six Go tests unchanged",
+  "frozen_test_sha256": "7e1477727855f72ab03efd31bc6350d5399def191c0487d936b3daeab8083f29",
+  "private_cases_sha256": "e29663a77a668d9749ae2fdf0a1916dbb3109f3fd60a229ce8fe145d3bf2836c",
+  "files": [
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-private-v1/fighter7-composition-action-boundaries.json.gz",
+      "sha256": "da4b92d4aa53b85738eb3e51d866b5793401c3bc9ea359cee226d648a5eb0213"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-private-v1/fighter7-composition-action-boundaries-manifest.json",
+      "sha256": "96a889da8440b1a60ca789e44be8b03cccb33ef61539fa83448c2dfa885b514c"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-private-v1/fighter7-composition-action-sequences.json.gz",
+      "sha256": "0bd26ba88ce3067a6088aef38d8f35d32c4dd310bc5c3a9afa89f8d85765949b"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-private-v1/fighter7-composition-action-sequences-manifest.json",
+      "sha256": "25a0789515e45257286307ee42cee80eab7cecf02d2b5d050ad294d79ad49f62"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-private-v1/fighter7-composition-input-boundaries.json.gz",
+      "sha256": "2a93ebbc555453cd092916374f2aa1559dcec443e4bac81ebd202a6167b3ffd0"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-private-v1/fighter7-composition-input-boundaries-manifest.json",
+      "sha256": "661096c0192a1e2ea5d6b324c30a9f484aa85a3f7fd0d08846cf95dabdf27b8f"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-private-v1/fighter7-composition-input-sequences.json.gz",
+      "sha256": "7c24334bff0b42fefc3a9ee862a3c830b2603ad572d0c66fe0a8e95f56d84981"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-private-v1/fighter7-composition-input-sequences-manifest.json",
+      "sha256": "40118ff5cf1ca918103192378d53e677b6d1f7f402aeffdfbd8f74f7571d8082"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-private-v1/fighter7-composition-actor-boundaries.json.gz",
+      "sha256": "c3b53b69a1a66415f3119d8a799149833d920e62085c623ed9e679148eb65ed9"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-private-v1/fighter7-composition-actor-boundaries-manifest.json",
+      "sha256": "6443e30122944bf8e4aeda960ed5714550957e61b1cdb3fbcced9ac5a4d237eb"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-private-v1/fighter7-composition-actor-sequences.json.gz",
+      "sha256": "75735c7d8c13815c7ff3b7f6cb622a1aaed9136b6db9f6a8ee2f0b88f8dd95c1"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-private-v1/fighter7-composition-actor-sequences-manifest.json",
+      "sha256": "b096f881f177a79e804682c122466c0047679ad990190e23895b384356524ee4"
+    }
+  ],
+  "enhancement": "The first ai-record Actor route will execute 3d frame2/ticks0 and write peer +69 after real AI/recording, before late HUD rollback validation."
+}

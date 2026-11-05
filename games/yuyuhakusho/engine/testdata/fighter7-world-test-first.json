@@ -1,0 +1,12 @@
+{
+  "world_support_and_data_export_changed": false,
+  "files": {
+    "fighter7_world_test.go": "c31bee778fd9faf2bd937238344f5f9fc36e39f13f4a45e85fcfc701e12932c6",
+    "fighter7_special_world_test.go": "88010377a7f28eb43c270144d9e15271583e712b2f456a77dac2ee628750792e",
+    "fighter7_child_world_test.go": "f8db6bd22c26a701bdd7630759cbd05df1fb8bfc284534df0589b4bfc49df20c",
+    "fighter7_rules_test.go": "7c16149a9d7f5af0997694d038b3c134bf8007a2cf782e17deb6eab4040b451a",
+    "FIGHTER7_WORLD_FAILURES.md": "ac0726103e170278d583e13482ff59c6e5ed62aadea5152c00297f27fcc1b711",
+    "testdata/fighter7-world-red.jsonl": "aad4785a0f2a3e99d8458fab8f770c6a97a3f6074f7f9cb376b1a7aac33bead3",
+    "testdata/fighter7-rules-red.jsonl": "ba2d43f0ac3b0ad7a6ef4708bc204358783739cec9cbc5bd3ff6e568868b9273"
+  }
+}

@@ -146,8 +146,13 @@ func decodeChuWorldTest(t *testing.T, raw chuWorldRaw) ChuWorldState {
 	}
 	v := attackContactBytes(t, raw.Vertical, 64)
 	s.Vertical = [2]int16{int16(w(v, 0)), int16(w(v, 40))}
-	copy(s.PanA[:], arenaWords(t, raw.PanA, 224))
-	copy(s.PanB[:], arenaWords(t, raw.PanB, 224))
+	for plane, encoded := range []string{raw.PanA, raw.PanB} {
+		var expected [224]int16
+		copy(expected[:], arenaWords(t, encoded, 224))
+		if s.PanRows(plane) != expected {
+			t.Fatalf("original raster plane %d disagrees with its shared stream bytes", plane)
+		}
+	}
 	src := attackContactBytes(t, raw.Sources, 8)
 	s.ScrollSources = [2]int32{l(src, 0), l(src, 4)}
 	return s
@@ -228,6 +233,11 @@ func chuWorldLibrariesTest(t *testing.T) ChuWorldLibrary {
 	for _, frame := range fighter5.Frames {
 		library.Animations[frame.Key] = frame.Data
 	}
+	var fighter7 struct{ Frames []chuWorldAnimationRule }
+	read("../data/fighter7-children-rules.json", &fighter7)
+	for _, frame := range fighter7.Frames {
+		library.Animations[frame.Key] = frame.Data
+	}
 	library.Fighter0Projectiles = Fighter0ProjectileLibrary{Animations: library.Animations, Sequences: make(map[uint32][]ChuAttachmentFrame)}
 	for _, sequence := range fighter0.Sequences {
 		library.Fighter0Projectiles.Sequences[sequence.Identity] = sequence.Frames
@@ -294,6 +304,10 @@ func visitChuWorldTest(t *testing.T, handle func(chuWorldOriginalPass), fixtureN
 			wantRecords, wantFrames = 3116, 5500
 		} else if name == "chu-world-fighter5-special" {
 			wantRecords, wantFrames = 1801, 3602
+		} else if name == "chu-world-fighter7" {
+			wantRecords, wantFrames = 3144, 5500
+		} else if name == "chu-world-fighter7-special" {
+			wantRecords, wantFrames = 3700, 5502
 		}
 	}
 	zipped, err := os.ReadFile("testdata/" + name + ".json.gz")
@@ -327,6 +341,9 @@ func visitChuWorldTest(t *testing.T, handle func(chuWorldOriginalPass), fixtureN
 	}
 	if name == "chu-world-fighter5-special" {
 		captureName = "capture_fighter5_world.py"
+	}
+	if name == "chu-world-fighter7-special" {
+		captureName = "capture_fighter7_world.py"
 	}
 	if name == "chu-world-fighter6-ai" {
 		captureName = "capture_fighter6_ai_world.py"

@@ -1,0 +1,44 @@
+{
+  "pass": true,
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter7-composition-natural",
+      "removed_bytes": 317367940,
+      "scope": "Only this composition collector raw JSONL/intermediate observed-core output; retained canonical gzip/manifests and v1 lineage in testdata"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter7-composition-private",
+      "removed_bytes": 332270171,
+      "scope": "Only this composition collector raw JSONL/intermediate observed-core output; retained canonical gzip/manifests and v1 lineage in testdata"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter7-composition-private-final",
+      "removed_bytes": 334431221,
+      "scope": "Only this composition collector raw JSONL/intermediate observed-core output; retained canonical gzip/manifests and v1 lineage in testdata"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter7-composition-special",
+      "removed_bytes": 598885042,
+      "scope": "Only this composition collector raw JSONL and observed-core intermediate output; retain canonical v2, complete v1 lineage, manifests, actual reds, final logs and audit source."
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter7-composition-audio-ordinary",
+      "removed_bytes": 335161477,
+      "scope": "Only this composition collector raw JSONL and observed-core intermediate output; retain canonical v2, complete v1 lineage, manifests, actual reds, final logs and audit source."
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter7-composition-audio-special",
+      "removed_bytes": 600128534,
+      "scope": "Only this composition collector raw JSONL and observed-core intermediate output; retain canonical v2, complete v1 lineage, manifests, actual reds, final logs and audit source."
+    }
+  ],
+  "preserved": [
+    "current12canonical gzip/manifests",
+    "complete Go v1/test/raw failures and12original CPU fixtures",
+    "private scenario v1lineage",
+    "byte-exact ordinary/private/special producer sources",
+    "final native-race and Wasm logs and validation/commands/audit",
+    "all ROM/core/control resources and other owners outputs"
+  ],
+  "total_removed_bytes": 2518244385
+}

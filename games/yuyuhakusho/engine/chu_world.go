@@ -26,6 +26,7 @@ type ChuWorldMatch struct {
 // callback and merged immediately, rather than kept as independent worlds.
 // Cells covers E600..EC00: fighter HUD = [1:513], arena rows = [256:768].
 // LossesByCharacter[60:64] is also the recording end-marker storage.
+// Stream owns both recording/playback bytes and the two PanRows views.
 type ChuWorldState struct {
 	Objects                                           WorldObjects
 	Clock                                             WorldClockState
@@ -56,7 +57,6 @@ type ChuWorldState struct {
 	VideoMode, SceneMode, SceneRequest, InterruptMode uint16
 	ScrollMode                                        uint8
 	Vertical                                          [2]int16
-	PanA, PanB                                        [224]int16
 	ScrollSources                                     [2]int32
 	ResourceList                                      uint32
 	ResourceBusy                                      uint8
@@ -196,6 +196,12 @@ func stepChuWorldObject(state *ChuWorldState, object WorldObject, view ChuWorldV
 		return stepFighter4WorldBoost(state, object, library.Animations)
 	case 0x1414e, 0x143e4, 0x146ba:
 		return stepFighter5WorldProjectile(state, object, library.Animations)
+	case 0x136e6:
+		return stepFighter7WorldFirstChild(state, object, library.Animations)
+	case 0x1391e:
+		return stepFighter7WorldSecondChild(state, object, library.Animations)
+	case 0x15094:
+		return stepFighter7WorldPan(state, object)
 	case 0x132de, 0x1361e:
 		return stepChuWorldAttachment(state, object, library.Attachments)
 	case 0x149ac:
@@ -350,7 +356,7 @@ func stepChuWorldCollision(state *ChuWorldState) error {
 func stepChuWorldArena(state *ChuWorldState, object WorldObject, library ArenaRuntimeLibrary) error {
 	s := DefaultArenaState{Stage: object.Header.Stage, Offsets: [3]int16{object.ScreenX, object.ScreenY, int16(object.Body.VelocityX >> 16)},
 		Drifts: [2]int32{object.Body.VerticalVelocity, object.Aux18}, Phases: [2]uint16{uint16(object.TilesBase >> 16), uint16(object.TilesBase)},
-		Camera: state.Camera, Mode: state.ScrollMode, Vertical: state.Vertical, PanA: state.PanA, PanB: state.PanB, SourceA: state.ScrollSources[0], SourceB: state.ScrollSources[1]}
+		Camera: state.Camera, Mode: state.ScrollMode, Vertical: state.Vertical, PanA: state.PanRows(0), PanB: state.PanRows(1), SourceA: state.ScrollSources[0], SourceB: state.ScrollSources[1]}
 	v := DefaultArenaView{PauseFlags: state.Clock.PauseFlags, SlowFlag: state.Clock.SlowFlag, Shake: int16(state.Clock.ScreenShake), Pan: int16(state.Clock.PanOffset)}
 	for i := range s.RowsA {
 		s.RowsA[i], s.RowsB[i], v.HUDPrefix[i] = int16(state.Cells[256+i]), int16(state.Cells[512+i]), int16(state.Cells[i])
@@ -359,13 +365,18 @@ func stepChuWorldArena(state *ChuWorldState, object WorldObject, library ArenaRu
 	if err != nil {
 		return err
 	}
+	if v.Pan != 0 && v.PauseFlags&128 == 0 && v.SlowFlag == 0 {
+		if err := state.storePanRows(next.PanA, next.PanB); err != nil {
+			return err
+		}
+	}
 	object.Header.Stage, object.ScreenX, object.ScreenY = next.Stage, next.Offsets[0], next.Offsets[1]
 	object.Body.VelocityX = worldObjectHighWord(object.Body.VelocityX, uint16(next.Offsets[2]))
 	object.Body.VerticalVelocity, object.Aux18 = next.Drifts[0], next.Drifts[1]
 	object.TilesBase = uint32(next.Phases[0])<<16 | uint32(next.Phases[1])
 	state.Objects[object.ObjectID] = object
 	state.Camera, state.ScrollMode, state.Vertical = next.Camera, next.Mode, next.Vertical
-	state.PanA, state.PanB, state.ScrollSources = next.PanA, next.PanB, [2]int32{next.SourceA, next.SourceB}
+	state.ScrollSources = [2]int32{next.SourceA, next.SourceB}
 	for i := range next.RowsA {
 		state.Cells[256+i], state.Cells[512+i] = uint16(next.RowsA[i]), uint16(next.RowsB[i])
 	}
@@ -373,7 +384,7 @@ func stepChuWorldArena(state *ChuWorldState, object WorldObject, library ArenaRu
 }
 
 func stepChuWorldFighter(state *ChuWorldState, object WorldObject, view ChuWorldView, library ChuWorldLibrary, hudCursor *uint16) ([]ChuWorldEvent, error) {
-	if _, ok := chuAIIndex(object.ObjectID); !ok || (object.Tag != 0 && object.Tag != 1 && object.Tag != 2 && object.Tag != 3 && object.Tag != 4 && object.Tag != 5 && object.Tag != 6 && object.Tag != 8 && object.Tag != 9 && object.Tag != 10) {
+	if _, ok := chuAIIndex(object.ObjectID); !ok || object.Tag > 10 {
 		return nil, errors.New("complete fighter action source is not recovered")
 	}
 	switch object.Header.Stage {
@@ -406,7 +417,7 @@ func stepChuWorldFighter(state *ChuWorldState, object WorldObject, view ChuWorld
 	if err != nil {
 		return nil, err
 	}
-	w := ChuActorWorld{Pool: pool, OtherEnergy: make(map[uint16]int16), OccupiedLanes: state.OccupiedLanes, Buffers: state.Buffers, Throws: state.Throws, DragonBankCursor: state.DragonBankCursor,
+	w := ChuActorWorld{Pool: pool, OtherEnergy: make(map[uint16]int16), OtherHitStopTicks: make(map[uint16]uint8), OccupiedLanes: state.OccupiedLanes, Buffers: state.Buffers, Throws: state.Throws, DragonBankCursor: state.DragonBankCursor,
 		PendingSound: state.PendingSound, SoundQueue: state.SoundQueue, RandomSeed: state.RandomSeed, GlobalF568: state.Clock.DurationRequest, GlobalF56A: state.Clock.AmplitudeRequest,
 		Stream: state.Stream, Stopped: state.Stopped, Registration: state.Registration, SampleUsed: state.Camera.Used, SamplesX: state.Camera.SamplesX, SamplesY: state.Camera.SamplesY,
 		HUDCells: state.Cells[1:513], HUDCursor: *hudCursor}
@@ -431,6 +442,7 @@ func stepChuWorldFighter(state *ChuWorldState, object WorldObject, view ChuWorld
 			FrameFlags: o.Body.Clock.Flags, AttackFlags: o.Body.Auxiliary64, ChildX: int16(child.Body.X >> 16), ChildY: int16(child.Body.Y >> 16), ChildGround: int16(child.Body.Ground >> 16), ChildAttackFlags: child.Body.Auxiliary64, ChildAttackValue: child.AttackValue}
 		if id != object.ObjectID {
 			w.OtherEnergy[id] = int16(o.Energy >> 16)
+			w.OtherHitStopTicks[id] = o.HitStopTicks
 		}
 	}
 	next, out, err := StepFighterActor(ChuActorState{Fighter: fighter, World: w}, object.Tag, v, library.Commands, library.Animations)
@@ -453,6 +465,11 @@ func stepChuWorldFighter(state *ChuWorldState, object WorldObject, view ChuWorld
 	for id, energy := range w.OtherEnergy {
 		o, _ := LookupWorldObject(state.Objects, id)
 		o.Energy = worldObjectHighWord(o.Energy, uint16(energy))
+		state.Objects[id] = o
+	}
+	for id, stop := range w.OtherHitStopTicks {
+		o, _ := LookupWorldObject(state.Objects, id)
+		o.HitStopTicks = stop
 		state.Objects[id] = o
 	}
 	state.EffectCursor, state.OccupiedLanes, state.Buffers, state.Throws = w.Pool.Cursor, w.OccupiedLanes, w.Buffers, w.Throws

@@ -1,0 +1,23 @@
+# command-line-arguments [command-line-arguments.test]
+./fighter7_children_test.go:200:9: undefined: Fighter7ChildSubmission
+./fighter7_children_test.go:206:10: undefined: Fighter7FirstChildContext
+./fighter7_children_test.go:206:44: undefined: Fighter7ChildParent
+./fighter7_children_test.go:206:112: undefined: Fighter7ChildLink
+./fighter7_children_test.go:207:22: undefined: StepFighter7FirstChild
+./fighter7_children_test.go:213:10: undefined: Fighter7SecondChildContext
+./fighter7_children_test.go:213:45: undefined: Fighter7ChildParent
+./fighter7_children_test.go:216:22: undefined: Fighter7HealingTarget
+./fighter7_children_test.go:220:26: undefined: Fighter7ChildEffectExtra
+./fighter7_children_test.go:222:22: undefined: StepFighter7SecondChild
+./fighter7_children_test.go:240:39: undefined: StepFighter7Pan
+./fighter7_children_test.go:456:9: undefined: Fighter7ChildSubmission
+./fighter7_children_test.go:457:11: undefined: Fighter7FirstChildContext
+./fighter7_children_test.go:457:45: undefined: Fighter7ChildParent
+./fighter7_children_test.go:457:102: undefined: Fighter7ChildLink
+./fighter7_children_test.go:478:26: undefined: StepFighter7FirstChild
+./fighter7_children_test.go:487:12: undefined: Fighter7SecondChildContext
+./fighter7_children_test.go:489:24: undefined: Fighter7HealingTarget
+./fighter7_children_test.go:492:24: undefined: StepFighter7SecondChild
+./fighter7_children_test.go:498:30: undefined: StepFighter7Pan
+FAIL	command-line-arguments [build failed]
+FAIL

@@ -49,7 +49,7 @@ func decodeChuTail(t *testing.T, raw chuTailSnapshot, id uint16) ChuTailState {
 	s.Pool, _ = decodeEffectPool(t, raw.Pool.Cursor, raw.Pool.Bytes)
 	for owner, encoded := range raw.Others {
 		b := attackContactBytes(t, encoded, 256)
-		s.OtherFighters[owner] = TailFighterEnergy{Size: binary.BigEndian.Uint16(b[4:]), Team: b[0x6e], Health: int16(binary.BigEndian.Uint16(b[0x78:])), Energy: int16(binary.BigEndian.Uint16(b[0xb8:]))}
+		s.OtherFighters[owner] = TailFighterEnergy{Size: binary.BigEndian.Uint16(b[4:]), Team: b[0x6e], Health: int16(binary.BigEndian.Uint16(b[0x78:])), Energy: int16(binary.BigEndian.Uint16(b[0xb8:])), HitStopTicks: b[0x69]}
 	}
 	b := attackContactBytes(t, raw.Buffers, 1024)
 	for i := range s.Buffers {
@@ -80,6 +80,7 @@ func encodeChuTail(t *testing.T, s ChuTailState, old chuTailSnapshot) chuTailSna
 		b := attackContactBytes(t, old.Others[id], 256)
 		binary.BigEndian.PutUint16(b[4:], f.Size)
 		b[0x6e] = f.Team
+		b[0x69] = f.HitStopTicks
 		binary.BigEndian.PutUint16(b[0x78:], uint16(f.Health))
 		binary.BigEndian.PutUint16(b[0xb8:], uint16(f.Energy))
 		raw.Others[id] = hex.EncodeToString(b)

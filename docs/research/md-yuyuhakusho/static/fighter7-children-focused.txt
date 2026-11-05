@@ -1,0 +1,125 @@
+route=direct-ghidra-headless; REA raw 68000 unsupported
+language=68000:BE:32:default
+source=MD Yu Yu Hakusho Japan; static reachable instructions only
+
+seeds=136e6 scope=0x136e6..0x1391d
+000136e6 move.w (0x6,A5),D0w
+000136ea bne.b 0x0001374a
+000136ec addq.w #0x2,(0x6,A5)
+000136f0 move.w #0x0,(0x28,A5)
+000136f6 move.w #0x0,(0x2a,A5)
+000136fc clr.w (0x3c,A5)
+00013700 clr.l (0x2c,A5)
+00013704 clr.l (0x30,A5)
+00013708 clr.l (0x34,A5)
+0001370c clr.l (0x38,A5)
+00013710 move.l #0xd8f1a,(0x1c,A5)
+00013718 move.l #0x240000,(0x20,A5)
+00013720 move.l #0xd92ca,(0x50,A5)
+00013728 move.l #0xd9a3a,(0x8c,A5)
+00013730 move.w (0xffffa03e).w,D0w
+00013734 or.w D0w,(0x24,A5)
+00013738 move.b #0x3e,(0x5f,A5)
+0001373e move.b #0x8,(0x5a,A5)
+00013744 move.b #-0x1,(0x5b,A5)
+0001374a move.w #0xff,(0x78,A5)
+00013750 tst.b (0xfffff550).w
+00013754 bmi.w 0x000137ec
+00013758 cmpi.b #0x0,(0xfffff55a).w
+0001375e bne.w 0x000137ec
+00013762 cmpi.b #0x0,(0x69,A5)
+00013768 bhi.w 0x000137f4
+0001376c clr.b (0x6a,A5)
+00013770 jsr 0x00019cc4.l
+00013776 jsr 0x00019c96.l
+0001377c moveq 0x0,D0
+0001377e move.b (0x5d,A5),D0b
+00013782 add.w D0w,D0w
+00013784 lea (0x1378c,PC,D0w*0x1),A0
+00013788 adda.w (A0),A0
+0001378a jmp (A0)
+000137e0 jsr 0x0001eb40.l
+000137e6 jsr 0x000156f0.l
+000137ec jmp 0x00001580.l
+000137f4 subi.b #0x1,(0x69,A5)
+000137fa cmpi.b #0x1,(0x6a,A5)
+00013800 bls.b 0x00013808
+00013802 subi.b #0x1,(0x6a,A5)
+00013808 moveq 0x0,D0
+0001380a move.b (0x6a,A5),D0b
+0001380e btst.b #0x0,(0x69,A5)
+00013814 bne.b 0x0001381c
+00013816 add.w D0w,(0x54,A5)
+0001381a bra.b 0x00013820
+0001381c sub.w D0w,(0x54,A5)
+00013820 bra.b 0x000137e0
+printed_instructions=50
+
+seeds=1391e scope=0x1391e..0x13bff
+0001391e move.w (0x6,A5),D0w
+00013922 bne.b 0x00013982
+00013924 addq.w #0x2,(0x6,A5)
+00013928 move.w #0x0,(0x28,A5)
+0001392e move.w #0x0,(0x2a,A5)
+00013934 clr.w (0x3c,A5)
+00013938 clr.l (0x2c,A5)
+0001393c clr.l (0x30,A5)
+00013940 clr.l (0x34,A5)
+00013944 clr.l (0x38,A5)
+00013948 move.l #0xd8f1a,(0x1c,A5)
+00013950 move.l #0x240000,(0x20,A5)
+00013958 move.l #0xd92ca,(0x50,A5)
+00013960 move.l #0xd9a3a,(0x8c,A5)
+00013968 move.w (0xffffa03e).w,D0w
+0001396c or.w D0w,(0x24,A5)
+00013970 move.b #0x3c,(0x5f,A5)
+00013976 move.b #0x8,(0x5a,A5)
+0001397c move.b #-0x1,(0x5b,A5)
+00013982 move.w #0xff,(0x78,A5)
+00013988 tst.b (0xfffff550).w
+0001398c bmi.b 0x00013a00
+0001398e cmpi.b #0x0,(0xfffff55a).w
+00013994 bne.b 0x00013a00
+00013996 cmpi.b #0x0,(0x69,A5)
+0001399c bhi.b 0x00013a08
+0001399e clr.b (0x6a,A5)
+000139a2 jsr 0x00019c96.l
+000139a8 moveq 0x0,D0
+000139aa move.b (0x5d,A5),D0b
+000139ae add.w D0w,D0w
+000139b0 lea (0x139b8,PC,D0w*0x1),A0
+000139b4 adda.w (A0),A0
+000139b6 jmp (A0)
+000139f4 jsr 0x0001eb40.l
+000139fa jsr 0x000156f0.l
+00013a00 jmp 0x00001580.l
+00013a08 subi.b #0x1,(0x69,A5)
+00013a0e cmpi.b #0x1,(0x6a,A5)
+00013a14 bls.b 0x00013a1c
+00013a16 subi.b #0x1,(0x6a,A5)
+00013a1c moveq 0x0,D0
+00013a1e move.b (0x6a,A5),D0b
+00013a22 btst.b #0x0,(0x69,A5)
+00013a28 bne.b 0x00013a30
+00013a2a add.w D0w,(0x54,A5)
+00013a2e bra.b 0x00013a34
+00013a30 sub.w D0w,(0x54,A5)
+00013a34 bra.b 0x000139f4
+printed_instructions=49
+
+seeds=15094 scope=0x15094..0x156ff
+00015094 move.w (0x6,A5),D0w
+00015098 bne.b 0x000150a4
+0001509a move.w #0x1000,(0x14,A5)
+000150a0 addq.w #0x2,(0x6,A5)
+000150a4 tst.b (0xfffff550).w
+000150a8 bmi.b 0x000150c2
+000150aa tst.b (0xfffff55a).w
+000150ae bne.b 0x000150c2
+000150b0 subi.w #0x10,(0x14,A5)
+000150b6 move.w (0x14,A5),(0xfffff570).w
+000150bc tst.w (0x14,A5)
+000150c0 beq.b 0x000150c4
+000150c2 rts
+000150c4 jmp 0x00003556.l
+printed_instructions=14

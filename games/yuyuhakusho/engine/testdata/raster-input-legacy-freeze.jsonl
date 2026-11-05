@@ -1,0 +1,8 @@
+{"Time":"2026-11-05T14:19:16.869738+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine"}
+{"Time":"2026-11-05T14:19:17.306038+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestRasterInputStorageFreezeLegacyJSON"}
+{"Time":"2026-11-05T14:19:17.306234+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestRasterInputStorageFreezeLegacyJSON","Output":"=== RUN   TestRasterInputStorageFreezeLegacyJSON\n"}
+{"Time":"2026-11-05T14:19:22.630326+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestRasterInputStorageFreezeLegacyJSON","Output":"--- PASS: TestRasterInputStorageFreezeLegacyJSON (5.32s)\n"}
+{"Time":"2026-11-05T14:19:22.630346+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestRasterInputStorageFreezeLegacyJSON","Elapsed":5.32}
+{"Time":"2026-11-05T14:19:22.630361+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"PASS\n"}
+{"Time":"2026-11-05T14:19:22.631275+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine\t5.761s\n"}
+{"Time":"2026-11-05T14:19:22.631292+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Elapsed":5.7620000000000005}

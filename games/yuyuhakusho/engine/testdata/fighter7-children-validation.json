@@ -1,0 +1,116 @@
+{
+  "pass": true,
+  "scope": "Source7 three child callbacks, natural/dirty CPU boundaries, creator-clock lifecycles, derivedFX and atomic errors; world integration remains Root scope",
+  "frozen_test_sha256": "9e2832aeb24902e3cf742347c228aab60f3083ab02b0a33744a2df8b867cd352",
+  "production_sha256": "8e55ee9aeb37507b9b3ba1b8bf4d39547ebae207fcd61d5d400bbec065e5055b",
+  "capture_sha256": "52dc4e19c1593ec2f9cfd78dd39bc29552d2920c18d1400718aeb1d75538c901",
+  "private_frozen_capture_sha256": "f4f7a801815bda5bdcf4861d0bab7e8c287692a61bf997db55c6b08aeed9e8f6",
+  "native_race_pass": true,
+  "native_seconds": 71.953,
+  "wasm_pass": true,
+  "wasm_seconds": 20.183,
+  "vet_pass": true,
+  "natural_callbacks": 1378,
+  "natural_kinds": {
+    "first": 209,
+    "second": 209,
+    "effect": 704,
+    "pan": 256
+  },
+  "private_callbacks": 11323,
+  "single_initial_flows": 8,
+  "single_initial_calls": 7948,
+  "natural_pan": {
+    "first_video": 4053,
+    "last_video": 4308,
+    "calls": 256,
+    "cleared_bytes": 256,
+    "final_amplitude": 0
+  },
+  "natural_healing": {
+    "branch_videos": [
+      1935,
+      2112
+    ],
+    "health_changes": 0,
+    "limit": "Natural action reached; actual Health increments and overflow are verified by private originalCPU contexts"
+  },
+  "unexplained_changes": 0,
+  "frozen_assertions_unchanged": true,
+  "fixtures": {
+    "fighter7-children-oracle.json.gz": "f236f3885b30eefb62465e8c11a08be79a7ca1d511dadb8e11affb49bfcf1cf1",
+    "fighter7-children-sequences.json.gz": "76df601b11ba5118029d19e48756fafc730021e6760eb0228e30550b19749244",
+    "fighter7-children-boundaries.json.gz": "f2996cdb66613a0ba8a3370c85a1ad84baa635d11ca16c3a048f610f34cd68f1"
+  },
+  "logs": {
+    "native-race": {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-children-native-race.log",
+      "sha256": "143d3475d3b10193df233b9ad19560e98044221eac77777ee3e12c743be6a4b4"
+    },
+    "wasm": {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-children-wasm.log",
+      "sha256": "e916b9357aa8f5e9947d5ee014164362b5bd451cff1adcdcc280b718a2128f77"
+    },
+    "vet": {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-children-vet.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "natural-capture": {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-children-natural-capture.log",
+      "sha256": "f9d175ae104774979aa6d56e9ec254cf3efbd1ac21109749d664d5c1f95db0c0"
+    }
+  },
+  "commands": {
+    "native": [
+      "go",
+      "test",
+      "-race",
+      "./games/yuyuhakusho/engine",
+      "-run",
+      "^TestFighter7Children",
+      "-count=1",
+      "-v"
+    ],
+    "wasm": [
+      "go",
+      "test",
+      "-exec=/opt/homebrew/Cellar/go/1.26.2/libexec/lib/wasm/go_js_wasm_exec",
+      "./games/yuyuhakusho/engine",
+      "-run",
+      "^TestFighter7Children",
+      "-count=1",
+      "-v"
+    ],
+    "vet": [
+      "go",
+      "vet",
+      "./games/yuyuhakusho/engine"
+    ]
+  },
+  "wasm_environment": {
+    "GOOS": "js",
+    "GOARCH": "wasm",
+    "GOENV": "off",
+    "GOTOOLCHAIN": "local",
+    "node": "/Users/jason/.nvm/versions/node/v24.15.0/bin/node"
+  },
+  "runtime_data_sha256": "72d54890df9bbb66b7a70e0f026e343dc749d971b9450979d103324e65d16aec",
+  "documentation_sha256": "e85456ff6949d53b740d15d86906acb979af54225a021c0c08c33b951f8ff3dc",
+  "runtime_data_manifest_sha256": "0bd6bea1bcde94938968893e3d651c967d2403ddff5300af8dd44060081d4fe2",
+  "cleanup": {
+    "removed_static_partial_listings": 2,
+    "removed_private_local_paths": [
+      ".local/md-yuyuhakusho/fighter7children-static",
+      ".local/md-yuyuhakusho/fighter7-children-observed-fighter7-children-0",
+      ".local/md-yuyuhakusho/fighter7-children-observed-fighter7-children-1",
+      ".local/md-yuyuhakusho/fighter7children-natural-capture.log",
+      ".local/md-yuyuhakusho/fighter7children-capture.log",
+      ".local/md-yuyuhakusho/fighter7children-native-final.log",
+      ".local/md-yuyuhakusho/fighter7children-wasm-intermediate.log",
+      ".local/md-yuyuhakusho/fighter7children-wasm-final.log",
+      ".local/md-yuyuhakusho/fighter7children-vet.log",
+      ".local/md-yuyuhakusho/fighter7children-vet-final.log",
+      ".local/md-yuyuhakusho/fighter7children-native.log"
+    ]
+  }
+}

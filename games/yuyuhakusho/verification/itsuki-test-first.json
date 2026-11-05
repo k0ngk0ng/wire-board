@@ -1,0 +1,11 @@
+{
+  "session_cli_ui_support_changed": false,
+  "files": {
+    "games/yuyuhakusho/engine/fighter7_sessions_test.go": "73960d4edd4eb8800da321af243bcb02ca11662381c0698c30c8f371fb2ab363",
+    "games/yuyuhakusho/engine/testdata/fighter7-session-red.jsonl": "cb2e68f5c2d4c2c1cd3fe0f379d5c6e28aea449f3e93e2294fa69aa60ce84348",
+    "scripts/yuyuhakusho/check_itsuki_player.py": "954633e6eb6915a3033ee055437a2aa91aca9dba1efce6ba2af4db8220a7b4ce",
+    "scripts/yuyuhakusho/verify_itsuki_sessions.sh": "50bc4c66e56ed5d6fac5420e18cdcae65921d9ea9a2f6e895bdafe0cf8266d3c",
+    "games/yuyuhakusho/verification/itsuki-session-cli-red.txt": "96f09d51f4a52a412c0ce1608b8ef9e18cce9f31ed3acfde84f3f710595cd439",
+    "games/yuyuhakusho/verification/itsuki-player-ui-red.txt": "76802e03931cb9326a4641d98b1326edee1037acf52e32319bb86cdf4e16d7c4"
+  }
+}

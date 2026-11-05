@@ -1,0 +1,62 @@
+{
+  "scope": "Source7 selector fixtures and tests frozen before own production symbols exist",
+  "production_exists": false,
+  "files": [
+    {
+      "path": "docs/research/md-yuyuhakusho/SOURCE7_ATTACKS_FAILURES.md",
+      "sha256": "02bf70af53ce9a89c55953ecefa7ed086f68a0978103af2983b0c62d10c83cf4"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_fighter7_attacks.py",
+      "sha256": "46a5b05b9acc13e5b29c919fd1fff69e8827aa566ebdd607527836a43b0c3af8"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter7_attacks_test.go",
+      "sha256": "454f1c19afb68202377d75206f8fb5064a834cbc41a09e3b2209153694169fc4"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-attacks-boundaries-manifest.json",
+      "sha256": "e8f40948cc56601a42e69bcbb1e5346400449d4456fcd237e5da5d7bd3e02523"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-attacks-boundaries.json.gz",
+      "sha256": "ab6b4774838627bc47e5f98425d5c11ce214b97e2af9547217742d7262473175"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-attacks-initializer.json",
+      "sha256": "c53d351493167af315cb0139e655d93a1b96dd3f90b2baf537a3828a613f8936"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-attacks-natural-manifest.json",
+      "sha256": "c4051fa02ef8feb20ad2f364e27d88d9f7aa24c79c3129c933021702beb30ffc"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-attacks-natural.json.gz",
+      "sha256": "210d641baca2015bd99cee2e744e4f6e2e7e89fc42118bff958ae4c5394d80af"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-attacks-oracle-manifest.json",
+      "sha256": "86829a9f266db77b39c9cff6056c1e0a95db3582bf305ea45cfbfa387381dc46"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-attacks-oracle.json.gz",
+      "sha256": "4d17818cb843e44df6366aae96bc3f8d929350c7a7f6a6731ff322aa48a285df"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-attacks-reference-frames.json",
+      "sha256": "ffebd6741b4a5a44a76832fc658045e144fd3607fec5fefd563a01be1809a65d"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-attacks-reference-manifest.json",
+      "sha256": "7be398c41e00a3bb161b78bd947efcc5c03dfd670bf9b2281ac092b8ce7bc207"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-attacks-sequences-manifest.json",
+      "sha256": "6d2f4ee63c53f265f0b7316672d8d6de98b82d5bd7dc23af813fac982ce22d3e"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-attacks-sequences.json.gz",
+      "sha256": "410255b48370011d4f72bfc285d8b990a2580c59049c7223bd9f6e71bf643341"
+    }
+  ]
+}

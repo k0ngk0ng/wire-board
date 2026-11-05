@@ -1,0 +1,262 @@
+{
+  "pass": true,
+  "scope": "All four physical CPU audio slots and exact original requests; all v1 nonaudio fields remain identical.",
+  "test_sha256": "c449c984ccbdadaf4bce67b6abd0660ffc00c502b693596c4285d46dca2627c6",
+  "audit_source_sha256": "95f7cda8ee9f02bf727ffaf9224d43298333330feb84025ce78e3088fa954e13",
+  "statistics": {
+    "request": 468,
+    "drop": 158,
+    "write": 310,
+    "calls": 19008,
+    "clear": 1420
+  },
+  "fixtures": [
+    {
+      "name": "fighter7-composition-action-boundaries.json.gz",
+      "records": 253,
+      "complete_calls": 253,
+      "v1_nonaudio_all_fields_equal": true,
+      "v2_raw_sha256": "94f9cd7dac2d601f4e80fceea76b9be832384b119a3aa718ceeab36c5253d573",
+      "v2_gzip_sha256": "fe33931b17903a50b9da1317792cc009c64d7a928b67a7230be13e0ac2bfe875",
+      "audio_event_counts": {
+        "request": 139,
+        "drop": 124,
+        "write": 15
+      },
+      "calls_requiring_synchronous_projection": 0
+    },
+    {
+      "name": "fighter7-composition-action-natural.json.gz",
+      "records": 2067,
+      "complete_calls": 2067,
+      "v1_nonaudio_all_fields_equal": true,
+      "v2_raw_sha256": "934b870fb09e56cb642830569cb1689ef328b7d49373bf3a790abf1876a0217d",
+      "v2_gzip_sha256": "70703f0a26727383525f2890117f039bfcbeda14bbe7d39c3bc28b3a84b6c8a8",
+      "audio_event_counts": {
+        "clear": 164,
+        "request": 23,
+        "write": 23
+      },
+      "calls_requiring_synchronous_projection": 41
+    },
+    {
+      "name": "fighter7-composition-action-sequences.json.gz",
+      "records": 17,
+      "complete_calls": 590,
+      "v1_nonaudio_all_fields_equal": true,
+      "v2_raw_sha256": "3b41fa009085ee46a1f22a960543f625de47656d827adf8c7073ea938277b2b4",
+      "v2_gzip_sha256": "51aad19c836aa4754bf31e114f1247487191d628f1682d1857835f1e530991f2",
+      "audio_event_counts": {
+        "request": 14,
+        "drop": 12,
+        "write": 2
+      },
+      "calls_requiring_synchronous_projection": 0
+    },
+    {
+      "name": "fighter7-composition-action-special.json.gz",
+      "records": 3886,
+      "complete_calls": 3886,
+      "v1_nonaudio_all_fields_equal": true,
+      "v2_raw_sha256": "ce9774e6a39e45e1e0b2e4fe4c04895f3ca66a23ca12de699faf25a0f2bbc311",
+      "v2_gzip_sha256": "4291a26ce9d38b53066827cb20902e4ae41083fcf2c37de2b019e6fd7c24be7e",
+      "audio_event_counts": {
+        "clear": 384,
+        "request": 120,
+        "write": 120
+      },
+      "calls_requiring_synchronous_projection": 94
+    },
+    {
+      "name": "fighter7-composition-actor-boundaries.json.gz",
+      "records": 47,
+      "complete_calls": 47,
+      "v1_nonaudio_all_fields_equal": true,
+      "v2_raw_sha256": "60343435ec88f7b6bc253d6502e89637b20d2ec2044c1a8b122b1e75dab391db",
+      "v2_gzip_sha256": "df46fd39fa2dd02c174219851e9888496b71ff9c1a8c7e94a3ab10e2340408c5",
+      "audio_event_counts": {
+        "request": 21,
+        "drop": 17,
+        "write": 4
+      },
+      "calls_requiring_synchronous_projection": 0
+    },
+    {
+      "name": "fighter7-composition-actor-natural.json.gz",
+      "records": 2067,
+      "complete_calls": 2067,
+      "v1_nonaudio_all_fields_equal": true,
+      "v2_raw_sha256": "ae1f4cbc0a10701efc5950a4158f0b18e4ce5961b067a174e90786f98faedd37",
+      "v2_gzip_sha256": "42702053ea499e4e544c1e6754b2f0ed748a3a59b75103c451ee55a5fe823444",
+      "audio_event_counts": {
+        "clear": 204,
+        "request": 23,
+        "write": 23
+      },
+      "calls_requiring_synchronous_projection": 51
+    },
+    {
+      "name": "fighter7-composition-actor-sequences.json.gz",
+      "records": 4,
+      "complete_calls": 96,
+      "v1_nonaudio_all_fields_equal": true,
+      "v2_raw_sha256": "49860538838a50f4167cc59054301fc1325cd712aaba9d633f6b22d6e9f52eb8",
+      "v2_gzip_sha256": "6cfa4ad9c03d572bcba32e43e649a819e7fa0fa436b64d07f0d507189280fa22",
+      "audio_event_counts": {
+        "request": 8,
+        "drop": 5,
+        "write": 3
+      },
+      "calls_requiring_synchronous_projection": 0
+    },
+    {
+      "name": "fighter7-composition-actor-special.json.gz",
+      "records": 3966,
+      "complete_calls": 3966,
+      "v1_nonaudio_all_fields_equal": true,
+      "v2_raw_sha256": "d486d7ea46dafb8fa20333ae587a381b7fc70741e25acb9a980015df7c4cfc18",
+      "v2_gzip_sha256": "d62b3de99b8abb4be6121841a9a39fb6d28454f4a68b57a7311f7262c23a4af1",
+      "audio_event_counts": {
+        "clear": 636,
+        "request": 120,
+        "write": 120
+      },
+      "calls_requiring_synchronous_projection": 157
+    },
+    {
+      "name": "fighter7-composition-input-boundaries.json.gz",
+      "records": 35,
+      "complete_calls": 35,
+      "v1_nonaudio_all_fields_equal": true,
+      "v2_raw_sha256": "5f2fcfb61fb881e25d5ab795a8b552b0a2eb9d03a1ca13c5e115214034da38d8",
+      "v2_gzip_sha256": "e0aec90d2d53aeaa962c8c910ac47213ae7cb0260934e39ece66a29dfae5d535",
+      "audio_event_counts": {},
+      "calls_requiring_synchronous_projection": 0
+    },
+    {
+      "name": "fighter7-composition-input-natural.json.gz",
+      "records": 2067,
+      "complete_calls": 2067,
+      "v1_nonaudio_all_fields_equal": true,
+      "v2_raw_sha256": "7ba4b5cbb5f5255b699bd085b5d6c8300b70b051fa5abbbd11f9465de2635e1e",
+      "v2_gzip_sha256": "68412eacbbd7cd1e4433c409f3791a18da75fde9621fdb16dedb9ac782f51220",
+      "audio_event_counts": {
+        "clear": 12
+      },
+      "calls_requiring_synchronous_projection": 3
+    },
+    {
+      "name": "fighter7-composition-input-sequences.json.gz",
+      "records": 3,
+      "complete_calls": 48,
+      "v1_nonaudio_all_fields_equal": true,
+      "v2_raw_sha256": "d9f512626845226926a91dc776de015ff80c46d07569ab6be163e8e1fe1c33fe",
+      "v2_gzip_sha256": "4e10afa79a8455cf9b571df9ebdde9850d16e813a9fc8c599bd68d4d43448cd0",
+      "audio_event_counts": {},
+      "calls_requiring_synchronous_projection": 0
+    },
+    {
+      "name": "fighter7-composition-input-special.json.gz",
+      "records": 3886,
+      "complete_calls": 3886,
+      "v1_nonaudio_all_fields_equal": true,
+      "v2_raw_sha256": "3d2d2afac18d21ffe6b0e5d3e7c1ab16bfe96648867998ddf442e7556a5acc1d",
+      "v2_gzip_sha256": "fa7c1350f8d5f6414b24178d4015956c48b2fc90450f05d7ee626bdf4cb8b8a5",
+      "audio_event_counts": {
+        "clear": 20
+      },
+      "calls_requiring_synchronous_projection": 5
+    }
+  ],
+  "original_failed_case_with_exact_events": {
+    "frame": 3142,
+    "source_register": "0xffff8400",
+    "before": [
+      162,
+      0,
+      0,
+      0
+    ],
+    "cpu_after": [
+      166,
+      0,
+      0,
+      0
+    ],
+    "synchronous_expected": [
+      162,
+      166,
+      0,
+      0
+    ],
+    "events": [
+      {
+        "kind": "clear",
+        "ordinal": 0,
+        "pc": "0x37c56",
+        "address": "0xf80d",
+        "before": 0,
+        "after": 0,
+        "irq_depth": 1,
+        "after_verified": true
+      },
+      {
+        "kind": "clear",
+        "ordinal": 1,
+        "pc": "0x37c56",
+        "address": "0xf80c",
+        "before": 0,
+        "after": 0,
+        "irq_depth": 1,
+        "after_verified": true
+      },
+      {
+        "kind": "clear",
+        "ordinal": 2,
+        "pc": "0x37c56",
+        "address": "0xf80b",
+        "before": 0,
+        "after": 0,
+        "irq_depth": 1,
+        "after_verified": true
+      },
+      {
+        "kind": "clear",
+        "ordinal": 3,
+        "pc": "0x37c56",
+        "address": "0xf80a",
+        "before": 162,
+        "after": 0,
+        "irq_depth": 1,
+        "after_verified": true
+      },
+      {
+        "kind": "request",
+        "ordinal": 4,
+        "pc": "0x21960",
+        "value": 166,
+        "irq_depth": 0,
+        "source_register": "0xffff8400",
+        "after_verified": true,
+        "queue_before": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "kind": "write",
+        "ordinal": 5,
+        "pc": "0x2196c",
+        "value": 166,
+        "irq_depth": 0,
+        "source_register": "0xffff8400",
+        "after_verified": true,
+        "address": "0xf80a",
+        "before": 0,
+        "after": 166
+      }
+    ]
+  }
+}

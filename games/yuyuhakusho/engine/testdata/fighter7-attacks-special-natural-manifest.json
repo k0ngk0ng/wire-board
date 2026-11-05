@@ -1,0 +1,491 @@
+{
+  "scope": "Cold-hook natural complete source7 selectors from Root-owned 5502-frame original control",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "843a894e9af2e4e306731fb8bbe6d2a1a5a70604c93c03278ef60641922b0405",
+  "capture_dependencies": [
+    {
+      "path": "scripts/yuyuhakusho/capture_fighter7_attacks.py",
+      "sha256": "46a5b05b9acc13e5b29c919fd1fff69e8827aa566ebdd607527836a43b0c3af8"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_chu_attacks.py",
+      "sha256": "f3d42a7d04267fcdbdea9e67963a70bb34920b861676358d67ab607e563eb580"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_ground_idle.py",
+      "sha256": "01d4798e937fa01946b7612fbc4fa7418dda97ec3411db4beb4629975614ba1d"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_jump.py",
+      "sha256": "21017876cd34f9263b6efa11e376ebf84b31d5fc82664c7c8b208213d1ecd8ab"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_ground_actions.py",
+      "sha256": "25076eebbcbb4192ccf4111330b49693e9adf1a5c95c8f5d5f1fd02e3cd70f0a"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_effect_pool.py",
+      "sha256": "b9c753d1c9b6380ac64ee16f2c10cdcf8560654e493e770b31552b1781354f46"
+    },
+    {
+      "path": "scripts/yuyuhakusho/reference.py",
+      "sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/probe.py",
+      "sha256": "03a52ad64abf051a4a0c8914cb4813503f246afc0ec463ecd5cadb55c3bf7642"
+    }
+  ],
+  "reference_manifest": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter7-attacks-special-reference-manifest.json",
+    "sha256": "914ba10a0e5e2bedb718cfe7e2f91ba6c6c090751084f519067e6092a904eed8"
+  },
+  "input": {
+    "path": "docs/research/md-yuyuhakusho/source7-special-discovery-inputs.json",
+    "sha256": "5354fe1e66a6875483398763ce7644c363682e864537f827786fd42b0fab05fd"
+  },
+  "baseline": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter7-attacks-special-reference-frames.json",
+    "sha256": "98a17dffa4906b63a6ad2e309c7cfb402ca38e0a46fdfce7a5b0bd81456d55dd",
+    "frames": 5502
+  },
+  "frames_match_original_core": true,
+  "natural_entry_limit": 5500,
+  "drain_frames": 2,
+  "records": 2124,
+  "calls": 2124,
+  "kind_counts": {
+    "ground": 862,
+    "ground-special": 1165,
+    "air-special": 51,
+    "air": 46
+  },
+  "constructor_counts": {
+    "0x196d6": 1,
+    "0x196ee": 1,
+    "0x19706": 1,
+    "0x195fa": 1,
+    "0x19624": 1,
+    "0x19676": 2,
+    "0x1968e": 2,
+    "0x196a6": 2,
+    "0x19736": 1,
+    "0x1975e": 1,
+    "0x1886a": 1,
+    "0x19798": 1
+  },
+  "source_objects": {
+    "0x8400": 2124
+  },
+  "successful_root_counts": {
+    "ground-special/r2/c": 1,
+    "ground-special/r2/b": 1,
+    "ground-special/r2/a": 1,
+    "ground-special/r1/b": 1,
+    "ground-special/r1/a": 1,
+    "ground-special/r3/c": 1,
+    "ground-special/r3/b": 1,
+    "ground-special/r3/a": 1,
+    "air-special/r2/b": 1,
+    "air-special/r2/a": 1,
+    "air-special/r3/c": 1,
+    "air-special/r3/b": 1,
+    "air-special/r3/a": 1,
+    "ground-special/r6": 1
+  },
+  "successful_roots": {
+    "ground-special/r2/c": [
+      {
+        "frame": 1893,
+        "exit_frame": 1893,
+        "constructor": "0x196d6",
+        "discovery_frame": 1893,
+        "discovery_frame_matches": true,
+        "object_id": 33792,
+        "request": 2,
+        "held": 32,
+        "changed": 32,
+        "before_energy": 223,
+        "after_energy": 207,
+        "actual_cost": 16,
+        "energy_fraction": 0,
+        "health": 223,
+        "facing": 0,
+        "before_child_size": 0,
+        "action": 59,
+        "pose": 166,
+        "entry_sp": 4294966948,
+        "exit_sp": 4294966952,
+        "ram_before_sha256": "37cdcd9fb84f3f698dc547fb4791b8399b2201f238cd7338c86d95c635cd3564",
+        "ram_after_sha256": "7dac60a53ab9f3dd5a0aff0288fc6043c3cd9f74a28d1ead87669d514e3e6f53"
+      }
+    ],
+    "ground-special/r2/b": [
+      {
+        "frame": 2007,
+        "exit_frame": 2007,
+        "constructor": "0x196ee",
+        "discovery_frame": 2007,
+        "discovery_frame_matches": true,
+        "object_id": 33792,
+        "request": 2,
+        "held": 16,
+        "changed": 16,
+        "before_energy": 191,
+        "after_energy": 175,
+        "actual_cost": 16,
+        "energy_fraction": 16384,
+        "health": 223,
+        "facing": 0,
+        "before_child_size": 0,
+        "action": 59,
+        "pose": 166,
+        "entry_sp": 4294966948,
+        "exit_sp": 4294966952,
+        "ram_before_sha256": "6c20438da9721d946f6915fe443ecacc8c4fcca0bcdb6ccff2a0ecaa3dc966fb",
+        "ram_after_sha256": "96bd653b4c9294328cbc0963742a78a99dbfbd4330c9dcc158735c65da71ea7b"
+      }
+    ],
+    "ground-special/r2/a": [
+      {
+        "frame": 2070,
+        "exit_frame": 2070,
+        "constructor": "0x19706",
+        "discovery_frame": 2070,
+        "discovery_frame_matches": true,
+        "object_id": 33792,
+        "request": 2,
+        "held": 64,
+        "changed": 64,
+        "before_energy": 173,
+        "after_energy": 157,
+        "actual_cost": 16,
+        "energy_fraction": 0,
+        "health": 215,
+        "facing": 0,
+        "before_child_size": 0,
+        "action": 59,
+        "pose": 166,
+        "entry_sp": 4294966952,
+        "exit_sp": 4294966956,
+        "ram_before_sha256": "c5a179abcc6321bbc73ce285227d06e3382913e323399c14c35348bb8dced279",
+        "ram_after_sha256": "6fa67b60d15609c87f427e02e9c1461768bcbe492ca803c3644af465fc895394"
+      }
+    ],
+    "ground-special/r1/b": [
+      {
+        "frame": 2157,
+        "exit_frame": 2157,
+        "constructor": "0x195fa",
+        "discovery_frame": 2157,
+        "discovery_frame_matches": true,
+        "object_id": 33792,
+        "request": 1,
+        "held": 16,
+        "changed": 16,
+        "before_energy": 145,
+        "after_energy": 129,
+        "actual_cost": 16,
+        "energy_fraction": 32768,
+        "health": 215,
+        "facing": 0,
+        "before_child_size": 256,
+        "action": 57,
+        "pose": 160,
+        "entry_sp": 4294966948,
+        "exit_sp": 4294966952,
+        "ram_before_sha256": "fedea6bac14d3ad847c16fc38e8137bc250af405560583bc444742988fa8b568",
+        "ram_after_sha256": "eaa94eb71bba3a487facee99bbff2ea37d5473b2643e6a6a4f3fd4fd921a092b"
+      }
+    ],
+    "ground-special/r1/a": [
+      {
+        "frame": 2226,
+        "exit_frame": 2226,
+        "constructor": "0x19624",
+        "discovery_frame": 2226,
+        "discovery_frame_matches": true,
+        "object_id": 33792,
+        "request": 1,
+        "held": 64,
+        "changed": 64,
+        "before_energy": 129,
+        "after_energy": 113,
+        "actual_cost": 16,
+        "energy_fraction": 32768,
+        "health": 207,
+        "facing": 0,
+        "before_child_size": 0,
+        "action": 57,
+        "pose": 160,
+        "entry_sp": 4294966952,
+        "exit_sp": 4294966956,
+        "ram_before_sha256": "4fe498ba61aa252273a27f4ce51a5f0e7be88a6f7aaee757cfbc3f0557a89dd0",
+        "ram_after_sha256": "b9e780cd6a7aeebc3a22ad7ddb886932285db301a2e18511afe7e7de3465d1ee"
+      }
+    ],
+    "ground-special/r3/c": [
+      {
+        "frame": 2326,
+        "exit_frame": 2326,
+        "constructor": "0x19676",
+        "discovery_frame": 2326,
+        "discovery_frame_matches": true,
+        "object_id": 33792,
+        "request": 3,
+        "held": 32,
+        "changed": 32,
+        "before_energy": 115,
+        "after_energy": 99,
+        "actual_cost": 16,
+        "energy_fraction": 32768,
+        "health": 207,
+        "facing": 0,
+        "before_child_size": 0,
+        "action": 58,
+        "pose": 164,
+        "entry_sp": 4294966948,
+        "exit_sp": 4294966952,
+        "ram_before_sha256": "4bb25ff407a776b1a3ff9edb0ef50da6e60a8d41572b7b54a28bb8ae96cc556f",
+        "ram_after_sha256": "ae11b90b640c7dcc9b48af30df91cbcf3d912b92fbb5db5396be90fd790b5742"
+      }
+    ],
+    "ground-special/r3/b": [
+      {
+        "frame": 2409,
+        "exit_frame": 2409,
+        "constructor": "0x1968e",
+        "discovery_frame": 2409,
+        "discovery_frame_matches": true,
+        "object_id": 33792,
+        "request": 3,
+        "held": 16,
+        "changed": 16,
+        "before_energy": 99,
+        "after_energy": 83,
+        "actual_cost": 16,
+        "energy_fraction": 32768,
+        "health": 207,
+        "facing": 0,
+        "before_child_size": 0,
+        "action": 58,
+        "pose": 164,
+        "entry_sp": 4294966948,
+        "exit_sp": 4294966952,
+        "ram_before_sha256": "7547801b27f55431f2d79d62077163bb7010accb7c9729a49da67cec0e14c9ab",
+        "ram_after_sha256": "ca09d2ff3e0029016370dfce434f0f8d018390f7edaaa224605a58fd6a956220"
+      }
+    ],
+    "ground-special/r3/a": [
+      {
+        "frame": 2492,
+        "exit_frame": 2492,
+        "constructor": "0x196a6",
+        "discovery_frame": 2492,
+        "discovery_frame_matches": true,
+        "object_id": 33792,
+        "request": 3,
+        "held": 64,
+        "changed": 64,
+        "before_energy": 83,
+        "after_energy": 67,
+        "actual_cost": 16,
+        "energy_fraction": 32768,
+        "health": 207,
+        "facing": 0,
+        "before_child_size": 0,
+        "action": 58,
+        "pose": 164,
+        "entry_sp": 4294966952,
+        "exit_sp": 4294966956,
+        "ram_before_sha256": "e5601ebad1f86a07906b7b5ec72fc2e34bbc9a39812155fbde1049eb3971c206",
+        "ram_after_sha256": "bd9387bef55d55829ab931c7490d06f3ed18668b3fb304e3b41aa8793e43ca5b"
+      }
+    ],
+    "air-special/r2/b": [
+      {
+        "frame": 2669,
+        "exit_frame": 2669,
+        "constructor": "0x19736",
+        "discovery_frame": 2669,
+        "discovery_frame_matches": true,
+        "object_id": 33792,
+        "request": 2,
+        "held": 16,
+        "changed": 16,
+        "before_energy": 67,
+        "after_energy": 51,
+        "actual_cost": 16,
+        "energy_fraction": 32768,
+        "health": 191,
+        "facing": 0,
+        "before_child_size": 0,
+        "action": 69,
+        "pose": 174,
+        "entry_sp": 4294966948,
+        "exit_sp": 4294966952,
+        "ram_before_sha256": "db116e109bce52843714325b416e5bf4a9a8879be062b70eabd8f196cf17299d",
+        "ram_after_sha256": "a921bbb0f773045b1084bfdf2c16c2a41db37830df66f77c91b5a0b2723aa2c6"
+      }
+    ],
+    "air-special/r2/a": [
+      {
+        "frame": 2720,
+        "exit_frame": 2720,
+        "constructor": "0x1975e",
+        "discovery_frame": 2720,
+        "discovery_frame_matches": true,
+        "object_id": 33792,
+        "request": 2,
+        "held": 64,
+        "changed": 64,
+        "before_energy": 51,
+        "after_energy": 31,
+        "actual_cost": 20,
+        "energy_fraction": 32768,
+        "health": 191,
+        "facing": 0,
+        "before_child_size": 0,
+        "action": 69,
+        "pose": 175,
+        "entry_sp": 4294966952,
+        "exit_sp": 4294966956,
+        "ram_before_sha256": "8ab7c688cd7aea68c97371f7e8da53950d7ddd4f73f9f063f7635a7e9802d8bd",
+        "ram_after_sha256": "3a36b05eea107f55a5d31aa3bb13ac57b22b8a3b67c50271e2d4c51c639a0eea"
+      }
+    ],
+    "air-special/r3/c": [
+      {
+        "frame": 2781,
+        "exit_frame": 2781,
+        "constructor": "0x19676",
+        "discovery_frame": 2781,
+        "discovery_frame_matches": true,
+        "object_id": 33792,
+        "request": 3,
+        "held": 32,
+        "changed": 32,
+        "before_energy": 31,
+        "after_energy": 15,
+        "actual_cost": 16,
+        "energy_fraction": 32768,
+        "health": 191,
+        "facing": 0,
+        "before_child_size": 0,
+        "action": 58,
+        "pose": 164,
+        "entry_sp": 4294966948,
+        "exit_sp": 4294966952,
+        "ram_before_sha256": "11e1c8cdf60793d8ba8c00aae18fc1ca8eee9d67d1b6d0720c60427bc1148c56",
+        "ram_after_sha256": "28a56b80de12ce9ac48413250b14ed177c022a357a65aa83c2255dda86a5d54d"
+      }
+    ],
+    "air-special/r3/b": [
+      {
+        "frame": 2876,
+        "exit_frame": 2876,
+        "constructor": "0x1968e",
+        "discovery_frame": 2876,
+        "discovery_frame_matches": true,
+        "object_id": 33792,
+        "request": 3,
+        "held": 16,
+        "changed": 16,
+        "before_energy": 17,
+        "after_energy": 1,
+        "actual_cost": 16,
+        "energy_fraction": 49152,
+        "health": 191,
+        "facing": 0,
+        "before_child_size": 0,
+        "action": 58,
+        "pose": 164,
+        "entry_sp": 4294966952,
+        "exit_sp": 4294966956,
+        "ram_before_sha256": "d92fbb178f086f7006cfbe660ca1ee7c6d411c3733dd7bc97d62b0f4089a79e0",
+        "ram_after_sha256": "cf3f2dd7e5843a94a65ed329b6a13c92c3e38d618a590fd9867735bf8f97af16"
+      }
+    ],
+    "air-special/r3/a": [
+      {
+        "frame": 3028,
+        "exit_frame": 3028,
+        "constructor": "0x196a6",
+        "discovery_frame": 3028,
+        "discovery_frame_matches": true,
+        "object_id": 33792,
+        "request": 3,
+        "held": 64,
+        "changed": 64,
+        "before_energy": 17,
+        "after_energy": 1,
+        "actual_cost": 16,
+        "energy_fraction": 32768,
+        "health": 174,
+        "facing": 1,
+        "before_child_size": 0,
+        "action": 58,
+        "pose": 164,
+        "entry_sp": 4294966952,
+        "exit_sp": 4294966956,
+        "ram_before_sha256": "c6d3d63986ccf62cffaf73466ebd5e62fafeabbad9fcc8f2d1c5d61e4e0f6df1",
+        "ram_after_sha256": "0320fdf4b123878295916094f07fb5c22100c8a02a2285e89d623667cd0bc16c"
+      }
+    ],
+    "ground-special/r6": [
+      {
+        "frame": 4038,
+        "exit_frame": 4038,
+        "constructor": "0x19798",
+        "discovery_frame": 4038,
+        "discovery_frame_matches": true,
+        "object_id": 33792,
+        "request": 6,
+        "held": 82,
+        "changed": 0,
+        "before_energy": 201,
+        "after_energy": 1,
+        "actual_cost": 200,
+        "energy_fraction": 49152,
+        "health": 96,
+        "facing": 0,
+        "before_child_size": 0,
+        "action": 61,
+        "pose": 170,
+        "entry_sp": 4294966948,
+        "exit_sp": 4294966952,
+        "ram_before_sha256": "7228ee8658fbd0fd35f9634b041cee237c01f63ea07a0b5e0d388586a106177d",
+        "ram_after_sha256": "e871a06162c710364d88f21f7176558f2006ea67ccfef076db7b8b1dafb0c030"
+      }
+    ]
+  },
+  "player_roots_verified": 14,
+  "r4_natural_claimed": false,
+  "irq_spans": 108,
+  "sound_consumer_markers": 16,
+  "rng_calls": 0,
+  "full_cpu_ram_audited": true,
+  "cpu_ram_bytes": 65536,
+  "unexplained_ram_writes": 0,
+  "fixture_sha256": "3230d5276627aca9a3edcf6b1cb56b7566540b69db3e64dc130a0c3738e6a6f9",
+  "gzip_sha256": "5cb4024e31563db2e18b919a0d890313425bcec9b213bd9adad7504c3b995dd3",
+  "frozen_old_evidence_sha256": "c2f3e744e664b9783181571f6e7eb0b2eb0774bd710066df9be4bb180716c4a4",
+  "frozen_old_files_unchanged": true,
+  "incomplete_calls": 0,
+  "errors": [],
+  "pass": true,
+  "limits": [
+    "Selector returns only; children, healing, motion, collision and World have separate acceptance",
+    "R4 has no player command binding and is not claimed as natural coverage",
+    "No game RAM/register/cycle writes, private state, restore or alternate original control"
+  ]
+}

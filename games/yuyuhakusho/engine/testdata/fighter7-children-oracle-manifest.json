@@ -1,0 +1,73 @@
+{
+  "pass": true,
+  "scope": "Actual source7 child callbacks from Root fixed real-menu baselines",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "52dc4e19c1593ec2f9cfd78dd39bc29552d2920c18d1400718aeb1d75538c901",
+  "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+  "records": 1378,
+  "calls": 1378,
+  "kind_counts": {
+    "first": 209,
+    "second": 209,
+    "effect": 704,
+    "pan": 256
+  },
+  "fixture_sha256": "89b800be3b137074a6bffc2fe8c5bac104e1bfa2a106c7c7b11ab741d3ce38e9",
+  "gzip_sha256": "f236f3885b30eefb62465e8c11a08be79a7ca1d511dadb8e11affb49bfcf1cf1",
+  "frames_match_original_core": true,
+  "baselines": [
+    {
+      "input": "docs/research/md-yuyuhakusho/source7-next-inputs.json",
+      "input_sha256": "fed38aa84737d5d17bdf7d02f78f109ec0836f1cb244de6e2def47a8b9fc904f",
+      "reference": "games/yuyuhakusho/engine/testdata/fighter7-attacks-reference-frames.json",
+      "reference_raw_sha256": "ffebd6741b4a5a44a76832fc658045e144fd3607fec5fefd563a01be1809a65d",
+      "reference_manifest": "games/yuyuhakusho/engine/testdata/fighter7-attacks-reference-manifest.json",
+      "reference_manifest_sha256": "7be398c41e00a3bb161b78bd947efcc5c03dfd670bf9b2281ac092b8ce7bc207",
+      "video_steps": 3602,
+      "entry_video_limit": 3600,
+      "drain_video_steps": 2,
+      "all_ram_video_match": true
+    },
+    {
+      "input": "docs/research/md-yuyuhakusho/source7-special-discovery-inputs.json",
+      "input_sha256": "5354fe1e66a6875483398763ce7644c363682e864537f827786fd42b0fab05fd",
+      "reference": "games/yuyuhakusho/engine/testdata/fighter7-attacks-special-reference-frames.json",
+      "reference_raw_sha256": "98a17dffa4906b63a6ad2e309c7cfb402ca38e0a46fdfce7a5b0bd81456d55dd",
+      "reference_manifest": "games/yuyuhakusho/engine/testdata/fighter7-attacks-special-reference-manifest.json",
+      "reference_manifest_sha256": "914ba10a0e5e2bedb718cfe7e2f91ba6c6c090751084f519067e6092a904eed8",
+      "video_steps": 5502,
+      "entry_video_limit": 5500,
+      "drain_video_steps": 2,
+      "all_ram_video_match": true
+    }
+  ],
+  "binding": null,
+  "library_frames": 66,
+  "unexplained_change_calls": 0,
+  "external_change_calls": 0,
+  "rng_calls": 0,
+  "clears": 23,
+  "draws": 860,
+  "interrupt_calls": 0,
+  "paths": {
+    "heal": 2,
+    "healing_fx": 2
+  },
+  "incomplete_calls": 0,
+  "errors": [],
+  "limits": [
+    "Private cases are never called natural; zero natural callbacks is pass:false",
+    "Full64KB deltas retained; four raw parents andF570 captured separately from theP1 family",
+    "Each draw is captured at its own1580 boundary",
+    "Typed data only; originalCPU andROM remain research-only"
+  ]
+}

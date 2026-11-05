@@ -1,0 +1,95 @@
+{
+  "pass": true,
+  "scope": "Additional natural source7 MAIN pre-tail phases; raw CPU evidence, not a new Go unit-test acceptance",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "binding": {
+    "source_tag": 7,
+    "object_id": 33792,
+    "animation_set": 850330,
+    "shape_set": 853658,
+    "movement_source": 75248,
+    "header_behavior": "0x9ad0",
+    "header_stage": 20
+  },
+  "capture_sha256": "eef79c02c5068802e042f70d3a6b3165dc14f00a35c014a477361ca42fbb8477",
+  "frozen_original_capture_sha256": "d527595497364d856ce62214ab74a4a6229c37bb2559d586656d0bada1e8bb8e",
+  "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+  "fixture_sha256": "a70d2365c549ed0d6d74ab9cea595d55b345afc2c32c157a391350c0a58ca42f",
+  "gzip_sha256": "9ee60e1fec115c3a127c7075d8715e0c7014c7ca14db70c8d63d186818789823",
+  "records": 507,
+  "calls": 507,
+  "kind_counts": {
+    "3b": 39,
+    "3c": 118,
+    "39": 45,
+    "3a": 228,
+    "45": 30,
+    "3d": 47
+  },
+  "kind_windows": {
+    "3b": {
+      "first": 1894,
+      "last": 2083
+    },
+    "3c": {
+      "first": 1907,
+      "last": 2129
+    },
+    "39": {
+      "first": 2158,
+      "last": 2269
+    },
+    "3a": {
+      "first": 2327,
+      "last": 3066
+    },
+    "45": {
+      "first": 2670,
+      "last": 2757
+    },
+    "3d": {
+      "first": 4039,
+      "last": 4085
+    }
+  },
+  "frames_match_original_core": true,
+  "incomplete_calls": 0,
+  "errors": [],
+  "rng_calls": 0,
+  "external_queue_calls": 0,
+  "external_change_calls": 11,
+  "unexplained_change_calls": 0,
+  "interrupt_calls": 22,
+  "full_ram_delta_calls": 507,
+  "original_frozen_files_unchanged": true,
+  "original_go_sha256": "cfb8334a40adb24ceaf5232f09cf06a14fdc948c83f3e71308cf0cf746c26004",
+  "original_test_freeze_sha256": "37167a1ca69fabfdfd92cc13436ea58760d48b9108d4a262ca87a8ab8cc13bf3",
+  "baselines": [
+    {
+      "input": "docs/research/md-yuyuhakusho/source7-special-discovery-inputs.json",
+      "input_sha256": "5354fe1e66a6875483398763ce7644c363682e864537f827786fd42b0fab05fd",
+      "reference": "games/yuyuhakusho/engine/testdata/fighter7-attacks-special-reference-frames.json",
+      "reference_raw_sha256": "98a17dffa4906b63a6ad2e309c7cfb402ca38e0a46fdfce7a5b0bd81456d55dd",
+      "reference_manifest": "games/yuyuhakusho/engine/testdata/fighter7-attacks-special-reference-manifest.json",
+      "reference_manifest_sha256": "914ba10a0e5e2bedb718cfe7e2f91ba6c6c090751084f519067e6092a904eed8",
+      "video_steps": 5502,
+      "entry_frame_limit": 5500,
+      "all_ram_video_match": true
+    }
+  ],
+  "limits": [
+    "No shared tail, active children/FX or complete actor/world execution is reproduced by this phase collector.",
+    "Natural source7 integration is validated by the separate complete composition/world scope.",
+    "No frozen MAIN implementation, test, old collector or existing fixture was changed.",
+    "IRQ and audio changes retain exact ordered event chains; history RAM has no exemption."
+  ]
+}

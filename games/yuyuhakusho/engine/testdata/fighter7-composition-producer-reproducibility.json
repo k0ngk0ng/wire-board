@@ -1,0 +1,11 @@
+{
+  "pass": true,
+  "scope": "Current exact-audio producer uses only the same unique ordinary/special original-core controls; new physical events are annotations and all previous original CPU fields are unchanged.",
+  "v1_byte_exact_ordinary_reproducibility": "fighter7-composition-v1/fighter7-composition-producer-reproducibility.json",
+  "v2_all_twelve_nonaudio_fields_equal": true,
+  "physical_replay_pass": true,
+  "current_fixture_checks": "fighter7-composition-capture-integrity.json",
+  "current_producer_sha256": "afec60041180c1e30e7b419db9a574fbb496d13815d79da79139b93d9e000d8a",
+  "audit_source_sha256": "95f7cda8ee9f02bf727ffaf9224d43298333330feb84025ce78e3088fa954e13",
+  "audit_report": "fighter7-composition-audio-projection-verification.json"
+}

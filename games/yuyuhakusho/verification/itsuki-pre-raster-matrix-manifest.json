@@ -1,0 +1,6 @@
+{
+  "scope": "Before shared raster/input owner correction: native/Wasm39scene traces were equal, but original special world still failed at4054 Stream alias. Retained as initial evidence, not final source7 acceptance.",
+  "reports": 78,
+  "fixture_sha256": "e76b618dded67379a27d3e2f33f7b87987f4bb7154017f0ca686e0adb1b65bfa",
+  "gzip_sha256": "5b0b0987c0500d55e26b17d7fb0ad7356bd9fc0bc3ecc39f0fd9392a80be1cb7"
+}

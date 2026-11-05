@@ -1,0 +1,626 @@
+{
+  "scope": "Source7 four selectors and reached constructors only; motion/children/composition/world excluded",
+  "frozen_files_unchanged": true,
+  "test_sha256": "454f1c19afb68202377d75206f8fb5064a834cbc41a09e3b2209153694169fc4",
+  "production_sha256": "b33c38737e5b8ad01629d5f2cad911861bead841933c8d92fcdc68a3ed9dcb22",
+  "own_symbol_red": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter7-attacks-own-symbol-red.log",
+    "sha256": "19f72bed10f5051180379f60cae701cc113ff2e40e1f9df72de6fc207ce47fc2",
+    "required_undefined_symbols": [
+      "Fighter7AttackState",
+      "SelectFighter7Attack"
+    ]
+  },
+  "capture": {
+    "natural": {
+      "records": 1681,
+      "calls": 1681,
+      "irq_spans": 94,
+      "sound_consumer_markers": 4,
+      "successful_constructor_counts": {},
+      "all_ram_audits_65536": true
+    },
+    "oracle": {
+      "records": 57,
+      "calls": 57,
+      "irq_spans": 0,
+      "sound_consumer_markers": 0,
+      "successful_constructor_counts": {
+        "0x195dc": 1,
+        "0x195fa": 2,
+        "0x19624": 2,
+        "0x196d6": 2,
+        "0x196ee": 2,
+        "0x19706": 2,
+        "0x19676": 4,
+        "0x1968e": 4,
+        "0x196a6": 4,
+        "0x19798": 4,
+        "0x19736": 2,
+        "0x1975e": 2
+      },
+      "all_ram_audits_65536": true
+    },
+    "boundaries": {
+      "records": 11164,
+      "calls": 11164,
+      "irq_spans": 0,
+      "sound_consumer_markers": 0,
+      "successful_constructor_counts": {
+        "0x195dc": 56,
+        "0x195fa": 82,
+        "0x19624": 66,
+        "0x1968e": 172,
+        "0x19676": 304,
+        "0x196a6": 652,
+        "0x19736": 82,
+        "0x1975e": 66,
+        "0x196d6": 134,
+        "0x196ee": 85,
+        "0x19706": 405,
+        "0x19798": 216
+      },
+      "all_ram_audits_65536": true
+    },
+    "sequences": {
+      "records": 52,
+      "calls": 1040,
+      "irq_spans": 0,
+      "sound_consumer_markers": 0,
+      "successful_constructor_counts": {
+        "0x195dc": 4,
+        "0x195fa": 4,
+        "0x196ee": 4,
+        "0x1968e": 8,
+        "0x19798": 8,
+        "0x19736": 4
+      },
+      "all_ram_audits_65536": true
+    },
+    "special_natural": {
+      "records": 2124,
+      "calls": 2124,
+      "irq_spans": 108,
+      "sound_consumer_markers": 16,
+      "successful_root_counts": {
+        "ground-special/r2/c": 1,
+        "ground-special/r2/b": 1,
+        "ground-special/r2/a": 1,
+        "ground-special/r1/b": 1,
+        "ground-special/r1/a": 1,
+        "ground-special/r3/c": 1,
+        "ground-special/r3/b": 1,
+        "ground-special/r3/a": 1,
+        "air-special/r2/b": 1,
+        "air-special/r2/a": 1,
+        "air-special/r3/c": 1,
+        "air-special/r3/b": 1,
+        "air-special/r3/a": 1,
+        "ground-special/r6": 1
+      },
+      "successful_roots": {
+        "ground-special/r2/c": [
+          {
+            "frame": 1893,
+            "exit_frame": 1893,
+            "constructor": "0x196d6",
+            "discovery_frame": 1893,
+            "discovery_frame_matches": true,
+            "object_id": 33792,
+            "request": 2,
+            "held": 32,
+            "changed": 32,
+            "before_energy": 223,
+            "after_energy": 207,
+            "actual_cost": 16,
+            "energy_fraction": 0,
+            "health": 223,
+            "facing": 0,
+            "before_child_size": 0,
+            "action": 59,
+            "pose": 166,
+            "entry_sp": 4294966948,
+            "exit_sp": 4294966952,
+            "ram_before_sha256": "37cdcd9fb84f3f698dc547fb4791b8399b2201f238cd7338c86d95c635cd3564",
+            "ram_after_sha256": "7dac60a53ab9f3dd5a0aff0288fc6043c3cd9f74a28d1ead87669d514e3e6f53"
+          }
+        ],
+        "ground-special/r2/b": [
+          {
+            "frame": 2007,
+            "exit_frame": 2007,
+            "constructor": "0x196ee",
+            "discovery_frame": 2007,
+            "discovery_frame_matches": true,
+            "object_id": 33792,
+            "request": 2,
+            "held": 16,
+            "changed": 16,
+            "before_energy": 191,
+            "after_energy": 175,
+            "actual_cost": 16,
+            "energy_fraction": 16384,
+            "health": 223,
+            "facing": 0,
+            "before_child_size": 0,
+            "action": 59,
+            "pose": 166,
+            "entry_sp": 4294966948,
+            "exit_sp": 4294966952,
+            "ram_before_sha256": "6c20438da9721d946f6915fe443ecacc8c4fcca0bcdb6ccff2a0ecaa3dc966fb",
+            "ram_after_sha256": "96bd653b4c9294328cbc0963742a78a99dbfbd4330c9dcc158735c65da71ea7b"
+          }
+        ],
+        "ground-special/r2/a": [
+          {
+            "frame": 2070,
+            "exit_frame": 2070,
+            "constructor": "0x19706",
+            "discovery_frame": 2070,
+            "discovery_frame_matches": true,
+            "object_id": 33792,
+            "request": 2,
+            "held": 64,
+            "changed": 64,
+            "before_energy": 173,
+            "after_energy": 157,
+            "actual_cost": 16,
+            "energy_fraction": 0,
+            "health": 215,
+            "facing": 0,
+            "before_child_size": 0,
+            "action": 59,
+            "pose": 166,
+            "entry_sp": 4294966952,
+            "exit_sp": 4294966956,
+            "ram_before_sha256": "c5a179abcc6321bbc73ce285227d06e3382913e323399c14c35348bb8dced279",
+            "ram_after_sha256": "6fa67b60d15609c87f427e02e9c1461768bcbe492ca803c3644af465fc895394"
+          }
+        ],
+        "ground-special/r1/b": [
+          {
+            "frame": 2157,
+            "exit_frame": 2157,
+            "constructor": "0x195fa",
+            "discovery_frame": 2157,
+            "discovery_frame_matches": true,
+            "object_id": 33792,
+            "request": 1,
+            "held": 16,
+            "changed": 16,
+            "before_energy": 145,
+            "after_energy": 129,
+            "actual_cost": 16,
+            "energy_fraction": 32768,
+            "health": 215,
+            "facing": 0,
+            "before_child_size": 256,
+            "action": 57,
+            "pose": 160,
+            "entry_sp": 4294966948,
+            "exit_sp": 4294966952,
+            "ram_before_sha256": "fedea6bac14d3ad847c16fc38e8137bc250af405560583bc444742988fa8b568",
+            "ram_after_sha256": "eaa94eb71bba3a487facee99bbff2ea37d5473b2643e6a6a4f3fd4fd921a092b"
+          }
+        ],
+        "ground-special/r1/a": [
+          {
+            "frame": 2226,
+            "exit_frame": 2226,
+            "constructor": "0x19624",
+            "discovery_frame": 2226,
+            "discovery_frame_matches": true,
+            "object_id": 33792,
+            "request": 1,
+            "held": 64,
+            "changed": 64,
+            "before_energy": 129,
+            "after_energy": 113,
+            "actual_cost": 16,
+            "energy_fraction": 32768,
+            "health": 207,
+            "facing": 0,
+            "before_child_size": 0,
+            "action": 57,
+            "pose": 160,
+            "entry_sp": 4294966952,
+            "exit_sp": 4294966956,
+            "ram_before_sha256": "4fe498ba61aa252273a27f4ce51a5f0e7be88a6f7aaee757cfbc3f0557a89dd0",
+            "ram_after_sha256": "b9e780cd6a7aeebc3a22ad7ddb886932285db301a2e18511afe7e7de3465d1ee"
+          }
+        ],
+        "ground-special/r3/c": [
+          {
+            "frame": 2326,
+            "exit_frame": 2326,
+            "constructor": "0x19676",
+            "discovery_frame": 2326,
+            "discovery_frame_matches": true,
+            "object_id": 33792,
+            "request": 3,
+            "held": 32,
+            "changed": 32,
+            "before_energy": 115,
+            "after_energy": 99,
+            "actual_cost": 16,
+            "energy_fraction": 32768,
+            "health": 207,
+            "facing": 0,
+            "before_child_size": 0,
+            "action": 58,
+            "pose": 164,
+            "entry_sp": 4294966948,
+            "exit_sp": 4294966952,
+            "ram_before_sha256": "4bb25ff407a776b1a3ff9edb0ef50da6e60a8d41572b7b54a28bb8ae96cc556f",
+            "ram_after_sha256": "ae11b90b640c7dcc9b48af30df91cbcf3d912b92fbb5db5396be90fd790b5742"
+          }
+        ],
+        "ground-special/r3/b": [
+          {
+            "frame": 2409,
+            "exit_frame": 2409,
+            "constructor": "0x1968e",
+            "discovery_frame": 2409,
+            "discovery_frame_matches": true,
+            "object_id": 33792,
+            "request": 3,
+            "held": 16,
+            "changed": 16,
+            "before_energy": 99,
+            "after_energy": 83,
+            "actual_cost": 16,
+            "energy_fraction": 32768,
+            "health": 207,
+            "facing": 0,
+            "before_child_size": 0,
+            "action": 58,
+            "pose": 164,
+            "entry_sp": 4294966948,
+            "exit_sp": 4294966952,
+            "ram_before_sha256": "7547801b27f55431f2d79d62077163bb7010accb7c9729a49da67cec0e14c9ab",
+            "ram_after_sha256": "ca09d2ff3e0029016370dfce434f0f8d018390f7edaaa224605a58fd6a956220"
+          }
+        ],
+        "ground-special/r3/a": [
+          {
+            "frame": 2492,
+            "exit_frame": 2492,
+            "constructor": "0x196a6",
+            "discovery_frame": 2492,
+            "discovery_frame_matches": true,
+            "object_id": 33792,
+            "request": 3,
+            "held": 64,
+            "changed": 64,
+            "before_energy": 83,
+            "after_energy": 67,
+            "actual_cost": 16,
+            "energy_fraction": 32768,
+            "health": 207,
+            "facing": 0,
+            "before_child_size": 0,
+            "action": 58,
+            "pose": 164,
+            "entry_sp": 4294966952,
+            "exit_sp": 4294966956,
+            "ram_before_sha256": "e5601ebad1f86a07906b7b5ec72fc2e34bbc9a39812155fbde1049eb3971c206",
+            "ram_after_sha256": "bd9387bef55d55829ab931c7490d06f3ed18668b3fb304e3b41aa8793e43ca5b"
+          }
+        ],
+        "air-special/r2/b": [
+          {
+            "frame": 2669,
+            "exit_frame": 2669,
+            "constructor": "0x19736",
+            "discovery_frame": 2669,
+            "discovery_frame_matches": true,
+            "object_id": 33792,
+            "request": 2,
+            "held": 16,
+            "changed": 16,
+            "before_energy": 67,
+            "after_energy": 51,
+            "actual_cost": 16,
+            "energy_fraction": 32768,
+            "health": 191,
+            "facing": 0,
+            "before_child_size": 0,
+            "action": 69,
+            "pose": 174,
+            "entry_sp": 4294966948,
+            "exit_sp": 4294966952,
+            "ram_before_sha256": "db116e109bce52843714325b416e5bf4a9a8879be062b70eabd8f196cf17299d",
+            "ram_after_sha256": "a921bbb0f773045b1084bfdf2c16c2a41db37830df66f77c91b5a0b2723aa2c6"
+          }
+        ],
+        "air-special/r2/a": [
+          {
+            "frame": 2720,
+            "exit_frame": 2720,
+            "constructor": "0x1975e",
+            "discovery_frame": 2720,
+            "discovery_frame_matches": true,
+            "object_id": 33792,
+            "request": 2,
+            "held": 64,
+            "changed": 64,
+            "before_energy": 51,
+            "after_energy": 31,
+            "actual_cost": 20,
+            "energy_fraction": 32768,
+            "health": 191,
+            "facing": 0,
+            "before_child_size": 0,
+            "action": 69,
+            "pose": 175,
+            "entry_sp": 4294966952,
+            "exit_sp": 4294966956,
+            "ram_before_sha256": "8ab7c688cd7aea68c97371f7e8da53950d7ddd4f73f9f063f7635a7e9802d8bd",
+            "ram_after_sha256": "3a36b05eea107f55a5d31aa3bb13ac57b22b8a3b67c50271e2d4c51c639a0eea"
+          }
+        ],
+        "air-special/r3/c": [
+          {
+            "frame": 2781,
+            "exit_frame": 2781,
+            "constructor": "0x19676",
+            "discovery_frame": 2781,
+            "discovery_frame_matches": true,
+            "object_id": 33792,
+            "request": 3,
+            "held": 32,
+            "changed": 32,
+            "before_energy": 31,
+            "after_energy": 15,
+            "actual_cost": 16,
+            "energy_fraction": 32768,
+            "health": 191,
+            "facing": 0,
+            "before_child_size": 0,
+            "action": 58,
+            "pose": 164,
+            "entry_sp": 4294966948,
+            "exit_sp": 4294966952,
+            "ram_before_sha256": "11e1c8cdf60793d8ba8c00aae18fc1ca8eee9d67d1b6d0720c60427bc1148c56",
+            "ram_after_sha256": "28a56b80de12ce9ac48413250b14ed177c022a357a65aa83c2255dda86a5d54d"
+          }
+        ],
+        "air-special/r3/b": [
+          {
+            "frame": 2876,
+            "exit_frame": 2876,
+            "constructor": "0x1968e",
+            "discovery_frame": 2876,
+            "discovery_frame_matches": true,
+            "object_id": 33792,
+            "request": 3,
+            "held": 16,
+            "changed": 16,
+            "before_energy": 17,
+            "after_energy": 1,
+            "actual_cost": 16,
+            "energy_fraction": 49152,
+            "health": 191,
+            "facing": 0,
+            "before_child_size": 0,
+            "action": 58,
+            "pose": 164,
+            "entry_sp": 4294966952,
+            "exit_sp": 4294966956,
+            "ram_before_sha256": "d92fbb178f086f7006cfbe660ca1ee7c6d411c3733dd7bc97d62b0f4089a79e0",
+            "ram_after_sha256": "cf3f2dd7e5843a94a65ed329b6a13c92c3e38d618a590fd9867735bf8f97af16"
+          }
+        ],
+        "air-special/r3/a": [
+          {
+            "frame": 3028,
+            "exit_frame": 3028,
+            "constructor": "0x196a6",
+            "discovery_frame": 3028,
+            "discovery_frame_matches": true,
+            "object_id": 33792,
+            "request": 3,
+            "held": 64,
+            "changed": 64,
+            "before_energy": 17,
+            "after_energy": 1,
+            "actual_cost": 16,
+            "energy_fraction": 32768,
+            "health": 174,
+            "facing": 1,
+            "before_child_size": 0,
+            "action": 58,
+            "pose": 164,
+            "entry_sp": 4294966952,
+            "exit_sp": 4294966956,
+            "ram_before_sha256": "c6d3d63986ccf62cffaf73466ebd5e62fafeabbad9fcc8f2d1c5d61e4e0f6df1",
+            "ram_after_sha256": "0320fdf4b123878295916094f07fb5c22100c8a02a2285e89d623667cd0bc16c"
+          }
+        ],
+        "ground-special/r6": [
+          {
+            "frame": 4038,
+            "exit_frame": 4038,
+            "constructor": "0x19798",
+            "discovery_frame": 4038,
+            "discovery_frame_matches": true,
+            "object_id": 33792,
+            "request": 6,
+            "held": 82,
+            "changed": 0,
+            "before_energy": 201,
+            "after_energy": 1,
+            "actual_cost": 200,
+            "energy_fraction": 49152,
+            "health": 96,
+            "facing": 0,
+            "before_child_size": 0,
+            "action": 61,
+            "pose": 170,
+            "entry_sp": 4294966948,
+            "exit_sp": 4294966952,
+            "ram_before_sha256": "7228ee8658fbd0fd35f9634b041cee237c01f63ea07a0b5e0d388586a106177d",
+            "ram_after_sha256": "e871a06162c710364d88f21f7176558f2006ea67ccfef076db7b8b1dafb0c030"
+          }
+        ]
+      },
+      "player_roots_verified": 14,
+      "r4_natural_claimed": false,
+      "fixture_sha256": "3230d5276627aca9a3edcf6b1cb56b7566540b69db3e64dc130a0c3738e6a6f9",
+      "gzip_sha256": "5cb4024e31563db2e18b919a0d890313425bcec9b213bd9adad7504c3b995dd3",
+      "all_ram_audits_65536": true
+    }
+  },
+  "intermediate_native_file_list": {
+    "pass": true,
+    "path": "games/yuyuhakusho/engine/testdata/fighter7-attacks-native-intermediate.log"
+  },
+  "official_package_native": {
+    "pass": true,
+    "package": "./games/yuyuhakusho/engine",
+    "pattern": "^TestFighter7Attacks",
+    "count": 1,
+    "seconds": 62.93,
+    "path": "games/yuyuhakusho/engine/testdata/fighter7-attacks-special-native-validation.log",
+    "sha256": "876470d68baae5319910378f34de076d88ade119fde0c1bb9e5e1d3fd6838789",
+    "race": true
+  },
+  "official_package_wasm": {
+    "pass": true,
+    "package": "./games/yuyuhakusho/engine",
+    "pattern": "^TestFighter7Attacks",
+    "count": 1,
+    "seconds": 15.041,
+    "path": "games/yuyuhakusho/engine/testdata/fighter7-attacks-special-wasm-validation.log",
+    "sha256": "abbabebb904ebb3e07c9c9ae177d9ba66e111a8500b9b3b2f4dd0e123c686687",
+    "goos": "js",
+    "goarch": "wasm",
+    "runner": "/opt/homebrew/Cellar/go/1.26.2/libexec/lib/wasm/go_js_wasm_exec",
+    "minimal_environment": true
+  },
+  "correction": "Initial static hypothesis 0/4/8 for air A was disproved by frozen CPU air-2-64 case; implementation now uses 0/2/4/6/8/10 for pose95. No frozen tests or fixtures changed.",
+  "cleanup": {
+    "removed_intermediate_jsonl": [
+      {
+        "path": ".local/md-yuyuhakusho/fighter7-attacks/natural.jsonl",
+        "bytes": 57291354
+      },
+      {
+        "path": ".local/md-yuyuhakusho/fighter7-attacks/oracle.jsonl",
+        "bytes": 1967102
+      },
+      {
+        "path": ".local/md-yuyuhakusho/fighter7-attacks/boundaries.jsonl",
+        "bytes": 384179141
+      }
+    ],
+    "preserved": "Canonical compressed fixtures, manifests, own-symbol red and verification logs inside engine/testdata",
+    "removed_duplicate_capture_copies": [
+      {
+        "path": ".local/md-yuyuhakusho/fighter7-attacks/fighter7-attacks-boundaries-manifest.json",
+        "bytes": 3780
+      },
+      {
+        "path": ".local/md-yuyuhakusho/fighter7-attacks/fighter7-attacks-boundaries.json.gz",
+        "bytes": 11640090
+      },
+      {
+        "path": ".local/md-yuyuhakusho/fighter7-attacks/fighter7-attacks-initializer.json",
+        "bytes": 1354
+      },
+      {
+        "path": ".local/md-yuyuhakusho/fighter7-attacks/fighter7-attacks-natural-manifest.json",
+        "bytes": 3305
+      },
+      {
+        "path": ".local/md-yuyuhakusho/fighter7-attacks/fighter7-attacks-natural.json.gz",
+        "bytes": 884840
+      },
+      {
+        "path": ".local/md-yuyuhakusho/fighter7-attacks/fighter7-attacks-oracle-manifest.json",
+        "bytes": 3651
+      },
+      {
+        "path": ".local/md-yuyuhakusho/fighter7-attacks/fighter7-attacks-oracle.json.gz",
+        "bytes": 64590
+      },
+      {
+        "path": ".local/md-yuyuhakusho/fighter7-attacks/fighter7-attacks-sequences-manifest.json",
+        "bytes": 3250
+      },
+      {
+        "path": ".local/md-yuyuhakusho/fighter7-attacks/fighter7-attacks-sequences.json.gz",
+        "bytes": 764380
+      }
+    ],
+    "removed_duplicate_capture_stdout": {
+      "path": ".local/md-yuyuhakusho/fighter7-attacks-capture.log",
+      "bytes": 6770
+    },
+    "removed_special_capture_intermediates": [
+      {
+        "path": ".local/md-yuyuhakusho/fighter7-attacks-special/capture-diagnostic.json",
+        "bytes": 492
+      },
+      {
+        "path": ".local/md-yuyuhakusho/fighter7-attacks-special/fighter7-attacks-special-natural-manifest.json",
+        "bytes": 15508
+      },
+      {
+        "path": ".local/md-yuyuhakusho/fighter7-attacks-special/fighter7-attacks-special-natural.json.gz",
+        "bytes": 1190197
+      },
+      {
+        "path": ".local/md-yuyuhakusho/fighter7-attacks-special/special-natural.jsonl",
+        "bytes": 72491953
+      },
+      {
+        "path": ".local/md-yuyuhakusho/fighter7-attacks-special-capture.log",
+        "bytes": 2791
+      }
+    ]
+  },
+  "intermediate_wasm_file_list": {
+    "pass": true,
+    "path": "games/yuyuhakusho/engine/testdata/fighter7-attacks-wasm-intermediate.log",
+    "sha256": "2ae1acf46a290fe5c6bef29d58329cfe2ddfb2089bcad4440b7539524445ce44",
+    "minimal_environment": true
+  },
+  "pass": true,
+  "scope_limits": [
+    "Four complete selector APIs and constructors only; no full World or match acceptance",
+    "All 14 player-reachable special roots have successful cold-hook natural calls with actual cost/context verified",
+    "R4 has no player command binding and remains declared-private coverage only; children/healing/motion have independent acceptance"
+  ],
+  "ordinary_package_native": {
+    "pass": true,
+    "package": "./games/yuyuhakusho/engine",
+    "pattern": "^TestFighter7Attacks",
+    "count": 1,
+    "seconds": 56.041,
+    "path": "games/yuyuhakusho/engine/testdata/fighter7-attacks-native-validation.log",
+    "sha256": "80c7944f0fcb7ea64e77162cdd36222d7882a3f2ef5ad19c3426d9408677de8b",
+    "race": true
+  },
+  "ordinary_package_wasm": {
+    "pass": true,
+    "package": "./games/yuyuhakusho/engine",
+    "pattern": "^TestFighter7Attacks",
+    "count": 1,
+    "seconds": 13.594,
+    "path": "games/yuyuhakusho/engine/testdata/fighter7-attacks-wasm-validation.log",
+    "sha256": "da11f2776e4f9deaa366cdb42c044251aeaa499380229c6cd0df798e27006d06",
+    "goos": "js",
+    "goarch": "wasm",
+    "runner": "/opt/homebrew/Cellar/go/1.26.2/libexec/lib/wasm/go_js_wasm_exec",
+    "minimal_environment": true
+  },
+  "special_natural_binding": {
+    "manifest": "games/yuyuhakusho/engine/testdata/fighter7-attacks-special-natural-manifest.json",
+    "sha256": "815635bcdd4d9be6693bea5aec7a8f6ecea90a3a6a36009262dedb98f4d77030",
+    "freeze": "games/yuyuhakusho/engine/testdata/fighter7-attacks-special-evidence-freeze.json",
+    "freeze_sha256": "8efdfc1d88472d3d02fe6f70f243dd2914866fb66991d9100ae50e60330874cf"
+  },
+  "total_original_cpu_calls": 16066,
+  "special_evidence_frozen_files_unchanged": true
+}

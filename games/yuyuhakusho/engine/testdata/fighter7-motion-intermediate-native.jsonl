@@ -1,0 +1,27 @@
+{"Time":"2026-11-05T13:22:37.160921+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-05T13:22:37.694217+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter7MotionOriginalPhases"}
+{"Time":"2026-11-05T13:22:37.694248+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter7MotionOriginalPhases","Output":"=== RUN   TestFighter7MotionOriginalPhases\n"}
+{"Time":"2026-11-05T13:22:37.69428+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter7MotionOriginalPhases/oracle"}
+{"Time":"2026-11-05T13:22:37.694284+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter7MotionOriginalPhases/oracle","Output":"=== RUN   TestFighter7MotionOriginalPhases/oracle\n"}
+{"Time":"2026-11-05T13:22:37.7052+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter7MotionOriginalPhases/oracle","Output":"    fighter7_motion_test.go:270: source7 oracle calls=91 kinds=map[11:91]; ordinary natural evidence covers retreat only\n"}
+{"Time":"2026-11-05T13:22:37.705216+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter7MotionOriginalPhases/oracle","Output":"--- PASS: TestFighter7MotionOriginalPhases/oracle (0.01s)\n"}
+{"Time":"2026-11-05T13:22:37.705222+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighter7MotionOriginalPhases/oracle","Elapsed":0.01}
+{"Time":"2026-11-05T13:22:37.70524+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter7MotionOriginalPhases/boundaries"}
+{"Time":"2026-11-05T13:22:37.705243+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter7MotionOriginalPhases/boundaries","Output":"=== RUN   TestFighter7MotionOriginalPhases/boundaries\n"}
+{"Time":"2026-11-05T13:22:38.388467+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter7MotionOriginalPhases/boundaries","Output":"    fighter7_motion_test.go:270: source7 boundaries calls=6428 kinds=map[0f:294 11:256 13:294 14:294 39:1112 3a:80 3b:1152 3c:960 3d:1080 45:906]; ordinary natural evidence covers retreat only\n"}
+{"Time":"2026-11-05T13:22:38.388505+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter7MotionOriginalPhases/boundaries","Output":"--- PASS: TestFighter7MotionOriginalPhases/boundaries (0.68s)\n"}
+{"Time":"2026-11-05T13:22:38.388518+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighter7MotionOriginalPhases/boundaries","Elapsed":0.68}
+{"Time":"2026-11-05T13:22:38.388531+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter7MotionOriginalPhases","Output":"--- PASS: TestFighter7MotionOriginalPhases (0.69s)\n"}
+{"Time":"2026-11-05T13:22:38.388535+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighter7MotionOriginalPhases","Elapsed":0.69}
+{"Time":"2026-11-05T13:22:38.38854+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter7MotionSingleInitialState"}
+{"Time":"2026-11-05T13:22:38.388543+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter7MotionSingleInitialState","Output":"=== RUN   TestFighter7MotionSingleInitialState\n"}
+{"Time":"2026-11-05T13:22:38.669217+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter7MotionSingleInitialState","Output":"    fighter7_motion_test.go:344: source7 single-initial trajectories=34 original clocks=916 MAIN=916 own-record refreshes=916 declared inputs=10\n"}
+{"Time":"2026-11-05T13:22:38.669243+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter7MotionSingleInitialState","Output":"--- PASS: TestFighter7MotionSingleInitialState (0.28s)\n"}
+{"Time":"2026-11-05T13:22:38.669247+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighter7MotionSingleInitialState","Elapsed":0.28}
+{"Time":"2026-11-05T13:22:38.669253+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter7MotionErrorsAreAtomic"}
+{"Time":"2026-11-05T13:22:38.669256+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter7MotionErrorsAreAtomic","Output":"=== RUN   TestFighter7MotionErrorsAreAtomic\n"}
+{"Time":"2026-11-05T13:22:38.669541+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter7MotionErrorsAreAtomic","Output":"--- PASS: TestFighter7MotionErrorsAreAtomic (0.00s)\n"}
+{"Time":"2026-11-05T13:22:38.669546+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighter7MotionErrorsAreAtomic","Elapsed":0}
+{"Time":"2026-11-05T13:22:38.669549+08:00","Action":"output","Package":"command-line-arguments","Output":"PASS\n"}
+{"Time":"2026-11-05T13:22:38.670108+08:00","Action":"output","Package":"command-line-arguments","Output":"ok  \tcommand-line-arguments\t1.509s\n"}
+{"Time":"2026-11-05T13:22:38.670117+08:00","Action":"pass","Package":"command-line-arguments","Elapsed":1.509}

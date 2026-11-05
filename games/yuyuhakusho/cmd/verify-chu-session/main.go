@@ -46,7 +46,7 @@ func digest(raw []byte) string { sum := sha256.Sum256(raw); return hex.EncodeToS
 
 func run() error {
 	players := flag.Int("players", 2, "number of active original slots,2..4")
-	selection := flag.String("characters", "", "comma-separated source IDs,0/1/2/3/4/5/6/8/9/10; defaults to all9")
+	selection := flag.String("characters", "", "comma-separated source IDs,0..10; defaults to all9")
 	team := flag.Bool("team", false, "use original four-player1/1/4/4 teams")
 	human := flag.Bool("human-idle", false, "keep slot0 explicitly human with neutral input")
 	seed := flag.Uint64("seed", 0x12345678, "shared32-bit initial rule seed")
@@ -67,7 +67,7 @@ func run() error {
 		}
 		for i, part := range parts {
 			id, err := strconv.ParseUint(strings.TrimSpace(part), 10, 8)
-			if err != nil || (id != 0 && id != 1 && id != 2 && id != 3 && id != 4 && id != 5 && id != 6 && id != 8 && id != 9 && id != 10) {
+			if err != nil || id > 10 {
 				return fmt.Errorf("unsupported character ID %q", part)
 			}
 			characters[i] = uint8(id)

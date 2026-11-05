@@ -1,0 +1,236 @@
+"""Declared source7 complete-API private initial states and single-state flows."""
+
+
+def capture(setup, invoke, write, fighters, poses, streams, set_collect):
+    seed = 0
+
+    def action(kind, options, name, owner=0x8400, route='human', api='action'):
+        nonlocal seed
+        setup(seed, owner, kind, route=route, **options)
+        row = invoke(api, owner, name)
+        seed += 1
+        return row
+
+    for owner in fighters:
+        for kind in poses:
+            action(kind, {}, f'complete-slot-{owner:x}-{kind:x}', owner)
+
+    profiles = []
+    profiles += [(0x39, {'facing': facing, 'vx': vx, 'vy': vy, 'gravity': gravity,
+                         'y': y, 'contact': contact, 'aux': aux})
+                 for facing, vx, vy, gravity, y, contact, aux in [
+                     (0, 0x48001, -0x60000, 0x3601, 0x1301234, 0, 0x00123456),
+                     (1, -0x48001, -0x60000, 0x3601, 0x1301234, 12, 0x00123456),
+                     (2, 0x48001, 0, 0, 0x1301234, 1, 0x00123456),
+                     (3, -0x48001, 0x60000, 0x3601, 0x13f1234, 0, 0x00123456),
+                     (0, 0x7fffffff, 0, 0, 0x1401234, 0, 0x01123456),
+                     (1, -0x80000000, 0, 0, 0x140ffff, 4, 0x00123456),
+                     (2, -0x80000000, 0x7fffffff, 1, -0x70000000, 8, 0x00123456)]]
+    profiles += [(0x3a, {'completed': complete, 'aux': variant << 24 | 0x123456,
+                         'x': 0x7fffabcd, 'y': 0x1301234})
+                 for complete in [0, 1, 2] for variant in [0, 1, 2, 3, 255]]
+    profiles += [(0x3b, {'completed': complete, 'facing': facing, 'vx': vx,
+                         'child_sizes': sizes, 'target_bit': 255, 'attributes': 0xbfff,
+                         'layer': 2, 'ground': 0x1405678, 'y': 0x130abcd})
+                 for complete, facing, vx, sizes in [
+                     (0, 0, 0x48001, [0, 0, 0]),
+                     (1, 0, 0x48001, [0, 0, 0]),
+                     (1, 1, -0x48001, [0x100, 0, 0]),
+                     (1, 2, 0x48001, [0, 0x100, 0]),
+                     (1, 255, 0x80010000, [0x100, 0x100, 0]),
+                     (2, 0, 0x48001, [0, 0, 0])]]
+    profiles += [(0x3c, {'energy': energy, 'child_sizes': sizes, 'held': 0x8f,
+                         'pressed': pressed, 'extended_held': 0xa5,
+                         'extended_pressed': 0x5a})
+                 for energy, sizes, pressed in [
+                     (0, [0, 0, 0], 0), (0x3fff, [0x100, 0, 0], 0),
+                     (0x4000, [0x100, 0, 0], 0), (0x4001, [0x100, 0, 0], 0),
+                     (0x10000, [0, 0x100, 0], 0),
+                     (0x10000, [0x100, 0, 0], 32),
+                     (0x10000, [0x100, 0x100, 0], 0),
+                     (0x10000, [0x100, 0x100, 0], 32),
+                     (-1, [0x100, 0x100, 0], 0),
+                     (-0x80000000, [0x100, 0x100, 0], 0),
+                     (0x7fffffff, [0x100, 0x100, 0], 0)]]
+    profiles += [(0x3d, {'completed': complete, 'index': index, 'ticks': ticks,
+                         'child_sizes': [0, 0, size]})
+                 for complete, index, ticks, size in [
+                     (0, 1, 0, 0), (0, 2, 0, 0), (0, 2, 255, 0),
+                     (0, 2, 255, 0x100), (1, 2, 255, 0), (2, 2, 255, 0)]]
+    profiles += [(0x11, {'completed': complete, 'facing': facing,
+                         'index': index, 'ticks': 'end'})
+                 for complete, facing, index in [(0, 0, 0), (0, 1, 6), (1, 2, 0)]]
+    profiles += [(0x13, {'completed': complete, 'facing': facing,
+                         'vx': vx, 'contact': contact, 'y': 0x1301234})
+                 for complete, facing, vx, contact in [
+                     (0, 0, 0x48001, 0), (0, 1, -0x48001, 1),
+                     (1, 2, 0x48001, 0), (2, 3, 0, 0)]]
+    profiles += [(0x14, {'completed': complete}) for complete in [0, 1, 2]]
+    profiles += [(0x45, {'pose': pose, 'index': index, 'ticks': ticks,
+                         'facing': facing, 'contact': contact, 'vx': 0x48001,
+                         'vy': 0x60000, 'y': y, 'extra_jump': 255})
+                 for pose, index, ticks, facing, contact, y in [
+                     (0xae, 0, 0, 0, 0, 0x1301234),
+                     (0xae, 1, 255, 1, 0, 0x13f1234),
+                     (0xaf, 1, 255, 2, 12, 0x1301234),
+                     (0xaf, 1, 255, 3, 0, 0x1301234)]]
+    profiles += [(kind, {'stop': stop, 'flags': flags, 'completed': complete})
+                 for kind, stop, flags, complete in [
+                     (0, 1, 0, 0), (0x3c, 2, 0, 0),
+                     (0x39, 0, 128, 0), (0x3d, 0, 128, 0),
+                     (0x3c, 0, 255, 0), (0x11, 0, 0, 1)]]
+    for index, (kind, options) in enumerate(profiles):
+        action(kind, options, f'phase-{kind:x}-{index}')
+
+    constructors = []
+    for button, cost in [(16, 16), (64, 16)]:
+        for energy in [cost - 1, cost]:
+            constructors.append((0, {'request': 1, 'changed': button, 'enabled': 8,
+                                     'energy': energy << 16 | 0xabcd},
+                                 0x39 if energy == cost else None))
+    for button in [32, 16, 64, 48, 96]:
+        for size in [0, 0x100]:
+            constructors.append((0, {'request': 2, 'changed': button, 'enabled': 8,
+                                     'energy': 16 << 16 | 0xabcd,
+                                     'child_sizes': [size, 0, 0]},
+                                 0x3b if size == 0 else None))
+    constructors.append((0, {'request': 2, 'changed': 32, 'enabled': 8,
+                              'energy': 15 << 16 | 0xabcd}, None))
+    for kind, enabled in [(0, 8), (2, 16)]:
+        for button in [32, 16, 64, 48, 96]:
+            options = {'request': 3, 'changed': button, 'enabled': enabled,
+                       'energy': 16 << 16 | 0xabcd, 'aux': 0xff123456}
+            if kind == 2:
+                options.update(y=0x1301234, vy=-1, gravity=0)
+            constructors.append((kind, options, 0x3a))
+        options = {'request': 3, 'changed': 32, 'enabled': enabled,
+                   'energy': 15 << 16 | 0xabcd}
+        if kind == 2:
+            options.update(y=0x1301234, vy=-1, gravity=0)
+        constructors.append((kind, options, None))
+    for request in [4, 6]:
+        for health, held, energy in [(111, 2, 200), (112, 2, 200),
+                                     (111, 0, 200), (111, 2, 199),
+                                     (-1, 2, 200)]:
+            constructors.append((0, {'request': request, 'held': held, 'enabled': 8,
+                                     'health': health, 'energy': energy << 16 | 0xabcd},
+                                 0x3d if health <= 111 and held == 2 and energy == 200 else None))
+    for button, cost in [(16, 16), (64, 20)]:
+        for energy in [cost - 1, cost]:
+            for held in [4, 8, 12]:
+                constructors.append((2, {'request': 2, 'changed': button, 'held': held,
+                                         'enabled': 16, 'energy': energy << 16 | 0xabcd,
+                                         'y': 0x1301234, 'vy': -1, 'gravity': 0},
+                                     0x45 if energy == cost else None))
+    constructors += [(0, {'request': 7, 'enabled': 11}, 0x0f),
+                     (0, {'request': 8, 'enabled': 11}, 0x11),
+                     (0, {'held': 8, 'pressed': 64, 'changed': 64, 'enabled': 11}, 3),
+                     (0, {'held': 10, 'pressed': 64, 'changed': 64, 'enabled': 11}, 0x13)]
+    for index, (kind, options, expected) in enumerate(constructors):
+        row = action(kind, options, f'full-tail-selector-{index}')
+        if expected is not None:
+            assert row['after']['tail']['body']['action_kind'] == expected, (index, expected, row['after']['tail']['body']['action_kind'])
+
+    # Empty/dead peer parents still receive +69 when Team differs. Dirty sibling
+    # bytes remain observable through the complete four-family snapshots.
+    peer_profiles = [(0, 0, 1), (0x100, 0, 0), (0, -1024, 1)]
+    for owner in fighters:
+        for api in ['action', 'actor']:
+            setup(seed, owner, 0x3d, index=2, ticks=255,
+                  child_sizes=[0, 0, 0x100], team=0)
+            for peer, (size, health, team) in zip([p for p in fighters if p != owner], peer_profiles):
+                write(0xff0000 + peer + 4, size, 2)
+                write(0xff0000 + peer + 0x78, health, 2)
+                write(0xff0000 + peer + 0x6e, team)
+                write(0xff0000 + peer + 0x69, 0x35)
+            row = invoke(api, owner, f'cross-parent-{owner:x}-{api}')
+            after = row['after']['tail'] if api == 'action' else row['after']['action']['tail']
+            for peer, (_, _, team) in zip([p for p in fighters if p != owner], peer_profiles):
+                actual = bytes.fromhex(after['other_actors'][str(peer)])[0x69]
+                assert actual == (0xff if team else 0x35), (owner, peer, actual)
+            seed += 1
+
+    for owner in fighters:
+        for route in ['disabled', 'human', 'ai', 'human-record', 'ai-record', 'playback', 'playback-stopped']:
+            action(0, {}, f'route-{owner:x}-{route}', owner, route, 'actor')
+        for pause, slow in [(128, 0), (0, 1), (255, 255)]:
+            setup(seed, owner, 0)
+            write(0xfff550, pause)
+            write(0xfff55a, slow)
+            invoke('actor', owner, f'gate-{owner:x}-{pause}-{slow}')
+            seed += 1
+    for kind, options, route in [(0x39, {'vy': -0x60000, 'y': 0x1301234}, 'human'),
+                                  (0x3b, {'completed': 1}, 'ai-record'),
+                                  (0x3c, {'child_sizes': [0x100, 0, 0], 'energy': 0x4000}, 'human')]:
+        action(kind, options, f'complete-actor-{kind:x}-{route}', route=route, api='actor')
+
+    set_collect(False)
+    cases = [(0, 0, 32, {}), (0x0f, 0x0b, 128, {}), (0x11, 0x0c, 128, {}),
+             (0x13, 0x87, 128, {'y': 0x1301234}), (0x14, 0xb1, 128, {}),
+             (0x45, 0xae, 256, {'y': 0x1301234, 'vy': 0x60000}),
+             (0x45, 0xaf, 256, {'y': 0x1301234, 'vy': 0x60000}),
+             (0x39, 0xa0, 256, {'y': 0x1301234, 'vy': -0x60000}),
+             (0x39, 0xa0, 256, {'y': 0x1301234, 'vy': -0x60000, 'aux': 0x0100abcd}),
+             (0x3a, 0xa4, 256, {'aux': 0x0000abcd}),
+             (0x3a, 0xa4, 256, {'aux': 0x0100abcd}),
+             (0x3a, 0xa4, 256, {'aux': 0x0200abcd}),
+             (0x3b, 0xa6, 1200, {'energy': 0x20000}),
+             (0x3b, 0xa6, 1200, {'energy': 0x20000, 'child_sizes': [0x100, 0, 0]}),
+             (0x3c, 0xa7, 128, {'energy': 0x20000, 'child_sizes': [0x100, 0, 0]}),
+             (0x3c, 0xa7, 128, {'energy': 0x100000, 'child_sizes': [0x100, 0x100, 0]}),
+             (0x3d, 0xaa, 256, {})]
+    motions = [0x0f, 0x11, 0x13, 0x14, 0x45, 0x39, 0x3a, 0x3b, 0x3c, 0x3d]
+    for serial, (kind, pose, limit, options) in enumerate(cases):
+        setup(seed, 0x8400, kind, pose=pose, ticks=0, vx=0x48001, **options)
+        calls, previous = [], 0
+        for step in range(limit):
+            held = 32 if kind == 0x3c and serial == 15 and step == 7 else 0
+            changed = held ^ previous
+            external = {'held': held, 'pressed': held & changed, 'changed': changed, 'raw_held': held}
+            for key, offset in [('held', 0x71), ('pressed', 0x72), ('changed', 0x73), ('raw_held', 0x74)]:
+                write(0xff8400 + offset, external[key])
+            row = invoke('action', 0x8400, f'action-stream-{serial}-{step}')
+            row['external_input'] = external
+            calls.append(row)
+            previous = held
+            current = row['after']['tail']['body']['action_kind']
+            if kind and current not in motions:
+                break
+        if kind:
+            assert current not in motions, ('complete action stream did not exit', serial, kind, current)
+        streams['action'].append({'initial': calls[0]['before'], 'calls': calls})
+        seed += 1
+
+    for route in ['human-record', 'ai-record', 'playback']:
+        setup(seed, 0x8400, 0, route=route)
+        calls, previous = [], 0
+        for step in range(16):
+            held = 8 if step < 4 else 16 if step < 8 else 0
+            changed = held ^ previous
+            for i, value in enumerate([held, previous, changed, held & changed, previous & changed]):
+                write(0xfff780 + i * 8, value)
+            row = invoke('input', 0x8400, f'input-stream-{route}-{step}')
+            row['external_input'] = row['before']['envelope']['input']
+            calls.append(row)
+            previous = held
+        streams['input'].append({'initial': calls[0]['before'], 'calls': calls})
+        seed += 1
+
+    for route in ['human', 'ai-record', 'playback', 'human-record']:
+        setup(seed, 0x8400, 0, route=route)
+        calls, previous = [], 0
+        for step in range(24):
+            held = 8 if step < 4 else 16 if 8 <= step < 12 else 0
+            changed = held ^ previous
+            for i, value in enumerate([held, previous, changed, held & changed, previous & changed]):
+                write(0xfff780 + i * 8, value)
+            pause = 128 if route == 'human' and 5 <= step < 8 else 0
+            slow = 1 if route == 'human' and 15 <= step < 18 else 0
+            write(0xfff550, pause)
+            write(0xfff55a, slow)
+            row = invoke('actor', 0x8400, f'actor-stream-{route}-{step}')
+            row['external_view'] = {'controllers': row['view']['controllers'], 'pause': pause, 'slow': slow}
+            calls.append(row)
+            previous = held
+        streams['actor'].append({'initial': calls[0]['before'], 'view': calls[0]['view'], 'calls': calls})
+        seed += 1

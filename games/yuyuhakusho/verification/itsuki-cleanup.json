@@ -1,0 +1,104 @@
+{
+  "scope": "Completed source7 discovery/original-world duplicates, inactive supplemental-menu workspace, closed browser profile, replaced CLI binaries and temporary legacy copies only",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/source7-menu",
+      "files": 0,
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source7-duo-menu",
+      "files": 0,
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source7-discovery",
+      "files": 3,
+      "bytes": 22017
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source7-portal-discovery",
+      "files": 3,
+      "bytes": 62918
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source7-all-special-discovery",
+      "files": 3,
+      "bytes": 66310
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter7-reference",
+      "files": 0,
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter7-world",
+      "files": 3,
+      "bytes": 3601858
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter7-special-world",
+      "files": 2,
+      "bytes": 14924116
+    },
+    {
+      "path": ".local/md-yuyuhakusho/itsuki-browser",
+      "files": 219,
+      "bytes": 9447851
+    },
+    {
+      "path": ".local/md-yuyuhakusho/source7-duo-discovery",
+      "files": 42,
+      "bytes": 460742
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-session",
+      "files": 1,
+      "bytes": 4370002
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-session.wasm",
+      "files": 1,
+      "bytes": 4944457
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-render",
+      "files": 1,
+      "bytes": 4812274
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-render.wasm",
+      "files": 1,
+      "bytes": 5507291
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/itsuki-legacy",
+      "files": 1,
+      "bytes": 4370002
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/itsuki-legacy.wasm",
+      "files": 1,
+      "bytes": 4944457
+    },
+    {
+      "path": ".local/md-yuyuhakusho/itsuki-legacy-native.json.gz",
+      "files": 1,
+      "bytes": 25423
+    },
+    {
+      "path": ".local/md-yuyuhakusho/itsuki-legacy-wasm.json.gz",
+      "files": 1,
+      "bytes": 25426
+    }
+  ],
+  "files": 283,
+  "bytes": 57585144,
+  "retained": [
+    "Canonical data/control/SHA/raw red/final logs/screenshots",
+    "Active local player8799 and current core assets",
+    "Original ROM/emulator/research tools/shared Go caches/current worktree",
+    "Active full-check and final scene/legacy programs",
+    "Other agents/main-workspace user changes"
+  ]
+}

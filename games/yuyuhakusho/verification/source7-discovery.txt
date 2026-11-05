@@ -1,0 +1,29 @@
+success {'task': 'r6', 'frame': 3206}
+success {'task': 'r1b', 'frame': 3457}
+{
+  "frames": 3770,
+  "completed": [
+    {
+      "task": "r6",
+      "frame": 3206
+    },
+    {
+      "task": "r1b",
+      "frame": 3457
+    }
+  ],
+  "last": {
+    "frame": 3700,
+    "task_index": 2,
+    "hp": 18,
+    "energy": 16,
+    "action": "0x6",
+    "pose": "0x28",
+    "stages": "0x0",
+    "x": 1105,
+    "y": 312,
+    "facing": 1,
+    "child_size": 0
+  },
+  "errors": []
+}

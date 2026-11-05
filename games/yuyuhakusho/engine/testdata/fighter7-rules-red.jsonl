@@ -1,0 +1,14 @@
+{"Time":"2026-11-05T13:54:06.575221+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine"}
+{"Time":"2026-11-05T13:54:07.010513+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestChuWorldRuleBundle"}
+{"Time":"2026-11-05T13:54:07.01065+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestChuWorldRuleBundle","Output":"=== RUN   TestChuWorldRuleBundle\n"}
+{"Time":"2026-11-05T13:54:07.092006+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestChuWorldRuleBundle","Output":"    chu_world_test.go:746: semantic runtime bundle differs from independently decoded source libraries \u003cnil\u003e\n"}
+{"Time":"2026-11-05T13:54:07.09204+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestChuWorldRuleBundle","Output":"--- FAIL: TestChuWorldRuleBundle (0.08s)\n"}
+{"Time":"2026-11-05T13:54:07.092052+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestChuWorldRuleBundle","Elapsed":0.08}
+{"Time":"2026-11-05T13:54:07.092066+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter7WorldRuleFrames"}
+{"Time":"2026-11-05T13:54:07.092069+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter7WorldRuleFrames","Output":"=== RUN   TestFighter7WorldRuleFrames\n"}
+{"Time":"2026-11-05T13:54:07.110415+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter7WorldRuleFrames","Output":"    fighter7_rules_test.go:22: source7 typed frame omitted or altered {889546 891450 60 0}\n"}
+{"Time":"2026-11-05T13:54:07.110433+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter7WorldRuleFrames","Output":"--- FAIL: TestFighter7WorldRuleFrames (0.02s)\n"}
+{"Time":"2026-11-05T13:54:07.110445+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter7WorldRuleFrames","Elapsed":0.02}
+{"Time":"2026-11-05T13:54:07.110455+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"FAIL\n"}
+{"Time":"2026-11-05T13:54:07.110952+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine\t0.536s\n"}
+{"Time":"2026-11-05T13:54:07.110962+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Elapsed":0.536}

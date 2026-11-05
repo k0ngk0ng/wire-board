@@ -1,0 +1,1732 @@
+{
+  "scope": "Observed IRQ audio clear followed by independent owned sound enqueue, beyond v1 single-clear guard; no production change inferred",
+  "frozen_test_sha256": "7e1477727855f72ab03efd31bc6350d5399def191c0487d936b3daeab8083f29",
+  "fixture": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-action-special.json.gz",
+    "sha256": "e0c4751c69b49f00659b4c40d7cc24c3dd6cd9fdeab4abf6799447c2058e231a",
+    "index": 1608,
+    "frame": 3142
+  },
+  "observed": {
+    "before_queue": [
+      162,
+      0,
+      0,
+      0
+    ],
+    "after_queue": [
+      166,
+      0,
+      0,
+      0
+    ],
+    "animation_key": {
+      "animation_set": 850330,
+      "shape_set": 853658,
+      "pose": 19,
+      "index": 1
+    },
+    "selected_sound": 166,
+    "queue_clears": [
+      {
+        "pc": "0x37c56",
+        "address": "0xf80d",
+        "before": 0,
+        "sr": 9988,
+        "sp": 4294966878,
+        "after": 0
+      },
+      {
+        "pc": "0x37c56",
+        "address": "0xf80c",
+        "before": 0,
+        "sr": 10004,
+        "sp": 4294966878,
+        "after": 0
+      },
+      {
+        "pc": "0x37c56",
+        "address": "0xf80b",
+        "before": 0,
+        "sr": 10004,
+        "sp": 4294966878,
+        "after": 0
+      },
+      {
+        "pc": "0x37c56",
+        "address": "0xf80a",
+        "before": 162,
+        "sr": 10008,
+        "sp": 4294966878,
+        "after": 0
+      }
+    ],
+    "ram_audit": {
+      "bytes_compared": 65536,
+      "changed_bytes": 127,
+      "unknown_writes": 0,
+      "before_sha256": "88291c3914f17282ea2d47b39b332517cfdfd38cf8b5a25ba1d00059c2a30b53",
+      "after_sha256": "8279a0c9d74ebf3aa7307897cd41c35e4428f45f54b497220c8178b89a81b214",
+      "delta": [
+        {
+          "address": 33835,
+          "before": 208,
+          "after": 211
+        },
+        {
+          "address": 33853,
+          "before": 212,
+          "after": 214
+        },
+        {
+          "address": 33881,
+          "before": 0,
+          "after": 1
+        },
+        {
+          "address": 33883,
+          "before": 3,
+          "after": 0
+        },
+        {
+          "address": 33926,
+          "before": 70,
+          "after": 69
+        },
+        {
+          "address": 33960,
+          "before": 6,
+          "after": 7
+        },
+        {
+          "address": 33961,
+          "before": 2,
+          "after": 3
+        },
+        {
+          "address": 33962,
+          "before": 19,
+          "after": 20
+        },
+        {
+          "address": 33965,
+          "before": 2,
+          "after": 3
+        },
+        {
+          "address": 33966,
+          "before": 4,
+          "after": 5
+        },
+        {
+          "address": 33967,
+          "before": 0,
+          "after": 1
+        },
+        {
+          "address": 33977,
+          "before": 28,
+          "after": 29
+        },
+        {
+          "address": 33978,
+          "before": 128,
+          "after": 64
+        },
+        {
+          "address": 40969,
+          "before": 0,
+          "after": 48
+        },
+        {
+          "address": 40971,
+          "before": 0,
+          "after": 16
+        },
+        {
+          "address": 41985,
+          "before": 242,
+          "after": 243
+        },
+        {
+          "address": 41988,
+          "before": 0,
+          "after": 1
+        },
+        {
+          "address": 41989,
+          "before": 255,
+          "after": 2
+        },
+        {
+          "address": 41992,
+          "before": 6,
+          "after": 7
+        },
+        {
+          "address": 42001,
+          "before": 245,
+          "after": 246
+        },
+        {
+          "address": 42005,
+          "before": 12,
+          "after": 17
+        },
+        {
+          "address": 42008,
+          "before": 10,
+          "after": 12
+        },
+        {
+          "address": 42009,
+          "before": 13,
+          "after": 11
+        },
+        {
+          "address": 42017,
+          "before": 243,
+          "after": 244
+        },
+        {
+          "address": 42021,
+          "before": 31,
+          "after": 34
+        },
+        {
+          "address": 42024,
+          "before": 18,
+          "after": 19
+        },
+        {
+          "address": 42241,
+          "before": 244,
+          "after": 246
+        },
+        {
+          "address": 42245,
+          "before": 18,
+          "after": 21
+        },
+        {
+          "address": 62743,
+          "before": 0,
+          "after": 4
+        },
+        {
+          "address": 63187,
+          "before": 36,
+          "after": 100
+        },
+        {
+          "address": 63489,
+          "before": 2,
+          "after": 1
+        },
+        {
+          "address": 63498,
+          "before": 162,
+          "after": 166
+        },
+        {
+          "address": 63566,
+          "before": 4,
+          "after": 3
+        },
+        {
+          "address": 63614,
+          "before": 4,
+          "after": 3
+        },
+        {
+          "address": 63624,
+          "before": 22,
+          "after": 21
+        },
+        {
+          "address": 63662,
+          "before": 4,
+          "after": 3
+        },
+        {
+          "address": 63710,
+          "before": 4,
+          "after": 3
+        },
+        {
+          "address": 63720,
+          "before": 21,
+          "after": 20
+        },
+        {
+          "address": 63758,
+          "before": 10,
+          "after": 9
+        },
+        {
+          "address": 63768,
+          "before": 21,
+          "after": 20
+        },
+        {
+          "address": 63806,
+          "before": 10,
+          "after": 9
+        },
+        {
+          "address": 63816,
+          "before": 22,
+          "after": 21
+        },
+        {
+          "address": 63902,
+          "before": 58,
+          "after": 57
+        },
+        {
+          "address": 63913,
+          "before": 2,
+          "after": 1
+        },
+        {
+          "address": 63950,
+          "before": 4,
+          "after": 3
+        },
+        {
+          "address": 63960,
+          "before": 10,
+          "after": 9
+        },
+        {
+          "address": 63996,
+          "before": 3,
+          "after": 4
+        },
+        {
+          "address": 63998,
+          "before": 4,
+          "after": 3
+        },
+        {
+          "address": 64142,
+          "before": 3,
+          "after": 2
+        },
+        {
+          "address": 64155,
+          "before": 3,
+          "after": 2
+        },
+        {
+          "address": 64156,
+          "before": 0,
+          "after": 1
+        },
+        {
+          "address": 64157,
+          "before": 192,
+          "after": 32
+        },
+        {
+          "address": 65108,
+          "before": 121,
+          "after": 0
+        },
+        {
+          "address": 65109,
+          "before": 172,
+          "after": 3
+        },
+        {
+          "address": 65110,
+          "before": 0,
+          "after": 139
+        },
+        {
+          "address": 65111,
+          "before": 3,
+          "after": 124
+        },
+        {
+          "address": 65112,
+          "before": 118,
+          "after": 39
+        },
+        {
+          "address": 65113,
+          "before": 28,
+          "after": 2
+        },
+        {
+          "address": 65115,
+          "before": 2,
+          "after": 3
+        },
+        {
+          "address": 65116,
+          "before": 25,
+          "after": 121
+        },
+        {
+          "address": 65117,
+          "before": 228,
+          "after": 172
+        },
+        {
+          "address": 65118,
+          "before": 255,
+          "after": 0
+        },
+        {
+          "address": 65119,
+          "before": 255,
+          "after": 3
+        },
+        {
+          "address": 65120,
+          "before": 240,
+          "after": 118
+        },
+        {
+          "address": 65121,
+          "before": 150,
+          "after": 28
+        },
+        {
+          "address": 65123,
+          "before": 0,
+          "after": 2
+        },
+        {
+          "address": 65124,
+          "before": 0,
+          "after": 25
+        },
+        {
+          "address": 65125,
+          "before": 0,
+          "after": 228
+        },
+        {
+          "address": 65126,
+          "before": 0,
+          "after": 255
+        },
+        {
+          "address": 65127,
+          "before": 0,
+          "after": 255
+        },
+        {
+          "address": 65128,
+          "before": 0,
+          "after": 240
+        },
+        {
+          "address": 65129,
+          "before": 0,
+          "after": 150
+        },
+        {
+          "address": 65133,
+          "before": 0,
+          "after": 8
+        },
+        {
+          "address": 65134,
+          "before": 48,
+          "after": 0
+        },
+        {
+          "address": 65135,
+          "before": 102,
+          "after": 0
+        },
+        {
+          "address": 65137,
+          "before": 0,
+          "after": 170
+        },
+        {
+          "address": 65138,
+          "before": 47,
+          "after": 0
+        },
+        {
+          "address": 65139,
+          "before": 142,
+          "after": 0
+        },
+        {
+          "address": 65142,
+          "before": 46,
+          "after": 0
+        },
+        {
+          "address": 65143,
+          "before": 154,
+          "after": 0
+        },
+        {
+          "address": 65144,
+          "before": 255,
+          "after": 1
+        },
+        {
+          "address": 65145,
+          "before": 255,
+          "after": 172
+        },
+        {
+          "address": 65149,
+          "before": 0,
+          "after": 24
+        },
+        {
+          "address": 65152,
+          "before": 192,
+          "after": 1
+        },
+        {
+          "address": 65153,
+          "before": 0,
+          "after": 1
+        },
+        {
+          "address": 65154,
+          "before": 0,
+          "after": 208
+        },
+        {
+          "address": 65155,
+          "before": 0,
+          "after": 64
+        },
+        {
+          "address": 65156,
+          "before": 0,
+          "after": 3
+        },
+        {
+          "address": 65157,
+          "before": 0,
+          "after": 248
+        },
+        {
+          "address": 65158,
+          "before": 255,
+          "after": 208
+        },
+        {
+          "address": 65159,
+          "before": 2,
+          "after": 64
+        },
+        {
+          "address": 65160,
+          "before": 0,
+          "after": 255
+        },
+        {
+          "address": 65161,
+          "before": 0,
+          "after": 211
+        },
+        {
+          "address": 65162,
+          "before": 236,
+          "after": 0
+        },
+        {
+          "address": 65163,
+          "before": 0,
+          "after": 1
+        },
+        {
+          "address": 65164,
+          "before": 0,
+          "after": 121
+        },
+        {
+          "address": 65165,
+          "before": 0,
+          "after": 96
+        },
+        {
+          "address": 65166,
+          "before": 0,
+          "after": 255
+        },
+        {
+          "address": 65167,
+          "before": 0,
+          "after": 255
+        },
+        {
+          "address": 65168,
+          "before": 0,
+          "after": 132
+        },
+        {
+          "address": 65169,
+          "before": 0,
+          "after": 5
+        },
+        {
+          "address": 65171,
+          "before": 0,
+          "after": 13
+        },
+        {
+          "address": 65172,
+          "before": 0,
+          "after": 14
+        },
+        {
+          "address": 65173,
+          "before": 0,
+          "after": 150
+        },
+        {
+          "address": 65174,
+          "before": 255,
+          "after": 0
+        },
+        {
+          "address": 65175,
+          "before": 255,
+          "after": 2
+        },
+        {
+          "address": 65176,
+          "before": 255,
+          "after": 24
+        },
+        {
+          "address": 65177,
+          "before": 255,
+          "after": 216
+        },
+        {
+          "address": 65178,
+          "before": 247,
+          "after": 0
+        },
+        {
+          "address": 65179,
+          "before": 24,
+          "after": 13
+        },
+        {
+          "address": 65180,
+          "before": 255,
+          "after": 169
+        },
+        {
+          "address": 65181,
+          "before": 255,
+          "after": 122
+        },
+        {
+          "address": 65182,
+          "before": 247,
+          "after": 255
+        },
+        {
+          "address": 65183,
+          "before": 129,
+          "after": 255
+        },
+        {
+          "address": 65186,
+          "before": 45,
+          "after": 0
+        },
+        {
+          "address": 65187,
+          "before": 10,
+          "after": 170
+        },
+        {
+          "address": 65188,
+          "before": 255,
+          "after": 0
+        },
+        {
+          "address": 65189,
+          "before": 255,
+          "after": 1
+        },
+        {
+          "address": 65190,
+          "before": 224,
+          "after": 92
+        },
+        {
+          "address": 65191,
+          "before": 160,
+          "after": 4
+        },
+        {
+          "address": 65193,
+          "before": 2,
+          "after": 1
+        },
+        {
+          "address": 65194,
+          "before": 9,
+          "after": 91
+        },
+        {
+          "address": 65195,
+          "before": 80,
+          "after": 130
+        },
+        {
+          "address": 65304,
+          "before": 232,
+          "after": 85
+        },
+        {
+          "address": 65305,
+          "before": 169,
+          "after": 133
+        },
+        {
+          "address": 65306,
+          "before": 162,
+          "after": 18
+        },
+        {
+          "address": 65307,
+          "before": 202,
+          "after": 90
+        }
+      ],
+      "stack_delta": [
+        {
+          "address": 65108,
+          "before": 121,
+          "after": 0
+        },
+        {
+          "address": 65109,
+          "before": 172,
+          "after": 3
+        },
+        {
+          "address": 65110,
+          "before": 0,
+          "after": 139
+        },
+        {
+          "address": 65111,
+          "before": 3,
+          "after": 124
+        },
+        {
+          "address": 65112,
+          "before": 118,
+          "after": 39
+        },
+        {
+          "address": 65113,
+          "before": 28,
+          "after": 2
+        },
+        {
+          "address": 65115,
+          "before": 2,
+          "after": 3
+        },
+        {
+          "address": 65116,
+          "before": 25,
+          "after": 121
+        },
+        {
+          "address": 65117,
+          "before": 228,
+          "after": 172
+        },
+        {
+          "address": 65118,
+          "before": 255,
+          "after": 0
+        },
+        {
+          "address": 65119,
+          "before": 255,
+          "after": 3
+        },
+        {
+          "address": 65120,
+          "before": 240,
+          "after": 118
+        },
+        {
+          "address": 65121,
+          "before": 150,
+          "after": 28
+        },
+        {
+          "address": 65123,
+          "before": 0,
+          "after": 2
+        },
+        {
+          "address": 65124,
+          "before": 0,
+          "after": 25
+        },
+        {
+          "address": 65125,
+          "before": 0,
+          "after": 228
+        },
+        {
+          "address": 65126,
+          "before": 0,
+          "after": 255
+        },
+        {
+          "address": 65127,
+          "before": 0,
+          "after": 255
+        },
+        {
+          "address": 65128,
+          "before": 0,
+          "after": 240
+        },
+        {
+          "address": 65129,
+          "before": 0,
+          "after": 150
+        },
+        {
+          "address": 65133,
+          "before": 0,
+          "after": 8
+        },
+        {
+          "address": 65134,
+          "before": 48,
+          "after": 0
+        },
+        {
+          "address": 65135,
+          "before": 102,
+          "after": 0
+        },
+        {
+          "address": 65137,
+          "before": 0,
+          "after": 170
+        },
+        {
+          "address": 65138,
+          "before": 47,
+          "after": 0
+        },
+        {
+          "address": 65139,
+          "before": 142,
+          "after": 0
+        },
+        {
+          "address": 65142,
+          "before": 46,
+          "after": 0
+        },
+        {
+          "address": 65143,
+          "before": 154,
+          "after": 0
+        },
+        {
+          "address": 65144,
+          "before": 255,
+          "after": 1
+        },
+        {
+          "address": 65145,
+          "before": 255,
+          "after": 172
+        },
+        {
+          "address": 65149,
+          "before": 0,
+          "after": 24
+        },
+        {
+          "address": 65152,
+          "before": 192,
+          "after": 1
+        },
+        {
+          "address": 65153,
+          "before": 0,
+          "after": 1
+        },
+        {
+          "address": 65154,
+          "before": 0,
+          "after": 208
+        },
+        {
+          "address": 65155,
+          "before": 0,
+          "after": 64
+        },
+        {
+          "address": 65156,
+          "before": 0,
+          "after": 3
+        },
+        {
+          "address": 65157,
+          "before": 0,
+          "after": 248
+        },
+        {
+          "address": 65158,
+          "before": 255,
+          "after": 208
+        },
+        {
+          "address": 65159,
+          "before": 2,
+          "after": 64
+        },
+        {
+          "address": 65160,
+          "before": 0,
+          "after": 255
+        },
+        {
+          "address": 65161,
+          "before": 0,
+          "after": 211
+        },
+        {
+          "address": 65162,
+          "before": 236,
+          "after": 0
+        },
+        {
+          "address": 65163,
+          "before": 0,
+          "after": 1
+        },
+        {
+          "address": 65164,
+          "before": 0,
+          "after": 121
+        },
+        {
+          "address": 65165,
+          "before": 0,
+          "after": 96
+        },
+        {
+          "address": 65166,
+          "before": 0,
+          "after": 255
+        },
+        {
+          "address": 65167,
+          "before": 0,
+          "after": 255
+        },
+        {
+          "address": 65168,
+          "before": 0,
+          "after": 132
+        },
+        {
+          "address": 65169,
+          "before": 0,
+          "after": 5
+        },
+        {
+          "address": 65171,
+          "before": 0,
+          "after": 13
+        },
+        {
+          "address": 65172,
+          "before": 0,
+          "after": 14
+        },
+        {
+          "address": 65173,
+          "before": 0,
+          "after": 150
+        },
+        {
+          "address": 65174,
+          "before": 255,
+          "after": 0
+        },
+        {
+          "address": 65175,
+          "before": 255,
+          "after": 2
+        },
+        {
+          "address": 65176,
+          "before": 255,
+          "after": 24
+        },
+        {
+          "address": 65177,
+          "before": 255,
+          "after": 216
+        },
+        {
+          "address": 65178,
+          "before": 247,
+          "after": 0
+        },
+        {
+          "address": 65179,
+          "before": 24,
+          "after": 13
+        },
+        {
+          "address": 65180,
+          "before": 255,
+          "after": 169
+        },
+        {
+          "address": 65181,
+          "before": 255,
+          "after": 122
+        },
+        {
+          "address": 65182,
+          "before": 247,
+          "after": 255
+        },
+        {
+          "address": 65183,
+          "before": 129,
+          "after": 255
+        },
+        {
+          "address": 65186,
+          "before": 45,
+          "after": 0
+        },
+        {
+          "address": 65187,
+          "before": 10,
+          "after": 170
+        },
+        {
+          "address": 65188,
+          "before": 255,
+          "after": 0
+        },
+        {
+          "address": 65189,
+          "before": 255,
+          "after": 1
+        },
+        {
+          "address": 65190,
+          "before": 224,
+          "after": 92
+        },
+        {
+          "address": 65191,
+          "before": 160,
+          "after": 4
+        },
+        {
+          "address": 65193,
+          "before": 2,
+          "after": 1
+        },
+        {
+          "address": 65194,
+          "before": 9,
+          "after": 91
+        },
+        {
+          "address": 65195,
+          "before": 80,
+          "after": 130
+        }
+      ],
+      "external_delta": [
+        {
+          "address": 62743,
+          "before": 0,
+          "after": 4
+        },
+        {
+          "address": 63187,
+          "before": 36,
+          "after": 100
+        },
+        {
+          "address": 63489,
+          "before": 2,
+          "after": 1
+        },
+        {
+          "address": 63566,
+          "before": 4,
+          "after": 3
+        },
+        {
+          "address": 63614,
+          "before": 4,
+          "after": 3
+        },
+        {
+          "address": 63624,
+          "before": 22,
+          "after": 21
+        },
+        {
+          "address": 63662,
+          "before": 4,
+          "after": 3
+        },
+        {
+          "address": 63710,
+          "before": 4,
+          "after": 3
+        },
+        {
+          "address": 63720,
+          "before": 21,
+          "after": 20
+        },
+        {
+          "address": 63758,
+          "before": 10,
+          "after": 9
+        },
+        {
+          "address": 63768,
+          "before": 21,
+          "after": 20
+        },
+        {
+          "address": 63806,
+          "before": 10,
+          "after": 9
+        },
+        {
+          "address": 63816,
+          "before": 22,
+          "after": 21
+        },
+        {
+          "address": 63902,
+          "before": 58,
+          "after": 57
+        },
+        {
+          "address": 63913,
+          "before": 2,
+          "after": 1
+        },
+        {
+          "address": 63950,
+          "before": 4,
+          "after": 3
+        },
+        {
+          "address": 63960,
+          "before": 10,
+          "after": 9
+        },
+        {
+          "address": 63996,
+          "before": 3,
+          "after": 4
+        },
+        {
+          "address": 63998,
+          "before": 4,
+          "after": 3
+        },
+        {
+          "address": 64142,
+          "before": 3,
+          "after": 2
+        },
+        {
+          "address": 64155,
+          "before": 3,
+          "after": 2
+        },
+        {
+          "address": 64156,
+          "before": 0,
+          "after": 1
+        },
+        {
+          "address": 64157,
+          "before": 192,
+          "after": 32
+        }
+      ]
+    },
+    "interrupts": [
+      {
+        "entry": "0xfff000",
+        "entry_register": "0xfffff000",
+        "exit": "0xfff09a",
+        "changes": [
+          {
+            "address": 62743,
+            "before": 0,
+            "after": 2
+          },
+          {
+            "address": 63187,
+            "before": 36,
+            "after": 100
+          },
+          {
+            "address": 63489,
+            "before": 2,
+            "after": 1
+          },
+          {
+            "address": 63498,
+            "before": 162,
+            "after": 0
+          },
+          {
+            "address": 63566,
+            "before": 4,
+            "after": 3
+          },
+          {
+            "address": 63614,
+            "before": 4,
+            "after": 3
+          },
+          {
+            "address": 63624,
+            "before": 22,
+            "after": 21
+          },
+          {
+            "address": 63662,
+            "before": 4,
+            "after": 3
+          },
+          {
+            "address": 63710,
+            "before": 4,
+            "after": 3
+          },
+          {
+            "address": 63720,
+            "before": 21,
+            "after": 20
+          },
+          {
+            "address": 63758,
+            "before": 10,
+            "after": 9
+          },
+          {
+            "address": 63768,
+            "before": 21,
+            "after": 20
+          },
+          {
+            "address": 63806,
+            "before": 10,
+            "after": 9
+          },
+          {
+            "address": 63816,
+            "before": 22,
+            "after": 21
+          },
+          {
+            "address": 63902,
+            "before": 58,
+            "after": 57
+          },
+          {
+            "address": 63913,
+            "before": 2,
+            "after": 1
+          },
+          {
+            "address": 63950,
+            "before": 4,
+            "after": 3
+          },
+          {
+            "address": 63960,
+            "before": 10,
+            "after": 9
+          },
+          {
+            "address": 63996,
+            "before": 3,
+            "after": 4
+          },
+          {
+            "address": 63998,
+            "before": 4,
+            "after": 3
+          },
+          {
+            "address": 64142,
+            "before": 3,
+            "after": 2
+          },
+          {
+            "address": 64155,
+            "before": 3,
+            "after": 2
+          },
+          {
+            "address": 64156,
+            "before": 0,
+            "after": 1
+          },
+          {
+            "address": 64157,
+            "before": 192,
+            "after": 32
+          },
+          {
+            "address": 65108,
+            "before": 121,
+            "after": 0
+          },
+          {
+            "address": 65109,
+            "before": 172,
+            "after": 3
+          },
+          {
+            "address": 65110,
+            "before": 0,
+            "after": 139
+          },
+          {
+            "address": 65111,
+            "before": 3,
+            "after": 124
+          },
+          {
+            "address": 65112,
+            "before": 118,
+            "after": 39
+          },
+          {
+            "address": 65113,
+            "before": 28,
+            "after": 2
+          },
+          {
+            "address": 65115,
+            "before": 2,
+            "after": 3
+          },
+          {
+            "address": 65116,
+            "before": 25,
+            "after": 121
+          },
+          {
+            "address": 65117,
+            "before": 228,
+            "after": 172
+          },
+          {
+            "address": 65118,
+            "before": 255,
+            "after": 0
+          },
+          {
+            "address": 65119,
+            "before": 255,
+            "after": 3
+          },
+          {
+            "address": 65120,
+            "before": 240,
+            "after": 118
+          },
+          {
+            "address": 65121,
+            "before": 150,
+            "after": 28
+          },
+          {
+            "address": 65123,
+            "before": 0,
+            "after": 2
+          },
+          {
+            "address": 65124,
+            "before": 0,
+            "after": 25
+          },
+          {
+            "address": 65125,
+            "before": 0,
+            "after": 228
+          },
+          {
+            "address": 65126,
+            "before": 0,
+            "after": 255
+          },
+          {
+            "address": 65127,
+            "before": 0,
+            "after": 255
+          },
+          {
+            "address": 65128,
+            "before": 0,
+            "after": 240
+          },
+          {
+            "address": 65129,
+            "before": 0,
+            "after": 150
+          },
+          {
+            "address": 65133,
+            "before": 0,
+            "after": 8
+          },
+          {
+            "address": 65134,
+            "before": 48,
+            "after": 0
+          },
+          {
+            "address": 65135,
+            "before": 102,
+            "after": 0
+          },
+          {
+            "address": 65137,
+            "before": 0,
+            "after": 170
+          },
+          {
+            "address": 65138,
+            "before": 47,
+            "after": 0
+          },
+          {
+            "address": 65139,
+            "before": 142,
+            "after": 0
+          },
+          {
+            "address": 65142,
+            "before": 46,
+            "after": 0
+          },
+          {
+            "address": 65143,
+            "before": 154,
+            "after": 0
+          },
+          {
+            "address": 65144,
+            "before": 255,
+            "after": 1
+          },
+          {
+            "address": 65145,
+            "before": 255,
+            "after": 172
+          },
+          {
+            "address": 65149,
+            "before": 0,
+            "after": 24
+          },
+          {
+            "address": 65152,
+            "before": 192,
+            "after": 1
+          },
+          {
+            "address": 65153,
+            "before": 0,
+            "after": 1
+          },
+          {
+            "address": 65154,
+            "before": 0,
+            "after": 208
+          },
+          {
+            "address": 65155,
+            "before": 0,
+            "after": 64
+          },
+          {
+            "address": 65156,
+            "before": 0,
+            "after": 3
+          },
+          {
+            "address": 65157,
+            "before": 0,
+            "after": 248
+          },
+          {
+            "address": 65158,
+            "before": 255,
+            "after": 208
+          },
+          {
+            "address": 65159,
+            "before": 2,
+            "after": 64
+          },
+          {
+            "address": 65160,
+            "before": 0,
+            "after": 255
+          },
+          {
+            "address": 65161,
+            "before": 0,
+            "after": 211
+          },
+          {
+            "address": 65162,
+            "before": 236,
+            "after": 0
+          },
+          {
+            "address": 65163,
+            "before": 0,
+            "after": 1
+          },
+          {
+            "address": 65164,
+            "before": 0,
+            "after": 121
+          },
+          {
+            "address": 65165,
+            "before": 0,
+            "after": 96
+          },
+          {
+            "address": 65166,
+            "before": 0,
+            "after": 255
+          },
+          {
+            "address": 65167,
+            "before": 0,
+            "after": 255
+          },
+          {
+            "address": 65168,
+            "before": 0,
+            "after": 132
+          },
+          {
+            "address": 65169,
+            "before": 0,
+            "after": 5
+          },
+          {
+            "address": 65171,
+            "before": 0,
+            "after": 13
+          },
+          {
+            "address": 65172,
+            "before": 0,
+            "after": 14
+          },
+          {
+            "address": 65173,
+            "before": 0,
+            "after": 150
+          },
+          {
+            "address": 65174,
+            "before": 255,
+            "after": 0
+          },
+          {
+            "address": 65175,
+            "before": 255,
+            "after": 2
+          },
+          {
+            "address": 65176,
+            "before": 255,
+            "after": 24
+          },
+          {
+            "address": 65177,
+            "before": 255,
+            "after": 216
+          },
+          {
+            "address": 65178,
+            "before": 247,
+            "after": 0
+          },
+          {
+            "address": 65179,
+            "before": 24,
+            "after": 13
+          },
+          {
+            "address": 65180,
+            "before": 255,
+            "after": 169
+          },
+          {
+            "address": 65181,
+            "before": 255,
+            "after": 122
+          },
+          {
+            "address": 65182,
+            "before": 247,
+            "after": 255
+          },
+          {
+            "address": 65183,
+            "before": 129,
+            "after": 255
+          },
+          {
+            "address": 65184,
+            "before": 0,
+            "after": 132
+          }
+        ]
+      },
+      {
+        "entry": "0xfff000",
+        "entry_register": "0xfffff000",
+        "exit": "0xfff0a8",
+        "changes": [
+          {
+            "address": 62743,
+            "before": 2,
+            "after": 4
+          }
+        ]
+      }
+    ]
+  },
+  "rule_inference": {
+    "go_before_no_external_irq": [
+      162,
+      0,
+      0,
+      0
+    ],
+    "owned_request_from_observed_selected_data": 166,
+    "synchronous_queue_after_without_irq": [
+      162,
+      166,
+      0,
+      0
+    ],
+    "reason": "The existing deterministic allocator retains occupied a2 at slot0 and enqueues a6 into the first free slot1. The original IRQ clears a2 before the actual owned producer, leaving a6 at slot0."
+  },
+  "initial_verification": [
+    {
+      "kind": "native",
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-native.jsonl",
+      "sha256": "857ee4d207d2567599d833b1bb272408633a8fb7f744713fd3441e3b3e742072",
+      "tests": [
+        {
+          "name": "TestFighter7CompositionOriginalActions",
+          "result": "fail",
+          "elapsed": 21.01
+        },
+        {
+          "name": "TestFighter7CompositionOriginalInputs",
+          "result": "pass",
+          "elapsed": 11.28
+        },
+        {
+          "name": "TestFighter7CompositionOriginalActors",
+          "result": "fail",
+          "elapsed": 29.35
+        },
+        {
+          "name": "TestFighter7CompositionActionStreams",
+          "result": "pass",
+          "elapsed": 2.15
+        },
+        {
+          "name": "TestFighter7CompositionInputAndActorStreams",
+          "result": "pass",
+          "elapsed": 0.69
+        },
+        {
+          "name": "TestFighter7CompositionFailuresAreAtomic",
+          "result": "pass",
+          "elapsed": 0.96
+        }
+      ]
+    },
+    {
+      "kind": "wasm",
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-wasm.jsonl",
+      "sha256": "ba27f1243c514fb561b5f96be392a503670e0ab50dabbe8d9e1533acc172aac4",
+      "tests": [
+        {
+          "name": "TestFighter7CompositionOriginalActions",
+          "result": "fail",
+          "elapsed": 6.58
+        },
+        {
+          "name": "TestFighter7CompositionOriginalInputs",
+          "result": "pass",
+          "elapsed": 2.82
+        },
+        {
+          "name": "TestFighter7CompositionOriginalActors",
+          "result": "fail",
+          "elapsed": 8.17
+        },
+        {
+          "name": "TestFighter7CompositionActionStreams",
+          "result": "pass",
+          "elapsed": 0.72
+        },
+        {
+          "name": "TestFighter7CompositionInputAndActorStreams",
+          "result": "pass",
+          "elapsed": 0.21
+        },
+        {
+          "name": "TestFighter7CompositionFailuresAreAtomic",
+          "result": "pass",
+          "elapsed": 0.3
+        }
+      ]
+    }
+  ],
+  "pending": "Root decision on a separately preserved v2 test projection of exact observed external audio events; v1 assertion remains unchanged."
+}

@@ -43,6 +43,8 @@ def main():
     fighter4_projectiles = read(tests + 'fighter4-projectile-rules.json')
     fighter4_movements = read(tests + 'fighter4-composition-movement-rules.json')
     fighter5_projectiles = read(tests + 'fighter5-projectile-data.json')
+    fighter7_children = read(data + 'fighter7-children-rules.json')
+    assert len(fighter7_children['frames']) == 94
     assert fighter5_projectiles['source_sha256'] == ROM_SHA and len(fighter5_projectiles['frames']) == 33
     alternate_movements = [{'source': rule['source'], 'movement': rule['movement']}
                            for rule in fighter4_movements['rules'] if rule['source'] == 0x15946]
@@ -63,7 +65,7 @@ def main():
         return output
 
     payload = {'schema': 3, 'rom_sha256': ROM_SHA, 'fighters': fighters, 'commands': commands,
-               'animations': animations(parents + projectiles + fighter0_projectiles['animations'] + fighter2_projectiles['animations'] + fighter1_projectiles['animations'] + fighter4_projectiles['animations'] + fighter5_projectiles['frames']),
+               'animations': animations(parents + projectiles + fighter0_projectiles['animations'] + fighter2_projectiles['animations'] + fighter1_projectiles['animations'] + fighter4_projectiles['animations'] + fighter5_projectiles['frames'] + fighter7_children['frames']),
                'attachments': {'sequences': attachments['sequences'], 'animations': animations(attachments['animations'])},
                'effects': effects,
                'attached_effects': {key: attached[key] for key in ['sequences', 'orbit_x', 'orbit_y', 'offset_y']},
@@ -86,6 +88,7 @@ def main():
                            'fighter1_projectile_frames': len(fighter1_projectiles['animations']),
                            'fighter4_projectile_frames': len(fighter4_projectiles['animations']),
                            'fighter5_projectile_frames': len(fighter5_projectiles['frames']),
+                           'fighter7_children_frames': len(fighter7_children['frames']),
                            'fighter4_curve_words': len(fighter4_projectiles['curve']['values']),
                            'alternate_movements': len(alternate_movements),
                            'fighter0_release_sequences': len(fighter0_projectiles['sequences'])},

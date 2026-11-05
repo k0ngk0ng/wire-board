@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/capture_fighter7_composition.py", line 368, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/capture_fighter7_composition.py", line 332, in main
+    capture_cases(setup,invoke,write,FIGHTERS,POSES,stream_rows,set_collect)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/capture_fighter7_composition_cases.py", line 131, in capture
+    assert row['after']['tail']['body']['action_kind'] == expected, (index, expected, row['after']['tail']['body']['action_kind'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: (51, 19, 3)

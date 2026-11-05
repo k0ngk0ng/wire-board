@@ -1,0 +1,117 @@
+{
+  "pass": true,
+  "ordinary_control_reused": true,
+  "natural_gzip_unchanged_after_final_private_capture": [
+    {
+      "name": "fighter7-composition-action-natural.json.gz",
+      "original_sha256": "f600caed6b4927b31e3ed24877ae6f2e06e0e1d84920d2ffe5c13ef2a9708872",
+      "replayed_sha256": "f600caed6b4927b31e3ed24877ae6f2e06e0e1d84920d2ffe5c13ef2a9708872",
+      "identical": true
+    },
+    {
+      "name": "fighter7-composition-input-natural.json.gz",
+      "original_sha256": "92b832a799d63421ec6793f8ddbfed04899a214bfb20e62b4e008b2e93d34bfe",
+      "replayed_sha256": "92b832a799d63421ec6793f8ddbfed04899a214bfb20e62b4e008b2e93d34bfe",
+      "identical": true
+    },
+    {
+      "name": "fighter7-composition-actor-natural.json.gz",
+      "original_sha256": "752d059b283c4b01118e2c8488af6fb6ec2b2630f8e7ae0907b93e3c18008d22",
+      "replayed_sha256": "752d059b283c4b01118e2c8488af6fb6ec2b2630f8e7ae0907b93e3c18008d22",
+      "identical": true
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-action-boundaries.json.gz",
+      "records": 253,
+      "complete_api_returns": 253,
+      "changed_bytes": 17244,
+      "interrupts": 0,
+      "audio_consumers": 0,
+      "raw_sha256": "593c338f27183f644fdf5c7dbb52a49b7b2897e5ac336587dd7540b8c960d02d",
+      "gzip_sha256": "fa247c0eab48733db52da977d7530ee8fb71664e3dfc9a723856a918981387ed"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-action-natural.json.gz",
+      "records": 2067,
+      "complete_api_returns": 2067,
+      "changed_bytes": 150567,
+      "interrupts": 2342,
+      "audio_consumers": 164,
+      "raw_sha256": "dda1082e9e71a55a42c5d1a8c3a365cc123080dd347cd876ae8d439354034b09",
+      "gzip_sha256": "f600caed6b4927b31e3ed24877ae6f2e06e0e1d84920d2ffe5c13ef2a9708872"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-action-sequences.json.gz",
+      "records": 17,
+      "complete_api_returns": 590,
+      "changed_bytes": 14310,
+      "interrupts": 0,
+      "audio_consumers": 0,
+      "raw_sha256": "2c61e5dff82c58f04c05f7ca871da896ede0e470792756f447fb950271ecae92",
+      "gzip_sha256": "0bd26ba88ce3067a6088aef38d8f35d32c4dd310bc5c3a9afa89f8d85765949b"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-actor-boundaries.json.gz",
+      "records": 47,
+      "complete_api_returns": 47,
+      "changed_bytes": 3787,
+      "interrupts": 0,
+      "audio_consumers": 0,
+      "raw_sha256": "010c7f30c25a8d552d0e2a891a4073fc07491f6700d872b55a3cf380492f8906",
+      "gzip_sha256": "62403d289a376451c1cd46855f1a32b3de26e2a0d86ff8ea32d9ece2159aafa3"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-actor-natural.json.gz",
+      "records": 2067,
+      "complete_api_returns": 2067,
+      "changed_bytes": 191906,
+      "interrupts": 2956,
+      "audio_consumers": 204,
+      "raw_sha256": "0efbbfaa5aaba312ada929f1bf5cce7f053530afe29ee5ee10ce2a7e06e8fc2c",
+      "gzip_sha256": "752d059b283c4b01118e2c8488af6fb6ec2b2630f8e7ae0907b93e3c18008d22"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-actor-sequences.json.gz",
+      "records": 4,
+      "complete_api_returns": 96,
+      "changed_bytes": 4359,
+      "interrupts": 0,
+      "audio_consumers": 0,
+      "raw_sha256": "9ce4b66740fe7088476cb6a5b6c1662eb3c41f08cdbe7e058651e18aba21a302",
+      "gzip_sha256": "75735c7d8c13815c7ff3b7f6cb622a1aaed9136b6db9f6a8ee2f0b88f8dd95c1"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-input-boundaries.json.gz",
+      "records": 35,
+      "complete_api_returns": 35,
+      "changed_bytes": 298,
+      "interrupts": 0,
+      "audio_consumers": 0,
+      "raw_sha256": "64c0fca15f66134971fd5d433d86f91a3d3bfbde2d030615a9e90f6f9e8dba01",
+      "gzip_sha256": "d163c2f7964f34be01f7fff3e62e54c4856ae4a4f187bd391c9c0c8571de2e74"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-input-natural.json.gz",
+      "records": 2067,
+      "complete_api_returns": 2067,
+      "changed_bytes": 925,
+      "interrupts": 18,
+      "audio_consumers": 12,
+      "raw_sha256": "8bbe8083c41222ced9d7522fed62530a1cb2e840c40ecfa84c00192b41f3935a",
+      "gzip_sha256": "92b832a799d63421ec6793f8ddbfed04899a214bfb20e62b4e008b2e93d34bfe"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-composition-input-sequences.json.gz",
+      "records": 3,
+      "complete_api_returns": 48,
+      "changed_bytes": 372,
+      "interrupts": 0,
+      "audio_consumers": 0,
+      "raw_sha256": "b09e37b0c1fb711dca2c8e72a0b02cd8a757c8d99343b85119686578080246fc",
+      "gzip_sha256": "7c24334bff0b42fefc3a9ee862a3c830b2603ad572d0c66fe0a8e95f56d84981"
+    }
+  ],
+  "frozen_test_sha256": "7e1477727855f72ab03efd31bc6350d5399def191c0487d936b3daeab8083f29"
+}

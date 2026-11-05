@@ -1,0 +1,89 @@
+{
+  "pass": true,
+  "utc": "2026-11-05T05:28:44.759844+00:00",
+  "scope": "Source7 pre-tail MAIN39..3d and shared0f/11/13/14/45; no full actor/world claim",
+  "production_sha256": "cfb8334a40adb24ceaf5232f09cf06a14fdc948c83f3e71308cf0cf746c26004",
+  "frozen_test_sha256": "cbea2f11e0efe11694c4042aca6722a1a6861edd9b2bc97ed6b52d3494613c51",
+  "frozen_files_unchanged": true,
+  "frozen_file_count": 9,
+  "test_first_version": 2,
+  "test_first_lineage": "fighter7-motion-test-lineage.json",
+  "owned_symbol_red_verified": true,
+  "checks": {
+    "native_race": {
+      "pass": true,
+      "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+      "elapsed_seconds": 14.258,
+      "tests": [
+        "TestFighter7MotionOriginalPhases/oracle",
+        "TestFighter7MotionOriginalPhases/boundaries",
+        "TestFighter7MotionOriginalPhases",
+        "TestFighter7MotionSingleInitialState",
+        "TestFighter7MotionErrorsAreAtomic"
+      ],
+      "artifact": "fighter7-motion-native.jsonl",
+      "sha256": "f9cd368a427a7aedbf95392500ac785baa413e24bfa5c52f7e4557a012c07207"
+    },
+    "js_wasm": {
+      "pass": true,
+      "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+      "elapsed_seconds": 4.261,
+      "tests": [
+        "TestFighter7MotionOriginalPhases/oracle",
+        "TestFighter7MotionOriginalPhases/boundaries",
+        "TestFighter7MotionOriginalPhases",
+        "TestFighter7MotionSingleInitialState",
+        "TestFighter7MotionErrorsAreAtomic"
+      ],
+      "artifact": "fighter7-motion-wasm.jsonl",
+      "sha256": "f14d781765c048e73255fd78b111f5d7f6d2dc63e65abd46b16af18cef436c3b"
+    }
+  },
+  "original_cpu": {
+    "natural_calls": 91,
+    "natural_kinds": {
+      "11": 91
+    },
+    "dirty_calls": 6428,
+    "single_initial_trajectories": 34,
+    "original_clock_calls": 916,
+    "motion_calls_in_trajectories": 916,
+    "own_record_refreshes": 916,
+    "external_input_steps": 10,
+    "full_64k_delta_calls": 8351,
+    "interrupts": 2,
+    "unexplained_change_calls": 0,
+    "rng_calls": 0,
+    "special_natural_observed": false
+  },
+  "artifacts": {
+    "games/yuyuhakusho/engine/fighter7_motion.go": "cfb8334a40adb24ceaf5232f09cf06a14fdc948c83f3e71308cf0cf746c26004",
+    "games/yuyuhakusho/engine/fighter7_motion_test.go": "cbea2f11e0efe11694c4042aca6722a1a6861edd9b2bc97ed6b52d3494613c51",
+    "games/yuyuhakusho/engine/FIGHTER7_MOTION_FAILURES.md": "edce7f1f9a0e9f7af12b87f0fe161d325f0d91ffd3d4933e3ad42e6e5611d3db",
+    "games/yuyuhakusho/engine/FIGHTER7_MOTION_VERIFICATION.md": "0b07321afd5b0af82af968bbff9128e9bb8df2f8a27803cdae9d381863047a17",
+    "scripts/yuyuhakusho/capture_fighter7_motion.py": "d527595497364d856ce62214ab74a4a6229c37bb2559d586656d0bada1e8bb8e",
+    "games/yuyuhakusho/engine/testdata/fighter7-motion-boundaries-manifest.json": "830aea7938ae110440548fac90f08f67b9b4dc2abd343273b4a96ac3033b708a",
+    "games/yuyuhakusho/engine/testdata/fighter7-motion-boundaries.json.gz": "c397ff2e173b0aef7a1022ea15e36fc9786e6e5068f160b89fc45aa0eda783a1",
+    "games/yuyuhakusho/engine/testdata/fighter7-motion-intermediate-native.jsonl": "7c29d710c9011c5d8c061eea187bad7d59fe847fb32441adffd3c72cb5659c99",
+    "games/yuyuhakusho/engine/testdata/fighter7-motion-intermediate-selection.json": "a34de85d3eb6fc95fa203fb063085d87db7fb8fd3be55d34209182cf2f19c69b",
+    "games/yuyuhakusho/engine/testdata/fighter7-motion-intermediate-wasm-selection.json": "b13a49064c71981ad8f09bfede890c95ff6552183406a455a07e441152e4ae0c",
+    "games/yuyuhakusho/engine/testdata/fighter7-motion-intermediate-wasm.jsonl": "a4129687dd98bb8b9288e1d8dcefd9a09a97c7e198bd8227a8b643d0bf71b6c6",
+    "games/yuyuhakusho/engine/testdata/fighter7-motion-native.jsonl": "f9cd368a427a7aedbf95392500ac785baa413e24bfa5c52f7e4557a012c07207",
+    "games/yuyuhakusho/engine/testdata/fighter7-motion-oracle-manifest.json": "72f936acc325091498eee4f57d039ae2a62d752c8722a555f7d81c4f0a958925",
+    "games/yuyuhakusho/engine/testdata/fighter7-motion-oracle.json.gz": "4494df344e14230f985553d9e54208e6c906c74518ea6842c66214ce90e3dcb3",
+    "games/yuyuhakusho/engine/testdata/fighter7-motion-package-waiting-children.jsonl": "cf45988c6867423e8b224aa6564de98e079606a2a0187ccbe6d7b85ee7a574c5",
+    "games/yuyuhakusho/engine/testdata/fighter7-motion-red.jsonl": "35b5a9d6f582fa34de33e4b66b77f302bea121605da9993fd3dd1f21564d9932",
+    "games/yuyuhakusho/engine/testdata/fighter7-motion-sequences-manifest.json": "68d8b2c152498657c6feb91416968b0749cc0cb5acddffa02a58aea3d915f3f8",
+    "games/yuyuhakusho/engine/testdata/fighter7-motion-sequences.json.gz": "61aef86f8e1dd3f8036d66bb3e87dae37faef8e4a722bd8718135493a3395bf5",
+    "games/yuyuhakusho/engine/testdata/fighter7-motion-test-first.json": "37167a1ca69fabfdfd92cc13436ea58760d48b9108d4a262ca87a8ab8cc13bf3",
+    "games/yuyuhakusho/engine/testdata/fighter7-motion-test-lineage.json": "79d60c01756875f4fdff81a84c952b973295915d05e8354a2174d980277b1e8f",
+    "games/yuyuhakusho/engine/testdata/fighter7-motion-v1-red.jsonl": "3518ab679dab606881ce658dd8b8ce131eb5e4e96620f2039a29ce9303dbc749",
+    "games/yuyuhakusho/engine/testdata/fighter7-motion-v1-test-first.json": "10872fafb2c5d8470b32a94972c272df78532cd8893a207a72d2b4f9da2c87c8",
+    "games/yuyuhakusho/engine/testdata/fighter7-motion-v1-test.go.txt": "fb9b7143bce96d06aae26a6edb9d8f5fd0bf12f587f4b2011c08d6f1c17495e1",
+    "games/yuyuhakusho/engine/testdata/fighter7-motion-wasm.jsonl": "f14d781765c048e73255fd78b111f5d7f6d2dc63e65abd46b16af18cef436c3b"
+  },
+  "limits": [
+    "Ordinary natural control observes retreat11 only; special natural coverage remains in the separate composition scope.",
+    "No shared tail, active child/FX callbacks, actor/world scheduling, UI or progress changes in this scope."
+  ]
+}
