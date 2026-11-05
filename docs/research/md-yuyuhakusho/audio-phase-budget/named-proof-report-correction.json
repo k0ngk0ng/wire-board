@@ -1,0 +1,118 @@
+{
+  "scope": "Metadata/report consistency correction only; no original capture or frozen algorithm change",
+  "problem": "The priorvalidation frame_tail_counterexamples summary selected battle_only_frame_tail_counterexample for both baseline andpause, omittedscenario/domain labels and didnot expose the separately verified full-flow proof. Underlyingcausality.json alreadycontainsboth375/FF→73 and1813/FF→A3 results ineachscenario.",
+  "previous_validation": {
+    "path": "docs/research/md-yuyuhakusho/audio-phase-budget/validation-before-named-proofs.json",
+    "sha256": "56feb08acb7b5059e4458e5f1432af58eb2a82127cbded96b6de37c2b1a3609e"
+  },
+  "previous_document": {
+    "path": "docs/research/md-yuyuhakusho/audio-phase-budget/AUDIO_PHASE_BUDGET-before-named-proofs.md",
+    "sha256": "30601951da2feb3f0b48cf49f1388b4374d7dd5e2f3e59433ba895e70095d2a3"
+  },
+  "unchanged_causality": {
+    "path": "docs/research/md-yuyuhakusho/audio-phase-budget/causality.json",
+    "sha256": "9b0b21976b7c395d68abebfa19a4abb45e827170b9d40f96ce6bf016bcb94e74"
+  },
+  "repair": "Publishfouruniquelynamedproofs withscenario,domain,policystartframe and exactsourceJSONpointer; leaveunderlyingalgorithm/data unchanged",
+  "named_proofs": [
+    {
+      "proof_id": "baseline-full_flow",
+      "scenario": "baseline",
+      "domain": "full_flow",
+      "policy_start_frame": 1,
+      "source_path": "docs/research/md-yuyuhakusho/audio-phase-budget/causality.json",
+      "source_sha256": "9b0b21976b7c395d68abebfa19a4abb45e827170b9d40f96ce6bf016bcb94e74",
+      "source_json_pointer": "/reports/0/frame_tail_counterexample",
+      "rejected": true,
+      "reason": "frame-tail placement changes the selected command before any earlier command differs",
+      "frame": 375,
+      "native_selected": 255,
+      "hypothetical_selected": 115,
+      "hypothetical_queue_before_consume": [
+        146,
+        115,
+        0,
+        0
+      ],
+      "priority_before": 0,
+      "unchanged_dispatches_before_counterexample": 69,
+      "native_tick_time_master": 335249048,
+      "scope": "Original driver non-consumer operations are reused only along the unchanged selected-command prefix; no claim is made about later hypothetical DSP output"
+    },
+    {
+      "proof_id": "baseline-battle_only",
+      "scenario": "baseline",
+      "domain": "battle_only",
+      "policy_start_frame": 1800,
+      "source_path": "docs/research/md-yuyuhakusho/audio-phase-budget/causality.json",
+      "source_sha256": "9b0b21976b7c395d68abebfa19a4abb45e827170b9d40f96ce6bf016bcb94e74",
+      "source_json_pointer": "/reports/0/battle_only_frame_tail_counterexample",
+      "rejected": true,
+      "reason": "frame-tail placement changes the selected command before any earlier command differs",
+      "frame": 1813,
+      "native_selected": 255,
+      "hypothetical_selected": 163,
+      "hypothetical_queue_before_consume": [
+        163,
+        0,
+        0,
+        0
+      ],
+      "priority_before": 0,
+      "unchanged_dispatches_before_counterexample": 1508,
+      "native_tick_time_master": 1623825747,
+      "scope": "Original driver non-consumer operations are reused only along the unchanged selected-command prefix; no claim is made about later hypothetical DSP output"
+    },
+    {
+      "proof_id": "pause-full_flow",
+      "scenario": "pause",
+      "domain": "full_flow",
+      "policy_start_frame": 1,
+      "source_path": "docs/research/md-yuyuhakusho/audio-phase-budget/causality.json",
+      "source_sha256": "9b0b21976b7c395d68abebfa19a4abb45e827170b9d40f96ce6bf016bcb94e74",
+      "source_json_pointer": "/reports/1/frame_tail_counterexample",
+      "rejected": true,
+      "reason": "frame-tail placement changes the selected command before any earlier command differs",
+      "frame": 375,
+      "native_selected": 255,
+      "hypothetical_selected": 115,
+      "hypothetical_queue_before_consume": [
+        146,
+        115,
+        0,
+        0
+      ],
+      "priority_before": 0,
+      "unchanged_dispatches_before_counterexample": 69,
+      "native_tick_time_master": 335249048,
+      "scope": "Original driver non-consumer operations are reused only along the unchanged selected-command prefix; no claim is made about later hypothetical DSP output"
+    },
+    {
+      "proof_id": "pause-battle_only",
+      "scenario": "pause",
+      "domain": "battle_only",
+      "policy_start_frame": 1800,
+      "source_path": "docs/research/md-yuyuhakusho/audio-phase-budget/causality.json",
+      "source_sha256": "9b0b21976b7c395d68abebfa19a4abb45e827170b9d40f96ce6bf016bcb94e74",
+      "source_json_pointer": "/reports/1/battle_only_frame_tail_counterexample",
+      "rejected": true,
+      "reason": "frame-tail placement changes the selected command before any earlier command differs",
+      "frame": 1813,
+      "native_selected": 255,
+      "hypothetical_selected": 163,
+      "hypothetical_queue_before_consume": [
+        163,
+        0,
+        0,
+        0
+      ],
+      "priority_before": 0,
+      "unchanged_dispatches_before_counterexample": 1508,
+      "native_tick_time_master": 1623825747,
+      "scope": "Original driver non-consumer operations are reused only along the unchanged selected-command prefix; no claim is made about later hypothetical DSP output"
+    }
+  ],
+  "production_modified": false,
+  "original_recaptured": false,
+  "algorithm_modified": false
+}

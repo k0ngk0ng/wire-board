@@ -1,0 +1,112 @@
+{
+  "scope": "Residual arithmetic plus pinned native source; not direct per-Z80-read runtime observation",
+  "mismatches": 6710,
+  "all_residuals_compatible_with_70_77": true,
+  "residuals": [
+    {
+      "residual_master": 70,
+      "count": 1307,
+      "compatible_z80_steal_combinations": [
+        {
+          "bank_reads": 1,
+          "seventy_seven_reads": 0
+        }
+      ]
+    },
+    {
+      "residual_master": 77,
+      "count": 509,
+      "compatible_z80_steal_combinations": [
+        {
+          "bank_reads": 1,
+          "seventy_seven_reads": 1
+        }
+      ]
+    },
+    {
+      "residual_master": 140,
+      "count": 1025,
+      "compatible_z80_steal_combinations": [
+        {
+          "bank_reads": 2,
+          "seventy_seven_reads": 0
+        }
+      ]
+    },
+    {
+      "residual_master": 147,
+      "count": 1351,
+      "compatible_z80_steal_combinations": [
+        {
+          "bank_reads": 2,
+          "seventy_seven_reads": 1
+        }
+      ]
+    },
+    {
+      "residual_master": 154,
+      "count": 1,
+      "compatible_z80_steal_combinations": [
+        {
+          "bank_reads": 2,
+          "seventy_seven_reads": 2
+        }
+      ]
+    },
+    {
+      "residual_master": 210,
+      "count": 59,
+      "compatible_z80_steal_combinations": [
+        {
+          "bank_reads": 3,
+          "seventy_seven_reads": 0
+        }
+      ]
+    },
+    {
+      "residual_master": 217,
+      "count": 321,
+      "compatible_z80_steal_combinations": [
+        {
+          "bank_reads": 3,
+          "seventy_seven_reads": 1
+        }
+      ]
+    },
+    {
+      "residual_master": 224,
+      "count": 22,
+      "compatible_z80_steal_combinations": [
+        {
+          "bank_reads": 3,
+          "seventy_seven_reads": 2
+        }
+      ]
+    },
+    {
+      "residual_master": 287,
+      "count": 1815,
+      "compatible_z80_steal_combinations": [
+        {
+          "bank_reads": 4,
+          "seventy_seven_reads": 1
+        }
+      ]
+    },
+    {
+      "residual_master": 294,
+      "count": 300,
+      "compatible_z80_steal_combinations": [
+        {
+          "bank_reads": 4,
+          "seventy_seven_reads": 2
+        }
+      ]
+    }
+  ],
+  "source": "core/memz80.c z80_request_68k_bus_access advancesm68k.cycles by70 or77 thenZ80 by45; source explicitly calls this an approximate hardware wait-state model",
+  "limits": [
+    "IRQ and own hardware-access intervals are retained separately in the original red model output",
+    "This arithmetic/source correlation does not yet reconstruct independent PCM bus accesses or prove every individual steal timestamp"
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "phase": "research capture/failure scope frozen before first execution; no production implementation",
+  "sha256": {
+    "scripts/yuyuhakusho/capture_audio_phase_budget.py": "bf19d7bb4bf23e5c13517f687635f5a92efd59cd4511b472a0c7d4607a0268de",
+    "scripts/yuyuhakusho/audio_phase_budget_bridge.c": "f5926b23561e1e1083bb7e473fa561003303e80033328d4c39fea2e7eb0bb9fa",
+    "docs/research/md-yuyuhakusho/AUDIO_PHASE_BUDGET_FAILURES.md": "e884a9015c41b583b7289deb2a28823cea3058ebe883151bbb2485cabaac1bb5"
+  }
+}

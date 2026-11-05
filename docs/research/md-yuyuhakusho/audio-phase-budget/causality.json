@@ -1,0 +1,445 @@
+{
+  "pass": true,
+  "scope": "Complete watched-write semantic validation and observed callback-barrier reduction; not a production scheduler",
+  "reports": [
+    {
+      "pass": true,
+      "scenario": "baseline",
+      "events_checked": 267672,
+      "owned_writes": 5953,
+      "write_categories": {
+        "cold-initialization-clear": 9,
+        "driver-reset-clear": 44,
+        "driver-reset-selected": 11,
+        "cold-initialization-queue-command4": 1,
+        "priority-consumer": 554,
+        "dispatch-clear": 5195,
+        "world-or-delayed-request": 109,
+        "primary-stop": 7,
+        "driver-priority-restore": 7,
+        "score-EB-slot0-overwrite": 1,
+        "voice-priority-release": 15
+      },
+      "requests": 109,
+      "driver_ticks": 5195,
+      "non_ff_dispatches": 107,
+      "complete_dispatch_codes_equal_after_reduction": true,
+      "dispatch_codes_sha256": "ea9bf08353d0faf84fae448d704cf90d73576015a3a45a835716463f417ef64f",
+      "frame_tail_counterexample": {
+        "rejected": true,
+        "reason": "frame-tail placement changes the selected command before any earlier command differs",
+        "frame": 375,
+        "native_selected": 255,
+        "hypothetical_selected": 115,
+        "hypothetical_queue_before_consume": [
+          146,
+          115,
+          0,
+          0
+        ],
+        "priority_before": 0,
+        "unchanged_dispatches_before_counterexample": 69,
+        "native_tick_time_master": 335249048,
+        "scope": "Original driver non-consumer operations are reused only along the unchanged selected-command prefix; no claim is made about later hypothetical DSP output"
+      },
+      "battle_only_frame_tail_counterexample": {
+        "rejected": true,
+        "reason": "frame-tail placement changes the selected command before any earlier command differs",
+        "frame": 1813,
+        "native_selected": 255,
+        "hypothetical_selected": 163,
+        "hypothetical_queue_before_consume": [
+          163,
+          0,
+          0,
+          0
+        ],
+        "priority_before": 0,
+        "unchanged_dispatches_before_counterexample": 1508,
+        "native_tick_time_master": 1623825747,
+        "scope": "Original driver non-consumer operations are reused only along the unchanged selected-command prefix; no claim is made about later hypothetical DSP output"
+      },
+      "callback_boundary_choices": {
+        "outside-closed-callback": 2032,
+        "before-callback": 3158,
+        "after-callback": 5
+      },
+      "ambiguous_ticks": [],
+      "all_physical_sound_writes_equal_after_reduction": true,
+      "all_owned_before_after_states_equal": true,
+      "nonempty_consumers_inside_callbacks_retained": 83,
+      "ticks_before_later_callback_request": 23,
+      "ticks_inside_request_function": 1,
+      "driver_duration_by_selected": {
+        "4": {
+          "calls": 2,
+          "min_master": 135513,
+          "max_master": 156702
+        },
+        "255": {
+          "calls": 5088,
+          "min_master": 5327,
+          "max_master": 594118
+        },
+        "115": {
+          "calls": 1,
+          "min_master": 16485,
+          "max_master": 16485
+        },
+        "146": {
+          "calls": 1,
+          "min_master": 82887,
+          "max_master": 82887
+        },
+        "147": {
+          "calls": 1,
+          "min_master": 79114,
+          "max_master": 79114
+        },
+        "161": {
+          "calls": 3,
+          "min_master": 63490,
+          "max_master": 73297
+        },
+        "1": {
+          "calls": 3,
+          "min_master": 29589,
+          "max_master": 163156
+        },
+        "142": {
+          "calls": 1,
+          "min_master": 148925,
+          "max_master": 148925
+        },
+        "167": {
+          "calls": 1,
+          "min_master": 144102,
+          "max_master": 144102
+        },
+        "150": {
+          "calls": 1,
+          "min_master": 171136,
+          "max_master": 171136
+        },
+        "135": {
+          "calls": 1,
+          "min_master": 81634,
+          "max_master": 81634
+        },
+        "88": {
+          "calls": 1,
+          "min_master": 49126,
+          "max_master": 49126
+        },
+        "89": {
+          "calls": 1,
+          "min_master": 48489,
+          "max_master": 48489
+        },
+        "163": {
+          "calls": 3,
+          "min_master": 52066,
+          "max_master": 71449
+        },
+        "162": {
+          "calls": 3,
+          "min_master": 153286,
+          "max_master": 160041
+        },
+        "118": {
+          "calls": 16,
+          "min_master": 51772,
+          "max_master": 128989
+        },
+        "59": {
+          "calls": 9,
+          "min_master": 62349,
+          "max_master": 133721
+        },
+        "116": {
+          "calls": 6,
+          "min_master": 57190,
+          "max_master": 98623
+        },
+        "60": {
+          "calls": 3,
+          "min_master": 56553,
+          "max_master": 147126
+        },
+        "124": {
+          "calls": 11,
+          "min_master": 43316,
+          "max_master": 78477
+        },
+        "61": {
+          "calls": 8,
+          "min_master": 42721,
+          "max_master": 78659
+        },
+        "125": {
+          "calls": 17,
+          "min_master": 43953,
+          "max_master": 126553
+        },
+        "122": {
+          "calls": 2,
+          "min_master": 46914,
+          "max_master": 58555
+        },
+        "63": {
+          "calls": 1,
+          "min_master": 68922,
+          "max_master": 68922
+        },
+        "5": {
+          "calls": 1,
+          "min_master": 51562,
+          "max_master": 51562
+        },
+        "93": {
+          "calls": 1,
+          "min_master": 64225,
+          "max_master": 64225
+        },
+        "111": {
+          "calls": 1,
+          "min_master": 34111,
+          "max_master": 34111
+        },
+        "65": {
+          "calls": 1,
+          "min_master": 72030,
+          "max_master": 72030
+        },
+        "143": {
+          "calls": 1,
+          "min_master": 76118,
+          "max_master": 76118
+        },
+        "144": {
+          "calls": 1,
+          "min_master": 79114,
+          "max_master": 79114
+        },
+        "168": {
+          "calls": 5,
+          "min_master": 119672,
+          "max_master": 150325
+        }
+      },
+      "closed_callbacks": 59788,
+      "open_callback_at_capture_end": 0,
+      "source": "docs/research/md-yuyuhakusho/audio-phase-budget/compact/audio-phase-baseline.json.gz",
+      "source_sha256": "735833ae6e4ac55d8094ffe5827ecd33b92433b21b1135250ccab037f27b8402",
+      "limits": [
+        "Barrier choices are derived from observed producer order and prove observed-trace existence only; they are not an independent globalIRQ timing algorithm",
+        "Original driver internal control/priority release and scoreEB parameter events remain original-oracle inputs; DSP/score execution is not reconstructed here",
+        "Original audio timestamps are preserved separately; logical commutation does not prove PCM timing or arbitrary future input equivalence"
+      ]
+    },
+    {
+      "pass": true,
+      "scenario": "pause",
+      "events_checked": 171044,
+      "owned_writes": 3802,
+      "write_categories": {
+        "cold-initialization-clear": 9,
+        "driver-reset-clear": 32,
+        "driver-reset-selected": 8,
+        "cold-initialization-queue-command4": 1,
+        "priority-consumer": 394,
+        "dispatch-clear": 3257,
+        "world-or-delayed-request": 76,
+        "primary-stop": 5,
+        "driver-priority-restore": 5,
+        "score-EB-slot0-overwrite": 1,
+        "voice-priority-release": 10,
+        "world-pause-request": 2,
+        "driver-pause-confirm": 1,
+        "driver-resume-confirm": 1
+      },
+      "requests": 76,
+      "driver_ticks": 3298,
+      "non_ff_dispatches": 76,
+      "complete_dispatch_codes_equal_after_reduction": true,
+      "dispatch_codes_sha256": "92b88b63122ce2277557450329827ece619a6c4156fba0fa06b7e8255b400feb",
+      "frame_tail_counterexample": {
+        "rejected": true,
+        "reason": "frame-tail placement changes the selected command before any earlier command differs",
+        "frame": 375,
+        "native_selected": 255,
+        "hypothetical_selected": 115,
+        "hypothetical_queue_before_consume": [
+          146,
+          115,
+          0,
+          0
+        ],
+        "priority_before": 0,
+        "unchanged_dispatches_before_counterexample": 69,
+        "native_tick_time_master": 335249048,
+        "scope": "Original driver non-consumer operations are reused only along the unchanged selected-command prefix; no claim is made about later hypothetical DSP output"
+      },
+      "battle_only_frame_tail_counterexample": {
+        "rejected": true,
+        "reason": "frame-tail placement changes the selected command before any earlier command differs",
+        "frame": 1813,
+        "native_selected": 255,
+        "hypothetical_selected": 163,
+        "hypothetical_queue_before_consume": [
+          163,
+          0,
+          0,
+          0
+        ],
+        "priority_before": 0,
+        "unchanged_dispatches_before_counterexample": 1508,
+        "native_tick_time_master": 1623825747,
+        "scope": "Original driver non-consumer operations are reused only along the unchanged selected-command prefix; no claim is made about later hypothetical DSP output"
+      },
+      "callback_boundary_choices": {
+        "outside-closed-callback": 1256,
+        "before-callback": 2039,
+        "after-callback": 3
+      },
+      "ambiguous_ticks": [],
+      "all_physical_sound_writes_equal_after_reduction": true,
+      "all_owned_before_after_states_equal": true,
+      "nonempty_consumers_inside_callbacks_retained": 62,
+      "ticks_before_later_callback_request": 15,
+      "ticks_inside_request_function": 0,
+      "driver_duration_by_selected": {
+        "4": {
+          "calls": 2,
+          "min_master": 135513,
+          "max_master": 156702
+        },
+        "255": {
+          "calls": 3181,
+          "min_master": 5376,
+          "max_master": 594118
+        },
+        "115": {
+          "calls": 1,
+          "min_master": 16485,
+          "max_master": 16485
+        },
+        "146": {
+          "calls": 1,
+          "min_master": 82887,
+          "max_master": 82887
+        },
+        "147": {
+          "calls": 1,
+          "min_master": 79114,
+          "max_master": 79114
+        },
+        "161": {
+          "calls": 3,
+          "min_master": 63490,
+          "max_master": 73297
+        },
+        "1": {
+          "calls": 3,
+          "min_master": 29589,
+          "max_master": 163156
+        },
+        "142": {
+          "calls": 1,
+          "min_master": 148925,
+          "max_master": 148925
+        },
+        "167": {
+          "calls": 1,
+          "min_master": 144102,
+          "max_master": 144102
+        },
+        "150": {
+          "calls": 1,
+          "min_master": 171136,
+          "max_master": 171136
+        },
+        "135": {
+          "calls": 1,
+          "min_master": 81634,
+          "max_master": 81634
+        },
+        "88": {
+          "calls": 1,
+          "min_master": 49126,
+          "max_master": 49126
+        },
+        "89": {
+          "calls": 1,
+          "min_master": 48489,
+          "max_master": 48489
+        },
+        "163": {
+          "calls": 3,
+          "min_master": 52066,
+          "max_master": 71449
+        },
+        "162": {
+          "calls": 3,
+          "min_master": 153286,
+          "max_master": 160041
+        },
+        "118": {
+          "calls": 12,
+          "min_master": 54866,
+          "max_master": 128989
+        },
+        "59": {
+          "calls": 4,
+          "min_master": 53914,
+          "max_master": 133721
+        },
+        "116": {
+          "calls": 6,
+          "min_master": 57190,
+          "max_master": 98623
+        },
+        "60": {
+          "calls": 4,
+          "min_master": 56553,
+          "max_master": 72709
+        },
+        "124": {
+          "calls": 9,
+          "min_master": 43316,
+          "max_master": 146307
+        },
+        "61": {
+          "calls": 6,
+          "min_master": 42721,
+          "max_master": 82236
+        },
+        "125": {
+          "calls": 10,
+          "min_master": 48440,
+          "max_master": 126553
+        },
+        "122": {
+          "calls": 2,
+          "min_master": 46914,
+          "max_master": 58555
+        },
+        "-1": {
+          "calls": 41,
+          "min_master": 644,
+          "max_master": 71029
+        }
+      },
+      "closed_callbacks": 38119,
+      "open_callback_at_capture_end": 0,
+      "source": "docs/research/md-yuyuhakusho/audio-phase-budget/compact/audio-phase-pause.json.gz",
+      "source_sha256": "b0c2d19bd5fb04e346cebd6b52464e57ba15fc9ea938ba61cfc521cd7e40249d",
+      "limits": [
+        "Barrier choices are derived from observed producer order and prove observed-trace existence only; they are not an independent globalIRQ timing algorithm",
+        "Original driver internal control/priority release and scoreEB parameter events remain original-oracle inputs; DSP/score execution is not reconstructed here",
+        "Original audio timestamps are preserved separately; logical commutation does not prove PCM timing or arbitrary future input equivalence"
+      ]
+    }
+  ],
+  "source_sha256": "02446e9a3dea0b6e7d1ccdac66b3aafe6c77edacafe5e60457062a8271ffaea0"
+}
