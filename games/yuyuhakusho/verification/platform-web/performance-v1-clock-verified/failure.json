@@ -1,0 +1,252 @@
+{
+  "error": "AssertionError({'authority': 760, 'local': 760, 'pose': 42, 'action': 0, 'at': 11627.20000076294, 'inputAt': 10127.400000572205, 'frame': '665', 'before': {'x': 789, 'pose': 47, 'action': 5, 'pixelHash': '55de8757'}, 'firstResponse': {'authority': 760, 'local': 760, 'pose': 40, 'action': 6, 'at': 10737.10000038147, 'inputAt': 10127.400000572205, 'frame': '611', 'pixelHash': 'aeac045b'}, 'pixelHash': '779ac624', 'firstVisibleResponseMs': 609.6999998092651})",
+  "completed": {
+    "performance": {
+      "paint": {
+        "fps": 59.97855516113122,
+        "median_ms": 16.300000190736682,
+        "p95_ms": 25.399999618530273,
+        "max_ms": 27.800000190734863,
+        "paint_count": 180
+      },
+      "rpc": {
+        "step": {
+          "count": 430,
+          "mean_ms": 3.2390697479248045,
+          "total_ms": 1392.799991607666,
+          "max_ms": 4.40000057220459
+        },
+        "fork": {
+          "count": 86,
+          "mean_ms": 0.17558139978453172,
+          "total_ms": 15.100000381469727,
+          "max_ms": 1.5
+        },
+        "digests": {
+          "count": 17,
+          "mean_ms": 2.07058822407442,
+          "total_ms": 35.19999980926514,
+          "max_ms": 2.200000762939453
+        },
+        "replay": {
+          "count": 86,
+          "mean_ms": 3.2325580729994665,
+          "total_ms": 277.9999942779541,
+          "max_ms": 5.09999942779541
+        },
+        "dispose": {
+          "count": 86,
+          "mean_ms": 0.013953497243482013,
+          "total_ms": 1.2000007629394531,
+          "max_ms": 0.10000038146972656
+        }
+      },
+      "cpu_profile": "cpu.cpuprofile",
+      "authority_poll_ms": 50
+    }
+  },
+  "diagnostic": {
+    "actions": [
+      {
+        "epoch": "38acc98acb1e875b8213837a",
+        "type": "loaded"
+      },
+      {
+        "buttons": 8,
+        "epoch": "38acc98acb1e875b8213837a",
+        "sequence": 1,
+        "type": "input"
+      },
+      {
+        "buttons": 8,
+        "epoch": "38acc98acb1e875b8213837a",
+        "sequence": 2,
+        "type": "input"
+      },
+      {
+        "buttons": 8,
+        "epoch": "38acc98acb1e875b8213837a",
+        "sequence": 3,
+        "type": "input"
+      },
+      {
+        "buttons": 8,
+        "epoch": "38acc98acb1e875b8213837a",
+        "sequence": 4,
+        "type": "input"
+      },
+      {
+        "buttons": 8,
+        "epoch": "38acc98acb1e875b8213837a",
+        "sequence": 5,
+        "type": "input"
+      },
+      {
+        "epoch": "38acc98acb1e875b8213837a",
+        "sequence": 6,
+        "type": "release"
+      }
+    ],
+    "active": "<div class=\"yuyu-board\" data-yuyu-board=\"true\" tabindex=\"0\" aria-label=\"魔强统一战比赛画面\" data-local-x=\"760\" data-local-y=\"320\" data-frame=\"666\" data-authority-frame=\"662\" data-connection=\"connected\"><div class=\"yuyu-screen\"><canvas width=\"320\" height=\"224\"",
+    "authority": {
+      "digest": "25b6478eb93f945c9d9b1d0f5693d089ad55a01a937da480b449256d7ae452c7",
+      "epoch": "38acc98acb1e875b8213837a",
+      "frame": "662",
+      "inputs": [
+        {
+          "appliedButtons": 8,
+          "appliedSequence": 4,
+          "automated": false,
+          "buttons": 8,
+          "sequence": 4
+        },
+        {
+          "appliedButtons": 0,
+          "appliedSequence": 0,
+          "automated": true,
+          "buttons": 0,
+          "sequence": 0
+        }
+      ],
+      "localSeat": 0,
+      "options": {
+        "arena": 10,
+        "characters": [
+          3,
+          8
+        ],
+        "teamBattle": false
+      },
+      "phase": "playing",
+      "players": [
+        {
+          "active": true,
+          "characterID": 3,
+          "computer": false,
+          "energy": 223,
+          "health": 181,
+          "seat": 0,
+          "slot": 0,
+          "x": 760,
+          "y": 320
+        },
+        {
+          "active": true,
+          "characterID": 8,
+          "computer": true,
+          "energy": 201,
+          "health": 223,
+          "seat": 1,
+          "slot": 3,
+          "x": 804,
+          "y": 320
+        }
+      ],
+      "presentationDigest": "5ca4c17de7cb4cac1235f718f70f321f188ddee262a93f919e9a81d487fa1d63",
+      "protocol": 1,
+      "replay": {
+        "data": "PwIAAAAAAAAAADkCAAgAAAAAAAA=",
+        "firstFrame": "543",
+        "frameCount": 120,
+        "version": 1
+      },
+      "resourceDescriptorSHA256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+      "seatSlots": [
+        0,
+        3
+      ],
+      "serverAt": 1793898761387
+    },
+    "hidden": false,
+    "lastHeld": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "lastStep": {
+      "arena": 10,
+      "completed": false,
+      "frame": "666",
+      "logic_frame": 666,
+      "paused": false,
+      "players": [
+        {
+          "Action": 0,
+          "Pose": 42,
+          "X": 760,
+          "Y": 320,
+          "active": true,
+          "character_id": 3,
+          "computer": false,
+          "energy": 223,
+          "health": 181,
+          "input_channel": 0,
+          "slot": 0
+        },
+        {
+          "Action": 3,
+          "Pose": 161,
+          "X": 804,
+          "Y": 320,
+          "active": true,
+          "character_id": 8,
+          "computer": true,
+          "energy": 201,
+          "health": 223,
+          "input_channel": 255,
+          "slot": 3
+        }
+      ],
+      "ready": true,
+      "tick": 666,
+      "window_complete": true,
+      "winner": 0
+    },
+    "timings": [
+      {
+        "ack": 531.6000003814697,
+        "bytes": 52,
+        "sent": 526.9000005722046
+      },
+      {
+        "ack": 10635.70000076294,
+        "appliedAt": 10723.60000038147,
+        "bytes": 76,
+        "sent": 10129.10000038147,
+        "sequence": 1
+      },
+      {
+        "ack": 10899.10000038147,
+        "appliedAt": 10973.5,
+        "bytes": 76,
+        "sent": 10395.20000076294,
+        "sequence": 2
+      },
+      {
+        "ack": 11149.10000038147,
+        "appliedAt": 11223.900000572205,
+        "bytes": 76,
+        "sent": 10645.300000190737,
+        "sequence": 3
+      },
+      {
+        "ack": 11415.300000190737,
+        "appliedAt": 11473.800000190737,
+        "bytes": 76,
+        "sent": 10911.300000190737,
+        "sequence": 4
+      },
+      {
+        "bytes": 76,
+        "sent": 11162.5,
+        "sequence": 5
+      },
+      {
+        "bytes": 66,
+        "sent": 11412.10000038147,
+        "sequence": 6
+      }
+    ]
+  }
+}

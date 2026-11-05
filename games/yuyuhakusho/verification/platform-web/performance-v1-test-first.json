@@ -1,0 +1,12 @@
+{
+  "prior_production": "games/yuyuhakusho/verification/platform-web/platform-client-wasm.before-performance-v1.go.txt",
+  "prior_sha256": "a95152825a96917cb54f0ae3ae30771c329594c9d1ec62b34944d0352c7b8eed",
+  "actual_red": "performance-v1-red/performance-result.json",
+  "cpu_profile": "performance-v1-red/cpu.cpuprofile",
+  "replay_contract_test_sha256": "5d229954643420c8b6b34eb4d152852568a7f3825dc0687d4f19b4e7bb987ea3",
+  "thresholds": {
+    "minimum_visible_fps": 50,
+    "median_frame_max_ms": 25,
+    "p95_frame_max_ms": 45
+  }
+}

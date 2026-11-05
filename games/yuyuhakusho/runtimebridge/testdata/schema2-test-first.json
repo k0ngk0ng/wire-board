@@ -1,0 +1,16 @@
+{
+  "frozen_at_utc": "2026-11-05T15:34:30.682869+00:00",
+  "scope": "schema2 exact assets, mutually exclusive persistent variants, forked F+1 preview, checkpoint and49 frozen complete pixel trajectories",
+  "missing_reds": [
+    "schema2-missing-red.jsonl",
+    "schema2-hud-refs-red.jsonl"
+  ],
+  "sha256": {
+    "games/yuyuhakusho/runtimebridge/SCHEMA2_FAILURES.md": "27fb9a5a9c601f96b7a0205249082c2cee2c4bf1483f9e63b302f50bc1279cb1",
+    "games/yuyuhakusho/runtimebridge/schema2_test.go": "b69195e82c6656f00f0b11115789b9477329e595b6bfe26bb4616729507125b4",
+    "games/yuyuhakusho/presentation/hud_refs_test.go": "a19dd263dbf0aaaea2f2d49882f66f0c5d70e6736c52dc23177965cf8826fcde",
+    "games/yuyuhakusho/runtimebridge/testdata/schema1-save-baseline.json": "ded00630c0e810851dd46fc2e9aaf41331ff65fc431cbfdd454133b2b50a60af",
+    "games/yuyuhakusho/runtimebridge/testdata/schema1-capture-producer.go.txt": "a4953409ce041735066cdcd95c2c851811273a465bbd26a68e062b0f3f70bd8c"
+  },
+  "reference_scope": "Existing renderstate49 complete bridge reference; no ROM/core or new original capture"
+}

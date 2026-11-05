@@ -1,0 +1,13 @@
+legacy-four completed=true frame=3952 preview=3952 events=3 draws=0 pixels_equal=true
+legacy-itsuki-hiei completed=true frame=6076 preview=6076 events=3 draws=0 pixels_equal=true
+legacy-itsuki-kuwabara completed=true frame=3925 preview=3925 events=3 draws=0 pixels_equal=true
+legacy-team completed=true frame=4054 preview=4054 events=3 draws=0 pixels_equal=true
+arena-2-four completed=true frame=4894 preview=4894 events=3 draws=0 pixels_equal=true
+arena-4-three completed=true frame=4030 preview=4030 events=3 draws=0 pixels_equal=true
+arena-6-duel completed=true frame=4985 preview=4985 events=3 draws=0 pixels_equal=true
+arena-6-pan completed=false frame=1416 preview=1417 events=11 draws=3 pixels_equal=false
+arena-8-team completed=true frame=3851 preview=3851 events=3 draws=0 pixels_equal=true
+arena-a-four completed=true frame=4894 preview=4894 events=3 draws=0 pixels_equal=true
+arena-c-three completed=true frame=4030 preview=4030 events=3 draws=0 pixels_equal=true
+arena-e-duel completed=true frame=4985 preview=4985 events=3 draws=0 pixels_equal=true
+arena-e-pan completed=false frame=1416 preview=1417 events=11 draws=3 pixels_equal=false

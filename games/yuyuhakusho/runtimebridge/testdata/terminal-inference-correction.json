@@ -1,0 +1,14 @@
+{
+  "at_utc": "2026-11-05T16:18:46.958299+00:00",
+  "withdrawn_inference": "nil events on completed Preview imply missing final fighter pixels",
+  "reason": "all actual completed final frames have already faded and cleared via manager8040 stage26; direct pixel comparison shows no difference",
+  "sampled_endpoints": 49,
+  "completed": 42,
+  "nonterminal_pan": 7,
+  "completed_differences": 0,
+  "completed_preview_frame": "F",
+  "nonterminal_preview_frame": "F+1",
+  "result": "games/yuyuhakusho/verification/client-terminal-preview/result.json",
+  "result_sha256": "aee3e1d4531064bf467a6f0e87b0a41379a6bd7343b91f89b3713abf8849bf0a",
+  "production_or_frozen49_changed": false
+}

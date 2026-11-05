@@ -1,0 +1,302 @@
+//go:build js && wasm
+
+// Platform-only RPC adapter. Rules, rendering and replay remain in Go.
+package main
+
+import (
+	"encoding/json"
+	"errors"
+	"strconv"
+	"syscall/js"
+
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine"
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/runtimebridge"
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/syncwire"
+)
+
+type command struct {
+	Op          string                   `json:"op"`
+	Asset       uint32                   `json:"asset"`
+	Session     uint32                   `json:"session"`
+	Arena       uint16                   `json:"arena"`
+	Options     engine.ChuSessionOptions `json:"options"`
+	Checkpoint  string                   `json:"checkpoint"`
+	Snapshot    string                   `json:"snapshot"`
+	Epoch       string                   `json:"epoch"`
+	Held        [4]engine.Buttons        `json:"held"`
+	Automated   uint8                    `json:"automated"`
+	Replay      syncwire.InputWindow     `json:"replay"`
+	TargetFrame string                   `json:"targetFrame"`
+}
+type reply struct {
+	OK                 bool                `json:"ok"`
+	Error              string              `json:"error,omitempty"`
+	Asset              uint32              `json:"asset,omitempty"`
+	Session            uint32              `json:"session,omitempty"`
+	View               *runtimebridge.View `json:"view,omitempty"`
+	RulesDigest        string              `json:"rulesDigest,omitempty"`
+	PresentationDigest string              `json:"presentationDigest,omitempty"`
+	Snapshot           string              `json:"snapshot,omitempty"`
+	Checkpoint         string              `json:"checkpoint,omitempty"`
+	RenderedFrame      string              `json:"renderedFrame,omitempty"`
+	DrawRequests       int                 `json:"drawRequests,omitempty"`
+	SpritePixels       int                 `json:"spritePixels,omitempty"`
+}
+type entry struct {
+	asset   uint32
+	session *runtimebridge.Session
+}
+
+func main() {
+	assets := make(map[uint32]runtimebridge.Assets)
+	sessions := make(map[uint32]entry)
+	var nextAsset, nextSession uint32
+	call := js.FuncOf(func(_ js.Value, args []js.Value) any {
+		out := reply{}
+		var err error
+		var req command
+		if len(args) < 1 || args[0].Type() != js.TypeString {
+			err = errors.New("expected JSON command")
+		} else {
+			err = json.Unmarshal([]byte(args[0].String()), &req)
+		}
+		var session *runtimebridge.Session
+		if err == nil && req.Session != 0 {
+			if value, ok := sessions[req.Session]; ok {
+				session = value.session
+			} else {
+				err = errors.New("unknown session")
+			}
+		}
+		put := func(asset uint32, value *runtimebridge.Session) error {
+			if len(sessions) >= 16 || nextSession == ^uint32(0) {
+				return errors.New("session capacity exceeded")
+			}
+			nextSession++
+			sessions[nextSession] = entry{asset, value}
+			out.Session = nextSession
+			session = value
+			return nil
+		}
+		validPixels := func() error {
+			if len(args) < 2 || args[1].Type() != js.TypeObject || !args[1].InstanceOf(js.Global().Get("Uint8Array")) || args[1].Length() != 320*224*4 {
+				return errors.New("complete320x224 RGBA target required")
+			}
+			return nil
+		}
+		copyPixels := func(frame runtimebridge.Frame) error {
+			if e := validPixels(); e != nil {
+				return e
+			}
+			js.CopyBytesToJS(args[1], frame.Pixels)
+			out.RenderedFrame = frame.View.Frame
+			out.DrawRequests = frame.DrawRequests
+			out.SpritePixels = frame.SpritePixels
+			return nil
+		}
+		if err == nil {
+			switch req.Op {
+			case "load":
+				if len(args) != 8 || len(assets) >= 4 || nextAsset == ^uint32(0) {
+					err = errors.New("seven exact asset buffers required or asset capacity exceeded")
+					break
+				}
+				raw := make([][]byte, 7)
+				totalBytes := 0
+				for i := range raw {
+					if args[i+1].Type() != js.TypeObject || !args[i+1].InstanceOf(js.Global().Get("Uint8Array")) {
+						err = errors.New("asset must be Uint8Array")
+						break
+					}
+					if args[i+1].Length() > 16*1024*1024 {
+						err = errors.New("asset exceeds byte limit")
+						break
+					}
+					totalBytes += args[i+1].Length()
+					if totalBytes > 64*1024*1024 {
+						err = errors.New("combined assets exceed byte limit")
+						break
+					}
+					raw[i] = make([]byte, args[i+1].Length())
+					js.CopyBytesToGo(raw[i], args[i+1])
+				}
+				if err != nil {
+					break
+				}
+				var value runtimebridge.Assets
+				value, err = runtimebridge.DecodeNetworkAssets(runtimebridge.AssetBytes{Rules: raw[0], Sprites: raw[1], Arena: raw[2], HUD: raw[3], ArenaAux: raw[4], RenderMetadata: raw[5], Descriptor: raw[6]}, req.Arena)
+				if err == nil {
+					nextAsset++
+					assets[nextAsset] = value
+					out.Asset = nextAsset
+				}
+			case "prepare", "restoreCheckpoint", "restore":
+				value, ok := assets[req.Asset]
+				if !ok {
+					err = errors.New("unknown assets")
+					break
+				}
+				var created *runtimebridge.Session
+				if req.Op == "prepare" {
+					created, err = runtimebridge.NewSession(req.Options, value)
+				} else if req.Op == "restoreCheckpoint" {
+					created, err = runtimebridge.RestoreCheckpoint([]byte(req.Checkpoint), value)
+				} else {
+					created, err = runtimebridge.RestoreSession([]byte(req.Snapshot), value)
+				}
+				if err == nil {
+					err = put(req.Asset, created)
+				}
+			case "fork":
+				if session == nil {
+					err = errors.New("session required")
+					break
+				}
+				value := sessions[req.Session]
+				var created *runtimebridge.Session
+				created, err = session.Fork()
+				if err == nil {
+					err = put(value.asset, created)
+				}
+			case "ready", "inspect", "preview", "step", "replay", "save", "checkpoint", "digests":
+				if session == nil {
+					err = errors.New("session required")
+					break
+				}
+				switch req.Op {
+				case "ready":
+					err = session.Ready()
+				case "preview":
+					if err = validPixels(); err != nil {
+						break
+					}
+					var frame runtimebridge.Frame
+					frame, err = session.Preview()
+					if err == nil {
+						err = copyPixels(frame)
+					}
+				case "step":
+					if err = validPixels(); err != nil {
+						break
+					}
+					var frame runtimebridge.Frame
+					frame, err = session.StepControlled(req.Held, req.Automated)
+					if err == nil {
+						err = copyPixels(frame)
+					}
+				case "save":
+					var raw []byte
+					raw, err = session.Save()
+					out.Snapshot = string(raw)
+				case "checkpoint":
+					var raw []byte
+					raw, err = session.Checkpoint(req.Epoch)
+					out.Checkpoint = string(raw)
+				case "replay":
+					if len(args) > 1 {
+						if err = validPixels(); err != nil {
+							break
+						}
+					}
+					var frames []syncwire.InputFrame
+					frames, err = syncwire.Decode(req.Replay)
+					if err != nil {
+						break
+					}
+					current, e := strconv.ParseUint(session.View().Frame, 10, 64)
+					if e != nil {
+						err = e
+						break
+					}
+					target := current
+					if req.TargetFrame != "" {
+						target, err = strconv.ParseUint(req.TargetFrame, 10, 64)
+						if err != nil {
+							break
+						}
+					}
+					if target < current || target-current > 120 {
+						err = errors.New("invalid replay range")
+						break
+					}
+					value := sessions[req.Session]
+					var working *runtimebridge.Session
+					working, err = session.Fork()
+					if err != nil {
+						break
+					}
+					var last runtimebridge.Frame
+					advanced := false
+					for _, input := range frames {
+						if input.Frame <= current {
+							continue
+						}
+						if input.Frame > target {
+							break
+						}
+						if input.Frame != current+1 {
+							err = errors.New("replay gap")
+							break
+						}
+						// Authority consumes the same canonical tick without
+						// constructing pixels nobody requested. A requested final
+						// image still uses its exact callback-time draw events.
+						if len(args) > 1 && input.Frame == target {
+							last, err = working.StepControlled(input.Held, input.Automated)
+						} else {
+							_, err = working.AdvanceControlled(input.Held, input.Automated)
+						}
+						if err != nil {
+							break
+						}
+						current = input.Frame
+						advanced = true
+					}
+					if err == nil && current != target {
+						err = errors.New("replay target unavailable")
+					}
+					if err == nil && advanced && len(args) > 1 {
+						err = copyPixels(last)
+					}
+					if err == nil {
+						sessions[req.Session] = entry{value.asset, working}
+						session = working
+					}
+				}
+				// Prediction consumes pixels and the small view. Confirmed
+				// replay/explicit digest calls retain both authority checks.
+				if err == nil && req.Op != "step" && req.Op != "preview" {
+					out.RulesDigest, out.PresentationDigest, err = session.Digests()
+				}
+			case "dispose":
+				delete(sessions, req.Session)
+				session = nil
+			case "disposeAssets":
+				for _, value := range sessions {
+					if value.asset == req.Asset {
+						err = errors.New("assets still referenced")
+						break
+					}
+				}
+				if err == nil {
+					delete(assets, req.Asset)
+				}
+			default:
+				err = errors.New("unknown platform client operation")
+			}
+		}
+		if err != nil {
+			out.Error = err.Error()
+		} else {
+			out.OK = true
+			if session != nil {
+				view := session.View()
+				out.View = &view
+			}
+		}
+		raw, _ := json.Marshal(out)
+		return string(raw)
+	})
+	js.Global().Set("yuyuhakushoNetworkWasm", call)
+	select {}
+}

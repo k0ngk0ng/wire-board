@@ -1,0 +1,37 @@
+{
+  "error": "AssertionError({'authorityPhase': 'paused', 'frame': '300', 'localPaused': True})",
+  "completed": {
+    "prediction_before_delayed_authority": {
+      "authority": 944,
+      "local": 950,
+      "pose": 5,
+      "action": 1,
+      "at": 5255,
+      "inputAt": 5036.89999961853,
+      "frame": "284",
+      "before": {
+        "x": 944,
+        "pose": 0,
+        "action": 0,
+        "pixelHash": "103279a0"
+      },
+      "firstResponse": {
+        "authority": 944,
+        "local": 945,
+        "pose": 5,
+        "action": 1,
+        "at": 5143.199999809265,
+        "inputAt": 5036.89999961853,
+        "frame": "276",
+        "pixelHash": "27bfff87"
+      },
+      "pixelHash": "e5767544",
+      "firstVisibleResponseMs": 106.30000019073486
+    },
+    "pause_resume_delayed": {
+      "authorityPhase": "paused",
+      "frame": "300",
+      "localPaused": true
+    }
+  }
+}

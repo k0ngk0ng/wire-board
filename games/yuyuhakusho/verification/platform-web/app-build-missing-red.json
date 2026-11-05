@@ -1,0 +1,7 @@
+{
+  "label": "app-build-missing-red",
+  "scope": "Built normal React platform app and local-only asset routing, not authenticated/browser acceptance",
+  "checks": [],
+  "pass": false,
+  "error": "Error: ENOENT: no such file or directory, open '/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/platform-app/dist/game-load-manifest.json'"
+}

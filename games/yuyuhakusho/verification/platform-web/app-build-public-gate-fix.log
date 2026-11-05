@@ -1,0 +1,93 @@
+{"local_only": true, "wasm_bytes": 4893410, "wasm_sha256": "21d942d98a3b500963c9b4dd1bce09b758f76bb25122c9d83a84f88bd66c13a4"}
+vite v6.4.3 building for production...
+transforming...
+✓ 2102 modules transformed.
+rendering chunks...
+computing gzip size...
+../.local/md-yuyuhakusho/platform-app/dist/index.html                             0.59 kB │ gzip:   0.45 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/fc-controller-CYM3TdYS.svg      4.97 kB │ gzip:   1.56 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/room-ui-DfV_PdBf.css            2.26 kB │ gzip:   0.84 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-DdOGpeqI.css             2.65 kB │ gzip:   0.99 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-Cqga00g7.css             2.68 kB │ gzip:   0.91 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-C267d0_d.css             3.52 kB │ gzip:   1.33 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-D-tn_IBt.css             4.29 kB │ gzip:   1.45 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-Yaax1DYN.css             4.52 kB │ gzip:   1.50 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-CDqyNgeA.css             4.97 kB │ gzip:   1.69 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-tJTbyU4e.css             4.99 kB │ gzip:   1.59 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-Dykw-AHR.css             5.33 kB │ gzip:   1.74 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-tn0HSsh1.css             5.55 kB │ gzip:   1.66 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-CDVuP_-k.css             7.49 kB │ gzip:   2.04 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-BPrZWDNi.css             8.84 kB │ gzip:   2.37 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-C9V6r7H8.css             9.96 kB │ gzip:   2.49 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-B4HwOkOm.css            10.44 kB │ gzip:   2.28 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-hMr6S8S-.css            10.77 kB │ gzip:   2.91 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-dkVV7LIn.css            10.94 kB │ gzip:   3.01 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-Dqz6-E-c.css            13.61 kB │ gzip:   3.79 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/board-TDdzt3Lv.css             14.17 kB │ gzip:   3.44 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-VE_HUKFI.css            14.78 kB │ gzip:   3.70 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-B3ues7ch.css            14.86 kB │ gzip:   3.98 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/ui-ZjmHBafg.css                14.96 kB │ gzip:   3.69 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-Dj4FxkvU.css            19.56 kB │ gzip:   5.06 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-Bocz2i4b.css            20.76 kB │ gzip:   4.97 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/sanguosha-8SDFt5HJ.css         22.37 kB │ gzip:   5.37 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/catan-CZngZ2M-.css             74.99 kB │ gzip:  15.13 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/index-NX2rYXHh.css            145.58 kB │ gzip:  30.48 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-4rIte7rE.js              0.04 kB │ gzip:   0.06 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-DauO2v1A.js              0.26 kB │ gzip:   0.20 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/minus-Bz_dMO8L.js               0.29 kB │ gzip:   0.24 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/chevron-down-CFIufxAt.js        0.30 kB │ gzip:   0.24 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/chevron-right-CjU3IpDl.js       0.30 kB │ gzip:   0.25 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-Bf_ioQXd.js              0.39 kB │ gzip:   0.27 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/coins-_bLi9ZCY.js               0.45 kB │ gzip:   0.33 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/house-tAX0A9h2.js               0.46 kB │ gzip:   0.32 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-BiYzMGOS.js              0.49 kB │ gzip:   0.32 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/animated-slot-DJrAhfjR.js       0.66 kB │ gzip:   0.40 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/scene-theme-CYWgkfp1.js         0.72 kB │ gzip:   0.37 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/zoom-out-dMZQMogM.js            0.84 kB │ gzip:   0.33 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/map-controls-NqypDu1G.js        2.55 kB │ gzip:   1.16 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/chase-fallback-DWme2jxe.js      3.11 kB │ gzip:   1.50 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-DLUvMzFJ.js              8.33 kB │ gzip:   3.97 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-CpMypHzO.js             10.08 kB │ gzip:   4.58 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-v-EuTs5P.js             10.64 kB │ gzip:   4.56 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-Cm9Gt9yw.js             10.90 kB │ gzip:   5.05 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-C_XnN0mu.js             11.16 kB │ gzip:   4.95 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-MhYCbmQa.js             11.39 kB │ gzip:   4.68 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-D0hlVKtn.js             11.43 kB │ gzip:   5.32 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/ui-Bqgw6tQL.js                 12.19 kB │ gzip:   5.07 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-CU2IfeJy.js             14.09 kB │ gzip:   6.07 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/renderer-CN8u3U6I.js           14.23 kB │ gzip:   6.69 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-CzMT7UXv.js             15.51 kB │ gzip:   6.40 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/chase-renderer-D-oeZ3Dj.js     19.35 kB │ gzip:   7.11 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-Bj7kY7EL.js             20.12 kB │ gzip:   8.46 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-DrkKzQjy.js             20.25 kB │ gzip:   7.57 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-CcTcDCQJ.js             23.13 kB │ gzip:   8.98 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-CWXGcLrn.js             23.14 kB │ gzip:   8.87 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-CaKPO9zO.js             26.54 kB │ gzip:  10.62 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-MJCp78k4.js             31.51 kB │ gzip:  10.91 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-CGBBQiIl.js             34.08 kB │ gzip:  12.12 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/board-DugyDuX1.js              34.91 kB │ gzip:  12.00 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-DDEtBm0b.js             37.19 kB │ gzip:  12.77 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-rVN8sMlo.js             39.44 kB │ gzip:  14.87 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/europe-Cvvq1aoO.js             42.23 kB │ gzip:  15.01 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-vdE3EyhL.js             46.28 kB │ gzip:  17.64 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-DCxQu-MO.js             55.84 kB │ gzip:  19.05 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/sanguosha-Bfem8VW-.js          57.45 kB │ gzip:  19.70 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-DsHR8N34.js             58.87 kB │ gzip:  20.87 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/china-Toh4FN9i.js             135.11 kB │ gzip:  52.27 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/usa-CkHp9CuP.js               136.56 kB │ gzip:  51.54 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/room-ui-G390obaZ.js           154.26 kB │ gzip:  49.77 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/world-e87wS3hP.js             169.11 kB │ gzip:  66.41 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-BUxitELI.js            176.25 kB │ gzip:  51.68 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/catan-D-u5R2N0.js             337.14 kB │ gzip: 107.59 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/three.module-ADFecVSo.js      521.37 kB │ gzip: 132.34 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/index-CusqBW6I.js             594.20 kB │ gzip: 193.25 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-BB87DpCP.js            734.25 kB │ gzip: 143.39 kB
+../.local/md-yuyuhakusho/platform-app/dist/assets/module-D57Ob2Cp.js          1,693.21 kB │ gzip: 146.64 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 2.15s
+{"label":"app-build-final","scope":"Built normal React platform app and local-only asset routing, not authenticated/browser acceptance","checks":["lazy_board_not_home","all_13_fixed_resource_routes_sha","runtime_descriptor_exact_wasm"],"pass":true,"resource_descriptor_sha256":"7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c","runtime":{"url":"/yuyuhakusho/v1/runtime/client.wasm","sha256":"21d942d98a3b500963c9b4dd1bce09b758f76bb25122c9d83a84f88bd66c13a4","bytes":4893410},"build":"5cc555a9c26b9a42879b077f6c7011d1e7165cb096d7def8df1417daacbdfce2","dist":"/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/platform-app/dist/"}
+{"local_only": true, "dist": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/platform-app/dist", "server_handler": "server.New(real config including Modules: games.Modules(), ClientLoading: true, os.DirFS(dist))", "routes": {"resources": "/yuyuhakusho/data/{13 descriptor entries + runtime-resource-descriptor.json}", "wasm": "/yuyuhakusho/v1/runtime/{build.json,wasm_exec.js,client.wasm}", "loading": "/game-load-manifest.json"}}

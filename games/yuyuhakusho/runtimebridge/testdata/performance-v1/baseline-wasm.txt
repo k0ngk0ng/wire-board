@@ -1,0 +1,19 @@
+=== RUN   TestClientBridgeMutableOwnersBaseline
+    performance_baseline_test.go:47: mutable containers=[computed.HUD.Slots legacy.HUD.Slots saved.Options.Players saved.World.Objects saved.World.Registration.Owners saved.World.Stream saved.World.Throws.Records]
+--- PASS: TestClientBridgeMutableOwnersBaseline (0.00s)
+goos: js
+goarch: wasm
+pkg: github.com/k0ngk0ng/wire-board/games/yuyuhakusho/runtimebridge
+BenchmarkClientBridgeCurrent
+BenchmarkClientBridgeCurrent/JSONFork
+BenchmarkClientBridgeCurrent/JSONFork         	      50	  13893780 ns/op	  433099 B/op	    2048 allocs/op
+BenchmarkClientBridgeCurrent/StepWithPixels
+BenchmarkClientBridgeCurrent/StepWithPixels   	      50	   3415583 ns/op	 1896507 B/op	     567 allocs/op
+BenchmarkClientBridgeCurrent/CanonicalAdvanceOnly
+BenchmarkClientBridgeCurrent/CanonicalAdvanceOnly         	      50	    244152 ns/op	  134344 B/op	     498 allocs/op
+BenchmarkClientBridgeCurrent/DualDigests
+BenchmarkClientBridgeCurrent/DualDigests                  	      50	   2165105 ns/op	  238083 B/op	     541 allocs/op
+BenchmarkClientBridgeCurrent/PreviewJSONFork
+BenchmarkClientBridgeCurrent/PreviewJSONFork              	      50	  17477801 ns/op	 2328911 B/op	    2618 allocs/op
+PASS
+ok  	github.com/k0ngk0ng/wire-board/games/yuyuhakusho/runtimebridge	15.961s

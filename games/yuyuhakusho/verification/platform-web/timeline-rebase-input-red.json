@@ -1,0 +1,20 @@
+{
+  "label": "timeline-rebase-input-red",
+  "pass": false,
+  "actual_go_wasm": true,
+  "clock_props_lead_ms": 500,
+  "authority_arrival_every_frames": 7,
+  "maximum_prediction_frames": 12,
+  "scope": "Actual rules/Wasm with injected GameClock props and120ms-cadence authority, not a TCP benchmark",
+  "rebase_case": true,
+  "visible_ticks": 140,
+  "visible_fps": 55.927893844024815,
+  "p95_ms": 16.68815450008333,
+  "initial_advance_frames": 1,
+  "first_local_held_tick": 50,
+  "first_local_held_frame": "356",
+  "expected_input_frame": "361",
+  "input_to_rule_ms": 0,
+  "max_lead": 12,
+  "error": "AssertionError [ERR_ASSERTION]: Fresh input was replayed into already displayed historical ticks"
+}

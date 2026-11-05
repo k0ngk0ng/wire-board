@@ -1,0 +1,1135 @@
+{
+  "pass": false,
+  "scope": "Normal Vite app + registered composition root + real authentication, SQLite, HTTP and WebSocket. Shaping delays real TCP writes and closes actual connections. Virtual Gamepad API only; no physical hardware claim.",
+  "urls": {
+    "direct": "http://127.0.0.1:59546/",
+    "shaped": "http://127.0.0.1:59547/"
+  },
+  "roomID": "42695f31",
+  "preparation": {
+    "capacity": 2,
+    "chat": null,
+    "clockOffsetMs": 0,
+    "closeReason": "",
+    "host": "849216a23bba54e60da888f0",
+    "id": "42695f31",
+    "kind": "yuyuhakusho",
+    "loading": null,
+    "locked": false,
+    "matchId": "",
+    "name": "魔强统一战验收",
+    "options": {
+      "arena": 10,
+      "characters": [
+        8,
+        9
+      ],
+      "teamBattle": false
+    },
+    "seats": [
+      {
+        "id": "849216a23bba54e60da888f0",
+        "left": false,
+        "name": "Yuyufastplay02",
+        "network": {
+          "connected": true,
+          "connections": 1,
+          "rttMs": 0,
+          "sampledAt": 1793896564999
+        },
+        "ready": false
+      },
+      {
+        "id": "b9ede68165a6d79a8443aed5",
+        "left": false,
+        "name": "Yuyuslowplay02",
+        "network": {
+          "connected": true,
+          "connections": 1,
+          "rttMs": 0,
+          "sampledAt": 1793896568215
+        },
+        "ready": false
+      }
+    ],
+    "setupVersion": 0,
+    "spectating": false,
+    "spectatorCount": 0,
+    "status": "waiting",
+    "turnDeadline": 0,
+    "updated": 1793896569,
+    "version": 4,
+    "you": 0
+  },
+  "error": "RuntimeError('{\"success\":false,\"data\":null,\"error\":\"Wait timed out after 25000ms\"}\\n')",
+  "fastFailureState": {
+    "assetsBaseURL": "",
+    "availableGames": [
+      "splendor",
+      "rail",
+      "catan",
+      "carcassonne",
+      "sanguosha",
+      "basketball",
+      "monopoly",
+      "starfort",
+      "doudizhu",
+      "guandan",
+      "shengji",
+      "snooker",
+      "pairs",
+      "gomoku",
+      "junqi",
+      "chess",
+      "xiangqi",
+      "weiqi",
+      "racing",
+      "tetris",
+      "spf2t",
+      "battlecity",
+      "bubbleparty",
+      "fortressblue",
+      "conquest",
+      "tabletennis",
+      "yuyuhakusho"
+    ],
+    "modules": [
+      {
+        "id": "basketball",
+        "maxPlayers": 2,
+        "minPlayers": 1,
+        "name": "热血篮球"
+      },
+      {
+        "id": "monopoly",
+        "maxPlayers": 6,
+        "minPlayers": 2,
+        "name": "强手棋"
+      },
+      {
+        "id": "starfort",
+        "maxPlayers": 4,
+        "minPlayers": 1,
+        "name": "星垒"
+      },
+      {
+        "id": "doudizhu",
+        "maxPlayers": 4,
+        "minPlayers": 4,
+        "name": "斗地主"
+      },
+      {
+        "id": "guandan",
+        "maxPlayers": 4,
+        "minPlayers": 4,
+        "name": "掼蛋"
+      },
+      {
+        "id": "shengji",
+        "maxPlayers": 4,
+        "minPlayers": 4,
+        "name": "升级"
+      },
+      {
+        "id": "snooker",
+        "maxPlayers": 4,
+        "minPlayers": 2,
+        "name": "斯诺克"
+      },
+      {
+        "id": "pairs",
+        "maxPlayers": 6,
+        "minPlayers": 1,
+        "name": "连连看"
+      },
+      {
+        "id": "gomoku",
+        "maxPlayers": 2,
+        "minPlayers": 2,
+        "name": "五子棋"
+      },
+      {
+        "id": "junqi",
+        "maxPlayers": 4,
+        "minPlayers": 2,
+        "name": "军棋"
+      },
+      {
+        "id": "chess",
+        "maxPlayers": 2,
+        "minPlayers": 2,
+        "name": "国际象棋"
+      },
+      {
+        "id": "xiangqi",
+        "maxPlayers": 2,
+        "minPlayers": 2,
+        "name": "中国象棋"
+      },
+      {
+        "id": "weiqi",
+        "maxPlayers": 2,
+        "minPlayers": 2,
+        "name": "围棋"
+      },
+      {
+        "id": "racing",
+        "maxPlayers": 6,
+        "minPlayers": 2,
+        "name": "极品飞车"
+      },
+      {
+        "id": "tetris",
+        "maxPlayers": 4,
+        "minPlayers": 1,
+        "name": "俄罗斯方块"
+      },
+      {
+        "id": "spf2t",
+        "maxPlayers": 2,
+        "minPlayers": 2,
+        "name": "街霸方块"
+      },
+      {
+        "id": "battlecity",
+        "maxPlayers": 6,
+        "minPlayers": 2,
+        "name": "坦克大战"
+      },
+      {
+        "id": "bubbleparty",
+        "maxPlayers": 8,
+        "minPlayers": 2,
+        "name": "泡泡堂"
+      },
+      {
+        "id": "fortressblue",
+        "maxPlayers": 8,
+        "minPlayers": 2,
+        "name": "疯狂坦克"
+      },
+      {
+        "id": "conquest",
+        "maxPlayers": 8,
+        "minPlayers": 2,
+        "name": "征服时代"
+      },
+      {
+        "id": "tabletennis",
+        "maxPlayers": 4,
+        "minPlayers": 2,
+        "name": "乒乓球"
+      },
+      {
+        "id": "yuyuhakusho",
+        "maxPlayers": 4,
+        "minPlayers": 2,
+        "name": "魔强统一战"
+      }
+    ],
+    "network": {
+      "connected": true,
+      "connections": 1,
+      "rttMs": 0,
+      "sampledAt": 1793896595004
+    },
+    "railMaps": [
+      {
+        "additionalReturn": true,
+        "art": "rail",
+        "bonus": "longest",
+        "doubleMin": 4,
+        "height": 1125,
+        "id": "usa",
+        "initialReturn": true,
+        "longTickets": false,
+        "maxPlayers": 5,
+        "minPlayers": 2,
+        "name": "美国",
+        "rules": [
+          "美国基础版；最长连续路线奖励 10 分。",
+          "初始抽 3 张任务至少留 2 张；2–3 人只能使用双线中的一条。"
+        ],
+        "setupTickets": 3,
+        "stations": 0,
+        "trains": 45,
+        "width": 1744,
+        "wildRule": "any",
+        "wildSingle": false
+      },
+      {
+        "additionalReturn": true,
+        "art": "rail/maps/v1/europe",
+        "bonus": "longest",
+        "doubleMin": 4,
+        "height": 1125,
+        "id": "europe",
+        "initialReturn": false,
+        "longTickets": true,
+        "maxPlayers": 5,
+        "minPlayers": 2,
+        "name": "欧洲",
+        "rules": [
+          "隧道翻 3 张牌检查追加费用；渡轮需要图示数量的万能牌。",
+          "每人 3 座车站，可借用他人路线完成任务；未建车站每座 4 分。",
+          "初始发 1 张长途与 3 张普通任务，至少留 2 张；未留任务移出游戏。",
+          "最长连续路线奖励 10 分；8 节路线计 21 分。"
+        ],
+        "setupTickets": 4,
+        "stations": 3,
+        "trains": 45,
+        "width": 1744,
+        "wildRule": "any",
+        "wildSingle": false
+      },
+      {
+        "additionalReturn": true,
+        "art": "rail/maps/v1/india",
+        "bonus": "longest",
+        "doubleMin": 4,
+        "height": 1744,
+        "id": "india",
+        "initialReturn": true,
+        "longTickets": false,
+        "maxPlayers": 4,
+        "minPlayers": 2,
+        "name": "印度",
+        "rules": [
+          "最多 4 人；4 人时才可使用双线的两条路线。",
+          "渡轮需要图示数量的万能牌。",
+          "以两条不共用铁路线的路径完成同一任务可获环游奖励：5、10、20、30、40 分。",
+          "初始抽 4 留至少 2；最长连续路线奖励 10 分。"
+        ],
+        "setupTickets": 4,
+        "stations": 0,
+        "trains": 45,
+        "width": 1125,
+        "wildRule": "any",
+        "wildSingle": false
+      },
+      {
+        "additionalReturn": false,
+        "art": "rail/maps/v1/switzerland",
+        "bonus": "longest",
+        "doubleMin": 3,
+        "height": 1125,
+        "id": "switzerland",
+        "initialReturn": false,
+        "longTickets": false,
+        "maxPlayers": 3,
+        "minPlayers": 2,
+        "name": "瑞士",
+        "rules": [
+          "2–3 人，每人 40 节车厢；3 人可使用双线。",
+          "公开万能牌只计 1 次摸牌，但只能用于隧道。",
+          "国家任务取已连通选项中的最高分；全部未完成则扣最低分。各边境入口互不连通。",
+          "初始抽 5 留至少 2；所有未留任务移出游戏；最长路线奖励 10 分。"
+        ],
+        "setupTickets": 5,
+        "stations": 0,
+        "trains": 40,
+        "width": 1744,
+        "wildRule": "tunnel",
+        "wildSingle": true
+      },
+      {
+        "additionalReturn": false,
+        "art": "rail/maps/v1/nordiccountries",
+        "bonus": "tickets",
+        "doubleMin": 3,
+        "height": 1744,
+        "id": "nordiccountries",
+        "initialReturn": false,
+        "longTickets": false,
+        "maxPlayers": 3,
+        "minPlayers": 2,
+        "name": "北欧",
+        "rules": [
+          "2–3 人，每人 40 节车厢；3 人可使用双线。",
+          "公开万能牌只计 1 次摸牌，仅用于隧道和渡轮。",
+          "渡轮可用任意 3 张牌替代 1 张必需万能牌；9 节特殊线路可用任意 4 张替代 1 张同色牌。",
+          "初始抽 5 留至少 2；未留任务移出游戏；任务完成最多奖励 10 分，无最长路线奖。"
+        ],
+        "setupTickets": 5,
+        "stations": 0,
+        "trains": 40,
+        "width": 1125,
+        "wildRule": "special",
+        "wildSingle": true
+      },
+      {
+        "additionalReturn": true,
+        "art": "rail/maps/v1/legendaryasia",
+        "bonus": "network",
+        "doubleMin": 4,
+        "height": 1125,
+        "id": "legendaryasia",
+        "initialReturn": false,
+        "longTickets": true,
+        "maxPlayers": 5,
+        "minPlayers": 2,
+        "name": "传奇亚洲",
+        "rules": [
+          "山地每个 × 需额外消耗 1 节车厢，并获 2 分；渡轮需要万能牌。",
+          "初始发 1 张长途与 3 张普通任务，至少留 2 张；未留任务移出游戏。",
+          "最大连通网络包含城市最多者获 10 分，无最长路线奖。",
+          "同分依次比较完成任务数量、已铺山地路线数量。"
+        ],
+        "setupTickets": 4,
+        "stations": 0,
+        "trains": 45,
+        "width": 1744,
+        "wildRule": "any",
+        "wildSingle": false
+      }
+    ],
+    "room": {
+      "capacity": 2,
+      "chat": null,
+      "clockOffsetMs": 0,
+      "closeReason": "",
+      "game": {
+        "actors": [],
+        "attention": [],
+        "data": {
+          "digest": "6310daf01ed4fe33f3c4bc065f49a96837e13b698364f27b88a6bb514fd01555",
+          "epoch": "65e7e29b620a15c5523bb840",
+          "frame": "0",
+          "inputs": [
+            {
+              "appliedButtons": 0,
+              "appliedSequence": 0,
+              "automated": false,
+              "buttons": 0,
+              "sequence": 0
+            },
+            {
+              "appliedButtons": 0,
+              "appliedSequence": 0,
+              "automated": false,
+              "buttons": 0,
+              "sequence": 0
+            }
+          ],
+          "loading": {
+            "ready": [
+              false,
+              false
+            ]
+          },
+          "localSeat": 0,
+          "options": {
+            "arena": 10,
+            "characters": [
+              8,
+              9
+            ],
+            "teamBattle": false
+          },
+          "phase": "loading",
+          "players": [
+            {
+              "active": false,
+              "characterID": 8,
+              "computer": false,
+              "energy": 0,
+              "health": 0,
+              "seat": 0,
+              "slot": 0,
+              "x": 0,
+              "y": 0
+            },
+            {
+              "active": false,
+              "characterID": 9,
+              "computer": false,
+              "energy": 0,
+              "health": 0,
+              "seat": 1,
+              "slot": 3,
+              "x": 0,
+              "y": 0
+            }
+          ],
+          "presentationDigest": "bab3872417bab91575013a9539fe01ce855411f17cc81d2877c66cb517f2c85f",
+          "protocol": 1,
+          "replay": {
+            "data": "",
+            "firstFrame": "0",
+            "frameCount": 0,
+            "version": 1
+          },
+          "resourceDescriptorSHA256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+          "seatSlots": [
+            0,
+            3
+          ],
+          "serverAt": 1793896570285
+        },
+        "eliminated": null,
+        "finished": false,
+        "kind": "yuyuhakusho",
+        "log": [],
+        "phase": "module",
+        "round": 1,
+        "systemDeadline": 0,
+        "turn": 0,
+        "winners": []
+      },
+      "host": "849216a23bba54e60da888f0",
+      "id": "42695f31",
+      "kind": "yuyuhakusho",
+      "loading": {
+        "build": "c4e49c00176565e2d199ad5bdc0f92dd4713a22781e59c63bc052df4f3c4b822",
+        "frozenAt": 1793896570285,
+        "ready": [
+          false,
+          false
+        ],
+        "startedAt": 1793896570285,
+        "token": "b43906a588d8f14a8379c44c"
+      },
+      "locked": false,
+      "matchId": "650b7dc25ced73eef553e2eb",
+      "name": "魔强统一战验收",
+      "options": {
+        "arena": 10,
+        "characters": [
+          8,
+          9
+        ],
+        "teamBattle": false
+      },
+      "seats": [
+        {
+          "id": "849216a23bba54e60da888f0",
+          "left": false,
+          "name": "Yuyufastplay02",
+          "network": {
+            "connected": true,
+            "connections": 1,
+            "rttMs": 0,
+            "sampledAt": 1793896595004
+          },
+          "ready": true
+        },
+        {
+          "id": "b9ede68165a6d79a8443aed5",
+          "left": false,
+          "name": "Yuyuslowplay02",
+          "network": {
+            "connected": true,
+            "connections": 1,
+            "rttMs": 0,
+            "sampledAt": 1793896593218
+          },
+          "ready": true
+        }
+      ],
+      "setupVersion": 7,
+      "spectating": false,
+      "spectatorCount": 0,
+      "status": "playing",
+      "turnDeadline": 0,
+      "updated": 1793896570,
+      "version": 9,
+      "you": 0
+    },
+    "rooms": [
+      {
+        "capacity": 2,
+        "clockOffsetMs": 0,
+        "closeReason": "",
+        "host": "849216a23bba54e60da888f0",
+        "id": "42695f31",
+        "kind": "yuyuhakusho",
+        "loading": {
+          "build": "c4e49c00176565e2d199ad5bdc0f92dd4713a22781e59c63bc052df4f3c4b822",
+          "frozenAt": 1793896570285,
+          "ready": [
+            false,
+            false
+          ],
+          "startedAt": 1793896570285,
+          "token": "b43906a588d8f14a8379c44c"
+        },
+        "locked": false,
+        "matchId": "650b7dc25ced73eef553e2eb",
+        "name": "魔强统一战验收",
+        "options": {
+          "arena": 10,
+          "characters": [
+            8,
+            9
+          ],
+          "teamBattle": false
+        },
+        "seats": [
+          {
+            "id": "849216a23bba54e60da888f0",
+            "left": false,
+            "name": "Yuyufastplay02",
+            "ready": true
+          },
+          {
+            "id": "b9ede68165a6d79a8443aed5",
+            "left": false,
+            "name": "Yuyuslowplay02",
+            "ready": true
+          }
+        ],
+        "setupVersion": 7,
+        "spectatorCount": 0,
+        "status": "playing",
+        "updated": 1793896570,
+        "version": 9
+      }
+    ],
+    "serverInstance": "82293b298664db16f64c3331a2ba7dec",
+    "serverNow": 1793896595345,
+    "user": {
+      "id": "849216a23bba54e60da888f0",
+      "name": "Yuyufastplay02",
+      "role": "player"
+    },
+    "version": "dev"
+  },
+  "slowFailureState": {
+    "assetsBaseURL": "",
+    "availableGames": [
+      "splendor",
+      "rail",
+      "catan",
+      "carcassonne",
+      "sanguosha",
+      "basketball",
+      "monopoly",
+      "starfort",
+      "doudizhu",
+      "guandan",
+      "shengji",
+      "snooker",
+      "pairs",
+      "gomoku",
+      "junqi",
+      "chess",
+      "xiangqi",
+      "weiqi",
+      "racing",
+      "tetris",
+      "spf2t",
+      "battlecity",
+      "bubbleparty",
+      "fortressblue",
+      "conquest",
+      "tabletennis",
+      "yuyuhakusho"
+    ],
+    "modules": [
+      {
+        "id": "basketball",
+        "maxPlayers": 2,
+        "minPlayers": 1,
+        "name": "热血篮球"
+      },
+      {
+        "id": "monopoly",
+        "maxPlayers": 6,
+        "minPlayers": 2,
+        "name": "强手棋"
+      },
+      {
+        "id": "starfort",
+        "maxPlayers": 4,
+        "minPlayers": 1,
+        "name": "星垒"
+      },
+      {
+        "id": "doudizhu",
+        "maxPlayers": 4,
+        "minPlayers": 4,
+        "name": "斗地主"
+      },
+      {
+        "id": "guandan",
+        "maxPlayers": 4,
+        "minPlayers": 4,
+        "name": "掼蛋"
+      },
+      {
+        "id": "shengji",
+        "maxPlayers": 4,
+        "minPlayers": 4,
+        "name": "升级"
+      },
+      {
+        "id": "snooker",
+        "maxPlayers": 4,
+        "minPlayers": 2,
+        "name": "斯诺克"
+      },
+      {
+        "id": "pairs",
+        "maxPlayers": 6,
+        "minPlayers": 1,
+        "name": "连连看"
+      },
+      {
+        "id": "gomoku",
+        "maxPlayers": 2,
+        "minPlayers": 2,
+        "name": "五子棋"
+      },
+      {
+        "id": "junqi",
+        "maxPlayers": 4,
+        "minPlayers": 2,
+        "name": "军棋"
+      },
+      {
+        "id": "chess",
+        "maxPlayers": 2,
+        "minPlayers": 2,
+        "name": "国际象棋"
+      },
+      {
+        "id": "xiangqi",
+        "maxPlayers": 2,
+        "minPlayers": 2,
+        "name": "中国象棋"
+      },
+      {
+        "id": "weiqi",
+        "maxPlayers": 2,
+        "minPlayers": 2,
+        "name": "围棋"
+      },
+      {
+        "id": "racing",
+        "maxPlayers": 6,
+        "minPlayers": 2,
+        "name": "极品飞车"
+      },
+      {
+        "id": "tetris",
+        "maxPlayers": 4,
+        "minPlayers": 1,
+        "name": "俄罗斯方块"
+      },
+      {
+        "id": "spf2t",
+        "maxPlayers": 2,
+        "minPlayers": 2,
+        "name": "街霸方块"
+      },
+      {
+        "id": "battlecity",
+        "maxPlayers": 6,
+        "minPlayers": 2,
+        "name": "坦克大战"
+      },
+      {
+        "id": "bubbleparty",
+        "maxPlayers": 8,
+        "minPlayers": 2,
+        "name": "泡泡堂"
+      },
+      {
+        "id": "fortressblue",
+        "maxPlayers": 8,
+        "minPlayers": 2,
+        "name": "疯狂坦克"
+      },
+      {
+        "id": "conquest",
+        "maxPlayers": 8,
+        "minPlayers": 2,
+        "name": "征服时代"
+      },
+      {
+        "id": "tabletennis",
+        "maxPlayers": 4,
+        "minPlayers": 2,
+        "name": "乒乓球"
+      },
+      {
+        "id": "yuyuhakusho",
+        "maxPlayers": 4,
+        "minPlayers": 2,
+        "name": "魔强统一战"
+      }
+    ],
+    "network": {
+      "connected": true,
+      "connections": 1,
+      "rttMs": 0,
+      "sampledAt": 1793896593218
+    },
+    "railMaps": [
+      {
+        "additionalReturn": true,
+        "art": "rail",
+        "bonus": "longest",
+        "doubleMin": 4,
+        "height": 1125,
+        "id": "usa",
+        "initialReturn": true,
+        "longTickets": false,
+        "maxPlayers": 5,
+        "minPlayers": 2,
+        "name": "美国",
+        "rules": [
+          "美国基础版；最长连续路线奖励 10 分。",
+          "初始抽 3 张任务至少留 2 张；2–3 人只能使用双线中的一条。"
+        ],
+        "setupTickets": 3,
+        "stations": 0,
+        "trains": 45,
+        "width": 1744,
+        "wildRule": "any",
+        "wildSingle": false
+      },
+      {
+        "additionalReturn": true,
+        "art": "rail/maps/v1/europe",
+        "bonus": "longest",
+        "doubleMin": 4,
+        "height": 1125,
+        "id": "europe",
+        "initialReturn": false,
+        "longTickets": true,
+        "maxPlayers": 5,
+        "minPlayers": 2,
+        "name": "欧洲",
+        "rules": [
+          "隧道翻 3 张牌检查追加费用；渡轮需要图示数量的万能牌。",
+          "每人 3 座车站，可借用他人路线完成任务；未建车站每座 4 分。",
+          "初始发 1 张长途与 3 张普通任务，至少留 2 张；未留任务移出游戏。",
+          "最长连续路线奖励 10 分；8 节路线计 21 分。"
+        ],
+        "setupTickets": 4,
+        "stations": 3,
+        "trains": 45,
+        "width": 1744,
+        "wildRule": "any",
+        "wildSingle": false
+      },
+      {
+        "additionalReturn": true,
+        "art": "rail/maps/v1/india",
+        "bonus": "longest",
+        "doubleMin": 4,
+        "height": 1744,
+        "id": "india",
+        "initialReturn": true,
+        "longTickets": false,
+        "maxPlayers": 4,
+        "minPlayers": 2,
+        "name": "印度",
+        "rules": [
+          "最多 4 人；4 人时才可使用双线的两条路线。",
+          "渡轮需要图示数量的万能牌。",
+          "以两条不共用铁路线的路径完成同一任务可获环游奖励：5、10、20、30、40 分。",
+          "初始抽 4 留至少 2；最长连续路线奖励 10 分。"
+        ],
+        "setupTickets": 4,
+        "stations": 0,
+        "trains": 45,
+        "width": 1125,
+        "wildRule": "any",
+        "wildSingle": false
+      },
+      {
+        "additionalReturn": false,
+        "art": "rail/maps/v1/switzerland",
+        "bonus": "longest",
+        "doubleMin": 3,
+        "height": 1125,
+        "id": "switzerland",
+        "initialReturn": false,
+        "longTickets": false,
+        "maxPlayers": 3,
+        "minPlayers": 2,
+        "name": "瑞士",
+        "rules": [
+          "2–3 人，每人 40 节车厢；3 人可使用双线。",
+          "公开万能牌只计 1 次摸牌，但只能用于隧道。",
+          "国家任务取已连通选项中的最高分；全部未完成则扣最低分。各边境入口互不连通。",
+          "初始抽 5 留至少 2；所有未留任务移出游戏；最长路线奖励 10 分。"
+        ],
+        "setupTickets": 5,
+        "stations": 0,
+        "trains": 40,
+        "width": 1744,
+        "wildRule": "tunnel",
+        "wildSingle": true
+      },
+      {
+        "additionalReturn": false,
+        "art": "rail/maps/v1/nordiccountries",
+        "bonus": "tickets",
+        "doubleMin": 3,
+        "height": 1744,
+        "id": "nordiccountries",
+        "initialReturn": false,
+        "longTickets": false,
+        "maxPlayers": 3,
+        "minPlayers": 2,
+        "name": "北欧",
+        "rules": [
+          "2–3 人，每人 40 节车厢；3 人可使用双线。",
+          "公开万能牌只计 1 次摸牌，仅用于隧道和渡轮。",
+          "渡轮可用任意 3 张牌替代 1 张必需万能牌；9 节特殊线路可用任意 4 张替代 1 张同色牌。",
+          "初始抽 5 留至少 2；未留任务移出游戏；任务完成最多奖励 10 分，无最长路线奖。"
+        ],
+        "setupTickets": 5,
+        "stations": 0,
+        "trains": 40,
+        "width": 1125,
+        "wildRule": "special",
+        "wildSingle": true
+      },
+      {
+        "additionalReturn": true,
+        "art": "rail/maps/v1/legendaryasia",
+        "bonus": "network",
+        "doubleMin": 4,
+        "height": 1125,
+        "id": "legendaryasia",
+        "initialReturn": false,
+        "longTickets": true,
+        "maxPlayers": 5,
+        "minPlayers": 2,
+        "name": "传奇亚洲",
+        "rules": [
+          "山地每个 × 需额外消耗 1 节车厢，并获 2 分；渡轮需要万能牌。",
+          "初始发 1 张长途与 3 张普通任务，至少留 2 张；未留任务移出游戏。",
+          "最大连通网络包含城市最多者获 10 分，无最长路线奖。",
+          "同分依次比较完成任务数量、已铺山地路线数量。"
+        ],
+        "setupTickets": 4,
+        "stations": 0,
+        "trains": 45,
+        "width": 1744,
+        "wildRule": "any",
+        "wildSingle": false
+      }
+    ],
+    "room": {
+      "capacity": 2,
+      "chat": null,
+      "clockOffsetMs": 0,
+      "closeReason": "",
+      "game": {
+        "actors": [],
+        "attention": [],
+        "data": {
+          "digest": "6310daf01ed4fe33f3c4bc065f49a96837e13b698364f27b88a6bb514fd01555",
+          "epoch": "65e7e29b620a15c5523bb840",
+          "frame": "0",
+          "inputs": [
+            {
+              "appliedButtons": 0,
+              "appliedSequence": 0,
+              "automated": false,
+              "buttons": 0,
+              "sequence": 0
+            },
+            {
+              "appliedButtons": 0,
+              "appliedSequence": 0,
+              "automated": false,
+              "buttons": 0,
+              "sequence": 0
+            }
+          ],
+          "loading": {
+            "ready": [
+              false,
+              false
+            ]
+          },
+          "localSeat": 1,
+          "options": {
+            "arena": 10,
+            "characters": [
+              8,
+              9
+            ],
+            "teamBattle": false
+          },
+          "phase": "loading",
+          "players": [
+            {
+              "active": false,
+              "characterID": 8,
+              "computer": false,
+              "energy": 0,
+              "health": 0,
+              "seat": 0,
+              "slot": 0,
+              "x": 0,
+              "y": 0
+            },
+            {
+              "active": false,
+              "characterID": 9,
+              "computer": false,
+              "energy": 0,
+              "health": 0,
+              "seat": 1,
+              "slot": 3,
+              "x": 0,
+              "y": 0
+            }
+          ],
+          "presentationDigest": "bab3872417bab91575013a9539fe01ce855411f17cc81d2877c66cb517f2c85f",
+          "protocol": 1,
+          "replay": {
+            "data": "",
+            "firstFrame": "0",
+            "frameCount": 0,
+            "version": 1
+          },
+          "resourceDescriptorSHA256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+          "seatSlots": [
+            0,
+            3
+          ],
+          "serverAt": 1793896570285
+        },
+        "eliminated": null,
+        "finished": false,
+        "kind": "yuyuhakusho",
+        "log": [],
+        "phase": "module",
+        "round": 1,
+        "systemDeadline": 0,
+        "turn": 0,
+        "winners": []
+      },
+      "host": "849216a23bba54e60da888f0",
+      "id": "42695f31",
+      "kind": "yuyuhakusho",
+      "loading": {
+        "build": "c4e49c00176565e2d199ad5bdc0f92dd4713a22781e59c63bc052df4f3c4b822",
+        "frozenAt": 1793896570285,
+        "ready": [
+          false,
+          false
+        ],
+        "startedAt": 1793896570285,
+        "token": "b43906a588d8f14a8379c44c"
+      },
+      "locked": false,
+      "matchId": "650b7dc25ced73eef553e2eb",
+      "name": "魔强统一战验收",
+      "options": {
+        "arena": 10,
+        "characters": [
+          8,
+          9
+        ],
+        "teamBattle": false
+      },
+      "seats": [
+        {
+          "id": "849216a23bba54e60da888f0",
+          "left": false,
+          "name": "Yuyufastplay02",
+          "network": {
+            "connected": true,
+            "connections": 1,
+            "rttMs": 0,
+            "sampledAt": 1793896595004
+          },
+          "ready": true
+        },
+        {
+          "id": "b9ede68165a6d79a8443aed5",
+          "left": false,
+          "name": "Yuyuslowplay02",
+          "network": {
+            "connected": true,
+            "connections": 1,
+            "rttMs": 0,
+            "sampledAt": 1793896593218
+          },
+          "ready": true
+        }
+      ],
+      "setupVersion": 7,
+      "spectating": false,
+      "spectatorCount": 0,
+      "status": "playing",
+      "turnDeadline": 0,
+      "updated": 1793896570,
+      "version": 9,
+      "you": 1
+    },
+    "rooms": [
+      {
+        "capacity": 2,
+        "clockOffsetMs": 0,
+        "closeReason": "",
+        "host": "849216a23bba54e60da888f0",
+        "id": "42695f31",
+        "kind": "yuyuhakusho",
+        "loading": {
+          "build": "c4e49c00176565e2d199ad5bdc0f92dd4713a22781e59c63bc052df4f3c4b822",
+          "frozenAt": 1793896570285,
+          "ready": [
+            false,
+            false
+          ],
+          "startedAt": 1793896570285,
+          "token": "b43906a588d8f14a8379c44c"
+        },
+        "locked": false,
+        "matchId": "650b7dc25ced73eef553e2eb",
+        "name": "魔强统一战验收",
+        "options": {
+          "arena": 10,
+          "characters": [
+            8,
+            9
+          ],
+          "teamBattle": false
+        },
+        "seats": [
+          {
+            "id": "849216a23bba54e60da888f0",
+            "left": false,
+            "name": "Yuyufastplay02",
+            "ready": true
+          },
+          {
+            "id": "b9ede68165a6d79a8443aed5",
+            "left": false,
+            "name": "Yuyuslowplay02",
+            "ready": true
+          }
+        ],
+        "setupVersion": 7,
+        "spectatorCount": 0,
+        "status": "playing",
+        "updated": 1793896570,
+        "version": 9
+      }
+    ],
+    "serverInstance": "82293b298664db16f64c3331a2ba7dec",
+    "serverNow": 1793896595562,
+    "user": {
+      "id": "b9ede68165a6d79a8443aed5",
+      "name": "Yuyuslowplay02",
+      "role": "player"
+    },
+    "version": "dev"
+  },
+  "sourceSHA256": {
+    "scripts/yuyuhakusho/platform_app_host.go": "039eb5666e853e1cfd201b5daa53794bb60c2057b4d176fa52f82ebb508b43c5",
+    "scripts/yuyuhakusho/platform_app_observer.js": "8ee4a64b53b16b7be3d1f489b1cd902528224a83c6cf674d904d0d3968c0dc6d",
+    "scripts/yuyuhakusho/native_app_input.mjs": "b8d4e687b01e668d4b9c870397ba201ce6d94085919ee9ddb20b62abd168e459",
+    "scripts/yuyuhakusho/check_platform_app.py": "8183befc68a9cdd619c63a82c34f20b6f0cfbe50ac71593540e727560563ace2"
+  }
+}

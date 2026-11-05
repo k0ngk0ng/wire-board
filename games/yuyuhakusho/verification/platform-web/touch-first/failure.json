@@ -1,0 +1,39 @@
+{
+  "error": "CalledProcessError(1, ['node', '/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/native_platform_input.mjs', 'ws://127.0.0.1:58852/devtools/browser/2a666a1e-62b7-4497-ae13-43610f58dd10', 'http://127.0.0.1:58850/', '[{\"method\": \"Input.dispatchTouchEvent\", \"type\": \"touchStart\", \"touchPoints\": [{\"x\": 86.830625, \"y\": 404.5625, \"id\": 1, \"radiusX\": 3, \"radiusY\": 3, \"force\": 1}], \"expectButtons\": 8}, {\"method\": \"Input.dispatchTouchEvent\", \"type\": \"touchStart\", \"touchPoints\": [{\"x\": 86.830625, \"y\": 404.5625, \"id\": 1, \"radiusX\": 3, \"radiusY\": 3, \"force\": 1}, {\"x\": 202.75, \"y\": 379.5625, \"id\": 2, \"radiusX\": 3, \"radiusY\": 3, \"force\": 1}], \"expectButtons\": 1032}, {\"method\": \"Input.dispatchTouchEvent\", \"type\": \"touchMove\", \"touchPoints\": [{\"x\": 48.950625, \"y\": 423.5025, \"id\": 1, \"radiusX\": 3, \"radiusY\": 3, \"force\": 1}, {\"x\": 202.75, \"y\": 379.5625, \"id\": 2, \"radiusX\": 3, \"radiusY\": 3, \"force\": 1}], \"expectButtons\": 1030}, {\"method\": \"Input.dispatchTouchEvent\", \"type\": \"touchEnd\", \"touchPoints\": [{\"x\": 202.75, \"y\": 379.5625, \"id\": 2, \"radiusX\": 3, \"radiusY\": 3, \"force\": 1}], \"expectButtons\": 1024}, {\"method\": \"Input.dispatchTouchEvent\", \"type\": \"touchCancel\", \"touchPoints\": [], \"expectButtons\": 0}]'])",
+  "completed": {
+    "prediction_before_delayed_authority": {
+      "authority": 944,
+      "local": 950,
+      "at": 5253.199999809265,
+      "inputAt": 5026.699999809265,
+      "frame": "281",
+      "before": {
+        "x": 944,
+        "pixelHash": "4ea2ccdf"
+      },
+      "firstResponse": {
+        "authority": 944,
+        "local": 947,
+        "at": 5226.800000190735,
+        "inputAt": 5026.699999809265,
+        "frame": "279",
+        "pixelHash": "d7cc13dd"
+      },
+      "pixelHash": "ec3f314e",
+      "firstVisibleResponseMs": 200.10000038146973
+    },
+    "controls": {
+      "pass": true,
+      "virtual_gamepad_api": true,
+      "hardware_tested": false,
+      "visible_local_x": {
+        "before": 944,
+        "after": 956
+      },
+      "applied_release": true,
+      "mixed_source_disconnect": true,
+      "reconnect_requires_neutral": true,
+      "cleared_primary_and_alternative": true
+    }
+  }
+}

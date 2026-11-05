@@ -1,0 +1,14 @@
+{
+  "label": "wasm-performance-v1",
+  "actual_go_wasm": true,
+  "wasm_sha256": "a10458e21546db20123a6d7c2f07196a29607c5ed3c0686ffc0ba74dac219c73",
+  "checks": [
+    "invalid_step_target_atomic",
+    "preview_detached_pixels",
+    "valid_step_twelve_bits",
+    "non_uint8_asset_rejected_runtime_alive",
+    "exact_raw_json_identity",
+    "bounded_sessions_disposal"
+  ],
+  "pass": true
+}

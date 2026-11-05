@@ -1,0 +1,70 @@
+[
+  {
+    "shard": 0,
+    "command": [
+      "/opt/homebrew/bin/go",
+      "test",
+      "-json",
+      "-count=1",
+      "-timeout=45m",
+      "-exec",
+      "/opt/homebrew/Cellar/go/1.26.2/libexec/lib/wasm/go_js_wasm_exec",
+      "./games/yuyuhakusho/runtimebridge",
+      "-run",
+      "^TestSchema2FrozenWholeTrajectories$"
+    ],
+    "exit_code": 0,
+    "log": "games/yuyuhakusho/runtimebridge/testdata/schema2-flows-wasm-0.jsonl"
+  },
+  {
+    "shard": 1,
+    "command": [
+      "/opt/homebrew/bin/go",
+      "test",
+      "-json",
+      "-count=1",
+      "-timeout=45m",
+      "-exec",
+      "/opt/homebrew/Cellar/go/1.26.2/libexec/lib/wasm/go_js_wasm_exec",
+      "./games/yuyuhakusho/runtimebridge",
+      "-run",
+      "^TestSchema2FrozenWholeTrajectories$"
+    ],
+    "exit_code": 0,
+    "log": "games/yuyuhakusho/runtimebridge/testdata/schema2-flows-wasm-1.jsonl"
+  },
+  {
+    "shard": 2,
+    "command": [
+      "/opt/homebrew/bin/go",
+      "test",
+      "-json",
+      "-count=1",
+      "-timeout=45m",
+      "-exec",
+      "/opt/homebrew/Cellar/go/1.26.2/libexec/lib/wasm/go_js_wasm_exec",
+      "./games/yuyuhakusho/runtimebridge",
+      "-run",
+      "^TestSchema2FrozenWholeTrajectories$"
+    ],
+    "exit_code": 0,
+    "log": "games/yuyuhakusho/runtimebridge/testdata/schema2-flows-wasm-2.jsonl"
+  },
+  {
+    "shard": 3,
+    "command": [
+      "/opt/homebrew/bin/go",
+      "test",
+      "-json",
+      "-count=1",
+      "-timeout=45m",
+      "-exec",
+      "/opt/homebrew/Cellar/go/1.26.2/libexec/lib/wasm/go_js_wasm_exec",
+      "./games/yuyuhakusho/runtimebridge",
+      "-run",
+      "^TestSchema2FrozenWholeTrajectories$"
+    ],
+    "exit_code": 0,
+    "log": "games/yuyuhakusho/runtimebridge/testdata/schema2-flows-wasm-3.jsonl"
+  }
+]

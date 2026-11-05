@@ -1,0 +1,54 @@
+import {useEffect,useLayoutEffect,useRef,useState} from 'react';
+import type {BoardProps} from '../../../web/src/game-api/module';
+import {api} from '../../../web/src/ui/board-host';
+import {MDController} from '../../../web/src/controllers/MDController';
+import type {ControllerProfile,ControllerSettingsData} from '../../../web/src/controllers/input';
+import {PhysicalController,mergeLogicalButtons} from '../../../web/src/controllers/gamepad';
+import {NetworkClient} from './network-client';
+import type {NetworkView,Progress} from './types';
+import './network.css';
+
+export function Board(props:BoardProps<NetworkView>){
+ const root=useRef<HTMLDivElement>(null),canvas=useRef<HTMLCanvasElement>(null),client=useRef<NetworkClient|undefined>(undefined),latest=useRef(props);latest.current=props;
+ const [profile,setProfile]=useState<ControllerProfile>(),[readyIdentity,setReadyIdentity]=useState(''),[error,setError]=useState(''),[connected,setConnected]=useState(true),[retry,setRetry]=useState(0);
+ const [progress,setProgress]=useState<Progress>({percent:0,label:'加载控制器设置'});
+ const {room,data}=props,watching=!!room.spectating||room.you<0,seat=watching?-1:room.you,userID=watching?'spectator':room.seats[seat]?.id??'';
+ const identity=[room.id,data.epoch,seat,userID,props.clock.epoch??0,props.assets].join(':');
+ const ready=readyIdentity===identity;
+ const enabled=(value:BoardProps<NetworkView>)=>value.room.status==='playing'&&!value.room.spectating&&value.room.you>=0&&!value.room.seats[value.room.you]?.autoPlay&&!value.room.seats[value.room.you]?.left&&value.data.phase!=='result';
+ useEffect(()=>{props.onLoadProgress?.(progress.percent,progress.label);},[progress,props.onLoadProgress]);
+ useEffect(()=>{if(error)props.onLoadError?.(error);},[error,props.onLoadError]);
+ useEffect(()=>{if(ready)props.onReady?.();},[ready,props.onReady]);
+ useLayoutEffect(()=>{
+  let alive=true,owned:NetworkClient|undefined,physical:PhysicalController|undefined,changedProfile:ControllerProfile|undefined;
+  setReadyIdentity('');setError('');setProfile(undefined);setProgress({percent:0,label:'加载控制器设置'});
+  const model='game:yuyuhakusho';
+  const changed=(event:Event)=>{const detail=(event as CustomEvent).detail;if(detail?.userId!==userID||detail?.model!==model)return;changedProfile=detail.profile;setProfile(detail.profile);physical?.configure(detail.profile);owned?.configure(detail.profile);};
+  window.addEventListener('controller-settings-changed',changed);
+  void(async()=>{
+   const settings:ControllerSettingsData=await api('/controllers?game=yuyuhakusho');if(!alive)return;
+   const fetched=settings.profiles[model]??settings.profiles['md-6'];
+   const saved=changedProfile&&(!fetched||changedProfile.revision>=fetched.revision)?changedProfile:fetched;
+   if(!saved)throw Error('未找到当前用户的 MD 控制器设置');setProfile(saved);
+   const definition=settings.models.find(value=>value.id===model);
+   physical=new PhysicalController(saved,{standardGamepad:definition?.standardGamepad,turboTargets:definition?.turboTargets??{},continuous:definition?.continuous});
+   const created=new NetworkClient({root:root.current!,canvas:canvas.current!,profile:saved,roomID:room.id,userID,seat,epoch:data.epoch,arena:data.options.arena,descriptorSHA:data.resourceDescriptorSHA256,assetsBase:props.assets,
+    loadCheckpoint:async()=>{if(!alive)throw Error('对局已切换');const result=await api('/rooms/'+encodeURIComponent(room.id)+'/sync');if(!alive)throw Error('对局已切换');return result;},
+    send:action=>{const current=latest.current;if(!alive||current.room.id!==room.id||current.data.epoch!==data.epoch||current.room.you!==seat&&!(seat<0&&current.room.spectating))return Promise.reject(Error('控制席位已变化'));return current.act({...action});},
+    inputWindow:()=>latest.current.inputWindow??1,onProgress:value=>{if(alive)setProgress(value);},onConnection:value=>{if(alive)setConnected(value);},onError:failure=>{if(alive)setError(failure.message);},
+    physical:(keyboard,at,active)=>mergeLogicalButtons(keyboard,physical?.sample(at,active,root.current!)??[]),clearPhysical:()=>physical?.clear(),
+   });owned=created;client.current=created;
+   await created.initialize();if(!alive)return;
+   if(changedProfile&&changedProfile.revision>saved.revision){physical.configure(changedProfile);created.configure(changedProfile);}
+   const current=latest.current;created.update(current.data,current.room.version,enabled(current),current.clock);setReadyIdentity(identity);
+   if(seat>=0&&current.data.phase==='loading'&&!current.data.loading?.ready[seat])await current.act({type:'loaded',epoch:data.epoch});
+  })().catch(failure=>{if(alive)setError(failure instanceof Error?failure.message:String(failure));});
+  return()=>{alive=false;window.removeEventListener('controller-settings-changed',changed);owned?.dispose();physical?.dispose();if(client.current===owned)client.current=undefined;};
+ },[identity,retry]);
+ useLayoutEffect(()=>{client.current?.update(props.data,props.room.version,enabled(props),props.clock);},[props.data,props.room.version,props.clock,props.room.status,props.room.spectating,props.room.you,props.room.seats]);
+ return <div ref={root} className="yuyu-board" data-yuyu-board tabIndex={0} aria-label="魔强统一战比赛画面">
+  <div className="yuyu-screen"><canvas ref={canvas} width={320} height={224} aria-label="魔强统一战战场"/>{!ready&&!error&&<div className="yuyu-load" role="status"><progress max={100} value={progress.percent}/><span>{progress.label}</span></div>}</div>
+  {error?<div className="yuyu-status" role="alert"><span>{error}</span><button type="button" onClick={()=>setRetry(value=>value+1)}>重新连接</button></div>:ready&&!connected?<p className="yuyu-status" role="status">正在恢复连接</p>:null}
+  {profile&&!watching&&<div className="yuyu-controller"><MDController profile={profile} mode="play" disabled={!ready||!connected||!enabled(props)||data.phase==='loading'} sink={{pressPointer:(id,buttons)=>client.current?.pressPointer(id,buttons),releasePointer:(id,cancelled)=>client.current?.releasePointer(id,cancelled)}}/></div>}
+ </div>;
+}

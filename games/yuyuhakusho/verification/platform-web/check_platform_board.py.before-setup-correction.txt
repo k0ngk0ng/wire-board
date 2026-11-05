@@ -1,0 +1,59 @@
+"""Actual browser Board with native Go module/Wasm; not authenticated host QA."""
+from pathlib import Path
+import argparse,hashlib,json,os,subprocess,time
+ROOT=Path(__file__).resolve().parents[2]
+parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--label',default='final');parser.add_argument('--red',action='store_true');args=parser.parse_args()
+OUT=ROOT/'games/yuyuhakusho/verification/platform-web'/args.label;TMP=ROOT/'.local/md-yuyuhakusho/platform-web'
+for p in [OUT,TMP,TMP/'tmp',ROOT/'.local/yw']:p.mkdir(parents=True,exist_ok=True)
+env=dict(os.environ,TMPDIR=str(TMP/'tmp'),GOTMPDIR=str(TMP/'tmp'),GOCACHE=str(ROOT/'.local/go-cache'),GOMODCACHE=str(ROOT/'.local/go-mod'),TEST_TELEMETRY_DIR=str(ROOT/'.local/go-telemetry'),AGENT_BROWSER_SOCKET_DIR=str(ROOT/'.local/yw'))
+build=[str(ROOT/'web/node_modules/.bin/esbuild'),'scripts/yuyuhakusho/platform_board_harness.tsx','--bundle','--format=esm','--jsx=automatic','--alias:react=./web/node_modules/react','--alias:react-dom=./web/node_modules/react-dom','--loader:.svg=file','--outfile='+str(TMP/'harness.js')]
+r=subprocess.run(build,cwd=ROOT,env=env,text=True,capture_output=True)
+if args.red:
+ report={'test_first':True,'scope':'Missing real Board/module UI compile contract before implementation; browser/Go execution remains required','command':build,'exit_code':r.returncode,'stdout':r.stdout,'stderr':r.stderr,'missing_board':r.returncode!=0 and 'Could not resolve' in r.stderr,'harness_sha256':hashlib.sha256((ROOT/'scripts/yuyuhakusho/platform_board_harness.tsx').read_bytes()).hexdigest()};(OUT/'missing-board-red.json').write_text(json.dumps(report,indent=2)+'\n');assert report['missing_board'];print('actual missing Board compile red retained');raise SystemExit(0)
+assert r.returncode==0,r.stderr
+subprocess.run(['python3',str(ROOT/'scripts/yuyuhakusho/build_platform_web.py')],cwd=ROOT,env=env,check=True)
+process=subprocess.Popen([str(TMP/'host'),'-build',str(TMP),'-root',str(ROOT)],cwd=ROOT,env=env,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
+url=process.stdout.readline().strip();assert url.startswith('http://127.0.0.1:'),url
+seed=subprocess.check_output(['agent-browser','session','id','--scope','worktree','--prefix','yuyu-platform-web'],cwd=ROOT,env=env,text=True).strip();env['AGENT_BROWSER_SESSION']='pw'+seed.rsplit('-',1)[-1][:6]
+def browser(*items):
+ result=subprocess.run(['agent-browser',*items,'--json'],cwd=ROOT,env=env,text=True,capture_output=True,timeout=55)
+ if result.returncode:raise RuntimeError(result.stdout+result.stderr)
+ value=json.loads(result.stdout);assert value['success'],value;return value['data']
+def js(code):return browser('eval',code)['result']
+opened=False;report={}
+try:
+ browser('--profile',str(TMP/'profile'),'open',url);opened=True;browser('set','viewport','1100','1000');browser('snapshot','-i')
+ assert js('document.querySelectorAll("[aria-label=场地] option").length')==8
+ assert js('document.querySelectorAll("[data-character-seat] option").length')>=22
+ browser('select','[aria-label=场地]','10');assert js('window.yuyuBoardProbe.prepare.at(-1)?.arena')==10
+ browser('select','[data-character-seat="1"]','8');assert js('window.yuyuBoardProbe.prepare.at(-1)?.character')==8
+ browser('click','#start-board');browser('wait','--fn','yuyuBoardProbe.ready || !!yuyuBoardProbe.error');assert not js('yuyuBoardProbe.error'),js('yuyuBoardProbe.error')
+ browser('wait','--fn','yuyuBoardProbe.authority?.phase !== "loading" && BigInt(yuyuBoardProbe.authority?.frame??"0") > 250n')
+ assert js('document.querySelector("[data-controller-layout=md]") !== null')
+ before=js('window.yuyuBoardProbe.authority.players[0].x')
+ js('window.yuyuBoardProbe.delay=500')
+ browser('focus','[data-yuyu-board]');browser('keyboard','keydown','d')
+ browser('wait','--fn','document.querySelector("[data-yuyu-board]")?.dataset.localX > '+str(before+5))
+ observed=js('({authority:yuyuBoardProbe.authority.players[0].x,local:Number(document.querySelector("[data-yuyu-board]").dataset.localX),at:performance.now(),inputAt:yuyuBoardProbe.firstInputAt})')
+ assert observed['local']>before+5 and observed['authority']<=before+3,observed
+ browser('keyboard','keyup','d');js('window.yuyuBoardProbe.delay=0')
+ report['prediction_before_delayed_authority']=observed
+ browser('screenshot',str(OUT/'desktop.png'))
+ browser('click','#fullscreen');browser('wait','--fn','document.querySelector("[data-room-fullscreen]") !== null')
+ assert js('!document.querySelector("[data-game-fullscreen-surface]").contains(document.querySelector("#platform-header"))')
+ browser('press','Escape');browser('wait','--fn','document.querySelector("[data-room-fullscreen]") === null')
+ browser('set','viewport','320','740');assert not js('document.documentElement.scrollWidth > innerWidth')
+ pad=js('(()=>{const a=document.querySelector("canvas").getBoundingClientRect(),b=document.querySelector("[data-controller-layout=md]").getBoundingClientRect();return {canvas:a.bottom,pad:b.top}})()');assert pad['pad']>=pad['canvas']
+ browser('screenshot',str(OUT/'mobile-320.png'))
+ assert js('yuyuBoardProbe.actions.some(action=>action.type==="loaded")')
+ report.update(pass_=True,scope='Actual Go module and Go/Wasm Board integration with a local test host; not platform authentication/socket/slow-peer acceptance',native_keyboard=True,source_sha256={str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest()for p in (ROOT/'games/yuyuhakusho/web').glob('*')if p.is_file()},pad_geometry=pad)
+ report['pass']=report.pop('pass_');(OUT/'result.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n');print('Board actual browser E2E pass')
+except Exception as error:
+ (OUT/'failure.json').write_text(json.dumps({'error':repr(error),'completed':report},ensure_ascii=False,indent=2)+'\n')
+ if opened:
+  try:browser('screenshot',str(OUT/'failure.png'))
+  except Exception:pass
+ raise
+finally:
+ if opened:browser('close')
+ process.terminate();process.wait(timeout=10)

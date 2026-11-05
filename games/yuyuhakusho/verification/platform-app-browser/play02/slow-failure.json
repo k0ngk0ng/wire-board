@@ -1,0 +1,156 @@
+{
+  "lifecycle": {
+    "effectiveLaunch": {
+      "browserLaunched": true,
+      "engine": "chrome",
+      "launchHash": 18404876198101387355
+    },
+    "launched": false,
+    "relaunchedBrowser": false,
+    "restartedBackground": false,
+    "restoreStatus": "not_configured",
+    "reused": true,
+    "saveStatus": "not_attempted"
+  },
+  "origin": "http://127.0.0.1:59547/",
+  "refs": {
+    "e1": {
+      "name": "",
+      "role": "generic"
+    },
+    "e12": {
+      "name": "围桌首页",
+      "role": "link"
+    },
+    "e123": {
+      "name": "关闭错误",
+      "role": "button"
+    },
+    "e124": {
+      "name": "开启托管",
+      "role": "button"
+    },
+    "e125": {
+      "name": "全屏",
+      "role": "button"
+    },
+    "e126": {
+      "name": "对局日志",
+      "role": "button"
+    },
+    "e127": {
+      "name": "魔强统一战加载",
+      "role": "region"
+    },
+    "e128": {
+      "name": "魔强统一战",
+      "role": "heading"
+    },
+    "e129": {
+      "name": "重试加载",
+      "role": "button"
+    },
+    "e13": {
+      "name": "打开游戏许愿池",
+      "role": "button"
+    },
+    "e130": {
+      "name": "刷新页面",
+      "role": "button"
+    },
+    "e14": {
+      "name": "积分榜",
+      "role": "button"
+    },
+    "e15": {
+      "name": "",
+      "role": "generic"
+    },
+    "e16": {
+      "name": "我的战绩与好友",
+      "role": "button"
+    },
+    "e17": {
+      "name": "控制器设置",
+      "role": "button"
+    },
+    "e18": {
+      "name": "Yuyuslowplay02",
+      "role": "button"
+    },
+    "e19": {
+      "name": "声音控制",
+      "role": "button"
+    },
+    "e67": {
+      "name": "魔强统一战验收",
+      "role": "heading"
+    },
+    "e68": {
+      "name": "玩法速查",
+      "role": "button"
+    },
+    "e69": {
+      "name": "邀请朋友",
+      "role": "button"
+    },
+    "e77": {
+      "name": "打开牌桌聊天",
+      "role": "button"
+    }
+  },
+  "removedRefs": [
+    "@e70",
+    "@e71",
+    "@e72",
+    "@e73",
+    "@e74",
+    "@e75",
+    "@e76",
+    "@e78",
+    "@e79",
+    "@e80",
+    "@e81",
+    "@e82",
+    "@e83",
+    "@e84",
+    "@e85",
+    "@e86",
+    "@e87",
+    "@e88",
+    "@e89",
+    "@e90",
+    "@e91",
+    "@e92",
+    "@e93",
+    "@e94",
+    "@e95",
+    "@e96",
+    "@e97",
+    "@e98",
+    "@e99",
+    "@e100",
+    "@e101",
+    "@e102",
+    "@e103",
+    "@e104",
+    "@e105",
+    "@e106",
+    "@e107",
+    "@e108",
+    "@e109",
+    "@e110",
+    "@e111",
+    "@e112",
+    "@e113",
+    "@e114",
+    "@e115",
+    "@e116",
+    "@e117",
+    "@e118",
+    "@e119",
+    "@e120",
+    "@e121"
+  ],
+  "snapshot": "- generic \"围桌WIRE BOARD游戏牌桌让相聚，多一局。vdev许愿池积分榜0msYYuyuslowplay02魔强统一战  /  牌桌 42695F31魔强统一战验收开启托管全屏对局日志玩法速查邀请朋友魔强\" [ref=e1] clickable [onclick]\n  - link \"围桌首页\" [ref=e12]\n  - button \"打开游戏许愿池\" [ref=e13]\n  - button \"积分榜\" [ref=e14]\n  - generic [ref=e15] clickable [onclick]\n    - button \"声音控制\" [expanded=false, ref=e19]\n  - button \"我的战绩与好友\" [ref=e16]\n  - button \"控制器设置\" [ref=e17]\n  - button \"Yuyuslowplay02\" [ref=e18]\n  - heading \"魔强统一战验收\" [level=1, ref=e67]\n  - button \"开启托管\" [ref=e124]\n  - button \"全屏\" [disabled, ref=e125]\n  - button \"对局日志\" [ref=e126]\n  - button \"玩法速查\" [ref=e68]\n  - button \"邀请朋友\" [ref=e69]\n  - region \"魔强统一战加载\" [ref=e127]\n    - heading \"魔强统一战\" [level=2, ref=e128]\n    - button \"重试加载\" [ref=e129]\n    - button \"刷新页面\" [ref=e130]\n  - button \"打开牌桌聊天\" [expanded=false, ref=e77]\n- button \"关闭错误\" [ref=e123]"
+}

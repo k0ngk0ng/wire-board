@@ -1,0 +1,276 @@
+package runtimebridge
+
+import (
+	"bytes"
+	"testing"
+
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine"
+)
+
+func performanceSession(t *testing.T, arena uint16, legacy bool) *Session {
+	t.Helper()
+	a := networkAssets(t, arena)
+	if legacy {
+		r := networkInputs(t, arena)
+		var e error
+		a, e = DecodeAssetsForArena(r.Rules, r.Sprites, r.Arena, r.HUD, r.ArenaAux, arena)
+		if e != nil {
+			t.Fatal(e)
+		}
+	}
+	o := networkOptions(arena, []uint8{7, 9}, false, false)
+	s, e := NewSession(o, a)
+	if e != nil {
+		t.Fatal(e)
+	}
+	if e = s.Ready(); e != nil {
+		t.Fatal(e)
+	}
+	for i := 0; i < 320; i++ {
+		if _, e = s.Step([8]engine.Buttons{}); e != nil {
+			t.Fatal(e)
+		}
+	}
+	return s
+}
+func performanceSave(t *testing.T, s *Session) []byte {
+	t.Helper()
+	b, e := s.Save()
+	if e != nil {
+		t.Fatal(e)
+	}
+	return b
+}
+func TestPerformanceTypedForkPreservesBytesAndDetaches(t *testing.T) {
+	for _, legacy := range []bool{false, true} {
+		for _, arena := range []uint16{0, 10} {
+			s := performanceSession(t, arena, legacy)
+			s.saved.World.Throws.Records = []engine.ThrowContactRecord{{Owner: 0x8400}}
+			before := performanceSave(t, s)
+			changes := []struct {
+				name   string
+				change func(*Session)
+			}{
+				{"options", func(f *Session) { f.saved.Options.Players[0].CharacterID ^= 1 }},
+				{"objects", func(f *Session) {
+					o := f.saved.World.Objects[0x8400]
+					o.Body.Health--
+					f.saved.World.Objects[0x8400] = o
+				}},
+				{"stream", func(f *Session) { f.saved.World.Stream[0] ^= 1 }},
+				{"throws", func(f *Session) { f.saved.World.Throws.Records[0].Owner++ }},
+				{"registration", func(f *Session) { f.saved.World.Registration.Owners[0]++ }},
+				{"arrays", func(f *Session) { f.saved.World.DragonHistory[0][0].X++; f.saved.World.Buffers[0].Records[0].Owner++ }},
+				{"hud", func(f *Session) {
+					if f.computed != nil {
+						delete(f.computed.HUD.Slots, 0)
+						f.computed.HUD.Cells[0] ^= 1
+						f.computed.SpriteSlots.Tiles[0]++
+					} else {
+						delete(f.legacy.HUD.Slots, 0)
+						f.legacy.HUD.Cells[0] ^= 1
+						f.legacy.Slots.Tiles[0]++
+					}
+				}},
+			}
+			for _, change := range changes {
+				f, e := s.Fork()
+				if e != nil {
+					t.Fatal(e)
+				}
+				if !bytes.Equal(before, performanceSave(t, f)) {
+					t.Fatal("typed fork changed bytes", legacy, arena, change.name)
+				}
+				change.change(f)
+				if !bytes.Equal(before, performanceSave(t, s)) {
+					t.Fatal("fork mutated original", legacy, arena, change.name)
+				}
+			}
+			f, e := s.Fork()
+			if e != nil {
+				t.Fatal(e)
+			}
+			if _, e = f.Step([8]engine.Buttons{engine.ButtonRight}); e != nil {
+				t.Fatal(e)
+			}
+			if !bytes.Equal(before, performanceSave(t, s)) {
+				t.Fatal("fork step mutated authority")
+			}
+			// Preserve the observable distinction between nil and nonnil empty slices.
+			for _, nonnull := range []bool{false, true} {
+				s.saved.World.Throws.Records = nil
+				s.saved.World.Registration.Owners = nil
+				if nonnull {
+					s.saved.World.Throws.Records = []engine.ThrowContactRecord{}
+					s.saved.World.Registration.Owners = []uint16{}
+				}
+				f, e = s.Fork()
+				if e != nil {
+					t.Fatal(e)
+				}
+				if !bytes.Equal(performanceSave(t, s), performanceSave(t, f)) {
+					t.Fatal("nil/empty JSON distinction changed")
+				}
+			}
+		}
+	}
+}
+func TestPerformanceTypedForkRetainsValidation(t *testing.T) {
+	var empty *Session
+	if _, e := empty.Fork(); e == nil {
+		t.Fatal("nil fork accepted")
+	}
+	s := performanceSession(t, 0, false)
+	s.computed.SpriteSlots.Present[3] = 0
+	if _, e := s.Fork(); e == nil {
+		t.Fatal("bad refs accepted by typed fork")
+	}
+	s = performanceSession(t, 0, false)
+	s.saved.AssetDigests[0] = "wrong"
+	if _, e := s.Fork(); e == nil {
+		t.Fatal("bad assets accepted")
+	}
+	s = performanceSession(t, 0, false)
+	s.legacy = &legacyPresentation{}
+	if _, e := s.Fork(); e == nil {
+		t.Fatal("multiple owners accepted")
+	}
+}
+func TestPerformanceAdvanceMatchesStateAndFinalDraw(t *testing.T) {
+	for _, arena := range []uint16{0, 10} {
+		slow := performanceSession(t, arena, false)
+		fast, e := slow.Fork()
+		if e != nil {
+			t.Fatal(e)
+		}
+		for tick := 0; tick < 600; tick++ {
+			held := [4]engine.Buttons{}
+			if tick%90 < 50 {
+				held[0] = engine.ButtonRight
+			}
+			if tick%120 < 30 {
+				held[1] = engine.ButtonLeft | engine.ButtonB
+			}
+			mask := uint8(0)
+			if tick >= 180 && tick < 300 {
+				mask = 2
+			}
+			want, e := slow.StepControlled(held, mask)
+			if e != nil {
+				t.Fatal(tick, e)
+			}
+			if tick%17 == 0 {
+				got, e := fast.StepControlled(held, mask)
+				if e != nil || !bytes.Equal(want.Pixels, got.Pixels) {
+					t.Fatal("final callback-time pixels differ", arena, tick, e)
+				}
+			} else {
+				view, e := fast.AdvanceControlled(held, mask)
+				if e != nil || view.Frame != want.View.Frame {
+					t.Fatal("state-only frame differs", arena, tick, e)
+				}
+			}
+			if !bytes.Equal(performanceSave(t, slow), performanceSave(t, fast)) {
+				t.Fatal("state-only state differs", arena, tick)
+			}
+		}
+		before := performanceSave(t, fast)
+		preview, e := fast.Preview()
+		if e != nil || preview.View.Frame == fast.View().Frame || !bytes.Equal(before, performanceSave(t, fast)) {
+			t.Fatal("typed preview changed authority", e)
+		}
+	}
+}
+func TestPerformanceAdvanceErrorsRemainAtomic(t *testing.T) {
+	s := performanceSession(t, 10, false)
+	before := performanceSave(t, s)
+	for _, v := range []struct {
+		held [4]engine.Buttons
+		mask uint8
+	}{{held: [4]engine.Buttons{4096}}, {held: [4]engine.Buttons{0, 0, 1}}, {mask: 4}, {mask: 128}} {
+		if _, e := s.AdvanceControlled(v.held, v.mask); e == nil {
+			t.Fatal("bad state-only advance accepted")
+		}
+		if !bytes.Equal(before, performanceSave(t, s)) {
+			t.Fatal("invalid advance changed state")
+		}
+	}
+	s.saved.Tick = ^uint64(0)
+	before = performanceSave(t, s)
+	if _, e := s.AdvanceControlled([4]engine.Buttons{}, 0); e == nil {
+		t.Fatal("overflow accepted")
+	}
+	if !bytes.Equal(before, performanceSave(t, s)) {
+		t.Fatal("overflow committed")
+	}
+	s = performanceSession(t, 10, false)
+	s.saved.World.ScrollSources[0] = 0
+	before = performanceSave(t, s)
+	if _, e := s.AdvanceControlled([4]engine.Buttons{}, 0); e == nil {
+		t.Fatal("bad renderer sources accepted")
+	}
+	if !bytes.Equal(before, performanceSave(t, s)) {
+		t.Fatal("bad renderer sources committed")
+	}
+	legacy := performanceSession(t, 0, true)
+	before = performanceSave(t, legacy)
+	if _, e := legacy.AdvanceControlled([4]engine.Buttons{}, 0); e == nil {
+		t.Fatal("legacy state-only path accepted")
+	}
+	if !bytes.Equal(before, performanceSave(t, legacy)) {
+		t.Fatal("legacy changed")
+	}
+}
+func TestPerformanceTypedForkAllocationReduction(t *testing.T) {
+	s := performanceSession(t, 10, false)
+	jsonAllocs := testing.AllocsPerRun(12, func() {
+		raw, e := s.Save()
+		if e != nil {
+			panic(e)
+		}
+		if _, e = RestoreSession(raw, s.assets); e != nil {
+			panic(e)
+		}
+	})
+	typedAllocs := testing.AllocsPerRun(12, func() {
+		if _, e := s.Fork(); e != nil {
+			panic(e)
+		}
+	})
+	if typedAllocs >= jsonAllocs/2 {
+		t.Fatal("typed fork failed to halve JSON allocations", typedAllocs, jsonAllocs)
+	}
+	t.Logf("typed=%g JSON=%g allocations", typedAllocs, jsonAllocs)
+}
+func BenchmarkClientBridgeOptimized(b *testing.B) {
+	b.Run("TypedFork", func(b *testing.B) {
+		s := benchmarkNetworkSession(b)
+		b.ReportAllocs()
+		b.ResetTimer()
+		for i := 0; i < b.N; i++ {
+			if _, e := s.Fork(); e != nil {
+				b.Fatal(e)
+			}
+		}
+	})
+	b.Run("AdvanceControlled", func(b *testing.B) {
+		s := benchmarkNetworkSession(b)
+		b.ReportAllocs()
+		b.ResetTimer()
+		for i := 0; i < b.N; i++ {
+			if _, e := s.AdvanceControlled([4]engine.Buttons{}, 0); e != nil {
+				b.Fatal(e)
+			}
+		}
+	})
+	b.Run("PreviewTypedFork", func(b *testing.B) {
+		s := benchmarkNetworkSession(b)
+		b.ReportAllocs()
+		b.ResetTimer()
+		for i := 0; i < b.N; i++ {
+			if _, e := s.Preview(); e != nil {
+				b.Fatal(e)
+			}
+		}
+	})
+}

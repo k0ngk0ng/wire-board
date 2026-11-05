@@ -1,0 +1,8 @@
+{
+  "at_utc": "2026-11-05T17:04:49.003015+00:00",
+  "old_sha256": "04c3e979eb10f62b8b906448e332bf7e5ba1c1c6c5a14b7e6e08006791ae5384",
+  "new_sha256": "c217623b5e1a7a45bef3a8886379def1decd3efc2e9e79356bf1a79417b4b48e",
+  "old_test": "games/yuyuhakusho/runtimebridge/testdata/performance-v1/performance-test-before-scene-fixture-fix.go.txt",
+  "reason": "arena-a step legitimately rewrites ScrollSources during the frame. Mark only this malformed-state fixture complete, so no callback repairs it and the renderer-source validation must reject atomically. Production validation was not weakened.",
+  "actual_failure": "first-wasm.jsonl"
+}

@@ -1,0 +1,11 @@
+{
+  "removed": [
+    ".local/md-yuyuhakusho/client-bridge-browser",
+    ".local/yycb",
+    ".local/md-yuyuhakusho/client-bridge-dependency-paths.json",
+    ".local/md-yuyuhakusho/client-schema1-baseline.go",
+    ".local/md-yuyuhakusho/client-browser-core.md",
+    ".local/md-yuyuhakusho/client-terminal-probe"
+  ],
+  "retained": "verified browser result/screenshots, test-first logs, terminal probe source and four real terminal samples; shared Go caches/builds remain while other agents use them"
+}

@@ -1,0 +1,6 @@
+{
+  "before_physical_integration": true,
+  "source": "scripts/yuyuhakusho/platform_controls_acceptance.py",
+  "sha256": "1ba5ab1ee4bf047d6ae7e5e9cfc8c7c889ac6ed92d391693be314e8b8935efc5",
+  "scope": "Actual Board with explicitly virtual Gamepad API; no hardware compatibility claim"
+}

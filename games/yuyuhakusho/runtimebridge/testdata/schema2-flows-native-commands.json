@@ -1,0 +1,62 @@
+[
+  {
+    "shard": 2,
+    "command": [
+      "go",
+      "test",
+      "-json",
+      "-count=1",
+      "-timeout=30m",
+      "./games/yuyuhakusho/runtimebridge",
+      "-run",
+      "^TestSchema2FrozenWholeTrajectories$"
+    ],
+    "exit_code": 0,
+    "log": "games/yuyuhakusho/runtimebridge/testdata/schema2-flows-native-2.jsonl"
+  },
+  {
+    "shard": 3,
+    "command": [
+      "go",
+      "test",
+      "-json",
+      "-count=1",
+      "-timeout=30m",
+      "./games/yuyuhakusho/runtimebridge",
+      "-run",
+      "^TestSchema2FrozenWholeTrajectories$"
+    ],
+    "exit_code": 0,
+    "log": "games/yuyuhakusho/runtimebridge/testdata/schema2-flows-native-3.jsonl"
+  },
+  {
+    "shard": 0,
+    "command": [
+      "go",
+      "test",
+      "-json",
+      "-count=1",
+      "-timeout=30m",
+      "./games/yuyuhakusho/runtimebridge",
+      "-run",
+      "^TestSchema2FrozenWholeTrajectories$"
+    ],
+    "exit_code": 0,
+    "log": "games/yuyuhakusho/runtimebridge/testdata/schema2-flows-native-0.jsonl"
+  },
+  {
+    "shard": 1,
+    "command": [
+      "go",
+      "test",
+      "-json",
+      "-count=1",
+      "-timeout=30m",
+      "./games/yuyuhakusho/runtimebridge",
+      "-run",
+      "^TestSchema2FrozenWholeTrajectories$"
+    ],
+    "exit_code": 0,
+    "log": "games/yuyuhakusho/runtimebridge/testdata/schema2-flows-native-1.jsonl"
+  }
+]

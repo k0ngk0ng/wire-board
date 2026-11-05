@@ -1,0 +1,70 @@
+{
+  "scope": "Only closed Root-owned local browser profiles, disposable test databases/hosts and temp caches; kept all canonical results, raw observations, source archives and failure screenshots. Shared app dist/runtime, Go caches and other owners untouched.",
+  "paths": [
+    {
+      "path": ".local/md-yuyuhakusho/platform-app/acceptance-setup01",
+      "files": 2,
+      "bytes": 32472034,
+      "retainedResult": "games/yuyuhakusho/verification/platform-app-browser/setup01/result.json",
+      "resultSHA256": "2cf802ef7d5f75018dca7d8ea62af6c55291c8260e886928b05d492bc5058c66"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/platform-app/acceptance-setup02",
+      "files": 172,
+      "bytes": 41855222,
+      "retainedResult": "games/yuyuhakusho/verification/platform-app-browser/setup02/result.json",
+      "resultSHA256": "2406c66ffa37ef8e9ae47703b428ba2342426a17396c1308075d7a0f58c6ac83"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/platform-app/acceptance-setup03",
+      "files": 343,
+      "bytes": 51276902,
+      "retainedResult": "games/yuyuhakusho/verification/platform-app-browser/setup03/result.json",
+      "resultSHA256": "f8b3173171d7906ec8a68a852998fd7bf92d49526d3844f25ab0b16823401071"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/platform-app/acceptance-play01",
+      "files": 399,
+      "bytes": 51775104,
+      "retainedResult": "games/yuyuhakusho/verification/platform-app-browser/play01/result.json",
+      "resultSHA256": "dd276ff84bbe17e4a9fbffa3297bd11d31b7a19173ce07d61a0efc39d01a4cb6"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/platform-app/acceptance-play02",
+      "files": 399,
+      "bytes": 63566280,
+      "retainedResult": "games/yuyuhakusho/verification/platform-app-browser/play02/result.json",
+      "resultSHA256": "7f325e2201bbf30c04a74d9db2f8ef7cd6bacad1a9ab862558ad045b443627f7"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/platform-app/acceptance-network01",
+      "files": 373,
+      "bytes": 63496192,
+      "retainedResult": "games/yuyuhakusho/verification/platform-app-browser/network01/result.json",
+      "resultSHA256": "de00819ceef6676f2057303a54b4969b4ec663fda75bcf9d6937140a48a42121"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/platform-app/acceptance-performance-red01",
+      "files": 373,
+      "bytes": 63502993,
+      "retainedResult": "games/yuyuhakusho/verification/platform-app-browser/performance-red01/result.json",
+      "resultSHA256": "3bda3948a1cb6bf6c65ae3a88515974c41e7a2a567559fa6d413f4ce890fb491"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/platform-app/profile-fast",
+      "files": 195,
+      "bytes": 13676708
+    },
+    {
+      "path": ".local/md-yuyuhakusho/platform-app/browser-tmp",
+      "files": 0,
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/platform-app/host",
+      "files": 1,
+      "bytes": 32312290
+    }
+  ],
+  "totalBytes": 413933725
+}

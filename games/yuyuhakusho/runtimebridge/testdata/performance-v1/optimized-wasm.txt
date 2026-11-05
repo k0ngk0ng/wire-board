@@ -1,0 +1,12 @@
+goos: js
+goarch: wasm
+pkg: github.com/k0ngk0ng/wire-board/games/yuyuhakusho/runtimebridge
+BenchmarkClientBridgeOptimized
+BenchmarkClientBridgeOptimized/TypedFork
+BenchmarkClientBridgeOptimized/TypedFork         	      50	     94623 ns/op	   51272 B/op	     101 allocs/op
+BenchmarkClientBridgeOptimized/AdvanceControlled
+BenchmarkClientBridgeOptimized/AdvanceControlled 	      50	    290959 ns/op	  176640 B/op	     503 allocs/op
+BenchmarkClientBridgeOptimized/PreviewTypedFork
+BenchmarkClientBridgeOptimized/PreviewTypedFork  	      50	   3514634 ns/op	 1946962 B/op	     670 allocs/op
+PASS
+ok  	github.com/k0ngk0ng/wire-board/games/yuyuhakusho/runtimebridge	9.048s

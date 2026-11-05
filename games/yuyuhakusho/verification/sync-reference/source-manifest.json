@@ -1,0 +1,30 @@
+{
+  "scope": "Read-only source comparison, not re-execution or FPS acceptance of these three games",
+  "source_checkout": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board",
+  "source_commit": "bc9d0d49708b0b8b735cd8034bc98c26d55fcc0b",
+  "files_clean": true,
+  "sha256": {
+    "games/basketball/server/wire_view.go": "23263b3103354023dee383a7a2274643129db88827f3a9f4ac0c3c5d59c3e77b",
+    "games/basketball/server/wire_view_test.go": "17122fb27a8853106956f5b39b0e6e0431774499c51cc0febf19ac1f5d2b25be",
+    "games/basketball/web/network-scene.ts": "7fb78398a386a8c5bb18e77a12cbb85362f87b80e3844e57d4f32805c6e41708",
+    "games/basketball/web/network-input.ts": "877030f1cabc10435a6f19d3db5fd0c2526435aef4865ccbe9bbe4788a7a2194",
+    "games/basketball/runtimebridge/compact.go": "323529c9e5e1bd5bc1530d9fb8c92c178e5f5f1f3b7f09648bca0bf542e9065d",
+    "games/bubbleparty/server/state.go": "bc0a95325350699be89a9113253b6a02a7ddb79ed7edbac6c083aab9a1563986",
+    "games/bubbleparty/web/input.ts": "9c3460560e2d24977365da57e2ff5957668c0c66102369337dc8fe91aa085840",
+    "games/bubbleparty/web/prediction.ts": "002d41e3a9a8cb996b7ebd3cf954c4fea84a0b638b6ddada990ba279f213d58f",
+    "games/bubbleparty/web/Board.tsx": "76aceac31c4af682420bc2cf0cd8e6f0e20808b4b0680848e761a5a352a62984",
+    "games/contra/server/module.go": "d0eb672a149a78bf23ce1259635222b48683b36bea793b120f80c480e5089918",
+    "games/contra/server/stream_view.go": "c9172e3f091c5080a5692ae64979e4d7846e70e5998b6b49bce44e32be625a6e",
+    "games/contra/runtime/bridge.go": "276f5f1220ac49d88930a799966d3471ff2fb27c52d925d499ab440d10ac0bf7",
+    "games/contra/web/runtime-prediction.ts": "e2efe3d2dbee9b15b15f7c06c2ca6ff4f639a648d7d96ee928fb14d5c5b35819",
+    "games/contra/web/runtime-room.ts": "8ecf1200eb16fdf02dd5305940b0ed0ed5b4617cba25866ac9580ca0755cafcb",
+    "games/contra/server/stage_network_e2e_test.go": "948aadeb43f8c70679d47ec18a7d95c4e66613a74ec33958a0764772c3819ac0",
+    "rules/realtime.md": "6a6fef0399f5e0b575fdd5b3f826b11516b36a3e42c105681236f2169c3d17bf"
+  },
+  "facts": {
+    "basketball": "deterministic bounded input replay; ordinary wire excludes full runtime; explicit checkpoint; compact WASM replies and optional verification",
+    "bubbleparty": "100ms authority projection with cells/bombs/items plus local movement prediction, bounded horizon and smooth correction; not input-only replication",
+    "contra": "per-connection revision cursor with six-record redundancy, explicit resync on gaps; bounded replay ring; exact bootstrap checkpoint; isolated native prediction",
+    "yuyu_observed_failure": "8.80 visible updates/s in actual authenticated dual browser due hot JSON copy, replay rasterization and unnecessary digest computation; not full-state wire streaming"
+  }
+}

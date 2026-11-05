@@ -1,6 +1,6 @@
 # 《幽游白书：魔强统一战》复刻进度
 
-更新：2026-11-05。整体约 **81%**（工程估算）。独立 worktree 为 `worktrees/yuyuhakusho`，分支为 `codex/yuyuhakusho`。当前已有可操作的幻海、藏马、桑原、幽助、飞影、仙水、阵、树、户愚吕兄、酎、户愚吕弟／8 场地本地研究页；游戏尚未注册到平台，未上传资源、发布或部署。main 工作区的其他改动未导入或覆盖。
+更新：2026-11-06。整体约 **85%**（工程估算）。独立 worktree 为 `worktrees/yuyuhakusho`，分支为 `codex/yuyuhakusho`。全 11 人物／8 场地已有独立 Go／Wasm 玩法；游戏已注册到本地平台，真实主机五项端到端及竞态验收通过。正式认证双人房间正常网络下两端均约 60 帧／秒，单端每次 TCP 写入延迟 120 ms 时慢端仍约 56 帧／秒；改键、虚拟手柄、320px 原生触屏、全屏及重连已通过。逐连接增量协议和完整对局音频继续完成；未上传资源、发布或部署。除用户要求回馈的 `rules/realtime.md`，main 工作区的其他改动未导入或覆盖。
 
 ## 当前可运行范围
 
@@ -8,6 +8,10 @@
 - 独立 Go／Wasm 规则驱动输入、真实原版 AI、动作、子对象、特效、碰撞、退场、判胜和清场；运行时不读取 ROM、不执行模拟器，不逐帧载入参考状态。
 - 独立索引素材呈现人物、特效、动态背景、色盘、滚动、原版姓名／头像／生命与能量条。浏览器页复用公共 MD 手柄，支持键盘和触屏；当前页面没有接入声音播放。
 - 资源解码、Wasm 和 Canvas 就绪后才开始推进。存档保留规则状态、图块映射与呈现缓存；出错时不提交半帧状态。
+
+正式房间的加载死锁已修复。原约 8.8 帧／秒的客户端开销来自完整 JSON 分叉、重放中间像素和未使用的预测摘要；改为直接复制状态、仅推进中间规则状态后，恢复正常双人约 60 帧／秒。随后对照篮球修正本地显示时钟，保持 12 帧预测上限，确认后重放到旧显示目标。最终真实双人可见更新为 59.94／59.93 次／秒；单端每次 TCP 写入延迟 120 ms 时，慢端 55.91 次／秒、帧间隔 p95 为 31.7 ms，原生按键到画布变化 27.8 ms，先于 226.4 ms 的 ACK。完整证据见 [native-clock-network04](verification/platform-app-browser/native-clock-network04/result.json)。此为明确网络条件下的本机实测，不代表所有丢包、设备或网络环境。
+
+同步机制已对照热血篮球、泡泡堂与魂斗罗的实际源码，结论和规则回馈见[同步对照](../../docs/research/md-yuyuhakusho/SYNC_REFERENCE.md)。普通消息不携完整世界、呈现缓存或像素；当前仍使用有界 RLE 输入窗口，尚未接入魂斗罗较新的逐连接增量游标。
 
 启动方式和截图见[本地研究页](../../docs/research/md-yuyuhakusho/LOCAL_PLAYER.md)。本轮完整摘要见[八场地整体验收](verification/additional-arenas-session.json)，接口、证据边界和复跑见[七场地接入](../../docs/research/md-yuyuhakusho/ADDITIONAL_ARENA_SESSIONS.md)。上一检查点的[全十一角色对局验收](verification/itsuki-session.json)；既有[十角色验收](verification/sensui-session.json)、[九角色验收](verification/hiei-session.json)、[八角色验收](verification/jin-session.json)、[七角色验收](verification/kurama-session.json)、[六角色验收](verification/elder-session.json)、[五角色验收](verification/kuwabara-session.json)、[四角色验收](verification/yusuke-session.json)、[三角色验收](verification/genkai-session.json)、[双角色验收](verification/fighter10-session.json)和[独立对局／素材验收](verification/independent-session.json)保留各自提交时的绑定。
 
@@ -32,6 +36,10 @@
 | 音频目录与平台通路 | 134 个有限 WAV 全量 Go／Wasm 校验；四个可重入调度阶段与 PCM 选择通过原调用；平台有限 lane 的 75 项低层检查、8 项新接口和 10 项旧接口真实媒体 E2E 通过；Chrome 无损分片承载跨 11 个边界 | 实际对局仍未接声音；回调内调度、原双 PCM／FM／PSG 混音、独立 DSP 与平台连续流仍待完成，见[音频阶段](../../docs/research/md-yuyuhakusho/AUDIO_FOUNDATIONS.md) |
 
 本轮原生竞态和 Wasm 各完成 **445 项顶层检查**：404 项引擎、22 项呈现、3 项 bridge 与 16 项目录／素材命令检查。引擎按 8 片运行，所有分片退出码为 0。`go vet` 和本地页 TypeScript 检查通过。首轮每端 63 个普通完整对局均通过，但未触发非零 Pan，最后专项断言真实失败；保留该日志后，新增每端 7 个合法双真人输入专项，在非零反馈、暂停和恢复全部通过后仅续汇总，未删除动态断言或重采 original。原生／Wasm 的 126 个完整对局、14 个 Pan 专项和 358 份历史报告由[整体验收](verification/additional-arenas-session.json)绑定，没有运行其他游戏矩阵。
+
+2026-11-06 客户端共享状态验收：精确 raw／gzip 身份、唯一 `renderstate.State`、schema 1 字节兼容、原样 checkpoint 和可丢弃预览已通过；原生／Wasm 各 49 条冻结轨迹共各 203,428 帧、选定完整竞态和 PC／320px 原生输入验证通过。见[客户端说明](../../docs/research/md-yuyuhakusho/CLIENT_RUNTIME_SCHEMA2.md)、[绑定摘要](runtimebridge/testdata/schema2-verification.json)和[浏览器结果](verification/client-bridge-schema2/result.json)。本条仅更新客户端范围，不替代平台网络及音频验收。
+
+终局订正：独立重放 49 个端点，其中 42 个自然终局全部在 `0x8040` 阶段 26 清场、淡出后结束；恢复 `Preview` 与真实终止帧像素差异为 0，帧号保持 F。7 个非终局 pan 端点仍预测 F+1。此前由空事件推断「恢复后丢失角色」已撤回，未新增持久绘制历史、像素或近似状态。见[终态实证](verification/client-terminal-preview/result.json)与[订正记录](../../docs/research/md-yuyuhakusho/CLIENT_TERMINAL_PREVIEW_CORRECTION.md)。
 
 ## 后续工作
 

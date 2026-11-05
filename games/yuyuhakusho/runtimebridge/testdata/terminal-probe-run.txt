@@ -1,0 +1,15 @@
+{"command": ["/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/client-terminal-probe/probe", "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/games/yuyuhakusho/verification/client-terminal-preview", "2", "4"], "exit_code": 0}
+{"command": ["/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/client-terminal-probe/probe", "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/games/yuyuhakusho/verification/client-terminal-preview", "3", "4"], "exit_code": 0}
+{"command": ["/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/client-terminal-probe/probe", "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/games/yuyuhakusho/verification/client-terminal-preview", "0", "4"], "exit_code": 0}
+{"command": ["/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/client-terminal-probe/probe", "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/games/yuyuhakusho/verification/client-terminal-preview", "1", "4"], "exit_code": 0}
+{
+  "schema": 1,
+  "pass": true,
+  "trajectories": 49,
+  "completed_trajectories": 42,
+  "nonterminal_pan_endpoints": 7,
+  "completed_pixel_differences": 0,
+  "completed_empty_draw_frames": 42,
+  "completed_clear_world_events": 42,
+  "completed_same_authority_and_preview_frame": true
+}

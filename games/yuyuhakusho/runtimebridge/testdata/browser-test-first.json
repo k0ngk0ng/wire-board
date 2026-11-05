@@ -1,0 +1,6 @@
+{
+  "test": "scripts/yuyuhakusho/check_runtimebridge_schema2.py",
+  "test_sha256": "9954b61a1dea27c1b0823bbec467747e42da92480acbd2d3ff7865167ffd0441",
+  "failure_list_sha256": "6efbe48865a369294eb3b198b3a63625b674e5d2b25ed839e3020ea53d11e011",
+  "before_local_wasm_schema2_implementation": true
+}

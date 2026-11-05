@@ -1,0 +1,91 @@
+{
+  "error": "AssertionError('请等待所有玩家加载完成')",
+  "completed": {},
+  "diagnostic": {
+    "actions": [
+      {
+        "epoch": "edf5eb60a5f9f2255f2ddc40",
+        "type": "loaded"
+      }
+    ],
+    "active": "<body><div id=\"root\"><main style=\"max-width: 850px; margin: auto; padding: 12px;\"><header id=\"platform-header\">共用平台菜单</header><button id=\"release-public-gate\">确认另一位玩家加载完成</button><div id=\"room-actions\"><button id=\"fullscreen\">全屏</button><button id=\"l",
+    "authority": {
+      "digest": "dc626d132dda2d58e5b478a815efb6fb7131fbbd77ed5b9da009c120eea96340",
+      "epoch": "edf5eb60a5f9f2255f2ddc40",
+      "frame": "0",
+      "inputs": [
+        {
+          "appliedButtons": 0,
+          "appliedSequence": 0,
+          "automated": false,
+          "buttons": 0,
+          "sequence": 0
+        },
+        {
+          "appliedButtons": 0,
+          "appliedSequence": 0,
+          "automated": true,
+          "buttons": 0,
+          "sequence": 0
+        }
+      ],
+      "loading": {
+        "ready": [
+          false,
+          true
+        ]
+      },
+      "localSeat": 0,
+      "options": {
+        "arena": 10,
+        "characters": [
+          3,
+          8
+        ],
+        "teamBattle": false
+      },
+      "phase": "loading",
+      "players": [
+        {
+          "active": false,
+          "characterID": 3,
+          "computer": false,
+          "energy": 0,
+          "health": 0,
+          "seat": 0,
+          "slot": 0,
+          "x": 0,
+          "y": 0
+        },
+        {
+          "active": false,
+          "characterID": 8,
+          "computer": true,
+          "energy": 0,
+          "health": 0,
+          "seat": 1,
+          "slot": 3,
+          "x": 0,
+          "y": 0
+        }
+      ],
+      "presentationDigest": "bab3872417bab91575013a9539fe01ce855411f17cc81d2877c66cb517f2c85f",
+      "protocol": 1,
+      "replay": {
+        "data": "",
+        "firstFrame": "0",
+        "frameCount": 0,
+        "version": 1
+      },
+      "resourceDescriptorSHA256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+      "seatSlots": [
+        0,
+        3
+      ],
+      "serverAt": 1793896862580
+    },
+    "hidden": false,
+    "lastHeld": [],
+    "timings": []
+  }
+}

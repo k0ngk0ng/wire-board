@@ -1,0 +1,15 @@
+{
+  "source": "scripts/yuyuhakusho/platform_pause_acceptance.py",
+  "sha256": "c68e2fa9c0feaffe0a4e8876ddb416e012af352e2cbfe24af72d2d0c7e409e29",
+  "implementation_before_sha256": "900d1c17c8519898ab19789874ad7f9a91b178d91e43d5bbe351cdd5c4e39f3f",
+  "archived_implementation": "games/yuyuhakusho/verification/platform-web/network-scene.before-pause-fix.ts.txt",
+  "actual_red": "pause-resume-review-red/failure.json",
+  "red_result": {
+    "localPaused": true,
+    "authorityPhase": "paused",
+    "delayed_input_ms": 500
+  },
+  "original_test_archive": "games/yuyuhakusho/verification/platform-web/platform_pause_acceptance.original-red.py.txt",
+  "current_test_sha256": "70e59a9bc2d1f91d5f003bd9c9051402fdc29698fa462e1a096fa0842e923725",
+  "changes": "Added delayed first-pause prediction assertion; wait for preceding delayed movement release; retain 500ms delay until authority applies resume/release to avoid an artificial release overtaking the older press."
+}

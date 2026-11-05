@@ -1,0 +1,21 @@
+{
+  "reason": "Original E2E setup uses unsupported CLI keydown command, ambiguous duplicate arena selector, and old controller endpoint; product assertions stay the same.",
+  "files": [
+    {
+      "source": "scripts/yuyuhakusho/platform_board_harness.tsx",
+      "before_sha256": "0df21dd0e2e5689fdfefb900ac8b3b38c4594be9dbffdc30282285751e5d89a1",
+      "archived": "games/yuyuhakusho/verification/platform-web/platform_board_harness.tsx.before-setup-correction.txt"
+    },
+    {
+      "source": "scripts/yuyuhakusho/check_platform_board.py",
+      "before_sha256": "de88abc969920f0e31ab442decda478bb1fff770b808d48a45b8eb5ce367558d",
+      "archived": "games/yuyuhakusho/verification/platform-web/check_platform_board.py.before-setup-correction.txt"
+    },
+    {
+      "source": "scripts/yuyuhakusho/platform_touch_acceptance.py",
+      "before_sha256": "9219a5041f736024f2193ca83df04b64c38661647cd131e0cec268b5df771126",
+      "archived": "games/yuyuhakusho/verification/platform-web/platform_touch_acceptance.before-cdp-end-correction.py.txt",
+      "reason": "Actual touchEnd of CDP point id2 released X and retained dpad bits6; the event point list names contacts being ended, so end id1 to test dpad release retaining X. Product code unchanged."
+    }
+  ]
+}

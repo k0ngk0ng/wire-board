@@ -1,0 +1,23 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-exec",
+    "/opt/homebrew/Cellar/go/1.26.2/libexec/lib/wasm/go_js_wasm_exec",
+    "-v",
+    "-count=1",
+    "-run",
+    "^TestClientBridgeMutableOwnersBaseline$",
+    "-bench",
+    "^BenchmarkClientBridgeCurrent$",
+    "-benchtime=50x",
+    "-benchmem",
+    "./games/yuyuhakusho/runtimebridge"
+  ],
+  "source_sha256": {
+    "games/yuyuhakusho/runtimebridge/session.go": "3d4f7c3e1896d8a5af5947fe881b8708c18ef44ac194dd093ead6c9b963cde4e",
+    "games/yuyuhakusho/runtimebridge/serialization.go": "7a610c1b743e70b03a5ee3c0dfa411f2d3801ed0d024b54d8d6c6bb4f4b31b7a",
+    "games/yuyuhakusho/runtimebridge/performance_baseline_test.go": "ff97d46ee7f53be3cf8b6fa265dd298173d3e8b1f55bb27e77ab2ea54878f97d"
+  },
+  "exit_code": 0
+}

@@ -1,0 +1,179 @@
+{
+  "error": "AssertionError({'paint': {'fps': 41.23473853950703, 'median_ms': 11.299999237060547, 'p95_ms': 50.5, 'max_ms': 81.10000038146973, 'paint_count': 180}, 'rpc': {'dispose': {'count': 87, 'mean_ms': 0.029885039932426364, 'total_ms': 2.5999984741210938, 'max_ms': 0.10000038146972656}, 'replay': {'count': 87, 'mean_ms': 24.191954086566792, 'total_ms': 2104.700005531311, 'max_ms': 27.300000190734863}, 'fork': {'count': 87, 'mean_ms': 12.896551713176157, 'total_ms': 1121.9999990463257, 'max_ms': 18.600000381469727}, 'step': {'count': 293, 'mean_ms': 5.444709891752171, 'total_ms': 1595.2999982833862, 'max_ms': 7.100000381469727}, 'digests': {'count': 17, 'mean_ms': 1.9823528738582836, 'total_ms': 33.69999885559082, 'max_ms': 2.1000003814697266}}, 'cpu_profile': 'cpu.cpuprofile', 'authority_poll_ms': 50})",
+  "completed": {
+    "performance": {
+      "paint": {
+        "fps": 41.23473853950703,
+        "median_ms": 11.299999237060547,
+        "p95_ms": 50.5,
+        "max_ms": 81.10000038146973,
+        "paint_count": 180
+      },
+      "rpc": {
+        "dispose": {
+          "count": 87,
+          "mean_ms": 0.029885039932426364,
+          "total_ms": 2.5999984741210938,
+          "max_ms": 0.10000038146972656
+        },
+        "replay": {
+          "count": 87,
+          "mean_ms": 24.191954086566792,
+          "total_ms": 2104.700005531311,
+          "max_ms": 27.300000190734863
+        },
+        "fork": {
+          "count": 87,
+          "mean_ms": 12.896551713176157,
+          "total_ms": 1121.9999990463257,
+          "max_ms": 18.600000381469727
+        },
+        "step": {
+          "count": 293,
+          "mean_ms": 5.444709891752171,
+          "total_ms": 1595.2999982833862,
+          "max_ms": 7.100000381469727
+        },
+        "digests": {
+          "count": 17,
+          "mean_ms": 1.9823528738582836,
+          "total_ms": 33.69999885559082,
+          "max_ms": 2.1000003814697266
+        }
+      },
+      "cpu_profile": "cpu.cpuprofile",
+      "authority_poll_ms": 50
+    }
+  },
+  "diagnostic": {
+    "actions": [
+      {
+        "epoch": "39189e2ebdc3344319c58622",
+        "type": "loaded"
+      }
+    ],
+    "active": "<body><div id=\"root\"><main style=\"max-width: 850px; margin: auto; padding: 12px;\"><header id=\"platform-header\">共用平台菜单</header><div id=\"room-actions\"><button id=\"fullscreen\">全屏</button><button id=\"leave\">离开房间</button></div><div id=\"public-players\"><sp",
+    "authority": {
+      "digest": "5c76e300f25be46f88f46117be7306df5afb8813b9cd01b3ffa623ecb32429d1",
+      "epoch": "39189e2ebdc3344319c58622",
+      "frame": "575",
+      "inputs": [
+        {
+          "appliedButtons": 0,
+          "appliedSequence": 0,
+          "automated": false,
+          "buttons": 0,
+          "sequence": 0
+        },
+        {
+          "appliedButtons": 0,
+          "appliedSequence": 0,
+          "automated": true,
+          "buttons": 0,
+          "sequence": 0
+        }
+      ],
+      "localSeat": 0,
+      "options": {
+        "arena": 10,
+        "characters": [
+          3,
+          8
+        ],
+        "teamBattle": false
+      },
+      "phase": "playing",
+      "players": [
+        {
+          "active": true,
+          "characterID": 3,
+          "computer": false,
+          "energy": 187,
+          "health": 205,
+          "seat": 0,
+          "slot": 0,
+          "x": 849,
+          "y": 320
+        },
+        {
+          "active": true,
+          "characterID": 8,
+          "computer": true,
+          "energy": 199,
+          "health": 223,
+          "seat": 1,
+          "slot": 3,
+          "x": 923,
+          "y": 251
+        }
+      ],
+      "presentationDigest": "38f66130f437e766c68500a5da72f0152d4b21080bc314701bd018cab1f490c2",
+      "protocol": 1,
+      "replay": {
+        "data": "eAIAAAAAAAAAAA==",
+        "firstFrame": "456",
+        "frameCount": 120,
+        "version": 1
+      },
+      "resourceDescriptorSHA256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+      "seatSlots": [
+        0,
+        3
+      ],
+      "serverAt": 1793898119613
+    },
+    "hidden": false,
+    "lastHeld": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "lastStep": {
+      "arena": 10,
+      "completed": false,
+      "frame": "576",
+      "logic_frame": 576,
+      "paused": false,
+      "players": [
+        {
+          "Action": 0,
+          "Pose": 0,
+          "X": 849,
+          "Y": 320,
+          "active": true,
+          "character_id": 3,
+          "computer": false,
+          "energy": 187,
+          "health": 205,
+          "input_channel": 0,
+          "slot": 0
+        },
+        {
+          "Action": 2,
+          "Pose": 6,
+          "X": 921,
+          "Y": 251,
+          "active": true,
+          "character_id": 8,
+          "computer": true,
+          "energy": 199,
+          "health": 223,
+          "input_channel": 255,
+          "slot": 3
+        }
+      ],
+      "ready": true,
+      "tick": 576,
+      "window_complete": true,
+      "winner": 0
+    },
+    "timings": [
+      {
+        "ack": 563.6999998092651,
+        "bytes": 52,
+        "sent": 560.7999992370605
+      }
+    ]
+  }
+}

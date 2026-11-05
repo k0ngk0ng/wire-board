@@ -28,6 +28,8 @@ class PlayerHandler(BaseHTTPRequestHandler):
             assets={'/rules.json.gz':'chu-world-rules.json.gz','/sprites.json.gz':'world-sprites.json.gz','/arena.json.gz':'arena-assets-default.json.gz','/hud.json.gz':'hud-assets.json.gz'}
             assets.update({f'/arena-{arena:x}.json.gz':f'arena-assets-{arena:x}.json.gz' for arena in (2,4,6,8,10,12,14)})
             assets['/arena-a-aux.json.gz']='arena-a-aux-assets.json.gz'
+            assets['/render-meta.json.gz']='renderstate-metadata.json.gz'
+            assets['/resource-descriptor.json']='runtime-resource-descriptor.json'
             if path in assets:
                 source=ROOT/'games/yuyuhakusho/data'/assets[path]
             else:
@@ -37,7 +39,7 @@ class PlayerHandler(BaseHTTPRequestHandler):
                 source=BUILD/relative
             if not source.is_file():self.send_error(404);return
             data=source.read_bytes()
-            mime={'.wasm':'application/wasm','.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.gz':'application/octet-stream'}.get(source.suffix,'application/octet-stream')
+            mime={'.wasm':'application/wasm','.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.gz':'application/octet-stream','.json':'application/json'}.get(source.suffix,'application/octet-stream')
         self.send_response(200)
         self.send_header('Content-Type',mime)
         self.send_header('Content-Length',str(len(data)))

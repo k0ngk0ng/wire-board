@@ -1,0 +1,320 @@
+{
+  "pass": true,
+  "scope": "Normal Vite app + registered composition root + real authentication, SQLite, HTTP and WebSocket. Shaping delays real TCP writes and closes actual connections. Virtual Gamepad API only; no physical hardware claim.",
+  "appBuild": "6021ab95cf83c6fe6e48ab10364b567be895b8f9eb4fc62878e4b1621728105d",
+  "runtimeBuild": {
+    "wasm": {
+      "url": "/yuyuhakusho/v1/runtime/client.wasm",
+      "sha256": "a10458e21546db20123a6d7c2f07196a29607c5ed3c0686ffc0ba74dac219c73",
+      "bytes": 4911200
+    }
+  },
+  "urls": {
+    "direct": "http://127.0.0.1:61436/",
+    "shaped": "http://127.0.0.1:61437/"
+  },
+  "roomID": "809a96c4",
+  "preparation": {
+    "capacity": 2,
+    "chat": null,
+    "clockOffsetMs": 0,
+    "closeReason": "",
+    "host": "d82a62866b7da67de5d33b7c",
+    "id": "809a96c4",
+    "kind": "yuyuhakusho",
+    "loading": null,
+    "locked": false,
+    "matchId": "",
+    "name": "魔强统一战验收",
+    "options": {
+      "arena": 10,
+      "characters": [
+        8,
+        9
+      ],
+      "teamBattle": false
+    },
+    "seats": [
+      {
+        "id": "d82a62866b7da67de5d33b7c",
+        "left": false,
+        "name": "Yuyufast-network04",
+        "network": {
+          "connected": true,
+          "connections": 1,
+          "rttMs": 3,
+          "sampledAt": 1793900768590
+        },
+        "ready": false
+      },
+      {
+        "id": "77537b711402ee6da0ba24fc",
+        "left": false,
+        "name": "Yuyuslow-network04",
+        "network": {
+          "connected": true,
+          "connections": 1,
+          "rttMs": 2,
+          "sampledAt": 1793900770053
+        },
+        "ready": false
+      }
+    ],
+    "setupVersion": 0,
+    "spectating": false,
+    "spectatorCount": 0,
+    "status": "waiting",
+    "turnDeadline": 0,
+    "updated": 1793900770,
+    "version": 4,
+    "you": 0
+  },
+  "epoch": "64ffea0668163b0a9d37d57f",
+  "stage": "complete",
+  "renderPerformance": {
+    "fast": {
+      "frames": 150,
+      "elapsedMs": 2502.5,
+      "visibleUpdatesPerSecond": 59.94005994005994,
+      "medianFrameIntervalMs": 15.800000190734863,
+      "p95FrameIntervalMs": 21.600000381469727,
+      "budget": {
+        "minimumVisibleUpdatesPerSecond": 50,
+        "maximumP95FrameIntervalMs": 40
+      },
+      "hidden": false
+    },
+    "slow": {
+      "frames": 150,
+      "elapsedMs": 2503.0999994277954,
+      "visibleUpdatesPerSecond": 59.92569215544315,
+      "medianFrameIntervalMs": 16.09999942779541,
+      "p95FrameIntervalMs": 28.199999809265137,
+      "budget": {
+        "minimumVisibleUpdatesPerSecond": 50,
+        "maximumP95FrameIntervalMs": 40
+      },
+      "hidden": false
+    },
+    "slow-tcp-delayed": {
+      "frames": 140,
+      "elapsedMs": 2504.199999809265,
+      "visibleUpdatesPerSecond": 55.906077793572095,
+      "medianFrameIntervalMs": 16.899999618530273,
+      "p95FrameIntervalMs": 31.700000762939453,
+      "budget": {
+        "minimumVisibleUpdatesPerSecond": 50,
+        "maximumP95FrameIntervalMs": 40
+      },
+      "hidden": false
+    }
+  },
+  "measurements": {
+    "normal-native-input": {
+      "nativeEventToFirstVisibleMs": 22.59999942779541,
+      "inputAckMs": 11.800000190734863,
+      "nativeEventToAuthoritativeAppliedArrivalMs": 92.89999961853027,
+      "firstVisibleBeforeAck": false,
+      "renderFrameIntervalMedianMs": 16.300000190734863,
+      "renderFrameIntervalMaxMs": 20.800000190734863,
+      "initialX": 944.0,
+      "firstVisibleX": 945,
+      "firstVisibleHash": "50c5b218",
+      "beforeHash": "4a0271eb",
+      "trusted": true
+    },
+    "tcp-delayed-native-input": {
+      "nativeEventToFirstVisibleMs": 27.800000190734863,
+      "inputAckMs": 226.39999961853027,
+      "nativeEventToAuthoritativeAppliedArrivalMs": 233.5,
+      "firstVisibleBeforeAck": true,
+      "renderFrameIntervalMedianMs": 17.15000009536743,
+      "renderFrameIntervalMaxMs": 38.60000038146973,
+      "initialX": 1104.0,
+      "firstVisibleX": 1102,
+      "firstVisibleHash": "209d37ae",
+      "beforeHash": "904dd213",
+      "trusted": true
+    },
+    "fast-peer-while-other-delayed": {
+      "nativeEventToFirstVisibleMs": 23.600000381469727,
+      "inputAckMs": 10.200000762939453,
+      "nativeEventToAuthoritativeAppliedArrivalMs": 90.39999961853027,
+      "firstVisibleBeforeAck": false,
+      "renderFrameIntervalMedianMs": 16.34999990463257,
+      "renderFrameIntervalMaxMs": 32.40000057220459,
+      "initialX": 954.0,
+      "firstVisibleX": 955,
+      "firstVisibleHash": "8f63dc52",
+      "beforeHash": "2a8f300f",
+      "trusted": true
+    },
+    "reconnected-native-input": {
+      "nativeEventToFirstVisibleMs": 62.89999961853027,
+      "inputAckMs": 8.299999237060547,
+      "nativeEventToAuthoritativeAppliedArrivalMs": 68.5,
+      "firstVisibleBeforeAck": false,
+      "renderFrameIntervalMedianMs": 16.899999618530273,
+      "renderFrameIntervalMaxMs": 36.79999923706055,
+      "initialX": 1029.0,
+      "firstVisibleX": 1026,
+      "firstVisibleHash": "d5ff9c56",
+      "beforeHash": "9fdec9f4",
+      "trusted": true
+    },
+    "saved-remap-native-input": {
+      "nativeEventToFirstVisibleMs": 48.0,
+      "inputAckMs": 16.800000190734863,
+      "nativeEventToAuthoritativeAppliedArrivalMs": 64.0,
+      "firstVisibleBeforeAck": false,
+      "renderFrameIntervalMedianMs": 15.699999809265137,
+      "renderFrameIntervalMaxMs": 21.0,
+      "initialX": 962.0,
+      "firstVisibleX": 964,
+      "firstVisibleHash": "3e8013a1",
+      "beforeHash": "8b7f1a1f",
+      "trusted": true
+    }
+  },
+  "normalTransportMeasurements": {
+    "http": [
+      {
+        "mainThreadObservedMs": 11.100000381469728,
+        "networkResourceDurationMs": 7.59999942779541,
+        "responseTransferMs": 7.399999618530273
+      },
+      {
+        "mainThreadObservedMs": 3.6999998092651367,
+        "networkResourceDurationMs": 3.5,
+        "responseTransferMs": 3.3000001907348633
+      },
+      {
+        "mainThreadObservedMs": 3.5,
+        "networkResourceDurationMs": 3.200000762939453,
+        "responseTransferMs": 3.1000003814697266
+      }
+    ],
+    "platformWebSocketRTT": {
+      "connected": true,
+      "connections": 1,
+      "rttMs": 0,
+      "sampledAt": 1793900778593
+    }
+  },
+  "shapedTransportMeasurements": {
+    "http": [
+      {
+        "mainThreadObservedMs": 487.30000019073486,
+        "networkResourceDurationMs": 487,
+        "responseTransferMs": 486.79999923706055
+      },
+      {
+        "mainThreadObservedMs": 490.5,
+        "networkResourceDurationMs": 490.0999994277954,
+        "responseTransferMs": 490
+      },
+      {
+        "mainThreadObservedMs": 605.6999998092651,
+        "networkResourceDurationMs": 605.5,
+        "responseTransferMs": 605.3999996185303
+      }
+    ],
+    "platformWebSocketRTT": {
+      "connected": true,
+      "connections": 1,
+      "rttMs": 0,
+      "sampledAt": 1793900780058
+    }
+  },
+  "fastClockWhileSlow": {
+    "before": "892",
+    "after": "984",
+    "elapsedMs": 1538.5581655427814
+  },
+  "recovery": {
+    "beforeFrame": "996",
+    "afterFrame": "1059",
+    "epoch": "64ffea0668163b0a9d37d57f",
+    "sockets": [
+      {
+        "at": 344.6000003814697,
+        "event": "create",
+        "url": "ws://127.0.0.1:61437/api/ws?stream=1"
+      },
+      {
+        "at": 362,
+        "event": "open"
+      },
+      {
+        "at": 17843.5,
+        "event": "close"
+      },
+      {
+        "at": 18161.10000038147,
+        "event": "create",
+        "url": "ws://127.0.0.1:61437/api/ws?stream=1"
+      },
+      {
+        "at": 18172.300000190735,
+        "event": "open"
+      }
+    ]
+  },
+  "settings": {
+    "currentGame": "game:yuyuhakusho",
+    "models": [
+      "game:yuyuhakusho",
+      "classic-2",
+      "md-6"
+    ],
+    "trustedRemap": true,
+    "oldKeyBypass": false
+  },
+  "virtualGamepad": {
+    "hardware": false,
+    "standardSparseIndex": 3,
+    "mixedKeyboardDisconnect": true,
+    "reconnectNeutral": true,
+    "ZPosition5": true
+  },
+  "mobile": {
+    "width": 320,
+    "noHorizontalOverflow": true,
+    "geometry": {
+      "c": {
+        "x": 273.78125,
+        "y": 693.0625
+      },
+      "canvasBottom": 607.796875,
+      "padTop": 614.796875,
+      "width": 320
+    },
+    "publicResources": [
+      {
+        "bottom": 313,
+        "health": "体力 223",
+        "healthRects": 1,
+        "left": 14,
+        "right": 156,
+        "seat": "0",
+        "top": 195
+      },
+      {
+        "bottom": 313,
+        "health": "体力 212",
+        "healthRects": 1,
+        "left": 164,
+        "right": 306,
+        "seat": "1",
+        "top": 195
+      }
+    ],
+    "nativeTouchC": true
+  },
+  "sourceSHA256": {
+    "scripts/yuyuhakusho/platform_app_host.go": "b69aad1a7ffd6b08713ad429709c667854ae9c7053b289c4da1a7f2f0e878ba0",
+    "scripts/yuyuhakusho/platform_app_observer.js": "b07d9a383bd2927e2d188e604dfa43c4d084945d788810f5f3ff4480dd283a5c",
+    "scripts/yuyuhakusho/native_app_input.mjs": "b8d4e687b01e668d4b9c870397ba201ce6d94085919ee9ddb20b62abd168e459",
+    "scripts/yuyuhakusho/check_platform_app.py": "96811cf5e3b72619281203e8e83d48d5410b5de88c76f476538ac8d330aa70cb"
+  }
+}

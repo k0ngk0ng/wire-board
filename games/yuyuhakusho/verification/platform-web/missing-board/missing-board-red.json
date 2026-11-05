@@ -1,0 +1,20 @@
+{
+  "test_first": true,
+  "scope": "Missing real Board/module UI compile contract before implementation; browser/Go execution remains required",
+  "command": [
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/node_modules/.bin/esbuild",
+    "scripts/yuyuhakusho/platform_board_harness.tsx",
+    "--bundle",
+    "--format=esm",
+    "--jsx=automatic",
+    "--alias:react=./web/node_modules/react",
+    "--alias:react-dom=./web/node_modules/react-dom",
+    "--loader:.svg=file",
+    "--outfile=/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/platform-web/harness.js"
+  ],
+  "exit_code": 1,
+  "stdout": "",
+  "stderr": "\u2718 [ERROR] Could not resolve \"../../games/yuyuhakusho/web/Board\"\n\n    scripts/yuyuhakusho/platform_board_harness.tsx:5:20:\n      5 \u2502 import {Board} from '../../games/yuyuhakusho/web/Board';\n        \u2575                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\u2718 [ERROR] Could not resolve \"../../games/yuyuhakusho/web/Options\"\n\n    scripts/yuyuhakusho/platform_board_harness.tsx:6:26:\n      6 \u2502 import {OptionsForm} from '../../games/yuyuhakusho/web/Options';\n        \u2575                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\u2718 [ERROR] Could not resolve \"../../games/yuyuhakusho/web/Preparation\"\n\n    scripts/yuyuhakusho/platform_board_harness.tsx:7:26:\n      7 \u2502 import {Preparation} from '../../games/yuyuhakusho/web/Preparation';\n        \u2575                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\u2718 [ERROR] Could not resolve \"../../games/yuyuhakusho/web/Cover\"\n\n    scripts/yuyuhakusho/platform_board_harness.tsx:8:20:\n      8 \u2502 import {Cover} from '../../games/yuyuhakusho/web/Cover';\n        \u2575                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n4 errors\n",
+  "missing_board": true,
+  "harness_sha256": "0df21dd0e2e5689fdfefb900ac8b3b38c4594be9dbffdc30282285751e5d89a1"
+}

@@ -2,15 +2,16 @@ import { useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { MDController } from "../../web/src/controllers/MDController";
 import { KeyboardController, type ControllerProfile } from "../../web/src/controllers/input";
+import resourceManifest from "../../games/yuyuhakusho/data/runtime-resource-descriptor-manifest.json";
 import "./local_player.css";
 
 type Player = { slot: number; character_id: number; computer: boolean; input_channel: number; active: boolean; health: number; energy: number; X: number; Y: number; Pose: number; Action: number };
-type View = { tick: number; logic_frame: number; ready: boolean; paused: boolean; completed: boolean; winner: number; window_complete: boolean; players: Player[]; arena?: number };
-type Reply = { ok: boolean; error?: string; view?: View; snapshot?: string; sprite_pixels?: number };
+type View = { frame?: string; tick: number; logic_frame: number; ready: boolean; paused: boolean; completed: boolean; winner: number; window_complete: boolean; players: Player[]; arena?: number };
+type Reply = { ok: boolean; error?: string; view?: View; snapshot?: string; checkpoint?: string; preview?: View; sprite_pixels?: number };
 declare global {
   interface Window {
     Go: new () => { importObject: WebAssembly.Imports; run(instance: WebAssembly.Instance): Promise<void> };
-    yuyuhakushoWasm: (request: string, pixels?: Uint8Array) => string;
+    yuyuhakushoWasm: (request: string, ...bytes: Uint8Array[]) => string;
     yyResearch: typeof research;
   }
 }
@@ -34,11 +35,11 @@ const sink = {
   pressPointer(id: number, buttons: readonly string[]) { pointers.set(id, [...buttons]); },
   releasePointer(id: number) { pointers.delete(id); },
 };
-const research = { assetsReady: false, view: null as View | null, pixelSignature: 0, trusted: [] as boolean[], errors: [] as string[], sample };
+const research = { assetsReady: false, preview: null as null | { authorityFrame: string; predictedFrame: string; unchanged: boolean }, view: null as View | null, pixelSignature: 0, trusted: [] as boolean[], errors: [] as string[], sample };
 window.yyResearch = research;
 
-function call(request: object, pixels?: Uint8Array): Reply {
-  const response = JSON.parse(window.yuyuhakushoWasm(JSON.stringify(request), pixels)) as Reply;
+function call(request: object, ...bytes: Uint8Array[]): Reply {
+  const response = JSON.parse(window.yuyuhakushoWasm(JSON.stringify(request), ...bytes)) as Reply;
   if (!response.ok) throw Error(response.error ?? "独立对局运行失败");
   if (response.view) research.view = response.view;
   return response;
@@ -56,6 +57,7 @@ function App() {
   const canvas = useRef<HTMLCanvasElement>(null);
   const running = useRef(false);
   const loadArena = useRef<((arena: number) => Promise<void>) | null>(null);
+  const renderPreview = useRef<(() => void) | null>(null);
   const [ready, setReady] = useState(false);
   const [preparing, setPreparing] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -118,24 +120,54 @@ function App() {
       for (const chunk of chunks) { bytes.set(chunk, offset); offset += chunk.length; }
       return bytes;
     }
+    async function sha256(bytes: Uint8Array) {
+      const buffer = new ArrayBuffer(bytes.length);
+      new Uint8Array(buffer).set(bytes);
+      const hash = new Uint8Array(await crypto.subtle.digest("SHA-256", buffer));
+      return [...hash].map(value => value.toString(16).padStart(2, "0")).join("");
+    }
     async function unpack(bytes: Uint8Array) {
       const buffer = new ArrayBuffer(bytes.length);
       new Uint8Array(buffer).set(bytes);
       const stream = new Blob([buffer]).stream().pipeThrough(new DecompressionStream("gzip"));
-      return JSON.parse(await new Response(stream).text());
+      return new Uint8Array(await new Response(stream).arrayBuffer());
     }
+    renderPreview.current = () => {
+      const before = call({ Op: "save" }).snapshot;
+      const preview = call({ Op: "preview" }, pixels);
+      const after = call({ Op: "save" }).snapshot;
+      research.preview = { authorityFrame: preview.view?.frame ?? "", predictedFrame: preview.preview?.frame ?? "", unchanged: before === after };
+      if (!research.preview.unchanged) throw Error("加载预览修改了比赛状态");
+      image.data.set(pixels); context.putImageData(image, 0, 0);
+      research.pixelSignature = signature(pixels);
+    };
     void (async () => {
       try {
-        const [wasm, ruleBytes, spriteBytes, arenaBytes, hudBytes] = await Promise.all([
-          asset("/player.wasm"), asset("/rules.json.gz"), asset("/sprites.json.gz"), asset("/arena.json.gz"), asset("/hud.json.gz"),
+        const [wasm, descriptor] = await Promise.all([asset("/player.wasm"), asset("/resource-descriptor.json")]);
+        if (descriptor.length !== resourceManifest.bytes || await sha256(descriptor) !== resourceManifest.sha256) throw Error("资源清单校验失败");
+        type Resource = { id: string; raw_json_sha256: string; raw_json_bytes: number; gzip_sha256: string; gzip_bytes: number };
+        const listing = JSON.parse(new TextDecoder().decode(descriptor)) as { resources: Resource[] };
+        const identities = new Map(listing.resources.map(item => [item.id, item]));
+        async function resource(id: string, url: string) {
+          const identity = identities.get(id);
+          if (!identity) throw Error("缺少比赛资源清单");
+          const packed = await asset(url);
+          if (packed.length !== identity.gzip_bytes || await sha256(packed) !== identity.gzip_sha256) throw Error("压缩资源校验失败");
+          const raw = await unpack(packed);
+          if (raw.length !== identity.raw_json_bytes || await sha256(raw) !== identity.raw_json_sha256) throw Error("比赛资源校验失败");
+          return raw;
+        }
+        const [rules, sprites, arena, hud, metadata] = await Promise.all([
+          resource("rules", "/rules.json.gz"), resource("sprites", "/sprites.json.gz"), resource("arena-default", "/arena.json.gz"),
+          resource("hud", "/hud.json.gz"), resource("render_meta", "/render-meta.json.gz"),
         ]);
-        const [rules, sprites, arena, hud] = await Promise.all([unpack(ruleBytes), unpack(spriteBytes), unpack(arenaBytes), unpack(hudBytes)]);
         const go = new window.Go();
         const { instance } = await WebAssembly.instantiate(wasm, go.importObject);
         void go.run(instance).catch(fail);
         if (typeof window.yuyuhakushoWasm !== "function") throw Error("比赛程序未完成初始化");
-        call({ Op: "load", Rules: rules, Sprites: sprites, Arena: arena, HUD: hud });
-        const cached = new Map<number, { arena: unknown; auxiliary?: unknown }>([[0, { arena }]]);
+        const empty = new Uint8Array();
+        call({ Op: "load-v2" }, rules, sprites, arena, hud, empty, metadata, descriptor);
+        const cached = new Map<number, { arena: Uint8Array; auxiliary: Uint8Array }>([[0, { arena, auxiliary: empty }]]);
         let loadedArena = 0;
         loadArena.current = async (selected: number) => {
           if (loadedArena === selected) return;
@@ -144,14 +176,14 @@ function App() {
             for (const key of Object.keys(downloaded)) delete downloaded[key];
             if (mounted) setProgress(0);
             const [background, auxiliary] = await Promise.all([
-              asset(`/arena-${selected.toString(16)}.json.gz`).then(unpack),
-              selected === 10 ? asset("/arena-a-aux.json.gz").then(unpack) : Promise.resolve(undefined),
+              resource(`arena-${selected.toString(16)}`, `/arena-${selected.toString(16)}.json.gz`),
+              selected === 10 ? resource("arena-a-aux", "/arena-a-aux.json.gz") : Promise.resolve(empty),
             ]);
             media = { arena: background, auxiliary };
             cached.set(selected, media);
           }
           if (!mounted) return;
-          call({ Op: "load", Rules: rules, Sprites: sprites, Arena: media.arena, ArenaAux: media.auxiliary, HUD: hud, Options: { Arena: selected } });
+          call({ Op: "load-v2", Options: { Arena: selected } }, rules, sprites, media.arena, hud, media.auxiliary, metadata, descriptor);
           loadedArena = selected;
           setProgress(100);
         };
@@ -188,7 +220,7 @@ function App() {
     };
     frameID = requestAnimationFrame(loop);
     return () => {
-      mounted = false; running.current = false; loadArena.current = null; clearInput(); cancelAnimationFrame(frameID);
+      mounted = false; running.current = false; loadArena.current = null; renderPreview.current = null; clearInput(); cancelAnimationFrame(frameID);
       window.removeEventListener("keydown", down); window.removeEventListener("keyup", up);
       window.removeEventListener("blur", clearInput); window.removeEventListener("focusin", focus);
       window.removeEventListener("pointerdown", trusted); document.removeEventListener("visibilitychange", visibility);
@@ -202,8 +234,10 @@ function App() {
       await loadArena.current(arena);
       const slots = players === 2 ? [0, 3] : players === 3 ? [0, 1, 3] : [0, 1, 2, 3];
       call({ Op: "prepare", Options: { Arena: arena, Seed: 0x12345678, Difficulty: 6, TeamBattle: team && players === 4,
-        Players: slots.map((slot, color) => ({ Slot: slot, CharacterID: slot === 0 ? character : opponent, Color: color, Computer: watch || slot !== 0, HumanChannel: 0 })),
+        Players: slots.map((slot, color) => ({ Slot: slot, CharacterID: slot === 0 ? character : opponent, Color: color, Computer: watch || slot !== 0, HumanChannel: color })),
       } });
+      if (!renderPreview.current) throw Error("比赛画面尚未初始化");
+      renderPreview.current();
       const response = call({ Op: "ready" });
       setView(response.view ?? null); setPreparing(false); running.current = true;
       canvas.current?.focus();

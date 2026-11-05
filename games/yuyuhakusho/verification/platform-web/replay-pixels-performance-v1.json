@@ -1,0 +1,11 @@
+{
+  "pass": true,
+  "actual_go_wasm": true,
+  "label": "replay-pixels-performance-v1",
+  "checks": [
+    "100_full_ticks_canonical_save_and_dual_digest_identical",
+    "next_visible_callback_pixels_identical_after_no_pixel_replay",
+    "bad_replay_gap_atomic"
+  ],
+  "rgba_sha256": "9cf37e39630928581813c50484f980afb473ddeb61af48d89db33896cd1cddec"
+}

@@ -1,0 +1,12 @@
+
+  .local/md-yuyuhakusho/local-player/player.js                   1.2mb ⚠️
+  .local/md-yuyuhakusho/local-player/player.css                  6.7kb
+  .local/md-yuyuhakusho/local-player/md-controller-UXLIP6HJ.svg  1.8kb
+
+⚡ Done in 61ms
+{"error": "AssertionError(('local page did not use exact-byte network assets', 1))", "completed": {"native_activation": {"targetId": "62BA17C6226F13F964755945A418B129", "before": {"hidden": false, "visibility": "visible", "focused": true, "href": "http://127.0.0.1:57889/", "readyState": "complete"}, "after": {"hidden": false, "visibility": "visible", "focused": true, "href": "http://127.0.0.1:57889/", "readyState": "complete"}}}, "requests": ["/", "/player.css", "/wasm_exec.js", "/player.js", "/md-controller-UXLIP6HJ.svg", "/player.wasm", "/rules.json.gz", "/sprites.json.gz", "/arena.json.gz", "/hud.json.gz", "/favicon.ico"]}
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/check_runtimebridge_schema2.py", line 56, in <module>
+    assert schema==2,('local page did not use exact-byte network assets',schema)
+           ^^^^^^^^^
+AssertionError: ('local page did not use exact-byte network assets', 1)
