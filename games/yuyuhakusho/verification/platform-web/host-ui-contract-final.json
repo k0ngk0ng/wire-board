@@ -1,0 +1,11 @@
+{
+  "revision": "public-ui-optin-v1",
+  "pass": true,
+  "checks": [
+    "non_opted_default_create_waiting_players_board_dom_exact",
+    "preparation_ownership_only_waiting_create_unchanged",
+    "compact_groups_all_seats_and_required_statuses",
+    "invalid_groups_never_drop_or_duplicate_players",
+    "viewport_fit_only_explicit_opt_in"
+  ]
+}

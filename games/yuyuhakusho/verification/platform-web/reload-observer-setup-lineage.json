@@ -1,0 +1,6 @@
+{
+  "archive": "games/yuyuhakusho/verification/platform-web/check_platform_modes.before-reload-observer-setup-fix.py.txt",
+  "sha256": "b39b3e2c54dabe75cef1507d6c42667b0f845905582fb7da360a2846bd568bee",
+  "actual_setup_failure": "../platform-mode-ui/public-fullscreen-autoplay-red01/result.json",
+  "reason": "Global AGENT_BROWSER_INIT_SCRIPTS launch altered initial login readiness; use explicit owned-page CDP preload only before actual reload, preserve app state and add login readiness wait."
+}

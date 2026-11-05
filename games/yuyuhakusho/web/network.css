@@ -88,9 +88,10 @@
   font: inherit;
   padding: 8px;
   border-radius: 7px;
-  background: #151d1a;
-  color: inherit;
-  border: 1px solid #6a6c58;
+  background: #fffefa;
+  color: #293b35;
+  border: 1px solid #d9e0d4;
+  opacity: 1;
 }
 .yuyu-preparation {
   display: flex;
@@ -120,6 +121,46 @@
 }
 .yuyu-player-summary strong {
   font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.yuyu-player-values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+}
+.module-players[data-player-density="compact"] .yuyu-player-summary {
+  display: grid;
+  grid-template-rows: 13px 13px;
+  font-size: 11px;
+  line-height: 13px;
+  gap: 1px 4px;
+  min-height: 27px;
+}
+.module-players[data-player-density="compact"] .yuyu-player-values {
+  gap: 1px 6px;
+}
+.game-viewport-fit[data-fit-active]:not([data-fit-fullscreen]) > .yuyu-board {
+  --yuyu-fit-overhead: 20px;
+  height: 100%;
+  width: min(
+    100%,
+    800px,
+    max(
+      calc((100cqh - var(--yuyu-fit-overhead)) / 1.1222222222),
+      calc((100cqh - var(--yuyu-fit-overhead) - 236.444444px) / 0.7)
+    )
+  );
+}
+.game-viewport-fit[data-fit-active]:not([data-fit-fullscreen]) .yuyu-screen {
+  flex: 1 1 auto;
+}
+.game-viewport-fit[data-fit-active]:not([data-fit-fullscreen])
+  .yuyu-screen
+  canvas {
+  height: 100%;
+  max-height: 100%;
+  object-fit: contain;
 }
 [data-room-fullscreen] .yuyu-board {
   height: 100%;
@@ -142,6 +183,9 @@
   width: min(100%, 440px);
 }
 @media (max-width: 480px) {
+  .game-viewport-fit[data-fit-active]:not([data-fit-fullscreen]) > .yuyu-board {
+    --yuyu-fit-overhead: 8px;
+  }
   .yuyu-board {
     gap: 6px;
   }

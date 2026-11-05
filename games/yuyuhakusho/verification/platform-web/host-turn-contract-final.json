@@ -1,0 +1,8 @@
+{
+  "revision": "public-ui-optin-v1",
+  "pass": true,
+  "checks": [
+    "default_turn_clock_and_placeholder_dom_exact_baseline",
+    "compact_real_clock_retained_and_placeholder_keeps_same_inline_slot"
+  ]
+}

@@ -1,0 +1,204 @@
+{
+  "beforeCanvasTop": 399,
+  "canvasTop": 399,
+  "modalPresent": false,
+  "scrollY": 0,
+  "values": [
+    {
+      "color": "rgb(41, 59, 53)",
+      "ink": {
+        "bottom": 256,
+        "height": 16,
+        "right": 59.28125,
+        "width": 32.28125,
+        "x": 27,
+        "y": 240
+      },
+      "rect": {
+        "bottom": 255,
+        "height": 13,
+        "right": 59.28125,
+        "width": 32.28125,
+        "x": 27,
+        "y": 242
+      },
+      "resource": "health",
+      "seat": 0,
+      "text": "体力 0",
+      "unoccluded": true,
+      "visible": true
+    },
+    {
+      "color": "rgb(41, 59, 53)",
+      "ink": {
+        "bottom": 256,
+        "height": 16,
+        "right": 97.5625,
+        "width": 32.28125,
+        "x": 65.28125,
+        "y": 240
+      },
+      "rect": {
+        "bottom": 255,
+        "height": 13,
+        "right": 97.5625,
+        "width": 32.28125,
+        "x": 65.28125,
+        "y": 242
+      },
+      "resource": "energy",
+      "seat": 0,
+      "text": "灵力 0",
+      "unoccluded": true,
+      "visible": true
+    },
+    {
+      "color": "rgb(41, 59, 53)",
+      "ink": {
+        "bottom": 324,
+        "height": 16,
+        "right": 59.28125,
+        "width": 32.28125,
+        "x": 27,
+        "y": 308
+      },
+      "rect": {
+        "bottom": 323,
+        "height": 13,
+        "right": 59.28125,
+        "width": 32.28125,
+        "x": 27,
+        "y": 310
+      },
+      "resource": "health",
+      "seat": 1,
+      "text": "体力 0",
+      "unoccluded": true,
+      "visible": true
+    },
+    {
+      "color": "rgb(41, 59, 53)",
+      "ink": {
+        "bottom": 324,
+        "height": 16,
+        "right": 97.5625,
+        "width": 32.28125,
+        "x": 65.28125,
+        "y": 308
+      },
+      "rect": {
+        "bottom": 323,
+        "height": 13,
+        "right": 97.5625,
+        "width": 32.28125,
+        "x": 65.28125,
+        "y": 310
+      },
+      "resource": "energy",
+      "seat": 1,
+      "text": "灵力 0",
+      "unoccluded": true,
+      "visible": true
+    },
+    {
+      "color": "rgb(41, 59, 53)",
+      "ink": {
+        "bottom": 256,
+        "height": 16,
+        "right": 208.28125,
+        "width": 32.28125,
+        "x": 176,
+        "y": 240
+      },
+      "rect": {
+        "bottom": 255,
+        "height": 13,
+        "right": 208.28125,
+        "width": 32.28125,
+        "x": 176,
+        "y": 242
+      },
+      "resource": "health",
+      "seat": 2,
+      "text": "体力 0",
+      "unoccluded": true,
+      "visible": true
+    },
+    {
+      "color": "rgb(41, 59, 53)",
+      "ink": {
+        "bottom": 256,
+        "height": 16,
+        "right": 246.5625,
+        "width": 32.28125,
+        "x": 214.28125,
+        "y": 240
+      },
+      "rect": {
+        "bottom": 255,
+        "height": 13,
+        "right": 246.5625,
+        "width": 32.28125,
+        "x": 214.28125,
+        "y": 242
+      },
+      "resource": "energy",
+      "seat": 2,
+      "text": "灵力 0",
+      "unoccluded": true,
+      "visible": true
+    },
+    {
+      "color": "rgb(41, 59, 53)",
+      "ink": {
+        "bottom": 324,
+        "height": 16,
+        "right": 208.28125,
+        "width": 32.28125,
+        "x": 176,
+        "y": 308
+      },
+      "rect": {
+        "bottom": 323,
+        "height": 13,
+        "right": 208.28125,
+        "width": 32.28125,
+        "x": 176,
+        "y": 310
+      },
+      "resource": "health",
+      "seat": 3,
+      "text": "体力 0",
+      "unoccluded": true,
+      "visible": true
+    },
+    {
+      "color": "rgb(41, 59, 53)",
+      "ink": {
+        "bottom": 324,
+        "height": 16,
+        "right": 246.5625,
+        "width": 32.28125,
+        "x": 214.28125,
+        "y": 308
+      },
+      "rect": {
+        "bottom": 323,
+        "height": 13,
+        "right": 246.5625,
+        "width": 32.28125,
+        "x": 214.28125,
+        "y": 310
+      },
+      "resource": "energy",
+      "seat": 3,
+      "text": "灵力 0",
+      "unoccluded": true,
+      "visible": true
+    }
+  ],
+  "viewport": {
+    "height": 740,
+    "width": 320
+  }
+}

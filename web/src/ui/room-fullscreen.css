@@ -70,6 +70,23 @@
   flex: 1;
   min-width: 0;
 }
+.game-fullscreen-actions {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 8px;
+  margin-right: 8px;
+  white-space: nowrap;
+  font-size: 12px;
+}
+.game-fullscreen-actions button {
+  min-height: 32px;
+  height: 32px;
+  padding: 4px 8px;
+  color: #244836;
+  background: #f8f4e8;
+  border: 1px solid #a6b5a4;
+}
 .game-fullscreen-surface[data-room-fullscreen]
   .game-fullscreen-status
   .turn-card {

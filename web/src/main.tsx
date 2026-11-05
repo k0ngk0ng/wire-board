@@ -940,24 +940,30 @@ function App() {
                     观战中 · 仅展示公开牌面与玩家信息
                   </div>
                 )}
-                {autoPlay && canAutoPlay && (
-                  <div className="autoplay-notice" role="status">
-                    <Bot size={21} aria-hidden="true" />
-                    <div>
-                      <strong>电脑正在为你托管</strong>
-                      <span>离开或关闭网页也会继续，回来后可随时接手。</span>
+                {autoPlay &&
+                  canAutoPlay &&
+                  !(
+                    isIndependentGame(room.kind) &&
+                    gameModule(room.kind)?.viewportFit &&
+                    gameModule(room.kind)?.playerLayout?.density === "compact"
+                  ) && (
+                    <div className="autoplay-notice" role="status">
+                      <Bot size={21} aria-hidden="true" />
+                      <div>
+                        <strong>电脑正在为你托管</strong>
+                        <span>离开或关闭网页也会继续，回来后可随时接手。</span>
+                      </div>
+                      <button
+                        className="outline"
+                        disabled={busy}
+                        onClick={() =>
+                          roomCommand("autoplay", { enabled: false })
+                        }
+                      >
+                        恢复手动操作
+                      </button>
                     </div>
-                    <button
-                      className="outline"
-                      disabled={busy}
-                      onClick={() =>
-                        roomCommand("autoplay", { enabled: false })
-                      }
-                    >
-                      恢复手动操作
-                    </button>
-                  </div>
-                )}
+                  )}
                 {room.status === "waiting" ? (
                   <Waiting
                     room={room}
@@ -1016,6 +1022,29 @@ function App() {
                                 onReadyChange={setGameFullscreenReady}
                                 scope={`${room.id}:${room.matchId ?? room.setupVersion}`}
                                 enabled={!loading && !!room.game}
+                                toolbarActions={
+                                  autoPlay &&
+                                  canAutoPlay &&
+                                  isIndependentGame(room.kind) &&
+                                  gameModule(room.kind)?.viewportFit ? (
+                                    <>
+                                      <span role="status">托管中</span>
+                                      <button
+                                        className="subtle"
+                                        data-viewport-resume
+                                        disabled={busy}
+                                        onClick={() =>
+                                          roomCommand("autoplay", {
+                                            enabled: false,
+                                          })
+                                        }
+                                      >
+                                        <Hand size={16} />
+                                        取消托管
+                                      </button>
+                                    </>
+                                  ) : undefined
+                                }
                                 status={
                                   room.turnDeadline ? (
                                     <Turn

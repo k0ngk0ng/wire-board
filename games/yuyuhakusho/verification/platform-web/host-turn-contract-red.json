@@ -1,0 +1,8 @@
+{
+  "revision": "public-ui-optin-v1",
+  "pass": false,
+  "checks": [
+    "default_turn_clock_and_placeholder_dom_exact_baseline"
+  ],
+  "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:"
+}

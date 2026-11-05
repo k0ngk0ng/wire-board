@@ -1,0 +1,300 @@
+{
+  "lifecycle": {
+    "effectiveLaunch": {
+      "browserLaunched": true,
+      "engine": "chrome",
+      "launchHash": 9312706250556144325
+    },
+    "launched": false,
+    "relaunchedBrowser": false,
+    "restartedBackground": false,
+    "restoreStatus": "not_configured",
+    "reused": true,
+    "saveStatus": "not_attempted"
+  },
+  "origin": "http://127.0.0.1:64742/",
+  "refs": {
+    "e10": {
+      "name": "",
+      "role": "generic"
+    },
+    "e11": {
+      "name": "我的战绩与好友",
+      "role": "button"
+    },
+    "e12": {
+      "name": "控制器设置",
+      "role": "button"
+    },
+    "e13": {
+      "name": "Modehostb14bf",
+      "role": "button"
+    },
+    "e14": {
+      "name": "模式公开资源验收",
+      "role": "heading"
+    },
+    "e15": {
+      "name": "玩法速查",
+      "role": "button"
+    },
+    "e16": {
+      "name": "邀请朋友",
+      "role": "button"
+    },
+    "e17": {
+      "name": "离开房间",
+      "role": "button"
+    },
+    "e18": {
+      "name": "魔强统一战",
+      "role": "heading"
+    },
+    "e19": {
+      "name": "朋友或电脑，到齐就开局。",
+      "role": "heading"
+    },
+    "e20": {
+      "name": "比赛准备",
+      "role": "region"
+    },
+    "e21": {
+      "name": "Modehostb14bf Modehostb14bf：网络延迟 2 毫秒",
+      "role": "heading"
+    },
+    "e22": {
+      "name": "Modeguestb14bf Modeguestb14bf：网络延迟 0 毫秒",
+      "role": "heading"
+    },
+    "e23": {
+      "name": "电脑 1 AI",
+      "role": "heading"
+    },
+    "e24": {
+      "name": "移除电脑 1",
+      "role": "button"
+    },
+    "e25": {
+      "name": "我准备好了",
+      "role": "button"
+    },
+    "e26": {
+      "name": "开始游戏",
+      "role": "button"
+    },
+    "e27": {
+      "name": "打开牌桌聊天",
+      "role": "button"
+    },
+    "e28": {
+      "name": "声音控制",
+      "role": "button"
+    },
+    "e29": {
+      "name": "Modehostb14bf",
+      "role": "button"
+    },
+    "e30": {
+      "name": "Modeguestb14bf",
+      "role": "button"
+    },
+    "e31": {
+      "name": "场地",
+      "role": "combobox"
+    },
+    "e32": {
+      "name": "Modehostb14bf的角色",
+      "role": "combobox"
+    },
+    "e33": {
+      "name": "Modeguestb14bf的角色",
+      "role": "combobox"
+    },
+    "e34": {
+      "name": "电脑 1的角色",
+      "role": "combobox"
+    },
+    "e35": {
+      "name": "默认场地",
+      "role": "option"
+    },
+    "e36": {
+      "name": "灵界",
+      "role": "option"
+    },
+    "e37": {
+      "name": "亚空间 1",
+      "role": "option"
+    },
+    "e38": {
+      "name": "魔界",
+      "role": "option"
+    },
+    "e39": {
+      "name": "洞窟",
+      "role": "option"
+    },
+    "e40": {
+      "name": "魔性之森",
+      "role": "option"
+    },
+    "e41": {
+      "name": "亚空间 2",
+      "role": "option"
+    },
+    "e42": {
+      "name": "山顶",
+      "role": "option"
+    },
+    "e43": {
+      "name": "幻海",
+      "role": "option"
+    },
+    "e44": {
+      "name": "藏马",
+      "role": "option"
+    },
+    "e45": {
+      "name": "桑原",
+      "role": "option"
+    },
+    "e46": {
+      "name": "幽助",
+      "role": "option"
+    },
+    "e47": {
+      "name": "飞影",
+      "role": "option"
+    },
+    "e48": {
+      "name": "仙水",
+      "role": "option"
+    },
+    "e49": {
+      "name": "阵",
+      "role": "option"
+    },
+    "e50": {
+      "name": "树",
+      "role": "option"
+    },
+    "e51": {
+      "name": "户愚吕兄",
+      "role": "option"
+    },
+    "e52": {
+      "name": "酎",
+      "role": "option"
+    },
+    "e53": {
+      "name": "户愚吕弟",
+      "role": "option"
+    },
+    "e54": {
+      "name": "幻海",
+      "role": "option"
+    },
+    "e55": {
+      "name": "藏马",
+      "role": "option"
+    },
+    "e56": {
+      "name": "桑原",
+      "role": "option"
+    },
+    "e57": {
+      "name": "幽助",
+      "role": "option"
+    },
+    "e58": {
+      "name": "飞影",
+      "role": "option"
+    },
+    "e59": {
+      "name": "仙水",
+      "role": "option"
+    },
+    "e6": {
+      "name": "",
+      "role": "generic"
+    },
+    "e60": {
+      "name": "阵",
+      "role": "option"
+    },
+    "e61": {
+      "name": "树",
+      "role": "option"
+    },
+    "e62": {
+      "name": "户愚吕兄",
+      "role": "option"
+    },
+    "e63": {
+      "name": "酎",
+      "role": "option"
+    },
+    "e64": {
+      "name": "户愚吕弟",
+      "role": "option"
+    },
+    "e65": {
+      "name": "幻海",
+      "role": "option"
+    },
+    "e66": {
+      "name": "藏马",
+      "role": "option"
+    },
+    "e67": {
+      "name": "桑原",
+      "role": "option"
+    },
+    "e68": {
+      "name": "幽助",
+      "role": "option"
+    },
+    "e69": {
+      "name": "飞影",
+      "role": "option"
+    },
+    "e7": {
+      "name": "围桌首页",
+      "role": "link"
+    },
+    "e70": {
+      "name": "仙水",
+      "role": "option"
+    },
+    "e71": {
+      "name": "阵",
+      "role": "option"
+    },
+    "e72": {
+      "name": "树",
+      "role": "option"
+    },
+    "e73": {
+      "name": "户愚吕兄",
+      "role": "option"
+    },
+    "e74": {
+      "name": "酎",
+      "role": "option"
+    },
+    "e75": {
+      "name": "户愚吕弟",
+      "role": "option"
+    },
+    "e8": {
+      "name": "打开游戏许愿池",
+      "role": "button"
+    },
+    "e9": {
+      "name": "积分榜",
+      "role": "button"
+    }
+  },
+  "removedRefs": [],
+  "snapshot": "- generic \"围桌WIRE BOARD游戏牌桌让相聚，多一局。vdev许愿池积分榜2msMModehostb14bf魔强统一战  /  牌桌 639C1838模式公开资源验收玩法速查邀请朋友离开房间魔强统一战幽助与\" [ref=e6] clickable [onclick]\n  - link \"围桌首页\" [ref=e7]\n  - button \"打开游戏许愿池\" [ref=e8]\n  - button \"积分榜\" [ref=e9]\n  - generic [ref=e10] clickable [onclick]\n    - button \"声音控制\" [expanded=false, ref=e28]\n  - button \"我的战绩与好友\" [ref=e11]\n  - button \"控制器设置\" [ref=e12]\n  - button \"Modehostb14bf\" [ref=e13]\n  - heading \"模式公开资源验收\" [level=1, ref=e14]\n  - button \"玩法速查\" [ref=e15]\n  - button \"邀请朋友\" [ref=e16]\n  - button \"离开房间\" [ref=e17]\n  - heading \"魔强统一战\" [level=2, ref=e18]\n  - heading \"朋友或电脑，到齐就开局。\" [level=2, ref=e19]\n  - region \"比赛准备\" [ref=e20]\n    - combobox \"场地\" [expanded=false, ref=e31]: 魔性之森\n      - option \"默认场地\" [ref=e35]\n      - option \"灵界\" [ref=e36]\n      - option \"亚空间 1\" [ref=e37]\n      - option \"魔界\" [ref=e38]\n      - option \"洞窟\" [ref=e39]\n      - option \"魔性之森\" [selected, ref=e40]\n      - option \"亚空间 2\" [ref=e41]\n      - option \"山顶\" [ref=e42]\n    - combobox \"Modehostb14bf的角色\" [expanded=false, ref=e32]: 幽助\n      - option \"幻海\" [ref=e43]\n      - option \"藏马\" [ref=e44]\n      - option \"桑原\" [ref=e45]\n      - option \"幽助\" [selected, ref=e46]\n      - option \"飞影\" [ref=e47]\n      - option \"仙水\" [ref=e48]\n      - option \"阵\" [ref=e49]\n      - option \"树\" [ref=e50]\n      - option \"户愚吕兄\" [ref=e51]\n      - option \"酎\" [ref=e52]\n      - option \"户愚吕弟\" [ref=e53]\n    - combobox \"Modeguestb14bf的角色\" [expanded=false, disabled, ref=e33]: 藏马\n      - option \"幻海\" [disabled, ref=e54]\n      - option \"藏马\" [disabled, ref=e55]\n      - option \"桑原\" [disabled, ref=e56]\n      - option \"幽助\" [disabled, ref=e57]\n      - option \"飞影\" [disabled, ref=e58]\n      - option \"仙水\" [disabled, ref=e59]\n      - option \"阵\" [disabled, ref=e60]\n      - option \"树\" [disabled, ref=e61]\n      - option \"户愚吕兄\" [disabled, ref=e62]\n      - option \"酎\" [disabled, ref=e63]\n      - option \"户愚吕弟\" [disabled, ref=e64]\n    - combobox \"电脑 1的角色\" [expanded=false, ref=e34]: 户愚吕兄\n      - option \"幻海\" [disabled, ref=e65]\n      - option \"藏马\" [disabled, ref=e66]\n      - option \"桑原\" [disabled, ref=e67]\n      - option \"幽助\" [disabled, ref=e68]\n      - option \"飞影\" [disabled, ref=e69]\n      - option \"仙水\" [disabled, ref=e70]\n      - option \"阵\" [disabled, ref=e71]\n      - option \"树\" [disabled, ref=e72]\n      - option \"户愚吕兄\" [disabled, ref=e73]\n      - option \"酎\" [disabled, ref=e74]\n      - option \"户愚吕弟\" [disabled, ref=e75]\n  - heading \"Modehostb14bf Modehostb14bf：网络延迟 2 毫秒\" [level=3, ref=e21]\n    - button \"Modehostb14bf\" [ref=e29]\n  - heading \"Modeguestb14bf Modeguestb14bf：网络延迟 0 毫秒\" [level=3, ref=e22]\n    - button \"Modeguestb14bf\" [ref=e30]\n  - heading \"电脑 1 AI\" [level=3, ref=e23]\n  - button \"移除电脑 1\" [ref=e24]\n  - button \"我准备好了\" [ref=e25]\n  - button \"开始游戏\" [disabled, ref=e26]\n  - button \"打开牌桌聊天\" [expanded=false, ref=e27]"
+}

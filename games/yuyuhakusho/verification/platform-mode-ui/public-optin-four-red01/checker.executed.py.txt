@@ -1,0 +1,108 @@
+"""Independent real normal-app3/4-player public UI/authority/input acceptance."""
+from pathlib import Path
+import argparse,hashlib,json,os,subprocess,time,shutil
+ROOT=Path(__file__).resolve().parents[2]
+parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--label',required=True);parser.add_argument('--mode',choices=['four-team','three-free'],required=True);parser.add_argument('--zero',action='store_true');parser.add_argument('--public-ui',action='store_true');args=parser.parse_args()
+CAP=4 if args.mode=='four-team' else 3;TEAM=CAP==4
+OUT=ROOT/'games/yuyuhakusho/verification/platform-mode-ui'/args.label;OUT.mkdir(parents=True,exist_ok=False)
+TMP=ROOT/'.local/md-yuyuhakusho/platform-mode-ui'/args.label
+for path in [TMP/'tmp',ROOT/'.local/yu']:path.mkdir(parents=True,exist_ok=True)
+env=dict(os.environ,TMPDIR=str(TMP/'tmp'),GOTMPDIR=str(TMP/'tmp'),GOCACHE=str(ROOT/'.local/go-cache'),GOMODCACHE=str(ROOT/'.local/go-mod'),TEST_TELEMETRY_DIR=str(ROOT/'.local/go-telemetry'),AGENT_BROWSER_SOCKET_DIR=str(ROOT/'.local/yu'))
+sources=[Path(__file__),ROOT/'scripts/yuyuhakusho/platform_app_host.go',ROOT/'scripts/yuyuhakusho/platform_app_observer.js',ROOT/'scripts/yuyuhakusho/native_app_input.mjs',ROOT/'scripts/yuyuhakusho/inspect_platform_modes.go']
+frozen={str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest()for p in sources};(OUT/'checker.executed.py.txt').write_bytes(Path(__file__).read_bytes())
+report={'pass':False,'mode':args.mode,'capacity':CAP,'scope':'Actual normal React app/authentication/SQLite/WebSocket; two real local accounts plus explicitly added bots. No ROM/emulator/fake authority.'};sessions=[];host=None;urls={}
+def browser(who,*items):
+ task_env=dict(env,AGENT_BROWSER_SESSION='mu'+hashlib.sha256((args.label+who).encode()).hexdigest()[:7])
+ p=subprocess.run(['agent-browser',*items,'--json'],cwd=ROOT,env=task_env,text=True,capture_output=True,timeout=55);value=json.loads(p.stdout)
+ if p.returncode or not value.get('success'):raise RuntimeError(p.stdout+p.stderr)
+ return value['data']
+def js(who,code):return browser(who,'eval',code)['result']
+def wait(who,code):return browser(who,'wait','--fn',code)
+def click(who,name):return browser(who,'find','role','button','click','--name',name,'--exact')
+def state(who):return js(who,'fetch("/api/state").then(r=>r.json())')
+def snap(who,name):
+ value=browser(who,'snapshot','-i');(OUT/(name+'.json')).write_text(json.dumps(value,ensure_ascii=False,indent=2)+'\n');return value
+def native(who,actions):
+ endpoint=browser(who,'get','cdp-url')['cdpUrl'];url=urls['direct'] if who=='host' else urls['shaped']
+ return json.loads(subprocess.check_output(['node',str(ROOT/'scripts/yuyuhakusho/native_app_input.mjs'),endpoint,url,json.dumps(actions)],cwd=ROOT,env=env,text=True))
+def register(who):
+ url=urls['direct'] if who=='host' else urls['shaped'];browser(who,'--profile',str(TMP/('profile-'+who)),'open',url);sessions.append(who);browser(who,'set','viewport','1100','1000');js(who,(ROOT/'scripts/yuyuhakusho/platform_app_observer.js').read_text());click(who,'创建账号')
+ for name,value in [('name','Mode'+who+hashlib.sha256(args.label.encode()).hexdigest()[:5]),('password','LocalModeTest01'),('invite','yuyu-local-e2e')]:browser(who,'fill','input[name='+name+']',value)
+ click(who,'创建账号，入座');wait(who,'!document.querySelector("input[name=password]")')
+def resources(who):return js(who,r'''(()=>{const rect=e=>{const r=e.getBoundingClientRect();return{x:r.x,y:r.y,right:r.right,bottom:r.bottom,width:r.width,height:r.height}};return [...document.querySelectorAll('[data-player-seat]')].map(panel=>{const seat=Number(panel.dataset.playerSeat),node=panel.querySelector('.yuyu-player-summary');let fiber=node?.[Object.keys(node).find(key=>key.startsWith('__reactFiber$'))];while(fiber&&(!fiber.memoizedProps?.data?.players||fiber.memoizedProps?.seat!==seat))fiber=fiber.return;const data=fiber?.memoizedProps?.data,p=data?.players.find(p=>p.seat===seat),text=node?.textContent??'',health=text.match(/体力\s*(-?\d+)/),energy=text.match(/灵力\s*(-?\d+)/);return{seat,text,health:health?Number(health[1]):null,energy:energy?Number(energy[1]):null,expected:p?{health:Math.max(0,p.health),energy:Math.max(0,p.energy),slot:p.slot,characterID:p.characterID}:null,frame:data?.frame,epoch:data?.epoch,serverObserved:!!window.yuyuAppObservation?.views.some(v=>v.view.epoch===data?.epoch&&v.view.frame===data?.frame&&v.view.digest===data?.digest),panel:rect(panel),summary:node?rect(node):null,resources:[...node?.querySelectorAll('strong,span')??[]].filter(e=>/体力|灵力/.test(e.textContent??'')).map(e=>({text:e.textContent,rect:rect(e),color:getComputedStyle(e).color})),teamText:/A\s*队|B\s*队|甲队|乙队|红队|蓝队/.test(text)}})})()''')
+def geometry():return js('host','''(()=>{const rect=s=>{const r=document.querySelector(s).getBoundingClientRect();return{x:r.x,y:r.y,right:r.right,bottom:r.bottom,width:r.width,height:r.height}};return{width:innerWidth,height:innerHeight,scrollY,canvas:rect('canvas'),pad:rect('[data-controller-layout=md]'),c:rect('[data-controller-button=c]'),players:rect('.module-players'),overflow:document.documentElement.scrollWidth>innerWidth,fullscreen:!!document.querySelector('[data-room-fullscreen]'),nativeFullscreen:!!document.fullscreenElement,frame:document.querySelector('[data-yuyu-board]').dataset.frame}})()''')
+def layouts():
+ result=[];js('host','window.modeUICanvas=document.querySelector("canvas");true')
+ for label,w,h,full in [('desktop',1100,1000,False),('portrait-320',320,740,False),('landscape-fullscreen',740,360,True)]:
+  browser('host','set','viewport',str(w),str(h));js('host','window.scrollTo(0,0)')
+  if full:click('host','全屏');wait('host','!!document.querySelector("[data-room-fullscreen]")')
+  before=geometry();public=resources('host') if not full else []
+  browser('host','screenshot',str(OUT/(label+'-initial.png')))
+  if before['c']['y']<0 or before['c']['bottom']>h:
+   browser('host','scrollintoview','[data-controller-layout=md]')
+  current=geometry();c=current['c'];x,y=c['x']+c['width']/2,c['y']+c['height']/2
+  observed=native('host',[{'method':'Input.dispatchTouchEvent','type':'touchStart','touchPoints':[{'id':1,'x':x,'y':y}],'wait':130},{'method':'Input.dispatchTouchEvent','type':'touchEnd','touchPoints':[],'wait':220}]);assert any(k['trusted']and k['type']=='pointerdown'for k in observed['keys']);assert any(v['view']['inputs'][0]['appliedButtons']&32 for v in observed['views']),label
+  wait('host','yuyuAppObservation.latestView.inputs[0].appliedButtons===0');(OUT/(label+'-touch.json')).write_text(json.dumps(observed,indent=2)+'\n');browser('host','screenshot',str(OUT/(label+'-playable.png')))
+  result.append({'label':label,'initial':before,'afterScroll':current,'publicResources':public,'padInitiallyInViewport':before['pad']['bottom']<=h,'nativeTouchC':True})
+  if full:browser('host','press','Escape');wait('host','!document.querySelector("[data-room-fullscreen]")');assert js('host','modeUICanvas===document.querySelector("canvas")')
+ return result
+try:
+ subprocess.run(['go','build','-o',str(TMP/'host'),'scripts/yuyuhakusho/platform_app_host.go'],cwd=ROOT,env=env,check=True);subprocess.run(['go','build','-o',str(TMP/'inspect'),'scripts/yuyuhakusho/inspect_platform_modes.go'],cwd=ROOT,env=env,check=True)
+ stderr=(OUT/'host.log').open('w');host=subprocess.Popen([str(TMP/'host'),'-build',str(ROOT/'.local/md-yuyuhakusho/platform-app/dist'),'-data',str(TMP/'database')],cwd=ROOT,env=env,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=stderr,text=True);urls=json.loads(host.stdout.readline());report['appBuild']=json.loads((ROOT/'.local/md-yuyuhakusho/platform-app/dist/game-load-manifest.json').read_text())['build']
+ register('host');click('host','创建房间');browser('host','find','role','button','click','--name','魔强统一战');wait('host','!!document.querySelector("[aria-label=房间设置] input[name=name]")');browser('host','select','[aria-label=座位上限]',str(CAP));browser('host','fill','input[name=name]','模式公开资源验收')
+ if TEAM:browser('host','select','[aria-label=房间设置] [aria-label=赛制]','team')
+ browser('host','click','[aria-label=房间设置] form button.primary');wait('host','!!document.querySelector("[aria-label=比赛准备]")');register('guest');browser('guest','find','role','button','click','--name','加入');wait('guest','!!document.querySelector("[aria-label=比赛准备]")')
+ for expected in range(3,CAP+1):click('host','添加电脑玩家');wait('host','document.querySelectorAll("[aria-label^=移除]").length==='+str(expected-2))
+ roster=[3,1,8,10][:CAP];browser('host','select','[aria-label=比赛准备] [aria-label=场地]','10');browser('host','select','[data-character-seat="0"]',str(roster[0]));browser('guest','select','[data-character-seat="1"]',str(roster[1]))
+ for seat in range(2,CAP):browser('host','select','[data-character-seat="'+str(seat)+'"]',str(roster[seat]))
+ wait('host','[...document.querySelectorAll("[data-character-seat]")].map(e=>Number(e.value)).join(",")==='+json.dumps(','.join(map(str,roster))))
+ prep=state('host')['room'];assert prep['capacity']==CAP and prep['options']['teamBattle']==TEAM and prep['options']['characters']==roster and all(s.get('bot')for s in prep['seats'][2:]);assert js('host','document.querySelector("[data-character-seat=\\"1\\"]").disabled')
+ report['preparation']=prep
+ report['preparationUI']=js('host',r'''(()=>{const lum=s=>{const a=s.match(/[\d.]+/g).slice(0,3).map(Number).map(v=>{v/=255;return v<=.04045?v/12.92:((v+.055)/1.055)**2.4});return .2126*a[0]+.7152*a[1]+.0722*a[2]};return{arenaCount:document.querySelectorAll('.waiting-layout [aria-label="场地"]').length,modeCount:document.querySelectorAll('.waiting-layout [aria-label="赛制"]').length,selects:[...document.querySelectorAll('.waiting-layout select')].map(e=>{const s=getComputedStyle(e),a=lum(s.color),b=lum(s.backgroundColor);return{label:e.getAttribute('aria-label'),value:e.value,disabled:e.disabled,color:s.color,background:s.backgroundColor,opacity:s.opacity,contrast:(Math.max(a,b)+.05)/(Math.min(a,b)+.05)}})}})()''')
+ snap('host','preparation');browser('host','screenshot',str(OUT/'preparation.png'));click('guest','我准备好了');click('host','我准备好了');wait('host','[...document.querySelectorAll("button")].some(b=>b.textContent.trim()==="开始游戏"&&!b.disabled)');click('host','开始游戏')
+ for who in ['host','guest']:wait(who,'document.querySelector("[data-yuyu-board]")?.dataset.connection==="connected"&&BigInt(document.querySelector("[data-yuyu-board]").dataset.authorityFrame)>250n')
+ report['entry']=geometry();report['entryResources']=resources('host')
+ live=state('host')['room'];view=live['game']['data'];slots=[0,1,2,3]if TEAM else[0,1,3];assert view['seatSlots']==slots and [p['characterID']for p in view['players']]==roster and view['options']['teamBattle']==TEAM;report['initialView']=view;report['epoch']=view['epoch']
+ envelope=js('host','fetch("/api/rooms/'+live['id']+'/sync").then(r=>r.json())');(OUT/'sync-envelope.json').write_text(json.dumps(envelope,ensure_ascii=False)+'\n');detail=json.loads(subprocess.check_output([str(TMP/'inspect'),'-input',str(OUT/'sync-envelope.json')],cwd=ROOT,env=env,text=True));report['nativeAuthority']=detail;assert[p['slot']for p in detail['players']]==slots;assert[p['baseTeam']for p in detail['players']]==([1,1,4,4]if TEAM else[1,2,4]);assert[p['effectiveInputChannel']for p in detail['players']][:2]==[0,1]
+ browser('host','focus','[data-yuyu-board]');nativeInput=native('host',[{'type':'keyDown','key':'d','code':'KeyD','windowsVirtualKeyCode':68,'wait':130},{'type':'keyUp','key':'d','code':'KeyD','windowsVirtualKeyCode':68,'wait':240}]);assert any(k['trusted']and k.get('code')=='KeyD'for k in nativeInput['keys']);assert any(v['view']['inputs'][0]['appliedButtons']&8 for v in nativeInput['views']);assert any(p['hash']!=nativeInput['before']['paint']['hash']for p in nativeInput['paints']);(OUT/'desktop-native-key.json').write_text(json.dumps(nativeInput,indent=2)+'\n')
+ report['layouts']=layouts();report['publicResources']=resources('host');report['teamRelationshipVisible']=any(p['teamText']for p in report['publicResources'])if TEAM else None
+ missing=[p['seat']for p in report['publicResources']if p['energy']is None];report['missingEnergySeats']=missing
+ assert not missing,'公共玩家栏缺少灵力: '+str(missing)
+ assert all(p['expected']and p['energy']==p['expected']['energy']and p['health']==p['expected']['health']and p['serverObserved']for p in report['publicResources']),report['publicResources']
+ if args.public_ui:
+  failures=[]
+  if report['preparationUI']['arenaCount']!=1 or report['preparationUI']['modeCount']!=(1 if TEAM else 0):failures.append('duplicate_preparation_controls')
+  if any(p['contrast']<4.5 for p in report['preparationUI']['selects']):failures.append('preparation_select_contrast')
+  if report['entry']['scrollY']>1:failures.append('entry_scroll_hides_public_resources')
+  for case in report['layouts']:
+   g=case['initial']
+   if g['overflow']or g['pad']['y']<g['canvas']['bottom']or g['canvas']['y']<0 or g['pad']['bottom']>g['height']+1:failures.append(case['label']+'_viewport_fit')
+   if g['c']['width']<24:failures.append(case['label']+'_touch_target_below24')
+  report['publicUiFailures']=failures
+  assert not failures,failures
+ if args.zero:
+  for who in ['host','guest']:click(who,'开启托管')
+  deadline=time.monotonic()+160
+  while time.monotonic()<deadline:
+   room=state('host')['room']
+   if room['game']['finished']:break
+   time.sleep(4)
+  assert room['game']['finished'],'真实原版电脑对局未在窗口内完成'
+  browser('host','set','viewport','320','740');js('host','window.scrollTo(0,0)');report['zeroResources']=resources('host');assert all(p['energy']==p['expected']['energy']==0 and p['health']==p['expected']['health']==0 for p in report['zeroResources']);browser('host','screenshot',str(OUT/'zero-resources-320.png'))
+ report['pass']=True
+except Exception as error:
+ report['error']=repr(error)
+ for who in sessions:
+  try:report[who+'State']=state(who);browser(who,'screenshot',str(OUT/(who+'-failure.png')))
+  except Exception:pass
+ raise
+finally:
+ report['sourceSHA256']=frozen;(OUT/'result.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+ for who in sessions:
+  try:browser(who,'close')
+  except Exception:pass
+ if host:
+  host.stdin.close()
+  try:host.wait(timeout=15)
+  except subprocess.TimeoutExpired:host.terminate();host.wait(timeout=10)
+ print(json.dumps({'pass':report['pass'],'error':report.get('error'),'mode':args.mode}),flush=True)

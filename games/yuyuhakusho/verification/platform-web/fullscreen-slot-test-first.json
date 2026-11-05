@@ -1,0 +1,34 @@
+{
+  "actualRed": "../platform-mode-ui/public-fullscreen-autoplay-red02/result.json",
+  "failures": [
+    "Fullscreen autoplay has no cancel control",
+    "Optional action could change no-slot DOM",
+    "Actions could increase36px toolbar height or overlap Exit at320/740/desktop",
+    "Cancelling autoplay could remount Canvas/reset epoch or shift top",
+    "Busy/disabled controls and text inputs could leak game input",
+    "Same-epoch reload could lose autoplay state"
+  ],
+  "sourcesBefore": [
+    {
+      "source": "web/src/ui/room-fullscreen.tsx",
+      "sha256": "7b54e350677b2c40331e4721cb1a43e982a51431abd77fc2729fce68046a8e60",
+      "archive": "games/yuyuhakusho/verification/platform-web/room-fullscreen.tsx.before-toolbar-slot.txt"
+    },
+    {
+      "source": "web/src/ui/room-fullscreen.css",
+      "sha256": "f7d436d19213a5d8e7a34e4fc2ea5090528f57ae8ca56c19948cb85760b5a165",
+      "archive": "games/yuyuhakusho/verification/platform-web/room-fullscreen.css.before-toolbar-slot.txt"
+    },
+    {
+      "source": "web/src/main.tsx",
+      "sha256": "9e493adb6d4b26021435c17ce249b05b98939cb9ea3814ef3e062690a5e13c5f",
+      "archive": "games/yuyuhakusho/verification/platform-web/main.tsx.before-toolbar-slot.txt"
+    },
+    {
+      "source": "scripts/yuyuhakusho/check_platform_modes.py",
+      "sha256": "8f83c4e3320ca030ad36e4ad0810ad72a7e169060ef703e461e7a939dd66ffbd",
+      "archive": "games/yuyuhakusho/verification/platform-web/check_platform_modes.py.before-toolbar-slot.txt"
+    }
+  ],
+  "authorization": "Root explicitly authorized optional GameFullscreen toolbar slot + narrow Main props wiring; no input/autoplay/clock policy changes"
+}

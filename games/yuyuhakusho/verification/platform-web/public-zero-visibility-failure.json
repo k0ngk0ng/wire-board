@@ -1,0 +1,9 @@
+{
+  "finding": "The first full UI screenshots at zero are captured with the normal result modal still open and blur public resources. Rectangles inside the viewport prove geometry only.",
+  "actualEvidence": [
+    "../platform-mode-ui/public-ui-three-fullscreen03/zero-resources-320.png",
+    "../platform-mode-ui/public-ui-four-fullscreen01/zero-resources-320.png"
+  ],
+  "verification": "Restore those exact completed SQLite matches through real authentication, close the normal result dialog, compare exact epoch/frame and zero state, inspect actual text ink visibility/elementFromPoint and save unobscured screenshots.",
+  "productionChange": false
+}

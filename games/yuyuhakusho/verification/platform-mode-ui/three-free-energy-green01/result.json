@@ -1,0 +1,1323 @@
+{
+  "pass": true,
+  "mode": "three-free",
+  "capacity": 3,
+  "scope": "Actual normal React app/authentication/SQLite/WebSocket; two real local accounts plus explicitly added bots. No ROM/emulator/fake authority.",
+  "appBuild": "4e04897ab2daeb4defa88aa3fcf8a2f12fd6e11e8e8a8d7f5386e5173b2d447e",
+  "preparation": {
+    "capacity": 3,
+    "chat": null,
+    "clockOffsetMs": 0,
+    "closeReason": "",
+    "host": "953611c82dc199a175f1c8b2",
+    "id": "0d1950ff",
+    "kind": "yuyuhakusho",
+    "loading": null,
+    "locked": false,
+    "matchId": "",
+    "name": "模式公开资源验收",
+    "options": {
+      "arena": 10,
+      "characters": [
+        3,
+        1,
+        8
+      ],
+      "teamBattle": false
+    },
+    "seats": [
+      {
+        "id": "953611c82dc199a175f1c8b2",
+        "left": false,
+        "name": "Modehostfc9c9",
+        "network": {
+          "connected": true,
+          "connections": 1,
+          "rttMs": 0,
+          "sampledAt": 1793910181942
+        },
+        "ready": false
+      },
+      {
+        "id": "ac37e011c968455ebf85ce87",
+        "left": false,
+        "name": "Modeguestfc9c9",
+        "network": {
+          "connected": true,
+          "connections": 1,
+          "rttMs": 0,
+          "sampledAt": 1793910183018
+        },
+        "ready": false
+      },
+      {
+        "bot": true,
+        "id": "bot-15b9636bd5d6d4f32c337b9c",
+        "left": false,
+        "name": "电脑 1",
+        "ready": true
+      }
+    ],
+    "setupVersion": 0,
+    "spectating": false,
+    "spectatorCount": 0,
+    "status": "waiting",
+    "turnDeadline": 0,
+    "updated": 1793910183,
+    "version": 7,
+    "you": 0
+  },
+  "initialView": {
+    "digest": "e97951b16ca0b976d21677292379b41ea7285ad05546274b4660a093512d39a5",
+    "epoch": "05eafdc7900a4e732faf416a",
+    "frame": "262",
+    "inputs": [
+      {
+        "appliedButtons": 0,
+        "appliedSequence": 0,
+        "automated": false,
+        "buttons": 0,
+        "sequence": 0
+      },
+      {
+        "appliedButtons": 0,
+        "appliedSequence": 0,
+        "automated": false,
+        "buttons": 0,
+        "sequence": 0
+      },
+      {
+        "appliedButtons": 0,
+        "appliedSequence": 0,
+        "automated": true,
+        "buttons": 0,
+        "sequence": 0
+      }
+    ],
+    "localSeat": 0,
+    "options": {
+      "arena": 10,
+      "characters": [
+        3,
+        1,
+        8
+      ],
+      "teamBattle": false
+    },
+    "phase": "opening",
+    "players": [
+      {
+        "active": true,
+        "characterID": 3,
+        "computer": false,
+        "energy": 223,
+        "health": 223,
+        "seat": 0,
+        "slot": 0,
+        "x": 944,
+        "y": 320
+      },
+      {
+        "active": true,
+        "characterID": 1,
+        "computer": false,
+        "energy": 223,
+        "health": 223,
+        "seat": 1,
+        "slot": 1,
+        "x": 976,
+        "y": 304
+      },
+      {
+        "active": true,
+        "characterID": 8,
+        "computer": true,
+        "energy": 223,
+        "health": 223,
+        "seat": 2,
+        "slot": 3,
+        "x": 1104,
+        "y": 320
+      }
+    ],
+    "presentationDigest": "e8d016183e9ced8d40309848c6e2f98fb72b3af7f9c25110f634a5b26050c7f2",
+    "protocol": 1,
+    "replay": {
+      "data": "eAQAAAAAAAAAAA==",
+      "firstFrame": "143",
+      "frameCount": 120,
+      "version": 1
+    },
+    "resourceDescriptorSHA256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+    "seatSlots": [
+      0,
+      1,
+      3
+    ],
+    "serverAt": 1793910188039
+  },
+  "epoch": "05eafdc7900a4e732faf416a",
+  "nativeAuthority": {
+    "arena": 10,
+    "epoch": "05eafdc7900a4e732faf416a",
+    "frame": "262",
+    "grouping": 2,
+    "players": [
+      {
+        "baseTeam": 1,
+        "characterID": 3,
+        "configuredHumanChannel": 0,
+        "effectiveInputChannel": 0,
+        "energy": 223,
+        "health": 223,
+        "seat": 0,
+        "slot": 0,
+        "team": 1
+      },
+      {
+        "baseTeam": 2,
+        "characterID": 1,
+        "configuredHumanChannel": 1,
+        "effectiveInputChannel": 1,
+        "energy": 223,
+        "health": 223,
+        "seat": 1,
+        "slot": 1,
+        "team": 2
+      },
+      {
+        "baseTeam": 4,
+        "characterID": 8,
+        "configuredHumanChannel": 2,
+        "effectiveInputChannel": 255,
+        "energy": 223,
+        "health": 223,
+        "seat": 2,
+        "slot": 3,
+        "team": 4
+      }
+    ],
+    "teamBattle": false
+  },
+  "layouts": [
+    {
+      "label": "desktop",
+      "initial": {
+        "c": {
+          "bottom": 1000.671875,
+          "height": 57.234375,
+          "right": 793.890625,
+          "width": 57.234375,
+          "x": 736.65625,
+          "y": 943.4375
+        },
+        "canvas": {
+          "bottom": 808.984375,
+          "height": 558.59375,
+          "right": 949,
+          "width": 798,
+          "x": 151,
+          "y": 250.390625
+        },
+        "frame": "309",
+        "fullscreen": false,
+        "height": 1000,
+        "nativeFullscreen": false,
+        "overflow": false,
+        "pad": {
+          "bottom": 1060.421875,
+          "height": 236.4375,
+          "right": 830,
+          "width": 560,
+          "x": 270,
+          "y": 823.984375
+        },
+        "players": {
+          "bottom": 194.390625,
+          "height": 74,
+          "right": 1078,
+          "width": 1056,
+          "x": 22,
+          "y": 120.390625
+        },
+        "scrollY": 0,
+        "width": 1100
+      },
+      "afterScroll": {
+        "c": {
+          "bottom": 928.671875,
+          "height": 57.234375,
+          "right": 793.890625,
+          "width": 57.234375,
+          "x": 736.65625,
+          "y": 871.4375
+        },
+        "canvas": {
+          "bottom": 736.984375,
+          "height": 558.59375,
+          "right": 949,
+          "width": 798,
+          "x": 151,
+          "y": 178.390625
+        },
+        "frame": "315",
+        "fullscreen": false,
+        "height": 1000,
+        "nativeFullscreen": false,
+        "overflow": false,
+        "pad": {
+          "bottom": 988.421875,
+          "height": 236.4375,
+          "right": 830,
+          "width": 560,
+          "x": 270,
+          "y": 751.984375
+        },
+        "players": {
+          "bottom": 122.390625,
+          "height": 74,
+          "right": 1078,
+          "width": 1056,
+          "x": 22,
+          "y": 48.390625
+        },
+        "scrollY": 72,
+        "width": 1100
+      },
+      "publicResources": [
+        {
+          "energy": 223,
+          "epoch": "05eafdc7900a4e732faf416a",
+          "expected": {
+            "characterID": 3,
+            "energy": 223,
+            "health": 223,
+            "slot": 0
+          },
+          "frame": "307",
+          "health": 223,
+          "panel": {
+            "bottom": 194.390625,
+            "height": 74,
+            "right": 368,
+            "width": 346,
+            "x": 22,
+            "y": 120.390625
+          },
+          "resources": [
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 188.390625,
+                "height": 16,
+                "right": 165.03125,
+                "width": 100.625,
+                "x": 64.40625,
+                "y": 172.390625
+              },
+              "text": "体力 223灵力 223"
+            },
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 188.390625,
+                "height": 16,
+                "right": 110.71875,
+                "width": 46.3125,
+                "x": 64.40625,
+                "y": 172.390625
+              },
+              "text": "体力 223"
+            },
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 188.390625,
+                "height": 16,
+                "right": 165.03125,
+                "width": 46.3125,
+                "x": 118.71875,
+                "y": 172.390625
+              },
+              "text": "灵力 223"
+            }
+          ],
+          "seat": 0,
+          "serverObserved": true,
+          "summary": {
+            "bottom": 188.390625,
+            "height": 16,
+            "right": 358,
+            "width": 326,
+            "x": 32,
+            "y": 172.390625
+          },
+          "teamText": false,
+          "text": "幽助体力 223灵力 223"
+        },
+        {
+          "energy": 223,
+          "epoch": "05eafdc7900a4e732faf416a",
+          "expected": {
+            "characterID": 1,
+            "energy": 223,
+            "health": 223,
+            "slot": 1
+          },
+          "frame": "307",
+          "health": 223,
+          "panel": {
+            "bottom": 194.390625,
+            "height": 74,
+            "right": 723,
+            "width": 346,
+            "x": 377,
+            "y": 120.390625
+          },
+          "resources": [
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 188.390625,
+                "height": 16,
+                "right": 520.03125,
+                "width": 100.625,
+                "x": 419.40625,
+                "y": 172.390625
+              },
+              "text": "体力 223灵力 223"
+            },
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 188.390625,
+                "height": 16,
+                "right": 465.71875,
+                "width": 46.3125,
+                "x": 419.40625,
+                "y": 172.390625
+              },
+              "text": "体力 223"
+            },
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 188.390625,
+                "height": 16,
+                "right": 520.03125,
+                "width": 46.3125,
+                "x": 473.71875,
+                "y": 172.390625
+              },
+              "text": "灵力 223"
+            }
+          ],
+          "seat": 1,
+          "serverObserved": true,
+          "summary": {
+            "bottom": 188.390625,
+            "height": 16,
+            "right": 713,
+            "width": 326,
+            "x": 387,
+            "y": 172.390625
+          },
+          "teamText": false,
+          "text": "藏马体力 223灵力 223"
+        },
+        {
+          "energy": 223,
+          "epoch": "05eafdc7900a4e732faf416a",
+          "expected": {
+            "characterID": 8,
+            "energy": 223,
+            "health": 223,
+            "slot": 3
+          },
+          "frame": "307",
+          "health": 223,
+          "panel": {
+            "bottom": 194.390625,
+            "height": 74,
+            "right": 1078,
+            "width": 346,
+            "x": 732,
+            "y": 120.390625
+          },
+          "resources": [
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 187.890625,
+                "height": 16,
+                "right": 897.4375,
+                "width": 100.625,
+                "x": 796.8125,
+                "y": 171.890625
+              },
+              "text": "体力 223灵力 223"
+            },
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 187.890625,
+                "height": 16,
+                "right": 843.125,
+                "width": 46.3125,
+                "x": 796.8125,
+                "y": 171.890625
+              },
+              "text": "体力 223"
+            },
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 187.890625,
+                "height": 16,
+                "right": 897.4375,
+                "width": 46.3125,
+                "x": 851.125,
+                "y": 171.890625
+              },
+              "text": "灵力 223"
+            }
+          ],
+          "seat": 2,
+          "serverObserved": true,
+          "summary": {
+            "bottom": 187.890625,
+            "height": 16,
+            "right": 1068,
+            "width": 326,
+            "x": 742,
+            "y": 171.890625
+          },
+          "teamText": false,
+          "text": "户愚吕兄体力 223灵力 223"
+        }
+      ],
+      "padInitiallyInViewport": false,
+      "nativeTouchC": true
+    },
+    {
+      "label": "portrait-320",
+      "initial": {
+        "c": {
+          "bottom": 851.1875,
+          "height": 30.25,
+          "right": 288.90625,
+          "width": 30.25,
+          "x": 258.65625,
+          "y": 820.9375
+        },
+        "canvas": {
+          "bottom": 750.796875,
+          "height": 205.796875,
+          "right": 307,
+          "width": 294,
+          "x": 13,
+          "y": 545
+        },
+        "frame": "353",
+        "fullscreen": false,
+        "height": 740,
+        "nativeFullscreen": false,
+        "overflow": false,
+        "pad": {
+          "bottom": 882.765625,
+          "height": 124.96875,
+          "right": 308,
+          "width": 296,
+          "x": 12,
+          "y": 757.796875
+        },
+        "players": {
+          "bottom": 446,
+          "height": 253,
+          "right": 308,
+          "width": 296,
+          "x": 12,
+          "y": 193
+        },
+        "scrollY": 0,
+        "width": 320
+      },
+      "afterScroll": {
+        "c": {
+          "bottom": 597.1875,
+          "height": 30.25,
+          "right": 288.90625,
+          "width": 30.25,
+          "x": 258.65625,
+          "y": 566.9375
+        },
+        "canvas": {
+          "bottom": 496.796875,
+          "height": 205.796875,
+          "right": 307,
+          "width": 294,
+          "x": 13,
+          "y": 291
+        },
+        "frame": "358",
+        "fullscreen": false,
+        "height": 740,
+        "nativeFullscreen": false,
+        "overflow": false,
+        "pad": {
+          "bottom": 628.765625,
+          "height": 124.96875,
+          "right": 308,
+          "width": 296,
+          "x": 12,
+          "y": 503.796875
+        },
+        "players": {
+          "bottom": 192,
+          "height": 253,
+          "right": 308,
+          "width": 296,
+          "x": 12,
+          "y": -61
+        },
+        "scrollY": 254,
+        "width": 320
+      },
+      "publicResources": [
+        {
+          "energy": 223,
+          "epoch": "05eafdc7900a4e732faf416a",
+          "expected": {
+            "characterID": 3,
+            "energy": 223,
+            "health": 223,
+            "slot": 0
+          },
+          "frame": "346",
+          "health": 223,
+          "panel": {
+            "bottom": 333,
+            "height": 138,
+            "right": 156,
+            "width": 142,
+            "x": 14,
+            "y": 195
+          },
+          "resources": [
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 324,
+                "height": 16,
+                "right": 123.625,
+                "width": 100.625,
+                "x": 23,
+                "y": 308
+              },
+              "text": "体力 223灵力 223"
+            },
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 324,
+                "height": 16,
+                "right": 69.3125,
+                "width": 46.3125,
+                "x": 23,
+                "y": 308
+              },
+              "text": "体力 223"
+            },
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 324,
+                "height": 16,
+                "right": 123.625,
+                "width": 46.3125,
+                "x": 77.3125,
+                "y": 308
+              },
+              "text": "灵力 223"
+            }
+          ],
+          "seat": 0,
+          "serverObserved": true,
+          "summary": {
+            "bottom": 324,
+            "height": 36,
+            "right": 147,
+            "width": 124,
+            "x": 23,
+            "y": 288
+          },
+          "teamText": false,
+          "text": "幽助体力 223灵力 223"
+        },
+        {
+          "energy": 223,
+          "epoch": "05eafdc7900a4e732faf416a",
+          "expected": {
+            "characterID": 1,
+            "energy": 223,
+            "health": 223,
+            "slot": 1
+          },
+          "frame": "346",
+          "health": 223,
+          "panel": {
+            "bottom": 333,
+            "height": 138,
+            "right": 306,
+            "width": 142,
+            "x": 164,
+            "y": 195
+          },
+          "resources": [
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 319.75,
+                "height": 16,
+                "right": 273.625,
+                "width": 100.625,
+                "x": 173,
+                "y": 303.75
+              },
+              "text": "体力 223灵力 223"
+            },
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 319.75,
+                "height": 16,
+                "right": 219.3125,
+                "width": 46.3125,
+                "x": 173,
+                "y": 303.75
+              },
+              "text": "体力 223"
+            },
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 319.75,
+                "height": 16,
+                "right": 273.625,
+                "width": 46.3125,
+                "x": 227.3125,
+                "y": 303.75
+              },
+              "text": "灵力 223"
+            }
+          ],
+          "seat": 1,
+          "serverObserved": true,
+          "summary": {
+            "bottom": 319.75,
+            "height": 36,
+            "right": 297,
+            "width": 124,
+            "x": 173,
+            "y": 283.75
+          },
+          "teamText": false,
+          "text": "藏马体力 223灵力 223"
+        },
+        {
+          "energy": 223,
+          "epoch": "05eafdc7900a4e732faf416a",
+          "expected": {
+            "characterID": 8,
+            "energy": 223,
+            "health": 223,
+            "slot": 3
+          },
+          "frame": "346",
+          "health": 223,
+          "panel": {
+            "bottom": 439,
+            "height": 98,
+            "right": 156,
+            "width": 142,
+            "x": 14,
+            "y": 341
+          },
+          "resources": [
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 430,
+                "height": 16,
+                "right": 123.625,
+                "width": 100.625,
+                "x": 23,
+                "y": 414
+              },
+              "text": "体力 223灵力 223"
+            },
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 430,
+                "height": 16,
+                "right": 69.3125,
+                "width": 46.3125,
+                "x": 23,
+                "y": 414
+              },
+              "text": "体力 223"
+            },
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 430,
+                "height": 16,
+                "right": 123.625,
+                "width": 46.3125,
+                "x": 77.3125,
+                "y": 414
+              },
+              "text": "灵力 223"
+            }
+          ],
+          "seat": 2,
+          "serverObserved": true,
+          "summary": {
+            "bottom": 430,
+            "height": 36,
+            "right": 147,
+            "width": 124,
+            "x": 23,
+            "y": 394
+          },
+          "teamText": false,
+          "text": "户愚吕兄体力 223灵力 223"
+        }
+      ],
+      "padInitiallyInViewport": false,
+      "nativeTouchC": true
+    },
+    {
+      "label": "landscape-fullscreen",
+      "initial": {
+        "c": {
+          "bottom": 319.859375,
+          "height": 26.953125,
+          "right": 484.859375,
+          "width": 26.953125,
+          "x": 457.90625,
+          "y": 292.90625
+        },
+        "canvas": {
+          "bottom": 227.640625,
+          "height": 182.640625,
+          "right": 500.875,
+          "width": 261.75,
+          "x": 239.125,
+          "y": 45
+        },
+        "frame": "399",
+        "fullscreen": true,
+        "height": 360,
+        "nativeFullscreen": true,
+        "overflow": false,
+        "pad": {
+          "bottom": 348,
+          "height": 111.359375,
+          "right": 501.875,
+          "width": 263.75,
+          "x": 238.125,
+          "y": 236.640625
+        },
+        "players": {
+          "bottom": 342,
+          "height": 179,
+          "right": 712,
+          "width": 684,
+          "x": 28,
+          "y": 163
+        },
+        "scrollY": 0,
+        "width": 740
+      },
+      "afterScroll": {
+        "c": {
+          "bottom": 319.859375,
+          "height": 26.953125,
+          "right": 484.859375,
+          "width": 26.953125,
+          "x": 457.90625,
+          "y": 292.90625
+        },
+        "canvas": {
+          "bottom": 227.640625,
+          "height": 182.640625,
+          "right": 500.875,
+          "width": 261.75,
+          "x": 239.125,
+          "y": 45
+        },
+        "frame": "404",
+        "fullscreen": true,
+        "height": 360,
+        "nativeFullscreen": true,
+        "overflow": false,
+        "pad": {
+          "bottom": 348,
+          "height": 111.359375,
+          "right": 501.875,
+          "width": 263.75,
+          "x": 238.125,
+          "y": 236.640625
+        },
+        "players": {
+          "bottom": 342,
+          "height": 179,
+          "right": 712,
+          "width": 684,
+          "x": 28,
+          "y": 163
+        },
+        "scrollY": 0,
+        "width": 740
+      },
+      "publicResources": [],
+      "padInitiallyInViewport": true,
+      "nativeTouchC": true
+    }
+  ],
+  "publicResources": [
+    {
+      "energy": 223,
+      "epoch": "05eafdc7900a4e732faf416a",
+      "expected": {
+        "characterID": 3,
+        "energy": 223,
+        "health": 193,
+        "slot": 0
+      },
+      "frame": "436",
+      "health": 193,
+      "panel": {
+        "bottom": 245,
+        "height": 80,
+        "right": 364,
+        "width": 334,
+        "x": 30,
+        "y": 165
+      },
+      "resources": [
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 236,
+            "height": 16,
+            "right": 169.90625,
+            "width": 98.5,
+            "x": 71.40625,
+            "y": 220
+          },
+          "text": "体力 193灵力 223"
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 236,
+            "height": 16,
+            "right": 115.59375,
+            "width": 44.1875,
+            "x": 71.40625,
+            "y": 220
+          },
+          "text": "体力 193"
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 236,
+            "height": 16,
+            "right": 169.90625,
+            "width": 46.3125,
+            "x": 123.59375,
+            "y": 220
+          },
+          "text": "灵力 223"
+        }
+      ],
+      "seat": 0,
+      "serverObserved": true,
+      "summary": {
+        "bottom": 236,
+        "height": 16,
+        "right": 355,
+        "width": 316,
+        "x": 39,
+        "y": 220
+      },
+      "teamText": false,
+      "text": "幽助体力 193灵力 223"
+    },
+    {
+      "energy": 223,
+      "epoch": "05eafdc7900a4e732faf416a",
+      "expected": {
+        "characterID": 1,
+        "energy": 223,
+        "health": 223,
+        "slot": 1
+      },
+      "frame": "436",
+      "health": 223,
+      "panel": {
+        "bottom": 245,
+        "height": 80,
+        "right": 710,
+        "width": 334,
+        "x": 376,
+        "y": 165
+      },
+      "resources": [
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 236,
+            "height": 16,
+            "right": 518.03125,
+            "width": 100.625,
+            "x": 417.40625,
+            "y": 220
+          },
+          "text": "体力 223灵力 223"
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 236,
+            "height": 16,
+            "right": 463.71875,
+            "width": 46.3125,
+            "x": 417.40625,
+            "y": 220
+          },
+          "text": "体力 223"
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 236,
+            "height": 16,
+            "right": 518.03125,
+            "width": 46.3125,
+            "x": 471.71875,
+            "y": 220
+          },
+          "text": "灵力 223"
+        }
+      ],
+      "seat": 1,
+      "serverObserved": true,
+      "summary": {
+        "bottom": 236,
+        "height": 16,
+        "right": 701,
+        "width": 316,
+        "x": 385,
+        "y": 220
+      },
+      "teamText": false,
+      "text": "藏马体力 223灵力 223"
+    },
+    {
+      "energy": 223,
+      "epoch": "05eafdc7900a4e732faf416a",
+      "expected": {
+        "characterID": 8,
+        "energy": 223,
+        "health": 223,
+        "slot": 3
+      },
+      "frame": "436",
+      "health": 223,
+      "panel": {
+        "bottom": 335,
+        "height": 78,
+        "right": 364,
+        "width": 334,
+        "x": 30,
+        "y": 257
+      },
+      "resources": [
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 326,
+            "height": 16,
+            "right": 194.4375,
+            "width": 100.625,
+            "x": 93.8125,
+            "y": 310
+          },
+          "text": "体力 223灵力 223"
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 326,
+            "height": 16,
+            "right": 140.125,
+            "width": 46.3125,
+            "x": 93.8125,
+            "y": 310
+          },
+          "text": "体力 223"
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 326,
+            "height": 16,
+            "right": 194.4375,
+            "width": 46.3125,
+            "x": 148.125,
+            "y": 310
+          },
+          "text": "灵力 223"
+        }
+      ],
+      "seat": 2,
+      "serverObserved": true,
+      "summary": {
+        "bottom": 326,
+        "height": 16,
+        "right": 355,
+        "width": 316,
+        "x": 39,
+        "y": 310
+      },
+      "teamText": false,
+      "text": "户愚吕兄体力 223灵力 223"
+    }
+  ],
+  "teamRelationshipVisible": null,
+  "missingEnergySeats": [],
+  "zeroResources": [
+    {
+      "energy": 0,
+      "epoch": "05eafdc7900a4e732faf416a",
+      "expected": {
+        "characterID": 3,
+        "energy": 0,
+        "health": 0,
+        "slot": 0
+      },
+      "frame": "4610",
+      "health": 0,
+      "panel": {
+        "bottom": 313,
+        "height": 118,
+        "right": 156,
+        "width": 142,
+        "x": 14,
+        "y": 195
+      },
+      "resources": [
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 304,
+            "height": 16,
+            "right": 129.15625,
+            "width": 73.75,
+            "x": 55.40625,
+            "y": 288
+          },
+          "text": "体力 0灵力 0"
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 304,
+            "height": 16,
+            "right": 88.28125,
+            "width": 32.875,
+            "x": 55.40625,
+            "y": 288
+          },
+          "text": "体力 0"
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 304,
+            "height": 16,
+            "right": 129.15625,
+            "width": 32.875,
+            "x": 96.28125,
+            "y": 288
+          },
+          "text": "灵力 0"
+        }
+      ],
+      "seat": 0,
+      "serverObserved": true,
+      "summary": {
+        "bottom": 304,
+        "height": 16,
+        "right": 147,
+        "width": 124,
+        "x": 23,
+        "y": 288
+      },
+      "teamText": false,
+      "text": "幽助体力 0灵力 0"
+    },
+    {
+      "energy": 0,
+      "epoch": "05eafdc7900a4e732faf416a",
+      "expected": {
+        "characterID": 1,
+        "energy": 0,
+        "health": 0,
+        "slot": 1
+      },
+      "frame": "4610",
+      "health": 0,
+      "panel": {
+        "bottom": 313,
+        "height": 118,
+        "right": 306,
+        "width": 142,
+        "x": 164,
+        "y": 195
+      },
+      "resources": [
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 299.75,
+            "height": 16,
+            "right": 279.15625,
+            "width": 73.75,
+            "x": 205.40625,
+            "y": 283.75
+          },
+          "text": "体力 0灵力 0"
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 299.75,
+            "height": 16,
+            "right": 238.28125,
+            "width": 32.875,
+            "x": 205.40625,
+            "y": 283.75
+          },
+          "text": "体力 0"
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 299.75,
+            "height": 16,
+            "right": 279.15625,
+            "width": 32.875,
+            "x": 246.28125,
+            "y": 283.75
+          },
+          "text": "灵力 0"
+        }
+      ],
+      "seat": 1,
+      "serverObserved": true,
+      "summary": {
+        "bottom": 299.75,
+        "height": 16,
+        "right": 297,
+        "width": 124,
+        "x": 173,
+        "y": 283.75
+      },
+      "teamText": false,
+      "text": "藏马体力 0灵力 0"
+    },
+    {
+      "energy": 0,
+      "epoch": "05eafdc7900a4e732faf416a",
+      "expected": {
+        "characterID": 8,
+        "energy": 0,
+        "health": 0,
+        "slot": 3
+      },
+      "frame": "4610",
+      "health": 0,
+      "panel": {
+        "bottom": 419,
+        "height": 98,
+        "right": 156,
+        "width": 142,
+        "x": 14,
+        "y": 321
+      },
+      "resources": [
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 410,
+            "height": 16,
+            "right": 96.75,
+            "width": 73.75,
+            "x": 23,
+            "y": 394
+          },
+          "text": "体力 0灵力 0"
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 410,
+            "height": 16,
+            "right": 55.875,
+            "width": 32.875,
+            "x": 23,
+            "y": 394
+          },
+          "text": "体力 0"
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 410,
+            "height": 16,
+            "right": 96.75,
+            "width": 32.875,
+            "x": 63.875,
+            "y": 394
+          },
+          "text": "灵力 0"
+        }
+      ],
+      "seat": 2,
+      "serverObserved": true,
+      "summary": {
+        "bottom": 410,
+        "height": 36,
+        "right": 147,
+        "width": 124,
+        "x": 23,
+        "y": 374
+      },
+      "teamText": false,
+      "text": "户愚吕兄体力 0灵力 0"
+    }
+  ],
+  "sourceSHA256": {
+    "scripts/yuyuhakusho/check_platform_modes.py": "6657d0fe5efc92777d27faa00b5c943116b49fcf4116691fce6c4d2598851c89",
+    "scripts/yuyuhakusho/platform_app_host.go": "b69aad1a7ffd6b08713ad429709c667854ae9c7053b289c4da1a7f2f0e878ba0",
+    "scripts/yuyuhakusho/platform_app_observer.js": "b07d9a383bd2927e2d188e604dfa43c4d084945d788810f5f3ff4480dd283a5c",
+    "scripts/yuyuhakusho/native_app_input.mjs": "b8d4e687b01e668d4b9c870397ba201ce6d94085919ee9ddb20b62abd168e459",
+    "scripts/yuyuhakusho/inspect_platform_modes.go": "94f43cbc3097bfa8a47e82bf74212e9e5930f7e0c381d66a9e4c09444826e45a"
+  }
+}

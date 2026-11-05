@@ -1,0 +1,9 @@
+{
+  "actualFailure": "../platform-mode-ui/public-ui-three-fullscreen01/result.json",
+  "finding": "Page.addScriptToEvaluateOnNewDocument was registered on a session detached before reload. Native helper saw ReferenceError for passive observer after real reload.",
+  "fixScope": "Only owned acceptance helper holds its CDP session through Page.reload and observer initialization; production unchanged.",
+  "productEvidence": "fullscreen autoplay screenshot shows shared toolbar present; cancellation not yet verified",
+  "followupActualFailure": "../platform-mode-ui/public-ui-three-fullscreen02/result.json",
+  "rootCause": "A separate attached CDP session must enable Page before registering the new-document script. The setup now explicitly enables Page, waits for a changed performance.timeOrigin and observer in the reloaded document, then detaches.",
+  "isolatedSetupVerification": "reload-observer-contract-final.json"
+}

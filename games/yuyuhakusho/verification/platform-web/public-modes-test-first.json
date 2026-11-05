@@ -1,0 +1,15 @@
+{
+  "revision": "public-mode-resource-ui-v1",
+  "baseline_commit": "2ac14ca9",
+  "scope": "Formal app2humans+explicit bots; no source rule/input-clock/RPC changes",
+  "failures": "PUBLIC_MODE_UI_FAILURES.md",
+  "before_sha256": {
+    "games/yuyuhakusho/web/module.tsx": "7f556d04f81df9cc02d5b5e094fc7c55332bb79262969243519948227ff2a99f",
+    "games/yuyuhakusho/web/network.css": "614cb79ea3a0431b372c31a0f456b76cfefcbe5507dc9ff4d9d405a3537b8b5b"
+  },
+  "setup_correction": {
+    "archive": "games/yuyuhakusho/verification/platform-web/check_platform_modes.before-raw-js-string.py.txt",
+    "sha256": "15cc66eda66834a36e86f180c4df6f8b33ba006225b3f7827bc9de15469fb878",
+    "reason": "Mark regex-bearing JS string raw to remove Python invalid-escape warning; JS expression/semantics unchanged."
+  }
+}

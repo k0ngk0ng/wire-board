@@ -1,0 +1,8 @@
+{
+  "revision": "public-ui-optin-v1",
+  "pass": false,
+  "checks": [
+    "non_opted_default_create_waiting_players_board_dom_exact"
+  ],
+  "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:"
+}

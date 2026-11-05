@@ -1,0 +1,1126 @@
+{
+  "before": {
+    "paint": {
+      "at": 6957.800000190735,
+      "hash": "88c1de10",
+      "frame": "278",
+      "authorityFrame": "274",
+      "x": 944,
+      "y": 320
+    },
+    "view": {
+      "protocol": 1,
+      "epoch": "cd3c747ee48850eb8db1b227",
+      "frame": "274",
+      "phase": "opening",
+      "options": {
+        "arena": 10,
+        "teamBattle": false,
+        "characters": [
+          3,
+          1,
+          8
+        ]
+      },
+      "localSeat": 0,
+      "players": [
+        {
+          "seat": 0,
+          "slot": 0,
+          "characterID": 3,
+          "computer": false,
+          "active": true,
+          "health": 223,
+          "energy": 223,
+          "x": 944,
+          "y": 320
+        },
+        {
+          "seat": 1,
+          "slot": 1,
+          "characterID": 1,
+          "computer": false,
+          "active": true,
+          "health": 223,
+          "energy": 223,
+          "x": 976,
+          "y": 304
+        },
+        {
+          "seat": 2,
+          "slot": 3,
+          "characterID": 8,
+          "computer": true,
+          "active": true,
+          "health": 223,
+          "energy": 223,
+          "x": 1104,
+          "y": 320
+        }
+      ],
+      "inputs": [
+        {
+          "sequence": 0,
+          "appliedSequence": 0,
+          "buttons": 0,
+          "appliedButtons": 0,
+          "automated": false
+        },
+        {
+          "sequence": 0,
+          "appliedSequence": 0,
+          "buttons": 0,
+          "appliedButtons": 0,
+          "automated": false
+        },
+        {
+          "sequence": 0,
+          "appliedSequence": 0,
+          "buttons": 0,
+          "appliedButtons": 0,
+          "automated": true
+        }
+      ],
+      "digest": "a943f6a4bc07177d3fb96ea130e120be808f9240f46e27317640e9128fe36ab7",
+      "presentationDigest": "5480becd0f145aa13a18eb14a89c6fc8653b45e9e93928d95d72bfae12914233",
+      "replay": {
+        "version": 1,
+        "firstFrame": "266",
+        "frameCount": 9,
+        "data": "CQQAAAAAAAAAAA=="
+      },
+      "serverAt": 1793916988330,
+      "resourceDescriptorSHA256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+      "seatSlots": [
+        0,
+        1,
+        3
+      ]
+    },
+    "board": {
+      "yuyuBoard": "true",
+      "localX": "944",
+      "localY": "320",
+      "frame": "278",
+      "authorityFrame": "274",
+      "connection": "connected"
+    }
+  },
+  "start": 6958.800000190735,
+  "now": 7335,
+  "hidden": false,
+  "board": {
+    "yuyuBoard": "true",
+    "localX": "956",
+    "localY": "320",
+    "frame": "300",
+    "authorityFrame": "298",
+    "connection": "connected"
+  },
+  "keys": [
+    {
+      "at": 6959.700000762939,
+      "type": "keydown",
+      "code": "KeyD",
+      "key": "d",
+      "trusted": true,
+      "target": "DIV"
+    },
+    {
+      "at": 7092.700000762939,
+      "type": "keyup",
+      "code": "KeyD",
+      "key": "d",
+      "trusted": true,
+      "target": "DIV"
+    }
+  ],
+  "paints": [
+    {
+      "at": 6977.800000190735,
+      "hash": "25c8457b",
+      "frame": "279",
+      "authorityFrame": "274",
+      "x": 944,
+      "y": 320
+    },
+    {
+      "at": 7000.60000038147,
+      "hash": "a5ea9b5b",
+      "frame": "280",
+      "authorityFrame": "277",
+      "x": 945,
+      "y": 320
+    },
+    {
+      "at": 7008.400000572205,
+      "hash": "e4f3d01d",
+      "frame": "281",
+      "authorityFrame": "277",
+      "x": 947,
+      "y": 320
+    },
+    {
+      "at": 7030.10000038147,
+      "hash": "8d6cdde3",
+      "frame": "282",
+      "authorityFrame": "280",
+      "x": 947,
+      "y": 320
+    },
+    {
+      "at": 7043.5,
+      "hash": "a450f1ca",
+      "frame": "283",
+      "authorityFrame": "280",
+      "x": 948,
+      "y": 320
+    },
+    {
+      "at": 7058.900000572205,
+      "hash": "470aa98",
+      "frame": "284",
+      "authorityFrame": "280",
+      "x": 950,
+      "y": 320
+    },
+    {
+      "at": 7079.200000762939,
+      "hash": "ddc42588",
+      "frame": "285",
+      "authorityFrame": "283",
+      "x": 951,
+      "y": 320
+    },
+    {
+      "at": 7092.300000190735,
+      "hash": "1e2c3e01",
+      "frame": "286",
+      "authorityFrame": "283",
+      "x": 953,
+      "y": 320
+    },
+    {
+      "at": 7110.900000572205,
+      "hash": "77ba465d",
+      "frame": "287",
+      "authorityFrame": "283",
+      "x": 954,
+      "y": 320
+    },
+    {
+      "at": 7126.5,
+      "hash": "2e30f002",
+      "frame": "288",
+      "authorityFrame": "287",
+      "x": 956,
+      "y": 320
+    },
+    {
+      "at": 7140.800000190735,
+      "hash": "2dbff1f4",
+      "frame": "289",
+      "authorityFrame": "287",
+      "x": 956,
+      "y": 320
+    },
+    {
+      "at": 7159.900000572205,
+      "hash": "97313658",
+      "frame": "290",
+      "authorityFrame": "287",
+      "x": 956,
+      "y": 320
+    },
+    {
+      "at": 7177.800000190735,
+      "hash": "537b64ca",
+      "frame": "291",
+      "authorityFrame": "289",
+      "x": 956,
+      "y": 320
+    },
+    {
+      "at": 7190.60000038147,
+      "hash": "32c46e16",
+      "frame": "292",
+      "authorityFrame": "289",
+      "x": 956,
+      "y": 320
+    },
+    {
+      "at": 7208.700000762939,
+      "hash": "84e3432f",
+      "frame": "293",
+      "authorityFrame": "289",
+      "x": 956,
+      "y": 320
+    },
+    {
+      "at": 7229.400000572205,
+      "hash": "5f2e12d7",
+      "frame": "294",
+      "authorityFrame": "292",
+      "x": 956,
+      "y": 320
+    },
+    {
+      "at": 7241.700000762939,
+      "hash": "362cada2",
+      "frame": "295",
+      "authorityFrame": "292",
+      "x": 956,
+      "y": 320
+    },
+    {
+      "at": 7258.800000190735,
+      "hash": "8be0c3e2",
+      "frame": "296",
+      "authorityFrame": "292",
+      "x": 956,
+      "y": 320
+    },
+    {
+      "at": 7279.300000190735,
+      "hash": "5f96f728",
+      "frame": "297",
+      "authorityFrame": "295",
+      "x": 956,
+      "y": 320
+    },
+    {
+      "at": 7291.10000038147,
+      "hash": "9e04fcce",
+      "frame": "298",
+      "authorityFrame": "295",
+      "x": 956,
+      "y": 320
+    },
+    {
+      "at": 7310.400000572205,
+      "hash": "457291f4",
+      "frame": "299",
+      "authorityFrame": "295",
+      "x": 956,
+      "y": 320
+    },
+    {
+      "at": 7329.800000190735,
+      "hash": "3f5092fb",
+      "frame": "300",
+      "authorityFrame": "298",
+      "x": 956,
+      "y": 320
+    }
+  ],
+  "inputs": [
+    {
+      "at": 6973.200000762939,
+      "type": "input",
+      "serverInstance": "8219e36de7529f35f0916cb7e9dfe721",
+      "roomId": "b0b06f68",
+      "version": 107,
+      "nonce": "991b9dd6-9c17-474d-aa3f-e95d3aacbbcf",
+      "action": {
+        "type": "input",
+        "epoch": "cd3c747ee48850eb8db1b227",
+        "sequence": 1,
+        "buttons": 8
+      }
+    },
+    {
+      "at": 7106.300000190735,
+      "type": "input",
+      "serverInstance": "8219e36de7529f35f0916cb7e9dfe721",
+      "roomId": "b0b06f68",
+      "version": 111,
+      "nonce": "4a54b8b3-8d97-4d5c-aa8f-bedfec00d505",
+      "action": {
+        "type": "input",
+        "epoch": "cd3c747ee48850eb8db1b227",
+        "sequence": 2,
+        "buttons": 0
+      }
+    }
+  ],
+  "acks": [
+    {
+      "at": 6981.60000038147,
+      "durable": false,
+      "type": "ack",
+      "nonce": "991b9dd6-9c17-474d-aa3f-e95d3aacbbcf",
+      "status": 200,
+      "version": 109
+    },
+    {
+      "at": 7119.60000038147,
+      "durable": false,
+      "type": "ack",
+      "nonce": "4a54b8b3-8d97-4d5c-aa8f-bedfec00d505",
+      "status": 200,
+      "version": 113
+    }
+  ],
+  "views": [
+    {
+      "at": 6978.10000038147,
+      "bytes": 1555,
+      "kind": "game",
+      "view": {
+        "protocol": 1,
+        "epoch": "cd3c747ee48850eb8db1b227",
+        "frame": "277",
+        "phase": "playing",
+        "options": {
+          "arena": 10,
+          "teamBattle": false,
+          "characters": [
+            3,
+            1,
+            8
+          ]
+        },
+        "localSeat": 0,
+        "players": [
+          {
+            "seat": 0,
+            "slot": 0,
+            "characterID": 3,
+            "computer": false,
+            "active": true,
+            "health": 223,
+            "energy": 223,
+            "x": 944,
+            "y": 320
+          },
+          {
+            "seat": 1,
+            "slot": 1,
+            "characterID": 1,
+            "computer": false,
+            "active": true,
+            "health": 223,
+            "energy": 223,
+            "x": 976,
+            "y": 304
+          },
+          {
+            "seat": 2,
+            "slot": 3,
+            "characterID": 8,
+            "computer": true,
+            "active": true,
+            "health": 223,
+            "energy": 223,
+            "x": 1104,
+            "y": 312
+          }
+        ],
+        "inputs": [
+          {
+            "sequence": 0,
+            "appliedSequence": 0,
+            "buttons": 0,
+            "appliedButtons": 0,
+            "automated": false
+          },
+          {
+            "sequence": 0,
+            "appliedSequence": 0,
+            "buttons": 0,
+            "appliedButtons": 0,
+            "automated": false
+          },
+          {
+            "sequence": 0,
+            "appliedSequence": 0,
+            "buttons": 0,
+            "appliedButtons": 0,
+            "automated": true
+          }
+        ],
+        "digest": "3f2019074027c1034119eb5d29eddea9f837e7a4ac7c3d7df1fd9d12c0273d7a",
+        "presentationDigest": "6892d33c0a890a6857f4ee4e06ec04add158c80560c3e6fdd43493070192a39a",
+        "replay": {
+          "version": 1,
+          "firstFrame": "269",
+          "frameCount": 9,
+          "data": "CQQAAAAAAAAAAA=="
+        },
+        "serverAt": 1793916988380,
+        "resourceDescriptorSHA256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+        "seatSlots": [
+          0,
+          1,
+          3
+        ]
+      },
+      "serverNow": 1793916988826
+    },
+    {
+      "at": 7012.700000762939,
+      "bytes": 1567,
+      "kind": "game",
+      "view": {
+        "protocol": 1,
+        "epoch": "cd3c747ee48850eb8db1b227",
+        "frame": "280",
+        "phase": "playing",
+        "options": {
+          "arena": 10,
+          "teamBattle": false,
+          "characters": [
+            3,
+            1,
+            8
+          ]
+        },
+        "localSeat": 0,
+        "players": [
+          {
+            "seat": 0,
+            "slot": 0,
+            "characterID": 3,
+            "computer": false,
+            "active": true,
+            "health": 223,
+            "energy": 223,
+            "x": 944,
+            "y": 320
+          },
+          {
+            "seat": 1,
+            "slot": 1,
+            "characterID": 1,
+            "computer": false,
+            "active": true,
+            "health": 223,
+            "energy": 223,
+            "x": 976,
+            "y": 304
+          },
+          {
+            "seat": 2,
+            "slot": 3,
+            "characterID": 8,
+            "computer": true,
+            "active": true,
+            "health": 223,
+            "energy": 223,
+            "x": 1104,
+            "y": 304
+          }
+        ],
+        "inputs": [
+          {
+            "sequence": 1,
+            "appliedSequence": 1,
+            "buttons": 8,
+            "appliedButtons": 8,
+            "automated": false
+          },
+          {
+            "sequence": 0,
+            "appliedSequence": 0,
+            "buttons": 0,
+            "appliedButtons": 0,
+            "automated": false
+          },
+          {
+            "sequence": 0,
+            "appliedSequence": 0,
+            "buttons": 0,
+            "appliedButtons": 0,
+            "automated": true
+          }
+        ],
+        "digest": "274db2eab7aa7551f66ba9feb6b70e7710922cce2d4b29145bac84f36e0f9ec8",
+        "presentationDigest": "8a49750a0b579381ea63916f777eff5dda1c7e6f385f5fc4be96cec3d9d3ab2c",
+        "replay": {
+          "version": 1,
+          "firstFrame": "272",
+          "frameCount": 9,
+          "data": "CAQAAAAAAAAAAAEEAAgAAAAAAAA="
+        },
+        "serverAt": 1793916988430,
+        "resourceDescriptorSHA256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+        "seatSlots": [
+          0,
+          1,
+          3
+        ]
+      },
+      "serverNow": 1793916988876
+    },
+    {
+      "at": 7062.300000190735,
+      "bytes": 1567,
+      "kind": "game",
+      "view": {
+        "protocol": 1,
+        "epoch": "cd3c747ee48850eb8db1b227",
+        "frame": "283",
+        "phase": "playing",
+        "options": {
+          "arena": 10,
+          "teamBattle": false,
+          "characters": [
+            3,
+            1,
+            8
+          ]
+        },
+        "localSeat": 0,
+        "players": [
+          {
+            "seat": 0,
+            "slot": 0,
+            "characterID": 3,
+            "computer": false,
+            "active": true,
+            "health": 223,
+            "energy": 223,
+            "x": 948,
+            "y": 320
+          },
+          {
+            "seat": 1,
+            "slot": 1,
+            "characterID": 1,
+            "computer": false,
+            "active": true,
+            "health": 223,
+            "energy": 223,
+            "x": 976,
+            "y": 304
+          },
+          {
+            "seat": 2,
+            "slot": 3,
+            "characterID": 8,
+            "computer": true,
+            "active": true,
+            "health": 223,
+            "energy": 223,
+            "x": 1104,
+            "y": 298
+          }
+        ],
+        "inputs": [
+          {
+            "sequence": 1,
+            "appliedSequence": 1,
+            "buttons": 8,
+            "appliedButtons": 8,
+            "automated": false
+          },
+          {
+            "sequence": 0,
+            "appliedSequence": 0,
+            "buttons": 0,
+            "appliedButtons": 0,
+            "automated": false
+          },
+          {
+            "sequence": 0,
+            "appliedSequence": 0,
+            "buttons": 0,
+            "appliedButtons": 0,
+            "automated": true
+          }
+        ],
+        "digest": "b50ffeb348afce7523cac8daff489bf508d71f0bdde57ef3e44aea391eccce88",
+        "presentationDigest": "3bf778af1e0bec08bc87646e61907d00c9b3430cd612b14d8cf9c412ee2c3d2d",
+        "replay": {
+          "version": 1,
+          "firstFrame": "275",
+          "frameCount": 9,
+          "data": "BQQAAAAAAAAAAAQEAAgAAAAAAAA="
+        },
+        "serverAt": 1793916988480,
+        "resourceDescriptorSHA256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+        "seatSlots": [
+          0,
+          1,
+          3
+        ]
+      },
+      "serverNow": 1793916988926
+    },
+    {
+      "at": 7115.900000572205,
+      "bytes": 1568,
+      "kind": "game",
+      "view": {
+        "protocol": 1,
+        "epoch": "cd3c747ee48850eb8db1b227",
+        "frame": "287",
+        "phase": "playing",
+        "options": {
+          "arena": 10,
+          "teamBattle": false,
+          "characters": [
+            3,
+            1,
+            8
+          ]
+        },
+        "localSeat": 0,
+        "players": [
+          {
+            "seat": 0,
+            "slot": 0,
+            "characterID": 3,
+            "computer": false,
+            "active": true,
+            "health": 223,
+            "energy": 223,
+            "x": 954,
+            "y": 320
+          },
+          {
+            "seat": 1,
+            "slot": 1,
+            "characterID": 1,
+            "computer": false,
+            "active": true,
+            "health": 223,
+            "energy": 223,
+            "x": 976,
+            "y": 304
+          },
+          {
+            "seat": 2,
+            "slot": 3,
+            "characterID": 8,
+            "computer": true,
+            "active": true,
+            "health": 223,
+            "energy": 223,
+            "x": 1104,
+            "y": 293
+          }
+        ],
+        "inputs": [
+          {
+            "sequence": 2,
+            "appliedSequence": 1,
+            "buttons": 0,
+            "appliedButtons": 8,
+            "automated": false
+          },
+          {
+            "sequence": 0,
+            "appliedSequence": 0,
+            "buttons": 0,
+            "appliedButtons": 0,
+            "automated": false
+          },
+          {
+            "sequence": 0,
+            "appliedSequence": 0,
+            "buttons": 0,
+            "appliedButtons": 0,
+            "automated": true
+          }
+        ],
+        "digest": "241f219a832e4b3feabd90736e6713643b9ca54b6fda1e604df9d22b22e283c7",
+        "presentationDigest": "96c49c6194209b83bed94633e38cad727315e80e3591386e1c5aa0d95f3e3296",
+        "replay": {
+          "version": 1,
+          "firstFrame": "278",
+          "frameCount": 10,
+          "data": "AgQAAAAAAAAAAAgEAAgAAAAAAAA="
+        },
+        "serverAt": 1793916988555,
+        "resourceDescriptorSHA256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+        "seatSlots": [
+          0,
+          1,
+          3
+        ]
+      },
+      "serverNow": 1793916988979
+    },
+    {
+      "at": 7162.200000762939,
+      "bytes": 1567,
+      "kind": "game",
+      "view": {
+        "protocol": 1,
+        "epoch": "cd3c747ee48850eb8db1b227",
+        "frame": "289",
+        "phase": "playing",
+        "options": {
+          "arena": 10,
+          "teamBattle": false,
+          "characters": [
+            3,
+            1,
+            8
+          ]
+        },
+        "localSeat": 0,
+        "players": [
+          {
+            "seat": 0,
+            "slot": 0,
+            "characterID": 3,
+            "computer": false,
+            "active": true,
+            "health": 223,
+            "energy": 223,
+            "x": 956,
+            "y": 320
+          },
+          {
+            "seat": 1,
+            "slot": 1,
+            "characterID": 1,
+            "computer": false,
+            "active": true,
+            "health": 223,
+            "energy": 223,
+            "x": 976,
+            "y": 304
+          },
+          {
+            "seat": 2,
+            "slot": 3,
+            "characterID": 8,
+            "computer": true,
+            "active": true,
+            "health": 223,
+            "energy": 223,
+            "x": 1104,
+            "y": 293
+          }
+        ],
+        "inputs": [
+          {
+            "sequence": 2,
+            "appliedSequence": 2,
+            "buttons": 0,
+            "appliedButtons": 0,
+            "automated": false
+          },
+          {
+            "sequence": 0,
+            "appliedSequence": 0,
+            "buttons": 0,
+            "appliedButtons": 0,
+            "automated": false
+          },
+          {
+            "sequence": 0,
+            "appliedSequence": 0,
+            "buttons": 0,
+            "appliedButtons": 0,
+            "automated": true
+          }
+        ],
+        "digest": "fd45609b005bc6e79d1fc65c51f252f02872db2ca88b4fbca9eeca289d0c7567",
+        "presentationDigest": "f558b5b46b79e3de6c3ea4d83c87f7f7cf068aa2d12efed4022a493236b0a212",
+        "replay": {
+          "version": 1,
+          "firstFrame": "282",
+          "frameCount": 8,
+          "data": "BgQACAAAAAAAAAIEAAAAAAAAAAA="
+        },
+        "serverAt": 1793916988580,
+        "resourceDescriptorSHA256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+        "seatSlots": [
+          0,
+          1,
+          3
+        ]
+      },
+      "serverNow": 1793916989026
+    },
+    {
+      "at": 7213.200000762939,
+      "bytes": 1567,
+      "kind": "game",
+      "view": {
+        "protocol": 1,
+        "epoch": "cd3c747ee48850eb8db1b227",
+        "frame": "292",
+        "phase": "playing",
+        "options": {
+          "arena": 10,
+          "teamBattle": false,
+          "characters": [
+            3,
+            1,
+            8
+          ]
+        },
+        "localSeat": 0,
+        "players": [
+          {
+            "seat": 0,
+            "slot": 0,
+            "characterID": 3,
+            "computer": false,
+            "active": true,
+            "health": 223,
+            "energy": 223,
+            "x": 956,
+            "y": 320
+          },
+          {
+            "seat": 1,
+            "slot": 1,
+            "characterID": 1,
+            "computer": false,
+            "active": true,
+            "health": 223,
+            "energy": 223,
+            "x": 976,
+            "y": 304
+          },
+          {
+            "seat": 2,
+            "slot": 3,
+            "characterID": 8,
+            "computer": true,
+            "active": true,
+            "health": 223,
+            "energy": 223,
+            "x": 1104,
+            "y": 295
+          }
+        ],
+        "inputs": [
+          {
+            "sequence": 2,
+            "appliedSequence": 2,
+            "buttons": 0,
+            "appliedButtons": 0,
+            "automated": false
+          },
+          {
+            "sequence": 0,
+            "appliedSequence": 0,
+            "buttons": 0,
+            "appliedButtons": 0,
+            "automated": false
+          },
+          {
+            "sequence": 0,
+            "appliedSequence": 0,
+            "buttons": 0,
+            "appliedButtons": 0,
+            "automated": true
+          }
+        ],
+        "digest": "accd418de4e24ffe30a07391be464a14ab38d38bfc766c56ea78fbd44c5fbcfe",
+        "presentationDigest": "1809decc49ed55f63bbb655a0ab2f96d6c9bb48e27018278847ad80a2ef4c124",
+        "replay": {
+          "version": 1,
+          "firstFrame": "284",
+          "frameCount": 9,
+          "data": "BAQACAAAAAAAAAUEAAAAAAAAAAA="
+        },
+        "serverAt": 1793916988630,
+        "resourceDescriptorSHA256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+        "seatSlots": [
+          0,
+          1,
+          3
+        ]
+      },
+      "serverNow": 1793916989076
+    },
+    {
+      "at": 7262.10000038147,
+      "bytes": 1567,
+      "kind": "game",
+      "view": {
+        "protocol": 1,
+        "epoch": "cd3c747ee48850eb8db1b227",
+        "frame": "295",
+        "phase": "playing",
+        "options": {
+          "arena": 10,
+          "teamBattle": false,
+          "characters": [
+            3,
+            1,
+            8
+          ]
+        },
+        "localSeat": 0,
+        "players": [
+          {
+            "seat": 0,
+            "slot": 0,
+            "characterID": 3,
+            "computer": false,
+            "active": true,
+            "health": 223,
+            "energy": 223,
+            "x": 956,
+            "y": 320
+          },
+          {
+            "seat": 1,
+            "slot": 1,
+            "characterID": 1,
+            "computer": false,
+            "active": true,
+            "health": 223,
+            "energy": 223,
+            "x": 976,
+            "y": 304
+          },
+          {
+            "seat": 2,
+            "slot": 3,
+            "characterID": 8,
+            "computer": true,
+            "active": true,
+            "health": 223,
+            "energy": 223,
+            "x": 1104,
+            "y": 299
+          }
+        ],
+        "inputs": [
+          {
+            "sequence": 2,
+            "appliedSequence": 2,
+            "buttons": 0,
+            "appliedButtons": 0,
+            "automated": false
+          },
+          {
+            "sequence": 0,
+            "appliedSequence": 0,
+            "buttons": 0,
+            "appliedButtons": 0,
+            "automated": false
+          },
+          {
+            "sequence": 0,
+            "appliedSequence": 0,
+            "buttons": 0,
+            "appliedButtons": 0,
+            "automated": true
+          }
+        ],
+        "digest": "a701289cf4a83ee06985027410380aa3d10d3633c2e9636673e3611d89ca3cef",
+        "presentationDigest": "4bf2a5d590e33cec9a7abf92fcfee19907fb5b93c21e90401b3cca4251e125a5",
+        "replay": {
+          "version": 1,
+          "firstFrame": "287",
+          "frameCount": 9,
+          "data": "AQQACAAAAAAAAAgEAAAAAAAAAAA="
+        },
+        "serverAt": 1793916988680,
+        "resourceDescriptorSHA256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+        "seatSlots": [
+          0,
+          1,
+          3
+        ]
+      },
+      "serverNow": 1793916989126
+    },
+    {
+      "at": 7312.900000572205,
+      "bytes": 1555,
+      "kind": "game",
+      "view": {
+        "protocol": 1,
+        "epoch": "cd3c747ee48850eb8db1b227",
+        "frame": "298",
+        "phase": "playing",
+        "options": {
+          "arena": 10,
+          "teamBattle": false,
+          "characters": [
+            3,
+            1,
+            8
+          ]
+        },
+        "localSeat": 0,
+        "players": [
+          {
+            "seat": 0,
+            "slot": 0,
+            "characterID": 3,
+            "computer": false,
+            "active": true,
+            "health": 223,
+            "energy": 223,
+            "x": 956,
+            "y": 320
+          },
+          {
+            "seat": 1,
+            "slot": 1,
+            "characterID": 1,
+            "computer": false,
+            "active": true,
+            "health": 223,
+            "energy": 223,
+            "x": 976,
+            "y": 304
+          },
+          {
+            "seat": 2,
+            "slot": 3,
+            "characterID": 8,
+            "computer": true,
+            "active": true,
+            "health": 223,
+            "energy": 199,
+            "x": 1104,
+            "y": 304
+          }
+        ],
+        "inputs": [
+          {
+            "sequence": 2,
+            "appliedSequence": 2,
+            "buttons": 0,
+            "appliedButtons": 0,
+            "automated": false
+          },
+          {
+            "sequence": 0,
+            "appliedSequence": 0,
+            "buttons": 0,
+            "appliedButtons": 0,
+            "automated": false
+          },
+          {
+            "sequence": 0,
+            "appliedSequence": 0,
+            "buttons": 0,
+            "appliedButtons": 0,
+            "automated": true
+          }
+        ],
+        "digest": "c2ba794df6a59995838df3eb7d4e5104ee11315bdee798ca34b49fa0593f1773",
+        "presentationDigest": "fe7decb87b627ff8d5577ddabebddb1efcead8f65554d49823be0a610a6171bb",
+        "replay": {
+          "version": 1,
+          "firstFrame": "290",
+          "frameCount": 9,
+          "data": "CQQAAAAAAAAAAA=="
+        },
+        "serverAt": 1793916988730,
+        "resourceDescriptorSHA256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+        "seatSlots": [
+          0,
+          1,
+          3
+        ]
+      },
+      "serverNow": 1793916989176
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "label": "app-build-final",
+  "scope": "Built normal React platform app and local-only asset routing, not authenticated/browser acceptance",
+  "checks": [
+    "lazy_board_not_home",
+    "all_13_fixed_resource_routes_sha",
+    "runtime_descriptor_exact_wasm",
+    "shared_favicon_route_exact_source"
+  ],
+  "favicon": {
+    "url": "/favicon.svg",
+    "bytes": 250,
+    "sha256": "0c308d0332fd6c21fa0eca4b9f0475235b9ed72e3174132ff15d5e94ecc45b1c"
+  },
+  "pass": true,
+  "resource_descriptor_sha256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+  "runtime": {
+    "url": "/yuyuhakusho/v1/runtime/client.wasm",
+    "sha256": "5d8febf5b5fa91d1348314e41f62e26f3a3f7ccd1cb10b418465dff42a7ad92b",
+    "bytes": 4911229
+  },
+  "build": "9bd242d381ba458b0c48041fbe75c073ce5922ca0f24c38b9f9fbd9e7ecf66bd",
+  "dist": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/platform-app/dist/"
+}

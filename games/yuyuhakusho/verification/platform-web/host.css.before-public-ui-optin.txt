@@ -1,0 +1,60 @@
+/* Independent modules use the same room/player/turn surfaces as existing games. */
+.turn-clock-placeholder {
+  /* Playback can temporarily remove the deadline. Keep its layout slot so
+     the board below does not jump between active and neutral turn states. */
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.players-strip.module-players {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 185px), 1fr));
+  overflow: visible;
+}
+.module-players .player-panel {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.module-players .player-info strong {
+  display: flex;
+  white-space: nowrap;
+}
+.module-players .player-info strong small {
+  margin-left: 5px;
+}
+.module-players .player-info > small {
+  color: #52664f;
+}
+.module-players .player-extras {
+  grid-column: 1/-1;
+  justify-self: stretch;
+  min-width: 0;
+}
+@media (max-width: 850px) {
+  .players-strip.module-players {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.module-players .player-panel:only-child {
+  grid-column: 1 / -1;
+}
+.game-category {
+  display: grid;
+  gap: 6px;
+  color: #344832;
+  min-width: 0;
+  max-width: 100%;
+}
+.game-category select {
+  width: 100%;
+  min-width: 125px;
+  color: #344832;
+  background: #fffdf5;
+}
+.game-choices .game-category {
+  margin-bottom: 10px;
+}

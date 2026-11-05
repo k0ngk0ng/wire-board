@@ -1,0 +1,48 @@
+{
+  "scope": "Only completed Root-owned dummy databases, closed profiles, binaries and temp caches; active public-ui-network09 and all other owners/shared data left intact",
+  "paths": [
+    {
+      "path": ".local/md-yuyuhakusho/platform-app/acceptance-performance-network02",
+      "files": 347,
+      "bytes": 63376404,
+      "retained_result_sha256": "dc1118755c22fc6c0df7745e98320de6ba5126c7926a127d2e80c1ca772286d6"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/platform-app/acceptance-delayed-performance-red03",
+      "files": 347,
+      "bytes": 63369239,
+      "retained_result_sha256": "c18203043c6c9325552be7ea6ffea245545359fe48cdba25c9c919ece529535d"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/platform-app/acceptance-native-clock-network04",
+      "files": 347,
+      "bytes": 63364086,
+      "retained_result_sha256": "ccd188f455e15a3afb0470e796ada52c1073679bd9a6bc1170b7549811678050"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/platform-app/acceptance-cursor-network05",
+      "files": 399,
+      "bytes": 63729834,
+      "retained_result_sha256": "cf8dcb0f53bc7090a29c6f754e3aa56fa691883c863a0e6cc851f01b0dd3f969"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/platform-app/acceptance-cursor-network06",
+      "files": 347,
+      "bytes": 63389220,
+      "retained_result_sha256": "2788d4b1e2322d0bd97dbf0512b55093f9ec6cdc76bfaceb7d0115e9e7ec54e3"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/platform-app/acceptance-landscape-app07",
+      "files": 371,
+      "bytes": 63560459,
+      "retained_result_sha256": "d981b04f90d35a2f1417b874d32bc148cd187b3504415f056181bb7bb4bcf261"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/platform-app/acceptance-landscape-app08",
+      "files": 399,
+      "bytes": 63749634,
+      "retained_result_sha256": "3111bfc789af3e9269fbcbc92b6f029393b8d95c5dc267a9d2c6625196a5964f"
+    }
+  ],
+  "bytes": 444538876
+}

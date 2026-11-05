@@ -14,6 +14,7 @@ import { ModuleCover } from "./host";
 import { prepareGame, type LoadProgress } from "./load-assets";
 import "./loading.css";
 import { revealGameOnEntry } from "../game-entry-scroll";
+import { entryAutoScrollAllowed } from "./viewport-fit-core";
 class LoadBoundary extends Component<
   { children: ReactNode; failed: (message: string) => void },
   { error: boolean }
@@ -158,7 +159,11 @@ export function GameLoading({
   }, [mounted, asyncBoard, onReady]);
   const blocked = !ready || !!room.loading || !!error;
   useEffect(() => {
-    if (!blocked && host.current) {
+    if (
+      !blocked &&
+      host.current &&
+      entryAutoScrollAllowed(gameModule(room.kind))
+    ) {
       const surface =
         host.current.querySelector<HTMLElement>(".game-main") ?? host.current;
       return revealGameOnEntry(surface);

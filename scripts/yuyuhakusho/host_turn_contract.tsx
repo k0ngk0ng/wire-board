@@ -1,0 +1,3 @@
+import {renderToStaticMarkup} from '../../web/node_modules/react-dom/server';
+import {ModuleTurn}from'../../web/src/game-api/host';import type{Room}from'../../web/src/types';
+export function turns(){const output:Record<string,string>={};for(const kind of['contract-default','contract-opted'])for(const clock of[false,true]){const room={kind,id:'turn',you:0,turnDeadline:clock?11000:0,game:{finished:false,paused:false,actors:[],attention:[],eliminated:[],log:[],winners:[]}}as unknown as Room;output[kind+(clock?'-clock':'-none')]=renderToStaticMarkup(<ModuleTurn room={room}serverNow={1000}receivedAt={performance.now()}/>);}return output;}

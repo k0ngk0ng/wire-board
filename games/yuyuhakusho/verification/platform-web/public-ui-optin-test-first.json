@@ -1,0 +1,30 @@
+{
+  "revision": "public-ui-optin-v1",
+  "before": [
+    {
+      "source": "web/src/game-api/module.ts",
+      "before_sha256": "24a4f8f71f339845c975f3852068cc4e6c6f40762e8a06059c73ffc901a16cd1",
+      "archive": "games/yuyuhakusho/verification/platform-web/module.ts.before-public-ui-optin.txt"
+    },
+    {
+      "source": "web/src/game-api/host.tsx",
+      "before_sha256": "ab64a8b8c338cd1cf8d00fc24efff88c510a38ce254c16e7c56b2453ff104e46",
+      "archive": "games/yuyuhakusho/verification/platform-web/host.tsx.before-public-ui-optin.txt"
+    },
+    {
+      "source": "web/src/game-api/host.css",
+      "before_sha256": "f834281fc169c285d55ed53a8be0a9d4105834d2b10e40a838474294972d5586",
+      "archive": "games/yuyuhakusho/verification/platform-web/host.css.before-public-ui-optin.txt"
+    },
+    {
+      "source": "web/src/game-api/loading.tsx",
+      "before_sha256": "9dea964e8d9bea28d8229200eb3c72a99d5fa5532557d1a63ca0a4560ab7583e",
+      "archive": "games/yuyuhakusho/verification/platform-web/loading.tsx.before-public-ui-optin.txt"
+    }
+  ],
+  "failure_scope": "PUBLIC_UI_OPTIN_FAILURES.md",
+  "default_ssr_baseline": "host-ui-default-before.json",
+  "ssr_semantic_red": "host-ui-contract-red.json",
+  "missing_fit_api_red": "viewport-fit-api-red.log",
+  "actual_public_ui_red": "../platform-mode-ui/public-optin-four-red01/result.json"
+}

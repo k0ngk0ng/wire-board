@@ -170,6 +170,7 @@ export function GameFullscreen({
   children,
   result,
   status,
+  toolbarActions,
   onReadyChange,
 }: {
   ref?: Ref<GameFullscreenHandle>;
@@ -178,6 +179,7 @@ export function GameFullscreen({
   children: ReactNode;
   result?: ReactNode;
   status?: ReactNode;
+  toolbarActions?: ReactNode;
   onReadyChange: (ready: boolean) => void;
 }) {
   const [root, setRoot] = useState<HTMLDivElement | null>(null);
@@ -233,6 +235,9 @@ export function GameFullscreen({
           >
             {fullscreen.active && status && (
               <div className="game-fullscreen-status">{status}</div>
+            )}
+            {toolbarActions && (
+              <div className="game-fullscreen-actions">{toolbarActions}</div>
             )}
             <FullscreenButton {...fullscreen} />
           </div>
