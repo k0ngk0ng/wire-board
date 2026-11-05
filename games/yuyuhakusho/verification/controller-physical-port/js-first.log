@@ -1,0 +1,49 @@
+✔ all default buttons have the requested direction and A/B identity (2.404125ms)
+✔ turbo begins immediately and holds its phase through OS key repeats (0.401458ms)
+✔ normal A stays held during a turbo A gap and A+B can coexist (0.1795ms)
+✔ clear and profile replacement release old keys without affecting another controller (0.698708ms)
+✔ OS repeats after clearing cannot reactivate a key without a fresh press (0.076ms)
+✔ standard face buttons, dpad, stick and diagonal produce logical names (1.084125ms)
+✔ sticks use dead zones and hysteresis and opposing directions cancel (1.186375ms)
+✔ turbo retains phase and does not release a normal held button (0.518459ms)
+✔ connect, clear, disable and reconnect require neutral input before rearming (0.555417ms)
+✔ raw hardware stays silent until configured; each device keeps its own mapping (0.529958ms)
+✔ automatic selection sticks to its device, missing/invalid samples cannot latch input (0.344333ms)
+✔ four-button defaults preserve X/Y and put turbo on triggers (0.262458ms)
+✔ automatic selection skips raw devices with no assigned inputs (0.208875ms)
+✔ game-owned action presets do not require FC button names (0.315334ms)
+✔ opposite navigation directions cancel across input sources (0.280458ms)
+✔ charged actions distinguish cancellation from a normal device release (0.587833ms)
+✔ continuous axes and triggers preserve values without changing digital buttons (0.338ms)
+file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/tests/md-gamepad-input.test.mjs:22
+ const p=pad(),cfg=profile();cfg.gamepads={[gamepadKey(p)]:{deadzone:.3,bindings:{z:[{type:'button',index:7}],right:[{type:'axis',index:0,direction:1}]}};const s=new GamepadSampler(cfg);sample(s,[null,null,null,p]);p.buttons[7]=1;p.axes[0]=.8;assert.deepEqual(sample(s,[null,null,null,p],10),['right','z']);
+                                                                                                                                                         ^
+
+SyntaxError: Unexpected token ';'
+    at compileSourceTextModule (node:internal/modules/esm/utils:318:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:90:18)
+    at #translate (node:internal/modules/esm/loader:451:20)
+    at afterLoad (node:internal/modules/esm/loader:507:29)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:512:12)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:555:36)
+    at afterResolve (node:internal/modules/esm/loader:603:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:609:12)
+    at node:internal/modules/esm/loader:628:32
+    at TracingChannel.tracePromise (node:diagnostics_channel:362:14)
+
+Node.js v24.15.0
+✖ web/tests/md-gamepad-input.test.mjs (35.165958ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 17
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 115.329
+
+✖ failing tests:
+
+test at web/tests/md-gamepad-input.test.mjs:1:1
+✖ web/tests/md-gamepad-input.test.mjs (35.165958ms)
+  'test failed'

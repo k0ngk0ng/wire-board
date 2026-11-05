@@ -1,0 +1,14 @@
+.F..
+======================================================================
+FAIL: test_exact_raw_bytes_are_not_restringified (__main__.RuntimeResourceDescriptorContract.test_exact_raw_bytes_are_not_restringified)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/test_runtime_resource_descriptor.py", line 51, in test_exact_raw_bytes_are_not_restringified
+    self.assertNotEqual(row['raw_json_sha256'], hashlib.sha256(normalized).hexdigest())
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '379cae3d0621a4731776383e44781eaa0d8caaf9c45718504849baeea2c8ebf4' == '379cae3d0621a4731776383e44781eaa0d8caaf9c45718504849baeea2c8ebf4'
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.190s
+
+FAILED (failures=1)

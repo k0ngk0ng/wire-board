@@ -1,0 +1,9 @@
+{"Time":"2026-11-06T00:38:53.547119+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest"}
+{"Time":"2026-11-06T00:38:54.655103+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Test":"TestRealHostPublicLoadingPrecedesGameLoading"}
+{"Time":"2026-11-06T00:38:54.65519+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Test":"TestRealHostPublicLoadingPrecedesGameLoading","Output":"=== RUN   TestRealHostPublicLoadingPrecedesGameLoading\n"}
+{"Time":"2026-11-06T00:38:57.229827+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Test":"TestRealHostPublicLoadingPrecedesGameLoading","Output":"    http.go:165: no current room\n"}
+{"Time":"2026-11-06T00:38:57.231392+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Test":"TestRealHostPublicLoadingPrecedesGameLoading","Output":"--- FAIL: TestRealHostPublicLoadingPrecedesGameLoading (2.58s)\n"}
+{"Time":"2026-11-06T00:38:57.231411+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Test":"TestRealHostPublicLoadingPrecedesGameLoading","Elapsed":2.58}
+{"Time":"2026-11-06T00:38:57.231429+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Output":"FAIL\n"}
+{"Time":"2026-11-06T00:38:57.23518+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest\t3.688s\n"}
+{"Time":"2026-11-06T00:38:57.235198+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Elapsed":3.6879999999999997}

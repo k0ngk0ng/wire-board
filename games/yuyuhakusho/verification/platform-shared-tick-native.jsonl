@@ -1,0 +1,12 @@
+{"Time":"2026-11-05T23:15:07.516445+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/sessiontick"}
+{"Time":"2026-11-05T23:15:08.046701+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/sessiontick","Test":"TestSharedTickCompleteWorldAndAutomationReplay"}
+{"Time":"2026-11-05T23:15:08.046755+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/sessiontick","Test":"TestSharedTickCompleteWorldAndAutomationReplay","Output":"=== RUN   TestSharedTickCompleteWorldAndAutomationReplay\n"}
+{"Time":"2026-11-05T23:15:10.654324+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/sessiontick","Test":"TestSharedTickCompleteWorldAndAutomationReplay","Output":"--- PASS: TestSharedTickCompleteWorldAndAutomationReplay (2.61s)\n"}
+{"Time":"2026-11-05T23:15:10.654361+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/sessiontick","Test":"TestSharedTickCompleteWorldAndAutomationReplay","Elapsed":2.61}
+{"Time":"2026-11-05T23:15:10.654842+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/sessiontick","Test":"TestSharedTickInvalidAndLateErrorsAreAtomic"}
+{"Time":"2026-11-05T23:15:10.654848+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/sessiontick","Test":"TestSharedTickInvalidAndLateErrorsAreAtomic","Output":"=== RUN   TestSharedTickInvalidAndLateErrorsAreAtomic\n"}
+{"Time":"2026-11-05T23:15:11.080532+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/sessiontick","Test":"TestSharedTickInvalidAndLateErrorsAreAtomic","Output":"--- PASS: TestSharedTickInvalidAndLateErrorsAreAtomic (0.43s)\n"}
+{"Time":"2026-11-05T23:15:11.080563+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/sessiontick","Test":"TestSharedTickInvalidAndLateErrorsAreAtomic","Elapsed":0.43}
+{"Time":"2026-11-05T23:15:11.080585+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/sessiontick","Output":"PASS\n"}
+{"Time":"2026-11-05T23:15:12.114966+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/sessiontick","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/sessiontick\t4.598s\n"}
+{"Time":"2026-11-05T23:15:12.11508+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/sessiontick","Elapsed":4.599}

@@ -1,0 +1,9 @@
+{"Time":"2026-11-05T23:57:47.24128+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/internal/server"}
+{"Time":"2026-11-05T23:57:48.020202+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestPhysicalControllerPortHTTPPersistenceAndLegacy"}
+{"Time":"2026-11-05T23:57:48.020386+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestPhysicalControllerPortHTTPPersistenceAndLegacy","Output":"=== RUN   TestPhysicalControllerPortHTTPPersistenceAndLegacy\n"}
+{"Time":"2026-11-05T23:57:48.150286+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestPhysicalControllerPortHTTPPersistenceAndLegacy","Output":"    controller_physical_port_e2e_test.go:24: POST /api/controllers/md-6 got 400 want 200: map[error:控制器配置格式不正确]\n"}
+{"Time":"2026-11-05T23:57:48.154294+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestPhysicalControllerPortHTTPPersistenceAndLegacy","Output":"--- FAIL: TestPhysicalControllerPortHTTPPersistenceAndLegacy (0.13s)\n"}
+{"Time":"2026-11-05T23:57:48.154323+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestPhysicalControllerPortHTTPPersistenceAndLegacy","Elapsed":0.13}
+{"Time":"2026-11-05T23:57:48.154356+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Output":"FAIL\n"}
+{"Time":"2026-11-05T23:57:48.155271+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/internal/server\t0.914s\n"}
+{"Time":"2026-11-05T23:57:48.155287+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/internal/server","Elapsed":0.914}

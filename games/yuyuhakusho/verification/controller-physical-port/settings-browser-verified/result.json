@@ -1,0 +1,27 @@
+{
+  "virtual_gamepad_api": true,
+  "physical_hardware_tested": false,
+  "scope": "Actual platform HTTP/authentication/SQLite/controllers API + actual ControllerSettings and PhysicalController in a fixture React shell. Does not claim production main entrypoint or game Canvas response.",
+  "checks": [
+    "current game first",
+    "FC and MD presets retained; no SFC",
+    "trusted keyboard remap/conflict/alias/clear/reset",
+    "physical record ignores pre-held input",
+    "duplicate conflict",
+    "standard/raw model persistence",
+    "reopen and reset one device only",
+    "user and game isolation",
+    "settings suppression and neutral/disconnect lifecycle",
+    "Gamepad API failure fallback",
+    "desktop and 320px geometry"
+  ],
+  "pass": true,
+  "source_sha256": {
+    "web/src/controllers/Settings.tsx": "d5c0960bba18c2a2efba098ba644e7c81b0c655d3952cd7bf6c8bf1574365941",
+    "web/src/controllers/GamepadSettings.tsx": "e389e26b8a15ed1cf4c6a9f578d3c4573c649e1cb381bdaac0be0a578b017fe9",
+    "web/src/controllers/gamepad.ts": "6e07e3a9173a744af98c1fa109b0e0fc937a86adb18b33387af6a7050d68c22b",
+    "internal/server/controllers.go": "f024f2505ff37d00cc420292dc9834ff18c00d8c94493302f113d0939bb3048e",
+    "internal/server/controller_models.go": "5eb50a6f3cec24fb2583cde63131f49d1ae8e0f20b551c377d75150bd2981b61",
+    "scripts/yuyuhakusho/check_controller_settings.py": "abd4198c8efbe357d8545020f6843961341475eeafb1cfec59f23280c4d0c440"
+  }
+}

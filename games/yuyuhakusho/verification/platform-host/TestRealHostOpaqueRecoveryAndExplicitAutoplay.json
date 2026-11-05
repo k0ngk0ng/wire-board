@@ -1,0 +1,2102 @@
+{
+  "passed": true,
+  "scope": "real HTTP sessions, real game module, real SQLite restore; test identities only",
+  "test": "TestRealHostOpaqueRecoveryAndExplicitAutoplay",
+  "trace": [
+    {
+      "label": "started real room",
+      "spectator": {
+        "capacity": 3,
+        "chat": null,
+        "clockOffsetMs": 0,
+        "closeReason": "",
+        "game": {
+          "actors": [
+            0,
+            1,
+            2
+          ],
+          "attention": [],
+          "data": {
+            "digest": "335b0ffe808cba4c41e805caf406434509a34acd2d0962b3020e6cd9cf6b99a5",
+            "epoch": "8811b907d8a0d1ba28ef8d66",
+            "frame": "0",
+            "inputs": [
+              {
+                "appliedButtons": 0,
+                "appliedSequence": 0,
+                "automated": false,
+                "buttons": 0,
+                "sequence": 0
+              },
+              {
+                "appliedButtons": 0,
+                "appliedSequence": 0,
+                "automated": false,
+                "buttons": 0,
+                "sequence": 0
+              },
+              {
+                "appliedButtons": 0,
+                "appliedSequence": 0,
+                "automated": false,
+                "buttons": 0,
+                "sequence": 0
+              }
+            ],
+            "loading": {
+              "ready": [
+                false,
+                false,
+                false
+              ]
+            },
+            "localSeat": -1,
+            "options": {
+              "arena": 2,
+              "characters": [
+                3,
+                7,
+                9
+              ],
+              "teamBattle": false
+            },
+            "phase": "loading",
+            "players": [
+              {
+                "active": false,
+                "characterID": 3,
+                "computer": false,
+                "energy": 0,
+                "health": 0,
+                "seat": 0,
+                "slot": 0,
+                "x": 0,
+                "y": 0
+              },
+              {
+                "active": false,
+                "characterID": 7,
+                "computer": false,
+                "energy": 0,
+                "health": 0,
+                "seat": 1,
+                "slot": 1,
+                "x": 0,
+                "y": 0
+              },
+              {
+                "active": false,
+                "characterID": 9,
+                "computer": false,
+                "energy": 0,
+                "health": 0,
+                "seat": 2,
+                "slot": 3,
+                "x": 0,
+                "y": 0
+              }
+            ],
+            "presentationDigest": "bab3872417bab91575013a9539fe01ce855411f17cc81d2877c66cb517f2c85f",
+            "protocol": 1,
+            "replay": {
+              "data": "",
+              "firstFrame": "0",
+              "frameCount": 0,
+              "version": 1
+            },
+            "resourceDescriptorSHA256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+            "seatSlots": [
+              0,
+              1,
+              3
+            ],
+            "serverAt": 1793896854294
+          },
+          "eliminated": null,
+          "finished": false,
+          "kind": "yuyuhakusho",
+          "log": [],
+          "phase": "module",
+          "round": 1,
+          "systemDeadline": 0,
+          "turn": 0,
+          "winners": []
+        },
+        "host": "f016e9ef9f884ee6eb067533",
+        "id": "737865d5",
+        "kind": "yuyuhakusho",
+        "loading": null,
+        "locked": false,
+        "matchId": "8dcc661022533549d2ab05ab",
+        "name": "扑克牌协议验收",
+        "options": {
+          "arena": 2,
+          "characters": [
+            3,
+            7,
+            9
+          ],
+          "teamBattle": false
+        },
+        "seats": [
+          {
+            "id": "f016e9ef9f884ee6eb067533",
+            "left": false,
+            "name": "牌局管理员",
+            "network": {
+              "connected": false,
+              "rttMs": null,
+              "sampledAt": 0
+            },
+            "ready": true
+          },
+          {
+            "id": "8ca2cbec15a489ea99ba8710",
+            "left": false,
+            "name": "牌局玩家1",
+            "network": {
+              "connected": false,
+              "rttMs": null,
+              "sampledAt": 0
+            },
+            "ready": true
+          },
+          {
+            "id": "1124cf0ac7b992b1cf5ac458",
+            "left": false,
+            "name": "牌局玩家2",
+            "network": {
+              "connected": false,
+              "rttMs": null,
+              "sampledAt": 0
+            },
+            "ready": true
+          }
+        ],
+        "setupVersion": 7,
+        "spectating": true,
+        "spectatorCount": 1,
+        "status": "playing",
+        "turnDeadline": 0,
+        "updated": 1793896854,
+        "version": 7,
+        "you": -1
+      },
+      "views": [
+        {
+          "capacity": 3,
+          "chat": null,
+          "clockOffsetMs": 0,
+          "closeReason": "",
+          "game": {
+            "actors": [
+              0,
+              1,
+              2
+            ],
+            "attention": [],
+            "data": {
+              "digest": "335b0ffe808cba4c41e805caf406434509a34acd2d0962b3020e6cd9cf6b99a5",
+              "epoch": "8811b907d8a0d1ba28ef8d66",
+              "frame": "0",
+              "inputs": [
+                {
+                  "appliedButtons": 0,
+                  "appliedSequence": 0,
+                  "automated": false,
+                  "buttons": 0,
+                  "sequence": 0
+                },
+                {
+                  "appliedButtons": 0,
+                  "appliedSequence": 0,
+                  "automated": false,
+                  "buttons": 0,
+                  "sequence": 0
+                },
+                {
+                  "appliedButtons": 0,
+                  "appliedSequence": 0,
+                  "automated": false,
+                  "buttons": 0,
+                  "sequence": 0
+                }
+              ],
+              "loading": {
+                "ready": [
+                  false,
+                  false,
+                  false
+                ]
+              },
+              "localSeat": 0,
+              "options": {
+                "arena": 2,
+                "characters": [
+                  3,
+                  7,
+                  9
+                ],
+                "teamBattle": false
+              },
+              "phase": "loading",
+              "players": [
+                {
+                  "active": false,
+                  "characterID": 3,
+                  "computer": false,
+                  "energy": 0,
+                  "health": 0,
+                  "seat": 0,
+                  "slot": 0,
+                  "x": 0,
+                  "y": 0
+                },
+                {
+                  "active": false,
+                  "characterID": 7,
+                  "computer": false,
+                  "energy": 0,
+                  "health": 0,
+                  "seat": 1,
+                  "slot": 1,
+                  "x": 0,
+                  "y": 0
+                },
+                {
+                  "active": false,
+                  "characterID": 9,
+                  "computer": false,
+                  "energy": 0,
+                  "health": 0,
+                  "seat": 2,
+                  "slot": 3,
+                  "x": 0,
+                  "y": 0
+                }
+              ],
+              "presentationDigest": "bab3872417bab91575013a9539fe01ce855411f17cc81d2877c66cb517f2c85f",
+              "protocol": 1,
+              "replay": {
+                "data": "",
+                "firstFrame": "0",
+                "frameCount": 0,
+                "version": 1
+              },
+              "resourceDescriptorSHA256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+              "seatSlots": [
+                0,
+                1,
+                3
+              ],
+              "serverAt": 1793896854294
+            },
+            "eliminated": null,
+            "finished": false,
+            "kind": "yuyuhakusho",
+            "log": [],
+            "phase": "module",
+            "round": 1,
+            "systemDeadline": 0,
+            "turn": 0,
+            "winners": []
+          },
+          "host": "f016e9ef9f884ee6eb067533",
+          "id": "737865d5",
+          "kind": "yuyuhakusho",
+          "loading": null,
+          "locked": false,
+          "matchId": "8dcc661022533549d2ab05ab",
+          "name": "扑克牌协议验收",
+          "options": {
+            "arena": 2,
+            "characters": [
+              3,
+              7,
+              9
+            ],
+            "teamBattle": false
+          },
+          "seats": [
+            {
+              "id": "f016e9ef9f884ee6eb067533",
+              "left": false,
+              "name": "牌局管理员",
+              "network": {
+                "connected": false,
+                "rttMs": null,
+                "sampledAt": 0
+              },
+              "ready": true
+            },
+            {
+              "id": "8ca2cbec15a489ea99ba8710",
+              "left": false,
+              "name": "牌局玩家1",
+              "network": {
+                "connected": false,
+                "rttMs": null,
+                "sampledAt": 0
+              },
+              "ready": true
+            },
+            {
+              "id": "1124cf0ac7b992b1cf5ac458",
+              "left": false,
+              "name": "牌局玩家2",
+              "network": {
+                "connected": false,
+                "rttMs": null,
+                "sampledAt": 0
+              },
+              "ready": true
+            }
+          ],
+          "setupVersion": 7,
+          "spectating": false,
+          "spectatorCount": 1,
+          "status": "playing",
+          "turnDeadline": 0,
+          "updated": 1793896854,
+          "version": 7,
+          "you": 0
+        },
+        {
+          "capacity": 3,
+          "chat": null,
+          "clockOffsetMs": 0,
+          "closeReason": "",
+          "game": {
+            "actors": [
+              0,
+              1,
+              2
+            ],
+            "attention": [],
+            "data": {
+              "digest": "335b0ffe808cba4c41e805caf406434509a34acd2d0962b3020e6cd9cf6b99a5",
+              "epoch": "8811b907d8a0d1ba28ef8d66",
+              "frame": "0",
+              "inputs": [
+                {
+                  "appliedButtons": 0,
+                  "appliedSequence": 0,
+                  "automated": false,
+                  "buttons": 0,
+                  "sequence": 0
+                },
+                {
+                  "appliedButtons": 0,
+                  "appliedSequence": 0,
+                  "automated": false,
+                  "buttons": 0,
+                  "sequence": 0
+                },
+                {
+                  "appliedButtons": 0,
+                  "appliedSequence": 0,
+                  "automated": false,
+                  "buttons": 0,
+                  "sequence": 0
+                }
+              ],
+              "loading": {
+                "ready": [
+                  false,
+                  false,
+                  false
+                ]
+              },
+              "localSeat": 1,
+              "options": {
+                "arena": 2,
+                "characters": [
+                  3,
+                  7,
+                  9
+                ],
+                "teamBattle": false
+              },
+              "phase": "loading",
+              "players": [
+                {
+                  "active": false,
+                  "characterID": 3,
+                  "computer": false,
+                  "energy": 0,
+                  "health": 0,
+                  "seat": 0,
+                  "slot": 0,
+                  "x": 0,
+                  "y": 0
+                },
+                {
+                  "active": false,
+                  "characterID": 7,
+                  "computer": false,
+                  "energy": 0,
+                  "health": 0,
+                  "seat": 1,
+                  "slot": 1,
+                  "x": 0,
+                  "y": 0
+                },
+                {
+                  "active": false,
+                  "characterID": 9,
+                  "computer": false,
+                  "energy": 0,
+                  "health": 0,
+                  "seat": 2,
+                  "slot": 3,
+                  "x": 0,
+                  "y": 0
+                }
+              ],
+              "presentationDigest": "bab3872417bab91575013a9539fe01ce855411f17cc81d2877c66cb517f2c85f",
+              "protocol": 1,
+              "replay": {
+                "data": "",
+                "firstFrame": "0",
+                "frameCount": 0,
+                "version": 1
+              },
+              "resourceDescriptorSHA256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+              "seatSlots": [
+                0,
+                1,
+                3
+              ],
+              "serverAt": 1793896854294
+            },
+            "eliminated": null,
+            "finished": false,
+            "kind": "yuyuhakusho",
+            "log": [],
+            "phase": "module",
+            "round": 1,
+            "systemDeadline": 0,
+            "turn": 0,
+            "winners": []
+          },
+          "host": "f016e9ef9f884ee6eb067533",
+          "id": "737865d5",
+          "kind": "yuyuhakusho",
+          "loading": null,
+          "locked": false,
+          "matchId": "8dcc661022533549d2ab05ab",
+          "name": "扑克牌协议验收",
+          "options": {
+            "arena": 2,
+            "characters": [
+              3,
+              7,
+              9
+            ],
+            "teamBattle": false
+          },
+          "seats": [
+            {
+              "id": "f016e9ef9f884ee6eb067533",
+              "left": false,
+              "name": "牌局管理员",
+              "network": {
+                "connected": false,
+                "rttMs": null,
+                "sampledAt": 0
+              },
+              "ready": true
+            },
+            {
+              "id": "8ca2cbec15a489ea99ba8710",
+              "left": false,
+              "name": "牌局玩家1",
+              "network": {
+                "connected": false,
+                "rttMs": null,
+                "sampledAt": 0
+              },
+              "ready": true
+            },
+            {
+              "id": "1124cf0ac7b992b1cf5ac458",
+              "left": false,
+              "name": "牌局玩家2",
+              "network": {
+                "connected": false,
+                "rttMs": null,
+                "sampledAt": 0
+              },
+              "ready": true
+            }
+          ],
+          "setupVersion": 7,
+          "spectating": false,
+          "spectatorCount": 1,
+          "status": "playing",
+          "turnDeadline": 0,
+          "updated": 1793896854,
+          "version": 7,
+          "you": 1
+        },
+        {
+          "capacity": 3,
+          "chat": null,
+          "clockOffsetMs": 0,
+          "closeReason": "",
+          "game": {
+            "actors": [
+              0,
+              1,
+              2
+            ],
+            "attention": [],
+            "data": {
+              "digest": "335b0ffe808cba4c41e805caf406434509a34acd2d0962b3020e6cd9cf6b99a5",
+              "epoch": "8811b907d8a0d1ba28ef8d66",
+              "frame": "0",
+              "inputs": [
+                {
+                  "appliedButtons": 0,
+                  "appliedSequence": 0,
+                  "automated": false,
+                  "buttons": 0,
+                  "sequence": 0
+                },
+                {
+                  "appliedButtons": 0,
+                  "appliedSequence": 0,
+                  "automated": false,
+                  "buttons": 0,
+                  "sequence": 0
+                },
+                {
+                  "appliedButtons": 0,
+                  "appliedSequence": 0,
+                  "automated": false,
+                  "buttons": 0,
+                  "sequence": 0
+                }
+              ],
+              "loading": {
+                "ready": [
+                  false,
+                  false,
+                  false
+                ]
+              },
+              "localSeat": 2,
+              "options": {
+                "arena": 2,
+                "characters": [
+                  3,
+                  7,
+                  9
+                ],
+                "teamBattle": false
+              },
+              "phase": "loading",
+              "players": [
+                {
+                  "active": false,
+                  "characterID": 3,
+                  "computer": false,
+                  "energy": 0,
+                  "health": 0,
+                  "seat": 0,
+                  "slot": 0,
+                  "x": 0,
+                  "y": 0
+                },
+                {
+                  "active": false,
+                  "characterID": 7,
+                  "computer": false,
+                  "energy": 0,
+                  "health": 0,
+                  "seat": 1,
+                  "slot": 1,
+                  "x": 0,
+                  "y": 0
+                },
+                {
+                  "active": false,
+                  "characterID": 9,
+                  "computer": false,
+                  "energy": 0,
+                  "health": 0,
+                  "seat": 2,
+                  "slot": 3,
+                  "x": 0,
+                  "y": 0
+                }
+              ],
+              "presentationDigest": "bab3872417bab91575013a9539fe01ce855411f17cc81d2877c66cb517f2c85f",
+              "protocol": 1,
+              "replay": {
+                "data": "",
+                "firstFrame": "0",
+                "frameCount": 0,
+                "version": 1
+              },
+              "resourceDescriptorSHA256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+              "seatSlots": [
+                0,
+                1,
+                3
+              ],
+              "serverAt": 1793896854294
+            },
+            "eliminated": null,
+            "finished": false,
+            "kind": "yuyuhakusho",
+            "log": [],
+            "phase": "module",
+            "round": 1,
+            "systemDeadline": 0,
+            "turn": 0,
+            "winners": []
+          },
+          "host": "f016e9ef9f884ee6eb067533",
+          "id": "737865d5",
+          "kind": "yuyuhakusho",
+          "loading": null,
+          "locked": false,
+          "matchId": "8dcc661022533549d2ab05ab",
+          "name": "扑克牌协议验收",
+          "options": {
+            "arena": 2,
+            "characters": [
+              3,
+              7,
+              9
+            ],
+            "teamBattle": false
+          },
+          "seats": [
+            {
+              "id": "f016e9ef9f884ee6eb067533",
+              "left": false,
+              "name": "牌局管理员",
+              "network": {
+                "connected": false,
+                "rttMs": null,
+                "sampledAt": 0
+              },
+              "ready": true
+            },
+            {
+              "id": "8ca2cbec15a489ea99ba8710",
+              "left": false,
+              "name": "牌局玩家1",
+              "network": {
+                "connected": false,
+                "rttMs": null,
+                "sampledAt": 0
+              },
+              "ready": true
+            },
+            {
+              "id": "1124cf0ac7b992b1cf5ac458",
+              "left": false,
+              "name": "牌局玩家2",
+              "network": {
+                "connected": false,
+                "rttMs": null,
+                "sampledAt": 0
+              },
+              "ready": true
+            }
+          ],
+          "setupVersion": 7,
+          "spectating": false,
+          "spectatorCount": 1,
+          "status": "playing",
+          "turnDeadline": 0,
+          "updated": 1793896854,
+          "version": 7,
+          "you": 2
+        }
+      ]
+    },
+    {
+      "label": "restarted persisted room",
+      "spectator": {
+        "capacity": 3,
+        "chat": null,
+        "clockOffsetMs": 0,
+        "closeReason": "",
+        "game": {
+          "actors": [
+            0,
+            1,
+            2
+          ],
+          "attention": [],
+          "data": {
+            "digest": "a538651ec3268e771690fc81bb42201f14241275187771ecfb67abae44f96c68",
+            "epoch": "8811b907d8a0d1ba28ef8d66",
+            "frame": "347",
+            "inputs": [
+              {
+                "appliedButtons": 0,
+                "appliedSequence": 0,
+                "automated": false,
+                "buttons": 0,
+                "sequence": 0
+              },
+              {
+                "appliedButtons": 0,
+                "appliedSequence": 0,
+                "automated": false,
+                "buttons": 0,
+                "sequence": 0
+              },
+              {
+                "appliedButtons": 0,
+                "appliedSequence": 0,
+                "automated": false,
+                "buttons": 0,
+                "sequence": 0
+              }
+            ],
+            "localSeat": -1,
+            "options": {
+              "arena": 2,
+              "characters": [
+                3,
+                7,
+                9
+              ],
+              "teamBattle": false
+            },
+            "phase": "playing",
+            "players": [
+              {
+                "active": true,
+                "characterID": 3,
+                "computer": false,
+                "energy": 223,
+                "health": 223,
+                "seat": 0,
+                "slot": 0,
+                "x": 944,
+                "y": 320
+              },
+              {
+                "active": true,
+                "characterID": 7,
+                "computer": false,
+                "energy": 223,
+                "health": 223,
+                "seat": 1,
+                "slot": 1,
+                "x": 976,
+                "y": 320
+              },
+              {
+                "active": true,
+                "characterID": 9,
+                "computer": false,
+                "energy": 223,
+                "health": 223,
+                "seat": 2,
+                "slot": 3,
+                "x": 1104,
+                "y": 320
+              }
+            ],
+            "presentationDigest": "87efe593ab8d4e8a1e10295fa667ea2aaec7f8d505886d721d0ffcb7b1c729bd",
+            "protocol": 1,
+            "replay": {
+              "data": "KgAAAAAAAAAAABUCAAAAAAAAAAA5AAAAAAAAAAAA",
+              "firstFrame": "228",
+              "frameCount": 120,
+              "version": 1
+            },
+            "resourceDescriptorSHA256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+            "seatSlots": [
+              0,
+              1,
+              3
+            ],
+            "serverAt": 1793896860853
+          },
+          "eliminated": null,
+          "finished": false,
+          "kind": "yuyuhakusho",
+          "log": [],
+          "phase": "module",
+          "round": 1,
+          "systemDeadline": 1793896860903,
+          "turn": 0,
+          "winners": []
+        },
+        "host": "f016e9ef9f884ee6eb067533",
+        "id": "737865d5",
+        "kind": "yuyuhakusho",
+        "loading": null,
+        "locked": false,
+        "matchId": "8dcc661022533549d2ab05ab",
+        "name": "扑克牌协议验收",
+        "options": {
+          "arena": 2,
+          "characters": [
+            3,
+            7,
+            9
+          ],
+          "teamBattle": false
+        },
+        "seats": [
+          {
+            "id": "f016e9ef9f884ee6eb067533",
+            "left": false,
+            "name": "牌局管理员",
+            "network": {
+              "connected": false,
+              "rttMs": null,
+              "sampledAt": 0
+            },
+            "ready": true
+          },
+          {
+            "id": "8ca2cbec15a489ea99ba8710",
+            "left": false,
+            "name": "牌局玩家1",
+            "network": {
+              "connected": false,
+              "rttMs": null,
+              "sampledAt": 0
+            },
+            "ready": true
+          },
+          {
+            "id": "1124cf0ac7b992b1cf5ac458",
+            "left": false,
+            "name": "牌局玩家2",
+            "network": {
+              "connected": false,
+              "rttMs": null,
+              "sampledAt": 0
+            },
+            "ready": true
+          }
+        ],
+        "setupVersion": 7,
+        "spectating": true,
+        "spectatorCount": 1,
+        "status": "playing",
+        "turnDeadline": 0,
+        "updated": 1793896860,
+        "version": 116,
+        "you": -1
+      },
+      "views": [
+        {
+          "capacity": 3,
+          "chat": null,
+          "clockOffsetMs": 0,
+          "closeReason": "",
+          "game": {
+            "actors": [
+              0,
+              1,
+              2
+            ],
+            "attention": [],
+            "data": {
+              "digest": "011bf48b05907edfef4419b38502b1c2820bbf2b9b0a507423a52a77b1ab4974",
+              "epoch": "8811b907d8a0d1ba28ef8d66",
+              "frame": "323",
+              "inputs": [
+                {
+                  "appliedButtons": 0,
+                  "appliedSequence": 0,
+                  "automated": false,
+                  "buttons": 0,
+                  "sequence": 0
+                },
+                {
+                  "appliedButtons": 0,
+                  "appliedSequence": 0,
+                  "automated": false,
+                  "buttons": 0,
+                  "sequence": 0
+                },
+                {
+                  "appliedButtons": 0,
+                  "appliedSequence": 0,
+                  "automated": false,
+                  "buttons": 0,
+                  "sequence": 0
+                }
+              ],
+              "localSeat": 0,
+              "options": {
+                "arena": 2,
+                "characters": [
+                  3,
+                  7,
+                  9
+                ],
+                "teamBattle": false
+              },
+              "phase": "playing",
+              "players": [
+                {
+                  "active": true,
+                  "characterID": 3,
+                  "computer": false,
+                  "energy": 223,
+                  "health": 223,
+                  "seat": 0,
+                  "slot": 0,
+                  "x": 944,
+                  "y": 320
+                },
+                {
+                  "active": true,
+                  "characterID": 7,
+                  "computer": false,
+                  "energy": 223,
+                  "health": 223,
+                  "seat": 1,
+                  "slot": 1,
+                  "x": 976,
+                  "y": 320
+                },
+                {
+                  "active": true,
+                  "characterID": 9,
+                  "computer": false,
+                  "energy": 223,
+                  "health": 223,
+                  "seat": 2,
+                  "slot": 3,
+                  "x": 1104,
+                  "y": 320
+                }
+              ],
+              "presentationDigest": "837c743e299db9465f3e2347aff5b0452c2e4229ac3e455a70af7192b37a2144",
+              "protocol": 1,
+              "replay": {
+                "data": "QgAAAAAAAAAAABUCAAAAAAAAAAAhAAAAAAAAAAAA",
+                "firstFrame": "204",
+                "frameCount": 120,
+                "version": 1
+              },
+              "resourceDescriptorSHA256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+              "seatSlots": [
+                0,
+                1,
+                3
+              ],
+              "serverAt": 1793896859950
+            },
+            "eliminated": null,
+            "finished": false,
+            "kind": "yuyuhakusho",
+            "log": [],
+            "phase": "module",
+            "round": 1,
+            "systemDeadline": 1793896860000,
+            "turn": 0,
+            "winners": []
+          },
+          "host": "f016e9ef9f884ee6eb067533",
+          "id": "737865d5",
+          "kind": "yuyuhakusho",
+          "loading": null,
+          "locked": false,
+          "matchId": "8dcc661022533549d2ab05ab",
+          "name": "扑克牌协议验收",
+          "options": {
+            "arena": 2,
+            "characters": [
+              3,
+              7,
+              9
+            ],
+            "teamBattle": false
+          },
+          "seats": [
+            {
+              "id": "f016e9ef9f884ee6eb067533",
+              "left": false,
+              "name": "牌局管理员",
+              "network": {
+                "connected": false,
+                "rttMs": null,
+                "sampledAt": 0
+              },
+              "ready": true
+            },
+            {
+              "id": "8ca2cbec15a489ea99ba8710",
+              "left": false,
+              "name": "牌局玩家1",
+              "network": {
+                "connected": false,
+                "rttMs": null,
+                "sampledAt": 0
+              },
+              "ready": true
+            },
+            {
+              "id": "1124cf0ac7b992b1cf5ac458",
+              "left": false,
+              "name": "牌局玩家2",
+              "network": {
+                "connected": false,
+                "rttMs": null,
+                "sampledAt": 0
+              },
+              "ready": true
+            }
+          ],
+          "setupVersion": 7,
+          "spectating": false,
+          "spectatorCount": 1,
+          "status": "playing",
+          "turnDeadline": 0,
+          "updated": 1793896859,
+          "version": 112,
+          "you": 0
+        },
+        {
+          "capacity": 3,
+          "chat": null,
+          "clockOffsetMs": 0,
+          "closeReason": "",
+          "game": {
+            "actors": [
+              0,
+              1,
+              2
+            ],
+            "attention": [],
+            "data": {
+              "digest": "011bf48b05907edfef4419b38502b1c2820bbf2b9b0a507423a52a77b1ab4974",
+              "epoch": "8811b907d8a0d1ba28ef8d66",
+              "frame": "323",
+              "inputs": [
+                {
+                  "appliedButtons": 0,
+                  "appliedSequence": 0,
+                  "automated": false,
+                  "buttons": 0,
+                  "sequence": 0
+                },
+                {
+                  "appliedButtons": 0,
+                  "appliedSequence": 0,
+                  "automated": false,
+                  "buttons": 0,
+                  "sequence": 0
+                },
+                {
+                  "appliedButtons": 0,
+                  "appliedSequence": 0,
+                  "automated": false,
+                  "buttons": 0,
+                  "sequence": 0
+                }
+              ],
+              "localSeat": 1,
+              "options": {
+                "arena": 2,
+                "characters": [
+                  3,
+                  7,
+                  9
+                ],
+                "teamBattle": false
+              },
+              "phase": "playing",
+              "players": [
+                {
+                  "active": true,
+                  "characterID": 3,
+                  "computer": false,
+                  "energy": 223,
+                  "health": 223,
+                  "seat": 0,
+                  "slot": 0,
+                  "x": 944,
+                  "y": 320
+                },
+                {
+                  "active": true,
+                  "characterID": 7,
+                  "computer": false,
+                  "energy": 223,
+                  "health": 223,
+                  "seat": 1,
+                  "slot": 1,
+                  "x": 976,
+                  "y": 320
+                },
+                {
+                  "active": true,
+                  "characterID": 9,
+                  "computer": false,
+                  "energy": 223,
+                  "health": 223,
+                  "seat": 2,
+                  "slot": 3,
+                  "x": 1104,
+                  "y": 320
+                }
+              ],
+              "presentationDigest": "837c743e299db9465f3e2347aff5b0452c2e4229ac3e455a70af7192b37a2144",
+              "protocol": 1,
+              "replay": {
+                "data": "QgAAAAAAAAAAABUCAAAAAAAAAAAhAAAAAAAAAAAA",
+                "firstFrame": "204",
+                "frameCount": 120,
+                "version": 1
+              },
+              "resourceDescriptorSHA256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+              "seatSlots": [
+                0,
+                1,
+                3
+              ],
+              "serverAt": 1793896859950
+            },
+            "eliminated": null,
+            "finished": false,
+            "kind": "yuyuhakusho",
+            "log": [],
+            "phase": "module",
+            "round": 1,
+            "systemDeadline": 1793896860000,
+            "turn": 0,
+            "winners": []
+          },
+          "host": "f016e9ef9f884ee6eb067533",
+          "id": "737865d5",
+          "kind": "yuyuhakusho",
+          "loading": null,
+          "locked": false,
+          "matchId": "8dcc661022533549d2ab05ab",
+          "name": "扑克牌协议验收",
+          "options": {
+            "arena": 2,
+            "characters": [
+              3,
+              7,
+              9
+            ],
+            "teamBattle": false
+          },
+          "seats": [
+            {
+              "id": "f016e9ef9f884ee6eb067533",
+              "left": false,
+              "name": "牌局管理员",
+              "network": {
+                "connected": false,
+                "rttMs": null,
+                "sampledAt": 0
+              },
+              "ready": true
+            },
+            {
+              "id": "8ca2cbec15a489ea99ba8710",
+              "left": false,
+              "name": "牌局玩家1",
+              "network": {
+                "connected": false,
+                "rttMs": null,
+                "sampledAt": 0
+              },
+              "ready": true
+            },
+            {
+              "id": "1124cf0ac7b992b1cf5ac458",
+              "left": false,
+              "name": "牌局玩家2",
+              "network": {
+                "connected": false,
+                "rttMs": null,
+                "sampledAt": 0
+              },
+              "ready": true
+            }
+          ],
+          "setupVersion": 7,
+          "spectating": false,
+          "spectatorCount": 1,
+          "status": "playing",
+          "turnDeadline": 0,
+          "updated": 1793896859,
+          "version": 112,
+          "you": 1
+        },
+        {
+          "capacity": 3,
+          "chat": null,
+          "clockOffsetMs": 0,
+          "closeReason": "",
+          "game": {
+            "actors": [
+              0,
+              1,
+              2
+            ],
+            "attention": [],
+            "data": {
+              "digest": "fbf9addecc0b137fdaad82049c4180acf83af093c819ca7edaa0fcb89cd63012",
+              "epoch": "8811b907d8a0d1ba28ef8d66",
+              "frame": "341",
+              "inputs": [
+                {
+                  "appliedButtons": 0,
+                  "appliedSequence": 0,
+                  "automated": false,
+                  "buttons": 0,
+                  "sequence": 0
+                },
+                {
+                  "appliedButtons": 0,
+                  "appliedSequence": 0,
+                  "automated": false,
+                  "buttons": 0,
+                  "sequence": 0
+                },
+                {
+                  "appliedButtons": 0,
+                  "appliedSequence": 0,
+                  "automated": false,
+                  "buttons": 0,
+                  "sequence": 0
+                }
+              ],
+              "localSeat": 2,
+              "options": {
+                "arena": 2,
+                "characters": [
+                  3,
+                  7,
+                  9
+                ],
+                "teamBattle": false
+              },
+              "phase": "playing",
+              "players": [
+                {
+                  "active": true,
+                  "characterID": 3,
+                  "computer": false,
+                  "energy": 223,
+                  "health": 223,
+                  "seat": 0,
+                  "slot": 0,
+                  "x": 944,
+                  "y": 320
+                },
+                {
+                  "active": true,
+                  "characterID": 7,
+                  "computer": false,
+                  "energy": 223,
+                  "health": 223,
+                  "seat": 1,
+                  "slot": 1,
+                  "x": 976,
+                  "y": 320
+                },
+                {
+                  "active": true,
+                  "characterID": 9,
+                  "computer": false,
+                  "energy": 223,
+                  "health": 223,
+                  "seat": 2,
+                  "slot": 3,
+                  "x": 1104,
+                  "y": 320
+                }
+              ],
+              "presentationDigest": "c9af3fd6cc4efcf8e13d5b2c8022ca4db3232fe96d711806fabe2fed08e0f84c",
+              "protocol": 1,
+              "replay": {
+                "data": "MAAAAAAAAAAAABUCAAAAAAAAAAAzAAAAAAAAAAAA",
+                "firstFrame": "222",
+                "frameCount": 120,
+                "version": 1
+              },
+              "resourceDescriptorSHA256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+              "seatSlots": [
+                0,
+                1,
+                3
+              ],
+              "serverAt": 1793896860753
+            },
+            "eliminated": null,
+            "finished": false,
+            "kind": "yuyuhakusho",
+            "log": [],
+            "phase": "module",
+            "round": 1,
+            "systemDeadline": 1793896860803,
+            "turn": 0,
+            "winners": []
+          },
+          "host": "f016e9ef9f884ee6eb067533",
+          "id": "737865d5",
+          "kind": "yuyuhakusho",
+          "loading": null,
+          "locked": false,
+          "matchId": "8dcc661022533549d2ab05ab",
+          "name": "扑克牌协议验收",
+          "options": {
+            "arena": 2,
+            "characters": [
+              3,
+              7,
+              9
+            ],
+            "teamBattle": false
+          },
+          "seats": [
+            {
+              "id": "f016e9ef9f884ee6eb067533",
+              "left": false,
+              "name": "牌局管理员",
+              "network": {
+                "connected": false,
+                "rttMs": null,
+                "sampledAt": 0
+              },
+              "ready": true
+            },
+            {
+              "id": "8ca2cbec15a489ea99ba8710",
+              "left": false,
+              "name": "牌局玩家1",
+              "network": {
+                "connected": false,
+                "rttMs": null,
+                "sampledAt": 0
+              },
+              "ready": true
+            },
+            {
+              "id": "1124cf0ac7b992b1cf5ac458",
+              "left": false,
+              "name": "牌局玩家2",
+              "network": {
+                "connected": false,
+                "rttMs": null,
+                "sampledAt": 0
+              },
+              "ready": true
+            }
+          ],
+          "setupVersion": 7,
+          "spectating": false,
+          "spectatorCount": 1,
+          "status": "playing",
+          "turnDeadline": 0,
+          "updated": 1793896860,
+          "version": 114,
+          "you": 2
+        }
+      ]
+    },
+    {
+      "label": "opaque checkpoint frame314 survived SQL restart and explicit AI handoff",
+      "spectator": {
+        "capacity": 3,
+        "chat": null,
+        "clockOffsetMs": 0,
+        "closeReason": "",
+        "game": {
+          "actors": [
+            0,
+            1,
+            2
+          ],
+          "attention": [],
+          "data": {
+            "digest": "5309194f5120d0f2b59dce93d2a291aa6bb52b271ca64705e4ad61f8db0c1173",
+            "epoch": "8811b907d8a0d1ba28ef8d66",
+            "frame": "383",
+            "inputs": [
+              {
+                "appliedButtons": 0,
+                "appliedSequence": 0,
+                "automated": false,
+                "buttons": 0,
+                "sequence": 0
+              },
+              {
+                "appliedButtons": 0,
+                "appliedSequence": 0,
+                "automated": false,
+                "buttons": 0,
+                "sequence": 0
+              },
+              {
+                "appliedButtons": 0,
+                "appliedSequence": 0,
+                "automated": false,
+                "buttons": 0,
+                "sequence": 0
+              }
+            ],
+            "localSeat": -1,
+            "options": {
+              "arena": 2,
+              "characters": [
+                3,
+                7,
+                9
+              ],
+              "teamBattle": false
+            },
+            "phase": "playing",
+            "players": [
+              {
+                "active": true,
+                "characterID": 3,
+                "computer": false,
+                "energy": 223,
+                "health": 223,
+                "seat": 0,
+                "slot": 0,
+                "x": 944,
+                "y": 320
+              },
+              {
+                "active": true,
+                "characterID": 7,
+                "computer": false,
+                "energy": 223,
+                "health": 223,
+                "seat": 1,
+                "slot": 1,
+                "x": 976,
+                "y": 320
+              },
+              {
+                "active": true,
+                "characterID": 9,
+                "computer": false,
+                "energy": 223,
+                "health": 223,
+                "seat": 2,
+                "slot": 3,
+                "x": 1104,
+                "y": 320
+              }
+            ],
+            "presentationDigest": "513d90f100bdf90eb800af77e696d335af2f48b19130fc3c55ff8134ad19121c",
+            "protocol": 1,
+            "replay": {
+              "data": "BgAAAAAAAAAAABUCAAAAAAAAAABdAAAAAAAAAAAA",
+              "firstFrame": "264",
+              "frameCount": 120,
+              "version": 1
+            },
+            "resourceDescriptorSHA256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+            "seatSlots": [
+              0,
+              1,
+              3
+            ],
+            "serverAt": 1793896861453
+          },
+          "eliminated": null,
+          "finished": false,
+          "kind": "yuyuhakusho",
+          "log": [],
+          "phase": "module",
+          "round": 1,
+          "systemDeadline": 1793896861503,
+          "turn": 0,
+          "winners": []
+        },
+        "host": "f016e9ef9f884ee6eb067533",
+        "id": "737865d5",
+        "kind": "yuyuhakusho",
+        "loading": null,
+        "locked": false,
+        "matchId": "8dcc661022533549d2ab05ab",
+        "name": "扑克牌协议验收",
+        "options": {
+          "arena": 2,
+          "characters": [
+            3,
+            7,
+            9
+          ],
+          "teamBattle": false
+        },
+        "seats": [
+          {
+            "id": "f016e9ef9f884ee6eb067533",
+            "left": false,
+            "name": "牌局管理员",
+            "network": {
+              "connected": false,
+              "rttMs": null,
+              "sampledAt": 0
+            },
+            "ready": true
+          },
+          {
+            "id": "8ca2cbec15a489ea99ba8710",
+            "left": false,
+            "name": "牌局玩家1",
+            "network": {
+              "connected": false,
+              "rttMs": null,
+              "sampledAt": 0
+            },
+            "ready": true
+          },
+          {
+            "id": "1124cf0ac7b992b1cf5ac458",
+            "left": false,
+            "name": "牌局玩家2",
+            "network": {
+              "connected": false,
+              "rttMs": null,
+              "sampledAt": 0
+            },
+            "ready": true
+          }
+        ],
+        "setupVersion": 7,
+        "spectating": true,
+        "spectatorCount": 1,
+        "status": "playing",
+        "turnDeadline": 0,
+        "updated": 1793896861,
+        "version": 126,
+        "you": -1
+      },
+      "views": [
+        {
+          "capacity": 3,
+          "chat": null,
+          "clockOffsetMs": 0,
+          "closeReason": "",
+          "game": {
+            "actors": [
+              0,
+              1,
+              2
+            ],
+            "attention": [],
+            "data": {
+              "digest": "24c40757efcc46cd570514d559f8622254b3d4b038bffd7a16fbeef5cfe91239",
+              "epoch": "8811b907d8a0d1ba28ef8d66",
+              "frame": "362",
+              "inputs": [
+                {
+                  "appliedButtons": 0,
+                  "appliedSequence": 0,
+                  "automated": false,
+                  "buttons": 0,
+                  "sequence": 0
+                },
+                {
+                  "appliedButtons": 0,
+                  "appliedSequence": 0,
+                  "automated": false,
+                  "buttons": 0,
+                  "sequence": 0
+                },
+                {
+                  "appliedButtons": 0,
+                  "appliedSequence": 0,
+                  "automated": false,
+                  "buttons": 0,
+                  "sequence": 0
+                }
+              ],
+              "localSeat": 0,
+              "options": {
+                "arena": 2,
+                "characters": [
+                  3,
+                  7,
+                  9
+                ],
+                "teamBattle": false
+              },
+              "phase": "playing",
+              "players": [
+                {
+                  "active": true,
+                  "characterID": 3,
+                  "computer": false,
+                  "energy": 223,
+                  "health": 223,
+                  "seat": 0,
+                  "slot": 0,
+                  "x": 944,
+                  "y": 320
+                },
+                {
+                  "active": true,
+                  "characterID": 7,
+                  "computer": false,
+                  "energy": 223,
+                  "health": 223,
+                  "seat": 1,
+                  "slot": 1,
+                  "x": 976,
+                  "y": 320
+                },
+                {
+                  "active": true,
+                  "characterID": 9,
+                  "computer": false,
+                  "energy": 223,
+                  "health": 223,
+                  "seat": 2,
+                  "slot": 3,
+                  "x": 1104,
+                  "y": 320
+                }
+              ],
+              "presentationDigest": "5f0ee3119ce6628a04c9b1a83754e9fee8b92a4311e271ed33cb2faa57019815",
+              "protocol": 1,
+              "replay": {
+                "data": "GwAAAAAAAAAAABUCAAAAAAAAAABIAAAAAAAAAAAA",
+                "firstFrame": "243",
+                "frameCount": 120,
+                "version": 1
+              },
+              "resourceDescriptorSHA256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+              "seatSlots": [
+                0,
+                1,
+                3
+              ],
+              "serverAt": 1793896861103
+            },
+            "eliminated": null,
+            "finished": false,
+            "kind": "yuyuhakusho",
+            "log": [],
+            "phase": "module",
+            "round": 1,
+            "systemDeadline": 1793896861153,
+            "turn": 0,
+            "winners": []
+          },
+          "host": "f016e9ef9f884ee6eb067533",
+          "id": "737865d5",
+          "kind": "yuyuhakusho",
+          "loading": null,
+          "locked": false,
+          "matchId": "8dcc661022533549d2ab05ab",
+          "name": "扑克牌协议验收",
+          "options": {
+            "arena": 2,
+            "characters": [
+              3,
+              7,
+              9
+            ],
+            "teamBattle": false
+          },
+          "seats": [
+            {
+              "id": "f016e9ef9f884ee6eb067533",
+              "left": false,
+              "name": "牌局管理员",
+              "network": {
+                "connected": false,
+                "rttMs": null,
+                "sampledAt": 0
+              },
+              "ready": true
+            },
+            {
+              "id": "8ca2cbec15a489ea99ba8710",
+              "left": false,
+              "name": "牌局玩家1",
+              "network": {
+                "connected": false,
+                "rttMs": null,
+                "sampledAt": 0
+              },
+              "ready": true
+            },
+            {
+              "id": "1124cf0ac7b992b1cf5ac458",
+              "left": false,
+              "name": "牌局玩家2",
+              "network": {
+                "connected": false,
+                "rttMs": null,
+                "sampledAt": 0
+              },
+              "ready": true
+            }
+          ],
+          "setupVersion": 7,
+          "spectating": false,
+          "spectatorCount": 1,
+          "status": "playing",
+          "turnDeadline": 0,
+          "updated": 1793896861,
+          "version": 120,
+          "you": 0
+        },
+        {
+          "capacity": 3,
+          "chat": null,
+          "clockOffsetMs": 0,
+          "closeReason": "",
+          "game": {
+            "actors": [
+              0,
+              1,
+              2
+            ],
+            "attention": [],
+            "data": {
+              "digest": "d654cbd083871fd8a1d6cd8672bff771b6c0962ddea2734d57fbb76f9d23cc73",
+              "epoch": "8811b907d8a0d1ba28ef8d66",
+              "frame": "368",
+              "inputs": [
+                {
+                  "appliedButtons": 0,
+                  "appliedSequence": 0,
+                  "automated": false,
+                  "buttons": 0,
+                  "sequence": 0
+                },
+                {
+                  "appliedButtons": 0,
+                  "appliedSequence": 0,
+                  "automated": false,
+                  "buttons": 0,
+                  "sequence": 0
+                },
+                {
+                  "appliedButtons": 0,
+                  "appliedSequence": 0,
+                  "automated": false,
+                  "buttons": 0,
+                  "sequence": 0
+                }
+              ],
+              "localSeat": 1,
+              "options": {
+                "arena": 2,
+                "characters": [
+                  3,
+                  7,
+                  9
+                ],
+                "teamBattle": false
+              },
+              "phase": "playing",
+              "players": [
+                {
+                  "active": true,
+                  "characterID": 3,
+                  "computer": false,
+                  "energy": 223,
+                  "health": 223,
+                  "seat": 0,
+                  "slot": 0,
+                  "x": 944,
+                  "y": 320
+                },
+                {
+                  "active": true,
+                  "characterID": 7,
+                  "computer": false,
+                  "energy": 223,
+                  "health": 223,
+                  "seat": 1,
+                  "slot": 1,
+                  "x": 976,
+                  "y": 320
+                },
+                {
+                  "active": true,
+                  "characterID": 9,
+                  "computer": false,
+                  "energy": 223,
+                  "health": 223,
+                  "seat": 2,
+                  "slot": 3,
+                  "x": 1104,
+                  "y": 320
+                }
+              ],
+              "presentationDigest": "c14746666470abcbdd73b6571a3106e14cafda0bd35f944914875ef11cf596b8",
+              "protocol": 1,
+              "replay": {
+                "data": "FQAAAAAAAAAAABUCAAAAAAAAAABOAAAAAAAAAAAA",
+                "firstFrame": "249",
+                "frameCount": 120,
+                "version": 1
+              },
+              "resourceDescriptorSHA256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+              "seatSlots": [
+                0,
+                1,
+                3
+              ],
+              "serverAt": 1793896861203
+            },
+            "eliminated": null,
+            "finished": false,
+            "kind": "yuyuhakusho",
+            "log": [],
+            "phase": "module",
+            "round": 1,
+            "systemDeadline": 1793896861253,
+            "turn": 0,
+            "winners": []
+          },
+          "host": "f016e9ef9f884ee6eb067533",
+          "id": "737865d5",
+          "kind": "yuyuhakusho",
+          "loading": null,
+          "locked": false,
+          "matchId": "8dcc661022533549d2ab05ab",
+          "name": "扑克牌协议验收",
+          "options": {
+            "arena": 2,
+            "characters": [
+              3,
+              7,
+              9
+            ],
+            "teamBattle": false
+          },
+          "seats": [
+            {
+              "id": "f016e9ef9f884ee6eb067533",
+              "left": false,
+              "name": "牌局管理员",
+              "network": {
+                "connected": false,
+                "rttMs": null,
+                "sampledAt": 0
+              },
+              "ready": true
+            },
+            {
+              "id": "8ca2cbec15a489ea99ba8710",
+              "left": false,
+              "name": "牌局玩家1",
+              "network": {
+                "connected": false,
+                "rttMs": null,
+                "sampledAt": 0
+              },
+              "ready": true
+            },
+            {
+              "id": "1124cf0ac7b992b1cf5ac458",
+              "left": false,
+              "name": "牌局玩家2",
+              "network": {
+                "connected": false,
+                "rttMs": null,
+                "sampledAt": 0
+              },
+              "ready": true
+            }
+          ],
+          "setupVersion": 7,
+          "spectating": false,
+          "spectatorCount": 1,
+          "status": "playing",
+          "turnDeadline": 0,
+          "updated": 1793896861,
+          "version": 122,
+          "you": 1
+        },
+        {
+          "capacity": 3,
+          "chat": null,
+          "clockOffsetMs": 0,
+          "closeReason": "",
+          "game": {
+            "actors": [
+              0,
+              1,
+              2
+            ],
+            "attention": [],
+            "data": {
+              "digest": "e96f8e138121af0d6624b06ea8b83831544af2e20f8c3510d8e0583ad80156fd",
+              "epoch": "8811b907d8a0d1ba28ef8d66",
+              "frame": "374",
+              "inputs": [
+                {
+                  "appliedButtons": 0,
+                  "appliedSequence": 0,
+                  "automated": false,
+                  "buttons": 0,
+                  "sequence": 0
+                },
+                {
+                  "appliedButtons": 0,
+                  "appliedSequence": 0,
+                  "automated": false,
+                  "buttons": 0,
+                  "sequence": 0
+                },
+                {
+                  "appliedButtons": 0,
+                  "appliedSequence": 0,
+                  "automated": false,
+                  "buttons": 0,
+                  "sequence": 0
+                }
+              ],
+              "localSeat": 2,
+              "options": {
+                "arena": 2,
+                "characters": [
+                  3,
+                  7,
+                  9
+                ],
+                "teamBattle": false
+              },
+              "phase": "playing",
+              "players": [
+                {
+                  "active": true,
+                  "characterID": 3,
+                  "computer": false,
+                  "energy": 223,
+                  "health": 223,
+                  "seat": 0,
+                  "slot": 0,
+                  "x": 944,
+                  "y": 320
+                },
+                {
+                  "active": true,
+                  "characterID": 7,
+                  "computer": false,
+                  "energy": 223,
+                  "health": 223,
+                  "seat": 1,
+                  "slot": 1,
+                  "x": 976,
+                  "y": 320
+                },
+                {
+                  "active": true,
+                  "characterID": 9,
+                  "computer": false,
+                  "energy": 223,
+                  "health": 223,
+                  "seat": 2,
+                  "slot": 3,
+                  "x": 1104,
+                  "y": 320
+                }
+              ],
+              "presentationDigest": "7706e6b76ec61727b0165555378dc13636e50cdd625e8172ff4527b5673002f3",
+              "protocol": 1,
+              "replay": {
+                "data": "DwAAAAAAAAAAABUCAAAAAAAAAABUAAAAAAAAAAAA",
+                "firstFrame": "255",
+                "frameCount": 120,
+                "version": 1
+              },
+              "resourceDescriptorSHA256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+              "seatSlots": [
+                0,
+                1,
+                3
+              ],
+              "serverAt": 1793896861303
+            },
+            "eliminated": null,
+            "finished": false,
+            "kind": "yuyuhakusho",
+            "log": [],
+            "phase": "module",
+            "round": 1,
+            "systemDeadline": 1793896861353,
+            "turn": 0,
+            "winners": []
+          },
+          "host": "f016e9ef9f884ee6eb067533",
+          "id": "737865d5",
+          "kind": "yuyuhakusho",
+          "loading": null,
+          "locked": false,
+          "matchId": "8dcc661022533549d2ab05ab",
+          "name": "扑克牌协议验收",
+          "options": {
+            "arena": 2,
+            "characters": [
+              3,
+              7,
+              9
+            ],
+            "teamBattle": false
+          },
+          "seats": [
+            {
+              "id": "f016e9ef9f884ee6eb067533",
+              "left": false,
+              "name": "牌局管理员",
+              "network": {
+                "connected": false,
+                "rttMs": null,
+                "sampledAt": 0
+              },
+              "ready": true
+            },
+            {
+              "id": "8ca2cbec15a489ea99ba8710",
+              "left": false,
+              "name": "牌局玩家1",
+              "network": {
+                "connected": false,
+                "rttMs": null,
+                "sampledAt": 0
+              },
+              "ready": true
+            },
+            {
+              "id": "1124cf0ac7b992b1cf5ac458",
+              "left": false,
+              "name": "牌局玩家2",
+              "network": {
+                "connected": false,
+                "rttMs": null,
+                "sampledAt": 0
+              },
+              "ready": true
+            }
+          ],
+          "setupVersion": 7,
+          "spectating": false,
+          "spectatorCount": 1,
+          "status": "playing",
+          "turnDeadline": 0,
+          "updated": 1793896861,
+          "version": 124,
+          "you": 2
+        }
+      ]
+    }
+  ]
+}

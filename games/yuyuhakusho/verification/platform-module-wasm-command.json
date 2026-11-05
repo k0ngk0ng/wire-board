@@ -1,0 +1,14 @@
+{
+  "command": [
+    "/opt/homebrew/bin/go",
+    "test",
+    "-json",
+    "-count=1",
+    "-timeout=30m",
+    "-exec",
+    "/opt/homebrew/Cellar/go/1.26.2/libexec/lib/wasm/go_js_wasm_exec",
+    "./games/yuyuhakusho/server",
+    "./games/yuyuhakusho/sessiontick"
+  ],
+  "exit_code": 0
+}

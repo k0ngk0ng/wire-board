@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "pass": true,
+  "scope": "Separate resource identity-only descriptor; not client payload or a game-release claim",
+  "resources": 13,
+  "descriptor_bytes": 3737,
+  "descriptor_sha256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+  "contract_tests": 4,
+  "source_and_artifact_sha256": {
+    "games/yuyuhakusho/data/runtime-resource-descriptor.json": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+    "games/yuyuhakusho/data/runtime-resource-descriptor-manifest.json": "2e19c5474de63bb935ab17f8a776351b9dc5be66349c6676c5d89969b0fc9146",
+    "scripts/yuyuhakusho/export_runtime_resource_descriptor.py": "f56be7cc6c7b37182f72f8cee6487deed19a56a8f1b9c2a3fb12906763eef2e5",
+    "scripts/yuyuhakusho/test_runtime_resource_descriptor.py": "d917bd42d613e62f4aaad9d803635826c56caad1abe8749b31f8c095a841c0fc",
+    "docs/research/md-yuyuhakusho/RUNTIME_RESOURCE_DESCRIPTOR_FAILURES.md": "b0e98df8560abe7f34a460209f67671b54f12bf6a357136ddb22b940ba810246",
+    "docs/research/md-yuyuhakusho/RUNTIME_RESOURCE_DESCRIPTOR.md": "d00aaeb61014d382628d63af671c093d3bac8f0649c7590b8f09ea4b0787f303",
+    "docs/research/md-yuyuhakusho/runtime-resource-descriptor-red.txt": "28055386e1fb06545dfde6c8d023872801d89faab91d5db9bfcb865a5ebd21b8",
+    "docs/research/md-yuyuhakusho/runtime-resource-descriptor-native.txt": "b54d545a111951478a98644e5fadea29288884627062f9964e4657d242e3ed87",
+    "docs/research/md-yuyuhakusho/runtime-resource-descriptor-test-first.json": "cdc657a8b23c684ae4e430f265ac8eff789660be77b9fd0b62f4520b8bdfc064",
+    "docs/research/md-yuyuhakusho/runtime-resource-descriptor-normalization-assumption-red.txt": "d1f4b8cc7c47fb03db4ebd0caababfe11dcd1ecb364f40098708b530b0a28ec1",
+    "docs/research/md-yuyuhakusho/runtime-resource-descriptor-test-before-normalization-correction.py.txt": "e2aaf29a8b8c66c2c588d984f34b24b2ebcbb6a87f176509b0b5a526ddfc1d76"
+  },
+  "renderstate_algorithm_changed": false,
+  "renderstate_identity_changed": false,
+  "client_payload_embedded_by_this_export": false,
+  "resource_ids": [
+    "rules",
+    "sprites",
+    "hud",
+    "render_meta",
+    "arena-default",
+    "arena-2",
+    "arena-4",
+    "arena-6",
+    "arena-8",
+    "arena-a",
+    "arena-c",
+    "arena-e",
+    "arena-a-aux"
+  ]
+}

@@ -1,0 +1,8 @@
+{"Time":"2026-11-05T23:45:51.001889+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server"}
+{"Time":"2026-11-05T23:45:51.979154+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server","Test":"TestModuleSavedResourceIdentity"}
+{"Time":"2026-11-05T23:45:51.979205+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server","Test":"TestModuleSavedResourceIdentity","Output":"=== RUN   TestModuleSavedResourceIdentity\n"}
+{"Time":"2026-11-05T23:45:52.107255+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server","Test":"TestModuleSavedResourceIdentity","Output":"--- PASS: TestModuleSavedResourceIdentity (0.13s)\n"}
+{"Time":"2026-11-05T23:45:52.107292+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server","Test":"TestModuleSavedResourceIdentity","Elapsed":0.13}
+{"Time":"2026-11-05T23:45:52.107304+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server","Output":"PASS\n"}
+{"Time":"2026-11-05T23:45:53.120075+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/server\t2.118s\n"}
+{"Time":"2026-11-05T23:45:53.120183+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server","Elapsed":2.118}

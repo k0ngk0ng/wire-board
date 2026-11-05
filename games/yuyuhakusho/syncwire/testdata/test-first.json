@@ -1,0 +1,10 @@
+{
+  "frozen_at_utc": "2026-11-05T15:02:32.797773+00:00",
+  "phase": "failure list and full bounded codec/history plus complete independent match replay tests before production implementation",
+  "sha256": {
+    "games/yuyuhakusho/syncwire/FAILURES.md": "06a2f83d40ea342df317893a3c546f1f794fcc300dc39b3ad9ef3087cfafc695",
+    "games/yuyuhakusho/syncwire/window_test.go": "7a89f34ad12ceae273d68fb91fa4f99e4387f31e3b1537156449adbe2474f412",
+    "games/yuyuhakusho/syncwire/replay_test.go": "2a3daee90576ac3c78069dff851f6f37371bc9e34483c90f2045c205b97fbb39"
+  },
+  "actual_missing_red": "games/yuyuhakusho/syncwire/testdata/frozen-api-red.jsonl"
+}

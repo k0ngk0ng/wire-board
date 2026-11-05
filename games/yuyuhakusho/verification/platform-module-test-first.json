@@ -1,0 +1,30 @@
+{
+  "created_at_utc": "2026-11-05T15:09:08.986948+00:00",
+  "scope": "Full server module boundary and shared deterministic tick tests before implementation",
+  "test_first": true,
+  "files": {
+    "games/yuyuhakusho/server/MODULE_FAILURES.md": "013f9e61a54bdc89f7d71a6e4eb61cb1c199dcfb494bd57b77e9b78f046883e7",
+    "games/yuyuhakusho/server/module_e2e_test.go": "88fe8c7dd8b5a4de2d63094dc195f8ead070e29f87ceae75a022e97f61c56851",
+    "games/yuyuhakusho/sessiontick/FAILURES.md": "abdc5e2a217e75fab8b2fe02638238da7a8caafc0acaf429795900d90c9fadda",
+    "games/yuyuhakusho/sessiontick/tick_test.go": "6909044a96114b50acf574a03f3104d2b99fe5f41db4ca4bdbfe0acbbf109da8"
+  },
+  "reds": [
+    "games/yuyuhakusho/verification/platform-module-symbol-red.jsonl",
+    "games/yuyuhakusho/verification/platform-shared-tick-symbol-red.jsonl",
+    "games/yuyuhakusho/verification/platform-module-final-symbol-red.jsonl",
+    "games/yuyuhakusho/verification/platform-module-opaque-symbol-red.jsonl"
+  ],
+  "preimplementation_test_note": "Corrected a lexical shadowing issue in the unimplemented shared-tick draft before production implementation; final red still fails because Advance is absent.",
+  "module_preimplementation_host_contract_revision": {
+    "requested_by": "Root clarified gameapi.HasComputerPlayers is for game-owned non-seat AI; YuYu has none. Host seat bots/autoplay cause persistent HadComputer/Unrated, not that flag.",
+    "old_module_tests_sha256": "d8d29a95e2bd58c33c9ec7cbf56daad980d1273ab91a8db89a3a0a48c5039bcd",
+    "old_module_tests_archive": "games/yuyuhakusho/verification/platform-module-pre-host-computer-contract.go.txt",
+    "changed_before_module_implementation": true
+  },
+  "opaque_checkpoint_revision": {
+    "reason": "Root requires opaque exact JSON string on network to preserve uint64 sprite Present bits through JavaScript",
+    "changed_before_module_implementation": true,
+    "prior_tests_sha256": "029eb1b7b7531c01def34c951ec35579a2f165720502966e6ae0b85b9341097a",
+    "prior_tests_archive": "games/yuyuhakusho/verification/platform-module-pre-opaque-checkpoint.go.txt"
+  }
+}

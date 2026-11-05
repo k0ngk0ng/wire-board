@@ -1,0 +1,12 @@
+{
+  "created_at_utc": "2026-11-05T16:02:08.035718+00:00",
+  "phase": "Additional MD controller metadata test after shared controller contract port; test and real nil-definition red precede module metadata change",
+  "test_first": true,
+  "test_sha256": {
+    "games/yuyuhakusho/server/module_controller_test.go": "29ce5afdbdb66ea087b19af67d6da5f1e7d26bed740a37f07007f34314ce796b"
+  },
+  "before_production_sha256": {
+    "games/yuyuhakusho/server/module.go": "0e017206e3e8958db61f0cbb9647a523f41a8c4a2916fc1c9b01072b7b3dcc99"
+  },
+  "red": "games/yuyuhakusho/verification/platform-module-controller-red.jsonl"
+}

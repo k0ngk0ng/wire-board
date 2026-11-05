@@ -1,0 +1,8 @@
+{
+  "scope": "Documentation-only extension after the unchanged five host E2Es; no code or logs rewritten",
+  "path": "games/yuyuhakusho/platformtest/BROWSER_FAILURES.md",
+  "test_time_sha256": "37c8de38a240d2c3487f4630f9a21e3596d49b6234ca5d2f17bbef5ab8b87256",
+  "current_sha256": "5ad5532438701668301f0de0eb17671dcc63d00b65bc9409b0bc379078ab17a8",
+  "original_archive": "BROWSER_FAILURES.at-host-freeze.md.txt",
+  "change": "Adds the later real browser performance failure and frozen smoothness budget"
+}

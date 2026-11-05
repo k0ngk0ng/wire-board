@@ -755,6 +755,8 @@ function App() {
               <ControllerSettings
                 key={state.user.id}
                 userId={state.user.id}
+                gameId={state.room?.kind}
+                availableGames={state.availableGames}
                 onClose={() => setControllerSettingsOpen(false)}
               />
             )}

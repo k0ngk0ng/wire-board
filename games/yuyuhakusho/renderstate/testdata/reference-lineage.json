@@ -1,0 +1,22 @@
+{
+  "scope": "Unmodified bridge/presentation sources used by the frozen reference capture",
+  "baseline_commit": "54a5b9ae",
+  "manifest_sha256": "cb4d018f877332b905af8e8a940ba135d4c0eaa6e4715a096e6cd1a5fa2b9572",
+  "sources": [
+    {
+      "original_path": "games/yuyuhakusho/runtimebridge/session.go",
+      "path": "games/yuyuhakusho/renderstate/testdata/baseline-runtimebridge-session.go.txt",
+      "sha256": "68cb5c8f2f823be40d0f0bde29c472387862db7a725f3472165b63ba9215718f"
+    },
+    {
+      "original_path": "games/yuyuhakusho/presentation/compose.go",
+      "path": "games/yuyuhakusho/renderstate/testdata/baseline-presentation-compose.go.txt",
+      "sha256": "3ea96b6c956325fbd07299fd22729b93dc3cfc5690e3f89072380c5ca845b2f1"
+    },
+    {
+      "original_path": "games/yuyuhakusho/presentation/hud.go",
+      "path": "games/yuyuhakusho/renderstate/testdata/baseline-presentation-hud.go.txt",
+      "sha256": "0c403ba976f7ec41086466a9f643350b4efefff3a2a505d12feaa9154995c4cb"
+    }
+  ]
+}

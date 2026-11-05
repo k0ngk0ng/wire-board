@@ -1,0 +1,17 @@
+{
+  "at_utc": "2026-11-05T16:00:20.096435+00:00",
+  "test_first": true,
+  "source_commit": "caedfc4c",
+  "source_file": "games/yuyuhakusho/verification/controller-physical-port/source-commit.json",
+  "sha256": {
+    "docs/research/md-yuyuhakusho/CONTROLLER_PHYSICAL_PORT_FAILURES.md": "92198ebb905376fadf7ff6ebb107d7776f4ef4f9d72b5723ff988a074f9a955c",
+    "internal/server/controller_physical_port_e2e_test.go": "6f3d8e76bc4ddfbad89e617df709f04f8c62b4d7f28e20d997f2bf1d06ee4fcc",
+    "web/tests/gamepad-input.test.mjs": "6fd869fb1b69855f6cf9c216cc566fe3a4dd9014e616eda2ad5af336fc4a3d04",
+    "web/tests/md-gamepad-input.test.mjs": "aa9fef59e5bd3759fcae67967cb01a274448063c56bc737c339a0324fb7ebded"
+  },
+  "actual_reds": [
+    "games/yuyuhakusho/verification/controller-physical-port/js-missing-red.log",
+    "games/yuyuhakusho/verification/controller-physical-port/http-behavior-red.jsonl",
+    "games/yuyuhakusho/verification/controller-physical-port/http-final-symbol-red.jsonl"
+  ]
+}

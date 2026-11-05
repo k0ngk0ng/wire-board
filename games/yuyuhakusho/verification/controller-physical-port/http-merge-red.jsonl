@@ -1,0 +1,9 @@
+{"Time":"2026-11-06T00:11:37.38522+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/internal/server"}
+{"Time":"2026-11-06T00:11:38.093593+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestPhysicalControllerPortLegacyAliasMergeHTTP"}
+{"Time":"2026-11-06T00:11:38.093669+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestPhysicalControllerPortLegacyAliasMergeHTTP","Output":"=== RUN   TestPhysicalControllerPortLegacyAliasMergeHTTP\n"}
+{"Time":"2026-11-06T00:11:38.168003+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestPhysicalControllerPortLegacyAliasMergeHTTP","Output":"    controller_physical_port_e2e_test.go:161: POST /api/controllers/md-6 got 400 want 200: map[error:控制器配置格式不正确]\n"}
+{"Time":"2026-11-06T00:11:38.169252+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestPhysicalControllerPortLegacyAliasMergeHTTP","Output":"--- FAIL: TestPhysicalControllerPortLegacyAliasMergeHTTP (0.08s)\n"}
+{"Time":"2026-11-06T00:11:38.169261+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestPhysicalControllerPortLegacyAliasMergeHTTP","Elapsed":0.08}
+{"Time":"2026-11-06T00:11:38.169271+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Output":"FAIL\n"}
+{"Time":"2026-11-06T00:11:38.170033+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/internal/server\t0.785s\n"}
+{"Time":"2026-11-06T00:11:38.170044+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/internal/server","Elapsed":0.785}

@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "at_utc": "2026-11-05T16:29:13.849913+00:00",
+  "production_frozen": true,
+  "source_commit": "caedfc4c",
+  "main_checkout_read_only": true,
+  "production_sha256": {
+    "internal/gameapi/controllers.go": "32833816c3565ad1eb1ba455becf03f6fba5a2669ec029d43cb71878d9a93d12",
+    "internal/gameapi/module.go": "f9deaa4b1c0bd199b6e2561f4d1a5e7039450cedd96ef0e6c26f2f91372ca909",
+    "internal/server/controllers.go": "f024f2505ff37d00cc420292dc9834ff18c00d8c94493302f113d0939bb3048e",
+    "internal/server/controller_models.go": "5eb50a6f3cec24fb2583cde63131f49d1ae8e0f20b551c377d75150bd2981b61",
+    "web/src/controllers/input.ts": "e246a8d3b67aa44361631ec51f55a95d8d0d8f341d0adce3fb01922216e5233d",
+    "web/src/controllers/gamepad.ts": "6e07e3a9173a744af98c1fa109b0e0fc937a86adb18b33387af6a7050d68c22b",
+    "web/src/controllers/GamepadSettings.tsx": "e389e26b8a15ed1cf4c6a9f578d3c4573c649e1cb381bdaac0be0a578b017fe9",
+    "web/src/controllers/Settings.tsx": "d5c0960bba18c2a2efba098ba644e7c81b0c655d3952cd7bf6c8bf1574365941",
+    "web/src/controllers/settings.css": "c77b076a429645478f444275ba81e3e0d6ceee8274bcfd1beb6e12e347bf1e62",
+    "web/src/controllers/FCController.tsx": "48f11f4d3ff158e60c5b28375d69491b7bd8812c3a3f43e090fe062eb10908d9",
+    "web/src/controllers/MDController.tsx": "bf7f45de20b3aa305addbf1909eee7ad33016fdb42823b3aad6550146542d4f7"
+  },
+  "test_support_sha256": {
+    "internal/server/controller_physical_port_e2e_test.go": "c3e79d5cdb89dbdb76844cfe57cc5441df8b6ed639c44a1f7e317877ff5ce560",
+    "web/tests/controller-input.test.mjs": "2eb46ffd0db1323ccce9d4b49520458333cb550f9e5cfcca5a55f16151f11eb4",
+    "web/tests/gamepad-input.test.mjs": "6fd869fb1b69855f6cf9c216cc566fe3a4dd9014e616eda2ad5af336fc4a3d04",
+    "web/tests/md-gamepad-input.test.mjs": "1d4bf4671830113435b560475c7620f352889518e3aed392a480d25e95e65dfe",
+    "scripts/yuyuhakusho/controller_settings_harness.tsx": "d46bc3a9924fdfcbecebb4159f6750b1749ff560cf8889cd360b9bea0d1c2113",
+    "scripts/yuyuhakusho/controller_settings_host.go": "b1c1f2792d20cd3599ccd1aab82fe85f0b02c2577782bc7f54f382ee1bf6d24c",
+    "scripts/yuyuhakusho/check_controller_settings.py": "abd4198c8efbe357d8545020f6843961341475eeafb1cfec59f23280c4d0c440"
+  },
+  "documentation_sha256": {
+    "docs/research/md-yuyuhakusho/CONTROLLER_PHYSICAL_PORT.md": "d1c895dd6963ef6f2ec18d5ee98dd8f0d624682dba1d070b851d361a05a5d2fe",
+    "docs/research/md-yuyuhakusho/CONTROLLER_PHYSICAL_PORT_FAILURES.md": "92198ebb905376fadf7ff6ebb107d7776f4ef4f9d72b5723ff988a074f9a955c"
+  },
+  "artifact_sha256": {
+    "games/yuyuhakusho/verification/controller-physical-port/cleanup.json": "fd8b4b87fa4ade5d6a8b0c583a8a661a3dcde3924bd5bd517dc90d721abe81c4",
+    "games/yuyuhakusho/verification/controller-physical-port/files.list": "8bea3cab0b540e739e7f3ea9f3db124a6b80bbc12b03a61c223c8e90c6f242e6",
+    "games/yuyuhakusho/verification/controller-physical-port/http-behavior-red.jsonl": "46f3816352f8feef7b01100d65d243aafc6d66e4f10bdce71d647e6d46f7590f",
+    "games/yuyuhakusho/verification/controller-physical-port/http-extra-test-first.json": "2b7b1f6a7060f76df019aabbd4d2ab8255c5203cce4f54468e4adca8c956b2ad",
+    "games/yuyuhakusho/verification/controller-physical-port/http-final-symbol-red.jsonl": "d7da1fc5867ae04e5678bfe47856fc4334117813a83906a40c94063837d73422",
+    "games/yuyuhakusho/verification/controller-physical-port/http-merge-red.jsonl": "014c50f51b649a2184625eb0ce9d7a8bfe5006cd3101b86e71babfc340b31993",
+    "games/yuyuhakusho/verification/controller-physical-port/http-native-corrected.jsonl": "1f24f4502a6374a0304426ffbc62d37ce69d416e8221b1b2b783714e91a9e806",
+    "games/yuyuhakusho/verification/controller-physical-port/http-native.jsonl": "e0646ad3355ce8e21347434a80db3458fa2014bd67780032d7e2768c1de05444",
+    "games/yuyuhakusho/verification/controller-physical-port/http-race.jsonl": "8fb4ce99a7d60662a46960a025bbb8401ce599ceaaeaca62129145bb7548c33a",
+    "games/yuyuhakusho/verification/controller-physical-port/js-final.log": "5993baccec98cd6363ab648eb158ad9b227c54fc8c9a372c1a259cb95e486bc7",
+    "games/yuyuhakusho/verification/controller-physical-port/js-first.log": "172e53c14851b491eada57120ec3e1fb270eb1f630cd24411665060d631749af",
+    "games/yuyuhakusho/verification/controller-physical-port/js-missing-red.log": "f0a7f0cd86ab4ce0529f3f6e9d46ecfd36beb13e307450f89ba4f8370bc4aa38",
+    "games/yuyuhakusho/verification/controller-physical-port/md-gamepad-test-before-syntax-repair.mjs.txt": "aa9fef59e5bd3759fcae67967cb01a274448063c56bc737c339a0324fb7ebded",
+    "games/yuyuhakusho/verification/controller-physical-port/md-test-syntax-lineage.json": "3794234034bd84e89c323798e4d01d0f7f4c7c9dc199adfc8906673cdae374db",
+    "games/yuyuhakusho/verification/controller-physical-port/settings-browser-verified/desktop-physical-bindings.png": "9c7a1bbfe70c1e6b26066f3eeb4b3870e9f2604d031d26a8cfed7b625d4faee4",
+    "games/yuyuhakusho/verification/controller-physical-port/settings-browser-verified/desktop-physical.png": "30e0df4f2759f467812628810f6410f95ad7d5788a0119e403a9fb4ae8e9dac7",
+    "games/yuyuhakusho/verification/controller-physical-port/settings-browser-verified/mobile-320-keyboard.png": "54e87818576688b2ebead12735bdd28c2efcff25b82d52f248c59082a2d3c66e",
+    "games/yuyuhakusho/verification/controller-physical-port/settings-browser-verified/mobile-320-physical.png": "ca8baa4fdb51e29629de09b709753c6c0b5506ef53e0c93cc4bde2c7c1623cc0",
+    "games/yuyuhakusho/verification/controller-physical-port/settings-browser-verified/result.json": "8bf9b3f9d12c54a2f025647f93ef860ebd560d5d4910b87124bcb9cd3179a2d5",
+    "games/yuyuhakusho/verification/controller-physical-port/settings-browser-verified.log": "14b076d9644285fbb0e2a5f993d80ac3ea0794d92cd8e27edd9ed99f1169c443",
+    "games/yuyuhakusho/verification/controller-physical-port/settings-current-game-red/red.png": "779273056912cba89f67fbbf73acbc7cb8104ed0aaccfd5d0e50f4b695af61b0",
+    "games/yuyuhakusho/verification/controller-physical-port/settings-current-game-red/result.json": "2bf999873030b122d138594751435e8cb0a3ba6ccd71528aea600891019d3c47",
+    "games/yuyuhakusho/verification/controller-physical-port/settings-current-game-red.log": "443faba64a6a707cc1f4a7f4f6250ce393136458caf0750672c395b701dd96cd",
+    "games/yuyuhakusho/verification/controller-physical-port/settings-test-before-md-visual-selector-adaptation.py.txt": "9ced8bdf576fe609f09dce79765ff102205b9589700c3e621a8d74d93b6291b0",
+    "games/yuyuhakusho/verification/controller-physical-port/settings-test-lineage.json": "78523df1a02deed178ef3651503c96fd010b132805c772e207f522660b931965",
+    "games/yuyuhakusho/verification/controller-physical-port/source-commit.json": "8b9db614475dc2d4b7d1150fcecaf02957b37e9de78b68ce7caa43023b08ad6f",
+    "games/yuyuhakusho/verification/controller-physical-port/test-first.json": "d9963e49cada95b2cd39984a8487411297c6452a59bd6311045b9655cfc9d5ba",
+    "games/yuyuhakusho/verification/controller-physical-port/tsc.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "games/yuyuhakusho/verification/controller-physical-port/vet.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "results": {
+    "js_tests": 20,
+    "http_sqlite_tests": 7,
+    "http_race_tests": 7,
+    "typescript": "pass",
+    "go_vet": "pass",
+    "settings_browser": "settings-browser-verified/result.json",
+    "physical_hardware_tested": false
+  },
+  "limitations": [
+    "Virtual Gamepad API only; no physical brand compatibility claim.",
+    "Settings browser uses real platform HTTP/auth/SQLite/API and real registered Yuyu module with a test-only React shell; production main/actual-room transport is separate root acceptance.",
+    "Initial MD-only test file had a syntax error; its missing brace was repaired after the MD branch existed. Original bytes and lineage are retained; no semantic-red claim for that branch."
+  ],
+  "cross_reference": {
+    "actual_module_wasm_board_controls": "games/yuyuhakusho/verification/platform-web/controls-first/result.json"
+  },
+  "cleanup": "cleanup.json"
+}

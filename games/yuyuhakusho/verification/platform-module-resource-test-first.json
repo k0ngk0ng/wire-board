@@ -1,0 +1,15 @@
+{
+  "created_at_utc": "2026-11-05T15:44:19.762958+00:00",
+  "phase": "Additional persisted-resource identity gate test and real red before this gate implementation; main module already existed",
+  "test_first": true,
+  "test_sha256": {
+    "games/yuyuhakusho/server/module_resource_identity_test.go": "77b1a3781f34bdcf8e70156db03bd897e457478593b657444bcc552616e89a93"
+  },
+  "before_production_sha256": {
+    "games/yuyuhakusho/server/module.go": "b8863efba9fae46644fa5e0fce8930fcd580fd0fbf6a327bdf3dcc125b75d9b8",
+    "games/yuyuhakusho/server/module_types.go": "32491ddd8512745bf0bb0a7ae053f7b17406a106d0be0477eb8c123f69ce9cc0",
+    "games/yuyuhakusho/server/module_state.go": "fe69be6e55abc4c3f6017b2c29b1043d0888874df16bce5c9807f7c9fcf86139",
+    "games/yuyuhakusho/server/module_view.go": "d3dfa0d71fcf0a45c4b6d982d175d52066623bf7a31b290b8f54d1caf0555d71"
+  },
+  "red": "games/yuyuhakusho/verification/platform-module-resource-red.jsonl"
+}

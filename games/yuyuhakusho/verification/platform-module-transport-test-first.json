@@ -1,0 +1,20 @@
+{
+  "created_at_utc": "2026-11-05T15:58:05.443476+00:00",
+  "phase": "Additional transport reset and manager phase tests, after prior full green module suites and before these fixes",
+  "test_first": true,
+  "files": {
+    "games/yuyuhakusho/server/module_transport_reset_test.go": "5b928c2b4c85525015e858ea95014542b93f2bde41826205ea4a6ee9f4638ff4",
+    "games/yuyuhakusho/server/RESTORE_INPUT_FAILURES.md": "8b236e7c626f0c0d14c886df694b5928fa55a6af5ae4270846c85c657003b8cf"
+  },
+  "before_production_sha256": {
+    "games/yuyuhakusho/server/module_clock.go": "bd5980743607e649fd20e51d307f4f7da609f5a88c164ba01e86dfc27a04995d",
+    "games/yuyuhakusho/server/module_state.go": "9c21ec4d4a42be34202e41c1f904e5f2d032497f0e741ef8897341280b5739f6"
+  },
+  "red": "games/yuyuhakusho/verification/platform-module-transport-red.jsonl",
+  "prior_full_green": [
+    "platform-module-native-final.jsonl",
+    "platform-module-wasm-final.jsonl",
+    "platform-module-race-final.jsonl"
+  ],
+  "frozen_original_tests_unchanged": true
+}

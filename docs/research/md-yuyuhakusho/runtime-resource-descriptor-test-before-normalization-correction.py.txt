@@ -1,0 +1,70 @@
+#!/usr/bin/env python3
+"""Small identity-only descriptor contract, written before its exporter."""
+import gzip
+import hashlib
+import json
+from pathlib import Path
+import subprocess
+import sys
+import unittest
+
+ROOT = Path(__file__).resolve().parents[2]
+DATA = ROOT/'games/yuyuhakusho/data'
+DESCRIPTOR = DATA/'runtime-resource-descriptor.json'
+EXPECTED = [
+    ('rules', 'chu-world-rules'), ('sprites', 'world-sprites'), ('hud', 'hud-assets'),
+    ('render_meta', 'renderstate-metadata'), ('arena-default', 'arena-assets-default'),
+    *[(f'arena-{arena}', f'arena-assets-{arena}') for arena in ('2', '4', '6', '8', 'a', 'c', 'e')],
+    ('arena-a-aux', 'arena-a-aux-assets'),
+]
+
+
+class RuntimeResourceDescriptorContract(unittest.TestCase):
+    def test_exact_thirteen_identity_records(self):
+        descriptor = json.loads(DESCRIPTOR.read_bytes())
+        self.assertEqual(set(descriptor), {'schema', 'resources'})
+        self.assertEqual(descriptor['schema'], 1)
+        rows = descriptor['resources']
+        self.assertEqual(len(rows), 13)
+        self.assertEqual([row['id'] for row in rows], [name for name, _ in EXPECTED])
+        paths = set()
+        for row, (name, file) in zip(rows, EXPECTED):
+            self.assertEqual(set(row), {'id', 'logical_path', 'raw_json_sha256', 'raw_json_bytes', 'gzip_sha256', 'gzip_bytes'})
+            path = f'/yuyuhakusho/data/{file}.json.gz'
+            self.assertEqual(row['logical_path'], path)
+            self.assertNotIn(path, paths)
+            paths.add(path)
+            packed = (DATA/(file+'.json.gz')).read_bytes()
+            raw = gzip.decompress(packed)
+            json.loads(raw)
+            self.assertEqual(row['raw_json_bytes'], len(raw))
+            self.assertEqual(row['gzip_bytes'], len(packed))
+            self.assertEqual(row['raw_json_sha256'], hashlib.sha256(raw).hexdigest())
+            self.assertEqual(row['gzip_sha256'], hashlib.sha256(packed).hexdigest())
+
+    def test_exact_raw_bytes_are_not_restringified(self):
+        rows = json.loads(DESCRIPTOR.read_bytes())['resources']
+        changed = 0
+        for row, (_, file) in zip(rows, EXPECTED):
+            raw = gzip.decompress((DATA/(file+'.json.gz')).read_bytes())
+            normalized = json.dumps(json.loads(raw), separators=(',', ':')).encode()
+            self.assertNotEqual(row['raw_json_sha256'], hashlib.sha256(normalized).hexdigest())
+            changed += raw != normalized
+        self.assertEqual(changed, 13)
+
+    def test_no_client_body_or_external_path(self):
+        raw = DESCRIPTOR.read_bytes()
+        self.assertLess(len(raw), 8192)
+        for word in (b'"tile_bytes"', b'"packed_4bpp_tiles"', b'"base_tiles"', b'"bar_tiles"', b'"body"', b'http:', b'https:', b'base64', b'../', b'file://'):
+            self.assertNotIn(word, raw)
+
+    def test_check_only_export_is_deterministic(self):
+        before = DESCRIPTOR.read_bytes()
+        result = subprocess.run([sys.executable, '-B', str(ROOT/'scripts/yuyuhakusho/export_runtime_resource_descriptor.py'), '--check'], cwd=ROOT, text=True, capture_output=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(DESCRIPTOR.read_bytes(), before)
+        self.assertEqual(json.loads(result.stdout)['sha256'], hashlib.sha256(before).hexdigest())
+
+
+if __name__ == '__main__':
+    unittest.main()

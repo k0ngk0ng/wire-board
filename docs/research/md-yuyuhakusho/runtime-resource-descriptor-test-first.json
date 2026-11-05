@@ -1,0 +1,35 @@
+{
+  "scope": "Descriptor contract and genuine missing-file red before exporter implementation",
+  "frozen_at": "2026-11-05T15:12:59.433053+00:00",
+  "sha256": {
+    "docs/research/md-yuyuhakusho/RUNTIME_RESOURCE_DESCRIPTOR_FAILURES.md": "b0e98df8560abe7f34a460209f67671b54f12bf6a357136ddb22b940ba810246",
+    "scripts/yuyuhakusho/test_runtime_resource_descriptor.py": "e2aaf29a8b8c66c2c588d984f34b24b2ebcbb6a87f176509b0b5a526ddfc1d76",
+    "docs/research/md-yuyuhakusho/runtime-resource-descriptor-red.txt": "28055386e1fb06545dfde6c8d023872801d89faab91d5db9bfcb865a5ebd21b8"
+  },
+  "adapter_corrections": [
+    {
+      "reason": "One source catalog is already exactly compact JSON without a newline; exact-byte identity must remain equal for that input, while re-stringification changes twelve sources. No input asset or exporter changed.",
+      "frozen_test": "docs/research/md-yuyuhakusho/runtime-resource-descriptor-test-before-normalization-correction.py.txt",
+      "frozen_test_sha256": "e2aaf29a8b8c66c2c588d984f34b24b2ebcbb6a87f176509b0b5a526ddfc1d76",
+      "retained_failure": "docs/research/md-yuyuhakusho/runtime-resource-descriptor-normalization-assumption-red.txt",
+      "changed_ids": [
+        "rules",
+        "sprites",
+        "hud",
+        "render_meta",
+        "arena-2",
+        "arena-4",
+        "arena-6",
+        "arena-8",
+        "arena-a",
+        "arena-c",
+        "arena-e",
+        "arena-a-aux"
+      ],
+      "already_compact_ids": [
+        "arena-default"
+      ],
+      "corrected_test_sha256": "d917bd42d613e62f4aaad9d803635826c56caad1abe8749b31f8c095a841c0fc"
+    }
+  ]
+}

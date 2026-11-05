@@ -1,0 +1,8 @@
+{"Time":"2026-11-05T23:58:41.395876+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games"}
+{"Time":"2026-11-05T23:58:41.899806+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games","Test":"TestAllIndependentGamesSupportComputers"}
+{"Time":"2026-11-05T23:58:41.900204+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games","Test":"TestAllIndependentGamesSupportComputers","Output":"=== RUN   TestAllIndependentGamesSupportComputers\n"}
+{"Time":"2026-11-05T23:58:41.900254+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games","Test":"TestAllIndependentGamesSupportComputers","Output":"--- PASS: TestAllIndependentGamesSupportComputers (0.00s)\n"}
+{"Time":"2026-11-05T23:58:41.900262+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games","Test":"TestAllIndependentGamesSupportComputers","Elapsed":0}
+{"Time":"2026-11-05T23:58:41.900268+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games","Output":"PASS\n"}
+{"Time":"2026-11-05T23:58:41.900301+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games\t0.504s\n"}
+{"Time":"2026-11-05T23:58:41.900308+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games","Elapsed":0.504}

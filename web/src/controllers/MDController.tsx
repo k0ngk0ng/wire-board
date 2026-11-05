@@ -8,6 +8,8 @@ import "./md-controller.css";
 
 export type MDControllerProps = {
   profile: ControllerProfile;
+  bindingLabels?: Record<string, string>;
+  activeButtons?: ReadonlySet<string>;
   mode: "play" | "configure";
   recording?: string;
   disabled?: boolean;
@@ -46,6 +48,8 @@ const names: Record<string, string> = {
 /** MD six-button faceplate; shared by settings and games. */
 export function MDController({
   profile,
+  bindingLabels,
+  activeButtons,
   mode,
   recording = "",
   disabled = false,
@@ -59,7 +63,7 @@ export function MDController({
       key={button}
       type="button"
       data-controller-button={button}
-      className={`md-control md-${button}${active.has(button) ? " is-pressed" : ""}${recording === button ? " recording" : ""}`}
+      className={`md-control md-${button}${active.has(button) || activeButtons?.has(button) ? " is-pressed" : ""}${recording === button ? " recording" : ""}`}
       aria-label={
         mode === "configure" ? `修改 ${labels[button]} 按键` : labels[button]
       }
@@ -81,7 +85,8 @@ export function MDController({
           <kbd>
             {recording === button
               ? "…"
-              : keyLabel(profile.keyboard[button] ?? "")}
+              : (bindingLabels?.[button] ??
+                keyLabel(profile.keyboard[button] ?? ""))}
           </kbd>
         </>
       ) : (

@@ -9,6 +9,8 @@ import "./fc-controller.css";
 export type FCControllerSink = ControllerSink;
 export type FCControllerProps = {
   profile: ControllerProfile;
+  bindingLabels?: Record<string, string>;
+  activeButtons?: ReadonlySet<string>;
   mode: "play" | "configure";
   recording?: string;
   disabled?: boolean;
@@ -43,6 +45,8 @@ const playLabels: Record<string, string> = {
 /** FC faceplate with paired upper turbo controls. Input and turbo timing belong to the platform sink. */
 export function FCController({
   profile,
+  bindingLabels,
+  activeButtons,
   mode,
   recording = "",
   disabled = false,
@@ -53,13 +57,14 @@ export function FCController({
     useControllerPointers({ profile, mode, disabled, sink });
   const control = (button: string, dpad = false) => {
     const waiting = recording === button;
-    const keyboard = keyLabel(profile.keyboard[button] ?? "");
+    const keyboard =
+      bindingLabels?.[button] ?? keyLabel(profile.keyboard[button] ?? "");
     return (
       <button
         key={button}
         type="button"
         data-controller-button={button}
-        className={`fc-control fc-${button}${active.has(button) ? " is-pressed" : ""}${waiting ? " recording" : ""}${mode === "configure" ? " controller-key" : ""}`}
+        className={`fc-control fc-${button}${active.has(button) || activeButtons?.has(button) ? " is-pressed" : ""}${waiting ? " recording" : ""}${mode === "configure" ? " controller-key" : ""}`}
         aria-label={
           mode === "configure" ? `修改 ${labels[button]} 按键` : labels[button]
         }

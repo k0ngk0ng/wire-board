@@ -1,0 +1,18 @@
+{
+  "at_utc": "2026-11-05T16:28:33.287190+00:00",
+  "removed_owned_paths": [
+    "games/yuyuhakusho/verification/controller-physical-port/settings-browser-first",
+    "games/yuyuhakusho/verification/controller-physical-port/settings-browser-first.log",
+    "games/yuyuhakusho/verification/controller-physical-port/settings-browser-final",
+    "games/yuyuhakusho/verification/controller-physical-port/settings-browser-final.log",
+    "games/yuyuhakusho/verification/controller-physical-port/js-syntax-repaired.log",
+    "games/yuyuhakusho/verification/controller-physical-port/format.txt",
+    "games/yuyuhakusho/verification/controller-physical-port/fixture-format.txt",
+    ".local/yc"
+  ],
+  "fixture_temp_directories_remaining": [],
+  "browser_process_closed": true,
+  "host_process_closed": true,
+  "main_modified": false,
+  "other_agents_files_removed": false
+}
