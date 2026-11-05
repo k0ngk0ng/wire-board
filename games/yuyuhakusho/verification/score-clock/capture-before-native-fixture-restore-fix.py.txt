@@ -1,0 +1,88 @@
+"""Private canonical YM service origin/cost oracle on the fixed native cores.
+
+The original core executes every instruction. Stepping and source PCs remain
+research provenance; no instruction or timing table enters production.
+"""
+import argparse,ctypes as C,gzip,json,os,subprocess
+from pathlib import Path
+from extract_audio_assets import AudioSession,write_cpu
+from reference import ROOT,CPUHead,sha
+from research_audio_loops import ORIGINAL,OBSERVED,quiet_checkpoint
+
+SOURCE=ROOT/'scripts/yuyuhakusho/score-clock-bridge.c'
+FIELDS=['kind','pc','at','after','refresh','width','address','value','zstate','z80','owner']
+class Event(C.Structure):_fields_=[(k,C.c_uint32)for k in FIELDS]
+
+def saved(path,value):
+ raw=(json.dumps(value,separators=(',',':'))+'\n').encode();path.write_bytes(gzip.compress(raw,mtime=0)if path.suffix=='.gz'else raw)
+def build(out):
+ tmp=out/'tmp';tmp.mkdir(parents=True,exist_ok=True);lib=out/'score-clock.dylib'
+ subprocess.run(['clang','-dynamiclib','-O2','-fno-modules',str(SOURCE),'-o',str(lib)],cwd=ROOT,env=dict(os.environ,TMPDIR=str(tmp),CLANG_MODULE_CACHE_PATH=str(tmp/'clang-cache')),check=True)
+ b=C.CDLL(str(lib));b.score_clock_attach.argtypes=[C.c_void_p]*9;b.score_clock_attach.restype=C.c_int;b.score_clock_pc.argtypes=[C.c_uint]
+ b.score_clock_count.restype=C.c_size_t;b.score_clock_events.restype=C.POINTER(Event);b.score_clock_size.restype=C.c_uint;b.score_clock_overflow.restype=C.c_uint;b.score_clock_detach.restype=C.c_int
+ assert b.score_clock_size()==C.sizeof(Event);return b,lib
+def attach(b,ref):
+ addr=C.addressof(ref.cpu);z=C.c_byte.in_dll(ref.lib,'Z80');state=C.c_ubyte.in_dll(ref.lib,'zstate')
+ fr=C.c_void_p.in_dll(ref.lib,'fm_read');fw=C.c_void_p.in_dll(ref.lib,'fm_write')
+ assert b.score_clock_attach(addr,addr+CPUHead.cycles.offset,addr+CPUHead.refresh_cycles.offset,C.addressof(z)+64,C.addressof(state),C.addressof(fr),C.addressof(fw),C.cast(ref.lib.z80_read_byte,C.c_void_p),C.cast(ref.lib.z80_write_byte,C.c_void_p))
+def events(b):
+ assert not b.score_clock_overflow();p=b.score_clock_events();return[{name:int(getattr(p[i],name))for name in FIELDS}for i in range(b.score_clock_count())]
+def setup(ref,checkpoint,case):
+ ref.restore(checkpoint,restore_refresh_cycles=True)
+ origin=case['origin'];ref.cpu.cycles=origin
+ ref.api('gen_zbusreq_w',None,C.c_uint,C.c_uint)(1,origin)
+ ref.cpu.cycles=origin;ref.cpu.refresh_cycles=case['refresh']
+ setreg=ref.api('m68k_set_reg',None,C.c_uint,C.c_uint)
+ for index,value in [(17,0x2700),(15,0xffff00),(0,case['register']),(1,case['value']),(16,0x38b2e if case['bank']==0 else 0x38b9e)]:setreg(index,value)
+ write_cpu(ref,0xffff00,0x3d8,4)
+ (C.c_ubyte*8192).in_dll(ref.lib,'zram')[0x1f2a]=0
+ if case['seed_busy']:
+  fr=C.c_void_p.in_dll(ref.lib,'fm_write').value;write=C.CFUNCTYPE(None,C.c_uint,C.c_uint,C.c_uint)(fr)
+  write(origin,0,0x2b);write(origin,1,0)
+ return ref.save()
+def execute(ref,b=None):
+ execute=ref.api('m68k_run',None,C.c_uint);rows=[]
+ for _ in range(10000):
+  pc=ref.get_register(16)&0xffffff
+  if pc==0x3d8:break
+  assert 0x38b2e<=pc<=0x38c2c,('Escaped canonical YM service',hex(pc))
+  before=ref.cpu.cycles;refresh=ref.cpu.refresh_cycles
+  if b:b.score_clock_pc(pc)
+  execute(before+1)
+  rows.append([pc,before,refresh,ref.cpu.cycles,ref.cpu.refresh_cycles])
+ else:raise AssertionError('Private YM service exceeded declared operation cap')
+ return rows
+def main():
+ p=argparse.ArgumentParser(description=__doc__);p.add_argument('--out',type=Path,required=True);p.add_argument('--smoke',action='store_true');a=p.parse_args()
+ out=a.out.resolve();assert out.is_relative_to(ROOT);out.mkdir(parents=True,exist_ok=True);b,lib=build(out)
+ cases=[]
+ for bank in [0,1]:
+  for reg in [0x28,0x44,0xb4]:
+   for origin,deadline in [(0,0),(1,896),(1008,1008),(2048,2050)]:
+    for busy in [False,True]:cases.append({'id':f'b{bank}-r{reg:02x}-o{origin}-d{deadline}-busy{int(busy)}','bank':bank,'register':reg,'value':0x45,'origin':origin,'refresh':deadline,'seed_busy':busy})
+ if a.smoke:cases=cases[:4]
+ outputs={};identities={};reports=[]
+ for mode,core in [('original',ORIGINAL),('hook',OBSERVED)]:
+  with AudioSession(ROOT,out/('core-'+mode),core=core)as ref:
+   checkpoint=quiet_checkpoint(ref);identities[mode]=ref.identity
+   for case in cases:
+    initial=setup(ref,checkpoint,case);control=execute(ref);control_save=ref.save();control_ram=ref.ram_cpu()
+    ref.restore(initial,restore_refresh_cycles=True);attach(b,ref)
+    if mode=='hook':ref.api('set_cpu_hook',None,C.c_void_p)(C.cast(b.score_clock_hook,C.c_void_p))
+    try:
+     observed=execute(ref,b);raw=events(b)
+    finally:
+     if mode=='hook':ref.api('set_cpu_hook',None,C.c_void_p)(None)
+     assert b.score_clock_detach()==1
+    after=ref.save();assert control==observed and control_save['data']==after['data'] and control_save['refresh_cycles']==after['refresh_cycles']and control_ram==ref.ram_cpu(),('Recorder changed native state',mode,case['id'])
+    comparable=[e for e in raw if e['kind']!=7]
+    if mode=='original':outputs[case['id']]={'steps':observed,'events':comparable}
+    else:
+     assert outputs[case['id']]=={'steps':observed,'events':comparable},('Pinned native builds disagree',case['id'])
+     reports.append({'input':case,'events':raw,'steps':observed,'end':{'cycle':ref.cpu.cycles,'refresh':ref.cpu.refresh_cycles},'native_state_equal_without_recorder':True,'both_native_builds_equal':True})
+  print(json.dumps({'mode':mode,'cases':len(cases),'done':True}),flush=True)
+ payload={'schema':1,'format':'native-canonical-YM-service-v1','cases':reports,'identity':identities,'scope':'Declared held-Z80-bus private service states; no natural mailbox retry, autonomous PCM or whole-driver cost claim'}
+ target=out/'native-services.json.gz';saved(target,payload)
+ saved(out/'capture.json',{'pass':True,'cases':len(reports),'identity':identities,'source_sha256':{str(p.relative_to(ROOT)):sha(p.read_bytes())for p in [SOURCE,Path(__file__)]},'artifact':{'path':str(target.relative_to(ROOT)),'sha256':sha(target.read_bytes())},'scope':payload['scope'],'bridge_sha256':sha(lib.read_bytes())})
+ print(json.dumps({'pass':True,'cases':len(reports),'events':sum(len(x['events'])for x in reports)}),flush=True)
+if __name__=='__main__':main()

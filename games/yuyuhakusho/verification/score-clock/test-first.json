@@ -1,0 +1,12 @@
+{
+  "test_first": true,
+  "at_utc": "2026-11-05T18:09:30.225832+00:00",
+  "files": {
+    "games/yuyuhakusho/audio/scoreclock/service_test.go": "15a831c2ee1314a9d02f93c05d4910f775fb8743ef08b489b9e408e5d44e9589",
+    "games/yuyuhakusho/audio/scoreclock/testdata/native-services.json.gz": "3d01fa573adc582e0da407fb908287532eaa10a1b63d9f1becdc5fa638c5acd2",
+    "games/yuyuhakusho/audio/scoreclock/testdata/native-manifest.json": "6f651fa3178149ed3b6f912635f2eeeb770379f1ee6aea64ab700af363250c97",
+    "docs/research/md-yuyuhakusho/SCORE_CLOCK_FAILURES.md": "4d7215dfa742d23598f61aff3cd5ab8d36b81bd34d64849c4eaca5b7b7a63ea1"
+  },
+  "red": "games/yuyuhakusho/verification/score-clock/missing-service-api-red.jsonl",
+  "production_exists": false
+}

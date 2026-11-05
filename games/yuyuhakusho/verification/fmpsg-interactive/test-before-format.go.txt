@@ -1,0 +1,122 @@
+package chips_test
+
+import (
+	"bytes"
+	"compress/gzip"
+	"encoding/base64"
+	"encoding/binary"
+	"encoding/json"
+	"io"
+	"math"
+	"os"
+	"reflect"
+	"testing"
+
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips"
+)
+
+type interactiveFixture struct {
+	Cases []struct {
+		Name string
+		Config chips.Config
+		Initial chips.State
+		Programs []struct {Start,PollStep,AddressCost,DataCost uint64; Bank,Register,Value uint8}
+		Operations []struct {Boundary bool;Event chips.Event;Read uint8;Snapshot chips.InteractiveState;Committed *chips.State;PCM string}
+	}
+}
+
+func readInteractiveFixture(t *testing.T) interactiveFixture {
+	t.Helper();raw,err:=os.ReadFile("../../verification/fmpsg-interactive/native.json.gz");if err!=nil{t.Fatal(err)}
+	z,err:=gzip.NewReader(bytes.NewReader(raw));if err!=nil{t.Fatal(err)};defer z.Close()
+	body,err:=io.ReadAll(z);if err!=nil{t.Fatal(err)}
+	var result interactiveFixture;if err=json.Unmarshal(body,&result);err!=nil{t.Fatal(err)}
+	if len(result.Cases)!=5{t.Fatal("interactive native coverage changed")};return result
+}
+func equalPCM(t *testing.T,got []int16,encoded string){
+	t.Helper();want,err:=base64.StdEncoding.DecodeString(encoded);if err!=nil{t.Fatal(err)}
+	if len(got)*2!=len(want){t.Fatal("interactive PCM length differs")}
+	for i,value:=range got{if value!=int16(binary.LittleEndian.Uint16(want[i*2:])){t.Fatalf("interactive PCM sample%d: Go%d Native%d",i,value,int16(binary.LittleEndian.Uint16(want[i*2:])))}}
+}
+
+func TestNativeInteractiveReadWriteAndSnapshots(t *testing.T){
+	fixture:=readInteractiveFixture(t);events,frames:=0,0
+	for _,row:=range fixture.Cases{t.Run(row.Name,func(t *testing.T){
+		active,err:=chips.NewInteractive(row.Config,row.Initial);if err!=nil{t.Fatal(err)}
+		legacy,err:=chips.NewStream(row.Config,row.Initial);if err!=nil{t.Fatal(err)}
+		var pending []chips.Event
+		for index,op:=range row.Operations{
+			if op.Boundary{
+				got,err:=active.FrameBoundary();if err!=nil{t.Fatalf("op%d: %v",index,err)}
+				equalPCM(t,got.PCM,op.PCM);if len(got.Reads)!=0{t.Fatal("interactive returned old status reads again")}
+				if err=legacy.Queue(pending);err!=nil{t.Fatal(err)};queued,err:=legacy.FrameBoundary();if err!=nil{t.Fatal(err)}
+				if !reflect.DeepEqual(queued.PCM,got.PCM){t.Fatal("legacy and interactive PCM differ")}
+				pending=nil;committed,err:=active.CommittedState();if err!=nil{t.Fatal(err)}
+				if op.Committed==nil || !reflect.DeepEqual(committed,*op.Committed) || !reflect.DeepEqual(committed,legacy.Snapshot()){t.Fatal("boundary committed state differs")}
+				frames++
+			}else{
+				e:=op.Event
+				switch e.Kind{
+				case chips.YMPortWrite:err=active.WritePort(e.Cycle,e.Port,e.Value)
+				case chips.PSGByteWrite:err=active.WritePSG(e.Cycle,e.Value)
+				case chips.YMStatusRead:var value uint8;value,err=active.ReadStatus(e.Cycle,e.Port);if value!=op.Read{t.Fatalf("op%d immediate read Go%x Native%x",index,value,op.Read)}
+				default:t.Fatal("unknown native interactive input")
+				}
+				if err!=nil{t.Fatalf("op%d: %v",index,err)}
+				if _,err=active.CommittedState();err==nil{t.Fatal("half-frame exported a lossy old State")}
+				pending=append(pending,e);events++
+			}
+			if got:=active.Snapshot();!reflect.DeepEqual(got,op.Snapshot){a,_:=json.Marshal(got);b,_:=json.Marshal(op.Snapshot);t.Fatalf("op%d snapshot differs\nGo=%s\nNative=%s",index,a,b)}
+			// Every event and boundary must survive a complete in-flight restore.
+			active,err=chips.RestoreInteractive(row.Config,active.Snapshot());if err!=nil{t.Fatal(err)}
+		}
+	})}
+	if events<200 || frames<10{t.Fatalf("incomplete interactive native coverage: %d events %d frames",events,frames)}
+}
+
+func TestInteractiveAdaptiveBusyServiceUsesReturnedStatus(t *testing.T){
+	fixture:=readInteractiveFixture(t)
+	for _,row:=range fixture.Cases{if row.Name!="adaptive-service"{continue}
+		active,err:=chips.NewInteractive(row.Config,row.Initial);if err!=nil{t.Fatal(err)}
+		index:=0
+		check:=func(e chips.Event,value uint8){t.Helper();if index>=len(row.Operations){t.Fatal("adaptive service exceeded original operations")};want:=row.Operations[index];if want.Boundary||want.Event!=e||want.Read!=value{t.Fatalf("adaptive operation%d differs: %+v %x",index,e,value)};index++}
+		for _,request:=range row.Programs{
+			cycle:=request.Start
+			for polls:=0;;polls++{if polls>1000{t.Fatal("busy loop failed to stop")};value,err:=active.ReadStatus(cycle,0);if err!=nil{t.Fatal(err)};check(chips.Event{Cycle:cycle,Kind:chips.YMStatusRead},value);if value&128==0{break};cycle+=request.PollStep}
+			cycle+=request.AddressCost
+			if err=active.WritePort(cycle,request.Bank*2,request.Register);err!=nil{t.Fatal(err)};check(chips.Event{Cycle:cycle,Kind:chips.YMPortWrite,Port:request.Bank*2,Value:request.Register},0)
+			cycle+=request.DataCost
+			if err=active.WritePort(cycle,request.Bank*2+1,request.Value);err!=nil{t.Fatal(err)};check(chips.Event{Cycle:cycle,Kind:chips.YMPortWrite,Port:request.Bank*2+1,Value:request.Value},0)
+		}
+		if index+1!=len(row.Operations)||!row.Operations[index].Boundary{t.Fatal("native adaptive program shape changed")}
+		frame,err:=active.FrameBoundary();if err!=nil{t.Fatal(err)};equalPCM(t,frame.PCM,row.Operations[index].PCM)
+		return
+	}
+	t.Fatal("missing original adaptive busy service")
+}
+
+func TestInteractiveAtomicBoundsAndOwnerContract(t *testing.T){
+	config:=chips.Config{Profile:chips.ReferenceMixedHQ44100};initial:=mixedReset()
+	active,err:=chips.NewInteractive(config,initial);if err!=nil{t.Fatal(err)}
+	if err=active.WritePort(1000,0,0x2a);err!=nil{t.Fatal(err)}
+	if err=active.WritePort(1000,1,17);err!=nil{t.Fatal(err)}
+	before:=active.Snapshot();view:=active.Snapshot();view.FIR[0][0]++
+	if !reflect.DeepEqual(before,active.Snapshot()){t.Fatal("interactive snapshot FIR alias")}
+	for _,bad:=range []func()error{
+		func()error{return active.WritePort(1000,4,0)},func()error{_,e:=active.ReadStatus(1000,4);return e},
+		func()error{return active.WritePSG(999,0x90)},func()error{return active.WritePort(chips.FrameCycles+chips.MaxInputAhead+1,0,0)},
+	}{if err=bad();err==nil{t.Fatal("invalid interaction accepted")};if !reflect.DeepEqual(before,active.Snapshot()){t.Fatal("invalid interaction partially committed")}}
+	for _,change:=range []func(*chips.InteractiveState){
+		func(s *chips.InteractiveState){s.FIR[0]=s.FIR[0][:1]},func(s *chips.InteractiveState){s.Cursor=s.Time+chips.FrameCycles+chips.MaxInputAhead+1},
+		func(s *chips.InteractiveState){s.InputCount=chips.MaxPendingEvents+1},func(s *chips.InteractiveState){s.FMGenerated=1000},
+		func(s *chips.InteractiveState){s.YM.Address=512},func(s *chips.InteractiveState){s.PSG.NoiseShift=0},
+	}{state:=active.Snapshot();change(&state);if _,err=chips.RestoreInteractive(config,state);err==nil{t.Fatal("invalid interactive snapshot accepted")}}
+	queued:=initial;queued.Pending=[]chips.Event{{Kind:chips.YMPortWrite}}
+	if _,err=chips.NewInteractive(config,queued);err==nil{t.Fatal("unconsumed queued inputs silently switched mode")}
+	for _,forbidden:=range []string{"Tail","Pending","Base","Committed","History","Events"}{if _,exists:=reflect.TypeOf(before).FieldByName(forbidden);exists{t.Fatal("interactive duplicated a persisted owner",forbidden)}}
+	limited,err:=chips.NewInteractive(config,initial);if err!=nil{t.Fatal(err)}
+	for i:=0;i<chips.MaxPendingEvents;i++{if err=limited.WritePort(0,0,uint8(i));err!=nil{t.Fatal(err)}}
+	full:=limited.Snapshot();if _,err=limited.ReadStatus(0,0);err==nil{t.Fatal("unbounded interactive operations")};if !reflect.DeepEqual(full,limited.Snapshot()){t.Fatal("capacity rejection changed state")}
+	if _,err=limited.FrameBoundary();err!=nil{t.Fatal(err)};if _,err=limited.ReadStatus(chips.FrameCycles,0);err!=nil{t.Fatal("frame flush did not reset input capacity",err)}
+	late,err:=chips.NewInteractive(chips.Config{Profile:chips.ReferenceMixedHQ44100,MasterOrigin:math.MaxUint64-100},initial);if err!=nil{t.Fatal(err)}
+	old:=late.Snapshot();if _,err=late.ReadStatus(101,0);err==nil{t.Fatal("interactive origin+cycle overflow accepted")};if _,err=late.FrameBoundary();err==nil{t.Fatal("interactive origin+frame overflow accepted")};if !reflect.DeepEqual(old,late.Snapshot()){t.Fatal("overflow mutated interactive chip/FIR")}
+}

@@ -1,0 +1,50 @@
+{
+  "pass": false,
+  "scope": "Ordered typed intents do not establish driver service times",
+  "source": "games/yuyuhakusho/audio/score/testdata/isolated-82.jsonl.gz",
+  "source_sha256": "bd63401746edf76a196177ed96fa1eae0979bd737e3650c2951f048a625f4210",
+  "intents": 97992,
+  "missing_timed_chip_intents": 97409,
+  "first_missing": [
+    {
+      "frame_index": 1,
+      "order": 0,
+      "kind": "ym"
+    },
+    {
+      "frame_index": 1,
+      "order": 1,
+      "kind": "ym"
+    },
+    {
+      "frame_index": 1,
+      "order": 2,
+      "kind": "ym"
+    },
+    {
+      "frame_index": 1,
+      "order": 3,
+      "kind": "ym"
+    },
+    {
+      "frame_index": 1,
+      "order": 4,
+      "kind": "ym"
+    },
+    {
+      "frame_index": 1,
+      "order": 5,
+      "kind": "ym"
+    },
+    {
+      "frame_index": 1,
+      "order": 6,
+      "kind": "ym"
+    },
+    {
+      "frame_index": 1,
+      "order": 7,
+      "kind": "ym"
+    }
+  ]
+}

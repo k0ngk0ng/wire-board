@@ -1,0 +1,16 @@
+{
+  "source": {
+    "path": ".local/md-yuyuhakusho/score-clock-native/native-services.json.gz",
+    "sha256": "c8bf595aad4bbe770974ef249b10e1b368ea46b07c5aaa31bd0266fc51e29bda"
+  },
+  "output": {
+    "path": "games/yuyuhakusho/audio/scoreclock/testdata/native-services.json.gz",
+    "gzip_sha256": "3d01fa573adc582e0da407fb908287532eaa10a1b63d9f1becdc5fa638c5acd2",
+    "json_sha256": "9e35be91a11038b8b9a99ea436e6f2d5f6d4222c28564de197dce201b5bc1dd6"
+  },
+  "cases": 48,
+  "accesses": 472,
+  "cache_effects": 16,
+  "producer_sha256": "6dc5ee8049553bfea75e7ef88686a8b33b20746e134ffbcc43bef9d7ce6302e9",
+  "source_addresses_in_runtime_fixture": false
+}

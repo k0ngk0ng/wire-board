@@ -1,0 +1,579 @@
+{
+  "scope": "Immediate interactive chip feedback, in-flight native-projected FIR/state and unchanged queued PCM/state oracles; no original driver CPU costs or independently assigned event times claim",
+  "native": {
+    "scope": "Private cold original chip resets, immediate native port/status feedback and non-mutating in-flight FIR projection; no CPU or real driver phase-cost claim",
+    "cases": 5,
+    "events": 1109,
+    "frames": 13,
+    "stereo_frames": 9563,
+    "original_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+    "observed_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "projection_nochange_checks_per_core": 1127,
+    "producer_sha256": "46feba71e21f05e910951d118868f52e4092d2d3c2241708e7f83aa4c33c81bc",
+    "json_sha256": "56ef95a93dd323ed437b175edefeb0ffbaa5b2882468ba0fbaeee23b7a1d3ca8",
+    "gzip_sha256": "52e11e14baf8db047142dc5e7a2a9cee89265508c2540c1fbdc7a0c594f7df4b",
+    "gzip_bytes": 206837,
+    "pass": true
+  },
+  "checks": {
+    "native_race": {
+      "top_level": 17,
+      "sub_scenarios": 62,
+      "packages": [
+        "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips/psg",
+        "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/dsp",
+        "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips"
+      ],
+      "log": {
+        "path": "games/yuyuhakusho/verification/fmpsg-interactive/race-final.jsonl",
+        "bytes": 76125,
+        "sha256": "4dd6edb0b9a64919f57da7e25014b1688dc2946fdfb42821caaf8f491b9e1e5f"
+      }
+    },
+    "wasm": {
+      "top_level": 17,
+      "sub_scenarios": 62,
+      "packages": [
+        "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips/psg",
+        "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/dsp",
+        "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips"
+      ],
+      "log": {
+        "path": "games/yuyuhakusho/verification/fmpsg-interactive/wasm-final.jsonl",
+        "bytes": 76113,
+        "sha256": "1a4f2f9dbc44c63e9125fb3424b6a621d05cbc3ad8dd8239ff061e299fef695f"
+      }
+    }
+  },
+  "vet_pass": true,
+  "prior_frozen_validation": {
+    "path": "games/yuyuhakusho/verification/fmpsg-ym/validation.json",
+    "bytes": 21102,
+    "sha256": "2024c8dcf4a334994f25f1818107c816a6c67d172daf947cd2a8eb97ec1621b5"
+  },
+  "preserved_prior_stream": {
+    "path": "games/yuyuhakusho/verification/fmpsg-interactive/stream-before-interactive.go.txt",
+    "bytes": 10682,
+    "sha256": "cad1f5f08a768403620fb014a37fe770af37233d80f3c2ee4538338159d8fc65"
+  },
+  "unchanged_frozen_audio_go_sources": [
+    {
+      "path": "games/yuyuhakusho/audio/chips/kernel_contract_test.go",
+      "bytes": 451,
+      "sha256": "d01e01f8905ca158ee9604782a7c8add2a86e55d6db80599ce9326bc6ece657c"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/psg/psg.go",
+      "bytes": 8044,
+      "sha256": "b13590a9b3c4f04a45ea77ebf0938903550c889ab317b3ff8c877b95a71cb9ff"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/psg/psg_test.go",
+      "bytes": 5272,
+      "sha256": "0c19b319cb0fc923a797366b6bb35425d019cda73ffeea93d86dc29e73ef1db4"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/stream_test.go",
+      "bytes": 5538,
+      "sha256": "fc2f63f06dd7b5b4838d973783fb8ffacd3c14de1c11ad90b70c800353870878"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/ym.go",
+      "bytes": 18862,
+      "sha256": "c2a893762a202145ef03a97cfd08762119378604d9aef3f69a48487020b17b62"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/ym_tables.go",
+      "bytes": 3731,
+      "sha256": "d9a1b020866cdf687790b3013a3bca72ecead5fcceadb1654acda4d78438344a"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/ym_test.go",
+      "bytes": 5121,
+      "sha256": "e64daa6f258ce0a3c7d46dcc83688e4fef9aad60f50aaf13782668c8282ffffa"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/dsp/dsp.go",
+      "bytes": 10402,
+      "sha256": "9b15ee92fc61bd9265052944f86ce6140782176700cca9a5b93adf0edb47aced"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/dsp/dsp_test.go",
+      "bytes": 10442,
+      "sha256": "226c6227033d4ba27411c8f671eaa65dc65683e22f6d67354414785e8261fada"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/dsp/kernel.go",
+      "bytes": 1809,
+      "sha256": "bdf6c8423864f8ed991c95b5d7e615bf74b05d53b3708b15e2556e96a6e184c1"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/dsp/kernel_view.go",
+      "bytes": 303,
+      "sha256": "4ad1d64448b9a0ca021bad6e109b8cda19d34c111a6c1784e0eb96741ce800ed"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/dsp/overflow_test.go",
+      "bytes": 800,
+      "sha256": "764f6cf8d0f18d56a02a04a77aa79def7247a5b737a26302cc775232a7b5f122"
+    }
+  ],
+  "sources": [
+    {
+      "path": "docs/research/md-yuyuhakusho/FMPSG_DSP.md",
+      "bytes": 5954,
+      "sha256": "4911db5f16b3aec91feb0c8525b4c65ee243151a1211565f05cc0028904f2331"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/FMPSG_FAILURES.md",
+      "bytes": 2638,
+      "sha256": "44bb4089100773086793d963d6a14cdb09de08db5e841afe770cf3856c6d730b"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/FMPSG_INTERACTIVE.md",
+      "bytes": 5662,
+      "sha256": "e7af48c9407b0f91878d02efca61c65fb5538240d036de10df824f0c8096af78"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/FMPSG_INTERACTIVE_FAILURES.md",
+      "bytes": 3333,
+      "sha256": "d7c51160d1ad9f378b59fe638ad5a7f480b4399fa205637685b2f919670d4512"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/FMPSG_PSG.md",
+      "bytes": 6735,
+      "sha256": "493b2bd2157f255867046c22de6d77c58d25611bb10a691a1574238ec3303b1a"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/FMPSG_PSG_FAILURES.md",
+      "bytes": 2246,
+      "sha256": "b5eb0c5af2768ab1fdb2fb8f99b88cf11174d0220ab333afc648ba5266e2f0b5"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/INTERACTIVE.md",
+      "bytes": 3420,
+      "sha256": "d437938c0ce02dfdac5555997800433d2f5c0e0b902c0516894e533ad67e42e4"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/README.md",
+      "bytes": 3522,
+      "sha256": "67db1c394d09a185f319d23ddfddc72ce4b4242164862e25be22bdd35f2b0636"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/SOURCE.md",
+      "bytes": 2411,
+      "sha256": "8ed27e1653ff3ffe8ee0da3952cd60a81354ecebf84885f0e2c139930bb3ad30"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/interactive.go",
+      "bytes": 14749,
+      "sha256": "44b2f607d2bf405b5e693c1cf9000f0a3d07571c4f67bf51c929914e4dade824"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/interactive_test.go",
+      "bytes": 9477,
+      "sha256": "65f420ddeb6b57c50a466c4906432245231da55fd92b260d033ec46894fe5409"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/kernel_contract_test.go",
+      "bytes": 451,
+      "sha256": "d01e01f8905ca158ee9604782a7c8add2a86e55d6db80599ce9326bc6ece657c"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/psg/README.md",
+      "bytes": 2355,
+      "sha256": "f98f92c4a1c511e08b23c000d65514fc562cd9a52e98931ce742d68998569dce"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/psg/psg.go",
+      "bytes": 8044,
+      "sha256": "b13590a9b3c4f04a45ea77ebf0938903550c889ab317b3ff8c877b95a71cb9ff"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/psg/psg_test.go",
+      "bytes": 5272,
+      "sha256": "0c19b319cb0fc923a797366b6bb35425d019cda73ffeea93d86dc29e73ef1db4"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/stream.go",
+      "bytes": 6142,
+      "sha256": "91d0be1cc1412a1416dfebf5bf8cf78a2901ae08f782de6c456b7a3f836ad3e0"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/stream_test.go",
+      "bytes": 5538,
+      "sha256": "fc2f63f06dd7b5b4838d973783fb8ffacd3c14de1c11ad90b70c800353870878"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/ym.go",
+      "bytes": 18862,
+      "sha256": "c2a893762a202145ef03a97cfd08762119378604d9aef3f69a48487020b17b62"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/ym_tables.go",
+      "bytes": 3731,
+      "sha256": "d9a1b020866cdf687790b3013a3bca72ecead5fcceadb1654acda4d78438344a"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/ym_test.go",
+      "bytes": 5121,
+      "sha256": "e64daa6f258ce0a3c7d46dcc83688e4fef9aad60f50aaf13782668c8282ffffa"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/dsp/KERNEL_SOURCE.md",
+      "bytes": 1745,
+      "sha256": "1acdce5137fd136e1425a1eb7c68a33fcc71f2cfc6871d659874e3add0ce7a97"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/dsp/README.md",
+      "bytes": 2696,
+      "sha256": "825c457e56192137f06ab8dfeec75a3f3fb30afd19bb826afeb0425c832fe539"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/dsp/dsp.go",
+      "bytes": 10402,
+      "sha256": "9b15ee92fc61bd9265052944f86ce6140782176700cca9a5b93adf0edb47aced"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/dsp/dsp_test.go",
+      "bytes": 10442,
+      "sha256": "226c6227033d4ba27411c8f671eaa65dc65683e22f6d67354414785e8261fada"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/dsp/kernel.go",
+      "bytes": 1809,
+      "sha256": "bdf6c8423864f8ed991c95b5d7e615bf74b05d53b3708b15e2556e96a6e184c1"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/dsp/kernel_view.go",
+      "bytes": 303,
+      "sha256": "4ad1d64448b9a0ca021bad6e109b8cda19d34c111a6c1784e0eb96741ce800ed"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/dsp/overflow_test.go",
+      "bytes": 800,
+      "sha256": "764f6cf8d0f18d56a02a04a77aa79def7247a5b737a26302cc775232a7b5f122"
+    },
+    {
+      "path": "go.mod",
+      "bytes": 702,
+      "sha256": "33aa54f687143b2e468be7fe308f3455104c8b0f2fdc6e409233b5b1c8a3166f"
+    },
+    {
+      "path": "go.sum",
+      "bytes": 4934,
+      "sha256": "bde219704d2cf0b9e3e8b9bb01e6d97656accddcf5423d8587cd1afd8b8c25cb"
+    },
+    {
+      "path": "scripts/yuyuhakusho/extract_audio_assets.py",
+      "bytes": 29061,
+      "sha256": "e8a59cb97a15b02d930b2335175eca9fb17600a778ce93d779449cdac3775f56"
+    },
+    {
+      "path": "scripts/yuyuhakusho/fmpsg_capture_interactive.py",
+      "bytes": 8988,
+      "sha256": "46feba71e21f05e910951d118868f52e4092d2d3c2241708e7f83aa4c33c81bc"
+    },
+    {
+      "path": "scripts/yuyuhakusho/fmpsg_capture_mixed.py",
+      "bytes": 6804,
+      "sha256": "2cad5d41c6384674a0adfa8b8053b6ac9d549f3c113664d0bcc0c9d43d9d44f5"
+    },
+    {
+      "path": "scripts/yuyuhakusho/fmpsg_capture_ym.py",
+      "bytes": 7445,
+      "sha256": "e0a844190151342b41e340955f4d910ed32beabda708075beb8c0bed59b3ee40"
+    },
+    {
+      "path": "scripts/yuyuhakusho/fmpsg_generate_tables.py",
+      "bytes": 1981,
+      "sha256": "e75f8c10c92d62b585488f6c3eec614ffef9e0518ee80212ce84d66985884c1d"
+    },
+    {
+      "path": "scripts/yuyuhakusho/fmpsg_psg_capture.py",
+      "bytes": 10145,
+      "sha256": "cea9ec640768978121b56ca96c0c95fb5145c48d3ac1bc71e0dd72f8f089f061"
+    },
+    {
+      "path": "scripts/yuyuhakusho/fmpsg_psg_verify.py",
+      "bytes": 2769,
+      "sha256": "340a5ac5c34ff0161f590b89035ff4f300742591125f28f44d884777f7586108"
+    },
+    {
+      "path": "scripts/yuyuhakusho/fmpsg_verify.py",
+      "bytes": 5155,
+      "sha256": "b8ec6a47177fa79f0dccb47c36b2f02451d486432fd106d2cdfb071334b76400"
+    },
+    {
+      "path": "scripts/yuyuhakusho/fmpsg_verify_interactive.py",
+      "bytes": 5596,
+      "sha256": "20583d3be2f3a20c07a842e84a11ff62cd88ec23539d005c5bff8ae700e60cdc"
+    },
+    {
+      "path": "scripts/yuyuhakusho/inspect_dac_dsp_state.py",
+      "bytes": 5746,
+      "sha256": "008576cb72b0ef5feab4e566dda23e9d2841a6340a66c93a4ba04de07284d82f"
+    },
+    {
+      "path": "scripts/yuyuhakusho/reference.py",
+      "bytes": 8606,
+      "sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81"
+    }
+  ],
+  "source_manifest_sha256": "7b6a97819b048e9a1cb9fb99bfa8d4a4ed42e848424bb1004445702bd160747e",
+  "artifacts": [
+    {
+      "path": "games/yuyuhakusho/audio/chips/psg/testdata/native.json.gz",
+      "bytes": 214810,
+      "sha256": "2b4ef75c4a5d97dd3861bfb6bb253a3f92bc2a2365b30d8f15b2814f91a56ab2"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-interactive/cleanup.json",
+      "bytes": 424,
+      "sha256": "13d809684eff3ecbde3d69404d7ae08f4c7202115523916c1471d523890431da"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-interactive/first-native.jsonl",
+      "bytes": 45134,
+      "sha256": "9e11a36106906c7128159e68cf3c3da9cd837364b71ee4f6c3f86c1ad28f1931"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-interactive/missing-interface-red.jsonl",
+      "bytes": 4211,
+      "sha256": "c71ce8ac2a6fc261cd8d1bf512586808808fb807da8bd4ebeddeb3563f73adcd"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-interactive/native-capture.json",
+      "bytes": 769,
+      "sha256": "c45cb8ed2b9e05a9af5e00377856c1050844828a34036abdb9231c45ec96d633"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-interactive/native-interface-red.jsonl",
+      "bytes": 4211,
+      "sha256": "04f0fad3ad8e9b6c3d2fe41114fb15a569186df141bdf39fc9864a29a2a28f96"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-interactive/native.json.gz",
+      "bytes": 206837,
+      "sha256": "52e11e14baf8db047142dc5e7a2a9cee89265508c2540c1fbdc7a0c594f7df4b"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-interactive/race-final.jsonl",
+      "bytes": 76125,
+      "sha256": "4dd6edb0b9a64919f57da7e25014b1688dc2946fdfb42821caaf8f491b9e1e5f"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-interactive/recapture.json",
+      "bytes": 180,
+      "sha256": "59725eeb2237c08de9660f80d3d3d859ff4919eec088f43f841150b37dc9cc42"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-interactive/stream-before-interactive.go.txt",
+      "bytes": 10682,
+      "sha256": "cad1f5f08a768403620fb014a37fe770af37233d80f3c2ee4538338159d8fc65"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-interactive/test-before-format.go.txt",
+      "bytes": 8183,
+      "sha256": "c09ea7a4f9010360ad655df42e687b7afae894bdb2fa87dc92a0f8abf7d111f8"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-interactive/test-first.json",
+      "bytes": 844,
+      "sha256": "8dec5a687f7b3a311dd1274db46c47508bba9ee9da8bf19b756f89496c28245d"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-interactive/vet-final.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-interactive/wasm-final.jsonl",
+      "bytes": 76113,
+      "sha256": "1a4f2f9dbc44c63e9125fb3424b6a621d05cbc3ad8dd8239ff061e299fef695f"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-mixed/native-capture.json",
+      "bytes": 717,
+      "sha256": "69d6a3eb07aec6dae52e44f75bc4bebbd0fd33c890fd8b75db6d177b086d866e"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-mixed/native-frames.json.gz",
+      "bytes": 733726,
+      "sha256": "a603ceca091bf87165cf9109682fa1697ebfd54a48074b44684f6bfcb5ceba94"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-psg/native-artifact-manifest.json",
+      "bytes": 4949,
+      "sha256": "f4ef9d65a61229fff3a74f862d25756174b36dc34c20e4897acaf72d2ec2fa36"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-psg/native-capture.json",
+      "bytes": 2631,
+      "sha256": "1ef44d1e84283172e75c42b77cf7fc75f4da3a91a2b0e50253d60f8f3e378f6e"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-psg/native-command.json",
+      "bytes": 1594,
+      "sha256": "adcc5419d02c86df3f47b7a182f70f047e8ea1469eadd568e9416261259ae8e3"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-psg/race-command.json",
+      "bytes": 1605,
+      "sha256": "634155a9562102200a1d123bedba2b0051a7d61075fb303da390d49cc2b74acb"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-psg/validation.json",
+      "bytes": 3351,
+      "sha256": "a2c25be035727a1b29355e2c957a22a6a5900031929f1570fab63dc086bb3511"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-psg/vet-command.json",
+      "bytes": 1561,
+      "sha256": "0ef8d7b59d5a0e86e42db5790122b9bdca5891cec0d3918945921464d47c56bd"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-psg/wasm-command.json",
+      "bytes": 1716,
+      "sha256": "c327660647c798e1655df341cfdcd8bcbd621d1614232a733788292634d9ab97"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-psg-test-first.json",
+      "bytes": 461,
+      "sha256": "2a5f4d6b954a342a20e2f88a1439db6ab375b02f2f87e79d3a463c15e0361d0a"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-ym/cleanup.json",
+      "bytes": 513,
+      "sha256": "33580969694b3bb1cb36489ef2601062c33d8468b1c1148b7ad238c61b1feb4e"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-ym/native-capture-uninitialized-config.json",
+      "bytes": 726,
+      "sha256": "cc30948b4e635769ed0ff83cce11d4e9e22ef7f91940583f022e18396cfa6021"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-ym/native-capture.json",
+      "bytes": 726,
+      "sha256": "ed54ddb8db4e4ad3f6d5785bd88e37670b6e888ad3ef738552a379b4419f27d4"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-ym/native-recapture.json",
+      "bytes": 421,
+      "sha256": "872cc670c72f72c9823890c6cc98253498f236d11554298f48aba0588d0840ab"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-ym/oracle-configuration-correction.json",
+      "bytes": 502,
+      "sha256": "40deaddb6b1769f94c78397a9137f64aaf1b8fba0adbec43c999842bb7c1eb73"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-ym/report-counter-correction.json",
+      "bytes": 500,
+      "sha256": "7c73c67824057718384862ed5f6d847cdac77071705979fcecce634c89955d29"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-ym/table-regeneration.json",
+      "bytes": 255,
+      "sha256": "69ca363f67028499be0e0526adadac7a8f73822a31f253d09a998a39698acd88"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-ym/test-first.json",
+      "bytes": 617,
+      "sha256": "9b332464d8a10a2cd2cff5acf621f14c80eda9ed5d38638c8ce78841963f00ee"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-ym/validation.json",
+      "bytes": 21102,
+      "sha256": "2024c8dcf4a334994f25f1818107c816a6c67d172daf947cd2a8eb97ec1621b5"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-ym/ym-native-uninitialized-config.json.gz",
+      "bytes": 172117,
+      "sha256": "44792e5195877739395b4e10820b24d77e22eaf9d8dde254d4177b97bfddcb6a"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-ym/ym-native.json.gz",
+      "bytes": 1160244,
+      "sha256": "2efddfc294a7581dab70e2fb991b3ea0735d57392860c15b1e11f14dae586f4f"
+    }
+  ],
+  "commands": {
+    "native_race": {
+      "argv": [
+        "nice",
+        "-n",
+        "15",
+        "/opt/homebrew/bin/go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "./games/yuyuhakusho/audio/chips/...",
+        "./games/yuyuhakusho/audio/dsp"
+      ],
+      "environment": {
+        "PATH": "/opt/homebrew/bin:/Users/jason/.nvm/versions/node/v24.15.0/bin:/usr/bin:/bin",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "LC_CTYPE": "C.UTF-8",
+        "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+        "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+        "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+        "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+        "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp"
+      }
+    },
+    "wasm": {
+      "argv": [
+        "nice",
+        "-n",
+        "15",
+        "/opt/homebrew/bin/go",
+        "test",
+        "-exec",
+        "/opt/homebrew/Cellar/go/1.26.2/libexec/lib/wasm/go_js_wasm_exec",
+        "-json",
+        "-count=1",
+        "./games/yuyuhakusho/audio/chips/...",
+        "./games/yuyuhakusho/audio/dsp"
+      ],
+      "environment": {
+        "PATH": "/opt/homebrew/bin:/Users/jason/.nvm/versions/node/v24.15.0/bin:/usr/bin:/bin",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "LC_CTYPE": "C.UTF-8",
+        "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+        "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+        "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+        "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+        "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+        "GOOS": "js",
+        "GOARCH": "wasm"
+      }
+    },
+    "vet": {
+      "argv": [
+        "nice",
+        "-n",
+        "15",
+        "/opt/homebrew/bin/go",
+        "vet",
+        "./games/yuyuhakusho/audio/chips/...",
+        "./games/yuyuhakusho/audio/dsp"
+      ],
+      "environment": {
+        "PATH": "/opt/homebrew/bin:/Users/jason/.nvm/versions/node/v24.15.0/bin:/usr/bin:/bin",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "LC_CTYPE": "C.UTF-8",
+        "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+        "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+        "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+        "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+        "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp"
+      }
+    }
+  },
+  "pass": true
+}

@@ -1,0 +1,7 @@
+{
+  "pass": true,
+  "case_count": 4,
+  "all_native_rows_equal_full_prefix": true,
+  "smoke_sha256": "c2ca75fca8b20c67cb52f687ac547ad91cfff7924a3de9f0ffcd2ca718a41fb7",
+  "full_sha256": "c8bf595aad4bbe770974ef249b10e1b368ea46b07c5aaa31bd0266fc51e29bda"
+}

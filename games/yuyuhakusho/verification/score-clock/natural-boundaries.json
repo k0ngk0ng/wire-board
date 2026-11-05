@@ -1,0 +1,1179 @@
+{
+  "pass": true,
+  "scope": "Actual selected natural IO/owned-field boundaries only; not a complete driver cost predictor",
+  "source": {
+    "path": ".local/md-yuyuhakusho/score-clock-natural/natural-windows.json.gz",
+    "sha256": "52de3d48cd11a4f61222b699f4516843ea477fb7e6a289155ecd97fe2338f5cb"
+  },
+  "pause_transitions": [
+    {
+      "frame": 3001,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201139,
+        "after": 201139,
+        "refresh": 201475,
+        "width": 1,
+        "address": 63495,
+        "value": 1,
+        "zstate": 1,
+        "z80": 198405,
+        "owner": 1
+      },
+      "actual_pause_field_store": {
+        "kind": 10,
+        "pc": 228258,
+        "at": 201741,
+        "after": 201741,
+        "refresh": 202413,
+        "width": 1,
+        "address": 4294965255,
+        "value": 255,
+        "zstate": 1,
+        "z80": 198405,
+        "owner": 1
+      },
+      "first_main_YM_write_after_store": {
+        "kind": 2,
+        "pc": 232322,
+        "at": 205871,
+        "after": 205871,
+        "refresh": 206214,
+        "width": 1,
+        "address": 0,
+        "value": 66,
+        "zstate": 3,
+        "z80": 202380,
+        "owner": 1
+      },
+      "main_YM_writes_after_store": 48,
+      "last_control_end": {
+        "kind": 5,
+        "pc": 4294963376,
+        "at": 828899,
+        "after": 828899,
+        "refresh": 829137,
+        "width": 1,
+        "address": 10555648,
+        "value": 103,
+        "zstate": 3,
+        "z80": 828810,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 3041,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201068,
+        "after": 201068,
+        "refresh": 201628,
+        "width": 1,
+        "address": 63495,
+        "value": 128,
+        "zstate": 3,
+        "z80": 4259954506,
+        "owner": 1
+      },
+      "actual_pause_field_store": {
+        "kind": 10,
+        "pc": 228360,
+        "at": 201684,
+        "after": 201684,
+        "refresh": 202566,
+        "width": 1,
+        "address": 4294965255,
+        "value": 0,
+        "zstate": 3,
+        "z80": 4259954506,
+        "owner": 1
+      },
+      "first_main_YM_write_after_store": {
+        "kind": 2,
+        "pc": 232322,
+        "at": 204197,
+        "after": 204197,
+        "refresh": 204540,
+        "width": 1,
+        "address": 0,
+        "value": 66,
+        "zstate": 3,
+        "z80": 203640,
+        "owner": 1
+      },
+      "main_YM_writes_after_store": 48,
+      "last_control_end": {
+        "kind": 5,
+        "pc": 13130,
+        "at": 887032,
+        "after": 887032,
+        "refresh": 887039,
+        "width": 1,
+        "address": 10555648,
+        "value": 102,
+        "zstate": 1,
+        "z80": 886800,
+        "owner": 1
+      }
+    }
+  ],
+  "held_pause_ticks": [
+    {
+      "frame": 3002,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201069,
+        "after": 201069,
+        "refresh": 201405,
+        "width": 1,
+        "address": 63495,
+        "value": 255,
+        "zstate": 3,
+        "z80": 4294900066,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 3003,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201068,
+        "after": 201068,
+        "refresh": 201404,
+        "width": 1,
+        "address": 63495,
+        "value": 255,
+        "zstate": 3,
+        "z80": 4294004026,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 3004,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201071,
+        "after": 201071,
+        "refresh": 201407,
+        "width": 1,
+        "address": 63495,
+        "value": 255,
+        "zstate": 3,
+        "z80": 4293107986,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 3005,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201057,
+        "after": 201057,
+        "refresh": 201155,
+        "width": 1,
+        "address": 63495,
+        "value": 255,
+        "zstate": 3,
+        "z80": 4292211946,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 3006,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201071,
+        "after": 201071,
+        "refresh": 201407,
+        "width": 1,
+        "address": 63495,
+        "value": 255,
+        "zstate": 3,
+        "z80": 4291315906,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 3007,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201057,
+        "after": 201057,
+        "refresh": 201155,
+        "width": 1,
+        "address": 63495,
+        "value": 255,
+        "zstate": 3,
+        "z80": 4290419866,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 3008,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201068,
+        "after": 201068,
+        "refresh": 201404,
+        "width": 1,
+        "address": 63495,
+        "value": 255,
+        "zstate": 3,
+        "z80": 4289523826,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 3009,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201071,
+        "after": 201071,
+        "refresh": 201407,
+        "width": 1,
+        "address": 63495,
+        "value": 255,
+        "zstate": 3,
+        "z80": 4288627786,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 3010,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201071,
+        "after": 201071,
+        "refresh": 201407,
+        "width": 1,
+        "address": 63495,
+        "value": 255,
+        "zstate": 3,
+        "z80": 4287731746,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 3011,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201071,
+        "after": 201071,
+        "refresh": 201407,
+        "width": 1,
+        "address": 63495,
+        "value": 255,
+        "zstate": 3,
+        "z80": 4286835706,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 3012,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201071,
+        "after": 201071,
+        "refresh": 201407,
+        "width": 1,
+        "address": 63495,
+        "value": 255,
+        "zstate": 3,
+        "z80": 4285939666,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 3013,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201068,
+        "after": 201068,
+        "refresh": 201404,
+        "width": 1,
+        "address": 63495,
+        "value": 255,
+        "zstate": 3,
+        "z80": 4285043626,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 3014,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201071,
+        "after": 201071,
+        "refresh": 201407,
+        "width": 1,
+        "address": 63495,
+        "value": 255,
+        "zstate": 3,
+        "z80": 4284147586,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 3015,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201068,
+        "after": 201068,
+        "refresh": 201404,
+        "width": 1,
+        "address": 63495,
+        "value": 255,
+        "zstate": 3,
+        "z80": 4283251546,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 3016,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201071,
+        "after": 201071,
+        "refresh": 201407,
+        "width": 1,
+        "address": 63495,
+        "value": 255,
+        "zstate": 3,
+        "z80": 4282355506,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 3017,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201071,
+        "after": 201071,
+        "refresh": 201407,
+        "width": 1,
+        "address": 63495,
+        "value": 255,
+        "zstate": 3,
+        "z80": 4281459466,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 3018,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201073,
+        "after": 201073,
+        "refresh": 201409,
+        "width": 1,
+        "address": 63495,
+        "value": 255,
+        "zstate": 3,
+        "z80": 4280563426,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 3019,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201071,
+        "after": 201071,
+        "refresh": 201407,
+        "width": 1,
+        "address": 63495,
+        "value": 255,
+        "zstate": 3,
+        "z80": 4279667386,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 3020,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201071,
+        "after": 201071,
+        "refresh": 201407,
+        "width": 1,
+        "address": 63495,
+        "value": 255,
+        "zstate": 3,
+        "z80": 4278771346,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 3021,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201068,
+        "after": 201068,
+        "refresh": 201404,
+        "width": 1,
+        "address": 63495,
+        "value": 255,
+        "zstate": 3,
+        "z80": 4277875306,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 3022,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201071,
+        "after": 201071,
+        "refresh": 201407,
+        "width": 1,
+        "address": 63495,
+        "value": 255,
+        "zstate": 3,
+        "z80": 4276979266,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 3023,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201068,
+        "after": 201068,
+        "refresh": 201404,
+        "width": 1,
+        "address": 63495,
+        "value": 255,
+        "zstate": 3,
+        "z80": 4276083226,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 3024,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201071,
+        "after": 201071,
+        "refresh": 201407,
+        "width": 1,
+        "address": 63495,
+        "value": 255,
+        "zstate": 3,
+        "z80": 4275187186,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 3025,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201071,
+        "after": 201071,
+        "refresh": 201407,
+        "width": 1,
+        "address": 63495,
+        "value": 255,
+        "zstate": 3,
+        "z80": 4274291146,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 3026,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201073,
+        "after": 201073,
+        "refresh": 201409,
+        "width": 1,
+        "address": 63495,
+        "value": 255,
+        "zstate": 3,
+        "z80": 4273395106,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 3027,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201071,
+        "after": 201071,
+        "refresh": 201407,
+        "width": 1,
+        "address": 63495,
+        "value": 255,
+        "zstate": 3,
+        "z80": 4272499066,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 3028,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201071,
+        "after": 201071,
+        "refresh": 201407,
+        "width": 1,
+        "address": 63495,
+        "value": 255,
+        "zstate": 3,
+        "z80": 4271603026,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 3029,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201071,
+        "after": 201071,
+        "refresh": 201407,
+        "width": 1,
+        "address": 63495,
+        "value": 255,
+        "zstate": 3,
+        "z80": 4270706986,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 3030,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201073,
+        "after": 201073,
+        "refresh": 201409,
+        "width": 1,
+        "address": 63495,
+        "value": 255,
+        "zstate": 3,
+        "z80": 4269810946,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 3031,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201071,
+        "after": 201071,
+        "refresh": 201407,
+        "width": 1,
+        "address": 63495,
+        "value": 255,
+        "zstate": 3,
+        "z80": 4268914906,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 3032,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201071,
+        "after": 201071,
+        "refresh": 201407,
+        "width": 1,
+        "address": 63495,
+        "value": 255,
+        "zstate": 3,
+        "z80": 4268018866,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 3033,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201071,
+        "after": 201071,
+        "refresh": 201631,
+        "width": 1,
+        "address": 63495,
+        "value": 255,
+        "zstate": 3,
+        "z80": 4267122826,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 3034,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201054,
+        "after": 201054,
+        "refresh": 201012,
+        "width": 1,
+        "address": 63495,
+        "value": 255,
+        "zstate": 3,
+        "z80": 4266226786,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 3035,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201071,
+        "after": 201071,
+        "refresh": 201631,
+        "width": 1,
+        "address": 63495,
+        "value": 255,
+        "zstate": 3,
+        "z80": 4265330746,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 3036,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201057,
+        "after": 201057,
+        "refresh": 201015,
+        "width": 1,
+        "address": 63495,
+        "value": 255,
+        "zstate": 3,
+        "z80": 4264434706,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 3037,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201071,
+        "after": 201071,
+        "refresh": 201631,
+        "width": 1,
+        "address": 63495,
+        "value": 255,
+        "zstate": 3,
+        "z80": 4263538666,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 3038,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201057,
+        "after": 201057,
+        "refresh": 201015,
+        "width": 1,
+        "address": 63495,
+        "value": 255,
+        "zstate": 3,
+        "z80": 4262642626,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 3039,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201054,
+        "after": 201054,
+        "refresh": 201012,
+        "width": 1,
+        "address": 63495,
+        "value": 255,
+        "zstate": 3,
+        "z80": 4261746586,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 3040,
+      "driver_entry": {
+        "kind": 8,
+        "pc": 226734,
+        "at": 201054,
+        "after": 201054,
+        "refresh": 201012,
+        "width": 1,
+        "address": 63495,
+        "value": 255,
+        "zstate": 3,
+        "z80": 4260850546,
+        "owner": 1
+      }
+    }
+  ],
+  "resume_bus_release": {
+    "kind": 5,
+    "pc": 228370,
+    "at": 202034,
+    "after": 202034,
+    "refresh": 202566,
+    "width": 2,
+    "address": 10555648,
+    "value": 0,
+    "zstate": 1,
+    "z80": 202035,
+    "owner": 1
+  },
+  "priority_store_windows": [
+    {
+      "frame": 1513,
+      "actual_priority_store": {
+        "kind": 9,
+        "pc": 231996,
+        "at": 213624,
+        "after": 213624,
+        "refresh": 214394,
+        "width": 4,
+        "address": 4294965248,
+        "value": 0,
+        "zstate": 1,
+        "z80": 213135,
+        "owner": 1
+      },
+      "last_main_YM_write_before": {
+        "kind": 2,
+        "pc": 232332,
+        "at": 213050,
+        "after": 213050,
+        "refresh": 213435,
+        "width": 1,
+        "address": 1,
+        "value": 0,
+        "zstate": 3,
+        "z80": 211920,
+        "owner": 1
+      },
+      "next_main_YM_write_after": {
+        "kind": 2,
+        "pc": 232322,
+        "at": 267993,
+        "after": 267993,
+        "refresh": 268147,
+        "width": 1,
+        "address": 0,
+        "value": 40,
+        "zstate": 3,
+        "z80": 266865,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 1532,
+      "actual_priority_store": {
+        "kind": 9,
+        "pc": 231432,
+        "at": 185401,
+        "after": 185401,
+        "refresh": 185681,
+        "width": 1,
+        "address": 4294965248,
+        "value": 0,
+        "zstate": 1,
+        "z80": 184755,
+        "owner": 1
+      },
+      "last_main_YM_write_before": null,
+      "next_main_YM_write_after": {
+        "kind": 2,
+        "pc": 232322,
+        "at": 188859,
+        "after": 188859,
+        "refresh": 189482,
+        "width": 1,
+        "address": 0,
+        "value": 39,
+        "zstate": 3,
+        "z80": 187920,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 1532,
+      "actual_priority_store": {
+        "kind": 9,
+        "pc": 232038,
+        "at": 194718,
+        "after": 194718,
+        "refresh": 195236,
+        "width": 4,
+        "address": 4294965248,
+        "value": 0,
+        "zstate": 1,
+        "z80": 194100,
+        "owner": 1
+      },
+      "last_main_YM_write_before": {
+        "kind": 2,
+        "pc": 232332,
+        "at": 194004,
+        "after": 194004,
+        "refresh": 194277,
+        "width": 1,
+        "address": 1,
+        "value": 0,
+        "zstate": 3,
+        "z80": 193185,
+        "owner": 1
+      },
+      "next_main_YM_write_after": {
+        "kind": 2,
+        "pc": 232322,
+        "at": 240897,
+        "after": 240897,
+        "refresh": 241772,
+        "width": 1,
+        "address": 0,
+        "value": 40,
+        "zstate": 3,
+        "z80": 239775,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 1532,
+      "actual_priority_store": {
+        "kind": 9,
+        "pc": 232046,
+        "at": 224377,
+        "after": 224377,
+        "refresh": 224965,
+        "width": 1,
+        "address": 4294965248,
+        "value": 0,
+        "zstate": 1,
+        "z80": 222300,
+        "owner": 1
+      },
+      "last_main_YM_write_before": {
+        "kind": 2,
+        "pc": 232332,
+        "at": 194004,
+        "after": 194004,
+        "refresh": 194277,
+        "width": 1,
+        "address": 1,
+        "value": 0,
+        "zstate": 3,
+        "z80": 193185,
+        "owner": 1
+      },
+      "next_main_YM_write_after": {
+        "kind": 2,
+        "pc": 232322,
+        "at": 240897,
+        "after": 240897,
+        "refresh": 241772,
+        "width": 1,
+        "address": 0,
+        "value": 40,
+        "zstate": 3,
+        "z80": 239775,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 1829,
+      "actual_priority_store": {
+        "kind": 9,
+        "pc": 233718,
+        "at": 240267,
+        "after": 240267,
+        "refresh": 240799,
+        "width": 1,
+        "address": 4294965248,
+        "value": 0,
+        "zstate": 1,
+        "z80": 239655,
+        "owner": 1
+      },
+      "last_main_YM_write_before": {
+        "kind": 2,
+        "pc": 232332,
+        "at": 239567,
+        "after": 239567,
+        "refresh": 239840,
+        "width": 1,
+        "address": 1,
+        "value": 5,
+        "zstate": 3,
+        "z80": 238785,
+        "owner": 1
+      },
+      "next_main_YM_write_after": {
+        "kind": 2,
+        "pc": 232434,
+        "at": 244236,
+        "after": 244236,
+        "refresh": 244579,
+        "width": 1,
+        "address": 2,
+        "value": 177,
+        "zstate": 3,
+        "z80": 243555,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 1875,
+      "actual_priority_store": {
+        "kind": 9,
+        "pc": 233718,
+        "at": 257537,
+        "after": 257537,
+        "refresh": 258419,
+        "width": 1,
+        "address": 4294965248,
+        "value": 0,
+        "zstate": 1,
+        "z80": 256935,
+        "owner": 1
+      },
+      "last_main_YM_write_before": {
+        "kind": 2,
+        "pc": 232332,
+        "at": 256837,
+        "after": 256837,
+        "refresh": 257474,
+        "width": 1,
+        "address": 1,
+        "value": 5,
+        "zstate": 3,
+        "z80": 256020,
+        "owner": 1
+      },
+      "next_main_YM_write_after": {
+        "kind": 2,
+        "pc": 232434,
+        "at": 261380,
+        "after": 261380,
+        "refresh": 262136,
+        "width": 1,
+        "address": 2,
+        "value": 177,
+        "zstate": 3,
+        "z80": 260775,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 1893,
+      "actual_priority_store": {
+        "kind": 9,
+        "pc": 233718,
+        "at": 246282,
+        "after": 246282,
+        "refresh": 247164,
+        "width": 1,
+        "address": 4294965248,
+        "value": 0,
+        "zstate": 1,
+        "z80": 246285,
+        "owner": 1
+      },
+      "last_main_YM_write_before": {
+        "kind": 2,
+        "pc": 232332,
+        "at": 245582,
+        "after": 245582,
+        "refresh": 246219,
+        "width": 1,
+        "address": 1,
+        "value": 5,
+        "zstate": 3,
+        "z80": 244710,
+        "owner": 1
+      },
+      "next_main_YM_write_after": {
+        "kind": 2,
+        "pc": 232434,
+        "at": 250265,
+        "after": 250265,
+        "refresh": 250832,
+        "width": 1,
+        "address": 2,
+        "value": 177,
+        "zstate": 3,
+        "z80": 249465,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 1939,
+      "actual_priority_store": {
+        "kind": 9,
+        "pc": 233718,
+        "at": 246046,
+        "after": 246046,
+        "refresh": 246179,
+        "width": 1,
+        "address": 4294965248,
+        "value": 0,
+        "zstate": 1,
+        "z80": 245445,
+        "owner": 1
+      },
+      "last_main_YM_write_before": {
+        "kind": 2,
+        "pc": 232332,
+        "at": 245360,
+        "after": 245360,
+        "refresh": 246179,
+        "width": 1,
+        "address": 1,
+        "value": 5,
+        "zstate": 3,
+        "z80": 243705,
+        "owner": 1
+      },
+      "next_main_YM_write_after": {
+        "kind": 2,
+        "pc": 232434,
+        "at": 250309,
+        "after": 250309,
+        "refresh": 250799,
+        "width": 1,
+        "address": 2,
+        "value": 177,
+        "zstate": 3,
+        "z80": 249240,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 2223,
+      "actual_priority_store": {
+        "kind": 9,
+        "pc": 233718,
+        "at": 262482,
+        "after": 262482,
+        "refresh": 262902,
+        "width": 1,
+        "address": 4294965248,
+        "value": 0,
+        "zstate": 1,
+        "z80": 261870,
+        "owner": 1
+      },
+      "last_main_YM_write_before": {
+        "kind": 2,
+        "pc": 232332,
+        "at": 261782,
+        "after": 261782,
+        "refresh": 261964,
+        "width": 1,
+        "address": 1,
+        "value": 5,
+        "zstate": 3,
+        "z80": 260685,
+        "owner": 1
+      },
+      "next_main_YM_write_after": {
+        "kind": 2,
+        "pc": 232434,
+        "at": 266325,
+        "after": 266325,
+        "refresh": 266668,
+        "width": 1,
+        "address": 2,
+        "value": 177,
+        "zstate": 3,
+        "z80": 265710,
+        "owner": 1
+      }
+    },
+    {
+      "frame": 2269,
+      "actual_priority_store": {
+        "kind": 9,
+        "pc": 233718,
+        "at": 245705,
+        "after": 245705,
+        "refresh": 246587,
+        "width": 1,
+        "address": 4294965248,
+        "value": 0,
+        "zstate": 1,
+        "z80": 245100,
+        "owner": 1
+      },
+      "last_main_YM_write_before": {
+        "kind": 2,
+        "pc": 232332,
+        "at": 245005,
+        "after": 245005,
+        "refresh": 245642,
+        "width": 1,
+        "address": 1,
+        "value": 5,
+        "zstate": 3,
+        "z80": 244125,
+        "owner": 1
+      },
+      "next_main_YM_write_after": {
+        "kind": 2,
+        "pc": 232434,
+        "at": 249548,
+        "after": 249548,
+        "refresh": 250304,
+        "width": 1,
+        "address": 2,
+        "value": 177,
+        "zstate": 3,
+        "z80": 248910,
+        "owner": 1
+      }
+    }
+  ],
+  "priority_summary_bool_has_no_unique_time": true,
+  "global_independent_schedule_solved": false,
+  "producer_sha256": "3d1f675003b4dbb358b9bba5dd2ef6a1592709660569e2a4d87d202a59df01b0",
+  "limits": [
+    "Late world/IRQ bus assertions are distinct from the leaf YM service release; do not infer final frame hold from the leaf alone",
+    "The stale held Z80 uint32 cursor can wrap as frames subtract; release overwrites it with ceil15 rather than max",
+    "Only existing pinned-source selected windows are retained; this is no all-possible-input execution claim"
+  ]
+}
