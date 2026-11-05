@@ -1,0 +1,7 @@
+{
+  "at_utc": "2026-11-05T16:09:36.905832+00:00",
+  "original_sha256": "aa9fef59e5bd3759fcae67967cb01a274448063c56bc737c339a0324fb7ebded",
+  "repaired_sha256": "1d4bf4671830113435b560475c7620f352889518e3aed392a480d25e95e65dfe",
+  "change": "Added one missing object closing brace; assertions unchanged.",
+  "evidence": "js-first.log and js-missing-red.log retain the original syntax failure. The MD branch was already implemented before this mechanical repair; no semantic test-first claim is made for that branch."
+}

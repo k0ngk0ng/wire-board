@@ -1,0 +1,19 @@
+{
+  "created_at_utc": "2026-11-05T16:11:49.256794+00:00",
+  "deleted_artifacts": [
+    {
+      "path": "games/yuyuhakusho/verification/platform-module-numeric-json-draft-syntax-red.jsonl",
+      "bytes": 1043,
+      "sha256": "5704c18380071b00f06da15b19abd8a3e8e2e736e6bfbecd308b8037585e9861",
+      "reason": "Temporary syntax failure while drafting the additional test; canonical numeric-array behavioral red is preserved"
+    }
+  ],
+  "kept": "Canonical test-first red logs, frozen test source archives, native/Wasm/race validation and command/source SHA records",
+  "shared_active_cache_directories_not_removed": [
+    ".local/go-cache",
+    ".local/go-mod",
+    ".local/go-telemetry",
+    ".local/md-yuyuhakusho/tmp"
+  ],
+  "no_external_mutation": true
+}

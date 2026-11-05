@@ -1,0 +1,15 @@
+{
+  "support_only": true,
+  "production_hashes_unchanged": true,
+  "explicit_single_file_build": "pass",
+  "go_list_all_exit_code": 1,
+  "research_package_excluded": true,
+  "package_count": 100,
+  "remaining_package_errors": [
+    {
+      "import_path": "github.com/k0ngk0ng/wire-board",
+      "error": "pattern all:web/dist: no matching files found"
+    }
+  ],
+  "scratch_removed": ".local/md-yuyuhakusho/controller-support-qfjs5tmv"
+}

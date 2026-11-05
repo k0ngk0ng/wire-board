@@ -1,0 +1,15 @@
+{
+  "created_at_utc": "2026-11-05T16:09:28.772205+00:00",
+  "phase": "Additional raw JSON numeric-array tests following actual browser fixture base64 failure; canonical red precedes custom marshaler implementation",
+  "test_first": true,
+  "test_sha256": {
+    "games/yuyuhakusho/server/module_numeric_json_test.go": "f6259370db9924936c270dbc0154595b08f21a41099322af14f074b711f67406"
+  },
+  "before_production_sha256": {
+    "games/yuyuhakusho/server/options.go": "8d12ca90fd64c196feec4d5e4eb01f7f18966733fe2163b966479657fe8cf48d",
+    "games/yuyuhakusho/server/module_types.go": "4dc450cca52ce89970535bb8d25066efe161a2a42337cbbb9e9f0ec86a33f84b",
+    "games/yuyuhakusho/server/module_view.go": "10ac239c761d79d9f2c86f34dbbd5cf26a0cac099d70ac63c8811a96bdf2ff54"
+  },
+  "red": "games/yuyuhakusho/verification/platform-module-numeric-json-red.jsonl",
+  "preimplementation_draft_note": "Corrected a missing loop brace in the new unimplemented test draft. Only the subsequent raw numeric-array contract failure is the canonical red; temporary draft syntax output was cleaned."
+}

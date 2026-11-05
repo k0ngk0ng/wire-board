@@ -1,0 +1,7 @@
+{
+  "at_utc": "2026-11-05T16:12:16.880039+00:00",
+  "test_sha256": "9cf4534dde88b8154b887dae916c7bb8f751b846d69c4965a77c3b62070ebf36",
+  "red": "http-merge-red.jsonl",
+  "behavior": "legacy omitted aliases are merged before final validation; clearing keeps all logical keys",
+  "implementation_started_after_red": true
+}

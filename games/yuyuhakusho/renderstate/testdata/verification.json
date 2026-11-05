@@ -1,0 +1,306 @@
+{
+  "schema": 1,
+  "pass": true,
+  "scope": "Shared pixel-free render cache/slot/HUD-ref computation; separate from platform game delivery",
+  "actual_frame_keys": 1500,
+  "isolated_frame_cases": 12000,
+  "frozen_complete_flows": 49,
+  "native_wasm_complete_old_bridge_traces_equal": true,
+  "complete_frames_per_environment": 203428,
+  "nonzero_pan_frames_per_environment": 1624,
+  "checks": [
+    {
+      "path": "games/yuyuhakusho/renderstate/testdata/boundaries-native.jsonl",
+      "sha256": "53eabd47bd7dd4d8bf5e05ff1a76e935452bde30c59c6e68e83c5da0ba275bda",
+      "seconds": 5.09,
+      "subtests": [
+        "TestRenderMetadataSourceAndValidation/schema",
+        "TestRenderMetadataSourceAndValidation/pixel-payload",
+        "TestRenderMetadataSourceAndValidation/missing-frames",
+        "TestRenderMetadataSourceAndValidation/duplicate-frame",
+        "TestRenderMetadataSourceAndValidation/piece-zero",
+        "TestRenderMetadataSourceAndValidation/piece-large",
+        "TestRenderMetadataSourceAndValidation/odd-parameter",
+        "TestRenderMetadataSourceAndValidation/bad-tile",
+        "TestRenderMetadataSourceAndValidation/short-transfer",
+        "TestRenderMetadataSourceAndValidation/high-stamp",
+        "TestRenderMetadataSourceAndValidation/duplicate-preload",
+        "TestRenderMetadataSourceAndValidation/bad-preload",
+        "TestRenderMetadataSourceAndValidation/missing-glyph",
+        "TestRenderMetadataSourceAndValidation/duplicate-glyph",
+        "TestRenderMetadataSourceAndValidation/bad-portrait",
+        "TestRenderMetadataSourceAndValidation/bad-resource",
+        "TestRenderMetadataSourceAndValidation/bad-sha"
+      ],
+      "pass": true
+    },
+    {
+      "path": "games/yuyuhakusho/renderstate/testdata/boundaries-wasm.jsonl",
+      "sha256": "5776ea9480f4c69295e6b5196100b912b8c600af3b8c69a2c77cb985b4164f2a",
+      "seconds": 34.858,
+      "subtests": [
+        "TestRenderMetadataSourceAndValidation/schema",
+        "TestRenderMetadataSourceAndValidation/pixel-payload",
+        "TestRenderMetadataSourceAndValidation/missing-frames",
+        "TestRenderMetadataSourceAndValidation/duplicate-frame",
+        "TestRenderMetadataSourceAndValidation/piece-zero",
+        "TestRenderMetadataSourceAndValidation/piece-large",
+        "TestRenderMetadataSourceAndValidation/odd-parameter",
+        "TestRenderMetadataSourceAndValidation/bad-tile",
+        "TestRenderMetadataSourceAndValidation/short-transfer",
+        "TestRenderMetadataSourceAndValidation/high-stamp",
+        "TestRenderMetadataSourceAndValidation/duplicate-preload",
+        "TestRenderMetadataSourceAndValidation/bad-preload",
+        "TestRenderMetadataSourceAndValidation/missing-glyph",
+        "TestRenderMetadataSourceAndValidation/duplicate-glyph",
+        "TestRenderMetadataSourceAndValidation/bad-portrait",
+        "TestRenderMetadataSourceAndValidation/bad-resource",
+        "TestRenderMetadataSourceAndValidation/bad-sha"
+      ],
+      "pass": true
+    },
+    {
+      "path": "games/yuyuhakusho/renderstate/testdata/boundaries-race.jsonl",
+      "sha256": "76e37620146d65884338b25920031b8b830a15afdf4d4887206284993bf90f72",
+      "seconds": 95.459,
+      "subtests": [
+        "TestRenderMetadataSourceAndValidation/schema",
+        "TestRenderMetadataSourceAndValidation/pixel-payload",
+        "TestRenderMetadataSourceAndValidation/missing-frames",
+        "TestRenderMetadataSourceAndValidation/duplicate-frame",
+        "TestRenderMetadataSourceAndValidation/piece-zero",
+        "TestRenderMetadataSourceAndValidation/piece-large",
+        "TestRenderMetadataSourceAndValidation/odd-parameter",
+        "TestRenderMetadataSourceAndValidation/bad-tile",
+        "TestRenderMetadataSourceAndValidation/short-transfer",
+        "TestRenderMetadataSourceAndValidation/high-stamp",
+        "TestRenderMetadataSourceAndValidation/duplicate-preload",
+        "TestRenderMetadataSourceAndValidation/bad-preload",
+        "TestRenderMetadataSourceAndValidation/missing-glyph",
+        "TestRenderMetadataSourceAndValidation/duplicate-glyph",
+        "TestRenderMetadataSourceAndValidation/bad-portrait",
+        "TestRenderMetadataSourceAndValidation/bad-resource",
+        "TestRenderMetadataSourceAndValidation/bad-sha"
+      ],
+      "pass": true
+    },
+    {
+      "path": "games/yuyuhakusho/renderstate/testdata/flows-race.jsonl",
+      "sha256": "1906986a2fca9ba9b80df15f8fc175cb48fcd5794804e4932863c500b9c3dd61",
+      "seconds": 212.04,
+      "subtests": [
+        "TestRenderFrozenBridgeTrajectories/legacy-four",
+        "TestRenderFrozenBridgeTrajectories/arena-a-four",
+        "TestRenderFrozenBridgeTrajectories/arena-c-pan"
+      ],
+      "pass": true
+    },
+    {
+      "path": "games/yuyuhakusho/renderstate/testdata/first-flow-native.jsonl",
+      "sha256": "0b3d5eb068b17399486f9d4d9757c17a0dd97a67a2be6dfa66bd6e7438a35041",
+      "seconds": 5.357,
+      "subtests": [
+        "TestRenderFrozenBridgeTrajectories/legacy-itsuki-chu"
+      ],
+      "pass": true
+    },
+    {
+      "path": "games/yuyuhakusho/renderstate/testdata/flows-native-0.jsonl",
+      "sha256": "48896228d1ecacaf245cc2ad4e970becdfc0351e51d7e78fa4ef0266abe02985",
+      "seconds": 198.311,
+      "subtests": [
+        "TestRenderFrozenBridgeTrajectories/legacy-four",
+        "TestRenderFrozenBridgeTrajectories/legacy-itsuki-hiei",
+        "TestRenderFrozenBridgeTrajectories/legacy-itsuki-kuwabara",
+        "TestRenderFrozenBridgeTrajectories/legacy-team",
+        "TestRenderFrozenBridgeTrajectories/arena-2-four",
+        "TestRenderFrozenBridgeTrajectories/arena-4-three",
+        "TestRenderFrozenBridgeTrajectories/arena-6-duel",
+        "TestRenderFrozenBridgeTrajectories/arena-6-pan",
+        "TestRenderFrozenBridgeTrajectories/arena-8-team",
+        "TestRenderFrozenBridgeTrajectories/arena-a-four",
+        "TestRenderFrozenBridgeTrajectories/arena-c-three",
+        "TestRenderFrozenBridgeTrajectories/arena-e-duel",
+        "TestRenderFrozenBridgeTrajectories/arena-e-pan"
+      ],
+      "pass": true
+    },
+    {
+      "path": "games/yuyuhakusho/renderstate/testdata/flows-native-1.jsonl",
+      "sha256": "47e7c743ebb975ae888ab242f9df21cc76a0b8f28f99df7be32673bcc5214e25",
+      "seconds": 200.743,
+      "subtests": [
+        "TestRenderFrozenBridgeTrajectories/legacy-itsuki-chu",
+        "TestRenderFrozenBridgeTrajectories/legacy-itsuki-itsuki",
+        "TestRenderFrozenBridgeTrajectories/legacy-itsuki-sensui",
+        "TestRenderFrozenBridgeTrajectories/legacy-three",
+        "TestRenderFrozenBridgeTrajectories/arena-2-team",
+        "TestRenderFrozenBridgeTrajectories/arena-4-four",
+        "TestRenderFrozenBridgeTrajectories/arena-6-three",
+        "TestRenderFrozenBridgeTrajectories/arena-8-duel",
+        "TestRenderFrozenBridgeTrajectories/arena-8-pan",
+        "TestRenderFrozenBridgeTrajectories/arena-a-team",
+        "TestRenderFrozenBridgeTrajectories/arena-c-four",
+        "TestRenderFrozenBridgeTrajectories/arena-e-three"
+      ],
+      "pass": true
+    },
+    {
+      "path": "games/yuyuhakusho/renderstate/testdata/flows-native-2.jsonl",
+      "sha256": "fa6a78b3286568d62fde4a30ed6e1743b130949651636a949b22d0c1e54040ac",
+      "seconds": 180.509,
+      "subtests": [
+        "TestRenderFrozenBridgeTrajectories/legacy-itsuki-elder",
+        "TestRenderFrozenBridgeTrajectories/legacy-itsuki-jin",
+        "TestRenderFrozenBridgeTrajectories/legacy-itsuki-younger",
+        "TestRenderFrozenBridgeTrajectories/arena-2-duel",
+        "TestRenderFrozenBridgeTrajectories/arena-2-pan",
+        "TestRenderFrozenBridgeTrajectories/arena-4-team",
+        "TestRenderFrozenBridgeTrajectories/arena-6-four",
+        "TestRenderFrozenBridgeTrajectories/arena-8-three",
+        "TestRenderFrozenBridgeTrajectories/arena-a-duel",
+        "TestRenderFrozenBridgeTrajectories/arena-a-pan",
+        "TestRenderFrozenBridgeTrajectories/arena-c-team",
+        "TestRenderFrozenBridgeTrajectories/arena-e-four"
+      ],
+      "pass": true
+    },
+    {
+      "path": "games/yuyuhakusho/renderstate/testdata/flows-native-3.jsonl",
+      "sha256": "a3bd419d8fd2c82b2051f6f66ff46097c228d3092fedff40833c411eb7a0220b",
+      "seconds": 191.342,
+      "subtests": [
+        "TestRenderFrozenBridgeTrajectories/legacy-itsuki-genkai",
+        "TestRenderFrozenBridgeTrajectories/legacy-itsuki-kurama",
+        "TestRenderFrozenBridgeTrajectories/legacy-itsuki-yusuke",
+        "TestRenderFrozenBridgeTrajectories/arena-2-three",
+        "TestRenderFrozenBridgeTrajectories/arena-4-duel",
+        "TestRenderFrozenBridgeTrajectories/arena-4-pan",
+        "TestRenderFrozenBridgeTrajectories/arena-6-team",
+        "TestRenderFrozenBridgeTrajectories/arena-8-four",
+        "TestRenderFrozenBridgeTrajectories/arena-a-three",
+        "TestRenderFrozenBridgeTrajectories/arena-c-duel",
+        "TestRenderFrozenBridgeTrajectories/arena-c-pan",
+        "TestRenderFrozenBridgeTrajectories/arena-e-team"
+      ],
+      "pass": true
+    },
+    {
+      "path": "games/yuyuhakusho/renderstate/testdata/flows-wasm-0.jsonl",
+      "sha256": "14f9bc988301eab6d58a0bb2c49bb0e2aeba9e4defbfef339b32b89d7fd168b7",
+      "seconds": 459.823,
+      "subtests": [
+        "TestRenderFrozenBridgeTrajectories/legacy-four",
+        "TestRenderFrozenBridgeTrajectories/legacy-itsuki-hiei",
+        "TestRenderFrozenBridgeTrajectories/legacy-itsuki-kuwabara",
+        "TestRenderFrozenBridgeTrajectories/legacy-team",
+        "TestRenderFrozenBridgeTrajectories/arena-2-four",
+        "TestRenderFrozenBridgeTrajectories/arena-4-three",
+        "TestRenderFrozenBridgeTrajectories/arena-6-duel",
+        "TestRenderFrozenBridgeTrajectories/arena-6-pan",
+        "TestRenderFrozenBridgeTrajectories/arena-8-team",
+        "TestRenderFrozenBridgeTrajectories/arena-a-four",
+        "TestRenderFrozenBridgeTrajectories/arena-c-three",
+        "TestRenderFrozenBridgeTrajectories/arena-e-duel",
+        "TestRenderFrozenBridgeTrajectories/arena-e-pan"
+      ],
+      "pass": true
+    },
+    {
+      "path": "games/yuyuhakusho/renderstate/testdata/flows-wasm-1.jsonl",
+      "sha256": "be32bd9549f1f407e6fe3fe1706c7ee95ad61b8fd460955e3027315c54200b8b",
+      "seconds": 463.892,
+      "subtests": [
+        "TestRenderFrozenBridgeTrajectories/legacy-itsuki-chu",
+        "TestRenderFrozenBridgeTrajectories/legacy-itsuki-itsuki",
+        "TestRenderFrozenBridgeTrajectories/legacy-itsuki-sensui",
+        "TestRenderFrozenBridgeTrajectories/legacy-three",
+        "TestRenderFrozenBridgeTrajectories/arena-2-team",
+        "TestRenderFrozenBridgeTrajectories/arena-4-four",
+        "TestRenderFrozenBridgeTrajectories/arena-6-three",
+        "TestRenderFrozenBridgeTrajectories/arena-8-duel",
+        "TestRenderFrozenBridgeTrajectories/arena-8-pan",
+        "TestRenderFrozenBridgeTrajectories/arena-a-team",
+        "TestRenderFrozenBridgeTrajectories/arena-c-four",
+        "TestRenderFrozenBridgeTrajectories/arena-e-three"
+      ],
+      "pass": true
+    },
+    {
+      "path": "games/yuyuhakusho/renderstate/testdata/flows-wasm-2.jsonl",
+      "sha256": "c6935edf9a8e5efdce5a761bde29e360edcf744c657836c91f07591b51b7d0b5",
+      "seconds": 422.469,
+      "subtests": [
+        "TestRenderFrozenBridgeTrajectories/legacy-itsuki-elder",
+        "TestRenderFrozenBridgeTrajectories/legacy-itsuki-jin",
+        "TestRenderFrozenBridgeTrajectories/legacy-itsuki-younger",
+        "TestRenderFrozenBridgeTrajectories/arena-2-duel",
+        "TestRenderFrozenBridgeTrajectories/arena-2-pan",
+        "TestRenderFrozenBridgeTrajectories/arena-4-team",
+        "TestRenderFrozenBridgeTrajectories/arena-6-four",
+        "TestRenderFrozenBridgeTrajectories/arena-8-three",
+        "TestRenderFrozenBridgeTrajectories/arena-a-duel",
+        "TestRenderFrozenBridgeTrajectories/arena-a-pan",
+        "TestRenderFrozenBridgeTrajectories/arena-c-team",
+        "TestRenderFrozenBridgeTrajectories/arena-e-four"
+      ],
+      "pass": true
+    },
+    {
+      "path": "games/yuyuhakusho/renderstate/testdata/flows-wasm-3.jsonl",
+      "sha256": "90549d3daf40465f384db57eea947737c3e83d7b4cdf5b9421ce7c439cf7d445",
+      "seconds": 445.436,
+      "subtests": [
+        "TestRenderFrozenBridgeTrajectories/legacy-itsuki-genkai",
+        "TestRenderFrozenBridgeTrajectories/legacy-itsuki-kurama",
+        "TestRenderFrozenBridgeTrajectories/legacy-itsuki-yusuke",
+        "TestRenderFrozenBridgeTrajectories/arena-2-three",
+        "TestRenderFrozenBridgeTrajectories/arena-4-duel",
+        "TestRenderFrozenBridgeTrajectories/arena-4-pan",
+        "TestRenderFrozenBridgeTrajectories/arena-6-team",
+        "TestRenderFrozenBridgeTrajectories/arena-8-four",
+        "TestRenderFrozenBridgeTrajectories/arena-a-three",
+        "TestRenderFrozenBridgeTrajectories/arena-c-duel",
+        "TestRenderFrozenBridgeTrajectories/arena-c-pan",
+        "TestRenderFrozenBridgeTrajectories/arena-e-team"
+      ],
+      "pass": true
+    }
+  ],
+  "source_sha256": {
+    "games/yuyuhakusho/renderstate/catalog.go": "abf324fc6274f553bf86a238bffa315e957db65400751f6d9acfb0d96095b8b8",
+    "games/yuyuhakusho/renderstate/state.go": "c251a25ab151208b56e4aaab2851fe917a15ebe5410ecbb2015a1f6b17597e85",
+    "games/yuyuhakusho/renderstate/renderstate_test.go": "ba4f5b29d2da4ac99b6e5c62e550ad2d16eef6a1da80681ccc8937bac6a7d230",
+    "games/yuyuhakusho/renderstate/bridge_reference_test.go": "52a5836156141305bb219a50c6a41260bc5645043f6b59faf9be3bd0c3a3f9a7",
+    "games/yuyuhakusho/renderstate/FAILURES.md": "9e77e1f836de39213159bde27f8f3008a4b1955caf8f1be710833b976f3ed2cc",
+    "games/yuyuhakusho/renderstate/VERIFICATION.md": "725226882b7b162715a64bc898b523e85fabd87e1f15e937d900a38d5fc96431",
+    "scripts/yuyuhakusho/export_renderstate_metadata.py": "57457ffa382ff8b04058da629a63806af78a9bbd1f260caa8fba4d5ba2237d41",
+    "scripts/yuyuhakusho/capture_renderstate_reference.py": "9a6ca0458739c18c1143522938f5c8fa7b4cb9c5f98c91dff51e647c24acac48",
+    "games/yuyuhakusho/cmd/capture-renderstate-reference/main.go": "60c615c9abe1d61e845d77807616be31ecbc678f9f3b8376570a9b5e88b1f445",
+    "games/yuyuhakusho/data/renderstate-metadata.json.gz": "da0e0eeae122113f92b99a5f355c5b48886382dc03a2fc602d3058ddd7618617",
+    "games/yuyuhakusho/data/renderstate-metadata-manifest.json": "0b2ffdc61dd82dfb4b4c757fb149e3aeaa78e45306f732e346a9359a3cf2e372"
+  },
+  "test_first": {
+    "path": "games/yuyuhakusho/renderstate/testdata/test-first.json",
+    "sha256": "0085bb0bd0cabe7347c19ec6cccaac26f20410d5b8e893c359c32f50a2418ee1"
+  },
+  "reference": {
+    "path": "games/yuyuhakusho/renderstate/testdata/bridge-reference.json",
+    "sha256": "d9e956f6676de33714815535e98715b4b3459e2f8b73cbb529ce79ca41636da4",
+    "manifest": "games/yuyuhakusho/renderstate/testdata/bridge-reference-manifest.json",
+    "manifest_sha256": "cb4d018f877332b905af8e8a940ba135d4c0eaa6e4715a096e6cd1a5fa2b9572",
+    "lineage": "games/yuyuhakusho/renderstate/testdata/reference-lineage.json",
+    "lineage_sha256": "bf86c83f7f099831b1b8bee7dee7ac4739416c82841abc0f3818579088f7c751"
+  },
+  "production_bridge_or_presentation_modified": false,
+  "server_registry_modified": false,
+  "dependencies": {
+    "path": "games/yuyuhakusho/renderstate/testdata/dependencies.txt",
+    "sha256": "6a575cd73bc2f2019433073fd85cbc1da1da5fb347316353be5bf834c90b253f",
+    "game_packages": [
+      "engine",
+      "renderstate"
+    ],
+    "client_presentation_or_runtimebridge_dependency": false
+  }
+}

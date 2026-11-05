@@ -1,0 +1,142 @@
+"""Real HTTP/SQLite controller settings E2E; Gamepad API snapshots are virtual."""
+from pathlib import Path
+import argparse,hashlib,json,os,shutil,subprocess,tempfile
+ROOT=Path(__file__).resolve().parents[2]
+parser=argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--label',default='final')
+parser.add_argument('--red',action='store_true')
+args=parser.parse_args()
+OUT=ROOT/'games/yuyuhakusho/verification/controller-physical-port'/args.label
+TMP=Path(tempfile.mkdtemp(prefix='controller-physical-',dir=ROOT/'.local/md-yuyuhakusho'))
+for p in [OUT,TMP/'tmp',ROOT/'.local/yc']:p.mkdir(parents=True,exist_ok=True)
+env=dict(os.environ,TMPDIR=str(TMP/'tmp'),GOTMPDIR=str(TMP/'tmp'),GOCACHE=str(ROOT/'.local/go-cache'),GOMODCACHE=str(ROOT/'.local/go-mod'),TEST_TELEMETRY_DIR=str(ROOT/'.local/go-telemetry'),AGENT_BROWSER_SOCKET_DIR=str(ROOT/'.local/yc'))
+seed=subprocess.check_output(['agent-browser','session','id','--scope','worktree','--prefix','controller-settings'],cwd=ROOT,env=env,text=True).strip()
+env['AGENT_BROWSER_SESSION']='cs'+seed.rsplit('-',1)[-1][:6]
+def run(cmd):return subprocess.run(cmd,cwd=ROOT,env=env,text=True,capture_output=True,check=True)
+def browser(*args):
+ r=run(['agent-browser',*args,'--json']);v=json.loads(r.stdout)
+ assert v['success'],v
+ return v['data']
+def js(code):return browser('eval',code)['result']
+def wait(code):browser('wait','--fn',code)
+def profile():return js('(async()=>{const r=await fetch("/api/controllers?game=yuyuhakusho");if(!r.ok)throw Error(r.status);return (await r.json()).profiles["game:yuyuhakusho"]})()')
+def inject():
+ js('''window.virtualMD={id:"Virtual MD standard",index:3,mapping:"standard",connected:true,axes:[0,0],buttons:Array.from({length:17},()=>({pressed:false,value:0}))};window.virtualRaw={id:"Virtual Raw Adapter",index:7,mapping:"",connected:true,axes:[0,0],buttons:Array.from({length:17},()=>({pressed:false,value:0}))};Object.defineProperty(navigator,"getGamepads",{configurable:true,value:()=>[null,null,null,window.virtualMD,null,null,null,window.virtualRaw]})''')
+def value(code):return js(code)
+def save():
+ browser('click','[data-controller-save]');wait('document.querySelector(".controller-notice")?.textContent.includes("已保存")')
+def open_settings():
+ browser('click','#open-settings');wait('!!document.querySelector("[aria-label=输入来源]")')
+def keyboard():browser('select','[aria-label=输入来源]','keyboard')
+def physical():browser('select','[aria-label=输入来源]','gamepad');wait('!!document.querySelector("[aria-label=使用手柄]")')
+def close():browser('click','[aria-label=关闭]');wait('!document.querySelector("[aria-modal=true]")')
+process=None;opened=False;report={'virtual_gamepad_api':True,'physical_hardware_tested':False,'scope':'Actual platform HTTP/authentication/SQLite/controllers API + actual ControllerSettings and PhysicalController in a fixture React shell. Does not claim production main entrypoint or game Canvas response.'}
+try:
+ run([str(ROOT/'web/node_modules/.bin/esbuild'),'scripts/yuyuhakusho/controller_settings_harness.tsx','--bundle','--format=esm','--jsx=automatic','--alias:react=./web/node_modules/react','--alias:react-dom=./web/node_modules/react-dom','--alias:lucide-react=./web/node_modules/lucide-react','--loader:.svg=file','--outfile='+str(TMP/'harness.js')])
+ (TMP/'index.html').write_text('<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>控制器设置验收</title><link rel="stylesheet" href="/harness.css"><div id="root"></div><script type="module" src="/harness.js"></script></html>')
+ run(['go','build','-o',str(TMP/'host'),'scripts/yuyuhakusho/controller_settings_host.go'])
+ process=subprocess.Popen([str(TMP/'host'),'-build',str(TMP),'-data',str(TMP/'database')],cwd=ROOT,env=env,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
+ url=process.stdout.readline().strip();assert url.startswith('http://127.0.0.1:'),url
+ browser('--profile',str(TMP/'profile'),'open',url);opened=True
+ browser('set','viewport','1100','1000');browser('snapshot','-i')
+ browser('click','#user-a');wait('document.querySelector("#current-user")?.textContent==="ControllerBrowserA"')
+ browser('click','#open-settings');wait('!!document.querySelector(".controller-model select")')
+ if args.red:
+  actual=value('document.querySelector(".controller-model select").value')
+  assert actual!='game:yuyuhakusho',actual
+  report.update(pass_=True,test_first_red=True,expected='game:yuyuhakusho',actual=actual,reason='Current game not selected; input-source and physical configuration UI not connected.')
+  browser('screenshot',str(OUT/'red.png'))
+ else:
+  wait('document.querySelector("[data-controller-model]")?.value==="game:yuyuhakusho"')
+  options=value('[...document.querySelector("[data-controller-model]").options].map(x=>x.value)')
+  assert options==['game:yuyuhakusho','classic-2','md-6'],options
+  assert value('!!document.querySelector("[data-controller-layout=md]")')
+  assert profile()['keyboard']['c']=='KeyL' and profile()['keyboard']['z']=='KeyO'
+  # Trusted keyboard capture, conflict, clear/replace, and event identity.
+  browser('click','[data-controller-button=x]');browser('press','p')
+  save();assert profile()['keyboard']['x']=='KeyP'
+  assert value('window.controllerAcceptanceEvents.at(-1).model')=='game:yuyuhakusho'
+  browser('click','[data-controller-button=y]');browser('press','p')
+  wait('document.querySelector(".controller-error")?.textContent.includes("每个按键")');browser('press','Escape')
+  browser('click','summary');browser('click','[aria-label="添加 上 替代按键"]');browser('press','ArrowUp');save()
+  assert profile()['keyboardAlt']['up']==['ArrowUp']
+  browser('click','[aria-label="清除 X 按键"]');save();assert profile()['keyboard']['x']==''
+  browser('find','role','button','click','--name','恢复默认键位');save()
+  assert profile()['keyboard']['x']=='KeyU' and not profile().get('keyboardAlt')
+  inject();physical();browser('select','[aria-label=使用手柄]','standard:Virtual MD standard')
+  wait('!!document.querySelector("[data-gamepad-binding=z]")')
+  assert value('document.querySelector("[data-gamepad-binding=z] .controller-key").textContent')=='R1 / RB'
+  # Recording ignores pre-held button, then accepts fresh input.
+  js('virtualMD.buttons[7]={pressed:true,value:1}')
+  browser('click','[aria-label="修改手柄 Z"]')
+  assert value('document.querySelector("[data-controller-save]").disabled')
+  wait('document.querySelector("[data-gamepad-binding=z] .controller-key").textContent.includes("等待输入")')
+  js('virtualMD.buttons[7]={pressed:false,value:0}');wait('document.querySelector("[data-gamepad-live]").textContent==="未按键"')
+  js('virtualMD.buttons[7]={pressed:true,value:1}')
+  wait('document.querySelector("[data-gamepad-binding=z] .controller-key").textContent==="R2 / RT"')
+  js('virtualMD.buttons[7]={pressed:false,value:0}');browser('select','[aria-label=摇杆死区]','35');save()
+  saved=profile();assert saved['gamepads']['standard:Virtual MD standard']['deadzone']==.35
+  assert saved['gamepads']['standard:Virtual MD standard']['bindings']['z']==[{'type':'button','index':7}]
+  # Same physical input cannot be assigned to a second action.
+  browser('click','[aria-label="修改手柄 Y"]');js('virtualMD.buttons[7]={pressed:true,value:1}')
+  wait('document.querySelector(".controller-error")?.textContent.includes("已用于")')
+  browser('press','Escape');js('virtualMD.buttons[7]={pressed:false,value:0}')
+  browser('select','[aria-label=使用手柄]','raw:Virtual Raw Adapter')
+  assert value('document.querySelector("[data-gamepad-binding=a] .controller-key").textContent')=='未绑定'
+  browser('click','[aria-label="修改手柄 A"]');js('virtualRaw.axes[0]=.8')
+  wait('document.querySelector("[data-gamepad-binding=a] .controller-key").textContent.includes("轴 1 +")')
+  js('virtualRaw.axes[0]=0');save()
+  assert profile()['gamepads']['standard:Virtual MD standard']==saved['gamepads']['standard:Virtual MD standard']
+  assert profile()['gamepads']['raw:Virtual Raw Adapter']['bindings']['a']==[{'type':'axis','index':0,'direction':1}]
+  browser('select','[aria-label=使用手柄]','standard:Virtual MD standard');save()
+  browser('screenshot',str(OUT/'desktop-physical.png'))
+  close();open_settings();physical()
+  assert value('document.querySelector("[data-gamepad-binding=z] .controller-key").textContent')=='R2 / RT'
+  browser('find','role','button','click','--name','恢复此手柄默认映射');save()
+  reset=profile();assert reset['gamepads']['standard:Virtual MD standard']['bindings']['z']==[{'type':'button','index':5}]
+  assert reset['gamepads']['raw:Virtual Raw Adapter']['bindings']['a']==[{'type':'axis','index':0,'direction':1}]
+  browser('select','[data-controller-model]','md-6')
+  assert value('document.querySelector("[data-gamepad-binding=z] .controller-key").textContent')=='R1 / RB'
+  keyboard();assert value('document.querySelector("[data-controller-button=x] kbd").textContent')=='U'
+  browser('select','[data-controller-model]','classic-2');assert value('!!document.querySelector(".fc-controller")')
+  browser('select','[data-controller-model]','game:yuyuhakusho');keyboard()
+  browser('set','viewport','320','740')
+  assert not value('document.documentElement.scrollWidth>innerWidth')
+  assert value('document.querySelector(".controller-settings").scrollWidth<=document.querySelector(".controller-settings").clientWidth+1')
+  browser('screenshot',str(OUT/'mobile-320-keyboard.png'))
+  physical();browser('screenshot',str(OUT/'mobile-320-physical.png'))
+  assert not value('document.documentElement.scrollWidth>innerWidth')
+  # Settings suppress the real sampler; close held requires neutral first.
+  js('virtualMD.buttons[1]={pressed:true,value:1}');wait('document.querySelector("[data-gamepad-live]").textContent.includes("右侧键")')
+  assert value('document.querySelector("#sampler-output").textContent')==''
+  close();assert value('document.querySelector("#sampler-output").textContent')==''
+  js('virtualMD.buttons[1]={pressed:false,value:0}');wait('document.querySelector("#sampler-output").textContent===""')
+  js('virtualMD.buttons[1]={pressed:true,value:1}');wait('document.querySelector("#sampler-output").textContent==="c"')
+  js('virtualMD.connected=false');wait('document.querySelector("#sampler-output").textContent===""')
+  js('virtualMD.connected=true');assert value('document.querySelector("#sampler-output").textContent')==''
+  js('virtualMD.buttons[1]={pressed:false,value:0}')
+  # Account switch must not expose A's saved devices to B.
+  browser('click','#user-b');wait('document.querySelector("#current-user")?.textContent==="ControllerBrowserB"')
+  assert not profile().get('gamepads')
+  browser('click','#user-a');wait('document.querySelector("#current-user")?.textContent==="ControllerBrowserA"')
+  assert profile()['gamepads']['raw:Virtual Raw Adapter']['bindings']['a']==[{'type':'axis','index':0,'direction':1}]
+  open_settings();physical();js('Object.defineProperty(navigator,"getGamepads",{configurable:true,value:()=>{throw Error("denied")}})')
+  wait('document.querySelector(".gamepad-connection")?.textContent.includes("未允许")')
+  keyboard();assert value('!!document.querySelector("[data-controller-layout=md]")')
+  report.update(pass_=True,checks=['current game first','FC and MD presets retained; no SFC','trusted keyboard remap/conflict/alias/clear/reset','physical record ignores pre-held input','duplicate conflict','standard/raw model persistence','reopen and reset one device only','user and game isolation','settings suppression and neutral/disconnect lifecycle','Gamepad API failure fallback','desktop and 320px geometry'])
+ report['pass']=report.pop('pass_')
+ report['source_sha256']={str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in [ROOT/'web/src/controllers/Settings.tsx',ROOT/'web/src/controllers/GamepadSettings.tsx',ROOT/'web/src/controllers/gamepad.ts',ROOT/'internal/server/controllers.go',ROOT/'internal/server/controller_models.go',ROOT/'scripts/yuyuhakusho/check_controller_settings.py']}
+ (OUT/'result.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+ print(json.dumps(report,ensure_ascii=False))
+except Exception as e:
+ (OUT/'failure.json').write_text(json.dumps({'error':repr(e),'scope':report},ensure_ascii=False,indent=2)+'\n')
+ if opened:
+  try:browser('screenshot',str(OUT/'failure.png'))
+  except Exception:pass
+ raise
+finally:
+ if opened:
+  try:browser('close')
+  except Exception:pass
+ if process:process.terminate();process.wait(timeout=10)
+ shutil.rmtree(TMP)

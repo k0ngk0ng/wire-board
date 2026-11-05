@@ -1,0 +1,28 @@
+go: downloading github.com/corentings/chess/v2 v2.6.0
+go: downloading modernc.org/sqlite v1.46.1
+go: downloading golang.org/x/crypto v0.48.0
+go: downloading github.com/coder/websocket v1.8.14
+go: downloading modernc.org/libc v1.67.6
+go: downloading golang.org/x/sys v0.41.0
+go: downloading golang.org/x/exp v0.0.0-20251023183803-a4bb9ffd2546
+go: downloading modernc.org/mathutil v1.7.1
+go: downloading github.com/ncruces/go-strftime v1.0.0
+go: downloading github.com/mattn/go-isatty v0.0.20
+go: downloading modernc.org/memory v1.11.0
+go: downloading github.com/google/uuid v1.6.0
+go: downloading github.com/dustin/go-humanize v1.0.1
+go: downloading github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec
+{"Time":"2026-11-05T23:42:05.957593+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest"}
+{"Time":"2026-11-05T23:42:06.772466+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Test":"TestRegisteredGameUsesRealHostLoadingAndIndependentSeatInputs"}
+{"Time":"2026-11-05T23:42:06.772532+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Test":"TestRegisteredGameUsesRealHostLoadingAndIndependentSeatInputs","Output":"=== RUN   TestRegisteredGameUsesRealHostLoadingAndIndependentSeatInputs\n"}
+{"Time":"2026-11-05T23:42:06.772577+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Test":"TestRegisteredGameUsesRealHostLoadingAndIndependentSeatInputs","Output":"    http_test.go:97: 魔强统一战尚未注册到平台composition root\n"}
+{"Time":"2026-11-05T23:42:06.772583+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Test":"TestRegisteredGameUsesRealHostLoadingAndIndependentSeatInputs","Output":"--- FAIL: TestRegisteredGameUsesRealHostLoadingAndIndependentSeatInputs (0.00s)\n"}
+{"Time":"2026-11-05T23:42:06.772587+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Test":"TestRegisteredGameUsesRealHostLoadingAndIndependentSeatInputs","Elapsed":0}
+{"Time":"2026-11-05T23:42:06.772594+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Test":"TestRealHostOpaqueRecoveryAndExplicitAutoplay"}
+{"Time":"2026-11-05T23:42:06.772599+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Test":"TestRealHostOpaqueRecoveryAndExplicitAutoplay","Output":"=== RUN   TestRealHostOpaqueRecoveryAndExplicitAutoplay\n"}
+{"Time":"2026-11-05T23:42:06.772608+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Test":"TestRealHostOpaqueRecoveryAndExplicitAutoplay","Output":"    http_test.go:143: 魔强统一战尚未注册到平台composition root\n"}
+{"Time":"2026-11-05T23:42:06.772611+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Test":"TestRealHostOpaqueRecoveryAndExplicitAutoplay","Output":"--- FAIL: TestRealHostOpaqueRecoveryAndExplicitAutoplay (0.00s)\n"}
+{"Time":"2026-11-05T23:42:06.772614+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Test":"TestRealHostOpaqueRecoveryAndExplicitAutoplay","Elapsed":0}
+{"Time":"2026-11-05T23:42:06.772616+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Output":"FAIL\n"}
+{"Time":"2026-11-05T23:42:06.773219+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest\t0.815s\n"}
+{"Time":"2026-11-05T23:42:06.773241+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Elapsed":0.816}

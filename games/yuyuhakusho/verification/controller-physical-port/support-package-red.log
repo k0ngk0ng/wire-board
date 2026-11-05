@@ -1,0 +1,1 @@
+package github.com/k0ngk0ng/wire-board/scripts/yuyuhakusho: C source files not allowed when not using cgo or SWIG: audio_phase_budget_bridge.c hook_filter.c pcm_model_observer.c

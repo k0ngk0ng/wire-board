@@ -1,0 +1,22 @@
+{
+  "at_utc": "2026-11-05T16:28:33.282973+00:00",
+  "original_script": "settings-test-before-md-visual-selector-adaptation.py.txt",
+  "changes": [
+    "Expand MD physical binding details after adding the existing visual surface; selectors remain scoped to the same actions.",
+    "Wait for the test shell refresh to reconstruct PhysicalController and observe an actual neutral sample before the next press.",
+    "Query the existing .gamepad-settings .controller-error status for Gamepad API refusal instead of the connection-only paragraph.",
+    "Capture both binding rows and the top of the MD physical settings surface."
+  ],
+  "behavior_assertions_relaxed": false,
+  "product_input_changed_for_fixture_failures": false,
+  "initial_fixture_failures": [
+    {
+      "label": "settings-browser-first",
+      "reason": "Neutral frame raced with the test shell asynchronous refresh/reconstruction."
+    },
+    {
+      "label": "settings-browser-final",
+      "reason": "API refusal used existing error paragraph rather than .gamepad-connection."
+    }
+  ]
+}

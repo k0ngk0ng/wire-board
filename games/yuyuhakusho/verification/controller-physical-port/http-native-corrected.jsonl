@@ -1,0 +1,32 @@
+{"Time":"2026-11-06T00:13:06.511428+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/internal/server"}
+{"Time":"2026-11-06T00:13:07.103431+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestPhysicalControllerPortHTTPPersistenceAndLegacy"}
+{"Time":"2026-11-06T00:13:07.103478+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestPhysicalControllerPortHTTPPersistenceAndLegacy","Output":"=== RUN   TestPhysicalControllerPortHTTPPersistenceAndLegacy\n"}
+{"Time":"2026-11-06T00:13:07.232684+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestPhysicalControllerPortHTTPPersistenceAndLegacy","Output":"--- PASS: TestPhysicalControllerPortHTTPPersistenceAndLegacy (0.13s)\n"}
+{"Time":"2026-11-06T00:13:07.23271+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestPhysicalControllerPortHTTPPersistenceAndLegacy","Elapsed":0.13}
+{"Time":"2026-11-06T00:13:07.232727+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestPhysicalControllerPortHTTPInvalidAndIsolation"}
+{"Time":"2026-11-06T00:13:07.232738+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestPhysicalControllerPortHTTPInvalidAndIsolation","Output":"=== RUN   TestPhysicalControllerPortHTTPInvalidAndIsolation\n"}
+{"Time":"2026-11-06T00:13:07.294551+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestPhysicalControllerPortHTTPInvalidAndIsolation","Output":"--- PASS: TestPhysicalControllerPortHTTPInvalidAndIsolation (0.06s)\n"}
+{"Time":"2026-11-06T00:13:07.294564+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestPhysicalControllerPortHTTPInvalidAndIsolation","Elapsed":0.06}
+{"Time":"2026-11-06T00:13:07.29457+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestPhysicalControllerPortPerGameHTTPIsolation"}
+{"Time":"2026-11-06T00:13:07.294574+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestPhysicalControllerPortPerGameHTTPIsolation","Output":"=== RUN   TestPhysicalControllerPortPerGameHTTPIsolation\n"}
+{"Time":"2026-11-06T00:13:07.402237+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestPhysicalControllerPortPerGameHTTPIsolation","Output":"--- PASS: TestPhysicalControllerPortPerGameHTTPIsolation (0.11s)\n"}
+{"Time":"2026-11-06T00:13:07.402251+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestPhysicalControllerPortPerGameHTTPIsolation","Elapsed":0.11}
+{"Time":"2026-11-06T00:13:07.402263+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestPhysicalControllerPortLegacyAliasMergeHTTP"}
+{"Time":"2026-11-06T00:13:07.402268+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestPhysicalControllerPortLegacyAliasMergeHTTP","Output":"=== RUN   TestPhysicalControllerPortLegacyAliasMergeHTTP\n"}
+{"Time":"2026-11-06T00:13:07.458192+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestPhysicalControllerPortLegacyAliasMergeHTTP","Output":"--- PASS: TestPhysicalControllerPortLegacyAliasMergeHTTP (0.06s)\n"}
+{"Time":"2026-11-06T00:13:07.458203+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestPhysicalControllerPortLegacyAliasMergeHTTP","Elapsed":0.06}
+{"Time":"2026-11-06T00:13:07.458215+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestControllerProfilesE2E"}
+{"Time":"2026-11-06T00:13:07.458225+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestControllerProfilesE2E","Output":"=== RUN   TestControllerProfilesE2E\n"}
+{"Time":"2026-11-06T00:13:07.568468+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestControllerProfilesE2E","Output":"--- PASS: TestControllerProfilesE2E (0.11s)\n"}
+{"Time":"2026-11-06T00:13:07.56852+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestControllerProfilesE2E","Elapsed":0.11}
+{"Time":"2026-11-06T00:13:07.568528+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestControllerMDProfilesE2E"}
+{"Time":"2026-11-06T00:13:07.568537+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestControllerMDProfilesE2E","Output":"=== RUN   TestControllerMDProfilesE2E\n"}
+{"Time":"2026-11-06T00:13:07.67578+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestControllerMDProfilesE2E","Output":"--- PASS: TestControllerMDProfilesE2E (0.11s)\n"}
+{"Time":"2026-11-06T00:13:07.675795+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestControllerMDProfilesE2E","Elapsed":0.11}
+{"Time":"2026-11-06T00:13:07.675802+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestControllerProfileValidationE2E"}
+{"Time":"2026-11-06T00:13:07.675805+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestControllerProfileValidationE2E","Output":"=== RUN   TestControllerProfileValidationE2E\n"}
+{"Time":"2026-11-06T00:13:07.73484+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestControllerProfileValidationE2E","Output":"--- PASS: TestControllerProfileValidationE2E (0.06s)\n"}
+{"Time":"2026-11-06T00:13:07.734863+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestControllerProfileValidationE2E","Elapsed":0.06}
+{"Time":"2026-11-06T00:13:07.734876+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Output":"PASS\n"}
+{"Time":"2026-11-06T00:13:07.735705+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/internal/server\t1.224s\n"}
+{"Time":"2026-11-06T00:13:07.735716+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/internal/server","Elapsed":1.224}

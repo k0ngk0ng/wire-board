@@ -1,0 +1,28 @@
+✔ all default buttons have the requested direction and A/B identity (1.897583ms)
+✔ turbo begins immediately and holds its phase through OS key repeats (0.137667ms)
+✔ normal A stays held during a turbo A gap and A+B can coexist (0.087625ms)
+✔ clear and profile replacement release old keys without affecting another controller (0.557125ms)
+✔ OS repeats after clearing cannot reactivate a key without a fresh press (0.083583ms)
+✔ standard face buttons, dpad, stick and diagonal produce logical names (1.109166ms)
+✔ sticks use dead zones and hysteresis and opposing directions cancel (0.713583ms)
+✔ turbo retains phase and does not release a normal held button (0.129458ms)
+✔ connect, clear, disable and reconnect require neutral input before rearming (0.134959ms)
+✔ raw hardware stays silent until configured; each device keeps its own mapping (0.160584ms)
+✔ automatic selection sticks to its device, missing/invalid samples cannot latch input (0.113458ms)
+✔ four-button defaults preserve X/Y and put turbo on triggers (0.085167ms)
+✔ automatic selection skips raw devices with no assigned inputs (0.082708ms)
+✔ game-owned action presets do not require FC button names (0.222958ms)
+✔ opposite navigation directions cancel across input sources (0.094083ms)
+✔ charged actions distinguish cancellation from a normal device release (0.167167ms)
+✔ continuous axes and triggers preserve values without changing digital buttons (0.161208ms)
+✔ standard MD6 preset maps all six ordinary buttons plus mode/start and directions (2.058666ms)
+✔ MD U/I are continuous X/Y while FC named turbos keep their original phase (0.217791ms)
+✔ device profile identity, sparse attachment and source release remain independent for MD (0.168208ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 20
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 77.34675

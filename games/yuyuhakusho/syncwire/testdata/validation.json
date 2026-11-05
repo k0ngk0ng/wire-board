@@ -1,0 +1,371 @@
+{
+  "pass": true,
+  "verified_at_utc": "2026-11-05T15:12:24.753780+00:00",
+  "scope": "Canonical12-bit bounded input encoding/history and complete independent fixed-automation rule replay; no network/graphics/audio/takeover application claim",
+  "test_first": {
+    "record": "games/yuyuhakusho/syncwire/testdata/test-first.json",
+    "sha256": "dc1a34123ab46f9af0d6cbdbb863909242b1f8ad2f3eea72a1b1925b87d7295d",
+    "frozen_sources_unchanged": true,
+    "actual_missing_red": "games/yuyuhakusho/syncwire/testdata/frozen-api-red.jsonl"
+  },
+  "native": {
+    "path": "games/yuyuhakusho/syncwire/testdata/native-first.jsonl",
+    "sha256": "26229b621d1cb44eca7514e89987534a1f232a14e3438f8b10733798e3c1f47d",
+    "tests": [
+      "TestFullIndependentMatchesThroughEncodedWindows",
+      "TestHistoryPushCopiesAndRetainsOnly120",
+      "TestInputWindowActualPayloadSizes",
+      "TestWindowExactMD6AndUint64Format",
+      "TestWindowRLEAndEmptyCanonical",
+      "TestWindowRejectsInvalidInputsAtomically",
+      "TestWindowRejectsMalformedWireAtomically",
+      "TestWindowStrictJSONBoundary"
+    ],
+    "complete_matches": [
+      {
+        "case": "duel",
+        "arena": 2,
+        "characters": "AAE=",
+        "team": false,
+        "human_idle": false,
+        "frames": 4985,
+        "callbacks": 52832,
+        "windows": 42,
+        "complete": true,
+        "winner": 4,
+        "state_trace_sha256": "0a7380974e40f863ebb7cb75bbed8b5645b97d03ee2229f0b17fbe20c7ec6825",
+        "event_trace_sha256": "2f33fc18137dfef2547e7571f5cec57125a265a90ab07d9106c03d7219d939d6",
+        "wire_trace_sha256": "07f690609459afa2be1ca1e4973810c5686a2ccf4b2d5e4aa1cdc3e5625ad81c",
+        "final_window": {
+          "version": 1,
+          "firstFrame": "4866",
+          "frameCount": 120,
+          "data": "DQMASAAUACIAABEDABQAIgAADwARAwAiAAAPAABIEQMAAA8AAEgAFBEDDwAASAAUACIRAwBIABQAIgAAEQMAFAAiAAAPAAUDACIAAA8AAEg="
+        },
+        "reference_state_loaded": false,
+        "character_ids": [
+          0,
+          1
+        ]
+      },
+      {
+        "case": "three",
+        "arena": 4,
+        "characters": "AgME",
+        "team": false,
+        "human_idle": false,
+        "frames": 4030,
+        "callbacks": 44809,
+        "windows": 34,
+        "complete": true,
+        "winner": 2,
+        "state_trace_sha256": "625f05fd1db1dedc35c2e4cddba17fe978612b782093509a0f324b6253598215",
+        "event_trace_sha256": "d1bd4a782d23d69785752e6844927ccfaf924d3651959936eae62a813d44aa0a",
+        "wire_trace_sha256": "723d825f86927d7dbc8aaf73c05016081103523ccf3c16695d3e72fc92fb3e4e",
+        "final_window": {
+          "version": 1,
+          "firstFrame": "3911",
+          "frameCount": 120,
+          "data": "EAcPAABIABQAIhEHAEgAFAAiAAARBwAUACIAAA8AEQcAIgAADwAASBEHAAAPAABIABQRBw8AAEgAFAAiEQcASAAUACIAAAIHABQAIgAADwA="
+        },
+        "reference_state_loaded": false,
+        "character_ids": [
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "case": "four",
+        "arena": 10,
+        "characters": "BQYHCA==",
+        "team": false,
+        "human_idle": false,
+        "frames": 4894,
+        "callbacks": 67014,
+        "windows": 41,
+        "complete": true,
+        "winner": 2,
+        "state_trace_sha256": "40a873a2612fae8aec96f51f6b003fab70d6baf8c351d6fd427b11275e48cd91",
+        "event_trace_sha256": "82d1f0c2c556bda1598d7b2eb05720785846c1d98d3fe61d416d3535c6abff9b",
+        "wire_trace_sha256": "e807e7854527ca2801e7b1523183d248c0de85a798937e38bc107b863353aeea",
+        "final_window": {
+          "version": 1,
+          "firstFrame": "4775",
+          "frameCount": 120,
+          "data": "Ag8PAABIABQAIhEPAEgAFAAiAAARDwAUACIAAA8AEQ8AIgAADwAASBEPAAAPAABIABQRDw8AAEgAFAAiEQ8ASAAUACIAABAPABQAIgAADwA="
+        },
+        "reference_state_loaded": false,
+        "character_ids": [
+          5,
+          6,
+          7,
+          8
+        ]
+      },
+      {
+        "case": "team",
+        "arena": 14,
+        "characters": "CQoAAQ==",
+        "team": true,
+        "human_idle": false,
+        "frames": 3851,
+        "callbacks": 54152,
+        "windows": 33,
+        "complete": true,
+        "winner": 4,
+        "state_trace_sha256": "c73355108979a4124c779b47bb05bec6e07cd1b45de488f7c3845f1c5013d8ae",
+        "event_trace_sha256": "2bfd40f3422b459ca21e11eb2edd88983d8cd88600eefc3a8aed2cb38d889b65",
+        "wire_trace_sha256": "eff9824197022dd1a161e62556c1b2ec007949c9921ac1b72f21bc24e76cf08a",
+        "final_window": {
+          "version": 1,
+          "firstFrame": "3732",
+          "frameCount": 120,
+          "data": "CA8AAA8AAEgAFBEPDwAASAAUACIRDwBIABQAIgAAEQ8AFAAiAAAPABEPACIAAA8AAEgRDwAADwAASAAUEQ8PAABIABQAIgoPAEgAFAAiAAA="
+        },
+        "reference_state_loaded": false,
+        "character_ids": [
+          9,
+          10,
+          0,
+          1
+        ]
+      },
+      {
+        "case": "human-idle",
+        "arena": 8,
+        "characters": "Bwk=",
+        "team": false,
+        "human_idle": true,
+        "frames": 2791,
+        "callbacks": 25915,
+        "windows": 24,
+        "complete": true,
+        "winner": 4,
+        "state_trace_sha256": "1adb79d83c2fd53ea6fc35a16b7616e3a98d4aef733eac42bc2a3505f95295ef",
+        "event_trace_sha256": "e7d0b19e153d154bc0263836ea4bc2ae94c4c0309b3119a449115c87ea68e95d",
+        "wire_trace_sha256": "546ee2437bffac5b7c3a02d7fd410e272a95052f52d4324e99caa3d1d50db736",
+        "final_window": {
+          "version": 1,
+          "firstFrame": "2672",
+          "frameCount": 120,
+          "data": "DgIAAAAiAAAPABECAAAAAA8AAEgRAgAADwAASAAUEQIAAABIABQAIhECAAAAFAAiAAARAgAAACIAAA8AEQIAAAAADwAASAQCAAAPAABIABQ="
+        },
+        "reference_state_loaded": false,
+        "character_ids": [
+          7,
+          9
+        ]
+      }
+    ],
+    "payload_sizes": {
+      "dense": {
+        "base64_bytes": 1600,
+        "frames": 120,
+        "rle_bytes": 1200,
+        "window_json_bytes": 1662
+      },
+      "idle": {
+        "base64_bytes": 16,
+        "frames": 120,
+        "rle_bytes": 10,
+        "window_json_bytes": 78
+      },
+      "ordinary": {
+        "base64_bytes": 160,
+        "frames": 120,
+        "rle_bytes": 120,
+        "window_json_bytes": 222
+      }
+    }
+  },
+  "wasm": {
+    "path": "games/yuyuhakusho/syncwire/testdata/wasm-first.jsonl",
+    "sha256": "5e2e67fe3552b399122f65eb82ebce80d46bbddebe7db62a19b8fb8893bc8fb9",
+    "tests": [
+      "TestFullIndependentMatchesThroughEncodedWindows",
+      "TestHistoryPushCopiesAndRetainsOnly120",
+      "TestInputWindowActualPayloadSizes",
+      "TestWindowExactMD6AndUint64Format",
+      "TestWindowRLEAndEmptyCanonical",
+      "TestWindowRejectsInvalidInputsAtomically",
+      "TestWindowRejectsMalformedWireAtomically",
+      "TestWindowStrictJSONBoundary"
+    ],
+    "complete_matches": [
+      {
+        "case": "duel",
+        "arena": 2,
+        "characters": "AAE=",
+        "team": false,
+        "human_idle": false,
+        "frames": 4985,
+        "callbacks": 52832,
+        "windows": 42,
+        "complete": true,
+        "winner": 4,
+        "state_trace_sha256": "0a7380974e40f863ebb7cb75bbed8b5645b97d03ee2229f0b17fbe20c7ec6825",
+        "event_trace_sha256": "2f33fc18137dfef2547e7571f5cec57125a265a90ab07d9106c03d7219d939d6",
+        "wire_trace_sha256": "07f690609459afa2be1ca1e4973810c5686a2ccf4b2d5e4aa1cdc3e5625ad81c",
+        "final_window": {
+          "version": 1,
+          "firstFrame": "4866",
+          "frameCount": 120,
+          "data": "DQMASAAUACIAABEDABQAIgAADwARAwAiAAAPAABIEQMAAA8AAEgAFBEDDwAASAAUACIRAwBIABQAIgAAEQMAFAAiAAAPAAUDACIAAA8AAEg="
+        },
+        "reference_state_loaded": false,
+        "character_ids": [
+          0,
+          1
+        ]
+      },
+      {
+        "case": "three",
+        "arena": 4,
+        "characters": "AgME",
+        "team": false,
+        "human_idle": false,
+        "frames": 4030,
+        "callbacks": 44809,
+        "windows": 34,
+        "complete": true,
+        "winner": 2,
+        "state_trace_sha256": "625f05fd1db1dedc35c2e4cddba17fe978612b782093509a0f324b6253598215",
+        "event_trace_sha256": "d1bd4a782d23d69785752e6844927ccfaf924d3651959936eae62a813d44aa0a",
+        "wire_trace_sha256": "723d825f86927d7dbc8aaf73c05016081103523ccf3c16695d3e72fc92fb3e4e",
+        "final_window": {
+          "version": 1,
+          "firstFrame": "3911",
+          "frameCount": 120,
+          "data": "EAcPAABIABQAIhEHAEgAFAAiAAARBwAUACIAAA8AEQcAIgAADwAASBEHAAAPAABIABQRBw8AAEgAFAAiEQcASAAUACIAAAIHABQAIgAADwA="
+        },
+        "reference_state_loaded": false,
+        "character_ids": [
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "case": "four",
+        "arena": 10,
+        "characters": "BQYHCA==",
+        "team": false,
+        "human_idle": false,
+        "frames": 4894,
+        "callbacks": 67014,
+        "windows": 41,
+        "complete": true,
+        "winner": 2,
+        "state_trace_sha256": "40a873a2612fae8aec96f51f6b003fab70d6baf8c351d6fd427b11275e48cd91",
+        "event_trace_sha256": "82d1f0c2c556bda1598d7b2eb05720785846c1d98d3fe61d416d3535c6abff9b",
+        "wire_trace_sha256": "e807e7854527ca2801e7b1523183d248c0de85a798937e38bc107b863353aeea",
+        "final_window": {
+          "version": 1,
+          "firstFrame": "4775",
+          "frameCount": 120,
+          "data": "Ag8PAABIABQAIhEPAEgAFAAiAAARDwAUACIAAA8AEQ8AIgAADwAASBEPAAAPAABIABQRDw8AAEgAFAAiEQ8ASAAUACIAABAPABQAIgAADwA="
+        },
+        "reference_state_loaded": false,
+        "character_ids": [
+          5,
+          6,
+          7,
+          8
+        ]
+      },
+      {
+        "case": "team",
+        "arena": 14,
+        "characters": "CQoAAQ==",
+        "team": true,
+        "human_idle": false,
+        "frames": 3851,
+        "callbacks": 54152,
+        "windows": 33,
+        "complete": true,
+        "winner": 4,
+        "state_trace_sha256": "c73355108979a4124c779b47bb05bec6e07cd1b45de488f7c3845f1c5013d8ae",
+        "event_trace_sha256": "2bfd40f3422b459ca21e11eb2edd88983d8cd88600eefc3a8aed2cb38d889b65",
+        "wire_trace_sha256": "eff9824197022dd1a161e62556c1b2ec007949c9921ac1b72f21bc24e76cf08a",
+        "final_window": {
+          "version": 1,
+          "firstFrame": "3732",
+          "frameCount": 120,
+          "data": "CA8AAA8AAEgAFBEPDwAASAAUACIRDwBIABQAIgAAEQ8AFAAiAAAPABEPACIAAA8AAEgRDwAADwAASAAUEQ8PAABIABQAIgoPAEgAFAAiAAA="
+        },
+        "reference_state_loaded": false,
+        "character_ids": [
+          9,
+          10,
+          0,
+          1
+        ]
+      },
+      {
+        "case": "human-idle",
+        "arena": 8,
+        "characters": "Bwk=",
+        "team": false,
+        "human_idle": true,
+        "frames": 2791,
+        "callbacks": 25915,
+        "windows": 24,
+        "complete": true,
+        "winner": 4,
+        "state_trace_sha256": "1adb79d83c2fd53ea6fc35a16b7616e3a98d4aef733eac42bc2a3505f95295ef",
+        "event_trace_sha256": "e7d0b19e153d154bc0263836ea4bc2ae94c4c0309b3119a449115c87ea68e95d",
+        "wire_trace_sha256": "546ee2437bffac5b7c3a02d7fd410e272a95052f52d4324e99caa3d1d50db736",
+        "final_window": {
+          "version": 1,
+          "firstFrame": "2672",
+          "frameCount": 120,
+          "data": "DgIAAAAiAAAPABECAAAAAA8AAEgRAgAADwAASAAUEQIAAABIABQAIhECAAAAFAAiAAARAgAAACIAAA8AEQIAAAAADwAASAQCAAAPAABIABQ="
+        },
+        "reference_state_loaded": false,
+        "character_ids": [
+          7,
+          9
+        ]
+      }
+    ],
+    "payload_sizes": {
+      "dense": {
+        "base64_bytes": 1600,
+        "frames": 120,
+        "rle_bytes": 1200,
+        "window_json_bytes": 1662
+      },
+      "idle": {
+        "base64_bytes": 16,
+        "frames": 120,
+        "rle_bytes": 10,
+        "window_json_bytes": 78
+      },
+      "ordinary": {
+        "base64_bytes": 160,
+        "frames": 120,
+        "rle_bytes": 120,
+        "window_json_bytes": 222
+      }
+    }
+  },
+  "native_wasm_complete_facts_equal": true,
+  "max_frames": 120,
+  "all_eleven_characters_covered": true,
+  "whole_world_controllers_compared_without_mask": true,
+  "automation": "Input masks preserved exactly; complete matches use fixed authorized flags, dynamic tick application belongs to sessiontick",
+  "versioning": "Version1 only; uint64firstFrame JSON decimal string; future versions explicitly rejected",
+  "source_sha256": {
+    "games/yuyuhakusho/syncwire/inputs.go": "6a72aecd6b426534069112edd4d40eab22e4902080b8f9514f02d48ba98331f7",
+    "games/yuyuhakusho/syncwire/window_test.go": "7a89f34ad12ceae273d68fb91fa4f99e4387f31e3b1537156449adbe2474f412",
+    "games/yuyuhakusho/syncwire/replay_test.go": "2a3daee90576ac3c78069dff851f6f37371bc9e34483c90f2045c205b97fbb39",
+    "games/yuyuhakusho/syncwire/README.md": "97eb1e296e571fb51f69ecf6a3ee851c6e7e90f6f0082eafd0dd32d2a99ba72d",
+    "games/yuyuhakusho/syncwire/verify.py": "b3dfbb440f90080bf51f46064a93803530bd80166698f39ea725b49bb01ebf04"
+  },
+  "limits": [
+    "Regular packets contain only inputs/frame metadata; checkpoints and authenticated host control are separate.",
+    "Does not apply automation, predict ticks, compute or normalize world digests, render media or implement slow-peer recovery.",
+    "The complete replay oracle is another independent Go session receiving the exact same physical inputs, not original CPU execution."
+  ]
+}

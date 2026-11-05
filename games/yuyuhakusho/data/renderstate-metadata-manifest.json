@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "pass": true,
+  "scope": "Pixel-free computational frame/culling/cache/transfer/preload counts, stable tile identities and HUD ref domains; no tile pixels, piece geometry, palettes, ROM, CPU snapshots or client runtime",
+  "bytes": 486408,
+  "gzip_bytes": 111445,
+  "sha256": "9dca2baecf120b7b09d7e4d1c8db410ff33a49a68acdcf5c3bf2b6e03fa260bd",
+  "gzip_sha256": "da0e0eeae122113f92b99a5f355c5b48886382dc03a2fc602d3058ddd7618617",
+  "frames": 1500,
+  "tile_identities": 34520,
+  "default_slots": 320,
+  "glyph_codes": 20,
+  "portraits": 11,
+  "source_sha256": {
+    "chu-world-rules.json.gz": "fac9146e529ca2d191847d1cbba339c2b14e29b5c5a44fdf9a01df27cede1c5b",
+    "world-sprites.json.gz": "200e28e775a809de89c19df0dfef314d5697224fcb6a145853beb7344b5833ef",
+    "hud-assets.json.gz": "4c26a97efb8901db2c6ed791d3cb99ebf7e9efcbeaed2cc13e8bd54f22bdc50c"
+  },
+  "exporter_sha256": "57457ffa382ff8b04058da629a63806af78a9bbd1f260caa8fba4d5ba2237d41"
+}

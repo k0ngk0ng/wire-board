@@ -102,6 +102,8 @@ type Result struct {
 // authentication, transactions, clocks, deduplication and publication. Keep all
 // game-specific types, decoding and snapshot upgrades in the game's package.
 type Module struct {
+	// Controls declares only an actually wired per-game logical input scheme.
+	Controls   *ControllerDefinition                                                `json:"-"`
 	ID         string                                                               `json:"id"`
 	Name       string                                                               `json:"name"`
 	MinPlayers int                                                                  `json:"minPlayers"`

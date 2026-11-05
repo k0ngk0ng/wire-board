@@ -1,0 +1,38 @@
+{
+  "pass": true,
+  "scope": "Five real HTTP/authentication/SQLite/clock/WebSocket E2Es under race. Browser, hardware gamepad, complete TCP backpressure and release remain separate.",
+  "tests": [
+    "TestRegisteredGameUsesRealHostLoadingAndIndependentSeatInputs",
+    "TestRealHostOpaqueRecoveryAndExplicitAutoplay",
+    "TestRealHostPublicLoadingPrecedesGameLoading",
+    "TestRealSlowSpectatorDoesNotBlockFastPlayerOrClock",
+    "TestRealWebsocketCompactFramesAndIdempotentInputs"
+  ],
+  "race_log": "games/yuyuhakusho/verification/platform-host-public-loading-final-race.jsonl",
+  "race_log_sha256": "281a42e9254dfa3850cfa55e577c4279c32e36cd48613531397eaf525c137fc1",
+  "source_sha256": {
+    "games/registry.go": "20f01ed49f3303fd1f1ae4c4c2a8d7a27c8f09172234269d9a15fade16594ba7",
+    "web/src/main.tsx": "c4e07b178fe0ed4cbbc4cdf19918c1cb06e3748f5ad1546a3710c6d61bbaba8f",
+    "games/yuyuhakusho/platformtest/slow_reader_test.go": "32a41fa70c01d8d060e4a40ac2ca6f4f549bf9a82e1124ca8db62482ac7c7a40",
+    "games/yuyuhakusho/platformtest/FAILURES.md": "eb9224d2e8a49bd0b4bb96ca8e2d18e18f1d5760f005e39db24ac9a2c4b2b9dc",
+    "games/yuyuhakusho/platformtest/http_test.go": "b03c3a1ede221b21fe3462a4c4cda9d0bf6f6fc576cda27b01c5652320e0a81b",
+    "games/yuyuhakusho/platformtest/BROWSER_FAILURES.md": "37c8de38a240d2c3487f4630f9a21e3596d49b6234ca5d2f17bbef5ab8b87256",
+    "games/yuyuhakusho/platformtest/stream_test.go": "f9e6a73006446a819ebb68858757b27b4cb7f1077fc61832b63c1adb32537b2d",
+    "games/yuyuhakusho/platformtest/loading_test.go": "613838631c3c5dbf9d98c40c85a2b7d7b2142ec590b909367ab6accac2430ddc"
+  },
+  "evidence_sha256": {
+    "games/yuyuhakusho/verification/platform-host-public-loading-final-race.jsonl": "281a42e9254dfa3850cfa55e577c4279c32e36cd48613531397eaf525c137fc1",
+    "games/yuyuhakusho/verification/platform-host/TestRealSlowSpectatorDoesNotBlockFastPlayerOrClock.json": "c59d8e60ab3c7f7930cd4b7cd1afa4585665a8f7069f546d6abc8e786371401a",
+    "games/yuyuhakusho/verification/platform-host/TestRealHostPublicLoadingPrecedesGameLoading.json": "e200fd609a26dd1b6c4bb68ace28d5854e5f06fdd25c7b47f2e293fb34f9c366",
+    "games/yuyuhakusho/verification/platform-host/TestRegisteredGameUsesRealHostLoadingAndIndependentSeatInputs.json": "e30ea76e8a18b88766d35b208de88ae39f042ffc993fbff2902e69e686988484",
+    "games/yuyuhakusho/verification/platform-host/TestRealWebsocketCompactFramesAndIdempotentInputs.json": "a5dadad93eb199b49a1e2c66312dd87185095e340a56c2228b12f4c67f4360ca",
+    "games/yuyuhakusho/verification/platform-host/TestRealHostOpaqueRecoveryAndExplicitAutoplay.json": "5e344787e2ae82caa0e6455eeffad942ce51e0c760fa78566804c1780d9be69a",
+    "games/yuyuhakusho/verification/platform-host-registration-red.jsonl": "a7ed3956777332154e9b9edc26282852387d55b18636ccc71508ad42e41bcbb6",
+    "games/yuyuhakusho/verification/platform-host-public-loading-setup-error.jsonl": "fb58e563d4f2a1873810957e9e16c6af711478bb65cea0ec23c182708bd8f994"
+  },
+  "limitations": [
+    "slow spectator stops reading real WebSocket; kernel write-blocked state not instrumented",
+    "no claim of browser input-to-visible latency from Go-only E2E",
+    "public loading initial setup failure was helper.Restart before room creation; recorded as setup error, no production change used to fix it"
+  ]
+}

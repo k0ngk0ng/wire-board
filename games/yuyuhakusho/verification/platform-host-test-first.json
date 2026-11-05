@@ -1,0 +1,10 @@
+{
+  "frozen_at_utc": "2026-11-05T15:41:49.903496+00:00",
+  "test_first": true,
+  "scope": "Composition root and real HTTP/auth/SQLite/timer/recovery acceptance; no browser or physical hardware claim",
+  "files": {
+    "games/yuyuhakusho/platformtest/FAILURES.md": "eb9224d2e8a49bd0b4bb96ca8e2d18e18f1d5760f005e39db24ac9a2c4b2b9dc",
+    "games/yuyuhakusho/platformtest/http_test.go": "b03c3a1ede221b21fe3462a4c4cda9d0bf6f6fc576cda27b01c5652320e0a81b"
+  },
+  "red": "games/yuyuhakusho/verification/platform-host-registration-red.jsonl"
+}

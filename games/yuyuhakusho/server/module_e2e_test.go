@@ -1,0 +1,461 @@
+package yuyuhakusho
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"reflect"
+	"strings"
+	"testing"
+	"time"
+
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine"
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/renderstate"
+	"github.com/k0ngk0ng/wire-board/internal/gameapi"
+)
+
+type moduleWireViewTest struct {
+	Epoch              string  `json:"epoch"`
+	Frame              uint64  `json:"frame,string"`
+	Phase              string  `json:"phase"`
+	Digest             string  `json:"digest"`
+	PresentationDigest string  `json:"presentationDigest"`
+	SeatSlots          []uint8 `json:"seatSlots"`
+	Players            []struct {
+		Seat        int   `json:"seat"`
+		Slot        uint8 `json:"slot"`
+		CharacterID uint8 `json:"characterID"`
+		Computer    bool  `json:"computer"`
+		Health      int16 `json:"health"`
+		X           int16 `json:"x"`
+		Y           int16 `json:"y"`
+	} `json:"players"`
+}
+
+func moduleContextTest(n int, now int64, automated []bool) gameapi.Context {
+	return gameapi.Context{Actor: -1, Players: n, Now: time.UnixMilli(now), Automated: append([]bool(nil), automated...), Version: 2, RequestedVersion: 2}
+}
+func moduleViewTest(t *testing.T, mod gameapi.Module, m gameapi.Match, seat int) moduleWireViewTest {
+	t.Helper()
+	v, err := mod.View(m, seat)
+	if err != nil {
+		t.Fatal(err)
+	}
+	raw, err := json.Marshal(v)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var result moduleWireViewTest
+	if err = json.Unmarshal(raw, &result); err != nil {
+		t.Fatal(err)
+	}
+	if len(result.Epoch) != 24 || len(result.Digest) != 64 || len(result.PresentationDigest) != 64 {
+		t.Fatal("wire metadata identity unavailable", string(raw))
+	}
+	return result
+}
+func moduleActionTest(t *testing.T, mod gameapi.Module, ctx gameapi.Context, m gameapi.Match, action any) gameapi.Match {
+	t.Helper()
+	raw, err := json.Marshal(action)
+	if err != nil {
+		t.Fatal(err)
+	}
+	next, err := mod.Apply(ctx, m, raw)
+	if err != nil {
+		t.Fatal(err, string(raw))
+	}
+	if err = mod.ValidateMatch(next, ctx.Players); err != nil {
+		t.Fatal(err)
+	}
+	return next
+}
+func moduleStartTest(t *testing.T, n int, o Options, auto []bool) (gameapi.Module, gameapi.Context, gameapi.Match) {
+	t.Helper()
+	mod := Module()
+	if err := mod.Validate(); err != nil {
+		t.Fatal(err)
+	}
+	ctx := moduleContextTest(n, 1000, auto)
+	raw, _ := json.Marshal(o)
+	m, err := mod.Start(ctx, raw)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err = mod.ValidateMatch(m, n); err != nil {
+		t.Fatal(err)
+	}
+	return mod, ctx, m
+}
+func moduleTickTest(t *testing.T, mod gameapi.Module, ctx gameapi.Context, m gameapi.Match, at int64) gameapi.Match {
+	t.Helper()
+	ctx.Actor = -1
+	ctx.Now = time.UnixMilli(at)
+	next, err := mod.OnTimer(ctx, m)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err = mod.ValidateMatch(next, ctx.Players); err != nil {
+		t.Fatal(err)
+	}
+	return next
+}
+func moduleCheckpointTest(t *testing.T, mod gameapi.Module, m gameapi.Match, seat int) Checkpoint {
+	t.Helper()
+	value, err := mod.SyncSnapshot(m, seat)
+	if err != nil {
+		t.Fatal(err)
+	}
+	raw, err := json.Marshal(value)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var saved struct {
+		Checkpoint string `json:"checkpoint"`
+	}
+	if err = json.Unmarshal(raw, &saved); err != nil {
+		t.Fatal(err)
+	}
+	var checkpoint Checkpoint
+	if err = json.Unmarshal([]byte(saved.Checkpoint), &checkpoint); err != nil {
+		t.Fatal(err)
+	}
+	return checkpoint
+}
+
+func TestModuleInitialLoadingClockAndInputBoundary(t *testing.T) {
+	o := Options{Arena: 10, Characters: []uint8{7, 9}}
+	mod, ctx, m := moduleStartTest(t, 2, o, []bool{false, false})
+	if !mod.Realtime || mod.MinPlayers != 2 || mod.MaxPlayers != 4 || mod.Prepare == nil || mod.Reclaim == nil || mod.BotAction == nil || mod.SyncSnapshot == nil {
+		t.Fatal("incomplete platform module")
+	}
+	v := moduleViewTest(t, mod, m, 0)
+	if v.Frame != 0 || v.Phase != "loading" || m.SystemDeadline != 0 {
+		t.Fatal("manual loading advanced authority", v)
+	}
+	before := append([]byte(nil), m.Data...)
+	waiting := moduleTickTest(t, mod, ctx, m, 12000)
+	if !bytes.Equal(before, waiting.Data) {
+		t.Fatal("loading timer mutated saved state")
+	}
+	ctx.Actor = 0
+	ctx.Now = time.UnixMilli(12000)
+	m = moduleActionTest(t, mod, ctx, m, map[string]any{"type": "loaded", "epoch": v.Epoch})
+	if moduleViewTest(t, mod, m, 0).Phase != "loading" {
+		t.Fatal("one ready released all players")
+	}
+	ctx.Actor = 1
+	ctx.Now = time.UnixMilli(20000)
+	m = moduleActionTest(t, mod, ctx, m, map[string]any{"type": "loaded", "epoch": v.Epoch})
+	if moduleViewTest(t, mod, m, 0).Frame != 0 || m.SystemDeadline <= 20000 {
+		t.Fatal("initial resource acknowledgement did not anchor realtime clock")
+	}
+	duplicate := moduleActionTest(t, mod, ctx, m, map[string]any{"type": "loaded", "epoch": v.Epoch})
+	if !bytes.Equal(m.Data, duplicate.Data) {
+		t.Fatal("duplicate loaded reset running match")
+	}
+	ctx.Actor = 0
+	m = moduleActionTest(t, mod, ctx, m, map[string]any{"type": "input", "epoch": v.Epoch, "sequence": 1, "buttons": engine.ButtonX | engine.ButtonZ | engine.ButtonA})
+	m = moduleActionTest(t, mod, ctx, m, map[string]any{"type": "release", "epoch": v.Epoch, "sequence": 2})
+	m = moduleTickTest(t, mod, ctx, m, 20017)
+	cp := moduleCheckpointTest(t, mod, m, 0)
+	if cp.Frame != 1 || cp.World.Controllers[0].Current != (engine.ButtonX|engine.ButtonZ|engine.ButtonA) {
+		t.Fatal("short high-MD pulse lost", cp.Frame, cp.World.Controllers[0])
+	}
+	m = moduleTickTest(t, mod, ctx, m, 20034)
+	cp = moduleCheckpointTest(t, mod, m, -1)
+	if cp.Frame != 2 || cp.World.Controllers[0].Current != 0 || cp.World.Controllers[0].Released&(engine.ButtonX|engine.ButtonZ|engine.ButtonA) == 0 {
+		t.Fatal("short pulse release/history lost")
+	}
+	for at := int64(20100); at <= 21000; at += 100 {
+		m = moduleTickTest(t, mod, ctx, m, at)
+	}
+	if got := moduleViewTest(t, mod, m, 0).Frame; got != 59 {
+		t.Fatal("rational realtime clock differs", got)
+	}
+}
+
+func TestModuleInvalidActionsAreAtomicAndStaleInputsRemainAuthenticated(t *testing.T) {
+	mod, ctx, m := moduleStartTest(t, 2, Options{Characters: []uint8{3, 9}}, []bool{false, true})
+	v := moduleViewTest(t, mod, m, 0)
+	ctx.Actor = 0
+	m = moduleActionTest(t, mod, ctx, m, map[string]any{"type": "loaded", "epoch": v.Epoch})
+	for _, raw := range []string{`null`, `{"type":"input","epoch":"wrong","sequence":1,"buttons":1}`, fmt.Sprintf(`{"type":"input","epoch":%q,"sequence":1,"buttons":4096}`, v.Epoch), fmt.Sprintf(`{"type":"input","epoch":%q,"sequence":0,"buttons":1}`, v.Epoch), fmt.Sprintf(`{"type":"input","epoch":%q,"sequence":9007199254740992,"buttons":1}`, v.Epoch), fmt.Sprintf(`{"type":"input","epoch":%q,"sequence":2049,"buttons":1}`, v.Epoch), fmt.Sprintf(`{"type":"input","epoch":%q,"sequence":1,"buttons":1,"seat":1}`, v.Epoch), fmt.Sprintf(`{"type":"input","epoch":%q,"sequence":1,"sequence":2,"buttons":1}`, v.Epoch), `{} {}`} {
+		before := append([]byte(nil), m.Data...)
+		ctx.Now = time.UnixMilli(9000)
+		next, err := mod.Apply(ctx, m, json.RawMessage(raw))
+		if err == nil || !bytes.Equal(m.Data, before) || !reflect.DeepEqual(next, m) {
+			t.Fatal("invalid input changed state", raw, err)
+		}
+	}
+	good, _ := json.Marshal(map[string]any{"type": "input", "epoch": v.Epoch, "sequence": 1, "buttons": engine.ButtonZ})
+	ctx.Now = time.UnixMilli(1000)
+	ctx.RequestedVersion = 1
+	if !mod.AcceptStale(ctx, m, good) {
+		t.Fatal("valid old-version logical input not admitted")
+	}
+	next, err := mod.Apply(ctx, m, good)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m = next
+	if mod.AcceptStale(ctx, m, good) {
+		t.Fatal("duplicate sequence remained admissible")
+	}
+	bot := ctx
+	bot.Actor = 1
+	if mod.AcceptStale(bot, m, good) {
+		t.Fatal("computer seat accepted client controls")
+	}
+	bad := ctx
+	bad.Actor = 2
+	if _, err = mod.Apply(bad, m, good); err == nil {
+		t.Fatal("foreign seat accepted")
+	}
+	if _, err = mod.SyncSnapshot(m, 2); err == nil {
+		t.Fatal("unauthorized checkpoint viewer accepted")
+	}
+}
+
+func TestModuleHumanIdleExplicitAutomationAndReclaim(t *testing.T) {
+	mod, ctx, m := moduleStartTest(t, 2, Options{Arena: 2, Characters: []uint8{7, 9}}, []bool{false, true})
+	epoch := moduleViewTest(t, mod, m, 0).Epoch
+	ctx.Actor = 0
+	m = moduleActionTest(t, mod, ctx, m, map[string]any{"type": "loaded", "epoch": epoch})
+	for at := int64(1100); at <= 7000; at += 100 {
+		m = moduleTickTest(t, mod, ctx, m, at)
+	}
+	ctx.Now = time.UnixMilli(7000)
+	m = moduleActionTest(t, mod, ctx, m, map[string]any{"type": "input", "epoch": epoch, "sequence": 1, "buttons": engine.ButtonRight | engine.ButtonX})
+	for at := int64(7100); at <= 10000; at += 100 {
+		m = moduleTickTest(t, mod, ctx, m, at)
+	}
+	cp := moduleCheckpointTest(t, mod, m, 0)
+	if cp.World.Objects[0x8400].InputChannel != 0 || cp.World.Controllers[0].Current != 0 || moduleViewTest(t, mod, m, 0).Players[0].Computer {
+		t.Fatal("idle/lost-input human auto-taken or latch not released")
+	}
+	ctx.Automated[0] = true
+	m = moduleTickTest(t, mod, ctx, m, 10100)
+	cp = moduleCheckpointTest(t, mod, m, 0)
+	if cp.World.Objects[0x8400].InputChannel != 255 {
+		t.Fatal("explicit automation did not reach the effective tick")
+	}
+	original := cp
+	beforeDigest, _ := renderstate.RulesDigest(cp.World)
+	ctx.Actor = 0
+	ctx.Now = time.UnixMilli(10100)
+	reclaimed, err := mod.Reclaim(ctx, m)
+	if err != nil {
+		t.Fatal(err)
+	}
+	after := moduleCheckpointTest(t, mod, reclaimed, 0)
+	afterDigest, _ := renderstate.RulesDigest(after.World)
+	if after.Frame != original.Frame || beforeDigest != afterDigest {
+		t.Fatal("reclaim changed rule state outside recorded tick")
+	}
+	ctx.Automated[0] = false
+	m = moduleTickTest(t, mod, ctx, reclaimed, 10200)
+	cp = moduleCheckpointTest(t, mod, m, 0)
+	if cp.World.Objects[0x8400].InputChannel != 0 || moduleViewTest(t, mod, m, 0).Players[0].Computer {
+		t.Fatal("manual reclaim was not applied on recorded tick")
+	}
+	saved, decodeErr := decode(m)
+	if decodeErr != nil || !saved.HadComputer || m.HasComputerPlayers {
+		t.Fatal("computer history or host-owned seat classification differs", decodeErr)
+	}
+}
+
+func TestModuleWireAndRecoveryBoundaries(t *testing.T) {
+	mod, ctx, m := moduleStartTest(t, 2, Options{Arena: 10, Characters: []uint8{7, 3}}, []bool{false, false})
+	epoch := moduleViewTest(t, mod, m, 0).Epoch
+	for seat := 0; seat < 2; seat++ {
+		ctx.Actor = seat
+		m = moduleActionTest(t, mod, ctx, m, map[string]any{"type": "loaded", "epoch": epoch})
+	}
+	var maximum int
+	for tick := 1; tick <= 360; tick++ {
+		at := int64(1000 + tick*17)
+		ctx.Now = time.UnixMilli(at)
+		ctx.Actor = 0
+		m = moduleActionTest(t, mod, ctx, m, map[string]any{"type": "input", "epoch": epoch, "sequence": tick, "buttons": engine.Buttons(1 << uint(tick%12))})
+		m = moduleTickTest(t, mod, ctx, m, at)
+		view, err := mod.View(m, 0)
+		if err != nil {
+			t.Fatal(err)
+		}
+		raw, _ := json.Marshal(view)
+		if len(raw) > maximum {
+			maximum = len(raw)
+		}
+		for _, forbidden := range []string{`"world"`, `"presentation"`, `"sprite_slots"`, `"Objects"`, `"Stream"`} {
+			if bytes.Contains(raw, []byte(forbidden)) {
+				t.Fatal("ordinary view carries checkpoint or client payload", forbidden)
+			}
+		}
+	}
+	if maximum > 8192 {
+		t.Fatal("dense ordinary wire window unbounded", maximum)
+	}
+	before := moduleCheckpointTest(t, mod, m, 0)
+	raw, _ := json.Marshal(m)
+	var restored gameapi.Match
+	if err := json.Unmarshal(raw, &restored); err != nil {
+		t.Fatal(err)
+	}
+	ctx.Actor = -1
+	ctx.Now = time.UnixMilli(1000 + 360*17)
+	restored, err := mod.Restore(ctx, restored)
+	if err != nil {
+		t.Fatal(err)
+	}
+	after := moduleCheckpointTest(t, mod, restored, 0)
+	if before.Frame != after.Frame || !reflect.DeepEqual(before.World, after.World) || !reflect.DeepEqual(before.Presentation, after.Presentation) {
+		t.Fatal("restore replaced canonical world or presentation state")
+	}
+	view := moduleViewTest(t, mod, restored, -1)
+	if view.Phase == "loading" {
+		t.Fatal("reconnect globally gated running match")
+	}
+	for seat := 0; seat < 2; seat++ {
+		ctx.Actor = seat
+		ctx.Now = time.UnixMilli(1000 + 360*17)
+		restored = moduleActionTest(t, mod, ctx, restored, map[string]any{"type": "loaded", "epoch": epoch})
+	}
+	if moduleViewTest(t, mod, restored, 0).Frame != before.Frame {
+		t.Fatal("duplicate reconnect ready advanced/reset rules")
+	}
+	t.Logf("dense public view max_bytes=%d; checkpoint/world/presentation excluded", maximum)
+}
+
+func TestModuleCompleteNewMatchesAcrossArenaModes(t *testing.T) {
+	modes := []struct {
+		name       string
+		characters []uint8
+		team       bool
+	}{{"duel", []uint8{0, 1}, false}, {"three", []uint8{2, 3, 4}, false}, {"four", []uint8{5, 6, 7, 8}, false}, {"team", []uint8{9, 10, 0, 1}, true}}
+	for _, arena := range []uint16{0, 2, 4, 6, 8, 10, 12, 14} {
+		for _, mode := range modes {
+			t.Run(fmt.Sprintf("arena-%x-%s", arena, mode.name), func(t *testing.T) {
+				n := len(mode.characters)
+				flags := make([]bool, n)
+				for i := range flags {
+					flags[i] = true
+				}
+				mod, ctx, m := moduleStartTest(t, n, Options{Arena: arena, TeamBattle: mode.team, Characters: mode.characters}, flags)
+				if moduleViewTest(t, mod, m, -1).Phase == "loading" {
+					t.Fatal("all-computer match waits on nonexistent browser")
+				}
+				bot, err := mod.BotAction(ctx, m)
+				if err != nil || len(bot) != 0 {
+					t.Fatal("original AI must run through shared tick, not a second bot strategy", err)
+				}
+				var twin gameapi.Match
+				resumed := 0
+				for step := 1; step <= 4000 && m.Result == nil; step++ {
+					now := int64(1000 + step*100)
+					m = moduleTickTest(t, mod, ctx, m, now)
+					if step == 100 {
+						data, _ := json.Marshal(m)
+						if err = json.Unmarshal(data, &twin); err != nil {
+							t.Fatal(err)
+						}
+						ctx.Now = time.UnixMilli(now)
+						twin, err = mod.Restore(ctx, twin)
+						if err != nil {
+							t.Fatal(err)
+						}
+					}
+					if step > 100 && step <= 110 {
+						twin = moduleTickTest(t, mod, ctx, twin, now)
+						a := moduleCheckpointTest(t, mod, m, -1)
+						b := moduleCheckpointTest(t, mod, twin, -1)
+						if !reflect.DeepEqual(a, b) {
+							t.Fatal("restored complete match diverged", step)
+						}
+						resumed++
+					}
+				}
+				if m.Result == nil || resumed != 10 {
+					t.Fatal("fresh original-AI match did not reach actual lifecycle clear")
+				}
+				if !m.Result.Unrated || m.HasComputerPlayers || m.Result.Team != mode.team || m.Result.Draw || len(m.Result.Winners) == 0 {
+					t.Fatal("AI/team result metadata wrong", m.Result)
+				}
+				if m.SystemDeadline != 0 || len(m.Actors) != 0 || len(m.TimeoutActors) != 0 {
+					t.Fatal("terminal match still scheduled")
+				}
+				v := moduleViewTest(t, mod, m, -1)
+				cp := moduleCheckpointTest(t, mod, m, -1)
+				if !cp.World.MatchComplete {
+					t.Fatal("platform ended before original clear")
+				}
+				winner := cp.World.Match.WinnerCode
+				for seat, slot := range v.SeatSlots {
+					expected := int16(slot + 1)
+					if mode.team {
+						expected = 1
+						if slot >= 2 {
+							expected = 4
+						}
+					}
+					won := false
+					for _, actual := range m.Result.Winners {
+						won = won || actual == seat
+					}
+					if won != (expected == winner) {
+						t.Fatal("base-team/slot winner was not reversed to platform seat", winner, v.SeatSlots, m.Result)
+					}
+				}
+				t.Logf("complete arena=%x mode=%s frame=%d winner=%d rules=%s presentation=%s", arena, mode.name, v.Frame, winner, v.Digest, v.PresentationDigest)
+			})
+		}
+	}
+}
+
+func TestModuleDrawUsesExplicitPlatformDraw(t *testing.T) {
+	mod, _, m := moduleStartTest(t, 3, Options{Characters: []uint8{3, 9, 7}}, []bool{true, true, true})
+	s, err := decode(m)
+	if err != nil {
+		t.Fatal(err)
+	}
+	s.World.MatchComplete = true
+	s.World.Match.WinnerCode = engine.MatchDrawCode
+	m, err = s.match()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if m.Result == nil || !m.Result.Draw || len(m.Result.Winners) != 0 || m.Result.Team {
+		t.Fatal("draw encoded as shared victory", m.Result)
+	}
+	for _, rank := range m.Result.Ranks {
+		if rank != 1 {
+			t.Fatal("draw rank differs")
+		}
+	}
+	if err = mod.ValidateMatch(m, 3); err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestModuleSavedStateValidationAndBoundedClock(t *testing.T) {
+	mod, ctx, m := moduleStartTest(t, 2, Options{Characters: []uint8{3, 9}}, []bool{true, true})
+	before := append([]byte(nil), m.Data...)
+	for _, raw := range []json.RawMessage{json.RawMessage(`null`), json.RawMessage(`{}`), json.RawMessage(strings.Repeat("x", 2<<20))} {
+		broken := m
+		broken.Data = raw
+		if _, err := mod.Restore(ctx, broken); err == nil {
+			t.Fatal("malformed checkpoint accepted")
+		}
+	}
+	if !bytes.Equal(m.Data, before) {
+		t.Fatal("restore validation modified original match")
+	}
+	initial := moduleViewTest(t, mod, m, 0).Frame
+	m = moduleTickTest(t, mod, ctx, m, 61000)
+	after := moduleViewTest(t, mod, m, 0).Frame
+	if after <= initial || after-initial > 15 {
+		t.Fatal("clock catchup unbounded", initial, after)
+	}
+	if m.SystemDeadline <= 61000 {
+		t.Fatal("system clock not scheduled beyond current wall clock")
+	}
+}

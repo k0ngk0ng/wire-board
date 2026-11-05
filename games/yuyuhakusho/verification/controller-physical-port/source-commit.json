@@ -1,0 +1,14 @@
+{
+  "source_commit": "caedfc4c",
+  "main_read_only": true,
+  "source_files": {
+    "web/src/controllers/input.ts": "e246a8d3b67aa44361631ec51f55a95d8d0d8f341d0adce3fb01922216e5233d",
+    "web/src/controllers/gamepad.ts": "fc9ae4a24b26bd1abb5ee38bdb7934e86411356fea0043483037ad634fcf6a48",
+    "web/src/controllers/GamepadSettings.tsx": "3d0f714d5f7373bef746d415a9cf749463e8d09b3403b4cc317646e7c39ed4f2",
+    "web/src/controllers/Settings.tsx": "6e34209eab49d79dcde66c2ff39ad06c1a67a8d6658a0d26da09d59e0fda06e5",
+    "internal/server/controllers.go": "b7a562c3186f9e0b99bc8dff6a262ba69bc44d74689c917a55443662c1f498c4",
+    "internal/server/controller_models.go": "7d5cdab7f7811ae1ac171d22364da86c5abe294df56d66d71ee6c14fe76f8bfc",
+    "internal/gameapi/controllers.go": "32833816c3565ad1eb1ba455becf03f6fba5a2669ec029d43cb71878d9a93d12",
+    "web/tests/gamepad-input.test.mjs": "6fd869fb1b69855f6cf9c216cc566fe3a4dd9014e616eda2ad5af336fc4a3d04"
+  }
+}

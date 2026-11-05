@@ -1,0 +1,5 @@
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/resourceid","Action":"build-output","Output":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/resourceid: no non-test Go files in /Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/games/yuyuhakusho/resourceid\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/resourceid","Action":"build-fail"}
+{"Time":"2026-11-05T23:23:36.834431+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/resourceid"}
+{"Time":"2026-11-05T23:23:36.834481+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/resourceid","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/resourceid [build failed]\n"}
+{"Time":"2026-11-05T23:23:36.834488+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/resourceid","Elapsed":0,"FailedBuild":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/resourceid"}

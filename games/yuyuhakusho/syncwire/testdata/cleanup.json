@@ -1,0 +1,25 @@
+{
+  "at_utc": "2026-11-05T15:12:24.730984+00:00",
+  "scope": "Only this syncwire worker own redundant early/targeted logs",
+  "removed": [
+    {
+      "path": "games/yuyuhakusho/syncwire/testdata/missing-api-red.jsonl",
+      "bytes": 3804,
+      "sha256": "30f574bdbad777ea6d095a2e37e071eedf2123208bf24f2e1e8a8dac78a23da1",
+      "reason": "Superseded by frozen full missing-API red or complete native race test log; not referenced by the frozen test-first record"
+    },
+    {
+      "path": "games/yuyuhakusho/syncwire/testdata/codec-native.jsonl",
+      "bytes": 7018,
+      "sha256": "604e7ed885d2b9ba395ec96644aa7911900b93a5c27f98a076c26eb2e44d4133",
+      "reason": "Superseded by frozen full missing-API red or complete native race test log; not referenced by the frozen test-first record"
+    }
+  ],
+  "bytes_removed": 10822,
+  "preserved": [
+    "Frozen tests and actual complete missing-API red",
+    "Full native race/Wasm JSON logs, facts and commands",
+    "All production source/README/validation",
+    "Shared workspace caches and other workers untouched"
+  ]
+}

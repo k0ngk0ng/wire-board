@@ -1,0 +1,16 @@
+{
+  "scope": "All frame/edge/HUD/digest tests and 49 unmodified-bridge trajectories frozen before renderstate implementation; real missing package API red",
+  "frozen_at": "2026-11-05T14:32:02.451479+00:00",
+  "production_implemented": false,
+  "sha256": {
+    "games/yuyuhakusho/renderstate/FAILURES.md": "9e77e1f836de39213159bde27f8f3008a4b1955caf8f1be710833b976f3ed2cc",
+    "games/yuyuhakusho/renderstate/renderstate_test.go": "ba4f5b29d2da4ac99b6e5c62e550ad2d16eef6a1da80681ccc8937bac6a7d230",
+    "games/yuyuhakusho/renderstate/bridge_reference_test.go": "52a5836156141305bb219a50c6a41260bc5645043f6b59faf9be3bd0c3a3f9a7",
+    "games/yuyuhakusho/renderstate/testdata/missing-api-red.txt": "33654b8656175bac9eb3c4159dea30ad4f2e240b269bd846940043c14fbb4e32",
+    "games/yuyuhakusho/renderstate/testdata/bridge-reference.json": "d9e956f6676de33714815535e98715b4b3459e2f8b73cbb529ce79ca41636da4",
+    "games/yuyuhakusho/renderstate/testdata/bridge-reference-manifest.json": "cb4d018f877332b905af8e8a940ba135d4c0eaa6e4715a096e6cd1a5fa2b9572",
+    "games/yuyuhakusho/runtimebridge/session.go": "68cb5c8f2f823be40d0f0bde29c472387862db7a725f3472165b63ba9215718f",
+    "games/yuyuhakusho/presentation/compose.go": "3ea96b6c956325fbd07299fd22729b93dc3cfc5690e3f89072380c5ca845b2f1",
+    "games/yuyuhakusho/presentation/hud.go": "0c403ba976f7ec41086466a9f643350b4efefff3a2a505d12feaa9154995c4cb"
+  }
+}

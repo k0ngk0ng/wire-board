@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "pass": true,
+  "scope": "Identity-only resource paths, exact raw-JSON/gzip SHA-256 and sizes; no body or client media",
+  "resources": 13,
+  "bytes": 3737,
+  "sha256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+  "logical_path_prefix": "/yuyuhakusho/data/",
+  "exporter_sha256": "f56be7cc6c7b37182f72f8cee6487deed19a56a8f1b9c2a3fb12906763eef2e5"
+}

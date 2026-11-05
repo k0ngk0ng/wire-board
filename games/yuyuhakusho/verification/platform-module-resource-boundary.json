@@ -1,0 +1,40 @@
+{
+  "pass": true,
+  "command": [
+    "/opt/homebrew/bin/go",
+    "list",
+    "-deps",
+    "-json",
+    "./games/yuyuhakusho/server"
+  ],
+  "game_packages": [
+    "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/data",
+    "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+    "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/renderstate",
+    "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/resourceid",
+    "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/sessiontick",
+    "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/syncwire",
+    "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server"
+  ],
+  "computational_embeds": [
+    {
+      "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/data",
+      "path": "games/yuyuhakusho/data/chu-world-rules.json.gz",
+      "bytes": 103902,
+      "sha256": "fac9146e529ca2d191847d1cbba339c2b14e29b5c5a44fdf9a01df27cede1c5b"
+    },
+    {
+      "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/data",
+      "path": "games/yuyuhakusho/data/renderstate-metadata.json.gz",
+      "bytes": 111445,
+      "sha256": "da0e0eeae122113f92b99a5f355c5b48886382dc03a2fc602d3058ddd7618617"
+    },
+    {
+      "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/data",
+      "path": "games/yuyuhakusho/data/runtime-resource-descriptor.json",
+      "bytes": 3737,
+      "sha256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c"
+    }
+  ],
+  "claim_boundary": "Source dependency/embed inventory only; final release binary/container asset-stripping is a separate host acceptance check"
+}
