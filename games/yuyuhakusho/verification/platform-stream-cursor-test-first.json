@@ -1,0 +1,65 @@
+{
+  "created_at_utc": "2026-11-05T18:03:22.594056+00:00",
+  "test_first": true,
+  "scope": "Optional StreamView host contract and YuYu per-connection incremental input projection; rules untouched",
+  "frozen_tests": {
+    "docs/research/md-yuyuhakusho/STREAM_CURSOR_FAILURES.md": "2dde48e27abd674134fc90b441e3236976dc94b84021c40efe591dd2fd5a651c",
+    "internal/server/realtime_cursor_e2e_test.go": "db6668108fe33de1dacb21bed0f878d1394e45adf85b9710dd5066ac1a6888ed",
+    "internal/server/realtime_cursor_scope_e2e_test.go": "810abc7127fe369037b554229ee88d3a8db85c9c5edb3a80f3f6067a905f8c4c",
+    "games/yuyuhakusho/server/stream_view_test.go": "3f4be65153106893101a26a0f7f9679219574193c43f5c030033c1d77980dd02",
+    "games/yuyuhakusho/platformtest/stream_cursor_test.go": "90f348f9a430a444d90aed88debf652f8137472f34d233867358c7e3e54abf7f",
+    "docs/research/md-yuyuhakusho/STREAM_RACE_SCOPE.md": "ec9c495506800067699b616f7dc5839e51dba657e1ae97a32a9335f4a91efe9e"
+  },
+  "before_production_sha256": {
+    "internal/gameapi/module.go": "f9deaa4b1c0bd199b6e2561f4d1a5e7039450cedd96ef0e6c26f2f91372ca909",
+    "internal/server/realtime_stream.go": "e6b9ae8ed3c3a12b9d31f5fc663f7e4b6ff6b4e7acfb003dfa44cb623f5834b0",
+    "games/yuyuhakusho/server/module.go": "e3d250331e41bcf76c8113ba053c6a72d5b8f0b4610f8e39094d47a18ffb6454",
+    "games/yuyuhakusho/server/module_view.go": "10ac239c761d79d9f2c86f34dbbd5cf26a0cac099d70ac63c8811a96bdf2ff54",
+    "games/yuyuhakusho/server/module_types.go": "4dc450cca52ce89970535bb8d25066efe161a2a42337cbbb9e9f0ec86a33f84b"
+  },
+  "canonical_red": [
+    "platform-stream-cursor-host-red.jsonl",
+    "platform-stream-cursor-game-red.jsonl"
+  ],
+  "main_read_only_reference": {
+    "head": "bc9d0d49708b0b8b735cd8034bc98c26d55fcc0b",
+    "files": {
+      "internal/gameapi/module.go": "b519a8e82b1d88f2c37c886be857c4ee047d149eab123afccf89d8de2a701c60",
+      "internal/server/realtime_stream.go": "39fed473427aae6e984f65a1372319385a9f6fc74eb410f817be71437742a4b8",
+      "internal/server/realtime_cursor_e2e_test.go": "db6668108fe33de1dacb21bed0f878d1394e45adf85b9710dd5066ac1a6888ed",
+      "games/contra/server/stream_view.go": "c9172e3f091c5080a5692ae64979e4d7846e70e5998b6b49bce44e32be625a6e",
+      "games/basketball/server/wire_view.go": "23263b3103354023dee383a7a2274643129db88827f3a9f4ac0c3c5d59c3e77b",
+      "games/bubbleparty/server/module.go": "b1d749cdb002d50bf5494b0e2b62b9257ddc5380e15da016701d55c40dd72443"
+    }
+  },
+  "older_263_manifest_preserved": "games/yuyuhakusho/verification/platform-module-final-validation.json",
+  "no_full_AI_matrix": true,
+  "fixture_correction": {
+    "at_utc": "2026-11-05T18:05:47.756482+00:00",
+    "old_source_archive": "games/yuyuhakusho/verification/platform-stream-cursor-pre-status-union-test.go.txt",
+    "old_source_sha256": "2f8a93d0de9dbaf3263818575131d6378b677d5729c4ede7ed7c703748c01088",
+    "new_source_sha256": "78700e6ad4e4367e6e073bd4a990fa0073088c7a7b76811008ca3064ef216e4f",
+    "reason": "Actual game messages use status string playing; input acknowledgements use numeric HTTP status. Test fixture had incorrectly decoded both as int. Corrected to raw JSON union while retaining exact numeric 200 ACK assertion. No product code change or budget/assertion relaxation.",
+    "observed_failure_log": "platform-stream-cursor-first-native.jsonl"
+  },
+  "ack_measurement_fixture_correction": {
+    "at_utc": "2026-11-05T18:17:16.282721+00:00",
+    "old_source_archive": "games/yuyuhakusho/verification/platform-stream-cursor-pre-ack-receive-test.go.txt",
+    "old_source_sha256": "78700e6ad4e4367e6e073bd4a990fa0073088c7a7b76811008ca3064ef216e4f",
+    "new_source_sha256": "191965f631e1577c996b18a5c70057710611703b85e61b5a38d8c8cba2436364",
+    "reason": "Single synchronous socket/replay loop measured ACK after subsequent race-instrumented full-rule replay queue. Record arrival in a dedicated socket reader with bounded 128-event channel; full ordered replay and double-digest checks remain unchanged. No production code change; 500ms ACK, 2048B normal view, 300 replay frames, 60 actions/ACK budgets retained.",
+    "observed_failure_logs": [
+      "platform-stream-cursor-race-final.jsonl",
+      "platform-stream-cursor-isolated-race.jsonl"
+    ]
+  },
+  "root_authorized_functional_split": {
+    "at_utc": "2026-11-05T18:28:47.833584+00:00",
+    "old_source_archive": "games/yuyuhakusho/verification/platform-stream-cursor-pre-functional-split-test.go.txt",
+    "old_source_sha256": "191965f631e1577c996b18a5c70057710611703b85e61b5a38d8c8cba2436364",
+    "new_source_sha256": "90f348f9a430a444d90aed88debf652f8137472f34d233867358c7e3e54abf7f",
+    "reason": "Root explicitly required an independent real functional race case while retaining native hard500ms and all failed instrumented performance evidence. Shared driver keeps 300frames, strengthens minimum actions40 to60, retains60ACK/double digest/2048B/slow peer/reconnect. Correct redundancy against previous WS cursor frame, not a newer out-of-band /sync confirmed frame. Functional race has no instrumented walltime SLA; original named performance test still passes enforceNativeLatency=true and500ms unchanged.",
+    "new_case_real_red": "platform-stream-cursor-functional-driver-red.jsonl",
+    "scope_document": "docs/research/md-yuyuhakusho/STREAM_RACE_SCOPE.md"
+  }
+}

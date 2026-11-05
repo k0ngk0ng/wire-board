@@ -8,6 +8,8 @@ import hashlib,json,os,shutil,subprocess
 ROOT=Path(__file__).resolve().parents[2]
 OUT=ROOT/'.local/md-yuyuhakusho/platform-app';PUBLIC=OUT/'public';DIST=OUT/'dist'
 for path in [OUT,PUBLIC,OUT/'tmp']:path.mkdir(parents=True,exist_ok=True)
+# Keep the shared platform brand route in this isolated local public tree.
+shutil.copyfile(ROOT/'web/public/favicon.svg',PUBLIC/'favicon.svg')
 env=dict(os.environ,TMPDIR=str(OUT/'tmp'),GOTMPDIR=str(OUT/'tmp'),GOCACHE=str(ROOT/'.local/go-cache'),GOMODCACHE=str(ROOT/'.local/go-mod'),TEST_TELEMETRY_DIR=str(ROOT/'.local/go-telemetry'))
 subprocess.run(['python3',str(ROOT/'scripts/yuyuhakusho/build_platform_web.py')],cwd=ROOT,env=env,check=True)
 descriptor=ROOT/'games/yuyuhakusho/data/runtime-resource-descriptor.json'

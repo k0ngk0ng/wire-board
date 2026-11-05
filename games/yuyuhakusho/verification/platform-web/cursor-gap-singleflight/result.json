@@ -1,0 +1,49 @@
+{
+  "scope": "Actual Board/Go Module/Wasm with three deliberately omitted input windows and a450ms delayed real checkpoint request; real WebSocket cursor/write contracts belong to server owner/Root",
+  "before": {
+    "epoch": "4659b8715f4463a3b09cb23f",
+    "frame": "251",
+    "loaded": 1
+  },
+  "mid": {
+    "count": 1,
+    "gaps": [
+      {
+        "at": 4836.60000038147,
+        "frame": "251"
+      },
+      {
+        "at": 4888.10000038147,
+        "frame": "254"
+      },
+      {
+        "at": 4939.400000572205,
+        "frame": "258"
+      }
+    ]
+  },
+  "after": {
+    "count": 1,
+    "epoch": "4659b8715f4463a3b09cb23f",
+    "error": "",
+    "frame": "298",
+    "gaps": [
+      {
+        "at": 4836.60000038147,
+        "frame": "251"
+      },
+      {
+        "at": 4888.10000038147,
+        "frame": "254"
+      },
+      {
+        "at": 4939.400000572205,
+        "frame": "258"
+      }
+    ],
+    "loaded": 1,
+    "phase": "playing"
+  },
+  "production_changes": false,
+  "pass": true
+}

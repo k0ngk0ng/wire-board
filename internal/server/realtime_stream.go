@@ -6,9 +6,11 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"slices"
 	"time"
 
 	"github.com/coder/websocket"
+	"github.com/k0ngk0ng/wire-board/internal/gameapi"
 )
 
 // A memory response lets both transports use the same authenticated command
@@ -90,25 +92,89 @@ func (s *Server) streamCommand(r *http.Request, raw []byte) streamAck {
 // The high frequency packet deliberately excludes lobby, configuration, chat
 // and room metadata. View is still computed per authenticated viewer; private
 // data must never be shared between seats by a room-wide serialization cache.
+type streamConnectionCursor struct {
+	RoomID string
+	Viewer int
+	Value  string
+}
+
 func (s *Server) streamGame(r *http.Request) (any, bool) {
+	packet, _, ok := s.streamGameCursor(r, streamConnectionCursor{})
+	return packet, ok
+}
+
+func (s *Server) streamGameCursor(r *http.Request, previous streamConnectionCursor) (any, streamConnectionCursor, bool) {
 	s.mu.Lock()
-	defer s.mu.Unlock()
 	user, err := s.user(r)
 	if err != nil {
-		return nil, false
+		s.mu.Unlock()
+		return nil, streamConnectionCursor{}, false
 	}
 	room := s.current(user.ID)
 	if room == nil {
 		room = s.watching(user.ID)
 	}
 	if room == nil || room.Module == nil || !s.modules[room.Kind].Realtime || room.Status != "playing" {
-		return nil, true
+		s.mu.Unlock()
+		return nil, streamConnectionCursor{}, true
 	}
-	view, err := s.moduleView(room, seatIndex(room, user.ID))
+	module := s.modules[room.Kind]
+	viewer := seatIndex(room, user.ID)
+	envelope := func(view any) map[string]any {
+		return map[string]any{"serverInstance": s.instance, "type": "game", "roomId": room.ID, "setupVersion": room.SetupVersion, "version": room.Version, "status": room.Status, "turnDeadline": room.TurnDeadline, "loading": room.loadingView(), "clockOffsetMs": room.ClockOffsetMS, "serverNow": time.Now().UnixMilli(), "game": view}
+	}
+	if module.StreamView == nil {
+		// Existing games retain their original callback serialization contract.
+		view, err := s.moduleView(room, viewer)
+		packet := envelope(view)
+		s.mu.Unlock()
+		return packet, streamConnectionCursor{}, err == nil
+	}
+	next := streamConnectionCursor{RoomID: room.ID, Viewer: viewer}
+	cursor := ""
+	if previous.RoomID == room.ID && previous.Viewer == viewer {
+		cursor = previous.Value
+	}
+	// Both the match (including Data) and public envelope are deep snapshots
+	// from one room version. No room-owned pointers escape the platform lock.
+	match := cloneStreamMatch(*room.Module)
+	rawEnvelope, err := json.Marshal(envelope(streamModuleViewData(room, match)))
+	s.mu.Unlock()
 	if err != nil {
-		return nil, false
+		return nil, next, false
 	}
-	return map[string]any{"serverInstance": s.instance, "type": "game", "roomId": room.ID, "setupVersion": room.SetupVersion, "version": room.Version, "status": room.Status, "turnDeadline": room.TurnDeadline, "loading": room.loadingView(), "clockOffsetMs": room.ClockOffsetMS, "serverNow": time.Now().UnixMilli(), "game": view}, true
+	value, err := module.StreamView(match, viewer, cursor)
+	if err != nil {
+		return nil, next, false
+	}
+	var packet map[string]any
+	if json.Unmarshal(rawEnvelope, &packet) != nil {
+		return nil, next, false
+	}
+	packet["game"].(map[string]any)["data"] = value.Data
+	next.Value = value.Cursor
+	return packet, next, true
+}
+
+// Copy every reference owned by Match without scanning or JSON-encoding the
+// opaque game payload under the shared platform lock. Clone preserves nil vs
+// explicit empty actor/attention slices, which have different host semantics.
+func cloneStreamMatch(match gameapi.Match) gameapi.Match {
+	match.Data = slices.Clone(match.Data)
+	match.Actors = slices.Clone(match.Actors)
+	match.TimeoutActors = slices.Clone(match.TimeoutActors)
+	match.Attention = slices.Clone(match.Attention)
+	match.Eliminated = slices.Clone(match.Eliminated)
+	match.Log = slices.Clone(match.Log)
+	if match.Result != nil {
+		result := *match.Result
+		result.Ranks = slices.Clone(result.Ranks)
+		result.Winners = slices.Clone(result.Winners)
+		result.Scores = slices.Clone(result.Scores)
+		result.Details = slices.Clone(result.Details)
+		match.Result = &result
+	}
+	return match
 }
 
 func (s *Server) streamSocket(w http.ResponseWriter, r *http.Request, user User) {
@@ -191,6 +257,7 @@ func (s *Server) streamSocket(w http.ResponseWriter, r *http.Request, user User)
 	push := time.NewTicker(50 * time.Millisecond)
 	defer push.Stop()
 	pending := false
+	cursor := streamConnectionCursor{}
 	for {
 		select {
 		case <-ctx.Done():
@@ -216,7 +283,7 @@ func (s *Server) streamSocket(w http.ResponseWriter, r *http.Request, user User)
 				continue
 			}
 			pending = false
-			packet, valid := s.streamGame(r)
+			packet, nextCursor, valid := s.streamGameCursor(r, cursor)
 			if !valid {
 				return
 			}
@@ -224,9 +291,34 @@ func (s *Server) streamSocket(w http.ResponseWriter, r *http.Request, user User)
 				if !write(packet) {
 					return
 				}
+				cursor = nextCursor
 			} else if !state() {
 				return
 			}
 		}
 	}
+}
+
+// Match the existing moduleView envelope without invoking game code under the lock.
+func streamModuleViewData(r *Room, match gameapi.Match) map[string]any {
+	attention := match.Attention
+	if attention == nil {
+		attention = match.Actors
+	}
+	actors := match.Actors
+	deadline := match.SystemDeadline
+	if deadline > 0 {
+		deadline += r.ClockOffsetMS
+	}
+	if r.Loading != nil {
+		actors = []int{}
+		attention = []int{}
+		deadline = 0
+	}
+	view := map[string]any{"kind": r.Kind, "data": nil, "actors": actors, "attention": attention, "eliminated": match.Eliminated, "systemDeadline": deadline, "finished": match.Result != nil, "winners": r.Game.Winners, "log": r.Game.Log, "phase": "module", "turn": r.Game.Turn, "round": 1}
+	if match.Paused {
+		view["paused"] = true
+		view["pauseExpiresAt"] = time.Unix(r.LastActive, 0).Add(pausedRoomIdleLimit).UnixMilli()
+	}
+	return view
 }

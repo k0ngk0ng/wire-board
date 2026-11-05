@@ -1,0 +1,17 @@
+{
+  "created_at_utc": "2026-11-05T19:25:52.803250+00:00",
+  "scope": "Root-authorized test organization only; no threshold/driver/production changes",
+  "before_shared_test_sha256": "90f348f9a430a444d90aed88debf652f8137472f34d233867358c7e3e54abf7f",
+  "original_test_archive": "games/yuyuhakusho/verification/platform-stream-cursor-ci/stream_cursor.before-native-buildtag.go.txt",
+  "production_sha256": {
+    "internal/gameapi/module.go": "d1bab2a0252edd7f7b949d379c33f580a03615b4cd0f2b8024678305de24852d",
+    "internal/server/realtime_stream.go": "be8ccc2e3696fd691b24d41cb7a33dd782ceedb7738086ef1081ff1434c74d2a",
+    "games/yuyuhakusho/server/module.go": "ed4ef8bfddc35e4642110cbfcc2441bb8f5bc976d2c6e49ac39d1d7ae66bb2d6",
+    "games/yuyuhakusho/server/module_types.go": "49c1d303f4b3e10c8f19d7174073ad7587f90f858da328ea767d01376db05446",
+    "games/yuyuhakusho/server/module_view.go": "90a05bafbf6d0e77255e909ec8d82013745adfa1c29dbfc3f0512b19cd358655",
+    "games/yuyuhakusho/server/stream_view.go": "4bb8c45ef3ccbff071bf87ecba0a785733de932f5436f0bf1d5c9f66553d126c"
+  },
+  "prior_final_manifest_sha256": "9366339db35977008257fe48dc13a143a7bb00311d207e947c6169936cb9d21e",
+  "prior_263_manifest_sha256": "0cd4c78ecfa48656721fcf6320a4589a5c4884f5019ed892d756a936761e5379",
+  "scope_document_sha256": "5f1c21553ed5ae33653f0d7be22b970aae5de8856da202181b41d7942b343573"
+}

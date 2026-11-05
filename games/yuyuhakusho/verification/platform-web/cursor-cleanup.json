@@ -1,0 +1,15 @@
+{
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/platform-web/profile",
+      "logical_bytes": 16293920
+    },
+    {
+      "path": ".local/yw/pwe319b8.config"
+    },
+    {
+      "path": ".local/yw/pwe319b8.target"
+    }
+  ],
+  "scope": "Only closed browser profile/session created by cursor compatibility fixture; all verification, current dist, shared caches and other owners preserved."
+}

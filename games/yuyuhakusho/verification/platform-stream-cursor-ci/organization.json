@@ -1,0 +1,15 @@
+{
+  "created_at_utc": "2026-11-05T19:27:24.184033+00:00",
+  "kind": "Tests-only wrapper extraction; shared driver and all production bytes preserved",
+  "before_default_race_exit_code": 1,
+  "before_default_race_failed_tests": [
+    "TestCursorHTTPWSReplaySizesAndReconnect"
+  ],
+  "before_default_race_red_sha256": "617ac8d3463de6c06c24126bb30e9da9b35aa5acf61e798dd777d1e7873212c6",
+  "original_shared_sha256": "90f348f9a430a444d90aed88debf652f8137472f34d233867358c7e3e54abf7f",
+  "after_shared_sha256": "6ddc1f6f039a48a071e6188be4fa1857931dc1323220b361db5e106f563f3ed4",
+  "new_native_wrapper_sha256": "72f14d5cc33342a838a481fdc35c78d8d32cf919e01a6c2154e36c31f906a64e",
+  "wrapper_exact_source": "func TestCursorHTTPWSReplaySizesAndReconnect(t *testing.T) {\n\trunCursorTransportScenario(t, true)\n}\n\n",
+  "shared_driver_byte_identity": true,
+  "prior_manifest_preserved_sha256": "9366339db35977008257fe48dc13a143a7bb00311d207e947c6169936cb9d21e"
+}

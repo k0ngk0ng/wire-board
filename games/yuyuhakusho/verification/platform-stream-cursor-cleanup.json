@@ -1,0 +1,49 @@
+{
+  "created_at_utc": "2026-11-05T18:33:32.669109+00:00",
+  "removed_owned_temporary_files": [
+    {
+      "path": ".local/md-yuyuhakusho/stream-cursor-profile.test",
+      "bytes": 47054978,
+      "sha256": "8f4e6b493bfa7dc0bfdff42f66a5c1fa798d79e1b316780318c797a0809277ba"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/stream-cursor-profile.cpu",
+      "bytes": 14691,
+      "sha256": "c9c96b4466d78e441f1e31188baad7b43e9d75f53203f891f53eca0802b5e3ba"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/stream-cursor-profile.mutex",
+      "bytes": 3388,
+      "sha256": "58cf495556259c386354d99e028c0e9e6da36d955f748e687ce4deed05f5371a"
+    },
+    {
+      "path": ".local/realtime-efficiency/cursor-slow-connection.json",
+      "bytes": 824,
+      "sha256": "b4aa7241ba4bd55d2497ac3ff4ce26a85c720c081684b22e49872be2900417fc"
+    },
+    {
+      "path": ".local/realtime-efficiency/cursor-detached-scope.json",
+      "bytes": 131,
+      "sha256": "1b7cc63e8db903cbe0f804e16777b7208fcef1f970492e996de5b7de89c775ad"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/platform-stream-cursor-profile-cpu.txt",
+      "bytes": 1215,
+      "sha256": "c728dd6a0457d5fbdb2627d94ff9468982f8c553fba6c23f940fe84acc8a8195"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/platform-stream-cursor-profile-mutex.txt",
+      "bytes": 1832,
+      "sha256": "74b50dc6201f5bf570ce542eaf5a079b27629720992d45d3e93acb5eda3f4bbe"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/platform-stream-cursor-actual-native.jsonl",
+      "bytes": 5610,
+      "sha256": "43caf4a6e9b236cf29b9bc6523dec1af4440f6c27d5ce35a8d1aea3b6448a3e1"
+    }
+  ],
+  "kept": "Final source-bound acceptance, canonical missing-API reds, all original instrumented performance failures and fixture source/SHA lineage",
+  "shared_caches_untouched": true,
+  "main_written": false,
+  "note": "Profile stopped in setup/fixture validation and was not evidence of steady-state rule CPU; raw profile-run failure remains for redundancy-contract correction lineage."
+}

@@ -1,0 +1,779 @@
+{
+  "error": "AssertionError({'failure': 'pad_must_be_below_canvas', 'case': {'board': {'bottom': 352, 'height': 308, 'right': 732, 'width': 724, 'x': 8, 'y': 44}, 'buttons': [{'bottom': 192.34375, 'height': 16.875, 'name': 'up', 'right': 534.875, 'width': 16.875, 'x': 518, 'y': 175.46875}, {'bottom': 226.109375, 'height': 16.875, 'name': 'down', 'right': 534.875, 'width': 16.875, 'x': 518, 'y': 209.234375}, {'bottom': 209.21875, 'height': 16.875, 'name': 'left', 'right': 518, 'width': 16.875, 'x': 501.125, 'y': 192.34375}, {'bottom': 209.21875, 'height': 16.875, 'name': 'right', 'right': 551.765625, 'width': 16.875, 'x': 534.890625, 'y': 192.34375}, {'bottom': 186.984375, 'height': 13.21875, 'name': 'mode', 'right': 617.109375, 'width': 34.34375, 'x': 582.765625, 'y': 173.765625}, {'bottom': 214.3125, 'height': 16.328125, 'name': 'start', 'right': 620.203125, 'width': 40.25, 'x': 579.953125, 'y': 197.984375}, {'bottom': 192.34375, 'height': 25.890625, 'name': 'x', 'right': 654.84375, 'width': 25.890625, 'x': 628.953125, 'y': 166.453125}, {'bottom': 192.34375, 'height': 25.890625, 'name': 'y', 'right': 685.25, 'width': 25.890625, 'x': 659.359375, 'y': 166.453125}, {'bottom': 192.34375, 'height': 25.890625, 'name': 'z', 'right': 715.65625, 'width': 25.890625, 'x': 689.765625, 'y': 166.453125}, {'bottom': 224.4375, 'height': 25.890625, 'name': 'a', 'right': 654.84375, 'width': 25.890625, 'x': 628.953125, 'y': 198.546875}, {'bottom': 224.4375, 'height': 25.890625, 'name': 'b', 'right': 685.25, 'width': 25.890625, 'x': 659.359375, 'y': 198.546875}, {'bottom': 224.4375, 'height': 25.890625, 'name': 'c', 'right': 715.65625, 'width': 25.890625, 'x': 689.765625, 'y': 198.546875}], 'c': {'bottom': 224.4375, 'height': 25.890625, 'right': 715.65625, 'width': 25.890625, 'x': 689.765625, 'y': 198.546875}, 'canvas': {'bottom': 351, 'height': 306, 'right': 473.609375, 'width': 464.609375, 'x': 9, 'y': 45}, 'fit': 'contain', 'fullscreen': True, 'hud': {'bottom': 37, 'height': 22, 'right': 688, 'width': 680, 'x': 8, 'y': 15}, 'image': {'bottom': 351, 'height': 306, 'right': 459.87611607142856, 'width': 437.1428571428572, 'x': 22.733258928571416, 'y': 45}, 'nativeFullscreen': True, 'pad': {'bottom': 251.484375, 'height': 106.984375, 'right': 732, 'width': 253.390625, 'x': 478.609375, 'y': 144.5}, 'scrollWidth': 740, 'source': {'height': 224, 'width': 320}, 'toggle': {'bottom': 42, 'height': 32, 'right': 726, 'width': 32, 'x': 694, 'y': 10}, 'viewport': {'height': 360, 'width': 740}, 'native_touch': [{'buttons': 32, 'localX': '944', 'frame': '326', 'event': 'touchStart', 'native': True}, {'buttons': 0, 'localX': '944', 'frame': '333', 'event': 'touchEnd', 'native': True}], 'label': 'landscape-fullscreen'}})",
+  "completed": {
+    "layouts": [
+      {
+        "board": {
+          "bottom": 940.03125,
+          "height": 815.03125,
+          "right": 950,
+          "width": 800,
+          "x": 150,
+          "y": 125
+        },
+        "buttons": [
+          {
+            "bottom": 805.34375,
+            "height": 37.3125,
+            "name": "up",
+            "right": 394.421875,
+            "width": 37.328125,
+            "x": 357.09375,
+            "y": 768.03125
+          },
+          {
+            "bottom": 879.984375,
+            "height": 37.3125,
+            "name": "down",
+            "right": 394.421875,
+            "width": 37.328125,
+            "x": 357.09375,
+            "y": 842.671875
+          },
+          {
+            "bottom": 842.65625,
+            "height": 37.3125,
+            "name": "left",
+            "right": 357.09375,
+            "width": 37.328125,
+            "x": 319.765625,
+            "y": 805.34375
+          },
+          {
+            "bottom": 842.65625,
+            "height": 37.3125,
+            "name": "right",
+            "right": 431.75,
+            "width": 37.328125,
+            "x": 394.421875,
+            "y": 805.34375
+          },
+          {
+            "bottom": 793.53125,
+            "height": 29.234375,
+            "name": "mode",
+            "right": 576.125,
+            "width": 75.90625,
+            "x": 500.21875,
+            "y": 764.296875
+          },
+          {
+            "bottom": 853.890625,
+            "height": 36.078125,
+            "name": "start",
+            "right": 582.96875,
+            "width": 88.96875,
+            "x": 494,
+            "y": 817.8125
+          },
+          {
+            "bottom": 805.359375,
+            "height": 57.234375,
+            "name": "x",
+            "right": 659.5,
+            "width": 57.234375,
+            "x": 602.265625,
+            "y": 748.125
+          },
+          {
+            "bottom": 805.359375,
+            "height": 57.234375,
+            "name": "y",
+            "right": 726.6875,
+            "width": 57.234375,
+            "x": 669.453125,
+            "y": 748.125
+          },
+          {
+            "bottom": 805.359375,
+            "height": 57.234375,
+            "name": "z",
+            "right": 793.890625,
+            "width": 57.234375,
+            "x": 736.65625,
+            "y": 748.125
+          },
+          {
+            "bottom": 876.28125,
+            "height": 57.234375,
+            "name": "a",
+            "right": 659.5,
+            "width": 57.234375,
+            "x": 602.265625,
+            "y": 819.046875
+          },
+          {
+            "bottom": 876.28125,
+            "height": 57.234375,
+            "name": "b",
+            "right": 726.6875,
+            "width": 57.234375,
+            "x": 669.453125,
+            "y": 819.046875
+          },
+          {
+            "bottom": 876.28125,
+            "height": 57.234375,
+            "name": "c",
+            "right": 793.890625,
+            "width": 57.234375,
+            "x": 736.65625,
+            "y": 819.046875
+          }
+        ],
+        "c": {
+          "bottom": 876.28125,
+          "height": 57.234375,
+          "right": 793.890625,
+          "width": 57.234375,
+          "x": 736.65625,
+          "y": 819.046875
+        },
+        "canvas": {
+          "bottom": 684.59375,
+          "height": 558.59375,
+          "right": 949,
+          "width": 798,
+          "x": 151,
+          "y": 126
+        },
+        "fit": "contain",
+        "fullscreen": false,
+        "hud": null,
+        "image": {
+          "bottom": 684.59375,
+          "height": 558.59375,
+          "right": 948.9955357142856,
+          "width": 797.9910714285713,
+          "x": 151.0044642857143,
+          "y": 126
+        },
+        "nativeFullscreen": false,
+        "pad": {
+          "bottom": 936.03125,
+          "height": 236.4375,
+          "right": 830,
+          "width": 560,
+          "x": 270,
+          "y": 699.59375
+        },
+        "scrollWidth": 1100,
+        "source": {
+          "height": 224,
+          "width": 320
+        },
+        "toggle": null,
+        "viewport": {
+          "height": 1000,
+          "width": 1100
+        },
+        "native_touch": [
+          {
+            "buttons": 32,
+            "localX": "944",
+            "frame": "270",
+            "event": "touchStart",
+            "native": true
+          },
+          {
+            "buttons": 0,
+            "localX": "944",
+            "frame": "279",
+            "event": "touchEnd",
+            "native": true
+          }
+        ],
+        "label": "desktop"
+      },
+      {
+        "board": {
+          "bottom": 463.765625,
+          "height": 338.765625,
+          "right": 308,
+          "width": 296,
+          "x": 12,
+          "y": 125
+        },
+        "buttons": [
+          {
+            "bottom": 394.6875,
+            "height": 19.71875,
+            "name": "up",
+            "right": 77.734375,
+            "width": 19.71875,
+            "x": 58.015625,
+            "y": 374.96875
+          },
+          {
+            "bottom": 434.140625,
+            "height": 19.71875,
+            "name": "down",
+            "right": 77.734375,
+            "width": 19.71875,
+            "x": 58.015625,
+            "y": 414.421875
+          },
+          {
+            "bottom": 414.40625,
+            "height": 19.71875,
+            "name": "left",
+            "right": 58.015625,
+            "width": 19.71875,
+            "x": 38.296875,
+            "y": 394.6875
+          },
+          {
+            "bottom": 414.40625,
+            "height": 19.71875,
+            "name": "right",
+            "right": 97.46875,
+            "width": 19.71875,
+            "x": 77.75,
+            "y": 394.6875
+          },
+          {
+            "bottom": 388.4375,
+            "height": 15.453125,
+            "name": "mode",
+            "right": 173.796875,
+            "width": 40.109375,
+            "x": 133.6875,
+            "y": 372.984375
+          },
+          {
+            "bottom": 420.34375,
+            "height": 19.0625,
+            "name": "start",
+            "right": 177.40625,
+            "width": 47.015625,
+            "x": 130.390625,
+            "y": 401.28125
+          },
+          {
+            "bottom": 394.6875,
+            "height": 30.25,
+            "name": "x",
+            "right": 217.875,
+            "width": 30.25,
+            "x": 187.625,
+            "y": 364.4375
+          },
+          {
+            "bottom": 394.6875,
+            "height": 30.25,
+            "name": "y",
+            "right": 253.390625,
+            "width": 30.25,
+            "x": 223.140625,
+            "y": 364.4375
+          },
+          {
+            "bottom": 394.6875,
+            "height": 30.25,
+            "name": "z",
+            "right": 288.90625,
+            "width": 30.25,
+            "x": 258.65625,
+            "y": 364.4375
+          },
+          {
+            "bottom": 432.1875,
+            "height": 30.25,
+            "name": "a",
+            "right": 217.875,
+            "width": 30.25,
+            "x": 187.625,
+            "y": 401.9375
+          },
+          {
+            "bottom": 432.1875,
+            "height": 30.25,
+            "name": "b",
+            "right": 253.390625,
+            "width": 30.25,
+            "x": 223.140625,
+            "y": 401.9375
+          },
+          {
+            "bottom": 432.1875,
+            "height": 30.25,
+            "name": "c",
+            "right": 288.90625,
+            "width": 30.25,
+            "x": 258.65625,
+            "y": 401.9375
+          }
+        ],
+        "c": {
+          "bottom": 432.1875,
+          "height": 30.25,
+          "right": 288.90625,
+          "width": 30.25,
+          "x": 258.65625,
+          "y": 401.9375
+        },
+        "canvas": {
+          "bottom": 331.796875,
+          "height": 205.796875,
+          "right": 307,
+          "width": 294,
+          "x": 13,
+          "y": 126
+        },
+        "fit": "contain",
+        "fullscreen": false,
+        "hud": null,
+        "image": {
+          "bottom": 331.796875,
+          "height": 205.796875,
+          "right": 306.9977678571429,
+          "width": 293.9955357142857,
+          "x": 13.00223214285714,
+          "y": 126
+        },
+        "nativeFullscreen": false,
+        "pad": {
+          "bottom": 463.765625,
+          "height": 124.96875,
+          "right": 308,
+          "width": 296,
+          "x": 12,
+          "y": 338.796875
+        },
+        "scrollWidth": 320,
+        "source": {
+          "height": 224,
+          "width": 320
+        },
+        "toggle": null,
+        "viewport": {
+          "height": 740,
+          "width": 320
+        },
+        "native_touch": [
+          {
+            "buttons": 32,
+            "localX": "944",
+            "frame": "294",
+            "event": "touchStart",
+            "native": true
+          },
+          {
+            "buttons": 0,
+            "localX": "944",
+            "frame": "303",
+            "event": "touchEnd",
+            "native": true
+          }
+        ],
+        "label": "portrait-320"
+      },
+      {
+        "board": {
+          "bottom": 352,
+          "height": 308,
+          "right": 732,
+          "width": 724,
+          "x": 8,
+          "y": 44
+        },
+        "buttons": [
+          {
+            "bottom": 192.34375,
+            "height": 16.875,
+            "name": "up",
+            "right": 534.875,
+            "width": 16.875,
+            "x": 518,
+            "y": 175.46875
+          },
+          {
+            "bottom": 226.109375,
+            "height": 16.875,
+            "name": "down",
+            "right": 534.875,
+            "width": 16.875,
+            "x": 518,
+            "y": 209.234375
+          },
+          {
+            "bottom": 209.21875,
+            "height": 16.875,
+            "name": "left",
+            "right": 518,
+            "width": 16.875,
+            "x": 501.125,
+            "y": 192.34375
+          },
+          {
+            "bottom": 209.21875,
+            "height": 16.875,
+            "name": "right",
+            "right": 551.765625,
+            "width": 16.875,
+            "x": 534.890625,
+            "y": 192.34375
+          },
+          {
+            "bottom": 186.984375,
+            "height": 13.21875,
+            "name": "mode",
+            "right": 617.109375,
+            "width": 34.34375,
+            "x": 582.765625,
+            "y": 173.765625
+          },
+          {
+            "bottom": 214.3125,
+            "height": 16.328125,
+            "name": "start",
+            "right": 620.203125,
+            "width": 40.25,
+            "x": 579.953125,
+            "y": 197.984375
+          },
+          {
+            "bottom": 192.34375,
+            "height": 25.890625,
+            "name": "x",
+            "right": 654.84375,
+            "width": 25.890625,
+            "x": 628.953125,
+            "y": 166.453125
+          },
+          {
+            "bottom": 192.34375,
+            "height": 25.890625,
+            "name": "y",
+            "right": 685.25,
+            "width": 25.890625,
+            "x": 659.359375,
+            "y": 166.453125
+          },
+          {
+            "bottom": 192.34375,
+            "height": 25.890625,
+            "name": "z",
+            "right": 715.65625,
+            "width": 25.890625,
+            "x": 689.765625,
+            "y": 166.453125
+          },
+          {
+            "bottom": 224.4375,
+            "height": 25.890625,
+            "name": "a",
+            "right": 654.84375,
+            "width": 25.890625,
+            "x": 628.953125,
+            "y": 198.546875
+          },
+          {
+            "bottom": 224.4375,
+            "height": 25.890625,
+            "name": "b",
+            "right": 685.25,
+            "width": 25.890625,
+            "x": 659.359375,
+            "y": 198.546875
+          },
+          {
+            "bottom": 224.4375,
+            "height": 25.890625,
+            "name": "c",
+            "right": 715.65625,
+            "width": 25.890625,
+            "x": 689.765625,
+            "y": 198.546875
+          }
+        ],
+        "c": {
+          "bottom": 224.4375,
+          "height": 25.890625,
+          "right": 715.65625,
+          "width": 25.890625,
+          "x": 689.765625,
+          "y": 198.546875
+        },
+        "canvas": {
+          "bottom": 351,
+          "height": 306,
+          "right": 473.609375,
+          "width": 464.609375,
+          "x": 9,
+          "y": 45
+        },
+        "fit": "contain",
+        "fullscreen": true,
+        "hud": {
+          "bottom": 37,
+          "height": 22,
+          "right": 688,
+          "width": 680,
+          "x": 8,
+          "y": 15
+        },
+        "image": {
+          "bottom": 351,
+          "height": 306,
+          "right": 459.87611607142856,
+          "width": 437.1428571428572,
+          "x": 22.733258928571416,
+          "y": 45
+        },
+        "nativeFullscreen": true,
+        "pad": {
+          "bottom": 251.484375,
+          "height": 106.984375,
+          "right": 732,
+          "width": 253.390625,
+          "x": 478.609375,
+          "y": 144.5
+        },
+        "scrollWidth": 740,
+        "source": {
+          "height": 224,
+          "width": 320
+        },
+        "toggle": {
+          "bottom": 42,
+          "height": 32,
+          "right": 726,
+          "width": 32,
+          "x": 694,
+          "y": 10
+        },
+        "viewport": {
+          "height": 360,
+          "width": 740
+        },
+        "native_touch": [
+          {
+            "buttons": 32,
+            "localX": "944",
+            "frame": "326",
+            "event": "touchStart",
+            "native": true
+          },
+          {
+            "buttons": 0,
+            "localX": "944",
+            "frame": "333",
+            "event": "touchEnd",
+            "native": true
+          }
+        ],
+        "label": "landscape-fullscreen"
+      }
+    ]
+  },
+  "diagnostic": {
+    "actions": [
+      {
+        "epoch": "e02464f4b2333220f12dcca2",
+        "type": "loaded"
+      },
+      {
+        "buttons": 32,
+        "epoch": "e02464f4b2333220f12dcca2",
+        "sequence": 1,
+        "type": "input"
+      },
+      {
+        "buttons": 0,
+        "epoch": "e02464f4b2333220f12dcca2",
+        "sequence": 2,
+        "type": "input"
+      },
+      {
+        "buttons": 32,
+        "epoch": "e02464f4b2333220f12dcca2",
+        "sequence": 3,
+        "type": "input"
+      },
+      {
+        "buttons": 0,
+        "epoch": "e02464f4b2333220f12dcca2",
+        "sequence": 4,
+        "type": "input"
+      },
+      {
+        "buttons": 32,
+        "epoch": "e02464f4b2333220f12dcca2",
+        "sequence": 5,
+        "type": "input"
+      },
+      {
+        "buttons": 0,
+        "epoch": "e02464f4b2333220f12dcca2",
+        "sequence": 6,
+        "type": "input"
+      }
+    ],
+    "active": "<div class=\"yuyu-board\" data-yuyu-board=\"true\" tabindex=\"0\" aria-label=\"魔强统一战比赛画面\" data-local-x=\"944\" data-local-y=\"320\" data-frame=\"337\" data-authority-frame=\"332\" data-connection=\"connected\"><div class=\"yuyu-screen\"><canvas width=\"320\" height=\"224\"",
+    "authority": {
+      "digest": "daed3e4ede5250c505887399771a91672ef25cd2d4c86a928cdd962b38db4556",
+      "epoch": "e02464f4b2333220f12dcca2",
+      "frame": "332",
+      "inputs": [
+        {
+          "appliedButtons": 0,
+          "appliedSequence": 6,
+          "automated": false,
+          "buttons": 0,
+          "sequence": 6
+        },
+        {
+          "appliedButtons": 0,
+          "appliedSequence": 0,
+          "automated": true,
+          "buttons": 0,
+          "sequence": 0
+        }
+      ],
+      "localSeat": 0,
+      "options": {
+        "arena": 10,
+        "characters": [
+          3,
+          8
+        ],
+        "teamBattle": false
+      },
+      "phase": "playing",
+      "players": [
+        {
+          "active": true,
+          "characterID": 3,
+          "computer": false,
+          "energy": 223,
+          "health": 223,
+          "seat": 0,
+          "slot": 0,
+          "x": 944,
+          "y": 320
+        },
+        {
+          "active": true,
+          "characterID": 8,
+          "computer": true,
+          "energy": 199,
+          "health": 223,
+          "seat": 1,
+          "slot": 3,
+          "x": 1037,
+          "y": 320
+        }
+      ],
+      "presentationDigest": "52e73d0d93b0e2bd95e8a8508fed61d62b2446b46d45ad3ebb5a5733d5c856f6",
+      "protocol": 1,
+      "replay": {
+        "data": "NgIAAAAAAAAAAAgCACAAAAAAAAAQAgAAAAAAAAAACAIAIAAAAAAAABYCAAAAAAAAAAAIAgAgAAAAAAAABAIAAAAAAAAAAA==",
+        "firstFrame": "213",
+        "frameCount": 120,
+        "version": 1
+      },
+      "resourceDescriptorSHA256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+      "seatSlots": [
+        0,
+        3
+      ],
+      "serverAt": 1793904196503
+    },
+    "hidden": false,
+    "lastHeld": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "lastStep": {
+      "arena": 10,
+      "completed": false,
+      "frame": "337",
+      "logic_frame": 337,
+      "paused": false,
+      "players": [
+        {
+          "Action": 0,
+          "Pose": 0,
+          "X": 944,
+          "Y": 320,
+          "active": true,
+          "character_id": 3,
+          "computer": false,
+          "energy": 223,
+          "health": 223,
+          "input_channel": 0,
+          "slot": 0
+        },
+        {
+          "Action": 3,
+          "Pose": 163,
+          "X": 1037,
+          "Y": 320,
+          "active": true,
+          "character_id": 8,
+          "computer": true,
+          "energy": 199,
+          "health": 223,
+          "input_channel": 255,
+          "slot": 3
+        }
+      ],
+      "ready": true,
+      "tick": 337,
+      "window_complete": true,
+      "winner": 0
+    },
+    "timings": [
+      {
+        "ack": 552.0999994277954,
+        "bytes": 52,
+        "sent": 549.5999994277954
+      },
+      {
+        "ack": 5094.299999237061,
+        "appliedAt": 5097.5,
+        "bytes": 77,
+        "sent": 5004,
+        "sequence": 1
+      },
+      {
+        "ack": 5141.39999961853,
+        "appliedAt": 5213.099999427795,
+        "bytes": 76,
+        "sent": 5137.89999961853,
+        "sequence": 2
+      },
+      {
+        "ack": 5492.799999237061,
+        "appliedAt": 5495.5,
+        "bytes": 77,
+        "sent": 5404,
+        "sequence": 3
+      },
+      {
+        "ack": 5546,
+        "appliedAt": 5612.89999961853,
+        "bytes": 76,
+        "sent": 5538.799999237061,
+        "sequence": 4
+      },
+      {
+        "ack": 5991.599999427795,
+        "appliedAt": 5994.39999961853,
+        "bytes": 77,
+        "sent": 5904,
+        "sequence": 5
+      },
+      {
+        "ack": 6041.5,
+        "appliedAt": 6112.89999961853,
+        "bytes": 76,
+        "sent": 6036.89999961853,
+        "sequence": 6
+      }
+    ]
+  }
+}

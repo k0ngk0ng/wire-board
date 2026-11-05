@@ -1,0 +1,8 @@
+{
+  "removed": [
+    ".local/md-yuyuhakusho/platform-web/profile",
+    ".local/yw/pwe319b8.config",
+    ".local/yw/pwe319b8.target"
+  ],
+  "scope": "Only closed local fixture browser profile/session; red/final evidence, user/other-agent files, current dist and shared caches preserved."
+}

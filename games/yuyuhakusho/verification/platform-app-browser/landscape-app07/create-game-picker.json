@@ -1,0 +1,388 @@
+{
+  "lifecycle": {
+    "effectiveLaunch": {
+      "browserLaunched": true,
+      "engine": "chrome",
+      "launchHash": 7233726534415790690
+    },
+    "launched": false,
+    "relaunchedBrowser": false,
+    "restartedBackground": false,
+    "restoreStatus": "not_configured",
+    "reused": true,
+    "saveStatus": "not_attempted"
+  },
+  "origin": "http://127.0.0.1:62739/",
+  "refs": {
+    "e1": {
+      "name": "",
+      "role": "generic"
+    },
+    "e100": {
+      "name": "棋牌类",
+      "role": "option"
+    },
+    "e101": {
+      "name": "即时策略",
+      "role": "option"
+    },
+    "e102": {
+      "name": "体育",
+      "role": "option"
+    },
+    "e103": {
+      "name": "益智休闲",
+      "role": "option"
+    },
+    "e12": {
+      "name": "围桌首页",
+      "role": "link"
+    },
+    "e13": {
+      "name": "打开游戏许愿池",
+      "role": "button"
+    },
+    "e14": {
+      "name": "积分榜",
+      "role": "button"
+    },
+    "e15": {
+      "name": "",
+      "role": "generic"
+    },
+    "e16": {
+      "name": "我的战绩与好友",
+      "role": "button"
+    },
+    "e17": {
+      "name": "控制器设置",
+      "role": "button"
+    },
+    "e18": {
+      "name": "Yuyufastcape-app07",
+      "role": "button"
+    },
+    "e19": {
+      "name": "声音控制",
+      "role": "button"
+    },
+    "e20": {
+      "name": "游戏大厅",
+      "role": "heading"
+    },
+    "e21": {
+      "name": "创建房间",
+      "role": "button"
+    },
+    "e22": {
+      "name": "还没有房间，来开第一局吧",
+      "role": "heading"
+    },
+    "e23": {
+      "name": "搜索房间",
+      "role": "searchbox"
+    },
+    "e24": {
+      "name": "游戏分类",
+      "role": "combobox"
+    },
+    "e25": {
+      "name": "按游戏筛选牌桌",
+      "role": "combobox"
+    },
+    "e26": {
+      "name": "房间状态",
+      "role": "combobox"
+    },
+    "e27": {
+      "name": "全部分类",
+      "role": "option"
+    },
+    "e28": {
+      "name": "桌游",
+      "role": "option"
+    },
+    "e29": {
+      "name": "棋牌类",
+      "role": "option"
+    },
+    "e30": {
+      "name": "即时策略",
+      "role": "option"
+    },
+    "e31": {
+      "name": "体育",
+      "role": "option"
+    },
+    "e32": {
+      "name": "益智休闲",
+      "role": "option"
+    },
+    "e33": {
+      "name": "全部游戏",
+      "role": "option"
+    },
+    "e34": {
+      "name": "璀璨宝石",
+      "role": "option"
+    },
+    "e35": {
+      "name": "铁路环游",
+      "role": "option"
+    },
+    "e36": {
+      "name": "卡坦岛",
+      "role": "option"
+    },
+    "e37": {
+      "name": "卡卡颂",
+      "role": "option"
+    },
+    "e38": {
+      "name": "三国杀",
+      "role": "option"
+    },
+    "e39": {
+      "name": "热血篮球",
+      "role": "option"
+    },
+    "e40": {
+      "name": "强手棋",
+      "role": "option"
+    },
+    "e41": {
+      "name": "星垒",
+      "role": "option"
+    },
+    "e42": {
+      "name": "斗地主",
+      "role": "option"
+    },
+    "e43": {
+      "name": "掼蛋",
+      "role": "option"
+    },
+    "e44": {
+      "name": "升级",
+      "role": "option"
+    },
+    "e45": {
+      "name": "斯诺克",
+      "role": "option"
+    },
+    "e46": {
+      "name": "连连看",
+      "role": "option"
+    },
+    "e47": {
+      "name": "五子棋",
+      "role": "option"
+    },
+    "e48": {
+      "name": "军棋",
+      "role": "option"
+    },
+    "e49": {
+      "name": "国际象棋",
+      "role": "option"
+    },
+    "e50": {
+      "name": "中国象棋",
+      "role": "option"
+    },
+    "e51": {
+      "name": "围棋",
+      "role": "option"
+    },
+    "e52": {
+      "name": "极品飞车",
+      "role": "option"
+    },
+    "e53": {
+      "name": "俄罗斯方块",
+      "role": "option"
+    },
+    "e54": {
+      "name": "街霸方块",
+      "role": "option"
+    },
+    "e55": {
+      "name": "坦克大战",
+      "role": "option"
+    },
+    "e56": {
+      "name": "泡泡堂",
+      "role": "option"
+    },
+    "e57": {
+      "name": "疯狂坦克",
+      "role": "option"
+    },
+    "e58": {
+      "name": "征服时代",
+      "role": "option"
+    },
+    "e59": {
+      "name": "乒乓球",
+      "role": "option"
+    },
+    "e60": {
+      "name": "魔强统一战",
+      "role": "option"
+    },
+    "e61": {
+      "name": "全部状态",
+      "role": "option"
+    },
+    "e62": {
+      "name": "等待入座",
+      "role": "option"
+    },
+    "e63": {
+      "name": "游戏中",
+      "role": "option"
+    },
+    "e65": {
+      "name": "",
+      "role": "generic"
+    },
+    "e66": {
+      "name": "选择游戏",
+      "role": "heading"
+    },
+    "e67": {
+      "name": "关闭",
+      "role": "button"
+    },
+    "e68": {
+      "name": "选择游戏",
+      "role": "region"
+    },
+    "e69": {
+      "name": "可选游戏分类",
+      "role": "combobox"
+    },
+    "e70": {
+      "name": "搜索可选游戏",
+      "role": "searchbox"
+    },
+    "e71": {
+      "name": "璀璨宝石",
+      "role": "button"
+    },
+    "e72": {
+      "name": "铁路环游",
+      "role": "button"
+    },
+    "e73": {
+      "name": "卡坦岛",
+      "role": "button"
+    },
+    "e74": {
+      "name": "卡卡颂",
+      "role": "button"
+    },
+    "e75": {
+      "name": "三国杀",
+      "role": "button"
+    },
+    "e76": {
+      "name": "热血篮球",
+      "role": "button"
+    },
+    "e77": {
+      "name": "强手棋",
+      "role": "button"
+    },
+    "e78": {
+      "name": "星垒",
+      "role": "button"
+    },
+    "e79": {
+      "name": "斗地主",
+      "role": "button"
+    },
+    "e80": {
+      "name": "掼蛋",
+      "role": "button"
+    },
+    "e81": {
+      "name": "升级",
+      "role": "button"
+    },
+    "e82": {
+      "name": "斯诺克",
+      "role": "button"
+    },
+    "e83": {
+      "name": "连连看",
+      "role": "button"
+    },
+    "e84": {
+      "name": "五子棋",
+      "role": "button"
+    },
+    "e85": {
+      "name": "军棋",
+      "role": "button"
+    },
+    "e86": {
+      "name": "国际象棋",
+      "role": "button"
+    },
+    "e87": {
+      "name": "中国象棋",
+      "role": "button"
+    },
+    "e88": {
+      "name": "围棋",
+      "role": "button"
+    },
+    "e89": {
+      "name": "极品飞车",
+      "role": "button"
+    },
+    "e90": {
+      "name": "俄罗斯方块",
+      "role": "button"
+    },
+    "e91": {
+      "name": "街霸方块",
+      "role": "button"
+    },
+    "e92": {
+      "name": "坦克大战",
+      "role": "button"
+    },
+    "e93": {
+      "name": "泡泡堂",
+      "role": "button"
+    },
+    "e94": {
+      "name": "疯狂坦克",
+      "role": "button"
+    },
+    "e95": {
+      "name": "征服时代",
+      "role": "button"
+    },
+    "e96": {
+      "name": "乒乓球",
+      "role": "button"
+    },
+    "e97": {
+      "name": "魔强统一战",
+      "role": "button"
+    },
+    "e98": {
+      "name": "全部分类",
+      "role": "option"
+    },
+    "e99": {
+      "name": "桌游",
+      "role": "option"
+    }
+  },
+  "removedRefs": [],
+  "snapshot": "- generic \"围桌WIRE BOARD游戏大厅让相聚，多一局。vdev许愿池积分榜1msYYuyufastcape-app07游戏大厅找个房间，一起开局。创建房间搜索房间游戏分类全部分类桌游棋牌类即时策略体育益智休\" [ref=e1] clickable [onclick]\n  - link \"围桌首页\" [ref=e12]\n  - button \"打开游戏许愿池\" [ref=e13]\n  - button \"积分榜\" [ref=e14]\n  - generic [ref=e15] clickable [onclick]\n    - button \"声音控制\" [expanded=false, ref=e19]\n  - button \"我的战绩与好友\" [ref=e16]\n  - button \"控制器设置\" [ref=e17]\n  - button \"Yuyufastcape-app07\" [ref=e18]\n  - heading \"游戏大厅\" [level=1, ref=e20]\n  - button \"创建房间\" [ref=e21]\n  - searchbox \"搜索房间\" [ref=e23]\n  - combobox \"游戏分类\" [expanded=false, ref=e24]: 全部分类\n    - option \"全部分类\" [selected, ref=e27]\n    - option \"桌游\" [ref=e28]\n    - option \"棋牌类\" [ref=e29]\n    - option \"即时策略\" [ref=e30]\n    - option \"体育\" [ref=e31]\n    - option \"益智休闲\" [ref=e32]\n  - combobox \"按游戏筛选牌桌\" [expanded=false, ref=e25]: 全部游戏\n    - option \"全部游戏\" [selected, ref=e33]\n    - option \"璀璨宝石\" [ref=e34]\n    - option \"铁路环游\" [ref=e35]\n    - option \"卡坦岛\" [ref=e36]\n    - option \"卡卡颂\" [ref=e37]\n    - option \"三国杀\" [ref=e38]\n    - option \"热血篮球\" [ref=e39]\n    - option \"强手棋\" [ref=e40]\n    - option \"星垒\" [ref=e41]\n    - option \"斗地主\" [ref=e42]\n    - option \"掼蛋\" [ref=e43]\n    - option \"升级\" [ref=e44]\n    - option \"斯诺克\" [ref=e45]\n    - option \"连连看\" [ref=e46]\n    - option \"五子棋\" [ref=e47]\n    - option \"军棋\" [ref=e48]\n    - option \"国际象棋\" [ref=e49]\n    - option \"中国象棋\" [ref=e50]\n    - option \"围棋\" [ref=e51]\n    - option \"极品飞车\" [ref=e52]\n    - option \"俄罗斯方块\" [ref=e53]\n    - option \"街霸方块\" [ref=e54]\n    - option \"坦克大战\" [ref=e55]\n    - option \"泡泡堂\" [ref=e56]\n    - option \"疯狂坦克\" [ref=e57]\n    - option \"征服时代\" [ref=e58]\n    - option \"乒乓球\" [ref=e59]\n    - option \"魔强统一战\" [ref=e60]\n  - combobox \"房间状态\" [expanded=false, ref=e26]: 全部状态\n    - option \"全部状态\" [selected, ref=e61]\n    - option \"等待入座\" [ref=e62]\n    - option \"游戏中\" [ref=e63]\n  - heading \"还没有房间，来开第一局吧\" [level=3, ref=e22]\n  - generic \"选择游戏可选游戏分类全部分类桌游棋牌类即时策略体育益智休闲搜索游戏选择游戏后，继续设置房间和规则。璀璨宝石铁路环游64581039卡坦岛卡卡颂魏蜀吴三国杀热血篮球强手棋星垒斗地主掼蛋升级斯诺克连连看五\" [ref=e65] clickable [onclick]\n    - heading \"选择游戏\" [level=2, ref=e66]\n    - button \"关闭\" [ref=e67]\n    - region \"选择游戏\" [ref=e68]\n      - combobox \"可选游戏分类\" [expanded=false, ref=e69]: 全部分类\n        - option \"全部分类\" [selected, ref=e98]\n        - option \"桌游\" [ref=e99]\n        - option \"棋牌类\" [ref=e100]\n        - option \"即时策略\" [ref=e101]\n        - option \"体育\" [ref=e102]\n        - option \"益智休闲\" [ref=e103]\n      - searchbox \"搜索可选游戏\" [ref=e70]\n      - button \"璀璨宝石\" [ref=e71]\n      - button \"铁路环游\" [ref=e72]\n      - button \"卡坦岛\" [ref=e73]\n      - button \"卡卡颂\" [ref=e74]\n      - button \"三国杀\" [ref=e75]\n      - button \"热血篮球\" [ref=e76]\n      - button \"强手棋\" [ref=e77]\n      - button \"星垒\" [ref=e78]\n      - button \"斗地主\" [ref=e79]\n      - button \"掼蛋\" [ref=e80]\n      - button \"升级\" [ref=e81]\n      - button \"斯诺克\" [ref=e82]\n      - button \"连连看\" [ref=e83]\n      - button \"五子棋\" [ref=e84]\n      - button \"军棋\" [ref=e85]\n      - button \"国际象棋\" [ref=e86]\n      - button \"中国象棋\" [ref=e87]\n      - button \"围棋\" [ref=e88]\n      - button \"极品飞车\" [ref=e89]\n      - button \"俄罗斯方块\" [ref=e90]\n      - button \"街霸方块\" [ref=e91]\n      - button \"坦克大战\" [ref=e92]\n      - button \"泡泡堂\" [ref=e93]\n      - button \"疯狂坦克\" [ref=e94]\n      - button \"征服时代\" [ref=e95]\n      - button \"乒乓球\" [ref=e96]\n      - button \"魔强统一战\" [ref=e97]"
+}

@@ -1,0 +1,56 @@
+{
+  "lifecycle": {
+    "effectiveLaunch": {
+      "browserLaunched": true,
+      "engine": "chrome",
+      "launchHash": 1768254767765992115
+    },
+    "launched": false,
+    "relaunchedBrowser": false,
+    "restartedBackground": false,
+    "restoreStatus": "not_configured",
+    "reused": true,
+    "saveStatus": "not_attempted"
+  },
+  "origin": "http://127.0.0.1:62959/",
+  "refs": {
+    "e1": {
+      "name": "",
+      "role": "generic"
+    },
+    "e2": {
+      "name": "围桌首页",
+      "role": "link"
+    },
+    "e3": {
+      "name": "把朋友，约到 同一张桌上。",
+      "role": "heading"
+    },
+    "e4": {
+      "name": "欢迎回来，入座吧。",
+      "role": "heading"
+    },
+    "e5": {
+      "name": "登录",
+      "role": "button"
+    },
+    "e6": {
+      "name": "创建账号",
+      "role": "button"
+    },
+    "e7": {
+      "name": "进入游戏大厅",
+      "role": "button"
+    },
+    "e8": {
+      "name": "玩家昵称",
+      "role": "textbox"
+    },
+    "e9": {
+      "name": "密码",
+      "role": "textbox"
+    }
+  },
+  "removedRefs": [],
+  "snapshot": "- generic \"围桌WIRE BOARDA TABLE FOR YOUR PEOPLE把朋友，约到同一张桌上。收集一颗宝石，连接一座城市。从一局好游戏，开始今晚的相聚。卡牌与策略探索与冒险联机游戏 · 好友相聚 ·\" [ref=e1] clickable [onclick]\n  - link \"围桌首页\" [ref=e2]\n  - heading \"把朋友，约到 同一张桌上。\" [level=1, ref=e3]\n  - heading \"欢迎回来，入座吧。\" [level=2, ref=e4]\n  - button \"登录\" [ref=e5]\n  - button \"创建账号\" [ref=e6]\n  - textbox \"玩家昵称\" [required, ref=e8]\n  - textbox \"密码\" [required, ref=e9]\n  - button \"进入游戏大厅\" [ref=e7]"
+}

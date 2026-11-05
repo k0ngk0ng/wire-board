@@ -1,0 +1,112 @@
+{
+  "schema": 1,
+  "revision": "confirmation-native-phase-v1",
+  "baseline_commit": "40237232",
+  "pass": true,
+  "production_changes": [
+    "games/yuyuhakusho/web/network-scene.ts"
+  ],
+  "source_before_sha256": "de9fe122c7de5daf0a0faf99d0c0f4ffa761e34222f301ac4cd07d870354c64f",
+  "source_after_sha256": "f8ee4b8df95ee7c7d3576b59bcb2554fa3051445a608b529e9fd1c60591f7c06",
+  "change": "Preserve native RAF clock phase when a timely authority catches the previous local target; restore and genuine stall resets remain unchanged.",
+  "verification_source_sha256": {
+    "scripts/yuyuhakusho/check_platform_timeline.mjs": "5c8b6ad9e4587cdeed6d59aa350a6a14047c5325c38033277a4f75ba474c0ff8"
+  },
+  "artifact_sha256": {
+    "timeline-phase-test-first.json": "ee6d4d85112063a9dd80120c9fb421548e0f0588d1df2a5d30a4112c0affa279",
+    "timeline-confirm-phase-red.json": "7b0f2c662867f7c5e93c6bbfa41b960b46aba83260c792fc243585c93286dc9b",
+    "timeline-confirm-phase-final.json": "f0b5dfd07d7eec7465b2f5e6c6ce6ea5efbc445f53011c1187c4ac6c2a726b13",
+    "timeline-rebase-after-phase-verified.json": "05c375a8a01a71f2a8c1869447d2812712ca8cd54a867921009db52df28bff1a",
+    "typecheck-confirm-phase.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "app-build-confirm-phase.json": "f19acb09d6f435d6280cf0d8621457c8ef5fb17961d62670990ff0e17f1f1213",
+    "app-build-confirm-phase.log": "d1900d85feaa77be2f4f39b3bf849698a37aa607f14d995746f7d459798b8572",
+    "network-scene.before-confirm-phase-fix.ts.txt": "de9fe122c7de5daf0a0faf99d0c0f4ffa761e34222f301ac4cd07d870354c64f",
+    "check_platform_timeline.before-phase-case.mjs.txt": "7191f1e841ca1f930be0e3422daa381294364d73b0810f37e71a43323f346566",
+    "check_platform_timeline.executed-before-phase-metadata.mjs.txt": "f93a331ba7ec56910d49985a2c2580d664c0e30ac1001b5fd33b008c705a5a30"
+  },
+  "actual_platform": {
+    "path": "games/yuyuhakusho/verification/platform-app-browser/cursor-network06/result.json",
+    "sha256": "2788d4b1e2322d0bd97dbf0512b55093f9ec6cdc76bfaceb7d0115e9e7ec54e3",
+    "pass": true,
+    "app_build": "4a213a12b716f069485b79fb0cb2fd85bb645264d3a9173719e6f163e1ce563f",
+    "render_performance": {
+      "fast": {
+        "frames": 150,
+        "elapsedMs": 2502.0,
+        "visibleUpdatesPerSecond": 59.95203836930455,
+        "medianFrameIntervalMs": 16.899999618530273,
+        "p95FrameIntervalMs": 21.899999618530273,
+        "budget": {
+          "minimumVisibleUpdatesPerSecond": 50,
+          "maximumP95FrameIntervalMs": 40
+        },
+        "hidden": false
+      },
+      "slow": {
+        "frames": 150,
+        "elapsedMs": 2503.300000190735,
+        "visibleUpdatesPerSecond": 59.92090440161826,
+        "medianFrameIntervalMs": 16.199999809265137,
+        "p95FrameIntervalMs": 22.199999809265137,
+        "budget": {
+          "minimumVisibleUpdatesPerSecond": 50,
+          "maximumP95FrameIntervalMs": 40
+        },
+        "hidden": false
+      },
+      "slow-tcp-delayed": {
+        "frames": 145,
+        "elapsedMs": 2501.300000190735,
+        "visibleUpdatesPerSecond": 57.969855670628526,
+        "medianFrameIntervalMs": 16.749999523162842,
+        "p95FrameIntervalMs": 24.199999809265137,
+        "budget": {
+          "minimumVisibleUpdatesPerSecond": 50,
+          "maximumP95FrameIntervalMs": 40
+        },
+        "hidden": false
+      }
+    },
+    "delayed_native_input": {
+      "nativeEventToFirstVisibleMs": 22.09999942779541,
+      "inputAckMs": 210.30000019073486,
+      "nativeEventToAuthoritativeAppliedArrivalMs": 212.0,
+      "firstVisibleBeforeAck": true,
+      "renderFrameIntervalMedianMs": 16.84999990463257,
+      "renderFrameIntervalMaxMs": 22.799999237060547,
+      "initialX": 1104.0,
+      "firstVisibleX": 1102,
+      "firstVisibleHash": "2771baa3",
+      "beforeHash": "c835d194",
+      "trusted": true
+    }
+  },
+  "runtime_unchanged": {
+    "url": "/yuyuhakusho/v1/runtime/client.wasm",
+    "sha256": "a10458e21546db20123a6d7c2f07196a29607c5ed3c0686ffc0ba74dac219c73",
+    "bytes": 4911200
+  },
+  "limits_unchanged": {
+    "prediction_frames": 12,
+    "input_history": 64,
+    "replay_frames": 120,
+    "ordinary_inflight": 8
+  },
+  "unmodified_core_sha256": {
+    "games/yuyuhakusho/cmd/platform-client-wasm/main_js.go": "764e3be6ee19c8403cc7d5336174e5317fcc858dd592d636cb5d1c85350afa22",
+    "games/yuyuhakusho/web/Board.tsx": "aedb87338ea119273ac15f03b5aab88f5eaeec7b6d07bdfceb69d11c500b0072",
+    "games/yuyuhakusho/web/Cover.tsx": "d75e03c629d0eed62d040a0d842d4ce30d0aff6eea01ecd2f3e3e55a63659936",
+    "games/yuyuhakusho/web/Options.tsx": "87449c1efec8d6d41805506583e65b486843cd3311f9f671229b8a7d405071c9",
+    "games/yuyuhakusho/web/Preparation.tsx": "66843d5fc158dc6bfde15f90761e98642fd1525befffdd615166f8400aae4d9c",
+    "games/yuyuhakusho/web/assets.ts": "0772fc41b5b48af4dee0e9a5df1099a70cbda4bb509f2d25df382a7b76f7af84",
+    "games/yuyuhakusho/web/catalog.tsx": "632bade9c69cf56510dd4f3f0234d7dff22ebbfd2b1879501968c9e41eb5fa39",
+    "games/yuyuhakusho/web/input.ts": "5113279f9fc2be2dd84a10db73dc1edff361354e3192dbf176195f11b6fd5163",
+    "games/yuyuhakusho/web/labels.ts": "880083c93f07aa40a6a05bbca53af4b8eb7b717e7858bdbf63aed4ec22122a1c",
+    "games/yuyuhakusho/web/module.tsx": "7f556d04f81df9cc02d5b5e094fc7c55332bb79262969243519948227ff2a99f",
+    "games/yuyuhakusho/web/network-client.ts": "d5b435001676e9ffe6114d8e6be19f2fba404b57af2638c45dc856580033de7a",
+    "games/yuyuhakusho/web/network-input.ts": "13ccfd4ceeb4c434657aa5306723f5ff2076dd810b235f9b5aab1b3fdf896922",
+    "games/yuyuhakusho/web/types.ts": "5151eb726b0da3885aaeb9856a4e3ad7c4cecc5ab10876db43fb558666fa84ac",
+    "games/yuyuhakusho/web/wasm.ts": "1b86dc7353060b2a0eea3c66427c76fbf3d309aa5116e217b317bc6067deb354"
+  },
+  "separate_css_revision": "landscape-controller-ui-v1"
+}

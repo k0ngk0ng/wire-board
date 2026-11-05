@@ -101,6 +101,13 @@ type Result struct {
 // The host owns
 // authentication, transactions, clocks, deduplication and publication. Keep all
 // game-specific types, decoding and snapshot upgrades in the game's package.
+// StreamViewResult is an optional per-connection realtime projection. Cursor
+// belongs to the game and advances only after a successful socket write.
+type StreamViewResult struct {
+	Data   any
+	Cursor string
+}
+
 type Module struct {
 	// Controls declares only an actually wired per-game logical input scheme.
 	Controls   *ControllerDefinition                                                `json:"-"`
@@ -115,6 +122,10 @@ type Module struct {
 	Start   func(Context, json.RawMessage) (Match, error)                                       `json:"-"`
 	Apply   func(Context, Match, json.RawMessage) (Match, error)                                `json:"-"`
 	View    func(Match, int) (any, error)                                                       `json:"-"`
+	// StreamView receives a detached match outside the host lock. It must be
+	// pure and safe concurrently with other callbacks. The opaque cursor is
+	// private to this authenticated connection; gaps must use SyncSnapshot.
+	StreamView func(Match, int, string) (StreamViewResult, error) `json:"-"`
 	// SyncSnapshot optionally supplies a recovery checkpoint on explicit
 	// request, separate from the frequent public View. It receives a detached
 	// Match and authenticated seat (-1 for an authorized spectator), and must
@@ -170,6 +181,9 @@ func (m Module) Validate() error {
 	}
 	if m.Realtime && (m.OnTimer == nil || m.BotSearch != nil) {
 		return fmt.Errorf("invalid realtime registration: %s", m.ID)
+	}
+	if m.StreamView != nil && (!m.Realtime || m.SyncSnapshot == nil) {
+		return fmt.Errorf("stream view requires realtime recovery: %s", m.ID)
 	}
 	return nil
 }

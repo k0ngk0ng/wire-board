@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "revision": "local-app-favicon-v1",
+  "pass": true,
+  "scope": "Isolated local test-build assembly only; product main and other game assets unchanged.",
+  "changed_sources": {
+    "scripts/yuyuhakusho/build_platform_app.py": "b9c0dc2028351195e1010924f977c7ae180dec0c85bb75ea0a511d09b7315952",
+    "scripts/yuyuhakusho/check_platform_app_build.mjs": "72671a0b8ad64ab5e09cdef4afc0fe625d1dc7a853113dfb93c41b33c576ac80"
+  },
+  "copied_unchanged_source": {
+    "path": "web/public/favicon.svg",
+    "sha256": "0c308d0332fd6c21fa0eca4b9f0475235b9ed72e3174132ff15d5e94ecc45b1c"
+  },
+  "artifact_sha256": {
+    "favicon-test-first.json": "c8acd682fc06b5fdeba10b492abfb65a9d7338154632d7d5e0bcddd00a4e6b64",
+    "app-build-favicon-required-red.json": "b65ea02bab4aec7f5f80644e0fab8be80061f3fbdb48b85fa22b69cd5e8d7cf6",
+    "app-build-brand-ui-v1.json": "42ef7ffe6cf31e7a252183c1dfd59b2b4f511102696868b922edb159e6303bee",
+    "app-build-brand-ui-v1.log": "a5489add89f8c43126cdcbde94ae9ab736820ce541c581ff5d97f3603136ab24",
+    "check_platform_app_build.mjs.before-favicon.txt": "88c94dfc6408f81435dc0a0244429f3844ce430771b36c4ddcdcfb859bba4224",
+    "build_platform_app.py.before-favicon.txt": "66170d98470485289223fabc07d9aab6acb3608efd43bb3a69636f08cbed11fe"
+  },
+  "favicon": {
+    "url": "/favicon.svg",
+    "bytes": 250,
+    "sha256": "0c308d0332fd6c21fa0eca4b9f0475235b9ed72e3174132ff15d5e94ecc45b1c"
+  },
+  "final_app_build": "6d4751a7d6da00baad57fcede509c481109aa7f2ec079eedb3cf307d8e7b2baf",
+  "runtime_unchanged": {
+    "url": "/yuyuhakusho/v1/runtime/client.wasm",
+    "sha256": "a10458e21546db20123a6d7c2f07196a29607c5ed3c0686ffc0ba74dac219c73",
+    "bytes": 4911200
+  },
+  "actual_app_layout": {
+    "path": "games/yuyuhakusho/verification/platform-app-browser/landscape-app08/result.json",
+    "sha256": "3111bfc789af3e9269fbcbc92b6f029393b8d95c5dc267a9d2c6625196a5964f",
+    "pass": true
+  },
+  "old_baseline_app_build_record_restored": true
+}

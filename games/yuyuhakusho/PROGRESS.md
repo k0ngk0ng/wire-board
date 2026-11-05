@@ -1,6 +1,6 @@
 # 《幽游白书：魔强统一战》复刻进度
 
-更新：2026-11-06。整体约 **85%**（工程估算）。独立 worktree 为 `worktrees/yuyuhakusho`，分支为 `codex/yuyuhakusho`。全 11 人物／8 场地已有独立 Go／Wasm 玩法；游戏已注册到本地平台，真实主机五项端到端及竞态验收通过。正式认证双人房间正常网络下两端均约 60 帧／秒，单端每次 TCP 写入延迟 120 ms 时慢端仍约 56 帧／秒；改键、虚拟手柄、320px 原生触屏、全屏及重连已通过。逐连接增量协议和完整对局音频继续完成；未上传资源、发布或部署。除用户要求回馈的 `rules/realtime.md`，main 工作区的其他改动未导入或覆盖。
+更新：2026-11-06。整体约 **85%**（工程估算）。独立 worktree 为 `worktrees/yuyuhakusho`，分支为 `codex/yuyuhakusho`。全 11 人物／8 场地已有独立 Go／Wasm 玩法；游戏已注册到本地平台。逐连接输入增量、真实主机端到端与竞态正确性已验收；正式认证双人房间正常约 60 帧／秒，单端每次 TCP 写入延迟 120 ms 时慢端约 58 帧／秒。改键、虚拟手柄、320px 竖屏／740×360 横屏原生触摸、全屏及重连通过。完整对局音频继续完成；未上传资源、发布或部署。Main 仅按用户要求回馈即时游戏规范、补游戏规范和索引，其他游戏的未提交工作未覆盖。
 
 ## 当前可运行范围
 
@@ -11,7 +11,7 @@
 
 正式房间的加载死锁已修复。原约 8.8 帧／秒的客户端开销来自完整 JSON 分叉、重放中间像素和未使用的预测摘要；改为直接复制状态、仅推进中间规则状态后，恢复正常双人约 60 帧／秒。随后对照篮球修正本地显示时钟，保持 12 帧预测上限，确认后重放到旧显示目标。最终真实双人可见更新为 59.94／59.93 次／秒；单端每次 TCP 写入延迟 120 ms 时，慢端 55.91 次／秒、帧间隔 p95 为 31.7 ms，原生按键到画布变化 27.8 ms，先于 226.4 ms 的 ACK。完整证据见 [native-clock-network04](verification/platform-app-browser/native-clock-network04/result.json)。此为明确网络条件下的本机实测，不代表所有丢包、设备或网络环境。
 
-同步机制已对照热血篮球、泡泡堂与魂斗罗的实际源码，结论和规则回馈见[同步对照](../../docs/research/md-yuyuhakusho/SYNC_REFERENCE.md)。普通消息不携完整世界、呈现缓存或像素；当前仍使用有界 RLE 输入窗口，尚未接入魂斗罗较新的逐连接增量游标。
+同步机制已对照热血篮球、泡泡堂与魂斗罗的实际源码，结论和规则回馈见[同步对照](../../docs/research/md-yuyuhakusho/SYNC_REFERENCE.md)。普通 WS 只发该连接新增输入与最多六帧冗余，120 帧恢复环单独保存；不携完整世界、呈现缓存或像素。原生密集 View 峰值从 2513 B 降为 997 B；最终 [cursor-network06](verification/platform-app-browser/cursor-network06/result.json) 正常 59.95／59.92 帧／秒、延迟慢端 57.97 帧／秒，慢端原生按键约 22.1 ms 响应，早于约 210.3 ms ACK。横屏控制器下置和真实触摸见 [landscape-app08](verification/platform-app-browser/landscape-app08/result.json)。
 
 启动方式和截图见[本地研究页](../../docs/research/md-yuyuhakusho/LOCAL_PLAYER.md)。本轮完整摘要见[八场地整体验收](verification/additional-arenas-session.json)，接口、证据边界和复跑见[七场地接入](../../docs/research/md-yuyuhakusho/ADDITIONAL_ARENA_SESSIONS.md)。上一检查点的[全十一角色对局验收](verification/itsuki-session.json)；既有[十角色验收](verification/sensui-session.json)、[九角色验收](verification/hiei-session.json)、[八角色验收](verification/jin-session.json)、[七角色验收](verification/kurama-session.json)、[六角色验收](verification/elder-session.json)、[五角色验收](verification/kuwabara-session.json)、[四角色验收](verification/yusuke-session.json)、[三角色验收](verification/genkai-session.json)、[双角色验收](verification/fighter10-session.json)和[独立对局／素材验收](verification/independent-session.json)保留各自提交时的绑定。
 

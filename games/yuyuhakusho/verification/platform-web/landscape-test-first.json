@@ -1,0 +1,38 @@
+{
+  "revision": "landscape-controller-ui-v1",
+  "prior_css": "games/yuyuhakusho/verification/platform-web/network.before-landscape-ui-v1.css.txt",
+  "prior_css_sha256": "4b6bb34ebe7ea7119cd1dbe0b8349b631259e5b09488bd023c6e9f4fc0dbfb20",
+  "test": "scripts/yuyuhakusho/platform_layout_acceptance.py",
+  "test_sha256": "23adfce772367984e4efbb5832d2ab79c4b84260920c7ae816aa9b76cae44370",
+  "actual_red": "landscape-layout-red/failure.json",
+  "cases": [
+    [
+      1100,
+      1000,
+      "page"
+    ],
+    [
+      320,
+      740,
+      "page"
+    ],
+    [
+      740,
+      360,
+      "native fullscreen"
+    ]
+  ],
+  "failures": [
+    "landscape pad beside canvas violates below-canvas grouping",
+    "removing grid without sizing may push pad below viewport",
+    "canvas stretched/cropped or HUD/exit toggle hidden",
+    "native C touch fails or overlaps",
+    "fullscreen remounts canvas/resets epoch"
+  ],
+  "native_feedback_extension": {
+    "source": "scripts/yuyuhakusho/native_platform_input.mjs",
+    "before_sha256": "89f34d68f53109748b35d74c50dbedd3694d3689eb75a68839b547d30f69e006",
+    "archive": "games/yuyuhakusho/verification/platform-web/native_platform_input.before-layout-feedback.mjs.txt",
+    "reason": "Capture actual public MDController pressed styling while trusted touch remains held, alongside the existing real Go appliedButtons assertion."
+  }
+}

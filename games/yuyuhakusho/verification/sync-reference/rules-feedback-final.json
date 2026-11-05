@@ -1,0 +1,15 @@
+{
+  "scope": "User-requested realtime lessons and project-required new-game rule/index; other Main work untouched",
+  "files": {
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/AGENTS.md": "ef77854893cc028865095122f7afda07ae79482a06781cdfecf08c99099e5980",
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/rules/realtime.md": "9b5c365b2050cb0e78f53a80613deb36aa6b6adf03aec19625df6aa85f02497c",
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/rules/yuyuhakusho.md": "46d203a2596c5d7e73b997170c03d594dc430e1eff075450d238dad721451a56"
+  },
+  "same_game_rule_in_worktree": true,
+  "checks": [
+    "all new AGENTS links resolve",
+    "Main/worktree game rule exact bytes",
+    "source slot/team/default MD controls match implementation",
+    "actual FPS/phase/input/recovery evidence retained"
+  ]
+}

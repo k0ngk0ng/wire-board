@@ -1,0 +1,205 @@
+{
+  "pass": true,
+  "scope": "Normal Vite app + registered composition root + real authentication, SQLite, HTTP and WebSocket. Shaping delays real TCP writes and closes actual connections. Virtual Gamepad API only; no physical hardware claim.",
+  "appBuild": "6d4751a7d6da00baad57fcede509c481109aa7f2ec079eedb3cf307d8e7b2baf",
+  "runtimeBuild": {
+    "wasm": {
+      "url": "/yuyuhakusho/v1/runtime/client.wasm",
+      "sha256": "a10458e21546db20123a6d7c2f07196a29607c5ed3c0686ffc0ba74dac219c73",
+      "bytes": 4911200
+    }
+  },
+  "urls": {
+    "direct": "http://127.0.0.1:62959/",
+    "shaped": "http://127.0.0.1:62960/"
+  },
+  "roomID": "ba0f64b7",
+  "preparation": {
+    "capacity": 2,
+    "chat": null,
+    "clockOffsetMs": 0,
+    "closeReason": "",
+    "host": "0d011b5937b8102b5b2099af",
+    "id": "ba0f64b7",
+    "kind": "yuyuhakusho",
+    "loading": null,
+    "locked": false,
+    "matchId": "",
+    "name": "魔强统一战验收",
+    "options": {
+      "arena": 10,
+      "characters": [
+        8,
+        9
+      ],
+      "teamBattle": false
+    },
+    "seats": [
+      {
+        "id": "0d011b5937b8102b5b2099af",
+        "left": false,
+        "name": "Yuyufastcape-app08",
+        "network": {
+          "connected": true,
+          "connections": 1,
+          "rttMs": 0,
+          "sampledAt": 1793905570869
+        },
+        "ready": false
+      },
+      {
+        "id": "0ed4c0dd759c8aa93c6008fd",
+        "left": false,
+        "name": "Yuyuslowcape-app08",
+        "network": {
+          "connected": true,
+          "connections": 1,
+          "rttMs": 0,
+          "sampledAt": 1793905573950
+        },
+        "ready": false
+      }
+    ],
+    "setupVersion": 0,
+    "spectating": false,
+    "spectatorCount": 0,
+    "status": "waiting",
+    "turnDeadline": 0,
+    "updated": 1793905574,
+    "version": 4,
+    "you": 0
+  },
+  "epoch": "ec3b37875376fcf8f36ed491",
+  "stage": "layout-complete",
+  "layouts": [
+    {
+      "label": "desktop",
+      "geometry": {
+        "c": {
+          "bottom": 928.671875,
+          "height": 57.234375,
+          "left": 736.65625,
+          "right": 793.890625,
+          "top": 871.4375,
+          "width": 57.234375,
+          "x": 736.65625,
+          "y": 871.4375
+        },
+        "canvas": {
+          "bottom": 736.984375,
+          "height": 558.59375,
+          "left": 151,
+          "right": 949,
+          "top": 178.390625,
+          "width": 798,
+          "x": 151,
+          "y": 178.390625
+        },
+        "frame": "273",
+        "height": 1000,
+        "nativeFullscreen": false,
+        "overflow": false,
+        "pad": {
+          "bottom": 988.421875,
+          "height": 236.4375,
+          "left": 270,
+          "right": 830,
+          "top": 751.984375,
+          "width": 560,
+          "x": 270,
+          "y": 751.984375
+        },
+        "width": 1100
+      },
+      "nativeTouchC": true
+    },
+    {
+      "label": "portrait-320",
+      "geometry": {
+        "c": {
+          "bottom": 653.1875,
+          "height": 30.25,
+          "left": 258.65625,
+          "right": 288.90625,
+          "top": 622.9375,
+          "width": 30.25,
+          "x": 258.65625,
+          "y": 622.9375
+        },
+        "canvas": {
+          "bottom": 552.796875,
+          "height": 205.796875,
+          "left": 13,
+          "right": 307,
+          "top": 347,
+          "width": 294,
+          "x": 13,
+          "y": 347
+        },
+        "frame": "320",
+        "height": 740,
+        "nativeFullscreen": false,
+        "overflow": false,
+        "pad": {
+          "bottom": 684.765625,
+          "height": 124.96875,
+          "left": 12,
+          "right": 308,
+          "top": 559.796875,
+          "width": 296,
+          "x": 12,
+          "y": 559.796875
+        },
+        "width": 320
+      },
+      "nativeTouchC": true
+    },
+    {
+      "label": "landscape-740",
+      "geometry": {
+        "c": {
+          "bottom": 319.859375,
+          "height": 26.953125,
+          "left": 457.90625,
+          "right": 484.859375,
+          "top": 292.90625,
+          "width": 26.953125,
+          "x": 457.90625,
+          "y": 292.90625
+        },
+        "canvas": {
+          "bottom": 227.640625,
+          "height": 182.640625,
+          "left": 239.125,
+          "right": 500.875,
+          "top": 45,
+          "width": 261.75,
+          "x": 239.125,
+          "y": 45
+        },
+        "frame": "388",
+        "height": 360,
+        "nativeFullscreen": true,
+        "overflow": false,
+        "pad": {
+          "bottom": 348,
+          "height": 111.359375,
+          "left": 238.125,
+          "right": 501.875,
+          "top": 236.640625,
+          "width": 263.75,
+          "x": 238.125,
+          "y": 236.640625
+        },
+        "width": 740
+      },
+      "nativeTouchC": true
+    }
+  ],
+  "sourceSHA256": {
+    "scripts/yuyuhakusho/platform_app_host.go": "b69aad1a7ffd6b08713ad429709c667854ae9c7053b289c4da1a7f2f0e878ba0",
+    "scripts/yuyuhakusho/platform_app_observer.js": "b07d9a383bd2927e2d188e604dfa43c4d084945d788810f5f3ff4480dd283a5c",
+    "scripts/yuyuhakusho/native_app_input.mjs": "b8d4e687b01e668d4b9c870397ba201ce6d94085919ee9ddb20b62abd168e459",
+    "scripts/yuyuhakusho/check_platform_app.py": "e304e565e6a55d8020cd3e19ea8f801895e191977da3486f9488c62528a2ce8f"
+  }
+}

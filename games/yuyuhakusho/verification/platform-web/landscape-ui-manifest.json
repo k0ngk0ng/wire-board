@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "revision": "landscape-controller-ui-v1",
+  "pass": true,
+  "production_changes": [
+    "games/yuyuhakusho/web/network.css"
+  ],
+  "source_before_sha256": "4b6bb34ebe7ea7119cd1dbe0b8349b631259e5b09488bd023c6e9f4fc0dbfb20",
+  "source_after_sha256": "614cb79ea3a0431b372c31a0f456b76cfefcbe5507dc9ff4d9d405a3537b8b5b",
+  "phase_revision_manifest_sha256": "725481f205a1bfb6401ac7e85a4180843f65730b19b663841440eac75a2e8189",
+  "network_and_rpc_unchanged_by_css": true,
+  "change": "Replace landscape side-by-side placement with a centered vertical game/pad stack whose width fits the actual fullscreen game-board height; shared toolbar/safe areas stay outside that height.",
+  "verification_source_sha256": {
+    "scripts/yuyuhakusho/platform_layout_acceptance.py": "77a56f6251a2ebcccc99d51c5fc0ea8ddc305451aa9a185468f27158d63780c4",
+    "scripts/yuyuhakusho/check_platform_board.py": "edd69f3ea6f413cb47f58bfd0b65e8f31f5dd1f27b0bc8534700be28d93be37e",
+    "scripts/yuyuhakusho/platform_board_harness.tsx": "b844237a6eb4736b8022cf2ab8886ea9149767049d419bb1fa88c5cc6214e760",
+    "scripts/yuyuhakusho/native_platform_input.mjs": "0d5728c2a8e77d422615f8c734bfa45f90e4f6ca048084bc57fd861623cbe7f2"
+  },
+  "artifact_sha256": {
+    "landscape-test-first.json": "97b2caff6f01c8fbb7934f13df0f0cc9cac1edd0a2ad6dc85ada14a464d820a2",
+    "network.before-landscape-ui-v1.css.txt": "4b6bb34ebe7ea7119cd1dbe0b8349b631259e5b09488bd023c6e9f4fc0dbfb20",
+    "landscape-layout-red/failure.json": "ff42091b3e5c25afaef28c4c6c60ec70e7e5a9c50aa7e17b77bf266d560af6a1",
+    "landscape-layout-red/landscape-fullscreen.png": "152f7401682cc545dc0df1a261bf991fb5e4d21e216ded734b6d14bd04902aa2",
+    "landscape-layout-first/result.json": "790f818155512d483cdc6add5f494c551f1c5c1ae628b28b68383408ba0d9a85",
+    "landscape-layout-verified/result.json": "2560dbfe3e5d2e63e8c0780f5ac19da0555f7836bbfe2c903ddd8b8a48295c71",
+    "landscape-layout-verified/desktop.png": "a27e0c7a20a1017a45b19bb0040ea1b211a0d0c3ffe841b113723df8ceae8757",
+    "landscape-layout-verified/portrait-320.png": "fe91a1376f23d1a7e085dad00f353647ced3740bdcdedcb4d0f206655cd20da4",
+    "landscape-layout-verified/landscape-fullscreen.png": "804f6988c256e5fc2fe0ee28227bd65e18a156091801eb045231edfe24d1c4eb",
+    "app-build-landscape-ui-v1.json": "b6eb4fc0f87cb844a97d2a31736f0ed1df814ea95044531361f2bce2ae57dadd"
+  },
+  "viewports": [
+    [
+      1100,
+      1000
+    ],
+    [
+      320,
+      740
+    ],
+    [
+      740,
+      360
+    ]
+  ],
+  "native_touch": {
+    "button": "c",
+    "game_buttons_down": 32,
+    "game_buttons_up": 0,
+    "pressed_style_verified": true
+  },
+  "same_canvas_and_epoch": true,
+  "actual_platform": {
+    "path": "games/yuyuhakusho/verification/platform-app-browser/landscape-app08/result.json",
+    "sha256": "3111bfc789af3e9269fbcbc92b6f029393b8d95c5dc267a9d2c6625196a5964f",
+    "pass": true,
+    "app_build": "6d4751a7d6da00baad57fcede509c481109aa7f2ec079eedb3cf307d8e7b2baf",
+    "stage": "layout-complete"
+  },
+  "final_runtime": {
+    "url": "/yuyuhakusho/v1/runtime/client.wasm",
+    "sha256": "a10458e21546db20123a6d7c2f07196a29607c5ed3c0686ffc0ba74dac219c73",
+    "bytes": 4911200
+  }
+}

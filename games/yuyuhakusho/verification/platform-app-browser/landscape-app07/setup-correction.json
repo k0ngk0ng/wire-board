@@ -1,0 +1,8 @@
+{
+  "scope": "Acceptance helper setup only; no product change or budget relaxation",
+  "error": "The canvas identity assignment returned an actual DOM node to the JSON-valued browser eval transport, which rejected a cyclic/deep reference chain.",
+  "fix": "Keep the page-owned identity reference but return primitive true.",
+  "original_result_sha256": "d981b04f90d35a2f1417b874d32bc148cd187b3504415f056181bb7bb4bcf261",
+  "executed_source": "check_platform_app.executed.py.txt",
+  "prior_stage": "playing"
+}

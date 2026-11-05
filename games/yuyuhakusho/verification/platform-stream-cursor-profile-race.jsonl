@@ -1,0 +1,9 @@
+{"Time":"2026-11-06T02:23:53.971338+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest"}
+{"Time":"2026-11-06T02:23:55.23435+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Test":"TestCursorHTTPWSReplaySizesAndReconnect"}
+{"Time":"2026-11-06T02:23:55.234409+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Test":"TestCursorHTTPWSReplaySizesAndReconnect","Output":"=== RUN   TestCursorHTTPWSReplaySizesAndReconnect\n"}
+{"Time":"2026-11-06T02:23:58.752796+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Test":"TestCursorHTTPWSReplaySizesAndReconnect","Output":"    stream_cursor_test.go:203: connection repeated an oversized recovery ring 15 6\n"}
+{"Time":"2026-11-06T02:23:58.776013+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Test":"TestCursorHTTPWSReplaySizesAndReconnect","Output":"--- FAIL: TestCursorHTTPWSReplaySizesAndReconnect (3.54s)\n"}
+{"Time":"2026-11-06T02:23:58.776036+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Test":"TestCursorHTTPWSReplaySizesAndReconnect","Elapsed":3.54}
+{"Time":"2026-11-06T02:23:58.776055+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Output":"FAIL\n"}
+{"Time":"2026-11-06T02:23:58.895733+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest\t4.924s\n"}
+{"Time":"2026-11-06T02:23:58.895764+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Elapsed":4.924}
