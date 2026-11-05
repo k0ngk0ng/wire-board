@@ -1,0 +1,8 @@
+{
+  "scope": "Only remove redundant trailing blank line in the newly authored rule; no semantic edit or evidence rewrite",
+  "before_sha256": "46d203a2596c5d7e73b997170c03d594dc430e1eff075450d238dad721451a56",
+  "after_sha256": "73c9bc77f37aa6e2bd9b60c8c66b9bf4c3fbd9a82f8629992e246017774adb1b",
+  "main_worktree_exact": true,
+  "prior_snapshot_retained": "rules-yuyuhakusho.current.md.txt",
+  "final_snapshot": "rules-yuyuhakusho.final.md.txt"
+}

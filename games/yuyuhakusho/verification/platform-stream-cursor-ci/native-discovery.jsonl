@@ -1,0 +1,10 @@
+{"Time":"2026-11-06T03:29:13.239693+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest"}
+{"Time":"2026-11-06T03:29:14.069762+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Output":"TestRegisteredGameUsesRealHostLoadingAndIndependentSeatInputs\n"}
+{"Time":"2026-11-06T03:29:14.069846+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Output":"TestRealHostOpaqueRecoveryAndExplicitAutoplay\n"}
+{"Time":"2026-11-06T03:29:14.069853+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Output":"TestRealHostPublicLoadingPrecedesGameLoading\n"}
+{"Time":"2026-11-06T03:29:14.069855+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Output":"TestCursorHTTPWSReplaySizesAndReconnect\n"}
+{"Time":"2026-11-06T03:29:14.069861+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Output":"TestRealSlowSpectatorDoesNotBlockFastPlayerOrClock\n"}
+{"Time":"2026-11-06T03:29:14.069862+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Output":"TestCursorHTTPWSFunctionalRace\n"}
+{"Time":"2026-11-06T03:29:14.069863+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Output":"TestRealWebsocketCompactFramesAndIdempotentInputs\n"}
+{"Time":"2026-11-06T03:29:14.070483+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest\t0.830s\n"}
+{"Time":"2026-11-06T03:29:14.070527+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Elapsed":0.831}

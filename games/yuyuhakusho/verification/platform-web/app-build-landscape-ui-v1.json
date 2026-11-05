@@ -1,0 +1,18 @@
+{
+  "label": "app-build-landscape-ui-v1",
+  "scope": "Built normal React platform app and local-only asset routing, not authenticated/browser acceptance",
+  "checks": [
+    "lazy_board_not_home",
+    "all_13_fixed_resource_routes_sha",
+    "runtime_descriptor_exact_wasm"
+  ],
+  "pass": true,
+  "resource_descriptor_sha256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+  "runtime": {
+    "url": "/yuyuhakusho/v1/runtime/client.wasm",
+    "sha256": "a10458e21546db20123a6d7c2f07196a29607c5ed3c0686ffc0ba74dac219c73",
+    "bytes": 4911200
+  },
+  "build": "6d4751a7d6da00baad57fcede509c481109aa7f2ec079eedb3cf307d8e7b2baf",
+  "dist": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/platform-app/dist/"
+}

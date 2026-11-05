@@ -1,0 +1,323 @@
+{
+  "lifecycle": {
+    "effectiveLaunch": {
+      "browserLaunched": true,
+      "engine": "chrome",
+      "launchHash": 3887314542036303621
+    },
+    "launched": false,
+    "relaunchedBrowser": false,
+    "restartedBackground": false,
+    "restoreStatus": "not_configured",
+    "reused": true,
+    "saveStatus": "not_attempted"
+  },
+  "origin": "http://127.0.0.1:62540/",
+  "refs": {
+    "e1": {
+      "name": "",
+      "role": "generic"
+    },
+    "e100": {
+      "name": "幻海",
+      "role": "option"
+    },
+    "e101": {
+      "name": "藏马",
+      "role": "option"
+    },
+    "e102": {
+      "name": "桑原",
+      "role": "option"
+    },
+    "e103": {
+      "name": "幽助",
+      "role": "option"
+    },
+    "e104": {
+      "name": "飞影",
+      "role": "option"
+    },
+    "e105": {
+      "name": "仙水",
+      "role": "option"
+    },
+    "e106": {
+      "name": "阵",
+      "role": "option"
+    },
+    "e107": {
+      "name": "树",
+      "role": "option"
+    },
+    "e108": {
+      "name": "户愚吕兄",
+      "role": "option"
+    },
+    "e109": {
+      "name": "酎",
+      "role": "option"
+    },
+    "e110": {
+      "name": "户愚吕弟",
+      "role": "option"
+    },
+    "e111": {
+      "name": "幻海",
+      "role": "option"
+    },
+    "e112": {
+      "name": "藏马",
+      "role": "option"
+    },
+    "e113": {
+      "name": "桑原",
+      "role": "option"
+    },
+    "e114": {
+      "name": "幽助",
+      "role": "option"
+    },
+    "e115": {
+      "name": "飞影",
+      "role": "option"
+    },
+    "e116": {
+      "name": "仙水",
+      "role": "option"
+    },
+    "e117": {
+      "name": "阵",
+      "role": "option"
+    },
+    "e118": {
+      "name": "树",
+      "role": "option"
+    },
+    "e119": {
+      "name": "户愚吕兄",
+      "role": "option"
+    },
+    "e12": {
+      "name": "围桌首页",
+      "role": "link"
+    },
+    "e120": {
+      "name": "酎",
+      "role": "option"
+    },
+    "e121": {
+      "name": "户愚吕弟",
+      "role": "option"
+    },
+    "e13": {
+      "name": "打开游戏许愿池",
+      "role": "button"
+    },
+    "e14": {
+      "name": "积分榜",
+      "role": "button"
+    },
+    "e15": {
+      "name": "",
+      "role": "generic"
+    },
+    "e16": {
+      "name": "我的战绩与好友",
+      "role": "button"
+    },
+    "e17": {
+      "name": "控制器设置",
+      "role": "button"
+    },
+    "e18": {
+      "name": "Yuyuslow-network06",
+      "role": "button"
+    },
+    "e19": {
+      "name": "声音控制",
+      "role": "button"
+    },
+    "e67": {
+      "name": "魔强统一战验收",
+      "role": "heading"
+    },
+    "e68": {
+      "name": "玩法速查",
+      "role": "button"
+    },
+    "e69": {
+      "name": "邀请朋友",
+      "role": "button"
+    },
+    "e70": {
+      "name": "离开房间",
+      "role": "button"
+    },
+    "e71": {
+      "name": "魔强统一战",
+      "role": "heading"
+    },
+    "e72": {
+      "name": "朋友或电脑，到齐就开局。",
+      "role": "heading"
+    },
+    "e73": {
+      "name": "比赛准备",
+      "role": "region"
+    },
+    "e74": {
+      "name": "Yuyufast-network06 Yuyufast-network06：网络延迟 0 毫秒",
+      "role": "heading"
+    },
+    "e75": {
+      "name": "Yuyuslow-network06 Yuyuslow-network06：网络延迟 0 毫秒",
+      "role": "heading"
+    },
+    "e76": {
+      "name": "我准备好了",
+      "role": "button"
+    },
+    "e77": {
+      "name": "打开牌桌聊天",
+      "role": "button"
+    },
+    "e78": {
+      "name": "场地",
+      "role": "combobox"
+    },
+    "e79": {
+      "name": "Yuyufast-network06",
+      "role": "button"
+    },
+    "e80": {
+      "name": "Yuyuslow-network06",
+      "role": "button"
+    },
+    "e81": {
+      "name": "场地",
+      "role": "combobox"
+    },
+    "e82": {
+      "name": "Yuyufast-network06的角色",
+      "role": "combobox"
+    },
+    "e83": {
+      "name": "Yuyuslow-network06的角色",
+      "role": "combobox"
+    },
+    "e84": {
+      "name": "默认场地",
+      "role": "option"
+    },
+    "e85": {
+      "name": "灵界",
+      "role": "option"
+    },
+    "e86": {
+      "name": "亚空间 1",
+      "role": "option"
+    },
+    "e87": {
+      "name": "魔界",
+      "role": "option"
+    },
+    "e88": {
+      "name": "洞窟",
+      "role": "option"
+    },
+    "e89": {
+      "name": "魔性之森",
+      "role": "option"
+    },
+    "e90": {
+      "name": "亚空间 2",
+      "role": "option"
+    },
+    "e91": {
+      "name": "山顶",
+      "role": "option"
+    },
+    "e92": {
+      "name": "默认场地",
+      "role": "option"
+    },
+    "e93": {
+      "name": "灵界",
+      "role": "option"
+    },
+    "e94": {
+      "name": "亚空间 1",
+      "role": "option"
+    },
+    "e95": {
+      "name": "魔界",
+      "role": "option"
+    },
+    "e96": {
+      "name": "洞窟",
+      "role": "option"
+    },
+    "e97": {
+      "name": "魔性之森",
+      "role": "option"
+    },
+    "e98": {
+      "name": "亚空间 2",
+      "role": "option"
+    },
+    "e99": {
+      "name": "山顶",
+      "role": "option"
+    }
+  },
+  "removedRefs": [
+    "@e20",
+    "@e21",
+    "@e22",
+    "@e23",
+    "@e24",
+    "@e25",
+    "@e26",
+    "@e27",
+    "@e28",
+    "@e29",
+    "@e30",
+    "@e31",
+    "@e32",
+    "@e33",
+    "@e34",
+    "@e35",
+    "@e36",
+    "@e37",
+    "@e38",
+    "@e39",
+    "@e40",
+    "@e41",
+    "@e42",
+    "@e43",
+    "@e44",
+    "@e45",
+    "@e46",
+    "@e47",
+    "@e48",
+    "@e49",
+    "@e50",
+    "@e51",
+    "@e52",
+    "@e53",
+    "@e54",
+    "@e55",
+    "@e56",
+    "@e57",
+    "@e58",
+    "@e59",
+    "@e60",
+    "@e61",
+    "@e62",
+    "@e63",
+    "@e64",
+    "@e65"
+  ],
+  "snapshot": "- generic \"围桌WIRE BOARD游戏牌桌让相聚，多一局。vdev许愿池积分榜0msYYuyuslow-network06魔强统一战  /  牌桌 F3591114魔强统一战验收玩法速查邀请朋友离开房间魔强统一\" [ref=e1] clickable [onclick]\n  - link \"围桌首页\" [ref=e12]\n  - button \"打开游戏许愿池\" [ref=e13]\n  - button \"积分榜\" [ref=e14]\n  - generic [ref=e15] clickable [onclick]\n    - button \"声音控制\" [expanded=false, ref=e19]\n  - button \"我的战绩与好友\" [ref=e16]\n  - button \"控制器设置\" [ref=e17]\n  - button \"Yuyuslow-network06\" [ref=e18]\n  - heading \"魔强统一战验收\" [level=1, ref=e67]\n  - button \"玩法速查\" [ref=e68]\n  - button \"邀请朋友\" [ref=e69]\n  - button \"离开房间\" [ref=e70]\n  - heading \"魔强统一战\" [level=2, ref=e71]\n  - heading \"朋友或电脑，到齐就开局。\" [level=2, ref=e72]\n  - combobox \"场地\" [expanded=false, disabled, ref=e78]: 魔性之森\n    - option \"默认场地\" [disabled, ref=e84]\n    - option \"灵界\" [disabled, ref=e85]\n    - option \"亚空间 1\" [disabled, ref=e86]\n    - option \"魔界\" [disabled, ref=e87]\n    - option \"洞窟\" [disabled, ref=e88]\n    - option \"魔性之森\" [disabled, ref=e89]\n    - option \"亚空间 2\" [disabled, ref=e90]\n    - option \"山顶\" [disabled, ref=e91]\n  - region \"比赛准备\" [ref=e73]\n    - combobox \"场地\" [expanded=false, disabled, ref=e81]: 魔性之森\n      - option \"默认场地\" [disabled, ref=e92]\n      - option \"灵界\" [disabled, ref=e93]\n      - option \"亚空间 1\" [disabled, ref=e94]\n      - option \"魔界\" [disabled, ref=e95]\n      - option \"洞窟\" [disabled, ref=e96]\n      - option \"魔性之森\" [disabled, ref=e97]\n      - option \"亚空间 2\" [disabled, ref=e98]\n      - option \"山顶\" [disabled, ref=e99]\n    - combobox \"Yuyufast-network06的角色\" [expanded=false, disabled, ref=e82]: 户愚吕兄\n      - option \"幻海\" [disabled, ref=e100]\n      - option \"藏马\" [disabled, ref=e101]\n      - option \"桑原\" [disabled, ref=e102]\n      - option \"幽助\" [disabled, ref=e103]\n      - option \"飞影\" [disabled, ref=e104]\n      - option \"仙水\" [disabled, ref=e105]\n      - option \"阵\" [disabled, ref=e106]\n      - option \"树\" [disabled, ref=e107]\n      - option \"户愚吕兄\" [disabled, ref=e108]\n      - option \"酎\" [disabled, ref=e109]\n      - option \"户愚吕弟\" [disabled, ref=e110]\n    - combobox \"Yuyuslow-network06的角色\" [expanded=false, ref=e83]: 酎\n      - option \"幻海\" [ref=e111]\n      - option \"藏马\" [ref=e112]\n      - option \"桑原\" [ref=e113]\n      - option \"幽助\" [ref=e114]\n      - option \"飞影\" [ref=e115]\n      - option \"仙水\" [ref=e116]\n      - option \"阵\" [ref=e117]\n      - option \"树\" [ref=e118]\n      - option \"户愚吕兄\" [ref=e119]\n      - option \"酎\" [selected, ref=e120]\n      - option \"户愚吕弟\" [ref=e121]\n  - heading \"Yuyufast-network06 Yuyufast-network06：网络延迟 0 毫秒\" [level=3, ref=e74]\n    - button \"Yuyufast-network06\" [ref=e79]\n  - heading \"Yuyuslow-network06 Yuyuslow-network06：网络延迟 0 毫秒\" [level=3, ref=e75]\n    - button \"Yuyuslow-network06\" [ref=e80]\n  - button \"我准备好了\" [ref=e76]\n  - button \"打开牌桌聊天\" [expanded=false, ref=e77]"
+}

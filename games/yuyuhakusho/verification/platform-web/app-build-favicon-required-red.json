@@ -1,0 +1,11 @@
+{
+  "label": "app-build-favicon-required-red",
+  "scope": "Built normal React platform app and local-only asset routing, not authenticated/browser acceptance",
+  "checks": [
+    "lazy_board_not_home",
+    "all_13_fixed_resource_routes_sha",
+    "runtime_descriptor_exact_wasm"
+  ],
+  "pass": false,
+  "error": "Error: ENOENT: no such file or directory, open '/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/platform-app/dist/favicon.svg'"
+}

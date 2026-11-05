@@ -1,0 +1,32 @@
+{"Time":"2026-11-06T03:30:18.208753+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/internal/server"}
+{"Time":"2026-11-06T03:30:19.652746+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestModuleSyncSnapshotE2E"}
+{"Time":"2026-11-06T03:30:19.65279+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestModuleSyncSnapshotE2E","Output":"=== RUN   TestModuleSyncSnapshotE2E\n"}
+{"Time":"2026-11-06T03:30:22.740728+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestModuleSyncSnapshotE2E","Output":"--- PASS: TestModuleSyncSnapshotE2E (3.09s)\n"}
+{"Time":"2026-11-06T03:30:22.74075+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestModuleSyncSnapshotE2E","Elapsed":3.09}
+{"Time":"2026-11-06T03:30:22.740848+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestRealtimeCursorStreamIsolatesSlowConnection"}
+{"Time":"2026-11-06T03:30:22.740854+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestRealtimeCursorStreamIsolatesSlowConnection","Output":"=== RUN   TestRealtimeCursorStreamIsolatesSlowConnection\n"}
+{"Time":"2026-11-06T03:30:24.925976+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestRealtimeCursorStreamIsolatesSlowConnection","Output":"--- PASS: TestRealtimeCursorStreamIsolatesSlowConnection (2.19s)\n"}
+{"Time":"2026-11-06T03:30:24.926029+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestRealtimeCursorStreamIsolatesSlowConnection","Elapsed":2.19}
+{"Time":"2026-11-06T03:30:24.92605+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestRealtimeCursorRegistrationRequiresRecovery"}
+{"Time":"2026-11-06T03:30:24.926055+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestRealtimeCursorRegistrationRequiresRecovery","Output":"=== RUN   TestRealtimeCursorRegistrationRequiresRecovery\n"}
+{"Time":"2026-11-06T03:30:24.926132+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestRealtimeCursorRegistrationRequiresRecovery","Output":"--- PASS: TestRealtimeCursorRegistrationRequiresRecovery (0.00s)\n"}
+{"Time":"2026-11-06T03:30:24.926138+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestRealtimeCursorRegistrationRequiresRecovery","Elapsed":0}
+{"Time":"2026-11-06T03:30:24.926149+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestRealtimeCursorProjectionDetachedOutsideLockAndScoped"}
+{"Time":"2026-11-06T03:30:24.926154+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestRealtimeCursorProjectionDetachedOutsideLockAndScoped","Output":"=== RUN   TestRealtimeCursorProjectionDetachedOutsideLockAndScoped\n"}
+{"Time":"2026-11-06T03:30:26.499223+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestRealtimeCursorProjectionDetachedOutsideLockAndScoped","Output":"--- PASS: TestRealtimeCursorProjectionDetachedOutsideLockAndScoped (1.57s)\n"}
+{"Time":"2026-11-06T03:30:26.499243+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestRealtimeCursorProjectionDetachedOutsideLockAndScoped","Elapsed":1.57}
+{"Time":"2026-11-06T03:30:26.499256+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestRealtimeStreamBootstrapAndScopedPush"}
+{"Time":"2026-11-06T03:30:26.499261+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestRealtimeStreamBootstrapAndScopedPush","Output":"=== RUN   TestRealtimeStreamBootstrapAndScopedPush\n"}
+{"Time":"2026-11-06T03:30:28.224101+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestRealtimeStreamBootstrapAndScopedPush","Output":"--- PASS: TestRealtimeStreamBootstrapAndScopedPush (1.72s)\n"}
+{"Time":"2026-11-06T03:30:28.224125+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestRealtimeStreamBootstrapAndScopedPush","Elapsed":1.72}
+{"Time":"2026-11-06T03:30:28.224131+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestRealtimeStreamInputAcknowledgedExactlyOnce"}
+{"Time":"2026-11-06T03:30:28.224134+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestRealtimeStreamInputAcknowledgedExactlyOnce","Output":"=== RUN   TestRealtimeStreamInputAcknowledgedExactlyOnce\n"}
+{"Time":"2026-11-06T03:30:30.342836+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestRealtimeStreamInputAcknowledgedExactlyOnce","Output":"--- PASS: TestRealtimeStreamInputAcknowledgedExactlyOnce (2.12s)\n"}
+{"Time":"2026-11-06T03:30:30.342854+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestRealtimeStreamInputAcknowledgedExactlyOnce","Elapsed":2.12}
+{"Time":"2026-11-06T03:30:30.342862+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestRealtimeStreamRejectsSpectatorAndStaleRoom"}
+{"Time":"2026-11-06T03:30:30.342866+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestRealtimeStreamRejectsSpectatorAndStaleRoom","Output":"=== RUN   TestRealtimeStreamRejectsSpectatorAndStaleRoom\n"}
+{"Time":"2026-11-06T03:30:32.46079+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestRealtimeStreamRejectsSpectatorAndStaleRoom","Output":"--- PASS: TestRealtimeStreamRejectsSpectatorAndStaleRoom (2.12s)\n"}
+{"Time":"2026-11-06T03:30:32.460808+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestRealtimeStreamRejectsSpectatorAndStaleRoom","Elapsed":2.12}
+{"Time":"2026-11-06T03:30:32.461151+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Output":"PASS\n"}
+{"Time":"2026-11-06T03:30:33.470984+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/internal/server\t15.262s\n"}
+{"Time":"2026-11-06T03:30:33.471005+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/internal/server","Elapsed":15.262}

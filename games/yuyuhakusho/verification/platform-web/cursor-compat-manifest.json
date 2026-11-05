@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "revision": "stream-cursor-client-compat-v1",
+  "baseline_commit": "40237232",
+  "pass": true,
+  "production_changes": false,
+  "baseline_manifest_sha256": "0b1f1becf26c01deabcb08cd641446746f1f4184f65a377c14c57e8663309de3",
+  "production_sha256": {
+    "games/yuyuhakusho/cmd/platform-client-wasm/main_js.go": "764e3be6ee19c8403cc7d5336174e5317fcc858dd592d636cb5d1c85350afa22",
+    "games/yuyuhakusho/web/Board.tsx": "aedb87338ea119273ac15f03b5aab88f5eaeec7b6d07bdfceb69d11c500b0072",
+    "games/yuyuhakusho/web/Cover.tsx": "d75e03c629d0eed62d040a0d842d4ce30d0aff6eea01ecd2f3e3e55a63659936",
+    "games/yuyuhakusho/web/Options.tsx": "87449c1efec8d6d41805506583e65b486843cd3311f9f671229b8a7d405071c9",
+    "games/yuyuhakusho/web/Preparation.tsx": "66843d5fc158dc6bfde15f90761e98642fd1525befffdd615166f8400aae4d9c",
+    "games/yuyuhakusho/web/assets.ts": "0772fc41b5b48af4dee0e9a5df1099a70cbda4bb509f2d25df382a7b76f7af84",
+    "games/yuyuhakusho/web/catalog.tsx": "632bade9c69cf56510dd4f3f0234d7dff22ebbfd2b1879501968c9e41eb5fa39",
+    "games/yuyuhakusho/web/input.ts": "5113279f9fc2be2dd84a10db73dc1edff361354e3192dbf176195f11b6fd5163",
+    "games/yuyuhakusho/web/labels.ts": "880083c93f07aa40a6a05bbca53af4b8eb7b717e7858bdbf63aed4ec22122a1c",
+    "games/yuyuhakusho/web/module.tsx": "7f556d04f81df9cc02d5b5e094fc7c55332bb79262969243519948227ff2a99f",
+    "games/yuyuhakusho/web/network-client.ts": "d5b435001676e9ffe6114d8e6be19f2fba404b57af2638c45dc856580033de7a",
+    "games/yuyuhakusho/web/network-input.ts": "13ccfd4ceeb4c434657aa5306723f5ff2076dd810b235f9b5aab1b3fdf896922",
+    "games/yuyuhakusho/web/network-scene.ts": "de9fe122c7de5daf0a0faf99d0c0f4ffa761e34222f301ac4cd07d870354c64f",
+    "games/yuyuhakusho/web/network.css": "4b6bb34ebe7ea7119cd1dbe0b8349b631259e5b09488bd023c6e9f4fc0dbfb20",
+    "games/yuyuhakusho/web/types.ts": "5151eb726b0da3885aaeb9856a4e3ad7c4cecc5ab10876db43fb558666fa84ac",
+    "games/yuyuhakusho/web/wasm.ts": "1b86dc7353060b2a0eea3c66427c76fbf3d309aa5116e217b317bc6067deb354"
+  },
+  "verification_source_sha256": {
+    "scripts/yuyuhakusho/check_platform_cursor_compat.mjs": "d1768fa69744358128ddc7f45736c80f5f4758cf1daf5e74403ae5d3b7459dfb",
+    "scripts/yuyuhakusho/check_platform_board.py": "65e535bfcc9a04525640cf8862dcbe2e3f73383fb7b9a9d7af7d8da97ced197a",
+    "scripts/yuyuhakusho/platform_board_harness.tsx": "fc2a44c723d2f25c201e6a00b9e0bcbb7c738f8f104c2950300cc0de230de85d"
+  },
+  "artifact_sha256": {
+    "cursor-compat-scene.json": "fb4c4b06f58dbcbb519d2df07826038d79e9a25363f01f826387b675f49a2d84",
+    "cursor-gap-singleflight/result.json": "74f9356dc3244f2eac1990859a3eb8becb58f045ca8131d156977014e76ab2a5",
+    "cursor-gap-singleflight/recovered.png": "640a1213d9118380d6f1ebd71fccb573fa361e83ef1770a8a0656f7aed579790",
+    "cursor-test-first.json": "7e10e6d58fbf82eceb7b10894d603321d286f4242e82b78c22d476b3b02ed199",
+    "CURSOR_COMPAT.md": "c85f8c9c0530a7bea278206719957de2daf6498cc06121c12285adeabcf3cbdf"
+  },
+  "contract": {
+    "same_epoch_frame_and_both_verified_digests_satisfy_resync": true,
+    "new_frame_missing_window_or_gap_requires_checkpoint": true,
+    "recovery_single_flight": true,
+    "checkpoint_is_opaque_string": true,
+    "redundancy_frames": 6
+  },
+  "browser_fixture": {
+    "gap_views": 3,
+    "delayed_checkpoint_ms": 450,
+    "sync_requests": 1,
+    "epoch_unchanged": true,
+    "loading_gate_not_reentered": true,
+    "game_loaded_before": 1,
+    "game_loaded_after": 1
+  },
+  "limits_unchanged": {
+    "prediction_frames": 12,
+    "input_history": 64,
+    "replay_frames": 120,
+    "ordinary_inflight": 8
+  },
+  "root_real_ws_acceptance": "Server cursor/write revision and real normal-platform WS acceptance supplied separately by server owner/Root",
+  "app_build_unchanged": "6021ab95cf83c6fe6e48ab10364b567be895b8f9eb4fc62878e4b1621728105d",
+  "runtime_unchanged": {
+    "url": "/yuyuhakusho/v1/runtime/client.wasm",
+    "sha256": "a10458e21546db20123a6d7c2f07196a29607c5ed3c0686ffc0ba74dac219c73",
+    "bytes": 4911200
+  }
+}

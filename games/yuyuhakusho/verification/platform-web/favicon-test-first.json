@@ -1,0 +1,17 @@
+{
+  "revision": "local-app-favicon-v1",
+  "before": [
+    {
+      "source": "scripts/yuyuhakusho/check_platform_app_build.mjs",
+      "sha256": "88c94dfc6408f81435dc0a0244429f3844ce430771b36c4ddcdcfb859bba4224",
+      "archive": "games/yuyuhakusho/verification/platform-web/check_platform_app_build.mjs.before-favicon.txt"
+    },
+    {
+      "source": "scripts/yuyuhakusho/build_platform_app.py",
+      "sha256": "66170d98470485289223fabc07d9aab6acb3608efd43bb3a69636f08cbed11fe",
+      "archive": "games/yuyuhakusho/verification/platform-web/build_platform_app.py.before-favicon.txt"
+    }
+  ],
+  "failure": "Isolated local public directory omitted shared /favicon.svg, leaving normal platform header brand image broken",
+  "scope": "Local build fixture only; no product main or game runtime changes"
+}

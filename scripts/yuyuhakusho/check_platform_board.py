@@ -2,7 +2,7 @@
 from pathlib import Path
 import argparse,hashlib,json,os,runpy,subprocess,time
 ROOT=Path(__file__).resolve().parents[2]
-parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--label',default='final');parser.add_argument('--red',action='store_true');parser.add_argument('--controls',action='store_true');parser.add_argument('--pause-review',action='store_true');parser.add_argument('--loading-review',action='store_true');parser.add_argument('--performance-review',action='store_true');parser.add_argument('--performance-only',action='store_true');args=parser.parse_args()
+parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--label',default='final');parser.add_argument('--red',action='store_true');parser.add_argument('--controls',action='store_true');parser.add_argument('--pause-review',action='store_true');parser.add_argument('--loading-review',action='store_true');parser.add_argument('--performance-review',action='store_true');parser.add_argument('--performance-only',action='store_true');parser.add_argument('--cursor-review',action='store_true');parser.add_argument('--layout-review',action='store_true');args=parser.parse_args()
 OUT=ROOT/'games/yuyuhakusho/verification/platform-web'/args.label;TMP=ROOT/'.local/md-yuyuhakusho/platform-web'
 for p in [OUT,TMP,TMP/'tmp',ROOT/'.local/yw']:p.mkdir(parents=True,exist_ok=True)
 env=dict(os.environ,TMPDIR=str(TMP/'tmp'),GOTMPDIR=str(TMP/'tmp'),GOCACHE=str(ROOT/'.local/go-cache'),GOMODCACHE=str(ROOT/'.local/go-mod'),TEST_TELEMETRY_DIR=str(ROOT/'.local/go-telemetry'),AGENT_BROWSER_SOCKET_DIR=str(ROOT/'.local/yw'))
@@ -28,7 +28,7 @@ try:
  browser('select','[aria-label=比赛准备] [aria-label=场地]','10');assert js('window.yuyuBoardProbe.prepare.at(-1)?.arena')==10
  browser('select','[data-character-seat="1"]','8');assert js('window.yuyuBoardProbe.prepare.at(-1)?.character')==8
  if args.loading_review:js('yuyuBoardProbe.testGate=true')
- if args.performance_review:js('yuyuBoardProbe.pollMS=50')
+ if args.performance_review or args.cursor_review:js('yuyuBoardProbe.pollMS=50')
  browser('click','#start-board');browser('wait','--fn','yuyuBoardProbe.ready || !!yuyuBoardProbe.error');assert not js('yuyuBoardProbe.error'),js('yuyuBoardProbe.error')
  if args.loading_review:
   browser('wait','2200')
@@ -37,6 +37,22 @@ try:
   browser('click','#release-public-gate');browser('wait','--fn','yuyuBoardProbe.actions.some(action=>action.type==="loaded")')
   assert js('yuyuBoardProbe.actions.filter(action=>action.type==="loaded").length')==1
  browser('wait','--fn','yuyuBoardProbe.authority?.phase !== "loading" && BigInt(yuyuBoardProbe.authority?.frame??"0") > 250n')
+ if args.layout_review:
+  endpoint=browser('get','cdp-url')['cdpUrl']
+  def layout_native(actions):return json.loads(subprocess.check_output(['node',str(ROOT/'scripts/yuyuhakusho/native_platform_input.mjs'),endpoint,url,json.dumps(actions)],cwd=ROOT,env=env,text=True))
+  runpy.run_path(str(ROOT/'scripts/yuyuhakusho/platform_layout_acceptance.py'))['check'](browser,js,layout_native,report,OUT)
+  report.update(pass_=True,scope='Actual Module/Go-Wasm Board + public fullscreen shell at1100x1000/320x740/740x360 with native C touches; geometry-only UI revision',css_sha256=hashlib.sha256((ROOT/'games/yuyuhakusho/web/network.css').read_bytes()).hexdigest())
+  report['pass']=report.pop('pass_');(OUT/'result.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n');print('Fullscreen MD layout/native touch pass');raise SystemExit(0)
+ if args.cursor_review:
+  before=js('({frame:yuyuBoardProbe.authority.frame,epoch:yuyuBoardProbe.authority.epoch,loaded:yuyuBoardProbe.actions.filter(a=>a.type==="loaded").length})')
+  js('yuyuBoardProbe.syncCount=0;yuyuBoardProbe.syncDelayMS=450;yuyuBoardProbe.gapUpdates=3')
+  browser('wait','--fn','yuyuBoardProbe.syncCount===1');browser('wait','200')
+  mid=js('({count:yuyuBoardProbe.syncCount,gaps:yuyuBoardProbe.gapInjected})');assert mid['count']==1 and len(mid['gaps'])>=2,mid
+  browser('wait','--fn','document.querySelector("[data-yuyu-board]")?.dataset.connection==="connected"&&BigInt(document.querySelector("[data-yuyu-board]").dataset.authorityFrame)>='+str(int(before['frame'])+20)+'n')
+  browser('wait','200');after=js('({count:yuyuBoardProbe.syncCount,frame:document.querySelector("[data-yuyu-board]").dataset.authorityFrame,epoch:yuyuBoardProbe.authority.epoch,phase:yuyuBoardProbe.authority.phase,error:yuyuBoardProbe.error,loaded:yuyuBoardProbe.actions.filter(a=>a.type==="loaded").length,gaps:yuyuBoardProbe.gapInjected})')
+  assert after['count']==1 and not after['error'] and after['epoch']==before['epoch'] and after['loaded']==before['loaded'] and after['phase']!='loading',after
+  report.update(pass_=True,scope='Actual Board/Go Module/Wasm with three deliberately omitted input windows and a450ms delayed real checkpoint request; real WebSocket cursor/write contracts belong to server owner/Root',before=before,mid=mid,after=after,production_changes=False)
+  report['pass']=report.pop('pass_');(OUT/'result.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n');browser('screenshot',str(OUT/'recovered.png'));print('Cursor gap single-flight actual Board pass');raise SystemExit(0)
  if args.performance_review:
   js('yuyuBoardProbe.rpc=[];yuyuBoardProbe.paints=[];yuyuBoardProbe.fetches=[];performance.clearResourceTimings()')
   endpoint=browser('get','cdp-url')['cdpUrl']

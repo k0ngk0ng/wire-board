@@ -1,0 +1,27 @@
+{
+  "created_at_utc": "2026-11-05T19:33:33.939219+00:00",
+  "removed_owned_temporary_files": [
+    {
+      "path": ".local/realtime-efficiency/cursor-slow-connection.json",
+      "bytes": 824,
+      "sha256": "2cc6ba237d08912507bdeeee5fa298bb7327c146e0cfa35176c0ed3bff82bbbd"
+    },
+    {
+      "path": ".local/realtime-efficiency/cursor-detached-scope.json",
+      "bytes": 131,
+      "sha256": "1b7cc63e8db903cbe0f804e16777b7208fcef1f970492e996de5b7de89c775ad"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/platform-stream-cursor/actual-http-ws-manual.json",
+      "bytes": 668,
+      "sha256": "20bb3eb4a3ff595befc1c129138231bee1f3bc621cc5a459c49ec56b4d30bb27"
+    }
+  ],
+  "canonical_host_network_evidence": {
+    "games/yuyuhakusho/verification/platform-stream-cursor-ci/host-cursor-slow-connection.json": "2cc6ba237d08912507bdeeee5fa298bb7327c146e0cfa35176c0ed3bff82bbbd",
+    "games/yuyuhakusho/verification/platform-stream-cursor-ci/host-cursor-detached-scope.json": "1b7cc63e8db903cbe0f804e16777b7208fcef1f970492e996de5b7de89c775ad"
+  },
+  "old_final_artifacts_untouched": true,
+  "shared_caches_untouched": true,
+  "no_production_changes": true
+}

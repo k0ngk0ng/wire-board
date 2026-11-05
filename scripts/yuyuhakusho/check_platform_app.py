@@ -6,6 +6,7 @@ ROOT=Path(__file__).resolve().parents[2]
 parser=argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--label',required=True)
 parser.add_argument('--performance',action='store_true')
+parser.add_argument('--layout-only',action='store_true')
 args=parser.parse_args()
 OUT=ROOT/'games/yuyuhakusho/verification/platform-app-browser'/args.label
 TMP=ROOT/'.local/md-yuyuhakusho/platform-app'/('acceptance-'+args.label)
@@ -71,6 +72,31 @@ def performance_check(who,name=None):
     result={'frames':len(paints),'elapsedMs':elapsed,'visibleUpdatesPerSecond':len(paints)*1000/elapsed,'medianFrameIntervalMs':statistics.median(intervals) if intervals else None,'p95FrameIntervalMs':intervals[min(len(intervals)-1,int(len(intervals)*.95))] if intervals else None,'budget':{'minimumVisibleUpdatesPerSecond':50,'maximumP95FrameIntervalMs':40},'hidden':observed['hidden']}
     report.setdefault('renderPerformance',{})[name]=result
     assert not observed['hidden'] and result['visibleUpdatesPerSecond']>=50 and result['p95FrameIntervalMs']<=40,result
+def layouts():
+    results=[]
+    js('fast','window.layoutAcceptanceCanvas=document.querySelector("canvas");true')
+    for label,width,height,fullscreen in [('desktop',1100,1000,False),('portrait-320',320,740,False),('landscape-740',740,360,True)]:
+        browser('fast','set','viewport',str(width),str(height))
+        if fullscreen:
+            click('fast','全屏');wait('fast','!!document.querySelector("[data-room-fullscreen]")')
+        browser('fast','focus','[data-yuyu-board]')
+        native('fast',[{'wait':100}])
+        geometry=js('fast','(()=>{const rect=s=>{const r=document.querySelector(s).getBoundingClientRect();return{x:r.x,y:r.y,left:r.left,right:r.right,top:r.top,bottom:r.bottom,width:r.width,height:r.height}};return{canvas:rect("canvas"),pad:rect("[data-controller-layout=md]"),c:rect("[data-controller-button=c]"),width:innerWidth,height:innerHeight,overflow:document.documentElement.scrollWidth>innerWidth,nativeFullscreen:!!document.fullscreenElement,frame:document.querySelector("[data-yuyu-board]").dataset.frame}})()')
+        assert not geometry['overflow'] and geometry['pad']['top']>=geometry['canvas']['bottom'],geometry
+        assert abs(geometry['canvas']['width']/geometry['canvas']['height']-320/224)<.01,geometry
+        assert geometry['canvas']['top']>=0 and geometry['pad']['bottom']<=height+1,geometry
+        c=geometry['c'];x,y=c['x']+c['width']/2,c['y']+c['height']/2
+        observed=native('fast',[{'method':'Input.dispatchTouchEvent','type':'touchStart','touchPoints':[{'x':x,'y':y,'id':1}],'wait':120},{'method':'Input.dispatchTouchEvent','type':'touchEnd','touchPoints':[],'wait':200}])
+        assert any(k['trusted'] and k['type']=='pointerdown' for k in observed['keys'])
+        assert any(v['view']['inputs'][0]['appliedButtons']&32 for v in observed['views']),label
+        wait_input('fast',0,0)
+        browser('fast','screenshot',str(OUT/('layout-'+label+'.png')))
+        (OUT/('layout-'+label+'-touch.json')).write_text(json.dumps(observed,indent=2)+'\n')
+        if fullscreen:
+            browser('fast','press','Escape');wait('fast','!document.querySelector("[data-room-fullscreen]")')
+            assert js('fast','window.layoutAcceptanceCanvas===document.querySelector("canvas")')
+        results.append({'label':label,'geometry':geometry,'nativeTouchC':True})
+    report['layouts']=results
 def network(delay=0,disconnect=False):
     host.stdin.write(json.dumps({'delayMs':delay,'disconnect':disconnect})+'\n');host.stdin.flush()
     return json.loads(host.stdout.readline())
@@ -120,6 +146,10 @@ try:
     live=state('fast')['room'];report['epoch']=live['game']['data']['epoch']
     report['stage']='playing'
     print('Both normal Boards initialized and real clock advanced',flush=True)
+    if args.layout_only:
+        layouts();report['stage']='layout-complete';report['pass']=True
+        print('Actual app desktop/portrait/landscape layout and native touch passed',flush=True)
+        raise SystemExit(0)
     if args.performance:
         for who in ['fast','slow']:performance_check(who)
         print('Both normal visible Boards meet the frozen smoothness budget',flush=True)

@@ -132,7 +132,9 @@ export class NetworkScene {
         ? previousTarget
         : this.confirmedFrame;
     if (this.replayTarget > limit) this.replayTarget = limit;
-    if (previousTarget < this.confirmedFrame) this.tickAt = undefined;
+    // A timely confirmation may catch the local target by one tick. Keep the
+    // native RAF phase: restarting it here repeatedly drops the next60Hz RAF
+    // against the original59.92Hz game period. Restore/stall own clock resets.
     return true;
   }
   private rebuild(pending: LocalEvent[]) {

@@ -1,0 +1,17 @@
+{
+  "revision": "stream-cursor-client-compat-v1",
+  "baseline_commit": "40237232",
+  "pass": true,
+  "actual_go_wasm": true,
+  "production_changes": false,
+  "scope": "Scene/input-window compatibility; real host StreamView cursor/send semantics validated separately by server owner and Root",
+  "checks": [
+    "same_frame_resync_already_verified_checkpoint_is_idempotent",
+    "new_frames_only_window_accepted",
+    "six_redundant_frames_skipped_with_exact_digest",
+    "unchanged_frame_empty_window_is_valid",
+    "new_resync_frame_empty_window_requires_atomic_checkpoint_recovery",
+    "missing_cursor_gap_does_not_advance_authority",
+    "same_frame_resync_still_verifies_both_digests"
+  ]
+}

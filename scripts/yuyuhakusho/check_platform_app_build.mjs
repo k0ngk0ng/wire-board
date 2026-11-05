@@ -15,6 +15,7 @@ try{
  for(const entry of descriptor.resources){const bytes=await readFile(dist+entry.logical_path.slice(1));assert.equal(bytes.byteLength,entry.gzip_bytes);assert.equal(sha(bytes),entry.gzip_sha256);}
  report.checks.push('all_13_fixed_resource_routes_sha');
  const build=JSON.parse(await readFile(dist+'yuyuhakusho/v1/runtime/build.json','utf8')),wasm=await readFile(dist+build.wasm.url.slice(1));assert.equal(wasm.byteLength,build.wasm.bytes);assert.equal(sha(wasm),build.wasm.sha256);assert.deepEqual([...wasm.subarray(0,4)],[0,97,115,109]);assert.ok((await readFile(dist+'yuyuhakusho/v1/runtime/wasm_exec.js')).byteLength>10000);report.checks.push('runtime_descriptor_exact_wasm');
+ const favicon=await readFile(dist+'favicon.svg'),sourceFavicon=await readFile(root+'web/public/favicon.svg');assert.equal(sha(favicon),sha(sourceFavicon));assert.equal(manifest.media['/favicon.svg'],favicon.byteLength);report.checks.push('shared_favicon_route_exact_source');report.favicon={url:'/favicon.svg',bytes:favicon.byteLength,sha256:sha(favicon)};
  report.pass=true;report.resource_descriptor_sha256=sha(descriptorBytes);report.runtime=build.wasm;report.build=manifest.build;report.dist=dist;
 }catch(error){report.pass=false;report.error=String(error);await writeFile(out+label+'.json',JSON.stringify(report,null,2)+'\n');console.error(report.error);process.exit(1);}
 await writeFile(out+label+'.json',JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report));

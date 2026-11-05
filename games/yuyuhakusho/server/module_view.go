@@ -13,6 +13,10 @@ func project(m gameapi.Match, seat int) (any, error) {
 	if err != nil {
 		return nil, err
 	}
+	return projectState(s, seat, s.History)
+}
+
+func projectState(s State, seat int, history []syncwire.InputFrame) (any, error) {
 	if seat < -1 || seat >= len(s.Inputs) {
 		return nil, errors.New("无效观战或玩家席位")
 	}
@@ -24,7 +28,7 @@ func project(m gameapi.Match, seat int) (any, error) {
 	if err != nil {
 		return nil, err
 	}
-	replay, err := syncwire.Encode(s.History)
+	replay, err := syncwire.Encode(history)
 	if err != nil {
 		return nil, err
 	}

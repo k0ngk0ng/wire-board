@@ -1,0 +1,25 @@
+{
+  "revision": "stream-cursor-client-compat-v1",
+  "baseline_commit": "40237232",
+  "production_changes": false,
+  "tests_before_extension": [
+    {
+      "path": "scripts/yuyuhakusho/check_platform_board.py",
+      "sha256": "54c4ef7daa86210dd20f91b0e925ba5663ce4e53e86d5825632feb36504ef33d",
+      "archive": "games/yuyuhakusho/verification/platform-web/check_platform_board.py.before-cursor-compat.txt"
+    },
+    {
+      "path": "scripts/yuyuhakusho/platform_board_harness.tsx",
+      "sha256": "1e1e4014bc602fe0af0c57576262784958060c68dfdbe04f2687de34ce78c0c7",
+      "archive": "games/yuyuhakusho/verification/platform-web/platform_board_harness.tsx.before-cursor-compat.txt"
+    }
+  ],
+  "failure_cases": [
+    "new frame without replay must request checkpoint",
+    "six redundant old frames must not double-apply",
+    "same verified frame resync must be idempotent",
+    "repeated gap pushes while checkpoint pending must not create concurrent requests",
+    "recovery preserves epoch/loading state and releases no idle input"
+  ],
+  "scene_result": "cursor-compat-scene.json"
+}

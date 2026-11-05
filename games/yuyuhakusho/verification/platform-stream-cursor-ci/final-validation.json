@@ -1,0 +1,285 @@
+{
+  "created_at_utc": "2026-11-05T19:32:41.540677+00:00",
+  "revision": "cursor-ci-buildtag",
+  "pass": true,
+  "scope": "Only native performance wrapper file organization. No production/driver/threshold changes; no AI matrix rerun.",
+  "head_at_validation": "e59e22f05897434e7c5e976e176d1e54e94ed6a0",
+  "wrapper_original_source": "func TestCursorHTTPWSReplaySizesAndReconnect(t *testing.T) {\n\trunCursorTransportScenario(t, true)\n}\n\n",
+  "shared_driver_and_functional_case_byte_identical": true,
+  "native_wrapper_exact_extraction": true,
+  "production_files_sha256_unchanged": {
+    "internal/gameapi/module.go": "d1bab2a0252edd7f7b949d379c33f580a03615b4cd0f2b8024678305de24852d",
+    "internal/server/realtime_stream.go": "be8ccc2e3696fd691b24d41cb7a33dd782ceedb7738086ef1081ff1434c74d2a",
+    "games/yuyuhakusho/server/module.go": "ed4ef8bfddc35e4642110cbfcc2441bb8f5bc976d2c6e49ac39d1d7ae66bb2d6",
+    "games/yuyuhakusho/server/module_types.go": "49c1d303f4b3e10c8f19d7174073ad7587f90f858da328ea767d01376db05446",
+    "games/yuyuhakusho/server/module_view.go": "90a05bafbf6d0e77255e909ec8d82013745adfa1c29dbfc3f0512b19cd358655",
+    "games/yuyuhakusho/server/stream_view.go": "4bb8c45ef3ccbff071bf87ecba0a785733de932f5436f0bf1d5c9f66553d126c"
+  },
+  "shared_test_sha256": "6ddc1f6f039a48a071e6188be4fa1857931dc1323220b361db5e106f563f3ed4",
+  "native_test_sha256": "72f14d5cc33342a838a481fdc35c78d8d32cf919e01a6c2154e36c31f906a64e",
+  "original_source_archive": "games/yuyuhakusho/verification/platform-stream-cursor-ci/stream_cursor.before-native-buildtag.go.txt",
+  "original_source_archive_sha256": "90f348f9a430a444d90aed88debf652f8137472f34d233867358c7e3e54abf7f",
+  "before_default_race_red_sha256": "617ac8d3463de6c06c24126bb30e9da9b35aa5acf61e798dd777d1e7873212c6",
+  "before_default_race_failure": [
+    "TestCursorHTTPWSReplaySizesAndReconnect"
+  ],
+  "discovery": {
+    "native": [
+      "TestCursorHTTPWSFunctionalRace",
+      "TestCursorHTTPWSReplaySizesAndReconnect",
+      "TestRealHostOpaqueRecoveryAndExplicitAutoplay",
+      "TestRealHostPublicLoadingPrecedesGameLoading",
+      "TestRealSlowSpectatorDoesNotBlockFastPlayerOrClock",
+      "TestRealWebsocketCompactFramesAndIdempotentInputs",
+      "TestRegisteredGameUsesRealHostLoadingAndIndependentSeatInputs"
+    ],
+    "race": [
+      "TestCursorHTTPWSFunctionalRace",
+      "TestRealHostOpaqueRecoveryAndExplicitAutoplay",
+      "TestRealHostPublicLoadingPrecedesGameLoading",
+      "TestRealSlowSpectatorDoesNotBlockFastPlayerOrClock",
+      "TestRealWebsocketCompactFramesAndIdempotentInputs",
+      "TestRegisteredGameUsesRealHostLoadingAndIndependentSeatInputs"
+    ]
+  },
+  "native_only_test": [
+    "TestCursorHTTPWSReplaySizesAndReconnect"
+  ],
+  "default_race_uses_no_run_filter": true,
+  "native_performance": {
+    "ackMeasurement": "send to dedicated socket Read; excludes subsequent rule-replay queue",
+    "acknowledgements": 60,
+    "actions": 60,
+    "boundedReceiveEvents": 128,
+    "clientReplayedFrames": 300,
+    "densePackets": 78,
+    "denseWireBytes": 108415,
+    "idlePackets": 20,
+    "idleWireBytes": 27012,
+    "lastFrame": "302",
+    "maxGameViewBytes": 997,
+    "maximumObservedACKMS": 8.305,
+    "nativeLatencyBudgetEnforced": true,
+    "opaqueCheckpointRestored": true,
+    "passed": true,
+    "reconnectResync": true,
+    "scope": "Actual HTTP authentication, production clock, WS inputs, unread peer, full runtimebridge rules/presentation replay and reconnect",
+    "startFrame": "2"
+  },
+  "default_race_functional_transport": {
+    "ackMeasurement": "send to dedicated socket Read; excludes subsequent rule-replay queue",
+    "acknowledgements": 60,
+    "actions": 60,
+    "boundedReceiveEvents": 128,
+    "clientReplayedFrames": 815,
+    "densePackets": 106,
+    "denseWireBytes": 145449,
+    "idlePackets": 20,
+    "idleWireBytes": 27022,
+    "lastFrame": "825",
+    "maxGameViewBytes": 983,
+    "maximumObservedACKMS": 5166.509,
+    "nativeLatencyBudgetEnforced": false,
+    "opaqueCheckpointRestored": true,
+    "passed": true,
+    "reconnectResync": true,
+    "scope": "Actual HTTP authentication, production clock, WS inputs, unread peer, full runtimebridge rules/presentation replay and reconnect",
+    "startFrame": "10"
+  },
+  "suites": {
+    "discovery": {
+      "suite": "discovery",
+      "revision": "cursor-ci-buildtag",
+      "started_at_utc": "2026-11-05T19:29:12.199439+00:00",
+      "complete": true,
+      "names": {
+        "native": [
+          "TestCursorHTTPWSFunctionalRace",
+          "TestCursorHTTPWSReplaySizesAndReconnect",
+          "TestRealHostOpaqueRecoveryAndExplicitAutoplay",
+          "TestRealHostPublicLoadingPrecedesGameLoading",
+          "TestRealSlowSpectatorDoesNotBlockFastPlayerOrClock",
+          "TestRealWebsocketCompactFramesAndIdempotentInputs",
+          "TestRegisteredGameUsesRealHostLoadingAndIndependentSeatInputs"
+        ],
+        "race": [
+          "TestCursorHTTPWSFunctionalRace",
+          "TestRealHostOpaqueRecoveryAndExplicitAutoplay",
+          "TestRealHostPublicLoadingPrecedesGameLoading",
+          "TestRealSlowSpectatorDoesNotBlockFastPlayerOrClock",
+          "TestRealWebsocketCompactFramesAndIdempotentInputs",
+          "TestRegisteredGameUsesRealHostLoadingAndIndependentSeatInputs"
+        ]
+      },
+      "native_only": [
+        "TestCursorHTTPWSReplaySizesAndReconnect"
+      ],
+      "race_only": [],
+      "exit_code": 0,
+      "commands": [
+        [
+          "/opt/homebrew/bin/go",
+          "test",
+          "-json",
+          "-list",
+          ".",
+          "./games/yuyuhakusho/platformtest"
+        ],
+        [
+          "/opt/homebrew/bin/go",
+          "test",
+          "-json",
+          "-list",
+          ".",
+          "-race",
+          "./games/yuyuhakusho/platformtest"
+        ]
+      ],
+      "sources_unchanged": true,
+      "wall_seconds": 5.556,
+      "ended_at_utc": "2026-11-05T19:29:17.755276+00:00",
+      "pass": true,
+      "command_record_sha256": "efa8a6be59a2490c3114bdf28108d83a7c5cf1e660cc3c4384203df8983459db"
+    },
+    "native-performance": {
+      "suite": "native-performance",
+      "revision": "cursor-ci-buildtag",
+      "started_at_utc": "2026-11-05T19:29:12.199423+00:00",
+      "complete": true,
+      "exit_code": 0,
+      "executed_tests": [
+        "TestCursorHTTPWSReplaySizesAndReconnect"
+      ],
+      "failed_tests": [],
+      "log": "games/yuyuhakusho/verification/platform-stream-cursor-ci/native-performance.jsonl",
+      "log_sha256": "4c81376b323d9ab8da1477480ac671a8f957e629f550890cddd0f7cf57c0df95",
+      "package_results": [
+        {
+          "Time": "2026-11-06T03:29:19.306825+08:00",
+          "Action": "pass",
+          "Package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest",
+          "Elapsed": 6.067
+        }
+      ],
+      "transport_evidence": {
+        "games/yuyuhakusho/verification/platform-stream-cursor-ci/native-performance-transport.json": "2fce19ee4e1425d23868001ebfbf530dbb97de873a2a7668c0a6b832c877eda3"
+      },
+      "commands": [
+        [
+          "/opt/homebrew/bin/go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=5m",
+          "-run",
+          "^TestCursorHTTPWSReplaySizesAndReconnect$",
+          "./games/yuyuhakusho/platformtest"
+        ]
+      ],
+      "sources_unchanged": true,
+      "wall_seconds": 7.494,
+      "ended_at_utc": "2026-11-05T19:29:19.693003+00:00",
+      "pass": true,
+      "command_record_sha256": "bc9da5f078a9fe517e04fe960303d2abdafe7d04a30060cf0c8bc52c38c893f0"
+    },
+    "default-race": {
+      "suite": "default-race",
+      "revision": "cursor-ci-buildtag",
+      "started_at_utc": "2026-11-05T19:30:17.163590+00:00",
+      "complete": true,
+      "exit_code": 0,
+      "executed_tests": [
+        "TestRegisteredGameUsesRealHostLoadingAndIndependentSeatInputs",
+        "TestRealHostOpaqueRecoveryAndExplicitAutoplay",
+        "TestRealHostPublicLoadingPrecedesGameLoading",
+        "TestRealSlowSpectatorDoesNotBlockFastPlayerOrClock",
+        "TestCursorHTTPWSFunctionalRace",
+        "TestRealWebsocketCompactFramesAndIdempotentInputs"
+      ],
+      "failed_tests": [],
+      "log": "games/yuyuhakusho/verification/platform-stream-cursor-ci/default-race.jsonl",
+      "log_sha256": "b288cce4747c8beef61383ec6877c10c512671135f20b8c492d92f9c649680cb",
+      "package_results": [
+        {
+          "Time": "2026-11-06T03:31:06.723532+08:00",
+          "Action": "pass",
+          "Package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest",
+          "Elapsed": 48.531
+        }
+      ],
+      "transport_evidence": {
+        "games/yuyuhakusho/verification/platform-stream-cursor-ci/default-race-transport.json": "20bb3eb4a3ff595befc1c129138231bee1f3bc621cc5a459c49ec56b4d30bb27"
+      },
+      "commands": [
+        [
+          "/opt/homebrew/bin/go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=5m",
+          "-race",
+          "./games/yuyuhakusho/platformtest"
+        ]
+      ],
+      "sources_unchanged": true,
+      "wall_seconds": 50.139,
+      "ended_at_utc": "2026-11-05T19:31:07.302946+00:00",
+      "pass": true,
+      "command_record_sha256": "bbabdcfc7f41416b24df6dd9f6e3d7dcbf76229ad38caaab532bda08fd96e8c9"
+    },
+    "host-race": {
+      "suite": "host-race",
+      "revision": "cursor-ci-buildtag",
+      "started_at_utc": "2026-11-05T19:30:17.163557+00:00",
+      "complete": true,
+      "exit_code": 0,
+      "executed_tests": [
+        "TestModuleSyncSnapshotE2E",
+        "TestRealtimeCursorStreamIsolatesSlowConnection",
+        "TestRealtimeCursorRegistrationRequiresRecovery",
+        "TestRealtimeCursorProjectionDetachedOutsideLockAndScoped",
+        "TestRealtimeStreamBootstrapAndScopedPush",
+        "TestRealtimeStreamInputAcknowledgedExactlyOnce",
+        "TestRealtimeStreamRejectsSpectatorAndStaleRoom"
+      ],
+      "failed_tests": [],
+      "log": "games/yuyuhakusho/verification/platform-stream-cursor-ci/host-race.jsonl",
+      "log_sha256": "d24188f034aa286651e61d7bed948a823db68fc010959b03f7b746d9206a497f",
+      "package_results": [
+        {
+          "Time": "2026-11-06T03:30:33.471005+08:00",
+          "Action": "pass",
+          "Package": "github.com/k0ngk0ng/wire-board/internal/server",
+          "Elapsed": 15.262
+        }
+      ],
+      "commands": [
+        [
+          "/opt/homebrew/bin/go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=5m",
+          "-race",
+          "-run",
+          "^Test(RealtimeCursor|RealtimeStream(BootstrapAndScopedPush|InputAcknowledgedExactlyOnce|RejectsSpectatorAndStaleRoom)$|ModuleSyncSnapshotE2E$)",
+          "./internal/server"
+        ]
+      ],
+      "sources_unchanged": true,
+      "wall_seconds": 16.759,
+      "ended_at_utc": "2026-11-05T19:30:33.922676+00:00",
+      "pass": true,
+      "command_record_sha256": "000b3436d4ac88bd86c426780e3c5f511ff66cd6e28ef9962992e2d45d997a90"
+    }
+  },
+  "prior_final_manifest_sha256_unchanged": "9366339db35977008257fe48dc13a143a7bb00311d207e947c6169936cb9d21e",
+  "prior_263_manifest_sha256_unchanged": "0cd4c78ecfa48656721fcf6320a4589a5c4884f5019ed892d756a936761e5379",
+  "test_go_shard_discovery_script_unchanged_sha256": "4c8aeadb78edee81fb039b79b8486a24fbed7cc478f3d564178a32cf02d84c6d",
+  "no_main_writes": true,
+  "host_network_evidence": {
+    "games/yuyuhakusho/verification/platform-stream-cursor-ci/host-cursor-slow-connection.json": "2cc6ba237d08912507bdeeee5fa298bb7327c146e0cfa35176c0ed3bff82bbbd",
+    "games/yuyuhakusho/verification/platform-stream-cursor-ci/host-cursor-detached-scope.json": "1b7cc63e8db903cbe0f804e16777b7208fcef1f970492e996de5b7de89c775ad"
+  },
+  "cleanup_record": "games/yuyuhakusho/verification/platform-stream-cursor-ci/cleanup.json"
+}

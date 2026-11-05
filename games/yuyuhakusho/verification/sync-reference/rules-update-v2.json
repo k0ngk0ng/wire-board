@@ -1,0 +1,12 @@
+{
+  "scope": "User-requested rule feedback after actual cursor/timeline verification; preserves v1 snapshots",
+  "file": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/rules/realtime.md",
+  "after_sha256": "3c48ce328edcd9e44950e7d9e0aefc8a72384ba941e63416033582f678e94f81",
+  "patch_sha256": "4320cc6fdb8bd2509728b5198c5bed4fafbb6ef8b925e7fcacf86ef6c48ee3e7",
+  "added_cases": [
+    "ordinary authority catch-up preserves native display-clock phase",
+    "new input after rebase is later than the already presented target",
+    "per-connection cursor advances on successful send, without requiring a global per-frame ACK"
+  ],
+  "evidence": "games/yuyuhakusho/verification/platform-app-browser/cursor-network06/result.json"
+}

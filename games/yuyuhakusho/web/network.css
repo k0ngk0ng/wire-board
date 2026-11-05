@@ -170,14 +170,13 @@
   }
 }
 @media (orientation: landscape) and (max-height: 520px) {
-  [data-room-fullscreen] .yuyu-board {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(200px, 35%);
-    align-items: center;
+  [data-room-fullscreen] .game-fullscreen-board:has(> .yuyu-board) {
+    container-type: size;
   }
-  [data-room-fullscreen] .yuyu-screen {
-    height: 100%;
-    width: 100%;
+  [data-room-fullscreen] .yuyu-board {
+    /* Frame224/320 + pad380/900; leave the8px pad padding and4px gap.
+       The container already excludes the shared toolbar and safe areas. */
+    width: min(100%, calc((100cqh - 12px) / 1.1222222222));
   }
   [data-room-fullscreen] .yuyu-controller {
     width: 100%;

@@ -31,7 +31,7 @@ for(const action of JSON.parse(raw)){
   observations.push({...state,elapsedMs:Date.now()-started});
  }else if(expectButtons!==undefined){
   const started=Date.now();let state;
-  do{state=await evaluate('({buttons:yuyuBoardProbe.authority.inputs[0].appliedButtons,localX:document.querySelector("[data-yuyu-board]").dataset.localX,frame:document.querySelector("[data-yuyu-board]").dataset.frame})');if(state.buttons===expectButtons)break;await new Promise(resolve=>setTimeout(resolve,10));}while(Date.now()-started<2000);
+  do{state=await evaluate('({buttons:yuyuBoardProbe.authority.inputs[0].appliedButtons,localX:document.querySelector("[data-yuyu-board]").dataset.localX,localY:document.querySelector("[data-yuyu-board]").dataset.localY,frame:document.querySelector("[data-yuyu-board]").dataset.frame,pressedButtons:[...document.querySelectorAll("[data-controller-button][aria-pressed=true]")].map(node=>node.dataset.controllerButton),cBackground:getComputedStyle(document.querySelector(\'[data-controller-button="c"]\')).backgroundColor})');if(state.buttons===expectButtons)break;await new Promise(resolve=>setTimeout(resolve,10));}while(Date.now()-started<2000);
   if(state.buttons!==expectButtons)throw Error(JSON.stringify({expectButtons,state}));observations.push({...state,event:params.type,native:true});
  }else if(wait)await new Promise(resolve=>setTimeout(resolve,wait));
 }

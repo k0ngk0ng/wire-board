@@ -68,6 +68,7 @@ type WireInput struct {
 	Automated       bool           `json:"automated"`
 }
 type View struct {
+	Resync                   bool                 `json:"resync,omitempty"`
 	Protocol                 uint8                `json:"protocol"`
 	Epoch                    string               `json:"epoch"`
 	Frame                    uint64               `json:"frame,string"`

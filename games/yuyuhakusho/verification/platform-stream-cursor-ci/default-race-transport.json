@@ -1,0 +1,20 @@
+{
+  "ackMeasurement": "send to dedicated socket Read; excludes subsequent rule-replay queue",
+  "acknowledgements": 60,
+  "actions": 60,
+  "boundedReceiveEvents": 128,
+  "clientReplayedFrames": 815,
+  "densePackets": 106,
+  "denseWireBytes": 145449,
+  "idlePackets": 20,
+  "idleWireBytes": 27022,
+  "lastFrame": "825",
+  "maxGameViewBytes": 983,
+  "maximumObservedACKMS": 5166.509,
+  "nativeLatencyBudgetEnforced": false,
+  "opaqueCheckpointRestored": true,
+  "passed": true,
+  "reconnectResync": true,
+  "scope": "Actual HTTP authentication, production clock, WS inputs, unread peer, full runtimebridge rules/presentation replay and reconnect",
+  "startFrame": "10"
+}

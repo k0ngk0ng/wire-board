@@ -1,0 +1,11 @@
+{
+  "created_at_utc": "2026-11-05T18:28:47.715957+00:00",
+  "scope": "Root explicitly separates native hard latency budget from instrumented functional correctness. Original native performance test remains mandatory.",
+  "before_driver_files_sha256": {
+    "docs/research/md-yuyuhakusho/STREAM_RACE_SCOPE.md": "ec9c495506800067699b616f7dc5839e51dba657e1ae97a32a9335f4a91efe9e",
+    "games/yuyuhakusho/verification/platform-stream-cursor-functional-before-driver.go.txt": "206e18480d8d59bedaebd1155983e164b8fa7c0c3e8e6aa021014c49df3186e1"
+  },
+  "real_red": "platform-stream-cursor-functional-driver-red.jsonl",
+  "new_test": "TestCursorHTTPWSFunctionalRace",
+  "existing_product_unchanged_for_this_scope_split": true
+}

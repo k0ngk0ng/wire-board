@@ -1,0 +1,240 @@
+{
+  "lifecycle": {
+    "effectiveLaunch": {
+      "browserLaunched": true,
+      "engine": "chrome",
+      "launchHash": 13476830939511133691
+    },
+    "launched": false,
+    "relaunchedBrowser": false,
+    "restartedBackground": false,
+    "restoreStatus": "not_configured",
+    "reused": true,
+    "saveStatus": "not_attempted"
+  },
+  "origin": "http://127.0.0.1:62740/",
+  "refs": {
+    "e1": {
+      "name": "",
+      "role": "generic"
+    },
+    "e12": {
+      "name": "围桌首页",
+      "role": "link"
+    },
+    "e13": {
+      "name": "打开游戏许愿池",
+      "role": "button"
+    },
+    "e14": {
+      "name": "积分榜",
+      "role": "button"
+    },
+    "e15": {
+      "name": "",
+      "role": "generic"
+    },
+    "e16": {
+      "name": "我的战绩与好友",
+      "role": "button"
+    },
+    "e17": {
+      "name": "控制器设置",
+      "role": "button"
+    },
+    "e18": {
+      "name": "Yuyuslowcape-app07",
+      "role": "button"
+    },
+    "e19": {
+      "name": "声音控制",
+      "role": "button"
+    },
+    "e20": {
+      "name": "游戏大厅",
+      "role": "heading"
+    },
+    "e21": {
+      "name": "创建房间",
+      "role": "button"
+    },
+    "e22": {
+      "name": "魔强统一战验收",
+      "role": "heading"
+    },
+    "e23": {
+      "name": "加入牌桌",
+      "role": "button"
+    },
+    "e24": {
+      "name": "搜索房间",
+      "role": "searchbox"
+    },
+    "e25": {
+      "name": "游戏分类",
+      "role": "combobox"
+    },
+    "e26": {
+      "name": "按游戏筛选牌桌",
+      "role": "combobox"
+    },
+    "e27": {
+      "name": "房间状态",
+      "role": "combobox"
+    },
+    "e28": {
+      "name": "Y",
+      "role": "button"
+    },
+    "e29": {
+      "name": "全部分类",
+      "role": "option"
+    },
+    "e30": {
+      "name": "桌游",
+      "role": "option"
+    },
+    "e31": {
+      "name": "棋牌类",
+      "role": "option"
+    },
+    "e32": {
+      "name": "即时策略",
+      "role": "option"
+    },
+    "e33": {
+      "name": "体育",
+      "role": "option"
+    },
+    "e34": {
+      "name": "益智休闲",
+      "role": "option"
+    },
+    "e35": {
+      "name": "全部游戏",
+      "role": "option"
+    },
+    "e36": {
+      "name": "璀璨宝石",
+      "role": "option"
+    },
+    "e37": {
+      "name": "铁路环游",
+      "role": "option"
+    },
+    "e38": {
+      "name": "卡坦岛",
+      "role": "option"
+    },
+    "e39": {
+      "name": "卡卡颂",
+      "role": "option"
+    },
+    "e40": {
+      "name": "三国杀",
+      "role": "option"
+    },
+    "e41": {
+      "name": "热血篮球",
+      "role": "option"
+    },
+    "e42": {
+      "name": "强手棋",
+      "role": "option"
+    },
+    "e43": {
+      "name": "星垒",
+      "role": "option"
+    },
+    "e44": {
+      "name": "斗地主",
+      "role": "option"
+    },
+    "e45": {
+      "name": "掼蛋",
+      "role": "option"
+    },
+    "e46": {
+      "name": "升级",
+      "role": "option"
+    },
+    "e47": {
+      "name": "斯诺克",
+      "role": "option"
+    },
+    "e48": {
+      "name": "连连看",
+      "role": "option"
+    },
+    "e49": {
+      "name": "五子棋",
+      "role": "option"
+    },
+    "e50": {
+      "name": "军棋",
+      "role": "option"
+    },
+    "e51": {
+      "name": "国际象棋",
+      "role": "option"
+    },
+    "e52": {
+      "name": "中国象棋",
+      "role": "option"
+    },
+    "e53": {
+      "name": "围棋",
+      "role": "option"
+    },
+    "e54": {
+      "name": "极品飞车",
+      "role": "option"
+    },
+    "e55": {
+      "name": "俄罗斯方块",
+      "role": "option"
+    },
+    "e56": {
+      "name": "街霸方块",
+      "role": "option"
+    },
+    "e57": {
+      "name": "坦克大战",
+      "role": "option"
+    },
+    "e58": {
+      "name": "泡泡堂",
+      "role": "option"
+    },
+    "e59": {
+      "name": "疯狂坦克",
+      "role": "option"
+    },
+    "e60": {
+      "name": "征服时代",
+      "role": "option"
+    },
+    "e61": {
+      "name": "乒乓球",
+      "role": "option"
+    },
+    "e62": {
+      "name": "魔强统一战",
+      "role": "option"
+    },
+    "e63": {
+      "name": "全部状态",
+      "role": "option"
+    },
+    "e64": {
+      "name": "等待入座",
+      "role": "option"
+    },
+    "e65": {
+      "name": "游戏中",
+      "role": "option"
+    }
+  },
+  "removedRefs": [],
+  "snapshot": "- generic \"围桌WIRE BOARD游戏大厅让相聚，多一局。vdev许愿池积分榜0msYYuyuslowcape-app07游戏大厅找个房间，一起开局。创建房间搜索房间游戏分类全部分类桌游棋牌类即时策略体育益智休\" [ref=e1] clickable [onclick]\n  - link \"围桌首页\" [ref=e12]\n  - button \"打开游戏许愿池\" [ref=e13]\n  - button \"积分榜\" [ref=e14]\n  - generic [ref=e15] clickable [onclick]\n    - button \"声音控制\" [expanded=false, ref=e19]\n  - button \"我的战绩与好友\" [ref=e16]\n  - button \"控制器设置\" [ref=e17]\n  - button \"Yuyuslowcape-app07\" [ref=e18]\n  - heading \"游戏大厅\" [level=1, ref=e20]\n  - button \"创建房间\" [ref=e21]\n  - searchbox \"搜索房间\" [ref=e24]\n  - combobox \"游戏分类\" [expanded=false, ref=e25]: 全部分类\n    - option \"全部分类\" [selected, ref=e29]\n    - option \"桌游\" [ref=e30]\n    - option \"棋牌类\" [ref=e31]\n    - option \"即时策略\" [ref=e32]\n    - option \"体育\" [ref=e33]\n    - option \"益智休闲\" [ref=e34]\n  - combobox \"按游戏筛选牌桌\" [expanded=false, ref=e26]: 全部游戏\n    - option \"全部游戏\" [selected, ref=e35]\n    - option \"璀璨宝石\" [ref=e36]\n    - option \"铁路环游\" [ref=e37]\n    - option \"卡坦岛\" [ref=e38]\n    - option \"卡卡颂\" [ref=e39]\n    - option \"三国杀\" [ref=e40]\n    - option \"热血篮球\" [ref=e41]\n    - option \"强手棋\" [ref=e42]\n    - option \"星垒\" [ref=e43]\n    - option \"斗地主\" [ref=e44]\n    - option \"掼蛋\" [ref=e45]\n    - option \"升级\" [ref=e46]\n    - option \"斯诺克\" [ref=e47]\n    - option \"连连看\" [ref=e48]\n    - option \"五子棋\" [ref=e49]\n    - option \"军棋\" [ref=e50]\n    - option \"国际象棋\" [ref=e51]\n    - option \"中国象棋\" [ref=e52]\n    - option \"围棋\" [ref=e53]\n    - option \"极品飞车\" [ref=e54]\n    - option \"俄罗斯方块\" [ref=e55]\n    - option \"街霸方块\" [ref=e56]\n    - option \"坦克大战\" [ref=e57]\n    - option \"泡泡堂\" [ref=e58]\n    - option \"疯狂坦克\" [ref=e59]\n    - option \"征服时代\" [ref=e60]\n    - option \"乒乓球\" [ref=e61]\n    - option \"魔强统一战\" [ref=e62]\n  - combobox \"房间状态\" [expanded=false, ref=e27]: 全部状态\n    - option \"全部状态\" [selected, ref=e63]\n    - option \"等待入座\" [ref=e64]\n    - option \"游戏中\" [ref=e65]\n  - heading \"魔强统一战验收\" [level=3, ref=e22]\n  - button \"Y\" [ref=e28]\n  - button \"加入牌桌\" [ref=e23]"
+}

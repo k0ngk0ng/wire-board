@@ -1,0 +1,19 @@
+{
+  "scope": "Independent precise-authority/native-RAF phase regression after incremental StreamView",
+  "baseline_commit": "40237232",
+  "prior_test": "games/yuyuhakusho/verification/platform-web/check_platform_timeline.before-phase-case.mjs.txt",
+  "prior_test_sha256": "7191f1e841ca1f930be0e3422daa381294364d73b0810f37e71a43323f346566",
+  "prior_source": "games/yuyuhakusho/verification/platform-web/network-scene.before-confirm-phase-fix.ts.txt",
+  "prior_source_sha256": "de9fe122c7de5daf0a0faf99d0c0f4ffa761e34222f301ac4cd07d870354c64f",
+  "actual_platform_red": "../platform-app-browser/cursor-network05/slow-render-performance.json",
+  "budget": {
+    "minimum_visible_fps": 50,
+    "maximum_p95_ms": 40
+  },
+  "failure": "Repeated50ms authority advances3frames catches local target; resetting last native tick phase repeatedly loses next16.667ms RAF against16.688ms game period.",
+  "report_header_correction": {
+    "archive": "games/yuyuhakusho/verification/platform-web/check_platform_timeline.executed-before-phase-metadata.mjs.txt",
+    "sha256": "f93a331ba7ec56910d49985a2c2580d664c0e30ac1001b5fd33b008c705a5a30",
+    "reason": "Phase loop already uses3ticks/50ms; old JSON inherited generic7tick120ms header. Correct report metadata only; all assertions, actual loop and original red artifacts remain unchanged."
+  }
+}

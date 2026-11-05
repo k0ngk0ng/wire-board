@@ -1,0 +1,308 @@
+package platformtest
+
+import (
+	"bytes"
+	"compress/gzip"
+	"context"
+	"encoding/json"
+	"fmt"
+	"io"
+	"os"
+	"path/filepath"
+	"strings"
+	"testing"
+	"time"
+
+	"github.com/coder/websocket"
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine"
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/runtimebridge"
+	game "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server"
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/syncwire"
+	"github.com/k0ngk0ng/wire-board/internal/gametest"
+)
+
+type cursorPacket struct {
+	Type, RoomID, ServerInstance, Nonce string
+	Version                             int
+	Status                              json.RawMessage
+	Game                                struct{ Data game.View }
+}
+
+func cursorSocket(t *testing.T, client *gametest.Client) *websocket.Conn {
+	t.Helper()
+	conn, _, err := websocket.Dial(context.Background(), "ws"+strings.TrimPrefix(client.Base, "http")+"/api/ws?stream=1", &websocket.DialOptions{HTTPClient: client.HTTP})
+	if err != nil {
+		t.Fatal(err)
+	}
+	conn.SetReadLimit(2 << 20)
+	t.Cleanup(func() { conn.CloseNow() })
+	return conn
+}
+
+func cursorRead(t *testing.T, conn *websocket.Conn) (cursorPacket, int) {
+	t.Helper()
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+	_, raw, err := conn.Read(ctx)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var packet cursorPacket
+	if err = json.Unmarshal(raw, &packet); err != nil {
+		t.Fatal(err)
+	}
+	return packet, len(raw)
+}
+
+func cursorGame(t *testing.T, conn *websocket.Conn) cursorPacket {
+	t.Helper()
+	for i := 0; i < 100; i++ {
+		packet, _ := cursorRead(t, conn)
+		if packet.Type == "game" {
+			return packet
+		}
+	}
+	t.Fatal("no incremental game packet")
+	return cursorPacket{}
+}
+
+func cursorAssets(t *testing.T) runtimebridge.Assets {
+	t.Helper()
+	read := func(name string) []byte {
+		raw, err := os.ReadFile("../data/" + name + ".json.gz")
+		if err != nil {
+			t.Fatal(err)
+		}
+		reader, err := gzip.NewReader(bytes.NewReader(raw))
+		if err != nil {
+			t.Fatal(err)
+		}
+		defer reader.Close()
+		body, err := io.ReadAll(reader)
+		if err != nil {
+			t.Fatal(err)
+		}
+		return body
+	}
+	descriptor, err := os.ReadFile("../data/runtime-resource-descriptor.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	assets, err := runtimebridge.DecodeNetworkAssets(runtimebridge.AssetBytes{Rules: read("chu-world-rules"), Sprites: read("world-sprites"), Arena: read("arena-assets-default"), HUD: read("hud-assets"), RenderMetadata: read("renderstate-metadata"), Descriptor: descriptor}, 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return assets
+}
+
+func TestCursorHTTPWSFunctionalRace(t *testing.T) {
+	runCursorTransportScenario(t, false)
+}
+
+func TestCursorHTTPWSReplaySizesAndReconnect(t *testing.T) {
+	runCursorTransportScenario(t, true)
+}
+
+func runCursorTransportScenario(t *testing.T, enforceNativeLatency bool) {
+	module := registered(t)
+	if module.StreamView == nil {
+		t.Fatal("actual game lacks incremental WS projection")
+	}
+	assets := cursorAssets(t)
+	h := gametest.NewHTTP(t, 2, module, "yuyuhakusho")
+	h.Start(map[string]any{"characters": []int{3, 9}})
+	load(t, h)
+	slow := cursorSocket(t, h.Spectator)
+	for {
+		packet, _ := cursorRead(t, slow)
+		if packet.Type == "state" {
+			break
+		}
+	} // No further reads: this connection must not own the fast cursor.
+	fast := cursorSocket(t, h.People[0])
+	first := cursorGame(t, fast)
+	if !first.Game.Data.Resync || first.Game.Data.Replay.FrameCount != 0 {
+		t.Fatal("new real socket did not explicitly recover", first.Game.Data.Replay)
+	}
+	initial := checkpoint(t, h.People[0])
+	client, err := runtimebridge.RestoreCheckpoint([]byte(initial.Checkpoint), assets)
+	if err != nil {
+		t.Fatal(err)
+	}
+	startFrame, confirmed := client.View().Tick, client.View().Tick
+	lastStreamFrame := first.Game.Data.Frame
+	sequence := initial.View.Inputs[0].Sequence
+	packets, actions, acknowledgements, replayed := 0, 0, 0, 0
+	idleBytes, denseBytes, idlePackets, densePackets, maxViewBytes := 0, 0, 0, 0, 0
+	maximumACK := time.Duration(0)
+	pending := make(map[string]time.Time)
+	// Record reception independently of rule replay. A race-instrumented full
+	// replay may consume CPU after an ACK already arrived on the socket.
+	type received struct {
+		packet cursorPacket
+		bytes  int
+		at     time.Time
+		err    error
+	}
+	incoming := make(chan received, 128)
+	readContext, stopReading := context.WithCancel(context.Background())
+	defer stopReading()
+	go func() {
+		for {
+			_, raw, err := fast.Read(readContext)
+			at := time.Now()
+			var packet cursorPacket
+			if err == nil {
+				err = json.Unmarshal(raw, &packet)
+			}
+			select {
+			case incoming <- received{packet, len(raw), at, err}:
+			case <-readContext.Done():
+				return
+			}
+			if err != nil {
+				return
+			}
+		}
+	}()
+	deadline := time.Now().Add(15 * time.Second)
+	if !enforceNativeLatency {
+		deadline = time.Now().Add(2 * time.Minute)
+	}
+	for confirmed < startFrame+300 || actions < 60 || acknowledgements < actions {
+		if time.Now().After(deadline) {
+			t.Fatal("bounded real WS replay did not finish", confirmed-startFrame, actions, acknowledgements)
+		}
+		var event received
+		select {
+		case event = <-incoming:
+		case <-time.After(3 * time.Second):
+			t.Fatal("incremental WS reception stalled")
+		}
+		if event.err != nil {
+			t.Fatal(event.err)
+		}
+		packet, wireBytes := event.packet, event.bytes
+		if packet.Type == "ack" {
+			if !bytes.Equal(bytes.TrimSpace(packet.Status), []byte("200")) {
+				t.Fatal("actual WS input rejected", packet)
+			}
+			if sent, ok := pending[packet.Nonce]; ok {
+				elapsed := event.at.Sub(sent)
+				if elapsed > maximumACK {
+					maximumACK = elapsed
+				}
+				delete(pending, packet.Nonce)
+				acknowledgements++
+			}
+			continue
+		}
+		if packet.Type != "game" {
+			continue
+		}
+		view := packet.Game.Data
+		streamAfter := lastStreamFrame
+		lastStreamFrame = view.Frame
+		if view.Frame <= confirmed {
+			continue
+		}
+		if view.Resync {
+			t.Fatal("unread peer or regular input forced fast-client resync")
+		}
+		frames, err := syncwire.Decode(view.Replay)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if len(frames) > int(view.Frame-streamAfter)+6 {
+			t.Fatal("connection repeated an oversized recovery ring", len(frames), view.Frame-streamAfter)
+		}
+		for _, input := range frames {
+			if input.Frame <= confirmed {
+				continue
+			}
+			if input.Frame != confirmed+1 {
+				t.Fatal("incremental client missed a frame", input.Frame, confirmed)
+			}
+			if _, err = client.AdvanceControlled(input.Held, input.Automated); err != nil {
+				t.Fatal(err)
+			}
+			confirmed++
+			replayed++
+		}
+		if confirmed != view.Frame {
+			t.Fatal("stream omitted new authoritative inputs", confirmed, view.Frame)
+		}
+		rules, presentation, err := client.Digests()
+		if err != nil || rules != view.Digest || presentation != view.PresentationDigest {
+			t.Fatal("complete client rules/presentation replay diverged", confirmed, err)
+		}
+		raw, _ := json.Marshal(view)
+		if len(raw) > maxViewBytes {
+			maxViewBytes = len(raw)
+		}
+		if len(raw) > 2048 {
+			t.Fatal("real incremental view exceeded frozen byte budget", len(raw))
+		}
+		packets++
+		if packets <= 20 {
+			idlePackets++
+			idleBytes += wireBytes
+		} else {
+			densePackets++
+			denseBytes += wireBytes
+			if actions < 60 {
+				sequence++
+				actions++
+				nonce := fmt.Sprintf("cursor-game-%d", actions)
+				held := engine.ButtonRight | engine.ButtonA
+				if actions&1 == 0 {
+					held = engine.ButtonLeft | engine.ButtonX
+				}
+				input := map[string]any{"type": "input", "roomId": packet.RoomID, "version": packet.Version, "nonce": nonce, "serverInstance": packet.ServerInstance, "action": map[string]any{"type": "input", "epoch": view.Epoch, "sequence": sequence, "buttons": held}}
+				raw, _ := json.Marshal(input)
+				pending[nonce] = time.Now()
+				ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+				err = fast.Write(ctx, websocket.MessageText, raw)
+				cancel()
+				if err != nil {
+					t.Fatal(err)
+				}
+			}
+		}
+	}
+	if enforceNativeLatency && maximumACK > 500*time.Millisecond {
+		t.Fatal("native input ACK exceeded frozen 500ms budget", maximumACK)
+	}
+	if idlePackets == 0 || densePackets == 0 {
+		t.Fatal("slow peer blocked fast ACK or measurement incomplete", maximumACK, idlePackets, densePackets)
+	}
+	stopReading()
+	fast.CloseNow()
+	reopened := cursorSocket(t, h.People[0])
+	reconnect := cursorGame(t, reopened)
+	if !reconnect.Game.Data.Resync || reconnect.Game.Data.Replay.FrameCount != 0 || reconnect.Game.Data.Frame < confirmed {
+		t.Fatal("reconnected socket inherited a previous connection cursor")
+	}
+	recovered := checkpoint(t, h.People[0])
+	if recovered.View.Phase == "loading" || recovered.View.Inputs[0].Automated || recovered.View.Frame < confirmed {
+		t.Fatal("reconnect reset match or automatically enabled AI")
+	}
+	if _, err = runtimebridge.RestoreCheckpoint([]byte(recovered.Checkpoint), assets); err != nil {
+		t.Fatal("opaque /sync changed", err)
+	}
+	label := os.Getenv("YUYU_CURSOR_TEST_LABEL")
+	if label != "native" && label != "race" {
+		label = "manual"
+	}
+	directory := "../verification/platform-stream-cursor"
+	if err = os.MkdirAll(directory, 0755); err != nil {
+		t.Fatal(err)
+	}
+	evidence := map[string]any{"passed": true, "scope": "Actual HTTP authentication, production clock, WS inputs, unread peer, full runtimebridge rules/presentation replay and reconnect", "ackMeasurement": "send to dedicated socket Read; excludes subsequent rule-replay queue", "boundedReceiveEvents": cap(incoming), "idlePackets": idlePackets, "idleWireBytes": idleBytes, "densePackets": densePackets, "denseWireBytes": denseBytes, "maxGameViewBytes": maxViewBytes, "actions": actions, "acknowledgements": acknowledgements, "maximumObservedACKMS": float64(maximumACK.Microseconds()) / 1000, "clientReplayedFrames": replayed, "startFrame": fmt.Sprint(startFrame), "lastFrame": fmt.Sprint(confirmed), "reconnectResync": true, "opaqueCheckpointRestored": true}
+	evidence["nativeLatencyBudgetEnforced"] = enforceNativeLatency
+	raw, _ := json.MarshalIndent(evidence, "", "  ")
+	if err = os.WriteFile(filepath.Join(directory, "actual-http-ws-"+label+".json"), raw, 0644); err != nil {
+		t.Fatal(err)
+	}
+	t.Log(string(raw))
+}

@@ -1,0 +1,41 @@
+{
+  "blockedPayloadBytes": 4194304,
+  "fastActions": 12,
+  "lastFastPacket": {
+    "clockOffsetMs": 0,
+    "game": {
+      "actors": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "attention": [],
+      "data": {
+        "inputs": 13,
+        "previous": "1",
+        "viewer": 0
+      },
+      "eliminated": null,
+      "finished": false,
+      "kind": "realtime_fixture",
+      "log": [],
+      "phase": "module",
+      "round": 1,
+      "systemDeadline": 1793910624302,
+      "turn": 0,
+      "winners": []
+    },
+    "loading": null,
+    "roomId": "67118836",
+    "serverInstance": "81a9899bc84baf87b971bc4307e398d8",
+    "serverNow": 1793907024920,
+    "setupVersion": 6,
+    "status": "playing",
+    "turnDeadline": 0,
+    "type": "game",
+    "version": 19
+  },
+  "maximumAckMS": 3.117,
+  "passed": true
+}

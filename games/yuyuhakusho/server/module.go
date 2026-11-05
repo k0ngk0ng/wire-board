@@ -17,7 +17,7 @@ import (
 var matchSerial atomic.Uint64
 
 func Module() gameapi.Module {
-	return gameapi.Module{ID: "yuyuhakusho", Name: "魔强统一战", MinPlayers: 2, MaxPlayers: 4, Realtime: true, Controls: &gameapi.ControllerDefinition{Layout: "md-6", LegacyProfile: "md-6"}, Configure: configure, Prepare: prepare, Start: start, Apply: apply, View: project, SyncSnapshot: syncSnapshot, BotAction: botAction, Reclaim: reclaim, Restore: restore, AcceptStale: acceptStale, OnTimer: onTimer}
+	return gameapi.Module{ID: "yuyuhakusho", Name: "魔强统一战", MinPlayers: 2, MaxPlayers: 4, Realtime: true, Controls: &gameapi.ControllerDefinition{Layout: "md-6", LegacyProfile: "md-6"}, Configure: configure, Prepare: prepare, Start: start, Apply: apply, View: project, StreamView: streamView, SyncSnapshot: syncSnapshot, BotAction: botAction, Reclaim: reclaim, Restore: restore, AcceptStale: acceptStale, OnTimer: onTimer}
 }
 func start(ctx gameapi.Context, raw json.RawMessage) (gameapi.Match, error) {
 	if resources.err != nil {
