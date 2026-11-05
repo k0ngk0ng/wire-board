@@ -1,0 +1,64 @@
+// The server provides exact GameAudio source from committed baseline aa617e23.
+// This probe observes native capture lifetime, not a game playback substitute.
+import { GameAudio } from "/baseline-audio.js";
+const rows: unknown[] = [];
+const mark = (kind: string, value: object = {}) => rows.push({ kind, at: performance.now(), ...value });
+const platform = new GameAudio();
+platform.mount();
+const port = platform.channel("native-capture-boundary");
+const h = { complete: false, error: "", rows, capture: null as unknown, supported: false };
+Object.assign(window, { nativeCaptureBoundary: h });
+const wait = async (predicate: () => boolean) => {
+  const start = performance.now();
+  while (!predicate()) { if (performance.now() - start > 12000) throw Error("native capture boundary timed out"); await new Promise((resolve) => setTimeout(resolve, 10)); }
+};
+document.querySelector<HTMLButtonElement>("#start")!.onclick = async () => {
+  try {
+    await platform.unlock();
+    await port.music(["/diagnostic-loop.wav"], { loopStartSeconds: 1, playbackID: "capture-boundary" });
+    const media = document.querySelector<HTMLAudioElement>("audio[data-platform-music]")!;
+    let ended = 0;
+    for (const kind of ["playing", "pause", "ended", "seeking", "seeked", "waiting", "stalled", "timeupdate"])
+      media.addEventListener(kind, () => { if (kind === "ended") ended++; mark("media-" + kind, { time: media.currentTime, paused: media.paused, ended: media.ended }); }, { capture: true });
+    const source = media as HTMLAudioElement & { captureStream?: () => MediaStream };
+    if (!source.captureStream || !MediaRecorder.isTypeSupported("audio/webm;codecs=opus")) throw Error("native captureStream/Opus recorder unavailable");
+    h.supported = true;
+    const stream = source.captureStream();
+    const tracks = () => stream.getTracks().map((track) => ({ id: track.id, kind: track.kind, readyState: track.readyState, muted: track.muted, settings: track.getSettings() }));
+    const observe = (track: MediaStreamTrack) => {
+      mark("track-observed", { id: track.id, readyState: track.readyState, settings: track.getSettings() });
+      for (const kind of ["ended", "mute", "unmute"]) track.addEventListener(kind, () => mark("track-" + kind, { id: track.id, readyState: track.readyState, mediaTime: media.currentTime }));
+    };
+    stream.getTracks().forEach(observe);
+    stream.addEventListener("addtrack", (event) => { mark("stream-addtrack", { id: event.track.id, tracks: tracks() }); observe(event.track); });
+    stream.addEventListener("removetrack", (event) => mark("stream-removetrack", { id: event.track.id, tracks: tracks() }));
+    stream.addEventListener("active", () => mark("stream-active", { tracks: tracks() }));
+    stream.addEventListener("inactive", () => mark("stream-inactive", { tracks: tracks() }));
+    const recorder = new MediaRecorder(stream, { mimeType: "audio/webm;codecs=opus" });
+    const chunks: Blob[] = [];
+    for (const kind of ["start", "stop", "pause", "resume"]) recorder.addEventListener(kind, () => mark("recorder-" + kind, { state: recorder.state, tracks: tracks(), mediaTime: media.currentTime }));
+    recorder.addEventListener("error", (event) => mark("recorder-error", { state: recorder.state, message: (event as Event & { error?: DOMException }).error?.message ?? "", tracks: tracks() }));
+    recorder.addEventListener("dataavailable", (event) => { if (event.data.size) chunks.push(event.data); mark("recorder-dataavailable", { bytes: event.data.size, state: recorder.state, mediaTime: media.currentTime }); });
+    mark("before-record-start", { tracks: tracks(), mediaTime: media.currentTime });
+    recorder.start();
+    await wait(() => ended >= 2 && media.currentTime > 1.15 && media.currentTime < 2);
+    mark("after-two-media-boundaries", { state: recorder.state, mediaTime: media.currentTime, tracks: tracks(), loop: media.loop, rate: media.playbackRate, duration: media.duration });
+    const mediaRows = rows as { kind: string; at: number; time?: number }[];
+    const boundaries = mediaRows.filter((row) => row.kind === "media-ended");
+    const restarts = boundaries.slice(0, 2).map((row) => mediaRows.find((next) => next.kind === "media-playing" && next.at >= row.at));
+    if (restarts.some((row) => !row || row.time === undefined || row.time < 1 || row.time > 1.15)) throw Error("diagnostic source restarted its intro; suffix was not actually preserved");
+    if (boundaries[1].at - boundaries[0].at < 1900 || boundaries[1].at - boundaries[0].at > 2600) throw Error("diagnostic did not traverse the full two-second suffix");
+    if (recorder.state !== "inactive") {
+      mark("explicit-recorder-stop", { state: recorder.state, mediaTime: media.currentTime });
+      await new Promise<void>((resolve) => { recorder.addEventListener("stop", () => resolve(), { once: true }); recorder.stop(); });
+    }
+    const blob = new Blob(chunks, { type: recorder.mimeType });
+    const bytes = new Uint8Array(await blob.arrayBuffer());
+    let binary = "";
+    for (let index = 0; index < bytes.length; index += 16384) binary += String.fromCharCode(...bytes.subarray(index, index + 16384));
+    h.capture = { mime: recorder.mimeType, bytes: blob.size, data: btoa(binary) };
+    platform.dispose();
+    h.complete = true;
+    document.querySelector("pre")!.textContent = JSON.stringify({ complete: true, observations: rows.length, sampleGaplessVerified: false }, null, 2);
+  } catch (error) { h.error = String(error); platform.dispose(); document.querySelector("pre")!.textContent = h.error; }
+};

@@ -1,0 +1,18 @@
+{
+  "pass": true,
+  "scope": "Two exports from the same immutable source catalog and original134 WAVs produce byte-identical catalog and manifest",
+  "files": [
+    {
+      "file": "audio-finite-catalog.json",
+      "bytes": 37134,
+      "sha256": "017d1242e89bc6de78de1b6c4acdf89f6af4dccee92b12ba4aad7e5625be0f27",
+      "repeat_identical": true
+    },
+    {
+      "file": "audio-finite-catalog-manifest.json",
+      "bytes": 1819,
+      "sha256": "35d818bf7790df1d8d5cf19e77ef1d23330672eb3c3c2514123f6887220bd620",
+      "repeat_identical": true
+    }
+  ]
+}

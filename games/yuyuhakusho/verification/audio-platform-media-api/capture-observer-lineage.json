@@ -1,0 +1,15 @@
+{
+  "recorded_at_utc": "2026-11-05T09:56:54.024528+00:00",
+  "scope": "Focused observer fixture correction, no production change",
+  "initial_observer_not_valid_suffix_proof": true,
+  "reason": "Initial tiny HTTP fixture did not implement Range. Actual native seeks restarted at0; its broad two-ended predicate could falsely accept intro replay. Preserve initial raw result, strengthen suffix-position/period assertions first, reproduce red, then correct only HTTP fixture. The earlier full media API harness already implements properRange and correctly showed suffix start1.",
+  "archives": [
+    "capture-boundary/initial-http-result.json",
+    "capture-initial-harness.ts.txt",
+    "capture-initial-checker.py.txt"
+  ],
+  "strict_harness_sha256": "5df66943e1c9be37c77cccc035955b9e8706bfb007d1e9c7715c7b62fe582935",
+  "http_fixture_fix_sha256": "713c12b9c540fad5ae173005ff87e758c0d24f347ad6fbf138487336ff57bcac",
+  "actual_strict_red_log": "capture-http-red.log",
+  "historical_initial_capture_note": "The untrusted initial HTTP-result JSON preserves its original event rows and capture digest. Its original optional WebM was not retained when the corrected observer reran; it is not a raw-PCM evidence source. Final corrected WebM and initial full API-harness WebM are retained and verified."
+}

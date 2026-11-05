@@ -1,0 +1,75 @@
+{
+  "after_open": {
+    "focused": true,
+    "hidden": false,
+    "href": "http://127.0.0.1:50604/",
+    "readyState": "complete",
+    "userActivation": {
+      "active": false,
+      "ever": false
+    },
+    "visibility": "visible"
+  },
+  "tabs": {
+    "lifecycle": {
+      "effectiveLaunch": {
+        "browserLaunched": true,
+        "engine": "chrome",
+        "launchHash": 7789919054118900409
+      },
+      "launched": false,
+      "relaunchedBrowser": false,
+      "restartedBackground": false,
+      "restoreStatus": "not_configured",
+      "reused": true,
+      "saveStatus": "not_attempted"
+    },
+    "tabs": [
+      {
+        "active": true,
+        "label": null,
+        "tabId": "t1",
+        "targetId": "97DB74DC233B95DFD36898BA5D792ED5",
+        "title": "127.0.0.1:50604",
+        "type": "page",
+        "url": "http://127.0.0.1:50604/"
+      },
+      {
+        "active": false,
+        "label": null,
+        "tabId": "t2",
+        "targetId": "03C9A38FB0C2364A83EF9D39692515AB",
+        "title": "127.0.0.1:50483",
+        "type": "page",
+        "url": "http://127.0.0.1:50483/"
+      },
+      {
+        "active": false,
+        "label": null,
+        "tabId": "t3",
+        "targetId": "D2BE0DBA72CD25E7A1C9055480D303A9",
+        "title": "127.0.0.1:50519/blank",
+        "type": "page",
+        "url": "http://127.0.0.1:50519/blank"
+      },
+      {
+        "active": false,
+        "label": null,
+        "tabId": "t4",
+        "targetId": "1B09DDC3292F860EE4771D3D4A4A9484",
+        "title": "127.0.0.1:49935/blank",
+        "type": "page",
+        "url": "http://127.0.0.1:49935/blank"
+      },
+      {
+        "active": false,
+        "label": null,
+        "tabId": "t5",
+        "targetId": "1D77D1529DF4154630E5503CE011A265",
+        "title": "127.0.0.1:49882/blank",
+        "type": "page",
+        "url": "http://127.0.0.1:49882/blank"
+      }
+    ]
+  }
+}

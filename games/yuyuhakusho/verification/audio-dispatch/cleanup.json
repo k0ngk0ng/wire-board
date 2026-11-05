@@ -1,0 +1,34 @@
+{
+  "cleaned_at_utc": "2026-11-05T11:25:34.311555+00:00",
+  "scope": "Only this owner repeat fixture exports and empty libretro frontend directories",
+  "paths": [
+    {
+      "path": ".local/md-yuyuhakusho/audio-dispatch-private-repeat",
+      "bytes": 162037
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-dispatch-export-repeat",
+      "bytes": 168863
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-dispatch-study/original",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-dispatch-study/observed",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-dispatch-private/private-core",
+      "bytes": 0
+    }
+  ],
+  "total_bytes_removed": 330900,
+  "preserved": [
+    "Canonical23 original/hook cases, PCM and ordered boundary records in.local",
+    "Canonical13036 private call fixture and manifests",
+    "Three retained original WAV counterexamples and all Go fixtures",
+    "Actual missing/reset-input/linear-mix red evidence, final logs and frozen sources",
+    "All original ROM/core/media and other agents files"
+  ]
+}

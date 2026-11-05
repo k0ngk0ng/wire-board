@@ -1,0 +1,194 @@
+{
+  "schema": 1,
+  "scope": "verbatim-original-PCM-native-carrier",
+  "mime": "audio/mp4; codecs=\"fLaC\"",
+  "sample_rate": 44100,
+  "channels": 2,
+  "sample_frames": 529200,
+  "stereo_frames": 529200,
+  "source_code": 130,
+  "source_file": ".local/md-yuyuhakusho/audio-assets-final/isolated/music-excerpts/82.wav",
+  "source_wav_sha256": "85b105ce9ea41d49cf62da9b0a2612bbfdb436a77a9b6e4c0d72cd8ff3167c50",
+  "source_catalog_sha256": "617737f8ef07043401fa74f7f48ba551a64dd91cedd3a94dbfcf4883e0ff1541",
+  "source_excerpt_pcm_sha256": "7801d4c5f7ae515e7819c69637f3974ed2feedfc0362df2370ec28f5b8d55f4c",
+  "decoder_pcm_sha256": "7801d4c5f7ae515e7819c69637f3974ed2feedfc0362df2370ec28f5b8d55f4c",
+  "reconstructed_pcm_sha256": "7801d4c5f7ae515e7819c69637f3974ed2feedfc0362df2370ec28f5b8d55f4c",
+  "roundtrip_pcm_equal": true,
+  "fragment_reconstruction_pcm_equal": true,
+  "init_sha256": "24be8ab0a8eba249035e9acf5ba41b10a3edec9430072deb193b80f6b79fa864",
+  "fragments": [
+    {
+      "index": 0,
+      "file": "fragment-000.m4s",
+      "sha256": "058519bacc82022d7aa8778b9b1af4d7dc8c6047cbd170db57b3a8f20c4d9049",
+      "start_sample": 0,
+      "sample_frames": 45056,
+      "packets": 11,
+      "bytes": 98416
+    },
+    {
+      "index": 1,
+      "file": "fragment-001.m4s",
+      "sha256": "90ddce05c18a5bd9e5343bedff5a90de5af8da8ebdbc349a9569dba81c53579c",
+      "start_sample": 45056,
+      "sample_frames": 45056,
+      "packets": 11,
+      "bytes": 103798
+    },
+    {
+      "index": 2,
+      "file": "fragment-002.m4s",
+      "sha256": "7aca52f56f5af3ecae01185766ff78cdca557dc3f1007691097f2e81bf359b74",
+      "start_sample": 90112,
+      "sample_frames": 45056,
+      "packets": 11,
+      "bytes": 104482
+    },
+    {
+      "index": 3,
+      "file": "fragment-003.m4s",
+      "sha256": "632634f30d695ddffa368bef9576ad5791650fd6a1e8e4410a1e2480479193fd",
+      "start_sample": 135168,
+      "sample_frames": 45056,
+      "packets": 11,
+      "bytes": 100772
+    },
+    {
+      "index": 4,
+      "file": "fragment-004.m4s",
+      "sha256": "8d3a76ef3b5502f68fe12a96445f19d17797f4fe33ccb5f1a1172c5399cb061d",
+      "start_sample": 180224,
+      "sample_frames": 45056,
+      "packets": 11,
+      "bytes": 97083
+    },
+    {
+      "index": 5,
+      "file": "fragment-005.m4s",
+      "sha256": "0eaae8f87fad19ca4f1128f15fccdb48e5ac31ab53fd0dce290e62ad1f09842b",
+      "start_sample": 225280,
+      "sample_frames": 45056,
+      "packets": 11,
+      "bytes": 101906
+    },
+    {
+      "index": 6,
+      "file": "fragment-006.m4s",
+      "sha256": "5a9b81890e9ccc7afa6937876e21fc140a60ef765925afbba668ea53a1c6b629",
+      "start_sample": 270336,
+      "sample_frames": 45056,
+      "packets": 11,
+      "bytes": 100932
+    },
+    {
+      "index": 7,
+      "file": "fragment-007.m4s",
+      "sha256": "f50f2a554b71477bb79cc4b402372f22484f9b9adbd0af784a25facdd630501d",
+      "start_sample": 315392,
+      "sample_frames": 45056,
+      "packets": 11,
+      "bytes": 103914
+    },
+    {
+      "index": 8,
+      "file": "fragment-008.m4s",
+      "sha256": "797f9a3af5f106c9f7ecb00500852a40bcd3f4783e1cbbaf819f5f6d5f7f8b9d",
+      "start_sample": 360448,
+      "sample_frames": 45056,
+      "packets": 11,
+      "bytes": 103639
+    },
+    {
+      "index": 9,
+      "file": "fragment-009.m4s",
+      "sha256": "6cef72dfdc1f7a1712ece3e209eec349ff30eaf55477ccb99903399a77ad7415",
+      "start_sample": 405504,
+      "sample_frames": 45056,
+      "packets": 11,
+      "bytes": 101231
+    },
+    {
+      "index": 10,
+      "file": "fragment-010.m4s",
+      "sha256": "16a9ff4abb6282f21a1b200003e3a9df6d578c567174d76a679ce8de25c72df9",
+      "start_sample": 450560,
+      "sample_frames": 45056,
+      "packets": 11,
+      "bytes": 97893
+    },
+    {
+      "index": 11,
+      "file": "fragment-011.m4s",
+      "sha256": "a30bb3a86dd84bf05ab3698a7777090d780f3cba44b5bdc80b70696efec155bc",
+      "start_sample": 495616,
+      "sample_frames": 33584,
+      "packets": 9,
+      "bytes": 76280
+    }
+  ],
+  "ffmpeg_version": "ffmpeg version 9.0.1 Copyright (c) 2000-2026 the FFmpeg developers",
+  "commands": [
+    [
+      "/opt/homebrew/bin/ffmpeg",
+      "-nostdin",
+      "-v",
+      "error",
+      "-i",
+      "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/audio-music-carrier/fixture/source.wav",
+      "-map",
+      "0:a:0",
+      "-c:a",
+      "flac",
+      "-sample_fmt",
+      "s16",
+      "-strict",
+      "-2",
+      "-movflags",
+      "empty_moov+frag_keyframe+default_base_moof+skip_trailer",
+      "-frag_duration",
+      "1000000",
+      "-f",
+      "mp4",
+      "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/audio-music-carrier/fixture/carrier.mp4"
+    ],
+    [
+      "/opt/homebrew/bin/ffmpeg",
+      "-nostdin",
+      "-v",
+      "error",
+      "-i",
+      "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/audio-music-carrier/fixture/carrier.mp4",
+      "-map",
+      "0:a:0",
+      "-c:a",
+      "pcm_s16le",
+      "-f",
+      "s16le",
+      "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/audio-music-carrier/fixture/roundtrip.pcm"
+    ],
+    [
+      "/opt/homebrew/bin/ffmpeg",
+      "-nostdin",
+      "-v",
+      "error",
+      "-i",
+      "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/audio-music-carrier/fixture/reconstructed.mp4",
+      "-map",
+      "0:a:0",
+      "-c:a",
+      "pcm_s16le",
+      "-f",
+      "s16le",
+      "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/audio-music-carrier/fixture/reconstructed.pcm"
+    ]
+  ],
+  "published": false,
+  "loop_asset": false,
+  "source_sha256": {
+    "scripts/yuyuhakusho/build_music_native_carrier.py": "9a779ca51e5beba5e5e8c7b61ea58a5e47b833842af3e1419348cfb4cb7be9e4"
+  },
+  "limits": [
+    "Finite12second carrier fixture from an existing original excerpt, not a BGM loop",
+    "Offline ffmpeg research encoder; no independent DSP/Go encoder is claimed"
+  ]
+}

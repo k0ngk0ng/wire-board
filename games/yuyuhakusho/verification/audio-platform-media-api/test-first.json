@@ -1,0 +1,14 @@
+{
+  "created_at_utc": "2026-11-05T09:33:00.032850+00:00",
+  "shared_implementation_modified": false,
+  "phase": "Failure scope and E2E harness frozen before first browser execution",
+  "sha256": {
+    "docs/research/md-yuyuhakusho/AUDIO_PLATFORM_MEDIA_FAILURES.md": "d099352ac26666d92919c9128e3875fab63204dd122d22590fec71957764d4e8",
+    "scripts/yuyuhakusho/audio_media_api_harness.ts": "abcee3a7cbd3261c8c90160b6f30c6408f79fa578983f97f02b370bb7562d10a",
+    "scripts/yuyuhakusho/check_audio_media_api.py": "559c078c5c277d28bcaa8aed6a193473cba7cb30c905e93077ff51a7175049ba"
+  },
+  "observed_implementation_sha256": {
+    "web/src/audio.ts": "0901dad46773da863c3889788dd5f4ce8bc215360d384f83d3a32bf9f347dfb7",
+    "web/src/game-api/module.ts": "ef2259b10fbd03d280822f1da3f109fa13ab3d11113784414bd94a96bfe67aa7"
+  }
+}

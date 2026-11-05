@@ -1,0 +1,39 @@
+{
+  "error": "RuntimeError('{\"success\":false,\"data\":null,\"error\":\"CDP error (Runtime.evaluate): Inspected target navigated or closed\"}\\n')",
+  "requests": [
+    {
+      "path": "/",
+      "range": null,
+      "requested_at": 5217831.452352583,
+      "response_at": 5217831.452534583
+    },
+    {
+      "path": "/harness.js",
+      "range": null,
+      "requested_at": 5217831.466178541,
+      "response_at": 5217831.4664475
+    },
+    {
+      "path": "/favicon.ico",
+      "range": null,
+      "requested_at": 5217831.4917255
+    },
+    {
+      "path": "/",
+      "range": null,
+      "requested_at": 5217831.7149485,
+      "response_at": 5217831.714983833
+    },
+    {
+      "path": "/harness.js",
+      "range": null,
+      "requested_at": 5217831.718870625,
+      "response_at": 5217831.718979833
+    },
+    {
+      "path": "/favicon.ico",
+      "range": null,
+      "requested_at": 5217831.749269958
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "source_capture": "games/yuyuhakusho/verification/audio-platform-media-api/first-red/native-suffix-capture.webm",
+  "source_sha256": "101bd0488cf44e2e7e593125ab28d7dfc7479014d0c8ac83fdf65c1a2df6f359",
+  "decoder": "FFmpeg9.0.1 libopus decoder, native stream rate preserved",
+  "decoded_sample_rate": 48000,
+  "channels": 2,
+  "sample_width_bytes": 2,
+  "stereo_frames": 144000,
+  "duration_seconds": 3.0,
+  "decoded_pcm_sha256": "1e4cc858bd3a8dea6a965a3faeb2d70bfa4375bccf6cc654c5cdbde5a0191bdc",
+  "max_exact_zero_stereo_frames": 120,
+  "descriptive_rms_windows_excluding_first_last250ms": [
+    {
+      "window_ms": 1,
+      "minimum_rms": 5296.413178982546,
+      "window_start_seconds": 0.987
+    },
+    {
+      "window_ms": 5,
+      "minimum_rms": 5495.542930790976,
+      "window_start_seconds": 0.985
+    },
+    {
+      "window_ms": 10,
+      "minimum_rms": 5687.103351553407,
+      "window_start_seconds": 2.69
+    }
+  ],
+  "reference_diagnostic_sample_rate": 44100,
+  "sample_exact_source_alignment_verified": false,
+  "speaker_output_verified": false,
+  "limit": "Native captureStream recorded lossy Opus at48000Hz; neither source sample origin nor output-device clock was measured. RMS/zero descriptions cannot prove a sample-gapless loop or map JS event latency to an audible-gap duration."
+}

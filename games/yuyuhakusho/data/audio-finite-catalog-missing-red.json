@@ -1,0 +1,7 @@
+{
+  "scope": "All134 finite original WAVs and source-character animation references; no playback or BGM loop acceptance",
+  "verifier_sha256": "0104c7d79717a1b2f01a58c1d0dd877a64ba145801e40b69eb6369fb4a4f75bc",
+  "source_catalog_sha256": "617737f8ef07043401fa74f7f48ba551a64dd91cedd3a94dbfcf4883e0ff1541",
+  "pass": false,
+  "error": "missing finite runtime catalog: audio-finite-catalog.json"
+}

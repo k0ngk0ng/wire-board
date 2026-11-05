@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/analyze_audio_timing.py", line 83, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/analyze_audio_timing.py", line 72, in main
+    assert failed==0,('frame-end-only audio hypothesis contradicted by actual consumer entries inside callbacks',failed)
+           ^^^^^^^^^
+AssertionError: ('frame-end-only audio hypothesis contradicted by actual consumer entries inside callbacks', 145)

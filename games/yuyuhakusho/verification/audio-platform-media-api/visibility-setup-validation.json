@@ -1,0 +1,48 @@
+{
+  "created_at_utc": "2026-11-05T10:50:20.749140+00:00",
+  "pass": true,
+  "scope": "Real page visibility precondition investigation and setup-only repair for current finite effect API; frozen media assertions unchanged",
+  "original_failure": "games/yuyuhakusho/verification/audio-platform-media-api/finite-restored/failure-state.json",
+  "original_failure_evidence": "No/audio requests,events[],empty base element; initialvisibility was not recorded then.",
+  "observed_reproduction": {
+    "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-hidden-precondition2/setup.json",
+    "sha256": "9ffd8d19d0d931927d1d4ac27e96ba54f5bef80082cd2c1305220e58a244fadb",
+    "initial_owned_page_actually_hidden": true,
+    "trusted_background_click_reproduced_same_pre_media_failure": true
+  },
+  "fixed_precondition": "Activate exact verifier target with native CDP Target.activateTarget/Page.bringToFront, rebind documented agent-browser target, awaitactual document.visible, record native trusted click visibility. No document.hidden override.",
+  "final_run": {
+    "label": "finite-restored-final1",
+    "command": [
+      "python3",
+      "scripts/yuyuhakusho/check_audio_media_api.py",
+      "--proposed-finite-lanes",
+      "--label",
+      "finite-restored-final1"
+    ],
+    "exit_code": 0,
+    "result": "games/yuyuhakusho/verification/audio-platform-media-api/finite-restored-final1/result.json",
+    "sha256": "bd5286155995914481d8b210ea339a9724575e2c09c14f4775f12b62be5fd978",
+    "checks": 8,
+    "finite_overlap_supported": true,
+    "source_sha256": {
+      "web/src/audio.ts": "5b780a5aa796ccf07862e440a6519e6a80b649ac47537e5dcba79dcddd1f98aa",
+      "web/src/game-api/module.ts": "67dc0beb29ac8d13495a062fad97b88e755d1f292c2385c8d97fb4b13fe4f279",
+      "scripts/yuyuhakusho/audio_media_api_harness.ts": "abcee3a7cbd3261c8c90160b6f30c6408f79fa578983f97f02b370bb7562d10a",
+      "scripts/yuyuhakusho/check_audio_media_api.py": "958258b19a132b8c2e452a21591145e7d3d90770bc87858bf0fa979c539f8eb3",
+      "docs/research/md-yuyuhakusho/AUDIO_PLATFORM_MEDIA_FAILURES.md": "d099352ac26666d92919c9128e3875fab63204dd122d22590fec71957764d4e8",
+      "scripts/yuyuhakusho/activate_audio_media_page.mjs": "be175caaed1be418b82892ae56c53fefe3b8c56ceff208f94de997923a508ae8",
+      "scripts/yuyuhakusho/audio_finite_lanes_harness.ts": "94c125b84f4f5c9df26717bfb5b1548b0020ff74088c2dc8e61fadac402455a3"
+    }
+  },
+  "frozen_harness_sha256": {
+    "scripts/yuyuhakusho/audio_finite_lanes_harness.ts": "94c125b84f4f5c9df26717bfb5b1548b0020ff74088c2dc8e61fadac402455a3",
+    "scripts/yuyuhakusho/audio_media_api_harness.ts": "abcee3a7cbd3261c8c90160b6f30c6408f79fa578983f97f02b370bb7562d10a"
+  },
+  "checker_lineage": "games/yuyuhakusho/verification/audio-platform-media-api/visibility-setup-lineage.json",
+  "production_modified_by_this_scope": false,
+  "retained_setup_probe_failure": "games/yuyuhakusho/verification/audio-platform-media-api/finite-hidden-precondition.log",
+  "setup_probe_failure_limit": "Optional external CDP reload caused agent-browser cached context navigation error; only the target activation helper remains, and navigation now goes through agent-browser open.",
+  "sample_gapless_verified": false,
+  "original_mix_equivalent": false
+}

@@ -1,0 +1,67 @@
+{
+  "scope": "Only this worker private repeat/projection output, duplicated console logs and empty reference directories",
+  "paths": [
+    {
+      "path": ".local/md-yuyuhakusho/audio-timing-private",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-timing-private-repeat",
+      "bytes": 43439
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-timing-projection-repeat",
+      "bytes": 4318338
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-timing-first.log",
+      "bytes": 781
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-timing-private.log",
+      "bytes": 1140
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-timing-pause.log",
+      "bytes": 511
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-timing-private-v2.log",
+      "bytes": 29
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-timing-projection.log",
+      "bytes": 1569
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-timing-private-repeat.log",
+      "bytes": 29
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-timing-projection-repeat.log",
+      "bytes": 1569
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-timing-first/observed-baseline",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-timing-pause/unhooked-pause",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-timing-pause/observed-pause",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-timing-private-v2/private",
+      "bytes": 0
+    }
+  ],
+  "bytes_removed": 4367405,
+  "preserved": [
+    "All canonical original reference fixtures and original capture/test red evidence",
+    "First baseline/pause/private original data and manifests used by offline projector defaults",
+    "ROM/core/sharedGo cache/currentworld and other workers files"
+  ]
+}

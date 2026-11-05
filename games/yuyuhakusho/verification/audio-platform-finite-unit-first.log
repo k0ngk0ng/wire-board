@@ -1,0 +1,16 @@
+✔ finite lanes coexist with music and the legacy single effect task (0.867625ms)
+✔ finite instance identity is stable through refresh, conflict, end and replacement (0.166417ms)
+✔ invalid finite requests are atomic and source alternatives are not a playlist (0.853125ms)
+✔ expired restore does not replay or interrupt a peer (0.123167ms)
+✔ late replaced or muted plays cannot revive detached voices or stop a successor (0.163125ms)
+✔ pause during finite metadata load preserves offset and does not trigger fallback (0.231708ms)
+✔ finite owner cancellation, volume and stale callbacks stay isolated (0.112208ms)
+✔ finite stable lane capacity is bounded and replacement does not grow live media (0.971208ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 67.023708

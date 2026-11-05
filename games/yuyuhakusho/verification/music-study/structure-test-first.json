@@ -1,0 +1,8 @@
+{
+  "phase": "Original event comparison and malformed-flow contract before parser implementation",
+  "created_at_utc": "2026-11-05T09:46:52.040740+00:00",
+  "test": "scripts/yuyuhakusho/check_music_score_structure.py",
+  "sha256": "aeef14935ececbba60ce1c5b9f0eff537dfd18003a5f01c4b4b27543be20f26f",
+  "red": ".local/md-yuyuhakusho/audio-music-survey/structure-symbol-red.txt",
+  "red_exit_code": 1
+}

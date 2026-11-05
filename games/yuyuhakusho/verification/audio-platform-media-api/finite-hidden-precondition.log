@@ -1,0 +1,13 @@
+
+  .local/md-yuyuhakusho/audio-media-api/harness.js  42.0kb
+
+⚡ Done in 8ms
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/check_audio_media_api.py", line 85, in <module>
+    browser('wait','--fn','!document.hidden && document.visibilityState === "visible" && !!window.yuyuMediaAPI?.ready')
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/check_audio_media_api.py", line 72, in browser
+    if result.returncode:raise RuntimeError(result.stdout+result.stderr)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: {"success":false,"data":null,"error":"CDP error (Runtime.evaluate): Inspected target navigated or closed"}
+

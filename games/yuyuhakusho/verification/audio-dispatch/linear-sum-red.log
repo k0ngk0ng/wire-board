@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/verify_audio_dispatch_study.py", line 30, in <module>
+    if args.expect_linear_mix:assert r['linear_mix']['different_samples']==0,'original paired PCM is not the unmodified linear sum of the isolated captures'
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: original paired PCM is not the unmodified linear sum of the isolated captures

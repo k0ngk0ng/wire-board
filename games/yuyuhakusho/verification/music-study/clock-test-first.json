@@ -1,0 +1,8 @@
+{
+  "created_at_utc": "2026-11-05T09:57:41.938007+00:00",
+  "phase": "Extended original-event contract before shared clock implementation",
+  "test": "scripts/yuyuhakusho/check_music_survey_full.py",
+  "sha256": "78d691614f9cffcf037620e6948fd5fc42eabaf646c1026475e7acc3d6817fcc",
+  "red": ".local/md-yuyuhakusho/audio-music-survey/clock-symbol-red.txt",
+  "red_exit_code": 1
+}

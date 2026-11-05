@@ -1,0 +1,1088 @@
+{
+  "scope": "All134 finite original WAVs and source-character animation references; no playback or BGM loop acceptance",
+  "verifier_sha256": "0104c7d79717a1b2f01a58c1d0dd877a64ba145801e40b69eb6369fb4a4f75bc",
+  "source_catalog_sha256": "617737f8ef07043401fa74f7f48ba551a64dd91cedd3a94dbfcf4883e0ff1541",
+  "pass": true,
+  "catalog_sha256": "017d1242e89bc6de78de1b6c4acdf89f6af4dccee92b12ba4aad7e5625be0f27",
+  "catalog_bytes": 37134,
+  "finite_clips": 134,
+  "animation_characters": 11,
+  "animation_unique_codes": 78,
+  "wav_files_verified": 134,
+  "wav_bytes_verified": 26479688,
+  "finite8f_onset": 971,
+  "media": [
+    {
+      "code": 6,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/06.wav",
+      "bytes": 161956,
+      "wav_sha256": "a7b08614ad20dedc13fdc8e60627d1f8c2b4f6a7b6031f30c55374febfab5d26",
+      "pcm_sha256": "3181e7beb2cdaa6bfb4af6157a8c40cb637628c2f8b8ae50278f7f20249373b1",
+      "first_nonzero_stereo_frame": 619
+    },
+    {
+      "code": 7,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/07.wav",
+      "bytes": 132516,
+      "wav_sha256": "9024f3230a2aeed1151556a380e359d37740f28e09c8989821b06ba9b815ca25",
+      "pcm_sha256": "b7e1e0d13c610c7eb33c96a409342005357e6eb671a88a7bbea0d8640e90fe1d",
+      "first_nonzero_stereo_frame": 619
+    },
+    {
+      "code": 8,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/08.wav",
+      "bytes": 279708,
+      "wav_sha256": "6080d56c178e0897eaabcc584179c3551111b348b2083cae78ea4af6532cfc1d",
+      "pcm_sha256": "df9273969170bad4120b65fdd8499e3d7bec61ac152cd205fcc3eccc9f7d0abc",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 9,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/09.wav",
+      "bytes": 206112,
+      "wav_sha256": "0ef4cfb3522e7d644b1ed29574f065b69604c26ccbb63fbe6e8ba8a4ed5fb3f4",
+      "pcm_sha256": "1ecfd25b7188ee9659737ec90a4017c11594a4cbf84991a2a24871dd0c766bae",
+      "first_nonzero_stereo_frame": 619
+    },
+    {
+      "code": 10,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/0a.wav",
+      "bytes": 288536,
+      "wav_sha256": "32939e9f84382cd5bf8c29b2e262948da1b6c287b06324034db7fd0abcc580a8",
+      "pcm_sha256": "0aea09d05b6e65351d9a5b3b654d30b30ec59e1b67a3fd2617e44096e75286e1",
+      "first_nonzero_stereo_frame": 625
+    },
+    {
+      "code": 11,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/0b.wav",
+      "bytes": 206112,
+      "wav_sha256": "13a1a690731911e15ebf5660caedb48178581fe97cc962005163ffea6ad9b940",
+      "pcm_sha256": "43dc5562336b24f80b95050dd70dd808172a73b99cc1219287f9f806f901faea",
+      "first_nonzero_stereo_frame": 631
+    },
+    {
+      "code": 12,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/0c.wav",
+      "bytes": 247324,
+      "wav_sha256": "f15b8acd20d55fb5838a59a50fa1474d61ebd31457c8ad274d8fe29588829967",
+      "pcm_sha256": "c7624e0fa527983e96cc78ef9ad677e30027ac81bae705b151c1364c7b277d2a",
+      "first_nonzero_stereo_frame": 618
+    },
+    {
+      "code": 13,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/0d.wav",
+      "bytes": 132516,
+      "wav_sha256": "eb1b9412ca53a6499121c19ecf9bd331572ee7b247c155c0fe11298e3602964a",
+      "pcm_sha256": "595c6b38f2b6098c9c573eb212a672a6414bb43c7de1fb85b0ddb7db404aaf76",
+      "first_nonzero_stereo_frame": 618
+    },
+    {
+      "code": 14,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/0e.wav",
+      "bytes": 217888,
+      "wav_sha256": "a26e41236ec0c5336ad05b3cd2d1c01aa2a2f97eeddf89ea5b54810da8ddb5f2",
+      "pcm_sha256": "38302b45e623da0d3c4eab5aae728938965b766bfd485b1c0c3d20d4822d5e4a",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 15,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/0f.wav",
+      "bytes": 197280,
+      "wav_sha256": "70c48d72164393081726273ef2e6d687224e2f41ba94bea559aa0c87f936178e",
+      "pcm_sha256": "d3dfc85874999c85da353ca813337093e73c76ba623483f61bb2d64e583fc943",
+      "first_nonzero_stereo_frame": 619
+    },
+    {
+      "code": 16,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/10.wav",
+      "bytes": 197280,
+      "wav_sha256": "a59ec42edea128f77f33bd9e6ac4e23a582e2a2ee6b754efff3fefd3217fce97",
+      "pcm_sha256": "de60a2db1bdaaebb83e5684c51e46ff1e5441be513153684d05921be9892654c",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 17,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/11.wav",
+      "bytes": 214944,
+      "wav_sha256": "08f4b02557efea9f7baf21e55214d1459ff179fabb22221da6b00f968972725e",
+      "pcm_sha256": "788ae0fe7cad5e2c1d03cb73ee9500dc83a8d5a6dc80b93ef8efdd5debd8022e",
+      "first_nonzero_stereo_frame": 619
+    },
+    {
+      "code": 18,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/12.wav",
+      "bytes": 129572,
+      "wav_sha256": "11d26b8401900746e0b556e94cad074af1a52cfe563e1908b6485b92b8765cce",
+      "pcm_sha256": "c5fffb879bc286baa10723df0b04f6e2435a24009d07aa422c876aa65538a72b",
+      "first_nonzero_stereo_frame": 630
+    },
+    {
+      "code": 19,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/13.wav",
+      "bytes": 200224,
+      "wav_sha256": "03457698fd4daa5cacf8b2298d05cd0f6c0abcfe61753351c5ceedc6a69ec765",
+      "pcm_sha256": "fd8f0312940fbf56dd79abe428d0827cd4796f2ed941cc4025eda956a3ae1b29",
+      "first_nonzero_stereo_frame": 631
+    },
+    {
+      "code": 20,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/14.wav",
+      "bytes": 220832,
+      "wav_sha256": "49820b0015eb495a115274885f224ae61ed26fd2a4dca5a110e0d96b29c4f23c",
+      "pcm_sha256": "1d89804a69aa9bb7240e9b4566a6adc6a63cbb8d9c130203d6fde3dc23842963",
+      "first_nonzero_stereo_frame": 625
+    },
+    {
+      "code": 21,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/15.wav",
+      "bytes": 176672,
+      "wav_sha256": "4feebd8a06cd78a863578614502dc02ebf3a0d4e2f172f7312ecce930862d610",
+      "pcm_sha256": "191efa626b39c4313ebe27f9742ced5e36701cff98f1bd397edc786075e78cc9",
+      "first_nonzero_stereo_frame": 625
+    },
+    {
+      "code": 22,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/16.wav",
+      "bytes": 85416,
+      "wav_sha256": "562aec7d44c65d630aaa04811d348aa57822d3554a1343e35ab252a610a06341",
+      "pcm_sha256": "184b7998185a08ff8e86d3a3b326f156aaae5e6a33b723314ea2d93c192f8fc2",
+      "first_nonzero_stereo_frame": 635
+    },
+    {
+      "code": 23,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/17.wav",
+      "bytes": 135460,
+      "wav_sha256": "54acd023273f0818b39e640ab3d86fc8984ece714a23fea02928da7f271713cf",
+      "pcm_sha256": "9fb7a795d2c104c4cf97a158ac0f5da123dc6efa9a2df0a6b347dcd6642a8279",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 24,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/18.wav",
+      "bytes": 273820,
+      "wav_sha256": "dc65f871fa0adf4fdd1bdd7b9d90d0dd6bb296e6f85497d743493303923a3285",
+      "pcm_sha256": "e29f54888f2725bcea8b79003d5664725455074e9c070977b9679626f63209fe",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 25,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/19.wav",
+      "bytes": 194336,
+      "wav_sha256": "8fb3952ec59e9649f86654d24287f0755fe9cadb86864627bc7c8b9805d5c065",
+      "pcm_sha256": "cf475ffd027f9ae72971d04e3de764cf9f0c0f34f2c0d8b8d4490ec721caef4c",
+      "first_nonzero_stereo_frame": 635
+    },
+    {
+      "code": 26,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/1a.wav",
+      "bytes": 82472,
+      "wav_sha256": "9e134a3405be6a2193bdcfbc6e085d0b2108e4cfdbdd8e613f92f467e4961457",
+      "pcm_sha256": "4036bb72511bf1213aabca6b03f705ff839eb4738b26b959809ff932ba99b54f",
+      "first_nonzero_stereo_frame": 625
+    },
+    {
+      "code": 27,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/1b.wav",
+      "bytes": 94248,
+      "wav_sha256": "7a6a3a8e047637e97d57c5b0b7965370bca89ece18b2be9e99d223b872c23b10",
+      "pcm_sha256": "97e2e9a3aa1eaba5175eb3f135990afa2f885573c639e6a4f166cac511a92966",
+      "first_nonzero_stereo_frame": 625
+    },
+    {
+      "code": 28,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/1c.wav",
+      "bytes": 288536,
+      "wav_sha256": "ec492f315a2d87b7b831bcb406a87c4d3cdb5d676cb4fc9065ab2bbec2d817e5",
+      "pcm_sha256": "56f37d50024174b4115043041e88399a98a0e82c27f60471cdc35eee24a93121",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 29,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/1d.wav",
+      "bytes": 94248,
+      "wav_sha256": "ec369d7ab75491af7fd80bd4299f86d95e170b8fc8d07c6e18c203e635fa112b",
+      "pcm_sha256": "841e4bcf4dbddd5bf93bb0fa449acbe3158d61ef7509000862baad076825dac4",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 30,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/1e.wav",
+      "bytes": 350356,
+      "wav_sha256": "322f15bf2e19a47905963040a4eabfa5d33907c58a85c3eadbc7b746b76f7457",
+      "pcm_sha256": "235a878ba11465c6cb02cac07c4f541e0d500b6d5b2ff86ce11a7de50ca6b3bf",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 31,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/1f.wav",
+      "bytes": 373908,
+      "wav_sha256": "ec13f289239262317673ee344ed1f139f714b273fc5cdf806f90c0fa3723e351",
+      "pcm_sha256": "e7b52b754712ba0f68865722b92ba6bcd50158414ad657ec9ebd65d3db8d02a0",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 32,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/20.wav",
+      "bytes": 220832,
+      "wav_sha256": "216ef3050094716d7322654aadd379ef33ff8a52008f4aa321c53e5a3e28c116",
+      "pcm_sha256": "2e92d55450ca494f72a8724c7f46d1f9a6b1720323f2fea1775c522ad6512c95",
+      "first_nonzero_stereo_frame": 618
+    },
+    {
+      "code": 33,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/21.wav",
+      "bytes": 132516,
+      "wav_sha256": "25195f65e5c9c26aff96476b52aeeab2bdda8ff515cd560027ba0f1eb7ce7edd",
+      "pcm_sha256": "51d3fd78102e820a51601cb4202b0e0103dc87ff1942aa68d0bab55558a57114",
+      "first_nonzero_stereo_frame": 631
+    },
+    {
+      "code": 34,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/22.wav",
+      "bytes": 94248,
+      "wav_sha256": "532bcf969489840429d1f44ccd4242c2174486d2ccaecf7922941bba81a9979a",
+      "pcm_sha256": "9c5244ffb38fabd137210fa22a5d557d38797556b6db7811d2d2553af93812e2",
+      "first_nonzero_stereo_frame": 630
+    },
+    {
+      "code": 35,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/23.wav",
+      "bytes": 94248,
+      "wav_sha256": "bc0baa4e845682bc772b5023812f57d5b763e5a8a79371d849f4904388d43f8b",
+      "pcm_sha256": "2157269592c5c467ab46af728043598691a12cbdbcd31815b99176bef3f37114",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 36,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/24.wav",
+      "bytes": 106024,
+      "wav_sha256": "77b05adbb74069c7924e2e862a4244648908c5ec205dc71b2dc77d171bfbf4bc",
+      "pcm_sha256": "6ae66b18a46e4012c49cc55555e1415c73cc95ac53ccbf247d1d4b06861efb31",
+      "first_nonzero_stereo_frame": 686
+    },
+    {
+      "code": 37,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/25.wav",
+      "bytes": 262044,
+      "wav_sha256": "d82848a2e502412c12210e8af13eca3562609f0f08bee42cac188ae588c21528",
+      "pcm_sha256": "ebe672533c6c4408262c95a5eb93e44518704983a7b548a5d2e29f1f749681a0",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 38,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/26.wav",
+      "bytes": 182560,
+      "wav_sha256": "2c1267d1b6814d2450f4f2213479f8cf5b72b0ec76003699e821da52eb3b8ecd",
+      "pcm_sha256": "e97396c3e40b103706939caf7b2f3fb1b7231d4f9de192906c980a699068477b",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 39,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/27.wav",
+      "bytes": 273820,
+      "wav_sha256": "440ae6f098d740b8957724ff4b1934bb7041ce8c72ab466e2fce0e223d53fc56",
+      "pcm_sha256": "88b9ae2fe05c7321569350115692a72561c4f50dca953584c02927e1f2084ab3",
+      "first_nonzero_stereo_frame": 660
+    },
+    {
+      "code": 40,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/28.wav",
+      "bytes": 259100,
+      "wav_sha256": "a2201ca00bceae6a449ca2562f6d0ab3b32b9c7f6930aa3e5c697373a931d1ec",
+      "pcm_sha256": "9178500b61aaa210f174cd2a32f258b80c13beddda96e675b85890e70b120a4b",
+      "first_nonzero_stereo_frame": 619
+    },
+    {
+      "code": 41,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/29.wav",
+      "bytes": 197280,
+      "wav_sha256": "a275b2a193e2d002197f0782b5f664e96bcd237ac5c77f03fa4965ad49f6f189",
+      "pcm_sha256": "27026e4ce3a12a51ecc7310631de42cf570938438d5fd305e43fec56d35c287b",
+      "first_nonzero_stereo_frame": 635
+    },
+    {
+      "code": 42,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/2a.wav",
+      "bytes": 315032,
+      "wav_sha256": "a947a1477ad877542e63418d9dd7e9a79aba32c0151b17e6c32fd542de53f1b1",
+      "pcm_sha256": "98162979eb5de40df4711ea94e8771f7e4d559d92036382501cb9e577ee3c40f",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 43,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/2b.wav",
+      "bytes": 220832,
+      "wav_sha256": "61d414321b904e1b1b2fbdbacca34c1f2eae51ed1b91e40aa86bfd5ae457a6fb",
+      "pcm_sha256": "d12e2e105563d523ed60b024e49155eb712c839a52a6d10f86088499efe1c70d",
+      "first_nonzero_stereo_frame": 618
+    },
+    {
+      "code": 44,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/2c.wav",
+      "bytes": 288536,
+      "wav_sha256": "52e1bf3af3e0d1d5543d83157ffa51bf2438d565f31e9224b1a6717b3aead1c0",
+      "pcm_sha256": "311d3ee9a503930a21e3dc895a2318bcf77de16636bcf96681f476de01312acd",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 45,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/2d.wav",
+      "bytes": 126628,
+      "wav_sha256": "081f7416b4642d43ce51dcc1c16dcf91602167d2b81ebbf4aa9f4dc666d5fe56",
+      "pcm_sha256": "f9f8f9a8d7b3277f3203d5d3934db93b1c93dce500baf894593501f73ba5d09f",
+      "first_nonzero_stereo_frame": 630
+    },
+    {
+      "code": 46,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/2e.wav",
+      "bytes": 285592,
+      "wav_sha256": "7c0f24f827198ff356625a545dd986212d2a03e398bc77bb145f54f48985ad26",
+      "pcm_sha256": "ed18e14d363a7c4ca473308a93bf7638efe23a9e8e2c830b3afb07a6d92fc545",
+      "first_nonzero_stereo_frame": 625
+    },
+    {
+      "code": 47,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/2f.wav",
+      "bytes": 297368,
+      "wav_sha256": "f66e2f7beada4f7206d3631a1dd34782052bdcfd49da36a0076b5052a5a7891d",
+      "pcm_sha256": "fb5abf2608397de26760b9e135fc89ccf5f8ee2c98373e482b9989fbb0e27319",
+      "first_nonzero_stereo_frame": 625
+    },
+    {
+      "code": 48,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/30.wav",
+      "bytes": 250268,
+      "wav_sha256": "60522da3283e29eceb9d31220d868a4da14ed2a31f2238b07eeeff28f500e295",
+      "pcm_sha256": "ceae442787264618621c18fe4678cc49ca5ca1002b78610d99f29df388decb04",
+      "first_nonzero_stereo_frame": 625
+    },
+    {
+      "code": 49,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/31.wav",
+      "bytes": 194336,
+      "wav_sha256": "e45fec04350d4b9ed8823a4714faf1b7898011446ea1aa1417b8002f987843e4",
+      "pcm_sha256": "e883b7eba26beb343225bb0d5c905fba5785e3397e8cffe5aa969e593b968d2c",
+      "first_nonzero_stereo_frame": 625
+    },
+    {
+      "code": 50,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/32.wav",
+      "bytes": 235548,
+      "wav_sha256": "b06c93c1ec2c629e23d3f1976d143e9c223523c696c5eb377c5fdef2740407f8",
+      "pcm_sha256": "d0cd56265ca3e0a2a9ede4984a42db5573b81ef49b47879f885b9d5d852733db",
+      "first_nonzero_stereo_frame": 653
+    },
+    {
+      "code": 51,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/33.wav",
+      "bytes": 226716,
+      "wav_sha256": "358302994f12fe9728eb0ad8839bdba58bfb8baa9ae8167777818c8fa4ea6c25",
+      "pcm_sha256": "e22af9fe7d201789bd560a03382596f74ca504a01745f6cfc2566280e42d6b3f",
+      "first_nonzero_stereo_frame": 625
+    },
+    {
+      "code": 52,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/34.wav",
+      "bytes": 100136,
+      "wav_sha256": "1a3b94336022c08603401aad11b0cc4efe241bfd9c06c0aacf5ecc9a3df37242",
+      "pcm_sha256": "dc856624574eb01143e68a2833f05464ca55cca1993d6a6feec86786c4c3a0d2",
+      "first_nonzero_stereo_frame": 625
+    },
+    {
+      "code": 53,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/35.wav",
+      "bytes": 97192,
+      "wav_sha256": "7718553cb690426d58389fd3ddc3461e22a3e69d4595c42e92080e6acb7f04c2",
+      "pcm_sha256": "dd42fb4eeed9cb96d9a0fec1289575d0ce9bcefb046f5a26ca3d782e56bf66b0",
+      "first_nonzero_stereo_frame": 625
+    },
+    {
+      "code": 54,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/36.wav",
+      "bytes": 217888,
+      "wav_sha256": "bf73a0e258b0f5080bf2bae848eda0055a74679519169e16ac11374de015ab62",
+      "pcm_sha256": "72f3453aa0e53bc588073d32c01824b42c94100ecfd6c4d824065dd9aa211f77",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 55,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/37.wav",
+      "bytes": 315032,
+      "wav_sha256": "6a72364b1fb76c67b62cf88fba2dad64b09609d8a15bed32f8626f4f58d7cdc4",
+      "pcm_sha256": "521478e17599757db742555600a5b4be9d3ed90d0273b181fc56a5749fe45f9e",
+      "first_nonzero_stereo_frame": 619
+    },
+    {
+      "code": 56,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/38.wav",
+      "bytes": 147236,
+      "wav_sha256": "98b7e9771bff5903664bde21f3967bb5e9ae636973478e806c8f508eae5eebd6",
+      "pcm_sha256": "452e2e357fae1e9950023c360f8567fe6eb9b95cfab104769d55faf773d688fd",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 57,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/39.wav",
+      "bytes": 203168,
+      "wav_sha256": "97bbaeecfe4cfcfe4177a31ef8295b083e3467a88b78d5a490ed51d775e810c1",
+      "pcm_sha256": "0c7a06cefddd759e0fc22217c164a6a6ceaa8061850e46dc6529e2b543711be4",
+      "first_nonzero_stereo_frame": 630
+    },
+    {
+      "code": 58,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/3a.wav",
+      "bytes": 241436,
+      "wav_sha256": "487fa82af1efc314129e79a8e2fcabbcc4f749cbb0136f6d7ee2893c96afd962",
+      "pcm_sha256": "14d39558ad8a03f1018f6894c8e1571a5b1875231a0b755aa6b39017b92e4353",
+      "first_nonzero_stereo_frame": 618
+    },
+    {
+      "code": 59,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/3b.wav",
+      "bytes": 191392,
+      "wav_sha256": "b793edf0b9f2fac7b6dd8f481899d7f9513787bf4beed8b953c01e1e1a15db54",
+      "pcm_sha256": "408a015eeb02ff5e9dbe118d08873186f80e49d8ee035aefabd744c1fc70cc4e",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 60,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/3c.wav",
+      "bytes": 167844,
+      "wav_sha256": "8d5fb71c5a3f838e835cdf3940052658459e9e90f24fa9f4743f1c3de3f4d5cb",
+      "pcm_sha256": "b9345d6cf51b2baa80a9b882fb94dc5b310b8be058a000fb7fd5eb341ec86a6e",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 61,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/3d.wav",
+      "bytes": 253212,
+      "wav_sha256": "3810ddf24e63a36bf66aa7c54dac2bf69ede247542b5b5106e82c5754abc2a27",
+      "pcm_sha256": "11c4047eee0bb0748f1bc4bae2bc2348f8fb0af80f923dccc397ef8356d49230",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 62,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/3e.wav",
+      "bytes": 309144,
+      "wav_sha256": "52640b6844759ad78abb88da2b0268c9f247acdbf2e9fde14832933a2c61d442",
+      "pcm_sha256": "4014fa5ec57f11d150a69cf0f287a4a635f7e4850657cd800b4c32fa9c4fec13",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 63,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/3f.wav",
+      "bytes": 359188,
+      "wav_sha256": "480805b361927ccb6e32c75f45b783dff1e734931be77bb064c980b26afa911d",
+      "pcm_sha256": "ee9fd8e26f3f5f05cd810e4b05dbaadad822111fe0bc378abddf5a89090a5108",
+      "first_nonzero_stereo_frame": 631
+    },
+    {
+      "code": 64,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/40.wav",
+      "bytes": 285592,
+      "wav_sha256": "80a461ad8c3f1c865b9a4b6ff93d62838315682eaa8423c44fb9c706450e2dbe",
+      "pcm_sha256": "448b9eda0ff3a9d857b00455c626e832d71558b202ab87999b4c653ed89c20c7",
+      "first_nonzero_stereo_frame": 697
+    },
+    {
+      "code": 65,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/41.wav",
+      "bytes": 276764,
+      "wav_sha256": "cf238d4f00c70b26a2073ad6d63e5004dd3f1feb69914876f87decc6daa16837",
+      "pcm_sha256": "35aff627ceaf681f37a901f3c1b36d5d4ad05ddc3152aeb785628288709c0df6",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 66,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/42.wav",
+      "bytes": 91304,
+      "wav_sha256": "88a4a5f445e0c9c227a0f1083e29bd3e5add4ff4f7829fa878d6942491435a6e",
+      "pcm_sha256": "77b41c653a086ff6c1cbc3cb39ea0bfac4cdef090762d05c76fcae5479b11331",
+      "first_nonzero_stereo_frame": 625
+    },
+    {
+      "code": 67,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/43.wav",
+      "bytes": 103080,
+      "wav_sha256": "2e36d36c919ab4e2d9e97a6b88ab6a0c3c7963d5a67521ce96d666f184d598ba",
+      "pcm_sha256": "3cb1bd1d242a35a7fa3315800ed927a929ed9caf3140462a0757e48ecd67cc59",
+      "first_nonzero_stereo_frame": 619
+    },
+    {
+      "code": 68,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/44.wav",
+      "bytes": 223776,
+      "wav_sha256": "7158f6a7f65da443261d818d037c5632c5e054125a7c60bf201ce408c5a90176",
+      "pcm_sha256": "19603a39109c79e90a2c13d98886ef48bd88f22bcf908a49f0c8019d8fa3bd3c",
+      "first_nonzero_stereo_frame": 630
+    },
+    {
+      "code": 69,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/45.wav",
+      "bytes": 156068,
+      "wav_sha256": "a9ef7f2078d927a12caef9dd6da7d561bdff0c28128385807f4f40d07b12a378",
+      "pcm_sha256": "b77ed4150c2ee4e4065c98fc13c5d82abf1c3c2afa8358ff10215e4cd0f9adfb",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 70,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/46.wav",
+      "bytes": 338580,
+      "wav_sha256": "dbaf105fd2abd3dceadbbffbce2664eaf8d766feeae48826d7453e2dc74557f6",
+      "pcm_sha256": "51d3be1ecc51aa9d124a0c1604d7895b64fd66b30a1d5130e2fe53806982bc21",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 71,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/47.wav",
+      "bytes": 212000,
+      "wav_sha256": "b0f705acdd20cdf15b56ebe2af8e2ef3450d8f896ee0d988532b195181cb91db",
+      "pcm_sha256": "c29adc45eed7a513de84ec123a1850418652b4077f10a020452b1a44f6e539a4",
+      "first_nonzero_stereo_frame": 618
+    },
+    {
+      "code": 72,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/48.wav",
+      "bytes": 220832,
+      "wav_sha256": "67deb02b7db6763bcadfc214968c71fb91d352e5a553d7c42e2bb1a20b93d73e",
+      "pcm_sha256": "2eafbeef852ea5f896a9fc7681a675a2474287561de19df90f8b3303c51d105e",
+      "first_nonzero_stereo_frame": 630
+    },
+    {
+      "code": 73,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/49.wav",
+      "bytes": 267932,
+      "wav_sha256": "b0a95254cf56f0a36c9e43f6eb86dca94dbf6d0ba8c9eb361d054d2eae347456",
+      "pcm_sha256": "385fff28076c06c420a37abee396121ab1fea7c5612b7cd6ca90d8e19d44a265",
+      "first_nonzero_stereo_frame": 636
+    },
+    {
+      "code": 74,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/4a.wav",
+      "bytes": 229660,
+      "wav_sha256": "704a3ffed2bf0abc4363e66daf9a96b4a4caa54ef506ede50ecbf62ffb17ea65",
+      "pcm_sha256": "2048c17eb0c8c8a2967d38a732911ee277e4f07abcb91888f4bca392d13b99eb",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 75,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/4b.wav",
+      "bytes": 126628,
+      "wav_sha256": "25d3e115fadcb91a827d43aa14ef50db951aae5a5a0ada40c28a28929fdf43a2",
+      "pcm_sha256": "740abbaa65af32d94292d35c36d5b8fc953c85231e47ec7c90d942e9af59655f",
+      "first_nonzero_stereo_frame": 625
+    },
+    {
+      "code": 76,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/4c.wav",
+      "bytes": 270876,
+      "wav_sha256": "cdfef2e1ca5a154f02452803823305ae1a5e6df55b10d22414f29dfdd1b8375b",
+      "pcm_sha256": "1fe6b13c7ae2d18fad1efa94e6f21cc25a2c49099246580ea28128fe3388bfd2",
+      "first_nonzero_stereo_frame": 619
+    },
+    {
+      "code": 77,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/4d.wav",
+      "bytes": 241436,
+      "wav_sha256": "df037e59dcfe5ce16b424ac7dd0b8e1307e3dcd04db2280296a2e30443191fdd",
+      "pcm_sha256": "4ed0374ad954de0b4e1bc3a30f9d834c4f4940b043dd85ee3dddb62471cc6a2c",
+      "first_nonzero_stereo_frame": 630
+    },
+    {
+      "code": 78,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/4e.wav",
+      "bytes": 94248,
+      "wav_sha256": "9d647990f1a0ec89b6c3a7897ff8462ca29470e9423d09197f9407ff31444533",
+      "pcm_sha256": "3f208e74974498aa640463550da069e63867a36c1aa175127635ab649e19e3b7",
+      "first_nonzero_stereo_frame": 630
+    },
+    {
+      "code": 79,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/4f.wav",
+      "bytes": 97192,
+      "wav_sha256": "5379db418efb4b3b7d20692927eea5c2dd4fbe097ede2f464cf893da6d0f1d6f",
+      "pcm_sha256": "2eaecf6945ad6293736d7dc9cecd8145e8def180e6d54b7426dd6080d47075f8",
+      "first_nonzero_stereo_frame": 625
+    },
+    {
+      "code": 80,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/50.wav",
+      "bytes": 132516,
+      "wav_sha256": "e0e6f65ea45f77580e1ebe43f154e3f0ddf9fd083a539af787f4ac46de97d491",
+      "pcm_sha256": "141fe3436c2c6dbd316e5635708de3a58b693f6a1e091218e83b9f9e251cfe64",
+      "first_nonzero_stereo_frame": 631
+    },
+    {
+      "code": 81,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/51.wav",
+      "bytes": 106024,
+      "wav_sha256": "36a4336ecc0e8fbd7dbb9e40c0eec639463169343ab514a3ce26c4b5d52fa5bb",
+      "pcm_sha256": "61ba071bf8680145e7f154093ad0e1ae9397dd85f2b6370e091ee9cba4403b50",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 82,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/52.wav",
+      "bytes": 273820,
+      "wav_sha256": "7f47e14cabe767043e3adc775a39af37a3451a5d045a43333c0db8b61cb4bf99",
+      "pcm_sha256": "ce7877eff3e110b51c84afc03685b9a41cc2adc03f4167baa54d8b27b7237fb6",
+      "first_nonzero_stereo_frame": 625
+    },
+    {
+      "code": 83,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/53.wav",
+      "bytes": 306200,
+      "wav_sha256": "4d76c48f6a46dabbf7e179ae7d785bec729457e0fe7fc901200825b513c533c6",
+      "pcm_sha256": "80ab62c8674be48e0287f2365c801620471a5f1d43cede6ce0a7325960ff4b19",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 84,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/54.wav",
+      "bytes": 270876,
+      "wav_sha256": "55fec8e6001d449c3d5c3f5be2c6dff130d5f62b17d483e902d4100daca31b48",
+      "pcm_sha256": "1613ee950858422317ef5014e5351bf75ef1c94af864f4cf5e91a6067a7c6b9a",
+      "first_nonzero_stereo_frame": 619
+    },
+    {
+      "code": 85,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/55.wav",
+      "bytes": 226716,
+      "wav_sha256": "c969f5414ecf24f9044ea59402cb6741e6501e611c4ae884dbe72eb9cb318e67",
+      "pcm_sha256": "f656300c08153af6a40a3289730e31f0b88f2cc0c4e9511da5840646bb65b420",
+      "first_nonzero_stereo_frame": 631
+    },
+    {
+      "code": 86,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/56.wav",
+      "bytes": 217888,
+      "wav_sha256": "bf6fd2c1d7feec1017932d63ad121523bb50ceee2e72708a4960655db38d63d6",
+      "pcm_sha256": "463c001b9a68951dc43269baa4e220f4566eb8201ddf94470d8955456df65d87",
+      "first_nonzero_stereo_frame": 625
+    },
+    {
+      "code": 87,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/57.wav",
+      "bytes": 197280,
+      "wav_sha256": "cd34e350e2509210d06180cce126bd0eecdfdd66294bef5a6aedec2a825f9950",
+      "pcm_sha256": "9cc71b117dc9fea3032eef3990178c5efeab4b363d763d9ee7bc1e0d59be93fa",
+      "first_nonzero_stereo_frame": 618
+    },
+    {
+      "code": 88,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/58.wav",
+      "bytes": 144292,
+      "wav_sha256": "b3babe06d0a9abfd04c322a1df4026e5fd0af1cf0020f7703f3816015e0f8cd1",
+      "pcm_sha256": "fa4b70a486d11f30a9def6beb17745a0bfbaaba80aadff334522b85413e12110",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 89,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/59.wav",
+      "bytes": 138404,
+      "wav_sha256": "6c53eef26154dfd3ddcc4f924da227e983dfb2d237696a50739d3672f5420019",
+      "pcm_sha256": "66bbc3c65eeaa0a1082fdc3ffc42a5265e8ee1e4f7a37acc6f2e3712c6aef1b3",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 90,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/5a.wav",
+      "bytes": 194336,
+      "wav_sha256": "84677f943cabdf4469d03d7a83fce1fc5b4f3b162be898e3cb84b14621d3221a",
+      "pcm_sha256": "29d14eee72d5cd2ca5f2dd12b6c8566e098e31bd1edb7754f0931f7758594d44",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 91,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/5b.wav",
+      "bytes": 185504,
+      "wav_sha256": "2baf9c3ef01dfae7ee31fac6f670f3e446e0754d6e2d9bfc8277f846f158c7be",
+      "pcm_sha256": "6101ca6d3076a2300d6ef331aac30ce1c1ab35d546999353db110eae55315b72",
+      "first_nonzero_stereo_frame": 642
+    },
+    {
+      "code": 92,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/5c.wav",
+      "bytes": 229660,
+      "wav_sha256": "e38232418da148e300f712c47884aef093bbab6b050686b4aa9c0add1b84cf0b",
+      "pcm_sha256": "b0d2ba87b304a7a9d9d19d78ca1ca2aceeb969fa9afa8d0386456f0c48daac08",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 93,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/5d.wav",
+      "bytes": 273820,
+      "wav_sha256": "48a6cb0c4366a35afc16e5ffbd4e411b46a6c21227742adce5a24d3bfa782bd8",
+      "pcm_sha256": "98d2692fdf2b98f26abcd89771a515a0c966b13c98cc5abf91a122ae6249fbd4",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 94,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/5e.wav",
+      "bytes": 117796,
+      "wav_sha256": "510388c82401d9ceda1951f3efe36996b5385a1391558467159efb4e8371f1ea",
+      "pcm_sha256": "b303c62bf36b9c0d3dc7a49017eb948cecc5db7e65faf0bde016cdf7f6fd3ec5",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 95,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/5f.wav",
+      "bytes": 126628,
+      "wav_sha256": "b7fbbfe582bdd2812939f6b99efee01df68d49a43e143c299bb7139cc2832c07",
+      "pcm_sha256": "108f166f0ba33eb3db715cd6bb48c789c14d70cb44ff96b8ad15d2df000ef565",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 96,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/60.wav",
+      "bytes": 147236,
+      "wav_sha256": "cbd9205b890d543d11b00b497f56f8271fc91ee4a2a776f029a5630f9e471c3b",
+      "pcm_sha256": "6bde168f79e530f60580dfb6a46756885421d109c8fcd63cb6d093cdf3b66d13",
+      "first_nonzero_stereo_frame": 625
+    },
+    {
+      "code": 97,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/61.wav",
+      "bytes": 147236,
+      "wav_sha256": "6e1bb537836ec8d52581956ee51bb99b7c6f1d7b9668713ac6143b0cf6772c44",
+      "pcm_sha256": "d93885f2efbd662b6342e52b2d194ae2309947da4b7345fc570a70d6de67caab",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 98,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/62.wav",
+      "bytes": 126628,
+      "wav_sha256": "7f5c1c6c7dbc3ad84e5924337a576ba20b8bcf241c6c81430ff8d938ae749b44",
+      "pcm_sha256": "74159f07752c0186a354d144c256e052bb069fb144f628d1f2c0c82d21e0e64e",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 99,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/63.wav",
+      "bytes": 114852,
+      "wav_sha256": "af72a1ddf24233d4e81572f7f632fb5c78bf531e642df3574ca649699ef3ba49",
+      "pcm_sha256": "3f7bde9b21728db5d91226e755f050bb4e60c557ba52e7813986b460f89235c3",
+      "first_nonzero_stereo_frame": 619
+    },
+    {
+      "code": 100,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/64.wav",
+      "bytes": 144292,
+      "wav_sha256": "8d9fcf9fb173bcd5158553f34f0e9b45f6e6b3ff0e84ed781fc069700ad278d2",
+      "pcm_sha256": "93ccc9b5f53ec78ad2737d73b975ba426990615279c434461cee7d3976e0e6ff",
+      "first_nonzero_stereo_frame": 624
+    },
+    {
+      "code": 101,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/65.wav",
+      "bytes": 135460,
+      "wav_sha256": "32358d7dea7f9778c8e2c5d0443e948bf66371c645dcdcc2071f2f76f9139944",
+      "pcm_sha256": "7896f6e93ee46e8c2539b9a82c381413907494b8f1f7d66e8aed93db589b5697",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 102,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/66.wav",
+      "bytes": 188448,
+      "wav_sha256": "6c1b0aee59322ca74ec711649809583ff40119665c661fa703c82a890516e760",
+      "pcm_sha256": "9311b65e30099c703bfd770ba09a4d674141d3b966077e00ce0df3d7de067629",
+      "first_nonzero_stereo_frame": 624
+    },
+    {
+      "code": 103,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/67.wav",
+      "bytes": 212000,
+      "wav_sha256": "6e8f2be6a150151866586f99ef8c08938b03071876c2856a21b5cf2aedee690f",
+      "pcm_sha256": "a886502b9282227a79379f0c9ef0a2500935c55770babc10b7326918cf6701d4",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 104,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/68.wav",
+      "bytes": 235548,
+      "wav_sha256": "39708ad1939ef23686beb9f209d73e3de8253825d78e16d909b84d06ffb2e910",
+      "pcm_sha256": "09c97937cc395b4c6075428f124953f50c7b51770b4df08b225767a3db6be95a",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 105,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/69.wav",
+      "bytes": 209056,
+      "wav_sha256": "4ba925574cd51b7784269d43881d60309fb230ca95acdfc6b764a41d655ca531",
+      "pcm_sha256": "db29031f81698d4a7f44c3ece0285ae50df31def8b88d4ab8ee120582c09409c",
+      "first_nonzero_stereo_frame": 619
+    },
+    {
+      "code": 106,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/6a.wav",
+      "bytes": 182560,
+      "wav_sha256": "e773efd0b26ab0b8cdedfccb9ba91e87aee3e95f39fcb640dcce1325f6be642e",
+      "pcm_sha256": "6e6b0313b8d1ac883be0349d65840fac17461c64759c576e39278a0228511629",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 107,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/6b.wav",
+      "bytes": 209056,
+      "wav_sha256": "ce505867df15b1f90f84aadaf67ae52cf1a7a447002b46c8f471fd39374b1a9a",
+      "pcm_sha256": "03cf0929581803bc57eb70bfc84082a5fa9ed040ea94593b2fd4747e8c62337e",
+      "first_nonzero_stereo_frame": 636
+    },
+    {
+      "code": 108,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/6c.wav",
+      "bytes": 161956,
+      "wav_sha256": "3cb0d77da15f4b19028e4d76e57d1bf3e9406b3608f757146b0ad7849fc49085",
+      "pcm_sha256": "1253557c80b0ffd1c370d2a87ba2dd53c9bd3a882fab598a0bf4a4a8d5158b6f",
+      "first_nonzero_stereo_frame": 631
+    },
+    {
+      "code": 109,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/6d.wav",
+      "bytes": 247324,
+      "wav_sha256": "b2a5676d7267f4377f0c81fcfc2d20b49c8e199d9cab96ff685686e51e36b7b8",
+      "pcm_sha256": "bb92c91be4622a4a3a1bebca57e0711024ceb5e1fbe4cca8d73469994d839d96",
+      "first_nonzero_stereo_frame": 619
+    },
+    {
+      "code": 110,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/6e.wav",
+      "bytes": 179616,
+      "wav_sha256": "ec70de0f332917115e2056daa50be2ae1e588b8215786e6b8250ce7125279e8a",
+      "pcm_sha256": "9412b00d783aef11a11dc55160903cd926ce809a7dd474a8615057b519bb3f5e",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 111,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/6f.wav",
+      "bytes": 176672,
+      "wav_sha256": "bd3225f5f1e074e4d66db1a80060ea1d9379405322501eb68b6356210aefa366",
+      "pcm_sha256": "66f3c65dd42ea87bf57157c4e2d4b9f910553f1b841df6f8567098f3d73ee3ca",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 112,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/70.wav",
+      "bytes": 206112,
+      "wav_sha256": "7b97715ecb2ce333b52d91290895a68d6b9f63d5a360a53c9ecb91fa5fac43de",
+      "pcm_sha256": "d838bbd18dc0b2e09ae747897c2eb3c33f0d882f615b8155c8486abc1dd7fde2",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 113,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/71.wav",
+      "bytes": 220832,
+      "wav_sha256": "a9ff01e1ee5dbaf0d5846703be4b5a5fff8e27e5f1c597eff4867ef8bcbf6872",
+      "pcm_sha256": "02fe6a5d4cd8f7350c4c3cf187896616999c8e371aba05db1793dac0a3901eca",
+      "first_nonzero_stereo_frame": 620
+    },
+    {
+      "code": 114,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/72.wav",
+      "bytes": 217888,
+      "wav_sha256": "c13d251b1579cb3fa51eaf176ad1c1e16f8511f7b063af68eef2afeab93a286b",
+      "pcm_sha256": "d2c3531892d2f92efa6d77bbed1841cc7714c6f468c914c8f1e0c71a6297d2db",
+      "first_nonzero_stereo_frame": 624
+    },
+    {
+      "code": 115,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/73.wav",
+      "bytes": 217888,
+      "wav_sha256": "e5bc06f26c415cb26c8385d171dd7fa2bc19419c2eacf92b2891909422a03635",
+      "pcm_sha256": "9ab0ce687f57a2735658ae57782a030d13e945304fe4fd5d4bd6d36baf189f48",
+      "first_nonzero_stereo_frame": 234
+    },
+    {
+      "code": 116,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/74.wav",
+      "bytes": 79528,
+      "wav_sha256": "974eadf80df21a1930950b916b31cda26ef6701af31b68ca3ccc98402db9a25c",
+      "pcm_sha256": "41dba56dca1402a703b5eb79fa93dd571b8be2e7573607acd1f26297752f664a",
+      "first_nonzero_stereo_frame": 642
+    },
+    {
+      "code": 117,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/75.wav",
+      "bytes": 106024,
+      "wav_sha256": "0ec1869030f5bff55ad538a10ee528b0487586b236f0a4d0ebc36425d2064a19",
+      "pcm_sha256": "793b8ba1f6229824c10761cf23d350dc0bf94291ff0a5c6696f33ffba75030ad",
+      "first_nonzero_stereo_frame": 631
+    },
+    {
+      "code": 118,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/76.wav",
+      "bytes": 185504,
+      "wav_sha256": "c234f4b994210fdbeb9fbb7b6d781b4745e4c5d9872d8209fa53c77e6d378fe9",
+      "pcm_sha256": "57084f7bc6072b330093ad2a36b4ff8abde345b6b872678cd4d0df517ad1bc74",
+      "first_nonzero_stereo_frame": 636
+    },
+    {
+      "code": 119,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/77.wav",
+      "bytes": 114852,
+      "wav_sha256": "1d78f9c092df70387121665f02fc8613557c41d370ee43e1aa06a178e76032b3",
+      "pcm_sha256": "2e6eb9d2a9cd50cfc1851983fdd0a25dd87e31163845b41b01604aaf1d45668f",
+      "first_nonzero_stereo_frame": 631
+    },
+    {
+      "code": 120,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/78.wav",
+      "bytes": 106024,
+      "wav_sha256": "de2b311df6c9ff34a6d82e63fc91e132581108b284f116af4ca3f52b550d2ffa",
+      "pcm_sha256": "ff9e767e32b5c19e35911637940f86c8887647d9ca7b42d17bc172b4061092db",
+      "first_nonzero_stereo_frame": 631
+    },
+    {
+      "code": 121,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/79.wav",
+      "bytes": 350356,
+      "wav_sha256": "e364a815426a97c6b291cc2edd7aca7a5b30ddec72f0cd55dd8dc1a81052694c",
+      "pcm_sha256": "f00c21feadd26481b3e4c169fcc6f5a0546d232f25d5af2f4cc5125bca9ecf5a",
+      "first_nonzero_stereo_frame": 631
+    },
+    {
+      "code": 122,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/7a.wav",
+      "bytes": 94248,
+      "wav_sha256": "15f84f69eb619fba6ed10a3b8ee52f74126b17f2133a472be59c2f0c70cfd066",
+      "pcm_sha256": "542244806e09ade934478baba97f0a272d08f179983d8fff17b321d84945d75e",
+      "first_nonzero_stereo_frame": 630
+    },
+    {
+      "code": 123,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/7b.wav",
+      "bytes": 106024,
+      "wav_sha256": "6298efe1e141d33b6c97c7665c25f14fbd15e0adbe70fab288b57d58dd73c1e5",
+      "pcm_sha256": "60522cf4d3c55430702ab6d831615af43b87568cb368de6157e12d79c9bfce21",
+      "first_nonzero_stereo_frame": 636
+    },
+    {
+      "code": 124,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/7c.wav",
+      "bytes": 120740,
+      "wav_sha256": "a44e212e9ea8a0af620ca49238cbbfca004d524e77f1186c1aa7c908f3267880",
+      "pcm_sha256": "b4110e6e805b5b8f75f961989b9e396a55ef517cc06469b9d34b44ae1b0bc5c3",
+      "first_nonzero_stereo_frame": 631
+    },
+    {
+      "code": 125,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/7d.wav",
+      "bytes": 182560,
+      "wav_sha256": "fa4442bb470a0cb34b452510b465efef5db98aec3ab53502fd69c039a631727a",
+      "pcm_sha256": "6b5f359ea030088ee94e5475b38b2d7768ad3579af95122ea8e54dd8d0086440",
+      "first_nonzero_stereo_frame": 631
+    },
+    {
+      "code": 126,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/7e.wav",
+      "bytes": 120740,
+      "wav_sha256": "ae8d395851c46ef332528e90f2b133053684de01ad25dc5968e3b2dd507429d3",
+      "pcm_sha256": "0b89bc1992d8a364d62ddf5703e91dc274a6b84cd32a6233d5d80020863ad3f5",
+      "first_nonzero_stereo_frame": 653
+    },
+    {
+      "code": 143,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/music-excerpts/8f.wav",
+      "bytes": 735992,
+      "wav_sha256": "854deca3e7a5c480345d30334ef2da2f2405a92d37c7adadcdd954299b4c3ff2",
+      "pcm_sha256": "54ffaf24773e51c30b55247cb0dc018a6a5c8cf8b0f25282dffb5eec07eeab14",
+      "first_nonzero_stereo_frame": 971
+    },
+    {
+      "code": 160,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/a0.wav",
+      "bytes": 67752,
+      "wav_sha256": "87ed54b14c7f7f75417cfe859cca0568a076bf79bf63297d479a57e278b9c3c1",
+      "pcm_sha256": "8677e006f7234c09a22f676259d0d3974f3a4c8f1e9687146971b0a32c48be78",
+      "first_nonzero_stereo_frame": 250
+    },
+    {
+      "code": 161,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/a1.wav",
+      "bytes": 220832,
+      "wav_sha256": "9cf88412259925c96a7b17c1e3e9cf146d1469399505b464eb33147ee25b730e",
+      "pcm_sha256": "30d173b6d58bd00281070497898b66ceea6f1df6260ee8d48972b466b0ccf6c6",
+      "first_nonzero_stereo_frame": 983
+    },
+    {
+      "code": 162,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/a2.wav",
+      "bytes": 73640,
+      "wav_sha256": "a871c12136a26788a370d5bdd5b4c933e47a0589d942e350de0c933d003f80ae",
+      "pcm_sha256": "1fd6c69aea9abd221591ece4f80fdbf9f2151a288d79e2a5be4a92c3620eb24a",
+      "first_nonzero_stereo_frame": 253
+    },
+    {
+      "code": 163,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/a3.wav",
+      "bytes": 91304,
+      "wav_sha256": "32c049855632a34f51eebb4b137313398947c0b09767a4717b8c925842e7b99c",
+      "pcm_sha256": "d3d5c9a7c87be5de32085e53b60d6cef375a02169f4312b88488e1c9ecc0ae25",
+      "first_nonzero_stereo_frame": 1129
+    },
+    {
+      "code": 164,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/a4.wav",
+      "bytes": 276764,
+      "wav_sha256": "2706eac68a5a65808ce646fc65a87e3a57773b2e18739073e9efa9d30dc714c3",
+      "pcm_sha256": "d2fa3e7f857e116f5b88cc0c107d50cbfa7e9e1c02a0bd5a3509e4856c009d9d",
+      "first_nonzero_stereo_frame": 1071
+    },
+    {
+      "code": 165,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/a5.wav",
+      "bytes": 212000,
+      "wav_sha256": "d6ba3377abed8b5a51dba5b1f938d8045dde32ab1a84358ba2349f44062b8a27",
+      "pcm_sha256": "3d449f205defe5f50b01cee927146ffc2e63ffdae3e033304030ae64b02cdfba",
+      "first_nonzero_stereo_frame": 1791
+    },
+    {
+      "code": 166,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/a6.wav",
+      "bytes": 76584,
+      "wav_sha256": "c6c76d3a8b3da0362752b4c97e18b9d1279e60bfa611eddc25eabcb371bca698",
+      "pcm_sha256": "99729267ef0362b868632a05abae2525a85862a8a49b88594fc56a2ead94e44f",
+      "first_nonzero_stereo_frame": 232
+    },
+    {
+      "code": 167,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/a7.wav",
+      "bytes": 164900,
+      "wav_sha256": "cc19a3b84dcb0b2e70884c042e6e694290f46fd36a863aea6dfd7a26a2cc51ed",
+      "pcm_sha256": "e6cc43b0d746acc4216705b72cf543d62c425a6c2a63d5820397e6ca6cfba928",
+      "first_nonzero_stereo_frame": 254
+    },
+    {
+      "code": 168,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/a8.wav",
+      "bytes": 135460,
+      "wav_sha256": "a3418e7aafa07175b7c0801a6545e84bd4291adedfb0fd18d93da9e85f7f4e25",
+      "pcm_sha256": "dfffaaa49d880a9c0db2e60fb559047bda0ca63fdfebf56c29d0e1f546a6c06c",
+      "first_nonzero_stereo_frame": 253
+    },
+    {
+      "code": 169,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/a9.wav",
+      "bytes": 315032,
+      "wav_sha256": "172358dc95e3d227a7e2c57c36091bf75182847cc486984272efb83c808f634c",
+      "pcm_sha256": "7adc0f39f35b235d73902d6b966206dc3a9deb18a2c56723203a0b61e5ac86ab",
+      "first_nonzero_stereo_frame": 960
+    },
+    {
+      "code": 170,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/aa.wav",
+      "bytes": 135460,
+      "wav_sha256": "0b931a23b88498c400a77fbc73ec85a53c75fe290fd7ab5dbae98531a1fa4c1d",
+      "pcm_sha256": "9fc3e3b540418cd521b1cc3ec5a13d5fed42dd81ffceeabba37f679637d514bd",
+      "first_nonzero_stereo_frame": 252
+    },
+    {
+      "code": 171,
+      "path": ".local/md-yuyuhakusho/audio-assets-final/isolated/samples/ab.wav",
+      "bytes": 300312,
+      "wav_sha256": "e0d458ed262beac3e1897fb3a18fbda2165e4ce682457179860f5f1dc4934029",
+      "pcm_sha256": "1b644ba3fa7bea174be0d4836f0cc2c377c646244f5d4b532cf8556ae96f1c77",
+      "first_nonzero_stereo_frame": 242
+    }
+  ]
+}

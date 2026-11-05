@@ -1,0 +1,10 @@
+
+  .local/md-yuyuhakusho/audio-media-api/harness.js  30.7kb
+
+⚡ Done in 7ms
+{"pass": true, "checks": 10, "finite_overlap_supported": false, "capture_supported": true, "sample_gapless_verified": false}
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/check_audio_media_api.py", line 100, in <module>
+    if args.require_finite_lanes:assert report['finite_overlap_supported'],'production native media has only one finite effect voice; two-lane capability is not implemented'
+                                        ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: production native media has only one finite effect voice; two-lane capability is not implemented

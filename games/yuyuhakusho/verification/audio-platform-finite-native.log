@@ -1,0 +1,9 @@
+
+  .local/md-yuyuhakusho/audio-media-api/harness.js  42.0kb
+
+⚡ Done in 7ms
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/check_audio_media_api.py", line 80, in <module>
+    error=js('yuyuMediaAPI.error');assert not error,error
+                                          ^^^^^^^^^
+AssertionError: Error: independent music fixture failed

@@ -1,0 +1,129 @@
+{
+  "pass": true,
+  "scope": "Observed real queue dispatch decisions in declared private pair/control streams; not natural gameplay reachability",
+  "records": 33,
+  "frames_match_original_core": true,
+  "identity": {
+    "original": {
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+      "core_name": "Genesis Plus GX",
+      "core_version": "v1.7.4 60bee4c",
+      "fps": 59.92274340431231,
+      "ram_bytes": 65536,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "teamplayer": false
+    },
+    "observed": {
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+      "core_name": "Genesis Plus GX",
+      "core_version": "v1.7.460bee4c",
+      "fps": 59.92274340431231,
+      "ram_bytes": 65536,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "teamplayer": false
+    }
+  },
+  "fixture_path": "games/yuyuhakusho/engine/testdata/pcm-arbitration-sampled.json.gz",
+  "fixture_json_sha256": "7088d593b1515348cad47bd0421a81279ec777a1f2459bbaf5b4cfb00a737143",
+  "fixture_gzip_sha256": "640317e0a66710c6d4b4f841483eb9874d967802b67c923f60ba5850b42ee395",
+  "producer_sha256": "255fa635f5cfba3748da6d883b800b9f7102fe1045445527b713b16079fb4de0",
+  "sources": [
+    {
+      "path": ".local/md-yuyuhakusho/audio-dispatch-study/single-a-observed.json.gz",
+      "sha256": "fb238050eb15859f65ab15c7dda4858205e9ed0019ef0ea538bf1c0f0b22ab7b"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-dispatch-study/single-b-observed.json.gz",
+      "sha256": "eb718357537c8f24465b4a40aff91f0ecab7a5fe1f74cdb0c6e63aed5a5a169e"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-dispatch-study/single-b-late-observed.json.gz",
+      "sha256": "fab1857dddce9a02fe29adc194ea84a02d4d677d16c4948fdb3314a2e231019f"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-dispatch-study/pair-a-b-observed.json.gz",
+      "sha256": "00a855378a549328abb1d85056ad604903b8b88e8b3efdb2010f0c18ce3f74a9"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-dispatch-study/pair-a-low-drop-observed.json.gz",
+      "sha256": "b09e6b190e786b38f5d70e68833b2583e487f737114ee1856efaadcc2a01f97a"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-dispatch-study/pair-a-same-observed.json.gz",
+      "sha256": "fd6192a127e4e2ff613bfb8b3a4395451f50d2b987fbadee0f98d34ed49817ee"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-dispatch-study/pair-a-high-observed.json.gz",
+      "sha256": "f2d0c284e138a400ace7a81499419f0c211f3425c06ded5ff3fe33a183bbb420"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-dispatch-study/pair-b-low-drop-observed.json.gz",
+      "sha256": "2c3bdc9af5ddc79ba61c0b5e10821534b845ff32d80080b4a0a03e84f7ca5c93"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-dispatch-study/pair-b-high-observed.json.gz",
+      "sha256": "6ca91e9e439885b5e1873c9e61a4ee3da4a8242c34826e66165008adf6e7a91b"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-dispatch-study/auto-tie-observed.json.gz",
+      "sha256": "5c2ba42dd14829303094863798f5b24401978158dc7f4022aeb2c177ea579d2e"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-dispatch-study/single-mode-observed.json.gz",
+      "sha256": "2df6d108535fbd7e235ee06127fed01d82b6b5c59176c178d97652f37ec2672d"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-dispatch-study/single-to-dual-observed.json.gz",
+      "sha256": "49eaa8bafe43bf506b5f256e66b6bae4f0d91899650b566d891d8806b79f3514"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-dispatch-study/dual-to-single-observed.json.gz",
+      "sha256": "a972988dca7d84fc65979f1f9ad503380c9319e9828c175b52d09b3c0e450f5d"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-dispatch-study/silent-high-observed.json.gz",
+      "sha256": "56129b050e73c751d49bf0565559dcb4b979cbfd895744a2037e1c227ff33e82"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-dispatch-study/stop-primary-observed.json.gz",
+      "sha256": "22d7a9921fceb2525fbfb268ed3171fb6ec9ef1e097a8e9ce5535be5b06acc8f"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-dispatch-study/stop-secondary-observed.json.gz",
+      "sha256": "fd28361e85e3d71c556d784b3726c0f0b9b48eede638bffc1bdec68694b83eee"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-dispatch-study/clear-driver-observed.json.gz",
+      "sha256": "8b1d23c3d95ad3bb39713312740d15de947f5ed397a38a199eb556758d4771b5"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-dispatch-study/reset-driver-observed.json.gz",
+      "sha256": "2887af80a103e290915b3fa1a501ef39ae3eb05a14a690b90571d20241de78bb"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-dispatch-study/special-f0-observed.json.gz",
+      "sha256": "41111add3bdf74b27bc985d2b4129e1481303bec41e3e860c49473c03570f99a"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-dispatch-study/fm-stop-primary-observed.json.gz",
+      "sha256": "bd336087963e6207a233b65923b00b996ded8635dc9528114885c019a91bf4a7"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-dispatch-study/fm-stop-secondary-observed.json.gz",
+      "sha256": "c7e6c5d9590267014ace8457e510cd23ab2db2c8ef3ffe124473cc93f5da6d17"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-dispatch-study/fade-primary-observed.json.gz",
+      "sha256": "afabfaa15a68df54aceeef3acdf4eb2479c5c0ec1ecf8e02a3ed4236baea3731"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-dispatch-study/fade-secondary-observed.json.gz",
+      "sha256": "bb9888fd0571f7d167c116c0a605f7d2f1bf621db6308fb385bf609224b5a095"
+    }
+  ],
+  "limits": [
+    "StartDual in this sampled fixture is derived from observed accepted branch plus the recorded pre-branch mode; private boundary fixture separately observes exact37f48/37ff8 PCs"
+  ]
+}

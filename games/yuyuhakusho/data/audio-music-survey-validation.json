@@ -1,0 +1,1504 @@
+{
+  "schema": 1,
+  "pass": true,
+  "scope": "Eight additional native music structures and bounded lossless native-carrier feasibility",
+  "goal_complete": false,
+  "release_ready": false,
+  "published": false,
+  "exact_pcm_loop_assets_ready": false,
+  "independent_dsp_implemented": false,
+  "platform_stream_integrated": false,
+  "baseline_commit": "aa617e23",
+  "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+  "new_music_codes": [
+    131,
+    132,
+    133,
+    134,
+    136,
+    138,
+    141,
+    149
+  ],
+  "coverage": {
+    "tracks": 72,
+    "first_probe_steps": 32768,
+    "per_track_extended_steps": 88377,
+    "extra_8d_steps": 9335,
+    "original_hook_music_steps_compared": 130480,
+    "first_probe_sequence_commands": 7498,
+    "extended_sequence_commands": 21147,
+    "all72_tracks_have_two_actual_f6_returns": true,
+    "whole_raw_driver_periods_verified": [
+      131,
+      133,
+      141,
+      149
+    ]
+  },
+  "songs": [
+    {
+      "code": 131,
+      "header": {
+        "table_entry": 238746,
+        "address": 241228,
+        "bytes": "07a30603020906a700000030fe160169f2100298fe160402fe18040afe1a0412da04000004fcda040000069c00020003",
+        "sha256": "8a2a06258dba403f914aa6184d6a7aa062d4a85b38f566abb7e496b1be77b406",
+        "fm_rows_including_dac": 6,
+        "psg_rows": 3,
+        "instrument_data": 243183,
+        "duration_multiplier": 2,
+        "tempo_byte": 9,
+        "voices": [
+          {
+            "index": 0,
+            "kind": "dac",
+            "row": 63552,
+            "record": "06a70000",
+            "sequence": 242931
+          },
+          {
+            "index": 1,
+            "kind": "fm",
+            "row": 63600,
+            "record": "0030fe16",
+            "sequence": 241276
+          },
+          {
+            "index": 2,
+            "kind": "fm",
+            "row": 63648,
+            "record": "0169f210",
+            "sequence": 241589
+          },
+          {
+            "index": 3,
+            "kind": "fm",
+            "row": 63696,
+            "record": "0298fe16",
+            "sequence": 241892
+          },
+          {
+            "index": 4,
+            "kind": "fm",
+            "row": 63744,
+            "record": "0402fe18",
+            "sequence": 242254
+          },
+          {
+            "index": 5,
+            "kind": "fm",
+            "row": 63792,
+            "record": "040afe1a",
+            "sequence": 242262
+          },
+          {
+            "index": 6,
+            "kind": "psg",
+            "row": 63888,
+            "record": "0412da040000",
+            "sequence": 242270
+          },
+          {
+            "index": 7,
+            "kind": "psg",
+            "row": 63936,
+            "record": "04fcda040000",
+            "sequence": 242504
+          },
+          {
+            "index": 8,
+            "kind": "psg",
+            "row": 63984,
+            "record": "069c00020003",
+            "sequence": 242920
+          }
+        ]
+      },
+      "classification": "looping-native-sequence",
+      "actual_tracks_with_repeated_f6": 9,
+      "rhythm_period_quanta": [
+        3768,
+        3768,
+        3768,
+        3768,
+        3768,
+        3768,
+        3768,
+        3768,
+        24
+      ],
+      "common_rhythm_quanta": 3768,
+      "structure_joint_rhythm_tempo_frames": 4239,
+      "tempo_changes": [],
+      "raw_driver_recurrence": {
+        "verified": true,
+        "first_equal_after_step": 14,
+        "equal_pairs": 4462,
+        "period_frames": 4239,
+        "complete_raw_driver_bytes": 928,
+        "reason": "Full raw driver recurrence"
+      },
+      "selected_event_recurrence": {
+        "verified": true,
+        "events_first": 31495,
+        "events_second": 31495,
+        "first_sha256": "b145fb951f7e4d98e377cd6e99076e819f0e5a872df689030c8be0654b1e31a2",
+        "second_sha256": "b145fb951f7e4d98e377cd6e99076e819f0e5a872df689030c8be0654b1e31a2",
+        "limits": [
+          "Selected sequence/YM/DAC order and relative video steps only, not all chip writes at exact clocks"
+        ]
+      },
+      "pcm_recurrence": {
+        "verified": true,
+        "video_steps_completed": [
+          15,
+          4254,
+          8493
+        ],
+        "stereo_sample_offsets": [
+          11040,
+          3130722,
+          6250404
+        ],
+        "period_stereo_frames": [
+          3119682,
+          3119682
+        ],
+        "comparison": {
+          "same_length": true,
+          "pcm_bytes_equal": false,
+          "compared_sample_values": 6239364,
+          "different_sample_values": 6229127,
+          "max_absolute_difference": 16397,
+          "rms_difference": 1274.2367302037762
+        },
+        "first_100ms_comparison": {
+          "same_length": true,
+          "pcm_bytes_equal": false,
+          "compared_sample_values": 8820,
+          "different_sample_values": 8817,
+          "max_absolute_difference": 7360,
+          "rms_difference": 1399.2357268836995
+        },
+        "psg_noise_at_boundaries": [
+          4131,
+          8672,
+          41958
+        ],
+        "ym_context_sha256_at_boundaries": [
+          "b2d85b3e519908b477dde31085b9774888312d56b01c35183f889d84ef44af33",
+          "604e2e97fad9a8f358a260092110bfdf5a054ae736ad15157a23e53071a228d9",
+          "df3973bb6c1737d78f41e1725fe442d5cb5bcc32d4d89a0e023dcb81ce800308"
+        ],
+        "exact_media_loop_accepted": false,
+        "limits": [
+          "Video-step boundaries are not precise intra-frame sample cut points",
+          "This bounded comparison does not prove that no longer PCM period exists"
+        ]
+      },
+      "exact_pcm_loop_verified": false,
+      "bounded_capture": {
+        "path": ".local/md-yuyuhakusho/audio-music-survey/extended-83/survey.json",
+        "sha256": "5d74fd57aca4efc5dbd0387e3f5c45275a0c7595f33cf22c88b6bb5e794cd2cc",
+        "bytes": 16385
+      },
+      "limits": [
+        "Looping control flow proven; no accepted finite media loop",
+        "Structure-derived joint periods are not whole native recurrence claims where the captured window is shorter"
+      ]
+    },
+    {
+      "code": 132,
+      "header": {
+        "table_entry": 238750,
+        "address": 243384,
+        "bytes": "09460603021407ae000000300019026cf40e0392001905cc001805d4001805dcdc04000006b4dc040000078c00030003",
+        "sha256": "52e02d53cb03fa9e212755a530b24fb9fe454eade95db0bc030d0c0f1437a8ef",
+        "fm_rows_including_dac": 6,
+        "psg_rows": 3,
+        "instrument_data": 245758,
+        "duration_multiplier": 2,
+        "tempo_byte": 20,
+        "voices": [
+          {
+            "index": 0,
+            "kind": "dac",
+            "row": 63552,
+            "record": "07ae0000",
+            "sequence": 245350
+          },
+          {
+            "index": 1,
+            "kind": "fm",
+            "row": 63600,
+            "record": "00300019",
+            "sequence": 243432
+          },
+          {
+            "index": 2,
+            "kind": "fm",
+            "row": 63648,
+            "record": "026cf40e",
+            "sequence": 244004
+          },
+          {
+            "index": 3,
+            "kind": "fm",
+            "row": 63696,
+            "record": "03920019",
+            "sequence": 244298
+          },
+          {
+            "index": 4,
+            "kind": "fm",
+            "row": 63744,
+            "record": "05cc0018",
+            "sequence": 244868
+          },
+          {
+            "index": 5,
+            "kind": "fm",
+            "row": 63792,
+            "record": "05d40018",
+            "sequence": 244876
+          },
+          {
+            "index": 6,
+            "kind": "psg",
+            "row": 63888,
+            "record": "05dcdc040000",
+            "sequence": 244884
+          },
+          {
+            "index": 7,
+            "kind": "psg",
+            "row": 63936,
+            "record": "06b4dc040000",
+            "sequence": 245100
+          },
+          {
+            "index": 8,
+            "kind": "psg",
+            "row": 63984,
+            "record": "078c00030003",
+            "sequence": 245316
+          }
+        ]
+      },
+      "classification": "looping-native-sequence",
+      "actual_tracks_with_repeated_f6": 9,
+      "rhythm_period_quanta": [
+        3840,
+        3840,
+        3840,
+        3840,
+        3840,
+        3840,
+        3840,
+        3840,
+        96
+      ],
+      "common_rhythm_quanta": 3840,
+      "structure_joint_rhythm_tempo_frames": 76800,
+      "tempo_changes": [],
+      "raw_driver_recurrence": {
+        "verified": false,
+        "reason": "All active rows do not yet have a repeated F6"
+      },
+      "selected_event_recurrence": {
+        "verified": false
+      },
+      "pcm_recurrence": {
+        "verified": false,
+        "reason": "No complete raw-state boundary proved"
+      },
+      "exact_pcm_loop_verified": false,
+      "bounded_capture": {
+        "path": ".local/md-yuyuhakusho/audio-music-survey/extended-84/survey.json",
+        "sha256": "30d364f27ac1a24baac81ddeb508843e5e1e6124e69c9ae5d4d901bf5e589649",
+        "bytes": 10547
+      },
+      "limits": [
+        "Looping control flow proven; no accepted finite media loop",
+        "Structure-derived joint periods are not whole native recurrence claims where the captured window is shorter"
+      ]
+    },
+    {
+      "code": 133,
+      "header": {
+        "table_entry": 238754,
+        "address": 245908,
+        "bytes": "074c06030203069e000000300019019cf40e02aa001904100018041800180420dc0300000568dc030000067f00020003",
+        "sha256": "3194cd3f4e76e596046b0b9b165a37ef596d2f76f99e8a25fa80b69fe83fabbb",
+        "fm_rows_including_dac": 6,
+        "psg_rows": 3,
+        "instrument_data": 247776,
+        "duration_multiplier": 2,
+        "tempo_byte": 3,
+        "voices": [
+          {
+            "index": 0,
+            "kind": "dac",
+            "row": 63552,
+            "record": "069e0000",
+            "sequence": 247602
+          },
+          {
+            "index": 1,
+            "kind": "fm",
+            "row": 63600,
+            "record": "00300019",
+            "sequence": 245956
+          },
+          {
+            "index": 2,
+            "kind": "fm",
+            "row": 63648,
+            "record": "019cf40e",
+            "sequence": 246320
+          },
+          {
+            "index": 3,
+            "kind": "fm",
+            "row": 63696,
+            "record": "02aa0019",
+            "sequence": 246590
+          },
+          {
+            "index": 4,
+            "kind": "fm",
+            "row": 63744,
+            "record": "04100018",
+            "sequence": 246948
+          },
+          {
+            "index": 5,
+            "kind": "fm",
+            "row": 63792,
+            "record": "04180018",
+            "sequence": 246956
+          },
+          {
+            "index": 6,
+            "kind": "psg",
+            "row": 63888,
+            "record": "0420dc030000",
+            "sequence": 246964
+          },
+          {
+            "index": 7,
+            "kind": "psg",
+            "row": 63936,
+            "record": "0568dc030000",
+            "sequence": 247292
+          },
+          {
+            "index": 8,
+            "kind": "psg",
+            "row": 63984,
+            "record": "067f00020003",
+            "sequence": 247571
+          }
+        ]
+      },
+      "classification": "looping-native-sequence",
+      "actual_tracks_with_repeated_f6": 9,
+      "rhythm_period_quanta": [
+        2784,
+        2784,
+        2784,
+        2784,
+        2784,
+        2784,
+        2784,
+        2784,
+        96
+      ],
+      "common_rhythm_quanta": 2784,
+      "structure_joint_rhythm_tempo_frames": 4176,
+      "tempo_changes": [],
+      "raw_driver_recurrence": {
+        "verified": true,
+        "first_equal_after_step": 595,
+        "equal_pairs": 4304,
+        "period_frames": 4176,
+        "complete_raw_driver_bytes": 928,
+        "reason": "Full raw driver recurrence"
+      },
+      "selected_event_recurrence": {
+        "verified": true,
+        "events_first": 32329,
+        "events_second": 32329,
+        "first_sha256": "28a57833f8c97c4737e780f6bf31011cbcb05988f47d04ea9c53ca0a95b4dcab",
+        "second_sha256": "28a57833f8c97c4737e780f6bf31011cbcb05988f47d04ea9c53ca0a95b4dcab",
+        "limits": [
+          "Selected sequence/YM/DAC order and relative video steps only, not all chip writes at exact clocks"
+        ]
+      },
+      "pcm_recurrence": {
+        "verified": true,
+        "video_steps_completed": [
+          596,
+          4772,
+          8948
+        ],
+        "stereo_sample_offsets": [
+          438625,
+          3511942,
+          6585260
+        ],
+        "period_stereo_frames": [
+          3073317,
+          3073318
+        ],
+        "comparison": {
+          "same_length": false,
+          "pcm_bytes_equal": false,
+          "compared_sample_values": 6146634,
+          "different_sample_values": 6136271,
+          "max_absolute_difference": 11050,
+          "rms_difference": 1848.5442528612111
+        },
+        "first_100ms_comparison": {
+          "same_length": true,
+          "pcm_bytes_equal": false,
+          "compared_sample_values": 8820,
+          "different_sample_values": 8820,
+          "max_absolute_difference": 5618,
+          "rms_difference": 2250.6966169783977
+        },
+        "psg_noise_at_boundaries": [
+          46467,
+          35192,
+          64167
+        ],
+        "ym_context_sha256_at_boundaries": [
+          "27d3236f8bfeadc86f314c727f81b37cfa183ef6ccdd3e56979432d8eb4f5c1c",
+          "0150940ec773121265cbf65f4aa7f9ca64cafc81f7167876dfc3d4a5b94fcb67",
+          "659147c8cdd0ca9d1209c3e83e00ef8f73aacc29cdcea50fa7db00910db7d70e"
+        ],
+        "exact_media_loop_accepted": false,
+        "limits": [
+          "Video-step boundaries are not precise intra-frame sample cut points",
+          "This bounded comparison does not prove that no longer PCM period exists"
+        ]
+      },
+      "exact_pcm_loop_verified": false,
+      "bounded_capture": {
+        "path": ".local/md-yuyuhakusho/audio-music-survey/extended-85/survey.json",
+        "sha256": "5af4952f51c9717acc3a2e30fecda7a82d6a06271fb6dd8ebc0febd9e7d841ad",
+        "bytes": 11765
+      },
+      "limits": [
+        "Looping control flow proven; no accepted finite media loop",
+        "Structure-derived joint periods are not whole native recurrence claims where the captured window is shorter"
+      ]
+    },
+    {
+      "code": 134,
+      "header": {
+        "table_entry": 238758,
+        "address": 247926,
+        "bytes": "0a2e0603020309430000003000130224f40f03a400130552000e055a00120562dc030000074adc03000008bb00020003",
+        "sha256": "bcc1697328d7caf94f2a5221f2964fb9f04787f6f78aa643633812646fbb08aa",
+        "fm_rows_including_dac": 6,
+        "psg_rows": 3,
+        "instrument_data": 250532,
+        "duration_multiplier": 2,
+        "tempo_byte": 3,
+        "voices": [
+          {
+            "index": 0,
+            "kind": "dac",
+            "row": 63552,
+            "record": "09430000",
+            "sequence": 250297
+          },
+          {
+            "index": 1,
+            "kind": "fm",
+            "row": 63600,
+            "record": "00300013",
+            "sequence": 247974
+          },
+          {
+            "index": 2,
+            "kind": "fm",
+            "row": 63648,
+            "record": "0224f40f",
+            "sequence": 248474
+          },
+          {
+            "index": 3,
+            "kind": "fm",
+            "row": 63696,
+            "record": "03a40013",
+            "sequence": 248858
+          },
+          {
+            "index": 4,
+            "kind": "fm",
+            "row": 63744,
+            "record": "0552000e",
+            "sequence": 249288
+          },
+          {
+            "index": 5,
+            "kind": "fm",
+            "row": 63792,
+            "record": "055a0012",
+            "sequence": 249296
+          },
+          {
+            "index": 6,
+            "kind": "psg",
+            "row": 63888,
+            "record": "0562dc030000",
+            "sequence": 249304
+          },
+          {
+            "index": 7,
+            "kind": "psg",
+            "row": 63936,
+            "record": "074adc030000",
+            "sequence": 249792
+          },
+          {
+            "index": 8,
+            "kind": "psg",
+            "row": 63984,
+            "record": "08bb00020003",
+            "sequence": 250161
+          }
+        ]
+      },
+      "classification": "looping-native-sequence",
+      "actual_tracks_with_repeated_f6": 9,
+      "rhythm_period_quanta": [
+        3048,
+        3048,
+        3048,
+        3048,
+        3048,
+        3048,
+        3048,
+        3048,
+        2840
+      ],
+      "common_rhythm_quanta": 1082040,
+      "structure_joint_rhythm_tempo_frames": 1623060,
+      "tempo_changes": [],
+      "raw_driver_recurrence": {
+        "verified": false,
+        "reason": "All active rows do not yet have a repeated F6"
+      },
+      "selected_event_recurrence": {
+        "verified": false
+      },
+      "pcm_recurrence": {
+        "verified": false,
+        "reason": "No complete raw-state boundary proved"
+      },
+      "exact_pcm_loop_verified": false,
+      "bounded_capture": {
+        "path": ".local/md-yuyuhakusho/audio-music-survey/extended-86/survey.json",
+        "sha256": "8a15e555745936641d453d9ee36080e7fab4d04e508aa556912af2be738de59a",
+        "bytes": 8796
+      },
+      "limits": [
+        "Looping control flow proven; no accepted finite media loop",
+        "Structure-derived joint periods are not whole native recurrence claims where the captured window is shorter"
+      ]
+    },
+    {
+      "code": 136,
+      "header": {
+        "table_entry": 238766,
+        "address": 253028,
+        "bytes": "0ce1060302110a4100000030ff0802dbff120456ff190469ff130631ff1307e3e805000009dde806000009e700020000",
+        "sha256": "2b33443be3bdb07bb714dd7eb72f5a3dad2663505c2e2abaaef42d6fcf849441",
+        "fm_rows_including_dac": 6,
+        "psg_rows": 3,
+        "instrument_data": 256325,
+        "duration_multiplier": 2,
+        "tempo_byte": 17,
+        "voices": [
+          {
+            "index": 0,
+            "kind": "dac",
+            "row": 63552,
+            "record": "0a410000",
+            "sequence": 255653
+          },
+          {
+            "index": 1,
+            "kind": "fm",
+            "row": 63600,
+            "record": "0030ff08",
+            "sequence": 253076
+          },
+          {
+            "index": 2,
+            "kind": "fm",
+            "row": 63648,
+            "record": "02dbff12",
+            "sequence": 253759
+          },
+          {
+            "index": 3,
+            "kind": "fm",
+            "row": 63696,
+            "record": "0456ff19",
+            "sequence": 254138
+          },
+          {
+            "index": 4,
+            "kind": "fm",
+            "row": 63744,
+            "record": "0469ff13",
+            "sequence": 254157
+          },
+          {
+            "index": 5,
+            "kind": "fm",
+            "row": 63792,
+            "record": "0631ff13",
+            "sequence": 254613
+          },
+          {
+            "index": 6,
+            "kind": "psg",
+            "row": 63888,
+            "record": "07e3e8050000",
+            "sequence": 255047
+          },
+          {
+            "index": 7,
+            "kind": "psg",
+            "row": 63936,
+            "record": "09dde8060000",
+            "sequence": 255553
+          },
+          {
+            "index": 8,
+            "kind": "psg",
+            "row": 63984,
+            "record": "09e700020000",
+            "sequence": 255563
+          }
+        ]
+      },
+      "classification": "looping-native-sequence",
+      "actual_tracks_with_repeated_f6": 9,
+      "rhythm_period_quanta": [
+        5172,
+        5172,
+        5172,
+        5172,
+        5172,
+        5172,
+        5172,
+        5172,
+        5172
+      ],
+      "common_rhythm_quanta": 5172,
+      "structure_joint_rhythm_tempo_frames": 21981,
+      "tempo_changes": [],
+      "raw_driver_recurrence": {
+        "verified": false,
+        "reason": "All active rows do not yet have a repeated F6"
+      },
+      "selected_event_recurrence": {
+        "verified": false
+      },
+      "pcm_recurrence": {
+        "verified": false,
+        "reason": "No complete raw-state boundary proved"
+      },
+      "exact_pcm_loop_verified": false,
+      "bounded_capture": {
+        "path": ".local/md-yuyuhakusho/audio-music-survey/extended-88/survey.json",
+        "sha256": "3e96196779a5e69fb0fc979b1240a7d447662f9dced58c909c335d3aae2c1b98",
+        "bytes": 8863
+      },
+      "limits": [
+        "Looping control flow proven; no accepted finite media loop",
+        "Structure-derived joint periods are not whole native recurrence claims where the captured window is shorter"
+      ]
+    },
+    {
+      "code": 138,
+      "header": {
+        "table_entry": 238774,
+        "address": 260604,
+        "bytes": "098c0603020f077400000030000c01570014027000160283f41703dcf41504a2dc06000005efdc070000074500020000",
+        "sha256": "883cb779415049123d73916e6f5095344489317cd81314aed8b6cbdb0952f873",
+        "fm_rows_including_dac": 6,
+        "psg_rows": 3,
+        "instrument_data": 263048,
+        "duration_multiplier": 2,
+        "tempo_byte": 15,
+        "voices": [
+          {
+            "index": 0,
+            "kind": "dac",
+            "row": 63552,
+            "record": "07740000",
+            "sequence": 262512
+          },
+          {
+            "index": 1,
+            "kind": "fm",
+            "row": 63600,
+            "record": "0030000c",
+            "sequence": 260652
+          },
+          {
+            "index": 2,
+            "kind": "fm",
+            "row": 63648,
+            "record": "01570014",
+            "sequence": 260947
+          },
+          {
+            "index": 3,
+            "kind": "fm",
+            "row": 63696,
+            "record": "02700016",
+            "sequence": 261228
+          },
+          {
+            "index": 4,
+            "kind": "fm",
+            "row": 63744,
+            "record": "0283f417",
+            "sequence": 261247
+          },
+          {
+            "index": 5,
+            "kind": "fm",
+            "row": 63792,
+            "record": "03dcf415",
+            "sequence": 261592
+          },
+          {
+            "index": 6,
+            "kind": "psg",
+            "row": 63888,
+            "record": "04a2dc060000",
+            "sequence": 261790
+          },
+          {
+            "index": 7,
+            "kind": "psg",
+            "row": 63936,
+            "record": "05efdc070000",
+            "sequence": 262123
+          },
+          {
+            "index": 8,
+            "kind": "psg",
+            "row": 63984,
+            "record": "074500020000",
+            "sequence": 262465
+          }
+        ]
+      },
+      "classification": "looping-native-sequence",
+      "actual_tracks_with_repeated_f6": 9,
+      "rhythm_period_quanta": [
+        5568,
+        5568,
+        5568,
+        5568,
+        5568,
+        5568,
+        5568,
+        5568,
+        5568
+      ],
+      "common_rhythm_quanta": 5568,
+      "structure_joint_rhythm_tempo_frames": 41760,
+      "tempo_changes": [],
+      "raw_driver_recurrence": {
+        "verified": false,
+        "reason": "All active rows do not yet have a repeated F6"
+      },
+      "selected_event_recurrence": {
+        "verified": false
+      },
+      "pcm_recurrence": {
+        "verified": false,
+        "reason": "No complete raw-state boundary proved"
+      },
+      "exact_pcm_loop_verified": false,
+      "bounded_capture": {
+        "path": ".local/md-yuyuhakusho/audio-music-survey/extended-8a/survey.json",
+        "sha256": "00637a5a15e522741b73c651556b555a660cb875e366eead7a6348df3527d1ef",
+        "bytes": 8657
+      },
+      "limits": [
+        "Looping control flow proven; no accepted finite media loop",
+        "Structure-derived joint periods are not whole native recurrence claims where the captured window is shorter"
+      ]
+    },
+    {
+      "code": 141,
+      "header": {
+        "table_entry": 238786,
+        "address": 270066,
+        "bytes": "0ce4060301070bc70000003000110218000e0507000e066c000e07f9000f0965dc0300090a1cdc0300040ae700020002",
+        "sha256": "70a3d15fc27c174ea887765043d0dd16b8e7061e3dbf2d725d7cc94155d1bd6b",
+        "fm_rows_including_dac": 6,
+        "psg_rows": 3,
+        "instrument_data": 273366,
+        "duration_multiplier": 1,
+        "tempo_byte": 7,
+        "voices": [
+          {
+            "index": 0,
+            "kind": "dac",
+            "row": 63552,
+            "record": "0bc70000",
+            "sequence": 273081
+          },
+          {
+            "index": 1,
+            "kind": "fm",
+            "row": 63600,
+            "record": "00300011",
+            "sequence": 270114
+          },
+          {
+            "index": 2,
+            "kind": "fm",
+            "row": 63648,
+            "record": "0218000e",
+            "sequence": 270602
+          },
+          {
+            "index": 3,
+            "kind": "fm",
+            "row": 63696,
+            "record": "0507000e",
+            "sequence": 271353
+          },
+          {
+            "index": 4,
+            "kind": "fm",
+            "row": 63744,
+            "record": "066c000e",
+            "sequence": 271710
+          },
+          {
+            "index": 5,
+            "kind": "fm",
+            "row": 63792,
+            "record": "07f9000f",
+            "sequence": 272107
+          },
+          {
+            "index": 6,
+            "kind": "psg",
+            "row": 63888,
+            "record": "0965dc030009",
+            "sequence": 272471
+          },
+          {
+            "index": 7,
+            "kind": "psg",
+            "row": 63936,
+            "record": "0a1cdc030004",
+            "sequence": 272654
+          },
+          {
+            "index": 8,
+            "kind": "psg",
+            "row": 63984,
+            "record": "0ae700020002",
+            "sequence": 272857
+          }
+        ]
+      },
+      "classification": "looping-native-sequence",
+      "actual_tracks_with_repeated_f6": 9,
+      "rhythm_period_quanta": [
+        2886,
+        2886,
+        2886,
+        2886,
+        2886,
+        2886,
+        2886,
+        2886,
+        2886
+      ],
+      "common_rhythm_quanta": 2886,
+      "structure_joint_rhythm_tempo_frames": 3367,
+      "tempo_changes": [],
+      "raw_driver_recurrence": {
+        "verified": true,
+        "first_equal_after_step": 2472,
+        "equal_pairs": 3496,
+        "period_frames": 3367,
+        "complete_raw_driver_bytes": 928,
+        "reason": "Full raw driver recurrence"
+      },
+      "selected_event_recurrence": {
+        "verified": true,
+        "events_first": 24961,
+        "events_second": 24961,
+        "first_sha256": "13d77a6421df981d3a686eee1a169a607eb8686d8a6b86d74ec4e81c47f6e917",
+        "second_sha256": "13d77a6421df981d3a686eee1a169a607eb8686d8a6b86d74ec4e81c47f6e917",
+        "limits": [
+          "Selected sequence/YM/DAC order and relative video steps only, not all chip writes at exact clocks"
+        ]
+      },
+      "pcm_recurrence": {
+        "verified": true,
+        "video_steps_completed": [
+          2473,
+          5840,
+          9207
+        ],
+        "stereo_sample_offsets": [
+          1819999,
+          4297935,
+          6775870
+        ],
+        "period_stereo_frames": [
+          2477936,
+          2477935
+        ],
+        "comparison": {
+          "same_length": false,
+          "pcm_bytes_equal": false,
+          "compared_sample_values": 4955870,
+          "different_sample_values": 4949112,
+          "max_absolute_difference": 9612,
+          "rms_difference": 817.1477303536358
+        },
+        "first_100ms_comparison": {
+          "same_length": true,
+          "pcm_bytes_equal": false,
+          "compared_sample_values": 8820,
+          "different_sample_values": 8809,
+          "max_absolute_difference": 4651,
+          "rms_difference": 973.8102171961672
+        },
+        "psg_noise_at_boundaries": [
+          36761,
+          47378,
+          47378
+        ],
+        "ym_context_sha256_at_boundaries": [
+          "b08aee3de692ea0818db1093a585522e27351f4e9816de3af97fe946b93bb389",
+          "7f14171e04893b06ce06dad62448a87286456a1c3d60859f3847868c2741d620",
+          "aa69e5e8fc888dac25b65e7ceaeda348235892dbf505b11a43040328aad9cb33"
+        ],
+        "exact_media_loop_accepted": false,
+        "limits": [
+          "Video-step boundaries are not precise intra-frame sample cut points",
+          "This bounded comparison does not prove that no longer PCM period exists"
+        ]
+      },
+      "exact_pcm_loop_verified": false,
+      "bounded_capture": {
+        "path": ".local/md-yuyuhakusho/audio-music-survey/extended-8d/survey.json",
+        "sha256": "e68ea6dbeaa1b21386c0d4d8e5a47b212cec2d85b13ed32aea6ab3912d2ea428",
+        "bytes": 8729
+      },
+      "limits": [
+        "Looping control flow proven; no accepted finite media loop",
+        "Structure-derived joint periods are not whole native recurrence claims where the captured window is shorter"
+      ]
+    },
+    {
+      "code": 149,
+      "header": {
+        "table_entry": 238818,
+        "address": 285916,
+        "bytes": "17190603010a154a00000030001003f8000c069700100aa300060da1001011cbdc0200001348dc060000134e00020003",
+        "sha256": "d4412b137fed8a927ebad1f9c11a4fb4015a2ed089220cf694d1d011715b49d6",
+        "fm_rows_including_dac": 6,
+        "psg_rows": 3,
+        "instrument_data": 291829,
+        "duration_multiplier": 1,
+        "tempo_byte": 10,
+        "voices": [
+          {
+            "index": 0,
+            "kind": "dac",
+            "row": 63552,
+            "record": "154a0000",
+            "sequence": 291366
+          },
+          {
+            "index": 1,
+            "kind": "fm",
+            "row": 63600,
+            "record": "00300010",
+            "sequence": 285964
+          },
+          {
+            "index": 2,
+            "kind": "fm",
+            "row": 63648,
+            "record": "03f8000c",
+            "sequence": 286932
+          },
+          {
+            "index": 3,
+            "kind": "fm",
+            "row": 63696,
+            "record": "06970010",
+            "sequence": 287603
+          },
+          {
+            "index": 4,
+            "kind": "fm",
+            "row": 63744,
+            "record": "0aa30006",
+            "sequence": 288639
+          },
+          {
+            "index": 5,
+            "kind": "fm",
+            "row": 63792,
+            "record": "0da10010",
+            "sequence": 289405
+          },
+          {
+            "index": 6,
+            "kind": "psg",
+            "row": 63888,
+            "record": "11cbdc020000",
+            "sequence": 290471
+          },
+          {
+            "index": 7,
+            "kind": "psg",
+            "row": 63936,
+            "record": "1348dc060000",
+            "sequence": 290852
+          },
+          {
+            "index": 8,
+            "kind": "psg",
+            "row": 63984,
+            "record": "134e00020003",
+            "sequence": 290858
+          }
+        ]
+      },
+      "classification": "looping-native-sequence",
+      "actual_tracks_with_repeated_f6": 9,
+      "rhythm_period_quanta": [
+        3408,
+        3408,
+        3408,
+        3408,
+        3408,
+        3408,
+        3408,
+        3408,
+        3408
+      ],
+      "common_rhythm_quanta": 3408,
+      "structure_joint_rhythm_tempo_frames": null,
+      "tempo_changes": [
+        {
+          "row": 63552,
+          "source": 291695,
+          "quanta": 4224,
+          "tempo": 18
+        },
+        {
+          "row": 63552,
+          "source": 291737,
+          "quanta": 4422,
+          "tempo": 8
+        },
+        {
+          "row": 63552,
+          "source": 291741,
+          "quanta": 4440,
+          "tempo": 18
+        },
+        {
+          "row": 63552,
+          "source": 291748,
+          "quanta": 4464,
+          "tempo": 6
+        },
+        {
+          "row": 63552,
+          "source": 291752,
+          "quanta": 4476,
+          "tempo": 18
+        },
+        {
+          "row": 63552,
+          "source": 291759,
+          "quanta": 4500,
+          "tempo": 5
+        },
+        {
+          "row": 63552,
+          "source": 291763,
+          "quanta": 4512,
+          "tempo": 18
+        },
+        {
+          "row": 63552,
+          "source": 291770,
+          "quanta": 4536,
+          "tempo": 6
+        },
+        {
+          "row": 63552,
+          "source": 291774,
+          "quanta": 4548,
+          "tempo": 18
+        },
+        {
+          "row": 63552,
+          "source": 291796,
+          "quanta": 4642,
+          "tempo": 10
+        },
+        {
+          "row": 63744,
+          "source": 289217,
+          "quanta": 4224,
+          "tempo": 18
+        }
+      ],
+      "raw_driver_recurrence": {
+        "verified": true,
+        "first_equal_after_step": 6327,
+        "equal_pairs": 6390,
+        "period_frames": 3767,
+        "complete_raw_driver_bytes": 928,
+        "reason": "Full raw driver recurrence"
+      },
+      "selected_event_recurrence": {
+        "verified": true,
+        "events_first": 32958,
+        "events_second": 32958,
+        "first_sha256": "7a452311980ab895c3e58aaa6aff54f5f38d3fbc2501f9d1809eb08a875d9457",
+        "second_sha256": "7a452311980ab895c3e58aaa6aff54f5f38d3fbc2501f9d1809eb08a875d9457",
+        "limits": [
+          "Selected sequence/YM/DAC order and relative video steps only, not all chip writes at exact clocks"
+        ]
+      },
+      "pcm_recurrence": {
+        "verified": true,
+        "video_steps_completed": [
+          6328,
+          10095,
+          13862
+        ],
+        "stereo_sample_offsets": [
+          4657077,
+          7429392,
+          10201706
+        ],
+        "period_stereo_frames": [
+          2772315,
+          2772314
+        ],
+        "comparison": {
+          "same_length": false,
+          "pcm_bytes_equal": false,
+          "compared_sample_values": 5544628,
+          "different_sample_values": 5531303,
+          "max_absolute_difference": 14366,
+          "rms_difference": 1431.317546216625
+        },
+        "first_100ms_comparison": {
+          "same_length": true,
+          "pcm_bytes_equal": false,
+          "compared_sample_values": 8820,
+          "different_sample_values": 8817,
+          "max_absolute_difference": 3891,
+          "rms_difference": 885.2615073494147
+        },
+        "psg_noise_at_boundaries": [
+          41612,
+          41612,
+          41612
+        ],
+        "ym_context_sha256_at_boundaries": [
+          "f940ea211afc2dfc51028c769c6b53cf177dfbdfccbdbe66742bcbe025c79dfd",
+          "cd54f8bed4d79095cc0734ec39224fd0d22ebb174fe6bfe1a7867b5d98513dbd",
+          "892d9b5e6fba017c4067d578f56b0b70515d98a09a1115149b2626f09c5b66f6"
+        ],
+        "exact_media_loop_accepted": false,
+        "limits": [
+          "Video-step boundaries are not precise intra-frame sample cut points",
+          "This bounded comparison does not prove that no longer PCM period exists"
+        ]
+      },
+      "exact_pcm_loop_verified": false,
+      "bounded_capture": {
+        "path": ".local/md-yuyuhakusho/audio-music-survey/extended-95/survey.json",
+        "sha256": "85b5fb9bffbcf37cbfcd43057cc5ae0f2d5180b59e060c5c1e99fc5d399ee839",
+        "bytes": 10850
+      },
+      "limits": [
+        "Looping control flow proven; no accepted finite media loop",
+        "Structure-derived joint periods are not whole native recurrence claims where the captured window is shorter"
+      ]
+    }
+  ],
+  "phases": [
+    {
+      "label": "first-probe",
+      "path": ".local/md-yuyuhakusho/audio-music-survey/probe/survey.json",
+      "sha256": "b66b423b9b5b4bf80b3f884f37efedd8c7d0fe711b05839b2db1fbf08e4ff53e",
+      "bytes": 47443
+    },
+    {
+      "label": "per-track-83",
+      "path": ".local/md-yuyuhakusho/audio-music-survey/extended-83/survey.json",
+      "sha256": "5d74fd57aca4efc5dbd0387e3f5c45275a0c7595f33cf22c88b6bb5e794cd2cc",
+      "bytes": 16385
+    },
+    {
+      "label": "per-track-84",
+      "path": ".local/md-yuyuhakusho/audio-music-survey/extended-84/survey.json",
+      "sha256": "30d364f27ac1a24baac81ddeb508843e5e1e6124e69c9ae5d4d901bf5e589649",
+      "bytes": 10547
+    },
+    {
+      "label": "per-track-85",
+      "path": ".local/md-yuyuhakusho/audio-music-survey/extended-85/survey.json",
+      "sha256": "5af4952f51c9717acc3a2e30fecda7a82d6a06271fb6dd8ebc0febd9e7d841ad",
+      "bytes": 11765
+    },
+    {
+      "label": "per-track-86",
+      "path": ".local/md-yuyuhakusho/audio-music-survey/extended-86/survey.json",
+      "sha256": "8a15e555745936641d453d9ee36080e7fab4d04e508aa556912af2be738de59a",
+      "bytes": 8796
+    },
+    {
+      "label": "per-track-88",
+      "path": ".local/md-yuyuhakusho/audio-music-survey/extended-88/survey.json",
+      "sha256": "3e96196779a5e69fb0fc979b1240a7d447662f9dced58c909c335d3aae2c1b98",
+      "bytes": 8863
+    },
+    {
+      "label": "per-track-8a",
+      "path": ".local/md-yuyuhakusho/audio-music-survey/extended-8a/survey.json",
+      "sha256": "00637a5a15e522741b73c651556b555a660cb875e366eead7a6348df3527d1ef",
+      "bytes": 8657
+    },
+    {
+      "label": "per-track-8d",
+      "path": ".local/md-yuyuhakusho/audio-music-survey/extended-8d/survey.json",
+      "sha256": "e68ea6dbeaa1b21386c0d4d8e5a47b212cec2d85b13ed32aea6ab3912d2ea428",
+      "bytes": 8729
+    },
+    {
+      "label": "per-track-95",
+      "path": ".local/md-yuyuhakusho/audio-music-survey/extended-95/survey.json",
+      "sha256": "85b5fb9bffbcf37cbfcd43057cc5ae0f2d5180b59e060c5c1e99fc5d399ee839",
+      "bytes": 10850
+    },
+    {
+      "label": "8d-observed-raw-boundary",
+      "path": ".local/md-yuyuhakusho/audio-music-survey/raw-proof-8d/survey.json",
+      "sha256": "b488e761acf47ab1fa1991b3bf55ccca0b89e0e7eea7e991a443ee730c9caaa2",
+      "bytes": 10496
+    }
+  ],
+  "sampler_alignment_constraints": [
+    {
+      "sequence_period_video_frames": 3840,
+      "stereo_samples_per_period": "2023186636800/715909",
+      "minimum_sequence_loops_same_video_and_sample_phase": 715909,
+      "seconds": "45877248",
+      "raw_stereo_s16_bytes": 8092746547200,
+      "limit": "Alignment arithmetic only; not a proof excluding shorter waveform coincidence or additional chip-state factors"
+    },
+    {
+      "sequence_period_video_frames": 11502,
+      "stereo_samples_per_period": "6060076223040/715909",
+      "minimum_sequence_loops_same_video_and_sample_phase": 715909,
+      "seconds": "687083472/5",
+      "raw_stereo_s16_bytes": 24240304892160,
+      "limit": "Alignment arithmetic only; not a proof excluding shorter waveform coincidence or additional chip-state factors"
+    }
+  ],
+  "score_structure": {
+    "path": "games/yuyuhakusho/data/audio-music-score-structure.json.gz",
+    "sha256": "392e3dbd9d6773b0112c386f30c0b619936b62c5969aa3d3b1c312c1076859b0",
+    "bytes": 36052
+  },
+  "cleanup": {
+    "path": "games/yuyuhakusho/data/audio-music-study-cleanup.json",
+    "sha256": "f69f94bd28f591b71977584ad6e4f2dddd59b3b57ebaa317433a329701f4dea6",
+    "bytes": 4603
+  },
+  "native_carrier_index": "games/yuyuhakusho/data/audio-native-carrier-validation.json",
+  "test_first": {
+    "acceptance_sources_unchanged": true,
+    "initial_missing_evidence_red_is_not_a_production_code_red": true,
+    "plan_updated_after_probe_with_exact_initial_plan_preserved": true,
+    "evidence": [
+      {
+        "path": "games/yuyuhakusho/verification/music-study/music-missing-red.txt",
+        "sha256": "da7888ff3444a367cea2e39fb9452a3a31becd0323c6a7ec8204437a90fd24a1",
+        "bytes": 1320
+      },
+      {
+        "path": "games/yuyuhakusho/verification/music-study/music-structure-symbol-red.txt",
+        "sha256": "16755ad441738a8708f4aab4b1463f61268a64733960f6f9ed5ab7273b92dff8",
+        "bytes": 331
+      },
+      {
+        "path": "games/yuyuhakusho/verification/music-study/music-structure-tempo-red.txt",
+        "sha256": "c3703e630dbe6a036c1aa39373e771b0980e74e604eb0129fa7255e0b61f4ed9",
+        "bytes": 767
+      },
+      {
+        "path": "games/yuyuhakusho/verification/music-study/music-clock-symbol-red.txt",
+        "sha256": "dd7b62c6e5199c7f94d56ccd52115a6cbb01d02e09b1ed845d97326809f62b90",
+        "bytes": 447
+      },
+      {
+        "path": "games/yuyuhakusho/verification/music-study/music-probe-validation.json",
+        "sha256": "dcc9972cc17d782a42d978a4d992124dc1be4c9aef948478ed7b72be96b38448",
+        "bytes": 131
+      },
+      {
+        "path": "games/yuyuhakusho/verification/music-study/music-structure-validation.json",
+        "sha256": "0d4fd08a13051e6679f424373f7515570a28be08d861a593539a8d06173436d9",
+        "bytes": 949644
+      },
+      {
+        "path": "games/yuyuhakusho/verification/music-study/music-extended-validation.json",
+        "sha256": "fbd5b522cb8f63220eea0277e7e3b63190f2c7a4121757d1dd1ea7d5b535fc65",
+        "bytes": 12849
+      },
+      {
+        "path": "games/yuyuhakusho/verification/music-study/music-plan-initial.md",
+        "sha256": "d07d4f50d2f6a65782f8ebff9882174c6f852648837ed7882193549358a16da4",
+        "bytes": 3159
+      },
+      {
+        "path": "games/yuyuhakusho/verification/music-study/music-test-first.json",
+        "sha256": "a5323140d1ddd45a28b0ca3f8f16ee8a438083b3a3ce2f4731bb0558247fbbf5",
+        "bytes": 750
+      },
+      {
+        "path": "games/yuyuhakusho/verification/music-study/music-producer-frozen.json",
+        "sha256": "57c1fb6c10eba5424f7fdb5efc032010eacf07a3cd3793d276f6b39189fb6145",
+        "bytes": 269
+      },
+      {
+        "path": "games/yuyuhakusho/verification/music-study/music-extended-producer-frozen.json",
+        "sha256": "51867999ab6d52416cc935b5357adf5158a47cb62bf50463c3cf48ae1794f287",
+        "bytes": 307
+      },
+      {
+        "path": "games/yuyuhakusho/verification/music-study/music-8d-raw-boundary-summary.json",
+        "sha256": "b488e761acf47ab1fa1991b3bf55ccca0b89e0e7eea7e991a443ee730c9caaa2",
+        "bytes": 10496
+      },
+      {
+        "path": "games/yuyuhakusho/verification/music-study/music-8d-raw-boundary-capture.py.txt",
+        "sha256": "79bcb62f38455c6269fff21d51e4fe5db8c47f3008f06a7940ed3c199f47e939",
+        "bytes": 801
+      },
+      {
+        "path": "games/yuyuhakusho/verification/music-study/native-carrier-capabilities.json",
+        "sha256": "565952f0dc0788eca702fb80656b6c5ce924e4aacb8454935577d74a51b2d1e1",
+        "bytes": 2662
+      },
+      {
+        "path": "games/yuyuhakusho/verification/music-study/native-carrier-test-first.json",
+        "sha256": "23ae1aaca99101fc0670ca6aa6354c4897a8bfe6f641e3304d5169cc61678461",
+        "bytes": 510
+      },
+      {
+        "path": "games/yuyuhakusho/verification/music-study/native-carrier-missing-red.txt",
+        "sha256": "1a3550dcbdb30d0fa09e37859a78278466dd2675e96aaf5d0fe9fb0e682a131b",
+        "bytes": 1704
+      },
+      {
+        "path": "games/yuyuhakusho/verification/music-study/native-carrier-result.json",
+        "sha256": "eb37153ecac9b948dcfb164a6afbca134422b1c684089c62f15a252a71c6f9a2",
+        "bytes": 1642
+      },
+      {
+        "path": "games/yuyuhakusho/verification/music-study/native-carrier-manifest.json",
+        "sha256": "b5fbf92fcf11eb004d787389413095d8713a1af1cc1429f9d76c7061a3d2256f",
+        "bytes": 6121
+      },
+      {
+        "path": "games/yuyuhakusho/verification/music-study/native-carrier-negatives.json",
+        "sha256": "fe7d0d70104a97436c07e761bd0a3cb933a6ace2b30b50e479447d79c5661fea",
+        "bytes": 1540
+      },
+      {
+        "path": "games/yuyuhakusho/verification/music-study/structure-test-first.json",
+        "sha256": "0240806ff0b0c609cb951cc8366b0c59c67663c627a364a72fbfb5c416f5691e",
+        "bytes": 400
+      },
+      {
+        "path": "games/yuyuhakusho/verification/music-study/clock-test-first.json",
+        "sha256": "3260fcf52cbc0ab9a60085181827f2179b9916228659e88ee86e900a7bb2e25e",
+        "bytes": 377
+      },
+      {
+        "path": "games/yuyuhakusho/verification/music-study/native-carrier-negative-sample-gap.txt",
+        "sha256": "0afdea9c321ef00b82c1aea95a5d092c1243ea6e76a237073896252fc21d510a",
+        "bytes": 951
+      },
+      {
+        "path": "games/yuyuhakusho/verification/music-study/native-carrier-negative-changed-pcm.txt",
+        "sha256": "1075258eeaa21ac9fe75ace6979be6c5f2948aee9ec83f20e0866ee4cbc6c175",
+        "bytes": 963
+      },
+      {
+        "path": "games/yuyuhakusho/verification/music-study/native-carrier-negative-changed-fragment.txt",
+        "sha256": "cc784f396f4d4f45104ef29f16d64a8d2a74fbe05280c338000524adf573570c",
+        "bytes": 927
+      },
+      {
+        "path": "games/yuyuhakusho/verification/music-study/native-carrier-negative-unsupported-mime.txt",
+        "sha256": "b0d27e420f6033dde1f0ed02aa631d2279b610f1dd1cf1fedf7fea2ac2f6c184",
+        "bytes": 1288
+      }
+    ]
+  },
+  "source_sha256": {
+    "scripts/yuyuhakusho/survey_music_sequences.py": "8226ccd4892605dd4ed04df8baa4f7bbee4d6628c9d37fd1004aeea31d22c570",
+    "scripts/yuyuhakusho/validate_music_survey.py": "2d3df4cf9b4d3bd0f31b2545ed9e8221da6e4571e9a98e07080929d6c96f4aad",
+    "scripts/yuyuhakusho/music_score_structure.py": "7738e3fba39ba570101d73c454756b8b4949a5e31bd9f65ba6f40551fd59b1a2",
+    "scripts/yuyuhakusho/check_music_score_structure.py": "aeef14935ececbba60ce1c5b9f0eff537dfd18003a5f01c4b4b27543be20f26f",
+    "scripts/yuyuhakusho/capture_music_tracks.py": "e8e72a1457957947fd3f3b17eb8ef5867dd3dc882d73b42d6d3e1fadc82f2f55",
+    "scripts/yuyuhakusho/check_music_survey_full.py": "78d691614f9cffcf037620e6948fd5fc42eabaf646c1026475e7acc3d6817fcc",
+    "scripts/yuyuhakusho/probe_music_native_carrier.py": "f463d1b70c22ae4803bc6cf0136c718ba4bbaac443c19d6d87e11555482e713f",
+    "scripts/yuyuhakusho/check_music_native_carrier.py": "37ec0dcc344d127b4dc55660ddde28be198fbe52460cb144fdaa7e5559fd383d",
+    "scripts/yuyuhakusho/build_music_native_carrier.py": "9a779ca51e5beba5e5e8c7b61ea58a5e47b833842af3e1419348cfb4cb7be9e4",
+    "scripts/yuyuhakusho/verify_music_carrier_negatives.py": "07f58e4528a9ecca03bfddc43c398dec4d851104c111a0d5c6b9cfab11d2e856",
+    "scripts/yuyuhakusho/summarize_music_research.py": "f5f6c91e8aa9419024b675478a602ce9d0be77e945f02b0f84c158ac60a793d9",
+    "docs/research/md-yuyuhakusho/AUDIO_MUSIC_FAILURES.md": "f68a2870ac756b2d680f88a3ef446eebb1dadf5d0eeb64ab656090117f8b8a5d",
+    "docs/research/md-yuyuhakusho/AUDIO_MUSIC_PLAN.md": "f8bba964f7fe860ea313a617c74fbe9e16ff9eb67e38909d0c0984ffcbad9aad",
+    "docs/research/md-yuyuhakusho/AUDIO_MUSIC_NATIVE_CARRIER_FAILURES.md": "48b3cb5c6f634a3c10072cc24b57cf3b455ce4cd0279a805cc93225a5edfaeca",
+    "docs/research/md-yuyuhakusho/AUDIO_MUSIC_RESULTS.md": "4ff5c12cf3c2557aa3e9d499c394a8d99f6dbb09eafabd48b35bd3b376b31e16"
+  },
+  "limits": [
+    "Isolated music private input only; natural request dispatch and mixed SFX timing are separate owners",
+    "Long joint periods84/86/88/8a remain structure candidates, not captured whole-driver or PCM recurrence",
+    "Research model validates rhythm/command timing; complete pitched-note/instrument automation export and independent synthesis remain unimplemented",
+    "No fixed WAV loop is accepted; full native chip/PCM state can continue across sequence returns",
+    "Native carrier is finite12s Chromium evidence, not independentDSP or infinite music playback",
+    "No game/engine/platform production file, existing media or old producer modified"
+  ]
+}

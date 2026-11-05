@@ -1,0 +1,18 @@
+{
+  "pass": true,
+  "scope": "Repeated private original capture and offline natural phase projection; manifests retain their declared output paths",
+  "checks": [
+    {
+      "canonical": "games/yuyuhakusho/engine/testdata/audio-timing-boundaries.json.gz",
+      "repeat": ".local/md-yuyuhakusho/audio-timing-private-repeat/audio-timing-boundaries.json.gz",
+      "sha256": "2b22c2806e6e373a59306c54e1d274de3ba05eb81068eefa836b0ded8cbcd669",
+      "byte_identical": true
+    },
+    {
+      "canonical": "games/yuyuhakusho/engine/testdata/audio-timing-natural-phases.json.gz",
+      "repeat": ".local/md-yuyuhakusho/audio-timing-projection-repeat/audio-timing-natural-phases.json.gz",
+      "sha256": "3e7bc4390414e649eee8e671f2ebc00847253b04c47349cfd94ee17f87961c91",
+      "byte_identical": true
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "frozen_at_utc": "2026-11-05T10:25:23.869844+00:00",
+  "phase": "Root controlled lifecycle race tests and independently frozen real Chromium finite-lane E2E before shared production implementation",
+  "sha256": {
+    "web/tests/platform-audio-finite.test.mjs": "c4a858cac0b5a916cc44e1aa00b945abed6a2f7276cacb68ec4e354ebae229b6",
+    "docs/research/md-yuyuhakusho/AUDIO_PLATFORM_FINITE_LANES_FAILURES.md": "951f15d7441d970bda9282335d1c50f6ad0d8046e128fa8ec3bc4b1d6c27c8bf",
+    "scripts/yuyuhakusho/audio_finite_lanes_harness.ts": "94c125b84f4f5c9df26717bfb5b1548b0020ff74088c2dc8e61fadac402455a3",
+    "scripts/yuyuhakusho/check_audio_media_api.py": "86ab19dbbf272637d19eeefce9798d6d575dd52f2be13f16ec863ca9cb8d849a"
+  },
+  "actual_unit_red": "games/yuyuhakusho/verification/audio-platform-finite-unit-red.log",
+  "actual_browser_red": "games/yuyuhakusho/verification/audio-platform-media-api/proposed-finite-final-red.log",
+  "bounded_capacity": {
+    "lanes_per_owner": 16,
+    "total_lanes": 32,
+    "playback_id_characters": 256
+  }
+}

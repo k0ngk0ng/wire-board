@@ -1,0 +1,6 @@
+{
+  "pass": false,
+  "error": "FileNotFoundError(2, 'No such file or directory')",
+  "capture_path": ".local/md-yuyuhakusho/audio-dispatch-study/capture.json",
+  "verifier_sha256": "10836a6b1499f6e267b7018ae6017c94ea851c217d95c9af479bd3da347c53c4"
+}

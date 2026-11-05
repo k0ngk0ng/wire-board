@@ -1,0 +1,12 @@
+{
+  "created_at_utc": "2026-11-05T09:42:21.517927+00:00",
+  "phase": "Proposed finite-lane API E2E frozen before any shared implementation",
+  "sha256": {
+    "docs/research/md-yuyuhakusho/AUDIO_PLATFORM_FINITE_LANES_FAILURES.md": "951f15d7441d970bda9282335d1c50f6ad0d8046e128fa8ec3bc4b1d6c27c8bf",
+    "scripts/yuyuhakusho/audio_finite_lanes_harness.ts": "23322d9ac517f0962b48666f0e1c710683a630ebea5cb823bf74cdf42daa7e93",
+    "scripts/yuyuhakusho/check_audio_media_api.py": "c3219defba49f73c86bceccdcd94b7cdabd177fa5cab769fb434ada25709b768"
+  },
+  "legacy_checker_archive": "games/yuyuhakusho/verification/audio-platform-media-api/initial-checker.py.txt",
+  "legacy_checker_sha256": "559c078c5c277d28bcaa8aed6a193473cba7cb30c905e93077ff51a7175049ba",
+  "legacy_shared_implementation_unchanged": true
+}

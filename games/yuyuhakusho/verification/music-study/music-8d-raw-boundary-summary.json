@@ -1,0 +1,364 @@
+{
+  "schema": 1,
+  "scope": "bounded-original-music-survey",
+  "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+  "codes": [
+    141
+  ],
+  "pass": true,
+  "release_ready": false,
+  "published": false,
+  "identity": {
+    "original": {
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+      "core_name": "Genesis Plus GX",
+      "core_version": "v1.7.4 60bee4c",
+      "fps": 59.92274340431231,
+      "ram_bytes": 65536,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "teamplayer": false
+    },
+    "observed": {
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+      "core_name": "Genesis Plus GX",
+      "core_version": "v1.7.460bee4c",
+      "fps": 59.92274340431231,
+      "ram_bytes": 65536,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "teamplayer": false
+    }
+  },
+  "observer": {
+    "path": ".local/md-yuyuhakusho/tools/hook_filter.dylib",
+    "sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4"
+  },
+  "songs": [
+    {
+      "code": 141,
+      "header": {
+        "table_entry": 238786,
+        "address": 270066,
+        "bytes": "0ce4060301070bc70000003000110218000e0507000e066c000e07f9000f0965dc0300090a1cdc0300040ae700020002",
+        "sha256": "70a3d15fc27c174ea887765043d0dd16b8e7061e3dbf2d725d7cc94155d1bd6b",
+        "fm_rows_including_dac": 6,
+        "psg_rows": 3,
+        "instrument_data": 273366,
+        "duration_multiplier": 1,
+        "tempo_byte": 7,
+        "voices": [
+          {
+            "index": 0,
+            "kind": "dac",
+            "row": 63552,
+            "record": "0bc70000",
+            "sequence": 273081
+          },
+          {
+            "index": 1,
+            "kind": "fm",
+            "row": 63600,
+            "record": "00300011",
+            "sequence": 270114
+          },
+          {
+            "index": 2,
+            "kind": "fm",
+            "row": 63648,
+            "record": "0218000e",
+            "sequence": 270602
+          },
+          {
+            "index": 3,
+            "kind": "fm",
+            "row": 63696,
+            "record": "0507000e",
+            "sequence": 271353
+          },
+          {
+            "index": 4,
+            "kind": "fm",
+            "row": 63744,
+            "record": "066c000e",
+            "sequence": 271710
+          },
+          {
+            "index": 5,
+            "kind": "fm",
+            "row": 63792,
+            "record": "07f9000f",
+            "sequence": 272107
+          },
+          {
+            "index": 6,
+            "kind": "psg",
+            "row": 63888,
+            "record": "0965dc030009",
+            "sequence": 272471
+          },
+          {
+            "index": 7,
+            "kind": "psg",
+            "row": 63936,
+            "record": "0a1cdc030004",
+            "sequence": 272654
+          },
+          {
+            "index": 8,
+            "kind": "psg",
+            "row": 63984,
+            "record": "0ae700020002",
+            "sequence": 272857
+          }
+        ]
+      },
+      "sampling": {
+        "steps": 9335,
+        "limit": 9335,
+        "warmup_frames_checked": 2400,
+        "world_clear_every_step": true,
+        "effect_rows_clear_every_step": true,
+        "sample_rate": 44100,
+        "channels": 2,
+        "native_end_step": null,
+        "idle_tail_steps": 0,
+        "exact_zero_tail_batches": 0,
+        "native_finite_complete": false,
+        "nonzero_sample_values": 13736539,
+        "active_music_rows_at_end": [
+          63552,
+          63600,
+          63648,
+          63696,
+          63744,
+          63792,
+          63888,
+          63936,
+          63984
+        ],
+        "original_ram_video_driver_pcm_equal": true
+      },
+      "files": {
+        "states": {
+          "path": ".local/md-yuyuhakusho/audio-music-survey/raw-proof-8d/8d-states.jsonl.gz",
+          "sha256": "cff15fb9af881577a6ce98f84b8c830e44ffb9ef62e31a605b41a0b5537e4769"
+        },
+        "wav": {
+          "path": ".local/md-yuyuhakusho/audio-music-survey/raw-proof-8d/8d-control.wav",
+          "sha256": "c4b1c147d94c49ff9e86a0e7de128590ae3507715bd6f3a0d02f4a9ea8d6a809"
+        },
+        "events": {
+          "path": ".local/md-yuyuhakusho/audio-music-survey/raw-proof-8d/8d-events.json.gz",
+          "sha256": "6efa7a71aa8fc9a2e6b76fe890e4abd3475477a6df0f915258d7e9d8fc46f983"
+        }
+      },
+      "track_f6_observations": [
+        {
+          "row": 63552,
+          "source": 273362,
+          "target": 273081,
+          "steps": [
+            3368,
+            6735
+          ],
+          "period_frames": 3367
+        },
+        {
+          "row": 63600,
+          "source": 270355,
+          "target": 270114,
+          "steps": [
+            3368,
+            6735
+          ],
+          "period_frames": 3367
+        },
+        {
+          "row": 63648,
+          "source": 270797,
+          "target": 270605,
+          "steps": [
+            3704,
+            7071
+          ],
+          "period_frames": 3367
+        },
+        {
+          "row": 63696,
+          "source": 271677,
+          "target": 271353,
+          "steps": [
+            3368,
+            6735
+          ],
+          "period_frames": 3367
+        },
+        {
+          "row": 63744,
+          "source": 272074,
+          "target": 271710,
+          "steps": [
+            3368,
+            6735
+          ],
+          "period_frames": 3367
+        },
+        {
+          "row": 63792,
+          "source": 272358,
+          "target": 272116,
+          "steps": [
+            3718,
+            7085
+          ],
+          "period_frames": 3367
+        },
+        {
+          "row": 63888,
+          "source": 272623,
+          "target": 272471,
+          "steps": [
+            3368,
+            6735
+          ],
+          "period_frames": 3367
+        },
+        {
+          "row": 63936,
+          "source": 272826,
+          "target": 272654,
+          "steps": [
+            3368,
+            6735
+          ],
+          "period_frames": 3367
+        },
+        {
+          "row": 63984,
+          "source": 273077,
+          "target": 272857,
+          "steps": [
+            3368,
+            6735
+          ],
+          "period_frames": 3367
+        }
+      ],
+      "track_periods": [
+        3367,
+        3367,
+        3367,
+        3367,
+        3367,
+        3367,
+        3367,
+        3367,
+        3367
+      ],
+      "candidate_period_lcm": 3367,
+      "all_active_rows_have_repeated_f6": true,
+      "common_period_frames": 3367,
+      "exact_pcm_loop_verified": false,
+      "classification": "bounded-loop-evidence",
+      "tick_calls": 9335,
+      "sequence_command_counts": {
+        "224": 60,
+        "225": 55,
+        "228": 17,
+        "230": 125,
+        "231": 418,
+        "236": 123,
+        "239": 224,
+        "240": 373,
+        "243": 3,
+        "245": 99,
+        "246": 18,
+        "247": 94,
+        "248": 54,
+        "249": 52,
+        "251": 56,
+        "253": 320
+      },
+      "limits": [
+        "Probe only; common_period_frames is a structure-derived candidate until a complete recurrence window is validated",
+        "No semantic state bytes excluded",
+        "Selected events are not a complete exact-clock chip write stream",
+        "No accepted intro/loop media is produced"
+      ],
+      "raw_driver_recurrence": {
+        "verified": true,
+        "first_equal_after_step": 2472,
+        "equal_pairs": 3496,
+        "period_frames": 3367,
+        "complete_raw_driver_bytes": 928,
+        "reason": "Full raw driver recurrence"
+      },
+      "selected_event_recurrence": {
+        "verified": true,
+        "events_first": 24961,
+        "events_second": 24961,
+        "first_sha256": "13d77a6421df981d3a686eee1a169a607eb8686d8a6b86d74ec4e81c47f6e917",
+        "second_sha256": "13d77a6421df981d3a686eee1a169a607eb8686d8a6b86d74ec4e81c47f6e917",
+        "limits": [
+          "Selected sequence/YM/DAC order and relative video steps only, not all chip writes at exact clocks"
+        ]
+      },
+      "pcm_recurrence": {
+        "verified": true,
+        "video_steps_completed": [
+          2473,
+          5840,
+          9207
+        ],
+        "stereo_sample_offsets": [
+          1819999,
+          4297935,
+          6775870
+        ],
+        "period_stereo_frames": [
+          2477936,
+          2477935
+        ],
+        "comparison": {
+          "same_length": false,
+          "pcm_bytes_equal": false,
+          "compared_sample_values": 4955870,
+          "different_sample_values": 4949112,
+          "max_absolute_difference": 9612,
+          "rms_difference": 817.1477303536358
+        },
+        "first_100ms_comparison": {
+          "same_length": true,
+          "pcm_bytes_equal": false,
+          "compared_sample_values": 8820,
+          "different_sample_values": 8809,
+          "max_absolute_difference": 4651,
+          "rms_difference": 973.8102171961672
+        },
+        "psg_noise_at_boundaries": [
+          36761,
+          47378,
+          47378
+        ],
+        "ym_context_sha256_at_boundaries": [
+          "b08aee3de692ea0818db1093a585522e27351f4e9816de3af97fe946b93bb389",
+          "7f14171e04893b06ce06dad62448a87286456a1c3d60859f3847868c2741d620",
+          "aa69e5e8fc888dac25b65e7ceaeda348235892dbf505b11a43040328aad9cb33"
+        ],
+        "exact_media_loop_accepted": false,
+        "limits": [
+          "Video-step boundaries are not precise intra-frame sample cut points",
+          "This bounded comparison does not prove that no longer PCM period exists"
+        ]
+      }
+    }
+  ],
+  "source_sha256": {
+    "scripts/yuyuhakusho/survey_music_sequences.py": "8226ccd4892605dd4ed04df8baa4f7bbee4d6628c9d37fd1004aeea31d22c570",
+    "scripts/yuyuhakusho/validate_music_survey.py": "2d3df4cf9b4d3bd0f31b2545ed9e8221da6e4571e9a98e07080929d6c96f4aad",
+    "scripts/yuyuhakusho/reference.py": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "scripts/yuyuhakusho/extract_audio_assets.py": "e8a59cb97a15b02d930b2335175eca9fb17600a778ce93d779449cdac3775f56",
+    "scripts/yuyuhakusho/research_audio_loops.py": "854c259284e11c59a21be9560f0beca26f15ffebe132d18d64dce6fbed5e22f4"
+  }
+}

@@ -1,0 +1,277 @@
+{
+  "pass": true,
+  "created_at_utc": "2026-11-05T10:15:16.218028+00:00",
+  "scope": "Four reentrant scheduler phases only; original normal/pause timeline and queue consumers observed separately",
+  "production_files": [
+    "games/yuyuhakusho/engine/sound_scheduler.go"
+  ],
+  "new_tests": 5,
+  "existing_priority_tests": 2,
+  "checks": {
+    "native": {
+      "path": "games/yuyuhakusho/engine/testdata/sound-scheduler-native.jsonl",
+      "sha256": "568f38f8d4ce9ef663b1dd441a26d0c212fd119d375f9f57aa360ddf6840a2bc",
+      "exit_code": 0,
+      "elapsed_seconds": 5.656,
+      "passed_tests": [
+        "TestSoundQueueAgainstOriginal",
+        "TestSoundQueueSingleInitialState",
+        "TestSoundSchedulerOriginalBoundaries",
+        "TestSoundSchedulerSingleInitialStreams",
+        "TestSoundSchedulerStateOwnership",
+        "TestSoundSchedulerNaturalPhaseBoundaries",
+        "TestSoundSchedulerNaturalConsumers"
+      ]
+    },
+    "wasm": {
+      "path": "games/yuyuhakusho/engine/testdata/sound-scheduler-wasm.jsonl",
+      "sha256": "52b39430d7059a23f7aa8779cc7cdc692e17952d30efb70f2e2710fffd8ff4c7",
+      "exit_code": 0,
+      "elapsed_seconds": 1.5859999999999999,
+      "passed_tests": [
+        "TestSoundQueueAgainstOriginal",
+        "TestSoundQueueSingleInitialState",
+        "TestSoundSchedulerOriginalBoundaries",
+        "TestSoundSchedulerSingleInitialStreams",
+        "TestSoundSchedulerStateOwnership",
+        "TestSoundSchedulerNaturalPhaseBoundaries",
+        "TestSoundSchedulerNaturalConsumers"
+      ]
+    }
+  },
+  "vet": {
+    "path": "games/yuyuhakusho/engine/testdata/sound-scheduler-vet.txt",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "exit_code": 0
+  },
+  "frozen_tests_unchanged": true,
+  "test_first": {
+    "phase": "final tests frozen after natural original phase/consumer assertions and missing-symbol red; no production helper exists yet",
+    "created_at_utc": "2026-11-05T10:01:34.968295+00:00",
+    "files": {
+      "games/yuyuhakusho/engine/sound_scheduler_test.go": "b6459e518541bb6095475fa6de036d3747e7772f89378da341d2da0e7d84619a",
+      "docs/research/md-yuyuhakusho/AUDIO_TIMING_FAILURES.md": "cb94c645f5bd1d1fb1ac332c94c2859b8a54c3206d50739c9e10c3828ff0b0f3"
+    },
+    "original_test_first": "games/yuyuhakusho/engine/testdata/sound-scheduler-test-first.json",
+    "original_tests_archive": "games/yuyuhakusho/engine/testdata/sound-scheduler-before-natural-test.go.txt",
+    "red_log": "games/yuyuhakusho/engine/testdata/sound-scheduler-final-symbol-red.jsonl",
+    "reference_sha256": {
+      "games/yuyuhakusho/engine/testdata/audio-timing-boundaries.json.gz": "2b22c2806e6e373a59306c54e1d274de3ba05eb81068eefa836b0ded8cbcd669",
+      "games/yuyuhakusho/engine/testdata/audio-timing-natural-phases.json.gz": "3e7bc4390414e649eee8e671f2ebc00847253b04c47349cfd94ee17f87961c91"
+    }
+  },
+  "private_original": {
+    "calls": 1592,
+    "boundaries": 1332,
+    "continuous_phase_calls": 260,
+    "unknown_ram_writes": 0,
+    "explicit_nested_streams": 4,
+    "natural_reentry_claimed": false
+  },
+  "natural": [
+    {
+      "scenario": "baseline",
+      "video_steps": 5500,
+      "scheduler_closed_calls": 5192,
+      "driver_ticks": 5195,
+      "queue_consumers": 108,
+      "non_ff_dispatches": 107,
+      "requests": 109,
+      "ticks_in_object_callback": 3163,
+      "consumers_in_object_callback": 83,
+      "consumer_callback_behaviors": {
+        "0x20918": 8,
+        "0x10330": 2,
+        "0x12668": 62,
+        "0x10088": 8,
+        "0x104ac": 1,
+        "0x10522": 2
+      },
+      "driver_pause_entries": {
+        "0": 5195
+      },
+      "max_irq_depth": 3,
+      "max_backlog": 0,
+      "pause_entry_consumers": 0,
+      "driver_cycles_min": 6837,
+      "driver_cycles_max": 373005,
+      "phase_records": 10384,
+      "consumer_records": 108,
+      "source_manifest": ".local/md-yuyuhakusho/audio-timing-first/audio-timing-baseline-manifest.json",
+      "source_manifest_sha256": "a88ee25bac566f2b05a36f22826919f0ffdf1a95fd3d36fa234111602a424e8e"
+    },
+    {
+      "scenario": "pause",
+      "video_steps": 3602,
+      "scheduler_closed_calls": 3295,
+      "driver_ticks": 3298,
+      "queue_consumers": 77,
+      "non_ff_dispatches": 76,
+      "requests": 76,
+      "ticks_in_object_callback": 2042,
+      "consumers_in_object_callback": 62,
+      "consumer_callback_behaviors": {
+        "0x20918": 5,
+        "0x10330": 2,
+        "0x12668": 49,
+        "0x10088": 6
+      },
+      "driver_pause_entries": {
+        "0": 3257,
+        "1": 1,
+        "255": 39,
+        "128": 1
+      },
+      "max_irq_depth": 3,
+      "max_backlog": 0,
+      "pause_entry_consumers": 0,
+      "driver_cycles_min": 6837,
+      "driver_cycles_max": 373005,
+      "phase_records": 6590,
+      "consumer_records": 77,
+      "source_manifest": ".local/md-yuyuhakusho/audio-timing-pause/audio-timing-pause-manifest.json",
+      "source_manifest_sha256": "5a6ecdfdfb4600a61a5fbc793a446c16fa9a30d17ff4dc4e4ef51a243cd5dcbb"
+    }
+  ],
+  "natural_phase_records": 16974,
+  "natural_consumers": 185,
+  "frame_end_only_hypothesis": {
+    "accepted": false,
+    "actual_red": "games/yuyuhakusho/engine/testdata/audio-timing-frame-end-red.json",
+    "counterexamples": 145
+  },
+  "source_sha256": {
+    "games/yuyuhakusho/engine/sound_scheduler.go": "0876d32403872b95e38b094e23c7167d8f5b7bf97e10ccec366a6ee026f6fb7a",
+    "games/yuyuhakusho/engine/sound_scheduler_test.go": "b6459e518541bb6095475fa6de036d3747e7772f89378da341d2da0e7d84619a",
+    "scripts/yuyuhakusho/capture_audio_timing.py": "cc777c7862e4907d5f3a7c9c31f1582867df89844a56835b23db6ed0650661bb",
+    "scripts/yuyuhakusho/analyze_audio_timing.py": "2d016e1f825fc12c4a3edf72109bd888ee10432def9813fabd139b7726b8e796",
+    "docs/research/md-yuyuhakusho/AUDIO_TIMING_FAILURES.md": "cb94c645f5bd1d1fb1ac332c94c2859b8a54c3206d50739c9e10c3828ff0b0f3",
+    "docs/research/md-yuyuhakusho/AUDIO_TIMING.md": "08f4b3cc5d39987dce44d75e0b6b518e896af6b0d2c627100d92551d86ab1210"
+  },
+  "artifacts": [
+    {
+      "path": "games/yuyuhakusho/engine/testdata/audio-timing-baseline-manifest.json",
+      "sha256": "a88ee25bac566f2b05a36f22826919f0ffdf1a95fd3d36fa234111602a424e8e"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/audio-timing-baseline-original.json.gz",
+      "sha256": "17856c6293e27590544dc338f2a3cecae1aab4dc40112873e939f277ab0ce064"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/audio-timing-baseline.json.gz",
+      "sha256": "18c2d3ae0463ae7049bacef9fa37c35d3963fc2000e438b389e84b1f7c460589"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/audio-timing-boundaries-manifest.json",
+      "sha256": "942f073e4e3f24f0dd235541afde756b74017b8bbbea1382ba8a13e168d99528"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/audio-timing-boundaries.json.gz",
+      "sha256": "2b22c2806e6e373a59306c54e1d274de3ba05eb81068eefa836b0ded8cbcd669"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/audio-timing-capture-first.json",
+      "sha256": "5f841d3ef69096ce4b9257f290d0cb607f00ef61058c62e262063c2cc6e86f26"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/audio-timing-capture-v1.py.txt",
+      "sha256": "3f33ae48e25701eb1de02589e32a38ca793e8d7040707140db2c871d43e04777"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/audio-timing-capture-v2-lineage.json",
+      "sha256": "e366296469d95046636317b2a1e7c7c5655d157a8227bb3fab0ef5d2010276c7"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/audio-timing-frame-end-red.json",
+      "sha256": "1922f49d9ed98cfa799c2251d284215750aff72750e96fd2292ddc72e96051b7"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/audio-timing-frame-end-red.txt",
+      "sha256": "356aab08d0f32aa15686e10be1ce1cae01ad78048daaeb9fdece96d88dab9e8e"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/audio-timing-natural-phases-manifest.json",
+      "sha256": "48886529c08d5179433c2a3e67b030f82cef923c0ccfd90da8263ad1a27f87ca"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/audio-timing-natural-phases.json.gz",
+      "sha256": "3e7bc4390414e649eee8e671f2ebc00847253b04c47349cfd94ee17f87961c91"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/audio-timing-pause-manifest.json",
+      "sha256": "5a6ecdfdfb4600a61a5fbc793a446c16fa9a30d17ff4dc4e4ef51a243cd5dcbb"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/audio-timing-pause-original.json.gz",
+      "sha256": "0f0ad241ac11771222be388b66894efa7f919deabbc3bd42122359f0157a56c2"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/audio-timing-pause.json.gz",
+      "sha256": "3e05e3633373c15651bb9fcbb773d4302fc7206cd5c750748675706899d2aa37"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/audio-timing-private-capture-red.txt",
+      "sha256": "56e08c3be767e58ad6514b8e6055418291f843c65510ed1e0502e9ca907463c4"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/sound-scheduler-before-natural-test.go.txt",
+      "sha256": "b48df7dbd8074eebf011100545483f9c79d9a879c238bc9e8a90aa13f0100a5d"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/sound-scheduler-cleanup.json",
+      "sha256": "258ccd90bf03d3daa75172c2e60d2554a20618a794db0fcf850fd765288913ec"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/sound-scheduler-determinism.json",
+      "sha256": "e761ebcd6c499f6f347008759c5e9fe994d4d5bd4374bf6fd377da95c158cde2"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/sound-scheduler-final-symbol-red.jsonl",
+      "sha256": "8f7226372a11d37dccf2dec9ed7540802cc2e15cff4f1bde9b4c3626546ffd71"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/sound-scheduler-final-test-first.json",
+      "sha256": "48ead6cef402280d8018fd1303d8ce15f6ace60273512237f39464a3e19a79f1"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/sound-scheduler-native.jsonl",
+      "sha256": "568f38f8d4ce9ef663b1dd441a26d0c212fd119d375f9f57aa360ddf6840a2bc"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/sound-scheduler-symbol-red.jsonl",
+      "sha256": "e8642a80f250eaa4080fd6443fb4ff7f7b51e2803b176f75997288b4842faf73"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/sound-scheduler-test-first.json",
+      "sha256": "7a3263f6e5b9049c81b1b4008e4de15f46435bb55a64fdef7de13fc0d7be6bfb"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/sound-scheduler-vet.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/sound-scheduler-wasm-command.json",
+      "sha256": "daeabe8b86b0ee91d20625e84c422cd508fa62dfdf9c41504d54c7674af712e2"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/sound-scheduler-wasm.jsonl",
+      "sha256": "52b39430d7059a23f7aa8779cc7cdc692e17952d30efb70f2e2710fffd8ff4c7"
+    }
+  ],
+  "limits": [
+    "Natural backlog/delayed request both remainedzero; their semantics are proven by isolated original phases and explicit continuous compositions, not naturalIRQ execution",
+    "No complete audio driver, event exporter, independent CPU-cycle budget, frame/worldintegration, media playback or exact BGM/mixing completion claim",
+    "Queue and Clock.AudioPause retain existing sole owners; scheduler state owns onlyF560..F564",
+    "V1 natural observer unchanged; V2 fixes privateSP observation and adds native phase boundaries; both actual provenance chains are retained"
+  ],
+  "determinism": {
+    "path": "games/yuyuhakusho/engine/testdata/sound-scheduler-determinism.json",
+    "sha256": "e761ebcd6c499f6f347008759c5e9fe994d4d5bd4374bf6fd377da95c158cde2",
+    "byte_identical": true
+  },
+  "cleanup": {
+    "path": "games/yuyuhakusho/engine/testdata/sound-scheduler-cleanup.json",
+    "sha256": "258ccd90bf03d3daa75172c2e60d2554a20618a794db0fcf850fd765288913ec",
+    "bytes_removed": 4367405
+  }
+}

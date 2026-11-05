@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/check_music_survey_full.py", line 4, in <module>
+    from music_score_structure import derive_song, project_song
+ImportError: cannot import name 'project_song' from 'music_score_structure' (/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/music_score_structure.py)

@@ -1,0 +1,116 @@
+{
+  "after_open": {
+    "focused": true,
+    "hidden": false,
+    "href": "http://127.0.0.1:50795/",
+    "readyState": "complete",
+    "userActivation": {
+      "active": false,
+      "ever": false
+    },
+    "visibility": "visible"
+  },
+  "tabs": {
+    "lifecycle": {
+      "effectiveLaunch": {
+        "browserLaunched": true,
+        "engine": "chrome",
+        "launchHash": 7789919054118900409
+      },
+      "launched": false,
+      "relaunchedBrowser": false,
+      "restartedBackground": false,
+      "restoreStatus": "not_configured",
+      "reused": true,
+      "saveStatus": "not_attempted"
+    },
+    "tabs": [
+      {
+        "active": true,
+        "label": null,
+        "tabId": "t1",
+        "targetId": "9263EA4F33A87FC4563C56D7C8EA40F0",
+        "title": "127.0.0.1:50795",
+        "type": "page",
+        "url": "http://127.0.0.1:50795/"
+      },
+      {
+        "active": false,
+        "label": null,
+        "tabId": "t2",
+        "targetId": "4CEFC38358A80AF97F4C3BF03807E940",
+        "title": "Native audio API verification",
+        "type": "page",
+        "url": "http://127.0.0.1:50670/"
+      },
+      {
+        "active": false,
+        "label": null,
+        "tabId": "t3",
+        "targetId": "6E9FD187D8EBD5B250752884BD31183D",
+        "title": "127.0.0.1:50519/blank",
+        "type": "page",
+        "url": "http://127.0.0.1:50519/blank"
+      },
+      {
+        "active": false,
+        "label": null,
+        "tabId": "t4",
+        "targetId": "FE0A039FDA9E5B4E47B72031F661D444",
+        "title": "127.0.0.1:49935/blank",
+        "type": "page",
+        "url": "http://127.0.0.1:49935/blank"
+      },
+      {
+        "active": false,
+        "label": null,
+        "tabId": "t5",
+        "targetId": "78D2FA27F6EA6FD57A82D1129197D992",
+        "title": "127.0.0.1:50604/blank",
+        "type": "page",
+        "url": "http://127.0.0.1:50604/blank"
+      },
+      {
+        "active": false,
+        "label": null,
+        "tabId": "t6",
+        "targetId": "5C5D8D7AA84EB4AA97605B022821A624",
+        "title": "127.0.0.1:50729/blank",
+        "type": "page",
+        "url": "http://127.0.0.1:50729/blank"
+      },
+      {
+        "active": false,
+        "label": null,
+        "tabId": "t7",
+        "targetId": "2879DB2E2C8BFC4B7A45D986C29DC5F9",
+        "title": "127.0.0.1:49882/blank",
+        "type": "page",
+        "url": "http://127.0.0.1:49882/blank"
+      }
+    ]
+  },
+  "native_activation": {
+    "targetId": "9263EA4F33A87FC4563C56D7C8EA40F0",
+    "before": {
+      "hidden": false,
+      "visibility": "visible",
+      "focused": true,
+      "href": "http://127.0.0.1:50795/",
+      "readyState": "complete"
+    },
+    "after": {
+      "hidden": false,
+      "visibility": "visible",
+      "focused": true,
+      "href": "http://127.0.0.1:50795/",
+      "readyState": "complete"
+    }
+  },
+  "before_gesture": {
+    "focused": true,
+    "hidden": false,
+    "href": "http://127.0.0.1:50795/",
+    "visibility": "visible"
+  }
+}

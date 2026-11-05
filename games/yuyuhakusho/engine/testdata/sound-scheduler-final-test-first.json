@@ -1,0 +1,15 @@
+{
+  "phase": "final tests frozen after natural original phase/consumer assertions and missing-symbol red; no production helper exists yet",
+  "created_at_utc": "2026-11-05T10:01:34.968295+00:00",
+  "files": {
+    "games/yuyuhakusho/engine/sound_scheduler_test.go": "b6459e518541bb6095475fa6de036d3747e7772f89378da341d2da0e7d84619a",
+    "docs/research/md-yuyuhakusho/AUDIO_TIMING_FAILURES.md": "cb94c645f5bd1d1fb1ac332c94c2859b8a54c3206d50739c9e10c3828ff0b0f3"
+  },
+  "original_test_first": "games/yuyuhakusho/engine/testdata/sound-scheduler-test-first.json",
+  "original_tests_archive": "games/yuyuhakusho/engine/testdata/sound-scheduler-before-natural-test.go.txt",
+  "red_log": "games/yuyuhakusho/engine/testdata/sound-scheduler-final-symbol-red.jsonl",
+  "reference_sha256": {
+    "games/yuyuhakusho/engine/testdata/audio-timing-boundaries.json.gz": "2b22c2806e6e373a59306c54e1d274de3ba05eb81068eefa836b0ded8cbcd669",
+    "games/yuyuhakusho/engine/testdata/audio-timing-natural-phases.json.gz": "3e7bc4390414e649eee8e671f2ebc00847253b04c47349cfd94ee17f87961c91"
+  }
+}

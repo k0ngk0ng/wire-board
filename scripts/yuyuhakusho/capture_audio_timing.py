@@ -1,0 +1,321 @@
+#!/usr/bin/env python3
+"""Original sound scheduler boundaries and passive ordered timing evidence.
+
+Only the reference process executes the original code. No instruction, RAM or
+emulator state is loaded by production rules. Existing producers stay read-only.
+"""
+import argparse
+from collections import Counter
+import ctypes as C
+import gzip
+import itertools
+import json
+from pathlib import Path
+
+from extract_audio_assets import AudioSession, write_cpu
+from reference import ROOT, ROM_SHA256, buttons_at, sha
+
+ORIGINAL = ROOT / '.local/md-yuyuhakusho/tools/genesis_plus_gx_libretro.dylib'
+OBSERVED = ROOT / '.local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/genesis_plus_gx_libretro.dylib'
+BRIDGE = ROOT / '.local/md-yuyuhakusho/tools/hook_filter.dylib'
+RAW_IRQ = {0xfff000, 0xfff09c, 0xfff0aa, 0xfff09a, 0xfff0a8, 0xfff13a}
+POINTS = {
+    0x21960, 0x21970, 0x21982, 0x21994, 0x219a6, 0x219aa,
+    0x219ac, 0x219b8, 0x219c6, 0x219cc, 0x219d6, 0x219de, 0x219e4, 0x219e8,
+    0x219ea, 0x219f6, 0x219fc, 0x21a00, 0x21a04, 0x21a06,
+    0x375a6, 0x375ae, 0x375b2, 0x375c6, 0x375d0, 0x375d4,
+    0x37c44, 0x37c8e, 0x37cb2, 0x37cb4,
+    0x37b90, 0x37b9a, 0x37bd8, 0x37c08, 0x37c0c, 0x37c42,
+    0x3a2e, 0x3592, 0x35a2, 0x35a4, 0x3a6a, 0x38a,
+    0x2e5e, 0x2e9e, 0x3d8,
+} | RAW_IRQ | {pc | 0xff000000 for pc in RAW_IRQ}
+assert len(POINTS) <= 64
+REQUEST_RETURNS = {0x21970, 0x21982, 0x21994, 0x219a6, 0x219aa}
+
+
+def n(ram, address, width=2):
+    return int.from_bytes(bytes(ram[(address+i)&65535] for i in range(width)), 'big')
+
+
+def snapshot(ram):
+    return {'delay': n(ram, 0xf560), 'delayed_code': ram[0xf562],
+            'backlog': ram[0xf563], 'busy': ram[0xf564],
+            'priority': ram[0xf800], 'audio_pause': ram[0xf807],
+            'selected': ram[0xf809], 'queue': list(ram[0xf80a:0xf80e]),
+            'driver_group': ram[0xf80e], 'frame': n(ram, 0xf584),
+            'logic_frame': n(ram, 0xf588), 'pause_flags': ram[0xf550]}
+
+
+def changes(before, after):
+    rows = []
+    start = None
+    for index in range(len(before)+1):
+        changed = index < len(before) and before[index] != after[index]
+        if changed and start is None:
+            start = index
+        elif not changed and start is not None:
+            rows.append([start, before[start:index].hex(), after[start:index].hex()])
+            start = None
+    return rows
+
+
+def inside(path):
+    path = path.resolve()
+    assert path.is_relative_to(ROOT), path
+    return path
+
+
+def write_json(path, value):
+    path.write_text(json.dumps(value, indent=2)+'\n')
+
+
+def capture_natural(out, kind, frames):
+    inputs_path = ROOT / 'docs/research/md-yuyuhakusho/inputs.json'
+    events = json.loads(inputs_path.read_text())
+    existing = json.loads(gzip.decompress((ROOT/'games/yuyuhakusho/data/audio-natural-events.json.gz').read_bytes()))
+    pinned = json.loads(gzip.decompress((ROOT/'games/yuyuhakusho/engine/testdata/match-lifecycle-reference-frames.json.gz').read_bytes()))
+    expected = [{'reference': pinned[index], 'frames': row['frames'], 'pcm_sha256': row['sha256']} for index, row in enumerate(existing['frame_pcm'][:frames])]
+    if kind == 'pause':
+        events += [{'start': 3000, 'end': 3004, 'buttons': [3]}, {'start': 3040, 'end': 3044, 'buttons': [3]}]
+        input_copy = out/'audio-timing-pause-inputs.json'
+        write_json(input_copy, events)
+        inputs_path = input_copy
+        expected = []
+        with AudioSession(ROOT, out/'unhooked-pause', core=ORIGINAL) as ref:
+            for frame in range(1, frames+1):
+                result, pcm = ref.step_audio(frame, buttons_at(events, frame))
+                expected.append({'reference': result['reference'], 'frames': len(pcm)//4, 'pcm_sha256': sha(pcm)})
+            original_identity = ref.identity
+    else:
+        assert existing['report']['control_identity']['core_sha256'] == sha(ORIGINAL.read_bytes())
+        original_identity = existing['report']['control_identity']
+    expected_bytes = (json.dumps(expected, separators=(',', ':'))+'\n').encode()
+    reference_path = out/('audio-timing-'+kind+'-original.json.gz')
+    reference_path.write_bytes(gzip.compress(expected_bytes, mtime=0))
+    bridge = C.CDLL(str(BRIDGE))
+    callback_type = C.CFUNCTYPE(None, C.c_int, C.c_int, C.c_uint, C.c_uint)
+    bridge.yyh_set_observer.argtypes = [callback_type, C.POINTER(C.c_uint), C.c_size_t]
+    bridge.yyh_set_observer.restype = C.c_int
+    pcs = (C.c_uint*len(POINTS))(*sorted(POINTS))
+    markers, calls, requests, errors = [], [], [], []
+    wrappers, driver_calls, request_calls, interrupts = [], [], [], []
+    counts, branches = Counter(), Counter()
+    callback_id = callback_behavior = world_pass = 0
+    entry_end = frames-2
+    active = True
+    with AudioSession(ROOT, out/('observed-'+kind), core=OBSERVED) as ref:
+        @callback_type
+        def observe(event_type, width, raw_pc, value):
+            nonlocal callback_id, callback_behavior, world_pass, active
+            try:
+                pc = raw_pc & 0xffffff
+                counts[hex(pc)] += 1
+                sp = ref.get_register(15)
+                if pc in {0x3a2e, 0x3592, 0x35a2, 0x35a4, 0x3a6a}:
+                    if pc == 0x3592:
+                        world_pass += 1
+                    elif pc == 0x35a2:
+                        callback_id = ref.get_register(13)&65535
+                        callback_behavior = n(ref.ram_cpu(), callback_id, 4)
+                    elif pc in {0x35a4, 0x3a6a}:
+                        callback_id = callback_behavior = 0
+                    return
+                ram = ref.ram_cpu()
+                if pc == 0x219ea and ram[0xf563] == 0:
+                    return
+                if pc == 0x21a06 and not any(row['entry'] == 0x219ea and row['entry_sp'] == sp for row in wrappers):
+                    return
+                if pc == 0x3d8:
+                    return
+                row = {'ordinal': len(markers), 'video_step': ref.frame, 'pc': pc, 'raw_pc': raw_pc,
+                       'cpu_cycles': ref.cpu.cycles, 'cycle_end': ref.cpu.cycle_end,
+                       'sr': ref.get_register(17), 'sp': sp, 'caller': n(ram, sp&65535, 4),
+                       'world_pass': world_pass, 'callback_id': callback_id, 'callback_behavior': callback_behavior,
+                       'irq_depth': len(interrupts), 'state': snapshot(ram)}
+                if pc in {0xfff000, 0x2e5e}:
+                    interrupts.append({'entry_sp': sp, 'pc': pc, 'marker': len(markers),
+                                       'interrupted_sr': n(ram, sp&65535), 'interrupted_pc': n(ram, (sp+2)&65535, 4)})
+                    row['irq_depth'] = len(interrupts)
+                    row['interrupted'] = interrupts[-1]
+                elif pc in {0xfff09c, 0xfff0aa}:
+                    if not interrupts or interrupts[-1]['entry_sp'] != sp:
+                        interrupts.append({'entry_sp': sp, 'pc': pc, 'marker': len(markers),
+                                           'interrupted_sr': n(ram, sp&65535), 'interrupted_pc': n(ram, (sp+2)&65535, 4)})
+                        row['irq_depth'] = len(interrupts)
+                    row['irq_branch'] = pc
+                elif pc in {0xfff09a, 0xfff0a8, 0xfff13a, 0x2e9e}:
+                    assert interrupts and interrupts[-1]['entry_sp'] == sp, ('unclosed IRQ', row)
+                    row['irq_entry'] = interrupts[-1]['marker']
+                    interrupts.pop()
+                if pc == 0x21960:
+                    request_calls.append({'entry_sp': sp, 'before': row, 'code': ref.get_register(0)&255})
+                elif pc in REQUEST_RETURNS:
+                    assert request_calls and request_calls[-1]['entry_sp'] == sp, ('request return stack', row)
+                    request = request_calls.pop()
+                    request.update(after=row, accepted=bool(ref.get_register(0)&255))
+                    requests.append(request)
+                if pc in {0x219ac, 0x219ea} and ref.frame <= entry_end and not (pc == 0x219ea and wrappers and wrappers[-1]['entry'] == pc and wrappers[-1]['entry_sp'] == sp):
+                    wrappers.append({'kind': 'interrupt' if pc == 0x219ac else 'catchup',
+                                     'entry': pc, 'entry_sp': sp, 'before': row,
+                                     'return_pc': n(ram, sp&65535, 4)&0xffffff})
+                elif pc in {0x219d6, 0x219e8, 0x21a06}:
+                    entry = 0x219ea if pc == 0x21a06 else 0x219ac
+                    if wrappers and wrappers[-1]['entry'] == entry and wrappers[-1]['entry_sp'] == sp:
+                        call = wrappers.pop(); call.update(after=row); calls.append(call)
+                if pc == 0x375a6:
+                    driver_calls.append({'entry_sp': sp, 'before': row, 'return_pc': n(ram, sp&65535, 4)&0xffffff})
+                elif pc in {0x219e4, 0x219fc, 0x38a}:
+                    assert driver_calls and driver_calls[-1]['return_pc'] == pc and driver_calls[-1]['entry_sp']+4 == sp, ('driver return stack', row)
+                    driver = driver_calls.pop(); driver.update(after=row)
+                    row['driver_before'] = driver['before']['ordinal']
+                markers.append(row)
+                branches[hex(pc)] += 1
+            except Exception as error:
+                errors.append(repr(error))
+        assert bridge.yyh_set_observer(observe, pcs, len(pcs))
+        ref.api('set_cpu_hook', None, C.c_void_p)(C.cast(bridge.yyh_cpu_hook, C.c_void_p))
+        for frame in range(1, frames+1):
+            result, pcm = ref.step_audio(frame, buttons_at(events, frame))
+            assert result['reference'] == expected[frame-1]['reference'], ('RAM/video differs', kind, frame)
+            assert len(pcm)//4 == expected[frame-1]['frames'] and sha(pcm) == expected[frame-1]['pcm_sha256'], ('PCM differs', kind, frame)
+            assert not errors, errors[:3]
+            if frame%600 == 0:
+                print(json.dumps({'natural': kind, 'video_step': frame, 'markers': len(markers), 'closed_calls': len(calls)}), flush=True)
+        ref.api('set_cpu_hook', None, C.c_void_p)(None)
+        assert not wrappers and not request_calls and not driver_calls and not errors, ('unclosed audio boundaries', len(wrappers), len(request_calls), len(driver_calls), errors[:3])
+        identity = ref.identity
+    payload = {'schema': 1, 'markers': markers, 'scheduler_calls': calls, 'request_calls': requests}
+    raw = (json.dumps(payload, separators=(',', ':'))+'\n').encode()
+    path = out/('audio-timing-'+kind+'.json.gz'); path.write_bytes(gzip.compress(raw, mtime=0))
+    report = {'pass': True, 'scope': 'Closed original scheduler calls and ordered passive timing; no production scheduler claim',
+              'scenario': kind, 'video_steps': frames, 'entry_end': entry_end, 'drain_steps': 2,
+              'original_identity': original_identity, 'observed_identity': identity,
+              'input_path': str(inputs_path.relative_to(ROOT)), 'input_sha256': sha(inputs_path.read_bytes()),
+              'capture_path': str(Path(__file__).relative_to(ROOT)), 'capture_sha256': sha(Path(__file__).read_bytes()),
+              'original_path': str(reference_path.relative_to(ROOT)), 'original_json_sha256': sha(expected_bytes), 'original_gzip_sha256': sha(reference_path.read_bytes()),
+              'fixture_path': str(path.relative_to(ROOT)), 'fixture_json_sha256': sha(raw), 'fixture_gzip_sha256': sha(path.read_bytes()),
+              'raw_marker_calls': dict(counts), 'stored_marker_calls': dict(branches),
+              'closed_scheduler_calls': len(calls), 'closed_requests': len(requests),
+              'baseline': kind == 'baseline', 'ram_video_pcm_equal': True, 'errors': errors,
+              'limits': ['CPU cycles are retained raw, not converted into PCM sample positions',
+                         'Only scheduler calls starting at or before entry_end are included; two video steps drain them',
+                         'Driver rows and hardware synthesis are observed but not implemented by this timing producer']}
+    write_json(out/('audio-timing-'+kind+'-manifest.json'), report)
+    return report
+
+
+def capture_private(out):
+    from reference import ReferenceSession
+    bridge = C.CDLL(str(BRIDGE))
+    callback_type = C.CFUNCTYPE(None, C.c_int, C.c_int, C.c_uint, C.c_uint)
+    bridge.yyh_set_observer.argtypes = [callback_type, C.POINTER(C.c_uint), C.c_size_t]
+    bridge.yyh_set_observer.restype = C.c_int
+    phase_points = [0x3d8, 0x375a6, 0x21a00, 0x219de, 0x219f6, 0x21a04]
+    points = (C.c_uint*len(phase_points))(*phase_points)
+    calls, errors = [], []
+    inputs = json.loads((ROOT/'docs/research/md-yuyuhakusho/inputs.json').read_text())
+    baseline = json.loads((ROOT/'docs/research/md-yuyuhakusho/frame-hashes.json').read_text())
+    with ReferenceSession(ROOT, out/'private', core=OBSERVED) as ref:
+        for frame in range(1, 2401):
+            assert ref.step(frame, buttons_at(inputs, frame))['reference'] == baseline[frame-1]
+        checkpoint = ref.save()
+        setreg = ref.api('m68k_set_reg', None, C.c_uint, C.c_uint)
+        execute = ref.api('m68k_run', None, C.c_uint)
+        current, finished, finished_sp = None, None, None
+        @callback_type
+        def observe(kind, width, pc, value):
+            nonlocal finished, finished_sp
+            try:
+                if (current['kind'] == 'begin-interrupt' and pc == 0x219de) or (current['kind'] == 'begin-catchup' and pc == 0x219f6):
+                    current['drives'].append(snapshot(ref.ram_cpu()))
+                    finished, finished_sp = ref.ram_cpu(), ref.get_register(15)
+                    ref.cpu.cycles = 4000000
+                elif current['kind'] == 'finish-catchup' and pc == 0x21a04:
+                    finished, finished_sp = ref.ram_cpu(), ref.get_register(15)
+                    ref.cpu.cycles = 4000000
+                elif pc == 0x375a6:
+                    current['drives'].append(snapshot(ref.ram_cpu()))
+                elif pc == 0x21a00:
+                    current['before_decrements'].append(snapshot(ref.ram_cpu()))
+                elif pc == 0x3d8:
+                    finished, finished_sp = ref.ram_cpu(), ref.get_register(15)
+                    ref.cpu.cycles = 4000000
+            except Exception as error:
+                errors.append(repr(error)); ref.cpu.cycles = 4000000
+        assert bridge.yyh_set_observer(observe, points, len(points))
+        hook = ref.api('set_cpu_hook', None, C.c_void_p)
+        def setup(seed, state, queue):
+            ref.restore(checkpoint, restore_refresh_cycles=True)
+            for register in range(15):setreg(register, (seed*193+register*31)&0xffffffff)
+            for address, value, size in [(0xf560,state['delay'],2),(0xf562,state['delayed_code'],1),(0xf563,state['backlog'],1),(0xf564,state['busy'],1),(0xf807,255,1),(0xf80e,(seed*17)&255,1)]:
+                write_cpu(ref,0xff0000+address,value,size)
+            for index, code in enumerate(queue):write_cpu(ref,0xfff80a+index,code)
+        def call(kind, name):
+            nonlocal current, finished, finished_sp
+            finished = finished_sp = None
+            setreg(17,0x2700);setreg(15,0xffff00);write_cpu(ref,0xffff00,0x3d8,4)
+            entries={'interrupt':0x219ac,'catchup':0x219ea,'begin-interrupt':0x219ac,'finish-interrupt':0x219e4,'begin-catchup':0x219ea,'finish-catchup':0x219fc}
+            setreg(16,entries[kind])
+            ref.cpu.cycles=0;ref.cpu.refresh_cycles=896
+            before=ref.ram_cpu();current={'kind':kind,'name':name,'before':snapshot(before),'drives':[],'before_decrements':[]}
+            hook(C.cast(bridge.yyh_cpu_hook,C.c_void_p));execute(400000);hook(None)
+            assert finished is not None and not errors,(name,errors)
+            after=finished
+            current['after']=snapshot(after);current['delta']=changes(before,after)
+            actual={offset+i for offset,old,new in current['delta']for i in range(len(bytes.fromhex(old)))}
+            allowed=set(range(0xf560,0xf565))|set(range(0xf80a,0xf80f))|set(range(0xfef0,0xff00))
+            assert not actual-allowed,('unknown private writes',name,sorted(actual-allowed))
+            expected_sp = 0xffff00 if kind in ['begin-interrupt','begin-catchup'] and current['drives'] or kind == 'finish-catchup' else 0xffff04
+            assert finished_sp==expected_sp,('private entry/exit stack differs',name,finished_sp,expected_sp)
+            current['entry_sp']=0xffff00;current['exit_sp']=finished_sp
+            current['unknown_writes']=[];calls.append(current)
+            return current
+        queues=[[0,0,0,0],[0x82,0x83,0x84,0x85],[0x82,0x58,0x83,0x84],[0x82,0x83,0x84,0x82]]
+        for seed,(delay,code,backlog,busy,queue)in enumerate(itertools.product([0,1,2,65535],[0,0x58,0x82,0x85,255],[0,1,254,255],[0,1,255],queues)):
+            setup(seed,dict(delay=delay,delayed_code=code,backlog=backlog,busy=busy),queue)
+            call('interrupt',f'interrupt-{seed}')
+        for seed,(backlog,busy)in enumerate(itertools.product([0,1,2,3,7,254,255],[0,1,255])):
+            setup(seed,dict(delay=7,delayed_code=0x58,backlog=backlog,busy=busy),[0x82,0x58,0x83,0x84])
+            call('catchup',f'catchup-{seed}')
+        for seed,(delay,code,backlog,busy,queue)in enumerate(itertools.product([0,1,2,65535],[0,0x58,0x82],[0,1,254,255],[0,1,255],queues[:2])):
+            setup(seed,dict(delay=delay,delayed_code=code,backlog=backlog,busy=busy),queue)
+            call('begin-interrupt',f'begin-interrupt-{seed}')
+        for seed,(backlog,busy)in enumerate(itertools.product([0,1,2,3,7,254,255],[0,1,255])):
+            for phase in ['begin-catchup','finish-catchup','finish-interrupt']:
+                setup(seed,dict(delay=65535,delayed_code=0x82,backlog=backlog,busy=busy),queues[seed%4])
+                call(phase,f'{phase}-{seed}')
+        boundary_count=len(calls)
+        for stream in range(3):
+            setup(stream,dict(delay=3,delayed_code=0x82,backlog=255 if stream==2 else 0,busy=1 if stream else 0),queues[stream])
+            for step in range(80):
+                call('catchup'if step%11==10 else'interrupt',f'stream-{stream}-{step}')
+        for stream,backlog in enumerate([1,2,254,255]):
+            setup(stream,dict(delay=1,delayed_code=0x82,backlog=backlog,busy=0),queues[stream])
+            for step,phase in enumerate(['begin-catchup','begin-interrupt','begin-interrupt','finish-catchup','catchup']):
+                call(phase,f'nested-{stream}-{step}')
+        identity=ref.identity
+    raw=(json.dumps({'schema':1,'pause_driver_fixture':255,'boundary_calls':boundary_count,'calls':calls},separators=(',',':'))+'\n').encode()
+    path=out/'audio-timing-boundaries.json.gz';path.write_bytes(gzip.compress(raw,mtime=0))
+    report={'pass':True,'scope':'Private original219ac/219ea calls with paused255 driver; no CPU/Golang implementation comparison yet',
+            'identity':identity,'boundary_calls':boundary_count,'stream_calls':len(calls)-boundary_count,'calls':len(calls),
+            'unknown_writes':0,'fixture_path':str(path.relative_to(ROOT)),'fixture_json_sha256':sha(raw),'fixture_gzip_sha256':sha(path.read_bytes()),
+            'capture_sha256':sha(Path(__file__).read_bytes()),'limits':['Pause255 makes the actual driver return without synthesis; normal/pause-transition driver state has separate natural evidence','PrivateSR2700 isolates scheduler boundaries; IRQ interleaving is not inferred from these calls']}
+    write_json(out/'audio-timing-boundaries-manifest.json',report)
+    return report
+
+
+def main():
+    p=argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--out',type=Path,required=True)
+    p.add_argument('--mode',choices=['baseline','pause','private','all'],default='all')
+    p.add_argument('--frames',type=int,default=5500)
+    args=p.parse_args();out=inside(args.out);out.mkdir(parents=True,exist_ok=True)
+    assert 100<=args.frames<=5500
+    reports=[]
+    if args.mode in ['baseline','all']:reports.append(capture_natural(out,'baseline',args.frames))
+    if args.mode in ['pause','all']:reports.append(capture_natural(out,'pause',args.frames))
+    if args.mode in ['private','all']:reports.append(capture_private(out))
+    write_json(out/'audio-timing-capture.json',{'pass':True,'reports':reports,'producer_sha256':sha(Path(__file__).read_bytes())})
+    print(json.dumps({'pass':True,'reports':len(reports)}),flush=True)
+
+if __name__=='__main__':main()

@@ -1,0 +1,93 @@
+{
+  "verified_at_utc": "2026-11-05T11:40:05.058376+00:00",
+  "baseline_commit": "aa617e23",
+  "stage": "Finite media integrity, reentrant scheduler phases, native finite lanes and continuous lossless carrier evidence",
+  "pass": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "overall_progress_estimate_percent": 81,
+  "game_audio_playback_integrated": false,
+  "independent_music_synthesis_implemented": false,
+  "original_mixer_implemented": false,
+  "platform_audio": {
+    "unit_tests": 75,
+    "real_finite_lifecycle_checks": 8,
+    "real_legacy_lifecycle_checks": 10,
+    "finite_result": {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-restored-final1/result.json",
+      "sha256": "bd5286155995914481d8b210ea339a9724575e2c09c14f4775f12b62be5fd978"
+    },
+    "legacy_result": {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/finite-legacy-final1/result.json",
+      "sha256": "a151b93f414855523dd083ee843b8652477dd01e903d7fbff3795ddddd9aef99"
+    },
+    "unit_log": {
+      "path": "games/yuyuhakusho/verification/audio-platform-finite-all-tests.log",
+      "sha256": "ac7e98cee368a5463e12ccab77b7b4c812fa900a2f5ff24acd82704837ced64a"
+    }
+  },
+  "pcm_arbitration": {
+    "private_calls": 13036,
+    "real_queue_decisions": 33,
+    "tests_per_runtime": 4,
+    "full_driver_complete": false
+  },
+  "components": [
+    {
+      "path": "games/yuyuhakusho/data/audio-finite-catalog-validation.json",
+      "sha256": "5f72fb591ed2695d99c347811f9a5a5cb7878030f327c5107bbaa48d7343698e"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/sound-scheduler-validation.json",
+      "sha256": "128fa54adbccb46855b38d8e8bc4b8f64d77ca07609898683067ed98517b62ea"
+    },
+    {
+      "path": "games/yuyuhakusho/data/audio-music-survey-validation.json",
+      "sha256": "6a376298cdd6eae60bd6eb5e5da79e9842e92c4368d120754ab7b5f86d08c6fc"
+    },
+    {
+      "path": "games/yuyuhakusho/data/audio-native-carrier-validation.json",
+      "sha256": "11e2a441c5af376f2d7c4554e2f6eff3963beacd1c3fb176d4dbad3791601bac"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/visibility-setup-validation.json",
+      "sha256": "cb8ec88288902b65dacfa4d5a2ea35a99f74d55c4bf63a2d663c63a061f2e3c9"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-dispatch/validation.json",
+      "sha256": "dc096803ba2b754e30b9643d493c3e907510eecc28ee8c0e166d3294b8744c0f"
+    }
+  ],
+  "tool_setting_restored_with_user_authorization": {
+    "path": "games/yuyuhakusho/verification/audio-tool-directory-restoration.json",
+    "sha256": "433ffd04f611d57cad55ee378d051ab7e3830d7480447a6d860dc2a89a6f84ce"
+  },
+  "cleanup": {
+    "path": "games/yuyuhakusho/verification/audio-foundations-cleanup.json",
+    "sha256": "1888e9b5d8600576cd4f263d0a64c22ad82ad8372d284eedcf0a149ab29fef9d"
+  },
+  "limits": [
+    "The actual game still has no integrated playback; these components do not supply a frame-end-only sound consumer.",
+    "Natural callback-internal sound consumption and driver-originated requests require an independently derived causal schedule.",
+    "Finite native lanes offer lifecycle concurrency, not original PCM/FM/PSG mixing equivalence.",
+    "Native carrier proves Chromium lossless-container transport over11 boundaries, not independent synthesis, infinite BGM, exact speaker samples or Safari/mobile support.",
+    "New music sequence recurrence does not establish repeatable PCM; remaining long common periods are structural candidates.",
+    "No media publication, upload, push or deployment."
+  ],
+  "source_sha256": {
+    "web/src/audio.ts": "5b780a5aa796ccf07862e440a6519e6a80b649ac47537e5dcba79dcddd1f98aa",
+    "web/src/game-api/module.ts": "67dc0beb29ac8d13495a062fad97b88e755d1f292c2385c8d97fb4b13fe4f279",
+    "web/tests/platform-audio-finite.test.mjs": "c4a858cac0b5a916cc44e1aa00b945abed6a2f7276cacb68ec4e354ebae229b6",
+    "games/yuyuhakusho/engine/sound_scheduler.go": "0876d32403872b95e38b094e23c7167d8f5b7bf97e10ccec366a6ee026f6fb7a",
+    "games/yuyuhakusho/engine/sound_scheduler_test.go": "b6459e518541bb6095475fa6de036d3747e7772f89378da341d2da0e7d84619a",
+    "games/yuyuhakusho/engine/sound_pcm_arbitration.go": "ace412910e7c9cc3baf59a8602d65d5e500b0837fae6a2eda02818954f9e540a",
+    "games/yuyuhakusho/engine/sound_pcm_arbitration_test.go": "3bd23ae3cc5d517ed9dc43928c1f4099b3432465e53b7f4fc8bacfe6d1ac0d1e",
+    "scripts/yuyuhakusho/check_audio_media_api.py": "958258b19a132b8c2e452a21591145e7d3d90770bc87858bf0fa979c539f8eb3",
+    "scripts/yuyuhakusho/audio_finite_lanes_harness.ts": "94c125b84f4f5c9df26717bfb5b1548b0020ff74088c2dc8e61fadac402455a3",
+    "scripts/yuyuhakusho/activate_audio_media_page.mjs": "be175caaed1be418b82892ae56c53fefe3b8c56ceff208f94de997923a508ae8",
+    "scripts/yuyuhakusho/summarize_audio_foundations.py": "94c0aec3ad86b1d9c4794ae8fb880698983931c5e51cdf4b87f8c9b35d0f1d42",
+    "games/yuyuhakusho/audio/catalog.go": "c2f6e36d5fe69c245429ff0ed9f74f5c2ce5908fb1cadccd7982e40526b6725b",
+    "games/yuyuhakusho/audio/catalog_test.go": "8cfbb4fd0d2e698dca5744bf8181237665ea000e87c57ecfda539e77550d1f19",
+    "games/yuyuhakusho/audio/wav.go": "ff06559fc0ae3b47d7c01b8d1cad2f6d0396cef40c61ddd9112baf5426b207d1"
+  }
+}

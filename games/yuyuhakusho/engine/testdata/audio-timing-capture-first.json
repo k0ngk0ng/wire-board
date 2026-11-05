@@ -1,0 +1,11 @@
+{
+  "phase": "original observer and failure scope frozen before first execution and before independent production helper",
+  "created_at_utc": "2026-11-05T09:43:53.464211+00:00",
+  "sha256": {
+    "docs/research/md-yuyuhakusho/AUDIO_TIMING_FAILURES.md": "cb94c645f5bd1d1fb1ac332c94c2859b8a54c3206d50739c9e10c3828ff0b0f3",
+    "scripts/yuyuhakusho/capture_audio_timing.py": "3f33ae48e25701eb1de02589e32a38ca793e8d7040707140db2c871d43e04777",
+    "scripts/yuyuhakusho/reference.py": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "scripts/yuyuhakusho/extract_audio_assets.py": "e8a59cb97a15b02d930b2335175eca9fb17600a778ce93d779449cdac3775f56",
+    "games/yuyuhakusho/data/audio-natural-events.json.gz": "8d445cd35d2c70ad850a8ca1de479d97d96dc43878e2502f7c9f228d683e580c"
+  }
+}

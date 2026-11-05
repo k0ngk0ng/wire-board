@@ -1,0 +1,10 @@
+{
+  "restored_at_utc": "2026-11-05T10:06:36.741238+00:00",
+  "authorization": "Explicit user reply: 授权啊; restore this one external mode file to its prior local setting",
+  "path": "/Users/jason/Library/Application Support/go/telemetry/mode",
+  "before": "off 2026-11-05",
+  "after": "local 2026-11-05",
+  "after_sha256": "397ad0380f0fc8558aee88f3385861fb618155593750ca6f27c06322ec67a09d",
+  "other_external_files_modified": false,
+  "workspace_go_tools_telemetry_directory": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry"
+}

@@ -1,0 +1,27 @@
+{
+  "pass": false,
+  "scope": "Same-checkpoint/timebase original mono-pair WAV evidence, not a mixing implementation",
+  "stereo_frames": 139831,
+  "second_request_stereo_frame": 5888,
+  "pre_second_request_a_pcm_identical": true,
+  "pre_second_request_b_pcm_exact_zero": true,
+  "unmodified_saturating_sum_different_sample_values": 161234,
+  "sum_saturation_sample_values": 0,
+  "maximum_absolute_sum_error": 23063,
+  "same_alignment_exact_constant_gain_solution": {
+    "gain_a_numerator": "188820943036286682280664",
+    "gain_b_numerator": "92345260368088091933744",
+    "denominator": "1419772998958436688854096",
+    "gain_a_float": 0.13299375546288603,
+    "gain_b_float": 0.06504227114886234,
+    "nonzero_rational_residual_sample_values": 173016,
+    "exact_reconstruction": false
+  },
+  "sample_shift_search_performed": false,
+  "limits": [
+    "No arbitrary independent waveform realignment was attempted; fractional/variable timing and DAC/filter state remain unresolved",
+    "The nonzero residual excludes one fixed gain per standalone capture at this verified request alignment, not every possible phase-dependent mixer",
+    "These decoded source samples are not proof of browser or speaker output"
+  ],
+  "analyzer_sha256": "2b83cd0706c05077ba7d3a356e12995e27942dfca3809fa8a02703a560c1bf5a"
+}

@@ -1,0 +1,48 @@
+{"mode": "original", "case": "single-a", "frames": 190, "dispatches": 0}
+{"mode": "original", "case": "single-b", "frames": 190, "dispatches": 0}
+{"mode": "original", "case": "single-b-late", "frames": 190, "dispatches": 0}
+{"mode": "original", "case": "pair-a-b", "frames": 190, "dispatches": 0}
+{"mode": "original", "case": "pair-a-low-drop", "frames": 190, "dispatches": 0}
+{"mode": "original", "case": "pair-a-same", "frames": 190, "dispatches": 0}
+{"mode": "original", "case": "pair-a-high", "frames": 190, "dispatches": 0}
+{"mode": "original", "case": "pair-b-low-drop", "frames": 190, "dispatches": 0}
+{"mode": "original", "case": "pair-b-high", "frames": 190, "dispatches": 0}
+{"mode": "original", "case": "auto-tie", "frames": 190, "dispatches": 0}
+{"mode": "original", "case": "single-mode", "frames": 190, "dispatches": 0}
+{"mode": "original", "case": "single-to-dual", "frames": 190, "dispatches": 0}
+{"mode": "original", "case": "dual-to-single", "frames": 190, "dispatches": 0}
+{"mode": "original", "case": "silent-high", "frames": 190, "dispatches": 0}
+{"mode": "original", "case": "stop-primary", "frames": 190, "dispatches": 0}
+{"mode": "original", "case": "stop-secondary", "frames": 190, "dispatches": 0}
+{"mode": "original", "case": "clear-driver", "frames": 190, "dispatches": 0}
+{"mode": "original", "case": "reset-driver", "frames": 190, "dispatches": 0}
+{"mode": "original", "case": "special-f0", "frames": 190, "dispatches": 0}
+{"mode": "original", "case": "fm-stop-primary", "frames": 190, "dispatches": 0}
+{"mode": "original", "case": "fm-stop-secondary", "frames": 190, "dispatches": 0}
+{"mode": "original", "case": "fade-primary", "frames": 190, "dispatches": 0}
+{"mode": "original", "case": "fade-secondary", "frames": 190, "dispatches": 0}
+{"mode": "observed", "case": "single-a", "frames": 190, "dispatches": 1}
+{"mode": "observed", "case": "single-b", "frames": 190, "dispatches": 1}
+{"mode": "observed", "case": "single-b-late", "frames": 190, "dispatches": 1}
+{"mode": "observed", "case": "pair-a-b", "frames": 190, "dispatches": 2}
+{"mode": "observed", "case": "pair-a-low-drop", "frames": 190, "dispatches": 2}
+{"mode": "observed", "case": "pair-a-same", "frames": 190, "dispatches": 2}
+{"mode": "observed", "case": "pair-a-high", "frames": 190, "dispatches": 2}
+{"mode": "observed", "case": "pair-b-low-drop", "frames": 190, "dispatches": 2}
+{"mode": "observed", "case": "pair-b-high", "frames": 190, "dispatches": 2}
+{"mode": "observed", "case": "auto-tie", "frames": 190, "dispatches": 3}
+{"mode": "observed", "case": "single-mode", "frames": 190, "dispatches": 1}
+{"mode": "observed", "case": "single-to-dual", "frames": 190, "dispatches": 2}
+{"mode": "observed", "case": "dual-to-single", "frames": 190, "dispatches": 2}
+{"mode": "observed", "case": "silent-high", "frames": 190, "dispatches": 1}
+{"mode": "observed", "case": "stop-primary", "frames": 190, "dispatches": 3}
+{"mode": "observed", "case": "stop-secondary", "frames": 190, "dispatches": 3}
+{"mode": "observed", "case": "clear-driver", "frames": 190, "dispatches": 3}
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/capture_audio_dispatch.py", line 115, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/capture_audio_dispatch.py", line 99, in main
+    assert pcm==controls[name]['pcm'];assert len(calls)>=len(commands),(name,len(calls),len(commands))
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('reset-driver', 2, 3)

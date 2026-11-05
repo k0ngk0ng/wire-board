@@ -1,0 +1,61 @@
+{
+  "error": "AssertionError('production native media has only one finite effect voice; two-lane capability is not implemented')",
+  "requests": [
+    {
+      "path": "/",
+      "range": null
+    },
+    {
+      "path": "/harness.js",
+      "range": null
+    },
+    {
+      "path": "/favicon.ico",
+      "range": null
+    },
+    {
+      "path": "/audio/1f.wav",
+      "range": "bytes=0-"
+    },
+    {
+      "path": "/favicon.ico",
+      "range": null
+    },
+    {
+      "path": "/audio/3f.wav",
+      "range": "bytes=0-"
+    },
+    {
+      "path": "/audio/8f.wav",
+      "range": "bytes=0-"
+    },
+    {
+      "path": "/audio/1f.wav",
+      "range": "bytes=0-"
+    },
+    {
+      "path": "/missing/8f.wav",
+      "range": "bytes=0-"
+    },
+    {
+      "path": "/diagnostic-loop.wav",
+      "range": "bytes=0-"
+    },
+    {
+      "path": "/audio/8f.wav",
+      "range": "bytes=0-"
+    },
+    {
+      "path": "/audio/1f.wav",
+      "range": "bytes=0-"
+    },
+    {
+      "path": "/diagnostic-loop.wav",
+      "range": "bytes=0-"
+    },
+    {
+      "path": "/blank",
+      "range": null
+    }
+  ]
+}

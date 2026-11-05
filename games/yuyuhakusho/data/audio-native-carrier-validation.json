@@ -1,0 +1,448 @@
+{
+  "schema": 1,
+  "pass": true,
+  "scope": "Native Chromium HTMLAudio/MSE lossless-container fragment feasibility; not independent DSP or infinite BGM",
+  "goal_complete": false,
+  "release_ready": false,
+  "published": false,
+  "capabilities": {
+    "audioContextCreated": false,
+    "audioData": "function",
+    "audioEncoder": "function",
+    "encoders": [
+      {
+        "codec": "flac",
+        "config": {
+          "bitrateMode": "variable",
+          "codec": "flac",
+          "numberOfChannels": 2,
+          "sampleRate": 44100
+        },
+        "supported": false
+      },
+      {
+        "codec": "alac",
+        "config": {
+          "bitrateMode": "variable",
+          "codec": "alac",
+          "numberOfChannels": 2,
+          "sampleRate": 44100
+        },
+        "supported": false
+      },
+      {
+        "codec": "opus",
+        "config": {
+          "bitrateMode": "variable",
+          "codec": "opus",
+          "numberOfChannels": 2,
+          "sampleRate": 44100
+        },
+        "supported": true
+      },
+      {
+        "codec": "mp4a.40.2",
+        "config": {
+          "bitrateMode": "variable",
+          "codec": "mp4a.40.2",
+          "numberOfChannels": 2,
+          "sampleRate": 44100
+        },
+        "supported": true
+      },
+      {
+        "codec": "pcm-s16",
+        "config": {
+          "bitrateMode": "variable",
+          "codec": "pcm-s16",
+          "numberOfChannels": 2,
+          "sampleRate": 44100
+        },
+        "supported": false
+      }
+    ],
+    "managedMediaSource": "undefined",
+    "mediaSource": "function",
+    "mediaStreamTrackGenerator": "function",
+    "rows": [
+      {
+        "error": null,
+        "htmlAudio": "maybe",
+        "mediaSource": false,
+        "type": "audio/wav"
+      },
+      {
+        "error": null,
+        "htmlAudio": "probably",
+        "mediaSource": false,
+        "type": "audio/wav; codecs=\"1\""
+      },
+      {
+        "error": null,
+        "htmlAudio": "probably",
+        "mediaSource": false,
+        "type": "audio/flac"
+      },
+      {
+        "error": null,
+        "htmlAudio": "probably",
+        "mediaSource": true,
+        "type": "audio/mp4; codecs=\"fLaC\""
+      },
+      {
+        "error": null,
+        "htmlAudio": "",
+        "mediaSource": false,
+        "type": "audio/mp4; codecs=\"alac\""
+      },
+      {
+        "error": null,
+        "htmlAudio": "probably",
+        "mediaSource": true,
+        "type": "audio/mp4; codecs=\"mp4a.40.2\""
+      },
+      {
+        "error": null,
+        "htmlAudio": "probably",
+        "mediaSource": true,
+        "type": "audio/webm; codecs=\"opus\""
+      },
+      {
+        "error": null,
+        "htmlAudio": "probably",
+        "mediaSource": false,
+        "type": "audio/ogg; codecs=\"flac\""
+      }
+    ],
+    "scope": "Capability declarations only; no playback or continuity proof",
+    "secureContext": true,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+    "source_sha256": "f463d1b70c22ae4803bc6cf0136c718ba4bbaac443c19d6d87e11555482e713f"
+  },
+  "actual_playback": {
+    "pass": true,
+    "scope": "Native Chromium HTMLAudio/MSE lossless-container fragment feasibility; not independent DSP or infinite BGM",
+    "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+    "source_pcm_roundtrip_exact": true,
+    "source_pcm_sha256": "7801d4c5f7ae515e7819c69637f3974ed2feedfc0362df2370ec28f5b8d55f4c",
+    "stereo_frames": 529200,
+    "fragment_count": 12,
+    "observed_boundaries": 11,
+    "native_waiting_after_play": 0,
+    "source_changes": 1,
+    "audio_context_created": false,
+    "capture_ended_before_final_boundary": false,
+    "requests": [
+      "/",
+      "/favicon.ico",
+      "/manifest",
+      "/init",
+      "/fragment/0",
+      "/fragment/1",
+      "/favicon.ico",
+      "/fragment/2",
+      "/fragment/3",
+      "/fragment/4",
+      "/fragment/5",
+      "/fragment/6",
+      "/fragment/7",
+      "/fragment/8",
+      "/fragment/9",
+      "/fragment/10",
+      "/fragment/11"
+    ],
+    "manifest_sha256": "b5fbf92fcf11eb004d787389413095d8713a1af1cc1429f9d76c7061a3d2256f",
+    "observed_sha256": "014ab2baa8aebd0664cafce19561df7a7b060e3e141e35a8cd6a6afdbc3213f6",
+    "harness_sha256": "37ec0dcc344d127b4dc55660ddde28be198fbe52460cb144fdaa7e5559fd383d",
+    "limits": [
+      "Container decoded PCM roundtrip is exact; native speaker output is not separately captured sample-for-sample",
+      "Any native WebM capture is lossy48kHz timing evidence, not original44.1kHz PCM proof",
+      "Only this Chromium build is tested; Safari/mobile remain unverified",
+      "Source is a finite original excerpt to test transport; no BGM looping or independent synthesis is claimed"
+    ]
+  },
+  "container": {
+    "schema": 1,
+    "scope": "verbatim-original-PCM-native-carrier",
+    "mime": "audio/mp4; codecs=\"fLaC\"",
+    "sample_rate": 44100,
+    "channels": 2,
+    "sample_frames": 529200,
+    "stereo_frames": 529200,
+    "source_code": 130,
+    "source_file": ".local/md-yuyuhakusho/audio-assets-final/isolated/music-excerpts/82.wav",
+    "source_wav_sha256": "85b105ce9ea41d49cf62da9b0a2612bbfdb436a77a9b6e4c0d72cd8ff3167c50",
+    "source_catalog_sha256": "617737f8ef07043401fa74f7f48ba551a64dd91cedd3a94dbfcf4883e0ff1541",
+    "source_excerpt_pcm_sha256": "7801d4c5f7ae515e7819c69637f3974ed2feedfc0362df2370ec28f5b8d55f4c",
+    "decoder_pcm_sha256": "7801d4c5f7ae515e7819c69637f3974ed2feedfc0362df2370ec28f5b8d55f4c",
+    "reconstructed_pcm_sha256": "7801d4c5f7ae515e7819c69637f3974ed2feedfc0362df2370ec28f5b8d55f4c",
+    "roundtrip_pcm_equal": true,
+    "fragment_reconstruction_pcm_equal": true,
+    "init_sha256": "24be8ab0a8eba249035e9acf5ba41b10a3edec9430072deb193b80f6b79fa864",
+    "fragments": [
+      {
+        "index": 0,
+        "file": "fragment-000.m4s",
+        "sha256": "058519bacc82022d7aa8778b9b1af4d7dc8c6047cbd170db57b3a8f20c4d9049",
+        "start_sample": 0,
+        "sample_frames": 45056,
+        "packets": 11,
+        "bytes": 98416
+      },
+      {
+        "index": 1,
+        "file": "fragment-001.m4s",
+        "sha256": "90ddce05c18a5bd9e5343bedff5a90de5af8da8ebdbc349a9569dba81c53579c",
+        "start_sample": 45056,
+        "sample_frames": 45056,
+        "packets": 11,
+        "bytes": 103798
+      },
+      {
+        "index": 2,
+        "file": "fragment-002.m4s",
+        "sha256": "7aca52f56f5af3ecae01185766ff78cdca557dc3f1007691097f2e81bf359b74",
+        "start_sample": 90112,
+        "sample_frames": 45056,
+        "packets": 11,
+        "bytes": 104482
+      },
+      {
+        "index": 3,
+        "file": "fragment-003.m4s",
+        "sha256": "632634f30d695ddffa368bef9576ad5791650fd6a1e8e4410a1e2480479193fd",
+        "start_sample": 135168,
+        "sample_frames": 45056,
+        "packets": 11,
+        "bytes": 100772
+      },
+      {
+        "index": 4,
+        "file": "fragment-004.m4s",
+        "sha256": "8d3a76ef3b5502f68fe12a96445f19d17797f4fe33ccb5f1a1172c5399cb061d",
+        "start_sample": 180224,
+        "sample_frames": 45056,
+        "packets": 11,
+        "bytes": 97083
+      },
+      {
+        "index": 5,
+        "file": "fragment-005.m4s",
+        "sha256": "0eaae8f87fad19ca4f1128f15fccdb48e5ac31ab53fd0dce290e62ad1f09842b",
+        "start_sample": 225280,
+        "sample_frames": 45056,
+        "packets": 11,
+        "bytes": 101906
+      },
+      {
+        "index": 6,
+        "file": "fragment-006.m4s",
+        "sha256": "5a9b81890e9ccc7afa6937876e21fc140a60ef765925afbba668ea53a1c6b629",
+        "start_sample": 270336,
+        "sample_frames": 45056,
+        "packets": 11,
+        "bytes": 100932
+      },
+      {
+        "index": 7,
+        "file": "fragment-007.m4s",
+        "sha256": "f50f2a554b71477bb79cc4b402372f22484f9b9adbd0af784a25facdd630501d",
+        "start_sample": 315392,
+        "sample_frames": 45056,
+        "packets": 11,
+        "bytes": 103914
+      },
+      {
+        "index": 8,
+        "file": "fragment-008.m4s",
+        "sha256": "797f9a3af5f106c9f7ecb00500852a40bcd3f4783e1cbbaf819f5f6d5f7f8b9d",
+        "start_sample": 360448,
+        "sample_frames": 45056,
+        "packets": 11,
+        "bytes": 103639
+      },
+      {
+        "index": 9,
+        "file": "fragment-009.m4s",
+        "sha256": "6cef72dfdc1f7a1712ece3e209eec349ff30eaf55477ccb99903399a77ad7415",
+        "start_sample": 405504,
+        "sample_frames": 45056,
+        "packets": 11,
+        "bytes": 101231
+      },
+      {
+        "index": 10,
+        "file": "fragment-010.m4s",
+        "sha256": "16a9ff4abb6282f21a1b200003e3a9df6d578c567174d76a679ce8de25c72df9",
+        "start_sample": 450560,
+        "sample_frames": 45056,
+        "packets": 11,
+        "bytes": 97893
+      },
+      {
+        "index": 11,
+        "file": "fragment-011.m4s",
+        "sha256": "a30bb3a86dd84bf05ab3698a7777090d780f3cba44b5bdc80b70696efec155bc",
+        "start_sample": 495616,
+        "sample_frames": 33584,
+        "packets": 9,
+        "bytes": 76280
+      }
+    ],
+    "ffmpeg_version": "ffmpeg version 9.0.1 Copyright (c) 2000-2026 the FFmpeg developers",
+    "commands": [
+      [
+        "/opt/homebrew/bin/ffmpeg",
+        "-nostdin",
+        "-v",
+        "error",
+        "-i",
+        "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/audio-music-carrier/fixture/source.wav",
+        "-map",
+        "0:a:0",
+        "-c:a",
+        "flac",
+        "-sample_fmt",
+        "s16",
+        "-strict",
+        "-2",
+        "-movflags",
+        "empty_moov+frag_keyframe+default_base_moof+skip_trailer",
+        "-frag_duration",
+        "1000000",
+        "-f",
+        "mp4",
+        "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/audio-music-carrier/fixture/carrier.mp4"
+      ],
+      [
+        "/opt/homebrew/bin/ffmpeg",
+        "-nostdin",
+        "-v",
+        "error",
+        "-i",
+        "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/audio-music-carrier/fixture/carrier.mp4",
+        "-map",
+        "0:a:0",
+        "-c:a",
+        "pcm_s16le",
+        "-f",
+        "s16le",
+        "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/audio-music-carrier/fixture/roundtrip.pcm"
+      ],
+      [
+        "/opt/homebrew/bin/ffmpeg",
+        "-nostdin",
+        "-v",
+        "error",
+        "-i",
+        "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/audio-music-carrier/fixture/reconstructed.mp4",
+        "-map",
+        "0:a:0",
+        "-c:a",
+        "pcm_s16le",
+        "-f",
+        "s16le",
+        "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/audio-music-carrier/fixture/reconstructed.pcm"
+      ]
+    ],
+    "published": false,
+    "loop_asset": false,
+    "source_sha256": {
+      "scripts/yuyuhakusho/build_music_native_carrier.py": "9a779ca51e5beba5e5e8c7b61ea58a5e47b833842af3e1419348cfb4cb7be9e4"
+    },
+    "limits": [
+      "Finite12second carrier fixture from an existing original excerpt, not a BGM loop",
+      "Offline ffmpeg research encoder; no independent DSP/Go encoder is claimed"
+    ]
+  },
+  "observations": {
+    "path": "games/yuyuhakusho/data/audio-native-carrier-observed.json.gz",
+    "sha256": "a96c7a49fd9f9a32fd32654c021b69ca4c92c4bd1578eedc0a7ed4fc348ae12c",
+    "bytes": 10253
+  },
+  "capture_file": {
+    "path": ".local/md-yuyuhakusho/audio-music-carrier/e2e/native-capture.webm",
+    "sha256": "3d3934cb188eb9dfb16328f902b2d6bec3de42def5e0e93ecff9b33d75ec8636",
+    "bytes": 194630
+  },
+  "capture_codec": "Opus48kHz; temporal evidence only",
+  "negative_validation": {
+    "pass": true,
+    "scope": "Frozen carrier harness rejects source/packet metadata corruption and unsupported native codec",
+    "checks": [
+      {
+        "mode": "sample-gap",
+        "exit_code": 1,
+        "log": ".local/md-yuyuhakusho/audio-music-carrier/negatives/sample-gap/rejection.txt",
+        "sha256": "0afdea9c321ef00b82c1aea95a5d092c1243ea6e76a237073896252fc21d510a",
+        "rejected": true
+      },
+      {
+        "mode": "changed-pcm",
+        "exit_code": 1,
+        "log": ".local/md-yuyuhakusho/audio-music-carrier/negatives/changed-pcm/rejection.txt",
+        "sha256": "1075258eeaa21ac9fe75ace6979be6c5f2948aee9ec83f20e0866ee4cbc6c175",
+        "rejected": true
+      },
+      {
+        "mode": "changed-fragment",
+        "exit_code": 1,
+        "log": ".local/md-yuyuhakusho/audio-music-carrier/negatives/changed-fragment/rejection.txt",
+        "sha256": "cc784f396f4d4f45104ef29f16d64a8d2a74fbe05280c338000524adf573570c",
+        "rejected": true
+      },
+      {
+        "mode": "unsupported-mime",
+        "exit_code": 1,
+        "log": ".local/md-yuyuhakusho/audio-music-carrier/negatives/unsupported-mime/rejection.txt",
+        "sha256": "b0d27e420f6033dde1f0ed02aa631d2279b610f1dd1cf1fedf7fea2ac2f6c184",
+        "rejected": true
+      }
+    ],
+    "harness_sha256": "37ec0dcc344d127b4dc55660ddde28be198fbe52460cb144fdaa7e5559fd383d",
+    "source_sha256": "07f58e4528a9ecca03bfddc43c398dec4d851104c111a0d5c6b9cfab11d2e856",
+    "limits": [
+      "Three integrity mutations reject before browser playback; unsupported MIME is exercised in the actual native browser"
+    ]
+  },
+  "test_first": {
+    "created_at_utc": "2026-11-05T10:12:34.597583+00:00",
+    "scope": "Native carrier E2E authored before new lossless fixture builder",
+    "files": {
+      "scripts/yuyuhakusho/check_music_native_carrier.py": "37ec0dcc344d127b4dc55660ddde28be198fbe52460cb144fdaa7e5559fd383d",
+      "docs/research/md-yuyuhakusho/AUDIO_MUSIC_NATIVE_CARRIER_FAILURES.md": "48b3cb5c6f634a3c10072cc24b57cf3b455ce4cd0279a805cc93225a5edfaeca"
+    },
+    "red": ".local/md-yuyuhakusho/audio-music-carrier/missing-red.txt",
+    "exit_code": 1
+  },
+  "source_sha256": {
+    "scripts/yuyuhakusho/survey_music_sequences.py": "8226ccd4892605dd4ed04df8baa4f7bbee4d6628c9d37fd1004aeea31d22c570",
+    "scripts/yuyuhakusho/validate_music_survey.py": "2d3df4cf9b4d3bd0f31b2545ed9e8221da6e4571e9a98e07080929d6c96f4aad",
+    "scripts/yuyuhakusho/music_score_structure.py": "7738e3fba39ba570101d73c454756b8b4949a5e31bd9f65ba6f40551fd59b1a2",
+    "scripts/yuyuhakusho/check_music_score_structure.py": "aeef14935ececbba60ce1c5b9f0eff537dfd18003a5f01c4b4b27543be20f26f",
+    "scripts/yuyuhakusho/capture_music_tracks.py": "e8e72a1457957947fd3f3b17eb8ef5867dd3dc882d73b42d6d3e1fadc82f2f55",
+    "scripts/yuyuhakusho/check_music_survey_full.py": "78d691614f9cffcf037620e6948fd5fc42eabaf646c1026475e7acc3d6817fcc",
+    "scripts/yuyuhakusho/probe_music_native_carrier.py": "f463d1b70c22ae4803bc6cf0136c718ba4bbaac443c19d6d87e11555482e713f",
+    "scripts/yuyuhakusho/check_music_native_carrier.py": "37ec0dcc344d127b4dc55660ddde28be198fbe52460cb144fdaa7e5559fd383d",
+    "scripts/yuyuhakusho/build_music_native_carrier.py": "9a779ca51e5beba5e5e8c7b61ea58a5e47b833842af3e1419348cfb4cb7be9e4",
+    "scripts/yuyuhakusho/verify_music_carrier_negatives.py": "07f58e4528a9ecca03bfddc43c398dec4d851104c111a0d5c6b9cfab11d2e856",
+    "scripts/yuyuhakusho/summarize_music_research.py": "f5f6c91e8aa9419024b675478a602ce9d0be77e945f02b0f84c158ac60a793d9",
+    "docs/research/md-yuyuhakusho/AUDIO_MUSIC_FAILURES.md": "f68a2870ac756b2d680f88a3ef446eebb1dadf5d0eeb64ab656090117f8b8a5d",
+    "docs/research/md-yuyuhakusho/AUDIO_MUSIC_PLAN.md": "f8bba964f7fe860ea313a617c74fbe9e16ff9eb67e38909d0c0984ffcbad9aad",
+    "docs/research/md-yuyuhakusho/AUDIO_MUSIC_NATIVE_CARRIER_FAILURES.md": "48b3cb5c6f634a3c10072cc24b57cf3b455ce4cd0279a805cc93225a5edfaeca",
+    "docs/research/md-yuyuhakusho/AUDIO_MUSIC_RESULTS.md": "4ff5c12cf3c2557aa3e9d499c394a8d99f6dbb09eafabd48b35bd3b376b31e16"
+  },
+  "cleanup": {
+    "path": "games/yuyuhakusho/data/audio-music-study-cleanup.json",
+    "sha256": "f69f94bd28f591b71977584ad6e4f2dddd59b3b57ebaa317433a329701f4dea6",
+    "bytes": 4603
+  },
+  "limits": [
+    "Container decoded PCM roundtrip is exact; native speaker output is not separately captured sample-for-sample",
+    "Any native WebM capture is lossy48kHz timing evidence, not original44.1kHz PCM proof",
+    "Only this Chromium build is tested; Safari/mobile remain unverified",
+    "Source is a finite original excerpt to test transport; no BGM looping or independent synthesis is claimed",
+    "Prototype buffers90112 known samples before playback; dynamic SFX latency and buffer revision remain unmeasured",
+    "FutureGo/Wasm runtime needs its own lossless encoder/muxer; WebCodecsFLAC encoding is unsupported in this browser"
+  ]
+}

@@ -1,0 +1,102 @@
+✖ finite lanes coexist with music and the legacy single effect task (0.680667ms)
+✖ finite instance identity is stable through refresh, conflict, end and replacement (0.095917ms)
+✖ invalid finite requests are atomic and source alternatives are not a playlist (0.095167ms)
+✖ expired restore does not replay or interrupt a peer (0.059083ms)
+✖ late replaced or muted plays cannot revive detached voices or stop a successor (0.091459ms)
+✖ pause during finite metadata load preserves offset and does not trigger fallback (0.081292ms)
+✖ finite owner cancellation, volume and stale callbacks stay isolated (0.080417ms)
+✖ finite stable lane capacity is bounded and replacement does not grow live media (0.08ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 0
+ℹ fail 8
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 64.658917
+
+✖ failing tests:
+
+test at web/tests/platform-audio-finite.test.mjs:28:1
+✖ finite lanes coexist with music and the legacy single effect task (0.680667ms)
+  TypeError: p.effect is not a function
+      at TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/tests/platform-audio-finite.test.mjs:30:24)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3)
+
+test at web/tests/platform-audio-finite.test.mjs:37:1
+✖ finite instance identity is stable through refresh, conflict, end and replacement (0.095917ms)
+  TypeError: p.effect is not a function
+      at TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/tests/platform-audio-finite.test.mjs:38:35)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3)
+
+test at web/tests/platform-audio-finite.test.mjs:45:1
+✖ invalid finite requests are atomic and source alternatives are not a playlist (0.095167ms)
+  TypeError: p.effect is not a function
+      at TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/tests/platform-audio-finite.test.mjs:46:35)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)
+
+test at web/tests/platform-audio-finite.test.mjs:54:1
+✖ expired restore does not replay or interrupt a peer (0.059083ms)
+  TypeError: p.effect is not a function
+      at TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/tests/platform-audio-finite.test.mjs:55:35)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)
+
+test at web/tests/platform-audio-finite.test.mjs:60:1
+✖ late replaced or muted plays cannot revive detached voices or stop a successor (0.091459ms)
+  TypeError: p.effect is not a function
+      at TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/tests/platform-audio-finite.test.mjs:62:15)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)
+
+test at web/tests/platform-audio-finite.test.mjs:72:1
+✖ pause during finite metadata load preserves offset and does not trigger fallback (0.081292ms)
+  TypeError: p.effect is not a function
+      at TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/tests/platform-audio-finite.test.mjs:76:19)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)
+
+test at web/tests/platform-audio-finite.test.mjs:79:1
+✖ finite owner cancellation, volume and stale callbacks stay isolated (0.080417ms)
+  TypeError: p.effect is not a function
+      at TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/tests/platform-audio-finite.test.mjs:80:47)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)
+
+test at web/tests/platform-audio-finite.test.mjs:86:1
+✖ finite stable lane capacity is bounded and replacement does not grow live media (0.08ms)
+  TypeError: p.effect is not a function
+      at TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/tests/platform-audio-finite.test.mjs:88:45)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)
