@@ -1,0 +1,44 @@
+{
+  "mode": "wasm",
+  "pass": false,
+  "exit_code": 1,
+  "elapsed_seconds": 0.29523658379912376,
+  "command": [
+    "/opt/homebrew/bin/go",
+    "test",
+    "-json",
+    "-count=1",
+    "-exec",
+    "/opt/homebrew/Cellar/go/1.26.2/libexec/lib/wasm/go_js_wasm_exec",
+    "./games/yuyuhakusho/audio/pcmassets"
+  ],
+  "environment": {
+    "PATH": "/opt/homebrew/bin:/usr/bin:/bin",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+    "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+    "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+    "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/pcm-payload/tmp",
+    "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/pcm-payload/tmp",
+    "CLANG_MODULE_CACHE_PATH": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/pcm-payload/tmp/clang-cache",
+    "GOOS": "js",
+    "GOARCH": "wasm"
+  },
+  "source_sha256": {
+    "games/yuyuhakusho/audio/pcmassets/catalog_e2e_test.go": "9e3715c24c9d9479e27eee705b151dc51b3dc8f22ddcb68ea9510fe2591452ce",
+    "games/yuyuhakusho/audio/pcmassets/catalog.go": "a88763cc218429976878f576d9e1d3376d963afbbf1c4d686d1e3dd4b8d1bb67",
+    "games/yuyuhakusho/audio/pcmassets/FAILURES.md": "66418803b3b394e89fe35d733e1221822961a2d3669f6133e74b18f7c0f3f9ef",
+    "games/yuyuhakusho/audio/pcmassets/testdata/expected.json": "1e0546425b68e7779f8d77f1aacab47d9fc70b056145dfef7a5560268792c04e",
+    "games/yuyuhakusho/audio/pcmassets/testdata/source-provenance.json": "a16dff0d39cbc036b4e361e70b5bded854fce12c78de2636a7e00747ba25b2a5",
+    "games/yuyuhakusho/data/audio-pcm-payloads.json.gz": "dbfa09e9893dcd9c661ef085f8d5215a202c502ae4277c6b9f9992a3384827de",
+    "games/yuyuhakusho/data/audio-pcm-payloads-manifest.json": "c17e829faf813cce3d82b46a136d18ced5d8a68daf931d1e22b2636e450342e0",
+    "games/yuyuhakusho/data/audio-score.json.gz": "deaf3a70eac46c199335445d186f77d51f185bdaad4d95443d09b2f1d7054d71",
+    "games/yuyuhakusho/audio/pcm/pcm.go": "bc4dbea82a591c5ddce897e927500ec231c537895015dc39bee06c957a3bda90"
+  },
+  "log": "games/yuyuhakusho/verification/pcm-payload/final/wasm.jsonl",
+  "log_sha256": "24987bf1b233e82b5645c9f35ef34fafb65e86184e62beddfbcec35b60432678",
+  "top_tests": 0,
+  "subtests": 0,
+  "full_payload_proof_sha256": null
+}

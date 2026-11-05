@@ -1,0 +1,11 @@
+{
+  "actual_api_symbol_red": true,
+  "implementation_absent": true,
+  "sources": {
+    "games/yuyuhakusho/audio/pcmcommands/device_e2e_test.go": "a3da2ae2cb6454747b2c0f6275da721df3dbc9a6aa2590a4a1385e73fe02290a",
+    "games/yuyuhakusho/audio/pcmcommands/testdata/original-command-v1.json.gz": "3d184c91c2970c668e1e75b8b11848232ea55b6ac621a0d8ac1c5de169277c07",
+    "docs/research/md-yuyuhakusho/AUDIO_PCM_COMMAND_GO_FAILURES.md": "d3fe25cbb4af42ae129d596aa5c73ee13ef0b42bdc52376bc103138ec09391f7",
+    "scripts/yuyuhakusho/pcm-command-go-export.py": "f6b52990e8f2d1dff17637d2b06addf9b9e36db9cd61b215f88b08d6136ee545"
+  },
+  "red_sha256": "89d247a599709f2c81cd37f7b5719d4874aef03884b2f86c8ff8fe110e447189"
+}

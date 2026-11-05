@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "format": "typed-pcm-payloads-v1",
+  "logical_path": "/yuyuhakusho/data/audio-pcm-payloads.json.gz",
+  "raw_json_bytes": 600207,
+  "raw_json_sha256": "a696dab033d0075a15a70da7d88345c6b32c431ebd1ff0661e29bdee2f3c0534",
+  "gzip_bytes": 415208,
+  "gzip_sha256": "dbfa09e9893dcd9c661ef085f8d5215a202c502ae4277c6b9f9992a3384827de",
+  "ordinary_commands": 122,
+  "internal_silent_commands": 1,
+  "resident_payloads": 123,
+  "imported_music_payloads": 6,
+  "combined_unique_payloads": 129,
+  "music_resource": {
+    "logical_path": "/yuyuhakusho/data/audio-score.json.gz",
+    "raw_json_bytes": 3159957,
+    "raw_json_sha256": "735d012d3d3140e76f8f756f0ca757bdc4b8deeb5a66750dd4610e41e06af830",
+    "gzip_bytes": 196368,
+    "gzip_sha256": "deaf3a70eac46c199335445d186f77d51f185bdaad4d95443d09b2f1d7054d71"
+  },
+  "server_embedded": false,
+  "uploaded": false,
+  "limits": [
+    "7f is an internal-silent descriptor, not part of the finite WAV list",
+    "F1..FF are not opened by this profile",
+    "No unproven prefetch padding is stored",
+    "Original playback timing and platform output are separate validations"
+  ]
+}

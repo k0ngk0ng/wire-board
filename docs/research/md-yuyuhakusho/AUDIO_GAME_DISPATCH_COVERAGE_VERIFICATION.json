@@ -1,0 +1,13 @@
+{
+  "pass": true,
+  "manifest_sha256": "7e487d7fa2a5bc76738f10e24af2c2a1533d77e80a7bb655e4cbc603299f6557",
+  "repeated_audit_byte_equal": true,
+  "source_bindings_checked": 107,
+  "frozen_production_unchanged": true,
+  "no_new_cpu_capture": true,
+  "cleanup": {
+    "removed_path": ".local/md-yuyuhakusho/audio-game-dispatch-review/coverage.json",
+    "bytes": 41628,
+    "reason": "Second byte-identical derived report only; original observations, source audits and final manifest preserved."
+  }
+}

@@ -1,0 +1,384 @@
+package pcmcommands
+
+import (
+	"errors"
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcm"
+)
+
+// These are latency partitions of fixed audio semantic blocks. They contain
+// no opcodes, operands, addresses, register names or runtime-selected code.
+var singleProfiles = map[string][]uint16{
+	"idle": {13, 4, 10}, "entry": {13, 4, 10},
+	"s-init": {13, 4, 13, 20, 13, 13, 13, 4, 10, 13}, "s-pan-pad": {12}, "s-bank-setup": {4, 13, 4, 13, 7, 13}, "s-prime-start": {4, 13}, "s-preload-setup": {10, 10}, "s-preload-poll": {13, 4, 10}, "s-preload-group-end": {10},
+	"s-length": {7, 10}, "s-length-borrow": {4}, "s-before-enable": {4, 4, 7, 13, 20, 20, 4, 10, 10, 6, 7}, "s-enable": {20, 20, 10, 10, 6, 10, 20, 20, 6, 10, 6, 10}, "s-enable-finish": {10, 10, 13, 4, 4, 10, 11, 10, 16, 7, 4, 4, 13, 10},
+	"s-check": {4, 4, 10}, "s-negative-pad": {4, 10}, "s-remain-z": {4, 10}, "s-read-request": {13, 4, 10}, "s-return-jump": {10}, "s-tail-init": {7, 4, 4, 4, 4, 4},
+	"s-high": {16, 4, 4, 4, 13, 4, 7, 4, 4, 7, 4, 7, 4, 4, 7, 4, 13, 7, 4, 4}, "s-decode-low": {4, 4, 7, 4}, "s-tail-pause": {4, 4}, "s-refill-cmp": {4}, "s-refill-equal": {12, 13, 4, 12}, "s-refill-nz": {7, 10}, "s-refill-negative": {13, 4, 7}, "s-copy-pop": {10}, "s-copy-push": {11}, "s-dummy-walk": {10, 4, 4, 10, 10, 10, 10},
+	"s-low": {4, 7, 4, 4, 4, 4, 7, 4, 13, 7}, "s-low-load": {4}, "s-normal-after-delay": {4, 4}, "s-tail-check": {4, 4, 4, 4, 10, 4, 10}, "s-tail-read-request": {13, 4, 10},
+	"end": {7, 13, 20, 20, 10, 10, 6, 13, 7, 20, 20, 10, 10, 6, 4, 7, 13, 13, 13, 10},
+}
+
+func (d *Device) written(kind Kind, value uint8, ticks uint64) {
+	d.frame.Events = append(d.frame.Events, Event{Cycle: d.state.Time, StartCycle: d.state.Time - ticks*15, Kind: kind, Value: value})
+}
+func (d *Device) singleRemaining() uint16 {
+	return uint16(d.length(d.state.Single.Descriptor) - d.state.Single.Fetched)
+}
+func (d *Device) rateCount() {
+	n := uint16(d.state.Single.Rate)
+	if n == 0 {
+		n = 256
+	}
+	d.state.Work.Count = n
+}
+func (d *Device) stepSingle() bool {
+	s := &d.state
+	w := &s.Work
+	g := &s.Global
+	single := s.Single
+	phase := s.Phase
+	switch phase {
+	case "s-bank-serial":
+		ticks := []uint16{13, 4, 13}
+		if w.Count == 7 {
+			ticks[2] = 8
+		}
+		d.profile(ticks, nil, func() {
+			w.Count++
+			if w.Count == 8 {
+				w.Count = 0
+				d.next("s-prime-start")
+			} else {
+				s.Part = 0
+			}
+		})
+		return true
+	case "s-header-start":
+		d.emit(19, Metadata, 0, w.Source, uint32(s.Part))
+		if s.Part == 2 {
+			d.next("s-preload-setup")
+		}
+		return true
+	case "s-preload-copy":
+		d.emit(16, Bank, 0, single.Descriptor, single.Fetched)
+		single.Fetched++
+		if s.Part == 4 {
+			d.next("s-preload-group-end")
+		}
+		return true
+	case "s-header-size":
+		d.emit(19, Metadata, 0, single.Descriptor, 2+uint32(s.Part))
+		if s.Part == 2 {
+			d.next("s-length")
+		}
+		return true
+	case "s-delay-high", "s-delay-low":
+		if w.Count == 0 || w.Count > 256 {
+			d.err = errors.New("invalid PCM delay remainder")
+			return true
+		}
+		ticks := uint16(13)
+		if w.Count == 1 {
+			ticks = 8
+		}
+		d.op(ticks, nil)
+		s.Part = 0
+		w.Count--
+		if w.Count == 0 {
+			if phase == "s-delay-high" {
+				d.next("s-decode-low")
+			} else if w.Tail {
+				d.next("s-tail-check")
+			} else {
+				d.next("s-normal-after-delay")
+			}
+		}
+		return true
+	case "s-tail-walk":
+		d.op(10, nil)
+		single.DummyCursor++
+		w.Count--
+		s.Part = 0
+		if w.Count == 0 {
+			d.next("s-low")
+		}
+		return true
+	case "s-copy-body":
+		d.emit(16, Bank, 0, single.Descriptor, single.Fetched)
+		single.Fetched++
+		w.Count--
+		s.Part = 0
+		if w.Count == 0 {
+			d.next("s-copy-push")
+		}
+		return true
+	case "s-dummy":
+		d.emit(19, Dummy, 0, single.Descriptor, single.DummyCursor)
+		d.next("s-dummy-walk")
+		return true
+	}
+	ticks, ok := singleProfiles[phase]
+	if !ok {
+		return false
+	}
+	d.profile(ticks, func(part uint16) {
+		switch phase {
+		case "idle":
+			if part == 0 {
+				w.Rate = g.RateRequest
+			}
+		case "entry":
+			if part == 0 {
+				g.Busy = w.Rate
+			}
+		case "s-init":
+			switch part {
+			case 2:
+				g.RateRequest = 0
+			case 3:
+				w.Source = g.SingleDescriptor
+			case 4:
+				w.Flags = g.LatestFlags
+			case 5:
+				g.ModeFlags = w.Flags
+			case 6:
+				w.Marker = g.StartMarker
+			case 9:
+				if w.Marker&128 != 0 {
+					w.Pan = g.OrdinaryPan
+				} else {
+					w.Pan = g.MusicPan
+				}
+			}
+		case "s-prime-start":
+			if part == 1 {
+				g.Busy = 0
+			}
+		case "s-before-enable":
+			if part == 3 {
+				g.Busy = 128
+			}
+			if part == 10 {
+				d.written(Pan, w.Pan, 7)
+			}
+		case "s-enable":
+			if part == 11 {
+				d.written(Enable, 128, 10)
+			}
+		case "s-enable-finish":
+			if part == 12 {
+				g.Busy = 0
+			}
+		case "s-negative-pad":
+			if part == 1 {
+				single.DummyCursor++
+			}
+		case "s-read-request", "s-tail-read-request":
+			if part == 0 {
+				w.Rate = g.RateRequest
+			}
+		case "s-high":
+			switch part {
+			case 6:
+				if single.Consumed >= d.length(single.Descriptor) {
+					d.err = errors.New("single decode beyond payload")
+					return
+				}
+				_ = d.byteAt(single.Descriptor, single.Consumed)
+				single.Consumed++
+			case 9:
+				g.Busy = 64
+			case 11:
+				b := d.byteAt(single.Descriptor, single.Consumed-1)
+				_, pair := pcm.DecodeByte(pcm.DecoderState{Accumulator: single.Accumulator}, b)
+				single.Accumulator = pair[0]
+			case 16:
+				d.written(DAC, single.Accumulator, 13)
+			case 17:
+				g.Busy = 0
+			}
+		case "s-decode-low":
+			if part == 2 {
+				b := d.byteAt(single.Descriptor, single.Consumed-1)
+				_, pair := pcm.DecodeByte(pcm.DecoderState{Accumulator: single.Accumulator}, b&15)
+				single.Accumulator = pair[1]
+			}
+		case "s-refill-cmp":
+			w.Gap = uint8(single.Consumed - single.Fetched)
+		case "s-dummy-walk":
+			if int(part) == len(ticks)-1 {
+				single.DummyCursor += 4
+			}
+		case "s-low":
+			if part == 1 {
+				g.Busy = 64
+			}
+			if part == 8 {
+				d.written(DAC, single.Accumulator, 13)
+			}
+			if part == 9 {
+				g.Busy = 0
+			}
+		case "s-tail-check":
+			if part == 4 {
+				single.DummyCursor++
+			}
+		case "end":
+			switch part {
+			case 1:
+				g.Busy = 128
+			case 7:
+				w.Pan = g.RestorePan
+			case 8:
+				d.written(Pan, w.Pan, 7)
+			case 15:
+				d.written(Enable, 0, 7)
+			case 16:
+				g.ModeFlags = 0
+			case 17:
+				g.StartMarker = 0
+			case 18:
+				g.Busy = 0
+			}
+		}
+	}, func() {
+		switch phase {
+		case "idle":
+			if w.Rate == 0 {
+				s.Part = 0
+			} else {
+				d.next("entry")
+			}
+		case "entry":
+			if w.Rate&128 != 0 {
+				d.next("d-start")
+			} else {
+				d.next("s-init")
+			}
+		case "s-init":
+			if w.Marker&128 != 0 {
+				d.next("s-bank-setup")
+			} else {
+				d.next("s-pan-pad")
+			}
+		case "s-pan-pad":
+			d.next("s-bank-setup")
+		case "s-bank-setup":
+			w.Count = 0
+			d.next("s-bank-serial")
+		case "s-prime-start":
+			d.next("s-header-start")
+		case "s-preload-setup":
+			s.Single = &SingleStream{Descriptor: w.Source, Rate: w.Rate, Accumulator: 128}
+			d.next("s-preload-poll")
+		case "s-preload-poll":
+			d.next("s-preload-copy")
+		case "s-preload-group-end":
+			if single.Fetched < 128 {
+				d.next("s-preload-poll")
+			} else {
+				d.next("s-header-size")
+			}
+		case "s-length":
+			if d.length(single.Descriptor)&255 < 128 {
+				d.next("s-length-borrow")
+			} else {
+				d.next("s-before-enable")
+			}
+		case "s-length-borrow":
+			d.next("s-before-enable")
+		case "s-before-enable":
+			d.next("s-enable")
+		case "s-enable":
+			d.next("s-enable-finish")
+		case "s-enable-finish":
+			w.Source = ""
+			w.Marker = 0
+			w.Flags = 0
+			d.next("s-check")
+		case "s-check":
+			if d.singleRemaining()&32768 != 0 {
+				d.next("s-negative-pad")
+			} else {
+				d.next("s-remain-z")
+			}
+		case "s-negative-pad":
+			d.next("s-tail-init")
+		case "s-remain-z":
+			if d.singleRemaining() == 0 {
+				d.next("s-tail-init")
+			} else {
+				d.next("s-read-request")
+			}
+		case "s-read-request":
+			if w.Rate != 0 {
+				d.next("s-return-jump")
+			} else {
+				w.Tail = false
+				d.next("s-high")
+			}
+		case "s-return-jump":
+			d.next("entry")
+		case "s-tail-init":
+			w.Tail = true
+			d.next("s-high")
+		case "s-high":
+			d.rateCount()
+			d.next("s-delay-high")
+		case "s-decode-low":
+			if w.Tail {
+				d.next("s-tail-pause")
+			} else {
+				d.next("s-refill-cmp")
+			}
+		case "s-tail-pause":
+			w.Count = 9
+			d.next("s-tail-walk")
+		case "s-refill-cmp":
+			if w.Gap == 0 {
+				d.next("s-refill-equal")
+			} else {
+				d.next("s-refill-nz")
+			}
+		case "s-refill-equal":
+			d.next("s-copy-pop")
+		case "s-refill-nz":
+			if w.Gap&128 != 0 {
+				d.next("s-refill-negative")
+			} else {
+				d.next("s-dummy")
+			}
+		case "s-refill-negative":
+			d.next("s-copy-pop")
+		case "s-copy-pop":
+			w.Count = 2
+			d.next("s-copy-body")
+		case "s-copy-push", "s-dummy-walk":
+			d.next("s-low")
+		case "s-low":
+			d.next("s-low-load")
+		case "s-low-load":
+			d.rateCount()
+			d.next("s-delay-low")
+		case "s-normal-after-delay":
+			d.next("s-check")
+		case "s-tail-check":
+			if single.Consumed == d.length(single.Descriptor) {
+				d.next("end")
+			} else {
+				d.next("s-tail-read-request")
+			}
+		case "s-tail-read-request":
+			if w.Rate != 0 {
+				d.next("s-return-jump")
+			} else {
+				d.next("s-high")
+			}
+		case "end":
+			w.Rate = 0
+			w.Tail = false
+			w.Pan = 0
+			d.next("idle")
+		}
+	})
+	return true
+}

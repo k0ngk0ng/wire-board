@@ -1,0 +1,161 @@
+{
+  "pass": true,
+  "scope": "Frozen v1: twelve accepted command streams, hold windows, own JSON frame restore and original PCM/DSP; controls/reset extension is a later additive stage",
+  "source_manifest_sha256": "221ce8a65d3c8844037deab7bb44015f8ca10b7339528c2c9d2cf6763564bcf0",
+  "sources": [
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_PCM_COMMAND_GO.md",
+      "sha256": "ee01e790d238d0dd246517a19f46c87bef143cd23276df46900040f4a2dbb3ca",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/v1-source/00-AUDIO_PCM_COMMAND_GO.md.txt"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_PCM_COMMAND_GO_FAILURES.md",
+      "sha256": "d3fe25cbb4af42ae129d596aa5c73ee13ef0b42bdc52376bc103138ec09391f7",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/v1-source/01-AUDIO_PCM_COMMAND_GO_FAILURES.md.txt"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_PCM_COMMAND_GO_REVIEW_FAILURES.md",
+      "sha256": "6dcad629ecfc9aa85e028b047f30b16d2e414721650d97aba65aea72a1325520",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/v1-source/02-AUDIO_PCM_COMMAND_GO_REVIEW_FAILURES.md.txt"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/README.md",
+      "sha256": "f628b553d41b6b8b4830f61ba7393900f6b620af65ff2a83a98958194f39d932",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/v1-source/03-README.md.txt"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/device.go",
+      "sha256": "4eb9dfa3590efd3dfb257f119e8031700b947dd0ed8836962d9ef818aa5ace49",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/v1-source/04-device.go.txt"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/device_e2e_test.go",
+      "sha256": "0cafbd42860b4b38dd58133af02d8b0689bd6000db576ac5452d42b6798beaa0",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/v1-source/05-device_e2e_test.go.txt"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/phases_dual.go",
+      "sha256": "a14eb182b4753966cc020ab7041c5ec5f03478da90f49a534f0805be79c96abe",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/v1-source/06-phases_dual.go.txt"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/phases_single.go",
+      "sha256": "35ed375e9118f1eb6a5b09c6a50ee77fd28ca0456bc288a02f76deac9d8189c2",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/v1-source/07-phases_single.go.txt"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/restore_boundary_test.go",
+      "sha256": "8a5f3c900255e9bef0142bcd3917a544a5e6eee0a054abf99e9030b473526fed",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/v1-source/08-restore_boundary_test.go.txt"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/state.go",
+      "sha256": "09c2394e31fa87139246168c4285aec764ba2d48ac832f3df6f825f9a1712631",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/v1-source/09-state.go.txt"
+    },
+    {
+      "path": "scripts/yuyuhakusho/pcm-command-go-export.py",
+      "sha256": "f6b52990e8f2d1dff17637d2b06addf9b9e36db9cd61b215f88b08d6136ee545",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/v1-source/10-pcm-command-go-export.py.txt"
+    }
+  ],
+  "fixture": {
+    "path": "games/yuyuhakusho/audio/pcmcommands/testdata/original-command-v1.json.gz",
+    "sha256": "3d184c91c2970c668e1e75b8b11848232ea55b6ac621a0d8ac1c5de169277c07",
+    "bytes": 4013748
+  },
+  "native_cases": 12,
+  "reference_frames": 837,
+  "original_events": 210318,
+  "stereo_pcm_frames": 615994,
+  "checks": [
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command-go/native-hardened-race.jsonl",
+      "sha256": "0c77b6933eec253d81113da395828fb8089667505866611948af35d9e7022b5d",
+      "top_level_tests": 5,
+      "subtests": 28
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command-go/wasm-v1.jsonl",
+      "sha256": "40bd7003f3073a403bc52ca3784290211e9350f47bbfbb687ab7b8a13b67dd83",
+      "top_level_tests": 5,
+      "subtests": 28
+    }
+  ],
+  "vet": {
+    "path": "games/yuyuhakusho/verification/audio-pcm-command-go/vet-v1.txt",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "exit_code": 0
+  },
+  "original_source_bindings": [
+    {
+      "case": "dual-append",
+      "raw_sha256": "81eac95b1d0a660db5285f58cf167e75007851588b28fad2367bcee6e1f625dd"
+    },
+    {
+      "case": "dual-pause",
+      "raw_sha256": "f5d6a56411438eb72baa72f154570a0c776f05cb553f8c513f1485babbd292b5"
+    },
+    {
+      "case": "dual-replace-a",
+      "raw_sha256": "cfa5a000c0662e05893e98aee9b97e7bc06df0e0a8059f47249dee4772e4cd6d"
+    },
+    {
+      "case": "dual-to-single",
+      "raw_sha256": "6004c3245a3727d8197057688207135812bbf0b09d52462214d4e05b9d48ef44"
+    },
+    {
+      "case": "idle-to-dual-a",
+      "raw_sha256": "cc32a9c56e44ede562f499ba01924e2f66a1534978330fe8e542566ee685216a"
+    },
+    {
+      "case": "idle-to-dual-b",
+      "raw_sha256": "22697e177ec95e77c659b2c7504147d07869e489b70ef18c345ab7b22d2a9008"
+    },
+    {
+      "case": "idle-to-single",
+      "raw_sha256": "0a1b010b5fcd5ed1e13f02e233ca60dfc9404ac1bbc2c928f746250ed7ff703c"
+    },
+    {
+      "case": "music-from-idle",
+      "raw_sha256": "91edd6819b1af7759da830a619531f67a4f2b29126e0dc4b91415211114a006a"
+    },
+    {
+      "case": "music-replace",
+      "raw_sha256": "bf3b3e2a9311516a3d0914db5ad356f6594d2a010e43b36b3fe8dafce84a6853"
+    },
+    {
+      "case": "single-pause",
+      "raw_sha256": "bd568584547284659e7c23ca1e56affb137ab034f39b46cffd077184b1ffeb85"
+    },
+    {
+      "case": "single-replace",
+      "raw_sha256": "7709776365b8c40b6eca4145d476cbb1487f33e44391c0376a9e7db9f796a5b1"
+    },
+    {
+      "case": "single-to-dual",
+      "raw_sha256": "c7c09218cdf51c430d4bb9f8f1565598d3986ffd56e0017a5aa5d1008cc9a194"
+    }
+  ],
+  "production_ready": false,
+  "platform_wired": false,
+  "world_irq_scheduled": false,
+  "hard_reset_verified": false,
+  "full_ym_control_verified": false,
+  "generic_metadata_hybrid_supported": false,
+  "failure_evidence": [
+    "api-symbol-red.jsonl",
+    "native-first.jsonl",
+    "dual-before-transfer-jump.go.txt",
+    "boundary-red.jsonl",
+    "same-slot-hybrid-red.jsonl",
+    "device-before-boundary-hardening.go.txt",
+    "state-before-boundary-hardening.go.txt"
+  ],
+  "notes": [
+    "v1-source retains exact historical source/test bytes before the additive controls extension",
+    "Immutable catalog bytes are borrowed through callbacks and never cloned into device state",
+    "Fixed audio phases/parts are bounded semantic latency positions, not CPU instructions or PC values",
+    "The portable expected vectors were generated only from original native events, status, PCM and DSP states"
+  ]
+}

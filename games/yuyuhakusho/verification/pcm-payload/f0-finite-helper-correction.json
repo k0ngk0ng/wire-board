@@ -1,0 +1,6 @@
+{
+  "scope": "Exporter setup boundary correction, not native oracle or playback change",
+  "actual_exit_code": 1,
+  "source_sha256": "49fc3043b005537372f1ca7433af1d106cc7e6a3df5edd922315252dcd226c57",
+  "cause": "Existing finite descriptor helper deliberately rejects pseudo-code128 for source index122. The legal F0 remap needs an explicit source parser, not broadening old helper or substituting direct7A."
+}

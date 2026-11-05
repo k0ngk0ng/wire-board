@@ -1,0 +1,6 @@
+{
+  "original_before_implementation_sha256": "a3da2ae2cb6454747b2c0f6275da721df3dbc9a6aa2590a4a1385e73fe02290a",
+  "formatted_sha256": "0cafbd42860b4b38dd58133af02d8b0689bd6000db576ac5452d42b6798beaa0",
+  "change": "gofmt only; original twelve native cases and assertions were not changed",
+  "original_red_preserved": true
+}

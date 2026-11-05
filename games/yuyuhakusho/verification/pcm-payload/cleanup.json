@@ -1,0 +1,32 @@
+{
+  "scope": "Only this resource task repeat exports and finished tool tmp; retained all source fixtures, real red/final logs, native source provenance and frozen dependencies. No other owner or outside-workspace files touched.",
+  "paths": [
+    {
+      "path": ".local/md-yuyuhakusho/pcm-payload/repeat-data",
+      "files": 2,
+      "bytes": 416344
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-payload/repeat-proof",
+      "files": 1,
+      "bytes": 78005
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-payload/repeat-fixture",
+      "files": 2,
+      "bytes": 146459
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-payload/tmp",
+      "files": 0,
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-payload-api-red.jsonl",
+      "files": 1,
+      "bytes": 4177,
+      "retained_sha256": "c075872263614de20d6a6a8397583c1973347ac3e4426a0a77b3ccc3c7596dd5"
+    }
+  ],
+  "bytes": 644985
+}

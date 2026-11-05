@@ -1,0 +1,39 @@
+"""Run source-bound native race / Wasm / vet checks for the PCM resource owner."""
+from pathlib import Path
+import argparse,hashlib,json,os,re,shutil,subprocess,time
+
+ROOT=Path(__file__).resolve().parents[2]
+def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
+def main(out):
+    out=out.resolve();assert out.is_relative_to(ROOT) and not out.exists();out.mkdir(parents=True)
+    tmp=ROOT/'.local/md-yuyuhakusho/pcm-payload/tmp'
+    for path in [tmp,tmp/'clang-cache']:path.mkdir(parents=True,exist_ok=True)
+    env={'PATH':'/opt/homebrew/bin:/usr/bin:/bin','LANG':'C.UTF-8','LC_ALL':'C.UTF-8','TEST_TELEMETRY_DIR':str(ROOT/'.local/go-telemetry'),'GOCACHE':str(ROOT/'.local/go-cache'),'GOMODCACHE':str(ROOT/'.local/go-mod'),'GOTMPDIR':str(tmp),'TMPDIR':str(tmp),'CLANG_MODULE_CACHE_PATH':str(tmp/'clang-cache')}
+    go=shutil.which('go',path=env['PATH']);assert go
+    goroot=Path(subprocess.check_output([go,'env','GOROOT'],cwd=ROOT,env=env,text=True).strip())
+    executor=goroot/'lib/wasm/go_js_wasm_exec';assert executor.is_file()
+    package=ROOT/'games/yuyuhakusho/audio/pcmassets'
+    files=[*package.glob('*.go'),*package.glob('*.md'),*package.glob('testdata/*'),ROOT/'games/yuyuhakusho/data/audio-pcm-payloads.json.gz',ROOT/'games/yuyuhakusho/data/audio-pcm-payloads-manifest.json',ROOT/'games/yuyuhakusho/data/audio-score.json.gz',ROOT/'games/yuyuhakusho/audio/pcm/pcm.go']
+    source={str(path.relative_to(ROOT)):sha(path)for path in files if path.is_file()}
+    results=[]
+    for mode in ['native-race','wasm','vet']:
+        current=dict(env);command=[go,'test','-json','-count=1']
+        if mode=='native-race':command+=['-race']
+        elif mode=='wasm':current.update(GOOS='js',GOARCH='wasm');command+=['-exec',str(executor)]
+        else:command=[go,'vet']
+        command+=['./games/yuyuhakusho/audio/pcmassets'];started=time.monotonic()
+        run=subprocess.run(['nice','-n','15',*command],cwd=ROOT,env=current,text=True,capture_output=True)
+        log=out/(mode+('.txt'if mode=='vet'else'.jsonl'));log.write_text(run.stdout+run.stderr)
+        assert all(sha(ROOT/path)==digest for path,digest in source.items()),'source changed during verification'
+        rows=[json.loads(line)for line in run.stdout.splitlines()if line.startswith('{')]if mode!='vet'else[]
+        passes=[row for row in rows if row.get('Action')=='pass' and row.get('Test')]
+        proof=re.findall(r'PCM_PAYLOAD_PROOF rows=129 encoded=437940 decoded=875880 sha256=([a-f0-9]{64})',run.stdout)
+        result={'mode':mode,'pass':run.returncode==0,'exit_code':run.returncode,'elapsed_seconds':time.monotonic()-started,'command':command,'environment':current,'source_sha256':source,'log':str(log.relative_to(ROOT)),'log_sha256':sha(log),'top_tests':sum('/'not in row['Test']for row in passes),'subtests':sum('/'in row['Test']for row in passes),'full_payload_proof_sha256':proof[0]if proof else None}
+        (out/(mode+'-command.json')).write_text(json.dumps(result,indent=2)+'\n');results.append(result)
+        print(json.dumps({key:result[key]for key in ['mode','pass','elapsed_seconds','top_tests','subtests','full_payload_proof_sha256']}),flush=True)
+        if run.returncode:print(run.stdout[-2000:]+run.stderr[-2000:]);raise SystemExit(run.returncode)
+        if mode!='vet':assert result['top_tests']==5 and len(proof)==1
+    assert results[0]['full_payload_proof_sha256']==results[1]['full_payload_proof_sha256']
+    (out/'suites.json').write_text(json.dumps({'pass':True,'sources_unchanged':True,'native_wasm_exact_proof':results[0]['full_payload_proof_sha256'],'results':results},indent=2)+'\n')
+if __name__=='__main__':
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--out',type=Path,required=True);main(parser.parse_args().out)

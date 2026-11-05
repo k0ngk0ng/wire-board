@@ -1,0 +1,144 @@
+{
+  "schema": 1,
+  "scope": "Independent read-only original dispatch/data-grammar audit; no new CPU capture",
+  "pass": true,
+  "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+  "dispatch_ids": 256,
+  "semantic_report": {
+    "path": "docs/research/md-yuyuhakusho/AUDIO_GAME_DISPATCH_ORIGINAL_IDS.json",
+    "sha256": "c6ff8cd7b1f83b6f43bc9c8c1cc64d687617f385b5c5a048ec6806182efcb55a",
+    "bytes": 223700
+  },
+  "readable_report": {
+    "path": "docs/research/md-yuyuhakusho/AUDIO_GAME_DISPATCH_ORIGINAL_RESULTS.md",
+    "sha256": "f8d4a5497e8273b6288f17a8fd10f3afd1547b4bf0632f53ae3f203150305000",
+    "bytes": 8691
+  },
+  "failure_scope": {
+    "path": "docs/research/md-yuyuhakusho/AUDIO_GAME_DISPATCH_ORIGINAL_FAILURES.md",
+    "sha256": "da06613c7af2ee4443a24be2077d092206c524d4d0fc3d231464e54c232d365b",
+    "bytes": 1473
+  },
+  "private_provenance": {
+    "path": ".local/md-yuyuhakusho/audio-game-dispatch-original/provenance.json",
+    "sha256": "f44a3a6dd2b6526c0e9223d22d99e0407ea0d51a1a0c73a5facb9a491de4a264",
+    "bytes": 1826446
+  },
+  "private_audit": {
+    "path": ".local/md-yuyuhakusho/audio-game-dispatch-original/audit.json",
+    "sha256": "c6ff8cd7b1f83b6f43bc9c8c1cc64d687617f385b5c5a048ec6806182efcb55a",
+    "bytes": 223700
+  },
+  "acceptance": {
+    "path": ".local/md-yuyuhakusho/audio-game-dispatch-original/check-result.json",
+    "sha256": "4ffee9ad31533c47888c7214422bd09346fcb71d364d8e7d10d27499ad163e2c",
+    "bytes": 368
+  },
+  "checker": {
+    "path": ".local/md-yuyuhakusho/audio-game-dispatch-original/check.py",
+    "sha256": "125f7830a6756456074e2db0f5e08e8a902e018658539e09bea48d84d144ab7f",
+    "bytes": 2980
+  },
+  "extractor": {
+    "path": ".local/md-yuyuhakusho/audio-game-dispatch-original/audit.py",
+    "sha256": "3dca9837a39c1929f2db4f41ee14a3745c284318c21eb0d5d1ab73ee70e72116",
+    "bytes": 14108
+  },
+  "test_first": [
+    {
+      "path": ".local/md-yuyuhakusho/audio-game-dispatch-original/test-first.json",
+      "sha256": "972961ddb4586201c387a42929901b9225bcffee946f632465d466fad2758ef6",
+      "bytes": 671
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-game-dispatch-original/missing-red.txt",
+      "sha256": "6d1aad92faeda5a8f606334561a9e410e6d8d27f2312be913b5022ae76830a8f",
+      "bytes": 2612
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-game-dispatch-original/check-before-whitespace.py.txt",
+      "sha256": "aeb7a365af33eb3cf6b7efcfc0f18e7a3785f3c4e7fa17850356ea1a77de4776",
+      "bytes": 2977
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-game-dispatch-original/checker-format-lineage.json",
+      "sha256": "c6387bb92c9c7c1f684e797d7491a877688a8aa7f302968dac9633b1226400c2",
+      "bytes": 279
+    }
+  ],
+  "source_bindings": [
+    {
+      "path": ".local/md-yuyuhakusho/downloads/yuyuhakusho-jp.bin",
+      "sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "bytes": 3145728
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-game-dispatch-original/audit.py",
+      "sha256": "3dca9837a39c1929f2db4f41ee14a3745c284318c21eb0d5d1ab73ee70e72116",
+      "bytes": 14108
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-game-dispatch-original/check.py",
+      "sha256": "125f7830a6756456074e2db0f5e08e8a902e018658539e09bea48d84d144ab7f",
+      "bytes": 2980
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_GAME_DISPATCH_ORIGINAL_FAILURES.md",
+      "sha256": "da06613c7af2ee4443a24be2077d092206c524d4d0fc3d231464e54c232d365b",
+      "bytes": 1473
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt",
+      "sha256": "9f81bd47bfe322110bc11339992f0e570b704077ccff22493940b75af7837152",
+      "bytes": 46376
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/audio-control.txt",
+      "sha256": "87cc908286681bfe2d9e76b42e9f6ea2750ae1dd0f9e543507eb1df4ffc53505",
+      "bytes": 12031
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/audio-dispatch.txt",
+      "sha256": "1293e212c85faa1a1aa8800257c594d560bb9f698b4177bf5919e0423dfafd02",
+      "bytes": 4693
+    },
+    {
+      "path": "scripts/yuyuhakusho/music_score_structure.py",
+      "sha256": "7738e3fba39ba570101d73c454756b8b4949a5e31bd9f65ba6f40551fd59b1a2",
+      "bytes": 9849
+    },
+    {
+      "path": "scripts/yuyuhakusho/score_parameter_tables.py",
+      "sha256": "edb4f38a19b07812cdab2629aa70cf9bf9d453d10b2f3c3a8d279876b3152593",
+      "bytes": 22087
+    },
+    {
+      "path": "games/yuyuhakusho/data/audio-natural-events.json.gz",
+      "sha256": "8d445cd35d2c70ad850a8ca1de479d97d96dc43878e2502f7c9f228d683e580c",
+      "bytes": 198364
+    }
+  ],
+  "frozen_claim_inputs_unchanged": [
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_SCORE_CLAIM_EVIDENCE.json",
+      "sha256": "9355d8dbe6363afc67b931a6985e6174578e5c2f5e73fd6f7b101d5f0794afe0",
+      "bytes": 17505
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/canonical-v3-final/index.json",
+      "sha256": "cac5d869aab3fd4f45eb476ae541919a39c10394922107ba897714f955d4f263",
+      "bytes": 28811
+    }
+  ],
+  "normal_secondary_initialization_ids": [],
+  "initial_table_inference_corrected": "Nominal secondary records do not imply normal dispatch entry; unsigned guard empty intersection is decisive.",
+  "limits": [
+    "Data presence and dispatcher acceptance do not prove all game call paths.",
+    "Secondary structures are not entered by normal AC..EF dispatch because the guard has no intersection.",
+    "No new CPU capture;96 E9 remains a static score path despite natural menu selection.",
+    "No F1/F4/FE/ED/EE found in traversed22 music and12 primary definitions; this is not a statement about arbitrary RAM/hardware writes.",
+    "F0 payload uniqueness is content evidence, not synthesis/cadence completion."
+  ],
+  "source_route": "Fixed ROM bytes, saved direct Ghidra listings, validated static score grammar and saved5500-frame natural events; no REA raw68000 route and no new emulation.",
+  "writes_scope": "Only new AUDIO_GAME_DISPATCH_ORIGINAL_* docs and .local/audio-game-dispatch-original files. Existing production/catalog/claim/main coverage untouched."
+}
