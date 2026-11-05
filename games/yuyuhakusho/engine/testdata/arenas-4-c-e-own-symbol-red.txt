@@ -1,0 +1,9 @@
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"# command-line-arguments [command-line-arguments.test]\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./arenas_4_c_e_test.go:166:10: undefined: StepArena4Palette\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./arenas_4_c_e_test.go:170:11: undefined: StepArena4\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./arenas_4_c_e_test.go:172:12: undefined: StepArenaC\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./arenas_4_c_e_test.go:175:12: undefined: StepArenaE\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-fail"}
+{"Time":"2026-11-05T15:48:16.683161+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-05T15:48:16.683193+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\tcommand-line-arguments [build failed]\n"}
+{"Time":"2026-11-05T15:48:16.683199+08:00","Action":"fail","Package":"command-line-arguments","Elapsed":0,"FailedBuild":"command-line-arguments [command-line-arguments.test]"}

@@ -1,0 +1,347 @@
+#!/usr/bin/env python3
+"""Original CPU evidence for arena 0a and its six raw-SAT submissions.
+
+Uses the root task's sole legal-menu original control; never creates a second
+unobserved baseline. Production code has no dependency on this producer.
+"""
+import argparse
+from collections import Counter
+import ctypes as C
+import gzip
+import itertools
+import json
+from pathlib import Path
+from reference import ROOT, ReferenceSession, ROM_SHA256, buttons_at, sha
+
+ENTRIES = {0x21126: 'arena', 0x21258: 'child'}
+IRQ_ENTRIES = {0xfff000, 0xfff09c, 0xfff0aa}
+IRQ_EXITS = {0xfff09a, 0xfff0a8, 0xfff13a}
+
+
+def number(b, p, n=2, signed=False):
+    return int.from_bytes(b[p:p+n], 'big', signed=signed)
+
+
+def delta(a, b):
+    result = []
+    i = 0
+    while i < len(a):
+        if a[i] == b[i]:
+            i += 1
+            continue
+        start = i
+        while i < len(a) and a[i] != b[i]:
+            i += 1
+        result.append([start, a[start:i].hex(), b[start:i].hex()])
+    return result
+
+
+def addresses(changes):
+    return {p+i for p, old, new in changes for i in range(len(bytes.fromhex(old)))}
+
+
+def snapshot(ram):
+    return {'parent': ram[0x8180:0x8280].hex(), 'child': ram[0x9e00:0x9f00].hex(),
+            'camera': ram[0xa00e:0xa01c].hex(), 'samples': ram[0xa800:0xa880].hex(),
+            'cells': ram[0xe600:0xec00].hex(), 'stream': ram[0x6000:0x6400].hex(),
+            'vertical': ram[0xe500:0xe540].hex(), 'sources': ram[0xf598:0xf5a0].hex(),
+            'scroll_mode': ram[0xf6e7], 'column_mode': ram[0xf6df],
+            'pause': ram[0xf550], 'slow': ram[0xf55a],
+            'shake': number(ram, 0xf566, signed=True), 'pan': number(ram, 0xf572, signed=True)}
+
+
+def read_json(path):
+    raw = path.read_bytes()
+    return json.loads(gzip.decompress(raw) if path.suffix == '.gz' else raw)
+
+
+def extract_library(rom):
+    return {'linear_rows': {str(x): [number(rom, 0x24000+(x-0x2e0)*256+i*2, signed=True)
+                                    for i in range(128)] for x in range(744, 985)},
+            'tiles': [number(rom, 0x212d4+i*2) for i in range(6)],
+            'ys': [number(rom, 0x212e0+i*2, signed=True) for i in range(6)],
+            'xs': [number(rom, 0x212ec+i*2, signed=True) for i in range(6)]}
+
+
+def main():
+    p = argparse.ArgumentParser()
+    p.add_argument('--out', required=True, type=Path)
+    p.add_argument('--inputs', required=True, type=Path)
+    p.add_argument('--expected', required=True, type=Path)
+    p.add_argument('--frames', type=int, default=3602)
+    p.add_argument('--private-only', action='store_true', help='Bootstrap from an existing control; do not claim legal arena A natural coverage')
+    args = p.parse_args()
+    out, inputs_path, expected_path = (x.resolve() for x in (args.out, args.inputs, args.expected))
+    assert all(x.is_relative_to(ROOT) for x in (out, inputs_path, expected_path))
+    out.mkdir(parents=True, exist_ok=True)
+    events, expected = read_json(inputs_path), read_json(expected_path)
+    assert len(expected) == args.frames
+    rom = (ROOT/'.local/md-yuyuhakusho/downloads/yuyuhakusho-jp.bin').read_bytes()
+    assert sha(rom) == ROM_SHA256
+    library = extract_library(rom)
+    bridge = C.CDLL(str(ROOT/'.local/md-yuyuhakusho/tools/hook_filter.dylib'))
+    cbtype = C.CFUNCTYPE(None, C.c_int, C.c_int, C.c_uint, C.c_uint)
+    bridge.yyh_set_observer.argtypes = [cbtype, C.POINTER(C.c_uint), C.c_size_t]
+    bridge.yyh_set_observer.restype = C.c_int
+    points = set(ENTRIES)|IRQ_ENTRIES|IRQ_EXITS|{0x14d0, 0x150c, 0x35a4, 0x3d8, 0x219ac, 0x21960, 0x3982}
+    pending, irq, draw_pending = None, None, None
+    natural, isolated, streams, errors = [], [], [], []
+    private, label = False, ''
+    with ReferenceSession(ROOT, out, core=ROOT/'.local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/genesis_plus_gx_libretro.dylib') as ref:
+        def configure():
+            pcs = (C.c_uint*len(points))(*sorted(points))
+            assert bridge.yyh_set_observer(observe, pcs, len(points))
+
+        def finish():
+            nonlocal pending
+            row, pending = pending, None
+            ram = ref.ram_cpu()
+            row.update(after=snapshot(ram), after_ram_sha256=sha(ram), delta=delta(row.pop('_ram'), ram), exit_frame=ref.frame)
+            changed = addresses(row['delta'])
+            rules = set()
+            if row['kind'] == 'arena':
+                rules |= set(range(0x8186, 0x818a))|set(range(0x818c, 0x8192))|set(range(0x8194, 0x8196))
+                rules |= set(range(0x9e00, 0x9e08))|{0x9e1a, 0x9e1b, 0xf6df, 0xf6e7}
+                rules |= set(range(0xa00e, 0xa01c))|{0xe500, 0xe501, 0xe528, 0xe529}|set(range(0xf598, 0xf5a0))
+                rules |= set(range(0xe8a0, 0xe9f0))|set(range(0xea20, 0xebe0))
+                rules |= set(range(0x6000, 0x61c0))|set(range(0x6200, 0x63c0))
+            else:
+                rules |= {0x9e06, 0x9e07, 0x9e18, 0x9e19, 0x9e1c, 0x9e1d}|set(range(0x9e20, 0x9e2a))
+            sprite_addresses = set().union(*(addresses(d['delta']) for d in row['draws'])) if row['draws'] else set()
+            irq_addresses = set().union(*(addresses(d['delta']) for d in row['interrupts'])) if row['interrupts'] else set()
+            sp = row['stack']&0xffff
+            stack = set(range(sp-(8 if row['kind'] == 'arena' else 6), sp+4))
+            unknown = changed-rules-sprite_addresses-irq_addresses-stack
+            assert not unknown, ('unowned actual delta', row['kind'], label, sorted(unknown))
+            row['delta_owners'] = {k: sorted(changed&v) for k, v in
+                                   [('rules', rules), ('sprite_consumer', sprite_addresses-rules),
+                                    ('interrupt', irq_addresses-rules-sprite_addresses), ('stack', stack-rules-sprite_addresses-irq_addresses)]}
+            row['unknown_delta'] = []
+            if private:
+                row['name'] = label
+                isolated.append(row)
+                ref.cpu.cycles = 4000000
+            else:
+                natural.append(row)
+
+        @cbtype
+        def observe(kind, width, pc, value):
+            nonlocal pending, irq, draw_pending
+            try:
+                sp = ref.get_register(15)
+                if pending is not None and pc == pending['return_pc'] and sp == pending['stack']+4:
+                    assert irq is None and draw_pending is None
+                    finish()
+                if pc in ENTRIES:
+                    assert pending is None, 'Nested arena callback'
+                    ram = ref.ram_cpu()
+                    owner = ref.get_register(13)&0xffff
+                    assert owner == (0x8180 if pc == 0x21126 else 0x9e00)
+                    ret = number(ram, sp&0xffff, 4)&0xffffff
+                    pending = {'kind': ENTRIES[pc], 'object_id': owner, 'frame': ref.frame, 'stack': sp,
+                               'return_pc': ret, 'before': snapshot(ram), '_ram': ram, 'before_ram_sha256': sha(ram),
+                               'draws': [], 'interrupts': [], 'audio_entries': [], 'rng_entries': []}
+                    if ret not in points:
+                        points.add(ret)
+                        configure()
+                elif pending is not None:
+                    if pc in IRQ_ENTRIES and irq is None:
+                        irq = {'pc': pc, 'stack': sp, '_ram': ref.ram_cpu(), 'audio_entries': []}
+                    elif pc in IRQ_EXITS and irq is not None:
+                        assert sp == irq['stack']
+                        irq.update(exit_pc=pc, delta=delta(irq.pop('_ram'), ref.ram_cpu()))
+                        pending['interrupts'].append(irq)
+                        irq = None
+                    elif pc in {0x219ac, 0x21960}:
+                        pending['audio_entries'].append(pc)
+                        if irq is not None:
+                            irq['audio_entries'].append(pc)
+                    elif pc == 0x3982:
+                        pending['rng_entries'].append(pc)
+                    elif pc == 0x14d0:
+                        assert pending['kind'] == 'child' and draw_pending is None
+                        ram = ref.ram_cpu()
+                        a0 = ref.get_register(8)&0xffff
+                        layer_slot = 0xf302+(ram[a0+3]&252)
+                        draw_pending = {'descriptor': ram[a0:a0+10].hex(), 'stack': sp, '_ram': ram,
+                                        'count': number(ram, 0xf578), 'cursor': number(ram, 0xf57c),
+                                        'layer_slot': layer_slot, 'layer_tail': number(ram, layer_slot),
+                                        'irq_start': len(pending['interrupts'])}
+                    elif pc == 0x150c and draw_pending is not None:
+                        assert sp == draw_pending['stack']
+                        ram = ref.ram_cpu()
+                        before_draw = draw_pending.pop('_ram')
+                        draw_pending.update(delta=delta(before_draw, ram),
+                                            after_count=number(ram, 0xf578), after_cursor=number(ram, 0xf57c))
+                        descriptor = bytes.fromhex(draw_pending['descriptor'])
+                        assert descriptor[8:] == b'\xff\xff'
+                        count, cursor = draw_pending['count'], draw_pending['cursor']
+                        accepted = (count&255) < 80 or (count&255) >= 128
+                        draw_pending['accepted'] = accepted
+                        expected_count = (count&0xff00)|((count+1)&255) if accepted else count
+                        expected_cursor = (cursor+8)&65535 if accepted else cursor
+                        assert draw_pending['after_count'] == expected_count and draw_pending['after_cursor'] == expected_cursor
+                        allowed = set()
+                        if accepted:
+                            allowed |= {(cursor+i)&65535 for i in range(8)}
+                            allowed |= {(draw_pending['layer_tail']-5)&65535, draw_pending['layer_slot'],
+                                        draw_pending['layer_slot']+1, 0xf578, 0xf579, 0xf57c, 0xf57d}
+                            expected_sprite = descriptor[:3]+bytes([(count+1)&255])+descriptor[4:8]
+                            assert ram[cursor:cursor+8] == expected_sprite
+                            assert ram[(draw_pending['layer_tail']-5)&65535] == count&255
+                            assert number(ram, draw_pending['layer_slot']) == expected_cursor
+                        for interruption in pending['interrupts'][draw_pending['irq_start']:]:
+                            allowed |= addresses(interruption['delta'])
+                        assert not addresses(draw_pending['delta'])-allowed, 'unowned 14d0 RAM change'
+                        pending['draws'].append(draw_pending)
+                        draw_pending = None
+            except Exception as exc:
+                errors.append(repr(exc))
+                ref.cpu.cycles = 4000000
+
+        configure()
+        hook = ref.api('set_cpu_hook', None, C.c_void_p)
+        observer = C.cast(bridge.yyh_cpu_hook, C.c_void_p)
+        hook(observer)
+        frames = []
+        for f in range(1, args.frames+1):
+            frames.append(ref.step(f, buttons_at(events, f))['reference'])
+            if f == 2400:
+                checkpoint = ref.save()
+        hook(None)
+        assert frames == expected and not pending and not errors, (errors[:10], bool(pending), len(natural))
+        if not args.private_only:
+            assert Counter(c['kind'] for c in natural)['child'] > 0, 'Legal inputs did not select arena A'
+            assert any(number(bytes.fromhex(c['before']['parent']), 6) == 0 for c in natural if c['kind'] == 'arena')
+        private = True
+        setreg = ref.api('m68k_set_reg', None, C.c_uint, C.c_uint)
+        execute = ref.api('m68k_run', None, C.c_uint)
+
+        def write(address, value, size=1):
+            raw = (value&((1 << (size*8))-1)).to_bytes(size, 'big')
+            for i, b in enumerate(raw):
+                C.c_ubyte.from_address(ref.ram_pointer+(((address+i)&0xffff)^1)).value = b
+
+        def data(address, raw):
+            for i, b in enumerate(raw):
+                C.c_ubyte.from_address(ref.ram_pointer+(((address+i)&0xffff)^1)).value = b
+
+        def sprites(count=2):
+            write(0xfff578, count, 2)
+            write(0xfff57c, 0xe210, 2)
+            write(0xfff57e, 0xe210, 2)
+            for i in range(64):
+                write(0xfff300+i*4, 0xf306+i*4, 4)
+
+        def setup(seed=0):
+            ref.restore(checkpoint, restore_refresh_cycles=True)
+            for reg in range(15):
+                setreg(reg, 0)
+            for base, size in [(0x8180, 256), (0x9e00, 256), (0xe200, 1024), (0xe500, 64),
+                               (0xe600, 1536), (0x6000, 1024)]:
+                data(0xff0000+base, bytes((seed*29+i*73+17)&255 for i in range(size)))
+            for off, val, size in [(0x8180, 0x21126, 4), (0x8184, 128, 2), (0x8186, 2, 2),
+                                   (0x9e00, 0x21258, 4), (0x9e04, 64, 2), (0x9e06, 2, 2), (0x9e1a, 0x8180, 2),
+                                   (0x9e22, 0xffc, 2), (0x9e28, 0xffff, 2),
+                                   (0xf550, 0, 1), (0xf55a, 0, 1), (0xf566, 0, 2), (0xf572, 0, 2),
+                                   (0xa00e, 0, 2), (0xa010, 880, 2), (0xa012, 1168, 2),
+                                   (0xa014, 864, 2), (0xa016, 16, 2), (0xa018, 864, 2), (0xa01a, 16, 2)]:
+                write(0xff0000+off, val, size)
+            for i in range(16):
+                write(0xffa800+i*4, ((900+i*3)<<16)|0x1234, 4)
+                write(0xffa840+i*4, ((320-i*2)<<16)|0xabcd, 4)
+            sprites()
+
+        def invoke(kind, name):
+            nonlocal label
+            label = name
+            setreg(17, 0x2700)
+            setreg(15, 0xffff00)
+            write(0xffff00, 0x3d8, 4)
+            setreg(13, 0xffff0000|(0x8180 if kind == 'arena' else 0x9e00))
+            setreg(16, next(pc for pc, k in ENTRIES.items() if k == kind))
+            ref.cpu.cycles, ref.cpu.refresh_cycles = 0, 896
+            count = len(isolated)
+            hook(observer)
+            execute(2000000)
+            hook(None)
+            assert len(isolated) == count+1 and not pending and not errors, (kind, name, errors[:10])
+            return isolated[-1]
+
+        for seed, (stage, pause, slow, pan, x, y, used) in enumerate(itertools.product(
+                [0, 2, 0xffff], [0, 1, 0x80, 0xff], [0, 1, 0x80], [0, 1, -1, -32768],
+                [744, 864, 984], [0, 16, 32], [0, 64])):
+            setup(seed)
+            for off, val, size in [(0x8186, stage, 2), (0xf550, pause, 1), (0xf55a, slow, 1),
+                                   (0xf572, pan, 2), (0xa014, x, 2), (0xa016, y, 2), (0xa00e, used, 2)]:
+                write(0xff0000+off, val, size)
+            invoke('arena', f'arena/{stage}/{pause}/{slow}/{pan}/{x}/{y}/{used}')
+        child_cases = []
+        for seed, (stage, pause, slow, pan, count) in enumerate(itertools.product(
+                [0, 2, 0xffff], [0, 1, 0x80, 0xff], [0, 1, 0x80], [0, 1, -1, -32768],
+                [2, 79, 80, 127, 128, 255])):
+            child_cases.append((stage, pause, slow, pan, [-32768, -1, 0, 32767][seed%4],
+                                [-32768, -1, 0, 32767][seed//4%4], count))
+        child_cases += [(0, 0, 0, pan, x, y, 2) for pan, x, y in itertools.product(
+                        [0, 1, -1, -32768], [-32768, -1, 0, 32767], [-32768, -1, 0, 32767])]
+        for seed, (stage, pause, slow, pan, x, y, count) in enumerate(child_cases):
+            setup(seed)
+            for off, val, size in [(0x9e06, stage, 2), (0xf550, pause, 1), (0xf55a, slow, 1),
+                                   (0xf572, pan, 2), (0x8188, x, 2), (0xa016, y, 2)]:
+                write(0xff0000+off, val, size)
+            sprites(count)
+            invoke('child', f'child/{stage}/{pause}/{slow}/{pan}/{x}/{y}/{count}')
+        for seed, (stage, pause, slow, size_link, count) in enumerate(itertools.product(
+                [2, 0xffff], [0, 0x80], [0, 1], [0, 1, 0xfc, 0xffc, 0xfffc], [2, 79, 80, 128, 255])):
+            setup(seed)
+            for off, val, size in [(0x9e06, stage, 2), (0xf550, pause, 1), (0xf55a, slow, 1), (0x9e22, size_link, 2)]:
+                write(0xff0000+off, val, size)
+            sprites(count)
+            invoke('child', f'child-dirty-descriptor/{stage}/{pause}/{slow}/{size_link}/{count}')
+        boundary_count = len(isolated)
+        setup(53)
+        write(0xff8186, 0, 2)
+        calls = []
+        for tick in range(192):
+            external = {'pause': 128 if 30 <= tick < 40 else 0, 'slow': 1 if 80 <= tick < 90 else 0,
+                        'pan': [0, 1, -1, -32768][tick//48], 'shake': [0, 3, 31, -1][tick%4],
+                        'samples_x': [((900+tick%32)<<16)|0x1234]*4, 'samples_y': [320<<16|0xabcd]*4}
+            for key, off, size in [('pause', 0xf550, 1), ('slow', 0xf55a, 1), ('pan', 0xf572, 2), ('shake', 0xf566, 2)]:
+                write(0xff0000+off, external[key], size)
+            for i in range(4):
+                write(0xffa800+i*4, external['samples_x'][i], 4)
+                write(0xffa840+i*4, external['samples_y'][i], 4)
+            write(0xffa00e, 16, 2)
+            sprites()
+            a = invoke('arena', f'creator-clock/{tick}/arena')
+            a['external_input'] = external
+            calls.append(a)
+            calls.append(invoke('child', f'creator-clock/{tick}/child'))
+        streams.append({'kind': 'creator-clock', 'initial': calls[0]['before'], 'calls': calls})
+        identity = ref.identity
+    bundles = [('arena-a-boundaries', isolated[:boundary_count]), ('arena-a-sequences', streams)]
+    if not args.private_only:
+        bundles.insert(0, ('arena-a-natural', natural))
+    for name, records in bundles:
+        payload = {'library': library, 'calls': records}
+        raw = (json.dumps(payload, separators=(',', ':'))+'\n').encode()
+        zipped = gzip.compress(raw, mtime=0)
+        (out/(name+'.json.gz')).write_bytes(zipped)
+        flat = [c for s in records for c in s['calls']] if name.endswith('sequences') else records
+        report = {'scope': 'Arena 0a callbacks 21126/21258 through true return and six 14d0 consumers',
+                  'identity': identity, 'records': len(records), 'calls': len(flat),
+                  'kind_counts': dict(Counter(c['kind'] for c in flat)), 'draws': sum(len(c['draws']) for c in flat),
+                  'interrupts': sum(len(c['interrupts']) for c in flat),
+                  'audio_entries': sum(len(c['audio_entries']) for c in flat),
+                  'rng_entries': sum(len(c['rng_entries']) for c in flat), 'unknown_delta': 0,
+                  'inputs_sha256': sha(inputs_path.read_bytes()), 'control_sha256': sha(expected_path.read_bytes()),
+                  'capture_sha256': sha(Path(__file__).read_bytes()), 'fixture_sha256': sha(raw), 'gzip_sha256': sha(zipped),
+                  'frames_match_original_control': frames == expected, 'errors': errors, 'pass': not errors}
+        report['legal_arena_a_natural'] = not args.private_only
+        (out/(name+'-manifest.json')).write_text(json.dumps(report, indent=2)+'\n')
+        print(json.dumps(report))
+    (out/'arena-a-rules.json').write_text(json.dumps({'rom_sha256': ROM_SHA256, 'library': library}, separators=(',', ':'))+'\n')
+
+
+if __name__ == '__main__':
+    main()

@@ -61,6 +61,7 @@ type ArenaRuntimeLibrary struct {
 }
 type DefaultArenaView struct {
 	PauseFlags, SlowFlag uint8
+	FrameCounter         uint8 // The F589 low byte of Clock.LogicFrame.
 	Shake, Pan           int16
 	// E600..E7FF is shared with the HUD. It is a read-only view supplied by
 	// the world, not a second independently maintained copy of those cells.

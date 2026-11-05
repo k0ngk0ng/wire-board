@@ -1,0 +1,46 @@
+{
+  "pass": true,
+  "scope": "complete arena callback including camera21556 and feedback21690",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "binding": {
+    "arena_id": 6,
+    "callback": 134696,
+    "resource_list": 137164,
+    "checkpoint_frame": 2400,
+    "checkpoint_arena_sha256": "6a8f568afc7f7fe3145cd444351db255c247aa7ba2bd0245141486911f6b0f54"
+  },
+  "baseline": {
+    "input": "docs/research/md-yuyuhakusho/arena-6-inputs.json",
+    "input_sha256": "ccb1f5560fb983f00c05c19e13b947dc067167d258f37a4d5b7d8a12258bb6ee",
+    "reference": "games/yuyuhakusho/engine/testdata/arena-6-reference-frames.json",
+    "reference_sha256": "6ddda9cb56749653259e1d993d428a761912c5af7c279dabe68635eb729e570f",
+    "manifest": "games/yuyuhakusho/engine/testdata/arena-6-reference-manifest.json",
+    "manifest_sha256": "434e737ceb89e233f3a9091abae64c6fc01167d2b3d017440bcd2460eae882b1",
+    "video_steps": 3602,
+    "all_ram_video_match": true
+  },
+  "records": 3,
+  "calls": 960,
+  "other_entry_contexts": [],
+  "reference_only": 0,
+  "timeline_owners": {
+    "arena": 960
+  },
+  "complete_64k_delta": true,
+  "ordered_timeline_replay_matches_64k": true,
+  "unexplained_changes": 0,
+  "incomplete_calls": 0,
+  "errors": [],
+  "capture_sha256": "aace0b05bd53dea21db31fbab80d9b30ce703b6e2984bd1d87b5d57cf55488a7",
+  "fixture_sha256": "999874e8463b51dc585087e516b731a1d52547d42fd06d96fc55b3121617fc26",
+  "gzip_sha256": "e7791cf3647e2c497b5ffc55e890658e6747d41d375ea25f4bdf8d8d933098be"
+}

@@ -1,0 +1,34 @@
+{
+  "label": "verify-sprites-0",
+  "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-sprites",
+  "command": [
+    "/opt/homebrew/bin/go",
+    "test",
+    "-json",
+    "-count=1",
+    "-timeout=40m",
+    "-race",
+    "-run",
+    "^Test(?:NaturalSpritePixelsAgainstVideo|Sprite(?:MalformedInputsAreAtomic|PixelsRejectWrongTimingOrData|s(?:AgainstOriginalCPU|RejectCorruptedOriginalEvidence)))$",
+    "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-sprites"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 63.064,
+  "expected": [
+    "TestNaturalSpritePixelsAgainstVideo",
+    "TestSpriteMalformedInputsAreAtomic",
+    "TestSpritePixelsRejectWrongTimingOrData",
+    "TestSpritesAgainstOriginalCPU",
+    "TestSpritesRejectCorruptedOriginalEvidence"
+  ],
+  "passed": [
+    "TestNaturalSpritePixelsAgainstVideo",
+    "TestSpriteMalformedInputsAreAtomic",
+    "TestSpritePixelsRejectWrongTimingOrData",
+    "TestSpritesAgainstOriginalCPU",
+    "TestSpritesRejectCorruptedOriginalEvidence"
+  ],
+  "failed": [],
+  "log": "games/yuyuhakusho/verification/additional-arena-native-checks-verify-sprites-0.jsonl",
+  "log_sha256": "44dd7f0469e12e5dcbd592df6727ed87a68cbae2c750afe82fa3e09de89869ae"
+}

@@ -1,0 +1,8 @@
+{
+  "phase": "tests frozen before implementation beyond compile-only default-delegate stubs",
+  "files": {
+    "arena_profiles_test.go": "48164ba34588f797b3fc51f87eb33d93a1cc9da2ecbe0814930a5497320c47a8",
+    "ARENA_PROFILES_FAILURES.md": "1bd16e205f65eb1126fb278cdb90350891be1911bcde0354545ef79dbd8a8b7c"
+  },
+  "note": "Default tile count corrected from transcription464 to actual406 before freeze; raw source remains pinned by original gzip SHA"
+}

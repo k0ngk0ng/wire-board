@@ -1,0 +1,27 @@
+{
+  "argv": [
+    "/opt/homebrew/Cellar/go/1.26.2/libexec/bin/go",
+    "test",
+    "-json",
+    "-count=1",
+    "-exec",
+    "/opt/homebrew/Cellar/go/1.26.2/libexec/lib/wasm/go_js_wasm_exec",
+    "./games/yuyuhakusho/presentation"
+  ],
+  "environment": {
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "LC_CTYPE": "C.UTF-8",
+    "PATH": "/Users/jason/.nvm/versions/node/v24.15.0/bin:/opt/homebrew/Cellar/go/1.26.2/libexec/bin:/usr/bin:/bin",
+    "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+    "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+    "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "GOENV": "off",
+    "GOOS": "js",
+    "GOARCH": "wasm"
+  },
+  "exit_code": 0,
+  "elapsed_seconds": 15.29031537566334,
+  "argument_environment_bytes": 782
+}

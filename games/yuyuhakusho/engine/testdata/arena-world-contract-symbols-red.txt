@@ -1,0 +1,14 @@
+# github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine [github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine.test]
+games/yuyuhakusho/engine/arena_world_boundaries_test.go:20:27: unknown field BackdropColor in struct literal of type ChuWorldState
+games/yuyuhakusho/engine/arena_world_boundaries_test.go:36:125: state.BackdropColor undefined (type ChuWorldState has no field or method BackdropColor)
+games/yuyuhakusho/engine/arena_world_rules_sessions_test.go:13:17: library.ArenaResources undefined (type ChuWorldLibrary has no field or method ArenaResources)
+games/yuyuhakusho/engine/arena_world_rules_sessions_test.go:13:53: library.ArenaScenes undefined (type ChuWorldLibrary has no field or method ArenaScenes)
+games/yuyuhakusho/engine/arena_world_rules_sessions_test.go:17:20: undefined: ChuSessionResourceForArena
+games/yuyuhakusho/engine/arena_world_rules_sessions_test.go:18:40: library.ArenaResources undefined (type ChuWorldLibrary has no field or method ArenaResources)
+games/yuyuhakusho/engine/arena_world_rules_sessions_test.go:22:13: library.ArenaResources undefined (type ChuWorldLibrary has no field or method ArenaResources)
+games/yuyuhakusho/engine/arena_world_rules_sessions_test.go:36:31: legacy.ArenaScenes undefined (type ChuWorldLibrary has no field or method ArenaScenes)
+games/yuyuhakusho/engine/arena_world_rules_sessions_test.go:36:74: legacy.ArenaResources undefined (type ChuWorldLibrary has no field or method ArenaResources)
+games/yuyuhakusho/engine/arena_world_rules_sessions_test.go:39:23: undefined: ChuSessionResourceForArena
+games/yuyuhakusho/engine/arena_world_rules_sessions_test.go:39:23: too many errors
+FAIL	github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine [build failed]
+FAIL

@@ -1,0 +1,60 @@
+{
+  "scope": "Cold actual 3592 practice-ready whole-object passes against unique supplied original3602 control",
+  "arena": 2,
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture": {
+    "path": "scripts/yuyuhakusho/capture_arena_world_sessions.py",
+    "sha256": "2ff6006de45746d35806a29b6500b27eec8d84e2a03e654082232ebe3b1a5f42"
+  },
+  "inputs": {
+    "path": "docs/research/md-yuyuhakusho/arena-2-inputs.json",
+    "sha256": "77cc5359c10b6789889ccb9fd5e89c05b5fe4c759135b1d40ce2f91aa637de4c"
+  },
+  "control": {
+    "path": "games/yuyuhakusho/engine/testdata/arena-2-reference-frames.json",
+    "sha256": "963ba802317e664c73a3f7639d5865ae777d94e029588196669865ed1b6b5f89"
+  },
+  "control_manifest": {
+    "path": "games/yuyuhakusho/engine/testdata/arena-2-reference-manifest.json",
+    "sha256": "89b23c4827db3b643a6810e185ae627688033148959765f29823c6e279b29088"
+  },
+  "frames_checked": 3602,
+  "frames_match_original_control": true,
+  "checkpoint_restore": false,
+  "emulated_ram_writes": false,
+  "direct_cpu_calls": false,
+  "entry_frame_limit": 3600,
+  "drain_frames": 2,
+  "first_frame": 2700,
+  "last_frame": 3600,
+  "records": 901,
+  "object_calls": 8660,
+  "callbacks": {
+    "40990": 901,
+    "62116": 901,
+    "65144": 901,
+    "75368": 1802,
+    "82254": 67,
+    "84098": 901,
+    "84272": 64,
+    "84396": 664,
+    "85702": 657,
+    "126380": 901,
+    "133856": 901
+  },
+  "raw_arena_sprites": 0,
+  "fixture_sha256": "c3199ddebef8aa6ec896fac7490218fbbf61c7c8ef32d9b763ae41cfd6ddbd8d",
+  "gzip_sha256": "1b6246e82371c45fb954bb1b18db5dcd0bb15b4a86b1fb004243d45a02eae349",
+  "incomplete_calls": 0,
+  "errors": [],
+  "pass": true
+}

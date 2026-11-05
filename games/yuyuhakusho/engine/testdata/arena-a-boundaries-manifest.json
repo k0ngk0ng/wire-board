@@ -1,0 +1,33 @@
+{
+  "scope": "Arena 0a callbacks 21126/21258 through true return and six 14d0 consumers",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "records": 3720,
+  "calls": 3720,
+  "kind_counts": {
+    "arena": 2592,
+    "child": 1128
+  },
+  "draws": 6768,
+  "interrupts": 0,
+  "audio_entries": 0,
+  "rng_entries": 0,
+  "unknown_delta": 0,
+  "inputs_sha256": "59383329affb09e87c6452c135d3ae20df19db9f1675acddc0972a080a8551b6",
+  "control_sha256": "5dce10106326451b42952f473ec80adff118a7185cf64a7d6ef3fd52ff8ee1e8",
+  "capture_sha256": "639a7036b335b6108394f32089bb72382882ef53a479c014346373515049ed50",
+  "fixture_sha256": "d358f3d6afd4155b83720b81f2d9b7096718f4f590195d88a27adba062c77706",
+  "gzip_sha256": "e27886571653cf079b782b4c697777bb58c34a99b8cd3c87195b059ba2a9b9a2",
+  "frames_match_original_control": true,
+  "errors": [],
+  "pass": true,
+  "legal_arena_a_natural": false
+}

@@ -127,6 +127,10 @@ func NewHUD(catalog HUDCatalog) (HUDState, error) {
 // cells are an optional256-word E600 view; they update only rule-owned cells.
 // The adapter never writes the engine world or derives life/energy values.
 func ApplyHUDWorldEvents(state HUDState, events []engine.ChuWorldEvent, cells []uint16, catalog HUDCatalog) (HUDState, error) {
+	return applyHUDWorldEvents(state, events, cells, catalog, 0x21720)
+}
+
+func applyHUDWorldEvents(state HUDState, events []engine.ChuWorldEvent, cells []uint16, catalog HUDCatalog, resource uint32) (HUDState, error) {
 	original := state
 	if len(cells) != 0 && len(cells) != 256 {
 		return original, errors.New("HUD rules require the256-word E600 cell view")
@@ -161,8 +165,11 @@ func ApplyHUDWorldEvents(state HUDState, events []engine.ChuWorldEvent, cells []
 				return original, err
 			}
 		case "resource":
-			if request.Source != 0x21720 {
-				return original, errors.New("HUD resource does not match default arena")
+			if request.Source != resource {
+				if resource == 0x21720 {
+					return original, errors.New("HUD resource does not match default arena")
+				}
+				return original, errors.New("HUD resource does not match selected arena")
 			}
 		case "words":
 			start := int(request.Offset) / 2

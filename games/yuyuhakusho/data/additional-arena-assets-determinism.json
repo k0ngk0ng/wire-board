@@ -1,0 +1,54 @@
+{
+  "pass": true,
+  "scope": "Two offline exports from identical original inputs produce byte-identical canonical JSON/gzip",
+  "results": [
+    {
+      "file": "arena-assets-2.json.gz",
+      "bytes": 12093,
+      "sha256": "baf59b615e155f791e409b60e87cbe44ea43ce997230d426675c5cf6302709f5",
+      "repeat_identical": true
+    },
+    {
+      "file": "arena-assets-4.json.gz",
+      "bytes": 8270,
+      "sha256": "a8e9906e78ff660650413ce94adc9b1c425f384638956ed304877bf69d12133a",
+      "repeat_identical": true
+    },
+    {
+      "file": "arena-assets-6.json.gz",
+      "bytes": 10472,
+      "sha256": "7fa944acfdc4f9f0af3c6c131cf388fbd70bf7760da9e559b14c16174e304139",
+      "repeat_identical": true
+    },
+    {
+      "file": "arena-assets-8.json.gz",
+      "bytes": 12802,
+      "sha256": "dc4b52569a636e5e6c4103399ae668527ec98363513bbc547c749bc5303fb737",
+      "repeat_identical": true
+    },
+    {
+      "file": "arena-assets-a.json.gz",
+      "bytes": 12102,
+      "sha256": "fc95e4147eba1f158ef79a5e31374123e9f0d0359dd3041e7e0261f5f99743da",
+      "repeat_identical": true
+    },
+    {
+      "file": "arena-assets-c.json.gz",
+      "bytes": 11039,
+      "sha256": "2e1b28e6dfd4e975c4ace5ae9f350af242907e34437d9c07611633eb8fe4cb51",
+      "repeat_identical": true
+    },
+    {
+      "file": "arena-assets-e.json.gz",
+      "bytes": 10414,
+      "sha256": "a5fa5b72544edd249393e8eba4dedec4fc3b63771494e00d2ff09c07c79f41f6",
+      "repeat_identical": true
+    },
+    {
+      "file": "arena-a-aux-assets.json.gz",
+      "bytes": 564,
+      "sha256": "3eb8fd42cf1e675c91140f406833af7fde38968109749e0702a31f1471aa75b4",
+      "repeat_identical": true
+    }
+  ]
+}

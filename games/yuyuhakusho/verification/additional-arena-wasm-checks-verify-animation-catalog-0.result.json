@@ -1,0 +1,31 @@
+{
+  "label": "verify-animation-catalog-0",
+  "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-animation-catalog",
+  "command": [
+    "/opt/homebrew/bin/go",
+    "test",
+    "-exec",
+    "/opt/homebrew/Cellar/go/1.26.2/libexec/lib/wasm/go_js_wasm_exec",
+    "-json",
+    "-count=1",
+    "-timeout=40m",
+    "-run",
+    "^Test(?:CatalogVerifierRe(?:jectsIndependentCorruption|quiresFullStateAndUniqueCoverage)|VerifyAllCatalogFramesAgainstOriginalCPU)$",
+    "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-animation-catalog"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 10.721,
+  "expected": [
+    "TestCatalogVerifierRejectsIndependentCorruption",
+    "TestCatalogVerifierRequiresFullStateAndUniqueCoverage",
+    "TestVerifyAllCatalogFramesAgainstOriginalCPU"
+  ],
+  "passed": [
+    "TestCatalogVerifierRejectsIndependentCorruption",
+    "TestCatalogVerifierRequiresFullStateAndUniqueCoverage",
+    "TestVerifyAllCatalogFramesAgainstOriginalCPU"
+  ],
+  "failed": [],
+  "log": "games/yuyuhakusho/verification/additional-arena-wasm-checks-verify-animation-catalog-0.jsonl",
+  "log_sha256": "98725fe5914f4cbd112a65c4f8e32ff5bf96c5b59c5af6589dd4c082b3ddb78e"
+}

@@ -1,0 +1,26 @@
+{
+  "pass": true,
+  "complete": true,
+  "environment": "js/wasm",
+  "players": 4,
+  "characters": [
+    5,
+    6,
+    7,
+    8
+  ],
+  "team": false,
+  "ticks": 4894,
+  "restored_pixel_frames": 30,
+  "sprite_frames": 4892,
+  "max_draw_requests": 18,
+  "unready_tick_blocked": true,
+  "invalid_input_atomic": true,
+  "asset_version_checked": true,
+  "reference_state_loaded": false,
+  "hud_window_complete": true,
+  "final_state_sha256": "7f9bc6752f76a28214d5a1ee59f2e072d33a09c2afa460046c76d14d820b43b3",
+  "pixel_trace_sha256": "d006ef20f063c367459b1678ffb62f8653dfe6d579ce36fd0bf0c300ea5dcf2e",
+  "state_trace_sha256": "839599fa2450ea0f39e250bd967f3f2e0b4ddd244e8c95a5e4ffe62bc24922da",
+  "arena": 8
+}

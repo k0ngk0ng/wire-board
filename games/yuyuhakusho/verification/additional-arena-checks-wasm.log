@@ -1,0 +1,15 @@
+wasm verify-arena-assets-0 4 pass 10.103 seconds
+wasm verify-animation-catalog-0 3 pass 10.721 seconds
+wasm verify-sprites-0 5 pass 36.509 seconds
+wasm verify-character-assets-0 4 pass 58.72 seconds
+wasm engine-0 51 pass 237.198 seconds
+wasm engine-2 51 pass 288.083 seconds
+wasm engine-1 51 pass 390.277 seconds
+wasm engine-3 51 pass 339.532 seconds
+wasm engine-4 50 pass 345.206 seconds
+wasm engine-5 50 pass 266.095 seconds
+wasm presentation-0 22 pass 27.895 seconds
+wasm runtimebridge-0 3 pass 35.688 seconds
+wasm engine-6 50 pass 294.249 seconds
+wasm engine-7 50 pass 238.662 seconds
+wasm 445 exact top-level tests pass

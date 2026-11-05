@@ -1,0 +1,32 @@
+{"Time":"2026-11-05T15:50:32.791366+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-05T15:50:33.177146+08:00","Action":"run","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackViews"}
+{"Time":"2026-11-05T15:50:33.177197+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackViews","Output":"=== RUN   TestArenaSceneFeedbackViews\n"}
+{"Time":"2026-11-05T15:50:33.177214+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackViews","Output":"--- PASS: TestArenaSceneFeedbackViews (0.00s)\n"}
+{"Time":"2026-11-05T15:50:33.177221+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackViews","Elapsed":0}
+{"Time":"2026-11-05T15:50:33.177225+08:00","Action":"run","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackErrorsAreAtomic"}
+{"Time":"2026-11-05T15:50:33.177227+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackErrorsAreAtomic","Output":"=== RUN   TestArenaSceneFeedbackErrorsAreAtomic\n"}
+{"Time":"2026-11-05T15:50:33.178264+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackErrorsAreAtomic","Output":"--- PASS: TestArenaSceneFeedbackErrorsAreAtomic (0.00s)\n"}
+{"Time":"2026-11-05T15:50:33.178274+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackErrorsAreAtomic","Elapsed":0}
+{"Time":"2026-11-05T15:50:33.178277+08:00","Action":"run","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow"}
+{"Time":"2026-11-05T15:50:33.178282+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow","Output":"=== RUN   TestArenaSceneFeedbackRejectsLongOverflow\n"}
+{"Time":"2026-11-05T15:50:33.178286+08:00","Action":"run","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow/2147483646"}
+{"Time":"2026-11-05T15:50:33.178288+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow/2147483646","Output":"=== RUN   TestArenaSceneFeedbackRejectsLongOverflow/2147483646\n"}
+{"Time":"2026-11-05T15:50:33.178347+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow/2147483646","Output":"--- PASS: TestArenaSceneFeedbackRejectsLongOverflow/2147483646 (0.00s)\n"}
+{"Time":"2026-11-05T15:50:33.178352+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow/2147483646","Elapsed":0}
+{"Time":"2026-11-05T15:50:33.178357+08:00","Action":"run","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow/2147483392"}
+{"Time":"2026-11-05T15:50:33.178359+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow/2147483392","Output":"=== RUN   TestArenaSceneFeedbackRejectsLongOverflow/2147483392\n"}
+{"Time":"2026-11-05T15:50:33.178384+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow/2147483392","Output":"--- PASS: TestArenaSceneFeedbackRejectsLongOverflow/2147483392 (0.00s)\n"}
+{"Time":"2026-11-05T15:50:33.178393+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow/2147483392","Elapsed":0}
+{"Time":"2026-11-05T15:50:33.178397+08:00","Action":"run","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow/-2147483648"}
+{"Time":"2026-11-05T15:50:33.1784+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow/-2147483648","Output":"=== RUN   TestArenaSceneFeedbackRejectsLongOverflow/-2147483648\n"}
+{"Time":"2026-11-05T15:50:33.178417+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow/-2147483648","Output":"--- PASS: TestArenaSceneFeedbackRejectsLongOverflow/-2147483648 (0.00s)\n"}
+{"Time":"2026-11-05T15:50:33.178421+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow/-2147483648","Elapsed":0}
+{"Time":"2026-11-05T15:50:33.178431+08:00","Action":"run","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow/-2147483646"}
+{"Time":"2026-11-05T15:50:33.178434+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow/-2147483646","Output":"=== RUN   TestArenaSceneFeedbackRejectsLongOverflow/-2147483646\n"}
+{"Time":"2026-11-05T15:50:33.178451+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow/-2147483646","Output":"--- PASS: TestArenaSceneFeedbackRejectsLongOverflow/-2147483646 (0.00s)\n"}
+{"Time":"2026-11-05T15:50:33.178457+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow/-2147483646","Elapsed":0}
+{"Time":"2026-11-05T15:50:33.178497+08:00","Action":"output","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow","Output":"--- PASS: TestArenaSceneFeedbackRejectsLongOverflow (0.00s)\n"}
+{"Time":"2026-11-05T15:50:33.178501+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestArenaSceneFeedbackRejectsLongOverflow","Elapsed":0}
+{"Time":"2026-11-05T15:50:33.178519+08:00","Action":"output","Package":"command-line-arguments","Output":"PASS\n"}
+{"Time":"2026-11-05T15:50:34.189102+08:00","Action":"output","Package":"command-line-arguments","Output":"ok  \tcommand-line-arguments\t1.398s\n"}
+{"Time":"2026-11-05T15:50:34.189125+08:00","Action":"pass","Package":"command-line-arguments","Elapsed":1.3980000000000001}

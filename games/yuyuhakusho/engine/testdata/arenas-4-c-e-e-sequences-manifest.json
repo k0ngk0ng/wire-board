@@ -1,0 +1,21 @@
+{
+  "pass": true,
+  "streams": 1,
+  "calls": 180,
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "3de9a447d805856c4f55c524baf69b1bbaebe17c9a4cfb547f86dea151fb2a3c",
+  "fixture_sha256": "eb34090291557a6c079212cdd3ccf1617e151a3a0be5d4596b4a75c7bc65d660",
+  "gzip_sha256": "a97604dfa7a9aef4ca80799327cecd7d0529a7e976e425745fe567d68ab9f637",
+  "single_initial_state": true,
+  "unknown_writes": 0,
+  "incomplete_calls": 0
+}

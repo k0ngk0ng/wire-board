@@ -26,6 +26,13 @@ func color565(compact uint16, limited bool) uint16 {
 // mask is available for independent background composition. It does not model
 // per-scanline sprite overflow or shadow/highlight modes.
 func RasterizeSprites(state FrameState, catalog Catalog, palette [64]uint16, width, height int, limited bool) (Raster, error) {
+	return RasterizeSpritesForArena(state, catalog, nil, palette, width, height, limited)
+}
+
+// RasterizeSpritesForArena shares sprite ordering and opacity across normal
+// actors and the selected arena's transient local-bank parts. No auxiliary
+// mapping is stored in the actor tile slots or in a session snapshot.
+func RasterizeSpritesForArena(state FrameState, catalog Catalog, aux *ArenaAAuxCatalog, palette [64]uint16, width, height int, limited bool) (Raster, error) {
 	if width <= 0 || height <= 0 || width > 8192 || height > 8192 {
 		return Raster{}, errors.New("unsupported sprite raster dimensions")
 	}
@@ -44,6 +51,9 @@ func RasterizeSprites(state FrameState, catalog Catalog, palette [64]uint16, wid
 		}
 		if part.WidthTiles < 1 || part.WidthTiles > 4 || part.HeightTiles < 1 || part.HeightTiles > 4 || part.Palette >= 4 || part.TileSlot >= 2048 {
 			return Raster{}, errors.New("invalid independent sprite part")
+		}
+		if part.ArenaAux && (aux == nil || int(part.TileSlot)+int(part.WidthTiles)*int(part.HeightTiles) > len(aux.Tiles)) {
+			return Raster{}, errors.New("sprite references unavailable arena auxiliary tiles")
 		}
 		sx, sy := int(part.X&511)-128, int(part.Y&511)-128
 		w, h := int(part.WidthTiles)*8, int(part.HeightTiles)*8
@@ -65,11 +75,17 @@ func RasterizeSprites(state FrameState, catalog Catalog, palette [64]uint16, wid
 					v = h - 1 - v
 				}
 				slot := (part.TileSlot + uint16(u/8)*uint16(part.HeightTiles) + uint16(v/8)) & 2047
-				tile, exists := state.Slots.Lookup(slot)
-				if !exists || int(tile) >= len(catalog.Tiles) {
-					return Raster{}, errors.New("sprite references unavailable prior tile context")
+				var indexed Tile
+				if part.ArenaAux {
+					indexed = aux.Tiles[slot]
+				} else {
+					tile, exists := state.Slots.Lookup(slot)
+					if !exists || int(tile) >= len(catalog.Tiles) {
+						return Raster{}, errors.New("sprite references unavailable prior tile context")
+					}
+					indexed = catalog.Tiles[tile]
 				}
-				value := catalog.Tiles[tile][(v%8)*4+(u%8)/2]
+				value := indexed[(v%8)*4+(u%8)/2]
 				value >>= 4 * uint(1-u&1)
 				value &= 15
 				if value == 0 {

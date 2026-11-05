@@ -1,0 +1,354 @@
+{
+  "pass": true,
+  "phase": "final",
+  "cases": [
+    {
+      "arena": 2,
+      "view": {
+        "arena": 2,
+        "completed": false,
+        "logic_frame": 284,
+        "paused": false,
+        "players": [
+          {
+            "Action": 0,
+            "Pose": 0,
+            "X": 944,
+            "Y": 320,
+            "active": true,
+            "character_id": 7,
+            "computer": false,
+            "energy": 223,
+            "health": 223,
+            "input_channel": 0,
+            "slot": 0
+          },
+          {
+            "Action": 1,
+            "Pose": 5,
+            "X": 1090,
+            "Y": 320,
+            "active": true,
+            "character_id": 9,
+            "computer": true,
+            "energy": 223,
+            "health": 223,
+            "input_channel": 255,
+            "slot": 3
+          }
+        ],
+        "ready": true,
+        "tick": 284,
+        "window_complete": true,
+        "winner": 0
+      },
+      "pixel_signature": 3440334917
+    },
+    {
+      "arena": 4,
+      "view": {
+        "arena": 4,
+        "completed": false,
+        "logic_frame": 283,
+        "paused": false,
+        "players": [
+          {
+            "Action": 0,
+            "Pose": 0,
+            "X": 944,
+            "Y": 320,
+            "active": true,
+            "character_id": 7,
+            "computer": false,
+            "energy": 223,
+            "health": 223,
+            "input_channel": 0,
+            "slot": 0
+          },
+          {
+            "Action": 1,
+            "Pose": 5,
+            "X": 1092,
+            "Y": 320,
+            "active": true,
+            "character_id": 9,
+            "computer": true,
+            "energy": 223,
+            "health": 223,
+            "input_channel": 255,
+            "slot": 3
+          }
+        ],
+        "ready": true,
+        "tick": 283,
+        "window_complete": true,
+        "winner": 0
+      },
+      "pixel_signature": 3477619336
+    },
+    {
+      "arena": 6,
+      "view": {
+        "arena": 6,
+        "completed": false,
+        "logic_frame": 283,
+        "paused": false,
+        "players": [
+          {
+            "Action": 0,
+            "Pose": 0,
+            "X": 944,
+            "Y": 320,
+            "active": true,
+            "character_id": 7,
+            "computer": false,
+            "energy": 223,
+            "health": 223,
+            "input_channel": 0,
+            "slot": 0
+          },
+          {
+            "Action": 1,
+            "Pose": 5,
+            "X": 1092,
+            "Y": 320,
+            "active": true,
+            "character_id": 9,
+            "computer": true,
+            "energy": 223,
+            "health": 223,
+            "input_channel": 255,
+            "slot": 3
+          }
+        ],
+        "ready": true,
+        "tick": 283,
+        "window_complete": true,
+        "winner": 0
+      },
+      "pixel_signature": 1632587250
+    },
+    {
+      "arena": 8,
+      "view": {
+        "arena": 8,
+        "completed": false,
+        "logic_frame": 282,
+        "paused": false,
+        "players": [
+          {
+            "Action": 0,
+            "Pose": 0,
+            "X": 944,
+            "Y": 320,
+            "active": true,
+            "character_id": 7,
+            "computer": false,
+            "energy": 223,
+            "health": 223,
+            "input_channel": 0,
+            "slot": 0
+          },
+          {
+            "Action": 1,
+            "Pose": 5,
+            "X": 1093,
+            "Y": 320,
+            "active": true,
+            "character_id": 9,
+            "computer": true,
+            "energy": 223,
+            "health": 223,
+            "input_channel": 255,
+            "slot": 3
+          }
+        ],
+        "ready": true,
+        "tick": 282,
+        "window_complete": true,
+        "winner": 0
+      },
+      "pixel_signature": 253548377
+    },
+    {
+      "arena": 10,
+      "view": {
+        "arena": 10,
+        "completed": false,
+        "logic_frame": 283,
+        "paused": false,
+        "players": [
+          {
+            "Action": 0,
+            "Pose": 0,
+            "X": 944,
+            "Y": 320,
+            "active": true,
+            "character_id": 7,
+            "computer": false,
+            "energy": 223,
+            "health": 223,
+            "input_channel": 0,
+            "slot": 0
+          },
+          {
+            "Action": 1,
+            "Pose": 5,
+            "X": 1092,
+            "Y": 320,
+            "active": true,
+            "character_id": 9,
+            "computer": true,
+            "energy": 223,
+            "health": 223,
+            "input_channel": 255,
+            "slot": 3
+          }
+        ],
+        "ready": true,
+        "tick": 283,
+        "window_complete": true,
+        "winner": 0
+      },
+      "pixel_signature": 2722611549
+    },
+    {
+      "arena": 12,
+      "view": {
+        "arena": 12,
+        "completed": false,
+        "logic_frame": 282,
+        "paused": false,
+        "players": [
+          {
+            "Action": 0,
+            "Pose": 0,
+            "X": 944,
+            "Y": 320,
+            "active": true,
+            "character_id": 7,
+            "computer": false,
+            "energy": 223,
+            "health": 223,
+            "input_channel": 0,
+            "slot": 0
+          },
+          {
+            "Action": 1,
+            "Pose": 5,
+            "X": 1093,
+            "Y": 320,
+            "active": true,
+            "character_id": 9,
+            "computer": true,
+            "energy": 223,
+            "health": 223,
+            "input_channel": 255,
+            "slot": 3
+          }
+        ],
+        "ready": true,
+        "tick": 282,
+        "window_complete": true,
+        "winner": 0
+      },
+      "pixel_signature": 2697487172
+    },
+    {
+      "arena": 14,
+      "view": {
+        "arena": 14,
+        "completed": false,
+        "logic_frame": 282,
+        "paused": false,
+        "players": [
+          {
+            "Action": 0,
+            "Pose": 0,
+            "X": 944,
+            "Y": 320,
+            "active": true,
+            "character_id": 7,
+            "computer": false,
+            "energy": 223,
+            "health": 223,
+            "input_channel": 0,
+            "slot": 0
+          },
+          {
+            "Action": 1,
+            "Pose": 5,
+            "X": 1093,
+            "Y": 320,
+            "active": true,
+            "character_id": 9,
+            "computer": true,
+            "energy": 223,
+            "health": 223,
+            "input_channel": 255,
+            "slot": 3
+          }
+        ],
+        "ready": true,
+        "tick": 282,
+        "window_complete": true,
+        "winner": 0
+      },
+      "pixel_signature": 294890404
+    }
+  ],
+  "keyboard": {
+    "before": {
+      "pixel": 2722611549,
+      "x": 944
+    },
+    "after": {
+      "pixel": 1453830643,
+      "x": 966
+    }
+  },
+  "touch": [
+    {
+      "event": "touchStart",
+      "held": [
+        "c",
+        "left",
+        "z"
+      ]
+    },
+    {
+      "event": "touchCancel",
+      "held": []
+    }
+  ],
+  "scope": "Seven selected arenas in the independent research player; actual Go/Wasm, Canvas and trusted keyboard/touch; no platform room or network test",
+  "input_trusted": true,
+  "human_no_auto_takeover": true,
+  "asset_requests": [
+    "/",
+    "/player.css",
+    "/wasm_exec.js",
+    "/player.js",
+    "/md-controller-UXLIP6HJ.svg",
+    "/player.wasm",
+    "/rules.json.gz",
+    "/sprites.json.gz",
+    "/arena.json.gz",
+    "/hud.json.gz",
+    "/favicon.ico",
+    "/arena-2.json.gz",
+    "/arena-4.json.gz",
+    "/arena-6.json.gz",
+    "/arena-8.json.gz",
+    "/arena-a.json.gz",
+    "/arena-a-aux.json.gz",
+    "/arena-c.json.gz",
+    "/arena-e.json.gz"
+  ],
+  "source_sha256": {
+    "scripts/yuyuhakusho/check_arena_player.py": "6328ffd95fcf3d5e6fcf25eb0dc1558b463b95301dcaa4694db2d2c2885ba14b",
+    "scripts/yuyuhakusho/local_player.tsx": "1fe5e585ae48f39f33683cd5fc30d1b9662ac5946177c5fcc14b6eea1f570e90",
+    "games/yuyuhakusho/cmd/local-player-wasm/main_js.go": "97c9ebd4f99c8b785cfaa8916aa9a8665a79ebaeee35a2812a072fc9f4ddb91b",
+    "games/yuyuhakusho/runtimebridge/session.go": "68cb5c8f2f823be40d0f0bde29c472387862db7a725f3472165b63ba9215718f"
+  }
+}

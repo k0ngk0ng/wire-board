@@ -1,0 +1,32 @@
+{
+  "label": "verify-arena-assets-0",
+  "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-arena-assets",
+  "command": [
+    "/opt/homebrew/bin/go",
+    "test",
+    "-json",
+    "-count=1",
+    "-timeout=40m",
+    "-race",
+    "-run",
+    "^Test(?:ArenaBackground(?:AgainstOriginalVideo|Rejects(?:UnsupportedOrTruncatedInput|WrongTimingAndCorruptEvidence))|CompactArenaCatalogBindsEveryPlaneCellAndTile)$",
+    "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-arena-assets"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 17.826,
+  "expected": [
+    "TestArenaBackgroundAgainstOriginalVideo",
+    "TestArenaBackgroundRejectsUnsupportedOrTruncatedInput",
+    "TestArenaBackgroundRejectsWrongTimingAndCorruptEvidence",
+    "TestCompactArenaCatalogBindsEveryPlaneCellAndTile"
+  ],
+  "passed": [
+    "TestArenaBackgroundAgainstOriginalVideo",
+    "TestArenaBackgroundRejectsUnsupportedOrTruncatedInput",
+    "TestArenaBackgroundRejectsWrongTimingAndCorruptEvidence",
+    "TestCompactArenaCatalogBindsEveryPlaneCellAndTile"
+  ],
+  "failed": [],
+  "log": "games/yuyuhakusho/verification/additional-arena-native-checks-verify-arena-assets-0.jsonl",
+  "log_sha256": "f57ee310ad2e649b03454e5794f6b3808bd74077eb697d2b6303d2b182d5c3c7"
+}

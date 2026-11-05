@@ -69,6 +69,7 @@ type chuWorldJSONProjection struct {
 	ResourceBusy                                      uint8
 	Match                                             ChuWorldMatch
 	MatchComplete                                     bool
+	BackdropColor                                     uint8 `json:",omitempty"`
 }
 
 func (state ChuWorldState) MarshalJSON() ([]byte, error) {
@@ -85,7 +86,7 @@ func (state ChuWorldState) MarshalJSON() ([]byte, error) {
 		SceneMode: state.SceneMode, SceneRequest: state.SceneRequest, InterruptMode: state.InterruptMode,
 		ScrollMode: state.ScrollMode, Vertical: state.Vertical, PanA: state.PanRows(0), PanB: state.PanRows(1),
 		ScrollSources: state.ScrollSources, ResourceList: state.ResourceList, ResourceBusy: state.ResourceBusy,
-		Match: state.Match, MatchComplete: state.MatchComplete,
+		Match: state.Match, MatchComplete: state.MatchComplete, BackdropColor: state.BackdropColor,
 	})
 }
 

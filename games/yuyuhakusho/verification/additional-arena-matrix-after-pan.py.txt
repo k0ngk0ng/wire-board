@@ -1,0 +1,119 @@
+"""Complete-match seven-arena E2E matrix, specified before CLI selection flags."""
+from pathlib import Path
+from concurrent.futures import ThreadPoolExecutor, as_completed
+import argparse, hashlib, json, os, subprocess, time
+
+ROOT = Path(__file__).resolve().parents[2]
+LOCAL = ROOT / '.local/md-yuyuhakusho'
+OUT = ROOT / 'games/yuyuhakusho/verification/additional-arena-e2e'
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('environment', choices=['native', 'wasm'])
+parser.add_argument('--red', action='store_true')
+parser.add_argument('--resume', action='store_true')
+parser.add_argument('--workers', type=int, default=2)
+args = parser.parse_args()
+assert 1 <= args.workers <= 4
+for path in (LOCAL / 'tmp', LOCAL / 'build', OUT / args.environment):
+    path.mkdir(parents=True, exist_ok=True)
+env = dict(os.environ, GOCACHE=str(ROOT / '.local/go-cache'), GOMODCACHE=str(ROOT / '.local/go-mod'), GOTMPDIR=str(LOCAL / 'tmp'), TMPDIR=str(LOCAL / 'tmp'))
+if args.environment == 'wasm':
+    env.update(GOOS='js', GOARCH='wasm')
+commands = {}
+for kind, package in [('rules', 'verify-chu-session'), ('render', 'verify-chu-runtime')]:
+    binary = LOCAL / 'build' / ('arena-' + kind + ('.wasm' if args.environment == 'wasm' else ''))
+    subprocess.run(['go', 'build', '-o', str(binary), './games/yuyuhakusho/cmd/' + package], cwd=ROOT, env=env, check=True)
+    commands[kind] = [str(binary)]
+    if args.environment == 'wasm':
+        goroot = subprocess.check_output(['go', 'env', 'GOROOT'], cwd=ROOT, env=env, text=True).strip()
+        commands[kind].insert(0, str(Path(goroot) / 'lib/wasm/go_js_wasm_exec'))
+
+if args.red:
+    result = subprocess.run(commands['rules'] + ['-arena', '2', '-players', '2', '-characters', '0,1'], cwd=ROOT, env=env, capture_output=True, text=True)
+    artifact = {'test_first': True, 'command': commands['rules'] + ['-arena', '2', '-players', '2', '-characters', '0,1'], 'exit_code': result.returncode, 'stdout': result.stdout, 'stderr': result.stderr, 'expected_missing_flag': result.returncode != 0 and 'flag provided but not defined: -arena' in result.stderr, 'producer_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}
+    (OUT / 'cli-red.json').write_text(json.dumps(artifact, indent=2) + '\n')
+    assert artifact['expected_missing_flag'], artifact
+    print('real pre-implementation CLI rejection captured')
+    raise SystemExit(0)
+
+# Every arena contains all eleven source IDs across the four supported sizes/modes.
+modes = [('duel', [0, 1], False, False), ('three', [2, 3, 4], False, False), ('four', [5, 6, 7, 8], False, False), ('team', [9, 10, 0, 1], True, False), ('human-idle', [7, 9], False, True)]
+source_paths = sorted((ROOT / 'games/yuyuhakusho/engine').glob('*.go')) + sorted((ROOT / 'games/yuyuhakusho/runtimebridge').glob('*.go')) + sorted((ROOT / 'games/yuyuhakusho/presentation').glob('*.go')) + [ROOT / 'games/yuyuhakusho/cmd/verify-chu-session/main.go', ROOT / 'games/yuyuhakusho/cmd/verify-chu-runtime/main.go'] + sorted((ROOT / 'games/yuyuhakusho/data').glob('*.json.gz'))
+identity = {str(path.relative_to(ROOT)): hashlib.sha256(path.read_bytes()).hexdigest() for path in source_paths}
+info_path = OUT / args.environment / 'run-info.json'
+if args.resume and info_path.exists():
+    assert json.loads(info_path.read_text())['source_sha256'] == identity, 'resume requires unchanged source and assets'
+info_path.write_text(json.dumps({'source_sha256': identity, 'environment': args.environment}, indent=2) + '\n')
+jobs = []
+for arena in (2, 4, 6, 8, 10, 12, 14):
+    for name, characters, team, human in modes:
+        for kind in ('rules', 'render'):
+            if kind == 'render' and human:
+                continue
+            jobs.append((arena, name, characters, team, human, kind))
+
+def run_case(job):
+    arena, name, characters, team, human, kind = job
+    directory = OUT / args.environment / kind / format(arena, 'x')
+    directory.mkdir(parents=True, exist_ok=True)
+    path = directory / (name + '.json')
+    if args.resume and path.is_file():
+        actual = json.loads(path.read_text())
+        assert actual['pass'] and actual['arena'] == arena
+    else:
+        command = commands[kind] + ['-arena', str(arena), '-players', str(len(characters)), '-characters', ','.join(map(str, characters))]
+        if team:
+            command.append('-team')
+        if human:
+            command.append('-human-idle')
+        if kind == 'render':
+            command += ['-output', str(directory / name)]
+        result = subprocess.run(command, cwd=ROOT, env=env, text=True, capture_output=True)
+        if result.returncode:
+            failure = {'command': command, 'exit_code': result.returncode, 'stdout': result.stdout, 'stderr': result.stderr}
+            path.with_suffix('.failure.json').write_text(json.dumps(failure, indent=2) + '\n')
+            raise RuntimeError(str(path) + ': ' + result.stderr[-2000:])
+        actual = json.loads(result.stdout)
+        path.write_text(json.dumps(actual, indent=2) + '\n')
+    assert actual['pass'] and not actual['reference_state_loaded'] and actual['arena'] == arena, path
+    assert actual['characters'] == characters and actual['players'] == len(characters) and actual['team'] == team, path
+    if kind == 'rules':
+        assert actual['completed'] and actual['human_auto_takeovers'] == 0 and actual['human_idle'] == human
+        assert 0 < actual['first_damage_tick'] <= actual['first_ko_tick'] <= actual['retirement_tick'] <= actual['result_tick'] <= actual['clear_tick']
+    else:
+        assert actual['complete'] and actual['hud_window_complete'] and actual['restored_pixel_frames'] == 30
+        assert actual['unready_tick_blocked'] and actual['invalid_input_atomic'] and actual['asset_version_checked']
+        if arena == 10:
+            assert actual['arena_sprite_requests'] > 0, path
+    if args.environment == 'wasm':
+        native_path = OUT / 'native' / path.relative_to(OUT / 'wasm')
+        expected = json.loads(native_path.read_text())
+        expected.pop('environment')
+        normalized = actual.copy()
+        normalized.pop('environment')
+        assert expected == normalized, (str(path), 'native/Wasm complete state or pixel trace differs')
+    return {'path': str(path.relative_to(ROOT)), 'sha256': hashlib.sha256(path.read_bytes()).hexdigest(), 'arena': arena, 'case': name, 'kind': kind, 'ticks': actual['ticks'], 'pan_frames': actual.get('pan_frames', 0), 'pass': True}
+
+started = time.monotonic()
+checks = []
+with ThreadPoolExecutor(max_workers=args.workers) as pool:
+    pending = {pool.submit(run_case, job): job for job in jobs}
+    for future in as_completed(pending):
+        check = future.result()
+        checks.append(check)
+        print(f"{args.environment} {len(checks)}/{len(jobs)} arena {check['arena']:x} {check['kind']} {check['case']} {check['ticks']} ticks pass", flush=True)
+assert len(checks) == 63
+for arena in (2, 4, 6, 8, 10, 12, 14):
+    assert len([check for check in checks if check['arena'] == arena]) == 9
+pan_checks = []
+for arena in (2, 4, 6, 8, 10, 12, 14):
+    path = ROOT / 'games/yuyuhakusho/verification/additional-arena-pan' / args.environment / ('arena-' + format(arena, 'x') + '.json')
+    dynamic = json.loads(path.read_text())
+    assert dynamic['pass'] and dynamic['arena'] == arena and not dynamic['reference_state_loaded'], path
+    assert dynamic['human_auto_takeovers'] == 0 and dynamic['pan_frames'] > 0 and dynamic['feedback_frames'] > 0, path
+    assert dynamic['restored_pan_frames'] > 0 and dynamic['restored_pixel_frames'] > 0 and dynamic['restored_state_frames'] > 0 and dynamic['pause_pan_frames'] > 0, path
+    pan_checks.append({'arena': arena, 'path': str(path.relative_to(ROOT)), 'sha256': hashlib.sha256(path.read_bytes()).hexdigest(), 'pan_frames': dynamic['pan_frames'], 'pass': True})
+assert len(pan_checks) == 7
+assert any(check['pan_frames'] > 0 for check in checks + pan_checks), 'no dynamic pan was exercised by the complete-match matrix'
+report = {'pass': True, 'environment': args.environment, 'scenarios': len(checks), 'checks': sorted(checks, key=lambda check: check['path']), 'pan_checks': pan_checks, 'elapsed_seconds': round(time.monotonic() - started, 3), 'all_eleven_characters_per_arena': True, 'native_wasm_complete_traces_equal': args.environment == 'wasm', 'reference_state_loaded': False, 'source_sha256': identity}
+(OUT / args.environment / 'validation.json').write_text(json.dumps(report, indent=2) + '\n')
+print('seven-arena complete-match matrix pass:', args.environment, flush=True)

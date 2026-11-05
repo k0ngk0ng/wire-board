@@ -15,6 +15,7 @@ type ChuSessionOptions struct {
 	Difficulty uint16
 	Players    []ChuSessionPlayer
 	TeamBattle bool
+	Arena      uint16 `json:",omitempty"`
 }
 
 type ChuSessionResource struct {
@@ -28,6 +29,61 @@ func DefaultChuSessionResource() ChuSessionResource {
 	return ChuSessionResource{Source: 0x21720, Palette0: [16]uint16{2662, 512, 3822, 3786, 2150, 1126, 2728, 3240, 3240, 2184, 1092, 2694, 1058, 1604, 3786, 1090}}
 }
 
+var chuArenaBehaviors = [8]uint32{0x20918, 0x20ae0, 0x20cb2, 0x20e28, 0x20fb4, 0x21126, 0x212f8, 0x21412}
+
+// ChuSessionResourceForArena returns immutable fade/setup metadata for the
+// selected scene. Old rule bundles retain their verified default resource.
+func ChuSessionResourceForArena(arena uint16, library ChuWorldLibrary) (ChuSessionResource, error) {
+	if arena > 14 || arena&1 != 0 || library.MatchStart.ArenaBehaviors[arena/2] != chuArenaBehaviors[arena/2] {
+		return ChuSessionResource{}, errors.New("selected arena rules are unavailable")
+	}
+	resource, found := library.ArenaResources[arena]
+	if library.ArenaResources == nil && arena == 0 {
+		resource, found = DefaultChuSessionResource(), true
+	}
+	if !found || resource.Source == 0 || resource.Source != library.MatchStart.ArenaResources[arena/2] {
+		return ChuSessionResource{}, errors.New("selected arena resource metadata is unavailable")
+	}
+	for _, color := range resource.Palette0 {
+		if color&^0x0eee != 0 {
+			return ChuSessionResource{}, errors.New("selected arena resource palette is invalid")
+		}
+	}
+	if arena == 0 {
+		if resource != DefaultChuSessionResource() {
+			return ChuSessionResource{}, errors.New("default arena resource metadata differs from its verified binding")
+		}
+		return resource, nil
+	}
+	scenes := library.ArenaScenes
+	if arena == 2 || arena == 8 || arena == 12 {
+		if len(scenes.WaveX) != 1024 {
+			return ChuSessionResource{}, errors.New("selected arena waveform is unavailable")
+		}
+	}
+	if arena == 2 || arena == 6 || arena == 8 || arena == 10 || arena == 14 {
+		if len(scenes.LinearRows) != 241 {
+			return ChuSessionResource{}, errors.New("selected arena linear rows are unavailable")
+		}
+		for x := int16(744); x <= 984; x++ {
+			if len(scenes.LinearRows[x]) != 128 {
+				return ChuSessionResource{}, errors.New("selected arena linear row is incomplete")
+			}
+		}
+	}
+	if arena == 4 {
+		if len(scenes.Arena4Rows) != 64 {
+			return ChuSessionResource{}, errors.New("selected arena scrolling rows are unavailable")
+		}
+		for x := uint8(0); x < 64; x++ {
+			if len(scenes.Arena4Rows[x]) != 112 {
+				return ChuSessionResource{}, errors.New("selected arena scrolling row is incomplete")
+			}
+		}
+	}
+	return resource, nil
+}
+
 // NewChuSession prepares an independent platform match from configuration.
 // It performs manager setup before the gameplay clock starts and waits for an
 // explicit one-time resource-ready delivery. It never loads a reference state.
@@ -38,6 +94,9 @@ func NewChuSession(options ChuSessionOptions, library ChuWorldLibrary) (ChuWorld
 	if len(library.Commands) == 0 || len(library.Animations) == 0 {
 		return ChuWorldState{}, nil, errors.New("Chu match rules are unavailable")
 	}
+	if _, err := ChuSessionResourceForArena(options.Arena, library); err != nil {
+		return ChuWorldState{}, nil, err
+	}
 	state := ChuWorldState{Objects: WorldObjects{
 		0x8000: {ObjectID: 0x8000, Header: MatchObjectHeader{Behavior: 0x9ad0, Size: 64, Stage: 20}},
 		0x8040: {ObjectID: 0x8040, Header: MatchObjectHeader{Behavior: 0xf2a4, Size: 64}},
@@ -45,6 +104,7 @@ func NewChuSession(options ChuSessionOptions, library ChuWorldLibrary) (ChuWorld
 		Clock: WorldClockState{ControllerCount: 4}, Throws: ThrowContactBuffer{Records: make([]ThrowContactRecord, 16)},
 		Registration: FighterRegistrationState{Owners: make([]uint16, 64)}, Stream: make([]byte, 1024)}
 	state.Match.Rule, state.Match.Layout, state.Match.Grouping = 2, uint16(len(options.Players)), 2
+	state.Match.Arena = options.Arena
 	if options.TeamBattle {
 		state.Match.Grouping = 4
 	}
@@ -81,17 +141,30 @@ func NewChuSession(options ChuSessionOptions, library ChuWorldLibrary) (ChuWorld
 	return StepChuWorldObjects(state, ChuWorldView{}, library)
 }
 
-// CompleteChuSessionResource acknowledges exactly the pending default resource.
+// CompleteChuSessionResource acknowledges exactly the pending selected resource.
 // Code/assets/canvas readiness remains the host's real loading gate. Duplicate
 // or mismatched completions cannot reset a running match or its colors.
-func CompleteChuSessionResource(state ChuWorldState, resource ChuSessionResource) (ChuWorldState, error) {
+// The optional library preserves the historical two-argument default API;
+// additional arenas require the same immutable library used to construct them.
+func CompleteChuSessionResource(state ChuWorldState, resource ChuSessionResource, libraries ...ChuWorldLibrary) (ChuWorldState, error) {
+	expected := DefaultChuSessionResource()
+	if len(libraries) > 1 || len(libraries) == 0 && state.Match.Arena != 0 {
+		return state, errors.New("selected arena resource registry is unavailable")
+	}
+	if len(libraries) == 1 {
+		var err error
+		expected, err = ChuSessionResourceForArena(state.Match.Arena, libraries[0])
+		if err != nil {
+			return state, err
+		}
+	}
 	manager, err := LookupWorldObject(state.Objects, 0x8040)
-	if err != nil || state.ResourceBusy == 0 || manager.Header.Behavior != 0xf2a4 || manager.Header.Stage != 2 || state.Match.Arena != 0 || state.ResourceList != resource.Source || resource != DefaultChuSessionResource() {
+	if err != nil || state.ResourceBusy == 0 || manager.Header.Behavior != 0xf2a4 || manager.Header.Stage != 2 || state.ResourceList != resource.Source || resource != expected {
 		return state, errors.New("resource completion does not match the waiting Chu world")
 	}
 	copy(state.Palette.Primary[:16], resource.Palette0[:])
 	state.ResourceBusy = 0
-	state.Palette.Flags |= 0x80 // The verified default scene's display-ready flag.
+	state.Palette.Flags |= 0x80 // The verified scene resource display-ready flag.
 	state.InterruptMode = 4     // Retained context identity; no IRQ is executed.
 	return state, nil
 }

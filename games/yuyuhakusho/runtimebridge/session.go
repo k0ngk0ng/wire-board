@@ -19,9 +19,18 @@ type Assets struct {
 	arena   presentation.ArenaCatalog
 	hud     presentation.HUDCatalog
 	digests [4]string
+	arenaID uint16
+	aux     *presentation.ArenaAAuxCatalog
+	auxSHA  string
 }
 
 func DecodeAssets(rules, sprites, arena, hud []byte) (Assets, error) {
+	return DecodeAssetsForArena(rules, sprites, arena, hud, nil, 0)
+}
+
+// DecodeAssetsForArena binds the selected immutable background and optional
+// auxiliary material to the same rule resource before a match can be prepared.
+func DecodeAssetsForArena(rules, sprites, arena, hud, auxiliary []byte, selected uint16) (Assets, error) {
 	var a Assets
 	var err error
 	if a.rules, err = engine.DecodeChuWorldRules(rules); err != nil {
@@ -30,12 +39,36 @@ func DecodeAssets(rules, sprites, arena, hud []byte) (Assets, error) {
 	if a.sprites, err = presentation.DecodeCatalog(sprites); err != nil {
 		return Assets{}, fmt.Errorf("sprite assets: %w", err)
 	}
-	if a.arena, err = presentation.DecodeArenaCatalog(arena); err != nil {
+	if a.arena, err = presentation.DecodeArenaCatalogForArena(arena, selected); err != nil {
 		return Assets{}, fmt.Errorf("arena assets: %w", err)
 	}
 	if a.hud, err = presentation.DecodeHUDCatalog(hud); err != nil {
 		return Assets{}, fmt.Errorf("HUD assets: %w", err)
 	}
+	resource, err := engine.ChuSessionResourceForArena(selected, a.rules)
+	if err != nil || resource.Source != a.arena.Identity().ResourceList {
+		return Assets{}, errors.New("arena rule and media resource identities differ")
+	}
+	var nativePalette [64]uint16
+	copy(nativePalette[:16], resource.Palette0[:])
+	compact := presentation.CompactPalette(nativePalette)
+	for i, color := range a.arena.Palette0 {
+		if compact[i] != color {
+			return Assets{}, errors.New("arena rule and media initial colors differ")
+		}
+	}
+	if selected == 10 {
+		aux, decodeErr := presentation.DecodeArenaAAuxCatalog(auxiliary)
+		if decodeErr != nil {
+			return Assets{}, fmt.Errorf("arena auxiliary assets: %w", decodeErr)
+		}
+		a.aux = &aux
+		sum := sha256.Sum256(auxiliary)
+		a.auxSHA = hex.EncodeToString(sum[:])
+	} else if len(auxiliary) != 0 {
+		return Assets{}, errors.New("selected arena does not use auxiliary assets")
+	}
+	a.arenaID = selected
 	for i, raw := range [][]byte{rules, sprites, arena, hud} {
 		sum := sha256.Sum256(raw)
 		a.digests[i] = hex.EncodeToString(sum[:])
@@ -44,13 +77,14 @@ func DecodeAssets(rules, sprites, arena, hud []byte) (Assets, error) {
 }
 
 type snapshot struct {
-	Schema       int                      `json:"schema"`
-	AssetDigests [4]string                `json:"asset_digests"`
-	Tick         uint64                   `json:"tick"`
-	Options      engine.ChuSessionOptions `json:"options"`
-	World        engine.ChuWorldState     `json:"world"`
-	Slots        presentation.TileSlots   `json:"tile_slots"`
-	HUD          presentation.HUDState    `json:"hud"`
+	Schema         int                      `json:"schema"`
+	AssetDigests   [4]string                `json:"asset_digests"`
+	Tick           uint64                   `json:"tick"`
+	Options        engine.ChuSessionOptions `json:"options"`
+	World          engine.ChuWorldState     `json:"world"`
+	Slots          presentation.TileSlots   `json:"tile_slots"`
+	HUD            presentation.HUDState    `json:"hud"`
+	ArenaAuxDigest string                   `json:"arena_aux_digest,omitempty"`
 }
 
 type Session struct {
@@ -79,16 +113,22 @@ type View struct {
 	Winner         int16        `json:"winner"`
 	WindowComplete bool         `json:"window_complete"`
 	Players        []PlayerView `json:"players"`
+	Arena          uint16       `json:"arena,omitempty"`
+	PanOffset      uint16       `json:"pan_offset,omitempty"`
 }
 
 type Frame struct {
-	View         View
-	Pixels       []byte
-	DrawRequests int
-	SpritePixels int
+	View                View
+	Pixels              []byte
+	DrawRequests        int
+	SpritePixels        int
+	ArenaSpriteRequests int
 }
 
 func NewSession(options engine.ChuSessionOptions, assets Assets) (*Session, error) {
+	if options.Arena != assets.arenaID {
+		return nil, errors.New("selected arena assets are not loaded")
+	}
 	world, events, err := engine.NewChuSession(options, assets.rules)
 	if err != nil {
 		return nil, err
@@ -101,16 +141,20 @@ func NewSession(options engine.ChuSessionOptions, assets Assets) (*Session, erro
 	if err != nil {
 		return nil, err
 	}
-	hud, err = presentation.ApplyHUDWorldEvents(hud, events, world.Cells[:256], assets.hud)
+	hud, err = presentation.ApplyHUDWorldEventsForArena(hud, events, world.Cells[:256], assets.hud, options.Arena)
 	if err != nil {
 		return nil, err
 	}
 	options.Players = append([]engine.ChuSessionPlayer(nil), options.Players...)
-	return &Session{assets: assets, saved: snapshot{Schema: 1, AssetDigests: assets.digests, Options: options, World: world, Slots: slots, HUD: hud}}, nil
+	return &Session{assets: assets, saved: snapshot{Schema: 1, AssetDigests: assets.digests, Options: options, World: world, Slots: slots, HUD: hud, ArenaAuxDigest: assets.auxSHA}}, nil
 }
 
 func (s *Session) Ready() error {
-	world, err := engine.CompleteChuSessionResource(s.saved.World, engine.DefaultChuSessionResource())
+	resource, err := engine.ChuSessionResourceForArena(s.saved.Options.Arena, s.assets.rules)
+	if err != nil {
+		return err
+	}
+	world, err := engine.CompleteChuSessionResource(s.saved.World, resource, s.assets.rules)
 	if err != nil {
 		return err
 	}
@@ -123,7 +167,7 @@ func (s *Session) View() View { return sessionView(s.saved) }
 func sessionView(saved snapshot) View {
 	w := saved.World
 	v := View{Tick: saved.Tick, LogicFrame: w.Clock.LogicFrame, Ready: w.ResourceBusy == 0,
-		Paused: w.Clock.PauseFlags&0x80 != 0, Completed: w.MatchComplete, Winner: w.Match.WinnerCode, WindowComplete: saved.HUD.Slots != nil}
+		Paused: w.Clock.PauseFlags&0x80 != 0, Completed: w.MatchComplete, Winner: w.Match.WinnerCode, WindowComplete: saved.HUD.Slots != nil, Arena: saved.Options.Arena, PanOffset: w.Clock.PanOffset}
 	for _, player := range saved.Options.Players {
 		o := w.Objects[0x8400+uint16(player.Slot)*0x400]
 		computer := player.Computer
@@ -149,7 +193,7 @@ func RestoreSession(raw []byte, assets Assets) (*Session, error) {
 	if err := json.Unmarshal(raw, &saved); err != nil {
 		return nil, err
 	}
-	if saved.Schema != 1 || saved.AssetDigests != assets.digests || len(saved.World.Objects) > 128 || len(saved.World.Stream) != 1024 {
+	if saved.Schema != 1 || saved.AssetDigests != assets.digests || saved.ArenaAuxDigest != assets.auxSHA || saved.Options.Arena != assets.arenaID || saved.World.Match.Arena != saved.Options.Arena || len(saved.World.Objects) > 128 || len(saved.World.Stream) != 1024 {
 		return nil, errors.New("session save does not match the loaded assets or world format")
 	}
 	// Validate configuration without replacing any current rule state.
@@ -187,13 +231,25 @@ func (s *Session) Step(held [8]engine.Buttons) (Frame, error) {
 		next.Tick++
 	}
 	next.World = world
-	next.HUD, err = presentation.ApplyHUDWorldEvents(next.HUD, events, next.World.Cells[:256], s.assets.hud)
+	next.HUD, err = presentation.ApplyHUDWorldEventsForArena(next.HUD, events, next.World.Cells[:256], s.assets.hud, next.Options.Arena)
 	if err != nil {
 		return Frame{}, err
 	}
 	frame := presentation.BeginFrame(next.Slots, 2)
-	draws := 0
+	draws, arenaSprites := 0, 0
 	for _, event := range events {
+		if event.Kind == "arena-sprite" {
+			if s.assets.arenaID != 10 || s.assets.aux == nil || event.ObjectID != 0x9e00 || event.RawArenaSprite == nil {
+				return Frame{}, errors.New("world arena sprite is missing selected callback-time data")
+			}
+			frame, err = presentation.ComposeArenaASprite(frame, *event.RawArenaSprite)
+			if err != nil {
+				return Frame{}, err
+			}
+			draws++
+			arenaSprites++
+			continue
+		}
 		if event.Kind != "draw" {
 			continue
 		}
@@ -214,7 +270,7 @@ func (s *Session) Step(held [8]engine.Buttons) (Frame, error) {
 		}
 	}
 	palette := presentation.CompactPalette(next.World.Palette.Current)
-	sprites, err := presentation.RasterizeSprites(frame, s.assets.sprites, palette, 320, 224, false)
+	sprites, err := presentation.RasterizeSpritesForArena(frame, s.assets.sprites, s.assets.aux, palette, 320, 224, false)
 	if err != nil {
 		return Frame{}, err
 	}
@@ -234,7 +290,7 @@ func (s *Session) Step(held [8]engine.Buttons) (Frame, error) {
 	if err != nil {
 		return Frame{}, err
 	}
-	result := Frame{View: sessionView(next), Pixels: screen.RGBA().Pix, DrawRequests: draws}
+	result := Frame{View: sessionView(next), Pixels: screen.RGBA().Pix, DrawRequests: draws, ArenaSpriteRequests: arenaSprites}
 	for i, opaque := range sprites.Opaque {
 		if opaque && background.Visible[i/320] {
 			result.SpritePixels++
@@ -245,7 +301,7 @@ func (s *Session) Step(held [8]engine.Buttons) (Frame, error) {
 	return result, nil
 }
 
-// sceneFrame resolves the proven default-arena scroll sources and uses the
+// sceneFrame resolves the selected arena's owned scroll sources and uses the
 // separately reconstructed text/portrait window and observed display profile.
 func sceneFrame(world engine.ChuWorldState, palette [64]uint16, window *presentation.IndexedPlane) (presentation.ArenaFrame, error) {
 	var horizontal, vertical [224][2]uint16
@@ -263,14 +319,13 @@ func sceneFrame(world engine.ChuWorldState, palette [64]uint16, window *presenta
 				}
 				continue
 			}
-			address := int(uint16(source)) + y*2
-			if address < 0xe600 || address >= 0xec00 || address&1 != 0 {
+			if source < -0x1a00 || source > -0x15c0 || source&1 != 0 {
 				return presentation.ArenaFrame{}, errors.New("arena scroll row is outside the owned cell bank")
 			}
-			horizontal[y][plane] = world.Cells[(address-0xe600)/2]
+			horizontal[y][plane] = world.Cells[int(source+0x1a00)/2+y]
 		}
 	}
-	rows, err := presentation.DefaultArenaRows(palette, horizontal, vertical)
+	rows, err := presentation.ArenaRowsForArena(world.Match.Arena, world.BackdropColor&63, palette, horizontal, vertical)
 	if err != nil {
 		return presentation.ArenaFrame{}, err
 	}

@@ -44,6 +44,9 @@ type report struct {
 	StateSHA        string `json:"final_state_sha256"`
 	PixelsSHA       string `json:"pixel_trace_sha256"`
 	StateTraceSHA   string `json:"state_trace_sha256"`
+	Arena           uint16 `json:"arena,omitempty"`
+	PanFrames       int    `json:"pan_frames,omitempty"`
+	ArenaSprites    int    `json:"arena_sprite_requests,omitempty"`
 }
 
 func readAsset(name string) ([]byte, error) {
@@ -62,11 +65,12 @@ func digest(raw []byte) string { sum := sha256.Sum256(raw); return hex.EncodeToS
 
 func run() error {
 	players := flag.Int("players", 2, "active players,2..4")
+	selected := flag.Uint("arena", 0, "recovered arena offset, even0..14")
 	selection := flag.String("characters", "", "comma-separated source IDs,0..10; defaults to all9")
 	team := flag.Bool("team", false, "four-player teams")
 	out := flag.String("output", ".local/md-yuyuhakusho/runtime-preview", "PNG output inside the worktree")
 	flag.Parse()
-	if *players < 2 || *players > 4 {
+	if *players < 2 || *players > 4 || *selected > 14 || *selected&1 != 0 {
 		return errors.New("players must be2..4")
 	}
 	characters := make([]uint8, *players)
@@ -94,7 +98,11 @@ func run() error {
 	if err != nil {
 		return err
 	}
-	arena, err := readAsset("arena-assets-default")
+	arenaName := "arena-assets-default"
+	if *selected != 0 {
+		arenaName = fmt.Sprintf("arena-assets-%x", *selected)
+	}
+	arena, err := readAsset(arenaName)
 	if err != nil {
 		return err
 	}
@@ -102,11 +110,18 @@ func run() error {
 	if err != nil {
 		return err
 	}
-	assets, err := runtimebridge.DecodeAssets(rules, sprites, arena, hud)
+	var auxiliary []byte
+	if *selected == 10 {
+		auxiliary, err = readAsset("arena-a-aux-assets")
+		if err != nil {
+			return err
+		}
+	}
+	assets, err := runtimebridge.DecodeAssetsForArena(rules, sprites, arena, hud, auxiliary, uint16(*selected))
 	if err != nil {
 		return err
 	}
-	options := engine.ChuSessionOptions{Seed: 0x12345678, Difficulty: 6, TeamBattle: *team}
+	options := engine.ChuSessionOptions{Seed: 0x12345678, Difficulty: 6, TeamBattle: *team, Arena: uint16(*selected)}
 	slots := []uint8{0, 3}
 	if *players == 3 {
 		slots = []uint8{0, 1, 3}
@@ -120,7 +135,7 @@ func run() error {
 	if err != nil {
 		return err
 	}
-	r := report{Environment: runtime.GOOS + "/" + runtime.GOARCH, Players: *players, Team: *team}
+	r := report{Environment: runtime.GOOS + "/" + runtime.GOARCH, Players: *players, Team: *team, Arena: uint16(*selected)}
 	if *selection != "" {
 		for _, character := range characters {
 			r.Characters = append(r.Characters, int(character))
@@ -171,6 +186,12 @@ func run() error {
 			return errors.New("incomplete RGBA frame")
 		}
 		pixels.Write(frame.Pixels)
+		if *selected != 0 {
+			if frame.View.PanOffset != 0 {
+				r.PanFrames++
+			}
+			r.ArenaSprites += frame.ArenaSpriteRequests
+		}
 		saved, saveErr := session.Save()
 		if saveErr != nil {
 			return saveErr

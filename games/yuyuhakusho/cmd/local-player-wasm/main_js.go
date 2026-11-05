@@ -13,11 +13,11 @@ import (
 )
 
 type request struct {
-	Op                         string
-	Rules, Sprites, Arena, HUD json.RawMessage
-	Options                    engine.ChuSessionOptions
-	Held                       [8]engine.Buttons
-	Snapshot                   string
+	Op                                   string
+	Rules, Sprites, Arena, HUD, ArenaAux json.RawMessage
+	Options                              engine.ChuSessionOptions
+	Held                                 [8]engine.Buttons
+	Snapshot                             string
 }
 
 type reply struct {
@@ -45,7 +45,7 @@ func main() {
 				switch req.Op {
 				case "load":
 					var next runtimebridge.Assets
-					next, err = runtimebridge.DecodeAssets(req.Rules, req.Sprites, req.Arena, req.HUD)
+					next, err = runtimebridge.DecodeAssetsForArena(req.Rules, req.Sprites, req.Arena, req.HUD, req.ArenaAux, req.Options.Arena)
 					if err == nil {
 						assets, loaded, session = next, true, nil
 					}

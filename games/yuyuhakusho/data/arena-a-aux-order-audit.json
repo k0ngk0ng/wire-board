@@ -1,0 +1,299 @@
+{
+  "schema": 1,
+  "pass": true,
+  "scope": "Read-only audit of saved arena A SAT order, aux bytes and observed ordinary sprite transfer targets",
+  "producer_sha256": "30b42cdc4d5be9e900f35ac2c7e8f8412de1c654356018902bc651c5fb4e2bc9",
+  "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+  "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+  "sources": {
+    "arena_reference": {
+      "path": ".local/md-yuyuhakusho/additional-arena-assets/references/arena-assets-a-reference.json.gz",
+      "gzip_sha256": "85a75910ca8f85a9fcb10e134bb233d503494d787c6e12d979887f5b9ec4be0c",
+      "payload_sha256": "874f5d1314556a091037de4cb510a1b334bb7e5be211707b2ec24333ce0a19ec",
+      "manifest_path": "games/yuyuhakusho/data/arena-assets-a-reference-manifest.json",
+      "manifest_sha256": "0b37dd101e6954b93483d674500e5d8d60c0c5c60cfb7b4e025200275fcaa9fd"
+    },
+    "raw_natural": {
+      "path": "games/yuyuhakusho/engine/testdata/arena-a-natural.json.gz",
+      "gzip_sha256": "cd0a25b17f817274d4082660f12cadbe79f8deb6bf004cc46a369607e2a69468",
+      "payload_sha256": "a34ce9771a1ac3654b350f03f5fa0dd6ae8189a313f5b87fbdb08874db806416",
+      "manifest_path": "games/yuyuhakusho/engine/testdata/arena-a-natural-manifest.json",
+      "manifest_sha256": "a69cd2ab55ab2760dee8a520570c435e437ba20932606c5ef1dad56482ebdf2d"
+    },
+    "aux_catalog": {
+      "path": "games/yuyuhakusho/data/arena-a-aux-assets.json.gz",
+      "gzip_sha256": "3eb8fd42cf1e675c91140f406833af7fde38968109749e0702a31f1471aa75b4",
+      "payload_sha256": "7e027f867927094ba71d4f172ef262938e247cbe8a2aeb719767979d61497830",
+      "manifest_path": "games/yuyuhakusho/data/arena-a-aux-assets-manifest.json",
+      "manifest_sha256": "f24ff2b50a282ea77ab24389717af378ff468b73ab556f59e4c2e4dbcff63f11"
+    },
+    "sprite_catalog": {
+      "path": "games/yuyuhakusho/data/world-sprites.json.gz",
+      "gzip_sha256": "200e28e775a809de89c19df0dfef314d5697224fcb6a145853beb7344b5833ef",
+      "payload_sha256": "28384d4de74a5462bf3802934eea77a9526d4224fe1853b03c937956c5bca65f",
+      "manifest_path": "games/yuyuhakusho/data/world-sprites-manifest.json",
+      "manifest_sha256": "3c4292154c2135e5fed203d3a39d9ce19b3f4554533dfa178568e14991448dc0"
+    },
+    "sprite_oracle": {
+      "path": "games/yuyuhakusho/data/world-sprites-oracle.json.gz",
+      "gzip_sha256": "3f5100d1d96ecab5512b6bef45f57e6757fc70ba1be1f9ba0d9d558022c81915",
+      "payload_sha256": "d6e42b198d4c8bbb82b7dad24e03e7f3b93783ce6711171910310302856da2f8",
+      "manifest_path": "games/yuyuhakusho/data/world-sprites-manifest.json",
+      "manifest_sha256": "3c4292154c2135e5fed203d3a39d9ce19b3f4554533dfa178568e14991448dc0"
+    }
+  },
+  "static_sha256": {
+    "docs/research/md-yuyuhakusho/static/arena-a-draw.txt": "4d43542a296b30eb6334090db6f9845a23944db02783020dba0a0131d350c011",
+    "docs/research/md-yuyuhakusho/static/arena-a-consumers.txt": "6dfbdf1c77d79ccf0ebbbe6e7efc066175a2845f1a517118989cde708c5b6862",
+    "docs/research/md-yuyuhakusho/static/sprite-submit.txt": "9eb200a81fe7539b57e15fbd969231758ee7fa4dbc0d44aa0aad016800eedda3"
+  },
+  "raw_natural": {
+    "child_calls": 1203,
+    "submissions": 7218,
+    "all_accepted": true,
+    "first_count_min": 2,
+    "first_count_max": 41,
+    "fc_bucket_initial_tail": 62466,
+    "local_tile_starts": [
+      0,
+      0,
+      16,
+      16,
+      32,
+      32
+    ]
+  },
+  "sat_audit": {
+    "samples": 20,
+    "matched_descriptors": 120,
+    "all_are_final_six": true,
+    "all_last_links_zero": true,
+    "alignment": "CPU call frame f matches active_vram SAT used by video_next frame f+1",
+    "frames": [
+      {
+        "frame": 2700,
+        "video_frame": 2701,
+        "first_raw_index": 30,
+        "last_raw_index": 35,
+        "last_link": 0
+      },
+      {
+        "frame": 2720,
+        "video_frame": 2721,
+        "first_raw_index": 32,
+        "last_raw_index": 37,
+        "last_link": 0
+      },
+      {
+        "frame": 2740,
+        "video_frame": 2741,
+        "first_raw_index": 27,
+        "last_raw_index": 32,
+        "last_link": 0
+      },
+      {
+        "frame": 2760,
+        "video_frame": 2761,
+        "first_raw_index": 22,
+        "last_raw_index": 27,
+        "last_link": 0
+      },
+      {
+        "frame": 2780,
+        "video_frame": 2781,
+        "first_raw_index": 24,
+        "last_raw_index": 29,
+        "last_link": 0
+      },
+      {
+        "frame": 2800,
+        "video_frame": 2801,
+        "first_raw_index": 30,
+        "last_raw_index": 35,
+        "last_link": 0
+      },
+      {
+        "frame": 2820,
+        "video_frame": 2821,
+        "first_raw_index": 21,
+        "last_raw_index": 26,
+        "last_link": 0
+      },
+      {
+        "frame": 2850,
+        "video_frame": 2851,
+        "first_raw_index": 20,
+        "last_raw_index": 25,
+        "last_link": 0
+      },
+      {
+        "frame": 2880,
+        "video_frame": 2881,
+        "first_raw_index": 18,
+        "last_raw_index": 23,
+        "last_link": 0
+      },
+      {
+        "frame": 2910,
+        "video_frame": 2911,
+        "first_raw_index": 21,
+        "last_raw_index": 26,
+        "last_link": 0
+      },
+      {
+        "frame": 2940,
+        "video_frame": 2941,
+        "first_raw_index": 18,
+        "last_raw_index": 23,
+        "last_link": 0
+      },
+      {
+        "frame": 2970,
+        "video_frame": 2971,
+        "first_raw_index": 18,
+        "last_raw_index": 23,
+        "last_link": 0
+      },
+      {
+        "frame": 3000,
+        "video_frame": 3001,
+        "first_raw_index": 16,
+        "last_raw_index": 21,
+        "last_link": 0
+      },
+      {
+        "frame": 3050,
+        "video_frame": 3051,
+        "first_raw_index": 16,
+        "last_raw_index": 21,
+        "last_link": 0
+      },
+      {
+        "frame": 3100,
+        "video_frame": 3101,
+        "first_raw_index": 19,
+        "last_raw_index": 24,
+        "last_link": 0
+      },
+      {
+        "frame": 3150,
+        "video_frame": 3151,
+        "first_raw_index": 18,
+        "last_raw_index": 23,
+        "last_link": 0
+      },
+      {
+        "frame": 3250,
+        "video_frame": 3251,
+        "first_raw_index": 18,
+        "last_raw_index": 23,
+        "last_link": 0
+      },
+      {
+        "frame": 3350,
+        "video_frame": 3351,
+        "first_raw_index": 20,
+        "last_raw_index": 25,
+        "last_link": 0
+      },
+      {
+        "frame": 3450,
+        "video_frame": 3451,
+        "first_raw_index": 17,
+        "last_raw_index": 22,
+        "last_link": 0
+      },
+      {
+        "frame": 3550,
+        "video_frame": 3551,
+        "first_raw_index": 19,
+        "last_raw_index": 24,
+        "last_link": 0
+      }
+    ]
+  },
+  "aux_vram": {
+    "snapshots": 40,
+    "frame_end_matches": 20,
+    "actual_draw_matches": 20,
+    "bytes_per_snapshot": 1536,
+    "decoded_sha256": "43993f1d01e867cbd11750e7526ec6ce33e8d395f3445ff9b0643d47ebbb9343"
+  },
+  "ordinary_transfer_targets": {
+    "natural_frames": 83,
+    "descriptors": 383,
+    "preloaded_only_descriptors_excluded": 143,
+    "method": "Conservative union of non-preloaded transfer descriptors, including cache hits and SkipTiles cases; not an actual-write count",
+    "slot_count": 261,
+    "slot_ranges_half_open": [
+      [
+        80,
+        92
+      ],
+      [
+        104,
+        116
+      ],
+      [
+        128,
+        144
+      ],
+      [
+        160,
+        169
+      ],
+      [
+        512,
+        561
+      ],
+      [
+        604,
+        640
+      ],
+      [
+        732,
+        768
+      ],
+      [
+        896,
+        955
+      ],
+      [
+        960,
+        976
+      ],
+      [
+        992,
+        1008
+      ]
+    ],
+    "aux_overlap_slots": [],
+    "excluded_default_sky": [
+      {
+        "owner": 40064,
+        "descriptors": 83,
+        "slot_ranges_half_open": [
+          [
+            1532,
+            1536
+          ]
+        ]
+      },
+      {
+        "owner": 40192,
+        "descriptors": 83,
+        "slot_ranges_half_open": [
+          [
+            1528,
+            1532
+          ]
+        ]
+      }
+    ]
+  },
+  "limits": [
+    "These 20 arena A samples and 83 existing sprite-reference frames do not prove all characters and times cannot overwrite the aux region.",
+    "This audit checks saved SAT descriptors and bank bytes; final combined sprite/background pixels are a separate acceptance scope.",
+    "No ROM, emulator, original control or shared presentation code is executed or modified."
+  ]
+}

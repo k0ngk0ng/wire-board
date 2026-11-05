@@ -1,0 +1,16 @@
+{
+  "recorded_at_utc": "2026-11-05T08:42:53.782598+00:00",
+  "test_first": true,
+  "scope": "Root raw sprite unit contract and browser/CLI E2E were authored and failed before their respective production changes",
+  "tests_sha256": {
+    "games/yuyuhakusho/presentation/arena_sprites_test.go": "de3b703d048f9b14972f54f903bb8602e7e42491a29dba375b1b307efa348c65",
+    "scripts/yuyuhakusho/check_arena_player.py": "6328ffd95fcf3d5e6fcf25eb0dc1558b463b95301dcaa4694db2d2c2885ba14b",
+    "scripts/yuyuhakusho/verify_arena_sessions.py": "f86267439e8c64f015d8806bb6a26911c4c6bae9a6b8e502448a2be491b7e2b4"
+  },
+  "actual_reds": [
+    "games/yuyuhakusho/verification/arena-aux-sprite-symbol-red.jsonl",
+    "games/yuyuhakusho/verification/additional-arena-player/red/failure.json",
+    "games/yuyuhakusho/verification/additional-arena-e2e/cli-red.json"
+  ],
+  "original_full_matrix_gap": "All63 native complete matches passed, but none generated dynamic pan; the final predeclared pan assertion failed and requires a separate legal-input pan E2E, not removal of the assertion."
+}

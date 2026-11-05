@@ -1,0 +1,3762 @@
+{
+  "pass": true,
+  "scope": "complete arena callback including camera21556 and feedback21690",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "binding": {
+    "arena_id": 2,
+    "callback": 133856,
+    "resource_list": 137052,
+    "checkpoint_frame": 2400,
+    "checkpoint_arena_sha256": "5833c6f13ffb3298329da712c5d2a329905992ece26aa6257a55bc23e3f3b519"
+  },
+  "baseline": {
+    "input": "docs/research/md-yuyuhakusho/arena-2-inputs.json",
+    "input_sha256": "77cc5359c10b6789889ccb9fd5e89c05b5fe4c759135b1d40ce2f91aa637de4c",
+    "reference": "games/yuyuhakusho/engine/testdata/arena-2-reference-frames.json",
+    "reference_sha256": "963ba802317e664c73a3f7639d5865ae777d94e029588196669865ed1b6b5f89",
+    "manifest": "games/yuyuhakusho/engine/testdata/arena-2-reference-manifest.json",
+    "manifest_sha256": "89b23c4827db3b643a6810e185ae627688033148959765f29823c6e279b29088",
+    "video_steps": 3602,
+    "all_ram_video_match": true
+  },
+  "records": 1205,
+  "calls": 1205,
+  "other_entry_contexts": [
+    {
+      "frame": 1760,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400000",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1761,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1762,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1763,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1764,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966948,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1765,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1766,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966948,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1767,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1768,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1769,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966952,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1770,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1771,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1772,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1773,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1774,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1775,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1776,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1777,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1778,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1779,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1780,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1781,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966948,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1782,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1783,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1784,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1785,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966952,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1786,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1787,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1788,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1789,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966948,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1790,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1791,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966952,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1792,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1793,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1794,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1795,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1796,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1797,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1798,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1799,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1800,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1801,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1802,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1803,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1804,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1805,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1806,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1807,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1808,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1809,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1810,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1811,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1812,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1813,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1814,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1815,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1816,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1817,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1818,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1819,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1820,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1821,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1822,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1823,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1824,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1825,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1826,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1827,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1828,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1829,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1830,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1831,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1832,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1833,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1834,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1835,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1836,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1837,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1838,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1839,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1840,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1841,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1842,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1843,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1844,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1845,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1846,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1847,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1848,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1849,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1850,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1851,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1852,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1853,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1854,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1855,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1856,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1857,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1858,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1859,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1860,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1861,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1862,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1863,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1864,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1865,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1866,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1867,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1868,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1869,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1870,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1871,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1872,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1873,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1874,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1875,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1876,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1877,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1878,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1879,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1880,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1881,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1882,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1883,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1884,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1885,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1886,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1887,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1888,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1889,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1890,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1891,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1892,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1893,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1894,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1895,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1896,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1897,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1898,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1899,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1900,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1901,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1902,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1903,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1904,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1905,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1906,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1907,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1908,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1909,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1910,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1911,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1912,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1913,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1914,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1915,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1916,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1917,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1918,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1919,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1920,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1921,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1922,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1923,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1924,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1925,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1926,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1927,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1928,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1929,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1930,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1931,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1932,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1933,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1934,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1935,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1936,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1937,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1938,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1939,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1940,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1941,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1942,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1943,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1944,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1945,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1946,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1947,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1948,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1949,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1950,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1951,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1952,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1953,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1954,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1955,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1956,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1957,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1958,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1959,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1960,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1961,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1962,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1963,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1964,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1965,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1966,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1967,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1968,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1969,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1970,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1971,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1972,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1973,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1974,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1975,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1976,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1977,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1978,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1979,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1980,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1981,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1982,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1983,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1984,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1985,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1986,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1987,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1988,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1989,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1990,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1991,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1992,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1993,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1994,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1995,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1996,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1997,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1998,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 1999,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2000,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2001,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2002,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2003,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2004,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2005,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2006,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2007,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2008,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2009,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2010,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2011,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2012,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2013,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2014,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2015,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2016,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2017,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2018,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2019,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2020,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2021,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2022,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2023,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2024,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2025,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2026,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2027,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2028,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2029,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2030,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2031,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2032,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2033,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2034,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2035,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2036,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2037,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2038,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2039,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2040,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2041,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2042,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2043,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2044,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2045,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2046,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2047,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2048,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2049,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2050,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2051,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2052,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2053,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2054,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2055,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2056,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2057,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2058,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2059,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2060,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2061,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2062,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2063,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2064,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2065,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2066,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2067,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2068,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2069,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2070,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2071,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2072,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2073,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2074,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2075,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2076,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2077,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2078,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2079,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2080,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2081,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2082,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2083,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2084,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2085,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2086,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2087,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2088,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2089,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2090,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2091,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2092,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2093,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2094,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2095,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2096,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2097,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2098,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2099,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2100,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2101,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2102,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2103,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2104,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2105,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2106,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2107,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2108,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2109,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2110,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2111,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2112,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2113,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2114,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2115,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2116,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2117,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2118,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2119,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2120,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2121,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2122,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2123,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2124,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2125,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2126,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2127,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2128,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966960,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2129,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    },
+    {
+      "frame": 2130,
+      "pc": 133856,
+      "object_id": 33664,
+      "source_register": 4294935424,
+      "entry_sp": 4294966956,
+      "header": "00020ae000400002",
+      "return_pc": 13732,
+      "scope": "non-8180 original menu context; not a ready-match callback claim"
+    }
+  ],
+  "reference_only": 0,
+  "timeline_owners": {
+    "arena": 1339,
+    "irq-entry": 134,
+    "audio-clear-entry": 68,
+    "audio-clear-exit": 68,
+    "irq": 134,
+    "irq-exit": 134
+  },
+  "complete_64k_delta": true,
+  "ordered_timeline_replay_matches_64k": true,
+  "unexplained_changes": 0,
+  "incomplete_calls": 0,
+  "errors": [],
+  "capture_sha256": "aace0b05bd53dea21db31fbab80d9b30ce703b6e2984bd1d87b5d57cf55488a7",
+  "fixture_sha256": "ec28bdc9c9a92dad0856fffe6ec32a54c8abcc2af6fa51d119e5a0391323072e",
+  "gzip_sha256": "3b3f8fc7e95837abe7a03aa9c933c9743f8606d1783c8f09de610fee5dda4c26"
+}

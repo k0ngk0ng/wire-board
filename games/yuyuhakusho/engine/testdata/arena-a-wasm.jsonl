@@ -1,0 +1,20 @@
+{"Time":"2026-11-05T15:57:06.953313+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine"}
+{"Time":"2026-11-05T15:57:07.011286+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestArenaAOriginalBoundaries"}
+{"Time":"2026-11-05T15:57:07.011344+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestArenaAOriginalBoundaries","Output":"=== RUN   TestArenaAOriginalBoundaries\n"}
+{"Time":"2026-11-05T15:57:10.087696+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestArenaAOriginalBoundaries","Output":"--- PASS: TestArenaAOriginalBoundaries (3.07s)\n"}
+{"Time":"2026-11-05T15:57:10.098028+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestArenaAOriginalBoundaries","Elapsed":3.07}
+{"Time":"2026-11-05T15:57:10.098117+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestArenaAOriginalNatural"}
+{"Time":"2026-11-05T15:57:10.09813+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestArenaAOriginalNatural","Output":"=== RUN   TestArenaAOriginalNatural\n"}
+{"Time":"2026-11-05T15:57:11.746566+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestArenaAOriginalNatural","Output":"--- PASS: TestArenaAOriginalNatural (1.65s)\n"}
+{"Time":"2026-11-05T15:57:11.74704+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestArenaAOriginalNatural","Elapsed":1.65}
+{"Time":"2026-11-05T15:57:11.747111+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestArenaAOriginalCreatorClock"}
+{"Time":"2026-11-05T15:57:11.747122+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestArenaAOriginalCreatorClock","Output":"=== RUN   TestArenaAOriginalCreatorClock\n"}
+{"Time":"2026-11-05T15:57:12.379462+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestArenaAOriginalCreatorClock","Output":"--- PASS: TestArenaAOriginalCreatorClock (0.63s)\n"}
+{"Time":"2026-11-05T15:57:12.381389+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestArenaAOriginalCreatorClock","Elapsed":0.63}
+{"Time":"2026-11-05T15:57:12.381461+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestArenaAAtomicInputs"}
+{"Time":"2026-11-05T15:57:12.381473+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestArenaAAtomicInputs","Output":"=== RUN   TestArenaAAtomicInputs\n"}
+{"Time":"2026-11-05T15:57:14.478067+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestArenaAAtomicInputs","Output":"--- PASS: TestArenaAAtomicInputs (2.10s)\n"}
+{"Time":"2026-11-05T15:57:14.483527+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestArenaAAtomicInputs","Elapsed":2.1}
+{"Time":"2026-11-05T15:57:14.484247+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"PASS\n"}
+{"Time":"2026-11-05T15:57:14.491392+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine\t7.538s\n"}
+{"Time":"2026-11-05T15:57:14.491423+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Elapsed":7.538}

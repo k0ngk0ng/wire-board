@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/check_arena_player.py", line 63, in <module>
+    assert js('document.querySelectorAll("#arena-select option").length') == 8, 'eight-arena selector is unavailable'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: eight-arena selector is unavailable

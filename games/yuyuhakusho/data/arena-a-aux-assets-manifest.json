@@ -1,0 +1,173 @@
+{
+  "pass": true,
+  "scope": "Arena offseta six raw21258 sprites indexed material; positions and palette are current world inputs",
+  "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+  "arena_offset": 10,
+  "callback": 135768,
+  "resource_binding": {
+    "arena_offset": 10,
+    "scene_behavior": 135462,
+    "resource_list": 137268,
+    "list_sha256": "12380ed0db7d96af7e655e5b066e7b69f21a66121741ef3c8a66a3b4cedeccfb",
+    "resources": [
+      {
+        "kind": 6,
+        "source": 2612096,
+        "destination": 0,
+        "encoded_bytes": 305,
+        "encoded_sha256": "e8c8053c38485b230756ef379958426112e50623c5a6cb9a6a415d7d7e194fa5"
+      },
+      {
+        "kind": 6,
+        "source": 2612404,
+        "destination": 6144,
+        "encoded_bytes": 6498,
+        "encoded_sha256": "6f8346b2486b2bdf2ec22c312de4264a660d3261089ed4cf313d5865b354e782"
+      },
+      {
+        "kind": 6,
+        "source": 2707166,
+        "destination": 32768,
+        "encoded_bytes": 8565,
+        "encoded_sha256": "19ce5f0c8c28b25aaa9c7473991635c2477b8be5a88a7f556a23ef01b68f76e8"
+      },
+      {
+        "kind": 6,
+        "source": 2715734,
+        "destination": 47616,
+        "encoded_bytes": 380,
+        "encoded_sha256": "7380e621dd34e6025dca20cbf6a42a6f7d79da74a4ff125a2be39360e49fe6f0"
+      },
+      {
+        "kind": 6,
+        "source": 2716116,
+        "destination": 49408,
+        "encoded_bytes": 1330,
+        "encoded_sha256": "eb61239d3871225be87d6a9c508644eefb12835180df16c0c650f522bd2015c4"
+      },
+      {
+        "kind": 6,
+        "source": 2717448,
+        "destination": 57600,
+        "encoded_bytes": 2135,
+        "encoded_sha256": "f4ceb608108fac359a96dc569a5585252c3c713890a16e4667c8221ec4c240ee"
+      },
+      {
+        "kind": 0,
+        "source": 2719586,
+        "destination": 57472,
+        "length": 32
+      }
+    ]
+  },
+  "source": 2715734,
+  "destination": 47616,
+  "decoded_bytes": 1536,
+  "decoded_sha256": "43993f1d01e867cbd11750e7526ec6ce33e8d395f3445ff9b0643d47ebbb9343",
+  "token_counts": [
+    15,
+    24,
+    8,
+    1,
+    102,
+    12,
+    2,
+    19
+  ],
+  "encoded_bytes": 380,
+  "encoded_sha256": "7380e621dd34e6025dca20cbf6a42a6f7d79da74a4ff125a2be39360e49fe6f0",
+  "producer_sha256": "5e8916289bce45697a89327c7a1f681e81a5a88ccb7bae00501b61e7635f8c32",
+  "first_hardware_tile": 1488,
+  "tiles": 48,
+  "tile_order": "Original sequential48 tiles; runtime local starts0/16/32",
+  "reference_sha256": "874f5d1314556a091037de4cb510a1b334bb7e5be211707b2ec24333ce0a19ec",
+  "reference_gzip_sha256": "85a75910ca8f85a9fcb10e134bb233d503494d787c6e12d979887f5b9ec4be0c",
+  "catalog_sha256": "7e027f867927094ba71d4f172ef262938e247cbe8a2aeb719767979d61497830",
+  "gzip_sha256": "3eb8fd42cf1e675c91140f406833af7fde38968109749e0702a31f1471aa75b4",
+  "gzip_bytes": 564,
+  "loaded_original_frames": [
+    {
+      "frame": 2700,
+      "loaded_sha256": "43993f1d01e867cbd11750e7526ec6ce33e8d395f3445ff9b0643d47ebbb9343"
+    },
+    {
+      "frame": 2720,
+      "loaded_sha256": "43993f1d01e867cbd11750e7526ec6ce33e8d395f3445ff9b0643d47ebbb9343"
+    },
+    {
+      "frame": 2740,
+      "loaded_sha256": "43993f1d01e867cbd11750e7526ec6ce33e8d395f3445ff9b0643d47ebbb9343"
+    },
+    {
+      "frame": 2760,
+      "loaded_sha256": "43993f1d01e867cbd11750e7526ec6ce33e8d395f3445ff9b0643d47ebbb9343"
+    },
+    {
+      "frame": 2780,
+      "loaded_sha256": "43993f1d01e867cbd11750e7526ec6ce33e8d395f3445ff9b0643d47ebbb9343"
+    },
+    {
+      "frame": 2800,
+      "loaded_sha256": "43993f1d01e867cbd11750e7526ec6ce33e8d395f3445ff9b0643d47ebbb9343"
+    },
+    {
+      "frame": 2820,
+      "loaded_sha256": "43993f1d01e867cbd11750e7526ec6ce33e8d395f3445ff9b0643d47ebbb9343"
+    },
+    {
+      "frame": 2850,
+      "loaded_sha256": "43993f1d01e867cbd11750e7526ec6ce33e8d395f3445ff9b0643d47ebbb9343"
+    },
+    {
+      "frame": 2880,
+      "loaded_sha256": "43993f1d01e867cbd11750e7526ec6ce33e8d395f3445ff9b0643d47ebbb9343"
+    },
+    {
+      "frame": 2910,
+      "loaded_sha256": "43993f1d01e867cbd11750e7526ec6ce33e8d395f3445ff9b0643d47ebbb9343"
+    },
+    {
+      "frame": 2940,
+      "loaded_sha256": "43993f1d01e867cbd11750e7526ec6ce33e8d395f3445ff9b0643d47ebbb9343"
+    },
+    {
+      "frame": 2970,
+      "loaded_sha256": "43993f1d01e867cbd11750e7526ec6ce33e8d395f3445ff9b0643d47ebbb9343"
+    },
+    {
+      "frame": 3000,
+      "loaded_sha256": "43993f1d01e867cbd11750e7526ec6ce33e8d395f3445ff9b0643d47ebbb9343"
+    },
+    {
+      "frame": 3050,
+      "loaded_sha256": "43993f1d01e867cbd11750e7526ec6ce33e8d395f3445ff9b0643d47ebbb9343"
+    },
+    {
+      "frame": 3100,
+      "loaded_sha256": "43993f1d01e867cbd11750e7526ec6ce33e8d395f3445ff9b0643d47ebbb9343"
+    },
+    {
+      "frame": 3150,
+      "loaded_sha256": "43993f1d01e867cbd11750e7526ec6ce33e8d395f3445ff9b0643d47ebbb9343"
+    },
+    {
+      "frame": 3250,
+      "loaded_sha256": "43993f1d01e867cbd11750e7526ec6ce33e8d395f3445ff9b0643d47ebbb9343"
+    },
+    {
+      "frame": 3350,
+      "loaded_sha256": "43993f1d01e867cbd11750e7526ec6ce33e8d395f3445ff9b0643d47ebbb9343"
+    },
+    {
+      "frame": 3450,
+      "loaded_sha256": "43993f1d01e867cbd11750e7526ec6ce33e8d395f3445ff9b0643d47ebbb9343"
+    },
+    {
+      "frame": 3550,
+      "loaded_sha256": "43993f1d01e867cbd11750e7526ec6ce33e8d395f3445ff9b0643d47ebbb9343"
+    }
+  ],
+  "limits": [
+    "Indexed auxiliary source only; six draw intents and final composition are independent checks"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "scope": "Real legal-input failure preserved before correcting only the test controller facing input",
+  "production_modified": false,
+  "cause": "After knockback/cross-over, distance<=32 omitted directional input and P2 kept facing away from the target. Same lane/ground verified from read-only save.",
+  "sha256": {
+    "games/yuyuhakusho/verification/additional-arena-pan/damage-control-red/failure-final-save.json.gz": "2fc47135d0e74cde41db6f2a3b6bb3a194407f9c99409ae94923a821c436a80d",
+    "games/yuyuhakusho/verification/additional-arena-pan/damage-control-red/before-facing-fix.go.txt": "df2d3d7001e925f16a7f03139d14eecc71259492d5cb9d853ffc2e57f5fb8413",
+    "games/yuyuhakusho/verification/additional-arena-pan/damage-control-red/diagnostic-report.json": "5906207d8a3076b47d460a7adb210de81469102006fc41f8afd3165b2551f00a",
+    "games/yuyuhakusho/verification/additional-arena-pan/damage-control-red/failure-trace.jsonl.gz": "15e41aeb7432ad1d6ceecc0bf434806a417fa056490968bdc02d9611dbe119ba",
+    "games/yuyuhakusho/verification/additional-arena-pan/damage-control-red/failure-held-inputs.json": "ae6db630122e8699e2336649eb69a588869fff356959b4b53d5670f3ac1a9d1e"
+  }
+}

@@ -37,6 +37,25 @@ def main():
     attached = read(tests + 'attached-effects-data.json')
     start = read(tests + 'match-start-library.json')
     arena = read(data + 'arena-runtime-rules.json')['library']
+    arena_linear = read(data + 'arena-scene-linear-rows.json.gz')
+    arena_four = read(data + 'arena-scene-4-tables.json.gz')
+    assert len(arena_linear['linear_rows']) == 241
+    assert all(len(arena_linear['linear_rows'][str(x)]) == 128 and
+               arena_linear['linear_rows'][str(x)][40:96] == arena['tails'][str(x)]
+               for x in range(744, 985))
+    assert len(arena_four['arena4_rows']) == 64
+    assert all(len(arena_four['arena4_rows'][str(x)]) == 112 for x in range(64))
+    assert len(arena_four['arena4_colors']) == 4 and all(len(row) == 3 for row in arena_four['arena4_colors'])
+    arena_resources = []
+    for index, label in enumerate(['default', '2', '4', '6', '8', 'a', 'c', 'e']):
+        asset = read(data + f'arena-assets-{label}.json.gz')
+        assert asset['resource_binding']['resource_list'] == start['arena_resources'][index]
+        palette = asset['initial_scene_palette_0']
+        assert len(palette) == 16 and all(0 <= color < 512 for color in palette)
+        # Assets expose compact 3-bit RGB. Fade rules own actual CRAM words.
+        cram = [((color & 7) << 1) | (((color >> 3) & 7) << 5) | (((color >> 6) & 7) << 9)
+                for color in palette]
+        arena_resources.append({'arena': index * 2, 'source': start['arena_resources'][index], 'palette_0': cram})
     fighter0_projectiles = read(data + 'fighter0-projectile-rules.json')
     fighter2_projectiles = read(data + 'fighter2-projectile-rules.json')
     fighter1_projectiles = read(data + 'fighter1-projectile-rules.json')
@@ -70,6 +89,10 @@ def main():
                'effects': effects,
                'attached_effects': {key: attached[key] for key in ['sequences', 'orbit_x', 'orbit_y', 'offset_y']},
                'match_start': start, 'arena': arena,
+               'arena_scenes': {'linear_rows': arena_linear['linear_rows'],
+                                'arena4_rows': arena_four['arena4_rows'],
+                                'arena4_colors': arena_four['arena4_colors']},
+               'arena_resources': arena_resources,
                'fighter0_projectiles': {'sequences': fighter0_projectiles['sequences']},
                'alternate_movements': alternate_movements,
                'fighter4_dragon': {'curve': fighter4_projectiles['curve']}}
@@ -91,6 +114,12 @@ def main():
                            'fighter7_children_frames': len(fighter7_children['frames']),
                            'fighter4_curve_words': len(fighter4_projectiles['curve']['values']),
                            'alternate_movements': len(alternate_movements),
+                           'arena_resources': len(arena_resources),
+                           'arena_linear_rows': len(arena_linear['linear_rows']),
+                           'arena_linear_words': sum(len(row) for row in arena_linear['linear_rows'].values()),
+                           'arena4_rows': len(arena_four['arena4_rows']),
+                           'arena4_words': sum(len(row) for row in arena_four['arena4_rows'].values()),
+                           'arena4_palette_words': sum(len(row) for row in arena_four['arena4_colors']),
                            'fighter0_release_sequences': len(fighter0_projectiles['sequences'])},
                 'bytes': len(raw), 'gzip_bytes': len(packed), 'sha256': sha(raw), 'gzip_sha256': sha(packed)}
     (ROOT / data / 'chu-world-rules-manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')

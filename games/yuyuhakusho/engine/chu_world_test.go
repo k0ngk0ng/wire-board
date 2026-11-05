@@ -32,6 +32,7 @@ type chuWorldRaw struct {
 	ScrollMode                              uint8  `json:"scroll_mode"`
 	ResourceList                            uint32 `json:"resource_list"`
 	ResourceBusy                            uint8  `json:"resource_busy"`
+	BackdropColor                           uint8  `json:"backdrop_color,omitempty"`
 }
 
 // Explicit tags avoid giving both pan fields the same JSON name.
@@ -98,7 +99,7 @@ func decodeChuWorldTest(t *testing.T, raw chuWorldRaw) ChuWorldState {
 		SlowGate: c[11], SlowTicks: w(c, 8), EffectCursor: w(g, 0x36), EffectTileCursor: g[0x31], OccupiedLanes: g[0x42], ComboFlags: g[0xa4], DragonBankCursor: w(g, 0x38),
 		PendingSound: g[0x30], SoundQueue: raw.Queue, Stream: attackContactBytes(t, raw.Stream, 1024), Stopped: g[0x9a],
 		Difficulty: w(options, 2), ResetEnabled: options[7], SceneMode: w(c, 48), SceneRequest: w(c, 50), InterruptMode: w(p, 16), VideoMode: w(p, 18),
-		ScrollMode: raw.ScrollMode, ResourceList: raw.ResourceList, ResourceBusy: raw.ResourceBusy,
+		ScrollMode: raw.ScrollMode, BackdropColor: raw.BackdropColor, ResourceList: raw.ResourceList, ResourceBusy: raw.ResourceBusy,
 		Match: ChuWorldMatch{Arena: w(g, 0x60), Rule: w(g, 0x62), Layout: w(g, 0x70), Round: w(g, 0x7e), RoundPair: w(g, 0x72), RoundIndex: int16(w(g, 0x6a)), Grouping: w(g, 0x88),
 			ModeFlag: g[0x96], Disabled: g[0x32], OptionA097: g[0x97], EligibleChannels: g[0x7c], TeamResult: g[0x7a],
 			OpeningTicks: w(g, 0x3c), ResultTicks: w(g, 0x3a), AttributeMask: w(g, 0x3e), Selected: w(g, 0x64), WinnerCode: int16(w(g, 0x74)), TeamTitles: [2]uint16{w(g, 0x84), w(g, 0x86)}}}
@@ -256,6 +257,26 @@ func chuWorldLibrariesTest(t *testing.T) ChuWorldLibrary {
 	var arena struct{ Library ArenaRuntimeLibrary }
 	read("../data/arena-runtime-rules.json", &arena)
 	library.Arena = arena.Library
+	read("../data/arena-scene-linear-rows.json.gz", &library.ArenaScenes)
+	var arena4 ArenaSceneLibrary
+	read("../data/arena-scene-4-tables.json.gz", &arena4)
+	library.ArenaScenes.WaveX = library.Arena.WaveX
+	library.ArenaScenes.Arena4Rows, library.ArenaScenes.Arena4Colors = arena4.Arena4Rows, arena4.Arena4Colors
+	library.ArenaResources = make(map[uint16]ChuSessionResource)
+	for i, label := range []string{"default", "2", "4", "6", "8", "a", "c", "e"} {
+		var asset struct {
+			Palette [16]uint16 `json:"initial_scene_palette_0"`
+			Binding struct {
+				Source uint32 `json:"resource_list"`
+			} `json:"resource_binding"`
+		}
+		read("../data/arena-assets-"+label+".json.gz", &asset)
+		resource := ChuSessionResource{Source: asset.Binding.Source}
+		for j, compact := range asset.Palette {
+			resource.Palette0[j] = (compact&7)<<1 | ((compact>>3)&7)<<5 | ((compact>>6)&7)<<9
+		}
+		library.ArenaResources[uint16(i*2)] = resource
+	}
 	return library
 }
 

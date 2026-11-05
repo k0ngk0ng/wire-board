@@ -1,0 +1,9 @@
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"# command-line-arguments [command-line-arguments.test]\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/arena_scene_test.go:17:14: undefined: ApplyArenaSceneFeedback\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/arena_scene_test.go:31:13: undefined: ApplyArenaSceneFeedback\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/arena_scene_test.go:42:15: undefined: ApplyArenaSceneFeedback\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/engine/arena_scene_test.go:49:14: undefined: ApplyArenaSceneFeedback\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-fail"}
+{"Time":"2026-11-05T15:44:31.738307+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-05T15:44:31.738342+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\tcommand-line-arguments [build failed]\n"}
+{"Time":"2026-11-05T15:44:31.738347+08:00","Action":"fail","Package":"command-line-arguments","Elapsed":0,"FailedBuild":"command-line-arguments [command-line-arguments.test]"}

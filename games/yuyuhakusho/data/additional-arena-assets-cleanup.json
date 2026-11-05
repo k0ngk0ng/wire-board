@@ -1,0 +1,161 @@
+{
+  "pass": true,
+  "scope": "Only this additional-arena-assets worker private compilation/cache, duplicate export and console outputs",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/additional-arena-assets/observer-preflight",
+      "files": 2,
+      "bytes": 54509
+    },
+    {
+      "path": ".local/md-yuyuhakusho/additional-arena-assets/repeat",
+      "files": 17,
+      "bytes": 209395
+    },
+    {
+      "path": ".local/md-yuyuhakusho/additional-arena-assets/references/arena-2-observer",
+      "files": 2,
+      "bytes": 55138
+    },
+    {
+      "path": ".local/md-yuyuhakusho/additional-arena-assets/references/arena-4-observer",
+      "files": 2,
+      "bytes": 55138
+    },
+    {
+      "path": ".local/md-yuyuhakusho/additional-arena-assets/references/arena-6-observer",
+      "files": 2,
+      "bytes": 55138
+    },
+    {
+      "path": ".local/md-yuyuhakusho/additional-arena-assets/references/arena-8-observer",
+      "files": 2,
+      "bytes": 55138
+    },
+    {
+      "path": ".local/md-yuyuhakusho/additional-arena-assets/references/arena-a-observer",
+      "files": 2,
+      "bytes": 55138
+    },
+    {
+      "path": ".local/md-yuyuhakusho/additional-arena-assets/references/arena-c-observer",
+      "files": 2,
+      "bytes": 55138
+    },
+    {
+      "path": ".local/md-yuyuhakusho/additional-arena-assets/references/arena-e-observer",
+      "files": 2,
+      "bytes": 55138
+    },
+    {
+      "path": ".local/md-yuyuhakusho/additional-arena-assets/capture-2.json",
+      "files": 1,
+      "bytes": 4612
+    },
+    {
+      "path": ".local/md-yuyuhakusho/additional-arena-assets/capture-4.json",
+      "files": 1,
+      "bytes": 4423
+    },
+    {
+      "path": ".local/md-yuyuhakusho/additional-arena-assets/capture-6.json",
+      "files": 1,
+      "bytes": 5186
+    },
+    {
+      "path": ".local/md-yuyuhakusho/additional-arena-assets/capture-8.json",
+      "files": 1,
+      "bytes": 5312
+    },
+    {
+      "path": ".local/md-yuyuhakusho/additional-arena-assets/capture-a.json",
+      "files": 1,
+      "bytes": 4236
+    },
+    {
+      "path": ".local/md-yuyuhakusho/additional-arena-assets/capture-c.json",
+      "files": 1,
+      "bytes": 4423
+    },
+    {
+      "path": ".local/md-yuyuhakusho/additional-arena-assets/capture-e.json",
+      "files": 1,
+      "bytes": 4297
+    },
+    {
+      "path": ".local/md-yuyuhakusho/additional-arena-assets/extraction.json",
+      "files": 1,
+      "bytes": 768
+    },
+    {
+      "path": ".local/md-yuyuhakusho/additional-arena-assets/verification.json",
+      "files": 1,
+      "bytes": 1401585
+    },
+    {
+      "path": ".local/md-yuyuhakusho/additional-arena-assets/aux-verification.json",
+      "files": 1,
+      "bytes": 800
+    },
+    {
+      "path": ".local/md-yuyuhakusho/additional-arena-assets/additional-arena-source-analysis.json",
+      "files": 1,
+      "bytes": 34389
+    },
+    {
+      "path": ".local/md-yuyuhakusho/additional-arena-assets/references/arena-2-load-observation.json",
+      "files": 1,
+      "bytes": 307
+    },
+    {
+      "path": ".local/md-yuyuhakusho/additional-arena-assets/references/arena-4-load-observation.json",
+      "files": 1,
+      "bytes": 371
+    },
+    {
+      "path": ".local/md-yuyuhakusho/additional-arena-assets/references/arena-6-load-observation.json",
+      "files": 1,
+      "bytes": 435
+    },
+    {
+      "path": ".local/md-yuyuhakusho/additional-arena-assets/references/arena-8-load-observation.json",
+      "files": 1,
+      "bytes": 499
+    },
+    {
+      "path": ".local/md-yuyuhakusho/additional-arena-assets/references/arena-a-load-observation.json",
+      "files": 1,
+      "bytes": 436
+    },
+    {
+      "path": ".local/md-yuyuhakusho/additional-arena-assets/references/arena-c-load-observation.json",
+      "files": 1,
+      "bytes": 372
+    },
+    {
+      "path": ".local/md-yuyuhakusho/additional-arena-assets/references/arena-e-load-observation.json",
+      "files": 1,
+      "bytes": 308
+    },
+    {
+      "path": ".local/md-yuyuhakusho/additional-arena-assets/final-schema-verification.json",
+      "files": 1,
+      "bytes": 3293
+    },
+    {
+      "path": ".local/md-yuyuhakusho/additional-arena-assets/final-schema-console.json",
+      "files": 1,
+      "bytes": 3293
+    }
+  ],
+  "removed_files": 53,
+  "removed_bytes": 2129215,
+  "preserved": [
+    "Pinned ROM and both core binaries",
+    "Unique original controls and legal menu inputs",
+    "Seven complete raw development references and required source manifests",
+    "Original/independent PNG previews",
+    "All compact assets and persistent validation artifacts",
+    "Other workers files and active worktrees"
+  ]
+}

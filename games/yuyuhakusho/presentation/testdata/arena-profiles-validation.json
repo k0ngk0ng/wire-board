@@ -1,0 +1,204 @@
+{
+  "pass": true,
+  "scope": "Strict8-scene presentation selection,48 auxiliary local tiles,selected HUD event resource and normal row profile; no world/UI integration assertion",
+  "test_first": "Failure list and frozen tests precede implementation; actual default-delegate behavioral red retained after missing-symbol red",
+  "frozen_tests_unchanged": true,
+  "test_first_record": {
+    "phase": "tests frozen before implementation beyond compile-only default-delegate stubs",
+    "files": {
+      "arena_profiles_test.go": "48164ba34588f797b3fc51f87eb33d93a1cc9da2ecbe0814930a5497320c47a8",
+      "ARENA_PROFILES_FAILURES.md": "1bd16e205f65eb1126fb278cdb90350891be1911bcde0354545ef79dbd8a8b7c"
+    },
+    "note": "Default tile count corrected from transcription464 to actual406 before freeze; raw source remains pinned by original gzip SHA"
+  },
+  "coverage": {
+    "registered_scenes": 8,
+    "catalog_mutations_each": 23,
+    "cross_selection_rejections": 56,
+    "unsupported_selection_cases_each": 6,
+    "auxiliary_mutations": 10,
+    "selected_HUD_resource_cross_rejections": 56,
+    "original_frames": 140,
+    "original_rows": 31360,
+    "original_unmasked_pixels": 9535530,
+    "original_pixel_mismatches": 0,
+    "ID4_blank_unused_palette_difference_rows": 48
+  },
+  "logs": [
+    {
+      "path": "games/yuyuhakusho/presentation/testdata/arena-profiles-symbol-red.jsonl",
+      "sha256": "8ba2172b952aa248f369f7f12fb358c882d6c4887a1e7a04cc02c7d920ff59ae",
+      "result": {
+        "Time": "2026-11-05T16:10:00.648712+08:00",
+        "Action": "fail",
+        "Package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation",
+        "Elapsed": 0,
+        "FailedBuild": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation [github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation.test]"
+      },
+      "top_level_tests": [],
+      "failing_tests": []
+    },
+    {
+      "path": "games/yuyuhakusho/presentation/testdata/arena-profiles-red.jsonl",
+      "sha256": "b1a42500f5cbff23eda01f2454184c7da3ff305b4430e2dc78eafa8b7eb89d6e",
+      "result": {
+        "Time": "2026-11-05T16:12:39.665506+08:00",
+        "Action": "fail",
+        "Package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation",
+        "Elapsed": 1.203
+      },
+      "top_level_tests": [
+        "TestArenaProfilesCatalogFailures"
+      ],
+      "failing_tests": [
+        "TestArenaProfilesCatalogsAndSelection/0",
+        "TestArenaProfilesCatalogsAndSelection/2",
+        "TestArenaProfilesCatalogsAndSelection/4",
+        "TestArenaProfilesCatalogsAndSelection/6",
+        "TestArenaProfilesCatalogsAndSelection/8",
+        "TestArenaProfilesCatalogsAndSelection/a",
+        "TestArenaProfilesCatalogsAndSelection/c",
+        "TestArenaProfilesCatalogsAndSelection/e",
+        "TestArenaProfilesCatalogsAndSelection",
+        "TestArenaProfilesAuxiliaryIdentityAndTiles",
+        "TestArenaProfilesHUDResourceBindingAndAtomicity",
+        "TestArenaProfilesRowsAndValidation",
+        "TestArenaProfilesOriginalBackgroundPixels"
+      ]
+    },
+    {
+      "path": "games/yuyuhakusho/presentation/testdata/arena-profiles-native.jsonl",
+      "sha256": "b26964e21d9d960564d4837f844f06a95f0e3034f26384e34bdf62dd8ea9ae8f",
+      "result": {
+        "Time": "2026-11-05T16:14:53.760311+08:00",
+        "Action": "pass",
+        "Package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation",
+        "Elapsed": 13.138
+      },
+      "top_level_tests": [
+        "TestArenaProfilesCatalogsAndSelection",
+        "TestArenaProfilesCatalogFailures",
+        "TestArenaProfilesAuxiliaryIdentityAndTiles",
+        "TestArenaProfilesHUDResourceBindingAndAtomicity",
+        "TestArenaProfilesRowsAndValidation",
+        "TestArenaProfilesOriginalBackgroundPixels"
+      ],
+      "failing_tests": []
+    },
+    {
+      "path": "games/yuyuhakusho/presentation/testdata/arena-profiles-native-compatibility.jsonl",
+      "sha256": "1f55eb04991e6ae339c15c6bffd0c629662b44b47d92496b0baab70e1cf3c30e",
+      "result": {
+        "Time": "2026-11-05T16:16:44.625023+08:00",
+        "Action": "pass",
+        "Package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation",
+        "Elapsed": 56.186
+      },
+      "top_level_tests": [
+        "TestArenaProfilesCatalogsAndSelection",
+        "TestArenaProfilesCatalogFailures",
+        "TestArenaProfilesAuxiliaryIdentityAndTiles",
+        "TestArenaProfilesHUDResourceBindingAndAtomicity",
+        "TestArenaProfilesRowsAndValidation",
+        "TestArenaProfilesOriginalBackgroundPixels",
+        "TestArenaIndexedAgainstOriginalVideo",
+        "TestArenaPriorityOpaqueBlackAndBlankRows",
+        "TestArenaRejectsInvalidDataWithoutMutation",
+        "TestDefaultArenaRowsAgainstAllOriginalRows",
+        "TestDefaultArenaRowsRejectsInvalidPalette",
+        "TestHUDOriginalCallsAndNaturalWindow",
+        "TestHUDFreshSessionConstructsWindowWithoutReferenceState",
+        "TestHUDErrorsAreAtomicAndRuleSyncPreservesPictures",
+        "TestPresentationOriginalCPUSubmissions",
+        "TestPresentationNaturalFramesAndPixels",
+        "TestPresentationPaletteSelectors",
+        "TestPresentationErrorsAreAtomic",
+        "TestPresentationOpaqueBlackAndCoordinateWrap",
+        "TestPresentationHardwareListBoundary"
+      ],
+      "failing_tests": []
+    },
+    {
+      "path": "games/yuyuhakusho/presentation/testdata/arena-profiles-wasm-compatibility.jsonl",
+      "sha256": "6272e6a38f4449b376483eb7d505d318262ea4a10b88c3504887c5a2f6e3bb50",
+      "result": {
+        "Time": "2026-11-05T16:16:02.876553+08:00",
+        "Action": "pass",
+        "Package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation",
+        "Elapsed": 14.768
+      },
+      "top_level_tests": [
+        "TestArenaProfilesCatalogsAndSelection",
+        "TestArenaProfilesCatalogFailures",
+        "TestArenaProfilesAuxiliaryIdentityAndTiles",
+        "TestArenaProfilesHUDResourceBindingAndAtomicity",
+        "TestArenaProfilesRowsAndValidation",
+        "TestArenaProfilesOriginalBackgroundPixels",
+        "TestArenaIndexedAgainstOriginalVideo",
+        "TestArenaPriorityOpaqueBlackAndBlankRows",
+        "TestArenaRejectsInvalidDataWithoutMutation",
+        "TestDefaultArenaRowsAgainstAllOriginalRows",
+        "TestDefaultArenaRowsRejectsInvalidPalette",
+        "TestHUDOriginalCallsAndNaturalWindow",
+        "TestHUDFreshSessionConstructsWindowWithoutReferenceState",
+        "TestHUDErrorsAreAtomicAndRuleSyncPreservesPictures",
+        "TestPresentationOriginalCPUSubmissions",
+        "TestPresentationNaturalFramesAndPixels",
+        "TestPresentationPaletteSelectors",
+        "TestPresentationErrorsAreAtomic",
+        "TestPresentationOpaqueBlackAndCoordinateWrap",
+        "TestPresentationHardwareListBoundary"
+      ],
+      "failing_tests": []
+    }
+  ],
+  "sources": {
+    "games/yuyuhakusho/presentation/arena.go": "6ac17c471d00d7daef1c2276f447eceb35dce786e7ea997faa33206de6ede32b",
+    "games/yuyuhakusho/presentation/hud.go": "0c403ba976f7ec41086466a9f643350b4efefff3a2a505d12feaa9154995c4cb",
+    "games/yuyuhakusho/presentation/arena_profiles.go": "af59330ff8c596a0dfea491182dd9be545d0f664faa3cd08fba4303720ad1320",
+    "games/yuyuhakusho/presentation/arena_profiles_test.go": "48164ba34588f797b3fc51f87eb33d93a1cc9da2ecbe0814930a5497320c47a8",
+    "games/yuyuhakusho/presentation/ARENA_PROFILES_FAILURES.md": "1bd16e205f65eb1126fb278cdb90350891be1911bcde0354545ef79dbd8a8b7c",
+    "games/yuyuhakusho/presentation/testdata/arena-profiles-test-first.json": "36b844efcd9d6ccd03274ca3a3f0a4509d5cb21d96a35c0a4f214103d665afd0",
+    "games/yuyuhakusho/presentation/testdata/arena-profiles-vet.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "games/yuyuhakusho/presentation/testdata/arena-profiles-wasm-command.json": "1edb572ba49e2573200c71de696e54b371c93f9264e0a1ba17cd1fe046f3316c",
+    "scripts/yuyuhakusho/compact_additional_arena_presentation_reference.py": "6e08a9380dd309be9069f007df9027ca6411e536b1bee8bd9f61b00a79f21429",
+    "games/yuyuhakusho/presentation/ARENA_PROFILES_VERIFICATION.md": "11fb68777b36cb7da38f8997f3b9558dc3f40ee0988e3de2b413b47b86055890"
+  },
+  "fixture_determinism": [
+    {
+      "path": "games/yuyuhakusho/presentation/testdata/additional-arena-presentation-reference.json.gz",
+      "sha256": "b9c135c02699e87b3a92c97ed8853fbe6afa6b0ca0faaf488172a3d9cdf78af8",
+      "identical": true,
+      "repeat_bytes": 370686
+    },
+    {
+      "path": "games/yuyuhakusho/presentation/testdata/additional-arena-presentation-reference-manifest.json",
+      "sha256": "bc11cea9d309024bee7711d2aa6007442a1dc717ea8afd4e7a9bc231c7e36f3a",
+      "identical": true,
+      "repeat_bytes": 5886
+    }
+  ],
+  "limitations": [
+    "Original opaque sprites excluded; independent sprite composition remains separate",
+    "Original indexed window is test-only reference adapter, not shipped HUD data",
+    "ID4 blank unused9..11 phases differ; only visible complete palette and final pixels asserted",
+    "No browser/world/session/gameplay/network completion assertion"
+  ],
+  "cleanup": [
+    {
+      "path": ".local/md-yuyuhakusho/arena-presentation-repeat/additional-arena-presentation-reference-manifest.json",
+      "bytes": 5886,
+      "sha256": "bc11cea9d309024bee7711d2aa6007442a1dc717ea8afd4e7a9bc231c7e36f3a"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/arena-presentation-repeat/additional-arena-presentation-reference.json.gz",
+      "bytes": 370686,
+      "sha256": "b9c135c02699e87b3a92c97ed8853fbe6afa6b0ca0faaf488172a3d9cdf78af8"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/arena-presentation-repeat-report.json",
+      "bytes": 897,
+      "sha256": "36ffa44e5dba64d9eef479e2b0e01ef982dd76f728105d7def77c5544ea7d7d5"
+    }
+  ]
+}

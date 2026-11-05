@@ -23,6 +23,7 @@ type IndexedPlane struct {
 type ArenaCatalog struct {
 	Planes   [2]IndexedPlane // A, B. The immutable tile bank is shared.
 	Palette0 [16]uint16      // Initial compact colors; not the current world colors.
+	identity ArenaIdentity
 }
 
 // ArenaRow supplies actual display inputs for one visible or blank row. These
@@ -64,6 +65,10 @@ func validIndexedPlane(plane IndexedPlane) bool {
 // DecodeArenaCatalog validates the compact default A/B asset. Dynamic colors,
 // scrolling, visible rows and HUD/window material remain explicit frame inputs.
 func DecodeArenaCatalog(raw []byte) (ArenaCatalog, error) {
+	return DecodeArenaCatalogForArena(raw, 0)
+}
+
+func decodeArenaCatalogForIdentity(raw []byte, identity ArenaIdentity) (ArenaCatalog, error) {
 	var source struct {
 		Schema        int    `json:"schema"`
 		ROMSHA        string `json:"rom_sha256"`
@@ -85,8 +90,11 @@ func DecodeArenaCatalog(raw []byte) (ArenaCatalog, error) {
 	if err := json.Unmarshal(raw, &source); err != nil {
 		return ArenaCatalog{}, err
 	}
-	if source.Schema != 1 || source.ROMSHA != "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06" || source.ArenaOffset != 0 || source.SceneBehavior != 0x20918 || source.Binding.ArenaOffset != 0 || source.Binding.SceneBehavior != 0x20918 || source.Binding.ResourceList != 0x21720 || len(source.Planes) != 2 || len(source.Tiles) == 0 || len(source.Tiles) > 65536 || len(source.Palette) != 16 {
-		return ArenaCatalog{}, errors.New("invalid default indexed arena identity")
+	if source.Schema != 1 || source.ROMSHA != "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06" || source.ArenaOffset != identity.ArenaOffset || source.SceneBehavior != identity.SceneBehavior || source.Binding.ArenaOffset != identity.ArenaOffset || source.Binding.SceneBehavior != identity.SceneBehavior || source.Binding.ResourceList != identity.ResourceList || len(source.Planes) != 2 || len(source.Tiles) == 0 || len(source.Tiles) > 65536 || len(source.Palette) != 16 {
+		if identity.ArenaOffset == 0 {
+			return ArenaCatalog{}, errors.New("invalid default indexed arena identity")
+		}
+		return ArenaCatalog{}, errors.New("invalid selected indexed arena identity")
 	}
 	tiles := make([]Tile, len(source.Tiles))
 	for i, encoded := range source.Tiles {
@@ -96,7 +104,7 @@ func DecodeArenaCatalog(raw []byte) (ArenaCatalog, error) {
 		}
 		copy(tiles[i][:], packed)
 	}
-	catalog := ArenaCatalog{}
+	catalog := ArenaCatalog{identity: identity}
 	for i, plane := range source.Planes {
 		catalog.Planes[i] = IndexedPlane{Columns: plane.Columns, Rows: plane.Rows, Tiles: tiles, Cells: plane.Cells}
 		if plane.Name != [2]string{"A", "B"}[i] || !validIndexedPlane(catalog.Planes[i]) {

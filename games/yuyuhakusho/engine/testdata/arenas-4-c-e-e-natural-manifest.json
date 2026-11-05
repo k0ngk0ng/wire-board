@@ -1,0 +1,38 @@
+{
+  "pass": true,
+  "scope": "complete original arena/palette returns with exact 65536-byte RAM-write reconstruction",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "arena_id": 14,
+  "calls": 1201,
+  "kind_counts": {
+    "arena": 1201
+  },
+  "frames": 3602,
+  "frames_match_original_control": true,
+  "incomplete_calls": 0,
+  "unknown_writes": 0,
+  "input_sha256": "1106d48106bf8b4b88e6da278146ea93f59a427ed41ee5346331afba4168fc00",
+  "control_sha256": "39d4ea018f4491ff9cc387ca1afaa6edb39fe5742984f847beb03af8e40cd659",
+  "capture_sha256": "3de9a447d805856c4f55c524baf69b1bbaebe17c9a4cfb547f86dea151fb2a3c",
+  "bridge_source_sha256": "ae27d6769c8f328ebe8f5ff93b46851f0aa7bdcd0b2702d8d75545797a791680",
+  "fixture_sha256": "a7ec46f541b4a7fa31cffc3eefb3c90868719fcc031d05c352f6be9a3af99fb6",
+  "gzip_sha256": "d339223c0289b17302037adb8a410b402aad9e185ed1e166dedc7b032a1d9620",
+  "irq_calls": 2,
+  "rte_counts": {
+    "0xfffff09a": 2,
+    "0xfffff0a8": 2
+  },
+  "sound_clear_counts": {
+    "0x37c56": 4
+  },
+  "errors": []
+}

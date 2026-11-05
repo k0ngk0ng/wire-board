@@ -1,0 +1,251 @@
+{
+  "pass": true,
+  "scope": "20 captured natural arena-A six-raw final composition; non-A actual opaque pixels excluded; no new core run",
+  "test_first": {
+    "failure_scope": "games/yuyuhakusho/presentation/ARENA_A_AUX_PIXELS_FAILURES.md",
+    "harness_frozen": {
+      "scope": "Independent end-to-end oracle; production parent has separate test-first record",
+      "files": {
+        "games/yuyuhakusho/presentation/ARENA_A_AUX_PIXELS_FAILURES.md": "4905d61e99bd215e7987cd8a5057bb34cdb94eaa9f7d5ca4d11d331ff35b2ba0",
+        "cmd/verify-yuyu-arena-aux/main.go": "61ef80c2881c2d52ead2adcbbaee2c1dbde68865a1ebe27c6313a7da5409df6a",
+        "scripts/yuyuhakusho/build_arena_a_aux_pixel_fixture.py": "0058b03d8208ecfa2dfcb9528143d95201de2eac32c88a7169d9281163a6cd3d"
+      }
+    },
+    "actual_first_no_aux_red": {
+      "path": "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-red.json",
+      "exit_code": 1,
+      "pixel_mismatches": 28224,
+      "aux_visibility_mismatches": 29063
+    },
+    "harness_and_producer_unchanged": true,
+    "production_test_first_record_owned_by_root": true
+  },
+  "native": {
+    "argv": [
+      "go",
+      "run",
+      "-race",
+      "./cmd/verify-yuyu-arena-aux"
+    ],
+    "exit_code": 0,
+    "report": "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-native.json"
+  },
+  "wasm": {
+    "argv": [
+      "/opt/homebrew/Cellar/go/1.26.2/libexec/bin/go",
+      "run",
+      "-exec",
+      "/opt/homebrew/Cellar/go/1.26.2/libexec/lib/wasm/go_js_wasm_exec",
+      "./cmd/verify-yuyu-arena-aux"
+    ],
+    "environment": {
+      "LANG": "C.UTF-8",
+      "LC_ALL": "C.UTF-8",
+      "LC_CTYPE": "C.UTF-8",
+      "PATH": "/Users/jason/.nvm/versions/node/v24.15.0/bin:/opt/homebrew/Cellar/go/1.26.2/libexec/bin:/usr/bin:/bin",
+      "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+      "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+      "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+      "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+      "GOENV": "off",
+      "GOOS": "js",
+      "GOARCH": "wasm"
+    },
+    "exit_code": 0,
+    "elapsed_seconds": 1.0553543325513601
+  },
+  "reports_byte_identical": true,
+  "coverage": {
+    "compared_pixels": 1368854,
+    "non_aux_excluded_pixels": 64746,
+    "aux_visible_pixels": 29063,
+    "aux_distinct_from_background": 28224,
+    "pixel_mismatches": 0,
+    "aux_visibility_mismatches": 0
+  },
+  "frames": 20,
+  "minimum_distinct_aux_pixels_each_frame": 481,
+  "negative_checks": 12,
+  "mask_boundary": "Union of actual nonzero original non-A SAT pixels only; six CPU-bound tail entries excluded from mask construction; auxiliary visibility separately verified per pixel",
+  "fixture_determinism": [
+    {
+      "path": "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-reference.json.gz",
+      "sha256": "6d64523e849ea5f22432fad8c110c45f67ac0a795175b9e8189d710361339b28",
+      "identical": true
+    },
+    {
+      "path": "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-reference-manifest.json",
+      "sha256": "b57dec82cac680c9fdbb357382cf20936c00f8153bc69e143abd788a97a5e40d",
+      "identical": true
+    }
+  ],
+  "artifacts": {
+    "games/yuyuhakusho/presentation/ARENA_A_AUX_PIXELS_FAILURES.md": {
+      "sha256": "4905d61e99bd215e7987cd8a5057bb34cdb94eaa9f7d5ca4d11d331ff35b2ba0",
+      "bytes": 1667
+    },
+    "cmd/verify-yuyu-arena-aux/main.go": {
+      "sha256": "61ef80c2881c2d52ead2adcbbaee2c1dbde68865a1ebe27c6313a7da5409df6a",
+      "bytes": 12646
+    },
+    "scripts/yuyuhakusho/build_arena_a_aux_pixel_fixture.py": {
+      "sha256": "0058b03d8208ecfa2dfcb9528143d95201de2eac32c88a7169d9281163a6cd3d",
+      "bytes": 13011
+    },
+    "games/yuyuhakusho/presentation/ARENA_A_AUX_PIXELS_VERIFICATION.md": {
+      "sha256": "c1c800d2782f61a248b5765475be11c64cee0871ec7e084650e62a144336cfa5",
+      "bytes": 4580
+    },
+    "games/yuyuhakusho/presentation/arena_sprites.go": {
+      "sha256": "a253ece318af5bb491ecf44766ca9e70f44e007bf7b95e59233775869eb410a3",
+      "bytes": 999
+    },
+    "games/yuyuhakusho/presentation/raster.go": {
+      "sha256": "0b4d1d925e073f88d9b474b504608bdfdc52e7d7f7f9c913049982f4de5b8528",
+      "bytes": 4006
+    },
+    "games/yuyuhakusho/presentation/compose.go": {
+      "sha256": "3ea96b6c956325fbd07299fd22729b93dc3cfc5690e3f89072380c5ca845b2f1",
+      "bytes": 5586
+    },
+    "games/yuyuhakusho/presentation/arena.go": {
+      "sha256": "6ac17c471d00d7daef1c2276f447eceb35dce786e7ea997faa33206de6ede32b",
+      "bytes": 8481
+    },
+    "games/yuyuhakusho/presentation/arena_profiles.go": {
+      "sha256": "af59330ff8c596a0dfea491182dd9be545d0f664faa3cd08fba4303720ad1320",
+      "bytes": 3956
+    },
+    "games/yuyuhakusho/data/arena-a-aux-order-audit.json": {
+      "sha256": "a7eb2b4253a358ea914efb2aa173afe0136e96d8d82e2a49211c5c92a366f401",
+      "bytes": 8517
+    },
+    "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-negatives.json": {
+      "sha256": "38271a8ef1e1f7530de983de11328c75b45e1cb5158683d0571ff05fc5a5d978",
+      "bytes": 9342
+    },
+    "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-reference.json.gz": {
+      "sha256": "6d64523e849ea5f22432fad8c110c45f67ac0a795175b9e8189d710361339b28",
+      "bytes": 318272
+    },
+    "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-negative-native-bad-x.json": {
+      "sha256": "bca337019a75bc8b543b8eeda7e08bc933c0ecedfdc41720d952fec7212f9a57",
+      "bytes": 6381
+    },
+    "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-reference-manifest.json": {
+      "sha256": "b57dec82cac680c9fdbb357382cf20936c00f8153bc69e143abd788a97a5e40d",
+      "bytes": 2229
+    },
+    "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-wasm-command.json": {
+      "sha256": "b84da37ecb7fad982decd0bf93531a3529e4f58e586b72f16b86219b50d066eb",
+      "bytes": 989
+    },
+    "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-negative-wasm-wrong-bank.json": {
+      "sha256": "2f02fea194de6de7917605f4fcfdb622517b52ba8d32d4197ae573c247872721",
+      "bytes": 909
+    },
+    "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-negative-wasm-bad-expected.json": {
+      "sha256": "8fbaee37cf64a1e1346959e1c8e3fccd7a72b50220f61b0b869dca61bb658231",
+      "bytes": 6320
+    },
+    "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-negative-wasm-no-aux.json": {
+      "sha256": "e921464cc79f183ab8e6aa49eb071171d4f76459dc26a813b13e32e726c7b9ac",
+      "bytes": 6313
+    },
+    "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-negative-native-no-aux.json": {
+      "sha256": "e921464cc79f183ab8e6aa49eb071171d4f76459dc26a813b13e32e726c7b9ac",
+      "bytes": 6313
+    },
+    "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-negative-wasm-bad-x.json": {
+      "sha256": "bca337019a75bc8b543b8eeda7e08bc933c0ecedfdc41720d952fec7212f9a57",
+      "bytes": 6381
+    },
+    "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-negative-native-wrong-bank.json": {
+      "sha256": "2f02fea194de6de7917605f4fcfdb622517b52ba8d32d4197ae573c247872721",
+      "bytes": 909
+    },
+    "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-wasm-stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-native.json": {
+      "sha256": "fcc64e4405bf5864828288739e12e22c001a8da6982f8376432bb78d6469aba2",
+      "bytes": 6314
+    },
+    "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-wasm.json": {
+      "sha256": "fcc64e4405bf5864828288739e12e22c001a8da6982f8376432bb78d6469aba2",
+      "bytes": 6314
+    },
+    "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-negative-native-bad-expected.json": {
+      "sha256": "8fbaee37cf64a1e1346959e1c8e3fccd7a72b50220f61b0b869dca61bb658231",
+      "bytes": 6320
+    },
+    "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-harness-frozen.json": {
+      "sha256": "53fd35c5d14a41ce580301b32bea6ea8b9b206704ed0b4a3f2e1bf7cdf20a32a",
+      "bytes": 490
+    },
+    "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-negative-wasm-bad-tile.json": {
+      "sha256": "b1b6dd688d3b239b9a712ea808a9ea0797b903dfa939115f823f89fa4748f497",
+      "bytes": 6411
+    },
+    "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-red-stderr.txt": {
+      "sha256": "bf05a2ed1e6ff1ca52a9863bab4a8833d5068953dd57362001f6462ff43f7cfc",
+      "bytes": 14
+    },
+    "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-negative-native-bad-tile.json": {
+      "sha256": "b1b6dd688d3b239b9a712ea808a9ea0797b903dfa939115f823f89fa4748f497",
+      "bytes": 6411
+    },
+    "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-producer.json": {
+      "sha256": "f763ed916a3ba48d82a73f0bf9faa4713a040d63d10a5b1a89d06c889ab03427",
+      "bytes": 1065
+    },
+    "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-red.json": {
+      "sha256": "e921464cc79f183ab8e6aa49eb071171d4f76459dc26a813b13e32e726c7b9ac",
+      "bytes": 6313
+    },
+    "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-vet.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-native-stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-negative-native-mask-all.json": {
+      "sha256": "72cbf519605640f82bb0ee71d54eae2ce650735f96a4a1df1fadc6ea43fd76f2",
+      "bytes": 913
+    },
+    "games/yuyuhakusho/presentation/testdata/arena-a-aux-pixel-negative-wasm-mask-all.json": {
+      "sha256": "72cbf519605640f82bb0ee71d54eae2ce650735f96a4a1df1fadc6ea43fd76f2",
+      "bytes": 913
+    }
+  },
+  "cleanup": [
+    {
+      "path": ".local/md-yuyuhakusho/arena-a-aux-pixel-repeat/arena-a-aux-pixel-reference.json.gz",
+      "bytes": 318272,
+      "sha256": "6d64523e849ea5f22432fad8c110c45f67ac0a795175b9e8189d710361339b28"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/arena-a-aux-pixel-repeat/arena-a-aux-pixel-reference-manifest.json",
+      "bytes": 2229,
+      "sha256": "b57dec82cac680c9fdbb357382cf20936c00f8153bc69e143abd788a97a5e40d"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/arena-a-aux-pixel-repeat-report.json",
+      "bytes": 1065,
+      "sha256": "f763ed916a3ba48d82a73f0bf9faa4713a040d63d10a5b1a89d06c889ab03427"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/arena-a-aux-pixel-producer-first.json",
+      "bytes": 1065,
+      "sha256": "e91e961cf6661a039266869fb925b4924d24669ac4ccfe4d5957df9cd4ba0089"
+    }
+  ],
+  "limits": [
+    "Original indexed window remains reference adapter; independent HUD events separately verified",
+    "Non-A source sprites excluded even if hidden behind high-priority planes",
+    "No complete world dispatch, arbitrary inputs, per-line overflow, browser or network assertion"
+  ]
+}

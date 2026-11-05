@@ -2,9 +2,15 @@
 
 先阅读 [失败场景与验收范围](REFERENCE_VALIDATION.md)。当前工具在 macOS arm64 验证；libretro 内部结构与固定的 Genesis Plus GX 提交绑定，不能换内核后直接沿用其 ABI。独立游戏代码不依赖这些工具。
 
+在 worktree 根目录运行工具前，使用 `export TEST_TELEMETRY_DIR="$PWD/.local/go-telemetry"` 将普通 Go 工具的遥测数据目录也限定在工作区。不要通过 `go telemetry` 子命令配置本地验收；该子命令会读写全局配置，并不随这个目录覆盖而限定作用域。
+
 ## 独立本地对局
 
-幻海、藏马、桑原、幽助、阵、户愚吕兄、酎、户愚吕弟／默认场地已有独立浏览器研究页，运行与复跑命令见 [LOCAL_PLAYER.md](../../docs/research/md-yuyuhakusho/LOCAL_PLAYER.md)。`serve_local_player.py` 只在 loopback 提供独立 Wasm 和索引素材；它不提供 ROM 或模拟器。
+全 11 角色与 8 场地已有独立浏览器研究页，运行与复跑命令见 [LOCAL_PLAYER.md](../../docs/research/md-yuyuhakusho/LOCAL_PLAYER.md)。`serve_local_player.py` 只在 loopback 提供独立 Wasm 和索引素材；它不提供 ROM 或模拟器。
+
+七场地新增工具按证据用途分开：`capture_arena_menu_reference.py` 是合法原菜单控制组的唯一生产者；`capture_arena_world_sessions.py` 观察原版完整对象轮次；`extract_additional_arena_assets.py`、`capture_additional_arena_assets.py` 和 `verify_additional_arena_assets.py` 提炼并比对背景素材。离线精简语义夹具与附加精灵验收复用这些采样，不重新创建另一份 original。
+
+`verify_arena_checks.py native|wasm` 按实际测试清单分片运行，保留每片命令、逐测试 JSON 与源码摘要。`verify_arena_legacy.py native|wasm` 复验默认场地的 165 份规则报告和 14 份完整像素报告，历史文件原样保留。`verify_arena_pan.py native|wasm` 使用合法双真人输入触发非零震动；完成后运行 `verify_arena_sessions.py native|wasm`，检查每场的 2／3／4 人、组队、11 角色和真人闲置对局。`--resume` 只复用摘要匹配且已通过的同版本结果。
 
 ```sh
 sh scripts/yuyuhakusho/verify_chu_sessions.sh both

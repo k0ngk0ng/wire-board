@@ -1,0 +1,43 @@
+{
+  "scope": "Seven additional arenas: strict source, compact schema and optional loaded original verification",
+  "verifier_sha256": "be66a40512aae293366feb92f8ce996ccc889b35da81f45b00c375c3fe9c6c36",
+  "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+  "results": [
+    {
+      "arena_offset": 2,
+      "pass": false,
+      "error": "missing compact arena resource: arena-assets-2.json.gz"
+    },
+    {
+      "arena_offset": 4,
+      "pass": false,
+      "error": "missing compact arena resource: arena-assets-4.json.gz"
+    },
+    {
+      "arena_offset": 6,
+      "pass": false,
+      "error": "missing compact arena resource: arena-assets-6.json.gz"
+    },
+    {
+      "arena_offset": 8,
+      "pass": false,
+      "error": "missing compact arena resource: arena-assets-8.json.gz"
+    },
+    {
+      "arena_offset": 10,
+      "pass": false,
+      "error": "missing compact arena resource: arena-assets-a.json.gz"
+    },
+    {
+      "arena_offset": 12,
+      "pass": false,
+      "error": "missing compact arena resource: arena-assets-c.json.gz"
+    },
+    {
+      "arena_offset": 14,
+      "pass": false,
+      "error": "missing compact arena resource: arena-assets-e.json.gz"
+    }
+  ],
+  "pass": false
+}

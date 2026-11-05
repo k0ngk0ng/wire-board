@@ -1,0 +1,30 @@
+{
+  "scope": "Bounded direct-Ghidra static 68000 stage-menu investigation; no execution claim",
+  "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+  "route": "direct-ghidra-headless; REA raw 68000 unsupported",
+  "language": "68000:BE:32:default",
+  "loader": "BinaryLoader",
+  "base_address": 0,
+  "noanalysis": true,
+  "scopes": [
+    "48fa:48fa:4920",
+    "75e8:75e8:7610",
+    "7ae2:7ae2:7b10",
+    "7ff8:7ff8:8020",
+    "810a:810a:811a",
+    "9f82:9f82:9fa8",
+    "db68,db84,dbb4,dc12,dc44,dc54,dc6a,dc80,dcae,dcc8,dcfa,dcfe,dd40,dd4a,dd6a,ddb2,ddca,ddde,ddea,de1c,de2a,de76:db68:deaa",
+    "a0e0,a0ea,a10e:a0e0:a15e"
+  ],
+  "script": {
+    "path": "scripts/yuyuhakusho/static/MdControlProbe.java",
+    "sha256": "44903c14bfe5a1ffc354e4fab1eb5893303081bbe55aa9f620808daf4ebe18a8"
+  },
+  "launcher": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/nes-basket/tools/ghidra_12.1.4_PUBLIC/support/analyzeHeadless",
+  "launcher_sha256": "302880328a0024ee24cfe0326d4d9a61c2237116d95f2e0e0df090f747f95e30",
+  "output": {
+    "path": "docs/research/md-yuyuhakusho/static/arena-menu-writes.txt",
+    "sha256": "928a8ce2262a6345b538052503a355136d1a40c5c4a26175fb1dde494b689d76"
+  },
+  "exit_code": 0
+}

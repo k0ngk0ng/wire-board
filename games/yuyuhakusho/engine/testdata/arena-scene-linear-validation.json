@@ -1,0 +1,17 @@
+{
+  "pass": true,
+  "kind": "static typed table extraction; not CPU or stage acceptance",
+  "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+  "output": "games/yuyuhakusho/data/arena-scene-linear-rows.json.gz",
+  "rows": 241,
+  "words_per_row": 128,
+  "source_bytes": 61696,
+  "source_sha256": "ff195c2bf95112ebf7725daed9d623115a0584d231ca5501fdfd62780b6c7c3d",
+  "raw_sha256": "59118feb31b0edaeeeccc74c3a20420fc0a43a6a16feb2e713e4af7b58bc3874",
+  "gzip_sha256": "0ff3d50945efbc81d8b72c896cba729fba1a279133cfe4af73356b2b00f120b7",
+  "gzip_bytes": 10233,
+  "all_default_tail_slices_match": true,
+  "all_wave_bytes_match_existing_library": true,
+  "extractor": "scripts/yuyuhakusho/capture_arenas_2_6_8.py",
+  "extractor_sha256": "aace0b05bd53dea21db31fbab80d9b30ce703b6e2984bd1d87b5d57cf55488a7"
+}

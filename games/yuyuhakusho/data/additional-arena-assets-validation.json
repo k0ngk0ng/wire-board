@@ -1,0 +1,881 @@
+{
+  "pass": true,
+  "scope": "Seven ROM-bound static indexed A/B arenas plus arena a auxiliary48 tiles; selected natural raster/video evidence only",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "original_core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+    "hook_core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306"
+  },
+  "test_first": {
+    "background_red": "games/yuyuhakusho/data/additional-arena-assets-red.json",
+    "auxiliary_red": "games/yuyuhakusho/data/additional-arena-aux-assets-red.json",
+    "failure_scope": "docs/research/md-yuyuhakusho/ADDITIONAL_ARENA_ASSETS_FAILURES.md"
+  },
+  "totals": {
+    "arenas": 7,
+    "original_frames_matched": 25214,
+    "samples": 140,
+    "raster_rows": 31360,
+    "catalog_cells": 28672,
+    "catalog_tiles": 3069,
+    "runtime_gzip_bytes": 77756,
+    "compared_pixels": 9535530,
+    "nonblack_pixels": 7316464,
+    "sprite_pixels_excluded": 499670,
+    "mismatches": 0,
+    "negative_checks": 91
+  },
+  "sources": {
+    "scripts/yuyuhakusho/capture_additional_arena_assets.py": "fd0fa82ce5c978e13ad94a13151f48f04eec76ff3d48d1c74cd3732ed684ff83",
+    "scripts/yuyuhakusho/extract_additional_arena_assets.py": "5e8916289bce45697a89327c7a1f681e81a5a88ccb7bae00501b61e7635f8c32",
+    "scripts/yuyuhakusho/verify_additional_arena_assets.py": "0efd1d0a62deb40da5996973c3432cdd3320bc98f5a272c0add120632d02d833",
+    "scripts/yuyuhakusho/extract_hud_assets.py": "df8c8fff4f3b1d9b2f8d9e556b2b861527d4d033802874bd3d24a2892955817a",
+    "scripts/yuyuhakusho/reference.py": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "docs/research/md-yuyuhakusho/ADDITIONAL_ARENA_ASSETS_FAILURES.md": "880f58b3c5dbc87f0ba65f2642e2d746befa0ddc35a3cf3457628360d0e9aac5",
+    "scripts/yuyuhakusho/extract_arena_assets.py": "f003119c665edaeffecec06ff99f77625d14a5345e82956d10ab8dc165e9a13a",
+    "docs/research/md-yuyuhakusho/probe.py": "03a52ad64abf051a4a0c8914cb4813503f246afc0ec463ecd5cadb55c3bf7642"
+  },
+  "artifacts": {
+    "games/yuyuhakusho/data/additional-arena-assets-red.json": "27419b397ab7ff862117c83bb2b21d8a337ad971319f850f7c061128c434cda3",
+    "games/yuyuhakusho/data/additional-arena-aux-assets-red.json": "a53074352b3186a1f158fb261f09034a1e3858482646a5d35ba017753eefc053",
+    "games/yuyuhakusho/data/additional-arena-assets-verification.json": "7745f47cac9efa3b9d7532049c39b3529a420fdcfd6c494d2f5848b1857fd4c2",
+    "games/yuyuhakusho/data/additional-arena-aux-assets-verification.json": "e85115e5245c6d3c341069611589b2603d1d55ad32f6b393b2c00903cfbf3113",
+    "games/yuyuhakusho/data/additional-arena-assets-determinism.json": "11ab3b9c811968407b7d9e6f98299d76b825b8688e8bee0acb0f5da51f97f337",
+    "games/yuyuhakusho/data/additional-arena-raster-profile-verification.json": "36af72ca8b380774d8da4c14f2e91a6687160976ec429d45dc44377fba70a18d",
+    "games/yuyuhakusho/data/additional-arena-raster-full-palette-red.json": "7e412b252fb51c21dfe289a92a99b9630baa34f9f761f8c49251d564934c0145",
+    "games/yuyuhakusho/data/additional-arena-source-analysis.json": "bfcf7d85511d704225b71780d06186ef1e505a4bfb7eee309277035f4fff2df5",
+    "games/yuyuhakusho/data/additional-arena-assets-cleanup.json": "657536c7bc037b83ef567e4a5fdd541e139bdd6e06f43cee35c399c50a534146"
+  },
+  "arenas": [
+    {
+      "arena_offset": 2,
+      "scene_behavior": 133856,
+      "resource_list": 137052,
+      "catalog": {
+        "path": "games/yuyuhakusho/data/arena-assets-2.json.gz",
+        "bytes": 12093,
+        "sha256": "baf59b615e155f791e409b60e87cbe44ea43ce997230d426675c5cf6302709f5",
+        "tiles": 480
+      },
+      "manifest": {
+        "path": "games/yuyuhakusho/data/arena-assets-2-manifest.json",
+        "sha256": "09d9d9df0784b30bb71827fb15a96d3b546aeb3285f4f315e6d29648e5a6ad12"
+      },
+      "reference_manifest": {
+        "path": "games/yuyuhakusho/data/arena-assets-2-reference-manifest.json",
+        "sha256": "57aff0979e53fa81d39bf34ceea186bf48e10c70eef546f298ddf5378e58df42"
+      },
+      "reference": {
+        "path": ".local/md-yuyuhakusho/additional-arena-assets/references/arena-assets-2-reference.json.gz",
+        "sha256": "34d1f1754bb551ff24a9cd1a3fe60c452a97e8b9315889353dccac4f82f3ab16",
+        "fixture_sha256": "a39b6cdf510da95b1ea9a532bccdb0dae67f3027d60f681b609f16de3893ae41"
+      },
+      "original_control": {
+        "path": "games/yuyuhakusho/engine/testdata/arena-2-reference-manifest.json",
+        "sha256": "89b23c4827db3b643a6810e185ae627688033148959765f29823c6e279b29088",
+        "frames": 3602,
+        "input_sha256": "77cc5359c10b6789889ccb9fd5e89c05b5fe4c759135b1d40ce2f91aa637de4c",
+        "output_sha256": "963ba802317e664c73a3f7639d5865ae777d94e029588196669865ed1b6b5f89"
+      },
+      "frames_matched_original_core": 3602,
+      "samples": 20,
+      "active_rows": 4480,
+      "active_background_vram_changed_frames": [],
+      "pixels": {
+        "frames": 20,
+        "compared_pixels": 1373487,
+        "nonblack_pixels": 1141947,
+        "sprite_pixels_excluded": 60113,
+        "sources": [
+          255814,
+          594775,
+          424698,
+          98200
+        ],
+        "mismatches": 0,
+        "pass": true
+      },
+      "negative_checks": [
+        "identity",
+        "binding",
+        "palette",
+        "tile",
+        "cell",
+        "extra_tile",
+        "payload",
+        "timing",
+        "raster_palette",
+        "raster_scroll",
+        "active_vram",
+        "raster_mode",
+        "video"
+      ],
+      "unwritten_map_ranges": [],
+      "blank_palette_state_difference_rows": 0,
+      "pass": true
+    },
+    {
+      "arena_offset": 4,
+      "scene_behavior": 134322,
+      "resource_list": 137112,
+      "catalog": {
+        "path": "games/yuyuhakusho/data/arena-assets-4.json.gz",
+        "bytes": 8270,
+        "sha256": "a8e9906e78ff660650413ce94adc9b1c425f384638956ed304877bf69d12133a",
+        "tiles": 311
+      },
+      "manifest": {
+        "path": "games/yuyuhakusho/data/arena-assets-4-manifest.json",
+        "sha256": "52184f22fc1ab01cfcc6a8ba4e65c9a63413d4f531ce8d9ae9743c2c9f6d8016"
+      },
+      "reference_manifest": {
+        "path": "games/yuyuhakusho/data/arena-assets-4-reference-manifest.json",
+        "sha256": "67816e95c54e8239064ea789416cf5183e0550f49a05e98d2897b39203603adc"
+      },
+      "reference": {
+        "path": ".local/md-yuyuhakusho/additional-arena-assets/references/arena-assets-4-reference.json.gz",
+        "sha256": "22dd84421b6e38b431a3dbbd9b0066e366f7aa4bf808f375ee9e512e6771caf8",
+        "fixture_sha256": "71c1b6d2c54870c8a19eabeac5400ba01198dee7251ceac8add58e9ccca1706a"
+      },
+      "original_control": {
+        "path": "games/yuyuhakusho/engine/testdata/arena-4-reference-manifest.json",
+        "sha256": "d0a2c9df9922759a8d4a9ded2c5dae797c91dfc547113b6209273472a1cfaeb7",
+        "frames": 3602,
+        "input_sha256": "a7cc2c1ba724533606bce8c102de9c012f2b3f0eeaf094519cfed9ca753a9365",
+        "output_sha256": "f8c0cdbc1d4eeb3777118078674023da5702a9bb90bbd3b3ab839805b514ccfa"
+      },
+      "frames_matched_original_core": 3602,
+      "samples": 20,
+      "active_rows": 4480,
+      "active_background_vram_changed_frames": [],
+      "pixels": {
+        "frames": 20,
+        "compared_pixels": 1378156,
+        "nonblack_pixels": 650543,
+        "sprite_pixels_excluded": 55444,
+        "sources": [
+          688083,
+          271353,
+          320545,
+          98175
+        ],
+        "mismatches": 0,
+        "pass": true
+      },
+      "negative_checks": [
+        "identity",
+        "binding",
+        "palette",
+        "tile",
+        "cell",
+        "extra_tile",
+        "payload",
+        "timing",
+        "raster_palette",
+        "raster_scroll",
+        "active_vram",
+        "raster_mode",
+        "video"
+      ],
+      "unwritten_map_ranges": [
+        {
+          "plane": "A",
+          "start": 49152,
+          "end": 49408,
+          "loaded_sha256": "5341e6b2646979a70e57653007a1f310169421ec9bdd9f1a5648f75ade005af1",
+          "loaded_words": [
+            0
+          ],
+          "source": "Observed loaded original; outside this arena resource list upload ranges"
+        },
+        {
+          "plane": "A",
+          "start": 52992,
+          "end": 53248,
+          "loaded_sha256": "5341e6b2646979a70e57653007a1f310169421ec9bdd9f1a5648f75ade005af1",
+          "loaded_words": [
+            0
+          ],
+          "source": "Observed loaded original; outside this arena resource list upload ranges"
+        },
+        {
+          "plane": "B",
+          "start": 57344,
+          "end": 57600,
+          "loaded_sha256": "5341e6b2646979a70e57653007a1f310169421ec9bdd9f1a5648f75ade005af1",
+          "loaded_words": [
+            0
+          ],
+          "source": "Observed loaded original; outside this arena resource list upload ranges"
+        },
+        {
+          "plane": "B",
+          "start": 61184,
+          "end": 61440,
+          "loaded_sha256": "5341e6b2646979a70e57653007a1f310169421ec9bdd9f1a5648f75ade005af1",
+          "loaded_words": [
+            0
+          ],
+          "source": "Observed loaded original; outside this arena resource list upload ranges"
+        }
+      ],
+      "blank_palette_state_difference_rows": 48,
+      "pass": true
+    },
+    {
+      "arena_offset": 6,
+      "scene_behavior": 134696,
+      "resource_list": 137164,
+      "catalog": {
+        "path": "games/yuyuhakusho/data/arena-assets-6.json.gz",
+        "bytes": 10472,
+        "sha256": "7fa944acfdc4f9f0af3c6c131cf388fbd70bf7760da9e559b14c16174e304139",
+        "tiles": 462
+      },
+      "manifest": {
+        "path": "games/yuyuhakusho/data/arena-assets-6-manifest.json",
+        "sha256": "70a32ec6acb69a6ee245fd49424d6d3b2279db3ac962d9b0e533cb7d9372e6ce"
+      },
+      "reference_manifest": {
+        "path": "games/yuyuhakusho/data/arena-assets-6-reference-manifest.json",
+        "sha256": "beef59462bdb7dd34fab150f1e2e2527a373c1f8cabc7560463a7551c80bd587"
+      },
+      "reference": {
+        "path": ".local/md-yuyuhakusho/additional-arena-assets/references/arena-assets-6-reference.json.gz",
+        "sha256": "d7b03d947945af480ce646ea7aa8ffe1dbac7d21d06987b7780f33a023945bfa",
+        "fixture_sha256": "d2110e7f19b3277bc92213fe8f3013e86487d894b5d2fb2d40d8db71b69ac993"
+      },
+      "original_control": {
+        "path": "games/yuyuhakusho/engine/testdata/arena-6-reference-manifest.json",
+        "sha256": "434e737ceb89e233f3a9091abae64c6fc01167d2b3d017440bcd2460eae882b1",
+        "frames": 3602,
+        "input_sha256": "ccb1f5560fb983f00c05c19e13b947dc067167d258f37a4d5b7d8a12258bb6ee",
+        "output_sha256": "6ddda9cb56749653259e1d993d428a761912c5af7c279dabe68635eb729e570f"
+      },
+      "frames_matched_original_core": 3602,
+      "samples": 20,
+      "active_rows": 4480,
+      "active_background_vram_changed_frames": [],
+      "pixels": {
+        "frames": 20,
+        "compared_pixels": 1366902,
+        "nonblack_pixels": 1126604,
+        "sprite_pixels_excluded": 66698,
+        "sources": [
+          356174,
+          501725,
+          404763,
+          104240
+        ],
+        "mismatches": 0,
+        "pass": true
+      },
+      "negative_checks": [
+        "identity",
+        "binding",
+        "palette",
+        "tile",
+        "cell",
+        "extra_tile",
+        "payload",
+        "timing",
+        "raster_palette",
+        "raster_scroll",
+        "active_vram",
+        "raster_mode",
+        "video"
+      ],
+      "unwritten_map_ranges": [
+        {
+          "plane": "A",
+          "start": 49152,
+          "end": 49408,
+          "loaded_sha256": "5341e6b2646979a70e57653007a1f310169421ec9bdd9f1a5648f75ade005af1",
+          "loaded_words": [
+            0
+          ],
+          "source": "Observed loaded original; outside this arena resource list upload ranges"
+        },
+        {
+          "plane": "A",
+          "start": 52992,
+          "end": 53248,
+          "loaded_sha256": "5341e6b2646979a70e57653007a1f310169421ec9bdd9f1a5648f75ade005af1",
+          "loaded_words": [
+            0
+          ],
+          "source": "Observed loaded original; outside this arena resource list upload ranges"
+        },
+        {
+          "plane": "B",
+          "start": 57344,
+          "end": 57600,
+          "loaded_sha256": "5341e6b2646979a70e57653007a1f310169421ec9bdd9f1a5648f75ade005af1",
+          "loaded_words": [
+            0
+          ],
+          "source": "Observed loaded original; outside this arena resource list upload ranges"
+        },
+        {
+          "plane": "B",
+          "start": 61184,
+          "end": 61440,
+          "loaded_sha256": "5341e6b2646979a70e57653007a1f310169421ec9bdd9f1a5648f75ade005af1",
+          "loaded_words": [
+            0
+          ],
+          "source": "Observed loaded original; outside this arena resource list upload ranges"
+        }
+      ],
+      "blank_palette_state_difference_rows": 0,
+      "pass": true
+    },
+    {
+      "arena_offset": 8,
+      "scene_behavior": 135092,
+      "resource_list": 137216,
+      "catalog": {
+        "path": "games/yuyuhakusho/data/arena-assets-8.json.gz",
+        "bytes": 12802,
+        "sha256": "dc4b52569a636e5e6c4103399ae668527ec98363513bbc547c749bc5303fb737",
+        "tiles": 478
+      },
+      "manifest": {
+        "path": "games/yuyuhakusho/data/arena-assets-8-manifest.json",
+        "sha256": "9245f7267a19d6efaf06ba50abdebd7337262619c2f48f9ed8b836772c554b49"
+      },
+      "reference_manifest": {
+        "path": "games/yuyuhakusho/data/arena-assets-8-reference-manifest.json",
+        "sha256": "7879e9f908a6eb98432724225498e8d2b592af9aeec9afea9ba6700e575c4e3b"
+      },
+      "reference": {
+        "path": ".local/md-yuyuhakusho/additional-arena-assets/references/arena-assets-8-reference.json.gz",
+        "sha256": "ccbe5cc34c42cfface48c21d83d567a43e9f826228a037d691803098a168bcbb",
+        "fixture_sha256": "50ce36ddc105bb2affa60c6bcf65804f0da3e02c0492e8c530daab29f2888418"
+      },
+      "original_control": {
+        "path": "games/yuyuhakusho/engine/testdata/arena-8-reference-manifest.json",
+        "sha256": "f120164fb3c17df66709bc77c192ec3f8ae5a3c1dba198df0e06cbd429e4ac02",
+        "frames": 3602,
+        "input_sha256": "677caf4398b4525ec306392150c38ab05eec20c31983ccc59ca6b135ea92a3b4",
+        "output_sha256": "cb555178ff1d43e739097ccf23967125fb9f87778010567bda81c392989ef301"
+      },
+      "frames_matched_original_core": 3602,
+      "samples": 20,
+      "active_rows": 4480,
+      "active_background_vram_changed_frames": [],
+      "pixels": {
+        "frames": 20,
+        "compared_pixels": 1369326,
+        "nonblack_pixels": 1090541,
+        "sprite_pixels_excluded": 64274,
+        "sources": [
+          303538,
+          545429,
+          416119,
+          104240
+        ],
+        "mismatches": 0,
+        "pass": true
+      },
+      "negative_checks": [
+        "identity",
+        "binding",
+        "palette",
+        "tile",
+        "cell",
+        "extra_tile",
+        "payload",
+        "timing",
+        "raster_palette",
+        "raster_scroll",
+        "active_vram",
+        "raster_mode",
+        "video"
+      ],
+      "unwritten_map_ranges": [
+        {
+          "plane": "A",
+          "start": 49152,
+          "end": 49408,
+          "loaded_sha256": "5341e6b2646979a70e57653007a1f310169421ec9bdd9f1a5648f75ade005af1",
+          "loaded_words": [
+            0
+          ],
+          "source": "Observed loaded original; outside this arena resource list upload ranges"
+        },
+        {
+          "plane": "A",
+          "start": 52992,
+          "end": 53248,
+          "loaded_sha256": "5341e6b2646979a70e57653007a1f310169421ec9bdd9f1a5648f75ade005af1",
+          "loaded_words": [
+            0
+          ],
+          "source": "Observed loaded original; outside this arena resource list upload ranges"
+        },
+        {
+          "plane": "B",
+          "start": 57344,
+          "end": 57600,
+          "loaded_sha256": "5341e6b2646979a70e57653007a1f310169421ec9bdd9f1a5648f75ade005af1",
+          "loaded_words": [
+            0
+          ],
+          "source": "Observed loaded original; outside this arena resource list upload ranges"
+        },
+        {
+          "plane": "B",
+          "start": 61184,
+          "end": 61440,
+          "loaded_sha256": "5341e6b2646979a70e57653007a1f310169421ec9bdd9f1a5648f75ade005af1",
+          "loaded_words": [
+            0
+          ],
+          "source": "Observed loaded original; outside this arena resource list upload ranges"
+        }
+      ],
+      "blank_palette_state_difference_rows": 0,
+      "pass": true
+    },
+    {
+      "arena_offset": 10,
+      "scene_behavior": 135462,
+      "resource_list": 137268,
+      "catalog": {
+        "path": "games/yuyuhakusho/data/arena-assets-a.json.gz",
+        "bytes": 12102,
+        "sha256": "fc95e4147eba1f158ef79a5e31374123e9f0d0359dd3041e7e0261f5f99743da",
+        "tiles": 455
+      },
+      "manifest": {
+        "path": "games/yuyuhakusho/data/arena-assets-a-manifest.json",
+        "sha256": "439408e533442d98eee3cd9aad404d5fc6c64a913a8a8fe8ca95fafbdaa361ce"
+      },
+      "reference_manifest": {
+        "path": "games/yuyuhakusho/data/arena-assets-a-reference-manifest.json",
+        "sha256": "0b37dd101e6954b93483d674500e5d8d60c0c5c60cfb7b4e025200275fcaa9fd"
+      },
+      "reference": {
+        "path": ".local/md-yuyuhakusho/additional-arena-assets/references/arena-assets-a-reference.json.gz",
+        "sha256": "85a75910ca8f85a9fcb10e134bb233d503494d787c6e12d979887f5b9ec4be0c",
+        "fixture_sha256": "874f5d1314556a091037de4cb510a1b334bb7e5be211707b2ec24333ce0a19ec"
+      },
+      "original_control": {
+        "path": "games/yuyuhakusho/engine/testdata/arena-a-reference-manifest.json",
+        "sha256": "9be3ecf9e725c4989de749f2bcb30cf27c6aa02d4e7bccb86511d8ce6cda71af",
+        "frames": 3602,
+        "input_sha256": "94abff0831b64713c449beca0743f164be572d6085b21d651df51b00e641db60",
+        "output_sha256": "4d68f40cf741adeb7eb047d3d71a9d3b7681c3dd5dc3ec8c4aac5e9f23f09b14"
+      },
+      "frames_matched_original_core": 3602,
+      "samples": 20,
+      "active_rows": 4480,
+      "active_background_vram_changed_frames": [],
+      "pixels": {
+        "frames": 20,
+        "compared_pixels": 1301022,
+        "nonblack_pixels": 1094476,
+        "sprite_pixels_excluded": 132578,
+        "sources": [
+          173156,
+          598338,
+          445213,
+          84315
+        ],
+        "mismatches": 0,
+        "pass": true
+      },
+      "negative_checks": [
+        "identity",
+        "binding",
+        "palette",
+        "tile",
+        "cell",
+        "extra_tile",
+        "payload",
+        "timing",
+        "raster_palette",
+        "raster_scroll",
+        "active_vram",
+        "raster_mode",
+        "video"
+      ],
+      "unwritten_map_ranges": [
+        {
+          "plane": "A",
+          "start": 49152,
+          "end": 49408,
+          "loaded_sha256": "5341e6b2646979a70e57653007a1f310169421ec9bdd9f1a5648f75ade005af1",
+          "loaded_words": [
+            0
+          ],
+          "source": "Observed loaded original; outside this arena resource list upload ranges"
+        },
+        {
+          "plane": "A",
+          "start": 52992,
+          "end": 53248,
+          "loaded_sha256": "5341e6b2646979a70e57653007a1f310169421ec9bdd9f1a5648f75ade005af1",
+          "loaded_words": [
+            0
+          ],
+          "source": "Observed loaded original; outside this arena resource list upload ranges"
+        },
+        {
+          "plane": "B",
+          "start": 57344,
+          "end": 57600,
+          "loaded_sha256": "5341e6b2646979a70e57653007a1f310169421ec9bdd9f1a5648f75ade005af1",
+          "loaded_words": [
+            0
+          ],
+          "source": "Observed loaded original; outside this arena resource list upload ranges"
+        },
+        {
+          "plane": "B",
+          "start": 61184,
+          "end": 61440,
+          "loaded_sha256": "5341e6b2646979a70e57653007a1f310169421ec9bdd9f1a5648f75ade005af1",
+          "loaded_words": [
+            0
+          ],
+          "source": "Observed loaded original; outside this arena resource list upload ranges"
+        }
+      ],
+      "blank_palette_state_difference_rows": 0,
+      "pass": true
+    },
+    {
+      "arena_offset": 12,
+      "scene_behavior": 135928,
+      "resource_list": 137328,
+      "catalog": {
+        "path": "games/yuyuhakusho/data/arena-assets-c.json.gz",
+        "bytes": 11039,
+        "sha256": "2e1b28e6dfd4e975c4ace5ae9f350af242907e34437d9c07611633eb8fe4cb51",
+        "tiles": 420
+      },
+      "manifest": {
+        "path": "games/yuyuhakusho/data/arena-assets-c-manifest.json",
+        "sha256": "a0c9b4476f32f72863b65021c3635cc334e94cc8a1c184b28d9affd028ee6990"
+      },
+      "reference_manifest": {
+        "path": "games/yuyuhakusho/data/arena-assets-c-reference-manifest.json",
+        "sha256": "22441caf61dd9213639df077acce979b81c4c64f7a9b789417d88007aa458d1d"
+      },
+      "reference": {
+        "path": ".local/md-yuyuhakusho/additional-arena-assets/references/arena-assets-c-reference.json.gz",
+        "sha256": "e5a76ee9a009e748b0c130dfaebec0fdcb6ebd7eeff4a8c8619a98cf83bd19fe",
+        "fixture_sha256": "10273a8d98bb1409d7c09f9a3ff7a75ba6312a544d498ae7fd56d253531f0e60"
+      },
+      "original_control": {
+        "path": "games/yuyuhakusho/engine/testdata/arena-c-reference-manifest.json",
+        "sha256": "6d7deeb79849d65ca3a94cbace403b741d420665ac2ab52364f9818c4d0531f0",
+        "frames": 3602,
+        "input_sha256": "18a8ea0adeeed22186d12bc7f79b67cc9b0dc0feb26ecc0ae9ee6cb11306367c",
+        "output_sha256": "9b7c05e532f03cc63aabcb16f4a73497f62639be2ce6b1a1ca7c29e29d828b31"
+      },
+      "frames_matched_original_core": 3602,
+      "samples": 20,
+      "active_rows": 4480,
+      "active_background_vram_changed_frames": [],
+      "pixels": {
+        "frames": 20,
+        "compared_pixels": 1373304,
+        "nonblack_pixels": 1070560,
+        "sprite_pixels_excluded": 60296,
+        "sources": [
+          724612,
+          253012,
+          297480,
+          98200
+        ],
+        "mismatches": 0,
+        "pass": true
+      },
+      "negative_checks": [
+        "identity",
+        "binding",
+        "palette",
+        "tile",
+        "cell",
+        "extra_tile",
+        "payload",
+        "timing",
+        "raster_palette",
+        "raster_scroll",
+        "active_vram",
+        "raster_mode",
+        "video"
+      ],
+      "unwritten_map_ranges": [
+        {
+          "plane": "A",
+          "start": 49152,
+          "end": 49408,
+          "loaded_sha256": "5341e6b2646979a70e57653007a1f310169421ec9bdd9f1a5648f75ade005af1",
+          "loaded_words": [
+            0
+          ],
+          "source": "Observed loaded original; outside this arena resource list upload ranges"
+        },
+        {
+          "plane": "A",
+          "start": 52992,
+          "end": 53248,
+          "loaded_sha256": "5341e6b2646979a70e57653007a1f310169421ec9bdd9f1a5648f75ade005af1",
+          "loaded_words": [
+            0
+          ],
+          "source": "Observed loaded original; outside this arena resource list upload ranges"
+        },
+        {
+          "plane": "B",
+          "start": 57344,
+          "end": 57600,
+          "loaded_sha256": "5341e6b2646979a70e57653007a1f310169421ec9bdd9f1a5648f75ade005af1",
+          "loaded_words": [
+            0
+          ],
+          "source": "Observed loaded original; outside this arena resource list upload ranges"
+        },
+        {
+          "plane": "B",
+          "start": 61184,
+          "end": 61440,
+          "loaded_sha256": "5341e6b2646979a70e57653007a1f310169421ec9bdd9f1a5648f75ade005af1",
+          "loaded_words": [
+            0
+          ],
+          "source": "Observed loaded original; outside this arena resource list upload ranges"
+        }
+      ],
+      "blank_palette_state_difference_rows": 0,
+      "pass": true
+    },
+    {
+      "arena_offset": 14,
+      "scene_behavior": 136210,
+      "resource_list": 137380,
+      "catalog": {
+        "path": "games/yuyuhakusho/data/arena-assets-e.json.gz",
+        "bytes": 10414,
+        "sha256": "a5fa5b72544edd249393e8eba4dedec4fc3b63771494e00d2ff09c07c79f41f6",
+        "tiles": 463
+      },
+      "manifest": {
+        "path": "games/yuyuhakusho/data/arena-assets-e-manifest.json",
+        "sha256": "be990e941505ec677b9461467786b6c586b4e0463cda8c62cdcb48f5b33efbe1"
+      },
+      "reference_manifest": {
+        "path": "games/yuyuhakusho/data/arena-assets-e-reference-manifest.json",
+        "sha256": "b54abd08854c18e0e66e825958bd73682b2d2836670ced66b4c2d26a3ffca1df"
+      },
+      "reference": {
+        "path": ".local/md-yuyuhakusho/additional-arena-assets/references/arena-assets-e-reference.json.gz",
+        "sha256": "5a67426784990cd9d76448e394e3591296faed0617ba8279a37c11536e06b3cc",
+        "fixture_sha256": "190839f79486a0615e295fd0b41c9c95bf83c2b3ca56137aff02f400b906f8b3"
+      },
+      "original_control": {
+        "path": "games/yuyuhakusho/engine/testdata/arena-e-reference-manifest.json",
+        "sha256": "605f3464c073557595170e802d7ebb254384db818021714419a2e23a5a1f08b1",
+        "frames": 3602,
+        "input_sha256": "1106d48106bf8b4b88e6da278146ea93f59a427ed41ee5346331afba4168fc00",
+        "output_sha256": "39d4ea018f4491ff9cc387ca1afaa6edb39fe5742984f847beb03af8e40cd659"
+      },
+      "frames_matched_original_core": 3602,
+      "samples": 20,
+      "active_rows": 4480,
+      "active_background_vram_changed_frames": [],
+      "pixels": {
+        "frames": 20,
+        "compared_pixels": 1373333,
+        "nonblack_pixels": 1141793,
+        "sprite_pixels_excluded": 60267,
+        "sources": [
+          255200,
+          467882,
+          552051,
+          98200
+        ],
+        "mismatches": 0,
+        "pass": true
+      },
+      "negative_checks": [
+        "identity",
+        "binding",
+        "palette",
+        "tile",
+        "cell",
+        "extra_tile",
+        "payload",
+        "timing",
+        "raster_palette",
+        "raster_scroll",
+        "active_vram",
+        "raster_mode",
+        "video"
+      ],
+      "unwritten_map_ranges": [
+        {
+          "plane": "A",
+          "start": 49152,
+          "end": 49408,
+          "loaded_sha256": "5341e6b2646979a70e57653007a1f310169421ec9bdd9f1a5648f75ade005af1",
+          "loaded_words": [
+            0
+          ],
+          "source": "Observed loaded original; outside this arena resource list upload ranges"
+        },
+        {
+          "plane": "A",
+          "start": 52992,
+          "end": 53248,
+          "loaded_sha256": "5341e6b2646979a70e57653007a1f310169421ec9bdd9f1a5648f75ade005af1",
+          "loaded_words": [
+            0
+          ],
+          "source": "Observed loaded original; outside this arena resource list upload ranges"
+        },
+        {
+          "plane": "B",
+          "start": 57344,
+          "end": 57600,
+          "loaded_sha256": "5341e6b2646979a70e57653007a1f310169421ec9bdd9f1a5648f75ade005af1",
+          "loaded_words": [
+            0
+          ],
+          "source": "Observed loaded original; outside this arena resource list upload ranges"
+        },
+        {
+          "plane": "B",
+          "start": 61184,
+          "end": 61440,
+          "loaded_sha256": "5341e6b2646979a70e57653007a1f310169421ec9bdd9f1a5648f75ade005af1",
+          "loaded_words": [
+            0
+          ],
+          "source": "Observed loaded original; outside this arena resource list upload ranges"
+        }
+      ],
+      "blank_palette_state_difference_rows": 0,
+      "pass": true
+    }
+  ],
+  "auxiliary": {
+    "catalog": {
+      "path": "games/yuyuhakusho/data/arena-a-aux-assets.json.gz",
+      "bytes": 564,
+      "sha256": "3eb8fd42cf1e675c91140f406833af7fde38968109749e0702a31f1471aa75b4"
+    },
+    "manifest": "games/yuyuhakusho/data/arena-a-aux-assets-manifest.json",
+    "tiles": 48,
+    "runtime_local_starts": [
+      0,
+      16,
+      32
+    ],
+    "hardware_addresses_in_runtime_payload": false,
+    "verification": {
+      "scope": "Arena a auxiliary48 indexed tiles source and loaded original verification",
+      "verifier_sha256": "0efd1d0a62deb40da5996973c3432cdd3320bc98f5a272c0add120632d02d833",
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "pass": true,
+      "catalog_sha256": "7e027f867927094ba71d4f172ef262938e247cbe8a2aeb719767979d61497830",
+      "gzip_sha256": "3eb8fd42cf1e675c91140f406833af7fde38968109749e0702a31f1471aa75b4",
+      "tiles": 48,
+      "loaded_original_frames": [
+        2700,
+        2720,
+        2740,
+        2760,
+        2780,
+        2800,
+        2820,
+        2850,
+        2880,
+        2910,
+        2940,
+        2970,
+        3000,
+        3050,
+        3100,
+        3150,
+        3250,
+        3350,
+        3450,
+        3550
+      ],
+      "limits": [
+        "This checks auxiliary indexed source, not sprite/plane final composition"
+      ]
+    }
+  },
+  "determinism": {
+    "pass": true,
+    "scope": "Two offline exports from identical original inputs produce byte-identical canonical JSON/gzip",
+    "results": [
+      {
+        "file": "arena-assets-2.json.gz",
+        "bytes": 12093,
+        "sha256": "baf59b615e155f791e409b60e87cbe44ea43ce997230d426675c5cf6302709f5",
+        "repeat_identical": true
+      },
+      {
+        "file": "arena-assets-4.json.gz",
+        "bytes": 8270,
+        "sha256": "a8e9906e78ff660650413ce94adc9b1c425f384638956ed304877bf69d12133a",
+        "repeat_identical": true
+      },
+      {
+        "file": "arena-assets-6.json.gz",
+        "bytes": 10472,
+        "sha256": "7fa944acfdc4f9f0af3c6c131cf388fbd70bf7760da9e559b14c16174e304139",
+        "repeat_identical": true
+      },
+      {
+        "file": "arena-assets-8.json.gz",
+        "bytes": 12802,
+        "sha256": "dc4b52569a636e5e6c4103399ae668527ec98363513bbc547c749bc5303fb737",
+        "repeat_identical": true
+      },
+      {
+        "file": "arena-assets-a.json.gz",
+        "bytes": 12102,
+        "sha256": "fc95e4147eba1f158ef79a5e31374123e9f0d0359dd3041e7e0261f5f99743da",
+        "repeat_identical": true
+      },
+      {
+        "file": "arena-assets-c.json.gz",
+        "bytes": 11039,
+        "sha256": "2e1b28e6dfd4e975c4ace5ae9f350af242907e34437d9c07611633eb8fe4cb51",
+        "repeat_identical": true
+      },
+      {
+        "file": "arena-assets-e.json.gz",
+        "bytes": 10414,
+        "sha256": "a5fa5b72544edd249393e8eba4dedec4fc3b63771494e00d2ff09c07c79f41f6",
+        "repeat_identical": true
+      },
+      {
+        "file": "arena-a-aux-assets.json.gz",
+        "bytes": 564,
+        "sha256": "3eb8fd42cf1e675c91140f406833af7fde38968109749e0702a31f1471aa75b4",
+        "repeat_identical": true
+      }
+    ]
+  },
+  "preview_directory": ".local/md-yuyuhakusho/additional-arena-assets/previews",
+  "limits": [
+    "Selected20 natural samples per arena; not every possible state or gameplay mode",
+    "All opaque original sprites are excluded; this does not verify final sprite/plane composition",
+    "Arena4 has48 lower blank rows where unused palette colors9..11 differ from the earlier world snapshot; visible colors and backdrop remain exact",
+    "No observed active background VRAM changes in sampled raster rows; unobserved dynamic material states remain outside scope",
+    "No default asset, shared decoder, world/runtime bridge, UI, publication or bundle change in this scope"
+  ],
+  "documentation": {
+    "path": "docs/research/md-yuyuhakusho/ADDITIONAL_ARENA_ASSETS.md",
+    "sha256": "95a92bcda64ec633374189a8cd5fa32f39b59a64f9fd8d725ab334b897c60bc3"
+  }
+}

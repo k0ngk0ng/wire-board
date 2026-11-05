@@ -1,0 +1,50 @@
+{
+  "pass": true,
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/arenas-4-c-e-capture",
+      "bytes": 64977898
+    },
+    {
+      "path": ".local/md-yuyuhakusho/arenas-4-c-e-tables",
+      "bytes": 32413
+    },
+    {
+      "path": ".local/md-yuyuhakusho/arenas-4-c-e-collector-check",
+      "bytes": 35660
+    },
+    {
+      "path": ".local/md-yuyuhakusho/arenas-4-c-e-static",
+      "bytes": 249205
+    },
+    {
+      "path": ".local/md-yuyuhakusho/arenas-4-c-e-validation",
+      "bytes": 24897
+    },
+    {
+      "path": ".local/md-yuyuhakusho/arenas-4-c-e-4-capture.log",
+      "bytes": 2785
+    },
+    {
+      "path": ".local/md-yuyuhakusho/arenas-4-c-e-c-capture.log",
+      "bytes": 2770
+    },
+    {
+      "path": ".local/md-yuyuhakusho/arenas-4-c-e-e-capture.log",
+      "bytes": 2766
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static-work/arenas4ce",
+      "bytes": 0
+    }
+  ],
+  "removed_bytes": 65328394,
+  "canonical_fixture_sha256_verified": true,
+  "canonical_native_wasm_vet_verified": true,
+  "preserved": [
+    "all frozen testdata, manifests, own-symbol red and exact instruction audit",
+    "typed rule tables and source/static evidence",
+    "parent-provided original inputs/controls",
+    "shared go caches and other agents\u2019 work"
+  ]
+}

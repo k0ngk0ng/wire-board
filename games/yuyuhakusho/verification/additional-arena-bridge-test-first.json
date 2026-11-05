@@ -1,0 +1,12 @@
+{
+  "test_first": true,
+  "frozen_at_utc": "2026-11-05T08:11:09.666630+00:00",
+  "failure_log": "games/yuyuhakusho/verification/arena-source-backdrop-red.jsonl",
+  "missing_symbols_log": "games/yuyuhakusho/verification/additional-arena-bridge-symbol-red.jsonl",
+  "sha256": {
+    "games/yuyuhakusho/runtimebridge/ADDITIONAL_ARENAS_FAILURES.md": "a75fd1967fdc80416faf8c5908feea95f0166525f74d658782c0c67714bb1119",
+    "games/yuyuhakusho/runtimebridge/arena_sources_test.go": "a41501d676f6d80ca6c1f46b5c48121cc9d34669daab5abec9ef0622a9db60dc",
+    "games/yuyuhakusho/runtimebridge/additional_arenas_test.go": "b2976dfa596f05abd55dc6aaade314f45e094616a6495ea48261d09b9ac60853",
+    "games/yuyuhakusho/engine/arena_backdrop_json_test.go": "a468585019222d81793d12d85f479c42b498cc5c7a8703fdc916f790af017465"
+  }
+}

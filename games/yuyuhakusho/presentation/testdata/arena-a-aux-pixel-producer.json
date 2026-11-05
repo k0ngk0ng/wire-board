@@ -1,0 +1,21 @@
+{
+  "pass": true,
+  "scope": "Original A six-raw final pixels; only opaque non-A sprites excluded",
+  "fixture_sha256": "048f1d7e3ac9a0113acfb387ff2bb6d214afa39c8af66d38d64a0ec62b92ddb7",
+  "gzip_sha256": "6d64523e849ea5f22432fad8c110c45f67ac0a795175b9e8189d710361339b28",
+  "gzip_bytes": 318272,
+  "frames": 20,
+  "producer_sha256": "0058b03d8208ecfa2dfcb9528143d95201de2eac32c88a7169d9281163a6cd3d",
+  "compared_pixels": 1368854,
+  "aux_visible_pixels": 29063,
+  "aux_distinct_from_background": 28224,
+  "non_aux_excluded_pixels": 64746,
+  "mismatches": 0,
+  "every_sample_has_visible_distinct_aux_pixels": true,
+  "mask_boundary": "Only actual nonzero pixels of original SAT entries before the six CPU-bound tail entries; no rectangles and no auxiliary pixels added",
+  "limits": [
+    "Original indexed window remains reference adapter; independent HUD events are separately verified",
+    "Original non-A sprite pixels are excluded even if hidden by a high-priority plane",
+    "No sprite overflow, arbitrary inputs, world dispatch or browser assertion"
+  ]
+}

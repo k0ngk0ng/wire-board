@@ -1,14 +1,15 @@
-# 全11角色／默认场地本地研究页
+# 全 11 角色／8 场地本地研究页
 
-当前可以在浏览器选择幻海、藏马、桑原、幽助、飞影、仙水、阵、树、户愚吕兄、酎或户愚吕弟，与原版恢复的电脑策略对战。支持 2／3／4 人混战和 4 人组队，提供电脑演示。人物、特效、默认场地及 HUD 使用独立索引素材；对局由独立 Go／Wasm 规则运行，不加载 ROM 或模拟器。
+当前可以在浏览器选择幻海、藏马、桑原、幽助、飞影、仙水、阵、树、户愚吕兄、酎或户愚吕弟，与原版恢复的电脑策略对战。支持 2／3／4 人混战和 4 人组队，提供电脑演示。场地可选默认场地、灵界、亚空间 1、魔界、洞窟、魔性之森、亚空间 2 和山顶。人物、特效、场地及 HUD 使用独立索引素材；对局由独立 Go／Wasm 规则运行，不加载 ROM 或模拟器。
 
-本页用于本地验收，尚未接入平台房间、网络同步、托管及音效。其他七个场地没有开放。
+本页用于本地验收，尚未接入平台房间、网络同步、托管及音效。首次开局只加载默认背景；选择其他场地并开始对局时，按需加载对应背景，魔性之森另加载 48 块附加素材。修改选择器保留为下一局草稿，不改变正在运行的对局。
 
 ## 启动
 
 在 `worktrees/yuyuhakusho` 根目录运行：
 
 ```sh
+export TEST_TELEMETRY_DIR="$PWD/.local/go-telemetry"
 PYTHONDONTWRITEBYTECODE=1 python3 scripts/yuyuhakusho/serve_local_player.py --port 8799
 ```
 
@@ -30,6 +31,15 @@ PYTHONDONTWRITEBYTECODE=1 python3 scripts/yuyuhakusho/check_local_player.py
 
 # 本地页类型检查。
 node web/node_modules/typescript/bin/tsc -p scripts/yuyuhakusho/tsconfig.json
+
+# 七场地真实浏览器、键盘和 320 px 三指触屏。
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/yuyuhakusho/check_arena_player.py
+
+# 七场地完整对局矩阵；先运行专项震动验收，再核对 native/Wasm。
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/yuyuhakusho/verify_arena_pan.py native
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/yuyuhakusho/verify_arena_pan.py wasm
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/yuyuhakusho/verify_arena_sessions.py native
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/yuyuhakusho/verify_arena_sessions.py wasm
 ```
 
 双角色完整对局与呈现矩阵使用 `sh scripts/yuyuhakusho/verify_fighter_sessions.sh both`，浏览器验收使用 `PYTHONDONTWRITEBYTECODE=1 python3 scripts/yuyuhakusho/check_fighter_player.py`。机器结果见 [fighter10-e2e](../../../games/yuyuhakusho/verification/fighter10-e2e/native/render/ten-chu.json)，浏览器保留[桌面截图](../../../games/yuyuhakusho/verification/fighter10-local-player/desktop.png)、[320px 截图](../../../games/yuyuhakusho/verification/fighter10-local-player/mobile-320.png)和[原生输入结果](../../../games/yuyuhakusho/verification/fighter10-local-player/result.json)。完整绑定摘要见[双角色验收](../../../games/yuyuhakusho/verification/fighter10-session.json)。旧酎配置的既有报告继续保存在 `session-e2e` 和 `runtime-e2e`，用于逐字节回归。
