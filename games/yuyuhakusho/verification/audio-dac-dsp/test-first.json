@@ -1,0 +1,28 @@
+{
+  "frozen_at_utc": "2026-11-05T15:02:53.555577+00:00",
+  "phase": "Nativeconfiguration, rawtimestamp failure, explicitframe proof and nativePCM/state/queue/overflow tests frozen before pureGoDSP implementation",
+  "sha256": {
+    "docs/research/md-yuyuhakusho/AUDIO_DAC_DSP_FAILURES.md": "aa00480d505f957b53a484a431702f77bb3b7f7dd1a64f2f35e50d11d8c3d6b9",
+    "scripts/yuyuhakusho/inspect_dac_dsp_state.py": "008576cb72b0ef5feab4e566dda23e9d2841a6340a66c93a4ba04de07284d82f",
+    "scripts/yuyuhakusho/probe_dac_frame_flush.py": "a70105841cd1a621d21dce880e4f6f882a95eca689ec139e64ab266920a221c7",
+    "scripts/yuyuhakusho/prototype_dac_dsp.py": "14b1a0252153965640f0c17d8769ebcaa6f94718543a1897206ef77d81c5b2b0",
+    "scripts/yuyuhakusho/prototype_dac_frame_dsp.py": "755364d6379a89a58ced263f3ed4615f424e02bc03cc9a1cc376680a3d450c6b",
+    "scripts/yuyuhakusho/capture_dac_dsp_boundaries.py": "3ea25b9e11986680e234535ceb47ca979c581e8f4aadc90814620b56a1ee8b48",
+    "scripts/yuyuhakusho/export_dac_dsp_evidence.py": "cf339623383cb6d032c1a981c6b9bb6f1d31d600857d9c1bda953f9b7fff59be",
+    "games/yuyuhakusho/audio/dsp/dsp_test.go": "226c6227033d4ba27411c8f671eaa65dc65683e22f6d67354414785e8261fada",
+    "games/yuyuhakusho/audio/dsp/testdata/native-frames.json.gz": "174ad8f7245cb532120503f72c41b2942859c84b6b446febeb2b9a7ed4c0707a",
+    "games/yuyuhakusho/audio/dsp/testdata/native-frames-manifest.json": "39498621054cd4df6dd245a27f46a2f19c9b115e9f5e039c9ba4c2042b623b2c"
+  },
+  "actual_reds": [
+    "go-symbol-red.jsonl",
+    "prototype-first.log",
+    "inspector-v1-red.log"
+  ],
+  "frame_semantics": "Raw event timestamps unchanged. Explicitframe flush submits chipTick<end and discards lookahead; Queue does not mutate unflushedDSP. InputAhead is independentrawinput cursor, not duplicateoutput phase.",
+  "resource_contract": {
+    "pending_events": 4096,
+    "raw_ahead_master_cycles": 1008,
+    "reference_frame_master_cycles": 896040,
+    "maximum_stereo_output_samples": 736
+  }
+}

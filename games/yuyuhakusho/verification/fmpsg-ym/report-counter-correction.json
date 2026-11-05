@@ -1,0 +1,12 @@
+{
+  "scope": "Verification summarizer expected39 but actual57 sub-scenarios; omitted18 existingDAC child scenarios. Raw logs, test source, production and native fixtures unchanged. No failed Go checks were excluded.",
+  "pre_correction_verifier_sha256": "b160db668a6f6c58228b35617732eb33300f81494cea8f803aafbe356d557b12",
+  "actual_top_level": 14,
+  "actual_sub_scenarios": 57,
+  "sub_breakdown": {
+    "new_chips_raw_ym": 29,
+    "new_chips_mixed": 5,
+    "psg": 5,
+    "existing_dac_dsp": 18
+  }
+}

@@ -1,0 +1,147 @@
+{
+  "pass": false,
+  "scope": "PureDAC arithmetic prototype with given raw oracle event times; no native cadence generation or fullFM/PSG",
+  "runtime_configuration_sha256": "a80e2575f18fc027c5ac453531b54400a9511dc82cdd4a836146cab7010d5a97",
+  "kernel_source_sha256": "e4ca194284710361b033505aeb1f4283ae8d2e8cdcd2153a598604743f99abaf",
+  "prototype_sha256": "14b1a0252153965640f0c17d8769ebcaa6f94718543a1897206ef77d81c5b2b0",
+  "cases": [
+    {
+      "name": "single-short",
+      "stereo_frames": 58876,
+      "different_sample_values": 0,
+      "max_absolute_error": 0,
+      "first_differences": [],
+      "pcm_sha256": "23e57f95a5f9f2dca77f3288b481a68c1f793e472d9fb3d0e4484fbf78c5667a",
+      "reference_pcm_sha256": "23e57f95a5f9f2dca77f3288b481a68c1f793e472d9fb3d0e4484fbf78c5667a",
+      "raw_beyond_frame_end_events": [
+        {
+          "cycle": 23297055,
+          "kind": "data",
+          "value": 112,
+          "source_frame": 25,
+          "source_cycle": 896055
+        },
+        {
+          "cycle": 26881290,
+          "kind": "data",
+          "value": 90,
+          "source_frame": 29,
+          "source_cycle": 896130
+        }
+      ]
+    },
+    {
+      "name": "pair-short",
+      "stereo_frames": 66236,
+      "different_sample_values": 0,
+      "max_absolute_error": 0,
+      "first_differences": [],
+      "pcm_sha256": "9a1c199d3314edee1853bc8a7261000ece90b065bba79dcc608364356ef464ff",
+      "reference_pcm_sha256": "9a1c199d3314edee1853bc8a7261000ece90b065bba79dcc608364356ef464ff",
+      "raw_beyond_frame_end_events": []
+    },
+    {
+      "name": "single-mode",
+      "stereo_frames": 66236,
+      "different_sample_values": 0,
+      "max_absolute_error": 0,
+      "first_differences": [],
+      "pcm_sha256": "8dc6cc348ee50f251de31e5f6ea7273b465b64663d7ebdd2c0591db5c32af46b",
+      "reference_pcm_sha256": "8dc6cc348ee50f251de31e5f6ea7273b465b64663d7ebdd2c0591db5c32af46b",
+      "raw_beyond_frame_end_events": []
+    },
+    {
+      "name": "pair-long",
+      "stereo_frames": 117752,
+      "different_sample_values": 2686,
+      "max_absolute_error": 1266,
+      "first_differences": [
+        [
+          123642,
+          1618,
+          1616
+        ],
+        [
+          123643,
+          1618,
+          1616
+        ],
+        [
+          123644,
+          1718,
+          1723
+        ],
+        [
+          123645,
+          1718,
+          1723
+        ],
+        [
+          123646,
+          357,
+          349
+        ],
+        [
+          123647,
+          357,
+          349
+        ],
+        [
+          123648,
+          -1474,
+          -1478
+        ],
+        [
+          123649,
+          -1474,
+          -1478
+        ],
+        [
+          123650,
+          -1487,
+          -1477
+        ],
+        [
+          123651,
+          -1487,
+          -1477
+        ],
+        [
+          123652,
+          -1561,
+          -1650
+        ],
+        [
+          123653,
+          -1561,
+          -1650
+        ]
+      ],
+      "pcm_sha256": "04094f759a3c26ae46aeb9129bfd4265ee4974e7a45bce44914526431416c8f3",
+      "reference_pcm_sha256": "ab4eef0d8b8bf0939808727b3c65a2cd7867503f4564ec1e607aacf84825c914",
+      "raw_beyond_frame_end_events": [
+        {
+          "cycle": 11648580,
+          "kind": "data",
+          "value": 169,
+          "source_frame": 12,
+          "source_cycle": 896100
+        },
+        {
+          "cycle": 65410950,
+          "kind": "data",
+          "value": 214,
+          "source_frame": 72,
+          "source_cycle": 896070
+        },
+        {
+          "cycle": 75267390,
+          "kind": "data",
+          "value": 57,
+          "source_frame": 83,
+          "source_cycle": 896070
+        }
+      ]
+    }
+  ]
+}

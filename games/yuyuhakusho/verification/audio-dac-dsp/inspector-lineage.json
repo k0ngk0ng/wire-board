@@ -1,0 +1,5 @@
+{
+  "old_sha256": "eff54c4c33235493114bbc5eead776693d9ff1b998eb47111dc52ea252f6e844",
+  "new_sha256": "008576cb72b0ef5feab4e566dda23e9d2841a6340a66c93a4ba04de07284d82f",
+  "reason": "OriginalYM2612SaveContext save_param already increments bufferptr; each24 DT indices is incremented once more explicitly. Return3624 means3576-byte typedYM struct plus48, not struct+24. The observer reads fields only; no native state changed."
+}

@@ -1,0 +1,11 @@
+{"mode": "original", "case": "silence", "frames": 2, "stereo_frames": 1472}
+{"mode": "original", "case": "same-cycle", "frames": 4, "stereo_frames": 2944}
+{"mode": "original", "case": "pan-sign", "frames": 6, "stereo_frames": 4416}
+{"mode": "original", "case": "ahead-boundary", "frames": 4, "stereo_frames": 2944}
+{"mode": "original", "case": "data-sweep", "frames": 5, "stereo_frames": 3680}
+{"mode": "observed", "case": "silence", "frames": 2, "stereo_frames": 1472}
+{"mode": "observed", "case": "same-cycle", "frames": 4, "stereo_frames": 2944}
+{"mode": "observed", "case": "pan-sign", "frames": 6, "stereo_frames": 4416}
+{"mode": "observed", "case": "ahead-boundary", "frames": 4, "stereo_frames": 2944}
+{"mode": "observed", "case": "data-sweep", "frames": 5, "stereo_frames": 3680}
+{"pass": true, "cases": 5, "video_steps_per_core": 21}

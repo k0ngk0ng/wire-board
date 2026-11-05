@@ -1,0 +1,9 @@
+{"Time":"2026-11-05T23:06:26.401836+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/dsp"}
+{"Time":"2026-11-05T23:06:26.839316+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/dsp","Test":"TestCommittedRawInputCursorCannotOverflowOrigin"}
+{"Time":"2026-11-05T23:06:26.839408+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/dsp","Test":"TestCommittedRawInputCursorCannotOverflowOrigin","Output":"=== RUN   TestCommittedRawInputCursorCannotOverflowOrigin\n"}
+{"Time":"2026-11-05T23:06:26.887013+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/dsp","Test":"TestCommittedRawInputCursorCannotOverflowOrigin","Output":"    overflow_test.go:23: committed raw-input cursor overflow accepted {18446744073709551615 0 1}\n"}
+{"Time":"2026-11-05T23:06:26.887094+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/dsp","Test":"TestCommittedRawInputCursorCannotOverflowOrigin","Output":"--- FAIL: TestCommittedRawInputCursorCannotOverflowOrigin (0.05s)\n"}
+{"Time":"2026-11-05T23:06:26.887104+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/dsp","Test":"TestCommittedRawInputCursorCannotOverflowOrigin","Elapsed":0.05}
+{"Time":"2026-11-05T23:06:26.887123+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/dsp","Output":"FAIL\n"}
+{"Time":"2026-11-05T23:06:26.888244+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/dsp","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/dsp\t0.485s\n"}
+{"Time":"2026-11-05T23:06:26.888264+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/dsp","Elapsed":0.486}

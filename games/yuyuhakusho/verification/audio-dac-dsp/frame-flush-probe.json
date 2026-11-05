@@ -1,0 +1,4140 @@
+{
+  "pass": true,
+  "scope": "Reference-only scalar state around rawDAC writes and nativeframe flush; no production timing model",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "frames": 160,
+  "ram_video_pcm_match_canonical": true,
+  "writes_near_end": [
+    {
+      "frame": 6,
+      "cycles": 895095,
+      "data": 126,
+      "before": {
+        "count": 888480,
+        "start": 432,
+        "buffer_stereo_position": 881,
+        "last_flushed_output": [
+          2112,
+          2112
+        ]
+      },
+      "after": {
+        "count": 895536,
+        "start": 432,
+        "buffer_stereo_position": 888,
+        "last_flushed_output": [
+          2112,
+          2112
+        ]
+      }
+    },
+    {
+      "frame": 12,
+      "cycles": 896100,
+      "data": 169,
+      "before": {
+        "count": 889920,
+        "start": 864,
+        "buffer_stereo_position": 882,
+        "last_flushed_output": [
+          6016,
+          6016
+        ]
+      },
+      "after": {
+        "count": 896976,
+        "start": 864,
+        "buffer_stereo_position": 889,
+        "last_flushed_output": [
+          6016,
+          6016
+        ]
+      }
+    },
+    {
+      "frame": 14,
+      "cycles": 895200,
+      "data": 92,
+      "before": {
+        "count": 889056,
+        "start": 0,
+        "buffer_stereo_position": 882,
+        "last_flushed_output": [
+          1408,
+          1408
+        ]
+      },
+      "after": {
+        "count": 896112,
+        "start": 0,
+        "buffer_stereo_position": 889,
+        "last_flushed_output": [
+          1408,
+          1408
+        ]
+      }
+    },
+    {
+      "frame": 21,
+      "cycles": 895830,
+      "data": 151,
+      "before": {
+        "count": 889560,
+        "start": 504,
+        "buffer_stereo_position": 882,
+        "last_flushed_output": [
+          -2400,
+          -2400
+        ]
+      },
+      "after": {
+        "count": 896616,
+        "start": 504,
+        "buffer_stereo_position": 889,
+        "last_flushed_output": [
+          -2400,
+          -2400
+        ]
+      }
+    },
+    {
+      "frame": 23,
+      "cycles": 895500,
+      "data": 46,
+      "before": {
+        "count": 889704,
+        "start": 648,
+        "buffer_stereo_position": 882,
+        "last_flushed_output": [
+          3328,
+          3328
+        ]
+      },
+      "after": {
+        "count": 895752,
+        "start": 648,
+        "buffer_stereo_position": 888,
+        "last_flushed_output": [
+          3328,
+          3328
+        ]
+      }
+    },
+    {
+      "frame": 30,
+      "cycles": 895950,
+      "data": 158,
+      "before": {
+        "count": 889200,
+        "start": 144,
+        "buffer_stereo_position": 882,
+        "last_flushed_output": [
+          4736,
+          4736
+        ]
+      },
+      "after": {
+        "count": 896256,
+        "start": 144,
+        "buffer_stereo_position": 889,
+        "last_flushed_output": [
+          4736,
+          4736
+        ]
+      }
+    },
+    {
+      "frame": 43,
+      "cycles": 895860,
+      "data": 163,
+      "before": {
+        "count": 890136,
+        "start": 72,
+        "buffer_stereo_position": 883,
+        "last_flushed_output": [
+          -5920,
+          -5920
+        ]
+      },
+      "after": {
+        "count": 896184,
+        "start": 72,
+        "buffer_stereo_position": 889,
+        "last_flushed_output": [
+          -5920,
+          -5920
+        ]
+      }
+    },
+    {
+      "frame": 45,
+      "cycles": 895560,
+      "data": 117,
+      "before": {
+        "count": 889272,
+        "start": 216,
+        "buffer_stereo_position": 882,
+        "last_flushed_output": [
+          -5856,
+          -5856
+        ]
+      },
+      "after": {
+        "count": 896328,
+        "start": 216,
+        "buffer_stereo_position": 889,
+        "last_flushed_output": [
+          -5856,
+          -5856
+        ]
+      }
+    },
+    {
+      "frame": 54,
+      "cycles": 895530,
+      "data": 150,
+      "before": {
+        "count": 889920,
+        "start": 864,
+        "buffer_stereo_position": 882,
+        "last_flushed_output": [
+          -5536,
+          -5536
+        ]
+      },
+      "after": {
+        "count": 895968,
+        "start": 864,
+        "buffer_stereo_position": 888,
+        "last_flushed_output": [
+          -5536,
+          -5536
+        ]
+      }
+    },
+    {
+      "frame": 56,
+      "cycles": 895110,
+      "data": 170,
+      "before": {
+        "count": 889056,
+        "start": 0,
+        "buffer_stereo_position": 882,
+        "last_flushed_output": [
+          -4704,
+          -4704
+        ]
+      },
+      "after": {
+        "count": 896112,
+        "start": 0,
+        "buffer_stereo_position": 889,
+        "last_flushed_output": [
+          -4704,
+          -4704
+        ]
+      }
+    },
+    {
+      "frame": 63,
+      "cycles": 895950,
+      "data": 111,
+      "before": {
+        "count": 889560,
+        "start": 504,
+        "buffer_stereo_position": 882,
+        "last_flushed_output": [
+          7232,
+          7232
+        ]
+      },
+      "after": {
+        "count": 896616,
+        "start": 504,
+        "buffer_stereo_position": 889,
+        "last_flushed_output": [
+          7232,
+          7232
+        ]
+      }
+    },
+    {
+      "frame": 72,
+      "cycles": 896070,
+      "data": 214,
+      "before": {
+        "count": 890208,
+        "start": 144,
+        "buffer_stereo_position": 883,
+        "last_flushed_output": [
+          -800,
+          -800
+        ]
+      },
+      "after": {
+        "count": 896256,
+        "start": 144,
+        "buffer_stereo_position": 889,
+        "last_flushed_output": [
+          -800,
+          -800
+        ]
+      }
+    },
+    {
+      "frame": 74,
+      "cycles": 895620,
+      "data": 148,
+      "before": {
+        "count": 889344,
+        "start": 288,
+        "buffer_stereo_position": 882,
+        "last_flushed_output": [
+          3008,
+          3008
+        ]
+      },
+      "after": {
+        "count": 896400,
+        "start": 288,
+        "buffer_stereo_position": 889,
+        "last_flushed_output": [
+          3008,
+          3008
+        ]
+      }
+    },
+    {
+      "frame": 83,
+      "cycles": 896070,
+      "data": 57,
+      "before": {
+        "count": 889992,
+        "start": 936,
+        "buffer_stereo_position": 882,
+        "last_flushed_output": [
+          1408,
+          1408
+        ]
+      },
+      "after": {
+        "count": 897048,
+        "start": 936,
+        "buffer_stereo_position": 889,
+        "last_flushed_output": [
+          1408,
+          1408
+        ]
+      }
+    },
+    {
+      "frame": 85,
+      "cycles": 895335,
+      "data": 83,
+      "before": {
+        "count": 889128,
+        "start": 72,
+        "buffer_stereo_position": 882,
+        "last_flushed_output": [
+          3392,
+          3392
+        ]
+      },
+      "after": {
+        "count": 896184,
+        "start": 72,
+        "buffer_stereo_position": 889,
+        "last_flushed_output": [
+          3392,
+          3392
+        ]
+      }
+    },
+    {
+      "frame": 94,
+      "cycles": 895500,
+      "data": 147,
+      "before": {
+        "count": 889776,
+        "start": 720,
+        "buffer_stereo_position": 882,
+        "last_flushed_output": [
+          -7648,
+          -7648
+        ]
+      },
+      "after": {
+        "count": 895824,
+        "start": 720,
+        "buffer_stereo_position": 888,
+        "last_flushed_output": [
+          -7648,
+          -7648
+        ]
+      }
+    },
+    {
+      "frame": 105,
+      "cycles": 895200,
+      "data": 113,
+      "before": {
+        "count": 889560,
+        "start": 504,
+        "buffer_stereo_position": 882,
+        "last_flushed_output": [
+          1024,
+          1024
+        ]
+      },
+      "after": {
+        "count": 895608,
+        "start": 504,
+        "buffer_stereo_position": 888,
+        "last_flushed_output": [
+          1024,
+          1024
+        ]
+      }
+    },
+    {
+      "frame": 110,
+      "cycles": 895230,
+      "data": 128,
+      "before": {
+        "count": 888912,
+        "start": 864,
+        "buffer_stereo_position": 881,
+        "last_flushed_output": [
+          160,
+          160
+        ]
+      },
+      "after": {
+        "count": 895968,
+        "start": 864,
+        "buffer_stereo_position": 888,
+        "last_flushed_output": [
+          160,
+          160
+        ]
+      }
+    },
+    {
+      "frame": 113,
+      "cycles": 895575,
+      "data": 126,
+      "before": {
+        "count": 889128,
+        "start": 72,
+        "buffer_stereo_position": 882,
+        "last_flushed_output": [
+          896,
+          896
+        ]
+      },
+      "after": {
+        "count": 896184,
+        "start": 72,
+        "buffer_stereo_position": 889,
+        "last_flushed_output": [
+          896,
+          896
+        ]
+      }
+    }
+  ],
+  "frame_states": [
+    {
+      "frame": 0,
+      "before": {
+        "count": 0,
+        "start": 0,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 72,
+        "start": 72,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          1024,
+          1024
+        ]
+      },
+      "pcm_sha256": "9b4d44e44dfb69e213c3ca7148a9582fa4abd57de467d0e906542dcff032966e",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 1,
+      "before": {
+        "count": 72,
+        "start": 72,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          1024,
+          1024
+        ]
+      },
+      "after_frame_flush": {
+        "count": 144,
+        "start": 144,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -2336,
+          -2336
+        ]
+      },
+      "pcm_sha256": "f203f1124467293bafe9e39c57907fc1efce1f9a5bff1c6acbea9d578bde04fa",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 2,
+      "before": {
+        "count": 144,
+        "start": 144,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -2336,
+          -2336
+        ]
+      },
+      "after_frame_flush": {
+        "count": 216,
+        "start": 216,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -1376,
+          -1376
+        ]
+      },
+      "pcm_sha256": "c704121dc2d8882829db98dc3f38b7257f256ee6933aaaa668102560f30c29c0",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 3,
+      "before": {
+        "count": 216,
+        "start": 216,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -1376,
+          -1376
+        ]
+      },
+      "after_frame_flush": {
+        "count": 288,
+        "start": 288,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          160,
+          160
+        ]
+      },
+      "pcm_sha256": "05a7a5d451ad1fb744856876356d2094e622b77bf3eab4a75f763d939f5cb589",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 4,
+      "before": {
+        "count": 288,
+        "start": 288,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          160,
+          160
+        ]
+      },
+      "after_frame_flush": {
+        "count": 360,
+        "start": 360,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          224,
+          224
+        ]
+      },
+      "pcm_sha256": "1f9ab51990641f32fae7fc3616df46ce0438f177966f477008ae527240d5e1ca",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 5,
+      "before": {
+        "count": 360,
+        "start": 360,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          224,
+          224
+        ]
+      },
+      "after_frame_flush": {
+        "count": 432,
+        "start": 432,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          2112,
+          2112
+        ]
+      },
+      "pcm_sha256": "4a25092e67a7773197f7d904722f0e9ed5c3d7054566ce88245ba01447a0f1f1",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 6,
+      "before": {
+        "count": 432,
+        "start": 432,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          2112,
+          2112
+        ]
+      },
+      "after_frame_flush": {
+        "count": 504,
+        "start": 504,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          416,
+          416
+        ]
+      },
+      "pcm_sha256": "a97624f4d0dd3a6694f88cb45ea28957e172f758fa2ef6346aaed904207f73ec",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 7,
+      "before": {
+        "count": 504,
+        "start": 504,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          416,
+          416
+        ]
+      },
+      "after_frame_flush": {
+        "count": 576,
+        "start": 576,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          1344,
+          1344
+        ]
+      },
+      "pcm_sha256": "99b9696d53eb5163c8262fd5a9765b50efdefde0d3437062a437f240aa2cce58",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 8,
+      "before": {
+        "count": 576,
+        "start": 576,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          1344,
+          1344
+        ]
+      },
+      "after_frame_flush": {
+        "count": 648,
+        "start": 648,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          160,
+          160
+        ]
+      },
+      "pcm_sha256": "b4c599b21c00570538176e43c8db417a64f74bc513409b47e1901a05e12dceff",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 9,
+      "before": {
+        "count": 648,
+        "start": 648,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          160,
+          160
+        ]
+      },
+      "after_frame_flush": {
+        "count": 720,
+        "start": 720,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -224,
+          -224
+        ]
+      },
+      "pcm_sha256": "c1f4990d4e537d1b1f8cd00a3b48eaf73c161932814bac2d9c4ae9def0479752",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 10,
+      "before": {
+        "count": 720,
+        "start": 720,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -224,
+          -224
+        ]
+      },
+      "after_frame_flush": {
+        "count": 792,
+        "start": 792,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          1088,
+          1088
+        ]
+      },
+      "pcm_sha256": "23829d99bfd9b454df999aafd7087368a0f2710b4d0f019005e242f5c9653618",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 11,
+      "before": {
+        "count": 792,
+        "start": 792,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          1088,
+          1088
+        ]
+      },
+      "after_frame_flush": {
+        "count": 864,
+        "start": 864,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          6016,
+          6016
+        ]
+      },
+      "pcm_sha256": "802a900b70578daa95461ad30e4faccd3360feaeeb93b9d6a250a242e1b337e2",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 12,
+      "before": {
+        "count": 864,
+        "start": 864,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          6016,
+          6016
+        ]
+      },
+      "after_frame_flush": {
+        "count": 936,
+        "start": 936,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -4960,
+          -4960
+        ]
+      },
+      "pcm_sha256": "6815f4ba0bdda13a9f062f2d0e1c6143cc900aff0d1f5b3386c0274fb1004b6c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 13,
+      "before": {
+        "count": 936,
+        "start": 936,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -4960,
+          -4960
+        ]
+      },
+      "after_frame_flush": {
+        "count": 0,
+        "start": 0,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          1408,
+          1408
+        ]
+      },
+      "pcm_sha256": "e3835ee43f04855a2488c78369a8786a57f5a87414c194a384704c065dc95f46",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 14,
+      "before": {
+        "count": 0,
+        "start": 0,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          1408,
+          1408
+        ]
+      },
+      "after_frame_flush": {
+        "count": 72,
+        "start": 72,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -2400,
+          -2400
+        ]
+      },
+      "pcm_sha256": "709b122789e8e73132fa38b18f733d71a0d4e32ed6223bffd34c4d37f07cecc2",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 15,
+      "before": {
+        "count": 72,
+        "start": 72,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -2400,
+          -2400
+        ]
+      },
+      "after_frame_flush": {
+        "count": 144,
+        "start": 144,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -32,
+          -32
+        ]
+      },
+      "pcm_sha256": "fcfef4dc40bbe69edf828da9ffe980ce74b48f5a5389074f074dccc442625136",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 16,
+      "before": {
+        "count": 144,
+        "start": 144,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -32,
+          -32
+        ]
+      },
+      "after_frame_flush": {
+        "count": 216,
+        "start": 216,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          352,
+          352
+        ]
+      },
+      "pcm_sha256": "55f79ce5915c302765e0cf3dd9c43b7a4d48e91249059d7695b1e567a32279b6",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 17,
+      "before": {
+        "count": 216,
+        "start": 216,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          352,
+          352
+        ]
+      },
+      "after_frame_flush": {
+        "count": 288,
+        "start": 288,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          1088,
+          1088
+        ]
+      },
+      "pcm_sha256": "2c10b455cc44dd04c3c67e34197f9cbb5b2fe9ac45f7be98c7433cde40ee6ae6",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 18,
+      "before": {
+        "count": 288,
+        "start": 288,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          1088,
+          1088
+        ]
+      },
+      "after_frame_flush": {
+        "count": 360,
+        "start": 360,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -3680,
+          -3680
+        ]
+      },
+      "pcm_sha256": "178c3ea6b7e76e88c9b62daf2556e074bae765f71cdd2c92af6c13a62052efba",
+      "stereo_frames": 735
+    },
+    {
+      "frame": 19,
+      "before": {
+        "count": 360,
+        "start": 360,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -3680,
+          -3680
+        ]
+      },
+      "after_frame_flush": {
+        "count": 432,
+        "start": 432,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          1472,
+          1472
+        ]
+      },
+      "pcm_sha256": "fad163a97a7bc6820df5fe917e570b63d2e0318791814476b7dd9c20596b8bfc",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 20,
+      "before": {
+        "count": 432,
+        "start": 432,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          1472,
+          1472
+        ]
+      },
+      "after_frame_flush": {
+        "count": 504,
+        "start": 504,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -2400,
+          -2400
+        ]
+      },
+      "pcm_sha256": "08575d558ee732eae8e9956714e7c638c29b2aec1c776830a3aca36bc0611986",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 21,
+      "before": {
+        "count": 504,
+        "start": 504,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -2400,
+          -2400
+        ]
+      },
+      "after_frame_flush": {
+        "count": 576,
+        "start": 576,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          480,
+          480
+        ]
+      },
+      "pcm_sha256": "cf03cd189da9ea6b86af78ffaa888030339a4f3fa8f550ef3a5fe67df6f6ed41",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 22,
+      "before": {
+        "count": 576,
+        "start": 576,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          480,
+          480
+        ]
+      },
+      "after_frame_flush": {
+        "count": 648,
+        "start": 648,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          3328,
+          3328
+        ]
+      },
+      "pcm_sha256": "1772b002c488482956f473fb1bf7f7d16b1f254ec8e556620096717c144b2063",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 23,
+      "before": {
+        "count": 648,
+        "start": 648,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          3328,
+          3328
+        ]
+      },
+      "after_frame_flush": {
+        "count": 720,
+        "start": 720,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -4704,
+          -4704
+        ]
+      },
+      "pcm_sha256": "e8cef5b19c38108eed1792b22e1f4e13919899f19d6824b844638146c04a317d",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 24,
+      "before": {
+        "count": 720,
+        "start": 720,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -4704,
+          -4704
+        ]
+      },
+      "after_frame_flush": {
+        "count": 792,
+        "start": 792,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          7360,
+          7360
+        ]
+      },
+      "pcm_sha256": "cb18a1835750e5177bc89626ab53f2d83ef66521b7fd6629c8d184b37e21be2b",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 25,
+      "before": {
+        "count": 792,
+        "start": 792,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          7360,
+          7360
+        ]
+      },
+      "after_frame_flush": {
+        "count": 864,
+        "start": 864,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -1952,
+          -1952
+        ]
+      },
+      "pcm_sha256": "02b0935c4b8172a07d1f39de02d38ede91ac90c8a36cba041c783a8adba37bff",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 26,
+      "before": {
+        "count": 864,
+        "start": 864,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -1952,
+          -1952
+        ]
+      },
+      "after_frame_flush": {
+        "count": 936,
+        "start": 936,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          8896,
+          8896
+        ]
+      },
+      "pcm_sha256": "c1f97a90b49fe9362eb5e066aedb90d09538eab0544f5c84a410f5025d8248c0",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 27,
+      "before": {
+        "count": 936,
+        "start": 936,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          8896,
+          8896
+        ]
+      },
+      "after_frame_flush": {
+        "count": 0,
+        "start": 0,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -2016,
+          -2016
+        ]
+      },
+      "pcm_sha256": "38c683537aef45adc0464ffee53375c3b07364eb6468784ace646a68640665bd",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 28,
+      "before": {
+        "count": 0,
+        "start": 0,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -2016,
+          -2016
+        ]
+      },
+      "after_frame_flush": {
+        "count": 72,
+        "start": 72,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          2624,
+          2624
+        ]
+      },
+      "pcm_sha256": "a0c01d3117ebc02ca04610470c9272bd6d36d7fd5ec44946ecf0b4b2b71b4ba8",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 29,
+      "before": {
+        "count": 72,
+        "start": 72,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          2624,
+          2624
+        ]
+      },
+      "after_frame_flush": {
+        "count": 144,
+        "start": 144,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          4736,
+          4736
+        ]
+      },
+      "pcm_sha256": "6f43a194108b5fc32ed47dc85688d5a0dc0ad26c5b45a901b60e2a18d037c485",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 30,
+      "before": {
+        "count": 144,
+        "start": 144,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          4736,
+          4736
+        ]
+      },
+      "after_frame_flush": {
+        "count": 216,
+        "start": 216,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          2368,
+          2368
+        ]
+      },
+      "pcm_sha256": "e80bed3062b468d09d0b25c5ff1c20c6da018a4853e7f5dc4a0483b3a8df2e68",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 31,
+      "before": {
+        "count": 216,
+        "start": 216,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          2368,
+          2368
+        ]
+      },
+      "after_frame_flush": {
+        "count": 288,
+        "start": 288,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          5824,
+          5824
+        ]
+      },
+      "pcm_sha256": "b052195d1634d0980f2accab325c32b2b165b1310a89b8cf4bb77353b3ed32d6",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 32,
+      "before": {
+        "count": 288,
+        "start": 288,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          5824,
+          5824
+        ]
+      },
+      "after_frame_flush": {
+        "count": 360,
+        "start": 360,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -5664,
+          -5664
+        ]
+      },
+      "pcm_sha256": "4b014c15c89eb580d506e3968d423215d0a13f1837d70697c8c4a65229c59172",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 33,
+      "before": {
+        "count": 360,
+        "start": 360,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -5664,
+          -5664
+        ]
+      },
+      "after_frame_flush": {
+        "count": 432,
+        "start": 432,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          224,
+          224
+        ]
+      },
+      "pcm_sha256": "3ab20fffd041403754efc8fe935f607a04f77de06c72a578727df65553c52fdf",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 34,
+      "before": {
+        "count": 432,
+        "start": 432,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          224,
+          224
+        ]
+      },
+      "after_frame_flush": {
+        "count": 504,
+        "start": 504,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -1504,
+          -1504
+        ]
+      },
+      "pcm_sha256": "24e9e8e86309d113d9ce5fdbd9bb03a79f52da1fcc0a655dfc06bc92ff14cf0a",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 35,
+      "before": {
+        "count": 504,
+        "start": 504,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -1504,
+          -1504
+        ]
+      },
+      "after_frame_flush": {
+        "count": 576,
+        "start": 576,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          832,
+          832
+        ]
+      },
+      "pcm_sha256": "7292f24ac6f8c1025c7726caf1dd55ff371627d7a35440f2819994fdc0386e5e",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 36,
+      "before": {
+        "count": 576,
+        "start": 576,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          832,
+          832
+        ]
+      },
+      "after_frame_flush": {
+        "count": 648,
+        "start": 648,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          480,
+          480
+        ]
+      },
+      "pcm_sha256": "8e2c54d6290245135010191ff3a5b496009b70279932016cf45c220fe7926ff2",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 37,
+      "before": {
+        "count": 648,
+        "start": 648,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          480,
+          480
+        ]
+      },
+      "after_frame_flush": {
+        "count": 720,
+        "start": 720,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -288,
+          -288
+        ]
+      },
+      "pcm_sha256": "788ef74bf58e820b7ce6fcbf2fa891454280b3ca60cfd3f48139118d36383d5c",
+      "stereo_frames": 735
+    },
+    {
+      "frame": 38,
+      "before": {
+        "count": 720,
+        "start": 720,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -288,
+          -288
+        ]
+      },
+      "after_frame_flush": {
+        "count": 792,
+        "start": 792,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -2976,
+          -2976
+        ]
+      },
+      "pcm_sha256": "14d5d6c85f6a4575737dde67937c752e38c77d9204f65750ab92e2889ac77617",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 39,
+      "before": {
+        "count": 792,
+        "start": 792,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -2976,
+          -2976
+        ]
+      },
+      "after_frame_flush": {
+        "count": 864,
+        "start": 864,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -2144,
+          -2144
+        ]
+      },
+      "pcm_sha256": "6c62213937d9442cded47eec4358b5320b218a81c4dbc55368a82ecfece9f3fe",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 40,
+      "before": {
+        "count": 864,
+        "start": 864,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -2144,
+          -2144
+        ]
+      },
+      "after_frame_flush": {
+        "count": 936,
+        "start": 936,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          352,
+          352
+        ]
+      },
+      "pcm_sha256": "9e583266d626586ce40541775795abc1823aecaea907669aee622e4a261e2b9f",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 41,
+      "before": {
+        "count": 936,
+        "start": 936,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          352,
+          352
+        ]
+      },
+      "after_frame_flush": {
+        "count": 0,
+        "start": 0,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          3008,
+          3008
+        ]
+      },
+      "pcm_sha256": "3a6271e6063bc55b888e6d97daf22dc0fcd3b456f23ce87038552a35eac4511c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 42,
+      "before": {
+        "count": 0,
+        "start": 0,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          3008,
+          3008
+        ]
+      },
+      "after_frame_flush": {
+        "count": 72,
+        "start": 72,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -5920,
+          -5920
+        ]
+      },
+      "pcm_sha256": "463862bbff3a1e34475bec088d31fd68595dd499c0d0d1d6dcd89bc5f482fa21",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 43,
+      "before": {
+        "count": 72,
+        "start": 72,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -5920,
+          -5920
+        ]
+      },
+      "after_frame_flush": {
+        "count": 144,
+        "start": 144,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          5568,
+          5568
+        ]
+      },
+      "pcm_sha256": "a043387846f7d1c365f703628fc1f39738fcfe58a05ea900fb22302e8219d1be",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 44,
+      "before": {
+        "count": 144,
+        "start": 144,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          5568,
+          5568
+        ]
+      },
+      "after_frame_flush": {
+        "count": 216,
+        "start": 216,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -5856,
+          -5856
+        ]
+      },
+      "pcm_sha256": "c3f5acd94ed3291ce09815e0e086803470903a6a29aa0d3b9f08a1d0217f4558",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 45,
+      "before": {
+        "count": 216,
+        "start": 216,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -5856,
+          -5856
+        ]
+      },
+      "after_frame_flush": {
+        "count": 288,
+        "start": 288,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -1184,
+          -1184
+        ]
+      },
+      "pcm_sha256": "10c0fb1126f48ed10146531e19161b9000e397a8f185ac9187286bc40dd5e1b9",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 46,
+      "before": {
+        "count": 288,
+        "start": 288,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -1184,
+          -1184
+        ]
+      },
+      "after_frame_flush": {
+        "count": 360,
+        "start": 360,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          4544,
+          4544
+        ]
+      },
+      "pcm_sha256": "159554fa5ed7a2004cef3dc34468cebca578f1cbc04a1fc7243268b1415665e4",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 47,
+      "before": {
+        "count": 360,
+        "start": 360,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          4544,
+          4544
+        ]
+      },
+      "after_frame_flush": {
+        "count": 432,
+        "start": 432,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -352,
+          -352
+        ]
+      },
+      "pcm_sha256": "fc3b54ad8efa3bcbf64e60c16e23431e7576df4189a79c9e3b5815093dcc79bb",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 48,
+      "before": {
+        "count": 432,
+        "start": 432,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -352,
+          -352
+        ]
+      },
+      "after_frame_flush": {
+        "count": 504,
+        "start": 504,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -2144,
+          -2144
+        ]
+      },
+      "pcm_sha256": "b907820bbb4bcaf9aadccd0bae7055aa32630bdbc8d97bbfb9dcb95439b9b18d",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 49,
+      "before": {
+        "count": 504,
+        "start": 504,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -2144,
+          -2144
+        ]
+      },
+      "after_frame_flush": {
+        "count": 576,
+        "start": 576,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          1920,
+          1920
+        ]
+      },
+      "pcm_sha256": "e0cab550e602a7a30d6e723041eefd873f00d3ef22a0eb8afdda24f90fb389a7",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 50,
+      "before": {
+        "count": 576,
+        "start": 576,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          1920,
+          1920
+        ]
+      },
+      "after_frame_flush": {
+        "count": 648,
+        "start": 648,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -992,
+          -992
+        ]
+      },
+      "pcm_sha256": "21c25b128a786cc5ab651318d1382f0f32fcee5143499883f87adf180f7daefe",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 51,
+      "before": {
+        "count": 648,
+        "start": 648,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -992,
+          -992
+        ]
+      },
+      "after_frame_flush": {
+        "count": 720,
+        "start": 720,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          8896,
+          8896
+        ]
+      },
+      "pcm_sha256": "04b737fc283a3bd7814b257888838d2f5be88c08589c0805872774fff0d584bc",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 52,
+      "before": {
+        "count": 720,
+        "start": 720,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          8896,
+          8896
+        ]
+      },
+      "after_frame_flush": {
+        "count": 792,
+        "start": 792,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          896,
+          896
+        ]
+      },
+      "pcm_sha256": "e0e6ecc58d9a408b1176aa18e94acacdfac77d4580dda053c4707b1f38427af0",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 53,
+      "before": {
+        "count": 792,
+        "start": 792,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          896,
+          896
+        ]
+      },
+      "after_frame_flush": {
+        "count": 864,
+        "start": 864,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -5536,
+          -5536
+        ]
+      },
+      "pcm_sha256": "44596e6e0bde2984fbc7229a2e952d94ebdc2e9ed39862a9f4b7591e978ade11",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 54,
+      "before": {
+        "count": 864,
+        "start": 864,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -5536,
+          -5536
+        ]
+      },
+      "after_frame_flush": {
+        "count": 936,
+        "start": 936,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          2176,
+          2176
+        ]
+      },
+      "pcm_sha256": "9e666256db24b07ba4eea5c8779628ee105ca7e60c7cadd571079390169ba97b",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 55,
+      "before": {
+        "count": 936,
+        "start": 936,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          2176,
+          2176
+        ]
+      },
+      "after_frame_flush": {
+        "count": 0,
+        "start": 0,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -4704,
+          -4704
+        ]
+      },
+      "pcm_sha256": "9167917ca1dce962bf011614afb7b78b72bd73768fc0ad300a1ed14f6d8101cf",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 56,
+      "before": {
+        "count": 0,
+        "start": 0,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -4704,
+          -4704
+        ]
+      },
+      "after_frame_flush": {
+        "count": 72,
+        "start": 72,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -608,
+          -608
+        ]
+      },
+      "pcm_sha256": "715383fe5ce007b9a1f5bd96178dce8201321cf1dc4aa9f11fd67946a64f8700",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 57,
+      "before": {
+        "count": 72,
+        "start": 72,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -608,
+          -608
+        ]
+      },
+      "after_frame_flush": {
+        "count": 144,
+        "start": 144,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -2656,
+          -2656
+        ]
+      },
+      "pcm_sha256": "634677e3b8278e5f97f50b8c2cf84e9af4703f28113295e0a3a175d13a667387",
+      "stereo_frames": 735
+    },
+    {
+      "frame": 58,
+      "before": {
+        "count": 144,
+        "start": 144,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -2656,
+          -2656
+        ]
+      },
+      "after_frame_flush": {
+        "count": 216,
+        "start": 216,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          3840,
+          3840
+        ]
+      },
+      "pcm_sha256": "92196b16a556048b51bfb08780a982ad47d9331a29622810d551dc8fcc8d86aa",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 59,
+      "before": {
+        "count": 216,
+        "start": 216,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          3840,
+          3840
+        ]
+      },
+      "after_frame_flush": {
+        "count": 288,
+        "start": 288,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          2368,
+          2368
+        ]
+      },
+      "pcm_sha256": "8d3c2c6e81d93aeeac45607d70c99dcf5b2f9b27db2d2dbb453b381f319df02a",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 60,
+      "before": {
+        "count": 288,
+        "start": 288,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          2368,
+          2368
+        ]
+      },
+      "after_frame_flush": {
+        "count": 360,
+        "start": 360,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -416,
+          -416
+        ]
+      },
+      "pcm_sha256": "b2b90d65302a9d336898f029207a83204dcfd3e931c3bacb84fbd1e192a290de",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 61,
+      "before": {
+        "count": 360,
+        "start": 360,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -416,
+          -416
+        ]
+      },
+      "after_frame_flush": {
+        "count": 432,
+        "start": 432,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          2112,
+          2112
+        ]
+      },
+      "pcm_sha256": "b47e32793c6a4c94ccb5d74762aa7c361d69e37f2030c136546852defeb98d4b",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 62,
+      "before": {
+        "count": 432,
+        "start": 432,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          2112,
+          2112
+        ]
+      },
+      "after_frame_flush": {
+        "count": 504,
+        "start": 504,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          7232,
+          7232
+        ]
+      },
+      "pcm_sha256": "b57ad20a5e53fbb84b809306b370b5575b7094300ccd664ef5e03f3b3ee1b33f",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 63,
+      "before": {
+        "count": 504,
+        "start": 504,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          7232,
+          7232
+        ]
+      },
+      "after_frame_flush": {
+        "count": 576,
+        "start": 576,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          224,
+          224
+        ]
+      },
+      "pcm_sha256": "e4576d2c9ad0f941a95cb8a3128ef315d1a164d24b490563b531fc0911d2ac54",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 64,
+      "before": {
+        "count": 576,
+        "start": 576,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          224,
+          224
+        ]
+      },
+      "after_frame_flush": {
+        "count": 648,
+        "start": 648,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          32,
+          32
+        ]
+      },
+      "pcm_sha256": "ea5ceb91c8cee8da01026f935e58f7b51dd2db6aafb660a5ef7be1b9d69bd404",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 65,
+      "before": {
+        "count": 648,
+        "start": 648,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          32,
+          32
+        ]
+      },
+      "after_frame_flush": {
+        "count": 720,
+        "start": 720,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          5888,
+          5888
+        ]
+      },
+      "pcm_sha256": "f5fbba8d63b362e8a33259a87b6aa381395710e8fac491e4f1aef76ee2311be9",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 66,
+      "before": {
+        "count": 720,
+        "start": 720,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          5888,
+          5888
+        ]
+      },
+      "after_frame_flush": {
+        "count": 792,
+        "start": 792,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          2496,
+          2496
+        ]
+      },
+      "pcm_sha256": "bb0186479f51728db5e6ad785c5eda533c9eb1e018d70fd137bfa6d346358ea2",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 67,
+      "before": {
+        "count": 792,
+        "start": 792,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          2496,
+          2496
+        ]
+      },
+      "after_frame_flush": {
+        "count": 864,
+        "start": 864,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -1312,
+          -1312
+        ]
+      },
+      "pcm_sha256": "24215510bacecb8d4e82fa1709b73f4940ce0c94afa9d023c7ee7a089de1755c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 68,
+      "before": {
+        "count": 864,
+        "start": 864,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -1312,
+          -1312
+        ]
+      },
+      "after_frame_flush": {
+        "count": 936,
+        "start": 936,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          5952,
+          5952
+        ]
+      },
+      "pcm_sha256": "14076f0085efa16c6bf5fb8f0e5e6f5b2966f804f244d4792255dcf03db24732",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 69,
+      "before": {
+        "count": 936,
+        "start": 936,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          5952,
+          5952
+        ]
+      },
+      "after_frame_flush": {
+        "count": 0,
+        "start": 0,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          1920,
+          1920
+        ]
+      },
+      "pcm_sha256": "024db33e8eab5e6d7de2025972ca0990c3c915f31a7da0afa6138387ae9258aa",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 70,
+      "before": {
+        "count": 0,
+        "start": 0,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          1920,
+          1920
+        ]
+      },
+      "after_frame_flush": {
+        "count": 72,
+        "start": 72,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          8896,
+          8896
+        ]
+      },
+      "pcm_sha256": "543f9553aea2a580ceaad2523cdd8a791da026764795274821f11b16df4d6eaa",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 71,
+      "before": {
+        "count": 72,
+        "start": 72,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          8896,
+          8896
+        ]
+      },
+      "after_frame_flush": {
+        "count": 144,
+        "start": 144,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -800,
+          -800
+        ]
+      },
+      "pcm_sha256": "782fe3afa740fd65dd8b84882e00bbf538bcc39d8d820fe281c26ab033d8359d",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 72,
+      "before": {
+        "count": 144,
+        "start": 144,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -800,
+          -800
+        ]
+      },
+      "after_frame_flush": {
+        "count": 216,
+        "start": 216,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          3712,
+          3712
+        ]
+      },
+      "pcm_sha256": "4ab77c044a10b5a5f96edd427c6f280a180050723ce8f5f07cd057a5a0e7adec",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 73,
+      "before": {
+        "count": 216,
+        "start": 216,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          3712,
+          3712
+        ]
+      },
+      "after_frame_flush": {
+        "count": 288,
+        "start": 288,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          3008,
+          3008
+        ]
+      },
+      "pcm_sha256": "6a0472f6236c010849be1a6d8654df8bf0cb14aef23971b576965c34c024b5dc",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 74,
+      "before": {
+        "count": 288,
+        "start": 288,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          3008,
+          3008
+        ]
+      },
+      "after_frame_flush": {
+        "count": 360,
+        "start": 360,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          4096,
+          4096
+        ]
+      },
+      "pcm_sha256": "417d29dabc109bdda67d39a051f865c68330d9b786f1927ccd249608fac3a0c3",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 75,
+      "before": {
+        "count": 360,
+        "start": 360,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          4096,
+          4096
+        ]
+      },
+      "after_frame_flush": {
+        "count": 432,
+        "start": 432,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          1664,
+          1664
+        ]
+      },
+      "pcm_sha256": "a54aaf7e565776b62eb4cf3202955542a22405ba2f08b41b28c58c7f90e09b64",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 76,
+      "before": {
+        "count": 432,
+        "start": 432,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          1664,
+          1664
+        ]
+      },
+      "after_frame_flush": {
+        "count": 504,
+        "start": 504,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -416,
+          -416
+        ]
+      },
+      "pcm_sha256": "f1f66b8b7a00743a82201af7b672ca1e0217848c0caf02011d23e7ad9ab8d8a1",
+      "stereo_frames": 735
+    },
+    {
+      "frame": 77,
+      "before": {
+        "count": 504,
+        "start": 504,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -416,
+          -416
+        ]
+      },
+      "after_frame_flush": {
+        "count": 576,
+        "start": 576,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          4544,
+          4544
+        ]
+      },
+      "pcm_sha256": "f5e2de785e9c0034055d6705d86c04f159b1fe2639eb5644f2ae66c0a6706a83",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 78,
+      "before": {
+        "count": 576,
+        "start": 576,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          4544,
+          4544
+        ]
+      },
+      "after_frame_flush": {
+        "count": 648,
+        "start": 648,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -1632,
+          -1632
+        ]
+      },
+      "pcm_sha256": "9d74b3ef08f8682f6b312b792fbcbdaa3e9bdd76f2fc712dd079b8867038ef92",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 79,
+      "before": {
+        "count": 648,
+        "start": 648,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -1632,
+          -1632
+        ]
+      },
+      "after_frame_flush": {
+        "count": 720,
+        "start": 720,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          4864,
+          4864
+        ]
+      },
+      "pcm_sha256": "5ad3bc9ce614227edf99436f0a44fc8da9449fb5a2fe2397009370a907056a4a",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 80,
+      "before": {
+        "count": 720,
+        "start": 720,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          4864,
+          4864
+        ]
+      },
+      "after_frame_flush": {
+        "count": 792,
+        "start": 792,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          3712,
+          3712
+        ]
+      },
+      "pcm_sha256": "037e21c23350440bec02ceeb52e256f78721e6f07c3949761385ca119c0652f8",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 81,
+      "before": {
+        "count": 792,
+        "start": 792,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          3712,
+          3712
+        ]
+      },
+      "after_frame_flush": {
+        "count": 864,
+        "start": 864,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -480,
+          -480
+        ]
+      },
+      "pcm_sha256": "ec32f8f03696828ff3baae6bac2de4cd76e8ababd1263033e44eecabc8df08b0",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 82,
+      "before": {
+        "count": 864,
+        "start": 864,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -480,
+          -480
+        ]
+      },
+      "after_frame_flush": {
+        "count": 936,
+        "start": 936,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          1408,
+          1408
+        ]
+      },
+      "pcm_sha256": "240d78791d3ff11119592e66b8149f8833c86a9baa74dfad07fa62f21c6d2ac3",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 83,
+      "before": {
+        "count": 936,
+        "start": 936,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          1408,
+          1408
+        ]
+      },
+      "after_frame_flush": {
+        "count": 0,
+        "start": 0,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -928,
+          -928
+        ]
+      },
+      "pcm_sha256": "58f9e1476a992365930b88954951bf6b86258853d66a182c8655df544866a5f0",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 84,
+      "before": {
+        "count": 0,
+        "start": 0,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -928,
+          -928
+        ]
+      },
+      "after_frame_flush": {
+        "count": 72,
+        "start": 72,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          3392,
+          3392
+        ]
+      },
+      "pcm_sha256": "9f526eed4bbac3938f5052154b6bc2d778b18efad770662eb27b1de549c964d4",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 85,
+      "before": {
+        "count": 72,
+        "start": 72,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          3392,
+          3392
+        ]
+      },
+      "after_frame_flush": {
+        "count": 144,
+        "start": 144,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -3872,
+          -3872
+        ]
+      },
+      "pcm_sha256": "cabbd37743505e40fe2893678ac51eca6d9b5c369253d100503fde39f5cf973d",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 86,
+      "before": {
+        "count": 144,
+        "start": 144,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -3872,
+          -3872
+        ]
+      },
+      "after_frame_flush": {
+        "count": 216,
+        "start": 216,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          2240,
+          2240
+        ]
+      },
+      "pcm_sha256": "0cc3bbc15d65e21973139954d71f754833e73d84547622ccdc42de4b088a306e",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 87,
+      "before": {
+        "count": 216,
+        "start": 216,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          2240,
+          2240
+        ]
+      },
+      "after_frame_flush": {
+        "count": 288,
+        "start": 288,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -928,
+          -928
+        ]
+      },
+      "pcm_sha256": "c6f7e999bdc5d2617b0f7276245aaf0446a7a66731ab5719d66fd59b0d59e9ba",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 88,
+      "before": {
+        "count": 288,
+        "start": 288,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -928,
+          -928
+        ]
+      },
+      "after_frame_flush": {
+        "count": 360,
+        "start": 360,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          3456,
+          3456
+        ]
+      },
+      "pcm_sha256": "103f473836855c7062853a20f06314a8c65e2a84ee8dcaad0a80a44cb9480759",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 89,
+      "before": {
+        "count": 360,
+        "start": 360,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          3456,
+          3456
+        ]
+      },
+      "after_frame_flush": {
+        "count": 432,
+        "start": 432,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          3264,
+          3264
+        ]
+      },
+      "pcm_sha256": "98cd774197aeed3d1ab0994dbd5f21513f5c616680bf390f2617aa0329577dc0",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 90,
+      "before": {
+        "count": 432,
+        "start": 432,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          3264,
+          3264
+        ]
+      },
+      "after_frame_flush": {
+        "count": 504,
+        "start": 504,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          7296,
+          7296
+        ]
+      },
+      "pcm_sha256": "dd04746a82bddff75b9cb43d79591ffe69f9d060b659fea39a079fe63911a21d",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 91,
+      "before": {
+        "count": 504,
+        "start": 504,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          7296,
+          7296
+        ]
+      },
+      "after_frame_flush": {
+        "count": 576,
+        "start": 576,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -2144,
+          -2144
+        ]
+      },
+      "pcm_sha256": "02e653709f5bb149dfa2c47cfc0f95896c2ce0d69a129ffcafc20bfb2ed13d17",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 92,
+      "before": {
+        "count": 576,
+        "start": 576,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -2144,
+          -2144
+        ]
+      },
+      "after_frame_flush": {
+        "count": 648,
+        "start": 648,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -1824,
+          -1824
+        ]
+      },
+      "pcm_sha256": "861c1af4275808124aea4563975e966936e1e7489f8ccb6299b13f3c2e9eec9b",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 93,
+      "before": {
+        "count": 648,
+        "start": 648,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -1824,
+          -1824
+        ]
+      },
+      "after_frame_flush": {
+        "count": 720,
+        "start": 720,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -7648,
+          -7648
+        ]
+      },
+      "pcm_sha256": "b0e2a9f398951ca41c5cfcec5bc9385f404f932016ce34e12e0fdd28d84f5b19",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 94,
+      "before": {
+        "count": 720,
+        "start": 720,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -7648,
+          -7648
+        ]
+      },
+      "after_frame_flush": {
+        "count": 792,
+        "start": 792,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          1984,
+          1984
+        ]
+      },
+      "pcm_sha256": "3b5fc28d7f03ce97c1828af40ef2d7039ce5fdbf3b52278f704582af1c391f7d",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 95,
+      "before": {
+        "count": 792,
+        "start": 792,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          1984,
+          1984
+        ]
+      },
+      "after_frame_flush": {
+        "count": 864,
+        "start": 864,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          4608,
+          4608
+        ]
+      },
+      "pcm_sha256": "86bc1f60a6b4b013955eadf9fd8e9b08b48d52346d145973f5742e8c86d3ccc6",
+      "stereo_frames": 735
+    },
+    {
+      "frame": 96,
+      "before": {
+        "count": 864,
+        "start": 864,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          4608,
+          4608
+        ]
+      },
+      "after_frame_flush": {
+        "count": 936,
+        "start": 936,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -1760,
+          -1760
+        ]
+      },
+      "pcm_sha256": "d031835f1e9058dcaebd1edcb6d5dd94a8a1c6e1f46d0570420eed66e6df25f8",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 97,
+      "before": {
+        "count": 936,
+        "start": 936,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -1760,
+          -1760
+        ]
+      },
+      "after_frame_flush": {
+        "count": 0,
+        "start": 0,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -7008,
+          -7008
+        ]
+      },
+      "pcm_sha256": "1f54bd73c7f112b1e15bfcb20373b45ab276f21bf67588f09ac7750554e93116",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 98,
+      "before": {
+        "count": 0,
+        "start": 0,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -7008,
+          -7008
+        ]
+      },
+      "after_frame_flush": {
+        "count": 72,
+        "start": 72,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -7648,
+          -7648
+        ]
+      },
+      "pcm_sha256": "a4766323d58e7e58d973eb0cb160b51f47581bec38e85e1b14245a131068efa9",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 99,
+      "before": {
+        "count": 72,
+        "start": 72,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -7648,
+          -7648
+        ]
+      },
+      "after_frame_flush": {
+        "count": 144,
+        "start": 144,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          4096,
+          4096
+        ]
+      },
+      "pcm_sha256": "480587a7405b8951dbf781280472496c1e4d8c1c992f610a66f181a82cb50b57",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 100,
+      "before": {
+        "count": 144,
+        "start": 144,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          4096,
+          4096
+        ]
+      },
+      "after_frame_flush": {
+        "count": 216,
+        "start": 216,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          3136,
+          3136
+        ]
+      },
+      "pcm_sha256": "7e893e515773b837180485aa19bda0b11e8ee7b012ec5777a1928df352ddb055",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 101,
+      "before": {
+        "count": 216,
+        "start": 216,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          3136,
+          3136
+        ]
+      },
+      "after_frame_flush": {
+        "count": 288,
+        "start": 288,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          2944,
+          2944
+        ]
+      },
+      "pcm_sha256": "fa5e0c2b7417ab49578f36fbef922355ad2b207f9d30f0c912e91df51b7f5e63",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 102,
+      "before": {
+        "count": 288,
+        "start": 288,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          2944,
+          2944
+        ]
+      },
+      "after_frame_flush": {
+        "count": 360,
+        "start": 360,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          1472,
+          1472
+        ]
+      },
+      "pcm_sha256": "1d83ad147c43d45e0c7b55d4d36ec98bdad53f6edebe1e36cb962ef36b1d36ba",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 103,
+      "before": {
+        "count": 360,
+        "start": 360,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          1472,
+          1472
+        ]
+      },
+      "after_frame_flush": {
+        "count": 432,
+        "start": 432,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          1152,
+          1152
+        ]
+      },
+      "pcm_sha256": "06233f14b442a40a6e579bd8b54d2370443dc6d2ad0149095faac0dfab2b43c7",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 104,
+      "before": {
+        "count": 432,
+        "start": 432,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          1152,
+          1152
+        ]
+      },
+      "after_frame_flush": {
+        "count": 504,
+        "start": 504,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          1024,
+          1024
+        ]
+      },
+      "pcm_sha256": "cef5267276578bc008ca20e7e93effcbeaa341634f11f2aaa72e07385f6d7f16",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 105,
+      "before": {
+        "count": 504,
+        "start": 504,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          1024,
+          1024
+        ]
+      },
+      "after_frame_flush": {
+        "count": 576,
+        "start": 576,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -416,
+          -416
+        ]
+      },
+      "pcm_sha256": "db14c6803641b616dc25004125175c57d21c62254791a1648cbe3a9f536bfb6a",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 106,
+      "before": {
+        "count": 576,
+        "start": 576,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -416,
+          -416
+        ]
+      },
+      "after_frame_flush": {
+        "count": 648,
+        "start": 648,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -352,
+          -352
+        ]
+      },
+      "pcm_sha256": "0b2f515d489c22ae37d4582d1ddb2df0735f795b02c027b7b06e46d786705e35",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 107,
+      "before": {
+        "count": 648,
+        "start": 648,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -352,
+          -352
+        ]
+      },
+      "after_frame_flush": {
+        "count": 720,
+        "start": 720,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          224,
+          224
+        ]
+      },
+      "pcm_sha256": "197059ca195d7c5a90f0da1b9c1a018e1f69bc31448f5653754fbf2379a9dda2",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 108,
+      "before": {
+        "count": 720,
+        "start": 720,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          224,
+          224
+        ]
+      },
+      "after_frame_flush": {
+        "count": 792,
+        "start": 792,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -160,
+          -160
+        ]
+      },
+      "pcm_sha256": "30817a36df92c2582e92a6011377271afee0260adbce3589110c9d2c269c8562",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 109,
+      "before": {
+        "count": 792,
+        "start": 792,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          -160,
+          -160
+        ]
+      },
+      "after_frame_flush": {
+        "count": 864,
+        "start": 864,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          160,
+          160
+        ]
+      },
+      "pcm_sha256": "1f853743be00aca1e212398fa779b25f7161c7e240a258e203056f6a631d2383",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 110,
+      "before": {
+        "count": 864,
+        "start": 864,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          160,
+          160
+        ]
+      },
+      "after_frame_flush": {
+        "count": 936,
+        "start": 936,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "d62ede591c85276cb4337cfe4ad4e002731055cb5a14db53e6ccb0c7737b4e60",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 111,
+      "before": {
+        "count": 936,
+        "start": 936,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 0,
+        "start": 0,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "775281b40dca459179f0d687facb6a98626755fc49f1f61bd590061c728ceca4",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 112,
+      "before": {
+        "count": 0,
+        "start": 0,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 72,
+        "start": 72,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          896,
+          896
+        ]
+      },
+      "pcm_sha256": "b903e112aec3d2294c25fb8dff81c086945004475c2efdb5bf09f5f6f7c22869",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 113,
+      "before": {
+        "count": 72,
+        "start": 72,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          896,
+          896
+        ]
+      },
+      "after_frame_flush": {
+        "count": 144,
+        "start": 144,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          416,
+          416
+        ]
+      },
+      "pcm_sha256": "513d259e6d3b0a57854713d2414fabc5edbe574e93640762b6c4bf4b013002e4",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 114,
+      "before": {
+        "count": 144,
+        "start": 144,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          416,
+          416
+        ]
+      },
+      "after_frame_flush": {
+        "count": 216,
+        "start": 216,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "074c16c6f60129f7d4cbaca773ee4da4f700081ff578723c3fabd0e04268ed9a",
+      "stereo_frames": 735
+    },
+    {
+      "frame": 115,
+      "before": {
+        "count": 216,
+        "start": 216,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 288,
+        "start": 288,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "74cd4ce12ed8952b03d5706de964ea06d960ebf40535b41ed9ae36cec57be674",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 116,
+      "before": {
+        "count": 288,
+        "start": 288,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 360,
+        "start": 360,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "dc44942b77dd09114b44f37ba7ea7eb0c0a4af6c726a96e9344265204391dfd2",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 117,
+      "before": {
+        "count": 360,
+        "start": 360,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 432,
+        "start": 432,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "f20f7db0811aa37532934aa128492f10561d45566242b7b37b5dfb272cfe5970",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 118,
+      "before": {
+        "count": 432,
+        "start": 432,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 504,
+        "start": 504,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "78fe4665d216e7e425a0e60b1db33e7884ed9bcf0847d714918c009d0190c0fe",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 119,
+      "before": {
+        "count": 504,
+        "start": 504,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 576,
+        "start": 576,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "85e59f7e1bb5b3c5e95cccaa8b311f46d61a630145f38ada2c1c6f8ee0ece90c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 120,
+      "before": {
+        "count": 576,
+        "start": 576,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 648,
+        "start": 648,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "85e59f7e1bb5b3c5e95cccaa8b311f46d61a630145f38ada2c1c6f8ee0ece90c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 121,
+      "before": {
+        "count": 648,
+        "start": 648,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 720,
+        "start": 720,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "85e59f7e1bb5b3c5e95cccaa8b311f46d61a630145f38ada2c1c6f8ee0ece90c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 122,
+      "before": {
+        "count": 720,
+        "start": 720,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 792,
+        "start": 792,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "85e59f7e1bb5b3c5e95cccaa8b311f46d61a630145f38ada2c1c6f8ee0ece90c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 123,
+      "before": {
+        "count": 792,
+        "start": 792,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 864,
+        "start": 864,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "85e59f7e1bb5b3c5e95cccaa8b311f46d61a630145f38ada2c1c6f8ee0ece90c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 124,
+      "before": {
+        "count": 864,
+        "start": 864,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 936,
+        "start": 936,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "85e59f7e1bb5b3c5e95cccaa8b311f46d61a630145f38ada2c1c6f8ee0ece90c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 125,
+      "before": {
+        "count": 936,
+        "start": 936,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 0,
+        "start": 0,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "85e59f7e1bb5b3c5e95cccaa8b311f46d61a630145f38ada2c1c6f8ee0ece90c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 126,
+      "before": {
+        "count": 0,
+        "start": 0,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 72,
+        "start": 72,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "85e59f7e1bb5b3c5e95cccaa8b311f46d61a630145f38ada2c1c6f8ee0ece90c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 127,
+      "before": {
+        "count": 72,
+        "start": 72,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 144,
+        "start": 144,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "85e59f7e1bb5b3c5e95cccaa8b311f46d61a630145f38ada2c1c6f8ee0ece90c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 128,
+      "before": {
+        "count": 144,
+        "start": 144,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 216,
+        "start": 216,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "85e59f7e1bb5b3c5e95cccaa8b311f46d61a630145f38ada2c1c6f8ee0ece90c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 129,
+      "before": {
+        "count": 216,
+        "start": 216,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 288,
+        "start": 288,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "85e59f7e1bb5b3c5e95cccaa8b311f46d61a630145f38ada2c1c6f8ee0ece90c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 130,
+      "before": {
+        "count": 288,
+        "start": 288,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 360,
+        "start": 360,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "85e59f7e1bb5b3c5e95cccaa8b311f46d61a630145f38ada2c1c6f8ee0ece90c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 131,
+      "before": {
+        "count": 360,
+        "start": 360,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 432,
+        "start": 432,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "85e59f7e1bb5b3c5e95cccaa8b311f46d61a630145f38ada2c1c6f8ee0ece90c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 132,
+      "before": {
+        "count": 432,
+        "start": 432,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 504,
+        "start": 504,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "85e59f7e1bb5b3c5e95cccaa8b311f46d61a630145f38ada2c1c6f8ee0ece90c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 133,
+      "before": {
+        "count": 504,
+        "start": 504,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 576,
+        "start": 576,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "41c3d9c4303767eabb2d81a074700fa2a110487f56d66960ef7f8d1fb678f15c",
+      "stereo_frames": 735
+    },
+    {
+      "frame": 134,
+      "before": {
+        "count": 576,
+        "start": 576,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 648,
+        "start": 648,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "85e59f7e1bb5b3c5e95cccaa8b311f46d61a630145f38ada2c1c6f8ee0ece90c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 135,
+      "before": {
+        "count": 648,
+        "start": 648,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 720,
+        "start": 720,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "85e59f7e1bb5b3c5e95cccaa8b311f46d61a630145f38ada2c1c6f8ee0ece90c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 136,
+      "before": {
+        "count": 720,
+        "start": 720,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 792,
+        "start": 792,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "85e59f7e1bb5b3c5e95cccaa8b311f46d61a630145f38ada2c1c6f8ee0ece90c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 137,
+      "before": {
+        "count": 792,
+        "start": 792,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 864,
+        "start": 864,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "85e59f7e1bb5b3c5e95cccaa8b311f46d61a630145f38ada2c1c6f8ee0ece90c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 138,
+      "before": {
+        "count": 864,
+        "start": 864,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 936,
+        "start": 936,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "85e59f7e1bb5b3c5e95cccaa8b311f46d61a630145f38ada2c1c6f8ee0ece90c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 139,
+      "before": {
+        "count": 936,
+        "start": 936,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 0,
+        "start": 0,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "85e59f7e1bb5b3c5e95cccaa8b311f46d61a630145f38ada2c1c6f8ee0ece90c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 140,
+      "before": {
+        "count": 0,
+        "start": 0,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 72,
+        "start": 72,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "85e59f7e1bb5b3c5e95cccaa8b311f46d61a630145f38ada2c1c6f8ee0ece90c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 141,
+      "before": {
+        "count": 72,
+        "start": 72,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 144,
+        "start": 144,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "85e59f7e1bb5b3c5e95cccaa8b311f46d61a630145f38ada2c1c6f8ee0ece90c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 142,
+      "before": {
+        "count": 144,
+        "start": 144,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 216,
+        "start": 216,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "85e59f7e1bb5b3c5e95cccaa8b311f46d61a630145f38ada2c1c6f8ee0ece90c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 143,
+      "before": {
+        "count": 216,
+        "start": 216,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 288,
+        "start": 288,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "85e59f7e1bb5b3c5e95cccaa8b311f46d61a630145f38ada2c1c6f8ee0ece90c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 144,
+      "before": {
+        "count": 288,
+        "start": 288,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 360,
+        "start": 360,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "85e59f7e1bb5b3c5e95cccaa8b311f46d61a630145f38ada2c1c6f8ee0ece90c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 145,
+      "before": {
+        "count": 360,
+        "start": 360,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 432,
+        "start": 432,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "85e59f7e1bb5b3c5e95cccaa8b311f46d61a630145f38ada2c1c6f8ee0ece90c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 146,
+      "before": {
+        "count": 432,
+        "start": 432,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 504,
+        "start": 504,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "85e59f7e1bb5b3c5e95cccaa8b311f46d61a630145f38ada2c1c6f8ee0ece90c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 147,
+      "before": {
+        "count": 504,
+        "start": 504,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 576,
+        "start": 576,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "85e59f7e1bb5b3c5e95cccaa8b311f46d61a630145f38ada2c1c6f8ee0ece90c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 148,
+      "before": {
+        "count": 576,
+        "start": 576,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 648,
+        "start": 648,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "85e59f7e1bb5b3c5e95cccaa8b311f46d61a630145f38ada2c1c6f8ee0ece90c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 149,
+      "before": {
+        "count": 648,
+        "start": 648,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 720,
+        "start": 720,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "85e59f7e1bb5b3c5e95cccaa8b311f46d61a630145f38ada2c1c6f8ee0ece90c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 150,
+      "before": {
+        "count": 720,
+        "start": 720,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 792,
+        "start": 792,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "85e59f7e1bb5b3c5e95cccaa8b311f46d61a630145f38ada2c1c6f8ee0ece90c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 151,
+      "before": {
+        "count": 792,
+        "start": 792,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 864,
+        "start": 864,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "85e59f7e1bb5b3c5e95cccaa8b311f46d61a630145f38ada2c1c6f8ee0ece90c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 152,
+      "before": {
+        "count": 864,
+        "start": 864,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 936,
+        "start": 936,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "41c3d9c4303767eabb2d81a074700fa2a110487f56d66960ef7f8d1fb678f15c",
+      "stereo_frames": 735
+    },
+    {
+      "frame": 153,
+      "before": {
+        "count": 936,
+        "start": 936,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 0,
+        "start": 0,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "85e59f7e1bb5b3c5e95cccaa8b311f46d61a630145f38ada2c1c6f8ee0ece90c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 154,
+      "before": {
+        "count": 0,
+        "start": 0,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 72,
+        "start": 72,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "85e59f7e1bb5b3c5e95cccaa8b311f46d61a630145f38ada2c1c6f8ee0ece90c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 155,
+      "before": {
+        "count": 72,
+        "start": 72,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 144,
+        "start": 144,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "85e59f7e1bb5b3c5e95cccaa8b311f46d61a630145f38ada2c1c6f8ee0ece90c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 156,
+      "before": {
+        "count": 144,
+        "start": 144,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 216,
+        "start": 216,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "85e59f7e1bb5b3c5e95cccaa8b311f46d61a630145f38ada2c1c6f8ee0ece90c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 157,
+      "before": {
+        "count": 216,
+        "start": 216,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 288,
+        "start": 288,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "85e59f7e1bb5b3c5e95cccaa8b311f46d61a630145f38ada2c1c6f8ee0ece90c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 158,
+      "before": {
+        "count": 288,
+        "start": 288,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 360,
+        "start": 360,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "85e59f7e1bb5b3c5e95cccaa8b311f46d61a630145f38ada2c1c6f8ee0ece90c",
+      "stereo_frames": 736
+    },
+    {
+      "frame": 159,
+      "before": {
+        "count": 360,
+        "start": 360,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "after_frame_flush": {
+        "count": 432,
+        "start": 432,
+        "buffer_stereo_position": 0,
+        "last_flushed_output": [
+          768,
+          768
+        ]
+      },
+      "pcm_sha256": "85e59f7e1bb5b3c5e95cccaa8b311f46d61a630145f38ada2c1c6f8ee0ece90c",
+      "stereo_frames": 736
+    }
+  ],
+  "errors": [],
+  "probe_sha256": "a70105841cd1a621d21dce880e4f6f882a95eca689ec139e64ab266920a221c7",
+  "boundary_frame": 83
+}

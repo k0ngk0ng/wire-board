@@ -1,0 +1,5 @@
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips/psg","Action":"build-output","Output":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips/psg: no non-test Go files in /Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/games/yuyuhakusho/audio/chips/psg\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips/psg","Action":"build-fail"}
+{"Time":"2026-11-06T00:32:05.292002+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips/psg"}
+{"Time":"2026-11-06T00:32:05.292051+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips/psg","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips/psg [build failed]\n"}
+{"Time":"2026-11-06T00:32:05.292057+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips/psg","Elapsed":0,"FailedBuild":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips/psg"}

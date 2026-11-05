@@ -1,0 +1,208 @@
+package psg_test
+
+import (
+	"compress/gzip"
+	"encoding/json"
+	"math"
+	"os"
+	"reflect"
+	"testing"
+
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips/psg"
+)
+
+type fixture struct {
+	Cases []struct {
+		Name       string
+		Initial    psg.State
+		Operations []struct {
+			Kind  string
+			Cycle uint64
+			Data  uint8
+			State psg.State
+			Edges []psg.Edge
+		}
+	}
+}
+
+func native(t *testing.T) fixture {
+	t.Helper()
+	f, err := os.Open("testdata/native.json.gz")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer f.Close()
+	z, err := gzip.NewReader(f)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer z.Close()
+	var value fixture
+	if err = json.NewDecoder(z).Decode(&value); err != nil {
+		t.Fatal(err)
+	}
+	return value
+}
+
+func TestNativeContinuousEdgesAndState(t *testing.T) {
+	for _, c := range native(t).Cases {
+		t.Run(c.Name, func(t *testing.T) {
+			s, err := psg.New(psg.IntegratedHQ150Stereo, c.Initial)
+			if err != nil {
+				t.Fatal(err)
+			}
+			for i, op := range c.Operations {
+				var edges []psg.Edge
+				if op.Kind == "write" {
+					edges, err = s.Write(psg.Event{Cycle: op.Cycle, Data: op.Data})
+				} else if op.Kind == "frame" {
+					edges, err = s.FrameBoundary(op.Cycle)
+				} else {
+					edges, err = s.Advance(op.Cycle)
+				}
+				if err != nil {
+					t.Fatalf("op %d: %v", i, err)
+				}
+				if len(edges) != len(op.Edges) || !reflect.DeepEqual(append([]psg.Edge{}, edges...), append([]psg.Edge{}, op.Edges...)) {
+					t.Fatalf("op %d edge mismatch: got %v want %v", i, edges, op.Edges)
+				}
+				if !reflect.DeepEqual(s.Snapshot(), op.State) {
+					t.Fatalf("op %d state mismatch: got %+v want %+v", i, s.Snapshot(), op.State)
+				}
+				if i%7 == 0 {
+					saved := s.Snapshot()
+					s, err = psg.New(psg.IntegratedHQ150Stereo, saved)
+					if err != nil {
+						t.Fatal(err)
+					}
+				}
+			}
+		})
+	}
+}
+
+func TestRestoreBoundariesAndAtomicFailure(t *testing.T) {
+	s, err := psg.New(psg.IntegratedHQ150Stereo, psg.ResetState())
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, e := range []psg.Event{{Cycle: 0, Data: 0x80}, {Cycle: 0, Data: 0x01}, {Cycle: 1, Data: 0x90}, {Cycle: 239, Data: 0x98}, {Cycle: 239, Data: 0x92}} {
+		if _, err = s.Write(e); err != nil {
+			t.Fatal(err)
+		}
+	}
+	before := s.Snapshot()
+	if _, err = s.Write(psg.Event{Cycle: 238, Data: 0x9f}); err == nil {
+		t.Fatal("reversed write accepted")
+	}
+	if s.Snapshot() != before {
+		t.Fatal("reversed write mutated state")
+	}
+	if _, err = s.Advance(before.Cursor + psg.MaxAdvanceCycles + 1); err == nil {
+		t.Fatal("unbounded advance accepted")
+	}
+	if s.Snapshot() != before {
+		t.Fatal("unbounded advance mutated state")
+	}
+	if _, err = psg.New(99, before); err == nil {
+		t.Fatal("unknown profile accepted")
+	}
+	bad := before
+	bad.Latch = 8
+	if _, err = psg.New(psg.IntegratedHQ150Stereo, bad); err == nil {
+		t.Fatal("bad latch accepted")
+	}
+	bad = before
+	bad.NoiseShift = 0
+	if _, err = psg.New(psg.IntegratedHQ150Stereo, bad); err == nil {
+		t.Fatal("zero LSFR accepted")
+	}
+	bad = before
+	bad.ToneDivider[0] = 1024
+	if _, err = psg.New(psg.IntegratedHQ150Stereo, bad); err == nil {
+		t.Fatal("large divider accepted")
+	}
+	bad = before
+	bad.Level[1] = 2799
+	if _, err = psg.New(psg.IntegratedHQ150Stereo, bad); err == nil {
+		t.Fatal("unknown level accepted")
+	}
+	bad = before
+	bad.NextTick = 0
+	if _, err = psg.New(psg.IntegratedHQ150Stereo, bad); err == nil {
+		t.Fatal("old synchronization clock accepted")
+	}
+	bad = before
+	bad.PendingDelta[0][0] = 5000
+	if _, err = psg.New(psg.IntegratedHQ150Stereo, bad); err == nil {
+		t.Fatal("large pending amplitude accepted")
+	}
+	bad = before
+	bad.NextEdge[0] = 0
+	if _, err = psg.New(psg.IntegratedHQ150Stereo, bad); err == nil {
+		t.Fatal("old edge accepted")
+	}
+	clone, err := psg.New(psg.IntegratedHQ150Stereo, before)
+	if err != nil {
+		t.Fatal(err)
+	}
+	a, err := s.Advance(4000)
+	if err != nil {
+		t.Fatal(err)
+	}
+	b, err := clone.Advance(4000)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(a, b) || s.Snapshot() != clone.Snapshot() {
+		t.Fatal("pending restore differs")
+	}
+	late := psg.ResetState()
+	late.Cursor = math.MaxUint64 - 15
+	late.NextTick = late.Cursor
+	for i := range late.NextEdge {
+		late.NextEdge[i] = late.Cursor
+	}
+	overflow, err := psg.New(psg.IntegratedHQ150Stereo, late)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err = overflow.Advance(late.Cursor + 1); err == nil {
+		t.Fatal("clock overflow accepted")
+	}
+	if overflow.Snapshot() != late {
+		t.Fatal("overflow partially committed")
+	}
+	if _, err = s.FrameBoundary(1); err == nil {
+		t.Fatal("non-frame end accepted")
+	}
+}
+
+func TestExactCycleAndSameTimeOrdering(t *testing.T) {
+	s, err := psg.New(psg.IntegratedHQ150Stereo, psg.ResetState())
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, e := range []psg.Event{{0, 0x80}, {0, 0}, {0, 0x90}} {
+		if _, err = s.Write(e); err != nil {
+			t.Fatal(err)
+		}
+	}
+	a, err := s.Advance(240)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(a) != 1 || a[0].Cycle != 0 || a[0].Delta != [2]int32{4200, 4200} {
+		t.Fatal("initial positive edge missing", a)
+	}
+	if _, err = s.Write(psg.Event{240, 0x9f}); err != nil {
+		t.Fatal(err)
+	}
+	b, err := s.Advance(241)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(b) != 1 || b[0].Cycle != 240 || b[0].Delta != [2]int32{-4200, -4200} {
+		t.Fatal("same clock volume/edge merge differs", b)
+	}
+}

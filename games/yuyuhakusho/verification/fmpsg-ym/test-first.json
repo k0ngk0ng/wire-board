@@ -1,0 +1,11 @@
+{
+  "test_before_production": true,
+  "red_exit_code": 1,
+  "production_ym_files_present": false,
+  "files": {
+    "docs/research/md-yuyuhakusho/FMPSG_FAILURES.md": "44bb4089100773086793d963d6a14cdb09de08db5e841afe770cf3856c6d730b",
+    "scripts/yuyuhakusho/fmpsg_capture_ym.py": "1871094460a78025f4e62ff18507f86cf3932ec94c96173b7be11ee9e18e17f1",
+    "games/yuyuhakusho/audio/chips/ym_test.go": "baa1b6bd43d4580898f93f2599f75d84e6dd3d668fee1e41cf51b7b3357828fd",
+    "games/yuyuhakusho/verification/fmpsg-ym/missing-implementation-red.jsonl": "096cfb980c82152e0e76552c6caed443c60258102744945e49511ace290c0318"
+  }
+}

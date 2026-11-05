@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/fmpsg_psg_capture.py", line 163, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/fmpsg_psg_capture.py", line 78, in main
+    psg=PSG.from_address(image+lookup['_psg'][0]);assert C.sizeof(PSG)==232
+                                                         ^^^^^^^^^^^^^^^^^^
+AssertionError

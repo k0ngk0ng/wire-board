@@ -1,0 +1,17 @@
+{
+  "pass": true,
+  "fresh_original_and_hook_recaptures_equal_frozen_fixture": [
+    {
+      "kind": "raw",
+      "byte_equal": true,
+      "bytes": 1160244,
+      "sha256": "2efddfc294a7581dab70e2fb991b3ea0735d57392860c15b1e11f14dae586f4f"
+    },
+    {
+      "kind": "mixed",
+      "byte_equal": true,
+      "bytes": 733726,
+      "sha256": "a603ceca091bf87165cf9109682fa1697ebfd54a48074b44684f6bfcb5ceba94"
+    }
+  ]
+}
