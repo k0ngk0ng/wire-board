@@ -1,0 +1,36 @@
+{
+  "stage": "Six source6 tests frozen before shared support",
+  "recorded_at_utc": "2026-11-04T23:55:15.672232+00:00",
+  "test_top_levels": 6,
+  "files": [
+    {
+      "path": "games/yuyuhakusho/engine/fighter6_composition_test.go",
+      "sha256": "9eae88248cb802ad8c7da885ff36347b099c9f03230852d9b0f028264447d83f"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/FIGHTER6_COMPOSITION_VERIFICATION.md",
+      "sha256": "91365a67db026e72a5c9a0920b6fc883074248e7ba8e1963feeaa186b7ad889d"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_action.go",
+      "sha256": "630b7df4c29496f38e0891b4500cccf77825cb7bb65bca7be5949db92a329927"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_actor.go",
+      "sha256": "6a2193dd9a5cb999671eed5d026499c155aa237055959a454655b5e5e18fecb7"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_input.go",
+      "sha256": "a9d14993c78d4ae89403824254d72edc3a6315f61928c65129e8b67ac870e294"
+    }
+  ],
+  "actual_natural_red": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter6-composition-red.jsonl",
+    "sha256": "d0f4b9ddf8b2826ed4f676ef3246ecf2da7ade6c5f1cb0bdbbd6513025bac113",
+    "tests": [
+      "TestFighter6CompositionOriginalActions",
+      "TestFighter6CompositionOriginalActors"
+    ],
+    "scope": "True source6 menu ordinary complete CPU calls, actual unsupported6 runtime error; all six tests frozen"
+  }
+}

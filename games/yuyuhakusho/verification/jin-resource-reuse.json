@@ -1,0 +1,11 @@
+{
+  "pass": true,
+  "scope": "Source6 runtime semantic rules and indexed resources already present; no data or schema change",
+  "baseline_commit": "8c2ed877",
+  "sources": {
+    "games/yuyuhakusho/data/chu-world-rules.json.gz": "45cdfc3a6f31e41ec7bbec93f8444bcafff8de486ea6bc0a09c1aafea4f853a0",
+    "games/yuyuhakusho/data/world-sprites.json.gz": "200e28e775a809de89c19df0dfef314d5697224fcb6a145853beb7344b5833ef",
+    "games/yuyuhakusho/data/animation-catalog.json.gz": "845e2f43179f831130b40c4b796843fdc0c3ae4c699d605e4326905800781495"
+  },
+  "runtime_rule_package_byte_identical": true
+}

@@ -1,0 +1,36 @@
+{
+  "pass": true,
+  "scope": "Final sampler source binding after private-matrix completion; ordinary CPU gzip unchanged from preproduction red",
+  "changes": [
+    {
+      "fixture": "fighter6-composition-action-natural",
+      "CPU_gzip_byte_identical": true,
+      "differences": {
+        "capture_sha256": {
+          "before": "c93f952154ec6bf513689360f5ecf3f120eec63daf025571783c5b27a10f03f0",
+          "after": "7a92c576e3bde8d7f9cf6574aeb036f4a4bb175cb7012d0d6b148fd0baf14126"
+        }
+      }
+    },
+    {
+      "fixture": "fighter6-composition-input-natural",
+      "CPU_gzip_byte_identical": true,
+      "differences": {
+        "capture_sha256": {
+          "before": "c93f952154ec6bf513689360f5ecf3f120eec63daf025571783c5b27a10f03f0",
+          "after": "7a92c576e3bde8d7f9cf6574aeb036f4a4bb175cb7012d0d6b148fd0baf14126"
+        }
+      }
+    },
+    {
+      "fixture": "fighter6-composition-actor-natural",
+      "CPU_gzip_byte_identical": true,
+      "differences": {
+        "capture_sha256": {
+          "before": "c93f952154ec6bf513689360f5ecf3f120eec63daf025571783c5b27a10f03f0",
+          "after": "7a92c576e3bde8d7f9cf6574aeb036f4a4bb175cb7012d0d6b148fd0baf14126"
+        }
+      }
+    }
+  ]
+}

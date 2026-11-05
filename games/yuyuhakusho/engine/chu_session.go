@@ -50,7 +50,7 @@ func NewChuSession(options ChuSessionOptions, library ChuWorldLibrary) (ChuWorld
 	}
 	var slots, humanChannels uint8
 	for _, player := range options.Players {
-		if player.Slot >= 4 || (player.CharacterID != 0 && player.CharacterID != 1 && player.CharacterID != 2 && player.CharacterID != 3 && player.CharacterID != 8 && player.CharacterID != 9 && player.CharacterID != 10) || player.Color >= 12 || slots&(1<<player.Slot) != 0 || !player.Computer && (player.HumanChannel >= 4 || humanChannels&(1<<player.HumanChannel) != 0) {
+		if player.Slot >= 4 || (player.CharacterID != 0 && player.CharacterID != 1 && player.CharacterID != 2 && player.CharacterID != 3 && player.CharacterID != 6 && player.CharacterID != 8 && player.CharacterID != 9 && player.CharacterID != 10) || player.Color >= 12 || slots&(1<<player.Slot) != 0 || !player.Computer && (player.HumanChannel >= 4 || humanChannels&(1<<player.HumanChannel) != 0) {
 			return ChuWorldState{}, nil, errors.New("unsupported or repeated Chu player slot, character, palette or input channel")
 		}
 		if spec, ok := library.Fighters[player.CharacterID]; !ok || spec.CharacterID != player.CharacterID {

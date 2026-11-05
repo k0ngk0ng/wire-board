@@ -36,10 +36,10 @@ func StepChuAction(state ChuActionState, parameters ChuActionParameters, command
 }
 
 // StepFighterAction keeps one copy of the complete action driver for the
-// restored sources0/1/2/3/8/9/10. AlternateVelocity remains the sole +48 long owner.
+// restored sources0/1/2/3/6/8/9/10. AlternateVelocity remains the sole +48 long owner.
 func StepFighterAction(state ChuActionState, characterID uint8, parameters ChuActionParameters, commands CommandLibrary, animations AnimationLibrary) (ChuActionState, error) {
 	original := state
-	if characterID != 0 && characterID != 1 && characterID != 2 && characterID != 3 && characterID != 8 && characterID != 9 && characterID != 10 {
+	if characterID != 0 && characterID != 1 && characterID != 2 && characterID != 3 && characterID != 6 && characterID != 8 && characterID != 9 && characterID != 10 {
 		return original, errors.New("unsupported complete fighter action source")
 	}
 	command := CommandState{RawHeld: state.Controls.RawHeld, Facing: state.Body.Facing, Request: state.Body.Request}
@@ -98,6 +98,12 @@ func StepFighterAction(state ChuActionState, characterID uint8, parameters ChuAc
 			}
 			state.Body, state.Pool, state.OccupiedLanes = body, pool, occupied
 		case 0x0e, 0x16, 0x17, 0x18, 0x19:
+			if characterID == 6 && state.Body.ActionKind == 0x0e {
+				if actionErr := stepFighter6ActionMotion(&state, parameters.JumpParameters); actionErr != nil {
+					return original, actionErr
+				}
+				break
+			}
 			if characterID == 3 && state.Body.ActionKind == 0x17 {
 				if actionErr := stepFighter3ActionMotion(&state, parameters.JumpParameters); actionErr != nil {
 					return original, actionErr
@@ -111,6 +117,12 @@ func StepFighterAction(state ChuActionState, characterID uint8, parameters ChuAc
 				return original, actionErr
 			}
 		case 0x13, 0x21, 0x23, 0x24:
+			if characterID == 6 && state.Body.ActionKind == 0x13 {
+				if actionErr := stepFighter6ActionMotion(&state, parameters.JumpParameters); actionErr != nil {
+					return original, actionErr
+				}
+				break
+			}
 			if characterID != 3 {
 				return original, errors.New("unsupported fighter action source/slot")
 			}
@@ -147,7 +159,20 @@ func StepFighterAction(state ChuActionState, characterID uint8, parameters ChuAc
 			if actionErr := stepFighter8ActionMotion(&state, parameters.JumpParameters); actionErr != nil {
 				return original, actionErr
 			}
+		case 0x33, 0x34, 0x35, 0x36, 0x37, 0x38:
+			if characterID != 6 {
+				return original, errors.New("unsupported fighter action source/slot")
+			}
+			if actionErr := stepFighter6ActionMotion(&state, parameters.JumpParameters); actionErr != nil {
+				return original, actionErr
+			}
 		case 15, 20, 21, 65, 66, 67, 68, 69, 70:
+			if characterID == 6 && state.Body.ActionKind == 15 {
+				if actionErr := stepFighter6ActionMotion(&state, parameters.JumpParameters); actionErr != nil {
+					return original, actionErr
+				}
+				break
+			}
 			if characterID == 1 && state.Body.ActionKind == 15 {
 				if actionErr := stepFighter1ActionMotion(&state, parameters.JumpParameters); actionErr != nil {
 					return original, actionErr
@@ -176,6 +201,12 @@ func StepFighterAction(state ChuActionState, characterID uint8, parameters ChuAc
 			state.setActionEnergy(special.Energy)
 			state.Power, state.AlternateVelocity, state.ContactFlags = special.Power, special.AlternateVelocity, special.ContactFlags
 		case 0x11, 0x2d, 0x47, 0x48, 0x49:
+			if characterID == 6 && state.Body.ActionKind == 0x11 {
+				if actionErr := stepFighter6ActionMotion(&state, parameters.JumpParameters); actionErr != nil {
+					return original, actionErr
+				}
+				break
+			}
 			if characterID == 1 && state.Body.ActionKind == 0x11 {
 				if actionErr := stepFighter1ActionMotion(&state, parameters.JumpParameters); actionErr != nil {
 					return original, actionErr
@@ -269,6 +300,16 @@ func stepFighter1ActionMotion(state *ChuActionState, parameters JumpParameters) 
 	}
 	state.acceptSpecialMotion(next.ChuSpecialMotionState)
 	state.EffectExtras = next.EffectExtras
+	return nil
+}
+
+func stepFighter6ActionMotion(state *ChuActionState, parameters JumpParameters) error {
+	next, err := StepFighter6Motion(Fighter6MotionState{ChuSpecialMotionState: state.specialMotionView(), StunTicks: state.StunTicks}, parameters)
+	if err != nil {
+		return err
+	}
+	state.acceptSpecialMotion(next.ChuSpecialMotionState)
+	state.StunTicks = next.StunTicks
 	return nil
 }
 

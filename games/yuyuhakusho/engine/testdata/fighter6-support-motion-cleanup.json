@@ -1,0 +1,46 @@
+{
+  "scope": "Only support6 capture copies already verified against canonical, private Java cache and superseded private-only logs",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-support-motion",
+      "files": 6,
+      "bytes": 1032552
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-support-motion-special",
+      "files": 2,
+      "bytes": 27550
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-support-static",
+      "files": 19,
+      "bytes": 233822
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-support-motion-capture.txt",
+      "files": 1,
+      "bytes": 473
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-support-motion-special-capture.txt",
+      "files": 1,
+      "bytes": 137
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-support-private-native.jsonl",
+      "files": 1,
+      "bytes": 3415
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-support-private-wasm.jsonl",
+      "files": 1,
+      "bytes": 3411
+    }
+  ],
+  "removed_bytes": 1301360,
+  "preserved": [
+    "Canonical CPU fixtures, own actual red, final four native/Wasm tests/vet and static evidence",
+    "MAIN/selector/composition/world files, legitimate inputs/shared original baselines and AI6 future evidence",
+    "ROM/core/tools/shared caches, other agents/games/worktrees, media and8c2ed877 service assets"
+  ]
+}

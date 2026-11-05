@@ -1,0 +1,542 @@
+{
+  "schema": 1,
+  "pass": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "checkpoint_commit": "8c2ed877",
+  "scope": "Source6 Jin MAIN33/34/35/36/38 before15afc, support0e/0f/11/13/37 delegated",
+  "api": "Fighter6MotionState{ChuSpecialMotionState;StunTicks uint16};StepFighter6Motion(state,JumpParameters)(state,error)",
+  "test_first": {
+    "failure_scenarios_before_capture_and_implementation": true,
+    "initial_failure_scenarios_sha256": "ed0024680d36a5dc78aec59f60b8326a4c262f969dee282c5a34df3d213dc044",
+    "proof_path": "games/yuyuhakusho/engine/testdata/fighter6-motion-test-first.json",
+    "proof_sha256": "a8282e4f85fd46f6fcbac195680968cd235d9ecc916e5ee67824d9fc2868ea64",
+    "actual_missing_implementation_red": true,
+    "test_sha256_at_red": "92f5bec89c9223d9ee18f01bc64d1816527ebe9d675c6ba770a23a2dd60024a2",
+    "test_assertions_changed_after_implementation": false,
+    "rule_fixes_after_first_executable_test": 0,
+    "initial_missing_support_build_is_not_green_evidence": true,
+    "special_natural_appended_after_frozen_go_and_four_tests": true,
+    "production_assertion_and_collector_changes_for_append": false
+  },
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "baselines": [
+    {
+      "input": "docs/research/md-yuyuhakusho/source6-next-inputs.json",
+      "input_sha256": "61b140b4ac6820bb6d352bfc98202129fedc4b310367a055df50e1aaffad319e",
+      "reference": "games/yuyuhakusho/engine/testdata/fighter6-attacks-reference-frames.json",
+      "reference_raw_sha256": "2ed9bd9445a1d561eed662a1a76f739f918f93852a6a20c6abec9a5619d8799a",
+      "reference_file_sha256": "2ed9bd9445a1d561eed662a1a76f739f918f93852a6a20c6abec9a5619d8799a",
+      "reference_manifest": "games/yuyuhakusho/engine/testdata/fighter6-attacks-reference-manifest.json",
+      "reference_manifest_sha256": "db2c9edfe0fdcce6a338e088ce6ecf58fc55cc4be5f09cd7945381cdc8c03ad0",
+      "video_steps": 3602,
+      "all_ram_video_match": true
+    },
+    {
+      "input": "games/yuyuhakusho/engine/testdata/fighter6-special-inputs.json",
+      "input_sha256": "686cbd1c0015aa9b0d73d9b92db8dd4b34d1bfef75327a2261f3d82f2fb6f114",
+      "reference": "games/yuyuhakusho/engine/testdata/fighter6-attacks-special-reference-frames.json",
+      "reference_raw_sha256": "d15e6c9a73e3a2344b4c2a19248dd67ce79d08fa14a7b03a464aa92d6a2ce64f",
+      "reference_file_sha256": "d15e6c9a73e3a2344b4c2a19248dd67ce79d08fa14a7b03a464aa92d6a2ce64f",
+      "reference_manifest": "games/yuyuhakusho/engine/testdata/fighter6-attacks-special-reference-manifest.json",
+      "reference_manifest_sha256": "fc6b4e3bb3c03931723751f9c616e7383bb382c4dd05cf1249eb0839006a2f28",
+      "video_steps": 3602,
+      "all_ram_video_match": true
+    }
+  ],
+  "actual_source6_initialization_binding": {
+    "source_tag": 6,
+    "animation_set": 838778,
+    "shape_set": 843514,
+    "parameter_pointer": 75218,
+    "source_actor_sha256": "deb972615271375a735e5d59d5f71ffc0e6eb3d9edccf8a40ef30e8d1053354b"
+  },
+  "state_ownership": {
+    "base": "ChuSpecialMotionState",
+    "only_addition": "StunTicks uint16,existing+84.word owner",
+    "AlternateVelocity": "single complete+48.long;33 writes highword and retains lowword",
+    "new_vortex_counter": false,
+    "exit18682": "support-owned enterFighter6Exit(*FighterBodyState),not air recovery",
+    "support_sha256": "a1c4cbb25a8583c5de280c94934f8816d8f2e74ae7d421124d1a24e808c74d71"
+  },
+  "fixtures": [
+    {
+      "name": "fighter6-motion-oracle",
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-motion-oracle.json.gz",
+      "manifest_path": "games/yuyuhakusho/engine/testdata/fighter6-motion-oracle-manifest.json",
+      "manifest_sha256": "c03ccc5a2fb1dbbc364427c141c5f68ebc99854f98ca90110a49c97445e93096",
+      "gzip_sha256": "df8801ccc9fa69d7053eefda12cea6e40369fcdd2fb0d8af04b318c63c76aa64",
+      "fixture_sha256": "7155379f8c2b664b1e271e2cc518e71daa6d31cb9bf3d1deb0cf80035368c1be",
+      "records": 345,
+      "calls": 345,
+      "kind_counts_decimal": {
+        "53": 44,
+        "54": 71,
+        "51": 16,
+        "56": 214
+      },
+      "allocation_attempts": 11,
+      "successful_allocations": 11,
+      "external_queue_rows": 0
+    },
+    {
+      "name": "fighter6-motion-boundaries",
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-motion-boundaries.json.gz",
+      "manifest_path": "games/yuyuhakusho/engine/testdata/fighter6-motion-boundaries-manifest.json",
+      "manifest_sha256": "59d47e39aee5b76134486e57d1c35bc93190d7890efd2cf45932c2699a4f3de0",
+      "gzip_sha256": "a7696218b2bc448f8eb15512ef1a892e28d327bc69eb9e18e71d71a7b926a22f",
+      "fixture_sha256": "5bdd2f84fa01e9d1c2f982b4d68e5304d8f59405759aa0d32fae6e6a6f372576",
+      "records": 2776,
+      "calls": 2776,
+      "kind_counts_decimal": {
+        "51": 336,
+        "52": 540,
+        "53": 540,
+        "54": 540,
+        "56": 820
+      },
+      "allocation_attempts": 868,
+      "successful_allocations": 534,
+      "external_queue_rows": 0
+    },
+    {
+      "name": "fighter6-motion-sequences",
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-motion-sequences.json.gz",
+      "manifest_path": "games/yuyuhakusho/engine/testdata/fighter6-motion-sequences-manifest.json",
+      "manifest_sha256": "d1166c5a4a554604d9deecd92637a295992eb647da023cefc843e20e7a840c93",
+      "gzip_sha256": "9d37848e785d80001faa51b86bb941714175a87bfb9814616abe8459a5da09a2",
+      "fixture_sha256": "99c2bc5687e28694ff75d84bf913dfc27fb65bdbef7e7aed5a5ed01c1106cb0f",
+      "records": 20,
+      "calls": 2786,
+      "kind_counts_decimal": {
+        "51": 32,
+        "52": 6,
+        "53": 180,
+        "54": 284,
+        "56": 2284
+      },
+      "allocation_attempts": 48,
+      "successful_allocations": 24,
+      "external_queue_rows": 0
+    }
+  ],
+  "test_logs": [
+    {
+      "phase": "red",
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-motion-red.jsonl",
+      "sha256": "237c7e76056d3bd5bb70d33173542eec3e57d947e963cec178dac7a53b8d9ec0",
+      "final_action": "fail",
+      "elapsed_seconds": 0,
+      "top_level_tests": [],
+      "scope": "Focused TestFighter6MotionMain in full engine package"
+    },
+    {
+      "phase": "initial-native-build",
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-motion-initial-native-build.jsonl",
+      "sha256": "7d4d63400478c2471406ff448c03b29a0d97f08e1c1e1e794b6fd5ed508fef08",
+      "final_action": "fail",
+      "elapsed_seconds": 0,
+      "top_level_tests": [],
+      "scope": "Focused TestFighter6MotionMain in full engine package"
+    },
+    {
+      "phase": "ordinary-native",
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-motion-ordinary-native.jsonl",
+      "sha256": "76557c15347fdd7e0a20b330f152aa7848f4d3851d038859f6a7b82ebc05f710",
+      "final_action": "pass",
+      "elapsed_seconds": 10.362,
+      "top_level_tests": [
+        "TestFighter6MotionMainOriginal",
+        "TestFighter6MotionMainRealTiming",
+        "TestFighter6MotionMainWordsAndRecovery",
+        "TestFighter6MotionMainErrorsAreAtomic"
+      ],
+      "scope": "Focused TestFighter6MotionMain in full engine package"
+    },
+    {
+      "phase": "ordinary-wasm",
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-motion-ordinary-wasm.jsonl",
+      "sha256": "3acb5a92eb0f6ca8654576c29ad5c3af5259a2eaa65f35eeaa8fb741a1a6493c",
+      "final_action": "pass",
+      "elapsed_seconds": 2.781,
+      "top_level_tests": [
+        "TestFighter6MotionMainOriginal",
+        "TestFighter6MotionMainRealTiming",
+        "TestFighter6MotionMainWordsAndRecovery",
+        "TestFighter6MotionMainErrorsAreAtomic"
+      ],
+      "scope": "Focused TestFighter6MotionMain in full engine package"
+    },
+    {
+      "phase": "native",
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-motion-native.jsonl",
+      "sha256": "9181dffefd7f33779cf41a9b612e94d54956aecbfd21cd91a91e16bc3557cd02",
+      "final_action": "pass",
+      "elapsed_seconds": 11.6,
+      "top_level_tests": [
+        "TestFighter6MotionMainOriginal",
+        "TestFighter6MotionMainRealTiming",
+        "TestFighter6MotionMainWordsAndRecovery",
+        "TestFighter6MotionMainErrorsAreAtomic"
+      ],
+      "scope": "Focused TestFighter6MotionMain in full engine package"
+    },
+    {
+      "phase": "wasm",
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-motion-wasm.jsonl",
+      "sha256": "466f030b38bfff721cbec6dcba0be7b1f17f832b12aac8de91147117d12afa38",
+      "final_action": "pass",
+      "elapsed_seconds": 2.998,
+      "top_level_tests": [
+        "TestFighter6MotionMainOriginal",
+        "TestFighter6MotionMainRealTiming",
+        "TestFighter6MotionMainWordsAndRecovery",
+        "TestFighter6MotionMainErrorsAreAtomic"
+      ],
+      "scope": "Focused TestFighter6MotionMain in full engine package"
+    }
+  ],
+  "natural_coverage_hex": {
+    "35": 44,
+    "36": 71,
+    "33": 16,
+    "38": 214
+  },
+  "natural_coverage_complete": false,
+  "natural_gap_hex": [
+    "34"
+  ],
+  "ordinary_natural_calls": 0,
+  "special_natural_append_pending": false,
+  "continuous": {
+    "streams": [
+      {
+        "name": "rise",
+        "pool": "empty",
+        "initial_action_hex": "0x33",
+        "steps": 16,
+        "final_action": 2,
+        "final_pose": 7
+      },
+      {
+        "name": "rise",
+        "pool": "full",
+        "initial_action_hex": "0x33",
+        "steps": 16,
+        "final_action": 2,
+        "final_pose": 7
+      },
+      {
+        "name": "drop",
+        "pool": "empty",
+        "initial_action_hex": "0x34",
+        "steps": 3,
+        "final_action": 0,
+        "final_pose": 14
+      },
+      {
+        "name": "drop",
+        "pool": "full",
+        "initial_action_hex": "0x34",
+        "steps": 3,
+        "final_action": 0,
+        "final_pose": 14
+      },
+      {
+        "name": "short-ground",
+        "pool": "empty",
+        "initial_action_hex": "0x35",
+        "steps": 45,
+        "final_action": 0,
+        "final_pose": 0
+      },
+      {
+        "name": "short-ground",
+        "pool": "full",
+        "initial_action_hex": "0x35",
+        "steps": 45,
+        "final_action": 0,
+        "final_pose": 0
+      },
+      {
+        "name": "short-air",
+        "pool": "empty",
+        "initial_action_hex": "0x35",
+        "steps": 45,
+        "final_action": 2,
+        "final_pose": 7
+      },
+      {
+        "name": "short-air",
+        "pool": "full",
+        "initial_action_hex": "0x35",
+        "steps": 45,
+        "final_action": 2,
+        "final_pose": 7
+      },
+      {
+        "name": "long-ground",
+        "pool": "empty",
+        "initial_action_hex": "0x36",
+        "steps": 71,
+        "final_action": 0,
+        "final_pose": 0
+      },
+      {
+        "name": "long-ground",
+        "pool": "full",
+        "initial_action_hex": "0x36",
+        "steps": 71,
+        "final_action": 0,
+        "final_pose": 0
+      },
+      {
+        "name": "long-air",
+        "pool": "empty",
+        "initial_action_hex": "0x36",
+        "steps": 71,
+        "final_action": 2,
+        "final_pose": 7
+      },
+      {
+        "name": "long-air",
+        "pool": "full",
+        "initial_action_hex": "0x36",
+        "steps": 71,
+        "final_action": 2,
+        "final_pose": 7
+      },
+      {
+        "name": "vortex-timeout",
+        "pool": "empty",
+        "initial_action_hex": "0x38",
+        "steps": 373,
+        "final_action": 12,
+        "final_pose": 43
+      },
+      {
+        "name": "vortex-timeout",
+        "pool": "full",
+        "initial_action_hex": "0x38",
+        "steps": 373,
+        "final_action": 12,
+        "final_pose": 43
+      },
+      {
+        "name": "vortex-short-cancel",
+        "pool": "empty",
+        "initial_action_hex": "0x38",
+        "steps": 148,
+        "final_action": 0,
+        "final_pose": 0
+      },
+      {
+        "name": "vortex-short-cancel",
+        "pool": "full",
+        "initial_action_hex": "0x38",
+        "steps": 148,
+        "final_action": 0,
+        "final_pose": 0
+      },
+      {
+        "name": "vortex-long-cancel",
+        "pool": "empty",
+        "initial_action_hex": "0x38",
+        "steps": 248,
+        "final_action": 12,
+        "final_pose": 43
+      },
+      {
+        "name": "vortex-long-cancel",
+        "pool": "full",
+        "initial_action_hex": "0x38",
+        "steps": 248,
+        "final_action": 12,
+        "final_pose": 43
+      },
+      {
+        "name": "vortex-control",
+        "pool": "empty",
+        "initial_action_hex": "0x38",
+        "steps": 373,
+        "final_action": 12,
+        "final_pose": 43
+      },
+      {
+        "name": "vortex-control",
+        "pool": "full",
+        "initial_action_hex": "0x38",
+        "steps": 373,
+        "final_action": 12,
+        "final_pose": 43
+      }
+    ],
+    "total_streams": 20,
+    "total_phase_calls": 2786,
+    "actual_original19c96_vs_StepAnimationClock": true,
+    "immutable_timing_record_frames": 64,
+    "refresh_only": [
+      "Clock.Duration",
+      "Clock.Flags"
+    ],
+    "own_pose_index_select_record": true,
+    "expected_intermediate_state_fed_back": false,
+    "shared_tail_child_FX_world_callbacks_executed": false,
+    "external_inputs": "held/pressed only; early16 at step80,late64 at180,direction8 then4 in vortex control",
+    "endpoints": {
+      "air02": 6,
+      "standing_or_landing00": 8,
+      "common_exit0c2b": 6
+    }
+  },
+  "audit": {
+    "full_parent_bytes": 256,
+    "full_three_children_bytes": 768,
+    "full_FX_pool_bytes": 2048,
+    "parent_child_FX_masks": 0,
+    "private_unknown_RAM_writes": 0,
+    "private_SP_restored": true,
+    "private_canonical_A5": "FFFF8400",
+    "private_SP": "FFFFFF00",
+    "private_stack_audit_allow_range": "FEC0..FF04",
+    "checkpoint_restore_refresh_cycles": true,
+    "motion_RNG_calls": 0,
+    "pending_sound_request_unchanged": true,
+    "diagnostic_errors_rollback_complete_original_state": true,
+    "normal_full_pool_is_not_error": true
+  },
+  "source_sha256": {
+    "games/yuyuhakusho/engine/fighter6_motion.go": "334b3d5cdc4e6d61dd1a62c8b664ad106fd3bca26ab3aa4625105eca5dd07ca1",
+    "games/yuyuhakusho/engine/fighter6_motion_test.go": "92f5bec89c9223d9ee18f01bc64d1816527ebe9d675c6ba770a23a2dd60024a2",
+    "games/yuyuhakusho/engine/fighter6_support_motion.go": "a1c4cbb25a8583c5de280c94934f8816d8f2e74ae7d421124d1a24e808c74d71",
+    "games/yuyuhakusho/engine/FIGHTER6_MOTION_VERIFICATION.md": "92df356e4a2b79e42c8a2bba151e7a391d4873d0ce98efee7bd62f8527a81b26",
+    "games/yuyuhakusho/engine/fighter0_motion.go": "3fcd2c8280c1383f41198d87ffba62936aaad259acff8413713d4ba18b35cf71",
+    "games/yuyuhakusho/engine/fighter10_motion.go": "120bf695e1e02406d6ba94493d373b59782e606ba939fbfe284bd17b99b8e427",
+    "games/yuyuhakusho/engine/chu_special_motion.go": "5c37d35003f4f983010232d495b6e45143553a36b347edbaf2aa494006839c98",
+    "games/yuyuhakusho/engine/ground_actions.go": "cc6106a696c63bb39293694ed8cc63e04586ceb89e6b04454fb08970aedca80c",
+    "games/yuyuhakusho/engine/animation_clock.go": "fa868c5c160fa22fba71520d80c18e8d1f40217ff9a64c6d90a231eab65f28a4",
+    "games/yuyuhakusho/engine/effects.go": "6a0916fbc4051a0e67988b9cad99e41d9ef778e0e78a7f63d65f5fb35d2f6b18",
+    "games/yuyuhakusho/engine/jump.go": "4d04cd8fc08edde75a5793d6be21644e058e7b2caf4e7c3c6c7b15f18fa39605",
+    "games/yuyuhakusho/engine/throw_records.go": "ce5f9c6c77a8d7ebc298f30e9f99fb9686ad436bc4cc716960c3c0542480b34f",
+    "games/yuyuhakusho/engine/fighter0_motion_test.go": "475425489dc89714c8a7af147d9c3064daf6971e40ac710c8e3b7c9c8b60a150",
+    "games/yuyuhakusho/engine/chu_special_motion_test.go": "dfd3cf4c7e19b5a4e7e6653744a4160732f14415f78b1b997124660675f7d269",
+    "games/yuyuhakusho/engine/chu_actor_test.go": "64cbd90975e93b8ca9e44fe034bca3d177de4e15f45939248256c5823e44c0e7",
+    "games/yuyuhakusho/engine/jump_test.go": "9dd7ebb41549fb7c0528fe11e19b0a230157b1515ebbe46fe690847a46ee81d7",
+    "games/yuyuhakusho/engine/effects_test.go": "25b7abb54ed803a4802b3bbe3a9c718d0343270c6f0a6150e187fef4c5c11fb0",
+    "games/yuyuhakusho/engine/lane_motion_test.go": "1ce015651231e59d4134999e02c9af300a7bfc5ca65da658778b96c8a506868e",
+    "games/yuyuhakusho/engine/attack_contacts_test.go": "a7398b4e96c22d89801e3974637f83562c39155020a901214aea9005ee4c386a",
+    "scripts/yuyuhakusho/capture_fighter6_motion.py": "1629252d15e2185d8caae54ca991342f5f12637409d239879d283986d7d0a522",
+    "scripts/yuyuhakusho/reference.py": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "scripts/yuyuhakusho/capture_ground_idle.py": "01d4798e937fa01946b7612fbc4fa7418dda97ec3411db4beb4629975614ba1d",
+    "scripts/yuyuhakusho/capture_jump.py": "21017876cd34f9263b6efa11e376ebf84b31d5fc82664c7c8b208213d1ecd8ab",
+    "scripts/yuyuhakusho/capture_ground_actions.py": "25076eebbcbb4192ccf4111330b49693e9adf1a5c95c8f5d5f1fd02e3cd70f0a",
+    "scripts/yuyuhakusho/capture_effect_pool.py": "b9c753d1c9b6380ac64ee16f2c10cdcf8560654e493e770b31552b1781354f46",
+    "scripts/yuyuhakusho/capture_animation_records.py": "9ed4d8019c29cdf4272cdc54636047b6325c45b2d5d9b9b16efd74e1eb1c3208",
+    "docs/research/md-yuyuhakusho/static/fighter-action-slots-focused.txt": "c6a52e94bea31dc12e08c6cd76a282dc4ae51c56288f2df3e7bef40cd72a072d",
+    "docs/research/md-yuyuhakusho/static/fighter-action-constructors-focused.txt": "e43cec558dad5ba037b0ad39577ec0ebc8b9d9a6c6af0b667596d35e0ae44dad",
+    "docs/research/md-yuyuhakusho/static/actions-shared-tail.txt": "86fafb812a107047b59069c22361167d7124101be56714b05a1acc995dc6a056",
+    "docs/research/md-yuyuhakusho/probe.py": "03a52ad64abf051a4a0c8914cb4813503f246afc0ec463ecd5cadb55c3bf7642"
+  },
+  "capture_log": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter6-motion-capture.log",
+    "sha256": "6a92d7ba4593a45cef2fbb849555c2a08fbe4a853d9a1a89076538e82a21bd18"
+  },
+  "cleanup": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter6-motion-cleanup.json",
+    "sha256": "d67fea9a0cb0bfdf4f95c8e873c722096707d6594142af0c52abb030c2002dad",
+    "deleted_files": 14,
+    "deleted_bytes": 1496198,
+    "shared_cache_other_scopes_or_8799_assets_changed": false
+  },
+  "limits": [
+    "Ordinary independent3602-video-step baseline contains zero MAIN calls;special independent3602 baseline adds345 complete pre-tail calls of33/35/36/38.",
+    "Human34 remains unobserved;private and actual-clock coverage is retained without fabricating a Request or changing original command precedence.",
+    "Natural33/35/36 return observed;38 at3389..3602 is an active214-call fragment ending38/AA,not a complete natural vortex lifecycle.",
+    "Private complete pre-tail motion and actual clock-record flows do not claim complete actor/world/match acceptance.",
+    "Shared animation/shape/audio tail and child/FX lifetime callbacks excluded.",
+    "Invalid cursor/pool diagnostics are independent API rejections,not original CPU error semantics.",
+    "REA does not support raw68000;entry evidence reused from direct Ghidra,not REA decompilation or runtime VM."
+  ],
+  "natural_lifecycle_completed_hex": [
+    "33",
+    "35",
+    "36"
+  ],
+  "natural_lifecycle_unfinished_hex": [
+    "38"
+  ],
+  "initial_capture_log": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter6-motion-ordinary-capture.log",
+    "sha256": "84990934ecd182f1e07c7ff421f2a6f01ea627efe738fc61b47e3a63240ac854"
+  },
+  "natural_append": {
+    "input_path": "games/yuyuhakusho/engine/testdata/fighter6-special-inputs.json",
+    "input_sha256": "686cbd1c0015aa9b0d73d9b92db8dd4b34d1bfef75327a2261f3d82f2fb6f114",
+    "independent_unobserved3602_baseline_reused": true,
+    "observed_coldstart_all_RAM_video_match": true,
+    "special_added_complete_motion_calls": 345,
+    "complete_pre_tail_natural_slots_hex": {
+      "35": 44,
+      "36": 71,
+      "33": 16,
+      "38": 214
+    },
+    "natural_windows": [
+      {
+        "action_hex": "33",
+        "first_video_frame": 2160,
+        "last_video_frame": 2175,
+        "complete_pre_tail_calls": 16,
+        "last_action_hex": "02",
+        "last_pose_hex": "07"
+      },
+      {
+        "action_hex": "35",
+        "first_video_frame": 1920,
+        "last_video_frame": 1934,
+        "complete_pre_tail_calls": 15,
+        "last_action_hex": "35",
+        "last_pose_hex": "a0"
+      },
+      {
+        "action_hex": "35",
+        "first_video_frame": 1951,
+        "last_video_frame": 1979,
+        "complete_pre_tail_calls": 29,
+        "last_action_hex": "00",
+        "last_pose_hex": "00"
+      },
+      {
+        "action_hex": "36",
+        "first_video_frame": 2000,
+        "last_video_frame": 2070,
+        "complete_pre_tail_calls": 71,
+        "last_action_hex": "00",
+        "last_pose_hex": "00"
+      },
+      {
+        "action_hex": "38",
+        "first_video_frame": 3389,
+        "last_video_frame": 3602,
+        "complete_pre_tail_calls": 214,
+        "last_action_hex": "38",
+        "last_pose_hex": "aa"
+      }
+    ],
+    "source6_vortex_last_action_hex": "38",
+    "source6_vortex_last_pose_hex": "aa",
+    "vortex_natural_lifecycle_complete": false,
+    "human34_natural_observed": false,
+    "production_and_frozen_four_tests_and_collector_unchanged": true,
+    "private_context": "Final private and clock outputs independently recaptured from actual special2400 checkpoint;not fed from Go or expected intermediate states."
+  }
+}

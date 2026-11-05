@@ -1,0 +1,1101 @@
+[
+  {
+    "input": {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/walk-jump/inputs.json",
+      "sha256": "4151e2f129855a4dd8d24a4ad1143a1bebf66dd2cc09886bfd58daaa697d9fa4"
+    },
+    "complete_ai_returns": 1110,
+    "source6_character_decisions": 303,
+    "complete_air_special_returns": 5,
+    "computer6_actions": {
+      "0x0": 423,
+      "0x1": 279,
+      "0x37": 487,
+      "0x2": 5,
+      "0x13": 55,
+      "0xb": 52,
+      "0xa": 26,
+      "0x3": 61
+    },
+    "natural34_complete_selections": 0,
+    "natural34_frames": [],
+    "errors": [],
+    "pattern": "walk-jump",
+    "extra_events": [
+      {
+        "start": 2250,
+        "end": 2290,
+        "buttons": [
+          7
+        ]
+      },
+      {
+        "start": 2350,
+        "end": 2354,
+        "buttons": [
+          4
+        ]
+      },
+      {
+        "start": 2500,
+        "end": 2504,
+        "buttons": [
+          4
+        ]
+      },
+      {
+        "start": 2650,
+        "end": 2654,
+        "buttons": [
+          4
+        ]
+      },
+      {
+        "start": 2800,
+        "end": 2804,
+        "buttons": [
+          4
+        ]
+      },
+      {
+        "start": 2950,
+        "end": 2954,
+        "buttons": [
+          4
+        ]
+      },
+      {
+        "start": 3100,
+        "end": 3104,
+        "buttons": [
+          4
+        ]
+      },
+      {
+        "start": 3250,
+        "end": 3254,
+        "buttons": [
+          4
+        ]
+      },
+      {
+        "start": 3400,
+        "end": 3404,
+        "buttons": [
+          4
+        ]
+      }
+    ],
+    "air_character_decisions": 23,
+    "r4_geometry_candidates": [],
+    "request4_leaf_frames": []
+  },
+  {
+    "input": {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/rise-repeat/inputs.json",
+      "sha256": "977a5142d53dbf172f68096903395adb5774a2f2eeaa47001553acdc6abc1f6e"
+    },
+    "complete_ai_returns": 1110,
+    "source6_character_decisions": 304,
+    "complete_air_special_returns": 4,
+    "computer6_actions": {
+      "0x0": 375,
+      "0x1": 369,
+      "0x13": 3,
+      "0x3": 183,
+      "0xb": 52,
+      "0xa": 26,
+      "0x37": 376,
+      "0x2": 4
+    },
+    "natural34_complete_selections": 0,
+    "natural34_frames": [],
+    "errors": [],
+    "pattern": "rise-repeat",
+    "extra_events": [
+      {
+        "start": 2250,
+        "end": 2280,
+        "buttons": [
+          7
+        ]
+      },
+      {
+        "start": 2350,
+        "end": 2353,
+        "buttons": [
+          4
+        ]
+      },
+      {
+        "start": 2362,
+        "end": 2365,
+        "buttons": [
+          4
+        ]
+      },
+      {
+        "start": 2650,
+        "end": 2653,
+        "buttons": [
+          4
+        ]
+      },
+      {
+        "start": 2662,
+        "end": 2665,
+        "buttons": [
+          4
+        ]
+      },
+      {
+        "start": 2950,
+        "end": 2953,
+        "buttons": [
+          4
+        ]
+      },
+      {
+        "start": 2962,
+        "end": 2965,
+        "buttons": [
+          4
+        ]
+      },
+      {
+        "start": 3250,
+        "end": 3253,
+        "buttons": [
+          4
+        ]
+      },
+      {
+        "start": 3262,
+        "end": 3265,
+        "buttons": [
+          4
+        ]
+      }
+    ],
+    "air_character_decisions": 23,
+    "r4_geometry_candidates": [],
+    "request4_leaf_frames": []
+  },
+  {
+    "input": {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/air-throw/inputs.json",
+      "sha256": "a5d6cb985c4855cafa034c35577020a4835e7952493f5c517ba3394ae2ed2525"
+    },
+    "complete_ai_returns": 1110,
+    "source6_character_decisions": 297,
+    "complete_air_special_returns": 4,
+    "computer6_actions": {
+      "0x0": 338,
+      "0x1": 405,
+      "0x13": 2,
+      "0x3": 122,
+      "0xb": 52,
+      "0xa": 26,
+      "0x37": 439,
+      "0x2": 4
+    },
+    "natural34_complete_selections": 0,
+    "natural34_frames": [],
+    "errors": [],
+    "pattern": "air-throw",
+    "extra_events": [
+      {
+        "start": 2250,
+        "end": 2290,
+        "buttons": [
+          7
+        ]
+      },
+      {
+        "start": 2350,
+        "end": 2354,
+        "buttons": [
+          4
+        ]
+      },
+      {
+        "start": 2368,
+        "end": 2372,
+        "buttons": [
+          7,
+          1
+        ]
+      },
+      {
+        "start": 2600,
+        "end": 2604,
+        "buttons": [
+          4
+        ]
+      },
+      {
+        "start": 2618,
+        "end": 2622,
+        "buttons": [
+          7,
+          1
+        ]
+      },
+      {
+        "start": 2850,
+        "end": 2854,
+        "buttons": [
+          4
+        ]
+      },
+      {
+        "start": 2868,
+        "end": 2872,
+        "buttons": [
+          7,
+          1
+        ]
+      },
+      {
+        "start": 3100,
+        "end": 3104,
+        "buttons": [
+          4
+        ]
+      },
+      {
+        "start": 3118,
+        "end": 3122,
+        "buttons": [
+          7,
+          1
+        ]
+      },
+      {
+        "start": 3350,
+        "end": 3354,
+        "buttons": [
+          4
+        ]
+      },
+      {
+        "start": 3368,
+        "end": 3372,
+        "buttons": [
+          7,
+          1
+        ]
+      }
+    ],
+    "air_character_decisions": 23,
+    "r4_geometry_candidates": [],
+    "request4_leaf_frames": []
+  },
+  {
+    "input": {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/air-b/inputs.json",
+      "sha256": "6b259fd6f65182e0b86da17d5fea451ddaea3088a4c757c87d2b661bdff154ca"
+    },
+    "complete_ai_returns": 1110,
+    "source6_character_decisions": 297,
+    "complete_air_special_returns": 4,
+    "computer6_actions": {
+      "0x0": 338,
+      "0x1": 405,
+      "0x13": 2,
+      "0x3": 122,
+      "0xb": 52,
+      "0xa": 26,
+      "0x37": 439,
+      "0x2": 4
+    },
+    "natural34_complete_selections": 0,
+    "natural34_frames": [],
+    "errors": [],
+    "pattern": "air-b",
+    "extra_events": [
+      {
+        "start": 2250,
+        "end": 2290,
+        "buttons": [
+          7
+        ]
+      },
+      {
+        "start": 2350,
+        "end": 2354,
+        "buttons": [
+          4
+        ]
+      },
+      {
+        "start": 2368,
+        "end": 2372,
+        "buttons": [
+          7,
+          0
+        ]
+      },
+      {
+        "start": 2600,
+        "end": 2604,
+        "buttons": [
+          4
+        ]
+      },
+      {
+        "start": 2618,
+        "end": 2622,
+        "buttons": [
+          7,
+          0
+        ]
+      },
+      {
+        "start": 2850,
+        "end": 2854,
+        "buttons": [
+          4
+        ]
+      },
+      {
+        "start": 2868,
+        "end": 2872,
+        "buttons": [
+          7,
+          0
+        ]
+      },
+      {
+        "start": 3100,
+        "end": 3104,
+        "buttons": [
+          4
+        ]
+      },
+      {
+        "start": 3118,
+        "end": 3122,
+        "buttons": [
+          7,
+          0
+        ]
+      },
+      {
+        "start": 3350,
+        "end": 3354,
+        "buttons": [
+          4
+        ]
+      },
+      {
+        "start": 3368,
+        "end": 3372,
+        "buttons": [
+          7,
+          0
+        ]
+      }
+    ],
+    "air_character_decisions": 23,
+    "r4_geometry_candidates": [],
+    "request4_leaf_frames": []
+  },
+  {
+    "input": {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/guard/inputs.json",
+      "sha256": "937020f497cc759678a925f528e8c1dc88412014ea6be26eb2d58e801d55532e"
+    },
+    "complete_ai_returns": 1110,
+    "source6_character_decisions": 299,
+    "complete_air_special_returns": 4,
+    "computer6_actions": {
+      "0x0": 335,
+      "0x1": 360,
+      "0x13": 3,
+      "0x3": 183,
+      "0xb": 52,
+      "0xa": 26,
+      "0x37": 410,
+      "0x2": 4,
+      "0x35": 15
+    },
+    "natural34_complete_selections": 0,
+    "natural34_frames": [],
+    "errors": [],
+    "pattern": "guard",
+    "extra_events": [
+      {
+        "start": 2300,
+        "end": 3550,
+        "buttons": [
+          8
+        ]
+      }
+    ],
+    "air_character_decisions": 23,
+    "r4_geometry_candidates": [],
+    "request4_leaf_frames": []
+  },
+  {
+    "input": {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/jump-retreat/inputs.json",
+      "sha256": "3f05ebc87d72d2e7b0bf1c933e2d027ea5ac377a0c7e76d8e29f06144fa9c1ef"
+    },
+    "complete_ai_returns": 1110,
+    "source6_character_decisions": 303,
+    "complete_air_special_returns": 4,
+    "computer6_actions": {
+      "0x0": 359,
+      "0x1": 336,
+      "0x13": 3,
+      "0x3": 183,
+      "0xb": 52,
+      "0xa": 26,
+      "0x37": 425,
+      "0x2": 4
+    },
+    "natural34_complete_selections": 0,
+    "natural34_frames": [],
+    "errors": [],
+    "pattern": "jump-retreat",
+    "extra_events": [
+      {
+        "start": 2250,
+        "end": 2290,
+        "buttons": [
+          7
+        ]
+      },
+      {
+        "start": 2350,
+        "end": 2380,
+        "buttons": [
+          6
+        ]
+      },
+      {
+        "start": 2350,
+        "end": 2354,
+        "buttons": [
+          4
+        ]
+      },
+      {
+        "start": 2410,
+        "end": 2440,
+        "buttons": [
+          7
+        ]
+      },
+      {
+        "start": 2650,
+        "end": 2680,
+        "buttons": [
+          6
+        ]
+      },
+      {
+        "start": 2650,
+        "end": 2654,
+        "buttons": [
+          4
+        ]
+      },
+      {
+        "start": 2710,
+        "end": 2740,
+        "buttons": [
+          7
+        ]
+      },
+      {
+        "start": 2950,
+        "end": 2980,
+        "buttons": [
+          6
+        ]
+      },
+      {
+        "start": 2950,
+        "end": 2954,
+        "buttons": [
+          4
+        ]
+      },
+      {
+        "start": 3010,
+        "end": 3040,
+        "buttons": [
+          7
+        ]
+      },
+      {
+        "start": 3250,
+        "end": 3280,
+        "buttons": [
+          6
+        ]
+      },
+      {
+        "start": 3250,
+        "end": 3254,
+        "buttons": [
+          4
+        ]
+      },
+      {
+        "start": 3310,
+        "end": 3340,
+        "buttons": [
+          7
+        ]
+      }
+    ],
+    "air_character_decisions": 23,
+    "r4_geometry_candidates": [],
+    "request4_leaf_frames": []
+  },
+  {
+    "input": {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/sweep-pulses/inputs.json",
+      "sha256": "38a32b672fe0b3a82429d38264195df43265b4d4833ef42e3c58db69ed80fa73"
+    },
+    "complete_ai_returns": 1110,
+    "source6_character_decisions": 281,
+    "complete_air_special_returns": 119,
+    "computer6_actions": {
+      "0x0": 313,
+      "0x1": 413,
+      "0x13": 42,
+      "0x3": 183,
+      "0x4": 78,
+      "0x2": 125,
+      "0x5": 55,
+      "0x36": 101,
+      "0x37": 78
+    },
+    "natural34_complete_selections": 0,
+    "natural34_frames": [],
+    "errors": [],
+    "pattern": "sweep-pulses",
+    "extra_events": [
+      {
+        "start": 2250,
+        "end": 2290,
+        "buttons": [
+          7
+        ]
+      },
+      {
+        "start": 2350,
+        "end": 2353,
+        "buttons": [
+          5,
+          0
+        ]
+      },
+      {
+        "start": 2395,
+        "end": 2398,
+        "buttons": [
+          5,
+          0
+        ]
+      },
+      {
+        "start": 2440,
+        "end": 2443,
+        "buttons": [
+          5,
+          0
+        ]
+      },
+      {
+        "start": 2485,
+        "end": 2488,
+        "buttons": [
+          5,
+          0
+        ]
+      },
+      {
+        "start": 2530,
+        "end": 2533,
+        "buttons": [
+          5,
+          0
+        ]
+      },
+      {
+        "start": 2575,
+        "end": 2578,
+        "buttons": [
+          5,
+          0
+        ]
+      },
+      {
+        "start": 2620,
+        "end": 2623,
+        "buttons": [
+          5,
+          0
+        ]
+      },
+      {
+        "start": 2665,
+        "end": 2668,
+        "buttons": [
+          5,
+          0
+        ]
+      },
+      {
+        "start": 2710,
+        "end": 2713,
+        "buttons": [
+          5,
+          0
+        ]
+      },
+      {
+        "start": 2755,
+        "end": 2758,
+        "buttons": [
+          5,
+          0
+        ]
+      },
+      {
+        "start": 2800,
+        "end": 2803,
+        "buttons": [
+          5,
+          0
+        ]
+      },
+      {
+        "start": 2845,
+        "end": 2848,
+        "buttons": [
+          5,
+          0
+        ]
+      },
+      {
+        "start": 2890,
+        "end": 2893,
+        "buttons": [
+          5,
+          0
+        ]
+      },
+      {
+        "start": 2935,
+        "end": 2938,
+        "buttons": [
+          5,
+          0
+        ]
+      },
+      {
+        "start": 2980,
+        "end": 2983,
+        "buttons": [
+          5,
+          0
+        ]
+      },
+      {
+        "start": 3025,
+        "end": 3028,
+        "buttons": [
+          5,
+          0
+        ]
+      },
+      {
+        "start": 3070,
+        "end": 3073,
+        "buttons": [
+          5,
+          0
+        ]
+      },
+      {
+        "start": 3115,
+        "end": 3118,
+        "buttons": [
+          5,
+          0
+        ]
+      },
+      {
+        "start": 3160,
+        "end": 3163,
+        "buttons": [
+          5,
+          0
+        ]
+      },
+      {
+        "start": 3205,
+        "end": 3208,
+        "buttons": [
+          5,
+          0
+        ]
+      },
+      {
+        "start": 3250,
+        "end": 3253,
+        "buttons": [
+          5,
+          0
+        ]
+      },
+      {
+        "start": 3295,
+        "end": 3298,
+        "buttons": [
+          5,
+          0
+        ]
+      },
+      {
+        "start": 3340,
+        "end": 3343,
+        "buttons": [
+          5,
+          0
+        ]
+      },
+      {
+        "start": 3385,
+        "end": 3388,
+        "buttons": [
+          5,
+          0
+        ]
+      },
+      {
+        "start": 3430,
+        "end": 3433,
+        "buttons": [
+          5,
+          0
+        ]
+      },
+      {
+        "start": 3475,
+        "end": 3478,
+        "buttons": [
+          5,
+          0
+        ]
+      }
+    ],
+    "air_character_decisions": 57,
+    "r4_geometry_candidates": [],
+    "request4_leaf_frames": []
+  },
+  {
+    "input": {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/throw-pulses/inputs.json",
+      "sha256": "a5025f8fd6eea4d145bcf48973216bca62c412bdd8451464069ae257f66f8c0c"
+    },
+    "complete_ai_returns": 1110,
+    "source6_character_decisions": 298,
+    "complete_air_special_returns": 3,
+    "computer6_actions": {
+      "0x0": 465,
+      "0x1": 202,
+      "0x37": 289,
+      "0x2": 3,
+      "0x3": 147,
+      "0x13": 40,
+      "0x5": 159,
+      "0x6": 78,
+      "0x35": 5
+    },
+    "natural34_complete_selections": 0,
+    "natural34_frames": [],
+    "errors": [],
+    "pattern": "throw-pulses",
+    "extra_events": [
+      {
+        "start": 2250,
+        "end": 2290,
+        "buttons": [
+          7
+        ]
+      },
+      {
+        "start": 2350,
+        "end": 2353,
+        "buttons": [
+          7,
+          1
+        ]
+      },
+      {
+        "start": 2405,
+        "end": 2408,
+        "buttons": [
+          7,
+          1
+        ]
+      },
+      {
+        "start": 2460,
+        "end": 2463,
+        "buttons": [
+          7,
+          1
+        ]
+      },
+      {
+        "start": 2515,
+        "end": 2518,
+        "buttons": [
+          7,
+          1
+        ]
+      },
+      {
+        "start": 2570,
+        "end": 2573,
+        "buttons": [
+          7,
+          1
+        ]
+      },
+      {
+        "start": 2625,
+        "end": 2628,
+        "buttons": [
+          7,
+          1
+        ]
+      },
+      {
+        "start": 2680,
+        "end": 2683,
+        "buttons": [
+          7,
+          1
+        ]
+      },
+      {
+        "start": 2735,
+        "end": 2738,
+        "buttons": [
+          7,
+          1
+        ]
+      },
+      {
+        "start": 2790,
+        "end": 2793,
+        "buttons": [
+          7,
+          1
+        ]
+      },
+      {
+        "start": 2845,
+        "end": 2848,
+        "buttons": [
+          7,
+          1
+        ]
+      },
+      {
+        "start": 2900,
+        "end": 2903,
+        "buttons": [
+          7,
+          1
+        ]
+      },
+      {
+        "start": 2955,
+        "end": 2958,
+        "buttons": [
+          7,
+          1
+        ]
+      },
+      {
+        "start": 3010,
+        "end": 3013,
+        "buttons": [
+          7,
+          1
+        ]
+      },
+      {
+        "start": 3065,
+        "end": 3068,
+        "buttons": [
+          7,
+          1
+        ]
+      },
+      {
+        "start": 3120,
+        "end": 3123,
+        "buttons": [
+          7,
+          1
+        ]
+      },
+      {
+        "start": 3175,
+        "end": 3178,
+        "buttons": [
+          7,
+          1
+        ]
+      },
+      {
+        "start": 3230,
+        "end": 3233,
+        "buttons": [
+          7,
+          1
+        ]
+      },
+      {
+        "start": 3285,
+        "end": 3288,
+        "buttons": [
+          7,
+          1
+        ]
+      },
+      {
+        "start": 3340,
+        "end": 3343,
+        "buttons": [
+          7,
+          1
+        ]
+      },
+      {
+        "start": 3395,
+        "end": 3398,
+        "buttons": [
+          7,
+          1
+        ]
+      },
+      {
+        "start": 3450,
+        "end": 3453,
+        "buttons": [
+          7,
+          1
+        ]
+      }
+    ],
+    "air_character_decisions": 66,
+    "r4_geometry_candidates": [
+      {
+        "frame": 2941,
+        "dx": 13,
+        "dy": 77
+      },
+      {
+        "frame": 2942,
+        "dx": 14,
+        "dy": 78
+      },
+      {
+        "frame": 2943,
+        "dx": 16,
+        "dy": 79
+      },
+      {
+        "frame": 2946,
+        "dx": 20,
+        "dy": 80
+      },
+      {
+        "frame": 2950,
+        "dx": 26,
+        "dy": 78
+      },
+      {
+        "frame": 3100,
+        "dx": 4,
+        "dy": 67
+      },
+      {
+        "frame": 3107,
+        "dx": 14,
+        "dy": 78
+      },
+      {
+        "frame": 3108,
+        "dx": 16,
+        "dy": 79
+      },
+      {
+        "frame": 3109,
+        "dx": 17,
+        "dy": 79
+      },
+      {
+        "frame": 3115,
+        "dx": 26,
+        "dy": 78
+      },
+      {
+        "frame": 3116,
+        "dx": 28,
+        "dy": 77
+      },
+      {
+        "frame": 3485,
+        "dx": 2,
+        "dy": 67
+      },
+      {
+        "frame": 3487,
+        "dx": 5,
+        "dy": 71
+      },
+      {
+        "frame": 3491,
+        "dx": 11,
+        "dy": 77
+      },
+      {
+        "frame": 3493,
+        "dx": 14,
+        "dy": 79
+      },
+      {
+        "frame": 3497,
+        "dx": 20,
+        "dy": 80
+      },
+      {
+        "frame": 3500,
+        "dx": 24,
+        "dy": 78
+      },
+      {
+        "frame": 3502,
+        "dx": 27,
+        "dy": 76
+      }
+    ],
+    "request4_leaf_frames": [
+      2950,
+      3502
+    ]
+  }
+]

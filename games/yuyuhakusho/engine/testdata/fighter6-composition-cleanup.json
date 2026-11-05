@@ -1,0 +1,68 @@
+{
+  "pass": true,
+  "scope": "Only this source6-composition duplicate/intermediate output; canonical fixtures/red/log metadata/baselines/inputs, ROM/tools/shared cache and8799 assets retained",
+  "deleted": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-composition-natural",
+      "files": 12,
+      "bytes": 234544217
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-composition-natural-run.txt",
+      "files": 1,
+      "bytes": 915
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-composition-full",
+      "files": 24,
+      "bytes": 243467338
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-composition-full-run.txt",
+      "files": 1,
+      "bytes": 2451
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-composition-natural-final",
+      "files": 12,
+      "bytes": 234544217
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-composition-natural-final-run.txt",
+      "files": 1,
+      "bytes": 915
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-composition-special",
+      "files": 12,
+      "bytes": 234601502
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-composition-special-run.txt",
+      "files": 1,
+      "bytes": 1033
+    }
+  ],
+  "natural_library_checks": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-composition-full/fighter6-composition-input-natural.json.gz",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter6-composition-input-natural.json.gz",
+      "calls_sha256": "e0afb10d99d957af7e920277c879bc0c87d4b2ad5761ddc16e27bb82d63a9f0c",
+      "difference": "Private-run frame library union larger; natural CPU call bytes unchanged"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-composition-full/fighter6-composition-action-natural.json.gz",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter6-composition-action-natural.json.gz",
+      "calls_sha256": "415f53a244b74f8cbc2149ca28c2265589677f6bc46949e488723844e9f57221",
+      "difference": "Private-run frame library union larger; natural CPU call bytes unchanged"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-composition-full/fighter6-composition-actor-natural.json.gz",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter6-composition-actor-natural.json.gz",
+      "calls_sha256": "c01321e133426f170ece09fb815394d7a3ca304e03edd2484f5b65cea8eeb3cc",
+      "difference": "Private-run frame library union larger; natural CPU call bytes unchanged"
+    }
+  ],
+  "files_removed": 64,
+  "bytes_removed": 947162588
+}

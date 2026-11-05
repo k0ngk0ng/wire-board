@@ -1,0 +1,102 @@
+{
+  "schema": 1,
+  "scope": "Only source6 MAIN duplicate collector outputs",
+  "deleted_files": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-motion/fighter6-motion-boundaries-manifest.json",
+      "bytes": 2457,
+      "sha256": "209e87d81ce845c485125311ff96bba1ac131c3c4b11b80e94482ae76463b9fd",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter6-motion-boundaries-manifest.json"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-motion/fighter6-motion-boundaries.json.gz",
+      "bytes": 285692,
+      "sha256": "cfafb4527a86dcfc3992b727d4bcdf49c05c1a2e04e41e7150611f22d088576d",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter6-motion-boundaries.json.gz"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-motion/fighter6-motion-oracle-manifest.json",
+      "bytes": 2366,
+      "sha256": "96a9eea9c51c68944f19230c01fa45466c0d7ed5463249db50b42a751e2b3247",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter6-motion-oracle-manifest.json"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-motion/fighter6-motion-oracle.json.gz",
+      "bytes": 3843,
+      "sha256": "c0df066a395d3cebe98d96c0a0a86b90da5e9503988ca7b647554fcdc9dde90a",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter6-motion-oracle.json.gz"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-motion/fighter6-motion-sequences-manifest.json",
+      "bytes": 2485,
+      "sha256": "4b0cf71ffca9b7b5bad10b351f55e364b0712a870aa1bc7da38a5127ad498ac2",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter6-motion-sequences-manifest.json"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-motion/fighter6-motion-sequences.json.gz",
+      "bytes": 422893,
+      "sha256": "a2b44de34f09ee7c73cbf790ed30b3b3ee2b4e6dc5ff4219c4099b0df346d7b4",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter6-motion-sequences.json.gz"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-motion-capture.txt",
+      "bytes": 385,
+      "sha256": "84990934ecd182f1e07c7ff421f2a6f01ea627efe738fc61b47e3a63240ac854",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter6-motion-capture.log"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-motion-special-natural/fighter6-motion-boundaries-manifest.json",
+      "bytes": 3219,
+      "sha256": "59d47e39aee5b76134486e57d1c35bc93190d7890efd2cf45932c2699a4f3de0",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter6-motion-boundaries-manifest.json",
+      "round": "special-natural-append"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-motion-special-natural/fighter6-motion-boundaries.json.gz",
+      "bytes": 285781,
+      "sha256": "a7696218b2bc448f8eb15512ef1a892e28d327bc69eb9e18e71d71a7b926a22f",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter6-motion-boundaries.json.gz",
+      "round": "special-natural-append"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-motion-special-natural/fighter6-motion-oracle-manifest.json",
+      "bytes": 3208,
+      "sha256": "c03ccc5a2fb1dbbc364427c141c5f68ebc99854f98ca90110a49c97445e93096",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter6-motion-oracle-manifest.json",
+      "round": "special-natural-append"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-motion-special-natural/fighter6-motion-oracle.json.gz",
+      "bytes": 57245,
+      "sha256": "df8801ccc9fa69d7053eefda12cea6e40369fcdd2fb0d8af04b318c63c76aa64",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter6-motion-oracle.json.gz",
+      "round": "special-natural-append"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-motion-special-natural/fighter6-motion-sequences-manifest.json",
+      "bytes": 3247,
+      "sha256": "d1166c5a4a554604d9deecd92637a295992eb647da023cefc843e20e7a840c93",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter6-motion-sequences-manifest.json",
+      "round": "special-natural-append"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-motion-special-natural/fighter6-motion-sequences.json.gz",
+      "bytes": 422949,
+      "sha256": "9d37848e785d80001faa51b86bb941714175a87bfb9814616abe8459a5da09a2",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter6-motion-sequences.json.gz",
+      "round": "special-natural-append"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-motion-special-natural-capture.log",
+      "bytes": 428,
+      "sha256": "6a92d7ba4593a45cef2fbb849555c2a08fbe4a853d9a1a89076538e82a21bd18",
+      "canonical": "games/yuyuhakusho/engine/testdata/fighter6-motion-capture.log",
+      "round": "special-natural-append"
+    }
+  ],
+  "deleted_bytes": 1496198,
+  "canonical_fixture_bytes_verified_equal_before_deletion": true,
+  "actual_red_final_native_and_wasm_preserved": true,
+  "shared_caches_other_agents_and_8799_assets_changed": false,
+  "initial_native_wasm_and_capture_logs_preserved_after_append": true
+}

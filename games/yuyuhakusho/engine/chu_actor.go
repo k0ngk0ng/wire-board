@@ -91,10 +91,10 @@ func StepChuActor(state ChuActorState, view ChuActorView, commands CommandLibrar
 }
 
 // StepFighterActor shares the original complete active-rule callback between
-// sources0/1/2/3/8/9/10; drawing, source identity and other callbacks remain caller-owned.
+// sources0/1/2/3/6/8/9/10; drawing, source identity and other callbacks remain caller-owned.
 func StepFighterActor(state ChuActorState, characterID uint8, view ChuActorView, commands CommandLibrary, animations AnimationLibrary) (ChuActorState, ChuActorEmissions, error) {
 	original := state
-	if characterID != 0 && characterID != 1 && characterID != 2 && characterID != 3 && characterID != 8 && characterID != 9 && characterID != 10 {
+	if characterID != 0 && characterID != 1 && characterID != 2 && characterID != 3 && characterID != 6 && characterID != 8 && characterID != 9 && characterID != 10 {
 		return original, ChuActorEmissions{}, errors.New("unsupported complete fighter actor source")
 	}
 	self, ok := chuAIIndex(state.Fighter.ObjectID)

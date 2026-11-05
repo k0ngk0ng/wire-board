@@ -1,0 +1,119 @@
+{
+  "scope": "Independent real physical practice-menu CPU6 original full AI and air-special return evidence, compared to unique observer-free original control",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "input": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter6-ai-inputs.json",
+    "sha256": "16505f2ee81d6828397785195f2912c554d33ee7647585f1d93e6f76d39ce753"
+  },
+  "capture": {
+    "path": "scripts/yuyuhakusho/capture_fighter6_natural_ai.py",
+    "sha256": "2390dd0ed2fc8ee8bb49d59301f49046070a2b2e0b432526addb6051444192b1"
+  },
+  "frames": 3602,
+  "entry_frame_limit": 3600,
+  "drain_frames": 2,
+  "complete_ai_returns": 1110,
+  "complete_air_special_returns": 4,
+  "source6_character_decisions": 297,
+  "ai_rng_calls": 2835,
+  "computer6_objects": {
+    "0x9000": 1388
+  },
+  "computer6_actions": {
+    "0x0": 338,
+    "0x1": 405,
+    "0x13": 2,
+    "0x3": 122,
+    "0xb": 52,
+    "0xa": 26,
+    "0x37": 439,
+    "0x2": 4
+  },
+  "natural34_complete_selections": 0,
+  "natural34_frames": [],
+  "outputs": [
+    {
+      "name": "ai-calls",
+      "records": 1110,
+      "fixture_sha256": "e9137f67a0b3ec106dd8048d693bbd96ed951a73398c67049e35872d6bba7217",
+      "gzip_sha256": "0de277407ebcc66a886717b66515924ce56b9341fed107e7075955154a987f61"
+    },
+    {
+      "name": "air-special-calls",
+      "records": 4,
+      "fixture_sha256": "754dfcb33769a456112fbcdd3ac3fd2af7745d3d0f214a6187aed1cad8c03325",
+      "gzip_sha256": "089d34068fa9fab3d4bb3b1be8c202d475135a47720b4dd9417ae54cca33617b"
+    }
+  ],
+  "observed_frames_sha256": "21bdaf7229acd97b95120deed04e34216a912e4d963ce16e592eaa5353ebbe5f",
+  "incomplete_calls": 0,
+  "errors": [],
+  "rom_ram_request_writes": false,
+  "restore_or_seed_injection": false,
+  "unobserved_control_generated": true,
+  "pass": true,
+  "frames_match_original_core": true,
+  "original_core_control": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-ai-reference-manifest.json",
+    "sha256": "8b80e27f3c547297ee7eefb4fdf609c787c6efc98599c39b571ddc268927b49c"
+  },
+  "canonical_outputs": [
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-ai-natural-calls.json.gz",
+      "sha256": "0de277407ebcc66a886717b66515924ce56b9341fed107e7075955154a987f61"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-ai-air-special-calls.json.gz",
+      "sha256": "089d34068fa9fab3d4bb3b1be8c202d475135a47720b4dd9417ae54cca33617b"
+    }
+  ],
+  "source_dependencies": [
+    {
+      "path": "scripts/yuyuhakusho/reference.py",
+      "sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_chu_ai.py",
+      "sha256": "c4803b501d7450467f44a7ae0a3be1337da8c18e92708eec8b0de303bc1cfe52"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_fighter_ai.py",
+      "sha256": "aa8c4302f8cd9200cfa9184ee22f9e664ed3c06bf1cb0c8b7989c93957c9c545"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/probe.py",
+      "sha256": "03a52ad64abf051a4a0c8914cb4813503f246afc0ec463ecd5cadb55c3bf7642"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/source6-ai-selection.json",
+      "sha256": "88ed1e9fd0bfd83af5e5695e2f20e3789ffd4d221878a8abeabf96c2a3ab8e7e"
+    }
+  ],
+  "independent_go_ai_acceptance": false,
+  "natural34_verified": false,
+  "release_ready": false,
+  "limits": [
+    "Actual computer channel255 and original complete AI execution are established",
+    "This evidence is not an independent Go comparison; Root world validation is separate",
+    "No natural34 success in this exact 3602-frame input",
+    "Human special fixtures and this AI corpus remain separate",
+    "Early attract-mode channel0/1 actors were not counted as AI; later real attract AI6 begins4340 and is a separate unselected input"
+  ],
+  "capture_history": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter6-ai-natural-capture-history.json",
+    "sha256": "d547d91c2fefdd820979a394880d8b6538cc58fbe7f317cd8000dc9379c7f668"
+  },
+  "description": {
+    "path": "docs/research/md-yuyuhakusho/SOURCE6_CPU_MENU.md",
+    "sha256": "ba21e63fd33ed4e30f6b259264d36011284bc77b05bfe67f49b9722672c8c130"
+  }
+}

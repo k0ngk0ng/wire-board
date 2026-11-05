@@ -1,0 +1,67 @@
+{
+  "scope": "Original source6 ordered throw, forced Request8 and low-energy fallthrough; original command preparation evidence reused",
+  "ordered_fallthroughs": [
+    {
+      "name": "complete-6-air",
+      "constructors": [
+        "0x175e0",
+        "0x188ee"
+      ],
+      "energy": [
+        0,
+        0
+      ],
+      "request": [
+        0,
+        8
+      ],
+      "throw_offset": [
+        224,
+        256
+      ]
+    },
+    {
+      "name": "complete-7-air",
+      "constructors": [
+        "0x175e0",
+        "0x188ee"
+      ],
+      "energy": [
+        7,
+        7
+      ],
+      "request": [
+        0,
+        8
+      ],
+      "throw_offset": [
+        256,
+        288
+      ]
+    }
+  ],
+  "command_programs": {
+    "slots": [
+      3,
+      5
+    ],
+    "program": "0x1eab7",
+    "steps": [
+      2,
+      0,
+      2,
+      255
+    ],
+    "window": 8,
+    "order": "Later slot5 Request6 replaces slot3 Request4",
+    "human_air34_claim": false
+  },
+  "original_command_fixture": {
+    "path": "games/yuyuhakusho/engine/testdata/character-commands-sequences.json.gz",
+    "sha256": "1914ad1f91d5981a49c141d7d2f7c1f49c7e319bdbece0a707ba778c002f4321"
+  },
+  "selector_oracle": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-oracle.json.gz",
+    "sha256": "82851850f244b5b97bd107476d60d7f805ae95419f32d0437e0d52b85e9fa103"
+  }
+}

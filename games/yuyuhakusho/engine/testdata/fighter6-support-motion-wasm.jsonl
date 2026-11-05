@@ -1,0 +1,22 @@
+{"Time":"2026-11-05T08:29:51.340394+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine"}
+{"Time":"2026-11-05T08:29:51.410493+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter6SupportOriginalContexts"}
+{"Time":"2026-11-05T08:29:51.410549+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter6SupportOriginalContexts","Output":"=== RUN   TestFighter6SupportOriginalContexts\n"}
+{"Time":"2026-11-05T08:29:52.790767+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter6SupportOriginalContexts","Output":"--- PASS: TestFighter6SupportOriginalContexts (1.38s)\n"}
+{"Time":"2026-11-05T08:29:52.791102+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter6SupportOriginalContexts","Elapsed":1.38}
+{"Time":"2026-11-05T08:29:52.791151+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter6SupportNaturalContexts"}
+{"Time":"2026-11-05T08:29:52.79116+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter6SupportNaturalContexts","Output":"=== RUN   TestFighter6SupportNaturalContexts\n"}
+{"Time":"2026-11-05T08:29:52.845561+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter6SupportNaturalContexts","Output":"    fighter6_support_motion_test.go:147: source6 support natural calls=115 kinds=map[13:39 37:75 exit:1]\n"}
+{"Time":"2026-11-05T08:29:52.846802+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter6SupportNaturalContexts","Output":"--- PASS: TestFighter6SupportNaturalContexts (0.06s)\n"}
+{"Time":"2026-11-05T08:29:52.846841+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter6SupportNaturalContexts","Elapsed":0.06}
+{"Time":"2026-11-05T08:29:52.846918+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter6SupportRealClockFlows"}
+{"Time":"2026-11-05T08:29:52.846927+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter6SupportRealClockFlows","Output":"=== RUN   TestFighter6SupportRealClockFlows\n"}
+{"Time":"2026-11-05T08:29:54.014075+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter6SupportRealClockFlows","Output":"    fighter6_support_motion_test.go:179: support real clock streams=20 stages=2574\n"}
+{"Time":"2026-11-05T08:29:54.015467+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter6SupportRealClockFlows","Output":"--- PASS: TestFighter6SupportRealClockFlows (1.17s)\n"}
+{"Time":"2026-11-05T08:29:54.015569+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter6SupportRealClockFlows","Elapsed":1.17}
+{"Time":"2026-11-05T08:29:54.015635+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter6SupportExitAndAtomicErrors"}
+{"Time":"2026-11-05T08:29:54.015643+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter6SupportExitAndAtomicErrors","Output":"=== RUN   TestFighter6SupportExitAndAtomicErrors\n"}
+{"Time":"2026-11-05T08:29:54.015991+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter6SupportExitAndAtomicErrors","Output":"--- PASS: TestFighter6SupportExitAndAtomicErrors (0.00s)\n"}
+{"Time":"2026-11-05T08:29:54.016048+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter6SupportExitAndAtomicErrors","Elapsed":0}
+{"Time":"2026-11-05T08:29:54.016571+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"PASS\n"}
+{"Time":"2026-11-05T08:29:54.022334+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine\t2.682s\n"}
+{"Time":"2026-11-05T08:29:54.022354+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Elapsed":2.682}

@@ -1,0 +1,439 @@
+{
+  "scope": "Legal physical source6 input discovery, adaptive attempts recorded as fixed input, no RAM writes. Original cold baseline pending.",
+  "input_sha256": "686cbd1c0015aa9b0d73d9b92db8dd4b34d1bfef75327a2261f3d82f2fb6f114",
+  "actions": {
+    "0": 552,
+    "19": 39,
+    "1": 2,
+    "53": 60,
+    "54": 71,
+    "55": 75,
+    "2": 33,
+    "51": 16,
+    "3": 108,
+    "5": 239,
+    "6": 130,
+    "4": 125,
+    "7": 59,
+    "12": 14,
+    "13": 65,
+    "56": 215
+  },
+  "first_actions": {
+    "0": 1800,
+    "19": 1811,
+    "1": 1917,
+    "53": 1919,
+    "54": 1999,
+    "55": 2077,
+    "2": 2152,
+    "51": 2159,
+    "3": 2242,
+    "5": 2263,
+    "6": 2316,
+    "4": 2393,
+    "7": 2479,
+    "12": 2848,
+    "13": 3155,
+    "56": 3388
+  },
+  "segments": [
+    {
+      "kind": 0,
+      "start": 1800,
+      "pose": 0,
+      "facing": 0,
+      "end": 1810
+    },
+    {
+      "kind": 19,
+      "start": 1811,
+      "pose": 131,
+      "facing": 0,
+      "end": 1849
+    },
+    {
+      "kind": 0,
+      "start": 1850,
+      "pose": 0,
+      "facing": 0,
+      "end": 1916
+    },
+    {
+      "kind": 1,
+      "start": 1917,
+      "pose": 5,
+      "facing": 0,
+      "end": 1917
+    },
+    {
+      "kind": 0,
+      "start": 1918,
+      "pose": 0,
+      "facing": 0,
+      "end": 1918
+    },
+    {
+      "kind": 53,
+      "start": 1919,
+      "pose": 160,
+      "facing": 0,
+      "end": 1978
+    },
+    {
+      "kind": 0,
+      "start": 1979,
+      "pose": 0,
+      "facing": 0,
+      "end": 1996
+    },
+    {
+      "kind": 1,
+      "start": 1997,
+      "pose": 5,
+      "facing": 0,
+      "end": 1997
+    },
+    {
+      "kind": 0,
+      "start": 1998,
+      "pose": 0,
+      "facing": 0,
+      "end": 1998
+    },
+    {
+      "kind": 54,
+      "start": 1999,
+      "pose": 162,
+      "facing": 0,
+      "end": 2069
+    },
+    {
+      "kind": 0,
+      "start": 2070,
+      "pose": 0,
+      "facing": 0,
+      "end": 2076
+    },
+    {
+      "kind": 55,
+      "start": 2077,
+      "pose": 164,
+      "facing": 0,
+      "end": 2151
+    },
+    {
+      "kind": 2,
+      "start": 2152,
+      "pose": 7,
+      "facing": 0,
+      "end": 2152
+    },
+    {
+      "kind": 0,
+      "start": 2153,
+      "pose": 14,
+      "facing": 0,
+      "end": 2158
+    },
+    {
+      "kind": 51,
+      "start": 2159,
+      "pose": 172,
+      "facing": 0,
+      "end": 2174
+    },
+    {
+      "kind": 2,
+      "start": 2175,
+      "pose": 7,
+      "facing": 0,
+      "end": 2206
+    },
+    {
+      "kind": 0,
+      "start": 2207,
+      "pose": 14,
+      "facing": 0,
+      "end": 2241
+    },
+    {
+      "kind": 3,
+      "start": 2242,
+      "pose": 64,
+      "facing": 0,
+      "end": 2262
+    },
+    {
+      "kind": 5,
+      "start": 2263,
+      "pose": 47,
+      "facing": 0,
+      "end": 2315
+    },
+    {
+      "kind": 6,
+      "start": 2316,
+      "pose": 40,
+      "facing": 0,
+      "end": 2341
+    },
+    {
+      "kind": 0,
+      "start": 2342,
+      "pose": 41,
+      "facing": 0,
+      "end": 2392
+    },
+    {
+      "kind": 4,
+      "start": 2393,
+      "pose": 32,
+      "facing": 0,
+      "end": 2465
+    },
+    {
+      "kind": 0,
+      "start": 2466,
+      "pose": 0,
+      "facing": 0,
+      "end": 2478
+    },
+    {
+      "kind": 7,
+      "start": 2479,
+      "pose": 38,
+      "facing": 1,
+      "end": 2537
+    },
+    {
+      "kind": 5,
+      "start": 2538,
+      "pose": 37,
+      "facing": 0,
+      "end": 2564
+    },
+    {
+      "kind": 6,
+      "start": 2565,
+      "pose": 40,
+      "facing": 0,
+      "end": 2590
+    },
+    {
+      "kind": 0,
+      "start": 2591,
+      "pose": 41,
+      "facing": 0,
+      "end": 2697
+    },
+    {
+      "kind": 3,
+      "start": 2698,
+      "pose": 64,
+      "facing": 0,
+      "end": 2718
+    },
+    {
+      "kind": 5,
+      "start": 2719,
+      "pose": 47,
+      "facing": 0,
+      "end": 2771
+    },
+    {
+      "kind": 6,
+      "start": 2772,
+      "pose": 40,
+      "facing": 0,
+      "end": 2797
+    },
+    {
+      "kind": 0,
+      "start": 2798,
+      "pose": 41,
+      "facing": 0,
+      "end": 2847
+    },
+    {
+      "kind": 12,
+      "start": 2848,
+      "pose": 43,
+      "facing": 0,
+      "end": 2861
+    },
+    {
+      "kind": 3,
+      "start": 2862,
+      "pose": 64,
+      "facing": 0,
+      "end": 2882
+    },
+    {
+      "kind": 5,
+      "start": 2883,
+      "pose": 47,
+      "facing": 0,
+      "end": 2935
+    },
+    {
+      "kind": 6,
+      "start": 2936,
+      "pose": 40,
+      "facing": 0,
+      "end": 2961
+    },
+    {
+      "kind": 0,
+      "start": 2962,
+      "pose": 41,
+      "facing": 0,
+      "end": 3073
+    },
+    {
+      "kind": 4,
+      "start": 3074,
+      "pose": 33,
+      "facing": 0,
+      "end": 3099
+    },
+    {
+      "kind": 0,
+      "start": 3100,
+      "pose": 0,
+      "facing": 0,
+      "end": 3102
+    },
+    {
+      "kind": 4,
+      "start": 3103,
+      "pose": 33,
+      "facing": 0,
+      "end": 3128
+    },
+    {
+      "kind": 0,
+      "start": 3129,
+      "pose": 0,
+      "facing": 0,
+      "end": 3130
+    },
+    {
+      "kind": 3,
+      "start": 3131,
+      "pose": 128,
+      "facing": 0,
+      "end": 3154
+    },
+    {
+      "kind": 13,
+      "start": 3155,
+      "pose": 19,
+      "facing": 0,
+      "end": 3219
+    },
+    {
+      "kind": 0,
+      "start": 3220,
+      "pose": 0,
+      "facing": 0,
+      "end": 3228
+    },
+    {
+      "kind": 3,
+      "start": 3229,
+      "pose": 64,
+      "facing": 1,
+      "end": 3249
+    },
+    {
+      "kind": 5,
+      "start": 3250,
+      "pose": 47,
+      "facing": 1,
+      "end": 3302
+    },
+    {
+      "kind": 6,
+      "start": 3303,
+      "pose": 40,
+      "facing": 1,
+      "end": 3328
+    },
+    {
+      "kind": 0,
+      "start": 3329,
+      "pose": 41,
+      "facing": 1,
+      "end": 3387
+    },
+    {
+      "kind": 56,
+      "start": 3388,
+      "pose": 168,
+      "facing": 1,
+      "end": 3602
+    }
+  ],
+  "attempts": [
+    {
+      "kind": "35",
+      "frame": 1910,
+      "hp": 223,
+      "energy": 223,
+      "flags": 11
+    },
+    {
+      "kind": "36",
+      "frame": 1990,
+      "hp": 223,
+      "energy": 207,
+      "flags": 11
+    },
+    {
+      "kind": "37",
+      "frame": 2070,
+      "hp": 223,
+      "energy": 183,
+      "flags": 11
+    },
+    {
+      "kind": "33",
+      "frame": 2152,
+      "hp": 223,
+      "energy": 165,
+      "flags": 148
+    },
+    {
+      "kind": "charge",
+      "frame": 3129,
+      "hp": 110,
+      "energy": 157,
+      "flags": 11
+    },
+    {
+      "kind": "38",
+      "frame": 3224,
+      "hp": 110,
+      "energy": 205,
+      "flags": 11
+    },
+    {
+      "kind": "38",
+      "frame": 3379,
+      "hp": 87,
+      "energy": 205,
+      "flags": 11
+    }
+  ],
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.4 60bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  }
+}

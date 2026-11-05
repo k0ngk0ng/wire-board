@@ -1,0 +1,806 @@
+{
+  "scope": "Remove own duplicate source6 selector captures, raw intermediates and menu research trials after canonical evidence retained",
+  "files": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-attacks/boundaries.jsonl.gz",
+      "bytes": 18854865,
+      "sha256": "d1585e91a017da55676645d9e37525b781e6cb4903ed191e92811c67585f9bde"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-attacks/fighter6-attacks-boundaries-manifest.json",
+      "bytes": 3320,
+      "sha256": "67aa4ec06c0f1c61aa3f03160dd0b666199f352ea86e8947367f29ba2b6b9b04"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-attacks/fighter6-attacks-boundaries.json.gz",
+      "bytes": 18839613,
+      "sha256": "ffc698f33728757ca61ef20d438617c0749e4ce8bb84fee2d8c3e2fd1340739e"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-attacks/fighter6-attacks-natural-manifest.json",
+      "bytes": 2875,
+      "sha256": "b47ad0aa70d99853faffb740d5cd4587dc90abb7c885f1a83ce5b893f26dab3a"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-attacks/fighter6-attacks-natural.json.gz",
+      "bytes": 611158,
+      "sha256": "35e0c026f92690fd271e8a3e9e850d6747d27de3aa89ba6fcf78d1ba9f55efe0"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-attacks/fighter6-attacks-oracle-manifest.json",
+      "bytes": 3166,
+      "sha256": "7ae63626bfe037ffcd907314d77e257caa663a551ff2719e087f1aad8a8fe8e0"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-attacks/fighter6-attacks-oracle.json.gz",
+      "bytes": 31393,
+      "sha256": "82851850f244b5b97bd107476d60d7f805ae95419f32d0437e0d52b85e9fa103"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-attacks/fighter6-attacks-sequences-manifest.json",
+      "bytes": 2823,
+      "sha256": "e23ddf71b8acb1ada41f620190eb2668237e56e6076242f33b1c38a4ed5a3377"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-attacks/fighter6-attacks-sequences.json.gz",
+      "bytes": 481007,
+      "sha256": "84c6ddc5238c8862ddd5c9acb8e005c07cee4fccf857d561aa4f4f2da2935033"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-attacks/natural.jsonl.gz",
+      "bytes": 611902,
+      "sha256": "625a62d1f6ea6aa92c37b84fd3a0fcda530680b21ed9ccd6b26a13871b3b3344"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-attacks/oracle.jsonl.gz",
+      "bytes": 31398,
+      "sha256": "7814fe87f16c82bb4d14a1c2fc14e5394915901e38851d8268fc2201992057c7"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-attacks-special/boundaries.jsonl.gz",
+      "bytes": 42,
+      "sha256": "b6a88aed9ce13b5f9833cb12afe3e52131adbfe9d404ae1ec1edbac5fbd36410"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-attacks-special/fighter6-attacks-natural-manifest.json",
+      "bytes": 3000,
+      "sha256": "4def6ef7733149efec5bf3f4101681456857f68e08e524cfad1c9051b4e60e5f"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-attacks-special/fighter6-attacks-natural.json.gz",
+      "bytes": 435065,
+      "sha256": "0b05ef420900d4ce7411e09940bd3a53f59b07957a5f38d1dc16cda2118d44eb"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-attacks-special/natural.jsonl.gz",
+      "bytes": 435596,
+      "sha256": "7b1a2be02dc24be48677cdfa158c95c4e55279ca84b16965c656af4911b847d0"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-attacks-special/oracle.jsonl.gz",
+      "bytes": 38,
+      "sha256": "5d2e9c33f44782d6bb82788220887545c1ea538cdb46e91b509f653eececdb71"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-natural-proof/ai-calls.json.gz",
+      "bytes": 171139,
+      "sha256": "0de277407ebcc66a886717b66515924ce56b9341fed107e7075955154a987f61"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-natural-proof/air-special-calls.json.gz",
+      "bytes": 1028,
+      "sha256": "089d34068fa9fab3d4bb3b1be8c202d475135a47720b4dd9417ae54cca33617b"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-natural-proof/observed-frames.json",
+      "bytes": 668867,
+      "sha256": "21bdaf7229acd97b95120deed04e34216a912e4d963ce16e592eaa5353ebbe5f"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-natural-proof/report.json",
+      "bytes": 2120,
+      "sha256": "d547d91c2fefdd820979a394880d8b6538cc58fbe7f317cd8000dc9379c7f668"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/1050.png",
+      "bytes": 18245,
+      "sha256": "e095a7725d1205bdfe04623c07fed8cdc204ff085b386564841996263bd3c61c"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/1200.png",
+      "bytes": 18145,
+      "sha256": "2b800bc22c8a57f5658c569c98909f1eff33b24a2550b77fc1c4dcf015d6ff2a"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/1275.png",
+      "bytes": 18218,
+      "sha256": "58650b790480900437149d16375651006c240626c9588af77a1a574eba25f919"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/1350.png",
+      "bytes": 18444,
+      "sha256": "276b2b16cd4051ab5f1648be1f38ed30f336aa866b0c0761d64537e78babdb78"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/1500.png",
+      "bytes": 12114,
+      "sha256": "29e2217c0ca4c0c54c135662fcac0f5892e22afb5c2043a9e96205ea714239b1"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/1600.png",
+      "bytes": 12807,
+      "sha256": "ddbedc2526a6e2e062a057850fcd5426b60a3103f627a9b8928ae3744c0efe4c"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/1650.png",
+      "bytes": 13059,
+      "sha256": "cb062eb21031e5e9f14306983cbe76c9a84cdab02ce73d90571c1cfb96ac6338"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/400.png",
+      "bytes": 9350,
+      "sha256": "5e445e3ca5ab58f0b45fe8fcb5afa6f17c4e1b4c81441a65b8df3f7e79c7800f"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/700.png",
+      "bytes": 7082,
+      "sha256": "39d17345c7c1a89e2cd7eb441dc42c91b820c991c2f3e4ed76df4ff27c6ae021"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/850.png",
+      "bytes": 8990,
+      "sha256": "5dbbdee3b3d1fc957e20cfa01e03fd3ab142a8780317e55aec5b89af6bd7f71a"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/ai-proof.log",
+      "bytes": 2120,
+      "sha256": "d547d91c2fefdd820979a394880d8b6538cc58fbe7f317cd8000dc9379c7f668"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/attract/first-source6.png",
+      "bytes": 288,
+      "sha256": "f37fc32c68c223a1c6198c376e6bc3977fc4f488da12c71a67fe41271ffbc027"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/attract/inputs.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/attract/report.json",
+      "bytes": 3271,
+      "sha256": "d06111bfe116b9f1163a80becc0a953157e699226f68005805db780536990f51"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/initial-menu.json",
+      "bytes": 13428,
+      "sha256": "264bcd1d0737b37d2b2a67eb2935babc839edb7464c51d6006464b0f83039124"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/practice/1050.png",
+      "bytes": 9959,
+      "sha256": "cea5c5e81a0b96e838441d90c8c5bbb49aeba06dde919d93a6c150ae7d9192ef"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/practice/1200.png",
+      "bytes": 10065,
+      "sha256": "5d987ffc16924831c50f94367db4c9ec9d9d9fb5ec66c3acdda88bed4feff2bd"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/practice/1350.png",
+      "bytes": 9933,
+      "sha256": "a8ec7666cd3b0f5f159b98b95aa90c5e942c6a0de423dace61b74ea2c34f67ca"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/practice/940.png",
+      "bytes": 9086,
+      "sha256": "007e6299ff649c7f1747dc1fc2ef4ff61dde156d3ed15d9f0e55b897f391e9ef"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/practice/discovery.json",
+      "bytes": 10636,
+      "sha256": "11cace554d24d588617a37c139ef10936a972f9eb148658e7667f51801e3bb8f"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/practice/inputs.json",
+      "bytes": 447,
+      "sha256": "386a25b9c9add046acdd0cbf721b86d35da4b33061a0f60ebde038f8f4a9c364"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/survival/1200.png",
+      "bytes": 8795,
+      "sha256": "c723cbb04671ae37ba3d277381bd6c59fbde82d9dcde75b0fc7477e7834de10f"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/survival/1400.png",
+      "bytes": 8713,
+      "sha256": "d446c75491ad77c70c51ec3b46900bf64146bbe86cde3cd61ade3dc927bdd9e5"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/survival/1600.png",
+      "bytes": 8878,
+      "sha256": "b2d26930a3799bdeed608ad7fef5d47c564db9f9c6301b4d561addca317ebfed"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/survival/discovery.json",
+      "bytes": 2052,
+      "sha256": "96abe73b0e5763525f13fa70bfd5102fe055ed8f8bc7895dd152d22ed3214fec"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/survival/inputs.json",
+      "bytes": 523,
+      "sha256": "7500389be3cbdd30b5818931f2f83d75c9a550ed20bd6fd92fef1efbe81c37ee"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/survival-cpu6-search/candidate-inputs.json",
+      "bytes": 1207,
+      "sha256": "16505f2ee81d6828397785195f2912c554d33ee7647585f1d93e6f76d39ce753"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/survival-cpu6-search/candidate.png",
+      "bytes": 12439,
+      "sha256": "cc45bd3b00e6648817598ea725b47ea22d238733b65dd113a0a7c8f409ab959e"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/survival-cpu6-search/trials.json",
+      "bytes": 23546,
+      "sha256": "a53eb08add22c19a72f450c8f10d218572de40d8c39b300e5cf0bc8139c66706"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/survival-entry/1400.png",
+      "bytes": 14335,
+      "sha256": "4b4c8745bc7573d2910330c24ef3ee799cf44970fb45de0b30a1b306af656f11"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/survival-entry/1550.png",
+      "bytes": 18356,
+      "sha256": "60274ce727f2767fdd0012a1f1d61bc22e84a9aad2a15bf0d4a3c0b0bb360de4"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/survival-entry/1700.png",
+      "bytes": 18401,
+      "sha256": "64a6ec4502eed90fe1bf6c544b3f75aed4e2e411aa65ac0ef8382cb2305734b3"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/survival-entry/1800.png",
+      "bytes": 18369,
+      "sha256": "d12c65e45fb23555193d380b071c95a13d45e7d37a10f730746c790c2853a8c3"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/survival-entry/discovery.json",
+      "bytes": 2737,
+      "sha256": "840553a71a10bb125f293dfa6cf821bda154801eba4af67b5239713ef4235fa0"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/survival-entry/inputs.json",
+      "bytes": 751,
+      "sha256": "d96186a09e7d0e12acc3db5157a45226ea4409603f8e28a6e83a60c8b836a835"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/survival-jin/1805.png",
+      "bytes": 18209,
+      "sha256": "eafd7a59f1adaa40d0094ccd90e2ea7b00bcfc53a002203200d68e29b1e01e64"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/survival-jin/1900.png",
+      "bytes": 10383,
+      "sha256": "a91b37976b5eead43ffcdfb66df1141f1f5b4ba3f3d5766fb5b00908bbde693d"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/survival-jin/2100.png",
+      "bytes": 12273,
+      "sha256": "6358ead34933598caa4b0af1c18b0b7742ad45985ba8990545f4c7c0ba12b5de"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/survival-jin/2400.png",
+      "bytes": 13165,
+      "sha256": "1004d740d4a2a07fb608248635209023226a84357800e4d0ba044454f3b0b534"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/survival-jin/3602.png",
+      "bytes": 12511,
+      "sha256": "a671c642285dbc25771aeca36867a649f487c9053b7a9f38eb50eca6442bd954"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/survival-jin/discovery.json",
+      "bytes": 7190,
+      "sha256": "c0bbbadeafae792589d01100f7ec6e92308cfa40c927b4630fd0cd335a6b4bb7"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/survival-jin/inputs.json",
+      "bytes": 1207,
+      "sha256": "332f80bf47f5e0cdda20cd4f7167ca6d99b9ae1215862efbec870424709da035"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/survival-p1-confirm/1950.png",
+      "bytes": 10383,
+      "sha256": "a91b37976b5eead43ffcdfb66df1141f1f5b4ba3f3d5766fb5b00908bbde693d"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/survival-p1-confirm/2150.png",
+      "bytes": 10715,
+      "sha256": "92fff0213d61608c4c15a06b01ec1e0d72e5098ee8cc8d7a6c894081a52a05b9"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/survival-p1-confirm/2350.png",
+      "bytes": 11903,
+      "sha256": "4c00e9708f372031a464eae5f7d89f5c22c0c122e2220ee38ace965d604d0f19"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/survival-p1-confirm/2600.png",
+      "bytes": 12622,
+      "sha256": "92426b83e0aaf2992111c57bac9dd6ac64a55a70e6f91037003252fb6db65a3c"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/survival-p1-confirm/discovery.json",
+      "bytes": 4517,
+      "sha256": "82d70519473903177183526ac633a4769b17795d7398ef59e4f9efc7323d2909"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/survival-p1-confirm/inputs.json",
+      "bytes": 979,
+      "sha256": "1102b3ab7501d8cd647b17318f7e27f1656c05cdb92953e5f6b354962ce1874d"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tag/1200.png",
+      "bytes": 14735,
+      "sha256": "3b9f6be73420dd9fb87d2a527a0ffba34550ef6308849b708c4f37889c8c807f"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tag/1400.png",
+      "bytes": 14761,
+      "sha256": "cc819b0bbdf7b6d396650485cc8f1550fc87cfd13ab145122c7a13cdb6cef6f8"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tag/1600.png",
+      "bytes": 14252,
+      "sha256": "f81f7a6464ae486c1373f492886f87b07bb7ba8e29f5b209ee45ae05a61ee930"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tag/discovery.json",
+      "bytes": 2052,
+      "sha256": "e032753ce21e0d94fae737d6ace9bb1e78774781dbb13e8f2b9d984a16cbc4de"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tag/inputs.json",
+      "bytes": 599,
+      "sha256": "cb5c82dd5d84539fbce3acf707fd0388206c63b713827424c695a711e5251281"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tag-p1-confirm/1950.png",
+      "bytes": 18219,
+      "sha256": "ddf5ad39a1c0d7bdc168984576609e215fb5aca73f39fe8ca0565213863ad923"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tag-p1-confirm/2150.png",
+      "bytes": 18420,
+      "sha256": "e9c633707be9fb6abd8a3463d7fc0039913a841684eeafac210dfb774aa97106"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tag-p1-confirm/2350.png",
+      "bytes": 10379,
+      "sha256": "1d2ce27d4f239b50f2bcec61ed92ffd2f0a0dc02c3fcf9aec03a62cdf27cdc4a"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tag-p1-confirm/2600.png",
+      "bytes": 10376,
+      "sha256": "7037deb163eb5525b6ea39868405deebc3264cb65ceec1dc4f21032e521ab2c2"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tag-p1-confirm/discovery.json",
+      "bytes": 4507,
+      "sha256": "ba2b6e5adb89a9c7cd7aa11e12130d4ab9baede6f63e7fe94812d3b964fa8b49"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tag-p1-confirm/inputs.json",
+      "bytes": 979,
+      "sha256": "4e576ad6d6d9a3c9ab905c79bcdda991429c472dea32425c5276b3acc4cb6da9"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tag-select/1400.png",
+      "bytes": 13979,
+      "sha256": "44fd51731459a4d7c8467d5362a8dbdfce9dcb15c3cda273379993d427d48e8d"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tag-select/1550.png",
+      "bytes": 13999,
+      "sha256": "9f2cd8db9b2604a0e0ef0a5d3ccafc42e84119fd112c85861e87877cf9b70f9e"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tag-select/1700.png",
+      "bytes": 13952,
+      "sha256": "aa1cbfa7c505b16d5a79a52a9679ff2950c8a1662c8ea53e795ba7b7d9e0f9d6"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tag-select/1800.png",
+      "bytes": 14004,
+      "sha256": "901de17b03877239b0699daccaec9da4674cd656d038b026ea473e7e4506ea6b"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tag-select/discovery.json",
+      "bytes": 2735,
+      "sha256": "db4c25eb548897a13a2b3b08abb66a662b2c03dee150b6c7b21eef7465b3bc09"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tag-select/inputs.json",
+      "bytes": 751,
+      "sha256": "85bbaf9d848ef0607d2121f49508da03e9854c1a840c566f98c9a97215020995"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tournament/1050.png",
+      "bytes": 8619,
+      "sha256": "ec93a3a854b80756b4094fad66a749d6ca6e11e58761cdf9893e8de2ddd93123"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tournament/1200.png",
+      "bytes": 8791,
+      "sha256": "00b89beca79e5bb36712bf466960bf827bcfde1fb772c9e334e265c460ee906e"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tournament/1350.png",
+      "bytes": 8694,
+      "sha256": "fc40fba8bf6aed337b6f71e71d36a4902f68a497309ab6b8d00d34d0e0185610"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tournament/940.png",
+      "bytes": 9112,
+      "sha256": "0b5cd55f25e57d556cc071c5b2b14378ae3c4439e20d9654977a38def2203754"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tournament/discovery.json",
+      "bytes": 10636,
+      "sha256": "4e21da1190f582a78201e240d359285cc1d3340da6852c9e95d3a4c3b4caef97"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tournament/inputs.json",
+      "bytes": 521,
+      "sha256": "6e903f707de6e94780d2eb82aeace8c0a12211d8b439cf275e31e89aa79ef41c"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tournament-entry/1200.png",
+      "bytes": 14735,
+      "sha256": "3b9f6be73420dd9fb87d2a527a0ffba34550ef6308849b708c4f37889c8c807f"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tournament-entry/1400.png",
+      "bytes": 14761,
+      "sha256": "cc819b0bbdf7b6d396650485cc8f1550fc87cfd13ab145122c7a13cdb6cef6f8"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tournament-entry/1600.png",
+      "bytes": 14252,
+      "sha256": "f81f7a6464ae486c1373f492886f87b07bb7ba8e29f5b209ee45ae05a61ee930"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tournament-entry/discovery.json",
+      "bytes": 2052,
+      "sha256": "281a76cab38b38d7fd24e3ed829f8b7f9aad59df61d9f8d7c72a3756c00e81d7"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tournament-entry/inputs.json",
+      "bytes": 597,
+      "sha256": "0ed8faa8403cd7432dc1419aec9e38d53ffb5cb9b62325b7a61dc163135666fa"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tournament-p1-confirm/1950.png",
+      "bytes": 10381,
+      "sha256": "3d356c6fd023e37c5b664d2aed8cd0f3c4dfaa795354abad46587d1a792af731"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tournament-p1-confirm/2150.png",
+      "bytes": 6801,
+      "sha256": "3a4d8525b10f6adb0bbf0dd838c137a2274097c2a9fbc0c7a651db89f09396f8"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tournament-p1-confirm/2350.png",
+      "bytes": 9692,
+      "sha256": "a7f3b646a68ec6071e75d5db5134082669406ab30dc8e5c7edd418dcc5e0fb70"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tournament-p1-confirm/2600.png",
+      "bytes": 7685,
+      "sha256": "bd66899cb71a292adf4e950cc7bf64a65dbbc70dbf1b58de3cd2a61d90d32089"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tournament-p1-confirm/discovery.json",
+      "bytes": 4510,
+      "sha256": "6143b2ec48c6138e716bd21cef74c66f4f1c17fb5abab36496cd8765123acc75"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tournament-p1-confirm/inputs.json",
+      "bytes": 977,
+      "sha256": "4082bebe2405717c064cb96491311334b6aca0ca5be220f325f72e8ea6589f3c"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tournament-select/1400.png",
+      "bytes": 18356,
+      "sha256": "60274ce727f2767fdd0012a1f1d61bc22e84a9aad2a15bf0d4a3c0b0bb360de4"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tournament-select/1550.png",
+      "bytes": 18407,
+      "sha256": "03dd28b73a96d4b0f93801cd20210889e50bf6b0bb53b4856e645aae9dee80d9"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tournament-select/1700.png",
+      "bytes": 18526,
+      "sha256": "3656a3e54450a061955258a3bc7d674ea00fbad7bd083d8850ae1ff00b006ab5"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tournament-select/1800.png",
+      "bytes": 18496,
+      "sha256": "153ad506dd63258ee12fb2a702406eb21873fcdbf6b4c84f3816a49e5d01effa"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tournament-select/discovery.json",
+      "bytes": 2735,
+      "sha256": "fcce77702c46ed9b8a1bd705413cec209e48a4e349736d1351d63978041bd849"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-cpu-menu/tournament-select/inputs.json",
+      "bytes": 749,
+      "sha256": "9bce9fbd2be33c0ecd55b7b17f8149886987c570fefc83515839c2712a94245b"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/air-b/ai-calls.json.gz",
+      "bytes": 179035,
+      "sha256": "ac5a64e111e2d8350cfe887849590ef18118afb0ac85d678a545324bada92820"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/air-b/air-special-calls.json.gz",
+      "bytes": 1049,
+      "sha256": "21478e935b53d2f48198903085272aaad8e489a74977ed2e45ba8972b2f9d8cc"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/air-b/inputs.json",
+      "bytes": 2088,
+      "sha256": "6b259fd6f65182e0b86da17d5fea451ddaea3088a4c757c87d2b661bdff154ca"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/air-b/observed-frames.json",
+      "bytes": 668867,
+      "sha256": "e6569a6c1f3294de959920f95266b6d59b12e3dd6a5f8bf617f45753697402a6"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/air-b/report.json",
+      "bytes": 2124,
+      "sha256": "6a8d1773453e08fe8904434278e1287afd2269ccc8f76d307a82654fd99b0899"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/air-b/stdout.log",
+      "bytes": 2124,
+      "sha256": "6a8d1773453e08fe8904434278e1287afd2269ccc8f76d307a82654fd99b0899"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/air-throw/ai-calls.json.gz",
+      "bytes": 179039,
+      "sha256": "463e547e109a77c6da4b58ba893b2eadbb22bf2b4e3ab54fff5e5eb68a74d3d6"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/air-throw/air-special-calls.json.gz",
+      "bytes": 1049,
+      "sha256": "21478e935b53d2f48198903085272aaad8e489a74977ed2e45ba8972b2f9d8cc"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/air-throw/inputs.json",
+      "bytes": 2088,
+      "sha256": "a5d6cb985c4855cafa034c35577020a4835e7952493f5c517ba3394ae2ed2525"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/air-throw/observed-frames.json",
+      "bytes": 668867,
+      "sha256": "296c8535db848bed83f3c274c71f2f42ecdb1d6252faf9f68ab742e7cfe5cee7"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/air-throw/report.json",
+      "bytes": 2128,
+      "sha256": "11898e9854ded845f43091a6836bd97669f29088387d1d029d6f54893a57e0c1"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/air-throw/stdout.log",
+      "bytes": 2128,
+      "sha256": "11898e9854ded845f43091a6836bd97669f29088387d1d029d6f54893a57e0c1"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/guard/ai-calls.json.gz",
+      "bytes": 163835,
+      "sha256": "2a311468c3df21690bd05dd29d5d5afd23494726e9bf3efe3f92cc815a4a23fb"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/guard/air-special-calls.json.gz",
+      "bytes": 985,
+      "sha256": "32994935a5db229e4bbcf2c4f51953e0b37b3f0f08d9a75ac5a71d7e95c82eaa"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/guard/inputs.json",
+      "bytes": 1283,
+      "sha256": "937020f497cc759678a925f528e8c1dc88412014ea6be26eb2d58e801d55532e"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/guard/observed-frames.json",
+      "bytes": 668867,
+      "sha256": "efd09ba680729b78b09dd75dd1978b8910bccb161062dbd9a5a14b2d036a22e5"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/guard/report.json",
+      "bytes": 2140,
+      "sha256": "f166fff6f0ce84e9f561e5912b4a934b8b54d4ad7470e9def927c3adbefea80c"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/guard/stdout.log",
+      "bytes": 2140,
+      "sha256": "f166fff6f0ce84e9f561e5912b4a934b8b54d4ad7470e9def927c3adbefea80c"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/jump-retreat/ai-calls.json.gz",
+      "bytes": 174774,
+      "sha256": "5cdb2d56baf98d3955164f572f36c8ef07867304c479cb7bc925a8ab417ccd10"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/jump-retreat/air-special-calls.json.gz",
+      "bytes": 1145,
+      "sha256": "017cab3d58a2371df6344fc02e4b943d417cd731c9a263ce4e2805a4b13df3ce"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/jump-retreat/inputs.json",
+      "bytes": 2195,
+      "sha256": "3f05ebc87d72d2e7b0bf1c933e2d027ea5ac377a0c7e76d8e29f06144fa9c1ef"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/jump-retreat/observed-frames.json",
+      "bytes": 668867,
+      "sha256": "f9da895be8cadd13bfc1c1822ea000d7f22172a068fdf0b028dad0f24d53e1a7"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/jump-retreat/report.json",
+      "bytes": 2131,
+      "sha256": "a3aa65b25aa3546b72c27202b43fab2092c9ecc624f2aa3f62f594dc8cc74f36"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/jump-retreat/stdout.log",
+      "bytes": 2131,
+      "sha256": "a3aa65b25aa3546b72c27202b43fab2092c9ecc624f2aa3f62f594dc8cc74f36"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/rise-repeat/ai-calls.json.gz",
+      "bytes": 175293,
+      "sha256": "7094c4cd523cf6e9ae45fd39affc7eb1d8c6087b68a61d85a1afb9d0061f15de"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/rise-repeat/air-special-calls.json.gz",
+      "bytes": 1117,
+      "sha256": "cac2d5a6e113afb20f7b50fc5c0a220fb34cc0f4b33d0e57500a3d7991813722"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/rise-repeat/inputs.json",
+      "bytes": 1891,
+      "sha256": "977a5142d53dbf172f68096903395adb5774a2f2eeaa47001553acdc6abc1f6e"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/rise-repeat/observed-frames.json",
+      "bytes": 668867,
+      "sha256": "d7fe5f8e188dbd0a58d40464cf614f7461ec0a2d6e1f7a10f82435e0f11cf0fd"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/rise-repeat/report.json",
+      "bytes": 2130,
+      "sha256": "63aa29672ad2870aaff761c5eb5958abd0d136a685ad0cdeb17703c34f15967d"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/rise-repeat/stdout.log",
+      "bytes": 2130,
+      "sha256": "63aa29672ad2870aaff761c5eb5958abd0d136a685ad0cdeb17703c34f15967d"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/run.py",
+      "bytes": 2098,
+      "sha256": "73f0dd81a07f6280ee78a38e5ee092c908f0edcae1d74109e4c4cc06fd715fe5"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/summary.json",
+      "bytes": 18693,
+      "sha256": "8c9e781c5155a7a4e2009019479dc95dc4679c1fb9444301e91a68969ccd7640"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/sweep-pulses/ai-calls.json.gz",
+      "bytes": 174534,
+      "sha256": "fcdf52a7f1fcf27f9b09804ded3ac7a6c0f2d18f775dad3574e7f5eadb8d8ef1"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/sweep-pulses/air-special-calls.json.gz",
+      "bytes": 17648,
+      "sha256": "9ea5afad187c6a5f86aafd89fe167ae38fa4732c37d0127ec3bfcf5f86d1036c"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/sweep-pulses/inputs.json",
+      "bytes": 3493,
+      "sha256": "38a32b672fe0b3a82429d38264195df43265b4d4833ef42e3c58db69ed80fa73"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/sweep-pulses/observed-frames.json",
+      "bytes": 668867,
+      "sha256": "b8bba6e70aba2f5844ba6472910d17feea537eaa05a0c9cb716a06df414390af"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/sweep-pulses/report.json",
+      "bytes": 2154,
+      "sha256": "f0e211b09644998654434fbd3e9e7a9d07cfda8f910270761768d623b014be2f"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/sweep-pulses/stdout.log",
+      "bytes": 2154,
+      "sha256": "f0e211b09644998654434fbd3e9e7a9d07cfda8f910270761768d623b014be2f"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/throw-pulses/ai-calls.json.gz",
+      "bytes": 173536,
+      "sha256": "c1aea1e29462458a74cdd5a765bd5ba510cbf1d1c40f6da1ba09fc446a32c611"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/throw-pulses/air-special-calls.json.gz",
+      "bytes": 945,
+      "sha256": "7d1e6dd63ca383592a0f4d0412c2b2fefa46150d2b1972356510b8e99520ea87"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/throw-pulses/inputs.json",
+      "bytes": 3068,
+      "sha256": "a5025f8fd6eea4d145bcf48973216bca62c412bdd8451464069ae257f66f8c0c"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/throw-pulses/observed-frames.json",
+      "bytes": 668867,
+      "sha256": "3017a7fb72cb8d17610a2338202ab0dfea875d2ccfe89e841f12031aa281e8c9"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/throw-pulses/report.json",
+      "bytes": 2148,
+      "sha256": "041e3c13b663d21308f4564afb28caf6b2b50d52f4df6d972ab9c3be2660b908"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/throw-pulses/stdout.log",
+      "bytes": 2148,
+      "sha256": "041e3c13b663d21308f4564afb28caf6b2b50d52f4df6d972ab9c3be2660b908"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/walk-jump/ai-calls.json.gz",
+      "bytes": 176247,
+      "sha256": "2230269cb1bb49e9110899f99cae98227c521832de942358d4aa326265a5f3e9"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/walk-jump/air-special-calls.json.gz",
+      "bytes": 1340,
+      "sha256": "284e31b6cd7450db4ca38ee5f5bb39b01adc71ef7536aba1073bfcbb9e5e6a95"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/walk-jump/inputs.json",
+      "bytes": 1891,
+      "sha256": "4151e2f129855a4dd8d24a4ad1143a1bebf66dd2cc09886bfd58daaa697d9fa4"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/walk-jump/observed-frames.json",
+      "bytes": 668867,
+      "sha256": "9703aac4a53ef6017a7e5e6c736769c464be6772de151344aab50a197ef1b762"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/walk-jump/report.json",
+      "bytes": 2128,
+      "sha256": "8611f5464606c2736e94e3debdbeaf46cb76f9cc712b4e0057969048ee2a572a"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-r4-search/walk-jump/stdout.log",
+      "bytes": 2128,
+      "sha256": "8611f5464606c2736e94e3debdbeaf46cb76f9cc712b4e0057969048ee2a572a"
+    }
+  ],
+  "bytes": 48885509,
+  "canonical_fixtures_preserved": true,
+  "shared_cache_and_other_workers_untouched": true,
+  "directories_removed": [
+    ".local/md-yuyuhakusho/fighter6-attacks",
+    ".local/md-yuyuhakusho/fighter6-attacks-special",
+    ".local/md-yuyuhakusho/fighter6-ai-natural-proof",
+    ".local/md-yuyuhakusho/fighter6-cpu-menu",
+    ".local/md-yuyuhakusho/fighter6-reference",
+    ".local/md-yuyuhakusho/fighter6-ai-r4-search"
+  ]
+}

@@ -249,6 +249,12 @@ func visitChuWorldTest(t *testing.T, handle func(chuWorldOriginalPass), fixtureN
 			wantRecords, wantFrames = 2955, 5500
 		} else if name == "chu-world-fighter1-special" {
 			wantRecords, wantFrames = 1801, 3600
+		} else if name == "chu-world-fighter6" {
+			wantRecords, wantFrames = 2685, 5500
+		} else if name == "chu-world-fighter6-special" {
+			wantRecords, wantFrames = 2401, 4200
+		} else if name == "chu-world-fighter6-ai" {
+			wantRecords, wantFrames = 2280, 5500
 		}
 	}
 	zipped, err := os.ReadFile("testdata/" + name + ".json.gz")
@@ -273,7 +279,11 @@ func visitChuWorldTest(t *testing.T, handle func(chuWorldOriginalPass), fixtureN
 		t.Fatal(err)
 	}
 	zh := sha256.Sum256(zipped)
-	capture, err := os.ReadFile("../../../scripts/yuyuhakusho/capture_chu_world.py")
+	captureName := "capture_chu_world.py"
+	if name == "chu-world-fighter6-ai" {
+		captureName = "capture_fighter6_ai_world.py"
+	}
+	capture, err := os.ReadFile("../../../scripts/yuyuhakusho/" + captureName)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -299,7 +309,7 @@ func visitChuWorldTest(t *testing.T, handle func(chuWorldOriginalPass), fixtureN
 			t.Fatal(err)
 		}
 		firstEntries := 0
-		if name == "chu-world-fighter10" || name == "chu-world-fighter1" || name == "chu-world-fighter1-special" {
+		if name == "chu-world-fighter10" || name == "chu-world-fighter1" || name == "chu-world-fighter1-special" || name == "chu-world-fighter6" || name == "chu-world-fighter6-special" || name == "chu-world-fighter6-ai" {
 			// These inputs reach the first captured pass after3a2e in the
 			// same video label. The other inputs cross that boundary earlier.
 			firstEntries = 1
