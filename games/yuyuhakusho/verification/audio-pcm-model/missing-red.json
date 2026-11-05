@@ -1,0 +1,5 @@
+{
+  "pass": false,
+  "error": "FileNotFoundError(2, 'No such file or directory')",
+  "verifier_sha256": "f7737c0d8c58f7a588a643e28e25c00ec4579681b89a473fe0ad3804cb4c8a5d"
+}

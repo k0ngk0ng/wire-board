@@ -1,0 +1,13 @@
+{
+  "frozen_at_utc": "2026-11-05T12:46:56.415605+00:00",
+  "unit_first": true,
+  "real_browser_first": true,
+  "sha256": {
+    "web/tests/platform-audio-stream.test.mjs": "fbab96fd15f944bac0f0a7d8094d09162cd8a82635e7b0b9bb9232fd46998253",
+    "web/src/game-api/audio-stream.ts": "d9f8e75e1d8290b0e335a945e39758a6851cdb6129b830dd9d5337506d240229",
+    "docs/research/md-yuyuhakusho/AUDIO_PLATFORM_STREAM_FAILURES.md": "a86c9266ac700b8ea3cda1de3446783fab0a6fb9d80e04b5dcd394ef0ae1406b"
+  },
+  "unit_red": "games/yuyuhakusho/verification/audio-platform-stream-root-unit-red.log",
+  "browser_red": "games/yuyuhakusho/verification/audio-platform-stream/missing-final-red.log",
+  "browser_freeze": "games/yuyuhakusho/verification/audio-platform-stream/test-first.json"
+}

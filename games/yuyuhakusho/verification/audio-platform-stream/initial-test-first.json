@@ -1,0 +1,11 @@
+{
+  "created_at_utc": "2026-11-05T12:38:39.011878+00:00",
+  "phase": "Full public/native stream E2E frozen before platform runtime implementation",
+  "sha256": {
+    "docs/research/md-yuyuhakusho/AUDIO_PLATFORM_STREAM_FAILURES.md": "a86c9266ac700b8ea3cda1de3446783fab0a6fb9d80e04b5dcd394ef0ae1406b",
+    "web/src/game-api/audio-stream.ts": "d9f8e75e1d8290b0e335a945e39758a6851cdb6129b830dd9d5337506d240229",
+    "scripts/yuyuhakusho/audio_stream_harness.ts": "6a502c2adc5cac05dc391f09733a8a9d44370807c61c85070c69f9f3e2c2be86",
+    "scripts/yuyuhakusho/check_audio_stream.py": "927d37d19f2ac087e5fec32fe16a1621b7dddffb60a4da44c79414d129d2e46d"
+  },
+  "fixture": ".local/md-yuyuhakusho/audio-encoder-plan/e2e/native/original12/small-bulk/manifest.json"
+}

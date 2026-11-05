@@ -1,0 +1,8 @@
+{
+  "error": "AssertionError('Error: platform openStream method is unavailable')",
+  "requests": [
+    "/",
+    "/harness.js",
+    "/favicon.ico"
+  ]
+}

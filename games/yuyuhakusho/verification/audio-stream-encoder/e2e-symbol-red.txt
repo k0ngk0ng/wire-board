@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/verify_go_audio_stream.py", line 114, in <module>
+    for environment in ('native','wasm')if a.environment=='both'else(a.environment,):run(out,environment)
+                                                                                     ~~~^^^^^^^^^^^^^^^^^
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/verify_go_audio_stream.py", line 75, in run
+    assert built.returncode==0,(command,built.returncode,built.stderr)
+           ^^^^^^^^^^^^^^^^^^^
+AssertionError: (['/opt/homebrew/bin/go', 'build', '-o', '/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/audio-encoder-plan/e2e/build/encoder', './games/yuyuhakusho/cmd/verify-audio-stream-encoder'], 1, 'stat /Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/games/yuyuhakusho/cmd/verify-audio-stream-encoder: directory not found\n')

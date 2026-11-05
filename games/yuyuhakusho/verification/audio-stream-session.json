@@ -1,0 +1,83 @@
+{
+  "verified_at_utc": "2026-11-05T13:42:45.879128+00:00",
+  "pass": true,
+  "baseline_commit": "0f3bea2f",
+  "stage": "PureGo lossless encoding, native platform stream lifecycle and DPCM arithmetic",
+  "goal_complete": false,
+  "release_ready": false,
+  "overall_progress_estimate_percent": 81,
+  "game_audio_playback_integrated": false,
+  "independent_audio_synthesis_complete": false,
+  "platform_unit_tests": 83,
+  "platform_native_stream_cases": 5,
+  "native_fragments": 517,
+  "native_crossings": 516,
+  "pcm_source_stereo_frames": 529200,
+  "native_first_playing_ahead_seconds": 0.25539199999999995,
+  "encoder_unit_tests_per_runtime": 6,
+  "pcm_arithmetic_unit_tests_per_runtime": 4,
+  "go_package_checks": [
+    {
+      "environment": "native",
+      "tests": 16,
+      "path": "games/yuyuhakusho/verification/audio-stream-all-full-native.jsonl",
+      "sha256": "1b9b19565caa6032a802e13a5a70a203b6b8193d5d9ea265c65706703dc507e3"
+    },
+    {
+      "environment": "wasm",
+      "tests": 16,
+      "path": "games/yuyuhakusho/verification/audio-stream-all-full-wasm.jsonl",
+      "sha256": "18c1100e6ad0dbfdc58e99c44e359a49549e45bffd2f6558b7c7a6cadb019645"
+    }
+  ],
+  "cleanup": {
+    "path": "games/yuyuhakusho/verification/audio-stream-cleanup.json",
+    "sha256": "7496dff1ae12ef79b7621f0b3ee62b1d94d5241a88db6ca233ef5f22f5673dae"
+  },
+  "evidence": [
+    {
+      "path": "games/yuyuhakusho/data/audio-stream-encoder-validation.json",
+      "sha256": "d8c8c1a3ac11bea7ea4575e98f5847b51c9c66ca354620b266a5c60594205c44"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-model/validation.json",
+      "sha256": "d31f77eadf469a93c26b68f89c639cbb8edd0acf8c99b56c196e8cec2117cf0a"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-stream/restored-final1/result.json",
+      "sha256": "644b4b0757c164390ead8bcb29af019ba7b9800c1ac5152d835521a75642612b"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/stream-finite-compatible/result.json",
+      "sha256": "77aba8b85f60242118054cfa6c6c569e18230bc390c3eb9a1cce81651ff1e015"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/stream-legacy-compatible/result.json",
+      "sha256": "9c8971f663bd2f7ab477b580e74f88cda4ff34bf0b94d02ee3cf379682a804e4"
+    }
+  ],
+  "source_sha256": {
+    "web/src/audio.ts": "83945c4668d6ed15f6befda3a19222e9c52b20de4ff0e4c247b6e8070117784e",
+    "web/src/audio-stream.ts": "298f42cf2d04456b11626725fd8251476c14142341b1349f1b3162b4166723ce",
+    "web/src/game-api/module.ts": "953aa857c17979d80a2761b4b0d6a943950d857519cec222bd6a744471a28d83",
+    "web/src/game-api/audio-stream.ts": "d9f8e75e1d8290b0e335a945e39758a6851cdb6129b830dd9d5337506d240229",
+    "web/tests/platform-audio-stream.test.mjs": "fbab96fd15f944bac0f0a7d8094d09162cd8a82635e7b0b9bb9232fd46998253",
+    "scripts/yuyuhakusho/check_audio_stream.py": "8075db0b17e75b970876a0790d9235bd52e1d553e45f1c4b3de038b6b0536424",
+    "scripts/yuyuhakusho/audio_stream_harness.ts": "b8ed2b86dfbc82df14a42b6161d2a2a4d0fe8b0194f1215f4ad672eaf4e19304",
+    "scripts/yuyuhakusho/summarize_audio_stream_session.py": "3e29926a9b744c5ac4d30bb18f45fc0032d86549419a69385bee3001768b5618",
+    "games/yuyuhakusho/audio/stream/encoder.go": "64e28621e5540a186c391adf7774a82ded932b6018dacf97ccce92b8647efa63",
+    "games/yuyuhakusho/audio/stream/encoder_test.go": "b04dbbdd5a373d1a30192c16aa3090e2f1f2f238a8056b5bc10349a5614e6046",
+    "games/yuyuhakusho/audio/stream/flac.go": "26dab2d2fff243803ac5de49265d8a9d4a71e063753b04d59ad6716a11822219",
+    "games/yuyuhakusho/audio/stream/mp4.go": "ea9cae9d9458fca2778defb913b69c30c7412beebc0c27c3567a4a565c0c56b2",
+    "games/yuyuhakusho/audio/stream/reference_test.go": "b6b3d321809a0739612b4688359c68c5120fc0acef6e4c8d7a5c8854308f71fb",
+    "games/yuyuhakusho/audio/pcm/pcm.go": "bc4dbea82a591c5ddce897e927500ec231c537895015dc39bee06c957a3bda90",
+    "games/yuyuhakusho/audio/pcm/pcm_test.go": "978419b76006f91854bc5f04fe445294751488e7ac432c7dcbf1a9ac74e6166a"
+  },
+  "limits": [
+    "Original DPCM values and8bit clamp are verified; independent event cadence/bank prefetch/YM/filter/resampler and world scheduling remain incomplete.",
+    "Native MSE startup needed9 small fragments (~209ms); original8-fragment pause fixture failure was retained and only its bootstrap supply was repaired. Main low-ahead acceptance was not relaxed.",
+    "Exact container roundtrip is separate from browser speaker samples. No sample-exact speaker output, Safari/mobile, input-to-sound latency, complete synthesis or infiniteBGM claim.",
+    "Encoder generic maximum segment size is larger than platform1MiB; caller must select a compatible fragment configuration.",
+    "All media remains local; no publication, upload, push or deployment."
+  ]
+}

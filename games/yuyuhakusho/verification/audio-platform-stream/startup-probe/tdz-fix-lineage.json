@@ -1,0 +1,7 @@
+{
+  "recorded_at_utc": "2026-11-05T13:13:50.693259+00:00",
+  "scope": "Private observer only, no production/frozenE2E changes",
+  "reason": "Local const start shadowed the async start function throughout its handler (TDZ); renamed only steady timer",
+  "before_sha256": "2405d510b8f9e5aacf346eb1ef0610a571697a2a49e219130fee9c1496c5373e",
+  "after_sha256": "553097790b76d3aaa843a68312007065bbfc738195872943d30faab31f928ab0"
+}

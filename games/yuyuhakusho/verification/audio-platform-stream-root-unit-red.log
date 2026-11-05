@@ -1,0 +1,104 @@
+✖ native stream ready, contiguous commits and end distinguish EOS from playback end (0.754875ms)
+✖ init and pending data are copied; only an identical in-flight segment shares a Promise (0.1465ms)
+✖ invalid segments and forward backpressure preserve the current cursor and media (0.133833ms)
+✖ unsupported, conflicting or malformed stream configurations are atomic (0.200125ms)
+✖ replace during bootstrap or update cannot resurrect or stop another epoch (0.195917ms)
+✖ pause preserves stream data and position; resume does not replace its URL (0.136459ms)
+✖ end waits for an in-flight commit while stop/mute close all pending work exactly once (0.140625ms)
+✖ back-buffer eviction keeps the current playback interval and a late play cannot revive stop (0.135291ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 0
+ℹ fail 8
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 66.282917
+
+✖ failing tests:
+
+test at web/tests/platform-audio-stream.test.mjs:56:1
+✖ native stream ready, contiguous commits and end distinguish EOS from playback end (0.754875ms)
+  TypeError: p.openStream is not a function
+      at TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/tests/platform-audio-stream.test.mjs:57:59)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.start (node:internal/test_runner/test:1096:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17)
+
+test at web/tests/platform-audio-stream.test.mjs:64:1
+✖ init and pending data are copied; only an identical in-flight segment shares a Promise (0.1465ms)
+  TypeError: p.openStream is not a function
+      at TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/tests/platform-audio-stream.test.mjs:65:76)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3)
+
+test at web/tests/platform-audio-stream.test.mjs:73:1
+✖ invalid segments and forward backpressure preserve the current cursor and media (0.133833ms)
+  TypeError: p.openStream is not a function
+      at TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/tests/platform-audio-stream.test.mjs:74:51)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)
+
+test at web/tests/platform-audio-stream.test.mjs:80:1
+✖ unsupported, conflicting or malformed stream configurations are atomic (0.200125ms)
+  TypeError: p.openStream is not a function
+      at TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/tests/platform-audio-stream.test.mjs:81:45)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)
+
+test at web/tests/platform-audio-stream.test.mjs:85:1
+✖ replace during bootstrap or update cannot resurrect or stop another epoch (0.195917ms)
+  TypeError: p.openStream is not a function
+      at TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/tests/platform-audio-stream.test.mjs:87:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)
+
+test at web/tests/platform-audio-stream.test.mjs:92:1
+✖ pause preserves stream data and position; resume does not replace its URL (0.136459ms)
+  TypeError: p.openStream is not a function
+      at TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/tests/platform-audio-stream.test.mjs:93:51)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)
+
+test at web/tests/platform-audio-stream.test.mjs:98:1
+✖ end waits for an in-flight commit while stop/mute close all pending work exactly once (0.140625ms)
+  TypeError: p.openStream is not a function
+      at TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/tests/platform-audio-stream.test.mjs:99:73)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)
+
+test at web/tests/platform-audio-stream.test.mjs:105:1
+✖ back-buffer eviction keeps the current playback interval and a late play cannot revive stop (0.135291ms)
+  TypeError: p.openStream is not a function
+      at TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/tests/platform-audio-stream.test.mjs:106:59)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)

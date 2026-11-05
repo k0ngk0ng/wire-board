@@ -1,0 +1,8 @@
+{
+  "pass": true,
+  "scope": "Original unfilteredDAC/value/bank evidence; no independent cadence/filter/synthesis completion",
+  "capture_path": ".local/md-yuyuhakusho/audio-pcm-model-first/capture.json",
+  "capture_sha256": "ed36902d977512354c7333e630bbd9c7a801851e2676ebcb6547bd1adf03d0d9",
+  "cases": 4,
+  "verifier_sha256": "f7737c0d8c58f7a588a643e28e25c00ec4579681b89a473fe0ad3804cb4c8a5d"
+}

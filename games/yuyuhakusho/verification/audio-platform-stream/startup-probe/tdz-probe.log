@@ -1,0 +1,10 @@
+
+  .local/md-yuyuhakusho/audio-stream-startup/probe.js  39.8kb
+
+⚡ Done in 10ms
+{"case": "failure", "append": null, "frames": null, "native": null, "playPending": null, "stage": null, "started": null}
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/probe_audio_stream_startup.py", line 35, in <module>
+    result=browser('eval','({results:streamStartupProbe.results,events:streamStartupProbe.events,error:streamStartupProbe.error})')['result'];(OUT/'result.json').write_text(json.dumps(result,indent=2)+'\n');assert not result['error'],result['error']
+                                                                                                                                                                                                                      ^^^^^^^^^^^^^^^^^^^
+AssertionError: ReferenceError: Cannot access 'start' before initialization

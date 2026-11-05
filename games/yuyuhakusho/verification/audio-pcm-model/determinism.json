@@ -1,0 +1,72 @@
+{
+  "pass": true,
+  "scope": "Fresh native full capture and compact fixture re-export repeated exactly; manifests with output paths are not claimed byte-identical",
+  "files": [
+    {
+      "name": "tables.json",
+      "bytes": 8843,
+      "sha256": "b25c699f5537e36b11607512ed1247d1b8c9c6cef4f8ab3a62450354f8159424",
+      "byte_identical": true
+    },
+    {
+      "name": "samples.json",
+      "bytes": 54629,
+      "sha256": "1493df6b2c56524b4bf7d12161dcc0845551f39c2b67608f1216b9285161b828",
+      "byte_identical": true
+    },
+    {
+      "name": "single-short-events.json.gz",
+      "bytes": 956773,
+      "sha256": "caa5c90aefb86a48a62b41e5752c35dc5532324a02be82dff9a559debd719c4f",
+      "byte_identical": true
+    },
+    {
+      "name": "pair-short-events.json.gz",
+      "bytes": 1211604,
+      "sha256": "7b18084bc2f201e7bf9b24e435d83908d50715b9c0f69f60b2c52ea61d1f9b2b",
+      "byte_identical": true
+    },
+    {
+      "name": "single-mode-events.json.gz",
+      "bytes": 2161578,
+      "sha256": "58ed4a7acd34f7e881956352e2025487c49712210816d001cd79b47881fbbf96",
+      "byte_identical": true
+    },
+    {
+      "name": "pair-long-events.json.gz",
+      "bytes": 4418495,
+      "sha256": "466092e6c31ed9f1408aad63c843ddd4f748ca78c86c2ef1cc2205975d4e432f",
+      "byte_identical": true
+    },
+    {
+      "name": "single-short-original.wav",
+      "bytes": 235548,
+      "sha256": "d1f1f229569c1357c3ed16bd2cf51a93a7b70f3aaa3794710b1dab3a51e93a37",
+      "byte_identical": true
+    },
+    {
+      "name": "pair-short-original.wav",
+      "bytes": 264988,
+      "sha256": "f0053228300a0c10a3de016a1ceccf820693c6d295cfd8954897d2a00110ca6a",
+      "byte_identical": true
+    },
+    {
+      "name": "single-mode-original.wav",
+      "bytes": 264988,
+      "sha256": "df2831d6050fede465e35131e9f5ef21dcea4c9fd440986a96a5e393755375bb",
+      "byte_identical": true
+    },
+    {
+      "name": "pair-long-original.wav",
+      "bytes": 471052,
+      "sha256": "6c258c4b526206a6ba77603176e40a55596d24104a82465003d159f87a1d7583",
+      "byte_identical": true
+    },
+    {
+      "name": "exported original-values.json.gz",
+      "bytes": 1116036,
+      "sha256": "edb270d670b95282b35f95901278403040ed03503bfac17788f2f104b4d3040b",
+      "byte_identical": true
+    }
+  ]
+}

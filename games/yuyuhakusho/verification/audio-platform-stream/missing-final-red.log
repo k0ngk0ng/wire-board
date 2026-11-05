@@ -1,0 +1,9 @@
+
+  .local/md-yuyuhakusho/audio-platform-stream/harness.js  37.9kb
+
+⚡ Done in 12ms
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/check_audio_stream.py", line 57, in <module>
+    (OUT/'observed.json').write_text(json.dumps(r,ensure_ascii=False,indent=2)+'\n');assert not r['error'],r['error']
+                                                                                            ^^^^^^^^^^^^^^
+AssertionError: Error: platform openStream method is unavailable

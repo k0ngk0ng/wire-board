@@ -1,0 +1,19 @@
+{
+  "frozen_at_utc": "2026-11-05T12:59:13.491318+00:00",
+  "phase": "Native mother-table and complete encoded/DAC-value-stream tests frozen before production arithmetic implementation",
+  "sha256": {
+    "docs/research/md-yuyuhakusho/AUDIO_PCM_MODEL_FAILURES.md": "dfa47297396baec99b83cbab9d6359bb6299e3e322be8fc6470e061b56ab4994",
+    "scripts/yuyuhakusho/verify_pcm_model_capture.py": "f7737c0d8c58f7a588a643e28e25c00ec4579681b89a473fe0ad3804cb4c8a5d",
+    "scripts/yuyuhakusho/pcm_model_observer.c": "a9e44f5661e2ab00ce4ea8b8e00a64dc722f6e7b395a1ee1f6ea79918acf3e71",
+    "scripts/yuyuhakusho/capture_pcm_model.py": "7922b26a1d44296d4afd196fd2eab3c49d7e3eb6cd427393bcc32d45e84e63d3",
+    "scripts/yuyuhakusho/export_pcm_model_evidence.py": "6bb8cc0afe6b6f81a32684f1263241dddcb1c7fc85687076530871912415d845",
+    "games/yuyuhakusho/audio/pcm/pcm_test.go": "978419b76006f91854bc5f04fe445294751488e7ac432c7dcbf1a9ac74e6166a",
+    "games/yuyuhakusho/audio/pcm/testdata/original-values.json.gz": "edb270d670b95282b35f95901278403040ed03503bfac17788f2f104b4d3040b",
+    "games/yuyuhakusho/audio/pcm/testdata/original-values-manifest.json": "48c50b992fe42fb21ef3b2f1b42bbf5161462502833012b009533a31aefc0236"
+  },
+  "actual_reds": [
+    "games/yuyuhakusho/verification/audio-pcm-model/missing-red.json",
+    "games/yuyuhakusho/verification/audio-pcm-model/go-frozen-symbol-red.jsonl"
+  ],
+  "source_boundary": "Original event order is a test oracle only. No independent cadence, IRQ placement, prefetch or filter has been implemented or claimed."
+}

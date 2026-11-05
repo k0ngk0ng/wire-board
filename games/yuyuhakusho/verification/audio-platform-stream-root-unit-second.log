@@ -1,0 +1,16 @@
+✔ native stream ready, contiguous commits and end distinguish EOS from playback end (1.951208ms)
+✔ init and pending data are copied; only an identical in-flight segment shares a Promise (0.324583ms)
+✔ invalid segments and forward backpressure preserve the current cursor and media (0.313375ms)
+✔ unsupported, conflicting or malformed stream configurations are atomic (0.225458ms)
+✔ replace during bootstrap or update cannot resurrect or stop another epoch (0.344916ms)
+✔ pause preserves stream data and position; resume does not replace its URL (0.29275ms)
+✔ end waits for an in-flight commit while stop/mute close all pending work exactly once (0.277ms)
+✔ back-buffer eviction keeps the current playback interval and a late play cannot revive stop (0.35225ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 69.957625

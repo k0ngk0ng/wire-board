@@ -1,0 +1,11 @@
+{
+  "created_at_utc": "2026-11-05T12:01:11.201072+00:00",
+  "phase": "Frozen failure and test contract before production Go codec",
+  "files": {
+    "games/yuyuhakusho/audio/stream/FAILURES.md": "b639807d6203a9b32cfebf1f7f6e15941af83f4a7c093c3aca4ed98ca11c736d",
+    "games/yuyuhakusho/audio/stream/encoder_test.go": "b04dbbdd5a373d1a30192c16aa3090e2f1f2f238a8056b5bc10349a5614e6046",
+    "games/yuyuhakusho/audio/stream/reference_test.go": "b6b3d321809a0739612b4688359c68c5120fc0acef6e4c8d7a5c8854308f71fb"
+  },
+  "red": ".local/md-yuyuhakusho/audio-encoder-plan/stream-symbol-red.jsonl",
+  "red_exit_code": 1
+}

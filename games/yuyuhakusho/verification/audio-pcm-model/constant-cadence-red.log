@@ -1,0 +1,1 @@
+{"pass": false, "totals": {"encoded_bytes": 28510, "decoded_samples": 57020, "ordered_dac_values": 41345, "dual_8bit_clamps": 476, "bank_reads": 31799, "value_mismatches": 0}}

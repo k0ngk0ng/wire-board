@@ -1,0 +1,37 @@
+{
+  "created_at_utc": "2026-11-05T13:38:11.629589+00:00",
+  "scope": "Closed Root native-stream/finite-media Chromium profiles, temporary dirs and reproducible JS bundles",
+  "paths": [
+    {
+      "path": ".local/md-yuyuhakusho/audio-platform-stream/profile",
+      "bytes": 9528716
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-platform-stream/tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-platform-stream/harness.js",
+      "bytes": 52233
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-media-api/profile",
+      "bytes": 9382992
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-media-api/tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-media-api/harness.js",
+      "bytes": 47502
+    }
+  ],
+  "total_bytes_removed": 19011443,
+  "preserved": [
+    "All original media, positive encoded fixtures, actual failed/final reports and screenshots",
+    "Active8799 research player and shared worktree Go caches",
+    "Ongoing DSP and independent raw PCM transport research paths"
+  ],
+  "tool_directory_boundary": "Go tests/vet/build and future gofmt use workspace TEST_TELEMETRY_DIR. A few earlier gofmt calls did not explicitly set it and may have used default Go telemetry counters; new external files were not independently audited, no external cache cleanup or global mode mutation was performed by this cleanup."
+}

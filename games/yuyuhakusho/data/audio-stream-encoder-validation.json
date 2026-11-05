@@ -1,0 +1,311 @@
+{
+  "schema": 1,
+  "pass": true,
+  "scope": "PureGo integer PCM-to-verbatimFLAC/fMP4 encoding, independentdecode and nativeMSE codec acceptance",
+  "baseline_commit": "0f3bea2f",
+  "goal_complete": false,
+  "release_ready": false,
+  "independent_dsp_implemented": false,
+  "runtime_external_dependencies": [],
+  "runtime_imports": [
+    "encoding/binary",
+    "errors"
+  ],
+  "test_first": {
+    "frozen_sources_unchanged": true,
+    "initial_missing_implementation_and_CLI_red_retained": true
+  },
+  "unit_tests": {
+    "native": [
+      "TestEncoderBlockAndFragmentVariants",
+      "TestEncoderFormatAndConfigErrors",
+      "TestEncoderOwnershipAndAtomicErrors",
+      "TestEncoderPartitionInvariantAndShortTails",
+      "TestEncoderSampleAndSequenceBoundariesAreAtomic",
+      "TestReferenceCRCAndCorruptionChecks"
+    ],
+    "wasm": [
+      "TestEncoderBlockAndFragmentVariants",
+      "TestEncoderFormatAndConfigErrors",
+      "TestEncoderOwnershipAndAtomicErrors",
+      "TestEncoderPartitionInvariantAndShortTails",
+      "TestEncoderSampleAndSequenceBoundariesAreAtomic",
+      "TestReferenceCRCAndCorruptionChecks"
+    ]
+  },
+  "unit_tests_per_environment": 6,
+  "complete_roundtrip_cases": {
+    "native": {
+      "report": {
+        "path": ".local/md-yuyuhakusho/audio-encoder-plan/e2e/native-validation.json",
+        "sha256": "b837b806dc186fcaa7027b58af26bdb6225d2e2e051411012ab0b77e1136ccc4",
+        "bytes": 14620
+      },
+      "case_count": 12,
+      "all_pcm_exact": true
+    },
+    "wasm": {
+      "report": {
+        "path": ".local/md-yuyuhakusho/audio-encoder-plan/e2e/wasm-validation.json",
+        "sha256": "afddcc4f143b3b57193d619d3175b1ba1b4a3b627132556906e61722a3ecb3d2",
+        "bytes": 14545
+      },
+      "case_count": 12,
+      "all_pcm_exact": true
+    }
+  },
+  "additional_edge_cases": 4,
+  "negative_checks": [
+    {
+      "mode": "crc8",
+      "rejected": true,
+      "exit_code": 183,
+      "log": ".local/md-yuyuhakusho/audio-encoder-plan/edges/crc8-rejection.txt",
+      "sha256": "23f203b6d538325cc2707f6def9c7c88a01e1683e87ba8a6087eb8ca1d33599f"
+    },
+    {
+      "mode": "crc16",
+      "rejected": true,
+      "exit_code": 183,
+      "log": ".local/md-yuyuhakusho/audio-encoder-plan/edges/crc16-rejection.txt",
+      "sha256": "0f5b0c879878f84772d2e40419d35ac9bc0912148a5fde4acceaae37c53d1f06"
+    },
+    {
+      "mode": "decode-time",
+      "rejected": true,
+      "timeline_mismatches": [
+        {
+          "packet": 0,
+          "expected": 0,
+          "actual": 1
+        },
+        {
+          "packet": 4,
+          "expected": 4097,
+          "actual": 4096
+        }
+      ]
+    },
+    {
+      "mode": "duration",
+      "rejected": true,
+      "timeline_mismatches": [
+        {
+          "packet": 4,
+          "expected": 4097,
+          "actual": 4096
+        }
+      ]
+    }
+  ],
+  "native_wasm_output_bytes_identical": true,
+  "default_format": {
+    "sample_rate": 44100,
+    "channels": 2,
+    "bits_per_sample": 16,
+    "block_frames": 1024,
+    "fragment_frames": 4096,
+    "max_input_frames": 65536
+  },
+  "latency_scope": {
+    "default_fragment_span_ms": 92.87981859410431,
+    "small_fragment_span_ms": 23.219954648526077,
+    "actual_input_to_sound_latency_verified": false,
+    "limit": "Encoding aggregation only; inputbatch/MSE/device/bufferlatency is not included"
+  },
+  "mse_codec_acceptance": {
+    "report": {
+      "path": ".local/md-yuyuhakusho/audio-encoder-plan/mse-go-e2e/result.json",
+      "sha256": "cfadd6c36f892370bff7f0164edd718d6a7cf748cb200cf03ffbbd92b904016b",
+      "bytes": 1642
+    },
+    "logical_mp4_fragments": 130,
+    "transport_append_chunks": 12,
+    "actual_chunk_boundaries": 11,
+    "waiting_after_play": 0,
+    "source_changes": 1,
+    "limit": "Frozen older researchharness groups11 unchangedGo fragments perHTTP append; individual93ms platformappend is a separate obligation"
+  },
+  "small_mse_codec_acceptance": {
+    "report": {
+      "path": ".local/md-yuyuhakusho/audio-encoder-plan/mse-small-e2e/result.json",
+      "sha256": "b7e0b483955cea99ed132e241adef0564bb8519fbc827d1db9172bcafeb97c7f",
+      "bytes": 1642
+    },
+    "logical_mp4_fragments": 517,
+    "transport_append_chunks": 12,
+    "actual_chunk_boundaries": 11,
+    "waiting_after_play": 0,
+    "source_changes": 1,
+    "limit": "Groups44 unchangedGo256sampleFLAC fragments perappend; this excludes a small-codec syntax failure but does not establish startup with only8192 samples"
+  },
+  "platform_stream_verification": {
+    "report": {
+      "path": "games/yuyuhakusho/verification/audio-platform-stream/restored-final1/result.json",
+      "sha256": "644b4b0757c164390ead8bcb29af019ba7b9800c1ac5152d835521a75642612b",
+      "bytes": 525924
+    },
+    "platform_index": {
+      "path": "games/yuyuhakusho/verification/audio-platform-stream/validation.json",
+      "sha256": "2f22fd07d4cf798b7eb13d9a76c4dfdcf0f4a0bd81024ca8f0acd21cce66d62a",
+      "bytes": 15187
+    },
+    "scope": "Current platform-owned nativeChromium playback of517 pure-Go small fragments; bounded feed and lifecycle, not DSP/speaker/sample-gapless proof",
+    "fixture_manifest_sha256": "728634ab372580e6706c48f7a88420113b5ab5ae6ffdbf09fc289adac76ca703",
+    "source_pcm_sha256": "7801d4c5f7ae515e7819c69637f3974ed2feedfc0362df2370ec28f5b8d55f4c",
+    "cases": 5,
+    "actual_go_fragments": 517,
+    "actual_sample_boundaries": 516,
+    "accepted_end_sample": 529200,
+    "first_playing_buffer_seconds": 0.25539199999999995,
+    "maximum_forward_seconds": 0.2594599999999989,
+    "safe_back_removes": 496,
+    "main_source_changes": 1,
+    "waiting_after_play": 0,
+    "source_sha256": {
+      "web/src/audio.ts": "83945c4668d6ed15f6befda3a19222e9c52b20de4ff0e4c247b6e8070117784e",
+      "web/src/audio-stream.ts": "298f42cf2d04456b11626725fd8251476c14142341b1349f1b3162b4166723ce",
+      "web/src/game-api/module.ts": "953aa857c17979d80a2761b4b0d6a943950d857519cec222bd6a744471a28d83",
+      "web/src/game-api/audio-stream.ts": "d9f8e75e1d8290b0e335a945e39758a6851cdb6129b830dd9d5337506d240229",
+      "scripts/yuyuhakusho/audio_stream_harness.ts": "b8ed2b86dfbc82df14a42b6161d2a2a4d0fe8b0194f1215f4ad672eaf4e19304",
+      "scripts/yuyuhakusho/check_audio_stream.py": "8075db0b17e75b970876a0790d9235bd52e1d553e45f1c4b3de038b6b0536424",
+      "scripts/yuyuhakusho/activate_audio_media_page.mjs": "be175caaed1be418b82892ae56c53fefe3b8c56ceff208f94de997923a508ae8"
+    },
+    "sample_gapless_verified": false,
+    "speaker_output_verified": false,
+    "original_mix_equivalent": false
+  },
+  "platform_stream_verified": true,
+  "platform_segment_capacity": {
+    "maximum_bytes": 1048576,
+    "default_upper_bound_bytes": 16584,
+    "small_upper_bound_bytes": 4296,
+    "wide_upper_bound_bytes": 32916,
+    "general_encoder_config_automatically_supported": false,
+    "adapter_requirement": "Before consuming PCM/opening a platformstream, reject configs where96+4*FragmentFrames+26*ceil(FragmentFrames/BlockFrames)>1MiB"
+  },
+  "capacity_bound": {
+    "maximum_input_frames": 1048576,
+    "maximum_segment_bytes_upper_bound": 5898336,
+    "maximum_moof_relative_data_offset": 524384,
+    "maximum_flac_sample_start_exclusive": 68719476736,
+    "maximum_fragment_sequence": 4294967295
+  },
+  "cleanup": {
+    "path": "games/yuyuhakusho/data/audio-stream-encoder-cleanup.json",
+    "sha256": "62d490b8360a87d24e9007cb18e8bebde4ec36f4f75689c6757ea603a8a58182",
+    "bytes": 1176
+  },
+  "evidence": [
+    {
+      "path": "games/yuyuhakusho/verification/audio-stream-encoder/test-first.json",
+      "sha256": "e4c1e46a90795abac83ac22e4fb60b2909b94e06ff933fc5d96a4db6e6f112ac",
+      "bytes": 613
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-stream-encoder/e2e-test-first.json",
+      "sha256": "3190d55cefe0dfe8da49f04069938a3a4f95397b1a65f059a5f863d03c8461a9",
+      "bytes": 333
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-stream-encoder/symbol-red.jsonl",
+      "sha256": "966cf544b48db8207d84c16f8b2f83cf2463b6b5a9c7accff08c3edcaa1f259b",
+      "bytes": 3985
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-stream-encoder/e2e-symbol-red.txt",
+      "sha256": "585f80d8ad4007e5f6061192b16f2cd776cbc260b188124e95590f7c9cfb0c0b",
+      "bytes": 1054
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-stream-encoder/native.jsonl",
+      "sha256": "be43f37e78264e4f23fb70275665efe4ca118ef36d3c39ba3844354b419aee2b",
+      "bytes": 16845
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-stream-encoder/wasm.jsonl",
+      "sha256": "a0d63c96a81bb97be1d8c84aa16d46512c96fecb4e6d7bca9b0a629e5db3293d",
+      "bytes": 16831
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-stream-encoder/wasm-command.json",
+      "sha256": "e2843261fe0237f88492ed61a500e3f949eeadc2ed568736631e3cd767f824d4",
+      "bytes": 233
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-stream-encoder/native-e2e.json",
+      "sha256": "b837b806dc186fcaa7027b58af26bdb6225d2e2e051411012ab0b77e1136ccc4",
+      "bytes": 14620
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-stream-encoder/wasm-e2e.json",
+      "sha256": "afddcc4f143b3b57193d619d3175b1ba1b4a3b627132556906e61722a3ecb3d2",
+      "bytes": 14545
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-stream-encoder/edges.json",
+      "sha256": "6391e67e84ada773f395e55015a666d755e1799740ef39b670a8aca1321e71b3",
+      "bytes": 5809
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-stream-encoder/ffmpeg-soft-error-red.txt",
+      "sha256": "bbbbc71095227bfb441a81b5dbc8dc0591c495d2bd14050c985f3ef0b8fdc6c8",
+      "bytes": 1592
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-stream-encoder/mse-go-result.json",
+      "sha256": "cfadd6c36f892370bff7f0164edd718d6a7cf748cb200cf03ffbbd92b904016b",
+      "bytes": 1642
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-stream-encoder/mse-go-fixture.json",
+      "sha256": "51f01007a2d8ecabf9ca58c453ffd0ab333037ab58bc7bb1f5435affc763ffa1",
+      "bytes": 6153
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-stream-encoder/mse-small-result.json",
+      "sha256": "b7e0b483955cea99ed132e241adef0564bb8519fbc827d1db9172bcafeb97c7f",
+      "bytes": 1642
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-stream-encoder/mse-small-fixture.json",
+      "sha256": "6dcaddf0f01da3c6698f9b6ec22cdadced68766466a49f52f478eac194671c83",
+      "bytes": 11169
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-stream-encoder/vet.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-stream-encoder/dependencies.txt",
+      "sha256": "a080a164a93ef049df1209f414c75297f39de42207a4aaa7d24f4d41c7abfc53",
+      "bytes": 62
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-stream-encoder/mse-go-observed.json.gz",
+      "sha256": "6ac82f97538305872bd24baa08e1656a54151157775c64129a174afce59f8f60",
+      "bytes": 10046
+    }
+  ],
+  "source_sha256": {
+    "games/yuyuhakusho/audio/stream/flac.go": "26dab2d2fff243803ac5de49265d8a9d4a71e063753b04d59ad6716a11822219",
+    "games/yuyuhakusho/audio/stream/encoder.go": "64e28621e5540a186c391adf7774a82ded932b6018dacf97ccce92b8647efa63",
+    "games/yuyuhakusho/audio/stream/reference_test.go": "b6b3d321809a0739612b4688359c68c5120fc0acef6e4c8d7a5c8854308f71fb",
+    "games/yuyuhakusho/audio/stream/encoder_test.go": "b04dbbdd5a373d1a30192c16aa3090e2f1f2f238a8056b5bc10349a5614e6046",
+    "games/yuyuhakusho/audio/stream/mp4.go": "ea9cae9d9458fca2778defb913b69c30c7412beebc0c27c3567a4a565c0c56b2",
+    "games/yuyuhakusho/audio/stream/FAILURES.md": "b639807d6203a9b32cfebf1f7f6e15941af83f4a7c093c3aca4ed98ca11c736d",
+    "games/yuyuhakusho/audio/stream/README.md": "567088cec12ab3a03f4c0710f521f43db7c541670267f701ea354484b13031f7",
+    "games/yuyuhakusho/audio/stream/VERIFICATION.md": "684da3e680df2cc77bd2cd794812e40efd48ee5b2e70622ae6019d5798318707",
+    "games/yuyuhakusho/cmd/verify-audio-stream-encoder/main.go": "7e6e9d9e7ca35f7ed06a4d11731971e70b209d0309bfe302939329bfe76f0381",
+    "scripts/yuyuhakusho/verify_go_audio_stream.py": "0601fac625a765889c54418b124adbb53cd65f958f48e6cec9a2cb49ea227582",
+    "scripts/yuyuhakusho/verify_go_audio_stream_edges.py": "68765002dfe872f4c9fbec818c7381e4dad46bfadef76bee573d815ba0a6974b",
+    "scripts/yuyuhakusho/summarize_go_audio_stream.py": "d9556b0d2046e5bb9527c9d9016cc1bd4e009e3d7d9b91a4062922e4409f7894"
+  },
+  "limits": [
+    "Encoder is not DSP, infiniteBGM, gameaudio integration or dynamicmix fidelity",
+    "Platform scoped lifecycle/517fragment transport is verified only when platform_stream_verified=true; lowlatency dynamicmix, Safari/mobile and game recovery remain separate obligations",
+    "FFmpeg is an independent acceptance decoder only; no FFmpeg/core/ROM runtime is used",
+    "Original12secondPCM is a transport fixture, not a new loopasset"
+  ]
+}

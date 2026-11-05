@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/verify_go_audio_stream_edges.py", line 72, in <module>
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--out',type=Path,required=True);p.add_argument('--base',type=Path,required=True);a=p.parse_args();out=a.out.resolve();base=a.base.resolve();assert out.is_relative_to(ROOT/'.local')and base.is_relative_to(ROOT/'.local');out.mkdir(parents=True,exist_ok=True);run(out,base)
+                                                                                                                                                                                                                                                                                                                                    ~~~^^^^^^^^^^
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/verify_go_audio_stream_edges.py", line 55, in run
+    assert value.returncode!=0 and ('crc'in value.stderr.lower()),(mode,value.returncode,value.stderr)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('crc8', 0, '[flac @ 0xc2ec28380] header crc mismatch\n[flac @ 0xc2ec28380] invalid frame header\n[flac @ 0xc2ec28380] decode_frame() failed\n[flac @ 0xc2ec29180] header crc mismatch\n[flac @ 0xc2ec29180] invalid frame header\n[flac @ 0xc2ec29180] decode_frame() failed\n[aist#0:0/flac @ 0xc2f018300] [dec:flac @ 0xc2f020280] Decoding error: Invalid data found when processing input\n')

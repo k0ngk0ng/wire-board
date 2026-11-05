@@ -69,3 +69,7 @@
 音频基础阶段的当前范围与机器摘要见[音频阶段验收](verification/audio-foundations-session.json)。本地页仍无对局播放；整体进度保持 81%，未以有限声道或原生载体原型替代完整音频目标。
 
 音频基础阶段另清理父任务已关闭的媒体验收 profile、临时文件和可再生成 JS，共 10,370,690 bytes，见[清理记录](verification/audio-foundations-cleanup.json)。所有原 WAV、原版对照、真实 red／最终结果和活动研究页保留；正在进行的调度预算与混音研究未清理。
+
+持续音频承载阶段新增纯 Go FLAC/fMP4 编码器、平台 `openStream` 和 DPCM 算术。原生／Wasm 编码逐 byte 相同；平台 83 项低层检查、5 组真实连续流验收及 18 项有限／旧接口兼容通过。12 秒共 517 片，真实跨越 516 个边界；首播需要约 209 ms 数据，主流前瞻维持约 260 ms。DPCM 算术与原 41,345 次 DAC 输出值相同，但自主事件时间、完整滤波／FM／PSG 合成和对局接入仍未完成。见[持续流验收](verification/audio-stream-session.json)及[平台流说明](../../docs/research/md-yuyuhakusho/AUDIO_PLATFORM_STREAM.md)。整体保持 81%。
+
+持续流阶段父任务另清理已关闭的连续流／有限媒体 profile、临时目录和可再生成 bundle，共 19,011,443 bytes，见[持续流清理记录](verification/audio-stream-cleanup.json)。完整音频包 16 项原生竞态／Wasm 检查（包含实际 134 WAV）均无跳过；早先未设置媒体目录的一次 15 项加 skip 日志仍保留，最终摘要只绑定全量结果。
