@@ -1,0 +1,58 @@
+{
+  "pass": true,
+  "scope": "Metadata-only named-proof correction; all four proofs resolve to unchanged source outputs",
+  "previous_validation_sha256": "56feb08acb7b5059e4458e5f1432af58eb2a82127cbded96b6de37c2b1a3609e",
+  "unchanged_causality_sha256": "9b0b21976b7c395d68abebfa19a4abb45e827170b9d40f96ce6bf016bcb94e74",
+  "unchanged_algorithm_sha256": "02446e9a3dea0b6e7d1ccdac66b3aafe6c77edacafe5e60457062a8271ffaea0",
+  "algorithm_matches_previous_validation": true,
+  "offline_replay_byte_identical": true,
+  "checks": [
+    {
+      "proof_id": "baseline-full_flow",
+      "scenario": "baseline",
+      "domain": "full_flow",
+      "policy_start_frame": 1,
+      "frame": 375,
+      "native_selected": 255,
+      "hypothetical_selected": 115,
+      "source_json_pointer": "/reports/0/frame_tail_counterexample",
+      "exact_source_witness_equal": true
+    },
+    {
+      "proof_id": "baseline-battle_only",
+      "scenario": "baseline",
+      "domain": "battle_only",
+      "policy_start_frame": 1800,
+      "frame": 1813,
+      "native_selected": 255,
+      "hypothetical_selected": 163,
+      "source_json_pointer": "/reports/0/battle_only_frame_tail_counterexample",
+      "exact_source_witness_equal": true
+    },
+    {
+      "proof_id": "pause-full_flow",
+      "scenario": "pause",
+      "domain": "full_flow",
+      "policy_start_frame": 1,
+      "frame": 375,
+      "native_selected": 255,
+      "hypothetical_selected": 115,
+      "source_json_pointer": "/reports/1/frame_tail_counterexample",
+      "exact_source_witness_equal": true
+    },
+    {
+      "proof_id": "pause-battle_only",
+      "scenario": "pause",
+      "domain": "battle_only",
+      "policy_start_frame": 1800,
+      "frame": 1813,
+      "native_selected": 255,
+      "hypothetical_selected": 163,
+      "source_json_pointer": "/reports/1/battle_only_frame_tail_counterexample",
+      "exact_source_witness_equal": true
+    }
+  ],
+  "original_recaptured": false,
+  "algorithm_modified": false,
+  "production_modified": false
+}

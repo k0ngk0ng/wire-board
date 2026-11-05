@@ -1,0 +1,100 @@
+{
+  "scope": "Only this newresearch scope compiled observer, own compiler tmp/emptyreference dirs and duplicate readable/repeat outputs",
+  "paths": [
+    {
+      "path": ".local/md-yuyuhakusho/audio-phase-budget/first/audio-phase-budget.dylib",
+      "bytes": 17672
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-phase-budget/first/tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-phase-budget/first/core-baseline",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-phase-budget/first/core-pause",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-phase-budget/first/private-core",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-phase-budget/arena-model-first.json",
+      "bytes": 122846
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-phase-budget/arena-natural-first.json",
+      "bytes": 12084240
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-phase-budget/causality-first.json",
+      "bytes": 10274
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-phase-budget/causality-complete.json",
+      "bytes": 11974
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-phase-budget/causality-bootstrap-model.py.txt",
+      "bytes": 11273
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-phase-budget/causality-bootstrap-red.txt",
+      "bytes": 873
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-phase-budget/causality-first.log",
+      "bytes": 325
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-phase-budget/causality-complete.log",
+      "bytes": 325
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-phase-budget/causality-repeat.json",
+      "bytes": 13396
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-phase-budget/causality-repeat.log",
+      "bytes": 325
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-phase-budget/private-cost-repeat.json",
+      "bytes": 122846
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-phase-budget/private-cost-repeat.log",
+      "bytes": 69
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-phase-budget/natural-cost-repeat.json",
+      "bytes": 12084240
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-phase-budget/natural-cost-repeat.log",
+      "bytes": 2177
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-phase-budget/canonical-causality.log",
+      "bytes": 325
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-phase-budget/compact-baseline.log",
+      "bytes": 885
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-phase-budget/compact-pause.log",
+      "bytes": 932
+    }
+  ],
+  "bytes_removed": 24484997,
+  "preserved": [
+    "FulloriginalC observer captures and their manifests in dedicated.local scope",
+    "Canonicalcompact traces retaining every sound field write",
+    "All6710 naturalmodel counterexamples and actualbootstrap modelred",
+    "Previousfrozen timinghelper/producers/tests and otherworkers files"
+  ]
+}

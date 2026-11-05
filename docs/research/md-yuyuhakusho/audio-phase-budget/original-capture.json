@@ -1,0 +1,98 @@
+{
+  "pass": true,
+  "reports": [
+    {
+      "pass": true,
+      "scenario": "baseline",
+      "frames": 5500,
+      "identity": {
+        "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+        "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+        "core_name": "Genesis Plus GX",
+        "core_version": "v1.7.460bee4c",
+        "fps": 59.92274340431231,
+        "ram_bytes": 65536,
+        "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+        "teamplayer": false
+      },
+      "original": {
+        "path": "games/yuyuhakusho/engine/testdata/audio-timing-baseline-original.json.gz",
+        "sha256": "17856c6293e27590544dc338f2a3cecae1aab4dc40112873e939f277ab0ce064"
+      },
+      "artifact": {
+        "path": ".local/md-yuyuhakusho/audio-phase-budget/first/audio-phase-baseline.json.gz",
+        "json_sha256": "fe2c35f06176d5c4f37f0b082144aaa28bd68e209a32ea19c9a82dc414cd29ec",
+        "gzip_sha256": "4c2acba37a061bac8fa4519ca447d8a46f49ece0e8060c68ff7a7c2558465547"
+      },
+      "events": 2401755,
+      "sound_writes": 5953,
+      "unexplained_owned_writes": 0,
+      "ram_video_pcm_equal": true,
+      "producer_sha256": "bf19d7bb4bf23e5c13517f687635f5a92efd59cd4511b472a0c7d4607a0268de",
+      "bridge_source_sha256": "f5926b23561e1e1083bb7e473fa561003303e80033328d4c39fea2e7eb0bb9fa",
+      "limits": [
+        "All writes to declared sound fields are recorded including unchanged values; this is a passive original oracle, not an independent timing implementation",
+        "Private model and semantic equivalence analysis are separate obligations"
+      ]
+    },
+    {
+      "pass": true,
+      "scenario": "pause",
+      "frames": 3602,
+      "identity": {
+        "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+        "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+        "core_name": "Genesis Plus GX",
+        "core_version": "v1.7.460bee4c",
+        "fps": 59.92274340431231,
+        "ram_bytes": 65536,
+        "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+        "teamplayer": false
+      },
+      "original": {
+        "path": "games/yuyuhakusho/engine/testdata/audio-timing-pause-original.json.gz",
+        "sha256": "0f0ad241ac11771222be388b66894efa7f919deabbc3bd42122359f0157a56c2"
+      },
+      "artifact": {
+        "path": ".local/md-yuyuhakusho/audio-phase-budget/first/audio-phase-pause.json.gz",
+        "json_sha256": "14884ea5aeb6c0d419184dbf8e829744f2bd75df733e9852f3be44197fd91115",
+        "gzip_sha256": "b442f6468ec9fa1f5d2c7c4d53a093cbf0c377db85642b2bc514e4da90369068"
+      },
+      "events": 1544325,
+      "sound_writes": 3802,
+      "unexplained_owned_writes": 0,
+      "ram_video_pcm_equal": true,
+      "producer_sha256": "bf19d7bb4bf23e5c13517f687635f5a92efd59cd4511b472a0c7d4607a0268de",
+      "bridge_source_sha256": "f5926b23561e1e1083bb7e473fa561003303e80033328d4c39fea2e7eb0bb9fa",
+      "limits": [
+        "All writes to declared sound fields are recorded including unchanged values; this is a passive original oracle, not an independent timing implementation",
+        "Private model and semantic equivalence analysis are separate obligations"
+      ]
+    },
+    {
+      "pass": true,
+      "identity": {
+        "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+        "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+        "core_name": "Genesis Plus GX",
+        "core_version": "v1.7.460bee4c",
+        "fps": 59.92274340431231,
+        "ram_bytes": 65536,
+        "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+        "teamplayer": false
+      },
+      "cases": 192,
+      "artifact": {
+        "path": ".local/md-yuyuhakusho/audio-phase-budget/first/audio-phase-arena-private.json.gz",
+        "json_sha256": "aa624dfc219303cf52c60ab3de8a5a2f89197c5600abe7361d64fdba488b63ac",
+        "gzip_sha256": "fd31c3a20e35ab6b2ff57f87291ee5815f64ae8a55a6df2d52197d31b5e7429c"
+      },
+      "owned_sound_accesses": 0,
+      "producer_sha256": "bf19d7bb4bf23e5c13517f687635f5a92efd59cd4511b472a0c7d4607a0268de",
+      "bridge_source_sha256": "f5926b23561e1e1083bb7e473fa561003303e80033328d4c39fea2e7eb0bb9fa",
+      "scope": "Original20918 semantic block cost oracle; isolatedSR2700, actual branch/loop execution, no production cost model"
+    }
+  ],
+  "bridge_sha256": "0168dc8219fde8c3b0644af842e29a4abbdab820970958a3f1c2ed7bdc685529",
+  "producer_sha256": "bf19d7bb4bf23e5c13517f687635f5a92efd59cd4511b472a0c7d4607a0268de"
+}

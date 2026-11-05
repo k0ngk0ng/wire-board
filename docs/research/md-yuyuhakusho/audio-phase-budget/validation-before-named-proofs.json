@@ -1,0 +1,192 @@
+{
+  "pass": true,
+  "scope": "Verified bounded research conclusions, including an expected invalid natural pure-CPU model; no production integration",
+  "global_independent_schedule_solved": false,
+  "production_modified": false,
+  "whole_goal_complete": false,
+  "original_ram_video_pcm_steps": 9102,
+  "owned_sound_write_checks": 9755,
+  "complete_requests": 185,
+  "complete_non_ff_dispatches": 183,
+  "internal_nonempty_consumers_retained": 145,
+  "observed_barrier_reduction": {
+    "pass": true,
+    "all_physical_writes_and_before_after_states_equal": true,
+    "all_dispatch_codes_equal": true,
+    "choices_are_oracle_derived": true,
+    "production_predictor_claimed": false
+  },
+  "frame_tail_counterexamples": [
+    {
+      "rejected": true,
+      "reason": "frame-tail placement changes the selected command before any earlier command differs",
+      "frame": 1813,
+      "native_selected": 255,
+      "hypothetical_selected": 163,
+      "hypothetical_queue_before_consume": [
+        163,
+        0,
+        0,
+        0
+      ],
+      "priority_before": 0,
+      "unchanged_dispatches_before_counterexample": 1508,
+      "native_tick_time_master": 1623825747,
+      "scope": "Original driver non-consumer operations are reused only along the unchanged selected-command prefix; no claim is made about later hypothetical DSP output"
+    },
+    {
+      "rejected": true,
+      "reason": "frame-tail placement changes the selected command before any earlier command differs",
+      "frame": 1813,
+      "native_selected": 255,
+      "hypothetical_selected": 163,
+      "hypothetical_queue_before_consume": [
+        163,
+        0,
+        0,
+        0
+      ],
+      "priority_before": 0,
+      "unchanged_dispatches_before_counterexample": 1508,
+      "native_tick_time_master": 1623825747,
+      "scope": "Original driver non-consumer operations are reused only along the unchanged selected-command prefix; no claim is made about later hypothetical DSP output"
+    }
+  ],
+  "private_semantic_cost_model": {
+    "pass": true,
+    "cases": 192,
+    "phase_checks": 336,
+    "seven_blocks_cpu_base_sum": 5152,
+    "model_changed_after_first_comparison": false
+  },
+  "natural_pure_cpu_model": {
+    "valid": false,
+    "ordinary_phase_checks": 21963,
+    "out_of_bound_cases": 6710,
+    "irq_or_hardware_intervals_retained": 38,
+    "counterexamples_all_preserved": true,
+    "fitted_constant_added": false
+  },
+  "bus_attribution": {
+    "all_residuals_compatible_with_70_77": true,
+    "pinned_native_source_correlated": true,
+    "per_Z80_read_independent_timeline_reconstructed": false,
+    "core_model_itself_is_approximate": true
+  },
+  "source_sha256": {
+    "scripts/yuyuhakusho/audio_phase_budget_bridge.c": "f5926b23561e1e1083bb7e473fa561003303e80033328d4c39fea2e7eb0bb9fa",
+    "scripts/yuyuhakusho/capture_audio_phase_budget.py": "bf19d7bb4bf23e5c13517f687635f5a92efd59cd4511b472a0c7d4607a0268de",
+    "scripts/yuyuhakusho/compact_audio_phase_budget.py": "3ba2037ac191a7bd6f08fbe24c40fc1f3a0ff92cc0e8abd02a7a86aafcc1f269",
+    "scripts/yuyuhakusho/arena_phase_cost_model.py": "5d6cfe5ad6ae488a70d3928c88d9ae805fce62448a69b96a22556622dee8fb36",
+    "scripts/yuyuhakusho/check_arena_phase_budget.py": "ff5d3e4fe2caad29e76d0cf3c3e0f804f57f0966bda2bb5f612ada75a6766663",
+    "scripts/yuyuhakusho/analyze_audio_phase_budget.py": "02446e9a3dea0b6e7d1ccdac66b3aafe6c77edacafe5e60457062a8271ffaea0",
+    "docs/research/md-yuyuhakusho/AUDIO_PHASE_BUDGET.md": "30601951da2feb3f0b48cf49f1388b4374d7dd5e2f3e59433ba895e70095d2a3",
+    "docs/research/md-yuyuhakusho/AUDIO_PHASE_BUDGET_FAILURES.md": "e884a9015c41b583b7289deb2a28823cea3058ebe883151bbb2485cabaac1bb5"
+  },
+  "reference_sha256": {
+    ".local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/core/m68k/m68kcpu.h": "6f2fc0979153d994b4ba539aa51bc0da4b8ff089e174d4cc07aee1f537643827",
+    ".local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/core/m68k/m68kcpu.c": "8c09b9d86e8c77366eff430f62c3b5742adce1ccdee849c246e24dcba74fcf15",
+    ".local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/core/m68k/m68kops.h": "d3ff2631658e589813d2915ba3dc03b9fd2097761f6eb221fc6264a4b8d1d6f0",
+    ".local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/core/memz80.c": "142e79e651c56ef74b2557e4736734ec5592498597143ee58cee4ed39bf108ef",
+    ".local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/core/mem68k.c": "5a16c625ea77934fee90cf5d5eaa72cf92fc478811e20cb0af3138b247e9f022",
+    ".local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/core/vdp_ctrl.c": "34aa4da65cfadf9da528dd387929c4ad5d52ec9bb3d83e379f9c2070ce33542a",
+    ".local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/core/system.c": "9c0f6a042a1f5abce540d3aa69d4fcfa3fae2c66ca7d667e6f2a81a7f8af0d79",
+    "docs/research/md-yuyuhakusho/static/arena-assets-scenes.txt": "0375753b2dc55fae32cad6372cda751c7cf9e3555755178035099b304f3d816d",
+    "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt": "9f81bd47bfe322110bc11339992f0e570b704077ccff22493940b75af7837152",
+    "docs/research/md-yuyuhakusho/ghidra-entry.txt": "a15fe16b1f05bb663787c3459989643ba9c692893e5a3c4c520570ad869f7184"
+  },
+  "artifacts": [
+    {
+      "path": "docs/research/md-yuyuhakusho/audio-phase-budget/arena-cost-natural-red.json.gz",
+      "sha256": "54238a47bc4d5f432bac7dcb903b3dcf1d8d272a58e210a5984def93aa0c4158"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/audio-phase-budget/arena-cost-natural-red.log",
+      "sha256": "5703fdb27d70773555a6d392c8ff311289979a27cd054707906d1416d887ceca"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/audio-phase-budget/arena-cost-private.json.gz",
+      "sha256": "9a5af2b5b7906842d51fafe64a45478f4f1c6c22380cd89505ab7f325b58ebe2"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/audio-phase-budget/arena-private.json.gz",
+      "sha256": "fd31c3a20e35ab6b2ff57f87291ee5815f64ae8a55a6df2d52197d31b5e7429c"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/audio-phase-budget/bus-contention-attribution.json",
+      "sha256": "5c9d51ad381dc254a9b366b6383541403b9a600312f4e43aeb79216528000f12"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/audio-phase-budget/capture-first.json",
+      "sha256": "8f28426a1faa9b62801aaf552d95149ce1b5e63ecdf2b973fe79ec3dedc924f9"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/audio-phase-budget/causality.json",
+      "sha256": "9b0b21976b7c395d68abebfa19a4abb45e827170b9d40f96ce6bf016bcb94e74"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/audio-phase-budget/cleanup.json",
+      "sha256": "1b946108b379403e530dad9c00c3e874740f9ce5c28e0ef543e1e55456fcefb7"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/audio-phase-budget/compact/audio-phase-baseline.json.gz",
+      "sha256": "735833ae6e4ac55d8094ffe5827ecd33b92433b21b1135250ccab037f27b8402"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/audio-phase-budget/compact/audio-phase-baseline.manifest.json",
+      "sha256": "70a0198487b97a6490a9725b3125201b158a4aae16b11862c6a87855c6de2f7e"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/audio-phase-budget/compact/audio-phase-pause.json.gz",
+      "sha256": "b0c2d19bd5fb04e346cebd6b52464e57ba15fc9ea938ba61cfc521cd7e40249d"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/audio-phase-budget/compact/audio-phase-pause.manifest.json",
+      "sha256": "b9803fa9ff320ba8426fca44ad0752db4ee749dcc5c87107af5fd936547127bf"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/audio-phase-budget/determinism.json",
+      "sha256": "9d3156562601f371351268439fd2455cac4a46eb4ae32ede2d5e483c93e39174"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/audio-phase-budget/model-first.json",
+      "sha256": "eb691aaf91301ac70a797c5f710d1d9ac4ec998f80318db9ca85497ed06f6169"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/audio-phase-budget/original-baseline-manifest.json",
+      "sha256": "168c9cf1bd77efaaa094f3b73be1175013a6bd1381c3299165bc1b39ef7b723a"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/audio-phase-budget/original-capture.json",
+      "sha256": "924615b4bd4d7faa6cb37031e58c85fe98272a398db647d70a1b070768d3444d"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/audio-phase-budget/original-pause-manifest.json",
+      "sha256": "41dff9080444337e28b8261abd361113593be7cc94326783f24e27f3da702ff9"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/audio-phase-budget/original-private-manifest.json",
+      "sha256": "4ea3df6a9015c93f3fa060ef5f204716bb52a5b43d43f3648158570779e81cf3"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/audio-phase-budget/writer-model-bootstrap-model.py.txt",
+      "sha256": "a6581127878f47c8b658a7fdaeab5884b09fdb02dda34d3dd8ebd55425770bdb"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/audio-phase-budget/writer-model-bootstrap-red.txt",
+      "sha256": "a224ca980b2b499ad587cd89a0334b8ae6420fab5df489048af5e0bced8dea3d"
+    }
+  ],
+  "limits": [
+    "Callback barrier decisions use original observed order; this proves existence for the two complete traces, not a future-input-independent clock",
+    "Original DSP/score release andEB producer timing remain oracle inputs to the commutation analysis",
+    "Local private base-cost success does not explain natural parallelZ80/DMA/IRQ/driver costs",
+    "Queue choice/order equivalence does not alone prove PCM sample timing, synthesis or mixing equivalence"
+  ],
+  "cleanup": {
+    "paths": 22,
+    "bytes_removed": 24484997,
+    "path": "docs/research/md-yuyuhakusho/audio-phase-budget/cleanup.json"
+  },
+  "offline_repeats_byte_identical": true
+}

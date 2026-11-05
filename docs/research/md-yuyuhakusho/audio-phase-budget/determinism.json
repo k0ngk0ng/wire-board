@@ -1,0 +1,19 @@
+{
+  "pass": true,
+  "checks": [
+    {
+      "artifact": "causality.json",
+      "repeat_byte_identical": true
+    },
+    {
+      "artifact": "arena-cost-private.json.gz",
+      "decompressed_repeat_byte_identical": true
+    },
+    {
+      "artifact": "arena-cost-natural-red.json.gz",
+      "decompressed_repeat_byte_identical": true,
+      "expected_exit_code": 1
+    }
+  ],
+  "scope": "Offlineanalysis repeat over samecanonicaloriginaldata; private336 remainpass,natural6710 remainrejected"
+}

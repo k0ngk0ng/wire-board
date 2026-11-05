@@ -1,0 +1,219 @@
+#!/usr/bin/env python3
+"""Complete watched-write causality and observed callback-barrier equivalence.
+
+The driver remains an original oracle. This analysis does not predict global
+IRQ times, synthesize PCM, or install any sampled PC schedule into production.
+"""
+import argparse,gzip,hashlib,json
+from collections import Counter,defaultdict
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[2]
+ADDR=[0xf800,0xf807,0xf809,0xf80a,0xf80b,0xf80c,0xf80d]
+FIELDS=['kind','pc','address','width','value','frame','cycles','refresh','callback_id','callback_behavior','irq_depth','arena','b0','b1','b2','b3','b4','b5','b6','a0','a1','a2','a3','source_ordinal']
+REQUEST_STORE={0x2196c:0xf80a,0x2197e:0xf80b,0x21990:0xf80c,0x219a2:0xf80d}
+REQUEST_RETURN={0x21970,0x21982,0x21994,0x219a6,0x219aa}
+CONSUMER_PC={0x37c56,0x37cac,0x37c7e,0x37c90,0x37c8a}
+
+def load(path):return json.loads(gzip.decompress(path.read_bytes())if path.suffix=='.gz'else path.read_bytes())
+def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
+def stamp(e):return(e[5]-1)*896040+e[6]
+def norm_write(e):return[e[1]&0xffffff,e[2]&65535,e[3],e[4]&((1<<(e[3]*8))-1)]
+def store(current,address,width,value):
+ raw=(value&((1<<(width*8))-1)).to_bytes(width,'big')
+ for index,byte in enumerate(raw):
+  a=(address+index)&65535
+  if a in ADDR:current[ADDR.index(a)]=byte
+
+def consume_writes(current,priorities):
+ q=current[3:];candidate=current[0];out=[]
+ for slot in range(3,-1,-1):
+  code=q[slot];out.append([0x37c56,0xf80a+slot,1,0]);q[slot]=0
+  if not code:continue
+  priority=priorities[code-1]
+  if priority==255:
+   out.append([0x37c90,0xf809,1,code])
+   for lower in range(slot-1,-1,-1):
+    queued=q[lower]
+    if queued and priorities[queued-1]==255:continue
+    out.append([0x37cac,0xf80a+lower,1,0]);q[lower]=0
+   return out
+  if priority&127>=candidate&127:
+   candidate=priority;out.append([0x37c7e,0xf809,1,code])
+ if candidate<128:out.append([0x37c8a,0xf800,1,candidate])
+ return out
+
+def frame_tail_counterexample(ticks,writes,events,priorities,initial,start_frame=1):
+ last_by_frame={}
+ for index,event in enumerate(events):last_by_frame[event[5]]=index
+ operations=[]
+ for write in writes:
+  if write['tick']is None:operations.append((write['event'],write['event'],'world',write))
+ for tick in ticks:
+  target=last_by_frame[events[tick['start']][5]]+0.25 if events[tick['start']][5]>=start_frame else tick['start']
+  operations.append((target,tick['start'],'tick',tick))
+ current=list(initial);same_dispatches=0
+ for _,_,kind,item in sorted(operations,key=lambda item:(item[0],item[1])):
+  if kind=='world':
+   signature=item['signature']
+   if item['category']=='world-or-delayed-request':
+    code=signature[3]
+    slot=next((slot for slot,queued in enumerate(current[3:])if queued<128 or queued==code),None)
+    if slot is not None:current[3+slot]=code
+   else:store(current,*signature[1:])
+   continue
+  tick=item
+  original_pause=tick['entry_owned'][1]
+  if current[1]!=original_pause:
+   return{'rejected':True,'reason':'frame-tail tick crosses a world pause transition','frame':events[tick['start']][5],'native_pause':original_pause,'hypothetical_pause':current[1],'unchanged_dispatches_before_counterexample':same_dispatches}
+  if not tick['selected']:
+   for write in tick['writes']:store(current,*write['signature'][1:])
+   continue
+  split=tick.get('consumer_entry',tick['dispatch_point'])
+  for write in tick['writes']:
+   if write['event']<split and write['category']!='priority-consumer':store(current,*write['signature'][1:])
+  queue_before=list(current[3:]);priority_before=current[0]
+  if any(current[3:]):
+   for signature in consume_writes(current,priorities):store(current,*signature[1:])
+  selected=current[2];actual=tick['selected'][0]
+  if selected!=actual:
+   return{'rejected':True,'reason':'frame-tail placement changes the selected command before any earlier command differs','frame':events[tick['start']][5],'native_selected':actual,'hypothetical_selected':selected,'hypothetical_queue_before_consume':queue_before,'priority_before':priority_before,'unchanged_dispatches_before_counterexample':same_dispatches,'native_tick_time_master':tick['time'],'scope':'Original driver non-consumer operations are reused only along the unchanged selected-command prefix; no claim is made about later hypothetical DSP output'}
+  same_dispatches+=1
+  for write in tick['writes']:
+   if write['event']>=split and write['category']!='priority-consumer':store(current,*write['signature'][1:])
+ return{'rejected':False,'scope':'No selected-command counterexample found in this bounded trace'}
+
+def analyze(path,kind):
+ path=path.resolve()
+ payload=load(path);events=payload['events'];current=list(payload['initial']);priorities=load(ROOT/'games/yuyuhakusho/engine/testdata/sound-queue-priorities.json')['priorities'];rom=(ROOT/'.local/md-yuyuhakusho/downloads/yuyuhakusho-jp.bin').read_bytes()
+ consumer=None;requests=[];request_calls=[];writer=Counter();writes=[];cbs=[];cb_stack=[];ticks=[];driver_stack=[];dispatches=[];scope_by_index={};saved_priority=None;score_arg=None;errors=[]
+ for index,e in enumerate(events):
+  typ,pc=e[0],e[1]&0xffffff
+  assert current==e[12:19],('owned-state transition absent from full watched-write trace',kind,index,current,e[12:19])
+  if typ==10:
+   cb_stack.append({'start':index,'sp':e[19],'id':e[8],'behavior':e[9],'ticks':[]})
+  elif typ==11:
+   assert cb_stack and cb_stack[-1]['sp']==e[19],('callback boundary not closed',kind,index,e[19],cb_stack[-1]if cb_stack else None)
+   cb=cb_stack.pop();cb['end']=index;cb['number']=len(cbs);cbs.append(cb)
+   for tick in cb['ticks']:tick['callback']=cb
+  if typ==1:
+   if pc==0x21960:requests.append({'entry':index,'sp':e[19],'code':e[20]&255,'writes':[]})
+   elif pc in REQUEST_RETURN:
+    assert requests and requests[-1]['sp']==e[19]
+    request=requests.pop();request['exit']=index;request['accepted']=bool(e[20]&255);assert request['accepted']==bool(request['writes'])
+    request_calls.append(request)
+   elif pc==0x37c44:
+    assert consumer is None
+    consumer={'entry':index,'expected':consume_writes(current,priorities),'actual':[]}
+    assert driver_stack;driver_stack[-1]['consumer_entry']=index
+   elif pc in[0x37c8e,0x37cb2]:
+    assert consumer is not None and consumer['actual']==consumer['expected'],('consumer physical writes differ',kind,consumer)
+    consumer=None
+   elif pc==0x375a6:
+    tick={'start':index,'entry_sp':e[19],'time':stamp(e),'selected':[],'writes':[],'callback':None,'entry_owned':list(current)}
+    driver_stack.append(tick)
+    if cb_stack:cb_stack[-1]['ticks'].append(tick)
+   elif pc in[0x219e4,0x219fc,0x38a]:
+    assert driver_stack and driver_stack[-1]['entry_sp']+4==e[19],('driver scope differs',kind,index)
+    tick=driver_stack.pop();tick['end']=index;tick['end_time']=stamp(e);ticks.append(tick)
+   elif pc==0x375d0:
+    assert driver_stack;driver_stack[-1]['dispatch_point']=index
+   elif pc==0x37cb4:
+    if current[2]!=255:dispatches.append({'event':index,'time':stamp(e),'code':current[2]})
+    assert driver_stack
+    driver_stack[-1]['selected'].append(current[2])
+   elif pc==0x38f28:
+    a4=e[22]&0xffffff;assert a4<len(rom);score_arg=rom[a4]
+  if typ!=2:continue
+  actual=norm_write(e);address,width,value=actual[1:];category=None
+  if pc in REQUEST_STORE:
+   assert requests and REQUEST_STORE[pc]==address and width==1 and requests[-1]['code']==value
+   target=next((slot for slot,queued in enumerate(current[3:])if queued<128 or queued==value),None)
+   assert target is not None and 0xf80a+target==address,('request does not linearize atomically at observed store',kind,index,actual,current)
+   requests[-1]['writes'].append(index);category='world-or-delayed-request'
+  elif pc in CONSUMER_PC:
+   assert consumer is not None
+   consumer['actual'].append(actual);category='priority-consumer'
+  elif pc==0x37cba:
+   assert actual==[pc,0xf809,1,255];category='dispatch-clear'
+  elif pc==0x38f28:
+   assert actual==[pc,0xf80a,1,score_arg];category='score-EB-slot0-overwrite'
+  elif pc in[0x38808,0x390f6]:
+   assert actual==[pc,0xf800,1,0];category='primary-stop'if pc==0x38808 else'voice-priority-release'
+  elif pc in[0x38a3c,0x38a66]:
+   assert width==4 and value==0
+   if pc==0x38a66 and address==0xf800:saved_priority=current[0]
+   category='driver-reset-clear'
+  elif pc==0x38a6e:
+   assert actual==[pc,0xf800,1,saved_priority];category='driver-priority-restore'
+  elif pc in[0x38a42,0x38a72]:
+   assert actual==[pc,0xf809,1,255];category='driver-reset-selected'
+  elif pc in[0x3ae6,0x3af6]:
+   assert actual==[pc,0xf807,1,1 if pc==0x3ae6 else 128];category='world-pause-request'
+  elif pc==0x37ba2:
+   assert current[1]!=0 and current[1]<128 and actual==[pc,0xf807,1,255];category='driver-pause-confirm'
+  elif pc==0x37c08:
+   assert current[1]>=128 and current[1]!=255 and actual==[pc,0xf807,1,0];category='driver-resume-confirm'
+  elif pc in[0x25c,0x32c,0x32e,0x330,0x332]:
+   assert value==0;category='cold-initialization-clear'
+  elif pc==0x37e:
+   assert actual==[pc,0xf80a,1,4];category='cold-initialization-queue-command4'
+  else:raise ValueError(('unclassified watched writer',kind,index,actual))
+  writer[category]+=1
+  row={'event':index,'signature':actual,'category':category,'before':list(current),'tick':driver_stack[-1]if driver_stack else None}
+  store(current,address,width,value);row['after']=list(current);writes.append(row)
+  if driver_stack:driver_stack[-1]['writes'].append(row)
+ assert consumer is None and not requests and not driver_stack
+ # Exact physical write comparison includes unchanged zero writes. Assigning
+ # a tick to a callback barrier is an existence proof based on this oracle's
+ # observed ordering, not a new independent IRQ-position predictor.
+ external=[w for w in writes if w['tick']is None]
+ boundary=Counter();ambiguous=[];tick_by_callback=Counter();nonempty_inside=0;empty_before_request=0;request_overlap=0
+ for tick in ticks:
+  cb=tick['callback']
+  if cb is None:
+   tick['target']=tick['start'];boundary['outside-closed-callback']+=1;continue
+  prior=[w for w in external if cb['start']<w['event']<tick['start']]
+  later=[w for w in external if tick['end']<w['event']<cb['end']]
+  inside=[w for w in external if tick['start']<w['event']<tick['end']]
+  if inside:
+   ambiguous.append({'tick':tick['start'],'reason':'external world sound mutation inside driver','writes':[w['signature']for w in inside]});tick['target']=tick['start'];continue
+  if not prior:
+   tick['target']=cb['start']-0.25;boundary['before-callback']+=1
+  elif not later:
+   tick['target']=cb['end']+0.25;boundary['after-callback']+=1
+  else:
+   ambiguous.append({'tick':tick['start'],'reason':'requires a semantic producer barrier inside callback','before':[w['signature']for w in prior],'after':[w['signature']for w in later]});tick['target']=tick['start']
+  tick_by_callback[hex(cb['behavior'])]+=1
+  if any(events[index][0]==1 and events[index][1]&0xffffff==0x37c44 for index in range(tick['start'],tick['end'])):nonempty_inside+=1
+  for request in request_calls:
+   if cb['start']<request['entry']<cb['end']:
+    if tick['end']<request['entry']:empty_before_request+=1
+    if request['entry']<tick['start']<request['exit']:request_overlap+=1
+ reordered=sorted(writes,key=lambda w:(w['tick']['target'],w['tick']['start'],w['event'])if w['tick']else(w['event'],w['event'],w['event']))
+ original_signatures=[w['signature']for w in writes];reduced_signatures=[w['signature']for w in reordered]
+ assert original_signatures==reduced_signatures,('callback-barrier reduction changed a physical sound write',kind)
+ after=list(payload['initial'])
+ for row in reordered:
+  assert after==row['before'];store(after,*row['signature'][1:]);assert after==row['after']
+ assert after==current
+ reduced_dispatch_codes=[w['before'][2]for w in reordered if w['category']=='dispatch-clear'and w['before'][2]!=255]
+ assert reduced_dispatch_codes==[d['code']for d in dispatches]
+ frame_tail=frame_tail_counterexample(ticks,writes,events,priorities,payload['initial'])
+ assert frame_tail['rejected'],('frame-tail hypothesis unexpectedly survives full watched-write causality',kind)
+ battle_frame_tail=frame_tail_counterexample(ticks,writes,events,priorities,payload['initial'],1800)
+ assert battle_frame_tail['rejected'],('battle-only frame-tail hypothesis unexpectedly survives',kind)
+ durations=defaultdict(list)
+ for tick in ticks:
+  assert len(tick['selected'])<=1
+  selected=tick['selected'][0]if tick['selected']else-1
+  durations[selected].append(tick['end_time']-tick['time'])
+ stats={str(code):{'calls':len(values),'min_master':min(values),'max_master':max(values)}for code,values in durations.items()}
+ outputs={'pass':True,'scenario':kind,'events_checked':len(events),'owned_writes':len(writes),'write_categories':dict(writer),'requests':len(request_calls),'driver_ticks':len(ticks),'non_ff_dispatches':len(dispatches),'complete_dispatch_codes_equal_after_reduction':True,'dispatch_codes_sha256':hashlib.sha256(bytes(reduced_dispatch_codes)).hexdigest(),'frame_tail_counterexample':frame_tail,'battle_only_frame_tail_counterexample':battle_frame_tail,'callback_boundary_choices':dict(boundary),'ambiguous_ticks':ambiguous,'all_physical_sound_writes_equal_after_reduction':True,'all_owned_before_after_states_equal':True,'nonempty_consumers_inside_callbacks_retained':nonempty_inside,'ticks_before_later_callback_request':empty_before_request,'ticks_inside_request_function':request_overlap,'driver_duration_by_selected':stats,'closed_callbacks':len(cbs),'open_callback_at_capture_end':len(cb_stack),'source':str(path.relative_to(ROOT)),'source_sha256':sha(path),'limits':['Barrier choices are derived from observed producer order and prove observed-trace existence only; they are not an independent globalIRQ timing algorithm','Original driver internal control/priority release and scoreEB parameter events remain original-oracle inputs; DSP/score execution is not reconstructed here','Original audio timestamps are preserved separately; logical commutation does not prove PCM timing or arbitrary future input equivalence']}
+ return outputs
+
+def main():
+ p=argparse.ArgumentParser(description=__doc__);p.add_argument('--capture-dir',type=Path,required=True);p.add_argument('--out',type=Path,required=True);args=p.parse_args();out=args.out.resolve();assert out.is_relative_to(ROOT)
+ reports=[analyze(args.capture_dir/f'audio-phase-{kind}.json.gz',kind)for kind in['baseline','pause']]
+ result={'pass':True,'scope':'Complete watched-write semantic validation and observed callback-barrier reduction; not a production scheduler','reports':reports,'source_sha256':sha(Path(__file__))}
+ out.write_text(json.dumps(result,indent=2)+'\n');print(json.dumps({'pass':True,'reports':[{'scenario':r['scenario'],'writes':r['owned_writes'],'ambiguous':len(r['ambiguous_ticks']),'choices':r['callback_boundary_choices']}for r in reports]}))
+if __name__=='__main__':main()

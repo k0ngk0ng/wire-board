@@ -1,0 +1,34 @@
+{
+  "pass": true,
+  "scenario": "baseline",
+  "frames": 5500,
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "original": {
+    "path": "games/yuyuhakusho/engine/testdata/audio-timing-baseline-original.json.gz",
+    "sha256": "17856c6293e27590544dc338f2a3cecae1aab4dc40112873e939f277ab0ce064"
+  },
+  "artifact": {
+    "path": ".local/md-yuyuhakusho/audio-phase-budget/first/audio-phase-baseline.json.gz",
+    "json_sha256": "fe2c35f06176d5c4f37f0b082144aaa28bd68e209a32ea19c9a82dc414cd29ec",
+    "gzip_sha256": "4c2acba37a061bac8fa4519ca447d8a46f49ece0e8060c68ff7a7c2558465547"
+  },
+  "events": 2401755,
+  "sound_writes": 5953,
+  "unexplained_owned_writes": 0,
+  "ram_video_pcm_equal": true,
+  "producer_sha256": "bf19d7bb4bf23e5c13517f687635f5a92efd59cd4511b472a0c7d4607a0268de",
+  "bridge_source_sha256": "f5926b23561e1e1083bb7e473fa561003303e80033328d4c39fea2e7eb0bb9fa",
+  "limits": [
+    "All writes to declared sound fields are recorded including unchanged values; this is a passive original oracle, not an independent timing implementation",
+    "Private model and semantic equivalence analysis are separate obligations"
+  ]
+}

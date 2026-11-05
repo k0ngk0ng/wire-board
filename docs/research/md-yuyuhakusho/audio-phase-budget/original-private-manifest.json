@@ -1,0 +1,23 @@
+{
+  "pass": true,
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "cases": 192,
+  "artifact": {
+    "path": ".local/md-yuyuhakusho/audio-phase-budget/first/audio-phase-arena-private.json.gz",
+    "json_sha256": "aa624dfc219303cf52c60ab3de8a5a2f89197c5600abe7361d64fdba488b63ac",
+    "gzip_sha256": "fd31c3a20e35ab6b2ff57f87291ee5815f64ae8a55a6df2d52197d31b5e7429c"
+  },
+  "owned_sound_accesses": 0,
+  "producer_sha256": "bf19d7bb4bf23e5c13517f687635f5a92efd59cd4511b472a0c7d4607a0268de",
+  "bridge_source_sha256": "f5926b23561e1e1083bb7e473fa561003303e80033328d4c39fea2e7eb0bb9fa",
+  "scope": "Original20918 semantic block cost oracle; isolatedSR2700, actual branch/loop execution, no production cost model"
+}

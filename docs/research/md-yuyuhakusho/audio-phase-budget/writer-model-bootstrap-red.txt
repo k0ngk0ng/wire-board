@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/analyze_audio_phase_budget.py", line 169, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/analyze_audio_phase_budget.py", line 166, in main
+    reports=[analyze(args.capture_dir/f'audio-phase-{kind}.json.gz',kind)for kind in['baseline','pause']]
+             ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/analyze_audio_phase_budget.py", line 115, in analyze
+    assert actual==[pc,0xf809,1,4];category='cold-initialization-command4'
+           ^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
