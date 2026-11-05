@@ -1,0 +1,10 @@
+{
+  "frozen_at_utc": "2026-11-05T15:24:50.778310+00:00",
+  "phase": "Dedicated regression tests after exact pre-fix restoration and before final fix reapplication",
+  "sha256": {
+    "web/tests/platform-audio-pcm-review.test.mjs": "7555dd2470eb0c3ecee6d374894df941de13e3055dbe906e104015847b9d85f1",
+    "docs/research/md-yuyuhakusho/AUDIO_PLATFORM_PCM_REVIEW_FAILURES.md": "14468c59c1b6714d90e2ce42a89ccf9e02c1ba31f902310282abb845a9112d0c"
+  },
+  "tested_bad_source_sha256": "ca7757be72756ade9b8fbd410ac912102e12a11a185e139893d82babd98a6371",
+  "history": "review-fix-rewind.json"
+}

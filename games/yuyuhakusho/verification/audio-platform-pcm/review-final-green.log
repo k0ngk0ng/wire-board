@@ -1,0 +1,14 @@
+✔ late pre-pause play success cannot pause the same element after resume (1.8925ms)
+✔ cleanup pause exception attempts peers and released remains observable without unhandled (1.796667ms)
+✔ cleanup clear exception attempts peers and released remains observable without unhandled (0.36375ms)
+✔ cleanup remove exception attempts peers and released remains observable without unhandled (0.343ms)
+✔ cleanup track exception attempts peers and released remains observable without unhandled (0.311125ms)
+✔ failed preparation still attempts remove/track cleanup when its pause throws (0.192667ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 69.1715

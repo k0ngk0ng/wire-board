@@ -1,0 +1,46 @@
+{
+  "checks": [],
+  "clocks": [],
+  "complete": true,
+  "error": "Error: platform openPCMStream method is unavailable",
+  "events": [
+    {
+      "at": 297.9000005722046,
+      "kind": "play",
+      "time": 0
+    },
+    {
+      "at": 297.9000005722046,
+      "kind": "waiting",
+      "time": 0
+    },
+    {
+      "at": 298.70000076293945,
+      "kind": "loadedmetadata",
+      "time": 0
+    },
+    {
+      "at": 437.4000005722046,
+      "kind": "playing",
+      "time": 0.000105
+    }
+  ],
+  "forbidden": [],
+  "frames": [],
+  "gestures": {
+    "hidden": false,
+    "trusted": true
+  },
+  "manifest": {
+    "chunk": 1024,
+    "maxAhead": 2048,
+    "pcmSHA256": "bbcad423d3c8db4265f9792bf1f9bdefab98851a16891fbf5dbb50dda09c4b51",
+    "sampleFrames": 88200,
+    "scenario": "smoke"
+  },
+  "packets": [],
+  "ready": true,
+  "reason": "",
+  "released": false,
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+}

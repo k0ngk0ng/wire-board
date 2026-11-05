@@ -1,0 +1,36 @@
+{
+  "before": {
+    "acceptedSamples": 22932,
+    "currentTime": 0.516772,
+    "desiredSize": 1,
+    "maxCurrentTime": 0.516772,
+    "maxPendingWrites": 1,
+    "muted": false,
+    "networkState": 2,
+    "paused": true,
+    "pendingWrites": 0,
+    "phase": "paused",
+    "playingCount": 1,
+    "readyState": 4,
+    "sourceWallLeadSamples": -4,
+    "submittedSamples": 22932,
+    "trackState": "live"
+  },
+  "after": {
+    "acceptedSamples": 22932,
+    "currentTime": 0.516772,
+    "desiredSize": 1,
+    "maxCurrentTime": 0.516772,
+    "maxPendingWrites": 1,
+    "muted": false,
+    "networkState": 2,
+    "paused": true,
+    "pendingWrites": 0,
+    "phase": "paused",
+    "playingCount": 1,
+    "readyState": 4,
+    "sourceWallLeadSamples": -4,
+    "submittedSamples": 22932,
+    "trackState": "live"
+  }
+}

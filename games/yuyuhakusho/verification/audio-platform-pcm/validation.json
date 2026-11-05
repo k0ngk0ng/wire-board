@@ -1,0 +1,1224 @@
+{
+  "created_at_utc": "2026-11-05T15:34:57.878481+00:00",
+  "pass": true,
+  "scope": "Production platform native generated PCM input, lifecycle/admission and native playback activity; not full original audio/DSP or speaker completion",
+  "source_format": {
+    "sample_rate": 44100,
+    "channels": 2,
+    "format": "s16le",
+    "packet_max_frames": 1024,
+    "max_ahead_samples": 2048,
+    "late_budget_samples": 4410
+  },
+  "tests": {
+    "original_controlled_pcm_cases": 16,
+    "new_review_regressions": 6,
+    "existing_platform_cases": 83,
+    "all_platform_cases": 105,
+    "unit_log": "games/yuyuhakusho/verification/audio-platform-pcm/all-unit-tdd-final.log",
+    "unit_log_sha256": "2a959f73087017ec44e7079e1732922018cc0698ec236c613a91e160e540b38f",
+    "tsc_log": "games/yuyuhakusho/verification/audio-platform-pcm/tsc-tdd-final.log",
+    "tsc_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "native_cases": [
+    {
+      "result": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-1024-12s-tdd/result.json",
+      "sha256": "e1f502093018c7264b92100514172917b3de5d1e9ad6041ae5557d33d69f9647",
+      "scenario": "smoke",
+      "pass": true
+    },
+    {
+      "result": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-441-12s-tdd/result.json",
+      "sha256": "f1b1e7c2f11bd339fe22ea56d1c7bf1b4fb9c4996f82475a3ac1a31fd6ecab01",
+      "scenario": "smoke",
+      "pass": true
+    },
+    {
+      "result": "games/yuyuhakusho/verification/audio-platform-pcm/contract-1024-2s-tdd/result.json",
+      "sha256": "4463d89efec40ddd76bf593ad8b2875516b77cdba6407c9989cceffb5aa1d1db",
+      "scenario": "contract",
+      "pass": true
+    },
+    {
+      "result": "games/yuyuhakusho/verification/audio-platform-pcm/jitter-441-4s-tdd/result.json",
+      "sha256": "5884d0f4382986ac2647b30650c5b596a96f7711362507d0e5834a06c6321a39",
+      "scenario": "jitter",
+      "pass": true
+    },
+    {
+      "result": "games/yuyuhakusho/verification/audio-platform-pcm/pause-441-4s-tdd/result.json",
+      "sha256": "804c2c838508192b9e2cd02971f9f8c2971bf36be0eb600f1b0cbdb2067ce404",
+      "scenario": "pause",
+      "pass": true
+    },
+    {
+      "result": "games/yuyuhakusho/verification/audio-platform-pcm/mute-441-4s-tdd/result.json",
+      "sha256": "d57b8114f6e5f095fcf956bc84cb74d0a5ab6f9fc073eeac5c75582789ca98af",
+      "scenario": "mute",
+      "pass": true
+    },
+    {
+      "result": "games/yuyuhakusho/verification/audio-platform-pcm/stop-441-4s-tdd/result.json",
+      "sha256": "d4946f537484f803c9ddb5bc999755bf9cd3420d5f98484a071dac879b138930",
+      "scenario": "stop",
+      "pass": true
+    },
+    {
+      "result": "games/yuyuhakusho/verification/audio-platform-pcm/hidden-441-4s-tdd/result.json",
+      "sha256": "6f5e27bdde2d96459a5c411ea1f3cf1db4e2533d07b72fb74258f9cce798fc4a",
+      "scenario": "hidden",
+      "pass": true
+    },
+    {
+      "result": "games/yuyuhakusho/verification/audio-platform-pcm/late-441-4s-tdd/result.json",
+      "sha256": "e8d0e0fbb8f578346fe669f1068c18fd502b4e2f5bf69d3139ea482e19a788d7",
+      "scenario": "late",
+      "pass": true
+    }
+  ],
+  "metrics": [
+    {
+      "label": "smoke-1024-12s-tdd",
+      "scenario": "smoke",
+      "accepted_samples": 529200,
+      "click_handler_to_playing_ms": 123.69999980926514,
+      "first_append_to_playing_ms": 3.6999998092651367,
+      "max_ahead_samples": 2038,
+      "native_clock_at_input_end": 12.081399,
+      "source_lateness_on_close_samples": 154
+    },
+    {
+      "label": "smoke-441-12s-tdd",
+      "scenario": "smoke",
+      "accepted_samples": 529200,
+      "click_handler_to_playing_ms": 77.10000038146973,
+      "first_append_to_playing_ms": 1.0,
+      "max_ahead_samples": 424,
+      "native_clock_at_input_end": 12.082412,
+      "source_lateness_on_close_samples": 97
+    },
+    {
+      "label": "contract-1024-2s-tdd",
+      "scenario": "contract",
+      "accepted_samples": 88200,
+      "click_handler_to_playing_ms": 101.5,
+      "first_append_to_playing_ms": 0.39999961853027344,
+      "max_ahead_samples": 2044,
+      "native_clock_at_input_end": 2.084322,
+      "source_lateness_on_close_samples": 132
+    },
+    {
+      "label": "jitter-441-4s-tdd",
+      "scenario": "jitter",
+      "accepted_samples": 176400,
+      "click_handler_to_playing_ms": 81.19999980926514,
+      "first_append_to_playing_ms": 0.8999996185302734,
+      "max_ahead_samples": 437,
+      "native_clock_at_input_end": 4.083328,
+      "source_lateness_on_close_samples": 154
+    },
+    {
+      "label": "pause-441-4s-tdd",
+      "scenario": "pause",
+      "accepted_samples": 176400,
+      "click_handler_to_playing_ms": 76.69999980926514,
+      "first_append_to_playing_ms": 0.8000001907348633,
+      "max_ahead_samples": 428,
+      "native_clock_at_input_end": 4.08682,
+      "source_lateness_on_close_samples": 141
+    },
+    {
+      "label": "mute-441-4s-tdd",
+      "scenario": "mute",
+      "accepted_samples": 26460,
+      "click_handler_to_playing_ms": 78.19999980926514,
+      "first_append_to_playing_ms": 0.8000001907348633,
+      "max_ahead_samples": 428,
+      "native_clock_at_input_end": null,
+      "source_lateness_on_close_samples": 0
+    },
+    {
+      "label": "stop-441-4s-tdd",
+      "scenario": "stop",
+      "accepted_samples": 22050,
+      "click_handler_to_playing_ms": 71,
+      "first_append_to_playing_ms": 0.8999996185302166,
+      "max_ahead_samples": 428,
+      "native_clock_at_input_end": null,
+      "source_lateness_on_close_samples": 0
+    },
+    {
+      "label": "hidden-441-4s-tdd",
+      "scenario": "hidden",
+      "accepted_samples": 25578,
+      "click_handler_to_playing_ms": 75.80000019073486,
+      "first_append_to_playing_ms": 0.9000005722045898,
+      "max_ahead_samples": 424,
+      "native_clock_at_input_end": null,
+      "source_lateness_on_close_samples": 0
+    },
+    {
+      "label": "late-441-4s-tdd",
+      "scenario": "late",
+      "accepted_samples": 26460,
+      "click_handler_to_playing_ms": 75.10000038146973,
+      "first_append_to_playing_ms": 0.8000001907348917,
+      "max_ahead_samples": 433,
+      "native_clock_at_input_end": null,
+      "source_lateness_on_close_samples": 4515
+    }
+  ],
+  "regressions": [
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-stream/pcm-tdd-regression-mse/result.json",
+      "sha256": "f48236b240771fadfd0add05dcfc50d7c0bc0624517b21641620dcfe151fb0b6",
+      "checks": 5,
+      "pass": true
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/pcm-tdd-regression-finite/result.json",
+      "sha256": "60fee7794f04e799fc57c16e37b725c146d1ee1be529ec4ad8550eeebbad2b24",
+      "checks": 8,
+      "pass": true
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-media-api/pcm-tdd-regression-legacy/result.json",
+      "sha256": "85a7206ec63b4c4604a2a69b0d9ed48f4e678b7ad869b1bbe74cf05419345c86",
+      "checks": 10,
+      "pass": true
+    }
+  ],
+  "test_first": {
+    "initial": "test-first.json",
+    "initial_unit_red": "unit-final-red.log",
+    "initial_native_red": "native-missing-final-red.log",
+    "review": "review-test-first.json",
+    "review_bad_source": "controller-before-review-regression.ts.txt",
+    "review_actual_red": "review-actual-red.log",
+    "final_reapplication": "review-final-reapplication.json",
+    "honest_premature_review_history": "review-fix-rewind.json",
+    "native_coverage_strengthening": "native-coverage-refinement.json"
+  },
+  "native_played_samples": null,
+  "native_dropped_samples": null,
+  "input_end_means_native_drain": false,
+  "speaker_bit_exact": false,
+  "original_mix_equivalent": false,
+  "safari_mobile_verified": false,
+  "host_explicit_stop_required": true,
+  "publication": false,
+  "source_sha256": {
+    "web/src/audio-pcm-stream.ts": "53bed38792fc9d282567aef6e9d04774ae99e2c4323c7b343df1408d28f06709",
+    "web/src/game-api/audio-pcm-stream.ts": "169f243b6acee1d3e1c18d91abd6aa0d4023198b25de9f689a6a7ca3fe4f7afe",
+    "web/src/audio.ts": "ff511c42b39c243d0928d500df7d2312adcd6fb1e64fa5fca134be3080b0dd21",
+    "web/src/game-api/module.ts": "24a4f8f71f339845c975f3852068cc4e6c6f40762e8a06059c73ffc901a16cd1",
+    "web/tests/platform-audio-pcm.test.mjs": "652992f6c4667c2568ca405e4fad230dc5dde5fc12737773c845e6f255280a81",
+    "web/tests/platform-audio-pcm-review.test.mjs": "7555dd2470eb0c3ecee6d374894df941de13e3055dbe906e104015847b9d85f1",
+    "scripts/yuyuhakusho/audio_pcm_platform_harness.ts": "b34d61047ddd508d46b4b22cf5905db092729aad1e72d3cdc550990eab63e335",
+    "scripts/yuyuhakusho/activate_public_pcm.mjs": "f768afda64560f713e4ce9be73fee179d7dc7417ea61f027cdc594f6143d9675",
+    "scripts/yuyuhakusho/check_audio_pcm_platform.py": "7f62e35bf898431ce2dada307fbc9117c8ab5c501ca65ad865baab0005ca0f01",
+    "scripts/yuyuhakusho/verify_audio_pcm_platform.py": "b708b30b3b9445b273fc587a50cb31d9d16530637f834207b373cd8e47db9e13",
+    "scripts/yuyuhakusho/validate_audio_pcm_platform.py": "627ade8860716ffccfa612e17c094a0c571a38fc815a63103af8896b0e8cd2d6",
+    "docs/research/md-yuyuhakusho/AUDIO_PLATFORM_PCM_FAILURES.md": "a68963cdcc748e5b33aafd91965dba89c0c4981041cb26b197a58598f1cbe1ba",
+    "docs/research/md-yuyuhakusho/AUDIO_PLATFORM_PCM_REVIEW_FAILURES.md": "14468c59c1b6714d90e2ce42a89ccf9e02c1ba31f902310282abb845a9112d0c",
+    "docs/research/md-yuyuhakusho/AUDIO_PLATFORM_PCM.md": "be8299b07c14209f772307216201e2424f8be1de6197ff893e6a714e53b475a2"
+  },
+  "evidence": [
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/all-unit-final.log",
+      "sha256": "e2d5838ef94ca7b69f06c4bc37d33427ef51f0fe3363e3095433c1d9549a9fcf"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/all-unit-first.log",
+      "sha256": "8569d56792a364c917b292ccec77d18f32fafcd1cce56d0852937f4b7d6dad25"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/all-unit-reviewed.log",
+      "sha256": "9b103835ef6d481ad9207309f27db7d89de78d0b256494ec530af94ccef415f4"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/all-unit-tdd-final.log",
+      "sha256": "2a959f73087017ec44e7079e1732922018cc0698ec236c613a91e160e540b38f"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/cleanup.json",
+      "sha256": "5b0adaf27978e51a65779c15ac73d2d8aa6e876ab537c9979782b63ba514cfc0"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/contract-1024-2s/desktop.png",
+      "sha256": "ece49edcabe93853d32241399778225b1ed6d2f23def345ef1fb6e0664732fe0"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/contract-1024-2s/observed.json",
+      "sha256": "675bf232fb645c653e589926e493ddafb1b453fb7bdeabae4b0fdaad3276acdf"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/contract-1024-2s/result.json",
+      "sha256": "cf4a8b6b455e01a90bad7d68b27ef572f672269d872396eff15ef11b1b5869f9"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/contract-1024-2s/setup.json",
+      "sha256": "d541d8d5ee83f69073f7b81e7a2dc9a7647426f628727ec3ef73aba4bc9a6f97"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/contract-1024-2s-final/desktop.png",
+      "sha256": "ece49edcabe93853d32241399778225b1ed6d2f23def345ef1fb6e0664732fe0"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/contract-1024-2s-final/observed.json",
+      "sha256": "828cf8e8190b316f652060cb2d515445905fb53bf6795502194f5de7eb21cc38"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/contract-1024-2s-final/result.json",
+      "sha256": "2c98ee72acf6acf2af8b9fa6e8ba4ffafd4c1845c6adda3577e2dcc3680fefdb"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/contract-1024-2s-final/setup.json",
+      "sha256": "06aa17c6f4969b4b6deb16cdf076f61d959e787cf0299b09f820620e29236589"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/contract-1024-2s-final.log",
+      "sha256": "42ab730ce77ac00b31f687ebd1a1e38140d60643fd7e611071a245135004d97a"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/contract-1024-2s-reviewed/desktop.png",
+      "sha256": "ece49edcabe93853d32241399778225b1ed6d2f23def345ef1fb6e0664732fe0"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/contract-1024-2s-reviewed/observed.json",
+      "sha256": "e0c70797815e42ca978c989d3d53b3aaa70308ef11fe4a12b2d8f94bf236c3db"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/contract-1024-2s-reviewed/result.json",
+      "sha256": "a101567ced2b30d24dce0d2e9b6407a6a432cd39d12d1ce2db8bbe9829874cdb"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/contract-1024-2s-reviewed/setup.json",
+      "sha256": "dcae3f0cc5bbf73eb1e235179b2777318c16e6850aab612cb4a37a2ae134d92e"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/contract-1024-2s-reviewed.log",
+      "sha256": "fd913e485b6ecbae4d5cd2533739cbaabc6254d4d4805574e070bbee6a565d31"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/contract-1024-2s-tdd/desktop.png",
+      "sha256": "ece49edcabe93853d32241399778225b1ed6d2f23def345ef1fb6e0664732fe0"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/contract-1024-2s-tdd/observed.json",
+      "sha256": "8f7e3b41fdc648841a558d09930bfba30de5d31598422888cd43bf9aa1cfc3ef"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/contract-1024-2s-tdd/result.json",
+      "sha256": "4463d89efec40ddd76bf593ad8b2875516b77cdba6407c9989cceffb5aa1d1db"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/contract-1024-2s-tdd/setup.json",
+      "sha256": "192f9e22e785522bfe6131006dc557b2d2c02e69fd87b009bb3cf803f550d2ed"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/contract-1024-2s-tdd.log",
+      "sha256": "fe5d83b808beff9d3130e21b80d6f0885c6c3f6858fb93bc86497501160bd182"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/contract-1024-2s.log",
+      "sha256": "af236f7c23b0715e9e8c699a1454ca98840f380c8c26e271dd3267f75311c55a"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/contract-first.json",
+      "sha256": "ec29e8bf4ca2c14c5c2e8e68a4a83ca6b6f77a3e127521f773606a511081c9dd"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/controller-before-review-regression.ts.txt",
+      "sha256": "ca7757be72756ade9b8fbd410ac912102e12a11a185e139893d82babd98a6371"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/controller-premature-review-fix.ts.txt",
+      "sha256": "53bed38792fc9d282567aef6e9d04774ae99e2c4323c7b343df1408d28f06709"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/finite-regression-tdd.log",
+      "sha256": "945aef8e41716e0fb6513959dd5f7cf8da6b293d197a426bd3f93562a6d9cab2"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/finite-regression.log",
+      "sha256": "f1dd97428544e5d53783a2688872eef635def6b7ed67bc9bc20bee4ad7807427"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/harness-before-host-base-dispose.ts.txt",
+      "sha256": "29c1e76770323d995c273364d9cfcbcef25e5a9361d3fe98085962c4504286ed"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/harness-before-meaningful-native-coverage.ts.txt",
+      "sha256": "e9ea7593a8b2a88bbd4ce087526262a89a563db31c1264b14f612fdbfa3347d7"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/hidden-441-4s/desktop.png",
+      "sha256": "ece49edcabe93853d32241399778225b1ed6d2f23def345ef1fb6e0664732fe0"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/hidden-441-4s/hidden.json",
+      "sha256": "c90f99c1f3dea2297ebcffd1e3215cef15af801f5cea483bd9aef155c98397bc"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/hidden-441-4s/observed.json",
+      "sha256": "3ebd5c50b4bd3a1708b1da5d38f87028cb9f9e58bba032cf85af6c17e92ea263"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/hidden-441-4s/result.json",
+      "sha256": "77877f67351b938f4617abef687b02836cc7c72b5300c3868f776c65dfe9b560"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/hidden-441-4s/setup.json",
+      "sha256": "6beffbe7ac037d178156d43eff65c3bce15ae78f510311f1bb507108d8ea2a0a"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/hidden-441-4s-final/desktop.png",
+      "sha256": "ece49edcabe93853d32241399778225b1ed6d2f23def345ef1fb6e0664732fe0"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/hidden-441-4s-final/hidden.json",
+      "sha256": "0d8433cba1d062d9fd2e5e00f43184b8f9217a76fd61966394e2f339c90905df"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/hidden-441-4s-final/observed.json",
+      "sha256": "9f51091721b681b7754b6743e1a38e90e2b42d347cd965131362f60286e79fac"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/hidden-441-4s-final/result.json",
+      "sha256": "cc9ad4897b3c357911baad6591d7d19b6ce3e305e54c68c46293f8a5c6c3009e"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/hidden-441-4s-final/setup.json",
+      "sha256": "473979019779c0438d2f87e3fd291e914b8d38fb9591d80d8869332d1585d0bc"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/hidden-441-4s-final.log",
+      "sha256": "e88d380260f483418f861252aff652f9863be103b394e28ff1fa185ff306c240"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/hidden-441-4s-reviewed/desktop.png",
+      "sha256": "ece49edcabe93853d32241399778225b1ed6d2f23def345ef1fb6e0664732fe0"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/hidden-441-4s-reviewed/hidden.json",
+      "sha256": "15f26b77801b0d697fa89c05318a89162d0a1823dced1a351bda084d0875f625"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/hidden-441-4s-reviewed/observed.json",
+      "sha256": "4d03d12650beb751d9572201252f3b92d4fbeaa17c309453a9a0cf394d2ec507"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/hidden-441-4s-reviewed/result.json",
+      "sha256": "1724f5b5a106a432d2fcae5ee9a92124175e4aad5ebb91da8d595d5feb6158d9"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/hidden-441-4s-reviewed/setup.json",
+      "sha256": "049e75272baa383dccf14c185070520a364ed30f52e86e37fbc7996bdcaa803d"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/hidden-441-4s-reviewed.log",
+      "sha256": "569fe268aced764b715f1e7b0eae7c10acced99e36194ae44c80731752aba4ac"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/hidden-441-4s-tdd/desktop.png",
+      "sha256": "ece49edcabe93853d32241399778225b1ed6d2f23def345ef1fb6e0664732fe0"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/hidden-441-4s-tdd/hidden.json",
+      "sha256": "89fa701c4e71389e4ba5ca4822d9a5927b764814dafc0cff252d90e318bf46bb"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/hidden-441-4s-tdd/observed.json",
+      "sha256": "62209bc617d2faa03b99b67403dcb7a69597b86c15b18c42690575380c04fca6"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/hidden-441-4s-tdd/result.json",
+      "sha256": "6f5e27bdde2d96459a5c411ea1f3cf1db4e2533d07b72fb74258f9cce798fc4a"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/hidden-441-4s-tdd/setup.json",
+      "sha256": "ca87117f08f5aebb211c9f20415a02c1233dba5279d2842166ed24a94f230642"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/hidden-441-4s-tdd.log",
+      "sha256": "a14a7b295b9d7812f987a6ab096c1521a63678d796892519a6955bd3587a72a9"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/hidden-441-4s.log",
+      "sha256": "bfcadc7bd60de69933a5adebd536c92ad20a1f3bdfe238558a37ba2d3f3ba8a3"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/initial-test-first.json",
+      "sha256": "e33caca78b6de0b114f64bd957582b767eedbe60a774dd84d73d0b4634ae5f9c"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/jitter-441-4s/desktop.png",
+      "sha256": "ece49edcabe93853d32241399778225b1ed6d2f23def345ef1fb6e0664732fe0"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/jitter-441-4s/observed.json",
+      "sha256": "9cd2d2a7bd340f8daac33288ad5a89bd51856fb817ac5e935a990423acef0a9b"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/jitter-441-4s/result.json",
+      "sha256": "ef6b6190e8503f65fe76fd077a93683fa0add70ca1f2fc3a426742f19e11af95"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/jitter-441-4s/setup.json",
+      "sha256": "35528c3846e79476cc2bcd394f1071c8ccd132a4c61d0ecc7274a3131f16499f"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/jitter-441-4s-final/desktop.png",
+      "sha256": "ece49edcabe93853d32241399778225b1ed6d2f23def345ef1fb6e0664732fe0"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/jitter-441-4s-final/observed.json",
+      "sha256": "9eca33dd7c96f6b4f3bef2d28416b5332b521942437d8b54631d27c207142aef"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/jitter-441-4s-final/result.json",
+      "sha256": "9d794ef33b69c0b51c90c47761171d5fdb73874f4691938a15a2b30d4a867c3a"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/jitter-441-4s-final/setup.json",
+      "sha256": "b7a08a4cef79ab65d2581bba1e1508bad73eff5dbe9de19750fddfab904cb3a1"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/jitter-441-4s-final.log",
+      "sha256": "628953b10b3d056a41056236e7f03eb1bb25ba813216909bd4e9a8165f1474fe"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/jitter-441-4s-reviewed/desktop.png",
+      "sha256": "ece49edcabe93853d32241399778225b1ed6d2f23def345ef1fb6e0664732fe0"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/jitter-441-4s-reviewed/observed.json",
+      "sha256": "1c20d45ab590e020d82a9fb56a88ebde436e3ef32a667bed2c2c80d252dd2f1e"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/jitter-441-4s-reviewed/result.json",
+      "sha256": "2cbb9ecc8f07965d306cae1622a45eb76dada324221961ce6b03cfab82e03857"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/jitter-441-4s-reviewed/setup.json",
+      "sha256": "c9766f390a4677137f79a5060d095ef317f2ea7aed281e1eba3070a01cfedab1"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/jitter-441-4s-reviewed.log",
+      "sha256": "175e04c8c45887f27019d883f8fd66f62d4e7e0f4fc2dd561749101883ad14ec"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/jitter-441-4s-tdd/desktop.png",
+      "sha256": "ece49edcabe93853d32241399778225b1ed6d2f23def345ef1fb6e0664732fe0"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/jitter-441-4s-tdd/observed.json",
+      "sha256": "d625217f4f9b3484a5c4a35feda3016c7e7fe053e0e2008663bf9b05ae3c1f1c"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/jitter-441-4s-tdd/result.json",
+      "sha256": "5884d0f4382986ac2647b30650c5b596a96f7711362507d0e5834a06c6321a39"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/jitter-441-4s-tdd/setup.json",
+      "sha256": "257377d442022c456854e9b573fce9ce046b597c27e29abaf8987d579e9a9e1d"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/jitter-441-4s-tdd.log",
+      "sha256": "b6a6ed9afe0a1ddf2c6279430c7fab4c7ece335adee1cede4055091d5f5fc50b"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/jitter-441-4s.log",
+      "sha256": "fb51b5473e676a924579882b49006e412bc61d5ff817864b230d51b9ef9f7fc4"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/late-441-4s/desktop.png",
+      "sha256": "ece49edcabe93853d32241399778225b1ed6d2f23def345ef1fb6e0664732fe0"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/late-441-4s/observed.json",
+      "sha256": "d470ee9dc63239c09ed1d57600a67c7d09124f21e24170decd822619f9eb1858"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/late-441-4s/result.json",
+      "sha256": "f72f5973e44b58cc18a6ba0d889bfbbd9b09ac1b8e519f091d5d71eab2a0b4d3"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/late-441-4s/setup.json",
+      "sha256": "2a0dd7e7600f1d62a12d15339eed68aa058319ea0b5d24f2f9c291cd7a890c91"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/late-441-4s-final/desktop.png",
+      "sha256": "ece49edcabe93853d32241399778225b1ed6d2f23def345ef1fb6e0664732fe0"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/late-441-4s-final/observed.json",
+      "sha256": "05cbef44bb53894df6daaeccb0b594912eeb044754380f85f5b6347506c3c825"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/late-441-4s-final/result.json",
+      "sha256": "bf96504fdd65107d80a38c010830361221a16b0da1b02a50e0012b5bdc20d619"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/late-441-4s-final/setup.json",
+      "sha256": "1a1b473403a5d43955c766fa9b145ce4a05ca31d06c28a4d020880b6189acb49"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/late-441-4s-final.log",
+      "sha256": "376eee3724cb2e02a8c3f2efcef78b069fe249d01619a67c3f4723276d29a268"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/late-441-4s-reviewed/desktop.png",
+      "sha256": "ece49edcabe93853d32241399778225b1ed6d2f23def345ef1fb6e0664732fe0"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/late-441-4s-reviewed/observed.json",
+      "sha256": "ab43d8515bb12885c1ccefe5a3763e29050f4c8ee8eda536353558259cd7a287"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/late-441-4s-reviewed/result.json",
+      "sha256": "66e93b38b71091835521167c922901cc61754fceff710c43f821110b07692caf"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/late-441-4s-reviewed/setup.json",
+      "sha256": "2c37f2abc453b9fccc8281c332eb88aa19958b6816da0319c86421a92a3f116c"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/late-441-4s-reviewed.log",
+      "sha256": "ca3a703f7cf9bc1f63da41e8fc09669fd71ef477cde6ba5096f7a68acf5317db"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/late-441-4s-tdd/desktop.png",
+      "sha256": "ece49edcabe93853d32241399778225b1ed6d2f23def345ef1fb6e0664732fe0"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/late-441-4s-tdd/observed.json",
+      "sha256": "a3cd254097e97ace5dddd73746d6da068c4d8686d0601ab061886fa5fddc0d00"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/late-441-4s-tdd/result.json",
+      "sha256": "e8d0e0fbb8f578346fe669f1068c18fd502b4e2f5bf69d3139ea482e19a788d7"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/late-441-4s-tdd/setup.json",
+      "sha256": "4ddf4df991d27c23fa8e6a664b3029093cccd9834e02681fa8fe39c4fa2925f3"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/late-441-4s-tdd.log",
+      "sha256": "fc2e08f13066c6991770b8d7a0b62e6be83d550733804d9142cf4e964d0757b8"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/late-441-4s.log",
+      "sha256": "414d6a9cd8a2ee7fbd93d9725a01ef939719c0c3b42a43b677ddb1c67ef6b786"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/legacy-regression-tdd.log",
+      "sha256": "5fe2c0b019a13b4360f510c0b9e9761d97263b8eab1ff38c9b930aaed9f0eb99"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/legacy-regression.log",
+      "sha256": "456ecf1c5a5491b3f392a09e36ccd45758d686a5688e0e399f79bbd48cf60d3e"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/matrix-runner-before-final-suffix.py.txt",
+      "sha256": "fe87cfeb1120e52c5e62993cf2a0932aaecec06dd844a4cc8b3d151473e5a5b1"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/missing-final-red/failure-state.json",
+      "sha256": "01aff8235b73ade1bf1a723536e9781c29795110c0a3ade6b8cf4b78b186c53e"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/missing-final-red/failure.json",
+      "sha256": "6a17c78f20772627943140d01592cbbd76533b5eec86ce83de9cba10baff01a6"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/missing-final-red/observed.json",
+      "sha256": "01aff8235b73ade1bf1a723536e9781c29795110c0a3ade6b8cf4b78b186c53e"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/missing-final-red/setup.json",
+      "sha256": "88dac66aba79c7ec4440d1d844d8c3da8fc96733a0a4e5e88a165c527d0ff224"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/missing-red/failure-state.json",
+      "sha256": "b061d739bd0fd9c21540a87eec4969facf61a56ba97918ea94c03be71123bc4d"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/missing-red/failure.json",
+      "sha256": "6a17c78f20772627943140d01592cbbd76533b5eec86ce83de9cba10baff01a6"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/missing-red/observed.json",
+      "sha256": "b061d739bd0fd9c21540a87eec4969facf61a56ba97918ea94c03be71123bc4d"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/missing-red/setup.json",
+      "sha256": "51fa8a95b73d2a7dc358ed8079781e2fa80cdec4adbba3533d63507ec81329a0"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/mse-regression-tdd.log",
+      "sha256": "98706b7156388a850a5afa62bfc942c545e5a9a2ec1f3f3e7c5258f497675eac"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/mse-regression.log",
+      "sha256": "6aae07c9bd18dcd2357f8b08c142a4880982c8cc8efb565bf762cce4febe53e0"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/mute-441-4s/desktop.png",
+      "sha256": "32eb01fc7b09d6be915f106ad20b5a7addc084d8fed0e5efec4305b49c9e5f76"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/mute-441-4s/observed.json",
+      "sha256": "73bca4f8525e7d84ac133641b2402c19e0783a41cfe87f1f11f55cc6015d2a51"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/mute-441-4s/result.json",
+      "sha256": "4b467e5411522d99ea2b72f63a9b1026f1a704f9f112d25d93a7a7f619d83bc9"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/mute-441-4s/setup.json",
+      "sha256": "94bdd48615e979d215766c68384d658300d2bcaf3d18704c0e8c1cc8fa953234"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/mute-441-4s-final/desktop.png",
+      "sha256": "32eb01fc7b09d6be915f106ad20b5a7addc084d8fed0e5efec4305b49c9e5f76"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/mute-441-4s-final/observed.json",
+      "sha256": "f44bba74321796e88caf2ad3cf03b99f3063da6f4c6bdcd425e1b5750b341771"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/mute-441-4s-final/result.json",
+      "sha256": "16ecbf52d741ffbfc68d4491b5e0f3ad4c968dd11b579826ac71631790286b03"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/mute-441-4s-final/setup.json",
+      "sha256": "207cae5e1fafedd58e3fc1919acd4dce5cfcd54ed6162389cf364b99bdaafa1c"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/mute-441-4s-final.log",
+      "sha256": "46603a5474b481e6baeac2cef986e77c34f2323336824af4440dabc824c2900c"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/mute-441-4s-reviewed/desktop.png",
+      "sha256": "32eb01fc7b09d6be915f106ad20b5a7addc084d8fed0e5efec4305b49c9e5f76"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/mute-441-4s-reviewed/observed.json",
+      "sha256": "d3fe2fd5a9ed63e4c3cacbb3d818b85f8f358df88daa585492d8331f2d66007e"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/mute-441-4s-reviewed/result.json",
+      "sha256": "9e28c4b50bcb8615a4bea680447c5c1a46dc86754e3db3f605885fe80af75325"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/mute-441-4s-reviewed/setup.json",
+      "sha256": "87a80076b290b78238204a85eb24afea50c0d66354e0fa92eda4bc0b8ac6a7eb"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/mute-441-4s-reviewed.log",
+      "sha256": "e3c135579d3411d21ee75ca61bd033b1da98667a6742baf64ae0a29d8806fb5f"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/mute-441-4s-tdd/desktop.png",
+      "sha256": "32eb01fc7b09d6be915f106ad20b5a7addc084d8fed0e5efec4305b49c9e5f76"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/mute-441-4s-tdd/observed.json",
+      "sha256": "6123c9f3c47c6e8069581d0efee3dc4d6ed934b97580eed2d2bc548c957a5926"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/mute-441-4s-tdd/result.json",
+      "sha256": "d57b8114f6e5f095fcf956bc84cb74d0a5ab6f9fc073eeac5c75582789ca98af"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/mute-441-4s-tdd/setup.json",
+      "sha256": "59ed6d3759596d951d8be5a632da6d7b70e55c73dfad02c6b33f13963d3ca3fe"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/mute-441-4s-tdd.log",
+      "sha256": "c6532bc7f2b580f5a0549d9a66e7165fbfd6db40054130cee399785cb0a6d330"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/mute-441-4s.log",
+      "sha256": "b36f37022aaec3ca9f639ac708807fa1fe137faaa9bc423d3ee1af6cfbdedf9c"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/native-coverage-refinement.json",
+      "sha256": "e2c833825d2ae0126a6d2fe64134eee43e86a7c5e75b2a2e71d9af98fe9b1414"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/native-matrix-final.json",
+      "sha256": "17556c86b2086cc3106a77f3c5cd6980a0ba98940d3491f89bb874c267d34d12"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/native-matrix-final.log",
+      "sha256": "f593fe6bc1166a9718ae1f89bd183ab1509d1649694699f4ee6f2c196d055d49"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/native-matrix-reviewed.json",
+      "sha256": "aff606dfc86521930c4982f4456c8894a42e26a9eef05fc0d4aad7a32242f4ae"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/native-matrix-reviewed.log",
+      "sha256": "b3ddd0a6ed39a1af99418f37a16fa7c5fce5164208f553564b8d60209a01f5a4"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/native-matrix-tdd.json",
+      "sha256": "427bd013d985cb1ffde5da82716a12e11d6616e1a9ca15d2bbf30d2249137173"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/native-matrix-tdd.log",
+      "sha256": "f66fc49c2d297eb12bfc9bfab80ebf057f1db2c2388474494d9f6bc61a47266a"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/native-matrix.json",
+      "sha256": "4e5776a898f6a179c56d31c91ca84173e902182fb345fef1519211d82454f4b3"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/native-matrix.log",
+      "sha256": "4257941627a0c0da1f0635127ba2b66cd780a5eabef1a18dabe2f1feda5c1823"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/native-metrics-reviewed.json",
+      "sha256": "6ae4afcb8ae59e4e8b6c495f0441f6f71e06ce8cc14348decd275cbf4c0d38b3"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/native-metrics-tdd.json",
+      "sha256": "2856b0121f413762b12f8903a4bf53fba09f2563374e785e538537b30f507fa9"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/native-metrics.json",
+      "sha256": "612740050c281c81a8d302d834b32cd1b36cc8995e7492a4d141acea409e68a1"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/native-missing-final-red.log",
+      "sha256": "30416e2e340059c1df5b09db397d6506c6aac2c54daaff3cf05c11142dcfb6b7"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/native-missing-red.log",
+      "sha256": "8fd2d7956d3d1d1ed523363215f59d7e5f7b286474dce664dbb58c99468b6029"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/pause-441-4s/desktop.png",
+      "sha256": "5e4180ad9685591cd985401eb4812cfbb1ca345fd068c781b047c8c79fab0dde"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/pause-441-4s/observed.json",
+      "sha256": "71e93d3e2d71425e5a1100a971e183f5eabc484055f2dff6037e22dc0ae3c6ae"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/pause-441-4s/pause.json",
+      "sha256": "044efc372ca942a9f953e4b9c90f585a17b8dba387f9bf496addc745d0aff048"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/pause-441-4s/result.json",
+      "sha256": "5d2c6946417fabbd6f8504d8c28380aac18322cdf8af3f5e7c2188c8871b2ec2"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/pause-441-4s/setup.json",
+      "sha256": "962d4ec4fb9dca81d8ed28cd62a6bd5fe88bab6b3dd671c3398717e71535b9fc"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/pause-441-4s-final/desktop.png",
+      "sha256": "5e4180ad9685591cd985401eb4812cfbb1ca345fd068c781b047c8c79fab0dde"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/pause-441-4s-final/observed.json",
+      "sha256": "a6b8c28d078e6d9fe990743936b3bcc658ced80e9ea399a986d308fc6290545c"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/pause-441-4s-final/pause.json",
+      "sha256": "3745eaddc738305731ccda385271b1b394894aa5cf943bfb083b148e96a42986"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/pause-441-4s-final/result.json",
+      "sha256": "ea6c29a18bc8a9c81f02efac2789b3878078abdbeda6bc6f2822cdbdd9f236e8"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/pause-441-4s-final/setup.json",
+      "sha256": "259d7979f3bf13c61f7f1bce9efa4fe7c761c04a10d9e8f1aafb72fec82b677f"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/pause-441-4s-final.log",
+      "sha256": "c24b5474d29179a3a6452c2689282f4416aa2f97d87c531b399fa514d9c53684"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/pause-441-4s-reviewed/desktop.png",
+      "sha256": "5e4180ad9685591cd985401eb4812cfbb1ca345fd068c781b047c8c79fab0dde"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/pause-441-4s-reviewed/observed.json",
+      "sha256": "1d46af3bca7e649d04b3f07fc0b9737ce558121246048d40da87a27a44ff0c8f"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/pause-441-4s-reviewed/pause.json",
+      "sha256": "b4da4100d656fd799027c519eba87958ab27dbd9c418339ff8f20a5d8dfd937f"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/pause-441-4s-reviewed/result.json",
+      "sha256": "0e56e3ef7d94e392da6465a9358bf114b7750ca1f8c0585ea0c3460e0e870358"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/pause-441-4s-reviewed/setup.json",
+      "sha256": "670a7e76d3cc3564531a2e67e58b0e9742884050fbe8e0ad2a4b6fd8b7950ef5"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/pause-441-4s-reviewed.log",
+      "sha256": "0ca28dd723bde3f4b78bb8c815868b4b8aba0b4db2e7e78c83593136ed81420b"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/pause-441-4s-tdd/desktop.png",
+      "sha256": "5e4180ad9685591cd985401eb4812cfbb1ca345fd068c781b047c8c79fab0dde"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/pause-441-4s-tdd/observed.json",
+      "sha256": "7c42a616b011f74e7a300fb4af3e821ac97dddb26f672b53f43e2a192815e932"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/pause-441-4s-tdd/pause.json",
+      "sha256": "890877f912a968578cb51a7c7b2653fd2f2900dd449fecc0397448a24ba932ad"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/pause-441-4s-tdd/result.json",
+      "sha256": "804c2c838508192b9e2cd02971f9f8c2971bf36be0eb600f1b0cbdb2067ce404"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/pause-441-4s-tdd/setup.json",
+      "sha256": "3c91ae33ffe867960036545a3e6fcc86781b07ea2aa7a88b257f8f8c83bf51b4"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/pause-441-4s-tdd.log",
+      "sha256": "0e8dcc7df6e3d570ae221b50ab7167df4b7e9142bb35e0e1f28b50d2a0f8b758"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/pause-441-4s.log",
+      "sha256": "25e1273601805adc3d5718a2aa55693b01137982d2e8dc80f1f730a9673cc54e"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/review-actual-red.log",
+      "sha256": "8ff1369c8529379334cb13891cb9de382551af56295384e29d7c853d739fec22"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/review-final-green.log",
+      "sha256": "4b9efbc121748882e0cbc586fa52d2f1099af7ab0f1db246d438af5160e6a36e"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/review-final-reapplication.json",
+      "sha256": "47c896c6f358f639e7fb0c125d6be3b68be6fc5b71e2f0138567d23a5bb1b63f"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/review-fix-rewind.json",
+      "sha256": "333674c724d919f71c54e22426c3f2104495c02a6d75b93204121cd8432b5f64"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/review-test-first.json",
+      "sha256": "052b63c13e0fe0230b493884b7a2c788ee9dc55f2e624be780519400515a95d9"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-1024-12s/desktop.png",
+      "sha256": "ece49edcabe93853d32241399778225b1ed6d2f23def345ef1fb6e0664732fe0"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-1024-12s/observed.json",
+      "sha256": "d10b8654a0ae5a3b59a0ba00a2f309edd5f81ea1a1fce03c7126276d297222e3"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-1024-12s/result.json",
+      "sha256": "a96d0618db6dd9f89ee08bcc18ec2845ff138f8303afdf6f51e7aed33299c4cb"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-1024-12s/setup.json",
+      "sha256": "1d81be03285750bf8df9c29092b232469c6aa6d45f669a0b040c4ec97575aa9e"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-1024-12s-final/desktop.png",
+      "sha256": "ece49edcabe93853d32241399778225b1ed6d2f23def345ef1fb6e0664732fe0"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-1024-12s-final/observed.json",
+      "sha256": "c88496ad87a5e5564c21c48d0d1ab1a6f16ebb873840602e04743d5d37c0c00c"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-1024-12s-final/result.json",
+      "sha256": "0f63da2237ed1fb07f55bc4494f559f279cf6876f0a1f2f1d2159accd987328e"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-1024-12s-final/setup.json",
+      "sha256": "34b3f1b4990b8c320223fd6599adbd9ba8f367f1613552eb5fb00ac2b052707a"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-1024-12s-final.log",
+      "sha256": "7faba968c1fb25e8c23d59dfff3aad287887adeb03c5e821fa42b339aa6ce893"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-1024-12s-reviewed/desktop.png",
+      "sha256": "ece49edcabe93853d32241399778225b1ed6d2f23def345ef1fb6e0664732fe0"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-1024-12s-reviewed/observed.json",
+      "sha256": "098ba217db1286130ce10107f8d5e2ad40233a24f5035caaf5d12493b5be7cfb"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-1024-12s-reviewed/result.json",
+      "sha256": "6f63bf0d2025fe727082a19fe9f62b163304b4b8ab10e51b0ed3987e32dac829"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-1024-12s-reviewed/setup.json",
+      "sha256": "818fa21175528d6f199419da8222cf70ec8b9b43426402eea497f6130e93f66a"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-1024-12s-reviewed.log",
+      "sha256": "37a2f940858f298bee6c9e01ecfd2ff73e7bc6f9d19a920b2a5a9040e63ff042"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-1024-12s-tdd/desktop.png",
+      "sha256": "ece49edcabe93853d32241399778225b1ed6d2f23def345ef1fb6e0664732fe0"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-1024-12s-tdd/observed.json",
+      "sha256": "52de9109b92095e5efb544a15d24f25657bb08703c014dc069d22e9678fe7c5c"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-1024-12s-tdd/result.json",
+      "sha256": "e1f502093018c7264b92100514172917b3de5d1e9ad6041ae5557d33d69f9647"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-1024-12s-tdd/setup.json",
+      "sha256": "f9f84f6c0e8f37c563801ef700f3afa904ce0b7e4c8cd3be517a9c7fadb16d5f"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-1024-12s-tdd.log",
+      "sha256": "8fbec19b58c56e9c83afffd53517d60d5965f4e3e7685cd3068c918bdfdd5e24"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-1024-12s.log",
+      "sha256": "0dd9f4710fa3a59a26efe758694af568a41fa3d7312b192a8eb6d2575604d61d"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-441-12s/desktop.png",
+      "sha256": "ece49edcabe93853d32241399778225b1ed6d2f23def345ef1fb6e0664732fe0"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-441-12s/observed.json",
+      "sha256": "a8bbf94b005a69664141c1aae7806e6f74e5d2fa727f4c296f6a247f988ec444"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-441-12s/result.json",
+      "sha256": "94551c1554606e1cb3bc21af4ea9d4251e41f36f13e73341aa1d396819918316"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-441-12s/setup.json",
+      "sha256": "b308afba901dc61ff70f2e035a2c7d929cb3bfc9860ca72b563386c9d82b72cc"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-441-12s-final/desktop.png",
+      "sha256": "ece49edcabe93853d32241399778225b1ed6d2f23def345ef1fb6e0664732fe0"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-441-12s-final/observed.json",
+      "sha256": "32ceb35c922a9bd579ab59c0b13dce32861f15a12d21a466b268bd7e5321e397"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-441-12s-final/result.json",
+      "sha256": "3de643f0d93528a5296365b99db6fd5005b983a82928e41ca0d2db56400b7451"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-441-12s-final/setup.json",
+      "sha256": "99b5198672ae798a27354a12c2a95734e58a6c67f0cf8cd9526b673d06e23980"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-441-12s-final.log",
+      "sha256": "08108b66bed0b485ea7f4922a35cb2e9475ea74660bf75d43056b0d87e8a90bc"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-441-12s-reviewed/desktop.png",
+      "sha256": "ece49edcabe93853d32241399778225b1ed6d2f23def345ef1fb6e0664732fe0"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-441-12s-reviewed/observed.json",
+      "sha256": "845b6d262d547fec9b7710ae91f5d25401ddf4ad638fa7611a01c301e225d27c"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-441-12s-reviewed/result.json",
+      "sha256": "c4b12fbc6d253f4dae44b9e72197e2ae13141240ffd6faff4f5bffe9c77388be"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-441-12s-reviewed/setup.json",
+      "sha256": "238945b67cae9a6f3c996284a480812cdc9f383e31a4033d82e59ce9587fc0bb"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-441-12s-reviewed.log",
+      "sha256": "4848b996c4f97e4d45db6bc3a7de27ab3f9ee46faaf6556cdde11df05f44e667"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-441-12s-tdd/desktop.png",
+      "sha256": "ece49edcabe93853d32241399778225b1ed6d2f23def345ef1fb6e0664732fe0"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-441-12s-tdd/observed.json",
+      "sha256": "ed28724604636a5e1d99b21238067cbbc031106abebe96cbcd15bd14a8353d35"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-441-12s-tdd/result.json",
+      "sha256": "f1b1e7c2f11bd339fe22ea56d1c7bf1b4fb9c4996f82475a3ac1a31fd6ecab01"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-441-12s-tdd/setup.json",
+      "sha256": "23c7ba2086b511d1aeb8c389d400ed7873de428336d161c25c524f4e97572c79"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-441-12s-tdd.log",
+      "sha256": "d3a1b634e94f82a825155e49b86172778916484fbca78f517fcb139ad384482e"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-441-12s.log",
+      "sha256": "402b4f1e57249caf796a7c4387e3a9ed75b720fe6460838f845b60bdc65e97f1"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke2-first/desktop.png",
+      "sha256": "ece49edcabe93853d32241399778225b1ed6d2f23def345ef1fb6e0664732fe0"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke2-first/observed.json",
+      "sha256": "5af87fa61f7e1f985065ea6233902e289bad4a95d5b02ed3a10572a896f3e10e"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke2-first/result.json",
+      "sha256": "de42930e2631bc94b4d2da46ee06d4c8c354f9b8414f85453eb78fd2c6f1b418"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke2-first/setup.json",
+      "sha256": "965c230ca554ec5a6fb77f5f39704fb06d767332b7c6c567176ca62de77594a4"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/smoke2-first.log",
+      "sha256": "9cbc68f8e0462ddec57bc41897733e2ac24aa89299affcee312e7e667f9156ac"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/stop-441-4s/desktop.png",
+      "sha256": "df37d7761ff02065fad1e9b9b00ab80789a486e8f77e405652dd6779452261bb"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/stop-441-4s/observed.json",
+      "sha256": "1251179d3d35c9eb1b02c614310c9ad4a2f6f052953e07a5aa1a0f86fa229741"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/stop-441-4s/result.json",
+      "sha256": "d0555aac7b2318c9c663da3da24dc2fa0cfcda35c566097906029393b01539e8"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/stop-441-4s/setup.json",
+      "sha256": "53a2bf20367bb8a05c782f21aea76031ad3534ae753c7a9b9b3d8d64f6f25c44"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/stop-441-4s-final/desktop.png",
+      "sha256": "df37d7761ff02065fad1e9b9b00ab80789a486e8f77e405652dd6779452261bb"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/stop-441-4s-final/observed.json",
+      "sha256": "7ae2c86db6c7c0f43699203aa4f57791f418a96df607dc739c1bce9135f49910"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/stop-441-4s-final/result.json",
+      "sha256": "ee6fb7e4d213fbf6fd85cd0a693b2aed2b0ea1c7f2066ec3e695f39ff43a7e3a"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/stop-441-4s-final/setup.json",
+      "sha256": "8d1e6025f0b0744f95a563dbf77b628d4136f3d6273713c462d5fa5a4efb1e99"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/stop-441-4s-final.log",
+      "sha256": "5a11e2c65de2d6f4fb7f60aa8f97f66a0d74acacf715016410d33423151f4b7f"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/stop-441-4s-reviewed/desktop.png",
+      "sha256": "df37d7761ff02065fad1e9b9b00ab80789a486e8f77e405652dd6779452261bb"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/stop-441-4s-reviewed/observed.json",
+      "sha256": "90739a130d0eecd13c66c7fe171c1aa5b9c513debe00a8b245b69cf8d6313667"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/stop-441-4s-reviewed/result.json",
+      "sha256": "f9e00688dcffd28cfa14ccfa504faab8d359638ded388fda5c3e7c2daeb34307"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/stop-441-4s-reviewed/setup.json",
+      "sha256": "51144dd1010339e810c8a78f0d624cd8968d1558f5971aa704fe240ce82fee9e"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/stop-441-4s-reviewed.log",
+      "sha256": "6395d2f0afd84218078edcd4de238b89bf10e5808b36543208f229a259c30225"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/stop-441-4s-tdd/desktop.png",
+      "sha256": "df37d7761ff02065fad1e9b9b00ab80789a486e8f77e405652dd6779452261bb"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/stop-441-4s-tdd/observed.json",
+      "sha256": "721f611ea15f3905d6d79bba590e9d22bf8677242ab07611c89ce37c4bb0c66a"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/stop-441-4s-tdd/result.json",
+      "sha256": "d4946f537484f803c9ddb5bc999755bf9cd3420d5f98484a071dac879b138930"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/stop-441-4s-tdd/setup.json",
+      "sha256": "f4dd0da7287ba206c356e773bac82205625a9844c0c4f0c26bb6f5397b11d997"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/stop-441-4s-tdd.log",
+      "sha256": "d05577aee8ea2dbe94ef1f180529c7fe7f8424ce595da894d792a1c380f8ed8c"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/stop-441-4s.log",
+      "sha256": "e0103c84a518073db5a16c04fb453ec1a465361db50e6582bac057c96d19889b"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/test-first.json",
+      "sha256": "e64f953ae3ee6472e20b649a4323ced1aab1cf112a8894f770ad9be3ab947842"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/tsc-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/tsc-first.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/tsc-reviewed.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/tsc-second.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/tsc-tdd-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/unit-before-resource-subcases.mjs.txt",
+      "sha256": "bbf7a2909c4d0cdb97725cbd660e46d9532f253eff03049fea8739aa4f1ee0de"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/unit-final-red.log",
+      "sha256": "d5042cf8219a8bbe1ccb5dd25cee34b2213558c767860093b716d74c240682c1"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/unit-first.log",
+      "sha256": "2b3d31ec5c01f80ff04d972989ce5f11b44d1abe61b016efbaaeaec29dd35023"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/unit-missing-red.log",
+      "sha256": "21cff13dbba0272c4a5c0b1eceacddb19e3164f7fe903a98527de4dcf86aa936"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-platform-pcm/unit-second.log",
+      "sha256": "2c6d72d6f207f0b30644efac4cb278cf4a19ee1637eb9d51efbb8d581d8c3665"
+    }
+  ]
+}

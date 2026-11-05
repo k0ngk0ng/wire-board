@@ -56,6 +56,9 @@ export type GameAudioPort = {
   openStream: (
     options: import("./audio-stream").GameAudioStreamConfig,
   ) => import("./audio-stream").GameAudioStreamHandle | undefined;
+  openPCMStream: (
+    options: import("./audio-pcm-stream").GameAudioPCMStreamConfig,
+  ) => import("./audio-pcm-stream").GameAudioPCMStreamHandle | undefined;
   stop: () => void;
   // Pause preserves this owner's media positions; stop/mute/cleanup cancels them.
   pause: () => void;

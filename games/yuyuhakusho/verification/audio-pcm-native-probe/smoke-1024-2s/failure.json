@@ -1,0 +1,23 @@
+{
+  "error": "RuntimeError('{\"success\":false,\"data\":null,\"error\":\"Evaluation error: TypeError: Failed to read the \\'desiredSize\\' property from \\'WritableStreamDefaultWriter\\': This writable stream writer has been released and cannot be used to get the desiredSize\\\\n    at snapshot (http://127.0.0.1:52356/probe.js:18:89)\\\\n    at probe.result (http://127.0.0.1:52356/probe.js:128:24)\\\\n    at <anonymous>:1:16\"}\\n')",
+  "requests": [
+    "/",
+    "/probe.js",
+    "/manifest",
+    "/favicon.ico",
+    "/pcm"
+  ],
+  "manifest": {
+    "code": 130,
+    "format": "s16",
+    "sampleRate": 44100,
+    "channels": 2,
+    "sampleFrames": 88200,
+    "pcmSHA256": "bbcad423d3c8db4265f9792bf1f9bdefab98851a16891fbf5dbb50dda09c4b51",
+    "url": "/pcm",
+    "chunkFrames": 1024,
+    "aheadChunks": 2,
+    "scenario": "smoke",
+    "inputWAVSHA256": "85b105ce9ea41d49cf62da9b0a2612bbfdb436a77a9b6e4c0d72cd8ff3167c50"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "frozen_at_utc": "2026-11-05T14:44:13.891601+00:00",
+  "phase": "Full native public API and controlled race tests before runtime implementation",
+  "sha256": {
+    "web/src/game-api/audio-pcm-stream.ts": "169f243b6acee1d3e1c18d91abd6aa0d4023198b25de9f689a6a7ca3fe4f7afe",
+    "docs/research/md-yuyuhakusho/AUDIO_PLATFORM_PCM_FAILURES.md": "a68963cdcc748e5b33aafd91965dba89c0c4981041cb26b197a58598f1cbe1ba",
+    "web/tests/platform-audio-pcm.test.mjs": "bbf7a2909c4d0cdb97725cbd660e46d9532f253eff03049fea8739aa4f1ee0de",
+    "scripts/yuyuhakusho/audio_pcm_platform_harness.ts": "29c1e76770323d995c273364d9cfcbcef25e5a9361d3fe98085962c4504286ed",
+    "scripts/yuyuhakusho/check_audio_pcm_platform.py": "7f62e35bf898431ce2dada307fbc9117c8ab5c501ca65ad865baab0005ca0f01",
+    "scripts/yuyuhakusho/activate_public_pcm.mjs": "f768afda64560f713e4ce9be73fee179d7dc7417ea61f027cdc594f6143d9675"
+  }
+}

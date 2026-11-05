@@ -1,0 +1,148 @@
+// Research-only native generated-audio transport. No game or platform code is
+// imported, and no AudioContext or external input/capture API is called.
+const probe = {ready:false,error:'',complete:false,current:null,manifest:null,pcm:null,visibility:[],disposed:false};
+window.pcmNativeProbe = probe;
+const status = document.querySelector('#status');
+const fnv = raw => {let hash=2166136261;for(const value of raw)hash=Math.imul(hash^value,16777619)>>>0;return hash;};
+const hex = raw => Array.from(new Uint8Array(raw),value=>value.toString(16).padStart(2,'0')).join('');
+const caps = {secureContext:window.isSecureContext,generator:typeof MediaStreamTrackGenerator,audioData:typeof AudioData,userAgent:navigator.userAgent};
+const elapsed = run => Math.max(0,(performance.now()-run.startedAt-run.pausedTotal-(run.phase==='paused'?performance.now()-run.pauseAt:0))/1000);
+const wait = (run,ms) => new Promise(resolve=>{let active=true;const finish=()=>{if(!active)return;active=false;clearTimeout(timer);run.waiters.delete(finish);resolve();};const timer=setTimeout(finish,Math.max(0,ms));run.waiters.add(finish);});
+function snapshot(run=probe.current) {
+ if(!run)return {phase:'idle',playingCount:0,maxCurrentTime:0};
+ const media=run.audio;
+ const currentTime=Number.isFinite(media?.currentTime)?media.currentTime:0;
+ let desiredSize=null;try{desiredSize=run.writer?.desiredSize??null;}catch{}
+ return {phase:run.phase,currentTime,maxCurrentTime:run.maxCurrentTime,acceptedSamples:run.cursor,submittedSamples:run.submitted,
+  pendingWrites:run.pending,maxPendingWrites:run.maxPending,playingCount:run.playingCount,paused:media?.paused??true,muted:media?.muted??false,
+  readyState:media?.readyState??0,networkState:media?.networkState??0,trackState:run.track?.readyState,
+  sourceWallLeadSamples:run.cursor-Math.floor(elapsed(run)*44100),desiredSize};
+}
+probe.snapshot=()=>snapshot();
+function event(run,type,extra={}) {
+ const row={type,at:performance.now()-run.startedAt,...snapshot(run),...extra};
+ run.events.push(row);if(run.events.length>5000)throw Error('Unbounded event trace');
+ return row;
+}
+function sample(run) {
+ const row=snapshot(run);run.maxCurrentTime=Math.max(run.maxCurrentTime,row.currentTime);
+ run.maxAhead=Math.max(run.maxAhead,run.cursor-Math.floor(elapsed(run)*44100));
+ run.clocks.push({at:performance.now()-run.startedAt,...row});
+ if(run.clocks.length>5000)throw Error('Unbounded clock trace');
+ status.textContent=JSON.stringify({caps,manifest:probe.manifest,...snapshot(run)},null,2);
+}
+async function release(run,reason,fromPump=false) {
+ if(run.releasing)return run.releasing;
+ run.releasing=(async()=>{
+  run.reason=reason;run.cancelled=true;run.beforeRelease=snapshot(run);clearInterval(run.sampler);
+  for(const finish of [...run.waiters])finish();
+  run.audio.pause();run.audio.srcObject=null;run.track.stop();
+  if(!run.nativeClosed){try{await run.writer.abort(reason);}catch(error){run.expectedAbort=String(error);}}
+  if(!fromPump&&run.pump){try{await run.pump;}catch{}}
+  try{run.writer.releaseLock();}catch(error){run.cleanupErrors.push(String(error));}
+  run.audio.remove();
+  run.phase=reason==='close'?'closed':'stopped';
+  run.resources={trackEnded:run.track.readyState==='ended',writerUnlocked:!run.track.writable.locked,
+   srcObjectCleared:run.audio.srcObject===null,elementRemoved:!run.audio.isConnected,streamInactive:!run.stream.active,
+   pendingWrites:run.pending,audioDataCreated:run.created,audioDataClosed:run.closed};
+  event(run,'released',{reason,resources:run.resources});
+  probe.complete=true;
+  status.textContent=JSON.stringify(probe.result(),null,2).slice(0,12000);
+ })();
+ return run.releasing;
+}
+function fail(run,error) {
+ probe.error=String(error);if(run){event(run,'failure',{error:probe.error});void release(run,'error');}
+ else status.textContent=probe.error;
+}
+function play(run,label) {
+ event(run,label+'-request');
+ run.audio.play().then(()=>{event(run,label+'-resolved');if(run.cancelled)run.audio.pause();}).catch(error=>{if(!run.cancelled)fail(run,error);});
+}
+async function pump(run) {
+ const {chunkFrames,aheadChunks,sampleFrames}=probe.manifest;
+ while(!run.cancelled&&run.cursor<sampleFrames){
+  if(run.phase==='paused'){await wait(run,10);continue;}
+  const frames=Math.min(chunkFrames,sampleFrames-run.cursor);
+  const limit=Math.floor(elapsed(run)*44100)+chunkFrames*aheadChunks;
+  if(run.cursor+frames>limit){await wait(run,Math.min(10,(run.cursor+frames-limit)/44.1));continue;}
+  if(probe.manifest.scenario==='jitter'&&!run.injectedJitter&&run.packets.length===60){run.injectedJitter=true;event(run,'injected-jitter-begin',{delayMs:35});await wait(run,35);event(run,'injected-jitter-end');if(run.cancelled)break;}
+  const start=run.cursor,timestamp=Math.floor(start*1000000/44100);
+  const bytes=probe.pcm.subarray(start*4,(start+frames)*4);
+  const data=new AudioData({format:'s16',sampleRate:44100,numberOfFrames:frames,numberOfChannels:2,timestamp,data:bytes});
+  run.created++;
+  const packet={sequence:run.packets.length+1,startSample:start,frames,timestamp:data.timestamp,dataFrames:data.numberOfFrames,
+   dataSampleRate:data.sampleRate,dataChannels:data.numberOfChannels,dataFormat:data.format,accepted:false,
+   submittedAt:performance.now()-run.startedAt,scheduledAtMs:start/44.1,desiredSizeBefore:run.writer.desiredSize};
+  run.packets.push(packet);run.submitted=start+frames;
+  try{
+   const copy=new Uint8Array(data.allocationSize({planeIndex:0}));data.copyTo(copy,{planeIndex:0});
+   packet.dataCopyFNV=fnv(copy);
+   if(copy.length!==bytes.length||copy.some((value,index)=>value!==bytes[index]))run.copyExact=false;
+   if(data.timestamp!==timestamp||start!==run.cursor||data.numberOfFrames!==frames)run.contiguous=false;
+   run.pending++;run.maxPending=Math.max(run.maxPending,run.pending);
+   const before=performance.now();await run.writer.ready;await run.writer.write(data);
+   packet.accepted=true;packet.acceptedAt=performance.now()-run.startedAt;packet.writeWaitMs=performance.now()-before;
+   run.cursor=start+frames;run.maxAhead=Math.max(run.maxAhead,run.cursor-Math.floor(elapsed(run)*44100));
+   if(copy.some(value=>value!==0))run.nonzeroAcceptedPackets++;
+  }catch(error){packet.error=String(error);if(!run.cancelled)throw error;}
+  finally{run.pending=Math.max(0,run.pending-1);data.close();run.closed++;packet.closedFormat=data.format;}
+ }
+ if(run.cancelled)return;
+ event(run,'all-input-accepted');
+ // Bound real-time supply to one/two/four packets. The finite source is not
+ // bulk-enqueued. Wait for its wall-clock end before closing the live track.
+ while(!run.cancelled&&elapsed(run)<sampleFrames/44100+.08){if(run.phase==='paused'){await wait(run,10);continue;}await wait(run,10);}
+ if(run.cancelled)return;
+ event(run,'writer-close-request');await run.writer.close();run.nativeClosed=true;event(run,'writer-close-resolved');
+ const closeAt=performance.now();
+ while(!run.cancelled&&!run.audio.ended&&performance.now()-closeAt<350)await wait(run,10);
+ run.nativeCloseObservation={waitMs:performance.now()-closeAt,ended:run.audio.ended,currentTime:run.audio.currentTime,
+  trackState:run.track.readyState,streamActive:run.stream.active,endedEvents:run.events.filter(row=>row.type==='media-ended').length};
+ event(run,'native-close-observed',run.nativeCloseObservation);
+ if(!run.playingCount)probe.error='Generated source accepted input but never reached native playing';
+ await release(run,'close',true);
+}
+function start(eventObject) {
+ if(!eventObject.isTrusted||document.hidden)throw Error('Visible trusted start gesture is required');
+ if(!probe.ready||probe.disposed)throw Error('Validated PCM source is not ready');
+ if(probe.current&&!probe.complete)throw Error('Research run is already active');
+ if(caps.generator!=='function'||caps.audioData!=='function')throw Error('Native generated-audio APIs are unavailable');
+ probe.error='';probe.complete=false;
+ const run={startedAt:performance.now(),gestureAt:window.__gestureEvidence.findLast(row=>row.id==='start')?.at??performance.now(),phase:'starting',cursor:0,submitted:0,pending:0,maxPending:0,maxAhead:0,
+  created:0,closed:0,packets:[],events:[],clocks:[],playingCount:0,maxCurrentTime:0,pausedTotal:0,pauseAt:0,
+  waiters:new Set(),cancelled:false,contiguous:true,copyExact:true,cleanupErrors:[],nonzeroAcceptedPackets:0};
+ probe.current=run;
+ run.track=new MediaStreamTrackGenerator({kind:'audio'});run.stream=new MediaStream([run.track]);run.writer=run.track.writable.getWriter();
+ run.writer.closed.catch(error=>{run.writerClosedError=String(error);});
+ run.trackSettings=run.track.getSettings();run.audio=new Audio();run.audio.controls=true;run.audio.dataset.pcmNativeProbe='';run.audio.srcObject=run.stream;document.body.append(run.audio);
+ for(const type of ['play','playing','waiting','stalled','pause','loadedmetadata','ended','error','emptied','volumechange'])run.audio.addEventListener(type,()=>{
+  if(type==='playing'){run.playingCount++;if(!run.firstPlaying)run.firstPlaying={delayMs:performance.now()-run.startedAt,gestureDelayMs:performance.now()-run.gestureAt,...snapshot(run)};if(!run.cancelled&&run.phase!=='paused')run.phase='playing';}
+  if(type==='error'&&!run.cancelled)fail(run,Error(run.audio.error?.message||'Native audio error'));
+  event(run,'media-'+type);
+ });
+ run.sampler=setInterval(()=>sample(run),20);event(run,'trusted-start',{trusted:eventObject.isTrusted,hidden:document.hidden});
+ play(run,'play');run.pump=pump(run);run.pump.catch(error=>fail(run,error));
+}
+document.querySelector('#start').addEventListener('click',eventObject=>{try{start(eventObject);}catch(error){fail(probe.current,error);}});
+document.querySelector('#pause').addEventListener('click',()=>{const run=probe.current;if(!run||run.cancelled||run.phase==='paused')return;run.pauseAt=performance.now();run.phase='paused';run.audio.pause();event(run,'owner-pause');});
+document.querySelector('#resume').addEventListener('click',()=>{const run=probe.current;if(!run||run.cancelled||run.phase!=='paused')return;run.pausedTotal+=performance.now()-run.pauseAt;run.phase='playing';event(run,'owner-resume');play(run,'resume');});
+document.querySelector('#mute').addEventListener('click',()=>{const run=probe.current;if(run&&!run.cancelled){run.audio.muted=true;event(run,'owner-mute');void release(run,'mute');}});
+document.querySelector('#stop').addEventListener('click',()=>{const run=probe.current;if(run&&!run.cancelled)void release(run,'stop');});
+document.addEventListener('visibilitychange',()=>{probe.visibility.push({hidden:document.hidden,at:performance.now()});if(document.hidden&&probe.current&&!probe.current.cancelled)void release(probe.current,'hidden');});
+probe.result=()=>({ready:probe.ready,error:probe.error,complete:probe.complete,caps,forbiddenCalls:window.__forbiddenCalls,gestures:window.__gestureEvidence,visibility:probe.visibility,
+ run:probe.current?{...snapshot(),reason:probe.current.reason,firstPlaying:probe.current.firstPlaying,
+  startedAt:probe.current.startedAt,gestureAt:probe.current.gestureAt,
+  maxAheadSamples:probe.current.maxAhead,audioDataCreated:probe.current.created,audioDataClosed:probe.current.closed,
+  inputContiguous:probe.current.contiguous,audioDataCopyExact:probe.current.copyExact,nonzeroAcceptedPackets:probe.current.nonzeroAcceptedPackets,
+  trackSettings:probe.current.trackSettings,resources:probe.current.resources,beforeRelease:probe.current.beforeRelease,cleanupErrors:probe.current.cleanupErrors,
+  nativeCloseObservation:probe.current.nativeCloseObservation,
+  packets:probe.current.packets,events:probe.current.events,clocks:probe.current.clocks,
+  injectedJitter:!!probe.current.injectedJitter,sourcePacketsDropped:0,nativeOutputDropCount:null,nativeOutputDropsObservable:false}:null});
+probe.dispose=()=>{probe.disposed=true;probe.ready=false;probe.pcm=null;if(probe.current&&!probe.current.cancelled)void release(probe.current,'dispose');};
+try{
+ const manifestResponse=await fetch('/manifest');if(!manifestResponse.ok)throw Error('PCM source manifest failed');probe.manifest=await manifestResponse.json();
+ const response=await fetch(probe.manifest.url);if(!response.ok)throw Error('PCM source fetch failed');probe.pcm=new Uint8Array(await response.arrayBuffer());
+ if(probe.pcm.byteLength!==probe.manifest.sampleFrames*4||hex(await crypto.subtle.digest('SHA-256',probe.pcm))!==probe.manifest.pcmSHA256)throw Error('PCM source SHA/count mismatch');
+ probe.ready=true;status.textContent=JSON.stringify({caps,source:probe.manifest},null,2);
+}catch(error){fail(null,error);}

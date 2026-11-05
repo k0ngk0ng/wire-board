@@ -1,0 +1,23 @@
+{
+  "targetId": "347821CF1BDA8874C690D34EF1DBC789",
+  "before": {
+    "hidden": false,
+    "visibility": "visible",
+    "focused": true,
+    "href": "http://127.0.0.1:51701/"
+  },
+  "after": {
+    "hidden": false,
+    "visibility": "visible",
+    "focused": true,
+    "href": "http://127.0.0.1:51701/"
+  },
+  "version": {
+    "protocolVersion": "1.3",
+    "product": "Chrome/157.0.8103.38",
+    "revision": "@a733b5afbb3ba618844ff8876b89ad1a774b2f18",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
+    "jsVersion": "15.7.112.23"
+  },
+  "commandLine": {}
+}

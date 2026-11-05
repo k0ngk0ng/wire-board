@@ -1,0 +1,13 @@
+{
+  "recorded_at_utc": "2026-11-05T15:05:00.911410+00:00",
+  "scope": "Strengthen native observations only; implementation and all unit tests unchanged",
+  "before_sha256": "e9ea7593a8b2a88bbd4ce087526262a89a563db31c1264b14f612fdbfa3347d7",
+  "after_sha256": "b34d61047ddd508d46b4b22cf5905db092729aad1e72d3cdc550990eab63e335",
+  "old_harness": "harness-before-meaningful-native-coverage.ts.txt",
+  "reason": [
+    "Use1024 original frames that include verified nonzero PCM, then compare actual constructed AudioData FNV to unmutated copy",
+    "EndInput rejection uses correctly sized1-frame bytes so it reaches closed-input rather than malformed-data guard"
+  ],
+  "prior_native_results_preserved": "All original nine case directories and native-matrix.json retained",
+  "no_weakened_predicates": true
+}

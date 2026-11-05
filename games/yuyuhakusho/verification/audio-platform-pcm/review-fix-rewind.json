@@ -1,0 +1,8 @@
+{
+  "recorded_at_utc": "2026-11-05T15:24:50.572208+00:00",
+  "honest_history": "A code-review fix had already been written and tested with the original16 tests/native matrix before dedicated regression tests. Parent required explicit test-first repair; preserve it, revert to the pre-fix implementation, add separate regressions and run real red, then reapply. Do not claim the premature review edit itself was test-first.",
+  "premature_fixed_source": "controller-premature-review-fix.ts.txt",
+  "premature_fixed_sha256": "53bed38792fc9d282567aef6e9d04774ae99e2c4323c7b343df1408d28f06709",
+  "reverted_sha256": "ca7757be72756ade9b8fbd410ac912102e12a11a185e139893d82babd98a6371",
+  "original_tests_sha256": "652992f6c4667c2568ca405e4fad230dc5dde5fc12737773c845e6f255280a81"
+}

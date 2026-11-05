@@ -1,0 +1,94 @@
+{
+  "pass": true,
+  "checks": [
+    {
+      "label": "smoke-1024-12s-final",
+      "scenario": "smoke",
+      "result": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-1024-12s-final/result.json",
+      "sha256": "0f63da2237ed1fb07f55bc4494f559f279cf6876f0a1f2f1d2159accd987328e",
+      "firstPlayingMs": 92.5,
+      "sourceAccepted": 529200,
+      "pass": true
+    },
+    {
+      "label": "smoke-441-12s-final",
+      "scenario": "smoke",
+      "result": "games/yuyuhakusho/verification/audio-platform-pcm/smoke-441-12s-final/result.json",
+      "sha256": "3de643f0d93528a5296365b99db6fd5005b983a82928e41ca0d2db56400b7451",
+      "firstPlayingMs": 68,
+      "sourceAccepted": 529200,
+      "pass": true
+    },
+    {
+      "label": "contract-1024-2s-final",
+      "scenario": "contract",
+      "result": "games/yuyuhakusho/verification/audio-platform-pcm/contract-1024-2s-final/result.json",
+      "sha256": "2c98ee72acf6acf2af8b9fa6e8ba4ffafd4c1845c6adda3577e2dcc3680fefdb",
+      "firstPlayingMs": 94.5999994277954,
+      "sourceAccepted": 88200,
+      "pass": true
+    },
+    {
+      "label": "jitter-441-4s-final",
+      "scenario": "jitter",
+      "result": "games/yuyuhakusho/verification/audio-platform-pcm/jitter-441-4s-final/result.json",
+      "sha256": "9d794ef33b69c0b51c90c47761171d5fdb73874f4691938a15a2b30d4a867c3a",
+      "firstPlayingMs": 69.10000038146973,
+      "sourceAccepted": 176400,
+      "pass": true
+    },
+    {
+      "label": "pause-441-4s-final",
+      "scenario": "pause",
+      "result": "games/yuyuhakusho/verification/audio-platform-pcm/pause-441-4s-final/result.json",
+      "sha256": "ea6c29a18bc8a9c81f02efac2789b3878078abdbeda6bc6f2822cdbdd9f236e8",
+      "firstPlayingMs": 88.80000019073486,
+      "sourceAccepted": 176400,
+      "pass": true
+    },
+    {
+      "label": "mute-441-4s-final",
+      "scenario": "mute",
+      "result": "games/yuyuhakusho/verification/audio-platform-pcm/mute-441-4s-final/result.json",
+      "sha256": "16ecbf52d741ffbfc68d4491b5e0f3ad4c968dd11b579826ac71631790286b03",
+      "firstPlayingMs": 83.39999961853027,
+      "sourceAccepted": 25137,
+      "pass": true
+    },
+    {
+      "label": "stop-441-4s-final",
+      "scenario": "stop",
+      "result": "games/yuyuhakusho/verification/audio-platform-pcm/stop-441-4s-final/result.json",
+      "sha256": "ee6fb7e4d213fbf6fd85cd0a693b2aed2b0ea1c7f2066ec3e695f39ff43a7e3a",
+      "firstPlayingMs": 110.5,
+      "sourceAccepted": 24255,
+      "pass": true
+    },
+    {
+      "label": "hidden-441-4s-final",
+      "scenario": "hidden",
+      "result": "games/yuyuhakusho/verification/audio-platform-pcm/hidden-441-4s-final/result.json",
+      "sha256": "cc9ad4897b3c357911baad6591d7d19b6ce3e305e54c68c46293f8a5c6c3009e",
+      "firstPlayingMs": 90.69999980926514,
+      "sourceAccepted": 24255,
+      "pass": true
+    },
+    {
+      "label": "late-441-4s-final",
+      "scenario": "late",
+      "result": "games/yuyuhakusho/verification/audio-platform-pcm/late-441-4s-final/result.json",
+      "sha256": "bf96504fdd65107d80a38c010830361221a16b0da1b02a50e0012b5bdc20d619",
+      "firstPlayingMs": 69.79999923706055,
+      "sourceAccepted": 26460,
+      "pass": true
+    }
+  ],
+  "source_sha256": {
+    "web/src/audio-pcm-stream.ts": "ca7757be72756ade9b8fbd410ac912102e12a11a185e139893d82babd98a6371",
+    "web/src/audio.ts": "ff511c42b39c243d0928d500df7d2312adcd6fb1e64fa5fca134be3080b0dd21",
+    "web/src/game-api/module.ts": "24a4f8f71f339845c975f3852068cc4e6c6f40762e8a06059c73ffc901a16cd1",
+    "scripts/yuyuhakusho/audio_pcm_platform_harness.ts": "b34d61047ddd508d46b4b22cf5905db092729aad1e72d3cdc550990eab63e335",
+    "scripts/yuyuhakusho/check_audio_pcm_platform.py": "7f62e35bf898431ce2dada307fbc9117c8ab5c501ca65ad865baab0005ca0f01",
+    "scripts/yuyuhakusho/verify_audio_pcm_platform.py": "b708b30b3b9445b273fc587a50cb31d9d16530637f834207b373cd8e47db9e13"
+  }
+}

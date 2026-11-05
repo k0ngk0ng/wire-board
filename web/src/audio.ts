@@ -1,5 +1,10 @@
 import { toneDataURL, type Sound } from "./audio-tones.ts";
 import { NativeAudioStream, normalizeStreamConfig } from "./audio-stream.ts";
+import { NativePCMStream, normalizePCMConfig } from "./audio-pcm-stream.ts";
+import type {
+  GameAudioPCMStreamConfig,
+  GameAudioPCMStreamHandle,
+} from "./game-api/audio-pcm-stream";
 import type {
   GameAudioStreamConfig,
   GameAudioStreamHandle,
@@ -64,6 +69,7 @@ export class GameAudio {
   private loops = new Map<string, LoopVoice>();
   private finite = new Map<string, FiniteVoice>();
   private stream?: { owner: string; controller: NativeAudioStream };
+  private pcm?: { owner: string; controller: NativePCMStream };
   private pausedOwners = new Set<string>();
   private factory: () => HTMLAudioElement;
   private allowed = true;
@@ -85,6 +91,7 @@ export class GameAudio {
     if (this.media) this.media.volume = this.level;
     this.background?.setVolume(this.level);
     this.stream?.controller.setVolume(this.level);
+    this.pcm?.controller.setVolume(this.level);
     for (const voice of this.finite.values())
       voice.player.setVolume(this.level);
     for (const voice of this.loops.values())
@@ -169,6 +176,7 @@ export class GameAudio {
     }
     this.background?.pause(owner);
     if (this.stream?.owner === owner) this.stream.controller.pause();
+    if (this.pcm?.owner === owner) this.pcm.controller.pause();
     for (const voice of this.finite.values())
       if (voice.owner === owner) voice.player.pause(owner);
   }
@@ -233,6 +241,7 @@ export class GameAudio {
     if (this.background) pending.push(this.background.resume(owner));
     if (this.stream?.owner === owner)
       pending.push(this.stream.controller.resume());
+    if (this.pcm?.owner === owner) pending.push(this.pcm.controller.resume());
     for (const voice of this.finite.values())
       if (voice.owner === owner) pending.push(voice.player.resume(owner));
     return (await Promise.all(pending)).some(Boolean);
@@ -243,6 +252,8 @@ export class GameAudio {
     this.stopEffects(owner);
     if (owner === undefined || this.stream?.owner === owner)
       this.stream?.controller.stop();
+    if (owner === undefined || this.pcm?.owner === owner)
+      this.pcm?.controller.stop();
     for (const voice of this.loops.values())
       if (owner === undefined || voice.owner === owner) this.releaseLoop(voice);
     for (const [key, voice] of this.finite)
@@ -310,6 +321,8 @@ export class GameAudio {
       },
       openStream: (options: GameAudioStreamConfig) =>
         this.openStream(owner, options),
+      openPCMStream: (options: GameAudioPCMStreamConfig) =>
+        this.openPCMStream(owner, options),
       stop: () => this.stop(owner),
       pause: () => this.pause(owner),
       resume: () => this.resume(owner),
@@ -352,6 +365,38 @@ export class GameAudio {
     if (!controller) return;
     this.stream = { owner, controller };
     old?.controller.stop();
+    this.pcm?.controller.stop();
+    controller.setVolume(this.level);
+    this.playbackSession();
+    controller.begin();
+    return controller;
+  }
+  private openPCMStream(
+    owner: string,
+    options: GameAudioPCMStreamConfig,
+  ): GameAudioPCMStreamHandle | undefined {
+    if (!this.available() || this.pausedOwners.has(owner)) return;
+    const config = normalizePCMConfig(options);
+    if (!config) return;
+    const old = this.pcm;
+    if (
+      old?.owner === owner &&
+      old.controller.status().playbackID === config.playbackID
+    )
+      return old.controller.matches(config) ? old.controller : undefined;
+    let controller: NativePCMStream | undefined;
+    controller = NativePCMStream.prepare(
+      config,
+      () => this.createElement(),
+      () => this.available(),
+      () => {
+        if (this.pcm?.controller === controller) this.pcm = undefined;
+      },
+    );
+    if (!controller) return;
+    this.pcm = { owner, controller };
+    old?.controller.stop();
+    this.stream?.controller.stop();
     controller.setVolume(this.level);
     this.playbackSession();
     controller.begin();
