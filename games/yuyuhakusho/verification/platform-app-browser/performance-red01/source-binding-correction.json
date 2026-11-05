@@ -1,0 +1,23 @@
+{
+  "scope": "Source binding correction only; no result/assertion/oracle altered",
+  "reason": "The script file was edited during the active run to add app-build metadata and rename transport measurement fields. The old finalizer hashed ending files, not the already loaded Python program. The same smoothness check and native input instrumentation actually ran.",
+  "original_result_sha256": "3bda3948a1cb6bf6c65ae3a88515974c41e7a2a567559fa6d413f4ce890fb491",
+  "recorded_ending_script_sha256": "3844a7b829c09e6cf5b153b94bb32732b406c9774f507da74d1e6cbd0b2ee97d",
+  "executed_script_archive": "check_platform_app.executed.py.txt",
+  "executed_script_sha256": "3844a7b829c09e6cf5b153b94bb32732b406c9774f507da74d1e6cbd0b2ee97d",
+  "tested_app_build": "5cc555a9c26b9a42879b077f6c7011d1e7165cb096d7def8df1417daacbdfce2",
+  "failure_preserved": {
+    "fast": {
+      "frames": 24,
+      "elapsedMs": 2728.300000190735,
+      "visibleUpdatesPerSecond": 8.796686580772702,
+      "medianFrameIntervalMs": 108.70000076293945,
+      "p95FrameIntervalMs": 119.09999942779541,
+      "budget": {
+        "minimumVisibleUpdatesPerSecond": 50,
+        "maximumP95FrameIntervalMs": 40
+      },
+      "hidden": false
+    }
+  }
+}

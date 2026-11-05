@@ -1,0 +1,14 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-json",
+    "-count=1",
+    "-timeout=30m",
+    "./games/yuyuhakusho/runtimebridge",
+    "-run",
+    "^TestSchema2FrozenWholeTrajectories$/(legacy-four|arena-a-pan|arena-e-team)$"
+  ],
+  "exit_code": 0
+}

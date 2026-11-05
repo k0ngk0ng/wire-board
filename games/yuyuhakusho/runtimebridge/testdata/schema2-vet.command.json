@@ -1,0 +1,10 @@
+{
+  "command": [
+    "go",
+    "vet",
+    "./games/yuyuhakusho/resourceid",
+    "./games/yuyuhakusho/runtimebridge",
+    "./games/yuyuhakusho/presentation"
+  ],
+  "exit_code": 0
+}

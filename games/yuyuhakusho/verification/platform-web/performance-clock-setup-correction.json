@@ -1,0 +1,18 @@
+{
+  "before": [
+    {
+      "source": "scripts/yuyuhakusho/platform_board_harness.tsx",
+      "sha256": "4acc2776101840cd8914c847c9dc3baa2840442f4533a8c080f2f354da439c96",
+      "archive": "games/yuyuhakusho/verification/platform-web/platform_board_harness.tsx.before-clock-correction.txt"
+    },
+    {
+      "source": "games/yuyuhakusho/cmd/platform-web-harness/main.go",
+      "sha256": "e22701353e3531ccf7c39f80b418862ab83e32912a4156f2edb3ac6bfa543552",
+      "archive": "games/yuyuhakusho/verification/platform-web/main.go.before-clock-correction.txt"
+    }
+  ],
+  "evidence": "performance-v1-typed/performance-raw.json",
+  "reason": "Fixture used stopped game view.serverAt as clock.serverNow then reset receivedAt on every50ms poll; Module timer is60ms, producing300ms periodic67ms display gaps despite~10ms CPU. Use real server wall clock and captured receipt as formal host does; production clock and thresholds unchanged.",
+  "resource_timing_median_ms": 2.8,
+  "callback_median_ms": 6.2
+}

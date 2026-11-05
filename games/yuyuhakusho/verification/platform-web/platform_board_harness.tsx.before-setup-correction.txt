@@ -1,0 +1,32 @@
+import {useRef,useState,useEffect} from 'react';
+import {createRoot} from '../../web/node_modules/react-dom/client';
+import {GameAudio} from '../../web/src/audio';
+import {GameFullscreen,type GameFullscreenHandle} from '../../web/src/ui/room-fullscreen';
+import {Board} from '../../games/yuyuhakusho/web/Board';
+import {OptionsForm} from '../../games/yuyuhakusho/web/Options';
+import {Preparation} from '../../games/yuyuhakusho/web/Preparation';
+import {Cover} from '../../games/yuyuhakusho/web/Cover';
+import type {GameRoom,BoardProps} from '../../web/src/game-api/module';
+import type {NetworkView,GameOptions} from '../../games/yuyuhakusho/web/types';
+const audio=new GameAudio();
+const profile={revision:1,turboHz:10,keyboard:{up:'KeyW',down:'KeyS',left:'KeyA',right:'KeyD',mode:'KeyF',start:'Space',b:'KeyJ',a:'KeyK',c:'KeyL',x:'KeyU',y:'KeyI',z:'KeyO'}};
+const probe={ready:false,loaded:0,progress:0,error:'',actions:[] as object[],prepare:[] as object[],delay:0,authority:undefined as NetworkView|undefined,firstInputAt:0,visibleAt:0,fullReady:false};
+Object.assign(window,{yuyuBoardProbe:probe});
+function Harness(){
+ const [options,setOptions]=useState<GameOptions>({arena:0,teamBattle:false,characters:[3,9]});
+ const [started,setStarted]=useState(false),[view,setView]=useState<NetworkView>(),[version,setVersion]=useState(1);
+ const fullscreen=useRef<GameFullscreenHandle>(null);
+ const room:GameRoom={id:'board-harness',name:'原生Board验收',kind:'yuyuhakusho',host:'human',capacity:2,status:started?'playing':'waiting',version,you:0,options,seats:[{id:'human',name:'玩家',ready:true},{id:'bot',name:'电脑',ready:true,bot:true}]};
+ async function update(){const r=await fetch('/fixture').then(r=>r.json());setView(r.data.view);setVersion(r.version);probe.authority=r.data.view;}
+ useEffect(()=>{void update();if(!started)return;const timer=setInterval(()=>{void update();},100);return()=>clearInterval(timer);},[started]);
+ const props:BoardProps<NetworkView>={room,data:view!,busy:false,assets:'',sound:false,audio:audio.channel('board-harness'),clock:{serverNow:view?.serverAt??0,receivedAt:performance.now(),epoch:1},inputWindow:8,act:async(action)=>{probe.actions.push(action);const delay=probe.delay;await fetch('/act?delay='+delay,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(action)}).then(async r=>{if(!r.ok)throw Error(await r.text());});await update();},command:async()=>{},onReady:()=>{probe.ready=true;probe.loaded++;},onLoadProgress:(n)=>{probe.progress=n;},onLoadError:message=>{probe.error=message;}};
+ return <main style={{maxWidth:850,margin:'auto',padding:12}}>
+  <header id="platform-header">共用平台菜单</header>
+  {!started&&<><div style={{width:240}}><Cover/></div><OptionsForm value={options} onChange={setOptions} capacity={2} disabled={false}/><Preparation room={room} options={options} host busy={false} assets="" prepare={action=>{probe.prepare.push(action);if(action.type==='arena')setOptions({...options,arena:Number(action.arena)});if(action.type==='character'){const next=[...options.characters];next[Number(action.seat??0)]=Number(action.character);setOptions({...options,characters:next});}}}/><button id="start-board" onClick={async()=>{await fetch('/restart',{method:'POST',body:JSON.stringify(options)});await update();setStarted(true);}}>开始Board验收</button></>}
+  {started&&view&&<><div id="room-actions"><button id="fullscreen" onClick={()=>fullscreen.current?.enter()}>全屏</button><button id="leave">离开房间</button></div><div id="public-players">{view.players.map(p=><span key={p.seat} data-public-seat={p.seat}>{room.seats[p.seat]?.name} {Math.max(0,p.health)}</span>)}</div><GameFullscreen ref={fullscreen} scope="board-harness" enabled={probe.ready} onReadyChange={value=>{probe.fullReady=value;}}><Board {...props}/></GameFullscreen></>}
+ </main>;
+}
+window.addEventListener('keydown',event=>{if(event.isTrusted&&event.code==='KeyD')probe.firstInputAt=performance.now();});
+const originalFetch=window.fetch.bind(window);
+window.fetch=async(input,init)=>{if(String(input)==='/api/controllers')return new Response(JSON.stringify({models:[],profiles:{'md-6':profile}}),{headers:{'Content-Type':'application/json'}});if(String(input)==='/api/rooms/board-harness/sync')return originalFetch('/sync',init);return originalFetch(input,init);};
+createRoot(document.getElementById('root')!).render(<Harness/>);

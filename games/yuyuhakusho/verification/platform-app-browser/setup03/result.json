@@ -1,0 +1,70 @@
+{
+  "pass": true,
+  "scope": "Normal Vite app + registered composition root + real authentication, SQLite, HTTP and WebSocket. Shaping delays real TCP writes and closes actual connections. Virtual Gamepad API only; no physical hardware claim.",
+  "urls": {
+    "direct": "http://127.0.0.1:59254/",
+    "shaped": "http://127.0.0.1:59255/"
+  },
+  "roomID": "9050734e",
+  "preparation": {
+    "capacity": 2,
+    "chat": null,
+    "clockOffsetMs": 0,
+    "closeReason": "",
+    "host": "a7cc6aa63a50c79d2dae7aad",
+    "id": "9050734e",
+    "kind": "yuyuhakusho",
+    "loading": null,
+    "locked": false,
+    "matchId": "",
+    "name": "魔强统一战验收",
+    "options": {
+      "arena": 10,
+      "characters": [
+        8,
+        9
+      ],
+      "teamBattle": false
+    },
+    "seats": [
+      {
+        "id": "a7cc6aa63a50c79d2dae7aad",
+        "left": false,
+        "name": "Yuyufastsetup03",
+        "network": {
+          "connected": true,
+          "connections": 1,
+          "rttMs": 0,
+          "sampledAt": 1793896353868
+        },
+        "ready": false
+      },
+      {
+        "id": "a2bfe39f5edafc2973b336d0",
+        "left": false,
+        "name": "Yuyuslowsetup03",
+        "network": {
+          "connected": true,
+          "connections": 1,
+          "rttMs": 1,
+          "sampledAt": 1793896355171
+        },
+        "ready": false
+      }
+    ],
+    "setupVersion": 0,
+    "spectating": false,
+    "spectatorCount": 0,
+    "status": "waiting",
+    "turnDeadline": 0,
+    "updated": 1793896355,
+    "version": 4,
+    "you": 0
+  },
+  "stage": "preparation",
+  "sourceSHA256": {
+    "scripts/yuyuhakusho/platform_app_host.go": "039eb5666e853e1cfd201b5daa53794bb60c2057b4d176fa52f82ebb508b43c5",
+    "scripts/yuyuhakusho/platform_app_observer.js": "7df158028396d277c1c5890676735fdb9cb60862f5456359502bb32b21a75325",
+    "scripts/yuyuhakusho/check_platform_app.py": "3a9244f875566d993ed356826089b4601d43e787f4e74b4947acd3f3ab9ed90c"
+  }
+}

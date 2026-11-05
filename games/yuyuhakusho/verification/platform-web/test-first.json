@@ -1,0 +1,14 @@
+{
+  "frozen_at_utc": "2026-11-05T15:39:23.893704+00:00",
+  "scope": "Before platform web/runtime implementation; unit missing modules and Board missing compile evidence retained; final actual browser still mandatory",
+  "files": {
+    "games/yuyuhakusho/web/FAILURES.md": "fd2b3a2f6f26903a02cbf61487ad145cfe50d9734410d10e6c4261cc2cf12f4a",
+    "games/yuyuhakusho/tests/platform-web.test.mjs": "38f82dd2981d0c41fc331ca0494f3be5d084dab389e742ac6995ec98131cb916",
+    "scripts/yuyuhakusho/platform_board_harness.tsx": "0df21dd0e2e5689fdfefb900ac8b3b38c4594be9dbffdc30282285751e5d89a1",
+    "scripts/yuyuhakusho/check_platform_board.py": "de88abc969920f0e31ab442decda478bb1fff770b808d48a45b8eb5ce367558d"
+  },
+  "red": [
+    "games/yuyuhakusho/verification/platform-web/unit-missing-red.log",
+    "games/yuyuhakusho/verification/platform-web/missing-board/missing-board-red.json"
+  ]
+}

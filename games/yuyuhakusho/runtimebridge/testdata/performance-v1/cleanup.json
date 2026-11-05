@@ -1,0 +1,7 @@
+{
+  "temporary_stopped_pid_record_removed": true,
+  "matrix_completed_and_go_test_temporary_builds_released": true,
+  "retained": "source-bound complete logs, actual red lineage, frozen-source archive, benchmarks and revision manifests",
+  "shared_go_cache_retained": "Root and other agents still use this worktree cache",
+  "browser_profiles_created_by_this_revision": false
+}

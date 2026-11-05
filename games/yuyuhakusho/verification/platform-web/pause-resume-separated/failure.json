@@ -1,0 +1,41 @@
+{
+  "error": "RuntimeError('{\"success\":false,\"data\":null,\"error\":\"Wait timed out after 25000ms\"}\\n')",
+  "completed": {
+    "prediction_before_delayed_authority": {
+      "authority": 944,
+      "local": 950,
+      "pose": 5,
+      "action": 1,
+      "at": 5251.89999961853,
+      "inputAt": 5042.199999809265,
+      "frame": "280",
+      "before": {
+        "x": 944,
+        "pose": 0,
+        "action": 0,
+        "pixelHash": "103279a0"
+      },
+      "firstResponse": {
+        "authority": 944,
+        "local": 944,
+        "pose": 5,
+        "action": 1,
+        "at": 5214.10000038147,
+        "inputAt": 5042.199999809265,
+        "frame": "276",
+        "pixelHash": "e25cac9e"
+      },
+      "pixelHash": "2cee6dcb",
+      "firstVisibleResponseMs": 171.9000005722046
+    },
+    "pause_start_delayed": {
+      "authorityPhase": "playing",
+      "localPaused": true
+    },
+    "pause_resume_delayed": {
+      "authorityPhase": "paused",
+      "frame": "396",
+      "localPaused": false
+    }
+  }
+}

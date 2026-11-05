@@ -1,0 +1,37 @@
+{
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/platform-web/profile",
+      "logical_bytes": 160943767,
+      "kind": "closed acceptance browser profile"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/platform-web/profile-endpoint",
+      "logical_bytes": 9191878,
+      "kind": "closed acceptance browser profile"
+    },
+    {
+      "path": ".local/yw/pwe319b8.config",
+      "kind": "closed owned browser session metadata"
+    },
+    {
+      "path": ".local/yw/pwe319b8.target",
+      "kind": "closed owned browser session metadata"
+    },
+    {
+      "path": ".local/yw/pwendpoint.config",
+      "kind": "closed owned browser session metadata"
+    },
+    {
+      "path": ".local/yw/pwendpoint.target",
+      "kind": "closed owned browser session metadata"
+    }
+  ],
+  "preserved": [
+    "all red and previous/final verification artifacts",
+    "active local full-app dist/public/runtime needed by Root",
+    "shared Go caches and telemetry directories",
+    "all other owners and user files"
+  ],
+  "checked_no_live_platform_web_browser_or_harness": true
+}

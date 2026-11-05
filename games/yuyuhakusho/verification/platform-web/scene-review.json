@@ -1,0 +1,14 @@
+{
+  "scope": "Frozen NetworkScene + actual Go/Wasm and original terminal reference; not host auth/socket acceptance",
+  "pass": true,
+  "checks": [
+    "prediction_at_most_12_frames_without_authority_progress",
+    "bad_digest_requires_recovery_without_authority_mutation",
+    "result_accept_never_advances",
+    "terminal_restore_exact_rgba_and_same_frame"
+  ],
+  "terminal": {
+    "frame": "3952",
+    "rgba_sha256": "811a21a28045551ab6fdb3a94f27d5aee5043f0ba626f166295fc2e5813444b0"
+  }
+}

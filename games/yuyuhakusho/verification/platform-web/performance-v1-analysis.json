@@ -1,0 +1,356 @@
+{
+  "scope": "Actual browser RPC timing and CDP CPU samples; before/after timings compare same operations. FPS before clock-fixture correction is not an apples-to-apples production-clock comparison.",
+  "runs": {
+    "performance-v1-red": {
+      "paint": {
+        "fps": 41.23473853950703,
+        "median_ms": 11.299999237060547,
+        "p95_ms": 50.5,
+        "max_ms": 81.10000038146973,
+        "paint_count": 180
+      },
+      "rpc": {
+        "dispose": {
+          "count": 87,
+          "mean_ms": 0.029885039932426364,
+          "total_ms": 2.5999984741210938,
+          "max_ms": 0.10000038146972656
+        },
+        "replay": {
+          "count": 87,
+          "mean_ms": 24.191954086566792,
+          "total_ms": 2104.700005531311,
+          "max_ms": 27.300000190734863
+        },
+        "fork": {
+          "count": 87,
+          "mean_ms": 12.896551713176157,
+          "total_ms": 1121.9999990463257,
+          "max_ms": 18.600000381469727
+        },
+        "step": {
+          "count": 293,
+          "mean_ms": 5.444709891752171,
+          "total_ms": 1595.2999982833862,
+          "max_ms": 7.100000381469727
+        },
+        "digests": {
+          "count": 17,
+          "mean_ms": 1.9823528738582836,
+          "total_ms": 33.69999885559082,
+          "max_ms": 2.1000003814697266
+        }
+      },
+      "resource_duration_median_ms": 2.40000057220459,
+      "fetch_callback_duration_median_ms": 10.600000381469727,
+      "cpu_top_self_ms": [
+        {
+          "function": "github.com_k0ngk0ng_wire_board_games_yuyuhakusho_presentation.RasterizeArena",
+          "self_ms": 395.45
+        },
+        {
+          "function": "github.com_k0ngk0ng_wire_board_games_yuyuhakusho_presentation.indexedPlanePixel",
+          "self_ms": 374.9
+        },
+        {
+          "function": "encoding_json.stateInString",
+          "self_ms": 319.73
+        },
+        {
+          "function": "encoding_json.appendCompact",
+          "self_ms": 288.83
+        },
+        {
+          "function": "(idle)",
+          "self_ms": 242.68
+        },
+        {
+          "function": "encoding_json.checkValid",
+          "self_ms": 202.81
+        },
+        {
+          "function": "runtime.tryDeferToSpanScan",
+          "self_ms": 172.68
+        },
+        {
+          "function": "encoding_json.stateEndValue",
+          "self_ms": 170.87
+        },
+        {
+          "function": "image.__RGBA_.SetRGBA",
+          "self_ms": 149.9
+        },
+        {
+          "function": "github.com_k0ngk0ng_wire_board_games_yuyuhakusho_presentation.Raster.RGBA",
+          "self_ms": 133.28
+        },
+        {
+          "function": "encoding_json.__decodeState_.skip",
+          "self_ms": 131.44
+        },
+        {
+          "function": "crypto_internal_fips140_sha256.blockGeneric",
+          "self_ms": 128.83
+        },
+        {
+          "function": "encoding_json.stateBeginValue",
+          "self_ms": 126.21
+        },
+        {
+          "function": "github.com_k0ngk0ng_wire_board_games_yuyuhakusho_presentation.CompositeArenaSprites",
+          "self_ms": 117.71
+        },
+        {
+          "function": "encoding_json.structEncoder.encode",
+          "self_ms": 87.03
+        },
+        {
+          "function": "encoding_json.__decodeState_.object",
+          "self_ms": 72.83
+        },
+        {
+          "function": "runtime.findObject",
+          "self_ms": 71.59
+        },
+        {
+          "function": "encoding_json.indirect",
+          "self_ms": 70.62
+        }
+      ]
+    },
+    "performance-v1-typed": {
+      "paint": {
+        "fps": 49.93165777885823,
+        "median_ms": 16.59999942779541,
+        "p95_ms": 67.09999942779541,
+        "max_ms": 69.5,
+        "paint_count": 180
+      },
+      "rpc": {
+        "step": {
+          "count": 257,
+          "mean_ms": 3.914007780616849,
+          "total_ms": 1005.8999996185303,
+          "max_ms": 5.199999809265137
+        },
+        "digests": {
+          "count": 17,
+          "mean_ms": 2.1999999775606045,
+          "total_ms": 37.39999961853027,
+          "max_ms": 2.3999996185302734
+        },
+        "fork": {
+          "count": 86,
+          "mean_ms": 0.10697670870049056,
+          "total_ms": 9.199996948242188,
+          "max_ms": 1.7000007629394531
+        },
+        "dispose": {
+          "count": 86,
+          "mean_ms": 0.02093021259751431,
+          "total_ms": 1.7999982833862305,
+          "max_ms": 0.10000038146972656
+        },
+        "replay": {
+          "count": 86,
+          "mean_ms": 3.26976746182109,
+          "total_ms": 281.20000171661377,
+          "max_ms": 5.800000190734863
+        }
+      },
+      "resource_duration_median_ms": 2.8000001907348633,
+      "fetch_callback_duration_median_ms": 6.199999809265137,
+      "cpu_top_self_ms": [
+        {
+          "function": "(idle)",
+          "self_ms": 3508.86
+        },
+        {
+          "function": "github.com_k0ngk0ng_wire_board_games_yuyuhakusho_presentation.RasterizeArena",
+          "self_ms": 199.05
+        },
+        {
+          "function": "github.com_k0ngk0ng_wire_board_games_yuyuhakusho_presentation.indexedPlanePixel",
+          "self_ms": 172.54
+        },
+        {
+          "function": "(program)",
+          "self_ms": 110.31
+        },
+        {
+          "function": "github.com_k0ngk0ng_wire_board_games_yuyuhakusho_presentation.Raster.RGBA",
+          "self_ms": 83.64
+        },
+        {
+          "function": "image.__RGBA_.SetRGBA",
+          "self_ms": 74.5
+        },
+        {
+          "function": "encoding_json.appendCompact",
+          "self_ms": 64.28
+        },
+        {
+          "function": "runtime.tryDeferToSpanScan",
+          "self_ms": 59.47
+        },
+        {
+          "function": "github.com_k0ngk0ng_wire_board_games_yuyuhakusho_presentation.CompositeArenaSprites",
+          "self_ms": 52.29
+        },
+        {
+          "function": "runtime.scanObject",
+          "self_ms": 40.88
+        },
+        {
+          "function": "runtime.mapaccess2",
+          "self_ms": 38.27
+        },
+        {
+          "function": "crypto_internal_fips140_sha256.blockGeneric",
+          "self_ms": 36.46
+        },
+        {
+          "function": "runtime.mapassign",
+          "self_ms": 22.38
+        },
+        {
+          "function": "github.com_k0ngk0ng_wire_board_games_yuyuhakusho_presentation.RasterizeSpritesForArena",
+          "self_ms": 22.37
+        },
+        {
+          "function": "github.com_k0ngk0ng_wire_board_games_yuyuhakusho_runtimebridge.renderPixels",
+          "self_ms": 18.53
+        },
+        {
+          "function": "encoding_json.stateInString",
+          "self_ms": 18.36
+        },
+        {
+          "function": "fetch",
+          "self_ms": 17.0
+        },
+        {
+          "function": "runtime.findObject",
+          "self_ms": 16.85
+        }
+      ]
+    },
+    "performance-v1-clock-verified": {
+      "paint": {
+        "fps": 59.97855516113122,
+        "median_ms": 16.300000190736682,
+        "p95_ms": 25.399999618530273,
+        "max_ms": 27.800000190734863,
+        "paint_count": 180
+      },
+      "rpc": {
+        "step": {
+          "count": 430,
+          "mean_ms": 3.2390697479248045,
+          "total_ms": 1392.799991607666,
+          "max_ms": 4.40000057220459
+        },
+        "fork": {
+          "count": 86,
+          "mean_ms": 0.17558139978453172,
+          "total_ms": 15.100000381469727,
+          "max_ms": 1.5
+        },
+        "digests": {
+          "count": 17,
+          "mean_ms": 2.07058822407442,
+          "total_ms": 35.19999980926514,
+          "max_ms": 2.200000762939453
+        },
+        "replay": {
+          "count": 86,
+          "mean_ms": 3.2325580729994665,
+          "total_ms": 277.9999942779541,
+          "max_ms": 5.09999942779541
+        },
+        "dispose": {
+          "count": 86,
+          "mean_ms": 0.013953497243482013,
+          "total_ms": 1.2000007629394531,
+          "max_ms": 0.10000038146972656
+        }
+      },
+      "resource_duration_median_ms": 2.5,
+      "fetch_callback_duration_median_ms": 2.6000003814697266,
+      "cpu_top_self_ms": [
+        {
+          "function": "(idle)",
+          "self_ms": 3181.67
+        },
+        {
+          "function": "github.com_k0ngk0ng_wire_board_games_yuyuhakusho_presentation.indexedPlanePixel",
+          "self_ms": 287.85
+        },
+        {
+          "function": "github.com_k0ngk0ng_wire_board_games_yuyuhakusho_presentation.RasterizeArena",
+          "self_ms": 278.06
+        },
+        {
+          "function": "github.com_k0ngk0ng_wire_board_games_yuyuhakusho_presentation.Raster.RGBA",
+          "self_ms": 107.63
+        },
+        {
+          "function": "image.__RGBA_.SetRGBA",
+          "self_ms": 106.91
+        },
+        {
+          "function": "(program)",
+          "self_ms": 93.64
+        },
+        {
+          "function": "runtime.tryDeferToSpanScan",
+          "self_ms": 86.61
+        },
+        {
+          "function": "github.com_k0ngk0ng_wire_board_games_yuyuhakusho_presentation.CompositeArenaSprites",
+          "self_ms": 79.8
+        },
+        {
+          "function": "encoding_json.appendCompact",
+          "self_ms": 55.2
+        },
+        {
+          "function": "runtime.scanObject",
+          "self_ms": 54.91
+        },
+        {
+          "function": "github.com_k0ngk0ng_wire_board_games_yuyuhakusho_presentation.RasterizeSpritesForArena",
+          "self_ms": 35.8
+        },
+        {
+          "function": "crypto_internal_fips140_sha256.blockGeneric",
+          "self_ms": 34.63
+        },
+        {
+          "function": "runtime.findObject",
+          "self_ms": 33.56
+        },
+        {
+          "function": "github.com_k0ngk0ng_wire_board_games_yuyuhakusho_runtimebridge.renderPixels",
+          "self_ms": 32.55
+        },
+        {
+          "function": "runtime.scanObjectsSmall",
+          "self_ms": 28.19
+        },
+        {
+          "function": "runtime.mapaccess2",
+          "self_ms": 24.89
+        },
+        {
+          "function": "encoding_json.stateInString",
+          "self_ms": 22.53
+        },
+        {
+          "function": "runtime.mapassign",
+          "self_ms": 21.21
+        }
+      ]
+    }
+  }
+}

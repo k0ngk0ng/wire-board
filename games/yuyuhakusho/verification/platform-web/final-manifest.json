@@ -1,0 +1,269 @@
+{
+  "schema": 2,
+  "revision": "performance-v1-native-timeline",
+  "pass": true,
+  "production_frozen": true,
+  "scope": "Game-owned frontend/Wasm RPC, actual Go module/Wasm functional fixtures and actual normal-platform auth/WebSocket/TCP performance acceptance supplied by Root. CDN/release is separate.",
+  "production_sha256": {
+    "games/yuyuhakusho/cmd/platform-client-wasm/main_js.go": "764e3be6ee19c8403cc7d5336174e5317fcc858dd592d636cb5d1c85350afa22",
+    "games/yuyuhakusho/web/Board.tsx": "aedb87338ea119273ac15f03b5aab88f5eaeec7b6d07bdfceb69d11c500b0072",
+    "games/yuyuhakusho/web/Cover.tsx": "d75e03c629d0eed62d040a0d842d4ce30d0aff6eea01ecd2f3e3e55a63659936",
+    "games/yuyuhakusho/web/Options.tsx": "87449c1efec8d6d41805506583e65b486843cd3311f9f671229b8a7d405071c9",
+    "games/yuyuhakusho/web/Preparation.tsx": "66843d5fc158dc6bfde15f90761e98642fd1525befffdd615166f8400aae4d9c",
+    "games/yuyuhakusho/web/assets.ts": "0772fc41b5b48af4dee0e9a5df1099a70cbda4bb509f2d25df382a7b76f7af84",
+    "games/yuyuhakusho/web/catalog.tsx": "632bade9c69cf56510dd4f3f0234d7dff22ebbfd2b1879501968c9e41eb5fa39",
+    "games/yuyuhakusho/web/input.ts": "5113279f9fc2be2dd84a10db73dc1edff361354e3192dbf176195f11b6fd5163",
+    "games/yuyuhakusho/web/labels.ts": "880083c93f07aa40a6a05bbca53af4b8eb7b717e7858bdbf63aed4ec22122a1c",
+    "games/yuyuhakusho/web/module.tsx": "7f556d04f81df9cc02d5b5e094fc7c55332bb79262969243519948227ff2a99f",
+    "games/yuyuhakusho/web/network-client.ts": "d5b435001676e9ffe6114d8e6be19f2fba404b57af2638c45dc856580033de7a",
+    "games/yuyuhakusho/web/network-input.ts": "13ccfd4ceeb4c434657aa5306723f5ff2076dd810b235f9b5aab1b3fdf896922",
+    "games/yuyuhakusho/web/network-scene.ts": "de9fe122c7de5daf0a0faf99d0c0f4ffa761e34222f301ac4cd07d870354c64f",
+    "games/yuyuhakusho/web/network.css": "4b6bb34ebe7ea7119cd1dbe0b8349b631259e5b09488bd023c6e9f4fc0dbfb20",
+    "games/yuyuhakusho/web/types.ts": "5151eb726b0da3885aaeb9856a4e3ad7c4cecc5ab10876db43fb558666fa84ac",
+    "games/yuyuhakusho/web/wasm.ts": "1b86dc7353060b2a0eea3c66427c76fbf3d309aa5116e217b317bc6067deb354"
+  },
+  "verification_source_sha256": {
+    "games/yuyuhakusho/tests/platform-web.test.mjs": "997899f6830e1dcf483389d58750506b2775b8a58b11fb199e2c9e526e818095",
+    "games/yuyuhakusho/cmd/platform-web-harness/main.go": "195f12bec6643f8907658b6371c19985dc6900610381d838908e4ad93648d7cd",
+    "scripts/yuyuhakusho/platform_board_harness.tsx": "1e1e4014bc602fe0af0c57576262784958060c68dfdbe04f2687de34ce78c0c7",
+    "scripts/yuyuhakusho/check_platform_board.py": "54c4ef7daa86210dd20f91b0e925ba5663ce4e53e86d5825632feb36504ef33d",
+    "scripts/yuyuhakusho/platform_controls_acceptance.py": "1ba5ab1ee4bf047d6ae7e5e9cfc8c7c889ac6ed92d391693be314e8b8935efc5",
+    "scripts/yuyuhakusho/platform_touch_acceptance.py": "e8e4680afc7165d1b7bb0d7026ab9b6ca3e78a116f3718dbd1f7cdc24d00e774",
+    "scripts/yuyuhakusho/platform_pause_acceptance.py": "50e9d4dc121168da73b27abcecf36fa28fe5807a9a3ae16a2411c9876e839f52",
+    "scripts/yuyuhakusho/native_platform_input.mjs": "89f34d68f53109748b35d74c50dbedd3694d3689eb75a68839b547d30f69e006",
+    "scripts/yuyuhakusho/profile_platform_runtime.mjs": "1490f92007f7a4720aa36961ca1e2f80967ff3581c77167abbf2a156fe032fc1",
+    "scripts/yuyuhakusho/check_platform_wasm.mjs": "d942f5eddc370017f0f9ac86ffcacabfab2d4f6e32fd3d0a6d740a45ffbe4bde",
+    "scripts/yuyuhakusho/check_platform_scene.mjs": "d231cbd09dcf9bba1525c0215911662361f9385a3bdd780fd1b5f1c0576cc165",
+    "scripts/yuyuhakusho/check_platform_replay_pixels.mjs": "5d229954643420c8b6b34eb4d152852568a7f3825dc0687d4f19b4e7bb987ea3",
+    "scripts/yuyuhakusho/check_platform_timeline.mjs": "7191f1e841ca1f930be0e3422daa381294364d73b0810f37e71a43323f346566",
+    "scripts/yuyuhakusho/build_platform_web.py": "18c7d9c2c10d83aef91cb6c2aa1976d5568f3cd812b931ee3875a74882ba54a2",
+    "scripts/yuyuhakusho/build_platform_app.py": "66170d98470485289223fabc07d9aab6acb3608efd43bb3a69636f08cbed11fe",
+    "scripts/yuyuhakusho/check_platform_app_build.mjs": "88c94dfc6408f81435dc0a0244429f3844ce430771b36c4ddcdcfb859bba4224"
+  },
+  "dependency_sha256": {
+    "games/yuyuhakusho/runtimebridge/performance.go": "fcccea7025b79ba9abb02a890ff344458d601bdce42f4821678f523ef444bc55",
+    "games/yuyuhakusho/runtimebridge/session.go": "fb1b1d2566a7e072f09a8eb183885854558a4de5ba081760f8b7e678c09f6e8a",
+    "web/src/controllers/input.ts": "e246a8d3b67aa44361631ec51f55a95d8d0d8f341d0adce3fb01922216e5233d",
+    "web/src/controllers/gamepad.ts": "6e07e3a9173a744af98c1fa109b0e0fc937a86adb18b33387af6a7050d68c22b",
+    "web/src/controllers/MDController.tsx": "bf7f45de20b3aa305addbf1909eee7ad33016fdb42823b3aad6550146542d4f7",
+    "web/src/controllers/pointer-controller.ts": "70c3f5194f0ff9c6303d1527fcbef04eff6b3237ac71c44eedf367ae04b11364",
+    "web/src/controllers/md-controller.css": "9aec61b9ccb58462e65862e35c14e4cd385a61c0787a2ac99f751349de7f2983",
+    "web/src/controllers/assets/md-controller.svg": "e5f7264ca0a328f11b033fa06d018bb3fb56a51a3d631bd9384183cab33375c1"
+  },
+  "checks": [
+    {
+      "name": "8 input/resource tests",
+      "artifact": "unit-final-revision.log",
+      "pass": true
+    },
+    {
+      "name": "full TypeScript",
+      "artifact": "typecheck-timeline-final.log",
+      "pass": true
+    },
+    {
+      "name": "Wasm adapter vet",
+      "artifact": "vet-final-revision.log",
+      "pass": true
+    },
+    {
+      "name": "actual Wasm adapter six checks",
+      "artifact": "wasm-performance-v1.json",
+      "pass": true
+    },
+    {
+      "name": "100tick replay canonical/pixel equivalence",
+      "artifact": "replay-pixels-performance-v1.json",
+      "pass": true
+    },
+    {
+      "name": "scene twelve-cap/digest/terminal exact pixels",
+      "artifact": "scene-review.json",
+      "pass": true
+    },
+    {
+      "name": "Module real Board loading/pause/controller/touch/fullscreen",
+      "artifact": "native-timeline-functional/result.json",
+      "pass": true
+    },
+    {
+      "name": "delayed authority native timeline",
+      "artifact": "timeline-native-clock-verified.json",
+      "pass": true
+    },
+    {
+      "name": "fresh input after rebase before RAF",
+      "artifact": "timeline-rebase-input-verified.json",
+      "pass": true
+    },
+    {
+      "name": "normal app code/resource delivery",
+      "artifact": "app-build-final.json",
+      "pass": true
+    }
+  ],
+  "artifact_sha256": {
+    "unit-final-revision.log": "b371c4d916dcc15ee00cf6716c63f41ae39dca18509fcf3772c6e36763d5efbf",
+    "typecheck-timeline-final.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "vet-final-revision.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "wasm-performance-v1.json": "7cadd93585a41893e4e5d29fe50a78fe6747a78eed282d59803db165debdf61d",
+    "replay-pixels-performance-v1.json": "4032b2eb457674ff4ceff224aba30f283ed3eea9c67ab05bd2bef54e5a4b57bc",
+    "scene-review.json": "01dff3abd0546f7377e72d958dcc705b32e19a124e9b15eafe94e36d8ead6341",
+    "native-timeline-functional/result.json": "da2ba04ee9603991c74d9d44eb8f38b842d96e3f7e7803efcba241fd80815dbc",
+    "timeline-native-clock-verified.json": "fc1d09319d02a15f2bb179f565a13e73862165dea9ec890828a107962622c2ad",
+    "timeline-rebase-input-verified.json": "ee8e3d21f87951da08aefac557c4754c3721e6c4db823b3ebc1912b1a45226b2",
+    "app-build-final.json": "24a59bba27d05f50fa3da91f4265656e21a4afab262b54f9b08977835195903b",
+    "RESULT.md": "86ba67010edb60cc7abec561074089a90203f6d48b76d31152cef4527168c52b",
+    "cleanup-final.json": "7a376568045eeaf3d5b25b5a2d65acfb9262e2eb3021b3d4f4f6393718a6fa1c",
+    "performance-v1-analysis.json": "5ffe218673b17ef21ad646d29b6f07cc5d94573cdbd6e366f6acf15735e5ad8f"
+  },
+  "preserved_red_sha256": {
+    "unit-missing-red.log": "3c4561f6650886e6cddd7744dd4790aa450e6f30bfffdffb08c15f0371b044f9",
+    "missing-board-red.log": "9fb343f3e844bb547ba07f2ef362f7ba6ed3c0858c302936ac71399a975bc9c0",
+    "wasm-entry-missing-red.log": "6bed1241e6d4b17a2d763cf5b254e97970c2bd8b8889c03716dff7fdb36d238f",
+    "controls-missing-red/failure.json": "d82a0204dd1a486be9b9a345f7c9c56c2812bd9c3b8665774a60d862cbddc9a7",
+    "wasm-target-atomic-red.json": "1557d8d8ce5831da9289bea2f199d59235b5d66bc334c8e43bc897d9211c219d",
+    "pause-resume-review-red/failure.json": "7428d010be6a349f0080f3f2189dd22ce29b95417f89bd1f07c405acc24c2b81",
+    "public-loading-red/failure.json": "026c02396cc4985376199fb19677e4394a0dc2660e1b54521065cab7a07028fd",
+    "idle-release-red.log": "4ffe9adcb22937b16bb590f607a7295b32c6224b440b643f89e8f62d30f75444",
+    "loading-terminal-release-red.log": "0cb175351958af7beb3d18db2b95c4bd566bc142d36fa612534cf720066b5214",
+    "performance-v1-red/performance-result.json": "563948098a202ae462053978e92ef7adc406a6f6f163f8272aa92ae9311f6699",
+    "timeline-clock-red.json": "0b8a784452fcce956a6493805e2de6a636f3de838d70ff4396b774594f5e3e81",
+    "timeline-rebase-input-red.json": "30a88b2a1d29114da2295d2d5e03fcf15c0b5ddb7e18b0beb386f02765a1efc7"
+  },
+  "root_platform_acceptance": {
+    "path": "games/yuyuhakusho/verification/platform-app-browser/native-clock-network04/result.json",
+    "sha256": "ccd188f455e15a3afb0470e796ada52c1073679bd9a6bc1170b7549811678050",
+    "app_build": "6021ab95cf83c6fe6e48ab10364b567be895b8f9eb4fc62878e4b1621728105d",
+    "render_performance": {
+      "fast": {
+        "frames": 150,
+        "elapsedMs": 2502.5,
+        "visibleUpdatesPerSecond": 59.94005994005994,
+        "medianFrameIntervalMs": 15.800000190734863,
+        "p95FrameIntervalMs": 21.600000381469727,
+        "budget": {
+          "minimumVisibleUpdatesPerSecond": 50,
+          "maximumP95FrameIntervalMs": 40
+        },
+        "hidden": false
+      },
+      "slow": {
+        "frames": 150,
+        "elapsedMs": 2503.0999994277954,
+        "visibleUpdatesPerSecond": 59.92569215544315,
+        "medianFrameIntervalMs": 16.09999942779541,
+        "p95FrameIntervalMs": 28.199999809265137,
+        "budget": {
+          "minimumVisibleUpdatesPerSecond": 50,
+          "maximumP95FrameIntervalMs": 40
+        },
+        "hidden": false
+      },
+      "slow-tcp-delayed": {
+        "frames": 140,
+        "elapsedMs": 2504.199999809265,
+        "visibleUpdatesPerSecond": 55.906077793572095,
+        "medianFrameIntervalMs": 16.899999618530273,
+        "p95FrameIntervalMs": 31.700000762939453,
+        "budget": {
+          "minimumVisibleUpdatesPerSecond": 50,
+          "maximumP95FrameIntervalMs": 40
+        },
+        "hidden": false
+      }
+    },
+    "native_measurements": {
+      "normal-native-input": {
+        "nativeEventToFirstVisibleMs": 22.59999942779541,
+        "inputAckMs": 11.800000190734863,
+        "nativeEventToAuthoritativeAppliedArrivalMs": 92.89999961853027,
+        "firstVisibleBeforeAck": false,
+        "renderFrameIntervalMedianMs": 16.300000190734863,
+        "renderFrameIntervalMaxMs": 20.800000190734863,
+        "initialX": 944.0,
+        "firstVisibleX": 945,
+        "firstVisibleHash": "50c5b218",
+        "beforeHash": "4a0271eb",
+        "trusted": true
+      },
+      "tcp-delayed-native-input": {
+        "nativeEventToFirstVisibleMs": 27.800000190734863,
+        "inputAckMs": 226.39999961853027,
+        "nativeEventToAuthoritativeAppliedArrivalMs": 233.5,
+        "firstVisibleBeforeAck": true,
+        "renderFrameIntervalMedianMs": 17.15000009536743,
+        "renderFrameIntervalMaxMs": 38.60000038146973,
+        "initialX": 1104.0,
+        "firstVisibleX": 1102,
+        "firstVisibleHash": "209d37ae",
+        "beforeHash": "904dd213",
+        "trusted": true
+      },
+      "fast-peer-while-other-delayed": {
+        "nativeEventToFirstVisibleMs": 23.600000381469727,
+        "inputAckMs": 10.200000762939453,
+        "nativeEventToAuthoritativeAppliedArrivalMs": 90.39999961853027,
+        "firstVisibleBeforeAck": false,
+        "renderFrameIntervalMedianMs": 16.34999990463257,
+        "renderFrameIntervalMaxMs": 32.40000057220459,
+        "initialX": 954.0,
+        "firstVisibleX": 955,
+        "firstVisibleHash": "8f63dc52",
+        "beforeHash": "2a8f300f",
+        "trusted": true
+      },
+      "reconnected-native-input": {
+        "nativeEventToFirstVisibleMs": 62.89999961853027,
+        "inputAckMs": 8.299999237060547,
+        "nativeEventToAuthoritativeAppliedArrivalMs": 68.5,
+        "firstVisibleBeforeAck": false,
+        "renderFrameIntervalMedianMs": 16.899999618530273,
+        "renderFrameIntervalMaxMs": 36.79999923706055,
+        "initialX": 1029.0,
+        "firstVisibleX": 1026,
+        "firstVisibleHash": "d5ff9c56",
+        "beforeHash": "9fdec9f4",
+        "trusted": true
+      },
+      "saved-remap-native-input": {
+        "nativeEventToFirstVisibleMs": 48.0,
+        "inputAckMs": 16.800000190734863,
+        "nativeEventToAuthoritativeAppliedArrivalMs": 64.0,
+        "firstVisibleBeforeAck": false,
+        "renderFrameIntervalMedianMs": 15.699999809265137,
+        "renderFrameIntervalMaxMs": 21.0,
+        "initialX": 962.0,
+        "firstVisibleX": 964,
+        "firstVisibleHash": "3e8013a1",
+        "beforeHash": "8b7f1a1f",
+        "trusted": true
+      }
+    },
+    "same_epoch_recovery": "64ffea0668163b0a9d37d57f"
+  },
+  "bridge_performance_revision": {
+    "path": "games/yuyuhakusho/runtimebridge/testdata/performance-v1/revision-manifest.json",
+    "sha256": "5fd2fa6fda642ec2a484bf759e3c6f06be9c3caafcaecdffed4d0fa92e524ca7",
+    "native_trajectories": 49,
+    "wasm_trajectories": 49,
+    "native_frames": 203428,
+    "wasm_frames": 203428
+  },
+  "build": "6021ab95cf83c6fe6e48ab10364b567be895b8f9eb4fc62878e4b1621728105d",
+  "runtime": {
+    "url": "/yuyuhakusho/v1/runtime/client.wasm",
+    "sha256": "a10458e21546db20123a6d7c2f07196a29607c5ed3c0686ffc0ba74dac219c73",
+    "bytes": 4911200
+  },
+  "resource_descriptor_sha256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+  "limits_unchanged": {
+    "prediction_frames": 12,
+    "input_history": 64,
+    "replay_frames": 120,
+    "ordinary_inflight": 8
+  },
+  "physical_hardware_tested": false,
+  "virtual_gamepad_api": true,
+  "next_protocol_revision": "Per-connection StreamView cursor/resync compatibility is separate and has not modified this frozen production."
+}

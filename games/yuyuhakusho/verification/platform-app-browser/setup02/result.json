@@ -1,0 +1,14 @@
+{
+  "pass": false,
+  "scope": "Normal Vite app + registered composition root + real authentication, SQLite, HTTP and WebSocket. Shaping delays real TCP writes and closes actual connections. Virtual Gamepad API only; no physical hardware claim.",
+  "urls": {
+    "direct": "http://127.0.0.1:59189/",
+    "shaped": "http://127.0.0.1:59190/"
+  },
+  "error": "RuntimeError('{\"success\":false,\"data\":null,\"error\":\"Element \\'@e106\\' is covered by <div.modal-backdrop inside div#root> at its click point, so the input would land on that element instead. Dismiss or interact with the covering element first (it is often a dialog, banner, or sticky header).\"}\\n')",
+  "sourceSHA256": {
+    "scripts/yuyuhakusho/platform_app_host.go": "039eb5666e853e1cfd201b5daa53794bb60c2057b4d176fa52f82ebb508b43c5",
+    "scripts/yuyuhakusho/platform_app_observer.js": "7df158028396d277c1c5890676735fdb9cb60862f5456359502bb32b21a75325",
+    "scripts/yuyuhakusho/check_platform_app.py": "8bdfe76d52d8dc6e89137b7aeb817acf012c8198dc5a66c5ff8849e3d13a655a"
+  }
+}

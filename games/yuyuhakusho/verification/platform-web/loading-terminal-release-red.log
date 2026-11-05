@@ -1,0 +1,72 @@
+✔ MD twelve-bit short taps transmit in sequence without waiting for ACK (0.884958ms)
+✔ cancellation has an independent lane and stale replies do not revive old input (0.539667ms)
+✔ bounded input expires with release and never emits automation or seat claims (0.382375ms)
+✔ received and applied ACKs are distinct and monotonic (0.127917ms)
+✖ idle loading cancellation, focus loss and disposal emit no game release (0.610083ms)
+✖ authority disabling game actions discards old input without terminal or loading releases (0.13525ms)
+✔ only the selected arena and its required auxiliary asset are requested (0.065833ms)
+✔ resource descriptor identity rejects malformed or foreign media mappings (0.133125ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 6
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 66.699417
+
+✖ failing tests:
+
+test at games/yuyuhakusho/tests/platform-web.test.mjs:12:1
+✖ idle loading cancellation, focus loss and disposal emit no game release (0.610083ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + [
+  +   {
+  +     epoch: 'e',
+  +     sequence: 1,
+  +     type: 'release'
+  +   }
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/games/yuyuhakusho/tests/platform-web.test.mjs:12:229)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { type: 'release', epoch: 'e', sequence: 1 } ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at games/yuyuhakusho/tests/platform-web.test.mjs:13:1
+✖ authority disabling game actions discards old input without terminal or loading releases (0.13525ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      'input',
+  +   'release'
+    ]
+  
+      at TestContext.<anonymous> (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/games/yuyuhakusho/tests/platform-web.test.mjs:13:304)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'input', 'release' ],
+    expected: [ 'input' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

@@ -1,0 +1,14 @@
+{
+  "label": "wasm-validation-first",
+  "actual_go_wasm": true,
+  "wasm_sha256": "21d942d98a3b500963c9b4dd1bce09b758f76bb25122c9d83a84f88bd66c13a4",
+  "checks": [
+    "invalid_step_target_atomic",
+    "preview_detached_pixels",
+    "valid_step_twelve_bits",
+    "non_uint8_asset_rejected_runtime_alive",
+    "exact_raw_json_identity",
+    "bounded_sessions_disposal"
+  ],
+  "pass": true
+}

@@ -1,0 +1,12 @@
+legacy-itsuki-elder completed=true frame=5611 preview=5611 events=3 draws=0 pixels_equal=true
+legacy-itsuki-jin completed=true frame=4191 preview=4191 events=3 draws=0 pixels_equal=true
+legacy-itsuki-younger completed=true frame=3233 preview=3233 events=3 draws=0 pixels_equal=true
+arena-2-duel completed=true frame=4985 preview=4985 events=3 draws=0 pixels_equal=true
+arena-2-pan completed=false frame=1416 preview=1417 events=11 draws=3 pixels_equal=false
+arena-4-team completed=true frame=3851 preview=3851 events=3 draws=0 pixels_equal=true
+arena-6-four completed=true frame=4894 preview=4894 events=3 draws=0 pixels_equal=true
+arena-8-three completed=true frame=4030 preview=4030 events=3 draws=0 pixels_equal=true
+arena-a-duel completed=true frame=4985 preview=4985 events=3 draws=0 pixels_equal=true
+arena-a-pan completed=false frame=1416 preview=1417 events=18 draws=9 pixels_equal=false
+arena-c-team completed=true frame=3851 preview=3851 events=3 draws=0 pixels_equal=true
+arena-e-four completed=true frame=4894 preview=4894 events=3 draws=0 pixels_equal=true

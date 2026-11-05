@@ -1,0 +1,25 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-json",
+    "-count=1",
+    "-run",
+    "^(TestPerformance|TestClientBridgeMutableOwnersBaseline|TestSchema[12](Save|Assets|Preview|Restore)).*",
+    "./games/yuyuhakusho/runtimebridge"
+  ],
+  "started_at_utc": "2026-11-05T17:02:58.417715+00:00",
+  "source_sha256": {
+    "games/yuyuhakusho/runtimebridge/additional_arenas_test.go": "b2976dfa596f05abd55dc6aaade314f45e094616a6495ea48261d09b9ac60853",
+    "games/yuyuhakusho/runtimebridge/network_assets.go": "df724464272f8231e3a992ab81ae1d947a45d6b281a3cee4c5bbf6a254731d63",
+    "games/yuyuhakusho/runtimebridge/session.go": "fb1b1d2566a7e072f09a8eb183885854558a4de5ba081760f8b7e678c09f6e8a",
+    "games/yuyuhakusho/runtimebridge/performance_test.go": "04c3e979eb10f62b8b906448e332bf7e5ba1c1c6c5a14b7e6e08006791ae5384",
+    "games/yuyuhakusho/runtimebridge/performance_baseline_test.go": "ff97d46ee7f53be3cf8b6fa265dd298173d3e8b1f55bb27e77ab2ea54878f97d",
+    "games/yuyuhakusho/runtimebridge/arena_sources_test.go": "a41501d676f6d80ca6c1f46b5c48121cc9d34669daab5abec9ef0622a9db60dc",
+    "games/yuyuhakusho/runtimebridge/schema2_test.go": "be477028fadd58e35040339a797f77bb82086f2c160f379cb3ad964d884b7e4f",
+    "games/yuyuhakusho/runtimebridge/serialization.go": "7a610c1b743e70b03a5ee3c0dfa411f2d3801ed0d024b54d8d6c6bb4f4b31b7a",
+    "games/yuyuhakusho/runtimebridge/performance.go": "fcccea7025b79ba9abb02a890ff344458d601bdce42f4821678f523ef444bc55"
+  },
+  "exit_code": 1
+}

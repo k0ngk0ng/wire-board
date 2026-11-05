@@ -1,0 +1,41 @@
+{
+  "error": "AssertionError({'authorityPhase': 'paused', 'frame': '407', 'localPaused': True})",
+  "completed": {
+    "prediction_before_delayed_authority": {
+      "authority": 944,
+      "local": 950,
+      "pose": 5,
+      "action": 1,
+      "at": 5250.699999809265,
+      "inputAt": 5037.699999809265,
+      "frame": "283",
+      "before": {
+        "x": 944,
+        "pose": 0,
+        "action": 0,
+        "pixelHash": "68a6313e"
+      },
+      "firstResponse": {
+        "authority": 944,
+        "local": 944,
+        "pose": 5,
+        "action": 1,
+        "at": 5135.5,
+        "inputAt": 5037.699999809265,
+        "frame": "275",
+        "pixelHash": "cf70cabb"
+      },
+      "pixelHash": "76989db8",
+      "firstVisibleResponseMs": 97.80000019073486
+    },
+    "pause_start_delayed": {
+      "authorityPhase": "playing",
+      "localPaused": true
+    },
+    "pause_resume_delayed": {
+      "authorityPhase": "paused",
+      "frame": "407",
+      "localPaused": true
+    }
+  }
+}

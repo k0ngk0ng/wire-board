@@ -1,0 +1,71 @@
+{
+  "pass": false,
+  "scope": "Normal Vite app + registered composition root + real authentication, SQLite, HTTP and WebSocket. Shaping delays real TCP writes and closes actual connections. Virtual Gamepad API only; no physical hardware claim.",
+  "urls": {
+    "direct": "http://127.0.0.1:59379/",
+    "shaped": "http://127.0.0.1:59380/"
+  },
+  "roomID": "a12df8d0",
+  "preparation": {
+    "capacity": 2,
+    "chat": null,
+    "clockOffsetMs": 0,
+    "closeReason": "",
+    "host": "7cfd21030516476f68c114ad",
+    "id": "a12df8d0",
+    "kind": "yuyuhakusho",
+    "loading": null,
+    "locked": false,
+    "matchId": "",
+    "name": "魔强统一战验收",
+    "options": {
+      "arena": 10,
+      "characters": [
+        8,
+        9
+      ],
+      "teamBattle": false
+    },
+    "seats": [
+      {
+        "id": "7cfd21030516476f68c114ad",
+        "left": false,
+        "name": "Yuyufastplay01",
+        "network": {
+          "connected": true,
+          "connections": 1,
+          "rttMs": 0,
+          "sampledAt": 1793896492876
+        },
+        "ready": false
+      },
+      {
+        "id": "da316b8ff34e1be65a586be4",
+        "left": false,
+        "name": "Yuyuslowplay01",
+        "network": {
+          "connected": true,
+          "connections": 1,
+          "rttMs": 0,
+          "sampledAt": 1793896494122
+        },
+        "ready": false
+      }
+    ],
+    "setupVersion": 0,
+    "spectating": false,
+    "spectatorCount": 0,
+    "status": "waiting",
+    "turnDeadline": 0,
+    "updated": 1793896494,
+    "version": 4,
+    "you": 0
+  },
+  "error": "RuntimeError('{\"success\":false,\"data\":null,\"error\":\"Wait timed out after 25000ms\"}\\n')",
+  "sourceSHA256": {
+    "scripts/yuyuhakusho/platform_app_host.go": "039eb5666e853e1cfd201b5daa53794bb60c2057b4d176fa52f82ebb508b43c5",
+    "scripts/yuyuhakusho/platform_app_observer.js": "8ee4a64b53b16b7be3d1f489b1cd902528224a83c6cf674d904d0d3968c0dc6d",
+    "scripts/yuyuhakusho/native_app_input.mjs": "b8d4e687b01e668d4b9c870397ba201ce6d94085919ee9ddb20b62abd168e459",
+    "scripts/yuyuhakusho/check_platform_app.py": "ea3009efb6895e0d363ba4dc2e96c98ce5e06517893e432b94fda74ad33e8898"
+  }
+}

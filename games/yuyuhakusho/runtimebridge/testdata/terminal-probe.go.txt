@@ -1,0 +1,49 @@
+package main
+
+import (
+ "bytes"
+ "compress/gzip"
+ "crypto/sha256"
+ "encoding/hex"
+ "encoding/json"
+ "fmt"
+ "image"
+ "image/png"
+ "io"
+ "os"
+ "path/filepath"
+ "strconv"
+
+ "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine"
+ "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/renderstate"
+ "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/runtimebridge"
+ "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/sessiontick"
+)
+func must(e error){if e!=nil{panic(e)}}
+func hash(b []byte)string{h:=sha256.Sum256(b);return hex.EncodeToString(h[:])}
+func jsonBytes(v any)[]byte{b,e:=json.Marshal(v);must(e);return b}
+func read(name string)[]byte{b,e:=os.ReadFile(name);must(e);return b}
+func asset(name string)[]byte{f,e:=os.Open(filepath.Join("games/yuyuhakusho/data",name+".json.gz"));must(e);defer f.Close();z,e:=gzip.NewReader(f);must(e);b,e:=io.ReadAll(z);must(e);must(z.Close());return b}
+func checkpoint(s *runtimebridge.Session)(runtimebridge.Checkpoint,[]byte){b,e:=s.Checkpoint("0123456789abcdef01234567");must(e);var c runtimebridge.Checkpoint;must(json.Unmarshal(b,&c));return c,b}
+func options(arena uint16, chars []uint8,team,computer bool)engine.ChuSessionOptions{o:=engine.ChuSessionOptions{Arena:arena,Seed:0x12345678,Difficulty:6,TeamBattle:team};slots:=[]uint8{0,3};if len(chars)==3{slots=[]uint8{0,1,3}}else if len(chars)==4{slots=[]uint8{0,1,2,3}};for i,c:=range chars{o.Players=append(o.Players,engine.ChuSessionPlayer{Slot:slots[i],CharacterID:c,Color:uint8(i),Computer:computer,HumanChannel:uint8(i)})};return o}
+func summary(c runtimebridge.Checkpoint,frame runtimebridge.Frame)map[string]any{active:=0;for _,o:=range c.World.Objects{if o.Header.Behavior!=0{active++}};return map[string]any{"frame":strconv.FormatUint(c.Frame,10),"complete":c.World.MatchComplete,"manager":c.World.Objects[0x8040].Header,"active_objects":active,"video_mode":c.World.VideoMode,"palette_status":c.World.Palette.Status,"pan_offset":c.World.Clock.PanOffset,"draw_requests":frame.DrawRequests,"sprite_pixels":frame.SpritePixels}}
+func saveSample(out,name string,prior,final []byte,events []engine.ChuWorldEvent,last,preview runtimebridge.Frame){must(os.MkdirAll(filepath.Join(out,name),0755));for n,b:=range map[string][]byte{"prior-checkpoint.json":prior,"checkpoint.json":final,"events.json":jsonBytes(events),"final.rgba":last.Pixels,"preview.rgba":preview.Pixels}{must(os.WriteFile(filepath.Join(out,name,n),b,0644))};for n,b:=range map[string][]byte{"final.png":last.Pixels,"preview.png":preview.Pixels}{f,e:=os.Create(filepath.Join(out,name,n));must(e);im:=&image.RGBA{Pix:b,Stride:320*4,Rect:image.Rect(0,0,320,224)};must(png.Encode(f,im));must(f.Close())}}
+func main(){if len(os.Args)!=4{panic("need output shard shards")};out:=os.Args[1];shard,e:=strconv.Atoi(os.Args[2]);must(e);shards,e:=strconv.Atoi(os.Args[3]);must(e);must(os.MkdirAll(out,0755))
+ var ref struct{Rows []struct{Configuration struct{Name string;Arena uint16;Characters []uint8;Team bool;HeldFixture string `json:"held_fixture"`};Ticks int;Complete bool;World string `json:"final_world_sha256"`;PixelTrace string `json:"pixel_trace_sha256"`}}
+ must(json.Unmarshal(read("games/yuyuhakusho/renderstate/testdata/bridge-reference.json"),&ref));if len(ref.Rows)!=49{panic("wrong reference rows")}
+ rulesRaw,spritesRaw,hudRaw,metadataRaw:=asset("chu-world-rules"),asset("world-sprites"),asset("hud-assets"),asset("renderstate-metadata");descriptor:=read("games/yuyuhakusho/data/runtime-resource-descriptor.json");rules,e:=engine.DecodeChuWorldRules(rulesRaw);must(e);graphics,e:=renderstate.DecodeLibrary(metadataRaw);must(e)
+ cache:=map[uint16]runtimebridge.Assets{};results:=[]map[string]any{};sampled:=false;diffSampled:=false
+ for index,row:=range ref.Rows{if index%shards!=shard{continue};c:=row.Configuration;a,ok:=cache[c.Arena];if !ok{arena:="arena-assets-default";if c.Arena!=0{arena=fmt.Sprintf("arena-assets-%x",c.Arena)};var aux []byte;if c.Arena==10{aux=asset("arena-a-aux-assets")};a,e=runtimebridge.DecodeNetworkAssets(runtimebridge.AssetBytes{Rules:rulesRaw,Sprites:spritesRaw,Arena:asset(arena),HUD:hudRaw,ArenaAux:aux,RenderMetadata:metadataRaw,Descriptor:descriptor},c.Arena);must(e);cache[c.Arena]=a}
+ o:=options(c.Arena,c.Characters,c.Team,c.HeldFixture=="");s,e:=runtimebridge.NewSession(o,a);must(e);must(s.Ready());var fixture struct{Held [][8]engine.Buttons `json:"held"`};if c.HeldFixture!=""{must(json.Unmarshal(read(c.HeldFixture),&fixture))}
+ var prior runtimebridge.Checkpoint;var priorRaw []byte;var last runtimebridge.Frame;var held [4]engine.Buttons;var mask uint8;tail:=[]map[string]any{};pixelTrace:=sha256.New()
+ for tick:=1;tick<=row.Ticks;tick++{held=[4]engine.Buttons{};mask=0;if fixture.Held!=nil{copy(held[:],fixture.Held[tick-1][:4])}else{mask=uint8((1<<len(c.Characters))-1)};if tick==row.Ticks{prior,priorRaw=checkpoint(s)};last,e=s.StepControlled(held,mask);must(e);pixelTrace.Write(last.Pixels);if tick>=row.Ticks-3{state,_:=checkpoint(s);tail=append(tail,summary(state,last))}}
+ final,raw:=checkpoint(s);worldSHA:=hash(jsonBytes(final.World));traceSHA:=hex.EncodeToString(pixelTrace.Sum(nil));if worldSHA!=row.World||traceSHA!=row.PixelTrace||final.World.MatchComplete!=row.Complete{panic("probe differs from frozen trajectory "+c.Name)}
+ next,visual,events,_,e:=sessiontick.Advance(prior.World,prior.Presentation,o,held,mask,rules,graphics);must(e);if !bytes.Equal(jsonBytes(next),jsonBytes(final.World))||!bytes.Equal(jsonBytes(visual),jsonBytes(final.Presentation)){panic("last event extraction differs "+c.Name)}
+ restored,e:=runtimebridge.RestoreCheckpoint(raw,a);must(e);preview,e:=restored.Preview();must(e);_,after:=checkpoint(restored);if !bytes.Equal(raw,after){panic("preview changed authority")};expected:=final.Frame;if !row.Complete{expected++};if preview.View.Frame!=strconv.FormatUint(expected,10){panic("preview frame mislabeled "+c.Name)}
+ diff:=0;for i,b:=range last.Pixels{if b!=preview.Pixels[i]{diff++}};kinds:=map[string]int{};draws,arenaDraws:=0,0;for _,event:=range events{kinds[event.Kind]++;if event.Kind=="draw"{draws++};if event.Kind=="arena-sprite"{arenaDraws++}}
+ result:=map[string]any{"name":c.Name,"arena":c.Arena,"complete":row.Complete,"ticks":row.Ticks,"authority_frame":strconv.FormatUint(final.Frame,10),"preview_frame":preview.View.Frame,"authority_unchanged":true,"last_frame_events":events,"event_kinds":kinds,"event_draws":draws,"event_arena_sprites":arenaDraws,"last_frame_draw_requests":last.DrawRequests,"preview_draw_requests":preview.DrawRequests,"last_sprite_pixels":last.SpritePixels,"preview_sprite_pixels":preview.SpritePixels,"final_world_sha256":worldSHA,"frozen_pixel_trace_sha256":traceSHA,"final_pixels_sha256":hash(last.Pixels),"preview_pixels_sha256":hash(preview.Pixels),"pixels_equal":diff==0,"different_rgba_bytes":diff,"prior_manager":prior.World.Objects[0x8040].Header,"final_manager":final.World.Objects[0x8040].Header,"tail":tail}
+ if row.Complete&&(!sampled||diff>0&&!diffSampled){name:="sample-"+c.Name;if diff>0{name="difference-"+c.Name;diffSampled=true};saveSample(out,name,priorRaw,raw,events,last,preview);result["sample_directory"]=name;sampled=true}
+ results=append(results,result);fmt.Printf("%s completed=%v frame=%s preview=%s events=%d draws=%d pixels_equal=%v\n",c.Name,row.Complete,last.View.Frame,preview.View.Frame,len(events),last.DrawRequests,diff==0)
+ }
+ must(os.WriteFile(filepath.Join(out,fmt.Sprintf("rows-%d.json",shard)),jsonBytes(results),0644))
+}

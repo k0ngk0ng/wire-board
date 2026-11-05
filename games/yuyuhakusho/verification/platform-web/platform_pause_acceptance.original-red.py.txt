@@ -1,0 +1,12 @@
+"""Review: resume must predict locally while authoritative input is delayed."""
+def check(browser,js,native,report):
+ browser('focus','[data-yuyu-board]');js('yuyuBoardProbe.delay=0')
+ native([{'type':'keyDown','key':' ','code':'Space','windowsVirtualKeyCode':32,'wait':100},{'type':'keyUp','key':' ','code':'Space','windowsVirtualKeyCode':32}])
+ browser('wait','--fn','yuyuBoardProbe.authority.phase==="paused"')
+ browser('wait','--fn','yuyuBoardProbe.authority.inputs[0].appliedButtons===0')
+ js('yuyuBoardProbe.delay=500')
+ native([{'type':'keyDown','key':' ','code':'Space','windowsVirtualKeyCode':32,'wait':150}])
+ observation=js('({localPaused:yuyuBoardProbe.lastStep?.paused,authorityPhase:yuyuBoardProbe.authority.phase,frame:document.querySelector("[data-yuyu-board]").dataset.frame})')
+ report['pause_resume_delayed']=observation
+ native([{'type':'keyUp','key':' ','code':'Space','windowsVirtualKeyCode':32}]);js('yuyuBoardProbe.delay=0')
+ assert observation['localPaused'] is False and observation['authorityPhase']=='paused',observation

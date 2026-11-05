@@ -1,0 +1,14 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-json",
+    "-count=1",
+    "-timeout=20m",
+    "./games/yuyuhakusho/runtimebridge",
+    "-run",
+    "^(TestAdditionalArena.*|TestArenaScene.*)$"
+  ],
+  "exit_code": 0
+}

@@ -1,0 +1,15 @@
+{
+  "pass": true,
+  "scope": "User-requested documentation update only in the main checkout; game source files untouched",
+  "path": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/rules/realtime.md",
+  "before_sha256": "6a6fef0399f5e0b575fdd5b3f826b11516b36a3e42c105681236f2169c3d17bf",
+  "after_sha256": "d0d1d39c67d343dfd784e3105e073a2824e0a89eb060650d88f649eb7717902a",
+  "patch_sha256": "0de9264d0784e310920e3b9c6eef2a4e2415b6407051076b38f70dade0abde23",
+  "checks": [
+    "only realtime topic changed by this update",
+    "three named source approaches compared without claiming rerun",
+    "input-only vs minimal authority projection separated",
+    "profile and actual room performance required",
+    "main starfort changes left untouched"
+  ]
+}

@@ -1,0 +1,14 @@
+✔ MD twelve-bit short taps transmit in sequence without waiting for ACK (0.838042ms)
+✔ cancellation has an independent lane and stale replies do not revive old input (0.136125ms)
+✔ bounded input expires with release and never emits automation or seat claims (0.726625ms)
+✔ received and applied ACKs are distinct and monotonic (0.135125ms)
+✔ only the selected arena and its required auxiliary asset are requested (0.078791ms)
+✔ resource descriptor identity rejects malformed or foreign media mappings (0.149042ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 68.7335

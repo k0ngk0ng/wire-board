@@ -1,0 +1,110 @@
+import type {GameClock} from '../../../web/src/game-api/module';
+import type {ControllerProfile} from '../../../web/src/controllers/input';
+import {loadAssets,assetURL} from './assets';
+import {MDInput,mdBits,type MDButton} from './input';
+import {InputTransport} from './network-input';
+import {NetworkScene} from './network-scene';
+import {loadNetworkWasm} from './wasm';
+import {FRAME_MS,type NetworkView,type CheckpointResponse,type InputAction,type Progress} from './types';
+
+type ClientOptions={
+ root:HTMLElement;canvas:HTMLCanvasElement;profile:ControllerProfile;
+ roomID:string;userID:string;seat:number;epoch:string;arena:number;descriptorSHA:string;assetsBase:string;
+ send:(action:InputAction)=>Promise<void>;loadCheckpoint:()=>Promise<CheckpointResponse>;
+ onProgress:(progress:Progress)=>void;onConnection:(connected:boolean)=>void;onError:(error:Error)=>void;
+ inputWindow:()=>number;
+ physical?:(keyboard:Set<string>,at:number,enabled:boolean)=>Set<string>;
+ clearPhysical?:()=>void;
+};
+function buttonsForMask(mask:number){return new Set(Object.entries(mdBits).filter(([,bit])=>(mask&bit)!==0).map(([name])=>name));}
+function logicalMask(buttons:Set<string>){let mask=0;for(const button of buttons)if(Object.hasOwn(mdBits,button))mask|=mdBits[button as MDButton];if((mask&3)===3)mask&=~3;if((mask&12)===12)mask&=~12;return mask;}
+/** Browser lifecycle/transport only; movement, combat and rendering stay in Go. */
+export class NetworkClient{
+ private input:MDInput;private transport:InputTransport;private scene?:NetworkScene;private options:ClientOptions;
+ private abort=new AbortController();private context:CanvasRenderingContext2D;private image:ImageData;
+ private view?:NetworkView;private version=0;private clock?:GameClock;private enabled=false;private initialized=false;
+ private closed=false;private recovering?:Promise<void>;private retryAt=0;private failures=0;private raf=0;private lastStep=0;private painted=false;
+ constructor(options:ClientOptions){
+  this.options=options;
+  const context=options.canvas.getContext('2d',{alpha:false});if(!context)throw Error('浏览器无法显示比赛画面');this.context=context;this.image=context.createImageData(320,224);
+  this.input=new MDInput(options.root,options.profile,remaining=>{
+   if(this.closed)return;
+   const keyboard=buttonsForMask(remaining),combined=options.physical?.(keyboard,performance.now(),this.enabled)??keyboard,mask=logicalMask(combined);
+   if(mask){const event=this.transport?.sample(mask,this.scene?this.scene.frame+1n:undefined);if(event)this.scene?.queueInput(event);}else this.transport?.cancel();
+  });
+  this.transport=new InputTransport({send:options.send,inputWindow:options.inputWindow,onReset:()=>{this.input?.cancelLocal();options.clearPhysical?.();this.scene?.release();}});
+  options.canvas.width=320;options.canvas.height=224;
+ }
+ async initialize(){
+  let runtimePercent=0,assetsPercent=0;
+  const report=(label:string)=>this.options.onProgress({percent:runtimePercent*.35+assetsPercent*.55,label});
+  const [wasm,raw]=await Promise.all([
+   loadNetworkWasm(assetURL(this.options.assetsBase,'/yuyuhakusho/v1/runtime'),progress=>{runtimePercent=progress.percent;report(progress.label);}),
+   loadAssets(this.options.assetsBase,this.options.arena,this.options.descriptorSHA,this.abort.signal,progress=>{assetsPercent=progress.percent;report(progress.label);}),
+  ]);
+  this.abort.signal.throwIfAborted();this.options.onProgress({percent:92,label:'恢复比赛画面'});
+  const asset=wasm.load(this.options.arena,raw);
+  const scene=new NetworkScene(wasm,asset,this.options.seat);this.scene=scene;
+  try{
+   const result=await this.options.loadCheckpoint();this.abort.signal.throwIfAborted();this.validate(result.data.view);
+   scene.restore(result.data.checkpoint,result.data.view);this.view=result.data.view;this.version=result.version;
+   this.transportBinding();this.paint();this.initialized=true;
+   this.options.onProgress({percent:100,label:'比赛画面已就绪'});this.raf=requestAnimationFrame(this.tick);
+  }catch(error){scene.dispose();this.scene=undefined;throw error;}
+ }
+ private validate(view:NetworkView){
+  if(!view||view.protocol!==1||view.epoch!==this.options.epoch||view.options.arena!==this.options.arena||view.resourceDescriptorSHA256!==this.options.descriptorSHA||view.localSeat!==this.options.seat||!Array.isArray(view.inputs)||!Array.isArray(view.seatSlots)||!Array.isArray(view.options.characters)||view.inputs.length<2||view.inputs.length>4)throw Error('对局或资源身份已变化，请重新连接');
+ }
+ private transportBinding(){
+  const view=this.view;if(!view)return;const input=view.inputs[this.options.seat];
+  this.transport.update({roomID:this.options.roomID,userID:this.options.userID,seat:this.options.seat,epoch:view.epoch,serverAt:view.serverAt,receivedSequence:input?.sequence??0,appliedSequence:input?.appliedSequence??0,canInput:this.enabled&&!this.recovering&&view.phase!=='loading'&&view.phase!=='result'&&!input?.automated,version:this.version});
+  this.input.setEnabled(this.enabled&&!this.recovering&&this.transport.connected&&view.phase!=='loading'&&view.phase!=='result'&&!input?.automated);
+ }
+ update(view:NetworkView,version:number,enabled:boolean,clock:GameClock){
+  if(this.closed)return;this.enabled=enabled;this.clock=clock;
+  if(!this.initialized)return;
+  try{
+   this.validate(view);if(version<this.version)return;
+   this.version=version;this.view=view;this.transportBinding();
+   if(!this.recovering)this.scene!.accept(view,this.transport.unapplied);
+  }catch(error){void this.recover(error);}
+ }
+ private recover(reason:unknown){
+  if(this.closed||this.recovering||performance.now()<this.retryAt)return this.recovering??Promise.resolve();
+  this.input.setEnabled(false);this.transport.cancel();this.options.onConnection(false);
+  const pending=(async()=>{
+   const result=await this.options.loadCheckpoint();this.abort.signal.throwIfAborted();this.validate(result.data.view);
+   this.scene!.restore(result.data.checkpoint,result.data.view);this.view=result.data.view;this.version=result.version;this.failures=0;this.paint();
+  })().catch(error=>{
+   if(this.closed)return;this.failures++;this.retryAt=performance.now()+Math.min(5000,300*2**Math.min(4,this.failures));
+   if(this.failures>=3)this.options.onError(error instanceof Error?error:Error(String(reason)));
+  }).finally(()=>{this.recovering=undefined;if(!this.closed)this.transportBinding();});
+  this.recovering=pending;return pending;
+ }
+ private paint(){
+  if(!this.scene)return;this.image.data.set(this.scene.pixels);this.context.putImageData(this.image,0,0);this.painted=true;
+  const slot=this.view?.seatSlots[this.options.seat],local=this.scene.view?.players.find(player=>player.slot===slot);
+  const root=this.options.root;root.dataset.localX=String(local?.X??'');root.dataset.localY=String(local?.Y??'');root.dataset.frame=this.scene.renderedFrame;root.dataset.authorityFrame=this.scene.authorityFrame.toString();
+  root.dataset.connection=this.transport.connected?'connected':'recovering';
+ }
+ private tick=(now:number)=>{
+  if(this.closed)return;
+  try{
+   this.transport.pump();const connected=this.transport.connected&&!this.recovering;this.options.onConnection(connected);
+   if(!connected){this.input.setEnabled(false);if(!this.recovering&&this.initialized&&now>=this.retryAt)void this.recover(Error('等待权威帧恢复'));}
+   else this.transportBinding();
+   if(this.initialized&&!this.recovering&&now-this.lastStep>=FRAME_MS*.8){
+    this.lastStep=now;
+    const active=this.enabled&&connected&&this.view?.phase!=='loading'&&this.view?.phase!=='result'&&!this.view?.inputs[this.options.seat]?.automated;
+    const logical=buttonsForMask(this.input.sample()),merged=this.options.physical?.(logical,now,!!active)??logical;
+    const event=this.transport.sample(active?logicalMask(merged):0,this.scene!.frame+1n);if(event)this.scene!.queueInput(event);
+    if(this.scene!.sample(now,this.clock)||!this.painted)this.paint();
+   }
+  }catch(error){void this.recover(error);}
+  this.raf=requestAnimationFrame(this.tick);
+ };
+ configure(profile:ControllerProfile){this.transport.cancel();this.input.configure(profile);this.options.clearPhysical?.();}
+ pressPointer=(pointer:number,buttons:readonly string[])=>this.input.pressPointer(pointer,buttons);
+ releasePointer=(pointer:number,cancelled=false)=>this.input.releasePointer(pointer,cancelled);
+ dispose(){if(this.closed)return;this.closed=true;this.abort.abort();cancelAnimationFrame(this.raf);this.transport.dispose();this.input.dispose();this.options.clearPhysical?.();this.scene?.dispose();this.scene=undefined;}
+}

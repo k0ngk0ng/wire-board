@@ -1,0 +1,14 @@
+{
+  "pass": false,
+  "scope": "Normal Vite app + registered composition root + real authentication, SQLite, HTTP and WebSocket. Shaping delays real TCP writes and closes actual connections. Virtual Gamepad API only; no physical hardware claim.",
+  "urls": {
+    "direct": "http://127.0.0.1:59183/",
+    "shaped": "http://127.0.0.1:59184/"
+  },
+  "error": "RuntimeError('{\"error\":\"Session name \\'yua-setup01-fast\\' is too long. Socket path would be 105 bytes (max 103).\\\\nUse a shorter session name or set AGENT_BROWSER_SOCKET_DIR to a shorter path.\",\"success\":false}\\n')",
+  "sourceSHA256": {
+    "scripts/yuyuhakusho/platform_app_host.go": "039eb5666e853e1cfd201b5daa53794bb60c2057b4d176fa52f82ebb508b43c5",
+    "scripts/yuyuhakusho/platform_app_observer.js": "7df158028396d277c1c5890676735fdb9cb60862f5456359502bb32b21a75325",
+    "scripts/yuyuhakusho/check_platform_app.py": "cad0a8ffa68765515049d8fef6bfae4ef56c3347362e57cd1d4d20b73e1c4194"
+  }
+}

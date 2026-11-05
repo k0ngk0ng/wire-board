@@ -1,0 +1,104 @@
+{
+  "schema": 1,
+  "pass": true,
+  "scope": "Game-owned browser UI, exact assets, new network Wasm entry, normal React app local build and Module test-host acceptance. Root owns final real authentication/WebSocket/mixed fast-slow acceptance and release.",
+  "production_frozen": true,
+  "production_sha256": {
+    "games/yuyuhakusho/cmd/platform-client-wasm/main_js.go": "a95152825a96917cb54f0ae3ae30771c329594c9d1ec62b34944d0352c7b8eed",
+    "games/yuyuhakusho/cmd/platform-web-harness/main.go": "e22701353e3531ccf7c39f80b418862ab83e32912a4156f2edb3ac6bfa543552",
+    "games/yuyuhakusho/web/Board.tsx": "aedb87338ea119273ac15f03b5aab88f5eaeec7b6d07bdfceb69d11c500b0072",
+    "games/yuyuhakusho/web/Cover.tsx": "d75e03c629d0eed62d040a0d842d4ce30d0aff6eea01ecd2f3e3e55a63659936",
+    "games/yuyuhakusho/web/Options.tsx": "87449c1efec8d6d41805506583e65b486843cd3311f9f671229b8a7d405071c9",
+    "games/yuyuhakusho/web/Preparation.tsx": "66843d5fc158dc6bfde15f90761e98642fd1525befffdd615166f8400aae4d9c",
+    "games/yuyuhakusho/web/assets.ts": "0772fc41b5b48af4dee0e9a5df1099a70cbda4bb509f2d25df382a7b76f7af84",
+    "games/yuyuhakusho/web/catalog.tsx": "632bade9c69cf56510dd4f3f0234d7dff22ebbfd2b1879501968c9e41eb5fa39",
+    "games/yuyuhakusho/web/input.ts": "5113279f9fc2be2dd84a10db73dc1edff361354e3192dbf176195f11b6fd5163",
+    "games/yuyuhakusho/web/labels.ts": "880083c93f07aa40a6a05bbca53af4b8eb7b717e7858bdbf63aed4ec22122a1c",
+    "games/yuyuhakusho/web/module.tsx": "7f556d04f81df9cc02d5b5e094fc7c55332bb79262969243519948227ff2a99f",
+    "games/yuyuhakusho/web/network-client.ts": "8def765ef02937f5a1147ebec6451ebadfeb0e1e0e6f22df733cf317627e380f",
+    "games/yuyuhakusho/web/network-input.ts": "13ccfd4ceeb4c434657aa5306723f5ff2076dd810b235f9b5aab1b3fdf896922",
+    "games/yuyuhakusho/web/network-scene.ts": "cb8c2c8e6e8f56babeccdd1190c1b4d3cafc457344eee57ae4ff7d2d4817c178",
+    "games/yuyuhakusho/web/network.css": "4b6bb34ebe7ea7119cd1dbe0b8349b631259e5b09488bd023c6e9f4fc0dbfb20",
+    "games/yuyuhakusho/web/types.ts": "5151eb726b0da3885aaeb9856a4e3ad7c4cecc5ab10876db43fb558666fa84ac",
+    "games/yuyuhakusho/web/wasm.ts": "1b86dc7353060b2a0eea3c66427c76fbf3d309aa5116e217b317bc6067deb354"
+  },
+  "verification_source_sha256": {
+    "games/yuyuhakusho/tests/platform-web.test.mjs": "997899f6830e1dcf483389d58750506b2775b8a58b11fb199e2c9e526e818095",
+    "scripts/yuyuhakusho/platform_board_harness.tsx": "61e99fbad91ca11c54026b970dea402e0d15cbc13ad9365c8dd2a3ca2fc2db4e",
+    "scripts/yuyuhakusho/check_platform_board.py": "27995b92ef88e54934e791e0e8192c68117bc28b49a7baf16b595cad177bc596",
+    "scripts/yuyuhakusho/platform_controls_acceptance.py": "1ba5ab1ee4bf047d6ae7e5e9cfc8c7c889ac6ed92d391693be314e8b8935efc5",
+    "scripts/yuyuhakusho/platform_touch_acceptance.py": "e8e4680afc7165d1b7bb0d7026ab9b6ca3e78a116f3718dbd1f7cdc24d00e774",
+    "scripts/yuyuhakusho/platform_pause_acceptance.py": "50e9d4dc121168da73b27abcecf36fa28fe5807a9a3ae16a2411c9876e839f52",
+    "scripts/yuyuhakusho/native_platform_input.mjs": "89f34d68f53109748b35d74c50dbedd3694d3689eb75a68839b547d30f69e006",
+    "scripts/yuyuhakusho/check_platform_wasm.mjs": "d942f5eddc370017f0f9ac86ffcacabfab2d4f6e32fd3d0a6d740a45ffbe4bde",
+    "scripts/yuyuhakusho/check_platform_scene.mjs": "3ab0b228be161480759ed30692826662b8f4273375ad4f96a9fd2530a25e1860",
+    "scripts/yuyuhakusho/build_platform_web.py": "18c7d9c2c10d83aef91cb6c2aa1976d5568f3cd812b931ee3875a74882ba54a2",
+    "scripts/yuyuhakusho/build_platform_app.py": "66170d98470485289223fabc07d9aab6acb3608efd43bb3a69636f08cbed11fe",
+    "scripts/yuyuhakusho/check_platform_app_build.mjs": "88c94dfc6408f81435dc0a0244429f3844ce430771b36c4ddcdcfb859bba4224"
+  },
+  "checks": [
+    {
+      "name": "input/resources",
+      "command": "node --experimental-strip-types --test games/yuyuhakusho/tests/platform-web.test.mjs",
+      "exit_code": 0,
+      "tests": 8,
+      "artifact": "unit-final.log"
+    },
+    {
+      "name": "typecheck",
+      "command": "web/node_modules/.bin/tsc --noEmit -p web/tsconfig.json",
+      "exit_code": 0,
+      "artifact": "typecheck-final.log"
+    },
+    {
+      "name": "actual Go/Wasm RPC",
+      "command": "node scripts/yuyuhakusho/check_platform_wasm.mjs wasm-validation-first",
+      "exit_code": 0,
+      "artifact": "wasm-validation-first.json"
+    },
+    {
+      "name": "actual Board browser",
+      "command": "python3 scripts/yuyuhakusho/check_platform_board.py --label final-all-boundaries --controls --pause-review --loading-review",
+      "exit_code": 0,
+      "artifact": "final-all-boundaries/result.json"
+    },
+    {
+      "name": "frozen Scene + actual Go/Wasm terminal/cap",
+      "command": "web/node_modules/.bin/esbuild games/yuyuhakusho/web/network-scene.ts --bundle --format=esm --platform=node --outfile=.local/md-yuyuhakusho/platform-web/network-scene-review.mjs; node scripts/yuyuhakusho/check_platform_scene.mjs",
+      "exit_code": 0,
+      "artifact": "scene-review.json"
+    },
+    {
+      "name": "full app build/assets",
+      "command": "python3 scripts/yuyuhakusho/build_platform_app.py",
+      "exit_code": 0,
+      "artifact": "app-build-final.json"
+    }
+  ],
+  "artifact_sha256": {
+    "unit-final.log": "6652e8026817247b47b474c782b6f6e72140d9b7bea203d919b85264750f3f80",
+    "typecheck-final.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "wasm-validation-first.json": "41365beaab9de45e6250c5b23d8c08535ccda83bf1d8147372866b2726002c15",
+    "final-all-boundaries/result.json": "87c4ee9e51089ac45c1091f8086790a1cdc9763bdf43b4c79871f1bfab5d8176",
+    "scene-review.json": "01dff3abd0546f7377e72d958dcc705b32e19a124e9b15eafe94e36d8ead6341",
+    "app-build-final.json": "b72c38a436ca8ec17dc93ad8becc9873e8888b3270ce3379384c7892e50f5b76"
+  },
+  "build": "5cc555a9c26b9a42879b077f6c7011d1e7165cb096d7def8df1417daacbdfce2",
+  "runtime": {
+    "url": "/yuyuhakusho/v1/runtime/client.wasm",
+    "sha256": "21d942d98a3b500963c9b4dd1bce09b758f76bb25122c9d83a84f88bd66c13a4",
+    "bytes": 4893410
+  },
+  "resource_descriptor_sha256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+  "virtual_gamepad_api": true,
+  "physical_hardware_tested": false,
+  "terminal_exact_frame": "3952",
+  "terminal_rgba_sha256": "811a21a28045551ab6fdb3a94f27d5aee5043f0ba626f166295fc2e5813444b0",
+  "shared_owners_untouched": [
+    "web/src/audio.ts",
+    "web/src/game-api/module.ts",
+    "games/registry.go",
+    "games/yuyuhakusho/server",
+    "games/yuyuhakusho/runtimebridge"
+  ]
+}

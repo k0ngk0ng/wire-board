@@ -1,0 +1,9 @@
+{
+  "at_utc": "2026-11-05T17:02:00.853880+00:00",
+  "before_revision_production_changes": true,
+  "sha256": {
+    "games/yuyuhakusho/runtimebridge/PERFORMANCE_FAILURES.md": "43f9d39ffd72200acbe7e0a66785e33daf356f8ed6703e73497113cba51188c1",
+    "games/yuyuhakusho/runtimebridge/performance_baseline_test.go": "ff97d46ee7f53be3cf8b6fa265dd298173d3e8b1f55bb27e77ab2ea54878f97d",
+    "games/yuyuhakusho/runtimebridge/performance_test.go": "04c3e979eb10f62b8b906448e332bf7e5ba1c1c6c5a14b7e6e08006791ae5384"
+  }
+}

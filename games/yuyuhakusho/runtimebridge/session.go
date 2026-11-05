@@ -5,23 +5,28 @@ package runtimebridge
 import (
 	"crypto/sha256"
 	"encoding/hex"
-	"encoding/json"
 	"errors"
 	"fmt"
 
 	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine"
 	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation"
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/renderstate"
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/resourceid"
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/sessiontick"
+	"strconv"
 )
 
 type Assets struct {
-	rules   engine.ChuWorldLibrary
-	sprites presentation.Catalog
-	arena   presentation.ArenaCatalog
-	hud     presentation.HUDCatalog
-	digests [4]string
-	arenaID uint16
-	aux     *presentation.ArenaAAuxCatalog
-	auxSHA  string
+	rules      engine.ChuWorldLibrary
+	sprites    presentation.Catalog
+	arena      presentation.ArenaCatalog
+	hud        presentation.HUDCatalog
+	digests    [4]string
+	arenaID    uint16
+	aux        *presentation.ArenaAAuxCatalog
+	auxSHA     string
+	graphics   renderstate.Library
+	descriptor resourceid.Descriptor
 }
 
 func DecodeAssets(rules, sprites, arena, hud []byte) (Assets, error) {
@@ -76,22 +81,26 @@ func DecodeAssetsForArena(rules, sprites, arena, hud, auxiliary []byte, selected
 	return a, nil
 }
 
+// snapshot owns only common rule state. Presentation is a mutually exclusive
+// Session variant, never a legacy pixel state plus a metadata state together.
 type snapshot struct {
 	Schema         int                      `json:"schema"`
 	AssetDigests   [4]string                `json:"asset_digests"`
 	Tick           uint64                   `json:"tick"`
 	Options        engine.ChuSessionOptions `json:"options"`
 	World          engine.ChuWorldState     `json:"world"`
-	Slots          presentation.TileSlots   `json:"tile_slots"`
-	HUD            presentation.HUDState    `json:"hud"`
 	ArenaAuxDigest string                   `json:"arena_aux_digest,omitempty"`
 }
-
-type Session struct {
-	assets Assets
-	saved  snapshot
+type legacyPresentation struct {
+	Slots presentation.TileSlots
+	HUD   presentation.HUDState
 }
-
+type Session struct {
+	assets   Assets
+	saved    snapshot
+	legacy   *legacyPresentation
+	computed *renderstate.State
+}
 type PlayerView struct {
 	Slot         uint8 `json:"slot"`
 	CharacterID  uint8 `json:"character_id"`
@@ -103,7 +112,6 @@ type PlayerView struct {
 	X, Y         int16
 	Pose, Action uint8
 }
-
 type View struct {
 	Tick           uint64       `json:"tick"`
 	LogicFrame     uint16       `json:"logic_frame"`
@@ -115,136 +123,234 @@ type View struct {
 	Players        []PlayerView `json:"players"`
 	Arena          uint16       `json:"arena,omitempty"`
 	PanOffset      uint16       `json:"pan_offset,omitempty"`
+	Frame          string       `json:"frame,omitempty"`
 }
-
 type Frame struct {
-	View                View
-	Pixels              []byte
-	DrawRequests        int
-	SpritePixels        int
-	ArenaSpriteRequests int
+	View                                            View
+	Pixels                                          []byte
+	DrawRequests, SpritePixels, ArenaSpriteRequests int
 }
 
+func validateNetworkOptions(options engine.ChuSessionOptions) error {
+	n := len(options.Players)
+	slots := []uint8{0, 3}
+	if n == 3 {
+		slots = []uint8{0, 1, 3}
+	} else if n == 4 {
+		slots = []uint8{0, 1, 2, 3}
+	} else if n != 2 {
+		return errors.New("unsupported network player count")
+	}
+	for seat, p := range options.Players {
+		if p.Slot != slots[seat] || p.HumanChannel != uint8(seat) {
+			return errors.New("network slot/controller projection differs from platform seats")
+		}
+	}
+	return nil
+}
 func NewSession(options engine.ChuSessionOptions, assets Assets) (*Session, error) {
 	if options.Arena != assets.arenaID {
 		return nil, errors.New("selected arena assets are not loaded")
 	}
-	world, events, err := engine.NewChuSession(options, assets.rules)
-	if err != nil {
-		return nil, err
-	}
-	slots, err := presentation.DefaultTileSlots(assets.sprites)
-	if err != nil {
-		return nil, err
-	}
-	hud, err := presentation.NewHUD(assets.hud)
-	if err != nil {
-		return nil, err
-	}
-	hud, err = presentation.ApplyHUDWorldEventsForArena(hud, events, world.Cells[:256], assets.hud, options.Arena)
-	if err != nil {
-		return nil, err
+	world, events, e := engine.NewChuSession(options, assets.rules)
+	if e != nil {
+		return nil, e
 	}
 	options.Players = append([]engine.ChuSessionPlayer(nil), options.Players...)
-	return &Session{assets: assets, saved: snapshot{Schema: 1, AssetDigests: assets.digests, Options: options, World: world, Slots: slots, HUD: hud, ArenaAuxDigest: assets.auxSHA}}, nil
-}
-
-func (s *Session) Ready() error {
-	resource, err := engine.ChuSessionResourceForArena(s.saved.Options.Arena, s.assets.rules)
-	if err != nil {
-		return err
+	s := &Session{assets: assets, saved: snapshot{Schema: 1, AssetDigests: assets.digests, Options: options, World: world, ArenaAuxDigest: assets.auxSHA}}
+	if assets.graphics.Identity().MetadataSHA256 != "" {
+		if e = validateNetworkOptions(options); e != nil {
+			return nil, e
+		}
+		visual, e := renderstate.New(assets.graphics)
+		if e != nil {
+			return nil, e
+		}
+		world, visual, e = renderstate.Advance(world, visual, events, assets.graphics)
+		if e != nil {
+			return nil, e
+		}
+		s.saved.Schema = 2
+		s.saved.World = world
+		s.computed = &visual
+	} else {
+		slots, e := presentation.DefaultTileSlots(assets.sprites)
+		if e != nil {
+			return nil, e
+		}
+		hud, e := presentation.NewHUD(assets.hud)
+		if e != nil {
+			return nil, e
+		}
+		hud, e = presentation.ApplyHUDWorldEventsForArena(hud, events, world.Cells[:256], assets.hud, options.Arena)
+		if e != nil {
+			return nil, e
+		}
+		s.legacy = &legacyPresentation{slots, hud}
 	}
-	world, err := engine.CompleteChuSessionResource(s.saved.World, resource, s.assets.rules)
-	if err != nil {
-		return err
+	return s, nil
+}
+func (s *Session) Ready() error {
+	resource, e := engine.ChuSessionResourceForArena(s.saved.Options.Arena, s.assets.rules)
+	if e != nil {
+		return e
+	}
+	world, e := engine.CompleteChuSessionResource(s.saved.World, resource, s.assets.rules)
+	if e != nil {
+		return e
 	}
 	s.saved.World = world
 	return nil
 }
-
-func (s *Session) View() View { return sessionView(s.saved) }
-
-func sessionView(saved snapshot) View {
+func (s *Session) View() View {
+	complete := s.legacy != nil && s.legacy.HUD.Slots != nil || s.computed != nil && s.computed.HUD.Slots != nil
+	return sessionView(s.saved, complete)
+}
+func sessionView(saved snapshot, windowComplete bool) View {
 	w := saved.World
-	v := View{Tick: saved.Tick, LogicFrame: w.Clock.LogicFrame, Ready: w.ResourceBusy == 0,
-		Paused: w.Clock.PauseFlags&0x80 != 0, Completed: w.MatchComplete, Winner: w.Match.WinnerCode, WindowComplete: saved.HUD.Slots != nil, Arena: saved.Options.Arena, PanOffset: w.Clock.PanOffset}
+	v := View{Tick: saved.Tick, LogicFrame: w.Clock.LogicFrame, Ready: w.ResourceBusy == 0, Paused: w.Clock.PauseFlags&0x80 != 0, Completed: w.MatchComplete, Winner: w.Match.WinnerCode, WindowComplete: windowComplete, Arena: saved.Options.Arena, PanOffset: w.Clock.PanOffset}
+	if saved.Schema == 2 {
+		v.Frame = strconv.FormatUint(saved.Tick, 10)
+	}
 	for _, player := range saved.Options.Players {
 		o := w.Objects[0x8400+uint16(player.Slot)*0x400]
-		computer := player.Computer
-		character := player.CharacterID
+		computer, character := player.Computer, player.CharacterID
 		if o.Header.Behavior == 0x12668 {
 			computer = o.InputChannel == 255
 			character = o.Tag
 		}
-		v.Players = append(v.Players, PlayerView{Slot: player.Slot, CharacterID: character, Computer: computer, InputChannel: o.InputChannel,
-			Active: o.Header.Behavior == 0x12668, Health: o.Body.Health, Energy: int16(o.Energy >> 16),
-			X: int16(o.Body.X >> 16), Y: int16(o.Body.Y >> 16), Pose: o.Body.Pose, Action: o.Body.ActionKind})
+		v.Players = append(v.Players, PlayerView{Slot: player.Slot, CharacterID: character, Computer: computer, InputChannel: o.InputChannel, Active: o.Header.Behavior == 0x12668, Health: o.Body.Health, Energy: int16(o.Energy >> 16), X: int16(o.Body.X >> 16), Y: int16(o.Body.Y >> 16), Pose: o.Body.Pose, Action: o.Body.ActionKind})
 	}
 	return v
 }
-
-func (s *Session) Save() ([]byte, error) { return json.Marshal(s.saved) }
-
-func RestoreSession(raw []byte, assets Assets) (*Session, error) {
-	if len(raw) == 0 || len(raw) > 1<<20 {
-		return nil, errors.New("invalid independent session save size")
+func (s *Session) Digests() (string, string, error) {
+	if s.computed == nil {
+		return "", "", errors.New("pixel-free state is unavailable for legacy session")
 	}
-	var saved snapshot
-	if err := json.Unmarshal(raw, &saved); err != nil {
-		return nil, err
+	rules, e := renderstate.RulesDigest(s.saved.World)
+	if e != nil {
+		return "", "", e
 	}
-	if saved.Schema != 1 || saved.AssetDigests != assets.digests || saved.ArenaAuxDigest != assets.auxSHA || saved.Options.Arena != assets.arenaID || saved.World.Match.Arena != saved.Options.Arena || len(saved.World.Objects) > 128 || len(saved.World.Stream) != 1024 {
-		return nil, errors.New("session save does not match the loaded assets or world format")
-	}
-	// Validate configuration without replacing any current rule state.
-	if _, _, err := engine.NewChuSession(saved.Options, assets.rules); err != nil {
-		return nil, err
-	}
-	for id := range saved.World.Objects {
-		if _, err := engine.LookupWorldObject(saved.World.Objects, id); err != nil {
-			return nil, err
-		}
-	}
-	for slot, tile := range saved.Slots.Tiles {
-		if _, present := saved.Slots.Lookup(uint16(slot)); present && int(tile) >= len(assets.sprites.Tiles) {
-			return nil, errors.New("session save references an unavailable indexed tile")
-		}
-	}
-	if _, err := presentation.HUDWindow(saved.HUD); err != nil {
-		return nil, err
-	}
-	return &Session{assets: assets, saved: saved}, nil
+	visual, e := renderstate.Digest(s.saved.World, *s.computed)
+	return rules, visual, e
 }
 
-// Step commits the next rule state, renderer caches and slot assignments only
-// after every draw and background input has been validated and rasterized.
+// Preview renders a detached first predicted frame, never the authoritative
+// frame's guessed final-object picture. It advances no stored world or cursor.
+func (s *Session) Preview() (Frame, error) {
+	fork, e := s.Fork()
+	if e != nil {
+		return Frame{}, e
+	}
+	if !fork.View().Ready {
+		if e = fork.Ready(); e != nil {
+			return Frame{}, e
+		}
+	}
+	var held [8]engine.Buttons
+	for i, input := range fork.saved.World.Controllers {
+		held[i] = input.Current
+	}
+	return fork.Step(held)
+}
 func (s *Session) Step(held [8]engine.Buttons) (Frame, error) {
+	if s.computed != nil {
+		for _, b := range held[4:] {
+			if b != 0 {
+				return Frame{}, errors.New("unoccupied network input channel")
+			}
+		}
+		var input [4]engine.Buttons
+		copy(input[:], held[:4])
+		mask := uint8(0)
+		for seat, p := range s.saved.Options.Players {
+			if s.saved.World.Match.Controllers[p.Slot] == 0 {
+				mask |= 1 << seat
+			}
+		}
+		return s.StepControlled(input, mask)
+	}
+	if s.legacy == nil {
+		return Frame{}, errors.New("session presentation variant is unavailable")
+	}
 	next := s.saved
-	world, events, outcome, err := engine.StepChuSessionFrame(next.World, held, s.assets.rules)
-	if err != nil {
-		return Frame{}, err
+	world, events, outcome, e := engine.StepChuSessionFrame(next.World, held, s.assets.rules)
+	if e != nil {
+		return Frame{}, e
 	}
 	if outcome.ResetRequested {
 		return Frame{}, errors.New("session reset requested")
 	}
 	if !next.World.MatchComplete {
+		if next.Tick == ^uint64(0) {
+			return Frame{}, errors.New("session frame counter exhausted")
+		}
 		next.Tick++
 	}
 	next.World = world
-	next.HUD, err = presentation.ApplyHUDWorldEventsForArena(next.HUD, events, next.World.Cells[:256], s.assets.hud, next.Options.Arena)
-	if err != nil {
-		return Frame{}, err
+	hud, e := presentation.ApplyHUDWorldEventsForArena(s.legacy.HUD, events, world.Cells[:256], s.assets.hud, next.Options.Arena)
+	if e != nil {
+		return Frame{}, e
 	}
-	frame := presentation.BeginFrame(next.Slots, 2)
+	world, frame, slots, e := renderPixels(next, s.legacy.Slots, hud, events, s.assets, true)
+	if e != nil {
+		return Frame{}, e
+	}
+	next.World = world
+	frame.View = sessionView(next, true)
+	s.saved = next
+	s.legacy = &legacyPresentation{slots, hud}
+	return frame, nil
+}
+func (s *Session) StepControlled(held [4]engine.Buttons, automated uint8) (Frame, error) {
+	if s.computed == nil || s.legacy != nil {
+		return Frame{}, errors.New("controlled replay requires sole pixel-free presentation state")
+	}
+	next := s.saved
+	if !next.World.MatchComplete && next.Tick == ^uint64(0) {
+		return Frame{}, errors.New("session frame counter exhausted")
+	}
+	prior := *s.computed
+	world, visual, events, _, e := sessiontick.Advance(next.World, prior, next.Options, held, automated, s.assets.rules, s.assets.graphics)
+	if e != nil {
+		return Frame{}, e
+	}
+	if !next.World.MatchComplete {
+		next.Tick++
+	}
+	next.World = world
+	hud, e := presentation.MaterializeHUDRefs(visual.HUD, s.assets.hud)
+	if e != nil {
+		return Frame{}, e
+	}
+	_, frame, slots, e := renderPixels(next, presentation.TileSlots(prior.SpriteSlots), hud, events, s.assets, false)
+	if e != nil {
+		return Frame{}, e
+	}
+	if slots != presentation.TileSlots(visual.SpriteSlots) {
+		return Frame{}, errors.New("temporary pixel slots differ from canonical shared presentation")
+	}
+	frame.View = sessionView(next, true)
+	s.saved = next
+	s.computed = &visual
+	return frame, nil
+}
+
+// renderPixels has only disposable renderer views. Schema2 never writes rule
+// caches here; the shared computational Advance is their sole commit path.
+func renderPixels(next snapshot, slots presentation.TileSlots, hud presentation.HUDState, events []engine.ChuWorldEvent, assets Assets, legacyCache bool) (engine.ChuWorldState, Frame, presentation.TileSlots, error) {
+	frame := presentation.BeginFrame(slots, 2)
 	draws, arenaSprites := 0, 0
+	world := next.World
 	for _, event := range events {
+		var e error
 		if event.Kind == "arena-sprite" {
-			if s.assets.arenaID != 10 || s.assets.aux == nil || event.ObjectID != 0x9e00 || event.RawArenaSprite == nil {
-				return Frame{}, errors.New("world arena sprite is missing selected callback-time data")
+			if assets.arenaID != 10 || assets.aux == nil || event.ObjectID != 0x9e00 || event.RawArenaSprite == nil {
+				return world, Frame{}, slots, errors.New("world arena sprite is missing selected callback-time data")
 			}
-			frame, err = presentation.ComposeArenaASprite(frame, *event.RawArenaSprite)
-			if err != nil {
-				return Frame{}, err
+			frame, e = presentation.ComposeArenaASprite(frame, *event.RawArenaSprite)
+			if e != nil {
+				return world, Frame{}, slots, e
 			}
 			draws++
 			arenaSprites++
@@ -254,51 +360,49 @@ func (s *Session) Step(held [8]engine.Buttons) (Frame, error) {
 			continue
 		}
 		if event.Draw == nil || event.Draw.ObjectID != event.ObjectID {
-			return Frame{}, errors.New("world draw is missing callback-time data")
+			return world, Frame{}, slots, errors.New("world draw is missing callback-time data")
 		}
 		actor := presentation.Actor(*event.Draw)
-		frame, actor, err = presentation.ComposeActor(frame, actor, s.assets.sprites)
-		if err != nil {
-			return Frame{}, fmt.Errorf("draw slot%04x set%x parameter%x: %w", actor.ObjectID, actor.GraphicsSet, actor.Parameter, err)
+		frame, actor, e = presentation.ComposeActor(frame, actor, assets.sprites)
+		if e != nil {
+			return world, Frame{}, slots, fmt.Errorf("draw slot%04x set%x parameter%x: %w", actor.ObjectID, actor.GraphicsSet, actor.Parameter, e)
 		}
 		draws++
-		// A later callback may have cleared or reused this logical slot. Its
-		// newer rule-owned fields must not be overwritten by the earlier draw.
-		if object := next.World.Objects[actor.ObjectID]; object.DrawRequest() == *event.Draw {
-			object.GraphicCache = actor.Cache
-			next.World.Objects[actor.ObjectID] = object
+		if legacyCache {
+			if object := world.Objects[actor.ObjectID]; object.DrawRequest() == *event.Draw {
+				object.GraphicCache = actor.Cache
+				world.Objects[actor.ObjectID] = object
+			}
 		}
 	}
-	palette := presentation.CompactPalette(next.World.Palette.Current)
-	sprites, err := presentation.RasterizeSpritesForArena(frame, s.assets.sprites, s.assets.aux, palette, 320, 224, false)
-	if err != nil {
-		return Frame{}, err
+	palette := presentation.CompactPalette(world.Palette.Current)
+	sprites, e := presentation.RasterizeSpritesForArena(frame, assets.sprites, assets.aux, palette, 320, 224, false)
+	if e != nil {
+		return world, Frame{}, slots, e
 	}
-	window, err := presentation.HUDWindow(next.HUD)
-	if err != nil {
-		return Frame{}, err
+	window, e := presentation.HUDWindow(hud)
+	if e != nil {
+		return world, Frame{}, slots, e
 	}
-	arenaFrame, err := sceneFrame(next.World, palette, &window)
-	if err != nil {
-		return Frame{}, err
+	arenaFrame, e := sceneFrame(world, palette, &window)
+	if e != nil {
+		return world, Frame{}, slots, e
 	}
-	background, err := presentation.RasterizeArena(s.assets.arena, arenaFrame)
-	if err != nil {
-		return Frame{}, err
+	background, e := presentation.RasterizeArena(assets.arena, arenaFrame)
+	if e != nil {
+		return world, Frame{}, slots, e
 	}
-	screen, err := presentation.CompositeArenaSprites(background, sprites)
-	if err != nil {
-		return Frame{}, err
+	screen, e := presentation.CompositeArenaSprites(background, sprites)
+	if e != nil {
+		return world, Frame{}, slots, e
 	}
-	result := Frame{View: sessionView(next), Pixels: screen.RGBA().Pix, DrawRequests: draws, ArenaSpriteRequests: arenaSprites}
+	result := Frame{Pixels: screen.RGBA().Pix, DrawRequests: draws, ArenaSpriteRequests: arenaSprites}
 	for i, opaque := range sprites.Opaque {
 		if opaque && background.Visible[i/320] {
 			result.SpritePixels++
 		}
 	}
-	next.Slots = frame.Slots
-	s.saved = next
-	return result, nil
+	return world, result, frame.Slots, nil
 }
 
 // sceneFrame resolves the selected arena's owned scroll sources and uses the

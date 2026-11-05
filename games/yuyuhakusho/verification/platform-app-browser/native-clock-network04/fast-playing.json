@@ -1,0 +1,206 @@
+{
+  "lifecycle": {
+    "effectiveLaunch": {
+      "browserLaunched": true,
+      "engine": "chrome",
+      "launchHash": 15868235566438757138
+    },
+    "launched": false,
+    "relaunchedBrowser": false,
+    "restartedBackground": false,
+    "restoreStatus": "not_configured",
+    "reused": true,
+    "saveStatus": "not_attempted"
+  },
+  "origin": "http://127.0.0.1:61436/",
+  "refs": {
+    "e1": {
+      "name": "",
+      "role": "generic"
+    },
+    "e12": {
+      "name": "围桌首页",
+      "role": "link"
+    },
+    "e122": {
+      "name": "魔强统一战验收",
+      "role": "heading"
+    },
+    "e123": {
+      "name": "玩法速查",
+      "role": "button"
+    },
+    "e124": {
+      "name": "邀请朋友",
+      "role": "button"
+    },
+    "e13": {
+      "name": "打开游戏许愿池",
+      "role": "button"
+    },
+    "e135": {
+      "name": "打开牌桌聊天",
+      "role": "button"
+    },
+    "e14": {
+      "name": "积分榜",
+      "role": "button"
+    },
+    "e15": {
+      "name": "",
+      "role": "generic"
+    },
+    "e16": {
+      "name": "我的战绩与好友",
+      "role": "button"
+    },
+    "e17": {
+      "name": "控制器设置",
+      "role": "button"
+    },
+    "e18": {
+      "name": "Yuyufast-network04",
+      "role": "button"
+    },
+    "e181": {
+      "name": "开启托管",
+      "role": "button"
+    },
+    "e182": {
+      "name": "全屏",
+      "role": "button"
+    },
+    "e183": {
+      "name": "对局日志",
+      "role": "button"
+    },
+    "e184": {
+      "name": "结束牌桌",
+      "role": "button"
+    },
+    "e185": {
+      "name": "Yuyufast-network04",
+      "role": "button"
+    },
+    "e186": {
+      "name": "Yuyuslow-network04",
+      "role": "button"
+    },
+    "e187": {
+      "name": "对局进行中",
+      "role": "heading"
+    },
+    "e188": {
+      "name": "魔强统一战比赛画面",
+      "role": "generic"
+    },
+    "e189": {
+      "name": "模式（Mode）",
+      "role": "button"
+    },
+    "e19": {
+      "name": "声音控制",
+      "role": "button"
+    },
+    "e190": {
+      "name": "开始（Start）",
+      "role": "button"
+    },
+    "e191": {
+      "name": "X",
+      "role": "button"
+    },
+    "e192": {
+      "name": "Y",
+      "role": "button"
+    },
+    "e193": {
+      "name": "Z",
+      "role": "button"
+    },
+    "e194": {
+      "name": "A",
+      "role": "button"
+    },
+    "e195": {
+      "name": "B",
+      "role": "button"
+    },
+    "e196": {
+      "name": "C",
+      "role": "button"
+    },
+    "e197": {
+      "name": "上",
+      "role": "button"
+    },
+    "e198": {
+      "name": "下",
+      "role": "button"
+    },
+    "e199": {
+      "name": "左",
+      "role": "button"
+    },
+    "e200": {
+      "name": "右",
+      "role": "button"
+    }
+  },
+  "removedRefs": [
+    "@e125",
+    "@e126",
+    "@e127",
+    "@e128",
+    "@e129",
+    "@e130",
+    "@e131",
+    "@e132",
+    "@e133",
+    "@e134",
+    "@e136",
+    "@e137",
+    "@e138",
+    "@e139",
+    "@e140",
+    "@e141",
+    "@e142",
+    "@e143",
+    "@e144",
+    "@e145",
+    "@e146",
+    "@e147",
+    "@e148",
+    "@e149",
+    "@e150",
+    "@e151",
+    "@e152",
+    "@e153",
+    "@e154",
+    "@e155",
+    "@e156",
+    "@e157",
+    "@e158",
+    "@e159",
+    "@e160",
+    "@e161",
+    "@e162",
+    "@e163",
+    "@e164",
+    "@e165",
+    "@e166",
+    "@e167",
+    "@e168",
+    "@e169",
+    "@e170",
+    "@e171",
+    "@e172",
+    "@e173",
+    "@e174",
+    "@e175",
+    "@e176",
+    "@e177",
+    "@e178"
+  ],
+  "snapshot": "- generic \"围桌WIRE BOARD游戏牌桌让相聚，多一局。vdev许愿池积分榜0msYYuyufast-network04魔强统一战  /  牌桌 809A96C4魔强统一战验收开启托管全屏对局日志玩法速查邀请\" [ref=e1] clickable [onclick]\n  - link \"围桌首页\" [ref=e12]\n  - button \"打开游戏许愿池\" [ref=e13]\n  - button \"积分榜\" [ref=e14]\n  - generic [ref=e15] clickable [onclick]\n    - button \"声音控制\" [expanded=false, ref=e19]\n  - button \"我的战绩与好友\" [ref=e16]\n  - button \"控制器设置\" [ref=e17]\n  - button \"Yuyufast-network04\" [ref=e18]\n  - heading \"魔强统一战验收\" [level=1, ref=e122]\n  - button \"开启托管\" [ref=e181]\n  - button \"全屏\" [ref=e182]\n  - button \"对局日志\" [ref=e183]\n  - button \"玩法速查\" [ref=e123]\n  - button \"邀请朋友\" [ref=e124]\n  - button \"结束牌桌\" [ref=e184]\n  - button \"Yuyufast-network04\" [ref=e185]\n  - button \"Yuyuslow-network04\" [ref=e186]\n  - generic \"魔强统一战比赛画面\" [ref=e188] focusable [tabindex]\n    - button \"上\" [ref=e197]\n    - button \"下\" [ref=e198]\n    - button \"左\" [ref=e199]\n    - button \"右\" [ref=e200]\n    - button \"模式（Mode）\" [ref=e189]\n    - button \"开始（Start）\" [ref=e190]\n    - button \"X\" [ref=e191]\n    - button \"Y\" [ref=e192]\n    - button \"Z\" [ref=e193]\n    - button \"A\" [ref=e194]\n    - button \"B\" [ref=e195]\n    - button \"C\" [ref=e196]\n  - heading \"对局进行中\" [level=3, ref=e187]\n  - button \"打开牌桌聊天\" [expanded=false, ref=e135]"
+}

@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "revision": "performance-v1",
+  "pass": true,
+  "at_utc": "2026-11-05T17:55:58.934777+00:00",
+  "runtime_source_frozen": true,
+  "source_files": 284,
+  "suites": {
+    "native": {
+      "complete": true,
+      "trajectories": 49,
+      "reference_frames": 203428
+    },
+    "wasm": {
+      "complete": true,
+      "trajectories": 49,
+      "reference_frames": 203428
+    },
+    "targeted_native": {
+      "pass": true,
+      "top_level_tests": 10
+    },
+    "targeted_wasm": {
+      "pass": true,
+      "top_level_tests": 10
+    }
+  },
+  "files_sha256": {
+    "games/yuyuhakusho/runtimebridge/testdata/performance-v1/revision-manifest.json": "5fd2fa6fda642ec2a484bf759e3c6f06be9c3caafcaecdffed4d0fa92e524ca7",
+    "docs/research/md-yuyuhakusho/CLIENT_RUNTIME_PERFORMANCE.md": "f548ff5cfb1db069c5cf9676095fd05f6f1b5b4f097c5a4770113ad006b74f88",
+    "games/yuyuhakusho/runtimebridge/testdata/performance-v1/source-comparison.json": "0efab6c9cfdf7a7f87a7eb7ee5c13c76d49712c0a228ae39183478ed8bcfdc22",
+    "games/yuyuhakusho/runtimebridge/testdata/performance-v1/matrix-pause.json": "31d5833be2aa1e4469c24533530521cf2004756ff134df187a4aa93b8eaa33c5",
+    "games/yuyuhakusho/runtimebridge/testdata/performance-v1/cleanup.json": "cc32ede40266db303b05c5289a2a155a5d5b8f6f352cf8a43ce2ae851b646803",
+    "games/yuyuhakusho/runtimebridge/testdata/performance-v1/session-before-performance.go.txt": "3d4f7c3e1896d8a5af5947fe881b8708c18ef44ac194dd093ead6c9b963cde4e",
+    "games/yuyuhakusho/runtimebridge/testdata/schema2-final-freeze.json": "27ba3b2e612447acb7c79eba78ca260ab46caac7b0ed2c30850530fa0ce2accc"
+  },
+  "formal_browser_evidence": {
+    "path": "games/yuyuhakusho/verification/platform-app-browser/native-clock-network04/result.json",
+    "sha256": "ccd188f455e15a3afb0470e796ada52c1073679bd9a6bc1170b7549811678050",
+    "owner": "Root/platform web, collected with client matrix paused",
+    "pass": true
+  },
+  "wasm_microbenchmark_ms": {
+    "old_json_fork": 13.89378,
+    "typed_fork": 0.094623,
+    "old_step_raster": 3.415583,
+    "advance_no_rgba": 0.290959,
+    "old_preview": 17.477801,
+    "new_preview": 3.514634
+  },
+  "production_change_scope": [
+    "runtimebridge/performance.go adds Fork/AdvanceControlled",
+    "runtimebridge/session.go Preview uses typed Fork; other12 function blocks byte-identical to original schema2 source"
+  ],
+  "old_freeze_preserved": true,
+  "no_commit": true
+}

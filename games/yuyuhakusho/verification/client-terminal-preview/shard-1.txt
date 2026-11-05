@@ -1,0 +1,12 @@
+legacy-itsuki-chu completed=true frame=3409 preview=3409 events=3 draws=0 pixels_equal=true
+legacy-itsuki-itsuki completed=true frame=7286 preview=7286 events=3 draws=0 pixels_equal=true
+legacy-itsuki-sensui completed=true frame=6043 preview=6043 events=3 draws=0 pixels_equal=true
+legacy-three completed=true frame=4428 preview=4428 events=3 draws=0 pixels_equal=true
+arena-2-team completed=true frame=3851 preview=3851 events=3 draws=0 pixels_equal=true
+arena-4-four completed=true frame=4894 preview=4894 events=3 draws=0 pixels_equal=true
+arena-6-three completed=true frame=4030 preview=4030 events=3 draws=0 pixels_equal=true
+arena-8-duel completed=true frame=4985 preview=4985 events=3 draws=0 pixels_equal=true
+arena-8-pan completed=false frame=1416 preview=1417 events=11 draws=3 pixels_equal=false
+arena-a-team completed=true frame=3851 preview=3851 events=3 draws=0 pixels_equal=true
+arena-c-four completed=true frame=4894 preview=4894 events=3 draws=0 pixels_equal=true
+arena-e-three completed=true frame=4030 preview=4030 events=3 draws=0 pixels_equal=true

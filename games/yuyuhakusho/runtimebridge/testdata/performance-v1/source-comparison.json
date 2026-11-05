@@ -1,0 +1,23 @@
+{
+  "original_source_sha256": "3d4f7c3e1896d8a5af5947fe881b8708c18ef44ac194dd093ead6c9b963cde4e",
+  "current_source_sha256": "fb1b1d2566a7e072f09a8eb183885854558a4de5ba081760f8b7e678c09f6e8a",
+  "same_function_blocks": [
+    "func DecodeAssets(rules, sprites, arena, hud []byte) (Assets, error) {",
+    "func DecodeAssetsForArena(rules, sprites, arena, hud, auxiliary []byte, selected uint16) (Assets, error) {",
+    "func validateNetworkOptions(options engine.ChuSessionOptions) error {",
+    "func NewSession(options engine.ChuSessionOptions, assets Assets) (*Session, error) {",
+    "func (s *Session) Ready() error {",
+    "func (s *Session) View() View {",
+    "func sessionView(saved snapshot, windowComplete bool) View {",
+    "func (s *Session) Digests() (string, string, error) {",
+    "func (s *Session) Step(held [8]engine.Buttons) (Frame, error) {",
+    "func (s *Session) StepControlled(held [4]engine.Buttons, automated uint8) (Frame, error) {",
+    "func renderPixels(next snapshot, slots presentation.TileSlots, hud presentation.HUDState, events []engine.ChuWorldEvent, assets Assets, legacyCache bool) (engine.ChuWorldState, Frame, presentation.TileSlots, error) {",
+    "func sceneFrame(world engine.ChuWorldState, palette [64]uint16, window *presentation.IndexedPlane) (presentation.ArenaFrame, error) {"
+  ],
+  "different_function_blocks": [
+    "func (s *Session) Preview() (Frame, error) {"
+  ],
+  "new_performance_api_file": "games/yuyuhakusho/runtimebridge/performance.go",
+  "old_serialization_file_unchanged": true
+}

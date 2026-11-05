@@ -1,0 +1,8 @@
+{
+  "at_utc": "2026-11-05T15:47:15.015227+00:00",
+  "reason": "The negative fixture set an absent slot0 to present with valid tile0; that is structurally valid and no state-authentication digest lives inside this checkpoint. Clear a real preload present word while its nonzero tile IDs remain: actually invalid canonical slot ownership. Production was not changed to reject valid checkpoints. Board must separately compare server View digests.",
+  "old_test": "games/yuyuhakusho/runtimebridge/testdata/schema2-test-before-invalid-present-fix.go.txt",
+  "old_sha256": "b69195e82c6656f00f0b11115789b9477329e595b6bfe26bb4616729507125b4",
+  "new_sha256": "be477028fadd58e35040339a797f77bb82086f2c160f379cb3ad964d884b7e4f",
+  "actual_failure": "schema2-second-native.jsonl"
+}

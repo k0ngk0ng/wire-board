@@ -1,0 +1,5 @@
+{
+  "before_test": "games/yuyuhakusho/verification/platform-web/check_platform_timeline.before-rebase-input-case.mjs.txt",
+  "before_sha256": "37c640c556a8449e0b274ee296338251b9582308eb5e4392686a421ab7683b95",
+  "failure": "A fresh input arriving after authority reset and before next RAF must be placed after the previously displayed local target, not replayed into historical correction ticks."
+}

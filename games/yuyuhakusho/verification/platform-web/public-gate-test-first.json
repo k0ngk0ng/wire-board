@@ -1,0 +1,28 @@
+{
+  "production": [
+    {
+      "source": "games/yuyuhakusho/web/Board.tsx",
+      "before_sha256": "821dc3349f6ac0117e0c26ce01ddbab13ccb08192afd143d3a180f6c8b719072",
+      "archive": "games/yuyuhakusho/verification/platform-web/Board.tsx.before-public-gate-fix.txt"
+    },
+    {
+      "source": "games/yuyuhakusho/web/network-client.ts",
+      "before_sha256": "99fb07faa5fd7d954d23ed23896c6276bb8faf3bc55175530708942a0397d51f",
+      "archive": "games/yuyuhakusho/verification/platform-web/network-client.ts.before-public-gate-fix.txt"
+    },
+    {
+      "source": "games/yuyuhakusho/web/network-input.ts",
+      "before_sha256": "baceccd1d18a129c516ed2d5a6e7fca87c59225af20382e3870df7e695f8cb39",
+      "archive": "games/yuyuhakusho/verification/platform-web/network-input.ts.before-public-gate-fix.txt"
+    }
+  ],
+  "test_before_expansion": {
+    "archive": "games/yuyuhakusho/verification/platform-web/platform-web.tests.before-idle-release-expansion.mjs.txt",
+    "sha256": "38f82dd2981d0c41fc331ca0494f3be5d084dab389e742ac6995ec98131cb916"
+  },
+  "expanded_test_sha256": "d114f1972c5851ff81c6d5c8e496bd1ab98b279d09634913c1f0344371a2e614",
+  "fixture_test_sha256": "27995b92ef88e54934e791e0e8192c68117bc28b49a7baf16b595cad177bc596",
+  "actual_unit_red": "idle-release-red.log",
+  "actual_platform_red": "../platform-app-browser/play02/result.json",
+  "failure": "public room.loading blocks all game actions; initial wait must not issue empty release or checkpoint recovery storm"
+}

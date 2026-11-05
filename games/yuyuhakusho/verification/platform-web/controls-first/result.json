@@ -1,0 +1,47 @@
+{
+  "prediction_before_delayed_authority": {
+    "authority": 944,
+    "local": 950,
+    "at": 5372.700000762939,
+    "inputAt": 5267.900000572205,
+    "frame": "288"
+  },
+  "controls": {
+    "pass": true,
+    "virtual_gamepad_api": true,
+    "hardware_tested": false,
+    "visible_local_x": {
+      "before": 948,
+      "after": 962
+    },
+    "applied_release": true,
+    "mixed_source_disconnect": true,
+    "reconnect_requires_neutral": true,
+    "cleared_primary_and_alternative": true
+  },
+  "scope": "Actual Go module and Go/Wasm Board integration with a local test host; not platform authentication/socket/slow-peer acceptance",
+  "native_keyboard": true,
+  "source_sha256": {
+    "games/yuyuhakusho/web/network-client.ts": "99fb07faa5fd7d954d23ed23896c6276bb8faf3bc55175530708942a0397d51f",
+    "games/yuyuhakusho/web/FAILURES.md": "79ffd1caf6f1c408909f10d81a89cd2c7d4a79c20df7d32d51a01fd7ed3860ed",
+    "games/yuyuhakusho/web/catalog.tsx": "bf6a0e346ce2418b16103b626b62eec34a96cd686e0160fb5cd8518592308601",
+    "games/yuyuhakusho/web/input.ts": "f95bf08f6a853fff8c8207d20bf8040f3030aea22279c8d08aa8aabb57a54ad4",
+    "games/yuyuhakusho/web/assets.ts": "d4946b678941e8368e5f8e7fcc5ee64e339b1abb42c9e141d863ad9fd6079af5",
+    "games/yuyuhakusho/web/wasm.ts": "04308518ef794f5b7d9bb5fee4ae0016967a98829c8382b61c07aec6ef5d4308",
+    "games/yuyuhakusho/web/network-scene.ts": "900d1c17c8519898ab19789874ad7f9a91b178d91e43d5bbe351cdd5c4e39f3f",
+    "games/yuyuhakusho/web/types.ts": "14c61d047829ee755bda9741ae7979891692b012381f6b38c8d535d9a9cdb367",
+    "games/yuyuhakusho/web/network.css": "ea65d69ad7057657e7dd7b3535f98a7efcb2590b21eb7783ef02599b254ba0e1",
+    "games/yuyuhakusho/web/Options.tsx": "b39efc25fc027a1d13b7603c87df4a20a7c36ce8007eedc4bbe391f32e885607",
+    "games/yuyuhakusho/web/Board.tsx": "821dc3349f6ac0117e0c26ce01ddbab13ccb08192afd143d3a180f6c8b719072",
+    "games/yuyuhakusho/web/Cover.tsx": "9f8fa4e819c917949ee54545ab66c812d63ca74c89693dbb6356fedcc8d09dad",
+    "games/yuyuhakusho/web/network-input.ts": "baceccd1d18a129c516ed2d5a6e7fca87c59225af20382e3870df7e695f8cb39",
+    "games/yuyuhakusho/web/module.tsx": "3d38dec72b40a7578ae5f7a7452f3a94f189956c003688b5164d4499be1a73d6",
+    "games/yuyuhakusho/web/labels.ts": "92eddd1924b529f95d514a47b53c34019da0f2e78edda61182c27cc862bdb079",
+    "games/yuyuhakusho/web/Preparation.tsx": "7f2a49014fab7f5fdb93ad7f820492b40de06dd3a6af40de8151607f94556c6b"
+  },
+  "pad_geometry": {
+    "canvas": 331.796875,
+    "pad": 338.796875
+  },
+  "pass": true
+}

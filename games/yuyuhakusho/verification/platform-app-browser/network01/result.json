@@ -1,0 +1,170 @@
+{
+  "pass": true,
+  "scope": "Normal Vite app + registered composition root + real authentication, SQLite, HTTP and WebSocket. Shaping delays real TCP writes and closes actual connections. Virtual Gamepad API only; no physical hardware claim.",
+  "urls": {
+    "direct": "http://127.0.0.1:60048/",
+    "shaped": "http://127.0.0.1:60049/"
+  },
+  "roomID": "bcc679ab",
+  "preparation": {
+    "capacity": 2,
+    "chat": null,
+    "clockOffsetMs": 0,
+    "closeReason": "",
+    "host": "6461110d358e4c208f464a8c",
+    "id": "bcc679ab",
+    "kind": "yuyuhakusho",
+    "loading": null,
+    "locked": false,
+    "matchId": "",
+    "name": "魔强统一战验收",
+    "options": {
+      "arena": 10,
+      "characters": [
+        8,
+        9
+      ],
+      "teamBattle": false
+    },
+    "seats": [
+      {
+        "id": "6461110d358e4c208f464a8c",
+        "left": false,
+        "name": "Yuyufastnetwork01",
+        "network": {
+          "connected": true,
+          "connections": 1,
+          "rttMs": 1,
+          "sampledAt": 1793897404042
+        },
+        "ready": false
+      },
+      {
+        "id": "5b42b0ee0afe817efa719247",
+        "left": false,
+        "name": "Yuyuslownetwork01",
+        "network": {
+          "connected": true,
+          "connections": 1,
+          "rttMs": 0,
+          "sampledAt": 1793897405284
+        },
+        "ready": false
+      }
+    ],
+    "setupVersion": 0,
+    "spectating": false,
+    "spectatorCount": 0,
+    "status": "waiting",
+    "turnDeadline": 0,
+    "updated": 1793897405,
+    "version": 4,
+    "you": 0
+  },
+  "epoch": "906ae1fadbfd96772495f63e",
+  "stage": "recovery",
+  "measurements": {
+    "normal-native-input": {
+      "nativeEventToFirstVisibleMs": 65.69999980926514,
+      "inputAckMs": 174.5999994277954,
+      "nativeEventToAuthoritativeAppliedArrivalMs": 175.30000019073486,
+      "firstVisibleBeforeAck": true,
+      "renderFrameIntervalMedianMs": 108.80000019073486,
+      "renderFrameIntervalMaxMs": 115.30000019073486,
+      "initialX": 944.0,
+      "firstVisibleX": 957,
+      "firstVisibleHash": "b74b220e",
+      "beforeHash": "d833dc50",
+      "trusted": true
+    },
+    "tcp-delayed-native-input": {
+      "nativeEventToFirstVisibleMs": 64.90000057220459,
+      "inputAckMs": 181.80000019073486,
+      "nativeEventToAuthoritativeAppliedArrivalMs": 296.70000076293945,
+      "firstVisibleBeforeAck": true,
+      "renderFrameIntervalMedianMs": 108.65000009536743,
+      "renderFrameIntervalMaxMs": 121.5,
+      "initialX": 1104.0,
+      "firstVisibleX": 1087,
+      "firstVisibleHash": "fad5df0e",
+      "beforeHash": "4dfd54a6",
+      "trusted": true
+    },
+    "fast-peer-while-other-delayed": {
+      "nativeEventToFirstVisibleMs": 64.39999961853027,
+      "inputAckMs": 173.80000019073486,
+      "nativeEventToAuthoritativeAppliedArrivalMs": 287.3999996185303,
+      "firstVisibleBeforeAck": true,
+      "renderFrameIntervalMedianMs": 109.19999980926514,
+      "renderFrameIntervalMaxMs": 118.10000038146973,
+      "initialX": 957.0,
+      "firstVisibleX": 971,
+      "firstVisibleHash": "abb78ac6",
+      "beforeHash": "99b19149",
+      "trusted": true
+    },
+    "reconnected-native-input": {
+      "nativeEventToFirstVisibleMs": 64.5,
+      "inputAckMs": 173.0999994277954,
+      "nativeEventToAuthoritativeAppliedArrivalMs": 173.39999961853027,
+      "firstVisibleBeforeAck": true,
+      "renderFrameIntervalMedianMs": 107.89999961853027,
+      "renderFrameIntervalMaxMs": 115.0,
+      "initialX": 982.0,
+      "firstVisibleX": 970,
+      "firstVisibleHash": "ff4a666",
+      "beforeHash": "adb275f4",
+      "trusted": true
+    }
+  },
+  "normalHTTPRoundTripMs": [
+    335.5999994277954,
+    334.69999980926514,
+    334.1000003814697
+  ],
+  "shapedHTTPRoundTripMs": [
+    489.6000003814697,
+    562.1999998092651,
+    563.5
+  ],
+  "fastClockWhileSlow": {
+    "before": "775",
+    "after": "988",
+    "elapsedMs": 3494.787374511361
+  },
+  "recovery": {
+    "beforeFrame": "1042",
+    "afterFrame": "1171",
+    "epoch": "906ae1fadbfd96772495f63e",
+    "sockets": [
+      {
+        "at": 279.19999980926514,
+        "event": "create",
+        "url": "ws://127.0.0.1:60049/api/ws?stream=1"
+      },
+      {
+        "at": 301.3999996185303,
+        "event": "open"
+      },
+      {
+        "at": 19052.300000190735,
+        "event": "close"
+      },
+      {
+        "at": 19434.5,
+        "event": "create",
+        "url": "ws://127.0.0.1:60049/api/ws?stream=1"
+      },
+      {
+        "at": 19448.5,
+        "event": "open"
+      }
+    ]
+  },
+  "sourceSHA256": {
+    "scripts/yuyuhakusho/platform_app_host.go": "b69aad1a7ffd6b08713ad429709c667854ae9c7053b289c4da1a7f2f0e878ba0",
+    "scripts/yuyuhakusho/platform_app_observer.js": "8ee4a64b53b16b7be3d1f489b1cd902528224a83c6cf674d904d0d3968c0dc6d",
+    "scripts/yuyuhakusho/native_app_input.mjs": "b8d4e687b01e668d4b9c870397ba201ce6d94085919ee9ddb20b62abd168e459",
+    "scripts/yuyuhakusho/check_platform_app.py": "1b36f95f61f0d54dd4b6836a712731f04c88b72eccabcb29b96b27eac3e70436"
+  }
+}

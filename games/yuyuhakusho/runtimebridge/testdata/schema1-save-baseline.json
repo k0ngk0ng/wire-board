@@ -1,0 +1,76 @@
+{
+  "rows": [
+    {
+      "arena": 0,
+      "bytes": 44721,
+      "mark": "prepared",
+      "sha256": "c7381155e699b3722e6c75e88707ed88bb9437ce0fb00bd17348fd41351ce295",
+      "tick": 0
+    },
+    {
+      "arena": 0,
+      "bytes": 44749,
+      "mark": "ready",
+      "sha256": "7610aa80eb04ff9cd6f4719af403aa8623cc8f28e20447f1fb28dc071d955a80",
+      "tick": 0
+    },
+    {
+      "arena": 0,
+      "bytes": 91991,
+      "mark": "1",
+      "sha256": "7d4305e081cae7f66cfdae73181bcd9ba0429ce6a04063479484f8577970cd3b",
+      "tick": 1
+    },
+    {
+      "arena": 0,
+      "bytes": 97550,
+      "mark": "240",
+      "sha256": "a682b168857bba8c5194322c182507322e37bae917d7f0657a8aefdd3647a137",
+      "tick": 240
+    },
+    {
+      "arena": 0,
+      "bytes": 97710,
+      "mark": "600",
+      "sha256": "bc17b9102fd2a3bc9fd9575662e0dec789d36d061600dadd48555034b98c162d",
+      "tick": 600
+    },
+    {
+      "arena": 10,
+      "bytes": 44819,
+      "mark": "prepared",
+      "sha256": "8f84928a9f9bb7e92f3f1db57334b449d3166068013fdf7694b60203005088c4",
+      "tick": 0
+    },
+    {
+      "arena": 10,
+      "bytes": 44832,
+      "mark": "ready",
+      "sha256": "4a31183f04c59f720f1f5d47f6225ceff241ffb142c5bfe2e852dce7146658f6",
+      "tick": 0
+    },
+    {
+      "arena": 10,
+      "bytes": 92005,
+      "mark": "1",
+      "sha256": "6a3205afc3a895292b07f4f8ea82bc6cf1679411211ec5749215e59d8a9e89b7",
+      "tick": 1
+    },
+    {
+      "arena": 10,
+      "bytes": 97541,
+      "mark": "240",
+      "sha256": "a46f257d0d06a03ab30725157452ce73eddf96093ca8ecac852dcefce46b1faf",
+      "tick": 240
+    },
+    {
+      "arena": 10,
+      "bytes": 97748,
+      "mark": "600",
+      "sha256": "6be6c352ce16ec753fe1a46ab31024fc29848f242b17c44fa912a97f7d9fc43e",
+      "tick": 600
+    }
+  ],
+  "schema": 1,
+  "scope": "Existing schema1 bytes before schema2 implementation; original assets exact raw JSON"
+}

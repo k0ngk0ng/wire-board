@@ -1,0 +1,17 @@
+{
+  "label": "timeline-clock-red",
+  "pass": false,
+  "actual_go_wasm": true,
+  "clock_props_lead_ms": 500,
+  "authority_arrival_every_frames": 7,
+  "maximum_prediction_frames": 12,
+  "scope": "Actual rules/Wasm with injected GameClock props and120ms-cadence authority, not a TCP benchmark",
+  "visible_ticks": 22,
+  "visible_fps": 8.788669032632471,
+  "p95_ms": 116.81708150058193,
+  "initial_advance_frames": 12,
+  "first_local_held_tick": 49,
+  "input_to_rule_ms": 100.12892700049866,
+  "max_lead": 12,
+  "error": "AssertionError [ERR_ASSERTION]: Absolute clock age exhausted prediction headroom"
+}

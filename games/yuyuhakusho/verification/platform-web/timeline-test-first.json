@@ -1,0 +1,20 @@
+{
+  "source": "scripts/yuyuhakusho/check_platform_timeline.mjs",
+  "sha256": "d04907962b9bf910260bb3286948e11f79926c8f0f4a646adb24ad8950e2ef5c",
+  "prior_production": "games/yuyuhakusho/verification/platform-web/network-scene.before-native-timeline.ts.txt",
+  "prior_sha256": "cb8c2c8e6e8f56babeccdd1190c1b4d3cafc457344eee57ae4ff7d2d4817c178",
+  "actual_scene_red": "timeline-clock-red.json",
+  "actual_platform_red": "../platform-app-browser/delayed-performance-red03/result.json",
+  "budget": {
+    "fps_min": 50,
+    "p95_ms_max": 40,
+    "prediction_max_frames": 12,
+    "native_input_rule_ms_max": 33.4
+  },
+  "existing_cap_case_update": {
+    "source": "scripts/yuyuhakusho/check_platform_scene.mjs",
+    "before_sha256": "3ab0b228be161480759ed30692826662b8f4273375ad4f96a9fd2530a25e1860",
+    "archive": "games/yuyuhakusho/verification/platform-web/check_platform_scene.before-native-clock-cap-case.mjs.txt",
+    "reason": "Old review spent prediction cap from absolute props clock at first sample. Native-clock contract now takes first normal tick, then a real60s RAF gap must still cap at12 and remain frozen on further gaps; authority and terminal assertions unchanged."
+  }
+}

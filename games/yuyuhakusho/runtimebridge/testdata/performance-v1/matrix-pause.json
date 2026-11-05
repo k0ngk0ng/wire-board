@@ -1,0 +1,21 @@
+{
+  "started_at_utc": "2026-11-05T17:46:25.312126+00:00",
+  "resumed_at_utc": "2026-11-05T17:48:28.288456+00:00",
+  "duration_seconds": 122.976,
+  "paused_pids": [
+    18018,
+    18033,
+    18011,
+    18026,
+    15477
+  ],
+  "resumed_pids": [
+    15477,
+    18026,
+    18011,
+    18033,
+    18018
+  ],
+  "reason": "Root actual normal/shaped-120ms nativeTimeline browser measurement; retain running matrix and source",
+  "source_changed": false
+}
