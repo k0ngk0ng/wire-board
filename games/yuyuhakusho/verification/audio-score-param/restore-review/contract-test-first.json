@@ -1,0 +1,67 @@
+{
+  "scope": "Independent Restore/DecodeCatalog rejection contract before parent fixes",
+  "created_at_utc": "2026-11-05T17:16:39.698057+00:00",
+  "command": [
+    "/opt/homebrew/bin/go",
+    "test",
+    "-overlay",
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/games/yuyuhakusho/verification/audio-score-param/restore-review/baseline-overlay.json",
+    "-json",
+    "-count=1",
+    "-run",
+    "^(TestRestoreContract|TestDecodeCatalogContract)",
+    "./games/yuyuhakusho/audio/score"
+  ],
+  "environment": {
+    "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+    "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+    "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+    "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp"
+  },
+  "exit_code": 1,
+  "test_sha256": "fc40f87f1e6cf1c8876da77da738dce179ef72df521632789aff27fdb953b55e",
+  "log_sha256": "debb09cee10441be7117574408bf3be8fb7212ad548bb7daabfeb51361e8a870",
+  "baseline": [
+    {
+      "source": "games/yuyuhakusho/audio/score/catalog.go",
+      "snapshot": "games/yuyuhakusho/verification/audio-score-param/restore-review/catalog.go.txt",
+      "sha256": "280b664cf42251fb7979fc3ebe6430ca159d8eff12702998bd5a1636a15847d9"
+    },
+    {
+      "source": "games/yuyuhakusho/audio/score/state.go",
+      "snapshot": "games/yuyuhakusho/verification/audio-score-param/restore-review/state.go.txt",
+      "sha256": "46b771acf245eada1d1637f8f60dcd091444ffb4a49c174c63bce20ddc21e9eb"
+    },
+    {
+      "source": "games/yuyuhakusho/audio/score/driver.go",
+      "snapshot": "games/yuyuhakusho/verification/audio-score-param/restore-review/driver.go.txt",
+      "sha256": "ed92036620ef294168ab56b50c9aba13ba19f980c4933e53688352714ea8db68"
+    }
+  ],
+  "failed_tests": [
+    "TestRestoreContractRejectsInvalidState/unknown-channel",
+    "TestRestoreContractRejectsInvalidState/wrong-known-channel",
+    "TestRestoreContractRejectsInvalidState/active-without-owner",
+    "TestRestoreContractRejectsInvalidState/unowned-negative-event-owner",
+    "TestRestoreContractRejectsInvalidState/finite-track-in-cycle",
+    "TestRestoreContractRejectsInvalidState/unknown-dac-descriptor",
+    "TestRestoreContractRejectsInvalidState/volume-cursor-out-of-range",
+    "TestRestoreContractRejectsInvalidState/pitch-cursor-out-of-range",
+    "TestRestoreContractRejectsInvalidState/pan-step-out-of-range",
+    "TestRestoreContractRejectsInvalidState/modulation-without-definition",
+    "TestRestoreContractRejectsInvalidState/modulation-delay-exceeds-definition",
+    "TestRestoreContractRejectsInvalidState/modulation-steps-exceed-definition",
+    "TestRestoreContractRejectsInvalidState/modulation-direction-invalid",
+    "TestRestoreContractRejectsInvalidState/tempo-remaining-exceeds-period",
+    "TestRestoreContractRejectsInvalidState/tempo-zero-remaining",
+    "TestRestoreContractRejectsInvalidState/disabled-tempo-nonzero-remaining",
+    "TestRestoreContractRejectsInvalidState/conflicting-music-instance",
+    "TestRestoreContractRejectsInvalidState/invalid-noise-latch",
+    "TestRestoreContractRejectsInvalidState",
+    "TestDecodeCatalogContractRejectsInvalidProfile/missing-required-pitch-envelope",
+    "TestDecodeCatalogContractRejectsInvalidProfile/missing-required-volume-envelope",
+    "TestDecodeCatalogContractRejectsInvalidProfile",
+    "TestDecodeCatalogContractRejectsHiddenTrailingDocument"
+  ]
+}

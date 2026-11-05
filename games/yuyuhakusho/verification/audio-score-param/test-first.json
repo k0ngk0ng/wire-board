@@ -1,0 +1,26 @@
+{
+  "phase": "Frozen original parameter checks before Go helper implementation",
+  "created_at_utc": "2026-11-05T16:33:12.484976+00:00",
+  "command": [
+    "/opt/homebrew/bin/go",
+    "test",
+    "-json",
+    "-count=1",
+    "./games/yuyuhakusho/audio/score/param"
+  ],
+  "environment": {
+    "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+    "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+    "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+    "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp"
+  },
+  "exit_code": 1,
+  "source_sha256": {
+    "games/yuyuhakusho/audio/score/param/param_test.go": "89d1342eb77eef9d5b9b82c8a21393094f850c3a5f06958efb4357e59d29d27c",
+    "docs/research/md-yuyuhakusho/AUDIO_SCORE_PARAM_GO_FAILURES.md": "a2192f72ec2943b04a1240087a8092c05bf5fa8590dfb2e2dab234c81924f1d9",
+    "scripts/yuyuhakusho/score_param_fixture.py": "918af5a3f5848caaa907dfc036baa153ed3d4063494335074b00eb53746d360c",
+    "games/yuyuhakusho/audio/score/param/testdata/source.json.gz": "4147e1607d241dd1510dbabaa484f6f6ea4b73b2230319e6923b3084aa2b8cbb"
+  },
+  "red_log_sha256": "ae08f57dec608b1efe48091b47acc8bd4669d34eb3b9b3d75bd76f4edccb3466"
+}

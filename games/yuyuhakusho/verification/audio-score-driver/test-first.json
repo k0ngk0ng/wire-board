@@ -1,0 +1,23 @@
+{
+  "phase": "Full typed score driver tests before implementation",
+  "created_at_utc": "2026-11-05T16:48:38.887709+00:00",
+  "command": [
+    "go",
+    "test",
+    "-json",
+    "-count=1",
+    "./games/yuyuhakusho/audio/score"
+  ],
+  "environment": {
+    "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+    "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+    "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+    "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp"
+  },
+  "red_exit_code": 1,
+  "source_sha256": {
+    "games/yuyuhakusho/audio/score/FAILURES.md": "df05ea890af04e9100c0a8b8f0491ab6c1d7e0a14a92c2ea67d5264d9f0220e8",
+    "games/yuyuhakusho/audio/score/driver_test.go": "bceeb1b6edf3828d0de6a00b2734ac9fa142fbd6b811c3a353e58754fefea778"
+  }
+}

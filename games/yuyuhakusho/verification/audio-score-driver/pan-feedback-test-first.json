@@ -1,0 +1,8 @@
+{
+  "phase": "Natural native pending80 pan feedback contract before implementation",
+  "created_at_utc": "2026-11-05T17:30:36.173705+00:00",
+  "red_exit_code": 1,
+  "test_sha256": "82306a3ee090f920179b261be8b6e1c00142b4ee0f34c862e44b9af38fe9bd53",
+  "native_source": ".local/md-yuyuhakusho/audio-score-claim/pan-feedback-capture/",
+  "semantics": "1ffd nonzero redirects DAC pan; highbit DAC-note blocking is an independent external view."
+}

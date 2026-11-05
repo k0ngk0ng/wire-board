@@ -1,0 +1,25 @@
+{
+  "command": [
+    "/opt/homebrew/bin/go",
+    "test",
+    "-race",
+    "-json",
+    "-count=1",
+    "./games/yuyuhakusho/audio/score/param"
+  ],
+  "environment": {
+    "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+    "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+    "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+    "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp"
+  },
+  "exit_code": 0,
+  "log_sha256": "95802840c06fed3220b748def96edec054c8bb133a510fead5a57263c5fd1d1c",
+  "sources": {
+    "games/yuyuhakusho/audio/score/param/param_test.go": "4e9a718127173f0265411a6572ffe290fc47834f5bc11a0b0db8a0ad9e59c84c",
+    "games/yuyuhakusho/audio/score/param/fm.go": "e325442cf55374d110eea7cd9f13cb5a2c4bf966bbe8444be563cbc98594f220",
+    "games/yuyuhakusho/audio/score/param/envelope.go": "a200e87f05eca67f1998f4956fb22b625fbf76c5d52567b15fc31f383bc6cb1b",
+    "games/yuyuhakusho/audio/score/param/pan.go": "ef19d52ff80914af2d2eb1356d478a22ba071157eac7d37e17f42441d10da754"
+  }
+}

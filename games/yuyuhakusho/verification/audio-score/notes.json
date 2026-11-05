@@ -1,0 +1,160 @@
+{
+  "pass": true,
+  "dsp_implemented": false,
+  "definitions": 23,
+  "header_voices_compared": 115,
+  "continuous_note_outcomes_compared": 127691,
+  "cases": [
+    {
+      "id": 130,
+      "pass": true,
+      "steps": 8000,
+      "note_outcomes": 8764
+    },
+    {
+      "id": 131,
+      "pass": true,
+      "steps": 8715,
+      "note_outcomes": 8477
+    },
+    {
+      "id": 132,
+      "pass": true,
+      "steps": 9830,
+      "note_outcomes": 13011
+    },
+    {
+      "id": 133,
+      "pass": true,
+      "steps": 9075,
+      "note_outcomes": 9199
+    },
+    {
+      "id": 134,
+      "pass": true,
+      "steps": 11001,
+      "note_outcomes": 9754
+    },
+    {
+      "id": 135,
+      "pass": true,
+      "steps": 24576,
+      "note_outcomes": 28259
+    },
+    {
+      "id": 136,
+      "pass": true,
+      "steps": 12751,
+      "note_outcomes": 10476
+    },
+    {
+      "id": 138,
+      "pass": true,
+      "steps": 12090,
+      "note_outcomes": 13218
+    },
+    {
+      "id": 141,
+      "pass": true,
+      "steps": 9335,
+      "note_outcomes": 6874
+    },
+    {
+      "id": 149,
+      "pass": true,
+      "steps": 16484,
+      "note_outcomes": 19108
+    },
+    {
+      "id": 143,
+      "pass": true,
+      "steps": 250,
+      "note_outcomes": 268
+    },
+    {
+      "id": 160,
+      "pass": true,
+      "steps": 23,
+      "note_outcomes": 5
+    },
+    {
+      "id": 161,
+      "pass": true,
+      "steps": 75,
+      "note_outcomes": 57
+    },
+    {
+      "id": 162,
+      "pass": true,
+      "steps": 25,
+      "note_outcomes": 5
+    },
+    {
+      "id": 163,
+      "pass": true,
+      "steps": 31,
+      "note_outcomes": 6
+    },
+    {
+      "id": 164,
+      "pass": true,
+      "steps": 94,
+      "note_outcomes": 6
+    },
+    {
+      "id": 165,
+      "pass": true,
+      "steps": 72,
+      "note_outcomes": 3
+    },
+    {
+      "id": 166,
+      "pass": true,
+      "steps": 26,
+      "note_outcomes": 2
+    },
+    {
+      "id": 167,
+      "pass": true,
+      "steps": 56,
+      "note_outcomes": 120
+    },
+    {
+      "id": 168,
+      "pass": true,
+      "steps": 46,
+      "note_outcomes": 9
+    },
+    {
+      "id": 169,
+      "pass": true,
+      "steps": 107,
+      "note_outcomes": 44
+    },
+    {
+      "id": 170,
+      "pass": true,
+      "steps": 46,
+      "note_outcomes": 2
+    },
+    {
+      "id": 171,
+      "pass": true,
+      "steps": 102,
+      "note_outcomes": 24
+    }
+  ],
+  "catalog_sha256": "16393fe882ff984b3fb2ca6fa585b02e178e96555886c932598e79f08a09f703",
+  "actual_read_parameters_checked": 255109,
+  "machine_data_absent_from_catalog": true,
+  "source_sha256": {
+    "scripts/yuyuhakusho/check_audio_score_notes.py": "28445f7b8f177348970b4e9a3cce06c80c2c5488593fe733e02a0e6e3c9e59b2",
+    "scripts/yuyuhakusho/audio_score_replay.py": "6901169e4e42d68c14f21657c0b86e867df86ffe0cf4f57456989d3308de32bf",
+    "scripts/yuyuhakusho/export_audio_score.py": "a851a526f245606ff05354ebeb48ee6b69131dfe96186a3c604c0aa3d519ae61",
+    "scripts/yuyuhakusho/score_parameter_tables.py": "edb4f38a19b07812cdab2629aa70cf9bf9d453d10b2f3c3a8d279876b3152593"
+  },
+  "limits": [
+    "Note/base-pitch/duration/transpose/level continuous projection only; fullgate/modulation/bus output and mixedrestore are separate layers",
+    "Parameter read/outcome evidence is linked separately, not claimed as continuousfullDSP"
+  ]
+}

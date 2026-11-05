@@ -1,0 +1,445 @@
+{
+  "schema": 2,
+  "scope": "Mixed original observations and versioned canonical oracle; independent Go driver/DSP equality is separate",
+  "created_at_utc": "2026-11-05T17:40:55.454342+00:00",
+  "pass": true,
+  "independent_driver_verified": false,
+  "dsp_verified": false,
+  "canonical_cases": 42,
+  "canonical_frames": 126141,
+  "canonical_score_intents": 1504150,
+  "final_index": {
+    "path": ".local/md-yuyuhakusho/audio-score-claim/canonical-v3-final/index.json",
+    "sha256": "cac5d869aab3fd4f45eb476ae541919a39c10394922107ba897714f955d4f263",
+    "bytes": 28811
+  },
+  "sources": [
+    {
+      "path": "scripts/yuyuhakusho/score_claim_cache_capture.py",
+      "sha256": "fcf5fd53f0d658b49a15477e65bfdd2151c3db4bf8fd24e341d894fa486ee3a8",
+      "bytes": 756
+    },
+    {
+      "path": "scripts/yuyuhakusho/score_claim_cache_check.py",
+      "sha256": "9ea8061facbe31f4cf7ee4f2a0f729b711149c7c62fe02f5124827d59ef74975",
+      "bytes": 2341
+    },
+    {
+      "path": "scripts/yuyuhakusho/score_claim_capture.py",
+      "sha256": "1cd9d780ad95022412e20142a755c14c3beb082b3fa820b7e3db18b466709bcd",
+      "bytes": 19623
+    },
+    {
+      "path": "scripts/yuyuhakusho/score_claim_check.py",
+      "sha256": "6b330bb50a52466189756740316f0ecc28f8998ac8f3b5235aaa34cada8b5aff",
+      "bytes": 6041
+    },
+    {
+      "path": "scripts/yuyuhakusho/score_claim_final_check.py",
+      "sha256": "2d0b230d6627452cd566b9d7b3047680629a68ab4b9ae87dce1dce2b7e5e71a5",
+      "bytes": 2739
+    },
+    {
+      "path": "scripts/yuyuhakusho/score_claim_finalize.py",
+      "sha256": "71190bdd56803050b223e2043a58755f1199c1d2222492a5f720500e045989d0",
+      "bytes": 3698
+    },
+    {
+      "path": "scripts/yuyuhakusho/score_claim_inactive_capture.py",
+      "sha256": "e743b4c3d45483701715448c6e079b96f1d8e59cec61ee0648263a30f7d3072a",
+      "bytes": 13500
+    },
+    {
+      "path": "scripts/yuyuhakusho/score_claim_inactive_check.py",
+      "sha256": "3ca57038b25e5b67a70928919a01623bad8f5ccd20757a7c6e50db589795e44e",
+      "bytes": 3293
+    },
+    {
+      "path": "scripts/yuyuhakusho/score_claim_inactive_source_check.py",
+      "sha256": "223e6c0cf43f7d7faf3f38e70c2c520f985d8383308e0f17bf108a42b36dcef7",
+      "bytes": 3311
+    },
+    {
+      "path": "scripts/yuyuhakusho/score_claim_isolation_path_check.py",
+      "sha256": "4afc88baaf16140e79bd9f7028633086c659d4c7349a1249c7afdd950dce7f2c",
+      "bytes": 3688
+    },
+    {
+      "path": "scripts/yuyuhakusho/score_claim_normalize.py",
+      "sha256": "8da4c71969763768ebc2da1aac72c504a8bcf45d15d045a6afddda8d7b701cc5",
+      "bytes": 13810
+    },
+    {
+      "path": "scripts/yuyuhakusho/score_claim_normalize_extra.py",
+      "sha256": "674bc4a3d7abf267044eed387e4c7e78ec1992064f60a370880de45c6b20de10",
+      "bytes": 1629
+    },
+    {
+      "path": "scripts/yuyuhakusho/score_claim_pan_feedback_capture.py",
+      "sha256": "fd40ee4a879b2efbda0bad6346cba17dd4e19b12f1f4dcf2325c0db86be2ae85",
+      "bytes": 13154
+    },
+    {
+      "path": "scripts/yuyuhakusho/score_claim_pan_feedback_check.py",
+      "sha256": "ff31f3e53531bdc0f88bf0aaa91b868babeefd26b60702eb544970dc62a4491f",
+      "bytes": 2888
+    },
+    {
+      "path": "scripts/yuyuhakusho/score_claim_pan_feedback_source_check.py",
+      "sha256": "ea7992568abd347b11386d1d7b86d95b7c02bac1e4ba3b8b653c62f2021233af",
+      "bytes": 2887
+    },
+    {
+      "path": "scripts/yuyuhakusho/score_claim_pan_projection_check.py",
+      "sha256": "86090e6a9e9845db1cd31a8e7fa5aa33c81df5c8ad6a0770f88599544d7b2c73",
+      "bytes": 5103
+    },
+    {
+      "path": "scripts/yuyuhakusho/score_claim_project_v2.py",
+      "sha256": "4a1313a17a79e14249381047389f398d2350838f25a4fa46146a49858e08955d",
+      "bytes": 3129
+    },
+    {
+      "path": "scripts/yuyuhakusho/score_claim_project_v3.py",
+      "sha256": "3de68eea6319219f7ba6d8b293b554d8956895ae733fc12efcb0d91162b72452",
+      "bytes": 5030
+    },
+    {
+      "path": "scripts/yuyuhakusho/score_claim_restore_capture.py",
+      "sha256": "f03e80f47190a32af388605f94f793bd8d93acc1efb50742d165a785fa21e5bb",
+      "bytes": 12590
+    },
+    {
+      "path": "scripts/yuyuhakusho/score_claim_restore_check.py",
+      "sha256": "0f757edaab4fbfa29c4c272da9fa2c384f83f3754be84dda148b977421167500",
+      "bytes": 2244
+    },
+    {
+      "path": "scripts/yuyuhakusho/score_claim_restore_projection_check.py",
+      "sha256": "c1426376849d27dc947abaebaf66ac1cfeca827775a9b5fe82a218921048ab2e",
+      "bytes": 3067
+    },
+    {
+      "path": "scripts/yuyuhakusho/score_claim_restore_source_check.py",
+      "sha256": "f35518905fd29d67bed7a7f75ca1d2f58b1625e7555d5626a6b2cf45df5f4709",
+      "bytes": 2333
+    },
+    {
+      "path": "scripts/yuyuhakusho/score_claim_state_check.py",
+      "sha256": "cc1ad444317c219e5af975fdcfe4fe27b50adb05611f0e6eb5850f616bda7818",
+      "bytes": 4222
+    }
+  ],
+  "docs": [
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_SCORE_CLAIM_FAILURES.md",
+      "sha256": "171794f3b73a8ebe7b0527d338182c2b189505ba112b5fc70294f76cda060a62",
+      "bytes": 2913
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_SCORE_CLAIM_RESULTS.md",
+      "sha256": "e6c755f0922a7dff77d6479d39386247500352341330881e8f0afa6b3179135b",
+      "bytes": 9389
+    }
+  ],
+  "indices": [
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/capture/index.json",
+      "sha256": "a4dc5783de79118c817a84753427e47e17c99ca736add29ce3be4c5a417a6fbb",
+      "bytes": 14400
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/cache-capture/index.json",
+      "sha256": "bb860be3f82d7e19d06e66877dea41fdf17fff66ddf9146df2c2410ad3c6a2d9",
+      "bytes": 3470
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/canonical/index.json",
+      "sha256": "95329e23f78ff51845d7a1880c06c3e32023952637448434d69341935747b229",
+      "bytes": 18106
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/inactive-capture-fixed/index.json",
+      "sha256": "33f6b49da43e29850df2d562e6e8eb2a95a0c8179f27785268064b038a006b6c",
+      "bytes": 3685
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/inactive-canonical/index.json",
+      "sha256": "db8d0b68eda532dea9afab461cc44c0733e4f0442f4b3d814b85d254a5e0e25c",
+      "bytes": 2607
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/canonical-v2/index.json",
+      "sha256": "7d7937aa018c99a736a83a4237578431fb542cbee39d8a1964b76fd201e6834d",
+      "bytes": 25791
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/restore-capture/index.json",
+      "sha256": "fba6f9d080205bc734af6ed614403b9c54d1f180fffe84bf13d46f2f564a782e",
+      "bytes": 24186
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/canonical-v3/index.json",
+      "sha256": "89d64b1341edbe3a2194a2e76848a2b584192eadf037d921418fcb8ecae3ba68",
+      "bytes": 27172
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/pan-feedback-capture/index.json",
+      "sha256": "ec4bcd9c5e7ae450047ed9a0071c72b64cb0371ee1fec787da3cd6d0047f2793",
+      "bytes": 4951
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/canonical-v3-final/index.json",
+      "sha256": "cac5d869aab3fd4f45eb476ae541919a39c10394922107ba897714f955d4f263",
+      "bytes": 28811
+    }
+  ],
+  "checks": [
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/check-result.json",
+      "sha256": "4422e6664ed22b08a64bf7966390ff573d55c574b20d81e7dbb4f8d7311bb74c",
+      "bytes": 1080
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/cache-check-result.json",
+      "sha256": "16471d449236bdda1f868970dd768ded1c08abfcd5688da672c55d8979926962",
+      "bytes": 440
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/canonical-check-result.json",
+      "sha256": "e440abaa46d784df8418b88898ab84be31c73a9daeb6801d4205d74be2a9c7f2",
+      "bytes": 382
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/inactive-check-result.json",
+      "sha256": "e67b326f144278a81c41220d40a8b7cc23ec711a4c4368ecf90537086a7beb73",
+      "bytes": 589
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/pan-projection-check-result.json",
+      "sha256": "35408768f2193bbeed4a3d0e50a40cfe2aa3c5e468c7ba2e559a389feae1feb8",
+      "bytes": 571
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/restore-check-result.json",
+      "sha256": "98dd7aaa374e2ef6867d2edafab7ad038bf31143260e0498ce90c91f28ae47ed",
+      "bytes": 763
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/restore-projection-check-result.json",
+      "sha256": "fdd4a71478e68172eb4dec7769b220e9617b39db811c7a3766e54feea1835588",
+      "bytes": 346
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/pan-feedback-check.json",
+      "sha256": "8fa1ee2cf2893a5e34157571a8edeaa17ed01aeb8c510a91555e71b47327392b",
+      "bytes": 690
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/isolation-path-check.json",
+      "sha256": "39c33b6e8eb0cf073ed47e862f36630e352da36a5bc1cc3865b8792637851ba9",
+      "bytes": 1136
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/final-check-result.json",
+      "sha256": "be6edad3c60633217e7a25c783ce5513fa8a7b8f525b79925ecfd1ce457bea45",
+      "bytes": 512
+    }
+  ],
+  "test_first_failures_and_corrections": [
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/cache-missing-red.txt",
+      "sha256": "a51da5aa21e8f1d2a40b6c5fb25ef7aff5b557d71964366509dabdbccaa9ad9a",
+      "bytes": 1357
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/cache-test-first.json",
+      "sha256": "6f577418c56b867cb3a6f82ae838f561ffdf76601ef614c2cf2cef5f0b26ea4c",
+      "bytes": 586
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/canonical-missing-red.txt",
+      "sha256": "58a7b49248967f5bc8edbf4fa96d702303858bcceb018d0e9cedb61541ae4aad",
+      "bytes": 1059
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/canonical-test-first.json",
+      "sha256": "c5bbd66dcc914f2b661db9e500ff2bb661de6aca743e77f5ecde362d4291389c",
+      "bytes": 586
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/cleanup.json",
+      "sha256": "1ee180db17b3e1765f9b0ab4985c483fd76dbd6273f16e37efce00c915236b89",
+      "bytes": 811
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/failure-list-v1.md.txt",
+      "sha256": "bf6527309898232e90265b4c672512574e28a2430c2a6559f77ec6022ccd3cdf",
+      "bytes": 2557
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/final-missing-red.txt",
+      "sha256": "a3824680fd4c79dd4eb21126d9e8cf23dbac6ae9a588f9cedd31a724279d7a3a",
+      "bytes": 1363
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/final-test-first.json",
+      "sha256": "daef287b2230a4d9aaf91f96da0adc19dd6335c31917c6b522c96ef81fd72333",
+      "bytes": 591
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/inactive-import-red.json",
+      "sha256": "8cf3579157ef32ec5fd5e5212130c519068190ba050a168b821f1d264a5fbadb",
+      "bytes": 298
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/inactive-import-red.txt",
+      "sha256": "62fc7ba3348ef12524c78f99bac8c746947744877e5147aac811b873852582a4",
+      "bytes": 190
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/inactive-missing-red.txt",
+      "sha256": "e7d101c60afdf2e1011859c4d019b43bf13e1ab23d594a5b91e909e0f48ef035",
+      "bytes": 1416
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/inactive-source-correction.json",
+      "sha256": "ea28f2ffa98a67881ddbbe9c063874c884069be3aaf0fb5c7668f7bf55fbeeeb",
+      "bytes": 756
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/inactive-test-first.json",
+      "sha256": "552eb3ad3b4bbb1a1d7bbcb3b93e5465364ab4e3e49382d12130ba6cee9b2e55",
+      "bytes": 773
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/inactive-zero-algorithm-assumption-red.txt",
+      "sha256": "3c5e273c0513ebd3574d2f4866445463eeb527ba0b11ec3c879939032122736d",
+      "bytes": 701
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/missing-red.txt",
+      "sha256": "58c03099e03e31ac0ed6e48a52c1e0b014fe97b768e5c727476036913c9d08dc",
+      "bytes": 1341
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/pan-feedback-first-case-assumption-red.txt",
+      "sha256": "18c708a486f109de8ea2d02c29f92efae8d80caa032843fd9dfd38e135ab569f",
+      "bytes": 609
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/pan-feedback-missing-red.txt",
+      "sha256": "7afc18238b8f0d8061d240242518a008b2942aa7cb1ee6b715654bf7488d6e35",
+      "bytes": 1379
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/pan-feedback-source-correction.json",
+      "sha256": "f84add5af5077a56d63defc6b21e660791bf09d8128fbbc10ad1339e23acb77c",
+      "bytes": 590
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/pan-feedback-test-first.json",
+      "sha256": "6aa0c8a5ff03e263b7861d58795e3c6cc49199e541bedd20c9a7837e948b5314",
+      "bytes": 600
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/pan-projection-source-red.txt",
+      "sha256": "d87c76ce91d2825ad233162cc3866f2bdd8873982bc0f0b5cd20bfe31ce24e3d",
+      "bytes": 710
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/pan-projection-test-first.json",
+      "sha256": "2d824f4078b28d7ae572e0c1d20dcc348cbdfc51662054986815b2f34b5fb537",
+      "bytes": 805
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/restore-additional-boundary-cases-red.txt",
+      "sha256": "42e0745bbdde9a23de4a6b6849f262ee775e14ee5bf924abe986bac1a281a462",
+      "bytes": 517
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/restore-missing-points-red.txt",
+      "sha256": "3046d3bfa16e6f953b0022edf813122dff0dfffeaa892beb92d84969eb26aa15",
+      "bytes": 438
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/restore-observed-scope-correction.json",
+      "sha256": "3fe6a0b164b9ea8858ab527f178f1b6ed5452322347f4d6dd4511b9576e9ea03",
+      "bytes": 560
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/restore-projection-missing-red.txt",
+      "sha256": "6efaba637102fe565dd1497920955f4dc93a8d42e657242850a05bd1f30e8706",
+      "bytes": 519
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/restore-projection-test-first.json",
+      "sha256": "8ec636dd3b3dfab3d6d266d45b4035bec0f78f232bcd2c7e61d8dad683127039",
+      "bytes": 456
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/restore-test-first.json",
+      "sha256": "03b29dd442bb08349dc8d2e88c2dc46cdaf1155c0df21c574e6c081598552878",
+      "bytes": 320
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-claim/test-first.json",
+      "sha256": "3ca564ab07ac8605953aee489da334e0ba304af131480f0ea754bf9608c1713f",
+      "bytes": 848
+    }
+  ],
+  "typed_fallback": {
+    "path": ".local/md-yuyuhakusho/audio-score-claim/inactive-capture-fixed/fallback-patches.json",
+    "sha256": "79e7d6f85ab60a53d3af44ff4f98a307a4c73c2514c17357603c80c843820c06",
+    "bytes": 951
+  },
+  "fallback_source_provenance": {
+    "path": ".local/md-yuyuhakusho/audio-score-claim/inactive-capture-fixed/fallback-provenance.json",
+    "sha256": "4c87494e8df3d0d5b36dcb5d79ccde16f6e33ab0d7ed6918e00be63d6e1a0f54",
+    "bytes": 250
+  },
+  "native_runtime": [
+    {
+      "path": ".local/md-yuyuhakusho/tools/genesis_plus_gx_libretro.dylib",
+      "sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+      "bytes": 9040096
+    },
+    {
+      "path": ".local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/genesis_plus_gx_libretro.dylib",
+      "sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+      "bytes": 9206496
+    },
+    {
+      "path": ".local/md-yuyuhakusho/tools/hook_filter.dylib",
+      "sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+      "bytes": 33536
+    }
+  ],
+  "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+  "data_bindings_checked": 264,
+  "exclusions_frozen_through_all_versions": true,
+  "legacy_evidence_preserved": true,
+  "limits": [
+    "No independent Go driver or DSP pass asserted by this source-oracle owner.",
+    "Group2 startup and layered restore remain unobserved in this scope.",
+    "Ordered driver requests do not prove independent master-cycle cadence.",
+    "External hardware feedback remains an input contract, not score-owned RAM state."
+  ],
+  "cleanup": {
+    "removed_duplicate_failed_capture": [
+      {
+        "path": ".local/md-yuyuhakusho/audio-score-claim/inactive-capture/primary-before-first-music-original.json.gz",
+        "bytes": 23642,
+        "sha256": "0efedeee179aaebcae558a4d5f3f740414317e38deb8a0efc0a33516914ae227",
+        "retained": ".local/md-yuyuhakusho/audio-score-claim/inactive-capture-fixed/primary-before-first-music-original.json.gz"
+      }
+    ],
+    "bytes_removed": 23642,
+    "retained": [
+      "Actual NameError evidence and pre-fix source",
+      "Incorrect0/0 assumption checker and native contradiction",
+      "Successful raw/native/portable/canonical/fallback evidence"
+    ],
+    "scope": "Only the first failed inactive capture, after its sole data file matched the retained successful original byte-for-byte; empty frontend dirs removed with it."
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "pass": true,
+  "dsp_implemented": false,
+  "actual_psg_pitch_reads": 24873,
+  "actual_extended_psg_pitch_reads": 282,
+  "extended_psg_indices": [
+    121,
+    122,
+    123,
+    124,
+    125,
+    126,
+    127
+  ],
+  "native_tick_exit_boundaries": [
+    [
+      130,
+      0
+    ],
+    [
+      131,
+      0
+    ],
+    [
+      132,
+      0
+    ],
+    [
+      133,
+      0
+    ],
+    [
+      134,
+      0
+    ],
+    [
+      135,
+      0
+    ],
+    [
+      136,
+      0
+    ],
+    [
+      138,
+      0
+    ],
+    [
+      141,
+      0
+    ],
+    [
+      149,
+      0
+    ],
+    [
+      143,
+      0
+    ],
+    [
+      143,
+      165
+    ]
+  ],
+  "catalog_sha256": "16393fe882ff984b3fb2ca6fa585b02e178e96555886c932598e79f08a09f703",
+  "oracle_index_sha256": "c23c42be66c3cad068d6f7710aaedb8de763e66d856b9dec9eeca0f405bdfa81",
+  "checker_sha256": "2ee0e894308928d6424272a1ca967635105231d46cb867f83f0308186ca22c3b",
+  "limits": [
+    "Actual pitch reads and typed track-end policy only; continuous note, modulation, bus and DSP proofs are separate."
+  ]
+}

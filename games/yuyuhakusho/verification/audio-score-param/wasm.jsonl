@@ -1,0 +1,20 @@
+{"Time":"2026-11-06T00:39:08.772516+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score/param"}
+{"Time":"2026-11-06T00:39:08.827542+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score/param","Test":"TestOriginalPatchRequestsAndAllLevels"}
+{"Time":"2026-11-06T00:39:08.827567+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score/param","Test":"TestOriginalPatchRequestsAndAllLevels","Output":"=== RUN   TestOriginalPatchRequestsAndAllLevels\n"}
+{"Time":"2026-11-06T00:39:09.501243+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score/param","Test":"TestOriginalPatchRequestsAndAllLevels","Output":"--- PASS: TestOriginalPatchRequestsAndAllLevels (0.67s)\n"}
+{"Time":"2026-11-06T00:39:09.501974+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score/param","Test":"TestOriginalPatchRequestsAndAllLevels","Elapsed":0.67}
+{"Time":"2026-11-06T00:39:09.502037+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score/param","Test":"TestSourceEnvelopeSequences"}
+{"Time":"2026-11-06T00:39:09.502042+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score/param","Test":"TestSourceEnvelopeSequences","Output":"=== RUN   TestSourceEnvelopeSequences\n"}
+{"Time":"2026-11-06T00:39:10.153506+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score/param","Test":"TestSourceEnvelopeSequences","Output":"--- PASS: TestSourceEnvelopeSequences (0.65s)\n"}
+{"Time":"2026-11-06T00:39:10.157357+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score/param","Test":"TestSourceEnvelopeSequences","Elapsed":0.65}
+{"Time":"2026-11-06T00:39:10.157426+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score/param","Test":"TestPanSourceDispatch"}
+{"Time":"2026-11-06T00:39:10.157431+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score/param","Test":"TestPanSourceDispatch","Output":"=== RUN   TestPanSourceDispatch\n"}
+{"Time":"2026-11-06T00:39:10.828172+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score/param","Test":"TestPanSourceDispatch","Output":"--- PASS: TestPanSourceDispatch (0.67s)\n"}
+{"Time":"2026-11-06T00:39:10.829793+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score/param","Test":"TestPanSourceDispatch","Elapsed":0.67}
+{"Time":"2026-11-06T00:39:10.829924+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score/param","Test":"TestArithmeticAndInvalidParameters"}
+{"Time":"2026-11-06T00:39:10.829931+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score/param","Test":"TestArithmeticAndInvalidParameters","Output":"=== RUN   TestArithmeticAndInvalidParameters\n"}
+{"Time":"2026-11-06T00:39:11.461409+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score/param","Test":"TestArithmeticAndInvalidParameters","Output":"--- PASS: TestArithmeticAndInvalidParameters (0.63s)\n"}
+{"Time":"2026-11-06T00:39:11.463432+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score/param","Test":"TestArithmeticAndInvalidParameters","Elapsed":0.63}
+{"Time":"2026-11-06T00:39:11.463887+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score/param","Output":"PASS\n"}
+{"Time":"2026-11-06T00:39:11.46833+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score/param","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score/param\t2.696s\n"}
+{"Time":"2026-11-06T00:39:11.468337+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score/param","Elapsed":2.6959999999999997}

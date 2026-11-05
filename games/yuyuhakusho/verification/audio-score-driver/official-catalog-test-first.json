@@ -1,0 +1,8 @@
+{
+  "phase": "Official schema2 typed silent FM selection before data producer",
+  "created_at_utc": "2026-11-05T17:04:00.418054+00:00",
+  "red_exit_code": 1,
+  "test_sha256": "d56d556484aff18e213a33c7d6ca58d735bc756912c1ab4a3c959da0343fbf2c",
+  "only_existing_test_change": "Official input filename audio-score.json.gz; full continuous assertions preserved",
+  "failure": "official catalog does not exist"
+}

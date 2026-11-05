@@ -1,0 +1,17 @@
+{
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-source/typed-repeated/catalog.json.gz",
+      "bytes": 196160,
+      "sha256": "16393fe882ff984b3fb2ca6fa585b02e178e96555886c932598e79f08a09f703"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-source/typed-repeated/provenance.json",
+      "bytes": 5124752,
+      "sha256": "314806413636622d33ca0a7ef7feb71508fa3ef1653cffb242f15eb16f8c9689"
+    }
+  ],
+  "retained_identical_in": ".local/md-yuyuhakusho/audio-score-source/typed-boundary-corrected",
+  "bytes_removed": 5320912,
+  "scope": "Only the repeated export created by this continuation; original, failures and provenance retained."
+}

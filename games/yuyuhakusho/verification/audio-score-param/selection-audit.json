@@ -1,0 +1,14 @@
+{
+  "scope": "Read-only original F5 selection and next-note tie audit",
+  "counts": {
+    "volume_selection_events": 4080,
+    "next_note_outcomes": 4080
+  },
+  "examples": [],
+  "index_sha256": "c23c42be66c3cad068d6f7710aaedb8de763e66d856b9dec9eeca0f405bdfa81",
+  "checker_sha256": "7b07540b02fc0bdd9f30f29da97e09b0a78a72b6906f2d3210cffcae5820e9dd",
+  "limits": [
+    "Research source positions are not added to production Go state.",
+    "Unreached selection/tie combinations are not established by this audit."
+  ]
+}

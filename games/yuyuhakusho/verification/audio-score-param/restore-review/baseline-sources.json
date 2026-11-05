@@ -1,0 +1,17 @@
+[
+  {
+    "source": "games/yuyuhakusho/audio/score/catalog.go",
+    "snapshot": "games/yuyuhakusho/verification/audio-score-param/restore-review/catalog.go.txt",
+    "sha256": "280b664cf42251fb7979fc3ebe6430ca159d8eff12702998bd5a1636a15847d9"
+  },
+  {
+    "source": "games/yuyuhakusho/audio/score/state.go",
+    "snapshot": "games/yuyuhakusho/verification/audio-score-param/restore-review/state.go.txt",
+    "sha256": "46b771acf245eada1d1637f8f60dcd091444ffb4a49c174c63bce20ddc21e9eb"
+  },
+  {
+    "source": "games/yuyuhakusho/audio/score/driver.go",
+    "snapshot": "games/yuyuhakusho/verification/audio-score-param/restore-review/driver.go.txt",
+    "sha256": "ed92036620ef294168ab56b50c9aba13ba19f980c4933e53688352714ea8db68"
+  }
+]

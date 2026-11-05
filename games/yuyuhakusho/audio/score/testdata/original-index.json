@@ -1,0 +1,270 @@
+{
+  "schema": 1,
+  "source": ".local/md-yuyuhakusho/audio-score-claim/canonical-v3-final/index.json",
+  "source_sha256": "cac5d869aab3fd4f45eb476ae541919a39c10394922107ba897714f955d4f263",
+  "cases": [
+    {
+      "id": "music82-a0",
+      "path": "music82-a0.jsonl.gz",
+      "steps": 87,
+      "sha256": "6004749e230b98d73755c58d8a1bf1c80361299e0c900f38ec667ebfcdee37ac"
+    },
+    {
+      "id": "music82-a1",
+      "path": "music82-a1.jsonl.gz",
+      "steps": 139,
+      "sha256": "907089c07d01b00990a8fccc293cfbfe31ca056c228d76c0205a77c9422a1ddf"
+    },
+    {
+      "id": "music82-a2",
+      "path": "music82-a2.jsonl.gz",
+      "steps": 89,
+      "sha256": "f7742d7f9193d12ef3131504f75381283eacb6ab795c5947db3a84a41659e315"
+    },
+    {
+      "id": "music82-a3",
+      "path": "music82-a3.jsonl.gz",
+      "steps": 95,
+      "sha256": "e6e01cd25684c7a8f3c6ac0f21e609058763da5bffd44b3fec7a3cc3cffde203"
+    },
+    {
+      "id": "music82-a4",
+      "path": "music82-a4.jsonl.gz",
+      "steps": 158,
+      "sha256": "cf7dea4f7250e527555a1435623150db53fa184637b57f91f147d8710a4997a3"
+    },
+    {
+      "id": "music82-a5",
+      "path": "music82-a5.jsonl.gz",
+      "steps": 136,
+      "sha256": "d194c18511930e0a1189106ecf3c6d35b35b5166eb0dc46330966f5cb81228a2"
+    },
+    {
+      "id": "music82-a6",
+      "path": "music82-a6.jsonl.gz",
+      "steps": 90,
+      "sha256": "5b29d0adc8962582f95cd6bf2e6893b6e381a34c0f6f0b5f19d3c58f43c3c937"
+    },
+    {
+      "id": "music82-a7",
+      "path": "music82-a7.jsonl.gz",
+      "steps": 120,
+      "sha256": "84dbc2402caafb09c514539ae511d076dcf0f49591949a3c6bdf0ecfd23b42e4"
+    },
+    {
+      "id": "music82-a8",
+      "path": "music82-a8.jsonl.gz",
+      "steps": 110,
+      "sha256": "0e8870ddc5421e30ba6aeb5b0a2bde2fb4edfeaed1e75dbf228e6e7771687246"
+    },
+    {
+      "id": "music82-a9",
+      "path": "music82-a9.jsonl.gz",
+      "steps": 171,
+      "sha256": "7faac1ec41415b899db65e241cb2c3ec2fc7239945376ed3b78fb8ab358f2183"
+    },
+    {
+      "id": "music82-aa",
+      "path": "music82-aa.jsonl.gz",
+      "steps": 110,
+      "sha256": "78fceb713dad96b3e8d8caebb6c0f0d0a589c07a877485fdc152b646bb56e595"
+    },
+    {
+      "id": "music82-ab",
+      "path": "music82-ab.jsonl.gz",
+      "steps": 166,
+      "sha256": "edc31ba9c3814ea97ff7fbcfc29b3e19dfffc6ca8f6bbdea4cf53274f68a76bb"
+    },
+    {
+      "id": "higher-priority-replaces",
+      "path": "higher-priority-replaces.jsonl.gz",
+      "steps": 160,
+      "sha256": "deeca10679ceb73100e8173a7492574b7bf5f75fb2672290fa6116fa74b0cb18"
+    },
+    {
+      "id": "lower-priority-rejected",
+      "path": "lower-priority-rejected.jsonl.gz",
+      "steps": 160,
+      "sha256": "d23861be8de187c4a369ea58c61522f40506c2b09eec5e1dbda01db8da82f3fa"
+    },
+    {
+      "id": "music-replaces-primary",
+      "path": "music-replaces-primary.jsonl.gz",
+      "steps": 160,
+      "sha256": "f79a5a1606f20af370b057cfe92456497a235fd478044e8da0f0c3b1e8775ca7"
+    },
+    {
+      "id": "music82-hidden-patch",
+      "path": "music82-hidden-patch.jsonl.gz",
+      "steps": 900,
+      "sha256": "7d434010f5d986d73a024f0a881f56b46baa6e10ff9b72eb8da2d54ed3997290"
+    },
+    {
+      "id": "isolated-82",
+      "path": "isolated-82.jsonl.gz",
+      "steps": 8000,
+      "sha256": "bd63401746edf76a196177ed96fa1eae0979bd737e3650c2951f048a625f4210"
+    },
+    {
+      "id": "isolated-83",
+      "path": "isolated-83.jsonl.gz",
+      "steps": 8715,
+      "sha256": "89334c91b2d3101f1b848d90bde833dd47f3eeeb2cd57880ad614aaa963f2d9f"
+    },
+    {
+      "id": "isolated-84",
+      "path": "isolated-84.jsonl.gz",
+      "steps": 9830,
+      "sha256": "bbc5f9e17a52b0f0a2242cf26b5c7aa8cbfc7be994a5eb00098b0f18bab31c23"
+    },
+    {
+      "id": "isolated-85",
+      "path": "isolated-85.jsonl.gz",
+      "steps": 9075,
+      "sha256": "1f396d2598efd962959da479b65a0ba1616a65f1e23d09211766952b978c5949"
+    },
+    {
+      "id": "isolated-86",
+      "path": "isolated-86.jsonl.gz",
+      "steps": 11001,
+      "sha256": "1426040abd74e1ab7ce82e522c41bc01a5938899e9f8fd72bcce715f72b9f882"
+    },
+    {
+      "id": "isolated-87",
+      "path": "isolated-87.jsonl.gz",
+      "steps": 24576,
+      "sha256": "86274194c171c851e140eaa852f0c2456682a48d119dcdbb2daaad667eb37acb"
+    },
+    {
+      "id": "isolated-88",
+      "path": "isolated-88.jsonl.gz",
+      "steps": 12751,
+      "sha256": "49367af1fdf1c95a6826f508a1ff600048654def66d7f4a1c2338c228805d7db"
+    },
+    {
+      "id": "isolated-8a",
+      "path": "isolated-8a.jsonl.gz",
+      "steps": 12090,
+      "sha256": "62413826de2eff507e650a1e8c5ea70c08d8182b82765f71d099946e58b06abb"
+    },
+    {
+      "id": "isolated-8d",
+      "path": "isolated-8d.jsonl.gz",
+      "steps": 9335,
+      "sha256": "b15e28f116249e9c07bba0d40a9b3c137ffdcf35e60566002669ebfb6d0b198c"
+    },
+    {
+      "id": "isolated-95",
+      "path": "isolated-95.jsonl.gz",
+      "steps": 16484,
+      "sha256": "6a2fcbe3839a32b7c312b3fd45ecc7e1f555f5865911cd05966733e6d4bae2f1"
+    },
+    {
+      "id": "isolated-8f",
+      "path": "isolated-8f.jsonl.gz",
+      "steps": 250,
+      "sha256": "a375177794359d95450470e924cfa1b3bcffdf8e4fb4c7e1611fd6386622fb0a"
+    },
+    {
+      "id": "isolated-a0",
+      "path": "isolated-a0.jsonl.gz",
+      "steps": 23,
+      "sha256": "6951e3f0437e04f87421dcde73f3293374532cf9c89c4c6054819c588d2f730f"
+    },
+    {
+      "id": "isolated-a1",
+      "path": "isolated-a1.jsonl.gz",
+      "steps": 75,
+      "sha256": "05beb4e86322a335d8b7dede0ec0f25430b9dea9889f5c5a9d73ff8fb6b4754a"
+    },
+    {
+      "id": "isolated-a2",
+      "path": "isolated-a2.jsonl.gz",
+      "steps": 25,
+      "sha256": "d3c2ea3c02b34a4cd5e7bfa950f930514156b9155d86991bd4c8f588b12e3848"
+    },
+    {
+      "id": "isolated-a3",
+      "path": "isolated-a3.jsonl.gz",
+      "steps": 31,
+      "sha256": "3b64a8213071640600dda4f95e1558bde9616246c0555a8f661a25c396dcba22"
+    },
+    {
+      "id": "isolated-a4",
+      "path": "isolated-a4.jsonl.gz",
+      "steps": 94,
+      "sha256": "21b84a1c19114c2a748f2e02954dfba0971cdae7d303e1b8d64cf44df6a1d743"
+    },
+    {
+      "id": "isolated-a5",
+      "path": "isolated-a5.jsonl.gz",
+      "steps": 72,
+      "sha256": "74ba993a47e70cf4578c1bc484fa6d97a1aba7e31c741ae91610a37d6eef79c0"
+    },
+    {
+      "id": "isolated-a6",
+      "path": "isolated-a6.jsonl.gz",
+      "steps": 26,
+      "sha256": "530183e1d741f11408ac02edf25a300c1b45d28f1d0a52b22cfc9c3734bbdaf3"
+    },
+    {
+      "id": "isolated-a7",
+      "path": "isolated-a7.jsonl.gz",
+      "steps": 56,
+      "sha256": "8062924ca9c1b5fd5a39b4a89e4a925b1b6964bc1b2c10f56e1a4687a6e3f38f"
+    },
+    {
+      "id": "isolated-a8",
+      "path": "isolated-a8.jsonl.gz",
+      "steps": 46,
+      "sha256": "589040488eece58d61f5b158edb9a28e10708ddd1e4b110a90f5c9d5e411a9ec"
+    },
+    {
+      "id": "isolated-a9",
+      "path": "isolated-a9.jsonl.gz",
+      "steps": 107,
+      "sha256": "051a1f5d6db1066276522dca6896fdbf04443bcc33ab444fdc472b27dff22630"
+    },
+    {
+      "id": "isolated-aa",
+      "path": "isolated-aa.jsonl.gz",
+      "steps": 46,
+      "sha256": "13781f22bfab2b77b6f583ffa4eb8205e1c6be83bf92de33fabb936f02392295"
+    },
+    {
+      "id": "isolated-ab",
+      "path": "isolated-ab.jsonl.gz",
+      "steps": 102,
+      "sha256": "268ab33b8dcb664f7bb140ea286ba7f22618202f6fa2128e57a2ee249c7cfc4a"
+    },
+    {
+      "id": "primary-before-first-music",
+      "path": "primary-before-first-music.jsonl.gz",
+      "steps": 160,
+      "sha256": "ce81ab4ed8864cdc757f38c45fbaf46ae694a7fef96d427bdc1c0169a3e84763"
+    },
+    {
+      "id": "pcm-then-music88",
+      "path": "pcm-then-music88.jsonl.gz",
+      "steps": 160,
+      "sha256": "404ab471d1a9d148fbb0e079c89b5acd870c93777e2ba7a15735a8573b03eb1a"
+    },
+    {
+      "id": "music88-pcm-before-pan",
+      "path": "music88-pcm-before-pan.jsonl.gz",
+      "steps": 160,
+      "sha256": "551792203628218e363b0b1f4425b713ed359ac57487d0dc94bfbe8a31a78eb6"
+    }
+  ],
+  "exclusions": [
+    "source PC and sequence address",
+    "source shared loop-counter/return words",
+    "duration multiplier resolved into typed note duration",
+    "last duration used only by source cleanup diagnostic outcomes",
+    "root priority, queue and selected sound owned by external dispatcher",
+    "current traversal phase derived within each driver call",
+    "loaded feedback belongs to chip state and is unused by score arithmetic",
+    "unused source padding and source pointers",
+    "disabled pan automation parameters overwritten before the next enable"
+  ]
+}
