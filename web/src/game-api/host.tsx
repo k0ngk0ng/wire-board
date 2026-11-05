@@ -4,9 +4,11 @@ import { ArrowRight, Check, Clock, Crown, Plus } from "lucide-react";
 import { AssetsContext } from "../ui/board-host";
 import type { Act, Room } from "../types";
 import "./host.css";
-import type { GameAudioPort, GameClock } from "./module";
+import type { GameAudioPort, GameClock, PlayerGroup } from "./module";
 import { PlayerName } from "../profiles";
 import { gameModule, gameName } from "./registry";
+import { GameViewportFit } from "./viewport-fit";
+import { NetworkSignal } from "../ui/network-signal";
 
 export function GameBoard({
   room,
@@ -37,7 +39,7 @@ export function GameBoard({
   const module = gameModule(room.kind);
   if (!module) return <p role="alert">尚未安装此游戏的界面：{room.kind}</p>;
   const Board = module.Board;
-  return (
+  const board = (
     <Board
       {...loadEvents}
       room={room}
@@ -51,6 +53,11 @@ export function GameBoard({
       audio={audio}
       clock={clock}
     />
+  );
+  return module.viewportFit ? (
+    <GameViewportFit enabled={!room.loading}>{board}</GameViewportFit>
+  ) : (
+    board
   );
 }
 
@@ -169,7 +176,8 @@ export function ModuleWaiting({
     () => setOptions(JSON.parse(savedOptions)),
     [room.id, savedOptions],
   );
-  const Options = module.Options;
+  const Options =
+    module.preparationOwnsOptions && Preparation ? undefined : module.Options;
   const optionsDirty = !!Options && JSON.stringify(options) !== savedOptions;
   // Ready confirmations belong to the saved rules. A host previewing a new
   // draft must not carry human confirmations over to that draft; bots remain
@@ -349,29 +357,91 @@ const seatColors = [
   "#4f8b83",
   "#8a783c",
 ];
+function compactAvatarInk(background: string) {
+  const rgb = [1, 3, 5]
+    .map((index) => parseInt(background.slice(index, index + 2), 16) / 255)
+    .map((value) =>
+      value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4,
+    );
+  const luminance = rgb[0] * 0.2126 + rgb[1] * 0.7152 + rgb[2] * 0.0722;
+  return 1.05 / (luminance + 0.05) >= 4.5 ? "#fff" : "#000";
+}
 
 export function ModulePlayers({ room }: { room: Room }) {
   const assets = useContext(AssetsContext);
-  const Summary = gameModule(room.kind)?.PlayerSummary;
-  return (
-    <div className="players-strip module-players">
-      {room.seats.map((seat, i) => (
-        <div
-          className={`player-panel ${(room.game?.attention ?? room.game?.actors)?.includes(i) ? "current" : ""}`}
-          data-player-seat={i}
-          key={seat.id}
+  const module = gameModule(room.kind),
+    Summary = module?.PlayerSummary;
+  const compact = module?.playerLayout?.density === "compact";
+  const declared = module?.playerLayout?.groups?.(room, room.game?.data) ?? [];
+  const ids = new Set<string>(),
+    seats = new Set<number>();
+  const valid =
+    declared.length > 0 &&
+    declared.every((group) => {
+      if (!group.id || !group.label || ids.has(group.id) || !group.seats.length)
+        return false;
+      ids.add(group.id);
+      return group.seats.every((seat) => {
+        if (
+          !Number.isInteger(seat) ||
+          seat < 0 ||
+          seat >= room.seats.length ||
+          seats.has(seat)
+        )
+          return false;
+        seats.add(seat);
+        return true;
+      });
+    }) &&
+    seats.size === room.seats.length;
+  const groups: readonly PlayerGroup[] = valid ? declared : [];
+  const player = (seat: Room["seats"][number], i: number) => {
+    const status = room.game?.eliminated?.includes(i)
+      ? "已出局"
+      : seat.left
+        ? "已离桌"
+        : seat.autoPlay
+          ? "托管中"
+          : seat.bot
+            ? "电脑"
+            : (room.game?.attention ?? room.game?.actors)?.includes(i)
+              ? "等待行动"
+              : undefined;
+    return (
+      <div
+        className={`player-panel ${(room.game?.attention ?? room.game?.actors)?.includes(i) ? "current" : ""}`}
+        data-player-seat={i}
+        key={seat.id}
+      >
+        <span
+          className="avatar"
+          style={{
+            background: seatColors[i % seatColors.length],
+            color: compact
+              ? compactAvatarInk(seatColors[i % seatColors.length])
+              : undefined,
+          }}
         >
-          <span
-            className="avatar"
-            style={{ background: seatColors[i % seatColors.length] }}
-          >
-            {seat.name[0]}
-          </span>
-          <div className="player-info">
-            <strong>
+          {seat.name[0]}
+        </span>
+        <div className="player-info">
+          <strong>
+            {compact ? (
+              <>
+                <PlayerName user={seat}>{seat.name}</PlayerName>
+                {!seat.bot && seat.network && (
+                  <NetworkSignal info={seat.network} name={seat.name} />
+                )}
+              </>
+            ) : (
               <PlayerName user={seat} />
-              {room.you === i && <small>你</small>}
-            </strong>
+            )}
+            {room.you === i && <small>你</small>}
+            {compact && status && (
+              <small className="player-state">{status}</small>
+            )}
+          </strong>
+          {!compact && (
             <small>
               {room.game?.eliminated?.includes(i)
                 ? "已出局"
@@ -383,19 +453,88 @@ export function ModulePlayers({ room }: { room: Room }) {
                       ? "等待行动"
                       : "已入座"}
             </small>
-          </div>
-          {Summary && (
-            <div className="player-extras">
-              <Summary
-                room={room}
-                data={room.game?.data}
-                seat={i}
-                assets={assets}
-              />
-            </div>
           )}
         </div>
-      ))}
+        {Summary && (
+          <div className="player-extras">
+            <Summary
+              room={room}
+              data={room.game?.data}
+              seat={i}
+              assets={assets}
+            />
+          </div>
+        )}
+      </div>
+    );
+  };
+  return (
+    <div
+      className="players-strip module-players"
+      data-player-density={compact ? "compact" : undefined}
+      data-player-grouped={groups.length ? "true" : undefined}
+    >
+      {groups.length
+        ? groups.map((group) => (
+            <div
+              key={group.id}
+              className="module-player-group"
+              data-player-group={group.id}
+              role="group"
+              aria-label={group.label}
+            >
+              <div className="module-player-group-members">
+                {group.seats.map((i) => player(room.seats[i], i))}
+              </div>
+            </div>
+          ))
+        : room.seats.map((seat, i) =>
+            compact ? (
+              player(seat, i)
+            ) : (
+              <div
+                className={`player-panel ${(room.game?.attention ?? room.game?.actors)?.includes(i) ? "current" : ""}`}
+                data-player-seat={i}
+                key={seat.id}
+              >
+                <span
+                  className="avatar"
+                  style={{ background: seatColors[i % seatColors.length] }}
+                >
+                  {seat.name[0]}
+                </span>
+                <div className="player-info">
+                  <strong>
+                    <PlayerName user={seat} />
+                    {room.you === i && <small>你</small>}
+                  </strong>
+                  <small>
+                    {room.game?.eliminated?.includes(i)
+                      ? "已出局"
+                      : seat.left
+                        ? "已离桌"
+                        : seat.autoPlay
+                          ? "托管中"
+                          : (
+                                room.game?.attention ?? room.game?.actors
+                              )?.includes(i)
+                            ? "等待行动"
+                            : "已入座"}
+                  </small>
+                </div>
+                {Summary && (
+                  <div className="player-extras">
+                    <Summary
+                      room={room}
+                      data={room.game?.data}
+                      seat={i}
+                      assets={assets}
+                    />
+                  </div>
+                )}
+              </div>
+            ),
+          )}
     </div>
   );
 }
@@ -423,11 +562,13 @@ export function ModuleTurn({
   );
   const hasClock =
     !!room.turnDeadline && !room.game?.finished && !room.game?.paused;
+  const compact = gameModule(room.kind)?.viewportFit;
   return (
     <section
       className={`turn-card ${(room.game?.attention ?? room.game?.actors)?.includes(room.you) ? "mine" : ""}`}
+      data-turn-density={compact ? "compact" : undefined}
     >
-      <span className="eyebrow">TURN · 行动提示</span>
+      {!compact && <span className="eyebrow">TURN · 行动提示</span>}
       <h3>
         {room.game?.finished
           ? "本局已结束"
@@ -436,7 +577,9 @@ export function ModuleTurn({
             : (room.game?.attention ?? room.game?.actors)?.includes(room.you)
               ? "请行动"
               : room.game?.eliminated?.includes(room.you)
-                ? "你已出局，可以观战或离桌"
+                ? compact
+                  ? "你已出局"
+                  : "你已出局，可以观战或离桌"
                 : (room.game?.attention ?? room.game?.actors)?.length
                   ? "等待其他玩家"
                   : "对局进行中"}

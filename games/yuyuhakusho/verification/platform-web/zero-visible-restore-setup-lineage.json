@@ -1,0 +1,6 @@
+{
+  "firstRun": "../platform-mode-ui/public-zero-visible-restored01",
+  "failure": "First run combined restore-vs-original and before/after canvas equality in one assertion and did not retain the numeric values, so its precise mismatch cannot be distinguished. It was not treated as a product regression.",
+  "correction": "Wait actual game loading gone and fit active, save ink evidence before assertions, require before/after dismissal top stability for the restored page; original complete scenarios separately prove phase stability.",
+  "followupPass": "../platform-mode-ui/public-zero-visible-restored02/result.json"
+}

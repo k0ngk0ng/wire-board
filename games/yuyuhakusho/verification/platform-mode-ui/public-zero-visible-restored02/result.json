@@ -1,0 +1,383 @@
+{
+  "pass": true,
+  "scope": "Actual authenticated normal app reopens existing completed SQLite matches; normal result-dialog dismissal only. No rule writes, fake authority or checkpoint parsing.",
+  "cases": [
+    {
+      "sourceResult": "games/yuyuhakusho/verification/platform-mode-ui/public-ui-three-fullscreen03/result.json",
+      "sourceSHA256": "07c19f9a65c568d55b7d8efc8a1c93c443175c9a2df6dfccaf32330fcbb0f2d0",
+      "mode": "three-free",
+      "epoch": "cd3c747ee48850eb8db1b227",
+      "frame": "5090",
+      "digest": "fcd9977de3cbed3a22aba3d4f5abf4adea90d7fa3f9a6479054e04f17bbc2ea6",
+      "realPersistedResultRestored": true,
+      "normalResultDialogDismissed": true,
+      "sameCanvasTopBeforeAfter": true,
+      "canvasTop": 394,
+      "modalPresent": false,
+      "scrollY": 0,
+      "values": [
+        {
+          "color": "rgb(41, 59, 53)",
+          "ink": {
+            "bottom": 252,
+            "height": 16,
+            "right": 55.28125,
+            "width": 32.28125,
+            "x": 23,
+            "y": 236
+          },
+          "rect": {
+            "bottom": 251,
+            "height": 13,
+            "right": 55.28125,
+            "width": 32.28125,
+            "x": 23,
+            "y": 238
+          },
+          "resource": "health",
+          "seat": 0,
+          "text": "体力 0",
+          "unoccluded": true,
+          "visible": true
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "ink": {
+            "bottom": 252,
+            "height": 16,
+            "right": 93.5625,
+            "width": 32.28125,
+            "x": 61.28125,
+            "y": 236
+          },
+          "rect": {
+            "bottom": 251,
+            "height": 13,
+            "right": 93.5625,
+            "width": 32.28125,
+            "x": 61.28125,
+            "y": 238
+          },
+          "resource": "energy",
+          "seat": 0,
+          "text": "灵力 0",
+          "unoccluded": true,
+          "visible": true
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "ink": {
+            "bottom": 252,
+            "height": 16,
+            "right": 204.28125,
+            "width": 32.28125,
+            "x": 172,
+            "y": 236
+          },
+          "rect": {
+            "bottom": 251,
+            "height": 13,
+            "right": 204.28125,
+            "width": 32.28125,
+            "x": 172,
+            "y": 238
+          },
+          "resource": "health",
+          "seat": 1,
+          "text": "体力 0",
+          "unoccluded": true,
+          "visible": true
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "ink": {
+            "bottom": 252,
+            "height": 16,
+            "right": 242.5625,
+            "width": 32.28125,
+            "x": 210.28125,
+            "y": 236
+          },
+          "rect": {
+            "bottom": 251,
+            "height": 13,
+            "right": 242.5625,
+            "width": 32.28125,
+            "x": 210.28125,
+            "y": 238
+          },
+          "resource": "energy",
+          "seat": 1,
+          "text": "灵力 0",
+          "unoccluded": true,
+          "visible": true
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "ink": {
+            "bottom": 323,
+            "height": 16,
+            "right": 55.28125,
+            "width": 32.28125,
+            "x": 23,
+            "y": 307
+          },
+          "rect": {
+            "bottom": 322,
+            "height": 13,
+            "right": 55.28125,
+            "width": 32.28125,
+            "x": 23,
+            "y": 309
+          },
+          "resource": "health",
+          "seat": 2,
+          "text": "体力 0",
+          "unoccluded": true,
+          "visible": true
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "ink": {
+            "bottom": 323,
+            "height": 16,
+            "right": 93.5625,
+            "width": 32.28125,
+            "x": 61.28125,
+            "y": 307
+          },
+          "rect": {
+            "bottom": 322,
+            "height": 13,
+            "right": 93.5625,
+            "width": 32.28125,
+            "x": 61.28125,
+            "y": 309
+          },
+          "resource": "energy",
+          "seat": 2,
+          "text": "灵力 0",
+          "unoccluded": true,
+          "visible": true
+        }
+      ],
+      "viewport": {
+        "height": 740,
+        "width": 320
+      }
+    },
+    {
+      "sourceResult": "games/yuyuhakusho/verification/platform-mode-ui/public-ui-four-fullscreen01/result.json",
+      "sourceSHA256": "a95271731ebfdcf10800fe04a5d14632a285e9d76cd51b58bbb231094ffce9de",
+      "mode": "four-team",
+      "epoch": "3e4e485b157daf3b7b9562bc",
+      "frame": "4628",
+      "digest": "e2265daff638c73a2dab0c4ee7a2325e41b0ee8b6daf248ab2edabb5bc0cc80f",
+      "realPersistedResultRestored": true,
+      "normalResultDialogDismissed": true,
+      "sameCanvasTopBeforeAfter": true,
+      "canvasTop": 399,
+      "modalPresent": false,
+      "scrollY": 0,
+      "values": [
+        {
+          "color": "rgb(41, 59, 53)",
+          "ink": {
+            "bottom": 256,
+            "height": 16,
+            "right": 59.28125,
+            "width": 32.28125,
+            "x": 27,
+            "y": 240
+          },
+          "rect": {
+            "bottom": 255,
+            "height": 13,
+            "right": 59.28125,
+            "width": 32.28125,
+            "x": 27,
+            "y": 242
+          },
+          "resource": "health",
+          "seat": 0,
+          "text": "体力 0",
+          "unoccluded": true,
+          "visible": true
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "ink": {
+            "bottom": 256,
+            "height": 16,
+            "right": 97.5625,
+            "width": 32.28125,
+            "x": 65.28125,
+            "y": 240
+          },
+          "rect": {
+            "bottom": 255,
+            "height": 13,
+            "right": 97.5625,
+            "width": 32.28125,
+            "x": 65.28125,
+            "y": 242
+          },
+          "resource": "energy",
+          "seat": 0,
+          "text": "灵力 0",
+          "unoccluded": true,
+          "visible": true
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "ink": {
+            "bottom": 324,
+            "height": 16,
+            "right": 59.28125,
+            "width": 32.28125,
+            "x": 27,
+            "y": 308
+          },
+          "rect": {
+            "bottom": 323,
+            "height": 13,
+            "right": 59.28125,
+            "width": 32.28125,
+            "x": 27,
+            "y": 310
+          },
+          "resource": "health",
+          "seat": 1,
+          "text": "体力 0",
+          "unoccluded": true,
+          "visible": true
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "ink": {
+            "bottom": 324,
+            "height": 16,
+            "right": 97.5625,
+            "width": 32.28125,
+            "x": 65.28125,
+            "y": 308
+          },
+          "rect": {
+            "bottom": 323,
+            "height": 13,
+            "right": 97.5625,
+            "width": 32.28125,
+            "x": 65.28125,
+            "y": 310
+          },
+          "resource": "energy",
+          "seat": 1,
+          "text": "灵力 0",
+          "unoccluded": true,
+          "visible": true
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "ink": {
+            "bottom": 256,
+            "height": 16,
+            "right": 208.28125,
+            "width": 32.28125,
+            "x": 176,
+            "y": 240
+          },
+          "rect": {
+            "bottom": 255,
+            "height": 13,
+            "right": 208.28125,
+            "width": 32.28125,
+            "x": 176,
+            "y": 242
+          },
+          "resource": "health",
+          "seat": 2,
+          "text": "体力 0",
+          "unoccluded": true,
+          "visible": true
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "ink": {
+            "bottom": 256,
+            "height": 16,
+            "right": 246.5625,
+            "width": 32.28125,
+            "x": 214.28125,
+            "y": 240
+          },
+          "rect": {
+            "bottom": 255,
+            "height": 13,
+            "right": 246.5625,
+            "width": 32.28125,
+            "x": 214.28125,
+            "y": 242
+          },
+          "resource": "energy",
+          "seat": 2,
+          "text": "灵力 0",
+          "unoccluded": true,
+          "visible": true
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "ink": {
+            "bottom": 324,
+            "height": 16,
+            "right": 208.28125,
+            "width": 32.28125,
+            "x": 176,
+            "y": 308
+          },
+          "rect": {
+            "bottom": 323,
+            "height": 13,
+            "right": 208.28125,
+            "width": 32.28125,
+            "x": 176,
+            "y": 310
+          },
+          "resource": "health",
+          "seat": 3,
+          "text": "体力 0",
+          "unoccluded": true,
+          "visible": true
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "ink": {
+            "bottom": 324,
+            "height": 16,
+            "right": 246.5625,
+            "width": 32.28125,
+            "x": 214.28125,
+            "y": 308
+          },
+          "rect": {
+            "bottom": 323,
+            "height": 13,
+            "right": 246.5625,
+            "width": 32.28125,
+            "x": 214.28125,
+            "y": 310
+          },
+          "resource": "energy",
+          "seat": 3,
+          "text": "灵力 0",
+          "unoccluded": true,
+          "visible": true
+        }
+      ],
+      "viewport": {
+        "height": 740,
+        "width": 320
+      }
+    }
+  ],
+  "scriptSHA256": "eec72b86795dde02c6c75c82474b3d9641491912985bca801f1b104f75a29f5f"
+}

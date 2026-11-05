@@ -1,0 +1,15 @@
+{
+  "pass": false,
+  "mode": "three-free",
+  "capacity": 3,
+  "scope": "Actual normal React app/authentication/SQLite/WebSocket; two real local accounts plus explicitly added bots. No ROM/emulator/fake authority.",
+  "appBuild": "f6fc855c448e734fa5ef43985108e343f80f21727341414f77d802cc99dfc98b",
+  "error": "RuntimeError('{\"success\":false,\"data\":null,\"error\":\"No element found: getByRole(\\'button\\', { name: \\'创建账号\\', exact: true }). Verify the selector, role, or name is correct and the element exists in the DOM.\"}\\n')",
+  "sourceSHA256": {
+    "scripts/yuyuhakusho/check_platform_modes.py": "b39b3e2c54dabe75cef1507d6c42667b0f845905582fb7da360a2846bd568bee",
+    "scripts/yuyuhakusho/platform_app_host.go": "b69aad1a7ffd6b08713ad429709c667854ae9c7053b289c4da1a7f2f0e878ba0",
+    "scripts/yuyuhakusho/platform_app_observer.js": "b07d9a383bd2927e2d188e604dfa43c4d084945d788810f5f3ff4480dd283a5c",
+    "scripts/yuyuhakusho/native_app_input.mjs": "b8d4e687b01e668d4b9c870397ba201ce6d94085919ee9ddb20b62abd168e459",
+    "scripts/yuyuhakusho/inspect_platform_modes.go": "94f43cbc3097bfa8a47e82bf74212e9e5930f7e0c381d66a9e4c09444826e45a"
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "pass": true,
+  "scope": "Public timer CSS/DOM contract only",
+  "computed": [
+    {
+      "height": 79,
+      "id": "contract-default-none",
+      "placeholder": true,
+      "time": {
+        "display": "block",
+        "height": 30,
+        "text": "00:00",
+        "visibility": "hidden",
+        "width": 66
+      }
+    },
+    {
+      "height": 79,
+      "id": "contract-default-clock",
+      "placeholder": false,
+      "time": {
+        "display": "block",
+        "height": 30,
+        "text": "00:10",
+        "visibility": "visible",
+        "width": 66
+      }
+    },
+    {
+      "height": 32,
+      "id": "contract-opted-none",
+      "placeholder": true,
+      "time": {
+        "display": "block",
+        "height": 18,
+        "text": "00:00",
+        "visibility": "hidden",
+        "width": 36
+      }
+    },
+    {
+      "height": 32,
+      "id": "contract-opted-clock",
+      "placeholder": false,
+      "time": {
+        "display": "block",
+        "height": 18,
+        "text": "00:10",
+        "visibility": "visible",
+        "width": 36
+      }
+    }
+  ]
+}

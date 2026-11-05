@@ -1,0 +1,25 @@
+{
+  "before": [
+    {
+      "source": "web/src/game-api/host.tsx",
+      "sha256": "f154a7667e3c0903260acf6b9b6e31f3d4afd541e86423bd6c8609d7ad5d3278",
+      "archive": "games/yuyuhakusho/verification/platform-web/host.tsx.before-public-ui-edge-fixes.txt"
+    },
+    {
+      "source": "web/src/game-api/host.css",
+      "sha256": "67020132fab8f885525db96aaaecb34cb36f4b37ffd7c1c10b5e5c32597d4b76",
+      "archive": "games/yuyuhakusho/verification/platform-web/host.css.before-public-ui-edge-fixes.txt"
+    },
+    {
+      "source": "web/src/game-api/viewport-fit.tsx",
+      "sha256": "0f307d6f834b77b0acede296c7a9d74c6fca7e93e6918aa4b72c9a3ea35f6278",
+      "archive": "games/yuyuhakusho/verification/platform-web/viewport-fit.tsx.before-public-ui-edge-fixes.txt"
+    }
+  ],
+  "scroll_actual_red": "../platform-mode-ui/public-fit-flow-chat-red01/result.json",
+  "contrast_actual_red": "../platform-mode-ui/public-contrast-four-red01/result.json",
+  "avatar_gold_contrast": 2.636887527066922,
+  "badge_contrast": 2.96287163843222,
+  "result_header_shift_actual": "../platform-mode-ui/public-optin-four-final01/result.json",
+  "root_cause": "autoplay.active adds1px border to inactive border0; RoomHeading preserves2px larger footprint"
+}

@@ -1,0 +1,156 @@
+{
+  "beforeCanvasTop": 394,
+  "canvasTop": 394,
+  "modalPresent": false,
+  "scrollY": 0,
+  "values": [
+    {
+      "color": "rgb(41, 59, 53)",
+      "ink": {
+        "bottom": 252,
+        "height": 16,
+        "right": 55.28125,
+        "width": 32.28125,
+        "x": 23,
+        "y": 236
+      },
+      "rect": {
+        "bottom": 251,
+        "height": 13,
+        "right": 55.28125,
+        "width": 32.28125,
+        "x": 23,
+        "y": 238
+      },
+      "resource": "health",
+      "seat": 0,
+      "text": "体力 0",
+      "unoccluded": true,
+      "visible": true
+    },
+    {
+      "color": "rgb(41, 59, 53)",
+      "ink": {
+        "bottom": 252,
+        "height": 16,
+        "right": 93.5625,
+        "width": 32.28125,
+        "x": 61.28125,
+        "y": 236
+      },
+      "rect": {
+        "bottom": 251,
+        "height": 13,
+        "right": 93.5625,
+        "width": 32.28125,
+        "x": 61.28125,
+        "y": 238
+      },
+      "resource": "energy",
+      "seat": 0,
+      "text": "灵力 0",
+      "unoccluded": true,
+      "visible": true
+    },
+    {
+      "color": "rgb(41, 59, 53)",
+      "ink": {
+        "bottom": 252,
+        "height": 16,
+        "right": 204.28125,
+        "width": 32.28125,
+        "x": 172,
+        "y": 236
+      },
+      "rect": {
+        "bottom": 251,
+        "height": 13,
+        "right": 204.28125,
+        "width": 32.28125,
+        "x": 172,
+        "y": 238
+      },
+      "resource": "health",
+      "seat": 1,
+      "text": "体力 0",
+      "unoccluded": true,
+      "visible": true
+    },
+    {
+      "color": "rgb(41, 59, 53)",
+      "ink": {
+        "bottom": 252,
+        "height": 16,
+        "right": 242.5625,
+        "width": 32.28125,
+        "x": 210.28125,
+        "y": 236
+      },
+      "rect": {
+        "bottom": 251,
+        "height": 13,
+        "right": 242.5625,
+        "width": 32.28125,
+        "x": 210.28125,
+        "y": 238
+      },
+      "resource": "energy",
+      "seat": 1,
+      "text": "灵力 0",
+      "unoccluded": true,
+      "visible": true
+    },
+    {
+      "color": "rgb(41, 59, 53)",
+      "ink": {
+        "bottom": 323,
+        "height": 16,
+        "right": 55.28125,
+        "width": 32.28125,
+        "x": 23,
+        "y": 307
+      },
+      "rect": {
+        "bottom": 322,
+        "height": 13,
+        "right": 55.28125,
+        "width": 32.28125,
+        "x": 23,
+        "y": 309
+      },
+      "resource": "health",
+      "seat": 2,
+      "text": "体力 0",
+      "unoccluded": true,
+      "visible": true
+    },
+    {
+      "color": "rgb(41, 59, 53)",
+      "ink": {
+        "bottom": 323,
+        "height": 16,
+        "right": 93.5625,
+        "width": 32.28125,
+        "x": 61.28125,
+        "y": 307
+      },
+      "rect": {
+        "bottom": 322,
+        "height": 13,
+        "right": 93.5625,
+        "width": 32.28125,
+        "x": 61.28125,
+        "y": 309
+      },
+      "resource": "energy",
+      "seat": 2,
+      "text": "灵力 0",
+      "unoccluded": true,
+      "visible": true
+    }
+  ],
+  "viewport": {
+    "height": 740,
+    "width": 320
+  }
+}

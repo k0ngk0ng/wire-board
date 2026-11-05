@@ -1,0 +1,5 @@
+{
+  "red": "fullscreen-slot-geometry-settle-red.json",
+  "finding": "Test read prior desktop rightInset immediately after narrow viewport protocol resize; wait two animation frames before checking actual layout. Product default inset logic unchanged.",
+  "actualProductRed": "../platform-mode-ui/public-fullscreen-autoplay-red02/result.json"
+}

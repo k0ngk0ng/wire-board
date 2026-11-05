@@ -1,0 +1,155 @@
+{
+  "schema": 1,
+  "revision": "public-mode-resource-ui-v1",
+  "baseline_commit": "2ac14ca9",
+  "resource_display_pass": true,
+  "whole_mode_ui_complete": false,
+  "production_changes": [
+    "games/yuyuhakusho/web/module.tsx",
+    "games/yuyuhakusho/web/network.css"
+  ],
+  "source_sha256": {
+    "games/yuyuhakusho/web/module.tsx": "ef901a92833f3ecec42b9a4c1fabe6fa955cad1431bf85e7633a80df2ea7bb98",
+    "games/yuyuhakusho/web/network.css": "ddbfd17554b935243c66417c57c39ae84d5eed4269d2e2e64473901371d5f681",
+    "scripts/yuyuhakusho/check_platform_modes.py": "6657d0fe5efc92777d27faa00b5c943116b49fcf4116691fce6c4d2598851c89",
+    "scripts/yuyuhakusho/inspect_platform_modes.go": "94f43cbc3097bfa8a47e82bf74212e9e5930f7e0c381d66a9e4c09444826e45a"
+  },
+  "network_rpc_unchanged": {
+    "games/yuyuhakusho/web/network-scene.ts": "f8ee4b8df95ee7c7d3576b59bcb2554fa3051445a608b529e9fd1c60591f7c06",
+    "games/yuyuhakusho/web/network-client.ts": "d5b435001676e9ffe6114d8e6be19f2fba404b57af2638c45dc856580033de7a",
+    "games/yuyuhakusho/web/network-input.ts": "13ccfd4ceeb4c434657aa5306723f5ff2076dd810b235f9b5aab1b3fdf896922",
+    "games/yuyuhakusho/cmd/platform-client-wasm/main_js.go": "764e3be6ee19c8403cc7d5336174e5317fcc858dd592d636cb5d1c85350afa22"
+  },
+  "mode_evidence": {
+    "four-team-energy-red01": {
+      "pass": false,
+      "result": "games/yuyuhakusho/verification/platform-mode-ui/four-team-energy-red01/result.json",
+      "artifact_sha256": {
+        "games/yuyuhakusho/verification/platform-mode-ui/four-team-energy-red01/checker.executed.py.txt": "15cc66eda66834a36e86f180c4df6f8b33ba006225b3f7827bc9de15469fb878",
+        "games/yuyuhakusho/verification/platform-mode-ui/four-team-energy-red01/desktop-initial.png": "e7626726620074971805be5edf5be011fc330d456a55c195d245605235e0f7c7",
+        "games/yuyuhakusho/verification/platform-mode-ui/four-team-energy-red01/desktop-native-key.json": "bdf4810e71f877606f7d29618ace225db1c7e79df683b952e155bd9f3c19c7ab",
+        "games/yuyuhakusho/verification/platform-mode-ui/four-team-energy-red01/desktop-playable.png": "7fb900fe4ccd1286977671a48089fe18ac7ef0654d0ab2dfa104093a58f697a0",
+        "games/yuyuhakusho/verification/platform-mode-ui/four-team-energy-red01/desktop-touch.json": "0e5fb933df287bb0815177153ddf9a686acfbc06bc01bc7043212aacd0c58e16",
+        "games/yuyuhakusho/verification/platform-mode-ui/four-team-energy-red01/guest-failure.png": "c19b7ae8fc967c73a6a95ae0c1af1110c87cb1ff19a96e514c9d49ec41f07888",
+        "games/yuyuhakusho/verification/platform-mode-ui/four-team-energy-red01/host-failure.png": "90f2faeb4fa8d85a1c9b227c81563d3a6f5380cbbe1678811e3746d6bd828bc8",
+        "games/yuyuhakusho/verification/platform-mode-ui/four-team-energy-red01/host.log": "56b29cbcc9896cae24a3e1782b3e023b87aeb831e11ca850c55b528b8876ec86",
+        "games/yuyuhakusho/verification/platform-mode-ui/four-team-energy-red01/landscape-fullscreen-initial.png": "069bd577cc384205eea356adf4a254fcdc263d1cf75e5e4c11e17ab88c2bdd0f",
+        "games/yuyuhakusho/verification/platform-mode-ui/four-team-energy-red01/landscape-fullscreen-playable.png": "f28c42abba53e06dbc78785edbc59afc2328256c8a9582d402bd411f9b7d19b4",
+        "games/yuyuhakusho/verification/platform-mode-ui/four-team-energy-red01/landscape-fullscreen-touch.json": "acd6b9e8165b2af739f75d7abe4fa4afbd0079a5b2ef8fa2328a256b461b4796",
+        "games/yuyuhakusho/verification/platform-mode-ui/four-team-energy-red01/portrait-320-initial.png": "c75ca61e92feffac7b36256abc39c5f8d19def00062c58e2df43289eff7f5154",
+        "games/yuyuhakusho/verification/platform-mode-ui/four-team-energy-red01/portrait-320-playable.png": "788477f9c44175e4ba026451a295a993a1271c2e67e1ca9a994c958572b5c2f1",
+        "games/yuyuhakusho/verification/platform-mode-ui/four-team-energy-red01/portrait-320-touch.json": "5598c10c8cc60e120bbcfa698f2db97e3ad87dd455e58d58e8ed9271ef5146b0",
+        "games/yuyuhakusho/verification/platform-mode-ui/four-team-energy-red01/preparation.json": "18c65f0e33bd4824eb45dd6d9e0bf5887e6d2e6f47d16072ed6c243212ad0f25",
+        "games/yuyuhakusho/verification/platform-mode-ui/four-team-energy-red01/preparation.png": "89d542c1630b3829f03b9c3a0ca0245b7ae61b977e00d4d540488bfae54a7091",
+        "games/yuyuhakusho/verification/platform-mode-ui/four-team-energy-red01/result.json": "285aa2d6bad4f19fdaa6d1db53cfaba7f78f5895ac77b205d0e1a654c914a667",
+        "games/yuyuhakusho/verification/platform-mode-ui/four-team-energy-red01/sync-envelope.json": "980df89644c9992d07f0c3703250e6b37c4033a4dfb2144f5d226b9837509add"
+      },
+      "missing_energy": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "has_actual_zero_values": false
+    },
+    "three-free-energy-red01": {
+      "pass": false,
+      "result": "games/yuyuhakusho/verification/platform-mode-ui/three-free-energy-red01/result.json",
+      "artifact_sha256": {
+        "games/yuyuhakusho/verification/platform-mode-ui/three-free-energy-red01/checker.executed.py.txt": "15cc66eda66834a36e86f180c4df6f8b33ba006225b3f7827bc9de15469fb878",
+        "games/yuyuhakusho/verification/platform-mode-ui/three-free-energy-red01/desktop-initial.png": "a125bae6e7ed3f1e9aa5b089595df47c1cd478e7b1cc6053762aa99e62b6624e",
+        "games/yuyuhakusho/verification/platform-mode-ui/three-free-energy-red01/desktop-native-key.json": "185c539aefe20873f5d715a915ca607938b9ce431ef27f1f55c8f9a45fda2c02",
+        "games/yuyuhakusho/verification/platform-mode-ui/three-free-energy-red01/desktop-playable.png": "a48ee57939fbc5d4996ce65dc935abd472a876a9d358273bdc723d38272e8f32",
+        "games/yuyuhakusho/verification/platform-mode-ui/three-free-energy-red01/desktop-touch.json": "5682cd6988c3ab09a669e07ad06653b52d33b2fd4b299f2036c5fd189e50f648",
+        "games/yuyuhakusho/verification/platform-mode-ui/three-free-energy-red01/guest-failure.png": "04bf7940f2b0e54305862b290d271e2aa9d3d611cfc034c2af44905faa60d869",
+        "games/yuyuhakusho/verification/platform-mode-ui/three-free-energy-red01/host-failure.png": "5792075d7c0bcb13060e06024999b97e4d65b4d5b380a93f01b9f2b9f3773cc6",
+        "games/yuyuhakusho/verification/platform-mode-ui/three-free-energy-red01/host.log": "801d134a894b2cc7cfd707733a3486835834f6e61044b01a9feb3b18dbb46940",
+        "games/yuyuhakusho/verification/platform-mode-ui/three-free-energy-red01/landscape-fullscreen-initial.png": "6da04520d7f232a014667a11f68dd84aea8ff245302327fc65340578e192ff47",
+        "games/yuyuhakusho/verification/platform-mode-ui/three-free-energy-red01/landscape-fullscreen-playable.png": "ccb1c07305a8196d5c60e571429ece8447d6301b2ca222677e673f29eb889af5",
+        "games/yuyuhakusho/verification/platform-mode-ui/three-free-energy-red01/landscape-fullscreen-touch.json": "aa848b4ccc85a46b50b6defc294a5be3841401d16c5be9462557e5bf6591db8b",
+        "games/yuyuhakusho/verification/platform-mode-ui/three-free-energy-red01/portrait-320-initial.png": "5a1fbb22241e9743aebb24c6f55c9904c5b47c6ff4d7a952409231a91e4e2de3",
+        "games/yuyuhakusho/verification/platform-mode-ui/three-free-energy-red01/portrait-320-playable.png": "05d3ebbd0c7d91d4aa60df22d5318cd95908819040a9e3d92dce9aea40f6bedd",
+        "games/yuyuhakusho/verification/platform-mode-ui/three-free-energy-red01/portrait-320-touch.json": "73b1c5dc853b5d06066a09d9e9d3d38b962b77ce15598bad5d42c1bef5176f72",
+        "games/yuyuhakusho/verification/platform-mode-ui/three-free-energy-red01/preparation.json": "336723e97410ee22327fed00d32d6b9a338dc12dafd1ed2c6589459378e38677",
+        "games/yuyuhakusho/verification/platform-mode-ui/three-free-energy-red01/preparation.png": "8887040e5fc5875bdd9f4d764a82e108407da2e45acfbf4e0ecb20bf26f817a4",
+        "games/yuyuhakusho/verification/platform-mode-ui/three-free-energy-red01/result.json": "82a10a3baa6cea31a57f121d0c738fb10b3d0da50ae84feeb74f3a84b194de10",
+        "games/yuyuhakusho/verification/platform-mode-ui/three-free-energy-red01/sync-envelope.json": "28b12d6e1fd7d1980e6cc06ae4e1e4fffd2955b8f5dea18a83f96579317ab26a"
+      },
+      "missing_energy": [
+        0,
+        1,
+        2
+      ],
+      "has_actual_zero_values": false
+    },
+    "four-team-energy-green01": {
+      "pass": true,
+      "result": "games/yuyuhakusho/verification/platform-mode-ui/four-team-energy-green01/result.json",
+      "artifact_sha256": {
+        "games/yuyuhakusho/verification/platform-mode-ui/four-team-energy-green01/checker.executed.py.txt": "6657d0fe5efc92777d27faa00b5c943116b49fcf4116691fce6c4d2598851c89",
+        "games/yuyuhakusho/verification/platform-mode-ui/four-team-energy-green01/desktop-initial.png": "f0754c8454172d6142b55c1d62849146ab6ba28cda1f48fc196262c54caab7d9",
+        "games/yuyuhakusho/verification/platform-mode-ui/four-team-energy-green01/desktop-native-key.json": "0a5d300ca0320bcdaba98d76b1340c44488a0570378cd75597d8e06fdec92bd6",
+        "games/yuyuhakusho/verification/platform-mode-ui/four-team-energy-green01/desktop-playable.png": "1bee6b16160b8a7b5b45122218d744a3930cf454ba01eada6cc18595ffa46d3f",
+        "games/yuyuhakusho/verification/platform-mode-ui/four-team-energy-green01/desktop-touch.json": "54f7ead0c264bd4ad92b6ca8b633736ebd4ac8343e62aff637dfe56fe3098de8",
+        "games/yuyuhakusho/verification/platform-mode-ui/four-team-energy-green01/host.log": "09d00bf4072f3b7f3d2d61f74c522a5b61985f4683d59633dd23bf800c1f8214",
+        "games/yuyuhakusho/verification/platform-mode-ui/four-team-energy-green01/landscape-fullscreen-initial.png": "9e5ca98e68609ee34b8d0d078090f1183b236173219fddb4de93c1b80c237a29",
+        "games/yuyuhakusho/verification/platform-mode-ui/four-team-energy-green01/landscape-fullscreen-playable.png": "2ad5abaf00b049c0bfcca23cac5808c08ec15ab01dfad7d18a0fc950de8ffd19",
+        "games/yuyuhakusho/verification/platform-mode-ui/four-team-energy-green01/landscape-fullscreen-touch.json": "b0fb46840493d75c3fd1a391341c16a7bcb5d179bb7da0267e50a271655903f5",
+        "games/yuyuhakusho/verification/platform-mode-ui/four-team-energy-green01/portrait-320-initial.png": "dfb0816f4f49bd345d56f3be89f2d03348c97b6eeb729b75f0eae4eedbe4c78b",
+        "games/yuyuhakusho/verification/platform-mode-ui/four-team-energy-green01/portrait-320-playable.png": "02b463059b7c8792b6f9aecc006660edb4c8b6a9f125902b75a957f74a8c83a6",
+        "games/yuyuhakusho/verification/platform-mode-ui/four-team-energy-green01/portrait-320-touch.json": "6fde459e6951f99bc21b53a1479a653dd2ae2831bfc2ae21f01719890e39bfba",
+        "games/yuyuhakusho/verification/platform-mode-ui/four-team-energy-green01/preparation.json": "0af558b2e1fcaf666cc087fce5d2643802af4a062260b39b4eaab9c35f0a5de3",
+        "games/yuyuhakusho/verification/platform-mode-ui/four-team-energy-green01/preparation.png": "c958c2b229f80a7a3666f70fafc150c81562e6830b466b406d8348dc2d472675",
+        "games/yuyuhakusho/verification/platform-mode-ui/four-team-energy-green01/result.json": "93982897569e7781952d9c0ce91dab037e3700fbc8fbabe486ae3f82029994ab",
+        "games/yuyuhakusho/verification/platform-mode-ui/four-team-energy-green01/sync-envelope.json": "c2ea1f649b678e7a7b6055e6bdeba33bf83bee717b87cfa3227a2d81daf21175",
+        "games/yuyuhakusho/verification/platform-mode-ui/four-team-energy-green01/zero-resources-320.png": "ce6007a37f574d7cba42979909e016cad8cf823241ae923d6b26c0e825fea544",
+        "games/yuyuhakusho/verification/platform-mode-ui/four-team-energy-green01/zero-visible-verification.json": "1416d891a15084837fce0c95d1db2d7bf29b6eb3f3bd3e0dca79a876ac9e9ecc"
+      },
+      "missing_energy": [],
+      "has_actual_zero_values": true
+    },
+    "three-free-energy-green01": {
+      "pass": true,
+      "result": "games/yuyuhakusho/verification/platform-mode-ui/three-free-energy-green01/result.json",
+      "artifact_sha256": {
+        "games/yuyuhakusho/verification/platform-mode-ui/three-free-energy-green01/checker.executed.py.txt": "6657d0fe5efc92777d27faa00b5c943116b49fcf4116691fce6c4d2598851c89",
+        "games/yuyuhakusho/verification/platform-mode-ui/three-free-energy-green01/desktop-initial.png": "8ab527478e92c3672961e7505ead6b47b80af6d62d78ce97843c37717d5125c2",
+        "games/yuyuhakusho/verification/platform-mode-ui/three-free-energy-green01/desktop-native-key.json": "5113e52b78610186b38c4f821c101670afa4d0ec1c5f66c51dcb5889061c1e1d",
+        "games/yuyuhakusho/verification/platform-mode-ui/three-free-energy-green01/desktop-playable.png": "1620b7953f9b14ac9743d35449bb2d14161eb6505e5539760fb49541a7aff900",
+        "games/yuyuhakusho/verification/platform-mode-ui/three-free-energy-green01/desktop-touch.json": "c634c76da35e3f209f76bc1cbc0c042b0342c92a0930e1eb666dfa8b4d6f058c",
+        "games/yuyuhakusho/verification/platform-mode-ui/three-free-energy-green01/host.log": "b562c6af27ed22981a99fbf6d209266fb455064f5c095e3b31ed7124a05c4e6b",
+        "games/yuyuhakusho/verification/platform-mode-ui/three-free-energy-green01/landscape-fullscreen-initial.png": "fa4260fb943764160867ef8b52eb4c05c9edc1d41d29473d18db265479fde4c2",
+        "games/yuyuhakusho/verification/platform-mode-ui/three-free-energy-green01/landscape-fullscreen-playable.png": "d017ed987bac318137be13592915a043b83bab1d2260faf8d25d1316539844f5",
+        "games/yuyuhakusho/verification/platform-mode-ui/three-free-energy-green01/landscape-fullscreen-touch.json": "66e03ee12f6a93714a06018e7db29e5b08d0474a0658d40f737791675d90b1ec",
+        "games/yuyuhakusho/verification/platform-mode-ui/three-free-energy-green01/portrait-320-initial.png": "7711179a509598ea65f087377e19d8599d4c26e2733747676a32d07f7d764cbf",
+        "games/yuyuhakusho/verification/platform-mode-ui/three-free-energy-green01/portrait-320-playable.png": "5fe4fd903108fa5e63e2a01370bec125da78559d6f39ba516195242e057cece2",
+        "games/yuyuhakusho/verification/platform-mode-ui/three-free-energy-green01/portrait-320-touch.json": "40a37f1a2fed0a43e3005b512064ac0923c04429fe343770734d7eef02ce776c",
+        "games/yuyuhakusho/verification/platform-mode-ui/three-free-energy-green01/preparation.json": "a562d0bb5ec1050fa5b2b4cc5305842b19f14d98c5e9701f8c08bc7db8eb60ba",
+        "games/yuyuhakusho/verification/platform-mode-ui/three-free-energy-green01/preparation.png": "e301cd2fec5117cb8c3f96eca4aa1ac3401d4b5ef82aff8532eeefd9b1d5b046",
+        "games/yuyuhakusho/verification/platform-mode-ui/three-free-energy-green01/result.json": "006f4c1dfce94c85216c72752ae5704f50d468449ed6821d7fcf20a8a62ed96d",
+        "games/yuyuhakusho/verification/platform-mode-ui/three-free-energy-green01/sync-envelope.json": "06718ead806ae6d7a2d2cfaf4b17eef5d0b734b707cba37a7bcda1ff699fe82a",
+        "games/yuyuhakusho/verification/platform-mode-ui/three-free-energy-green01/zero-resources-320.png": "bbbbf06a063051eb00a73a12bce220916112a70caf55dbe1028c88805d2fde7a",
+        "games/yuyuhakusho/verification/platform-mode-ui/three-free-energy-green01/zero-visible-verification.json": "c9fdb439e12de1037bf62f471e3e96eece77cd7b75e3833feadcbd3a42e33cf4"
+      },
+      "missing_energy": [],
+      "has_actual_zero_values": true
+    }
+  },
+  "artifact_sha256": {
+    "PUBLIC_MODE_UI_FAILURES.md": "1fd53dd16ed069204711534d39a56080cdc8073a82252f420aa43b4e27f6c700",
+    "PUBLIC_MODE_RESOURCE_REPORT.md": "6afe16a9d70c2f7060dd19788fa873b49e9b4b113a1fda61138b28d8be7e022c",
+    "public-modes-test-first.json": "5b04af1484944da32a422f31ca3d568cf35d6c6c679a944ff3a56e145094b9c3",
+    "typecheck-public-energy-v1.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "app-build-public-energy-v1.json": "f6eeff25dcc0c059a14b791e98759a93ace31debe79257d878ab70c74a06eda3",
+    "public-energy-wasm-source-invariance.json": "d8b532518df2539db4b1cd01b59b5fc0d7596c4a72d307d76617c73699bfb789"
+  },
+  "pending_root_ui_review": [
+    "normal320px3/4public-player-card height pushes game/pad below viewport",
+    "4team member relationship not clearly labeled",
+    "preparation select contrast and duplicate Options/Preparation controls"
+  ],
+  "actual_authority_data": true,
+  "zero_values_from_natural_completed_matches": true,
+  "no_public_layout_changes": true,
+  "no_rule_input_clock_rpc_changes": true
+}

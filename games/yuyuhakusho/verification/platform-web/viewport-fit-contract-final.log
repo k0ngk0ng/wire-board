@@ -1,0 +1,12 @@
+✔ entry auto-scroll remains default and only explicit fit opts out (0.278416ms)
+✔ available height uses measured boundaries and real obstruction (0.063208ms)
+✔ scroll cannot feed an expansion loop but actual layout resize can grow (0.042417ms)
+✔ invalid geometry does not write a fabricated height (0.040041ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 59.119167

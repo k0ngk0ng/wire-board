@@ -1,0 +1,9 @@
+{
+  "source": "web/src/main.tsx",
+  "before_sha256": "c4e07b178fe0ed4cbbc4cdf19918c1cb06e3748f5ad1546a3710c6d61bbaba8f",
+  "archive": "games/yuyuhakusho/verification/platform-web/main.before-compact-autoplay-notice.tsx.txt",
+  "actual_red": "../platform-mode-ui/public-ui-four-verified02/result.json",
+  "actual_red_delta_px": 123,
+  "authorization": "Root approved one notice condition only; default remains unchanged",
+  "necessary_state_and_resume": "compact public cards + room-tools cancel entry"
+}

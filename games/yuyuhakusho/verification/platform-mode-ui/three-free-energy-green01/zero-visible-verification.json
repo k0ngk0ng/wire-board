@@ -1,0 +1,14 @@
+{
+  "pass": true,
+  "source_result_sha256": "006f4c1dfce94c85216c72752ae5704f50d468449ed6821d7fcf20a8a62ed96d",
+  "viewport": [
+    320,
+    740
+  ],
+  "all_zero_resource_rects_in_viewport_and_public_panel": true,
+  "frames": [
+    "4610"
+  ],
+  "no_data_injection": true,
+  "zero_values_from_actual_completed_match": true
+}

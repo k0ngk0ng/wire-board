@@ -1,0 +1,11 @@
+{
+  "pass": true,
+  "scope": "Public fullscreen actual React fallback DOM/slot contract; no game rules",
+  "checks": [
+    "no_slot_default_normal_and_fullscreen_dom_exact_baseline"
+  ],
+  "defaultMarkup": {
+    "normal": "<div class=\"game-fullscreen-surface\" data-game-fullscreen-surface=\"true\"><div class=\"game-fullscreen-board\" data-fullscreen-board=\"true\" tabindex=\"-1\"><canvas data-contract-canvas=\"true\" width=\"240\" height=\"180\" style=\"width: 240px; height: 180px;\"></canvas></div></div>",
+    "fullscreen": "<div class=\"game-fullscreen-surface\" data-game-fullscreen-surface=\"true\" data-room-fullscreen=\"page\"><div class=\"game-fullscreen-toolbar\" style=\"padding-right: 64px;\"><div class=\"game-fullscreen-status\"><span data-contract-clock=\"true\">10 秒</span></div><button class=\"room-fullscreen-toggle\" data-fullscreen-toggle=\"true\" aria-label=\"退出全屏\" aria-pressed=\"true\" title=\"退出全屏（Esc）\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-minimize\"><path d=\"M8 3v3a2 2 0 0 1-2 2H3\"></path><path d=\"M21 8h-3a2 2 0 0 1-2-2V3\"></path><path d=\"M3 16h3a2 2 0 0 1 2 2v3\"></path><path d=\"M16 21v-3a2 2 0 0 1 2-2h3\"></path></svg></button></div><div class=\"game-fullscreen-board\" data-fullscreen-board=\"true\" tabindex=\"-1\"><canvas data-contract-canvas=\"true\" width=\"240\" height=\"180\" style=\"width: 240px; height: 180px;\"></canvas></div></div>"
+  }
+}

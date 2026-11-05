@@ -1,0 +1,6 @@
+{
+  "pass": true,
+  "scope": "Observer setup only; blank owned page, no game or authority",
+  "realReload": true,
+  "passiveObserverPresentAfterHelperDetached": true
+}

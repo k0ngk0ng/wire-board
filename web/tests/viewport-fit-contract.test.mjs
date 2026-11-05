@@ -1,0 +1,7 @@
+// Failures enumerated in PUBLIC_UI_OPTIN_FAILURES.md before implementation.
+import test from 'node:test';import assert from 'node:assert/strict';
+import {entryAutoScrollAllowed,viewportFitHeight}from'../src/game-api/viewport-fit-core.ts';
+test('entry auto-scroll remains default and only explicit fit opts out',()=>{assert.equal(entryAutoScrollAllowed(undefined),true);assert.equal(entryAutoScrollAllowed({}),true);assert.equal(entryAutoScrollAllowed({viewportFit:false}),true);assert.equal(entryAutoScrollAllowed({viewportFit:true}),false);});
+test('available height uses measured boundaries and real obstruction',()=>{assert.equal(viewportFitHeight({viewportHeight:740,documentTop:380,occlusionTop:676,bottomPadding:8,reason:'layout'}),288);assert.equal(viewportFitHeight({viewportHeight:1000,documentTop:250,bottomPadding:8,reason:'layout'}),742);});
+test('scroll cannot feed an expansion loop but actual layout resize can grow',()=>{assert.equal(viewportFitHeight({viewportHeight:740,documentTop:100,bottomPadding:8,previousHeight:288,reason:'scroll'}),288);assert.equal(viewportFitHeight({viewportHeight:900,documentTop:380,bottomPadding:8,previousHeight:288,reason:'layout'}),512);});
+test('invalid geometry does not write a fabricated height',()=>{assert.equal(viewportFitHeight({viewportHeight:NaN,documentTop:20,bottomPadding:8,reason:'layout'}),undefined);assert.equal(viewportFitHeight({viewportHeight:740,documentTop:800,bottomPadding:8,reason:'layout'}),undefined);});

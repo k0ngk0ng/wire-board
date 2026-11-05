@@ -1,0 +1,3637 @@
+{
+  "pass": false,
+  "mode": "four-team",
+  "capacity": 4,
+  "scope": "Actual normal React app/authentication/SQLite/WebSocket; two real local accounts plus explicitly added bots. No ROM/emulator/fake authority.",
+  "appBuild": "44bf42992de5daaf878ffc75cbd3ebd7287f4aa11284e1f4d399dfda483099c9",
+  "preparation": {
+    "capacity": 4,
+    "chat": null,
+    "clockOffsetMs": 0,
+    "closeReason": "",
+    "host": "25711df2abe839ea901de8c9",
+    "id": "b128a445",
+    "kind": "yuyuhakusho",
+    "loading": null,
+    "locked": false,
+    "matchId": "",
+    "name": "模式公开资源验收",
+    "options": {
+      "arena": 10,
+      "characters": [
+        3,
+        1,
+        8,
+        10
+      ],
+      "teamBattle": true
+    },
+    "seats": [
+      {
+        "id": "25711df2abe839ea901de8c9",
+        "left": false,
+        "name": "Modehostc74e4",
+        "network": {
+          "connected": true,
+          "connections": 1,
+          "rttMs": 0,
+          "sampledAt": 1793914983855
+        },
+        "ready": false
+      },
+      {
+        "id": "defc9847f310f635e57ab496",
+        "left": false,
+        "name": "Modeguestc74e4",
+        "network": {
+          "connected": true,
+          "connections": 1,
+          "rttMs": 0,
+          "sampledAt": 1793914985010
+        },
+        "ready": false
+      },
+      {
+        "bot": true,
+        "id": "bot-a82cb9e8416a9565e0fc5cd3",
+        "left": false,
+        "name": "电脑 1",
+        "ready": true
+      },
+      {
+        "bot": true,
+        "id": "bot-eff78ab24e20778784f9e320",
+        "left": false,
+        "name": "电脑 2",
+        "ready": true
+      }
+    ],
+    "setupVersion": 0,
+    "spectating": false,
+    "spectatorCount": 0,
+    "status": "waiting",
+    "turnDeadline": 0,
+    "updated": 1793914985,
+    "version": 9,
+    "you": 0
+  },
+  "preparationUI": {
+    "arenaCount": 1,
+    "modeCount": 1,
+    "selects": [
+      {
+        "background": "rgb(255, 254, 250)",
+        "color": "rgb(41, 59, 53)",
+        "contrast": 11.74810256400384,
+        "disabled": false,
+        "label": "场地",
+        "opacity": "1",
+        "value": "10"
+      },
+      {
+        "background": "rgb(255, 254, 250)",
+        "color": "rgb(41, 59, 53)",
+        "contrast": 11.74810256400384,
+        "disabled": false,
+        "label": "赛制",
+        "opacity": "1",
+        "value": "team"
+      },
+      {
+        "background": "rgb(255, 254, 250)",
+        "color": "rgb(41, 59, 53)",
+        "contrast": 11.74810256400384,
+        "disabled": false,
+        "label": "Modehostc74e4的角色",
+        "opacity": "1",
+        "value": "3"
+      },
+      {
+        "background": "rgb(255, 254, 250)",
+        "color": "rgb(41, 59, 53)",
+        "contrast": 11.74810256400384,
+        "disabled": true,
+        "label": "Modeguestc74e4的角色",
+        "opacity": "1",
+        "value": "1"
+      },
+      {
+        "background": "rgb(255, 254, 250)",
+        "color": "rgb(41, 59, 53)",
+        "contrast": 11.74810256400384,
+        "disabled": false,
+        "label": "电脑 1的角色",
+        "opacity": "1",
+        "value": "8"
+      },
+      {
+        "background": "rgb(255, 254, 250)",
+        "color": "rgb(41, 59, 53)",
+        "contrast": 11.74810256400384,
+        "disabled": false,
+        "label": "电脑 2的角色",
+        "opacity": "1",
+        "value": "10"
+      }
+    ]
+  },
+  "phaseLayouts": {
+    "opening": {
+      "c": {
+        "bottom": 701,
+        "height": 29.6875,
+        "right": 286.515625,
+        "width": 29.6875,
+        "x": 256.828125,
+        "y": 671.3125
+      },
+      "canvas": {
+        "bottom": 602.359375,
+        "height": 203.359375,
+        "right": 304.25,
+        "width": 288.484375,
+        "x": 15.765625,
+        "y": 399
+      },
+      "fit": {},
+      "frame": "1",
+      "fullscreen": false,
+      "height": 740,
+      "nativeFullscreen": false,
+      "overflow": false,
+      "pad": {
+        "bottom": 732,
+        "height": 122.640625,
+        "right": 305.25,
+        "width": 290.484375,
+        "x": 14.765625,
+        "y": 609.359375
+      },
+      "players": {
+        "bottom": 343,
+        "height": 150,
+        "right": 308,
+        "width": 296,
+        "x": 12,
+        "y": 193
+      },
+      "scrollY": 0,
+      "turn": {
+        "height": 18,
+        "scrollWidth": 144,
+        "text": "对局进行中",
+        "width": 144
+      },
+      "width": 320
+    },
+    "playing": {
+      "c": {
+        "bottom": 701,
+        "height": 29.6875,
+        "right": 286.515625,
+        "width": 29.6875,
+        "x": 256.828125,
+        "y": 671.3125
+      },
+      "canvas": {
+        "bottom": 602.359375,
+        "height": 203.359375,
+        "right": 304.25,
+        "width": 288.484375,
+        "x": 15.765625,
+        "y": 399
+      },
+      "fit": {},
+      "frame": "257",
+      "fullscreen": false,
+      "height": 740,
+      "nativeFullscreen": false,
+      "overflow": false,
+      "pad": {
+        "bottom": 732,
+        "height": 122.640625,
+        "right": 305.25,
+        "width": 290.484375,
+        "x": 14.765625,
+        "y": 609.359375
+      },
+      "players": {
+        "bottom": 343,
+        "height": 150,
+        "right": 308,
+        "width": 296,
+        "x": 12,
+        "y": 193
+      },
+      "scrollY": 0,
+      "turn": {
+        "height": 18,
+        "scrollWidth": 144,
+        "text": "对局进行中",
+        "width": 144
+      },
+      "width": 320
+    },
+    "paused": {
+      "c": {
+        "bottom": 701,
+        "height": 29.6875,
+        "right": 286.515625,
+        "width": 29.6875,
+        "x": 256.828125,
+        "y": 671.3125
+      },
+      "canvas": {
+        "bottom": 602.359375,
+        "height": 203.359375,
+        "right": 304.25,
+        "width": 288.484375,
+        "x": 15.765625,
+        "y": 399
+      },
+      "fit": {},
+      "frame": "463",
+      "fullscreen": false,
+      "height": 740,
+      "nativeFullscreen": false,
+      "overflow": false,
+      "pad": {
+        "bottom": 732,
+        "height": 122.640625,
+        "right": 305.25,
+        "width": 290.484375,
+        "x": 14.765625,
+        "y": 609.359375
+      },
+      "players": {
+        "bottom": 343,
+        "height": 150,
+        "right": 308,
+        "width": 296,
+        "x": 12,
+        "y": 193
+      },
+      "scrollY": 0,
+      "turn": {
+        "height": 18,
+        "scrollWidth": 144,
+        "text": "对局进行中",
+        "width": 144
+      },
+      "width": 320
+    }
+  },
+  "entry": {
+    "c": {
+      "bottom": 701,
+      "height": 29.6875,
+      "right": 286.515625,
+      "width": 29.6875,
+      "x": 256.828125,
+      "y": 671.3125
+    },
+    "canvas": {
+      "bottom": 602.359375,
+      "height": 203.359375,
+      "right": 304.25,
+      "width": 288.484375,
+      "x": 15.765625,
+      "y": 399
+    },
+    "fit": {},
+    "frame": "257",
+    "fullscreen": false,
+    "height": 740,
+    "nativeFullscreen": false,
+    "overflow": false,
+    "pad": {
+      "bottom": 732,
+      "height": 122.640625,
+      "right": 305.25,
+      "width": 290.484375,
+      "x": 14.765625,
+      "y": 609.359375
+    },
+    "players": {
+      "bottom": 343,
+      "height": 150,
+      "right": 308,
+      "width": 296,
+      "x": 12,
+      "y": 193
+    },
+    "scrollY": 0,
+    "turn": {
+      "height": 18,
+      "scrollWidth": 144,
+      "text": "对局进行中",
+      "width": 144
+    },
+    "width": 320
+  },
+  "entryResources": [
+    {
+      "energy": 223,
+      "epoch": "ac1d90516fe76efcb382b3bd",
+      "expected": {
+        "characterID": 3,
+        "energy": 223,
+        "health": 223,
+        "slot": 0
+      },
+      "frame": "252",
+      "health": 223,
+      "panel": {
+        "bottom": 264,
+        "height": 65,
+        "right": 153,
+        "width": 135,
+        "x": 18,
+        "y": 199
+      },
+      "resources": [
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 255,
+            "height": 13,
+            "right": 144,
+            "width": 117,
+            "x": 27,
+            "y": 242
+          },
+          "text": "体力 223灵力 223"
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 255,
+            "height": 13,
+            "right": 72.484375,
+            "width": 45.484375,
+            "x": 27,
+            "y": 242
+          },
+          "text": "体力 223"
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 255,
+            "height": 13,
+            "right": 123.96875,
+            "width": 45.484375,
+            "x": 78.484375,
+            "y": 242
+          },
+          "text": "灵力 223"
+        }
+      ],
+      "seat": 0,
+      "serverObserved": true,
+      "summary": {
+        "bottom": 255,
+        "height": 27,
+        "right": 144,
+        "width": 117,
+        "x": 27,
+        "y": 228
+      },
+      "teamText": false,
+      "text": "幽助体力 223灵力 223"
+    },
+    {
+      "energy": 223,
+      "epoch": "ac1d90516fe76efcb382b3bd",
+      "expected": {
+        "characterID": 1,
+        "energy": 223,
+        "health": 223,
+        "slot": 1
+      },
+      "frame": "252",
+      "health": 223,
+      "panel": {
+        "bottom": 332,
+        "height": 65,
+        "right": 153,
+        "width": 135,
+        "x": 18,
+        "y": 267
+      },
+      "resources": [
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 323,
+            "height": 13,
+            "right": 144,
+            "width": 117,
+            "x": 27,
+            "y": 310
+          },
+          "text": "体力 223灵力 223"
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 323,
+            "height": 13,
+            "right": 72.484375,
+            "width": 45.484375,
+            "x": 27,
+            "y": 310
+          },
+          "text": "体力 223"
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 323,
+            "height": 13,
+            "right": 123.96875,
+            "width": 45.484375,
+            "x": 78.484375,
+            "y": 310
+          },
+          "text": "灵力 223"
+        }
+      ],
+      "seat": 1,
+      "serverObserved": true,
+      "summary": {
+        "bottom": 323,
+        "height": 27,
+        "right": 144,
+        "width": 117,
+        "x": 27,
+        "y": 296
+      },
+      "teamText": false,
+      "text": "藏马体力 223灵力 223"
+    },
+    {
+      "energy": 223,
+      "epoch": "ac1d90516fe76efcb382b3bd",
+      "expected": {
+        "characterID": 8,
+        "energy": 223,
+        "health": 223,
+        "slot": 2
+      },
+      "frame": "252",
+      "health": 223,
+      "panel": {
+        "bottom": 264,
+        "height": 65,
+        "right": 302,
+        "width": 135,
+        "x": 167,
+        "y": 199
+      },
+      "resources": [
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 255,
+            "height": 13,
+            "right": 293,
+            "width": 117,
+            "x": 176,
+            "y": 242
+          },
+          "text": "体力 223灵力 223"
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 255,
+            "height": 13,
+            "right": 221.484375,
+            "width": 45.484375,
+            "x": 176,
+            "y": 242
+          },
+          "text": "体力 223"
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 255,
+            "height": 13,
+            "right": 272.96875,
+            "width": 45.484375,
+            "x": 227.484375,
+            "y": 242
+          },
+          "text": "灵力 223"
+        }
+      ],
+      "seat": 2,
+      "serverObserved": true,
+      "summary": {
+        "bottom": 255,
+        "height": 27,
+        "right": 293,
+        "width": 117,
+        "x": 176,
+        "y": 228
+      },
+      "teamText": false,
+      "text": "户愚吕兄体力 223灵力 223"
+    },
+    {
+      "energy": 223,
+      "epoch": "ac1d90516fe76efcb382b3bd",
+      "expected": {
+        "characterID": 10,
+        "energy": 223,
+        "health": 223,
+        "slot": 3
+      },
+      "frame": "252",
+      "health": 223,
+      "panel": {
+        "bottom": 332,
+        "height": 65,
+        "right": 302,
+        "width": 135,
+        "x": 167,
+        "y": 267
+      },
+      "resources": [
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 323,
+            "height": 13,
+            "right": 293,
+            "width": 117,
+            "x": 176,
+            "y": 310
+          },
+          "text": "体力 223灵力 223"
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 323,
+            "height": 13,
+            "right": 221.484375,
+            "width": 45.484375,
+            "x": 176,
+            "y": 310
+          },
+          "text": "体力 223"
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 323,
+            "height": 13,
+            "right": 272.96875,
+            "width": 45.484375,
+            "x": 227.484375,
+            "y": 310
+          },
+          "text": "灵力 223"
+        }
+      ],
+      "seat": 3,
+      "serverObserved": true,
+      "summary": {
+        "bottom": 323,
+        "height": 27,
+        "right": 293,
+        "width": 117,
+        "x": 176,
+        "y": 296
+      },
+      "teamText": false,
+      "text": "户愚吕弟体力 223灵力 223"
+    }
+  ],
+  "initialView": {
+    "digest": "ddc36aa5b3afdaa918b41a7e389b21bca24c0fbd7dd1f86772ba88f8496543a9",
+    "epoch": "ac1d90516fe76efcb382b3bd",
+    "frame": "258",
+    "inputs": [
+      {
+        "appliedButtons": 0,
+        "appliedSequence": 0,
+        "automated": false,
+        "buttons": 0,
+        "sequence": 0
+      },
+      {
+        "appliedButtons": 0,
+        "appliedSequence": 0,
+        "automated": false,
+        "buttons": 0,
+        "sequence": 0
+      },
+      {
+        "appliedButtons": 0,
+        "appliedSequence": 0,
+        "automated": true,
+        "buttons": 0,
+        "sequence": 0
+      },
+      {
+        "appliedButtons": 0,
+        "appliedSequence": 0,
+        "automated": true,
+        "buttons": 0,
+        "sequence": 0
+      }
+    ],
+    "localSeat": 0,
+    "options": {
+      "arena": 10,
+      "characters": [
+        3,
+        1,
+        8,
+        10
+      ],
+      "teamBattle": true
+    },
+    "phase": "opening",
+    "players": [
+      {
+        "active": true,
+        "characterID": 3,
+        "computer": false,
+        "energy": 223,
+        "health": 223,
+        "seat": 0,
+        "slot": 0,
+        "x": 944,
+        "y": 320
+      },
+      {
+        "active": true,
+        "characterID": 1,
+        "computer": false,
+        "energy": 223,
+        "health": 223,
+        "seat": 1,
+        "slot": 1,
+        "x": 976,
+        "y": 304
+      },
+      {
+        "active": true,
+        "characterID": 8,
+        "computer": true,
+        "energy": 223,
+        "health": 223,
+        "seat": 2,
+        "slot": 2,
+        "x": 1072,
+        "y": 304
+      },
+      {
+        "active": true,
+        "characterID": 10,
+        "computer": true,
+        "energy": 223,
+        "health": 223,
+        "seat": 3,
+        "slot": 3,
+        "x": 1104,
+        "y": 320
+      }
+    ],
+    "presentationDigest": "39e9093ef4d28a41512a097234d1b6f5a838b08a5915592045ada2ace8b4492f",
+    "protocol": 1,
+    "replay": {
+      "data": "eAwAAAAAAAAAAA==",
+      "firstFrame": "139",
+      "frameCount": 120,
+      "version": 1
+    },
+    "resourceDescriptorSHA256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+    "seatSlots": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "serverAt": 1793914989965
+  },
+  "epoch": "ac1d90516fe76efcb382b3bd",
+  "nativeAuthority": {
+    "arena": 10,
+    "epoch": "ac1d90516fe76efcb382b3bd",
+    "frame": "258",
+    "grouping": 4,
+    "players": [
+      {
+        "baseTeam": 1,
+        "characterID": 3,
+        "configuredHumanChannel": 0,
+        "effectiveInputChannel": 0,
+        "energy": 223,
+        "health": 223,
+        "seat": 0,
+        "slot": 0,
+        "team": 1
+      },
+      {
+        "baseTeam": 1,
+        "characterID": 1,
+        "configuredHumanChannel": 1,
+        "effectiveInputChannel": 1,
+        "energy": 223,
+        "health": 223,
+        "seat": 1,
+        "slot": 1,
+        "team": 1
+      },
+      {
+        "baseTeam": 4,
+        "characterID": 8,
+        "configuredHumanChannel": 2,
+        "effectiveInputChannel": 255,
+        "energy": 223,
+        "health": 223,
+        "seat": 2,
+        "slot": 2,
+        "team": 4
+      },
+      {
+        "baseTeam": 4,
+        "characterID": 10,
+        "configuredHumanChannel": 3,
+        "effectiveInputChannel": 255,
+        "energy": 223,
+        "health": 223,
+        "seat": 3,
+        "slot": 3,
+        "team": 4
+      }
+    ],
+    "teamBattle": true
+  },
+  "layouts": [
+    {
+      "label": "desktop",
+      "initial": {
+        "c": {
+          "bottom": 927.640625,
+          "height": 57.234375,
+          "right": 793.890625,
+          "width": 57.234375,
+          "x": 736.65625,
+          "y": 870.40625
+        },
+        "canvas": {
+          "bottom": 735.953125,
+          "height": 495.5625,
+          "right": 902.96875,
+          "width": 705.921875,
+          "x": 197.046875,
+          "y": 240.390625
+        },
+        "fit": {},
+        "frame": "315",
+        "fullscreen": false,
+        "height": 1000,
+        "nativeFullscreen": false,
+        "overflow": false,
+        "pad": {
+          "bottom": 987.390625,
+          "height": 236.4375,
+          "right": 830,
+          "width": 560,
+          "x": 270,
+          "y": 750.953125
+        },
+        "players": {
+          "bottom": 187.390625,
+          "height": 67,
+          "right": 1078,
+          "width": 1056,
+          "x": 22,
+          "y": 120.390625
+        },
+        "scrollY": 0,
+        "turn": {
+          "height": 18,
+          "scrollWidth": 904,
+          "text": "对局进行中",
+          "width": 904
+        },
+        "width": 1100
+      },
+      "afterScroll": {
+        "c": {
+          "bottom": 927.640625,
+          "height": 57.234375,
+          "right": 793.890625,
+          "width": 57.234375,
+          "x": 736.65625,
+          "y": 870.40625
+        },
+        "canvas": {
+          "bottom": 735.953125,
+          "height": 495.5625,
+          "right": 902.96875,
+          "width": 705.921875,
+          "x": 197.046875,
+          "y": 240.390625
+        },
+        "fit": {},
+        "frame": "320",
+        "fullscreen": false,
+        "height": 1000,
+        "nativeFullscreen": false,
+        "overflow": false,
+        "pad": {
+          "bottom": 987.390625,
+          "height": 236.4375,
+          "right": 830,
+          "width": 560,
+          "x": 270,
+          "y": 750.953125
+        },
+        "players": {
+          "bottom": 187.390625,
+          "height": 67,
+          "right": 1078,
+          "width": 1056,
+          "x": 22,
+          "y": 120.390625
+        },
+        "scrollY": 0,
+        "turn": {
+          "height": 18,
+          "scrollWidth": 904,
+          "text": "对局进行中",
+          "width": 904
+        },
+        "width": 1100
+      },
+      "publicResources": [
+        {
+          "energy": 223,
+          "epoch": "ac1d90516fe76efcb382b3bd",
+          "expected": {
+            "characterID": 3,
+            "energy": 223,
+            "health": 223,
+            "slot": 0
+          },
+          "frame": "312",
+          "health": 223,
+          "panel": {
+            "bottom": 183.390625,
+            "height": 59,
+            "right": 282.25,
+            "width": 256.25,
+            "x": 26,
+            "y": 124.390625
+          },
+          "resources": [
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 177.390625,
+                "height": 13,
+                "right": 272.25,
+                "width": 236.25,
+                "x": 36,
+                "y": 164.390625
+              },
+              "text": "体力 223灵力 223"
+            },
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 177.390625,
+                "height": 13,
+                "right": 81.484375,
+                "width": 45.484375,
+                "x": 36,
+                "y": 164.390625
+              },
+              "text": "体力 223"
+            },
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 177.390625,
+                "height": 13,
+                "right": 132.96875,
+                "width": 45.484375,
+                "x": 87.484375,
+                "y": 164.390625
+              },
+              "text": "灵力 223"
+            }
+          ],
+          "seat": 0,
+          "serverObserved": true,
+          "summary": {
+            "bottom": 177.390625,
+            "height": 27,
+            "right": 272.25,
+            "width": 236.25,
+            "x": 36,
+            "y": 150.390625
+          },
+          "teamText": false,
+          "text": "幽助体力 223灵力 223"
+        },
+        {
+          "energy": 223,
+          "epoch": "ac1d90516fe76efcb382b3bd",
+          "expected": {
+            "characterID": 1,
+            "energy": 223,
+            "health": 223,
+            "slot": 1
+          },
+          "frame": "312",
+          "health": 223,
+          "panel": {
+            "bottom": 183.390625,
+            "height": 59,
+            "right": 541.5,
+            "width": 256.25,
+            "x": 285.25,
+            "y": 124.390625
+          },
+          "resources": [
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 177.390625,
+                "height": 13,
+                "right": 531.5,
+                "width": 236.25,
+                "x": 295.25,
+                "y": 164.390625
+              },
+              "text": "体力 223灵力 223"
+            },
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 177.390625,
+                "height": 13,
+                "right": 340.734375,
+                "width": 45.484375,
+                "x": 295.25,
+                "y": 164.390625
+              },
+              "text": "体力 223"
+            },
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 177.390625,
+                "height": 13,
+                "right": 392.21875,
+                "width": 45.484375,
+                "x": 346.734375,
+                "y": 164.390625
+              },
+              "text": "灵力 223"
+            }
+          ],
+          "seat": 1,
+          "serverObserved": true,
+          "summary": {
+            "bottom": 177.390625,
+            "height": 27,
+            "right": 531.5,
+            "width": 236.25,
+            "x": 295.25,
+            "y": 150.390625
+          },
+          "teamText": false,
+          "text": "藏马体力 223灵力 223"
+        },
+        {
+          "energy": 215,
+          "epoch": "ac1d90516fe76efcb382b3bd",
+          "expected": {
+            "characterID": 8,
+            "energy": 215,
+            "health": 223,
+            "slot": 2
+          },
+          "frame": "312",
+          "health": 223,
+          "panel": {
+            "bottom": 183.390625,
+            "height": 59,
+            "right": 814.75,
+            "width": 256.25,
+            "x": 558.5,
+            "y": 124.390625
+          },
+          "resources": [
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 177.390625,
+                "height": 13,
+                "right": 804.75,
+                "width": 236.25,
+                "x": 568.5,
+                "y": 164.390625
+              },
+              "text": "体力 223灵力 215"
+            },
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 177.390625,
+                "height": 13,
+                "right": 613.984375,
+                "width": 45.484375,
+                "x": 568.5,
+                "y": 164.390625
+              },
+              "text": "体力 223"
+            },
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 177.390625,
+                "height": 13,
+                "right": 663.375,
+                "width": 43.390625,
+                "x": 619.984375,
+                "y": 164.390625
+              },
+              "text": "灵力 215"
+            }
+          ],
+          "seat": 2,
+          "serverObserved": true,
+          "summary": {
+            "bottom": 177.390625,
+            "height": 27,
+            "right": 804.75,
+            "width": 236.25,
+            "x": 568.5,
+            "y": 150.390625
+          },
+          "teamText": false,
+          "text": "户愚吕兄体力 223灵力 215"
+        },
+        {
+          "energy": 223,
+          "epoch": "ac1d90516fe76efcb382b3bd",
+          "expected": {
+            "characterID": 10,
+            "energy": 223,
+            "health": 223,
+            "slot": 3
+          },
+          "frame": "312",
+          "health": 223,
+          "panel": {
+            "bottom": 183.390625,
+            "height": 59,
+            "right": 1074,
+            "width": 256.25,
+            "x": 817.75,
+            "y": 124.390625
+          },
+          "resources": [
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 177.390625,
+                "height": 13,
+                "right": 1064,
+                "width": 236.25,
+                "x": 827.75,
+                "y": 164.390625
+              },
+              "text": "体力 223灵力 223"
+            },
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 177.390625,
+                "height": 13,
+                "right": 873.234375,
+                "width": 45.484375,
+                "x": 827.75,
+                "y": 164.390625
+              },
+              "text": "体力 223"
+            },
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 177.390625,
+                "height": 13,
+                "right": 924.71875,
+                "width": 45.484375,
+                "x": 879.234375,
+                "y": 164.390625
+              },
+              "text": "灵力 223"
+            }
+          ],
+          "seat": 3,
+          "serverObserved": true,
+          "summary": {
+            "bottom": 177.390625,
+            "height": 27,
+            "right": 1064,
+            "width": 236.25,
+            "x": 827.75,
+            "y": 150.390625
+          },
+          "teamText": false,
+          "text": "户愚吕弟体力 223灵力 223"
+        }
+      ],
+      "padInitiallyInViewport": true,
+      "nativeTouchC": true
+    },
+    {
+      "label": "portrait-320",
+      "initial": {
+        "c": {
+          "bottom": 701,
+          "height": 29.6875,
+          "right": 286.515625,
+          "width": 29.6875,
+          "x": 256.828125,
+          "y": 671.3125
+        },
+        "canvas": {
+          "bottom": 602.359375,
+          "height": 203.359375,
+          "right": 304.25,
+          "width": 288.484375,
+          "x": 15.765625,
+          "y": 399
+        },
+        "fit": {},
+        "frame": "355",
+        "fullscreen": false,
+        "height": 740,
+        "nativeFullscreen": false,
+        "overflow": false,
+        "pad": {
+          "bottom": 732,
+          "height": 122.640625,
+          "right": 305.25,
+          "width": 290.484375,
+          "x": 14.765625,
+          "y": 609.359375
+        },
+        "players": {
+          "bottom": 343,
+          "height": 150,
+          "right": 308,
+          "width": 296,
+          "x": 12,
+          "y": 193
+        },
+        "scrollY": 0,
+        "turn": {
+          "height": 18,
+          "scrollWidth": 144,
+          "text": "对局进行中",
+          "width": 144
+        },
+        "width": 320
+      },
+      "afterScroll": {
+        "c": {
+          "bottom": 701,
+          "height": 29.6875,
+          "right": 286.515625,
+          "width": 29.6875,
+          "x": 256.828125,
+          "y": 671.3125
+        },
+        "canvas": {
+          "bottom": 602.359375,
+          "height": 203.359375,
+          "right": 304.25,
+          "width": 288.484375,
+          "x": 15.765625,
+          "y": 399
+        },
+        "fit": {},
+        "frame": "360",
+        "fullscreen": false,
+        "height": 740,
+        "nativeFullscreen": false,
+        "overflow": false,
+        "pad": {
+          "bottom": 732,
+          "height": 122.640625,
+          "right": 305.25,
+          "width": 290.484375,
+          "x": 14.765625,
+          "y": 609.359375
+        },
+        "players": {
+          "bottom": 343,
+          "height": 150,
+          "right": 308,
+          "width": 296,
+          "x": 12,
+          "y": 193
+        },
+        "scrollY": 0,
+        "turn": {
+          "height": 18,
+          "scrollWidth": 144,
+          "text": "对局进行中",
+          "width": 144
+        },
+        "width": 320
+      },
+      "publicResources": [
+        {
+          "energy": 223,
+          "epoch": "ac1d90516fe76efcb382b3bd",
+          "expected": {
+            "characterID": 3,
+            "energy": 223,
+            "health": 223,
+            "slot": 0
+          },
+          "frame": "351",
+          "health": 223,
+          "panel": {
+            "bottom": 264,
+            "height": 65,
+            "right": 153,
+            "width": 135,
+            "x": 18,
+            "y": 199
+          },
+          "resources": [
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 255,
+                "height": 13,
+                "right": 144,
+                "width": 117,
+                "x": 27,
+                "y": 242
+              },
+              "text": "体力 223灵力 223"
+            },
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 255,
+                "height": 13,
+                "right": 72.484375,
+                "width": 45.484375,
+                "x": 27,
+                "y": 242
+              },
+              "text": "体力 223"
+            },
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 255,
+                "height": 13,
+                "right": 123.96875,
+                "width": 45.484375,
+                "x": 78.484375,
+                "y": 242
+              },
+              "text": "灵力 223"
+            }
+          ],
+          "seat": 0,
+          "serverObserved": true,
+          "summary": {
+            "bottom": 255,
+            "height": 27,
+            "right": 144,
+            "width": 117,
+            "x": 27,
+            "y": 228
+          },
+          "teamText": false,
+          "text": "幽助体力 223灵力 223"
+        },
+        {
+          "energy": 223,
+          "epoch": "ac1d90516fe76efcb382b3bd",
+          "expected": {
+            "characterID": 1,
+            "energy": 223,
+            "health": 223,
+            "slot": 1
+          },
+          "frame": "351",
+          "health": 223,
+          "panel": {
+            "bottom": 332,
+            "height": 65,
+            "right": 153,
+            "width": 135,
+            "x": 18,
+            "y": 267
+          },
+          "resources": [
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 323,
+                "height": 13,
+                "right": 144,
+                "width": 117,
+                "x": 27,
+                "y": 310
+              },
+              "text": "体力 223灵力 223"
+            },
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 323,
+                "height": 13,
+                "right": 72.484375,
+                "width": 45.484375,
+                "x": 27,
+                "y": 310
+              },
+              "text": "体力 223"
+            },
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 323,
+                "height": 13,
+                "right": 123.96875,
+                "width": 45.484375,
+                "x": 78.484375,
+                "y": 310
+              },
+              "text": "灵力 223"
+            }
+          ],
+          "seat": 1,
+          "serverObserved": true,
+          "summary": {
+            "bottom": 323,
+            "height": 27,
+            "right": 144,
+            "width": 117,
+            "x": 27,
+            "y": 296
+          },
+          "teamText": false,
+          "text": "藏马体力 223灵力 223"
+        },
+        {
+          "energy": 215,
+          "epoch": "ac1d90516fe76efcb382b3bd",
+          "expected": {
+            "characterID": 8,
+            "energy": 215,
+            "health": 223,
+            "slot": 2
+          },
+          "frame": "351",
+          "health": 223,
+          "panel": {
+            "bottom": 264,
+            "height": 65,
+            "right": 302,
+            "width": 135,
+            "x": 167,
+            "y": 199
+          },
+          "resources": [
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 255,
+                "height": 13,
+                "right": 293,
+                "width": 117,
+                "x": 176,
+                "y": 242
+              },
+              "text": "体力 223灵力 215"
+            },
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 255,
+                "height": 13,
+                "right": 221.484375,
+                "width": 45.484375,
+                "x": 176,
+                "y": 242
+              },
+              "text": "体力 223"
+            },
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 255,
+                "height": 13,
+                "right": 270.875,
+                "width": 43.390625,
+                "x": 227.484375,
+                "y": 242
+              },
+              "text": "灵力 215"
+            }
+          ],
+          "seat": 2,
+          "serverObserved": true,
+          "summary": {
+            "bottom": 255,
+            "height": 27,
+            "right": 293,
+            "width": 117,
+            "x": 176,
+            "y": 228
+          },
+          "teamText": false,
+          "text": "户愚吕兄体力 223灵力 215"
+        },
+        {
+          "energy": 223,
+          "epoch": "ac1d90516fe76efcb382b3bd",
+          "expected": {
+            "characterID": 10,
+            "energy": 223,
+            "health": 223,
+            "slot": 3
+          },
+          "frame": "351",
+          "health": 223,
+          "panel": {
+            "bottom": 332,
+            "height": 65,
+            "right": 302,
+            "width": 135,
+            "x": 167,
+            "y": 267
+          },
+          "resources": [
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 323,
+                "height": 13,
+                "right": 293,
+                "width": 117,
+                "x": 176,
+                "y": 310
+              },
+              "text": "体力 223灵力 223"
+            },
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 323,
+                "height": 13,
+                "right": 221.484375,
+                "width": 45.484375,
+                "x": 176,
+                "y": 310
+              },
+              "text": "体力 223"
+            },
+            {
+              "color": "rgb(41, 59, 53)",
+              "rect": {
+                "bottom": 323,
+                "height": 13,
+                "right": 272.96875,
+                "width": 45.484375,
+                "x": 227.484375,
+                "y": 310
+              },
+              "text": "灵力 223"
+            }
+          ],
+          "seat": 3,
+          "serverObserved": true,
+          "summary": {
+            "bottom": 323,
+            "height": 27,
+            "right": 293,
+            "width": 117,
+            "x": 176,
+            "y": 296
+          },
+          "teamText": false,
+          "text": "户愚吕弟体力 223灵力 223"
+        }
+      ],
+      "padInitiallyInViewport": true,
+      "nativeTouchC": true
+    },
+    {
+      "label": "landscape-fullscreen",
+      "initial": {
+        "c": {
+          "bottom": 319.859375,
+          "height": 26.953125,
+          "right": 484.859375,
+          "width": 26.953125,
+          "x": 457.90625,
+          "y": 292.90625
+        },
+        "canvas": {
+          "bottom": 227.640625,
+          "height": 182.640625,
+          "right": 500.875,
+          "width": 261.75,
+          "x": 239.125,
+          "y": 45
+        },
+        "fit": {},
+        "frame": "398",
+        "fullscreen": true,
+        "height": 360,
+        "nativeFullscreen": true,
+        "overflow": false,
+        "pad": {
+          "bottom": 348,
+          "height": 111.359375,
+          "right": 501.875,
+          "width": 263.75,
+          "x": 238.125,
+          "y": 236.640625
+        },
+        "players": {
+          "bottom": 313,
+          "height": 150,
+          "right": 712,
+          "width": 684,
+          "x": 28,
+          "y": 163
+        },
+        "scrollY": 0,
+        "turn": {
+          "height": 18,
+          "scrollWidth": 532,
+          "text": "对局进行中",
+          "width": 532
+        },
+        "width": 740
+      },
+      "afterScroll": {
+        "c": {
+          "bottom": 319.859375,
+          "height": 26.953125,
+          "right": 484.859375,
+          "width": 26.953125,
+          "x": 457.90625,
+          "y": 292.90625
+        },
+        "canvas": {
+          "bottom": 227.640625,
+          "height": 182.640625,
+          "right": 500.875,
+          "width": 261.75,
+          "x": 239.125,
+          "y": 45
+        },
+        "fit": {},
+        "frame": "403",
+        "fullscreen": true,
+        "height": 360,
+        "nativeFullscreen": true,
+        "overflow": false,
+        "pad": {
+          "bottom": 348,
+          "height": 111.359375,
+          "right": 501.875,
+          "width": 263.75,
+          "x": 238.125,
+          "y": 236.640625
+        },
+        "players": {
+          "bottom": 313,
+          "height": 150,
+          "right": 712,
+          "width": 684,
+          "x": 28,
+          "y": 163
+        },
+        "scrollY": 0,
+        "turn": {
+          "height": 18,
+          "scrollWidth": 532,
+          "text": "对局进行中",
+          "width": 532
+        },
+        "width": 740
+      },
+      "publicResources": [],
+      "padInitiallyInViewport": true,
+      "nativeTouchC": true
+    }
+  ],
+  "publicResources": [
+    {
+      "energy": 223,
+      "epoch": "ac1d90516fe76efcb382b3bd",
+      "expected": {
+        "characterID": 3,
+        "energy": 223,
+        "health": 216,
+        "slot": 0
+      },
+      "frame": "435",
+      "health": 216,
+      "panel": {
+        "bottom": 234,
+        "height": 65,
+        "right": 363,
+        "width": 329,
+        "x": 34,
+        "y": 169
+      },
+      "resources": [
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 225,
+            "height": 13,
+            "right": 354,
+            "width": 311,
+            "x": 43,
+            "y": 212
+          },
+          "text": "体力 216灵力 223"
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 225,
+            "height": 13,
+            "right": 86.390625,
+            "width": 43.390625,
+            "x": 43,
+            "y": 212
+          },
+          "text": "体力 216"
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 225,
+            "height": 13,
+            "right": 137.875,
+            "width": 45.484375,
+            "x": 92.390625,
+            "y": 212
+          },
+          "text": "灵力 223"
+        }
+      ],
+      "seat": 0,
+      "serverObserved": true,
+      "summary": {
+        "bottom": 225,
+        "height": 27,
+        "right": 354,
+        "width": 311,
+        "x": 43,
+        "y": 198
+      },
+      "teamText": false,
+      "text": "幽助体力 216灵力 223"
+    },
+    {
+      "energy": 223,
+      "epoch": "ac1d90516fe76efcb382b3bd",
+      "expected": {
+        "characterID": 1,
+        "energy": 223,
+        "health": 204,
+        "slot": 1
+      },
+      "frame": "435",
+      "health": 204,
+      "panel": {
+        "bottom": 302,
+        "height": 65,
+        "right": 363,
+        "width": 329,
+        "x": 34,
+        "y": 237
+      },
+      "resources": [
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 293,
+            "height": 13,
+            "right": 354,
+            "width": 311,
+            "x": 43,
+            "y": 280
+          },
+          "text": "体力 204灵力 223"
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 293,
+            "height": 13,
+            "right": 88.484375,
+            "width": 45.484375,
+            "x": 43,
+            "y": 280
+          },
+          "text": "体力 204"
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 293,
+            "height": 13,
+            "right": 139.96875,
+            "width": 45.484375,
+            "x": 94.484375,
+            "y": 280
+          },
+          "text": "灵力 223"
+        }
+      ],
+      "seat": 1,
+      "serverObserved": true,
+      "summary": {
+        "bottom": 293,
+        "height": 27,
+        "right": 354,
+        "width": 311,
+        "x": 43,
+        "y": 266
+      },
+      "teamText": false,
+      "text": "藏马体力 204灵力 223"
+    },
+    {
+      "energy": 217,
+      "epoch": "ac1d90516fe76efcb382b3bd",
+      "expected": {
+        "characterID": 8,
+        "energy": 217,
+        "health": 223,
+        "slot": 2
+      },
+      "frame": "435",
+      "health": 223,
+      "panel": {
+        "bottom": 234,
+        "height": 65,
+        "right": 706,
+        "width": 329,
+        "x": 377,
+        "y": 169
+      },
+      "resources": [
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 225,
+            "height": 13,
+            "right": 697,
+            "width": 311,
+            "x": 386,
+            "y": 212
+          },
+          "text": "体力 223灵力 217"
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 225,
+            "height": 13,
+            "right": 431.484375,
+            "width": 45.484375,
+            "x": 386,
+            "y": 212
+          },
+          "text": "体力 223"
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 225,
+            "height": 13,
+            "right": 480.359375,
+            "width": 42.875,
+            "x": 437.484375,
+            "y": 212
+          },
+          "text": "灵力 217"
+        }
+      ],
+      "seat": 2,
+      "serverObserved": true,
+      "summary": {
+        "bottom": 225,
+        "height": 27,
+        "right": 697,
+        "width": 311,
+        "x": 386,
+        "y": 198
+      },
+      "teamText": false,
+      "text": "户愚吕兄体力 223灵力 217"
+    },
+    {
+      "energy": 207,
+      "epoch": "ac1d90516fe76efcb382b3bd",
+      "expected": {
+        "characterID": 10,
+        "energy": 207,
+        "health": 223,
+        "slot": 3
+      },
+      "frame": "435",
+      "health": 223,
+      "panel": {
+        "bottom": 302,
+        "height": 65,
+        "right": 706,
+        "width": 329,
+        "x": 377,
+        "y": 237
+      },
+      "resources": [
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 293,
+            "height": 13,
+            "right": 697,
+            "width": 311,
+            "x": 386,
+            "y": 280
+          },
+          "text": "体力 223灵力 207"
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 293,
+            "height": 13,
+            "right": 431.484375,
+            "width": 45.484375,
+            "x": 386,
+            "y": 280
+          },
+          "text": "体力 223"
+        },
+        {
+          "color": "rgb(41, 59, 53)",
+          "rect": {
+            "bottom": 293,
+            "height": 13,
+            "right": 482.453125,
+            "width": 44.96875,
+            "x": 437.484375,
+            "y": 280
+          },
+          "text": "灵力 207"
+        }
+      ],
+      "seat": 3,
+      "serverObserved": true,
+      "summary": {
+        "bottom": 293,
+        "height": 27,
+        "right": 697,
+        "width": 311,
+        "x": 386,
+        "y": 266
+      },
+      "teamText": false,
+      "text": "户愚吕弟体力 223灵力 207"
+    }
+  ],
+  "publicGroups": [
+    {
+      "id": "team-a",
+      "label": "A队",
+      "seats": [
+        0,
+        1
+      ]
+    },
+    {
+      "id": "team-b",
+      "label": "B队",
+      "seats": [
+        2,
+        3
+      ]
+    }
+  ],
+  "teamRelationshipVisible": true,
+  "publicTextContrast": [
+    {
+      "background": [
+        183,
+        65,
+        52
+      ],
+      "classes": "avatar",
+      "color": "rgb(255, 255, 255)",
+      "contrast": 5.498589444964573,
+      "text": "M"
+    },
+    {
+      "background": [
+        255,
+        254,
+        249
+      ],
+      "classes": "player-link player-name",
+      "color": "rgb(41, 59, 53)",
+      "contrast": 11.741037108172645,
+      "text": "Modehostc74e4"
+    },
+    {
+      "background": [
+        232,
+        238,
+        225
+      ],
+      "classes": "",
+      "color": "rgb(121, 144, 101)",
+      "contrast": 2.96287163843222,
+      "text": "你"
+    },
+    {
+      "background": [
+        255,
+        254,
+        249
+      ],
+      "classes": "",
+      "color": "rgb(41, 59, 53)",
+      "contrast": 11.741037108172645,
+      "text": "幽助"
+    },
+    {
+      "background": [
+        255,
+        254,
+        249
+      ],
+      "classes": "",
+      "color": "rgb(41, 59, 53)",
+      "contrast": 11.741037108172645,
+      "text": "体力"
+    },
+    {
+      "background": [
+        255,
+        254,
+        249
+      ],
+      "classes": "",
+      "color": "rgb(41, 59, 53)",
+      "contrast": 11.741037108172645,
+      "text": "216"
+    },
+    {
+      "background": [
+        255,
+        254,
+        249
+      ],
+      "classes": "",
+      "color": "rgb(41, 59, 53)",
+      "contrast": 11.741037108172645,
+      "text": "灵力"
+    },
+    {
+      "background": [
+        255,
+        254,
+        249
+      ],
+      "classes": "",
+      "color": "rgb(41, 59, 53)",
+      "contrast": 11.741037108172645,
+      "text": "223"
+    },
+    {
+      "background": [
+        44,
+        117,
+        167
+      ],
+      "classes": "avatar",
+      "color": "rgb(255, 255, 255)",
+      "contrast": 4.988580270614628,
+      "text": "M"
+    },
+    {
+      "background": [
+        255,
+        254,
+        249
+      ],
+      "classes": "player-link player-name",
+      "color": "rgb(41, 59, 53)",
+      "contrast": 11.741037108172645,
+      "text": "Modeguestc74e4"
+    },
+    {
+      "background": [
+        255,
+        254,
+        249
+      ],
+      "classes": "",
+      "color": "rgb(41, 59, 53)",
+      "contrast": 11.741037108172645,
+      "text": "藏马"
+    },
+    {
+      "background": [
+        255,
+        254,
+        249
+      ],
+      "classes": "",
+      "color": "rgb(41, 59, 53)",
+      "contrast": 11.741037108172645,
+      "text": "体力"
+    },
+    {
+      "background": [
+        255,
+        254,
+        249
+      ],
+      "classes": "",
+      "color": "rgb(41, 59, 53)",
+      "contrast": 11.741037108172645,
+      "text": "204"
+    },
+    {
+      "background": [
+        255,
+        254,
+        249
+      ],
+      "classes": "",
+      "color": "rgb(41, 59, 53)",
+      "contrast": 11.741037108172645,
+      "text": "灵力"
+    },
+    {
+      "background": [
+        255,
+        254,
+        249
+      ],
+      "classes": "",
+      "color": "rgb(41, 59, 53)",
+      "contrast": 11.741037108172645,
+      "text": "223"
+    },
+    {
+      "background": [
+        200,
+        152,
+        28
+      ],
+      "classes": "avatar",
+      "color": "rgb(255, 255, 255)",
+      "contrast": 2.636887527066922,
+      "text": "电"
+    },
+    {
+      "background": [
+        255,
+        254,
+        249
+      ],
+      "classes": "player-name",
+      "color": "rgb(41, 59, 53)",
+      "contrast": 11.741037108172645,
+      "text": "电脑 1"
+    },
+    {
+      "background": [
+        232,
+        238,
+        225
+      ],
+      "classes": "player-state",
+      "color": "rgb(121, 144, 101)",
+      "contrast": 2.96287163843222,
+      "text": "电脑"
+    },
+    {
+      "background": [
+        255,
+        254,
+        249
+      ],
+      "classes": "",
+      "color": "rgb(41, 59, 53)",
+      "contrast": 11.741037108172645,
+      "text": "户愚吕兄"
+    },
+    {
+      "background": [
+        255,
+        254,
+        249
+      ],
+      "classes": "",
+      "color": "rgb(41, 59, 53)",
+      "contrast": 11.741037108172645,
+      "text": "体力"
+    },
+    {
+      "background": [
+        255,
+        254,
+        249
+      ],
+      "classes": "",
+      "color": "rgb(41, 59, 53)",
+      "contrast": 11.741037108172645,
+      "text": "223"
+    },
+    {
+      "background": [
+        255,
+        254,
+        249
+      ],
+      "classes": "",
+      "color": "rgb(41, 59, 53)",
+      "contrast": 11.741037108172645,
+      "text": "灵力"
+    },
+    {
+      "background": [
+        255,
+        254,
+        249
+      ],
+      "classes": "",
+      "color": "rgb(41, 59, 53)",
+      "contrast": 11.741037108172645,
+      "text": "217"
+    },
+    {
+      "background": [
+        54,
+        129,
+        97
+      ],
+      "classes": "avatar",
+      "color": "rgb(255, 255, 255)",
+      "contrast": 4.698438348269945,
+      "text": "电"
+    },
+    {
+      "background": [
+        255,
+        254,
+        249
+      ],
+      "classes": "player-name",
+      "color": "rgb(41, 59, 53)",
+      "contrast": 11.741037108172645,
+      "text": "电脑 2"
+    },
+    {
+      "background": [
+        232,
+        238,
+        225
+      ],
+      "classes": "player-state",
+      "color": "rgb(121, 144, 101)",
+      "contrast": 2.96287163843222,
+      "text": "电脑"
+    },
+    {
+      "background": [
+        255,
+        254,
+        249
+      ],
+      "classes": "",
+      "color": "rgb(41, 59, 53)",
+      "contrast": 11.741037108172645,
+      "text": "户愚吕弟"
+    },
+    {
+      "background": [
+        255,
+        254,
+        249
+      ],
+      "classes": "",
+      "color": "rgb(41, 59, 53)",
+      "contrast": 11.741037108172645,
+      "text": "体力"
+    },
+    {
+      "background": [
+        255,
+        254,
+        249
+      ],
+      "classes": "",
+      "color": "rgb(41, 59, 53)",
+      "contrast": 11.741037108172645,
+      "text": "223"
+    },
+    {
+      "background": [
+        255,
+        254,
+        249
+      ],
+      "classes": "",
+      "color": "rgb(41, 59, 53)",
+      "contrast": 11.741037108172645,
+      "text": "灵力"
+    },
+    {
+      "background": [
+        255,
+        254,
+        249
+      ],
+      "classes": "",
+      "color": "rgb(41, 59, 53)",
+      "contrast": 11.741037108172645,
+      "text": "207"
+    },
+    {
+      "background": [
+        237,
+        241,
+        228
+      ],
+      "classes": "",
+      "color": "rgb(41, 59, 53)",
+      "contrast": 10.33339545637598,
+      "text": "对局进行中"
+    }
+  ],
+  "missingEnergySeats": [],
+  "jitter": [
+    {
+      "frame": "462",
+      "height": 334,
+      "measures": 14,
+      "top": 398,
+      "width": 290.484375
+    },
+    {
+      "frame": "465",
+      "height": 334,
+      "measures": 14,
+      "top": 398,
+      "width": 290.484375
+    },
+    {
+      "frame": "468",
+      "height": 334,
+      "measures": 14,
+      "top": 398,
+      "width": 290.484375
+    },
+    {
+      "frame": "471",
+      "height": 334,
+      "measures": 14,
+      "top": 398,
+      "width": 290.484375
+    },
+    {
+      "frame": "474",
+      "height": 334,
+      "measures": 14,
+      "top": 398,
+      "width": 290.484375
+    },
+    {
+      "frame": "477",
+      "height": 334,
+      "measures": 14,
+      "top": 398,
+      "width": 290.484375
+    },
+    {
+      "frame": "480",
+      "height": 334,
+      "measures": 14,
+      "top": 398,
+      "width": 290.484375
+    },
+    {
+      "frame": "483",
+      "height": 334,
+      "measures": 14,
+      "top": 398,
+      "width": 290.484375
+    },
+    {
+      "frame": "486",
+      "height": 334,
+      "measures": 14,
+      "top": 398,
+      "width": 290.484375
+    },
+    {
+      "frame": "489",
+      "height": 334,
+      "measures": 14,
+      "top": 398,
+      "width": 290.484375
+    },
+    {
+      "frame": "492",
+      "height": 334,
+      "measures": 14,
+      "top": 398,
+      "width": 290.484375
+    },
+    {
+      "frame": "495",
+      "height": 334,
+      "measures": 14,
+      "top": 398,
+      "width": 290.484375
+    },
+    {
+      "frame": "498",
+      "height": 334,
+      "measures": 14,
+      "top": 398,
+      "width": 290.484375
+    },
+    {
+      "frame": "501",
+      "height": 334,
+      "measures": 14,
+      "top": 398,
+      "width": 290.484375
+    },
+    {
+      "frame": "504",
+      "height": 334,
+      "measures": 14,
+      "top": 398,
+      "width": 290.484375
+    },
+    {
+      "frame": "507",
+      "height": 334,
+      "measures": 14,
+      "top": 398,
+      "width": 290.484375
+    },
+    {
+      "frame": "510",
+      "height": 334,
+      "measures": 14,
+      "top": 398,
+      "width": 290.484375
+    },
+    {
+      "frame": "512",
+      "height": 334,
+      "measures": 14,
+      "top": 398,
+      "width": 290.484375
+    },
+    {
+      "frame": "515",
+      "height": 334,
+      "measures": 14,
+      "top": 398,
+      "width": 290.484375
+    },
+    {
+      "frame": "518",
+      "height": 334,
+      "measures": 14,
+      "top": 398,
+      "width": 290.484375
+    }
+  ],
+  "scrollFit": {
+    "before": {
+      "chat": {
+        "position": "relative",
+        "top": 779
+      },
+      "height": 334,
+      "scrollY": 0
+    },
+    "after": {
+      "height": 270,
+      "scrollY": 39
+    }
+  },
+  "error": "AssertionError({'before': {'chat': {'position': 'relative', 'top': 779}, 'height': 334, 'scrollY': 0}, 'after': {'height': 270, 'scrollY': 39}})",
+  "hostState": {
+    "assetsBaseURL": "",
+    "availableGames": [
+      "splendor",
+      "rail",
+      "catan",
+      "carcassonne",
+      "sanguosha",
+      "basketball",
+      "monopoly",
+      "starfort",
+      "doudizhu",
+      "guandan",
+      "shengji",
+      "snooker",
+      "pairs",
+      "gomoku",
+      "junqi",
+      "chess",
+      "xiangqi",
+      "weiqi",
+      "racing",
+      "tetris",
+      "spf2t",
+      "battlecity",
+      "bubbleparty",
+      "fortressblue",
+      "conquest",
+      "tabletennis",
+      "yuyuhakusho"
+    ],
+    "modules": [
+      {
+        "id": "basketball",
+        "maxPlayers": 2,
+        "minPlayers": 1,
+        "name": "热血篮球"
+      },
+      {
+        "id": "monopoly",
+        "maxPlayers": 6,
+        "minPlayers": 2,
+        "name": "强手棋"
+      },
+      {
+        "id": "starfort",
+        "maxPlayers": 4,
+        "minPlayers": 1,
+        "name": "星垒"
+      },
+      {
+        "id": "doudizhu",
+        "maxPlayers": 4,
+        "minPlayers": 4,
+        "name": "斗地主"
+      },
+      {
+        "id": "guandan",
+        "maxPlayers": 4,
+        "minPlayers": 4,
+        "name": "掼蛋"
+      },
+      {
+        "id": "shengji",
+        "maxPlayers": 4,
+        "minPlayers": 4,
+        "name": "升级"
+      },
+      {
+        "id": "snooker",
+        "maxPlayers": 4,
+        "minPlayers": 2,
+        "name": "斯诺克"
+      },
+      {
+        "id": "pairs",
+        "maxPlayers": 6,
+        "minPlayers": 1,
+        "name": "连连看"
+      },
+      {
+        "id": "gomoku",
+        "maxPlayers": 2,
+        "minPlayers": 2,
+        "name": "五子棋"
+      },
+      {
+        "id": "junqi",
+        "maxPlayers": 4,
+        "minPlayers": 2,
+        "name": "军棋"
+      },
+      {
+        "id": "chess",
+        "maxPlayers": 2,
+        "minPlayers": 2,
+        "name": "国际象棋"
+      },
+      {
+        "id": "xiangqi",
+        "maxPlayers": 2,
+        "minPlayers": 2,
+        "name": "中国象棋"
+      },
+      {
+        "id": "weiqi",
+        "maxPlayers": 2,
+        "minPlayers": 2,
+        "name": "围棋"
+      },
+      {
+        "id": "racing",
+        "maxPlayers": 6,
+        "minPlayers": 2,
+        "name": "极品飞车"
+      },
+      {
+        "id": "tetris",
+        "maxPlayers": 4,
+        "minPlayers": 1,
+        "name": "俄罗斯方块"
+      },
+      {
+        "id": "spf2t",
+        "maxPlayers": 2,
+        "minPlayers": 2,
+        "name": "街霸方块"
+      },
+      {
+        "id": "battlecity",
+        "maxPlayers": 6,
+        "minPlayers": 2,
+        "name": "坦克大战"
+      },
+      {
+        "id": "bubbleparty",
+        "maxPlayers": 8,
+        "minPlayers": 2,
+        "name": "泡泡堂"
+      },
+      {
+        "id": "fortressblue",
+        "maxPlayers": 8,
+        "minPlayers": 2,
+        "name": "疯狂坦克"
+      },
+      {
+        "id": "conquest",
+        "maxPlayers": 8,
+        "minPlayers": 2,
+        "name": "征服时代"
+      },
+      {
+        "id": "tabletennis",
+        "maxPlayers": 4,
+        "minPlayers": 2,
+        "name": "乒乓球"
+      },
+      {
+        "id": "yuyuhakusho",
+        "maxPlayers": 4,
+        "minPlayers": 2,
+        "name": "魔强统一战"
+      }
+    ],
+    "network": {
+      "connected": true,
+      "connections": 1,
+      "rttMs": 0,
+      "sampledAt": 1793914993857
+    },
+    "railMaps": [
+      {
+        "additionalReturn": true,
+        "art": "rail",
+        "bonus": "longest",
+        "doubleMin": 4,
+        "height": 1125,
+        "id": "usa",
+        "initialReturn": true,
+        "longTickets": false,
+        "maxPlayers": 5,
+        "minPlayers": 2,
+        "name": "美国",
+        "rules": [
+          "美国基础版；最长连续路线奖励 10 分。",
+          "初始抽 3 张任务至少留 2 张；2–3 人只能使用双线中的一条。"
+        ],
+        "setupTickets": 3,
+        "stations": 0,
+        "trains": 45,
+        "width": 1744,
+        "wildRule": "any",
+        "wildSingle": false
+      },
+      {
+        "additionalReturn": true,
+        "art": "rail/maps/v1/europe",
+        "bonus": "longest",
+        "doubleMin": 4,
+        "height": 1125,
+        "id": "europe",
+        "initialReturn": false,
+        "longTickets": true,
+        "maxPlayers": 5,
+        "minPlayers": 2,
+        "name": "欧洲",
+        "rules": [
+          "隧道翻 3 张牌检查追加费用；渡轮需要图示数量的万能牌。",
+          "每人 3 座车站，可借用他人路线完成任务；未建车站每座 4 分。",
+          "初始发 1 张长途与 3 张普通任务，至少留 2 张；未留任务移出游戏。",
+          "最长连续路线奖励 10 分；8 节路线计 21 分。"
+        ],
+        "setupTickets": 4,
+        "stations": 3,
+        "trains": 45,
+        "width": 1744,
+        "wildRule": "any",
+        "wildSingle": false
+      },
+      {
+        "additionalReturn": true,
+        "art": "rail/maps/v1/india",
+        "bonus": "longest",
+        "doubleMin": 4,
+        "height": 1744,
+        "id": "india",
+        "initialReturn": true,
+        "longTickets": false,
+        "maxPlayers": 4,
+        "minPlayers": 2,
+        "name": "印度",
+        "rules": [
+          "最多 4 人；4 人时才可使用双线的两条路线。",
+          "渡轮需要图示数量的万能牌。",
+          "以两条不共用铁路线的路径完成同一任务可获环游奖励：5、10、20、30、40 分。",
+          "初始抽 4 留至少 2；最长连续路线奖励 10 分。"
+        ],
+        "setupTickets": 4,
+        "stations": 0,
+        "trains": 45,
+        "width": 1125,
+        "wildRule": "any",
+        "wildSingle": false
+      },
+      {
+        "additionalReturn": false,
+        "art": "rail/maps/v1/switzerland",
+        "bonus": "longest",
+        "doubleMin": 3,
+        "height": 1125,
+        "id": "switzerland",
+        "initialReturn": false,
+        "longTickets": false,
+        "maxPlayers": 3,
+        "minPlayers": 2,
+        "name": "瑞士",
+        "rules": [
+          "2–3 人，每人 40 节车厢；3 人可使用双线。",
+          "公开万能牌只计 1 次摸牌，但只能用于隧道。",
+          "国家任务取已连通选项中的最高分；全部未完成则扣最低分。各边境入口互不连通。",
+          "初始抽 5 留至少 2；所有未留任务移出游戏；最长路线奖励 10 分。"
+        ],
+        "setupTickets": 5,
+        "stations": 0,
+        "trains": 40,
+        "width": 1744,
+        "wildRule": "tunnel",
+        "wildSingle": true
+      },
+      {
+        "additionalReturn": false,
+        "art": "rail/maps/v1/nordiccountries",
+        "bonus": "tickets",
+        "doubleMin": 3,
+        "height": 1744,
+        "id": "nordiccountries",
+        "initialReturn": false,
+        "longTickets": false,
+        "maxPlayers": 3,
+        "minPlayers": 2,
+        "name": "北欧",
+        "rules": [
+          "2–3 人，每人 40 节车厢；3 人可使用双线。",
+          "公开万能牌只计 1 次摸牌，仅用于隧道和渡轮。",
+          "渡轮可用任意 3 张牌替代 1 张必需万能牌；9 节特殊线路可用任意 4 张替代 1 张同色牌。",
+          "初始抽 5 留至少 2；未留任务移出游戏；任务完成最多奖励 10 分，无最长路线奖。"
+        ],
+        "setupTickets": 5,
+        "stations": 0,
+        "trains": 40,
+        "width": 1125,
+        "wildRule": "special",
+        "wildSingle": true
+      },
+      {
+        "additionalReturn": true,
+        "art": "rail/maps/v1/legendaryasia",
+        "bonus": "network",
+        "doubleMin": 4,
+        "height": 1125,
+        "id": "legendaryasia",
+        "initialReturn": false,
+        "longTickets": true,
+        "maxPlayers": 5,
+        "minPlayers": 2,
+        "name": "传奇亚洲",
+        "rules": [
+          "山地每个 × 需额外消耗 1 节车厢，并获 2 分；渡轮需要万能牌。",
+          "初始发 1 张长途与 3 张普通任务，至少留 2 张；未留任务移出游戏。",
+          "最大连通网络包含城市最多者获 10 分，无最长路线奖。",
+          "同分依次比较完成任务数量、已铺山地路线数量。"
+        ],
+        "setupTickets": 4,
+        "stations": 0,
+        "trains": 45,
+        "width": 1744,
+        "wildRule": "any",
+        "wildSingle": false
+      }
+    ],
+    "room": {
+      "capacity": 4,
+      "chat": null,
+      "clockOffsetMs": 432,
+      "closeReason": "",
+      "game": {
+        "actors": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "attention": [],
+        "data": {
+          "digest": "f62d4c3f3075da8db3ae6a2c70efc7698b9c9d29463249bcbf97590b3e6a315b",
+          "epoch": "ac1d90516fe76efcb382b3bd",
+          "frame": "536",
+          "inputs": [
+            {
+              "appliedButtons": 0,
+              "appliedSequence": 10,
+              "automated": false,
+              "buttons": 0,
+              "sequence": 10
+            },
+            {
+              "appliedButtons": 0,
+              "appliedSequence": 0,
+              "automated": false,
+              "buttons": 0,
+              "sequence": 0
+            },
+            {
+              "appliedButtons": 0,
+              "appliedSequence": 0,
+              "automated": true,
+              "buttons": 0,
+              "sequence": 0
+            },
+            {
+              "appliedButtons": 0,
+              "appliedSequence": 0,
+              "automated": true,
+              "buttons": 0,
+              "sequence": 0
+            }
+          ],
+          "localSeat": 0,
+          "options": {
+            "arena": 10,
+            "characters": [
+              3,
+              1,
+              8,
+              10
+            ],
+            "teamBattle": true
+          },
+          "phase": "paused",
+          "players": [
+            {
+              "active": true,
+              "characterID": 3,
+              "computer": false,
+              "energy": 223,
+              "health": 216,
+              "seat": 0,
+              "slot": 0,
+              "x": 882,
+              "y": 320
+            },
+            {
+              "active": true,
+              "characterID": 1,
+              "computer": false,
+              "energy": 223,
+              "health": 204,
+              "seat": 1,
+              "slot": 1,
+              "x": 1030,
+              "y": 214
+            },
+            {
+              "active": true,
+              "characterID": 8,
+              "computer": true,
+              "energy": 217,
+              "health": 223,
+              "seat": 2,
+              "slot": 2,
+              "x": 971,
+              "y": 304
+            },
+            {
+              "active": true,
+              "characterID": 10,
+              "computer": true,
+              "energy": 207,
+              "health": 223,
+              "seat": 3,
+              "slot": 3,
+              "x": 958,
+              "y": 320
+            }
+          ],
+          "presentationDigest": "ef0f754b051e996d3ec02720f6e13583efd01dec344ada6fc4e47d1abb30ad85",
+          "protocol": 1,
+          "replay": {
+            "data": "AgwAIAAAAAAAABwMAAAAAAAAAAAGDACAAAAAAAAAVAwAAAAAAAAAAA==",
+            "firstFrame": "417",
+            "frameCount": 120,
+            "version": 1
+          },
+          "resourceDescriptorSHA256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+          "seatSlots": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "serverAt": 1793914994615
+        },
+        "eliminated": null,
+        "finished": false,
+        "kind": "yuyuhakusho",
+        "log": [],
+        "phase": "module",
+        "round": 1,
+        "systemDeadline": 1793914995097,
+        "turn": 0,
+        "winners": []
+      },
+      "host": "25711df2abe839ea901de8c9",
+      "id": "b128a445",
+      "kind": "yuyuhakusho",
+      "loading": null,
+      "locked": false,
+      "matchId": "aac3acfc7c08bb38891a484b",
+      "name": "模式公开资源验收",
+      "options": {
+        "arena": 10,
+        "characters": [
+          3,
+          1,
+          8,
+          10
+        ],
+        "teamBattle": true
+      },
+      "seats": [
+        {
+          "id": "25711df2abe839ea901de8c9",
+          "left": false,
+          "name": "Modehostc74e4",
+          "network": {
+            "connected": true,
+            "connections": 1,
+            "rttMs": 0,
+            "sampledAt": 1793914993857
+          },
+          "ready": true
+        },
+        {
+          "id": "defc9847f310f635e57ab496",
+          "left": false,
+          "name": "Modeguestc74e4",
+          "network": {
+            "connected": true,
+            "connections": 1,
+            "rttMs": 0,
+            "sampledAt": 1793914995012
+          },
+          "ready": true
+        },
+        {
+          "bot": true,
+          "id": "bot-a82cb9e8416a9565e0fc5cd3",
+          "left": false,
+          "name": "电脑 1",
+          "ready": true
+        },
+        {
+          "bot": true,
+          "id": "bot-eff78ab24e20778784f9e320",
+          "left": false,
+          "name": "电脑 2",
+          "ready": true
+        }
+      ],
+      "setupVersion": 12,
+      "spectating": false,
+      "spectatorCount": 0,
+      "status": "playing",
+      "turnDeadline": 0,
+      "updated": 1793914995,
+      "version": 207,
+      "you": 0
+    },
+    "rooms": [
+      {
+        "capacity": 4,
+        "clockOffsetMs": 432,
+        "closeReason": "",
+        "host": "25711df2abe839ea901de8c9",
+        "id": "b128a445",
+        "kind": "yuyuhakusho",
+        "loading": null,
+        "locked": false,
+        "matchId": "aac3acfc7c08bb38891a484b",
+        "name": "模式公开资源验收",
+        "options": {
+          "arena": 10,
+          "characters": [
+            3,
+            1,
+            8,
+            10
+          ],
+          "teamBattle": true
+        },
+        "seats": [
+          {
+            "id": "25711df2abe839ea901de8c9",
+            "left": false,
+            "name": "Modehostc74e4",
+            "ready": true
+          },
+          {
+            "id": "defc9847f310f635e57ab496",
+            "left": false,
+            "name": "Modeguestc74e4",
+            "ready": true
+          },
+          {
+            "bot": true,
+            "id": "bot-a82cb9e8416a9565e0fc5cd3",
+            "left": false,
+            "name": "电脑 1",
+            "ready": true
+          },
+          {
+            "bot": true,
+            "id": "bot-eff78ab24e20778784f9e320",
+            "left": false,
+            "name": "电脑 2",
+            "ready": true
+          }
+        ],
+        "setupVersion": 12,
+        "spectatorCount": 0,
+        "status": "playing",
+        "updated": 1793914995,
+        "version": 207
+      }
+    ],
+    "serverInstance": "e709ecd7e963c426daf1935bd1d4e905",
+    "serverNow": 1793914995080,
+    "user": {
+      "id": "25711df2abe839ea901de8c9",
+      "name": "Modehostc74e4",
+      "role": "player"
+    },
+    "version": "dev"
+  },
+  "guestState": {
+    "assetsBaseURL": "",
+    "availableGames": [
+      "splendor",
+      "rail",
+      "catan",
+      "carcassonne",
+      "sanguosha",
+      "basketball",
+      "monopoly",
+      "starfort",
+      "doudizhu",
+      "guandan",
+      "shengji",
+      "snooker",
+      "pairs",
+      "gomoku",
+      "junqi",
+      "chess",
+      "xiangqi",
+      "weiqi",
+      "racing",
+      "tetris",
+      "spf2t",
+      "battlecity",
+      "bubbleparty",
+      "fortressblue",
+      "conquest",
+      "tabletennis",
+      "yuyuhakusho"
+    ],
+    "modules": [
+      {
+        "id": "basketball",
+        "maxPlayers": 2,
+        "minPlayers": 1,
+        "name": "热血篮球"
+      },
+      {
+        "id": "monopoly",
+        "maxPlayers": 6,
+        "minPlayers": 2,
+        "name": "强手棋"
+      },
+      {
+        "id": "starfort",
+        "maxPlayers": 4,
+        "minPlayers": 1,
+        "name": "星垒"
+      },
+      {
+        "id": "doudizhu",
+        "maxPlayers": 4,
+        "minPlayers": 4,
+        "name": "斗地主"
+      },
+      {
+        "id": "guandan",
+        "maxPlayers": 4,
+        "minPlayers": 4,
+        "name": "掼蛋"
+      },
+      {
+        "id": "shengji",
+        "maxPlayers": 4,
+        "minPlayers": 4,
+        "name": "升级"
+      },
+      {
+        "id": "snooker",
+        "maxPlayers": 4,
+        "minPlayers": 2,
+        "name": "斯诺克"
+      },
+      {
+        "id": "pairs",
+        "maxPlayers": 6,
+        "minPlayers": 1,
+        "name": "连连看"
+      },
+      {
+        "id": "gomoku",
+        "maxPlayers": 2,
+        "minPlayers": 2,
+        "name": "五子棋"
+      },
+      {
+        "id": "junqi",
+        "maxPlayers": 4,
+        "minPlayers": 2,
+        "name": "军棋"
+      },
+      {
+        "id": "chess",
+        "maxPlayers": 2,
+        "minPlayers": 2,
+        "name": "国际象棋"
+      },
+      {
+        "id": "xiangqi",
+        "maxPlayers": 2,
+        "minPlayers": 2,
+        "name": "中国象棋"
+      },
+      {
+        "id": "weiqi",
+        "maxPlayers": 2,
+        "minPlayers": 2,
+        "name": "围棋"
+      },
+      {
+        "id": "racing",
+        "maxPlayers": 6,
+        "minPlayers": 2,
+        "name": "极品飞车"
+      },
+      {
+        "id": "tetris",
+        "maxPlayers": 4,
+        "minPlayers": 1,
+        "name": "俄罗斯方块"
+      },
+      {
+        "id": "spf2t",
+        "maxPlayers": 2,
+        "minPlayers": 2,
+        "name": "街霸方块"
+      },
+      {
+        "id": "battlecity",
+        "maxPlayers": 6,
+        "minPlayers": 2,
+        "name": "坦克大战"
+      },
+      {
+        "id": "bubbleparty",
+        "maxPlayers": 8,
+        "minPlayers": 2,
+        "name": "泡泡堂"
+      },
+      {
+        "id": "fortressblue",
+        "maxPlayers": 8,
+        "minPlayers": 2,
+        "name": "疯狂坦克"
+      },
+      {
+        "id": "conquest",
+        "maxPlayers": 8,
+        "minPlayers": 2,
+        "name": "征服时代"
+      },
+      {
+        "id": "tabletennis",
+        "maxPlayers": 4,
+        "minPlayers": 2,
+        "name": "乒乓球"
+      },
+      {
+        "id": "yuyuhakusho",
+        "maxPlayers": 4,
+        "minPlayers": 2,
+        "name": "魔强统一战"
+      }
+    ],
+    "network": {
+      "connected": true,
+      "connections": 1,
+      "rttMs": 0,
+      "sampledAt": 1793914995012
+    },
+    "railMaps": [
+      {
+        "additionalReturn": true,
+        "art": "rail",
+        "bonus": "longest",
+        "doubleMin": 4,
+        "height": 1125,
+        "id": "usa",
+        "initialReturn": true,
+        "longTickets": false,
+        "maxPlayers": 5,
+        "minPlayers": 2,
+        "name": "美国",
+        "rules": [
+          "美国基础版；最长连续路线奖励 10 分。",
+          "初始抽 3 张任务至少留 2 张；2–3 人只能使用双线中的一条。"
+        ],
+        "setupTickets": 3,
+        "stations": 0,
+        "trains": 45,
+        "width": 1744,
+        "wildRule": "any",
+        "wildSingle": false
+      },
+      {
+        "additionalReturn": true,
+        "art": "rail/maps/v1/europe",
+        "bonus": "longest",
+        "doubleMin": 4,
+        "height": 1125,
+        "id": "europe",
+        "initialReturn": false,
+        "longTickets": true,
+        "maxPlayers": 5,
+        "minPlayers": 2,
+        "name": "欧洲",
+        "rules": [
+          "隧道翻 3 张牌检查追加费用；渡轮需要图示数量的万能牌。",
+          "每人 3 座车站，可借用他人路线完成任务；未建车站每座 4 分。",
+          "初始发 1 张长途与 3 张普通任务，至少留 2 张；未留任务移出游戏。",
+          "最长连续路线奖励 10 分；8 节路线计 21 分。"
+        ],
+        "setupTickets": 4,
+        "stations": 3,
+        "trains": 45,
+        "width": 1744,
+        "wildRule": "any",
+        "wildSingle": false
+      },
+      {
+        "additionalReturn": true,
+        "art": "rail/maps/v1/india",
+        "bonus": "longest",
+        "doubleMin": 4,
+        "height": 1744,
+        "id": "india",
+        "initialReturn": true,
+        "longTickets": false,
+        "maxPlayers": 4,
+        "minPlayers": 2,
+        "name": "印度",
+        "rules": [
+          "最多 4 人；4 人时才可使用双线的两条路线。",
+          "渡轮需要图示数量的万能牌。",
+          "以两条不共用铁路线的路径完成同一任务可获环游奖励：5、10、20、30、40 分。",
+          "初始抽 4 留至少 2；最长连续路线奖励 10 分。"
+        ],
+        "setupTickets": 4,
+        "stations": 0,
+        "trains": 45,
+        "width": 1125,
+        "wildRule": "any",
+        "wildSingle": false
+      },
+      {
+        "additionalReturn": false,
+        "art": "rail/maps/v1/switzerland",
+        "bonus": "longest",
+        "doubleMin": 3,
+        "height": 1125,
+        "id": "switzerland",
+        "initialReturn": false,
+        "longTickets": false,
+        "maxPlayers": 3,
+        "minPlayers": 2,
+        "name": "瑞士",
+        "rules": [
+          "2–3 人，每人 40 节车厢；3 人可使用双线。",
+          "公开万能牌只计 1 次摸牌，但只能用于隧道。",
+          "国家任务取已连通选项中的最高分；全部未完成则扣最低分。各边境入口互不连通。",
+          "初始抽 5 留至少 2；所有未留任务移出游戏；最长路线奖励 10 分。"
+        ],
+        "setupTickets": 5,
+        "stations": 0,
+        "trains": 40,
+        "width": 1744,
+        "wildRule": "tunnel",
+        "wildSingle": true
+      },
+      {
+        "additionalReturn": false,
+        "art": "rail/maps/v1/nordiccountries",
+        "bonus": "tickets",
+        "doubleMin": 3,
+        "height": 1744,
+        "id": "nordiccountries",
+        "initialReturn": false,
+        "longTickets": false,
+        "maxPlayers": 3,
+        "minPlayers": 2,
+        "name": "北欧",
+        "rules": [
+          "2–3 人，每人 40 节车厢；3 人可使用双线。",
+          "公开万能牌只计 1 次摸牌，仅用于隧道和渡轮。",
+          "渡轮可用任意 3 张牌替代 1 张必需万能牌；9 节特殊线路可用任意 4 张替代 1 张同色牌。",
+          "初始抽 5 留至少 2；未留任务移出游戏；任务完成最多奖励 10 分，无最长路线奖。"
+        ],
+        "setupTickets": 5,
+        "stations": 0,
+        "trains": 40,
+        "width": 1125,
+        "wildRule": "special",
+        "wildSingle": true
+      },
+      {
+        "additionalReturn": true,
+        "art": "rail/maps/v1/legendaryasia",
+        "bonus": "network",
+        "doubleMin": 4,
+        "height": 1125,
+        "id": "legendaryasia",
+        "initialReturn": false,
+        "longTickets": true,
+        "maxPlayers": 5,
+        "minPlayers": 2,
+        "name": "传奇亚洲",
+        "rules": [
+          "山地每个 × 需额外消耗 1 节车厢，并获 2 分；渡轮需要万能牌。",
+          "初始发 1 张长途与 3 张普通任务，至少留 2 张；未留任务移出游戏。",
+          "最大连通网络包含城市最多者获 10 分，无最长路线奖。",
+          "同分依次比较完成任务数量、已铺山地路线数量。"
+        ],
+        "setupTickets": 4,
+        "stations": 0,
+        "trains": 45,
+        "width": 1744,
+        "wildRule": "any",
+        "wildSingle": false
+      }
+    ],
+    "room": {
+      "capacity": 4,
+      "chat": null,
+      "clockOffsetMs": 432,
+      "closeReason": "",
+      "game": {
+        "actors": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "attention": [],
+        "data": {
+          "digest": "a3a5d7f3df75170e9198ca9c12cb054b96eb3f1dbe1370b64c1af9c6675a8142",
+          "epoch": "ac1d90516fe76efcb382b3bd",
+          "frame": "542",
+          "inputs": [
+            {
+              "appliedButtons": 0,
+              "appliedSequence": 10,
+              "automated": false,
+              "buttons": 0,
+              "sequence": 10
+            },
+            {
+              "appliedButtons": 0,
+              "appliedSequence": 0,
+              "automated": false,
+              "buttons": 0,
+              "sequence": 0
+            },
+            {
+              "appliedButtons": 0,
+              "appliedSequence": 0,
+              "automated": true,
+              "buttons": 0,
+              "sequence": 0
+            },
+            {
+              "appliedButtons": 0,
+              "appliedSequence": 0,
+              "automated": true,
+              "buttons": 0,
+              "sequence": 0
+            }
+          ],
+          "localSeat": 1,
+          "options": {
+            "arena": 10,
+            "characters": [
+              3,
+              1,
+              8,
+              10
+            ],
+            "teamBattle": true
+          },
+          "phase": "paused",
+          "players": [
+            {
+              "active": true,
+              "characterID": 3,
+              "computer": false,
+              "energy": 223,
+              "health": 216,
+              "seat": 0,
+              "slot": 0,
+              "x": 882,
+              "y": 320
+            },
+            {
+              "active": true,
+              "characterID": 1,
+              "computer": false,
+              "energy": 223,
+              "health": 204,
+              "seat": 1,
+              "slot": 1,
+              "x": 1030,
+              "y": 214
+            },
+            {
+              "active": true,
+              "characterID": 8,
+              "computer": true,
+              "energy": 217,
+              "health": 223,
+              "seat": 2,
+              "slot": 2,
+              "x": 971,
+              "y": 304
+            },
+            {
+              "active": true,
+              "characterID": 10,
+              "computer": true,
+              "energy": 207,
+              "health": 223,
+              "seat": 3,
+              "slot": 3,
+              "x": 958,
+              "y": 320
+            }
+          ],
+          "presentationDigest": "ef0f754b051e996d3ec02720f6e13583efd01dec344ada6fc4e47d1abb30ad85",
+          "protocol": 1,
+          "replay": {
+            "data": "GAwAAAAAAAAAAAYMAIAAAAAAAABaDAAAAAAAAAAA",
+            "firstFrame": "423",
+            "frameCount": 120,
+            "version": 1
+          },
+          "resourceDescriptorSHA256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+          "seatSlots": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "serverAt": 1793914994715
+        },
+        "eliminated": null,
+        "finished": false,
+        "kind": "yuyuhakusho",
+        "log": [],
+        "phase": "module",
+        "round": 1,
+        "systemDeadline": 1793914995197,
+        "turn": 0,
+        "winners": []
+      },
+      "host": "25711df2abe839ea901de8c9",
+      "id": "b128a445",
+      "kind": "yuyuhakusho",
+      "loading": null,
+      "locked": false,
+      "matchId": "aac3acfc7c08bb38891a484b",
+      "name": "模式公开资源验收",
+      "options": {
+        "arena": 10,
+        "characters": [
+          3,
+          1,
+          8,
+          10
+        ],
+        "teamBattle": true
+      },
+      "seats": [
+        {
+          "id": "25711df2abe839ea901de8c9",
+          "left": false,
+          "name": "Modehostc74e4",
+          "network": {
+            "connected": true,
+            "connections": 1,
+            "rttMs": 0,
+            "sampledAt": 1793914993857
+          },
+          "ready": true
+        },
+        {
+          "id": "defc9847f310f635e57ab496",
+          "left": false,
+          "name": "Modeguestc74e4",
+          "network": {
+            "connected": true,
+            "connections": 1,
+            "rttMs": 0,
+            "sampledAt": 1793914995012
+          },
+          "ready": true
+        },
+        {
+          "bot": true,
+          "id": "bot-a82cb9e8416a9565e0fc5cd3",
+          "left": false,
+          "name": "电脑 1",
+          "ready": true
+        },
+        {
+          "bot": true,
+          "id": "bot-eff78ab24e20778784f9e320",
+          "left": false,
+          "name": "电脑 2",
+          "ready": true
+        }
+      ],
+      "setupVersion": 12,
+      "spectating": false,
+      "spectatorCount": 0,
+      "status": "playing",
+      "turnDeadline": 0,
+      "updated": 1793914995,
+      "version": 209,
+      "you": 1
+    },
+    "rooms": [
+      {
+        "capacity": 4,
+        "clockOffsetMs": 432,
+        "closeReason": "",
+        "host": "25711df2abe839ea901de8c9",
+        "id": "b128a445",
+        "kind": "yuyuhakusho",
+        "loading": null,
+        "locked": false,
+        "matchId": "aac3acfc7c08bb38891a484b",
+        "name": "模式公开资源验收",
+        "options": {
+          "arena": 10,
+          "characters": [
+            3,
+            1,
+            8,
+            10
+          ],
+          "teamBattle": true
+        },
+        "seats": [
+          {
+            "id": "25711df2abe839ea901de8c9",
+            "left": false,
+            "name": "Modehostc74e4",
+            "ready": true
+          },
+          {
+            "id": "defc9847f310f635e57ab496",
+            "left": false,
+            "name": "Modeguestc74e4",
+            "ready": true
+          },
+          {
+            "bot": true,
+            "id": "bot-a82cb9e8416a9565e0fc5cd3",
+            "left": false,
+            "name": "电脑 1",
+            "ready": true
+          },
+          {
+            "bot": true,
+            "id": "bot-eff78ab24e20778784f9e320",
+            "left": false,
+            "name": "电脑 2",
+            "ready": true
+          }
+        ],
+        "setupVersion": 12,
+        "spectatorCount": 0,
+        "status": "playing",
+        "updated": 1793914995,
+        "version": 209
+      }
+    ],
+    "serverInstance": "e709ecd7e963c426daf1935bd1d4e905",
+    "serverNow": 1793914995156,
+    "user": {
+      "id": "defc9847f310f635e57ab496",
+      "name": "Modeguestc74e4",
+      "role": "player"
+    },
+    "version": "dev"
+  },
+  "sourceSHA256": {
+    "scripts/yuyuhakusho/check_platform_modes.py": "7dacade5de04e4264eb719c22cfe51d6aa789a9b962a834062a12fb522c9ebda",
+    "scripts/yuyuhakusho/platform_app_host.go": "b69aad1a7ffd6b08713ad429709c667854ae9c7053b289c4da1a7f2f0e878ba0",
+    "scripts/yuyuhakusho/platform_app_observer.js": "b07d9a383bd2927e2d188e604dfa43c4d084945d788810f5f3ff4480dd283a5c",
+    "scripts/yuyuhakusho/native_app_input.mjs": "b8d4e687b01e668d4b9c870397ba201ce6d94085919ee9ddb20b62abd168e459",
+    "scripts/yuyuhakusho/inspect_platform_modes.go": "94f43cbc3097bfa8a47e82bf74212e9e5930f7e0c381d66a9e4c09444826e45a"
+  }
+}

@@ -135,6 +135,11 @@ export type PreparationProps<Options = unknown> = {
   assets: string;
   prepare: (action: Record<string, unknown>) => void;
 };
+export type PlayerGroup = {
+  id: string;
+  label: string;
+  seats: readonly number[];
+};
 export type GameModule<Data = unknown, Options = unknown> = {
   id: string;
   name: string;
@@ -161,6 +166,14 @@ export type GameModule<Data = unknown, Options = unknown> = {
   Options?: ComponentType<OptionsProps<Options>>;
   // Waiting-room extension inside the shared shell; never part of creation.
   Preparation?: ComponentType<PreparationProps<Options>>;
+  // Creation keeps Options; this waiting-room preparation owns its controls.
+  preparationOwnsOptions?: boolean;
+  playerLayout?: {
+    density?: "compact";
+    groups?: (room: GameRoom, data: Data | undefined) => readonly PlayerGroup[];
+  };
+  // Reserve only the measured visible remainder for the playable surface.
+  viewportFit?: boolean;
   Rules?: ComponentType;
   Cover?: ComponentType;
   PlayerSummary?: ComponentType<{
