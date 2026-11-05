@@ -1,0 +1,68 @@
+{
+  "scope": "Ordinary source5 attack acceptance; special natural fixture remains pending",
+  "pass": true,
+  "production": {
+    "path": "games/yuyuhakusho/engine/fighter5_attacks.go",
+    "sha256": "c92ece3a1159fb48e91f37566f3e6c942764a4ad4439f392e0af056f49c0760b"
+  },
+  "frozen_test_sha256": "4d687d9aa63d1c2d33e091a4af0b749bde08775f046b24f635b491d37ca63008",
+  "test_unchanged": true,
+  "prior_evidence_unchanged": true,
+  "runs": [
+    {
+      "flavor": "native",
+      "jsonl": "games/yuyuhakusho/engine/testdata/fighter5-attacks-initial-native.jsonl",
+      "sha256": "88e4d38d69152c519de3f5714b1bd25ea4bd6c125517cd41281af6b560bef36d",
+      "seconds": 133.718,
+      "command": "games/yuyuhakusho/engine/testdata/fighter5-attacks-initial-native-command.json",
+      "passed_top_level_tests": [
+        "TestFighter5AttacksOriginalFullCalls",
+        "TestFighter5AttacksSingleInitialState",
+        "TestFighter5AttacksInvalidInputIsAtomic"
+      ]
+    },
+    {
+      "flavor": "wasm",
+      "jsonl": "games/yuyuhakusho/engine/testdata/fighter5-attacks-initial-wasm.jsonl",
+      "sha256": "3d35d1e8ea29d5db8428231801869a86743d77200068823d2536fbcf62eef90d",
+      "seconds": 30.15,
+      "command": "games/yuyuhakusho/engine/testdata/fighter5-attacks-initial-wasm-command.json",
+      "passed_top_level_tests": [
+        "TestFighter5AttacksOriginalFullCalls",
+        "TestFighter5AttacksSingleInitialState",
+        "TestFighter5AttacksInvalidInputIsAtomic"
+      ]
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-attacks-boundaries-manifest.json",
+      "sha256": "0b5212ce31270694e3e6a87560fcba802f2ded2ad3ed2da46affac4f481146ef",
+      "records": 33280
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-attacks-natural-manifest.json",
+      "sha256": "8171da839a380bc579c26d2b0334ec3ed71c8e1da289703bcadd05dd77d9c566",
+      "records": 1964
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-attacks-oracle-manifest.json",
+      "sha256": "9f92c121456d0c306e379464859853babfa0c81fc638957aeccdf5795b2e3ae3",
+      "records": 34
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-attacks-sequences-manifest.json",
+      "sha256": "3b810a4212b458495dd331ced934c7ca39419014c753693503befc622a3a07e3",
+      "records": 108
+    }
+  ],
+  "pending": [
+    "Shared special natural control, ten successful roots, same frozen test",
+    "Final package-level compilation after peer owners complete"
+  ],
+  "runtime": [
+    "Independent Go",
+    "Node/Wasm"
+  ],
+  "reference_runtime_required_by_go": false
+}

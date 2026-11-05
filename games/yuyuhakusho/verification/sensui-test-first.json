@@ -1,0 +1,11 @@
+{
+  "session_cli_ui_support_changed": false,
+  "files": {
+    "games/yuyuhakusho/engine/fighter5_sessions_test.go": "db00e26c503b9793e58fc3666f04fc0238faf978f2c9be4d1d43616555e0bd49",
+    "games/yuyuhakusho/engine/testdata/fighter5-session-red.jsonl": "7664e5d1878c7044a263512c97af9edfd124411d453c9bf10d7f6e590be72268",
+    "scripts/yuyuhakusho/verify_sensui_sessions.sh": "356baf638ff895c138752b77db599524054fa1f7fbf76695c95e7648a6e29077",
+    "scripts/yuyuhakusho/check_sensui_player.py": "58327dcf86508a5b5cbf9800cca0a64f2e04197d6b2df2951214e97f166c7d4a",
+    "games/yuyuhakusho/verification/sensui-session-cli-red.txt": "c377ff4ca8a9eec134eb1a027ce70a693bf6fb2c0297cd8f7abd923b7ebd7961",
+    "games/yuyuhakusho/verification/sensui-player-ui-red.txt": "9b5cc762f9d06e66302a52aa046c273d91bb8d531e9dc0f17ae6d04b7f482236"
+  }
+}

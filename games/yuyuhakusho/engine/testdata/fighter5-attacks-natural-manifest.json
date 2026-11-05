@@ -1,0 +1,138 @@
+{
+  "scope": "Passive natural source5 complete selector and followup returns",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "9e7a409b132913da0fb2fcb3056a08bf00dc2b8de234856e23852175d299e9a2",
+  "capture_dependencies": [
+    {
+      "path": "scripts/yuyuhakusho/capture_chu_attacks.py",
+      "sha256": "f3d42a7d04267fcdbdea9e67963a70bb34920b861676358d67ab607e563eb580"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_ground_idle.py",
+      "sha256": "01d4798e937fa01946b7612fbc4fa7418dda97ec3411db4beb4629975614ba1d"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_jump.py",
+      "sha256": "21017876cd34f9263b6efa11e376ebf84b31d5fc82664c7c8b208213d1ecd8ab"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_effect_pool.py",
+      "sha256": "b9c753d1c9b6380ac64ee16f2c10cdcf8560654e493e770b31552b1781354f46"
+    },
+    {
+      "path": "scripts/yuyuhakusho/reference.py",
+      "sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/probe.py",
+      "sha256": "03a52ad64abf051a4a0c8914cb4813503f246afc0ec463ecd5cadb55c3bf7642"
+    }
+  ],
+  "input": {
+    "path": "docs/research/md-yuyuhakusho/source5-next-inputs.json",
+    "sha256": "6dd2eea8f585b62ad886da67d1123c61e06bedb97da4fdd9fd768b8441969601"
+  },
+  "baseline": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter5-attacks-reference-frames.json",
+    "sha256": "f43682106819d7847243a459c9bac6b60ddc63d5f5f9bb9a58c633a8154d7c2b",
+    "frames": 3602
+  },
+  "reference_manifest": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter5-attacks-reference-manifest.json",
+    "sha256": "3d6c5106dd33076f242c8d3468a0c840e9547e313060e6dcae665c511b280a4c"
+  },
+  "records": 1964,
+  "calls": 1964,
+  "kind_counts": {
+    "ground": 861,
+    "ground-special": 875,
+    "air-special": 114,
+    "air": 114
+  },
+  "constructor_counts": {
+    "0x18828": 1,
+    "0x18812": 1
+  },
+  "successful_constructor_counts": {},
+  "source_objects": {
+    "0x8400": 1964
+  },
+  "fixture_sha256": "5421070b2a345b3a6759d907bdbb44cca93977a19e692b569e0aaa3476082bc7",
+  "gzip_sha256": "9a3ad6a0814bd55900e0a566e6a6ed1ceb0783a7e49a62ea6ab5db2773600e63",
+  "frames_match_original_core": true,
+  "video_steps": 3602,
+  "full_ram_audit_bytes": 65536,
+  "interrupts": 74,
+  "observer_points": [
+    984,
+    14722,
+    88856,
+    88868,
+    88880,
+    88892,
+    94300,
+    94476,
+    94622,
+    94740,
+    94916,
+    100370,
+    100392,
+    100414,
+    100436,
+    100458,
+    100480,
+    100568,
+    100590,
+    100656,
+    102934,
+    102976,
+    103018,
+    103044,
+    103086,
+    103112,
+    103158,
+    103204,
+    103268,
+    103332,
+    103356,
+    103380,
+    103432,
+    103462,
+    103492,
+    112364,
+    112372,
+    113064,
+    113072,
+    113080,
+    16773120,
+    16773274,
+    16773288,
+    16773434,
+    4294963200,
+    4294963354,
+    4294963368,
+    4294963514
+  ],
+  "observer_point_count": 48,
+  "incomplete_calls": 0,
+  "errors": [],
+  "rng_calls": 0,
+  "entry_frame_limit": 3600,
+  "drain_frames": 2,
+  "pass": true,
+  "limits": [
+    "Private dirty inputs do not establish natural gameplay or character resource initialization",
+    "Selection and initialization only; no continued motion, collision or full matches",
+    "Streams change declared base controls only; no expected intermediate state or RNG injection",
+    "RAM audit retains every changed byte and separately explains interrupt changes"
+  ]
+}

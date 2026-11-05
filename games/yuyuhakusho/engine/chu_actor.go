@@ -34,6 +34,7 @@ type ChuActorFighter struct {
 	MovementSource                                         uint32
 	Children                                               [3]ChuSpecialChild
 	ChildExtras                                            [3]Fighter4ChildExtra
+	Fighter5ChildExtras                                    [3]Fighter5ChildExtra
 	ChildAttackFlags                                       [3]uint8
 }
 
@@ -94,10 +95,10 @@ func StepChuActor(state ChuActorState, view ChuActorView, commands CommandLibrar
 }
 
 // StepFighterActor shares the original complete active-rule callback between
-// sources0/1/2/3/4/6/8/9/10; drawing, source identity and other callbacks remain caller-owned.
+// sources0/1/2/3/4/5/6/8/9/10; drawing, source identity and other callbacks remain caller-owned.
 func StepFighterActor(state ChuActorState, characterID uint8, view ChuActorView, commands CommandLibrary, animations AnimationLibrary) (ChuActorState, ChuActorEmissions, error) {
 	original := state
-	if characterID != 0 && characterID != 1 && characterID != 2 && characterID != 3 && characterID != 4 && characterID != 6 && characterID != 8 && characterID != 9 && characterID != 10 {
+	if characterID != 0 && characterID != 1 && characterID != 2 && characterID != 3 && characterID != 4 && characterID != 5 && characterID != 6 && characterID != 8 && characterID != 9 && characterID != 10 {
 		return original, ChuActorEmissions{}, errors.New("unsupported complete fighter actor source")
 	}
 	self, ok := chuAIIndex(state.Fighter.ObjectID)
@@ -183,7 +184,8 @@ func (state ChuActorState) actorAction(view ChuActorView) (ChuActionState, error
 		EnergyFraction: uint16(f.Energy), HitStopTicks: f.HitStopTicks, Shake: f.Shake, ScreenOffsetX: f.ScreenOffsetX, StatusDelay: f.StatusDelay, Residual: f.Residual,
 		StunTicks: f.StunTicks, TargetBit: f.TargetBit, Power: f.Power, AlternateVelocity: f.AlternateVelocity, Children: f.Children, EffectExtras: w.EffectExtras,
 		GlobalF568: w.GlobalF568, GlobalF56A: w.GlobalF56A, Left: view.ArenaLeft, Right: view.ArenaRight,
-		MovementSource: f.MovementSource, ChildExtras: f.ChildExtras, DragonBankCursor: w.DragonBankCursor}, nil
+		MovementSource: f.MovementSource, ChildExtras: f.ChildExtras, DragonBankCursor: w.DragonBankCursor,
+		Fighter5ChildExtras: f.Fighter5ChildExtras}, nil
 }
 
 func (state *ChuActorState) acceptActorAction(a ChuActionState) {
@@ -196,6 +198,7 @@ func (state *ChuActorState) acceptActorAction(a ChuActionState) {
 	f.HitStopTicks, f.Shake, f.ScreenOffsetX, f.StatusDelay, f.Residual = a.HitStopTicks, a.Shake, a.ScreenOffsetX, a.StatusDelay, a.Residual
 	f.StunTicks, f.TargetBit, f.Power, f.AlternateVelocity, f.Children = a.StunTicks, a.TargetBit, a.Power, a.AlternateVelocity, a.Children
 	f.MovementSource, f.ChildExtras, w.DragonBankCursor = a.MovementSource, a.ChildExtras, a.DragonBankCursor
+	f.Fighter5ChildExtras = a.Fighter5ChildExtras
 	w.Pool, w.EffectExtras, w.Throws = a.Pool, a.EffectExtras, a.Throws
 	w.OtherEnergy = make(map[uint16]int16, len(a.OtherFighters))
 	for id, resource := range a.OtherFighters {

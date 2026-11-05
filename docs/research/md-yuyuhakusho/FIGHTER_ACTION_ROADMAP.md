@@ -224,3 +224,7 @@ PYTHONDONTWRITEBYTECODE=1 python3 \
 来源 4「飞影」已完成四个选择器、`0e/12/25..2c` 十个 MAIN／支持槽、龙头 `13bb6`、身体段 `13e9a` 和强化 `13fc8`。公共构造 `2029e` 及 `203f8` 的飞影调用上下文已有完整原 CPU 对照。身体段是独立 FX 对象，不能只实现两个保留子对象或只画龙头。
 
 吞龙在同次人物调用内切换移动参数，三回调使用四组 typed 历史样本；完整弱生命生成、放龙、操龙、吞龙、强化消耗、清除及站立恢复由双真人固定输入和独立 Go 单初态世界验证。该结论替代本页静态快照中来源 4 的「待恢复」状态，不改写当时的原始表和调查边界。详细来源见[飞影世界](../../../games/yuyuhakusho/engine/FIGHTER4_WORLD_VERIFICATION.md)和[九角色验收](../../../games/yuyuhakusho/verification/hiei-session.json)。当前尚缺来源 5「仙水」和来源 7「树」。
+
+## 来源 5 当前验收补充
+
+来源 5「仙水」已完成四个 selector、`11/2d/2e/2f/30/31/32` 七个 MAIN／支持槽、三个子对象及反射父体更新。普通与特殊两条原世界共 4,917 轮与独立 Go 单初态推进一致，普通场景在视频4916清场，十个特殊根均有合法输入与实际扣成本成功证据。本页旧静态快照中的来源 5「待恢复」状态由[完整世界](../../../games/yuyuhakusho/engine/FIGHTER5_WORLD_VERIFICATION.md)与[十角色验收](../../../games/yuyuhakusho/verification/sensui-session.json)替代；不改写原始表与当时边界。自然 `31→32` 仅见 variant2，其他变体和未自然完成的四个后续构造有原 CPU 私有／真实时钟验证。来源 7「树」是最后未开放人物，见[只读恢复起点](SOURCE7_PLAN.md)。

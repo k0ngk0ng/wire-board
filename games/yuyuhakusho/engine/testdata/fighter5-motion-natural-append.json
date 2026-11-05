@@ -1,0 +1,169 @@
+{
+  "scope": "Natural evidence appended only; frozen motion, tests, boundaries and continuous flows are unchanged",
+  "producer_sha256": "23644b4dab1455007b50ddb86ccf052399c734503f0d00b3795a4ab6ba87f3d6",
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/capture_fighter5_motion.py",
+    "--input",
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/docs/research/md-yuyuhakusho/source5-special-discovery-inputs.json",
+    "--reference",
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/games/yuyuhakusho/engine/testdata/fighter5-attacks-special-reference-frames.json",
+    "--manifest",
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/games/yuyuhakusho/engine/testdata/fighter5-attacks-special-reference-manifest.json",
+    "--out",
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/fighter5-motion-natural-append/observation",
+    "--natural-only"
+  ],
+  "previous_oracle_raw_sha256": "6ef5b9006384fb236444feb3e765455070a7faa2af8ef74ccd60529d0db4bec0",
+  "previous_oracle_gzip_sha256": "2fd8f2afc330a6d5400f6bcd7402f229957170f6b13587fb7bc7f9d26bf237c2",
+  "previous_manifest_sha256": "f7f96038725bd7e3747d8cba3baf15007280dd2a8968096fbe85188c0f183904",
+  "previous_manifest_snapshot": {
+    "pass": true,
+    "scope": "Actual source5 MAIN entries under independently controlled real-menu physical inputs",
+    "identity": {
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+      "core_name": "Genesis Plus GX",
+      "core_version": "v1.7.460bee4c",
+      "fps": 59.92274340431231,
+      "ram_bytes": 65536,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "teamplayer": false
+    },
+    "capture_sha256": "1c9621358e8621e3d3e74525f90da7c9ffd9b03d0f466afab218409c857e26cd",
+    "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+    "records": 33,
+    "calls": 33,
+    "kind_counts": {
+      "17": 33
+    },
+    "character_counts": {
+      "5": 33
+    },
+    "allocation_attempts": 0,
+    "external_queue_calls": 0,
+    "interrupt_calls": 0,
+    "external_change_calls": 0,
+    "fixture_sha256": "6ef5b9006384fb236444feb3e765455070a7faa2af8ef74ccd60529d0db4bec0",
+    "gzip_sha256": "2fd8f2afc330a6d5400f6bcd7402f229957170f6b13587fb7bc7f9d26bf237c2",
+    "baselines": [
+      {
+        "input": "docs/research/md-yuyuhakusho/source5-next-inputs.json",
+        "input_sha256": "6dd2eea8f585b62ad886da67d1123c61e06bedb97da4fdd9fd768b8441969601",
+        "reference": "games/yuyuhakusho/engine/testdata/fighter5-attacks-reference-frames.json",
+        "reference_raw_sha256": "f43682106819d7847243a459c9bac6b60ddc63d5f5f9bb9a58c633a8154d7c2b",
+        "reference_manifest": "games/yuyuhakusho/engine/testdata/fighter5-attacks-reference-manifest.json",
+        "reference_manifest_sha256": "3d6c5106dd33076f242c8d3468a0c840e9547e313060e6dcae665c511b280a4c",
+        "video_steps": 3602,
+        "entry_frame_limit": 3600,
+        "all_ram_video_match": true
+      }
+    ],
+    "frames_match_original_core": true,
+    "rng_calls": 0,
+    "unexplained_change_calls": 0,
+    "private_unknown_ram_writes": 0,
+    "errors": [],
+    "incomplete_calls": 0,
+    "retreat_table": {
+      "address": "0x1cb20",
+      "bytes": "0044000e000c000a0008000600380036",
+      "sha256": "90d3194cc32e779669f42bcad69a4b481c047f2d72823df8d6cb8a9a2b12c2ae"
+    },
+    "limits": [
+      "MAIN stops before15afc; no shared tail, child/FX callbacks or world scheduling.",
+      "Only Duration/Flags are refreshed from actual immutable animation records; no intermediate state injection."
+    ],
+    "binding": {
+      "source_tag": 5,
+      "animation_set": 829146,
+      "shape_set": 832394,
+      "parameter_pointer": 75188,
+      "checkpoint_frame": 2400,
+      "source_header": "0001266801000002",
+      "source_actor_sha256": "f8e504643ddac35fc263dee641b4145f1f32b15f34878a89f4ae88aed0aea327"
+    },
+    "movement_parameters_sha256": "0272e897f6c72823bb5228039b04d03e1eaf95f046d1624d08128a9c09b49475",
+    "library_frames": 57
+  },
+  "appended_manifest": {
+    "pass": true,
+    "scope": "Actual source5 MAIN entries under independently controlled real-menu physical inputs",
+    "identity": {
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+      "core_name": "Genesis Plus GX",
+      "core_version": "v1.7.460bee4c",
+      "fps": 59.92274340431231,
+      "ram_bytes": 65536,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "teamplayer": false
+    },
+    "capture_sha256": "1c9621358e8621e3d3e74525f90da7c9ffd9b03d0f466afab218409c857e26cd",
+    "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+    "records": 486,
+    "calls": 486,
+    "kind_counts": {
+      "46": 130,
+      "45": 93,
+      "47": 152,
+      "48": 28,
+      "49": 37,
+      "50": 46
+    },
+    "character_counts": {
+      "5": 486
+    },
+    "allocation_attempts": 0,
+    "external_queue_calls": 1,
+    "interrupt_calls": 8,
+    "external_change_calls": 4,
+    "fixture_sha256": "55b482e291ba7b63612bc2cb50eebbc896b4eb7778fbc5cfee79b728a2e23ff5",
+    "gzip_sha256": "9ce6fc4ae3d6ff628c8bd9eae0466772906a7ee543a661b09f8fa6f2ef18ed92",
+    "baselines": [
+      {
+        "input": "docs/research/md-yuyuhakusho/source5-special-discovery-inputs.json",
+        "input_sha256": "e6ca2bbb16821f13c2508661b3b1b4ebddcad141f40ed7ef99fac0fea2f54af9",
+        "reference": "games/yuyuhakusho/engine/testdata/fighter5-attacks-special-reference-frames.json",
+        "reference_raw_sha256": "8f813685d06dfbe1ca8d9615cd027aef04b130790efe5e6dd66b8395d795bed3",
+        "reference_manifest": "games/yuyuhakusho/engine/testdata/fighter5-attacks-special-reference-manifest.json",
+        "reference_manifest_sha256": "7f60dea78eeee80ff7dadfc272f55ef4d85acc016e37d091747a719e323e80e3",
+        "video_steps": 3602,
+        "entry_frame_limit": 3600,
+        "all_ram_video_match": true
+      }
+    ],
+    "frames_match_original_core": true,
+    "rng_calls": 0,
+    "unexplained_change_calls": 0,
+    "private_unknown_ram_writes": 0,
+    "errors": [],
+    "incomplete_calls": 0,
+    "retreat_table": {
+      "address": "0x1cb20",
+      "bytes": "0044000e000c000a0008000600380036",
+      "sha256": "90d3194cc32e779669f42bcad69a4b481c047f2d72823df8d6cb8a9a2b12c2ae"
+    },
+    "limits": [
+      "MAIN stops before15afc; no shared tail, child/FX callbacks or world scheduling.",
+      "Only Duration/Flags are refreshed from actual immutable animation records; no intermediate state injection."
+    ]
+  },
+  "appended_frame_range": [
+    1809,
+    3465
+  ],
+  "combined_calls": 519,
+  "combined_raw_sha256": "9af14a29cbfff2039cff1847e8cab6f39d5f8e939f9032a7f329b7cd64fb8615",
+  "combined_gzip_sha256": "b47403cd8038e8b9e257f297a8af8012424f8ac7d40d73edd6fda88196bf358c",
+  "frozen_bindings": {
+    "games/yuyuhakusho/engine/fighter5_motion.go": "a09add7c76bb4ede0f21fc1b3c7ef7a55bc8da9913671fded7ea170d13205506",
+    "games/yuyuhakusho/engine/fighter5_motion_test.go": "e2755b908063572fdf59dd43c609698f8a65642c4405274e4d37c67343c255cd",
+    "scripts/yuyuhakusho/capture_fighter5_motion.py": "1c9621358e8621e3d3e74525f90da7c9ffd9b03d0f466afab218409c857e26cd",
+    "games/yuyuhakusho/engine/testdata/fighter5-motion-boundaries.json.gz": "3a889a1d22aab1ace650b5cb21b58d437a28177434b7dda1633dc389d274a3af",
+    "games/yuyuhakusho/engine/testdata/fighter5-motion-boundaries-manifest.json": "80988d734a1bf56cd64f1d1c30f16f05678d03d0c71cec1a9b71d5dfdd9cfe42",
+    "games/yuyuhakusho/engine/testdata/fighter5-motion-sequences.json.gz": "40d657b36c01a6a178305a078246cc9913038de7fb0ba11a934f1683da53bdeb",
+    "games/yuyuhakusho/engine/testdata/fighter5-motion-sequences-manifest.json": "7cfb88fb1e58bae29362d0b601ea36189edee134d075bd3602646880b3e0174b",
+    "games/yuyuhakusho/engine/testdata/fighter5-motion-parameters.json": "0272e897f6c72823bb5228039b04d03e1eaf95f046d1624d08128a9c09b49475"
+  }
+}

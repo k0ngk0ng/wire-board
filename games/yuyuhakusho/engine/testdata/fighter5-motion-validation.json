@@ -1,0 +1,164 @@
+{
+  "pass": true,
+  "scope": "Independent source5 MAIN rules through15afc; actual natural calls, full dirty CPU contexts and single-initial immutable timing streams",
+  "frozen_tests_unchanged": true,
+  "true_missing_own_symbol_red_retained": true,
+  "full_package_compilation": true,
+  "file_exclusions": [],
+  "stubs_added": false,
+  "runs": [
+    {
+      "stage": "native",
+      "scope": "Complete engine package compilation; all five frozen source5 MAIN tests; no file exclusions or stubs",
+      "command": [
+        "go",
+        "test",
+        "-json",
+        "-count=1",
+        "-run",
+        "^TestFighter5Motion",
+        "-race",
+        "./games/yuyuhakusho/engine"
+      ],
+      "cwd": ".",
+      "environment_overrides": {},
+      "exit_code": 0,
+      "elapsed_seconds": 18.992,
+      "passed_tests": [
+        "TestFighter5MotionOriginalPhases",
+        "TestFighter5MotionRealTiming",
+        "TestFighter5MotionCanonicalOwnership",
+        "TestFighter5MotionRetreatPoseRange",
+        "TestFighter5MotionErrorsAreAtomic"
+      ],
+      "log": "games/yuyuhakusho/engine/testdata/fighter5-motion-native.jsonl",
+      "log_sha256": "6dd2e44f4bdeef3837b39c2dd48990c6cb1d27ee992c7616ceb4d4ba1a51539a"
+    },
+    {
+      "stage": "wasm",
+      "scope": "Complete engine package compilation; all five frozen source5 MAIN tests; no file exclusions or stubs",
+      "command": [
+        "go",
+        "test",
+        "-json",
+        "-count=1",
+        "-run",
+        "^TestFighter5Motion",
+        "-exec",
+        "/opt/homebrew/Cellar/go/1.26.2/libexec/lib/wasm/go_js_wasm_exec",
+        "./games/yuyuhakusho/engine"
+      ],
+      "cwd": ".",
+      "environment_overrides": {
+        "GOOS": "js",
+        "GOARCH": "wasm"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 5.681,
+      "passed_tests": [
+        "TestFighter5MotionOriginalPhases",
+        "TestFighter5MotionRealTiming",
+        "TestFighter5MotionCanonicalOwnership",
+        "TestFighter5MotionRetreatPoseRange",
+        "TestFighter5MotionErrorsAreAtomic"
+      ],
+      "log": "games/yuyuhakusho/engine/testdata/fighter5-motion-wasm.jsonl",
+      "log_sha256": "70fa46bb2baea6463e9d6509c693326de94cd36e0f0da8bae022f3bf95d20912"
+    }
+  ],
+  "bindings": {
+    "games/yuyuhakusho/engine/fighter5_motion.go": "a09add7c76bb4ede0f21fc1b3c7ef7a55bc8da9913671fded7ea170d13205506",
+    "games/yuyuhakusho/engine/fighter5_motion_test.go": "e2755b908063572fdf59dd43c609698f8a65642c4405274e4d37c67343c255cd",
+    "games/yuyuhakusho/engine/fighter5_attacks.go": "c92ece3a1159fb48e91f37566f3e6c942764a4ad4439f392e0af056f49c0760b",
+    "games/yuyuhakusho/engine/fighter5_projectile.go": "f6d72694b6eb2096dadf4611f3eed552f3c0c592b2294167dae52ba8ba6bf8e0",
+    "scripts/yuyuhakusho/capture_fighter5_motion.py": "1c9621358e8621e3d3e74525f90da7c9ffd9b03d0f466afab218409c857e26cd",
+    "scripts/yuyuhakusho/capture_fighter5_motion_natural.py": "23644b4dab1455007b50ddb86ccf052399c734503f0d00b3795a4ab6ba87f3d6",
+    "games/yuyuhakusho/engine/testdata/fighter5-motion-boundaries.json.gz": "3a889a1d22aab1ace650b5cb21b58d437a28177434b7dda1633dc389d274a3af",
+    "games/yuyuhakusho/engine/testdata/fighter5-motion-oracle.json.gz": "b47403cd8038e8b9e257f297a8af8012424f8ac7d40d73edd6fda88196bf358c",
+    "games/yuyuhakusho/engine/testdata/fighter5-motion-sequences.json.gz": "40d657b36c01a6a178305a078246cc9913038de7fb0ba11a934f1683da53bdeb",
+    "games/yuyuhakusho/engine/testdata/fighter5-motion-boundaries-manifest.json": "80988d734a1bf56cd64f1d1c30f16f05678d03d0c71cec1a9b71d5dfdd9cfe42",
+    "games/yuyuhakusho/engine/testdata/fighter5-motion-oracle-manifest.json": "ee75ddd9f042d9bdd557b7c65f8439ee5e7d3b432d8e7aa5e89314926214fd32",
+    "games/yuyuhakusho/engine/testdata/fighter5-motion-sequences-manifest.json": "7cfb88fb1e58bae29362d0b601ea36189edee134d075bd3602646880b3e0174b",
+    "games/yuyuhakusho/engine/testdata/fighter5-motion-parameters.json": "0272e897f6c72823bb5228039b04d03e1eaf95f046d1624d08128a9c09b49475",
+    "games/yuyuhakusho/engine/testdata/fighter5-motion-freeze.json": "f547515443618dca2338ba931003fccb385d5a66933f447ce8820326c692ce41",
+    "games/yuyuhakusho/engine/testdata/fighter5-motion-red.jsonl": "4424a6d41a27a51889d52a4714c1ab2ed338b793c721f554506891614d97479b",
+    "games/yuyuhakusho/engine/testdata/fighter5-motion-natural-append.json": "a0ed4a8eea76c7a3bfec0dd1a4458792c9eac2fd061dd14dc95d2e15f63b5bba"
+  },
+  "evidence": {
+    "oracle": {
+      "records": 519,
+      "calls": 519,
+      "kind_counts": {
+        "17": 33,
+        "46": 130,
+        "45": 93,
+        "47": 152,
+        "48": 28,
+        "49": 37,
+        "50": 46
+      },
+      "fixture_sha256": "9af14a29cbfff2039cff1847e8cab6f39d5f8e939f9032a7f329b7cd64fb8615",
+      "gzip_sha256": "b47403cd8038e8b9e257f297a8af8012424f8ac7d40d73edd6fda88196bf358c",
+      "interrupt_calls": 8,
+      "external_change_calls": 4,
+      "external_queue_calls": 1,
+      "unexplained_change_calls": 0
+    },
+    "boundaries": {
+      "records": 5474,
+      "calls": 5474,
+      "kind_counts": {
+        "17": 1152,
+        "45": 630,
+        "46": 512,
+        "47": 708,
+        "48": 708,
+        "50": 708,
+        "49": 1056
+      },
+      "fixture_sha256": "08e31f6cdf5a987f803c6c018b505984f819f2100a5a504a16a7349c2e34a8a5",
+      "gzip_sha256": "3a889a1d22aab1ace650b5cb21b58d437a28177434b7dda1633dc389d274a3af",
+      "interrupt_calls": 0,
+      "external_change_calls": 0,
+      "external_queue_calls": 0,
+      "unexplained_change_calls": 0
+    },
+    "sequences": {
+      "records": 48,
+      "calls": 2749,
+      "kind_counts": {
+        "17": 132,
+        "45": 183,
+        "46": 132,
+        "47": 620,
+        "49": 384,
+        "50": 1240,
+        "48": 58
+      },
+      "fixture_sha256": "f4c3f1eb88ba0b34a2d0d914354eff9a879b9b2a9f7a8ddf67d9b7bd73e283f9",
+      "gzip_sha256": "40d657b36c01a6a178305a078246cc9913038de7fb0ba11a934f1683da53bdeb",
+      "interrupt_calls": 0,
+      "external_change_calls": 0,
+      "external_queue_calls": 0,
+      "unexplained_change_calls": 0
+    }
+  },
+  "limits": [
+    "Stops before the shared action tail; child callbacks and world scheduling are separate owners.",
+    "Natural31 variant1 has only five calls, variant2 has32 and the only31-to32 at3419; no natural variant0 MAIN31 or19408/19426 completion is claimed.",
+    "All three variants complete in the twelve explicitly private31-to32 timing streams."
+  ],
+  "documentation_and_static_bindings": {
+    "games/yuyuhakusho/engine/FIGHTER5_MOTION_FAILURES.md": "329ac4d735b32de4f8d57d86e367204ef803fcf913b969275da6ed224d05c0c0",
+    "games/yuyuhakusho/engine/FIGHTER5_MOTION_VERIFICATION.md": "c762b61cfdec9e72a3e81b5d8a13ae164e3b4d1ad04d83c23859a0b88f98f6f8",
+    "games/yuyuhakusho/engine/testdata/fighter5-motion-cleanup.json": "ed2b809200b5037874a15653b783b18e6e0afd0030bcf70d1221f91776fdcda8",
+    "docs/research/md-yuyuhakusho/static/fighter-action-slots-focused.txt": "c6a52e94bea31dc12e08c6cd76a282dc4ae51c56288f2df3e7bef40cd72a072d",
+    "docs/research/md-yuyuhakusho/static/fighter-action-constructors-focused.txt": "e43cec558dad5ba037b0ad39577ec0ebc8b9d9a6c6af0b667596d35e0ae44dad",
+    "docs/research/md-yuyuhakusho/static/fighter-action-coverage.json": "521080d1aaa6947d0d71316ea9ce2d3e4872958e74a9e54933061493e2650824"
+  },
+  "cleanup": {
+    "file_count": 21,
+    "bytes": 3853988,
+    "other_tasks_or_shared_cache_touched": false
+  }
+}

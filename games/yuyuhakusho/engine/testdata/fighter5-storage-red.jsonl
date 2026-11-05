@@ -1,0 +1,13 @@
+{"Time":"2026-11-05T12:00:31.293413+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-05T12:00:31.714706+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter5CanonicalChildViews"}
+{"Time":"2026-11-05T12:00:31.714738+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter5CanonicalChildViews","Output":"=== RUN   TestFighter5CanonicalChildViews\n"}
+{"Time":"2026-11-05T12:00:31.714981+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter5CanonicalChildViews","Output":"    fighter5_storage_test.go:26: source5 child word/long views lost or duplicated 0\n"}
+{"Time":"2026-11-05T12:00:31.714991+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter5CanonicalChildViews","Output":"--- FAIL: TestFighter5CanonicalChildViews (0.00s)\n"}
+{"Time":"2026-11-05T12:00:31.715001+08:00","Action":"fail","Package":"command-line-arguments","Test":"TestFighter5CanonicalChildViews","Elapsed":0}
+{"Time":"2026-11-05T12:00:31.715007+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter5CanonicalActionViews"}
+{"Time":"2026-11-05T12:00:31.71501+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter5CanonicalActionViews","Output":"=== RUN   TestFighter5CanonicalActionViews\n"}
+{"Time":"2026-11-05T12:00:31.715111+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter5CanonicalActionViews","Output":"--- PASS: TestFighter5CanonicalActionViews (0.00s)\n"}
+{"Time":"2026-11-05T12:00:31.715119+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighter5CanonicalActionViews","Elapsed":0}
+{"Time":"2026-11-05T12:00:31.715252+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\n"}
+{"Time":"2026-11-05T12:00:31.715697+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\tcommand-line-arguments\t0.422s\n"}
+{"Time":"2026-11-05T12:00:31.715707+08:00","Action":"fail","Package":"command-line-arguments","Elapsed":0.422}

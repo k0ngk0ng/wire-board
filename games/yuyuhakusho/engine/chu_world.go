@@ -194,6 +194,8 @@ func stepChuWorldObject(state *ChuWorldState, object WorldObject, view ChuWorldV
 		return stepFighter4WorldDragonTrail(state, object)
 	case 0x13fc8:
 		return stepFighter4WorldBoost(state, object, library.Animations)
+	case 0x1414e, 0x143e4, 0x146ba:
+		return stepFighter5WorldProjectile(state, object, library.Animations)
 	case 0x132de, 0x1361e:
 		return stepChuWorldAttachment(state, object, library.Attachments)
 	case 0x149ac:
@@ -371,7 +373,7 @@ func stepChuWorldArena(state *ChuWorldState, object WorldObject, library ArenaRu
 }
 
 func stepChuWorldFighter(state *ChuWorldState, object WorldObject, view ChuWorldView, library ChuWorldLibrary, hudCursor *uint16) ([]ChuWorldEvent, error) {
-	if _, ok := chuAIIndex(object.ObjectID); !ok || (object.Tag != 0 && object.Tag != 1 && object.Tag != 2 && object.Tag != 3 && object.Tag != 4 && object.Tag != 6 && object.Tag != 8 && object.Tag != 9 && object.Tag != 10) {
+	if _, ok := chuAIIndex(object.ObjectID); !ok || (object.Tag != 0 && object.Tag != 1 && object.Tag != 2 && object.Tag != 3 && object.Tag != 4 && object.Tag != 5 && object.Tag != 6 && object.Tag != 8 && object.Tag != 9 && object.Tag != 10) {
 		return nil, errors.New("complete fighter action source is not recovered")
 	}
 	switch object.Header.Stage {

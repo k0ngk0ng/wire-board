@@ -1,0 +1,225 @@
+{
+  "scope": "Complete source5 selectors, ten special roots and five followup constructors; ordinary plus final special natural, dirty boundaries and one-initial-state streams",
+  "pass": true,
+  "production": {
+    "path": "games/yuyuhakusho/engine/fighter5_attacks.go",
+    "sha256": "c92ece3a1159fb48e91f37566f3e6c942764a4ad4439f392e0af056f49c0760b"
+  },
+  "frozen_test_sha256": "4d687d9aa63d1c2d33e091a4af0b749bde08775f046b24f635b491d37ca63008",
+  "test_unchanged": true,
+  "production_unchanged_after_first_green": true,
+  "prior_evidence_unchanged": true,
+  "own_symbol_red": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter5-attacks-own-symbol-red.jsonl",
+    "sha256": "eb9cbd0b0c431df54365872433200008fe3f3eb3b82705bc8af41ac6c40e3262",
+    "exit_code": 1,
+    "type_dependency": "fighter5_motion.go contains declarations only",
+    "type_dependency_sha256": "75a32325f12b908838bbd7f117f404d74f1f6b14192d4f51eb516af8f68aa257"
+  },
+  "runs": [
+    {
+      "phase": "initial",
+      "flavor": "native",
+      "jsonl": "games/yuyuhakusho/engine/testdata/fighter5-attacks-initial-native.jsonl",
+      "sha256": "88e4d38d69152c519de3f5714b1bd25ea4bd6c125517cd41281af6b560bef36d",
+      "seconds": 133.718,
+      "command": "games/yuyuhakusho/engine/testdata/fighter5-attacks-initial-native-command.json",
+      "passed_tests": [
+        "TestFighter5AttacksOriginalFullCalls/fighter5-attacks-natural",
+        "TestFighter5AttacksOriginalFullCalls/fighter5-attacks-oracle",
+        "TestFighter5AttacksOriginalFullCalls/fighter5-attacks-boundaries",
+        "TestFighter5AttacksOriginalFullCalls",
+        "TestFighter5AttacksSingleInitialState",
+        "TestFighter5AttacksInvalidInputIsAtomic"
+      ]
+    },
+    {
+      "phase": "initial",
+      "flavor": "wasm",
+      "jsonl": "games/yuyuhakusho/engine/testdata/fighter5-attacks-initial-wasm.jsonl",
+      "sha256": "3d35d1e8ea29d5db8428231801869a86743d77200068823d2536fbcf62eef90d",
+      "seconds": 30.15,
+      "command": "games/yuyuhakusho/engine/testdata/fighter5-attacks-initial-wasm-command.json",
+      "passed_tests": [
+        "TestFighter5AttacksOriginalFullCalls/fighter5-attacks-natural",
+        "TestFighter5AttacksOriginalFullCalls/fighter5-attacks-oracle",
+        "TestFighter5AttacksOriginalFullCalls/fighter5-attacks-boundaries",
+        "TestFighter5AttacksOriginalFullCalls",
+        "TestFighter5AttacksSingleInitialState",
+        "TestFighter5AttacksInvalidInputIsAtomic"
+      ]
+    },
+    {
+      "phase": "special",
+      "flavor": "native",
+      "jsonl": "games/yuyuhakusho/engine/testdata/fighter5-attacks-special-native.jsonl",
+      "sha256": "3997776bc294cbdeee7054ef8b308b0c79283b1d5bd9dba20b771e9665768d24",
+      "seconds": 6.787,
+      "command": "games/yuyuhakusho/engine/testdata/fighter5-attacks-special-native-command.json",
+      "passed_tests": [
+        "TestFighter5AttacksOriginalFullCalls/fighter5-attacks-special-natural",
+        "TestFighter5AttacksOriginalFullCalls"
+      ]
+    },
+    {
+      "phase": "special",
+      "flavor": "wasm",
+      "jsonl": "games/yuyuhakusho/engine/testdata/fighter5-attacks-special-wasm.jsonl",
+      "sha256": "141ae273ea129e9ecdd3b74b7c3ed82e3b348e92c8bc7c5a2edaa921b5b05847",
+      "seconds": 1.3980000000000001,
+      "command": "games/yuyuhakusho/engine/testdata/fighter5-attacks-special-wasm-command.json",
+      "passed_tests": [
+        "TestFighter5AttacksOriginalFullCalls/fighter5-attacks-special-natural",
+        "TestFighter5AttacksOriginalFullCalls"
+      ]
+    },
+    {
+      "phase": "final-package",
+      "flavor": "native",
+      "jsonl": "games/yuyuhakusho/engine/testdata/fighter5-attacks-native.jsonl",
+      "sha256": "7567dbc4a82edfa7214f4a68fffbe035ac77c7184551710a61287aabe433ab35",
+      "seconds": 139.721,
+      "command": "games/yuyuhakusho/engine/testdata/fighter5-attacks-native-command.json",
+      "passed_tests": [
+        "TestFighter5AttacksOriginalFullCalls/fighter5-attacks-natural",
+        "TestFighter5AttacksOriginalFullCalls/fighter5-attacks-special-natural",
+        "TestFighter5AttacksOriginalFullCalls/fighter5-attacks-oracle",
+        "TestFighter5AttacksOriginalFullCalls/fighter5-attacks-boundaries",
+        "TestFighter5AttacksOriginalFullCalls",
+        "TestFighter5AttacksSingleInitialState",
+        "TestFighter5AttacksInvalidInputIsAtomic"
+      ]
+    },
+    {
+      "phase": "final-package",
+      "flavor": "wasm",
+      "jsonl": "games/yuyuhakusho/engine/testdata/fighter5-attacks-wasm.jsonl",
+      "sha256": "16b9ec51e281b384a33d988fc525184aaa21aa4a7133463610888f986d8b8884",
+      "seconds": 32.383,
+      "command": "games/yuyuhakusho/engine/testdata/fighter5-attacks-wasm-command.json",
+      "passed_tests": [
+        "TestFighter5AttacksOriginalFullCalls/fighter5-attacks-natural",
+        "TestFighter5AttacksOriginalFullCalls/fighter5-attacks-special-natural",
+        "TestFighter5AttacksOriginalFullCalls/fighter5-attacks-oracle",
+        "TestFighter5AttacksOriginalFullCalls/fighter5-attacks-boundaries",
+        "TestFighter5AttacksOriginalFullCalls",
+        "TestFighter5AttacksSingleInitialState",
+        "TestFighter5AttacksInvalidInputIsAtomic"
+      ]
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-attacks-boundaries-manifest.json",
+      "sha256": "0b5212ce31270694e3e6a87560fcba802f2ded2ad3ed2da46affac4f481146ef",
+      "records": 33280,
+      "calls": 33280,
+      "interrupts": 0,
+      "successful_constructor_counts": {
+        "0x19240": 672,
+        "0x19284": 636,
+        "0x19216": 708,
+        "0x192f6": 188,
+        "0x192c8": 837,
+        "0x19324": 121,
+        "0x19364": 1170,
+        "0x193a4": 398,
+        "0x193bc": 226,
+        "0x193d4": 194,
+        "0x1926a": 1188,
+        "0x192ae": 1188,
+        "0x19408": 1188,
+        "0x19426": 1188,
+        "0x19444": 1188
+      }
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-attacks-natural-manifest.json",
+      "sha256": "8171da839a380bc579c26d2b0334ec3ed71c8e1da289703bcadd05dd77d9c566",
+      "records": 1964,
+      "calls": 1964,
+      "interrupts": 74,
+      "successful_constructor_counts": {}
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-attacks-oracle-manifest.json",
+      "sha256": "9f92c121456d0c306e379464859853babfa0c81fc638957aeccdf5795b2e3ae3",
+      "records": 34,
+      "calls": 34,
+      "interrupts": 0,
+      "successful_constructor_counts": {
+        "0x19240": 1,
+        "0x19284": 1,
+        "0x19216": 2,
+        "0x192c8": 1,
+        "0x192f6": 1,
+        "0x19324": 1,
+        "0x19364": 1,
+        "0x193a4": 1,
+        "0x193bc": 1,
+        "0x193d4": 1,
+        "0x1926a": 1,
+        "0x192ae": 1,
+        "0x19408": 1,
+        "0x19426": 1,
+        "0x19444": 1
+      }
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-attacks-sequences-manifest.json",
+      "sha256": "3b810a4212b458495dd331ced934c7ca39419014c753693503befc622a3a07e3",
+      "records": 108,
+      "calls": 1728,
+      "interrupts": 0,
+      "successful_constructor_counts": {}
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-attacks-special-natural-manifest.json",
+      "sha256": "e792347df03696cab6d9e8b5a61dbb8ab4315e0b41652a03b1071f472642353f",
+      "records": 1462,
+      "calls": 1462,
+      "interrupts": 96,
+      "successful_constructor_counts": {
+        "0x19240": 1,
+        "0x19284": 1,
+        "0x19216": 1,
+        "0x192c8": 1,
+        "0x192f6": 1,
+        "0x19324": 1,
+        "0x19364": 1,
+        "0x193a4": 1,
+        "0x193bc": 1,
+        "0x193d4": 1,
+        "0x19444": 1
+      }
+    }
+  ],
+  "cpu_calls": 38468,
+  "successful_special_roots": 10,
+  "natural_followups_observed": [
+    "0x19444"
+  ],
+  "natural_followups_not_observed": [
+    "0x1926a",
+    "0x192ae",
+    "0x19408",
+    "0x19426"
+  ],
+  "natural_followups_limits": "Unobserved followups retain private/one-initial-state stream coverage; no natural claim",
+  "go_runtime": [
+    "Independent Go",
+    "Node/Wasm"
+  ],
+  "reference_runtime_required_by_go": false,
+  "pending_integration": [],
+  "cleanup": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter5-attacks-cleanup.json",
+    "sha256": "e71383dc7770a3d8f5c1d04b259d05ab5977511aa607ed34e5e513305befec3e"
+  },
+  "verification": {
+    "path": "games/yuyuhakusho/engine/FIGHTER5_ATTACK_VERIFICATION.md",
+    "sha256": "9802721371c4aba7c7c583817f6642b637d077ba29e1fa920b6601ca0e302e8b"
+  },
+  "package_level_acceptance_complete": true,
+  "unique_recorded_interrupts": 170
+}

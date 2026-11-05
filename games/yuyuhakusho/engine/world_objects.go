@@ -39,7 +39,9 @@ type WorldObject struct {
 	AIBehavior                             uint8
 	AITargetCursor, AICountdown, AIElapsed uint16
 	AIFollowTarget                         uint16
-	DragonBank                             uint16 `json:",omitempty"`
+	// DragonBank retains the original save name for the canonical +fe word.
+	// Source4 views it as a history bank; source5 views the same word as Owner.
+	DragonBank uint16 `json:",omitempty"`
 }
 
 // ApplyObjectClearPrefix applies an already resolved 0x3556 clear request to
@@ -177,6 +179,10 @@ func (object WorldObject) AsChuFighter(children [3]WorldObject) (ChuActorFighter
 	for i, child := range children {
 		f.Children[i], f.ChildAttackFlags[i] = child.AsChuChild(), child.Body.Auxiliary64
 		f.ChildExtras[i] = Fighter4ChildExtra{Direction: child.Aux48, Held: uint8(child.Controls.Held), Pressed: uint8(child.Controls.Pressed), ContactFlags: child.ContactFlags, DragonBank: child.DragonBank}
+		if object.Tag == 5 {
+			f.ChildExtras[i].DragonBank = 0
+			f.Fighter5ChildExtras[i] = Fighter5ChildExtra{Gravity: child.Body.Gravity, Owner: child.DragonBank}
+		}
 	}
 	return f, nil
 }
@@ -413,6 +419,9 @@ func MergeWorldChuActor(objects WorldObjects, fighter ChuActorFighter) (WorldObj
 		children[i] = children[i].MergeChuChild(fighter.Children[i])
 		extra := fighter.ChildExtras[i]
 		children[i].Aux48, children[i].ContactFlags, children[i].DragonBank = extra.Direction, extra.ContactFlags, extra.DragonBank
+		if object.Tag == 5 {
+			children[i].Body.Gravity, children[i].DragonBank = fighter.Fighter5ChildExtras[i].Gravity, fighter.Fighter5ChildExtras[i].Owner
+		}
 		children[i].Controls.Held = children[i].Controls.Held&0xff00 | Buttons(extra.Held)
 		children[i].Controls.Pressed = children[i].Controls.Pressed&0xff00 | Buttons(extra.Pressed)
 	}

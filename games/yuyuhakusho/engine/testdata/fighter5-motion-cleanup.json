@@ -1,0 +1,142 @@
+{
+  "scope": "Only module-owned duplicate captures, appended observation output and superseded file-selected diagnostics; canonical evidence/red/final package logs remain",
+  "capture_comparison": [
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-motion-oracle.json.gz",
+      "sha256": "2fd8f2afc330a6d5400f6bcd7402f229957170f6b13587fb7bc7f9d26bf237c2",
+      "captures_byte_identical": true
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-motion-boundaries.json.gz",
+      "sha256": "3a889a1d22aab1ace650b5cb21b58d437a28177434b7dda1633dc389d274a3af",
+      "captures_byte_identical": true
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-motion-sequences.json.gz",
+      "sha256": "40d657b36c01a6a178305a078246cc9913038de7fb0ba11a934f1683da53bdeb",
+      "captures_byte_identical": true
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-motion-parameters.json",
+      "sha256": "0272e897f6c72823bb5228039b04d03e1eaf95f046d1624d08128a9c09b49475",
+      "captures_byte_identical": true
+    }
+  ],
+  "removed_files": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-motion-capture/fighter5-motion-boundaries-manifest.json",
+      "bytes": 2808,
+      "sha256": "426980a559f28e2eb8eea7d2ae8cd42ca9efecbf45da0bda7b7b763b37a5c2f7"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-motion-capture/fighter5-motion-boundaries.json.gz",
+      "bytes": 1228199,
+      "sha256": "3a889a1d22aab1ace650b5cb21b58d437a28177434b7dda1633dc389d274a3af"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-motion-capture/fighter5-motion-oracle-manifest.json",
+      "bytes": 2727,
+      "sha256": "c85eca8f99ae8d573e88529814c2b15a42f230cdc04e5dd5bcdf5f6809753413"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-motion-capture/fighter5-motion-oracle.json.gz",
+      "bytes": 11872,
+      "sha256": "2fd8f2afc330a6d5400f6bcd7402f229957170f6b13587fb7bc7f9d26bf237c2"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-motion-capture/fighter5-motion-parameters.json",
+      "bytes": 323,
+      "sha256": "0272e897f6c72823bb5228039b04d03e1eaf95f046d1624d08128a9c09b49475"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-motion-capture/fighter5-motion-sequences-manifest.json",
+      "bytes": 2816,
+      "sha256": "77f9bb6eedc33978878ccbaa242a614e2987f9f9ccae21b776c175403a04601c"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-motion-capture/fighter5-motion-sequences.json.gz",
+      "bytes": 609054,
+      "sha256": "40d657b36c01a6a178305a078246cc9913038de7fb0ba11a934f1683da53bdeb"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-motion-capture-final/fighter5-motion-boundaries-manifest.json",
+      "bytes": 2879,
+      "sha256": "80988d734a1bf56cd64f1d1c30f16f05678d03d0c71cec1a9b71d5dfdd9cfe42"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-motion-capture-final/fighter5-motion-boundaries.json.gz",
+      "bytes": 1228199,
+      "sha256": "3a889a1d22aab1ace650b5cb21b58d437a28177434b7dda1633dc389d274a3af"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-motion-capture-final/fighter5-motion-oracle-manifest.json",
+      "bytes": 2798,
+      "sha256": "f7f96038725bd7e3747d8cba3baf15007280dd2a8968096fbe85188c0f183904"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-motion-capture-final/fighter5-motion-oracle.json.gz",
+      "bytes": 11872,
+      "sha256": "2fd8f2afc330a6d5400f6bcd7402f229957170f6b13587fb7bc7f9d26bf237c2"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-motion-capture-final/fighter5-motion-parameters.json",
+      "bytes": 323,
+      "sha256": "0272e897f6c72823bb5228039b04d03e1eaf95f046d1624d08128a9c09b49475"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-motion-capture-final/fighter5-motion-sequences-manifest.json",
+      "bytes": 2887,
+      "sha256": "7cfb88fb1e58bae29362d0b601ea36189edee134d075bd3602646880b3e0174b"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-motion-capture-final/fighter5-motion-sequences.json.gz",
+      "bytes": 609054,
+      "sha256": "40d657b36c01a6a178305a078246cc9913038de7fb0ba11a934f1683da53bdeb"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-motion-natural-append/observation/fighter5-motion-oracle-manifest.json",
+      "bytes": 2486,
+      "sha256": "cae522ce09d4227227073c206a2593598919264538e2d2ee574c03acdafa4069"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-motion-natural-append/observation/fighter5-motion-oracle.json.gz",
+      "bytes": 104554,
+      "sha256": "9ce6fc4ae3d6ff628c8bd9eae0466772906a7ee543a661b09f8fa6f2ef18ed92"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-motion-diagnostic.jsonl",
+      "bytes": 5024,
+      "sha256": "b852054b7bcf93a036fbb4d92fc8740d60141b8b0fc48ba56393c5da352308bc"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-motion-native-selected.jsonl",
+      "bytes": 5028,
+      "sha256": "7e86df523eebb511f4627852cbca6d5ef9bac3f540b474acb5e83946aa26483d"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-motion-wasm-selected.jsonl",
+      "bytes": 5024,
+      "sha256": "1ffc6bd38e4881260366fddc0840d5e89eeca076ef4639817367869392952a43"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-motion-selected-validation.json",
+      "bytes": 14327,
+      "sha256": "9d8b8e2fed438f5b50f484b81d6deaf69f7677be9b39e7a96adf567311b8643d"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-motion-natural-diagnostic.jsonl",
+      "bytes": 1734,
+      "sha256": "640a1bd80ac799e6e9fe5adca720f930f58f0f56f6931757a2749334a3a37e6c"
+    }
+  ],
+  "removed_bytes": 3853988,
+  "removed_file_count": 21,
+  "other_tasks_and_shared_caches_touched": false,
+  "natural_append_comparison": {
+    "all_appended_calls_retained": true,
+    "calls": 486,
+    "raw_sha256": "55b482e291ba7b63612bc2cb50eebbc896b4eb7778fbc5cfee79b728a2e23ff5",
+    "gzip_sha256": "9ce6fc4ae3d6ff628c8bd9eae0466772906a7ee543a661b09f8fa6f2ef18ed92"
+  },
+  "prior_cleanup_sha256": "31806fafbe97246243d72ff0916d259e7e2d9008a81c95c29075d80e4a0e28df"
+}

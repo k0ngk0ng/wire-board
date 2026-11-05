@@ -1,0 +1,116 @@
+{
+  "pass": true,
+  "scope": "Source5 standalone1414e/143e4/146ba, private142b4/1458a hit-stop continuations and creator-clock-child16flows; not full actor/world acceptance",
+  "go": "go1.26.2 darwin/arm64",
+  "node": "v24.15.0",
+  "frozen_test_files_unchanged": true,
+  "frozen_fixtures_unchanged": true,
+  "actual_own_symbol_red_before_implementation": true,
+  "runs": {
+    "native": {
+      "pass": true,
+      "tests": [
+        "TestFighter5ProjectileCreatorLifecycles",
+        "TestFighter5ProjectileErrorsAreAtomic",
+        "TestFighter5ProjectileNaturalCallbacks",
+        "TestFighter5ProjectileOriginalBoundaries"
+      ],
+      "elapsed_seconds": 22.488,
+      "log": "games/yuyuhakusho/engine/testdata/fighter5-projectile-native.jsonl",
+      "sha256": "d2e33a37707905710f6d9ce0fe03e48b2dad2f5730335f0bfde7b805c4375ce4"
+    },
+    "wasm": {
+      "pass": true,
+      "tests": [
+        "TestFighter5ProjectileCreatorLifecycles",
+        "TestFighter5ProjectileErrorsAreAtomic",
+        "TestFighter5ProjectileNaturalCallbacks",
+        "TestFighter5ProjectileOriginalBoundaries"
+      ],
+      "elapsed_seconds": 5.796,
+      "log": "games/yuyuhakusho/engine/testdata/fighter5-projectile-wasm.jsonl",
+      "sha256": "4e3e0ea47526e401f9d6881a43ac9b2f82fb0e7a7b8b2c119ac1b2fef6e69ef3"
+    }
+  },
+  "vet": {
+    "pass": true,
+    "log": "games/yuyuhakusho/engine/testdata/fighter5-projectile-vet.txt",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "cpu_counts": {
+    "natural": 191,
+    "boundaries": 6363,
+    "streams": 16,
+    "stream_calls": 3596,
+    "all_calls": 10150,
+    "draws": 6081,
+    "clears": 1296,
+    "unexplained_writes": 0,
+    "rng_calls": 0
+  },
+  "reproducibility": {
+    "pass": true,
+    "files": 7,
+    "report": "games/yuyuhakusho/engine/testdata/fighter5-projectile-reproducibility.json"
+  },
+  "tool_sha256": {
+    "rom": {
+      "path": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/downloads/yuyuhakusho-jp.bin",
+      "sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06"
+    },
+    "original_core": {
+      "path": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tools/genesis_plus_gx_libretro.dylib",
+      "sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da"
+    },
+    "hook_core": {
+      "path": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/genesis_plus_gx_libretro.dylib",
+      "sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306"
+    },
+    "hook_filter": {
+      "path": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tools/hook_filter.dylib",
+      "sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4"
+    },
+    "reference_frontend": {
+      "path": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/reference.py",
+      "sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81"
+    },
+    "go_binary": {
+      "path": "/opt/homebrew/Cellar/go/1.26.2/libexec/bin/go",
+      "sha256": "912f19a1a95ffe44a9e349d8283c74eb1d2eace37aad3ca6ef7b9ae321eb709f"
+    },
+    "node_binary": {
+      "path": "/Users/jason/.nvm/versions/node/v24.15.0/bin/node",
+      "sha256": "3200fbd9f7fd4410426dd541e10d1ab829d3472f270d743c7fabd1696c03fe32"
+    }
+  },
+  "files": {
+    "docs/research/md-yuyuhakusho/static/fighter5-projectile-manifest.json": "0324a2bd137331cfcea1f03b0886c377afd85eec271f5c62d904540425c0a378",
+    "games/yuyuhakusho/engine/FIGHTER5_PROJECTILE_FAILURES.md": "2689a11c07714986a86b88798e5ff2a055f92deb8a950a7be3f9cf689eb2a93e",
+    "games/yuyuhakusho/engine/FIGHTER5_PROJECTILE_VERIFICATION.md": "a3d4e28cd4b3cf3c7107706cb6e04aff706b3d78c9a3933357c50764f14df59c",
+    "games/yuyuhakusho/engine/fighter5_projectile.go": "f6d72694b6eb2096dadf4611f3eed552f3c0c592b2294167dae52ba8ba6bf8e0",
+    "games/yuyuhakusho/engine/fighter5_projectile_test.go": "276b79212a2c31a3187a7bbe0e1274898841516ede1a053770054d4308767750",
+    "games/yuyuhakusho/engine/testdata/fighter5-projectile-boundaries-manifest.json": "fd8699c329e54a8f546a1e52817729119b5b34dd1add98659538f8be2e9ff17d",
+    "games/yuyuhakusho/engine/testdata/fighter5-projectile-boundaries.json.gz": "39a5f020f5156075043ecd7047b8a042fa3e8cbd4645b7a62b1744190446d15e",
+    "games/yuyuhakusho/engine/testdata/fighter5-projectile-cleanup.json": "09951ffbca08495e46d3ee82c56a9af95077ca18dffb70e2914d5bd463a63252",
+    "games/yuyuhakusho/engine/testdata/fighter5-projectile-data.json": "3224a4874868b8a609115b903604449824107de8901ba7cc688dfcd7d6a418c5",
+    "games/yuyuhakusho/engine/testdata/fighter5-projectile-frozen-red.jsonl": "d67c3c1fad75fb2c555980b498fb8e42d6da829e6e40a71b1347bcf3a45bcef2",
+    "games/yuyuhakusho/engine/testdata/fighter5-projectile-native.jsonl": "d2e33a37707905710f6d9ce0fe03e48b2dad2f5730335f0bfde7b805c4375ce4",
+    "games/yuyuhakusho/engine/testdata/fighter5-projectile-oracle-manifest.json": "2ca17563ae6184023883a7958a7a3d6b1e3544b2235e5d046b2b8ac2cc6d688c",
+    "games/yuyuhakusho/engine/testdata/fighter5-projectile-oracle.json.gz": "bd10303bf506d5cb4320b5860232c6473bcce6d8b21cfc4acd640b6e3e130d8d",
+    "games/yuyuhakusho/engine/testdata/fighter5-projectile-ordinary-oracle-manifest.json": "14330f8e4c96314c4bc8ece68b7f5a9a585c087d98e8cf5309bea7b01b4a861f",
+    "games/yuyuhakusho/engine/testdata/fighter5-projectile-ordinary-oracle.json.gz": "9896df62222531d78db68608d3af86a20b6c3b8da856dfd7edbbfe3acde11156",
+    "games/yuyuhakusho/engine/testdata/fighter5-projectile-reproducibility.json": "7d148a9279f618d4e79e213dde5b3e511a709fb38c1399c8e2166d2314201f37",
+    "games/yuyuhakusho/engine/testdata/fighter5-projectile-sequences-manifest.json": "6aaca7970647a6d11a530ec786467e1bd1911778f58bc18d34c8f27db8b261a7",
+    "games/yuyuhakusho/engine/testdata/fighter5-projectile-sequences.json.gz": "cf18555c0e1850420e6bab83512e9664245c08bc561425b258332bd626793fe5",
+    "games/yuyuhakusho/engine/testdata/fighter5-projectile-test-first.json": "a6ed3e3c439b4303cf1b748aa855fc04125381697a874792ffe5455fe28d8449",
+    "games/yuyuhakusho/engine/testdata/fighter5-projectile-vet.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "games/yuyuhakusho/engine/testdata/fighter5-projectile-wasm.jsonl": "4e3e0ea47526e401f9d6881a43ac9b2f82fb0e7a7b8b2c119ac1b2fef6e69ef3",
+    "scripts/yuyuhakusho/capture_fighter5_projectile.py": "78554b8a9292a64d9a82902ed406da6b3891524bac025f48a0a96f88784f8716"
+  },
+  "limits": [
+    "Ordinary natural0 preserved pass:false; merged oracle191 comes from fixed special input, both original3602 controls cold-replayed exactly",
+    "No natural142b4/1458a observed; only bounded static + explicit private CPU evidence, no invented world scheduling",
+    "Fixed special input naturally reaches final-C19444 only; no claim of other follow-up helpers natural coverage",
+    "Only new owned files written; no shared world/bundle/UI/PROGRESS or commits by this owner"
+  ]
+}

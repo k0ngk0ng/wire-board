@@ -1,0 +1,22 @@
+{
+  "argv": [
+    "go",
+    "test",
+    "-count=1",
+    "-run",
+    "^TestFighter5Attacks",
+    "-json",
+    "-exec",
+    "/opt/homebrew/Cellar/go/1.26.2/libexec/lib/wasm/go_js_wasm_exec",
+    "./games/yuyuhakusho/engine"
+  ],
+  "env": {
+    "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+    "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+    "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "GOOS": "js",
+    "GOARCH": "wasm"
+  },
+  "workdir": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho"
+}

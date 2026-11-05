@@ -72,7 +72,7 @@ func decodeChuActor(t *testing.T, raw chuActorSnapshot, id uint16) ChuActorState
 		ChargeTicks: a.ChargeTicks, GuardMask: a.GuardMask, ContactFlags: a.ContactFlags, TargetMask: a.TargetMask, AttackValue: a.AttackValue, StunDamage: a.StunDamage,
 		EffectKind: a.EffectKind, Reaction: a.Reaction, AttackScale: a.AttackScale, HitStopTicks: a.HitStopTicks, Shake: a.Shake, StatusDelay: a.StatusDelay,
 		Residual: a.Residual, StunTicks: a.StunTicks, TargetBit: a.TargetBit, Power: a.Power, AlternateVelocity: a.AlternateVelocity, Children: a.Children,
-		MovementSource: a.MovementSource, ChildExtras: a.ChildExtras}
+		MovementSource: a.MovementSource, ChildExtras: a.ChildExtras, Fighter5ChildExtras: a.Fighter5ChildExtras}
 	for i := range f.ChildAttackFlags {
 		f.ChildAttackFlags[i] = family[index+256*(i+1)+0x64]
 	}
@@ -111,6 +111,7 @@ func encodeChuActor(t *testing.T, state ChuActorState, view ChuActorView, emitte
 		StunTicks: f.StunTicks, TargetBit: f.TargetBit, Power: f.Power, AlternateVelocity: f.AlternateVelocity, Children: f.Children, EffectExtras: w.EffectExtras,
 		GlobalF568: w.GlobalF568, GlobalF56A: w.GlobalF56A, Left: view.ArenaLeft, Right: view.ArenaRight}
 	action.MovementSource, action.ChildExtras, action.DragonBankCursor = f.MovementSource, f.ChildExtras, w.DragonBankCursor
+	action.Fighter5ChildExtras = f.Fighter5ChildExtras
 	raw := previous
 	raw.Action = encodeChuAction(t, action, previous.Action)
 	b := attackContactBytes(t, raw.Action.Tail.ActorBytes, 256)

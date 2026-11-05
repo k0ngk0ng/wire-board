@@ -1,0 +1,21 @@
+{"boundaries_collected": 6363, "natural_so_far": 0}
+{"stream": "47-0-False", "calls": 188}
+{"stream": "47-0-True", "calls": 189}
+{"stream": "47-1-False", "calls": 188}
+{"stream": "47-1-True", "calls": 189}
+{"stream": "48-0-False", "calls": 205}
+{"stream": "48-0-True", "calls": 206}
+{"stream": "48-1-False", "calls": 205}
+{"stream": "48-1-True", "calls": 206}
+{"stream": "49-0-False", "calls": 316}
+{"stream": "49-0-True", "calls": 317}
+{"stream": "49-1-False", "calls": 316}
+{"stream": "49-1-True", "calls": 317}
+{"stream": "50-0-False", "calls": 188}
+{"stream": "50-0-True", "calls": 189}
+{"stream": "50-1-False", "calls": 188}
+{"stream": "50-1-True", "calls": 189}
+{"name": "fighter5-projectile-oracle", "records": 191, "calls": 191, "kinds": {"linear": 139, "follower": 38, "steered": 14}, "pass": true}
+{"name": "fighter5-projectile-boundaries", "records": 6363, "calls": 6363, "kinds": {"linear": 2763, "linear_stop": 64, "steered": 2833, "steered_stop": 64, "follower": 639}, "pass": true}
+{"name": "fighter5-projectile-sequences", "records": 16, "calls": 3596, "kinds": {"clock": 880, "creator47": 212, "record": 880, "linear": 592, "creator48": 116, "creator49": 128, "follower": 130, "creator50": 424, "steered": 234}, "pass": true}
+{"missing_animation_frames": 16, "all_frames": 33}

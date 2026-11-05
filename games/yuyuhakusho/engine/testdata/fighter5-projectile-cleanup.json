@@ -1,0 +1,270 @@
+{
+  "pass": true,
+  "scope": "Only owner-specific duplicate raw output, Ghidra scratch/cache/logs, capture scratch/logs and one owned pyc; canonical CPU fixtures, original/frozen red, native/Wasm/vet and static evidence retained",
+  "shared_cache_untouched": [
+    ".local/go-cache",
+    ".local/go-mod",
+    ".local/md-yuyuhakusho/tmp",
+    "games/yuyuhakusho/engine/testdata/observed-0"
+  ],
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-projectile-repro",
+      "kind": "directory",
+      "files": [
+        {
+          "path": ".local/md-yuyuhakusho/fighter5-projectile-repro/fighter5-projectile-boundaries-manifest.json",
+          "bytes": 3194,
+          "sha256": "fd8699c329e54a8f546a1e52817729119b5b34dd1add98659538f8be2e9ff17d"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/fighter5-projectile-repro/fighter5-projectile-boundaries.json.gz",
+          "bytes": 3978013,
+          "sha256": "39a5f020f5156075043ecd7047b8a042fa3e8cbd4645b7a62b1744190446d15e"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/fighter5-projectile-repro/fighter5-projectile-data.json",
+          "bytes": 42154,
+          "sha256": "3224a4874868b8a609115b903604449824107de8901ba7cc688dfcd7d6a418c5"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/fighter5-projectile-repro/fighter5-projectile-oracle-manifest.json",
+          "bytes": 3132,
+          "sha256": "2ca17563ae6184023883a7958a7a3d6b1e3544b2235e5d046b2b8ac2cc6d688c"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/fighter5-projectile-repro/fighter5-projectile-oracle.json.gz",
+          "bytes": 71989,
+          "sha256": "bd10303bf506d5cb4320b5860232c6473bcce6d8b21cfc4acd640b6e3e130d8d"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/fighter5-projectile-repro/fighter5-projectile-sequences-manifest.json",
+          "bytes": 3261,
+          "sha256": "6aaca7970647a6d11a530ec786467e1bd1911778f58bc18d34c8f27db8b261a7"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/fighter5-projectile-repro/fighter5-projectile-sequences.json.gz",
+          "bytes": 829396,
+          "sha256": "cf18555c0e1850420e6bab83512e9664245c08bc561425b258332bd626793fe5"
+        }
+      ],
+      "bytes": 4931139
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-projectile-static",
+      "kind": "directory",
+      "files": [
+        {
+          "path": ".local/md-yuyuhakusho/fighter5-projectile-static/console.log",
+          "bytes": 11767,
+          "sha256": "da9017b0dee4bc8aa9f7c01ebf3cd6e260775cd037c6c10941b0e7cad7ad5bf8"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/fighter5-projectile-static/follow-console.log",
+          "bytes": 11585,
+          "sha256": "606bd5f62081281c8ebffda8289260ab880fe687daa3a374749418487607b85f"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/fighter5-projectile-static/follow-ghidra.log",
+          "bytes": 7948,
+          "sha256": "10beaac2407599146a15a744438dc693cb96cd23da380e5fd3d03f755469941b"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/fighter5-projectile-static/follow-script.log",
+          "bytes": 196,
+          "sha256": "e0a72e86943982179d9a7428c6351a64f30448dd0148824ff8b6198dee776e47"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/fighter5-projectile-static/ghidra.log",
+          "bytes": 8352,
+          "sha256": "78fe3fd9833023ec6cd293bc791133f4fc30f95561a956b3eeb9871e37df2983"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/fighter5-projectile-static/script.log",
+          "bytes": 189,
+          "sha256": "bea750fe2db19e28b43a6a38785b7c91860d02c68cb0c1d91a9f02a48e2c2126"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/fighter5-projectile-static/slave-console.log",
+          "bytes": 11512,
+          "sha256": "9c4721fa67e01c53a6c9e3a95cb86c8daf56cf927b9e693fa65f5a0ce6221c58"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/fighter5-projectile-static/slave-ghidra.log",
+          "bytes": 7875,
+          "sha256": "c8f5509c20cfdf2ffb07aa17e767421e1d9511e2daf7ff40ae62cd45e926fc40"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/fighter5-projectile-static/slave-script.log",
+          "bytes": 195,
+          "sha256": "4c3356f97d77658ae4246a2c776ed5026203790fa2cae5760357c1edc012a340"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/fighter5-projectile-static/tmp/cache/jason-ghidra/fscache2/.lastmaint",
+          "bytes": 46,
+          "sha256": "2188ed7d3fea1b521d17b4bc92402bdadd670614d70e98e437fdf6bda69628f5"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/fighter5-projectile-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/osgi/compiled-bundles/d5ce2b6/GeneratedActivator.class",
+          "bytes": 608,
+          "sha256": "f55703662e3acd9ac4e5238005621103e5a86c70079b9772301b78e32c030e88"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/fighter5-projectile-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/osgi/compiled-bundles/d5ce2b6/GeneratedActivator.java",
+          "bytes": 407,
+          "sha256": "2a604f29202d03de20281e95e9e9cf25d51350a7f0bcebdff63c06b6207b6658"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/fighter5-projectile-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/osgi/compiled-bundles/d5ce2b6/META-INF/MANIFEST.MF",
+          "bytes": 603,
+          "sha256": "616293336a2eace7b1aa3ebb3989e5e79c4d781006bb4f91831cf4093cb5dfc5"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/fighter5-projectile-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/osgi/compiled-bundles/d5ce2b6/MdControlProbe.class",
+          "bytes": 4688,
+          "sha256": "72396de71c5a18dfbf54d60d1d021e676b0fe24dbdccf11262681f4582e7ec74"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/fighter5-projectile-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/osgi/compiled-bundles/d5ce2b6/MdRamFrameProbe.class",
+          "bytes": 3723,
+          "sha256": "c7db65cc8425c8b9e099a1ecbcf8a22f9a724d299948900796a90ec0add3ebb3"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/fighter5-projectile-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/osgi/felixcache/bundle0/bundle.id",
+          "bytes": 1,
+          "sha256": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/fighter5-projectile-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/osgi/felixcache/bundle0/last.java.version",
+          "bytes": 3,
+          "sha256": "20d2add851bf39edcc6b5e830930f962db7e19dffa2cab8610eed551eda6c302"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/fighter5-projectile-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/osgi/felixcache/bundle1/bundle.info",
+          "bytes": 238,
+          "sha256": "5b8b3433a9ea4dcc972eef186ad5dfa2bd343d9e1639762c5e1f0f2bacb46ae2"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/fighter5-projectile-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/osgi/felixcache/bundle1/version0.0/revision.location",
+          "bytes": 214,
+          "sha256": "8e637b293064b836fb7116e772fc7f74170789c42e33e89d7ccc463c243e146f"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/fighter5-projectile-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/osgi/parallel.lock",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/fighter5-projectile-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/tools/_code_browser.tcd",
+          "bytes": 38435,
+          "sha256": "7f3b72bbcccef22e476da60f88101885b1ec625fae79a58cbb78a9a81dacbd0d"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/fighter5-projectile-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/tools/_debugger.tcd",
+          "bytes": 46088,
+          "sha256": "efa89df0d486fe15de6c1abdbfb3a1fbcde70596c7f6c96fd9fd547cd1477ed4"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/fighter5-projectile-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/tools/_emulator.tcd",
+          "bytes": 116623,
+          "sha256": "bdc4262723f9b714ef8e2038f39c09b1aa567fb57acb9edf3d597b4bd892385a"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/fighter5-projectile-static/tmp/config/jason-ghidra/ghidra_12.1.4_PUBLIC/tools/_version _tracking.tcd",
+          "bytes": 1656,
+          "sha256": "42a672303407e4d56e3042c396cc9d37a72965c653aa6aec62160cadcd98e1c0"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/fighter5-projectile-static/tmp/home/Library/ghidra/ghidra_12.1.4_PUBLIC/java_home.save",
+          "bytes": 70,
+          "sha256": "d96a6f882c80576492a97eff2df6c0d6a3a0859cea48cb43924276776fd56342"
+        }
+      ],
+      "bytes": 273022
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-projectile-observed-fighter5-projectile-0",
+      "kind": "directory",
+      "files": [],
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-projectile-observed-fighter5-projectile-1",
+      "kind": "directory",
+      "files": [],
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-projectile-capture.log",
+      "kind": "file",
+      "bytes": 1246,
+      "sha256": "543f2439747ce3d8912eaaddf4c321137e0325abee17aa9cdd8400a93d0c4c23"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-projectile-capture-final.log",
+      "kind": "file",
+      "bytes": 1294,
+      "sha256": "094644554c135a3700f6c8456a0f4683bda6eaf901b2180df74fefe8f8229327"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter5-projectile-repro.log",
+      "kind": "file",
+      "bytes": 1294,
+      "sha256": "094644554c135a3700f6c8456a0f4683bda6eaf901b2180df74fefe8f8229327"
+    },
+    {
+      "path": "scripts/yuyuhakusho/__pycache__/capture_fighter5_projectile.cpython-314.pyc",
+      "kind": "file",
+      "bytes": 40160,
+      "sha256": "9c53d65f8fec1805d16f70d382f13538ae8bf452e767ea6cf1c518d12cf430ef"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-projectile-capture-first-failure.txt",
+      "kind": "file",
+      "bytes": 520,
+      "sha256": "2961922d35c8b46d1472062e9bfe37368e16af17cf77dd8d81b4abc4bf3f47b4"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-projectile-capture-second-failure.txt",
+      "kind": "file",
+      "bytes": 762,
+      "sha256": "8243c4ae8ec92186879db2a5557898d7eea6454fdcea2ea37db7a0c66c8bf25c"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-projectile-capture-third-failure.txt",
+      "kind": "file",
+      "bytes": 762,
+      "sha256": "8243c4ae8ec92186879db2a5557898d7eea6454fdcea2ea37db7a0c66c8bf25c"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-projectile-preimplementation.json",
+      "kind": "file",
+      "bytes": 1517,
+      "sha256": "a279bdc6691a1128fd707ee6884c5c38bb243232214f09f83b2aaa5a88575ba0"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-projectile-current-red.jsonl",
+      "kind": "file",
+      "bytes": 4312,
+      "sha256": "49e19f488f6e2c66099ae6712d77a857948f793f850c154e0a3a0aa411169130"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-projectile-first-implementation.jsonl",
+      "kind": "file",
+      "bytes": 3056,
+      "sha256": "dd74b2061a40b88f4193a5e0f4d83dac322ba3e6821891d0a1608cc42a249441"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter5-projectile-initial-runtime.jsonl",
+      "kind": "file",
+      "bytes": 5130,
+      "sha256": "0f5dd4c352862f09564b3c51f9dcf84c6f18d4b5c315bb42193f0c62ae3d4ed0"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static-work-fighter5-projectile",
+      "kind": "empty-project-directory",
+      "bytes": 0
+    }
+  ],
+  "bytes": 5264214
+}

@@ -1,0 +1,69 @@
+success {'task': 'r1', 'frame': 1808}
+success {'task': 'r1down', 'frame': 1879}
+success {'task': 'r3', 'frame': 1953}
+success {'task': 'r4a', 'frame': 2055}
+success {'task': 'r4b', 'frame': 2117}
+success {'task': 'r4c', 'frame': 2181}
+success {'task': 'air4', 'frame': 2247}
+success {'task': 'r6a', 'frame': 3179}
+success {'task': 'r6b', 'frame': 3335}
+success {'task': 'r6c', 'frame': 3387}
+{
+  "frames": 3788,
+  "completed": [
+    {
+      "task": "r1",
+      "frame": 1808
+    },
+    {
+      "task": "r1down",
+      "frame": 1879
+    },
+    {
+      "task": "r3",
+      "frame": 1953
+    },
+    {
+      "task": "r4a",
+      "frame": 2055
+    },
+    {
+      "task": "r4b",
+      "frame": 2117
+    },
+    {
+      "task": "r4c",
+      "frame": 2181
+    },
+    {
+      "task": "air4",
+      "frame": 2247
+    },
+    {
+      "task": "r6a",
+      "frame": 3179
+    },
+    {
+      "task": "r6b",
+      "frame": 3335
+    },
+    {
+      "task": "r6c",
+      "frame": 3387
+    }
+  ],
+  "last": {
+    "frame": 3700,
+    "task_index": 10,
+    "hp": 25,
+    "energy": 17,
+    "action": "0x6",
+    "pose": "0x28",
+    "stages": "0x80",
+    "x": 774,
+    "y": 312,
+    "facing": 0,
+    "child_size": 0
+  },
+  "errors": []
+}

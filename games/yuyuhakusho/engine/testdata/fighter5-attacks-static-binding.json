@@ -1,0 +1,185 @@
+{
+  "scope": "Static direct-Ghidra source5 attacks binding; no runtime observation",
+  "source_character_id": 5,
+  "baseline_commit": "b832d149",
+  "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+  "direct_ghidra": [
+    {
+      "path": "docs/research/md-yuyuhakusho/static/character-commands-preparations.txt",
+      "sha256": "27612acd36c94863db04ab8294104d3cb7c711ae67e46c02dfad3f09fbdb3fdc"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-action-selectors-focused.txt",
+      "sha256": "8c27ef51fc1bddfbf4b928e5a1290b2556c057f01d320e46a0ccdda56609692b"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-action-constructors-focused.txt",
+      "sha256": "e43cec558dad5ba037b0ad39577ec0ebc8b9d9a6c6af0b667596d35e0ae44dad"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-action-slots-focused.txt",
+      "sha256": "c6a52e94bea31dc12e08c6cd76a282dc4ae51c56288f2df3e7bef40cd72a072d"
+    }
+  ],
+  "commands": [
+    {
+      "slot": 6,
+      "request": 7,
+      "kind": "direction",
+      "address": "0x1eaa4",
+      "window": 8,
+      "steps": [
+        8,
+        0,
+        8,
+        255
+      ],
+      "bytes_sha256": "13374ae57292651686748d2653b96543a76aa5323797f6ea7ea3cdb1771f214e"
+    },
+    {
+      "slot": 7,
+      "request": 8,
+      "kind": "direction",
+      "address": "0x1eaa9",
+      "window": 8,
+      "steps": [
+        4,
+        0,
+        4,
+        255
+      ],
+      "bytes_sha256": "b6a4daa519fb9928f2c14bcac4b14727e121235bfd940732e367731659bbf742"
+    },
+    {
+      "slot": 0,
+      "request": 1,
+      "kind": "buttons",
+      "address": "0x1eb00",
+      "window": 8,
+      "steps": [
+        0,
+        80,
+        255
+      ],
+      "bytes_sha256": "b082784133a61d5d1e24eb48589d10bbe76157028758ac2195d7b9c220bd490c"
+    },
+    {
+      "slot": 2,
+      "request": 3,
+      "kind": "direction",
+      "address": "0x1eab7",
+      "window": 8,
+      "steps": [
+        2,
+        0,
+        2,
+        255
+      ],
+      "bytes_sha256": "3f5c7668ab9e551f8e666c7745b89a6f1bddd7b563be83a84c255c4e7cfa5160"
+    },
+    {
+      "slot": 3,
+      "request": 4,
+      "kind": "direction",
+      "address": "0x1ead9",
+      "window": 16,
+      "steps": [
+        2,
+        10,
+        8,
+        255
+      ],
+      "bytes_sha256": "d7495c48fe2fe0035e2d7d6de8357793b9ca230dcf2534de8ee9a12d4bd56ce3"
+    },
+    {
+      "slot": 5,
+      "request": 6,
+      "kind": "direction",
+      "address": "0x1eb27",
+      "window": 16,
+      "steps": [
+        2,
+        0,
+        2,
+        8,
+        255
+      ],
+      "bytes_sha256": "736931bc6f64aa2a905d930e748665aa9289873d40d00fac7357be2a48f98656"
+    }
+  ],
+  "direction_tables": [
+    {
+      "address": "0x170c2",
+      "bytes_sha256": "96921ce303bd1a032793d96ba03ceedf5ad56601b03d9094eb070d9bc17a4651",
+      "targets": [
+        "0x170e2",
+        "0x170e2",
+        "0x17186",
+        "0x170e2",
+        "0x170fa",
+        "0x170fa",
+        "0x17186",
+        "0x170e2",
+        "0x170fa",
+        "0x170fa",
+        "0x17186",
+        "0x170e2",
+        "0x170e2",
+        "0x170e2",
+        "0x170e2",
+        "0x170e2"
+      ]
+    },
+    {
+      "address": "0x171b0",
+      "bytes_sha256": "c3ddd3b6df427eb96fa08bcaf0e86c5f0414de470c45b18bd54da4bbee724223",
+      "targets": [
+        "0x171e6",
+        "0x171d0",
+        "0x171fc",
+        "0x171d0",
+        "0x171e6",
+        "0x171d0",
+        "0x171fc",
+        "0x171d0",
+        "0x171e6",
+        "0x171d0",
+        "0x171fc",
+        "0x171d0",
+        "0x171d0",
+        "0x171d0",
+        "0x171d0",
+        "0x171d0"
+      ]
+    }
+  ],
+  "selectors": [
+    "0x1705c",
+    "0x1719e",
+    "0x17214",
+    "0x172c4"
+  ],
+  "special_roots": [
+    "0x19216",
+    "0x19240",
+    "0x19284",
+    "0x192c8",
+    "0x192f6",
+    "0x19324",
+    "0x19364",
+    "0x193a4",
+    "0x193bc",
+    "0x193d4"
+  ],
+  "followup_roots": [
+    "0x1926a",
+    "0x192ae",
+    "0x19408",
+    "0x19426",
+    "0x19444"
+  ],
+  "limits": [
+    "REA does not support this raw 68000 input; reused direct-Ghidra evidence",
+    "Static control flow and ROM data do not establish natural execution or resource initialization"
+  ]
+}

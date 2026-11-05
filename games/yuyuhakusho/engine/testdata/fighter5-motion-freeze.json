@@ -1,0 +1,30 @@
+{
+  "phase": "Tests frozen before StepFighter5Motion behavior; motion.go contains approved types only",
+  "files": {
+    "games/yuyuhakusho/engine/fighter5_motion_test.go": "e2755b908063572fdf59dd43c609698f8a65642c4405274e4d37c67343c255cd",
+    "games/yuyuhakusho/engine/fighter5_motion.go": "75a32325f12b908838bbd7f117f404d74f1f6b14192d4f51eb516af8f68aa257",
+    "games/yuyuhakusho/engine/FIGHTER5_MOTION_FAILURES.md": "329ac4d735b32de4f8d57d86e367204ef803fcf913b969275da6ed224d05c0c0",
+    "scripts/yuyuhakusho/capture_fighter5_motion.py": "1c9621358e8621e3d3e74525f90da7c9ffd9b03d0f466afab218409c857e26cd",
+    "games/yuyuhakusho/engine/testdata/fighter5-motion-boundaries.json.gz": "3a889a1d22aab1ace650b5cb21b58d437a28177434b7dda1633dc389d274a3af",
+    "games/yuyuhakusho/engine/testdata/fighter5-motion-oracle.json.gz": "2fd8f2afc330a6d5400f6bcd7402f229957170f6b13587fb7bc7f9d26bf237c2",
+    "games/yuyuhakusho/engine/testdata/fighter5-motion-sequences.json.gz": "40d657b36c01a6a178305a078246cc9913038de7fb0ba11a934f1683da53bdeb",
+    "games/yuyuhakusho/engine/testdata/fighter5-motion-boundaries-manifest.json": "80988d734a1bf56cd64f1d1c30f16f05678d03d0c71cec1a9b71d5dfdd9cfe42",
+    "games/yuyuhakusho/engine/testdata/fighter5-motion-oracle-manifest.json": "f7f96038725bd7e3747d8cba3baf15007280dd2a8968096fbe85188c0f183904",
+    "games/yuyuhakusho/engine/testdata/fighter5-motion-sequences-manifest.json": "7cfb88fb1e58bae29362d0b601ea36189edee134d075bd3602646880b3e0174b",
+    "games/yuyuhakusho/engine/testdata/fighter5-motion-parameters.json": "0272e897f6c72823bb5228039b04d03e1eaf95f046d1624d08128a9c09b49475"
+  },
+  "command": [
+    "go",
+    "test",
+    "-json",
+    "-gcflags=-e",
+    "-count=1",
+    "-run",
+    "^TestFighter5Motion",
+    "./games/yuyuhakusho/engine"
+  ],
+  "exit_code": 1,
+  "elapsed_seconds": 0.15,
+  "own_symbol_missing": true,
+  "red_log_sha256": "4424a6d41a27a51889d52a4714c1ab2ed338b793c721f554506891614d97479b"
+}

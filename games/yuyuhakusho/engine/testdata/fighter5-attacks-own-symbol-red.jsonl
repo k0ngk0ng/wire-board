@@ -1,0 +1,16 @@
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"# command-line-arguments [command-line-arguments.test]\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter5_attacks_test.go:72:80: undefined: Fighter5AttackState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter5_attacks_test.go:82:11: undefined: Fighter5AttackState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter5_attacks_test.go:92:47: undefined: Fighter5AttackState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter5_attacks_test.go:113:46: undefined: Fighter5AttackState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter5_attacks_test.go:117:10: undefined: FinishFighter5Combination\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter5_attacks_test.go:119:10: undefined: FinishFighter5Combination\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter5_attacks_test.go:121:10: undefined: BeginFighter5FinalProjectile\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter5_attacks_test.go:123:10: undefined: SelectFighter5Attack\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter5_attacks_test.go:348:11: undefined: Fighter5AttackState\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter5_attacks_test.go:365:15: undefined: SelectFighter5Attack\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./fighter5_attacks_test.go:365:15: too many errors\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-fail"}
+{"Time":"2026-11-05T11:41:32.095871+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-05T11:41:32.095901+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\tcommand-line-arguments [build failed]\n"}
+{"Time":"2026-11-05T11:41:32.095907+08:00","Action":"fail","Package":"command-line-arguments","Elapsed":0,"FailedBuild":"command-line-arguments [command-line-arguments.test]"}
