@@ -51,3 +51,4 @@
 | 俄罗斯方块 | [tetris.md](rules/tetris.md) |
 | 围棋 | [weiqi.md](rules/weiqi.md) |
 | 中国象棋 | [xiangqi.md](rules/xiangqi.md) |
+| 幽游白书：魔强统一战 | [yuyuhakusho.md](rules/yuyuhakusho.md) |
