@@ -1,0 +1,10 @@
+{
+  "frozen_at_utc": "2026-11-05T14:04:40.483933+00:00",
+  "test_first": true,
+  "scope": "Pure waiting-room config/preparation and seat/original-slot projection only; not full platform integration",
+  "files": {
+    "games/yuyuhakusho/server/options_test.go": "8e162d46474f9e9b7de7e93426afd684bc32f65bfedd55eee99b6e6e63b0722d",
+    "games/yuyuhakusho/server/WAITING_OPTIONS_FAILURES.md": "7464ba6326f80cb470f4eed224256330726aa1c1f28f805e16890d17b4f658a7"
+  },
+  "red": "games/yuyuhakusho/verification/platform-options-frozen-symbol-red.jsonl"
+}
