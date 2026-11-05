@@ -1,0 +1,36 @@
+{"Time":"2026-11-05T08:03:38.576939+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-05T08:03:39.122763+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter6AttacksOriginalFullCalls"}
+{"Time":"2026-11-05T08:03:39.124034+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter6AttacksOriginalFullCalls","Output":"=== RUN   TestFighter6AttacksOriginalFullCalls\n"}
+{"Time":"2026-11-05T08:03:39.124056+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter6AttacksOriginalFullCalls/fighter6-attacks-natural"}
+{"Time":"2026-11-05T08:03:39.124065+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter6AttacksOriginalFullCalls/fighter6-attacks-natural","Output":"=== RUN   TestFighter6AttacksOriginalFullCalls/fighter6-attacks-natural\n"}
+{"Time":"2026-11-05T08:03:44.791161+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter6AttacksOriginalFullCalls/fighter6-attacks-natural","Output":"    fighter6_attacks_test.go:187: complete original source6 calls=1723 modes=map[air:63 air-special:63 ground:789 ground-special:808] objects=map[33792:1723]\n"}
+{"Time":"2026-11-05T08:03:44.79126+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter6AttacksOriginalFullCalls/fighter6-attacks-natural","Output":"--- PASS: TestFighter6AttacksOriginalFullCalls/fighter6-attacks-natural (5.67s)\n"}
+{"Time":"2026-11-05T08:03:44.791278+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighter6AttacksOriginalFullCalls/fighter6-attacks-natural","Elapsed":5.67}
+{"Time":"2026-11-05T08:03:44.791301+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter6AttacksOriginalFullCalls/fighter6-attacks-oracle"}
+{"Time":"2026-11-05T08:03:44.791311+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter6AttacksOriginalFullCalls/fighter6-attacks-oracle","Output":"=== RUN   TestFighter6AttacksOriginalFullCalls/fighter6-attacks-oracle\n"}
+{"Time":"2026-11-05T08:03:44.915847+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter6AttacksOriginalFullCalls/fighter6-attacks-oracle","Output":"    fighter6_attacks_test.go:187: complete original source6 calls=37 modes=map[air:9 air-special:12 ground:4 ground-special:12] objects=map[33792:9 34816:10 35840:9 36864:9]\n"}
+{"Time":"2026-11-05T08:03:44.91593+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter6AttacksOriginalFullCalls/fighter6-attacks-oracle","Output":"--- PASS: TestFighter6AttacksOriginalFullCalls/fighter6-attacks-oracle (0.12s)\n"}
+{"Time":"2026-11-05T08:03:44.915952+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighter6AttacksOriginalFullCalls/fighter6-attacks-oracle","Elapsed":0.12}
+{"Time":"2026-11-05T08:03:44.915988+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter6AttacksOriginalFullCalls/fighter6-attacks-boundaries"}
+{"Time":"2026-11-05T08:03:44.916+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter6AttacksOriginalFullCalls/fighter6-attacks-boundaries","Output":"=== RUN   TestFighter6AttacksOriginalFullCalls/fighter6-attacks-boundaries\n"}
+{"Time":"2026-11-05T08:05:00.514872+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter6AttacksOriginalFullCalls/fighter6-attacks-boundaries","Output":"    fighter6_attacks_test.go:187: complete original source6 calls=23192 modes=map[air:13056 air-special:3528 ground:2432 ground-special:4176] objects=map[33792:5798 34816:5798 35840:5798 36864:5798]\n"}
+{"Time":"2026-11-05T08:05:00.51558+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter6AttacksOriginalFullCalls/fighter6-attacks-boundaries","Output":"--- PASS: TestFighter6AttacksOriginalFullCalls/fighter6-attacks-boundaries (75.60s)\n"}
+{"Time":"2026-11-05T08:05:00.51559+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighter6AttacksOriginalFullCalls/fighter6-attacks-boundaries","Elapsed":75.6}
+{"Time":"2026-11-05T08:05:00.515721+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter6AttacksOriginalFullCalls","Output":"--- PASS: TestFighter6AttacksOriginalFullCalls (81.39s)\n"}
+{"Time":"2026-11-05T08:05:00.51573+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighter6AttacksOriginalFullCalls","Elapsed":81.39}
+{"Time":"2026-11-05T08:05:00.515733+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter6AttacksSingleInitialState"}
+{"Time":"2026-11-05T08:05:00.515736+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter6AttacksSingleInitialState","Output":"=== RUN   TestFighter6AttacksSingleInitialState\n"}
+{"Time":"2026-11-05T08:05:03.211535+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter6AttacksSingleInitialState","Output":"--- PASS: TestFighter6AttacksSingleInitialState (2.70s)\n"}
+{"Time":"2026-11-05T08:05:03.211574+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighter6AttacksSingleInitialState","Elapsed":2.7}
+{"Time":"2026-11-05T08:05:03.211582+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter6AttacksInvalidInputIsAtomic"}
+{"Time":"2026-11-05T08:05:03.211585+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter6AttacksInvalidInputIsAtomic","Output":"=== RUN   TestFighter6AttacksInvalidInputIsAtomic\n"}
+{"Time":"2026-11-05T08:05:03.279984+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter6AttacksInvalidInputIsAtomic","Output":"--- PASS: TestFighter6AttacksInvalidInputIsAtomic (0.07s)\n"}
+{"Time":"2026-11-05T08:05:03.279994+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighter6AttacksInvalidInputIsAtomic","Elapsed":0.07}
+{"Time":"2026-11-05T08:05:03.28+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter6AttacksCommandOrder"}
+{"Time":"2026-11-05T08:05:03.280003+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter6AttacksCommandOrder","Output":"=== RUN   TestFighter6AttacksCommandOrder\n"}
+{"Time":"2026-11-05T08:05:03.897754+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter6AttacksCommandOrder","Output":"    fighter6_attacks_test.go:348: source6 existing original command streams=3 steps=342 Request6 states=48; DD completes as Request6\n"}
+{"Time":"2026-11-05T08:05:03.897784+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter6AttacksCommandOrder","Output":"--- PASS: TestFighter6AttacksCommandOrder (0.62s)\n"}
+{"Time":"2026-11-05T08:05:03.897788+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestFighter6AttacksCommandOrder","Elapsed":0.62}
+{"Time":"2026-11-05T08:05:03.897976+08:00","Action":"output","Package":"command-line-arguments","Output":"PASS\n"}
+{"Time":"2026-11-05T08:05:04.926539+08:00","Action":"output","Package":"command-line-arguments","Output":"ok  \tcommand-line-arguments\t86.349s\n"}
+{"Time":"2026-11-05T08:05:04.926667+08:00","Action":"pass","Package":"command-line-arguments","Elapsed":86.349}

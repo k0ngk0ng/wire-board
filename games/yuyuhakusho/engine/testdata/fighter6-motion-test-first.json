@@ -1,0 +1,95 @@
+{
+  "schema": 1,
+  "scope": "source6 MAIN slots33/34/35/36/38",
+  "initial_failure_ledger_sha256": "ed0024680d36a5dc78aec59f60b8326a4c262f969dee282c5a34df3d213dc044",
+  "initial_failure_ledger_utf8": "# 阵 MAIN motion：实现前验证范围\n\nMAIN负责 `33/34/35/36/38`（`1bab2/1bad6/1bafe/1bbbe/1bc92→15afc`），统一入口对 `0e/0f/11/13/37` 委派独立support任务。最小类型为 `Fighter6MotionState{ChuSpecialMotionState; StunTicks uint16}`，`+0x84` word已有StunTicks所有者，不新增涡旋计数；`33`的`+0x48`高word沿用完整AlternateVelocity，低word保持。`enterFighter6Exit(*FighterBodyState)`由support文件提供，对应原18682，本MAIN不重复实现。\n\n实现前失败场景：错误来源资源；33先计数或错误读取完成、忽略先Y加VY、计数高word／精确等16和word回绕错误、误清低word、1860c误条件站立；34增加重力／先夹Y、地面signed高word／小数错误、BeginLanding与ExtraJump清零顺序错误、FX错误泄露前置Y；35/36起始帧及常量40000/20000/10000分段错位、ground高word−32的word回绕／残影ticks门槛、任意非零facing、先位移再contact.bit0跳帧、完成ground高word相等才stand否则air错误、存储VX被常量覆盖；38先pose分派与Completed优先级错误、StunTicks word计数／signed256和128门槛、A/B/C取消优先级、Right优先Left及30000边界一次超调、ae类先半速后位移和负余数错误、18682误当air或漏Aux7E←Aux80；support误内联／重复canonical；资源小数／完整父三子FX／声音/RNG遗漏，正常满池当错误，诊断错误漏回滚，实际动画流回灌期望状态，或把phase通过写成完整actor/world。\n\n先原CPU完整自然／有界dirty／实际只读动画时钟流，再冻结四项MAIN测试并保存实际缺实现red，最后只新增MAIN Go。普通／special输入和唯一未观察3602控制由Root／selector共享，本任务独立观察core逐视频核对RAM／画面。参数／动画／形状指针来自source6真实初始化；私有canonical A5、FFFF00下栈、refresh sidecar恢复、全RAM审计与完整SP恢复都保留。静态入口来自已有直接Ghidra清单；REA不支持raw68000，不声明REA反编译。\n",
+  "test_sha256_at_red": "92f5bec89c9223d9ee18f01bc64d1816527ebe9d675c6ba770a23a2dd60024a2",
+  "actual_missing_implementation_red": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter6-motion-red.jsonl",
+    "sha256": "237c7e76056d3bd5bb70d33173542eec3e57d947e963cec178dac7a53b8d9ec0",
+    "own_missing_symbols": [
+      "Fighter6MotionState",
+      "StepFighter6Motion"
+    ],
+    "command": [
+      "go",
+      "test",
+      "-gcflags=-e",
+      "-json",
+      "-count=1",
+      "-run",
+      "^TestFighter6MotionMain",
+      "./games/yuyuhakusho/engine"
+    ]
+  },
+  "after_implementation_test_changes": false,
+  "first_executable_test_rule_fixes": 0,
+  "initial_fixture_identities_before_natural_append": [
+    {
+      "name": "fighter6-motion-oracle",
+      "manifest_sha256": "96a9eea9c51c68944f19230c01fa45466c0d7ed5463249db50b42a751e2b3247",
+      "gzip_sha256": "c0df066a395d3cebe98d96c0a0a86b90da5e9503988ca7b647554fcdc9dde90a",
+      "fixture_sha256": "59047dde8593b42cec322784c41bf9a08a9cc779ad53ea4641c539f0b2b69f5d",
+      "records": 0,
+      "calls": 0,
+      "capture_sha256": "1629252d15e2185d8caae54ca991342f5f12637409d239879d283986d7d0a522",
+      "baselines": [
+        {
+          "input": "docs/research/md-yuyuhakusho/source6-next-inputs.json",
+          "input_sha256": "61b140b4ac6820bb6d352bfc98202129fedc4b310367a055df50e1aaffad319e",
+          "reference": "games/yuyuhakusho/engine/testdata/fighter6-attacks-reference-frames.json",
+          "reference_raw_sha256": "2ed9bd9445a1d561eed662a1a76f739f918f93852a6a20c6abec9a5619d8799a",
+          "reference_file_sha256": "2ed9bd9445a1d561eed662a1a76f739f918f93852a6a20c6abec9a5619d8799a",
+          "reference_manifest": "games/yuyuhakusho/engine/testdata/fighter6-attacks-reference-manifest.json",
+          "reference_manifest_sha256": "db2c9edfe0fdcce6a338e088ce6ecf58fc55cc4be5f09cd7945381cdc8c03ad0",
+          "video_steps": 3602,
+          "all_ram_video_match": true
+        }
+      ]
+    },
+    {
+      "name": "fighter6-motion-boundaries",
+      "manifest_sha256": "209e87d81ce845c485125311ff96bba1ac131c3c4b11b80e94482ae76463b9fd",
+      "gzip_sha256": "cfafb4527a86dcfc3992b727d4bcdf49c05c1a2e04e41e7150611f22d088576d",
+      "fixture_sha256": "920165dcbcb816983a9d92fba3feb7b0325a5dfd4c7149a3a2c895643815a20b",
+      "records": 2776,
+      "calls": 2776,
+      "capture_sha256": "1629252d15e2185d8caae54ca991342f5f12637409d239879d283986d7d0a522",
+      "baselines": [
+        {
+          "input": "docs/research/md-yuyuhakusho/source6-next-inputs.json",
+          "input_sha256": "61b140b4ac6820bb6d352bfc98202129fedc4b310367a055df50e1aaffad319e",
+          "reference": "games/yuyuhakusho/engine/testdata/fighter6-attacks-reference-frames.json",
+          "reference_raw_sha256": "2ed9bd9445a1d561eed662a1a76f739f918f93852a6a20c6abec9a5619d8799a",
+          "reference_file_sha256": "2ed9bd9445a1d561eed662a1a76f739f918f93852a6a20c6abec9a5619d8799a",
+          "reference_manifest": "games/yuyuhakusho/engine/testdata/fighter6-attacks-reference-manifest.json",
+          "reference_manifest_sha256": "db2c9edfe0fdcce6a338e088ce6ecf58fc55cc4be5f09cd7945381cdc8c03ad0",
+          "video_steps": 3602,
+          "all_ram_video_match": true
+        }
+      ]
+    },
+    {
+      "name": "fighter6-motion-sequences",
+      "manifest_sha256": "4b0cf71ffca9b7b5bad10b351f55e364b0712a870aa1bc7da38a5127ad498ac2",
+      "gzip_sha256": "a2b44de34f09ee7c73cbf790ed30b3b3ee2b4e6dc5ff4219c4099b0df346d7b4",
+      "fixture_sha256": "a74197f740abd263c2892145e7a1f56206150cb17057c23f1d1e381a1d415de6",
+      "records": 20,
+      "calls": 2786,
+      "capture_sha256": "1629252d15e2185d8caae54ca991342f5f12637409d239879d283986d7d0a522",
+      "baselines": [
+        {
+          "input": "docs/research/md-yuyuhakusho/source6-next-inputs.json",
+          "input_sha256": "61b140b4ac6820bb6d352bfc98202129fedc4b310367a055df50e1aaffad319e",
+          "reference": "games/yuyuhakusho/engine/testdata/fighter6-attacks-reference-frames.json",
+          "reference_raw_sha256": "2ed9bd9445a1d561eed662a1a76f739f918f93852a6a20c6abec9a5619d8799a",
+          "reference_file_sha256": "2ed9bd9445a1d561eed662a1a76f739f918f93852a6a20c6abec9a5619d8799a",
+          "reference_manifest": "games/yuyuhakusho/engine/testdata/fighter6-attacks-reference-manifest.json",
+          "reference_manifest_sha256": "db2c9edfe0fdcce6a338e088ce6ecf58fc55cc4be5f09cd7945381cdc8c03ad0",
+          "video_steps": 3602,
+          "all_ram_video_match": true
+        }
+      ]
+    }
+  ]
+}

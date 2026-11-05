@@ -1,0 +1,167 @@
+{
+  "scope": "Independent bounded physical-input AI6 search: actual Request4 leaves reached twice in action05; no air34 constructor success",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "input": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter6-ai-r4-inputs.json",
+    "sha256": "a5025f8fd6eea4d145bcf48973216bca62c412bdd8451464069ae257f66f8c0c"
+  },
+  "capture": {
+    "path": "scripts/yuyuhakusho/capture_fighter6_natural_ai.py",
+    "sha256": "2390dd0ed2fc8ee8bb49d59301f49046070a2b2e0b432526addb6051444192b1"
+  },
+  "frames": 3602,
+  "entry_frame_limit": 3600,
+  "drain_frames": 2,
+  "complete_ai_returns": 1110,
+  "complete_air_special_returns": 3,
+  "source6_character_decisions": 298,
+  "ai_rng_calls": 2788,
+  "computer6_objects": {
+    "0x9000": 1388
+  },
+  "computer6_actions": {
+    "0x0": 465,
+    "0x1": 202,
+    "0x37": 289,
+    "0x2": 3,
+    "0x3": 147,
+    "0x13": 40,
+    "0x5": 159,
+    "0x6": 78,
+    "0x35": 5
+  },
+  "natural34_complete_selections": 0,
+  "natural34_frames": [],
+  "outputs": [
+    {
+      "name": "ai-calls",
+      "records": 1110,
+      "fixture_sha256": "f650469004a9c8b22cb35ff956693603f9da3ba6ceed605156dbb71a4b6db6ef",
+      "gzip_sha256": "c1aea1e29462458a74cdd5a765bd5ba510cbf1d1c40f6da1ba09fc446a32c611"
+    },
+    {
+      "name": "air-special-calls",
+      "records": 3,
+      "fixture_sha256": "bd733088ef7317efd0ad99a230daf2a4ea6c342c14afe18fee933483fab7fe8e",
+      "gzip_sha256": "7d1e6dd63ca383592a0f4d0412c2b2fefa46150d2b1972356510b8e99520ea87"
+    }
+  ],
+  "observed_frames_sha256": "3017a7fb72cb8d17610a2338202ab0dfea875d2ccfe89e841f12031aa281e8c9",
+  "incomplete_calls": 0,
+  "errors": [],
+  "rom_ram_request_writes": false,
+  "restore_or_seed_injection": false,
+  "unobserved_control_generated": false,
+  "pass": true,
+  "canonical_input": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter6-ai-r4-inputs.json",
+    "sha256": "a5025f8fd6eea4d145bcf48973216bca62c412bdd8451464069ae257f66f8c0c"
+  },
+  "actual_request4_returns": [
+    {
+      "frame": 2950,
+      "entry_sp": 4294966948,
+      "exit_sp": 4294966952,
+      "object_id": "0x9000",
+      "input_channel": 255,
+      "action": "0x5",
+      "pose": "0x2f",
+      "enabled_stages": "0x80",
+      "request": [
+        0,
+        4
+      ],
+      "after_input": [
+        64,
+        64,
+        64
+      ],
+      "paths": [
+        "0x1d212",
+        "0x1dc50",
+        "0x1e7a2"
+      ]
+    },
+    {
+      "frame": 3502,
+      "entry_sp": 4294966948,
+      "exit_sp": 4294966952,
+      "object_id": "0x9000",
+      "input_channel": 255,
+      "action": "0x5",
+      "pose": "0x2f",
+      "enabled_stages": "0x80",
+      "request": [
+        0,
+        4
+      ],
+      "after_input": [
+        64,
+        64,
+        64
+      ],
+      "paths": [
+        "0x1d212",
+        "0x1dc50",
+        "0x1e7a2"
+      ]
+    }
+  ],
+  "bounded_patterns": 8,
+  "natural34_verified": false,
+  "independent_go_ai_acceptance": false,
+  "frames_match_original_core": null,
+  "release_ready": false,
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-ai-r4-inputs.json",
+      "sha256": "a5025f8fd6eea4d145bcf48973216bca62c412bdd8451464069ae257f66f8c0c"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-ai-r4-calls.json.gz",
+      "sha256": "c1aea1e29462458a74cdd5a765bd5ba510cbf1d1c40f6da1ba09fc446a32c611"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-ai-r4-air-special-calls.json.gz",
+      "sha256": "7d1e6dd63ca383592a0f4d0412c2b2fefa46150d2b1972356510b8e99520ea87"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-ai-r4-capture-history.json",
+      "sha256": "041e3c13b663d21308f4564afb28caf6b2b50d52f4df6d972ab9c3be2660b908"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/source6-ai-r4-bounded-search.json",
+      "sha256": "8c9e781c5155a7a4e2009019479dc95dc4679c1fb9444301e91a68969ccd7640"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/source6-ai-r4-search.py",
+      "sha256": "73f0dd81a07f6280ee78a38e5ee092c908f0edcae1d74109e4c4cc06fd715fe5"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_fighter6_natural_ai.py",
+      "sha256": "2390dd0ed2fc8ee8bb49d59301f49046070a2b2e0b432526addb6051444192b1"
+    }
+  ],
+  "limits": [
+    "Original CPU request4 is observed; successful air34 selection is not observed",
+    "Action05/Pose2f/EnabledStages80 at both request4 leaves; this does not prove the air-special gate executes",
+    "No independent observer-free control was created for this secondary search input",
+    "Primary AI input16505f/control21bd remains separate and unchanged",
+    "No Go AI or full-world acceptance is claimed; no ROM/RAM/Request/RNG/AI-state injection"
+  ],
+  "capture_input_identity": {
+    "path_at_capture": ".local/md-yuyuhakusho/fighter6-ai-r4-search/throw-pulses/inputs.json",
+    "sha256": "a5025f8fd6eea4d145bcf48973216bca62c412bdd8451464069ae257f66f8c0c",
+    "canonical_copy_is_identical": true,
+    "original_trial_path_removed_after_canonical_copy": true
+  }
+}

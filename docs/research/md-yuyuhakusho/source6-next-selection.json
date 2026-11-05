@@ -1,0 +1,30 @@
+{
+  "scope": "Actual physical source6 menu and cold original-core1800 discovery; full baseline and independent rules pending",
+  "frames": 1800,
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.4 60bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "match_characters": [
+    7,
+    0,
+    0,
+    10
+  ],
+  "active_source_tags": [
+    6,
+    0,
+    0,
+    9
+  ],
+  "name_from_original_hud": "阵",
+  "input_sha256": "61b140b4ac6820bb6d352bfc98202129fedc4b310367a055df50e1aaffad319e",
+  "cold_replay_verified": true,
+  "implemented": false
+}

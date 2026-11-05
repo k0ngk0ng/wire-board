@@ -1,0 +1,17 @@
+{
+  "scope": "Source6 support/18682 original CPU contexts and tests before new support file",
+  "implementation_present": false,
+  "own_missing_symbols_observed": true,
+  "special_natural_pending": true,
+  "source_sha256": {
+    "games/yuyuhakusho/engine/fighter6_support_motion_test.go": "a9a8533e965068abf6ca68fe9b98fedee77ba05d3e01331a9f40605fec068d3c",
+    "games/yuyuhakusho/engine/FIGHTER6_SUPPORT_MOTION_VERIFICATION.md": "a9444d256578b33a62d89dba4ab42ab2adf256cea42a48dbae59f714d6dbfb9b",
+    "scripts/yuyuhakusho/capture_fighter6_support_motion.py": "b11d40fa078ec8c6752146afbc0100d1143bdacd636b8f68f6f12a4114d2d0b5",
+    "games/yuyuhakusho/engine/testdata/fighter6-support-motion-red.jsonl": "e554fddc328b578862267b613e440daae4285fa46a1b539771af93f83eed9e45"
+  },
+  "fixture_sha256": {
+    "fighter6-support-motion-sequences.json.gz": "9d7154659eda63b1a206928a2f476003e6bf1567bf9dfadce0c66e07b8b33c47",
+    "fighter6-support-motion-boundaries.json.gz": "f3bdce74a6d28af2b8a2205a5b992ef5fec86c7f697e5908479ecf41a3463d3d",
+    "fighter6-support-motion-oracle.json.gz": "847568c40941bb6629d5decddd8d4f5dd437942f7cb3f2dc06f15427a727e0d6"
+  }
+}

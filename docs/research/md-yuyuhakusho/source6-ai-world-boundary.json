@@ -1,0 +1,142 @@
+{
+  "scope": "Original physical AI6 practice boundary discovery: raw maina01e/stage32, no Go acceptance yet",
+  "markers": [
+    {
+      "frame": 2480,
+      "main_stage": 32,
+      "manager_stage": 10,
+      "arena": "0x20918",
+      "tags": [
+        6,
+        6
+      ],
+      "ai_channel": 255,
+      "hp": [
+        223,
+        223
+      ],
+      "target_bit": 12
+    },
+    {
+      "frame": 2490,
+      "main_stage": 32,
+      "manager_stage": 12,
+      "arena": "0x20918",
+      "tags": [
+        6,
+        6
+      ],
+      "ai_channel": 255,
+      "hp": [
+        223,
+        223
+      ],
+      "target_bit": 12
+    },
+    {
+      "frame": 2500,
+      "main_stage": 32,
+      "manager_stage": 14,
+      "arena": "0x20918",
+      "tags": [
+        6,
+        6
+      ],
+      "ai_channel": 255,
+      "hp": [
+        223,
+        223
+      ],
+      "target_bit": 12
+    },
+    {
+      "frame": 3000,
+      "main_stage": 32,
+      "manager_stage": 14,
+      "arena": "0x20918",
+      "tags": [
+        6,
+        6
+      ],
+      "ai_channel": 255,
+      "hp": [
+        152,
+        223
+      ],
+      "target_bit": 12
+    },
+    {
+      "frame": 3600,
+      "main_stage": 32,
+      "manager_stage": 14,
+      "arena": "0x20918",
+      "tags": [
+        6,
+        6
+      ],
+      "ai_channel": 255,
+      "hp": [
+        71,
+        223
+      ],
+      "target_bit": 12
+    },
+    {
+      "frame": 4000,
+      "main_stage": 32,
+      "manager_stage": 14,
+      "arena": "0x20918",
+      "tags": [
+        6,
+        6
+      ],
+      "ai_channel": 255,
+      "hp": [
+        16,
+        223
+      ],
+      "target_bit": 12
+    },
+    {
+      "frame": 4300,
+      "main_stage": 32,
+      "manager_stage": 18,
+      "arena": "0x20918",
+      "tags": [
+        6,
+        6
+      ],
+      "ai_channel": 255,
+      "hp": [
+        -1024,
+        223
+      ],
+      "target_bit": 12
+    }
+  ],
+  "input_sha256": "16505f2ee81d6828397785195f2912c554d33ee7647585f1d93e6f76d39ce753",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.4 60bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "correction": "Earlier field label ai_mode read70 (TargetBit), now correctly labelled target_bit. Actual input mode is bytec9 and actual1110 AI returns are separately CPU-proven. This marker file is not the AI acceptance proof.",
+  "wait_equivalence": {
+    "original_main20": "9ad0",
+    "stage20_entry": "9c70",
+    "actual_practice_main": "a01e",
+    "actual_practice_stage": 32,
+    "stage32_entry": "a1c6",
+    "original_bytes": "4ab880406604546d00064e75",
+    "identical": true,
+    "behavior": "TST.L8040;BNE return;ADDQ.W2,main.stage;RTS. Ready active-match scope requires manager nonzero."
+  },
+  "sampled_ready_match_frame": 2533,
+  "confirmed_main_header": "0000a01e00400020",
+  "confirmed_ai_input_mode_c9": 0
+}

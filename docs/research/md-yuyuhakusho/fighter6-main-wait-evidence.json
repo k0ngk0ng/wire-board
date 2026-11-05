@@ -1,0 +1,24 @@
+{
+  "scope": "Literal original main-container dispatch and equal12-byte wait functions; static evidence, runtime AI world captured independently",
+  "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+  "entries": [
+    {
+      "behavior": "9ad0",
+      "stage": 20,
+      "table": "9adc",
+      "table_offset": 40,
+      "target": "9c70",
+      "bytes": "4ab880406604546d00064e75"
+    },
+    {
+      "behavior": "a01e",
+      "stage": 32,
+      "table": "a02a",
+      "table_offset": 64,
+      "target": "a1c6",
+      "bytes": "4ab880406604546d00064e75"
+    }
+  ],
+  "functions_byte_identical": true,
+  "semantic_wait": "While manager8040 behavior is nonzero, all fields unchanged. Zero-manager transition lies outside ready-match world endpoint."
+}

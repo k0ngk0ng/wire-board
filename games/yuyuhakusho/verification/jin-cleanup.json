@@ -1,0 +1,77 @@
+{
+  "scope": "Root-owned source6 selection/special/AI header/capture duplicates,verified and closed CLI builds/browser profile only; no active check input is removed",
+  "recorded_at_utc": "2026-11-05T01:16:23.822471+00:00",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-selection-discovery",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-special-discovery",
+      "bytes": 9936
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-world",
+      "bytes": 3078565
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-world-special",
+      "bytes": 2782310
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-world-ai",
+      "bytes": 2608679
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-world-discovery",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter6-ai-header-probe",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/jin-browser",
+      "bytes": 9362086
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-session",
+      "bytes": 4180802
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-render",
+      "bytes": 4623010
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-session.wasm",
+      "bytes": 4762105
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-render.wasm",
+      "bytes": 5323402
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/jin-legacy",
+      "bytes": 4180802
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/jin-legacy.wasm",
+      "bytes": 4762105
+    }
+  ],
+  "removed_bytes": 45673802,
+  "preserved": [
+    "All canonical raw CPU world and component fixtures/manifests/references/fixed human and originalAI6 inputs",
+    "Stage32 original wait-code and mode/header evidence,genuine AI/R4 bounded search and selected-menu evidence",
+    "Initial red and all final logs,current native/Wasm30 cases,154 prior actual reports,canonical screenshots/source bindings",
+    "Unmodified stage20 producer and separately bound stage32 producer",
+    "ROM/reference cores/source/hooks/audio/IRQ/static evidence",
+    "Active worktree,loopback8799 current player build,shared Go caches and original main-user changes"
+  ],
+  "subtask_cleanup_reports": [
+    "games/yuyuhakusho/engine/testdata/fighter6-attacks-cleanup.json",
+    "games/yuyuhakusho/engine/testdata/fighter6-motion-cleanup.json",
+    "games/yuyuhakusho/engine/testdata/fighter6-support-motion-cleanup.json",
+    "games/yuyuhakusho/engine/testdata/fighter6-composition-cleanup.json"
+  ]
+}

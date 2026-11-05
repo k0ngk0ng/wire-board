@@ -1,0 +1,214 @@
+{
+  "scope": "Bounded original attract-mode discovery; no physical inputs, no RAM/ROM writes or control baseline",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.4 60bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "frames": 18000,
+  "rosters": [
+    {
+      "first_frame": 765,
+      "actors": [
+        [
+          33792,
+          0,
+          0
+        ],
+        [
+          34816,
+          10,
+          1
+        ]
+      ]
+    },
+    {
+      "first_frame": 1194,
+      "actors": [
+        [
+          33792,
+          2,
+          0
+        ],
+        [
+          34816,
+          7,
+          1
+        ]
+      ]
+    },
+    {
+      "first_frame": 1642,
+      "actors": [
+        [
+          33792,
+          1,
+          0
+        ],
+        [
+          34816,
+          8,
+          1
+        ]
+      ]
+    },
+    {
+      "first_frame": 2113,
+      "actors": [
+        [
+          33792,
+          4,
+          0
+        ],
+        [
+          34816,
+          5,
+          1
+        ]
+      ]
+    },
+    {
+      "first_frame": 2456,
+      "actors": [
+        [
+          33792,
+          3,
+          0
+        ],
+        [
+          34816,
+          9,
+          1
+        ]
+      ]
+    },
+    {
+      "first_frame": 4339,
+      "actors": [
+        [
+          33792,
+          4,
+          255
+        ]
+      ]
+    },
+    {
+      "first_frame": 4340,
+      "actors": [
+        [
+          33792,
+          4,
+          255
+        ],
+        [
+          34816,
+          6,
+          255
+        ],
+        [
+          36864,
+          7,
+          255
+        ]
+      ]
+    },
+    {
+      "first_frame": 10455,
+      "actors": [
+        [
+          33792,
+          0,
+          255
+        ]
+      ]
+    },
+    {
+      "first_frame": 10456,
+      "actors": [
+        [
+          33792,
+          0,
+          255
+        ],
+        [
+          34816,
+          1,
+          255
+        ],
+        [
+          36864,
+          5,
+          255
+        ]
+      ]
+    },
+    {
+      "first_frame": 16567,
+      "actors": [
+        [
+          33792,
+          9,
+          255
+        ]
+      ]
+    },
+    {
+      "first_frame": 16568,
+      "actors": [
+        [
+          33792,
+          9,
+          255
+        ],
+        [
+          34816,
+          2,
+          255
+        ],
+        [
+          36864,
+          0,
+          255
+        ]
+      ]
+    }
+  ],
+  "source6_frames": 2083,
+  "first_source6": [
+    {
+      "frame": 4340,
+      "object_id": 34816,
+      "channel": 255,
+      "action": 0
+    },
+    {
+      "frame": 4341,
+      "object_id": 34816,
+      "channel": 255,
+      "action": 0
+    },
+    {
+      "frame": 4342,
+      "object_id": 34816,
+      "channel": 255,
+      "action": 0
+    },
+    {
+      "frame": 4343,
+      "object_id": 34816,
+      "channel": 255,
+      "action": 0
+    },
+    {
+      "frame": 4344,
+      "object_id": 34816,
+      "channel": 255,
+      "action": 0
+    }
+  ]
+}

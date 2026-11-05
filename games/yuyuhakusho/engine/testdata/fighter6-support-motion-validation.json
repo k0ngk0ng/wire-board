@@ -1,0 +1,188 @@
+{
+  "pass": true,
+  "scope": "Source6 support0e/0f/11/13/37 plus exact18682 constructor, before shared tail or complete RTS",
+  "character": {
+    "source_id": 6,
+    "display_name": "\u9635"
+  },
+  "go_version": "go version go1.26.2 darwin/arm64",
+  "canonical_contract": {
+    "new_world_fields": 0,
+    "shared_view": "Fighter6MotionState{ChuSpecialMotionState;StunTicks uint16}",
+    "stun_owner": "WorldObject.StunTicks +84.word",
+    "exit_helper": "enterFighter6Exit(*FighterBodyState)",
+    "exit18682": "action0c/pose2b/stages0;Auxiliary7E=Auxiliary80;ResetActionState;no air/velocity/gravity/ExtraJump/StunTicks change",
+    "37_completion": "Completed==1 then unconditional1860c even ground:air02/07mask14,ExtraJump/VX/VY0 and parameter gravity"
+  },
+  "test_first": {
+    "own_missing_symbols_observed": true,
+    "original_cpu_and_all_tests_precede_support_file": true,
+    "test_source_unchanged_since_red": true,
+    "initial_cpu_fixtures_unchanged_since_red": true,
+    "special_natural_uses_prior_test": true
+  },
+  "evidence": {
+    "oracle": {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-support-motion-oracle-manifest.json",
+      "manifest_sha256": "288b3733492398ee1c6c8f681ed9228404e2118ec4f0d9e238e7c968d08d104e",
+      "records": 34,
+      "calls": 34,
+      "kind_counts": {
+        "11": 33,
+        "exit": 1
+      },
+      "fixture_sha256": "07f4359129353f2cccb261cd63746e37367435e276cc61fc94fb744d8f34bd6b",
+      "gzip_sha256": "847568c40941bb6629d5decddd8d4f5dd437942f7cb3f2dc06f15427a727e0d6",
+      "interrupt_calls": 0,
+      "external_change_calls": 0,
+      "unexplained_changes": 0
+    },
+    "boundaries": {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-support-motion-boundaries-manifest.json",
+      "manifest_sha256": "0feae5accd8fcb6e5dd7bd716f4b0d43ca5f41c5d41a16d01489709c573cd669",
+      "records": 3000,
+      "calls": 3000,
+      "kind_counts": {
+        "0e": 330,
+        "0f": 330,
+        "11": 192,
+        "13": 1806,
+        "37": 72,
+        "exit": 270
+      },
+      "fixture_sha256": "491fdc6b8a9d3eaae282fe0aa3099ad3c5c6dd423e4098b3afc62c9f3b3ef92c",
+      "gzip_sha256": "f3bdce74a6d28af2b8a2205a5b992ef5fec86c7f697e5908479ecf41a3463d3d",
+      "interrupt_calls": 0,
+      "external_change_calls": 0,
+      "unexplained_changes": 0
+    },
+    "sequences": {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-support-motion-sequences-manifest.json",
+      "manifest_sha256": "d312b97d5eb79d589f3dcf0c561c4b64bc80da173770f4284d27d89d25e2559d",
+      "records": 20,
+      "calls": 2574,
+      "kind_counts": {
+        "clock": 858,
+        "0e": 132,
+        "record": 858,
+        "0f": 132,
+        "11": 132,
+        "13": 80,
+        "37": 382
+      },
+      "fixture_sha256": "81be89e71a7f65d766ca80a87919dcf1026cd4a0764f4b17dcc1554f313817cf",
+      "gzip_sha256": "9d7154659eda63b1a206928a2f476003e6bf1567bf9dfadce0c66e07b8b33c47",
+      "interrupt_calls": 0,
+      "external_change_calls": 0,
+      "unexplained_changes": 0
+    },
+    "special-oracle": {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-support-motion-special-oracle-manifest.json",
+      "manifest_sha256": "97fe6e9442ccaacc1237e38ef5e7ebc8341ad92d4e20c8e1fd2a9b5bae37a8d5",
+      "records": 115,
+      "calls": 115,
+      "kind_counts": {
+        "13": 39,
+        "37": 75,
+        "exit": 1
+      },
+      "fixture_sha256": "b008a1d9509913e5b7defc87d8be74e67e08a89a520c634005fb76a599d5ac33",
+      "gzip_sha256": "f6c8b69a5111f81a3cf05065505c687b34000adf1cde4bfaef5ac032dda27702",
+      "interrupt_calls": 2,
+      "external_change_calls": 1,
+      "unexplained_changes": 0
+    }
+  },
+  "continuous": {
+    "streams": 20,
+    "stages": 2574,
+    "readonly_timing_refreshes": 858,
+    "original_cpu_calls": 1716,
+    "support_phase_calls": 858,
+    "no_expected_state_or_clock_injection": true
+  },
+  "natural_constructor_note": {
+    "special_exit_calls": [
+      {
+        "video_step": 2848,
+        "exit": "0x19d90"
+      }
+    ],
+    "not_claimed": "Not MAIN38 completion; actual return19d90 identifies the shared basic route, longer38 world validation belongs to Root"
+  },
+  "irq_attribution": [
+    {
+      "kind": "13",
+      "video_step": 1850,
+      "entry_registers": [
+        "0xfffff000",
+        "0xfffff000"
+      ],
+      "exits": [
+        "0xfff09a",
+        "0xfff0a8"
+      ],
+      "irq_delta_bytes": [
+        114,
+        1
+      ],
+      "outside_rule_final_bytes": 51,
+      "unexplained_bytes": 0
+    }
+  ],
+  "checks": {
+    "native": {
+      "pass": true,
+      "top_level_tests": 4,
+      "elapsed_seconds": 10.99,
+      "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+      "log": "games/yuyuhakusho/engine/testdata/fighter6-support-motion-native.jsonl",
+      "log_sha256": "e7874197800733b7575b4a3023925e1611f75a9c91c6d70875c1b8f6a24d648a",
+      "command": "go test -race -count=1 -json ./games/yuyuhakusho/engine -run ^TestFighter6Support"
+    },
+    "wasm": {
+      "pass": true,
+      "top_level_tests": 4,
+      "elapsed_seconds": 2.682,
+      "package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+      "log": "games/yuyuhakusho/engine/testdata/fighter6-support-motion-wasm.jsonl",
+      "log_sha256": "3b8bfea8487556f6a7092d7f5d1ddbc78adc1bb220385405f8969f2347ad563e",
+      "command": "GOOS=js GOARCH=wasm go test -count=1 -json -exec <GOROOT>/lib/wasm/go_js_wasm_exec ./games/yuyuhakusho/engine -run ^TestFighter6Support"
+    },
+    "vet": {
+      "pass": true,
+      "command": "go vet ./games/yuyuhakusho/engine",
+      "excluded": [],
+      "log": "games/yuyuhakusho/engine/testdata/fighter6-support-motion-vet.txt",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "source_sha256": {
+    "docs/research/md-yuyuhakusho/static/fighter6-support.txt": "e2a2afe1f92d8f569d8259c10517a05bd91a6d1e639cd3af68f3125e5c7d9210",
+    "games/yuyuhakusho/engine/FIGHTER6_SUPPORT_MOTION_VERIFICATION.md": "705f39e373ca78e8851324d82b790e1b92c7b82d4bb328770b8ca7e918dc5bc0",
+    "games/yuyuhakusho/engine/animation_clock.go": "fa868c5c160fa22fba71520d80c18e8d1f40217ff9a64c6d90a231eab65f28a4",
+    "games/yuyuhakusho/engine/chu_special_motion.go": "5c37d35003f4f983010232d495b6e45143553a36b347edbaf2aa494006839c98",
+    "games/yuyuhakusho/engine/fighter0_motion.go": "3fcd2c8280c1383f41198d87ffba62936aaad259acff8413713d4ba18b35cf71",
+    "games/yuyuhakusho/engine/fighter10_motion.go": "120bf695e1e02406d6ba94493d373b59782e606ba939fbfe284bd17b99b8e427",
+    "games/yuyuhakusho/engine/fighter3_air_motion_test.go": "33ea38d6b6cd4ab568fe108be1d3baba972fe857ad55b3e9996af7ea20863d11",
+    "games/yuyuhakusho/engine/fighter3_motion.go": "14288bf20eb1c378d5c23a14a4f7e2c6a39ac28f1998f21e2d323b01e42e72b3",
+    "games/yuyuhakusho/engine/fighter6_motion.go": "334b3d5cdc4e6d61dd1a62c8b664ad106fd3bca26ab3aa4625105eca5dd07ca1",
+    "games/yuyuhakusho/engine/fighter6_support_motion.go": "a1c4cbb25a8583c5de280c94934f8816d8f2e74ae7d421124d1a24e808c74d71",
+    "games/yuyuhakusho/engine/fighter6_support_motion_test.go": "a9a8533e965068abf6ca68fe9b98fedee77ba05d3e01331a9f40605fec068d3c",
+    "games/yuyuhakusho/engine/ground_actions.go": "cc6106a696c63bb39293694ed8cc63e04586ceb89e6b04454fb08970aedca80c",
+    "games/yuyuhakusho/engine/testdata/fighter6-support-motion-cleanup.json": "e04481180ab4553d46f1eeb1eba072e65cced54949cba91b5bff9bcb8fc04e8d",
+    "games/yuyuhakusho/engine/testdata/fighter6-support-motion-red.jsonl": "e554fddc328b578862267b613e440daae4285fa46a1b539771af93f83eed9e45",
+    "games/yuyuhakusho/engine/testdata/fighter6-support-motion-test-first.json": "649411b77b1392ef3c55e82b46431a9ed24d8329c0e8140a1f7d448919ac1b80",
+    "games/yuyuhakusho/engine/world_objects_test.go": "be37d61ae8dd40dc85a63efe4846118aa71f3ddf0d92333a89f4b0be9483e719",
+    "scripts/yuyuhakusho/capture_fighter6_support_motion.py": "b11d40fa078ec8c6752146afbc0100d1143bdacd636b8f68f6f12a4114d2d0b5",
+    "scripts/yuyuhakusho/static/MdControlProbe.java": "44903c14bfe5a1ffc354e4fab1eb5893303081bbe55aa9f620808daf4ebe18a8"
+  },
+  "limits": [
+    "Only source6 shared support and18682; MAIN33/34/35/36/38 and unified entry are maintained/verified separately",
+    "Human duplicate command slot reachability is not changed; no synthetic MetaInput or retagged other actor is called natural",
+    "Original clock/phase/readonly record contexts do not constitute full actor/tail/world/collision/active FX or platform E2E",
+    "Shared entry11 rejects unmodeled frame-table indices atomically; not described as original no-op",
+    "Direct Ghidra68000 static evidence is not REA decompilation; ROM/core remain research-only",
+    "Only new support code/tests/research/report files written; old Go/bundle/PROGRESS/other reports/service assets unchanged"
+  ]
+}

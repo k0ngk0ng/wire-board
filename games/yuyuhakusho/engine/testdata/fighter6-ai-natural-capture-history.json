@@ -1,0 +1,64 @@
+{
+  "scope": "Cold original physical practice menu CPU6; passive full AI and air-special SP+4 returns",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "input": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter6-ai-inputs.json",
+    "sha256": "16505f2ee81d6828397785195f2912c554d33ee7647585f1d93e6f76d39ce753"
+  },
+  "capture": {
+    "path": "scripts/yuyuhakusho/capture_fighter6_natural_ai.py",
+    "sha256": "2390dd0ed2fc8ee8bb49d59301f49046070a2b2e0b432526addb6051444192b1"
+  },
+  "frames": 3602,
+  "entry_frame_limit": 3600,
+  "drain_frames": 2,
+  "complete_ai_returns": 1110,
+  "complete_air_special_returns": 4,
+  "source6_character_decisions": 297,
+  "ai_rng_calls": 2835,
+  "computer6_objects": {
+    "0x9000": 1388
+  },
+  "computer6_actions": {
+    "0x0": 338,
+    "0x1": 405,
+    "0x13": 2,
+    "0x3": 122,
+    "0xb": 52,
+    "0xa": 26,
+    "0x37": 439,
+    "0x2": 4
+  },
+  "natural34_complete_selections": 0,
+  "natural34_frames": [],
+  "outputs": [
+    {
+      "name": "ai-calls",
+      "records": 1110,
+      "fixture_sha256": "e9137f67a0b3ec106dd8048d693bbd96ed951a73398c67049e35872d6bba7217",
+      "gzip_sha256": "0de277407ebcc66a886717b66515924ce56b9341fed107e7075955154a987f61"
+    },
+    {
+      "name": "air-special-calls",
+      "records": 4,
+      "fixture_sha256": "754dfcb33769a456112fbcdd3ac3fd2af7745d3d0f214a6187aed1cad8c03325",
+      "gzip_sha256": "089d34068fa9fab3d4bb3b1be8c202d475135a47720b4dd9417ae54cca33617b"
+    }
+  ],
+  "observed_frames_sha256": "21bdaf7229acd97b95120deed04e34216a912e4d963ce16e592eaa5353ebbe5f",
+  "incomplete_calls": 0,
+  "errors": [],
+  "rom_ram_request_writes": false,
+  "restore_or_seed_injection": false,
+  "unobserved_control_generated": false,
+  "pass": true
+}

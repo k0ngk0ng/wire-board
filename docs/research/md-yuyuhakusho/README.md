@@ -201,3 +201,5 @@ PATH="/opt/homebrew/Cellar/openjdk/26.0.1/libexec/openjdk.jdk/Contents/Home/bin:
 当前进一步完成来源 8「户愚吕兄」，六角色世界／新建对局与呈现结果见[六角色验收](../../../games/yuyuhakusho/verification/elder-session.json)。此前把 8／10 的兄弟姓名标注写反，已按原 HUD 放大字形及造型订正为 8「兄」、10「弟」，旧报告保留历史提交与摘要；规则、原 CPU 编号和素材不变。
 
 藏马现已完成，七角色完整 input／action／actor、原世界、新建对局及呈现验证见[七角色验收](../../../games/yuyuhakusho/verification/kurama-session.json)。两种新子对象使用原有字段的临时窄视图，公共姿态 10／11 新增 8 条 AN，索引图形与波表沿用已验资源。原版首采样帧的 driver-entry 边界已依据未改动 CPU 记录纠正，并以旧 `b5723d24` 实现回放确认回归测试能识别来源 1 未实现。
+
+阵已进一步开放，八角色规则／呈现与三条原世界见[八角色验收](../../../games/yuyuhakusho/verification/jin-session.json)。取得真正电脑阵的 1,110 次原 AI 返回，并独立以 Go 单初态完整重建至练习战清场；原容器 `a01e/32` 的等待体与旧等待体逐 byte 相同，未把原 header 改写为其他模式。人类 DD 请求覆盖关系及未自然成功的 `34` 仍按原版边界声明。

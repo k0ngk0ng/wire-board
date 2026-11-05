@@ -1,0 +1,258 @@
+{
+  "scope": "Actual whole3592 ready-match passes; no Go execution or world completion claim",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "d27cadf136c3e3334b31158306522fa323432b579f988f2c35e6108645172511",
+  "inputs_sha256": "686cbd1c0015aa9b0d73d9b92db8dd4b34d1bfef75327a2261f3d82f2fb6f114",
+  "inputs_path": "games/yuyuhakusho/engine/testdata/fighter6-special-inputs.json",
+  "baseline_sha256": "a7c54ad9197eecb5f40dca78474c83df81c8e83b47bb2ffe8200a29be04bfb4a",
+  "frames_checked": 4200,
+  "records": 2401,
+  "first_frame": 1800,
+  "last_frame": 4200,
+  "object_calls": 31617,
+  "kinds": [
+    {
+      "behavior": 39632,
+      "calls": 2401,
+      "ids": [
+        32768
+      ],
+      "stages": [
+        20
+      ],
+      "first_frame": 1800,
+      "last_frame": 4200
+    },
+    {
+      "behavior": 62116,
+      "calls": 2401,
+      "ids": [
+        32832
+      ],
+      "stages": [
+        10,
+        12,
+        14
+      ],
+      "first_frame": 1800,
+      "last_frame": 4200
+    },
+    {
+      "behavior": 65144,
+      "calls": 2401,
+      "ids": [
+        33280
+      ],
+      "stages": [
+        2
+      ],
+      "first_frame": 1800,
+      "last_frame": 4200
+    },
+    {
+      "behavior": 65202,
+      "calls": 2401,
+      "ids": [
+        33088
+      ],
+      "stages": [
+        2
+      ],
+      "first_frame": 1800,
+      "last_frame": 4200
+    },
+    {
+      "behavior": 65672,
+      "calls": 2401,
+      "ids": [
+        33344
+      ],
+      "stages": [
+        2
+      ],
+      "first_frame": 1800,
+      "last_frame": 4200
+    },
+    {
+      "behavior": 66034,
+      "calls": 15,
+      "ids": [
+        33536
+      ],
+      "stages": [
+        10,
+        12
+      ],
+      "first_frame": 1800,
+      "last_frame": 1814
+    },
+    {
+      "behavior": 66352,
+      "calls": 26,
+      "ids": [
+        33600,
+        33664
+      ],
+      "stages": [
+        6,
+        8
+      ],
+      "first_frame": 1800,
+      "last_frame": 1812
+    },
+    {
+      "behavior": 75368,
+      "calls": 4802,
+      "ids": [
+        33792,
+        36864
+      ],
+      "stages": [
+        2
+      ],
+      "first_frame": 1800,
+      "last_frame": 4200
+    },
+    {
+      "behavior": 84098,
+      "calls": 2401,
+      "ids": [
+        39936
+      ],
+      "stages": [
+        2
+      ],
+      "first_frame": 1800,
+      "last_frame": 4200
+    },
+    {
+      "behavior": 84272,
+      "calls": 288,
+      "ids": [
+        38144,
+        38400,
+        38656,
+        38912,
+        39040,
+        39168,
+        39296,
+        39552
+      ],
+      "stages": [
+        0,
+        2
+      ],
+      "first_frame": 2093,
+      "last_frame": 3718
+    },
+    {
+      "behavior": 84396,
+      "calls": 1984,
+      "ids": [
+        37888,
+        38016,
+        38144,
+        38272,
+        38400,
+        38528,
+        38656,
+        38784,
+        38912,
+        39040,
+        39168,
+        39296,
+        39424,
+        39552,
+        39680,
+        39808
+      ],
+      "stages": [
+        0,
+        2
+      ],
+      "first_frame": 1812,
+      "last_frame": 4161
+    },
+    {
+      "behavior": 85702,
+      "calls": 492,
+      "ids": [
+        37888,
+        39680,
+        39808
+      ],
+      "stages": [
+        0,
+        2
+      ],
+      "first_frame": 2720,
+      "last_frame": 2883
+    },
+    {
+      "behavior": 86218,
+      "calls": 2401,
+      "ids": [
+        40064
+      ],
+      "stages": [
+        2
+      ],
+      "first_frame": 1800,
+      "last_frame": 4200
+    },
+    {
+      "behavior": 86622,
+      "calls": 2401,
+      "ids": [
+        40192
+      ],
+      "stages": [
+        2
+      ],
+      "first_frame": 1800,
+      "last_frame": 4200
+    },
+    {
+      "behavior": 126380,
+      "calls": 2401,
+      "ids": [
+        33024
+      ],
+      "stages": [
+        0
+      ],
+      "first_frame": 1800,
+      "last_frame": 4200
+    },
+    {
+      "behavior": 133400,
+      "calls": 2401,
+      "ids": [
+        33152
+      ],
+      "stages": [
+        2
+      ],
+      "first_frame": 1800,
+      "last_frame": 4200
+    }
+  ],
+  "queue_interleaved_passes": 112,
+  "closed_after_clear": false,
+  "fixture_sha256": "cdbbb2f017d5098368be837035ef7e6af7bd6ab2b522ef2104bb3ba20bfad3f2",
+  "gzip_sha256": "d3b443840ca3754f90d03291877036bf421ee6233cd0f904c228b3874cd04618",
+  "frames_match_original_core": true,
+  "incomplete_calls": 0,
+  "errors": [],
+  "allow_open_end": true,
+  "pass": true
+}

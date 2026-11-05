@@ -1,0 +1,19 @@
+{
+  "baseline_commit": "8c2ed877",
+  "scope": "Source6 ordinary,long human special,true-AI6 world,30 fresh render/rule scenes and native browser specified before source6 shared implementation; practice wait boundary independently proven from original code",
+  "files": {
+    "games/yuyuhakusho/engine/fighter6_world_test.go": "affe5a63f5e597ffc274cb1650c45d890fe99a9e324e940543efd80de3b2cdb8",
+    "scripts/yuyuhakusho/verify_jin_sessions.sh": "65a14483e179b755f5bf1a8421953ad10b0229624e3280874a564b3ec1439816",
+    "scripts/yuyuhakusho/check_jin_player.py": "cc22f43a40e0d5280cefe18ad9fd88d8440dc9565257472244f6b64b47b117fb"
+  },
+  "before_cli_csv_refinement_files": {
+    "games/yuyuhakusho/engine/fighter6_world_test.go": "affe5a63f5e597ffc274cb1650c45d890fe99a9e324e940543efd80de3b2cdb8",
+    "scripts/yuyuhakusho/verify_jin_sessions.sh": "65a14483e179b755f5bf1a8421953ad10b0229624e3280874a564b3ec1439816",
+    "scripts/yuyuhakusho/check_jin_player.py": "cc22f43a40e0d5280cefe18ad9fd88d8440dc9565257472244f6b64b47b117fb"
+  },
+  "cli_csv_refinement": {
+    "before_sha256": "aa948d893c763f1fa936a5541243707b7d80d54abe6afc9bebef3ba5e72a5a1f",
+    "after_sha256": "65a14483e179b755f5bf1a8421953ad10b0229624e3280874a564b3ec1439816",
+    "reason": "Copying the prior source1 matrix by substring replacement changed source10 token to60. Correct generated CLI fixture input to actual original source10, preserving original declared roster, all assertions and Go code."
+  }
+}

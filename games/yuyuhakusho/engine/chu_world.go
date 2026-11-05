@@ -148,9 +148,13 @@ func StepChuWorldObjects(state ChuWorldState, view ChuWorldView, library ChuWorl
 func stepChuWorldObject(state *ChuWorldState, object WorldObject, view ChuWorldView, library ChuWorldLibrary, hudCursor *uint16) ([]ChuWorldEvent, error) {
 	id := object.ObjectID
 	switch object.Header.Behavior {
-	case 0x9ad0:
+	case 0x9ad0, 0xa01e:
 		manager, err := LookupWorldObject(state.Objects, 0x8040)
-		if err != nil || id != 0x8000 || object.Header.Stage != 20 || manager.Header.Behavior != 0xf2a4 {
+		stage := uint16(20)
+		if object.Header.Behavior == 0xa01e {
+			stage = 32 // The original practice wait at a1c6 matches9c70 byte-for-byte.
+		}
+		if err != nil || id != 0x8000 || object.Header.Stage != stage || manager.Header.Behavior != 0xf2a4 {
 			return nil, errors.New("main container is outside the proven ready-match wait boundary")
 		}
 		return nil, nil
@@ -357,7 +361,7 @@ func stepChuWorldArena(state *ChuWorldState, object WorldObject, library ArenaRu
 }
 
 func stepChuWorldFighter(state *ChuWorldState, object WorldObject, view ChuWorldView, library ChuWorldLibrary, hudCursor *uint16) ([]ChuWorldEvent, error) {
-	if _, ok := chuAIIndex(object.ObjectID); !ok || (object.Tag != 0 && object.Tag != 1 && object.Tag != 2 && object.Tag != 3 && object.Tag != 8 && object.Tag != 9 && object.Tag != 10) {
+	if _, ok := chuAIIndex(object.ObjectID); !ok || (object.Tag != 0 && object.Tag != 1 && object.Tag != 2 && object.Tag != 3 && object.Tag != 6 && object.Tag != 8 && object.Tag != 9 && object.Tag != 10) {
 		return nil, errors.New("complete fighter action source is not recovered")
 	}
 	switch object.Header.Stage {

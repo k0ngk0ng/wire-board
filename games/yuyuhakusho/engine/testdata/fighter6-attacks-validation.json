@@ -1,0 +1,498 @@
+{
+  "verified_at_utc": "2026-11-05T00:48:50.415913+00:00",
+  "base_commit": "8c2ed877",
+  "scope": "Source6 Jin four complete attack selector returns, seven special roots and two ordinary slot13 constructors; no continued motion",
+  "pass": true,
+  "phase_complete": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "api": {
+    "state": "Fighter6AttackState{ChuAttackState; AlternateVelocity int32}",
+    "function": "SelectFighter6Attack",
+    "storage_owner": "Caller existing full Aux48 long; CLR.W+48 clears big-endian high word and retains low16",
+    "unowned": "Energy fraction, shared RNG, child and other actor storage",
+    "ordered_air_effects": "Extra throw -> HeldC+PressedB Request8 -> energy8 dash -> ordinary fallthrough; legal cost failure retains earlier effects",
+    "special_height": "Air Request3 uses signed16 Ground high word minus128 with word wrap, compared to signed16 Y high word"
+  },
+  "test_first": {
+    "record": {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-test-first.json",
+      "sha256": "a62fd36449e134465c1c9756cd2d2c9d04bb122351258ef29c62c3adf17efbbc"
+    },
+    "actual_missing_symbol_red": {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-red.jsonl",
+      "sha256": "2f41c1fcf5b090d805e9100575a884856d11069ff10f7dd9ee83bc38dbda145c"
+    },
+    "production_present_at_red": false,
+    "frozen_artifacts_unchanged": 13,
+    "frozen_test": {
+      "path": "games/yuyuhakusho/engine/fighter6_attacks_test.go",
+      "sha256": "2e0c058e423a137da0ee61ad0dc0241769bcf50eca3030b86e1df0a91c45cca2"
+    },
+    "implementation_changed_after_first_creation": false
+  },
+  "coverage": {
+    "source_character_id": 6,
+    "name": "\u9635",
+    "selector_entries": [
+      "0x1738c",
+      "0x174ce",
+      "0x17654",
+      "0x176be"
+    ],
+    "natural_complete_returns": 1723,
+    "human_special_natural_complete_returns": 1231,
+    "natural_kinds": {
+      "ground": 789,
+      "ground-special": 808,
+      "air-special": 63,
+      "air": 63
+    },
+    "human_special_natural_kinds": {
+      "ground": 574,
+      "ground-special": 591,
+      "air-special": 33,
+      "air": 33
+    },
+    "human_natural_constructor_counts": {
+      "0x1743c": 1,
+      "0x194dc": 1,
+      "0x19518": 1,
+      "0x19542": 1,
+      "0x1959a": 1,
+      "0x19474": 1,
+      "0x18812": 1,
+      "0x1956c": 1
+    },
+    "private_representative_returns": 37,
+    "private_boundary_returns": 23192,
+    "private_boundary_objects": {
+      "0x8c00": 5798,
+      "0x9000": 5798,
+      "0x8400": 5798,
+      "0x8800": 5798
+    },
+    "special_constructor_entries": [
+      "0x19474",
+      "0x194aa",
+      "0x19518",
+      "0x19542",
+      "0x1956c",
+      "0x1959a",
+      "0x195b2"
+    ],
+    "ordinary_slot13_entries": [
+      "0x194dc",
+      "0x194fa"
+    ],
+    "ground_throw_entry": "0x1743c",
+    "air_throw_entry": "0x175e0",
+    "air_dash_success_entries": [
+      "0x174fe",
+      "0x17534"
+    ],
+    "ordered_low_energy_throw_fallbacks": 2,
+    "ordered_evidence": {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-order-evidence.json",
+      "sha256": "5b0775ef5092e76de88487aff8009fe407dc2fc0420efe22fee8537f2e7b9a6e"
+    },
+    "single_initial_state_streams": 64,
+    "single_initial_state_steps": 1024,
+    "stream_changes": [
+      "Declared base Held/Pressed/Changed only"
+    ],
+    "original_command_streams": 3,
+    "original_command_steps": 342,
+    "original_command_request6_states": 48,
+    "dd_duplicate_program_order": "slot5 Request6 replaces slot3 Request4; human DD is not claimed to naturally trigger34",
+    "human_natural34": false,
+    "actor_bytes": 256,
+    "children_bytes": 768,
+    "four_fighter_families_bytes": 4096,
+    "effect_pool_bytes": 2048,
+    "throw_buffer_bytes": 512,
+    "energy_fraction_values": [
+      0,
+      1,
+      65535
+    ],
+    "aux48_values": [
+      0,
+      1,
+      -1,
+      -2147483648,
+      2147483647,
+      "0xa5d3c791"
+    ],
+    "shared_rng_calls": 0,
+    "unmasked_output_bytes": true,
+    "actual_return_sp_checked": true,
+    "incomplete_calls": 0,
+    "out_of_scope_private_ram_writes": 0,
+    "errors": 0
+  },
+  "natural_baseline": {
+    "ordinary": {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-reference-manifest.json",
+      "sha256": "db2c9edfe0fdcce6a338e088ce6ecf58fc55cc4be5f09cd7945381cdc8c03ad0"
+    },
+    "human_special": {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-special-reference-manifest.json",
+      "sha256": "fc6b4e3bb3c03931723751f9c616e7383bb382c4dd05cf1249eb0839006a2f28"
+    },
+    "frames_each": 3602,
+    "entry_frame_limit": 3600,
+    "drain_frames": 2,
+    "original_core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+    "hook_core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "passive_ram_video_match": true,
+    "unique_controls_shared": true,
+    "human38_component_tail": "Entered3388; still active at3602; no continued-motion exit claim here"
+  },
+  "legacy_chu_regression": [
+    "TestChuAttacksOriginalFullCalls",
+    "TestChuAttacksSingleInitialState",
+    "TestChuAttacksInvalidInputIsAtomic"
+  ],
+  "logs": {
+    "ordinary_initial_native_race": {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-ordinary-isolated-native.jsonl",
+      "sha256": "ae42f2b65e459b18ec0e88fe7cfac7d523a0b4679cdff4ef63e6222e631653d4",
+      "pass": true,
+      "seconds": 86.349,
+      "json_elapsed": 86.349,
+      "top_level_tests": [
+        "TestFighter6AttacksOriginalFullCalls",
+        "TestFighter6AttacksSingleInitialState",
+        "TestFighter6AttacksInvalidInputIsAtomic",
+        "TestFighter6AttacksCommandOrder"
+      ]
+    },
+    "ordinary_initial_wasm": {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-ordinary-isolated-wasm.jsonl",
+      "sha256": "69aca532f73e63a4f20b8c06a973152cb3869d937cf547d4981b2efcda1d4dd7",
+      "pass": true,
+      "seconds": 19.773,
+      "json_elapsed": 19.773,
+      "top_level_tests": [
+        "TestFighter6AttacksOriginalFullCalls",
+        "TestFighter6AttacksSingleInitialState",
+        "TestFighter6AttacksInvalidInputIsAtomic",
+        "TestFighter6AttacksCommandOrder"
+      ]
+    },
+    "native_race": {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-native.jsonl",
+      "sha256": "e592f189a9725f05e6387686d80709dd896bfb1ec136f750766ac97f0b667013",
+      "pass": true,
+      "seconds": 100.933,
+      "json_elapsed": 100.933,
+      "top_level_tests": [
+        "TestChuAttacksOriginalFullCalls",
+        "TestChuAttacksSingleInitialState",
+        "TestChuAttacksInvalidInputIsAtomic",
+        "TestFighter6AttacksOriginalFullCalls",
+        "TestFighter6AttacksSingleInitialState",
+        "TestFighter6AttacksInvalidInputIsAtomic",
+        "TestFighter6AttacksCommandOrder"
+      ]
+    },
+    "wasm": {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-wasm.jsonl",
+      "sha256": "ccbb1c2ce9c8d5bf1edc20ec628daae47508ba04c1dd6310469fe76444da086c",
+      "pass": true,
+      "seconds": 24.841,
+      "json_elapsed": 24.841,
+      "top_level_tests": [
+        "TestChuAttacksOriginalFullCalls",
+        "TestChuAttacksSingleInitialState",
+        "TestChuAttacksInvalidInputIsAtomic",
+        "TestFighter6AttacksOriginalFullCalls",
+        "TestFighter6AttacksSingleInitialState",
+        "TestFighter6AttacksInvalidInputIsAtomic",
+        "TestFighter6AttacksCommandOrder"
+      ]
+    }
+  },
+  "fixtures": [
+    {
+      "name": "natural",
+      "fixture": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-natural.json.gz",
+        "sha256": "35e0c026f92690fd271e8a3e9e850d6747d27de3aa89ba6fcf78d1ba9f55efe0"
+      },
+      "manifest": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-natural-manifest.json",
+        "sha256": "b47ad0aa70d99853faffb740d5cd4587dc90abb7c885f1a83ce5b893f26dab3a"
+      },
+      "records": 1723,
+      "calls": 1723
+    },
+    {
+      "name": "special-natural",
+      "fixture": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-special-natural.json.gz",
+        "sha256": "0b05ef420900d4ce7411e09940bd3a53f59b07957a5f38d1dc16cda2118d44eb"
+      },
+      "manifest": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-special-natural-manifest.json",
+        "sha256": "4def6ef7733149efec5bf3f4101681456857f68e08e524cfad1c9051b4e60e5f"
+      },
+      "records": 1231,
+      "calls": 1231
+    },
+    {
+      "name": "oracle",
+      "fixture": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-oracle.json.gz",
+        "sha256": "82851850f244b5b97bd107476d60d7f805ae95419f32d0437e0d52b85e9fa103"
+      },
+      "manifest": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-oracle-manifest.json",
+        "sha256": "7ae63626bfe037ffcd907314d77e257caa663a551ff2719e087f1aad8a8fe8e0"
+      },
+      "records": 37,
+      "calls": 37
+    },
+    {
+      "name": "boundaries",
+      "fixture": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-boundaries.json.gz",
+        "sha256": "ffc698f33728757ca61ef20d438617c0749e4ce8bb84fee2d8c3e2fd1340739e"
+      },
+      "manifest": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-boundaries-manifest.json",
+        "sha256": "67aa4ec06c0f1c61aa3f03160dd0b666199f352ea86e8947367f29ba2b6b9b04"
+      },
+      "records": 23192,
+      "calls": 23192
+    },
+    {
+      "name": "sequences",
+      "fixture": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-sequences.json.gz",
+        "sha256": "84c6ddc5238c8862ddd5c9acb8e005c07cee4fccf857d561aa4f4f2da2935033"
+      },
+      "manifest": {
+        "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-sequences-manifest.json",
+        "sha256": "e23ddf71b8acb1ada41f620190eb2668237e56e6076242f33b1c38a4ed5a3377"
+      },
+      "records": 64,
+      "calls": 1024
+    }
+  ],
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/engine/fighter6_attacks.go",
+      "sha256": "f4c4b0e5cfcdb6b3693347baf18b20d922513a2beed45c6fd9047d1d0a37d14d"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/fighter6_attacks_test.go",
+      "sha256": "2e0c058e423a137da0ee61ad0dc0241769bcf50eca3030b86e1df0a91c45cca2"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/FIGHTER6_ATTACK_FAILURES.md",
+      "sha256": "03f5de476eec57aff09e5881f49cdb5fdb836375b6cc6b953f568bdd4c3a14b4"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/FIGHTER6_ATTACK_VERIFICATION.md",
+      "sha256": "7bf4e2316bddfe9bf61d31494b9117b1930d6c20d6610cc40b6725610a9937ff"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-test-first.json",
+      "sha256": "a62fd36449e134465c1c9756cd2d2c9d04bb122351258ef29c62c3adf17efbbc"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-red.jsonl",
+      "sha256": "2f41c1fcf5b090d805e9100575a884856d11069ff10f7dd9ee83bc38dbda145c"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-order-evidence.json",
+      "sha256": "5b0775ef5092e76de88487aff8009fe407dc2fc0420efe22fee8537f2e7b9a6e"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-initial-native-command.json",
+      "sha256": "7920000c11ea1b31589b8f586eaecfe3e0e82ab0df02b68ff0c5c24a91ca2994"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-ordinary-wasm-command.json",
+      "sha256": "6d3e335ab2bb8c8d97863b81a6c1b94c5d5a12ddf3f268a8f2f1a097ce32afaf"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-initial-peer-wasm-command.json",
+      "sha256": "7a150d374111a0c58c48a37dc09b88a39e85508fbc605bf75df8ab33c58c898f"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-initial-peer-wasm-build.jsonl",
+      "sha256": "efea9ba3b8bc6a06d242af46b38a216f4147cddf0fddba5272f55d46d6f56450"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-cleanup.json",
+      "sha256": "4d303f32a416b1f27f05d2562407eb759fd20c55d6a23a98b7d3ef8ddb45bcfc"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_fighter6_attacks.py",
+      "sha256": "b6a4b3f22c43f6a36ffbb177e1d6f6afb5c1637888822b1d3cc6039eb30399b6"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_fighter6_reference.py",
+      "sha256": "3a424c70f4f8c561a1923fa6f176994a1e5dc3f1279a41fc87af7acbe0adf1da"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/source6-next-inputs.json",
+      "sha256": "61b140b4ac6820bb6d352bfc98202129fedc4b310367a055df50e1aaffad319e"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/source6-next-selection.json",
+      "sha256": "935e03d1ba119b4f922c26bf914c3d63ad6170252558768accd85ecc352f2651"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-action-selectors-focused.txt",
+      "sha256": "8c27ef51fc1bddfbf4b928e5a1290b2556c057f01d320e46a0ccdda56609692b"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-action-constructors-focused.txt",
+      "sha256": "e43cec558dad5ba037b0ad39577ec0ebc8b9d9a6c6af0b667596d35e0ae44dad"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-action-coverage.json",
+      "sha256": "521080d1aaa6947d0d71316ea9ce2d3e4872958e74a9e54933061493e2650824"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/action-character-tables.txt",
+      "sha256": "41420035a9a1c6e1145dcbb3c479ea3f2dda47c7f18b4a591a05dda0b5d20764"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_attacks.go",
+      "sha256": "108d7a4a72ab06cd9c2950c6830e861c063f937a968499f554cd633062f434a6"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_attacks_test.go",
+      "sha256": "ff4bd0fb65a690923fe3b06821af51363b12b8f2449ce2a39c14341606d8c4a8"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/effects.go",
+      "sha256": "6a0916fbc4051a0e67988b9cad99e41d9ef778e0e78a7f63d65f5fb35d2f6b18"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/ground_actions.go",
+      "sha256": "cc6106a696c63bb39293694ed8cc63e04586ceb89e6b04454fb08970aedca80c"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/jump.go",
+      "sha256": "4d04cd8fc08edde75a5793d6be21644e058e7b2caf4e7c3c6c7b15f18fa39605"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/character_commands.go",
+      "sha256": "6f67aa187c0e48fd7787b00b38c41b6a7105a2a72553f1aa899fb9fed9665e5c"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/character_commands_test.go",
+      "sha256": "39f5508d620680c82875008d3070511fb509649ae9c72f89cca636dff37e61f7"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/commands.go",
+      "sha256": "fd0c39b62a11345e35a2f41e01a545da4dc13f24eb45853dc51ef8be6ac5439e"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/commands_test.go",
+      "sha256": "0e57d8056d0b422ccec3bbf0792f433bb238e7075c8802b2c22214f5177187ad"
+    },
+    {
+      "path": "games/yuyuhakusho/data/command-programs.json",
+      "sha256": "ce50d443432dc1db6be7ecb95ea12bb8b44ba88216fc12c815c43b1d88ef9ec3"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-special-inputs.json",
+      "sha256": "686cbd1c0015aa9b0d73d9b92db8dd4b34d1bfef75327a2261f3d82f2fb6f114"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/character-commands-sequences.json.gz",
+      "sha256": "1914ad1f91d5981a49c141d7d2f7c1f49c7e319bdbece0a707ba778c002f4321"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/character-commands-sequences-manifest.json",
+      "sha256": "7f7124b37fa1c8cbffe121a8b53605873198d6edf86d17f44d195d303614b83a"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-reference-frames.json",
+      "sha256": "2ed9bd9445a1d561eed662a1a76f739f918f93852a6a20c6abec9a5619d8799a"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-reference-manifest.json",
+      "sha256": "db2c9edfe0fdcce6a338e088ce6ecf58fc55cc4be5f09cd7945381cdc8c03ad0"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-special-reference-frames.json",
+      "sha256": "d15e6c9a73e3a2344b4c2a19248dd67ce79d08fa14a7b03a464aa92d6a2ce64f"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-special-reference-manifest.json",
+      "sha256": "fc6b4e3bb3c03931723751f9c616e7383bb382c4dd05cf1249eb0839006a2f28"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_chu_attacks.py",
+      "sha256": "f3d42a7d04267fcdbdea9e67963a70bb34920b861676358d67ab607e563eb580"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_ground_idle.py",
+      "sha256": "01d4798e937fa01946b7612fbc4fa7418dda97ec3411db4beb4629975614ba1d"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_jump.py",
+      "sha256": "21017876cd34f9263b6efa11e376ebf84b31d5fc82664c7c8b208213d1ecd8ab"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_effect_pool.py",
+      "sha256": "b9c753d1c9b6380ac64ee16f2c10cdcf8560654e493e770b31552b1781354f46"
+    },
+    {
+      "path": "scripts/yuyuhakusho/reference.py",
+      "sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/probe.py",
+      "sha256": "03a52ad64abf051a4a0c8914cb4813503f246afc0ec463ecd5cadb55c3bf7642"
+    }
+  ],
+  "separate_original_ai_research": {
+    "primary_report": {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-ai-natural-validation.json",
+      "sha256": "230aa9994467202751ae0b59c43ffdbe087b9b715a46c067712ce585d75040c9"
+    },
+    "menu_description": {
+      "path": "docs/research/md-yuyuhakusho/SOURCE6_CPU_MENU.md",
+      "sha256": "ba21e63fd33ed4e30f6b259264d36011284bc77b05bfe67f49b9722672c8c130"
+    },
+    "request4_report": {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-ai-r4-validation.json",
+      "sha256": "e1075bf8ffb6066909cf3be22f3c33d65d6f21b1b878853ba47f1153ecb61247"
+    },
+    "complete_primary_original_ai_returns": 1110,
+    "primary_source6_decisions": 297,
+    "actual_request4_returns_in_secondary_input": 2,
+    "natural34_verified": false,
+    "independent_go_ai_acceptance": false,
+    "mixed_into_human_selector_corpus": false
+  },
+  "limits": [
+    "Selection and immediate initialization only; no child evolution, continued moves, collision, rendering or whole matches established by selector tests",
+    "All seven special roots are covered by private full original calls; human natural34 remains absent",
+    "Human special38 is initialized but its full exit is outside this component natural window",
+    "Private manifest frame equality describes passive warmup before private field mutation, not natural private gameplay",
+    "Synthetic private fields do not establish character resource initialization",
+    "Slot0f is not produced by this selector closure; any shared private0f support is separate",
+    "RNG, ROM, RAM, Request and AI state were not manually changed in the separate menu/AI research",
+    "AI channel255 original execution and actual Request4 do not by themselves establish natural34 or independent Go AI/world acceptance",
+    "Frame controls verify RAM and video, not PCM; shared world integration and release acceptance belong to Root broader work"
+  ],
+  "cleanup": {
+    "record": {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-cleanup.json",
+      "sha256": "4d303f32a416b1f27f05d2562407eb759fd20c55d6a23a98b7d3ef8ddb45bcfc"
+    },
+    "bytes": 48885509,
+    "files": 158,
+    "shared_caches_and_other_workers_untouched": true
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "scope": "Source6 failure scenarios, full original CPU returns and frozen tests precede independent production",
+  "base_commit": "8c2ed877",
+  "recorded_at_utc": "2026-11-05T00:02:06.561732+00:00",
+  "production_present": false,
+  "red_exit_code": 1,
+  "red_reason": "Fighter6AttackState and SelectFighter6Attack undefined",
+  "special_natural_fixture_pending": true,
+  "files": [
+    {
+      "path": "games/yuyuhakusho/engine/fighter6_attacks_test.go",
+      "sha256": "2e0c058e423a137da0ee61ad0dc0241769bcf50eca3030b86e1df0a91c45cca2"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/FIGHTER6_ATTACK_FAILURES.md",
+      "sha256": "03f5de476eec57aff09e5881f49cdb5fdb836375b6cc6b953f568bdd4c3a14b4"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_fighter6_attacks.py",
+      "sha256": "b6a4b3f22c43f6a36ffbb177e1d6f6afb5c1637888822b1d3cc6039eb30399b6"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-red.jsonl",
+      "sha256": "2f41c1fcf5b090d805e9100575a884856d11069ff10f7dd9ee83bc38dbda145c"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-order-evidence.json",
+      "sha256": "5b0775ef5092e76de88487aff8009fe407dc2fc0420efe22fee8537f2e7b9a6e"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-natural.json.gz",
+      "sha256": "35e0c026f92690fd271e8a3e9e850d6747d27de3aa89ba6fcf78d1ba9f55efe0"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-natural-manifest.json",
+      "sha256": "b47ad0aa70d99853faffb740d5cd4587dc90abb7c885f1a83ce5b893f26dab3a"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-oracle.json.gz",
+      "sha256": "82851850f244b5b97bd107476d60d7f805ae95419f32d0437e0d52b85e9fa103"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-oracle-manifest.json",
+      "sha256": "7ae63626bfe037ffcd907314d77e257caa663a551ff2719e087f1aad8a8fe8e0"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-boundaries.json.gz",
+      "sha256": "ffc698f33728757ca61ef20d438617c0749e4ce8bb84fee2d8c3e2fd1340739e"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-boundaries-manifest.json",
+      "sha256": "67aa4ec06c0f1c61aa3f03160dd0b666199f352ea86e8947367f29ba2b6b9b04"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-sequences.json.gz",
+      "sha256": "84c6ddc5238c8862ddd5c9acb8e005c07cee4fccf857d561aa4f4f2da2935033"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter6-attacks-sequences-manifest.json",
+      "sha256": "e23ddf71b8acb1ada41f620190eb2668237e56e6076242f33b1c38a4ed5a3377"
+    }
+  ]
+}
