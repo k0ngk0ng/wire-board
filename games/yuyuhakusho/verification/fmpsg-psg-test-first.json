@@ -1,0 +1,9 @@
+{
+  "test_first": true,
+  "implementation_present": false,
+  "test_sha256": "e867347f7cb4fa566fe51f81a8b32f86ee27c978b1089b2a77b921cc77782334",
+  "fixture_sha256": "2b4ef75c4a5d97dd3861bfb6bb253a3f92bc2a2365b30d8f15b2814f91a56ab2",
+  "real_red": "games/yuyuhakusho/verification/fmpsg-psg-missing-red.jsonl",
+  "failures": "docs/research/md-yuyuhakusho/FMPSG_PSG_FAILURES.md",
+  "native_capture": "games/yuyuhakusho/verification/fmpsg-psg-native-verified.log"
+}

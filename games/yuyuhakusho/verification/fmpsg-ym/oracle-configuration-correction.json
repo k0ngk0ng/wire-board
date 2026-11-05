@@ -1,0 +1,4 @@
+{
+  "correction": "Direct CDLL load left optional per-channel volume config at zero. Original and hook raw output agreement was true but mute only; full FM PCM coverage invalid. Original fixture, first Go failure and old producer identity retained. Corrected capture will initialize libretro config through existing reference frontend and still call only raw YM test inputs; no gameplay frames.",
+  "pre_correction_producer_sha256": "1871094460a78025f4e62ff18507f86cf3932ec94c96173b7be11ee9e18e17f1"
+}

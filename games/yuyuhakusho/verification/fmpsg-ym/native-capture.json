@@ -1,0 +1,14 @@
+{
+  "scope": "Declared private raw YM ports and YM2612Update calls; original and hooked native library exactly equal; no CPU/game timing claim",
+  "cases": 29,
+  "steps": 416,
+  "stereo_samples": 616921,
+  "original_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+  "observed_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+  "producer_sha256": "e0a844190151342b41e340955f4d910ed32beabda708075beb8c0bed59b3ee40",
+  "gzip_sha256": "2efddfc294a7581dab70e2fb991b3ea0735d57392860c15b1e11f14dae586f4f",
+  "json_sha256": "a073bc7b20c53add34c2f8560b4f2ade41dc918c0d8b5c470aea4f3166688632",
+  "json_bytes": 9743238,
+  "host_context_pointers_discarded": true,
+  "pass": true
+}

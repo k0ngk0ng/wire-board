@@ -1,0 +1,65 @@
+{
+  "pass": true,
+  "scope": "Fixed integrated MD PSG individual edges and typed state; not independent score/cadence/world audio or full mixer",
+  "cases": 5,
+  "operation_checkpoints_per_runtime": 1616,
+  "nonzero_edges_per_runtime": 51139,
+  "native_stereo_frames": 36793,
+  "white_noise_complete_period_shifts": 57337,
+  "white_noise_observed_shifts": 74670,
+  "all_original_observer_buffers_pcm_and_states_equal": true,
+  "all_observed_edges_reinjected_native_buffers_pcm_equal": true,
+  "native_race_wasm_pass": true,
+  "vet_pass": true,
+  "top_level_tests_per_runtime": 3,
+  "native_scenarios_per_runtime": 5,
+  "fixture_sha256": "2b4ef75c4a5d97dd3861bfb6bb253a3f92bc2a2365b30d8f15b2814f91a56ab2",
+  "source_sha256": {
+    "docs/research/md-yuyuhakusho/FMPSG_PSG.md": "493b2bd2157f255867046c22de6d77c58d25611bb10a691a1574238ec3303b1a",
+    "docs/research/md-yuyuhakusho/FMPSG_PSG_FAILURES.md": "b5eb0c5af2768ab1fdb2fb8f99b88cf11174d0220ab333afc648ba5266e2f0b5",
+    "games/yuyuhakusho/audio/chips/psg/README.md": "f98f92c4a1c511e08b23c000d65514fc562cd9a52e98931ce742d68998569dce",
+    "games/yuyuhakusho/audio/chips/psg/psg.go": "b13590a9b3c4f04a45ea77ebf0938903550c889ab317b3ff8c877b95a71cb9ff",
+    "games/yuyuhakusho/audio/chips/psg/psg_test.go": "0c19b319cb0fc923a797366b6bb35425d019cda73ffeea93d86dc29e73ef1db4",
+    "games/yuyuhakusho/audio/chips/psg/testdata/native.json.gz": "2b4ef75c4a5d97dd3861bfb6bb253a3f92bc2a2365b30d8f15b2814f91a56ab2",
+    "scripts/yuyuhakusho/fmpsg_psg_capture.py": "cea9ec640768978121b56ca96c0c95fb5145c48d3ac1bc71e0dd72f8f089f061",
+    "scripts/yuyuhakusho/fmpsg_psg_verify.py": "340a5ac5c34ff0161f590b89035ff4f300742591125f28f44d884777f7586108"
+  },
+  "run_reports": {
+    "native": {
+      "path": "games/yuyuhakusho/verification/fmpsg-psg/native-command.json",
+      "sha256": "adcc5419d02c86df3f47b7a182f70f047e8ea1469eadd568e9416261259ae8e3"
+    },
+    "race": {
+      "path": "games/yuyuhakusho/verification/fmpsg-psg/race-command.json",
+      "sha256": "634155a9562102200a1d123bedba2b0051a7d61075fb303da390d49cc2b74acb"
+    },
+    "wasm": {
+      "path": "games/yuyuhakusho/verification/fmpsg-psg/wasm-command.json",
+      "sha256": "c327660647c798e1655df341cfdcd8bcbd621d1614232a733788292634d9ab97"
+    },
+    "vet": {
+      "path": "games/yuyuhakusho/verification/fmpsg-psg/vet-command.json",
+      "sha256": "0ef8d7b59d5a0e86e42db5790122b9bdca5891cec0d3918945921464d47c56bd"
+    }
+  },
+  "native_artifact_manifest_sha256": "f4ef9d65a61229fff3a74f862d25756174b36dc34c20e4897acaf72d2ec2fa36",
+  "test_first_record": "games/yuyuhakusho/verification/fmpsg-psg-test-first.json",
+  "limitations": [
+    "Only given original PSG byte timestamps are consumed; no independent world/score/bus clock generation",
+    "Native reference profile is not a universal real hardware equivalence claim",
+    "Full HQ FIR/FM mix and platform playback not wired by this package",
+    "Fixed 150% stereo profile; no other chip/model/gain/configuration promised"
+  ],
+  "cleanup": [
+    {
+      "path": ".local/md-yuyuhakusho/fmpsg-psg-native-first",
+      "bytes": 0,
+      "reason": "Empty directories from retained observer setup failures"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fmpsg-psg-native-final",
+      "bytes": 0,
+      "reason": "Empty directories from retained observer setup failures"
+    }
+  ]
+}

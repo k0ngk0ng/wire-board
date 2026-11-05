@@ -1,0 +1,37 @@
+{
+  "pass": true,
+  "mode": "wasm",
+  "command": [
+    "/opt/homebrew/bin/go",
+    "test",
+    "-json",
+    "-count=1",
+    "-exec",
+    "/opt/homebrew/Cellar/go/1.26.2/libexec/lib/wasm/go_js_wasm_exec",
+    "./games/yuyuhakusho/audio/chips/psg"
+  ],
+  "exit_code": 0,
+  "source_sha256": {
+    "games/yuyuhakusho/audio/chips/psg/psg.go": "b13590a9b3c4f04a45ea77ebf0938903550c889ab317b3ff8c877b95a71cb9ff",
+    "games/yuyuhakusho/audio/chips/psg/psg_test.go": "0c19b319cb0fc923a797366b6bb35425d019cda73ffeea93d86dc29e73ef1db4",
+    "games/yuyuhakusho/audio/chips/psg/testdata/native.json.gz": "2b4ef75c4a5d97dd3861bfb6bb253a3f92bc2a2365b30d8f15b2814f91a56ab2"
+  },
+  "environment": {
+    "HOME": "/Users/jason",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "LC_CTYPE": "C.UTF-8",
+    "PATH": "/opt/homebrew/bin:/Users/jason/.nvm/versions/node/v24.15.0/bin:/usr/bin:/bin",
+    "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+    "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+    "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+    "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "GOOS": "js",
+    "GOARCH": "wasm"
+  },
+  "log_sha256": "c6df03b0d59933ce3864d6da9a8259499decaf8bed01f328e4aa3f488b33ed9b",
+  "top_level_pass": 3,
+  "subtest_pass": 5,
+  "producer_sha256": "340a5ac5c34ff0161f590b89035ff4f300742591125f28f44d884777f7586108"
+}

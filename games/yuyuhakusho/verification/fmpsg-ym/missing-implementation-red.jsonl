@@ -1,0 +1,5 @@
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips","Action":"build-output","Output":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips: no non-test Go files in /Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/games/yuyuhakusho/audio/chips\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips","Action":"build-fail"}
+{"Time":"2026-11-06T00:34:32.875541+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips"}
+{"Time":"2026-11-06T00:34:32.875593+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips [build failed]\n"}
+{"Time":"2026-11-06T00:34:32.8756+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips","Elapsed":0,"FailedBuild":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips"}

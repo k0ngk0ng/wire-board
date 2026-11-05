@@ -1,0 +1,8 @@
+{"Time":"2026-11-06T00:42:31.999348+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips"}
+{"Time":"2026-11-06T00:42:32.50969+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips","Test":"TestSharedStepKernelIsValueCopy"}
+{"Time":"2026-11-06T00:42:32.509748+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips","Test":"TestSharedStepKernelIsValueCopy","Output":"=== RUN   TestSharedStepKernelIsValueCopy\n"}
+{"Time":"2026-11-06T00:42:32.509764+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips","Test":"TestSharedStepKernelIsValueCopy","Output":"--- PASS: TestSharedStepKernelIsValueCopy (0.00s)\n"}
+{"Time":"2026-11-06T00:42:32.509768+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips","Test":"TestSharedStepKernelIsValueCopy","Elapsed":0}
+{"Time":"2026-11-06T00:42:32.509778+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips","Output":"PASS\n"}
+{"Time":"2026-11-06T00:42:32.510012+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips\t0.510s\n"}
+{"Time":"2026-11-06T00:42:32.510022+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips","Elapsed":0.511}

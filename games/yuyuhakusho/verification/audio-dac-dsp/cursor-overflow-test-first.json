@@ -1,0 +1,8 @@
+{
+  "frozen_at_utc": "2026-11-05T15:06:26.216171+00:00",
+  "scope": "Committed rawinput cursor origin overflow regression before validation fix",
+  "test_path": "games/yuyuhakusho/audio/dsp/overflow_test.go",
+  "test_sha256": "764f6cf8d0f18d56a02a04a77aa79def7247a5b737a26302cc775232a7b5f122",
+  "actual_red": "games/yuyuhakusho/verification/audio-dac-dsp/cursor-overflow-red.jsonl",
+  "original_native_tests_unchanged": true
+}

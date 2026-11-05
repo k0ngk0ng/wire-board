@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/inspect_dac_dsp_state.py", line 56, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/inspect_dac_dsp_state.py", line 54, in main
+    checkpoint=quiet_checkpoint(ref);ref.restore(checkpoint,restore_refresh_cycles=True);record=snapshot(ref,lookup);record.update(identity=ref.identity,pass_=True,scope='Read-only runtime configuration and explicit normalized quiescentDAC DSP initial state, no production host pointers');record['pass']=record.pop('pass_')
+                                                                                                ~~~~~~~~^^^^^^^^^^^^
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/inspect_dac_dsp_state.py", line 39, in snapshot
+    context=C.create_string_buffer(65536);size=ref.api('YM2612SaveContext',C.c_int,C.c_void_p)(context);assert size==C.sizeof(YM)+24,(size,C.sizeof(YM))
+                                                                                                               ^^^^^^^^^^^^^^^^^^^^^
+AssertionError: (3624, 3576)

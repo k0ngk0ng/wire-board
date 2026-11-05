@@ -1,0 +1,199 @@
+{
+  "pass": true,
+  "verified_at_utc": "2026-11-05T15:27:35.637185+00:00",
+  "scope": "PureGoDAC-only fixed reference-frame discreteYM2612 HQ44100 waveform renderer from given typedinputframes",
+  "dac_only_dsp_from_given_inputs_complete": true,
+  "independent_audio_event_timing_complete": false,
+  "full_fm_psg_synthesis_complete": false,
+  "world_audio_integrated": false,
+  "platform_audio_integration_complete": false,
+  "release_ready": false,
+  "profile": {
+    "name": "ReferenceFrameDiscreteHQ44100",
+    "profile_id": 1,
+    "native_chip_enum": 0,
+    "native_filter": 0,
+    "hq_fm": 1,
+    "fm_preamp": 100,
+    "sample_rate": 44100,
+    "mono": 0,
+    "chip_master_period": 1008,
+    "frame_master_cycles": 896040,
+    "pending_event_cap": 4096,
+    "raw_input_ahead_cap": 1008,
+    "raw_timestamps_modified": false
+  },
+  "test_first": {
+    "record": "games/yuyuhakusho/verification/audio-dac-dsp/test-first.json",
+    "sha256": "c5112d8ab2ed1ac037985d5e4622d4419a229c858df96151a9fb054b00a08dfb",
+    "original_frozen_sources_unchanged": true,
+    "review_regression": {
+      "record": "games/yuyuhakusho/verification/audio-dac-dsp/cursor-overflow-test-first.json",
+      "sha256": "db8be34d707da54e0d32038e011eb2a4d43fbbd151b50ec738d10fdaf5c6fe36",
+      "frozen_test_unchanged": true
+    },
+    "actual_reds": [
+      {
+        "path": "games/yuyuhakusho/verification/audio-dac-dsp/go-symbol-red.jsonl",
+        "sha256": "d2453fec8f5ad639554cf04da55d13cfbd8a77aa3925e593ffb6ab014c846d6c"
+      },
+      {
+        "path": "games/yuyuhakusho/verification/audio-dac-dsp/prototype-first.log",
+        "sha256": "c6a4dc83fdace193c9eae7f64bcc27172781f2520cf09d7202c79415d406f0fa"
+      },
+      {
+        "path": "games/yuyuhakusho/verification/audio-dac-dsp/global-timestamp-prototype-red.json",
+        "sha256": "2eeaae86a4ad4ede89244ae4853ec1fe2a61a1a99190a4258e07fafb0629d6fa"
+      },
+      {
+        "path": "games/yuyuhakusho/verification/audio-dac-dsp/inspector-v1-red.log",
+        "sha256": "ac014fe7529888c9eac933783aa30a8f452c219f82c39de3027e09b3c5834817"
+      },
+      {
+        "path": "games/yuyuhakusho/verification/audio-dac-dsp/cursor-overflow-red.jsonl",
+        "sha256": "2a34375bbebe6cf176f95c87e74f683055404dbe8f18d8f6b4d29cefa97b4a97"
+      }
+    ]
+  },
+  "tests": {
+    "native": {
+      "pass": true,
+      "path": "games/yuyuhakusho/verification/audio-dac-dsp/native.jsonl",
+      "sha256": "d67f7c0cfc9cdc85ca5a8a87339460032ff71b25e1688dc7db2f4e4a69006090",
+      "top_level_tests": [
+        "TestNativeFramePCMAndCanonicalState",
+        "TestHalfFrameQueueSnapshotAndRestore",
+        "TestSameCycleInputOrderIsNotSortedOrDropped",
+        "TestDerivedPhaseAndNoDuplicateOwners",
+        "TestInvalidProfileStateEventAndOverflowAreAtomic",
+        "TestCommittedRawInputCursorCannotOverflowOrigin"
+      ],
+      "elapsed_seconds": 5.299
+    },
+    "wasm": {
+      "pass": true,
+      "path": "games/yuyuhakusho/verification/audio-dac-dsp/wasm.jsonl",
+      "sha256": "315495f3715b3ffd1b2c643dc5f2e8d40aef92cd786913387dc479c7eff231f3",
+      "top_level_tests": [
+        "TestNativeFramePCMAndCanonicalState",
+        "TestHalfFrameQueueSnapshotAndRestore",
+        "TestSameCycleInputOrderIsNotSortedOrDropped",
+        "TestDerivedPhaseAndNoDuplicateOwners",
+        "TestInvalidProfileStateEventAndOverflowAreAtomic",
+        "TestCommittedRawInputCursorCannotOverflowOrigin"
+      ],
+      "elapsed_seconds": 1.113
+    }
+  },
+  "vet": {
+    "pass": true,
+    "path": "games/yuyuhakusho/verification/audio-dac-dsp/vet.txt",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "coverage": {
+    "native_original_observed_cases": 9,
+    "private_native_audio_frames_per_core": 441,
+    "stereo_frames": 324556,
+    "interleaved_pcm16_values": 649112,
+    "actual_cpu_dac_source_cases_replayed": 4,
+    "actual_cpu_source_stereo_frames": 309100,
+    "native_pcm_sample_mismatches": 0,
+    "native_typed_state_mismatches": 0,
+    "raw_global_time_initial_long_case_mismatch_values": 2686,
+    "raw_global_time_initial_maximum_error": 1266,
+    "explicit_reference_frame_final_mismatch_values": 0,
+    "fir_numeric_coefficients": 264
+  },
+  "native_contract": "Queue raw typedwrites in referenceframe membership order, advancebefore write, flush chipTick<end, discard lookahead while retaining latestregister and InputAhead. Samecycle order retained. This is the observedreferencecore contract, not a physicalhardware claim.",
+  "artifacts": [
+    {
+      "path": "games/yuyuhakusho/verification/audio-dac-dsp/runtime-config.json",
+      "sha256": "a80e2575f18fc027c5ac453531b54400a9511dc82cdd4a836146cab7010d5a97"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-dac-dsp/frame-flush-probe.json",
+      "sha256": "cf9e5e14d0631270f2ac897c77049aa67aef2683666556bf2da7b04c601ce52e"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-dac-dsp/global-timestamp-prototype-red.json",
+      "sha256": "2eeaae86a4ad4ede89244ae4853ec1fe2a61a1a99190a4258e07fafb0629d6fa"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-dac-dsp/reference-frame-prototype.json",
+      "sha256": "b5b798fafbef99af9030c1c900ef95b20ed4647df13c5a49d7378122f743e901"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-dac-dsp/native-oracle-capture.json",
+      "sha256": "e93609cc6692745bc59db86fdbc03d99eefcfe5900d26cc8233c41a94658b528"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-dac-dsp/determinism.json",
+      "sha256": "4bc88a5c875fc39aa06ef2f629697cb6868a8ac031510bc8954e171f156ddc4b"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-dac-dsp/cleanup.json",
+      "sha256": "dc98ce69c32b95cff7b0aa0a309860134c0d83997083a22af323a3e46eb20eef"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-dac-dsp/inspector-lineage.json",
+      "sha256": "bf524680fca778157fda10e5aef038988272a4a112a2c9b3d2e517b2b353759e"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-dac-dsp/cursor-overflow-test-first.json",
+      "sha256": "db8be34d707da54e0d32038e011eb2a4d43fbbd151b50ec738d10fdaf5c6fe36"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-dac-dsp/wasm-command.json",
+      "sha256": "50f2ace53ce59b0a17a5dc3ba59a7eb38e8941331a5439992af6dbe5000044fe"
+    }
+  ],
+  "source_sha256": {
+    "games/yuyuhakusho/audio/dsp/dsp.go": "9b15ee92fc61bd9265052944f86ce6140782176700cca9a5b93adf0edb47aced",
+    "games/yuyuhakusho/audio/dsp/kernel.go": "bdf6c8423864f8ed991c95b5d7e615bf74b05d53b3708b15e2556e96a6e184c1",
+    "games/yuyuhakusho/audio/dsp/dsp_test.go": "226c6227033d4ba27411c8f671eaa65dc65683e22f6d67354414785e8261fada",
+    "games/yuyuhakusho/audio/dsp/overflow_test.go": "764f6cf8d0f18d56a02a04a77aa79def7247a5b737a26302cc775232a7b5f122",
+    "games/yuyuhakusho/audio/dsp/README.md": "825c457e56192137f06ab8dfeec75a3f3fb30afd19bb826afeb0425c832fe539",
+    "games/yuyuhakusho/audio/dsp/KERNEL_SOURCE.md": "1acdce5137fd136e1425a1eb7c68a33fcc71f2cfc6871d659874e3add0ce7a97",
+    "games/yuyuhakusho/audio/dsp/testdata/native-frames.json.gz": "174ad8f7245cb532120503f72c41b2942859c84b6b446febeb2b9a7ed4c0707a",
+    "games/yuyuhakusho/audio/dsp/testdata/native-frames-manifest.json": "39498621054cd4df6dd245a27f46a2f19c9b115e9f5e039c9ba4c2042b623b2c",
+    "docs/research/md-yuyuhakusho/AUDIO_DAC_DSP.md": "b7f32a3de8fb8d8d4230fac806225262c404a55d2b82d671d6165c37057ea4c1",
+    "docs/research/md-yuyuhakusho/AUDIO_DAC_DSP_FAILURES.md": "aa00480d505f957b53a484a431702f77bb3b7f7dd1a64f2f35e50d11d8c3d6b9",
+    "scripts/yuyuhakusho/inspect_dac_dsp_state.py": "008576cb72b0ef5feab4e566dda23e9d2841a6340a66c93a4ba04de07284d82f",
+    "scripts/yuyuhakusho/probe_dac_frame_flush.py": "a70105841cd1a621d21dce880e4f6f882a95eca689ec139e64ab266920a221c7",
+    "scripts/yuyuhakusho/prototype_dac_dsp.py": "14b1a0252153965640f0c17d8769ebcaa6f94718543a1897206ef77d81c5b2b0",
+    "scripts/yuyuhakusho/prototype_dac_frame_dsp.py": "755364d6379a89a58ced263f3ed4615f424e02bc03cc9a1cc376680a3d450c6b",
+    "scripts/yuyuhakusho/capture_dac_dsp_boundaries.py": "3ea25b9e11986680e234535ceb47ca979c581e8f4aadc90814620b56a1ee8b48",
+    "scripts/yuyuhakusho/export_dac_dsp_evidence.py": "cf339623383cb6d032c1a981c6b9bb6f1d31d600857d9c1bda953f9b7fff59be",
+    "scripts/yuyuhakusho/reference.py": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "scripts/yuyuhakusho/extract_audio_assets.py": "e8a59cb97a15b02d930b2335175eca9fb17600a778ce93d779449cdac3775f56",
+    "scripts/yuyuhakusho/research_audio_loops.py": "854c259284e11c59a21be9560f0beca26f15ffebe132d18d64dce6fbed5e22f4"
+  },
+  "protected_sources_sha256": {
+    "games/yuyuhakusho/audio/pcm/pcm.go": "bc4dbea82a591c5ddce897e927500ec231c537895015dc39bee06c957a3bda90",
+    "games/yuyuhakusho/engine/sound_pcm_arbitration.go": "ace412910e7c9cc3baf59a8602d65d5e500b0837fae6a2eda02818954f9e540a",
+    "games/yuyuhakusho/engine/sound_scheduler.go": "0876d32403872b95e38b094e23c7167d8f5b7bf97e10ccec366a6ee026f6fb7a",
+    "games/yuyuhakusho/data/audio-assets.json": "617737f8ef07043401fa74f7f48ba551a64dd91cedd3a94dbfcf4883e0ff1541",
+    "games/yuyuhakusho/engine/chu_world.go": "0b3078671394ff314881417ed07de23eaf423d44ae65af31086bda5ee89f15c3",
+    "games/yuyuhakusho/engine/chu_session.go": "61132bc4125ed99b3dc4ee6c04bd3002438d350e49f3287c45476e8603dd67b0"
+  },
+  "limits": [
+    "Caller must independently generate event time/command/player state; production reads no oraclePC/time trace",
+    "OnlyDAC-only fixedactualprofile is implemented; LP39321 is inactive and not used for fitting",
+    "ReferenceFM frameflusher discards generatedlookahead; this is not asserted physicalYM hardware behavior",
+    "DAC-only level is memoryless; fullFM must retain oscillator/envelope advancement from discardedlookahead",
+    "Rawinput ahead1008 is the declared testedmodelresource contract, not claimed maximalnativeCPU/hardware overrun",
+    "Native scalarinitialstate and everyframe normalizedsnapshot are copied as data only, with no host pointers/corecontext/CPU/RAM VM",
+    "NumericFIR coefficient profile attribution retained in KERNEL_SOURCE.md; no emulator/core implementation is vendored",
+    "No originalPCM media, PCM math, queue/scheduler/arbitration/world/stream or externalconfiguration modified by this scope"
+  ],
+  "resource_arithmetic_proof": {
+    "rate_factor": 3698956963656,
+    "factor_formula": "ceil(2^52*44100/53693175) using exact constant arithmetic",
+    "maximum_one_frame_fixed_product": "3318916997341692735",
+    "uint64_max": "18446744073709551615",
+    "one_frame_product_fits_uint64": true,
+    "maximum_convolution_fixed32": 772744719,
+    "fixed32_does_not_truncate_position": true,
+    "offset_high_product_discard_proof": "Only residue modulo2^52 is used. Since2^52 divides2^64, bits.Mul64/Add64 low word followed bymask is exact, including absoluteorigins whose full product exceeds64bits."
+  }
+}

@@ -1,0 +1,264 @@
+{
+  "pass": true,
+  "scope": "Private direct nativefm_write and audio_update scalarDSP inputs; no CPU/game/cadence reachability claim",
+  "identity": {
+    "original": {
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+      "core_name": "Genesis Plus GX",
+      "core_version": "v1.7.4 60bee4c",
+      "fps": 59.92274340431231,
+      "ram_bytes": 65536,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "teamplayer": false
+    },
+    "observed": {
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+      "core_name": "Genesis Plus GX",
+      "core_version": "v1.7.460bee4c",
+      "fps": 59.92274340431231,
+      "ram_bytes": 65536,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "teamplayer": false
+    }
+  },
+  "cases": [
+    {
+      "name": "silence",
+      "frames": 2,
+      "stereo_frames": 1472,
+      "pcm_sha256": "2cc2784c0ddcd0769b915ab468a65b378a10302cf058230ac75c9735750559d8",
+      "all_original_observed_equal": true,
+      "artifacts": [
+        {
+          "path": ".local/md-yuyuhakusho/audio-dac-dsp-native-oracle/silence-observed.json.gz",
+          "sha256": "e48add840a7ec9eddee7329cde620f6639e19588862196f7c7fb4b0d54a4f20d"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-dac-dsp-native-oracle/silence-observed.wav",
+          "sha256": "2f186613cf8ed98372e8ddbd9caede44f4c530a03a53892d584cf072dfbdbea6"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-dac-dsp-native-oracle/silence-original.json.gz",
+          "sha256": "e48add840a7ec9eddee7329cde620f6639e19588862196f7c7fb4b0d54a4f20d"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-dac-dsp-native-oracle/silence-original.wav",
+          "sha256": "2f186613cf8ed98372e8ddbd9caede44f4c530a03a53892d584cf072dfbdbea6"
+        }
+      ]
+    },
+    {
+      "name": "same-cycle",
+      "frames": 4,
+      "stereo_frames": 2944,
+      "pcm_sha256": "656bb23be23a633100da50c5d196eb9cb51d9af5b2cf92624ef414ec18e3fdaa",
+      "all_original_observed_equal": true,
+      "artifacts": [
+        {
+          "path": ".local/md-yuyuhakusho/audio-dac-dsp-native-oracle/same-cycle-observed.json.gz",
+          "sha256": "9fda0cc28a68ef7af934ab9c6908ab2076d13390a5dcd20b8fa28e818ea4bf9c"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-dac-dsp-native-oracle/same-cycle-observed.wav",
+          "sha256": "f1e1f0e03b47096eabb8e658d601556159ad1a2b890524c63a69bdb350925076"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-dac-dsp-native-oracle/same-cycle-original.json.gz",
+          "sha256": "9fda0cc28a68ef7af934ab9c6908ab2076d13390a5dcd20b8fa28e818ea4bf9c"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-dac-dsp-native-oracle/same-cycle-original.wav",
+          "sha256": "f1e1f0e03b47096eabb8e658d601556159ad1a2b890524c63a69bdb350925076"
+        }
+      ]
+    },
+    {
+      "name": "pan-sign",
+      "frames": 6,
+      "stereo_frames": 4416,
+      "pcm_sha256": "53910567a1b9e33753ad390fa312e2c91e53fcbf81840a8388114147143180ae",
+      "all_original_observed_equal": true,
+      "artifacts": [
+        {
+          "path": ".local/md-yuyuhakusho/audio-dac-dsp-native-oracle/pan-sign-observed.json.gz",
+          "sha256": "345a6b723aa553715c88b66a4e12760636e2e3c2b053a1777d8bba7af314095a"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-dac-dsp-native-oracle/pan-sign-observed.wav",
+          "sha256": "777001189852bd532608e22037ebc3b3b91a57bab87d7c3734dff61ba2c8f19c"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-dac-dsp-native-oracle/pan-sign-original.json.gz",
+          "sha256": "345a6b723aa553715c88b66a4e12760636e2e3c2b053a1777d8bba7af314095a"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-dac-dsp-native-oracle/pan-sign-original.wav",
+          "sha256": "777001189852bd532608e22037ebc3b3b91a57bab87d7c3734dff61ba2c8f19c"
+        }
+      ]
+    },
+    {
+      "name": "ahead-boundary",
+      "frames": 4,
+      "stereo_frames": 2944,
+      "pcm_sha256": "c5953967f44d3820cde209a0feed8e13742b228fef9f51fd743d2aadcf4482a6",
+      "all_original_observed_equal": true,
+      "artifacts": [
+        {
+          "path": ".local/md-yuyuhakusho/audio-dac-dsp-native-oracle/ahead-boundary-observed.json.gz",
+          "sha256": "c96dd4189d40e88f21af3aa19535b6a8935ccc88c64070d0d69b66ed161b5c43"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-dac-dsp-native-oracle/ahead-boundary-observed.wav",
+          "sha256": "805be8a29a118338616624adc23494d108bd4af7bf6dba65d1b946aed62c23ea"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-dac-dsp-native-oracle/ahead-boundary-original.json.gz",
+          "sha256": "c96dd4189d40e88f21af3aa19535b6a8935ccc88c64070d0d69b66ed161b5c43"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-dac-dsp-native-oracle/ahead-boundary-original.wav",
+          "sha256": "805be8a29a118338616624adc23494d108bd4af7bf6dba65d1b946aed62c23ea"
+        }
+      ]
+    },
+    {
+      "name": "data-sweep",
+      "frames": 5,
+      "stereo_frames": 3680,
+      "pcm_sha256": "7a26e1c3ea9337c26b50885f86b3b59d72f79afbf9060aa7f6dd0cb3579e7b47",
+      "all_original_observed_equal": true,
+      "artifacts": [
+        {
+          "path": ".local/md-yuyuhakusho/audio-dac-dsp-native-oracle/data-sweep-observed.json.gz",
+          "sha256": "6134b64a893052c65468695506a90c33dd1fb201c794582f4e971750494917a7"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-dac-dsp-native-oracle/data-sweep-observed.wav",
+          "sha256": "f1c0b085364a446c24f6acb0d9aa3fd5ba0ec0ad2bb8fe327651bb8f6257f527"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-dac-dsp-native-oracle/data-sweep-original.json.gz",
+          "sha256": "6134b64a893052c65468695506a90c33dd1fb201c794582f4e971750494917a7"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-dac-dsp-native-oracle/data-sweep-original.wav",
+          "sha256": "f1c0b085364a446c24f6acb0d9aa3fd5ba0ec0ad2bb8fe327651bb8f6257f527"
+        }
+      ]
+    },
+    {
+      "name": "source-single-short",
+      "frames": 80,
+      "stereo_frames": 58876,
+      "pcm_sha256": "23e57f95a5f9f2dca77f3288b481a68c1f793e472d9fb3d0e4484fbf78c5667a",
+      "all_original_observed_equal": true,
+      "artifacts": [
+        {
+          "path": ".local/md-yuyuhakusho/audio-dac-dsp-native-oracle/source-single-short-observed.json.gz",
+          "sha256": "02f981506ffef2d2f6e29008ae761d8f683e3fa7555876b31cce670b55ca990a"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-dac-dsp-native-oracle/source-single-short-observed.wav",
+          "sha256": "d1f1f229569c1357c3ed16bd2cf51a93a7b70f3aaa3794710b1dab3a51e93a37"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-dac-dsp-native-oracle/source-single-short-original.json.gz",
+          "sha256": "02f981506ffef2d2f6e29008ae761d8f683e3fa7555876b31cce670b55ca990a"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-dac-dsp-native-oracle/source-single-short-original.wav",
+          "sha256": "d1f1f229569c1357c3ed16bd2cf51a93a7b70f3aaa3794710b1dab3a51e93a37"
+        }
+      ]
+    },
+    {
+      "name": "source-pair-short",
+      "frames": 90,
+      "stereo_frames": 66236,
+      "pcm_sha256": "9a1c199d3314edee1853bc8a7261000ece90b065bba79dcc608364356ef464ff",
+      "all_original_observed_equal": true,
+      "artifacts": [
+        {
+          "path": ".local/md-yuyuhakusho/audio-dac-dsp-native-oracle/source-pair-short-observed.json.gz",
+          "sha256": "eaa05dbc89e9fa68a7264028580185a7d1ebbb52a9eb60e72e9f8e3cb72ec087"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-dac-dsp-native-oracle/source-pair-short-observed.wav",
+          "sha256": "f0053228300a0c10a3de016a1ceccf820693c6d295cfd8954897d2a00110ca6a"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-dac-dsp-native-oracle/source-pair-short-original.json.gz",
+          "sha256": "eaa05dbc89e9fa68a7264028580185a7d1ebbb52a9eb60e72e9f8e3cb72ec087"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-dac-dsp-native-oracle/source-pair-short-original.wav",
+          "sha256": "f0053228300a0c10a3de016a1ceccf820693c6d295cfd8954897d2a00110ca6a"
+        }
+      ]
+    },
+    {
+      "name": "source-single-mode",
+      "frames": 90,
+      "stereo_frames": 66236,
+      "pcm_sha256": "8dc6cc348ee50f251de31e5f6ea7273b465b64663d7ebdd2c0591db5c32af46b",
+      "all_original_observed_equal": true,
+      "artifacts": [
+        {
+          "path": ".local/md-yuyuhakusho/audio-dac-dsp-native-oracle/source-single-mode-observed.json.gz",
+          "sha256": "8e74f734cb0f702b5154e554bcc2dc2904747727e5d92d30c361bb5afb2d16b5"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-dac-dsp-native-oracle/source-single-mode-observed.wav",
+          "sha256": "df2831d6050fede465e35131e9f5ef21dcea4c9fd440986a96a5e393755375bb"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-dac-dsp-native-oracle/source-single-mode-original.json.gz",
+          "sha256": "8e74f734cb0f702b5154e554bcc2dc2904747727e5d92d30c361bb5afb2d16b5"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-dac-dsp-native-oracle/source-single-mode-original.wav",
+          "sha256": "df2831d6050fede465e35131e9f5ef21dcea4c9fd440986a96a5e393755375bb"
+        }
+      ]
+    },
+    {
+      "name": "source-pair-long",
+      "frames": 160,
+      "stereo_frames": 117752,
+      "pcm_sha256": "ab4eef0d8b8bf0939808727b3c65a2cd7867503f4564ec1e607aacf84825c914",
+      "all_original_observed_equal": true,
+      "artifacts": [
+        {
+          "path": ".local/md-yuyuhakusho/audio-dac-dsp-native-oracle/source-pair-long-observed.json.gz",
+          "sha256": "342d8903fb227f18ad426183ea1195d155f943e4ebe7c6792ad6bb73f5185214"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-dac-dsp-native-oracle/source-pair-long-observed.wav",
+          "sha256": "6c258c4b526206a6ba77603176e40a55596d24104a82465003d159f87a1d7583"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-dac-dsp-native-oracle/source-pair-long-original.json.gz",
+          "sha256": "342d8903fb227f18ad426183ea1195d155f943e4ebe7c6792ad6bb73f5185214"
+        },
+        {
+          "path": ".local/md-yuyuhakusho/audio-dac-dsp-native-oracle/source-pair-long-original.wav",
+          "sha256": "6c258c4b526206a6ba77603176e40a55596d24104a82465003d159f87a1d7583"
+        }
+      ]
+    }
+  ],
+  "prior_cpu_dac_source_pcm_match_cases": 4,
+  "max_declared_ahead_master_cycles": 1008,
+  "same_cycle_order_preserved": true,
+  "no_raw_event_times_modified": true,
+  "producer_sha256": "3ea25b9e11986680e234535ceb47ca979c581e8f4aadc90814620b56a1ee8b48",
+  "initial_inspector_sha256": "008576cb72b0ef5feab4e566dda23e9d2841a6340a66c93a4ba04de07284d82f",
+  "limits": [
+    "This explicitly drives audio-onlyframe boundaries and leaves guestRAM/video unchanged; it is not a new gameplay originalcontrol",
+    "1008 is a bounded tested DSP input contract, not a claim of maximum realhardware/nativeCPU instruction overrun",
+    "Raw writes at end and beyond end retain their original values; referenceframe flush discards lookahead as observed"
+  ]
+}

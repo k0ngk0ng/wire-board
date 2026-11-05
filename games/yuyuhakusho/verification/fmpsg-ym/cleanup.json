@@ -1,0 +1,22 @@
+{
+  "pass": true,
+  "scope": "Only owned duplicate recaptures and empty native frontend directories; frozen oracle, genuine red, and shared Go caches kept",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/fmpsg-review",
+      "files": 4,
+      "bytes": 1895413
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fmpsg-ym-capture",
+      "files": 0,
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fmpsg-mixed-native",
+      "files": 0,
+      "bytes": 0
+    }
+  ],
+  "bytes": 1895413
+}

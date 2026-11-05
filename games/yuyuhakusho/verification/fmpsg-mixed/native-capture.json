@@ -1,0 +1,14 @@
+{
+  "scope": "Declared private FM/PSG/DAC/status inputs and complete original native mixed audio_update boundary; no original CPU/game event timing claim",
+  "cases": 5,
+  "frames": 192,
+  "stereo_frames": 141304,
+  "original_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+  "observed_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+  "producer_sha256": "2cad5d41c6384674a0adfa8b8053b6ac9d549f3c113664d0bcc0c9d43d9d44f5",
+  "json_bytes": 2750557,
+  "json_sha256": "2d91f5fc11fec76869ec13fdde732a0ae42bf0a41a2c55b032a2465ea971c950",
+  "gzip_bytes": 733726,
+  "gzip_sha256": "a603ceca091bf87165cf9109682fa1697ebfd54a48074b44684f6bfcb5ceba94",
+  "pass": true
+}

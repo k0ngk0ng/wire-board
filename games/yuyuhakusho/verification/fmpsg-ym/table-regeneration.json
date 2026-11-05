@@ -1,0 +1,6 @@
+{
+  "pass": true,
+  "same_bytes_after_equation_regeneration_and_gofmt": true,
+  "table_sha256": "d9a1b020866cdf687790b3013a3bca72ecead5fcceadb1654acda4d78438344a",
+  "generator_sha256": "e75f8c10c92d62b585488f6c3eec614ffef9e0518ee80212ce84d66985884c1d"
+}
