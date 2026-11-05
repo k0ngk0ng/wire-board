@@ -1,0 +1,164 @@
+{
+  "pass": true,
+  "scope": "Declared private initialized native player; no world/68k run and no external bus holds; not normal gameplay reachability",
+  "identities": {
+    "original": {
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+      "core_name": "Genesis Plus GX",
+      "core_version": "v1.7.4 60bee4c",
+      "fps": 59.92274340431231,
+      "ram_bytes": 65536,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "teamplayer": false
+    },
+    "observed": {
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+      "core_name": "Genesis Plus GX",
+      "core_version": "v1.7.460bee4c",
+      "fps": 59.92274340431231,
+      "ram_bytes": 65536,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "teamplayer": false
+    }
+  },
+  "audible_dac_initialized": true,
+  "producer_sha256": "8ed416b0510f695d6e32f12f49a697395c86769e0499cf35aebada1d577146e0",
+  "bridge_sha256": "a7d988c0a6e14e68c8ac123afe6a969bd4a97072d524bf65ebf21ce80bb1ed0e",
+  "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+  "cases": [
+    {
+      "name": "dual-a",
+      "frames": 42,
+      "events": 23278,
+      "dac_events": 5211,
+      "bank_reads": 2572,
+      "final_busy": false,
+      "pass": true,
+      "path": ".local/md-yuyuhakusho/pcm-player-native-audible-repeat/dual-a.json.gz",
+      "sha256": "fcc6fe6a76596dcefd3f10d92007e6fe0fec6382c61e6cca56dcce3b7360a3bc"
+    },
+    {
+      "name": "dual-b",
+      "frames": 20,
+      "events": 9822,
+      "dac_events": 2221,
+      "bank_reads": 1076,
+      "final_busy": false,
+      "pass": true,
+      "path": ".local/md-yuyuhakusho/pcm-player-native-audible-repeat/dual-b.json.gz",
+      "sha256": "2ea4b2bfb2b7282a1232a711185604a0cc5488a805f72779d90fde516b9193e0"
+    },
+    {
+      "name": "dual-pair",
+      "frames": 115,
+      "events": 102347,
+      "dac_events": 14903,
+      "bank_reads": 14508,
+      "final_busy": false,
+      "pass": true,
+      "path": ".local/md-yuyuhakusho/pcm-player-native-audible-repeat/dual-pair.json.gz",
+      "sha256": "82600fd6ca227889c77c277eb6ef96006e67fb4b9fb65cdd9ab7c5455e27384c"
+    },
+    {
+      "name": "dual-odd-tail",
+      "frames": 6,
+      "events": 3151,
+      "dac_events": 591,
+      "bank_reads": 396,
+      "final_busy": false,
+      "pass": true,
+      "path": ".local/md-yuyuhakusho/pcm-player-native-audible-repeat/dual-odd-tail.json.gz",
+      "sha256": "158a4cbea3f18e069c6f7fbf7c52542dbeda201875ff1b96fc8083b8e87ef22c"
+    },
+    {
+      "name": "single-native",
+      "frames": 60,
+      "events": 50431,
+      "dac_events": 15576,
+      "bank_reads": 11488,
+      "final_busy": false,
+      "pass": true,
+      "path": ".local/md-yuyuhakusho/pcm-player-native-audible-repeat/single-native.json.gz",
+      "sha256": "40ee65b37a04416d9731499a15063dee4cc383d32a0a6981c8a1cd72e54ccb38"
+    },
+    {
+      "name": "single-tail129",
+      "frames": 3,
+      "events": 650,
+      "dac_events": 258,
+      "bank_reads": 2,
+      "final_busy": false,
+      "pass": true,
+      "path": ".local/md-yuyuhakusho/pcm-player-native-audible-repeat/single-tail129.json.gz",
+      "sha256": "622950d8e51de9fbcb554b607b33737a5b7530c0f62936d036f045894a493f27"
+    },
+    {
+      "name": "single-tail257",
+      "frames": 4,
+      "events": 1481,
+      "dac_events": 514,
+      "bank_reads": 193,
+      "final_busy": false,
+      "pass": true,
+      "path": ".local/md-yuyuhakusho/pcm-player-native-audible-repeat/single-tail257.json.gz",
+      "sha256": "3a49e5f06fb37bda2bc15432dc66f8614125ed5b4fa628918433d642ee3c231d"
+    },
+    {
+      "name": "dual-min69",
+      "frames": 4,
+      "events": 774,
+      "dac_events": 211,
+      "bank_reads": 72,
+      "final_busy": false,
+      "pass": true,
+      "path": ".local/md-yuyuhakusho/pcm-player-native-audible-repeat/dual-min69.json.gz",
+      "sha256": "c2da6ab0ea6b2c1cf4c263d2be40033833b54042a3296567aa0a0198290f24a9"
+    },
+    {
+      "name": "single-rate000",
+      "frames": 20,
+      "events": 650,
+      "dac_events": 258,
+      "bank_reads": 2,
+      "final_busy": false,
+      "pass": true,
+      "path": ".local/md-yuyuhakusho/pcm-player-native-audible-repeat/single-rate000.json.gz",
+      "sha256": "e085470308fdd4580f3f77c347701da50265a41d4ecf1b3fe5a510b01c1e8757"
+    },
+    {
+      "name": "single-rate001",
+      "frames": 4,
+      "events": 650,
+      "dac_events": 258,
+      "bank_reads": 2,
+      "final_busy": false,
+      "pass": true,
+      "path": ".local/md-yuyuhakusho/pcm-player-native-audible-repeat/single-rate001.json.gz",
+      "sha256": "3345095e2d43b775724a92afb00ecc051cbbe180840c40cb4601a2351fe060b9"
+    },
+    {
+      "name": "single-rate020",
+      "frames": 4,
+      "events": 650,
+      "dac_events": 258,
+      "bank_reads": 2,
+      "final_busy": false,
+      "pass": true,
+      "path": ".local/md-yuyuhakusho/pcm-player-native-audible-repeat/single-rate020.json.gz",
+      "sha256": "5bc7e0ce955daeca5cd9d7f6a82e2ab1b0b15402d4f214211dbb26a3f82befa2"
+    },
+    {
+      "name": "single-rate255",
+      "frames": 20,
+      "events": 650,
+      "dac_events": 258,
+      "bank_reads": 2,
+      "final_busy": false,
+      "pass": true,
+      "path": ".local/md-yuyuhakusho/pcm-player-native-audible-repeat/single-rate255.json.gz",
+      "sha256": "7c3bc85f3254ac3cb9823fa788426afa60b16e4dccb777f748ef13fed30ed38a"
+    }
+  ]
+}

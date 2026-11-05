@@ -1,0 +1,26 @@
+{
+  "command": [
+    "/opt/homebrew/bin/go",
+    "test",
+    "-exec",
+    "/opt/homebrew/Cellar/go/1.26.2/libexec/lib/wasm/go_js_wasm_exec",
+    "-json",
+    "./games/yuyuhakusho/audio/pcmplayer",
+    "-count=1"
+  ],
+  "environment": {
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "LC_CTYPE": "C.UTF-8",
+    "PATH": "/Users/jason/.local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/opt/homebrew/bin:/Users/jason/.codex/packages/standalone/releases/0.166.0-aarch64-apple-darwin/codex-path:/Users/jason/.codex/tmp/arg0-macos/codex-arg0fhBTO9:/Users/jason/.codex/tmp/arg0-macos/codex-arg0VGxlkS:/Users/jason/.codex/packages/standalone/releases/0.165.0-aarch64-apple-darwin/codex-path:/Users/jason/.codex/tmp/arg0-macos/codex-arg0KEckCA:/Users/jason/.codex/packages/standalone/releases/0.164.0-aarch64-apple-darwin/codex-path:/Users/jason/.codex/tmp/arg0-macos/codex-arg0aCpspT:/Users/jason/.codex/packages/standalone/releases/0.163.0-aarch64-apple-darwin/codex-path:/Users/jason/.codex/tmp/arg0/codex-arg0mfz2rx:/Users/jason/.codex/packages/standalone/releases/0.162.1-aarch64-apple-darwin/codex-path:/Users/jason/.codex/tmp/arg0/codex-arg0JRRpbU:/Users/jason/.codex/packages/standalone/releases/0.162.0-aarch64-apple-darwin/codex-path:/Users/jason/.codex/tmp/arg0/codex-arg02aoCzn:/Users/jason/.codex/packages/standalone/releases/0.161.0-aarch64-apple-darwin/codex-path:/Users/jason/.codex/tmp/arg0/codex-arg0Uc0TAq:/Users/jason/.codex/packages/standalone/releases/0.160.1-aarch64-apple-darwin/codex-path:/Users/jason/.codex/tmp/arg0/codex-arg0P7Hz4t:/Users/jason/.codex/packages/standalone/releases/0.160.0-aarch64-apple-darwin/codex-path:/Users/jason/.codex/tmp/arg0/codex-arg0LhKGCL:/Users/jason/.codex/packages/standalone/releases/0.159.3-aarch64-apple-darwin/codex-path:/Users/jason/.codex/tmp/arg0/codex-arg0nDHSA2:/Users/jason/.codex/packages/standalone/releases/0.159.2-aarch64-apple-darwin/codex-path:/Users/jason/.codex/tmp/arg0/codex-arg055ixb5:/Users/jason/.codex/packages/standalone/releases/0.159.1-aarch64-apple-darwin/codex-path:/Users/jason/.codex/tmp/arg0/codex-arg0a32kZ7:/Users/jason/.codex/packages/standalone/releases/0.159.0-aarch64-apple-darwin/codex-path:/Users/jason/.codex/tmp/arg0/codex-arg0q0Jrnu:/Users/jason/.codex/packages/standalone/releases/0.158.0-aarch64-apple-darwin/codex-path:/Users/jason/.codex/tmp/arg0/codex-arg0enI66z:/Users/jason/.codex/packages/standalone/releases/0.157.1-aarch64-apple-darwin/codex-path:/Users/jason/.codex/tmp/arg0/codex-arg0Si7CiU:/Users/jason/.codex/packages/standalone/releases/0.157.0-aarch64-apple-darwin/codex-path:/Users/jason/.codex/tmp/arg0/codex-arg0QfwYjP:/Users/jason/.codex/packages/standalone/releases/0.156.1-aarch64-apple-darwin/codex-path:/Users/jason/.codex/tmp/arg0/codex-arg0DDzEuB:/Users/jason/.codex/packages/standalone/releases/0.156.0-aarch64-apple-darwin/codex-path:/Users/jason/.codex/tmp/arg0/codex-arg0CdSj2w:/Users/jason/.codex/packages/standalone/releases/0.155.1-aarch64-apple-darwin/codex-path:/Users/jason/.codex/tmp/arg0/codex-arg0OLpasF:/Users/jason/.nvm/versions/node/v24.15.0/bin:/Users/jason/.local/bin:/opt/homebrew/sbin:/Users/jason/.codex/tmp/arg0/codex-arg0xOpMIa:/Users/jason/.codex/packages/standalone/releases/0.153.4-aarch64-apple-darwin/codex-path:/Users/jason/.codex/tmp/arg0/codex-arg0GlKXME:/Users/jason/.cargo/bin:/Applications/iTerm.app/Contents/Resources/utilities:/Users/jason/.orbstack/bin:/Users/jason/.orbstack/bin",
+    "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+    "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+    "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+    "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "GOOS": "js",
+    "GOARCH": "wasm"
+  },
+  "exit_code": 0,
+  "log_sha256": "5a6b88e2b6a8b414ba363e566f437a3dbf01d29e35445d0d60ebf08ac4a7be71"
+}

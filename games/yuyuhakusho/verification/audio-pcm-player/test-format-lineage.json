@@ -1,0 +1,7 @@
+{
+  "original_test_first_sha256": "bd7dce35e332fcd1fed66ee5337cede6fef50b6de4a2c3d9fe11090646cde326",
+  "formatted_sha256": "77d9e2d02b99d29384c24aa66ca0dc1c0febc1577b0cca4728937c908cbf751c",
+  "change": "gofmt formatting only after actual missing-API red; original assertions/fixtures retained. Separate later E2E files add native rate/minimum and player-to-DSP coverage.",
+  "format_command": "gofmt -w games/yuyuhakusho/audio/pcmplayer/player.go games/yuyuhakusho/audio/pcmplayer/player_e2e_test.go",
+  "initial_red_not_rewritten": true
+}

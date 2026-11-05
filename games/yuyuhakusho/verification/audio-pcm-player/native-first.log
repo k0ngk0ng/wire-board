@@ -1,0 +1,14 @@
+{"mode": "original", "case": "dual-a", "frames": 42, "final_busy": false}
+{"mode": "original", "case": "dual-b", "frames": 20, "final_busy": false}
+{"mode": "original", "case": "dual-pair", "frames": 115, "final_busy": false}
+{"mode": "original", "case": "dual-odd-tail", "frames": 6, "final_busy": false}
+{"mode": "original", "case": "single-native", "frames": 60, "final_busy": false}
+{"mode": "original", "case": "single-tail129", "frames": 3, "final_busy": false}
+{"mode": "original", "case": "single-tail257", "frames": 4, "final_busy": false}
+{"mode": "observed", "case": "dual-a", "frames": 42, "final_busy": false}
+{"mode": "observed", "case": "dual-b", "frames": 20, "final_busy": false}
+{"mode": "observed", "case": "dual-pair", "frames": 115, "final_busy": false}
+{"mode": "observed", "case": "dual-odd-tail", "frames": 6, "final_busy": false}
+{"mode": "observed", "case": "single-native", "frames": 60, "final_busy": false}
+{"mode": "observed", "case": "single-tail129", "frames": 3, "final_busy": false}
+{"mode": "observed", "case": "single-tail257", "frames": 4, "final_busy": false}

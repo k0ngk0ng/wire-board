@@ -1,0 +1,12 @@
+{
+  "test_first": true,
+  "pass": false,
+  "expected_failure": "independent typed PCM player is missing",
+  "command": [
+    "test",
+    "-f",
+    "games/yuyuhakusho/audio/pcmplayer/player.go"
+  ],
+  "exit_code": 1,
+  "failure_scenarios_sha256": "4847a2d1ed299b782f3d384eeaf1d14492e5c7b7b70ff9237eef658f8be347f4"
+}
