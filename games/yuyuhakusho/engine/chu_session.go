@@ -50,7 +50,7 @@ func NewChuSession(options ChuSessionOptions, library ChuWorldLibrary) (ChuWorld
 	}
 	var slots, humanChannels uint8
 	for _, player := range options.Players {
-		if player.Slot >= 4 || (player.CharacterID != 0 && player.CharacterID != 1 && player.CharacterID != 2 && player.CharacterID != 3 && player.CharacterID != 6 && player.CharacterID != 8 && player.CharacterID != 9 && player.CharacterID != 10) || player.Color >= 12 || slots&(1<<player.Slot) != 0 || !player.Computer && (player.HumanChannel >= 4 || humanChannels&(1<<player.HumanChannel) != 0) {
+		if player.Slot >= 4 || (player.CharacterID != 0 && player.CharacterID != 1 && player.CharacterID != 2 && player.CharacterID != 3 && player.CharacterID != 4 && player.CharacterID != 6 && player.CharacterID != 8 && player.CharacterID != 9 && player.CharacterID != 10) || player.Color >= 12 || slots&(1<<player.Slot) != 0 || !player.Computer && (player.HumanChannel >= 4 || humanChannels&(1<<player.HumanChannel) != 0) {
 			return ChuWorldState{}, nil, errors.New("unsupported or repeated Chu player slot, character, palette or input channel")
 		}
 		if spec, ok := library.Fighters[player.CharacterID]; !ok || spec.CharacterID != player.CharacterID {
@@ -58,6 +58,11 @@ func NewChuSession(options ChuSessionOptions, library ChuWorldLibrary) (ChuWorld
 		}
 		if (player.CharacterID == 0 || player.CharacterID == 3) && len(library.Fighter0Projectiles.Sequences) != 8 {
 			return ChuWorldState{}, nil, errors.New("source0 projectile rules are unavailable")
+		}
+		if player.CharacterID == 4 {
+			if _, found := library.MovementSources[0x15946]; !found || library.Fighter4Dragon.Curve.FirstIndex != -32 || len(library.Fighter4Dragon.Curve.Values) != 1344 {
+				return ChuWorldState{}, nil, errors.New("source4 dragon and alternate movement rules are unavailable")
+			}
 		}
 		slots |= 1 << player.Slot
 		state.Match.Characters[player.Slot], state.Match.Colors[player.Slot] = player.CharacterID+1, player.Color

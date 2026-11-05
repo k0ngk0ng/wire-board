@@ -1,0 +1,83 @@
+{
+  "scope": "Only completed source4 capture duplicates, closed browser profile, replaced CLI binaries and temporary regression inventories; canonical evidence preserved",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-world",
+      "files": 3,
+      "bytes": 3442039
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-special-world",
+      "files": 2,
+      "bytes": 7261695
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-duo-world",
+      "files": 2,
+      "bytes": 12234625
+    },
+    {
+      "path": ".local/md-yuyuhakusho/hiei-browser",
+      "files": 213,
+      "bytes": 9343898
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-session",
+      "files": 1,
+      "bytes": 4249650
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-session.wasm",
+      "files": 1,
+      "bytes": 4828549
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-render",
+      "files": 1,
+      "bytes": 4691922
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/fighter-render.wasm",
+      "files": 1,
+      "bytes": 5390222
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/hiei-legacy",
+      "files": 1,
+      "bytes": 4249650
+    },
+    {
+      "path": ".local/md-yuyuhakusho/build/hiei-legacy.wasm",
+      "files": 1,
+      "bytes": 4828549
+    },
+    {
+      "path": ".local/md-yuyuhakusho/hiei-legacy-native.json.gz",
+      "files": 1,
+      "bytes": 17684
+    },
+    {
+      "path": ".local/md-yuyuhakusho/hiei-legacy-wasm.json.gz",
+      "files": 1,
+      "bytes": 17678
+    },
+    {
+      "path": ".local/md-yuyuhakusho/hiei-engine-list.txt",
+      "files": 1,
+      "bytes": 11943
+    },
+    {
+      "path": ".local/md-yuyuhakusho/hiei-animation-list.txt",
+      "files": 1,
+      "bytes": 237
+    }
+  ],
+  "bytes": 60568341,
+  "files": 230,
+  "retained": [
+    "Canonical fixtures/control/SHA/manifests/raw failures/final logs/screenshots",
+    "Active local-player8799 and its assets",
+    "ROM/emulator/research tools/shared Go caches/current worktree",
+    "All other agents and main-workspace user changes"
+  ]
+}

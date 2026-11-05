@@ -1,0 +1,188 @@
+{
+  "scope": "Passive natural source4 complete selector returns",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "a5f9bcd2726051f1d744ca7444a3d5798a7c9ce9d76a8e5f7380d1c0a5718eb5",
+  "records": 1928,
+  "calls": 1928,
+  "kind_counts": {
+    "ground": 912,
+    "ground-special": 926,
+    "air-special": 45,
+    "air": 45
+  },
+  "constructor_counts": {
+    "0x18828": 1,
+    "0x18812": 3
+  },
+  "source_objects": {
+    "0x8400": 1928
+  },
+  "fixture_sha256": "1c67051c1fc8a760f8a3ecbd71b25473ea1976dc17944f98f605623bb3b1ed8a",
+  "gzip_sha256": "468b6603e7060df8a53d69d4468e7b0465b0f79987472a2e5006da8b7ffecdb5",
+  "frames_match_original_core": true,
+  "incomplete_calls": 0,
+  "errors": [],
+  "rng_calls": 0,
+  "entry_frame_limit": 3600,
+  "drain_frames": 2,
+  "pass": true
+}
+{
+  "scope": "Declared-private representative complete source4 selector returns",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "a5f9bcd2726051f1d744ca7444a3d5798a7c9ce9d76a8e5f7380d1c0a5718eb5",
+  "records": 29,
+  "calls": 29,
+  "kind_counts": {
+    "ground": 4,
+    "air": 3,
+    "ground-special": 16,
+    "air-special": 4,
+    "rush-finish": 1,
+    "dragon-followup": 1
+  },
+  "constructor_counts": {
+    "0x16e36": 1,
+    "0x18854": 1,
+    "0x1886a": 1,
+    "0x18930": 2,
+    "0x188ee": 1,
+    "0x1904e": 2,
+    "0x190a8": 2,
+    "0x190d2": 2,
+    "0x190f0": 2,
+    "0x1911a": 2,
+    "0x1913c": 2,
+    "0x19190": 4,
+    "0x191d4": 2,
+    "0x191ec": 2
+  },
+  "source_objects": {
+    "0x8800": 8,
+    "0x8c00": 7,
+    "0x9000": 7,
+    "0x8400": 7
+  },
+  "fixture_sha256": "0e75315a3bda102cb84132e40e59b221653403b6929d01482a422bb6a3fa4ebd",
+  "gzip_sha256": "25e2a26c1e5f8fa8c6c19b343e24fbf7602d811b6ec9f63a1d95512c50a5e930",
+  "frames_match_original_core": true,
+  "incomplete_calls": 0,
+  "errors": [],
+  "rng_calls": 0,
+  "entry_frame_limit": 3600,
+  "drain_frames": 2,
+  "pass": true
+}
+{
+  "scope": "Declared-private source4 complete selector boundary matrix",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "a5f9bcd2726051f1d744ca7444a3d5798a7c9ce9d76a8e5f7380d1c0a5718eb5",
+  "records": 22428,
+  "calls": 22428,
+  "kind_counts": {
+    "ground": 3264,
+    "air": 1536,
+    "ground-special": 11262,
+    "air-special": 4206,
+    "rush-finish": 1080,
+    "dragon-followup": 1080
+  },
+  "constructor_counts": {
+    "0x18812": 452,
+    "0x18828": 626,
+    "0x1886a": 108,
+    "0x18880": 102,
+    "0x1883e": 144,
+    "0x16e36": 136,
+    "0x18854": 136,
+    "0x188ee": 512,
+    "0x18930": 488,
+    "0x188d8": 280,
+    "0x1904e": 774,
+    "0x190a8": 774,
+    "0x190d2": 628,
+    "0x190f0": 1294,
+    "0x1911a": 564,
+    "0x1913c": 654,
+    "0x19190": 792,
+    "0x191d4": 628,
+    "0x191ec": 1294
+  },
+  "source_objects": {
+    "0x8c00": 5607,
+    "0x9000": 5607,
+    "0x8400": 5607,
+    "0x8800": 5607
+  },
+  "fixture_sha256": "ad2ccb5d467c2dcdc286dc3ecb92fa725f133444310e0f641ae7004e29e8f4db",
+  "gzip_sha256": "bc3be6b363925badbcb28e1398c5d2483bc74293b9af7bfff9861a3035bccb49",
+  "frames_match_original_core": true,
+  "incomplete_calls": 0,
+  "errors": [],
+  "rng_calls": 0,
+  "entry_frame_limit": 3600,
+  "drain_frames": 2,
+  "pass": true
+}
+{
+  "scope": "Declared-private single-initial-state source4 selector streams",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "a5f9bcd2726051f1d744ca7444a3d5798a7c9ce9d76a8e5f7380d1c0a5718eb5",
+  "records": 84,
+  "calls": 1344,
+  "kind_counts": {
+    "ground": 6,
+    "air": 6,
+    "ground-special": 48,
+    "air-special": 12,
+    "rush-finish": 6,
+    "dragon-followup": 6
+  },
+  "constructor_counts": {},
+  "source_objects": {},
+  "fixture_sha256": "c1decadbde33d88d32184b84e64bc1d6fb569b016488cbfff07d200262962edf",
+  "gzip_sha256": "db68b332039c7b157da1ad31f76f86125e99260dbffaf7d8d5f094af44d1e4ae",
+  "frames_match_original_core": true,
+  "incomplete_calls": 0,
+  "errors": [],
+  "rng_calls": 0,
+  "entry_frame_limit": 3600,
+  "drain_frames": 2,
+  "pass": true
+}

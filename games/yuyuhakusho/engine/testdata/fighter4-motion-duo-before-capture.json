@@ -1,0 +1,7 @@
+{
+  "schema": 1,
+  "scope": "Before-capture Duo observation failure scenarios; no new Go test or implementation",
+  "sha256": "19d7ed948b77702e07328ecffd6e9b610a7df41ec29b8c317841ebb8373d4ca6",
+  "utf8": "# 飞影双真人吞龙 MAIN 自然证据\n\n本轮使用已冻结的双真人输入及 selector 任务唯一未观察原版 control，采集真实 `9000` 父对象的 `2a/2b` 完整 pre-tail 返回。固定 5,502 个视频步，入口仅接受前 5,500 步，最后 2 步只用于返回排空。不生成第二份未观察 control，不把 `9000` 改为 `8400`。\n\n采集前失败场景：来源／输入／control 摘要错配；把 source3 的 `8400` 或其 child 当作飞影；漏掉 source4 `9000`、输入通道 1、child `9100`；记录超出 5,500 的入口或少跑两步排空；只保存后帧状态而无真实入口／出口；完成时 SP 不一致；吞龙前后 MovementSource、Energy 小数、child contact／输入或 FX Owner 字段遗漏；child 和 FX 交界范围错误；声音／RNG 或历史缓冲变更未解释；把 `2a/2b` 当次返回扩写为完整强化尾段的 Go 验收。\n\n已有四项 MAIN 测试固定要求 `A5=FFFF8400`，因此不将真实 `FFFF9000` 行混入旧 oracle，也不改冻结测试或生产实现。新增夹具用于原版自然取证；调用冻结 MAIN 的双真人完整组合和 whole-world E2E 由对应任务验收。Go 生产、四项冻结测试、原 oracle 397 次、3,818 次私有边界、40 条时钟流及参数资源均保持不变。\n",
+  "existing_Go_and_four_tests_frozen": true
+}

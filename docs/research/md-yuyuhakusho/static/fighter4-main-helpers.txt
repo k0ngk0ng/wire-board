@@ -1,0 +1,62 @@
+route=direct-ghidra-headless; REA raw 68000 unsupported
+language=68000:BE:32:default
+source=MD Yu Yu Hakusho Japan; static reachable instructions only
+
+seeds=2029e scope=0x2029e..0x203f7
+0002029e bsr.w 0x0001fa96
+000202a2 cmpa.w #0x0,A0
+000202a6 beq.b 0x000202fc
+000202a8 move.b #0x20,(0x58,A0)
+000202ae move.b #0x0,(0x5a,A0)
+000202b4 move.l (0x40,A5),(0x40,A0)
+000202ba move.l (0x9c,A5),(0x44,A0)
+000202c0 move.w (0x3e,A5),(0x3e,A0)
+000202c6 move.b (0x26,A5),(0x26,A0)
+000202cc subq.b #0x4,(0x26,A0)
+000202d0 move.b (0x24,A5),(0x24,A0)
+000202d6 andi.w #-0x8000,(0x24,A0)
+000202dc tst.b (0x61,A5)
+000202e0 bne.b 0x000202f0
+000202e2 ori.b #0x40,(0x24,A0)
+000202e8 addi.w #0x10,(0x40,A0)
+000202ee bra.b 0x000202fc
+000202f0 ori.b #0x48,(0x24,A0)
+000202f6 subi.w #0x10,(0x40,A0)
+000202fc bsr.w 0x0001fa96
+00020300 cmpa.w #0x0,A0
+00020304 beq.b 0x0002034e
+00020306 move.b #0x20,(0x58,A0)
+0002030c move.b #0x4,(0x5a,A0)
+00020312 move.l (0x40,A5),(0x40,A0)
+00020318 move.l (0x9c,A5),(0x44,A0)
+0002031e move.w (0x3e,A5),(0x3e,A0)
+00020324 move.b (0x26,A5),(0x26,A0)
+0002032a subq.b #0x4,(0x26,A0)
+0002032e move.b (0x24,A5),(0x24,A0)
+00020334 andi.w #-0x8000,(0x24,A0)
+0002033a tst.b (0x61,A5)
+0002033e bne.b 0x00020348
+00020340 ori.b #0x40,(0x24,A0)
+00020346 bra.b 0x0002034e
+00020348 ori.b #0x48,(0x24,A0)
+0002034e bsr.w 0x0001fa96
+00020352 cmpa.w #0x0,A0
+00020356 beq.b 0x000203ac
+00020358 move.b #0x20,(0x58,A0)
+0002035e move.b #0x8,(0x5a,A0)
+00020364 move.l (0x40,A5),(0x40,A0)
+0002036a move.l (0x9c,A5),(0x44,A0)
+00020370 move.w (0x3e,A5),(0x3e,A0)
+00020376 move.b (0x26,A5),(0x26,A0)
+0002037c subq.b #0x4,(0x26,A0)
+00020380 move.b (0x24,A5),(0x24,A0)
+00020386 andi.w #-0x8000,(0x24,A0)
+0002038c tst.b (0x61,A5)
+00020390 bne.b 0x000203a0
+00020392 ori.b #0x40,(0x24,A0)
+00020398 subi.w #0x10,(0x40,A0)
+0002039e bra.b 0x000203ac
+000203a0 ori.b #0x48,(0x24,A0)
+000203a6 addi.w #0x10,(0x40,A0)
+000203ac rts
+printed_instructions=56

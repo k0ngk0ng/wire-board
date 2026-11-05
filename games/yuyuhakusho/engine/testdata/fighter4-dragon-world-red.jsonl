@@ -1,0 +1,9 @@
+{"Time":"2026-11-05T10:08:02.669094+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine"}
+{"Time":"2026-11-05T10:08:03.0901+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter4DragonWorldCallbacks"}
+{"Time":"2026-11-05T10:08:03.090123+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter4DragonWorldCallbacks","Output":"=== RUN   TestFighter4DragonWorldCallbacks\n"}
+{"Time":"2026-11-05T10:08:03.092114+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter4DragonWorldCallbacks","Output":"    fighter4_dragon_world_test.go:33: source4 dragon world dispatcher gates-head-0-0-0-0 object callback is not recovered\n"}
+{"Time":"2026-11-05T10:08:03.092124+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter4DragonWorldCallbacks","Output":"--- FAIL: TestFighter4DragonWorldCallbacks (0.00s)\n"}
+{"Time":"2026-11-05T10:08:03.092133+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter4DragonWorldCallbacks","Elapsed":0}
+{"Time":"2026-11-05T10:08:03.09214+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"FAIL\n"}
+{"Time":"2026-11-05T10:08:03.092533+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine\t0.423s\n"}
+{"Time":"2026-11-05T10:08:03.092543+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Elapsed":0.423}

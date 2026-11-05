@@ -40,6 +40,14 @@ def main():
     fighter0_projectiles = read(data + 'fighter0-projectile-rules.json')
     fighter2_projectiles = read(data + 'fighter2-projectile-rules.json')
     fighter1_projectiles = read(data + 'fighter1-projectile-rules.json')
+    fighter4_projectiles = read(tests + 'fighter4-projectile-rules.json')
+    fighter4_movements = read(tests + 'fighter4-composition-movement-rules.json')
+    alternate_movements = [{'source': rule['source'], 'movement': rule['movement']}
+                           for rule in fighter4_movements['rules'] if rule['source'] == 0x15946]
+    assert len(alternate_movements) == 1
+    assert len(fighter4_projectiles['animations']) == 9
+    assert fighter4_projectiles['curve']['first_index'] == -32
+    assert len(fighter4_projectiles['curve']['values']) == 1344
 
     def animations(frames):
         output, seen = [], {}
@@ -52,18 +60,20 @@ def main():
             output.append({'key': frame['key'], 'data': frame['data']})
         return output
 
-    payload = {'schema': 2, 'rom_sha256': ROM_SHA, 'fighters': fighters, 'commands': commands,
-               'animations': animations(parents + projectiles + fighter0_projectiles['animations'] + fighter2_projectiles['animations'] + fighter1_projectiles['animations']),
+    payload = {'schema': 3, 'rom_sha256': ROM_SHA, 'fighters': fighters, 'commands': commands,
+               'animations': animations(parents + projectiles + fighter0_projectiles['animations'] + fighter2_projectiles['animations'] + fighter1_projectiles['animations'] + fighter4_projectiles['animations']),
                'attachments': {'sequences': attachments['sequences'], 'animations': animations(attachments['animations'])},
                'effects': effects,
                'attached_effects': {key: attached[key] for key in ['sequences', 'orbit_x', 'orbit_y', 'offset_y']},
                'match_start': start, 'arena': arena,
-               'fighter0_projectiles': {'sequences': fighter0_projectiles['sequences']}}
+               'fighter0_projectiles': {'sequences': fighter0_projectiles['sequences']},
+               'alternate_movements': alternate_movements,
+               'fighter4_dragon': {'curve': fighter4_projectiles['curve']}}
     raw = (json.dumps(payload, separators=(',', ':')) + '\n').encode()
     packed = gzip.compress(raw, mtime=0)
     target = ROOT / data / 'chu-world-rules.json.gz'
     target.write_bytes(packed)
-    manifest = {'schema': 2, 'scope': 'Immutable independently decoded semantic rules only; no calls, RAM images, executable code or client media',
+    manifest = {'schema': 3, 'scope': 'Immutable independently decoded semantic rules only; no calls, RAM images, executable code or client media',
                 'rom_sha256': ROM_SHA, 'sources': sources, 'exporter_sha256': sha(Path(__file__).read_bytes()),
                 'counts': {'fighters': len(fighters), 'command_programs': len(commands), 'animations': len(payload['animations']),
                            'charge_sequences': len(payload['attachments']['sequences']), 'release_animations': len(payload['attachments']['animations']),
@@ -72,6 +82,9 @@ def main():
                            'fighter0_projectile_frames': len(fighter0_projectiles['animations']),
                            'fighter2_projectile_frames': len(fighter2_projectiles['animations']),
                            'fighter1_projectile_frames': len(fighter1_projectiles['animations']),
+                           'fighter4_projectile_frames': len(fighter4_projectiles['animations']),
+                           'fighter4_curve_words': len(fighter4_projectiles['curve']['values']),
+                           'alternate_movements': len(alternate_movements),
                            'fighter0_release_sequences': len(fighter0_projectiles['sequences'])},
                 'bytes': len(raw), 'gzip_bytes': len(packed), 'sha256': sha(raw), 'gzip_sha256': sha(packed)}
     (ROOT / data / 'chu-world-rules-manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')

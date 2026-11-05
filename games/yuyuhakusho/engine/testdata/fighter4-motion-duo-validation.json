@@ -1,0 +1,252 @@
+{
+  "schema": 1,
+  "pass": true,
+  "goal_complete": false,
+  "release_ready": false,
+  "scope": "Independent real9000 source4 Duo2a/2b original CPU evidence plus bound composition and single-initial world integration acceptance",
+  "checkpoint_commit": "605efb55",
+  "new_Go_CLI_or_unit_test_added": false,
+  "original_four_MAIN_tests_consume_Duo": false,
+  "original_four_MAIN_tests_and_Go_unchanged": true,
+  "before_capture_scenarios": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter4-motion-duo-before-capture.json",
+    "sha256": "c53629534a627b5e37f0b082dcb956724407966aa044d892090bdc1c86f821b3",
+    "initial_failure_ledger_sha256": "19d7ed948b77702e07328ecffd6e9b610a7df41ec29b8c317841ebb8373d4ca6"
+  },
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "input": {
+    "path": "docs/research/md-yuyuhakusho/source4-special-discovery-duo-inputs.json",
+    "sha256": "b303ca8622f90747052902f81b2b7f2bdde39f59e47feb6f36a6bf8287a6ac34"
+  },
+  "reference": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter4-attacks-duo-reference-frames.json",
+    "sha256": "9f282f53a016d184d45052b30eaf8c482d4b568132f7979f7eebff4a7faa5917",
+    "manifest": "games/yuyuhakusho/engine/testdata/fighter4-attacks-duo-reference-manifest.json",
+    "manifest_sha256": "da7b399421593ad938377c99898e1734f5f61297efad133476c1802f1dc3ba80",
+    "new_unobserved_control_captured": false
+  },
+  "frames": 5502,
+  "entry_frame_limit": 5500,
+  "drain_frames": 2,
+  "actor": {
+    "object_id": 36864,
+    "source_register": "0xffff9000",
+    "source_tag": 4,
+    "input_channel": 1,
+    "child_id": 37120,
+    "other_object_id": 33792,
+    "other_source_tag": 3,
+    "other_input_channel": 0
+  },
+  "no_RAM_or_register_state_injection": true,
+  "new_unobserved_control_captured": false,
+  "fixture": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter4-motion-duo-natural.json.gz",
+    "manifest_path": "games/yuyuhakusho/engine/testdata/fighter4-motion-duo-natural-manifest.json",
+    "manifest_sha256": "8df2cbe50648d885cbf4584f3289e951cf554fa947461a2baaceac03d9098271",
+    "fixture_sha256": "31c79055a360d03608602c4cc8517f683aea9124b301b08025c11909c1db00f9",
+    "gzip_sha256": "1c9f053258fb6879c0a158c6c24c7a3b0cfa3e07a143fb9bb22d899862632b05",
+    "records": 159,
+    "kind_counts_hex": {
+      "2a": 102,
+      "2b": 57
+    },
+    "data_consumed_by_old_four_tests": false
+  },
+  "windows": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter4-motion-duo-windows.json",
+    "sha256": "a9441fcb1fbb7d8aef4a5cbec04b288936fbf58b266e8e4c060e4ebf546c2bec",
+    "phase_windows": [
+      {
+        "action_hex": "2a",
+        "first_frame": 3488,
+        "last_frame": 3589,
+        "calls": 102,
+        "last_action_hex": "2b",
+        "last_pose_hex": "ab",
+        "last_source_hex": "15946"
+      },
+      {
+        "action_hex": "2b",
+        "first_frame": 3590,
+        "last_frame": 3646,
+        "calls": 57,
+        "last_action_hex": "00",
+        "last_pose_hex": "00",
+        "last_source_hex": "15946"
+      }
+    ],
+    "swallow": [
+      {
+        "frame": 3589,
+        "before_source_hex": "12578",
+        "after_source_hex": "15946",
+        "energy_high_after": 223,
+        "source_register": "0xffff9000"
+      }
+    ],
+    "child_creations": [
+      {
+        "frame": 3598,
+        "before_child_behavior_hex": "0",
+        "after_child_behavior_hex": "13fc8"
+      }
+    ],
+    "source_video_runs": [
+      {
+        "first_frame": 2182,
+        "last_frame": 3588,
+        "source": 75128
+      },
+      {
+        "first_frame": 3589,
+        "last_frame": 4298,
+        "source": 88390
+      },
+      {
+        "first_frame": 4299,
+        "last_frame": 5502,
+        "source": 75128
+      }
+    ],
+    "first_original_joint_idle_recovery_frame": 4379
+  },
+  "audit": {
+    "complete_parent_bytes": 256,
+    "complete_three_children_bytes": 768,
+    "complete_FX_bytes": 2048,
+    "masked_bytes": 0,
+    "unknown_RAM_changes": 0,
+    "SP_restored": true,
+    "history_phase_writes": 0,
+    "RNG_calls": 0,
+    "pending_sound_changes": 0,
+    "actual_source_register": "0xffff9000",
+    "input_mode_human": 0
+  },
+  "final_original_scene_at5502": {
+    "movement_source": 75128,
+    "energy_high": -1,
+    "action": 0,
+    "child_size": 0
+  },
+  "final_scalar_recovery_is_original_CPU_observation": true,
+  "unchanged_old_scope": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter4-motion-duo-unchanged-baseline.json",
+    "sha256": "bcb8bd0fbc6e853a49da50da178828f45402048f59b636d519a50f830c0d8bb3",
+    "validation_before_duo_path": "games/yuyuhakusho/engine/testdata/fighter4-motion-validation-before-duo.json",
+    "validation_before_duo_sha256": "0afe8eb16ca8f26a96ee4f179360458017a898d577a57bb7e2ca510ce24adb3c",
+    "old_four_test_oracle_calls": 397,
+    "private_calls": 3818,
+    "clock_streams": 40,
+    "clock_calls": 3224,
+    "all_old_corpus_bytes_unchanged": true
+  },
+  "duo_composition_e2e": {
+    "pass": true,
+    "owner": "md_background_composition",
+    "documentation": "games/yuyuhakusho/engine/FIGHTER4_DUO_COMPOSITION_VERIFICATION.md",
+    "validation_path": "games/yuyuhakusho/engine/testdata/fighter4-duo-composition-validation.json",
+    "validation_sha256": "2756c95706786573c020d8892055a4ffc7db225b2f4804cce641d025d8b5a42f",
+    "test_path": "games/yuyuhakusho/engine/fighter4_duo_composition_test.go",
+    "test_sha256": "cf4990b5493177c9b5c936a85fb61377baf252672c0dc4d870676b44b7c2b4b4",
+    "complete_CPU_returns_per_layer": 3316,
+    "layers": [
+      "Action",
+      "Input",
+      "Actor"
+    ],
+    "test_logs": [
+      {
+        "path": "games/yuyuhakusho/engine/testdata/fighter4-duo-composition-native.jsonl",
+        "sha256": "1922590b718436bb91e6706bbec1a352d1eeccf2b186e36762f162d9d2812987",
+        "top_level_tests": [
+          "TestFighter4DuoCompositionOriginalActions",
+          "TestFighter4DuoCompositionOriginalInputs",
+          "TestFighter4DuoCompositionOriginalActors"
+        ],
+        "elapsed_seconds": 39.893,
+        "pass": true
+      },
+      {
+        "path": "games/yuyuhakusho/engine/testdata/fighter4-duo-composition-wasm.jsonl",
+        "sha256": "90434e1706efa952a8c9fce7f14c2f522e8c65f1759b41d67f13938de69e078d",
+        "top_level_tests": [
+          "TestFighter4DuoCompositionOriginalActions",
+          "TestFighter4DuoCompositionOriginalInputs",
+          "TestFighter4DuoCompositionOriginalActors"
+        ],
+        "elapsed_seconds": 11.718,
+        "pass": true
+      }
+    ],
+    "actual9000_and_complete5502_control_bound": true
+  },
+  "duo_world_e2e": {
+    "pass": true,
+    "owner": "root",
+    "test_path": "games/yuyuhakusho/engine/fighter4_duo_world_test.go",
+    "test_sha256": "3e8ab66efb596de6da4f920fef8e2407894ea4e9de3516909a799b6e1ebd7362",
+    "manifest_path": "games/yuyuhakusho/engine/testdata/chu-world-fighter4-duo-manifest.json",
+    "manifest_sha256": "fe1ab7c7c474ce3d672b208025ec8c9813120591196d37eb73be7186c06891d8",
+    "native_log": {
+      "path": "games/yuyuhakusho/engine/testdata/fighter4-duo-world-native.jsonl",
+      "sha256": "a255e108b6c41a5a82a0b5d25711b1685b60edcda2c4880cd62585ac16363c01",
+      "top_level_tests": [
+        "TestFighter4DuoWorldOriginalPasses",
+        "TestFighter4DuoWorldSingleInitialState"
+      ],
+      "elapsed_seconds": 76.19,
+      "pass": true
+    },
+    "Go_ready_practice_boundary_video_frames": [
+      2500,
+      5500
+    ],
+    "passes": 3001,
+    "callbacks": 34236,
+    "draws": 18901,
+    "single_initial_state": true,
+    "save_restore_checkpoints": 7,
+    "original_practice_header_behavior_hex": "a01e",
+    "original_practice_header_stage_decimal": 32,
+    "practice_header_normalized": false,
+    "whole_world_Wasm_separate_parent_check_not_claimed_here": true
+  },
+  "source_sha256": {
+    "scripts/yuyuhakusho/capture_fighter4_motion_duo.py": "8eb9a75b34edbb1f33fd883ce1e5f10c59898b64cee8c696a6098f97b3fdaf4d",
+    "scripts/yuyuhakusho/reference.py": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "scripts/yuyuhakusho/capture_ground_idle.py": "01d4798e937fa01946b7612fbc4fa7418dda97ec3411db4beb4629975614ba1d",
+    "scripts/yuyuhakusho/capture_effect_pool.py": "b9c753d1c9b6380ac64ee16f2c10cdcf8560654e493e770b31552b1781354f46",
+    "games/yuyuhakusho/engine/FIGHTER4_MOTION_DUO_EVIDENCE.md": "f675ad0488c339d35e773bdec75cbbb1f53a40a6fc4eeb934948d85a4c590451",
+    "games/yuyuhakusho/engine/fighter4_motion.go": "a236eac8bded286b9b35241c206d0de35e763d5097651862f14476f7f787f154",
+    "games/yuyuhakusho/engine/fighter4_motion_test.go": "d4ce7a8d890cce355f6c8dfb95ff415de02e2b5f0a8d39afa682a2a080c3447d"
+  },
+  "capture_log": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter4-motion-duo-capture.log",
+    "sha256": "9d9467d9915e7c1ebb72a9aa9cc730f92563e9e642f9f803e1cc5c18a85e6ed9"
+  },
+  "cleanup": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter4-motion-duo-cleanup.json",
+    "sha256": "69a0c85c2d42968420c12c5f7839a2f1b4d6409475f11ffbd5794d568ba445b4",
+    "deleted_files": 3,
+    "deleted_bytes": 66052,
+    "shared_cache_other_agents_and_8799_assets_changed": false
+  },
+  "limits": [
+    "The original frozen four MAIN tests still consume only397 real8400 calls;no source-register relabeling or fixture-path substitution occurred.",
+    "New159 real9000 calls are independent original evidence;Go natural integration is established by the separately bound three-layer and whole-world E2E.",
+    "MAIN-only data does not by itself replay child scheduling or full boost expiry;the world single-initial test owns that result.",
+    "Whole-world Go verification starts at the actual ready-practice frame2500,not at the original menu cold start.",
+    "This does not claim all characters or complete game release acceptance;REA raw68000 remains unsupported."
+  ]
+}

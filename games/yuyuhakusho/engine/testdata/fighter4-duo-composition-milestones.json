@@ -1,0 +1,588 @@
+{
+  "scope": "Derived timing explanation only; raw CPU fixture unchanged; rows remain independent complete Action calls",
+  "fixture_path": "games/yuyuhakusho/engine/testdata/fighter4-composition-action-duo.json.gz",
+  "fixture_gzip_sha256": "21b3b9fc84eb73465891ddd12b8f75e09c36b46e7996be016ec8463b5f412079",
+  "first_entry_frame": 2183,
+  "last_entry_frame": 5500,
+  "first_default_after_boost": {
+    "frame": 4300,
+    "before": {
+      "movement_source": "0x12578",
+      "action": "0x5",
+      "pose": "0x25",
+      "energy": -4096,
+      "energy_high": -1,
+      "health": 103,
+      "child_behavior": "0x0",
+      "child_size": 0,
+      "child_stage": 0,
+      "child_bank": "0x0",
+      "held": 0,
+      "pressed": 0,
+      "parameters": {
+        "vertical_velocity": -393216,
+        "gravity": 17408,
+        "horizontal_velocity": 114688,
+        "burst_speed": 65536,
+        "energy_drain": 48
+      },
+      "walk_speed": 139264
+    },
+    "after": {
+      "movement_source": "0x12578",
+      "action": "0x5",
+      "pose": "0x25",
+      "energy": -4096,
+      "energy_high": -1,
+      "health": 103,
+      "child_behavior": "0x0",
+      "child_size": 0,
+      "child_stage": 0,
+      "child_bank": "0x0",
+      "held": 0,
+      "pressed": 0,
+      "parameters": {
+        "vertical_velocity": -393216,
+        "gravity": 17408,
+        "horizontal_velocity": 114688,
+        "burst_speed": 65536,
+        "energy_drain": 48
+      },
+      "walk_speed": 139264
+    }
+  },
+  "milestones": [
+    {
+      "frame": 3588,
+      "exit_frame": 3588,
+      "before": {
+        "movement_source": "0x12578",
+        "action": "0x2a",
+        "pose": "0xa7",
+        "energy": 1507328,
+        "energy_high": 23,
+        "health": 103,
+        "child_behavior": "0x13bb6",
+        "child_size": 256,
+        "child_stage": 2,
+        "child_bank": "0x200",
+        "held": 9,
+        "pressed": 0,
+        "parameters": {
+          "vertical_velocity": -393216,
+          "gravity": 17408,
+          "horizontal_velocity": 114688,
+          "burst_speed": 65536,
+          "energy_drain": 48
+        },
+        "walk_speed": 139264
+      },
+      "after": {
+        "movement_source": "0x12578",
+        "action": "0x2a",
+        "pose": "0xa7",
+        "energy": 1507328,
+        "energy_high": 23,
+        "health": 103,
+        "child_behavior": "0x13bb6",
+        "child_size": 256,
+        "child_stage": 2,
+        "child_bank": "0x200",
+        "held": 9,
+        "pressed": 0,
+        "parameters": {
+          "vertical_velocity": -393216,
+          "gravity": 17408,
+          "horizontal_velocity": 114688,
+          "burst_speed": 65536,
+          "energy_drain": 48
+        },
+        "walk_speed": 139264
+      }
+    },
+    {
+      "frame": 3589,
+      "exit_frame": 3589,
+      "before": {
+        "movement_source": "0x12578",
+        "action": "0x2a",
+        "pose": "0xa7",
+        "energy": 1507328,
+        "energy_high": 23,
+        "health": 103,
+        "child_behavior": "0x13bb6",
+        "child_size": 256,
+        "child_stage": 2,
+        "child_bank": "0x200",
+        "held": 9,
+        "pressed": 0,
+        "parameters": {
+          "vertical_velocity": -393216,
+          "gravity": 17408,
+          "horizontal_velocity": 114688,
+          "burst_speed": 65536,
+          "energy_drain": 48
+        },
+        "walk_speed": 139264
+      },
+      "after": {
+        "movement_source": "0x15946",
+        "action": "0x2b",
+        "pose": "0xab",
+        "energy": 14614528,
+        "energy_high": 223,
+        "health": 103,
+        "child_behavior": "0x13bb6",
+        "child_size": 256,
+        "child_stage": 2,
+        "child_bank": "0x200",
+        "held": 9,
+        "pressed": 0,
+        "parameters": {
+          "vertical_velocity": -450560,
+          "gravity": 24576,
+          "horizontal_velocity": 114688,
+          "burst_speed": 65536,
+          "energy_drain": 48
+        },
+        "walk_speed": 196608
+      }
+    },
+    {
+      "frame": 3590,
+      "exit_frame": 3590,
+      "before": {
+        "movement_source": "0x15946",
+        "action": "0x2b",
+        "pose": "0xab",
+        "energy": 14614528,
+        "energy_high": 223,
+        "health": 103,
+        "child_behavior": "0x0",
+        "child_size": 0,
+        "child_stage": 0,
+        "child_bank": "0x0",
+        "held": 8,
+        "pressed": 0,
+        "parameters": {
+          "vertical_velocity": -450560,
+          "gravity": 24576,
+          "horizontal_velocity": 114688,
+          "burst_speed": 65536,
+          "energy_drain": 48
+        },
+        "walk_speed": 196608
+      },
+      "after": {
+        "movement_source": "0x15946",
+        "action": "0x2b",
+        "pose": "0xab",
+        "energy": 14614528,
+        "energy_high": 223,
+        "health": 103,
+        "child_behavior": "0x0",
+        "child_size": 0,
+        "child_stage": 0,
+        "child_bank": "0x0",
+        "held": 8,
+        "pressed": 0,
+        "parameters": {
+          "vertical_velocity": -450560,
+          "gravity": 24576,
+          "horizontal_velocity": 114688,
+          "burst_speed": 65536,
+          "energy_drain": 48
+        },
+        "walk_speed": 196608
+      }
+    },
+    {
+      "frame": 3598,
+      "exit_frame": 3598,
+      "before": {
+        "movement_source": "0x15946",
+        "action": "0x2b",
+        "pose": "0xab",
+        "energy": 14614528,
+        "energy_high": 223,
+        "health": 103,
+        "child_behavior": "0x0",
+        "child_size": 0,
+        "child_stage": 0,
+        "child_bank": "0x0",
+        "held": 0,
+        "pressed": 0,
+        "parameters": {
+          "vertical_velocity": -450560,
+          "gravity": 24576,
+          "horizontal_velocity": 114688,
+          "burst_speed": 65536,
+          "energy_drain": 48
+        },
+        "walk_speed": 196608
+      },
+      "after": {
+        "movement_source": "0x15946",
+        "action": "0x2b",
+        "pose": "0xab",
+        "energy": 14614528,
+        "energy_high": 223,
+        "health": 103,
+        "child_behavior": "0x13fc8",
+        "child_size": 256,
+        "child_stage": 0,
+        "child_bank": "0x0",
+        "held": 0,
+        "pressed": 0,
+        "parameters": {
+          "vertical_velocity": -450560,
+          "gravity": 24576,
+          "horizontal_velocity": 114688,
+          "burst_speed": 65536,
+          "energy_drain": 48
+        },
+        "walk_speed": 196608
+      }
+    },
+    {
+      "frame": 3646,
+      "exit_frame": 3646,
+      "before": {
+        "movement_source": "0x15946",
+        "action": "0x2b",
+        "pose": "0xab",
+        "energy": 13389824,
+        "energy_high": 204,
+        "health": 103,
+        "child_behavior": "0x13fc8",
+        "child_size": 256,
+        "child_stage": 2,
+        "child_bank": "0x0",
+        "held": 0,
+        "pressed": 0,
+        "parameters": {
+          "vertical_velocity": -450560,
+          "gravity": 24576,
+          "horizontal_velocity": 114688,
+          "burst_speed": 65536,
+          "energy_drain": 48
+        },
+        "walk_speed": 196608
+      },
+      "after": {
+        "movement_source": "0x15946",
+        "action": "0x0",
+        "pose": "0x0",
+        "energy": 13389824,
+        "energy_high": 204,
+        "health": 103,
+        "child_behavior": "0x13fc8",
+        "child_size": 256,
+        "child_stage": 2,
+        "child_bank": "0x0",
+        "held": 0,
+        "pressed": 0,
+        "parameters": {
+          "vertical_velocity": -450560,
+          "gravity": 24576,
+          "horizontal_velocity": 114688,
+          "burst_speed": 65536,
+          "energy_drain": 48
+        },
+        "walk_speed": 196608
+      }
+    },
+    {
+      "frame": 3647,
+      "exit_frame": 3647,
+      "before": {
+        "movement_source": "0x15946",
+        "action": "0x0",
+        "pose": "0x0",
+        "energy": 13369344,
+        "energy_high": 204,
+        "health": 103,
+        "child_behavior": "0x13fc8",
+        "child_size": 256,
+        "child_stage": 2,
+        "child_bank": "0x0",
+        "held": 0,
+        "pressed": 0,
+        "parameters": {
+          "vertical_velocity": -450560,
+          "gravity": 24576,
+          "horizontal_velocity": 114688,
+          "burst_speed": 65536,
+          "energy_drain": 48
+        },
+        "walk_speed": 196608
+      },
+      "after": {
+        "movement_source": "0x15946",
+        "action": "0x0",
+        "pose": "0x0",
+        "energy": 13369344,
+        "energy_high": 204,
+        "health": 103,
+        "child_behavior": "0x13fc8",
+        "child_size": 256,
+        "child_stage": 2,
+        "child_bank": "0x0",
+        "held": 0,
+        "pressed": 0,
+        "parameters": {
+          "vertical_velocity": -450560,
+          "gravity": 24576,
+          "horizontal_velocity": 114688,
+          "burst_speed": 65536,
+          "energy_drain": 48
+        },
+        "walk_speed": 196608
+      }
+    },
+    {
+      "frame": 4299,
+      "exit_frame": 4299,
+      "before": {
+        "movement_source": "0x15946",
+        "action": "0x0",
+        "pose": "0x0",
+        "energy": 16384,
+        "energy_high": 0,
+        "health": 103,
+        "child_behavior": "0x13fc8",
+        "child_size": 256,
+        "child_stage": 2,
+        "child_bank": "0x0",
+        "held": 0,
+        "pressed": 0,
+        "parameters": {
+          "vertical_velocity": -450560,
+          "gravity": 24576,
+          "horizontal_velocity": 114688,
+          "burst_speed": 65536,
+          "energy_drain": 48
+        },
+        "walk_speed": 196608
+      },
+      "after": {
+        "movement_source": "0x15946",
+        "action": "0x0",
+        "pose": "0x0",
+        "energy": 16384,
+        "energy_high": 0,
+        "health": 103,
+        "child_behavior": "0x13fc8",
+        "child_size": 256,
+        "child_stage": 2,
+        "child_bank": "0x0",
+        "held": 0,
+        "pressed": 0,
+        "parameters": {
+          "vertical_velocity": -450560,
+          "gravity": 24576,
+          "horizontal_velocity": 114688,
+          "burst_speed": 65536,
+          "energy_drain": 48
+        },
+        "walk_speed": 196608
+      }
+    },
+    {
+      "frame": 4300,
+      "exit_frame": 4300,
+      "before": {
+        "movement_source": "0x12578",
+        "action": "0x5",
+        "pose": "0x25",
+        "energy": -4096,
+        "energy_high": -1,
+        "health": 103,
+        "child_behavior": "0x0",
+        "child_size": 0,
+        "child_stage": 0,
+        "child_bank": "0x0",
+        "held": 0,
+        "pressed": 0,
+        "parameters": {
+          "vertical_velocity": -393216,
+          "gravity": 17408,
+          "horizontal_velocity": 114688,
+          "burst_speed": 65536,
+          "energy_drain": 48
+        },
+        "walk_speed": 139264
+      },
+      "after": {
+        "movement_source": "0x12578",
+        "action": "0x5",
+        "pose": "0x25",
+        "energy": -4096,
+        "energy_high": -1,
+        "health": 103,
+        "child_behavior": "0x0",
+        "child_size": 0,
+        "child_stage": 0,
+        "child_bank": "0x0",
+        "held": 0,
+        "pressed": 0,
+        "parameters": {
+          "vertical_velocity": -393216,
+          "gravity": 17408,
+          "horizontal_velocity": 114688,
+          "burst_speed": 65536,
+          "energy_drain": 48
+        },
+        "walk_speed": 139264
+      }
+    },
+    {
+      "frame": 4378,
+      "exit_frame": 4378,
+      "before": {
+        "movement_source": "0x12578",
+        "action": "0x6",
+        "pose": "0x28",
+        "energy": -4096,
+        "energy_high": -1,
+        "health": 103,
+        "child_behavior": "0x0",
+        "child_size": 0,
+        "child_stage": 0,
+        "child_bank": "0x0",
+        "held": 0,
+        "pressed": 0,
+        "parameters": {
+          "vertical_velocity": -393216,
+          "gravity": 17408,
+          "horizontal_velocity": 114688,
+          "burst_speed": 65536,
+          "energy_drain": 48
+        },
+        "walk_speed": 139264
+      },
+      "after": {
+        "movement_source": "0x12578",
+        "action": "0x6",
+        "pose": "0x28",
+        "energy": -4096,
+        "energy_high": -1,
+        "health": 103,
+        "child_behavior": "0x0",
+        "child_size": 0,
+        "child_stage": 0,
+        "child_bank": "0x0",
+        "held": 0,
+        "pressed": 0,
+        "parameters": {
+          "vertical_velocity": -393216,
+          "gravity": 17408,
+          "horizontal_velocity": 114688,
+          "burst_speed": 65536,
+          "energy_drain": 48
+        },
+        "walk_speed": 139264
+      }
+    },
+    {
+      "frame": 4379,
+      "exit_frame": 4379,
+      "before": {
+        "movement_source": "0x12578",
+        "action": "0x6",
+        "pose": "0x28",
+        "energy": -4096,
+        "energy_high": -1,
+        "health": 103,
+        "child_behavior": "0x0",
+        "child_size": 0,
+        "child_stage": 0,
+        "child_bank": "0x0",
+        "held": 0,
+        "pressed": 0,
+        "parameters": {
+          "vertical_velocity": -393216,
+          "gravity": 17408,
+          "horizontal_velocity": 114688,
+          "burst_speed": 65536,
+          "energy_drain": 48
+        },
+        "walk_speed": 139264
+      },
+      "after": {
+        "movement_source": "0x12578",
+        "action": "0x0",
+        "pose": "0x29",
+        "energy": -4096,
+        "energy_high": -1,
+        "health": 103,
+        "child_behavior": "0x0",
+        "child_size": 0,
+        "child_stage": 0,
+        "child_bank": "0x0",
+        "held": 0,
+        "pressed": 0,
+        "parameters": {
+          "vertical_velocity": -393216,
+          "gravity": 17408,
+          "horizontal_velocity": 114688,
+          "burst_speed": 65536,
+          "energy_drain": 48
+        },
+        "walk_speed": 139264
+      }
+    },
+    {
+      "frame": 5500,
+      "exit_frame": 5500,
+      "before": {
+        "movement_source": "0x12578",
+        "action": "0x0",
+        "pose": "0x0",
+        "energy": -4096,
+        "energy_high": -1,
+        "health": 103,
+        "child_behavior": "0x0",
+        "child_size": 0,
+        "child_stage": 0,
+        "child_bank": "0x0",
+        "held": 0,
+        "pressed": 0,
+        "parameters": {
+          "vertical_velocity": -393216,
+          "gravity": 17408,
+          "horizontal_velocity": 114688,
+          "burst_speed": 65536,
+          "energy_drain": 48
+        },
+        "walk_speed": 139264
+      },
+      "after": {
+        "movement_source": "0x12578",
+        "action": "0x0",
+        "pose": "0x0",
+        "energy": -4096,
+        "energy_high": -1,
+        "health": 103,
+        "child_behavior": "0x0",
+        "child_size": 0,
+        "child_stage": 0,
+        "child_bank": "0x0",
+        "held": 0,
+        "pressed": 0,
+        "parameters": {
+          "vertical_velocity": -393216,
+          "gravity": 17408,
+          "horizontal_velocity": 114688,
+          "burst_speed": 65536,
+          "energy_drain": 48
+        },
+        "walk_speed": 139264
+      }
+    }
+  ],
+  "limits": [
+    "Source reset happens in separate child callback after final boosted fighter row; actor/action composition does not claim to perform that callback.",
+    "First joint default/negative-energy/idle/child-empty row4379 is later than first default source row4300."
+  ]
+}

@@ -71,12 +71,13 @@ func decodeChuActor(t *testing.T, raw chuActorSnapshot, id uint16) ChuActorState
 		AnimationSet: a.AnimationSet, ShapeSet: a.ShapeSet, GraphicOffsetX: a.GraphicOffsetX, GraphicOffsetY: a.GraphicOffsetY, GraphicParameter: a.GraphicParameter,
 		ChargeTicks: a.ChargeTicks, GuardMask: a.GuardMask, ContactFlags: a.ContactFlags, TargetMask: a.TargetMask, AttackValue: a.AttackValue, StunDamage: a.StunDamage,
 		EffectKind: a.EffectKind, Reaction: a.Reaction, AttackScale: a.AttackScale, HitStopTicks: a.HitStopTicks, Shake: a.Shake, StatusDelay: a.StatusDelay,
-		Residual: a.Residual, StunTicks: a.StunTicks, TargetBit: a.TargetBit, Power: a.Power, AlternateVelocity: a.AlternateVelocity, Children: a.Children}
+		Residual: a.Residual, StunTicks: a.StunTicks, TargetBit: a.TargetBit, Power: a.Power, AlternateVelocity: a.AlternateVelocity, Children: a.Children,
+		MovementSource: a.MovementSource, ChildExtras: a.ChildExtras}
 	for i := range f.ChildAttackFlags {
 		f.ChildAttackFlags[i] = family[index+256*(i+1)+0x64]
 	}
 	w := ChuActorWorld{Pool: a.Pool, EffectExtras: a.EffectExtras, OtherEnergy: make(map[uint16]int16), OccupiedLanes: a.OccupiedLanes, Buffers: a.Buffers, Throws: a.Throws,
-		PendingSound: a.PendingSound, SoundQueue: a.SoundQueue, RandomSeed: a.RandomSeed, GlobalF568: a.GlobalF568, GlobalF56A: a.GlobalF56A,
+		PendingSound: a.PendingSound, SoundQueue: a.SoundQueue, RandomSeed: a.RandomSeed, GlobalF568: a.GlobalF568, GlobalF56A: a.GlobalF56A, DragonBankCursor: a.DragonBankCursor,
 		Stream: attackContactBytes(t, raw.Stream, 1024), Stopped: raw.Stopped, EndMarkers: raw.Markers,
 		Registration: FighterRegistrationState{Used: raw.RegistrationUsed, Owners: envelopeWords(t, raw.Registration, 128)},
 		SampleUsed:   raw.SamplesUsed, HUDCells: envelopeWords(t, raw.HUDCells, 1024), HUDCursor: raw.HUDCursor}
@@ -109,6 +110,7 @@ func encodeChuActor(t *testing.T, state ChuActorState, view ChuActorView, emitte
 		EnergyFraction: uint16(f.Energy), HitStopTicks: f.HitStopTicks, Shake: f.Shake, ScreenOffsetX: f.ScreenOffsetX, StatusDelay: f.StatusDelay, Residual: f.Residual,
 		StunTicks: f.StunTicks, TargetBit: f.TargetBit, Power: f.Power, AlternateVelocity: f.AlternateVelocity, Children: f.Children, EffectExtras: w.EffectExtras,
 		GlobalF568: w.GlobalF568, GlobalF56A: w.GlobalF56A, Left: view.ArenaLeft, Right: view.ArenaRight}
+	action.MovementSource, action.ChildExtras, action.DragonBankCursor = f.MovementSource, f.ChildExtras, w.DragonBankCursor
 	raw := previous
 	raw.Action = encodeChuAction(t, action, previous.Action)
 	b := attackContactBytes(t, raw.Action.Tail.ActorBytes, 256)

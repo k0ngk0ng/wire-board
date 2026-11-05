@@ -1,0 +1,8 @@
+{"Time":"2026-11-05T10:53:53.086625+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine"}
+{"Time":"2026-11-05T10:53:53.167834+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter0RuleVersionAndInvalidSequences"}
+{"Time":"2026-11-05T10:53:53.167913+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter0RuleVersionAndInvalidSequences","Output":"=== RUN   TestFighter0RuleVersionAndInvalidSequences\n"}
+{"Time":"2026-11-05T10:53:55.061484+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter0RuleVersionAndInvalidSequences","Output":"--- PASS: TestFighter0RuleVersionAndInvalidSequences (1.89s)\n"}
+{"Time":"2026-11-05T10:53:55.066172+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter0RuleVersionAndInvalidSequences","Elapsed":1.89}
+{"Time":"2026-11-05T10:53:55.067384+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"PASS\n"}
+{"Time":"2026-11-05T10:53:55.075751+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine\t1.989s\n"}
+{"Time":"2026-11-05T10:53:55.075819+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Elapsed":1.9889999999999999}

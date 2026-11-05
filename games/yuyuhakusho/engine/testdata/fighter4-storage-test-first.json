@@ -1,0 +1,11 @@
+{
+  "scope": "Canonical movement/childFE/cursor views only; unsupported4 gate retained",
+  "base_commit": "605efb552ca80754f96d040dc6671e72cbd9a0a6",
+  "implementation_changed": false,
+  "files": {
+    "fighter4_storage_test.go": "63a6b48f5eb2bd65554610792d8cecacad54702cd65a7b295ad50bd3643114d7",
+    "FIGHTER4_STORAGE_FAILURES.md": "2f99b12b81359a86401f288712dda1531ea065429fe3389ba6fe3443b56f1b6b",
+    "testdata/fighter4-storage-red.jsonl": "d7f5480e2c2b6c6ab0c99bed8fcdf4f04ee8f9c64ba7851fb87bab04700f78ec"
+  },
+  "red_reason": "ChuActorFighter.MovementSource/ChildExtras, WorldObject.DragonBank and new view fields unavailable"
+}

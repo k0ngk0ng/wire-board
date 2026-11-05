@@ -1,0 +1,8 @@
+{
+  "session_source4_and_zero_save_implementation_changed": false,
+  "files": {
+    "fighter4_save_compat_test.go": "91e613bb6d39d65c51f64245a89797b81ea1780a761b9fbfaca09227cd00a428",
+    "fighter4_sessions_test.go": "1e590a1d82fdc7bf9ce3fdbb90f9fc09756c0478ba6bc3034cee5e4f003e1848",
+    "testdata/fighter4-session-save-red.jsonl": "e3827b425e148b6a2e4f119561c8bb66eeb1275694993b46e6a0dfd7992f7d2e"
+  }
+}

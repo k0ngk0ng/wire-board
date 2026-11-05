@@ -1,0 +1,23 @@
+{
+  "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+  "records": [
+    {
+      "source": 75128,
+      "raw_bytes": "00022000fffa0000000044000001c000",
+      "data": {
+        "vertical_velocity": -393216,
+        "gravity": 17408,
+        "horizontal_velocity": 114688
+      }
+    },
+    {
+      "source": 88390,
+      "raw_bytes": "00030000fff92000000060000001c000",
+      "data": {
+        "vertical_velocity": -450560,
+        "gravity": 24576,
+        "horizontal_velocity": 114688
+      }
+    }
+  ]
+}

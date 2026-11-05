@@ -1,0 +1,9 @@
+{
+  "base_commit": "605efb552ca80754f96d040dc6671e72cbd9a0a6",
+  "world_source4_implementation_changed": false,
+  "files": {
+    "fighter4_world_test.go": "e6f42cfb443d75726b1b64f799082f79bea5dea38b82d29920a099751b455798",
+    "FIGHTER4_WORLD_FAILURES.md": "6df265bd5228b76c7fa0af7cabf52a971bf04d24afcff252ce033657d658d5a9",
+    "testdata/fighter4-world-red.jsonl": "584baa0078ff2dd7adabeba7aed6dd0d4c084ea1ab2bb37461497b88abbdd8b4"
+  }
+}

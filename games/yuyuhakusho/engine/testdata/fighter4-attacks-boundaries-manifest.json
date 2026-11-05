@@ -1,0 +1,101 @@
+{
+  "scope": "Declared-private source4 complete selector boundary matrix",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "capture_sha256": "a5f9bcd2726051f1d744ca7444a3d5798a7c9ce9d76a8e5f7380d1c0a5718eb5",
+  "capture_dependencies": [
+    {
+      "path": "scripts/yuyuhakusho/capture_chu_attacks.py",
+      "sha256": "f3d42a7d04267fcdbdea9e67963a70bb34920b861676358d67ab607e563eb580"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_ground_idle.py",
+      "sha256": "01d4798e937fa01946b7612fbc4fa7418dda97ec3411db4beb4629975614ba1d"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_jump.py",
+      "sha256": "21017876cd34f9263b6efa11e376ebf84b31d5fc82664c7c8b208213d1ecd8ab"
+    },
+    {
+      "path": "scripts/yuyuhakusho/capture_effect_pool.py",
+      "sha256": "b9c753d1c9b6380ac64ee16f2c10cdcf8560654e493e770b31552b1781354f46"
+    },
+    {
+      "path": "scripts/yuyuhakusho/reference.py",
+      "sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/probe.py",
+      "sha256": "03a52ad64abf051a4a0c8914cb4813503f246afc0ec463ecd5cadb55c3bf7642"
+    }
+  ],
+  "input": {
+    "path": "docs/research/md-yuyuhakusho/source4-next-inputs.json",
+    "sha256": "e00525d883a103b4631332ac793b2569ff0ee384134e8fd58407bbc4123d0352"
+  },
+  "baseline": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter4-attacks-reference-frames.json",
+    "sha256": "891f1e493f3e3d8bd34e6bf4789739364c6a3f3dc3d318d846d3b797f581d658",
+    "frames": 3602
+  },
+  "records": 22428,
+  "calls": 22428,
+  "kind_counts": {
+    "ground": 3264,
+    "air": 1536,
+    "ground-special": 11262,
+    "air-special": 4206,
+    "rush-finish": 1080,
+    "dragon-followup": 1080
+  },
+  "constructor_counts": {
+    "0x18812": 452,
+    "0x18828": 626,
+    "0x1886a": 108,
+    "0x18880": 102,
+    "0x1883e": 144,
+    "0x16e36": 136,
+    "0x18854": 136,
+    "0x188ee": 512,
+    "0x18930": 488,
+    "0x188d8": 280,
+    "0x1904e": 774,
+    "0x190a8": 774,
+    "0x190d2": 628,
+    "0x190f0": 1294,
+    "0x1911a": 564,
+    "0x1913c": 654,
+    "0x19190": 792,
+    "0x191d4": 628,
+    "0x191ec": 1294
+  },
+  "source_objects": {
+    "0x8c00": 5607,
+    "0x9000": 5607,
+    "0x8400": 5607,
+    "0x8800": 5607
+  },
+  "fixture_sha256": "ad2ccb5d467c2dcdc286dc3ecb92fa725f133444310e0f641ae7004e29e8f4db",
+  "gzip_sha256": "bc3be6b363925badbcb28e1398c5d2483bc74293b9af7bfff9861a3035bccb49",
+  "frames_match_original_core": true,
+  "incomplete_calls": 0,
+  "errors": [],
+  "rng_calls": 0,
+  "entry_frame_limit": 3600,
+  "drain_frames": 2,
+  "pass": true,
+  "limits": [
+    "Synthetic private storage does not establish natural gameplay or character resource initialization",
+    "Natural source4 count is explicit, including zero",
+    "Selection and initialization only; no continued motion, collision or full matches",
+    "Streams change declared base controls only; no expected intermediate state or RNG injection"
+  ]
+}

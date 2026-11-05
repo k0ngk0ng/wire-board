@@ -1,0 +1,181 @@
+{
+  "scope": "Append natural CPU evidence only; frozen Go/test/boundaries/sequences/rules are unchanged",
+  "previous_oracle_raw_sha256": "3be3ab5db9bcddc1f582d0989d177b6fee704483a51b2b0a663cc18857ceb599",
+  "previous_oracle_gzip_sha256": "71393dd71f7fc22f6a5ab00ac5d30a7e02d8bf475b206b2006e3140ce9f7600d",
+  "previous_manifest_sha256": "42d24d86d2d64c31f4bb3ff7dcd674f66c22e2d25aae993af55e6a1f8ece0ea4",
+  "previous_manifest_snapshot": {
+    "pass": true,
+    "scope": "Actual full source4 dragon callbacks under ordinary and appended declared real-menu physical inputs",
+    "identity": {
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+      "core_name": "Genesis Plus GX",
+      "core_version": "v1.7.460bee4c",
+      "fps": 59.92274340431231,
+      "ram_bytes": 65536,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "teamplayer": false
+    },
+    "capture_sha256": "1af2716d9f69041771bb4e4357c7961184f5cd990a4ac267983b1172fffda152",
+    "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+    "records": 2,
+    "calls": 2,
+    "kind_counts": {
+      "head": 2
+    },
+    "library_frames": 9,
+    "fixture_sha256": "3be3ab5db9bcddc1f582d0989d177b6fee704483a51b2b0a663cc18857ceb599",
+    "gzip_sha256": "71393dd71f7fc22f6a5ab00ac5d30a7e02d8bf475b206b2006e3140ce9f7600d",
+    "baselines": [
+      {
+        "input": "docs/research/md-yuyuhakusho/source4-next-inputs.json",
+        "input_sha256": "e00525d883a103b4631332ac793b2569ff0ee384134e8fd58407bbc4123d0352",
+        "reference": "games/yuyuhakusho/engine/testdata/fighter4-attacks-reference-frames.json",
+        "reference_raw_sha256": "891f1e493f3e3d8bd34e6bf4789739364c6a3f3dc3d318d846d3b797f581d658",
+        "reference_manifest": "games/yuyuhakusho/engine/testdata/fighter4-attacks-reference-manifest.json",
+        "reference_manifest_sha256": "222e0c20466f492035438421bcc835d356985a19973947ea654e4da0f8b553c7",
+        "video_steps": 3602,
+        "all_ram_video_match": true
+      },
+      {
+        "input": "docs/research/md-yuyuhakusho/source4-special-discovery-inputs.json",
+        "input_sha256": "5ba6b13d2bb0b285c4307981a5e903d75a7936de3d2632a9f1bf449189650424",
+        "reference": "games/yuyuhakusho/engine/testdata/fighter4-attacks-special-reference-frames.json",
+        "reference_raw_sha256": "666c2a9fff6c47b3b0540275beae5a7a1c0f6ada1e1d690d6a67d1596617b22e",
+        "reference_manifest": "games/yuyuhakusho/engine/testdata/fighter4-attacks-special-reference-manifest.json",
+        "reference_manifest_sha256": "45c14985191d312c82bdde49f0efa0b6debf67c0ba1560b8ad25d00d7ec03909",
+        "video_steps": 3602,
+        "all_ram_video_match": true
+      }
+    ],
+    "frames_match_original_core": true,
+    "curve_read_count": 6,
+    "curve_min_index": 32,
+    "curve_max_index": 534,
+    "rng_calls": 0,
+    "unexplained_change_calls": 0,
+    "errors": [],
+    "limits": [
+      "Each callback stops at1580 or completed3556; hardware sprites are outside this observer scope.",
+      "Natural activity is bounded by the declared legal input/control and is not asserted to cover swallowing or boosted child unless observed."
+    ],
+    "interrupt_calls": 0,
+    "external_change_calls": 0,
+    "external_queue_calls": 0
+  },
+  "appended_baseline": {
+    "input": "docs/research/md-yuyuhakusho/source4-special-discovery-duo-inputs.json",
+    "input_sha256": "b303ca8622f90747052902f81b2b7f2bdde39f59e47feb6f36a6bf8287a6ac34",
+    "reference": "games/yuyuhakusho/engine/testdata/fighter4-attacks-duo-reference-frames.json",
+    "reference_raw_sha256": "9f282f53a016d184d45052b30eaf8c482d4b568132f7979f7eebff4a7faa5917",
+    "reference_manifest": "games/yuyuhakusho/engine/testdata/fighter4-attacks-duo-reference-manifest.json",
+    "reference_manifest_sha256": "da7b399421593ad938377c99898e1734f5f61297efad133476c1802f1dc3ba80",
+    "video_steps": 5502,
+    "all_ram_video_match": true
+  },
+  "appended_records": 1590,
+  "appended_kind_counts": {
+    "head": 111,
+    "trail": 777,
+    "boost": 702
+  },
+  "appended_frame_range": [
+    3479,
+    4299
+  ],
+  "combined_records": 1592,
+  "new_fixture_raw_sha256": "0775a10654e433476afae9f611e18fff53cd9af70bdf70c3d78cd319e77f8744",
+  "new_fixture_gzip_sha256": "b8a48d382472e39a158916821c6a9eef7f58e274d84eb2002e14572979e87612",
+  "capture_sha256": "684144b79ecc090af8155d5ce5d813fab0a4cbc3d5aad293310a873766a8c388",
+  "frozen_bindings": {
+    "games/yuyuhakusho/engine/fighter4_projectile.go": "19efda7fa74f13d239d5552c6a7a580875661257567bdcaba76ccd04861db677",
+    "games/yuyuhakusho/engine/fighter4_projectile_test.go": "aaa6c8ee815b7e10f5799814874106ca9c02fd68a3283a2ec03619d7a5c90615",
+    "games/yuyuhakusho/engine/testdata/fighter4-projectile-boundaries.json.gz": "461828c02e995ec7cc0bd27d918413a48ea41dee1df8cf88130bb1bbdfcb04c9",
+    "games/yuyuhakusho/engine/testdata/fighter4-projectile-sequences.json.gz": "92c42ebff0897c55a256bd1c551c02dec7b0299a4c976ee37b320c2f676eea8b",
+    "games/yuyuhakusho/engine/testdata/fighter4-projectile-rules.json": "e1ce7f3a7153b2a97b4370c29daa9b3ef8ecb8f1b0a3521e9120e8491ef6f641",
+    "scripts/yuyuhakusho/capture_fighter4_projectile.py": "a1f37ef03fb10ba16f9f933db5e0570cf7efdc273abea8d517e82b063fea5686"
+  },
+  "previous_append_report_sha256": "b7444bdd8ace69acf2673497439aa8a018e0b12276beddb45bd311ef28845ff7",
+  "previous_append_report_snapshot": {
+    "scope": "Append natural CPU evidence only; frozen Go/test/boundaries/sequences/rules are unchanged",
+    "previous_oracle_raw_sha256": "e8e29c6e9cae99c14890f1df17a2e4c8ce850deb26f33296907aa39072bbb1b5",
+    "previous_oracle_gzip_sha256": "42c631ee1de2a82f1e9eeed8d6b8200df77bb62e8a22a6143f8f2086072a57f5",
+    "previous_manifest_sha256": "f25a6e4c438bd6cf232646ebdcd60fc609a1bfd7449beb164480d619b094ce06",
+    "previous_manifest_snapshot": {
+      "pass": true,
+      "scope": "Actual full source4 dragon callbacks under real-menu input",
+      "identity": {
+        "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+        "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+        "core_name": "Genesis Plus GX",
+        "core_version": "v1.7.460bee4c",
+        "fps": 59.92274340431231,
+        "ram_bytes": 65536,
+        "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+        "teamplayer": false
+      },
+      "capture_sha256": "a1f37ef03fb10ba16f9f933db5e0570cf7efdc273abea8d517e82b063fea5686",
+      "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+      "records": 0,
+      "calls": 0,
+      "kind_counts": {},
+      "library_frames": 9,
+      "fixture_sha256": "e8e29c6e9cae99c14890f1df17a2e4c8ce850deb26f33296907aa39072bbb1b5",
+      "gzip_sha256": "42c631ee1de2a82f1e9eeed8d6b8200df77bb62e8a22a6143f8f2086072a57f5",
+      "baselines": [
+        {
+          "input": "docs/research/md-yuyuhakusho/source4-next-inputs.json",
+          "input_sha256": "e00525d883a103b4631332ac793b2569ff0ee384134e8fd58407bbc4123d0352",
+          "reference": "games/yuyuhakusho/engine/testdata/fighter4-attacks-reference-frames.json",
+          "reference_raw_sha256": "891f1e493f3e3d8bd34e6bf4789739364c6a3f3dc3d318d846d3b797f581d658",
+          "reference_manifest": "games/yuyuhakusho/engine/testdata/fighter4-attacks-reference-manifest.json",
+          "reference_manifest_sha256": "222e0c20466f492035438421bcc835d356985a19973947ea654e4da0f8b553c7",
+          "video_steps": 3602,
+          "all_ram_video_match": true
+        }
+      ],
+      "frames_match_original_core": true,
+      "curve_read_count": 4581,
+      "curve_min_index": -32,
+      "curve_max_index": 1311,
+      "rng_calls": 0,
+      "unexplained_change_calls": 0,
+      "errors": [],
+      "limits": [
+        "Draw is captured at1580 entry; hardware sprite consumers are outside callback scope.",
+        "Non-dragon impact/dust callbacks are not scheduled in isolated flows.",
+        "Only declared pause/contact external inputs; no intermediate state/clock/AN reinjection."
+      ]
+    },
+    "appended_baseline": {
+      "input": "docs/research/md-yuyuhakusho/source4-special-discovery-inputs.json",
+      "input_sha256": "5ba6b13d2bb0b285c4307981a5e903d75a7936de3d2632a9f1bf449189650424",
+      "reference": "games/yuyuhakusho/engine/testdata/fighter4-attacks-special-reference-frames.json",
+      "reference_raw_sha256": "666c2a9fff6c47b3b0540275beae5a7a1c0f6ada1e1d690d6a67d1596617b22e",
+      "reference_manifest": "games/yuyuhakusho/engine/testdata/fighter4-attacks-special-reference-manifest.json",
+      "reference_manifest_sha256": "45c14985191d312c82bdde49f0efa0b6debf67c0ba1560b8ad25d00d7ec03909",
+      "video_steps": 3602,
+      "all_ram_video_match": true
+    },
+    "appended_records": 2,
+    "appended_kind_counts": {
+      "head": 2
+    },
+    "appended_frame_range": [
+      3481,
+      3482
+    ],
+    "combined_records": 2,
+    "new_fixture_raw_sha256": "3be3ab5db9bcddc1f582d0989d177b6fee704483a51b2b0a663cc18857ceb599",
+    "new_fixture_gzip_sha256": "71393dd71f7fc22f6a5ab00ac5d30a7e02d8bf475b206b2006e3140ce9f7600d",
+    "capture_sha256": "1af2716d9f69041771bb4e4357c7961184f5cd990a4ac267983b1172fffda152",
+    "frozen_bindings": {
+      "games/yuyuhakusho/engine/fighter4_projectile.go": "19efda7fa74f13d239d5552c6a7a580875661257567bdcaba76ccd04861db677",
+      "games/yuyuhakusho/engine/fighter4_projectile_test.go": "aaa6c8ee815b7e10f5799814874106ca9c02fd68a3283a2ec03619d7a5c90615",
+      "games/yuyuhakusho/engine/testdata/fighter4-projectile-boundaries.json.gz": "461828c02e995ec7cc0bd27d918413a48ea41dee1df8cf88130bb1bbdfcb04c9",
+      "games/yuyuhakusho/engine/testdata/fighter4-projectile-sequences.json.gz": "92c42ebff0897c55a256bd1c551c02dec7b0299a4c976ee37b320c2f676eea8b",
+      "games/yuyuhakusho/engine/testdata/fighter4-projectile-rules.json": "e1ce7f3a7153b2a97b4370c29daa9b3ef8ecb8f1b0a3521e9120e8491ef6f641",
+      "scripts/yuyuhakusho/capture_fighter4_projectile.py": "a1f37ef03fb10ba16f9f933db5e0570cf7efdc273abea8d517e82b063fea5686"
+    }
+  }
+}

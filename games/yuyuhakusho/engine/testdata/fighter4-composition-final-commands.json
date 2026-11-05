@@ -1,0 +1,34 @@
+{
+  "started_at_utc": "2026-11-05T02:19:36.585156+00:00",
+  "run": "six unchanged complete-composition tests after test-only immutable-metadata codec correction",
+  "files_before": {
+    "games/yuyuhakusho/engine/chu_action.go": "eea7322db1d75bcdb783130be4bcdf13ece6d742fafcdf951721338fb56f8c02",
+    "games/yuyuhakusho/engine/chu_actor.go": "a83e694c614f149772af5e085ecef80894e5a053c101289f72a5659849cffac2",
+    "games/yuyuhakusho/engine/chu_input.go": "a9d14993c78d4ae89403824254d72edc3a6315f61928c65129e8b67ac870e294",
+    "games/yuyuhakusho/engine/chu_tail.go": "96027a0b041983ece6fee7b553ae286085b7e428d6f8767393ac39ececcdc038",
+    "games/yuyuhakusho/engine/chu_world.go": "27a13d9eca15c668a9d9b6a090d7c5f10dfcf12fbc1e061441f4eb5de87153bc",
+    "games/yuyuhakusho/engine/world_objects.go": "dbb59e35cb93aca9928426de3c290af4fc132378a4f1ff15cc527d8014fd010d",
+    "games/yuyuhakusho/engine/fighter4_attacks.go": "ca87b180ace1aaff0c9e48ec2cc21f51c21d67351f88f5fe7eab1dd8753c54a6",
+    "games/yuyuhakusho/engine/fighter4_motion.go": "a236eac8bded286b9b35241c206d0de35e763d5097651862f14476f7f787f154",
+    "games/yuyuhakusho/engine/fighter4_projectile.go": "19efda7fa74f13d239d5552c6a7a580875661257567bdcaba76ccd04861db677",
+    "games/yuyuhakusho/engine/fighter4_world.go": "4f629e3017d1bc56ad56ec1394a3fca6e36527681d2a6b5a464f4c91578b1e5f",
+    "games/yuyuhakusho/engine/chu_action_test.go": "ce29ef76b272029224a90418ea6a53726e19e529051b4861987eed97cf915953",
+    "games/yuyuhakusho/engine/chu_actor_test.go": "09cdf2a78e0fe0b532b4555f7116e756db99441bbf518783729ace02f07d8355",
+    "games/yuyuhakusho/engine/chu_world_test.go": "2821c4112306e6a970a40414267c2c47f9305943c53ff3f8d44d70cbdd0fe14d",
+    "games/yuyuhakusho/engine/world_objects_test.go": "7e8c76984c6627121420512ef8e15845e22ceea89b6fad18c04338eebaf563db",
+    "games/yuyuhakusho/engine/fighter4_composition_test.go": "a29fcbeaa0fa2049d32bec75ba875c155c78b1675cd0c57b9114d8b6cb68f2a3"
+  },
+  "native_command": "GOCACHE=\"$PWD/.local/go-cache\" GOMODCACHE=\"$PWD/.local/go-mod\" GOTMPDIR=\"$PWD/.local/md-yuyuhakusho/tmp\" go test -race -count=1 -json -run '^TestFighter4Composition' ./games/yuyuhakusho/engine",
+  "wasm_command": "GOCACHE=\"$PWD/.local/go-cache\" GOMODCACHE=\"$PWD/.local/go-mod\" GOTMPDIR=\"$PWD/.local/md-yuyuhakusho/tmp\" GOOS=js GOARCH=wasm go test -count=1 -json -exec \"$(go env GOROOT)/lib/wasm/go_js_wasm_exec\" -run '^TestFighter4Composition' ./games/yuyuhakusho/engine",
+  "completed_at_utc": "2026-11-05T02:27:58.531097+00:00",
+  "composition_production_and_used_adapters_unchanged": true,
+  "post_validation_unrelated_changes": [
+    {
+      "path": "games/yuyuhakusho/engine/chu_world_test.go",
+      "tested_sha256": "2821c4112306e6a970a40414267c2c47f9305943c53ff3f8d44d70cbdd0fe14d",
+      "current_sha256": "83416cee18567121ea0013e05113d7c41591f107b7edb1dd35db67788f53796a",
+      "modified_at_utc": "2026-11-05T02:22:54.020552+00:00",
+      "scope": "World-only history/special fixture adapters; change after both test logs completed; not executed by six composition tests"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+
+  .local/md-yuyuhakusho/local-player/player.js                   1.2mb ⚠️
+  .local/md-yuyuhakusho/local-player/player.css                  6.7kb
+  .local/md-yuyuhakusho/local-player/md-controller-UXLIP6HJ.svg  1.8kb
+
+⚡ Done in 36ms
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/check_hiei_player.py", line 52, in <module>
+    assert js('Array.from(document.querySelector("#player-character").options).length') == 9
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

@@ -1,0 +1,393 @@
+[
+  {
+    "start": 180,
+    "end": 185,
+    "buttons": [
+      3
+    ]
+  },
+  {
+    "start": 360,
+    "end": 365,
+    "buttons": [
+      3
+    ]
+  },
+  {
+    "start": 650,
+    "end": 655,
+    "buttons": [
+      3
+    ]
+  },
+  {
+    "start": 800,
+    "end": 805,
+    "buttons": [
+      0
+    ]
+  },
+  {
+    "start": 950,
+    "end": 955,
+    "buttons": [
+      0
+    ]
+  },
+  {
+    "start": 1000,
+    "end": 1060,
+    "buttons": [
+      7
+    ]
+  },
+  {
+    "start": 1100,
+    "end": 1104,
+    "buttons": [
+      1
+    ]
+  },
+  {
+    "start": 1150,
+    "end": 1154,
+    "buttons": [
+      0
+    ]
+  },
+  {
+    "start": 1250,
+    "end": 1254,
+    "buttons": [
+      1
+    ]
+  },
+  {
+    "start": 1300,
+    "end": 1304,
+    "buttons": [
+      0
+    ]
+  },
+  {
+    "start": 1305,
+    "end": 1339,
+    "buttons": [
+      6
+    ]
+  },
+  {
+    "start": 1400,
+    "end": 1404,
+    "buttons": [
+      4
+    ]
+  },
+  {
+    "start": 1450,
+    "end": 1454,
+    "buttons": [
+      1
+    ]
+  },
+  {
+    "start": 1500,
+    "end": 1504,
+    "buttons": [
+      0
+    ]
+  },
+  {
+    "start": 1550,
+    "end": 1554,
+    "buttons": [
+      8
+    ]
+  },
+  {
+    "start": 1600,
+    "end": 1604,
+    "buttons": [
+      1
+    ]
+  },
+  {
+    "start": 1800,
+    "end": 1801,
+    "buttons": [
+      7
+    ]
+  },
+  {
+    "start": 1804,
+    "end": 1805,
+    "buttons": [
+      7
+    ]
+  },
+  {
+    "start": 1808,
+    "end": 1809,
+    "buttons": [
+      7
+    ]
+  },
+  {
+    "start": 1812,
+    "end": 1813,
+    "buttons": [
+      7
+    ]
+  },
+  {
+    "start": 1860,
+    "end": 1861,
+    "buttons": [
+      7
+    ]
+  },
+  {
+    "start": 1864,
+    "end": 1865,
+    "buttons": [
+      7
+    ]
+  },
+  {
+    "start": 1868,
+    "end": 1869,
+    "buttons": [
+      7
+    ]
+  },
+  {
+    "start": 1872,
+    "end": 1873,
+    "buttons": [
+      7
+    ]
+  },
+  {
+    "start": 1923,
+    "end": 1926,
+    "buttons": [
+      0,
+      1
+    ]
+  },
+  {
+    "start": 1991,
+    "end": 1992,
+    "buttons": [
+      5
+    ]
+  },
+  {
+    "start": 1993,
+    "end": 1994,
+    "buttons": [
+      5,
+      7
+    ]
+  },
+  {
+    "start": 1995,
+    "end": 1996,
+    "buttons": [
+      7
+    ]
+  },
+  {
+    "start": 1998,
+    "end": 2001,
+    "buttons": [
+      0
+    ]
+  },
+  {
+    "start": 2043,
+    "end": 2044,
+    "buttons": [
+      5
+    ]
+  },
+  {
+    "start": 2045,
+    "end": 2046,
+    "buttons": [
+      5,
+      7
+    ]
+  },
+  {
+    "start": 2047,
+    "end": 2048,
+    "buttons": [
+      7
+    ]
+  },
+  {
+    "start": 2050,
+    "end": 2053,
+    "buttons": [
+      1
+    ]
+  },
+  {
+    "start": 2182,
+    "end": 2183,
+    "buttons": [
+      5
+    ]
+  },
+  {
+    "start": 2186,
+    "end": 2187,
+    "buttons": [
+      5
+    ]
+  },
+  {
+    "start": 2189,
+    "end": 2192,
+    "buttons": [
+      0
+    ]
+  },
+  {
+    "start": 2380,
+    "end": 2381,
+    "buttons": [
+      5
+    ]
+  },
+  {
+    "start": 2384,
+    "end": 2385,
+    "buttons": [
+      5
+    ]
+  },
+  {
+    "start": 2387,
+    "end": 2390,
+    "buttons": [
+      1
+    ]
+  },
+  {
+    "start": 2606,
+    "end": 2607,
+    "buttons": [
+      4
+    ]
+  },
+  {
+    "start": 2616,
+    "end": 2617,
+    "buttons": [
+      5
+    ]
+  },
+  {
+    "start": 2618,
+    "end": 2619,
+    "buttons": [
+      5,
+      7
+    ]
+  },
+  {
+    "start": 2620,
+    "end": 2621,
+    "buttons": [
+      7
+    ]
+  },
+  {
+    "start": 2623,
+    "end": 2626,
+    "buttons": [
+      0
+    ]
+  },
+  {
+    "start": 2645,
+    "end": 2646,
+    "buttons": [
+      5
+    ]
+  },
+  {
+    "start": 2647,
+    "end": 2648,
+    "buttons": [
+      5,
+      7
+    ]
+  },
+  {
+    "start": 2649,
+    "end": 2650,
+    "buttons": [
+      7
+    ]
+  },
+  {
+    "start": 2652,
+    "end": 2655,
+    "buttons": [
+      1
+    ]
+  },
+  {
+    "start": 2674,
+    "end": 3044,
+    "buttons": [
+      0
+    ]
+  },
+  {
+    "start": 3424,
+    "end": 3425,
+    "buttons": [
+      5
+    ]
+  },
+  {
+    "start": 3426,
+    "end": 3427,
+    "buttons": [
+      7
+    ]
+  },
+  {
+    "start": 3428,
+    "end": 3429,
+    "buttons": [
+      5
+    ]
+  },
+  {
+    "start": 3430,
+    "end": 3431,
+    "buttons": [
+      7
+    ]
+  },
+  {
+    "start": 3433,
+    "end": 3436,
+    "buttons": [
+      0
+    ]
+  },
+  {
+    "start": 3490,
+    "end": 3490,
+    "buttons": [
+      7,
+      5
+    ]
+  }
+]

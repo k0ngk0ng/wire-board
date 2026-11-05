@@ -1,0 +1,8 @@
+{
+  "scope": "Original Duo startup stages are outside proven ready-practice wait; no gameplay normalization",
+  "old_capture_sha256": "5f7f2eb8ab2b2ada662f0a0f367b19f86c4513ff2603edb191855988545ff1e5",
+  "old_log_sha256": "0cb3f6cb3d3e53ba7d885f3f87d9f1b284f720d575d90cb041792060e588390d",
+  "lifecycle_path": "docs/research/md-yuyuhakusho/source4-special-discovery-duo-lifecycle.json",
+  "lifecycle_sha256": "ad6e4aef07d85e6d0b267214e32c92fe88578a19d34213d4dc64b1c111683d86",
+  "resolution": "New producer retains actual a01e/stage32 and captures2500..5500; unique5502 control is reused entirely. Startup stages are not Go acceptance."
+}

@@ -1,0 +1,219 @@
+{
+  "verified_at_utc": "2026-11-05T02:19:11.321677+00:00",
+  "pass": true,
+  "scope": "Only own source4 complete-composition cold capture scratch; canonical original fixtures and manifests preserved",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-composition-natural",
+      "bytes": 234681702,
+      "fixture_proofs": [
+        {
+          "fixture": "fighter4-composition-action-natural.json.gz",
+          "gzip_byte_identical": true,
+          "gzip_sha256": "d0c1f529d69bf73497fdd4364205c61bac022960535d7e5bc85326a7f519e7a4"
+        },
+        {
+          "fixture": "fighter4-composition-actor-natural.json.gz",
+          "gzip_byte_identical": true,
+          "gzip_sha256": "82bb9b669059d23e6b72f9dc31584f07619b71f9171b5825affef345089c2994"
+        },
+        {
+          "fixture": "fighter4-composition-input-natural.json.gz",
+          "gzip_byte_identical": true,
+          "gzip_sha256": "eac0b4ea9430847bb620dfe84cfb4e707cc2926beb93829f3abac1de20447583"
+        }
+      ],
+      "canonical_proofs_verified_before_delete": true
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-composition-full",
+      "bytes": 243337387,
+      "fixture_proofs": [
+        {
+          "fixture": "fighter4-composition-action-boundaries.json.gz",
+          "gzip_byte_identical": true,
+          "gzip_sha256": "28cde8703fccafc1a90a59d0a8f4b1bc3f48e179e35be8f864d6dd1b2325ab86"
+        },
+        {
+          "fixture": "fighter4-composition-action-natural.json.gz",
+          "same_complete_calls": true,
+          "calls_suffix_sha256": "71a312d6d3803c4e3fe4e2993cbc3b43d5d978346d46f56217039e104808fe26",
+          "difference": "full capture additionally retains private animation library records"
+        },
+        {
+          "fixture": "fighter4-composition-action-sequences.json.gz",
+          "gzip_byte_identical": true,
+          "gzip_sha256": "fb47655eb68bde4282b00118383e379590915f2cfda078372c4c19cdf1426cb7"
+        },
+        {
+          "fixture": "fighter4-composition-actor-boundaries.json.gz",
+          "gzip_byte_identical": true,
+          "gzip_sha256": "d39f11601e7d1f095ba6a7379c74a6cec0a68ce6f90115e7ecb64fe7f28536a7"
+        },
+        {
+          "fixture": "fighter4-composition-actor-natural.json.gz",
+          "same_complete_calls": true,
+          "calls_suffix_sha256": "471c6b929397f7897a252363434a05e1c472b3b8a25b96f5f1fdecbbb890b674",
+          "difference": "full capture additionally retains private animation library records"
+        },
+        {
+          "fixture": "fighter4-composition-actor-sequences.json.gz",
+          "gzip_byte_identical": true,
+          "gzip_sha256": "3a64d8fcb46b7d1262d6a78872bbc71e9e3feb5508edef5784eee98fd84328d2"
+        },
+        {
+          "fixture": "fighter4-composition-input-boundaries.json.gz",
+          "gzip_byte_identical": true,
+          "gzip_sha256": "a4551fadff412acd6443cd5202e935313902a28002d66da3e9f68c6af10cceda"
+        },
+        {
+          "fixture": "fighter4-composition-input-natural.json.gz",
+          "same_complete_calls": true,
+          "calls_suffix_sha256": "79fc2f74198269da7667206252b25203caa02d2d7d3e4c8c43769c6ec0f95fde",
+          "difference": "full capture additionally retains private animation library records"
+        },
+        {
+          "fixture": "fighter4-composition-input-sequences.json.gz",
+          "gzip_byte_identical": true,
+          "gzip_sha256": "92791c5c1d6a9a209f9ee43ca4d37457c5ef6994489e0ed48c275407b219c0c0"
+        }
+      ],
+      "canonical_proofs_verified_before_delete": true
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-composition-full-final",
+      "bytes": 243338486,
+      "fixture_proofs": [
+        {
+          "fixture": "fighter4-composition-action-boundaries.json.gz",
+          "gzip_byte_identical": true,
+          "gzip_sha256": "28cde8703fccafc1a90a59d0a8f4b1bc3f48e179e35be8f864d6dd1b2325ab86"
+        },
+        {
+          "fixture": "fighter4-composition-action-natural.json.gz",
+          "same_complete_calls": true,
+          "calls_suffix_sha256": "71a312d6d3803c4e3fe4e2993cbc3b43d5d978346d46f56217039e104808fe26",
+          "difference": "full capture additionally retains private animation library records"
+        },
+        {
+          "fixture": "fighter4-composition-action-sequences.json.gz",
+          "gzip_byte_identical": true,
+          "gzip_sha256": "fb47655eb68bde4282b00118383e379590915f2cfda078372c4c19cdf1426cb7"
+        },
+        {
+          "fixture": "fighter4-composition-actor-boundaries.json.gz",
+          "gzip_byte_identical": true,
+          "gzip_sha256": "d39f11601e7d1f095ba6a7379c74a6cec0a68ce6f90115e7ecb64fe7f28536a7"
+        },
+        {
+          "fixture": "fighter4-composition-actor-natural.json.gz",
+          "same_complete_calls": true,
+          "calls_suffix_sha256": "471c6b929397f7897a252363434a05e1c472b3b8a25b96f5f1fdecbbb890b674",
+          "difference": "full capture additionally retains private animation library records"
+        },
+        {
+          "fixture": "fighter4-composition-actor-sequences.json.gz",
+          "gzip_byte_identical": true,
+          "gzip_sha256": "3a64d8fcb46b7d1262d6a78872bbc71e9e3feb5508edef5784eee98fd84328d2"
+        },
+        {
+          "fixture": "fighter4-composition-input-boundaries.json.gz",
+          "gzip_byte_identical": true,
+          "gzip_sha256": "a4551fadff412acd6443cd5202e935313902a28002d66da3e9f68c6af10cceda"
+        },
+        {
+          "fixture": "fighter4-composition-input-natural.json.gz",
+          "same_complete_calls": true,
+          "calls_suffix_sha256": "79fc2f74198269da7667206252b25203caa02d2d7d3e4c8c43769c6ec0f95fde",
+          "difference": "full capture additionally retains private animation library records"
+        },
+        {
+          "fixture": "fighter4-composition-input-sequences.json.gz",
+          "gzip_byte_identical": true,
+          "gzip_sha256": "92791c5c1d6a9a209f9ee43ca4d37457c5ef6994489e0ed48c275407b219c0c0"
+        }
+      ],
+      "canonical_proofs_verified_before_delete": true
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-composition-natural-final",
+      "bytes": 234682801,
+      "fixture_proofs": [
+        {
+          "fixture": "fighter4-composition-action-natural.json.gz",
+          "gzip_byte_identical": true,
+          "gzip_sha256": "d0c1f529d69bf73497fdd4364205c61bac022960535d7e5bc85326a7f519e7a4"
+        },
+        {
+          "fixture": "fighter4-composition-actor-natural.json.gz",
+          "gzip_byte_identical": true,
+          "gzip_sha256": "82bb9b669059d23e6b72f9dc31584f07619b71f9171b5825affef345089c2994"
+        },
+        {
+          "fixture": "fighter4-composition-input-natural.json.gz",
+          "gzip_byte_identical": true,
+          "gzip_sha256": "eac0b4ea9430847bb620dfe84cfb4e707cc2926beb93829f3abac1de20447583"
+        }
+      ],
+      "canonical_proofs_verified_before_delete": true
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-composition-special",
+      "bytes": 234837718,
+      "fixture_proofs": [
+        {
+          "fixture": "fighter4-composition-action-special.json.gz",
+          "gzip_byte_identical": true,
+          "gzip_sha256": "d3843ffb60385fe333a223f5f3402da9307abfa95ad8bd205f2513134a799090"
+        },
+        {
+          "fixture": "fighter4-composition-actor-special.json.gz",
+          "gzip_byte_identical": true,
+          "gzip_sha256": "0c882c2369c6cf1e6148e1372b964d0f1f372120e37e6c51935282f60770dbe8"
+        },
+        {
+          "fixture": "fighter4-composition-input-special.json.gz",
+          "gzip_byte_identical": true,
+          "gzip_sha256": "157618c39fde3b376614d673548f267c606f48fc8a1f3718052235ef280932b8"
+        }
+      ],
+      "canonical_proofs_verified_before_delete": true
+    }
+  ],
+  "preserved": [
+    "shared Go caches",
+    ".local/md-yuyuhakusho/downloads",
+    ".local/md-yuyuhakusho/tools",
+    "Root logs and 8799 page assets",
+    "all canonical source4 CPU fixtures/manifests/red/provenance",
+    "current diagnostic scratch pending Root codec correction"
+  ],
+  "removed_duplicate_run_summaries": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-composition-full-final-run.txt",
+      "sha256": "8237f98f2e1e84d771a95faccd906a9714057fa066c1c21f913166fdc5179836",
+      "bytes": 2472
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-composition-full-run.txt",
+      "sha256": "8237f98f2e1e84d771a95faccd906a9714057fa066c1c21f913166fdc5179836",
+      "bytes": 2472
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-composition-natural-final-run.txt",
+      "sha256": "7f4e6bc7a9bbd83a4d960a01a2ee91479780b40ccd66a33d5c14f491396d62ed",
+      "bytes": 937
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-composition-natural-run.txt",
+      "sha256": "7f4e6bc7a9bbd83a4d960a01a2ee91479780b40ccd66a33d5c14f491396d62ed",
+      "bytes": 937
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-composition-special-run.jsonl",
+      "sha256": "d611378ef32ba381f23f8b41ac3140c8a4685e2f8d0255c60c5c399d896616ea",
+      "bytes": 1072
+    }
+  ],
+  "removed_bytes": 1190885984
+}

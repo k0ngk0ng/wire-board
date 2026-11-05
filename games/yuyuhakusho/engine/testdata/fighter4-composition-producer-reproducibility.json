@@ -1,0 +1,96 @@
+{
+  "pass": true,
+  "scope": "Sampler now reproduces independent ROM movement-rules fixture; full and natural cold recapture, all9 CPU gzip groups unchanged, only producer SHA metadata differs",
+  "changes": [
+    {
+      "fixture": "fighter4-composition-action-natural",
+      "CPU_gzip_byte_identical": true,
+      "differences": {
+        "capture_sha256": {
+          "before": "f4140fb80b0ed21a3692c82baa460034b4cd518b70f2c3217198fb06b67ee616",
+          "after": "28bf51af0722b8abd8ecaa50d8130c43924294fd018e40e4562590ad39dc6b23"
+        }
+      }
+    },
+    {
+      "fixture": "fighter4-composition-input-natural",
+      "CPU_gzip_byte_identical": true,
+      "differences": {
+        "capture_sha256": {
+          "before": "f4140fb80b0ed21a3692c82baa460034b4cd518b70f2c3217198fb06b67ee616",
+          "after": "28bf51af0722b8abd8ecaa50d8130c43924294fd018e40e4562590ad39dc6b23"
+        }
+      }
+    },
+    {
+      "fixture": "fighter4-composition-actor-natural",
+      "CPU_gzip_byte_identical": true,
+      "differences": {
+        "capture_sha256": {
+          "before": "f4140fb80b0ed21a3692c82baa460034b4cd518b70f2c3217198fb06b67ee616",
+          "after": "28bf51af0722b8abd8ecaa50d8130c43924294fd018e40e4562590ad39dc6b23"
+        }
+      }
+    },
+    {
+      "fixture": "fighter4-composition-action-boundaries",
+      "CPU_gzip_byte_identical": true,
+      "differences": {
+        "capture_sha256": {
+          "before": "7f23ed8a13458ee3e09615ba27936b56ec8c29ddb19c065ad32a6c868d754bd3",
+          "after": "28bf51af0722b8abd8ecaa50d8130c43924294fd018e40e4562590ad39dc6b23"
+        }
+      }
+    },
+    {
+      "fixture": "fighter4-composition-input-boundaries",
+      "CPU_gzip_byte_identical": true,
+      "differences": {
+        "capture_sha256": {
+          "before": "7f23ed8a13458ee3e09615ba27936b56ec8c29ddb19c065ad32a6c868d754bd3",
+          "after": "28bf51af0722b8abd8ecaa50d8130c43924294fd018e40e4562590ad39dc6b23"
+        }
+      }
+    },
+    {
+      "fixture": "fighter4-composition-actor-boundaries",
+      "CPU_gzip_byte_identical": true,
+      "differences": {
+        "capture_sha256": {
+          "before": "7f23ed8a13458ee3e09615ba27936b56ec8c29ddb19c065ad32a6c868d754bd3",
+          "after": "28bf51af0722b8abd8ecaa50d8130c43924294fd018e40e4562590ad39dc6b23"
+        }
+      }
+    },
+    {
+      "fixture": "fighter4-composition-action-sequences",
+      "CPU_gzip_byte_identical": true,
+      "differences": {
+        "capture_sha256": {
+          "before": "7f23ed8a13458ee3e09615ba27936b56ec8c29ddb19c065ad32a6c868d754bd3",
+          "after": "28bf51af0722b8abd8ecaa50d8130c43924294fd018e40e4562590ad39dc6b23"
+        }
+      }
+    },
+    {
+      "fixture": "fighter4-composition-input-sequences",
+      "CPU_gzip_byte_identical": true,
+      "differences": {
+        "capture_sha256": {
+          "before": "7f23ed8a13458ee3e09615ba27936b56ec8c29ddb19c065ad32a6c868d754bd3",
+          "after": "28bf51af0722b8abd8ecaa50d8130c43924294fd018e40e4562590ad39dc6b23"
+        }
+      }
+    },
+    {
+      "fixture": "fighter4-composition-actor-sequences",
+      "CPU_gzip_byte_identical": true,
+      "differences": {
+        "capture_sha256": {
+          "before": "7f23ed8a13458ee3e09615ba27936b56ec8c29ddb19c065ad32a6c868d754bd3",
+          "after": "28bf51af0722b8abd8ecaa50d8130c43924294fd018e40e4562590ad39dc6b23"
+        }
+      }
+    }
+  ]
+}

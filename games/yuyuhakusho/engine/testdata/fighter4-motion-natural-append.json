@@ -1,0 +1,140 @@
+{
+  "schema": 1,
+  "mode": "Observed special append only; no new original control or private/clock capture",
+  "input_path": "docs/research/md-yuyuhakusho/source4-special-discovery-inputs.json",
+  "input_sha256": "5ba6b13d2bb0b285c4307981a5e903d75a7936de3d2632a9f1bf449189650424",
+  "reference_path": "games/yuyuhakusho/engine/testdata/fighter4-attacks-special-reference-frames.json",
+  "reference_sha256": "666c2a9fff6c47b3b0540275beae5a7a1c0f6ada1e1d690d6a67d1596617b22e",
+  "ordinary_projection_bytes_unchanged": true,
+  "ordinary_projection_fixture_sha256": "2c7e82ee5f0ccb19ddebe09a18524517e13d91ac6f23455cf0ce70d1f204ca08",
+  "ordinary_before_manifest_path": "games/yuyuhakusho/engine/testdata/fighter4-motion-oracle-before-append-manifest.json",
+  "ordinary_before_manifest_sha256": "c741c167858f7c5aa38c84cca80f9f3316ff80597dec8d005fdaeca102626ae6",
+  "private_clock_and_parameters_bytes_unchanged": true,
+  "added_calls": 352,
+  "windows": [
+    {
+      "action_hex": "25",
+      "first_frame": 1875,
+      "last_frame": 1897,
+      "calls": 23,
+      "last_action_hex": "03",
+      "last_pose_hex": "a1",
+      "last_movement_source_hex": "12578"
+    },
+    {
+      "action_hex": "26",
+      "first_frame": 2000,
+      "last_frame": 2042,
+      "calls": 43,
+      "last_action_hex": "00",
+      "last_pose_hex": "00",
+      "last_movement_source_hex": "12578"
+    },
+    {
+      "action_hex": "27",
+      "first_frame": 2052,
+      "last_frame": 2070,
+      "calls": 19,
+      "last_action_hex": "27",
+      "last_pose_hex": "a5",
+      "last_movement_source_hex": "12578"
+    },
+    {
+      "action_hex": "27",
+      "first_frame": 2087,
+      "last_frame": 2092,
+      "calls": 6,
+      "last_action_hex": "27",
+      "last_pose_hex": "a5",
+      "last_movement_source_hex": "12578"
+    },
+    {
+      "action_hex": "27",
+      "first_frame": 2109,
+      "last_frame": 2115,
+      "calls": 7,
+      "last_action_hex": "27",
+      "last_pose_hex": "a5",
+      "last_movement_source_hex": "12578"
+    },
+    {
+      "action_hex": "27",
+      "first_frame": 2132,
+      "last_frame": 2138,
+      "calls": 7,
+      "last_action_hex": "27",
+      "last_pose_hex": "a5",
+      "last_movement_source_hex": "12578"
+    },
+    {
+      "action_hex": "27",
+      "first_frame": 2155,
+      "last_frame": 2181,
+      "calls": 27,
+      "last_action_hex": "00",
+      "last_pose_hex": "00",
+      "last_movement_source_hex": "12578"
+    },
+    {
+      "action_hex": "28",
+      "first_frame": 2625,
+      "last_frame": 2641,
+      "calls": 17,
+      "last_action_hex": "02",
+      "last_pose_hex": "07",
+      "last_movement_source_hex": "12578"
+    },
+    {
+      "action_hex": "28",
+      "first_frame": 2654,
+      "last_frame": 2694,
+      "calls": 41,
+      "last_action_hex": "02",
+      "last_pose_hex": "07",
+      "last_movement_source_hex": "12578"
+    },
+    {
+      "action_hex": "29",
+      "first_frame": 3435,
+      "last_frame": 3489,
+      "calls": 55,
+      "last_action_hex": "2a",
+      "last_pose_hex": "a7",
+      "last_movement_source_hex": "12578"
+    },
+    {
+      "action_hex": "2a",
+      "first_frame": 3490,
+      "last_frame": 3490,
+      "calls": 1,
+      "last_action_hex": "03",
+      "last_pose_hex": "aa",
+      "last_movement_source_hex": "12578"
+    },
+    {
+      "action_hex": "2c",
+      "first_frame": 2191,
+      "last_frame": 2230,
+      "calls": 40,
+      "last_action_hex": "2c",
+      "last_pose_hex": "a8",
+      "last_movement_source_hex": "12578"
+    },
+    {
+      "action_hex": "2c",
+      "first_frame": 2389,
+      "last_frame": 2454,
+      "calls": 66,
+      "last_action_hex": "03",
+      "last_pose_hex": "a9",
+      "last_movement_source_hex": "12578"
+    }
+  ],
+  "natural_boost2b_observed": false,
+  "production_sha256": "a236eac8bded286b9b35241c206d0de35e763d5097651862f14476f7f787f154",
+  "frozen_test_sha256": "d4ce7a8d890cce355f6c8dfb95ff415de02e2b5f0a8d39afa682a2a080c3447d",
+  "initial_capture_source_archive": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter4-motion-capture-before-append.py",
+    "sha256": "2039f867d1e616da680869bf8823d2a5cd84cd2b40374a91a1cecccf883353b0"
+  }
+}

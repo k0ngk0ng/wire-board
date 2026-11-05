@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "scope": "source4 MAIN25..2c and0e/12",
+  "initial_failure_ledger_sha256": "b3497d4d2b66e17a1c31c44c8a9e0ae6cfb29ea44c6f34377e36032023ed33db",
+  "initial_failure_ledger_utf8": "# 飞影 MAIN 动作：实现前验证范围\n\n范围为 `25/26/27/28/29/2a/2b/2c` 及共用 `0e/12`，截至原版公共尾处理入口 `15afc`。入口依次是 `1b1e8/1b21e/1b246/1b2bc/1b2d4/1b3f0/1b48a/1b51a`，共用入口为 `1ca46/1cb68`；`1b1ce` 属于 `24`，不列入本任务。只恢复动作及其当次子对象／FX 创建，不执行子对象、FX 生命周期、公共尾处理或世界调度。\n\n拟用 `Fighter4MotionState` 嵌入 `ChuSpecialMotionState`，另带 `MovementSource`、`DragonBankCursor`、`ChildExtras[3]` 和既有 `EffectExtras[16]ReactionEffectExtra`。`MovementSource` 只是现有 WorldObject `+90.long` 的临时视图；不新增强化模式或重复移动参数。`ChildExtras` 只暴露既有 child Aux48 的完整 long、Held／Pressed 低 byte、ContactFlags，以及唯一新增 `+FE.word` DragonBank 的视图。`DragonBankCursor` 对应全局 `A038.word`；MAIN 不拥有历史缓冲。正式类型名与 child peer、Root 统一，不复制 canonical 字段。API 为 `StepFighter4Motion(state, JumpParameters) (state, error)`，参数必须来自当步当前 MovementSource。`19092/191ba` 使用 selector 任务唯一提供的 `FinishFighter4Rush`／`BeginFighter4DragonFollowup`。\n\n在原版取证、测试和实现之前，列出以下失败场景：\n\n- 来源身份、真实参数／动画／形状指针或初始化错配；普通输入没有自然调用时假报覆盖，或把自然活动片段写成完整生命周期。\n- `0e` 的地面高 word 相等、ticks 0 尘土门槛、Facing.bit0 和完成值恰为 1 错误；`12` 的独立八项表被误套为 `11` 六项表，移动帧 1／2／4／5、后退方向或完成恢复错误。\n- `25` 活动时未直接加存储 VX，误按朝向再次反转；完成后 X 高 word 的正负 64 偏移、Facing.bit0、清完成与 `19092` 顺序错误，或误清 Request。\n- `26/27` 的七项／十一项帧表边界、快慢段与空操作帧错误；`1b282` 先把 ticks 写入 D0 低 byte 并只掩码该 byte，导致位移小数改变；调用 `20202` 后 allocator 对 D0 的真实破坏被忽略。空池、满池、ticks 的四种余数均须原 CPU 直接确认，不能根据常量指令猜位移。存储 VX 不应被位移覆盖。\n- `28` 完成时先 ExtraJump 加一、随后 `1860c` 清零的顺序被简化成保留加一；完成值不是 1 时误恢复；默认／强化 Gravity 取错，或空中恢复误依赖 Y 与地面相等。\n- `29` 完成优先级、`191ba` 清 Request 或 frame 0 每 16 ticks 三 FX 的门槛错误；三次独立分配被合并、Phase 0／4／8 对应 `+5a`、朝向与 X 高 word 的正负 16 偏移错误；FX 未写字段被清零，满池被当作错误。\n- `29` 在 frame 2／ticks 0 只用第一保留子槽；忙碌时误写游标／字段，创建时遗漏完整 Ground、Aux48 方向 long、Held 低 byte、TargetBit byte 回绕、原属性掩码或坐标高 word 偏移；误写未被原版初始化的 VX／VY／Pose／Pressed。`A038` 必须先 word 加 `200` 再与 `7ff`，仅成功创建时更新，并复制到 child FE；不得新增另一方向 long 或历史游标。\n- `2a` 每次都先复制 child Held／Pressed 低 byte，误覆盖扩展 byte；有符号 word 距离、NEG(-32768) 回绕、水平 24／垂直 32 门槛、近距离优先于 child.Size／取消按钮错误；近距离以外的存活／C 取消分支错误。吞龙先用当前原版 `203f8` 创建跟随 FX，再设 Energy 高 word 为 223、置 child ContactFlags.bit4、改姿势／动作及 MovementSource `15946`；满池仍须吞龙，且保留 Energy 小数、其他 contact bits 和未被写入的 EnabledStages。诊断错误必须回滚先前复制及全部变更。\n- `2b` 只在 frame 1／ticks 0、第一子槽空闲时创建 `13fc8`；原版未写的坐标、Ground、Facing、方向／历史字段及速度必须保留。完成时恢复站立，不把创建或强化参数重置到默认表。\n- `2c` 完成优先于方向／重力／落地，ExtraJump byte 加一回绕；当前参数 VY 分别算术右移一位、两位再相加，Facing 恰为 1 才保留水平参数正号；结果为 `02/AF`、EnabledStages 0。活动中 Right 优先 Left、加速后有符号 clamp、32 位回绕、先更新 VY 再加 Y、下落才判着地的顺序错误；`A8` 姿势的有符号 word 高度门槛与 B／A 取消、其他姿势 contact.bit2／3 跳帧、VY `a0000`、落地 `03/A9` 的优先级错误。\n- 改 MovementSource 后仍使用默认移动参数；把不可变参数表复制进可变模式字段；历史缓冲在 MAIN 被误写；现有 FX Owner／OffsetY／Phase、子对象 FE／Aux48 与世界 canonical owner 串用或重复保存。\n- 父 256 字节、三子 768 字节、FX 2,048 字节、游标、声音请求／队列或 RNG 漏比较；私有 SP 或 refresh cycles 未恢复；全 64 KiB RAM 审计出现未解释写入；只用逐条期望状态灌入代替单初态的真实动画时钟流程。\n- API 对未恢复槽位、活动有限表越界及未对齐 FX 游标应报告诊断错误，并保持完整输入状态；错误不能泄露 child 输入复制、位移、游标、FX 或 MovementSource。原版正常忙槽／满池不应报错。\n\n验证顺序为：失败清单 → 独立原版 CPU 普通／私有／真实动画时钟证据 → 冻结完整测试并保留真实缺实现 red → 只新增 MAIN 生产文件 → 同范围原生竞态与 Node-WebAssembly。普通原版基线由 selector 任务独立生成，观察器流程逐视频步核对全部 RAM 与画面。私有调用使用 canonical `A5=FFFF8400`、`SP=FFFFFF00`，每次恢复原版检查点及 refresh cycles，审计完整 RAM 和 SP。连续流程只刷新当前 pose／index 选择的不可变 Duration／Flags，不回灌期望中间状态。静态入口证据来自已有直接 Ghidra 和新 `fighter4-main-helpers.txt`；REA 不支持 raw 68000，不声称 REA 反编译或模拟执行。\n",
+  "test_sha256_at_red": "d4ce7a8d890cce355f6c8dfb95ff415de02e2b5f0a8d39afa682a2a080c3447d",
+  "production_exists_at_red": false,
+  "actual_missing_implementation_red": {
+    "path": "games/yuyuhakusho/engine/testdata/fighter4-motion-red.jsonl",
+    "sha256": "c98c91c48aae96f159403eb9dae90b046688ba0776ebcecb0a900ff6ca8681ad",
+    "command": [
+      "go",
+      "test",
+      "-gcflags=-e",
+      "-json",
+      "-count=1",
+      "-run",
+      "^TestFighter4Motion",
+      "./games/yuyuhakusho/engine"
+    ],
+    "exit_code": 1,
+    "own_missing_symbols": [
+      "Fighter4ChildExtra",
+      "Fighter4MotionState",
+      "StepFighter4Motion"
+    ]
+  },
+  "original_cpu": {
+    "natural_calls": 45,
+    "private_calls": 3818,
+    "actual_clock_streams": 40,
+    "actual_clock_calls": 3224,
+    "capture_sha256": "2039f867d1e616da680869bf8823d2a5cd84cd2b40374a91a1cecccf883353b0"
+  },
+  "after_implementation_test_changes": false,
+  "rule_fixes_after_first_executable_test": 0,
+  "types_and_motion_implementation_added_after_actual_full_test_red": true,
+  "production_sha256_after_first_green": "a236eac8bded286b9b35241c206d0de35e763d5097651862f14476f7f787f154"
+}

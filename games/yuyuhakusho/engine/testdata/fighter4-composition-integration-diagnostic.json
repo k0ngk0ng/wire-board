@@ -1,0 +1,93 @@
+{
+  "pass": false,
+  "diagnosis": "Canonical StepFighterAction state equals original CPU; encoder retains old immutable snapshot movement metadata after same-call source12578 to15946 change",
+  "case": "phase-2a-116",
+  "frozen_test_sha256": "a29fcbeaa0fa2049d32bec75ba875c155c78b1675cd0c57b9114d8b6cb68f2a3",
+  "differences": [
+    [
+      "encoded.Tail.Parameters.gravity",
+      17408,
+      24576
+    ],
+    [
+      "encoded.Tail.Parameters.vertical_velocity",
+      -393216,
+      -450560
+    ],
+    [
+      "encoded.walk_speed",
+      139264,
+      196608
+    ]
+  ],
+  "fixture": "fighter4-composition-action-boundaries.json.gz",
+  "fixture_sha256": "28cde8703fccafc1a90a59d0a8f4b1bc3f48e179e35be8f864d6dd1b2325ab86",
+  "metadata_producer": "scripts/yuyuhakusho/capture_chu_action.py snapshot reads current +90 through capture_chu_tail.py",
+  "diagnostic_log_sha256": "e8c51796b583041e2558e4f1269f969ada1f1aecdef52b0fec503cb88e209d00",
+  "diagnostic_overlay_only": true,
+  "canonical_production_and_frozen_tests_changed": false,
+  "diagnostic_source": "package engine\nimport (\"testing\"; \"encoding/json\"; \"os\"; \"fmt\")\nfunc TestFighter4CompositionDiagnostic(t *testing.T) {\n commands:=actionCommandLibrary(t)\n checked:=false\n walkChuActor(t,\"fighter4-composition-action-boundaries\",func(d *json.Decoder,library AnimationLibrary){\n var row fighter4CompositionAction\n if err:=d.Decode(&row);err!=nil{t.Fatal(err)}\n if row.Name!=\"phase-2a-116\"{return}\n before:=decodeChuAction(t,row.Before,row.ObjectID)\n got,err:=StepFighterAction(before,4,fighter4CompositionParameters(t,row.Before),commands,library)\n want:=decodeChuAction(t,row.After,row.ObjectID)\n out:=map[string]any{\"name\":row.Name,\"error\":fmt.Sprint(err),\"got\":got,\"want\":want,\"encoded\":encodeChuAction(t,got,row.Before),\"expected\":row.After,\"before\":before}\n raw,e:=json.MarshalIndent(out,\"\",\"  \");if e!=nil{t.Fatal(e)}\n if e=os.WriteFile(\"../../../.local/md-yuyuhakusho/fighter4-composition-diagnostic/action-difference.json\",raw,0600);e!=nil{t.Fatal(e)}\n checked=true\n })\n if !checked{t.Fatal(\"case missing\")}\n}\n",
+  "old_codec_sha256": "484fe703c5c64cee442160c8509a13b01b75ecd32c865b97dab9310bb4a7afa3",
+  "logs": [
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter4-composition-integration-red-native.jsonl",
+      "sha256": "12ed4866f99daa751b92c164565b7ac2b5b3129e6806b2b0e206f618f8ee2108",
+      "test_results": [
+        {
+          "test": "TestFighter4CompositionOriginalActions",
+          "result": "fail"
+        },
+        {
+          "test": "TestFighter4CompositionOriginalInputs",
+          "result": "pass"
+        },
+        {
+          "test": "TestFighter4CompositionOriginalActors",
+          "result": "fail"
+        },
+        {
+          "test": "TestFighter4CompositionActionStreams",
+          "result": "fail"
+        },
+        {
+          "test": "TestFighter4CompositionInputAndActorStreams",
+          "result": "pass"
+        },
+        {
+          "test": "TestFighter4CompositionFailuresAreAtomic",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter4-composition-integration-red-wasm.jsonl",
+      "sha256": "5b1b1f5767865573dbee5d242ab4ed34e66c4af3e2b69ed053b6a0b067582087",
+      "test_results": [
+        {
+          "test": "TestFighter4CompositionOriginalActions",
+          "result": "fail"
+        },
+        {
+          "test": "TestFighter4CompositionOriginalInputs",
+          "result": "pass"
+        },
+        {
+          "test": "TestFighter4CompositionOriginalActors",
+          "result": "fail"
+        },
+        {
+          "test": "TestFighter4CompositionActionStreams",
+          "result": "fail"
+        },
+        {
+          "test": "TestFighter4CompositionInputAndActorStreams",
+          "result": "pass"
+        },
+        {
+          "test": "TestFighter4CompositionFailuresAreAtomic",
+          "result": "pass"
+        }
+      ]
+    }
+  ]
+}

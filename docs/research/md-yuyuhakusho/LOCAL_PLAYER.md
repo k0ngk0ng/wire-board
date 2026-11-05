@@ -1,6 +1,6 @@
-# 八角色／默认场地本地研究页
+# 九角色／默认场地本地研究页
 
-当前可以在浏览器选择幻海、藏马、桑原、幽助、阵、户愚吕兄、酎或户愚吕弟，与原版恢复的电脑策略对战。支持 2／3／4 人混战和 4 人组队，提供电脑演示。人物、特效、默认场地及 HUD 使用独立索引素材；对局由独立 Go／Wasm 规则运行，不加载 ROM 或模拟器。
+当前可以在浏览器选择幻海、藏马、桑原、幽助、飞影、阵、户愚吕兄、酎或户愚吕弟，与原版恢复的电脑策略对战。支持 2／3／4 人混战和 4 人组队，提供电脑演示。人物、特效、默认场地及 HUD 使用独立索引素材；对局由独立 Go／Wasm 规则运行，不加载 ROM 或模拟器。
 
 本页用于本地验收，尚未接入平台房间、网络同步、托管及音效。其他角色和场地没有开放。
 
@@ -47,3 +47,5 @@ node web/node_modules/typescript/bin/tsc -p scripts/yuyuhakusho/tsconfig.json
 藏马与七角色矩阵使用 `sh scripts/yuyuhakusho/verify_kurama_sessions.sh both`，覆盖 17 组全新规则对局和 10 组完整呈现；浏览器使用 `PYTHONDONTWRITEBYTECODE=1 python3 scripts/yuyuhakusho/check_kurama_player.py`。当前[桌面](../../../games/yuyuhakusho/verification/kurama-local-player/desktop.png)、[320px](../../../games/yuyuhakusho/verification/kurama-local-player/mobile-320.png)和[完整绑定](../../../games/yuyuhakusho/verification/kurama-session.json)独立保存。schema2 补入公共姿态 10／11 的 8 条 AN 记录，现有图形素材与波表复用，旧角色状态／事件回归单独验收。
 
 阵与八角色矩阵使用 `sh scripts/yuyuhakusho/verify_jin_sessions.sh both`，覆盖 19 组全新规则对局和 11 组完整呈现；浏览器使用 `PYTHONDONTWRITEBYTECODE=1 python3 scripts/yuyuhakusho/check_jin_player.py`。当前[桌面](../../../games/yuyuhakusho/verification/jin-local-player/desktop.png)、[320px](../../../games/yuyuhakusho/verification/jin-local-player/mobile-320.png)和[完整绑定](../../../games/yuyuhakusho/verification/jin-session.json)独立保留。原规则包、图形和波表逐 byte 复用；真实电脑阵的原版世界由单独原菜单输入及练习主容器等待边界取证，不与人类特殊流混为一类。
+
+九角色最新验收使用 `sh scripts/yuyuhakusho/verify_hiei_sessions.sh both`，覆盖 21 组规则配置和 12 组完整呈现。浏览器验收使用 `PYTHONDONTWRITEBYTECODE=1 python3 scripts/yuyuhakusho/check_hiei_player.py`；保留[桌面截图](../../../games/yuyuhakusho/verification/hiei-local-player/desktop.png)、[320px 截图](../../../games/yuyuhakusho/verification/hiei-local-player/mobile-320.png)和[完整绑定摘要](../../../games/yuyuhakusho/verification/hiei-session.json)。

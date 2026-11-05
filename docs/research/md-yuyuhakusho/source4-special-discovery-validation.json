@@ -1,0 +1,63 @@
+{
+  "scope": "Original physical source4 all9 selector input plus separate two-human full swallow/enhanced/recovery discovery",
+  "pass": true,
+  "manual_state_or_rng_injection": false,
+  "cold_fixed_replays": true,
+  "all9_input_sha256": "5ba6b13d2bb0b285c4307981a5e903d75a7936de3d2632a9f1bf449189650424",
+  "duo_input_sha256": "b303ca8622f90747052902f81b2b7f2bdde39f59e47feb6f36a6bf8287a6ac34",
+  "all9_control_frames": 3602,
+  "duo_control_frames": 5502,
+  "independent_go_world_acceptance": false,
+  "sources": [
+    {
+      "path": "docs/research/md-yuyuhakusho/source4-special-discovery-inputs.json",
+      "sha256": "5ba6b13d2bb0b285c4307981a5e903d75a7936de3d2632a9f1bf449189650424"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/source4-special-discovery-duo-inputs.json",
+      "sha256": "b303ca8622f90747052902f81b2b7f2bdde39f59e47feb6f36a6bf8287a6ac34"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/source4-special-discovery-first-report.json",
+      "sha256": "b36c9171fe7bc3932c9460d8f625295d994216d7593e2c307713c49cdf424d73"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/source4-special-discovery-duo-full-report.json",
+      "sha256": "209d02c3ba587e503ab0866619714e6c45b2930c4162d275d482a665e7928d0d"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/source4-special-discovery-duo-lifecycle.json",
+      "sha256": "ad6e4aef07d85e6d0b267214e32c92fe88578a19d34213d4dc64b1c111683d86"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/source4-special-discovery.md",
+      "sha256": "876cd39f44f39b56c355ccdf810eca772ec09cedab1f326488c9f09e696737c4"
+    },
+    {
+      "path": "scripts/yuyuhakusho/source4-special-discovery.py",
+      "sha256": "10eb931b6161b3232738d81a3adfd5188b86189202c0d193d1f1b8452faf8585"
+    },
+    {
+      "path": "scripts/yuyuhakusho/source4-special-discovery-duo-lifecycle.py",
+      "sha256": "62c9e315a2e629676b6b083aaeaa6c08e0fd7d79da107f0f8bb4e14df774487f"
+    },
+    {
+      "path": "scripts/yuyuhakusho/source4-special-discovery-control.py",
+      "sha256": "a7561aa06158fad70fef4e94cec54fb8db838df196af9f69dab8b5bb177b04db"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter4-attacks-special-reference-manifest.json",
+      "sha256": "45c14985191d312c82bdde49f0efa0b6debf67c0ba1560b8ad25d00d7ec03909"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter4-attacks-duo-reference-manifest.json",
+      "sha256": "da7b399421593ad938377c99898e1734f5f61297efad133476c1802f1dc3ba80"
+    }
+  ],
+  "limits": [
+    "Historical raw discovery reports retain their actual capture-time private input paths; canonical input copies have identical bytes",
+    "The two-human a01e/32 scene is separate from the source4-vs-CPU9 endurance scene",
+    "R6/2a all9 scene does not swallow; complete2b/15946/enhanced/recovery belong to Duo only",
+    "Initial Header metadata addressed the wrong RAM cell; only final fixed FF8000 record is authoritative"
+  ]
+}

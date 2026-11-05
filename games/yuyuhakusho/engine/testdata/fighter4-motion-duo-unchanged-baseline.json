@@ -1,0 +1,34 @@
+{
+  "schema": 1,
+  "scope": "Duo extension preserves old four-test corpus and production",
+  "baseline_validation_sha256": "0afe8eb16ca8f26a96ee4f179360458017a898d577a57bb7e2ca510ce24adb3c",
+  "production_sha256": "a236eac8bded286b9b35241c206d0de35e763d5097651862f14476f7f787f154",
+  "frozen_four_test_sha256": "d4ce7a8d890cce355f6c8dfb95ff415de02e2b5f0a8d39afa682a2a080c3447d",
+  "old_corpus_unchanged": [
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter4-motion-oracle.json.gz",
+      "sha256": "88d00869ca82c6c1072ac067e5a11f31e3f9f26fd6f324fa9f26ffdc677c4754",
+      "manifest": "games/yuyuhakusho/engine/testdata/fighter4-motion-oracle-manifest.json",
+      "manifest_sha256": "4136780b64f9e4ce2c828ac9c435d9113b0dbef13823740d50501e1048e91dfd"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter4-motion-boundaries.json.gz",
+      "sha256": "e6d30015dc174e38eaa417668e0a6e1f172958e268beb8cb3d523bf6389810de",
+      "manifest": "games/yuyuhakusho/engine/testdata/fighter4-motion-boundaries-manifest.json",
+      "manifest_sha256": "4c80c078c32e91e383391c7de21e7e79f114ad8f10af3f37b4b3d5d546fbc597"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter4-motion-sequences.json.gz",
+      "sha256": "35dcdd2736da0bdc0154b48b35a163e1101b1c1885353a340e7661b3837ade9a",
+      "manifest": "games/yuyuhakusho/engine/testdata/fighter4-motion-sequences-manifest.json",
+      "manifest_sha256": "2f695990689f8055e68e425018fd5353bed106af43c475d3179d46b38013c346"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter4-motion-parameters.json",
+      "sha256": "41c95d7995a5862d96596bdc3c2cd32f8e9d076a08f831a0a30388b9376144a3"
+    }
+  ],
+  "new_duo_data_consumed_by_old_four_tests": false,
+  "new_Go_CLI_or_unit_test_added": false,
+  "baseline_validation_path": "games/yuyuhakusho/engine/testdata/fighter4-motion-validation-before-duo.json"
+}

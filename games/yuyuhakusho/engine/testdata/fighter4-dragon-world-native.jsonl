@@ -1,0 +1,9 @@
+{"Time":"2026-11-05T10:10:52.609096+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine"}
+{"Time":"2026-11-05T10:10:53.178966+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter4DragonWorldCallbacks"}
+{"Time":"2026-11-05T10:10:53.179092+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter4DragonWorldCallbacks","Output":"=== RUN   TestFighter4DragonWorldCallbacks\n"}
+{"Time":"2026-11-05T10:11:01.074384+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter4DragonWorldCallbacks","Output":"    fighter4_dragon_world_test.go:68: world dragon original callbacks=map[boost:586 head:923 trail:1098] restored=map[boost:8 head:8 trail:8]\n"}
+{"Time":"2026-11-05T10:11:01.074457+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter4DragonWorldCallbacks","Output":"--- PASS: TestFighter4DragonWorldCallbacks (7.90s)\n"}
+{"Time":"2026-11-05T10:11:01.074468+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter4DragonWorldCallbacks","Elapsed":7.9}
+{"Time":"2026-11-05T10:11:01.074548+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"PASS\n"}
+{"Time":"2026-11-05T10:11:02.088301+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine\t9.479s\n"}
+{"Time":"2026-11-05T10:11:02.088415+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Elapsed":9.479}

@@ -36,7 +36,7 @@ func decodeWorldObjectTest(t *testing.T, id uint16, encoded string) WorldObject 
 		HitStopTicks: b[0x69], Shake: b[0x6a], StatusDelay: b[0x86], AttackDelay: b[0x88], ContactFlags: b[0x89], TargetBit: b[0x70],
 		InputChannel: b[0x76], TargetMask: uint32(l(0x94)), Residual: l(0x98), StunTicks: w(0x84), HUDOffset: w(0x8a),
 		AttackScale: w(0xc4), ComboCount: b[0xc6], ChargeTicks: b[0xc7], InputMode: int8(b[0xc9]), StreamPosition: uint32(l(0xca)), AIBehavior: b[0xce],
-		AITargetCursor: w(0xd0), AICountdown: w(0xd2), AIElapsed: w(0xd4), AIFollowTarget: w(0xd6)}
+		AITargetCursor: w(0xd0), AICountdown: w(0xd2), AIElapsed: w(0xd4), AIFollowTarget: w(0xd6), DragonBank: w(0xfe)}
 	copy(o.Body.Commands[:], b[0xa8:0xb8])
 	for i := range o.GraphicCache {
 		o.GraphicCache[i] = uint32(l(0x2c + i*4))
@@ -102,6 +102,7 @@ func encodeWorldObjectTest(t *testing.T, o WorldObject, previous string, clearPr
 	w(0xd2, o.AICountdown)
 	w(0xd4, o.AIElapsed)
 	w(0xd6, o.AIFollowTarget)
+	w(0xfe, o.DragonBank)
 	return hex.EncodeToString(b)
 }
 

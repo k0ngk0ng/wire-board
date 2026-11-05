@@ -39,6 +39,7 @@ type WorldObject struct {
 	AIBehavior                             uint8
 	AITargetCursor, AICountdown, AIElapsed uint16
 	AIFollowTarget                         uint16
+	DragonBank                             uint16 `json:",omitempty"`
 }
 
 // ApplyObjectClearPrefix applies an already resolved 0x3556 clear request to
@@ -108,6 +109,9 @@ func ApplyObjectClearPrefix(object WorldObject, count uint16) (WorldObject, erro
 	if count >= 224 {
 		object.AITargetCursor, object.AICountdown, object.AIElapsed, object.AIFollowTarget = 0, 0, 0, 0
 	}
+	if count >= 256 {
+		object.DragonBank = 0
+	}
 	return object, nil
 }
 
@@ -169,9 +173,10 @@ func (object WorldObject) AsChuFighter(children [3]WorldObject) (ChuActorFighter
 		GraphicParameter: object.GraphicParameter, ChargeTicks: object.ChargeTicks, GuardMask: object.GuardMask, ContactFlags: object.ContactFlags,
 		TargetMask: object.TargetMask, AttackValue: object.AttackValue, StunDamage: object.StunDamage, EffectKind: object.EffectKind, Reaction: object.Reaction,
 		AttackScale: object.AttackScale, HitStopTicks: object.HitStopTicks, Shake: object.Shake, StatusDelay: object.StatusDelay, Residual: object.Residual,
-		StunTicks: object.StunTicks, TargetBit: object.TargetBit, Power: object.Power, AlternateVelocity: object.Aux48}
+		StunTicks: object.StunTicks, TargetBit: object.TargetBit, Power: object.Power, AlternateVelocity: object.Aux48, MovementSource: object.MovementSource}
 	for i, child := range children {
 		f.Children[i], f.ChildAttackFlags[i] = child.AsChuChild(), child.Body.Auxiliary64
+		f.ChildExtras[i] = Fighter4ChildExtra{Direction: child.Aux48, Held: uint8(child.Controls.Held), Pressed: uint8(child.Controls.Pressed), ContactFlags: child.ContactFlags, DragonBank: child.DragonBank}
 	}
 	return f, nil
 }
@@ -190,6 +195,7 @@ func (object WorldObject) MergeChuFighter(fighter ChuActorFighter) (WorldObject,
 	object.AttackValue, object.StunDamage, object.EffectKind, object.Reaction, object.AttackScale = fighter.AttackValue, fighter.StunDamage, fighter.EffectKind, fighter.Reaction, fighter.AttackScale
 	object.HitStopTicks, object.Shake, object.StatusDelay, object.Residual = fighter.HitStopTicks, fighter.Shake, fighter.StatusDelay, fighter.Residual
 	object.StunTicks, object.TargetBit, object.Power, object.Aux48 = fighter.StunTicks, fighter.TargetBit, fighter.Power, fighter.AlternateVelocity
+	object.MovementSource = fighter.MovementSource
 	return object, nil
 }
 
@@ -405,6 +411,10 @@ func MergeWorldChuActor(objects WorldObjects, fighter ChuActorFighter) (WorldObj
 			return objects, err
 		}
 		children[i] = children[i].MergeChuChild(fighter.Children[i])
+		extra := fighter.ChildExtras[i]
+		children[i].Aux48, children[i].ContactFlags, children[i].DragonBank = extra.Direction, extra.ContactFlags, extra.DragonBank
+		children[i].Controls.Held = children[i].Controls.Held&0xff00 | Buttons(extra.Held)
+		children[i].Controls.Pressed = children[i].Controls.Pressed&0xff00 | Buttons(extra.Pressed)
 	}
 	result := cloneWorldObjects(objects)
 	result[fighter.ObjectID] = merged

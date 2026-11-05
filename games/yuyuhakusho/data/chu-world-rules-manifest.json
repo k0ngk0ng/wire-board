@@ -1,5 +1,5 @@
 {
-  "schema": 2,
+  "schema": 3,
   "scope": "Immutable independently decoded semantic rules only; no calls, RAM images, executable code or client media",
   "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
   "sources": [
@@ -50,13 +50,21 @@
     {
       "path": "games/yuyuhakusho/data/fighter1-projectile-rules.json",
       "sha256": "09c7c5eeff2d896983edb8200ec47ff2fc20675394658d2f40207e1b1554914b"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter4-projectile-rules.json",
+      "sha256": "e1ce7f3a7153b2a97b4370c29daa9b3ef8ecb8f1b0a3521e9120e8491ef6f641"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter4-composition-movement-rules.json",
+      "sha256": "7dd4aeb5449d08470690a1f5e89635309bc9e0641a659564c1667dd1c2d6b806"
     }
   ],
-  "exporter_sha256": "890afffd6e87be575eb50cf6dd9a3709373a133ccaa7e6c327fa6093d5605052",
+  "exporter_sha256": "55b6858ccbcf64d6aed474695a9875b0971e6552f4b08c0ff949b91d59a78292",
   "counts": {
     "fighters": 11,
     "command_programs": 16,
-    "animations": 4788,
+    "animations": 4797,
     "charge_sequences": 8,
     "release_animations": 21,
     "effect_types": 37,
@@ -65,10 +73,13 @@
     "fighter0_projectile_frames": 25,
     "fighter2_projectile_frames": 23,
     "fighter1_projectile_frames": 8,
+    "fighter4_projectile_frames": 9,
+    "fighter4_curve_words": 1344,
+    "alternate_movements": 1,
     "fighter0_release_sequences": 8
   },
-  "bytes": 1894883,
-  "gzip_bytes": 87440,
-  "sha256": "3edae07d8be37acdf09ee4a4fc5d2ca7deacafc4f4e6279f8309a2ffb1e043a0",
-  "gzip_sha256": "45cdfc3a6f31e41ec7bbec93f8444bcafff8de486ea6bc0a09c1aafea4f853a0"
+  "bytes": 1905921,
+  "gzip_bytes": 90757,
+  "sha256": "f1b0b0dba3aebd98f42898f90b0a39a14fa3ef10b34470615b06b4161f8d6362",
+  "gzip_sha256": "cfb16b469485da42d2efcaf44031a44cf418f0f3d13b185dbd746be5f58ebe34"
 }

@@ -1,0 +1,172 @@
+{
+  "pass": true,
+  "scope": "source4 head13bb6/trail13e9a/boost13fc8 independent complete callbacks and creator-clock lifecycles",
+  "production_sha256": "19efda7fa74f13d239d5552c6a7a580875661257567bdcaba76ccd04861db677",
+  "tests_unchanged_from_preimplementation_freeze": true,
+  "test_sha256": "aaa6c8ee815b7e10f5799814874106ca9c02fd68a3283a2ec03619d7a5c90615",
+  "test_first_sha256": "4a2e0bbc8de8ba03b980c75954d2bf3aa68fb5dd6ed1613aca6487e95efc67ed",
+  "own_symbol_red_sha256": "db9c89b0883c49d1cfc9a863d61a55becdc2e773568dccdd16c89f7870884da3",
+  "counts": {
+    "dirty_callbacks": 2607,
+    "single_initial_state_flows": 16,
+    "flow_calls": 8596,
+    "head_flow_calls": 648,
+    "trail_flow_calls": 2276,
+    "boost_flow_calls": 5640,
+    "creator_calls": 16,
+    "clock_calls": 16,
+    "ordinary_natural_dragon_callbacks": 0,
+    "special_natural_dragon_callbacks": 1592,
+    "special_natural_kind_counts": {
+      "head": 113,
+      "trail": 777,
+      "boost": 702
+    },
+    "first_special_natural_callbacks": 2,
+    "duo_natural_callbacks": 1590,
+    "duo_natural_kind_counts": {
+      "head": 111,
+      "trail": 777,
+      "boost": 702
+    },
+    "duo_natural_frame_range": [
+      3479,
+      4299
+    ]
+  },
+  "curve": {
+    "first_index": -32,
+    "values": 1344,
+    "observed_min_index": -32,
+    "observed_max_index": 1311
+  },
+  "semantic_records": 9,
+  "checks": {
+    "native_race": {
+      "command": "go test -race ./games/yuyuhakusho/engine -run ^TestFighter4Dragon -count=1 -timeout=180s -json",
+      "artifact": "fighter4-projectile-native.jsonl",
+      "sha256": "fc77ea71ce3d00c11732b064f648e933b546b528a4ccbb6d3fc3ba71ee8ebd0a",
+      "elapsed_seconds": 53.635
+    },
+    "wasm": {
+      "command": "GOOS=js GOARCH=wasm go test ./games/yuyuhakusho/engine -exec /opt/homebrew/Cellar/go/1.26.2/libexec/lib/wasm/go_js_wasm_exec -run ^TestFighter4Dragon -count=1 -timeout=180s -json",
+      "artifact": "fighter4-projectile-wasm.jsonl",
+      "sha256": "81f039597c71d0877f30c69ed52f875945f04874d56e7569cf372b4ede47822b",
+      "elapsed_seconds": 13.925
+    },
+    "vet": {
+      "command": "go vet ./games/yuyuhakusho/engine",
+      "artifact": "fighter4-projectile-vet.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "fixture_sha256": {
+    "fighter4-projectile-boundaries.json.gz": "461828c02e995ec7cc0bd27d918413a48ea41dee1df8cf88130bb1bbdfcb04c9",
+    "fighter4-projectile-sequences.json.gz": "92c42ebff0897c55a256bd1c551c02dec7b0299a4c976ee37b320c2f676eea8b",
+    "fighter4-projectile-oracle.json.gz": "b8a48d382472e39a158916821c6a9eef7f58e274d84eb2002e14572979e87612",
+    "fighter4-projectile-rules.json": "e1ce7f3a7153b2a97b4370c29daa9b3ef8ecb8f1b0a3521e9120e8491ef6f641"
+  },
+  "limits": [
+    "Natural duo input covers head, seven independently scheduled trail segments and full boost energy-exhaustion/parent-constructor deletion. The separate ordinary/special controls retain their narrower recorded scope.",
+    "These callbacks stop at1580 draw or completed3556 clear; hardware sprite consumer and generic149ac FX are separate existing stages.",
+    "No world/schema/bundle/PROGRESS edits or commits are part of this module."
+  ],
+  "natural_append": {
+    "report": "fighter4-projectile-natural-append.json",
+    "sha256": "3a6f8764e53453f9f03acb77e3c44d89a504b32f04f18e7203778f48d1c8c5d6",
+    "original_empty_oracle_raw_sha256": "e8e29c6e9cae99c14890f1df17a2e4c8ce850deb26f33296907aa39072bbb1b5",
+    "original_empty_oracle_gzip_sha256": "42c631ee1de2a82f1e9eeed8d6b8200df77bb62e8a22a6143f8f2086072a57f5",
+    "previous_two_head_oracle_raw_sha256": "3be3ab5db9bcddc1f582d0989d177b6fee704483a51b2b0a663cc18857ceb599",
+    "previous_two_head_oracle_gzip_sha256": "71393dd71f7fc22f6a5ab00ac5d30a7e02d8bf475b206b2006e3140ce9f7600d",
+    "previous_two_head_ledger_sha256": "b7444bdd8ace69acf2673497439aa8a018e0b12276beddb45bd311ef28845ff7",
+    "manifest_snapshots_preserved": true,
+    "baselines": [
+      {
+        "input": "docs/research/md-yuyuhakusho/source4-next-inputs.json",
+        "input_sha256": "e00525d883a103b4631332ac793b2569ff0ee384134e8fd58407bbc4123d0352",
+        "reference": "games/yuyuhakusho/engine/testdata/fighter4-attacks-reference-frames.json",
+        "reference_raw_sha256": "891f1e493f3e3d8bd34e6bf4789739364c6a3f3dc3d318d846d3b797f581d658",
+        "reference_manifest": "games/yuyuhakusho/engine/testdata/fighter4-attacks-reference-manifest.json",
+        "reference_manifest_sha256": "222e0c20466f492035438421bcc835d356985a19973947ea654e4da0f8b553c7",
+        "video_steps": 3602,
+        "all_ram_video_match": true
+      },
+      {
+        "input": "docs/research/md-yuyuhakusho/source4-special-discovery-inputs.json",
+        "input_sha256": "5ba6b13d2bb0b285c4307981a5e903d75a7936de3d2632a9f1bf449189650424",
+        "reference": "games/yuyuhakusho/engine/testdata/fighter4-attacks-special-reference-frames.json",
+        "reference_raw_sha256": "666c2a9fff6c47b3b0540275beae5a7a1c0f6ada1e1d690d6a67d1596617b22e",
+        "reference_manifest": "games/yuyuhakusho/engine/testdata/fighter4-attacks-special-reference-manifest.json",
+        "reference_manifest_sha256": "45c14985191d312c82bdde49f0efa0b6debf67c0ba1560b8ad25d00d7ec03909",
+        "video_steps": 3602,
+        "all_ram_video_match": true
+      },
+      {
+        "input": "docs/research/md-yuyuhakusho/source4-special-discovery-duo-inputs.json",
+        "input_sha256": "b303ca8622f90747052902f81b2b7f2bdde39f59e47feb6f36a6bf8287a6ac34",
+        "reference": "games/yuyuhakusho/engine/testdata/fighter4-attacks-duo-reference-frames.json",
+        "reference_raw_sha256": "9f282f53a016d184d45052b30eaf8c482d4b568132f7979f7eebff4a7faa5917",
+        "reference_manifest": "games/yuyuhakusho/engine/testdata/fighter4-attacks-duo-reference-manifest.json",
+        "reference_manifest_sha256": "da7b399421593ad938377c99898e1734f5f61297efad133476c1802f1dc3ba80",
+        "video_steps": 5502,
+        "all_ram_video_match": true
+      }
+    ],
+    "all_ram_video_match": true,
+    "unexplained_changes": 0,
+    "jump_parameter_context": "Empty for appended natural head/trail/boost: these APIs do not consume MAIN JumpParameters. Actual current +90/table is preserved in movement_parameters_observed; complete parent/family bytes remain exact."
+  },
+  "natural_lifecycle": {
+    "head": {
+      "calls": 111,
+      "frames": [
+        3479,
+        3589
+      ],
+      "draws": 110,
+      "clears": 1,
+      "object_ids": [
+        37120
+      ]
+    },
+    "trail": {
+      "calls": 777,
+      "frames": [
+        3482,
+        3616
+      ],
+      "draws": 770,
+      "clears": 7,
+      "object_ids": [
+        38656,
+        38784,
+        38912,
+        39040,
+        39168,
+        39296,
+        39424
+      ]
+    },
+    "boost": {
+      "calls": 702,
+      "frames": [
+        3598,
+        4299
+      ],
+      "draws": 701,
+      "clears": 1,
+      "object_ids": [
+        37120
+      ]
+    },
+    "boost_exit": {
+      "frame": 4299,
+      "parent_family": 36864,
+      "child": 37120,
+      "movement_source_before": 88390,
+      "movement_source_after": 75128,
+      "energy_high_word_before_first_boost": 223,
+      "energy_high_word_after_last_boost": -1
+    }
+  }
+}

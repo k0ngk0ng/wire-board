@@ -1,0 +1,14 @@
+{"Time":"2026-11-05T09:57:19.271331+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine"}
+{"Time":"2026-11-05T09:57:19.833519+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter4WorldOriginalPasses"}
+{"Time":"2026-11-05T09:57:19.833744+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter4WorldOriginalPasses","Output":"=== RUN   TestFighter4WorldOriginalPasses\n"}
+{"Time":"2026-11-05T09:57:19.880745+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter4WorldOriginalPasses","Output":"    fighter4_world_test.go:30: source4 original world 1800 object 8400 callback 12668 stage 2: complete fighter action source is not recovered\n"}
+{"Time":"2026-11-05T09:57:19.880801+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter4WorldOriginalPasses","Output":"--- FAIL: TestFighter4WorldOriginalPasses (0.05s)\n"}
+{"Time":"2026-11-05T09:57:19.880809+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter4WorldOriginalPasses","Elapsed":0.05}
+{"Time":"2026-11-05T09:57:19.88082+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter4WorldSingleInitialState"}
+{"Time":"2026-11-05T09:57:19.880825+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter4WorldSingleInitialState","Output":"=== RUN   TestFighter4WorldSingleInitialState\n"}
+{"Time":"2026-11-05T09:57:19.906483+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter4WorldSingleInitialState","Output":"    fighter4_world_test.go:30: source4 original world 1800 object 8400 callback 12668 stage 2: complete fighter action source is not recovered\n"}
+{"Time":"2026-11-05T09:57:19.906495+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter4WorldSingleInitialState","Output":"--- FAIL: TestFighter4WorldSingleInitialState (0.03s)\n"}
+{"Time":"2026-11-05T09:57:19.906506+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter4WorldSingleInitialState","Elapsed":0.03}
+{"Time":"2026-11-05T09:57:19.90651+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"FAIL\n"}
+{"Time":"2026-11-05T09:57:19.907023+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine\t0.636s\n"}
+{"Time":"2026-11-05T09:57:19.907042+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Elapsed":0.636}

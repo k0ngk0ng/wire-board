@@ -1,0 +1,14 @@
+{"Time":"2026-11-05T10:40:24.167698+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine"}
+{"Time":"2026-11-05T10:40:24.708053+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter4DuoWorldOriginalPasses"}
+{"Time":"2026-11-05T10:40:24.7081+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter4DuoWorldOriginalPasses","Output":"=== RUN   TestFighter4DuoWorldOriginalPasses\n"}
+{"Time":"2026-11-05T10:41:03.608003+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter4DuoWorldOriginalPasses","Output":"    fighter4_duo_world_test.go:98: source4 duo continuous=false passes=3001 callbacks=34236 orderedDraws=18901 head=111 restores=7\n"}
+{"Time":"2026-11-05T10:41:03.608058+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter4DuoWorldOriginalPasses","Output":"--- PASS: TestFighter4DuoWorldOriginalPasses (38.90s)\n"}
+{"Time":"2026-11-05T10:41:03.608065+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter4DuoWorldOriginalPasses","Elapsed":38.9}
+{"Time":"2026-11-05T10:41:03.608074+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter4DuoWorldSingleInitialState"}
+{"Time":"2026-11-05T10:41:03.608085+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter4DuoWorldSingleInitialState","Output":"=== RUN   TestFighter4DuoWorldSingleInitialState\n"}
+{"Time":"2026-11-05T10:41:39.345579+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter4DuoWorldSingleInitialState","Output":"    fighter4_duo_world_test.go:99: source4 duo continuous=true passes=3001 callbacks=34236 orderedDraws=18901 head=111 restores=7\n"}
+{"Time":"2026-11-05T10:41:39.345639+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter4DuoWorldSingleInitialState","Output":"--- PASS: TestFighter4DuoWorldSingleInitialState (35.74s)\n"}
+{"Time":"2026-11-05T10:41:39.345646+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter4DuoWorldSingleInitialState","Elapsed":35.74}
+{"Time":"2026-11-05T10:41:39.345772+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"PASS\n"}
+{"Time":"2026-11-05T10:41:40.357798+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine\t76.190s\n"}
+{"Time":"2026-11-05T10:41:40.357843+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Elapsed":76.19}

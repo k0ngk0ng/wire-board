@@ -72,7 +72,7 @@ func TestFighter0WorldRuleLibrary(t *testing.T) {
 
 func TestFighter0RuleVersionAndInvalidSequences(t *testing.T) {
 	data := fighter0RuleJSON(t)
-	if data["schema"] != float64(2) {
+	if data["schema"] != float64(2) && data["schema"] != float64(3) {
 		t.Fatal("new rule bundle did not declare source0 extension")
 	}
 	for _, kind := range []string{"missing", "duplicate", "wrong-identity"} {

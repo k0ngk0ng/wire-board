@@ -1,0 +1,8 @@
+{
+  "implementation_changed": false,
+  "files": {
+    "fighter4_dragon_world_test.go": "6defcbdf35d56a3a5761394333c24e6dbaf884f25df63a5d3cd1832294512cd2",
+    "FIGHTER4_WORLD_FAILURES.md": "6df265bd5228b76c7fa0af7cabf52a971bf04d24afcff252ce033657d658d5a9",
+    "testdata/fighter4-dragon-world-red.jsonl": "636229e3f0e9c0f157db4a389193cb696118307832779489d8ad6e639f7f4f79"
+  }
+}

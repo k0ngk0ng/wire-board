@@ -4,7 +4,8 @@ import "errors"
 
 type ChuActionParameters struct {
 	ChuTailParameters
-	WalkSpeed int32 `json:"walk_speed"`
+	WalkSpeed       int32                          `json:"walk_speed"`
+	MovementSources map[uint32]FighterMovementSpec `json:"-"`
 }
 
 // ChuActionState is the union of state owned by the complete action routine.
@@ -21,7 +22,10 @@ type ChuActionState struct {
 	TargetBit              uint8
 	Power                  int16
 	AlternateVelocity      int32
+	MovementSource         uint32
+	DragonBankCursor       uint16
 	Children               [3]ChuSpecialChild
+	ChildExtras            [3]Fighter4ChildExtra
 	EffectExtras           [16]ReactionEffectExtra
 	GlobalF568, GlobalF56A uint16
 	Left, Right            int16
@@ -36,16 +40,21 @@ func StepChuAction(state ChuActionState, parameters ChuActionParameters, command
 }
 
 // StepFighterAction keeps one copy of the complete action driver for the
-// restored sources0/1/2/3/6/8/9/10. AlternateVelocity remains the sole +48 long owner.
+// restored sources0/1/2/3/4/6/8/9/10. AlternateVelocity remains the sole +48 long owner.
 func StepFighterAction(state ChuActionState, characterID uint8, parameters ChuActionParameters, commands CommandLibrary, animations AnimationLibrary) (ChuActionState, error) {
 	original := state
-	if characterID != 0 && characterID != 1 && characterID != 2 && characterID != 3 && characterID != 6 && characterID != 8 && characterID != 9 && characterID != 10 {
+	if characterID != 0 && characterID != 1 && characterID != 2 && characterID != 3 && characterID != 4 && characterID != 6 && characterID != 8 && characterID != 9 && characterID != 10 {
 		return original, errors.New("unsupported complete fighter action source")
+	}
+	var err error
+	parameters, err = actionMovementParameters(parameters, state.MovementSource)
+	if err != nil {
+		return original, err
 	}
 	command := CommandState{RawHeld: state.Controls.RawHeld, Facing: state.Body.Facing, Request: state.Body.Request}
 	copy(command.Timeouts[:], state.Body.Commands[:8])
 	copy(command.Indices[:], state.Body.Commands[8:])
-	command, err := PrepareCharacterCommands(characterID, command, commands)
+	command, err = PrepareCharacterCommands(characterID, command, commands)
 	if err != nil {
 		return original, err
 	}
@@ -97,7 +106,13 @@ func StepFighterAction(state ChuActionState, characterID uint8, parameters ChuAc
 				return original, actionErr
 			}
 			state.Body, state.Pool, state.OccupiedLanes = body, pool, occupied
-		case 0x0e, 0x16, 0x17, 0x18, 0x19:
+		case 0x0e, 0x12, 0x16, 0x17, 0x18, 0x19:
+			if characterID == 4 && (state.Body.ActionKind == 0x0e || state.Body.ActionKind == 0x12) {
+				if actionErr := stepFighter4ActionMotion(&state, parameters.JumpParameters); actionErr != nil {
+					return original, actionErr
+				}
+				break
+			}
 			if characterID == 6 && state.Body.ActionKind == 0x0e {
 				if actionErr := stepFighter6ActionMotion(&state, parameters.JumpParameters); actionErr != nil {
 					return original, actionErr
@@ -138,6 +153,13 @@ func StepFighterAction(state ChuActionState, characterID uint8, parameters ChuAc
 				return original, actionErr
 			}
 			state.acceptSpecialMotion(next)
+		case 0x25, 0x26, 0x27, 0x28, 0x29, 0x2a, 0x2b, 0x2c:
+			if characterID != 4 {
+				return original, errors.New("unsupported fighter action source/slot")
+			}
+			if actionErr := stepFighter4ActionMotion(&state, parameters.JumpParameters); actionErr != nil {
+				return original, actionErr
+			}
 		case 0x1e, 0x1f, 0x20:
 			if characterID != 2 {
 				return original, errors.New("unsupported fighter action source/slot")
@@ -247,12 +269,40 @@ func StepFighterAction(state ChuActionState, characterID uint8, parameters ChuAc
 	// Child creation earlier in this same call changes the later availability
 	// gate. The child's size is authoritative, rather than its old input copy.
 	state.ChildSize = state.Children[0].Size
+	parameters, err = actionMovementParameters(parameters, state.MovementSource)
+	if err != nil {
+		return original, err
+	}
 	tail, aux48, power, err := stepFighterActionTail(state.ChuTailState, characterID, state.AlternateVelocity, state.Power, state.EnergyFraction, parameters.ChuTailParameters, animations, mode)
 	if err != nil {
 		return original, err
 	}
 	state.ChuTailState, state.AlternateVelocity, state.Power = tail, aux48, power
 	return state, nil
+}
+
+func actionMovementParameters(parameters ChuActionParameters, source uint32) (ChuActionParameters, error) {
+	if parameters.MovementSources == nil {
+		return parameters, nil
+	}
+	movement, found := parameters.MovementSources[source]
+	if !found {
+		return parameters, errors.New("current fighter movement source is unavailable")
+	}
+	parameters.WalkSpeed = movement.WalkSpeed
+	parameters.ChuTailParameters = ChuTailParameters{JumpParameters: movement.JumpParameters, BurstSpeed: movement.BurstSpeed, EnergyDrain: movement.EnergyDrain}
+	return parameters, nil
+}
+
+func stepFighter4ActionMotion(state *ChuActionState, parameters JumpParameters) error {
+	next, err := StepFighter4Motion(Fighter4MotionState{ChuSpecialMotionState: state.specialMotionView(), MovementSource: state.MovementSource,
+		DragonBankCursor: state.DragonBankCursor, ChildExtras: state.ChildExtras, EffectExtras: state.EffectExtras}, parameters)
+	if err != nil {
+		return err
+	}
+	state.acceptSpecialMotion(next.ChuSpecialMotionState)
+	state.MovementSource, state.DragonBankCursor, state.ChildExtras, state.EffectExtras = next.MovementSource, next.DragonBankCursor, next.ChildExtras, next.EffectExtras
+	return nil
 }
 
 func stepFighter0ActionMotion(state *ChuActionState, parameters JumpParameters) error {

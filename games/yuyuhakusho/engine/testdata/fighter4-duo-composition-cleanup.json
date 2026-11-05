@@ -1,0 +1,49 @@
+{
+  "verified_at_utc": "2026-11-05T02:42:35.173172+00:00",
+  "pass": true,
+  "scope": "Own Duo complete-composition raw scratch and closed prior metadata diagnostic only",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-duo-composition",
+      "bytes": 376435077,
+      "canonical_proofs": [
+        {
+          "name": "fighter4-composition-action-duo.json.gz",
+          "gzip_sha256": "21b3b9fc84eb73465891ddd12b8f75e09c36b46e7996be016ec8463b5f412079",
+          "canonical_byte_identical": true
+        },
+        {
+          "name": "fighter4-composition-actor-duo.json.gz",
+          "gzip_sha256": "30d24a05b5828c8e74097b3303d9fd087c7d535c0525e8d88e8b4f15468aa85b",
+          "canonical_byte_identical": true
+        },
+        {
+          "name": "fighter4-composition-input-duo.json.gz",
+          "gzip_sha256": "ef21fe16723863037671f5ef37d63e474c153947044e52539fab5542b1309557",
+          "canonical_byte_identical": true
+        }
+      ]
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-duo-composition-run.jsonl",
+      "bytes": 1824,
+      "canonical_byte_identical": true
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fighter4-composition-diagnostic",
+      "bytes": 131882,
+      "canonical_full_diagnostic_archive": "games/yuyuhakusho/engine/testdata/fighter4-composition-integration-state-diagnostic.json.gz",
+      "archive_sha256": "283194cfc1348549c083ab6cf3b5280ff2d1791e901c6804c933bc17c6f2d1a6",
+      "archive_raw_sha256": "737be7ad24e49c2732975a576f47b643a405f83603de57548c95366837d7cf3d",
+      "diagnostic_source_preserved_in": "fighter4-composition-integration-diagnostic.json"
+    }
+  ],
+  "preserved": [
+    "All15 canonical composition CPU fixture/manifests",
+    "Original six and new three frozen tests",
+    "Prior12 validation/provenance/red reports unchanged",
+    "Shared Go caches/ROM/tools/Root logs/8799 page assets",
+    "Other agents MAIN/world/Duo captures"
+  ],
+  "removed_bytes": 376568783
+}
