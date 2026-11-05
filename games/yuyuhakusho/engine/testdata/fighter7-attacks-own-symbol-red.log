@@ -1,0 +1,12 @@
+# github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine [github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine.test]
+games/yuyuhakusho/engine/fighter7_attacks_test.go:216:80: undefined: Fighter7AttackState
+games/yuyuhakusho/engine/fighter7_attacks_test.go:226:11: undefined: Fighter7AttackState
+games/yuyuhakusho/engine/fighter7_attacks_test.go:236:47: undefined: Fighter7AttackState
+games/yuyuhakusho/engine/fighter7_attacks_test.go:336:18: undefined: SelectFighter7Attack
+games/yuyuhakusho/engine/fighter7_attacks_test.go:395:18: undefined: SelectFighter7Attack
+games/yuyuhakusho/engine/fighter7_attacks_test.go:411:11: undefined: Fighter7AttackState
+games/yuyuhakusho/engine/fighter7_attacks_test.go:430:15: undefined: SelectFighter7Attack
+games/yuyuhakusho/engine/fighter7_attacks_test.go:441:16: undefined: SelectFighter7Attack
+games/yuyuhakusho/engine/fighter7_attacks_test.go:452:14: undefined: SelectFighter7Attack
+FAIL	github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine [build failed]
+FAIL

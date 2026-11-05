@@ -1,0 +1,70 @@
+{
+  "frame": 2400,
+  "main_behavior": "0xa01e",
+  "main_stage": 32,
+  "header_a100": "0400000801000002000000010100000404080000800100000000000000000000",
+  "characters": [
+    4,
+    0,
+    0,
+    8
+  ],
+  "controllers": [
+    1,
+    0,
+    0,
+    2
+  ],
+  "mode_a01e": 0,
+  "sources": [
+    3,
+    0,
+    0,
+    7
+  ],
+  "channels": [
+    0,
+    0,
+    0,
+    1
+  ],
+  "parent_sizes": [
+    256,
+    0,
+    0,
+    256
+  ],
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.4 60bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "input_sha256": "78beacb58b4894176d5c4e1b69774246fec58eb91fc1119d8d824df1bfc9a3b5",
+  "reference_control_generated": false,
+  "scope": "Cold physical two-human source3/channel0 versus source7 tree/channel1 menu selection",
+  "input": {
+    "path": "docs/research/md-yuyuhakusho/source7-duo-menu-inputs.json",
+    "sha256": "78beacb58b4894176d5c4e1b69774246fec58eb91fc1119d8d824df1bfc9a3b5"
+  },
+  "cold_fixed_replay_verified": true,
+  "rom_ram_request_hp_energy_writes": false,
+  "physical_difference_from_source4_menu": {
+    "start": 1600,
+    "end": 1629,
+    "buttons": [
+      6
+    ],
+    "port": 1
+  },
+  "screenshot": "source7-duo-selection.png",
+  "limits": [
+    "Menu and source identity evidence only; no formal reference control generated",
+    "Damage and natural callbacks are separate follow-up discovery"
+  ],
+  "screenshot_sha256": "2d05876faf3b9819f70dd6c55ceb98ad75fa61ee0828536ff24098a8e4e5888c"
+}

@@ -1,0 +1,46 @@
+{
+  "pass": true,
+  "scope": "Source7 first ai-record complete original Actor executes 3d cross-peer writes before the frozen late-HUD rollback probe",
+  "frozen_test_sha256": "7e1477727855f72ab03efd31bc6350d5399def191c0487d936b3daeab8083f29",
+  "private_cases_sha256": "5ec1a22c298441deabdaeb1e0dc31b1be7a86512096ddfca0be0aac144b14584",
+  "v1_lineage": "fighter7-composition-private-v1-lineage.json",
+  "fixture": "fighter7-composition-actor-boundaries.json.gz",
+  "fixture_sha256": "df46fd39fa2dd02c174219851e9888496b71ff9c1a8c7e94a3ab10e2340408c5",
+  "real_original_row": {
+    "name": "route-8400-ai-record",
+    "source_register": "0xffff8400",
+    "before_kind": 61,
+    "after_kind": 61,
+    "ai_calls": 1,
+    "record_calls": 1,
+    "rng_calls": 5,
+    "peer_hit_stop": [
+      {
+        "id": 34816,
+        "before": 213,
+        "after": 255
+      },
+      {
+        "id": 35840,
+        "before": 242,
+        "after": 255
+      },
+      {
+        "id": 36864,
+        "before": 15,
+        "after": 255
+      }
+    ],
+    "ram_before_sha256": "c38ebd0f049e7c7f5fb90e3f8c4b8cf620ed402a8f8d5e3a5b2e58137e987878",
+    "ram_after_sha256": "80afea642ade8e790a5073b33f855c648f4598d5a927a07a55a9ca25be0d7bb5",
+    "ram_bytes_compared": 65536,
+    "unknown_writes": 0
+  },
+  "previous_fixture": {
+    "path": "fighter7-composition-v1/fighter7-composition-actor-boundaries.json.gz",
+    "sha256": "62403d289a376451c1cd46855f1a32b3de26e2a0d86ff8ea32d9ece2159aafa3"
+  },
+  "late_hud_atomic_assertion_unchanged": true,
+  "final_test_sha256": "c449c984ccbdadaf4bce67b6abd0660ffc00c502b693596c4285d46dca2627c6",
+  "v1_nonaudio_all_fields_equal": true
+}

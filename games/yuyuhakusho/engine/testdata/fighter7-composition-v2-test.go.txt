@@ -1,0 +1,691 @@
+package engine
+
+import (
+	"encoding/binary"
+	"encoding/hex"
+	"encoding/json"
+	"fmt"
+	"os"
+	"reflect"
+	"testing"
+)
+
+// These adapters expose only the established physical offsets. They do not
+// read an expected return or advance an animation/child state on behalf of Go.
+func fighter7CompositionActionState(t *testing.T, raw chuActionSnapshot, id uint16) ChuActionState {
+	t.Helper()
+	state := decodeChuAction(t, raw, id)
+	for owner, encoded := range raw.Tail.Others {
+		resource := state.OtherFighters[owner]
+		resource.HitStopTicks = attackContactBytes(t, encoded, 256)[0x69]
+		state.OtherFighters[owner] = resource
+	}
+	return state
+}
+
+func fighter7CompositionEncodeAction(t *testing.T, state ChuActionState, previous chuActionSnapshot) chuActionSnapshot {
+	t.Helper()
+	raw := encodeChuAction(t, state, previous)
+	for owner, resource := range state.OtherFighters {
+		b := attackContactBytes(t, raw.Tail.Others[owner], 256)
+		b[0x69] = resource.HitStopTicks
+		raw.Tail.Others[owner] = hex.EncodeToString(b)
+	}
+	// Metadata follows this output's current +90, even when it is unchanged.
+	if state.MovementSource != 0 {
+		movement, found := fighter7CompositionMovements(t)[state.MovementSource]
+		if !found {
+			t.Fatal("current source7 movement metadata unavailable", state.MovementSource)
+		}
+		raw.WalkSpeed = movement.WalkSpeed
+		raw.Tail.Parameters = ChuTailParameters{JumpParameters: movement.JumpParameters, BurstSpeed: movement.BurstSpeed, EnergyDrain: movement.EnergyDrain}
+	}
+	return raw
+}
+
+func fighter7CompositionActorState(t *testing.T, raw chuActorSnapshot, id uint16) ChuActorState {
+	t.Helper()
+	state := decodeChuActor(t, raw, id)
+	state.World.OtherHitStopTicks = make(map[uint16]uint8, 3)
+	for owner, encoded := range raw.Action.Tail.Others {
+		state.World.OtherHitStopTicks[owner] = attackContactBytes(t, encoded, 256)[0x69]
+	}
+	return state
+}
+
+func fighter7CompositionEncodeActor(t *testing.T, state ChuActorState, view ChuActorView, emitted ChuActorEmissions, previous chuActorSnapshot) chuActorSnapshot {
+	t.Helper()
+	raw := encodeChuActor(t, state, view, emitted, previous)
+	family := attackContactBytes(t, raw.FamilyWorld, 4096)
+	for owner, ticks := range state.World.OtherHitStopTicks {
+		b := attackContactBytes(t, raw.Action.Tail.Others[owner], 256)
+		b[0x69] = ticks
+		raw.Action.Tail.Others[owner] = hex.EncodeToString(b)
+		family[int(owner)-0x8400+0x69] = ticks
+	}
+	raw.FamilyWorld = hex.EncodeToString(family)
+	if state.Fighter.MovementSource != 0 {
+		movement, found := fighter7CompositionMovements(t)[state.Fighter.MovementSource]
+		if !found {
+			t.Fatal("current actor movement metadata unavailable", state.Fighter.MovementSource)
+		}
+		raw.Action.WalkSpeed = movement.WalkSpeed
+		raw.Action.Tail.Parameters = ChuTailParameters{JumpParameters: movement.JumpParameters, BurstSpeed: movement.BurstSpeed, EnergyDrain: movement.EnergyDrain}
+	}
+	return raw
+}
+
+func fighter7CompositionEncodeInput(t *testing.T, state ChuInputState, previous chuInputSnapshot) chuInputSnapshot {
+	t.Helper()
+	return encodeChuInput(t, state, previous)
+}
+
+func fighter7CompositionMovements(t *testing.T) map[uint32]FighterMovementSpec {
+	t.Helper()
+	raw, err := os.ReadFile("testdata/fighter7-composition-movement-rules.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var data struct {
+		Pass  bool
+		ROM   string `json:"rom_sha256"`
+		Rules []struct {
+			Source   uint32
+			Movement FighterMovementSpec
+		}
+	}
+	if err := json.Unmarshal(raw, &data); err != nil || !data.Pass || data.ROM != "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06" || len(data.Rules) == 0 {
+		t.Fatal("unbound original source7 movement parameters", err)
+	}
+	result := make(map[uint32]FighterMovementSpec, len(data.Rules))
+	for _, rule := range data.Rules {
+		result[rule.Source] = rule.Movement
+	}
+	return result
+}
+
+func fighter7CompositionParameters(t *testing.T, raw chuActionSnapshot) ChuActionParameters {
+	t.Helper()
+	source := binary.BigEndian.Uint32(attackContactBytes(t, raw.Tail.ActorBytes, 256)[0x90:])
+	movement, found := fighter7CompositionMovements(t)[source]
+	if !found {
+		t.Fatal("unbound current +90", source)
+	}
+	return ChuActionParameters{WalkSpeed: movement.WalkSpeed, ChuTailParameters: ChuTailParameters{JumpParameters: movement.JumpParameters, BurstSpeed: movement.BurstSpeed, EnergyDrain: movement.EnergyDrain}}
+}
+
+func fighter7CompositionAliases(t *testing.T, state ChuActionState, raw chuActionSnapshot) {
+	t.Helper()
+	a := attackContactBytes(t, raw.Tail.ActorBytes, 256)
+	children := attackContactBytes(t, raw.Children, 768)
+	if state.MovementSource != binary.BigEndian.Uint32(a[0x90:]) || state.AlternateVelocity != int32(binary.BigEndian.Uint32(a[0x48:])) || state.fullActionEnergy() != int32(binary.BigEndian.Uint32(a[0xb8:])) || state.Power != int16(binary.BigEndian.Uint16(a[0x7c:])) || state.HitStopTicks != a[0x69] || len(state.OtherFighters) != 3 {
+		t.Fatal("source7 canonical motion/resource/peer ownership missing")
+	}
+	if _, duplicate := state.OtherFighters[state.ObjectID]; duplicate {
+		t.Fatal("self duplicated in peer map")
+	}
+	for owner, peer := range state.OtherFighters {
+		b := attackContactBytes(t, raw.Tail.Others[owner], 256)
+		if peer.HitStopTicks != b[0x69] {
+			t.Fatal("peer hit-stop uses wrong offset", owner)
+		}
+	}
+	for i, extra := range state.ChildExtras {
+		b := children[i*256:]
+		if extra.Held != b[0x71] || extra.Pressed != b[0x72] {
+			t.Fatal("child input uses wrong offset", i)
+		}
+	}
+	probe := state
+	probe.OtherFighters = make(map[uint16]TailFighterEnergy, 3)
+	for owner, peer := range state.OtherFighters {
+		peer.HitStopTicks ^= 0xa5
+		probe.OtherFighters[owner] = peer
+	}
+	probe.MovementSource = 0
+	probe.AlternateVelocity ^= 0x123456
+	probe.EnergyFraction ^= 0x4321
+	probe.Power ^= 0x1234
+	probe.HitStopTicks ^= 0x5a
+	for i := range probe.ChildExtras {
+		probe.ChildExtras[i].Held ^= 8
+		probe.ChildExtras[i].Pressed ^= 32
+	}
+	encoded := fighter7CompositionEncodeAction(t, probe, raw)
+	aa := attackContactBytes(t, encoded.Tail.ActorBytes, 256)
+	cc := attackContactBytes(t, encoded.Children, 768)
+	if binary.BigEndian.Uint32(aa[0x90:]) != 0 || int32(binary.BigEndian.Uint32(aa[0x48:])) != probe.AlternateVelocity || binary.BigEndian.Uint16(aa[0xba:]) != probe.EnergyFraction || int16(binary.BigEndian.Uint16(aa[0x7c:])) != probe.Power || aa[0x69] != probe.HitStopTicks {
+		t.Fatal("encoder hides canonical writes behind previous bytes")
+	}
+	for owner, peer := range probe.OtherFighters {
+		if attackContactBytes(t, encoded.Tail.Others[owner], 256)[0x69] != peer.HitStopTicks {
+			t.Fatal("encoder hides peer hit-stop write", owner)
+		}
+	}
+	for i, extra := range probe.ChildExtras {
+		if cc[i*256+0x71] != extra.Held || cc[i*256+0x72] != extra.Pressed {
+			t.Fatal("encoder hides child input write", i)
+		}
+	}
+}
+
+type fighter7CompositionAudit struct {
+	BytesCompared int    `json:"bytes_compared"`
+	ChangedBytes  int    `json:"changed_bytes"`
+	UnknownWrites int    `json:"unknown_writes"`
+	BeforeSHA     string `json:"before_sha256"`
+	AfterSHA      string `json:"after_sha256"`
+	Delta         []struct {
+		Address       int
+		Before, After uint8
+	}
+}
+
+func fighter7CompositionRAM(t *testing.T, audit fighter7CompositionAudit) {
+	t.Helper()
+	if audit.BytesCompared != 65536 || audit.UnknownWrites != 0 || len(audit.BeforeSHA) != 64 || len(audit.AfterSHA) != 64 || len(audit.Delta) != audit.ChangedBytes {
+		t.Fatal("incomplete full64KiB original RAM audit")
+	}
+	previous := -1
+	for _, delta := range audit.Delta {
+		if delta.Address <= previous || delta.Address > 65535 || delta.Before == delta.After {
+			t.Fatal("invalid full RAM delta")
+		}
+		previous = delta.Address
+	}
+}
+
+func fighter7CompositionFamily(t *testing.T, row fighter7CompositionAction, encoded chuActionSnapshot) {
+	t.Helper()
+	family := attackContactBytes(t, row.FamilyBefore, 4096)
+	offset := int(row.ObjectID) - 0x8400
+	copy(family[offset:offset+256], attackContactBytes(t, encoded.Tail.ActorBytes, 256))
+	copy(family[offset+256:offset+1024], attackContactBytes(t, encoded.Children, 768))
+	for owner, raw := range encoded.Tail.Others {
+		copy(family[int(owner)-0x8400:], attackContactBytes(t, raw, 256))
+	}
+	if hex.EncodeToString(family) != row.FamilyAfter {
+		t.Fatal("complete Action omitted a cross-family write", row.Name)
+	}
+}
+
+// The original audio consumer runs asynchronously inside the complete CPU
+// call. Ordered physical events must reproduce every CPU slot. Replaying only
+// the observed owned requests gives the synchronous API's expected queue.
+// No actor, animation clock, child, resource or RNG state is projected.
+type fighter7CompositionAudioFixture struct {
+	AudioBefore [4]uint8                        `json:"audio_before"`
+	AudioAfter  [4]uint8                        `json:"audio_after"`
+	AudioEvents []fighter7CompositionAudioEvent `json:"audio_events"`
+}
+
+type fighter7CompositionAudioEvent struct {
+	Kind, PC, Address    string
+	Ordinal              int
+	Value, Before, After uint8
+	QueueBefore          [4]uint8 `json:"queue_before"`
+	IRQDepth             int      `json:"irq_depth"`
+	SourceRegister       string   `json:"source_register"`
+	AfterVerified        bool     `json:"after_verified"`
+}
+
+func fighter7CompositionAudioPhysical(t *testing.T, trace fighter7CompositionAudioFixture, owner string, clearCount int) [4]uint8 {
+	t.Helper()
+	physical, synchronous := trace.AudioBefore, trace.AudioBefore
+	pending, pendingValue, clears := false, uint8(0), 0
+	for index, event := range trace.AudioEvents {
+		if event.Ordinal != index || !event.AfterVerified {
+			t.Fatal("unverified or unordered original audio event", index, event)
+		}
+		switch event.Kind {
+		case "request":
+			if event.PC != "0x21960" || event.Value == 0 || event.IRQDepth != 0 || event.SourceRegister != owner || pending || event.QueueBefore != physical {
+				t.Fatal("invalid owned original sound request", index, event)
+			}
+			pending, pendingValue = true, event.Value
+			for slot, value := range synchronous {
+				if value < 128 || value == event.Value {
+					synchronous[slot] = event.Value
+					break
+				}
+			}
+		case "write":
+			slot := -1
+			for i, pc := range []string{"0x2196c", "0x2197e", "0x21990", "0x219a2"} {
+				if event.PC == pc {
+					slot = i
+				}
+			}
+			if slot < 0 || event.Address != fmt.Sprintf("0x%x", 0xf80a+slot) || event.IRQDepth != 0 || event.SourceRegister != owner || !pending || event.Value != pendingValue || event.After != event.Value || event.Before != physical[slot] {
+				t.Fatal("unidentified original owned audio write", index, event)
+			}
+			physical[slot], pending = event.After, false
+		case "drop":
+			if event.PC != "0x219a8" || event.IRQDepth != 0 || event.SourceRegister != owner || !pending || event.Value != pendingValue || event.QueueBefore != physical {
+				t.Fatal("unobserved original full-queue request drop", index, event)
+			}
+			pending = false
+		case "clear":
+			slot := -1
+			for i := range physical {
+				if event.Address == fmt.Sprintf("0x%x", 0xf80a+i) {
+					slot = i
+				}
+			}
+			if slot < 0 || (event.PC != "0x37c56" && event.PC != "0x37cac") || event.IRQDepth == 0 || event.Before != physical[slot] || event.After != 0 {
+				t.Fatal("unidentified original external audio clear", index, event)
+			}
+			physical[slot], clears = 0, clears+1
+		default:
+			t.Fatal("unknown original audio event", event.Kind)
+		}
+	}
+	if pending || clears != clearCount || physical != trace.AudioAfter {
+		t.Fatal("ordered original audio events do not reproduce all CPU queue slots", physical, trace.AudioAfter, clears, clearCount)
+	}
+	return synchronous
+}
+
+func fighter7CompositionAudioProjection(t *testing.T, trace fighter7CompositionAudioFixture, owner string, clearCount int, before, got, cpu [4]uint8) [4]uint8 {
+	t.Helper()
+	if trace.AudioBefore != before || trace.AudioAfter != cpu {
+		t.Fatal("audio trace does not match complete API queue boundaries")
+	}
+	expected := fighter7CompositionAudioPhysical(t, trace, owner, clearCount)
+	if got != expected {
+		t.Fatal("complete Go queue differs from observed synchronous sound requests", got, expected)
+	}
+	return got
+}
+
+type fighter7CompositionAction struct {
+	fighter7CompositionAudioFixture
+	chuActionCall
+	SourceRegister string                   `json:"source_register"`
+	FamilyBefore   string                   `json:"family_before"`
+	FamilyAfter    string                   `json:"family_after"`
+	RAMAudit       fighter7CompositionAudit `json:"ram_audit"`
+}
+
+type fighter7CompositionInput struct {
+	fighter7CompositionAudioFixture
+	chuInputCall
+	Clears         []struct{ PC, Address string } `json:"external_queue_clears"`
+	SourceRegister string                         `json:"source_register"`
+	RNGCalls       int                            `json:"rng_calls"`
+	ThreatBranches int                            `json:"threat_branches"`
+	RAMAudit       fighter7CompositionAudit       `json:"ram_audit"`
+}
+
+type fighter7CompositionActor struct {
+	fighter7CompositionAudioFixture
+	chuActorCall
+	SourceRegister string                   `json:"source_register"`
+	ThreatBranches int                      `json:"threat_branches"`
+	RAMAudit       fighter7CompositionAudit `json:"ram_audit"`
+}
+
+func fighter7CompositionInputState(t *testing.T, raw chuInputSnapshot, id uint16) ChuInputState {
+	t.Helper()
+	state := decodeChuInput(t, raw, id)
+	world := attackContactBytes(t, raw.AI.World, 4096)
+	for i := range state.AI.Fighters {
+		state.AI.Fighters[i].ChildAttackValue = world[i*1024+0x165]
+	}
+	return state
+}
+
+func fighter7CompositionView(t *testing.T, raw chuActorSnapshot, fixture chuActorViewFixture) ChuActorView {
+	t.Helper()
+	view := testActorView(t, raw, fixture)
+	view.Parameters = fighter7CompositionParameters(t, raw.Action)
+	family := attackContactBytes(t, raw.FamilyWorld, 4096)
+	for i := range view.Fighters {
+		view.Fighters[i].ChildAttackValue = family[i*1024+0x165]
+	}
+	return view
+}
+
+func fighter7CompositionSource(t *testing.T, id uint16, register string, rawActor string) {
+	t.Helper()
+	if register != fmt.Sprintf("0xffff%04x", id) {
+		t.Fatal("noncanonical original A5 source", register, id)
+	}
+	if attackContactBytes(t, rawActor, 256)[0x58] != 7 {
+		t.Fatal("full composition did not use actual source7 object")
+	}
+}
+
+func fighter7CompositionClear(t *testing.T, pc, address string) {
+	t.Helper()
+	if (pc != "0x37c56" && pc != "0x37cac") || address < "0xf80a" || address > "0xf80d" {
+		t.Fatal("unidentified natural audio queue clear", pc, address)
+	}
+}
+
+func checkFighter7CompositionAction(t *testing.T, row fighter7CompositionAction, library AnimationLibrary, commands CommandLibrary) {
+	t.Helper()
+	fighter7CompositionSource(t, row.ObjectID, row.SourceRegister, row.Before.Tail.ActorBytes)
+	fighter7CompositionRAM(t, row.RAMAudit)
+	state, copy := fighter7CompositionActionState(t, row.Before, row.ObjectID), fighter7CompositionActionState(t, row.Before, row.ObjectID)
+	fighter7CompositionAliases(t, state, row.Before)
+	got, err := StepFighterAction(state, 7, fighter7CompositionParameters(t, row.Before), commands, library)
+	want, expected := fighter7CompositionActionState(t, row.After, row.ObjectID), row.After
+	for _, clear := range row.Clears {
+		fighter7CompositionClear(t, clear.PC, clear.Address)
+	}
+	projectedQueue := fighter7CompositionAudioProjection(t, row.fighter7CompositionAudioFixture, row.SourceRegister, len(row.Clears), row.Before.Tail.SoundQueue, got.SoundQueue, want.SoundQueue)
+	want.SoundQueue, expected.Tail.SoundQueue = projectedQueue, projectedQueue
+	if err != nil || row.RNGCalls != 1 || !reflect.DeepEqual(got, want) || !reflect.DeepEqual(fighter7CompositionEncodeAction(t, got, row.Before), expected) {
+		t.Fatalf("full source7 action %s kind=%x differs: %v", row.Name, state.Body.ActionKind, err)
+	}
+	fighter7CompositionFamily(t, row, fighter7CompositionEncodeAction(t, got, row.Before))
+	if !reflect.DeepEqual(state, copy) {
+		t.Fatal("full action mutated caller storage")
+	}
+}
+
+func checkFighter7CompositionInput(t *testing.T, row fighter7CompositionInput) {
+	t.Helper()
+	fighter7CompositionSource(t, row.ObjectID, row.SourceRegister, row.Before.AI.Actor)
+	fighter7CompositionRAM(t, row.RAMAudit)
+	fighter7CompositionAudioPhysical(t, row.fighter7CompositionAudioFixture, row.SourceRegister, len(row.Clears))
+	state, copy := fighter7CompositionInputState(t, row.Before, row.ObjectID), fighter7CompositionInputState(t, row.Before, row.ObjectID)
+	got, err := StepFighterInput(state)
+	want := fighter7CompositionInputState(t, row.After, row.ObjectID)
+	if err != nil || !reflect.DeepEqual(got, want) || !reflect.DeepEqual(fighter7CompositionEncodeInput(t, got, row.Before), row.After) {
+		t.Fatalf("full source7 input %s/%s differs: %v", row.Route, row.Name, err)
+	}
+	if !reflect.DeepEqual(state, copy) || got.Envelope.Controls != got.AI.Actor.Controls {
+		t.Fatal("shared full input controls split or caller mutated")
+	}
+	if row.AICalls == 0 && (row.RNGCalls != 0 || got.AI.RandomSeed != state.AI.RandomSeed) {
+		t.Fatal("non-AI input consumed RNG")
+	}
+}
+
+func checkFighter7CompositionActor(t *testing.T, row fighter7CompositionActor, library AnimationLibrary, commands CommandLibrary) {
+	t.Helper()
+	fighter7CompositionSource(t, row.ObjectID, row.SourceRegister, row.Before.Action.Tail.ActorBytes)
+	fighter7CompositionRAM(t, row.RAMAudit)
+	state, copy := fighter7CompositionActorState(t, row.Before, row.ObjectID), fighter7CompositionActorState(t, row.Before, row.ObjectID)
+	if state.Fighter.MovementSource != binary.BigEndian.Uint32(attackContactBytes(t, row.Before.Action.Tail.ActorBytes, 256)[0x90:]) || !reflect.DeepEqual(state.World.OtherHitStopTicks, fighter7CompositionActorState(t, row.Before, row.ObjectID).World.OtherHitStopTicks) {
+		t.Fatal("actor source7 views missing canonical movement/peer hit-stop")
+	}
+	view := fighter7CompositionView(t, row.Before, row.View)
+	got, emitted, err := StepFighterActor(state, 7, view, commands, library)
+	want, expected := fighter7CompositionActorState(t, row.After, row.ObjectID), row.After
+	for _, clear := range row.Clears {
+		fighter7CompositionClear(t, clear.PC, clear.Address)
+	}
+	projectedQueue := fighter7CompositionAudioProjection(t, row.fighter7CompositionAudioFixture, row.SourceRegister, len(row.Clears), row.Before.Action.Tail.SoundQueue, got.World.SoundQueue, want.World.SoundQueue)
+	want.World.SoundQueue, expected.Action.Tail.SoundQueue = projectedQueue, projectedQueue
+	if err != nil || !reflect.DeepEqual(got, want) || !reflect.DeepEqual(fighter7CompositionEncodeActor(t, got, view, emitted, row.Before), expected) {
+		t.Fatalf("full source7 actor %s kind=%x differs: %v", row.Name, state.Fighter.Body.ActionKind, err)
+	}
+	if !emitted.DrawRequested || emitted.ObjectID != row.ObjectID || !reflect.DeepEqual(state, copy) {
+		t.Fatal("actor draw missing or caller mutated")
+	}
+	active := row.View.Pause&128 == 0 && row.View.Slow == 0
+	if active != (row.RNGCalls >= 1) {
+		t.Fatal("actor active gate/RNG count differs")
+	}
+}
+
+// These source7 tests precede production support in the complete action/actor
+// APIs. Input already uses all-character AI. Captures use actual full returns;
+// no production mock or reference-state interpreter is introduced.
+func TestFighter7CompositionOriginalActions(t *testing.T) {
+	commands := actionCommandLibrary(t)
+	for _, suffix := range []string{"natural", "special", "boundaries"} {
+		seen := map[uint8]int{}
+		count, _ := walkChuActor(t, "fighter7-composition-action-"+suffix, func(d *json.Decoder, library AnimationLibrary) {
+			var row fighter7CompositionAction
+			if err := d.Decode(&row); err != nil {
+				t.Fatal(err)
+			}
+			checkFighter7CompositionAction(t, row, library, commands)
+			seen[fighter7CompositionActionState(t, row.Before, row.ObjectID).Body.ActionKind]++
+		})
+		if count == 0 {
+			t.Fatal("missing full original action evidence")
+		}
+		if suffix == "boundaries" {
+			for _, action := range []uint8{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0x0f, 0x11, 0x13, 0x14, 0x45, 0x39, 0x3a, 0x3b, 0x3c, 0x3d} {
+				if seen[action] == 0 {
+					t.Fatal("missing full action slot", action)
+				}
+			}
+		}
+		t.Logf("original full actions %s=%d slots=%v", suffix, count, seen)
+	}
+}
+
+func TestFighter7CompositionOriginalInputs(t *testing.T) {
+	for _, suffix := range []string{"natural", "special", "boundaries"} {
+		routes := map[string]int{}
+		ai, threat := 0, 0
+		count, _ := walkChuActor(t, "fighter7-composition-input-"+suffix, func(d *json.Decoder, _ AnimationLibrary) {
+			var row fighter7CompositionInput
+			if err := d.Decode(&row); err != nil {
+				t.Fatal(err)
+			}
+			checkFighter7CompositionInput(t, row)
+			routes[row.Route]++
+			ai += row.AICalls
+			threat += row.ThreatBranches
+		})
+		if suffix == "boundaries" {
+			for _, route := range []string{"disabled", "human", "ai", "human-record", "ai-record", "playback", "playback-stopped"} {
+				if routes[route] == 0 {
+					t.Fatal("missing full source7 input route", route)
+				}
+			}
+			if ai == 0 {
+				t.Fatal("private source7 original AI not actually executed")
+			}
+		} else if ai != 0 {
+			t.Fatal("human source7 natural flow unexpectedly contains AI evidence")
+		}
+		t.Logf("original full inputs %s=%d AI calls=%d source7 threat branch=%d routes=%v", suffix, count, ai, threat, routes)
+	}
+}
+
+func TestFighter7CompositionOriginalActors(t *testing.T) {
+	commands := actionCommandLibrary(t)
+	for _, suffix := range []string{"natural", "special", "boundaries"} {
+		identities := map[uint16]bool{}
+		paused, slow := 0, 0
+		count, _ := walkChuActor(t, "fighter7-composition-actor-"+suffix, func(d *json.Decoder, library AnimationLibrary) {
+			var row fighter7CompositionActor
+			if err := d.Decode(&row); err != nil {
+				t.Fatal(err)
+			}
+			checkFighter7CompositionActor(t, row, library, commands)
+			identities[row.ObjectID] = true
+			if row.View.Pause&128 != 0 {
+				paused++
+			}
+			if row.View.Slow != 0 {
+				slow++
+			}
+		})
+		if suffix == "boundaries" && (len(identities) != 4 || paused == 0 || slow == 0) {
+			t.Fatal("missing canonical identity or active gate coverage")
+		}
+		t.Logf("original full actors %s=%d identities=%v pause=%d slow=%d", suffix, count, identities, paused, slow)
+	}
+}
+
+func TestFighter7CompositionActionStreams(t *testing.T) {
+	commands := actionCommandLibrary(t)
+	steps := 0
+	count, external := walkChuActor(t, "fighter7-composition-action-sequences", func(d *json.Decoder, library AnimationLibrary) {
+		var stream struct {
+			Initial chuActionSnapshot
+			Calls   []fighter7CompositionAction
+		}
+		if err := d.Decode(&stream); err != nil || len(stream.Calls) == 0 {
+			t.Fatal("invalid complete action stream", err)
+		}
+		state, encoded := fighter7CompositionActionState(t, stream.Initial, stream.Calls[0].ObjectID), stream.Initial
+		for index, call := range stream.Calls {
+			state.Controls.Held = state.Controls.Held&0xff00 | Buttons(call.External.Held)
+			state.Controls.Pressed = state.Controls.Pressed&0xff00 | Buttons(call.External.Pressed)
+			state.Controls.Changed = state.Controls.Changed&0xff00 | Buttons(call.External.Changed)
+			state.Controls.RawHeld = call.External.RawHeld
+			if !reflect.DeepEqual(state, fighter7CompositionActionState(t, call.Before, call.ObjectID)) {
+				t.Fatal("independent action stream entry diverged", index)
+			}
+			var err error
+			state, err = StepFighterAction(state, 7, fighter7CompositionParameters(t, encoded), commands, library)
+			fighter7CompositionAudioProjection(t, call.fighter7CompositionAudioFixture, call.SourceRegister, len(call.Clears), call.Before.Tail.SoundQueue, state.SoundQueue, call.After.Tail.SoundQueue)
+			encoded = fighter7CompositionEncodeAction(t, state, encoded)
+			if err != nil || !reflect.DeepEqual(state, fighter7CompositionActionState(t, call.After, call.ObjectID)) || !reflect.DeepEqual(encoded, call.After) {
+				t.Fatalf("full action stream step%d differs: %v", index, err)
+			}
+			steps++
+		}
+	})
+	if count < 10 || steps < count*2 || external != 0 {
+		t.Fatal("missing independently initialized action streams")
+	}
+	t.Logf("full action streams=%d complete calls=%d", count, steps)
+}
+
+func TestFighter7CompositionInputAndActorStreams(t *testing.T) {
+	inputSteps, actorSteps := 0, 0
+	inputCount, external := walkChuActor(t, "fighter7-composition-input-sequences", func(d *json.Decoder, _ AnimationLibrary) {
+		var stream struct {
+			Initial chuInputSnapshot
+			Calls   []fighter7CompositionInput
+		}
+		if err := d.Decode(&stream); err != nil || len(stream.Calls) == 0 {
+			t.Fatal("invalid complete input stream", err)
+		}
+		state, encoded := fighter7CompositionInputState(t, stream.Initial, stream.Calls[0].ObjectID), stream.Initial
+		for index, call := range stream.Calls {
+			state.Envelope.Input = call.External
+			if !reflect.DeepEqual(state, fighter7CompositionInputState(t, call.Before, call.ObjectID)) {
+				t.Fatal("independent input stream entry diverged", index)
+			}
+			var err error
+			state, err = StepFighterInput(state)
+			encoded = fighter7CompositionEncodeInput(t, state, encoded)
+			if err != nil || !reflect.DeepEqual(state, fighter7CompositionInputState(t, call.After, call.ObjectID)) || !reflect.DeepEqual(encoded, call.After) {
+				t.Fatalf("full input stream step%d differs: %v", index, err)
+			}
+			inputSteps++
+		}
+	})
+	if inputCount < 2 || inputSteps < inputCount*2 || external != 0 {
+		t.Fatal("missing full input streams")
+	}
+	commands := actionCommandLibrary(t)
+	actorCount, external := walkChuActor(t, "fighter7-composition-actor-sequences", func(d *json.Decoder, library AnimationLibrary) {
+		var stream struct {
+			Initial chuActorSnapshot
+			View    chuActorViewFixture
+			Calls   []fighter7CompositionActor
+		}
+		if err := d.Decode(&stream); err != nil || len(stream.Calls) == 0 {
+			t.Fatal("invalid complete actor stream", err)
+		}
+		state, encoded := fighter7CompositionActorState(t, stream.Initial, stream.Calls[0].ObjectID), stream.Initial
+		view := fighter7CompositionView(t, stream.Initial, stream.View)
+		for index, call := range stream.Calls {
+			if call.External == nil {
+				t.Fatal("undeclared external actor input")
+			}
+			view.Controllers, view.Pause, view.Slow = call.External.Controllers, call.External.Pause, call.External.Slow
+			if !reflect.DeepEqual(state, fighter7CompositionActorState(t, call.Before, call.ObjectID)) {
+				t.Fatal("independent actor stream entry diverged", index)
+			}
+			view.Parameters = fighter7CompositionParameters(t, encoded.Action)
+			var err error
+			var emitted ChuActorEmissions
+			state, emitted, err = StepFighterActor(state, 7, view, commands, library)
+			fighter7CompositionAudioProjection(t, call.fighter7CompositionAudioFixture, call.SourceRegister, len(call.Clears), call.Before.Action.Tail.SoundQueue, state.World.SoundQueue, call.After.Action.Tail.SoundQueue)
+			encoded = fighter7CompositionEncodeActor(t, state, view, emitted, encoded)
+			if err != nil || !reflect.DeepEqual(state, fighter7CompositionActorState(t, call.After, call.ObjectID)) || !reflect.DeepEqual(encoded, call.After) {
+				t.Fatalf("full actor stream step%d differs: %v", index, err)
+			}
+			actorSteps++
+		}
+	})
+	if actorCount < 3 || actorSteps < actorCount*2 || external != 0 {
+		t.Fatal("missing composed actor/input/action streams")
+	}
+	t.Logf("full input streams=%d steps=%d; composed actor streams=%d steps=%d", inputCount, inputSteps, actorCount, actorSteps)
+}
+
+func TestFighter7CompositionFailuresAreAtomic(t *testing.T) {
+	commands := actionCommandLibrary(t)
+	checkedAction, checkedInput, checkedActor := false, false, false
+	walkChuActor(t, "fighter7-composition-action-boundaries", func(d *json.Decoder, library AnimationLibrary) {
+		var row fighter7CompositionAction
+		if err := d.Decode(&row); err != nil {
+			t.Fatal(err)
+		}
+		if checkedAction {
+			return
+		}
+		base := fighter7CompositionActionState(t, row.Before, row.ObjectID)
+		for _, rules := range []struct {
+			Commands   CommandLibrary
+			Animations AnimationLibrary
+		}{{nil, library}, {commands, nil}} {
+			got, err := StepFighterAction(base, 7, fighter7CompositionParameters(t, row.Before), rules.Commands, rules.Animations)
+			if err == nil || !reflect.DeepEqual(got, base) {
+				t.Fatal("early/late missing data leaked full action state")
+			}
+		}
+		got, err := StepFighterAction(base, 255, fighter7CompositionParameters(t, row.Before), commands, library)
+		if err == nil || !reflect.DeepEqual(got, base) {
+			t.Fatal("unsupported source leaked command or action state")
+		}
+		checkedAction = true
+	})
+	walkChuActor(t, "fighter7-composition-input-boundaries", func(d *json.Decoder, _ AnimationLibrary) {
+		var row fighter7CompositionInput
+		if err := d.Decode(&row); err != nil {
+			t.Fatal(err)
+		}
+		if checkedInput || row.Route != "ai-record" {
+			return
+		}
+		base := fighter7CompositionInputState(t, row.Before, row.ObjectID)
+		base.Envelope.Position = base.Envelope.StreamBase + uint32(len(base.Envelope.Stream)) - 2
+		copy := fighter7CompositionInputState(t, row.Before, row.ObjectID)
+		copy.Envelope.Position = base.Envelope.Position
+		got, err := StepFighterInput(base)
+		if err == nil || !reflect.DeepEqual(got, base) || !reflect.DeepEqual(base, copy) {
+			t.Fatal("late record failure leaked real AI or caller stream writes")
+		}
+		checkedInput = true
+	})
+	walkChuActor(t, "fighter7-composition-actor-boundaries", func(d *json.Decoder, library AnimationLibrary) {
+		var row fighter7CompositionActor
+		if err := d.Decode(&row); err != nil {
+			t.Fatal(err)
+		}
+		if checkedActor || row.View.Pause&128 != 0 || row.View.Slow != 0 {
+			return
+		}
+		base := fighter7CompositionActorState(t, row.Before, row.ObjectID)
+		if base.Fighter.InputMode != -1 || base.Fighter.InputChannel != 255 {
+			return
+		}
+		base.World.HUDCells = nil
+		copy := fighter7CompositionActorState(t, row.Before, row.ObjectID)
+		copy.World.HUDCells = nil
+		got, emitted, err := StepFighterActor(base, 7, fighter7CompositionView(t, row.Before, row.View), commands, library)
+		if err == nil || !reflect.DeepEqual(got, base) || !reflect.DeepEqual(base, copy) || emitted.DrawRequested || len(emitted.HUDTransfers) != 0 {
+			t.Fatal("late HUD failure leaked registration, AI, recording, action, bounds or events")
+		}
+		checkedActor = true
+	})
+	if !checkedAction || !checkedInput || !checkedActor {
+		t.Fatal("missing real cases for full-API atomic checks")
+	}
+}

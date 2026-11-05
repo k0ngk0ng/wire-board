@@ -1,0 +1,37 @@
+{
+  "pass": true,
+  "scope": "Preserve byte-exact ordinary and private producer identities before adding manifest-derived 5502/5500+2 special capture support; frozen Go test unchanged",
+  "ordinary_v1": {
+    "path": "scripts/yuyuhakusho/capture_fighter7_composition_ordinary_v1.py",
+    "sha256": "611f37123518ca994806f298ec9d4ec5e1b8e5b14ebe558dbd7bb583371fe890",
+    "matches_existing_ordinary_manifests": true,
+    "reproduction_arguments": [
+      "--natural-only"
+    ],
+    "accepted_entry_video_limit": 3600,
+    "original_control_frames": 3602
+  },
+  "private_v2": {
+    "capture_source": "games/yuyuhakusho/engine/testdata/fighter7-composition-private-v2-capture.py.txt",
+    "capture_sha256": "e4c7f76083d3e1414287d7a9a029797a3ea013c66421ec4baecbb22fb1f5c05f",
+    "cases_source": "games/yuyuhakusho/engine/testdata/fighter7-composition-private-v2-cases.py.txt",
+    "cases_sha256": "5ec1a22c298441deabdaeb1e0dc31b1be7a86512096ddfca0be0aac144b14584"
+  },
+  "updated_producer": {
+    "path": "scripts/yuyuhakusho/capture_fighter7_composition.py",
+    "sha256": "2ab92e48e874800ca0979a4850740e1f7c5ffc3a67d50ca77f1c4d5a44e8edea",
+    "change": "Accept verified manifest.frames == entry_frame_limit + 2 for the two authorized limits 3600 and 5500. Snapshot and audit semantics for ordinary input remain identical.",
+    "archived_source": "games/yuyuhakusho/engine/testdata/fighter7-composition-v1/capture_fighter7_composition.py.txt"
+  },
+  "exact_audio_producer": {
+    "path": "scripts/yuyuhakusho/capture_fighter7_composition.py",
+    "sha256": "afec60041180c1e30e7b419db9a574fbb496d13815d79da79139b93d9e000d8a",
+    "annotation_fields": [
+      "audio_before",
+      "audio_after",
+      "audio_events"
+    ],
+    "all_twelve_prior_nonaudio_fields_equal": true,
+    "test_sha256": "c449c984ccbdadaf4bce67b6abd0660ffc00c502b693596c4285d46dca2627c6"
+  }
+}

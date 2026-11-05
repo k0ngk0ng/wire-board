@@ -1,0 +1,84 @@
+success {'task': 'r2c', 'frame': 1893}
+success {'task': 'r2b', 'frame': 2007}
+success {'task': 'r2a', 'frame': 2070}
+success {'task': 'r1b', 'frame': 2157}
+success {'task': 'r1a', 'frame': 2226}
+success {'task': 'r3c', 'frame': 2326}
+success {'task': 'r3b', 'frame': 2409}
+success {'task': 'r3a', 'frame': 2492}
+success {'task': 'air2b', 'frame': 2669}
+success {'task': 'air2a', 'frame': 2720}
+success {'task': 'air3c', 'frame': 2781}
+success {'task': 'air3b', 'frame': 2876}
+success {'task': 'air3a', 'frame': 3028}
+{
+  "frames": 3429,
+  "completed": [
+    {
+      "task": "r2c",
+      "frame": 1893
+    },
+    {
+      "task": "r2b",
+      "frame": 2007
+    },
+    {
+      "task": "r2a",
+      "frame": 2070
+    },
+    {
+      "task": "r1b",
+      "frame": 2157
+    },
+    {
+      "task": "r1a",
+      "frame": 2226
+    },
+    {
+      "task": "r3c",
+      "frame": 2326
+    },
+    {
+      "task": "r3b",
+      "frame": 2409
+    },
+    {
+      "task": "r3a",
+      "frame": 2492
+    },
+    {
+      "task": "air2b",
+      "frame": 2669
+    },
+    {
+      "task": "air2a",
+      "frame": 2720
+    },
+    {
+      "task": "air3c",
+      "frame": 2781
+    },
+    {
+      "task": "air3b",
+      "frame": 2876
+    },
+    {
+      "task": "air3a",
+      "frame": 3028
+    }
+  ],
+  "last": {
+    "frame": 3400,
+    "task_index": 13,
+    "hp": 154,
+    "energy": 1,
+    "action": "0x0",
+    "pose": "0x0",
+    "stages": "0xb",
+    "x": 822,
+    "y": 320,
+    "facing": 0,
+    "child_size": 0
+  },
+  "errors": []
+}

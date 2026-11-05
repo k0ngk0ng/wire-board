@@ -41,10 +41,10 @@ func StepChuAction(state ChuActionState, parameters ChuActionParameters, command
 }
 
 // StepFighterAction keeps one copy of the complete action driver for the
-// restored sources0/1/2/3/4/5/6/8/9/10. AlternateVelocity remains the sole +48 long owner.
+// restored sources0..10. AlternateVelocity remains the sole +48 long owner.
 func StepFighterAction(state ChuActionState, characterID uint8, parameters ChuActionParameters, commands CommandLibrary, animations AnimationLibrary) (ChuActionState, error) {
 	original := state
-	if characterID != 0 && characterID != 1 && characterID != 2 && characterID != 3 && characterID != 4 && characterID != 5 && characterID != 6 && characterID != 8 && characterID != 9 && characterID != 10 {
+	if characterID != 0 && characterID != 1 && characterID != 2 && characterID != 3 && characterID != 4 && characterID != 5 && characterID != 6 && characterID != 7 && characterID != 8 && characterID != 9 && characterID != 10 {
 		return original, errors.New("unsupported complete fighter action source")
 	}
 	var err error
@@ -133,6 +133,12 @@ func StepFighterAction(state ChuActionState, characterID uint8, parameters ChuAc
 				return original, actionErr
 			}
 		case 0x13, 0x21, 0x23, 0x24:
+			if characterID == 7 && state.Body.ActionKind == 0x13 {
+				if actionErr := stepFighter7ActionMotion(&state, parameters.JumpParameters); actionErr != nil {
+					return original, actionErr
+				}
+				break
+			}
 			if characterID == 6 && state.Body.ActionKind == 0x13 {
 				if actionErr := stepFighter6ActionMotion(&state, parameters.JumpParameters); actionErr != nil {
 					return original, actionErr
@@ -196,7 +202,20 @@ func StepFighterAction(state ChuActionState, characterID uint8, parameters ChuAc
 			if actionErr := stepFighter6ActionMotion(&state, parameters.JumpParameters); actionErr != nil {
 				return original, actionErr
 			}
+		case 0x39, 0x3a, 0x3b, 0x3c, 0x3d:
+			if characterID != 7 {
+				return original, errors.New("unsupported fighter action source/slot")
+			}
+			if actionErr := stepFighter7ActionMotion(&state, parameters.JumpParameters); actionErr != nil {
+				return original, actionErr
+			}
 		case 15, 20, 21, 65, 66, 67, 68, 69, 70:
+			if characterID == 7 && (state.Body.ActionKind == 0x0f || state.Body.ActionKind == 0x14 || state.Body.ActionKind == 0x45) {
+				if actionErr := stepFighter7ActionMotion(&state, parameters.JumpParameters); actionErr != nil {
+					return original, actionErr
+				}
+				break
+			}
 			if characterID == 6 && state.Body.ActionKind == 15 {
 				if actionErr := stepFighter6ActionMotion(&state, parameters.JumpParameters); actionErr != nil {
 					return original, actionErr
@@ -231,6 +250,12 @@ func StepFighterAction(state ChuActionState, characterID uint8, parameters ChuAc
 			state.setActionEnergy(special.Energy)
 			state.Power, state.AlternateVelocity, state.ContactFlags = special.Power, special.AlternateVelocity, special.ContactFlags
 		case 0x11, 0x2d, 0x47, 0x48, 0x49:
+			if characterID == 7 && state.Body.ActionKind == 0x11 {
+				if actionErr := stepFighter7ActionMotion(&state, parameters.JumpParameters); actionErr != nil {
+					return original, actionErr
+				}
+				break
+			}
 			if characterID == 5 && (state.Body.ActionKind == 0x11 || state.Body.ActionKind == 0x2d) {
 				if actionErr := stepFighter5ActionMotion(&state, parameters.JumpParameters); actionErr != nil {
 					return original, actionErr
@@ -326,6 +351,17 @@ func stepFighter5ActionMotion(state *ChuActionState, parameters JumpParameters) 
 	}
 	state.acceptSpecialMotion(next.ChuSpecialMotionState)
 	state.Fighter5ChildExtras = next.ChildExtras
+	return nil
+}
+
+func stepFighter7ActionMotion(state *ChuActionState, parameters JumpParameters) error {
+	next, err := StepFighter7Motion(Fighter7MotionState{ChuSpecialMotionState: state.specialMotionView(), Left: state.Left,
+		ChildExtras: state.ChildExtras, OtherFighters: state.OtherFighters}, parameters)
+	if err != nil {
+		return err
+	}
+	state.acceptSpecialMotion(next.ChuSpecialMotionState)
+	state.ChildExtras, state.OtherFighters = next.ChildExtras, next.OtherFighters
 	return nil
 }
 

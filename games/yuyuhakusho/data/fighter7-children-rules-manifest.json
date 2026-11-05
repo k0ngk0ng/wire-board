@@ -1,0 +1,19 @@
+{
+  "pass": true,
+  "scope": "Independent immutable semantic AN/shape records; no CPU/RAM/ROM payload",
+  "source_rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+  "capture_sha256": "f4f7a801815bda5bdcf4861d0bab7e8c287692a61bf997db55c6b08aeed9e8f6",
+  "capture_frozen_source": "scripts/yuyuhakusho/capture_fighter7_children_private_frozen.py",
+  "export_sha256": "14df8971e85f641623c719b0544403ea5d8cfe07f1f7ed8ba3afbae321f687e0",
+  "fixture_gzip_sha256": "f2996cdb66613a0ba8a3370c85a1ad84baa635d11ca16c3a048f610f34cd68f1",
+  "frames": 94,
+  "matching_existing_frames": 0,
+  "new_frames": 94,
+  "output_sha256": "72d54890df9bbb66b7a70e0f026e343dc749d971b9450979d103324e65d16aec",
+  "bytes": 23744,
+  "static_sha256": {
+    "fighter7-children-focused.txt": "5e4cbc677e2a18fd0821c73324c9a85d8428e20e1240d09a86de44426c450dee",
+    "fighter7-children-chain.txt": "82011cb5e4c1c78f6a8b380cfe33f92d9e32ea0924198b81ee7ac9d680fca1fa",
+    "fighter7-children-helper-full.txt": "ffe2b22b8ba79e9a46ce624f9c2877dd83ac65fe7073e9d3be7e9461e6e36c2c"
+  }
+}

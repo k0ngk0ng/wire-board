@@ -1,0 +1,143 @@
+{
+  "scope": "Canonical recording/playback storage shared by default-arena feedback row views; source7 original full-world E2E and focused compatibility regression",
+  "pass": true,
+  "head": "4b1a5c1553075d47831b56c1a31b248452602a39",
+  "design": {
+    "owner": "ChuWorldState.Stream only; no persistent PanA/PanB fields",
+    "views": "PanRows returns copied big-endian 224-word planes at byte offsets 0 and 512",
+    "writes": "Active arena feedback writes 448 bytes per plane and preserves each 64-byte gap; caller state is cloned by the world scheduler",
+    "wire_compatibility": "Serialization-only projection emits historical PanA/PanB fields in their exact old positions; unmarshal ignores those projections and uses only Stream",
+    "comparison": "Raw original PanA/PanB must equal decoded Stream views; complete world comparator still compares all Stream bytes"
+  },
+  "test_first": {
+    "failure_list": "games/yuyuhakusho/engine/RASTER_INPUT_STORAGE_FAILURES.md",
+    "freeze": "games/yuyuhakusho/engine/testdata/raster-input-test-first.json",
+    "runtime_red": "games/yuyuhakusho/engine/testdata/raster-input-owner-red.jsonl",
+    "previous_full_world_red": "games/yuyuhakusho/engine/testdata/raster-input-preexisting-world-red.jsonl",
+    "previous_failure": "Both original full-world E2E modes failed at frame4054 field=Stream",
+    "freeze_generator_source": "games/yuyuhakusho/engine/testdata/raster-input-legacy-freeze-test.go.txt",
+    "freeze_generator_original_path": "games/yuyuhakusho/engine/raster_input_storage_freeze_test.go"
+  },
+  "logs": {
+    "raster-input-native-race.jsonl": {
+      "sha256": "8acab4c71a376d997abdd3a14bd65168335e931c0ecb826d04e83a63c349f6cd",
+      "pass": true,
+      "elapsed_seconds": 187.611,
+      "passed_top_level_tests": [
+        "TestFighter7WorldChildCallbacks",
+        "TestFighter7WorldRuleFrames",
+        "TestFighter7SpecialWorldOriginalPasses",
+        "TestFighter7SpecialWorldSingleInitialState",
+        "TestFighter7WorldOriginalPasses",
+        "TestFighter7WorldSingleInitialState",
+        "TestRasterInputStorageSingleOwner",
+        "TestRasterInputStorageRecordingChangesRows",
+        "TestRasterInputStorageArenaChangesPlayback",
+        "TestRasterInputStorageArenaGatesAndAtomicity",
+        "TestRasterInputStorageLegacyJSON",
+        "TestRasterInputStorageIgnoresLegacyProjection"
+      ],
+      "coverage_output": [
+        "fighter7_child_world_test.go:63: source7 original child world=map[first:4321 pan:505 second:6497] restores=map[first:8 pan:8 second:8]",
+        "fighter7_special_world_test.go:91: source7 special continuous=false passes=3700 callbacks=50006 orderedDraws=24968 head=209 restores=4",
+        "fighter7_special_world_test.go:92: source7 special continuous=true passes=3700 callbacks=50006 orderedDraws=24968 head=209 restores=4",
+        "fighter7_world_test.go:51: source7 ordinary continuous=false passes=3144 callbacks=41797 cleared=true",
+        "fighter7_world_test.go:53: source7 ordinary continuous=true passes=3144 callbacks=41797 cleared=true"
+      ]
+    },
+    "raster-input-wasm.jsonl": {
+      "sha256": "ef348a12e0c61b8401f67b252e8af0e635c94f5b116f567be128e532ecbd366b",
+      "pass": true,
+      "elapsed_seconds": 49.982,
+      "passed_top_level_tests": [
+        "TestFighter7WorldChildCallbacks",
+        "TestFighter7WorldRuleFrames",
+        "TestFighter7SpecialWorldOriginalPasses",
+        "TestFighter7SpecialWorldSingleInitialState",
+        "TestFighter7WorldOriginalPasses",
+        "TestFighter7WorldSingleInitialState",
+        "TestRasterInputStorageSingleOwner",
+        "TestRasterInputStorageRecordingChangesRows",
+        "TestRasterInputStorageArenaChangesPlayback",
+        "TestRasterInputStorageArenaGatesAndAtomicity",
+        "TestRasterInputStorageLegacyJSON",
+        "TestRasterInputStorageIgnoresLegacyProjection"
+      ],
+      "coverage_output": [
+        "fighter7_child_world_test.go:63: source7 original child world=map[first:4321 pan:505 second:6497] restores=map[first:8 pan:8 second:8]",
+        "fighter7_special_world_test.go:91: source7 special continuous=false passes=3700 callbacks=50006 orderedDraws=24968 head=209 restores=4",
+        "fighter7_special_world_test.go:92: source7 special continuous=true passes=3700 callbacks=50006 orderedDraws=24968 head=209 restores=4",
+        "fighter7_world_test.go:51: source7 ordinary continuous=false passes=3144 callbacks=41797 cleared=true",
+        "fighter7_world_test.go:53: source7 ordinary continuous=true passes=3144 callbacks=41797 cleared=true"
+      ]
+    }
+  },
+  "legacy_session": {
+    "pass": true,
+    "expected_path": "games/yuyuhakusho/verification/session-e2e/native/two-ai.json",
+    "expected_sha256": "c1e8e816ef9fdee90c5051e19b08b525f34d865e97e78d0afdf83db492352e33",
+    "actual_path": "games/yuyuhakusho/engine/testdata/raster-input-legacy-session.json",
+    "actual_sha256": "4c71f8d037e3feced336ffbbcde87d814632bd254c60bdeaad99d2481f6f6598",
+    "actual_rules_sha256": "f262dc3fb72badd414eb05bad47319c99ad245b6387078d03868e692d6033078",
+    "expected_rules_sha256": "31a68fb3398b85aef747aab754f70429f987128ec914744de48b92b099761ee1",
+    "comparison": "Complete report equality after removing only historical rules_sha256; world/event/lifecycle and complete trace hashes remain exact.",
+    "matched_fields": [
+      "callbacks",
+      "clear_tick",
+      "completed",
+      "environment",
+      "final_state_sha256",
+      "first_damage_tick",
+      "first_ko_tick",
+      "human_auto_takeovers",
+      "human_idle",
+      "pass",
+      "players",
+      "reference_state_loaded",
+      "result_tick",
+      "retirement_tick",
+      "seed",
+      "team",
+      "ticks",
+      "trace_sha256",
+      "winner_code"
+    ]
+  },
+  "commands": {
+    "native_race": "env -i PATH=\"$PATH\" GOENV=off GOTOOLCHAIN=local GOCACHE=\"$PWD/.local/go-cache\" GOMODCACHE=\"$PWD/.local/go-mod\" GOTMPDIR=\"$PWD/.local/md-yuyuhakusho/tmp\" TMPDIR=\"$PWD/.local/md-yuyuhakusho/tmp\" go test -race -json -count=1 -run '^Test(RasterInputStorage|Fighter7(Special|Child)?World)' ./games/yuyuhakusho/engine > games/yuyuhakusho/engine/testdata/raster-input-native-race.jsonl",
+    "wasm": "env -i PATH=\"$PATH\" GOENV=off GOTOOLCHAIN=local GOCACHE=\"$PWD/.local/go-cache\" GOMODCACHE=\"$PWD/.local/go-mod\" GOTMPDIR=\"$PWD/.local/md-yuyuhakusho/tmp\" TMPDIR=\"$PWD/.local/md-yuyuhakusho/tmp\" GOOS=js GOARCH=wasm go test -json -count=1 -run '^Test(RasterInputStorage|Fighter7(Special|Child)?World)' -exec /opt/homebrew/Cellar/go/1.26.2/libexec/lib/wasm/go_js_wasm_exec ./games/yuyuhakusho/engine > games/yuyuhakusho/engine/testdata/raster-input-wasm.jsonl",
+    "legacy_session": "env -i PATH=\"$PATH\" GOENV=off GOTOOLCHAIN=local GOCACHE=\"$PWD/.local/go-cache\" GOMODCACHE=\"$PWD/.local/go-mod\" GOTMPDIR=\"$PWD/.local/md-yuyuhakusho/tmp\" TMPDIR=\"$PWD/.local/md-yuyuhakusho/tmp\" go run ./games/yuyuhakusho/cmd/verify-chu-session -players 2 > games/yuyuhakusho/engine/testdata/raster-input-legacy-session.json",
+    "vet": "env -i PATH=\"$PATH\" GOENV=off GOTOOLCHAIN=local GOCACHE=\"$PWD/.local/go-cache\" GOMODCACHE=\"$PWD/.local/go-mod\" GOTMPDIR=\"$PWD/.local/md-yuyuhakusho/tmp\" TMPDIR=\"$PWD/.local/md-yuyuhakusho/tmp\" go vet ./games/yuyuhakusho/engine ./games/yuyuhakusho/runtimebridge > games/yuyuhakusho/engine/testdata/raster-input-vet.log 2>&1",
+    "renderer_wasm_compile": "env -i PATH=\"$PATH\" GOENV=off GOTOOLCHAIN=local GOCACHE=\"$PWD/.local/go-cache\" GOMODCACHE=\"$PWD/.local/go-mod\" GOTMPDIR=\"$PWD/.local/md-yuyuhakusho/tmp\" TMPDIR=\"$PWD/.local/md-yuyuhakusho/tmp\" GOOS=js GOARCH=wasm go test -json -count=1 -run '^$' -exec /opt/homebrew/Cellar/go/1.26.2/libexec/lib/wasm/go_js_wasm_exec ./games/yuyuhakusho/runtimebridge > games/yuyuhakusho/engine/testdata/raster-input-renderer-wasm-compile.jsonl",
+    "runtime_red": "GOCACHE=\"$PWD/.local/go-cache\" GOMODCACHE=\"$PWD/.local/go-mod\" GOTMPDIR=\"$PWD/.local/md-yuyuhakusho/tmp\" TMPDIR=\"$PWD/.local/md-yuyuhakusho/tmp\" go test -json -count=1 -run '^TestRasterInputStorage' ./games/yuyuhakusho/engine > games/yuyuhakusho/engine/testdata/raster-input-owner-red.jsonl",
+    "legacy_fixture_freeze": "WIRE_RASTER_FREEZE_LEGACY=1 GOCACHE=\"$PWD/.local/go-cache\" GOMODCACHE=\"$PWD/.local/go-mod\" GOTMPDIR=\"$PWD/.local/md-yuyuhakusho/tmp\" TMPDIR=\"$PWD/.local/md-yuyuhakusho/tmp\" go test -json -count=1 -run '^TestRasterInputStorageFreezeLegacyJSON$' ./games/yuyuhakusho/engine > games/yuyuhakusho/engine/testdata/raster-input-legacy-freeze.jsonl"
+  },
+  "source_sha256": {
+    "games/yuyuhakusho/engine/raster_input_storage.go": "bdc1c1d13fe38b9ccb1ba57623f06fc6d6fa11f951d8f48ecf3cfb204707d605",
+    "games/yuyuhakusho/engine/raster_input_storage_test.go": "c2ff9399368f283b38ae579f356b1f709cee64982ceb5de172fefd1413d7945b",
+    "games/yuyuhakusho/engine/chu_world.go": "978702b89b4108d3334420a2099feddb04a93ce83af0f97da6dcb72ff4c4719f",
+    "games/yuyuhakusho/engine/chu_world_test.go": "61d876156170fd6d1eefaa1c094da6051ed9d6b98c8a82658cf6e30f4b6afa61",
+    "games/yuyuhakusho/runtimebridge/session.go": "2920f0d75561ecc67d9d57fe55356500f274db4d05ab69562272455eb3062d3d",
+    "games/yuyuhakusho/engine/RASTER_INPUT_STORAGE_FAILURES.md": "3281fc68a37ce9650665aa52405cf8c1101002a9f493644e5044719194d3acbd"
+  },
+  "artifact_sha256": {
+    "games/yuyuhakusho/engine/testdata/raster-input-before.json": "037b621f97286ab2f5ae3e053bf714229344069d6b11516fd7456c9688c78758",
+    "games/yuyuhakusho/engine/testdata/raster-input-test-first.json": "893aca5e76d9f609dd6a19898cd9eda76532f6346f08229ded434a01f12ca1f7",
+    "games/yuyuhakusho/engine/testdata/raster-input-preexisting-world-red.jsonl": "b16244f59ac273c49231c5d08613bbb6c341207d269bb7d7ff1a44cbc8dc2f38",
+    "games/yuyuhakusho/engine/testdata/raster-input-owner-red.jsonl": "a26e4413374c71f6479f1841619bdc3017e8f3d3b1e5bb3789073b5151429aa9",
+    "games/yuyuhakusho/engine/testdata/raster-input-owner-first-green.jsonl": "6fabfa0d30e59702f30f1e0ee4bf3be2ac9620c1024f875ad28c501894de7c21",
+    "games/yuyuhakusho/engine/testdata/raster-input-legacy-freeze.jsonl": "bfe01bcfd80bee7ff01abbc32a4197407c19584fd9dee3642c0fad41d6d81d43",
+    "games/yuyuhakusho/engine/testdata/raster-input-legacy-freeze-test.go.txt": "0547d1bae171df7e8c644e65aece2fd6b7d6051a44f6bc3581d77c743c847f15",
+    "games/yuyuhakusho/engine/testdata/raster-input-legacy-worlds.json.gz": "ee696a28b339e1c4939109f76fbd564220f203a092544d4d6284d9e823871a4f",
+    "games/yuyuhakusho/engine/testdata/raster-input-legacy-session.json": "4c71f8d037e3feced336ffbbcde87d814632bd254c60bdeaad99d2481f6f6598",
+    "games/yuyuhakusho/engine/testdata/raster-input-legacy-session-comparison.json": "dbdca940b75cea8c3e82d992643bd65a22ab0832ca7536586ebad9b0031e01af",
+    "games/yuyuhakusho/engine/testdata/raster-input-vet.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "games/yuyuhakusho/engine/testdata/raster-input-renderer-wasm-compile.jsonl": "067f44a0085c05526d25f27884e105ea4a0242751b3afd3dc717bacde59c7ac2"
+  },
+  "limits": [
+    "No full140-configuration native/Wasm legacy matrix rerun in this isolated scope; parent owns that final280-report verification.",
+    "No new browser pixel/interaction acceptance was performed; renderer consumers compile in native vet and Wasm.",
+    "Legacy JSON fixture optional-dragon case sets two optional fields solely to freeze encoding omission/order behavior; it is not CPU gameplay evidence."
+  ],
+  "cleanup": "Removed only the one-time raster_input_storage_freeze_test.go after preserving its exact source as testdata/raster-input-legacy-freeze-test.go.txt; retained all evidence and shared active Go caches."
+}

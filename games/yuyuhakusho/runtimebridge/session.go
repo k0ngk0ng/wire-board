@@ -249,14 +249,15 @@ func (s *Session) Step(held [8]engine.Buttons) (Frame, error) {
 // separately reconstructed text/portrait window and observed display profile.
 func sceneFrame(world engine.ChuWorldState, palette [64]uint16, window *presentation.IndexedPlane) (presentation.ArenaFrame, error) {
 	var horizontal, vertical [224][2]uint16
+	pan := [2][224]int16{world.PanRows(0), world.PanRows(1)}
 	for y := range horizontal {
 		vertical[y] = [2]uint16{uint16(world.Vertical[0]), uint16(world.Vertical[1])}
 		for plane, source := range world.ScrollSources {
 			if source == -0xa000 || source == -0x9e00 {
 				if plane == 0 && source == -0xa000 {
-					horizontal[y][plane] = uint16(world.PanA[y])
+					horizontal[y][plane] = uint16(pan[0][y])
 				} else if plane == 1 && source == -0x9e00 {
-					horizontal[y][plane] = uint16(world.PanB[y])
+					horizontal[y][plane] = uint16(pan[1][y])
 				} else {
 					return presentation.ArenaFrame{}, errors.New("unsupported arena feedback source")
 				}

@@ -228,3 +228,7 @@ PYTHONDONTWRITEBYTECODE=1 python3 \
 ## 来源 5 当前验收补充
 
 来源 5「仙水」已完成四个 selector、`11/2d/2e/2f/30/31/32` 七个 MAIN／支持槽、三个子对象及反射父体更新。普通与特殊两条原世界共 4,917 轮与独立 Go 单初态推进一致，普通场景在视频4916清场，十个特殊根均有合法输入与实际扣成本成功证据。本页旧静态快照中的来源 5「待恢复」状态由[完整世界](../../../games/yuyuhakusho/engine/FIGHTER5_WORLD_VERIFICATION.md)与[十角色验收](../../../games/yuyuhakusho/verification/sensui-session.json)替代；不改写原始表与当时边界。自然 `31→32` 仅见 variant2，其他变体和未自然完成的四个后续构造有原 CPU 私有／真实时钟验证。来源 7「树」是最后未开放人物，见[只读恢复起点](SOURCE7_PLAN.md)。
+
+## 来源 7 当前验收补充
+
+来源7「树」已完成四selector、`39..3d`及公共支持槽、三个子对象和8-FX派生链。14个玩家可达根自然成功，R4没有玩家命令绑定仍只声明私有证明；两次自然回血分支没有生命增量，真实Health修改由私有原CPU／world边界证明。完整普通／特殊世界、跨父体停顿、共享滚动／录制输入owner和存档兼容见[树世界](../../../games/yuyuhakusho/engine/FIGHTER7_WORLD_VERIFICATION.md)及[全人物验收](../../../games/yuyuhakusho/verification/itsuki-session.json)。本页原始静态调查中的全部人物缺口已按各自阶段补证；后续七场地、音频和平台同步仍有独立工作。

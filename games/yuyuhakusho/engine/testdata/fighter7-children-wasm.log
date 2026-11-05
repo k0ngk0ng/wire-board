@@ -1,0 +1,27 @@
+=== RUN   TestFighter7ChildrenOriginalCallbacks
+=== RUN   TestFighter7ChildrenOriginalCallbacks/boundaries
+    fighter7_children_test.go:374: source7 boundaries callbacks=11323 kinds=map[first:4321 pan:505 second:6497] paths=map[first_hit_stop:48 heal:1809 healing_fx:1809 second_hit_stop:48]
+=== RUN   TestFighter7ChildrenOriginalCallbacks/oracle
+    fighter7_children_test.go:374: source7 oracle callbacks=1378 kinds=map[effect:704 first:209 pan:256 second:209] paths=map[heal:2 healing_fx:2]
+--- PASS: TestFighter7ChildrenOriginalCallbacks (9.36s)
+    --- PASS: TestFighter7ChildrenOriginalCallbacks/boundaries (8.38s)
+    --- PASS: TestFighter7ChildrenOriginalCallbacks/oracle (0.98s)
+=== RUN   TestFighter7ChildrenSingleInitialLifecycles
+    fighter7_children_test.go:429: source7 single-initial flows=8 callbacks=7948 kinds=map[clock:1150 creator59:52 creator60:910 creator61:188 effect:1408 first:1032 pan:1026 record:1150 second:1032]
+--- PASS: TestFighter7ChildrenSingleInitialLifecycles (4.70s)
+=== RUN   TestFighter7ChildrenErrorsAreAtomic
+=== RUN   TestFighter7ChildrenErrorsAreAtomic/behavior
+=== RUN   TestFighter7ChildrenErrorsAreAtomic/action
+=== RUN   TestFighter7ChildrenErrorsAreAtomic/parent
+=== RUN   TestFighter7ChildrenErrorsAreAtomic/link
+=== RUN   TestFighter7ChildrenErrorsAreAtomic/animation
+=== RUN   TestFighter7ChildrenErrorsAreAtomic/clear
+--- PASS: TestFighter7ChildrenErrorsAreAtomic (6.05s)
+    --- PASS: TestFighter7ChildrenErrorsAreAtomic/behavior (0.00s)
+    --- PASS: TestFighter7ChildrenErrorsAreAtomic/action (0.00s)
+    --- PASS: TestFighter7ChildrenErrorsAreAtomic/parent (0.00s)
+    --- PASS: TestFighter7ChildrenErrorsAreAtomic/link (0.00s)
+    --- PASS: TestFighter7ChildrenErrorsAreAtomic/animation (0.00s)
+    --- PASS: TestFighter7ChildrenErrorsAreAtomic/clear (0.00s)
+PASS
+ok  	github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine	20.183s

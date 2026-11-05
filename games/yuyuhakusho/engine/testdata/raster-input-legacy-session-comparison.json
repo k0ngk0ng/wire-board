@@ -1,0 +1,31 @@
+{
+  "pass": true,
+  "expected_path": "games/yuyuhakusho/verification/session-e2e/native/two-ai.json",
+  "expected_sha256": "c1e8e816ef9fdee90c5051e19b08b525f34d865e97e78d0afdf83db492352e33",
+  "actual_path": "games/yuyuhakusho/engine/testdata/raster-input-legacy-session.json",
+  "actual_sha256": "4c71f8d037e3feced336ffbbcde87d814632bd254c60bdeaad99d2481f6f6598",
+  "actual_rules_sha256": "f262dc3fb72badd414eb05bad47319c99ad245b6387078d03868e692d6033078",
+  "expected_rules_sha256": "31a68fb3398b85aef747aab754f70429f987128ec914744de48b92b099761ee1",
+  "comparison": "Complete report equality after removing only historical rules_sha256; world/event/lifecycle and complete trace hashes remain exact.",
+  "matched_fields": [
+    "callbacks",
+    "clear_tick",
+    "completed",
+    "environment",
+    "final_state_sha256",
+    "first_damage_tick",
+    "first_ko_tick",
+    "human_auto_takeovers",
+    "human_idle",
+    "pass",
+    "players",
+    "reference_state_loaded",
+    "result_tick",
+    "retirement_tick",
+    "seed",
+    "team",
+    "ticks",
+    "trace_sha256",
+    "winner_code"
+  ]
+}

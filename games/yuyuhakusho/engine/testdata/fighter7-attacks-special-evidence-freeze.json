@@ -1,0 +1,34 @@
+{
+  "scope": "Additive natural evidence for the unchanged source7 selector production and frozen tests; no new implementation",
+  "old_test_sha256": "454f1c19afb68202377d75206f8fb5064a834cbc41a09e3b2209153694169fc4",
+  "files": [
+    {
+      "path": "scripts/yuyuhakusho/capture_fighter7_special_attacks.py",
+      "sha256": "843a894e9af2e4e306731fb8bbe6d2a1a5a70604c93c03278ef60641922b0405"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/SOURCE7_ATTACKS_SPECIAL_FAILURES.md",
+      "sha256": "f1b6aae43cfaa3a8a71a88fb40f815d4e1beb63603308c376bd81ed687ba3f7a"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/source7-special-discovery-inputs.json",
+      "sha256": "5354fe1e66a6875483398763ce7644c363682e864537f827786fd42b0fab05fd"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-attacks-special-reference-frames.json",
+      "sha256": "98a17dffa4906b63a6ad2e309c7cfb402ca38e0a46fdfce7a5b0bd81456d55dd"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-attacks-special-reference-manifest.json",
+      "sha256": "914ba10a0e5e2bedb718cfe7e2f91ba6c6c090751084f519067e6092a904eed8"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-attacks-special-natural.json.gz",
+      "sha256": "5cb4024e31563db2e18b919a0d890313425bcec9b213bd9adad7504c3b995dd3"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/fighter7-attacks-special-natural-manifest.json",
+      "sha256": "815635bcdd4d9be6693bea5aec7a8f6ecea90a3a6a36009262dedb98f4d77030"
+    }
+  ]
+}

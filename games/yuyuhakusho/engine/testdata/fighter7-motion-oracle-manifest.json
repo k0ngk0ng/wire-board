@@ -1,0 +1,59 @@
+{
+  "pass": true,
+  "scope": "Natural source7 MAIN before shared tail under the unique original 3602-frame control",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "binding": {
+    "source_tag": 7,
+    "checkpoint_frame": 2400,
+    "source_actor_sha256": "eaec8cd0b3614f03d890b7e448e47d4d8e7baf87872475a406a06a9222230559",
+    "animation_set": 850330,
+    "shape_set": 853658,
+    "movement_source": 75248
+  },
+  "capture_sha256": "d527595497364d856ce62214ab74a4a6229c37bb2559d586656d0bada1e8bb8e",
+  "filter_sha256": "c737ccc6d1536ef4eb5439ec73528dd52dddc14270eaadc83d285e1b964e5ca4",
+  "fixture_sha256": "dc9a9d4e003d1890057d3cc06c2b79b649a0b986063152dabffbd79a62165f6f",
+  "gzip_sha256": "4494df344e14230f985553d9e54208e6c906c74518ea6842c66214ce90e3dcb3",
+  "records": 91,
+  "calls": 91,
+  "kind_counts": {
+    "11": 91
+  },
+  "library_frames": 53,
+  "frames_match_original_core": true,
+  "baselines": [
+    {
+      "input": "docs/research/md-yuyuhakusho/source7-next-inputs.json",
+      "input_sha256": "fed38aa84737d5d17bdf7d02f78f109ec0836f1cb244de6e2def47a8b9fc904f",
+      "reference": "games/yuyuhakusho/engine/testdata/fighter7-attacks-reference-frames.json",
+      "reference_raw_sha256": "ffebd6741b4a5a44a76832fc658045e144fd3607fec5fefd563a01be1809a65d",
+      "reference_manifest": "games/yuyuhakusho/engine/testdata/fighter7-attacks-reference-manifest.json",
+      "reference_manifest_sha256": "7be398c41e00a3bb161b78bd947efcc5c03dfd670bf9b2281ac092b8ce7bc207",
+      "video_steps": 3602,
+      "all_ram_video_match": true
+    }
+  ],
+  "incomplete_calls": 0,
+  "errors": [],
+  "rng_calls": 0,
+  "external_queue_calls": 0,
+  "external_change_calls": 1,
+  "unexplained_change_calls": 0,
+  "interrupt_calls": 2,
+  "full_ram_delta_calls": 91,
+  "limits": [
+    "CPU phase ends at15afc; no shared tail, active child, FX or whole actor simulation.",
+    "Natural records cover only calls selected by the declared real menu input.",
+    "Private single-initial-state trajectories refresh only Duration/Flags from their own immutable animation key.",
+    "External audio clears and IRQ writes retain exact before/after event chains; no history RAM exemption."
+  ]
+}

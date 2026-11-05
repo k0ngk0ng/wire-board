@@ -1,0 +1,66 @@
+package engine
+
+import (
+	"bytes"
+	"compress/gzip"
+	"encoding/json"
+	"os"
+	"testing"
+)
+
+// One-time pre-implementation capture. Its exact source is retained with the
+// test-first evidence after this generator is removed from the test package.
+func TestRasterInputStorageFreezeLegacyJSON(t *testing.T) {
+	if os.Getenv("WIRE_RASTER_FREEZE_LEGACY") != "1" {
+		t.Skip("explicit pre-implementation legacy capture only")
+	}
+	type entry struct {
+		Name  string
+		State json.RawMessage
+	}
+	var cases []entry
+	add := func(name string, state ChuWorldState) {
+		data, err := json.Marshal(state)
+		if err != nil {
+			t.Fatal(err)
+		}
+		cases = append(cases, entry{name, data})
+	}
+	add("zero-world", ChuWorldState{})
+	visitChuWorldTest(t, func(row chuWorldOriginalPass) {
+		if row.Frame == 1800 {
+			add("ordinary-first", decodeChuWorldTest(t, row.Before))
+		}
+	})
+	visitChuWorldTest(t, func(row chuWorldOriginalPass) {
+		if row.Frame == 1901 || row.Frame == 4054 || row.Frame == 4308 {
+			add(string(rune('a'+len(cases)))+"-source7", decodeChuWorldTest(t, row.After))
+		}
+	}, "chu-world-fighter7-special")
+	visitChuWorldTest(t, func(row chuWorldOriginalPass) {
+		if row.Frame == 1900 {
+			state := decodeChuWorldTest(t, row.After)
+			state.DragonBankCursor = 512
+			state.DragonHistory[3][8].X = -123
+			add("optional-dragon-fields", state)
+		}
+	}, "chu-world-fighter7-special")
+	if len(cases) != 6 {
+		t.Fatal("legacy capture selection", len(cases))
+	}
+	data, err := json.Marshal(cases)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var packed bytes.Buffer
+	z := gzip.NewWriter(&packed)
+	if _, err := z.Write(data); err != nil {
+		t.Fatal(err)
+	}
+	if err := z.Close(); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile("testdata/raster-input-legacy-worlds.json.gz", packed.Bytes(), 0644); err != nil {
+		t.Fatal(err)
+	}
+}

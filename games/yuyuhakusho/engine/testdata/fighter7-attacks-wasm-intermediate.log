@@ -1,0 +1,18 @@
+=== RUN   TestFighter7AttacksOriginalFullCalls
+    fighter7_attacks_test.go:317: source7 special natural evidence not captured yet; private roots are separate
+=== RUN   TestFighter7AttacksOriginalFullCalls/fighter7-attacks-natural
+    fighter7_attacks_test.go:366: complete original source7 calls=1681 modes=map[air:103 air-special:103 ground:722 ground-special:753] objects=map[33792:1681]
+=== RUN   TestFighter7AttacksOriginalFullCalls/fighter7-attacks-oracle
+    fighter7_attacks_test.go:366: complete original source7 calls=57 modes=map[air:3 air-special:16 ground:5 ground-special:33] objects=map[33792:14 34816:15 35840:14 36864:14]
+=== RUN   TestFighter7AttacksOriginalFullCalls/fighter7-attacks-boundaries
+    fighter7_attacks_test.go:366: complete original source7 calls=11164 modes=map[air:1280 air-special:3216 ground:2432 ground-special:4236] objects=map[33792:2791 34816:2791 35840:2791 36864:2791]
+--- PASS: TestFighter7AttacksOriginalFullCalls (12.04s)
+    --- PASS: TestFighter7AttacksOriginalFullCalls/fighter7-attacks-natural (1.52s)
+    --- PASS: TestFighter7AttacksOriginalFullCalls/fighter7-attacks-oracle (0.06s)
+    --- PASS: TestFighter7AttacksOriginalFullCalls/fighter7-attacks-boundaries (10.45s)
+=== RUN   TestFighter7AttacksSingleInitialState
+--- PASS: TestFighter7AttacksSingleInitialState (0.85s)
+=== RUN   TestFighter7AttacksInvalidInputIsAtomic
+--- PASS: TestFighter7AttacksInvalidInputIsAtomic (0.03s)
+PASS
+ok  	command-line-arguments	12.986s

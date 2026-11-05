@@ -1,0 +1,16 @@
+{
+  "scope": "Root shared integration changes concurrent with the adapter-only repair; this owner did not edit production files",
+  "changed_since_adapter_v2_freeze": [
+    {
+      "path": "games/yuyuhakusho/engine/chu_action.go",
+      "v2_freeze_sha256": "48629deb317903659542876d03321a87b4120baf0f34ab5e408556e0acae719e",
+      "current_sha256": "acdbd600734a31b96876d6b1e626f297bd347f5e6aaf83e0e3ee019c537a71c3"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_actor.go",
+      "v2_freeze_sha256": "37122f7bc97493a4115ec5493de29c9e2335c90b2f2e482784454184c6252dce",
+      "current_sha256": "3f4959145936e3449599e2eb4769f7495ab2aa68c87cb249496e2d0b53423856"
+    }
+  ],
+  "root_confirmation": "Both changed files only replaced restored source-list comments with sources0..10. Root confirmed there was no Action/Actor business change during the adapter repair."
+}

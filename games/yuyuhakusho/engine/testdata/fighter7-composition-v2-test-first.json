@@ -1,0 +1,27 @@
+{
+  "stage": "approved-audio-acceptance-adapter-v2-frozen-before-new-event-fixtures",
+  "scope": "Only ordered external-audio projection; all nonqueue state/raw/clock/AN/actor/child assertions remain exact",
+  "v1_test_sha256": "7e1477727855f72ab03efd31bc6350d5399def191c0487d936b3daeab8083f29",
+  "v2_test_sha256": "c449c984ccbdadaf4bce67b6abd0660ffc00c502b693596c4285d46dca2627c6",
+  "test_source": "fighter7-composition-v2-test.go.txt",
+  "v1_lineage": "fighter7-composition-v1-lineage.json",
+  "original_failure_evidence": "fighter7-composition-audio-reenqueue-evidence.json",
+  "v2_old_fixtures_red": {
+    "path": "fighter7-composition-v2-missing-audio-events-red.jsonl",
+    "sha256": "2994c994334d329c92c22dd37b77ae75af2437268299d07f34a0c9cd8324351d"
+  },
+  "core_sources_unchanged_by_this_adapter_repair": {
+    "games/yuyuhakusho/engine/chu_action.go": "48629deb317903659542876d03321a87b4120baf0f34ab5e408556e0acae719e",
+    "games/yuyuhakusho/engine/chu_actor.go": "37122f7bc97493a4115ec5493de29c9e2335c90b2f2e482784454184c6252dce",
+    "games/yuyuhakusho/engine/chu_tail.go": "89841755614b08cbd26f3e337c07b638ee2b1beee23502296075d86904ae523b",
+    "games/yuyuhakusho/engine/animation_records.go": "15e3eb6b849d7d29f8b3b55f9c843b36c9ce38fbf3fa4ffa71a9672593d13cbe",
+    "games/yuyuhakusho/engine/fighter7_motion.go": "cfb8334a40adb24ceaf5232f09cf06a14fdc948c83f3e71308cf0cf746c26004",
+    "games/yuyuhakusho/engine/fighter7_attacks.go": "b33c38737e5b8ad01629d5f2cad911861bead841933c8d92fcdc68a3ed9dcb22"
+  },
+  "projection_contract": [
+    "Replay all observed request/write/drop/clear events in total order; every physical byte write must match original CPU before/after and all four final CPU slots.",
+    "Remove only external clear operations; observed owned requests must produce exactly all four Go slots with the original synchronous allocation policy.",
+    "Verify actual PC219a8 full-queue drop flow rather than assuming request success.",
+    "No expected actor, animation clock, AN, child, resource or RNG state is injected."
+  ]
+}

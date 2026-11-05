@@ -1,0 +1,195 @@
+"""Replay exact CPU audio events and compare every nonaudio field with v1."""
+import argparse
+from collections import Counter
+import gzip
+import hashlib
+import itertools
+import json
+from pathlib import Path
+import shutil
+
+ROOT = Path.cwd().resolve()
+BASE = ROOT / 'games/yuyuhakusho/engine/testdata'
+assert (ROOT / 'games/yuyuhakusho/engine/fighter7_composition_test.go').is_file()
+
+
+def sha(path):
+    with path.open('rb') as stream:
+        return hashlib.file_digest(stream, 'sha256').hexdigest()
+
+
+class Calls:
+    def __init__(self, path):
+        self.file = gzip.open(path, 'rt')
+        self.buffer, self.position, self.eof = '', 0, False
+        self.decoder = json.JSONDecoder()
+        self.take('{')
+        assert self.value() == 'library'
+        self.take(':')
+        self.library = self.value()
+        self.take(',')
+        assert self.value() == 'calls'
+        self.take(':')
+        self.take('[')
+
+    def fill(self):
+        extra = self.file.read(65536)
+        self.buffer = self.buffer[self.position:] + extra
+        self.position = 0
+        self.eof = not extra
+
+    def peek(self):
+        while True:
+            while self.position < len(self.buffer):
+                ch = self.buffer[self.position]
+                if not ch.isspace():
+                    return ch
+                self.position += 1
+            if self.eof:
+                return ''
+            self.fill()
+
+    def take(self, ch):
+        assert self.peek() == ch, (ch, self.buffer[self.position:self.position + 50])
+        self.position += 1
+
+    def value(self):
+        self.peek()
+        while True:
+            try:
+                result, end = self.decoder.raw_decode(self.buffer, self.position)
+                self.position = end
+                return result
+            except json.JSONDecodeError:
+                if self.eof:
+                    raise
+                self.fill()
+
+    def __iter__(self):
+        first = True
+        while self.peek() != ']':
+            if not first:
+                self.take(',')
+            yield self.value()
+            first = False
+        self.take(']')
+        self.take('}')
+        assert self.peek() == ''
+        self.file.close()
+
+
+def verify(row, kind):
+    before, after = row['audio_before'], row['audio_after']
+    if kind == 'action':
+        assert before == row['before']['tail']['sound_queue']
+        assert after == row['after']['tail']['sound_queue']
+    elif kind == 'actor':
+        assert before == row['before']['action']['tail']['sound_queue']
+        assert after == row['after']['action']['tail']['sound_queue']
+    delta = {d['address']: d for d in row['ram_audit']['delta']}
+    for index, (a, b) in enumerate(zip(before, after)):
+        expected = {'address': 0xf80a + index, 'before': a, 'after': b} if a != b else None
+        assert delta.get(0xf80a + index) == expected
+    physical, synchronous = before.copy(), before.copy()
+    pending, counts, clears = None, Counter(), []
+    writes = {'0x2196c': 0, '0x2197e': 1, '0x21990': 2, '0x219a2': 3}
+    for ordinal, event in enumerate(row['audio_events']):
+        assert event['ordinal'] == ordinal and event['after_verified']
+        tag = event['kind']
+        counts[tag] += 1
+        if tag == 'request':
+            assert event['pc'] == '0x21960' and event['value'] > 0
+            assert event['irq_depth'] == 0 and event['source_register'] == row['source_register']
+            assert pending is None and event['queue_before'] == physical
+            pending = event['value']
+            for index, value in enumerate(synchronous):
+                if value < 128 or value == pending:
+                    synchronous[index] = pending
+                    break
+        elif tag == 'write':
+            assert event['pc'] in writes
+            index = writes[event['pc']]
+            assert event['address'] == hex(0xf80a + index)
+            assert event['irq_depth'] == 0 and event['source_register'] == row['source_register']
+            assert pending is not None and event['value'] == pending == event['after']
+            assert event['before'] == physical[index]
+            physical[index], pending = event['after'], None
+        elif tag == 'drop':
+            assert event['pc'] == '0x219a8' and event['irq_depth'] == 0
+            assert event['source_register'] == row['source_register']
+            assert pending is not None and pending == event['value'] and event['queue_before'] == physical
+            pending = None
+        elif tag == 'clear':
+            index = int(event['address'], 16) - 0xf80a
+            assert 0 <= index < 4 and event['pc'] in ['0x37c56', '0x37cac']
+            assert event['irq_depth'] > 0 and event['before'] == physical[index] and event['after'] == 0
+            physical[index] = 0
+            clears.append(event)
+        else:
+            raise AssertionError(('unknown event', event))
+    assert pending is None and physical == after
+    assert len(clears) == len(row['external_queue_clears'])
+    for actual, declared in zip(clears, row['external_queue_clears']):
+        assert all(actual[key] == declared[key] for key in ['pc', 'address', 'before', 'after'])
+    return counts, synchronous
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--normal', type=Path, default=BASE)
+    parser.add_argument('--special', type=Path, default=BASE)
+    parser.add_argument('--install', action='store_true')
+    args = parser.parse_args()
+    assert all(p.resolve().is_relative_to(ROOT) for p in [args.normal, args.special])
+    checks, total, known = [], Counter(), None
+    for old in sorted((BASE / 'fighter7-composition-v1').glob('*.json.gz')):
+        kind = old.name.split('-')[2]
+        directory = args.special if '-special.' in old.name else args.normal
+        new = directory / old.name
+        om = json.loads(old.with_name(old.name.removesuffix('.json.gz') + '-manifest.json').read_text())
+        mp = new.with_name(new.name.removesuffix('.json.gz') + '-manifest.json')
+        nm = json.loads(mp.read_text())
+        assert sha(old) == om['gzip_sha256'] and sha(new) == nm['gzip_sha256']
+        for path, manifest in [(old, om), (new, nm)]:
+            with gzip.open(path, 'rb') as stream:
+                assert hashlib.file_digest(stream, 'sha256').hexdigest() == manifest['fixture_sha256']
+        a, b = Calls(old), Calls(new)
+        assert a.library == b.library
+        records, calls, counts, projected = 0, 0, Counter(), 0
+        for previous, current in itertools.zip_longest(a, b):
+            assert previous is not None and current is not None
+            records += 1
+            for row in current.get('calls', [current]):
+                statistics, synchronous = verify(row, kind)
+                counts.update(statistics)
+                calls += 1
+                projected += synchronous != row['audio_after']
+                if kind == 'action' and '-special.' in new.name and row['frame'] == 3142:
+                    known = {'frame': row['frame'], 'source_register': row['source_register'],
+                             'before': row['audio_before'], 'cpu_after': row['audio_after'],
+                             'synchronous_expected': synchronous, 'events': row['audio_events']}
+                for key in ['audio_before', 'audio_after', 'audio_events']:
+                    row.pop(key)
+            assert previous == current, ('nonaudio original evidence changed', old.name, records)
+        assert records == om['records'] == nm['records']
+        total.update(counts)
+        total['calls'] += calls
+        checks.append({'name': new.name, 'records': records, 'complete_calls': calls,
+                       'v1_nonaudio_all_fields_equal': True, 'v2_raw_sha256': nm['fixture_sha256'],
+                       'v2_gzip_sha256': nm['gzip_sha256'], 'audio_event_counts': dict(counts),
+                       'calls_requiring_synchronous_projection': projected})
+        if args.install:
+            shutil.copyfile(new, BASE / new.name)
+            shutil.copyfile(mp, BASE / mp.name)
+    assert len(checks) == 12 and known and known['before'] == [162, 0, 0, 0]
+    assert known['cpu_after'] == [166, 0, 0, 0] and known['synchronous_expected'] == [162, 166, 0, 0]
+    report = {'pass': True, 'scope': 'All four physical CPU audio slots and exact original requests; all v1 nonaudio fields remain identical.',
+              'test_sha256': sha(ROOT / 'games/yuyuhakusho/engine/fighter7_composition_test.go'),
+              'audit_source_sha256': sha(Path(__file__)), 'statistics': dict(total),
+              'fixtures': checks, 'original_failed_case_with_exact_events': known}
+    (BASE / 'fighter7-composition-audio-projection-verification.json').write_text(json.dumps(report, indent=2) + '\n')
+    print(json.dumps({'pass': True, 'statistics': dict(total), 'fixtures': len(checks)}))
+
+
+if __name__ == '__main__':
+    main()

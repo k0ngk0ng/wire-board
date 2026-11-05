@@ -1,0 +1,109 @@
+{
+  "cwd": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho",
+  "controls": "Only the Root-provided original-core ordinary3602 and special5502 controls are reused. No second original control is created by these commands.",
+  "capture": [
+    {
+      "kind": "ordinary/private/independent streams with exact audio events",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "argv": [
+        "python3",
+        "scripts/yuyuhakusho/capture_fighter7_composition.py",
+        "--out",
+        ".local/md-yuyuhakusho/fighter7-composition-audio-ordinary"
+      ],
+      "exit_code": 0
+    },
+    {
+      "kind": "special observer only;5500entry+2drain",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "argv": [
+        "python3",
+        "scripts/yuyuhakusho/capture_fighter7_composition.py",
+        "--out",
+        ".local/md-yuyuhakusho/fighter7-composition-audio-special",
+        "--inputs",
+        "docs/research/md-yuyuhakusho/source7-special-discovery-inputs.json",
+        "--baseline",
+        "games/yuyuhakusho/engine/testdata/fighter7-attacks-special-reference-frames.json",
+        "--baseline-manifest",
+        "games/yuyuhakusho/engine/testdata/fighter7-attacks-special-reference-manifest.json",
+        "--natural-label",
+        "special",
+        "--natural-only"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "replay_audit": {
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "argv": [
+      "python3",
+      "games/yuyuhakusho/engine/testdata/fighter7-composition-audio-audit-source.py.txt"
+    ],
+    "exit_code": 0,
+    "effect": "Read current and archived v1 fixtures, strictly replay all four physical slots, compare all prior nonaudio fields, and rewrite only the audit report."
+  },
+  "verification": [
+    {
+      "kind": "native-race",
+      "environment_overrides": {
+        "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+        "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+        "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+        "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp"
+      },
+      "argv": [
+        "go",
+        "test",
+        "-race",
+        "-count=1",
+        "-json",
+        "-run",
+        "^TestFighter7Composition",
+        "./games/yuyuhakusho/engine"
+      ],
+      "log": "games/yuyuhakusho/engine/testdata/fighter7-composition-native.jsonl",
+      "exit_code": 0
+    },
+    {
+      "kind": "node-wasm",
+      "replace_environment": {
+        "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+        "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+        "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+        "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+        "PATH": "/Users/jason/.nvm/versions/node/v24.15.0/bin:/opt/homebrew/bin:/usr/bin:/bin",
+        "GOENV": "off",
+        "GOOS": "js",
+        "GOARCH": "wasm"
+      },
+      "argv": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-count=1",
+        "-json",
+        "-exec",
+        "/opt/homebrew/Cellar/go/1.26.2/libexec/lib/wasm/go_js_wasm_exec",
+        "-run",
+        "^TestFighter7Composition",
+        "./games/yuyuhakusho/engine"
+      ],
+      "log": "games/yuyuhakusho/engine/testdata/fighter7-composition-wasm.jsonl",
+      "exit_code": 0,
+      "startup_constraint": "Minimal environment and short targeted regex for the8KiB Wasm startup argument/environment region."
+    }
+  ],
+  "versions": {
+    "go": "1.26.2",
+    "node": "24.15.0"
+  },
+  "capture_sha256": "afec60041180c1e30e7b419db9a574fbb496d13815d79da79139b93d9e000d8a",
+  "cases_sha256": "5ec1a22c298441deabdaeb1e0dc31b1be7a86512096ddfca0be0aac144b14584",
+  "test_sha256": "c449c984ccbdadaf4bce67b6abd0660ffc00c502b693596c4285d46dca2627c6"
+}

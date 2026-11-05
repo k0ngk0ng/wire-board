@@ -168,3 +168,15 @@ python3 scripts/yuyuhakusho/audit_fighter5_projectile_assets.py --out games/yuyu
 矩阵为 23 组规则配置和 13 组完整呈现。旧九角色回归使用 `verify_sensui_legacy.py native` 和 `verify_sensui_legacy.py wasm`，共 234 份结果。完整 351 引擎＋3 目录测试的来源／分片在 `verification/sensui-native-shards.json`；Wasm 初次达到20分钟限制后，仅对剩余75项续跑，精确清单、压缩正则、最小环境和原始日志在 `sensui-wasm-continuation.json`。GoWasm 的 argv＋环境有8KiB启动区，长正则与无关宿主变量可能超过上限，不把没有执行测试的启动失败当作规则失败。完整通过集合与原始记录由 [sensui-session.json](../../games/yuyuhakusho/verification/sensui-session.json)绑定。
 
 Source5 普通世界沿用未修改的 `capture_chu_world.py`，特殊世界使用 `capture_fighter5_world.py` 及唯一原 core3602控制组。两条输入／原 SHA 均在对应 manifest；特殊采样范围为1800..3600，另两步排空。固定输入的发现与复放说明见 [SOURCE5_SPECIAL_DISCOVERY.md](../../docs/research/md-yuyuhakusho/SOURCE5_SPECIAL_DISCOVERY.md)。
+
+全11人物最新检查点：
+
+```sh
+sh scripts/yuyuhakusho/verify_itsuki_sessions.sh both
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/yuyuhakusho/check_itsuki_player.py
+python3 scripts/yuyuhakusho/audit_fighter7_children_assets.py --out games/yuyuhakusho/verification/fighter7-children-assets.json
+```
+
+矩阵25组规则／14组完整呈现；旧十人物回归用 `verify_itsuki_legacy.py native` 与 `verify_itsuki_legacy.py wasm`，共280份报告。380引擎＋3目录顶层检查按同一冻结清单分片，见 `itsuki-native-shards.json`／`itsuki-wasm-shards.json`。Wasm4片完整通过；原生20分钟预算后61项续跑的精确集合、源码及命令在 `itsuki-native-continuation.json`，没有跳过未完成项。原始超时、全部最终通过集合和owner／音频适配器修正由 [itsuki-session.json](../../games/yuyuhakusho/verification/itsuki-session.json)绑定。
+
+树的特殊原控制为5502步，所有14个玩家根自然成功；分派初态、回调、FX和跨4父Health／停顿均保留完整64KiB审计。世界原始音频队列是独立异步消费者边界，组合v2另以实际request/write/drop/clear事件精确验证，不整队列遮蔽。滚动和录制输入共用一个Stream owner，旧PanA/PanB只作JSON派生视图；六份旧完整JSON和旧对局精确兼容，原始4054帧失败及先行测试保留。

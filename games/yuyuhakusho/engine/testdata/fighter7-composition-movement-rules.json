@@ -1,0 +1,20 @@
+{
+  "pass": true,
+  "scope": "Independent source7 default immutable movement parameter data, read from the actual +90 pointer, not Go bundle",
+  "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+  "rules": [
+    {
+      "source": 75248,
+      "movement": {
+        "walk_speed": 90112,
+        "vertical_velocity": -368640,
+        "gravity": 13824,
+        "horizontal_velocity": 114688,
+        "burst_speed": 49152,
+        "energy_drain": 48
+      },
+      "source_bytes": "00016000fffa6000000036000001c00000000600000020000000c0000030",
+      "source_sha256": "ee92ce13f060a7e94f65ba67791bd6b38d5459581e772f4a2824d87e697c0d69"
+    }
+  ]
+}

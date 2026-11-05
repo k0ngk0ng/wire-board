@@ -1,0 +1,9 @@
+{"Time":"2026-11-05T13:13:41.152063+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine"}
+{"Time":"2026-11-05T13:13:41.689501+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter7ActorPeerStopViews"}
+{"Time":"2026-11-05T13:13:41.689528+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter7ActorPeerStopViews","Output":"=== RUN   TestFighter7ActorPeerStopViews\n"}
+{"Time":"2026-11-05T13:13:41.68958+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter7ActorPeerStopViews","Output":"    fighter7_storage_test.go:20: peer stop byte lost 35840\n"}
+{"Time":"2026-11-05T13:13:41.689604+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter7ActorPeerStopViews","Output":"--- FAIL: TestFighter7ActorPeerStopViews (0.00s)\n"}
+{"Time":"2026-11-05T13:13:41.689611+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Test":"TestFighter7ActorPeerStopViews","Elapsed":0}
+{"Time":"2026-11-05T13:13:41.689622+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"FAIL\n"}
+{"Time":"2026-11-05T13:13:41.689946+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine\t0.538s\n"}
+{"Time":"2026-11-05T13:13:41.689953+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Elapsed":0.538}

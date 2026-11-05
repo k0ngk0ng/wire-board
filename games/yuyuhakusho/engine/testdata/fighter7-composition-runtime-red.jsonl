@@ -1,0 +1,35 @@
+{"Time":"2026-11-05T13:17:48.660972+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-05T13:17:49.096262+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter7CompositionOriginalActions"}
+{"Time":"2026-11-05T13:17:49.096428+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter7CompositionOriginalActions","Output":"=== RUN   TestFighter7CompositionOriginalActions\n"}
+{"Time":"2026-11-05T13:17:49.104485+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter7CompositionOriginalActions","Output":"    fighter7_composition_test.go:394: full source7 action  kind=0 differs: unsupported complete fighter action source\n"}
+{"Time":"2026-11-05T13:17:49.104621+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter7CompositionOriginalActions","Output":"--- FAIL: TestFighter7CompositionOriginalActions (0.01s)\n"}
+{"Time":"2026-11-05T13:17:49.104691+08:00","Action":"fail","Package":"command-line-arguments","Test":"TestFighter7CompositionOriginalActions","Elapsed":0.01}
+{"Time":"2026-11-05T13:17:49.104743+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter7CompositionOriginalInputs"}
+{"Time":"2026-11-05T13:17:49.104759+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter7CompositionOriginalInputs","Output":"=== RUN   TestFighter7CompositionOriginalInputs\n"}
+{"Time":"2026-11-05T13:17:49.408884+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter7CompositionOriginalInputs","Output":"    fighter7_composition_test.go:437: original full inputs natural=2067 AI calls=0 source7 threat branch=0 routes=map[disabled:273 human:1794]\n"}
+{"Time":"2026-11-05T13:17:49.408923+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter7CompositionOriginalInputs","Output":"    fighter7_composition_test.go:415: open testdata/fighter7-composition-input-special.json.gz: no such file or directory\n"}
+{"Time":"2026-11-05T13:17:49.408944+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter7CompositionOriginalInputs","Output":"--- FAIL: TestFighter7CompositionOriginalInputs (0.30s)\n"}
+{"Time":"2026-11-05T13:17:49.40895+08:00","Action":"fail","Package":"command-line-arguments","Test":"TestFighter7CompositionOriginalInputs","Elapsed":0.3}
+{"Time":"2026-11-05T13:17:49.408955+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter7CompositionOriginalActors"}
+{"Time":"2026-11-05T13:17:49.408958+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter7CompositionOriginalActors","Output":"=== RUN   TestFighter7CompositionOriginalActors\n"}
+{"Time":"2026-11-05T13:17:49.415434+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter7CompositionOriginalActors","Output":"    fighter7_composition_test.go:451: full source7 actor  kind=0 differs: unsupported complete fighter actor source\n"}
+{"Time":"2026-11-05T13:17:49.415462+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter7CompositionOriginalActors","Output":"--- FAIL: TestFighter7CompositionOriginalActors (0.01s)\n"}
+{"Time":"2026-11-05T13:17:49.415467+08:00","Action":"fail","Package":"command-line-arguments","Test":"TestFighter7CompositionOriginalActors","Elapsed":0.01}
+{"Time":"2026-11-05T13:17:49.415484+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter7CompositionActionStreams"}
+{"Time":"2026-11-05T13:17:49.415488+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter7CompositionActionStreams","Output":"=== RUN   TestFighter7CompositionActionStreams\n"}
+{"Time":"2026-11-05T13:17:49.415546+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter7CompositionActionStreams","Output":"    fighter7_composition_test.go:470: open testdata/fighter7-composition-action-sequences.json.gz: no such file or directory\n"}
+{"Time":"2026-11-05T13:17:49.415554+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter7CompositionActionStreams","Output":"--- FAIL: TestFighter7CompositionActionStreams (0.00s)\n"}
+{"Time":"2026-11-05T13:17:49.415572+08:00","Action":"fail","Package":"command-line-arguments","Test":"TestFighter7CompositionActionStreams","Elapsed":0}
+{"Time":"2026-11-05T13:17:49.415576+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter7CompositionInputAndActorStreams"}
+{"Time":"2026-11-05T13:17:49.415578+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter7CompositionInputAndActorStreams","Output":"=== RUN   TestFighter7CompositionInputAndActorStreams\n"}
+{"Time":"2026-11-05T13:17:49.415581+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter7CompositionInputAndActorStreams","Output":"    fighter7_composition_test.go:504: open testdata/fighter7-composition-input-sequences.json.gz: no such file or directory\n"}
+{"Time":"2026-11-05T13:17:49.415584+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter7CompositionInputAndActorStreams","Output":"--- FAIL: TestFighter7CompositionInputAndActorStreams (0.00s)\n"}
+{"Time":"2026-11-05T13:17:49.415596+08:00","Action":"fail","Package":"command-line-arguments","Test":"TestFighter7CompositionInputAndActorStreams","Elapsed":0}
+{"Time":"2026-11-05T13:17:49.415599+08:00","Action":"run","Package":"command-line-arguments","Test":"TestFighter7CompositionFailuresAreAtomic"}
+{"Time":"2026-11-05T13:17:49.415601+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter7CompositionFailuresAreAtomic","Output":"=== RUN   TestFighter7CompositionFailuresAreAtomic\n"}
+{"Time":"2026-11-05T13:17:49.415665+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter7CompositionFailuresAreAtomic","Output":"    fighter7_composition_test.go:570: open testdata/fighter7-composition-action-boundaries.json.gz: no such file or directory\n"}
+{"Time":"2026-11-05T13:17:49.41567+08:00","Action":"output","Package":"command-line-arguments","Test":"TestFighter7CompositionFailuresAreAtomic","Output":"--- FAIL: TestFighter7CompositionFailuresAreAtomic (0.00s)\n"}
+{"Time":"2026-11-05T13:17:49.415673+08:00","Action":"fail","Package":"command-line-arguments","Test":"TestFighter7CompositionFailuresAreAtomic","Elapsed":0}
+{"Time":"2026-11-05T13:17:49.415678+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\n"}
+{"Time":"2026-11-05T13:17:49.416269+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\tcommand-line-arguments\t0.755s\n"}
+{"Time":"2026-11-05T13:17:49.416277+08:00","Action":"fail","Package":"command-line-arguments","Elapsed":0.755}

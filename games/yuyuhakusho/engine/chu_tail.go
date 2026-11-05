@@ -16,10 +16,11 @@ type ChuTailParameters struct {
 }
 
 type TailFighterEnergy struct {
-	Size   uint16
-	Team   uint8
-	Health int16
-	Energy int16
+	Size         uint16
+	Team         uint8
+	Health       int16
+	Energy       int16
+	HitStopTicks uint8
 }
 
 type ChuTailState struct {
@@ -130,6 +131,10 @@ func stepFighterActionTail(state ChuTailState, characterID uint8, aux48 int32, p
 			} else if characterID == 6 {
 				var selected Fighter6AttackState
 				selected, err = SelectFighter6Attack(Fighter6AttackState{ChuAttackState: selection, AlternateVelocity: aux48}, stage.mode)
+				selection, aux48 = selected.ChuAttackState, selected.AlternateVelocity
+			} else if characterID == 7 {
+				var selected Fighter7AttackState
+				selected, err = SelectFighter7Attack(Fighter7AttackState{ChuAttackState: selection, AlternateVelocity: aux48}, stage.mode)
 				selection, aux48 = selected.ChuAttackState, selected.AlternateVelocity
 			} else if characterID == 8 {
 				var selected Fighter8AttackState
