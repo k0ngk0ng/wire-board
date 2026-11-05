@@ -1,0 +1,7 @@
+{
+  "phase": "Frozen native/Wasm/independent decode E2E before Go encoder and CLI implementation",
+  "path": "scripts/yuyuhakusho/verify_go_audio_stream.py",
+  "sha256": "0601fac625a765889c54418b124adbb53cd65f958f48e6cec9a2cb49ea227582",
+  "red": ".local/md-yuyuhakusho/audio-encoder-plan/e2e-symbol-red.txt",
+  "red_exit_code": 1
+}

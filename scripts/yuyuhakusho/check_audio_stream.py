@@ -1,0 +1,72 @@
+"""Real platform MSE stream E2E; authored/frozen before public implementation."""
+from pathlib import Path
+from http.server import BaseHTTPRequestHandler,ThreadingHTTPServer
+from urllib.parse import urlsplit
+import argparse,hashlib,json,os,re,subprocess,threading
+ROOT=Path(__file__).resolve().parents[2]
+parser=argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--fixture',type=Path,default=ROOT/'.local/md-yuyuhakusho/audio-encoder-plan/e2e/native/original12/small-bulk')
+parser.add_argument('--label',default='native');args=parser.parse_args();assert re.fullmatch(r'[a-zA-Z0-9_-]+',args.label)
+FIXTURE=args.fixture.resolve();assert FIXTURE.is_relative_to(ROOT)
+OUT=ROOT/'games/yuyuhakusho/verification/audio-platform-stream'/args.label
+TMP=ROOT/'.local/md-yuyuhakusho/audio-platform-stream'
+for p in [OUT,TMP,TMP/'tmp',ROOT/'.local/ys']:p.mkdir(parents=True,exist_ok=True)
+sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+m=json.loads((FIXTURE/'manifest.json').read_text());assert m['pass']and m['sample_rate']==44100 and m['channels']==2 and m['stereo_frames']==529200
+assert m['scope']=='pure-go-pcm-flac-mp4'and m['source_pcm_sha256']=='7801d4c5f7ae515e7819c69637f3974ed2feedfc0362df2370ec28f5b8d55f4c'
+init=FIXTURE/m['init_file'];assert sha(init)==m['init_sha256'];cursor=0
+fragments=[]
+for i,f in enumerate(m['fragments']):
+ assert f['sequence']==i+1 and f['start_sample']==cursor and f['sample_frames']>0 and sha(FIXTURE/f['file'])==f['sha256'];cursor+=f['sample_frames'];fragments.append({'sequence':f['sequence'],'startSample':f['start_sample'],'sampleFrames':f['sample_frames'],'url':'/fragment/'+str(i)})
+assert cursor==m['stereo_frames']and max(f['sampleFrames']for f in fragments)<=4096
+manifest={'mimeType':m['mime'],'sampleRate':m['sample_rate'],'totalSamples':m['stereo_frames'],'sourcePCMHash':m['source_pcm_sha256'],'initURL':'/init','fragments':fragments}
+env=dict(os.environ,TMPDIR=str(TMP/'tmp'),AGENT_BROWSER_SOCKET_DIR=str(ROOT/'.local/ys'))
+seed=subprocess.check_output(['agent-browser','session','id','--scope','worktree','--prefix','platform-stream'],cwd=ROOT,env=env,text=True).strip();env['AGENT_BROWSER_SESSION']='ps'+seed.rsplit('-',1)[-1][:6]
+subprocess.run([str(ROOT/'web/node_modules/.bin/esbuild'),'scripts/yuyuhakusho/audio_stream_harness.ts','--bundle','--format=esm','--target=es2022','--outfile='+str(TMP/'harness.js')],cwd=ROOT,env=env,check=True)
+requests=[]
+class Handler(BaseHTTPRequestHandler):
+ def log_message(self,*args):pass
+ def do_GET(self):
+  route=urlsplit(self.path).path;requests.append(route)
+  if route=='/':data=b'<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Platform lossless stream verification</title><button id="start">Run platform stream checks</button><pre>Ready</pre><script type="module" src="/harness.js"></script>';mime='text/html'
+  elif route=='/blank':data=b'<!doctype html><title>Stream visibility boundary</title>Stream visibility boundary';mime='text/html'
+  elif route=='/harness.js':data=(TMP/'harness.js').read_bytes();mime='text/javascript'
+  elif route=='/manifest':data=json.dumps(manifest).encode();mime='application/json'
+  elif route=='/init':data=init.read_bytes();mime='audio/mp4'
+  elif route.startswith('/fragment/'):
+   i=int(route.rsplit('/',1)[-1]);data=(FIXTURE/m['fragments'][i]['file']).read_bytes();mime='audio/mp4'
+  else:self.send_error(404);return
+  self.send_response(200);self.send_header('Content-Type',mime);self.send_header('Cache-Control','no-store');self.send_header('Content-Length',str(len(data)));self.end_headers()
+  try:self.wfile.write(data)
+  except(BrokenPipeError,ConnectionResetError):pass
+server=ThreadingHTTPServer(('127.0.0.1',0),Handler);thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start();url=f'http://127.0.0.1:{server.server_port}/'
+def browser(*items):
+ p=subprocess.run(['agent-browser',*items,'--json'],cwd=ROOT,env=env,text=True,capture_output=True,timeout=45)
+ if p.returncode:raise RuntimeError(p.stdout+p.stderr)
+ r=json.loads(p.stdout);assert r['success'],r
+ return r['data']
+def js(code):return browser('eval',code)['result']
+opened=False
+try:
+ browser('--profile',str(TMP/'profile'),'open',url);opened=True;browser('set','viewport','960','760');browser('snapshot','-i')
+ endpoint=browser('get','cdp-url');endpoint=endpoint.get('url')or endpoint.get('cdpUrl')or endpoint.get('value')
+ activation=subprocess.run(['node',str(ROOT/'scripts/yuyuhakusho/activate_audio_media_page.mjs'),endpoint,url],cwd=ROOT,env=env,text=True,capture_output=True,timeout=20);assert activation.returncode==0,activation.stderr
+ setup=json.loads(activation.stdout);browser('tab',setup['targetId']);browser('wait','--fn','!document.hidden && !!window.audioStreamProbe?.ready')
+ (OUT/'setup.json').write_text(json.dumps(setup,indent=2)+'\n');browser('click','#start');browser('wait','--fn','audioStreamProbe.complete || !!audioStreamProbe.error')
+ r=js('({complete:audioStreamProbe.complete,error:audioStreamProbe.error,checks:audioStreamProbe.checks,events:audioStreamProbe.events,clocks:audioStreamProbe.clocks,appends:audioStreamProbe.appends,removals:audioStreamProbe.removals,urls:audioStreamProbe.urls,crossings:audioStreamProbe.crossings,firstPlaying:audioStreamProbe.firstPlaying})')
+ (OUT/'observed.json').write_text(json.dumps(r,ensure_ascii=False,indent=2)+'\n');assert not r['error'],r['error']
+ tabs=browser('tab');owned=next(row['tabId']for row in tabs['tabs']if row['url']==url);browser('tab','new',url+'blank');browser('tab',owned)
+ hidden=js('({visibility:audioStreamProbe.visibility,status:audioStreamProbe.hiddenHandle.status(),media:audioStreamProbe.audioElements.map(m=>({src:m.getAttribute("src"),paused:m.paused}))})');assert any(row['hidden']for row in hidden['visibility'])and hidden['status']['phase']=='stopped'and all(not row['src']and row['paused']for row in hidden['media'])
+ assert js('audioStreamProbe.hiddenHandle.stop();audioStreamProbe.hiddenHandle.status().phase')=='stopped'
+ js('audioStreamProbe.platform.dispose()');r['final_url_events']=js('audioStreamProbe.urls');r['final_media_state']=js('audioStreamProbe.audioElements.map(m=>({src:m.getAttribute("src"),paused:m.paused,connected:m.isConnected}))');r.update(pass_=True,scope='Platform-owned native HTMLAudio/MSE with pureGo lossless fragments; current mixed stream API and bounded realtime feed, not independent DSP or speaker sample identity',hidden_cleanup=hidden,fixture_path=str(FIXTURE.relative_to(ROOT)),fixture_manifest_sha256=sha(FIXTURE/'manifest.json'),source_pcm_sha256=m['source_pcm_sha256'],source_sha256={name:sha(ROOT/name)for name in ['web/src/audio.ts','web/src/audio-stream.ts','web/src/game-api/module.ts','web/src/game-api/audio-stream.ts','scripts/yuyuhakusho/audio_stream_harness.ts','scripts/yuyuhakusho/check_audio_stream.py','scripts/yuyuhakusho/activate_audio_media_page.mjs']},requests=requests,actual_go_fragments=len(fragments),sample_gapless_verified=False,speaker_output_verified=False,original_mix_equivalent=False)
+ r['pass']=r.pop('pass_');(OUT/'result.json').write_text(json.dumps(r,ensure_ascii=False,indent=2)+'\n');browser('screenshot',str(OUT/'desktop.png'));browser('set','viewport','320','740');browser('screenshot',str(OUT/'mobile-320.png'));print(json.dumps({'pass':True,'checks':len(r['checks']),'fragments':len(fragments),'crossings':len(r['crossings'])}))
+except Exception as error:
+ (OUT/'failure.json').write_text(json.dumps({'error':repr(error),'requests':requests},indent=2)+'\n')
+ if opened:
+  try:
+   (OUT/'failure-state.json').write_text(json.dumps(js('typeof audioStreamProbe!=="undefined"?{error:audioStreamProbe.error,checks:audioStreamProbe.checks,events:audioStreamProbe.events,status:audioStreamProbe.current?.status(),hidden:document.hidden}:null'),ensure_ascii=False,indent=2)+'\n');browser('screenshot',str(OUT/'failure.png'))
+  except Exception:pass
+ raise
+finally:
+ if opened:browser('close')
+ server.shutdown();server.server_close();thread.join(timeout=5)

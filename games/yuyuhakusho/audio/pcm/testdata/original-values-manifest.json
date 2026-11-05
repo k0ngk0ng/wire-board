@@ -1,0 +1,14 @@
+{
+  "pass": true,
+  "schema": 1,
+  "fixture_path": "games/yuyuhakusho/audio/pcm/testdata/original-values.json.gz",
+  "fixture_json_sha256": "d23cc1c221fc38826fde1b1bbd948ee077f0e02cc258c8a5797c6be4fa5540ee",
+  "fixture_gzip_sha256": "edb270d670b95282b35f95901278403040ed03503bfac17788f2f104b4d3040b",
+  "capture_path": ".local/md-yuyuhakusho/audio-pcm-model-first/capture.json",
+  "capture_sha256": "ed36902d977512354c7333e630bbd9c7a801851e2676ebcb6547bd1adf03d0d9",
+  "producer_sha256": "6bb8cc0afe6b6f81a32684f1263241dddcb1c7fc85687076530871912415d845",
+  "cases": 4,
+  "decoder_pairs": 28510,
+  "dac_events": 41345,
+  "scope": "Original tables and ordered native semantic value stages; reference cycles are test provenance only, not a production timing algorithm"
+}

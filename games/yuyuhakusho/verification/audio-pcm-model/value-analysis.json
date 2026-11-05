@@ -1,0 +1,105 @@
+{
+  "pass": true,
+  "cases": [
+    {
+      "case": "single-short",
+      "decoder_pairs": 2570,
+      "decoder_mismatch": 0,
+      "bank_reads": 2572,
+      "m68k_stolen": {
+        "70": 1836,
+        "77": 736
+      },
+      "z80_wait": {
+        "45": 2572
+      },
+      "dac_events": 5217,
+      "dac_pc_counts": {
+        "0x2e1": 1305,
+        "0x34d": 1303,
+        "0x51c": 1304,
+        "0x588": 1304,
+        "0x37a": 1
+      },
+      "mix_lookups": 5217,
+      "native_mix_lookup_mismatch": 0
+    },
+    {
+      "case": "pair-short",
+      "decoder_pairs": 3645,
+      "decoder_mismatch": 0,
+      "bank_reads": 3648,
+      "m68k_stolen": {
+        "70": 2602,
+        "77": 1046
+      },
+      "z80_wait": {
+        "45": 3648
+      },
+      "dac_events": 5217,
+      "dac_pc_counts": {
+        "0x2e1": 1305,
+        "0x34d": 1303,
+        "0x51c": 1304,
+        "0x588": 1303,
+        "0x5b5": 1,
+        "0x37a": 1
+      },
+      "mix_lookups": 5217,
+      "native_mix_lookup_mismatch": 0
+    },
+    {
+      "case": "single-mode",
+      "decoder_pairs": 7788,
+      "decoder_mismatch": 0,
+      "bank_reads": 11071,
+      "m68k_stolen": {
+        "70": 7910,
+        "77": 3161
+      },
+      "z80_wait": {
+        "45": 11071
+      },
+      "dac_events": 15576,
+      "dac_pc_counts": {
+        "0x137": 7658,
+        "0x176": 7658,
+        "0x1b0": 130,
+        "0x1d8": 130
+      },
+      "mix_lookups": 0,
+      "native_mix_lookup_mismatch": 0
+    },
+    {
+      "case": "pair-long",
+      "decoder_pairs": 14507,
+      "decoder_mismatch": 0,
+      "bank_reads": 14508,
+      "m68k_stolen": {
+        "70": 10359,
+        "77": 4149
+      },
+      "z80_wait": {
+        "45": 14508
+      },
+      "dac_events": 15335,
+      "dac_pc_counts": {
+        "0x2e1": 3834,
+        "0x34d": 3834,
+        "0x51c": 3834,
+        "0x588": 3832,
+        "0x5b5": 1
+      },
+      "mix_lookups": 15335,
+      "native_mix_lookup_mismatch": 0
+    }
+  ],
+  "table_checks": {
+    "delta_entries": 512,
+    "mix_entries": 512,
+    "all_match": true
+  },
+  "limits": [
+    "No independent event-time/cadence prediction yet; this analysis checks original arithmetic observations, not filtered44100Hz output"
+  ]
+}

@@ -1,0 +1,443 @@
+{
+  "pass": true,
+  "scope": "Whole encoded payloads and ordered nativeDAC value matches; reference timing observation only",
+  "table_sha256": "be79e4eb4329b2f21dfda3d284a5b03afbd2dd8b1694c4366190072de0ef0fe8",
+  "cases": [
+    {
+      "name": "single-short",
+      "source_path": ".local/md-yuyuhakusho/audio-pcm-model-first/single-short-events.json.gz",
+      "source_sha256": "caa5c90aefb86a48a62b41e5752c35dc5532324a02be82dff9a559debd719c4f",
+      "encoded_bytes_by_role": {
+        "a": 2570
+      },
+      "all_payloads_consumed_from_initial128": true,
+      "decoded_pairs": 2570,
+      "ordered_dac_values": 5217,
+      "value_mismatches": 0,
+      "dual_8bit_clamps": 0,
+      "bank_reads": 2572,
+      "reference_bank_z80_wait_cycles": {
+        "45": 2572
+      },
+      "reference_bank_m68k_stolen_cycles": {
+        "70": 1836,
+        "77": 736
+      },
+      "reference_bus_formula_mismatches": 0,
+      "reference_dac_interval_master_cycles": {
+        "6390": 30,
+        "6585": 1870,
+        "6675": 2494,
+        "6750": 39,
+        "6765": 627,
+        "7050": 1,
+        "7125": 1,
+        "7140": 2,
+        "7155": 3,
+        "7170": 2,
+        "7185": 2,
+        "7200": 3,
+        "7215": 1,
+        "7230": 1,
+        "7260": 2,
+        "7275": 6,
+        "7290": 8,
+        "7305": 8,
+        "7320": 6,
+        "7335": 8,
+        "7350": 11,
+        "7365": 17,
+        "7380": 10,
+        "7395": 8,
+        "7410": 6,
+        "7425": 7,
+        "7440": 9,
+        "7455": 6,
+        "7470": 6,
+        "7485": 6,
+        "7500": 6,
+        "7530": 3,
+        "7545": 2,
+        "7560": 1,
+        "7575": 1,
+        "7620": 1,
+        "7665": 1,
+        "7680": 1
+      },
+      "constant_dac_cadence": false,
+      "mode_ack_end_writes": [
+        {
+          "video_step": 0,
+          "reference_cycle": 215670,
+          "pc": "0x1fa",
+          "address": "0x1ffc",
+          "value": 1
+        },
+        {
+          "video_step": 0,
+          "reference_cycle": 230400,
+          "pc": "0x3b0",
+          "address": "0x1f86",
+          "value": 64
+        },
+        {
+          "video_step": 0,
+          "reference_cycle": 257265,
+          "pc": "0x46b",
+          "address": "0x1ffc",
+          "value": 1
+        },
+        {
+          "video_step": 39,
+          "reference_cycle": 93420,
+          "pc": "0x425",
+          "address": "0x1f86",
+          "value": 0
+        },
+        {
+          "video_step": 39,
+          "reference_cycle": 96960,
+          "pc": "0x6f8",
+          "address": "0x1ffc",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "name": "pair-short",
+      "source_path": ".local/md-yuyuhakusho/audio-pcm-model-first/pair-short-events.json.gz",
+      "source_sha256": "7b18084bc2f201e7bf9b24e435d83908d50715b9c0f69f60b2c52ea61d1f9b2b",
+      "encoded_bytes_by_role": {
+        "a": 2570,
+        "b": 1075
+      },
+      "all_payloads_consumed_from_initial128": true,
+      "decoded_pairs": 3645,
+      "ordered_dac_values": 5217,
+      "value_mismatches": 0,
+      "dual_8bit_clamps": 35,
+      "bank_reads": 3648,
+      "reference_bank_z80_wait_cycles": {
+        "45": 3648
+      },
+      "reference_bank_m68k_stolen_cycles": {
+        "70": 2602,
+        "77": 1046
+      },
+      "reference_bus_formula_mismatches": 0,
+      "reference_dac_interval_master_cycles": {
+        "6390": 64,
+        "6585": 1577,
+        "6600": 1042,
+        "6675": 1448,
+        "6750": 40,
+        "6765": 888,
+        "7140": 1,
+        "7155": 2,
+        "7185": 2,
+        "7200": 6,
+        "7215": 3,
+        "7230": 3,
+        "7245": 3,
+        "7260": 1,
+        "7275": 7,
+        "7290": 10,
+        "7305": 2,
+        "7320": 6,
+        "7335": 13,
+        "7350": 10,
+        "7365": 15,
+        "7380": 10,
+        "7395": 8,
+        "7410": 9,
+        "7425": 3,
+        "7440": 7,
+        "7455": 4,
+        "7470": 8,
+        "7485": 6,
+        "7500": 3,
+        "7515": 1,
+        "7530": 7,
+        "7560": 2,
+        "7575": 2,
+        "7620": 1,
+        "7680": 1,
+        "9435": 1
+      },
+      "constant_dac_cadence": false,
+      "mode_ack_end_writes": [
+        {
+          "video_step": 0,
+          "reference_cycle": 215670,
+          "pc": "0x1fa",
+          "address": "0x1ffc",
+          "value": 1
+        },
+        {
+          "video_step": 0,
+          "reference_cycle": 230400,
+          "pc": "0x3b0",
+          "address": "0x1f86",
+          "value": 64
+        },
+        {
+          "video_step": 0,
+          "reference_cycle": 257265,
+          "pc": "0x46b",
+          "address": "0x1ffc",
+          "value": 1
+        },
+        {
+          "video_step": 8,
+          "reference_cycle": 237165,
+          "pc": "0x5eb",
+          "address": "0x1fa6",
+          "value": 64
+        },
+        {
+          "video_step": 8,
+          "reference_cycle": 264060,
+          "pc": "0x6a6",
+          "address": "0x1ffc",
+          "value": 65
+        },
+        {
+          "video_step": 24,
+          "reference_cycle": 730995,
+          "pc": "0x660",
+          "address": "0x1fa6",
+          "value": 0
+        },
+        {
+          "video_step": 39,
+          "reference_cycle": 58245,
+          "pc": "0x425",
+          "address": "0x1f86",
+          "value": 0
+        },
+        {
+          "video_step": 39,
+          "reference_cycle": 61785,
+          "pc": "0x6f8",
+          "address": "0x1ffc",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "name": "single-mode",
+      "source_path": ".local/md-yuyuhakusho/audio-pcm-model-first/single-mode-events.json.gz",
+      "source_sha256": "58ed4a7acd34f7e881956352e2025487c49712210816d001cd79b47881fbbf96",
+      "encoded_bytes_by_role": {
+        "single": 7788
+      },
+      "all_payloads_consumed_from_initial128": true,
+      "decoded_pairs": 7788,
+      "ordered_dac_values": 15576,
+      "value_mismatches": 0,
+      "dual_8bit_clamps": 0,
+      "bank_reads": 11071,
+      "reference_bank_z80_wait_cycles": {
+        "45": 11071
+      },
+      "reference_bank_m68k_stolen_cycles": {
+        "70": 7910,
+        "77": 3161
+      },
+      "reference_bus_formula_mismatches": 0,
+      "reference_dac_interval_master_cycles": {
+        "3255": 630,
+        "3300": 3262,
+        "3330": 7671,
+        "3345": 3780,
+        "3885": 2,
+        "3900": 2,
+        "3915": 2,
+        "3930": 2,
+        "3945": 2,
+        "3960": 8,
+        "3975": 4,
+        "3990": 5,
+        "4005": 6,
+        "4020": 13,
+        "4035": 12,
+        "4050": 16,
+        "4065": 23,
+        "4080": 21,
+        "4095": 16,
+        "4110": 20,
+        "4125": 29,
+        "4140": 25,
+        "4155": 10,
+        "4170": 7,
+        "4200": 2,
+        "4230": 1,
+        "4245": 1,
+        "4260": 2,
+        "4290": 1
+      },
+      "constant_dac_cadence": false,
+      "mode_ack_end_writes": [
+        {
+          "video_step": 0,
+          "reference_cycle": 212970,
+          "pc": "0x7c",
+          "address": "0x1ffc",
+          "value": 128
+        },
+        {
+          "video_step": 58,
+          "reference_cycle": 266865,
+          "pc": "0x6f8",
+          "address": "0x1ffc",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "name": "pair-long",
+      "source_path": ".local/md-yuyuhakusho/audio-pcm-model-first/pair-long-events.json.gz",
+      "source_sha256": "466092e6c31ed9f1408aad63c843ddd4f748ca78c86c2ef1cc2205975d4e432f",
+      "encoded_bytes_by_role": {
+        "a": 7416,
+        "b": 7091
+      },
+      "all_payloads_consumed_from_initial128": true,
+      "decoded_pairs": 14507,
+      "ordered_dac_values": 15335,
+      "value_mismatches": 0,
+      "dual_8bit_clamps": 441,
+      "bank_reads": 14508,
+      "reference_bank_z80_wait_cycles": {
+        "45": 14508
+      },
+      "reference_bank_m68k_stolen_cycles": {
+        "70": 10359,
+        "77": 4149
+      },
+      "reference_bus_formula_mismatches": 0,
+      "reference_dac_interval_master_cycles": {
+        "6390": 63,
+        "6585": 3830,
+        "6600": 6677,
+        "6675": 729,
+        "6750": 40,
+        "6765": 3538,
+        "6975": 1,
+        "7140": 6,
+        "7155": 7,
+        "7170": 10,
+        "7185": 2,
+        "7200": 7,
+        "7215": 6,
+        "7230": 11,
+        "7245": 8,
+        "7260": 8,
+        "7275": 16,
+        "7290": 16,
+        "7305": 26,
+        "7320": 22,
+        "7335": 32,
+        "7350": 29,
+        "7365": 46,
+        "7380": 33,
+        "7395": 41,
+        "7410": 26,
+        "7425": 12,
+        "7440": 3,
+        "7455": 1,
+        "7470": 8,
+        "7485": 4,
+        "7500": 10,
+        "7515": 10,
+        "7530": 9,
+        "7545": 10,
+        "7560": 11,
+        "7575": 12,
+        "7590": 1,
+        "7620": 4,
+        "7635": 1,
+        "7680": 2,
+        "7725": 2,
+        "7740": 1,
+        "7770": 2,
+        "9315": 1
+      },
+      "constant_dac_cadence": false,
+      "mode_ack_end_writes": [
+        {
+          "video_step": 0,
+          "reference_cycle": 215670,
+          "pc": "0x1fa",
+          "address": "0x1ffc",
+          "value": 193
+        },
+        {
+          "video_step": 0,
+          "reference_cycle": 230400,
+          "pc": "0x3b0",
+          "address": "0x1f86",
+          "value": 64
+        },
+        {
+          "video_step": 0,
+          "reference_cycle": 257265,
+          "pc": "0x46b",
+          "address": "0x1ffc",
+          "value": 193
+        },
+        {
+          "video_step": 8,
+          "reference_cycle": 237045,
+          "pc": "0x5eb",
+          "address": "0x1fa6",
+          "value": 64
+        },
+        {
+          "video_step": 8,
+          "reference_cycle": 263940,
+          "pc": "0x6a6",
+          "address": "0x1ffc",
+          "value": 193
+        },
+        {
+          "video_step": 111,
+          "reference_cycle": 69555,
+          "pc": "0x425",
+          "address": "0x1f86",
+          "value": 0
+        },
+        {
+          "video_step": 114,
+          "reference_cycle": 214935,
+          "pc": "0x660",
+          "address": "0x1fa6",
+          "value": 0
+        },
+        {
+          "video_step": 114,
+          "reference_cycle": 218475,
+          "pc": "0x6f8",
+          "address": "0x1ffc",
+          "value": 0
+        }
+      ]
+    }
+  ],
+  "totals": {
+    "encoded_bytes": 28510,
+    "decoded_samples": 57020,
+    "ordered_dac_values": 41345,
+    "dual_8bit_clamps": 476,
+    "bank_reads": 31799,
+    "value_mismatches": 0
+  },
+  "clock_basis": {
+    "reference_master_cycles_per_ntsc_video_frame": 896040,
+    "event_time_point": "Reference handler invocation, not a claimed real chip pin edge",
+    "bus_formula": "M68k += floor((Z80.cycles % 7 + 72)/7)*7; Z80 +=45. This is the pinned core empirical model."
+  },
+  "independent_cadence_implemented": false,
+  "ym2612_dac_filter_resampler_implemented": false,
+  "analyzer_sha256": "69968ba4de4e9d881f62fa2fafc87f5cd6fcb432018cb5fc744b0eaaf5d3b695"
+}

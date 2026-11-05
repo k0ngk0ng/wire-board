@@ -1,0 +1,9 @@
+{
+  "recorded_at_utc": "2026-11-05T13:25:33.705825+00:00",
+  "scope": "Metadata-only after successfulroot2; all native TS assertions and production unchanged",
+  "before_checker_sha256": "927d37d19f2ac087e5fec32fe16a1621b7dddffb60a4da44c79414d129d2e46d",
+  "after_checker_sha256": "8075db0b17e75b970876a0790d9235bd52e1d553e45f1c4b3de038b6b0536424",
+  "old_checker": "checker-before-final-source-binding.py.txt",
+  "reason": "Bind newly created platform controller explicitly and record URL/media cleanup after actual hidden/dispose, rather than only the earlier pre-hidden snapshot.",
+  "harness_sha256": "b8ed2b86dfbc82df14a42b6161d2a2a4d0fe8b0194f1215f4ad672eaf4e19304"
+}

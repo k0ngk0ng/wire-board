@@ -1,0 +1,46 @@
+{
+  "error": "ReferenceError: Cannot access 'start' before initialization",
+  "events": [
+    {
+      "at": 164.19999980926514,
+      "case": "",
+      "kind": "play-call",
+      "readyState": 0,
+      "time": 0
+    },
+    {
+      "at": 176.5,
+      "case": "",
+      "kind": "waiting",
+      "readyState": 0,
+      "time": 0
+    },
+    {
+      "at": 179.30000019073486,
+      "case": "",
+      "kind": "loadedmetadata",
+      "readyState": 1,
+      "time": 0
+    },
+    {
+      "at": 250,
+      "case": "",
+      "kind": "playing",
+      "readyState": 4,
+      "time": 0.000221
+    },
+    {
+      "at": 250.10000038146973,
+      "case": "",
+      "kind": "play-resolved",
+      "readyState": 4,
+      "time": 0.00025
+    }
+  ],
+  "results": [
+    {
+      "case": "failure",
+      "error": "ReferenceError: Cannot access 'start' before initialization"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "scope": "Stream encoder owner only: closed standaloneMSE profiles/tmp and invalid decoder partialPCM",
+  "created_at_utc": "2026-11-05T13:11:22.608685+00:00",
+  "paths": [
+    {
+      "path": ".local/md-yuyuhakusho/audio-encoder-plan/mse-go-e2e/profile",
+      "bytes": 11391145
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-encoder-plan/mse-go-e2e/tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-encoder-plan/mse-small-e2e/profile",
+      "bytes": 11456738
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-encoder-plan/mse-small-e2e/tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-encoder-plan/edges/crc8.pcm",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-encoder-plan/edges/crc16.pcm",
+      "bytes": 0
+    }
+  ],
+  "total_bytes_removed": 22847883,
+  "preserved": [
+    "AllGo output/init/media fragments and percase manifests for platformowner",
+    "CanonicalPCM/decoded positive outputs and frozen tests/red/final evidence",
+    "Standalone nativeMSE recordings and observations",
+    "Existingmusic/finite assets and otherowners active profiles/cache"
+  ]
+}

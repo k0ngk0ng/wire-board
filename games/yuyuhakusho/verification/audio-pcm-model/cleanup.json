@@ -1,0 +1,38 @@
+{
+  "cleaned_at_utc": "2026-11-05T13:25:50.951169+00:00",
+  "scope": "Only this PCM model owner repeat native capture/export, empty frontend folders and private clang temporary/cache folders",
+  "paths": [
+    {
+      "path": ".local/md-yuyuhakusho/audio-pcm-model-repeat",
+      "bytes": 11334818
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-pcm-model-export-repeat",
+      "bytes": 1116820
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-pcm-model-first/original",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-pcm-model-first/observed",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-pcm-model-tools/clang-cache",
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-pcm-model-tools/tmp",
+      "bytes": 0
+    }
+  ],
+  "total_bytes_removed": 12451638,
+  "preserved": [
+    "Canonical original/observed PCM and event/operand/bank traces",
+    "New portable mother-table/native value fixture and all actual red/final logs",
+    "Passive observer source and working private dylib for future DSP layer",
+    "Original ROM/core/media, existing audio modules and all other owners files"
+  ],
+  "tool_environment_note": "Go test/vet/env/wasm explicitly use workspace directories. Two PCM gofmt invocations and two prior arbitration gofmt invocations in this child sequence omitted TEST_TELEMETRY_DIR; Go1.26 gofmt also calls telemetry counter.Open and may have used default user counter cache. No new external counter files were observed/verified, no external files were inspected or modified for cleanup, and this child never invoked go telemetry or changed global mode. All later Go tools including gofmt must use workspace TEST_TELEMETRY_DIR."
+}

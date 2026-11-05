@@ -1,0 +1,167 @@
+{
+  "pass": true,
+  "scope": "Minimum/maximum legal blocks and independent CRC/sample-timeline corruption rejection",
+  "roundtrip_cases": [
+    {
+      "environment": "native",
+      "label": "minimum",
+      "manifest": ".local/md-yuyuhakusho/audio-encoder-plan/edges/native/minimum/manifest.json",
+      "manifest_sha256": "2f595fd6a46b837c626dd8c14ebce8b1a4addc7f80d96cc8a385db08f7b3a74a",
+      "pass": true,
+      "joined_sha256": "492addc85133857d3e7bffa5a2a979525539dfa7eee316ad337c4770eb995ac6",
+      "decoded_pcm_sha256": "4d7326408c51c54eaba745648d68a5176eac25fd8396bbb39a3bc2267b4c8adb",
+      "packet_count": 4097,
+      "samples": 65537,
+      "decode_command": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-nostdin",
+        "-v",
+        "error",
+        "-err_detect",
+        "crccheck+explode",
+        "-i",
+        "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/audio-encoder-plan/edges/native/minimum/joined.mp4",
+        "-map",
+        "0:a:0",
+        "-c:a",
+        "pcm_s16le",
+        "-f",
+        "s16le",
+        "-y",
+        "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/audio-encoder-plan/edges/native/minimum/decoded.pcm"
+      ]
+    },
+    {
+      "environment": "native",
+      "label": "maximum",
+      "manifest": ".local/md-yuyuhakusho/audio-encoder-plan/edges/native/maximum/manifest.json",
+      "manifest_sha256": "876ee0ebbd200c6392e52738b04790b544f8b49ec471394e217ec82e19468684",
+      "pass": true,
+      "joined_sha256": "bee2cbb144639d133128b530b4965a2bafc0b21de7c635d78df607cb29ea5920",
+      "decoded_pcm_sha256": "4d7326408c51c54eaba745648d68a5176eac25fd8396bbb39a3bc2267b4c8adb",
+      "packet_count": 2,
+      "samples": 65537,
+      "decode_command": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-nostdin",
+        "-v",
+        "error",
+        "-err_detect",
+        "crccheck+explode",
+        "-i",
+        "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/audio-encoder-plan/edges/native/maximum/joined.mp4",
+        "-map",
+        "0:a:0",
+        "-c:a",
+        "pcm_s16le",
+        "-f",
+        "s16le",
+        "-y",
+        "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/audio-encoder-plan/edges/native/maximum/decoded.pcm"
+      ]
+    },
+    {
+      "environment": "wasm",
+      "label": "minimum",
+      "manifest": ".local/md-yuyuhakusho/audio-encoder-plan/edges/wasm/minimum/manifest.json",
+      "manifest_sha256": "db9eb2f080ec8b3991a4562c41d35e6925ff0466f9512c9576da10a5b41fdccf",
+      "pass": true,
+      "joined_sha256": "492addc85133857d3e7bffa5a2a979525539dfa7eee316ad337c4770eb995ac6",
+      "decoded_pcm_sha256": "4d7326408c51c54eaba745648d68a5176eac25fd8396bbb39a3bc2267b4c8adb",
+      "packet_count": 4097,
+      "samples": 65537,
+      "decode_command": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-nostdin",
+        "-v",
+        "error",
+        "-err_detect",
+        "crccheck+explode",
+        "-i",
+        "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/audio-encoder-plan/edges/wasm/minimum/joined.mp4",
+        "-map",
+        "0:a:0",
+        "-c:a",
+        "pcm_s16le",
+        "-f",
+        "s16le",
+        "-y",
+        "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/audio-encoder-plan/edges/wasm/minimum/decoded.pcm"
+      ]
+    },
+    {
+      "environment": "wasm",
+      "label": "maximum",
+      "manifest": ".local/md-yuyuhakusho/audio-encoder-plan/edges/wasm/maximum/manifest.json",
+      "manifest_sha256": "113735e90a3bc589012f02b4c48f286af65142a03b52478ed543a4a64fac15e0",
+      "pass": true,
+      "joined_sha256": "bee2cbb144639d133128b530b4965a2bafc0b21de7c635d78df607cb29ea5920",
+      "decoded_pcm_sha256": "4d7326408c51c54eaba745648d68a5176eac25fd8396bbb39a3bc2267b4c8adb",
+      "packet_count": 2,
+      "samples": 65537,
+      "decode_command": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-nostdin",
+        "-v",
+        "error",
+        "-err_detect",
+        "crccheck+explode",
+        "-i",
+        "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/audio-encoder-plan/edges/wasm/maximum/joined.mp4",
+        "-map",
+        "0:a:0",
+        "-c:a",
+        "pcm_s16le",
+        "-f",
+        "s16le",
+        "-y",
+        "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/audio-encoder-plan/edges/wasm/maximum/decoded.pcm"
+      ]
+    }
+  ],
+  "negative_checks": [
+    {
+      "mode": "crc8",
+      "rejected": true,
+      "exit_code": 183,
+      "log": ".local/md-yuyuhakusho/audio-encoder-plan/edges/crc8-rejection.txt",
+      "sha256": "23f203b6d538325cc2707f6def9c7c88a01e1683e87ba8a6087eb8ca1d33599f"
+    },
+    {
+      "mode": "crc16",
+      "rejected": true,
+      "exit_code": 183,
+      "log": ".local/md-yuyuhakusho/audio-encoder-plan/edges/crc16-rejection.txt",
+      "sha256": "0f5b0c879878f84772d2e40419d35ac9bc0912148a5fde4acceaae37c53d1f06"
+    },
+    {
+      "mode": "decode-time",
+      "rejected": true,
+      "timeline_mismatches": [
+        {
+          "packet": 0,
+          "expected": 0,
+          "actual": 1
+        },
+        {
+          "packet": 4,
+          "expected": 4097,
+          "actual": 4096
+        }
+      ]
+    },
+    {
+      "mode": "duration",
+      "rejected": true,
+      "timeline_mismatches": [
+        {
+          "packet": 4,
+          "expected": 4097,
+          "actual": 4096
+        }
+      ]
+    }
+  ],
+  "source_sha256": "68765002dfe872f4c9fbec818c7381e4dad46bfadef76bee573d815ba0a6974b",
+  "no_runtime_external_encoder": true
+}

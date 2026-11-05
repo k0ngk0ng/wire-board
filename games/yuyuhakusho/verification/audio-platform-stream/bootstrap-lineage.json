@@ -1,0 +1,60 @@
+{
+  "recorded_at_utc": "2026-11-05T13:17:39.013301+00:00",
+  "scope": "Only lifecycle case bootstrap fixture; production and main low-ahead assertions unchanged",
+  "before_harness_sha256": "01185939c8668e3372a18417b072bd675abac91b5907da86b533e98b65708ff9",
+  "after_harness_sha256": "b8ed2b86dfbc82df14a42b6161d2a2a4d0fe8b0194f1215f4ad672eaf4e19304",
+  "previous_harness": "harness-before-measured-bootstrap.ts.txt",
+  "preserved_actual_failure": "restored-root1/failure-state.json",
+  "reason": "An arbitrary8small segments gives8192samples=.185758s, below observed native MSE startup. Incrementally supply only within the same .26s bound until actual currentTime advances, rather than ending input at8 or awaiting play before further appends.",
+  "actual_probe": "startup-probe/result.json",
+  "actual_probe_sha256": "7247940218f0033f5220c0db58a988ebd18c28c82c4a841e87953601699fa05d",
+  "actual_startup": [
+    {
+      "case": "small-bulk-none",
+      "accepted_samples_at_playing": 9216,
+      "buffered": [
+        [
+          0,
+          0.208978
+        ]
+      ]
+    },
+    {
+      "case": "small-bulk-auto",
+      "accepted_samples_at_playing": 9216,
+      "buffered": [
+        [
+          0,
+          0.208978
+        ]
+      ]
+    },
+    {
+      "case": "default-bulk-none",
+      "accepted_samples_at_playing": 12288,
+      "buffered": [
+        [
+          0,
+          0.278638
+        ]
+      ]
+    },
+    {
+      "case": "default-bulk-auto",
+      "accepted_samples_at_playing": 12288,
+      "buffered": [
+        [
+          0,
+          0.278638
+        ]
+      ]
+    }
+  ],
+  "main_target_ahead_seconds": 0.26,
+  "main_configured_forward_bound_seconds": 0.5,
+  "production_source_sha256": {
+    "web/src/audio-stream.ts": "298f42cf2d04456b11626725fd8251476c14142341b1349f1b3162b4166723ce",
+    "web/src/audio.ts": "83945c4668d6ed15f6befda3a19222e9c52b20de4ff0e4c247b6e8070117784e",
+    "web/src/game-api/module.ts": "953aa857c17979d80a2761b4b0d6a943950d857519cec222bd6a744471a28d83"
+  }
+}

@@ -1,0 +1,9 @@
+{"mode": "original", "case": "single-short", "frames": 80, "observed_events": 0}
+{"mode": "original", "case": "pair-short", "frames": 90, "observed_events": 0}
+{"mode": "original", "case": "single-mode", "frames": 90, "observed_events": 0}
+{"mode": "original", "case": "pair-long", "frames": 160, "observed_events": 0}
+{"mode": "observed", "case": "single-short", "frames": 80, "observed_events": 23299}
+{"mode": "observed", "case": "pair-short", "frames": 90, "observed_events": 28679}
+{"mode": "observed", "case": "single-mode", "frames": 90, "observed_events": 50018}
+{"mode": "observed", "case": "pair-long", "frames": 160, "observed_events": 103223}
+{"pass": true, "cases": 4, "events": 205219, "decoder_pairs": 28510}

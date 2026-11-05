@@ -53,6 +53,9 @@ export type GameAudioPort = {
     options: { playbackID: string; startOffset?: number },
   ) => Promise<boolean>;
   stopEffect: (lane: string, expectedPlaybackID?: string) => void;
+  openStream: (
+    options: import("./audio-stream").GameAudioStreamConfig,
+  ) => import("./audio-stream").GameAudioStreamHandle | undefined;
   stop: () => void;
   // Pause preserves this owner's media positions; stop/mute/cleanup cancels them.
   pause: () => void;

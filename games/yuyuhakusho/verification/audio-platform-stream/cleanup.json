@@ -1,0 +1,16 @@
+{
+  "created_at_utc": "2026-11-05T13:33:19.312730+00:00",
+  "scope": "Only this startup observer closed private profile/build; shared platform-stream profile left for Root actor integration",
+  "paths": [
+    {
+      "path": ".local/md-yuyuhakusho/audio-stream-startup",
+      "bytes": 11106460
+    }
+  ],
+  "total_bytes_removed": 11106460,
+  "kept": [
+    "All raw startup/probe/TDZ/red/final evidence",
+    "Go codec fixture and existing original PCM assets",
+    "Root platform-stream profile/build for possible actor integration"
+  ]
+}

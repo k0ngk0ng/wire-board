@@ -1,0 +1,44 @@
+{
+  "appends": [],
+  "checks": [],
+  "clocks": [],
+  "complete": false,
+  "crossings": [],
+  "error": "Error: platform openStream method is unavailable",
+  "events": [
+    {
+      "at": 188.3000001907349,
+      "id": 0,
+      "kind": "waiting",
+      "phase": "setup",
+      "src": "data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQIAAACAgA==",
+      "time": 0
+    },
+    {
+      "at": 188.3000001907349,
+      "id": 0,
+      "kind": "loadstart",
+      "phase": "setup",
+      "src": "data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQIAAACAgA==",
+      "time": 0
+    },
+    {
+      "at": 189.60000038146973,
+      "id": 0,
+      "kind": "loadedmetadata",
+      "phase": "setup",
+      "src": "data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQIAAACAgA==",
+      "time": 0
+    },
+    {
+      "at": 254.3000001907349,
+      "id": 0,
+      "kind": "playing",
+      "phase": "setup",
+      "src": "data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQIAAACAgA==",
+      "time": 0.000116
+    }
+  ],
+  "removals": [],
+  "urls": []
+}

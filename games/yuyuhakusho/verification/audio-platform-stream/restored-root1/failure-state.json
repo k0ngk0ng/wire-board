@@ -1,0 +1,183 @@
+{
+  "checks": [
+    {
+      "kind": "opening-replacement-and-old-epoch",
+      "state": {
+        "acceptedEndSample": 0,
+        "buffered": [],
+        "currentTime": 0,
+        "maxForwardSamples": 22050,
+        "nextSeq": 1,
+        "pendingBytes": 0,
+        "phase": "ready",
+        "playbackID": "opening-new",
+        "retainBackSamples": 11025,
+        "sampleRate": 44100,
+        "updating": false
+      }
+    },
+    {
+      "kind": "copied-bytes-sequence-and-single-flight",
+      "nativeCalls": 3,
+      "state": {
+        "acceptedEndSample": 2048,
+        "buffered": [
+          [
+            0,
+            0.046438
+          ]
+        ],
+        "currentTime": 0,
+        "maxForwardSamples": 22050,
+        "nextSeq": 3,
+        "pendingBytes": 0,
+        "phase": "ready",
+        "playbackID": "owned-init",
+        "retainBackSamples": 11025,
+        "sampleRate": 44100,
+        "updating": false
+      }
+    }
+  ],
+  "error": "Error: native stream predicate timed out",
+  "events": [
+    {
+      "at": 193.8000001907349,
+      "id": 0,
+      "kind": "waiting",
+      "phase": "setup",
+      "src": "data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQIAAACAgA==",
+      "time": 0
+    },
+    {
+      "at": 193.8000001907349,
+      "id": 0,
+      "kind": "loadstart",
+      "phase": "setup",
+      "src": "data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQIAAACAgA==",
+      "time": 0
+    },
+    {
+      "at": 195.60000038146973,
+      "id": 0,
+      "kind": "loadedmetadata",
+      "phase": "setup",
+      "src": "data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQIAAACAgA==",
+      "time": 0
+    },
+    {
+      "at": 261.19999980926514,
+      "id": 0,
+      "kind": "playing",
+      "phase": "setup",
+      "src": "data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQIAAACAgA==",
+      "time": 9.2e-05
+    },
+    {
+      "at": 268.19999980926514,
+      "id": 2,
+      "kind": "loadstart",
+      "phase": "opening-lifecycle",
+      "src": "blob:http://127.0.0.1:51514/e56b8d9c-ed69-4a44-a21f-7974f727f854",
+      "time": 0
+    },
+    {
+      "at": 269.8999996185303,
+      "id": 3,
+      "kind": "loadstart",
+      "phase": "append-contract",
+      "src": "blob:http://127.0.0.1:51514/162a9f98-d735-45e8-bf59-f6a8126ecd02",
+      "time": 0
+    },
+    {
+      "at": 270.5,
+      "id": 3,
+      "kind": "loadedmetadata",
+      "phase": "append-contract",
+      "src": "blob:http://127.0.0.1:51514/162a9f98-d735-45e8-bf59-f6a8126ecd02",
+      "time": 0
+    },
+    {
+      "at": 270.8999996185303,
+      "id": 3,
+      "kind": "waiting",
+      "phase": "append-contract",
+      "src": "blob:http://127.0.0.1:51514/162a9f98-d735-45e8-bf59-f6a8126ecd02",
+      "time": 0
+    },
+    {
+      "at": 271.6000003814697,
+      "id": 4,
+      "kind": "loadstart",
+      "phase": "pause-stop",
+      "src": "blob:http://127.0.0.1:51514/50c56be7-d33a-4298-9dbe-36ec8f0698e8",
+      "time": 0
+    },
+    {
+      "at": 271.69999980926514,
+      "id": 4,
+      "kind": "loadedmetadata",
+      "phase": "pause-stop",
+      "src": "blob:http://127.0.0.1:51514/50c56be7-d33a-4298-9dbe-36ec8f0698e8",
+      "status": {
+        "acceptedEndSample": 0,
+        "buffered": [
+          [
+            0,
+            0.023218
+          ]
+        ],
+        "currentTime": 0,
+        "maxForwardSamples": 22050,
+        "nextSeq": 1,
+        "pendingBytes": 4275,
+        "phase": "ready",
+        "playbackID": "paused",
+        "retainBackSamples": 11025,
+        "sampleRate": 44100,
+        "updating": false
+      },
+      "time": 0
+    },
+    {
+      "at": 271.80000019073486,
+      "id": 4,
+      "kind": "waiting",
+      "phase": "pause-stop",
+      "src": "blob:http://127.0.0.1:51514/50c56be7-d33a-4298-9dbe-36ec8f0698e8",
+      "status": {
+        "acceptedEndSample": 1024,
+        "buffered": [
+          [
+            0,
+            0.023218
+          ]
+        ],
+        "currentTime": 0,
+        "maxForwardSamples": 22050,
+        "nextSeq": 2,
+        "pendingBytes": 4276,
+        "phase": "ready",
+        "playbackID": "paused",
+        "retainBackSamples": 11025,
+        "sampleRate": 44100,
+        "updating": true
+      },
+      "time": 0
+    }
+  ],
+  "hidden": false,
+  "status": {
+    "acceptedEndSample": 8192,
+    "buffered": [],
+    "currentTime": 0,
+    "maxForwardSamples": 22050,
+    "nextSeq": 9,
+    "pendingBytes": 0,
+    "phase": "stopped",
+    "playbackID": "paused",
+    "retainBackSamples": 11025,
+    "sampleRate": 44100,
+    "updating": false
+  }
+}
