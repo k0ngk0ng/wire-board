@@ -1,0 +1,20 @@
+{
+  "pass": true,
+  "exit_code": 0,
+  "elapsed_seconds": 3.4302063332870603,
+  "command": [
+    "go",
+    "test",
+    "-json",
+    "-count=1",
+    "-timeout=10m",
+    "-run",
+    "^TestResourceBridge",
+    "./games/yuyuhakusho/audio/chips"
+  ],
+  "sources": {
+    "games/yuyuhakusho/audio/pcmassets/descriptors.go": "27b6ea3226f62bf02913ad1a51304fbb065ba4e515f0897f3e411767d98ccfc0",
+    "games/yuyuhakusho/audio/resourcebridge/library.go": "c5f87f255c8559e43f9f9b24f8d749d248ed8ebf9892ab1d05003e1548b2e269"
+  },
+  "log_sha256": "6e9c16ebb9e3656ff8c1983bee33c85ff360820724107cecd606d228e4bea7ce"
+}

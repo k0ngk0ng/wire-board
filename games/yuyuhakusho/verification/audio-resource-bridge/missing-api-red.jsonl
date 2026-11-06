@@ -1,0 +1,7 @@
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/resourcebridge","Action":"build-output","Output":"# github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/resourcebridge","Action":"build-output","Output":"games/yuyuhakusho/audio/chips/resource_bridge_e2e_test.go:19:2: no required module provides package github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/resourcebridge; to add it:\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/resourcebridge","Action":"build-output","Output":"\tgo get github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/resourcebridge\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/resourcebridge","Action":"build-fail"}
+{"Time":"2026-11-06T08:49:55.225688+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips"}
+{"Time":"2026-11-06T08:49:55.225705+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips [setup failed]\n"}
+{"Time":"2026-11-06T08:49:55.225709+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips","Elapsed":0,"FailedBuild":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/resourcebridge"}

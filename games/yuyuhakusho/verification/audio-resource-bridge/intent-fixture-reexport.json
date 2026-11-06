@@ -1,0 +1,18 @@
+{
+  "pass": true,
+  "scope": "Deterministic literal extraction from unchanged42 native score traces; no new original timing or CPU capture",
+  "extractor_output": {
+    "cases": 42,
+    "counts": {
+      "dac": 9230,
+      "dac-pan": 2
+    },
+    "raw_bytes": 1411811,
+    "gzip_bytes": 37231,
+    "raw_sha256": "2e4b2854a7710426b635aa21fc4010e6e969cd7e2c83bf92a578398004b5dd66",
+    "gzip_sha256": "eff74dff52e4e2de6906106738e239b2c967272cf369e58010fa3cc5704a0110"
+  },
+  "byte_identical_to_frozen_fixture": true,
+  "restored_json_sha256": "2e4b2854a7710426b635aa21fc4010e6e969cd7e2c83bf92a578398004b5dd66",
+  "removed_only_own_second_identical_copy_bytes": 37231
+}

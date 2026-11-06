@@ -1,0 +1,32 @@
+{
+  "scope": "Existing production data payloads, not prerecorded WAV; no OSS upload performed",
+  "lossless_roundtrip_verified": true,
+  "files": [
+    {
+      "path": "games/yuyuhakusho/data/audio-score.json.gz",
+      "compression": "gzip",
+      "packed_bytes": 196368,
+      "raw_bytes": 3159957,
+      "packed_sha256": "deaf3a70eac46c199335445d186f77d51f185bdaad4d95443d09b2f1d7054d71",
+      "restored_sha256": "735d012d3d3140e76f8f756f0ca757bdc4b8deeb5a66750dd4610e41e06af830"
+    },
+    {
+      "path": "games/yuyuhakusho/data/audio-pcm-payloads.json.gz",
+      "compression": "gzip",
+      "packed_bytes": 415208,
+      "raw_bytes": 600207,
+      "packed_sha256": "dbfa09e9893dcd9c661ef085f8d5215a202c502ae4277c6b9f9992a3384827de",
+      "restored_sha256": "a696dab033d0075a15a70da7d88345c6b32c431ebd1ff0661e29bdee2f3c0534"
+    },
+    {
+      "path": "games/yuyuhakusho/data/audio-score-parser-work.json.gz",
+      "compression": "gzip",
+      "packed_bytes": 199277,
+      "raw_bytes": 13015108,
+      "packed_sha256": "96f8044395167f4227b2c45e7ee66440987d8d49d3f7f52b40ca437930eedb43",
+      "restored_sha256": "c62699bd1a2efded0e9194d00ed37ebccdd5069fa614501e5ee53127d338b463"
+    }
+  ],
+  "total_packed_bytes": 810853,
+  "total_raw_bytes": 16775272
+}

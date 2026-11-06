@@ -1,0 +1,20 @@
+{
+  "test_first": true,
+  "at_utc": "2026-11-06T00:49:55.171471+00:00",
+  "production_exists": false,
+  "enumerator_exists": false,
+  "files": {
+    "games/yuyuhakusho/audio/chips/resource_bridge_e2e_test.go": "2aaf7987f0d8a56adbb6504a5829c9f48b327fe7e28005fe7265ff42aad310d1",
+    "docs/research/md-yuyuhakusho/AUDIO_RESOURCE_BRIDGE_FAILURES.md": "305aafdc22ff943a6598a50796253bd7af77e745bf5ef34d814d310174aa8b42",
+    "scripts/yuyuhakusho/extract_pcm_bridge_intents.py": "1876ea3ceef5c7cc796541f536a30942f8a712b77fd9798eeabba1cfb277b5c8",
+    "games/yuyuhakusho/verification/audio-resource-bridge/native-pcm-intents.json.gz": "eff74dff52e4e2de6906106738e239b2c967272cf369e58010fa3cc5704a0110",
+    "games/yuyuhakusho/data/audio-score.json.gz": "deaf3a70eac46c199335445d186f77d51f185bdaad4d95443d09b2f1d7054d71",
+    "games/yuyuhakusho/data/audio-pcm-payloads.json.gz": "dbfa09e9893dcd9c661ef085f8d5215a202c502ae4277c6b9f9992a3384827de",
+    "games/yuyuhakusho/data/audio-score-parser-work.json.gz": "96f8044395167f4227b2c45e7ee66440987d8d49d3f7f52b40ca437930eedb43",
+    "games/yuyuhakusho/audio/pcmassets/testdata/expected.json": "1e0546425b68e7779f8d77f1aacab47d9fc70b056145dfef7a5560268792c04e",
+    "games/yuyuhakusho/audio/score/testdata/original-index.json": "1972cf3e2a31ca1cfb30d0b25a227ad4d3ac662d072cdbd92fdc1ad177c3124a",
+    "games/yuyuhakusho/audio/pcmcommands/testdata/original-command-ports-v3.json.gz": "e435f0f778088e0bb133082f82720c8ca7ed10c7d13be388faea837d76fff995",
+    "games/yuyuhakusho/verification/fmpsg-pcm-integration/fmpsg-pcm-integration-native.json.gz": "692b9cd82914dedca8fa3017e30c55280fb255759932deb7a087d607a59b6fef",
+    "games/yuyuhakusho/engine/testdata/pcm-arbitration-private.json.gz": "c7c3bab06315326ace92f5fea93ff893547ba21cac5d89b4124ff6c9b3737f4d"
+  }
+}
