@@ -1,0 +1,13 @@
+{
+  "test_first": true,
+  "production_exists": false,
+  "production_files": [
+    "games/yuyuhakusho/audio/scoreclock/running_tick.go"
+  ],
+  "files": {
+    "games/yuyuhakusho/audio/scoreclock/running_tick_e2e_test.go": "d7556fbd7abe2b053cd217b83cb6f57ea5bab7d46b90a6dfcbf5339ffa9a147e",
+    "docs/research/md-yuyuhakusho/SCORE_CLOCK_RUNNING_TICK_FAILURES.md": "acb89244508d82fe2b6d176ea8adfe586f3480644a0fa6df51dbb66d9325cfcd",
+    "scripts/yuyuhakusho/score-clock-running-tick-capture.py": "3104803b960a526cb1f8ea1eb04a0098da6d90b5e7434d91d9dbdad0965e07f2",
+    "games/yuyuhakusho/verification/score-clock-running-tick/native-running-tick-full.json.gz": "bcb692e0e4530ce7cfc1038406be267d18d017392406d6f75204e375167bded0"
+  }
+}

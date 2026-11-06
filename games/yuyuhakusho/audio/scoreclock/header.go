@@ -48,6 +48,11 @@ func CallControlIdle(clock Clock, work ControlWork, limits Limits) (Clock, error
 	if err != nil {
 		return Clock{}, err
 	}
+	return controlIdleBody(s, work)
+}
+
+func controlIdleBody(s *service, work ControlWork) (Clock, error) {
+	var err error
 	if err = s.spend(16); err != nil {
 		return Clock{}, err
 	} // compare auxiliary mode
@@ -100,6 +105,11 @@ func CallTempo(clock Clock, work TempoWork, limits Limits) (Clock, error) {
 	if err != nil {
 		return Clock{}, err
 	}
+	return tempoBody(s, work)
+}
+
+func tempoBody(s *service, work TempoWork) (Clock, error) {
+	var err error
 	if err = s.spend(12); err != nil {
 		return Clock{}, err
 	} // test enabled period
@@ -178,6 +188,11 @@ func CallFadeIdle(clock Clock, fadeSteps uint8, limits Limits) (Clock, error) {
 	if err != nil {
 		return Clock{}, err
 	}
+	return fadeIdleBody(s)
+}
+
+func fadeIdleBody(s *service) (Clock, error) {
+	var err error
 	if err = s.spend(4); err != nil {
 		return Clock{}, err
 	} // temporary clear

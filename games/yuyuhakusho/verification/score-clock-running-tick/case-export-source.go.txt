@@ -1,0 +1,20 @@
+package main
+import("bytes";"compress/gzip";"encoding/json";"fmt";"io";"os"
+"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/resourcebridge"
+"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score")
+func load(path string)[]byte{raw,e:=os.ReadFile(path);if e!=nil{panic(e)};z,e:=gzip.NewReader(bytes.NewReader(raw));if e!=nil{panic(e)};defer z.Close();raw,e=io.ReadAll(z);if e!=nil{panic(e)};return raw}
+type row struct {ID string `json:"id"`;Before score.State `json:"before"`}
+func main(){
+ if len(os.Args)!=2{panic("new output required")};if _,e:=os.Stat(os.Args[1]);!os.IsNotExist(e){panic("preserve prior output")}
+ asset:=func(name string)[]byte{return load("games/yuyuhakusho/data/"+name+".json.gz")};raw:=asset("audio-score");l,e:=resourcebridge.DecodeWithEnvelopeWork(raw,asset("audio-pcm-payloads"),asset("audio-score-parser-work"),asset("audio-score-instrument-work"),asset("audio-score-envelope-work"));if e!=nil{panic(e)}
+ var notes struct{Cases []struct{Input struct{ID string;First bool `json:"first_owner"`;Slot int;Before score.State}}};if e=json.Unmarshal(load("games/yuyuhakusho/verification/score-clock-note-voice/native-note-voice-canonical-aux.json.gz"),&notes);e!=nil{panic(e)}
+ rows:=[]row{{ID:"empty"}};for _,r:=range notes.Cases{if r.Input.First||r.Input.Slot>=10{rows=append(rows,row{ID:"note-"+r.Input.ID,Before:r.Input.Before})}}
+ var stops struct{Cases []struct{Input struct{ID string;Before score.State}}};if e=json.Unmarshal(load("games/yuyuhakusho/verification/score-clock-track-end/native-track-end-full.json.gz"),&stops);e!=nil{panic(e)};for _,r:=range stops.Cases{rows=append(rows,row{ID:r.Input.ID,Before:r.Input.Before})}
+ var catalog struct{Scores []struct{ID uint8}};if e=json.Unmarshal(raw,&catalog);e!=nil{panic(e)}
+ for _,s:=range catalog.Scores{d,e:=score.New(l.Catalog());if e!=nil{panic(e)};if _,e=d.Advance(score.Input{SoundID:s.ID});e!=nil{panic(e)};state:=d.Snapshot();state.TempoPeriod,state.TempoRemaining=0,0;rows=append(rows,row{ID:fmt.Sprintf("initialized-%02x",s.ID),Before:state})}
+ d,e:=score.New(l.Catalog());if e!=nil{panic(e)};if _,e=d.Advance(score.Input{SoundID:0x82});e!=nil{panic(e)};base:=d.Snapshot()
+ for _,remaining:=range []uint8{2,0,255}{s:=base;for i:=range s.Voices{s.Voices[i].Active=false};s.TempoPeriod,s.TempoRemaining=0,0;s.Voices[0].Active=true;s.Voices[0].NoteWait=remaining;rows=append(rows,row{ID:fmt.Sprintf("dac-held-%d",remaining),Before:s})}
+ for _,mask:=range []uint16{0,1,0x155,0x2aa,0x3bf}{for _,remaining:=range []uint8{1,2}{s:=base;s.TempoPeriod,s.TempoRemaining=7,remaining;for i:=range s.Voices{s.Voices[i].Active=i<10&&mask&(1<<i)!=0;if s.Voices[i].Active&&!s.Voices[i].Owned{s.Voices[i].Active=false};if s.Voices[i].Active{s.Voices[i].NoteWait=2}};rows=append(rows,row{ID:fmt.Sprintf("tempo-%03x-r%d",mask,remaining),Before:s})}}
+ for _,r:=range rows{if _,e=score.Restore(l.Catalog(),r.Before);e!=nil{panic(e)}}
+ f,e:=os.OpenFile(os.Args[1],os.O_CREATE|os.O_EXCL|os.O_WRONLY,0600);if e!=nil{panic(e)};defer f.Close();z:=gzip.NewWriter(f);if e=json.NewEncoder(z).Encode(struct{Cases []row `json:"cases"`}{rows});e!=nil{panic(e)};if e=z.Close();e!=nil{panic(e)};fmt.Println("running tick profiles",len(rows))
+}

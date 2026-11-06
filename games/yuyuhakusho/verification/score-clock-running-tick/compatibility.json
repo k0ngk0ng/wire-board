@@ -1,0 +1,24 @@
+{
+  "existing_files": {
+    "header.go": {
+      "before_sha256": "d2f70897622c4ed801e2ad5ac2d35d024335e1347057461cbed9abbcd5efb9e9",
+      "current_sha256": "62cf3fdac6cf5e4c3f0f8e445f51fcf630bcc9f85bf9993867266a46c76883ac"
+    },
+    "voice.go": {
+      "before_sha256": "f887ef736b4fb01b505028dea0da9c4c5fa81bd58c046d3c7d24ffd876d8a421",
+      "current_sha256": "3f4d7020d518a58f4e43a8841c00a64e55e4ebed86cec12ae9b84a48a08de4ad"
+    },
+    "held_voice.go": {
+      "before_sha256": "21609515c3bd01b18fa0e640e13e6e77e111fb38562bee44ee52a6fdbe48cd18",
+      "current_sha256": "a5bbb42acebd39a0fda89c9cc39db625c77906f0b72da85f769125f7117e5474"
+    },
+    "note_voice.go": {
+      "before_sha256": "fe044d6cc92819cfb24081ed93ec9f70bbaf755b6e0eca99430f413d1ae1fc88",
+      "current_sha256": "fb754bf1a4d83f76cc97eaa413e3fc6cd3c9ffd8e411c5a9fdd70479f5d2a80a"
+    }
+  },
+  "root_and_score_rule_semantics_unchanged": true,
+  "frozen_tests_oracles_changed": false,
+  "first_implementation_corrections": "Queue TST.L16 and ADDA immediate stride12; original raw costs retained in oracle",
+  "second_new_e2e_records": 309
+}

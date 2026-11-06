@@ -2,7 +2,7 @@
 
 更新：2026-11-06。进度改用[待办清单](../../docs/research/md-yuyuhakusho/TODO.md)，按验收范围勾选。独立 worktree 为 `worktrees/yuyuhakusho`，分支为 `codex/yuyuhakusho`。全 11 人物／8 场地已有独立 Go／Wasm 玩法；游戏已注册到本地平台。逐连接输入增量、真实主机端到端与竞态正确性已验收；正式认证双人房间正常约 60 帧／秒，单端每次 TCP 写入延迟 120 ms 时慢端约 58 帧／秒。改键、虚拟手柄、320px 竖屏／740×360 横屏原生触摸、全屏及重连通过。完整对局音频继续完成；未上传资源、发布或部署。Main 仅按用户要求回馈即时游戏规范、补游戏规范和索引，其他游戏的未提交工作未覆盖。
 
-最新音频进展：统一实际声部入口已接通有限音轨终止、Root 唯一优先级／队列 effect 及被占用音乐声部的恢复。119 组原版终止调用的实际访问、时刻及 working State 投影一致；原生竞态与实际 Node/Wasm 各通过 113 个顶层测试、7,485 条记录，无跳过，见[终止与恢复验收](verification/score-clock-track-end/)。既有[新音符声部验收](verification/score-clock-note-voice/)和[连续声部验收](verification/score-clock-held-voice/)继续通过。完整 driver／Root、world IRQ、联合音频 checkpoint 与平台播放仍待完成。
+最新音频进展：初始 queue 为空、selected 为 FF、fade／pause／control 为 idle 的完整稳定运行拍已接通，串联 gate、header、tempo、18 个声部、终止恢复及 return，共用一个临时 clock／refresh／预算。307 组原版整拍 IO 与结束时刻一致；原生竞态与实际 Node/Wasm 各通过 115 个顶层测试、7,794 条记录，无跳过，见[稳定运行整拍验收](verification/score-clock-running-tick/)。既有声部与 Root 检查继续通过。待消费新请求、dispatch／header、非 idle fade／pause、world IRQ、联合音频 checkpoint 和平台播放仍待完成。
 
 ## 当前可运行范围
 
@@ -45,7 +45,7 @@
 
 ## 后续工作
 
-当前已完成项和剩余项统一维护在[待办清单](../../docs/research/md-yuyuhakusho/TODO.md)。下一项为完整 driver 外层扫描、dispatch／header 与 Root／world 请求消费，随后处理联合音频 checkpoint 和平台播放器。声部 body 与终止恢复按各自边界验收，实际对局音频仍需整场验证。
+当前已完成项和剩余项统一维护在[待办清单](../../docs/research/md-yuyuhakusho/TODO.md)。下一项为待消费新请求、dispatch／header 与非 idle fade／pause 的完整 Root 时序，随后处理 world IRQ、联合音频 checkpoint 和平台播放器。稳定运行拍按明确入口条件验收，实际对局音频仍需整场验证。
 
 其余赛制继续按平台最终拟开放范围研究。不可变资源与应用发布须在对应的人物／场地／模式、托管、PC／320 px 触屏及网络验收完成后进行。
 
