@@ -106,7 +106,7 @@ func (s *State) productionPlant(p *Plant) {
 	if base < s.Tick*TickMS-TickMS {
 		base = s.Tick * TickMS
 	}
-	p.ReadyMS = base + int64((2350+s.random(151))*10)
+	p.ReadyMS = base + s.productionIntervalMS(p.Kind)
 	p.ReadyAt = counterTick(p.ReadyMS)
 }
 

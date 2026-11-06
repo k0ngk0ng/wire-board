@@ -67,6 +67,21 @@ try {
   }
   assert.equal((await compare({ op: "step", id: "authority", ticks: 1000000 })).ok, false, "unbounded prediction accepted");
   assert.equal((await compare({ op: "load", id: "invalid", snapshot: {} })).ok, false, "invalid snapshot accepted");
+  if (process.env.PVZ_RUNTIME_BALANCE_REPLAY) {
+    const file = process.env.PVZ_RUNTIME_BALANCE_REPLAY;
+    const replay = JSON.parse(readFileSync(file, "utf8"));
+    assert.equal(replay.initial.rulesVersion, 3);
+    let balanced = await compare({ op: "load", id: "balanced", snapshot: replay.initial });
+    for (const item of replay.actions) {
+      if (balanced.state.tick < item.tick) balanced = await compare({ op: "step", id: "balanced", ticks: item.tick - balanced.state.tick });
+      balanced = await compare({ op: "apply", id: "balanced", actor: item.actor, action: item.action });
+      assert.equal(balanced.ok, true, "balanced replay action became illegal");
+    }
+    if (balanced.state.tick < replay.finalTick) balanced = await compare({ op: "step", id: "balanced", ticks: replay.finalTick - balanced.state.tick });
+    assert.equal(balanced.digest, replay.finalDigest, "balanced profile changed its complete recorded outcome");
+    report.balancedReplay = { file: path.relative(root, file), finalDigest: balanced.digest, actions: replay.actions.length };
+    assert.equal((await compare({ op: "drop", id: "balanced" })).ok, true);
+  }
   for (const id of ["authority", "recovered"]) assert.equal((await compare({ op: "drop", id })).ok, true);
   assert.equal((await compare({ op: "inspect", id: "authority" })).ok, false);
   report.passed = true;

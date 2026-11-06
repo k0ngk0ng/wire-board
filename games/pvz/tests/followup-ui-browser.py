@@ -104,7 +104,7 @@ try:
     attack.b('wait', '[data-pvz-board][data-ready=true]')
     wait(lambda: not defense.room().get('loading'))
     opening = defense.room()['game']['data']
-    assert opening['players'][0]['money'] == 300 and 'blover' in opening['players'][0]['deck'], opening['players'][0]
+    assert opening['players'][0]['money'] == 500 and 'blover' in opening['players'][0]['deck'], opening['players'][0]
     wait(lambda: attack.room()['game']['data']['phase'] == 'battle')
     locks = attack.js('Object.fromEntries(["balloon","digger","gargantuar"].map(k=>[k,document.querySelector(`[data-pvz-card=${k}]`).innerText]))')
     assert all('解锁' in text for text in locks.values()), locks

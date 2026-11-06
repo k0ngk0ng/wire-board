@@ -16,7 +16,20 @@ func UnlockSeconds(kind string) int {
 		return 0
 	}
 }
-func EnableProgression(s *State) { s.RulesVersion = 2; s.seedUnlocks() }
+
+// EnableProgression selects the current versus profile for a newly created
+// match. Restore never calls it, so a saved match keeps its original economy.
+func EnableProgression(s *State) {
+	s.RulesVersion = 3
+	for i := range s.Players {
+		s.Players[i].Deck = s.startingDeck(s.Players[i].Side)
+		if s.Players[i].Side == "plants" {
+			s.Players[i].Money = s.openingSun() / (len(s.Players) / 2)
+		}
+	}
+	s.NextSunTick = s.Tick + s.sunSupplyTicks()
+	s.seedUnlocks()
+}
 func (s *State) unlockAt(kind string) int64 {
 	if s.RulesVersion < 2 {
 		return 0
@@ -45,6 +58,18 @@ func (s *State) seedUnlocks() {
 }
 func CatalogFor(s State) Catalog {
 	c := GetCatalog()
+	if s.RulesVersion >= 3 {
+		for i := range c.Plants {
+			switch c.Plants[i].Kind {
+			case "sunflower":
+				c.Plants[i].Description = "种下后 3～6 秒首次产出 25 阳光，此后每 18～20 秒产出；收益归种植者。"
+			case "twinsunflower":
+				c.Plants[i].Description = "升级后 3～6 秒首次产出双份阳光，此后每 18～20 秒产出 50 阳光；收益归种植者。"
+			case "sunshroom":
+				c.Plants[i].Description = "种下后 3～6 秒首次产出阳光，此后每 18～20 秒产出；幼体每次 15，长大后每次 25。"
+			}
+		}
+	}
 	if s.RulesVersion >= 2 {
 		for i := range c.Zombies {
 			c.Zombies[i].UnlockAfterSeconds = UnlockSeconds(c.Zombies[i].Kind)

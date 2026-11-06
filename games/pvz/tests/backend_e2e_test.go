@@ -129,9 +129,10 @@ func TestPVZBackendConfigurationAndWallets(t *testing.T) {
 			t.Fatalf("team%d initial economy %d != %d", side, solo, total)
 		}
 	}
+	openingMoney := v.Players[0].Money
 	b.act(0, engine.Action{Type: "plant", Kind: "sunflower", Row: 0, Col: 0}, false)
 	v = b.view()
-	if v.Players[0].Money >= 300 || v.Players[1].Money != 250 || len(v.Plants) != 1 {
+	if v.Players[0].Money != openingMoney-50 || v.Players[1].Money != 250 || len(v.Plants) != 1 {
 		t.Fatal("wrong independent wallet debit")
 	}
 	before := v.Players[0].Money
