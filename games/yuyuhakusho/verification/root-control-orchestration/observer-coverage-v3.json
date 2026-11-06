@@ -1,0 +1,114 @@
+{
+  "coverage_route": "actual-byte-store",
+  "full_port_ledger_proven": false,
+  "missing_points": [
+    "38610",
+    "3869a",
+    "386a4",
+    "387de",
+    "387e8",
+    "3889a",
+    "3890c",
+    "39186",
+    "391a2"
+  ],
+  "pass": true,
+  "physical_filter_check": {
+    "path": "games/yuyuhakusho/verification/root-control-orchestration/physical-filter-v3.json",
+    "sha256": "36505a59e39257599fa3f02630e725ce06df4ec76292eb445ac33c51f369bc2b"
+  },
+  "physical_route_verified": true,
+  "scope": "Direct literal PSG byte stores in retained audio-loop-sequencer listing only; not all ROM/MMIO or event decoder completeness",
+  "sites": [
+    {
+      "address": 230928,
+      "hex": "38610",
+      "instruction": "move.b #-0x1,(0x00c00011).l",
+      "point_observed": false
+    },
+    {
+      "address": 231066,
+      "hex": "3869a",
+      "instruction": "move.b D0b,(0x00c00011).l",
+      "point_observed": false
+    },
+    {
+      "address": 231076,
+      "hex": "386a4",
+      "instruction": "move.b D0b,(0x00c00011).l",
+      "point_observed": false
+    },
+    {
+      "address": 231390,
+      "hex": "387de",
+      "instruction": "move.b D4b,(0x00c00011).l",
+      "point_observed": false
+    },
+    {
+      "address": 231400,
+      "hex": "387e8",
+      "instruction": "move.b D4b,(0x00c00011).l",
+      "point_observed": false
+    },
+    {
+      "address": 231578,
+      "hex": "3889a",
+      "instruction": "move.b (0x25,A0),(0x00c00011).l",
+      "point_observed": false
+    },
+    {
+      "address": 231692,
+      "hex": "3890c",
+      "instruction": "move.b (0x25,A5),(0x00c00011).l",
+      "point_observed": false
+    },
+    {
+      "address": 233862,
+      "hex": "39186",
+      "instruction": "move.b (0x25,A0),(0x00c00011).l",
+      "point_observed": false
+    },
+    {
+      "address": 233890,
+      "hex": "391a2",
+      "instruction": "move.b (-0x1,A4),(0x00c00011).l",
+      "point_observed": false
+    },
+    {
+      "address": 237766,
+      "hex": "3a0c6",
+      "instruction": "move.b D0b,(0x00c00011).l",
+      "point_observed": true
+    },
+    {
+      "address": 237772,
+      "hex": "3a0cc",
+      "instruction": "move.b D6b,(0x00c00011).l",
+      "point_observed": true
+    },
+    {
+      "address": 237888,
+      "hex": "3a140",
+      "instruction": "move.b D6b,(0x00c00011).l",
+      "point_observed": true
+    },
+    {
+      "address": 237958,
+      "hex": "3a186",
+      "instruction": "move.b D0b,(0x00c00011).l",
+      "point_observed": true
+    }
+  ],
+  "sources": [
+    {
+      "path": "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt",
+      "sha256": "9f81bd47bfe322110bc11339992f0e570b704077ccff22493940b75af7837152"
+    },
+    {
+      "path": "scripts/yuyuhakusho/root-control-capture.py",
+      "sha256": "e586f0e116d7043db48268c64e2bb203efca2b5dd94b9f9b9c95e0bddad53c21"
+    }
+  ],
+  "version": 1,
+  "whole_goal_complete": false
+}

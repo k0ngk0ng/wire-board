@@ -1,0 +1,8 @@
+{"mode": "original", "case": "ready-bank0", "main_end": 52072, "mailbox_reads": 1, "busy_mailbox_reads": 0, "PCM_events": 143}
+{"mode": "original", "case": "ready-bank1", "main_end": 51932, "mailbox_reads": 1, "busy_mailbox_reads": 0, "PCM_events": 142}
+{"mode": "original", "case": "critical64-bank0", "main_end": 74377, "mailbox_reads": 2, "busy_mailbox_reads": 1, "PCM_events": 203}
+{"mode": "original", "case": "startup-critical128-bank1", "main_end": 73864, "mailbox_reads": 7, "busy_mailbox_reads": 6, "PCM_events": 192}
+{"mode": "hook", "case": "ready-bank0", "main_end": 52072, "mailbox_reads": 1, "busy_mailbox_reads": 0, "PCM_events": 143}
+{"mode": "hook", "case": "ready-bank1", "main_end": 51932, "mailbox_reads": 1, "busy_mailbox_reads": 0, "PCM_events": 142}
+{"mode": "hook", "case": "critical64-bank0", "main_end": 74377, "mailbox_reads": 2, "busy_mailbox_reads": 1, "PCM_events": 203}
+{"mode": "hook", "case": "startup-critical128-bank1", "main_end": 73864, "mailbox_reads": 7, "busy_mailbox_reads": 6, "PCM_events": 192}

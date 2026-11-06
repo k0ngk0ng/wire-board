@@ -1,0 +1,24 @@
+{
+  "source": {
+    "path": "games/yuyuhakusho/verification/root-control-fade/extraction.json",
+    "sha256": "777a4d90047b9aa39ce33279627547316d47b83aa0252530d037ae420b68d737"
+  },
+  "output": {
+    "path": "games/yuyuhakusho/audio/rootcontrol/testdata/fade-native-streams.json.gz",
+    "gzip_sha256": "a88e122d490fd41839c944b403aadb29f309e56f8a981d81d41e1b37548cca28",
+    "json_sha256": "ceaed00e75ac7340296aab058328d12622453e47415bc0ebb6938080a6b1f8d6"
+  },
+  "streams": 5,
+  "frames": 785,
+  "decisions": {
+    "advance": 744,
+    "start": 2
+  },
+  "actions": {
+    "none": 654,
+    "stop-dac-flags": 2,
+    "fade-music-step": 88,
+    "request-full-clear": 2
+  },
+  "producer_sha256": "bccd2f4479d307c69e20d60471667437672ecd85c34c940c587e2d02299e8cc5"
+}

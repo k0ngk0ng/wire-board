@@ -1,0 +1,5751 @@
+{
+  "schema": 1,
+  "pass": true,
+  "no_target_execution": true,
+  "no_native_core_loaded": true,
+  "no_new_Ghidra_run": true,
+  "no_production_modified": true,
+  "scope": {
+    "fight_candidate_count": 139,
+    "fight_candidate_ids": [
+      1,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      79,
+      80,
+      81,
+      82,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      91,
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98,
+      99,
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106,
+      107,
+      108,
+      109,
+      110,
+      111,
+      112,
+      113,
+      114,
+      116,
+      117,
+      118,
+      119,
+      120,
+      121,
+      122,
+      123,
+      124,
+      125,
+      126,
+      130,
+      131,
+      132,
+      133,
+      134,
+      135,
+      136,
+      138,
+      141,
+      143,
+      149,
+      162,
+      163,
+      164,
+      165,
+      166,
+      169,
+      170,
+      240
+    ],
+    "fight_music_ids": [
+      130,
+      131,
+      132,
+      133,
+      134,
+      135,
+      136,
+      138,
+      141,
+      143,
+      149
+    ],
+    "primary_ids": [
+      160,
+      161,
+      162,
+      163,
+      164,
+      165,
+      166,
+      167,
+      168,
+      169,
+      170,
+      171
+    ],
+    "all_music_header_ids": [
+      129,
+      130,
+      131,
+      132,
+      133,
+      134,
+      135,
+      136,
+      137,
+      138,
+      139,
+      140,
+      141,
+      142,
+      143,
+      144,
+      145,
+      146,
+      147,
+      148,
+      149,
+      150
+    ]
+  },
+  "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+  "grammar": {
+    "music_definitions": 22,
+    "primary_definitions": 12,
+    "music_tracks": 198,
+    "primary_tracks": 16,
+    "commands": 12775,
+    "fight_catalog_commands": 8859,
+    "fight_catalog_tracks": 115,
+    "tracks": [
+      {
+        "id": 129,
+        "kind": "music",
+        "voice": 0,
+        "sequence": 239588,
+        "commands": 1,
+        "notes": 0,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 129,
+        "kind": "music",
+        "voice": 1,
+        "sequence": 239580,
+        "commands": 1,
+        "notes": 0,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 129,
+        "kind": "music",
+        "voice": 2,
+        "sequence": 239581,
+        "commands": 1,
+        "notes": 0,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 129,
+        "kind": "music",
+        "voice": 3,
+        "sequence": 239582,
+        "commands": 1,
+        "notes": 0,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 129,
+        "kind": "music",
+        "voice": 4,
+        "sequence": 239583,
+        "commands": 1,
+        "notes": 0,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 129,
+        "kind": "music",
+        "voice": 5,
+        "sequence": 239584,
+        "commands": 1,
+        "notes": 0,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 129,
+        "kind": "music",
+        "voice": 6,
+        "sequence": 239585,
+        "commands": 1,
+        "notes": 0,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 129,
+        "kind": "music",
+        "voice": 7,
+        "sequence": 239586,
+        "commands": 1,
+        "notes": 0,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 129,
+        "kind": "music",
+        "voice": 8,
+        "sequence": 239587,
+        "commands": 1,
+        "notes": 0,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 130,
+        "kind": "music",
+        "voice": 0,
+        "sequence": 240881,
+        "commands": 20,
+        "notes": 279,
+        "stopped": false,
+        "prefix_quanta": 12,
+        "cycle_quanta": 3840
+      },
+      {
+        "id": 130,
+        "kind": "music",
+        "voice": 1,
+        "sequence": 239638,
+        "commands": 64,
+        "notes": 295,
+        "stopped": false,
+        "prefix_quanta": 12,
+        "cycle_quanta": 3840
+      },
+      {
+        "id": 130,
+        "kind": "music",
+        "voice": 2,
+        "sequence": 239884,
+        "commands": 21,
+        "notes": 404,
+        "stopped": false,
+        "prefix_quanta": 12,
+        "cycle_quanta": 3840
+      },
+      {
+        "id": 130,
+        "kind": "music",
+        "voice": 3,
+        "sequence": 240139,
+        "commands": 106,
+        "notes": 246,
+        "stopped": false,
+        "prefix_quanta": 12,
+        "cycle_quanta": 3840
+      },
+      {
+        "id": 130,
+        "kind": "music",
+        "voice": 4,
+        "sequence": 240398,
+        "commands": 66,
+        "notes": 296,
+        "stopped": false,
+        "prefix_quanta": 24,
+        "cycle_quanta": 3840
+      },
+      {
+        "id": 130,
+        "kind": "music",
+        "voice": 5,
+        "sequence": 240405,
+        "commands": 108,
+        "notes": 247,
+        "stopped": false,
+        "prefix_quanta": 24,
+        "cycle_quanta": 3840
+      },
+      {
+        "id": 130,
+        "kind": "music",
+        "voice": 6,
+        "sequence": 240412,
+        "commands": 25,
+        "notes": 338,
+        "stopped": false,
+        "prefix_quanta": 48,
+        "cycle_quanta": 3840
+      },
+      {
+        "id": 130,
+        "kind": "music",
+        "voice": 7,
+        "sequence": 240650,
+        "commands": 19,
+        "notes": 282,
+        "stopped": false,
+        "prefix_quanta": 48,
+        "cycle_quanta": 3840
+      },
+      {
+        "id": 130,
+        "kind": "music",
+        "voice": 8,
+        "sequence": 240848,
+        "commands": 8,
+        "notes": 12,
+        "stopped": false,
+        "prefix_quanta": 12,
+        "cycle_quanta": 96
+      },
+      {
+        "id": 131,
+        "kind": "music",
+        "voice": 0,
+        "sequence": 242931,
+        "commands": 32,
+        "notes": 394,
+        "stopped": false,
+        "prefix_quanta": 6,
+        "cycle_quanta": 3768
+      },
+      {
+        "id": 131,
+        "kind": "music",
+        "voice": 1,
+        "sequence": 241276,
+        "commands": 43,
+        "notes": 249,
+        "stopped": false,
+        "prefix_quanta": 12,
+        "cycle_quanta": 3768
+      },
+      {
+        "id": 131,
+        "kind": "music",
+        "voice": 2,
+        "sequence": 241589,
+        "commands": 16,
+        "notes": 400,
+        "stopped": false,
+        "prefix_quanta": 6,
+        "cycle_quanta": 3768
+      },
+      {
+        "id": 131,
+        "kind": "music",
+        "voice": 3,
+        "sequence": 241892,
+        "commands": 58,
+        "notes": 294,
+        "stopped": false,
+        "prefix_quanta": 6,
+        "cycle_quanta": 3768
+      },
+      {
+        "id": 131,
+        "kind": "music",
+        "voice": 4,
+        "sequence": 242254,
+        "commands": 45,
+        "notes": 250,
+        "stopped": false,
+        "prefix_quanta": 24,
+        "cycle_quanta": 3768
+      },
+      {
+        "id": 131,
+        "kind": "music",
+        "voice": 5,
+        "sequence": 242262,
+        "commands": 60,
+        "notes": 295,
+        "stopped": false,
+        "prefix_quanta": 18,
+        "cycle_quanta": 3768
+      },
+      {
+        "id": 131,
+        "kind": "music",
+        "voice": 6,
+        "sequence": 242270,
+        "commands": 21,
+        "notes": 328,
+        "stopped": false,
+        "prefix_quanta": 96,
+        "cycle_quanta": 3768
+      },
+      {
+        "id": 131,
+        "kind": "music",
+        "voice": 7,
+        "sequence": 242504,
+        "commands": 5,
+        "notes": 321,
+        "stopped": false,
+        "prefix_quanta": 30,
+        "cycle_quanta": 3768
+      },
+      {
+        "id": 131,
+        "kind": "music",
+        "voice": 8,
+        "sequence": 242920,
+        "commands": 4,
+        "notes": 3,
+        "stopped": false,
+        "prefix_quanta": 12,
+        "cycle_quanta": 24
+      },
+      {
+        "id": 132,
+        "kind": "music",
+        "voice": 0,
+        "sequence": 245350,
+        "commands": 29,
+        "notes": 506,
+        "stopped": false,
+        "prefix_quanta": 1536,
+        "cycle_quanta": 3840
+      },
+      {
+        "id": 132,
+        "kind": "music",
+        "voice": 1,
+        "sequence": 243432,
+        "commands": 89,
+        "notes": 465,
+        "stopped": false,
+        "prefix_quanta": 768,
+        "cycle_quanta": 3840
+      },
+      {
+        "id": 132,
+        "kind": "music",
+        "voice": 2,
+        "sequence": 244004,
+        "commands": 36,
+        "notes": 475,
+        "stopped": false,
+        "prefix_quanta": 1536,
+        "cycle_quanta": 3840
+      },
+      {
+        "id": 132,
+        "kind": "music",
+        "voice": 3,
+        "sequence": 244298,
+        "commands": 111,
+        "notes": 411,
+        "stopped": false,
+        "prefix_quanta": 768,
+        "cycle_quanta": 3840
+      },
+      {
+        "id": 132,
+        "kind": "music",
+        "voice": 4,
+        "sequence": 244868,
+        "commands": 91,
+        "notes": 466,
+        "stopped": false,
+        "prefix_quanta": 780,
+        "cycle_quanta": 3840
+      },
+      {
+        "id": 132,
+        "kind": "music",
+        "voice": 5,
+        "sequence": 244876,
+        "commands": 113,
+        "notes": 412,
+        "stopped": false,
+        "prefix_quanta": 780,
+        "cycle_quanta": 3840
+      },
+      {
+        "id": 132,
+        "kind": "music",
+        "voice": 6,
+        "sequence": 244884,
+        "commands": 95,
+        "notes": 438,
+        "stopped": false,
+        "prefix_quanta": 6,
+        "cycle_quanta": 3840
+      },
+      {
+        "id": 132,
+        "kind": "music",
+        "voice": 7,
+        "sequence": 245100,
+        "commands": 95,
+        "notes": 438,
+        "stopped": false,
+        "prefix_quanta": 6,
+        "cycle_quanta": 3840
+      },
+      {
+        "id": 132,
+        "kind": "music",
+        "voice": 8,
+        "sequence": 245316,
+        "commands": 10,
+        "notes": 11,
+        "stopped": false,
+        "prefix_quanta": 12,
+        "cycle_quanta": 96
+      },
+      {
+        "id": 133,
+        "kind": "music",
+        "voice": 0,
+        "sequence": 247602,
+        "commands": 24,
+        "notes": 286,
+        "stopped": false,
+        "prefix_quanta": 12,
+        "cycle_quanta": 2784
+      },
+      {
+        "id": 133,
+        "kind": "music",
+        "voice": 1,
+        "sequence": 245956,
+        "commands": 51,
+        "notes": 324,
+        "stopped": false,
+        "prefix_quanta": 384,
+        "cycle_quanta": 2784
+      },
+      {
+        "id": 133,
+        "kind": "music",
+        "voice": 2,
+        "sequence": 246320,
+        "commands": 16,
+        "notes": 377,
+        "stopped": false,
+        "prefix_quanta": 384,
+        "cycle_quanta": 2784
+      },
+      {
+        "id": 133,
+        "kind": "music",
+        "voice": 3,
+        "sequence": 246590,
+        "commands": 56,
+        "notes": 316,
+        "stopped": false,
+        "prefix_quanta": 384,
+        "cycle_quanta": 2784
+      },
+      {
+        "id": 133,
+        "kind": "music",
+        "voice": 4,
+        "sequence": 246948,
+        "commands": 53,
+        "notes": 325,
+        "stopped": false,
+        "prefix_quanta": 396,
+        "cycle_quanta": 2784
+      },
+      {
+        "id": 133,
+        "kind": "music",
+        "voice": 5,
+        "sequence": 246956,
+        "commands": 58,
+        "notes": 317,
+        "stopped": false,
+        "prefix_quanta": 396,
+        "cycle_quanta": 2784
+      },
+      {
+        "id": 133,
+        "kind": "music",
+        "voice": 6,
+        "sequence": 246964,
+        "commands": 12,
+        "notes": 326,
+        "stopped": false,
+        "prefix_quanta": 384,
+        "cycle_quanta": 2784
+      },
+      {
+        "id": 133,
+        "kind": "music",
+        "voice": 7,
+        "sequence": 247292,
+        "commands": 20,
+        "notes": 404,
+        "stopped": false,
+        "prefix_quanta": 384,
+        "cycle_quanta": 2784
+      },
+      {
+        "id": 133,
+        "kind": "music",
+        "voice": 8,
+        "sequence": 247571,
+        "commands": 7,
+        "notes": 17,
+        "stopped": false,
+        "prefix_quanta": 6,
+        "cycle_quanta": 96
+      },
+      {
+        "id": 134,
+        "kind": "music",
+        "voice": 0,
+        "sequence": 250297,
+        "commands": 33,
+        "notes": 302,
+        "stopped": false,
+        "prefix_quanta": 4,
+        "cycle_quanta": 3048
+      },
+      {
+        "id": 134,
+        "kind": "music",
+        "voice": 1,
+        "sequence": 247974,
+        "commands": 67,
+        "notes": 348,
+        "stopped": false,
+        "prefix_quanta": 8,
+        "cycle_quanta": 3048
+      },
+      {
+        "id": 134,
+        "kind": "music",
+        "voice": 2,
+        "sequence": 248474,
+        "commands": 3,
+        "notes": 335,
+        "stopped": false,
+        "prefix_quanta": 8,
+        "cycle_quanta": 3048
+      },
+      {
+        "id": 134,
+        "kind": "music",
+        "voice": 3,
+        "sequence": 248858,
+        "commands": 40,
+        "notes": 294,
+        "stopped": false,
+        "prefix_quanta": 96,
+        "cycle_quanta": 3048
+      },
+      {
+        "id": 134,
+        "kind": "music",
+        "voice": 4,
+        "sequence": 249288,
+        "commands": 69,
+        "notes": 349,
+        "stopped": false,
+        "prefix_quanta": 32,
+        "cycle_quanta": 3048
+      },
+      {
+        "id": 134,
+        "kind": "music",
+        "voice": 5,
+        "sequence": 249296,
+        "commands": 42,
+        "notes": 295,
+        "stopped": false,
+        "prefix_quanta": 108,
+        "cycle_quanta": 3048
+      },
+      {
+        "id": 134,
+        "kind": "music",
+        "voice": 6,
+        "sequence": 249304,
+        "commands": 54,
+        "notes": 477,
+        "stopped": false,
+        "prefix_quanta": 1152,
+        "cycle_quanta": 3048
+      },
+      {
+        "id": 134,
+        "kind": "music",
+        "voice": 7,
+        "sequence": 249792,
+        "commands": 19,
+        "notes": 267,
+        "stopped": false,
+        "prefix_quanta": 96,
+        "cycle_quanta": 3048
+      },
+      {
+        "id": 134,
+        "kind": "music",
+        "voice": 8,
+        "sequence": 250161,
+        "commands": 211,
+        "notes": 285,
+        "stopped": false,
+        "prefix_quanta": 16,
+        "cycle_quanta": 2840
+      },
+      {
+        "id": 135,
+        "kind": "music",
+        "voice": 0,
+        "sequence": 252601,
+        "commands": 12,
+        "notes": 251,
+        "stopped": false,
+        "prefix_quanta": 24,
+        "cycle_quanta": 3408
+      },
+      {
+        "id": 135,
+        "kind": "music",
+        "voice": 1,
+        "sequence": 250780,
+        "commands": 38,
+        "notes": 250,
+        "stopped": false,
+        "prefix_quanta": 12,
+        "cycle_quanta": 3408
+      },
+      {
+        "id": 135,
+        "kind": "music",
+        "voice": 2,
+        "sequence": 251191,
+        "commands": 21,
+        "notes": 328,
+        "stopped": false,
+        "prefix_quanta": 12,
+        "cycle_quanta": 3408
+      },
+      {
+        "id": 135,
+        "kind": "music",
+        "voice": 3,
+        "sequence": 251455,
+        "commands": 141,
+        "notes": 451,
+        "stopped": false,
+        "prefix_quanta": 1296,
+        "cycle_quanta": 3408
+      },
+      {
+        "id": 135,
+        "kind": "music",
+        "voice": 4,
+        "sequence": 251843,
+        "commands": 143,
+        "notes": 453,
+        "stopped": false,
+        "prefix_quanta": 1308,
+        "cycle_quanta": 3408
+      },
+      {
+        "id": 135,
+        "kind": "music",
+        "voice": 5,
+        "sequence": 251918,
+        "commands": 40,
+        "notes": 251,
+        "stopped": false,
+        "prefix_quanta": 24,
+        "cycle_quanta": 3408
+      },
+      {
+        "id": 135,
+        "kind": "music",
+        "voice": 6,
+        "sequence": 251926,
+        "commands": 11,
+        "notes": 230,
+        "stopped": false,
+        "prefix_quanta": 18,
+        "cycle_quanta": 3408
+      },
+      {
+        "id": 135,
+        "kind": "music",
+        "voice": 7,
+        "sequence": 252248,
+        "commands": 24,
+        "notes": 328,
+        "stopped": false,
+        "prefix_quanta": 12,
+        "cycle_quanta": 3408
+      },
+      {
+        "id": 135,
+        "kind": "music",
+        "voice": 8,
+        "sequence": 252556,
+        "commands": 10,
+        "notes": 25,
+        "stopped": false,
+        "prefix_quanta": 6,
+        "cycle_quanta": 144
+      },
+      {
+        "id": 136,
+        "kind": "music",
+        "voice": 0,
+        "sequence": 255653,
+        "commands": 9,
+        "notes": 668,
+        "stopped": false,
+        "prefix_quanta": 1536,
+        "cycle_quanta": 5172
+      },
+      {
+        "id": 136,
+        "kind": "music",
+        "voice": 1,
+        "sequence": 253076,
+        "commands": 47,
+        "notes": 399,
+        "stopped": false,
+        "prefix_quanta": 24,
+        "cycle_quanta": 5172
+      },
+      {
+        "id": 136,
+        "kind": "music",
+        "voice": 2,
+        "sequence": 253759,
+        "commands": 78,
+        "notes": 244,
+        "stopped": false,
+        "prefix_quanta": 24,
+        "cycle_quanta": 5172
+      },
+      {
+        "id": 136,
+        "kind": "music",
+        "voice": 3,
+        "sequence": 254138,
+        "commands": 80,
+        "notes": 245,
+        "stopped": false,
+        "prefix_quanta": 34,
+        "cycle_quanta": 5172
+      },
+      {
+        "id": 136,
+        "kind": "music",
+        "voice": 4,
+        "sequence": 254157,
+        "commands": 23,
+        "notes": 307,
+        "stopped": false,
+        "prefix_quanta": 8,
+        "cycle_quanta": 5172
+      },
+      {
+        "id": 136,
+        "kind": "music",
+        "voice": 5,
+        "sequence": 254613,
+        "commands": 87,
+        "notes": 398,
+        "stopped": false,
+        "prefix_quanta": 14,
+        "cycle_quanta": 5172
+      },
+      {
+        "id": 136,
+        "kind": "music",
+        "voice": 6,
+        "sequence": 255047,
+        "commands": 32,
+        "notes": 330,
+        "stopped": false,
+        "prefix_quanta": 768,
+        "cycle_quanta": 5172
+      },
+      {
+        "id": 136,
+        "kind": "music",
+        "voice": 7,
+        "sequence": 255553,
+        "commands": 33,
+        "notes": 331,
+        "stopped": false,
+        "prefix_quanta": 786,
+        "cycle_quanta": 5172
+      },
+      {
+        "id": 136,
+        "kind": "music",
+        "voice": 8,
+        "sequence": 255563,
+        "commands": 225,
+        "notes": 552,
+        "stopped": false,
+        "prefix_quanta": 12,
+        "cycle_quanta": 5172
+      },
+      {
+        "id": 137,
+        "kind": "music",
+        "voice": 0,
+        "sequence": 259886,
+        "commands": 32,
+        "notes": 261,
+        "stopped": false,
+        "prefix_quanta": 288,
+        "cycle_quanta": 3822
+      },
+      {
+        "id": 137,
+        "kind": "music",
+        "voice": 1,
+        "sequence": 256974,
+        "commands": 13,
+        "notes": 319,
+        "stopped": false,
+        "prefix_quanta": 300,
+        "cycle_quanta": 3822
+      },
+      {
+        "id": 137,
+        "kind": "music",
+        "voice": 2,
+        "sequence": 257321,
+        "commands": 145,
+        "notes": 346,
+        "stopped": false,
+        "prefix_quanta": 300,
+        "cycle_quanta": 3822
+      },
+      {
+        "id": 137,
+        "kind": "music",
+        "voice": 3,
+        "sequence": 257942,
+        "commands": 118,
+        "notes": 278,
+        "stopped": false,
+        "prefix_quanta": 325,
+        "cycle_quanta": 3822
+      },
+      {
+        "id": 137,
+        "kind": "music",
+        "voice": 4,
+        "sequence": 258479,
+        "commands": 94,
+        "notes": 278,
+        "stopped": false,
+        "prefix_quanta": 324,
+        "cycle_quanta": 3822
+      },
+      {
+        "id": 137,
+        "kind": "music",
+        "voice": 5,
+        "sequence": 258982,
+        "commands": 71,
+        "notes": 194,
+        "stopped": false,
+        "prefix_quanta": 324,
+        "cycle_quanta": 3822
+      },
+      {
+        "id": 137,
+        "kind": "music",
+        "voice": 6,
+        "sequence": 259354,
+        "commands": 28,
+        "notes": 173,
+        "stopped": false,
+        "prefix_quanta": 324,
+        "cycle_quanta": 3822
+      },
+      {
+        "id": 137,
+        "kind": "music",
+        "voice": 7,
+        "sequence": 259580,
+        "commands": 24,
+        "notes": 156,
+        "stopped": false,
+        "prefix_quanta": 360,
+        "cycle_quanta": 3822
+      },
+      {
+        "id": 137,
+        "kind": "music",
+        "voice": 8,
+        "sequence": 259797,
+        "commands": 63,
+        "notes": 247,
+        "stopped": false,
+        "prefix_quanta": 306,
+        "cycle_quanta": 3822
+      },
+      {
+        "id": 138,
+        "kind": "music",
+        "voice": 0,
+        "sequence": 262512,
+        "commands": 5,
+        "notes": 606,
+        "stopped": false,
+        "prefix_quanta": 8,
+        "cycle_quanta": 5568
+      },
+      {
+        "id": 138,
+        "kind": "music",
+        "voice": 1,
+        "sequence": 260652,
+        "commands": 60,
+        "notes": 536,
+        "stopped": false,
+        "prefix_quanta": 8,
+        "cycle_quanta": 5568
+      },
+      {
+        "id": 138,
+        "kind": "music",
+        "voice": 2,
+        "sequence": 260947,
+        "commands": 43,
+        "notes": 296,
+        "stopped": false,
+        "prefix_quanta": 8,
+        "cycle_quanta": 5568
+      },
+      {
+        "id": 138,
+        "kind": "music",
+        "voice": 3,
+        "sequence": 261228,
+        "commands": 45,
+        "notes": 297,
+        "stopped": false,
+        "prefix_quanta": 14,
+        "cycle_quanta": 5568
+      },
+      {
+        "id": 138,
+        "kind": "music",
+        "voice": 4,
+        "sequence": 261247,
+        "commands": 53,
+        "notes": 273,
+        "stopped": false,
+        "prefix_quanta": 10,
+        "cycle_quanta": 5568
+      },
+      {
+        "id": 138,
+        "kind": "music",
+        "voice": 5,
+        "sequence": 261592,
+        "commands": 110,
+        "notes": 707,
+        "stopped": false,
+        "prefix_quanta": 10,
+        "cycle_quanta": 5568
+      },
+      {
+        "id": 138,
+        "kind": "music",
+        "voice": 6,
+        "sequence": 261790,
+        "commands": 85,
+        "notes": 528,
+        "stopped": false,
+        "prefix_quanta": 8,
+        "cycle_quanta": 5568
+      },
+      {
+        "id": 138,
+        "kind": "music",
+        "voice": 7,
+        "sequence": 262123,
+        "commands": 87,
+        "notes": 530,
+        "stopped": false,
+        "prefix_quanta": 28,
+        "cycle_quanta": 5568
+      },
+      {
+        "id": 138,
+        "kind": "music",
+        "voice": 8,
+        "sequence": 262465,
+        "commands": 517,
+        "notes": 686,
+        "stopped": false,
+        "prefix_quanta": 8,
+        "cycle_quanta": 5568
+      },
+      {
+        "id": 139,
+        "kind": "music",
+        "voice": 0,
+        "sequence": 266280,
+        "commands": 1,
+        "notes": 352,
+        "stopped": false,
+        "prefix_quanta": 12,
+        "cycle_quanta": 3528
+      },
+      {
+        "id": 139,
+        "kind": "music",
+        "voice": 1,
+        "sequence": 263696,
+        "commands": 66,
+        "notes": 202,
+        "stopped": false,
+        "prefix_quanta": 96,
+        "cycle_quanta": 3528
+      },
+      {
+        "id": 139,
+        "kind": "music",
+        "voice": 2,
+        "sequence": 264082,
+        "commands": 5,
+        "notes": 390,
+        "stopped": false,
+        "prefix_quanta": 42,
+        "cycle_quanta": 3528
+      },
+      {
+        "id": 139,
+        "kind": "music",
+        "voice": 3,
+        "sequence": 264611,
+        "commands": 72,
+        "notes": 325,
+        "stopped": false,
+        "prefix_quanta": 2760,
+        "cycle_quanta": 3528
+      },
+      {
+        "id": 139,
+        "kind": "music",
+        "voice": 4,
+        "sequence": 264903,
+        "commands": 31,
+        "notes": 130,
+        "stopped": false,
+        "prefix_quanta": 96,
+        "cycle_quanta": 3528
+      },
+      {
+        "id": 139,
+        "kind": "music",
+        "voice": 5,
+        "sequence": 265156,
+        "commands": 30,
+        "notes": 239,
+        "stopped": false,
+        "prefix_quanta": 108,
+        "cycle_quanta": 3528
+      },
+      {
+        "id": 139,
+        "kind": "music",
+        "voice": 6,
+        "sequence": 265601,
+        "commands": 24,
+        "notes": 189,
+        "stopped": false,
+        "prefix_quanta": 96,
+        "cycle_quanta": 3528
+      },
+      {
+        "id": 139,
+        "kind": "music",
+        "voice": 7,
+        "sequence": 265910,
+        "commands": 13,
+        "notes": 262,
+        "stopped": false,
+        "prefix_quanta": 96,
+        "cycle_quanta": 3528
+      },
+      {
+        "id": 139,
+        "kind": "music",
+        "voice": 8,
+        "sequence": 266258,
+        "commands": 3,
+        "notes": 11,
+        "stopped": false,
+        "prefix_quanta": 12,
+        "cycle_quanta": 96
+      },
+      {
+        "id": 140,
+        "kind": "music",
+        "voice": 0,
+        "sequence": 269314,
+        "commands": 1,
+        "notes": 272,
+        "stopped": false,
+        "prefix_quanta": 40,
+        "cycle_quanta": 3264
+      },
+      {
+        "id": 140,
+        "kind": "music",
+        "voice": 1,
+        "sequence": 267132,
+        "commands": 44,
+        "notes": 234,
+        "stopped": false,
+        "prefix_quanta": 40,
+        "cycle_quanta": 3264
+      },
+      {
+        "id": 140,
+        "kind": "music",
+        "voice": 2,
+        "sequence": 267491,
+        "commands": 20,
+        "notes": 417,
+        "stopped": false,
+        "prefix_quanta": 1168,
+        "cycle_quanta": 3264
+      },
+      {
+        "id": 140,
+        "kind": "music",
+        "voice": 3,
+        "sequence": 267861,
+        "commands": 88,
+        "notes": 409,
+        "stopped": false,
+        "prefix_quanta": 1936,
+        "cycle_quanta": 3264
+      },
+      {
+        "id": 140,
+        "kind": "music",
+        "voice": 4,
+        "sequence": 268207,
+        "commands": 57,
+        "notes": 423,
+        "stopped": false,
+        "prefix_quanta": 1168,
+        "cycle_quanta": 3264
+      },
+      {
+        "id": 140,
+        "kind": "music",
+        "voice": 5,
+        "sequence": 268610,
+        "commands": 47,
+        "notes": 237,
+        "stopped": false,
+        "prefix_quanta": 68,
+        "cycle_quanta": 3264
+      },
+      {
+        "id": 140,
+        "kind": "music",
+        "voice": 6,
+        "sequence": 268623,
+        "commands": 38,
+        "notes": 377,
+        "stopped": false,
+        "prefix_quanta": 1936,
+        "cycle_quanta": 3264
+      },
+      {
+        "id": 140,
+        "kind": "music",
+        "voice": 7,
+        "sequence": 268923,
+        "commands": 53,
+        "notes": 431,
+        "stopped": false,
+        "prefix_quanta": 1168,
+        "cycle_quanta": 3264
+      },
+      {
+        "id": 140,
+        "kind": "music",
+        "voice": 8,
+        "sequence": 269285,
+        "commands": 4,
+        "notes": 15,
+        "stopped": false,
+        "prefix_quanta": 22,
+        "cycle_quanta": 96
+      },
+      {
+        "id": 141,
+        "kind": "music",
+        "voice": 0,
+        "sequence": 273081,
+        "commands": 1,
+        "notes": 188,
+        "stopped": false,
+        "prefix_quanta": 24,
+        "cycle_quanta": 2886
+      },
+      {
+        "id": 141,
+        "kind": "music",
+        "voice": 1,
+        "sequence": 270114,
+        "commands": 47,
+        "notes": 495,
+        "stopped": false,
+        "prefix_quanta": 1344,
+        "cycle_quanta": 2886
+      },
+      {
+        "id": 141,
+        "kind": "music",
+        "voice": 2,
+        "sequence": 270602,
+        "commands": 227,
+        "notes": 221,
+        "stopped": false,
+        "prefix_quanta": 384,
+        "cycle_quanta": 2886
+      },
+      {
+        "id": 141,
+        "kind": "music",
+        "voice": 3,
+        "sequence": 271353,
+        "commands": 152,
+        "notes": 328,
+        "stopped": false,
+        "prefix_quanta": 384,
+        "cycle_quanta": 2886
+      },
+      {
+        "id": 141,
+        "kind": "music",
+        "voice": 4,
+        "sequence": 271710,
+        "commands": 147,
+        "notes": 239,
+        "stopped": false,
+        "prefix_quanta": 384,
+        "cycle_quanta": 2886
+      },
+      {
+        "id": 141,
+        "kind": "music",
+        "voice": 5,
+        "sequence": 272107,
+        "commands": 238,
+        "notes": 222,
+        "stopped": false,
+        "prefix_quanta": 390,
+        "cycle_quanta": 2886
+      },
+      {
+        "id": 141,
+        "kind": "music",
+        "voice": 6,
+        "sequence": 272471,
+        "commands": 47,
+        "notes": 204,
+        "stopped": false,
+        "prefix_quanta": 384,
+        "cycle_quanta": 2886
+      },
+      {
+        "id": 141,
+        "kind": "music",
+        "voice": 7,
+        "sequence": 272654,
+        "commands": 48,
+        "notes": 204,
+        "stopped": false,
+        "prefix_quanta": 384,
+        "cycle_quanta": 2886
+      },
+      {
+        "id": 141,
+        "kind": "music",
+        "voice": 8,
+        "sequence": 272857,
+        "commands": 80,
+        "notes": 393,
+        "stopped": false,
+        "prefix_quanta": 12,
+        "cycle_quanta": 2886
+      },
+      {
+        "id": 142,
+        "kind": "music",
+        "voice": 0,
+        "sequence": 275654,
+        "commands": 6,
+        "notes": 123,
+        "stopped": false,
+        "prefix_quanta": 29,
+        "cycle_quanta": 1152
+      },
+      {
+        "id": 142,
+        "kind": "music",
+        "voice": 1,
+        "sequence": 273940,
+        "commands": 17,
+        "notes": 129,
+        "stopped": false,
+        "prefix_quanta": 37,
+        "cycle_quanta": 1152
+      },
+      {
+        "id": 142,
+        "kind": "music",
+        "voice": 2,
+        "sequence": 274132,
+        "commands": 87,
+        "notes": 168,
+        "stopped": false,
+        "prefix_quanta": 33,
+        "cycle_quanta": 1152
+      },
+      {
+        "id": 142,
+        "kind": "music",
+        "voice": 3,
+        "sequence": 274456,
+        "commands": 97,
+        "notes": 186,
+        "stopped": false,
+        "prefix_quanta": 33,
+        "cycle_quanta": 1152
+      },
+      {
+        "id": 142,
+        "kind": "music",
+        "voice": 4,
+        "sequence": 274812,
+        "commands": 81,
+        "notes": 133,
+        "stopped": false,
+        "prefix_quanta": 33,
+        "cycle_quanta": 1152
+      },
+      {
+        "id": 142,
+        "kind": "music",
+        "voice": 5,
+        "sequence": 275103,
+        "commands": 102,
+        "notes": 150,
+        "stopped": false,
+        "prefix_quanta": 33,
+        "cycle_quanta": 1152
+      },
+      {
+        "id": 142,
+        "kind": "music",
+        "voice": 6,
+        "sequence": 275433,
+        "commands": 9,
+        "notes": 139,
+        "stopped": false,
+        "prefix_quanta": 37,
+        "cycle_quanta": 1152
+      },
+      {
+        "id": 142,
+        "kind": "music",
+        "voice": 7,
+        "sequence": 275591,
+        "commands": 12,
+        "notes": 136,
+        "stopped": false,
+        "prefix_quanta": 45,
+        "cycle_quanta": 1152
+      },
+      {
+        "id": 142,
+        "kind": "music",
+        "voice": 8,
+        "sequence": 275616,
+        "commands": 26,
+        "notes": 195,
+        "stopped": false,
+        "prefix_quanta": 37,
+        "cycle_quanta": 1152
+      },
+      {
+        "id": 143,
+        "kind": "music",
+        "voice": 0,
+        "sequence": 276625,
+        "commands": 1,
+        "notes": 22,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 143,
+        "kind": "music",
+        "voice": 1,
+        "sequence": 276218,
+        "commands": 5,
+        "notes": 19,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 143,
+        "kind": "music",
+        "voice": 2,
+        "sequence": 276255,
+        "commands": 10,
+        "notes": 25,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 143,
+        "kind": "music",
+        "voice": 3,
+        "sequence": 276308,
+        "commands": 17,
+        "notes": 19,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 143,
+        "kind": "music",
+        "voice": 4,
+        "sequence": 276375,
+        "commands": 14,
+        "notes": 25,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 143,
+        "kind": "music",
+        "voice": 5,
+        "sequence": 276437,
+        "commands": 10,
+        "notes": 19,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 143,
+        "kind": "music",
+        "voice": 6,
+        "sequence": 276492,
+        "commands": 4,
+        "notes": 11,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 143,
+        "kind": "music",
+        "voice": 7,
+        "sequence": 276517,
+        "commands": 10,
+        "notes": 26,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 143,
+        "kind": "music",
+        "voice": 8,
+        "sequence": 276572,
+        "commands": 9,
+        "notes": 26,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 144,
+        "kind": "music",
+        "voice": 0,
+        "sequence": 277563,
+        "commands": 1,
+        "notes": 41,
+        "stopped": false,
+        "prefix_quanta": 24,
+        "cycle_quanta": 768
+      },
+      {
+        "id": 144,
+        "kind": "music",
+        "voice": 1,
+        "sequence": 276788,
+        "commands": 47,
+        "notes": 52,
+        "stopped": false,
+        "prefix_quanta": 6,
+        "cycle_quanta": 768
+      },
+      {
+        "id": 144,
+        "kind": "music",
+        "voice": 2,
+        "sequence": 276970,
+        "commands": 13,
+        "notes": 60,
+        "stopped": false,
+        "prefix_quanta": 12,
+        "cycle_quanta": 768
+      },
+      {
+        "id": 144,
+        "kind": "music",
+        "voice": 3,
+        "sequence": 277088,
+        "commands": 21,
+        "notes": 110,
+        "stopped": false,
+        "prefix_quanta": 2,
+        "cycle_quanta": 768
+      },
+      {
+        "id": 144,
+        "kind": "music",
+        "voice": 4,
+        "sequence": 277292,
+        "commands": 16,
+        "notes": 41,
+        "stopped": false,
+        "prefix_quanta": 2,
+        "cycle_quanta": 768
+      },
+      {
+        "id": 144,
+        "kind": "music",
+        "voice": 5,
+        "sequence": 276778,
+        "commands": 49,
+        "notes": 53,
+        "stopped": false,
+        "prefix_quanta": 22,
+        "cycle_quanta": 768
+      },
+      {
+        "id": 144,
+        "kind": "music",
+        "voice": 6,
+        "sequence": 276786,
+        "commands": 1,
+        "notes": 0,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 144,
+        "kind": "music",
+        "voice": 7,
+        "sequence": 276787,
+        "commands": 1,
+        "notes": 0,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 144,
+        "kind": "music",
+        "voice": 8,
+        "sequence": 277392,
+        "commands": 26,
+        "notes": 70,
+        "stopped": false,
+        "prefix_quanta": 6,
+        "cycle_quanta": 768
+      },
+      {
+        "id": 145,
+        "kind": "music",
+        "voice": 0,
+        "sequence": 278293,
+        "commands": 3,
+        "notes": 15,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 145,
+        "kind": "music",
+        "voice": 1,
+        "sequence": 277990,
+        "commands": 4,
+        "notes": 16,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 145,
+        "kind": "music",
+        "voice": 2,
+        "sequence": 278018,
+        "commands": 12,
+        "notes": 16,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 145,
+        "kind": "music",
+        "voice": 3,
+        "sequence": 278073,
+        "commands": 18,
+        "notes": 21,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 145,
+        "kind": "music",
+        "voice": 4,
+        "sequence": 278149,
+        "commands": 15,
+        "notes": 28,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 145,
+        "kind": "music",
+        "voice": 5,
+        "sequence": 278213,
+        "commands": 17,
+        "notes": 29,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 145,
+        "kind": "music",
+        "voice": 6,
+        "sequence": 278223,
+        "commands": 8,
+        "notes": 15,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 145,
+        "kind": "music",
+        "voice": 7,
+        "sequence": 278260,
+        "commands": 10,
+        "notes": 16,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 145,
+        "kind": "music",
+        "voice": 8,
+        "sequence": 278268,
+        "commands": 4,
+        "notes": 32,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 146,
+        "kind": "music",
+        "voice": 0,
+        "sequence": 278647,
+        "commands": 1,
+        "notes": 0,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 146,
+        "kind": "music",
+        "voice": 1,
+        "sequence": 278492,
+        "commands": 14,
+        "notes": 7,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 146,
+        "kind": "music",
+        "voice": 2,
+        "sequence": 278546,
+        "commands": 16,
+        "notes": 8,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 146,
+        "kind": "music",
+        "voice": 3,
+        "sequence": 278606,
+        "commands": 17,
+        "notes": 8,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 146,
+        "kind": "music",
+        "voice": 4,
+        "sequence": 278620,
+        "commands": 4,
+        "notes": 8,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 146,
+        "kind": "music",
+        "voice": 5,
+        "sequence": 278643,
+        "commands": 1,
+        "notes": 0,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 146,
+        "kind": "music",
+        "voice": 6,
+        "sequence": 278644,
+        "commands": 1,
+        "notes": 0,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 146,
+        "kind": "music",
+        "voice": 7,
+        "sequence": 278645,
+        "commands": 1,
+        "notes": 0,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 146,
+        "kind": "music",
+        "voice": 8,
+        "sequence": 278646,
+        "commands": 1,
+        "notes": 0,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 147,
+        "kind": "music",
+        "voice": 0,
+        "sequence": 280214,
+        "commands": 6,
+        "notes": 87,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 147,
+        "kind": "music",
+        "voice": 1,
+        "sequence": 278772,
+        "commands": 8,
+        "notes": 63,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 147,
+        "kind": "music",
+        "voice": 2,
+        "sequence": 278900,
+        "commands": 77,
+        "notes": 105,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 147,
+        "kind": "music",
+        "voice": 3,
+        "sequence": 279238,
+        "commands": 37,
+        "notes": 67,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 147,
+        "kind": "music",
+        "voice": 4,
+        "sequence": 279413,
+        "commands": 74,
+        "notes": 86,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 147,
+        "kind": "music",
+        "voice": 5,
+        "sequence": 279717,
+        "commands": 37,
+        "notes": 89,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 147,
+        "kind": "music",
+        "voice": 6,
+        "sequence": 279969,
+        "commands": 5,
+        "notes": 8,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 147,
+        "kind": "music",
+        "voice": 7,
+        "sequence": 280000,
+        "commands": 36,
+        "notes": 55,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 147,
+        "kind": "music",
+        "voice": 8,
+        "sequence": 280153,
+        "commands": 19,
+        "notes": 66,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 148,
+        "kind": "music",
+        "voice": 0,
+        "sequence": 284808,
+        "commands": 16,
+        "notes": 475,
+        "stopped": false,
+        "prefix_quanta": 22,
+        "cycle_quanta": 4032
+      },
+      {
+        "id": 148,
+        "kind": "music",
+        "voice": 1,
+        "sequence": 280632,
+        "commands": 36,
+        "notes": 401,
+        "stopped": false,
+        "prefix_quanta": 22,
+        "cycle_quanta": 4032
+      },
+      {
+        "id": 148,
+        "kind": "music",
+        "voice": 2,
+        "sequence": 281086,
+        "commands": 260,
+        "notes": 490,
+        "stopped": false,
+        "prefix_quanta": 778,
+        "cycle_quanta": 4032
+      },
+      {
+        "id": 148,
+        "kind": "music",
+        "voice": 3,
+        "sequence": 281908,
+        "commands": 255,
+        "notes": 541,
+        "stopped": false,
+        "prefix_quanta": 778,
+        "cycle_quanta": 4032
+      },
+      {
+        "id": 148,
+        "kind": "music",
+        "voice": 4,
+        "sequence": 282753,
+        "commands": 184,
+        "notes": 488,
+        "stopped": false,
+        "prefix_quanta": 778,
+        "cycle_quanta": 4032
+      },
+      {
+        "id": 148,
+        "kind": "music",
+        "voice": 5,
+        "sequence": 283357,
+        "commands": 207,
+        "notes": 312,
+        "stopped": false,
+        "prefix_quanta": 778,
+        "cycle_quanta": 4032
+      },
+      {
+        "id": 148,
+        "kind": "music",
+        "voice": 6,
+        "sequence": 284064,
+        "commands": 54,
+        "notes": 164,
+        "stopped": false,
+        "prefix_quanta": 778,
+        "cycle_quanta": 4032
+      },
+      {
+        "id": 148,
+        "kind": "music",
+        "voice": 7,
+        "sequence": 284366,
+        "commands": 47,
+        "notes": 120,
+        "stopped": false,
+        "prefix_quanta": 106,
+        "cycle_quanta": 4032
+      },
+      {
+        "id": 148,
+        "kind": "music",
+        "voice": 8,
+        "sequence": 284620,
+        "commands": 498,
+        "notes": 667,
+        "stopped": false,
+        "prefix_quanta": 16,
+        "cycle_quanta": 4032
+      },
+      {
+        "id": 149,
+        "kind": "music",
+        "voice": 0,
+        "sequence": 291366,
+        "commands": 28,
+        "notes": 475,
+        "stopped": false,
+        "prefix_quanta": 1356,
+        "cycle_quanta": 3408
+      },
+      {
+        "id": 149,
+        "kind": "music",
+        "voice": 1,
+        "sequence": 285964,
+        "commands": 377,
+        "notes": 465,
+        "stopped": false,
+        "prefix_quanta": 1344,
+        "cycle_quanta": 3408
+      },
+      {
+        "id": 149,
+        "kind": "music",
+        "voice": 2,
+        "sequence": 286932,
+        "commands": 382,
+        "notes": 571,
+        "stopped": false,
+        "prefix_quanta": 1344,
+        "cycle_quanta": 3408
+      },
+      {
+        "id": 149,
+        "kind": "music",
+        "voice": 3,
+        "sequence": 287603,
+        "commands": 365,
+        "notes": 424,
+        "stopped": false,
+        "prefix_quanta": 1362,
+        "cycle_quanta": 3408
+      },
+      {
+        "id": 149,
+        "kind": "music",
+        "voice": 4,
+        "sequence": 288639,
+        "commands": 685,
+        "notes": 543,
+        "stopped": false,
+        "prefix_quanta": 1356,
+        "cycle_quanta": 3408
+      },
+      {
+        "id": 149,
+        "kind": "music",
+        "voice": 5,
+        "sequence": 289405,
+        "commands": 548,
+        "notes": 528,
+        "stopped": false,
+        "prefix_quanta": 1344,
+        "cycle_quanta": 3408
+      },
+      {
+        "id": 149,
+        "kind": "music",
+        "voice": 6,
+        "sequence": 290471,
+        "commands": 72,
+        "notes": 279,
+        "stopped": false,
+        "prefix_quanta": 1344,
+        "cycle_quanta": 3408
+      },
+      {
+        "id": 149,
+        "kind": "music",
+        "voice": 7,
+        "sequence": 290852,
+        "commands": 73,
+        "notes": 280,
+        "stopped": false,
+        "prefix_quanta": 1353,
+        "cycle_quanta": 3408
+      },
+      {
+        "id": 149,
+        "kind": "music",
+        "voice": 8,
+        "sequence": 290858,
+        "commands": 745,
+        "notes": 730,
+        "stopped": false,
+        "prefix_quanta": 1344,
+        "cycle_quanta": 3408
+      },
+      {
+        "id": 150,
+        "kind": "music",
+        "voice": 0,
+        "sequence": 292706,
+        "commands": 4,
+        "notes": 12,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 150,
+        "kind": "music",
+        "voice": 1,
+        "sequence": 292302,
+        "commands": 9,
+        "notes": 18,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 150,
+        "kind": "music",
+        "voice": 2,
+        "sequence": 292347,
+        "commands": 21,
+        "notes": 19,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 150,
+        "kind": "music",
+        "voice": 3,
+        "sequence": 292419,
+        "commands": 21,
+        "notes": 19,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 150,
+        "kind": "music",
+        "voice": 4,
+        "sequence": 292487,
+        "commands": 6,
+        "notes": 12,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 150,
+        "kind": "music",
+        "voice": 5,
+        "sequence": 292521,
+        "commands": 20,
+        "notes": 20,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 150,
+        "kind": "music",
+        "voice": 6,
+        "sequence": 292589,
+        "commands": 12,
+        "notes": 17,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 150,
+        "kind": "music",
+        "voice": 7,
+        "sequence": 292639,
+        "commands": 12,
+        "notes": 17,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 150,
+        "kind": "music",
+        "voice": 8,
+        "sequence": 292689,
+        "commands": 2,
+        "notes": 11,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 160,
+        "kind": "primary",
+        "voice": 0,
+        "sequence": 292918,
+        "commands": 4,
+        "notes": 4,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 161,
+        "kind": "primary",
+        "voice": 0,
+        "sequence": 293024,
+        "commands": 21,
+        "notes": 17,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 161,
+        "kind": "primary",
+        "voice": 1,
+        "sequence": 293059,
+        "commands": 18,
+        "notes": 17,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 162,
+        "kind": "primary",
+        "voice": 0,
+        "sequence": 293148,
+        "commands": 4,
+        "notes": 4,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 163,
+        "kind": "primary",
+        "voice": 0,
+        "sequence": 293226,
+        "commands": 4,
+        "notes": 4,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 164,
+        "kind": "primary",
+        "voice": 0,
+        "sequence": 293304,
+        "commands": 3,
+        "notes": 4,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 165,
+        "kind": "primary",
+        "voice": 0,
+        "sequence": 293356,
+        "commands": 3,
+        "notes": 2,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 166,
+        "kind": "primary",
+        "voice": 0,
+        "sequence": 293404,
+        "commands": 4,
+        "notes": 2,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 167,
+        "kind": "primary",
+        "voice": 0,
+        "sequence": 293458,
+        "commands": 47,
+        "notes": 40,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 167,
+        "kind": "primary",
+        "voice": 1,
+        "sequence": 293484,
+        "commands": 48,
+        "notes": 40,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 168,
+        "kind": "primary",
+        "voice": 0,
+        "sequence": 293548,
+        "commands": 14,
+        "notes": 9,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 169,
+        "kind": "primary",
+        "voice": 0,
+        "sequence": 293632,
+        "commands": 18,
+        "notes": 29,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 170,
+        "kind": "primary",
+        "voice": 0,
+        "sequence": 293720,
+        "commands": 5,
+        "notes": 2,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 171,
+        "kind": "primary",
+        "voice": 0,
+        "sequence": 293812,
+        "commands": 19,
+        "notes": 10,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 171,
+        "kind": "primary",
+        "voice": 1,
+        "sequence": 293833,
+        "commands": 19,
+        "notes": 10,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      },
+      {
+        "id": 171,
+        "kind": "primary",
+        "voice": 2,
+        "sequence": 293854,
+        "commands": 2,
+        "notes": 1,
+        "stopped": true,
+        "prefix_quanta": null,
+        "cycle_quanta": null
+      }
+    ],
+    "walk_errors": [],
+    "all_E2_events": [],
+    "all_FF_events": [],
+    "fight_E2_events": [],
+    "fight_FF_events": [],
+    "fight_nested_queue": [
+      {
+        "id": 171,
+        "voice": 2,
+        "source": 293856,
+        "quanta": 6,
+        "command": 235,
+        "args": "7d"
+      }
+    ],
+    "matches_previous_static_provenance": true,
+    "walker_bounds": {
+      "max_commands_per_track": 200000,
+      "max_quanta": 1000000,
+      "method": "Shared loop/return words and finite/cyclic score-data grammar; no CPU or target execution"
+    },
+    "limits": [
+      "Negative results are confined to these 22 music and 12 primary definitions under the declared grammar.",
+      "The 11 fight music definitions are a subset; arbitrary computed/dynamic score entry is not excluded."
+    ]
+  },
+  "F803": {
+    "E2_dispatch_entry": {
+      "address": 232896,
+      "target": 233076,
+      "bytes": "600000b2"
+    },
+    "actual_handler": {
+      "instruction": 233076,
+      "bytes": "11dcf8034e75",
+      "semantic": "E2 copies one score-data byte to the signal field"
+    },
+    "producer_in_fight_grammar": false,
+    "other_entry_paths_not_excluded": true
+  },
+  "F805": {
+    "known_direct_instruction_references": [],
+    "raw_aligned_word_candidates": [
+      {
+        "operand_word": 645422,
+        "nearby_bytes": "636c51276f53f805d67555dd",
+        "evidence": "unclassified raw word match; not accepted as code"
+      },
+      {
+        "operand_word": 2692558,
+        "nearby_bytes": "040501848f02f80506c83f8c",
+        "evidence": "unclassified raw word match; not accepted as code"
+      }
+    ],
+    "fade_period_owner_established": false,
+    "later_interval_is_immediate_constant": true,
+    "indirect_or_external_usage_not_excluded": true,
+    "bulk_reset_zeroes_byte": true
+  },
+  "producer_search": {
+    "saved_listing_files": 117,
+    "saved_instruction_addresses": 18654,
+    "known_direct_references": [
+      {
+        "field": "F82B",
+        "instruction": 228940,
+        "text": "cmpi.b #0x2,(0xfffff82b).w",
+        "access": "read",
+        "listing": [
+          {
+            "text": "cmpi.b #0x2,(0xfffff82b).w",
+            "path": "docs/research/md-yuyuhakusho/static/audio-dispatch.txt",
+            "line": 97
+          },
+          {
+            "text": "cmpi.b #0x2,(0xfffff82b).w",
+            "path": "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt",
+            "line": 530
+          }
+        ],
+        "rom_prefix": "0c380002f82b6700"
+      },
+      {
+        "field": "F82B",
+        "instruction": 228950,
+        "text": "move.b #0x1,(0xfffff82b).w",
+        "access": "write-or-RMW",
+        "listing": [
+          {
+            "text": "move.b #0x1,(0xfffff82b).w",
+            "path": "docs/research/md-yuyuhakusho/static/audio-dispatch.txt",
+            "line": 99
+          },
+          {
+            "text": "move.b #0x1,(0xfffff82b).w",
+            "path": "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt",
+            "line": 532
+          }
+        ],
+        "rom_prefix": "11fc0001f82b4e75"
+      },
+      {
+        "field": "F82C",
+        "instruction": 229112,
+        "text": "btst.b #0x0,(0xfffff82c).w",
+        "access": "read",
+        "listing": [
+          {
+            "text": "btst.b #0x0,(0xfffff82c).w",
+            "path": "docs/research/md-yuyuhakusho/static/audio-dispatch.txt",
+            "line": 140
+          },
+          {
+            "text": "btst.b #0x0,(0xfffff82c).w",
+            "path": "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt",
+            "line": 573
+          }
+        ],
+        "rom_prefix": "08380000f82c6600"
+      },
+      {
+        "field": "F82C",
+        "instruction": 229150,
+        "text": "bset.b #0x0,(0xfffff82c).w",
+        "access": "write-or-RMW",
+        "listing": [
+          {
+            "text": "bset.b #0x0,(0xfffff82c).w",
+            "path": "docs/research/md-yuyuhakusho/static/audio-dispatch.txt",
+            "line": 152
+          },
+          {
+            "text": "bset.b #0x0,(0xfffff82c).w",
+            "path": "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt",
+            "line": 585
+          }
+        ],
+        "rom_prefix": "08f80000f82c6100"
+      },
+      {
+        "field": "F82B",
+        "instruction": 229308,
+        "text": "cmpi.b #0x2,(0xfffff82b).w",
+        "access": "read",
+        "listing": [
+          {
+            "text": "cmpi.b #0x2,(0xfffff82b).w",
+            "path": "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt",
+            "line": 612
+          }
+        ],
+        "rom_prefix": "0c380002f82b6700"
+      },
+      {
+        "field": "F82B",
+        "instruction": 229318,
+        "text": "move.b #0x1,(0xfffff82b).w",
+        "access": "write-or-RMW",
+        "listing": [
+          {
+            "text": "move.b #0x1,(0xfffff82b).w",
+            "path": "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt",
+            "line": 614
+          }
+        ],
+        "rom_prefix": "11fc0001f82b4e75"
+      },
+      {
+        "field": "F82C",
+        "instruction": 229326,
+        "text": "bclr.b #0x0,(0xfffff82c).w",
+        "access": "write-or-RMW",
+        "listing": [
+          {
+            "text": "bclr.b #0x0,(0xfffff82c).w",
+            "path": "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt",
+            "line": 616
+          }
+        ],
+        "rom_prefix": "08b80000f82c6100"
+      },
+      {
+        "field": "F82B",
+        "instruction": 229484,
+        "text": "cmpi.b #0x2,(0xfffff82b).w",
+        "access": "read",
+        "listing": [
+          {
+            "text": "cmpi.b #0x2,(0xfffff82b).w",
+            "path": "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt",
+            "line": 643
+          }
+        ],
+        "rom_prefix": "0c380002f82b6700"
+      },
+      {
+        "field": "F82B",
+        "instruction": 229494,
+        "text": "move.b #0x1,(0xfffff82b).w",
+        "access": "write-or-RMW",
+        "listing": [
+          {
+            "text": "move.b #0x1,(0xfffff82b).w",
+            "path": "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt",
+            "line": 645
+          }
+        ],
+        "rom_prefix": "11fc0001f82b4e75"
+      },
+      {
+        "field": "F82B",
+        "instruction": 232494,
+        "text": "cmpi.b #0x2,(0xfffff82b).w",
+        "access": "read",
+        "listing": [
+          {
+            "text": "cmpi.b #0x2,(0xfffff82b).w",
+            "path": "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt",
+            "line": 1191
+          }
+        ],
+        "rom_prefix": "0c380002f82b6700"
+      },
+      {
+        "field": "F828",
+        "instruction": 232504,
+        "text": "move.b (0xfffff828).w,D0b",
+        "access": "read",
+        "listing": [
+          {
+            "text": "move.b (0xfffff828).w,D0b",
+            "path": "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt",
+            "line": 1193
+          }
+        ],
+        "rom_prefix": "1038f82867000022"
+      },
+      {
+        "field": "F828",
+        "instruction": 232524,
+        "text": "move.b #0x2,(0xfffff828).w",
+        "access": "write-or-RMW",
+        "listing": [
+          {
+            "text": "move.b #0x2,(0xfffff828).w",
+            "path": "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt",
+            "line": 1198
+          }
+        ],
+        "rom_prefix": "11fc0002f8286000"
+      },
+      {
+        "field": "F828",
+        "instruction": 232534,
+        "text": "move.b #0x0,(0xfffff828).w",
+        "access": "write-or-RMW",
+        "listing": [
+          {
+            "text": "move.b #0x0,(0xfffff828).w",
+            "path": "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt",
+            "line": 1200
+          }
+        ],
+        "rom_prefix": "11fc0000f8286000"
+      },
+      {
+        "field": "F828",
+        "instruction": 232544,
+        "text": "cmpi.b #0x2,(0xfffff828).w",
+        "access": "read",
+        "listing": [
+          {
+            "text": "cmpi.b #0x2,(0xfffff828).w",
+            "path": "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt",
+            "line": 1202
+          }
+        ],
+        "rom_prefix": "0c380002f8286700"
+      },
+      {
+        "field": "F82B",
+        "instruction": 232554,
+        "text": "move.b (0xfffff82b).w,D0b",
+        "access": "read",
+        "listing": [
+          {
+            "text": "move.b (0xfffff82b).w,D0b",
+            "path": "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt",
+            "line": 1204
+          }
+        ],
+        "rom_prefix": "1038f82b67000096"
+      },
+      {
+        "field": "F82B",
+        "instruction": 232618,
+        "text": "move.b #0x2,(0xfffff82b).w",
+        "access": "write-or-RMW",
+        "listing": [
+          {
+            "text": "move.b #0x2,(0xfffff82b).w",
+            "path": "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt",
+            "line": 1218
+          }
+        ],
+        "rom_prefix": "11fc0002f82b1038"
+      },
+      {
+        "field": "F829",
+        "instruction": 232624,
+        "text": "move.b (0xfffff829).w,D0b",
+        "access": "read",
+        "listing": [
+          {
+            "text": "move.b (0xfffff829).w,D0b",
+            "path": "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt",
+            "line": 1219
+          }
+        ],
+        "rom_prefix": "1038f8298038f82a"
+      },
+      {
+        "field": "F82A",
+        "instruction": 232628,
+        "text": "or.b (0xfffff82a).w,D0b",
+        "access": "read",
+        "listing": [
+          {
+            "text": "or.b (0xfffff82a).w,D0b",
+            "path": "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt",
+            "line": 1220
+          }
+        ],
+        "rom_prefix": "8038f82a6600004e"
+      },
+      {
+        "field": "F829",
+        "instruction": 232636,
+        "text": "move.b #0xa,(0xfffff829).w",
+        "access": "write-or-RMW",
+        "listing": [
+          {
+            "text": "move.b #0xa,(0xfffff829).w",
+            "path": "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt",
+            "line": 1222
+          }
+        ],
+        "rom_prefix": "11fc000af82911fc"
+      },
+      {
+        "field": "F82A",
+        "instruction": 232642,
+        "text": "move.b #0x2,(0xfffff82a).w",
+        "access": "write-or-RMW",
+        "listing": [
+          {
+            "text": "move.b #0x2,(0xfffff82a).w",
+            "path": "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt",
+            "line": 1223
+          }
+        ],
+        "rom_prefix": "11fc0002f82a6000"
+      },
+      {
+        "field": "F82B",
+        "instruction": 232700,
+        "text": "move.b #0x0,(0xfffff82b).w",
+        "access": "write-or-RMW",
+        "listing": [
+          {
+            "text": "move.b #0x0,(0xfffff82b).w",
+            "path": "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt",
+            "line": 1235
+          }
+        ],
+        "rom_prefix": "11fc0000f82b6000"
+      },
+      {
+        "field": "F829",
+        "instruction": 232712,
+        "text": "move.b (0xfffff829).w,D6b",
+        "access": "read",
+        "listing": [
+          {
+            "text": "move.b (0xfffff829).w,D6b",
+            "path": "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt",
+            "line": 1238
+          }
+        ],
+        "rom_prefix": "1c38f8294bf8f870"
+      },
+      {
+        "field": "F82A",
+        "instruction": 232744,
+        "text": "move.b (0xfffff82a).w,D5b",
+        "access": "read",
+        "listing": [
+          {
+            "text": "move.b (0xfffff82a).w,D5b",
+            "path": "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt",
+            "line": 1248
+          }
+        ],
+        "rom_prefix": "1a38f82a7e024a15"
+      },
+      {
+        "field": "F829",
+        "instruction": 232784,
+        "text": "move.b (0xfffff829).w,D6b",
+        "access": "read",
+        "listing": [
+          {
+            "text": "move.b (0xfffff829).w,D6b",
+            "path": "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt",
+            "line": 1260
+          }
+        ],
+        "rom_prefix": "1c38f8294bf8f870"
+      },
+      {
+        "field": "F82A",
+        "instruction": 232814,
+        "text": "move.b (0xfffff82a).w,D5b",
+        "access": "read",
+        "listing": [
+          {
+            "text": "move.b (0xfffff82a).w,D5b",
+            "path": "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt",
+            "line": 1269
+          }
+        ],
+        "rom_prefix": "1a38f82a7e024a15"
+      },
+      {
+        "field": "F829",
+        "instruction": 232844,
+        "text": "clr.b (0xfffff829).w",
+        "access": "write-or-RMW",
+        "listing": [
+          {
+            "text": "clr.b (0xfffff829).w",
+            "path": "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt",
+            "line": 1278
+          }
+        ],
+        "rom_prefix": "4238f8294238f82a"
+      },
+      {
+        "field": "F82A",
+        "instruction": 232848,
+        "text": "clr.b (0xfffff82a).w",
+        "access": "write-or-RMW",
+        "listing": [
+          {
+            "text": "clr.b (0xfffff82a).w",
+            "path": "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt",
+            "line": 1279
+          }
+        ],
+        "rom_prefix": "4238f82a4e75025e"
+      },
+      {
+        "field": "F803",
+        "instruction": 233076,
+        "text": "move.b (A4)+,(0xfffff803).w",
+        "access": "write-or-RMW",
+        "listing": [
+          {
+            "text": "move.b (A4)+,(0xfffff803).w",
+            "path": "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt",
+            "line": 1330
+          }
+        ],
+        "rom_prefix": "11dcf8034e754eba"
+      }
+    ],
+    "FF_subcommands": {
+      "00": {
+        "entry": 233022,
+        "bytes": "60000418",
+        "target": 234072
+      },
+      "01": {
+        "entry": 233026,
+        "bytes": "60000438",
+        "target": 234108
+      },
+      "02": {
+        "entry": 233030,
+        "bytes": "60000566",
+        "target": 234414
+      },
+      "03": {
+        "entry": 233034,
+        "bytes": "60000578",
+        "target": 234436
+      },
+      "04": {
+        "entry": 233038,
+        "bytes": "6000059c",
+        "target": 234476
+      }
+    },
+    "FF_handler_bytes": {
+      "address": 234436,
+      "bytes": "4a38f82867000006544c4e7511fc0001f8281038f8298038f82a6600000a11dcf82911dcf82a4e750c380002f8286600000811fc0080f8284e75"
+    },
+    "FF_handler_instructions": [
+      {
+        "instruction": 234436,
+        "bytes": "4a38f828",
+        "text": "tst.b Mode",
+        "access": "read",
+        "field": "F828",
+        "evidence": "Fixed ROM templates reached by the saved FF sub-dispatch table; no new disassembler or execution"
+      },
+      {
+        "instruction": 234440,
+        "bytes": "67000006",
+        "text": "beq.w init-if-zero",
+        "access": "branch",
+        "field": null,
+        "evidence": "Fixed ROM templates reached by the saved FF sub-dispatch table; no new disassembler or execution"
+      },
+      {
+        "instruction": 234444,
+        "bytes": "544c",
+        "text": "addq.w #2,A4",
+        "access": "skip-two-arguments",
+        "field": null,
+        "evidence": "Fixed ROM templates reached by the saved FF sub-dispatch table; no new disassembler or execution"
+      },
+      {
+        "instruction": 234446,
+        "bytes": "4e75",
+        "text": "rts",
+        "access": "return",
+        "field": null,
+        "evidence": "Fixed ROM templates reached by the saved FF sub-dispatch table; no new disassembler or execution"
+      },
+      {
+        "instruction": 234448,
+        "bytes": "11fc0001f828",
+        "text": "move.b #1,Mode",
+        "access": "write",
+        "field": "F828",
+        "evidence": "Fixed ROM templates reached by the saved FF sub-dispatch table; no new disassembler or execution"
+      },
+      {
+        "instruction": 234454,
+        "bytes": "1038f829",
+        "text": "move.b FMDelta,D0",
+        "access": "read",
+        "field": "F829",
+        "evidence": "Fixed ROM templates reached by the saved FF sub-dispatch table; no new disassembler or execution"
+      },
+      {
+        "instruction": 234458,
+        "bytes": "8038f82a",
+        "text": "or.b PSGDelta,D0",
+        "access": "read",
+        "field": "F82A",
+        "evidence": "Fixed ROM templates reached by the saved FF sub-dispatch table; no new disassembler or execution"
+      },
+      {
+        "instruction": 234462,
+        "bytes": "6600000a",
+        "text": "bne.w return-without-consuming-arguments",
+        "access": "branch",
+        "field": null,
+        "evidence": "Fixed ROM templates reached by the saved FF sub-dispatch table; no new disassembler or execution"
+      },
+      {
+        "instruction": 234466,
+        "bytes": "11dcf829",
+        "text": "move.b (A4)+,FMDelta",
+        "access": "write",
+        "field": "F829",
+        "evidence": "Fixed ROM templates reached by the saved FF sub-dispatch table; no new disassembler or execution"
+      },
+      {
+        "instruction": 234470,
+        "bytes": "11dcf82a",
+        "text": "move.b (A4)+,PSGDelta",
+        "access": "write",
+        "field": "F82A",
+        "evidence": "Fixed ROM templates reached by the saved FF sub-dispatch table; no new disassembler or execution"
+      },
+      {
+        "instruction": 234474,
+        "bytes": "4e75",
+        "text": "rts",
+        "access": "return",
+        "field": null,
+        "evidence": "Fixed ROM templates reached by the saved FF sub-dispatch table; no new disassembler or execution"
+      },
+      {
+        "instruction": 234476,
+        "bytes": "0c380002f828",
+        "text": "cmpi.b #2,Mode",
+        "access": "read",
+        "field": "F828",
+        "evidence": "Fixed ROM templates reached by the saved FF sub-dispatch table; no new disassembler or execution"
+      },
+      {
+        "instruction": 234482,
+        "bytes": "66000008",
+        "text": "bne.w return",
+        "access": "branch",
+        "field": null,
+        "evidence": "Fixed ROM templates reached by the saved FF sub-dispatch table; no new disassembler or execution"
+      },
+      {
+        "instruction": 234486,
+        "bytes": "11fc0080f828",
+        "text": "move.b #0x80,Mode",
+        "access": "write",
+        "field": "F828",
+        "evidence": "Fixed ROM templates reached by the saved FF sub-dispatch table; no new disassembler or execution"
+      },
+      {
+        "instruction": 234492,
+        "bytes": "4e75",
+        "text": "rts",
+        "access": "return",
+        "field": null,
+        "evidence": "Fixed ROM templates reached by the saved FF sub-dispatch table; no new disassembler or execution"
+      }
+    ],
+    "aligned_word_candidates": {
+      "F803": [
+        {
+          "operand_word": 233078,
+          "nearby_bytes": "001e4e7511dcf8034e754eba",
+          "instruction": 233076,
+          "evidence": "saved-direct-Ghidra-listing"
+        },
+        {
+          "operand_word": 539402,
+          "nearby_bytes": "7de63e5ee437f80374586efb",
+          "evidence": "unclassified raw word match; not accepted as code"
+        },
+        {
+          "operand_word": 2651096,
+          "nearby_bytes": "f3f4f5f600f7f8030c4a04f9",
+          "evidence": "unclassified raw word match; not accepted as code"
+        }
+      ],
+      "F805": [
+        {
+          "operand_word": 645422,
+          "nearby_bytes": "636c51276f53f805d67555dd",
+          "evidence": "unclassified raw word match; not accepted as code"
+        },
+        {
+          "operand_word": 2692558,
+          "nearby_bytes": "040501848f02f80506c83f8c",
+          "evidence": "unclassified raw word match; not accepted as code"
+        }
+      ],
+      "F828": [
+        {
+          "operand_word": 232506,
+          "nearby_bytes": "6700002a1038f82867000022",
+          "instruction": 232504,
+          "evidence": "saved-direct-Ghidra-listing"
+        },
+        {
+          "operand_word": 232528,
+          "nearby_bytes": "001611fc0002f828600000b4",
+          "instruction": 232524,
+          "evidence": "saved-direct-Ghidra-listing"
+        },
+        {
+          "operand_word": 232538,
+          "nearby_bytes": "00b411fc0000f828600000f2",
+          "instruction": 232534,
+          "evidence": "saved-direct-Ghidra-listing"
+        },
+        {
+          "operand_word": 232548,
+          "nearby_bytes": "00f20c380002f8286700009e",
+          "instruction": 232544,
+          "evidence": "saved-direct-Ghidra-listing"
+        },
+        {
+          "operand_word": 234438,
+          "nearby_bytes": "fff84e754a38f82867000006",
+          "instruction": 234436,
+          "evidence": "FF-table-linked fixed ROM template"
+        },
+        {
+          "operand_word": 234452,
+          "nearby_bytes": "4e7511fc0001f8281038f829",
+          "instruction": 234448,
+          "evidence": "FF-table-linked fixed ROM template"
+        },
+        {
+          "operand_word": 234480,
+          "nearby_bytes": "4e750c380002f82866000008",
+          "instruction": 234476,
+          "evidence": "FF-table-linked fixed ROM template"
+        },
+        {
+          "operand_word": 234490,
+          "nearby_bytes": "000811fc0080f8284e75f3f3",
+          "instruction": 234486,
+          "evidence": "FF-table-linked fixed ROM template"
+        },
+        {
+          "operand_word": 379438,
+          "nearby_bytes": "f770fe67ff87f8286eff677f",
+          "evidence": "unclassified raw word match; not accepted as code"
+        },
+        {
+          "operand_word": 399462,
+          "nearby_bytes": "f868476ff78df8286fdc64f6",
+          "evidence": "unclassified raw word match; not accepted as code"
+        },
+        {
+          "operand_word": 509696,
+          "nearby_bytes": "87666f67f478f82857f28fc7",
+          "evidence": "unclassified raw word match; not accepted as code"
+        }
+      ],
+      "F829": [
+        {
+          "operand_word": 232626,
+          "nearby_bytes": "0002f82b1038f8298038f82a",
+          "instruction": 232624,
+          "evidence": "saved-direct-Ghidra-listing"
+        },
+        {
+          "operand_word": 232640,
+          "nearby_bytes": "004e11fc000af82911fc0002",
+          "instruction": 232636,
+          "evidence": "saved-direct-Ghidra-listing"
+        },
+        {
+          "operand_word": 232714,
+          "nearby_bytes": "004c4e751c38f8294bf8f870",
+          "instruction": 232712,
+          "evidence": "saved-direct-Ghidra-listing"
+        },
+        {
+          "operand_word": 232786,
+          "nearby_bytes": "ffe24e751c38f8294bf8f870",
+          "instruction": 232784,
+          "evidence": "saved-direct-Ghidra-listing"
+        },
+        {
+          "operand_word": 232846,
+          "nearby_bytes": "51cfffea4238f8294238f82a",
+          "instruction": 232844,
+          "evidence": "saved-direct-Ghidra-listing"
+        },
+        {
+          "operand_word": 234456,
+          "nearby_bytes": "0001f8281038f8298038f82a",
+          "instruction": 234454,
+          "evidence": "FF-table-linked fixed ROM template"
+        },
+        {
+          "operand_word": 234468,
+          "nearby_bytes": "6600000a11dcf82911dcf82a",
+          "instruction": 234466,
+          "evidence": "FF-table-linked fixed ROM template"
+        }
+      ],
+      "F82A": [
+        {
+          "operand_word": 214056,
+          "nearby_bytes": "f956f8f2f88ef82af7c6f763",
+          "evidence": "unclassified raw word match; not accepted as code"
+        },
+        {
+          "operand_word": 215000,
+          "nearby_bytes": "f6fff763f7c6f82af88ef8f2",
+          "evidence": "unclassified raw word match; not accepted as code"
+        },
+        {
+          "operand_word": 232630,
+          "nearby_bytes": "1038f8298038f82a6600004e",
+          "instruction": 232628,
+          "evidence": "saved-direct-Ghidra-listing"
+        },
+        {
+          "operand_word": 232646,
+          "nearby_bytes": "f82911fc0002f82a6000003e",
+          "instruction": 232642,
+          "evidence": "saved-direct-Ghidra-listing"
+        },
+        {
+          "operand_word": 232746,
+          "nearby_bytes": "51cfffec1a38f82a7e024a15",
+          "instruction": 232744,
+          "evidence": "saved-direct-Ghidra-listing"
+        },
+        {
+          "operand_word": 232816,
+          "nearby_bytes": "51cfffee1a38f82a7e024a15",
+          "instruction": 232814,
+          "evidence": "saved-direct-Ghidra-listing"
+        },
+        {
+          "operand_word": 232850,
+          "nearby_bytes": "4238f8294238f82a4e75025e",
+          "instruction": 232848,
+          "evidence": "saved-direct-Ghidra-listing"
+        },
+        {
+          "operand_word": 234460,
+          "nearby_bytes": "1038f8298038f82a6600000a",
+          "instruction": 234458,
+          "evidence": "FF-table-linked fixed ROM template"
+        },
+        {
+          "operand_word": 234472,
+          "nearby_bytes": "11dcf82911dcf82a4e750c38",
+          "instruction": 234470,
+          "evidence": "FF-table-linked fixed ROM template"
+        }
+      ],
+      "F82B": [
+        {
+          "operand_word": 228944,
+          "nearby_bytes": "00120c380002f82b67000008",
+          "instruction": 228940,
+          "evidence": "saved-direct-Ghidra-listing"
+        },
+        {
+          "operand_word": 228954,
+          "nearby_bytes": "000811fc0001f82b4e7540e7",
+          "instruction": 228950,
+          "evidence": "saved-direct-Ghidra-listing"
+        },
+        {
+          "operand_word": 229312,
+          "nearby_bytes": "00120c380002f82b67000008",
+          "instruction": 229308,
+          "evidence": "saved-direct-Ghidra-listing"
+        },
+        {
+          "operand_word": 229322,
+          "nearby_bytes": "000811fc0001f82b4e7508b8",
+          "instruction": 229318,
+          "evidence": "saved-direct-Ghidra-listing"
+        },
+        {
+          "operand_word": 229488,
+          "nearby_bytes": "00120c380002f82b67000008",
+          "instruction": 229484,
+          "evidence": "saved-direct-Ghidra-listing"
+        },
+        {
+          "operand_word": 229498,
+          "nearby_bytes": "000811fc0001f82b4e757000",
+          "instruction": 229494,
+          "evidence": "saved-direct-Ghidra-listing"
+        },
+        {
+          "operand_word": 232498,
+          "nearby_bytes": "4e750c380002f82b6700002a",
+          "instruction": 232494,
+          "evidence": "saved-direct-Ghidra-listing"
+        },
+        {
+          "operand_word": 232556,
+          "nearby_bytes": "6700009e1038f82b67000096",
+          "instruction": 232554,
+          "evidence": "saved-direct-Ghidra-listing"
+        },
+        {
+          "operand_word": 232622,
+          "nearby_bytes": "005e11fc0002f82b1038f829",
+          "instruction": 232618,
+          "evidence": "saved-direct-Ghidra-listing"
+        },
+        {
+          "operand_word": 232704,
+          "nearby_bytes": "000c11fc0000f82b6000004c",
+          "instruction": 232700,
+          "evidence": "saved-direct-Ghidra-listing"
+        }
+      ],
+      "F82C": [
+        {
+          "operand_word": 229116,
+          "nearby_bytes": "00d808380000f82c66000010",
+          "instruction": 229112,
+          "evidence": "saved-direct-Ghidra-listing"
+        },
+        {
+          "operand_word": 229154,
+          "nearby_bytes": "4e7508f80000f82c61000158",
+          "instruction": 229150,
+          "evidence": "saved-direct-Ghidra-listing"
+        },
+        {
+          "operand_word": 229330,
+          "nearby_bytes": "4e7508b80000f82c610000a8",
+          "instruction": 229326,
+          "evidence": "saved-direct-Ghidra-listing"
+        },
+        {
+          "operand_word": 805702,
+          "nearby_bytes": "042e78140430f82c043288fa",
+          "evidence": "unclassified raw word match; not accepted as code"
+        }
+      ]
+    },
+    "aligned_search_range": [
+      0,
+      3145728
+    ],
+    "instruction_evidence_policy": "Accept saved direct-Ghidra instructions, or exact bounded ROM templates reached from an already corroborated sub-dispatch table. Other word matches remain unclassified.",
+    "FF_profile_natural_reachability": "not established in the audited grammar or saved natural observations",
+    "classification": {
+      "F828": "Header writes 2/0 plus FF03 writes1 and FF04 writes80; FF profile not observed in audited score grammar.",
+      "F829_F82A": "Automatic-duck defaults A/2 and restore clears; FF03 may load score-data deltas only when prior deltas are both zero.",
+      "F82B": "Accepted PCM producers at37e56/37fc6/38076 request1; header acknowledges2 and restores0. Relevance to139fight is separately checked against descriptor flag5.",
+      "F82C": "Dual-slot accepted A sets bit0, accepted B clears bit0; bulk reset zeroes it."
+    },
+    "unresolved": [
+      "No whole-ROM computed/dynamic call-graph proof.",
+      "Raw word candidates outside accepted instruction evidence are not called code or ruled unreachable.",
+      "Saved static listings do not themselves prove match/menu execution; FF producers remain unclassified for those scene labels."
+    ]
+  },
+  "duck_descriptors": {
+    "ordinary_count": 122,
+    "F0_count": 1,
+    "music_DAC_count": 25,
+    "ordinary_flag5_descriptors": [
+      {
+        "id": 127,
+        "address": 230512,
+        "bytes": "07001c8014e0c000",
+        "flags": 224
+      }
+    ],
+    "F0_descriptor": {
+      "address": 230520,
+      "bytes": "0b80008014814000"
+    },
+    "ordinary_with_flag5": [
+      127
+    ],
+    "fight_with_flag5": [],
+    "ordinary_flags": [
+      {
+        "id": 6,
+        "descriptor": 229544,
+        "flags": 1
+      },
+      {
+        "id": 7,
+        "descriptor": 229552,
+        "flags": 1
+      },
+      {
+        "id": 8,
+        "descriptor": 229560,
+        "flags": 193
+      },
+      {
+        "id": 9,
+        "descriptor": 229568,
+        "flags": 193
+      },
+      {
+        "id": 10,
+        "descriptor": 229576,
+        "flags": 193
+      },
+      {
+        "id": 11,
+        "descriptor": 229584,
+        "flags": 193
+      },
+      {
+        "id": 12,
+        "descriptor": 229592,
+        "flags": 193
+      },
+      {
+        "id": 13,
+        "descriptor": 229600,
+        "flags": 193
+      },
+      {
+        "id": 14,
+        "descriptor": 229608,
+        "flags": 1
+      },
+      {
+        "id": 15,
+        "descriptor": 229616,
+        "flags": 1
+      },
+      {
+        "id": 16,
+        "descriptor": 229624,
+        "flags": 193
+      },
+      {
+        "id": 17,
+        "descriptor": 229632,
+        "flags": 193
+      },
+      {
+        "id": 18,
+        "descriptor": 229640,
+        "flags": 193
+      },
+      {
+        "id": 19,
+        "descriptor": 229648,
+        "flags": 193
+      },
+      {
+        "id": 20,
+        "descriptor": 229656,
+        "flags": 193
+      },
+      {
+        "id": 21,
+        "descriptor": 229664,
+        "flags": 193
+      },
+      {
+        "id": 22,
+        "descriptor": 229672,
+        "flags": 1
+      },
+      {
+        "id": 23,
+        "descriptor": 229680,
+        "flags": 1
+      },
+      {
+        "id": 24,
+        "descriptor": 229688,
+        "flags": 193
+      },
+      {
+        "id": 25,
+        "descriptor": 229696,
+        "flags": 193
+      },
+      {
+        "id": 26,
+        "descriptor": 229704,
+        "flags": 193
+      },
+      {
+        "id": 27,
+        "descriptor": 229712,
+        "flags": 1
+      },
+      {
+        "id": 28,
+        "descriptor": 229720,
+        "flags": 193
+      },
+      {
+        "id": 29,
+        "descriptor": 229728,
+        "flags": 1
+      },
+      {
+        "id": 30,
+        "descriptor": 229736,
+        "flags": 193
+      },
+      {
+        "id": 31,
+        "descriptor": 229744,
+        "flags": 193
+      },
+      {
+        "id": 32,
+        "descriptor": 229752,
+        "flags": 193
+      },
+      {
+        "id": 33,
+        "descriptor": 229760,
+        "flags": 193
+      },
+      {
+        "id": 34,
+        "descriptor": 229768,
+        "flags": 193
+      },
+      {
+        "id": 35,
+        "descriptor": 229776,
+        "flags": 1
+      },
+      {
+        "id": 36,
+        "descriptor": 229784,
+        "flags": 1
+      },
+      {
+        "id": 37,
+        "descriptor": 229792,
+        "flags": 193
+      },
+      {
+        "id": 38,
+        "descriptor": 229800,
+        "flags": 193
+      },
+      {
+        "id": 39,
+        "descriptor": 229808,
+        "flags": 193
+      },
+      {
+        "id": 40,
+        "descriptor": 229816,
+        "flags": 193
+      },
+      {
+        "id": 41,
+        "descriptor": 229824,
+        "flags": 193
+      },
+      {
+        "id": 42,
+        "descriptor": 229832,
+        "flags": 193
+      },
+      {
+        "id": 43,
+        "descriptor": 229840,
+        "flags": 193
+      },
+      {
+        "id": 44,
+        "descriptor": 229848,
+        "flags": 193
+      },
+      {
+        "id": 45,
+        "descriptor": 229856,
+        "flags": 1
+      },
+      {
+        "id": 46,
+        "descriptor": 229864,
+        "flags": 193
+      },
+      {
+        "id": 47,
+        "descriptor": 229872,
+        "flags": 193
+      },
+      {
+        "id": 48,
+        "descriptor": 229880,
+        "flags": 193
+      },
+      {
+        "id": 49,
+        "descriptor": 229888,
+        "flags": 193
+      },
+      {
+        "id": 50,
+        "descriptor": 229896,
+        "flags": 193
+      },
+      {
+        "id": 51,
+        "descriptor": 229904,
+        "flags": 193
+      },
+      {
+        "id": 52,
+        "descriptor": 229912,
+        "flags": 1
+      },
+      {
+        "id": 53,
+        "descriptor": 229920,
+        "flags": 1
+      },
+      {
+        "id": 54,
+        "descriptor": 229928,
+        "flags": 193
+      },
+      {
+        "id": 55,
+        "descriptor": 229936,
+        "flags": 193
+      },
+      {
+        "id": 56,
+        "descriptor": 229944,
+        "flags": 193
+      },
+      {
+        "id": 57,
+        "descriptor": 229952,
+        "flags": 193
+      },
+      {
+        "id": 58,
+        "descriptor": 229960,
+        "flags": 193
+      },
+      {
+        "id": 59,
+        "descriptor": 229968,
+        "flags": 1
+      },
+      {
+        "id": 60,
+        "descriptor": 229976,
+        "flags": 1
+      },
+      {
+        "id": 61,
+        "descriptor": 229984,
+        "flags": 193
+      },
+      {
+        "id": 62,
+        "descriptor": 229992,
+        "flags": 193
+      },
+      {
+        "id": 63,
+        "descriptor": 230000,
+        "flags": 193
+      },
+      {
+        "id": 64,
+        "descriptor": 230008,
+        "flags": 193
+      },
+      {
+        "id": 65,
+        "descriptor": 230016,
+        "flags": 193
+      },
+      {
+        "id": 66,
+        "descriptor": 230024,
+        "flags": 1
+      },
+      {
+        "id": 67,
+        "descriptor": 230032,
+        "flags": 1
+      },
+      {
+        "id": 68,
+        "descriptor": 230040,
+        "flags": 193
+      },
+      {
+        "id": 69,
+        "descriptor": 230048,
+        "flags": 193
+      },
+      {
+        "id": 70,
+        "descriptor": 230056,
+        "flags": 193
+      },
+      {
+        "id": 71,
+        "descriptor": 230064,
+        "flags": 193
+      },
+      {
+        "id": 72,
+        "descriptor": 230072,
+        "flags": 193
+      },
+      {
+        "id": 73,
+        "descriptor": 230080,
+        "flags": 193
+      },
+      {
+        "id": 74,
+        "descriptor": 230088,
+        "flags": 193
+      },
+      {
+        "id": 75,
+        "descriptor": 230096,
+        "flags": 1
+      },
+      {
+        "id": 76,
+        "descriptor": 230104,
+        "flags": 193
+      },
+      {
+        "id": 77,
+        "descriptor": 230112,
+        "flags": 193
+      },
+      {
+        "id": 78,
+        "descriptor": 230120,
+        "flags": 193
+      },
+      {
+        "id": 79,
+        "descriptor": 230128,
+        "flags": 193
+      },
+      {
+        "id": 80,
+        "descriptor": 230136,
+        "flags": 1
+      },
+      {
+        "id": 81,
+        "descriptor": 230144,
+        "flags": 1
+      },
+      {
+        "id": 82,
+        "descriptor": 230152,
+        "flags": 193
+      },
+      {
+        "id": 83,
+        "descriptor": 230160,
+        "flags": 193
+      },
+      {
+        "id": 84,
+        "descriptor": 230168,
+        "flags": 193
+      },
+      {
+        "id": 85,
+        "descriptor": 230176,
+        "flags": 193
+      },
+      {
+        "id": 86,
+        "descriptor": 230184,
+        "flags": 193
+      },
+      {
+        "id": 87,
+        "descriptor": 230192,
+        "flags": 193
+      },
+      {
+        "id": 88,
+        "descriptor": 230200,
+        "flags": 193
+      },
+      {
+        "id": 89,
+        "descriptor": 230208,
+        "flags": 193
+      },
+      {
+        "id": 90,
+        "descriptor": 230216,
+        "flags": 193
+      },
+      {
+        "id": 91,
+        "descriptor": 230224,
+        "flags": 193
+      },
+      {
+        "id": 92,
+        "descriptor": 230232,
+        "flags": 193
+      },
+      {
+        "id": 93,
+        "descriptor": 230240,
+        "flags": 193
+      },
+      {
+        "id": 94,
+        "descriptor": 230248,
+        "flags": 193
+      },
+      {
+        "id": 95,
+        "descriptor": 230256,
+        "flags": 193
+      },
+      {
+        "id": 96,
+        "descriptor": 230264,
+        "flags": 193
+      },
+      {
+        "id": 97,
+        "descriptor": 230272,
+        "flags": 193
+      },
+      {
+        "id": 98,
+        "descriptor": 230280,
+        "flags": 193
+      },
+      {
+        "id": 99,
+        "descriptor": 230288,
+        "flags": 193
+      },
+      {
+        "id": 100,
+        "descriptor": 230296,
+        "flags": 193
+      },
+      {
+        "id": 101,
+        "descriptor": 230304,
+        "flags": 193
+      },
+      {
+        "id": 102,
+        "descriptor": 230312,
+        "flags": 193
+      },
+      {
+        "id": 103,
+        "descriptor": 230320,
+        "flags": 193
+      },
+      {
+        "id": 104,
+        "descriptor": 230328,
+        "flags": 193
+      },
+      {
+        "id": 105,
+        "descriptor": 230336,
+        "flags": 193
+      },
+      {
+        "id": 106,
+        "descriptor": 230344,
+        "flags": 193
+      },
+      {
+        "id": 107,
+        "descriptor": 230352,
+        "flags": 193
+      },
+      {
+        "id": 108,
+        "descriptor": 230360,
+        "flags": 193
+      },
+      {
+        "id": 109,
+        "descriptor": 230368,
+        "flags": 193
+      },
+      {
+        "id": 110,
+        "descriptor": 230376,
+        "flags": 193
+      },
+      {
+        "id": 111,
+        "descriptor": 230384,
+        "flags": 193
+      },
+      {
+        "id": 112,
+        "descriptor": 230392,
+        "flags": 193
+      },
+      {
+        "id": 113,
+        "descriptor": 230400,
+        "flags": 193
+      },
+      {
+        "id": 114,
+        "descriptor": 230408,
+        "flags": 193
+      },
+      {
+        "id": 115,
+        "descriptor": 230416,
+        "flags": 128
+      },
+      {
+        "id": 116,
+        "descriptor": 230424,
+        "flags": 1
+      },
+      {
+        "id": 117,
+        "descriptor": 230432,
+        "flags": 1
+      },
+      {
+        "id": 118,
+        "descriptor": 230440,
+        "flags": 1
+      },
+      {
+        "id": 119,
+        "descriptor": 230448,
+        "flags": 1
+      },
+      {
+        "id": 120,
+        "descriptor": 230456,
+        "flags": 1
+      },
+      {
+        "id": 121,
+        "descriptor": 230464,
+        "flags": 129
+      },
+      {
+        "id": 122,
+        "descriptor": 230472,
+        "flags": 65
+      },
+      {
+        "id": 123,
+        "descriptor": 230480,
+        "flags": 65
+      },
+      {
+        "id": 124,
+        "descriptor": 230488,
+        "flags": 65
+      },
+      {
+        "id": 125,
+        "descriptor": 230496,
+        "flags": 1
+      },
+      {
+        "id": 126,
+        "descriptor": 230504,
+        "flags": 1
+      },
+      {
+        "id": 127,
+        "descriptor": 230512,
+        "flags": 224
+      }
+    ],
+    "music_DAC_with_flag5": [],
+    "music_DAC_flags": [
+      {
+        "id": 129,
+        "descriptor": 227108,
+        "flags": 0
+      },
+      {
+        "id": 130,
+        "descriptor": 227116,
+        "flags": 0
+      },
+      {
+        "id": 131,
+        "descriptor": 227124,
+        "flags": 0
+      },
+      {
+        "id": 132,
+        "descriptor": 227132,
+        "flags": 0
+      },
+      {
+        "id": 133,
+        "descriptor": 227140,
+        "flags": 0
+      },
+      {
+        "id": 134,
+        "descriptor": 227148,
+        "flags": 0
+      },
+      {
+        "id": 135,
+        "descriptor": 227156,
+        "flags": 0
+      },
+      {
+        "id": 136,
+        "descriptor": 227164,
+        "flags": 0
+      },
+      {
+        "id": 137,
+        "descriptor": 227172,
+        "flags": 0
+      },
+      {
+        "id": 138,
+        "descriptor": 227180,
+        "flags": 0
+      },
+      {
+        "id": 139,
+        "descriptor": 227188,
+        "flags": 0
+      },
+      {
+        "id": 140,
+        "descriptor": 227196,
+        "flags": 0
+      },
+      {
+        "id": 141,
+        "descriptor": 227204,
+        "flags": 0
+      },
+      {
+        "id": 142,
+        "descriptor": 227212,
+        "flags": 0
+      },
+      {
+        "id": 143,
+        "descriptor": 227220,
+        "flags": 0
+      },
+      {
+        "id": 144,
+        "descriptor": 227228,
+        "flags": 0
+      },
+      {
+        "id": 145,
+        "descriptor": 227236,
+        "flags": 0
+      },
+      {
+        "id": 146,
+        "descriptor": 227244,
+        "flags": 0
+      },
+      {
+        "id": 147,
+        "descriptor": 227252,
+        "flags": 0
+      },
+      {
+        "id": 148,
+        "descriptor": 227260,
+        "flags": 0
+      },
+      {
+        "id": 149,
+        "descriptor": 227268,
+        "flags": 0
+      },
+      {
+        "id": 150,
+        "descriptor": 227276,
+        "flags": 0
+      },
+      {
+        "id": 151,
+        "descriptor": 227284,
+        "flags": 0
+      },
+      {
+        "id": 152,
+        "descriptor": 227292,
+        "flags": 0
+      },
+      {
+        "id": 153,
+        "descriptor": 227300,
+        "flags": 0
+      }
+    ],
+    "F0_flag5": false,
+    "F0_flags": 129,
+    "fight_has_7F": false,
+    "acceptance_conditions": "New descriptor flag5 set, prior PCM mode flag5 clear, and current duck phase !=2; descriptor presence does not prove arbitration acceptance or actual duck."
+  },
+  "fade": {
+    "control_targets": {
+      "01": 231702,
+      "02": 231432,
+      "03": 231596,
+      "04": 231980,
+      "05": 231720
+    },
+    "initial": {
+      "01": {
+        "steps": 40,
+        "remaining": 3,
+        "clear_DAC_flag_byte": true
+      },
+      "05": {
+        "steps": 50,
+        "remaining": 32,
+        "clear_DAC_flag_byte": true
+      }
+    },
+    "later_remaining_constant": 3,
+    "dispatch_selected_reset": {
+      "read": 228534,
+      "clear_before_dispatch": 228538,
+      "value": 255,
+      "ROM": {
+        "address": 228532,
+        "bytes": "7e001e38f80911fc00fff809"
+      }
+    },
+    "source_templates": [
+      {
+        "address": 231702,
+        "bytes": "11fc0003f80611fc0028f8044238f8404e75"
+      },
+      {
+        "address": 231720,
+        "bytes": "11fc0020f80611fc0032f8044238f8404e75"
+      },
+      {
+        "address": 231766,
+        "bytes": "11fc0003f806"
+      }
+    ],
+    "remaining_boundary": "Nonzero remaining is decremented then returns; remaining1->0 does not fade in that same invocation.",
+    "terminal_boundary": "If remaining was zero, steps decrements; steps1->0 branches directly to full04 reset before a level step.",
+    "no_PCM_stop_in_01_05_bodies": true
+  },
+  "bulk_clear": {
+    "full": {
+      "entry": 231980,
+      "clear_instruction": 231996,
+      "start": 16775168,
+      "count_long": 232,
+      "end_exclusive": 16776096,
+      "store_addresses": [
+        16775168,
+        16775172,
+        16775176,
+        16775180,
+        16775184,
+        16775188,
+        16775192,
+        16775196,
+        16775200,
+        16775204,
+        16775208,
+        16775212,
+        16775216,
+        16775220,
+        16775224,
+        16775228,
+        16775232,
+        16775236,
+        16775240,
+        16775244,
+        16775248,
+        16775252,
+        16775256,
+        16775260,
+        16775264,
+        16775268,
+        16775272,
+        16775276,
+        16775280,
+        16775284,
+        16775288,
+        16775292,
+        16775296,
+        16775300,
+        16775304,
+        16775308,
+        16775312,
+        16775316,
+        16775320,
+        16775324,
+        16775328,
+        16775332,
+        16775336,
+        16775340,
+        16775344,
+        16775348,
+        16775352,
+        16775356,
+        16775360,
+        16775364,
+        16775368,
+        16775372,
+        16775376,
+        16775380,
+        16775384,
+        16775388,
+        16775392,
+        16775396,
+        16775400,
+        16775404,
+        16775408,
+        16775412,
+        16775416,
+        16775420,
+        16775424,
+        16775428,
+        16775432,
+        16775436,
+        16775440,
+        16775444,
+        16775448,
+        16775452,
+        16775456,
+        16775460,
+        16775464,
+        16775468,
+        16775472,
+        16775476,
+        16775480,
+        16775484,
+        16775488,
+        16775492,
+        16775496,
+        16775500,
+        16775504,
+        16775508,
+        16775512,
+        16775516,
+        16775520,
+        16775524,
+        16775528,
+        16775532,
+        16775536,
+        16775540,
+        16775544,
+        16775548,
+        16775552,
+        16775556,
+        16775560,
+        16775564,
+        16775568,
+        16775572,
+        16775576,
+        16775580,
+        16775584,
+        16775588,
+        16775592,
+        16775596,
+        16775600,
+        16775604,
+        16775608,
+        16775612,
+        16775616,
+        16775620,
+        16775624,
+        16775628,
+        16775632,
+        16775636,
+        16775640,
+        16775644,
+        16775648,
+        16775652,
+        16775656,
+        16775660,
+        16775664,
+        16775668,
+        16775672,
+        16775676,
+        16775680,
+        16775684,
+        16775688,
+        16775692,
+        16775696,
+        16775700,
+        16775704,
+        16775708,
+        16775712,
+        16775716,
+        16775720,
+        16775724,
+        16775728,
+        16775732,
+        16775736,
+        16775740,
+        16775744,
+        16775748,
+        16775752,
+        16775756,
+        16775760,
+        16775764,
+        16775768,
+        16775772,
+        16775776,
+        16775780,
+        16775784,
+        16775788,
+        16775792,
+        16775796,
+        16775800,
+        16775804,
+        16775808,
+        16775812,
+        16775816,
+        16775820,
+        16775824,
+        16775828,
+        16775832,
+        16775836,
+        16775840,
+        16775844,
+        16775848,
+        16775852,
+        16775856,
+        16775860,
+        16775864,
+        16775868,
+        16775872,
+        16775876,
+        16775880,
+        16775884,
+        16775888,
+        16775892,
+        16775896,
+        16775900,
+        16775904,
+        16775908,
+        16775912,
+        16775916,
+        16775920,
+        16775924,
+        16775928,
+        16775932,
+        16775936,
+        16775940,
+        16775944,
+        16775948,
+        16775952,
+        16775956,
+        16775960,
+        16775964,
+        16775968,
+        16775972,
+        16775976,
+        16775980,
+        16775984,
+        16775988,
+        16775992,
+        16775996,
+        16776000,
+        16776004,
+        16776008,
+        16776012,
+        16776016,
+        16776020,
+        16776024,
+        16776028,
+        16776032,
+        16776036,
+        16776040,
+        16776044,
+        16776048,
+        16776052,
+        16776056,
+        16776060,
+        16776064,
+        16776068,
+        16776072,
+        16776076,
+        16776080,
+        16776084,
+        16776088,
+        16776092
+      ],
+      "selected_after_clear": 255,
+      "clears_scheduler": false,
+      "clears_Z80_PCM": false,
+      "bulk_clears_TL_cache": false
+    },
+    "music": {
+      "entry": 232016,
+      "clear_instruction": 232038,
+      "start": 16775168,
+      "count_long": 136,
+      "end_exclusive": 16775712,
+      "store_addresses": [
+        16775168,
+        16775172,
+        16775176,
+        16775180,
+        16775184,
+        16775188,
+        16775192,
+        16775196,
+        16775200,
+        16775204,
+        16775208,
+        16775212,
+        16775216,
+        16775220,
+        16775224,
+        16775228,
+        16775232,
+        16775236,
+        16775240,
+        16775244,
+        16775248,
+        16775252,
+        16775256,
+        16775260,
+        16775264,
+        16775268,
+        16775272,
+        16775276,
+        16775280,
+        16775284,
+        16775288,
+        16775292,
+        16775296,
+        16775300,
+        16775304,
+        16775308,
+        16775312,
+        16775316,
+        16775320,
+        16775324,
+        16775328,
+        16775332,
+        16775336,
+        16775340,
+        16775344,
+        16775348,
+        16775352,
+        16775356,
+        16775360,
+        16775364,
+        16775368,
+        16775372,
+        16775376,
+        16775380,
+        16775384,
+        16775388,
+        16775392,
+        16775396,
+        16775400,
+        16775404,
+        16775408,
+        16775412,
+        16775416,
+        16775420,
+        16775424,
+        16775428,
+        16775432,
+        16775436,
+        16775440,
+        16775444,
+        16775448,
+        16775452,
+        16775456,
+        16775460,
+        16775464,
+        16775468,
+        16775472,
+        16775476,
+        16775480,
+        16775484,
+        16775488,
+        16775492,
+        16775496,
+        16775500,
+        16775504,
+        16775508,
+        16775512,
+        16775516,
+        16775520,
+        16775524,
+        16775528,
+        16775532,
+        16775536,
+        16775540,
+        16775544,
+        16775548,
+        16775552,
+        16775556,
+        16775560,
+        16775564,
+        16775568,
+        16775572,
+        16775576,
+        16775580,
+        16775584,
+        16775588,
+        16775592,
+        16775596,
+        16775600,
+        16775604,
+        16775608,
+        16775612,
+        16775616,
+        16775620,
+        16775624,
+        16775628,
+        16775632,
+        16775636,
+        16775640,
+        16775644,
+        16775648,
+        16775652,
+        16775656,
+        16775660,
+        16775664,
+        16775668,
+        16775672,
+        16775676,
+        16775680,
+        16775684,
+        16775688,
+        16775692,
+        16775696,
+        16775700,
+        16775704,
+        16775708
+      ],
+      "selected_after_clear": 255,
+      "preserves_priority": true,
+      "preserves_primary_secondary": true,
+      "priority_save_read": 232024,
+      "priority_restore_write": 232046
+    },
+    "header_range": [
+      16775168,
+      16775232
+    ],
+    "voice_row_bytes": 48,
+    "voice_domains": [
+      {
+        "name": "music",
+        "first_slot": 0,
+        "rows": 10,
+        "start": 16775232,
+        "end_exclusive": 16775712,
+        "first_bulk_long": 16,
+        "last_bulk_long": 135
+      },
+      {
+        "name": "primary",
+        "first_slot": 10,
+        "rows": 6,
+        "start": 16775712,
+        "end_exclusive": 16776000,
+        "first_bulk_long": 136,
+        "last_bulk_long": 207
+      },
+      {
+        "name": "secondary",
+        "first_slot": 16,
+        "rows": 2,
+        "start": 16776000,
+        "end_exclusive": 16776096,
+        "first_bulk_long": 208,
+        "last_bulk_long": 231
+      }
+    ],
+    "cross_owner_long_groups": [
+      {
+        "bulk_index": 0,
+        "address": 16775168,
+        "fields": [
+          {
+            "byte_offset": 0,
+            "field": "Root.Priority"
+          },
+          {
+            "byte_offset": 1,
+            "field": "score.TempoRemaining"
+          },
+          {
+            "byte_offset": 2,
+            "field": "score.TempoPeriod"
+          },
+          {
+            "byte_offset": 3,
+            "field": "E2-signal; no producer in audited grammar"
+          }
+        ]
+      },
+      {
+        "bulk_index": 1,
+        "address": 16775172,
+        "fields": [
+          {
+            "byte_offset": 0,
+            "field": "Root.FadeSteps"
+          },
+          {
+            "byte_offset": 1,
+            "field": "unassigned; fade-period role not established"
+          },
+          {
+            "byte_offset": 2,
+            "field": "Root.FadeRemaining"
+          },
+          {
+            "byte_offset": 3,
+            "field": "World.AudioPause"
+          }
+        ]
+      },
+      {
+        "bulk_index": 2,
+        "address": 16775176,
+        "fields": [
+          {
+            "byte_offset": 0,
+            "field": "unassigned header byte"
+          },
+          {
+            "byte_offset": 1,
+            "field": "Root.Selected"
+          },
+          {
+            "byte_offset": 2,
+            "field": "World.Queue[0]"
+          },
+          {
+            "byte_offset": 3,
+            "field": "World.Queue[1]"
+          }
+        ]
+      },
+      {
+        "bulk_index": 3,
+        "address": 16775180,
+        "fields": [
+          {
+            "byte_offset": 0,
+            "field": "World.Queue[2]"
+          },
+          {
+            "byte_offset": 1,
+            "field": "World.Queue[3]"
+          },
+          {
+            "byte_offset": 2,
+            "field": "unassigned header byte"
+          },
+          {
+            "byte_offset": 3,
+            "field": "unassigned header byte"
+          }
+        ]
+      },
+      {
+        "bulk_index": 10,
+        "address": 16775208,
+        "fields": [
+          {
+            "byte_offset": 0,
+            "field": "Root.ControlMode"
+          },
+          {
+            "byte_offset": 1,
+            "field": "Root.FMDelta"
+          },
+          {
+            "byte_offset": 2,
+            "field": "Root.PSGDelta"
+          },
+          {
+            "byte_offset": 3,
+            "field": "Root.DuckPhase"
+          }
+        ]
+      },
+      {
+        "bulk_index": 11,
+        "address": 16775212,
+        "fields": [
+          {
+            "byte_offset": 0,
+            "field": "Root.ChoiceBits"
+          },
+          {
+            "byte_offset": 1,
+            "field": "unassigned header byte"
+          },
+          {
+            "byte_offset": 2,
+            "field": "unassigned header byte"
+          },
+          {
+            "byte_offset": 3,
+            "field": "unassigned header byte"
+          }
+        ]
+      }
+    ],
+    "outside_clear": {
+      "Scheduler": [
+        16774496,
+        16774501
+      ],
+      "Z80_PCM": [
+        10485760,
+        10493952
+      ],
+      "TL_cache": [
+        16776160,
+        16776192
+      ]
+    },
+    "templates": [
+      {
+        "address": 231980,
+        "bytes": "702772004eba00ec41f8f800303c00e7429851c8fffc11fc00fff8094ebaffb060001740"
+      },
+      {
+        "address": 232016,
+        "bytes": "702772004eba00c81038f8003f0041f8f800303c0087429851c8fffc301f11c0f80011fc00fff8094e75"
+      }
+    ]
+  },
+  "mute_order": {
+    "full_order": [
+      "YM27=0",
+      "232-long-clear",
+      "selected=FF",
+      "six-keyoff",
+      "24-TL-mute",
+      "four-PSG-mute"
+    ],
+    "keyoff_values": [
+      2,
+      6,
+      1,
+      5,
+      0,
+      4
+    ],
+    "keyoff_bank": 0,
+    "keyoff_register": 40,
+    "TL_register_writes": [
+      {
+        "bank": 0,
+        "register": 66,
+        "value": 127
+      },
+      {
+        "bank": 1,
+        "register": 66,
+        "value": 127
+      },
+      {
+        "bank": 0,
+        "register": 70,
+        "value": 127
+      },
+      {
+        "bank": 1,
+        "register": 70,
+        "value": 127
+      },
+      {
+        "bank": 0,
+        "register": 74,
+        "value": 127
+      },
+      {
+        "bank": 1,
+        "register": 74,
+        "value": 127
+      },
+      {
+        "bank": 0,
+        "register": 78,
+        "value": 127
+      },
+      {
+        "bank": 1,
+        "register": 78,
+        "value": 127
+      },
+      {
+        "bank": 0,
+        "register": 65,
+        "value": 127
+      },
+      {
+        "bank": 1,
+        "register": 65,
+        "value": 127
+      },
+      {
+        "bank": 0,
+        "register": 69,
+        "value": 127
+      },
+      {
+        "bank": 1,
+        "register": 69,
+        "value": 127
+      },
+      {
+        "bank": 0,
+        "register": 73,
+        "value": 127
+      },
+      {
+        "bank": 1,
+        "register": 73,
+        "value": 127
+      },
+      {
+        "bank": 0,
+        "register": 77,
+        "value": 127
+      },
+      {
+        "bank": 1,
+        "register": 77,
+        "value": 127
+      },
+      {
+        "bank": 0,
+        "register": 64,
+        "value": 127
+      },
+      {
+        "bank": 1,
+        "register": 64,
+        "value": 127
+      },
+      {
+        "bank": 0,
+        "register": 68,
+        "value": 127
+      },
+      {
+        "bank": 1,
+        "register": 68,
+        "value": 127
+      },
+      {
+        "bank": 0,
+        "register": 72,
+        "value": 127
+      },
+      {
+        "bank": 1,
+        "register": 72,
+        "value": 127
+      },
+      {
+        "bank": 0,
+        "register": 76,
+        "value": 127
+      },
+      {
+        "bank": 1,
+        "register": 76,
+        "value": 127
+      }
+    ],
+    "PSG_values": [
+      159,
+      191,
+      223,
+      255
+    ],
+    "music_reset_order": [
+      "YM27=0",
+      "priority-save",
+      "136-long-clear",
+      "priority-restore",
+      "selected=FF",
+      "return"
+    ],
+    "music_reset_has_keyoff_or_PSG_mute": false,
+    "music_start_outer_calls": [
+      231432,
+      231596,
+      232016
+    ],
+    "templates": [
+      {
+        "address": 231930,
+        "bytes": "7402702812024eba012c58014eba012651cafff2727f74027040d04276034eba01144eba0180584051cbfff451caffea4e75"
+      },
+      {
+        "address": 237966,
+        "bytes": "41f900c0001110bc009f10bc00bf10bc00df10bc00ff4e75"
+      }
+    ],
+    "evidence": "Static expansion of fixed loop bounds only, not observed IO or master-cycle proof"
+  },
+  "bounded_control_idle_closure": {
+    "established_for_current_fight_profile": true,
+    "premises": [
+      "Root begins at the existing full clear/initialization, with control mode, deltas and duck phase zero.",
+      "Platform preparation skips original menus and the only request candidates are the139 audited IDs plus the closed score queue edge.",
+      "The11 fight music definitions and12 primary definitions use neitherE2 norFF under the validated bounded grammar.",
+      "No external/unsupported state assignment or computed entry outside that explicit domain is introduced."
+    ],
+    "steps": [
+      "01/05 write only fade remaining/steps and clear the DAC flag byte;04 and music-reset zero the control fields.",
+      "Each of the three PCM duck-request stores requires new descriptor flag5; none of the139 candidates has that flag.",
+      "Mode1/80 requests originate inFF03/FF04, which have no command in the audited data grammar.",
+      "With mode0 and duck phase0,38c2e returns through its idle path and does not create either request."
+    ],
+    "conclusion": "The control/duck callee38c2e remains idle under these premises. This does not make tempo/fade/pause or the whole header idle.",
+    "choice_bits_can_change": true,
+    "whole_ROM_or_original_menu_unreachability_claim": false
+  },
+  "corrections": [
+    {
+      "earlier_assumption": "Legal fight PCM flags may trigger automatic duck within the139-candidate profile.",
+      "correction": "The valid7F descriptor can request duck, but7F is absent from the current139-candidate fight closure. Private7F vectors test a broader callable profile, not an established fight producer.",
+      "production_state_graph_supplied": false
+    }
+  ],
+  "source_bindings": [
+    {
+      "path": ".local/md-yuyuhakusho/downloads/yuyuhakusho-jp.bin",
+      "sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "bytes": 3145728
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_GAME_DISPATCH_COVERAGE_MANIFEST.json",
+      "sha256": "7e487d7fa2a5bc76738f10e24af2c2a1533d77e80a7bb655e4cbc603299f6557",
+      "bytes": 41628
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_GAME_DISPATCH_ORIGINAL_IDS.json",
+      "sha256": "c6ff8cd7b1f83b6f43bc9c8c1cc64d687617f385b5c5a048ec6806182efcb55a",
+      "bytes": 223700
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-game-dispatch-original/provenance.json",
+      "sha256": "f44a3a6dd2b6526c0e9223d22d99e0407ea0d51a1a0c73a5facb9a491de4a264",
+      "bytes": 1826446
+    },
+    {
+      "path": "scripts/yuyuhakusho/music_score_structure.py",
+      "sha256": "7738e3fba39ba570101d73c454756b8b4949a5e31bd9f65ba6f40551fd59b1a2",
+      "bytes": 9849
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_GAME_DISPATCH_ORIGINAL_EVIDENCE.json",
+      "sha256": "2407418770673f172b64fecb78def5b731907aef7bbac5043bb430d71524f483",
+      "bytes": 6183
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_GAME_DISPATCH_RESOURCES_INDEX.json",
+      "sha256": "5b92548e9cbef2f4e146387cd73d8eb5c5ecb3d7eb2d6d158f1450e95d9e54be",
+      "bytes": 237491
+    },
+    {
+      "path": "games/yuyuhakusho/data/audio-score.json.gz",
+      "sha256": "deaf3a70eac46c199335445d186f77d51f185bdaad4d95443d09b2f1d7054d71",
+      "bytes": 196368
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_SOURCE_AUDIT_FAILURES.md",
+      "sha256": "5d27c51e4bdd571f1965de495caeb8b77070d60e0705243cc3363ab006734cfe",
+      "bytes": 2026
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_SOURCE_AUDIT_CHECK.py",
+      "sha256": "6457ef51c31c7ed01709f5b4b9a9c8a485f3a3f2229ab8cc38fdb325b80b3e1f",
+      "bytes": 3613
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_SOURCE_AUDIT_RED.json",
+      "sha256": "1d4a87da6a30623a8225143f79729becd053100dc5392ec93244edca4c41c19a",
+      "bytes": 2174
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_SOURCE_AUDIT.py",
+      "sha256": "cc0dc12fade478a0609f3d480da216829343e456f492042a2a070b8ff32676dc",
+      "bytes": 23236
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/action-character-tables.txt",
+      "sha256": "41420035a9a1c6e1145dcbb3c479ea3f2dda47c7f18b4a591a05dda0b5d20764",
+      "bytes": 1760
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/action-chu-parameters.txt",
+      "sha256": "fd1920212f6483bb47aab6262177bf72fc9f94b50ab5c3565c475a9bf861ffbe",
+      "bytes": 470
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/action-dispatch-table.txt",
+      "sha256": "0e2546bc1e0490ad3a3dcb490f87318cd6765171cdedea6254f4ac7ff94ac3b1",
+      "bytes": 2352
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/actions-chu-input.txt",
+      "sha256": "36ed990cdc7ca0c91fd948e5629a2e759e6017a4bde4c9875b2b9bd6a2b24d75",
+      "bytes": 3600
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/actions-ground-constructors.txt",
+      "sha256": "fef1289b4501801a57ab1c976c7ab1925ad511417307d4c9b3c29c8f05cdbd1a",
+      "bytes": 4112
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/actions-shared-tail.txt",
+      "sha256": "86fafb812a107047b59069c22361167d7124101be56714b05a1acc995dc6a056",
+      "bytes": 3037
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/actions-tail-dependencies.txt",
+      "sha256": "9070a1ecd21832cc607652cad9ee1a4b0fe4137cf5980498f1ea67ead9eba05a",
+      "bytes": 5750
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/animation-catalog-initializers.txt",
+      "sha256": "01ce33bd0b2e2aa8a3d4021087f9da8c22bfb5b5af52282ee2bb3479b86d45e4",
+      "bytes": 4286
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/animation-records-consumer.txt",
+      "sha256": "ad170522e4bcb4f204bac6e7a28f9ab4e4595ff528d5782d87aba9258a307ffa",
+      "bytes": 1202
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/animation-records-tail.txt",
+      "sha256": "636dcd66a4a81ac73a40a70b4f044ce2886f51e1439bce015dc1d5ceccabf307",
+      "bytes": 899
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/arena-a-consumers.txt",
+      "sha256": "6dfbdf1c77d79ccf0ebbbe6e7efc066175a2845f1a517118989cde708c5b6862",
+      "bytes": 1643
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/arena-a-draw.txt",
+      "sha256": "4d43542a296b30eb6334090db6f9845a23944db02783020dba0a0131d350c011",
+      "bytes": 788
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/arena-a-full.txt",
+      "sha256": "bfde05ab04103fdf0b22dea16e9bd9ecf1a29595fa43dba7a4d8850c49eac0c0",
+      "bytes": 4979
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/arena-assets-bindings.txt",
+      "sha256": "dd60dbf46d572255df93bab6b53b87d3310e55ef5aa16df77ede2ffbca1a4ab9",
+      "bytes": 1893
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/arena-assets-loader.txt",
+      "sha256": "5b1955e1b088f08c8aa2167462a0a8162b10291f5e459a0e4408046c64057c6d",
+      "bytes": 5144
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/arena-assets-scenes.txt",
+      "sha256": "0375753b2dc55fae32cad6372cda751c7cf9e3555755178035099b304f3d816d",
+      "bytes": 26851
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/arena-composition-core-source.txt",
+      "sha256": "a56c13054a58e0ea5e3e3a4de489007f4eb02aff7d6c78e385d51f3268f71a4b",
+      "bytes": 3313
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/arena-menu-writes.txt",
+      "sha256": "928a8ce2262a6345b538052503a355136d1a40c5c4a26175fb1dde494b689d76",
+      "bytes": 6980
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/arenas-4-c-e-consumers.txt",
+      "sha256": "4300fe7ffb93dfebbdfebc20f2224f2e62a4aec29fabbd3b7db580cfbbda9f4f",
+      "bytes": 5254
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/attached-effects-core.txt",
+      "sha256": "38b9426853aa7b0c51dcd7b14ebd69a2156b6d4e09a35ac5551e0d48e0fee524",
+      "bytes": 3751
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/attack-contacts-allocator.txt",
+      "sha256": "13b8be349006669577b7dd025a2b56377001c85d04a6293a2482756473ebda1b",
+      "bytes": 657
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/attack-contacts-helpers.txt",
+      "sha256": "897545da1a78d388d71276344be9c1dba863c3796a08da83a522bee0d122cca5",
+      "bytes": 8411
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/audio-control.txt",
+      "sha256": "87cc908286681bfe2d9e76b42e9f6ea2750ae1dd0f9e543507eb1df4ffc53505",
+      "bytes": 12031
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/audio-dispatch.txt",
+      "sha256": "1293e212c85faa1a1aa8800257c594d560bb9f698b4177bf5919e0423dfafd02",
+      "bytes": 4693
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt",
+      "sha256": "9f81bd47bfe322110bc11339992f0e570b704077ccff22493940b75af7837152",
+      "bytes": 46376
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/audio-z80.txt",
+      "sha256": "6de7db3bc1660869bd228d8d09ea990a4ae4da12bfd35c2bed74523f05cc8e0a",
+      "bytes": 17136
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/character-assets-binding.txt",
+      "sha256": "c4975d1089b1c204e283553be8e766d45ed93cf0acc2963d946071649458d935",
+      "bytes": 3309
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/character-assets-palette-flow.txt",
+      "sha256": "756943c610c6d961373e7bf7accbeb2c8e3e14fc1892420043fd4ade8d981149",
+      "bytes": 1775
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/character-commands-preparations.txt",
+      "sha256": "27612acd36c94863db04ab8294104d3cb7c711ae67e46c02dfad3f09fbdb3fdc",
+      "bytes": 7034
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/chu-action-entry.txt",
+      "sha256": "6a5f4cebd9587b049396bcc7bb918c735aca0a7ea60f18b95f8a898f8fac5080",
+      "bytes": 1994
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/chu-actor-core.txt",
+      "sha256": "1693bb08755265bec661d93dea8895d3ec296b84ec117071c70d291b64ce72a0",
+      "bytes": 662
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/chu-ai-core.txt",
+      "sha256": "c901102e2c81958225f5adc0df6def1645210f901bcc271772dc457b28e3b9fa",
+      "bytes": 4195
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/chu-ai-decisions.txt",
+      "sha256": "ced694ae48be96b0b7662747cf6dcfc28ce21ae54e9a4f27ca2b68361a393b00",
+      "bytes": 12350
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/chu-attachments-core.txt",
+      "sha256": "a7d19512e6a08ea652757eb87231df8346192a69dbc4aad7ee2539f1b40c8c95",
+      "bytes": 4098
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/chu-attack-constructors.txt",
+      "sha256": "cf58bed0ca41b7245d919212a150828932efb6d0f9d1bac595740518d7e7f657",
+      "bytes": 2474
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/chu-attacks.txt",
+      "sha256": "8a2a0979526872f426ec158bad538a290b162d57bbb5c5b7f9de726792d06fb7",
+      "bytes": 10735
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/chu-input-flow.txt",
+      "sha256": "94dbba6bfd30a17e3313cdbffb03a84d053367017bb508e62fa95ad9ebc5dc0f",
+      "bytes": 3263
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/chu-projectile-core.txt",
+      "sha256": "d66756a27d03a14e4e0e93b540cfcd7222cd6119d444f15cd246fc96cb730033",
+      "bytes": 2199
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/chu-projectile-effects.txt",
+      "sha256": "cb4d40aadf5faaf1ad4edc09c4c90bdac678b4d21278aac0fb0da350cae381f6",
+      "bytes": 1407
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/chu-projectile-helpers.txt",
+      "sha256": "a8a5545bb2c6b283e554cdbf2c0b8fff09a1f88f9ef9ee87ef4586300c44097a",
+      "bytes": 1320
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/chu-special-motion-core.txt",
+      "sha256": "d80de4a0f93a640be0d5f0e2417c3029c53760b4f8079e6dedc83adc2ccb2099",
+      "bytes": 7718
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/chu-special-motion-costs.txt",
+      "sha256": "859b7863c61b207e8c110d40f7cdc287d597c3a6ece2e5a8015a9324ea2b570c",
+      "bytes": 870
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/chu-special-motion-helpers.txt",
+      "sha256": "0d25511d9b73b4723563a1dec541ce6715522451d75b96060f60ab0fb60959f0",
+      "bytes": 5206
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/chu-tail-helpers.txt",
+      "sha256": "f1bcee44ec0c6375ec4edd619f47edb2b369428af69b783fe5bb9d191dc03dac",
+      "bytes": 1406
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/collision-consumers.txt",
+      "sha256": "7266c083322efd456e9e16450c1d6fe054437c4a6e5fdd6a1dc956f99e05db11",
+      "bytes": 13694
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/collision-helpers.txt",
+      "sha256": "a5f0636552003534d1d6f84ec3822549710dc6edcaf02437e86adea0dcbc0cfc",
+      "bytes": 1304
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/commands-core.txt",
+      "sha256": "2465d7a2d0329ceeec7f5c0205075d886bbbd2077cec965586cf8ce5854405d4",
+      "bytes": 2268
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/default-arena-copy.txt",
+      "sha256": "62dcc60b47210d3458cf601d3f6c6fe01a473fa4fb8fb4528ed95210a1381f3a",
+      "bytes": 409
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/default-arena-core.txt",
+      "sha256": "26bdfaee211f8ad394c6c9d67c154266e83ab3698930ac695ff022f7aee096cb",
+      "bytes": 10941
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/default-arena-palette.txt",
+      "sha256": "401219efb3eba2be7be5ee3b7da5ad96d6d05b80720937fbd15547a96edb2c1a",
+      "bytes": 3696
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/device-decode.txt",
+      "sha256": "1f69a8b54428c5d87536231138290aaefedf6af843d0227960649be1fa0fca5a",
+      "bytes": 8707
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/effect-motion-core.txt",
+      "sha256": "5373c9d4ff80633ed4599d7b81a0d2db5df3a58736c3b6b3520d1b4c63497071",
+      "bytes": 5205
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-action-constructors-focused.txt",
+      "sha256": "e43cec558dad5ba037b0ad39577ec0ebc8b9d9a6c6af0b667596d35e0ae44dad",
+      "bytes": 32914
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-action-selectors-focused.txt",
+      "sha256": "8c27ef51fc1bddfbf4b928e5a1290b2556c057f01d320e46a0ccdda56609692b",
+      "bytes": 45908
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-action-slots-focused.txt",
+      "sha256": "c6a52e94bea31dc12e08c6cd76a282dc4ae51c56288f2df3e7bef40cd72a072d",
+      "bytes": 77073
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-active-actions.txt",
+      "sha256": "64c810348f2866c9ef122e0da5f076ccc9eb4282b825fd39708557dc8937f334",
+      "bytes": 4696
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-active.txt",
+      "sha256": "88c94a165036b3f70b01aab10786018c7f01300ca56d8f1f35c4d247bd88cc29",
+      "bytes": 1378
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-ai-decisions.txt",
+      "sha256": "53653633bc0024c195ef8067bb9ca838f9240d54c0dcb09745c9586de33f38b6",
+      "bytes": 35976
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-bounds-core.txt",
+      "sha256": "98c1a0ad83a6278253e39cae29bc5846b74f647fd3960a719f1bf8af536f2877",
+      "bytes": 846
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-entry.txt",
+      "sha256": "0a601db1315508dcabb044796922c4609012655fe1a72c20553e310dbe509fb4",
+      "bytes": 3076
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-envelope-core.txt",
+      "sha256": "5a4d39268ffcf7498cb7f9771eb437f6a0f8b7bbd65672b4ba4afda25ac129ec",
+      "bytes": 7258
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-motion-ai.txt",
+      "sha256": "429aec4b2b5058304c1384710b6c54630ebfdc7886e80a85f25ff8bda77b6307",
+      "bytes": 7961
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-preparation-core.txt",
+      "sha256": "ec005c895157865a22d98dfad711be6ea731344eb4b24764169ab99a3839906b",
+      "bytes": 1248
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter-stages.txt",
+      "sha256": "eecf2a94ca0bb29c21a1f895c4477d67fdf3b41c9fe21f19ac5098a6e06e8e40",
+      "bytes": 8309
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter0-projectile.txt",
+      "sha256": "9ba7860e82cd04ede646c540660aa9df4ae39138644c40a19c687b2fbc43c2fc",
+      "bytes": 4669
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter1-projectile.txt",
+      "sha256": "984beab049bd2546e891896ddc17999fb87529ae7b6622722f0381efe3cdeeb1",
+      "bytes": 3248
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter2-projectile.txt",
+      "sha256": "ae8c4288c2d8d880a5a5f527028d340b358c0216855d56f45e321066ef708746",
+      "bytes": 2758
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter4-dragon-follow.txt",
+      "sha256": "6d2d518047205d85f1df7ec874eaad81fbf288f05ac48ae060c3aaf9058219f2",
+      "bytes": 3119
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter4-main-helpers.txt",
+      "sha256": "85e6b1513b79036badd6612e0ac8cb533b9e3dd7c6e52f9fb874cc79a3ccd1ab",
+      "bytes": 1924
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter4-projectile.txt",
+      "sha256": "251c1319f7f58f690ccef144350f2ae80dabf56e7fbd4d86abca3a4b85ceaedb",
+      "bytes": 6702
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter5-projectile-follow.txt",
+      "sha256": "0cb9370ea8a7dc146bec2ab63a6bbe4672ba52e2d0e45d25513f2efc3f486c16",
+      "bytes": 7117
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter5-projectile-slave.txt",
+      "sha256": "8512239051fc5f3e861242f4adf66814ed7082a9060f2221c0c80853d5e7cd4b",
+      "bytes": 971
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter5-projectile.txt",
+      "sha256": "c591ef22c913f0149f212922fd904bb17dd94394a8f6d1f0f5b43b6d4aeb2991",
+      "bytes": 3747
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter6-support.txt",
+      "sha256": "e2a2afe1f92d8f569d8259c10517a05bd91a6d1e639cd3af68f3125e5c7d9210",
+      "bytes": 4318
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter7-children-chain.txt",
+      "sha256": "82011cb5e4c1c78f6a8b380cfe33f92d9e32ea0924198b81ee7ac9d680fca1fa",
+      "bytes": 6186
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter7-children-focused.txt",
+      "sha256": "5e4cbc677e2a18fd0821c73324c9a85d8428e20e1240d09a86de44426c450dee",
+      "bytes": 3549
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter7-children-helper-full.txt",
+      "sha256": "ffe2b22b8ba79e9a46ce624f9c2877dd83ac65fe7073e9d3be7e9461e6e36c2c",
+      "bytes": 3989
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter8-menu-hitbox.txt",
+      "sha256": "58bbcd5bdacb7a8cfb987dbaa794a354a0f7af61c3d47e2ebbaed3f55653bb5f",
+      "bytes": 1271
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter8-menu-navigation.txt",
+      "sha256": "39eb46ee916e94074530f68fad867c257ae279533869e02f07c029be92434e1c",
+      "bytes": 7019
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/fighter8-projectile.txt",
+      "sha256": "1653e3b60e1de830a79d971510e2d05c24ca3315c6b03ee5aab7cc04175c856d",
+      "bytes": 1112
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/first-control.txt",
+      "sha256": "106b4aac28c59d9c176d571c0eabc34c5e0ad75a28b070967a365b86c73098fd",
+      "bytes": 3757
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/hud-present-helpers.txt",
+      "sha256": "dceafbd5ea9f5a79fce1cc9ac9ccddf126d64ee032a2987da72b7addd251ad96",
+      "bytes": 5211
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/hud-present-scene-init.txt",
+      "sha256": "ecb4c019f28fc6d63cc349c927469e29bce43513cd75fdad4490d37c8c1b32d5",
+      "bytes": 1115
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/hud-present-window-template.txt",
+      "sha256": "c13417cca0ed6180ee50fa44256e85719156483911d12305c098b14e256badde",
+      "bytes": 1686
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/hud-present.txt",
+      "sha256": "8a10ba9f08202fa6711f66ba4ce13bb2583b168784a49260d966199f67e54968",
+      "bytes": 7879
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/input-and-tick.txt",
+      "sha256": "36d6af060e4e4c9ab4d7f6f47bbd903063a32b2addc7be70e2594b66876e5dfc",
+      "bytes": 8935
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/input-detail.txt",
+      "sha256": "4ee837e2e89ba82c303c3a73db8a80c17a54b81ab30c43226ace06a363289758",
+      "bytes": 4386
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/lane-motion.txt",
+      "sha256": "9abb9f0057fc7241121c35b8ef3f8f7fe680a04df0e58ed6ea360db2025753a6",
+      "bytes": 2605
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/logical-input.txt",
+      "sha256": "14e77637a1a7cbe3ed7bcfab350629a39c892ae5436ab4e92c7c99c6a29f7c30",
+      "bytes": 3024
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/match-lifecycle-core.txt",
+      "sha256": "ae8f7aafb7907b4b1552414a42488fadc7c42239db4039fc46c15f7b24474a3f",
+      "bytes": 14005
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/match-lifecycle-entry.txt",
+      "sha256": "1337c3b2cba22f86c22210fe8fd8f6cf060142c607af39f9818e6a2d7b8e967b",
+      "bytes": 930
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/match-lifecycle-helpers.txt",
+      "sha256": "8da89d15dd2460a62bc50d7fe3078a16598708c156b48c79ce1d0a8b33a1e808",
+      "bytes": 7303
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/match-overlays-core.txt",
+      "sha256": "9a298dd8c973413eeac557c74ef48b1b4cd0e508a3362cdb24b3adce1375a26d",
+      "bytes": 3156
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/match-overlays-demo.txt",
+      "sha256": "a02e4cdcbafd0f40018d068c61c5e79898e522af053b239cabc49bd1b7ca4be3",
+      "bytes": 1162
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/match-overlays-helpers.txt",
+      "sha256": "fb418efe741e2eead5fc4438bfa36a0c9cce9fb74ee71720ce2460b46da79910",
+      "bytes": 955
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/match-overlays-intro-child.txt",
+      "sha256": "70fa663c9e7ce39869899cf0d97cb7037c7742e6cfb0693a80b69fb93f714a13",
+      "bytes": 884
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/match-overlays-labels.txt",
+      "sha256": "7739d523a154770ffd12ee4939e1412015982b8e8a77455f616f45276a09ac64",
+      "bytes": 3557
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/match-overlays-phases.txt",
+      "sha256": "47e9d006baf5262a3ade6bb3ef3ffa40a69a7b799655a790c0593f5a75c5546d",
+      "bytes": 6299
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/match-overlays-resource.txt",
+      "sha256": "a248fb33b501b8dbeda53357a99844224c1f920c000383599be771d3a6377d80",
+      "bytes": 534
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/match-start-core.txt",
+      "sha256": "840b0448e0aab61cb930b2859bc1929fde3a88b5e60d42350e2115aebf62aab7",
+      "bytes": 13431
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/reaction-motion-allocator.txt",
+      "sha256": "e791fad5fe90ccae84cd526bf380bff73d358d9bbd2cecda5b87de3883152aa9",
+      "bytes": 683
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/reaction-motion-core.txt",
+      "sha256": "a1d423578df55842c380d4fbcd32e4b65fa3ef5a125d16981841edb97770e496",
+      "bytes": 6011
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/reaction-motion-helpers.txt",
+      "sha256": "7a761588c895fe465957b3b3c18edf8dd0161c61e02896fc5962691ed0fa1ed0",
+      "bytes": 4751
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/sound-queue-callsite.txt",
+      "sha256": "c2c1afb52dd6f65e44f32e3f9b0d4405b1864f0f8915bee0aff511065327a65c",
+      "bytes": 1593
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/sprite-consumers.txt",
+      "sha256": "63cfb714692e460a839139efdb3ac21553b68c726171be264679e14af6c6e53e",
+      "bytes": 3540
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/sprite-depth-d8.txt",
+      "sha256": "e8bffb8b93e96d88177db3b983748a73cd7f05fe90c3faf5450c43c2cbcdd07d",
+      "bytes": 2657
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/sprite-submit.txt",
+      "sha256": "9eb200a81fe7539b57e15fbd969231758ee7fa4dbc0d44aa0aad016800eedda3",
+      "bytes": 6894
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/throw-records-chu.txt",
+      "sha256": "d5887ee1b22f80058cb4e83876b95735213fe0c3d97a23807c0736aa816a49e6",
+      "bytes": 995
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/throw-records-tail.txt",
+      "sha256": "7a0a06a53dbf3af4e6c3dee6b5fd7dc3aaf1795cb4c983c7146eab6580a3bec2",
+      "bytes": 830
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/world-clock-core.txt",
+      "sha256": "ad5d7d45e272cd6e3051eb5e6bbb40acb5ffe92c3ef7f44be8f647dac4239fe9",
+      "bytes": 3546
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/world-frame-battle.txt",
+      "sha256": "8bca4da3aca10e85e9be20a99858a4ae3c64a6266e9dab204e4d21ea6ab0284b",
+      "bytes": 1320
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/world-frame-driver.txt",
+      "sha256": "fef18cc2ba45645e6c2049ae8024b6154eef70e5942a586d8fbae80022037e2d",
+      "bytes": 1723
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/world-frame-irq.txt",
+      "sha256": "15b00ba93c9aa7a4a0a6fed6d068e1d650a4b8765c3979060fa3bd704f9f1047",
+      "bytes": 2357
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/world-frame-scene.txt",
+      "sha256": "b9b2a0be3ca38ed9436bde50edadeaa93e88ab4af54cbd0e6234d8b10b3737cf",
+      "bytes": 332
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/world-objects-clear.txt",
+      "sha256": "797c73ceac85b3dcb6972b845751bb5ac4df7594154397c897ce1c570204e574",
+      "bytes": 766
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/world-sprites-order.txt",
+      "sha256": "0a881e65a1b0911beaaa2fc20f46241b22386e5ab70c7f3060936d3e3a91a645",
+      "bytes": 546
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/world-sprites-raster-source.txt",
+      "sha256": "906190c9163c37eb10b05f79689ff49b97997fb6c5f78c378cce970c350c4527",
+      "bytes": 2758
+    }
+  ],
+  "limitations": [
+    "No production state graph or implementation is supplied.",
+    "No new native capture, CPU execution, tools installation, PCM or playback acceptance.",
+    "Absence within the explicit grammar/listing/operand search domains is not global unreachability.",
+    "F805 has no established fade-period role; indirect/external uses are not excluded.",
+    "Automatic duck is not established by the current139fight candidate closure because the only ordinaryflag5descriptor is7F outside that closure."
+  ]
+}

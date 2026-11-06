@@ -1,0 +1,3 @@
+{"mode": "original", "cases": 290, "pass": true}
+{"mode": "hook", "cases": 290, "pass": true}
+{"pass": true, "cases": 290, "events": 1380}

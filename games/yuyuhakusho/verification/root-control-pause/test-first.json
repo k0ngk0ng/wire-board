@@ -1,0 +1,11 @@
+{
+  "test_first": true,
+  "at_utc": "2026-11-05T22:19:04.915509+00:00",
+  "sources": {
+    "games/yuyuhakusho/verification/root-control-pause/pause_test.go.txt": "1afda2f3dc4c1a9e3ef03b63eac289db21569f7b29c3c090b6efffcaabf97a08",
+    "games/yuyuhakusho/audio/rootcontrol/testdata/pause-native-levels.json.gz": "22bcb17d93b1cb506bf3491653b644b7e4225613b2afd6c8cb4c25cdaa312fa0",
+    "games/yuyuhakusho/verification/root-control/pause-levels-original.json": "ebdd9b2ac435ceaa20a6507d969d70057467a9ebf903e4177f18e27880866185"
+  },
+  "red": "games/yuyuhakusho/verification/root-control-pause/missing-api-red.jsonl",
+  "production_exists": false
+}

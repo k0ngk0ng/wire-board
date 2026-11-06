@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "fixture_sha256": "3ea26b82248967cc6e98d5b85dee38bdc174603a1d7dd2ddedad1f759bb05225",
+  "windows": 94,
+  "actions": {
+    "reset-score": 4,
+    "stop-dac-flags": 2,
+    "fade-step": 88
+  },
+  "catalog_json_sha256": "735d012d3d3140e76f8f756f0ca757bdc4b8deeb5a66750dd4610e41e06af830",
+  "source_index_sha256": "1a035f5d94d1bfedbb64e2da7ff4d166205c6dd43a3e1409d84099899d98dd83",
+  "original_expected_values": "Native before/after owner projections; Stop after combines observed DAC row with statically single flags store",
+  "reset_score_io": "Empty;35 full-clear hardware requests kept under Root scope"
+}

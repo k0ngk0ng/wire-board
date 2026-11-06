@@ -1,0 +1,23 @@
+{
+  "phase": "Observed operation/phase-feedback API before implementation",
+  "created_at_utc": "2026-11-05T19:25:08.888020+00:00",
+  "command": [
+    "go",
+    "test",
+    "-json",
+    "-count=1",
+    "./games/yuyuhakusho/audio/score",
+    "-run",
+    "^TestObserved"
+  ],
+  "red_exit_code": 1,
+  "source_sha256": {
+    "games/yuyuhakusho/audio/score/observed_test.go": "ff4bbbfde8c09124af604f43031da1c71dec391629d0f0101e961e35fc6839e7",
+    "docs/research/md-yuyuhakusho/AUDIO_SCORE_OBSERVED_FAILURES.md": "37f3d13141791f99795e6cafa104f3b649327354a194e9aad162cb0cab684fdd",
+    "games/yuyuhakusho/audio/score/driver.go": "3d23f1973d97297a9f9faf8783b4e32559c46dcd4a537c3dce798051fb63a70a",
+    "games/yuyuhakusho/audio/score/state.go": "611dc7cb1b45e31ffcc539eb8831e0fe824a7098583837ce1cb0e6fbc351f96f",
+    "games/yuyuhakusho/audio/score/catalog.go": "24f39bcf0598e33029d7dc9c432d56dc4b79fc1459912972ed74d3eb1b302a81"
+  },
+  "old_fixture_index_sha256": "1972cf3e2a31ca1cfb30d0b25a227ad4d3ac662d072cdbd92fdc1ad177c3124a",
+  "old_state_and_data_change_planned": false
+}

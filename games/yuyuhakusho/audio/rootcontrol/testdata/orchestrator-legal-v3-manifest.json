@@ -1,0 +1,40 @@
+{
+  "artifact": {
+    "json_sha256": "61d16b978d8a08e51682ae86df81d1b85fb6b4fb697ed4c7a288c0ba1bd50d4b",
+    "path": "games/yuyuhakusho/audio/rootcontrol/testdata/orchestrator-legal-v3.json.gz",
+    "sha256": "f735897dcce8b13895d3d65e6ab687140691d0e01aa4bff8b3062898bf5aea5c"
+  },
+  "cases": 3,
+  "frames": 330,
+  "producer": {
+    "path": "scripts/root-control-orchestration-fixtures.py",
+    "sha256": "4618e9200ad1f67aec2db90c965c2a1050471ffd6ff90c8f9bd89bfea473772e"
+  },
+  "sources": [
+    {
+      "path": ".local/md-yuyuhakusho/root-control-legal-v3/capture.json",
+      "sha256": "d81668755cd3f63ab2d9073e0d848cbf1a70609515dd8169991347ba089efed2"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/root-control-legal-v3/fight-long1f-clear04.json.gz",
+      "sha256": "73cb60f8f88b39ea3a60b50bb96eabcc03c4ea44907ff6c5a05219890076682f"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/root-control-legal-v3/fight-mixed82-a6-clear04.json.gz",
+      "sha256": "ae4c63ebb0ea59d9630e74904a4c9bd37759214d35bfb65238bda383c1220a5c"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/root-control-legal-v3/fight-mixed82-a6-pause.json.gz",
+      "sha256": "6feb94cdb943db3fc90c9527ccec14c56e4db6affb524b14ea00764ba8adaec8"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/sound-queue-priorities.json",
+      "sha256": "1886521bc06c33166bd8db7623b2cf9f46d3d1263b02230ad154ea711327fed6"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_SOURCE_AUDIT.json",
+      "sha256": "1ddf69bb57a26bdf1183d26f16271aed85580dfa37487499ddbb1427a723718c"
+    }
+  ],
+  "version": 1
+}

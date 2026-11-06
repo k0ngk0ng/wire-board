@@ -1,0 +1,40 @@
+{
+  "mode": "native",
+  "pass": true,
+  "exit_code": 0,
+  "elapsed_seconds": 2.3242089580744505,
+  "command": [
+    "/opt/homebrew/bin/go",
+    "test",
+    "-json",
+    "-count=1",
+    "-timeout=5m",
+    "-run",
+    "^TestFadeClock",
+    "-race",
+    "./games/yuyuhakusho/audio/scoreclock"
+  ],
+  "environment": {
+    "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+    "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+    "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+    "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "GOMAXPROCS": "2"
+  },
+  "source_sha256": {
+    "games/yuyuhakusho/audio/scoreclock/fade.go": "bf398c4372e6b59b6fe880c8dbb807d0efef50b2fc737df990e57a5f2dc0ffbe",
+    "games/yuyuhakusho/audio/scoreclock/fade_test.go": "5d3859be0023face113a4f2e80cc52c094e77b44d5d0b369bd1ae9132fd9506f",
+    "games/yuyuhakusho/audio/scoreclock/service.go": "3ba87dba2a672c351c2e5c41065b6a42236656f58e7e7bd37b99af6849911aee",
+    "games/yuyuhakusho/audio/scoreclock/header.go": "d2f70897622c4ed801e2ad5ac2d35d024335e1347057461cbed9abbcd5efb9e9",
+    "games/yuyuhakusho/audio/rootcontrol/fade.go": "7cbc5765aca57bb58626d6686bddbd2e1313592f81b7b3601e3560e30ee4580e",
+    "scripts/yuyuhakusho/score-clock-fade-verify.py": "869a670f0e01f676f918fc3322348bf72781d3fb7991383c679f47ae3d4b0e7b",
+    "games/yuyuhakusho/verification/score-clock-fade/fade_clock_test.go.txt": "5d3859be0023face113a4f2e80cc52c094e77b44d5d0b369bd1ae9132fd9506f",
+    "games/yuyuhakusho/audio/scoreclock/testdata/fade-clock-native-manifest.json": "470b9182cb714aace799d7a314105f25e297d4dd9987501b74e71e23817a7adb",
+    "games/yuyuhakusho/audio/scoreclock/testdata/fade-clock-native.json.gz": "d09ef4a56b2df03012b34823e71e482ed99258f68a768a50b47e9066de262a51"
+  },
+  "test_first_sha256": "313876acae3e458b91e01776c237b21ce61fb42c7b1721c05533ca174322537b",
+  "native_profiles": 91,
+  "timed_effects": 154,
+  "log_sha256": "e57ddd5559f6f9ccff681fdfa3b5339cbd360e91f11da31458b4ceb3c7cf8f9b"
+}

@@ -1,0 +1,12 @@
+{
+  "scope": "Only task-owned superseded exporter copy; retains the actual source-template failure summary and pre-implementation API red. No shared Go caches or other owner files touched.",
+  "removed": [
+    {
+      "path": "games/yuyuhakusho/verification/root-control-fade/fade-export-before-source-template-fix.py.txt",
+      "bytes": 8149,
+      "sha256": "1dc0d1c16a8bcab1e9bd040c1d45a001dfc218ef9a90e66b3a4c903c5da3e081"
+    }
+  ],
+  "bytes_removed": 8149,
+  "kept": "Frozen tests, actual red, native extraction provenance and data, repeatability record, Go/Wasm/vet evidence"
+}

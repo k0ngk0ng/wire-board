@@ -1,0 +1,161 @@
+{
+  "schema": 1,
+  "pass": true,
+  "at_utc": "2026-11-05T22:23:25.396598+00:00",
+  "scope": "Pure Root fade counter/start decisions with ordered temporary counter effects; score/04/pause/chip orchestration remains external",
+  "production_owner": "Only FadeState{Steps,Remaining uint8}; finalRoot.State embeds it once, without duplicated scattered counters",
+  "production_source": "games/yuyuhakusho/audio/rootcontrol/fade.go",
+  "Root_state_go_created": false,
+  "new_original_CPU_capture": false,
+  "native_core_loaded_by_this_task": false,
+  "native_streams": 5,
+  "native_frames": 785,
+  "native_decisions": 746,
+  "advance_decisions": 744,
+  "start_decisions": 2,
+  "native_actions": {
+    "none": 654,
+    "stop-dac-flags": 2,
+    "fade-music-step": 88,
+    "request-full-clear": 2
+  },
+  "native_terminal_expected_from_38a2c_entry": true,
+  "golden_values_generated_by_rule_model": false,
+  "SnapshotRestore_continuations": 50,
+  "byte_boundary_scenarios": 6,
+  "unsupported_commands_rejected": 254,
+  "action_runs_after_ordered_writes": true,
+  "terminal_does_not_perform_full_clear": true,
+  "idle_preserves_remaining": true,
+  "no_score_queue_pause_scheduler_PCM_voice_duck_copy": true,
+  "result_effects_bounded_and_temporary": true,
+  "test_first_real_missing_API_overlay_red": true,
+  "production_existed_at_red": false,
+  "frozen_test_sha256": "88b9483be3b4ade09102ab1e43626a534df302a1f3a482ccdce44aef2a9b9e22",
+  "fixture_sha256": "a88e122d490fd41839c944b403aadb29f309e56f8a981d81d41e1b37548cca28",
+  "native_identity": {
+    "original": {
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+      "core_name": "Genesis Plus GX",
+      "core_version": "v1.7.4 60bee4c",
+      "fps": 59.92274340431231,
+      "ram_bytes": 65536,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "teamplayer": false
+    },
+    "observed": {
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+      "core_name": "Genesis Plus GX",
+      "core_version": "v1.7.460bee4c",
+      "fps": 59.92274340431231,
+      "ram_bytes": 65536,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "teamplayer": false
+    }
+  },
+  "source_template_red_reconstructible_from_current_exporter": true,
+  "Go_validation": {
+    "native": {
+      "pass": true,
+      "command_record": "games/yuyuhakusho/verification/root-control-fade/go/native-command.json",
+      "log": "games/yuyuhakusho/verification/root-control-fade/go/native.jsonl",
+      "log_sha256": "fa9b676b38f7ea2c747632345b826cae1c3c4eb7685fdecd0c1630a460e40453",
+      "top_level_tests": [
+        "TestFadeNativeStreamsAcross785Frames",
+        "TestFadeNativeStreamSnapshotRestoreContinuation",
+        "TestFadeCounterBoundaryAndByteProfiles",
+        "TestFadeStartAlwaysWritesRemainingThenSteps",
+        "TestFadeStartRejectsUnknownCommands",
+        "TestFadeStateOwnsOnlyTheTwoIndependentCounters"
+      ],
+      "subscenarios": 61
+    },
+    "wasm": {
+      "pass": true,
+      "command_record": "games/yuyuhakusho/verification/root-control-fade/go/wasm-command.json",
+      "log": "games/yuyuhakusho/verification/root-control-fade/go/wasm.jsonl",
+      "log_sha256": "9ed1aa55a8f8a52364a0ea9deb8fb021ca7e529b278149a3c9daf2a376dbf906",
+      "top_level_tests": [
+        "TestFadeNativeStreamsAcross785Frames",
+        "TestFadeNativeStreamSnapshotRestoreContinuation",
+        "TestFadeCounterBoundaryAndByteProfiles",
+        "TestFadeStartAlwaysWritesRemainingThenSteps",
+        "TestFadeStartRejectsUnknownCommands",
+        "TestFadeStateOwnsOnlyTheTwoIndependentCounters"
+      ],
+      "subscenarios": 61
+    },
+    "vet": {
+      "pass": true,
+      "command_record": "games/yuyuhakusho/verification/root-control-fade/go/vet-command.json",
+      "log": "games/yuyuhakusho/verification/root-control-fade/go/vet.txt",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "top_level_tests": [],
+      "subscenarios": 0
+    }
+  },
+  "source_sha256": {
+    "games/yuyuhakusho/audio/rootcontrol/fade.go": "7cbc5765aca57bb58626d6686bddbd2e1313592f81b7b3601e3560e30ee4580e",
+    "games/yuyuhakusho/audio/rootcontrol/fade_e2e_test.go": "88b9483be3b4ade09102ab1e43626a534df302a1f3a482ccdce44aef2a9b9e22",
+    "games/yuyuhakusho/audio/rootcontrol/testdata/fade-native-manifest.json": "79534c2ea62b485ecbe571099e80a45acc9a3808ed489edb52dc7dd7b1b81c81",
+    "games/yuyuhakusho/audio/rootcontrol/testdata/fade-native-streams.json.gz": "a88e122d490fd41839c944b403aadb29f309e56f8a981d81d41e1b37548cca28",
+    "scripts/yuyuhakusho/root-control-fade-export.py": "bccd2f4479d307c69e20d60471667437672ecd85c34c940c587e2d02299e8cc5",
+    "scripts/yuyuhakusho/root-control-fade-verify.py": "cd34b501d41cec3df260784550a52279a09965a094c7ea3aa6e45615fc126df5",
+    "docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_FADE.md": "2ce4ea9445c2726f8f426d521f8e8325889f62e34e880735cab566faa425f657",
+    "docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_FADE_FAILURES.md": "1ff102f3dafbe5c4149296bcec74f6ad6827f97e37a55acf9c579d789fba6685"
+  },
+  "artifact_sha256": {
+    "games/yuyuhakusho/verification/root-control-fade/cleanup.json": "38b545e5d86e57c610676077fedb2e59f1f7100deabb4275e3d6877601e4ffeb",
+    "games/yuyuhakusho/verification/root-control-fade/extraction-repeat.json": "2386aab98c8b49481f870d8ca39d6aeb3821db5d42bfaeff7e6a21aa608be851",
+    "games/yuyuhakusho/verification/root-control-fade/extraction.json": "777a4d90047b9aa39ce33279627547316d47b83aa0252530d037ae420b68d737",
+    "games/yuyuhakusho/verification/root-control-fade/fade-empty-package.go.txt": "66776d6943ceaf187bd316e12d4fae764b51478f7aac1bb1b819f6082ea84ff7",
+    "games/yuyuhakusho/verification/root-control-fade/fade-missing-api-overlay-red.jsonl": "ef45220c0b4036ce9724c236d4be54cf7d3418f635fc3ec20b3cf21ddec786d9",
+    "games/yuyuhakusho/verification/root-control-fade/fade-test-first.json": "537d56175007040b99c92befc489967046a0c3a51b6afa558a710a2ef8f01dd9",
+    "games/yuyuhakusho/verification/root-control-fade/fade-test-overlay.json": "2acbbc2cfcf596c6594561f713f7ab3b30b899d9899482d576f3f35a0c978b7b",
+    "games/yuyuhakusho/verification/root-control-fade/fade_e2e_test.go.txt": "88b9483be3b4ade09102ab1e43626a534df302a1f3a482ccdce44aef2a9b9e22",
+    "games/yuyuhakusho/verification/root-control-fade/go/native-command.json": "2d4477b1e1908263adb12fa2c63f7a204ae0061eb07db1bdbc7f6cdd4a5e45e5",
+    "games/yuyuhakusho/verification/root-control-fade/go/native.jsonl": "fa9b676b38f7ea2c747632345b826cae1c3c4eb7685fdecd0c1630a460e40453",
+    "games/yuyuhakusho/verification/root-control-fade/go/vet-command.json": "bb7afeb9d57924c1a55d35aa6e32de56934ce9f1c9d59a6e6796c030c1bd5bdf",
+    "games/yuyuhakusho/verification/root-control-fade/go/vet.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "games/yuyuhakusho/verification/root-control-fade/go/wasm-command.json": "b0f20f65fe34a2efa24eaa12a93618a7dd3044d3c294bfbec5837e300595789f",
+    "games/yuyuhakusho/verification/root-control-fade/go/wasm.jsonl": "9ed1aa55a8f8a52364a0ea9deb8fb021ca7e529b278149a3c9daf2a376dbf906",
+    "games/yuyuhakusho/verification/root-control-fade/preserved-leaves.json": "d4b3668572642c7337efc9cd534de27a98bc11d9a138fadeb5b8e5e1fe276785",
+    "games/yuyuhakusho/verification/root-control-fade/source-template-red.json": "9bf0a1b41e59f08aed21e3d604717220e250e2a5c3c49d13c2fc79df30e15632"
+  },
+  "original_native_sources_unchanged": true,
+  "frozen_leaves_unchanged": true,
+  "old_leaf_sources": {
+    "games/yuyuhakusho/audio/scoreclock/psg.go": "10db96b908b5f3a8cb3f3aba3c0f87921ddc23c7ff56a41677672c9f951463c2",
+    "games/yuyuhakusho/audio/scoreclock/psg_test.go": "41df9f38b32a8d90a276f6d777d31673f5983112a3a4250f1afe224fc5eeee7b",
+    "games/yuyuhakusho/audio/scoreclock/service.go": "3ba87dba2a672c351c2e5c41065b6a42236656f58e7e7bd37b99af6849911aee",
+    "games/yuyuhakusho/audio/scoreclock/service_test.go": "15a831c2ee1314a9d02f93c05d4910f775fb8743ef08b489b9e408e5d44e9589",
+    "games/yuyuhakusho/audio/scoreclock/header.go": "d2f70897622c4ed801e2ad5ac2d35d024335e1347057461cbed9abbcd5efb9e9",
+    "games/yuyuhakusho/audio/scoreclock/header_test.go": "21cd9f18b89f350b4887fd428b06c1cd0283bc36eeb6823d46f1f1194f099e62"
+  },
+  "runtime_integrated": false,
+  "score_mutation_verified_by_this_scope": false,
+  "full04_reset_verified_by_this_scope": false,
+  "whole_driver_tick_or_PCM_playback_verified": false,
+  "limits": [
+    "The helper supplies only semantic actions; the orchestrator dispatches score.ApplyControl after writes and executes04 at its actual phase.",
+    "Pause sample has idle fade only; active-fade pause orchestration is not established by this fixture.",
+    "No independent tick count, pause byte, score/voice/PCM/register state or durable effect history is introduced.",
+    "All uint8 counter inputs have original branch semantics; only start commands01/05 are accepted.",
+    "SnapshotRestore tests serialize the uniqueFadeState value and continue native streams; no second Controller is created."
+  ],
+  "cleanup": {
+    "scope": "Only task-owned superseded exporter copy; retains the actual source-template failure summary and pre-implementation API red. No shared Go caches or other owner files touched.",
+    "removed": [
+      {
+        "path": "games/yuyuhakusho/verification/root-control-fade/fade-export-before-source-template-fix.py.txt",
+        "bytes": 8149,
+        "sha256": "1dc0d1c16a8bcab1e9bd040c1d45a001dfc218ef9a90e66b3a4c903c5da3e081"
+      }
+    ],
+    "bytes_removed": 8149,
+    "kept": "Frozen tests, actual red, native extraction provenance and data, repeatability record, Go/Wasm/vet evidence"
+  },
+  "no_commit_upload_install_or_index_change": true
+}

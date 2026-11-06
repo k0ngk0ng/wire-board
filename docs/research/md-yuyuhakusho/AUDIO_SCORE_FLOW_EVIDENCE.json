@@ -1,0 +1,395 @@
+{
+  "schema": 1,
+  "scope": "Research-only finite parser work sidecar and existing native evidence reuse",
+  "pass": true,
+  "production_resource": false,
+  "priced_clock_verified": false,
+  "new_cpu_capture": false,
+  "catalog_json_sha256": "735d012d3d3140e76f8f756f0ca757bdc4b8deeb5a66750dd4610e41e06af830",
+  "logical_events": 39045,
+  "voice_tracks": 115,
+  "static_cycles_compared": 3,
+  "event_key_alone_sufficient": false,
+  "occurrence_sensitive_cycle_entry_keys": [
+    [
+      136,
+      6
+    ],
+    [
+      136,
+      7
+    ],
+    [
+      149,
+      1
+    ],
+    [
+      149,
+      2
+    ],
+    [
+      149,
+      5
+    ],
+    [
+      149,
+      6
+    ],
+    [
+      149,
+      7
+    ],
+    [
+      149,
+      8
+    ]
+  ],
+  "entry_contract": [
+    "continue",
+    "from-prefix",
+    "cycle-wrap"
+  ],
+  "entry_is_temporary_existing_cursor_transition": true,
+  "unknown_entry_and_work_rejected": true,
+  "max_work_per_variant": 12,
+  "duration_scale_addition_domain": [
+    0,
+    1
+  ],
+  "native_counts": {
+    "native_driver_ticks": 122810,
+    "native_token_reads": 199477,
+    "native_control_before": 26130,
+    "native_control_after": 26105,
+    "native_note_commits": 127691,
+    "shared_words_and_stack_comparisons": 26130
+  },
+  "native_flow_counts": {
+    "loop": 3388,
+    "jump": 942,
+    "call": 263,
+    "return": 246
+  },
+  "native_loop_branches": {
+    "first-taken": 619,
+    "repeat-exit": 606,
+    "repeat-taken": 2163
+  },
+  "parameter_read_authority": "Static shipped-instruction ordering; no new per-operand runtime observation",
+  "scripts": [
+    {
+      "path": "scripts/yuyuhakusho/score_flow_check.py",
+      "sha256": "93dee954b945466a16c4e660353720a328b3beb16b942510fd4d6bc923460321",
+      "bytes": 3484
+    },
+    {
+      "path": "scripts/yuyuhakusho/score_flow_entry.py",
+      "sha256": "a922683db080dcc87520885ab1a414462e537e94f58ca46a9f0592cbb60594c3",
+      "bytes": 5081
+    },
+    {
+      "path": "scripts/yuyuhakusho/score_flow_entry_check.py",
+      "sha256": "1ef68fd73e0f323d84d7d5a2a4fd57db3940aa25fd26643801f26a75b94fab2b",
+      "bytes": 2249
+    },
+    {
+      "path": "scripts/yuyuhakusho/score_flow_extract.py",
+      "sha256": "b874d91837f25505176d653a0a967862f3cd78e5e1a3bc6a425b4d8c3b62fcb6",
+      "bytes": 13570
+    },
+    {
+      "path": "scripts/yuyuhakusho/score_flow_native_check.py",
+      "sha256": "030826669ba965f7ac98d1b8f837caa5acd60420d477978b5342e12a17c85826",
+      "bytes": 1497
+    },
+    {
+      "path": "scripts/yuyuhakusho/score_flow_native_replay.py",
+      "sha256": "1b45b8de4113f34b2e8d0702948f78487ea9a4038622b830e0876f517a20ebd6",
+      "bytes": 6622
+    },
+    {
+      "path": "scripts/yuyuhakusho/score_flow_work_check.py",
+      "sha256": "ed18c71d7d8e374f1b7102d6b2d16d3ec29f8d2d4a45798d16fa77016a9e1ce8",
+      "bytes": 906
+    }
+  ],
+  "docs": [
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_SCORE_FLOW_FAILURES.md",
+      "sha256": "c7c0508cd79e80d428c902a76ac7c378cb4f7ffe4d73244362cd8d39122d966d",
+      "bytes": 2117
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_SCORE_FLOW_PROPOSAL.md",
+      "sha256": "a56c9e47342b542e68c3c357670ea849377f263f3ae25973fa06801f4d45abdc",
+      "bytes": 1962
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_SCORE_FLOW_RESULTS.md",
+      "sha256": "c3b262917ff6ebacea3f917bc88ad51d104dd73dfbc9b6cbfb13d94ace012626",
+      "bytes": 7998
+    }
+  ],
+  "inputs": [
+    {
+      "path": "games/yuyuhakusho/data/audio-score.json.gz",
+      "sha256": "deaf3a70eac46c199335445d186f77d51f185bdaad4d95443d09b2f1d7054d71",
+      "bytes": 196368
+    },
+    {
+      "path": "scripts/yuyuhakusho/export_score_driver_data.py",
+      "sha256": "58f3787600f9d9a30878e7be18ed1601e78758c60c7471d58046ad56355b5c5c",
+      "bytes": 3530
+    },
+    {
+      "path": "scripts/yuyuhakusho/export_audio_score.py",
+      "sha256": "a851a526f245606ff05354ebeb48ee6b69131dfe96186a3c604c0aa3d519ae61",
+      "bytes": 13452
+    },
+    {
+      "path": "scripts/yuyuhakusho/music_score_structure.py",
+      "sha256": "7738e3fba39ba570101d73c454756b8b4949a5e31bd9f65ba6f40551fd59b1a2",
+      "bytes": 9849
+    },
+    {
+      "path": "scripts/yuyuhakusho/reference.py",
+      "sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "bytes": 8606
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-driver/official-with-fallback/provenance.json",
+      "sha256": "7729ceb0d19dd2b94527c7e85b5f9ad19a1650579ff2775075edd621458d3a70",
+      "bytes": 5124947
+    },
+    {
+      "path": ".local/md-yuyuhakusho/downloads/yuyuhakusho-jp.bin",
+      "sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "bytes": 3145728
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-source/full/index.json",
+      "sha256": "c23c42be66c3cad068d6f7710aaedb8de763e66d856b9dec9eeca0f405bdfa81",
+      "bytes": 30831
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt",
+      "sha256": "9f81bd47bfe322110bc11339992f0e570b704077ccff22493940b75af7837152",
+      "bytes": 46376
+    }
+  ],
+  "artifacts": [
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-flow/first/research-sidecar.json",
+      "sha256": "3bbacd9902da4921c12741869e2ed8dfa0fc872936379b1ec8c69ace1b6824ca",
+      "bytes": 13650065
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-flow/first/provenance.json.gz",
+      "sha256": "ad63653f95ee88c564e909026f7023fbe3f0f961b7e3ff138418d00d82f07c26",
+      "bytes": 604345
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-flow/first/extraction.json",
+      "sha256": "da92b4bcdebdefb12b31a29f1fc815b840a2fcdf9c25ff272862b6741e6911e2",
+      "bytes": 3015
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-flow/research-sidecar-logical-entry.json",
+      "sha256": "2eaaa1e20f7e6467656d4e0ae19a119718b55701fc802e8edaaeb06a383da1d5",
+      "bytes": 13015458
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-flow/native-replay.json",
+      "sha256": "015629d6566b7549fac077128a439cf3105b6f6a9357fddfbb73bbb77cf440ab",
+      "bytes": 5046
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-flow/entry-check.json",
+      "sha256": "3d34db0bf46ca19cb204b2189179e1cf070b14aaccc69e4bed141f59352419c5",
+      "bytes": 413
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-flow/source-binding.json",
+      "sha256": "3123160a9f3fb9f10e1ece02a9c51622a558f85212bbae8be7776db0e0379e21",
+      "bytes": 605
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-flow/parameter-provenance.json",
+      "sha256": "f0f1f24762bc44bfc5cee771ce682f6fffcbb215491199d9e698767bf3353a14",
+      "bytes": 837
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-flow/work-summary.json",
+      "sha256": "73e4fd4eadcd47f274ccffaabde504bfb15bca32611719c62fe2a1282b3f3cc3",
+      "bytes": 1146
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-flow/sidecar-check.json",
+      "sha256": "c9927b8212f79b93ed79843feb30babfdff4b239bdb1755291d60503c13556e5",
+      "bytes": 580
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-flow/work-check.json",
+      "sha256": "4f34e86fde4f3e7c8a9bdff95adf449f5558f2267500af1fe03e5522be6bf730",
+      "bytes": 224
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-flow/native-check.json",
+      "sha256": "209b06c6f9d407b4a0279844a82eb16a7a0a6e3c0f71b1aa1fff933aa543bd63",
+      "bytes": 677
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-flow/test-first.json",
+      "sha256": "668598f5d3c2c4408f165c62e5cc032eb81ff889471fd550a7d67a92c01bc459",
+      "bytes": 1415
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-flow/entry-native-test-first.json",
+      "sha256": "abc558312d2ced6f9162069a06d26771d266faa43ed2c59e2cbd4753fc036b14",
+      "bytes": 1453
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-flow/unknown-work-test-first.json",
+      "sha256": "d411078bc1886ceb399eb8020cd309dd0992ce1d3d54fcb40587fb5068f4d565",
+      "bytes": 275
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-flow/missing-red.txt",
+      "sha256": "5446f816e0a145abfdb84f7b263cff686a4792a4dfd80fd5147fa9d7ea0569c4",
+      "bytes": 1307
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-flow/wrong-modulation-red.txt",
+      "sha256": "8d079b100a8b392007fe0a67d2245d2868d5d24c3b6dd23867675250115a084d",
+      "bytes": 1026
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-flow/wrong-pan-red.txt",
+      "sha256": "158b0cfae6ec1051b54770be81d71ebe62aaefe456138d882593d042e56d103d",
+      "bytes": 1017
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-flow/entry-missing-red.txt",
+      "sha256": "d00a6bc0300292fc9a22fad68158b613aff37b4e1d87ec5d2a2ede611ef66554",
+      "bytes": 1047
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-flow/native-report-missing-red.txt",
+      "sha256": "826bc32905cffd4771cab7ed766e09f615798b4d9eb861415499e69ba8298f2f",
+      "bytes": 1073
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-flow/unknown-work-red.txt",
+      "sha256": "20be677af25f14de3e1f2861f90e2ee79947bb7c7eab62a3ec6aa451260a2c3f",
+      "bytes": 348
+    },
+    {
+      "path": ".local/md-yuyuhakusho/audio-score-flow/cleanup.json",
+      "sha256": "1a47f8da0686c55a30d268a87f3cf07ead82540fb34c39f17188b739aa337a40",
+      "bytes": 593
+    }
+  ],
+  "native_event_inputs": [
+    {
+      "score_id": 130,
+      "sha256": "fe10729cf414f56fb3c66a957d06c1b6435e7b2154643187c77196d3935c1c18"
+    },
+    {
+      "score_id": 131,
+      "sha256": "c44ad93f2ace73f4f8f3a891d5edcae3fd39b96983dcd41d8765d74a2a6d16b3"
+    },
+    {
+      "score_id": 132,
+      "sha256": "4d878b86ef702985c8d14f4807826a2332e634228227d4365127c3bc0f4bec41"
+    },
+    {
+      "score_id": 133,
+      "sha256": "1afbb142c36ad5cd1f5802a8977b1c76c08416ecd25ffdaa41f226faf9da5916"
+    },
+    {
+      "score_id": 134,
+      "sha256": "7730d30d44f85f985cfc7e02fb6d7469d914b56f0785c33d6064998488e96c16"
+    },
+    {
+      "score_id": 135,
+      "sha256": "75f697473a1d7e4a27076caed74ad37f7795e2f7085c5bf6b55c46d5aba9e081"
+    },
+    {
+      "score_id": 136,
+      "sha256": "2605322b12f6b9ca2b055c4466b9b4dbf5aee69ea62dafce29fd873e9d303d35"
+    },
+    {
+      "score_id": 138,
+      "sha256": "330536a31f26eeaa4d34a7c26c75052d375d316673613aabaa5cd67e72b435b9"
+    },
+    {
+      "score_id": 141,
+      "sha256": "a200f41d29fbe91d9ee5c11f570625942bfc9076ff76cd52f52a1ee8a5a65496"
+    },
+    {
+      "score_id": 149,
+      "sha256": "91b490c944a9f7d2ac96fc7050f6f7c1677a9eabde8a3593deeb24e025df8a7d"
+    },
+    {
+      "score_id": 143,
+      "sha256": "7f9acee0f1724e436a7c77e4ff6f4f5f00bfb850fb72e2b10effc7397184e2ef"
+    },
+    {
+      "score_id": 160,
+      "sha256": "5a845ce1036c7c9cd1a069d7e99d0ffe610c884a9022c17c616857355aa4ccbe"
+    },
+    {
+      "score_id": 161,
+      "sha256": "07bf86fc4c10d15794cc7b97903a676ef4300af7f4c53e1e4d5b74eedbf315fe"
+    },
+    {
+      "score_id": 162,
+      "sha256": "c51a0b0760a4919b5f618c47ca0b2a295fa43b6811913c71bf81e845ab69e252"
+    },
+    {
+      "score_id": 163,
+      "sha256": "e2ac597806dbe9cf171dec9b33ccad41ef8e6deb3fa0f12c0815e4544646ea5d"
+    },
+    {
+      "score_id": 164,
+      "sha256": "053d81dc0ce4552412172d68d0e4ce2c3eefa7c67782a4125623ae882bffe7f8"
+    },
+    {
+      "score_id": 165,
+      "sha256": "0eb49516111525f2431f51bb41f8ac922b19dce7141da524982560bc8bc13a50"
+    },
+    {
+      "score_id": 166,
+      "sha256": "29281bb4125653098af99bca88adaf09fd87bd46056ec7110f411707228dccb2"
+    },
+    {
+      "score_id": 167,
+      "sha256": "432aac526920a35e3799b3dd3894098f162c9a56ce29309b147560360009a569"
+    },
+    {
+      "score_id": 168,
+      "sha256": "dc28aef3addd832a0fc36988c9cb6e31af5f6cf98a89bd95a95be23fe009fae2"
+    },
+    {
+      "score_id": 169,
+      "sha256": "5c9cf4709b8013b6cf0cb181f5f1a19c63c4d7ad76df6a36d330bbf711bface8"
+    },
+    {
+      "score_id": 170,
+      "sha256": "607453c64b8515edd781b09724c5e9d56d9060e6d1bbd8e243c0277690d41e46"
+    },
+    {
+      "score_id": 171,
+      "sha256": "6d2508f6924fe60564b0067e8aa3061d93397f1a21abd6749b313e747aac5d3c"
+    }
+  ],
+  "limits": [
+    "No production sidecar, cost pricing, main clock, bus/chip/IRQ scheduling or DSP completion claim.",
+    "Instrument seek and intrinsic parameter-service costs remain outside pure lexical/flow work.",
+    "Dynamic claim/tie/gate/envelope/pan/modulation/feedback stays with Operation live owners.",
+    "Header initialization and Root dispatch are outside these event keys.",
+    "No first-exit loop was reached in the reused native window.",
+    "Unknown entry on manually fabricated cycle index0 must reject rather than guess."
+  ],
+  "writes_scope": "Only new AUDIO_SCORE_FLOW_* docs, score_flow_*.py scripts and .local/audio-score-flow; Go/catalog/payload/42 goldens untouched."
+}

@@ -1,0 +1,17 @@
+# Root 规则阶段协调接口
+
+`AdvanceRules(root *State, owners RuleOwners, input RuleInput, hooks RuleHooks) (RuleOutput, error)` 不持有长期状态或时钟。`RuleOwners` 只引用 caller 已 detached 的唯一 `Score *score.Driver`、`Queue *[4]uint8`、`AudioPause *uint8`。成功后 caller 将全部 detached owners 一起提交；错误后必须全部丢弃。score 自身事务在失败时不提交；外部 hook 已产生的副作用不能由此包撤销。
+
+`RuleInput` 带不可变 `Priorities engine.SoundPriorityTable`，以及仅用于边界验证的瞬时 `Idle RuleIdleProjection`（control mode、FM/PSG delta、duck、signal、FM3 均须为零）。它们不是新增持久字段。
+
+`RuleHooks.Operation(RuleOperation) error` 必填，在 Root 语义效果发生前同步运行。`Score score.ObservedHooks` 的 operation 和 ReadDAC 在 score 的真实语义点被委派；不采入口 feedback。139 candidate 外的请求默认 Unsupported。仅已静态证明仍为 idle 的 ordinary/完整 primary 域可由瞬时 `AcceptDispatch(id) error` 显式开启独立 callable stress；私有7F不接受此扩展，不能由此引入自动 duck。该 callback 不保存新 candidate 表。
+
+`CaptureLevels() (PauseLevels,error)` 仅在 pause capture 点读取当前实际 chip TL；`DispatchExternal(id uint8) error` 只处理非 score 的有效 Root dispatcher 域，缺服务即 Unsupported。
+
+正常阶段为 Gate→ControlIdle→Tempo→Fade→Queue→Dispatch→Voices→Return。每个阶段发 `RuleEnterPhase`；fade counter effects 发 `RuleFadeWrite`，pause live reads/writes、capture/commit/release 和 Root YM/PSG 请求有独立枚举。Root YM/PSG callback 就是实际效果消费点，不能只留在 tick 末回放。score 输出不会再二次回放。
+
+Gate 按原分支实际进行最多三次 pause live-field 读取。pause start/hold/resume 均只结束本 tick，不进入正常阶段。start 写 FF 后 capture 24 TL→24 mute→四 PSG mute→提交 pending；resume 写 0→24 restore→释放 pending；hold 不发 chip 请求。start/hold/resume 的 score transaction 仅 `FinishSuspended`，Ticks 恰好加一。restore 不额外恢复 PSG。
+
+queue 仅在 Queue 阶段以临时 `engine.SoundPriorityState` 调既有 `ConsumeSoundQueue`，立即拆回各唯一 owner。dispatcher 读取 selected 并先写 FF；01/05 按 remaining→steps→score DAC flags，仍在同 tick 扫描 voices。04 按 YM27=0→`RuleBulkClear`→selected FF→六 keyoff→24 TL→四 PSG。bulk 是一个规则 effect，`HeaderLongs=16,VoiceLongs=216,VoiceCount=18` 只描述来源边界；内部不对外制造逐 long progress。score music reset 的 header bulk 则为 16+120 long，保留 primary/secondary，并在真实 priority save/clear/restore、selected reset 节点协调 Root。
+
+`RuleOutput` 仅带 route 与本 tick score 语义输出，不带 cycle 或 cost。`RequireCost` 为 true 时在任何效果前返回 `ErrRuleCostUnavailable`。04/music bulk 的逐 long 中断可见性以及正常 voice 资源成本仍须后续专门恢复；本 revision 不输出零定价，不接受原 PC 表或 CPU/RAM VM。

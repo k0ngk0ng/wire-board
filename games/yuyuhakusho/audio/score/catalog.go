@@ -113,6 +113,7 @@ type rawCatalog struct {
 // Catalog is immutable after decoding. Its maps and definitions are private so
 // callers cannot mutate another driver's definitions through a shared catalog.
 type Catalog struct {
+	jsonSHA         string
 	scores          map[uint8]definition
 	patches         map[string]param.FMPatch
 	pitch           map[uint16]param.PitchEnvelope
@@ -146,6 +147,8 @@ func DecodeCatalog(r io.Reader) (*Catalog, error) {
 		return nil, fmt.Errorf("unsupported catalog profile")
 	}
 	c := &Catalog{scores: map[uint8]definition{}, patches: map[string]param.FMPatch{}, pitch: map[uint16]param.PitchEnvelope{}, volume: map[uint16]param.VolumeEnvelope{}, psg: map[int]uint16{}, descriptors: map[string]DACDescriptor{}, patterns: raw.Patterns}
+	identity := sha256.Sum256(source)
+	c.jsonSHA = hex.EncodeToString(identity[:])
 	copy(c.fm[:], raw.PitchTables.FM)
 	for i, v := range raw.PitchTables.PSG {
 		c.psg[i] = v

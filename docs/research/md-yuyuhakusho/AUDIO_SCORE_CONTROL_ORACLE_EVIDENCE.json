@@ -1,0 +1,223 @@
+{
+  "schema": 1,
+  "scope": "Read-only original score-owner control windows; Go action API remains independent",
+  "pass": true,
+  "new_cpu_capture": false,
+  "go_executed": false,
+  "go_generated_original_expected_values": false,
+  "windows": 94,
+  "actions": {
+    "reset-score": 4,
+    "stop-dac-flags": 2,
+    "fade-step": 88
+  },
+  "fixture": {
+    "path": "games/yuyuhakusho/audio/score/testdata/control-oracle/native-actions.json.gz",
+    "sha256": "3ea26b82248967cc6e98d5b85dee38bdc174603a1d7dd2ddedad1f759bb05225",
+    "bytes": 34401
+  },
+  "testdata_manifest": {
+    "path": "games/yuyuhakusho/audio/score/testdata/control-oracle/manifest.json",
+    "sha256": "4d55ba30d282f6b4098e912dacc65cf3ce2ff1a821268a66d2acf06a57205229",
+    "bytes": 623
+  },
+  "private_index": {
+    "path": ".local/md-yuyuhakusho/score-control-oracle/first/index.json",
+    "sha256": "1a035f5d94d1bfedbb64e2da7ff4d166205c6dd43a3e1409d84099899d98dd83",
+    "bytes": 4767
+  },
+  "private_provenance": {
+    "path": ".local/md-yuyuhakusho/score-control-oracle/first/provenance.json.gz",
+    "sha256": "d5d430c2e196bcf76e4103641312dffc77bd78f339e7e3d8356d8af746285ccb",
+    "bytes": 49006
+  },
+  "acceptance": {
+    "path": ".local/md-yuyuhakusho/score-control-oracle/check-result.json",
+    "sha256": "df99cf83f8a8b1ee0c475449e43ad76b1e3bb636bad58c2dcd2186a27b8cf25b",
+    "bytes": 366
+  },
+  "stop_flags_source_proof": {
+    "path": ".local/md-yuyuhakusho/score-control-oracle/stop-source-proof.json",
+    "sha256": "beb9689042c31619f9e14248d83e7492c734c9944348d91f956ab2f22c835a2c",
+    "bytes": 596
+  },
+  "test_first": [
+    {
+      "path": ".local/md-yuyuhakusho/score-control-oracle/test-first.json",
+      "sha256": "e938d48f754e79e40d44bdc388e7bcaf20945ddbe88b6303b9f368d3849d7100",
+      "bytes": 439
+    },
+    {
+      "path": ".local/md-yuyuhakusho/score-control-oracle/missing-red.txt",
+      "sha256": "96dfc4d726510668f43b4b7e225eac3afab8d160827a840e2adea36e7e3a7caf",
+      "bytes": 1296
+    }
+  ],
+  "scripts": [
+    {
+      "path": "scripts/yuyuhakusho/score_control_check.py",
+      "sha256": "1a069fbc31719a7bbca1c0cf17a9da1f40b17644e2986b23ad10ddf981101280",
+      "bytes": 4144
+    },
+    {
+      "path": "scripts/yuyuhakusho/score_control_export.py",
+      "sha256": "ad25cb2aefbd6cb97fc680bdc647346ff2e5debfd6ff06dc95bf08a7d71dd9bd",
+      "bytes": 12167
+    }
+  ],
+  "docs": [
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_SCORE_CONTROL_ORACLE_FAILURES.md",
+      "sha256": "878cfe8d379cf0c756817ec27b1c5a7a445ff521d3fae43aa0ef70f02bd5f014",
+      "bytes": 1433
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_SCORE_CONTROL_ORACLE_RESULTS.md",
+      "sha256": "1044d3bb440833fd3c1738b8efc721eea9715af06b266c60e366a0e44a7dce90",
+      "bytes": 5084
+    }
+  ],
+  "source_bindings": [
+    {
+      "path": ".local/md-yuyuhakusho/root-control-actions/index.json",
+      "sha256": "e53387c1849d0583b7231f21cd52d80098b499ac4751a639e15dd8dd118484dd",
+      "bytes": 3017
+    },
+    {
+      "path": ".local/md-yuyuhakusho/root-control-canonical-v2/capture.json",
+      "sha256": "7e1e77b89cb6eec24e2369815c652a78cd951524978b4522f17df98612e3535f",
+      "bytes": 2982
+    },
+    {
+      "path": "games/yuyuhakusho/data/audio-score.json.gz",
+      "sha256": "deaf3a70eac46c199335445d186f77d51f185bdaad4d95443d09b2f1d7054d71",
+      "bytes": 196368
+    },
+    {
+      "path": ".local/md-yuyuhakusho/downloads/yuyuhakusho-jp.bin",
+      "sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "bytes": 3145728
+    },
+    {
+      "path": ".local/md-yuyuhakusho/root-control-actions/mixed82-a7-clear04-actions.json.gz",
+      "sha256": "d14c66b2d4961b176c8434c9776131031cbea4ca1145633a1adf6ddee9cf879c",
+      "bytes": 8218
+    },
+    {
+      "path": ".local/md-yuyuhakusho/root-control-canonical-v2/mixed82-a7-clear04.json.gz",
+      "sha256": "0ebe43420d94bf975c1d03c31173ded928504b3a9ae22297c0282d3f5b8bc445",
+      "bytes": 24752
+    },
+    {
+      "path": ".local/md-yuyuhakusho/root-control-actions/music82-fade01-actions.json.gz",
+      "sha256": "5963c4f4c0a0ed0178aa8ba67adf24f79738ce05794e9a8b12f89ec0461fe208",
+      "bytes": 48427
+    },
+    {
+      "path": ".local/md-yuyuhakusho/root-control-canonical-v2/music82-fade01.json.gz",
+      "sha256": "1b62996fe66d0fa1f6864c904377df696bfcf1f2738ebbc9958aa9a49114e931",
+      "bytes": 108720
+    },
+    {
+      "path": ".local/md-yuyuhakusho/root-control-actions/music82-fade05-actions.json.gz",
+      "sha256": "9c7d8bfd5cf745024bc67eaffb71bf820aa6eaa79167315a273fb8b2c63ff0b3",
+      "bytes": 62542
+    },
+    {
+      "path": ".local/md-yuyuhakusho/root-control-canonical-v2/music82-fade05.json.gz",
+      "sha256": "ba814638edec4f759efb5c97743d3ea24461a35059a7c38f6dff41db1140fb6c",
+      "bytes": 141444
+    },
+    {
+      "path": ".local/md-yuyuhakusho/root-control-actions/ordinary73-clear04-actions.json.gz",
+      "sha256": "092466fe23ae97543a43576d41b61c231514ccb6e13656aec497161fefe3e5c7",
+      "bytes": 5946
+    },
+    {
+      "path": ".local/md-yuyuhakusho/root-control-canonical-v2/ordinary73-clear04.json.gz",
+      "sha256": "ca3fadb61b1b41d98f32fb651fe3984d2a7a3072f0f2d018285e12a16aa50c2e",
+      "bytes": 17762
+    },
+    {
+      "path": "scripts/yuyuhakusho/score_control_export.py",
+      "sha256": "ad25cb2aefbd6cb97fc680bdc647346ff2e5debfd6ff06dc95bf08a7d71dd9bd",
+      "bytes": 12167
+    },
+    {
+      "path": "scripts/yuyuhakusho/root-control-export-actions.py",
+      "sha256": "cc85b118d5d98297e500fd40680808af28aaaa03a4ceff2be459fbe7fddef322",
+      "bytes": 3040
+    },
+    {
+      "path": "scripts/yuyuhakusho/score_claim_capture.py",
+      "sha256": "1cd9d780ad95022412e20142a755c14c3beb082b3fa820b7e3db18b466709bcd",
+      "bytes": 19623
+    },
+    {
+      "path": "scripts/yuyuhakusho/score_claim_normalize.py",
+      "sha256": "8da4c71969763768ebc2da1aac72c504a8bcf45d15d045a6afddda8d7b701cc5",
+      "bytes": 13810
+    },
+    {
+      "path": "scripts/yuyuhakusho/score_claim_project_v3.py",
+      "sha256": "3de68eea6319219f7ba6d8b293b554d8956895ae733fc12efcb0d91162b72452",
+      "bytes": 5030
+    }
+  ],
+  "formal_catalog_json_sha256": "735d012d3d3140e76f8f756f0ca757bdc4b8deeb5a66750dd4610e41e06af830",
+  "view_projection": [
+    "tempo_remaining",
+    "tempo_period",
+    "voices"
+  ],
+  "whole_tick_before_score_equivalence": "Native Tempo0: both tempo bytes plus all18 score rows (866 bytes within the928-byte driver span) match preceding whole native frame; Root bytes excluded.",
+  "reset_score_is_state_only": true,
+  "full_clear_hardware_owned_by_root": {
+    "ym": 31,
+    "psg": 4,
+    "windows": 4
+  },
+  "stop_after_authority": "Observed DAC after row plus source single-flags-store projection; not a complete immediate native after sample",
+  "coverage": {
+    "fm_before_level_range": [
+      14,
+      84
+    ],
+    "native_fm_deactivation_windows": 0,
+    "native_psg_deactivations": 6,
+    "uncovered": [
+      "FM127-to128 deactivation",
+      "FM255-to0 wrap",
+      "carrier TL carry skips",
+      "fade while a primary claim suppresses music writes",
+      "active-fade pause",
+      "nonzero-tempo placement between tempo and voice scans"
+    ]
+  },
+  "additional_limits": [
+    "Only Active=true was naturally reached in Stop samples; other three true flag cases are static-CLR semantics, not native coverage.",
+    "Virtual Go Ticks/event cursor are not imported from source PC; their action law is checked by caller snapshot invariants."
+  ],
+  "cleanup": {
+    "removed": [
+      {
+        "path": ".local/md-yuyuhakusho/score-control-oracle/repeat/provenance.json.gz",
+        "bytes": 49006,
+        "sha256": "d5d430c2e196bcf76e4103641312dffc77bd78f339e7e3d8356d8af746285ccb"
+      },
+      {
+        "path": ".local/md-yuyuhakusho/score-control-oracle/repeat/index.json",
+        "bytes": 4769,
+        "sha256": "1c8c40d345fd051829fb168bbf6130efaa789de5a3689bbf76e3ffd47e14a35d"
+      },
+      {
+        "path": ".local/md-yuyuhakusho/score-control-oracle/repeat/testdata/score-control-actions.json.gz",
+        "bytes": 34401,
+        "sha256": "3ea26b82248967cc6e98d5b85dee38bdc174603a1d7dd2ddedad1f759bb05225"
+      }
+    ],
+    "reason": "Second export fixture/provenance proved byte-identical; authoritative first export retained.",
+    "bytes_removed": 88176
+  },
+  "writes_scope": "Only new score_control_* scripts, AUDIO_SCORE_CONTROL_ORACLE_* docs, .local/score-control-oracle and new score/testdata/control-oracle; no score Go/Observed/old42/catalog edits."
+}

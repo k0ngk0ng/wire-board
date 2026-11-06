@@ -1,0 +1,15 @@
+docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_PAUSE_LEVELS.md
+games/yuyuhakusho/audio/rootcontrol/pause.go
+games/yuyuhakusho/audio/rootcontrol/pause_test.go
+games/yuyuhakusho/audio/rootcontrol/testdata/pause-native-levels.json.gz
+games/yuyuhakusho/audio/rootcontrol/testdata/pause-native-manifest.json
+games/yuyuhakusho/verification/root-control-pause/missing-api-red.jsonl
+games/yuyuhakusho/verification/root-control-pause/native-race.jsonl
+games/yuyuhakusho/verification/root-control-pause/package-stub.go.txt
+games/yuyuhakusho/verification/root-control-pause/pause_test.go.txt
+games/yuyuhakusho/verification/root-control-pause/test-first.json
+games/yuyuhakusho/verification/root-control-pause/test-overlay.json
+games/yuyuhakusho/verification/root-control-pause/validation.json
+games/yuyuhakusho/verification/root-control-pause/vet.log
+games/yuyuhakusho/verification/root-control-pause/wasm.jsonl
+games/yuyuhakusho/verification/root-control/pause-levels-original.json

@@ -1,0 +1,12 @@
+{
+  "pass": false,
+  "source": ".local/md-yuyuhakusho/root-control-native/mixed82-a7-pause.json.gz",
+  "source_sha256": "970b7070e30605cbcc1a84d1272805f093f3a8fe773c1d58cd82cc50eaa8a76d",
+  "capture_count": 0,
+  "held_steps": [],
+  "restore_count": 1,
+  "errors": [
+    "Intended pause capture point was not reached",
+    "No actual FF-held pause frames"
+  ]
+}

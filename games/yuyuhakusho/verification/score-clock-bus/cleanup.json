@@ -1,0 +1,36 @@
+{
+  "scope": "Only exact repeated native data, exact smoke subset, own compiled observer/cache and reference output directories; borrowed PCM observer and canonical native/portable data remain",
+  "paths": [
+    {
+      "path": ".local/md-yuyuhakusho/score-clock-bus-native-repeat",
+      "files": 3,
+      "bytes": 86280
+    },
+    {
+      "path": ".local/md-yuyuhakusho/score-clock-bus-smoke",
+      "files": 3,
+      "bytes": 37928
+    },
+    {
+      "path": ".local/md-yuyuhakusho/score-clock-bus-native/score-clock.dylib",
+      "files": 1,
+      "bytes": 18000
+    },
+    {
+      "path": ".local/md-yuyuhakusho/score-clock-bus-native/tmp",
+      "files": 0,
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/score-clock-bus-native/core-original",
+      "files": 0,
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/score-clock-bus-native/core-hook",
+      "files": 0,
+      "bytes": 0
+    }
+  ],
+  "bytes_removed": 142208
+}

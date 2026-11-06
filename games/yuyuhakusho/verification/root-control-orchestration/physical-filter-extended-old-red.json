@@ -1,0 +1,25 @@
+{
+  "24bit_port_alias_forward": false,
+  "all_13_unselected_sites_forward": false,
+  "detached_callback_rejected": true,
+  "entrypoint": "yyh_cpu_hook",
+  "full_port_ledger_proven": false,
+  "include_sources": [],
+  "listing": {
+    "path": "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt",
+    "sha256": "9f81bd47bfe322110bc11339992f0e570b704077ccff22493940b75af7837152"
+  },
+  "pass": false,
+  "pc_filter_forward": true,
+  "physical_address": "port",
+  "physical_events": [],
+  "scope": "Only the passive filter exercised with declared synthetic callback arguments; no native core loaded",
+  "source": {
+    "path": "scripts/yuyuhakusho/hook_filter.c",
+    "sha256": "5320b2763215d032ce7eb5aaabcf0be2cfaa3b41eb49398d7c33933ce9f8c874"
+  },
+  "type4_byte_C00011_forward": false,
+  "unrelated_read_word_pc_rejected": true,
+  "version": 1,
+  "whole_goal_complete": false
+}

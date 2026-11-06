@@ -1,0 +1,12 @@
+{
+  "args": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-B",
+    "scripts/yuyuhakusho/root-control-scope-check.py"
+  ],
+  "cwd": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho",
+  "exit_code": 0,
+  "stdout": "{\n  \"pass\": true,\n  \"files\": 257,\n  \"preserved_native_files\": 49,\n  \"native_frames\": 1115,\n  \"rules_frames\": 1113,\n  \"rules_requests\": 8480,\n  \"no_core_or_Go_execution\": true\n}\n",
+  "stderr": "",
+  "no_native_core_or_Go_execution": true
+}

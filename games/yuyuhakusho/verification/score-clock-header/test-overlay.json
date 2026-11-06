@@ -1,0 +1,5 @@
+{
+  "Replace": {
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/games/yuyuhakusho/audio/scoreclock/header_test.go": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/games/yuyuhakusho/verification/score-clock-header/header_test.go.txt"
+  }
+}

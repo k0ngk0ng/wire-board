@@ -1,0 +1,8 @@
+{"ImportPath":"command-line-arguments_test [command-line-arguments.test]","Action":"build-output","Output":"# command-line-arguments_test [command-line-arguments.test]\n"}
+{"ImportPath":"command-line-arguments_test [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/audio/rootcontrol/orchestrator_contract_test.go:11:40: undefined: rootcontrol.RuleOwners\n"}
+{"ImportPath":"command-line-arguments_test [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/audio/rootcontrol/orchestrator_contract_test.go:20:65: undefined: rootcontrol.RuleOperation\n"}
+{"ImportPath":"command-line-arguments_test [command-line-arguments.test]","Action":"build-output","Output":"games/yuyuhakusho/audio/rootcontrol/orchestrator_contract_test.go:20:111: undefined: rootcontrol.RuleOutput\n"}
+{"ImportPath":"command-line-arguments_test [command-line-arguments.test]","Action":"build-fail"}
+{"Time":"2026-11-06T06:52:27.612392+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-06T06:52:27.612435+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\tcommand-line-arguments [build failed]\n"}
+{"Time":"2026-11-06T06:52:27.612441+08:00","Action":"fail","Package":"command-line-arguments","Elapsed":0,"FailedBuild":"command-line-arguments_test [command-line-arguments.test]"}

@@ -1,0 +1,169 @@
+{
+  "schema": 1,
+  "pass": true,
+  "at_utc": "2026-11-05T19:12:21.076158+00:00",
+  "scope": "Independent fixed PSG raw absolute store and single/pitch-pair/mute-all leaves from supplied main clock/refresh and canonical bytes",
+  "raw_store_verified": true,
+  "fixed_leaves_verified": [
+    "single",
+    "pitch-pair",
+    "mute-all"
+  ],
+  "canonical_private_cases": 138,
+  "ordered_PSG_writes": 192,
+  "native_builds": 2,
+  "recorder_on_off_invocations": 552,
+  "real_Interactive_owner_used": true,
+  "frozen_test_first_verified": true,
+  "old_YM_service_and_tests_unchanged": true,
+  "fixture_sha256": "2ebb7999315f787af32118c5f6b25ffeb38a6973a7db4a40e714eed3a9ffff56",
+  "native_full_sha256": "546b19c0f95ce6c3bde68c7981b07cc66b4a839cddddd274b3fe9d0a5673c7fd",
+  "go_validation": {
+    "native": {
+      "pass": true,
+      "command_record": "games/yuyuhakusho/verification/score-clock-psg/go/native-command.json",
+      "log": "games/yuyuhakusho/verification/score-clock-psg/go/native.jsonl",
+      "log_sha256": "5bd0afc95e7a77d8e0dec148ceb1d5aa3764c9a2ea6bc2c32f68cd0e4b79b2b9",
+      "top_level_tests": [
+        "TestPSGNativeFixedLeavesWithInteractiveOwner",
+        "TestPSGRawStoreAndLeafHaveDistinctCallerBoundary",
+        "TestPSGRejectsInvalidInputBeforeExternalIO",
+        "TestPSGFixedOperationBudgetStopsWithoutRollback",
+        "TestPSGExternalFailurePropagatesWithoutLaterWrites",
+        "TestPSGInteractiveOwnerRejectsBackwardAndUnflushedInput",
+        "TestPSGRefreshOverflowStopsAfterPriorExternalWrite"
+      ],
+      "native_fixture_subscenarios": 138
+    },
+    "wasm": {
+      "pass": true,
+      "command_record": "games/yuyuhakusho/verification/score-clock-psg/go/wasm-command.json",
+      "log": "games/yuyuhakusho/verification/score-clock-psg/go/wasm.jsonl",
+      "log_sha256": "f6e7924cc5fd8da53ab389b8ec277d31c2074c63cb48384ce38266faf32f3581",
+      "top_level_tests": [
+        "TestPSGNativeFixedLeavesWithInteractiveOwner",
+        "TestPSGRawStoreAndLeafHaveDistinctCallerBoundary",
+        "TestPSGRejectsInvalidInputBeforeExternalIO",
+        "TestPSGFixedOperationBudgetStopsWithoutRollback",
+        "TestPSGExternalFailurePropagatesWithoutLaterWrites",
+        "TestPSGInteractiveOwnerRejectsBackwardAndUnflushedInput",
+        "TestPSGRefreshOverflowStopsAfterPriorExternalWrite"
+      ],
+      "native_fixture_subscenarios": 138
+    },
+    "vet": {
+      "pass": true,
+      "command_record": "games/yuyuhakusho/verification/score-clock-psg/go/vet-command.json",
+      "log": "games/yuyuhakusho/verification/score-clock-psg/go/vet.txt",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "top_level_tests": [],
+      "native_fixture_subscenarios": 0
+    }
+  },
+  "native_identity": {
+    "original": {
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+      "core_name": "Genesis Plus GX",
+      "core_version": "v1.7.4 60bee4c",
+      "fps": 59.92274340431231,
+      "ram_bytes": 65536,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "teamplayer": false
+    },
+    "hook": {
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+      "core_name": "Genesis Plus GX",
+      "core_version": "v1.7.460bee4c",
+      "fps": 59.92274340431231,
+      "ram_bytes": 65536,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "teamplayer": false
+    }
+  },
+  "native_recorder_on_off_equal": [
+    "complete serialized state",
+    "RAM",
+    "refresh",
+    "PSG context",
+    "original execution steps"
+  ],
+  "cross_native_builds_equal": [
+    "ordered PSG writes",
+    "final clock/refresh",
+    "PSG context",
+    "original execution steps"
+  ],
+  "source_sha256": {
+    "games/yuyuhakusho/audio/scoreclock/psg.go": "10db96b908b5f3a8cb3f3aba3c0f87921ddc23c7ff56a41677672c9f951463c2",
+    "games/yuyuhakusho/audio/scoreclock/psg_test.go": "41df9f38b32a8d90a276f6d777d31673f5983112a3a4250f1afe224fc5eeee7b",
+    "games/yuyuhakusho/audio/scoreclock/service.go": "3ba87dba2a672c351c2e5c41065b6a42236656f58e7e7bd37b99af6849911aee",
+    "games/yuyuhakusho/audio/scoreclock/service_test.go": "15a831c2ee1314a9d02f93c05d4910f775fb8743ef08b489b9e408e5d44e9589",
+    "games/yuyuhakusho/audio/scoreclock/testdata/psg-native-manifest.json": "72e590aa9fc682a842e3053b6aed4fd88bd94948aa56fafdc6fef9e48f26dd72",
+    "games/yuyuhakusho/audio/scoreclock/testdata/psg-native-services.json.gz": "2ebb7999315f787af32118c5f6b25ffeb38a6973a7db4a40e714eed3a9ffff56",
+    "scripts/yuyuhakusho/score-clock-psg-capture.py": "9f80bcca6558d8e651a0925a8ae5e37e2a7f045f4fe3df22d7a2f0347ca47f9f",
+    "scripts/yuyuhakusho/score-clock-psg-cost-source.py": "9778f1b3a135807a714348de7828703aa0e029c571ac99b29ed38c42a0300f09",
+    "scripts/yuyuhakusho/score-clock-psg-observer.c": "d80a57828f590929d1b53bdb42f4e1a1e2e6022b1c34c4648b36e21dbe58d464",
+    "scripts/yuyuhakusho/score-clock-psg-verify.py": "e56ef9ba2ce6b4faf8e7a508f6dbf55215391f4ad4d22354a08364fe555a8003",
+    "docs/research/md-yuyuhakusho/SCORE_CLOCK_PSG.md": "db7b0df423e52795aebab862bc7a782d81d8dca74c8c5190180652eac1d6c840",
+    "docs/research/md-yuyuhakusho/SCORE_CLOCK_PSG_FAILURES.md": "32d5dbdaa5f2ddc2cd5fa621bce4ace5a1822911d67211ea7cc6769632c7483c"
+  },
+  "artifact_sha256": {
+    "games/yuyuhakusho/verification/score-clock-psg/cleanup.json": "8cad3ca1f2c0e6498904f4b27c8c3c9a19ffecaf18df84f6863282d8e7598a6c",
+    "games/yuyuhakusho/verification/score-clock-psg/cost-source.json": "55c9d217f72dc2f1beff8ff8562f2398330c2950c3813d1ab4b6c095980a87c2",
+    "games/yuyuhakusho/verification/score-clock-psg/go/native-command.json": "ed1d9509f65c365ff498121637362d8fa74036977be16c54d68db31d16154c07",
+    "games/yuyuhakusho/verification/score-clock-psg/go/native.jsonl": "5bd0afc95e7a77d8e0dec148ceb1d5aa3764c9a2ea6bc2c32f68cd0e4b79b2b9",
+    "games/yuyuhakusho/verification/score-clock-psg/go/vet-command.json": "783982c8163790592765a60b44b1054bc25263fc5cd544f970ac6ea7d1bb2ddb",
+    "games/yuyuhakusho/verification/score-clock-psg/go/vet.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "games/yuyuhakusho/verification/score-clock-psg/go/wasm-command.json": "64b907b08a9ecf0b90aa1e53031aa9a516ec372d3b6cdd67b4e18c8a3182ae3c",
+    "games/yuyuhakusho/verification/score-clock-psg/go/wasm-gomaxprocs2-environment-red-command.json": "824f70ee4426783be155c15f5f69b5a6d87df610d7d4b990adebaa2406a26edf",
+    "games/yuyuhakusho/verification/score-clock-psg/go/wasm-gomaxprocs2-environment-red.jsonl": "bffc3e5a8b8b35e4ad1305b05129ed2708354bca2b8ef2b9e7f515716f82c4ef",
+    "games/yuyuhakusho/verification/score-clock-psg/go/wasm.jsonl": "f6e7924cc5fd8da53ab389b8ec277d31c2074c63cb48384ce38266faf32f3581",
+    "games/yuyuhakusho/verification/score-clock-psg/missing-api-red.jsonl": "96f93f69c0dc6cfd811c1429d2d61e20d8c6ac5e71b74e7c48360ac22c6c5adf",
+    "games/yuyuhakusho/verification/score-clock-psg/native/capture.json": "a20f92c4d569ffa3cbb08bd890d1640c0c6b7e60cc2076801862a88c0c01afae",
+    "games/yuyuhakusho/verification/score-clock-psg/native/native-services-full.json.gz": "546b19c0f95ce6c3bde68c7981b07cc66b4a839cddddd274b3fe9d0a5673c7fd",
+    "games/yuyuhakusho/verification/score-clock-psg/test-first.json": "b1e076eaa32fe7c4575e60e248ad99e3676da8b8cdd20ef5e97b1bd3b89f4488"
+  },
+  "whole_driver_tick_assignment_verified": false,
+  "natural_driver_schedule_verified": false,
+  "PCM_or_product_playback_verified": false,
+  "production_uses_CPU_ROM_PC_or_caller_cycle_program": false,
+  "runtime_integrated": false,
+  "limits": [
+    "Native private fixture explicitly resets PSG after restoring a quiet world; it does not represent natural driver execution",
+    "Serialized/context equality does not separately prove hidden output buffers or PCM equality",
+    "Raw StorePSG excludes return; fixed leaves include one return but exclude caller preparation and call costs",
+    "Failures can follow prior external writes; callers discard detached transactions",
+    "No changes to frozen YM service, score, chips, phaseclock, engine or global indexes",
+    "First Wasm environment failure with GOMAXPROCS=2 is preserved; repeatable runner fixes Wasm GOMAXPROCS=1"
+  ],
+  "cleanup": {
+    "scope": "Only task-owned transient native observer binary and empty capture directories; no shared Go caches or unrelated paths touched",
+    "removed": [
+      {
+        "path": "games/yuyuhakusho/verification/score-clock-psg/native/score-clock-psg-observer.dylib",
+        "bytes": 17392,
+        "sha256": "ec2cf428a0563da9dfdecb38b2e343b76c8065cd7da24ac30b782444bd53e804"
+      },
+      {
+        "path": "games/yuyuhakusho/verification/score-clock-psg/native/core-original",
+        "bytes": 0,
+        "empty_directory": true
+      },
+      {
+        "path": "games/yuyuhakusho/verification/score-clock-psg/native/tmp",
+        "bytes": 0,
+        "empty_directory": true
+      },
+      {
+        "path": "games/yuyuhakusho/verification/score-clock-psg/native/core-hook",
+        "bytes": 0,
+        "empty_directory": true
+      }
+    ],
+    "bytes_removed": 17392,
+    "kept": "Frozen tests, true red, native full provenance, portable fixture, SHA manifests and repeatable Go/Wasm/vet results"
+  },
+  "no_commits_uploads_or_deployment": true
+}

@@ -1,0 +1,28 @@
+{
+  "stage": "before PSG implementation",
+  "test_first": true,
+  "actual_missing_api_red": true,
+  "command": [
+    "go",
+    "test",
+    "-json",
+    "-count=1",
+    "-run",
+    "TestPSG",
+    "./games/yuyuhakusho/audio/scoreclock"
+  ],
+  "exit_code": 1,
+  "implementation_exists": false,
+  "source_sha256": {
+    "games/yuyuhakusho/audio/scoreclock/psg_test.go": "41df9f38b32a8d90a276f6d777d31673f5983112a3a4250f1afe224fc5eeee7b",
+    "docs/research/md-yuyuhakusho/SCORE_CLOCK_PSG_FAILURES.md": "32d5dbdaa5f2ddc2cd5fa621bce4ace5a1822911d67211ea7cc6769632c7483c"
+  },
+  "log_sha256": "96f93f69c0dc6cfd811c1429d2d61e20d8c6ac5e71b74e7c48360ac22c6c5adf",
+  "environment": {
+    "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+    "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+    "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+    "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp"
+  }
+}

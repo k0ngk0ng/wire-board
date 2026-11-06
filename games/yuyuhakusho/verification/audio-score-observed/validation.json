@@ -1,0 +1,526 @@
+{
+  "schema": 1,
+  "scope": "Synchronous temporary score operations, staged external feedback and unpriced parser structure",
+  "pass": true,
+  "baseline_commit": "92f27271",
+  "completed_at_utc": "2026-11-05T21:10:50.494856+00:00",
+  "checks": {
+    "native": {
+      "command": {
+        "path": "games/yuyuhakusho/verification/audio-score-observed/final/native-command.json",
+        "sha256": "868bee2b154de9c8aec3da5732d881aa4f2c6216c992ee777c9a61eb4e3a7d26",
+        "bytes": 3338
+      },
+      "log": {
+        "path": "games/yuyuhakusho/verification/audio-score-observed/final/native.jsonl",
+        "sha256": "6fabf2abe069e71fc14508714b42977bfb89862755ec5a6e64e1a5b98aa0ddde",
+        "bytes": 154689
+      }
+    },
+    "wasm": {
+      "command": {
+        "path": "games/yuyuhakusho/verification/audio-score-observed/final/wasm-command.json",
+        "sha256": "b3faf9eb4e751fa7c842fa3de974301f216b736e235149b43741f0326769dfc1",
+        "bytes": 3446
+      },
+      "log": {
+        "path": "games/yuyuhakusho/verification/audio-score-observed/final/wasm.jsonl",
+        "sha256": "a91bd8162e2ef0210ba0c99359ee1b57aa3bd7dd98d42d82f88b8dc08c2d714f",
+        "bytes": 154677
+      }
+    },
+    "vet": {
+      "command": {
+        "path": "games/yuyuhakusho/verification/audio-score-observed/final/vet-command.json",
+        "sha256": "1a5a08cdf61a127a79e40286a73e9c48cd55fb369f1598ad5f47d45c65e2c499",
+        "bytes": 3273
+      },
+      "log": {
+        "path": "games/yuyuhakusho/verification/audio-score-observed/final/vet.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    }
+  },
+  "backends": {
+    "native": {
+      "passed_records": 138,
+      "legacy_cases": 42,
+      "legacy_ticks": 126141,
+      "legacy_intents": 1504150,
+      "observed_cases": 42,
+      "observed_ticks": 126141,
+      "observed_intents": 1504150,
+      "temporary_operations": 18855491,
+      "original_parser_counts": {
+        "ticks": 122810,
+        "token_and_lookahead_reads": 199477,
+        "controls": 26130,
+        "note_commit_sites": 127691,
+        "loop": 3388,
+        "jump": 942,
+        "call": 263,
+        "return": 246,
+        "first_taken": 619,
+        "repeat_taken": 2163,
+        "repeat_exit": 606
+      }
+    },
+    "wasm": {
+      "passed_records": 138,
+      "legacy_cases": 42,
+      "legacy_ticks": 126141,
+      "legacy_intents": 1504150,
+      "observed_cases": 42,
+      "observed_ticks": 126141,
+      "observed_intents": 1504150,
+      "temporary_operations": 18855491,
+      "original_parser_counts": {
+        "ticks": 122810,
+        "token_and_lookahead_reads": 199477,
+        "controls": 26130,
+        "note_commit_sites": 127691,
+        "loop": 3388,
+        "jump": 942,
+        "call": 263,
+        "return": 246,
+        "first_taken": 619,
+        "repeat_taken": 2163,
+        "repeat_exit": 606
+      }
+    }
+  },
+  "frozen_source_sha256": {
+    "games/yuyuhakusho/audio/score/parser_work_test.go": "0719465731b86d83871f91d060c968634e28468d68eef2005011ec23219c2899",
+    "games/yuyuhakusho/audio/score/catalog.go": "9d19b1b16342d54b4df4625a7e75bd3c2e6806af04194540a134f9b12059a542",
+    "games/yuyuhakusho/audio/score/observed.go": "70c8e254b7e1daf9b1aa49ded0e369d0831639e5eab9902ea9349b8cead846ba",
+    "games/yuyuhakusho/audio/score/restore_contract_test.go": "fc40f87f1e6cf1c8876da77da738dce179ef72df521632789aff27fdb953b55e",
+    "games/yuyuhakusho/audio/score/parser_binding_test.go": "47775465fa6a519533c4ba1470e89c8b7c885663ad3866110d194e28695bb087",
+    "games/yuyuhakusho/audio/score/observed_test.go": "81ce7738cce928035cc3a2e4a144b71a1d876472b0bd6eb9d7caa11c06f90938",
+    "games/yuyuhakusho/audio/score/parser_work.go": "d389483bc8d6ff4d3c1f6c784d4d094c30d825fc133d88a8079ecdb9b1e91394",
+    "games/yuyuhakusho/audio/score/state.go": "611dc7cb1b45e31ffcc539eb8831e0fe824a7098583837ce1cb0e6fbc351f96f",
+    "games/yuyuhakusho/audio/score/driver.go": "9f7d0ae19ed96a3266834b7438444656c167f34a2278a8498813af767a916fca",
+    "games/yuyuhakusho/audio/score/observed_tempo_test.go": "f24a7a1d13f7ac0863d6800711d54cffbd56143ab79e3703370d8ddc3d981c1f",
+    "games/yuyuhakusho/audio/score/driver_test.go": "d3f09a267d736a82c6e787de8cc3dca9a46c1ca0482dbe1a689c1573346fd595",
+    "games/yuyuhakusho/audio/score/param/param_test.go": "4e9a718127173f0265411a6572ffe290fc47834f5bc11a0b0db8a0ad9e59c84c",
+    "games/yuyuhakusho/audio/score/param/fm.go": "e325442cf55374d110eea7cd9f13cb5a2c4bf966bbe8444be563cbc98594f220",
+    "games/yuyuhakusho/audio/score/param/envelope.go": "a200e87f05eca67f1998f4956fb22b625fbf76c5d52567b15fc31f383bc6cb1b",
+    "games/yuyuhakusho/audio/score/param/pan.go": "ef19d52ff80914af2d2eb1356d478a22ba071157eac7d37e17f42441d10da754",
+    "games/yuyuhakusho/data/audio-score.json.gz": "deaf3a70eac46c199335445d186f77d51f185bdaad4d95443d09b2f1d7054d71",
+    "games/yuyuhakusho/data/audio-score-parser-work.json.gz": "96f8044395167f4227b2c45e7ee66440987d8d49d3f7f52b40ca437930eedb43",
+    "games/yuyuhakusho/audio/score/testdata/original-index.json": "1972cf3e2a31ca1cfb30d0b25a227ad4d3ac662d072cdbd92fdc1ad177c3124a",
+    "scripts/yuyuhakusho/verify_score_observed.py": "0fc7f1c111be9b2f93c6295c5b208f474065b28018aa914f6370ae561a4460c3"
+  },
+  "old_state_catalog_tests_and_42_fixtures_unchanged": true,
+  "retained_baseline_bindings": {
+    "games/yuyuhakusho/audio/score/state.go": "611dc7cb1b45e31ffcc539eb8831e0fe824a7098583837ce1cb0e6fbc351f96f",
+    "games/yuyuhakusho/audio/score/driver_test.go": "d3f09a267d736a82c6e787de8cc3dca9a46c1ca0482dbe1a689c1573346fd595",
+    "games/yuyuhakusho/audio/score/restore_contract_test.go": "fc40f87f1e6cf1c8876da77da738dce179ef72df521632789aff27fdb953b55e",
+    "games/yuyuhakusho/data/audio-score.json.gz": "deaf3a70eac46c199335445d186f77d51f185bdaad4d95443d09b2f1d7054d71",
+    "games/yuyuhakusho/audio/score/testdata/original-index.json": "1972cf3e2a31ca1cfb30d0b25a227ad4d3ac662d072cdbd92fdc1ad177c3124a"
+  },
+  "fixtures": [
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/music82-a0.jsonl.gz",
+      "sha256": "6004749e230b98d73755c58d8a1bf1c80361299e0c900f38ec667ebfcdee37ac",
+      "bytes": 33266
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/music82-a1.jsonl.gz",
+      "sha256": "907089c07d01b00990a8fccc293cfbfe31ca056c228d76c0205a77c9422a1ddf",
+      "bytes": 51161
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/music82-a2.jsonl.gz",
+      "sha256": "f7742d7f9193d12ef3131504f75381283eacb6ab795c5947db3a84a41659e315",
+      "bytes": 33502
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/music82-a3.jsonl.gz",
+      "sha256": "e6e01cd25684c7a8f3c6ac0f21e609058763da5bffd44b3fec7a3cc3cffde203",
+      "bytes": 35738
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/music82-a4.jsonl.gz",
+      "sha256": "cf7dea4f7250e527555a1435623150db53fa184637b57f91f147d8710a4997a3",
+      "bytes": 57617
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/music82-a5.jsonl.gz",
+      "sha256": "d194c18511930e0a1189106ecf3c6d35b35b5166eb0dc46330966f5cb81228a2",
+      "bytes": 49803
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/music82-a6.jsonl.gz",
+      "sha256": "5b29d0adc8962582f95cd6bf2e6893b6e381a34c0f6f0b5f19d3c58f43c3c937",
+      "bytes": 33899
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/music82-a7.jsonl.gz",
+      "sha256": "84dbc2402caafb09c514539ae511d076dcf0f49591949a3c6bdf0ecfd23b42e4",
+      "bytes": 46989
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/music82-a8.jsonl.gz",
+      "sha256": "0e8870ddc5421e30ba6aeb5b0a2bde2fb4edfeaed1e75dbf228e6e7771687246",
+      "bytes": 42781
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/music82-a9.jsonl.gz",
+      "sha256": "7faac1ec41415b899db65e241cb2c3ec2fc7239945376ed3b78fb8ab358f2183",
+      "bytes": 61957
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/music82-aa.jsonl.gz",
+      "sha256": "78fceb713dad96b3e8d8caebb6c0f0d0a589c07a877485fdc152b646bb56e595",
+      "bytes": 41635
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/music82-ab.jsonl.gz",
+      "sha256": "edc31ba9c3814ea97ff7fbcfc29b3e19dfffc6ca8f6bbdea4cf53274f68a76bb",
+      "bytes": 65258
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/higher-priority-replaces.jsonl.gz",
+      "sha256": "deeca10679ceb73100e8173a7492574b7bf5f75fb2672290fa6116fa74b0cb18",
+      "bytes": 58957
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/lower-priority-rejected.jsonl.gz",
+      "sha256": "d23861be8de187c4a369ea58c61522f40506c2b09eec5e1dbda01db8da82f3fa",
+      "bytes": 58552
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/music-replaces-primary.jsonl.gz",
+      "sha256": "f79a5a1606f20af370b057cfe92456497a235fd478044e8da0f0c3b1e8775ca7",
+      "bytes": 60522
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/music82-hidden-patch.jsonl.gz",
+      "sha256": "7d434010f5d986d73a024f0a881f56b46baa6e10ff9b72eb8da2d54ed3997290",
+      "bytes": 311783
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/isolated-82.jsonl.gz",
+      "sha256": "bd63401746edf76a196177ed96fa1eae0979bd737e3650c2951f048a625f4210",
+      "bytes": 2766315
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/isolated-83.jsonl.gz",
+      "sha256": "89334c91b2d3101f1b848d90bde833dd47f3eeeb2cd57880ad614aaa963f2d9f",
+      "bytes": 3033426
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/isolated-84.jsonl.gz",
+      "sha256": "bbc5f9e17a52b0f0a2242cf26b5c7aa8cbfc7be994a5eb00098b0f18bab31c23",
+      "bytes": 3508838
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/isolated-85.jsonl.gz",
+      "sha256": "1f396d2598efd962959da479b65a0ba1616a65f1e23d09211766952b978c5949",
+      "bytes": 3143718
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/isolated-86.jsonl.gz",
+      "sha256": "1426040abd74e1ab7ce82e522c41bc01a5938899e9f8fd72bcce715f72b9f882",
+      "bytes": 3789206
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/isolated-87.jsonl.gz",
+      "sha256": "86274194c171c851e140eaa852f0c2456682a48d119dcdbb2daaad667eb37acb",
+      "bytes": 8508371
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/isolated-88.jsonl.gz",
+      "sha256": "49367af1fdf1c95a6826f508a1ff600048654def66d7f4a1c2338c228805d7db",
+      "bytes": 5604781
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/isolated-8a.jsonl.gz",
+      "sha256": "62413826de2eff507e650a1e8c5ea70c08d8182b82765f71d099946e58b06abb",
+      "bytes": 5403087
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/isolated-8d.jsonl.gz",
+      "sha256": "b15e28f116249e9c07bba0d40a9b3c137ffdcf35e60566002669ebfb6d0b198c",
+      "bytes": 3377061
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/isolated-95.jsonl.gz",
+      "sha256": "6a2fcbe3839a32b7c312b3fd45ecc7e1f555f5865911cd05966733e6d4bae2f1",
+      "bytes": 6316915
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/isolated-8f.jsonl.gz",
+      "sha256": "a375177794359d95450470e924cfa1b3bcffdf8e4fb4c7e1611fd6386622fb0a",
+      "bytes": 90086
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/isolated-a0.jsonl.gz",
+      "sha256": "6951e3f0437e04f87421dcde73f3293374532cf9c89c4c6054819c588d2f730f",
+      "bytes": 6296
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/isolated-a1.jsonl.gz",
+      "sha256": "05beb4e86322a335d8b7dede0ec0f25430b9dea9889f5c5a9d73ff8fb6b4754a",
+      "bytes": 19286
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/isolated-a2.jsonl.gz",
+      "sha256": "d3c2ea3c02b34a4cd5e7bfa950f930514156b9155d86991bd4c8f588b12e3848",
+      "bytes": 6595
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/isolated-a3.jsonl.gz",
+      "sha256": "3b64a8213071640600dda4f95e1558bde9616246c0555a8f661a25c396dcba22",
+      "bytes": 7959
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/isolated-a4.jsonl.gz",
+      "sha256": "21b84a1c19114c2a748f2e02954dfba0971cdae7d303e1b8d64cf44df6a1d743",
+      "bytes": 22360
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/isolated-a5.jsonl.gz",
+      "sha256": "74ba993a47e70cf4578c1bc484fa6d97a1aba7e31c741ae91610a37d6eef79c0",
+      "bytes": 17188
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/isolated-a6.jsonl.gz",
+      "sha256": "530183e1d741f11408ac02edf25a300c1b45d28f1d0a52b22cfc9c3734bbdaf3",
+      "bytes": 6864
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/isolated-a7.jsonl.gz",
+      "sha256": "8062924ca9c1b5fd5a39b4a89e4a925b1b6964bc1b2c10f56e1a4687a6e3f38f",
+      "bytes": 15643
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/isolated-a8.jsonl.gz",
+      "sha256": "589040488eece58d61f5b158edb9a28e10708ddd1e4b110a90f5c9d5e411a9ec",
+      "bytes": 12904
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/isolated-a9.jsonl.gz",
+      "sha256": "051a1f5d6db1066276522dca6896fdbf04443bcc33ab444fdc472b27dff22630",
+      "bytes": 26279
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/isolated-aa.jsonl.gz",
+      "sha256": "13781f22bfab2b77b6f583ffa4eb8205e1c6be83bf92de33fabb936f02392295",
+      "bytes": 11606
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/isolated-ab.jsonl.gz",
+      "sha256": "268ab33b8dcb664f7bb140ea286ba7f22618202f6fa2128e57a2ee249c7cfc4a",
+      "bytes": 28047
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/primary-before-first-music.jsonl.gz",
+      "sha256": "ce81ab4ed8864cdc757f38c45fbaf46ae694a7fef96d427bdc1c0169a3e84763",
+      "bytes": 56374
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/pcm-then-music88.jsonl.gz",
+      "sha256": "404ab471d1a9d148fbb0e079c89b5acd870c93777e2ba7a15735a8573b03eb1a",
+      "bytes": 70409
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/music88-pcm-before-pan.jsonl.gz",
+      "sha256": "551792203628218e363b0b1f4425b713ed359ac57487d0dc94bfbe8a31a78eb6",
+      "bytes": 72208
+    }
+  ],
+  "parser_resource": {
+    "binding": {
+      "path": "games/yuyuhakusho/data/audio-score-parser-work.json.gz",
+      "sha256": "96f8044395167f4227b2c45e7ee66440987d8d49d3f7f52b40ca437930eedb43",
+      "bytes": 199277
+    },
+    "catalog_json_sha256": "735d012d3d3140e76f8f756f0ca757bdc4b8deeb5a66750dd4610e41e06af830",
+    "records": 39045,
+    "voice_headers": 115,
+    "maximum_work_per_variant": 12,
+    "entry_variants": 8,
+    "unpriced": true,
+    "scope": "parser-structure-only"
+  },
+  "new_source_and_document_bindings": [
+    {
+      "path": "scripts/yuyuhakusho/export_score_parser_work.py",
+      "sha256": "be3823d40984159142a2ddf62c009deddacb53a5a5782140f92f933b3c36b866",
+      "bytes": 2329
+    },
+    {
+      "path": "scripts/yuyuhakusho/verify_score_observed.py",
+      "sha256": "0fc7f1c111be9b2f93c6295c5b208f474065b28018aa914f6370ae561a4460c3",
+      "bytes": 4025
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_SCORE_OBSERVED.md",
+      "sha256": "42249c8ea23ce345da1534970a94019e9e8e746306120c0f4ddf3d5bee2357dc",
+      "bytes": 9288
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_SCORE_OBSERVED_FAILURES.md",
+      "sha256": "37f3d13141791f99795e6cafa104f3b649327354a194e9aad162cb0cab684fdd",
+      "bytes": 2190
+    }
+  ],
+  "proof_bindings": [
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_SCORE_FLOW_EVIDENCE.json",
+      "sha256": "c067223a383fd672827cd0feb24d392e9e03cdccacb30db84173a177b1d033af",
+      "bytes": 12897
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_SCORE_FLOW_RESULTS.md",
+      "sha256": "c3b262917ff6ebacea3f917bc88ad51d104dd73dfbc9b6cbfb13d94ace012626",
+      "bytes": 7998
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_SCORE_OBSERVED_REVIEW.md",
+      "sha256": "5afdde3758c649a6646a2d4ff0a3eb4ce20ca8ae010208002c4940db3673a160",
+      "bytes": 3482
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-score-observed/frozen-sources.json",
+      "sha256": "6ffa1af57137abeb572dcf61a14fdc2bb5b622dc5f32b789bd3066a3eaf31fe1",
+      "bytes": 2431
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-score-observed/legacy-order-contract-red.json",
+      "sha256": "8a4114373e85760b3c65624e3d0278afb09135abb0c7a1ad2cc9eaebf2098a36",
+      "bytes": 896
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-score-observed/missing-api-red.jsonl",
+      "sha256": "c207d17f809c3aad78ae7d3d6fd5d398b74b5921793ddd092ad32076868eed0c",
+      "bytes": 4265
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-score-observed/parser-binding-green.jsonl",
+      "sha256": "15ed1c3e72bc1a6839e638bc94af94729ee04eb7a59ed419a669769ef5f173f8",
+      "bytes": 13736
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-score-observed/parser-binding-test-first.json",
+      "sha256": "bbeaee28015eb32fb9586dd9d8879c68a1a1af558515a9e42ddc73634fd56cb7",
+      "bytes": 296
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-score-observed/parser-decode-first.jsonl",
+      "sha256": "b7d63e79a8ad85f110b7bbf1893af55f0df098d4f745f1262575c98f8669ff89",
+      "bytes": 7532
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-score-observed/parser-interface-missing-red.jsonl",
+      "sha256": "8b3f5136620f02fcb27c7cec4601f9d5814bc6ff35f8c746ca5d58516255c533",
+      "bytes": 4264
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-score-observed/parser-native-first-sources.json",
+      "sha256": "23e47e03c5c24d3e637a7325b9d1c8906d0256f12703e81570f0e2218b81939d",
+      "bytes": 1190
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-score-observed/parser-native-first.jsonl",
+      "sha256": "3d4e4a149530a4158ed3dcf5b52733a2782fed564f983beb80b12f5c59f0c457",
+      "bytes": 1907
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-score-observed/parser-semantic-binding-red.jsonl",
+      "sha256": "5b3e7e3da394fd71b383b1197cb73fd47d52e1ca06e2219cb83a68edf8beab5e",
+      "bytes": 9542
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-score-observed/parser-test-first.json",
+      "sha256": "e2804da1e38e1d8f397369684461f4f227b6ce331ef567bfb126dfa965d40d8e",
+      "bytes": 307
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-score-observed/phase1-native.jsonl",
+      "sha256": "2ad0fe4df093b744acccc38850bbc73f43ec77d08cb2b0262cbf74181f42b4c1",
+      "bytes": 140312
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-score-observed/phase1-sources.json",
+      "sha256": "bfc2b13d4507f4dfa162eb3af6914ea42ea6a1e8aa2f1d7aeee91bc8be9579db",
+      "bytes": 949
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-score-observed/priority-two-stops-assumption-red.jsonl",
+      "sha256": "f63362d1f27661dca1ac8d928cbaecf75eeac01823a18cd1ef6bd900ade144fe",
+      "bytes": 2959
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-score-observed/priority-two-stops-source.json",
+      "sha256": "38893cf6cb10b9c99f66e206e9b2b58deb8deaaed55bdde9fa83aafcf8bfd190",
+      "bytes": 682
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-score-observed/sidecar-reproducibility.json",
+      "sha256": "a1a0ea030d135c3b664f71c28c88f66fe06e06c09e0824022805f823d8850a2b",
+      "bytes": 235
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-score-observed/stage-first.jsonl",
+      "sha256": "d3a9f5770b7c508710c569a4e7cca4b7971519edecc7e8ca249669822fb75b09",
+      "bytes": 15982
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-score-observed/tempo-work-missing-red.jsonl",
+      "sha256": "6d9c784ef5cf72ac40a0e309fb8596a7a76b250e7471b8c54fb86c583e61f0fa",
+      "bytes": 1475
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-score-observed/tempo-work-test-first.json",
+      "sha256": "a960b6e2d054dc4e83137e3a4510eb42d3b2113084725211cd997fb8cf365346",
+      "bytes": 181
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-score-observed/test-first.json",
+      "sha256": "7cb0b9e258b133c75966b96bb8e077086c5b50156360c66b69c8d30c07e12db1",
+      "bytes": 1070
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-score-param/observed-review/targeted-positive-command.json",
+      "sha256": "c6e4293a5aeaee5fdd58f33a3205e88c015d404d30348989c52e09ae93ee2208",
+      "bytes": 3609
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-score-param/observed-review/targeted-positive.jsonl",
+      "sha256": "c59da05ef8afc2c6cb91e4c395a96195731bcfc66a06f244db75803026bfcf87",
+      "bytes": 17514
+    }
+  ],
+  "interfaces": [
+    "AdvanceObserved(ObservedInput,ObservedHooks)",
+    "Operation synchronous pre-effect callback, grouped PSG pitch writes",
+    "ReadDAC per actual PanRedirect and BlockedPriority stage",
+    "DecodeParserMetadata exact catalog binding and logical-entry selector"
+  ],
+  "transaction_contract": {
+    "score_rollback_on_error": true,
+    "external_side_effects_rolled_back_by_score": false,
+    "caller_requires_detached_all_owner_transaction": true,
+    "persistent_operation_history": false
+  },
+  "master_cycle_complete": false,
+  "root_control_fade_pause_complete": false,
+  "dynamic_resource_cost_complete": false,
+  "dsp_or_platform_wired": false,
+  "full_audio_goal_complete": false,
+  "no_commit": true,
+  "limits": [
+    "Normal score operations are not an automatically priced CPU call tree; service/caller/RTS ownership follows scoreclock contracts.",
+    "Root pause/duck/fade/control remain separate owners and are not copied into score State.",
+    "ResourceUnavailable (instrument seek/envelopes/dynamic body) and unhandled routine branches must produce Unsupported in the cost consumer, never zero.",
+    "The parser sidecar annotates structure only and never executes source flow, PCs, targets, opcodes, stack or oracle times.",
+    "Old Advance keeps entry-snapshot compatibility; only AdvanceObserved promises synchronous staged feedback."
+  ],
+  "cleanup": {
+    "removed_only_second_identical_sidecar_export_bytes": 199277,
+    "original_sources_failed_assumptions_raw_evidence_and_old_proofs_retained": true
+  }
+}

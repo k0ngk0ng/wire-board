@@ -1,0 +1,336 @@
+{
+  "artifacts": [
+    {
+      "path": "games/yuyuhakusho/audio/rootcontrol/testdata/orchestrator-legal-v3-manifest.json",
+      "sha256": "da5ae5f343473f1da1a10c9586955a535dfcbf74ecbba6c0b06e1cacf854aa69"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/rootcontrol/testdata/orchestrator-legal-v3.json.gz",
+      "sha256": "f735897dcce8b13895d3d65e6ab687140691d0e01aa4bff8b3062898bf5aea5c"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/rootcontrol/testdata/orchestrator-native-manifest.json",
+      "sha256": "c7d07d16ed2533576b4c0cde3c129b0c6f5f41887a7f8082d0598c994fe1ee55"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/rootcontrol/testdata/orchestrator-native-v3-manifest.json",
+      "sha256": "48d7ff278cdae47af8788f924482ae580205c8422c727baef39476d321db3b4a"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/rootcontrol/testdata/orchestrator-native-v3.json.gz",
+      "sha256": "02ae88f1ecd211ecc32d2c7bbcc758247554f64a08a2b6facac4ac3ef58960bf"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/rootcontrol/testdata/orchestrator-native.json.gz",
+      "sha256": "b2ce87f3b37e6f06bd6c41db8a4c4f475f3b7a1c142be27bb7da7e3a7a975864"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/root-control-orchestration/api-test-first.md.txt",
+      "sha256": "2c491b0bfaf1b434de5cb7d82a64d8c26c4ec0bb1ca1b56ebd6b12404ba46c8a"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/root-control-orchestration/failures-priority-correction.md.txt",
+      "sha256": "828b2686e5d6e792e70b6020230bd31d875817bcfa793efe6711ed5615555850"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/root-control-orchestration/failures-test-first.md.txt",
+      "sha256": "1009f3f7e4cb17960f4432172e3cfeb7bab86ec0f333ac84140c950fdf92ed5c"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/root-control-orchestration/final-native-race-command.json",
+      "sha256": "9054a41876a4d1ca354877b28c4bcb4343ea7bfe0ba3b34489a702430111eb57"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/root-control-orchestration/final-native-race.jsonl",
+      "sha256": "d53fe452211e7cdea9c0258afbde1e1a3a82b2b89a52ae45bf6112403f387d01"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/root-control-orchestration/final-vet-command.json",
+      "sha256": "e2cbcdd8e448c68645e8e6580dc6db2f3c4293bf1b96e451c1efe7b885f03d40"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/root-control-orchestration/final-vet.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/root-control-orchestration/final-wasm-command.json",
+      "sha256": "035d4224d408d7930e56bd06a377bb649e5cf58c11383327e8f352901a2af040"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/root-control-orchestration/final-wasm.jsonl",
+      "sha256": "0f3258742c8ccb687f26a2e7a19001fca45b1f324019132cbb317afb5cc61227"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/root-control-orchestration/first-implementation.jsonl",
+      "sha256": "04b064e18cd88c192b6ac7ee14e7ca64a8adf581d807c0306cc81851ad05cc34"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/root-control-orchestration/fixture-producer-v2.py.txt",
+      "sha256": "b040a10f046232448ce48e69943edbf03e07f60e4df15628778ebc36c1d3c072"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/root-control-orchestration/fixture-producer-v3-initial.py.txt",
+      "sha256": "243110111fea8cf1a4a85fd51ebc8c898f1286c9f57dbb70ef3095fe4cdb043b"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/root-control-orchestration/hook-filter-before.c.txt",
+      "sha256": "5320b2763215d032ce7eb5aaabcf0be2cfaa3b41eb49398d7c33933ce9f8c874"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/root-control-orchestration/missing-api-red.jsonl",
+      "sha256": "a700f587a3d9cebc63cccc9c6813ba42b4ac9b65c9f7cff4dc5429095edb4b98"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/root-control-orchestration/missing-score-consumer-red.jsonl",
+      "sha256": "e51f716d6dcbe0be55540eeb89d20ff031752d69b45d80589e698a576a26cc9b"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/root-control-orchestration/observer-coverage-before.json",
+      "sha256": "5e0fbf3d58fe1e1a6c01121825a5f9edb707a4f4fb28928fcfc15da97fafe037"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/root-control-orchestration/observer-coverage-v3.json",
+      "sha256": "2abee6dc22361bfa135b66eae5d1f7f792a3a14909db566e5dc50eca7684aea9"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/root-control-orchestration/orchestrator-native-v2-test.go.txt",
+      "sha256": "144dfc2f2c69cb214e858206e8a0a11860ac958a81e2f67d0a2772503496517f"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/root-control-orchestration/orchestrator-unit-priority-correction.go.txt",
+      "sha256": "154a13b15322ea3388eae51b40e886d1bada535a379f252f48fbd9a9caa31c87"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/root-control-orchestration/orchestrator-unit-test-first.go.txt",
+      "sha256": "7eb70f06fc38f3fa186ca040567ce88f83b447bf16b6df35761daaca2fb2fcda"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/root-control-orchestration/physical-filter-before-red.json",
+      "sha256": "c26c15e85ce9d97064b3ed31aa4ed3306975b4496f6c4c252d97721e75685c7e"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/root-control-orchestration/physical-filter-extended-old-red.json",
+      "sha256": "d695f36501046f95299035c7a69f894c6a679e8ddc16cba1cb7f18554b30f8ee"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/root-control-orchestration/physical-filter-v3.json",
+      "sha256": "36505a59e39257599fa3f02630e725ce06df4ec76292eb445ac33c51f369bc2b"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/root-control-orchestration/root-control-filter-v3.c.txt",
+      "sha256": "2963adaaf335a7f8a95368b14c44800c34cb32e0b0681cb6a3361c4fb0bc55cb"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/root-control-orchestration/root-missing-api-red.jsonl",
+      "sha256": "9edaede590072fe47b81c15ccd0ff0139f0f3b41a52b22dc0a1d2ea2231afffc"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/root-control-orchestration/root-reentrancy-red.jsonl",
+      "sha256": "5baa2444b7a98aba7985e7aef8a8f31f27dfd0d6f897ef15b26bb43c4e6443cf"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/root-control-orchestration/rule-boundaries.jsonl",
+      "sha256": "c5a34b2392f2b48d5b0dccf321c61b09a199d16f3babcfc3df0e41dde36a0ad1"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/root-control-orchestration/strict-v3-first.jsonl",
+      "sha256": "8a48589a45b54ca72e6ffa4ec6753abfc1e0fb48ac9b2a8bf62770152bb0e7dd"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/root-control-orchestration/strict-v3-legal-first.jsonl",
+      "sha256": "9876b9232cba2b0845ac429bb47e50f027371c32bfada90886e8cf4898806196"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/root-control-orchestration/strict-v3-second.jsonl",
+      "sha256": "43a2254b89bfd1e1766f6487309ac99c62ffe2d8c9300e0c26d949e70a6d84c8"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/root-control-orchestration/strict-v3-third.jsonl",
+      "sha256": "9248fe097f8a8cdaf30698c84e45f13c552d8d1cdb72bb9512ce1efc3eee929b"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/root-control-orchestration/test-correction.json",
+      "sha256": "7cb6ecc66e6c48d4f84d1bec53977d06329fec6866f6c2f70b52532cb9dc1cd9"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/root-control-orchestration/test-first-manifest.json",
+      "sha256": "aadd08734e914764e1077afb73a9b56eb4bca38e0d4e8c8ff017df168eb633e2"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/root-control-orchestration/validation.json",
+      "sha256": "400b0a560bdef14da3135dedb3a5727d7cb2bf1ca111e69b798a12fcac38defd"
+    }
+  ],
+  "full_master_cycle_cost": false,
+  "requests": 8480,
+  "rule_frames": 1113,
+  "scope": "Root rule-stage orchestration only; original sources1115 frames, independent rules1113 frames. Ordinary1F first2 acceptance frames excluded.",
+  "sources": [
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_ORCHESTRATION.md",
+      "sha256": "9a82fcb24677325976e4cd538fae35410e5f7a1bf5caf657f90808d97f8fce40"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_ORCHESTRATION_API.md",
+      "sha256": "3511de6bb34754d13455fe3e77d24db4a4978ef61975c19788d751f91a2459c4"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_ORCHESTRATION_FAILURES.md",
+      "sha256": "021812734ae81b7262060fb9bf5f89d2e9a055d8ff010f9b4a58ba4a63df18ba"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_SOURCE_AUDIT.json",
+      "sha256": "1ddf69bb57a26bdf1183d26f16271aed85580dfa37487499ddbb1427a723718c"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/interactive.go",
+      "sha256": "44b2f607d2bf405b5e693c1cf9000f0a3d07571c4f67bf51c929914e4dade824"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/psg/psg.go",
+      "sha256": "b13590a9b3c4f04a45ea77ebf0938903550c889ab317b3ff8c877b95a71cb9ff"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/reset.go",
+      "sha256": "4ed69e716ebce21da50189443ba8d07fa283a145a4f61e08dbbd4f3328f98bfe"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/stream.go",
+      "sha256": "91d0be1cc1412a1416dfebf5bf8cf78a2901ae08f782de6c456b7a3f836ad3e0"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/ym.go",
+      "sha256": "c2a893762a202145ef03a97cfd08762119378604d9aef3f69a48487020b17b62"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/ym_tables.go",
+      "sha256": "d9a1b020866cdf687790b3013a3bca72ecead5fcceadb1654acda4d78438344a"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/rootcontrol/fade.go",
+      "sha256": "7cbc5765aca57bb58626d6686bddbd2e1313592f81b7b3601e3560e30ee4580e"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/rootcontrol/orchestrator.go",
+      "sha256": "3e02b17760765416d966894541ffaea60fb08e09590902fb5b2bdd53649ab657"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/rootcontrol/orchestrator_contract_test.go",
+      "sha256": "4737152c0fdc4918ba04f47add06988a1821a44cb5e2c04d8591938aa1910a67"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/rootcontrol/orchestrator_e2e_v3_test.go",
+      "sha256": "458d67d0dcfaec6337f7ce83a130a914470cda85ffc36b4cf42b416fac2ab2bf"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/rootcontrol/orchestrator_score.go",
+      "sha256": "054786830b2f863c36302568664d53b8de7a1c427a45bb231ddd064cd33cfd75"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/rootcontrol/orchestrator_test.go",
+      "sha256": "e1810e2216384bd5d767fac6c8dc1a8252ed94f6303cfc2457f24726c4345f9f"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/rootcontrol/pause.go",
+      "sha256": "b2840c7888f603d77db70a9496652823a97352d8ca1c7e1f208c2d1b1d5ac3d5"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/rootcontrol/state.go",
+      "sha256": "2f151da70dc8bdf610f83481334bba239bf178e964bc66a94a40a0a17c9ecddb"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/catalog.go",
+      "sha256": "9d19b1b16342d54b4df4625a7e75bd3c2e6806af04194540a134f9b12059a542"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/control.go",
+      "sha256": "755043bd6bd60fc4756b1894ce5b098ac790d4fda523b44b29c388f53d1ec8f5"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/driver.go",
+      "sha256": "441da690dac15abbbafbce0b102bca189baad38fbda078c5b1067908506df7c9"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/observed.go",
+      "sha256": "866561887309f109e9d5a3a28983313bc05e33cf7bdd0f17187e185e64b79447"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/param/envelope.go",
+      "sha256": "a200e87f05eca67f1998f4956fb22b625fbf76c5d52567b15fc31f383bc6cb1b"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/param/fm.go",
+      "sha256": "e325442cf55374d110eea7cd9f13cb5a2c4bf966bbe8444be563cbc98594f220"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/param/pan.go",
+      "sha256": "ef19d52ff80914af2d2eb1356d478a22ba071157eac7d37e17f42441d10da754"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/parser_work.go",
+      "sha256": "d389483bc8d6ff4d3c1f6c784d4d094c30d825fc133d88a8079ecdb9b1e91394"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/state.go",
+      "sha256": "91fc0de482e99c0b1bc8f9a38e59ec8c013f5df80f9add02f173e148f47160a4"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/transaction.go",
+      "sha256": "d73c1508d44a1d4a7a7fff06769b0ca3555a3c276b2d528977d598be35a68525"
+    },
+    {
+      "path": "games/yuyuhakusho/data/audio-score.json.gz",
+      "sha256": "deaf3a70eac46c199335445d186f77d51f185bdaad4d95443d09b2f1d7054d71"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/sound_queue.go",
+      "sha256": "156b7d1484afd423e2e116aef0cea5aa897cd8c2c34dc707c012efa7360d978e"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/sound-queue-priorities.json",
+      "sha256": "1886521bc06c33166bd8db7623b2cf9f46d3d1263b02230ad154ea711327fed6"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-score-control/frozen-sources.json",
+      "sha256": "51a051cc5a385538fcf3bbc96e3ea196cf6f545062de0c38dcb48cb2a1c77a30"
+    },
+    {
+      "path": "go.mod",
+      "sha256": "33aa54f687143b2e468be7fe308f3455104c8b0f2fdc6e409233b5b1c8a3166f"
+    },
+    {
+      "path": "go.sum",
+      "sha256": "bde219704d2cf0b9e3e8b9bb01e6d97656accddcf5423d8587cd1afd8b8c25cb"
+    },
+    {
+      "path": "scripts/root-control-orchestration-filter-check.py",
+      "sha256": "8954ea88901abd41655f5cb07718079f2b8fae75abceb7bc95d63421c6d89ed2"
+    },
+    {
+      "path": "scripts/root-control-orchestration-fixtures.py",
+      "sha256": "4618e9200ad1f67aec2db90c965c2a1050471ffd6ff90c8f9bd89bfea473772e"
+    },
+    {
+      "path": "scripts/root-control-orchestration-observer-audit.py",
+      "sha256": "fb150f45ed62afd9b451cc40444f69401e9e1dc070b09f976c85574748c2aeaa"
+    },
+    {
+      "path": "scripts/root-control-orchestration-verify.py",
+      "sha256": "377d42afbcfa13989b2b24ec0ea9e8bf7249de6f9a836f39182bb5e9148809e2"
+    },
+    {
+      "path": "scripts/yuyuhakusho/hook_filter.c",
+      "sha256": "5320b2763215d032ce7eb5aaabcf0be2cfaa3b41eb49398d7c33933ce9f8c874"
+    },
+    {
+      "path": "scripts/yuyuhakusho/root-control-capture.py",
+      "sha256": "e586f0e116d7043db48268c64e2bb203efca2b5dd94b9f9b9c95e0bddad53c21"
+    },
+    {
+      "path": "scripts/yuyuhakusho/root-control-filter.c",
+      "sha256": "2963adaaf335a7f8a95368b14c44800c34cb32e0b0681cb6a3361c4fb0bc55cb"
+    }
+  ],
+  "version": 1,
+  "whole_goal_complete": false
+}

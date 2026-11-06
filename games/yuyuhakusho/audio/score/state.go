@@ -111,6 +111,7 @@ type Output struct {
 type Driver struct {
 	catalog *Catalog
 	state   State
+	lease   *TickTransaction
 }
 
 func New(c *Catalog) (*Driver, error) {

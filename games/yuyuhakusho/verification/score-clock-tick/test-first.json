@@ -1,0 +1,12 @@
+{
+  "test_first": true,
+  "at_utc": "2026-11-05T19:32:05.426401+00:00",
+  "files": {
+    "games/yuyuhakusho/verification/score-clock-tick/tick_test.go.txt": "48c93d82d0d27adda7117e13f86ead097d82beb8deb434a2346497dbb682b3e1",
+    "games/yuyuhakusho/audio/scoreclock/testdata/tick-native-boundaries.json.gz": "7fb3452af66a2758c375f01b1ea54ed997d47e3434e426f8244e1291474441eb",
+    "docs/research/md-yuyuhakusho/SCORE_CLOCK_TICK_FAILURES.md": "48f47bd75f963d0d8d8a383ebfb96633faa0158604eb938045aeed25073ac9e4"
+  },
+  "actual_compile_red": "games/yuyuhakusho/verification/score-clock-tick/missing-api-overlay-red.jsonl",
+  "overlay_explanation": "Frozen test text compiled as virtual new package test; preserves concurrent old package validation before production exists",
+  "new_production_exists": false
+}

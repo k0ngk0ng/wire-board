@@ -1,0 +1,37 @@
+{
+  "pass": true,
+  "scope": "Root state owner shape, initialization, unsupported choice/pending validation and caller-independent restore only",
+  "test_first": true,
+  "tests": {
+    "state-native-race.jsonl": {
+      "tests": [
+        "TestRootStateHasOnlyIndependentOwners",
+        "TestRootInitialAndRestoreAreIndependent",
+        "TestRootRestoreRejectsUnsupportedWithoutPartialState"
+      ],
+      "sha256": "df4dc17f9f5aedd1314e3d982c548cff0d354dac9c6824febf6b22ea21df5e57"
+    },
+    "state-wasm.jsonl": {
+      "tests": [
+        "TestRootStateHasOnlyIndependentOwners",
+        "TestRootInitialAndRestoreAreIndependent",
+        "TestRootRestoreRejectsUnsupportedWithoutPartialState"
+      ],
+      "sha256": "3b6b12b9ad25ac637c3c9f6ca371d3185ff48f9b5f280f4148caa9088dc29b7f"
+    }
+  },
+  "vet_pass": true,
+  "source_sha256": {
+    "games/yuyuhakusho/audio/rootcontrol/state.go": "2f151da70dc8bdf610f83481334bba239bf178e964bc66a94a40a0a17c9ecddb",
+    "games/yuyuhakusho/audio/rootcontrol/state_test.go": "9d9f04c97c7d7de306747207e87baeb1917453c10be0c081403cd78567bb7fe0"
+  },
+  "production_fields": [
+    "Priority",
+    "Selected",
+    "ChoiceBits",
+    "Fade",
+    "PauseRestore"
+  ],
+  "Queue_AudioPause_Scheduler_Score_PCM_chip_mirrors": false,
+  "orchestrator_or_complete_root_control_verified": false
+}

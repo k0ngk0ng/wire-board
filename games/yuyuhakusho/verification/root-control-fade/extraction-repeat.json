@@ -1,0 +1,20 @@
+{
+  "pass": true,
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-B",
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/root-control-fade-export.py",
+    "--out",
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/games/yuyuhakusho/audio/rootcontrol/testdata/fade-native-streams.json.gz",
+    "--provenance",
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/games/yuyuhakusho/verification/root-control-fade/extraction.json"
+  ],
+  "stdout": "{\n  \"pass\": true,\n  \"streams\": 5,\n  \"frames\": 785,\n  \"decisions\": {\n    \"advance\": 744,\n    \"start\": 2\n  },\n  \"actions\": {\n    \"none\": 654,\n    \"stop-dac-flags\": 2,\n    \"fade-music-step\": 88,\n    \"request-full-clear\": 2\n  },\n  \"fixture_sha256\": \"a88e122d490fd41839c944b403aadb29f309e56f8a981d81d41e1b37548cca28\"\n}\n",
+  "byte_identical": true,
+  "artifacts": {
+    "games/yuyuhakusho/audio/rootcontrol/testdata/fade-native-streams.json.gz": "a88e122d490fd41839c944b403aadb29f309e56f8a981d81d41e1b37548cca28",
+    "games/yuyuhakusho/audio/rootcontrol/testdata/fade-native-manifest.json": "79534c2ea62b485ecbe571099e80a45acc9a3808ed489edb52dc7dd7b1b81c81",
+    "games/yuyuhakusho/verification/root-control-fade/extraction.json": "777a4d90047b9aa39ce33279627547316d47b83aa0252530d037ae420b68d737"
+  },
+  "no_new_CPU_execution": true
+}

@@ -1,0 +1,48 @@
+{
+  "artifact": {
+    "json_sha256": "8afa5fe4e01ad0a63bea2bb93c29c5f223505e71fbf036ea020db824bb402628",
+    "path": "games/yuyuhakusho/audio/rootcontrol/testdata/orchestrator-native.json.gz",
+    "sha256": "b2ce87f3b37e6f06bd6c41db8a4c4f475f3b7a1c142be27bb7da7e3a7a975864"
+  },
+  "cases": 5,
+  "frames": 785,
+  "producer": {
+    "path": "scripts/root-control-orchestration-fixtures.py",
+    "sha256": "b040a10f046232448ce48e69943edbf03e07f60e4df15628778ebc36c1d3c072"
+  },
+  "sources": [
+    {
+      "path": ".local/md-yuyuhakusho/root-control-canonical-v2/capture.json",
+      "sha256": "7e1e77b89cb6eec24e2369815c652a78cd951524978b4522f17df98612e3535f"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/root-control-canonical-v2/music82-fade01.json.gz",
+      "sha256": "1b62996fe66d0fa1f6864c904377df696bfcf1f2738ebbc9958aa9a49114e931"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/root-control-canonical-v2/music82-fade05.json.gz",
+      "sha256": "ba814638edec4f759efb5c97743d3ea24461a35059a7c38f6dff41db1140fb6c"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/root-control-canonical-v2/ordinary73-clear04.json.gz",
+      "sha256": "ca3fadb61b1b41d98f32fb651fe3984d2a7a3072f0f2d018285e12a16aa50c2e"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/root-control-canonical-v2/mixed82-a7-clear04.json.gz",
+      "sha256": "0ebe43420d94bf975c1d03c31173ded928504b3a9ae22297c0282d3f5b8bc445"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/root-control-canonical-v2/mixed82-a7-pause.json.gz",
+      "sha256": "658c5a43824ef6592dc21bab87febaff087c52c2ad1bc0e0a575b55f9e5b6a7a"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/testdata/sound-queue-priorities.json",
+      "sha256": "1886521bc06c33166bd8db7623b2cf9f46d3d1263b02230ad154ea711327fed6"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_SOURCE_AUDIT.json",
+      "sha256": "1ddf69bb57a26bdf1183d26f16271aed85580dfa37487499ddbb1427a723718c"
+    }
+  ],
+  "version": 1
+}

@@ -1,0 +1,27 @@
+{
+  "scope": "Only header-owned transient read-only recorder binary and empty capture directories; no shared cache or other owner files touched",
+  "removed": [
+    {
+      "path": "games/yuyuhakusho/verification/score-clock-header/native/header-observer.dylib",
+      "bytes": 17416,
+      "sha256": "e445cf6a499edc1b2d8a93d66b8bad65cdced3296d33ce3b9d288980477d2ff5"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/score-clock-header/native/core-original",
+      "bytes": 0,
+      "empty_directory": true
+    },
+    {
+      "path": "games/yuyuhakusho/verification/score-clock-header/native/tmp",
+      "bytes": 0,
+      "empty_directory": true
+    },
+    {
+      "path": "games/yuyuhakusho/verification/score-clock-header/native/core-hook",
+      "bytes": 0,
+      "empty_directory": true
+    }
+  ],
+  "bytes_removed": 17416,
+  "kept": "Frozen test and overlay red, native full provenance, portable fixture, repeatable scripts, SHA manifests and Go/Wasm/vet results"
+}

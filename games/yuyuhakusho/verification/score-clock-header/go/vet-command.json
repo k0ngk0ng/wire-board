@@ -1,0 +1,37 @@
+{
+  "mode": "vet",
+  "pass": true,
+  "exit_code": 0,
+  "elapsed_seconds": 0.41213766764849424,
+  "command": [
+    "/opt/homebrew/bin/go",
+    "vet",
+    "./games/yuyuhakusho/audio/scoreclock"
+  ],
+  "environment": {
+    "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+    "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+    "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+    "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "GOMAXPROCS": "2"
+  },
+  "source_sha256": {
+    "games/yuyuhakusho/audio/scoreclock/header.go": "d2f70897622c4ed801e2ad5ac2d35d024335e1347057461cbed9abbcd5efb9e9",
+    "games/yuyuhakusho/audio/scoreclock/header_test.go": "21cd9f18b89f350b4887fd428b06c1cd0283bc36eeb6823d46f1f1194f099e62",
+    "games/yuyuhakusho/audio/scoreclock/service.go": "3ba87dba2a672c351c2e5c41065b6a42236656f58e7e7bd37b99af6849911aee",
+    "games/yuyuhakusho/audio/scoreclock/service_test.go": "15a831c2ee1314a9d02f93c05d4910f775fb8743ef08b489b9e408e5d44e9589",
+    "games/yuyuhakusho/audio/scoreclock/psg.go": "10db96b908b5f3a8cb3f3aba3c0f87921ddc23c7ff56a41677672c9f951463c2",
+    "games/yuyuhakusho/audio/scoreclock/psg_test.go": "41df9f38b32a8d90a276f6d777d31673f5983112a3a4250f1afe224fc5eeee7b",
+    "games/yuyuhakusho/audio/scoreclock/tick.go": "50ec6dfad8724e7df88f9362990a553843b0e32b9aa00999bd87b0353c69c3a9",
+    "games/yuyuhakusho/audio/scoreclock/tick_test.go": "48c93d82d0d27adda7117e13f86ead097d82beb8deb434a2346497dbb682b3e1",
+    "games/yuyuhakusho/audio/scoreclock/testdata/header-native-manifest.json": "8cac62a6ec912bcccbc5f172eb385e96b74115c7d9999ca00b78475a9ecef9a8",
+    "games/yuyuhakusho/audio/scoreclock/testdata/header-native-calls.json.gz": "7a930091b4fc86e6e02af4246fbd67cdab9059078be9e377c0bc19853f535ae8",
+    "scripts/yuyuhakusho/score-clock-header-verify.py": "999e9d840e298d7f8782bfcc93e262a366855af674809b1bc3f93c5bd1995ee1",
+    "games/yuyuhakusho/verification/score-clock-header/header_test.go.txt": "21cd9f18b89f350b4887fd428b06c1cd0283bc36eeb6823d46f1f1194f099e62"
+  },
+  "frozen_test_first_sha256": "eeda4b6e166b6e86625ce537a04df7169b3302b7176cbb7e6fd7c80aff0f3eed",
+  "fixture_cases": 170,
+  "routine_stops": 330,
+  "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

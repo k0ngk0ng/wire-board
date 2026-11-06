@@ -1,0 +1,77 @@
+{
+  "schema": 1,
+  "pass": true,
+  "at_utc": "2026-11-05T20:37:29.752281+00:00",
+  "scope": "Actual empty PCM command device, interactive chip and frozen canonical Main YM service conditional integration; no new production adapter",
+  "whole_goal_complete": false,
+  "world_to_IRQ_schedule_solved": false,
+  "runtime_integrated": false,
+  "native_cases": 4,
+  "native_builds": 2,
+  "recorder_on_off_service_calls": 16,
+  "main_accesses": 71,
+  "aux_semantic_events": 475,
+  "actual_busy_mailbox_reads": 7,
+  "all_end_clock_refresh_frontier_status_equal": true,
+  "real_Device_Busy_used": true,
+  "real_Interactive_busy_used": true,
+  "every_request_JSON_open_hold_and_pending_restore_verified": true,
+  "startup_bank_steals_not_recounted": true,
+  "new_production_integration_code": false,
+  "component_bridge_had_its_own_prior_API_red_and_original_E2E": true,
+  "this_scope_adds_integration_verification_to_existing_components_without_production_fixes": true,
+  "go_validation": {
+    "integration-first.jsonl": {
+      "top_level_tests": [
+        "TestRealPCMDeviceBusAndYMServiceOriginalIntegration"
+      ],
+      "original_scenarios": 4,
+      "sha256": "2ba76d4aefa8b5941043121e08c9b2049f0b6cde5fe75f52dbdc926df4581a13"
+    },
+    "wasm.jsonl": {
+      "top_level_tests": [
+        "TestRealPCMDeviceBusAndYMServiceOriginalIntegration"
+      ],
+      "original_scenarios": 4,
+      "sha256": "55465d4e3fd10fe34d7a5e86dcec1a55296e424a2e81dcb09b0b81f1db557bae"
+    }
+  },
+  "vet_pass": true,
+  "unchanged_YM_sha256": {
+    "games/yuyuhakusho/audio/scoreclock/service.go": "3ba87dba2a672c351c2e5c41065b6a42236656f58e7e7bd37b99af6849911aee",
+    "games/yuyuhakusho/audio/scoreclock/service_test.go": "15a831c2ee1314a9d02f93c05d4910f775fb8743ef08b489b9e408e5d44e9589"
+  },
+  "source_sha256": {
+    "games/yuyuhakusho/audio/scoreclock/bus_e2e_test.go": "5e939cbe81fb822780d4b14949feea40c4a35c9250778afecbaedb054fa6d248",
+    "games/yuyuhakusho/audio/scoreclock/testdata/bus-native-services.json.gz": "791338a42a2edc197b1366cdff93ca57e6d2fd1f917de7cf1c5549f6c0935921",
+    "games/yuyuhakusho/audio/scoreclock/testdata/bus-native-manifest.json": "2ba5af993196a65969f6a71a9b7b724db05cc1f7928f0d3cbb28429fca8d3064",
+    "docs/research/md-yuyuhakusho/SCORE_CLOCK_BUS.md": "58642f686308dd1673dcc1835ede0054bd9e712ad868db177e1de959ec38759f",
+    "docs/research/md-yuyuhakusho/SCORE_CLOCK_BUS_FAILURES.md": "162c466c3e27d6cd719cd1968dfe4357293dcd12196c241074be03625841c04a",
+    "scripts/yuyuhakusho/score-clock-bus-analyze.py": "3d814ca5150a66d17f97bf5c511b7584e67712c506ca9beae5561e9fa06b9515",
+    "scripts/yuyuhakusho/score-clock-bus-capture.py": "1cc3f77d9abcf5c8fd118dcac163d1792c89100c7944b562f04b368b1064e2de",
+    "scripts/yuyuhakusho/score-clock-bus-export.py": "8e7f4b9dace544e0803595491033f32a24590466d669542a4be9769f5ac2d81b"
+  },
+  "dependency_sha256": {
+    "games/yuyuhakusho/audio/pcmcommands/phases_single.go": "7cd3f0b83693d1e22998df12f5cd79d2ee9d5371dc75718f41c39fac2661a4b1",
+    "games/yuyuhakusho/audio/pcmcommands/bus_bridge.go": "ec76ed3b45a58efa7a9eb549908ed1896cbbbab1265e3d8e8ee76d584cf3da66",
+    "games/yuyuhakusho/audio/pcmcommands/phases_control.go": "a08151b591ad9f1b5f276f331ac316518ed83342283a17b01195abd4b3790d03",
+    "games/yuyuhakusho/audio/pcmcommands/phases_dual.go": "b3ecf57aba5620577dc3864c29b23364f351ea8c37bedc671677fb16774ff7af",
+    "games/yuyuhakusho/audio/pcmcommands/device.go": "bd1060eb000839bd844610cc8f9091620926c7ec75795b381d5040b0d62a3320",
+    "games/yuyuhakusho/audio/pcmcommands/state.go": "d2125bb856fa024dade12805fa995c74623e5b966d1a985c77053d4a3d757c98",
+    "games/yuyuhakusho/audio/chips/stream.go": "91d0be1cc1412a1416dfebf5bf8cf78a2901ae08f782de6c456b7a3f836ad3e0",
+    "games/yuyuhakusho/audio/chips/reset.go": "4ed69e716ebce21da50189443ba8d07fa283a145a4f61e08dbbd4f3328f98bfe",
+    "games/yuyuhakusho/audio/chips/ym_tables.go": "d9a1b020866cdf687790b3013a3bca72ecead5fcceadb1654acda4d78438344a",
+    "games/yuyuhakusho/audio/chips/interactive.go": "44b2f607d2bf405b5e693c1cf9000f0a3d07571c4f67bf51c929914e4dade824",
+    "games/yuyuhakusho/audio/chips/ym.go": "c2a893762a202145ef03a97cfd08762119378604d9aef3f69a48487020b17b62"
+  },
+  "native_recapture_byte_identical": true,
+  "cleanup_bytes": 142208,
+  "limits": [
+    "Declared Main service origins do not reconstruct preceding 0-to-origin Main execution or world/IRQ timing",
+    "No auxiliary raw-address/intermediate shared-latch or full mixed PCM equivalence is claimed; current test-only data-time register expansion is not a default production adapter",
+    "Selected profiles contain no DMA, extra IRQ or timer-status low bits",
+    "Future RawPorts revision must independently verify true address/data timing and every shared chip state",
+    "No platform product audio, physical hardware or speaker equivalence is claimed"
+  ],
+  "no_commits_uploads_or_deployment": true
+}

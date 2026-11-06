@@ -1,0 +1,10 @@
+{
+  "actual_export_failed": true,
+  "stage": "Before fixture/test/API implementation freeze",
+  "reason": "A transcribed BEQ.W displacement in the source template was00da, while original ROM is00d8",
+  "source_before_sha256": "1dc0d1c16a8bcab1e9bd040c1d45a001dfc218ef9a90e66b3a4c903c5da3e081",
+  "expected_wrong": "70001038f804670a1038f80667065338f8064e755338f804670000da11fc0003f806",
+  "actual_ROM": "70001038f804670a1038f80667065338f8064e755338f804670000d811fc0003f806",
+  "no_golden_emitted": true,
+  "production_exists": false
+}

@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "at_utc": "2026-11-06T00:16:10.718243+00:00",
+  "scope": "All packages build and test linking only; no behavioral tests run",
+  "pass": true,
+  "exit_code": 0,
+  "elapsed_seconds": 36.917146666906774,
+  "command": [
+    "go",
+    "test",
+    "./...",
+    "-run",
+    "^$",
+    "-count=1"
+  ],
+  "environment": {
+    "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+    "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+    "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+    "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp"
+  },
+  "head": "8da8e407f545be893c69fed0453155fd17b54d04",
+  "log_sha256": "ce59710307efaeb3467a5ba7b156309d86fc5b779592a23d070f2b8def365a1a"
+}

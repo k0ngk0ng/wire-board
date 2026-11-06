@@ -1,0 +1,59 @@
+{
+  "pass": true,
+  "scope": "Only this Root-control scope: superseded initial smoke, completed native filter builds and empty native work directories",
+  "reason": "Strict v3 and all necessary real-red/correction lineage retained by exact-byte archive; active raw datasets kept for other owners",
+  "removed_files": [
+    {
+      "path": ".local/md-yuyuhakusho/root-control-smoke/capture.json",
+      "bytes": 1695,
+      "sha256": "b142395f94aa39bda27f8e80f22c6bf44bb89b9214196d20c02f60edb0983d65"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/root-control-smoke/music82-fade01-control.json.gz",
+      "bytes": 32735,
+      "sha256": "aea94b941644e1340ff9379faf8b795711d0ce59885621666d1423937b8b9578"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/root-control-smoke/music82-fade01.json.gz",
+      "bytes": 95239,
+      "sha256": "b079fc9c162ecb8d2f0124fc15807f6a60ea5363a7112bebf3485a92aaffd36d"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/root-control/native-smoke.log",
+      "bytes": 557,
+      "sha256": "0fb6bdc0e0ea5ca4bd187d62de87e57fb478a0d1b2438e431e1c567e6555efe2"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/root-control/fade01-smoke-summary.json",
+      "bytes": 884,
+      "sha256": "6994d9ba3bb80292883f1d632906e5c2c60f9481ced3ca73fd4bc2565dc9e2a6"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/root-control-canonical-v3/root-control-filter.dylib",
+      "bytes": 33656,
+      "sha256": "4c9fefad9c2a63a1eb0d0eca446f1ddfb24314418e2c60249a226dd7486ca5e4"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/root-control-legal-v3/root-control-filter.dylib",
+      "bytes": 33656,
+      "sha256": "1fbaed7011c172441687e6ec3cac3ac13516afb273cee815b97973cfb00e2b78"
+    }
+  ],
+  "empty_directories": [
+    ".local/md-yuyuhakusho/root-control-native/core-original",
+    ".local/md-yuyuhakusho/root-control-native/core-observed",
+    ".local/md-yuyuhakusho/root-control-canonical-v2/core-original",
+    ".local/md-yuyuhakusho/root-control-canonical-v2/core-observed",
+    ".local/md-yuyuhakusho/root-control-canonical-v3/tmp",
+    ".local/md-yuyuhakusho/root-control-canonical-v3/core-original",
+    ".local/md-yuyuhakusho/root-control-canonical-v3/core-observed",
+    ".local/md-yuyuhakusho/root-control-legal-v3/tmp",
+    ".local/md-yuyuhakusho/root-control-legal-v3/core-original",
+    ".local/md-yuyuhakusho/root-control-legal-v3/core-observed",
+    ".local/md-yuyuhakusho/root-control-pause-corrected/core-original",
+    ".local/md-yuyuhakusho/root-control-pause-corrected/core-observed"
+  ],
+  "bytes_removed": 198422,
+  "raw_datasets_needed_by_other_owners_removed": false,
+  "shared_Go_or_browser_cache_touched": false
+}

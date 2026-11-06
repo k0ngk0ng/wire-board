@@ -1,0 +1,67 @@
+{
+  "cases": [
+    {
+      "external73_acceptance_lifecycle_proven": false,
+      "frames": 785,
+      "identity": "canonical-strict-v3-conditional-callable-stress",
+      "requests": 7199
+    },
+    {
+      "extension_hooks": false,
+      "frames": 180,
+      "identity": "fight139-music82-primaryA6-clear-pause",
+      "requests": 1246
+    },
+    {
+      "first2_acceptance_frames_composed": false,
+      "frames": 148,
+      "identity": "fight139-activePCM1F-pre04-typed-checkpoint",
+      "requests": 35,
+      "starts_at_native_step": 2
+    }
+  ],
+  "cleanup": "Only own passive-filter and fixture-rebuild scratch directories; native sources/results and historical reds retained",
+  "cost_request": "RequireCost returns ErrRuleCostUnavailable before any effect",
+  "dependencies": {
+    "music_tx_sha256": "d73c1508d44a1d4a7a7fff06769b0ca3555a3c276b2d528977d598be35a68525"
+  },
+  "excluded_ordinary1f_acceptance_frames": 2,
+  "frozen_sources": "games/yuyuhakusho/verification/root-control-orchestration/frozen-sources.json",
+  "full_master_cycle_cost": false,
+  "native_source_frames": 1115,
+  "ordered_effective_ym_psg_requests": 8480,
+  "ordinary_PCM_acceptance_lifecycle": false,
+  "pass": true,
+  "per_long_interrupt_visibility": false,
+  "replay": "python3 -B scripts/root-control-orchestration-verify.py --run-tests",
+  "rule_frames": 1113,
+  "scope": "Root rule-stage orchestration only; original sources1115 frames, independent rules1113 frames. Ordinary1F first2 acceptance frames excluded.",
+  "source_profile_candidates": 139,
+  "state_owners": "Only Root Priority/Selected/ChoiceBits/Fade/PauseRestore; referenced unique score/world owners; no clock or PCM/chip mirror",
+  "tests": [
+    {
+      "command": "games/yuyuhakusho/verification/root-control-orchestration/final-native-race-command.json",
+      "pass": true,
+      "passed_cases": 102,
+      "result": "games/yuyuhakusho/verification/root-control-orchestration/final-native-race.jsonl",
+      "stage": "native-race"
+    },
+    {
+      "command": "games/yuyuhakusho/verification/root-control-orchestration/final-wasm-command.json",
+      "pass": true,
+      "passed_cases": 102,
+      "result": "games/yuyuhakusho/verification/root-control-orchestration/final-wasm.jsonl",
+      "stage": "wasm"
+    },
+    {
+      "command": "games/yuyuhakusho/verification/root-control-orchestration/final-vet-command.json",
+      "pass": true,
+      "passed_cases": null,
+      "result": "games/yuyuhakusho/verification/root-control-orchestration/final-vet.txt",
+      "stage": "vet"
+    }
+  ],
+  "version": 1,
+  "whole_goal_complete": false,
+  "world_IRQ_schedule": false
+}

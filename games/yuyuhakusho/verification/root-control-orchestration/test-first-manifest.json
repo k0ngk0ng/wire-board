@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "frozen_before_implementation": true,
+  "files": [
+    {
+      "path": "games/yuyuhakusho/audio/rootcontrol/orchestrator_contract_test.go",
+      "sha256": "4737152c0fdc4918ba04f47add06988a1821a44cb5e2c04d8591938aa1910a67"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/rootcontrol/orchestrator_e2e_test.go",
+      "sha256": "144dfc2f2c69cb214e858206e8a0a11860ac958a81e2f67d0a2772503496517f"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/rootcontrol/orchestrator_test.go",
+      "sha256": "7eb70f06fc38f3fa186ca040567ce88f83b447bf16b6df35761daaca2fb2fcda"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_ORCHESTRATION_FAILURES.md",
+      "sha256": "1009f3f7e4cb17960f4432172e3cfeb7bab86ec0f333ac84140c950fdf92ed5c"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_ORCHESTRATION_API.md",
+      "sha256": "2c491b0bfaf1b434de5cb7d82a64d8c26c4ec0bb1ca1b56ebd6b12404ba46c8a"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/rootcontrol/testdata/orchestrator-native.json.gz",
+      "sha256": "b2ce87f3b37e6f06bd6c41db8a4c4f475f3b7a1c142be27bb7da7e3a7a975864"
+    }
+  ]
+}

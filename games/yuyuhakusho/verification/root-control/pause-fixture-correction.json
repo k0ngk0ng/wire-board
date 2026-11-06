@@ -1,0 +1,7 @@
+{
+  "reason": "Quiet world had pause disabled (PauseFlags bit0 clear); raw bit40 poke is correctly cleared by original ToggleWorldPause. Preserve red and use declared enabled controller profile plus real Start edges. No original code or expectations changed.",
+  "old_source_sha256": "5b32b1e1ed57b87238b113d64012138d642d326a59a906389c6f1ba65efe8c16",
+  "old_case_native": " .local/md-yuyuhakusho/root-control-native/mixed82-a7-pause.json.gz",
+  "red": "games/yuyuhakusho/verification/root-control/pause-fixture-disabled-red.json",
+  "production_modified": false
+}

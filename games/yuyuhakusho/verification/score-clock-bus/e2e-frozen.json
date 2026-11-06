@@ -1,0 +1,9 @@
+{
+  "scope": "New original-only integration E2E before any integration-discovered fixes; component bridge already has its own earlier missing-API red and 17 original E2E vectors",
+  "at_utc": "2026-11-05T20:24:34.188327+00:00",
+  "source_sha256": {
+    "games/yuyuhakusho/verification/score-clock-bus/bus_e2e_test.go.txt": "5e939cbe81fb822780d4b14949feea40c4a35c9250778afecbaedb054fa6d248",
+    "games/yuyuhakusho/audio/scoreclock/testdata/bus-native-services.json.gz": "791338a42a2edc197b1366cdff93ca57e6d2fd1f917de7cf1c5549f6c0935921"
+  },
+  "no_new_production_integration_code": true
+}

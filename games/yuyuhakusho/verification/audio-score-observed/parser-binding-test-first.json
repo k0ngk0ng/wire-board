@@ -1,0 +1,6 @@
+{
+  "phase": "Independent semantic binding/scalar validation regressions before fix",
+  "red_exit_code": 1,
+  "test_sha256": "47775465fa6a519533c4ba1470e89c8b7c885663ad3866110d194e28695bb087",
+  "before_implementation_sha256": "b45986c543e598ad74adf82f5cfd1dcc236ba63e0eb933e92fedce6abe8625c2"
+}

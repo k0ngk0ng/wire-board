@@ -1,0 +1,5 @@
+{
+  "phase": "Explicit music header clear/selected write nodes before implementation",
+  "test_sha256": "daae67d7ed3627878d09de628a11da11b7fcafd30cc243f013c3c572c6b64d99",
+  "red_exit_code": 1
+}

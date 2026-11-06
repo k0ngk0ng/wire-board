@@ -1,0 +1,9 @@
+{
+  "pass": true,
+  "files": 257,
+  "preserved_native_files": 49,
+  "native_frames": 1115,
+  "rules_frames": 1113,
+  "rules_requests": 8480,
+  "no_core_or_Go_execution": true
+}

@@ -1,0 +1,18 @@
+{
+  "games/yuyuhakusho/audio/score/parser_work_test.go": "0719465731b86d83871f91d060c968634e28468d68eef2005011ec23219c2899",
+  "games/yuyuhakusho/audio/score/catalog.go": "9d19b1b16342d54b4df4625a7e75bd3c2e6806af04194540a134f9b12059a542",
+  "games/yuyuhakusho/audio/score/transaction_test.go": "daae67d7ed3627878d09de628a11da11b7fcafd30cc243f013c3c572c6b64d99",
+  "games/yuyuhakusho/audio/score/observed.go": "866561887309f109e9d5a3a28983313bc05e33cf7bdd0f17187e185e64b79447",
+  "games/yuyuhakusho/audio/score/control.go": "755043bd6bd60fc4756b1894ce5b098ac790d4fda523b44b29c388f53d1ec8f5",
+  "games/yuyuhakusho/audio/score/transaction.go": "2917030de80992266ffd3fa6b1d43ed26fc41b9577097a38975a31eec2437b39",
+  "games/yuyuhakusho/audio/score/restore_contract_test.go": "fc40f87f1e6cf1c8876da77da738dce179ef72df521632789aff27fdb953b55e",
+  "games/yuyuhakusho/audio/score/parser_binding_test.go": "47775465fa6a519533c4ba1470e89c8b7c885663ad3866110d194e28695bb087",
+  "games/yuyuhakusho/audio/score/control_actions_test.go": "7c58dd4dcd224e6ca0c4bcf1103b3603ac25cb4eb6d1227ce6d77afa8f413dae",
+  "games/yuyuhakusho/audio/score/observed_test.go": "81ce7738cce928035cc3a2e4a144b71a1d876472b0bd6eb9d7caa11c06f90938",
+  "games/yuyuhakusho/audio/score/parser_work.go": "d389483bc8d6ff4d3c1f6c784d4d094c30d825fc133d88a8079ecdb9b1e91394",
+  "games/yuyuhakusho/audio/score/state.go": "91fc0de482e99c0b1bc8f9a38e59ec8c013f5df80f9add02f173e148f47160a4",
+  "games/yuyuhakusho/audio/score/control_native_test.go": "1915d7fae675e160f3061680943a0c4d0eccb96b94c0c559805ef9e81733bcbd",
+  "games/yuyuhakusho/audio/score/driver.go": "441da690dac15abbbafbce0b102bca189baad38fbda078c5b1067908506df7c9",
+  "games/yuyuhakusho/audio/score/observed_tempo_test.go": "f24a7a1d13f7ac0863d6800711d54cffbd56143ab79e3703370d8ddc3d981c1f",
+  "games/yuyuhakusho/audio/score/driver_test.go": "d3f09a267d736a82c6e787de8cc3dca9a46c1ca0482dbe1a689c1573346fd595"
+}

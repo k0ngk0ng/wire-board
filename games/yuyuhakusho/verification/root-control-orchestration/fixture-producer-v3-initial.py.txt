@@ -1,0 +1,105 @@
+#!/usr/bin/env python3
+"""Project retained canonical native cases; never starts the reference core."""
+import argparse
+import gzip
+import hashlib
+import json
+from pathlib import Path
+
+
+def sha(data):
+    return hashlib.sha256(data).hexdigest()
+
+
+def signed(value, bits):
+    return value - (1 << bits) if value & (1 << (bits - 1)) else value
+
+
+def projection(raw):
+    driver = bytes.fromhex(raw)
+    assert len(driver) == 928
+    voices = []
+    for index in range(18):
+        row = driver[64 + index * 48:112 + index * 48]
+        voices.append(dict(Active=bool(row[0] & 128), NoteOff=bool(row[0] & 2),
+                           Claimed=bool(row[0] & 4), Tie=bool(row[0] & 16),
+                           Transpose=signed(row[8], 8), BaseLevel=row[9],
+                           NoteWait=row[14], BasePitch=0 if index == 0 else int.from_bytes(row[16:18], 'big'),
+                           GateRemaining=row[18], GateTicks=row[19],
+                           ModDelay=row[24], ModRate=row[25], ModDelta=signed(row[26], 8),
+                           ModSteps=row[27], ModOffset=signed(int.from_bytes(row[28:30], 'big'), 16),
+                           Detune=signed(row[30], 8)))
+    return dict(TempoRemaining=driver[1], TempoPeriod=driver[2], Voices=voices)
+
+
+def request(event):
+    if event['kind'] == 'psg-request':
+        return dict(kind='psg', value=event['value'])
+    value, register = event['value'], event['register']
+    masks = {0x30: 0x7f, 0x40: 0x7f, 0x50: 0xdf, 0x60: 0x9f, 0x70: 0x1f}
+    value &= masks.get(register & 0xf0, 255)
+    if 0xb0 <= register <= 0xb2:
+        value &= 0x3f
+    if 0xb4 <= register <= 0xb6:
+        value &= 0xf7
+    if 0xa4 <= register <= 0xae:
+        value &= 0x3f
+    return dict(kind='ym', bank=event['bank'], register=register, value=value)
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--expected-cases',type=int,default=5)
+    parser.add_argument('--expected-frames',type=int,default=785)
+    parser.add_argument('--profile',choices=['callable-stress','fight'],default='callable-stress')
+    parser.add_argument('--capture', default='.local/md-yuyuhakusho/root-control-canonical-v2/capture.json')
+    parser.add_argument('--out', default='games/yuyuhakusho/audio/rootcontrol/testdata/orchestrator-native.json.gz')
+    parser.add_argument('--manifest', default='games/yuyuhakusho/audio/rootcontrol/testdata/orchestrator-native-manifest.json')
+    args = parser.parse_args()
+    root = Path.cwd()
+    capture_path = root / args.capture
+    capture = json.loads(capture_path.read_bytes())
+    assert capture['pass'] and len(capture['cases']) == args.expected_cases
+    sources = [{'path': args.capture, 'sha256': sha(capture_path.read_bytes())}]
+    streams = []
+    for source in capture['cases']:
+        path = root / source['artifact']['path']
+        raw = path.read_bytes()
+        assert sha(raw) == source['artifact']['sha256']
+        source_case = json.loads(gzip.decompress(raw))
+        assert not source_case['observer_errors']
+        rows = []
+        for index, frame in enumerate(source_case['frames']):
+            assert frame['step'] == index
+            events = [event for event in source_case['events'] if event['step'] == index]
+            begins = [event for event in events if event['kind'] == 'tick-before']
+            assert len(begins) == 1
+            before = bytes.fromhex(begins[0]['driver_hex'])
+            rows.append(dict(step=index, input_queue=list(before[10:14]), input_pause=before[7],
+                             root=frame['root'], score=projection(frame['driver_hex']),
+                             requests=[request(event) for event in events if event['kind'] in ('ym-request', 'psg-request')]))
+        streams.append(dict(id=source['id'], frames=rows))
+        sources.append({'path': source['artifact']['path'], 'sha256': sha(raw)})
+    table_path = root / 'games/yuyuhakusho/engine/testdata/sound-queue-priorities.json'
+    table = json.loads(table_path.read_bytes())
+    assert len(table['priorities']) == 255
+    sources.append({'path': str(table_path.relative_to(root)), 'sha256': sha(table_path.read_bytes())})
+    audit_path = root / 'docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_SOURCE_AUDIT.json'
+    audit = json.loads(audit_path.read_bytes())
+    sources.append({'path': str(audit_path.relative_to(root)), 'sha256': sha(audit_path.read_bytes())})
+    assert sum(len(case['frames']) for case in streams)==args.expected_frames
+    artifact = dict(version=1, profile=args.profile, fight_candidate_ids=audit['scope']['fight_candidate_ids'], scope='Retained native rules/requests; no timing, PCM synthesis or asynchronous world IRQ claim',
+                    priorities=table['priorities'], cases=streams)
+    encoded = json.dumps(artifact, sort_keys=True, separators=(',', ':')).encode()
+    zipped = gzip.compress(encoded, mtime=0)
+    out = root / args.out
+    out.write_bytes(zipped)
+    manifest = dict(version=1, sources=sources, frames=sum(len(case['frames']) for case in streams),
+                    cases=len(streams), artifact={'path': args.out, 'sha256': sha(zipped), 'json_sha256': sha(encoded)},
+                    producer={'path': str(Path(__file__).relative_to(root)), 'sha256': sha(Path(__file__).read_bytes())})
+    (root / args.manifest).write_text(json.dumps(manifest, indent=2, sort_keys=True) + '\n')
+    print(json.dumps({'pass': True, 'frames': manifest['frames'], 'cases': len(streams), 'sha256': sha(zipped)}))
+
+
+if __name__ == '__main__':
+    main()

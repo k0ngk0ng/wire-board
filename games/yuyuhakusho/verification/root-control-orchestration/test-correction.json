@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "reason": "Independent startMusic/StopPrimary source disproves entry-priority preservation; inject only at actual Save to test live access. No production mutation for this correction.",
+  "original": "test-first-manifest.json",
+  "first_result": "first-implementation.jsonl",
+  "files": [
+    {
+      "path": "games/yuyuhakusho/audio/rootcontrol/orchestrator_test.go",
+      "sha256": "154a13b15322ea3388eae51b40e886d1bada535a379f252f48fbd9a9caa31c87"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_ORCHESTRATION_FAILURES.md",
+      "sha256": "828b2686e5d6e792e70b6020230bd31d875817bcfa793efe6711ed5615555850"
+    }
+  ]
+}

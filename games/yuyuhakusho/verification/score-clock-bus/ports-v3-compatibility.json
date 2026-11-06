@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "pass": true,
+  "at_utc": "2026-11-05T20:52:47.403081+00:00",
+  "scope": "Unchanged four original Main+PCM integration E2E on frozen physical-port-capable PCM revision, default IncludeYMAddresses=false semantic data view",
+  "original_proof_final_freeze_sha256": "b5649f79e401e1656e80d7c98a820292d31db2011fadf6dd34924826598eb48f",
+  "test_and_native_fixture_unchanged": true,
+  "tests": {
+    "ports-v3-compat-native.jsonl": {
+      "top_level": 1,
+      "original_cases": 4,
+      "sha256": "f3bc847b48dc3273c3a4abdb39daea0d3022e1a3f6e4acec5e158c34554ee29d"
+    },
+    "ports-v3-compat-wasm.jsonl": {
+      "top_level": 1,
+      "original_cases": 4,
+      "sha256": "53e709a2d20a2f5d5ccee43dd68b834758399dc1d12f1b2bb31cbc36dd33c88f"
+    }
+  },
+  "vet_pass": true,
+  "main_accesses": 71,
+  "aux_semantic_events": 475,
+  "actual_busy_mailbox_reads": 7,
+  "dependency_sha256": {
+    "games/yuyuhakusho/audio/pcmcommands/phases_single.go": "ca650f1dabc657b668b1c9672674ca98e4f361e68ffc7a92fc7c08fb5713f088",
+    "games/yuyuhakusho/audio/pcmcommands/bus_bridge.go": "0dd755b50438409fd69731f3b9a5d4f49a81f04b2f2934a4363d9f7cc036738a",
+    "games/yuyuhakusho/audio/pcmcommands/phases_control.go": "313eb96643577d547738950e4d06a95cb8660e760a54cf6fe13eee25d1b8ef01",
+    "games/yuyuhakusho/audio/pcmcommands/phases_dual.go": "6a7bbd6e5d46a380659f12fb85c833947628436b57e28a6c7f8323102155bd63",
+    "games/yuyuhakusho/audio/pcmcommands/device.go": "6bd121b24d5b35c7760c719fd87fe41839100fcb6d7f284936eebdc75d509a3d",
+    "games/yuyuhakusho/audio/pcmcommands/state.go": "d2125bb856fa024dade12805fa995c74623e5b966d1a985c77053d4a3d757c98"
+  },
+  "physical_RawPorts_true_shared_latch_or_FIR_verified_by_this_scope": false,
+  "native_recapture_needed": false,
+  "old_records_rewritten": false,
+  "no_production_changes": true,
+  "global_world_IRQ_schedule_solved": false
+}

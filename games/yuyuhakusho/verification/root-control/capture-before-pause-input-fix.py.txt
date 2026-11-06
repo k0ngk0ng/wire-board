@@ -1,0 +1,75 @@
+"""Original active fight-control/fade/pause observations, no runtime model."""
+import argparse,ctypes as C,gzip,json,importlib.util
+from pathlib import Path
+from extract_audio_assets import AudioSession,queue_command,write_cpu
+from reference import ROOT,sha
+from research_audio_loops import ORIGINAL,OBSERVED,BRIDGE,quiet_checkpoint
+from inspect_dac_dsp_state import symbols,YM
+from capture_audio_score_reads import cpu_range
+
+POINTS=[0x375ae,0x37656,0x37b9a,0x37c42,0x37cb4,0x38916,0x38928,0x3893a,0x3894c,0x3894e,0x38956,0x38966,0x3896c,0x38984,0x38990,0x389a6,0x38a2c,0x38a42,0x3a1a4,0x37ba2,0x37bd8,0x37bec,0x37c04,0x37c08,0x37c1c,0x38b2e,0x38b9e,0x3a0c6,0x3a0cc,0x3a140,0x3a186,0x3a194,0x3a198,0x3a19c,0x3a1a0,0x3901c]
+CASES=[{'id':'music82-fade01','frames':225,'commands':{0:0x82,32:1}}, {'id':'music82-fade05','frames':300,'commands':{0:0x82,32:5}}, {'id':'ordinary73-clear04','frames':80,'commands':{0:0x73,2:4}}, {'id':'mixed82-a7-clear04','frames':80,'commands':{0:0x82,16:0xa7,24:4}}, {'id':'mixed82-a7-pause','frames':100,'commands':{0:0x82,26:0xa7},'pause':{30:0x40,70:0x80}}]
+def saved(path,value):
+ raw=(json.dumps(value,separators=(',',':'))+'\n').encode();path.write_bytes(gzip.compress(raw,mtime=0)if path.suffix=='.gz'else raw)
+def root_state(driver):return {'Priority':driver[0],'Selected':driver[9],'FadeSteps':driver[4],'FadeRemaining':driver[6],'Queue':list(driver[10:14]),'AudioPause':driver[7],'ControlMode':driver[40],'FMDelta':driver[41],'PSGDelta':driver[42],'DuckPhase':driver[43],'ChoiceBits':driver[44]}
+def before_input(ref,case,step):
+ if step in case['commands']:queue_command(ref,case['commands'][step])
+ if step in case.get('pause',{}):write_cpu(ref,0xfff550,case['pause'][step],1)
+def pcm_status(ref):
+ z=(C.c_ubyte*8192).in_dll(ref.lib,'zram');return {'ModeFlags':int(z[0x1ffc]),'StartMarker':int(z[0x1ffd]),'RateRequest':int(z[0x1ffe]),'Busy':int(z[0x1f2a]),'ZState':C.c_ubyte.in_dll(ref.lib,'zstate').value,'Z80RAMSHA256':sha(bytes(z))}
+def scalar_reset(ref,lookup):
+ image=C.cast(ref.lib.audio_update,C.c_void_p).value-lookup['_audio_update'][0]
+ C.c_int.from_address(image+lookup['_fm_cycles_busy'][0]).value=0;C.c_void_p.from_address(image+lookup['_fm_ptr'][0]).value=image+lookup['_fm_buffer'][0]
+def levels(ref,lookup):
+ image=C.cast(ref.lib.audio_update,C.c_void_p).value-lookup['_audio_update'][0];ym=YM.from_address(image+lookup['_ym2612'][0]);cache=cpu_range(ref,0xfbe0,32)
+ hardware=[[[int(ym.CH[bank*3+channel].SLOT[op].tl)>>3 for op in range(4)]for channel in range(3)]for bank in range(2)]
+ requested=[[[cache[bank*16+op*4+channel]&127 for op in range(4)]for channel in range(3)]for bank in range(2)]
+ return {'cache_raw_hex':cache.hex(),'visible_from_cache':requested,'chip_TL':hardware,'visible_equal':requested==hardware}
+def frame_row(ref,step,result,pcm):
+ driver=cpu_range(ref,0xf800,928)
+ return {'step':step,'reference':result['reference'],'driver_hex':driver.hex(),'root':root_state(driver),'PCM':pcm_status(ref),'pcm_sha256':sha(pcm),'stereo_frames':len(pcm)//4,'nonzero_samples':sum(int.from_bytes(pcm[i:i+2],'little',signed=True)!=0 for i in range(0,len(pcm),2))}
+def main():
+ p=argparse.ArgumentParser(description=__doc__);p.add_argument('--out',type=Path,required=True);p.add_argument('--smoke',action='store_true');p.add_argument('--case');a=p.parse_args();out=a.out.resolve();assert out.is_relative_to(ROOT);out.mkdir(parents=True,exist_ok=True)
+ cases=CASES[:1]if a.smoke else[c for c in CASES if not a.case or c['id']==a.case];controls={};reports=[];identities={}
+ b=C.CDLL(str(BRIDGE));typ=C.CFUNCTYPE(None,C.c_int,C.c_int,C.c_uint,C.c_uint);b.yyh_set_observer.argtypes=[typ,C.POINTER(C.c_uint),C.c_size_t];b.yyh_set_observer.restype=C.c_int;points=(C.c_uint*len(POINTS))(*POINTS)
+ for mode,core in [('original',ORIGINAL),('observed',OBSERVED)]:
+  with AudioSession(ROOT,out/('core-'+mode),core=core)as ref:
+   checkpoint=quiet_checkpoint(ref);lookup=symbols(core);identities[mode]=ref.identity
+   for case in cases:
+    ref.restore(checkpoint,restore_refresh_cycles=True);scalar_reset(ref,lookup);rows=[];events=[];errors=[];step=-1;tick=0;intents=[]
+    @typ
+    def observe(kind,width,pc,value):
+     nonlocal tick
+     try:
+      d=cpu_range(ref,0xf800,928);row=ref.get_register(13)&65535;event={'step':step,'tick':tick,'pc':pc,'at':ref.cpu.cycles,'refresh':ref.cpu.refresh_cycles}
+      if pc==0x375ae:tick+=1;event.update(kind='tick-before',tick=tick,driver_hex=d.hex())
+      elif pc in[0x37656,0x37b9a,0x37c42,0x3a1a4]:event.update(kind='return-boundary',driver_hex=d.hex())
+      elif pc==0x37cb4:event.update(kind='dispatch',selected=d[9])
+      elif pc in[0x38b2e,0x38b9e]:event.update(kind='ym-request',bank=0 if pc==0x38b2e else 1,register=ref.get_register(0)&255,value=ref.get_register(1)&255)
+      elif pc in[0x3a0c6,0x3a0cc,0x3a140,0x3a186,0x3a194,0x3a198,0x3a19c,0x3a1a0]:
+       register=6 if pc in[0x3a0cc,0x3a140]else 0
+       constant={0x3a194:0x9f,0x3a198:0xbf,0x3a19c:0xdf,0x3a1a0:0xff}
+       event.update(kind='psg-request',value=constant.get(pc,ref.get_register(register)&255))
+      else:
+       event.update(kind='control-boundary',root=root_state(d))
+       if 0xf840<=row<=0xfb70 and (row-0xf840)%48==0:event.update(voice_slot=(row-0xf840)//48,voice_hex=cpu_range(ref,row,48).hex())
+       if pc in[0x37bd8,0x37bec,0x37c04,0x37c1c]:event['levels']=levels(ref,lookup)
+      events.append(event)
+     except Exception as error:errors.append(repr(error))
+    if mode=='observed':
+     assert b.yyh_set_observer(observe,points,len(points));ref.api('set_cpu_hook',None,C.c_void_p)(C.cast(b.yyh_cpu_hook,C.c_void_p))
+    try:
+     for step in range(case['frames']):
+      before_input(ref,case,step);result,pcm=ref.step_audio(ref.frame+1,[0]*8);row=frame_row(ref,step,result,pcm);assert not errors,errors[:3]
+      if mode=='observed':assert row==controls[case['id']][step],('Root-control observer changed native',case['id'],step)
+      assert not any(row['root'][k]for k in['ControlMode','FMDelta','PSGDelta','DuckPhase']),'Fight control-idle closure violated'
+      rows.append(row)
+    finally:
+     if mode=='observed':ref.api('set_cpu_hook',None,C.c_void_p)(None)
+    if mode=='original':controls[case['id']]=rows;saved(out/(case['id']+'-control.json.gz'),{'case':case,'frames':rows})
+    else:
+     path=out/(case['id']+'.json.gz');saved(path,{'case':case,'frames':rows,'events':events,'observer_errors':errors})
+     reports.append({'id':case['id'],'frames':case['frames'],'events':len(events),'pass':True,'artifact':{'path':str(path.relative_to(ROOT)),'sha256':sha(path.read_bytes())},'control_sha256':sha((out/(case['id']+'-control.json.gz')).read_bytes())})
+    print(json.dumps({'mode':mode,'case':case['id'],'frames':len(rows),'root_end':rows[-1]['root'],'events':len(events)}),flush=True)
+ saved(out/'capture.json',{'pass':True,'scope':'Declared fight-control inputs on cleared original world; full reference frames observed/control equal, not independent orchestration or full cost','identity':identities,'cases':reports,'sources':{str(p.relative_to(ROOT)):sha(p.read_bytes())for p in[Path(__file__),ROOT/'scripts/yuyuhakusho/hook_filter.c',ROOT/'docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_SOURCE_AUDIT.json']},'whole_goal_complete':False,'independent_world_IRQ_schedule':False})
+if __name__=='__main__':main()

@@ -1,0 +1,54 @@
+{
+  "scope": "Read-only independent staged-observer interface review; no production edits or original CPU run",
+  "created_at_utc": "2026-11-05T20:34:26.111032+00:00",
+  "command": [
+    "/opt/homebrew/bin/go",
+    "test",
+    "-json",
+    "-count=1",
+    "-run",
+    "^(TestObservedFeedbackReadsAreStaged|TestObservedPriorityWritesAreAtOriginalPositions|TestObservedErrorsDoNotCommitScoreOrRepeatCallbacks|TestObservedRecordsHaveNoMutableOutputAlias|TestParserMetadataRejectsUnknownAndUnboundData)$",
+    "./games/yuyuhakusho/audio/score"
+  ],
+  "environment": {
+    "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+    "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+    "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+    "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp"
+  },
+  "exit_code": 0,
+  "tests_passed": [
+    "TestObservedFeedbackReadsAreStaged",
+    "TestObservedPriorityWritesAreAtOriginalPositions",
+    "TestObservedErrorsDoNotCommitScoreOrRepeatCallbacks",
+    "TestObservedRecordsHaveNoMutableOutputAlias",
+    "TestParserMetadataRejectsUnknownAndUnboundData"
+  ],
+  "source_sha256_before": {
+    "games/yuyuhakusho/audio/score/observed.go": "70c8e254b7e1daf9b1aa49ded0e369d0831639e5eab9902ea9349b8cead846ba",
+    "games/yuyuhakusho/audio/score/driver.go": "9f7d0ae19ed96a3266834b7438444656c167f34a2278a8498813af767a916fca",
+    "games/yuyuhakusho/audio/score/parser_work.go": "b45986c543e598ad74adf82f5cfd1dcc236ba63e0eb933e92fedce6abe8625c2",
+    "games/yuyuhakusho/audio/score/observed_test.go": "81ce7738cce928035cc3a2e4a144b71a1d876472b0bd6eb9d7caa11c06f90938",
+    "games/yuyuhakusho/audio/score/parser_work_test.go": "0719465731b86d83871f91d060c968634e28468d68eef2005011ec23219c2899"
+  },
+  "source_sha256_after": {
+    "games/yuyuhakusho/audio/score/observed.go": "70c8e254b7e1daf9b1aa49ded0e369d0831639e5eab9902ea9349b8cead846ba",
+    "games/yuyuhakusho/audio/score/driver.go": "9f7d0ae19ed96a3266834b7438444656c167f34a2278a8498813af767a916fca",
+    "games/yuyuhakusho/audio/score/parser_work.go": "b45986c543e598ad74adf82f5cfd1dcc236ba63e0eb933e92fedce6abe8625c2",
+    "games/yuyuhakusho/audio/score/observed_test.go": "81ce7738cce928035cc3a2e4a144b71a1d876472b0bd6eb9d7caa11c06f90938",
+    "games/yuyuhakusho/audio/score/parser_work_test.go": "0719465731b86d83871f91d060c968634e28468d68eef2005011ec23219c2899"
+  },
+  "sources_changed_concurrently": false,
+  "fixture_sha256_unchanged": {
+    "games/yuyuhakusho/data/audio-score.json.gz": "deaf3a70eac46c199335445d186f77d51f185bdaad4d95443d09b2f1d7054d71",
+    "games/yuyuhakusho/data/audio-score-parser-work.json.gz": "96f8044395167f4227b2c45e7ee66440987d8d49d3f7f52b40ca437930eedb43",
+    "games/yuyuhakusho/audio/score/testdata/original-index.json": "1972cf3e2a31ca1cfb30d0b25a227ad4d3ac662d072cdbd92fdc1ad177c3124a"
+  },
+  "log_sha256": "c59da05ef8afc2c6cb91e4c395a96195731bcfc66a06f244db75803026bfcf87",
+  "limits": [
+    "Only five targeted API tests were run; all42 trajectories and122810 parser count test belong to parent validation.",
+    "Parser empty/family/form/null rejection regressions are owned by parent parser_binding_test.go.",
+    "ResourceUnavailable operations remain unpriced; this review does not claim a master-cycle implementation."
+  ]
+}

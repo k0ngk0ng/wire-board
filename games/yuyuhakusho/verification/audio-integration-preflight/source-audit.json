@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "at_utc": "2026-11-06T00:15:10.307610+00:00",
+  "pass": true,
+  "scope": "Current score control, local score clocks, and VDP signal layer frozen source/artifact consistency only; no new behavioral or full-audio claim",
+  "checks": [
+    {
+      "manifest": "games/yuyuhakusho/verification/audio-score-control/validation.json",
+      "sha256": "f1f8382ac42700574b0c93975259e8a95c18c21b0ba411d54c12cd6862973155",
+      "bindings_checked": 47
+    },
+    {
+      "manifest": "games/yuyuhakusho/verification/score-clock-psg/validation.json",
+      "sha256": "c9d212cb74c3d8e9cb900ed6007c597892292395b2b8ba7e1bc3816779c3ea7f",
+      "bindings_checked": 26
+    },
+    {
+      "manifest": "games/yuyuhakusho/verification/score-clock-tick/final-freeze.json",
+      "sha256": "58667c62f434bdd48d1946183134bd09f9ca1b1226426b6810baa8e0f67c2540",
+      "bindings_checked": 29
+    },
+    {
+      "manifest": "games/yuyuhakusho/verification/score-clock-header/final-freeze.json",
+      "sha256": "0d629adedf237b861a213e46d88c16fd49aece9f089eaf2d3f4579272427847b",
+      "bindings_checked": 26
+    },
+    {
+      "manifest": "games/yuyuhakusho/verification/score-clock-bus/final-freeze.json",
+      "sha256": "b5649f79e401e1656e80d7c98a820292d31db2011fadf6dd34924826598eb48f",
+      "bindings_checked": 27
+    },
+    {
+      "manifest": "games/yuyuhakusho/verification/score-clock-fade/validation.json",
+      "sha256": "89bedf8dd7c1d162ea43e5ad1ad934ab976344c92c9adb7c523d5c1e22fbed04",
+      "bindings_checked": 26
+    },
+    {
+      "manifest": "games/yuyuhakusho/verification/world-video/final-freeze.json",
+      "sha256": "84f812f07c7b6c7840055c9f8042b2431dbb24b4dce1d5762d81ccd2d29a5b40",
+      "bindings_checked": 49
+    }
+  ],
+  "errors": []
+}

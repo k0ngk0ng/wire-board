@@ -1,0 +1,106 @@
+{
+  "pass": true,
+  "scope": "Only fixed gate/return/byte-clear costs; source PCs/opcodes are offline provenance, never production input",
+  "operations": [
+    {
+      "operation": "domain-clear",
+      "source_pc": 226734,
+      "source_opcode": 16952,
+      "architecture_handler": "m68k_op_clr_8_aw",
+      "cpu_cycles": 16
+    },
+    {
+      "operation": "pause-first-read",
+      "source_pc": 226738,
+      "source_opcode": 19000,
+      "architecture_handler": "m68k_op_tst_8_aw",
+      "cpu_cycles": 12
+    },
+    {
+      "operation": "pause-nonzero-branch",
+      "source_pc": 226742,
+      "source_opcode": 26112,
+      "architecture_handler": "m68k_op_bne_16",
+      "cpu_cycles": 10
+    },
+    {
+      "operation": "hold-compare-read",
+      "source_pc": 228240,
+      "source_opcode": 3128,
+      "architecture_handler": "m68k_op_cmpi_8_aw",
+      "cpu_cycles": 16
+    },
+    {
+      "operation": "hold-branch",
+      "source_pc": 228246,
+      "source_opcode": 26112,
+      "architecture_handler": "m68k_op_bne_16",
+      "cpu_cycles": 10
+    },
+    {
+      "operation": "hold-return",
+      "source_pc": 228250,
+      "source_opcode": 20085,
+      "architecture_handler": "m68k_op_rts_32",
+      "cpu_cycles": 16
+    },
+    {
+      "operation": "resume-read",
+      "source_pc": 228252,
+      "source_opcode": 19000,
+      "architecture_handler": "m68k_op_tst_8_aw",
+      "cpu_cycles": 12
+    },
+    {
+      "operation": "resume-branch",
+      "source_pc": 228256,
+      "source_opcode": 27494,
+      "architecture_handler": "m68k_op_bmi_8",
+      "cpu_cycles": 10
+    },
+    {
+      "operation": "pause-ack-store",
+      "source_pc": 228258,
+      "source_opcode": 4604,
+      "architecture_handler": "m68k_op_move_8_aw_i",
+      "cpu_cycles": 16
+    },
+    {
+      "operation": "resume-clear-store",
+      "source_pc": 228360,
+      "source_opcode": 16952,
+      "architecture_handler": "m68k_op_clr_8_aw",
+      "cpu_cycles": 16
+    },
+    {
+      "operation": "tick-return",
+      "source_pc": 226902,
+      "source_opcode": 20085,
+      "architecture_handler": "m68k_op_rts_32",
+      "cpu_cycles": 16
+    },
+    {
+      "operation": "priority-byte-clear",
+      "source_pc": 233718,
+      "source_opcode": 16952,
+      "architecture_handler": "m68k_op_clr_8_aw",
+      "cpu_cycles": 16
+    }
+  ],
+  "short_branch_not_taken": 8,
+  "long_branch_not_taken": 12,
+  "master_multiplier": 7,
+  "refresh_delay_master": 14,
+  "refresh_new_deadline_delta": 896,
+  "sources": {
+    ".local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/core/m68k/m68kops.h": "d3ff2631658e589813d2915ba3dc03b9fd2097761f6eb221fc6264a4b8d1d6f0",
+    ".local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/core/m68k/m68kcpu.h": "6f2fc0979153d994b4ba539aa51bc0da4b8ff089e174d4cc07aee1f537643827",
+    ".local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/core/m68k/m68kcpu.c": "8c09b9d86e8c77366eff430f62c3b5742adce1ccdee849c246e24dcba74fcf15",
+    ".local/md-yuyuhakusho/downloads/yuyuhakusho-jp.bin": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06"
+  },
+  "producer_sha256": "8614c3de4116688b2d05ba131b69c060dabaef8b7736d1def6ecf2e3fb7fee8c",
+  "limits": [
+    "This primitive priority clear does not cover CLR.L bulk resets or MOVE.B priority restoration",
+    "Normal gate stops before duck/tempo/fade housekeeping; hold includes its early return"
+  ]
+}
