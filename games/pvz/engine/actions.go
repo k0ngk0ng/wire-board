@@ -359,10 +359,10 @@ func (s *State) newPlant(c Spec, row, col, owner int) Plant {
 	p.ReadyAt = s.Tick + 20
 	switch c.Kind {
 	case "sunflower", "twinsunflower":
-		p.ReadyMS = s.Tick*TickMS + int64((300+s.random(951))*10)
+		p.ReadyMS = s.Tick*TickMS + s.firstSunMS()
 		p.ReadyAt = counterTick(p.ReadyMS)
 	case "sunshroom":
-		p.ReadyMS = s.Tick*TickMS + int64((300+s.random(951))*10)
+		p.ReadyMS = s.Tick*TickMS + s.firstSunMS()
 		p.ReadyAt = counterTick(p.ReadyMS)
 		p.EffectUntil = s.Tick + 2400
 	case "potatomine":

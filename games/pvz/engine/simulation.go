@@ -56,10 +56,10 @@ func Step(s *State, ticks int) error {
 }
 func (s *State) income() {
 	if s.Tick >= s.NextSunTick {
-		if !s.Map.Night {
+		if s.RulesVersion >= 3 || !s.Map.Night {
 			s.creditSide("plants", 25)
 		}
-		s.NextSunTick += 100
+		s.NextSunTick += s.sunSupplyTicks()
 	}
 	if s.Phase == "battle" && s.Tick >= s.NextBrainTick {
 		age := (s.Tick - s.BattleStartTick) * TickMS / 60000

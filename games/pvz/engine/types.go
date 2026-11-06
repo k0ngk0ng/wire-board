@@ -329,7 +329,7 @@ func (s *State) beginRound() {
 	for row := range s.Map.Rows {
 		s.Mowers[row] = Mower{Row: row, State: "ready", X: -450}
 	}
-	s.NextSunTick = s.Tick + 100
+	s.NextSunTick = s.Tick + s.sunSupplyTicks()
 	s.NextBrainTick = 0
 	s.IncomeCursor = [2]int{}
 	s.TeamCooldowns = [2]map[string]int64{{}, {}}
@@ -345,9 +345,9 @@ func (s *State) beginRound() {
 		money := 250
 		if s.Options.Teams[p] == (s.Round-1)%2 {
 			side = "plants"
-			money = 300
+			money = s.openingSun()
 		}
-		s.Players[p] = Player{Team: s.Options.Teams[p], Side: side, Money: money / (len(s.Players) / 2), Cooldowns: map[string]int64{}, Deck: DefaultDeck(s.Map.ID, side), ImitaterKind: "peashooter"}
+		s.Players[p] = Player{Team: s.Options.Teams[p], Side: side, Money: money / (len(s.Players) / 2), Cooldowns: map[string]int64{}, Deck: s.startingDeck(side), ImitaterKind: "peashooter"}
 	}
 	s.seedUnlocks()
 	if s.Map.Night && !s.Map.Roof && !s.Map.Fog {
