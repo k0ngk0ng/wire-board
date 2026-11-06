@@ -325,7 +325,7 @@ func TestPvZBrowserFixture(t *testing.T) {
 	if err = os.MkdirAll(out, 0755); err != nil {
 		t.Fatal(err)
 	}
-	s, err := server.New(server.Config{DataDir: t.TempDir(), InviteCode: "pvz-browser", AdminUsername: "PvZRoot", AdminPassword: "pvz-browser-password", ClientLoading: true, Modules: []gameapi.Module{integrationModule(t)}}, os.DirFS(filepath.Join(root, "web/dist")))
+	s, err := server.New(server.Config{DataDir: t.TempDir(), InviteCode: "pvz-browser", AdminUsername: "PvZRoot", AdminPassword: "pvz-browser-password", AssetsBaseURL: os.Getenv("PVZ_BROWSER_LEGACY_ASSETS"), ClientLoading: true, Modules: []gameapi.Module{integrationModule(t)}}, os.DirFS(filepath.Join(root, "web/dist")))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -350,7 +350,7 @@ func TestPvZBrowserFixture(t *testing.T) {
 	if err = os.WriteFile(filepath.Join(out, "url"), []byte("http://"+listener.Addr().String()), 0600); err != nil {
 		t.Fatal(err)
 	}
-	for began := time.Now(); time.Since(began) < 30*time.Minute; {
+	for began := time.Now(); time.Since(began) < 85*time.Minute; {
 		if _, err = os.Stat(filepath.Join(out, "stop")); err == nil {
 			return
 		}

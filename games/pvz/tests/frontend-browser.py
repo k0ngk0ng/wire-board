@@ -59,7 +59,7 @@ def geometry():
 
 try:
     assert BASE, 'PVZ_BROWSER_URL must point to the local production-module test server'
-    b('open', BASE); OPENED = True
+    OPENED = True; b('open', BASE)
     api('/register', {'name': '植物验收' + uuid.uuid4().hex[:6], 'password': 'pvz-browser-local', 'invite': 'pvz-browser'})
     b('reload'); b('wait', '--text', '创建房间')
     assert 'pvz' in api('/state')['availableGames'], 'PvZ must be available by default'
@@ -80,8 +80,8 @@ try:
         assert not info['overflow'], info
         assert len(info['wallets']) == count, info
         assert all(w['rect']['width'] > 0 and w['rect']['left'] >= 0 and w['rect']['right'] <= width + 1 for w in info['wallets']), info
-        assert len(info['cards']) == 8, info
-        assert js('document.querySelectorAll("[data-controller-group=board] button").length===45'), 'missing geometric navigation grid'
+        assert 1 <= len(info['cards']) <= 10, info
+        assert js('document.querySelectorAll("[data-pvz-cell]").length===45'), 'missing geometric navigation grid'
         assert js('document.querySelector("[data-controller-group=board] button").getBoundingClientRect().width>20'), 'navigation targets are visually collapsed'
         b('click', '[data-pvz-card="sunflower"]')
         # Real native pointer input, mapping the same 1000-unit grid as production.

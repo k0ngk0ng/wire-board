@@ -4,6 +4,11 @@ changes miss consumers; rename/deletion or cancelled predecessor misses changes;
 unknown manual game/invalid baseline silently passes; a failed required job still
 uploads a release binary; shared selection includes full-game loops; test failures
 are swallowed and empty optional frontend directories become false failures.
+
+PvZ asset-gate failures declared before implementation: semantic/native/music
+checks are omitted, run on unrelated games or repeat on later shards; CI needs
+private EXE/PAK/MO3/BASS inputs; Pillow is installed globally; FFmpeg is silently
+missing; caches/temporary files escape the workspace; output parents are absent.
 """
 import importlib.util
 import os
@@ -39,6 +44,57 @@ class ScopeTests(unittest.TestCase):
         self.assertTrue(all(c[:2]==(['node','--test'] if c[-1].endswith('.mjs') else ['python3','-B']) for c in commands))
         for game,index in [('shared',0),('rail',0),('contra',1)]:
             self.assertEqual(scope.build_commands(ROOT,game,index),[])
+
+    def test_pvz_asset_build_contracts_are_complete_and_scoped(self):
+        base=ROOT/'games/pvz/build';out=ROOT/'.local/pvz/ci-assets'
+        expected=[['python3','-B','-m','unittest','discover','-s',str(base),'-p','test_*.py'],
+                  ['python3','-B',str(base/'verify_native.py'),'--output',str(out/'native.json')],
+                  ['python3','-B',str(base/'verify_music.py'),'--output',str(out/'music.json')]]
+        self.assertEqual(scope.build_commands(ROOT,'pvz',0),expected)
+        for game,index in [('pvz',1),('pvz',2),('shared',0),('rail',0),('conquest',0)]:
+            self.assertEqual(scope.build_commands(ROOT,game,index),[])
+        flat=' '.join(' '.join(c) for c in expected)
+        for private_source in ['.local/pvz-research','PlantsVsZombies.exe','main.pak','.mo3','BassDecoder','render_music']:
+            self.assertNotIn(private_source,flat)
+
+    def test_pvz_asset_changes_do_not_request_other_game_rules(self):
+        for path in ['games/pvz/assets/public/pvz/classic-v2/native/peashooter.pvzr',
+                     'games/pvz/assets/public/pvz/classic-v2/music/day-main.flac',
+                     'games/pvz/build/verify_native.py','games/pvz/build/verify_music.py']:
+            self.assertEqual(self.plan(path)['games'],[{'game':'pvz','backend':False}],path)
+        self.assertTrue(all(c[-1].startswith('./games/pvz/') for c in scope.go_commands(ROOT,'pvz')))
+
+    def test_pvz_asset_run_creates_only_its_artifact_parent(self):
+        parent=ROOT/'.local/ci-scope';parent.mkdir(parents=True,exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=parent,prefix='pvz-assets-') as temporary:
+            root=Path(temporary);asset_output=root/'.local/pvz/ci-assets'
+            def verify_output(*args,**kwargs):
+                self.assertTrue(asset_output.is_dir(),'asset gate ran before its output directory existed')
+                self.assertEqual(kwargs['cwd'],root)
+            with patch.object(scope,'ROOT',root),patch.object(scope,'frontend_tests',return_value=[]),patch.object(scope,'go_commands',return_value=[]),patch.object(scope,'build_commands',return_value=[['python3','asset-check']]),patch.object(scope.subprocess,'run',side_effect=verify_output) as run:
+                scope.run(SimpleNamespace(game='pvz',backend=False,shard=0,count=1))
+                self.assertEqual(run.call_count,1)
+        with tempfile.TemporaryDirectory(dir=parent,prefix='other-assets-') as temporary:
+            root=Path(temporary)
+            with patch.object(scope,'ROOT',root),patch.object(scope,'frontend_tests',return_value=[]),patch.object(scope,'go_commands',return_value=[]),patch.object(scope,'build_commands',return_value=[]):
+                scope.run(SimpleNamespace(game='rail',backend=False,shard=0,count=1))
+            self.assertFalse((root/'.local/pvz').exists())
+
+    def test_pvz_workflow_uses_scoped_workspace_asset_environment(self):
+        workflow=(ROOT/'.github/workflows/build.yml').read_text()
+        gate=workflow.split('      - name: Prepare PvZ asset verification environment\n',1)[1].split('      - name: Validate this game only\n',1)[0]
+        self.assertIn("if: matrix.game == 'pvz' && matrix.shard == 0",gate)
+        for command in ['command -v ffmpeg','command -v ffprobe',
+                        'python3 -m venv .local/pvz/ci-assets/venv',
+                        '.local/pvz/ci-assets/venv/bin/python -m pip install Pillow==13.0.0',
+                        'export TMPDIR="$PWD/.local/tmp"',
+                        'export PIP_CACHE_DIR="$PWD/.local/pvz/ci-assets/pip-cache"']:
+            self.assertIn(command,gate)
+        for forbidden in ['apt-get','brew install','sudo','main.pak','.mo3','BASS']:
+            self.assertNotIn(forbidden,gate)
+        run=workflow.split('      - name: Validate this game only\n',1)[1].split('      - uses: actions/upload-artifact@v4',1)[0]
+        self.assertIn('if [ "$GAME_ID" = pvz ] && [ "$SHARD_INDEX" = 0 ]; then',run)
+        self.assertIn('export PATH="$PWD/.local/pvz/ci-assets/venv/bin:$PATH"',run)
 
     # Long campaigns run once through the explicit verified runner, not through
     # inherited diagnostic variables on ordinary/race test selections.

@@ -10,9 +10,65 @@ NORMAL_HIDDEN = ("anim_cone", "anim_bucket", "anim_screendoor", "Zombie_flaghand
 
 
 def matrix(value):
+    if "_matrix" in value:
+        return value["_matrix"]
     kx, ky = math.radians(value["kx"]), math.radians(value["ky"])
     return (math.cos(kx) * value["sx"], -math.sin(ky) * value["sy"],
             math.sin(kx) * value["sx"], math.cos(ky) * value["sy"], value["x"], value["y"])
+
+
+def multiply(left, right):
+    a, b, c, d, x, y = left
+    e, f, g, h, u, v = right
+    return (a * e + b * g, a * f + b * h, c * e + d * g, c * f + d * h,
+            a * u + b * v + x, c * u + d * v + y)
+
+
+def inverse(value):
+    a, b, c, d, x, y = value
+    determinant = a * d - b * c
+    if abs(determinant) < .000001:
+        raise ValueError("Singular attachment matrix")
+    return (d / determinant, -b / determinant, -c / determinant, a / determinant,
+            (b * y - d * x) / determinant, (c * x - a * y) / determinant)
+
+
+def frame_layers(definition, kind, clip, index):
+    """Compose independently animated shooter body and attached head."""
+    simple = kind in ("peashooter", "repeater", "snowpea", "leftpeater", "gatlingpea")
+    multi = kind in ("threepeater", "splitpea")
+    if not ((simple and clip == "attack") or (kind == "gatlingpea" and clip == "idle") or (multi and clip in ("idle", "attack", "attack_front", "attack_rear"))):
+        return [(track["name"], track["frames"][index]) for track in definition["tracks"]]
+    body_start, body_end = clip_range(definition, "anim_idle")
+    if simple:
+        bone = "anim_stem" if any(t["name"] == "anim_stem" for t in definition["tracks"]) else "anim_idle"
+        heads = [("anim_shooting" if clip == "attack" else "anim_head_idle", bone)]
+    elif kind == "threepeater":
+        heads = [("anim_shooting" + str(i) if clip == "attack" else "anim_head_idle" + str(i), "anim_head" + str(i)) for i in (1, 2, 3)]
+    else:
+        heads = [("anim_shooting" if clip in ("attack", "attack_front") else "anim_head_idle", "anim_idle"),
+                 ("anim_splitpea_shooting" if clip in ("attack", "attack_rear") else "anim_splitpea_idle", "anim_idle")]
+    origin = clip_range(definition, heads[0][0])[0] if clip != "idle" else body_start
+    offset = index - origin
+    body_index = body_start + offset % (body_end - body_start + 1)
+    selected = {}
+    for track in definition["tracks"]:
+        value = track["frames"][body_index]
+        if value["image"] and value["f"] >= 0:
+            selected[track["name"]] = value
+    for layer_name, bone_name in heads:
+        start, end = clip_range(definition, layer_name)
+        head_index = start + offset % (end - start + 1)
+        bone = next((track for track in definition["tracks"] if track["name"] == bone_name), None)
+        overlay = (1, 0, 0, 1, 0, 0)
+        if bone is not None:
+            overlay = multiply(matrix(bone["frames"][body_index]), inverse(matrix(bone["frames"][body_start])))
+        for track in definition["tracks"]:
+            value = track["frames"][head_index]
+            if value["image"] and value["f"] >= 0:
+                selected[track["name"]] = dict(value, _matrix=multiply(overlay, matrix(value)))
+    return [(track["name"], selected.get(track["name"], track["frames"][index]))
+            for track in definition["tracks"]]
 
 
 def visible(name, kind):
@@ -55,7 +111,7 @@ PROFILES = {
 }
 
 
-def bake(source, output):
+def bake(source, output, version="classic-v1", profiles=None):
     from PIL import Image
     from reanim import decode
     output.mkdir(parents=True, exist_ok=False)
@@ -65,11 +121,11 @@ def bake(source, output):
     images = {}
     for path in (source / "reanim").glob("*.png"):
         images["IMAGE_REANIM_" + path.stem.upper()] = Image.open(path).convert("RGBA")
-    manifest = {"version": "classic-v1", "sourceVersion": "PC 1.0.0.1051", "background": "images/background1.jpg",
+    manifest = {"version": version, "sourceVersion": "PC 1.0.0.1051", "background": "images/background1.jpg",
                 "backgroundCrop": {"x": 220, "y": 0, "width": 800, "height": 600},
                 "lawn": {"x": 40, "y": 80, "width": 720, "height": 500}, "sprites": {}, "images": {}, "audio": {}}
     contact = Image.new("RGBA", (8 * 160, 2 * 200), (232, 230, 210, 255))
-    for profile_index, (kind, (name, clips)) in enumerate(PROFILES.items()):
+    for profile_index, (kind, (name, clips)) in enumerate((profiles or PROFILES).items()):
         definition = decode((source / "compiled/reanim" / (name + ".reanim.compiled")).read_bytes())
         track_frames = len(definition["tracks"][0]["frames"])
         ranges = {clip: (clip_range(definition, layer) if layer else (0, track_frames - 1)) for clip, layer in clips.items()}
@@ -80,12 +136,11 @@ def bake(source, output):
         if kind == "sun":
             anchor = (0, 0)
         bounds = []
-        for start, end in ranges.values():
+        for clip, (start, end) in ranges.items():
             for index in range(start, end + 1):
-                for track in definition["tracks"]:
-                    value = track["frames"][index]
+                for track_name, value in frame_layers(definition, kind, clip, index):
                     image = images.get(value["image"])
-                    if image is None or value["f"] < 0 or value["a"] <= 0 or not visible(track["name"], kind):
+                    if image is None or value["f"] < 0 or value["a"] <= 0 or not visible(track_name, kind):
                         continue
                     a, b, c, d, x, y = matrix(value)
                     bounds.extend((a * px + b * py + x, c * px + d * py + y) for px, py in ((0, 0), (image.width, 0), (0, image.height), image.size))
@@ -100,10 +155,9 @@ def bake(source, output):
             sheet = Image.new("RGBA", (width * columns, height * math.ceil(count / columns)))
             for index in range(start, end + 1):
                 canvas = Image.new("RGBA", (width, height))
-                for track in definition["tracks"]:
-                    value = track["frames"][index]
+                for track_name, value in frame_layers(definition, kind, clip, index):
                     image = images.get(value["image"])
-                    if image is None or value["f"] < 0 or value["a"] <= 0 or not visible(track["name"], kind):
+                    if image is None or value["f"] < 0 or value["a"] <= 0 or not visible(track_name, kind):
                         continue
                     a, b, c, d, x, y = matrix(value)
                     x, y = x - min_x, y - min_y
@@ -153,10 +207,11 @@ def main():
     parser.add_argument("output", type=Path)
     parser.add_argument("--contact", type=Path, required=True)
     parser.add_argument("--manifest", type=Path, required=True)
+    parser.add_argument("--version", default="classic-v1")
     args = parser.parse_args()
-    _, files, contact = bake(args.source, args.output)
+    _, files, contact = bake(args.source, args.output, args.version)
     contact.save(args.contact)
-    args.manifest.write_text(json.dumps({"version": "classic-v1", "files": files}, indent=2) + "\n")
+    args.manifest.write_text(json.dumps({"version": args.version, "files": files}, indent=2) + "\n")
 
 
 if __name__ == "__main__":

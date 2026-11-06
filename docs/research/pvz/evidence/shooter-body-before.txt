@@ -1,0 +1,23 @@
+.E..E
+======================================================================
+ERROR: test_attached_head_follows_stem_relative_to_base_pose (test_render_classic.RenderClassicTests.test_attached_head_follows_stem_relative_to_base_pose)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/pvz/games/pvz/build/test_render_classic.py", line 40, in test_attached_head_follows_stem_relative_to_base_pose
+    layers = dict(module.frame_layers(definition, "peashooter", "attack", 3))
+                  ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'render_classic' has no attribute 'frame_layers'
+
+======================================================================
+ERROR: test_shooter_attack_keeps_stalk_leaves_head_and_mouth (test_render_classic.RenderClassicTests.test_shooter_attack_keeps_stalk_leaves_head_and_mouth)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/pvz/games/pvz/build/test_render_classic.py", line 26, in test_shooter_attack_keeps_stalk_leaves_head_and_mouth
+    layers = module.frame_layers(definition, kind, "attack", 2 + offset)
+             ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'render_classic' has no attribute 'frame_layers'
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.000s
+
+FAILED (errors=2)

@@ -1,0 +1,90 @@
+{
+  "evidence_id": "ev_119b0a1cff062bcdbb7bef5293c8f90febfda8abe8b3d235dcf5f2e7bcf906cc",
+  "subject": {
+    "name": "PlantsVsZombies.exe",
+    "digest": {
+      "sha256": "8e8eea73a85d7af311755708f5daf2786650cf3c032188b8315fcf99858c8342"
+    },
+    "local_path": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/pvz/.local/pvz-research/original-1.0.0.1051/PlantsVsZombies.exe",
+    "format": "pe",
+    "architecture": "x86"
+  },
+  "provider": {
+    "id": "ghidra",
+    "name": "Ghidra",
+    "version": "12.1.4"
+  },
+  "analysis_profile": {
+    "provider": {
+      "id": "ghidra",
+      "name": "Ghidra",
+      "version": "12.1.4"
+    },
+    "parameters": {
+      "target_kind": "executable",
+      "target_format": "pe",
+      "executable_role": "application",
+      "managed": false,
+      "native_aot_metadata": {
+        "contract_revision": "rtr-9.1-x64-pe-read-only-v3",
+        "source_bytes": 134217728,
+        "work_units": 67108864,
+        "working_memory_bytes": 67108864,
+        "report_bytes": 4194304
+      },
+      "architecture": "x86",
+      "available_architectures": [
+        "x86"
+      ],
+      "import_mode": "ephemeral-source-immutable",
+      "pdb_observations": "program-info-v1",
+      "annotation_policy": "atomic-function-entry-metadata-v1",
+      "load_image_observations": "source-mappings-entry-context-v2",
+      "function_body_evidence": "complete-inclusive-ranges-v1",
+      "function_references": "complete-body-and-entry-reference-manager-v2",
+      "call_relationship_coverage": "function-body-call-coverage-v5",
+      "function_dossier_coverage": "observed-facets-and-call-relationships-v1",
+      "string_inventory_evidence": "defined-data-coverage-v1",
+      "location_resolution": "explicit-address-exact-entry-symbol-first-v3",
+      "procedure_file_offset_resolution": "address-first-unique-target-source-mapping-v2",
+      "instruction_flow_evidence": "decoded-return-pcode-v1",
+      "instruction_references": "exact-address-incoming-v1",
+      "function_boundary_observations": "ghidra-function-boundary-limitations-v3",
+      "no_return_repair": "returning-imports-decoded-return-v2",
+      "process_launch": "inspected-jvm-launch-support-v1",
+      "jump_table_evidence": "typed-case-default-blocks-v1",
+      "decompiler_jump_loads": true,
+      "loader": "auto-from-header",
+      "language_id": "auto-from-header",
+      "compiler_spec_id": "auto-default",
+      "analyzer_preset": "ghidra-default"
+    },
+    "digest": "483a3c23d7b0c6333d61d7e050154873e5f8d7ea53a284362e069d8e793666a4"
+  },
+  "predicate_type": "rea.analysis",
+  "operation": "procedure_pseudo_code",
+  "parameters": {
+    "procedure": "0x46CAA0"
+  },
+  "raw_result": {
+    "value": "\n/* WARNING: Removing unreachable block (ram,0x0046cb2a) */\n/* WARNING: Removing unreachable block (ram,0x0046cb50) */\n\nint FUN_0046caa0(int param_1)\n\n{\n  uint uVar1;\n  uint uVar2;\n  char cVar3;\n  int local_10;\n  int local_c;\n  int local_8;\n  int local_4;\n  \n  FUN_0046ebc0();\n  do {\n    cVar3 = FUN_0041c950();\n    if (cVar3 == '\\0') {\n      return 0;\n    }\n  } while ((*(uint *)(param_1 + 0x1c) != uRam0000001c) ||\n          (((*(int *)(param_1 + 0x5c) == 0xd &&\n            (((((iRam00000024 == 8 || (iRam00000024 == 9)) || (iRam00000024 == 4)) ||\n              ((iRam00000024 == 0x15 || (iRam00000024 == 0x2e)))) || (iRam00000024 == 0x10)))) ||\n           (FUN_00467ef0(), uVar2 = uRam00000028, uVar1 = uRam0000001c, local_8 < 9))));\n  if (*(int *)(param_1 + 0x5c) == 0xd) {\n    if (((uRam00000028 < 9) && (uRam0000001c < 6)) &&\n       ((cVar3 = FUN_00453840(), cVar3 == '\\0' || (cVar3 = FUN_0043c1e0(), cVar3 != '\\0')))) {\n      FUN_0040d2a0(uVar2,uVar1);\n      if (local_c != 0) {\n        return local_c;\n      }\n      if (local_4 == 0) {\n        return local_10;\n      }\n      return local_4;\n    }\n  }\n  else if (((uRam00000028 < 9) && (uRam0000001c < 6)) &&\n          ((cVar3 = FUN_00453840(), cVar3 == '\\0' || (cVar3 = FUN_0043c1e0(), cVar3 != '\\0')))) {\n    FUN_0040d2a0(uVar2,uVar1);\n    if (local_8 != 0) {\n      return local_8;\n    }\n    if (local_4 == 0) {\n      if (local_c == 0) {\n        return local_10;\n      }\n      return local_c;\n    }\n    return local_4;\n  }\n  return 0;\n}\n\n",
+    "limitations": []
+  },
+  "normalized_result": "\n/* WARNING: Removing unreachable block (ram,0x0046cb2a) */\n/* WARNING: Removing unreachable block (ram,0x0046cb50) */\n\nint FUN_0046caa0(int param_1)\n\n{\n  uint uVar1;\n  uint uVar2;\n  char cVar3;\n  int local_10;\n  int local_c;\n  int local_8;\n  int local_4;\n  \n  FUN_0046ebc0();\n  do {\n    cVar3 = FUN_0041c950();\n    if (cVar3 == '\\0') {\n      return 0;\n    }\n  } while ((*(uint *)(param_1 + 0x1c) != uRam0000001c) ||\n          (((*(int *)(param_1 + 0x5c) == 0xd &&\n            (((((iRam00000024 == 8 || (iRam00000024 == 9)) || (iRam00000024 == 4)) ||\n              ((iRam00000024 == 0x15 || (iRam00000024 == 0x2e)))) || (iRam00000024 == 0x10)))) ||\n           (FUN_00467ef0(), uVar2 = uRam00000028, uVar1 = uRam0000001c, local_8 < 9))));\n  if (*(int *)(param_1 + 0x5c) == 0xd) {\n    if (((uRam00000028 < 9) && (uRam0000001c < 6)) &&\n       ((cVar3 = FUN_00453840(), cVar3 == '\\0' || (cVar3 = FUN_0043c1e0(), cVar3 != '\\0')))) {\n      FUN_0040d2a0(uVar2,uVar1);\n      if (local_c != 0) {\n        return local_c;\n      }\n      if (local_4 == 0) {\n        return local_10;\n      }\n      return local_4;\n    }\n  }\n  else if (((uRam00000028 < 9) && (uRam0000001c < 6)) &&\n          ((cVar3 = FUN_00453840(), cVar3 == '\\0' || (cVar3 = FUN_0043c1e0(), cVar3 != '\\0')))) {\n    FUN_0040d2a0(uVar2,uVar1);\n    if (local_8 != 0) {\n      return local_8;\n    }\n    if (local_4 == 0) {\n      if (local_c == 0) {\n        return local_10;\n      }\n      return local_c;\n    }\n    return local_4;\n  }\n  return 0;\n}\n\n",
+  "confidence": "observed",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+    "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+    "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+    "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+    "Pseudocode is Ghidra decompiler output, not original source and not text-equivalent to Hopper output.",
+    "External functions and functions without an analyzable body return null; other decompiler failures remain explicit.",
+    "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+    "The target references PDB PlantsVsZombies.pdb (GUID 8efc826c-78d7-4bea-aa67-ff33ea3dc99b, age (hex) 1, signature unknown, version RSDS); Ghidra reports load state unknown. Original names and types may be missing; an empty name search does not prove a procedure is absent. Use list_procedures and address-based analysis to inspect recovered functions. REA does not admit a caller-selected PDB companion."
+  ],
+  "relationship_coverage": null,
+  "locations": [],
+  "evidence_links": []
+}

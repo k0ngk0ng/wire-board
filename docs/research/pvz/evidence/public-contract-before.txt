@@ -1,0 +1,34 @@
+EFF
+======================================================================
+ERROR: test_actual_cdn_inventory_accepts_complete_directory (test_public_contract.PublicAssetContractTests.test_actual_cdn_inventory_accepts_complete_directory)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/pvz/games/pvz/build/test_public_contract.py", line 35, in test_actual_cdn_inventory_accepts_complete_directory
+    rows = module.inventory(ASSETS, "https://cdn.ichenj.com/bga/web/" + "a" * 40 + "/")
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/pvz/scripts/cdn_delivery.py", line 114, in inventory
+    if not re.fullmatch(r'[A-Za-z0-9._/-]+',rel) or any(part.startswith('.') for part in Path(rel).parts):raise ValueError('Noncanonical public asset path: '+rel)
+                                                                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Noncanonical public asset path: layers/tanglekelp_arm 8.webp
+
+======================================================================
+FAIL: test_every_actual_public_path_is_portable (test_public_contract.PublicAssetContractTests.test_every_actual_public_path_is_portable)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/pvz/games/pvz/build/test_public_contract.py", line 28, in test_every_actual_public_path_is_portable
+    self.assertRegex(relative, r"^[A-Za-z0-9._/-]+$", relative)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Regex didn't match: '^[A-Za-z0-9._/-]+$' not found in 'layers/tanglekelp_arm 8.webp' : layers/tanglekelp_arm 8.webp
+
+======================================================================
+FAIL: test_native_payload_is_explicit_standalone_container (test_public_contract.PublicAssetContractTests.test_native_payload_is_explicit_standalone_container)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/pvz/games/pvz/build/test_public_contract.py", line 17, in test_native_payload_is_explicit_standalone_container
+    self.assertTrue(native["src"].endswith(".pvzr"), kind)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : peashooter
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.103s
+
+FAILED (failures=2, errors=1)

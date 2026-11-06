@@ -1,0 +1,2559 @@
+{
+  "status": "pass",
+  "units": [
+    {
+      "kind": "peashooter",
+      "sourceReanimation": "PeaShooterSingle",
+      "frames": [
+        {
+          "sourceFrame": 54,
+          "beforeLayers": [
+            "anim_face",
+            "anim_sprout",
+            "idle_mouth"
+          ],
+          "afterLayers": [
+            "anim_face",
+            "anim_sprout",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_mouth",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 55,
+          "beforeLayers": [
+            "anim_face",
+            "anim_sprout",
+            "idle_mouth"
+          ],
+          "afterLayers": [
+            "anim_face",
+            "anim_sprout",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_mouth",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 56,
+          "beforeLayers": [
+            "anim_face",
+            "anim_sprout",
+            "idle_mouth"
+          ],
+          "afterLayers": [
+            "anim_face",
+            "anim_sprout",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_mouth",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 57,
+          "beforeLayers": [
+            "anim_face",
+            "anim_sprout",
+            "idle_mouth"
+          ],
+          "afterLayers": [
+            "anim_face",
+            "anim_sprout",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_mouth",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 58,
+          "beforeLayers": [
+            "anim_face",
+            "anim_sprout",
+            "idle_mouth"
+          ],
+          "afterLayers": [
+            "anim_face",
+            "anim_sprout",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_mouth",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 59,
+          "beforeLayers": [
+            "anim_face",
+            "anim_sprout",
+            "idle_mouth"
+          ],
+          "afterLayers": [
+            "anim_face",
+            "anim_sprout",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_mouth",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 60,
+          "beforeLayers": [
+            "anim_face",
+            "anim_sprout",
+            "idle_mouth"
+          ],
+          "afterLayers": [
+            "anim_face",
+            "anim_sprout",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_mouth",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 61,
+          "beforeLayers": [
+            "anim_face",
+            "anim_sprout",
+            "idle_mouth"
+          ],
+          "afterLayers": [
+            "anim_face",
+            "anim_sprout",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_mouth",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 62,
+          "beforeLayers": [
+            "anim_face",
+            "anim_sprout",
+            "idle_mouth"
+          ],
+          "afterLayers": [
+            "anim_face",
+            "anim_sprout",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_mouth",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 63,
+          "beforeLayers": [
+            "anim_face",
+            "anim_sprout",
+            "idle_mouth"
+          ],
+          "afterLayers": [
+            "anim_face",
+            "anim_sprout",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_mouth",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 64,
+          "beforeLayers": [
+            "anim_face",
+            "anim_sprout",
+            "idle_mouth",
+            "idle_shoot_blink"
+          ],
+          "afterLayers": [
+            "anim_face",
+            "anim_sprout",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_mouth",
+            "idle_shoot_blink",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 65,
+          "beforeLayers": [
+            "anim_face",
+            "anim_sprout",
+            "idle_mouth",
+            "idle_shoot_blink"
+          ],
+          "afterLayers": [
+            "anim_face",
+            "anim_sprout",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_mouth",
+            "idle_shoot_blink",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 66,
+          "beforeLayers": [
+            "anim_face",
+            "anim_sprout",
+            "idle_mouth",
+            "idle_shoot_blink"
+          ],
+          "afterLayers": [
+            "anim_face",
+            "anim_sprout",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_mouth",
+            "idle_shoot_blink",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 67,
+          "beforeLayers": [
+            "anim_face",
+            "anim_sprout",
+            "idle_mouth",
+            "idle_shoot_blink"
+          ],
+          "afterLayers": [
+            "anim_face",
+            "anim_sprout",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_mouth",
+            "idle_shoot_blink",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 68,
+          "beforeLayers": [
+            "anim_face",
+            "anim_sprout",
+            "idle_mouth",
+            "idle_shoot_blink"
+          ],
+          "afterLayers": [
+            "anim_face",
+            "anim_sprout",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_mouth",
+            "idle_shoot_blink",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 69,
+          "beforeLayers": [
+            "anim_face",
+            "anim_sprout",
+            "idle_mouth",
+            "idle_shoot_blink"
+          ],
+          "afterLayers": [
+            "anim_face",
+            "anim_sprout",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_mouth",
+            "idle_shoot_blink",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 70,
+          "beforeLayers": [
+            "anim_face",
+            "anim_sprout",
+            "idle_mouth"
+          ],
+          "afterLayers": [
+            "anim_face",
+            "anim_sprout",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_mouth",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 71,
+          "beforeLayers": [
+            "anim_face",
+            "anim_sprout",
+            "idle_mouth"
+          ],
+          "afterLayers": [
+            "anim_face",
+            "anim_sprout",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_mouth",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 72,
+          "beforeLayers": [
+            "anim_face",
+            "anim_sprout",
+            "idle_mouth"
+          ],
+          "afterLayers": [
+            "anim_face",
+            "anim_sprout",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_mouth",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 73,
+          "beforeLayers": [
+            "anim_face",
+            "anim_sprout",
+            "idle_mouth"
+          ],
+          "afterLayers": [
+            "anim_face",
+            "anim_sprout",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_mouth",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 74,
+          "beforeLayers": [
+            "anim_face",
+            "anim_sprout",
+            "idle_mouth"
+          ],
+          "afterLayers": [
+            "anim_face",
+            "anim_sprout",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_mouth",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 75,
+          "beforeLayers": [
+            "anim_face",
+            "anim_sprout",
+            "idle_mouth"
+          ],
+          "afterLayers": [
+            "anim_face",
+            "anim_sprout",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_mouth",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 76,
+          "beforeLayers": [
+            "anim_face",
+            "anim_sprout",
+            "idle_mouth"
+          ],
+          "afterLayers": [
+            "anim_face",
+            "anim_sprout",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_mouth",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 77,
+          "beforeLayers": [
+            "anim_face",
+            "anim_sprout",
+            "idle_mouth"
+          ],
+          "afterLayers": [
+            "anim_face",
+            "anim_sprout",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_mouth",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 78,
+          "beforeLayers": [
+            "anim_face",
+            "anim_sprout",
+            "idle_mouth"
+          ],
+          "afterLayers": [
+            "anim_face",
+            "anim_sprout",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_mouth",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        }
+      ]
+    },
+    {
+      "kind": "snowpea",
+      "sourceReanimation": "SnowPea",
+      "frames": [
+        {
+          "sourceFrame": 54,
+          "beforeLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face"
+          ],
+          "afterLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 55,
+          "beforeLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face"
+          ],
+          "afterLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 56,
+          "beforeLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face"
+          ],
+          "afterLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 57,
+          "beforeLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face"
+          ],
+          "afterLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 58,
+          "beforeLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face"
+          ],
+          "afterLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 59,
+          "beforeLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face"
+          ],
+          "afterLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 60,
+          "beforeLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face"
+          ],
+          "afterLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 61,
+          "beforeLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face"
+          ],
+          "afterLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 62,
+          "beforeLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face"
+          ],
+          "afterLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 63,
+          "beforeLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face"
+          ],
+          "afterLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 64,
+          "beforeLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face",
+            "idle_shoot_blink"
+          ],
+          "afterLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_shoot_blink",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 65,
+          "beforeLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face",
+            "idle_shoot_blink"
+          ],
+          "afterLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_shoot_blink",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 66,
+          "beforeLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face",
+            "idle_shoot_blink"
+          ],
+          "afterLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_shoot_blink",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 67,
+          "beforeLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face",
+            "idle_shoot_blink"
+          ],
+          "afterLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_shoot_blink",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 68,
+          "beforeLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face",
+            "idle_shoot_blink"
+          ],
+          "afterLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_shoot_blink",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 69,
+          "beforeLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face",
+            "idle_shoot_blink"
+          ],
+          "afterLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_shoot_blink",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 70,
+          "beforeLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face"
+          ],
+          "afterLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 71,
+          "beforeLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face"
+          ],
+          "afterLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 72,
+          "beforeLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face"
+          ],
+          "afterLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 73,
+          "beforeLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face"
+          ],
+          "afterLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 74,
+          "beforeLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face"
+          ],
+          "afterLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 75,
+          "beforeLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face"
+          ],
+          "afterLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 76,
+          "beforeLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face"
+          ],
+          "afterLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 77,
+          "beforeLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face"
+          ],
+          "afterLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 78,
+          "beforeLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face"
+          ],
+          "afterLayers": [
+            "SnowPea_crystals1",
+            "SnowPea_crystals2",
+            "SnowPea_crystals3",
+            "SnowPea_mouth",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        }
+      ]
+    },
+    {
+      "kind": "repeater",
+      "sourceReanimation": "PeaShooter",
+      "frames": [
+        {
+          "sourceFrame": 54,
+          "beforeLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth"
+          ],
+          "afterLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 55,
+          "beforeLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth"
+          ],
+          "afterLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 56,
+          "beforeLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth"
+          ],
+          "afterLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 57,
+          "beforeLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth"
+          ],
+          "afterLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 58,
+          "beforeLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth"
+          ],
+          "afterLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 59,
+          "beforeLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth"
+          ],
+          "afterLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 60,
+          "beforeLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth"
+          ],
+          "afterLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 61,
+          "beforeLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth"
+          ],
+          "afterLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 62,
+          "beforeLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth"
+          ],
+          "afterLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 63,
+          "beforeLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth"
+          ],
+          "afterLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 64,
+          "beforeLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth",
+            "idle_shoot_blink"
+          ],
+          "afterLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth",
+            "idle_shoot_blink",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 65,
+          "beforeLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth",
+            "idle_shoot_blink"
+          ],
+          "afterLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth",
+            "idle_shoot_blink",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 66,
+          "beforeLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth",
+            "idle_shoot_blink"
+          ],
+          "afterLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth",
+            "idle_shoot_blink",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 67,
+          "beforeLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth",
+            "idle_shoot_blink"
+          ],
+          "afterLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth",
+            "idle_shoot_blink",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 68,
+          "beforeLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth",
+            "idle_shoot_blink"
+          ],
+          "afterLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth",
+            "idle_shoot_blink",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 69,
+          "beforeLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth",
+            "idle_shoot_blink"
+          ],
+          "afterLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth",
+            "idle_shoot_blink",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 70,
+          "beforeLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth"
+          ],
+          "afterLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 71,
+          "beforeLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth"
+          ],
+          "afterLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 72,
+          "beforeLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth"
+          ],
+          "afterLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 73,
+          "beforeLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth"
+          ],
+          "afterLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 74,
+          "beforeLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth"
+          ],
+          "afterLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 75,
+          "beforeLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth"
+          ],
+          "afterLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 76,
+          "beforeLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth"
+          ],
+          "afterLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 77,
+          "beforeLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth"
+          ],
+          "afterLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        },
+        {
+          "sourceFrame": 78,
+          "beforeLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth"
+          ],
+          "afterLayers": [
+            "PeaShooter_eyebrow",
+            "anim_face",
+            "backleaf",
+            "backleaf_left_tip",
+            "backleaf_right_tip",
+            "frontleaf",
+            "frontleaf_right_tip",
+            "frontleaf_tip_left",
+            "idle_headleaf_2ndfarthest",
+            "idle_headleaf_3rdfarthest",
+            "idle_headleaf_farthest",
+            "idle_headleaf_nearest",
+            "idle_headleaf_tip_bottom",
+            "idle_headleaf_tip_top",
+            "idle_mouth",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "requiredBodyLayers": [
+            "backleaf",
+            "frontleaf",
+            "stalk_bottom",
+            "stalk_top"
+          ],
+          "status": "pass"
+        }
+      ]
+    }
+  ]
+}

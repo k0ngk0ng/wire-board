@@ -16,83 +16,178 @@ import (
 // the rule profile documented in docs/research/pvz.
 const TickMS = 50
 const Rows = 5
+const MaxRows = 6
 const Columns = 9
 const MaxZombies = 80
 const MaxProjectiles = 256
 const MaxEvents = 128
 const MaxMoney = 1000000
+const MaxDeck = 10
 
 type Options struct {
+	Scene        string `json:"scene"`
 	Mode         string `json:"mode"`
 	Teams        []int  `json:"teams"`
 	RoundSeconds int    `json:"roundSeconds"`
 	PrepSeconds  int    `json:"prepSeconds"`
 }
 type Action struct {
-	Type    string `json:"type"`
-	Epoch   string `json:"epoch"`
-	Seq     int64  `json:"seq"`
-	Kind    string `json:"kind,omitempty"`
-	Row     int    `json:"row,omitempty"`
-	Col     int    `json:"col,omitempty"`
-	PlantID int    `json:"plantId,omitempty"`
+	Type        string   `json:"type"`
+	Epoch       string   `json:"epoch"`
+	Seq         int64    `json:"seq"`
+	Kind        string   `json:"kind,omitempty"`
+	Row         int      `json:"row,omitempty"`
+	Col         int      `json:"col,omitempty"`
+	PlantID     int      `json:"plantId,omitempty"`
+	Kinds       []string `json:"kinds,omitempty"`
+	ImitateKind string   `json:"imitateKind,omitempty"`
+	PickupID    int      `json:"pickupId,omitempty"`
 }
 type Player struct {
-	Team      int              `json:"team"`
-	Side      string           `json:"side"`
-	Money     int              `json:"money"`
-	Cooldowns map[string]int64 `json:"cooldowns"`
-	Seq       int64            `json:"seq"`
+	Team         int              `json:"team"`
+	Side         string           `json:"side"`
+	Money        int              `json:"money"`
+	Cooldowns    map[string]int64 `json:"cooldowns"`
+	Seq          int64            `json:"seq"`
+	Deck         []string         `json:"deck"`
+	ImitaterKind string           `json:"imitaterKind,omitempty"`
+}
+type MapInfo struct {
+	ID        string `json:"id"`
+	Rows      int    `json:"rows"`
+	Cols      int    `json:"cols"`
+	Night     bool   `json:"night"`
+	WaterRows []int  `json:"waterRows"`
+	Roof      bool   `json:"roof"`
+	Fog       bool   `json:"fog"`
+}
+type Pickup struct {
+	ID        int    `json:"id"`
+	Owner     int    `json:"owner"`
+	Row       int    `json:"row"`
+	X         int    `json:"x"`
+	Y         int    `json:"y"`
+	Amount    int    `json:"amount"`
+	Kind      string `json:"kind"`
+	AutoAt    int64  `json:"autoAt"`
+	ExpiresAt int64  `json:"expiresAt"`
+}
+type Grave struct {
+	ID  int `json:"id"`
+	Row int `json:"row"`
+	Col int `json:"col"`
+	HP  int `json:"hp"`
+}
+type Crater struct {
+	ID    int   `json:"id"`
+	Row   int   `json:"row"`
+	Col   int   `json:"col"`
+	Until int64 `json:"until"`
+}
+type Terrain struct {
+	ID    int    `json:"id"`
+	Row   int    `json:"row"`
+	FromX int    `json:"fromX"`
+	ToX   int    `json:"toX"`
+	Owner int    `json:"owner"`
+	Kind  string `json:"kind"`
+	Until int64  `json:"until"`
+}
+type Ladder struct {
+	Row     int `json:"row"`
+	Col     int `json:"col"`
+	PlantID int `json:"plantId"`
+	Owner   int `json:"owner"`
+}
+type Visibility struct {
+	Cells [][]bool `json:"cells"`
 }
 type Plant struct {
-	ID       int    `json:"id"`
-	Owner    int    `json:"owner"`
-	Kind     string `json:"kind"`
-	Row      int    `json:"row"`
-	Col      int    `json:"col"`
-	HP       int    `json:"hp"`
-	MaxHP    int    `json:"maxHP"`
-	ReadyAt  int64  `json:"readyAt"`
-	ReadyMS  int64  `json:"readyMS,omitempty"`
-	AttackMS int64  `json:"attackMS,omitempty"`
-	AttackAt int64  `json:"attackAt"`
-	BurstAt  int64  `json:"burstAt,omitempty"`
-	BornAt   int64  `json:"bornAt"`
+	ID          int              `json:"id"`
+	Owner       int              `json:"owner"`
+	Kind        string           `json:"kind"`
+	Row         int              `json:"row"`
+	Col         int              `json:"col"`
+	HP          int              `json:"hp"`
+	MaxHP       int              `json:"maxHP"`
+	ReadyAt     int64            `json:"readyAt"`
+	ReadyMS     int64            `json:"readyMS,omitempty"`
+	AttackMS    int64            `json:"attackMS,omitempty"`
+	AttackAt    int64            `json:"attackAt"`
+	BurstAt     int64            `json:"burstAt,omitempty"`
+	BornAt      int64            `json:"bornAt"`
+	Layer       string           `json:"layer"`
+	Asleep      bool             `json:"asleep"`
+	State       string           `json:"state,omitempty"`
+	TargetKind  string           `json:"targetKind,omitempty"`
+	Imitated    bool             `json:"imitated,omitempty"`
+	Uses        int              `json:"uses,omitempty"`
+	TargetID    int              `json:"targetId,omitempty"`
+	EffectUntil int64            `json:"effectUntil,omitempty"`
+	ChargeMS    int64            `json:"chargeMS,omitempty"`
+	Flags       map[string]int64 `json:"flags,omitempty"`
 }
 type Zombie struct {
-	ID                int    `json:"id"`
-	Owner             int    `json:"owner"`
-	Kind              string `json:"kind"`
-	Row               int    `json:"row"`
-	X                 int    `json:"x"`
-	HP                int    `json:"hp"`
-	MaxHP             int    `json:"maxHP"`
-	Armor             int    `json:"armor"`
-	MaxArmor          int    `json:"maxArmor"`
-	SlowUntil         int64  `json:"slowUntil"`
-	State             string `json:"state"`
-	Vaulted           bool   `json:"vaulted"`
-	VaultUntil        int64  `json:"vaultUntil,omitempty"`
-	VaultX            int    `json:"vaultX,omitempty"`
-	BiteAt            int64  `json:"biteAt"`
-	BornAt            int64  `json:"bornAt"`
-	MoveRemainder     int    `json:"moveRemainder,omitempty"`
-	SpeedMilli        int    `json:"speedMilli"`
-	SpecialSpeedMilli int    `json:"specialSpeedMilli,omitempty"`
-	BiteCarryMS       int    `json:"biteCarryMS,omitempty"`
+	ID                int              `json:"id"`
+	Owner             int              `json:"owner"`
+	Kind              string           `json:"kind"`
+	Row               int              `json:"row"`
+	X                 int              `json:"x"`
+	MotionX           int              `json:"motionX,omitempty"`
+	HP                int              `json:"hp"`
+	MaxHP             int              `json:"maxHP"`
+	Armor             int              `json:"armor"`
+	MaxArmor          int              `json:"maxArmor"`
+	SlowUntil         int64            `json:"slowUntil"`
+	State             string           `json:"state"`
+	Vaulted           bool             `json:"vaulted"`
+	VaultUntil        int64            `json:"vaultUntil,omitempty"`
+	VaultX            int              `json:"vaultX,omitempty"`
+	BiteAt            int64            `json:"biteAt"`
+	BornAt            int64            `json:"bornAt"`
+	MoveRemainder     int              `json:"moveRemainder,omitempty"`
+	SpeedMilli        int              `json:"speedMilli"`
+	SpecialSpeedMilli int              `json:"specialSpeedMilli,omitempty"`
+	BiteCarryMS       int              `json:"biteCarryMS,omitempty"`
+	Allegiance        string           `json:"allegiance"`
+	Altitude          int              `json:"altitude,omitempty"`
+	Diving            bool             `json:"diving,omitempty"`
+	Digging           bool             `json:"digging,omitempty"`
+	TargetID          int              `json:"targetId,omitempty"`
+	AbilityMS         int64            `json:"abilityMS,omitempty"`
+	AbilityUntil      int64            `json:"abilityUntil,omitempty"`
+	Flags             map[string]int64 `json:"flags,omitempty"`
 }
 type Projectile struct {
-	ID     int    `json:"id"`
-	Owner  int    `json:"owner"`
-	Row    int    `json:"row"`
-	X      int    `json:"x"`
-	Kind   string `json:"kind"`
-	Damage int    `json:"damage"`
+	ID        int    `json:"id"`
+	Owner     int    `json:"owner"`
+	Row       int    `json:"row"`
+	X         int    `json:"x"`
+	Kind      string `json:"kind"`
+	Damage    int    `json:"damage"`
+	Y         int    `json:"y"`
+	MotionX   int    `json:"motionX,omitempty"`
+	MotionY   int    `json:"motionY,omitempty"`
+	MotionHeight int `json:"motionHeight,omitempty"`
+	VX        int    `json:"vx,omitempty"`
+	VY        int    `json:"vy,omitempty"`
+	TargetX   int    `json:"targetX,omitempty"`
+	TargetY   int    `json:"targetY,omitempty"`
+	LandAt    int64  `json:"landAt,omitempty"`
+	Height    int    `json:"height,omitempty"`
+	Radius    int    `json:"radius,omitempty"`
+	Pierce    bool   `json:"pierce,omitempty"`
+	Payload   string `json:"payload,omitempty"`
+	TargetID  int    `json:"targetId,omitempty"`
+	BornAt    int64  `json:"bornAt"`
+	Hits      []int  `json:"hits,omitempty"`
+	Remaining int    `json:"remaining,omitempty"`
 }
 type Mower struct {
 	Row   int    `json:"row"`
 	State string `json:"state"`
 	X     int    `json:"x"`
+	MotionX int  `json:"motionX,omitempty"`
 }
 type Event struct {
 	ID     int64  `json:"id"`
@@ -111,6 +206,8 @@ type RoundResult struct {
 	ElapsedMS  int64 `json:"elapsedMS"`
 }
 type State struct {
+	Map             MapInfo             `json:"map"`
+	Projection      bool                `json:"projection,omitempty"`
 	Options         Options             `json:"options"`
 	InitialRandom   uint32              `json:"initialRandom"`
 	RandomState     uint32              `json:"randomState"`
@@ -135,7 +232,13 @@ type State struct {
 	NextBrainTick   int64               `json:"nextBrainTick"`
 	IncomeCursor    [2]int              `json:"incomeCursor"`
 	TeamCooldowns   [2]map[string]int64 `json:"teamCooldowns"`
-	LaneCooldowns   [5]int64            `json:"laneCooldowns"`
+	LaneCooldowns   [MaxRows]int64      `json:"laneCooldowns"`
+	Pickups         []Pickup            `json:"pickups"`
+	Graves          []Grave             `json:"graves"`
+	Craters         []Crater            `json:"craters"`
+	Terrain         []Terrain           `json:"terrain"`
+	Ladders         []Ladder            `json:"ladders"`
+	FogClearedUntil int64               `json:"fogClearedUntil"`
 }
 type Outcome struct {
 	WinnerTeam int           `json:"winnerTeam"`
@@ -144,6 +247,12 @@ type Outcome struct {
 }
 
 func NormalizeOptions(o Options, n int) (Options, error) {
+	if o.Scene == "" {
+		o.Scene = "day"
+	}
+	if _, ok := SceneInfo(o.Scene); !ok {
+		return o, errors.New("请选择有效场景")
+	}
 	if n != 2 && n != 4 {
 		return o, errors.New("植物大战僵尸支持 2 人或 4 人")
 	}
@@ -207,6 +316,7 @@ func New(o Options, n int, epoch string) (State, error) {
 }
 func (s *State) beginRound() {
 	s.RandomState = s.InitialRandom
+	s.Map, _ = SceneInfo(s.Options.Scene)
 	s.Epoch = s.BaseEpoch + ":" + strconv.Itoa(s.Round)
 	s.Phase = "prepare"
 	s.PhaseEndTick = s.Tick + int64(s.Options.PrepSeconds*1000/TickMS)
@@ -214,15 +324,21 @@ func (s *State) beginRound() {
 	s.Plants = []Plant{}
 	s.Zombies = []Zombie{}
 	s.Projectiles = []Projectile{}
-	s.Mowers = make([]Mower, Rows)
-	for row := range Rows {
+	s.Mowers = make([]Mower, s.Map.Rows)
+	for row := range s.Map.Rows {
 		s.Mowers[row] = Mower{Row: row, State: "ready", X: -450}
 	}
 	s.NextSunTick = s.Tick + 100
 	s.NextBrainTick = 0
 	s.IncomeCursor = [2]int{}
 	s.TeamCooldowns = [2]map[string]int64{{}, {}}
-	s.LaneCooldowns = [5]int64{}
+	s.LaneCooldowns = [MaxRows]int64{}
+	s.Pickups = []Pickup{}
+	s.Graves = []Grave{}
+	s.Craters = []Crater{}
+	s.Terrain = []Terrain{}
+	s.Ladders = []Ladder{}
+	s.FogClearedUntil = 0
 	for p := range s.Players {
 		side := "zombies"
 		money := 250
@@ -230,20 +346,41 @@ func (s *State) beginRound() {
 			side = "plants"
 			money = 300
 		}
-		s.Players[p] = Player{Team: s.Options.Teams[p], Side: side, Money: money / (len(s.Players) / 2), Cooldowns: map[string]int64{}}
+		s.Players[p] = Player{Team: s.Options.Teams[p], Side: side, Money: money / (len(s.Players) / 2), Cooldowns: map[string]int64{}, Deck: DefaultDeck(s.Map.ID, side), ImitaterKind: "peashooter"}
+	}
+	if s.Map.Night && !s.Map.Roof && !s.Map.Fog {
+		for i := 0; i < 3; i++ {
+			s.Graves = append(s.Graves, Grave{ID: s.id(), Row: i % s.Map.Rows, Col: 6 + i%3, HP: 1000})
+		}
 	}
 	s.emit("round", 0, 0, -1, "", 0, s.Round)
 }
 func Clone(s State) State {
 	out := s
 	out.Options.Teams = slices.Clone(s.Options.Teams)
+	out.Map.WaterRows = slices.Clone(s.Map.WaterRows)
 	out.Players = slices.Clone(s.Players)
 	for p := range out.Players {
 		out.Players[p].Cooldowns = cloneMap(s.Players[p].Cooldowns)
+		out.Players[p].Deck = slices.Clone(s.Players[p].Deck)
 	}
 	out.Plants = slices.Clone(s.Plants)
+	for i := range out.Plants {
+		out.Plants[i].Flags = cloneMap(s.Plants[i].Flags)
+	}
 	out.Zombies = slices.Clone(s.Zombies)
+	for i := range out.Zombies {
+		out.Zombies[i].Flags = cloneMap(s.Zombies[i].Flags)
+	}
 	out.Projectiles = slices.Clone(s.Projectiles)
+	for i := range out.Projectiles {
+		out.Projectiles[i].Hits = slices.Clone(s.Projectiles[i].Hits)
+	}
+	out.Pickups = slices.Clone(s.Pickups)
+	out.Graves = slices.Clone(s.Graves)
+	out.Craters = slices.Clone(s.Craters)
+	out.Terrain = slices.Clone(s.Terrain)
+	out.Ladders = slices.Clone(s.Ladders)
 	out.Mowers = slices.Clone(s.Mowers)
 	out.Events = slices.Clone(s.Events)
 	out.Rounds = slices.Clone(s.Rounds)

@@ -1,0 +1,114 @@
+[
+  {
+    "name": "boss-bungee-containment",
+    "tool": "resolve_containing_procedure",
+    "arguments": {
+      "address": "0x5350c0"
+    }
+  },
+  {
+    "name": "board-explosion",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x41D8A0"
+    }
+  },
+  {
+    "name": "plant-row-damage",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x45ED00"
+    }
+  },
+  {
+    "name": "plant-magnet-item",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x4615D0"
+    }
+  },
+  {
+    "name": "plant-goldmagnet-targets",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x4624B0"
+    }
+  },
+  {
+    "name": "plant-goldmagnet-target",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x462390"
+    }
+  },
+  {
+    "name": "plant-starfruit-fire",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x45F720"
+    }
+  },
+  {
+    "name": "zombie-butter",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x5326D0"
+    }
+  },
+  {
+    "name": "zombie-can-freeze",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x531A10"
+    }
+  },
+  {
+    "name": "plant-damage-nuts",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x464480"
+    }
+  },
+  {
+    "name": "plant-damage-garlic",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x464680"
+    }
+  },
+  {
+    "name": "plant-damage-pumpkin",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x464760"
+    }
+  },
+  {
+    "name": "zombie-setup-layers",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x5240b0"
+    }
+  },
+  {
+    "name": "zombie-door-arms",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x524040"
+    }
+  },
+  {
+    "name": "zombie-draw-pos",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x52d9e0"
+    }
+  },
+  {
+    "name": "pool-draw",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x469de0"
+    }
+  }
+]

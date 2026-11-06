@@ -2,6 +2,32 @@
 
 本次以 PC 1.0.0.1051 作为原版基准，下载样本后仅进行静态读取、REA/Ghidra 反编译和资源解码，未执行 Windows 程序。玩家控制僵尸、1v1／2v2、独立钱包、限时与攻守换边属于新增对战规则。
 
+完整接入阶段已读取原始 53 项植物表、33 项僵尸表、143 项重动画表，并补充全部特殊机制、弹道、种植层叠、碰撞和场景函数的原版证据。运行资源使用 `classic-v2`：完整原图层、动作、受损阶段和 6 个场景，另有全部原版 OGG 音效与场景 FLAC 音乐。早期 `classic-v1` 保留为历史产物，当前完整接入使用 v2。
+
+## 完整目录与参数账本
+
+| 产物 | 范围 |
+| --- | --- |
+| [full-catalog.json](evidence/full-catalog.json) | 53 植物／33 僵尸原始 ID、费用、冷却、动作类型和动画映射；常规种子为前 49 项 |
+| [reanimation-catalog.json](evidence/reanimation-catalog.json) | 原程序实际 143 项动画映射，避免历史参考源码数组次序不同导致错绑 |
+| [plant-mechanism-profile.json](evidence/full/plant-mechanism-profile.json) | 全植物机制参数、分支、证据和明确未知项 |
+| [zombie-health-profile.json](evidence/full/zombie-health-profile.json) | 全 33 类身体／头盔／护盾／飞行生命和条件修正 |
+| [speed-profile.json](evidence/full/speed-profile.json) | 逐阶段 `_ground`／直接速度分类、原始轨道、减速差异和小丑引信公式 |
+| [animation-durations.json](evidence/full/animation-durations.json) | 全单位源动作帧范围；声明 FPS 与运行时覆盖速率分开 |
+| [index.json](evidence/index.json) | 完整保留的原版 REA Evidence 索引 |
+
+完整植物表原始内存证据为 `ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8`，僵尸表为 `ev_5d906ea59064c18eb9742862bae44019532615fe2e027260fc8585ed0adb398d`，动画表为 `ev_71accd825ab69bd5414e44fb65d9c276298c7faca105700bc570fa3d2b91c1c8`。各机制函数的完整输出保留在 `evidence/full/mechanisms/`。
+
+`BossBungeeAttack` 的机器码存在于 `0x5350C0`，默认分析未建立函数。后续使用[明确的分析入口种子](boss-seeds.tsv)恢复，证据为 `ev_764e4d538a1aabc89a99f9691406f3bc13a31266002cc3d451ea0d5397367833`；该分析配置包含人工指定入口，不伪装成原始符号恢复。
+
+## 原画完整性与音乐
+
+早期截图中「射手只有头」的根因已通过原始轨道确认：`anim_shooting` 仅含头／嘴，身体在独立 `anim_idle` 循环中。v2 按原始 stem attachment 的当前矩阵与基准矩阵逆合成完整头身。先行失败测试、75 个真实攻击帧的茎叶语义验收和[前后近图](evidence/shooter-body-before-after.png)均保留；机枪、三线和裂荚的多头也经过同类检查。
+
+原画验证同时检查受损坚果／高坚果／大蒜／南瓜、雪橇整队前后车壳与四乘员、泳池水面、屋顶坡度，以及所有 native 图层引用。见[完整姿态近图](evidence/native-complete-poses.png)、[native 验收](evidence/native-validation.json)和[全部音效验收](evidence/audio-validation-v2.json)。这验证实际素材与呈现数据，不替代平台真人交互 E2E。
+
+菜单、选卡、草地、夜晚、泳池、浓雾、屋顶和 Boss 的原始音乐已恢复为场景 FLAC，附带精确前奏／循环采样帧、原分轨及夜晚 76／77 高潮入口。原曲分段、官方工作区解码工具、无损 PCM 校验和范围说明见[音乐取证](MUSIC.md)。
+
 ## 样本身份
 
 | 样本 | 来源 | 大小 | SHA-256 |
@@ -69,4 +95,4 @@ TMPDIR="$PWD" GHIDRA_INSTALL_DIR="<已安装的 Ghidra 目录>" \
   0x45db60 --provider ghidra --format json
 ```
 
-本轮静态证据不证明原版 Windows 运行中的每帧结果、原始随机序列、动画插值、音频混音或全部碰撞边界一致。首版范围为白天草坪与上述单位；泳池、屋顶、夜晚和其余单位未取证。对战经济、僵尸价格／冷却、双方初始资源、时间限制、人数归一化与电脑策略均由新模块维护，不能标为原版数值。
+本轮静态证据不证明原版 Windows 运行中的每帧结果、原始随机序列、动画插值或动态音频混音完全一致。上述 8 个单位表格是早期 v1 基线；完整阶段已覆盖所有目录与场景，实际恢复程度及剩余缺口以参数账本为准。对战经济、僵尸价格／冷却、双方初始资源、时间限制、人数归一化与电脑策略由新模块维护，不能标为原版数值。

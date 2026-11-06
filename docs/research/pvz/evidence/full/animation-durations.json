@@ -1,0 +1,5639 @@
+[
+  {
+    "kind": "peashooter",
+    "originalReanimation": "PeaShooterSingle",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_idle",
+        "start": 4,
+        "end": 28,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_head_idle",
+        "start": 29,
+        "end": 53,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_shooting",
+        "start": 54,
+        "end": 78,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_full_idle",
+        "start": 79,
+        "end": 103,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_stem",
+        "start": 4,
+        "end": 103,
+        "frames": 100,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_sprout",
+        "start": 29,
+        "end": 103,
+        "frames": 75,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_face",
+        "start": 29,
+        "end": 103,
+        "frames": 75,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_blink",
+        "start": 1,
+        "end": 3,
+        "frames": 3,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "sunflower",
+    "originalReanimation": "SunFlower",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_idle",
+        "start": 4,
+        "end": 28,
+        "frames": 25,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_blink",
+        "start": 1,
+        "end": 3,
+        "frames": 3,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "cherrybomb",
+    "originalReanimation": "CherryBomb",
+    "declaredFPS": 30.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_explode",
+        "start": 0,
+        "end": 13,
+        "frames": 14,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 14,
+        "end": 26,
+        "frames": 13,
+        "hasImages": false
+      }
+    ]
+  },
+  {
+    "kind": "wallnut",
+    "originalReanimation": "Wallnut",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_idle",
+        "start": 0,
+        "end": 16,
+        "frames": 17,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_face",
+        "start": 0,
+        "end": 55,
+        "frames": 56,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_blink_twitch",
+        "start": 17,
+        "end": 21,
+        "frames": 5,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_blink_twice",
+        "start": 23,
+        "end": 29,
+        "frames": 7,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_blink_thrice",
+        "start": 31,
+        "end": 41,
+        "frames": 11,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "potatomine",
+    "originalReanimation": "PotatoMine",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_armed",
+        "start": 20,
+        "end": 30,
+        "frames": 11,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_rise",
+        "start": 1,
+        "end": 19,
+        "frames": 19,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 0,
+        "end": 0,
+        "frames": 1,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_blink",
+        "start": 32,
+        "end": 34,
+        "frames": 3,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_mashed",
+        "start": 36,
+        "end": 36,
+        "frames": 1,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_face",
+        "start": 10,
+        "end": 30,
+        "frames": 21,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_eye",
+        "start": 10,
+        "end": 30,
+        "frames": 21,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_light",
+        "start": 0,
+        "end": 30,
+        "frames": 31,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_glow",
+        "start": 20,
+        "end": 20,
+        "frames": 1,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "snowpea",
+    "originalReanimation": "SnowPea",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_full_idle",
+        "start": 79,
+        "end": 103,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_shooting",
+        "start": 54,
+        "end": 78,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_head_idle",
+        "start": 29,
+        "end": 53,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 4,
+        "end": 28,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_stem",
+        "start": 4,
+        "end": 103,
+        "frames": 100,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_face",
+        "start": 29,
+        "end": 103,
+        "frames": 75,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_blink",
+        "start": 1,
+        "end": 3,
+        "frames": 3,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "chomper",
+    "originalReanimation": "Chomper",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_swallow",
+        "start": 66,
+        "end": 93,
+        "frames": 28,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_chew",
+        "start": 50,
+        "end": 65,
+        "frames": 16,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_bite",
+        "start": 25,
+        "end": 49,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 0,
+        "end": 24,
+        "frames": 25,
+        "hasImages": false
+      }
+    ]
+  },
+  {
+    "kind": "repeater",
+    "originalReanimation": "PeaShooter",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_full_idle",
+        "start": 79,
+        "end": 103,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_shooting",
+        "start": 54,
+        "end": 78,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_head_idle",
+        "start": 29,
+        "end": 53,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 4,
+        "end": 28,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_stem",
+        "start": 4,
+        "end": 103,
+        "frames": 100,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_face",
+        "start": 29,
+        "end": 103,
+        "frames": 75,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_blink",
+        "start": 1,
+        "end": 3,
+        "frames": 3,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "puffshroom",
+    "originalReanimation": "Puffshroom",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_sleep",
+        "start": 34,
+        "end": 50,
+        "frames": 17,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_shooting",
+        "start": 21,
+        "end": 33,
+        "frames": 13,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 4,
+        "end": 20,
+        "frames": 17,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_face",
+        "start": 4,
+        "end": 50,
+        "frames": 47,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_blink",
+        "start": 1,
+        "end": 3,
+        "frames": 3,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "sunshroom",
+    "originalReanimation": "SunShroom",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_bigsleep",
+        "start": 51,
+        "end": 62,
+        "frames": 12,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_bigidle",
+        "start": 39,
+        "end": 50,
+        "frames": 12,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_grow",
+        "start": 27,
+        "end": 38,
+        "frames": 12,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_sleep",
+        "start": 17,
+        "end": 26,
+        "frames": 10,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 5,
+        "end": 16,
+        "frames": 12,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_face",
+        "start": 5,
+        "end": 62,
+        "frames": 58,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_sleep",
+        "start": 17,
+        "end": 62,
+        "frames": 46,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_blink",
+        "start": 1,
+        "end": 3,
+        "frames": 3,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "fumeshroom",
+    "originalReanimation": "Fumeshroom",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_sleep",
+        "start": 51,
+        "end": 67,
+        "frames": 17,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_shooting",
+        "start": 21,
+        "end": 50,
+        "frames": 30,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 4,
+        "end": 20,
+        "frames": 17,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_face",
+        "start": 4,
+        "end": 67,
+        "frames": 64,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_blink",
+        "start": 1,
+        "end": 3,
+        "frames": 3,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "gravebuster",
+    "originalReanimation": "Gravebuster",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_land",
+        "start": 0,
+        "end": 6,
+        "frames": 7,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 11,
+        "end": 38,
+        "frames": 28,
+        "hasImages": false
+      }
+    ]
+  },
+  {
+    "kind": "hypnoshroom",
+    "originalReanimation": "Hypnoshroom",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_idle",
+        "start": 0,
+        "end": 19,
+        "frames": 20,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_sleep",
+        "start": 20,
+        "end": 39,
+        "frames": 20,
+        "hasImages": false
+      }
+    ]
+  },
+  {
+    "kind": "scaredyshroom",
+    "originalReanimation": "ScaredyShroom",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_sleep",
+        "start": 70,
+        "end": 85,
+        "frames": 16,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_grow",
+        "start": 60,
+        "end": 69,
+        "frames": 10,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_scaredidle",
+        "start": 49,
+        "end": 59,
+        "frames": 11,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_scared",
+        "start": 36,
+        "end": 48,
+        "frames": 13,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_shooting",
+        "start": 21,
+        "end": 35,
+        "frames": 15,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 5,
+        "end": 20,
+        "frames": 16,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_blink",
+        "start": 1,
+        "end": 3,
+        "frames": 3,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_face",
+        "start": 5,
+        "end": 85,
+        "frames": 81,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_eye2",
+        "start": 1,
+        "end": 85,
+        "frames": 85,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_eye1",
+        "start": 1,
+        "end": 85,
+        "frames": 85,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "iceshroom",
+    "originalReanimation": "Iceshroom",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_idle",
+        "start": 4,
+        "end": 20,
+        "frames": 17,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_sleep",
+        "start": 21,
+        "end": 37,
+        "frames": 17,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_face",
+        "start": 4,
+        "end": 37,
+        "frames": 34,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_sleep",
+        "start": 21,
+        "end": 37,
+        "frames": 17,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_blink",
+        "start": 1,
+        "end": 3,
+        "frames": 3,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "doomshroom",
+    "originalReanimation": "DoomShroom",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_sleep",
+        "start": 52,
+        "end": 76,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_explode",
+        "start": 19,
+        "end": 51,
+        "frames": 33,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 0,
+        "end": 19,
+        "frames": 20,
+        "hasImages": false
+      }
+    ]
+  },
+  {
+    "kind": "lilypad",
+    "originalReanimation": "Lilypad",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_idle",
+        "start": 0,
+        "end": 0,
+        "frames": 1,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_blink",
+        "start": 1,
+        "end": 3,
+        "frames": 3,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "squash",
+    "originalReanimation": "Squash",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_jumpdown",
+        "start": 65,
+        "end": 72,
+        "frames": 8,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_jumpup",
+        "start": 50,
+        "end": 64,
+        "frames": 15,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_lookright",
+        "start": 37,
+        "end": 42,
+        "frames": 6,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_lookleft",
+        "start": 24,
+        "end": 29,
+        "frames": 6,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 5,
+        "end": 23,
+        "frames": 19,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_blink",
+        "start": 0,
+        "end": 4,
+        "frames": 5,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_face",
+        "start": 5,
+        "end": 72,
+        "frames": 68,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_eye",
+        "start": 0,
+        "end": 72,
+        "frames": 73,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "threepeater",
+    "originalReanimation": "ThreePeater",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_shooting2",
+        "start": 111,
+        "end": 123,
+        "frames": 13,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_head_idle2",
+        "start": 86,
+        "end": 110,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_blink2",
+        "start": 83,
+        "end": 85,
+        "frames": 3,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_shooting3",
+        "start": 70,
+        "end": 82,
+        "frames": 13,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_head_idle3",
+        "start": 45,
+        "end": 69,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_blink3",
+        "start": 42,
+        "end": 44,
+        "frames": 3,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_shooting1",
+        "start": 29,
+        "end": 41,
+        "frames": 13,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_head_idle1",
+        "start": 4,
+        "end": 28,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_blink1",
+        "start": 1,
+        "end": 3,
+        "frames": 3,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 124,
+        "end": 148,
+        "frames": 25,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head1",
+        "start": 124,
+        "end": 148,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_face1",
+        "start": 4,
+        "end": 41,
+        "frames": 38,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head3",
+        "start": 124,
+        "end": 148,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_face3",
+        "start": 45,
+        "end": 82,
+        "frames": 38,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head2",
+        "start": 124,
+        "end": 148,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_face2",
+        "start": 86,
+        "end": 123,
+        "frames": 38,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "tanglekelp",
+    "originalReanimation": "Tanglekelp",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_blink",
+        "start": 0,
+        "end": 4,
+        "frames": 5,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 5,
+        "end": 26,
+        "frames": 22,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_grab",
+        "start": 27,
+        "end": 31,
+        "frames": 5,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle_aquarium",
+        "start": 32,
+        "end": 53,
+        "frames": 22,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_face",
+        "start": 5,
+        "end": 53,
+        "frames": 49,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_waterline",
+        "start": 5,
+        "end": 26,
+        "frames": 22,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_blink",
+        "start": 1,
+        "end": 3,
+        "frames": 3,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "jalapeno",
+    "originalReanimation": "Jalapeno",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_blink",
+        "start": 0,
+        "end": 4,
+        "frames": 5,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 5,
+        "end": 11,
+        "frames": 7,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_explode",
+        "start": 12,
+        "end": 24,
+        "frames": 13,
+        "hasImages": false
+      }
+    ]
+  },
+  {
+    "kind": "spikeweed",
+    "originalReanimation": "Caltrop",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_attack",
+        "start": 25,
+        "end": 34,
+        "frames": 10,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 4,
+        "end": 24,
+        "frames": 21,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_face",
+        "start": 4,
+        "end": 34,
+        "frames": 31,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_blink",
+        "start": 1,
+        "end": 3,
+        "frames": 3,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "torchwood",
+    "originalReanimation": "Torchwood",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_idle",
+        "start": 4,
+        "end": 24,
+        "frames": 21,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_blink",
+        "start": 0,
+        "end": 3,
+        "frames": 4,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_face",
+        "start": 4,
+        "end": 24,
+        "frames": 21,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "tallnut",
+    "originalReanimation": "Tallnut",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_idle",
+        "start": 20,
+        "end": 36,
+        "frames": 17,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_blink_twice",
+        "start": 1,
+        "end": 7,
+        "frames": 7,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_blink_thrice",
+        "start": 9,
+        "end": 19,
+        "frames": 11,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "seashroom",
+    "originalReanimation": "SeaShroom",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_blink",
+        "start": 0,
+        "end": 3,
+        "frames": 4,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_sleep",
+        "start": 43,
+        "end": 67,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 4,
+        "end": 28,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle_aquarium",
+        "start": 68,
+        "end": 92,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_shooting",
+        "start": 29,
+        "end": 42,
+        "frames": 14,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_face",
+        "start": 4,
+        "end": 92,
+        "frames": 89,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_waterline",
+        "start": 4,
+        "end": 67,
+        "frames": 64,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "plantern",
+    "originalReanimation": "Plantern",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_idle",
+        "start": 5,
+        "end": 24,
+        "frames": 20,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_blink",
+        "start": 0,
+        "end": 4,
+        "frames": 5,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_face",
+        "start": 5,
+        "end": 24,
+        "frames": 20,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "cactus",
+    "originalReanimation": "Cactus",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_blink",
+        "start": 0,
+        "end": 4,
+        "frames": 5,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 5,
+        "end": 19,
+        "frames": 15,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_shooting",
+        "start": 20,
+        "end": 37,
+        "frames": 18,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_rise",
+        "start": 38,
+        "end": 52,
+        "frames": 15,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idlehigh",
+        "start": 53,
+        "end": 67,
+        "frames": 15,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_shootinghigh",
+        "start": 68,
+        "end": 81,
+        "frames": 14,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_lower",
+        "start": 82,
+        "end": 94,
+        "frames": 13,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_face",
+        "start": 5,
+        "end": 94,
+        "frames": 90,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "blover",
+    "originalReanimation": "Blover",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_idle",
+        "start": 0,
+        "end": 32,
+        "frames": 33,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_loop",
+        "start": 52,
+        "end": 61,
+        "frames": 10,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_blow",
+        "start": 33,
+        "end": 52,
+        "frames": 20,
+        "hasImages": false
+      }
+    ]
+  },
+  {
+    "kind": "splitpea",
+    "originalReanimation": "SplitPea",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_idle",
+        "start": 7,
+        "end": 31,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_shooting",
+        "start": 107,
+        "end": 131,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_head_idle",
+        "start": 82,
+        "end": 106,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_face",
+        "start": 82,
+        "end": 131,
+        "frames": 50,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_splitpea_idle",
+        "start": 32,
+        "end": 56,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_splitpea_shooting",
+        "start": 57,
+        "end": 69,
+        "frames": 13,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_blink",
+        "start": 1,
+        "end": 3,
+        "frames": 3,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_SplitPea_blink",
+        "start": 4,
+        "end": 6,
+        "frames": 3,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "starfruit",
+    "originalReanimation": "Starfruit",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_blink",
+        "start": 0,
+        "end": 4,
+        "frames": 5,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 5,
+        "end": 21,
+        "frames": 17,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_shoot",
+        "start": 22,
+        "end": 38,
+        "frames": 17,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_face",
+        "start": 5,
+        "end": 38,
+        "frames": 34,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "pumpkin",
+    "originalReanimation": "Pumpkin",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_idle",
+        "start": 0,
+        "end": 20,
+        "frames": 21,
+        "hasImages": false
+      }
+    ]
+  },
+  {
+    "kind": "magnetshroom",
+    "originalReanimation": "Magnetshroom",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_blink",
+        "start": 1,
+        "end": 3,
+        "frames": 3,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 4,
+        "end": 32,
+        "frames": 29,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_nonactive_idle",
+        "start": 33,
+        "end": 61,
+        "frames": 29,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_shooting",
+        "start": 71,
+        "end": 96,
+        "frames": 26,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_sleep",
+        "start": 108,
+        "end": 125,
+        "frames": 18,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_nonactive_idle2",
+        "start": 126,
+        "end": 130,
+        "frames": 5,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_face",
+        "start": 4,
+        "end": 130,
+        "frames": 127,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_eyes",
+        "start": 4,
+        "end": 130,
+        "frames": 127,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_eyes2",
+        "start": 4,
+        "end": 130,
+        "frames": 127,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_eyes2",
+        "start": 72,
+        "end": 125,
+        "frames": 54,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_eyes22",
+        "start": 72,
+        "end": 125,
+        "frames": 54,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "cabbagepult",
+    "originalReanimation": "Cabbagepult",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_blink",
+        "start": 0,
+        "end": 4,
+        "frames": 5,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 5,
+        "end": 35,
+        "frames": 31,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_shooting",
+        "start": 36,
+        "end": 73,
+        "frames": 38,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_face",
+        "start": 5,
+        "end": 73,
+        "frames": 69,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "flowerpot",
+    "originalReanimation": "Pot",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_idle",
+        "start": 0,
+        "end": 12,
+        "frames": 13,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_zengarden",
+        "start": 13,
+        "end": 25,
+        "frames": 13,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_waterplants",
+        "start": 26,
+        "end": 38,
+        "frames": 13,
+        "hasImages": false
+      }
+    ]
+  },
+  {
+    "kind": "kernelpult",
+    "originalReanimation": "Cornpult",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_blink",
+        "start": 0,
+        "end": 4,
+        "frames": 5,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 5,
+        "end": 23,
+        "frames": 19,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_shooting",
+        "start": 24,
+        "end": 57,
+        "frames": 34,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_full_idle",
+        "start": 58,
+        "end": 76,
+        "frames": 19,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_face",
+        "start": 5,
+        "end": 76,
+        "frames": 72,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "coffeebean",
+    "originalReanimation": "Coffeebean",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_idle",
+        "start": 0,
+        "end": 8,
+        "frames": 9,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_twitch",
+        "start": 9,
+        "end": 13,
+        "frames": 5,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_crumble",
+        "start": 14,
+        "end": 28,
+        "frames": 15,
+        "hasImages": false
+      }
+    ]
+  },
+  {
+    "kind": "garlic",
+    "originalReanimation": "Garlic",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_blink",
+        "start": 1,
+        "end": 3,
+        "frames": 3,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 4,
+        "end": 18,
+        "frames": 15,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_face",
+        "start": 4,
+        "end": 18,
+        "frames": 15,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "umbrellaleaf",
+    "originalReanimation": "Umbrellaleaf",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_blink",
+        "start": 0,
+        "end": 3,
+        "frames": 4,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 4,
+        "end": 18,
+        "frames": 15,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_block",
+        "start": 19,
+        "end": 31,
+        "frames": 13,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_face",
+        "start": 4,
+        "end": 31,
+        "frames": 28,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "marigold",
+    "originalReanimation": "Marigold",
+    "declaredFPS": 33.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_idle",
+        "start": 5,
+        "end": 29,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_blink",
+        "start": 0,
+        "end": 4,
+        "frames": 5,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_face",
+        "start": 5,
+        "end": 29,
+        "frames": 25,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "melonpult",
+    "originalReanimation": "Melonpult",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_blink",
+        "start": 0,
+        "end": 4,
+        "frames": 5,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 5,
+        "end": 35,
+        "frames": 31,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_shooting",
+        "start": 36,
+        "end": 73,
+        "frames": 38,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_face",
+        "start": 5,
+        "end": 73,
+        "frames": 69,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "gatlingpea",
+    "originalReanimation": "GatlingPea",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_idle",
+        "start": 4,
+        "end": 28,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_shooting",
+        "start": 54,
+        "end": 92,
+        "frames": 39,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_head_idle",
+        "start": 29,
+        "end": 53,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_face",
+        "start": 29,
+        "end": 92,
+        "frames": 64,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_blink",
+        "start": 1,
+        "end": 3,
+        "frames": 3,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "twinsunflower",
+    "originalReanimation": "TwinSunFlower",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_blink",
+        "start": 4,
+        "end": 8,
+        "frames": 5,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_blink2",
+        "start": 0,
+        "end": 3,
+        "frames": 4,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 9,
+        "end": 33,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_face2",
+        "start": 9,
+        "end": 33,
+        "frames": 25,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_face",
+        "start": 9,
+        "end": 33,
+        "frames": 25,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "gloomshroom",
+    "originalReanimation": "GloomShroom",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_blink",
+        "start": 0,
+        "end": 4,
+        "frames": 5,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 5,
+        "end": 23,
+        "frames": 19,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_sleep",
+        "start": 24,
+        "end": 42,
+        "frames": 19,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_shooting",
+        "start": 43,
+        "end": 70,
+        "frames": 28,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_face",
+        "start": 5,
+        "end": 70,
+        "frames": 66,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "cattail",
+    "originalReanimation": "Cattail",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_blink",
+        "start": 0,
+        "end": 4,
+        "frames": 5,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 5,
+        "end": 23,
+        "frames": 19,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_shooting",
+        "start": 24,
+        "end": 39,
+        "frames": 16,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_face",
+        "start": 5,
+        "end": 39,
+        "frames": 35,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "wintermelon",
+    "originalReanimation": "WinterMelon",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_blink",
+        "start": 0,
+        "end": 4,
+        "frames": 5,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 5,
+        "end": 35,
+        "frames": 31,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_shooting",
+        "start": 36,
+        "end": 73,
+        "frames": 38,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_face",
+        "start": 5,
+        "end": 73,
+        "frames": 69,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "goldmagnet",
+    "originalReanimation": "GoldMagnet",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_blink",
+        "start": 1,
+        "end": 3,
+        "frames": 3,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 5,
+        "end": 51,
+        "frames": 47,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_attract",
+        "start": 52,
+        "end": 82,
+        "frames": 31,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_face",
+        "start": 5,
+        "end": 82,
+        "frames": 78,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "spikerock",
+    "originalReanimation": "SpikeRock",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_blink",
+        "start": 0,
+        "end": 2,
+        "frames": 3,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 3,
+        "end": 17,
+        "frames": 15,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_attack",
+        "start": 18,
+        "end": 32,
+        "frames": 15,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_face",
+        "start": 3,
+        "end": 32,
+        "frames": 30,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_eye_leftbrow",
+        "start": 0,
+        "end": 32,
+        "frames": 33,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_eye_rightbrow",
+        "start": 0,
+        "end": 32,
+        "frames": 33,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "cobcannon",
+    "originalReanimation": "CobCannon",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_unarmed_idle",
+        "start": 5,
+        "end": 23,
+        "frames": 19,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 39,
+        "end": 57,
+        "frames": 19,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_shooting",
+        "start": 58,
+        "end": 99,
+        "frames": 42,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_charge",
+        "start": 24,
+        "end": 38,
+        "frames": 15,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_blink",
+        "start": 1,
+        "end": 3,
+        "frames": 3,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_face",
+        "start": 5,
+        "end": 99,
+        "frames": 95,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "imitater",
+    "originalReanimation": "Imitater",
+    "declaredFPS": 48.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_blink",
+        "start": 0,
+        "end": 2,
+        "frames": 3,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 3,
+        "end": 52,
+        "frames": 50,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_explode",
+        "start": 53,
+        "end": 83,
+        "frames": 31,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_face",
+        "start": 3,
+        "end": 52,
+        "frames": 50,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "explodeonut",
+    "originalReanimation": "Wallnut",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_idle",
+        "start": 0,
+        "end": 16,
+        "frames": 17,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_face",
+        "start": 0,
+        "end": 55,
+        "frames": 56,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_blink_twitch",
+        "start": 17,
+        "end": 21,
+        "frames": 5,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_blink_twice",
+        "start": 23,
+        "end": 29,
+        "frames": 7,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_blink_thrice",
+        "start": 31,
+        "end": 41,
+        "frames": 11,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "giantwallnut",
+    "originalReanimation": "Wallnut",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_idle",
+        "start": 0,
+        "end": 16,
+        "frames": 17,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_face",
+        "start": 0,
+        "end": 55,
+        "frames": 56,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_blink_twitch",
+        "start": 17,
+        "end": 21,
+        "frames": 5,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_blink_twice",
+        "start": 23,
+        "end": 29,
+        "frames": 7,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_blink_thrice",
+        "start": 31,
+        "end": 41,
+        "frames": 11,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "sprout",
+    "originalReanimation": "ZenGarden_sprout",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_sprout",
+        "start": 0,
+        "end": 9,
+        "frames": 10,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_flower",
+        "start": 10,
+        "end": 17,
+        "frames": 8,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 18,
+        "end": 38,
+        "frames": 21,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle_noflower",
+        "start": 39,
+        "end": 59,
+        "frames": 21,
+        "hasImages": false
+      }
+    ]
+  },
+  {
+    "kind": "leftpeater",
+    "originalReanimation": "PeaShooter",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_full_idle",
+        "start": 79,
+        "end": 103,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_shooting",
+        "start": 54,
+        "end": 78,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_head_idle",
+        "start": 29,
+        "end": 53,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 4,
+        "end": 28,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_stem",
+        "start": 4,
+        "end": 103,
+        "frames": 100,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_face",
+        "start": 29,
+        "end": 103,
+        "frames": 75,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_blink",
+        "start": 1,
+        "end": 3,
+        "frames": 3,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "normal",
+    "originalReanimation": "Zombie",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_superlongdeath",
+        "start": 292,
+        "end": 428,
+        "frames": 137,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_swim",
+        "start": 250,
+        "end": 291,
+        "frames": 42,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_death2",
+        "start": 217,
+        "end": 249,
+        "frames": 33,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_death",
+        "start": 178,
+        "end": 216,
+        "frames": 39,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk2",
+        "start": 91,
+        "end": 137,
+        "frames": 47,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk",
+        "start": 44,
+        "end": 90,
+        "frames": 47,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle2",
+        "start": 29,
+        "end": 43,
+        "frames": 15,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 0,
+        "end": 28,
+        "frames": 29,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_eat",
+        "start": 138,
+        "end": 177,
+        "frames": 40,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_waterdeath",
+        "start": 429,
+        "end": 453,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_dance",
+        "start": 454,
+        "end": 503,
+        "frames": 50,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_innerarm3",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_innerarm2",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_innerarm1",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head1",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head2",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_tongue",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_screendoor",
+        "start": 0,
+        "end": 177,
+        "frames": 178,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_hair",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_cone",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_bucket",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "flag",
+    "originalReanimation": "Zombie",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_superlongdeath",
+        "start": 292,
+        "end": 428,
+        "frames": 137,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_swim",
+        "start": 250,
+        "end": 291,
+        "frames": 42,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_death2",
+        "start": 217,
+        "end": 249,
+        "frames": 33,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_death",
+        "start": 178,
+        "end": 216,
+        "frames": 39,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk2",
+        "start": 91,
+        "end": 137,
+        "frames": 47,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk",
+        "start": 44,
+        "end": 90,
+        "frames": 47,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle2",
+        "start": 29,
+        "end": 43,
+        "frames": 15,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 0,
+        "end": 28,
+        "frames": 29,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_eat",
+        "start": 138,
+        "end": 177,
+        "frames": 40,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_waterdeath",
+        "start": 429,
+        "end": 453,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_dance",
+        "start": 454,
+        "end": 503,
+        "frames": 50,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_innerarm3",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_innerarm2",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_innerarm1",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head1",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head2",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_tongue",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_screendoor",
+        "start": 0,
+        "end": 177,
+        "frames": 178,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_hair",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_cone",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_bucket",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "conehead",
+    "originalReanimation": "Zombie",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_superlongdeath",
+        "start": 292,
+        "end": 428,
+        "frames": 137,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_swim",
+        "start": 250,
+        "end": 291,
+        "frames": 42,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_death2",
+        "start": 217,
+        "end": 249,
+        "frames": 33,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_death",
+        "start": 178,
+        "end": 216,
+        "frames": 39,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk2",
+        "start": 91,
+        "end": 137,
+        "frames": 47,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk",
+        "start": 44,
+        "end": 90,
+        "frames": 47,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle2",
+        "start": 29,
+        "end": 43,
+        "frames": 15,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 0,
+        "end": 28,
+        "frames": 29,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_eat",
+        "start": 138,
+        "end": 177,
+        "frames": 40,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_waterdeath",
+        "start": 429,
+        "end": 453,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_dance",
+        "start": 454,
+        "end": 503,
+        "frames": 50,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_innerarm3",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_innerarm2",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_innerarm1",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head1",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head2",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_tongue",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_screendoor",
+        "start": 0,
+        "end": 177,
+        "frames": 178,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_hair",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_cone",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_bucket",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "pole",
+    "originalReanimation": "Zombie_polevaulter",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_idle",
+        "start": 0,
+        "end": 12,
+        "frames": 13,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_run",
+        "start": 13,
+        "end": 49,
+        "frames": 37,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_jump",
+        "start": 50,
+        "end": 92,
+        "frames": 43,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk",
+        "start": 93,
+        "end": 137,
+        "frames": 45,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_death",
+        "start": 138,
+        "end": 164,
+        "frames": 27,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_eat",
+        "start": 165,
+        "end": 192,
+        "frames": 28,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_head1",
+        "start": 0,
+        "end": 192,
+        "frames": 193,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head2",
+        "start": 0,
+        "end": 192,
+        "frames": 193,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_hair",
+        "start": 0,
+        "end": 192,
+        "frames": 193,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "buckethead",
+    "originalReanimation": "Zombie",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_superlongdeath",
+        "start": 292,
+        "end": 428,
+        "frames": 137,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_swim",
+        "start": 250,
+        "end": 291,
+        "frames": 42,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_death2",
+        "start": 217,
+        "end": 249,
+        "frames": 33,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_death",
+        "start": 178,
+        "end": 216,
+        "frames": 39,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk2",
+        "start": 91,
+        "end": 137,
+        "frames": 47,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk",
+        "start": 44,
+        "end": 90,
+        "frames": 47,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle2",
+        "start": 29,
+        "end": 43,
+        "frames": 15,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 0,
+        "end": 28,
+        "frames": 29,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_eat",
+        "start": 138,
+        "end": 177,
+        "frames": 40,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_waterdeath",
+        "start": 429,
+        "end": 453,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_dance",
+        "start": 454,
+        "end": 503,
+        "frames": 50,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_innerarm3",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_innerarm2",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_innerarm1",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head1",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head2",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_tongue",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_screendoor",
+        "start": 0,
+        "end": 177,
+        "frames": 178,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_hair",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_cone",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_bucket",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "newspaper",
+    "originalReanimation": "Zombie_paper",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_death",
+        "start": 96,
+        "end": 131,
+        "frames": 36,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_eat",
+        "start": 72,
+        "end": 95,
+        "frames": 24,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_eat_nopaper",
+        "start": 192,
+        "end": 215,
+        "frames": 24,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk",
+        "start": 25,
+        "end": 71,
+        "frames": 47,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk_nopaper",
+        "start": 145,
+        "end": 191,
+        "frames": 47,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 0,
+        "end": 24,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_gasp",
+        "start": 132,
+        "end": 144,
+        "frames": 13,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_hair",
+        "start": 0,
+        "end": 215,
+        "frames": 216,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head1",
+        "start": 0,
+        "end": 215,
+        "frames": 216,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head_look",
+        "start": 132,
+        "end": 144,
+        "frames": 13,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head_pupils",
+        "start": 132,
+        "end": 144,
+        "frames": 13,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_hairpiece",
+        "start": 0,
+        "end": 215,
+        "frames": 216,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head_jaw",
+        "start": 0,
+        "end": 215,
+        "frames": 216,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head_glasses",
+        "start": 0,
+        "end": 215,
+        "frames": 216,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "screendoor",
+    "originalReanimation": "Zombie",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_superlongdeath",
+        "start": 292,
+        "end": 428,
+        "frames": 137,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_swim",
+        "start": 250,
+        "end": 291,
+        "frames": 42,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_death2",
+        "start": 217,
+        "end": 249,
+        "frames": 33,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_death",
+        "start": 178,
+        "end": 216,
+        "frames": 39,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk2",
+        "start": 91,
+        "end": 137,
+        "frames": 47,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk",
+        "start": 44,
+        "end": 90,
+        "frames": 47,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle2",
+        "start": 29,
+        "end": 43,
+        "frames": 15,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 0,
+        "end": 28,
+        "frames": 29,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_eat",
+        "start": 138,
+        "end": 177,
+        "frames": 40,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_waterdeath",
+        "start": 429,
+        "end": 453,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_dance",
+        "start": 454,
+        "end": 503,
+        "frames": 50,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_innerarm3",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_innerarm2",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_innerarm1",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head1",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head2",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_tongue",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_screendoor",
+        "start": 0,
+        "end": 177,
+        "frames": 178,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_hair",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_cone",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_bucket",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "football",
+    "originalReanimation": "Zombie_football",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_death",
+        "start": 87,
+        "end": 104,
+        "frames": 18,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_eat",
+        "start": 51,
+        "end": 86,
+        "frames": 36,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk",
+        "start": 21,
+        "end": 50,
+        "frames": 30,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 0,
+        "end": 20,
+        "frames": 21,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_hair",
+        "start": 0,
+        "end": 86,
+        "frames": 87,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head1",
+        "start": 0,
+        "end": 86,
+        "frames": 87,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head2",
+        "start": 0,
+        "end": 86,
+        "frames": 87,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "dancing",
+    "originalReanimation": "Zombie_Jackson",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_moonwalk",
+        "start": 0,
+        "end": 26,
+        "frames": 27,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_point",
+        "start": 27,
+        "end": 36,
+        "frames": 10,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk",
+        "start": 46,
+        "end": 66,
+        "frames": 21,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_armraise",
+        "start": 67,
+        "end": 77,
+        "frames": 11,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_eat",
+        "start": 78,
+        "end": 111,
+        "frames": 34,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_death",
+        "start": 112,
+        "end": 146,
+        "frames": 35,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_head1",
+        "start": 0,
+        "end": 111,
+        "frames": 112,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head2",
+        "start": 0,
+        "end": 111,
+        "frames": 112,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_hair",
+        "start": 0,
+        "end": 111,
+        "frames": 112,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "backupdancer",
+    "originalReanimation": "Zombie_dancer",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_walk",
+        "start": 0,
+        "end": 20,
+        "frames": 21,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_armraise",
+        "start": 21,
+        "end": 31,
+        "frames": 11,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_eat",
+        "start": 32,
+        "end": 64,
+        "frames": 33,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_death",
+        "start": 65,
+        "end": 99,
+        "frames": 35,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_head1",
+        "start": 0,
+        "end": 64,
+        "frames": 65,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head2",
+        "start": 0,
+        "end": 64,
+        "frames": 65,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_earing",
+        "start": 0,
+        "end": 64,
+        "frames": 65,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_hair",
+        "start": 0,
+        "end": 64,
+        "frames": 65,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "duckytube",
+    "originalReanimation": "Zombie",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_superlongdeath",
+        "start": 292,
+        "end": 428,
+        "frames": 137,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_swim",
+        "start": 250,
+        "end": 291,
+        "frames": 42,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_death2",
+        "start": 217,
+        "end": 249,
+        "frames": 33,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_death",
+        "start": 178,
+        "end": 216,
+        "frames": 39,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk2",
+        "start": 91,
+        "end": 137,
+        "frames": 47,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk",
+        "start": 44,
+        "end": 90,
+        "frames": 47,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle2",
+        "start": 29,
+        "end": 43,
+        "frames": 15,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 0,
+        "end": 28,
+        "frames": 29,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_eat",
+        "start": 138,
+        "end": 177,
+        "frames": 40,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_waterdeath",
+        "start": 429,
+        "end": 453,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_dance",
+        "start": 454,
+        "end": 503,
+        "frames": 50,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_innerarm3",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_innerarm2",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_innerarm1",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head1",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head2",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_tongue",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_screendoor",
+        "start": 0,
+        "end": 177,
+        "frames": 178,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_hair",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_cone",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_bucket",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "snorkel",
+    "originalReanimation": "Zombie_snorkle",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_aquarium_death",
+        "start": 212,
+        "end": 248,
+        "frames": 37,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_aquarium_bite",
+        "start": 197,
+        "end": 211,
+        "frames": 15,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_aquarium_swim",
+        "start": 157,
+        "end": 185,
+        "frames": 29,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_death",
+        "start": 122,
+        "end": 156,
+        "frames": 35,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_eat",
+        "start": 97,
+        "end": 121,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_uptoeat",
+        "start": 85,
+        "end": 96,
+        "frames": 12,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_swim",
+        "start": 78,
+        "end": 84,
+        "frames": 7,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_jumpinpool",
+        "start": 59,
+        "end": 77,
+        "frames": 19,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk",
+        "start": 22,
+        "end": 58,
+        "frames": 37,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 0,
+        "end": 21,
+        "frames": 22,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_head1",
+        "start": 0,
+        "end": 248,
+        "frames": 249,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head_lips",
+        "start": 92,
+        "end": 226,
+        "frames": 135,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head_jaw",
+        "start": 97,
+        "end": 248,
+        "frames": 152,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head_snorkle",
+        "start": 92,
+        "end": 248,
+        "frames": 157,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "zomboni",
+    "originalReanimation": "Zombie_zamboni",
+    "declaredFPS": 30.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_drive",
+        "start": 0,
+        "end": 12,
+        "frames": 13,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_wheelie1",
+        "start": 13,
+        "end": 28,
+        "frames": 16,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_wheelie2",
+        "start": 29,
+        "end": 61,
+        "frames": 33,
+        "hasImages": false
+      }
+    ]
+  },
+  {
+    "kind": "bobsled",
+    "originalReanimation": "Zombie_bobsled",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_idle",
+        "start": 0,
+        "end": 14,
+        "frames": 15,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk",
+        "start": 15,
+        "end": 53,
+        "frames": 39,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_push",
+        "start": 54,
+        "end": 77,
+        "frames": 24,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_jump",
+        "start": 78,
+        "end": 101,
+        "frames": 24,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_death",
+        "start": 102,
+        "end": 133,
+        "frames": 32,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_eat",
+        "start": 134,
+        "end": 175,
+        "frames": 42,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_head1",
+        "start": 0,
+        "end": 175,
+        "frames": 176,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head2",
+        "start": 0,
+        "end": 175,
+        "frames": 176,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "dolphin",
+    "originalReanimation": "Zombie_dolphinrider",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_idle",
+        "start": 0,
+        "end": 14,
+        "frames": 15,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walkdolphin",
+        "start": 15,
+        "end": 53,
+        "frames": 39,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk",
+        "start": 54,
+        "end": 92,
+        "frames": 39,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_jumpinpool",
+        "start": 93,
+        "end": 137,
+        "frames": 45,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_ride",
+        "start": 138,
+        "end": 142,
+        "frames": 5,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_dolphinjump",
+        "start": 143,
+        "end": 165,
+        "frames": 23,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_eat",
+        "start": 166,
+        "end": 207,
+        "frames": 42,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_swim",
+        "start": 208,
+        "end": 249,
+        "frames": 42,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_death",
+        "start": 250,
+        "end": 288,
+        "frames": 39,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_head2",
+        "start": 0,
+        "end": 249,
+        "frames": 250,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head1",
+        "start": 0,
+        "end": 249,
+        "frames": 250,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "jackinthebox",
+    "originalReanimation": "Zombie_jackbox",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_idle",
+        "start": 13,
+        "end": 29,
+        "frames": 17,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk",
+        "start": 30,
+        "end": 48,
+        "frames": 19,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_eat",
+        "start": 49,
+        "end": 63,
+        "frames": 15,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_pop",
+        "start": 64,
+        "end": 79,
+        "frames": 16,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_death",
+        "start": 80,
+        "end": 102,
+        "frames": 23,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_head1",
+        "start": 13,
+        "end": 79,
+        "frames": 67,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head2",
+        "start": 13,
+        "end": 79,
+        "frames": 67,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "balloon",
+    "originalReanimation": "Zombie_balloon",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_idle",
+        "start": 0,
+        "end": 12,
+        "frames": 13,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_swing",
+        "start": 13,
+        "end": 30,
+        "frames": 18,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_pop",
+        "start": 31,
+        "end": 58,
+        "frames": 28,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_eat",
+        "start": 59,
+        "end": 83,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk",
+        "start": 84,
+        "end": 124,
+        "frames": 41,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_death",
+        "start": 125,
+        "end": 152,
+        "frames": 28,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_head1",
+        "start": 0,
+        "end": 124,
+        "frames": 125,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head2",
+        "start": 0,
+        "end": 124,
+        "frames": 125,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "digger",
+    "originalReanimation": "Zombie_digger",
+    "declaredFPS": 16.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_idle",
+        "start": 0,
+        "end": 17,
+        "frames": 18,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk",
+        "start": 18,
+        "end": 54,
+        "frames": 37,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_eat",
+        "start": 55,
+        "end": 87,
+        "frames": 33,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_death",
+        "start": 88,
+        "end": 127,
+        "frames": 40,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_dig",
+        "start": 128,
+        "end": 145,
+        "frames": 18,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_drill",
+        "start": 146,
+        "end": 164,
+        "frames": 19,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_landing",
+        "start": 165,
+        "end": 178,
+        "frames": 14,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_dizzy",
+        "start": 179,
+        "end": 199,
+        "frames": 21,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_head1",
+        "start": 0,
+        "end": 199,
+        "frames": 200,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head2",
+        "start": 0,
+        "end": 199,
+        "frames": 200,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "pogo",
+    "originalReanimation": "Zombie_pogo",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_pogo",
+        "start": 155,
+        "end": 165,
+        "frames": 11,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_death",
+        "start": 116,
+        "end": 154,
+        "frames": 39,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk",
+        "start": 29,
+        "end": 75,
+        "frames": 47,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 0,
+        "end": 28,
+        "frames": 29,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_eat",
+        "start": 76,
+        "end": 115,
+        "frames": 40,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_innerarm3",
+        "start": 0,
+        "end": 149,
+        "frames": 150,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_innerarm2",
+        "start": 0,
+        "end": 165,
+        "frames": 166,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_innerarm1",
+        "start": 0,
+        "end": 165,
+        "frames": 166,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head1",
+        "start": 0,
+        "end": 165,
+        "frames": 166,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head2",
+        "start": 0,
+        "end": 165,
+        "frames": 166,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head_glasses",
+        "start": 0,
+        "end": 165,
+        "frames": 166,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_hair",
+        "start": 0,
+        "end": 165,
+        "frames": 166,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "yeti",
+    "originalReanimation": "Zombie_yeti",
+    "declaredFPS": 20.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_death",
+        "start": 78,
+        "end": 104,
+        "frames": 27,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_eat",
+        "start": 49,
+        "end": 77,
+        "frames": 29,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk",
+        "start": 15,
+        "end": 48,
+        "frames": 34,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 0,
+        "end": 14,
+        "frames": 15,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_head1",
+        "start": 0,
+        "end": 77,
+        "frames": 78,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head2",
+        "start": 0,
+        "end": 77,
+        "frames": 78,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "bungee",
+    "originalReanimation": "Zombie_bungi",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_idle",
+        "start": 0,
+        "end": 19,
+        "frames": 20,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_drop",
+        "start": 20,
+        "end": 28,
+        "frames": 9,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_grab",
+        "start": 29,
+        "end": 43,
+        "frames": 15,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_hold",
+        "start": 44,
+        "end": 53,
+        "frames": 10,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_raise",
+        "start": 54,
+        "end": 66,
+        "frames": 13,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_head1",
+        "start": 0,
+        "end": 66,
+        "frames": 67,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "ladder",
+    "originalReanimation": "Zombie_ladder",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_idle",
+        "start": 0,
+        "end": 24,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_ladderwalk",
+        "start": 25,
+        "end": 71,
+        "frames": 47,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_laddereat",
+        "start": 72,
+        "end": 95,
+        "frames": 24,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_death",
+        "start": 96,
+        "end": 131,
+        "frames": 36,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk",
+        "start": 132,
+        "end": 178,
+        "frames": 47,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_eat",
+        "start": 179,
+        "end": 202,
+        "frames": 24,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_placeladder",
+        "start": 203,
+        "end": 214,
+        "frames": 12,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_head2",
+        "start": 0,
+        "end": 214,
+        "frames": 215,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head1",
+        "start": 0,
+        "end": 214,
+        "frames": 215,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "catapult",
+    "originalReanimation": "Zombie_catapult",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_walk",
+        "start": 0,
+        "end": 24,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_shoot",
+        "start": 25,
+        "end": 56,
+        "frames": 32,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 57,
+        "end": 69,
+        "frames": 13,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_bounce",
+        "start": 70,
+        "end": 84,
+        "frames": 15,
+        "hasImages": false
+      }
+    ]
+  },
+  {
+    "kind": "gargantuar",
+    "originalReanimation": "Zombie_gargantuar",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_idle",
+        "start": 0,
+        "end": 21,
+        "frames": 22,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk",
+        "start": 22,
+        "end": 70,
+        "frames": 49,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_smash",
+        "start": 71,
+        "end": 103,
+        "frames": 33,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_throw",
+        "start": 104,
+        "end": 137,
+        "frames": 34,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_death",
+        "start": 138,
+        "end": 196,
+        "frames": 59,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_head1",
+        "start": 0,
+        "end": 196,
+        "frames": 197,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "imp",
+    "originalReanimation": "Zombie_imp",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_land",
+        "start": 98,
+        "end": 103,
+        "frames": 6,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_thrown",
+        "start": 82,
+        "end": 97,
+        "frames": 16,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk",
+        "start": 0,
+        "end": 32,
+        "frames": 33,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_eat",
+        "start": 33,
+        "end": 59,
+        "frames": 27,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_death",
+        "start": 60,
+        "end": 81,
+        "frames": 22,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_head1",
+        "start": 0,
+        "end": 103,
+        "frames": 104,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head2",
+        "start": 0,
+        "end": 103,
+        "frames": 104,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "zomboss",
+    "originalReanimation": "Zombie_boss",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_enter",
+        "start": 0,
+        "end": 39,
+        "frames": 40,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 40,
+        "end": 54,
+        "frames": 15,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_spawn_5",
+        "start": 55,
+        "end": 75,
+        "frames": 21,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_spawn_4",
+        "start": 76,
+        "end": 96,
+        "frames": 21,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_spawn_3",
+        "start": 97,
+        "end": 117,
+        "frames": 21,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_spawn_2",
+        "start": 118,
+        "end": 138,
+        "frames": 21,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_spawn_1",
+        "start": 139,
+        "end": 160,
+        "frames": 22,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_bungee_1_enter",
+        "start": 161,
+        "end": 185,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_bungee_1_leave",
+        "start": 186,
+        "end": 203,
+        "frames": 18,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_stomp_1",
+        "start": 205,
+        "end": 235,
+        "frames": 31,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_stomp_2",
+        "start": 236,
+        "end": 266,
+        "frames": 31,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_stomp_3",
+        "start": 267,
+        "end": 295,
+        "frames": 29,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_stomp_4",
+        "start": 296,
+        "end": 324,
+        "frames": 29,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_head_enter",
+        "start": 325,
+        "end": 381,
+        "frames": 57,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_head_idle",
+        "start": 382,
+        "end": 398,
+        "frames": 17,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_head_attack_1",
+        "start": 399,
+        "end": 438,
+        "frames": 40,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_head_attack_2",
+        "start": 439,
+        "end": 478,
+        "frames": 40,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_head_attack_3",
+        "start": 479,
+        "end": 518,
+        "frames": 40,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_head_attack_4",
+        "start": 519,
+        "end": 558,
+        "frames": 40,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_head_attack_5",
+        "start": 559,
+        "end": 601,
+        "frames": 43,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_head_leave",
+        "start": 602,
+        "end": 646,
+        "frames": 45,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_death",
+        "start": 647,
+        "end": 753,
+        "frames": 107,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_RV_1",
+        "start": 754,
+        "end": 791,
+        "frames": 38,
+        "hasImages": false
+      }
+    ]
+  },
+  {
+    "kind": "peahead",
+    "originalReanimation": "Zombie",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_superlongdeath",
+        "start": 292,
+        "end": 428,
+        "frames": 137,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_swim",
+        "start": 250,
+        "end": 291,
+        "frames": 42,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_death2",
+        "start": 217,
+        "end": 249,
+        "frames": 33,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_death",
+        "start": 178,
+        "end": 216,
+        "frames": 39,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk2",
+        "start": 91,
+        "end": 137,
+        "frames": 47,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk",
+        "start": 44,
+        "end": 90,
+        "frames": 47,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle2",
+        "start": 29,
+        "end": 43,
+        "frames": 15,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 0,
+        "end": 28,
+        "frames": 29,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_eat",
+        "start": 138,
+        "end": 177,
+        "frames": 40,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_waterdeath",
+        "start": 429,
+        "end": 453,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_dance",
+        "start": 454,
+        "end": 503,
+        "frames": 50,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_innerarm3",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_innerarm2",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_innerarm1",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head1",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head2",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_tongue",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_screendoor",
+        "start": 0,
+        "end": 177,
+        "frames": 178,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_hair",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_cone",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_bucket",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "wallnuthead",
+    "originalReanimation": "Zombie",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_superlongdeath",
+        "start": 292,
+        "end": 428,
+        "frames": 137,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_swim",
+        "start": 250,
+        "end": 291,
+        "frames": 42,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_death2",
+        "start": 217,
+        "end": 249,
+        "frames": 33,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_death",
+        "start": 178,
+        "end": 216,
+        "frames": 39,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk2",
+        "start": 91,
+        "end": 137,
+        "frames": 47,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk",
+        "start": 44,
+        "end": 90,
+        "frames": 47,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle2",
+        "start": 29,
+        "end": 43,
+        "frames": 15,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 0,
+        "end": 28,
+        "frames": 29,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_eat",
+        "start": 138,
+        "end": 177,
+        "frames": 40,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_waterdeath",
+        "start": 429,
+        "end": 453,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_dance",
+        "start": 454,
+        "end": 503,
+        "frames": 50,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_innerarm3",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_innerarm2",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_innerarm1",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head1",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head2",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_tongue",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_screendoor",
+        "start": 0,
+        "end": 177,
+        "frames": 178,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_hair",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_cone",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_bucket",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "jalapenohead",
+    "originalReanimation": "Zombie",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_superlongdeath",
+        "start": 292,
+        "end": 428,
+        "frames": 137,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_swim",
+        "start": 250,
+        "end": 291,
+        "frames": 42,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_death2",
+        "start": 217,
+        "end": 249,
+        "frames": 33,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_death",
+        "start": 178,
+        "end": 216,
+        "frames": 39,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk2",
+        "start": 91,
+        "end": 137,
+        "frames": 47,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk",
+        "start": 44,
+        "end": 90,
+        "frames": 47,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle2",
+        "start": 29,
+        "end": 43,
+        "frames": 15,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 0,
+        "end": 28,
+        "frames": 29,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_eat",
+        "start": 138,
+        "end": 177,
+        "frames": 40,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_waterdeath",
+        "start": 429,
+        "end": 453,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_dance",
+        "start": 454,
+        "end": 503,
+        "frames": 50,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_innerarm3",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_innerarm2",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_innerarm1",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head1",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head2",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_tongue",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_screendoor",
+        "start": 0,
+        "end": 177,
+        "frames": 178,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_hair",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_cone",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_bucket",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "gatlinghead",
+    "originalReanimation": "Zombie",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_superlongdeath",
+        "start": 292,
+        "end": 428,
+        "frames": 137,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_swim",
+        "start": 250,
+        "end": 291,
+        "frames": 42,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_death2",
+        "start": 217,
+        "end": 249,
+        "frames": 33,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_death",
+        "start": 178,
+        "end": 216,
+        "frames": 39,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk2",
+        "start": 91,
+        "end": 137,
+        "frames": 47,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk",
+        "start": 44,
+        "end": 90,
+        "frames": 47,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle2",
+        "start": 29,
+        "end": 43,
+        "frames": 15,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 0,
+        "end": 28,
+        "frames": 29,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_eat",
+        "start": 138,
+        "end": 177,
+        "frames": 40,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_waterdeath",
+        "start": 429,
+        "end": 453,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_dance",
+        "start": 454,
+        "end": 503,
+        "frames": 50,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_innerarm3",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_innerarm2",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_innerarm1",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head1",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head2",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_tongue",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_screendoor",
+        "start": 0,
+        "end": 177,
+        "frames": 178,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_hair",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_cone",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_bucket",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "squashhead",
+    "originalReanimation": "Zombie",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_superlongdeath",
+        "start": 292,
+        "end": 428,
+        "frames": 137,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_swim",
+        "start": 250,
+        "end": 291,
+        "frames": 42,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_death2",
+        "start": 217,
+        "end": 249,
+        "frames": 33,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_death",
+        "start": 178,
+        "end": 216,
+        "frames": 39,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk2",
+        "start": 91,
+        "end": 137,
+        "frames": 47,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk",
+        "start": 44,
+        "end": 90,
+        "frames": 47,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle2",
+        "start": 29,
+        "end": 43,
+        "frames": 15,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 0,
+        "end": 28,
+        "frames": 29,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_eat",
+        "start": 138,
+        "end": 177,
+        "frames": 40,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_waterdeath",
+        "start": 429,
+        "end": 453,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_dance",
+        "start": 454,
+        "end": 503,
+        "frames": 50,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_innerarm3",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_innerarm2",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_innerarm1",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head1",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head2",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_tongue",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_screendoor",
+        "start": 0,
+        "end": 177,
+        "frames": 178,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_hair",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_cone",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_bucket",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "tallnuthead",
+    "originalReanimation": "Zombie",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_superlongdeath",
+        "start": 292,
+        "end": 428,
+        "frames": 137,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_swim",
+        "start": 250,
+        "end": 291,
+        "frames": 42,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_death2",
+        "start": 217,
+        "end": 249,
+        "frames": 33,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_death",
+        "start": 178,
+        "end": 216,
+        "frames": 39,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk2",
+        "start": 91,
+        "end": 137,
+        "frames": 47,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk",
+        "start": 44,
+        "end": 90,
+        "frames": 47,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle2",
+        "start": 29,
+        "end": 43,
+        "frames": 15,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_idle",
+        "start": 0,
+        "end": 28,
+        "frames": 29,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_eat",
+        "start": 138,
+        "end": 177,
+        "frames": 40,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_waterdeath",
+        "start": 429,
+        "end": 453,
+        "frames": 25,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_dance",
+        "start": 454,
+        "end": 503,
+        "frames": 50,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_innerarm3",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_innerarm2",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_innerarm1",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head1",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_head2",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_tongue",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_screendoor",
+        "start": 0,
+        "end": 177,
+        "frames": 178,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_hair",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_cone",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      },
+      {
+        "marker": "anim_bucket",
+        "start": 0,
+        "end": 503,
+        "frames": 504,
+        "hasImages": true
+      }
+    ]
+  },
+  {
+    "kind": "redeye",
+    "originalReanimation": "Zombie_gargantuar",
+    "declaredFPS": 12.0,
+    "runtimeRateMayOverride": true,
+    "clips": [
+      {
+        "marker": "anim_idle",
+        "start": 0,
+        "end": 21,
+        "frames": 22,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_walk",
+        "start": 22,
+        "end": 70,
+        "frames": 49,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_smash",
+        "start": 71,
+        "end": 103,
+        "frames": 33,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_throw",
+        "start": 104,
+        "end": 137,
+        "frames": 34,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_death",
+        "start": 138,
+        "end": 196,
+        "frames": 59,
+        "hasImages": false
+      },
+      {
+        "marker": "anim_head1",
+        "start": 0,
+        "end": 196,
+        "frames": 197,
+        "hasImages": true
+      }
+    ]
+  }
+]
