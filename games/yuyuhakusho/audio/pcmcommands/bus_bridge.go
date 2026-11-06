@@ -186,7 +186,10 @@ func (d *Device) PublishAccepted(in Input) error {
 	n := *d
 	n.state = clone(d.state)
 	n.err = nil
-	n.publish(in)
+	// The actual held-bus path can update independent slot fields while the
+	// single source is being captured. The older FramePlan profile remains
+	// conservatively closed at that boundary.
+	n.publish(in, true)
 	if n.err != nil {
 		return n.err
 	}

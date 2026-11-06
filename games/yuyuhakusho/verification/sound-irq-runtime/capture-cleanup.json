@@ -1,0 +1,22 @@
+{
+  "all_capture_processes_terminal": true,
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/score-clock-sound-irq-native-v1/native-sound-irq-full.json.gz",
+      "bytes": 1381684,
+      "sha256": "7c9b2c1a41dcf423ffc12f825066d2b0852893a13e306ea67701d1c129c7383c"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/score-clock-sound-irq-native-v1/score-clock-psg-observer.dylib",
+      "bytes": 17392,
+      "sha256": "d7beb48ad16458dad28ae918adc9351cf059af483593644545949d7f4cc4b2c6"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/score-clock-sound-irq-native-v1/sound-irq-observer.dylib",
+      "bytes": 18696,
+      "sha256": "84f0922e5fbb90eb42d9a45a8d743845b66507f5362960d3c1a98f051837b71d"
+    }
+  ],
+  "removed_bytes": 1417772,
+  "unique_original_preserved": "games/yuyuhakusho/verification/sound-irq-runtime/native-sound-irq-full.json.gz"
+}

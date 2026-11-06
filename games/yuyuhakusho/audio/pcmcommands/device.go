@@ -402,14 +402,18 @@ func (d *Device) validateInput(in Input) error {
 	}
 	return nil
 }
-func (d *Device) publish(in Input) {
+func (d *Device) publish(in Input, live bool) {
 	// This opaque-resource profile cannot synthesize a ROM source assembled
 	// from fields of two descriptors. Refuse those unverified interleavings.
 	if in.Kind == Ordinary || in.Kind == Music {
 		switch d.state.Phase {
 		case "s-init", "s-pan-pad", "s-bank-setup", "s-bank-serial", "s-prime-start", "s-header-start":
-			d.err = errors.New("PCM descriptor publication overlaps single metadata capture")
-			return
+			// Slot A/B publication changes independent flags/marker fields but
+			// leaves the single descriptor's source bytes untouched.
+			if !live || in.Kind == Music || in.Destination == Single {
+				d.err = errors.New("PCM descriptor publication overlaps single metadata capture")
+				return
+			}
 		case "d-transfer":
 			if d.state.Part > 12 && d.state.Part <= 18 && in.Kind == Ordinary && in.Destination != Single && uint8(in.Destination-SlotA) == d.state.Work.PrefetchSlot {
 				d.err = errors.New("PCM descriptor publication overlaps same-slot metadata capture")
@@ -463,7 +467,7 @@ func (d *Device) release() {
 		d.state.WaitFlag = false
 		d.next("boot")
 	} else {
-		d.publish(h.Input)
+		d.publish(h.Input, false)
 	}
 	d.state.Time = resume
 	d.frame.Transactions = append(d.frame.Transactions, Transaction{Begin: h.Input.Begin, End: h.Input.End, Grant: h.Grant, Resume: resume})

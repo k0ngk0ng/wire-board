@@ -1,0 +1,161 @@
+{
+  "all_verification_processes_terminal": true,
+  "removed_duplicate_files": [
+    {
+      "path": ".local/md-yuyuhakusho/sound-irq-final/native-audio-command.json",
+      "bytes": 89457,
+      "sha256": "7335c058ea290bb6e56d2426d335f9427547975cd07b3ae26eba2ea531a76569"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sound-irq-final/native-audio.jsonl",
+      "bytes": 301772,
+      "sha256": "4bb1955d11846d061c2bfc1cad53112f60cc2cc30f338e194b521f6f5bb090c7"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sound-irq-final/native-clock-command.json",
+      "bytes": 1592440,
+      "sha256": "db4ae88d03e57c8107b4625dfd5d51b9c493ad172c7898927dec15fb0c4d84f6"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sound-irq-final/native-clock.jsonl",
+      "bytes": 9046882,
+      "sha256": "6e9b72385be7950e1f1ea7be059476f770cb44d40027dee7ff43676be74de78f"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sound-irq-final/native-engine-command.json",
+      "bytes": 41342,
+      "sha256": "c4a947283e9af83d034e5e66885abfe60177dbf4d0a16f75e6f955070a455b02"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sound-irq-final/native-engine.jsonl",
+      "bytes": 6582,
+      "sha256": "2dca92e76532a754c1dea668b3a29aadad6101a1f8ab981a6f054b00dcd2edef"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sound-irq-final/vet-command.json",
+      "bytes": 40418,
+      "sha256": "edb41e794a2500156fb02db771c7ad89ee2272634b795b9ba8966e0bc2abb7ec"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sound-irq-final/vet.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sound-irq-final/wasm-audio-command.json",
+      "bytes": 89565,
+      "sha256": "a9dbc9e53f9f2ac8aab7ad88fca40886437c563abfa30dd981fb7e2269171ab0"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sound-irq-final/wasm-audio.jsonl",
+      "bytes": 301747,
+      "sha256": "007749f7b75b51c99c040ebfd26e4a90e05fa890c07e8f7b01808afeb2f58e0f"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sound-irq-final/wasm-clock-command.json",
+      "bytes": 1592549,
+      "sha256": "cf42b271436675a6efffb7226986c0ee2ed8c3697bc3d1b9b5be2777d31b736b"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sound-irq-final/wasm-clock.jsonl",
+      "bytes": 9039806,
+      "sha256": "17c926a5903de76ddd17fa635f7782b64be4498c843cb6e39b30eb705d037bdc"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sound-irq-final/wasm-engine-command.json",
+      "bytes": 41451,
+      "sha256": "571bdc8a95b6ee0f6b953a8baa0970e83b34d65a086c5ac34db05be5aece8cb9"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sound-irq-final/wasm-engine.jsonl",
+      "bytes": 6583,
+      "sha256": "ebad5918e39c5d32e56b964d65c41f80af5b237f24365673dabc77ef0ddcb535"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sound-irq-final-v2/native-audio-command.json",
+      "bytes": 89628,
+      "sha256": "2ca3bc1a8bf3f5e4e89e8f4220a0ffa6b1afb965b43acf55feb52c419acb2f60"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sound-irq-final-v2/native-audio.jsonl",
+      "bytes": 301464,
+      "sha256": "8b60cebe9f04b311a289cb64b4d5d946a948d04406596f7dfa4d8b1198634bcc"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sound-irq-final-v2/native-clock-command.json",
+      "bytes": 1592440,
+      "sha256": "5567cf1b28fb078741fb5faae178675482e71888171c9f5497ad89ccbda0a05c"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sound-irq-final-v2/native-clock.jsonl",
+      "bytes": 9046783,
+      "sha256": "4f75b257e75fd6a18f54945cdcdf5f34fcda4cfcaf8b158720af29000fe719a7"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sound-irq-final-v2/native-engine-command.json",
+      "bytes": 41342,
+      "sha256": "1454297b8cf60c3797f984fa506f58dca952e2929e280ed7fa0fc581340af20f"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sound-irq-final-v2/native-engine.jsonl",
+      "bytes": 6584,
+      "sha256": "f37686166667ed4b5e234d0fc7c19e4543893541e141f2f01fdec69547d59ab1"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sound-irq-final-v2/vet-command.json",
+      "bytes": 40419,
+      "sha256": "48c3b53ae7964a5fcd3128a0c4521b3bcdfb0f35cd088a137917e0037f0d1f29"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sound-irq-final-v2/vet.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sound-irq-final-v2/wasm-audio-command.json",
+      "bytes": 89736,
+      "sha256": "fe79c17d53679f2b840ce36b0a68ef1606d6f2cf9e042a5760451ab6bee87413"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sound-irq-final-v2/wasm-audio.jsonl",
+      "bytes": 301421,
+      "sha256": "7330ea502a044a63cff518fa734c67509a5984256fdb70e66146b53389ce1ac5"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sound-irq-final-v2/wasm-clock-command.json",
+      "bytes": 1523776,
+      "sha256": "9717e1fa523c2a93170e320c1476e26cc34d74b369787039e8a18108434e94ac"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sound-irq-final-v2/wasm-clock.jsonl",
+      "bytes": 8706882,
+      "sha256": "63f44047fff45792a93fe698a0ba38b738821e20acdba6e6a167232fefd084fb"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sound-irq-final-v2/wasm-engine-command.json",
+      "bytes": 41451,
+      "sha256": "0228c90529f6b2683e618142fca04c3e996001c28ddaee84c41e1001bfb123a5"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sound-irq-final-v2/wasm-engine.jsonl",
+      "bytes": 6582,
+      "sha256": "bf59bd7a5cabef9dc36056a601d4014e21bc9e7e334c58bb20ac818d607c2337"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sound-irq-wasm-gc-final/extra-environment.json",
+      "bytes": 235,
+      "sha256": "b2d3d6b4d4249f67d7c1014e79fda9800234025dfc3fd25b3d385f0493fceec8"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sound-irq-wasm-gc-final/wasm-clock-command.json",
+      "bytes": 1592549,
+      "sha256": "15f63258b08f26eb09d74b4cf0ef484327f1c1fb9b7c7efe49b7aa39af057dff"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/sound-irq-wasm-gc-final/wasm-clock.jsonl",
+      "bytes": 9039532,
+      "sha256": "cae768b53409d50880f1a11966af90999f671997428918688d18cd7c2185061a"
+    }
+  ],
+  "removed_bytes": 54611418
+}

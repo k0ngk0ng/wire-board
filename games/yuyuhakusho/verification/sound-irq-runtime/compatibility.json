@@ -1,0 +1,28 @@
+{
+  "parent_commit": "82f2fa4a8534d788c9946bbcd5b6613a838315a8",
+  "before_sources": {
+    "games/yuyuhakusho/engine/sound_scheduler.go": {
+      "archive": "games/yuyuhakusho/verification/sound-irq-runtime/sound_scheduler.before-sound-irq.txt",
+      "parent_sha256": "0876d32403872b95e38b094e23c7167d8f5b7bf97e10ccec366a6ee026f6fb7a"
+    },
+    "games/yuyuhakusho/audio/scoreclock/request_tick.go": {
+      "archive": "games/yuyuhakusho/verification/sound-irq-runtime/request_tick.before-sound-irq.txt",
+      "parent_sha256": "ed57e060db31b8b90e648ee0d5011fe31616dd00a66d1c9c74eee31059630676"
+    },
+    "games/yuyuhakusho/audio/pcmcommands/device.go": {
+      "archive": "games/yuyuhakusho/verification/sound-irq-runtime/device.before-dual-capture-fix.txt",
+      "parent_sha256": "6bd121b24d5b35c7760c719fd87fe41839100fcb6d7f284936eebdc75d509a3d"
+    },
+    "games/yuyuhakusho/audio/pcmcommands/bus_bridge.go": {
+      "archive": "games/yuyuhakusho/verification/sound-irq-runtime/bus_bridge.before-live-publication.txt",
+      "parent_sha256": "0dd755b50438409fd69731f3b9a5d4f49a81f04b2f2934a4363d9f7cc036738a"
+    }
+  },
+  "all_previous_clock_root_test_names_retained": true,
+  "score_and_root_state_layout_unchanged": true,
+  "native_oracles_changed_after_implementation": false,
+  "new_e2e_setup_correction": "Music versus ordinary adapter formatting, native-prefixed witness ID; exact original/diff preserved.",
+  "frameplan_closed_rejection_contract_retained": true,
+  "live_dual_single_capture_supported_by_original_profile106": true,
+  "wasm_runtime_anomaly": "One bad-pointer error retained; targeted124 +20stress +complete8527 checked reruns pass; cause unproven."
+}
