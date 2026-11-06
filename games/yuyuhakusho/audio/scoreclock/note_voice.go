@@ -47,6 +47,9 @@ const (
 	noteTail
 	noteVoiceReturn
 	noteComplete
+	noteTrackEnd
+	noteControlQueue
+	noteQueuePending
 )
 
 // NoteVoiceTransfer consumes one actual new-note voice body. Parser metadata
@@ -83,6 +86,8 @@ type NoteVoiceTransfer struct {
 	tail                             *HeldVoiceTransfer
 	done, running                    bool
 	failure                          error
+	allowStop, canonicalDomain       bool
+	queueOp                          score.Operation
 }
 
 func noteVoiceFamily(channel string) (string, bool) {
@@ -144,7 +149,7 @@ func (t *NoteVoiceTransfer) Consume(op score.Operation, v score.VoiceState) erro
 		return t.failure
 	}
 	t.sequence++
-	if op.Kind == score.OpChipWrite || op.Kind == score.OpPSGPitchWrite {
+	if op.Kind == score.OpChipWrite || op.Kind == score.OpPSGPitchWrite || op.Kind == score.OpQueueReplace {
 		t.intentOffset += int(op.WriteCount)
 	}
 	return nil
@@ -174,7 +179,7 @@ func (t *NoteVoiceTransfer) consume(op score.Operation, v score.VoiceState) erro
 		t.phase = notePrelude
 	case notePrelude:
 		return t.consumePrelude(op)
-	case noteControlEnter, noteControlParameter, noteControlSetup, noteControlPan, noteControlPanWrite, noteControlNoise, noteControlReturn, noteInstrumentEnter, noteInstrumentResource, noteInstrumentClaimed, noteInstrumentBody, noteInstrumentPan, noteInstrumentReturn:
+	case noteControlEnter, noteControlParameter, noteControlSetup, noteControlPan, noteControlPanWrite, noteControlNoise, noteControlReturn, noteInstrumentEnter, noteInstrumentResource, noteInstrumentClaimed, noteInstrumentBody, noteInstrumentPan, noteInstrumentReturn, noteControlQueue:
 		return t.consumeControl(op, v)
 	case noteEnter:
 		if !heldOperation(op, score.OpEnter, score.RoutineNote) || op.Branch != score.BranchNoteBoundary {
@@ -407,6 +412,9 @@ func (t *NoteVoiceTransfer) consumePrelude(op score.Operation) error {
 				return ErrNoteVoiceSequence
 			}
 			t.phase = noteControlEnter
+			if t.action == "track-end" && t.allowStop {
+				t.phase = noteTrackEnd
+			}
 			return nil
 		}
 		if (t.token != "pitch" && t.token != "duration") || op.EventKind != "note" || op.Duration < 1 || op.Duration > 256 {
@@ -435,7 +443,7 @@ func (t *NoteVoiceTransfer) consumePrelude(op score.Operation) error {
 		default:
 			t.action = w.Action
 		}
-		if w.Action == "track-end" || w.Action == "enqueue-replace-first" {
+		if (w.Action == "track-end" || w.Action == "enqueue-replace-first") && !t.allowStop {
 			return ErrNoteVoiceUnavailable
 		}
 	case score.WorkParameterRead:

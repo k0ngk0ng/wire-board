@@ -1,0 +1,9 @@
+{
+  "original_test_sha256": "5dc5f26eb2237188d827a1ef87f132390cf976b63f8c8a87635726a1d0142ef0",
+  "original_archive": "games/yuyuhakusho/verification/score-clock-track-end/track_end_e2e_test.before-dac-projection-fix.txt",
+  "first_failure_sha256": "1bb57894811814b54011c55023ebf6bb95b94724cffd679b74ddf5325bebe1e1",
+  "reason": "DAC source bytes10/11 retain the sample/rest marker (here0x8000), while canonical BasePitch belongs only to tonal voices. The terminal handler does not read DAC BasePitch; do not compare that differently typed raw word. All119 original clocks/traces and remaining fields passed first implementation.",
+  "oracle_changed": false,
+  "production_changed_for_this_correction": false,
+  "current_test_sha256": "03f4f8b432a356ac661757f5b1c7ab789bbcc0b51863b583bbd7235ae9f4fd5b"
+}

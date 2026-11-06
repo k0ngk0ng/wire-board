@@ -1,0 +1,14 @@
+{
+  "test_first": true,
+  "production_exists": false,
+  "production_files": [
+    "games/yuyuhakusho/audio/scoreclock/voice.go"
+  ],
+  "files": {
+    "games/yuyuhakusho/audio/scoreclock/track_end_e2e_test.go": "e560d412beb3e553f8b5e8b2e6d6998d42cf31c4a87c82e434abef091d997b2e",
+    "docs/research/md-yuyuhakusho/SCORE_CLOCK_TRACK_END_FAILURES.md": "046e6d54ea854fab79aad48bd211e4b1272cf2e2ff83eb9a23756fc651d93d9c",
+    "scripts/yuyuhakusho/score-clock-track-end-capture.py": "b37e37083b8ff718a21cdb3262f21afa9e0cce04ab16bc26cded4b24afe50d53",
+    "games/yuyuhakusho/verification/score-clock-track-end/native-track-end-full.json.gz": "7892b4da7142dc625ed7648241866ff429d62897623a9064ebc2d89a97ea5618"
+  },
+  "pre_implementation_witness_fix": "Lease witness must include native queue store, not merely another voice from scoreAB; corrected before any production changes."
+}

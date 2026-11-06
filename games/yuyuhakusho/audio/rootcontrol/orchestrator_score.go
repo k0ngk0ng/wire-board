@@ -10,6 +10,19 @@ import (
 func (r *ruleTick) scoreHooks() score.ObservedHooks {
 	hooks := r.hooks.Score
 	hooks.Operation = func(op score.Operation) error {
+		if r.hooks.WorkingScore != nil {
+			state := r.owners.Score.Snapshot()
+			if r.tx != nil {
+				var err error
+				state, err = r.tx.Snapshot()
+				if err != nil {
+					return err
+				}
+			}
+			if err := r.hooks.WorkingScore(op, state); err != nil {
+				return err
+			}
+		}
 		if r.hooks.Score.Operation != nil {
 			if err := r.hooks.Score.Operation(op); err != nil {
 				return err
@@ -22,7 +35,9 @@ func (r *ruleTick) scoreHooks() score.ObservedHooks {
 			}
 			r.savedPriority, r.prioritySaved = r.root.Priority, true
 		case score.OpPriorityClear:
-			r.root.Priority = 0
+			if err := r.applyPriorityClear(op); err != nil {
+				return err
+			}
 		case score.OpHeaderClear:
 			if !r.prioritySaved || op.Routine != score.RoutineMusicReset || op.Iterations != 16 {
 				return fmt.Errorf("%w: unknown score header clear", ErrRuleUnsupported)

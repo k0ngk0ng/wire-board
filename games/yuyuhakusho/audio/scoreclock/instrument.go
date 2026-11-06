@@ -86,6 +86,10 @@ func (s *service) instrumentSeek(domain string, skipped uint8, level bool) error
 			}
 		}
 	}
+	return s.instrumentSkip(skipped)
+}
+
+func (s *service) instrumentSkip(skipped uint8) error {
 	if err := s.spend(4); err != nil {
 		return err
 	}
@@ -120,6 +124,10 @@ func BeginInstrumentTransfer(clock Clock, work InstrumentRequest, bus Bus, chip 
 }
 
 func beginInstrumentTransfer(s *service, work InstrumentRequest) (*InstrumentTransfer, error) {
+	return beginInstrumentOnRoute(s, work, work.Domain)
+}
+
+func beginInstrumentOnRoute(s *service, work InstrumentRequest, route string) (*InstrumentTransfer, error) {
 	var err error
 	t := &InstrumentTransfer{s: s, request: work}
 	if err = s.spend(12); err != nil {
@@ -139,7 +147,7 @@ func beginInstrumentTransfer(s *service, work InstrumentRequest) (*InstrumentTra
 			return nil, err
 		}
 	}
-	if err = s.instrumentSeek(work.Domain, work.Work.RecordsSkipped, work.Mode == "level"); err != nil {
+	if err = s.instrumentSeek(route, work.Work.RecordsSkipped, work.Mode == "level"); err != nil {
 		return nil, err
 	}
 	if work.Mode == "load" {
@@ -198,6 +206,26 @@ func beginInstrumentTransfer(s *service, work InstrumentRequest) (*InstrumentTra
 	}
 	for _, write := range writes {
 		t.writes = append(t.writes, t.route(0x40+write.Slot*4, write.TotalLevel))
+	}
+	return t, nil
+}
+
+// Restoration already selected the music bank and cleared claimed. The source
+// enters at the bounded seek itself, not the ordinary claimed/bank prefix.
+func beginRestoredInstrument(s *service, work InstrumentRequest) (*InstrumentTransfer, error) {
+	if err := s.instrumentSkip(work.Work.RecordsSkipped); err != nil {
+		return nil, err
+	}
+	if err := s.ordinaryCosts(8, 12); err != nil {
+		return nil, err
+	}
+	writes, err := param.PatchWrites(work.Patch, work.BaseLevel)
+	if err != nil {
+		return nil, err
+	}
+	t := &InstrumentTransfer{s: s, request: work}
+	for _, write := range writes {
+		t.writes = append(t.writes, t.route(write.Register, write.Value))
 	}
 	return t, nil
 }
