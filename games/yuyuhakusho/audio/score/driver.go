@@ -605,7 +605,7 @@ func (t *tick) note(i int, e event) error {
 		t.parserSite(SiteFinalCommit)
 		if v.DACDescriptor != "" {
 			descriptor := t.driver.catalog.descriptors[v.DACDescriptor]
-			feedback, err := t.readDAC(FeedbackRead{Kind: ReadBlockedPriority, VoiceSlot: int8(i), DescriptorID: v.DACDescriptor, DescriptorPriority: descriptor.Flags & 0xc0, Pan: Stereo{v.Pan.Left, v.Pan.Right}})
+			feedback, err := t.readDAC(FeedbackRead{Kind: ReadBlockedPriority, VoiceSlot: int8(i), DescriptorID: v.DACDescriptor, DescriptorPriority: descriptor.Flags & 0xc0, Pan: Stereo{v.Pan.Left, v.Pan.Right}, TrackPan: v.Pan, WritePan: v.Pan})
 			if err != nil {
 				return err
 			}
@@ -836,7 +836,7 @@ func (t *tick) writePanValue(i int, value Pan) {
 		return
 	}
 	if channelCode(v.Channel) == 6 {
-		feedback, err := t.readDAC(FeedbackRead{Kind: ReadPanRedirect, VoiceSlot: int8(i), Pan: Stereo{v.Pan.Left, v.Pan.Right}})
+		feedback, err := t.readDAC(FeedbackRead{Kind: ReadPanRedirect, VoiceSlot: int8(i), Pan: Stereo{v.Pan.Left, v.Pan.Right}, TrackPan: v.Pan, WritePan: value})
 		if err != nil {
 			return
 		}

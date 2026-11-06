@@ -211,6 +211,10 @@ type FeedbackRead struct {
 	DescriptorID       string
 	DescriptorPriority uint8
 	Pan                Stereo
+	// TrackPan is the canonical voice field; WritePan is this call's YM
+	// argument, which automatic stereo may override without changing TrackPan.
+	// Both are detached stage projections, never additional persistent owners.
+	TrackPan, WritePan Pan
 }
 
 type ObservedInput struct{ SoundID uint8 }

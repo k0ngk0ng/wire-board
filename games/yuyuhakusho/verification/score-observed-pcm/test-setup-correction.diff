@@ -1,0 +1,98 @@
+--- games/yuyuhakusho/verification/score-observed-pcm/observed-pcm-test.before-setup-correction.go.txt
++++ games/yuyuhakusho/audio/scoreclock/observed_pcm_e2e_test.go
+@@ -215,7 +215,7 @@
+ 		before.Voices[i].Active = false
+ 	}
+ 	before.TempoPeriod, before.TempoRemaining = 0, 0
+-	v := &before.Voices[6]
++	v := &before.Voices[1]
+ 	v.Active, v.NoteOff, v.Claimed, v.NoteWait = true, false, false, 2
+ 	v.GateTicks, v.GateRemaining = 0, 0
+ 	v.PitchControl = score.PitchControl{}
+@@ -237,7 +237,7 @@
+ 	}
+ 	count := 0
+ 	for _, row := range f.Cases {
+-		if row.Input.Channel != 6 || row.Input.Pan != 181 || row.Input.WritePan != 117 {
++		if row.Input.Channel != 0 || row.Input.Pan != 181 || row.Input.WritePan != 117 {
+ 			continue
+ 		}
+ 		count++
+@@ -249,10 +249,21 @@
+ 			e, _ := newPanMixed(t, row.Input.Marker, 0)
+ 			var stage *scoreclock.ObservedPCMStage
+ 			var end scoreclock.Clock
+-			var readValue score.FeedbackRead
+-			out, err := driver.AdvanceObserved(score.ObservedInput{}, score.ObservedHooks{
++			var tx *score.TickTransaction
++			tx, err = driver.BeginTickObserved(score.ObservedHooks{
+ 				Operation: func(op score.Operation) error {
+-					if op.Kind == score.OpChipWrite && stage != nil {
++					if op.Kind == score.OpChipWrite {
++						current, err := tx.Snapshot()
++						if err != nil {
++							return err
++						}
++						if current.Voices[1].Pan != panValue(181) || op.Writes[0].Value != 117 {
++							return errors.New("stored and requested automatic pan conflated")
++						}
++						stage, err = scoreclock.BeginObservedPan(scoreclock.Clock{Cycle: row.Input.Origin, Refresh: row.Input.Refresh}, op, current.Voices[1].Pan, "voice", e, e, scoreclock.Limits{})
++						if err != nil {
++							return err
++						}
+ 						return stage.Consume(op)
+ 					}
+ 					if op.Kind == score.OpLeave && op.Routine == score.RoutinePan {
+@@ -265,31 +276,31 @@
+ 					}
+ 					return nil
+ 				}, ReadDAC: func(read score.FeedbackRead) (score.DACFeedback, error) {
+-					readValue = read
+-					if read.Kind != score.ReadPanRedirect || read.TrackPan != panValue(181) || read.WritePan != panValue(117) {
+-						return score.DACFeedback{}, errors.New("stored and requested pan conflated")
+-					}
+-					var err error
+-					stage, err = scoreclock.BeginObservedPCM(scoreclock.Clock{Cycle: row.Input.Origin, Refresh: row.Input.Refresh}, read, "voice", e, e, scoreclock.Limits{})
+-					if err != nil {
+-						return score.DACFeedback{}, err
+-					}
+-					return stage.Feedback(), nil
++					return score.DACFeedback{}, errors.New("ordinary FM1 pan must not request DAC feedback")
+ 				},
+ 			})
+-			if err != nil || end != row.End || len(out.Intents) != 1 || driver.Snapshot().Voices[6].Pan != before.Voices[6].Pan {
++			if err != nil {
++				t.Fatal(err)
++			}
++			defer tx.Abort()
++			if err = tx.AdvanceTempo(); err != nil {
++				t.Fatal(err)
++			}
++			if err = tx.Dispatch(0); err != nil {
++				t.Fatal(err)
++			}
++			if err = tx.AdvanceVoices(); err != nil {
++				t.Fatal(err)
++			}
++			out, err := tx.Finish()
++			if err != nil || end != row.End || len(out.Intents) != 1 || driver.Snapshot().Voices[1].Pan != before.Voices[1].Pan {
+ 				t.Fatal("actual automatic pan phase failed or changed pan owner", end, row.End, err)
+ 			}
+-			if row.Input.Marker == 0 {
+-				if out.Intents[0].Kind != "ym" || out.Intents[0].Value != 117 {
+-					t.Fatal("YM ignored requested automatic pan")
+-				}
+-			} else if out.Intents[0].Kind != "dac-pan" || e.r.Snapshot().PCM.Global.RestorePan != 181 {
+-				t.Fatal("DAC restore ignored stored pan")
+-			}
+-			readValue.TrackPan.Left = false
+-			if driver.Snapshot().Voices[6].Pan != before.Voices[6].Pan {
+-				t.Fatal("read projection aliases canonical voice")
++			if out.Intents[0].Kind != "ym" || out.Intents[0].Value != 117 || e.r.Snapshot().PCM.Global.RestorePan != 64 {
++				t.Fatal("FM1 automatic pan changed the wrong route/value")
++			}
++			if _, err = tx.Snapshot(); err == nil {
++				t.Fatal("closed working-voice getter remained available")
+ 			}
+ 		})
+ 	}

@@ -2,6 +2,8 @@
 
 `BeginPanRouting` 覆盖普通 voice 声像入口与乐器 load 的声像尾部。输入使用当前 FM channel、claimed 状态和唯一 score owner 的完整 `score.Pan`，保留左右声道、AMS 和 FMS。instrument 入口要求上游 claimed guard 已通过；普通 voice 入口包含该 guard。
 
+`PanRequest.Pan` 表示 voice 保存字段，普通 voice 可通过 `WritePan` 提供当次 YM 调用值；省略时保持原行为。Begin 复制该值，之后不保留调用方指针。自动声像的 YM 值与保存字段可以不同，DAC 重定向始终读取保存字段；instrument tail 自行加载字段，拒绝不同的外部覆盖值。接线与补充原版证据见 [OBSERVED_PCM.md](OBSERVED_PCM.md)。
+
 第六声道在实际持有辅助总线后读取当前 PCM request marker。整个字节非零即更新 PCM 的自然结束恢复声像；为零则释放总线、恢复中断状态，再进入普通 YM B4 写入。此处仅等待 BUSACK，不读取或等待 busy mailbox。marker 与恢复声像仍分别由 `pcmcommands.State.Global.StartMarker` 和 `RestorePan` 唯一持有，mixed 接口不缓存副本。
 
 ```go

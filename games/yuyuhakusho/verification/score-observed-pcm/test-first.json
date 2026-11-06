@@ -1,0 +1,11 @@
+{
+  "test_first": true,
+  "production_exists": false,
+  "production_file": "games/yuyuhakusho/audio/scoreclock/observed_pcm.go",
+  "files": {
+    "games/yuyuhakusho/audio/scoreclock/observed_pcm_e2e_test.go": "148e78719ed25ed529088543638a48764fd18bae89ce7f87220ebad07cd040f0",
+    "games/yuyuhakusho/verification/score-observed-pcm/native-pan-value-full.json.gz": "2a9e2851b81d86407c633943c9119c5b08525af956da235d1c9aefe2acf66fca",
+    "scripts/yuyuhakusho/score-clock-pan-value-capture.py": "3a8abc4fd602cb57b7945b67098f768fb2e372ab8cbd741c147ab26066634431",
+    "docs/research/md-yuyuhakusho/SCORE_OBSERVED_PCM_FAILURES.md": "9160ee9660653d1d153e482b7fd87319e72e862171c752e37be872f90bc3a53c"
+  }
+}

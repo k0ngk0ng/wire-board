@@ -1,0 +1,407 @@
+package scoreclock_test
+
+import (
+	"encoding/json"
+	"errors"
+	"fmt"
+	"reflect"
+	"testing"
+
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/mixed"
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/resourcebridge"
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score"
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score/param"
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock"
+)
+
+func observedPCMLibrary(t *testing.T) *resourcebridge.Library {
+	t.Helper()
+	library, err := resourcebridge.DecodeWithInstrumentWork(parserClockUnpack(t, "../../data/audio-score.json.gz"), parserClockUnpack(t, "../../data/audio-pcm-payloads.json.gz"), parserClockUnpack(t, "../../data/audio-score-parser-work.json.gz"), parserClockUnpack(t, "../../data/audio-score-instrument-work.json.gz"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	return library
+}
+
+type observedMusicRow struct {
+	Input struct {
+		Descriptor         struct{ ID string }
+		Marker, Flags, Pan uint8
+	}
+	Steps [][]uint64
+	End   scoreclock.Clock
+}
+
+func observedMusicCases(t *testing.T) []observedMusicRow {
+	t.Helper()
+	var f struct{ Cases []observedMusicRow }
+	if err := json.Unmarshal(parserClockUnpack(t, "../../verification/score-clock-music/native-music-full.json.gz"), &f); err != nil {
+		t.Fatal(err)
+	}
+	return f.Cases
+}
+
+func observedDACState(t *testing.T, c *score.Catalog, descriptor string) score.State {
+	t.Helper()
+	var data struct {
+		Scores []struct {
+			ID     uint8
+			Voices []struct {
+				Channel  string
+				Timeline struct {
+					Prefix, Cycle []struct {
+						Kind  string
+						Pitch struct {
+							Kind, DescriptorID string
+							Descriptor         string `json:"descriptor_id"`
+						}
+					}
+				}
+			}
+		}
+	}
+	if err := json.Unmarshal(parserClockUnpack(t, "../../data/audio-score.json.gz"), &data); err != nil {
+		t.Fatal(err)
+	}
+	for _, s := range data.Scores {
+		for _, voice := range s.Voices {
+			if voice.Channel != "dac" {
+				continue
+			}
+			for section, events := range [][]struct {
+				Kind  string
+				Pitch struct {
+					Kind, DescriptorID string
+					Descriptor         string `json:"descriptor_id"`
+				}
+			}{voice.Timeline.Prefix, voice.Timeline.Cycle} {
+				for index, event := range events {
+					if event.Kind != "note" || event.Pitch.Kind != "dac" || event.Pitch.Descriptor != descriptor {
+						continue
+					}
+					d, err := score.New(c)
+					if err != nil {
+						t.Fatal(err)
+					}
+					if _, err = d.Advance(score.Input{SoundID: s.ID}); err != nil {
+						t.Fatal(err)
+					}
+					state := d.Snapshot()
+					for i := range state.Voices {
+						state.Voices[i].Active = false
+					}
+					state.TempoPeriod, state.TempoRemaining = 0, 0
+					v := &state.Voices[0]
+					v.Active, v.Cycle, v.EventIndex, v.NoteWait = true, section == 1, index, 1
+					v.Pan = panValue(181)
+					return state
+				}
+			}
+		}
+	}
+	t.Fatal("formal DAC note absent", descriptor)
+	return score.State{}
+}
+
+func TestObservedPCMActualScoreMusicStages(t *testing.T) {
+	library := observedPCMLibrary(t)
+	rows := observedMusicCases(t)
+	seen := map[string]bool{}
+	for _, native := range rows {
+		if native.Input.Pan != 181 {
+			continue
+		}
+		pair := [2]uint8{native.Input.Marker, native.Input.Flags}
+		if pair != [2]uint8{0, 0} && pair != [2]uint8{1, 33} && pair != [2]uint8{0, 64} && pair != [2]uint8{128, 0} {
+			continue
+		}
+		key := fmt.Sprintf("%s-m%d-f%d", native.Input.Descriptor.ID, pair[0], pair[1])
+		if seen[key] {
+			continue
+		}
+		seen[key] = true
+		t.Run(key, func(t *testing.T) {
+			before := observedDACState(t, library.Catalog(), native.Input.Descriptor.ID)
+			d, err := score.Restore(library.Catalog(), before)
+			if err != nil {
+				t.Fatal(err)
+			}
+			legacy, err := score.Restore(library.Catalog(), before)
+			if err != nil {
+				t.Fatal(err)
+			}
+			e, _ := newMusicIO(t, pair[0], pair[1])
+			var origin scoreclock.Clock
+			for _, step := range native.Steps {
+				if step[0] == 0x376ac {
+					origin = scoreclock.Clock{Cycle: step[1], Refresh: step[2]}
+					break
+				}
+			}
+			if origin == (scoreclock.Clock{}) {
+				t.Fatal("original phase boundary absent")
+			}
+			var stage *scoreclock.ObservedPCMStage
+			var feedback score.DACFeedback
+			var end scoreclock.Clock
+			reads, writes := 0, 0
+			out, err := d.AdvanceObserved(score.ObservedInput{}, score.ObservedHooks{
+				Operation: func(op score.Operation) error {
+					if op.Kind == score.OpChipWrite && op.Writes[0].Kind == "dac" {
+						writes++
+						if stage == nil {
+							return errors.New("intent preceded live feedback")
+						}
+						return stage.Consume(op)
+					}
+					if op.Kind == score.OpLeave && op.Routine == score.RoutineNote && op.VoiceSlot == 0 {
+						if stage == nil {
+							return errors.New("note returned without live feedback")
+						}
+						var err error
+						end, err = stage.Finish()
+						return err
+					}
+					return nil
+				}, ReadDAC: func(read score.FeedbackRead) (score.DACFeedback, error) {
+					reads++
+					if read.Kind != score.ReadBlockedPriority || read.TrackPan != before.Voices[0].Pan || read.WritePan != read.TrackPan {
+						return score.DACFeedback{}, errors.New("full current voice pan was lost")
+					}
+					var err error
+					stage, err = scoreclock.BeginObservedPCM(origin, read, "", e, e, scoreclock.Limits{})
+					if err != nil {
+						return score.DACFeedback{}, err
+					}
+					if len(e.publications) != 0 {
+						return score.DACFeedback{}, errors.New("feedback preemptively published")
+					}
+					feedback = stage.Feedback()
+					return feedback, nil
+				},
+			})
+			if err != nil || end != native.End || reads != 1 {
+				t.Fatal("actual observed music phase failed", end, native.End, reads, err)
+			}
+			want, err := legacy.Advance(score.Input{DAC: feedback})
+			if err != nil || !reflect.DeepEqual(out, want) || d.Snapshot() != legacy.Snapshot() {
+				t.Fatal("event connection changed canonical score behavior", err)
+			}
+			accepted := !feedback.Blocked && feedback.Priority == 0
+			if accepted && (writes != 1 || len(e.publications) != 1 || e.r.Snapshot().PCM.Global.MusicPan != 181) || !accepted && (writes != 0 || len(e.publications) != 0) {
+				t.Fatal("actual accepted intent was lost/replayed or rejected one published")
+			}
+			if _, err = stage.Finish(); !errors.Is(err, scoreclock.ErrObservedPCMSequence) {
+				t.Fatal("finished event stage reused")
+			}
+		})
+	}
+	if len(seen) != 24 {
+		t.Fatal("actual formal descriptor/stage coverage incomplete", len(seen))
+	}
+}
+
+func TestObservedPCMActualAutomaticPanStages(t *testing.T) {
+	library := observedPCMLibrary(t)
+	d, err := score.New(library.Catalog())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err = d.Advance(score.Input{SoundID: 0x82}); err != nil {
+		t.Fatal(err)
+	}
+	before := d.Snapshot()
+	for i := range before.Voices {
+		before.Voices[i].Active = false
+	}
+	before.TempoPeriod, before.TempoRemaining = 0, 0
+	v := &before.Voices[6]
+	v.Active, v.NoteOff, v.Claimed, v.NoteWait = true, false, false, 2
+	v.GateTicks, v.GateRemaining = 0, 0
+	v.PitchControl = score.PitchControl{}
+	v.Pan = panValue(181)
+	v.PanDefinition = param.PanDefinition{Mode: param.PanRestartEveryDriverTick, Pattern: "right-left-right-center", StepLimit: 3, Period: 1}
+	v.PanState = param.InitialPanState(v.PanDefinition)
+	var f struct {
+		Cases []struct {
+			Input struct {
+				Channel, Marker, Pan uint8
+				WritePan             uint8 `json:"write_pan"`
+				Origin, Refresh      uint64
+			}
+			End scoreclock.Clock
+		}
+	}
+	if err = json.Unmarshal(parserClockUnpack(t, "../../verification/score-observed-pcm/native-pan-value-full.json.gz"), &f); err != nil {
+		t.Fatal(err)
+	}
+	count := 0
+	for _, row := range f.Cases {
+		if row.Input.Channel != 6 || row.Input.Pan != 181 || row.Input.WritePan != 117 {
+			continue
+		}
+		count++
+		t.Run(fmt.Sprintf("marker%d", row.Input.Marker), func(t *testing.T) {
+			driver, err := score.Restore(library.Catalog(), before)
+			if err != nil {
+				t.Fatal(err)
+			}
+			e, _ := newPanMixed(t, row.Input.Marker, 0)
+			var stage *scoreclock.ObservedPCMStage
+			var end scoreclock.Clock
+			var readValue score.FeedbackRead
+			out, err := driver.AdvanceObserved(score.ObservedInput{}, score.ObservedHooks{
+				Operation: func(op score.Operation) error {
+					if op.Kind == score.OpChipWrite && stage != nil {
+						return stage.Consume(op)
+					}
+					if op.Kind == score.OpLeave && op.Routine == score.RoutinePan {
+						if stage == nil {
+							return errors.New("automation returned without feedback")
+						}
+						var err error
+						end, err = stage.Finish()
+						return err
+					}
+					return nil
+				}, ReadDAC: func(read score.FeedbackRead) (score.DACFeedback, error) {
+					readValue = read
+					if read.Kind != score.ReadPanRedirect || read.TrackPan != panValue(181) || read.WritePan != panValue(117) {
+						return score.DACFeedback{}, errors.New("stored and requested pan conflated")
+					}
+					var err error
+					stage, err = scoreclock.BeginObservedPCM(scoreclock.Clock{Cycle: row.Input.Origin, Refresh: row.Input.Refresh}, read, "voice", e, e, scoreclock.Limits{})
+					if err != nil {
+						return score.DACFeedback{}, err
+					}
+					return stage.Feedback(), nil
+				},
+			})
+			if err != nil || end != row.End || len(out.Intents) != 1 || driver.Snapshot().Voices[6].Pan != before.Voices[6].Pan {
+				t.Fatal("actual automatic pan phase failed or changed pan owner", end, row.End, err)
+			}
+			if row.Input.Marker == 0 {
+				if out.Intents[0].Kind != "ym" || out.Intents[0].Value != 117 {
+					t.Fatal("YM ignored requested automatic pan")
+				}
+			} else if out.Intents[0].Kind != "dac-pan" || e.r.Snapshot().PCM.Global.RestorePan != 181 {
+				t.Fatal("DAC restore ignored stored pan")
+			}
+			readValue.TrackPan.Left = false
+			if driver.Snapshot().Voices[6].Pan != before.Voices[6].Pan {
+				t.Fatal("read projection aliases canonical voice")
+			}
+		})
+	}
+	if count != 4 {
+		t.Fatal("automatic pan source profiles incomplete", count)
+	}
+}
+
+func TestObservedPCMPanCallValueOriginalAndDetached(t *testing.T) {
+	var f struct {
+		Cases []struct {
+			Input struct {
+				ID                   string
+				Channel, Marker, Pan uint8
+				WritePan             uint8 `json:"write_pan"`
+				Origin, Refresh      uint64
+			}
+			Events     []instrumentNativeEvent
+			End        scoreclock.Clock
+			RestorePan uint8 `json:"restore_pan"`
+		}
+	}
+	if err := json.Unmarshal(parserClockUnpack(t, "../../verification/score-observed-pcm/native-pan-value-full.json.gz"), &f); err != nil {
+		t.Fatal(err)
+	}
+	if len(f.Cases) != 48 {
+		t.Fatal("supplemental original pan scope incomplete")
+	}
+	for _, row := range f.Cases {
+		t.Run(row.Input.ID, func(t *testing.T) {
+			e, _ := newPanMixed(t, row.Input.Marker, 0)
+			value := panValue(row.Input.WritePan)
+			tx, err := scoreclock.BeginPanRouting(scoreclock.Clock{Cycle: row.Input.Origin, Refresh: row.Input.Refresh}, scoreclock.PanRequest{Entry: "voice", Channel: row.Input.Channel, Pan: panValue(row.Input.Pan), WritePan: &value}, e, e, scoreclock.Limits{})
+			if err != nil {
+				t.Fatal(err)
+			}
+			value = score.Pan{}
+			effect, ok := tx.ExpectedEffect()
+			if !ok {
+				t.Fatal("normal call value effect absent")
+			}
+			if err = tx.Apply(effect); err != nil {
+				t.Fatal(err)
+			}
+			end, err := tx.Finish()
+			if err != nil || end != row.End || e.r.Snapshot().PCM.Global.RestorePan != row.RestorePan || !reflect.DeepEqual(e.trace, panAccesses(t, row.Events)) {
+				t.Fatal("source call value/field routing differs", end, row.End, err)
+			}
+		})
+	}
+	e, _ := newPanMixed(t, 0, 0)
+	value := panValue(117)
+	if _, err := scoreclock.BeginPanRouting(scoreclock.Clock{}, scoreclock.PanRequest{Entry: "instrument", Channel: 6, Pan: panValue(181), WritePan: &value}, e, e, scoreclock.Limits{}); err == nil {
+		t.Fatal("instrument field load replaced by external call value")
+	}
+}
+
+func TestObservedPCMRejectsForeignOrRepeatedIntents(t *testing.T) {
+	for _, scenario := range []string{"wrong-voice", "wrong-position", "wrong-offset", "wrong-order", "wrong-kind", "wrong-pan", "duplicate", "early-finish", "external-error"} {
+		t.Run(scenario, func(t *testing.T) {
+			e, cfg := newMusicIO(t, 0, 0)
+			before := e.r.Snapshot()
+			r, err := mixed.Restore(cfg, before)
+			if err != nil {
+				t.Fatal(err)
+			}
+			x := &musicIO{panIO: &panIO{instrumentIO: &instrumentIO{r: r}}}
+			read := score.FeedbackRead{Kind: score.ReadBlockedPriority, VoiceSlot: 0, DescriptorID: musicDescriptor(t, cfg).ID, Pan: score.Stereo{Left: true}, TrackPan: panValue(181), WritePan: panValue(181)}
+			stage, err := scoreclock.BeginObservedPCM(scoreclock.Clock{}, read, "", x, x, scoreclock.Limits{})
+			if err != nil {
+				t.Fatal(err)
+			}
+			intent, ok := stage.ExpectedIntent()
+			if !ok {
+				t.Fatal("accepted expected intent absent")
+			}
+			copy, _ := stage.ExpectedIntent()
+			copy.Pan.Left = false
+			op := score.Operation{Version: 1, Kind: score.OpChipWrite, VoiceSlot: 0, Writes: [2]score.Intent{intent}, WriteCount: 1}
+			switch scenario {
+			case "wrong-voice":
+				op.VoiceSlot = 6
+			case "wrong-position":
+				op.Position.Valid = true
+			case "wrong-offset":
+				op.IntentOffset++
+			case "wrong-order":
+				op.Writes[0].Order++
+			case "wrong-kind":
+				op.Writes[0].Kind = "dac-pan"
+			case "wrong-pan":
+				op.Writes[0].Pan.Left = false
+			case "duplicate":
+				if err = stage.Consume(op); err != nil {
+					t.Fatal(err)
+				}
+			case "early-finish":
+				if _, err = stage.Finish(); !errors.Is(err, scoreclock.ErrObservedPCMSequence) {
+					t.Fatal("premature stage finish")
+				}
+			case "external-error":
+				x.failPublication = true
+			}
+			if err = stage.Consume(op); err == nil {
+				t.Fatal("wrong/repeated/failed actual event accepted")
+			}
+			if _, err = stage.Finish(); !errors.Is(err, scoreclock.ErrObservedPCMSequence) {
+				t.Fatal("poisoned event stage continued")
+			}
+			if !reflect.DeepEqual(before, e.r.Snapshot()) {
+				t.Fatal("failed detached hook changed original owner")
+			}
+		})
+	}
+}
