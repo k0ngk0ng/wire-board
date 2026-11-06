@@ -1,6 +1,36 @@
-# PC 初代资源
+# PC 初代完整资源
 
-资源版本为 `pvz/classic-v1/`，来自归档的 PC 1.0.0.1051 `main.pak`。程序和原始包仅保存在工作区研究缓存，不作为浏览器发布资源。下载地址、样本身份和局限见 [取证报告](../../../docs/research/pvz/README.md)。这些图像和音效是原版资源，来源记录不表示新增或扩大其许可。
+当前版本为 `pvz/classic-v2/`，保留旧 `classic-v1/`。完整目录包含原样本 53 个植物定义（49 个常规种子及 4 个小游戏模板）、33 种僵尸、6 个场景，以及割草机、拾取物、弹道、墓碑、梯子、冰道和原版受损图层。运行清单为 `public/pvz/classic-v2/manifest.json`，逐文件摘要为 `manifest-v2.json`。
+
+v2 使用去重的原图层 WebP 和独立 `.pvzr` 载荷。`.pvzr` 是 gzip 压缩的 JSON，清单明确 `compression: "gzip"`、`format: "pvz-reanimation-json-v1"`，MIME 为 `application/octet-stream`，不是通用 CDN 的 `.gz` 旁车。所有公开路径使用安全字符；原始资源名含空格时采用 slug 和摘要后缀，矩阵引用同步更新。
+
+解压后的片段保存每个原始姿态的图层、透明度及 Canvas 标准 `[a,b,c,d,e,f]` 矩阵。射手的身体／头部独立动画、三线与裂荚附属头、植物僵尸头、旗帜、僵王驾驶员和雪橇前后车壳均在合成数据中；植物受损图使用原始替换图片。`bounds` 保留完整有效图像边界，不能按普通格子裁掉跳跃、车辆或僵王。僵王使用场景坐标原点，蹦极携带植物使用原版独立垂直绘制偏移。
+
+`byScene`／`byUnit` 负责场景和单位懒加载；`byPreview` 只包含独立小图，卡册不加载整套动作。相同原图层跨单位复用。生成过程曾产生约 271 MB 的逐帧中间图集，已在未发布的 v2 内清理并改为约 27 MB 的基础原图层数据；旧 v1 与原始研究源保留。
+
+166 个原版 OGG 音效逐个与 PAK 内容比对，字节一致。经典音乐另由原始 MO3 离线渲染为 19 个无损 FLAC：菜单、选卡、草地、夜晚、泳池、浓雾、屋顶、Boss 与各分轨，并包含夜晚原曲高潮变奏。`music` 清单记录源 order、通道、PCM SHA-256、原前奏与循环采样帧。夜晚 order 92 是原版有意的静音待机段，已明确标记；不能以有声别曲替代。恢复范围、工具与重跑命令见[音乐取证](../../../docs/research/pvz/MUSIC.md)。
+
+v2 从空目录重复生成时使用下面的流程。Pillow 环境建立方法见下方；BGM 解码依赖仅放在工作区研究缓存，不随游戏发布。
+
+```sh
+.local/pvz-research/venv/bin/python -B games/pvz/build/native_classic.py \
+  .local/pvz-research/extracted \
+  .local/pvz-rebuild/assets/public/pvz/classic-v2 \
+  --audit .local/pvz-rebuild/native-audit.json
+.local/pvz-research/venv/bin/python -B games/pvz/build/music_classic.py \
+  --output .local/pvz-rebuild/assets/public/pvz/classic-v2 \
+  --report .local/pvz-rebuild/music-render.json
+.local/pvz-research/venv/bin/python -B games/pvz/build/verify_native.py \
+  --root .local/pvz-rebuild/assets/public/pvz/classic-v2 \
+  --output .local/pvz-rebuild/native-validation.json
+.local/pvz-research/venv/bin/python -B games/pvz/build/verify_music.py \
+  --root .local/pvz-rebuild/assets/public/pvz/classic-v2 \
+  --output .local/pvz-rebuild/music-validation.json
+```
+
+## 保留的 v1 资源
+
+v1 资源版本为 `pvz/classic-v1/`，来自归档的 PC 1.0.0.1051 `main.pak`。程序和原始包仅保存在工作区研究缓存，不作为浏览器发布资源。下载地址、样本身份和局限见 [取证报告](../../../docs/research/pvz/README.md)。这些图像和音效是原版资源，来源记录不表示新增或扩大其许可。
 
 `public/pvz/classic-v1/manifest.json` 为游戏运行清单。`manifest.json` 为发布文件的大小和 SHA-256 清单。共有 43 段透明动画、1,239 帧、8 段原版音效，以及白天草坪、铲子、卡包、弹丸与阴影图片。
 
@@ -59,4 +89,4 @@ python3 -B games/pvz/build/extract_classic.py \
   --output docs/research/pvz/evidence/asset-validation.json
 ```
 
-提取和生成命令拒绝已经存在的输出目录，防止覆盖。发布继续遵守仓库 OSS/CDN 规则，客户端图片、音频和 Wasm 不进入正式服务器包。本轮仅生成本地资源，尚未上传 OSS。
+v1 提取和生成命令拒绝已经存在的输出目录，防止覆盖；v2 原图层转换支持在本次生成目录内刷新清单与派生载荷，并清理其未引用中间文件。发布继续遵守仓库 OSS/CDN 规则，客户端图片、音频和 Wasm 不进入正式服务器包；线上上传、回读验证和剥离由统一发布流水线完成。

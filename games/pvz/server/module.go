@@ -33,6 +33,14 @@ type state struct {
 	Applied   []Applied    `json:"applied"`
 }
 type View struct {
+	Map         engine.MapInfo       `json:"map"`
+	Visibility  engine.Visibility    `json:"visibility"`
+	WireMode    string               `json:"wireMode"`
+	Pickups     []engine.Pickup      `json:"pickups"`
+	Graves      []engine.Grave       `json:"graves"`
+	Craters     []engine.Crater      `json:"craters"`
+	Terrain     []engine.Terrain     `json:"terrain"`
+	Ladders     []engine.Ladder      `json:"ladders"`
 	Protocol    int                  `json:"protocol"`
 	Options     engine.Options       `json:"options"`
 	Epoch       string               `json:"epoch"`
@@ -71,6 +79,17 @@ type delta struct {
 	Applied    []Applied            `json:"applied"`
 	Revision   uint64               `json:"revision"`
 	Digest     string               `json:"digest"`
+}
+
+// Override immutable fields in the embedded state so ordinary fog updates send
+// only the necessary authority projection, without repeating map/catalog data.
+type projectionPatch struct {
+	engine.State
+	Map           *engine.MapInfo `json:"map,omitempty"`
+	Options       *engine.Options `json:"options,omitempty"`
+	BaseEpoch     *string         `json:"baseEpoch,omitempty"`
+	InitialRandom *uint32         `json:"initialRandom,omitempty"`
+	Projection    *bool           `json:"projection,omitempty"`
 }
 
 func Module() gameapi.Module {
@@ -126,7 +145,7 @@ func start(ctx gameapi.Context, raw json.RawMessage) (gameapi.Match, error) {
 }
 func decode(m gameapi.Match) (state, error) {
 	var s state
-	if m.Schema != 1 || strict(m.Data, &s) != nil || s.ServerAt < 0 || s.Remainder < 0 || s.Remainder >= engine.TickMS || len(s.Applied) > maxApplied {
+	if m.Schema != 2 || strict(m.Data, &s) != nil || s.Runtime.Projection || s.ServerAt < 0 || s.Remainder < 0 || s.Remainder >= engine.TickMS || len(s.Applied) > maxApplied {
 		return s, errors.New("无法读取植物大战僵尸存档")
 	}
 	if err := engine.Validate(s.Runtime); err != nil {
@@ -219,7 +238,8 @@ func botAction(ctx gameapi.Context, m gameapi.Match) (json.RawMessage, error) {
 	if e != nil {
 		return nil, e
 	}
-	a := engine.BotAction(&s.Runtime, ctx.Actor)
+	visible := engine.ProjectState(s.Runtime, ctx.Actor)
+	a := engine.BotAction(&visible, ctx.Actor)
 	if a == nil {
 		return nil, nil
 	}
@@ -246,9 +266,14 @@ func (s state) canAct(viewer int) bool {
 	return viewer >= 0 && viewer < len(s.Runtime.Players) && (s.Runtime.Phase == "prepare" || s.Runtime.Phase == "battle")
 }
 func (s state) view(viewer int) View {
-	r := s.Runtime
-	return View{Protocol: 1, Options: r.Options, Epoch: r.Epoch, Round: r.Round, Phase: r.Phase, Tick: r.Tick, ServerAt: s.ServerAt, PhaseUntil: s.phaseUntil(), Players: r.Players, Plants: r.Plants, Zombies: r.Zombies, Projectiles: r.Projectiles, Mowers: r.Mowers, Events: r.Events, Rounds: r.Rounds, WinnerTeam: r.WinnerTeam, CanAct: s.canAct(viewer), Catalog: engine.GetCatalog(), Snapshot: r, Revision: s.Revision, Digest: engine.Digest(r), Actor: viewer}
+	r := engine.ProjectState(s.Runtime, viewer)
+	wire := "replay"
+	if r.Map.Fog {
+		wire = "projection"
+	}
+	return View{Protocol: 2, Map: r.Map, Visibility: engine.VisibilityFor(s.Runtime, viewer), WireMode: wire, Pickups: r.Pickups, Graves: r.Graves, Craters: r.Craters, Terrain: r.Terrain, Ladders: r.Ladders, Options: r.Options, Epoch: r.Epoch, Round: r.Round, Phase: r.Phase, Tick: r.Tick, ServerAt: s.ServerAt, PhaseUntil: s.phaseUntil(), Players: r.Players, Plants: r.Plants, Zombies: r.Zombies, Projectiles: r.Projectiles, Mowers: r.Mowers, Events: r.Events, Rounds: r.Rounds, WinnerTeam: r.WinnerTeam, CanAct: s.canAct(viewer), Catalog: engine.GetCatalog(), Snapshot: r, Revision: s.Revision, Digest: engine.Digest(r), Actor: viewer}
 }
+
 func project(m gameapi.Match, viewer int) (any, error) {
 	s, e := decode(m)
 	if e != nil {
@@ -266,6 +291,11 @@ func stream(m gameapi.Match, viewer int, cursor string) (gameapi.StreamViewResul
 	sep := strings.LastIndexByte(cursor, '|')
 	if sep < 0 || cursor[:sep] != s.Runtime.Epoch {
 		return full(), nil
+	}
+	if s.Runtime.Map.Fog {
+		v := s.view(viewer)
+		data := map[string]any{"protocol": 2, "wireMode": "projection", "epoch": v.Epoch, "round": v.Round, "phase": v.Phase, "tick": v.Tick, "serverAt": v.ServerAt, "phaseUntil": v.PhaseUntil, "players": v.Players, "rounds": v.Rounds, "winnerTeam": v.WinnerTeam, "canAct": v.CanAct, "visibility": v.Visibility, "projected": projectionPatch{State: v.Snapshot}, "revision": v.Revision, "digest": v.Digest}
+		return gameapi.StreamViewResult{Data: data, Cursor: next}, nil
 	}
 	seq, e := strconv.ParseUint(cursor[sep+1:], 10, 64)
 	if e != nil || seq > s.Revision {
@@ -289,7 +319,7 @@ func (s state) match() (gameapi.Match, error) {
 		return gameapi.Match{}, e
 	}
 	r := s.Runtime
-	m := gameapi.Match{Schema: 1, Data: raw, Actors: []int{}, Attention: []int{}, TimeoutActors: []int{}, CheckpointKey: r.Epoch + "/" + r.Phase, Log: []string{"共享草坪，独立资源；完成两个回合后比较攻破结果与用时"}}
+	m := gameapi.Match{Schema: 2, Data: raw, Actors: []int{}, Attention: []int{}, TimeoutActors: []int{}, CheckpointKey: r.Epoch + "/" + r.Phase, Log: []string{"共享草坪，独立资源；完成两个回合后比较攻破结果与用时"}}
 	if r.Phase == "prepare" || r.Phase == "battle" {
 		for p := range r.Players {
 			m.Actors = append(m.Actors, p)

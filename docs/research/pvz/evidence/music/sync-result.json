@@ -1,0 +1,102 @@
+{
+  "status": "pass",
+  "runs": [
+    {
+      "blockFrames": 256,
+      "decodedBytes": 2116800,
+      "pcmSHA256": "157d71a01bfa93766a5f8108aca4ca664d7bd8d0b5d49faf91bd034ff4d34693",
+      "events": [
+        {
+          "packed": 0,
+          "order": 0,
+          "row": 0,
+          "bytePosition": 0,
+          "decodeBytePosition": 0,
+          "orderRowPosition": 0
+        },
+        {
+          "packed": 1,
+          "order": 1,
+          "row": 0,
+          "bytePosition": 735232,
+          "decodeBytePosition": 735744,
+          "orderRowPosition": 4128768
+        },
+        {
+          "packed": 2,
+          "order": 2,
+          "row": 0,
+          "bytePosition": 1471488,
+          "decodeBytePosition": 1471488,
+          "orderRowPosition": 4128769
+        }
+      ]
+    },
+    {
+      "blockFrames": 1024,
+      "decodedBytes": 2116800,
+      "pcmSHA256": "157d71a01bfa93766a5f8108aca4ca664d7bd8d0b5d49faf91bd034ff4d34693",
+      "events": [
+        {
+          "packed": 0,
+          "order": 0,
+          "row": 0,
+          "bytePosition": 0,
+          "decodeBytePosition": 0,
+          "orderRowPosition": 0
+        },
+        {
+          "packed": 1,
+          "order": 1,
+          "row": 0,
+          "bytePosition": 733184,
+          "decodeBytePosition": 735744,
+          "orderRowPosition": 4128768
+        },
+        {
+          "packed": 2,
+          "order": 2,
+          "row": 0,
+          "bytePosition": 1470464,
+          "decodeBytePosition": 1471488,
+          "orderRowPosition": 4128769
+        }
+      ]
+    },
+    {
+      "blockFrames": 1,
+      "decodedBytes": 2116800,
+      "pcmSHA256": "157d71a01bfa93766a5f8108aca4ca664d7bd8d0b5d49faf91bd034ff4d34693",
+      "events": [
+        {
+          "packed": 0,
+          "order": 0,
+          "row": 0,
+          "bytePosition": 0,
+          "decodeBytePosition": 0,
+          "orderRowPosition": 0
+        },
+        {
+          "packed": 1,
+          "order": 1,
+          "row": 0,
+          "bytePosition": 735744,
+          "decodeBytePosition": 735744,
+          "orderRowPosition": 4128768
+        },
+        {
+          "packed": 2,
+          "order": 2,
+          "row": 0,
+          "bytePosition": 1471488,
+          "decodeBytePosition": 1471488,
+          "orderRowPosition": 4128769
+        }
+      ]
+    }
+  ],
+  "callbackType": "BASS_SYNC_MUSICPOS | BASS_SYNC_MIXTIME",
+  "parameter": "MAKELONG(0xffff,0)",
+  "coordinate": "BASS_ChannelGetPosition(handle, BASS_POS_BYTE | BASS_POS_DECODE); stereo int16 frames = bytes/4",
+  "ordinaryPositionIsBlockDependent": true
+}

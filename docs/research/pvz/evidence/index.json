@@ -26,6 +26,1326 @@
       "sha256": "7d8bbe5307506967fbec426197eebab8af995ac30da4b42bdb01571a86c61d69"
     },
     {
+      "file": "full/all-plant-definitions.json",
+      "evidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "operation": "read_bytes",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "0b825fdf98e2e2495a3bebc26c81a09d1739d7ae35bbc54ee1f219f378cc70b4"
+    },
+    {
+      "file": "full/all-reanimation-definitions.json",
+      "evidenceID": "ev_71accd825ab69bd5414e44fb65d9c276298c7faca105700bc570fa3d2b91c1c8",
+      "operation": "read_bytes",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "7521c1415af783068602f881543acd9fb8e50e0240e47bb914b9e0ae4eacfb94"
+    },
+    {
+      "file": "full/all-zombie-definitions.json",
+      "evidenceID": "ev_5d906ea59064c18eb9742862bae44019532615fe2e027260fc8585ed0adb398d",
+      "operation": "read_bytes",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "632b818c1c52e7b4aa2fe6e1f43097969868a1a7c03ebb96712165940475cf90"
+    },
+    {
+      "file": "full/attachment-overlay.json",
+      "evidenceID": "ev_47c3e6f3b9ce13e4ac1ed1a6620a4c34ce6a4fbbdc9baed86591ad795073775e",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "ff10546c3dc9abb189d11a9ab59e8ce62d6cacc29b64e8b8f34823434e2d4b5b"
+    },
+    {
+      "file": "full/grid-y.json",
+      "evidenceID": "ev_b096d83a8b8314965e3c4f22fc9faf3bdf941d51fbbdfa85d2e70e98fb9f48f5",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "eb8beab82c434fdac2a9a29d8a399fac4ed1c09e704cfdb41fa056678c5b8bfc"
+    },
+    {
+      "file": "full/head-attachment.json",
+      "evidenceID": "ev_affc5f8da2c372e90eb4bb9dde266011c57bd6877aff4c386809db5541e81063",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "28e98102b74839a370601222accb44c1f844453022ead461273e363154dbccc6"
+    },
+    {
+      "file": "full/mechanisms/board-bobsled-ice.json",
+      "evidenceID": "ev_da8af444b725d0c7b6fc5bbb026d364b3c1f120fbab6903b2aabb35fb1bcb335",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "4ee61037a01b4f1b6a9ad1839d35d270a0bd874b9cd5628108db47b76205b0db"
+    },
+    {
+      "file": "full/mechanisms/board-can-add-grave.json",
+      "evidenceID": "ev_cd22b76b72fb94879f8c86d421439381f64e833750f222f9a7cc515a5eea3767",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "1e1476186c6585965289f5e38228a9fb50b00a3eac8ece0a00d05b760ecffadd"
+    },
+    {
+      "file": "full/mechanisms/board-can-plant.json",
+      "evidenceID": "ev_0c241d342cdab84c44c45dc30c719d78b44b3f5b6293ef9b01809afe99c14969",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "fceabe6d063fcca740dfc00c103c57cb147a577d85238ea28ef675de7e91ea9a"
+    },
+    {
+      "file": "full/mechanisms/board-clear-fog.json",
+      "evidenceID": "ev_433143ba61663285f98389050a861d247d9e4bcc6833d7fa68382d4be53af324",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "257cb5759236eb454a577ae60947fe09891ea0ef9ef85c066099cb91c7e31121"
+    },
+    {
+      "file": "full/mechanisms/board-cob-pair-helper.json",
+      "evidenceID": "ev_c7ffc3a3ab423d262cc348a32e3ccbf2465b0d0769f8e6463eaae39f91e07965",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "9813f127ff92b75437e28bd178dcb9a3e0d0a6b5782644833ab88b182df88fac"
+    },
+    {
+      "file": "full/mechanisms/board-cob-pair.json",
+      "evidenceID": "ev_80e19cf44dcac86a6f83b7ced93f69b403daadaedc0976e04a72f0d6d43bfc12",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "924c9df49c854ab99f849bc33c20dede77a87919be1ad5cff6406c8f845887eb"
+    },
+    {
+      "file": "full/mechanisms/board-current-plant-cost.json",
+      "evidenceID": "ev_fb9eae18608ebfb9ec68c463237c498d3d560687dd623e11fbb6536b862d9bd6",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "15654a7e7f0b6ed4bdb19a757971b7f1530411a424c9438c35905fd8accdcf2f"
+    },
+    {
+      "file": "full/mechanisms/board-explosion.json",
+      "evidenceID": "ev_ac6f8bfe4b1e4124c29459b53c5bfbf97ab9290042cfb26f6ac08b263526ddcd",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "b70e42bf04950abffa59098b68760cf9f72ccd96b2a4fd0d847a0f6579222880"
+    },
+    {
+      "file": "full/mechanisms/board-find-umbrella.json",
+      "evidenceID": "ev_2a200118f740820ccd855c3f2ee5b5d6d0013b267d1a1e7d141c91e396729dee",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "215a0d0351c28d009d3941ba991dd52d735dc7c58453087749e3f62156343e22"
+    },
+    {
+      "file": "full/mechanisms/board-grid-x.json",
+      "evidenceID": "ev_572e7a628250ed7c2b3c245f9638fe61395f847586e8517bb55ee2076f678c31",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "867594c65098bd6cbcd825792d2a47146e00764bf061701c096ca2e2d9055828"
+    },
+    {
+      "file": "full/mechanisms/board-plant-layers.json",
+      "evidenceID": "ev_9ab344591d32f8344533878c00d5ccd330729442d49144107758171f8771e1bd",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "25b1ee5a83b350067556aecfaf2af13304cd38103aa2945c3b9a4d603489756e"
+    },
+    {
+      "file": "full/mechanisms/board-planting-requirements.json",
+      "evidenceID": "ev_6fae4af98925caf999f264bc4174ddbfb5884d6c7bf52b0406dafe0fa779385d",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "7bc0a5c9fe0b0521260d657c7cd2e3df23fcdaa6ea0d161b61ea116c5c5b7fc7"
+    },
+    {
+      "file": "full/mechanisms/board-pot-at.json",
+      "evidenceID": "ev_3a2581f39659782e4150e308b8c01d60714d6dfce703757a5f66216d783c6d2b",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "7653e37eeac1667229f8bb3000baab4410a38d1744795f67543f55e465bf5633"
+    },
+    {
+      "file": "full/mechanisms/board-pumpkin-at.json",
+      "evidenceID": "ev_954e7aa32933a8e5ee4806cbb2866543f9e15dbec7cd7f8d5a10ee2a237bcd25",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "b6cff2da5fd21dfa64cbe9d9f6af3071946a43d87a37aeacf6d7df535a62e9e9"
+    },
+    {
+      "file": "full/mechanisms/board-row-has-zombies.json",
+      "evidenceID": "ev_52612a20c5fee329701d5defdb48cf0d76c7b750b441c7eb66d087c36ed55a5e",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "6b3247b6e3b87c3ae29c10f9798df311861f6e14c669c58958f0ea4f5b0623e4"
+    },
+    {
+      "file": "full/mechanisms/board-row-zombie-type.json",
+      "evidenceID": "ev_c42647501bdfaacb16120463e483539b28bcaebeda8db5c743d4264952fc317c",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "f0cb37dc726b007aa7efb43bdc33f7ac5fb891ef7d6ce90a9570cf6349187d03"
+    },
+    {
+      "file": "full/mechanisms/board-stage-fog.json",
+      "evidenceID": "ev_265e51fbfaeef403a530fc6877358f8db95b0921f26b26fcd69f9460bf3acfc1",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "95e52ba1fdc78ebf4898bb410f227a19db24a3710eb317681d43072e5fd2424d"
+    },
+    {
+      "file": "full/mechanisms/board-stage-graves.json",
+      "evidenceID": "ev_3bcd22351ed8df6a92d105ccd60db8bf5df6d6885078ef468eb7811a465ab7b0",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "c43d91243ce534be0ad49aaa8ec3e9d641f28387fd6ac52df7abda7d92d261f3"
+    },
+    {
+      "file": "full/mechanisms/board-stage-night.json",
+      "evidenceID": "ev_d958f93527689a34b97eddfa7e52aec299dd3e4a0db5b65aa97f2c666ca16b3d",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "bde2ed424663a3041ab2bb279b25ac0ae504fb668e8ea9e0663726e8fdf9f428"
+    },
+    {
+      "file": "full/mechanisms/board-stage-pool.json",
+      "evidenceID": "ev_42a9b0dfa7dc26f638aee00d60239872ca1764f8fcf959839fe2bab12c0e4005",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "7ff0637f2865afede2f5dfeb667e03ffa427bcdf7886b27d28326ada0dc170cd"
+    },
+    {
+      "file": "full/mechanisms/board-stage-roof.json",
+      "evidenceID": "ev_801231e9594eda0c921d3abea3a57db6e4ef3e1900d6db645a80a5ba387eeb5f",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "d160a4ac1b34c3c515bf6d69f28ebf981c501777f967e5b8af2da00ec5e7ea87"
+    },
+    {
+      "file": "full/mechanisms/board-update-fog.json",
+      "evidenceID": "ev_1f8f2902aee32cd2a93f3b8846eddb08804acdf4f37d7bf4fb88978f2f6940d7",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "4dffff636578cd945310b65f419f53860537648a7f57391108a6a328302f14c9"
+    },
+    {
+      "file": "full/mechanisms/bobsled-draw.json",
+      "evidenceID": "ev_5b82e8a485df0858d9d701a933a7b17c9ae672f949e95659d1e1bb89d39d0139",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "c02b81c4704697765b2d0d2d0d891d75e441cdd194c367aed0d7793c7d773f83"
+    },
+    {
+      "file": "full/mechanisms/boss-bungee-containment.json",
+      "evidenceID": "ev_8fc7cb5a8c3964ac8ffb42e07063556604eb71f9b69a464315d9946ce37d9639",
+      "operation": "resolve_containing_procedure",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "254199519150d63faaeca3337086055025c41fa213e0be4ee34936f50681f234"
+    },
+    {
+      "file": "full/mechanisms/boss-bungee-seeded.json",
+      "evidenceID": "ev_764e4d538a1aabc89a99f9691406f3bc13a31266002cc3d451ea0d5397367833",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "60eafe0017699fa7d12a3fd3f50a3d86c287a2df88960848d45fcb61c9f2d079"
+    },
+    {
+      "file": "full/mechanisms/boss-fireball-counter.json",
+      "evidenceID": "ev_3e507165372b2687584f0961c8e6754f0c65179e72ff5cb146c559cc1bdbe50a",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "a8c96b60f5eab27ea3ea96a4e8b001da28750572f1115e7ea62be2f428460142"
+    },
+    {
+      "file": "full/mechanisms/boss-fireball-update.json",
+      "evidenceID": "ev_5f0f08fcad10188cf7f65dfc123096e2e4d439f9a1d7b0784affd439d2cd315f",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "47e19e5a017affff7ad3d98fc2adae14f7228eb98825cc5ccd463eea148cbb55"
+    },
+    {
+      "file": "full/mechanisms/boss-head-spit.json",
+      "evidenceID": "ev_da582888f254ef19e641da0771e368fc95f01eda0562f1845b4ef193bf10154d",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "c6d1026361a8404227d4533c1f2df6bb2582a595355574c0f6ba6fcacdb5d3ec"
+    },
+    {
+      "file": "full/mechanisms/boss-iceball-counter.json",
+      "evidenceID": "ev_286dde46d3f5da8452d6771f44721689461f950cdc38d00517b4600e77b7d240",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "1281f025a5a925c82a39188cb9704ad3474106dcb81b2992b44d4b6e8922f436"
+    },
+    {
+      "file": "full/mechanisms/boss-reanimation.json",
+      "evidenceID": "ev_bd57cd34234df3fc28b198962a5cc340c541d6d055c438cb22097890ccaf0f71",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "53b538c9ca5a6610907a2b2429b6fc79d8b12970aebc909da06594ea93641a67"
+    },
+    {
+      "file": "full/mechanisms/boss-rv.json",
+      "evidenceID": "ev_13f16df24122747af3e98fcfc8a555dbd6590c8c359acd23855392ff48c31b96",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "ef49ce71dc7123d4d91974a2bc52719da9ccbcce90397fce906bd008dfc39b3c"
+    },
+    {
+      "file": "full/mechanisms/boss-spawn.json",
+      "evidenceID": "ev_d580e72c5fac75879295bd394f698e7afc7a6b83a63ca9c2cc3024d64e3ffbd5",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "0398a25bac72afd198c98fb189b1e666b491a6a496c016cf9a97e408272dd33c"
+    },
+    {
+      "file": "full/mechanisms/boss-stomp-contact.json",
+      "evidenceID": "ev_e3d72d077287e2ac12d4dc064d7d0571841ecdccae64cb9d19adab94b0361c2c",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "e947f7e632177d2115218a567d8e41f40f02eed61ce80c3a5a885431e7a4e64c"
+    },
+    {
+      "file": "full/mechanisms/boss-stomp.json",
+      "evidenceID": "ev_432ed545c0510c2389964ccf196e4a78f0f5afd9cf51563a154c4062ab553cc9",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "21103ffc640afef319004c2cf909b6005e5513dd7cfc79602dd55c3e22190aa2"
+    },
+    {
+      "file": "full/mechanisms/boss-update.json",
+      "evidenceID": "ev_473f9528d2545bad31985a4c7f474c8414291e7e4928e9c4d9523c15e298e0eb",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "b26875789043a4c156c7ef66e65a98f56a250c75f2430a5eddf6dde9a6a19f2c"
+    },
+    {
+      "file": "full/mechanisms/bungee-draw-held.json",
+      "evidenceID": "ev_ffd7e3929c2a6a7306d820e1c3163d7b289d01b86352fe226456c9841e139d96",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "eac4703ffcca43ce08bfb8bb066f7e2c1fe6485f365396f752275e4c479d09cb"
+    },
+    {
+      "file": "full/mechanisms/coin-value.json",
+      "evidenceID": "ev_9d08be428fce46a6f655edff8c3d5945ed2f382e3652a2eb9cf194f67b343ccc",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "176d811cd94d901fef723db4f1ede1c156f3d11b4dea229332485986524f6c71"
+    },
+    {
+      "file": "full/mechanisms/music-burst.json",
+      "evidenceID": "ev_4e30c38ed63d7607a9387bfe8f281ccb30053fac985b78ae8d528e35cc6aef86",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "a4a2b19edc13c2ec11e3b65d22beefa64b627a84913e259d2ff8379d7adf2e91"
+    },
+    {
+      "file": "full/mechanisms/music-play-offset.json",
+      "evidenceID": "ev_bc1ca0f7f02d585378d2eeb7cfaff6cd1bc28ba03fe4f53da7805e2107dcbba2",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "4f1598b75b916132b8e9b1553a69e56d9bde139b5fc2a4bedeb89e755ad89f3b"
+    },
+    {
+      "file": "full/mechanisms/music-play.json",
+      "evidenceID": "ev_6e6d9ef1435e122ae803c42485febc4dce09ca0747b9ea1f5a8ac3f0f6c8199a",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "c11a079bafc4e778f07930daeb353165d20b3e64e638d887094a259b724095c1"
+    },
+    {
+      "file": "full/mechanisms/music-setup-channels.json",
+      "evidenceID": "ev_8344638e4d53ac63b893680a4fc1e0c1c22fcfc46f258e359d3c13daaf293c8d",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "b487c3572846bc0f9959042267dbbf9aba0b3029e4edb8feb731efa899cd00cc"
+    },
+    {
+      "file": "full/mechanisms/music-update.json",
+      "evidenceID": "ev_161124d9aa3e1bba551ba52a766f67cc49ad27f6c20eb85fbeda3619eaa36894",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "ac31c157b49fa5a11ab41fd584759928d5932354f29f526e6c353ed34e9cce08"
+    },
+    {
+      "file": "full/mechanisms/plant-abilities-dispatch.json",
+      "evidenceID": "ev_843c0ab69d9706c5d4d4a77783254da7da77804ca870fccc5ac63e691ccf8db9",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "4a87d4a9dcef09daf7dfe4bc0bd0a234497d7f00e799d8d3142b4b6999a36776"
+    },
+    {
+      "file": "full/mechanisms/plant-blover-all.json",
+      "evidenceID": "ev_90b6664779d1e1c1a14ad713c7bcc54359b97e288fee7c9915fce2c7ea173add",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "93ad24a380cb7eaf0e634a2745726b1d6c3f35d45e8f27cdce26b9454cb37a4f"
+    },
+    {
+      "file": "full/mechanisms/plant-blover.json",
+      "evidenceID": "ev_b615129e54edfe68d4d97e27eb2a604e7c3c5bc5b965e7428303c228059d852a",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "88b1aded3c3023bb95c62544b00da0ba50a868be7b11c2fdc5fccf443800c866"
+    },
+    {
+      "file": "full/mechanisms/plant-burn-row.json",
+      "evidenceID": "ev_30c27844d42b01546af8ed16c596f3561aa1dbf680eb489d75a20bd5f4a665c6",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "cc4f4acb628e787ed18a31eb5597860bc7c9493c503a6db26b28aacd502332c3"
+    },
+    {
+      "file": "full/mechanisms/plant-cactus.json",
+      "evidenceID": "ev_7593b8738885a4de1b8df9d8ae481a3e1a1ec8a0411cbbbf31d7e978c10a1f8b",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "fbd01346ef2244eb442bf549a74f82c2a954642e1d94e2e38c0680ce4f0db7ce"
+    },
+    {
+      "file": "full/mechanisms/plant-chomper.json",
+      "evidenceID": "ev_dd28f9b66e79b6aa79a19660c26d76f0c0f8ba90b9be3bdbcffcb6d2eebc8341",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "7504ad3e1d7a918bed0682486e90220875000dad59baa062d9385f223fc294b5"
+    },
+    {
+      "file": "full/mechanisms/plant-cob-fire.json",
+      "evidenceID": "ev_8e5b2a8eecc4bb70878359cd6ce4ff21fc779d5c9aa8f74812807d68a529de47",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "9ac8cc70a0c3d138510138da22ff4726eff5adacd0b4dfd05e36f25e90b041d1"
+    },
+    {
+      "file": "full/mechanisms/plant-cobcannon.json",
+      "evidenceID": "ev_9ccd77cec1f695d099618f0a9644158e5e58584644ac1733631a2642d6d00433",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "0f7a674386bcb9b9f883160b687b154881da62c7a8ecb66d5145c9c9bdc2082b"
+    },
+    {
+      "file": "full/mechanisms/plant-coffeebean.json",
+      "evidenceID": "ev_cd8f668cbc5818356c2e03371d59f55f5592546c276484d99e88f23d58e25513",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "a57a2326832e73fd939a8a7d3846947df1187d9fbd2d5ccdd41347bd56842525"
+    },
+    {
+      "file": "full/mechanisms/plant-cost.json",
+      "evidenceID": "ev_ef106d3d7c44745c084758da5d8f066b7c458d13dfecde16188a888f5cd1eb71",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "1372b40b14dd1b04af1cda4b51cf2e95fa3e5ce4963f49fef1ae92932e8e54a3"
+    },
+    {
+      "file": "full/mechanisms/plant-damage-garlic.json",
+      "evidenceID": "ev_e32f603a84a5c9c5a9326ba5b2f885168acc6e2c942e9ecde756de79677365d2",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "2eef39188c7f844c394679863d5d5b7b019f648a5fd67b75c05dcdc9be8ad1cf"
+    },
+    {
+      "file": "full/mechanisms/plant-damage-nuts.json",
+      "evidenceID": "ev_71cbaaff4a1d5daf8a8b67110d5f9270f2ca93fdc0de5380927e45847edddee2",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "2b5521f262dc7e2c70fb1e03303f785b45fe0683022d93fc5e81c5c2d85db32d"
+    },
+    {
+      "file": "full/mechanisms/plant-damage-pumpkin.json",
+      "evidenceID": "ev_d0ae8deaa31d7923eb9e58f3b14bb2a6bf269059ec2cc499e500a011d6afcada",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "55e83d66bc9f186992f3f03e6ecaf5762f756e3eff1951076ca0902caff919c2"
+    },
+    {
+      "file": "full/mechanisms/plant-damage-range-flags.json",
+      "evidenceID": "ev_b29e13cb7d57d23664bf3346c572c01f90b0cb87f1a803722de05f99e8badd5f",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "57ea07a29e1605bf8e84ef1c73c50589904fead425611481e3f314e868a5d468"
+    },
+    {
+      "file": "full/mechanisms/plant-doomshroom.json",
+      "evidenceID": "ev_0d2acec7d27bd32637ff15d27e315334cf4d7320bf3643736fc31eea6845dd82",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "b9bc413835710506f6241f3a5cda1325b1d8d0ab7d7ca586fd8fc882f2c73c32"
+    },
+    {
+      "file": "full/mechanisms/plant-find-and-fire.json",
+      "evidenceID": "ev_891b6c467e339c8f380bc62b693b982548c2ab62da7233c8e351bcc4555b1a2b",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "28bc64108e823b4a625392cf7900e73b94016eb08aa81f7bedc1204339929d0a"
+    },
+    {
+      "file": "full/mechanisms/plant-fire.json",
+      "evidenceID": "ev_5c3ad94592e47a9a0bb14ab51add547cf72f6128d730209292ea624a89c49fc9",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "e8a4a784165916b88bc1a5a0ddfeb23bee5611edc1456ead0d9d9d5555027ae9"
+    },
+    {
+      "file": "full/mechanisms/plant-goldmagnet-target.json",
+      "evidenceID": "ev_a18ddfb3f04e606a2f9c5b2d98366e3138eee80b5aff60064769c99c28aee0fa",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "50c08c359e686fa62b54693be7dab81ca851c8b8f48b1061d4b7ae1bc0161163"
+    },
+    {
+      "file": "full/mechanisms/plant-goldmagnet-targets.json",
+      "evidenceID": "ev_9cf075c54fac61cf973cbb882b11ccf040666e60881562bc5340faebf7e7e182",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "a6759f29fc19bcd104ef40c06dabe44830efb9b9c51f98890a022170366b9942"
+    },
+    {
+      "file": "full/mechanisms/plant-goldmagnet.json",
+      "evidenceID": "ev_53cb890232f0947188058359fd11a0a145458ef18a06db25ab173fc415c1a3de",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "dd0eed77a15c31ca5b82ffa5b6bb5946196176aff97503cfa1d24c323c24000d"
+    },
+    {
+      "file": "full/mechanisms/plant-gravebuster.json",
+      "evidenceID": "ev_dd5ed512225fadb7d17b0996316ce17fd364f2da19f743b6a5d17d44229e4230",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "aeebc5150a73d17c619b34ef91b7a781777a77679f2d9b91307802a4e1668ca8"
+    },
+    {
+      "file": "full/mechanisms/plant-ice-all.json",
+      "evidenceID": "ev_b5d171e2f56325ea888b6e6dd99fd534bcc738732047d8f4497d148af57a9e80",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "96e401dd34efa9043473f48280920314bcd3e167c54a21440563162b6121bc14"
+    },
+    {
+      "file": "full/mechanisms/plant-imitater.json",
+      "evidenceID": "ev_da5fc8b299eee56b26ab9295edecbb732e5454901c73933c3d627b88cb0d8c6f",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "9302c49323d35eb8f0fc80cf7ecc228ca353cdd7b143c741464b2406f4737843"
+    },
+    {
+      "file": "full/mechanisms/plant-magnet-attack-item.json",
+      "evidenceID": "ev_cfd8ad10f86475f87880fbd134642a6270bd02d4c5fb713ccf6c2ecc02f51dfb",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "12aa74c227ce99ec351eb30803ddc1f6485a268ecd2a08e6a840743e412511e9"
+    },
+    {
+      "file": "full/mechanisms/plant-magnet-free-slot.json",
+      "evidenceID": "ev_7c115f9cc7724226595b2045ccdfd3806999288008451cb34257956c3338c3e4",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "ca6791416f515308a0923578cdfdb108eddbfb6042830418d4bb600b21ab92fd"
+    },
+    {
+      "file": "full/mechanisms/plant-magnetshroom.json",
+      "evidenceID": "ev_a827c84354e7afd6d0fe78e8c40314c7b7465ade58f9f0eb7c299c1b71a78a45",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "70c60c06cda7b40f4e3e2681285891cf17824733b8272b4d315b9dab679a750c"
+    },
+    {
+      "file": "full/mechanisms/plant-potato.json",
+      "evidenceID": "ev_378a8bdf8ced01169c42349f37854322330b02c6f63548a86e1dcf2c53306570",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "1533ee61cf57261bb22f71754498de27ac69419a3c94d2cc3d4dae45288bd176"
+    },
+    {
+      "file": "full/mechanisms/plant-reanimation.json",
+      "evidenceID": "ev_f4b29419c44924a10dcbcc5f62f95a9e7daf412ec3cdb66b657a0435f671be5f",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "b45821ec10cdefdc1ee52f99786669e690b93534b6561965f62505d7e921c0ba"
+    },
+    {
+      "file": "full/mechanisms/plant-refresh-time.json",
+      "evidenceID": "ev_4c865f66931be314bf8f7f01eb22fe6e2e83b407c83d98b812442e9dae3918fb",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "fbbd36b9fc0e9af4099a99e58615ff86f46136f1a3972425780596b1d0f944f1"
+    },
+    {
+      "file": "full/mechanisms/plant-row-damage.json",
+      "evidenceID": "ev_9a6b4fa5e7770600f5552c91f1a3fd6ce27e67c6ce423f7390d21e174ff0a459",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "99da99bc598f91aa442fa0ad2c9d12ef2b66dab65573c85c799a5d98870d46cc"
+    },
+    {
+      "file": "full/mechanisms/plant-scaredyshroom.json",
+      "evidenceID": "ev_bc6e226dc0f93541b1028d35234a206feeb2338ed2304324cb179cd6f168d9a3",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "69983594df797102eae9dc0c83a52470617ad7ccaa3a4e455d73450d608c4f81"
+    },
+    {
+      "file": "full/mechanisms/plant-shooting.json",
+      "evidenceID": "ev_f4a73d3d7b17e155865f328438189e89f80f18f20d6ce62d75bab8e675fafb32",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "bcd4d09d3186b16f739cb211e7f00b6f0f3579c355a848e001005973d23c11e3"
+    },
+    {
+      "file": "full/mechanisms/plant-sleep.json",
+      "evidenceID": "ev_1f84e3276ad6ee541366ddb8e0048f198ae79c39bedf5811642b31739e149df7",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "77acc8f3ce5b97316893f44c027d4c5624e4957a2625b8c608d19e2c81edd141"
+    },
+    {
+      "file": "full/mechanisms/plant-special.json",
+      "evidenceID": "ev_26249238d841754be799302a9daa20e8a54eab1f5b2f3a4876ba15da7418c383",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "fcb1c5fbb586d99ec2cbe3ed2150bb477734f0b0e73eb21269ae7b1a6e445e9b"
+    },
+    {
+      "file": "full/mechanisms/plant-spikeweed.json",
+      "evidenceID": "ev_82fd078c7f7bb80412590f54f90049152a446638a286b7ff15c981b17d5abb34",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "a3d1326788a53b03d5d139bbd027eaad0f6a19b2208e99f9aca3b838e853023d"
+    },
+    {
+      "file": "full/mechanisms/plant-squash-damage.json",
+      "evidenceID": "ev_2feb260f59de09379a015d0985c0f61b740033c5e1fb88467647a8ccecd220f6",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "425e9dbe5315ced8559c6375b20e6d8083aec36ec7aff994186029dea85a8ab7"
+    },
+    {
+      "file": "full/mechanisms/plant-squash-target.json",
+      "evidenceID": "ev_e46e856207dce5354e03567408ede06fb773bfa2894540a07141650a0312bd9d",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "64fa3f9036d29ee58d62772c438dec106ca1a632d896ba4a67f1bcee7cdfcadf"
+    },
+    {
+      "file": "full/mechanisms/plant-squash.json",
+      "evidenceID": "ev_0a9b1255693659627cc036ce37b7469bb658cb046b14c0c6b597b941c95c67ae",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "d9551d4be8b7c6a447845b45e2f82754cc7a8d6f18f50125cd8e92a1edc6513e"
+    },
+    {
+      "file": "full/mechanisms/plant-starfruit-fire.json",
+      "evidenceID": "ev_9fcfa450d0d65e948f99c4373fb2758bda7955470b1911a9c64d3b6c9e804e08",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "c5dac3143bc68236ec80446b70201179942b3d9046ff06e23cb72f1312ff142c"
+    },
+    {
+      "file": "full/mechanisms/plant-starfruit-launch.json",
+      "evidenceID": "ev_95b0ed11170ebfb4d9ae1ea59b8c4290735dadcfb53e79931069a6c1e82a2efd",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "073f9b719cd4eda9d0ff20833ca58e279cf6205b24752db7307203e908b51015"
+    },
+    {
+      "file": "full/mechanisms/plant-starfruit-target.json",
+      "evidenceID": "ev_b525f75466cb3ac8354f1f9cdcfa13800b57ff924bf17833537e2f6dbf939346",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "1aff18468773f3ee90d6172a8ecd10f9a001e2dfaae883432ab7fcbb0fe5b9aa"
+    },
+    {
+      "file": "full/mechanisms/plant-sunshroom.json",
+      "evidenceID": "ev_9e1a5d5f2f1f2ae24335b9d98a73fc0df5b0f394bd2ada84f0045860b5df5554",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "9098da6b834357167c8b749c94ec14e68b3293ccb3405d06a261b702e2b2443a"
+    },
+    {
+      "file": "full/mechanisms/plant-tanglekelp.json",
+      "evidenceID": "ev_28bf54e45d7f88d3ffae7a1cbda345d55dfeb7ea242855d57de8c2de179391cb",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "62f4e968be4d09c1170b9c12020bcc3c9628d2124c13da067f930e5654d3fa9e"
+    },
+    {
+      "file": "full/mechanisms/plant-target-zombie.json",
+      "evidenceID": "ev_576cfe6a4b2efb5970a6d697dec89816c039f08451b94f44b9b8418cb107ce57",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "e06e6bcba52aa2e80939711e60e4416c2c40087aca09007602d807e7f40b9b75"
+    },
+    {
+      "file": "full/mechanisms/plant-threepeater.json",
+      "evidenceID": "ev_d20ee89af9bb5b7dbaff26a8da96fad6778a70fed50d5e3a3310d7b2db005ba7",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "4b001fdd1dadaf5a90b63548ce524f29a6a3c1b2b659c59830cdd285fe46d9a6"
+    },
+    {
+      "file": "full/mechanisms/plant-torchwood.json",
+      "evidenceID": "ev_53c9350f4de22c0139c33dc7e394a8da57b1a2dd7958236f6a302ea5cc036b7a",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "afaf2637e192c49b721125ffa4f85bc0a8720f94f5fffb8328ca5a49b47dbf22"
+    },
+    {
+      "file": "full/mechanisms/plant-umbrella.json",
+      "evidenceID": "ev_28df9174d0583295d09eb5617a1ce41c3b93107fd1e56d06f9a0d50f100b8658",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "f8d72d09cc08941ce9a7e1e5784366a8f9ffb8e60f9b4771c75ba674ba2f792e"
+    },
+    {
+      "file": "full/mechanisms/plant-upgrade-requirements.json",
+      "evidenceID": "ev_2d40523ff6f083ec5bdb3ba8dd4263eb5f52d75efddd141f03280801f92f97fc",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "3558f9b270fedcd5d2f89816f1e27cb3510ef3c764ecd82502d9c0b549553fe2"
+    },
+    {
+      "file": "full/mechanisms/pool-draw.json",
+      "evidenceID": "ev_cde1d99b3071b1dce88588253c235f859d7cbd680e9b9aaa311724ed5f514457",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "7576739ecd82278a5179aef6f50617033d6e7466f23437fe77285721ff360fbb"
+    },
+    {
+      "file": "full/mechanisms/projectile-collision.json",
+      "evidenceID": "ev_6924a9033c737c9e3111024b271ad210f38f8426881cf6570b5734f43d6cbd36",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "b3458377e4cb158b5b2487372d915ed0024e2f3e302c0c99bdcc16bcb7bcd8cd"
+    },
+    {
+      "file": "full/mechanisms/projectile-damage-flags.json",
+      "evidenceID": "ev_f2cbb22fee66b33f39ecbdfae82e418201244041a8b6062fafb16f516a2d732e",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "fb59061e8238c28d45552b207e721856e401848cd6d0e423e570b5916fab0683"
+    },
+    {
+      "file": "full/mechanisms/projectile-find-plant.json",
+      "evidenceID": "ev_119b0a1cff062bcdbb7bef5293c8f90febfda8abe8b3d235dcf5f2e7bcf906cc",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "52bad092556f6f3a4f620920a9f5f11d5bb561f73bf8b1380625a2419ad20f4a"
+    },
+    {
+      "file": "full/mechanisms/projectile-find-zombie.json",
+      "evidenceID": "ev_551cf89abde5752297395a8c70b8e7b29defc152f385ae7add57a7060310c782",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "18a8e3648dfca56ba746a45fdbe3aed291c444a39f5f00b03b31fd3ccca38ee4"
+    },
+    {
+      "file": "full/mechanisms/projectile-impact.json",
+      "evidenceID": "ev_2a36806b3bb7d8595dd9e601cb7382d571c0981d67874f2f1f80d975de585cfa",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "0ea9164e8024360d734d22ae53763434f9508d33deeac2e54ef38ba610c4db39"
+    },
+    {
+      "file": "full/mechanisms/projectile-init.json",
+      "evidenceID": "ev_00bd51b48e6549694febf37406729fac30cdb48062f88deefca6d5110f8ebd24",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "b3c68f426d5b6ab2f1a58eee1eb514774b5b4e1d002de34635dd9a0c8c3a6bae"
+    },
+    {
+      "file": "full/mechanisms/projectile-lob.json",
+      "evidenceID": "ev_51ceb495ba2aa8030a2551c43252e244e3ee0d652bdcd44b71c3e941ad75bf32",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "51205bf54f850b85cce17e90b76d7f1763bafc812eca470bb38646bb60079477"
+    },
+    {
+      "file": "full/mechanisms/projectile-normal.json",
+      "evidenceID": "ev_64a4b772a08e7d0b6cf955e9b5eb30e831e2d13ca641131131f7b2c972f44ecd",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "685d01d16f8c4769050665c00931a65e3b7003784bf4cb2b0062966f8462a326"
+    },
+    {
+      "file": "full/mechanisms/projectile-rect.json",
+      "evidenceID": "ev_303eeab3cb12b76df20034014aac09e20d75086dca076312dd3c9201abd86a4e",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "f99160d3025ccfe4ebb0580165e550ce58d99f615ba92c67dd26a895d881b7b1"
+    },
+    {
+      "file": "full/mechanisms/projectile-splash.json",
+      "evidenceID": "ev_5bb73ef09f584bfb4e87fb292ce074037c30aa211df60878341ba8a8385e1e40",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "0e7dbae409cf0f5e2795551d4d3004738877613dc1271ac6726e6984063226e2"
+    },
+    {
+      "file": "full/mechanisms/projectile-thaw-to-pea.json",
+      "evidenceID": "ev_d99586da9e46739c6aef9b31c4f6fb97d1989cbe3006933b0c6ee619a972e927",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "fa83a82f58cce0f659e4c6930adca19ca8b69128472e1613d04337546ccb5d14"
+    },
+    {
+      "file": "full/mechanisms/projectile-torchwood-fire.json",
+      "evidenceID": "ev_6dfcfbcbb5ca7264c220791178d2fb2b25efa4315e53ffe6321b901ed9e9687b",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "2cf9fcb90e5939a5aa3a01932107af6f920241884bf1294fdf67f65731fb35d2"
+    },
+    {
+      "file": "full/mechanisms/reanimation-frame-time.json",
+      "evidenceID": "ev_ef8c357920ec5b9c21a348de5da72ee42fd5795c692bddd7b746ac19ba50c978",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "9a4018fc3f24baadfc01d1b7604f27e6716f6d591297cf42c7c8e28b7899572c"
+    },
+    {
+      "file": "full/mechanisms/zombie-actions-dispatch.json",
+      "evidenceID": "ev_005d971557b5452aefabfba0a3c8d838d49884b2ec061aa832ab3441beacc275",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "95b314484168b2c0bca03e728e03a77e530d570d178cd18d8fa8806ed789cb48"
+    },
+    {
+      "file": "full/mechanisms/zombie-attach-shield.json",
+      "evidenceID": "ev_da429e613aa248e629b30c4bd1788b4117015419cfe20e6071346e33e9551f3e",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "43c3473492d5f206fcab5c44f2c82a133d207a3b38202e03b94f3617230a46e8"
+    },
+    {
+      "file": "full/mechanisms/zombie-backupdancer.json",
+      "evidenceID": "ev_233bf67bb43c45ce82fa0620602470eedace7e1cbe653b10d8be2d8cc187f8a6",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "410f1e9efc8b091649a38bcdb478819470d81cba9aafe5f8caba30cd23754144"
+    },
+    {
+      "file": "full/mechanisms/zombie-balloon.json",
+      "evidenceID": "ev_12653d5ac1275ee3647f1bb149a554bab2f362a2ec3b248116274a770d948a62",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "4010f7ff310586dd3630f0b502d97e26d4b6ef46e7cb78cea839e36593671c89"
+    },
+    {
+      "file": "full/mechanisms/zombie-bobsled.json",
+      "evidenceID": "ev_5e498404d2462835f290c1ad9342972cf9379cc44be44b4a2977a00e9c33110c",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "39188e63b5f18fdc7072a0284362882cdfb70e7b0faaf739bd45c494f71b214a"
+    },
+    {
+      "file": "full/mechanisms/zombie-body-damage.json",
+      "evidenceID": "ev_207f2f4e7741f1faa6699c3beaa55da7ff8736de8898b506f541a118efc8f902",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "0f4654febec5ed6f27363459edc86229109193474b92539850ad374a4dcecd3a"
+    },
+    {
+      "file": "full/mechanisms/zombie-bungee-steal.json",
+      "evidenceID": "ev_8fa48fab79edcadef71710ebaa00a27c0ffa30b92fe4794cfc12d2bbbfa64516",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "85b0f29e338cf829b9aeb79e8c8941feffafc3690f8ad732d34a47cb3bc3875f"
+    },
+    {
+      "file": "full/mechanisms/zombie-bungee-target.json",
+      "evidenceID": "ev_312ea6126d38a32d1d58ce561b1ef18c0fcd80aa404d34a775de53c3c82f495b",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "7f077d8d717c53ee3a9b62f1ce924383fdf053805954831e9b2adaf117386f83"
+    },
+    {
+      "file": "full/mechanisms/zombie-bungee.json",
+      "evidenceID": "ev_b19a27637a0eed3f394e6fa75afa982fb07df2a73885ed6595316af3b27a373a",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "913b9dd29821f85712eacee44e35843dee65005a027e3802a79934b03d9532c0"
+    },
+    {
+      "file": "full/mechanisms/zombie-burn.json",
+      "evidenceID": "ev_c144c4c4d3908f231bd1e4711001e70b3f0108e1b5b92f5671ba3e395dbf01ab",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "63077b140e1dc18bd39fa080b995123ce90a8b3d909bd1f6377f031aada447be"
+    },
+    {
+      "file": "full/mechanisms/zombie-butter.json",
+      "evidenceID": "ev_c9a9e2c6f57a632de31bf3e16e56be0ad642afb764ab8388f9ff153a04b0f873",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "9d9ee27e89d754de2c8e2381e4e3fbd94031bae58a008e65b28349df4b509830"
+    },
+    {
+      "file": "full/mechanisms/zombie-can-freeze.json",
+      "evidenceID": "ev_9097cafd0cb612ae3b6ecf6e29d13d7c83b23c9eb92585b54f360284a4c0d1af",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "dbe92a4e085b24f6b7f96b8cb40ed0347bc10bffebf2ad53f759578fb53d90c1"
+    },
+    {
+      "file": "full/mechanisms/zombie-can-target-plant.json",
+      "evidenceID": "ev_05e0409c9849878f82eba6694d2f1e0f9982a127668abcd429120e7e4dfea743",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "fcbaa94bd43f9e87dfd01615f6ce4db21c26482dfb27374d51c0ba14f5e5b533"
+    },
+    {
+      "file": "full/mechanisms/zombie-catapult-target.json",
+      "evidenceID": "ev_f4565aa7d186f4c4d785ac4de2a6ea3a5fe3b95537c30bbefc5c6e1af7ff50d0",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "c85d0abd78526c60f32ad00aed1345ec8aec99d501ebacfb559c25bd43193c17"
+    },
+    {
+      "file": "full/mechanisms/zombie-catapult.json",
+      "evidenceID": "ev_33428365bb553fc2a619707e29ead4651112763c70d11d150028454d42ace1b8",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "40126b21e677b80947a9a7ff40bbe0f9a15fa337135bf5c09c326ade1d3d6092"
+    },
+    {
+      "file": "full/mechanisms/zombie-chew-events.json",
+      "evidenceID": "ev_dc5468fc05689463f2dc0ae895539bbde875306f7d235d3c2f62b36082e9aca8",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "1a6ce366827f38179aecdf49ace2d48cc14af2af277d5a5341bdcaa509cbb2b7"
+    },
+    {
+      "file": "full/mechanisms/zombie-chill-eligibility.json",
+      "evidenceID": "ev_78fcd10208122baf0f196632c42bc25259e915909b6ae576d97f306eb2a5f825",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "b23c6b940f361e90dc3d323e6acb3610c1a45e329311de40e74c44611cacf1ef"
+    },
+    {
+      "file": "full/mechanisms/zombie-damage-eligibility.json",
+      "evidenceID": "ev_788c10cea9e44edb33006ce52ea9c149520dd383b0e040eca25a5cc2a0fc2efa",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "756408df5783e3676808abf1cefa87266be8c7796f0b895809772213dad0e2a8"
+    },
+    {
+      "file": "full/mechanisms/zombie-damage-states.json",
+      "evidenceID": "ev_68fd743215cff4431a4f84442a8e780a7e70d00fc2db65e1e53aaa4265eb7fa8",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "edb76ecd6be6d887f6d4e72f257a7a4c3cee2ff91a356c946751fe0a0257b737"
+    },
+    {
+      "file": "full/mechanisms/zombie-dancing.json",
+      "evidenceID": "ev_1ed2212e1ff5fa9dce6f475a3c34905dd4c8a8e07b8be20b384e12bc5e1c5964",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "ba784899280c04854ab2a0f60f9a8a5b3eb2107c4041f8ffd0e9717ab3520bfd"
+    },
+    {
+      "file": "full/mechanisms/zombie-digger.json",
+      "evidenceID": "ev_5bcc9bf1bbad34644f9135038be45232228af77113cfb22e16805fa5416d9c41",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "5f2dea615cfc713435890e8ad9fd1ff19be7fdd200416b086e58251cb473c23a"
+    },
+    {
+      "file": "full/mechanisms/zombie-dolphin.json",
+      "evidenceID": "ev_f33938ffeefc1a92f9236ba4154b06811d1742529fb97719111e923b1428b7c5",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "f848158df84375c43148f5f353d6b0717b0f11466bfb8d3a98d29895ff8cc36d"
+    },
+    {
+      "file": "full/mechanisms/zombie-door-arms.json",
+      "evidenceID": "ev_4cde05cf4e4093ade74ed9cb7e5c6d7e39f3839c3b136fe68194fe8462f477e0",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "1c94172769b7cc7bbf558c67c3991e3cd9d6692d68569adf779f8edf24811345"
+    },
+    {
+      "file": "full/mechanisms/zombie-draw-pos.json",
+      "evidenceID": "ev_dbd96221799d02a3fb2845c90126f77902da5d69bbeec5bbd1d0e305638c2f40",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "28fd5e2375e2cb49db2e1804ba335218cda81560f02eff620a208bc259f294b2"
+    },
+    {
+      "file": "full/mechanisms/zombie-find-plant.json",
+      "evidenceID": "ev_4a030b0a644376269bcfc03c17362c8498ebab46438e8f3d7bbafc9c8826e20c",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "18f5152e9cf2a93c1ad4883df32fce62576074c7a7b3801aed2a0061c6b60450"
+    },
+    {
+      "file": "full/mechanisms/zombie-gargantuar.json",
+      "evidenceID": "ev_eb3032d217f42ad0734d4aeb6438d15e0a4ab7ab3e6aa70d8f97e154b970238b",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "1474475ed0c90ca6fada48da4ceccd6973923cc1b95a4dffcfd783f6f39af649"
+    },
+    {
+      "file": "full/mechanisms/zombie-garlic-reaction.json",
+      "evidenceID": "ev_32b6b32f765fb62afc2c1aa74bf755370ac9173b66f5e6a3dc1f12cfffee367c",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "462dfa92e39da980db0c067a48afdd62c3cf1fd9e29687012007d9e65c6a05d3"
+    },
+    {
+      "file": "full/mechanisms/zombie-gatlinghead.json",
+      "evidenceID": "ev_821d1851be9d24015620908195b1b7c33177ffe9666bd762651c9122aeda5f41",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "36876b4514378f52d6bb2bb27e73f3f9edf0c512780b4c591dde90bb0a85ce4e"
+    },
+    {
+      "file": "full/mechanisms/zombie-hypnosis.json",
+      "evidenceID": "ev_5731e4c7fdecc66475be9e9455785efd840a53510c61403db23d67587f0bb21d",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "e1b1b103e5e3ae5570edffdb2a02a3425fb88ca26bc25acdd41aa40015370c48"
+    },
+    {
+      "file": "full/mechanisms/zombie-ice-trap.json",
+      "evidenceID": "ev_ab95aea69523def1676a88739d6ef51373a415be865013a2791ae3b9935e5292",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "80a995f4d700586b9ce02100ebc275abca26e386e47b7815f8ea350bf9798264"
+    },
+    {
+      "file": "full/mechanisms/zombie-imp.json",
+      "evidenceID": "ev_ded8828179feabf2c0c3015bc35a75d1849032fa29db96f0efeef8e94d0fc498",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "bc063d5cf09d1af2736e3aebf41a8f2ebf146d7cc9a4dcdac34cb3f252690c4a"
+    },
+    {
+      "file": "full/mechanisms/zombie-jackbox.json",
+      "evidenceID": "ev_1fac396fb526396bb39ea2c563e0e246f173d75725c5a66ffb7e1f1290e52dd2",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "e0f28f6ad4d19a792e95a6f9bf800ad77eddb112a9946a9e0178717479b70909"
+    },
+    {
+      "file": "full/mechanisms/zombie-jalapenohead.json",
+      "evidenceID": "ev_121ba759290bee57ca771504537ec143341ace531e6995b24ab5a4de9ab863a5",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "5233613cac3907e6755754766cc174aaf7045336b9a4c504c730f35fa6bb8208"
+    },
+    {
+      "file": "full/mechanisms/zombie-ladder.json",
+      "evidenceID": "ev_f1120d45d664416d4ebb30bc0487b55f8172a3667c2e68b568d3541bc8fdde12",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "0dcaae77e8c7d30bc58f08b8c67a1c92c70184b38d0a9bf0ece028c664e5069c"
+    },
+    {
+      "file": "full/mechanisms/zombie-moving-chilled-speed.json",
+      "evidenceID": "ev_f049f52ffef07dc95eeee700ac3a8a2ede0f24de120e657a1e8ef3b2fbe6e0ec",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "e17839a1487194b39d70a50c7ab75c9839d0dd730a4fdbdbb7403753d00ad3f5"
+    },
+    {
+      "file": "full/mechanisms/zombie-newspaper.json",
+      "evidenceID": "ev_a5225fa8139c1adac99407b3804bc7ec69169787c6ee433dda874d0aa8787f61",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "40934d7846658aca86fb1dad453a0ebfc24652287d7fe75cec149f2d17df4860"
+    },
+    {
+      "file": "full/mechanisms/zombie-peahead.json",
+      "evidenceID": "ev_97b241da32b0dbbccb79f25c9479c95e1ea9294ee85ee2a7d48fc4bc9ffaaeb0",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "36e26236016431dfb1528311a032f5d53c8169be8dae941112f10bf0dc1607d8"
+    },
+    {
+      "file": "full/mechanisms/zombie-pogo.json",
+      "evidenceID": "ev_bf421903e434fea35db12a25872a0cf5ab3db6f6bf6e22ec8c9f98f9c061ab90",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "b6e326ad992aea219ce516ebd69cbc1a528adc132b1a16e8b00dbc85a054224d"
+    },
+    {
+      "file": "full/mechanisms/zombie-pole.json",
+      "evidenceID": "ev_9365fa4724699bb7b05b1fb25ce8675ba88cc4b30232bcc1b921ef6c13892b5d",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "552eb2d47ba7169866d3574585f4f38bc6210ff55dfbea7d2c4001a4f839f03d"
+    },
+    {
+      "file": "full/mechanisms/zombie-pool.json",
+      "evidenceID": "ev_bb21b6dd37929e53cd889db5221ffadc1a0ccb8d0cad129dc1fc591f5d6a6ddd",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "69a2a381acfc4b1654571b21a574cc37aa2e7e51ea96f8076e344be08c447597"
+    },
+    {
+      "file": "full/mechanisms/zombie-rise-grave.json",
+      "evidenceID": "ev_3bcb490ad6e5f33fcfbf8631110e15a3a19d30d85495df824cb508f8175ff67d",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "bdb4b73813c96792a09301e7dd4161edbdb739cf8142c163405853372f1db3ca"
+    },
+    {
+      "file": "full/mechanisms/zombie-setup-layers.json",
+      "evidenceID": "ev_42c093f1dc198548cd706e815d576976b6b1d3999a464fc10d29d8e5f91337b5",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "baf95eafc7e8f21e539d44b272eeacc4cc447d91b60874aa04bd6abd64c54e34"
+    },
+    {
+      "file": "full/mechanisms/zombie-shield-damage.json",
+      "evidenceID": "ev_da069588925f28e2f9be7512bae6559b4a8c043c2e25e425ed020f037efe3cc5",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "1d65dfae947bcb781d32d01ec3b48065d6898efec821c4a380ab4e8895c10f0c"
+    },
+    {
+      "file": "full/mechanisms/zombie-snorkel.json",
+      "evidenceID": "ev_294eed1157f1762716d358c1b49ab1b4358986fdbb669ae201d05eb6717333d1",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "05d0a88a0f822a2e6ca52df7c8ccb3171c0c804f456dbf6142d228bf7e048cf9"
+    },
+    {
+      "file": "full/mechanisms/zombie-squashhead.json",
+      "evidenceID": "ev_f00029e2dd909f0c76d45ad54e824fb311ad947def023d3d465aa68cbbecdd10",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "c61f5cc2f9a63e8f766870cf0433e55aceda8cddf3aab502676162ca57099085"
+    },
+    {
+      "file": "full/mechanisms/zombie-summon-dancers.json",
+      "evidenceID": "ev_1578ec96f6478d435e8b230b10fdb4ac300d3575be07a148a7c46433c1040b03",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "635bad973093faa1fa492f0c21945b6c1e82239430d5156ab7939fcd286eaee1"
+    },
+    {
+      "file": "full/mechanisms/zombie-take-damage.json",
+      "evidenceID": "ev_3dee5d0cb1d602b677cb3760b2e9c5844ae02792cd4685e30f013e5e6080ce64",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "bce931ea1b9042a8ab8eb7fc91ff8ff749deae0d30911723184b38a241d4b324"
+    },
+    {
+      "file": "full/mechanisms/zombie-walking.json",
+      "evidenceID": "ev_93c3d76a4793dea0dcd111279aaed8413c6d9836d779dfedd9eb614826557340",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "774701e20ab7e746447b8137600631b4ff2f62ac298d2a8ef159d4fc4f194900"
+    },
+    {
+      "file": "full/mechanisms/zombie-yeti.json",
+      "evidenceID": "ev_7883722b924ef2ffc11847acd2bc8916353e201df511bf9209171a3c42275265",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "d5b3a6617d17e91bd1d9b4f42221d62d2a72c8a849c5d44ad47d81934d707c61"
+    },
+    {
+      "file": "full/mechanisms/zombie-zomboni.json",
+      "evidenceID": "ev_40b6a8faaf5bfac3f2992c660d0477e9b27df0971ea07ce6d58744c67682efa7",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "fbc51cfa22560f65b7e14ea6a70984d683c7ced18574d96396801cfd4ed1df21"
+    },
+    {
+      "file": "full/plant-attack-rect.json",
+      "evidenceID": "ev_68bd733b77738ae76a442c59246d19c91eb03909eed4a7cdfb0af4064b240a9b",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "6f878909b472f67ac943389a4124cf369e2be38439de35e8fdb05c8bc089de94"
+    },
+    {
+      "file": "full/plant-rect.json",
+      "evidenceID": "ev_4df82c031222c5e9d377413486f2772055ad313fce8df041509c326b6f49a032",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "88a61af22ba15c89097eb023f7a62f653417eff0e18476f5214b812a26c5e846"
+    },
+    {
+      "file": "full/row-y.json",
+      "evidenceID": "ev_1a7d069a44c6052709e1e6177fbd11744db38df8a8f416ca9de720c2820040c4",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "6ac6891b2340a7b722f4691218f60959bb42e0a077e3038f5a858a644d5d815c"
+    },
+    {
+      "file": "full/zombie-attack-rect.json",
+      "evidenceID": "ev_2e41f30a5d594f6a1fe6665a0d6ea181bd602c7f2874f46703300c0e7b9ec838",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "5401cb1514efce38c553c6860fcafad24a550c12523f9f56d6c8e1d530a19161"
+    },
+    {
+      "file": "full/zombie-rect.json",
+      "evidenceID": "ev_c27c2a77e15b9b017bccd465ffb699ccfd840dec001c6e46615bd905cbc49e8b",
+      "operation": "procedure_pseudo_code",
+      "authority": "shipped-artifact",
+      "confidence": "observed",
+      "sha256": "7c598e32abf672fbe92ce5403ccf2286dbc9f48f0c18e33c434afbcc7667e340"
+    },
+    {
       "file": "plant-definitions-memory.json",
       "evidenceID": "ev_dc71287f4a873a20c822a0bf6b9c3dea5337f41f1c93ef3b1cbdb775f3f87f9e",
       "operation": "read_bytes",

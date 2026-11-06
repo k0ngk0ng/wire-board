@@ -74,9 +74,10 @@ INIT = r'''(()=>{
 PROBE = r'''(()=>{
  const c=document.querySelector('[data-pvz-canvas]');
  window.__pvzMeasures=[];window.__pvzDraw={frames:0,changed:0,intervals:[]};
+ window.__pvzFocusLog=[];for(const type of ['focus','blur'])window.addEventListener(type,()=>{window.__pvzFocusLog.push({type,at:performance.now(),focused:document.hasFocus(),active:document.activeElement?.outerHTML.slice(0,160),selected:c.__pvzFrame?.selected});if(window.__pvzFocusLog.length>100)window.__pvzFocusLog.shift()});
  const hash=()=>{let a=c.getContext('2d').getImageData(0,0,c.width,c.height).data,h=2166136261;for(let i=0;i<a.length;i+=128)h=Math.imul(h^a[i],16777619);return h>>>0};
  let pending=null,lastAt=0,lastHash=-1;
- c.addEventListener('pointerdown',e=>{pending={at:performance.now(),trusted:e.isTrusted,before:c.__pvzFrame?.lastActionSeq??0,hash:hash()};},{capture:true});
+ c.addEventListener('pointerdown',e=>{pending={at:performance.now(),trusted:e.isTrusted,before:c.__pvzFrame?.lastActionSeq??0,hash:hash(),selected:c.__pvzFrame?.selected,focused:document.hasFocus(),hit:document.elementFromPoint(e.clientX,e.clientY)?.outerHTML.slice(0,200)};window.__pvzPendingInput=pending;},{capture:true});
  function tick(at){const f=c.__pvzFrame,d=window.__pvzDraw;if(f&&f.renderAt!==lastAt){if(lastAt)d.intervals.push(f.renderAt-lastAt);lastAt=f.renderAt;d.frames++;const h=hash();if(h!==lastHash)d.changed++;lastHash=h;if(pending&&f.lastActionSeq>pending.before&&h!==pending.hash){window.__pvzMeasures.push({inputToPixelMS:(f.pixelAt??f.renderAt)-pending.at,trusted:pending.trusted,seq:f.lastActionSeq,tick:f.tick,at});pending=null}}requestAnimationFrame(tick)}requestAnimationFrame(tick);return true;
 })()'''
 
@@ -90,15 +91,25 @@ def touch(x, y):
     subprocess.run(['node', 'games/pvz/tests/integration-cdp.mjs', endpoint, BASE, json.dumps(commands)], cwd=ROOT, env=SESSIONS[CURRENT], check=True, capture_output=True, text=True, timeout=15)
 
 def plant(kind, row, col, condition, mobile=False):
-    b('click', '[data-pvz-card="' + kind + '"]')
+    selector = '[data-pvz-card="' + kind + '"]'
+    REPORT.setdefault('cardSetup', []).append(js('(()=>{const e=document.querySelector(' + json.dumps(selector) + ');return{kind:' + json.dumps(kind) + ',disabled:e?.disabled,pressed:e?.getAttribute("aria-pressed"),card:e?.outerHTML.slice(0,400),focused:document.hasFocus(),frame:document.querySelector("[data-pvz-canvas]").__pvzFrame}})()'))
+    b('click', selector)
+    selected = 'document.querySelector(' + json.dumps(selector) + ').getAttribute("aria-pressed")==="true"'
+    # Separate headless browser windows may consume their first native click
+    # to acquire focus. Require a visibly selected card before measuring the
+    # subsequent battlefield input, using another real click if needed.
+    if not js(selected): b('click', selector)
+    wait(selected, 5)
     b('scrollintoview', '[data-pvz-canvas]')
     rect = js('document.querySelector("[data-pvz-canvas]").getBoundingClientRect().toJSON()')
     x = round(rect['left'] + rect['width'] * (40 + 80 * (col + .5)) / 800)
     y = round(rect['top'] + rect['height'] * (80 + 100 * (row + .5)) / 600)
+    REPORT.setdefault('inputSetup', []).append(js('({selected:' + selected + ',focused:document.hasFocus(),frame:document.querySelector("[data-pvz-canvas]").__pvzFrame,hit:document.elementFromPoint(' + str(x) + ',' + str(y) + ')?.outerHTML.slice(0,200)})'))
     before = js('window.__pvzMeasures.length')
     if mobile: touch(x, y)
     else:
         b('mouse', 'move', x, y); b('mouse', 'down'); b('mouse', 'up')
+    REPORT.setdefault('afterNative', []).append(js('({selected:' + selected + ',focused:document.hasFocus(),frame:document.querySelector("[data-pvz-canvas]").__pvzFrame,pending:window.__pvzPendingInput,focusLog:window.__pvzFocusLog,error:document.querySelector(".pvz-action-error")?.textContent,hit:document.elementFromPoint(' + str(x) + ',' + str(y) + ')?.outerHTML.slice(0,200)})'))
     wait('window.__pvzMeasures.length>' + str(before), 10)
     measurement = js('window.__pvzMeasures.at(-1)')
     assert measurement['trusted'], measurement
@@ -173,7 +184,7 @@ try:
     REPORT['passed'] = True
 finally:
     if not REPORT['passed']:
-        try: REPORT['page'] = js('document.body.innerText'); b('screenshot', OUT / 'failure.png', '--full')
+        try: REPORT['page'] = js('document.body.innerText'); REPORT['failureFrame'] = js('document.querySelector("[data-pvz-canvas]")?.__pvzFrame'); REPORT['failureInput'] = js('({pending:window.__pvzPendingInput,focusLog:window.__pvzFocusLog,error:document.querySelector(".pvz-action-error")?.textContent})'); b('screenshot', OUT / 'failure.png', '--full')
         except Exception: pass
     for name in SESSIONS:
         CURRENT = name

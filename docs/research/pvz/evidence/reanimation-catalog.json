@@ -1,0 +1,860 @@
+[
+  {
+    "id": 0,
+    "file": "reanim\\LoadBar_sprout.reanim",
+    "flags": 1,
+    "address": "0x6a1340"
+  },
+  {
+    "id": 1,
+    "file": "reanim\\LoadBar_Zombiehead.reanim",
+    "flags": 1,
+    "address": "0x6a134c"
+  },
+  {
+    "id": 2,
+    "file": "reanim\\SodRoll.reanim",
+    "flags": 0,
+    "address": "0x6a1358"
+  },
+  {
+    "id": 3,
+    "file": "reanim\\FinalWave.reanim",
+    "flags": 1,
+    "address": "0x6a1364"
+  },
+  {
+    "id": 4,
+    "file": "reanim\\PeaShooterSingle.reanim",
+    "flags": 0,
+    "address": "0x6a1370"
+  },
+  {
+    "id": 5,
+    "file": "reanim\\Wallnut.reanim",
+    "flags": 0,
+    "address": "0x6a137c"
+  },
+  {
+    "id": 6,
+    "file": "reanim\\Lilypad.reanim",
+    "flags": 0,
+    "address": "0x6a1388"
+  },
+  {
+    "id": 7,
+    "file": "reanim\\SunFlower.reanim",
+    "flags": 0,
+    "address": "0x6a1394"
+  },
+  {
+    "id": 8,
+    "file": "reanim\\LawnMower.reanim",
+    "flags": 0,
+    "address": "0x6a13a0"
+  },
+  {
+    "id": 9,
+    "file": "reanim\\StartReadySetPlant.reanim",
+    "flags": 1,
+    "address": "0x6a13ac"
+  },
+  {
+    "id": 10,
+    "file": "reanim\\CherryBomb.reanim",
+    "flags": 0,
+    "address": "0x6a13b8"
+  },
+  {
+    "id": 11,
+    "file": "reanim\\Squash.reanim",
+    "flags": 0,
+    "address": "0x6a13c4"
+  },
+  {
+    "id": 12,
+    "file": "reanim\\DoomShroom.reanim",
+    "flags": 0,
+    "address": "0x6a13d0"
+  },
+  {
+    "id": 13,
+    "file": "reanim\\SnowPea.reanim",
+    "flags": 0,
+    "address": "0x6a13dc"
+  },
+  {
+    "id": 14,
+    "file": "reanim\\PeaShooter.reanim",
+    "flags": 0,
+    "address": "0x6a13e8"
+  },
+  {
+    "id": 15,
+    "file": "reanim\\SunShroom.reanim",
+    "flags": 0,
+    "address": "0x6a13f4"
+  },
+  {
+    "id": 16,
+    "file": "reanim\\Tallnut.reanim",
+    "flags": 0,
+    "address": "0x6a1400"
+  },
+  {
+    "id": 17,
+    "file": "reanim\\Fumeshroom.reanim",
+    "flags": 0,
+    "address": "0x6a140c"
+  },
+  {
+    "id": 18,
+    "file": "reanim\\Puffshroom.reanim",
+    "flags": 0,
+    "address": "0x6a1418"
+  },
+  {
+    "id": 19,
+    "file": "reanim\\Hypnoshroom.reanim",
+    "flags": 0,
+    "address": "0x6a1424"
+  },
+  {
+    "id": 20,
+    "file": "reanim\\Chomper.reanim",
+    "flags": 0,
+    "address": "0x6a1430"
+  },
+  {
+    "id": 21,
+    "file": "reanim\\Zombie.reanim",
+    "flags": 0,
+    "address": "0x6a143c"
+  },
+  {
+    "id": 22,
+    "file": "reanim\\Sun.reanim",
+    "flags": 0,
+    "address": "0x6a1448"
+  },
+  {
+    "id": 23,
+    "file": "reanim\\PotatoMine.reanim",
+    "flags": 0,
+    "address": "0x6a1454"
+  },
+  {
+    "id": 24,
+    "file": "reanim\\Caltrop.reanim",
+    "flags": 0,
+    "address": "0x6a1460"
+  },
+  {
+    "id": 25,
+    "file": "reanim\\SpikeRock.reanim",
+    "flags": 0,
+    "address": "0x6a146c"
+  },
+  {
+    "id": 26,
+    "file": "reanim\\ThreePeater.reanim",
+    "flags": 0,
+    "address": "0x6a1478"
+  },
+  {
+    "id": 27,
+    "file": "reanim\\Marigold.reanim",
+    "flags": 0,
+    "address": "0x6a1484"
+  },
+  {
+    "id": 28,
+    "file": "reanim\\Iceshroom.reanim",
+    "flags": 0,
+    "address": "0x6a1490"
+  },
+  {
+    "id": 29,
+    "file": "reanim\\Zombie_football.reanim",
+    "flags": 0,
+    "address": "0x6a149c"
+  },
+  {
+    "id": 30,
+    "file": "reanim\\Zombie_paper.reanim",
+    "flags": 0,
+    "address": "0x6a14a8"
+  },
+  {
+    "id": 31,
+    "file": "reanim\\Zombie_zamboni.reanim",
+    "flags": 0,
+    "address": "0x6a14b4"
+  },
+  {
+    "id": 32,
+    "file": "reanim\\splash.reanim",
+    "flags": 0,
+    "address": "0x6a14c0"
+  },
+  {
+    "id": 33,
+    "file": "reanim\\Jalapeno.reanim",
+    "flags": 0,
+    "address": "0x6a14cc"
+  },
+  {
+    "id": 34,
+    "file": "reanim\\fire.reanim",
+    "flags": 0,
+    "address": "0x6a14d8"
+  },
+  {
+    "id": 35,
+    "file": "reanim\\Coin_silver.reanim",
+    "flags": 0,
+    "address": "0x6a14e4"
+  },
+  {
+    "id": 36,
+    "file": "reanim\\Zombie_charred.reanim",
+    "flags": 0,
+    "address": "0x6a14f0"
+  },
+  {
+    "id": 37,
+    "file": "reanim\\Zombie_charred_imp.reanim",
+    "flags": 0,
+    "address": "0x6a14fc"
+  },
+  {
+    "id": 38,
+    "file": "reanim\\Zombie_charred_digger.reanim",
+    "flags": 0,
+    "address": "0x6a1508"
+  },
+  {
+    "id": 39,
+    "file": "reanim\\Zombie_charred_zamboni.reanim",
+    "flags": 0,
+    "address": "0x6a1514"
+  },
+  {
+    "id": 40,
+    "file": "reanim\\Zombie_charred_catapult.reanim",
+    "flags": 0,
+    "address": "0x6a1520"
+  },
+  {
+    "id": 41,
+    "file": "reanim\\Zombie_charred_gargantuar.reanim",
+    "flags": 0,
+    "address": "0x6a152c"
+  },
+  {
+    "id": 42,
+    "file": "reanim\\ScaredyShroom.reanim",
+    "flags": 0,
+    "address": "0x6a1538"
+  },
+  {
+    "id": 43,
+    "file": "reanim\\Pumpkin.reanim",
+    "flags": 0,
+    "address": "0x6a1544"
+  },
+  {
+    "id": 44,
+    "file": "reanim\\Plantern.reanim",
+    "flags": 0,
+    "address": "0x6a1550"
+  },
+  {
+    "id": 45,
+    "file": "reanim\\Torchwood.reanim",
+    "flags": 0,
+    "address": "0x6a155c"
+  },
+  {
+    "id": 46,
+    "file": "reanim\\SplitPea.reanim",
+    "flags": 0,
+    "address": "0x6a1568"
+  },
+  {
+    "id": 47,
+    "file": "reanim\\SeaShroom.reanim",
+    "flags": 0,
+    "address": "0x6a1574"
+  },
+  {
+    "id": 48,
+    "file": "reanim\\Blover.reanim",
+    "flags": 0,
+    "address": "0x6a1580"
+  },
+  {
+    "id": 49,
+    "file": "reanim\\Pot.reanim",
+    "flags": 0,
+    "address": "0x6a158c"
+  },
+  {
+    "id": 50,
+    "file": "reanim\\Cactus.reanim",
+    "flags": 0,
+    "address": "0x6a1598"
+  },
+  {
+    "id": 51,
+    "file": "reanim\\Zombie_Jackson.reanim",
+    "flags": 0,
+    "address": "0x6a15a4"
+  },
+  {
+    "id": 52,
+    "file": "reanim\\Tanglekelp.reanim",
+    "flags": 0,
+    "address": "0x6a15b0"
+  },
+  {
+    "id": 53,
+    "file": "reanim\\Starfruit.reanim",
+    "flags": 0,
+    "address": "0x6a15bc"
+  },
+  {
+    "id": 54,
+    "file": "reanim\\Zombie_polevaulter.reanim",
+    "flags": 0,
+    "address": "0x6a15c8"
+  },
+  {
+    "id": 55,
+    "file": "reanim\\Zombie_balloon.reanim",
+    "flags": 0,
+    "address": "0x6a15d4"
+  },
+  {
+    "id": 56,
+    "file": "reanim\\Zombie_gargantuar.reanim",
+    "flags": 0,
+    "address": "0x6a15e0"
+  },
+  {
+    "id": 57,
+    "file": "reanim\\Zombie_imp.reanim",
+    "flags": 0,
+    "address": "0x6a15ec"
+  },
+  {
+    "id": 58,
+    "file": "reanim\\Zombie_digger.reanim",
+    "flags": 0,
+    "address": "0x6a15f8"
+  },
+  {
+    "id": 59,
+    "file": "reanim\\Digger_rising_dirt.reanim",
+    "flags": 0,
+    "address": "0x6a1604"
+  },
+  {
+    "id": 60,
+    "file": "reanim\\Zombie_dolphinrider.reanim",
+    "flags": 0,
+    "address": "0x6a1610"
+  },
+  {
+    "id": 61,
+    "file": "reanim\\Zombie_pogo.reanim",
+    "flags": 0,
+    "address": "0x6a161c"
+  },
+  {
+    "id": 62,
+    "file": "reanim\\Zombie_dancer.reanim",
+    "flags": 0,
+    "address": "0x6a1628"
+  },
+  {
+    "id": 63,
+    "file": "reanim\\Zombie_bobsled.reanim",
+    "flags": 0,
+    "address": "0x6a1634"
+  },
+  {
+    "id": 64,
+    "file": "reanim\\Zombie_jackbox.reanim",
+    "flags": 0,
+    "address": "0x6a1640"
+  },
+  {
+    "id": 65,
+    "file": "reanim\\Zombie_snorkle.reanim",
+    "flags": 0,
+    "address": "0x6a164c"
+  },
+  {
+    "id": 66,
+    "file": "reanim\\Zombie_bungi.reanim",
+    "flags": 0,
+    "address": "0x6a1658"
+  },
+  {
+    "id": 67,
+    "file": "reanim\\Zombie_catapult.reanim",
+    "flags": 0,
+    "address": "0x6a1664"
+  },
+  {
+    "id": 68,
+    "file": "reanim\\Zombie_ladder.reanim",
+    "flags": 0,
+    "address": "0x6a1670"
+  },
+  {
+    "id": 69,
+    "file": "reanim\\Puff.reanim",
+    "flags": 0,
+    "address": "0x6a167c"
+  },
+  {
+    "id": 70,
+    "file": "reanim\\Z.reanim",
+    "flags": 0,
+    "address": "0x6a1688"
+  },
+  {
+    "id": 71,
+    "file": "reanim\\Gravebuster.reanim",
+    "flags": 0,
+    "address": "0x6a1694"
+  },
+  {
+    "id": 72,
+    "file": "reanim\\ZombiesWon.reanim",
+    "flags": 1,
+    "address": "0x6a16a0"
+  },
+  {
+    "id": 73,
+    "file": "reanim\\Magnetshroom.reanim",
+    "flags": 0,
+    "address": "0x6a16ac"
+  },
+  {
+    "id": 74,
+    "file": "reanim\\Zombie_boss.reanim",
+    "flags": 1,
+    "address": "0x6a16b8"
+  },
+  {
+    "id": 75,
+    "file": "reanim\\Cabbagepult.reanim",
+    "flags": 0,
+    "address": "0x6a16c4"
+  },
+  {
+    "id": 76,
+    "file": "reanim\\Cornpult.reanim",
+    "flags": 0,
+    "address": "0x6a16d0"
+  },
+  {
+    "id": 77,
+    "file": "reanim\\Melonpult.reanim",
+    "flags": 0,
+    "address": "0x6a16dc"
+  },
+  {
+    "id": 78,
+    "file": "reanim\\Coffeebean.reanim",
+    "flags": 1,
+    "address": "0x6a16e8"
+  },
+  {
+    "id": 79,
+    "file": "reanim\\Umbrellaleaf.reanim",
+    "flags": 0,
+    "address": "0x6a16f4"
+  },
+  {
+    "id": 80,
+    "file": "reanim\\GatlingPea.reanim",
+    "flags": 0,
+    "address": "0x6a1700"
+  },
+  {
+    "id": 81,
+    "file": "reanim\\Cattail.reanim",
+    "flags": 0,
+    "address": "0x6a170c"
+  },
+  {
+    "id": 82,
+    "file": "reanim\\GloomShroom.reanim",
+    "flags": 0,
+    "address": "0x6a1718"
+  },
+  {
+    "id": 83,
+    "file": "reanim\\Zombie_boss_iceball.reanim",
+    "flags": 1,
+    "address": "0x6a1724"
+  },
+  {
+    "id": 84,
+    "file": "reanim\\Zombie_boss_fireball.reanim",
+    "flags": 1,
+    "address": "0x6a1730"
+  },
+  {
+    "id": 85,
+    "file": "reanim\\CobCannon.reanim",
+    "flags": 0,
+    "address": "0x6a173c"
+  },
+  {
+    "id": 86,
+    "file": "reanim\\Garlic.reanim",
+    "flags": 0,
+    "address": "0x6a1748"
+  },
+  {
+    "id": 87,
+    "file": "reanim\\GoldMagnet.reanim",
+    "flags": 0,
+    "address": "0x6a1754"
+  },
+  {
+    "id": 88,
+    "file": "reanim\\WinterMelon.reanim",
+    "flags": 0,
+    "address": "0x6a1760"
+  },
+  {
+    "id": 89,
+    "file": "reanim\\TwinSunFlower.reanim",
+    "flags": 0,
+    "address": "0x6a176c"
+  },
+  {
+    "id": 90,
+    "file": "reanim\\PoolCleaner.reanim",
+    "flags": 0,
+    "address": "0x6a1778"
+  },
+  {
+    "id": 91,
+    "file": "reanim\\RoofCleaner.reanim",
+    "flags": 0,
+    "address": "0x6a1784"
+  },
+  {
+    "id": 92,
+    "file": "reanim\\FirePea.reanim",
+    "flags": 0,
+    "address": "0x6a1790"
+  },
+  {
+    "id": 93,
+    "file": "reanim\\Imitater.reanim",
+    "flags": 0,
+    "address": "0x6a179c"
+  },
+  {
+    "id": 94,
+    "file": "reanim\\Zombie_yeti.reanim",
+    "flags": 0,
+    "address": "0x6a17a8"
+  },
+  {
+    "id": 95,
+    "file": "reanim\\Zombie_Boss_driver.reanim",
+    "flags": 0,
+    "address": "0x6a17b4"
+  },
+  {
+    "id": 96,
+    "file": "reanim\\LawnMoweredZombie.reanim",
+    "flags": 0,
+    "address": "0x6a17c0"
+  },
+  {
+    "id": 97,
+    "file": "reanim\\CrazyDave.reanim",
+    "flags": 1,
+    "address": "0x6a17cc"
+  },
+  {
+    "id": 98,
+    "file": "reanim\\TextFadeOn.reanim",
+    "flags": 0,
+    "address": "0x6a17d8"
+  },
+  {
+    "id": 99,
+    "file": "reanim\\Hammer.reanim",
+    "flags": 0,
+    "address": "0x6a17e4"
+  },
+  {
+    "id": 100,
+    "file": "reanim\\SlotMachine.reanim",
+    "flags": 0,
+    "address": "0x6a17f0"
+  },
+  {
+    "id": 101,
+    "file": "reanim\\Credits_Football.reanim",
+    "flags": 1,
+    "address": "0x6a17fc"
+  },
+  {
+    "id": 102,
+    "file": "reanim\\Credits_Jackbox.reanim",
+    "flags": 1,
+    "address": "0x6a1808"
+  },
+  {
+    "id": 103,
+    "file": "reanim\\SelectorScreen.reanim",
+    "flags": 3,
+    "address": "0x6a1814"
+  },
+  {
+    "id": 104,
+    "file": "reanim\\Portal_Circle.reanim",
+    "flags": 0,
+    "address": "0x6a1820"
+  },
+  {
+    "id": 105,
+    "file": "reanim\\Portal_Square.reanim",
+    "flags": 0,
+    "address": "0x6a182c"
+  },
+  {
+    "id": 106,
+    "file": "reanim\\ZenGarden_sprout.reanim",
+    "flags": 0,
+    "address": "0x6a1838"
+  },
+  {
+    "id": 107,
+    "file": "reanim\\ZenGarden_wateringcan.reanim",
+    "flags": 1,
+    "address": "0x6a1844"
+  },
+  {
+    "id": 108,
+    "file": "reanim\\ZenGarden_fertilizer.reanim",
+    "flags": 1,
+    "address": "0x6a1850"
+  },
+  {
+    "id": 109,
+    "file": "reanim\\ZenGarden_bugspray.reanim",
+    "flags": 1,
+    "address": "0x6a185c"
+  },
+  {
+    "id": 110,
+    "file": "reanim\\ZenGarden_phonograph.reanim",
+    "flags": 1,
+    "address": "0x6a1868"
+  },
+  {
+    "id": 111,
+    "file": "reanim\\Diamond.reanim",
+    "flags": 0,
+    "address": "0x6a1874"
+  },
+  {
+    "id": 112,
+    "file": "reanim\\Zombie_hand.reanim",
+    "flags": 1,
+    "address": "0x6a1880"
+  },
+  {
+    "id": 113,
+    "file": "reanim\\Stinky.reanim",
+    "flags": 0,
+    "address": "0x6a188c"
+  },
+  {
+    "id": 114,
+    "file": "reanim\\Rake.reanim",
+    "flags": 0,
+    "address": "0x6a1898"
+  },
+  {
+    "id": 115,
+    "file": "reanim\\Rain_circle.reanim",
+    "flags": 0,
+    "address": "0x6a18a4"
+  },
+  {
+    "id": 116,
+    "file": "reanim\\Rain_splash.reanim",
+    "flags": 0,
+    "address": "0x6a18b0"
+  },
+  {
+    "id": 117,
+    "file": "reanim\\Zombie_surprise.reanim",
+    "flags": 0,
+    "address": "0x6a18bc"
+  },
+  {
+    "id": 118,
+    "file": "reanim\\Coin_gold.reanim",
+    "flags": 0,
+    "address": "0x6a18c8"
+  },
+  {
+    "id": 119,
+    "file": "reanim\\TreeOfWisdom.reanim",
+    "flags": 1,
+    "address": "0x6a18d4"
+  },
+  {
+    "id": 120,
+    "file": "reanim\\TreeOfWisdomClouds.reanim",
+    "flags": 1,
+    "address": "0x6a18e0"
+  },
+  {
+    "id": 121,
+    "file": "reanim\\TreeFood.reanim",
+    "flags": 1,
+    "address": "0x6a18ec"
+  },
+  {
+    "id": 122,
+    "file": "reanim\\Credits_Main.reanim",
+    "flags": 3,
+    "address": "0x6a18f8"
+  },
+  {
+    "id": 123,
+    "file": "reanim\\Credits_Main2.reanim",
+    "flags": 3,
+    "address": "0x6a1904"
+  },
+  {
+    "id": 124,
+    "file": "reanim\\Credits_Main3.reanim",
+    "flags": 3,
+    "address": "0x6a1910"
+  },
+  {
+    "id": 125,
+    "file": "reanim\\Zombie_credits_dance.reanim",
+    "flags": 0,
+    "address": "0x6a191c"
+  },
+  {
+    "id": 126,
+    "file": "reanim\\Credits_stage.reanim",
+    "flags": 1,
+    "address": "0x6a1928"
+  },
+  {
+    "id": 127,
+    "file": "reanim\\Credits_BigBrain.reanim",
+    "flags": 1,
+    "address": "0x6a1934"
+  },
+  {
+    "id": 128,
+    "file": "reanim\\Credits_Flower_petals.reanim",
+    "flags": 1,
+    "address": "0x6a1940"
+  },
+  {
+    "id": 129,
+    "file": "reanim\\Credits_Infantry.reanim",
+    "flags": 1,
+    "address": "0x6a194c"
+  },
+  {
+    "id": 130,
+    "file": "reanim\\Credits_Throat.reanim",
+    "flags": 1,
+    "address": "0x6a1958"
+  },
+  {
+    "id": 131,
+    "file": "reanim\\Credits_CrazyDave.reanim",
+    "flags": 1,
+    "address": "0x6a1964"
+  },
+  {
+    "id": 132,
+    "file": "reanim\\Credits_Bossdance.reanim",
+    "flags": 1,
+    "address": "0x6a1970"
+  },
+  {
+    "id": 133,
+    "file": "reanim\\Zombie_Credits_Screendoor.reanim",
+    "flags": 1,
+    "address": "0x6a197c"
+  },
+  {
+    "id": 134,
+    "file": "reanim\\Zombie_Credits_Conehead.reanim",
+    "flags": 1,
+    "address": "0x6a1988"
+  },
+  {
+    "id": 135,
+    "file": "reanim\\Credits_ZombieArmy1.reanim",
+    "flags": 1,
+    "address": "0x6a1994"
+  },
+  {
+    "id": 136,
+    "file": "reanim\\Credits_ZombieArmy2.reanim",
+    "flags": 1,
+    "address": "0x6a19a0"
+  },
+  {
+    "id": 137,
+    "file": "reanim\\Credits_Tombstones.reanim",
+    "flags": 1,
+    "address": "0x6a19ac"
+  },
+  {
+    "id": 138,
+    "file": "reanim\\Credits_SolarPower.reanim",
+    "flags": 1,
+    "address": "0x6a19b8"
+  },
+  {
+    "id": 139,
+    "file": "reanim\\Credits_Anyhour.reanim",
+    "flags": 3,
+    "address": "0x6a19c4"
+  },
+  {
+    "id": 140,
+    "file": "reanim\\Credits_WeAreTheUndead.reanim",
+    "flags": 1,
+    "address": "0x6a19d0"
+  },
+  {
+    "id": 141,
+    "file": "reanim\\Credits_DiscoLights.reanim",
+    "flags": 1,
+    "address": "0x6a19dc"
+  },
+  {
+    "id": 142,
+    "file": "reanim\\Zombie_FlagPole.reanim",
+    "flags": 0,
+    "address": "0x6a19e8"
+  }
+]

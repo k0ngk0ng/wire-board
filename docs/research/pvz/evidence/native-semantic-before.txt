@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/pvz/games/pvz/build/verify_native.py", line 82, in <module>
+    main()
+    ~~~~^^
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/pvz/games/pvz/build/verify_native.py", line 66, in main
+    sled = payloads["bobsled"]["clips"]["sledding"]["frames"][0]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'sledding'

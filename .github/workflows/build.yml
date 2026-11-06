@@ -217,6 +217,16 @@ jobs:
       - name: Install dependencies for game rendering checks
         if: (matrix.game == 'battlecity' || matrix.game == 'conquest' || matrix.game == 'tabletennis' || matrix.game == 'contra') && matrix.shard == 0
         run: npm --prefix web ci
+      - name: Prepare PvZ asset verification environment
+        if: matrix.game == 'pvz' && matrix.shard == 0
+        run: |
+          mkdir -p .local/tmp .local/pvz/ci-assets
+          export TMPDIR="$PWD/.local/tmp"
+          export PIP_CACHE_DIR="$PWD/.local/pvz/ci-assets/pip-cache"
+          command -v ffmpeg
+          command -v ffprobe
+          python3 -m venv .local/pvz/ci-assets/venv
+          .local/pvz/ci-assets/venv/bin/python -m pip install Pillow==13.0.0
       - name: Validate this game only
         env:
           GAME_ID: ${{ matrix.game }}
@@ -226,7 +236,15 @@ jobs:
         run: |
           args=(--game "$GAME_ID" --shard "$SHARD_INDEX" --count "$SHARD_COUNT")
           if [ "$BACKEND_CHANGED" = true ]; then args+=(--backend); fi
+          if [ "$GAME_ID" = pvz ] && [ "$SHARD_INDEX" = 0 ]; then
+            export PATH="$PWD/.local/pvz/ci-assets/venv/bin:$PATH"
+            export TMPDIR="$PWD/.local/tmp"
+            export PIP_CACHE_DIR="$PWD/.local/pvz/ci-assets/pip-cache"
+          fi
           python3 -B scripts/ci/scope.py run "${args[@]}"
+      - name: Remove temporary PvZ asset tools
+        if: always() && matrix.game == 'pvz' && matrix.shard == 0
+        run: rm -rf .local/pvz/ci-assets/venv .local/pvz/ci-assets/pip-cache
       - uses: actions/upload-artifact@v4
         if: always()
         with:

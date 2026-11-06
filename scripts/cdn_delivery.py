@@ -2,7 +2,7 @@
 """Publish immutable compiled assets, verify CDN responses, then trim packaging.
 Only main's verified source uses credentials. Tags reuse the unchanged binary.
 """
-import argparse,base64,concurrent.futures,gzip,hashlib,hmac,json,os,re,shutil,time,threading
+import argparse,base64,concurrent.futures,gzip,hashlib,hmac,json,os,re,shutil,time,threading,zlib
 from email.utils import formatdate
 from pathlib import Path
 from urllib.request import Request,urlopen as standard_urlopen,getproxies,proxy_bypass
@@ -58,10 +58,25 @@ def urlopen(request,timeout=60):
 BASE=re.compile(r'https://cdn\.ichenj\.com/bga/web/[a-f0-9]{40}/\Z')
 MIME={'.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.png':'image/png','.webp':'image/webp','.jpg':'image/jpeg','.woff':'font/woff','.woff2':'font/woff2','.ttf':'font/ttf','.wasm':'application/wasm'}
 CONTRA_MIME={'.js':'text/javascript','.wasm':'application/wasm','.json':'application/json','.idx':'application/octet-stream','.rgb':'application/octet-stream','.wav':'audio/wav'}
-MIME.update({'.jpeg':'image/jpeg','.gif':'image/gif','.json':'application/json','.txt':'text/plain','.md':'text/plain','.mp3':'audio/mpeg','.wav':'audio/wav','.ogg':'audio/ogg','.idx':'application/octet-stream','.rgb':'application/octet-stream'})
+MIME.update({'.jpeg':'image/jpeg','.gif':'image/gif','.json':'application/json','.txt':'text/plain','.md':'text/plain','.mp3':'audio/mpeg','.wav':'audio/wav','.ogg':'audio/ogg','.flac':'audio/flac','.idx':'application/octet-stream','.rgb':'application/octet-stream','.pvzr':'application/octet-stream'})
 SERVER_METADATA={'index.html','game-load-manifest.json','contra-delivery.json','cdn-assets-manifest.json'}
 SHA256=re.compile(r'[a-f0-9]{64}\Z')
+PVZR_MAX_COMPRESSED_BYTES=16*1024*1024
+PVZR_MAX_DECODED_BYTES=64*1024*1024
 def sha(data):return hashlib.sha256(data).hexdigest()
+def validate_pvzr(data):
+ # .pvzr is one canonical, already-compressed application payload, not an
+ # HTTP Content-Encoding sidecar. Verify the stored bytes without adding an
+ # uncompressed copy or allowing an unbounded expansion during publication.
+ if len(data)>PVZR_MAX_COMPRESSED_BYTES or not data.startswith(b'\x1f\x8b\x08'):
+  raise ValueError('Invalid PvZ native animation container')
+ try:
+  decoder=zlib.decompressobj(16+zlib.MAX_WBITS)
+  body=decoder.decompress(data,PVZR_MAX_DECODED_BYTES+1)
+  if len(body)>PVZR_MAX_DECODED_BYTES or not decoder.eof or decoder.unused_data or not body:
+   raise ValueError('Invalid PvZ native animation container')
+ except zlib.error as error:
+  raise ValueError('Invalid PvZ native animation container') from error
 def contra_inventory(dist,base):
  folder,receipt_path=dist/'contra',dist/'contra-delivery.json'
  if folder.is_symlink() or receipt_path.is_symlink():raise ValueError('Symlink Contra delivery root or receipt')
@@ -120,9 +135,10 @@ def inventory(dist,base):
   if p.suffix not in MIME:raise ValueError('Unexpected public asset type: '+rel)
   data=p.read_bytes()
   if not data:raise ValueError('Empty public asset: '+rel)
+  if p.suffix=='.pvzr':validate_pvzr(data)
   encoding='gzip' if p.suffix in ('.js','.css','.svg','.json','.txt','.md') else ''
   row={'url':base+rel,'path':rel,'bytes':len(data),'sha256':sha(data),'mime':MIME[p.suffix],'encoding':encoding,'wireBytes':len(gzip.compress(data,mtime=0)) if encoding else len(data)}
-  if p.suffix in ('.mp3','.wav','.ogg'):row['requiresRange']=True
+  if p.suffix in ('.mp3','.wav','.ogg','.flac'):row['requiresRange']=True
   rows.append(row)
  rows.extend(runtime_rows)
  if not rows:raise ValueError('No published assets')

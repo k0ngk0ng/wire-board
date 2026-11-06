@@ -1,0 +1,65 @@
+[
+  {
+    "name": "plant-cost",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x467B00"
+    }
+  },
+  {
+    "name": "plant-refresh-time",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x467E30"
+    }
+  },
+  {
+    "name": "board-current-plant-cost",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x41DAE0"
+    }
+  },
+  {
+    "name": "board-clear-fog",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x41A430"
+    }
+  },
+  {
+    "name": "board-update-fog",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x41A5D0"
+    }
+  },
+  {
+    "name": "board-cob-pair-helper",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x40D4F0"
+    }
+  },
+  {
+    "name": "board-cob-pair",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x40D550"
+    }
+  },
+  {
+    "name": "reanimation-frame-time",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x472D90"
+    }
+  },
+  {
+    "name": "coin-value",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x4329D0"
+    }
+  }
+]

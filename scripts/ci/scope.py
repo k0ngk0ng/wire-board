@@ -143,6 +143,13 @@ def frontend_tests(root, game):
                    *(base/'web').glob('*.test.mjs')])
 
 def build_commands(root, game, index=0):
+    if game == 'pvz' and index == 0:
+        base, output = root/'games/pvz/build', root/'.local/pvz/ci-assets'
+        return [
+            ['python3', '-B', '-m', 'unittest', 'discover', '-s', str(base), '-p', 'test_*.py'],
+            ['python3', '-B', str(base/'verify_native.py'), '--output', str(output/'native.json')],
+            ['python3', '-B', str(base/'verify_music.py'), '--output', str(output/'music.json')],
+        ]
     if game != 'contra' or index != 0:
         return []
     return ([['python3', '-B', str(root/'games/contra/build'/name)]
@@ -152,6 +159,8 @@ def build_commands(root, game, index=0):
 def run(args):
     output = ROOT/'.local/ci'/args.game
     output.mkdir(parents=True, exist_ok=True)
+    if args.game == 'pvz' and args.shard == 0:
+        (ROOT/'.local/pvz/ci-assets').mkdir(parents=True, exist_ok=True)
     if args.game == 'shared':
         commands = go_commands(ROOT, 'shared', race=True)
     else:

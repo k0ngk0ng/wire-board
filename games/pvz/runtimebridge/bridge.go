@@ -20,6 +20,7 @@ func New() *Bridge { return &Bridge{sessions: map[string]engine.State{}} }
 type request struct {
 	Op       string          `json:"op"`
 	ID       string          `json:"id"`
+	Source   string          `json:"source,omitempty"`
 	Players  int             `json:"players"`
 	Epoch    string          `json:"epoch"`
 	Options  engine.Options  `json:"options"`
@@ -27,23 +28,33 @@ type request struct {
 	Actor    int             `json:"actor"`
 	Action   engine.Action   `json:"action"`
 	Ticks    int             `json:"ticks"`
+	Compact  bool            `json:"compact,omitempty"`
+	AtTick   *int64          `json:"atTick,omitempty"`
 }
 type response struct {
-	OK     bool          `json:"ok"`
-	Error  string        `json:"error,omitempty"`
-	State  *engine.State `json:"state,omitempty"`
-	Digest string        `json:"digest,omitempty"`
+	OK     bool                 `json:"ok"`
+	Error  string               `json:"error,omitempty"`
+	State  *engine.State        `json:"state,omitempty"`
+	Digest string               `json:"digest,omitempty"`
+	View   *engine.Presentation `json:"view,omitempty"`
 }
 
 func (b *Bridge) JSON(input string) string {
 	out := response{}
-	state, err := b.call(input)
+	q, err := decodeRequest(input)
+	var state *engine.State
+	if err == nil {
+		state, err = b.call(q)
+	}
 	if err != nil {
 		out.Error = err.Error()
 	} else {
 		out.OK = true
-		out.State = state
-		if state != nil {
+		if state != nil && q.Compact {
+			view := engine.Present(*state)
+			out.View = &view
+		} else if state != nil {
+			out.State = state
 			raw, _ := json.Marshal(state)
 			sum := sha256.Sum256(raw)
 			out.Digest = hex.EncodeToString(sum[:])
@@ -52,20 +63,23 @@ func (b *Bridge) JSON(input string) string {
 	raw, _ := json.Marshal(out)
 	return string(raw)
 }
-func (b *Bridge) call(input string) (*engine.State, error) {
-	if len(input) > 4<<20 {
-		return nil, errors.New("运行时请求过大")
-	}
+func decodeRequest(input string) (request, error) {
 	var q request
+	if len(input) > 4<<20 {
+		return q, errors.New("运行时请求过大")
+	}
 	d := json.NewDecoder(bytes.NewBufferString(input))
 	d.DisallowUnknownFields()
 	if d.Decode(&q) != nil {
-		return nil, errors.New("无效运行时请求")
+		return q, errors.New("无效运行时请求")
 	}
 	var tail any
 	if d.Decode(&tail) != io.EOF {
-		return nil, errors.New("请求包含多余内容")
+		return q, errors.New("请求包含多余内容")
 	}
+	return q, nil
+}
+func (b *Bridge) call(q request) (*engine.State, error) {
 	if q.ID == "" || len(q.ID) > 96 {
 		return nil, errors.New("无效运行时实例")
 	}
@@ -85,12 +99,21 @@ func (b *Bridge) call(input string) (*engine.State, error) {
 		}
 		s = next
 	case "load":
+		// This is a replacement checkpoint, never a merge into reused slices.
+		// Optional zero motion/state fields must erase their old values.
+		s = engine.State{}
 		if json.Unmarshal(q.Snapshot, &s) != nil {
 			return nil, errors.New("无效恢复快照")
 		}
 		if err := engine.Validate(s); err != nil {
 			return nil, err
 		}
+	case "fork":
+		original, ok := b.sessions[q.Source]
+		if !ok {
+			return nil, errors.New("复制的规则实例不存在")
+		}
+		s = engine.Clone(original)
 	case "inspect":
 		if !exists {
 			return nil, errors.New("运行时实例不存在")
@@ -101,9 +124,19 @@ func (b *Bridge) call(input string) (*engine.State, error) {
 			return nil, errors.New("运行时实例不存在")
 		}
 		s = engine.Clone(s)
+		// A local intent belongs after the last displayed fractional frame. Its
+		// own object is previewed now without simulating the future world tick.
+		at := s.Tick
+		if q.AtTick != nil {
+			if *q.AtTick < at || *q.AtTick > at+1 {
+				return nil, errors.New("无效本地操作帧")
+			}
+			s.Tick = *q.AtTick
+		}
 		if err := engine.Apply(&s, q.Actor, q.Action); err != nil {
 			return nil, err
 		}
+		s.Tick = at
 	case "step":
 		if !exists {
 			return nil, errors.New("运行时实例不存在")
@@ -112,7 +145,13 @@ func (b *Bridge) call(input string) (*engine.State, error) {
 			return nil, errors.New("预测步数超出范围")
 		}
 		s = engine.Clone(s)
-		if err := engine.Step(&s, q.Ticks); err != nil {
+		var err error
+		if s.Projection {
+			err = engine.StepProjection(&s, q.Ticks)
+		} else {
+			err = engine.Step(&s, q.Ticks)
+		}
+		if err != nil {
 			return nil, err
 		}
 	default:

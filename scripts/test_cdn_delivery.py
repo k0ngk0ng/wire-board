@@ -6,6 +6,15 @@ or missing payloads, wrong identity/hash/size/MIME, path aliases and symlinks,
 WAV incorrectly compressed or marked nonseekable, Range ignored (200), wrong
 Content-Range/body/MIME/CORS/encoding, and trim using another receipt's digest.
 All local HTTP probes are loopback-only; no upload or credentials are used.
+
+PvZ native-container failures declared before implementation: canonical .pvzr
+gzip bodies are rejected or double compressed; bad magic/CRC/truncation,
+trailing members and oversized expansion are accepted; trim leaves runtime
+payloads embedded; supporting .pvzr weakens path or ordinary .gz-sidecar rules.
+
+Lossless-music failures declared before implementation: .flac is missing from
+inventory, changes its stored-byte identity, uses gzip HTTP encoding, omits
+seekable Range validation, or accepts a 200/wrong-range/corrupt audio response.
 """
 import unittest,tempfile,json,hashlib,gzip,shutil,threading
 from http.server import BaseHTTPRequestHandler, HTTPServer
@@ -74,6 +83,53 @@ class GeneralMediaDelivery(unittest.TestCase):
   self.assertTrue((self.dist/'assets/index-abcdefgh.js').exists())
   p.unlink();p.symlink_to(self.dist/'index.html')
   with self.assertRaises(ValueError):cdn.inventory(self.dist,self.base)
+
+class PvZNativeDelivery(unittest.TestCase):
+ setUp=Delivery.setUp
+ def native(self,body=None,name='pvz/classic-v2/native/peashooter.pvzr'):
+  body=gzip.compress(b'{"clips":{"idle":{"frames":[[]]}}}',mtime=0) if body is None else body
+  p=self.dist/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(body)
+  return p,body
+ def test_canonical_container_uses_compressed_byte_identity_and_no_http_encoding(self):
+  p,body=self.native();rows=cdn.inventory(self.dist,self.base);row=next(r for r in rows if r['path']==p.relative_to(self.dist).as_posix())
+  self.assertEqual(row['mime'],'application/octet-stream');self.assertEqual(row['encoding'],'')
+  self.assertEqual(row['bytes'],len(body));self.assertEqual(row['wireBytes'],len(body));self.assertEqual(row['sha256'],cdn.sha(body))
+  cdn.validate_response(row,body,{'Content-Type':'application/octet-stream','Access-Control-Allow-Origin':'*'})
+  with self.assertRaises(ValueError):cdn.validate_response(row,gzip.compress(body,mtime=0),{'Content-Type':'application/octet-stream','Access-Control-Allow-Origin':'*'})
+  cdn.trim(self.dist,{'passed':True,'files':rows})
+  self.assertFalse(p.exists());entry=json.loads((self.dist/'cdn-assets-manifest.json').read_text())['files']['/'+row['path']]
+  self.assertEqual(entry['bytes'],len(body));self.assertEqual(entry['sha256'],cdn.sha(body));self.assertEqual(entry['mime'],'application/octet-stream')
+ def test_invalid_gzip_and_unbounded_containers_fail_closed(self):
+  from unittest.mock import patch
+  valid=gzip.compress(b'valid compressed animation',mtime=0)
+  corrupt=bytearray(valid);corrupt[-5]^=1
+  for case,body in [('plain',b'{"clips":{}}'),('truncated',valid[:-1]),('crc',bytes(corrupt)),('trailing',valid+b'extra'),('members',valid+valid)]:
+   with self.subTest(case=case):
+    self.native(body)
+    with self.assertRaisesRegex(ValueError,'Invalid PvZ native'):cdn.inventory(self.dist,self.base)
+  self.native(gzip.compress(b'x'*1025,mtime=0))
+  with patch.object(cdn,'PVZR_MAX_DECODED_BYTES',1024,create=True):
+   with self.assertRaisesRegex(ValueError,'Invalid PvZ native'):cdn.inventory(self.dist,self.base)
+  self.native(valid)
+  with patch.object(cdn,'PVZR_MAX_COMPRESSED_BYTES',len(valid)-1,create=True):
+   with self.assertRaisesRegex(ValueError,'Invalid PvZ native'):cdn.inventory(self.dist,self.base)
+ def test_path_validation_and_gzip_sidecars_stay_strict(self):
+  p,_=self.native(name='pvz/classic-v2/native/unsafe name.pvzr')
+  with self.assertRaisesRegex(ValueError,'Noncanonical public asset path'):cdn.inventory(self.dist,self.base)
+  p.unlink();self.native(name='pvz/classic-v2/native/peashooter.json.gz')
+  with self.assertRaisesRegex(ValueError,'Invalid precompressed asset'):cdn.inventory(self.dist,self.base)
+
+class FlacDelivery(unittest.TestCase):
+ setUp=Delivery.setUp
+ def test_flac_is_seekable_identity_audio_and_trims_with_other_client_payloads(self):
+  p=self.dist/'pvz/classic-v2/music/day-main.flac';p.parent.mkdir(parents=True);body=b'fLaC'+bytes(range(128));p.write_bytes(body)
+  rows=cdn.inventory(self.dist,self.base);row=next(r for r in rows if r['path'].endswith('.flac'))
+  self.assertEqual(row['mime'],'audio/flac');self.assertEqual(row['encoding'],'');self.assertTrue(row['requiresRange'])
+  self.assertEqual(row['bytes'],len(body));self.assertEqual(row['wireBytes'],len(body));self.assertEqual(row['sha256'],cdn.sha(body))
+  headers={'Content-Type':'audio/flac','Access-Control-Allow-Origin':'*'};cdn.validate_response(row,body,headers)
+  with self.assertRaises(ValueError):cdn.validate_response(row,gzip.compress(body,mtime=0),dict(headers,**{'Content-Encoding':'gzip'}))
+  cdn.trim(self.dist,{'passed':True,'files':rows});self.assertFalse(p.exists())
+  self.assertEqual(json.loads((self.dist/'cdn-assets-manifest.json').read_text())['files']['/'+row['path']]['mime'],'audio/flac')
 
 class ServerPackageBoundary(unittest.TestCase):
  # Before implementation: untrimmed files, stale compiler inputs, forged binary
@@ -188,13 +244,15 @@ class ContraDelivery(unittest.TestCase):
 
 class WaveRangeHTTP(unittest.TestCase):
  def test_real_range_response_and_failure_boundaries(self):
-  payload=b'RIFF'+bytes(range(128));state={'mode':'good','requests':[]}
+  self.exercise('audio/wav','wav')
+ def exercise(self,expected_mime,extension):
+  payload=(b'fLaC' if extension=='flac' else b'RIFF')+bytes(range(128));state={'mode':'good','requests':[]}
   class Handler(BaseHTTPRequestHandler):
    def log_message(self,*args):pass
    def do_GET(self):
     requested=self.headers.get('Range')
     state['requests'].append({'range':requested,'origin':self.headers.get('Origin'),'encoding':self.headers.get('Accept-Encoding')})
-    body=payload;status=200;mime='audio/wav';cors='*';content_range=None;encoding=None
+    body=payload;status=200;mime=expected_mime;cors='*';content_range=None;encoding=None
     if requested:
      body=payload[:64];status=206;content_range=f'bytes 0-63/{len(payload)}'
      if state['mode']=='status':status=200
@@ -211,7 +269,7 @@ class WaveRangeHTTP(unittest.TestCase):
     self.end_headers();self.wfile.write(body)
   server=HTTPServer(('127.0.0.1',0),Handler);thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
   try:
-   row={'url':f'http://127.0.0.1:{server.server_port}/tone.wav','bytes':len(payload),'sha256':cdn.sha(payload),'mime':'audio/wav','encoding':'','requiresRange':True}
+   row={'url':f'http://127.0.0.1:{server.server_port}/tone.{extension}','bytes':len(payload),'sha256':cdn.sha(payload),'mime':expected_mime,'encoding':'','requiresRange':True}
    self.assertEqual(cdn.verify(row),row)
    self.assertEqual([r['range'] for r in state['requests']],[None,'bytes=0-63'])
    self.assertEqual(state['requests'][-1]['encoding'],'identity');self.assertEqual(state['requests'][-1]['origin'],'https://bga.ichenj.com')
@@ -221,6 +279,10 @@ class WaveRangeHTTP(unittest.TestCase):
      with self.assertRaises(ValueError):cdn.verify(row)
      if mode=='full-body':self.assertEqual(len(state['requests']),1,'full checksum must pass before range probe')
   finally:server.shutdown();server.server_close();thread.join(timeout=2)
+
+class FlacRangeHTTP(WaveRangeHTTP):
+ def test_real_range_response_and_failure_boundaries(self):
+  self.exercise('audio/flac','flac')
 
 # Network failures declared before the retry implementation: transient request
 # errors abort all assets; ambiguous PUT is repeated over an immutable object;

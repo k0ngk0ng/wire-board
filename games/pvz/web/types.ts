@@ -1,11 +1,15 @@
 export type Side = "plants" | "zombies";
-export type PlantKind = "sunflower" | "peashooter" | "repeater" | "snowpea" | "wallnut" | "potatomine" | "cherrybomb" | "tallnut";
-export type ZombieKind = "zombie" | "conehead" | "buckethead" | "newspaper" | "polevaulter" | "football";
+export type PlantKind = string;
+export type ZombieKind = string;
+export type Scene = "day" | "night" | "pool" | "fog" | "roof" | "roofnight";
+export type MapSpec = { id: Scene; rows: number; cols: number; night: boolean; waterRows: number[]; roof: boolean; fog: boolean };
+export type Layer = "support" | "body" | "shell" | "instant";
 export type Options = {
   mode: "duel" | "team";
   teams: number[];
   roundSeconds: number;
   prepSeconds: number;
+  scene: Scene;
 };
 export type Spec = {
   kind: string;
@@ -15,6 +19,13 @@ export type Spec = {
   cooldownTicks?: number;
   hp?: number;
   description?: string;
+  originalId?: number;
+  target?: "cell" | "row" | "plant" | "area";
+  layer?: Layer;
+  upgradeFrom?: string;
+  waterOnly?: boolean;
+  roofOnly?: boolean;
+  scenes?: string[];
 };
 export type Player = {
   team: number;
@@ -22,6 +33,8 @@ export type Player = {
   money: number;
   cooldowns: Record<string, number>;
   seq: number;
+  deck: string[];
+  imitaterKind: string;
 };
 export type Plant = {
   id: number;
@@ -35,6 +48,16 @@ export type Plant = {
   bornAt?: number;
   attackAt?: number;
   burstAt?: number;
+  layer?: Layer;
+  asleep?: boolean;
+  state?: string;
+  targetKind?: string;
+  imitated?: boolean;
+  uses?: number;
+  targetId?: number;
+  effectUntil?: number;
+  chargeMS?: number;
+  flags?: Record<string, number>;
 };
 export type Zombie = {
   id: number;
@@ -51,14 +74,23 @@ export type Zombie = {
   bornAt?: number;
   vaulted?: boolean;
   vaultUntil?: number;
+  allegiance?: string;
+  altitude?: number;
+  diving?: boolean;
+  digging?: boolean;
+  targetId?: number;
+  abilityMS?: number;
+  abilityUntil?: number;
+  flags?: Record<string, number>;
 };
-export type Projectile = { id: number; row: number; x: number; kind: string };
+export type Projectile = { id: number; row: number; x: number; kind: string; y?: number; vx?: number; vy?: number; targetX?: number; targetY?: number; landAt?: number; height?: number; radius?: number; pierce?: number; payload?: string; targetId?: number };
 export type Mower = { row: number; state: "ready" | "moving" | "spent"; x: number };
 export type Event = { id: number; type: string; tick: number; row?: number; x?: number; col?: number; kind?: string; owner?: number; target?: number };
 export type RoundResult = { attackTeam: number; breached: boolean; elapsedMS: number };
 export type View = {
   protocol: number;
   options: Options;
+  map: MapSpec;
   epoch: string;
   round: number;
   phase: "prepare" | "battle" | "intermission" | "finished";
@@ -78,13 +110,25 @@ export type View = {
   digest?: string;
   frames?: unknown[];
   winnerTeam?: number;
+  wireMode?: "replay" | "projection";
+  projection?: boolean;
+  visibility?: { cells: (boolean | number)[][] };
+  graves?: { id?: number; row: number; col: number; hp?: number }[];
+  ladders?: { id?: number; row: number; col: number }[];
+  pickups?: { id: number; row: number; x: number; y: number; kind: string; owner: number; amount: number; autoAt: number; expiresAt: number }[];
+  craters?: { id: number; row: number; col: number; until: number }[];
+  terrain?: { id: number; row: number; fromX: number; toX: number; owner: number; kind: string; until: number }[];
+  fogClearedUntil?: number;
 };
 export type PvzAction = {
-  type: "plant" | "spawn" | "shovel";
+  type: "plant" | "spawn" | "shovel" | "deck" | "ability" | "collect";
   epoch: string;
   seq: number;
   kind?: string;
   row?: number;
   col?: number;
   plantId?: number;
+  kinds?: string[];
+  imitateKind?: string;
+  pickupId?: number;
 };
