@@ -1,0 +1,30 @@
+[
+  {
+    "character": 0,
+    "reference": "source/character-0-reference.png",
+    "model": "gpt-image-2.5",
+    "prompt": "Image 1 is the identity and four-direction reference for ONE original game character: amber raincoat engineer with copper goggles. Preserve this exact character, outfit, colors, hairstyle, body proportions, top-down oblique view, warm lighting and crisp handcrafted pixel-painted style. Create a production WALK CYCLE SPRITE SHEET of only this character. Exact regular 4 columns by 4 rows with generous transparent padding in each cell. Each row is one direction: first row facing down/front, second row facing up/back, third row facing left, fourth row facing right. Each column is a consecutive walking frame: left foot forward, contact center, right foot forward, contact center. Clearly separated moving legs and small opposing arm swing; compact natural steps, same head height and body scale throughout, stable framing, full body including boots in all16cells. Transparent background with native alpha. No shadows outside character, no colored background, no floor, no letters, no numbers, no text, no grid lines, no border. This is an extracted game sprite sheet, not an illustration or concept page.",
+    "out": "walk-0.png"
+  },
+  {
+    "character": 1,
+    "reference": "source/character-1-reference.png",
+    "model": "gpt-image-2.5",
+    "prompt": "Image 1 is the identity and four-direction reference for ONE original game character: teal diving scout with round brass helmet. Preserve this exact character, outfit, colors, hairstyle, body proportions, top-down oblique view, warm lighting and crisp handcrafted pixel-painted style. Create a production WALK CYCLE SPRITE SHEET of only this character. Exact regular 4 columns by 4 rows with generous transparent padding in each cell. Each row is one direction: first row facing down/front, second row facing up/back, third row facing left, fourth row facing right. Each column is a consecutive walking frame: left foot forward, contact center, right foot forward, contact center. Clearly separated moving legs and small opposing arm swing; compact natural steps, same head height and body scale throughout, stable framing, full body including boots in all16cells. Transparent background with native alpha. No shadows outside character, no colored background, no floor, no letters, no numbers, no text, no grid lines, no border. This is an extracted game sprite sheet, not an illustration or concept page.",
+    "out": "walk-1.png"
+  },
+  {
+    "character": 2,
+    "reference": "source/character-2-reference.png",
+    "model": "gpt-image-2.5",
+    "prompt": "Image 1 is the identity and four-direction reference for ONE original game character: coral coat medic with ponytail and cream scarf. Preserve this exact character, outfit, colors, hairstyle, body proportions, top-down oblique view, warm lighting and crisp handcrafted pixel-painted style. Create a production WALK CYCLE SPRITE SHEET of only this character. Exact regular 4 columns by 4 rows with generous transparent padding in each cell. Each row is one direction: first row facing down/front, second row facing up/back, third row facing left, fourth row facing right. Each column is a consecutive walking frame: left foot forward, contact center, right foot forward, contact center. Clearly separated moving legs and small opposing arm swing; compact natural steps, same head height and body scale throughout, stable framing, full body including boots in all16cells. Transparent background with native alpha. No shadows outside character, no colored background, no floor, no letters, no numbers, no text, no grid lines, no border. This is an extracted game sprite sheet, not an illustration or concept page.",
+    "out": "walk-2.png"
+  },
+  {
+    "character": 3,
+    "reference": "source/character-3-reference.png",
+    "model": "gpt-image-2.5",
+    "prompt": "Image 1 is the identity and four-direction reference for ONE original game character: ivory coat archivist with glasses. Preserve this exact character, outfit, colors, hairstyle, body proportions, top-down oblique view, warm lighting and crisp handcrafted pixel-painted style. Create a production WALK CYCLE SPRITE SHEET of only this character. Exact regular 4 columns by 4 rows with generous transparent padding in each cell. Each row is one direction: first row facing down/front, second row facing up/back, third row facing left, fourth row facing right. Each column is a consecutive walking frame: left foot forward, contact center, right foot forward, contact center. Clearly separated moving legs and small opposing arm swing; compact natural steps, same head height and body scale throughout, stable framing, full body including boots in all16cells. Transparent background with native alpha. No shadows outside character, no colored background, no floor, no letters, no numbers, no text, no grid lines, no border. This is an extracted game sprite sheet, not an illustration or concept page.",
+    "out": "walk-3.png"
+  }
+]
