@@ -1,0 +1,18 @@
+{
+  "test_first": true,
+  "production_exists": false,
+  "production_files": [
+    "games/yuyuhakusho/audio/scoreclock/ordinary.go",
+    "games/yuyuhakusho/audio/pcmcommands/ordinary_bus.go",
+    "games/yuyuhakusho/audio/mixed/ordinary.go",
+    "games/yuyuhakusho/audio/resourcebridge/ordinary.go",
+    "games/yuyuhakusho/audio/rootcontrol/choice.go"
+  ],
+  "files": {
+    "games/yuyuhakusho/audio/scoreclock/ordinary_e2e_test.go": "5fde03abb230dd78aa7bffc95ae2770526682f639df8078ec5a6952f57e9cdac",
+    "games/yuyuhakusho/verification/score-clock-ordinary/native-ordinary-full.json.gz": "190076f37feecf565b5f6f284dac103cc7ce96e888dec18fd2ad4c7ad9ef86be",
+    "scripts/yuyuhakusho/score-clock-ordinary-capture.py": "0c8645bbc30fe2b79e7f8cb86ee63ea488071f064824932799ec7a018414e341",
+    "scripts/yuyuhakusho/score-clock-ordinary-observer.c": "8730020a337a494637bbd9345e929e84abb2a217f95278ba8bdbd5443173faac",
+    "docs/research/md-yuyuhakusho/SCORE_CLOCK_ORDINARY_FAILURES.md": "1766f0f10f4f9814cdc68599a66b184e0bb047d981f94770abc16e1871a46966"
+  }
+}

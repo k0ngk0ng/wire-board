@@ -1,0 +1,149 @@
+"""Ordinary PCM snapshot/release/arbitration/reacquire/publication oracle."""
+import argparse
+import ctypes as C
+import gzip
+import importlib.util
+import itertools
+import json
+import os
+from pathlib import Path
+import subprocess
+
+from extract_audio_assets import AudioSession, write_cpu
+from reference import ROOT
+from research_audio_loops import ORIGINAL, OBSERVED, quiet_checkpoint
+from inspect_dac_dsp_state import symbols
+
+spec=importlib.util.spec_from_file_location('ordinary_shared',ROOT/'scripts/yuyuhakusho/score-clock-capture.py')
+shared=importlib.util.module_from_spec(spec)
+spec.loader.exec_module(shared)
+
+
+def signature(d, view):
+    priority=d['flags']&192
+    a,b=[v&192 for v in view['slot_flags']]
+    mode=view['mode_flags']
+    if not d['flags']&1:
+        if not mode&1:return 'single/legacy/'+('accept'if priority>=mode&192 else'reject')
+        return 'single/dual/'+('a-reject'if priority<a else'b-reject'if priority<b else'accept')
+    tag='dual/'+('active'if mode&1 else'legacy')
+    if not mode&1 and priority<mode&192:return tag+'/reject'
+    route=d['routing_or_pan']&192
+    tag+=f'/route{route}'
+    if route==128:return tag+('/A'if priority>=a else'/reject')
+    if route==64:return tag+('/B'if priority>=b else'/reject')
+    if view['slot_busy'][0]==0:return tag+'/A-free'
+    if view['slot_busy'][1]==0:return tag+'/B-free'
+    if view['choice']&1:return tag+'/choice1/'+('B'if priority>=b else'A'if priority>=a else'reject')
+    return tag+'/choice0/'+('A'if priority>=a else'B'if priority>=b else'reject')
+
+
+def cases(rom):
+    data=json.loads(gzip.decompress((ROOT/'games/yuyuhakusho/data/audio-pcm-payloads.json.gz').read_bytes()))
+    commands=data['ordinary'];assert len(commands)==122
+    rows=[];seen=set();shapes={};groups={};provenance={}
+    def add(command, view, tag):
+        key=(command['code'],view['mode_flags'],tuple(view['slot_flags']),tuple(view['slot_busy']),view['choice'])
+        if key in seen:return
+        seen.add(key);d=command['descriptor'];i=len(rows);phases=[(0,0),(1,896),(1008,1008),(2048,2050)]
+        origin,refresh=phases[i%4]
+        rows.append({'id':f'{i}-code{command["code"]:02x}-{tag}','code':command['code'],
+                     'descriptor':{'ID':d['id'],'PayloadID':d['sample_id'],'NativeRate':d['native_rate'],
+                                   'Flags':d['flags'],'RoutingOrPan':d['routing_or_pan'],'Protocol':1},
+                     **view,'origin':origin,'refresh':refresh,'shape':signature(d,view)})
+    for command in commands:
+        d=command['descriptor'];assert not d['flags']&32
+        index=122 if command['code']==240 else command['code']-6
+        address=0x380a8+index*8;raw=rom[address:address+8]
+        assert raw[4]==d['native_rate']and raw[5]==d['flags']and raw[6]==d['routing_or_pan']
+        provenance[d['id']]={'address':address,'bytes':raw.hex()}
+        add(command,{'mode_flags':0,'slot_flags':[0,0],'slot_busy':[0,0],'choice':0},'resource-closure')
+        groups.setdefault((d['flags']&1,d['flags']&192,d['routing_or_pan']&192),command)
+    for command in groups.values():
+        for mode,flags,busy,choice in itertools.product([0,1,64,65,128,129,192,193],itertools.product([0,64,128,192],repeat=2),[[0,0],[64,0],[0,128],[64,128]],[0,1]):
+            view={'mode_flags':mode,'slot_flags':list(flags),'slot_busy':busy,'choice':choice}
+            shape=signature(command['descriptor'],view)
+            shapes.setdefault(shape,(command,view))
+    for shape,(command,view)in sorted(shapes.items()):add(command,view,'branch')
+    return rows,provenance,sorted(shapes)
+
+
+def build(out):
+    tmp=out/'tmp';tmp.mkdir();target=out/'ordinary-observer.dylib'
+    subprocess.run(['clang','-dynamiclib','-O2','-fno-modules',str(ROOT/'scripts/yuyuhakusho/score-clock-ordinary-observer.c'),'-o',str(target)],cwd=ROOT,env=dict(os.environ,TMPDIR=str(tmp),CLANG_MODULE_CACHE_PATH=str(tmp/'clang-cache')),check=True)
+    b=C.CDLL(str(target));b.score_clock_attach.argtypes=[C.c_void_p]*9;b.score_clock_attach.restype=C.c_int
+    b.score_clock_pc.argtypes=[C.c_uint];b.score_clock_count.restype=C.c_size_t;b.score_clock_events.restype=C.POINTER(shared.Event)
+    for name in['score_clock_overflow','score_clock_detach','score_clock_ordinary_enable','score_clock_ordinary_disable']:getattr(b,name).restype=C.c_int
+    return b
+
+
+def setup(ref,checkpoint,case,lookup):
+    ref.restore(checkpoint,restore_refresh_cycles=True)
+    image=C.cast(ref.lib.audio_update,C.c_void_p).value-lookup['_audio_update'][0]
+    C.c_int.from_address(image+lookup['_fm_cycles_busy'][0]).value=0
+    C.c_void_p.from_address(image+lookup['_fm_ptr'][0]).value=image+lookup['_fm_buffer'][0]
+    ref.cpu.cycles=case['origin'];ref.api('gen_zbusreq_w',None,C.c_uint,C.c_uint)(1,case['origin'])
+    ref.cpu.cycles,ref.cpu.refresh_cycles=case['origin'],case['refresh']
+    z=(C.c_ubyte*8192).in_dll(ref.lib,'zram')
+    z[0x1ffc]=case['mode_flags'];z[0x1f87],z[0x1fa7]=case['slot_flags'];z[0x1f86],z[0x1fa6]=case['slot_busy']
+    z[0x1ffe]=z[0x1ffd]=z[0x1f2a]=0
+    write_cpu(ref,0xfff82c,case['choice']);write_cpu(ref,0xfff82b,0)
+    setter=ref.api('m68k_set_reg',None,C.c_uint,C.c_uint)
+    for index in range(15):setter(index,0)
+    address=0x380a8+(122 if case['code']==240 else case['code']-6)*8
+    for index,value in[(17,0x2700),(15,0xffff00),(8,address),(16,0x37d66)]:setter(index,value)
+    write_cpu(ref,0xffff00,0x3d8,4);return ref.save()
+
+
+def execute(ref,case,b=None):
+    run=ref.api('m68k_run',None,C.c_uint);steps=[];root=[]
+    for _ in range(192):
+        pc=ref.get_register(16)&0xffffff
+        if pc==0x3d8:return steps,root
+        assert 0x37d66<=pc<=0x380a6,('escaped ordinary phase',case['id'],hex(pc))
+        before,refresh=ref.cpu.cycles,ref.cpu.refresh_cycles
+        value=ref.ram_cpu()[0xf82c]if pc in[0x37ef8,0x37f1e,0x37fce]else None
+        if b:b.score_clock_pc(pc)
+        run(before+1);steps.append([pc,before,refresh,ref.cpu.cycles,ref.cpu.refresh_cycles])
+        if value is not None:
+            root.append({'kind':'choice-read'if pc==0x37ef8 else'choice-write',
+                         'at':before+(14 if before>=refresh else 0),'before':value,'value':ref.ram_cpu()[0xf82c]})
+    raise AssertionError(('ordinary step cap',case['id']))
+
+
+def main():
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--out',type=Path,required=True);args=parser.parse_args()
+    out=args.out.resolve();assert out.is_relative_to(ROOT/'.local')and not out.exists();out.mkdir(parents=True)
+    rom=ROOT/'.local/md-yuyuhakusho/downloads/yuyuhakusho-jp.bin';inputs,provenance,shapes=cases(rom.read_bytes());b=build(out)
+    print(json.dumps({'profiles':len(inputs),'shapes':len(shapes)}),flush=True)
+    controls={};rows=[];identities={}
+    for name,core in[('original',ORIGINAL),('observed',OBSERVED)]:
+        with AudioSession(ROOT,out/('core-'+name),core=core)as ref:
+            checkpoint,lookup=quiet_checkpoint(ref),symbols(core);identities[name]=ref.identity
+            for i,case in enumerate(inputs):
+                initial=setup(ref,checkpoint,case,lookup);plain_steps,plain_root=execute(ref,case);plain,plain_ram=ref.save(),ref.ram_cpu()
+                again=setup(ref,checkpoint,case,lookup);assert initial['data']==again['data'];shared.attach(b,ref);assert b.score_clock_ordinary_enable()==1
+                if name=='observed':ref.api('set_cpu_hook',None,C.c_void_p)(C.cast(b.score_clock_hook,C.c_void_p))
+                try:steps,root=execute(ref,case,b);events=shared.events(b)
+                finally:
+                    if name=='observed':ref.api('set_cpu_hook',None,C.c_void_p)(None)
+                    assert b.score_clock_ordinary_disable()==1 and b.score_clock_detach()==1
+                saved=ref.save();assert(plain_steps==steps and plain_root==root and plain['data']==saved['data']and plain['refresh_cycles']==saved['refresh_cycles']and plain_ram==ref.ram_cpu()),('observer changed ordinary',case['id'])
+                pcs={s[0]for s in steps};single=0x37dd8 in pcs;dual=0x37f1e in pcs or 0x37fce in pcs;start=0x37f48 in pcs or 0x37ff8 in pcs
+                expected_stores=8 if single else(12 if start else 10)if dual else 0
+                assert sum(e['kind']==26 for e in events)==expected_stores,('metadata observer coverage',case['id'])
+                assert sum(e['kind']==25 for e in events)==(5 if case['descriptor']['Flags']&1 else 3)
+                z=(C.c_ubyte*8192).in_dll(ref.lib,'zram');result={'steps':steps,'root':root,'events':[e for e in events if e['kind']!=7],
+                    'end':{'Cycle':ref.cpu.cycles,'Refresh':ref.cpu.refresh_cycles},'choice':ref.ram_cpu()[0xf82c],
+                    'fields':{str(a):int(z[a])for a in[0x1ffc,0x1ffd,0x1ffe,0x1ffb,0x1ffa,0x1f86,0x1f87,0x1fa6,0x1fa7]}}
+                if name=='original':controls[i]=result
+                else:
+                    assert controls[i]==result,('pinned cores disagree',case['id']);rows.append({'input':case,**result,'native_observer_state_equal':True})
+        print(json.dumps({'core':name,'cases':len(inputs),'pass':True}),flush=True)
+    sources=[Path(__file__),ROOT/'scripts/yuyuhakusho/score-clock-ordinary-observer.c',ROOT/'scripts/yuyuhakusho/score-clock-bridge.c',ROOT/'games/yuyuhakusho/data/audio-pcm-payloads.json.gz',ROOT/'games/yuyuhakusho/engine/testdata/pcm-arbitration-private.json.gz',ROOT/'docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt']
+    payload={'version':1,'scope':'All122 formal ordinary resources and normal canonical arbitration branch shapes; initial held idle player, no extraIRQ/DMA/duck','identities':identities,'cases':rows,'shapes':shapes,'descriptor_provenance':provenance,'root_observation':'Actual RAM bytes before/after declared choice instruction; stage time is pinned step origin after refresh. No synthetic RAM hook or source mutation.','sources':{str(p.relative_to(ROOT)):shared.sha(p.read_bytes())for p in sources}}
+    target=out/'native-ordinary-full.json.gz';target.write_bytes(gzip.compress((json.dumps(payload,sort_keys=True,separators=(',',':'))+'\n').encode(),mtime=0))
+    print(json.dumps({'pass':True,'cases':len(rows),'executions':len(rows)*4,'fixture_sha256':shared.sha(target.read_bytes())}),flush=True)
+
+
+if __name__=='__main__':main()
