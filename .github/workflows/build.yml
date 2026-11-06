@@ -220,13 +220,18 @@ jobs:
       - name: Prepare PvZ asset verification environment
         if: matrix.game == 'pvz' && matrix.shard == 0
         run: |
+          set -o pipefail
           mkdir -p .local/tmp .local/pvz/ci-assets
           export TMPDIR="$PWD/.local/tmp"
           export PIP_CACHE_DIR="$PWD/.local/pvz/ci-assets/pip-cache"
-          command -v ffmpeg
-          command -v ffprobe
+          export PIP_DISABLE_PIP_VERSION_CHECK=1
+          python3 -B -c 'import json; from pathlib import Path; Path(".local/pvz/ci-assets/prepare-result.json").write_text(json.dumps({"passed":False,"phase":"dependency-setup"})+"\n")'
           python3 -m venv .local/pvz/ci-assets/venv
-          .local/pvz/ci-assets/venv/bin/python -m pip install Pillow==13.0.0
+          .local/pvz/ci-assets/venv/bin/python -m pip install Pillow==13.0.0 2>&1 | tee .local/pvz/ci-assets/install.log
+          if ! command -v ffmpeg >/dev/null 2>&1; then
+            .local/pvz/ci-assets/venv/bin/python -m pip install imageio-ffmpeg==0.6.0 2>&1 | tee -a .local/pvz/ci-assets/install.log
+          fi
+          .local/pvz/ci-assets/venv/bin/python -B scripts/ci/scope.py pvz-tools
       - name: Validate this game only
         env:
           GAME_ID: ${{ matrix.game }}
@@ -237,14 +242,14 @@ jobs:
           args=(--game "$GAME_ID" --shard "$SHARD_INDEX" --count "$SHARD_COUNT")
           if [ "$BACKEND_CHANGED" = true ]; then args+=(--backend); fi
           if [ "$GAME_ID" = pvz ] && [ "$SHARD_INDEX" = 0 ]; then
-            export PATH="$PWD/.local/pvz/ci-assets/venv/bin:$PATH"
+            export PATH="$PWD/.local/pvz/ci-assets/bin:$PWD/.local/pvz/ci-assets/venv/bin:$PATH"
             export TMPDIR="$PWD/.local/tmp"
             export PIP_CACHE_DIR="$PWD/.local/pvz/ci-assets/pip-cache"
           fi
           python3 -B scripts/ci/scope.py run "${args[@]}"
       - name: Remove temporary PvZ asset tools
         if: always() && matrix.game == 'pvz' && matrix.shard == 0
-        run: rm -rf .local/pvz/ci-assets/venv .local/pvz/ci-assets/pip-cache
+        run: rm -rf .local/pvz/ci-assets/bin .local/pvz/ci-assets/venv .local/pvz/ci-assets/pip-cache
       - uses: actions/upload-artifact@v4
         if: always()
         with:
