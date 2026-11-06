@@ -472,7 +472,14 @@ func (t *tick) advanceVoice(i int) (bool, error) {
 
 func (t *tick) control(i int, e event) error {
 	defer t.enter(RoutineControl, i, BranchNormal)()
-	t.operation(Operation{Kind: OpParameter, Routine: RoutineControl, VoiceSlot: int8(i), OtherSlot: -1, EventKind: e.Kind})
+	projection := ControlProjection{ImmediateFM: e.ImmediateFM, PanDisabled: e.Kind == "pan-automation" && e.Definition != nil && e.Definition.Mode == param.PanDisabled, Enabled: e.Enabled}
+	if e.Kind == "psg-noise" {
+		projection.Noise = 0xe0 | e.Clock
+		if e.White {
+			projection.Noise |= 4
+		}
+	}
+	t.operation(Operation{Kind: OpParameter, Routine: RoutineControl, VoiceSlot: int8(i), OtherSlot: -1, EventKind: e.Kind, Control: projection})
 	if t.err != nil {
 		return t.err
 	}
@@ -526,10 +533,7 @@ func (t *tick) control(i int, e event) error {
 		v.PitchControl.ModulationEnabled = e.Enabled
 	case "psg-noise":
 		v.Channel = "psg-noise"
-		v.NoiseControl = 0xe0 | e.Clock
-		if e.White {
-			v.NoiseControl |= 4
-		}
+		v.NoiseControl = projection.Noise
 		if !v.Claimed {
 			t.psgFor(i, v.NoiseControl)
 		}

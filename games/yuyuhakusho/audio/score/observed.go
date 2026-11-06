@@ -158,6 +158,13 @@ type TempoObservation struct {
 	Period, Remaining uint8
 }
 
+// ControlProjection carries only this immutable typed event's values. It is
+// observed before the control effect and never retained as voice state.
+type ControlProjection struct {
+	ImmediateFM, PanDisabled, Enabled bool
+	Noise                             uint8
+}
+
 // Operation is one temporary semantic stage, before its effect. Writes form a
 // single ordered group (at most a PSG pitch pair). It contains no time or PC.
 // Counter Before/After are values of the named semantic counter, not registers.
@@ -192,6 +199,7 @@ type Operation struct {
 	Work          ParserWork
 	WorkSite      ParserWorkSite
 	Action        MusicControlAction
+	Control       ControlProjection
 }
 
 type FeedbackKind string

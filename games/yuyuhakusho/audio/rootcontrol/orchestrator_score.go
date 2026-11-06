@@ -45,7 +45,7 @@ func (r *ruleTick) scoreHooks() score.ObservedHooks {
 			if op.WriteCount != 1 || op.Writes[0].Kind != "queue" || op.Writes[0].Action != "replace-first" {
 				return fmt.Errorf("%w: unknown score queue effect", ErrRuleUnsupported)
 			}
-			r.owners.Queue[0] = op.Writes[0].SoundID
+			return r.applyQueueReplace(op)
 		}
 		return nil
 	}
