@@ -6,6 +6,8 @@
 
 发布检查还会核对实际二进制摘要及编译嵌入输入，防止素材藏在可执行文件中。没有发布清单的本地开发构建仍可加载本地资源。完整发布流程维护在源码仓库的 `rules/deploy.md`。
 
+CDN 回读在本地进行，GitHub Actions 仅上传不可变资源并构建候选包，以避免跨区域网络问题。main 构建成功后，在本地运行 `python3 -B scripts/cdn_local_ready.py --run <运行编号> --sha <完整提交> --mark-ready`。工具下载同一次构建的资源，回读检查 SHA-256、大小、MIME、CORS 和音频 Range，保存报告并写入绑定该构建的发布状态；tag 发布缺少该状态时会拒绝执行。
+
 ## Caddy HTTPS 反向代理
 
 ```caddy

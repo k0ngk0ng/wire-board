@@ -16,10 +16,38 @@ Lossless-music failures declared before implementation: .flac is missing from
 inventory, changes its stored-byte identity, uses gzip HTTP encoding, omits
 seekable Range validation, or accepts a 200/wrong-range/corrupt audio response.
 """
-import unittest,tempfile,json,hashlib,gzip,shutil,threading
+import unittest,tempfile,json,hashlib,gzip,shutil,threading,os,sys
+from unittest.mock import patch
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 import cdn_delivery as cdn
+
+class LocalReadbackPolicy(unittest.TestCase):
+ def setUp(self):
+  self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup);self.root=Path(self.temp.name);self.dist=self.root/'dist';(self.dist/'assets').mkdir(parents=True)
+  self.base='https://cdn.ichenj.com/bga/web/'+'a'*40+'/'
+  body=b'export const ready=true;';(self.dist/'assets/app.js').write_bytes(body);(self.dist/'index.html').write_text('entry')
+  (self.dist/'game-load-manifest.json').write_text(json.dumps({'assetBase':self.base,'entry':self.base+'assets/app.js','games':{'fixture':[{'url':self.base+'assets/app.js','bytes':len(body)}]}}))
+  self.report=self.root/'report.json'
+ def invoke(self,action,ci):
+  with patch.object(sys,'argv',['cdn_delivery.py',action,'--dist',str(self.dist),'--report',str(self.report)]),patch.dict(os.environ,{'GITHUB_ACTIONS':'true' if ci else ''}):cdn.main()
+ def test_actions_upload_never_reads_cdn_or_claims_cdn_verified(self):
+  with patch.object(cdn,'publish') as upload,patch.object(cdn,'verify',side_effect=AssertionError('CDN read from Actions')):
+   self.invoke('upload',True)
+  self.assertEqual(upload.call_count,1);r=json.loads(self.report.read_text());self.assertTrue(r['passed']);self.assertEqual(r['stage'],'uploaded');self.assertFalse(r['cdnVerified'])
+  cdn.trim(self.dist,r);self.assertTrue((self.dist/'cdn-assets-manifest.json').is_file())
+ def test_actions_rejects_readback_commands_before_network(self):
+  for action in ['publish','verify']:
+   with self.subTest(action=action),patch.object(cdn,'publish',side_effect=AssertionError('network')),patch.object(cdn,'verify',side_effect=AssertionError('network')):
+    with self.assertRaisesRegex(ValueError,'local|本地'):self.invoke(action,True)
+ def test_local_verify_still_checks_every_row_and_records_its_location(self):
+  with patch.object(cdn,'verify',side_effect=lambda row:row) as verify,patch.object(cdn,'publish',side_effect=AssertionError('verify must not upload')):
+   self.invoke('verify',False)
+  self.assertEqual(verify.call_count,1);r=json.loads(self.report.read_text());self.assertTrue(r['passed']);self.assertTrue(r['cdnVerified']);self.assertEqual(r['stage'],'verified');self.assertEqual(r['verificationLocation'],'local')
+ def test_failed_readback_cannot_produce_a_success_report(self):
+  with patch.object(cdn,'verify',side_effect=ValueError('wrong CDN bytes')):
+   with self.assertRaisesRegex(ValueError,'wrong CDN'):self.invoke('verify',False)
+  self.assertFalse(json.loads(self.report.read_text())['passed'])
 class Delivery(unittest.TestCase):
  def setUp(self):
   self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup);self.dist=Path(self.temp.name);(self.dist/'assets').mkdir();(self.dist/'assets/index-abcdefgh.js').write_bytes(b'export const ready=true;');(self.dist/'index.html').write_text('entry')
