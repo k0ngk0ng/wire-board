@@ -1,0 +1,22 @@
+{
+  "scope": "Only this terminal static exporter duplicate metadata/provenance and empty failed/reexport directories; originals and committed proofs retained",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/instrument-work-v2/provenance.json",
+      "bytes": 272557
+    },
+    {
+      "path": ".local/md-yuyuhakusho/instrument-work-v2/audio-instrument-work.json.gz",
+      "bytes": 9001
+    },
+    {
+      "path": ".local/md-yuyuhakusho/instrument-work-reexport/provenance.json",
+      "bytes": 272557
+    },
+    {
+      "path": ".local/md-yuyuhakusho/instrument-work-reexport/audio-instrument-work.json.gz",
+      "bytes": 9001
+    }
+  ],
+  "removed_directories": 3
+}

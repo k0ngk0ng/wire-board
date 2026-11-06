@@ -28,9 +28,29 @@ type Library struct {
 // hashes bind checkpoints and dependencies; they do not authenticate a download
 // against an independently trusted deployment manifest on the caller's behalf.
 func Decode(scoreJSON, pcmJSON, parserJSON []byte) (*Library, error) {
+	return decodeResources(scoreJSON, pcmJSON, parserJSON, nil)
+}
+
+// DecodeWithInstrumentWork binds the selected instrument's sound/work identity
+// without adding a second dynamic tone owner. All four exact resources enter
+// the outer identity so PCM/audio checkpoint restore cannot mix resource sets.
+func DecodeWithInstrumentWork(scoreJSON, pcmJSON, parserJSON, instrumentJSON []byte) (*Library, error) {
+	if len(instrumentJSON) == 0 {
+		return nil, errors.New("missing instrument work resource")
+	}
+	return decodeResources(scoreJSON, pcmJSON, parserJSON, instrumentJSON)
+}
+
+func decodeResources(scoreJSON, pcmJSON, parserJSON, instrumentJSON []byte) (*Library, error) {
 	catalog, err := score.DecodeCatalog(bytes.NewReader(scoreJSON))
 	if err != nil {
 		return nil, fmt.Errorf("score resource: %w", err)
+	}
+	if instrumentJSON != nil {
+		catalog, err = score.BindInstrumentWork(catalog, bytes.NewReader(instrumentJSON))
+		if err != nil {
+			return nil, fmt.Errorf("instrument work resource: %w", err)
+		}
 	}
 	pcm, err := pcmassets.Decode(bytes.NewReader(pcmJSON), scoreJSON)
 	if err != nil {
@@ -56,7 +76,11 @@ func Decode(scoreJSON, pcmJSON, parserJSON []byte) (*Library, error) {
 	}
 	hash := sha256.New()
 	hash.Write([]byte("yyh-audio-resource-bridge-v1\x00"))
-	for _, raw := range [][]byte{scoreJSON, pcmJSON, parserJSON} {
+	inputs := [][]byte{scoreJSON, pcmJSON, parserJSON}
+	if instrumentJSON != nil {
+		inputs = append(inputs, instrumentJSON)
+	}
+	for _, raw := range inputs {
 		digest := sha256.Sum256(raw)
 		hash.Write(digest[:])
 	}

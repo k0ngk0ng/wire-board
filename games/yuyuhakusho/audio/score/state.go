@@ -46,16 +46,18 @@ type Modulation struct {
 // VoiceState owns parameters and advancing counters, not source flow or RAM.
 // NoteWait is an 8-bit cyclic countdown; zero encodes the recovered 256 interval.
 type VoiceState struct {
-	Owned                              bool
-	Owner                              Owner
-	Channel                            string
-	Active, NoteOff, Claimed, Tie      bool
-	Transpose                          int8
-	BaseLevel                          uint8
-	BasePitch                          uint16
-	DACDescriptor                      string
-	PitchScale                         int8
-	PitchControl                       PitchControl
+	Owned                         bool
+	Owner                         Owner
+	Channel                       string
+	Active, NoteOff, Claimed, Tie bool
+	Transpose                     int8
+	BaseLevel                     uint8
+	BasePitch                     uint16
+	DACDescriptor                 string
+	PitchScale                    int8
+	PitchControl                  PitchControl
+	// Tone is the unique selected immutable resource reference: a patch ID in
+	// legacy catalogs, or an instrument sound/work reference in bound catalogs.
 	Tone                               string
 	VolumeEnvelope                     uint16
 	VolumeCursor, PitchCursor          param.EnvelopeCursor
@@ -167,7 +169,12 @@ func Restore(c *Catalog, s State) (*Driver, error) {
 				return nil, fmt.Errorf("invalid event cursor")
 			}
 			if isFM(i) {
-				if _, ok := c.patches[v.Tone]; !ok {
+				if c.instruments != nil {
+					if _, ok := c.instruments[v.Tone]; !ok {
+						return nil, fmt.Errorf("selected instrument does not belong to this bound resource set")
+					}
+				}
+				if _, ok := c.patch(v.Tone); !ok {
 					return nil, fmt.Errorf("unknown selected tone")
 				}
 			}
@@ -260,7 +267,7 @@ func (d *Driver) View() map[string]any {
 		if isPSG(i) {
 			tone = v.VolumeEnvelope
 		} else if v.Owned && i != 0 {
-			tone = v.Tone
+			tone = d.catalog.patchIdentity(v.Tone)
 		}
 		var base any = v.BasePitch
 		if i == 0 {

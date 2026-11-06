@@ -1,0 +1,12 @@
+{
+  "pass": true,
+  "data_and_provenance_byte_identical": true,
+  "exporter_result": {
+    "pass": true,
+    "profiles": 106,
+    "selectors": 960,
+    "gzip_bytes": 9001,
+    "gzip_sha256": "09b580e0b3a4354d5dd4d1c896105a0faf002eb50d469c0c048f788d79228125"
+  },
+  "no_native_core_executed": true
+}

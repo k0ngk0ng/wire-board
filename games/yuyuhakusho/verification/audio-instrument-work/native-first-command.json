@@ -1,0 +1,22 @@
+{
+  "pass": true,
+  "exit_code": 0,
+  "elapsed_seconds": 16.571014124900103,
+  "command": [
+    "go",
+    "test",
+    "-json",
+    "-count=1",
+    "-timeout=10m",
+    "-run",
+    "^TestInstrumentWork",
+    "./games/yuyuhakusho/audio/score"
+  ],
+  "sources": {
+    "games/yuyuhakusho/audio/score/catalog.go": "9f1cc09d669f446753711dabb998467fc6e6075e67880f91569229970940865e",
+    "games/yuyuhakusho/audio/score/driver.go": "5f1424130b0abdac2955ae4ad8c88093047fab6d1a4356ff62a16bea3ad1fbbf",
+    "games/yuyuhakusho/audio/score/state.go": "5b5c2f3d9d4b94c5f0e41fd4211cb06f5cc3d5ec2e02dccad03e5aaf4c60e4c0",
+    "games/yuyuhakusho/audio/score/instrument_work.go": "6bfca5209a1097c804485cfc181e0aebb06279ad1bfc03c3f64e9578c4a36cd5"
+  },
+  "log_sha256": "52eaf7c2df57bff7e63e582334b3e141dcd303846712f47d9f41ea23ef75c9d6"
+}

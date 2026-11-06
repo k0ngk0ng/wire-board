@@ -123,6 +123,7 @@ type Catalog struct {
 	psg             map[int]uint16
 	descriptors     map[string]DACDescriptor
 	fallbackPatchID string
+	instruments     map[string]InstrumentWork
 }
 
 func DecodeCatalog(r io.Reader) (*Catalog, error) {

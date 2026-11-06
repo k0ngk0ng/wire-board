@@ -1,0 +1,8 @@
+{"Time":"2026-11-06T11:20:30.532465+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/resourcebridge"}
+{"Time":"2026-11-06T11:20:31.091396+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/resourcebridge","Test":"TestInstrumentResourceSetIdentityAndRealDriver"}
+{"Time":"2026-11-06T11:20:31.091519+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/resourcebridge","Test":"TestInstrumentResourceSetIdentityAndRealDriver","Output":"=== RUN   TestInstrumentResourceSetIdentityAndRealDriver\n"}
+{"Time":"2026-11-06T11:20:31.834676+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/resourcebridge","Test":"TestInstrumentResourceSetIdentityAndRealDriver","Output":"--- PASS: TestInstrumentResourceSetIdentityAndRealDriver (0.74s)\n"}
+{"Time":"2026-11-06T11:20:31.834691+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/resourcebridge","Test":"TestInstrumentResourceSetIdentityAndRealDriver","Elapsed":0.74}
+{"Time":"2026-11-06T11:20:31.834705+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/resourcebridge","Output":"PASS\n"}
+{"Time":"2026-11-06T11:20:31.838803+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/resourcebridge","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/resourcebridge\t1.306s\n"}
+{"Time":"2026-11-06T11:20:31.838824+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/resourcebridge","Elapsed":1.306}
