@@ -1,0 +1,24 @@
+{
+  "scope": "Whole repository compile and test linking after shared leaf refactor; not whole repository behavioral testing",
+  "pass": true,
+  "exit_code": 0,
+  "command": [
+    "go",
+    "test",
+    "./...",
+    "-run",
+    "^$",
+    "-count=1"
+  ],
+  "at_utc": "2026-11-06T01:33:48.896777+00:00",
+  "elapsed_seconds": 36.761676584370434,
+  "environment": {
+    "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+    "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+    "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+    "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "GOMAXPROCS": "2"
+  },
+  "log_sha256": "8cd1f65adfe885af4cde1ebe7a6f2b374dab6278adc7b233b41f7b258c9219c1"
+}

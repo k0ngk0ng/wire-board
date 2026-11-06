@@ -1,0 +1,12 @@
+{
+  "pass": true,
+  "only_derived_driver_stage_selection_corrected": true,
+  "original_IO_trace_and_levels_unchanged": true,
+  "frozen_Go_test_unchanged": true,
+  "files": {
+    "scripts/yuyuhakusho/score-clock-pause-fixture.py": "3343f4590a0d0cc4828a54b63e039955b8e201168e52a5eee9468c0cc926432f",
+    "games/yuyuhakusho/verification/score-clock-pause/source/natural-pause-io.json.gz": "7ae7dbd9172f17930c2e2a7145bdd026c80250b9e5e36e414c7808024c107f80",
+    "games/yuyuhakusho/verification/score-clock-pause/source/cost-source.json": "8abca2704612eb3201752f12df78fbb83f0ccffd12c6183808521b05f838ab20",
+    "games/yuyuhakusho/verification/score-clock-pause/fixture-stage-correction.json": "e9fe0371399da97efcd7374c45c20792529579cc845d7a5bf5e5fed9973d5a9c"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "at_utc": "2026-11-06T01:25:47.105018+00:00",
+  "scope": "Derived fixture stage-selector correction; production and frozen Go tests unchanged",
+  "reason": "Original natural frames contain world request F807 writes at25838/23436 and later driver ACK/clear stores at201741/201684. The v1 selector incorrectly chose first RAM store, before driver entry. Bind the driver source points37ba2/37c08 after the observed driver entry. Original natural-windows source and499 IO responses are unchanged.",
+  "v1_fixture_sha256": "caf142ccd3e4e276ba53102c1962b58e67a80031a18a344b68c94875ad49b534",
+  "v1_script_sha256": "53298637b60a1ae8b158ad0b2a420e5b86346bdad8a7cc49bbf1b64f50d16706",
+  "native_first_red_preserved": "native-first.jsonl",
+  "correct_driver_stores": {
+    "start": {
+      "source_pc": 228258,
+      "at": 201741,
+      "value": 255
+    },
+    "resume": {
+      "source_pc": 228360,
+      "at": 201684,
+      "value": 0
+    }
+  }
+}

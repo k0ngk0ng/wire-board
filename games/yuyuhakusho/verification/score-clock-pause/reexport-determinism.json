@@ -1,0 +1,18 @@
+{
+  "pass": true,
+  "scope": "Offline literal fixture and static cost reexport only; no native core executed",
+  "byte_identical": true,
+  "files": [
+    {
+      "name": "natural-pause-io.json.gz",
+      "bytes": 3791,
+      "sha256": "7ae7dbd9172f17930c2e2a7145bdd026c80250b9e5e36e414c7808024c107f80"
+    },
+    {
+      "name": "cost-source.json",
+      "bytes": 7288,
+      "sha256": "8abca2704612eb3201752f12df78fbb83f0ccffd12c6183808521b05f838ab20"
+    }
+  ],
+  "removed_only_own_identical_reexport_directory": true
+}

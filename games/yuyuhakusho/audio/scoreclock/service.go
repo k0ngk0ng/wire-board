@@ -245,6 +245,42 @@ func (s *service) writePort(port, value uint8) error {
 	})
 }
 
+// serveYM shares the caller's temporary clock and operation budget. The
+// canonical leaf remains identical for standalone and composed invocations.
+func (s *service) serveYM(request Request) error {
+	if err := s.registerPrefix(request); err != nil {
+		return err
+	}
+	if err := s.acquire(); err != nil {
+		return err
+	}
+	if err := s.waitChip(); err != nil {
+		return err
+	}
+	if err := s.writePort(request.Bank*2, request.Register); err != nil {
+		return err
+	}
+	if err := s.spend(4); err != nil {
+		return err
+	}
+	if err := s.waitChip(); err != nil {
+		return err
+	}
+	if err := s.writePort(request.Bank*2+1, request.Value); err != nil {
+		return err
+	}
+	if err := s.request(20, false); err != nil {
+		return err
+	}
+	if err := s.spend(16); err != nil {
+		return fmt.Errorf("restore service interrupt mask: %w", err)
+	}
+	if err := s.spend(16); err != nil {
+		return err
+	}
+	return nil
+}
+
 // ServeYM performs one canonical register service from a supplied origin.
 // Callers use detached transactional chip/bus owners and commit them only after
 // success. Errors can follow prior external operations; this function does not
@@ -259,34 +295,7 @@ func ServeYM(clock Clock, request Request, bus Bus, chip Chip, limits Limits) (R
 		limit = 4096
 	}
 	s := service{clock: clock, bus: bus, chip: chip, limit: limit}
-	if err := s.registerPrefix(request); err != nil {
-		return Result{}, err
-	}
-	if err := s.acquire(); err != nil {
-		return Result{}, err
-	}
-	if err := s.waitChip(); err != nil {
-		return Result{}, err
-	}
-	if err := s.writePort(request.Bank*2, request.Register); err != nil {
-		return Result{}, err
-	}
-	if err := s.spend(4); err != nil {
-		return Result{}, err
-	}
-	if err := s.waitChip(); err != nil {
-		return Result{}, err
-	}
-	if err := s.writePort(request.Bank*2+1, request.Value); err != nil {
-		return Result{}, err
-	}
-	if err := s.request(20, false); err != nil {
-		return Result{}, err
-	}
-	if err := s.spend(16); err != nil {
-		return Result{}, fmt.Errorf("restore service interrupt mask: %w", err)
-	}
-	if err := s.spend(16); err != nil {
+	if err := s.serveYM(request); err != nil {
 		return Result{}, err
 	}
 	return Result{Clock: s.clock, Level: s.level}, nil
