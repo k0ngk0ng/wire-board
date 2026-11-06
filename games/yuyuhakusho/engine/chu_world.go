@@ -109,6 +109,12 @@ func StepChuWorldObjects(state ChuWorldState, view ChuWorldView, library ChuWorl
 
 // StepChuWorldObjectsObserved exposes only actual enqueue operations, not CPU time.
 func StepChuWorldObjectsObserved(state ChuWorldState, view ChuWorldView, library ChuWorldLibrary, hook WorldSoundHook) (ChuWorldState, []ChuWorldEvent, error) {
+	return StepChuWorldObjectsWithHooks(state, view, library, ChuWorldHooks{Sound: hook})
+}
+
+// StepChuWorldObjectsWithHooks observes actual producers and currently priced
+// default-arena work. It does not assign zero cost to unobserved world work.
+func StepChuWorldObjectsWithHooks(state ChuWorldState, view ChuWorldView, library ChuWorldLibrary, hooks ChuWorldHooks) (ChuWorldState, []ChuWorldEvent, error) {
 	original := state
 	if state.MatchComplete {
 		return state, nil, nil
@@ -122,7 +128,7 @@ func StepChuWorldObjectsObserved(state ChuWorldState, view ChuWorldView, library
 	state.Stream = append([]byte(nil), state.Stream...)
 	state.Throws.Records = append([]ThrowContactRecord(nil), state.Throws.Records...)
 	state.Registration.Owners = append([]uint16(nil), state.Registration.Owners...)
-	port := &worldSoundPort{owners: WorldSoundOwners{Queue: &state.SoundQueue, AudioPause: &state.Clock.AudioPause}, hook: hook}
+	port := &worldSoundPort{owners: WorldSoundOwners{Queue: &state.SoundQueue, AudioPause: &state.Clock.AudioPause}, hook: hooks.Sound}
 	var events []ChuWorldEvent
 	var hudCursor uint16 // Logical per-pass transfer cursor, not a physical DMA address.
 	for address := uint32(0x8000); address < 0xa000; {
@@ -141,7 +147,7 @@ func StepChuWorldObjectsObserved(state ChuWorldState, view ChuWorldView, library
 		}
 		events = append(events, ChuWorldEvent{Kind: "callback", ObjectID: id, Header: object.Header, Stride: stride})
 		port.objectID = id
-		more, err := stepChuWorldObjectWithSound(&state, object, view, library, &hudCursor, port)
+		more, err := stepChuWorldObjectWithSound(&state, object, view, library, &hudCursor, port, hooks.Work)
 		if port.err != nil {
 			return original, nil, fmt.Errorf("object %04x sound producer: %w", id, port.err)
 		}
@@ -164,10 +170,10 @@ func StepChuWorldObjectsObserved(state ChuWorldState, view ChuWorldView, library
 }
 
 func stepChuWorldObject(state *ChuWorldState, object WorldObject, view ChuWorldView, library ChuWorldLibrary, hudCursor *uint16) ([]ChuWorldEvent, error) {
-	return stepChuWorldObjectWithSound(state, object, view, library, hudCursor, nil)
+	return stepChuWorldObjectWithSound(state, object, view, library, hudCursor, nil, nil)
 }
 
-func stepChuWorldObjectWithSound(state *ChuWorldState, object WorldObject, view ChuWorldView, library ChuWorldLibrary, hudCursor *uint16, soundPort *worldSoundPort) ([]ChuWorldEvent, error) {
+func stepChuWorldObjectWithSound(state *ChuWorldState, object WorldObject, view ChuWorldView, library ChuWorldLibrary, hudCursor *uint16, soundPort *worldSoundPort, work WorldWorkHook) ([]ChuWorldEvent, error) {
 	id := object.ObjectID
 	switch object.Header.Behavior {
 	case 0x9ad0, 0xa01e:
@@ -191,7 +197,7 @@ func stepChuWorldObjectWithSound(state *ChuWorldState, object WorldObject, view 
 	case 0x1edac:
 		return nil, stepChuWorldCollision(state, soundPort)
 	case 0x20918:
-		return nil, stepChuWorldArena(state, object, library.Arena)
+		return nil, stepChuWorldArenaWithWork(state, object, library.Arena, work)
 	case 0x20ae0, 0x20cb2, 0x20e28, 0x20fb4, 0x21126, 0x212f8, 0x21412:
 		return nil, stepChuWorldArenaScene(state, object, library.ArenaScenes)
 	case 0x21258:
@@ -376,6 +382,9 @@ func stepChuWorldCollision(state *ChuWorldState, soundPort *worldSoundPort) erro
 }
 
 func stepChuWorldArena(state *ChuWorldState, object WorldObject, library ArenaRuntimeLibrary) error {
+	return stepChuWorldArenaWithWork(state, object, library, nil)
+}
+func stepChuWorldArenaWithWork(state *ChuWorldState, object WorldObject, library ArenaRuntimeLibrary, work WorldWorkHook) error {
 	s := DefaultArenaState{Stage: object.Header.Stage, Offsets: [3]int16{object.ScreenX, object.ScreenY, int16(object.Body.VelocityX >> 16)},
 		Drifts: [2]int32{object.Body.VerticalVelocity, object.Aux18}, Phases: [2]uint16{uint16(object.TilesBase >> 16), uint16(object.TilesBase)},
 		Camera: state.Camera, Mode: state.ScrollMode, Vertical: state.Vertical, PanA: state.PanRows(0), PanB: state.PanRows(1), SourceA: state.ScrollSources[0], SourceB: state.ScrollSources[1]}
@@ -383,7 +392,13 @@ func stepChuWorldArena(state *ChuWorldState, object WorldObject, library ArenaRu
 	for i := range s.RowsA {
 		s.RowsA[i], s.RowsB[i], v.HUDPrefix[i] = int16(state.Cells[256+i]), int16(state.Cells[512+i]), int16(state.Cells[i])
 	}
-	next, err := StepDefaultArena(s, v, library)
+	var hook ArenaWorkHook
+	if work != nil {
+		hook = func(op ArenaWorkOperation) error {
+			return work(WorldWorkOperation{ObjectID: object.ObjectID, Work: op}, WorldSoundOwners{Queue: &state.SoundQueue, AudioPause: &state.Clock.AudioPause})
+		}
+	}
+	next, err := StepDefaultArenaObserved(s, v, library, hook)
 	if err != nil {
 		return err
 	}

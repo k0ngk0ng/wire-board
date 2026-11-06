@@ -13,3 +13,5 @@
 ## Actual world producer transaction
 
 `WorldFrame` stages the actual `StepChuSessionFrameObserved` producer path and this runtime together. Synchronous `WorldHook` calls receive the detached audio branch and World queue/pause owners; late object/palette errors discard both. Existing pure APIs remain available. This interface supplies no CPU/VDP pricing or acceptance policy, and exposes enqueue operations only. See [world-sound-live verification](../../verification/world-sound-live/README.md).
+
+`WorldFrameWithHooks` additionally exposes actual default-arena work boundaries and stages the resulting audio effects in the same transaction. The main clock is still borrowed and must be staged by the caller; no whole-world IRQ policy is inferred. See [arena work verification](../../verification/world-arena-work/README.md).

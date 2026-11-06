@@ -179,6 +179,11 @@ func StepChuSessionFrame(state ChuWorldState, held [8]Buttons, library ChuWorldL
 // StepChuSessionFrameObserved includes input and palette in the World rollback.
 // It does not infer interrupt times or retain the synchronous hook.
 func StepChuSessionFrameObserved(state ChuWorldState, held [8]Buttons, library ChuWorldLibrary, hook WorldSoundHook) (ChuWorldState, []ChuWorldEvent, WorldFrameOutcome, error) {
+	return StepChuSessionFrameWithHooks(state, held, library, ChuWorldHooks{Sound: hook})
+}
+
+// StepChuSessionFrameWithHooks keeps observed work inside the frame transaction.
+func StepChuSessionFrameWithHooks(state ChuWorldState, held [8]Buttons, library ChuWorldLibrary, hooks ChuWorldHooks) (ChuWorldState, []ChuWorldEvent, WorldFrameOutcome, error) {
 	original := state
 	if state.MatchComplete {
 		return state, nil, WorldFrameOutcome{}, nil
@@ -202,7 +207,7 @@ func StepChuSessionFrameObserved(state ChuWorldState, held [8]Buttons, library C
 	if outcome.ResetRequested {
 		return state, []ChuWorldEvent{{Kind: "reset-request"}}, outcome, nil
 	}
-	state, events, err := StepChuWorldObjectsObserved(state, ChuWorldView{}, library, hook)
+	state, events, err := StepChuWorldObjectsWithHooks(state, ChuWorldView{}, library, hooks)
 	if err != nil {
 		return original, nil, WorldFrameOutcome{}, err
 	}

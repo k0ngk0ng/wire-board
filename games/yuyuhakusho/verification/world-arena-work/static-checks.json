@@ -1,0 +1,40 @@
+{
+  "gofmt_files": [
+    "games/yuyuhakusho/audio/session/world.go",
+    "games/yuyuhakusho/engine/chu_session.go",
+    "games/yuyuhakusho/engine/chu_world.go",
+    "games/yuyuhakusho/engine/default_arena.go",
+    "games/yuyuhakusho/engine/arena_work.go",
+    "games/yuyuhakusho/engine/arena_work_test.go",
+    "games/yuyuhakusho/audio/scoreclock/world_arena_work_e2e_test.go"
+  ],
+  "gofmt_pass": true,
+  "git_diff_check": true,
+  "links": [
+    {
+      "file": "games/yuyuhakusho/verification/world-arena-work/README.md",
+      "target": "FAILURES.md"
+    },
+    {
+      "file": "games/yuyuhakusho/verification/world-arena-work/README.md",
+      "target": "test-first.json"
+    },
+    {
+      "file": "games/yuyuhakusho/verification/world-arena-work/README.md",
+      "target": "capture-count-setup.json"
+    },
+    {
+      "file": "games/yuyuhakusho/audio/session/README.md",
+      "target": "../../verification/sound-irq-runtime/"
+    },
+    {
+      "file": "games/yuyuhakusho/audio/session/README.md",
+      "target": "../../verification/world-sound-live/README.md"
+    },
+    {
+      "file": "games/yuyuhakusho/audio/session/README.md",
+      "target": "../../verification/world-arena-work/README.md"
+    }
+  ],
+  "old_tests_fixtures_and_resources_unchanged": true
+}
