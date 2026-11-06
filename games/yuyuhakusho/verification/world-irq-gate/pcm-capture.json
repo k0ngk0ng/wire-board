@@ -1,0 +1,34 @@
+{
+  "pass": true,
+  "cases": 8,
+  "frames": 312,
+  "cross_core_full_frame_pcm_dsp_state_and_transactions_equal": true,
+  "identity": {
+    "original": {
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+      "core_name": "Genesis Plus GX",
+      "core_version": "v1.7.4 60bee4c",
+      "fps": 59.92274340431231,
+      "ram_bytes": 65536,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "teamplayer": false
+    },
+    "observed": {
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+      "core_name": "Genesis Plus GX",
+      "core_version": "v1.7.460bee4c",
+      "fps": 59.92274340431231,
+      "ram_bytes": 65536,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "teamplayer": false
+    }
+  },
+  "fixture_sha256": "8cabcc790a717ba25859b4daf33339c51df2d77f11b4872c50ee837a8659d1f3",
+  "sources": {
+    "scripts/yuyuhakusho/capture_pcm_transfer_gate.py": "c4998007a96008261e48c8b37504108f2bc0262f0073ebe4937cb37ddf4dd530",
+    "scripts/yuyuhakusho/pcm-command-capture.py": "4349a80c12019688324fbea3cb988ddcab16da8a76d170be9842b935c5d8356f",
+    "scripts/yuyuhakusho/pcm-command-observer.c": "e3f1b1b6846c891561802ac83ff0e1c6b80ed1889ab7b1f756f3224a90ccf6b4"
+  }
+}

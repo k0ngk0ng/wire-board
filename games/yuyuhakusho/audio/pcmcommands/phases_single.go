@@ -13,6 +13,7 @@ var singleProfiles = map[string][]uint16{
 	"s-length": {7, 10}, "s-length-borrow": {4}, "s-before-enable": {4, 4, 7, 13, 20, 20, 4, 10, 10, 6, 7}, "s-enable": {20, 20, 10, 10, 6, 10, 20, 20, 6, 10, 6, 10}, "s-enable-finish": {10, 10, 13, 4, 4, 10, 11, 10, 16, 7, 4, 4, 13, 10},
 	"s-check": {4, 4, 10}, "s-negative-pad": {4, 10}, "s-remain-z": {4, 10}, "s-read-request": {13, 4, 10}, "s-return-jump": {10}, "s-tail-init": {7, 4, 4, 4, 4, 4},
 	"s-high": {16, 4, 4, 4, 13, 4, 7, 4, 4, 7, 4, 7, 4, 4, 7, 4, 13, 7, 4, 4}, "s-decode-low": {4, 4, 7, 4}, "s-tail-pause": {4, 4}, "s-refill-cmp": {4}, "s-refill-equal": {12, 13, 4, 12}, "s-refill-nz": {7, 10}, "s-refill-negative": {13, 4, 7}, "s-copy-pop": {10}, "s-copy-push": {11}, "s-dummy-walk": {10, 4, 4, 10, 10, 10, 10},
+	"s-refill-wait": {13, 4, 12}, "s-refill-wait-jump": {10}, "s-blocked-skip": {4, 4, 10, 10, 10, 10},
 	"s-low": {4, 7, 4, 4, 4, 4, 7, 4, 13, 7}, "s-low-load": {4}, "s-normal-after-delay": {4, 4}, "s-tail-check": {4, 4, 4, 4, 10, 4, 10}, "s-tail-read-request": {13, 4, 10},
 	"end": {7, 13, 20, 20, 10, 10, 6, 13, 7, 20, 20, 10, 10, 6, 4, 7, 13, 13, 13, 10},
 }
@@ -125,8 +126,29 @@ func (d *Device) stepSingle() bool {
 	if !ok {
 		return false
 	}
+	if phase == "s-refill-equal" && w.BankBlockedRead {
+		ticks = []uint16{12, 13, 4, 7}
+	}
+	if phase == "s-refill-wait" && w.BankBlockedRead {
+		ticks = []uint16{13, 4, 7}
+	}
+	if phase == "s-refill-negative" && w.BankBlockedRead {
+		ticks = []uint16{13, 4, 12}
+	}
 	d.profile(ticks, func(part uint16) {
 		switch phase {
+		case "s-preload-poll", "s-refill-negative", "s-refill-wait":
+			if part == 0 {
+				w.BankBlockedRead = g.BankBlocked
+			}
+		case "s-refill-equal":
+			if part == 1 {
+				w.BankBlockedRead = g.BankBlocked
+			}
+		case "s-blocked-skip":
+			if part == 5 {
+				single.DummyCursor += 3
+			}
 		case "idle":
 			if part == 0 {
 				w.Rate = g.RateRequest
@@ -297,7 +319,11 @@ func (d *Device) stepSingle() bool {
 			s.Single = &SingleStream{Descriptor: w.Source, Rate: w.Rate, Accumulator: 128}
 			d.next("s-preload-poll")
 		case "s-preload-poll":
-			d.next("s-preload-copy")
+			if w.BankBlockedRead {
+				d.next("s-preload-poll")
+			} else {
+				d.next("s-preload-copy")
+			}
 		case "s-preload-group-end":
 			if single.Fetched < 128 {
 				d.next("s-preload-poll")
@@ -365,8 +391,16 @@ func (d *Device) stepSingle() bool {
 			} else {
 				d.next("s-refill-nz")
 			}
-		case "s-refill-equal":
-			d.next("s-copy-pop")
+		case "s-refill-equal", "s-refill-wait":
+			if w.BankBlockedRead {
+				d.next("s-refill-wait-jump")
+			} else {
+				d.next("s-copy-pop")
+			}
+		case "s-refill-wait-jump":
+			d.next("s-refill-wait")
+		case "s-blocked-skip":
+			d.next("s-low")
 		case "s-refill-nz":
 			if w.Gap&128 != 0 {
 				d.next("s-refill-negative")
@@ -374,7 +408,11 @@ func (d *Device) stepSingle() bool {
 				d.next("s-dummy")
 			}
 		case "s-refill-negative":
-			d.next("s-copy-pop")
+			if w.BankBlockedRead {
+				d.next("s-blocked-skip")
+			} else {
+				d.next("s-copy-pop")
+			}
 		case "s-copy-pop":
 			w.Count = 2
 			d.next("s-copy-body")

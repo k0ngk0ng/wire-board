@@ -1,0 +1,17 @@
+{
+  "test_first": true,
+  "production_exists": false,
+  "files": {
+    "games/yuyuhakusho/audio/scoreclock/battle_world_entry_e2e_test.go": "e1d2887fae3e45ef61dd34c626ad79e8667b53ce34f1b1b7718bf213ee390c11",
+    "games/yuyuhakusho/audio/scoreclock/battle_world_runtime_e2e_test.go": "cae5e91bdb747cd1e51e71f2add33f7ea4c827a7aa06334fd0336f98bd2a01a2",
+    "scripts/yuyuhakusho/extract_battle_world_entry.py": "16fa0709278f7074f47bff8cc81f4c852efd263c016f8504f032db3b71920246",
+    "scripts/yuyuhakusho/capture_battle_world_entry.py": "24927e9334f240967cf2aea3d823703b6e2af21c003a7ada0db4d298080af61e",
+    "scripts/yuyuhakusho/battle-world-observer.c": "6475de0adcfb6f0dd77438c4e01ef62365715fcb5356539038addbc95c251f76",
+    "games/yuyuhakusho/verification/world-irq-gate/FAILURES.md": "b399b0ddaeea5c27076f992662107afd5a0799853e928f96a49141265c8634d9",
+    "games/yuyuhakusho/verification/world-irq-gate/world-native-entry.json.gz": "68fdc01b5d5757e06415bce61ede0f67149faf5f7cb9d00782dcf5cd624d75ff",
+    "games/yuyuhakusho/verification/world-irq-gate/portable-world-entry.json.gz": "2f2eac2ad323145ab6da4b978392e6e5f76e1c498694fc53e06cb2a1cda51ac8",
+    "games/yuyuhakusho/verification/world-irq-gate/world-capture.json": "9e2377b1aba80ce91c0b097236320b44a6fffa464a13a19212cc0157264bc764",
+    "games/yuyuhakusho/verification/world-irq-gate/world-export.json": "6cabbe4ee014f8a9a51d299c42681b6139f117bac50d9444a16b4d933316eb24"
+  },
+  "scope": "23 actual original entry contexts / 4013 steps / 994 IO. Private frame-head setup does not imply it survives the earlier sample/driver: observed entry DisplayReady is true, pausedFF retains bus. Actual production-owner matrix separately covers both display branches and all pause/initial-held combinations with declared main/VDP entry."
+}

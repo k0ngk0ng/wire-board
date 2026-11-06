@@ -29,6 +29,8 @@ func (d *Device) stepControl() bool {
 			d.controlWritten(YMWrite, 6, 0x28, 10)
 		case 24:
 			d.written(Enable, 0, 7)
+		case 25:
+			g.BankBlocked = false
 		case 26:
 			g.RateRequest = 0
 		case 27:

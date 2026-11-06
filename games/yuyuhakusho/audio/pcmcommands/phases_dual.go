@@ -34,6 +34,20 @@ func (d *Device) stepDual() bool {
 	voice := &s.Voices[w.PrefetchSlot]
 	decoded := &s.Voices[w.DecodeSlot]
 	switch phase {
+	case "d-gap-equal":
+		part := s.Part
+		ticks := []uint16{13, 4, 10, 7, 10}
+		d.op(ticks[part], func() {
+			if part == 0 {
+				w.BankBlockedRead = s.Global.BankBlocked
+			}
+		})
+		if part == 2 && w.BankBlockedRead {
+			d.next("d-gap-equal")
+		} else if part == 4 {
+			d.next("d-copy-setup")
+		}
+		return true
 	case "d-decode-read":
 		d.op(10, func() { w.Enabled = decoded.Enabled })
 		d.next("d-decode-branch")
@@ -160,6 +174,10 @@ func (d *Device) stepDual() bool {
 	}
 	d.profile(ticks, func(part uint16) {
 		switch phase {
+		case "d-gap-readable":
+			if part == 0 {
+				w.BankBlockedRead = s.Global.BankBlocked
+			}
 		case "d-start":
 			switch part {
 			case 1:
@@ -390,8 +408,12 @@ func (d *Device) stepDual() bool {
 			} else {
 				d.next("d-gap-compare")
 			}
-		case "d-gap-equal", "d-gap-readable":
-			d.next("d-copy-setup")
+		case "d-gap-readable":
+			if w.BankBlockedRead {
+				d.next("d-pending-read")
+			} else {
+				d.next("d-copy-setup")
+			}
 		case "d-gap-compare":
 			if w.Gap < 192 {
 				d.next("d-enable-decode")
