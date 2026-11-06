@@ -28,7 +28,7 @@ type Library struct {
 // hashes bind checkpoints and dependencies; they do not authenticate a download
 // against an independently trusted deployment manifest on the caller's behalf.
 func Decode(scoreJSON, pcmJSON, parserJSON []byte) (*Library, error) {
-	return decodeResources(scoreJSON, pcmJSON, parserJSON, nil)
+	return decodeResources(scoreJSON, pcmJSON, parserJSON, nil, nil)
 }
 
 // DecodeWithInstrumentWork binds the selected instrument's sound/work identity
@@ -38,10 +38,19 @@ func DecodeWithInstrumentWork(scoreJSON, pcmJSON, parserJSON, instrumentJSON []b
 	if len(instrumentJSON) == 0 {
 		return nil, errors.New("missing instrument work resource")
 	}
-	return decodeResources(scoreJSON, pcmJSON, parserJSON, instrumentJSON)
+	return decodeResources(scoreJSON, pcmJSON, parserJSON, instrumentJSON, nil)
 }
 
-func decodeResources(scoreJSON, pcmJSON, parserJSON, instrumentJSON []byte) (*Library, error) {
+// DecodeWithEnvelopeWork binds all five immutable resources, preserving the
+// existing three/four-resource constructors and their exact identities.
+func DecodeWithEnvelopeWork(scoreJSON, pcmJSON, parserJSON, instrumentJSON, envelopeJSON []byte) (*Library, error) {
+	if len(instrumentJSON) == 0 || len(envelopeJSON) == 0 {
+		return nil, errors.New("missing instrument/envelope work resource")
+	}
+	return decodeResources(scoreJSON, pcmJSON, parserJSON, instrumentJSON, envelopeJSON)
+}
+
+func decodeResources(scoreJSON, pcmJSON, parserJSON, instrumentJSON, envelopeJSON []byte) (*Library, error) {
 	catalog, err := score.DecodeCatalog(bytes.NewReader(scoreJSON))
 	if err != nil {
 		return nil, fmt.Errorf("score resource: %w", err)
@@ -50,6 +59,12 @@ func decodeResources(scoreJSON, pcmJSON, parserJSON, instrumentJSON []byte) (*Li
 		catalog, err = score.BindInstrumentWork(catalog, bytes.NewReader(instrumentJSON))
 		if err != nil {
 			return nil, fmt.Errorf("instrument work resource: %w", err)
+		}
+	}
+	if envelopeJSON != nil {
+		catalog, err = score.BindEnvelopeWork(catalog, bytes.NewReader(envelopeJSON))
+		if err != nil {
+			return nil, fmt.Errorf("envelope work resource: %w", err)
 		}
 	}
 	pcm, err := pcmassets.Decode(bytes.NewReader(pcmJSON), scoreJSON)
@@ -79,6 +94,9 @@ func decodeResources(scoreJSON, pcmJSON, parserJSON, instrumentJSON []byte) (*Li
 	inputs := [][]byte{scoreJSON, pcmJSON, parserJSON}
 	if instrumentJSON != nil {
 		inputs = append(inputs, instrumentJSON)
+	}
+	if envelopeJSON != nil {
+		inputs = append(inputs, envelopeJSON)
 	}
 	for _, raw := range inputs {
 		digest := sha256.Sum256(raw)

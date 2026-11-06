@@ -1,0 +1,8 @@
+{
+  "pass": true,
+  "format": "gzip",
+  "compressed_bytes": 1948,
+  "raw_bytes": 58364,
+  "compressed_sha256": "b2d0d9363bef8e47832c67be65bbf380291a0e4a87c9e4b35c78bbf9445db028",
+  "raw_sha256": "b4894e6670be37251ba21796fdf48a8ab321033c6d52c3731fa4cf3f8361003f"
+}

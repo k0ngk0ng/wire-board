@@ -1,0 +1,15 @@
+{
+  "test_first": true,
+  "production_exists": false,
+  "production_files": [
+    "games/yuyuhakusho/audio/score/envelope_work.go",
+    "games/yuyuhakusho/audio/scoreclock/envelope.go"
+  ],
+  "files": {
+    "games/yuyuhakusho/audio/scoreclock/envelope_e2e_test.go": "9509816622e41775a05ec06089265961b5b699b23e76aae984b3a645807b3905",
+    "games/yuyuhakusho/verification/score-envelope-source/audio-score-envelope-work.json.gz": "b2d0d9363bef8e47832c67be65bbf380291a0e4a87c9e4b35c78bbf9445db028",
+    "games/yuyuhakusho/verification/score-envelope-source/native-envelope-full.json.gz": "9b7d91f9938bbc79d61a69cada7a2bc493feeefc9be546dfabc9908237171677",
+    "games/yuyuhakusho/verification/score-envelope-source/native-envelope-none.json.gz": "f36ee5dfa3f169ca2aecad58002695bff418243fb257ffb6ce8ca61f491095d7",
+    "docs/research/md-yuyuhakusho/SCORE_ENVELOPE_WORK_FAILURES.md": "ca868f89df65a6e01e8eea1bc73c7b2105a2799ae03946a84415942ffd9d5628"
+  }
+}

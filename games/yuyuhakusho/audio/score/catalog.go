@@ -124,6 +124,7 @@ type Catalog struct {
 	descriptors     map[string]DACDescriptor
 	fallbackPatchID string
 	instruments     map[string]InstrumentWork
+	envelopeWork    map[envelopeWorkKey]EnvelopePathWork
 }
 
 func DecodeCatalog(r io.Reader) (*Catalog, error) {
