@@ -1,0 +1,53 @@
+{
+  "passed": true,
+  "command": "python3 -B games/escape/tests/browser.py",
+  "scope": "production module and authenticated room; native browser inputs; simulated mobile viewport",
+  "sourceSHA256": {
+    "games/escape/web/canvas.ts": "0a443c29f197c7215f641b1230a3b06af44ff9e1deb529070825645e4aa96043",
+    "games/escape/web/catalog.tsx": "bafdec262e6650777f336113aed981f7f3bade504c8da17eb34ec84051f0c5c0",
+    "games/escape/web/art.ts": "3ae154ac20b513d82ceac772b28f2c6136323a5d04d4082fc8354c4108aacc61",
+    "games/escape/web/prediction.ts": "ae602ee8ca19d31ed4b63f54ad8b0340196cadc8e980b87a539272ab331d4b55",
+    "games/escape/web/types.ts": "e97c9d4ddf6590badc8521c9285b11d5a8de173ecccb23adcd35c26ff9c22dd2",
+    "games/escape/web/Board.tsx": "bdd879a83cad4a1fb8927d9d0c723afd34bea7d172b20f5edc65c29ca52202e3",
+    "games/escape/web/Cover.tsx": "622cb2937af00af2ea26d330eb0176d0a554e98d2b3b752dd77fe414289d6d7a",
+    "games/escape/web/style.css": "c1967ea9c5efcb70d85ff4b5af8246ba8929094d72cfd77386fc97f7b75ea57c",
+    "games/escape/web/module.tsx": "65e03c83fe3a24c4f65341a73506259a14f5b98c207a1f252235f88e29105331",
+    "games/escape/web/spacing.ts": "a27715ed8db8259a96ec583357371ad161e3a6825f8961a182b60747cbb3794e",
+    "games/escape/controls.json": "84427e83de66ef04779669a65ffa393c9459931ce3b1731f4d222476029a23ff",
+    "games/escape/assets/manifest.json": "6fd287cc16c2b6967858906b684479c826c9f4711f0030d4424ba86a189158ee"
+  },
+  "cases": [
+    {
+      "scenario": "station",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "naturalSharedVictory": null
+    },
+    {
+      "scenario": "archive",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "naturalSharedVictory": null
+    },
+    {
+      "scenario": "station",
+      "viewport": [
+        320,
+        820
+      ],
+      "naturalSharedVictory": null
+    },
+    {
+      "scenario": "archive",
+      "viewport": [
+        320,
+        820
+      ],
+      "naturalSharedVictory": null
+    }
+  ]
+}

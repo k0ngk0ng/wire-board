@@ -47,6 +47,7 @@
 | 街霸方块 | [spf2t.md](rules/spf2t.md) |
 | 璀璨宝石 | [splendor.md](rules/splendor.md) |
 | 星垒 | [starfort.md](rules/starfort.md) |
+| 密室逃脱 | [escape.md](rules/escape.md) |
 | 植物大战僵尸 | [pvz.md](rules/pvz.md) |
 | 乒乓球 | [tabletennis.md](rules/tabletennis.md) |
 | 俄罗斯方块 | [tetris.md](rules/tetris.md) |

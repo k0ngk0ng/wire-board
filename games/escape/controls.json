@@ -1,0 +1,151 @@
+{
+  "layout": "game",
+  "actions": [
+    {
+      "id": "up",
+      "label": "向上移动",
+      "keys": [
+        "KeyW",
+        "ArrowUp"
+      ],
+      "continuous": true,
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 12
+        },
+        {
+          "type": "axis",
+          "index": 1,
+          "direction": -1
+        }
+      ]
+    },
+    {
+      "id": "down",
+      "label": "向下移动",
+      "keys": [
+        "KeyS",
+        "ArrowDown"
+      ],
+      "continuous": true,
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 13
+        },
+        {
+          "type": "axis",
+          "index": 1,
+          "direction": 1
+        }
+      ]
+    },
+    {
+      "id": "left",
+      "label": "向左移动",
+      "keys": [
+        "KeyA",
+        "ArrowLeft"
+      ],
+      "continuous": true,
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 14
+        },
+        {
+          "type": "axis",
+          "index": 0,
+          "direction": -1
+        }
+      ]
+    },
+    {
+      "id": "right",
+      "label": "向右移动",
+      "keys": [
+        "KeyD",
+        "ArrowRight"
+      ],
+      "continuous": true,
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 15
+        },
+        {
+          "type": "axis",
+          "index": 0,
+          "direction": 1
+        }
+      ]
+    },
+    {
+      "id": "interact",
+      "label": "就近交互",
+      "keys": [
+        "KeyE",
+        "Space"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "id": "map",
+      "label": "设施地图",
+      "keys": [
+        "KeyM"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 9
+        }
+      ]
+    },
+    {
+      "id": "journal",
+      "label": "调查笔记",
+      "keys": [
+        "KeyJ"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 3
+        }
+      ]
+    },
+    {
+      "id": "ping",
+      "label": "呼叫队友",
+      "keys": [
+        "KeyQ"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 2
+        }
+      ]
+    },
+    {
+      "id": "cancel",
+      "label": "关闭面板",
+      "keys": [
+        "Backspace"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 1
+        }
+      ]
+    }
+  ]
+}
