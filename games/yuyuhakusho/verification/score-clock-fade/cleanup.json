@@ -1,0 +1,27 @@
+{
+  "scope": "Only task-owned compiled fade recorder and empty capture directories; no shared Go caches or other owner paths touched",
+  "removed": [
+    {
+      "path": "games/yuyuhakusho/verification/score-clock-fade/native/fade-observer.dylib",
+      "bytes": 17920,
+      "sha256": "4a543d5629579bb48db7ddcee9d3190f59b018fcea6f07ac44c50f94f9d273d0"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/score-clock-fade/native/core-original",
+      "bytes": 0,
+      "empty_directory": true
+    },
+    {
+      "path": "games/yuyuhakusho/verification/score-clock-fade/native/core-observed",
+      "bytes": 0,
+      "empty_directory": true
+    },
+    {
+      "path": "games/yuyuhakusho/verification/score-clock-fade/native/tmp",
+      "bytes": 0,
+      "empty_directory": true
+    }
+  ],
+  "bytes_removed": 17920,
+  "kept": "Native full provenance, portable golden, frozen tests, actual API red, source bindings and repeatable Go/Wasm/vet evidence"
+}

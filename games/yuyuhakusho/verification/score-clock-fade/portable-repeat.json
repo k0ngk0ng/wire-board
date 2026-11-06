@@ -1,0 +1,7 @@
+{
+  "pass": true,
+  "method": "Re-export the portable semantic fixture from frozen native provenance without target execution",
+  "byte_identical": true,
+  "fixture_sha256": "d09ef4a56b2df03012b34823e71e482ed99258f68a768a50b47e9066de262a51",
+  "native_full_sha256": "d2f8f36f3ab59b5cf3a84c29487c24c41539ee31b5d81d140edb63b49fdaae4f"
+}

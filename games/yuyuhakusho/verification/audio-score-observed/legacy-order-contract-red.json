@@ -1,0 +1,25 @@
+{
+  "pass": false,
+  "scope": "New ordered-effect protocol evaluated against the unchanged legacy return contract, not a legacy logical-state failure",
+  "fixture": {
+    "path": "games/yuyuhakusho/audio/score/testdata/music82-a7.jsonl.gz",
+    "sha256": "84dbc2402caafb09c514539ae511d076dcf0f49591949a3c6bdf0ecfd23b42e4",
+    "step": 80
+  },
+  "legacy_return_contract": {
+    "ClearPrimaryPriority": true,
+    "IntentCount": 40,
+    "no_order_or_multiplicity_field": true
+  },
+  "source_required_priority_clear_offsets": [
+    12,
+    39
+  ],
+  "incorrect_tick_end_clear_offsets": [
+    40
+  ],
+  "ordering_contract_satisfied": false,
+  "source_reason": "Each primary F2 source390f6 occurs after its keyoff and before restore; both native primary owners terminate in this tick.",
+  "new_protocol_test": "TestObservedPriorityWritesAreAtOriginalPositions",
+  "production_fixture_changed": false
+}

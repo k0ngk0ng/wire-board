@@ -1,0 +1,8 @@
+{
+  "old_producer_sha256": "861f5011a9ab378dc69f2ec0750f4a31b9a8feac4f0454f53b8fdf34612c3787",
+  "reason": "Finite request-PC filter omitted nine literal PSG store sites; strict Root combination saw original score music-start 12th PSG ff absent from native projected requests",
+  "production_or_frozen_score_wrong": false,
+  "fix": "Observe every actual M68K byte write to C00011 and use actual value/cycle; retain old metadata as v2 incomplete-observation proof",
+  "old_diagnostic": "games/yuyuhakusho/verification/root-control-orchestration/observer-coverage-before.json",
+  "old_data_retained": ".local/md-yuyuhakusho/root-control-canonical-v2"
+}

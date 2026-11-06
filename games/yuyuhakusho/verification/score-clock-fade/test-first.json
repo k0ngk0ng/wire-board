@@ -1,0 +1,37 @@
+{
+  "test_first": true,
+  "at_utc": "2026-11-05T22:46:06.551531+00:00",
+  "actual_missing_API_red": true,
+  "production_exists": false,
+  "command": [
+    "go",
+    "test",
+    "-json",
+    "-count=1",
+    "-overlay",
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/games/yuyuhakusho/verification/score-clock-fade/test-overlay.json",
+    "-run",
+    "^TestFadeClock",
+    "./games/yuyuhakusho/audio/scoreclock"
+  ],
+  "exit_code": 1,
+  "files": {
+    "games/yuyuhakusho/verification/score-clock-fade/fade_clock_test.go.txt": "5d3859be0023face113a4f2e80cc52c094e77b44d5d0b369bd1ae9132fd9506f",
+    "games/yuyuhakusho/audio/scoreclock/testdata/fade-clock-native.json.gz": "d09ef4a56b2df03012b34823e71e482ed99258f68a768a50b47e9066de262a51",
+    "games/yuyuhakusho/audio/scoreclock/testdata/fade-clock-native-manifest.json": "470b9182cb714aace799d7a314105f25e297d4dd9987501b74e71e23817a7adb",
+    "docs/research/md-yuyuhakusho/SCORE_CLOCK_FADE_FAILURES.md": "c5b59e981a86ab14b6e98c05aa934be0cf10f321db67ce16ae9ef8a967c1dc31",
+    "games/yuyuhakusho/verification/score-clock-fade/cost-source.json": "936211ca348445dc4f7613b7615b531adadb6575e1e7e0a6c709c8487dadc4e7",
+    "games/yuyuhakusho/verification/score-clock-fade/native/capture.json": "775343007de53b65159017ffc4a7eb578b3aa03dbd850ade353ee9d2ac82549c"
+  },
+  "log_sha256": "b87604422bea476220aac14e934530b896d40a2679711aef63a61e09980350d8",
+  "environment": {
+    "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+    "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+    "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+    "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "GOMAXPROCS": "2"
+  },
+  "native_golden_before_tests": true,
+  "no_later_body_or_full04_priced": true
+}

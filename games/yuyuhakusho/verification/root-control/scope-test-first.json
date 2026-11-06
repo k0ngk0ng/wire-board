@@ -1,0 +1,11 @@
+{
+  "args": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-B",
+    "scripts/yuyuhakusho/root-control-scope-check.py"
+  ],
+  "exit_code": 1,
+  "expected_reason": "Aggregate validation manifest does not exist yet",
+  "checker_sha256": "9b11a87d77d80068326bf279df4cbce1e7b3db8099dc2b2ea9722471c13ab7a8",
+  "actual_missing_manifest_red": true
+}

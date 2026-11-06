@@ -1,0 +1,36 @@
+{
+  "test_first": true,
+  "at_utc": "2026-11-05T22:17:08.698092+00:00",
+  "actual_missing_api_red": true,
+  "new_fade_implementation_exists": false,
+  "overlay_explanation": "A virtual empty package declaration permits the frozen external E2E tests to report truly undefined FadeState/StartFade/AdvanceFade APIs without changing production files",
+  "command": [
+    "go",
+    "test",
+    "-json",
+    "-count=1",
+    "-overlay",
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/games/yuyuhakusho/verification/root-control-fade/fade-test-overlay.json",
+    "-run",
+    "^TestFade",
+    "./games/yuyuhakusho/audio/rootcontrol"
+  ],
+  "exit_code": 1,
+  "files": {
+    "games/yuyuhakusho/verification/root-control-fade/fade_e2e_test.go.txt": "88b9483be3b4ade09102ab1e43626a534df302a1f3a482ccdce44aef2a9b9e22",
+    "games/yuyuhakusho/verification/root-control-fade/fade-empty-package.go.txt": "66776d6943ceaf187bd316e12d4fae764b51478f7aac1bb1b819f6082ea84ff7",
+    "docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_FADE_FAILURES.md": "1ff102f3dafbe5c4149296bcec74f6ad6827f97e37a55acf9c579d789fba6685",
+    "games/yuyuhakusho/audio/rootcontrol/testdata/fade-native-streams.json.gz": "a88e122d490fd41839c944b403aadb29f309e56f8a981d81d41e1b37548cca28",
+    "games/yuyuhakusho/audio/rootcontrol/testdata/fade-native-manifest.json": "79534c2ea62b485ecbe571099e80a45acc9a3808ed489edb52dc7dd7b1b81c81",
+    "games/yuyuhakusho/verification/root-control-fade/extraction.json": "777a4d90047b9aa39ce33279627547316d47b83aa0252530d037ae420b68d737"
+  },
+  "log_sha256": "ef45220c0b4036ce9724c236d4be54cf7d3418f635fc3ec20b3cf21ddec786d9",
+  "environment": {
+    "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+    "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+    "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+    "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "GOMAXPROCS": "2"
+  }
+}

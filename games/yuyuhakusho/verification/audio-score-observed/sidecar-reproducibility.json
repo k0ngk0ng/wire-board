@@ -1,0 +1,7 @@
+{
+  "pass": true,
+  "byte_equal": true,
+  "resource_sha256": "96f8044395167f4227b2c45e7ee66440987d8d49d3f7f52b40ca437930eedb43",
+  "bytes": 199277,
+  "cleanup": ".local/md-yuyuhakusho/audio-score-observed/parser-work-repeat.json.gz"
+}

@@ -1,0 +1,2 @@
+{"mode": "original", "case": "critical64-bank0", "main_end": 74377, "mailbox_reads": 2, "busy_mailbox_reads": 1, "PCM_events": 203}
+{"mode": "hook", "case": "critical64-bank0", "main_end": 74377, "mailbox_reads": 2, "busy_mailbox_reads": 1, "PCM_events": 203}

@@ -1,0 +1,9 @@
+{"Time":"2026-11-06T04:13:20.656304+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score"}
+{"Time":"2026-11-06T04:13:20.834417+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score","Test":"TestObservedParserWorkMatchesOriginalReadCounts"}
+{"Time":"2026-11-06T04:13:20.834464+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score","Test":"TestObservedParserWorkMatchesOriginalReadCounts","Output":"=== RUN   TestObservedParserWorkMatchesOriginalReadCounts\n"}
+{"Time":"2026-11-06T04:13:33.591492+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score","Test":"TestObservedParserWorkMatchesOriginalReadCounts","Output":"    parser_work_test.go:199: original parser: 122810 frames, 199477 reads, 26130 controls, 127691 commit sites\n"}
+{"Time":"2026-11-06T04:13:33.591552+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score","Test":"TestObservedParserWorkMatchesOriginalReadCounts","Output":"--- PASS: TestObservedParserWorkMatchesOriginalReadCounts (12.76s)\n"}
+{"Time":"2026-11-06T04:13:33.591558+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score","Test":"TestObservedParserWorkMatchesOriginalReadCounts","Elapsed":12.76}
+{"Time":"2026-11-06T04:13:33.591568+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score","Output":"PASS\n"}
+{"Time":"2026-11-06T04:13:33.595447+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score\t12.939s\n"}
+{"Time":"2026-11-06T04:13:33.595454+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score","Elapsed":12.939}

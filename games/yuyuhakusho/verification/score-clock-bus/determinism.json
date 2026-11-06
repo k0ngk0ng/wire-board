@@ -1,0 +1,7 @@
+{
+  "pass": true,
+  "full_native_recapture_byte_identical": true,
+  "sha256": "433f20a532092ba2be74a80618b871be6758f4d46e36d51200b4c69bb5b4b7f0",
+  "bytes": 66695,
+  "smoke_case_exact_full_subset": true
+}

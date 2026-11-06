@@ -1,0 +1,91 @@
+{
+  "schema": 1,
+  "pass": true,
+  "at_utc": "2026-11-05T19:41:46.113191+00:00",
+  "scope": "Given no-external-stall reference origin/refresh: fixed driver pause gate, final RTS and primary byte-clear store; no complete prefix/tick or global IRQ schedule",
+  "whole_goal_complete": false,
+  "complete_tick_timing_verified": false,
+  "world_to_IRQ_schedule_solved": false,
+  "runtime_integrated": false,
+  "native_cases": 290,
+  "gate_cases": 280,
+  "all_pause_byte_values_covered": 256,
+  "phase_pairs": [
+    [
+      0,
+      0
+    ],
+    [
+      1,
+      896
+    ],
+    [
+      895,
+      896
+    ],
+    [
+      1008,
+      1008
+    ],
+    [
+      2048,
+      2050
+    ]
+  ],
+  "native_builds": 2,
+  "recorder_on_off_original_calls": 1160,
+  "immediate_pause_reads": 825,
+  "pause_and_priority_writes": 275,
+  "domain_clear_effects": 280,
+  "natural_pause_store_checkpoints": 2,
+  "tests": {
+    "native-race.jsonl": {
+      "top_level_tests": [
+        "TestNativeFixedTickBoundaries",
+        "TestNaturalPauseStoreTimes",
+        "TestTickPauseReadsAreNotAnEntrySnapshot",
+        "TestTickInvalidBudgetAndFieldFailure"
+      ],
+      "native_subcases": 290,
+      "sha256": "5936b01271b74c9d1eaee361102b215f5f8260b9f703eb71ab383d9ba85386f8"
+    },
+    "wasm.jsonl": {
+      "top_level_tests": [
+        "TestNativeFixedTickBoundaries",
+        "TestNaturalPauseStoreTimes",
+        "TestTickPauseReadsAreNotAnEntrySnapshot",
+        "TestTickInvalidBudgetAndFieldFailure"
+      ],
+      "native_subcases": 290,
+      "sha256": "fe1e3d56a822807ec76df5ebde23406d9fbe804f5d2e0703269225fc7e6ce6e4"
+    }
+  },
+  "vet_pass": true,
+  "frozen_old_YM_sha256": {
+    "games/yuyuhakusho/audio/scoreclock/service.go": "3ba87dba2a672c351c2e5c41065b6a42236656f58e7e7bd37b99af6849911aee",
+    "games/yuyuhakusho/audio/scoreclock/service_test.go": "15a831c2ee1314a9d02f93c05d4910f775fb8743ef08b489b9e408e5d44e9589"
+  },
+  "source_sha256": {
+    "games/yuyuhakusho/audio/scoreclock/tick.go": "50ec6dfad8724e7df88f9362990a553843b0e32b9aa00999bd87b0353c69c3a9",
+    "games/yuyuhakusho/audio/scoreclock/tick_test.go": "48c93d82d0d27adda7117e13f86ead097d82beb8deb434a2346497dbb682b3e1",
+    "games/yuyuhakusho/audio/scoreclock/testdata/tick-native-boundaries.json.gz": "7fb3452af66a2758c375f01b1ea54ed997d47e3434e426f8244e1291474441eb",
+    "games/yuyuhakusho/audio/scoreclock/testdata/tick-native-manifest.json": "9c8539cbb5d90330577193bffc6d69b7afbe6c7927f6b15a2b64a36b797de735",
+    "docs/research/md-yuyuhakusho/SCORE_CLOCK_TICK.md": "8825b6c434eabf9c622073776cffeab051750267e56307294db2ef037b51e24a",
+    "docs/research/md-yuyuhakusho/SCORE_CLOCK_TICK_FAILURES.md": "48f47bd75f963d0d8d8a383ebfb96633faa0158604eb938045aeed25073ac9e4",
+    "scripts/yuyuhakusho/score-clock-tick-bridge.c": "342145e5d2cdfade96438250e7bf758426294a68903d94fba8b979783fa471c9",
+    "scripts/yuyuhakusho/score-clock-tick-capture.py": "6a3972932f28259d5b63032a9e5ac7d45656a5f858c5113f1d07b1a1a3c509ea",
+    "scripts/yuyuhakusho/score-clock-tick-cost-source.py": "8614c3de4116688b2d05ba131b69c060dabaef8b7736d1def6ecf2e3fb7fee8c",
+    "scripts/yuyuhakusho/score-clock-tick-export.py": "2cffac24f4746b91a110a1feab56fcc1445db7aa59b0bff3775ad384dc03cddf"
+  },
+  "native_recapture_byte_identical": true,
+  "cleanup_bytes": 43761,
+  "limits": [
+    "Normal stops before duck/tempo/fade/queue/dispatch; PauseStart/Resume stop before bus/mute/restore prefixes",
+    "Hold gate already includes its return; never append FinishTick again or add it to a returning leaf",
+    "Only CLR.B byte priority clear is priced, not bulk CLR.L resets or MOVE.B priority restoration",
+    "No auxiliary CPU/VDP progression, bank steals, scanline or IRQ is inserted in the private original executions; global composition remains separate",
+    "Live field callbacks belong to caller detached transactions; any failure must discard all participating owner work",
+    "No PCM, platform playback, physical hardware or speaker equivalence is claimed"
+  ],
+  "no_commits_uploads_or_deployment": true
+}

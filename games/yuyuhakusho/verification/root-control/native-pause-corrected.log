@@ -1,0 +1,2 @@
+{"mode": "original", "case": "mixed82-a7-pause", "frames": 100, "root_end": {"Priority": 85, "Selected": 255, "FadeSteps": 0, "FadeRemaining": 0, "Queue": [0, 0, 0, 0], "AudioPause": 0, "ControlMode": 0, "FMDelta": 0, "PSGDelta": 0, "DuckPhase": 0, "ChoiceBits": 0}, "events": 0}
+{"mode": "observed", "case": "mixed82-a7-pause", "frames": 100, "root_end": {"Priority": 85, "Selected": 255, "FadeSteps": 0, "FadeRemaining": 0, "Queue": [0, 0, 0, 0], "AudioPause": 0, "ControlMode": 0, "FMDelta": 0, "PSGDelta": 0, "DuckPhase": 0, "ChoiceBits": 0}, "events": 1294}

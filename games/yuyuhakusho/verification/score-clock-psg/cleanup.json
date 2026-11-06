@@ -1,0 +1,27 @@
+{
+  "scope": "Only task-owned transient native observer binary and empty capture directories; no shared Go caches or unrelated paths touched",
+  "removed": [
+    {
+      "path": "games/yuyuhakusho/verification/score-clock-psg/native/score-clock-psg-observer.dylib",
+      "bytes": 17392,
+      "sha256": "ec2cf428a0563da9dfdecb38b2e343b76c8065cd7da24ac30b782444bd53e804"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/score-clock-psg/native/core-original",
+      "bytes": 0,
+      "empty_directory": true
+    },
+    {
+      "path": "games/yuyuhakusho/verification/score-clock-psg/native/tmp",
+      "bytes": 0,
+      "empty_directory": true
+    },
+    {
+      "path": "games/yuyuhakusho/verification/score-clock-psg/native/core-hook",
+      "bytes": 0,
+      "empty_directory": true
+    }
+  ],
+  "bytes_removed": 17392,
+  "kept": "Frozen tests, true red, native full provenance, portable fixture, SHA manifests and repeatable Go/Wasm/vet results"
+}

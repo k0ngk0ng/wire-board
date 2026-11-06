@@ -1,0 +1,400 @@
+{
+  "pass": true,
+  "scope": "Original actual shared bus/mailbox/main port boundaries, not fake wall-time clears or independent global scheduling",
+  "source": {
+    "path": ".local/md-yuyuhakusho/score-clock-bus-native/native-bus-services-full.json.gz",
+    "sha256": "433f20a532092ba2be74a80618b871be6758f4d46e36d51200b4c69bb5b4b7f0"
+  },
+  "cases": [
+    {
+      "case": "ready-bank0",
+      "origin": 50000,
+      "bank": 0,
+      "startup_main_steal_before_declared_origin": 7280,
+      "requests": [
+        {
+          "at": 50602,
+          "after": 50679,
+          "asserted": true,
+          "aux_before": 50040,
+          "aux_after": 50670,
+          "new_main_steal": 77
+        },
+        {
+          "at": 50819,
+          "after": 50819,
+          "asserted": true,
+          "aux_before": 50670,
+          "aux_after": 50670,
+          "new_main_steal": 0
+        },
+        {
+          "at": 51694,
+          "after": 51694,
+          "asserted": false,
+          "aux_before": 50670,
+          "aux_after": 51705,
+          "new_main_steal": 0
+        }
+      ],
+      "mailbox": [
+        {
+          "at": 51064,
+          "value": 0,
+          "held_aux_frontier": 50670
+        }
+      ],
+      "busy_mailbox_reads": 0,
+      "main_end": 52072,
+      "refresh_end": 52842,
+      "aux_end": 51705
+    },
+    {
+      "case": "ready-bank1",
+      "origin": 50000,
+      "bank": 1,
+      "startup_main_steal_before_declared_origin": 7280,
+      "requests": [
+        {
+          "at": 50462,
+          "after": 50539,
+          "asserted": true,
+          "aux_before": 50040,
+          "aux_after": 50475,
+          "new_main_steal": 77
+        },
+        {
+          "at": 50679,
+          "after": 50679,
+          "asserted": true,
+          "aux_before": 50475,
+          "aux_after": 50475,
+          "new_main_steal": 0
+        },
+        {
+          "at": 51554,
+          "after": 51554,
+          "asserted": false,
+          "aux_before": 50475,
+          "aux_after": 51555,
+          "new_main_steal": 0
+        }
+      ],
+      "mailbox": [
+        {
+          "at": 50924,
+          "value": 0,
+          "held_aux_frontier": 50475
+        }
+      ],
+      "busy_mailbox_reads": 0,
+      "main_end": 51932,
+      "refresh_end": 52702,
+      "aux_end": 51555
+    },
+    {
+      "case": "critical64-bank0",
+      "origin": 70933,
+      "bank": 0,
+      "startup_main_steal_before_declared_origin": 9513,
+      "requests": [
+        {
+          "at": 71535,
+          "after": 71535,
+          "asserted": true,
+          "aux_before": 70950,
+          "aux_after": 71535,
+          "new_main_steal": 0
+        },
+        {
+          "at": 71675,
+          "after": 71675,
+          "asserted": true,
+          "aux_before": 71535,
+          "aux_after": 71535,
+          "new_main_steal": 0
+        },
+        {
+          "at": 72088,
+          "after": 72088,
+          "asserted": false,
+          "aux_before": 71535,
+          "aux_after": 72090,
+          "new_main_steal": 0
+        },
+        {
+          "at": 72998,
+          "after": 72998,
+          "asserted": true,
+          "aux_before": 72090,
+          "aux_after": 73050,
+          "new_main_steal": 0
+        },
+        {
+          "at": 73138,
+          "after": 73138,
+          "asserted": true,
+          "aux_before": 73050,
+          "aux_after": 73050,
+          "new_main_steal": 0
+        },
+        {
+          "at": 74013,
+          "after": 74013,
+          "asserted": false,
+          "aux_before": 73050,
+          "aux_after": 74025,
+          "new_main_steal": 0
+        }
+      ],
+      "mailbox": [
+        {
+          "at": 71920,
+          "value": 64,
+          "held_aux_frontier": 71535
+        },
+        {
+          "at": 73369,
+          "value": 0,
+          "held_aux_frontier": 73050
+        }
+      ],
+      "busy_mailbox_reads": 1,
+      "main_end": 74377,
+      "refresh_end": 74566,
+      "aux_end": 74025
+    },
+    {
+      "case": "startup-critical128-bank1",
+      "origin": 63273,
+      "bank": 1,
+      "startup_main_steal_before_declared_origin": 9513,
+      "requests": [
+        {
+          "at": 63735,
+          "after": 63735,
+          "asserted": true,
+          "aux_before": 63315,
+          "aux_after": 63735,
+          "new_main_steal": 0
+        },
+        {
+          "at": 63875,
+          "after": 63875,
+          "asserted": true,
+          "aux_before": 63735,
+          "aux_after": 63735,
+          "new_main_steal": 0
+        },
+        {
+          "at": 64288,
+          "after": 64288,
+          "asserted": false,
+          "aux_before": 63735,
+          "aux_after": 64290,
+          "new_main_steal": 0
+        },
+        {
+          "at": 65198,
+          "after": 65198,
+          "asserted": true,
+          "aux_before": 64290,
+          "aux_after": 65250,
+          "new_main_steal": 0
+        },
+        {
+          "at": 65338,
+          "after": 65338,
+          "asserted": true,
+          "aux_before": 65250,
+          "aux_after": 65250,
+          "new_main_steal": 0
+        },
+        {
+          "at": 65737,
+          "after": 65737,
+          "asserted": false,
+          "aux_before": 65250,
+          "aux_after": 65745,
+          "new_main_steal": 0
+        },
+        {
+          "at": 66647,
+          "after": 66647,
+          "asserted": true,
+          "aux_before": 65745,
+          "aux_after": 66690,
+          "new_main_steal": 0
+        },
+        {
+          "at": 66787,
+          "after": 66787,
+          "asserted": true,
+          "aux_before": 66690,
+          "aux_after": 66690,
+          "new_main_steal": 0
+        },
+        {
+          "at": 67200,
+          "after": 67200,
+          "asserted": false,
+          "aux_before": 66690,
+          "aux_after": 67200,
+          "new_main_steal": 0
+        },
+        {
+          "at": 68110,
+          "after": 68110,
+          "asserted": true,
+          "aux_before": 67200,
+          "aux_after": 68190,
+          "new_main_steal": 0
+        },
+        {
+          "at": 68250,
+          "after": 68250,
+          "asserted": true,
+          "aux_before": 68190,
+          "aux_after": 68190,
+          "new_main_steal": 0
+        },
+        {
+          "at": 68649,
+          "after": 68649,
+          "asserted": false,
+          "aux_before": 68190,
+          "aux_after": 68655,
+          "new_main_steal": 0
+        },
+        {
+          "at": 69559,
+          "after": 69559,
+          "asserted": true,
+          "aux_before": 68655,
+          "aux_after": 69630,
+          "new_main_steal": 0
+        },
+        {
+          "at": 69713,
+          "after": 69713,
+          "asserted": true,
+          "aux_before": 69630,
+          "aux_after": 69630,
+          "new_main_steal": 0
+        },
+        {
+          "at": 70112,
+          "after": 70112,
+          "asserted": false,
+          "aux_before": 69630,
+          "aux_after": 70125,
+          "new_main_steal": 0
+        },
+        {
+          "at": 71022,
+          "after": 71022,
+          "asserted": true,
+          "aux_before": 70125,
+          "aux_after": 71055,
+          "new_main_steal": 0
+        },
+        {
+          "at": 71162,
+          "after": 71162,
+          "asserted": true,
+          "aux_before": 71055,
+          "aux_after": 71055,
+          "new_main_steal": 0
+        },
+        {
+          "at": 71575,
+          "after": 71575,
+          "asserted": false,
+          "aux_before": 71055,
+          "aux_after": 71580,
+          "new_main_steal": 0
+        },
+        {
+          "at": 72485,
+          "after": 72485,
+          "asserted": true,
+          "aux_before": 71580,
+          "aux_after": 72525,
+          "new_main_steal": 0
+        },
+        {
+          "at": 72625,
+          "after": 72625,
+          "asserted": true,
+          "aux_before": 72525,
+          "aux_after": 72525,
+          "new_main_steal": 0
+        },
+        {
+          "at": 73500,
+          "after": 73500,
+          "asserted": false,
+          "aux_before": 72525,
+          "aux_after": 73500,
+          "new_main_steal": 0
+        }
+      ],
+      "mailbox": [
+        {
+          "at": 64106,
+          "value": 128,
+          "held_aux_frontier": 63735
+        },
+        {
+          "at": 65569,
+          "value": 128,
+          "held_aux_frontier": 65250
+        },
+        {
+          "at": 67032,
+          "value": 128,
+          "held_aux_frontier": 66690
+        },
+        {
+          "at": 68481,
+          "value": 128,
+          "held_aux_frontier": 68190
+        },
+        {
+          "at": 69944,
+          "value": 128,
+          "held_aux_frontier": 69630
+        },
+        {
+          "at": 71393,
+          "value": 128,
+          "held_aux_frontier": 71055
+        },
+        {
+          "at": 72856,
+          "value": 0,
+          "held_aux_frontier": 72525
+        }
+      ],
+      "busy_mailbox_reads": 6,
+      "main_end": 73864,
+      "refresh_end": 74235,
+      "aux_end": 73500
+    }
+  ],
+  "fake_time_mailbox_counterexample": {
+    "conditional_origin": 70933,
+    "original_unheld_clear_would_be": 71640,
+    "actual_held_read": {
+      "at": 71920,
+      "value": 64,
+      "held_aux_frontier": 71535
+    },
+    "actual_clear_requires_real_release_then_aux_execution": true
+  },
+  "producer_sha256": "3d814ca5150a66d17f97bf5c511b7584e67712c506ca9beae5561e9fa06b9515",
+  "limits": [
+    "Only main origin is declared, not a reconstructed preceding main CPU path",
+    "Auxiliary raw address/latch intermediate states and full mixed PCM are not asserted by the semantic-data integration view"
+  ]
+}

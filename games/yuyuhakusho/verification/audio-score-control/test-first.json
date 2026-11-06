@@ -1,0 +1,24 @@
+{
+  "phase": "Root fight01/05/04 score mutation and ordered single-tick transaction before API",
+  "created_at_utc": "2026-11-05T22:39:09.809016+00:00",
+  "command": [
+    "go",
+    "test",
+    "-json",
+    "-count=1",
+    "./games/yuyuhakusho/audio/score",
+    "-run",
+    "^TestControl|^TestTickTransaction"
+  ],
+  "red_exit_code": 1,
+  "bindings": {
+    "games/yuyuhakusho/audio/score/control_actions_test.go": "7c58dd4dcd224e6ca0c4bcf1103b3603ac25cb4eb6d1227ce6d77afa8f413dae",
+    "games/yuyuhakusho/audio/score/transaction_test.go": "5a73ae6a8b98ac3f38f9cf8eafad7434d1955017a7ee31d4c7e77f9a65ae7058",
+    "docs/research/md-yuyuhakusho/AUDIO_SCORE_CONTROL_FAILURES.md": "33c276f5cb281b45f17e517accaa3838d2455dcd124375b2aa2d75e24775f629",
+    "games/yuyuhakusho/audio/score/driver.go": "9f7d0ae19ed96a3266834b7438444656c167f34a2278a8498813af767a916fca",
+    "games/yuyuhakusho/audio/score/state.go": "611dc7cb1b45e31ffcc539eb8831e0fe824a7098583837ce1cb0e6fbc351f96f",
+    "games/yuyuhakusho/audio/score/observed.go": "70c8e254b7e1daf9b1aa49ded0e369d0831639e5eab9902ea9349b8cead846ba",
+    "games/yuyuhakusho/audio/score/parser_work.go": "d389483bc8d6ff4d3c1f6c784d4d094c30d825fc133d88a8079ecdb9b1e91394",
+    "games/yuyuhakusho/audio/score/catalog.go": "9d19b1b16342d54b4df4625a7e75bd3c2e6806af04194540a134f9b12059a542"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "pass": true,
+  "at_utc": "2026-11-05T21:39:19.924638+00:00",
+  "scope": "Read-only fixed ROM / existing listing / bounded grammar source audit, not a production state graph",
+  "no_target_CPU_execution": true,
+  "no_native_core_loaded": true,
+  "no_new_tool_installed": true,
+  "no_external_files_written": true,
+  "checker_first_actual_missing_artifact_red": true,
+  "frozen_checker_unchanged": true,
+  "repeat_manifest_byte_identical": true,
+  "audit_sha256": "1ddf69bb57a26bdf1183d26f16271aed85580dfa37487499ddbb1427a723718c",
+  "commands": [
+    {
+      "argv": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_SOURCE_AUDIT.py",
+        "--out",
+        "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_SOURCE_AUDIT.json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"pass\": true,\n  \"fight_candidates\": 139,\n  \"grammar_commands\": 12775,\n  \"E2_events\": 0,\n  \"FF_events\": 0,\n  \"ordinary_duck_ids\": [\n    127\n  ],\n  \"fight_duck_ids\": [],\n  \"manifest\": \"docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_SOURCE_AUDIT.json\"\n}\n"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_SOURCE_AUDIT_CHECK.py",
+        "--audit",
+        "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_SOURCE_AUDIT.json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"pass\": true,\n  \"audit\": \"docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_SOURCE_AUDIT.json\",\n  \"sources\": 129,\n  \"scope\": \"Static source facts only; no runtime/state-machine acceptance\"\n}\n"
+    }
+  ],
+  "source_files": {
+    "docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_SOURCE_AUDIT.json": "1ddf69bb57a26bdf1183d26f16271aed85580dfa37487499ddbb1427a723718c",
+    "docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_SOURCE_AUDIT.md": "c517db0ff6a41474314e91857ec98388b2ae7a79efaeb14bb615f7a48f99052b",
+    "docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_SOURCE_AUDIT.py": "cc0dc12fade478a0609f3d480da216829343e456f492042a2a070b8ff32676dc",
+    "docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_SOURCE_AUDIT_CHECK.py": "6457ef51c31c7ed01709f5b4b9a9c8a485f3a3f2229ab8cc38fdb325b80b3e1f",
+    "docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_SOURCE_AUDIT_FAILURES.md": "5d27c51e4bdd571f1965de495caeb8b77070d60e0705243cc3363ab006734cfe",
+    "docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_SOURCE_AUDIT_RED.json": "1d4a87da6a30623a8225143f79729becd053100dc5392ec93244edca4c41c19a"
+  },
+  "correction": "7F is the only ordinaryflag5descriptor and is outside current139fight candidates; private7F duck vectors do not establish a fight producer.",
+  "production_or_prior_frozen_files_modified": false,
+  "cleanup": "No native/build/browser/Go artifacts created; Python-B produced no new cache. Only new owned audit artifacts are retained.",
+  "no_commit_or_index_change": true
+}

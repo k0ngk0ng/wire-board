@@ -1,0 +1,73 @@
+{
+  "cwd": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho",
+  "commands": [
+    {
+      "name": "native-race",
+      "argv": [
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-run",
+        "^Test(NativeFixedTickBoundaries|NaturalPauseStoreTimes|TickPauseReadsAreNotAnEntrySnapshot|TickInvalidBudgetAndFieldFailure)$",
+        "./games/yuyuhakusho/audio/scoreclock"
+      ],
+      "env_overrides": {
+        "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+        "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+        "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+        "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+        "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp"
+      },
+      "exit_code": 0,
+      "log_sha256": "5936b01271b74c9d1eaee361102b215f5f8260b9f703eb71ab383d9ba85386f8"
+    },
+    {
+      "name": "wasm",
+      "argv": [
+        "go",
+        "test",
+        "-exec",
+        "/opt/homebrew/Cellar/go/1.26.2/libexec/lib/wasm/go_js_wasm_exec",
+        "-json",
+        "-count=1",
+        "-run",
+        "^Test(NativeFixedTickBoundaries|NaturalPauseStoreTimes|TickPauseReadsAreNotAnEntrySnapshot|TickInvalidBudgetAndFieldFailure)$",
+        "./games/yuyuhakusho/audio/scoreclock"
+      ],
+      "environment": {
+        "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+        "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+        "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+        "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+        "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "LC_CTYPE": "C.UTF-8",
+        "PATH": "/opt/homebrew/bin:/Users/jason/.nvm/versions/node/v24.15.0/bin:/usr/bin:/bin",
+        "GOOS": "js",
+        "GOARCH": "wasm"
+      },
+      "exit_code": 0,
+      "log_sha256": "fe1e3d56a822807ec76df5ebde23406d9fbe804f5d2e0703269225fc7e6ce6e4"
+    },
+    {
+      "name": "vet",
+      "argv": [
+        "go",
+        "vet",
+        "./games/yuyuhakusho/audio/scoreclock"
+      ],
+      "env_overrides": {
+        "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+        "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+        "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+        "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+        "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp"
+      },
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

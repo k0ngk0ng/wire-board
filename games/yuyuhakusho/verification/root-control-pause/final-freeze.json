@@ -1,0 +1,22 @@
+{
+  "production_frozen": true,
+  "validation_sha256": "7610a911b543dc5d90e2676886847b539dd62786b1c7f250e59cf74086dc0f35",
+  "files": {
+    "games/yuyuhakusho/audio/rootcontrol/pause.go": "b2840c7888f603d77db70a9496652823a97352d8ca1c7e1f208c2d1b1d5ac3d5",
+    "games/yuyuhakusho/audio/rootcontrol/pause_test.go": "1afda2f3dc4c1a9e3ef03b63eac289db21569f7b29c3c090b6efffcaabf97a08",
+    "games/yuyuhakusho/audio/rootcontrol/testdata/pause-native-levels.json.gz": "22bcb17d93b1cb506bf3491653b644b7e4225613b2afd6c8cb4c25cdaa312fa0",
+    "games/yuyuhakusho/audio/rootcontrol/testdata/pause-native-manifest.json": "f9539031962739e64d17b0ff7a3e7ac5043091d8978b272b5e35c559ce3e6b86",
+    "docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_PAUSE_LEVELS.md": "a8fbf74716b0caa6161f3900bb2ceeae4daed86268f160cb194bf1c399c08b9e",
+    "games/yuyuhakusho/verification/root-control/pause-levels-original.json": "ebdd9b2ac435ceaa20a6507d969d70057467a9ebf903e4177f18e27880866185",
+    "games/yuyuhakusho/verification/root-control-pause/vet.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "games/yuyuhakusho/verification/root-control-pause/test-first.json": "fdfb6df917735517d16e5d5e6bbfb8ca2812b54fa00f996aeccc6384f39f8e90",
+    "games/yuyuhakusho/verification/root-control-pause/wasm.jsonl": "744ad4df2485189f95c034285a425d9bcce63092f47327e7c306781e3dec469e",
+    "games/yuyuhakusho/verification/root-control-pause/test-overlay.json": "7cdbb155cc14a2516da438365b5f8963374fa83d2cefae23b24a0f001b7754b6",
+    "games/yuyuhakusho/verification/root-control-pause/native-race.jsonl": "92b8582f45bd3946aa35a91d172d4c058851629feeb7e2dda8beb94fc94a9f13",
+    "games/yuyuhakusho/verification/root-control-pause/pause_test.go.txt": "1afda2f3dc4c1a9e3ef03b63eac289db21569f7b29c3c090b6efffcaabf97a08",
+    "games/yuyuhakusho/verification/root-control-pause/validation.json": "7610a911b543dc5d90e2676886847b539dd62786b1c7f250e59cf74086dc0f35",
+    "games/yuyuhakusho/verification/root-control-pause/package-stub.go.txt": "66776d6943ceaf187bd316e12d4fae764b51478f7aac1bb1b819f6082ea84ff7",
+    "games/yuyuhakusho/verification/root-control-pause/missing-api-red.jsonl": "f5e7d5fc7ccc1b4b64d3aebedb0a1ab448ed46e37e8e2d4ea99d9acca8fd44a0",
+    "games/yuyuhakusho/verification/root-control-pause/files.list": "beef0dabe4524f72552076652c4c3039a7e44e9813c920772d4fb7aa18f1439f"
+  }
+}

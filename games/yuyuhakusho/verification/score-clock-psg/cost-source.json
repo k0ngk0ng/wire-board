@@ -1,0 +1,118 @@
+{
+  "pass": true,
+  "scope": "Offline source binding for named fixed PSG operations; never an executable runtime opcode/cycle program",
+  "operations": [
+    {
+      "semantic_operation": "pitch-latch-store",
+      "source_pc": 237766,
+      "source_opcode": 5056,
+      "native_handler": "m68k_op_move_8_al_d",
+      "cpu_cycles": 16
+    },
+    {
+      "semantic_operation": "pitch-data-store",
+      "source_pc": 237772,
+      "source_opcode": 5062,
+      "native_handler": "m68k_op_move_8_al_d",
+      "cpu_cycles": 16
+    },
+    {
+      "semantic_operation": "pitch-return",
+      "source_pc": 237778,
+      "source_opcode": 20085,
+      "native_handler": "m68k_op_rts_32",
+      "cpu_cycles": 16
+    },
+    {
+      "semantic_operation": "volume-store",
+      "source_pc": 237888,
+      "source_opcode": 5062,
+      "native_handler": "m68k_op_move_8_al_d",
+      "cpu_cycles": 16
+    },
+    {
+      "semantic_operation": "volume-return",
+      "source_pc": 237894,
+      "source_opcode": 20085,
+      "native_handler": "m68k_op_rts_32",
+      "cpu_cycles": 16
+    },
+    {
+      "semantic_operation": "keyoff-store",
+      "source_pc": 237958,
+      "source_opcode": 5056,
+      "native_handler": "m68k_op_move_8_al_d",
+      "cpu_cycles": 16
+    },
+    {
+      "semantic_operation": "keyoff-return",
+      "source_pc": 237964,
+      "source_opcode": 20085,
+      "native_handler": "m68k_op_rts_32",
+      "cpu_cycles": 16
+    },
+    {
+      "semantic_operation": "mute-select-port",
+      "source_pc": 237966,
+      "source_opcode": 16889,
+      "native_handler": "m68k_op_lea_32_al",
+      "cpu_cycles": 12
+    },
+    {
+      "semantic_operation": "mute-tone0",
+      "source_pc": 237972,
+      "source_opcode": 4284,
+      "native_handler": "m68k_op_move_8_ai_i",
+      "cpu_cycles": 12
+    },
+    {
+      "semantic_operation": "mute-tone1",
+      "source_pc": 237976,
+      "source_opcode": 4284,
+      "native_handler": "m68k_op_move_8_ai_i",
+      "cpu_cycles": 12
+    },
+    {
+      "semantic_operation": "mute-tone2",
+      "source_pc": 237980,
+      "source_opcode": 4284,
+      "native_handler": "m68k_op_move_8_ai_i",
+      "cpu_cycles": 12
+    },
+    {
+      "semantic_operation": "mute-noise",
+      "source_pc": 237984,
+      "source_opcode": 4284,
+      "native_handler": "m68k_op_move_8_ai_i",
+      "cpu_cycles": 12
+    },
+    {
+      "semantic_operation": "mute-return",
+      "source_pc": 237988,
+      "source_opcode": 20085,
+      "native_handler": "m68k_op_rts_32",
+      "cpu_cycles": 16
+    }
+  ],
+  "psg_store_extra_master": 0,
+  "no_refresh_master": {
+    "raw-store": 112,
+    "single": 224,
+    "pitch-pair": 336,
+    "mute-all": 532
+  },
+  "refresh_master": {
+    "deadline_after_current_boundary": 896,
+    "delay": 14
+  },
+  "source_sha256": {
+    ".local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/core/m68k/m68kops.h": "d3ff2631658e589813d2915ba3dc03b9fd2097761f6eb221fc6264a4b8d1d6f0",
+    ".local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/core/m68k/m68kcpu.c": "8c09b9d86e8c77366eff430f62c3b5742adce1ccdee849c246e24dcba74fcf15",
+    ".local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/core/mem68k.c": "5a16c625ea77934fee90cf5d5eaa72cf92fc478811e20cb0af3138b247e9f022",
+    ".local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/core/sound/psg.c": "098f13d95a0b366d1c874867f76aea15c36604ce968c00ee39f5cac8ecd79af4",
+    ".local/md-yuyuhakusho/downloads/yuyuhakusho-jp.bin": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt": "9f81bd47bfe322110bc11339992f0e570b704077ccff22493940b75af7837152"
+  },
+  "producer_sha256": "9778f1b3a135807a714348de7828703aa0e029c571ac99b29ed38c42a0300f09",
+  "production_uses_source_pc_or_opcodes": false
+}

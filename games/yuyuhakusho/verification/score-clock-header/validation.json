@@ -1,0 +1,193 @@
+{
+  "schema": 1,
+  "pass": true,
+  "at_utc": "2026-11-05T20:05:01.417169+00:00",
+  "scope": "Fixed original PC-relative caller + control-idle/tempo/fade-idle callee + one return, using temporary owner-supplied work",
+  "routines_verified": [
+    "CallControlIdle",
+    "CallTempo",
+    "CallFadeIdle"
+  ],
+  "caller_cpu_cycles": 18,
+  "caller_addressing": "PC-relative displacement",
+  "canonical_private_profiles": 170,
+  "routine_stops": 330,
+  "native_builds": 2,
+  "recorder_on_off_profile_executions": 680,
+  "profile_counts": {
+    "control": 5,
+    "fade": 5,
+    "tempo": 80,
+    "combined": 80
+  },
+  "reload_masks": 14,
+  "music_slots": 10,
+  "all_original_caller_callee_and_return_boundaries_equal": true,
+  "DBF_backedge_cpu": 10,
+  "DBF_final_cpu": 14,
+  "native_recorder_on_off_equal": [
+    "complete serialized state",
+    "RAM",
+    "refresh",
+    "all instruction boundaries",
+    "tempo/NoteWait effects"
+  ],
+  "cross_native_builds_equal": [
+    "all instruction boundaries",
+    "all routine stops",
+    "tempo/NoteWait effects"
+  ],
+  "recorder_reads_native_PC_cycle_refresh_only": true,
+  "native_ROM_or_code_modified": false,
+  "fixture_sha256": "7a930091b4fc86e6e02af4246fbd67cdab9059078be9e377c0bc19853f535ae8",
+  "native_full_sha256": "9149ce9f94f88abcfad0c79ebe404bd62b186a605e69a8201471dc1d6df2a8cc",
+  "test_first_overlay_red": true,
+  "new_implementation_existed_at_red": false,
+  "frozen_test_copied_byte_identically": true,
+  "frozen_test_sha256": "21cd9f18b89f350b4887fd428b06c1cd0283bc36eeb6823d46f1f1194f099e62",
+  "unsupported_nonidle_control_and_fade_tested": true,
+  "Go_validation": {
+    "native": {
+      "pass": true,
+      "command_record": "games/yuyuhakusho/verification/score-clock-header/go/native-command.json",
+      "log": "games/yuyuhakusho/verification/score-clock-header/go/native.jsonl",
+      "log_sha256": "4a59425f939c2f34baf6c7f9e46f53782bb333137d0d25314085d13e03aa084f",
+      "top_level_tests": [
+        "TestHeaderNativeRoutineAndCombinedStops",
+        "TestHeaderCallerAndReturnAreIncludedExactlyOnce",
+        "TestHeaderUnsupportedControlAndFadeProfiles",
+        "TestHeaderRejectsInconsistentTempoWork",
+        "TestHeaderFixedOperationBudgets",
+        "TestHeaderInvalidClockLimitAndLateOverflow"
+      ],
+      "native_fixture_subscenarios": 170
+    },
+    "wasm": {
+      "pass": true,
+      "command_record": "games/yuyuhakusho/verification/score-clock-header/go/wasm-command.json",
+      "log": "games/yuyuhakusho/verification/score-clock-header/go/wasm.jsonl",
+      "log_sha256": "e6230ab1450b2a6a2cdc60cf304c3b1ea6b891520f787d1bbeaadd19acb704dc",
+      "top_level_tests": [
+        "TestHeaderNativeRoutineAndCombinedStops",
+        "TestHeaderCallerAndReturnAreIncludedExactlyOnce",
+        "TestHeaderUnsupportedControlAndFadeProfiles",
+        "TestHeaderRejectsInconsistentTempoWork",
+        "TestHeaderFixedOperationBudgets",
+        "TestHeaderInvalidClockLimitAndLateOverflow"
+      ],
+      "native_fixture_subscenarios": 170
+    },
+    "vet": {
+      "pass": true,
+      "command_record": "games/yuyuhakusho/verification/score-clock-header/go/vet-command.json",
+      "log": "games/yuyuhakusho/verification/score-clock-header/go/vet.txt",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "top_level_tests": [],
+      "native_fixture_subscenarios": 0
+    }
+  },
+  "native_identity": {
+    "original": {
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+      "core_name": "Genesis Plus GX",
+      "core_version": "v1.7.4 60bee4c",
+      "fps": 59.92274340431231,
+      "ram_bytes": 65536,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "teamplayer": false
+    },
+    "hook": {
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+      "core_name": "Genesis Plus GX",
+      "core_version": "v1.7.460bee4c",
+      "fps": 59.92274340431231,
+      "ram_bytes": 65536,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "teamplayer": false
+    }
+  },
+  "source_sha256": {
+    "games/yuyuhakusho/audio/scoreclock/header.go": "d2f70897622c4ed801e2ad5ac2d35d024335e1347057461cbed9abbcd5efb9e9",
+    "games/yuyuhakusho/audio/scoreclock/header_test.go": "21cd9f18b89f350b4887fd428b06c1cd0283bc36eeb6823d46f1f1194f099e62",
+    "games/yuyuhakusho/audio/scoreclock/testdata/header-native-calls.json.gz": "7a930091b4fc86e6e02af4246fbd67cdab9059078be9e377c0bc19853f535ae8",
+    "games/yuyuhakusho/audio/scoreclock/testdata/header-native-manifest.json": "8cac62a6ec912bcccbc5f172eb385e96b74115c7d9999ca00b78475a9ecef9a8",
+    "scripts/yuyuhakusho/score-clock-header-capture.py": "8c475b8d4a53f2e266567412165bad622d2b11f1721632aa27755d2a3bacfa38",
+    "scripts/yuyuhakusho/score-clock-header-cost-source.py": "95f0d461cff6ea9d52d828e6b5786347c9ee0871e17aa65828d799cfd60d9d4a",
+    "scripts/yuyuhakusho/score-clock-header-observer.c": "3f528c043c49be2ec288a2ea3f92429a4aba138b98eb1f38d6ac6e8619b9e169",
+    "scripts/yuyuhakusho/score-clock-header-verify.py": "999e9d840e298d7f8782bfcc93e262a366855af674809b1bc3f93c5bd1995ee1",
+    "docs/research/md-yuyuhakusho/SCORE_CLOCK_HEADER.md": "16b714d15970ef5cd832a7ec782ed047603369dfb8bbcdbdf87a5c361fc5dc8e",
+    "docs/research/md-yuyuhakusho/SCORE_CLOCK_HEADER_FAILURES.md": "e37c26fba22ad73edaa4bc0650c45ad965bd07bd6c5911438f7aa0e81d141acf"
+  },
+  "preserved_frozen_sources": {
+    "pass": true,
+    "frozen_YM_PSG_tick_sources": {
+      "games/yuyuhakusho/audio/scoreclock/service.go": "3ba87dba2a672c351c2e5c41065b6a42236656f58e7e7bd37b99af6849911aee",
+      "games/yuyuhakusho/audio/scoreclock/service_test.go": "15a831c2ee1314a9d02f93c05d4910f775fb8743ef08b489b9e408e5d44e9589",
+      "games/yuyuhakusho/audio/scoreclock/psg.go": "10db96b908b5f3a8cb3f3aba3c0f87921ddc23c7ff56a41677672c9f951463c2",
+      "games/yuyuhakusho/audio/scoreclock/psg_test.go": "41df9f38b32a8d90a276f6d777d31673f5983112a3a4250f1afe224fc5eeee7b",
+      "games/yuyuhakusho/audio/scoreclock/tick.go": "50ec6dfad8724e7df88f9362990a553843b0e32b9aa00999bd87b0353c69c3a9",
+      "games/yuyuhakusho/audio/scoreclock/tick_test.go": "48c93d82d0d27adda7117e13f86ead097d82beb8deb434a2346497dbb682b3e1"
+    }
+  },
+  "artifact_sha256": {
+    "games/yuyuhakusho/verification/score-clock-header/cleanup.json": "7589b48429c4cf747e0a5459a0d0687d5b9d7ff84607722ec74ea351d787c6e9",
+    "games/yuyuhakusho/verification/score-clock-header/cost-source.json": "dfbb313e5bf284b93a262e33ee5538433b8e18e9f1322d926cd8446a4063dbeb",
+    "games/yuyuhakusho/verification/score-clock-header/go/native-command.json": "6f06e912d099022ff091a786a114aff9811c096ab4dd5fed1dbe8ee39bd8586f",
+    "games/yuyuhakusho/verification/score-clock-header/go/native.jsonl": "4a59425f939c2f34baf6c7f9e46f53782bb333137d0d25314085d13e03aa084f",
+    "games/yuyuhakusho/verification/score-clock-header/go/vet-command.json": "4811e17bfbda04187e79d1cee3cdd735648f2c58e4281669393a4a54d507bd4a",
+    "games/yuyuhakusho/verification/score-clock-header/go/vet.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "games/yuyuhakusho/verification/score-clock-header/go/wasm-command.json": "e3eb9cbe89ff6e723bf58a247fa69979322653c5aef55cc89240ff4951aa8c99",
+    "games/yuyuhakusho/verification/score-clock-header/go/wasm.jsonl": "e6230ab1450b2a6a2cdc60cf304c3b1ea6b891520f787d1bbeaadd19acb704dc",
+    "games/yuyuhakusho/verification/score-clock-header/header_test.go.txt": "21cd9f18b89f350b4887fd428b06c1cd0283bc36eeb6823d46f1f1194f099e62",
+    "games/yuyuhakusho/verification/score-clock-header/missing-api-overlay-red.jsonl": "00f73c21db4a5323872998de40ab2006da5905d31ae9307e48126c0ca215d767",
+    "games/yuyuhakusho/verification/score-clock-header/native/capture.json": "c5ff386a95d27e6ed4ba13bacc5e9943bf461a23caf8d2e75a32c5973450a5d7",
+    "games/yuyuhakusho/verification/score-clock-header/native/native-header-full.json.gz": "9149ce9f94f88abcfad0c79ebe404bd62b186a605e69a8201471dc1d6df2a8cc",
+    "games/yuyuhakusho/verification/score-clock-header/preserved-sources.json": "53642a54889b82e54b35d34d76f4db9f3bc04f1ea352aad5b2ac335a3bcb9550",
+    "games/yuyuhakusho/verification/score-clock-header/test-first.json": "eeda4b6e166b6e86625ce537a04df7169b3302b7176cbb7e6fd7c80aff0f3eed",
+    "games/yuyuhakusho/verification/score-clock-header/test-overlay.json": "5e5b4aba4e1fa768c517315ddeb96e05dc7afb8b45b12739b3aef5619d887d4d"
+  },
+  "no_second_tempo_voice_control_owner": true,
+  "production_accepts_arbitrary_instruction_or_cycle_program": false,
+  "runtime_integrated": false,
+  "whole_driver_tick_verified": false,
+  "natural_IRQ_schedule_verified": false,
+  "PCM_or_product_playback_verified": false,
+  "limits": [
+    "Only double-zero control and zero fade steps are supported; nonzero profiles explicitly return ErrHeaderUnsupported",
+    "Tempo work is a temporary semantic observation from the unique score owner; this layer never updates counters",
+    "Each service includes original caller and one return; later counter/scan/leave observations must not charge again",
+    "Native fixtures are declared private SR2700 states, not natural driver or IRQ execution",
+    "No queue/dispatch, complete tick, PCM, product playback or hardware proof is claimed",
+    "Frozen YM/PSG/tick sources and global indexes were not modified"
+  ],
+  "cleanup": {
+    "scope": "Only header-owned transient read-only recorder binary and empty capture directories; no shared cache or other owner files touched",
+    "removed": [
+      {
+        "path": "games/yuyuhakusho/verification/score-clock-header/native/header-observer.dylib",
+        "bytes": 17416,
+        "sha256": "e445cf6a499edc1b2d8a93d66b8bad65cdced3296d33ce3b9d288980477d2ff5"
+      },
+      {
+        "path": "games/yuyuhakusho/verification/score-clock-header/native/core-original",
+        "bytes": 0,
+        "empty_directory": true
+      },
+      {
+        "path": "games/yuyuhakusho/verification/score-clock-header/native/tmp",
+        "bytes": 0,
+        "empty_directory": true
+      },
+      {
+        "path": "games/yuyuhakusho/verification/score-clock-header/native/core-hook",
+        "bytes": 0,
+        "empty_directory": true
+      }
+    ],
+    "bytes_removed": 17416,
+    "kept": "Frozen test and overlay red, native full provenance, portable fixture, repeatable scripts, SHA manifests and Go/Wasm/vet results"
+  },
+  "no_commits_uploads_or_deployment": true
+}

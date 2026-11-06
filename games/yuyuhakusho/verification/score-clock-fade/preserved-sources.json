@@ -1,0 +1,9 @@
+{
+  "pass": true,
+  "previous_frozen_leaf_and_pure_fade_sha256": {
+    "games/yuyuhakusho/audio/scoreclock/header.go": "d2f70897622c4ed801e2ad5ac2d35d024335e1347057461cbed9abbcd5efb9e9",
+    "games/yuyuhakusho/audio/scoreclock/header_test.go": "21cd9f18b89f350b4887fd428b06c1cd0283bc36eeb6823d46f1f1194f099e62",
+    "games/yuyuhakusho/audio/rootcontrol/fade.go": "7cbc5765aca57bb58626d6686bddbd2e1313592f81b7b3601e3560e30ee4580e",
+    "games/yuyuhakusho/audio/rootcontrol/fade_e2e_test.go": "88b9483be3b4ade09102ab1e43626a534df302a1f3a482ccdce44aef2a9b9e22"
+  }
+}

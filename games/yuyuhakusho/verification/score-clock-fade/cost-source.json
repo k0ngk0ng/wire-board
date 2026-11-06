@@ -1,0 +1,192 @@
+{
+  "pass": true,
+  "scope": "Fixed source architecture binding only; no runtime program/PC input",
+  "operations": [
+    {
+      "operation": "start01-remaining",
+      "source_pc": 231702,
+      "source_opcode": 4604,
+      "native_handler": "m68k_op_move_8_aw_i",
+      "cpu_cycles": 16
+    },
+    {
+      "operation": "start01-steps",
+      "source_pc": 231708,
+      "source_opcode": 4604,
+      "native_handler": "m68k_op_move_8_aw_i",
+      "cpu_cycles": 16
+    },
+    {
+      "operation": "start01-DAC-flags",
+      "source_pc": 231714,
+      "source_opcode": 16952,
+      "native_handler": "m68k_op_clr_8_aw",
+      "cpu_cycles": 16
+    },
+    {
+      "operation": "start01-return",
+      "source_pc": 231718,
+      "source_opcode": 20085,
+      "native_handler": "m68k_op_rts_32",
+      "cpu_cycles": 16
+    },
+    {
+      "operation": "start05-remaining",
+      "source_pc": 231720,
+      "source_opcode": 4604,
+      "native_handler": "m68k_op_move_8_aw_i",
+      "cpu_cycles": 16
+    },
+    {
+      "operation": "start05-steps",
+      "source_pc": 231726,
+      "source_opcode": 4604,
+      "native_handler": "m68k_op_move_8_aw_i",
+      "cpu_cycles": 16
+    },
+    {
+      "operation": "start05-DAC-flags",
+      "source_pc": 231732,
+      "source_opcode": 16952,
+      "native_handler": "m68k_op_clr_8_aw",
+      "cpu_cycles": 16
+    },
+    {
+      "operation": "start05-return",
+      "source_pc": 231736,
+      "source_opcode": 20085,
+      "native_handler": "m68k_op_rts_32",
+      "cpu_cycles": 16
+    },
+    {
+      "operation": "header-caller",
+      "source_pc": 226754,
+      "source_opcode": 20154,
+      "native_handler": "m68k_op_jsr_32_pcdi",
+      "cpu_cycles": 18
+    },
+    {
+      "operation": "header-clear-temporary",
+      "source_pc": 231738,
+      "source_opcode": 28672,
+      "native_handler": "m68k_op_moveq_32",
+      "cpu_cycles": 4
+    },
+    {
+      "operation": "header-read-steps",
+      "source_pc": 231740,
+      "source_opcode": 4152,
+      "native_handler": "m68k_op_move_8_d_aw",
+      "cpu_cycles": 12
+    },
+    {
+      "operation": "header-idle-branch",
+      "source_pc": 231744,
+      "source_opcode": 26378,
+      "native_handler": "m68k_op_beq_8",
+      "cpu_cycles": 10
+    },
+    {
+      "operation": "header-read-remaining",
+      "source_pc": 231746,
+      "source_opcode": 4152,
+      "native_handler": "m68k_op_move_8_d_aw",
+      "cpu_cycles": 12
+    },
+    {
+      "operation": "header-step-branch",
+      "source_pc": 231750,
+      "source_opcode": 26374,
+      "native_handler": "m68k_op_beq_8",
+      "cpu_cycles": 10
+    },
+    {
+      "operation": "header-remaining-store",
+      "source_pc": 231752,
+      "source_opcode": 21304,
+      "native_handler": "m68k_op_subq_8_aw",
+      "cpu_cycles": 16
+    },
+    {
+      "operation": "header-done-return",
+      "source_pc": 231756,
+      "source_opcode": 20085,
+      "native_handler": "m68k_op_rts_32",
+      "cpu_cycles": 16
+    },
+    {
+      "operation": "header-steps-store",
+      "source_pc": 231758,
+      "source_opcode": 21304,
+      "native_handler": "m68k_op_subq_8_aw",
+      "cpu_cycles": 16
+    },
+    {
+      "operation": "header-clear-branch",
+      "source_pc": 231762,
+      "source_opcode": 26368,
+      "native_handler": "m68k_op_beq_16",
+      "cpu_cycles": 10
+    },
+    {
+      "operation": "header-remaining-reload",
+      "source_pc": 231766,
+      "source_opcode": 4604,
+      "native_handler": "m68k_op_move_8_aw_i",
+      "cpu_cycles": 16
+    },
+    {
+      "operation": "header-select-FM",
+      "source_pc": 231772,
+      "source_opcode": 19448,
+      "native_handler": "m68k_op_lea_32_aw",
+      "cpu_cycles": 8
+    },
+    {
+      "operation": "header-six-FM",
+      "source_pc": 231776,
+      "source_opcode": 32261,
+      "native_handler": "m68k_op_moveq_32",
+      "cpu_cycles": 4
+    }
+  ],
+  "short_branch_not_taken_cpu": 8,
+  "long_branch_not_taken_cpu": 12,
+  "master_multiplier": 7,
+  "refresh_delay_master": 14,
+  "refresh_deadline_delta_master": 896,
+  "no_refresh_master": {
+    "start": 448,
+    "header-idle": 420,
+    "header-timer": 658,
+    "header-LevelScan": 840,
+    "header-FullClear": 630
+  },
+  "no_refresh_effect_offsets": {
+    "start": [
+      0,
+      112,
+      224
+    ],
+    "header-timer": [
+      434
+    ],
+    "header-LevelScan": [
+      448,
+      644
+    ],
+    "header-FullClear": [
+      448
+    ]
+  },
+  "later_dynamic_body_or_full04_charged": false,
+  "source_sha256": {
+    ".local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/core/m68k/m68kops.h": "d3ff2631658e589813d2915ba3dc03b9fd2097761f6eb221fc6264a4b8d1d6f0",
+    ".local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/core/m68k/m68kcpu.h": "6f2fc0979153d994b4ba539aa51bc0da4b8ff089e174d4cc07aee1f537643827",
+    ".local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/core/m68k/m68kcpu.c": "8c09b9d86e8c77366eff430f62c3b5742adce1ccdee849c246e24dcba74fcf15",
+    ".local/md-yuyuhakusho/downloads/yuyuhakusho-jp.bin": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt": "9f81bd47bfe322110bc11339992f0e570b704077ccff22493940b75af7837152",
+    "docs/research/md-yuyuhakusho/static/audio-control.txt": "87cc908286681bfe2d9e76b42e9f6ea2750ae1dd0f9e543507eb1df4ffc53505"
+  },
+  "producer_sha256": "49b402a75c58396839903b984ddae208504fd5502fbe2aa9fa9a697a08f2cbce"
+}

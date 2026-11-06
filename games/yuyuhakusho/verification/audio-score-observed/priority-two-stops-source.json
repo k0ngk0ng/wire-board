@@ -1,0 +1,19 @@
+{
+  "expected_assumption": "Only FM stop clear in a7 step80",
+  "actual_native": "Both primary.fm5 and primary.psg3 stop at step80, each source390f6 clears priority",
+  "required_offsets": [
+    12,
+    39
+  ],
+  "canonical": {
+    "path": "games/yuyuhakusho/audio/score/testdata/music82-a7.jsonl.gz",
+    "sha256": "84dbc2402caafb09c514539ae511d076dcf0f49591949a3c6bdf0ecfd23b42e4"
+  },
+  "original_routing_at_step80": [
+    "music.fm5",
+    "music.psg3"
+  ],
+  "assertion_revision": "Strengthen exact vector from [12] to [12,39], not suppress a real second write",
+  "before_test_sha256": "ff4bbbfde8c09124af604f43031da1c71dec391629d0f0101e961e35fc6839e7",
+  "red_exit_code": 1
+}

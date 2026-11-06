@@ -1,0 +1,6 @@
+{
+  "phase": "Bound typed parser work sidecar, finite flow and source-read counts before implementation",
+  "test_sha256": "0719465731b86d83871f91d060c968634e28468d68eef2005011ec23219c2899",
+  "red_exit_code": 1,
+  "catalog_json_sha256": "735d012d3d3140e76f8f756f0ca757bdc4b8deeb5a66750dd4610e41e06af830"
+}

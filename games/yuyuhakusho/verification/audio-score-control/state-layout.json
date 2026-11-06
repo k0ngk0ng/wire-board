@@ -1,0 +1,6 @@
+{
+  "canonical_layout": "TempoRemaining, TempoPeriod uint8 Voices [18]VoiceState Ticks uint64",
+  "source_snapshot": ".local/md-yuyuhakusho/audio-score-control/baseline/state.go.txt",
+  "source_sha256": "611dc7cb1b45e31ffcc539eb8831e0fe824a7098583837ce1cb0e6fbc351f96f",
+  "driver_lease_and_running_are_transient_not_state_fields": true
+}

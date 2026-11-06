@@ -1,0 +1,242 @@
+{
+  "pass": true,
+  "scope": "Offline ROM/architecture provenance for fixed header costs; no executable instruction list enters production",
+  "operations": [
+    {
+      "semantic_operation": "call-control",
+      "source_pc": 226746,
+      "source_opcode": 20154,
+      "native_handler": "m68k_op_jsr_32_pcdi",
+      "cpu_cycles": 18
+    },
+    {
+      "semantic_operation": "call-tempo",
+      "source_pc": 226750,
+      "source_opcode": 20154,
+      "native_handler": "m68k_op_jsr_32_pcdi",
+      "cpu_cycles": 18
+    },
+    {
+      "semantic_operation": "call-fade",
+      "source_pc": 226754,
+      "source_opcode": 20154,
+      "native_handler": "m68k_op_jsr_32_pcdi",
+      "cpu_cycles": 18
+    },
+    {
+      "semantic_operation": "control-aux-compare",
+      "source_pc": 232494,
+      "source_opcode": 3128,
+      "native_handler": "m68k_op_cmpi_8_aw",
+      "cpu_cycles": 16
+    },
+    {
+      "semantic_operation": "control-aux-branch",
+      "source_pc": 232500,
+      "source_opcode": 26368,
+      "native_handler": "m68k_op_beq_16",
+      "cpu_cycles": 10
+    },
+    {
+      "semantic_operation": "control-mode-read",
+      "source_pc": 232504,
+      "source_opcode": 4152,
+      "native_handler": "m68k_op_move_8_d_aw",
+      "cpu_cycles": 12
+    },
+    {
+      "semantic_operation": "control-mode-zero-branch",
+      "source_pc": 232508,
+      "source_opcode": 26368,
+      "native_handler": "m68k_op_beq_16",
+      "cpu_cycles": 10
+    },
+    {
+      "semantic_operation": "control-mode-compare",
+      "source_pc": 232544,
+      "source_opcode": 3128,
+      "native_handler": "m68k_op_cmpi_8_aw",
+      "cpu_cycles": 16
+    },
+    {
+      "semantic_operation": "control-mode-two-branch",
+      "source_pc": 232550,
+      "source_opcode": 26368,
+      "native_handler": "m68k_op_beq_16",
+      "cpu_cycles": 10
+    },
+    {
+      "semantic_operation": "control-aux-read",
+      "source_pc": 232554,
+      "source_opcode": 4152,
+      "native_handler": "m68k_op_move_8_d_aw",
+      "cpu_cycles": 12
+    },
+    {
+      "semantic_operation": "control-aux-zero-branch",
+      "source_pc": 232558,
+      "source_opcode": 26368,
+      "native_handler": "m68k_op_beq_16",
+      "cpu_cycles": 10
+    },
+    {
+      "semantic_operation": "control-return",
+      "source_pc": 232710,
+      "source_opcode": 20085,
+      "native_handler": "m68k_op_rts_32",
+      "cpu_cycles": 16
+    },
+    {
+      "semantic_operation": "tempo-period-test",
+      "source_pc": 231848,
+      "source_opcode": 19000,
+      "native_handler": "m68k_op_tst_8_aw",
+      "cpu_cycles": 12
+    },
+    {
+      "semantic_operation": "tempo-disabled-branch",
+      "source_pc": 231852,
+      "source_opcode": 26402,
+      "native_handler": "m68k_op_beq_8",
+      "cpu_cycles": 10
+    },
+    {
+      "semantic_operation": "tempo-remaining-step",
+      "source_pc": 231854,
+      "source_opcode": 21304,
+      "native_handler": "m68k_op_subq_8_aw",
+      "cpu_cycles": 16
+    },
+    {
+      "semantic_operation": "tempo-no-reload-branch",
+      "source_pc": 231858,
+      "source_opcode": 26140,
+      "native_handler": "m68k_op_bne_8",
+      "cpu_cycles": 10
+    },
+    {
+      "semantic_operation": "tempo-reload",
+      "source_pc": 231860,
+      "source_opcode": 4600,
+      "native_handler": "m68k_op_move_8_aw_aw",
+      "cpu_cycles": 20
+    },
+    {
+      "semantic_operation": "tempo-select-music",
+      "source_pc": 231866,
+      "source_opcode": 16888,
+      "native_handler": "m68k_op_lea_32_aw",
+      "cpu_cycles": 8
+    },
+    {
+      "semantic_operation": "tempo-slot-stride",
+      "source_pc": 231870,
+      "source_opcode": 28720,
+      "native_handler": "m68k_op_moveq_32",
+      "cpu_cycles": 4
+    },
+    {
+      "semantic_operation": "tempo-ten-slots",
+      "source_pc": 231872,
+      "source_opcode": 29193,
+      "native_handler": "m68k_op_moveq_32",
+      "cpu_cycles": 4
+    },
+    {
+      "semantic_operation": "tempo-active-test",
+      "source_pc": 231874,
+      "source_opcode": 18960,
+      "native_handler": "m68k_op_tst_8_ai",
+      "cpu_cycles": 8
+    },
+    {
+      "semantic_operation": "tempo-skip-branch",
+      "source_pc": 231876,
+      "source_opcode": 27140,
+      "native_handler": "m68k_op_bpl_8",
+      "cpu_cycles": 10
+    },
+    {
+      "semantic_operation": "tempo-note-wait-step",
+      "source_pc": 231878,
+      "source_opcode": 21032,
+      "native_handler": "m68k_op_addq_8_di",
+      "cpu_cycles": 16
+    },
+    {
+      "semantic_operation": "tempo-next-slot",
+      "source_pc": 231882,
+      "source_opcode": 53440,
+      "native_handler": "m68k_op_adda_16_d",
+      "cpu_cycles": 8
+    },
+    {
+      "semantic_operation": "tempo-loop-branch-base",
+      "source_pc": 231884,
+      "source_opcode": 20937,
+      "native_handler": "m68k_op_dbf_16",
+      "cpu_cycles": 12
+    },
+    {
+      "semantic_operation": "tempo-return",
+      "source_pc": 231888,
+      "source_opcode": 20085,
+      "native_handler": "m68k_op_rts_32",
+      "cpu_cycles": 16
+    },
+    {
+      "semantic_operation": "fade-clear-temporary",
+      "source_pc": 231738,
+      "source_opcode": 28672,
+      "native_handler": "m68k_op_moveq_32",
+      "cpu_cycles": 4
+    },
+    {
+      "semantic_operation": "fade-steps-read",
+      "source_pc": 231740,
+      "source_opcode": 4152,
+      "native_handler": "m68k_op_move_8_d_aw",
+      "cpu_cycles": 12
+    },
+    {
+      "semantic_operation": "fade-idle-branch",
+      "source_pc": 231744,
+      "source_opcode": 26378,
+      "native_handler": "m68k_op_beq_8",
+      "cpu_cycles": 10
+    },
+    {
+      "semantic_operation": "fade-return",
+      "source_pc": 231756,
+      "source_opcode": 20085,
+      "native_handler": "m68k_op_rts_32",
+      "cpu_cycles": 16
+    }
+  ],
+  "caller_cpu": 18,
+  "caller_addressing": "PC-relative displacement",
+  "short_branch_not_taken_cpu": 8,
+  "long_branch_not_taken_cpu": 12,
+  "DBF_backedge_cpu": 10,
+  "DBF_final_cpu": 14,
+  "master_multiplier": 7,
+  "refresh_delay_master": 14,
+  "refresh_deadline_delta_master": 896,
+  "no_refresh_master": {
+    "control-idle": 938,
+    "fade-idle": 420,
+    "tempo-disabled": 392,
+    "tempo-step": 560,
+    "tempo-reload-no-active": 3346,
+    "tempo-reload-all-active": 4326
+  },
+  "source_sha256": {
+    ".local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/core/m68k/m68kops.h": "d3ff2631658e589813d2915ba3dc03b9fd2097761f6eb221fc6264a4b8d1d6f0",
+    ".local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/core/m68k/m68kcpu.h": "6f2fc0979153d994b4ba539aa51bc0da4b8ff089e174d4cc07aee1f537643827",
+    ".local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/core/m68k/m68kcpu.c": "8c09b9d86e8c77366eff430f62c3b5742adce1ccdee849c246e24dcba74fcf15",
+    ".local/md-yuyuhakusho/downloads/yuyuhakusho-jp.bin": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt": "9f81bd47bfe322110bc11339992f0e570b704077ccff22493940b75af7837152"
+  },
+  "producer_sha256": "95f0d461cff6ea9d52d828e6b5786347c9ee0871e17aa65828d799cfd60d9d4a",
+  "production_uses_source_addresses_or_opcodes": false
+}

@@ -1,0 +1,32 @@
+{
+  "production_frozen": true,
+  "validation_sha256": "1e6e81f70ea0b6804d428a51457c97cf37782d6dcb38b58b05c24d9f23c4f208",
+  "files": {
+    "games/yuyuhakusho/audio/rootcontrol/fade.go": "7cbc5765aca57bb58626d6686bddbd2e1313592f81b7b3601e3560e30ee4580e",
+    "games/yuyuhakusho/audio/rootcontrol/fade_e2e_test.go": "88b9483be3b4ade09102ab1e43626a534df302a1f3a482ccdce44aef2a9b9e22",
+    "games/yuyuhakusho/audio/rootcontrol/testdata/fade-native-manifest.json": "79534c2ea62b485ecbe571099e80a45acc9a3808ed489edb52dc7dd7b1b81c81",
+    "games/yuyuhakusho/audio/rootcontrol/testdata/fade-native-streams.json.gz": "a88e122d490fd41839c944b403aadb29f309e56f8a981d81d41e1b37548cca28",
+    "scripts/yuyuhakusho/root-control-fade-export.py": "bccd2f4479d307c69e20d60471667437672ecd85c34c940c587e2d02299e8cc5",
+    "scripts/yuyuhakusho/root-control-fade-verify.py": "cd34b501d41cec3df260784550a52279a09965a094c7ea3aa6e45615fc126df5",
+    "docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_FADE.md": "2ce4ea9445c2726f8f426d521f8e8325889f62e34e880735cab566faa425f657",
+    "docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_FADE_FAILURES.md": "1ff102f3dafbe5c4149296bcec74f6ad6827f97e37a55acf9c579d789fba6685",
+    "games/yuyuhakusho/verification/root-control-fade/cleanup.json": "38b545e5d86e57c610676077fedb2e59f1f7100deabb4275e3d6877601e4ffeb",
+    "games/yuyuhakusho/verification/root-control-fade/extraction-repeat.json": "2386aab98c8b49481f870d8ca39d6aeb3821db5d42bfaeff7e6a21aa608be851",
+    "games/yuyuhakusho/verification/root-control-fade/extraction.json": "777a4d90047b9aa39ce33279627547316d47b83aa0252530d037ae420b68d737",
+    "games/yuyuhakusho/verification/root-control-fade/fade-empty-package.go.txt": "66776d6943ceaf187bd316e12d4fae764b51478f7aac1bb1b819f6082ea84ff7",
+    "games/yuyuhakusho/verification/root-control-fade/fade-missing-api-overlay-red.jsonl": "ef45220c0b4036ce9724c236d4be54cf7d3418f635fc3ec20b3cf21ddec786d9",
+    "games/yuyuhakusho/verification/root-control-fade/fade-test-first.json": "537d56175007040b99c92befc489967046a0c3a51b6afa558a710a2ef8f01dd9",
+    "games/yuyuhakusho/verification/root-control-fade/fade-test-overlay.json": "2acbbc2cfcf596c6594561f713f7ab3b30b899d9899482d576f3f35a0c978b7b",
+    "games/yuyuhakusho/verification/root-control-fade/fade_e2e_test.go.txt": "88b9483be3b4ade09102ab1e43626a534df302a1f3a482ccdce44aef2a9b9e22",
+    "games/yuyuhakusho/verification/root-control-fade/go/native-command.json": "2d4477b1e1908263adb12fa2c63f7a204ae0061eb07db1bdbc7f6cdd4a5e45e5",
+    "games/yuyuhakusho/verification/root-control-fade/go/native.jsonl": "fa9b676b38f7ea2c747632345b826cae1c3c4eb7685fdecd0c1630a460e40453",
+    "games/yuyuhakusho/verification/root-control-fade/go/vet-command.json": "bb7afeb9d57924c1a55d35aa6e32de56934ce9f1c9d59a6e6796c030c1bd5bdf",
+    "games/yuyuhakusho/verification/root-control-fade/go/vet.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "games/yuyuhakusho/verification/root-control-fade/go/wasm-command.json": "b0f20f65fe34a2efa24eaa12a93618a7dd3044d3c294bfbec5837e300595789f",
+    "games/yuyuhakusho/verification/root-control-fade/go/wasm.jsonl": "9ed1aa55a8f8a52364a0ea9deb8fb021ca7e529b278149a3c9daf2a376dbf906",
+    "games/yuyuhakusho/verification/root-control-fade/preserved-leaves.json": "d4b3668572642c7337efc9cd534de27a98bc11d9a138fadeb5b8e5e1fe276785",
+    "games/yuyuhakusho/verification/root-control-fade/source-template-red.json": "9bf0a1b41e59f08aed21e3d604717220e250e2a5c3c49d13c2fc79df30e15632",
+    "games/yuyuhakusho/verification/root-control-fade/validation.json": "1e6e81f70ea0b6804d428a51457c97cf37782d6dcb38b58b05c24d9f23c4f208"
+  },
+  "scope": "Only independent fade counter component, testdata, scripts and dedicated docs/evidence; state.go and other owners untouched"
+}

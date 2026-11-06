@@ -1,0 +1,62 @@
+{
+  "scope": "Same-Tx reentry and Abort callback lease regression before parent implementation repair",
+  "created_at_utc": "2026-11-05T23:10:06.434842+00:00",
+  "command": [
+    "/opt/homebrew/bin/go",
+    "test",
+    "-overlay",
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/games/yuyuhakusho/verification/audio-score-param/control-review/baseline-overlay.json",
+    "-json",
+    "-count=1",
+    "-run",
+    "^TestControlReview",
+    "./games/yuyuhakusho/audio/score"
+  ],
+  "environment": {
+    "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+    "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+    "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+    "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp"
+  },
+  "exit_code": 1,
+  "test_sha256": "94a925a12b184f5061b1cc6c60c5679fdd9fc02e30d0ea9900e03c2958850c87",
+  "log_sha256": "f3f36740c397b193e1cf28d3a23c46f69bc12dfdad35a35e96ef16fc4cdeaf98",
+  "baseline": [
+    {
+      "source": "games/yuyuhakusho/audio/score/control.go",
+      "snapshot": "games/yuyuhakusho/verification/audio-score-param/control-review/control.go.txt",
+      "sha256": "755043bd6bd60fc4756b1894ce5b098ac790d4fda523b44b29c388f53d1ec8f5"
+    },
+    {
+      "source": "games/yuyuhakusho/audio/score/transaction.go",
+      "snapshot": "games/yuyuhakusho/verification/audio-score-param/control-review/transaction.go.txt",
+      "sha256": "2917030de80992266ffd3fa6b1d43ed26fc41b9577097a38975a31eec2437b39"
+    },
+    {
+      "source": "games/yuyuhakusho/audio/score/driver.go",
+      "snapshot": "games/yuyuhakusho/verification/audio-score-param/control-review/driver.go.txt",
+      "sha256": "441da690dac15abbbafbce0b102bca189baad38fbda078c5b1067908506df7c9"
+    },
+    {
+      "source": "games/yuyuhakusho/audio/score/state.go",
+      "snapshot": "games/yuyuhakusho/verification/audio-score-param/control-review/state.go.txt",
+      "sha256": "91fc0de482e99c0b1bc8f9a38e59ec8c013f5df80f9add02f173e148f47160a4"
+    },
+    {
+      "source": "games/yuyuhakusho/audio/score/observed.go",
+      "snapshot": "games/yuyuhakusho/verification/audio-score-param/control-review/observed.go.txt",
+      "sha256": "866561887309f109e9d5a3a28983313bc05e33cf7bdd0f17187e185e64b79447"
+    }
+  ],
+  "failed_tests": [
+    "TestControlReviewSameTransactionReentryPoisonsOuterAndHoldsLease/tempo",
+    "TestControlReviewSameTransactionReentryPoisonsOuterAndHoldsLease/control",
+    "TestControlReviewSameTransactionReentryPoisonsOuterAndHoldsLease/dispatch",
+    "TestControlReviewSameTransactionReentryPoisonsOuterAndHoldsLease/voices",
+    "TestControlReviewSameTransactionReentryPoisonsOuterAndHoldsLease/finish",
+    "TestControlReviewSameTransactionReentryPoisonsOuterAndHoldsLease/suspended",
+    "TestControlReviewSameTransactionReentryPoisonsOuterAndHoldsLease",
+    "TestControlReviewAbortInCallbackRetainsLeaseUntilOuterReturn"
+  ]
+}

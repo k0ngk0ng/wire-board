@@ -1,0 +1,298 @@
+package score
+
+import "fmt"
+
+type tickStage uint8
+
+const (
+	stageBegun tickStage = iota + 1
+	stageTempo
+	stageDispatched
+	stageVoices
+	stageAction
+	stageClosed
+)
+
+// TickTransaction owns one temporary working score branch. The source driver
+// remains untouched until Finish; it is leased against reentrant mutation.
+// No Root, PCM, bus or chip owner is copied or committed by this object.
+type TickTransaction struct {
+	owner      *Driver
+	working    Driver
+	engine     tick
+	stage      tickStage
+	skipVoices bool
+	running    bool
+}
+
+func (d *Driver) validateObservedHooks(hooks ObservedHooks) error {
+	if hooks.Operation == nil {
+		return fmt.Errorf("observed operation callback is required")
+	}
+	if hooks.MaxOperations > MaxObservedOperations {
+		return fmt.Errorf("operation budget exceeds profile")
+	}
+	if hooks.Parser != nil && hooks.Parser.catalogSHA != d.catalog.jsonSHA {
+		return fmt.Errorf("parser metadata belongs to another catalog")
+	}
+	return nil
+}
+
+func (d *Driver) BeginTickObserved(hooks ObservedHooks) (*TickTransaction, error) {
+	if err := d.validateObservedHooks(hooks); err != nil {
+		return nil, err
+	}
+	return d.beginTransaction(&hooks, DACFeedback{}, stageBegun)
+}
+
+func (d *Driver) beginTransaction(hooks *ObservedHooks, feedback DACFeedback, stage tickStage) (*TickTransaction, error) {
+	if d.lease != nil {
+		return nil, fmt.Errorf("score driver already has an active transaction")
+	}
+	if stage == stageBegun && d.state.Ticks == ^uint64(0) {
+		return nil, fmt.Errorf("driver tick overflow")
+	}
+	tx := &TickTransaction{owner: d, working: Driver{catalog: d.catalog, state: d.state}, stage: stage}
+	tx.engine = tick{driver: &tx.working, feedback: feedback, hooks: hooks, out: Output{Intents: make([]Intent, 0)}}
+	d.lease = tx
+	if stage == stageBegun {
+		tx.engine.operation(Operation{Kind: OpEnter, Routine: RoutineTick, VoiceSlot: -1, OtherSlot: -1, Branch: BranchNormal})
+	}
+	if tx.engine.err != nil {
+		return nil, tx.stop(tx.engine.err)
+	}
+	return tx, nil
+}
+
+func (tx *TickTransaction) stop(err error) error {
+	if tx == nil {
+		return err
+	}
+	tx.engine.fail(err)
+	if !tx.running && tx.owner != nil && tx.owner.lease == tx {
+		tx.owner.lease = nil
+	}
+	tx.stage = stageClosed
+	return err
+}
+func (tx *TickTransaction) require(stage tickStage) error {
+	if tx == nil || tx.stage == stageClosed {
+		return fmt.Errorf("score transaction is closed")
+	}
+	if tx.owner == nil || tx.owner.lease != tx {
+		return tx.stop(fmt.Errorf("score transaction lost its lease"))
+	}
+	if tx.running {
+		return tx.stop(fmt.Errorf("score transaction stage reentered from callback"))
+	}
+	if tx.stage != stage {
+		return tx.stop(fmt.Errorf("score transaction stage %d, required %d", tx.stage, stage))
+	}
+	if tx.engine.err != nil {
+		return tx.stop(tx.engine.err)
+	}
+	return nil
+}
+
+func (tx *TickTransaction) endRun() {
+	tx.running = false
+	if tx.stage == stageClosed && tx.owner != nil && tx.owner.lease == tx {
+		tx.owner.lease = nil
+	}
+}
+func (tx *TickTransaction) checkResult(err error) error {
+	if err == nil {
+		err = tx.engine.err
+	}
+	if err != nil {
+		return tx.stop(err)
+	}
+	return nil
+}
+
+func (tx *TickTransaction) AdvanceTempo() error {
+	if err := tx.require(stageBegun); err != nil {
+		return err
+	}
+	tx.running = true
+	defer tx.endRun()
+	if err := tx.checkResult(tx.engine.advanceTempo()); err != nil {
+		return err
+	}
+	tx.stage = stageTempo
+	return nil
+}
+func (tx *TickTransaction) ApplyMusicControl(action MusicControlAction) error {
+	if err := tx.require(stageTempo); err != nil {
+		return err
+	}
+	tx.running = true
+	defer tx.endRun()
+	if err := tx.checkResult(tx.engine.applyMusicControl(action)); err != nil {
+		return err
+	}
+	return nil
+}
+func (tx *TickTransaction) Dispatch(soundID uint8) error {
+	if err := tx.require(stageTempo); err != nil {
+		return err
+	}
+	tx.running = true
+	defer tx.endRun()
+	if soundID != 0 && !supported(soundID) {
+		return tx.stop(fmt.Errorf("unrestored dispatch %02x", soundID))
+	}
+	skip, err := tx.engine.dispatchScore(soundID)
+	if err = tx.checkResult(err); err != nil {
+		return err
+	}
+	tx.skipVoices = skip
+	tx.stage = stageDispatched
+	return nil
+}
+func (tx *TickTransaction) AdvanceVoices() error {
+	if err := tx.require(stageDispatched); err != nil {
+		return err
+	}
+	tx.running = true
+	defer tx.endRun()
+	if !tx.skipVoices {
+		if err := tx.checkResult(tx.engine.advanceVoices()); err != nil {
+			return err
+		}
+	}
+	tx.stage = stageVoices
+	return nil
+}
+
+func (tx *TickTransaction) finish(branch Branch) (Output, error) {
+	tx.engine.operation(Operation{Kind: OpLeave, Routine: RoutineTick, VoiceSlot: -1, OtherSlot: -1, Branch: branch})
+	if err := tx.checkResult(nil); err != nil {
+		return Output{}, err
+	}
+	tx.working.state.Ticks++
+	tx.owner.state = tx.working.state
+	tx.owner.lease = nil
+	tx.stage = stageClosed
+	return tx.engine.out, nil
+}
+func (tx *TickTransaction) Finish() (Output, error) {
+	if err := tx.require(stageVoices); err != nil {
+		return Output{}, err
+	}
+	tx.running = true
+	defer tx.endRun()
+	return tx.finish(BranchNormal)
+}
+
+// FinishSuspended counts one actual driver call with no normal score phases.
+// Pause state and hardware mute/restore remain caller-owned.
+func (tx *TickTransaction) FinishSuspended() (Output, error) {
+	if err := tx.require(stageBegun); err != nil {
+		return Output{}, err
+	}
+	tx.running = true
+	defer tx.endRun()
+	return tx.finish(BranchSuspended)
+}
+func (tx *TickTransaction) Snapshot() (State, error) {
+	if tx == nil || tx.stage == stageClosed || tx.owner == nil || tx.owner.lease != tx {
+		return State{}, fmt.Errorf("score transaction is closed")
+	}
+	return tx.working.state, nil
+}
+func (tx *TickTransaction) Abort() {
+	if tx == nil || tx.stage == stageClosed {
+		return
+	}
+	tx.stop(fmt.Errorf("score transaction aborted"))
+}
+
+func (t *tick) advanceTempo() error {
+	leave := t.enter(RoutineTempo, -1, BranchNormal)
+	state := &t.driver.state
+	if state.TempoPeriod != 0 {
+		before := state.TempoRemaining
+		t.operation(Operation{Kind: OpCounter, Routine: RoutineTempo, VoiceSlot: -1, OtherSlot: -1, Counter: CounterTempo, Before: uint16(before), After: uint16(before - 1), Branch: BranchStep})
+		state.TempoRemaining--
+		if state.TempoRemaining == 0 {
+			t.operation(Operation{Kind: OpCounter, Routine: RoutineTempo, VoiceSlot: -1, OtherSlot: -1, Counter: CounterTempo, After: uint16(state.TempoPeriod), Branch: BranchReload})
+			state.TempoRemaining = state.TempoPeriod
+			for i := 0; i < 10; i++ {
+				t.operation(Operation{Kind: OpVoiceScan, Routine: RoutineTempo, VoiceSlot: int8(i), OtherSlot: -1, Iterations: 10})
+				if state.Voices[i].Active {
+					before := state.Voices[i].NoteWait
+					t.operation(Operation{Kind: OpCounter, Routine: RoutineTempo, VoiceSlot: int8(i), OtherSlot: -1, Counter: CounterNoteWait, Before: uint16(before), After: uint16(before + 1), Branch: BranchReload})
+					state.Voices[i].NoteWait++
+				}
+			}
+		}
+	} else {
+		t.operation(Operation{Kind: OpParameter, Routine: RoutineTempo, VoiceSlot: -1, OtherSlot: -1, Branch: BranchDisabled})
+	}
+	leave()
+	return t.err
+}
+func (t *tick) dispatchScore(soundID uint8) (bool, error) {
+	if soundID == 0 {
+		t.operation(Operation{Kind: OpParameter, Routine: RoutineDispatch, VoiceSlot: -1, OtherSlot: -1, Branch: BranchNoDispatch})
+		return false, t.err
+	}
+	definition := t.driver.catalog.scores[soundID]
+	branch := BranchPrimary
+	if definition.Kind == "music" {
+		branch = BranchMusic
+	}
+	t.operation(Operation{Kind: OpEnter, Routine: RoutineDispatch, VoiceSlot: -1, OtherSlot: -1, Branch: branch, SoundID: soundID})
+	if t.err != nil {
+		return false, t.err
+	}
+	var err error
+	if definition.Kind == "music" {
+		err = t.startMusic(definition)
+	} else {
+		err = t.startEffect(definition)
+	}
+	if err != nil {
+		return false, err
+	}
+	t.operation(Operation{Kind: OpLeave, Routine: RoutineDispatch, VoiceSlot: -1, OtherSlot: -1, Branch: branch, SoundID: soundID})
+	return definition.Kind == "music", t.err
+}
+func (t *tick) advanceVoices() error {
+	for i := 0; i < 18; i++ {
+		t.position = EventPosition{}
+		t.eventKind = ""
+		if i == 0 || i == 10 || i == 16 {
+			branch := BranchMusic
+			if i == 10 {
+				branch = BranchPrimary
+			} else if i == 16 {
+				branch = BranchSecondary
+			}
+			t.operation(Operation{Kind: OpDomain, Routine: RoutineTick, VoiceSlot: -1, OtherSlot: -1, Branch: branch})
+		}
+		branch := BranchInactive
+		if t.driver.state.Voices[i].Active {
+			branch = BranchActive
+		}
+		t.operation(Operation{Kind: OpVoiceScan, Routine: RoutineTick, VoiceSlot: int8(i), OtherSlot: -1, Branch: branch})
+		if t.err != nil {
+			return t.err
+		}
+		if !t.driver.state.Voices[i].Active {
+			continue
+		}
+		end, err := t.advanceVoice(i)
+		if err != nil {
+			return fmt.Errorf("voice %d: %w", i, err)
+		}
+		if t.err != nil {
+			return t.err
+		}
+		if end {
+			break
+		}
+	}
+	return nil
+}

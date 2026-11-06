@@ -1,0 +1,44 @@
+{
+  "excluded_ordinary1f_acceptance_frames": 2,
+  "fixtures": [
+    {
+      "byte_identical": true,
+      "fixture": "native-v3",
+      "source_frames": 785
+    },
+    {
+      "byte_identical": true,
+      "fixture": "legal-v3",
+      "source_frames": 330
+    }
+  ],
+  "frozen_artifacts": 40,
+  "frozen_sources": 41,
+  "full_master_cycle_cost": false,
+  "initial_test_first_bindings": 6,
+  "native_source_frames": 1115,
+  "ordered_effective_ym_psg_requests": 8480,
+  "ordinary_PCM_acceptance_lifecycle": false,
+  "pass": true,
+  "per_long_interrupt_visibility": false,
+  "rule_frames": 1113,
+  "tests": [
+    {
+      "pass": true,
+      "passed_cases": 102,
+      "stage": "native-race"
+    },
+    {
+      "pass": true,
+      "passed_cases": 102,
+      "stage": "wasm"
+    },
+    {
+      "pass": true,
+      "stage": "vet"
+    }
+  ],
+  "version": 1,
+  "whole_goal_complete": false,
+  "world_IRQ_schedule": false
+}

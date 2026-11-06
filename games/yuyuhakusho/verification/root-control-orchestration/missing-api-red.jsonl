@@ -1,0 +1,9 @@
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score","Action":"build-output","Output":"# github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score","Action":"build-output","Output":"games/yuyuhakusho/audio/score/state.go:114:9: undefined: TickTransaction\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score","Action":"build-output","Output":"games/yuyuhakusho/audio/score/observed.go:194:9: undefined: MusicControlAction\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score","Action":"build-output","Output":"games/yuyuhakusho/audio/score/driver.go:33:12: d.beginTransaction undefined (type *Driver has no field or method beginTransaction)\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score","Action":"build-output","Output":"games/yuyuhakusho/audio/score/driver.go:33:44: undefined: stageBegun\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score","Action":"build-fail"}
+{"Time":"2026-11-06T06:49:24.950817+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/rootcontrol"}
+{"Time":"2026-11-06T06:49:24.950854+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/rootcontrol","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/rootcontrol [build failed]\n"}
+{"Time":"2026-11-06T06:49:24.95086+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/rootcontrol","Elapsed":0,"FailedBuild":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score"}

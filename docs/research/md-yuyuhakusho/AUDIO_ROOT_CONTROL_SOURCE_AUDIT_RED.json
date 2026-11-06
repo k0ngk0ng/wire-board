@@ -1,0 +1,19 @@
+{
+  "test_first": true,
+  "at_utc": "2026-11-05T21:29:35.626961+00:00",
+  "no_auditor_implementation_exists": true,
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-B",
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_SOURCE_AUDIT_CHECK.py",
+    "--audit",
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_SOURCE_AUDIT.json"
+  ],
+  "exit_code": 1,
+  "stdout": "",
+  "stderr": "Traceback (most recent call last):\n  File \"/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_SOURCE_AUDIT_CHECK.py\", line 52, in <module>\n    main()\n    ~~~~^^\n  File \"/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_SOURCE_AUDIT_CHECK.py\", line 15, in main\n    data = json.loads(path.read_text())\n                      ~~~~~~~~~~~~~~^^\n  File \"/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py\", line 787, in read_text\n    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:\n         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py\", line 771, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_SOURCE_AUDIT.json'\n",
+  "sources": {
+    "docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_SOURCE_AUDIT_CHECK.py": "6457ef51c31c7ed01709f5b4b9a9c8a485f3a3f2229ab8cc38fdb325b80b3e1f",
+    "docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_SOURCE_AUDIT_FAILURES.md": "5d27c51e4bdd571f1965de495caeb8b77070d60e0705243cc3363ab006734cfe"
+  }
+}

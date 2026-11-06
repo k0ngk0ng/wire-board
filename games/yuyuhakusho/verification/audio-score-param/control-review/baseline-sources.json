@@ -1,0 +1,27 @@
+[
+  {
+    "source": "games/yuyuhakusho/audio/score/control.go",
+    "snapshot": "games/yuyuhakusho/verification/audio-score-param/control-review/control.go.txt",
+    "sha256": "755043bd6bd60fc4756b1894ce5b098ac790d4fda523b44b29c388f53d1ec8f5"
+  },
+  {
+    "source": "games/yuyuhakusho/audio/score/transaction.go",
+    "snapshot": "games/yuyuhakusho/verification/audio-score-param/control-review/transaction.go.txt",
+    "sha256": "2917030de80992266ffd3fa6b1d43ed26fc41b9577097a38975a31eec2437b39"
+  },
+  {
+    "source": "games/yuyuhakusho/audio/score/driver.go",
+    "snapshot": "games/yuyuhakusho/verification/audio-score-param/control-review/driver.go.txt",
+    "sha256": "441da690dac15abbbafbce0b102bca189baad38fbda078c5b1067908506df7c9"
+  },
+  {
+    "source": "games/yuyuhakusho/audio/score/state.go",
+    "snapshot": "games/yuyuhakusho/verification/audio-score-param/control-review/state.go.txt",
+    "sha256": "91fc0de482e99c0b1bc8f9a38e59ec8c013f5df80f9add02f173e148f47160a4"
+  },
+  {
+    "source": "games/yuyuhakusho/audio/score/observed.go",
+    "snapshot": "games/yuyuhakusho/verification/audio-score-param/control-review/observed.go.txt",
+    "sha256": "866561887309f109e9d5a3a28983313bc05e33cf7bdd0f17187e185e64b79447"
+  }
+]

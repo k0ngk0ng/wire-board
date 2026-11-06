@@ -1,0 +1,523 @@
+{
+  "scope": "Original mixed/claimed pause capture/cache/visible-level and exact 24 TL request order; raw requested high bit retained separately from visible low7",
+  "source": {
+    "path": ".local/md-yuyuhakusho/root-control-canonical-v2/mixed82-a7-pause.json.gz",
+    "sha256": "658c5a43824ef6592dc21bab87febaff087c52c2ad1bc0e0a575b55f9e5b6a7a"
+  },
+  "pre": {
+    "cache_raw_hex": "1b13180097a61800978e2200978e95001b207f00a21d7f00a2227f00a2867f00",
+    "visible_from_cache": [
+      [
+        [
+          27,
+          23,
+          23,
+          23
+        ],
+        [
+          19,
+          38,
+          14,
+          14
+        ],
+        [
+          24,
+          24,
+          34,
+          21
+        ]
+      ],
+      [
+        [
+          27,
+          34,
+          34,
+          34
+        ],
+        [
+          32,
+          29,
+          34,
+          6
+        ],
+        [
+          127,
+          127,
+          127,
+          127
+        ]
+      ]
+    ],
+    "chip_TL": [
+      [
+        [
+          27,
+          23,
+          23,
+          23
+        ],
+        [
+          19,
+          38,
+          14,
+          14
+        ],
+        [
+          24,
+          24,
+          34,
+          21
+        ]
+      ],
+      [
+        [
+          27,
+          34,
+          34,
+          34
+        ],
+        [
+          32,
+          29,
+          34,
+          6
+        ],
+        [
+          127,
+          127,
+          127,
+          127
+        ]
+      ]
+    ],
+    "visible_equal": true
+  },
+  "muted": {
+    "cache_raw_hex": "1b13180097a61800978e2200978e95001b207f00a21d7f00a2227f00a2867f00",
+    "visible_from_cache": [
+      [
+        [
+          27,
+          23,
+          23,
+          23
+        ],
+        [
+          19,
+          38,
+          14,
+          14
+        ],
+        [
+          24,
+          24,
+          34,
+          21
+        ]
+      ],
+      [
+        [
+          27,
+          34,
+          34,
+          34
+        ],
+        [
+          32,
+          29,
+          34,
+          6
+        ],
+        [
+          127,
+          127,
+          127,
+          127
+        ]
+      ]
+    ],
+    "chip_TL": [
+      [
+        [
+          127,
+          127,
+          127,
+          127
+        ],
+        [
+          127,
+          127,
+          127,
+          127
+        ],
+        [
+          127,
+          127,
+          127,
+          127
+        ]
+      ],
+      [
+        [
+          127,
+          127,
+          127,
+          127
+        ],
+        [
+          127,
+          127,
+          127,
+          127
+        ],
+        [
+          127,
+          127,
+          127,
+          127
+        ]
+      ]
+    ],
+    "visible_equal": false
+  },
+  "restored": {
+    "cache_raw_hex": "1b13180097a61800978e2200978e95001b207f00a21d7f00a2227f00a2867f00",
+    "visible_from_cache": [
+      [
+        [
+          27,
+          23,
+          23,
+          23
+        ],
+        [
+          19,
+          38,
+          14,
+          14
+        ],
+        [
+          24,
+          24,
+          34,
+          21
+        ]
+      ],
+      [
+        [
+          27,
+          34,
+          34,
+          34
+        ],
+        [
+          32,
+          29,
+          34,
+          6
+        ],
+        [
+          127,
+          127,
+          127,
+          127
+        ]
+      ]
+    ],
+    "chip_TL": [
+      [
+        [
+          27,
+          23,
+          23,
+          23
+        ],
+        [
+          19,
+          38,
+          14,
+          14
+        ],
+        [
+          24,
+          24,
+          34,
+          21
+        ]
+      ],
+      [
+        [
+          27,
+          34,
+          34,
+          34
+        ],
+        [
+          32,
+          29,
+          34,
+          6
+        ],
+        [
+          127,
+          127,
+          127,
+          127
+        ]
+      ]
+    ],
+    "visible_equal": true
+  },
+  "mute_requests": [
+    {
+      "bank": 0,
+      "register": 66,
+      "value": 127
+    },
+    {
+      "bank": 1,
+      "register": 66,
+      "value": 127
+    },
+    {
+      "bank": 0,
+      "register": 70,
+      "value": 127
+    },
+    {
+      "bank": 1,
+      "register": 70,
+      "value": 127
+    },
+    {
+      "bank": 0,
+      "register": 74,
+      "value": 127
+    },
+    {
+      "bank": 1,
+      "register": 74,
+      "value": 127
+    },
+    {
+      "bank": 0,
+      "register": 78,
+      "value": 127
+    },
+    {
+      "bank": 1,
+      "register": 78,
+      "value": 127
+    },
+    {
+      "bank": 0,
+      "register": 65,
+      "value": 127
+    },
+    {
+      "bank": 1,
+      "register": 65,
+      "value": 127
+    },
+    {
+      "bank": 0,
+      "register": 69,
+      "value": 127
+    },
+    {
+      "bank": 1,
+      "register": 69,
+      "value": 127
+    },
+    {
+      "bank": 0,
+      "register": 73,
+      "value": 127
+    },
+    {
+      "bank": 1,
+      "register": 73,
+      "value": 127
+    },
+    {
+      "bank": 0,
+      "register": 77,
+      "value": 127
+    },
+    {
+      "bank": 1,
+      "register": 77,
+      "value": 127
+    },
+    {
+      "bank": 0,
+      "register": 64,
+      "value": 127
+    },
+    {
+      "bank": 1,
+      "register": 64,
+      "value": 127
+    },
+    {
+      "bank": 0,
+      "register": 68,
+      "value": 127
+    },
+    {
+      "bank": 1,
+      "register": 68,
+      "value": 127
+    },
+    {
+      "bank": 0,
+      "register": 72,
+      "value": 127
+    },
+    {
+      "bank": 1,
+      "register": 72,
+      "value": 127
+    },
+    {
+      "bank": 0,
+      "register": 76,
+      "value": 127
+    },
+    {
+      "bank": 1,
+      "register": 76,
+      "value": 127
+    }
+  ],
+  "restore_requests": [
+    {
+      "bank": 0,
+      "register": 66,
+      "value": 24
+    },
+    {
+      "bank": 1,
+      "register": 66,
+      "value": 127
+    },
+    {
+      "bank": 0,
+      "register": 70,
+      "value": 24
+    },
+    {
+      "bank": 1,
+      "register": 70,
+      "value": 127
+    },
+    {
+      "bank": 0,
+      "register": 74,
+      "value": 34
+    },
+    {
+      "bank": 1,
+      "register": 74,
+      "value": 127
+    },
+    {
+      "bank": 0,
+      "register": 78,
+      "value": 149
+    },
+    {
+      "bank": 1,
+      "register": 78,
+      "value": 127
+    },
+    {
+      "bank": 0,
+      "register": 65,
+      "value": 19
+    },
+    {
+      "bank": 1,
+      "register": 65,
+      "value": 32
+    },
+    {
+      "bank": 0,
+      "register": 69,
+      "value": 166
+    },
+    {
+      "bank": 1,
+      "register": 69,
+      "value": 29
+    },
+    {
+      "bank": 0,
+      "register": 73,
+      "value": 142
+    },
+    {
+      "bank": 1,
+      "register": 73,
+      "value": 34
+    },
+    {
+      "bank": 0,
+      "register": 77,
+      "value": 142
+    },
+    {
+      "bank": 1,
+      "register": 77,
+      "value": 134
+    },
+    {
+      "bank": 0,
+      "register": 64,
+      "value": 27
+    },
+    {
+      "bank": 1,
+      "register": 64,
+      "value": 27
+    },
+    {
+      "bank": 0,
+      "register": 68,
+      "value": 151
+    },
+    {
+      "bank": 1,
+      "register": 68,
+      "value": 162
+    },
+    {
+      "bank": 0,
+      "register": 72,
+      "value": 151
+    },
+    {
+      "bank": 1,
+      "register": 72,
+      "value": 162
+    },
+    {
+      "bank": 0,
+      "register": 76,
+      "value": 151
+    },
+    {
+      "bank": 1,
+      "register": 76,
+      "value": 162
+    }
+  ],
+  "frames": {
+    "capture": 31,
+    "restore": 71
+  },
+  "capture_cache_matches_visible_chip": true,
+  "mute_preserves_information_not_in_current_chip": true,
+  "resume_restores_exact_visible_pre_levels": true,
+  "independent_restore_implementation_verified": false
+}

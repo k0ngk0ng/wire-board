@@ -1,0 +1,6 @@
+{
+  "Replace": {
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/games/yuyuhakusho/audio/rootcontrol/fade_api_red.go": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/games/yuyuhakusho/verification/root-control-fade/fade-empty-package.go.txt",
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/games/yuyuhakusho/audio/rootcontrol/fade_e2e_test.go": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/games/yuyuhakusho/verification/root-control-fade/fade_e2e_test.go.txt"
+  }
+}

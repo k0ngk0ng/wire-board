@@ -1,0 +1,108 @@
+{
+  "scope": "Existing original selected/control entries only; no fade counters or full Root acceptance claimed",
+  "reports": [
+    {
+      "scenario": "baseline",
+      "source": "docs/research/md-yuyuhakusho/audio-phase-budget/compact/audio-phase-baseline.json.gz",
+      "source_sha256": "735833ae6e4ac55d8094ffe5827ecd33b92433b21b1135250ccab037f27b8402",
+      "control_dispatches": [
+        {
+          "frame": 9,
+          "cycle": 131616,
+          "ordinal": 27,
+          "selected": 4,
+          "priority": 0,
+          "pause": 0
+        },
+        {
+          "frame": 802,
+          "cycle": 83793,
+          "ordinal": 358323,
+          "selected": 1,
+          "priority": 85,
+          "pause": 0
+        },
+        {
+          "frame": 1463,
+          "cycle": 34980,
+          "ordinal": 682062,
+          "selected": 1,
+          "priority": 85,
+          "pause": 0
+        },
+        {
+          "frame": 1502,
+          "cycle": 73156,
+          "ordinal": 699656,
+          "selected": 1,
+          "priority": 0,
+          "pause": 0
+        },
+        {
+          "frame": 1513,
+          "cycle": 209879,
+          "ordinal": 704822,
+          "selected": 4,
+          "priority": 0,
+          "pause": 0
+        },
+        {
+          "frame": 4291,
+          "cycle": 206248,
+          "ordinal": 1825806,
+          "selected": 5,
+          "priority": 0,
+          "pause": 0
+        }
+      ]
+    },
+    {
+      "scenario": "pause",
+      "source": "docs/research/md-yuyuhakusho/audio-phase-budget/compact/audio-phase-pause.json.gz",
+      "source_sha256": "b0c2d19bd5fb04e346cebd6b52464e57ba15fc9ea938ba61cfc521cd7e40249d",
+      "control_dispatches": [
+        {
+          "frame": 9,
+          "cycle": 131616,
+          "ordinal": 27,
+          "selected": 4,
+          "priority": 0,
+          "pause": 0
+        },
+        {
+          "frame": 802,
+          "cycle": 83793,
+          "ordinal": 358323,
+          "selected": 1,
+          "priority": 85,
+          "pause": 0
+        },
+        {
+          "frame": 1463,
+          "cycle": 34980,
+          "ordinal": 682062,
+          "selected": 1,
+          "priority": 85,
+          "pause": 0
+        },
+        {
+          "frame": 1502,
+          "cycle": 73156,
+          "ordinal": 699656,
+          "selected": 1,
+          "priority": 0,
+          "pause": 0
+        },
+        {
+          "frame": 1513,
+          "cycle": 209879,
+          "ordinal": 704822,
+          "selected": 4,
+          "priority": 0,
+          "pause": 0
+        }
+      ]
+    }
+  ],
+  "note": "Early natural 01 entries include original menu music outside fight catalog; use as source provenance, not complete fight score proof"
+}

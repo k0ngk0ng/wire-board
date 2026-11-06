@@ -1,0 +1,32 @@
+{
+  "test_first": true,
+  "at_utc": "2026-11-05T19:54:17.954055+00:00",
+  "files": {
+    "games/yuyuhakusho/verification/score-clock-header/header_test.go.txt": "21cd9f18b89f350b4887fd428b06c1cd0283bc36eeb6823d46f1f1194f099e62",
+    "docs/research/md-yuyuhakusho/SCORE_CLOCK_HEADER_FAILURES.md": "e37c26fba22ad73edaa4bc0650c45ad965bd07bd6c5911438f7aa0e81d141acf"
+  },
+  "actual_compile_red": "games/yuyuhakusho/verification/score-clock-header/missing-api-overlay-red.jsonl",
+  "log_sha256": "00f73c21db4a5323872998de40ab2006da5905d31ae9307e48126c0ca215d767",
+  "overlay_explanation": "Frozen new header test compiled through Go overlay while existing package remains buildable",
+  "command": [
+    "go",
+    "test",
+    "-json",
+    "-count=1",
+    "-overlay",
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/games/yuyuhakusho/verification/score-clock-header/test-overlay.json",
+    "-run",
+    "TestHeader",
+    "./games/yuyuhakusho/audio/scoreclock"
+  ],
+  "exit_code": 1,
+  "new_production_exists": false,
+  "environment": {
+    "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+    "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+    "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+    "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "GOMAXPROCS": "2"
+  }
+}

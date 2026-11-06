@@ -1,0 +1,31 @@
+{
+  "scope": "Only own exact repeated native data, compiled observer/cache and empty reference output directories; canonical native/portable data and real red retained",
+  "paths": [
+    {
+      "path": ".local/md-yuyuhakusho/score-clock-tick-native-repeat",
+      "files": 3,
+      "bytes": 25705
+    },
+    {
+      "path": ".local/md-yuyuhakusho/score-clock-tick-native/tick.dylib",
+      "files": 1,
+      "bytes": 18056
+    },
+    {
+      "path": ".local/md-yuyuhakusho/score-clock-tick-native/tmp",
+      "files": 0,
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/score-clock-tick-native/core-original",
+      "files": 0,
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/score-clock-tick-native/core-hook",
+      "files": 0,
+      "bytes": 0
+    }
+  ],
+  "bytes_removed": 43761
+}

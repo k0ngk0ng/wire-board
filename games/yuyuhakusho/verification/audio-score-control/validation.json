@@ -1,0 +1,243 @@
+{
+  "schema": 1,
+  "scope": "Fight score-only01/05/04 actions and single-working staged tick transaction",
+  "pass": true,
+  "completed_at_utc": "2026-11-05T23:49:47.272137+00:00",
+  "backends": {
+    "native": {
+      "passed_records": 168,
+      "legacy_cases": 42,
+      "legacy_ticks": 126141,
+      "legacy_intents": 1504150,
+      "observed_cases": 42,
+      "observed_ticks": 126141,
+      "observed_intents": 1504150,
+      "operations": 18855522,
+      "native_action_windows": 94
+    },
+    "wasm": {
+      "passed_records": 168,
+      "legacy_cases": 42,
+      "legacy_ticks": 126141,
+      "legacy_intents": 1504150,
+      "observed_cases": 42,
+      "observed_ticks": 126141,
+      "observed_intents": 1504150,
+      "operations": 18855522,
+      "native_action_windows": 94
+    }
+  },
+  "checks": {
+    "native": {
+      "command": {
+        "path": "games/yuyuhakusho/verification/audio-score-control/final/native-command.json",
+        "sha256": "56a99a0182d0071f5682f58ef226919154e045abac3d2e870866e469ac421590",
+        "bytes": 4439
+      },
+      "log": {
+        "path": "games/yuyuhakusho/verification/audio-score-control/final/native.jsonl",
+        "sha256": "d8f5d08b1bc1ea65cd85ca430d066c45638200119ff398118a1dcd9305a05590",
+        "bytes": 184605
+      }
+    },
+    "wasm": {
+      "command": {
+        "path": "games/yuyuhakusho/verification/audio-score-control/final/wasm-command.json",
+        "sha256": "3522a02419a9d8a38e6df526a1122d469ae970387f569fbd53ce2e56ca439129",
+        "bytes": 4547
+      },
+      "log": {
+        "path": "games/yuyuhakusho/verification/audio-score-control/final/wasm.jsonl",
+        "sha256": "91861762afbdf0f3c90b302eacd7c9c53b02be14cf34739ca80be95088f4cfe0",
+        "bytes": 184612
+      }
+    },
+    "vet": {
+      "command": {
+        "path": "games/yuyuhakusho/verification/audio-score-control/final/vet-command.json",
+        "sha256": "62927c19d032caaef660d666a73b717a3ecfd9a5a48d26feeec8e8703cdc8c16",
+        "bytes": 4373
+      },
+      "log": {
+        "path": "games/yuyuhakusho/verification/audio-score-control/final/vet.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    }
+  },
+  "frozen_source_sha256": {
+    "games/yuyuhakusho/audio/score/parser_work_test.go": "0719465731b86d83871f91d060c968634e28468d68eef2005011ec23219c2899",
+    "games/yuyuhakusho/audio/score/control_review_test.go": "94a925a12b184f5061b1cc6c60c5679fdd9fc02e30d0ea9900e03c2958850c87",
+    "games/yuyuhakusho/audio/score/catalog.go": "9d19b1b16342d54b4df4625a7e75bd3c2e6806af04194540a134f9b12059a542",
+    "games/yuyuhakusho/audio/score/transaction_test.go": "daae67d7ed3627878d09de628a11da11b7fcafd30cc243f013c3c572c6b64d99",
+    "games/yuyuhakusho/audio/score/observed.go": "866561887309f109e9d5a3a28983313bc05e33cf7bdd0f17187e185e64b79447",
+    "games/yuyuhakusho/audio/score/control.go": "755043bd6bd60fc4756b1894ce5b098ac790d4fda523b44b29c388f53d1ec8f5",
+    "games/yuyuhakusho/audio/score/transaction.go": "d73c1508d44a1d4a7a7fff06769b0ca3555a3c276b2d528977d598be35a68525",
+    "games/yuyuhakusho/audio/score/restore_contract_test.go": "fc40f87f1e6cf1c8876da77da738dce179ef72df521632789aff27fdb953b55e",
+    "games/yuyuhakusho/audio/score/parser_binding_test.go": "47775465fa6a519533c4ba1470e89c8b7c885663ad3866110d194e28695bb087",
+    "games/yuyuhakusho/audio/score/control_actions_test.go": "7c58dd4dcd224e6ca0c4bcf1103b3603ac25cb4eb6d1227ce6d77afa8f413dae",
+    "games/yuyuhakusho/audio/score/observed_test.go": "81ce7738cce928035cc3a2e4a144b71a1d876472b0bd6eb9d7caa11c06f90938",
+    "games/yuyuhakusho/audio/score/parser_work.go": "d389483bc8d6ff4d3c1f6c784d4d094c30d825fc133d88a8079ecdb9b1e91394",
+    "games/yuyuhakusho/audio/score/state.go": "91fc0de482e99c0b1bc8f9a38e59ec8c013f5df80f9add02f173e148f47160a4",
+    "games/yuyuhakusho/audio/score/control_native_test.go": "1915d7fae675e160f3061680943a0c4d0eccb96b94c0c559805ef9e81733bcbd",
+    "games/yuyuhakusho/audio/score/driver.go": "441da690dac15abbbafbce0b102bca189baad38fbda078c5b1067908506df7c9",
+    "games/yuyuhakusho/audio/score/observed_tempo_test.go": "f24a7a1d13f7ac0863d6800711d54cffbd56143ab79e3703370d8ddc3d981c1f",
+    "games/yuyuhakusho/audio/score/driver_test.go": "d3f09a267d736a82c6e787de8cc3dca9a46c1ca0482dbe1a689c1573346fd595",
+    "games/yuyuhakusho/audio/score/param/param_test.go": "4e9a718127173f0265411a6572ffe290fc47834f5bc11a0b0db8a0ad9e59c84c",
+    "games/yuyuhakusho/audio/score/param/fm.go": "e325442cf55374d110eea7cd9f13cb5a2c4bf966bbe8444be563cbc98594f220",
+    "games/yuyuhakusho/audio/score/param/envelope.go": "a200e87f05eca67f1998f4956fb22b625fbf76c5d52567b15fc31f383bc6cb1b",
+    "games/yuyuhakusho/audio/score/param/pan.go": "ef19d52ff80914af2d2eb1356d478a22ba071157eac7d37e17f42441d10da754",
+    "games/yuyuhakusho/data/audio-score.json.gz": "deaf3a70eac46c199335445d186f77d51f185bdaad4d95443d09b2f1d7054d71",
+    "games/yuyuhakusho/data/audio-score-parser-work.json.gz": "96f8044395167f4227b2c45e7ee66440987d8d49d3f7f52b40ca437930eedb43",
+    "games/yuyuhakusho/audio/score/testdata/original-index.json": "1972cf3e2a31ca1cfb30d0b25a227ad4d3ac662d072cdbd92fdc1ad177c3124a",
+    "games/yuyuhakusho/audio/score/testdata/control-oracle/native-actions.json.gz": "3ea26b82248967cc6e98d5b85dee38bdc174603a1d7dd2ddedad1f759bb05225",
+    "games/yuyuhakusho/verification/audio-score-control/state-layout.json": "9c1060f69bf700ce49fea90bd3d1a14ff77c715cfaf753cd6ff5a23a01870d29",
+    "scripts/yuyuhakusho/verify_score_control.py": "9110957117b58ec177ccf344db2b96942d01a3724b33bddfe02341aaa57c2349"
+  },
+  "persistent_state_layout_unchanged": true,
+  "old_tests_catalog_parser_and_42_fixtures_unchanged": true,
+  "native_action_scope": {
+    "windows": 94,
+    "stop_dac_flags": 2,
+    "fade_steps": 88,
+    "reset_score": 4,
+    "ym_writes": 968,
+    "psg_writes": 42,
+    "reset_score_io": 0,
+    "root04_hardware_io_excluded_from_score_action": 35,
+    "fixture": {
+      "path": "games/yuyuhakusho/audio/score/testdata/control-oracle/native-actions.json.gz",
+      "sha256": "3ea26b82248967cc6e98d5b85dee38bdc174603a1d7dd2ddedad1f759bb05225",
+      "bytes": 34401
+    }
+  },
+  "api": {
+    "zero_tick": "Driver.ApplyMusicControlObserved(ActionStopMusicDACFlags|ActionFadeMusicStep|ActionResetScore,hooks)",
+    "staged": "BeginTickObserved -> AdvanceTempo -> ApplyMusicControl(optional) -> Dispatch -> AdvanceVoices -> Finish",
+    "suspended": "BeginTickObserved -> FinishSuspended",
+    "read_abort": "TickTransaction.Snapshot / Abort",
+    "root_music_reset_nodes": "PrioritySave -> HeaderClear16long -> PriorityRestore -> SelectedResetFF"
+  },
+  "source_and_document_bindings": [
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_SCORE_CONTROL.md",
+      "sha256": "b4d3059bbbccd61e20880449da820eac0dfaed8419c9172b8d5febb0f41ab4ac",
+      "bytes": 8016
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_SCORE_CONTROL_FAILURES.md",
+      "sha256": "33c276f5cb281b45f17e517accaa3838d2455dcd124375b2aa2d75e24775f629",
+      "bytes": 2168
+    },
+    {
+      "path": "scripts/yuyuhakusho/verify_score_control.py",
+      "sha256": "9110957117b58ec177ccf344db2b96942d01a3724b33bddfe02341aaa57c2349",
+      "bytes": 4403
+    }
+  ],
+  "proof_bindings": [
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_SCORE_CONTROL_ORACLE_EVIDENCE.json",
+      "sha256": "bdfcf04aabb422c71724f234e34cd705b274a2dc056217831a06d56b49af55eb",
+      "bytes": 8543
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_SCORE_CONTROL_ORACLE_RESULTS.md",
+      "sha256": "1044d3bb440833fd3c1738b8efc721eea9715af06b266c60e366a0e44a7dce90",
+      "bytes": 5084
+    },
+    {
+      "path": "games/yuyuhakusho/audio/score/testdata/control-oracle/manifest.json",
+      "sha256": "4d55ba30d282f6b4098e912dacc65cf3ce2ff1a821268a66d2acf06a57205229",
+      "bytes": 623
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-score-control/all-native-first-sources.json",
+      "sha256": "539c230c6353a607250daf7d2bf2eba8e30f2f6a256f5a679fe7ca7b9f463c69",
+      "bytes": 1924
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-score-control/all-native-first.jsonl",
+      "sha256": "92cf6d10fc8f4140c432f798ffcdce4a30cd35d22ac725815849e3baac385129",
+      "bytes": 176096
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-score-control/first-native.jsonl",
+      "sha256": "201ede18c1475bc2cafc4a01fade7294a2e1053c772f2b508617598af35b856c",
+      "bytes": 28716
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-score-control/frozen-sources.json",
+      "sha256": "51a051cc5a385538fcf3bbc96e3ea196cf6f545062de0c38dcb48cb2a1c77a30",
+      "bytes": 3439
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-score-control/header-effect-api-red.jsonl",
+      "sha256": "46c85de21544d0733f7500b8243a86189954c816eada917867e9661cad7b606c",
+      "bytes": 4642
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-score-control/header-effect-test-first.json",
+      "sha256": "ed201c62bf3702d955f50b8d619c575f3dac336f7b71ebc374d5918211c07f52",
+      "bytes": 195
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-score-control/missing-api-red.jsonl",
+      "sha256": "2d0a76d096379f366053af84ce8afa2bcf880c6ecf35caef985a51f35bbad6af",
+      "bytes": 4642
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-score-control/native-windows-first.jsonl",
+      "sha256": "d281f796c7e2046e68c6fe57a2d8a99d61df4fb8fbf277f8ebea6346c3181159",
+      "bytes": 6324
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-score-control/native-windows.jsonl",
+      "sha256": "dd756a25d8419994daaa6b83b0d497ed4170852cc9ffdc55230ad2cb05098a55",
+      "bytes": 5815
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-score-control/reentry-fix-native.jsonl",
+      "sha256": "2aaca2ab8d5480578ef4b568218c7f1c30a9ac40fb749739e5cbddc6b232d265",
+      "bytes": 30592
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-score-control/state-layout.json",
+      "sha256": "9c1060f69bf700ce49fea90bd3d1a14ff77c715cfaf753cd6ff5a23a01870d29",
+      "bytes": 339
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-score-control/test-first.json",
+      "sha256": "cd554c9df4b1a6165f836daab829a4ca5609d83b5d074f5500208b2b83761ba9",
+      "bytes": 1330
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-score-param/control-review/reentry-red.jsonl",
+      "sha256": "f3f36740c397b193e1cf28d3a23c46f69bc12dfdad35a35e96ef16fc4cdeaf98",
+      "bytes": 17462
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-score-param/control-review/reentry-test-first.json",
+      "sha256": "3a05acddeb49d7e3d09fea8ea6755cf7f26fbf53b63e6adbcc115d3bee301232",
+      "bytes": 3242
+    }
+  ],
+  "temporary_coordination": {
+    "driver_lease": true,
+    "same_transaction_running_guard": true,
+    "lease_retained_until_outer_call_unwinds": true,
+    "persistent_history_or_pc_or_root_voice_shadow": false
+  },
+  "no_new_native_capture_by_this_score_revision": true,
+  "no_commit": true,
+  "full_cycle_pricing_complete": false,
+  "product_audio_integrated": false,
+  "limits": [
+    "94 action windows use native Tempo0 profiles; static/isolated boundary tests cover the additional byte and signed thresholds without claiming those cases were all naturally captured.",
+    "Stop after uses native DAC row with source single-store projection for other score fields; only Active was true in captured Stop examples.",
+    "Root04 IO, Root queue/priority/pause/fade/scheduler/PCM/chips remain caller-owned; Output already consumed by hooks must not be replayed.",
+    "All external owners must be detached and committed together; score cannot roll back authority-side hook effects.",
+    "ResourceUnavailable and unpriced parser work remain explicit; no further parser/instrument/cost/native expansion belongs to this delivery."
+  ],
+  "cleanup": "Only duplicate oracle exports removed by independent oracle scope; original/goldens/real red/baseline overlays retained."
+}

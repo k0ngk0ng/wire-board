@@ -1,0 +1,32 @@
+{
+  "mode": "vet",
+  "pass": true,
+  "exit_code": 0,
+  "elapsed_seconds": 0.15035966783761978,
+  "command": [
+    "/opt/homebrew/bin/go",
+    "vet",
+    "./games/yuyuhakusho/audio/rootcontrol"
+  ],
+  "environment": {
+    "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+    "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+    "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+    "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "GOMAXPROCS": "2"
+  },
+  "source_sha256": {
+    "games/yuyuhakusho/audio/rootcontrol/fade.go": "7cbc5765aca57bb58626d6686bddbd2e1313592f81b7b3601e3560e30ee4580e",
+    "games/yuyuhakusho/audio/rootcontrol/fade_e2e_test.go": "88b9483be3b4ade09102ab1e43626a534df302a1f3a482ccdce44aef2a9b9e22",
+    "scripts/yuyuhakusho/root-control-fade-verify.py": "cd34b501d41cec3df260784550a52279a09965a094c7ea3aa6e45615fc126df5",
+    "games/yuyuhakusho/verification/root-control-fade/fade_e2e_test.go.txt": "88b9483be3b4ade09102ab1e43626a534df302a1f3a482ccdce44aef2a9b9e22",
+    "games/yuyuhakusho/audio/rootcontrol/testdata/fade-native-streams.json.gz": "a88e122d490fd41839c944b403aadb29f309e56f8a981d81d41e1b37548cca28",
+    "games/yuyuhakusho/audio/rootcontrol/testdata/fade-native-manifest.json": "79534c2ea62b485ecbe571099e80a45acc9a3808ed489edb52dc7dd7b1b81c81"
+  },
+  "frozen_test_first_sha256": "537d56175007040b99c92befc489967046a0c3a51b6afa558a710a2ef8f01dd9",
+  "native_streams": 5,
+  "native_frames": 785,
+  "native_decisions": 746,
+  "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

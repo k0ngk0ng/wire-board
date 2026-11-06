@@ -1,0 +1,17 @@
+{
+  "pass": true,
+  "cases": 4,
+  "main_accesses": 71,
+  "aux_semantic_events": 475,
+  "source": {
+    "path": ".local/md-yuyuhakusho/score-clock-bus-native/native-bus-services-full.json.gz",
+    "sha256": "433f20a532092ba2be74a80618b871be6758f4d46e36d51200b4c69bb5b4b7f0"
+  },
+  "fixture": {
+    "path": "games/yuyuhakusho/audio/scoreclock/testdata/bus-native-services.json.gz",
+    "gzip_sha256": "791338a42a2edc197b1366cdff93ca57e6d2fd1f917de7cf1c5549f6c0935921",
+    "json_sha256": "4ae87d137609a4dd5d6c41f6b241e5fdc21e2e34a20e393688f0d806d83db392"
+  },
+  "source_PC_ROM_addresses_removed": true,
+  "producer_sha256": "8e7f4b9dace544e0803595491033f32a24590466d669542a4be9769f5ac2d81b"
+}

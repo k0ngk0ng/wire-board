@@ -1,0 +1,44 @@
+{
+  "pass": true,
+  "at_utc": "2026-11-05T22:54:44.886120+00:00",
+  "scope": "Only 24-byte pause pending restore payload and original effective TL write order on real chip owner",
+  "test_first": true,
+  "tests": {
+    "native-race.jsonl": {
+      "tests": [
+        "TestOriginalMixedPauseMuteAndRestoreLevels",
+        "TestPauseLevelsHaveIndependentInformationAfterMute",
+        "TestPauseLevelPayloadRejectsOutOfRange",
+        "TestPausePayloadIsOnlyTwentyFourLevels"
+      ],
+      "sha256": "92b8582f45bd3946aa35a91d172d4c058851629feeb7e2dda8beb94fc94a9f13"
+    },
+    "wasm.jsonl": {
+      "tests": [
+        "TestOriginalMixedPauseMuteAndRestoreLevels",
+        "TestPauseLevelsHaveIndependentInformationAfterMute",
+        "TestPauseLevelPayloadRejectsOutOfRange",
+        "TestPausePayloadIsOnlyTwentyFourLevels"
+      ],
+      "sha256": "744ad4df2485189f95c034285a425d9bcce63092f47327e7c306781e3dec469e"
+    }
+  },
+  "vet_pass": true,
+  "pending_payload_bytes": 24,
+  "original_capture_cache_visible_equal": true,
+  "original_muted_chip_loses_restore_information": true,
+  "original_resume_returns_to_pre_visible_TL": true,
+  "raw_native_requested_bit7_not_persisted": true,
+  "state_or_pipeline_lifecycle_verified": false,
+  "full_pause_cycle_cost_or_IRQ_verified": false,
+  "full_mixed_audio_PCM_or_speaker_verified": false,
+  "source_sha256": {
+    "games/yuyuhakusho/audio/rootcontrol/pause.go": "b2840c7888f603d77db70a9496652823a97352d8ca1c7e1f208c2d1b1d5ac3d5",
+    "games/yuyuhakusho/audio/rootcontrol/pause_test.go": "1afda2f3dc4c1a9e3ef03b63eac289db21569f7b29c3c090b6efffcaabf97a08",
+    "games/yuyuhakusho/audio/rootcontrol/testdata/pause-native-levels.json.gz": "22bcb17d93b1cb506bf3491653b644b7e4225613b2afd6c8cb4c25cdaa312fa0",
+    "games/yuyuhakusho/audio/rootcontrol/testdata/pause-native-manifest.json": "f9539031962739e64d17b0ff7a3e7ac5043091d8978b272b5e35c559ce3e6b86",
+    "docs/research/md-yuyuhakusho/AUDIO_ROOT_CONTROL_PAUSE_LEVELS.md": "a8fbf74716b0caa6161f3900bb2ceeae4daed86268f160cb194bf1c399c08b9e",
+    "games/yuyuhakusho/verification/root-control/pause-levels-original.json": "ebdd9b2ac435ceaa20a6507d969d70057467a9ebf903e4177f18e27880866185"
+  },
+  "no_commits_or_deployment": true
+}

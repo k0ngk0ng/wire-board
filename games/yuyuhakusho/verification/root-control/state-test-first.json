@@ -1,0 +1,7 @@
+{
+  "test_first": true,
+  "at_utc": "2026-11-05T22:28:34.965916+00:00",
+  "test_sha256": "9d9f04c97c7d7de306747207e87baeb1917453c10be0c081403cd78567bb7fe0",
+  "red": "games/yuyuhakusho/verification/root-control/state-missing-api-red.jsonl",
+  "production_exists": false
+}

@@ -1,0 +1,302 @@
+{
+  "version": 1,
+  "scope": "Byte-preserved Root control native records, controls, historical observation corrections and score action windows; ROM and executable cores excluded",
+  "new_capture": false,
+  "complete_world_IRQ_or_full_speaker_proof": false,
+  "files": [
+    {
+      "source": ".local/md-yuyuhakusho/root-control-canonical-v3/capture.json",
+      "retained": "games/yuyuhakusho/verification/root-control/native/canonical-v3/capture.json",
+      "bytes": 3128,
+      "sha256": "5b2442ebb8e8225628a1aa4f28ad6c03840fa9a6437ad02595f84f67db728d85"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-canonical-v3/mixed82-a7-clear04-control.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/canonical-v3/mixed82-a7-clear04-control.json.gz",
+      "bytes": 9786,
+      "sha256": "c70c3f7ceef0b72cb2651b729407fca750236fe705b9a0657c968d97e4562106"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-canonical-v3/mixed82-a7-clear04.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/canonical-v3/mixed82-a7-clear04.json.gz",
+      "bytes": 24951,
+      "sha256": "abf48ab40ecb8f3003aed2ebd982f04ee8621440e8eb9f03cf6d73bab3202dad"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-canonical-v3/mixed82-a7-pause-control.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/canonical-v3/mixed82-a7-pause-control.json.gz",
+      "bytes": 15775,
+      "sha256": "a433fba0c483382813491429c39cf1995a825f50a306c0ee460a75774b9eba05"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-canonical-v3/mixed82-a7-pause.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/canonical-v3/mixed82-a7-pause.json.gz",
+      "bytes": 42381,
+      "sha256": "bbfdea770fbdd2a5062dc168b7a31c38a02765b9985def3b68fbb01dd959a9ff"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-canonical-v3/music82-fade01-control.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/canonical-v3/music82-fade01-control.json.gz",
+      "bytes": 32735,
+      "sha256": "aea94b941644e1340ff9379faf8b795711d0ce59885621666d1423937b8b9578"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-canonical-v3/music82-fade01.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/canonical-v3/music82-fade01.json.gz",
+      "bytes": 109130,
+      "sha256": "554a652a07dd378a4ceb7318716f004750b1534307d168ca82365e20810a45da"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-canonical-v3/music82-fade05-control.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/canonical-v3/music82-fade05-control.json.gz",
+      "bytes": 42935,
+      "sha256": "1e89d9f176f6269a7f337b140ba98a0faccd6d0dcdb1b29c9eb6f7e59e210d39"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-canonical-v3/music82-fade05.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/canonical-v3/music82-fade05.json.gz",
+      "bytes": 141860,
+      "sha256": "6dfdb1358e115522c909ecabc8dfe677e5f0abe0d37010ac6d26679cba761c0b"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-canonical-v3/ordinary73-clear04-control.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/canonical-v3/ordinary73-clear04-control.json.gz",
+      "bytes": 9981,
+      "sha256": "d63eaec86d9a173dade18057ddf25f347c4e8bf015bc756c3dc119ced22dc76d"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-canonical-v3/ordinary73-clear04.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/canonical-v3/ordinary73-clear04.json.gz",
+      "bytes": 17794,
+      "sha256": "4deadcbc1f3933fab63c6ee65bd9f3f7fdde78c0502ba7176fa317a559c8aeb4"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-legal-v3/capture.json",
+      "retained": "games/yuyuhakusho/verification/root-control/native/legal-v3/capture.json",
+      "bytes": 2415,
+      "sha256": "d81668755cd3f63ab2d9073e0d848cbf1a70609515dd8169991347ba089efed2"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-legal-v3/fight-long1f-clear04-control.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/legal-v3/fight-long1f-clear04-control.json.gz",
+      "bytes": 18104,
+      "sha256": "7eaa1ee89dc121bb8296edb4821b385939650ce910f36292b8e33d87624629e7"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-legal-v3/fight-long1f-clear04.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/legal-v3/fight-long1f-clear04.json.gz",
+      "bytes": 31319,
+      "sha256": "73cb60f8f88b39ea3a60b50bb96eabcc03c4ea44907ff6c5a05219890076682f"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-legal-v3/fight-mixed82-a6-clear04-control.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/legal-v3/fight-mixed82-a6-clear04-control.json.gz",
+      "bytes": 9683,
+      "sha256": "1d875014fdc43b0ccf1363dc2508ed313366b7e4e98cd2fb134eabc825c33da5"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-legal-v3/fight-mixed82-a6-clear04.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/legal-v3/fight-mixed82-a6-clear04.json.gz",
+      "bytes": 24543,
+      "sha256": "ae4c63ebb0ea59d9630e74904a4c9bd37759214d35bfb65238bda383c1220a5c"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-legal-v3/fight-mixed82-a6-pause-control.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/legal-v3/fight-mixed82-a6-pause-control.json.gz",
+      "bytes": 15245,
+      "sha256": "0334044eb8e839d44cb32f8a7d92b4c4698c894cd098bd33c6d1f1ae84954479"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-legal-v3/fight-mixed82-a6-pause.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/legal-v3/fight-mixed82-a6-pause.json.gz",
+      "bytes": 39720,
+      "sha256": "6feb94cdb943db3fc90c9527ccec14c56e4db6affb524b14ea00764ba8adaec8"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-canonical-v2/capture.json",
+      "retained": "games/yuyuhakusho/verification/root-control/native/canonical-v2-incomplete-PSG/capture.json",
+      "bytes": 2982,
+      "sha256": "7e1e77b89cb6eec24e2369815c652a78cd951524978b4522f17df98612e3535f"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-canonical-v2/mixed82-a7-clear04-control.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/canonical-v2-incomplete-PSG/mixed82-a7-clear04-control.json.gz",
+      "bytes": 9786,
+      "sha256": "c70c3f7ceef0b72cb2651b729407fca750236fe705b9a0657c968d97e4562106"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-canonical-v2/mixed82-a7-clear04.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/canonical-v2-incomplete-PSG/mixed82-a7-clear04.json.gz",
+      "bytes": 24752,
+      "sha256": "0ebe43420d94bf975c1d03c31173ded928504b3a9ae22297c0282d3f5b8bc445"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-canonical-v2/mixed82-a7-pause-control.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/canonical-v2-incomplete-PSG/mixed82-a7-pause-control.json.gz",
+      "bytes": 15775,
+      "sha256": "a433fba0c483382813491429c39cf1995a825f50a306c0ee460a75774b9eba05"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-canonical-v2/mixed82-a7-pause.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/canonical-v2-incomplete-PSG/mixed82-a7-pause.json.gz",
+      "bytes": 42005,
+      "sha256": "658c5a43824ef6592dc21bab87febaff087c52c2ad1bc0e0a575b55f9e5b6a7a"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-canonical-v2/music82-fade01-control.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/canonical-v2-incomplete-PSG/music82-fade01-control.json.gz",
+      "bytes": 32735,
+      "sha256": "aea94b941644e1340ff9379faf8b795711d0ce59885621666d1423937b8b9578"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-canonical-v2/music82-fade01.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/canonical-v2-incomplete-PSG/music82-fade01.json.gz",
+      "bytes": 108720,
+      "sha256": "1b62996fe66d0fa1f6864c904377df696bfcf1f2738ebbc9958aa9a49114e931"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-canonical-v2/music82-fade05-control.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/canonical-v2-incomplete-PSG/music82-fade05-control.json.gz",
+      "bytes": 42935,
+      "sha256": "1e89d9f176f6269a7f337b140ba98a0faccd6d0dcdb1b29c9eb6f7e59e210d39"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-canonical-v2/music82-fade05.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/canonical-v2-incomplete-PSG/music82-fade05.json.gz",
+      "bytes": 141444,
+      "sha256": "ba814638edec4f759efb5c97743d3ea24461a35059a7c38f6dff41db1140fb6c"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-canonical-v2/ordinary73-clear04-control.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/canonical-v2-incomplete-PSG/ordinary73-clear04-control.json.gz",
+      "bytes": 9981,
+      "sha256": "d63eaec86d9a173dade18057ddf25f347c4e8bf015bc756c3dc119ced22dc76d"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-canonical-v2/ordinary73-clear04.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/canonical-v2-incomplete-PSG/ordinary73-clear04.json.gz",
+      "bytes": 17762,
+      "sha256": "ca3fadb61b1b41d98f32fb651fe3984d2a7a3072f0f2d018285e12a16aa50c2e"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-native/capture.json",
+      "retained": "games/yuyuhakusho/verification/root-control/native/disabled-pause-v1/capture.json",
+      "bytes": 2952,
+      "sha256": "365622e118667adde7fc758158e2b7329c51c07aa92082439a5df155971d3909"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-native/mixed82-a7-clear04-control.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/disabled-pause-v1/mixed82-a7-clear04-control.json.gz",
+      "bytes": 9786,
+      "sha256": "c70c3f7ceef0b72cb2651b729407fca750236fe705b9a0657c968d97e4562106"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-native/mixed82-a7-clear04.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/disabled-pause-v1/mixed82-a7-clear04.json.gz",
+      "bytes": 22941,
+      "sha256": "36c663a4a39bc236318d18b0e769c9931384157768c04707cc5fef362757b132"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-native/mixed82-a7-pause-control.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/disabled-pause-v1/mixed82-a7-pause-control.json.gz",
+      "bytes": 20324,
+      "sha256": "8173c623fc591ea19cb002dd37e775a69283028602744735620526d2b7edbbf9"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-native/mixed82-a7-pause.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/disabled-pause-v1/mixed82-a7-pause.json.gz",
+      "bytes": 54116,
+      "sha256": "970b7070e30605cbcc1a84d1272805f093f3a8fe773c1d58cd82cc50eaa8a76d"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-native/music82-fade01-control.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/disabled-pause-v1/music82-fade01-control.json.gz",
+      "bytes": 32735,
+      "sha256": "aea94b941644e1340ff9379faf8b795711d0ce59885621666d1423937b8b9578"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-native/music82-fade01.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/disabled-pause-v1/music82-fade01.json.gz",
+      "bytes": 95239,
+      "sha256": "b079fc9c162ecb8d2f0124fc15807f6a60ea5363a7112bebf3485a92aaffd36d"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-native/music82-fade05-control.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/disabled-pause-v1/music82-fade05-control.json.gz",
+      "bytes": 42935,
+      "sha256": "1e89d9f176f6269a7f337b140ba98a0faccd6d0dcdb1b29c9eb6f7e59e210d39"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-native/music82-fade05.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/disabled-pause-v1/music82-fade05.json.gz",
+      "bytes": 123356,
+      "sha256": "dcff89e6f0d12db6e73b50f1bc969750c640d4bdc474149b8a3b072b82e38d9d"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-native/ordinary73-clear04-control.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/disabled-pause-v1/ordinary73-clear04-control.json.gz",
+      "bytes": 9981,
+      "sha256": "d63eaec86d9a173dade18057ddf25f347c4e8bf015bc756c3dc119ced22dc76d"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-native/ordinary73-clear04.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/disabled-pause-v1/ordinary73-clear04.json.gz",
+      "bytes": 16486,
+      "sha256": "a037e8ef2b0ba99b0b7acc408472686f4c8e5552bf427b30cb94ab9a4811a309"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-pause-corrected/capture.json",
+      "retained": "games/yuyuhakusho/verification/root-control/native/pause-correction/capture.json",
+      "bytes": 1709,
+      "sha256": "ca86d8e4bd9f2e7620af281211d27b8bd9c5e2fc6d07d035e2d6be1108d6d3b9"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-pause-corrected/mixed82-a7-pause-control.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/pause-correction/mixed82-a7-pause-control.json.gz",
+      "bytes": 15775,
+      "sha256": "a433fba0c483382813491429c39cf1995a825f50a306c0ee460a75774b9eba05"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-pause-corrected/mixed82-a7-pause.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/pause-correction/mixed82-a7-pause.json.gz",
+      "bytes": 41989,
+      "sha256": "68592cde22356d1494d7fcf70147957c89b9d40e12f174268e4dcb6da2d68278"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-actions/index.json",
+      "retained": "games/yuyuhakusho/verification/root-control/native/actions-v2/index.json",
+      "bytes": 3017,
+      "sha256": "e53387c1849d0583b7231f21cd52d80098b499ac4751a639e15dd8dd118484dd"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-actions/mixed82-a7-clear04-actions.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/actions-v2/mixed82-a7-clear04-actions.json.gz",
+      "bytes": 8218,
+      "sha256": "d14c66b2d4961b176c8434c9776131031cbea4ca1145633a1adf6ddee9cf879c"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-actions/mixed82-a7-pause-actions.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/actions-v2/mixed82-a7-pause-actions.json.gz",
+      "bytes": 9509,
+      "sha256": "520b084fb9f9dbfe1ea66c9a4eef3f10a80e36b50844e04e4177313bfc35bc24"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-actions/music82-fade01-actions.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/actions-v2/music82-fade01-actions.json.gz",
+      "bytes": 48427,
+      "sha256": "5963c4f4c0a0ed0178aa8ba67adf24f79738ce05794e9a8b12f89ec0461fe208"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-actions/music82-fade05-actions.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/actions-v2/music82-fade05-actions.json.gz",
+      "bytes": 62542,
+      "sha256": "9c7d8bfd5cf745024bc67eaffb71bf820aa6eaa79167315a273fb8b2c63ff0b3"
+    },
+    {
+      "source": ".local/md-yuyuhakusho/root-control-actions/ordinary73-clear04-actions.json.gz",
+      "retained": "games/yuyuhakusho/verification/root-control/native/actions-v2/ordinary73-clear04-actions.json.gz",
+      "bytes": 5946,
+      "sha256": "092466fe23ae97543a43576d41b61c231514ccb6e13656aec497161fefe3e5c7"
+    }
+  ]
+}

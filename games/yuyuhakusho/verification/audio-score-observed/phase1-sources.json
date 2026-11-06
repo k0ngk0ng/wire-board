@@ -1,0 +1,10 @@
+{
+  "games/yuyuhakusho/audio/score/catalog.go": "24f39bcf0598e33029d7dc9c432d56dc4b79fc1459912972ed74d3eb1b302a81",
+  "games/yuyuhakusho/audio/score/observed.go": "fcb05806aed05ab076e0d13e06b05d35970495de7cfb8a1b696263bb9903d4e8",
+  "games/yuyuhakusho/audio/score/restore_contract_test.go": "fc40f87f1e6cf1c8876da77da738dce179ef72df521632789aff27fdb953b55e",
+  "games/yuyuhakusho/audio/score/observed_test.go": "81ce7738cce928035cc3a2e4a144b71a1d876472b0bd6eb9d7caa11c06f90938",
+  "games/yuyuhakusho/audio/score/state.go": "611dc7cb1b45e31ffcc539eb8831e0fe824a7098583837ce1cb0e6fbc351f96f",
+  "games/yuyuhakusho/audio/score/driver.go": "1b68a100f284402c4daa21735e7ce171f6c7099a58d85e6a221728ed22b566f3",
+  "games/yuyuhakusho/audio/score/observed_tempo_test.go": "f24a7a1d13f7ac0863d6800711d54cffbd56143ab79e3703370d8ddc3d981c1f",
+  "games/yuyuhakusho/audio/score/driver_test.go": "d3f09a267d736a82c6e787de8cc3dca9a46c1ca0482dbe1a689c1573346fd595"
+}
