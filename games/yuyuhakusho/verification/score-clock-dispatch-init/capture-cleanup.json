@@ -1,0 +1,22 @@
+{
+  "terminal_capture": true,
+  "preserved_unique_fixture": "games/yuyuhakusho/verification/score-clock-dispatch-init/native-dispatch-init-full.json.gz",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/score-clock-dispatch-init-native-v1/dispatch-observer.dylib",
+      "bytes": 18456,
+      "sha256": "5e996573b8cc6369db2e6a52ffc29c7b791ebe902cb88fa1a54c2f5682653622"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/score-clock-dispatch-init-native-v1/native-dispatch-init-full.json.gz",
+      "bytes": 1047354,
+      "sha256": "33f9653b81054ea37461070935216dd80befb4aa4d28e3b55f2ae74b2e70449f"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/score-clock-dispatch-init-native-v1/score-clock-psg-observer.dylib",
+      "bytes": 17392,
+      "sha256": "55efabd6ca7bfe994fb3095421f016a802d1ddaf8862a8e57a4f2a2153d67f43"
+    }
+  ],
+  "removed_bytes": 1083202
+}

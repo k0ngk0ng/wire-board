@@ -90,6 +90,8 @@ type RuleHooks struct {
 	QueueTest      func(read func() bool) (bool, error)
 	QueueOperation engine.SoundQueueHook
 	SelectedWrite  func(op RuleOperation, apply func() error) error
+	// HeaderEffect times each actual Root-owned music reset effect once.
+	HeaderEffect func(op score.Operation, apply func() error) error
 	// QueueReplace may time the real canonical queue mutation. It must call
 	// apply exactly once synchronously on success and never retain it.
 	QueueReplace     func(op score.Operation, apply func() error) error

@@ -1,0 +1,8 @@
+{
+  "pass": true,
+  "original_candidates_sha256": "a030747dcd161091f7ab3a48e385b9613b4728895f6d01e526baffd735683515",
+  "regenerated_candidates_sha256": "a030747dcd161091f7ab3a48e385b9613b4728895f6d01e526baffd735683515",
+  "current_source_generates_identical_inputs": true,
+  "profile_count": 63,
+  "oracle_rewritten": false
+}

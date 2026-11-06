@@ -1,0 +1,73 @@
+{
+  "pass": true,
+  "all_validation_and_diagnostic_processes_terminal": true,
+  "removed_duplicate_files": [
+    {
+      "path": ".local/md-yuyuhakusho/dispatch-init-final/native-clock-root.jsonl",
+      "bytes": 8781221,
+      "sha256": "c920984a2b3790756dfd18e9766ea87c030066f3d6cc623e392343a0b3dc84f2"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/dispatch-init-final/native-command.json",
+      "bytes": 1688643,
+      "sha256": "45e5c116d46aa3071f15b0008ebec6197e6a9da41d2361de939bc9f3cd913d4d"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/dispatch-init-final/native-score-contract.jsonl",
+      "bytes": 34284,
+      "sha256": "7e724fc8b0d1f1213224074ed06c04d2e6f3b75013058ca74483baec9dafada6"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/dispatch-init-final/native-score-original.jsonl",
+      "bytes": 38025,
+      "sha256": "7722640f24fbb8f2301fc54911b09c31b1507882d3db679dbae65cd57435e8a4"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/dispatch-init-final/vet-command.json",
+      "bytes": 36514,
+      "sha256": "8cbaae106031202e5a8e2bb5b35dc901be001892e18fcb5b4ef42445c3ef45bc"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/dispatch-init-final/vet-vet.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/dispatch-init-final/wasm-clock-root.jsonl",
+      "bytes": 8774024,
+      "sha256": "1b76dcc9b9d676ece683cf4b58da4b696de34e4104d149f19b628d8347b1f144"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/dispatch-init-final/wasm-command.json",
+      "bytes": 1688906,
+      "sha256": "c39ab0a7518f659533291f3cb37b4fe0e1d4cf6669d6e28b1f25e58b67814695"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/dispatch-init-final/wasm-score-contract.jsonl",
+      "bytes": 34289,
+      "sha256": "351c6a4b6eb5180e026aac05603f0f7a6d0ba5ada6103c632e5085e6974bcbac"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/dispatch-init-final/wasm-score-original.jsonl",
+      "bytes": 38020,
+      "sha256": "7eddf05bdda65c69b314c9362bcdcc13e13c24e47853885e66224d9aa5c9a4bf"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/dispatch-init-debug/dispatch_init_diagnostic.go.txt",
+      "bytes": 9435,
+      "sha256": "b87b9feee6e268ca789555847e1959f2f5cce73efe87ca5fd4fc449b70d21af0"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/dispatch-init-debug/first-trace-diagnostic.jsonl",
+      "bytes": 10753,
+      "sha256": "968ee139ed2184dcbfacf5431b5c52b6b32a5804368c64f018c739900d8a32f5"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/dispatch-init-debug/overlay.json",
+      "bytes": 315,
+      "sha256": "538329aa7759de37fe127e17235c7dbf0f339122410c82edf46e469c534f4b73"
+    }
+  ],
+  "removed_bytes": 21134429,
+  "preserved_directory": "games/yuyuhakusho/verification/score-clock-dispatch-init"
+}

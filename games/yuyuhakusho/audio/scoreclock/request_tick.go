@@ -11,6 +11,15 @@ type RequestResult struct {
 	Output      rootcontrol.RuleOutput
 	QueueFields []QueueField
 }
+type DriverField struct {
+	Kind  string
+	At    uint64
+	Value uint8
+}
+type DriverResult struct {
+	RequestResult
+	Fields []DriverField
+}
 type requestTick struct {
 	parent         *runningTick
 	root           *rootcontrol.State
@@ -20,31 +29,45 @@ type requestTick struct {
 	qclock         *queueClock
 	selected       uint8
 	selectedStored bool
+	allowScores    bool
+	init           *dispatchInit
 }
 
 // AdvanceRequestTick extends the same running parent with live queue fields
 // and ordinary PCM dispatch. Other selected commands remain explicitly unpriced.
 func AdvanceRequestTick(clock Clock, root *rootcontrol.State, owners rootcontrol.RuleOwners, input rootcontrol.RuleInput, library *resourcebridge.Library, bus OrdinaryBus, chip Chip, limits Limits) (RequestResult, error) {
+	result, err := advanceRequestTick(clock, root, owners, input, library, bus, chip, limits, false)
+	return result.RequestResult, err
+}
+
+// AdvanceDriverTick extends the same parent with catalog music/primary headers.
+// Active fade/pause and control commands remain explicit unfinished boundaries.
+func AdvanceDriverTick(clock Clock, root *rootcontrol.State, owners rootcontrol.RuleOwners, input rootcontrol.RuleInput, library *resourcebridge.Library, bus Bus, chip Chip, limits Limits) (DriverResult, error) {
+	return advanceRequestTick(clock, root, owners, input, library, bus, chip, limits, true)
+}
+
+func advanceRequestTick(clock Clock, root *rootcontrol.State, owners rootcontrol.RuleOwners, input rootcontrol.RuleInput, library *resourcebridge.Library, bus Bus, chip Chip, limits Limits, allowScores bool) (DriverResult, error) {
 	if root == nil || owners.Score == nil || owners.Queue == nil || owners.AudioPause == nil || library == nil || bus == nil || chip == nil || root.Selected == 0 || root.Fade.Steps != 0 || root.PauseRestore != nil || *owners.AudioPause != 0 || input.Idle != (rootcontrol.RuleIdleProjection{}) {
-		return RequestResult{}, ErrRunningProfile
+		return DriverResult{}, ErrRunningProfile
 	}
 	keyChip, _ := chip.(KeyGateChip)
 	if keyChip == nil {
 		for _, v := range owners.Score.Snapshot().Voices {
 			if v.Active {
-				return RequestResult{}, ErrRunningProfile
+				return DriverResult{}, ErrRunningProfile
 			}
 		}
 	}
 	s, err := pauseService(clock, bus, chip, limits)
 	if err != nil {
-		return RequestResult{}, err
+		return DriverResult{}, err
 	}
 	if limits.MaxOperations == 0 {
 		s.limit = 65536
 	}
 	parent := &runningTick{s: s, catalog: library.Catalog(), chip: keyChip}
-	r := &requestTick{parent: parent, root: root, queue: owners.Queue, library: library, bus: bus}
+	ordinaryBus, _ := bus.(OrdinaryBus)
+	r := &requestTick{parent: parent, root: root, queue: owners.Queue, library: library, bus: ordinaryBus, allowScores: allowScores}
 	parent.request = r
 	r.qclock = &queueClock{s: s, root: root, queue: owners.Queue}
 	hooks := rootcontrol.RuleHooks{Operation: parent.rootOperation, WorkingScore: parent.scoreOperation, Score: score.ObservedHooks{Parser: library.Parser(), Operation: func(score.Operation) error { return nil }, ReadDAC: func(read score.FeedbackRead) (score.DACFeedback, error) {
@@ -52,7 +75,17 @@ func AdvanceRequestTick(clock Clock, root *rootcontrol.State, owners rootcontrol
 			return score.DACFeedback{}, ErrRunningSequence
 		}
 		return parent.voice.ReadDAC(read)
-	}}, QueueTest: r.queueTest, QueueOperation: r.qclock.operation, SelectedWrite: r.selectedWrite, DispatchExternal: r.dispatch, AcceptDispatch: func(code uint8) error {
+	}}, HeaderEffect: func(op score.Operation, apply func() error) error {
+		if r.init == nil {
+			return ErrRunningSequence
+		}
+		return r.init.headerEffect(op, apply)
+	}, QueueTest: r.queueTest, QueueOperation: r.qclock.operation, SelectedWrite: r.selectedWrite, DispatchExternal: r.dispatch, AcceptDispatch: func(code uint8) error {
+		if allowScores {
+			if _, ok := library.Catalog().HeaderPlan(code); ok {
+				return nil
+			}
+		}
 		if _, ok := library.OrdinaryDescriptor(code); !ok {
 			return ErrRunningProfile
 		}
@@ -64,6 +97,9 @@ func AdvanceRequestTick(clock Clock, root *rootcontrol.State, owners rootcontrol
 		return parent.voice.QueueReplace(op, apply)
 	}, PriorityClear: func(op score.Operation, apply func() error) error {
 		if parent.voice == nil {
+			if r.init != nil {
+				return r.init.priorityClear(op, apply)
+			}
 			return ErrRunningSequence
 		}
 		return parent.voice.PriorityClear(op, apply)
@@ -72,12 +108,16 @@ func AdvanceRequestTick(clock Clock, root *rootcontrol.State, owners rootcontrol
 	semantic.RequireCost = false
 	out, err := rootcontrol.AdvanceRules(root, owners, semantic, hooks)
 	if err != nil {
-		return RequestResult{}, err
+		return DriverResult{}, err
 	}
 	if !parent.finished || !parent.scoreClosed || parent.voice != nil {
-		return RequestResult{}, ErrRunningSequence
+		return DriverResult{}, ErrRunningSequence
 	}
-	return RequestResult{Clock: s.clock, Output: out, QueueFields: r.qclock.fields}, nil
+	result := DriverResult{RequestResult: RequestResult{Clock: s.clock, Output: out, QueueFields: r.qclock.fields}}
+	if r.init != nil {
+		result.Fields = r.init.fields
+	}
+	return result, nil
 }
 
 func (r *requestTick) queueTest(read func() bool) (bool, error) {
@@ -125,7 +165,9 @@ func (r *requestTick) beginDispatch() error {
 		}
 		return s.spend(16)
 	}
-	if _, ok := r.library.OrdinaryDescriptor(r.selected); !ok {
+	_, ordinary := r.library.OrdinaryDescriptor(r.selected)
+	_, scoreHeader := r.library.Catalog().HeaderPlan(r.selected)
+	if !ordinary && !(r.allowScores && scoreHeader && r.parent.chip != nil) {
 		return ErrRunningProfile
 	}
 	return nil
@@ -175,12 +217,23 @@ func (r *requestTick) selectedWrite(op rootcontrol.RuleOperation, apply func() e
 			return err
 		}
 	} else {
-		if r.selected != 240 {
-			return ErrRunningProfile
-		}
 		for _, threshold := range []uint8{129, 160, 172, 240, 241} {
 			if err := compare(threshold); err != nil {
 				return err
+			}
+			if r.selected < threshold {
+				if r.allowScores && (threshold == 160 || threshold == 172) {
+					plan, ok := r.library.Catalog().HeaderPlan(r.selected)
+					if !ok {
+						return ErrRunningProfile
+					}
+					r.init = &dispatchInit{r: r, s: s, plan: plan, stage: "dispatch", scan: 10}
+					return nil
+				}
+				if threshold != 241 || r.selected != 240 {
+					return ErrRunningProfile
+				}
+				break
 			}
 		}
 		if err := compare(241); err != nil {
@@ -194,7 +247,7 @@ func (r *requestTick) selectedWrite(op rootcontrol.RuleOperation, apply func() e
 }
 
 func (r *requestTick) dispatch(code uint8) error {
-	if !r.selectedStored || code != r.selected {
+	if !r.selectedStored || code != r.selected || r.bus == nil {
 		return ErrRunningSequence
 	}
 	// A combined Root/PCM port may observe the actual choice owner at these

@@ -1,0 +1,10 @@
+{
+  "diagnostic_only": true,
+  "included_in_acceptance": false,
+  "purpose": "Expose first physical IO divergence after the frozen E2E already failed its final clock assertion. The formal test retained every assertion.",
+  "single_diagnostic_change": "Temporarily bypass the clock comparison to reach the first IO comparison; API errors still fail.",
+  "formal_test_sha256": "e82a66c89261207ae962e7e1610750a63c618d3787580200c18fd8cb494e13b9",
+  "diagnostic_test_sha256": "b87b9feee6e268ca789555847e1959f2f5cce73efe87ca5fd4fc449b70d21af0",
+  "finding": "All-primary stop for primary PSG3/noise restores secondary slot 17, even inactive; ordinary track-end still restores the music slot. Production canonical and timer target were fixed; no oracle/test changes.",
+  "baseline_driver_sha256": "1bb71397ea52b001ab790da68ef2ad68406876b1c849c642fd5f50f0b09a14bf"
+}
