@@ -1,0 +1,9 @@
+{"Time":"2026-11-06T07:47:00.66858+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/videoclock"}
+{"Time":"2026-11-06T07:47:01.227963+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/videoclock","Test":"TestHorizontalRequestMustNotReplacePin"}
+{"Time":"2026-11-06T07:47:01.228139+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/videoclock","Test":"TestHorizontalRequestMustNotReplacePin","Output":"=== RUN   TestHorizontalRequestMustNotReplacePin\n"}
+{"Time":"2026-11-06T07:47:01.228224+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/videoclock","Test":"TestHorizontalRequestMustNotReplacePin","Output":"    clock_test.go:398: HINT must preserve an existing CPU level 6: got 4 from {SetIRQ:true Level:4 Deferred:false Horizontal:true Vertical:false Cycle:0}\n"}
+{"Time":"2026-11-06T07:47:01.228252+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/videoclock","Test":"TestHorizontalRequestMustNotReplacePin","Output":"--- FAIL: TestHorizontalRequestMustNotReplacePin (0.00s)\n"}
+{"Time":"2026-11-06T07:47:01.228273+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/videoclock","Test":"TestHorizontalRequestMustNotReplacePin","Elapsed":0}
+{"Time":"2026-11-06T07:47:01.228298+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/videoclock","Output":"FAIL\n"}
+{"Time":"2026-11-06T07:47:01.229125+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/videoclock","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/videoclock\t0.560s\n"}
+{"Time":"2026-11-06T07:47:01.229196+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/videoclock","Elapsed":0.561}

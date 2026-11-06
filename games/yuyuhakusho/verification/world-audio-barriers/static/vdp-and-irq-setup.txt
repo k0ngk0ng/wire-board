@@ -1,0 +1,118 @@
+route=direct-ghidra-headless; REA raw 68000 unsupported
+language=68000:BE:32:default
+source=MD Yu Yu Hakusho Japan; static reachable instructions only
+
+seeds=2ff4 scope=0x2ff4..0x302f
+00002ff4 lea (0xc00004).l,A0
+00002ffa move.w (0xfffff6d2).w,D0w
+00002ffe bset.l #0x4,D0
+00003002 move.w D0w,(A0)
+00003004 move.l #-0x6cbf6c00,(A0)
+0000300a move.w #-0x6b00,(A0)
+0000300e move.w #-0x6910,(A0)
+00003012 move.w #-0x6881,(A0)
+00003016 move.w #-0x70fe,(A0)
+0000301a move.l #-0x3fffff80,(0xfffff51c).w
+00003022 move.w (0xfffff51c).w,(A0)
+00003026 move.w (0xfffff51e).w,(A0)
+0000302a move.w (0xfffff6d2).w,(A0)
+0000302e rts
+printed_instructions=14
+
+seeds=3030,3054,307c scope=0x3030..0x30af
+00003030 move.b (0xfffff500).w,D0b
+00003034 btst.l #0x0,D0
+00003038 beq.b 0x00003048
+0000303a move.b #-0x7f,(0xfffff500).w
+00003040 bset.b #0x6,(0xfffff6d3).w
+00003046 rts
+00003048 clr.b (0xfffff500).w
+0000304c bclr.b #0x6,(0xfffff6d3).w
+00003052 rts
+00003054 move.w (0xfffff512).w,D0w
+00003058 cmp.w (0xfffff514).w,D0w
+0000305c beq.b 0x00003064
+0000305e move.w D0w,(0xfffff514).w
+00003062 bsr.b 0x00003084
+00003064 bsr.b 0x00003090
+00003066 btst.b #0x4,(0xfffff6d1).w
+0000306c bne.b 0x00003074
+0000306e clr.b (0xfffff50f).w
+00003072 rts
+00003074 move.b #0x1,(0xfffff50f).w
+0000307a rts
+0000307c tst.b (0xfffff50f).w
+00003080 bne.b 0x00003090
+00003082 rts
+00003084 lea (0x308c,PC,D0w*0x1),A0
+00003088 adda.w (A0),A0
+0000308a jmp (A0)
+00003090 move.w (0xfffff512).w,D0w
+00003094 lea (0x309c,PC,D0w*0x1),A0
+00003098 adda.w (A0),A0
+0000309a jmp (A0)
+printed_instructions=31
+
+seeds=2514 scope=0x2514..0x258f
+00002514 lea (-0x900).w,A0
+00002518 move.w #0x4,D0w
+0000251c moveq 0x0,D1
+0000251e move.l D1,(A0)+
+00002520 move.l D1,(A0)+
+00002522 move.l D1,(A0)+
+00002524 move.l D1,(A0)+
+00002526 dbf D0w,0x0000251e
+0000252a lea (-0x900).w,A0
+0000252e lea (0xa10003).l,A1
+00002534 bsr.b 0x00002540
+00002536 lea (-0x8d8).w,A0
+0000253a lea (0xa10005).l,A1
+00002540 move.b #0x60,(0x6,A1)
+00002546 move.b #0x60,(0x0,A1)
+0000254c nop
+0000254e nop
+00002550 nop
+00002552 nop
+00002554 move.b (0x0,A1),D0b
+00002558 move.b #0x20,(0x0,A1)
+0000255e nop
+00002560 nop
+00002562 nop
+00002564 nop
+00002566 move.b (0x0,A1),D1b
+0000256a andi.w #0xf,D0w
+0000256e andi.w #0xf,D1w
+00002572 bsr.w 0x00002c1e
+00002576 asl.w #0x2,D2w
+00002578 movea.l (0x257e,PC,D2w*0x1),A2
+0000257c jmp (A2)
+printed_instructions=32
+
+seeds=219ac,219ea scope=0x219ac..0x21a07
+000219ac move.w (0xfffff560).w,D0w
+000219b0 beq.b 0x000219ba
+000219b2 subq.w #0x1,D0w
+000219b4 move.w D0w,(0xfffff560).w
+000219b8 bra.b 0x000219cc
+000219ba move.b (0xfffff562).w,D0b
+000219be beq.b 0x000219cc
+000219c0 jsr 0x00021960.l
+000219c6 beq.b 0x000219cc
+000219c8 clr.b (0xfffff562).w
+000219cc tst.b (0xfffff564).w
+000219d0 beq.b 0x000219d8
+000219d2 addq.b #0x1,(0xfffff563).w
+000219d6 rts
+000219d8 move.b #0x1,(0xfffff564).w
+000219de jsr 0x000375a6.l
+000219e4 clr.b (0xfffff564).w
+000219e8 rts
+000219ea tst.b (0xfffff563).w
+000219ee beq.b 0x00021a06
+000219f0 move.b #0x1,(0xfffff564).w
+000219f6 jsr 0x000375a6.l
+000219fc clr.b (0xfffff564).w
+00021a00 subq.b #0x1,(0xfffff563).w
+00021a04 bra.b 0x000219ea
+00021a06 rts
+printed_instructions=26

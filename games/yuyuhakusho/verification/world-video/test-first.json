@@ -1,0 +1,10 @@
+{
+  "scope": "Failures and checker before native observer/Go implementation",
+  "sha256": {
+    "docs/research/md-yuyuhakusho/WORLD_VIDEO_FAILURES.md": "c5b4f0a6e4d3b8555653b29aa35a9ba06f0c4a443f9281081a42ccc52af73e5c",
+    "scripts/yuyuhakusho/world-video-check-native.py": "448e1531ecea4fce5a3323eebc3222b84115e55331ccfdd0a699e9b845addcff",
+    "games/yuyuhakusho/verification/world-video-missing-capture-red.log": "1364361d1c71c04b2b3b2b8b579d49b6855d5f5398f35f7a366653037ca9e33e"
+  },
+  "native_missing_capture_red": true,
+  "production_modified": false
+}

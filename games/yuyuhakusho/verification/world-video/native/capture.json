@@ -1,0 +1,179 @@
+{
+  "pass": true,
+  "scope": "Passive selected natural VDP snapshots and CPU IO; does not infer CPU acceptance independently",
+  "checked_frames": 2400,
+  "selected_frames": [
+    2068,
+    2069,
+    2070,
+    2071,
+    2072,
+    2073,
+    2074,
+    2393,
+    2394,
+    2395,
+    2396,
+    2397,
+    2398,
+    2399,
+    2400
+  ],
+  "all_reference_equal": true,
+  "all_pcm_equal": true,
+  "observer_overflow": 0,
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "events": 7757,
+  "event_abi_bytes": 104,
+  "frame_checks": [
+    {
+      "frame": 2068,
+      "reference_equal": true,
+      "pcm_equal": true,
+      "stereo_frames": 736,
+      "pcm_sha256": "b761290bff8bd8ba41df8a17be72966608cebd38fd76400e60dd75de13249dfc",
+      "events": 497
+    },
+    {
+      "frame": 2069,
+      "reference_equal": true,
+      "pcm_equal": true,
+      "stereo_frames": 736,
+      "pcm_sha256": "b0a2577954c8807b2b66f55a7e1f6c4bdcf51084fc391a0717b8975beb4ec4bd",
+      "events": 528
+    },
+    {
+      "frame": 2070,
+      "reference_equal": true,
+      "pcm_equal": true,
+      "stereo_frames": 736,
+      "pcm_sha256": "375b62fae8fc590dc7052f8728e61d9358d815b2881da086b267eae454ecab7a",
+      "events": 482
+    },
+    {
+      "frame": 2071,
+      "reference_equal": true,
+      "pcm_equal": true,
+      "stereo_frames": 736,
+      "pcm_sha256": "cf0f356d733b3cec1643d98d8e50afce2213514da43c4fbb4e421e785a8fbda2",
+      "events": 523
+    },
+    {
+      "frame": 2072,
+      "reference_equal": true,
+      "pcm_equal": true,
+      "stereo_frames": 736,
+      "pcm_sha256": "e0ab41ec2e77abe9e02e4da535b8f16d079230585f24d15dd906035bcfca1956",
+      "events": 556
+    },
+    {
+      "frame": 2073,
+      "reference_equal": true,
+      "pcm_equal": true,
+      "stereo_frames": 736,
+      "pcm_sha256": "66a1127ce4c06e2df2a2f247ba4509e1d12385fa209031e4aafab63d4eb623b8",
+      "events": 517
+    },
+    {
+      "frame": 2074,
+      "reference_equal": true,
+      "pcm_equal": true,
+      "stereo_frames": 736,
+      "pcm_sha256": "e39ecc9b1d69dd812ecbc0a20232a62ef5ba4f49712835b781c06385ea2158b5",
+      "events": 521
+    },
+    {
+      "frame": 2393,
+      "reference_equal": true,
+      "pcm_equal": true,
+      "stereo_frames": 736,
+      "pcm_sha256": "3aed05a97724c556137639ceb169ed2c1b83a8ceb87182b52928b4ba612ce7b9",
+      "events": 532
+    },
+    {
+      "frame": 2394,
+      "reference_equal": true,
+      "pcm_equal": true,
+      "stereo_frames": 736,
+      "pcm_sha256": "241ddee154985454c0739fbdb6cbcad5594ef645032d6888f763dd5c374c5029",
+      "events": 513
+    },
+    {
+      "frame": 2395,
+      "reference_equal": true,
+      "pcm_equal": true,
+      "stereo_frames": 736,
+      "pcm_sha256": "49360b7db0447564368ae037029398fb68de203ac185c77c87a490223fe0ca4f",
+      "events": 512
+    },
+    {
+      "frame": 2396,
+      "reference_equal": true,
+      "pcm_equal": true,
+      "stereo_frames": 736,
+      "pcm_sha256": "b2668c0ed65040d2daf1052861aa3a88aba30c97530513f631972b36262b9d27",
+      "events": 486
+    },
+    {
+      "frame": 2397,
+      "reference_equal": true,
+      "pcm_equal": true,
+      "stereo_frames": 736,
+      "pcm_sha256": "c85e958a7291fe703447d7df20a5e96c6bd0d9df4338b77cce092f30901fc3d6",
+      "events": 548
+    },
+    {
+      "frame": 2398,
+      "reference_equal": true,
+      "pcm_equal": true,
+      "stereo_frames": 736,
+      "pcm_sha256": "29851d6cd124423e355c8ecfca1c40999dabf053559c4e1b84f1a73f32381e53",
+      "events": 511
+    },
+    {
+      "frame": 2399,
+      "reference_equal": true,
+      "pcm_equal": true,
+      "stereo_frames": 736,
+      "pcm_sha256": "31b48dfa03bca4ffb19635178159037219c7145ee9d2ac1f67103660edbb6d08",
+      "events": 498
+    },
+    {
+      "frame": 2400,
+      "reference_equal": true,
+      "pcm_equal": true,
+      "stereo_frames": 736,
+      "pcm_sha256": "52c22f11ae77607d353f1d483acb022e60bca2e38585f8a8e3f0fc634498ce31",
+      "events": 533
+    }
+  ],
+  "original_control": {
+    "path": "games/yuyuhakusho/engine/testdata/audio-timing-baseline-original.json.gz",
+    "sha256": "17856c6293e27590544dc338f2a3cecae1aab4dc40112873e939f277ab0ce064"
+  },
+  "source_sha256": {
+    "scripts/yuyuhakusho/world-video-observer.c": "30251f1106a23c132c1e60818108dd073f712a5da33746e772f0804b9faa35a8",
+    "scripts/yuyuhakusho/world-video-capture.py": "1fb502e88adfd6dcaadb9073d0e7723888a506276da9961b06ef0929315a2866",
+    "scripts/yuyuhakusho/reference.py": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "scripts/yuyuhakusho/extract_audio_assets.py": "e8a59cb97a15b02d930b2335175eca9fb17600a778ce93d779449cdac3775f56"
+  },
+  "artifacts": [
+    {
+      "path": "games/yuyuhakusho/verification/world-video/native/events.json.gz",
+      "sha256": "03371dac6766f3cccda1e537173ee4507643de6cc9e3c78bdb540bace697c6fd",
+      "json_sha256": "33cc8bbd460f882f0871cc4950bd24188e6dc1f4eaeffb14cd7745cba57eff17",
+      "bytes": 95005
+    }
+  ],
+  "production_modified": false,
+  "global_irq_acceptance_proved": false
+}

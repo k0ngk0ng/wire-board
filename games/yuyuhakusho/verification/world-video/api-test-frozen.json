@@ -1,0 +1,22 @@
+{
+  "production_exists": false,
+  "phase": "all tests and native fixture before first production implementation",
+  "artifacts": [
+    {
+      "path": "games/yuyuhakusho/audio/videoclock/clock_test.go",
+      "sha256": "77a7f4e6838d74e7369a4403d0da9e0774a57608db110d77cdb8bec8fcceeb86"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-video/final-tests-missing-api-red.jsonl",
+      "sha256": "67cc3c9ac6831911ae22c0736f3ca370d9914c7b53935001df16e103fee53899"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-video/fixture.json",
+      "sha256": "1e18f2fcddefaa23607ff7a0b168c8f1ebfea806365b71ac5e3f3a718d6547ff"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/videoclock/testdata/natural.json.gz",
+      "sha256": "a59f17ac534a208c979dbd6fde53cb091ff67c969126080dbf82e522005cfc63"
+    }
+  ]
+}

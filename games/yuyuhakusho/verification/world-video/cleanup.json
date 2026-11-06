@@ -1,0 +1,10 @@
+{
+  "scope": "Only this VDP task completed native temporary binaries/reference output directories",
+  "removed": [
+    "games/yuyuhakusho/verification/world-video/native/tmp",
+    "games/yuyuhakusho/verification/world-video/native/reference",
+    "games/yuyuhakusho/verification/world-video/native-ack/tmp",
+    "games/yuyuhakusho/verification/world-video/native-ack/reference"
+  ],
+  "retained": "Native capture/events, exact executed sources, test-first real red and passing result artifacts; no shared caches removed"
+}

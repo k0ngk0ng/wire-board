@@ -1,0 +1,418 @@
+package videoclock
+
+// Native observation and failure inventory precede this implementation. The
+// fixture is only test input: ordered external register/ack operations and
+// directly observed scalar counter states, never a production PC schedule.
+import (
+	"bytes"
+	"compress/gzip"
+	"encoding/json"
+	"os"
+	"reflect"
+	"testing"
+)
+
+type nativeWant struct {
+	Counter, Reload                                    uint8
+	HorizontalEnabled, VerticalEnabled, DisplayEnabled bool
+	HorizontalPending, VerticalPending                 bool
+	VCounter                                           uint16
+	LineCycle                                          uint32
+	Status                                             uint8
+}
+type nativeOperation struct {
+	Kind                     string
+	Register                 uint8
+	Value                    uint8
+	Cycle, InstructionCycles uint32
+	Want                     *nativeWant
+	Pin                      *uint8
+}
+type nativeCase struct {
+	Name       string
+	Initial    State
+	Operations []nativeOperation
+	Frames     int
+}
+
+func natural(t *testing.T) []nativeCase {
+	t.Helper()
+	raw, e := os.ReadFile("testdata/natural.json.gz")
+	if e != nil {
+		t.Fatal(e)
+	}
+	z, e := gzip.NewReader(bytes.NewReader(raw))
+	if e != nil {
+		t.Fatal(e)
+	}
+	defer z.Close()
+	var f struct{ Cases []nativeCase }
+	if e = json.NewDecoder(z).Decode(&f); e != nil || len(f.Cases) != 2 {
+		t.Fatal(e, "native windows", len(f.Cases))
+	}
+	return f.Cases
+}
+func initial() State {
+	return State{Phase: BetweenFrames, Counter: 204, Reload: 223, HorizontalEnabled: true, VerticalEnabled: true}
+}
+func observed(c *Clock) nativeWant {
+	s := c.Snapshot()
+	return nativeWant{s.Counter, s.Reload, s.HorizontalEnabled, s.VerticalEnabled, s.DisplayEnabled, s.HorizontalPending, s.VerticalPending, c.VCounter(), c.LineCycle(), c.StatusBits()}
+}
+func TestOriginalNaturalOrderedCounterAndSignals(t *testing.T) {
+	frames, states, reads := 0, 0, 0
+	for _, f := range natural(t) {
+		t.Run(f.Name, func(t *testing.T) {
+			c, e := New(Config{Profile: NTSC224H40}, f.Initial)
+			if e != nil {
+				t.Fatal(e)
+			}
+			pin := uint8(0)
+			for i, op := range f.Operations {
+				// Every operation resumes from its own real JSON checkpoint. No hidden
+				// goroutine, runtime stack or preceding operation list is retained.
+				raw, e := json.Marshal(c.Snapshot())
+				if e != nil {
+					t.Fatal(e)
+				}
+				var state State
+				if e = json.Unmarshal(raw, &state); e != nil {
+					t.Fatal(e)
+				}
+				c, e = New(Config{Profile: NTSC224H40}, state)
+				if e != nil {
+					t.Fatalf("restore %d: %v", i, e)
+				}
+				var effect Effect
+				switch op.Kind {
+				case "begin":
+					effect, e = c.BeginFrame()
+				case "vertical":
+					effect, e = c.VerticalEdge()
+				case "line":
+					effect, e = c.NextLine()
+				case "register":
+					effect, e = c.WriteRegister(Register(op.Register), op.Value)
+				case "ack":
+					effect, e = c.Acknowledge()
+				case "observe":
+					states++
+					if op.Want == nil || observed(c) != *op.Want {
+						t.Fatalf("native scalar state %d actual=%+v native=%+v", i, observed(c), op.Want)
+					}
+				case "status":
+					var value uint8
+					value, e = c.ReadStatus(op.Cycle, op.InstructionCycles)
+					if e == nil && value != op.Value {
+						t.Fatalf("native M68K status %d actual=%x native=%x", i, value, op.Value)
+					}
+					reads++
+				case "hvc":
+					var value uint8
+					value, e = c.ReadVertical(op.Cycle)
+					if e == nil && value != op.Value {
+						t.Fatalf("native VCounter %d actual=%x native=%x", i, value, op.Value)
+					}
+					reads++
+				default:
+					t.Fatalf("unknown fixture operation %q", op.Kind)
+				}
+				if e != nil {
+					t.Fatalf("operation %d %s: %v", i, op.Kind, e)
+				}
+				if effect.SetIRQ && effect.UpdateIRQ {
+					t.Fatal("IRQ request cannot both merge and replace")
+				}
+				if effect.SetIRQ || effect.UpdateIRQ {
+					if effect.Deferred {
+						t.Fatal("natural fixture unexpectedly needs deferred CPU instruction execution")
+					}
+					if effect.UpdateIRQ {
+						pin |= effect.Level
+					} else {
+						pin = effect.Level
+					}
+				}
+				if op.Pin != nil && pin != *op.Pin {
+					t.Fatalf("native CPU requested pin %d actual=%d native=%d", i, pin, *op.Pin)
+				}
+			}
+			frames += f.Frames
+		})
+	}
+	if frames != 15 || states < 7700 || reads < 2000 {
+		t.Fatal("incomplete native coverage", frames, states, reads)
+	}
+	t.Logf("native frames=%d scalar states=%d reads=%d", frames, states, reads)
+}
+func TestCallOrderReloadAndInterruptPriority(t *testing.T) {
+	c, e := New(Config{Profile: NTSC224H40}, initial())
+	if e != nil {
+		t.Fatal(e)
+	}
+	if _, e = c.BeginFrame(); e != nil {
+		t.Fatal(e)
+	}
+	if _, e = c.WriteRegister(CounterReload, 9); e != nil {
+		t.Fatal(e)
+	}
+	effect, e := c.VerticalEdge()
+	if e != nil || !effect.SetIRQ || effect.Level != 6 {
+		t.Fatal(effect, e)
+	}
+	// Blank scanlines do not decrement. The last blank line reloads9; the
+	// first HINT reloads old9 before the ISR writes184 for the next expiry.
+	signals := []uint32{}
+	for c.Snapshot().Phase != BetweenFrames {
+		effect, e = c.NextLine()
+		if e != nil {
+			t.Fatal(e)
+		}
+		if effect.Horizontal {
+			if !effect.UpdateIRQ || effect.SetIRQ || effect.Level != 4 {
+				t.Fatal("HINT must produce a CPU pin OR request", effect)
+			}
+			signals = append(signals, effect.Cycle)
+			if len(signals) == 1 {
+				if _, e = c.WriteRegister(CounterReload, 184); e != nil {
+					t.Fatal(e)
+				}
+			}
+			if len(signals) == 2 {
+				if _, e = c.WriteRegister(CounterReload, 223); e != nil {
+					t.Fatal(e)
+				}
+			}
+		}
+	}
+	if !reflect.DeepEqual(signals, []uint32{160740, 194940, 827640}) {
+		t.Fatal("reload/call order", signals)
+	}
+	// HINT generation requests level4 even while VINT remains pending. The
+	// acknowledge handler independently clears enabled VINT first.
+	s := initial()
+	s.HorizontalPending = true
+	s.VerticalPending = true
+	c, e = New(Config{Profile: NTSC224H40}, s)
+	if e != nil {
+		t.Fatal(e)
+	}
+	effect, e = c.Acknowledge()
+	if e != nil || effect.Level != 4 || c.Snapshot().VerticalPending || !c.Snapshot().HorizontalPending {
+		t.Fatal(effect, e, c.Snapshot())
+	}
+	effect, e = c.Acknowledge()
+	if e != nil || effect.Level != 0 || c.Snapshot().HorizontalPending {
+		t.Fatal(effect, e)
+	}
+}
+func TestInvalidInputAndSnapshotAreAtomic(t *testing.T) {
+	for _, p := range []Profile{0, 2, 255} {
+		if _, e := New(Config{Profile: p}, initial()); e == nil {
+			t.Fatal("unknown profile", p)
+		}
+	}
+	bad := initial()
+	bad.Phase = 255
+	if _, e := New(Config{Profile: NTSC224H40}, bad); e == nil {
+		t.Fatal("unknown phase")
+	}
+	bad = initial()
+	bad.Line = 1
+	if _, e := New(Config{Profile: NTSC224H40}, bad); e == nil {
+		t.Fatal("unused line is not canonical")
+	}
+	c, e := New(Config{Profile: NTSC224H40}, initial())
+	if e != nil {
+		t.Fatal(e)
+	}
+	before := c.Snapshot()
+	for _, op := range []func() error{
+		func() error { _, e := c.VerticalEdge(); return e }, func() error { _, e := c.NextLine(); return e },
+		func() error { _, e := c.WriteRegister(Register(2), 0); return e }, func() error { _, e := c.WriteRegister(HorizontalControl, 2); return e },
+		func() error { _, e := c.WriteRegister(VerticalControl, 8); return e }, func() error { _, e := c.WriteRegister(WidthControl, 0); return e },
+		func() error { _, e := c.ReadStatus(0, 0); return e }, func() error { _, e := c.ReadVertical(0); return e },
+	} {
+		if e := op(); e == nil || c.Snapshot() != before {
+			t.Fatal("failed operation was not atomic", e, c.Snapshot(), before)
+		}
+	}
+	if _, e = c.BeginFrame(); e != nil {
+		t.Fatal(e)
+	}
+	before = c.Snapshot()
+	if _, e = c.NextLine(); e == nil || c.Snapshot() != before {
+		t.Fatal("vertical stage bypass accepted")
+	}
+}
+func TestM68KReadAndDeferredRegisterRequests(t *testing.T) {
+	s := initial()
+	s.HorizontalPending = true
+	s.VerticalPending = true
+	c, e := New(Config{Profile: NTSC224H40}, s)
+	if e != nil {
+		t.Fatal(e)
+	}
+	if _, e = c.BeginFrame(); e != nil {
+		t.Fatal(e)
+	}
+	before := c.Snapshot()
+	bits, e := c.ReadStatus(0, 0)
+	if e != nil || bits != 0x88 || before != c.Snapshot() {
+		t.Fatal("M68K status cleared pending", bits, e)
+	}
+	if _, e = c.WriteRegister(VerticalControl, 4); e != nil {
+		t.Fatal(e)
+	}
+	effect, e := c.WriteRegister(VerticalControl, 0x24)
+	if e != nil || !effect.SetIRQ || effect.Level != 6 || !effect.Deferred {
+		t.Fatal("VINT enable service", effect, e)
+	}
+	if _, e = c.WriteRegister(VerticalControl, 4); e != nil {
+		t.Fatal(e)
+	}
+	if _, e = c.WriteRegister(HorizontalControl, 0); e != nil {
+		t.Fatal(e)
+	}
+	effect, e = c.WriteRegister(HorizontalControl, 16)
+	if e != nil || !effect.SetIRQ || effect.Level != 4 || !effect.Deferred {
+		t.Fatal("HINT enable service", effect, e)
+	}
+}
+
+func TestPendingIsNotTheRequestedCPUPin(t *testing.T) {
+	s := initial()
+	s.Counter = 0
+	s.Reload = 9
+	s.VerticalPending = true
+	c, e := New(Config{Profile: NTSC224H40}, s)
+	if e != nil {
+		t.Fatal(e)
+	}
+	effect, e := c.BeginFrame()
+	if e != nil || !effect.Horizontal || !effect.UpdateIRQ || effect.SetIRQ || effect.Level != 4 || c.Snapshot().Counter != 0 {
+		t.Fatal("first blank HINT must not reload or prefer pending VINT", effect, e, c.Snapshot())
+	}
+	effect, e = c.WriteRegister(HorizontalControl, 0)
+	if e != nil || !effect.SetIRQ || effect.Level != 6 || effect.Deferred {
+		t.Fatal("H disable refreshes enabled VINT immediately", effect, e)
+	}
+	effect, e = c.WriteRegister(VerticalControl, 4)
+	if e != nil || !effect.SetIRQ || effect.Level != 0 || effect.Deferred {
+		t.Fatal("V disable must clear pin with H disabled", effect, e)
+	}
+	effect, e = c.Acknowledge()
+	if e != nil || effect.Level != 0 || c.Snapshot().HorizontalPending == true || !c.Snapshot().VerticalPending {
+		t.Fatal("disabled VINT cannot win acknowledge", effect, e, c.Snapshot())
+	}
+	s = initial()
+	s.Counter = 0
+	s.HorizontalEnabled = false
+	s.VerticalEnabled = false
+	c, e = New(Config{Profile: NTSC224H40}, s)
+	if e != nil {
+		t.Fatal(e)
+	}
+	effect, e = c.BeginFrame()
+	if e != nil || !effect.Horizontal || effect.SetIRQ || effect.UpdateIRQ || !c.Snapshot().HorizontalPending {
+		t.Fatal("disabled HINT still becomes pending", effect, e)
+	}
+	effect, e = c.VerticalEdge()
+	if e != nil || effect.SetIRQ || !c.Snapshot().VerticalPending {
+		t.Fatal("disabled VINT still becomes pending", effect, e)
+	}
+}
+
+func TestStatusBoundaryAndVCounterOverrun(t *testing.T) {
+	s := initial()
+	s.DisplayEnabled = true
+	c, e := New(Config{Profile: NTSC224H40}, s)
+	if e != nil {
+		t.Fatal(e)
+	}
+	if _, e = c.BeginFrame(); e != nil {
+		t.Fatal(e)
+	}
+	for _, v := range []struct {
+		raw, work uint32
+		want      uint8
+	}{{700, 87, 8}, {700, 88, 0x88}, {788, 0, 0x88}} {
+		got, e := c.ReadStatus(v.raw, v.work)
+		if e != nil || got != v.want {
+			t.Fatal("read-ahead VINT bit", v, got, e)
+		}
+	}
+	if c.Snapshot().VerticalPending {
+		t.Fatal("status read-ahead generated an interrupt")
+	}
+	if _, e = c.VerticalEdge(); e != nil {
+		t.Fatal(e)
+	}
+	if _, e = c.Acknowledge(); e != nil {
+		t.Fatal(e)
+	}
+	got, e := c.ReadStatus(1000, 0)
+	if e != nil || got != 8 {
+		t.Fatal("Z80 assert suppresses post-ack read-ahead VINT", got, e)
+	}
+	for c.VCounter() != 234 {
+		if _, e = c.NextLine(); e != nil {
+			t.Fatal(e)
+		}
+	}
+	at := c.LineCycle()
+	for _, v := range []struct {
+		at   uint32
+		want uint8
+	}{{at + 3419, 234}, {at + 3420, 229}, {at + 6840, 229}} {
+		got, e := c.ReadVertical(v.at)
+		if e != nil || got != v.want {
+			t.Fatal("raw cycle only; advance at most one line; NTSC wrap", v, got, e)
+		}
+	}
+	if _, e = c.NextLine(); e != nil {
+		t.Fatal(e)
+	}
+	before := c.Snapshot()
+	for _, v := range []func() error{
+		func() error { _, e := c.ReadStatus(c.LineCycle()-1, 0); return e },
+		func() error { _, e := c.ReadStatus(^uint32(0), 1); return e },
+		func() error { _, e := c.ReadVertical(c.LineCycle() - 1); return e },
+		func() error { _, e := c.BeginFrame(); return e },
+		func() error { _, e := c.VerticalEdge(); return e },
+	} {
+		if e := v(); e == nil || c.Snapshot() != before {
+			t.Fatal("invalid temporal operation committed", e, c.Snapshot())
+		}
+	}
+}
+
+func TestHorizontalRequestMustNotReplacePin(t *testing.T) {
+	s := initial()
+	s.Counter = 0
+	c, err := New(Config{Profile: NTSC224H40}, s)
+	if err != nil {
+		t.Fatal(err)
+	}
+	effect, err := c.BeginFrame()
+	if err != nil {
+		t.Fatal(err)
+	}
+	// The external CPU owns its pin. A HINT uses bitwise OR; VDP pending
+	// flags alone do not determine the CPU pin.
+	if effect.SetIRQ || !effect.UpdateIRQ {
+		t.Fatal("HINT must merge, not replace the external CPU pin", effect)
+	}
+	for _, v := range []struct{ before, want uint8 }{{0, 4}, {2, 6}, {6, 6}} {
+		pin := v.before
+		if effect.SetIRQ {
+			pin = effect.Level
+		}
+		if effect.UpdateIRQ {
+			pin |= effect.Level
+		}
+		if pin != v.want {
+			t.Fatalf("CPU pin %d with HINT: got %d want %d", v.before, pin, v.want)
+		}
+	}
+}

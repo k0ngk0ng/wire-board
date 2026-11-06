@@ -1,0 +1,51 @@
+{
+  "pass": true,
+  "mode": "native",
+  "exit_code": 0,
+  "elapsed_seconds": 2.659093292430043,
+  "command": [
+    "nice",
+    "-n",
+    "10",
+    "/opt/homebrew/bin/go",
+    "test",
+    "-json",
+    "-count=1",
+    "-timeout=2m",
+    "-race",
+    "./games/yuyuhakusho/audio/videoclock"
+  ],
+  "environment": {
+    "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+    "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+    "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+    "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "GOMAXPROCS": "2"
+  },
+  "passed_tests": [
+    "TestOriginalNaturalOrderedCounterAndSignals/original-steps-2068",
+    "TestOriginalNaturalOrderedCounterAndSignals/original-steps-2393",
+    "TestOriginalNaturalOrderedCounterAndSignals",
+    "TestCallOrderReloadAndInterruptPriority",
+    "TestInvalidInputAndSnapshotAreAtomic",
+    "TestM68KReadAndDeferredRegisterRequests",
+    "TestPendingIsNotTheRequestedCPUPin",
+    "TestStatusBoundaryAndVCounterOverrun",
+    "TestHorizontalRequestMustNotReplacePin"
+  ],
+  "source_sha256": {
+    "games/yuyuhakusho/audio/videoclock/clock.go": "89a278d4d78ddad492ef57ff6d57c91aa7ce6a0d64cab3b3d54d75cf3985e185",
+    "games/yuyuhakusho/audio/videoclock/clock_test.go": "1267cc86a905bc34b5aadd08d00cc261d24b242849d52978058adb71a952abd8",
+    "games/yuyuhakusho/audio/videoclock/testdata/natural.json.gz": "a59f17ac534a208c979dbd6fde53cb091ff67c969126080dbf82e522005cfc63",
+    "scripts/yuyuhakusho/world-video-verify.py": "ec1f09224b4ab1c87e1c26dbda379c36351654358c4372cef133204676c120f5",
+    "games/yuyuhakusho/verification/world-video/fixture.json": "1e18f2fcddefaa23607ff7a0b168c8f1ebfea806365b71ac5e3f3a718d6547ff",
+    "games/yuyuhakusho/verification/world-video/api-test-frozen.json": "f04107b16ee3e450a682e8a31faaf2e0842ea2974e3354f2c028f8aa4fc330a6",
+    "games/yuyuhakusho/verification/world-video/merge-test-first.json": "e10ad5f438ebdd4c8dda587bed6f96bce6c35ff0b87fc6e927576120188c7100"
+  },
+  "log_sha256": "6e57cee086ebdf5af2602f5b007e6ff65f813fc4fe92bfc36ba1c5917e8ce82f",
+  "native_frames": 15,
+  "native_scalar_states": 7757,
+  "native_reads": 2193,
+  "scope": "Fixed NTSC224 H40 VDP counters/signals given ordered external operations; not CPU acceptance, full status/VDP or independent world/audio scheduling"
+}

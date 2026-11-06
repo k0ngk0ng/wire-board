@@ -1,0 +1,7 @@
+{
+  "scope": "First shell preparation failure, separate from actual missing-probe red",
+  "observed_exit_code": 1,
+  "reason": "Shell opens redirected output before the Python checker can create its own directory.",
+  "corrected_command": "python3 -B scripts/yuyuhakusho/check_world_audio_barriers.py > games/yuyuhakusho/verification/world-audio-barriers-missing-probe-red.log 2>&1",
+  "actual_missing_probe_red_sha256": "0b0f271c99d96b1b7272237f956e74d5adc22e6ffa9e0b912d8924ffa5765bf7"
+}

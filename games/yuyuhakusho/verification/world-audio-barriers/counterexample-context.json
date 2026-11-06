@@ -1,0 +1,237 @@
+{
+  "scope": "Observed source context only; cycle labels and instrumentation depth are not a production schedule or an independently inferred hardware nesting model",
+  "cases": [
+    {
+      "scenario": "baseline",
+      "video_step_label": 2071,
+      "code": "0x7c",
+      "source_sha256": "735833ae6e4ac55d8094ffe5827ecd33b92433b21b1135250ccab037f27b8402",
+      "producer_store": {
+        "kind": 2,
+        "pc": "0x2196c",
+        "cycle": 116753,
+        "object": "0x8100",
+        "behavior": "0x1edac",
+        "instrumentation_depth": 1,
+        "watched_state": [
+          0,
+          0,
+          255,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "ram_irq_entry": {
+        "kind": 3,
+        "pc": "0xfff000",
+        "cycle": 161280,
+        "object": "0x8180",
+        "behavior": "0x20918",
+        "instrumentation_depth": 2,
+        "watched_state": [
+          0,
+          0,
+          255,
+          124,
+          0,
+          0,
+          0
+        ]
+      },
+      "driver_entry": {
+        "kind": 1,
+        "pc": "0x375a6",
+        "cycle": 201299,
+        "object": "0x8180",
+        "behavior": "0x20918",
+        "instrumentation_depth": 2,
+        "watched_state": [
+          0,
+          0,
+          255,
+          124,
+          0,
+          0,
+          0
+        ]
+      },
+      "native_selected": 124
+    },
+    {
+      "scenario": "baseline",
+      "video_step_label": 2396,
+      "code": "0x7d",
+      "source_sha256": "735833ae6e4ac55d8094ffe5827ecd33b92433b21b1135250ccab037f27b8402",
+      "producer_store": {
+        "kind": 2,
+        "pc": "0x2196c",
+        "cycle": 158942,
+        "object": "0x8400",
+        "behavior": "0x12668",
+        "instrumentation_depth": 1,
+        "watched_state": [
+          0,
+          0,
+          255,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "ram_irq_entry": {
+        "kind": 3,
+        "pc": "0xfff000",
+        "cycle": 161210,
+        "object": "0x8400",
+        "behavior": "0x12668",
+        "instrumentation_depth": 2,
+        "watched_state": [
+          0,
+          0,
+          255,
+          125,
+          0,
+          0,
+          0
+        ]
+      },
+      "driver_entry": {
+        "kind": 1,
+        "pc": "0x375a6",
+        "cycle": 201355,
+        "object": "0x8400",
+        "behavior": "0x12668",
+        "instrumentation_depth": 2,
+        "watched_state": [
+          0,
+          0,
+          255,
+          125,
+          0,
+          0,
+          0
+        ]
+      },
+      "native_selected": 125
+    },
+    {
+      "scenario": "pause",
+      "video_step_label": 2071,
+      "code": "0x7c",
+      "source_sha256": "b0c2d19bd5fb04e346cebd6b52464e57ba15fc9ea938ba61cfc521cd7e40249d",
+      "producer_store": {
+        "kind": 2,
+        "pc": "0x2196c",
+        "cycle": 116753,
+        "object": "0x8100",
+        "behavior": "0x1edac",
+        "instrumentation_depth": 1,
+        "watched_state": [
+          0,
+          0,
+          255,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "ram_irq_entry": {
+        "kind": 3,
+        "pc": "0xfff000",
+        "cycle": 161280,
+        "object": "0x8180",
+        "behavior": "0x20918",
+        "instrumentation_depth": 2,
+        "watched_state": [
+          0,
+          0,
+          255,
+          124,
+          0,
+          0,
+          0
+        ]
+      },
+      "driver_entry": {
+        "kind": 1,
+        "pc": "0x375a6",
+        "cycle": 201299,
+        "object": "0x8180",
+        "behavior": "0x20918",
+        "instrumentation_depth": 2,
+        "watched_state": [
+          0,
+          0,
+          255,
+          124,
+          0,
+          0,
+          0
+        ]
+      },
+      "native_selected": 124
+    },
+    {
+      "scenario": "pause",
+      "video_step_label": 2396,
+      "code": "0x7d",
+      "source_sha256": "b0c2d19bd5fb04e346cebd6b52464e57ba15fc9ea938ba61cfc521cd7e40249d",
+      "producer_store": {
+        "kind": 2,
+        "pc": "0x2196c",
+        "cycle": 158942,
+        "object": "0x8400",
+        "behavior": "0x12668",
+        "instrumentation_depth": 1,
+        "watched_state": [
+          0,
+          0,
+          255,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "ram_irq_entry": {
+        "kind": 3,
+        "pc": "0xfff000",
+        "cycle": 161210,
+        "object": "0x8400",
+        "behavior": "0x12668",
+        "instrumentation_depth": 2,
+        "watched_state": [
+          0,
+          0,
+          255,
+          125,
+          0,
+          0,
+          0
+        ]
+      },
+      "driver_entry": {
+        "kind": 1,
+        "pc": "0x375a6",
+        "cycle": 201355,
+        "object": "0x8400",
+        "behavior": "0x12668",
+        "instrumentation_depth": 2,
+        "watched_state": [
+          0,
+          0,
+          255,
+          125,
+          0,
+          0,
+          0
+        ]
+      },
+      "native_selected": 125
+    }
+  ]
+}
