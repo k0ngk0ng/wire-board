@@ -1,0 +1,11 @@
+{
+  "test_first": true,
+  "production_exists": false,
+  "production_file": "games/yuyuhakusho/audio/scoreclock/commit_modulation.go",
+  "files": {
+    "games/yuyuhakusho/audio/scoreclock/commit_modulation_e2e_test.go": "88bf5827bd2ba63233215faba41557c3d348dc047939bb1c0495a7e23802c7c5",
+    "games/yuyuhakusho/verification/score-clock-commit-modulation/native-commit-mod-full.json.gz": "cd16cdd93d44a7a4e7f1eaf9b3a0c2c291db1a1442d8cb815537369e549a33ca",
+    "scripts/yuyuhakusho/score-clock-commit-mod-capture.py": "24916191bc14a86003bc8e2f4970307ee6e907d2007b2f3331e40cf6de833cfa",
+    "docs/research/md-yuyuhakusho/SCORE_CLOCK_COMMIT_MOD_FAILURES.md": "15a137097fc71539aba259166d854b573dedc442d1d048a6b709c79076310aa9"
+  }
+}
