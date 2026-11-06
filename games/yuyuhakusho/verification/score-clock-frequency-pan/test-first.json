@@ -1,0 +1,15 @@
+{
+  "test_first": true,
+  "production_exists": false,
+  "production_files": [
+    "games/yuyuhakusho/audio/scoreclock/frequency.go",
+    "games/yuyuhakusho/audio/scoreclock/pan_automation.go",
+    "games/yuyuhakusho/audio/score/pan_step.go"
+  ],
+  "files": {
+    "games/yuyuhakusho/audio/scoreclock/frequency_pan_e2e_test.go": "34f5b8f6aa1a24a454f5afb97f38ae2148a1d1677e611b13cda34ab3dbaf1528",
+    "games/yuyuhakusho/verification/score-clock-frequency-pan/native-frequency-pan-full.json.gz": "cfa2c3e1f00e37bbbefd09775e15514694ca47139ac06fde013108620746c0fb",
+    "scripts/yuyuhakusho/score-clock-frequency-pan-capture.py": "bcade1d081170064ce2fd021510b9930dc21d42e61560905a75e81c461a36e16",
+    "docs/research/md-yuyuhakusho/SCORE_CLOCK_FREQUENCY_PAN_FAILURES.md": "ca057e35801bbe8c9da2c55a9fe645d48e6365ee28ace63557a5f85d2ca6da39"
+  }
+}
