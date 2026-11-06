@@ -153,7 +153,7 @@ export function SkillBadge({
   }, [open]);
   const state = skillProgress(passive, elapsed, phase === "battle");
   const label = passive.triggerChance
-    ? `${passive.triggerChance}% 触发`
+    ? `${passive.triggerChance}%${!state.ready && passive.cooldownMS ? ` · ${(state.remainingMS / 1000).toFixed(1)} 秒` : " 触发"}`
     : state.stacks
       ? `${passive.stacks}/${passive.maxStacks}`
       : state.ready

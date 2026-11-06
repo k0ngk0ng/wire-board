@@ -8,7 +8,7 @@ func (s *State) enemyAbilities() {
 	initial := len(s.Enemies)
 	for i := 0; i < initial; i++ {
 		e := s.Enemies[i]
-		if e.HP <= 0 {
+		if e.HP <= 0 || s.abilitiesBlocked(e) {
 			continue
 		}
 		switch e.Kind {
@@ -54,6 +54,7 @@ func (s *State) enemyAbilities() {
 				guard.ID = s.EnemySerial
 				guard.Kind = "shield"
 				guard.Frostbound = false
+				guard.FrozenUntil, guard.SilencedUntil = 0, 0
 				guard.Phase = 0
 				guard.AbilityTick = s.Tick
 				guard.HP = math.Max(1, e.MaxHP*.06)

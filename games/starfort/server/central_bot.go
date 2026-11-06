@@ -127,6 +127,12 @@ func (s *State) centralInvestment(player int) *Action {
 					a.Branch = "heart"
 				}
 			}
+			if s.specialized() && t.Kind == "frost" && t.Pad%2 == 0 {
+				a.Branch = "freeze"
+			}
+			if s.specialized() && t.Kind == "arcane" && t.Pad%2 == 0 {
+				a.Branch = "magic"
+			}
 		}
 		return a
 	}

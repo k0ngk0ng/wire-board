@@ -90,6 +90,8 @@ type Tower struct {
 	Priority       string  `json:"priority"`
 }
 type Enemy struct {
+	FrozenUntil   int64   `json:"frozenUntil,omitempty"`
+	SilencedUntil int64   `json:"silencedUntil,omitempty"`
 	Level         int     `json:"level,omitempty"`
 	Frostbound    bool    `json:"frostbound,omitempty"`
 	Repairing     int     `json:"repairing,omitempty"`
@@ -134,15 +136,18 @@ type DamageGroup struct {
 }
 
 type Event struct {
-	DamageGroups []DamageGroup `json:"damageGroups,omitempty"`
-	IceWallID    int           `json:"iceWallId,omitempty"`
-	IceWall      *ViewIceWall  `json:"iceWall,omitempty"`
-	SlowTargets  []int         `json:"slowTargets,omitempty"`
-	SlowUntil    int64         `json:"slowUntil,omitempty"`
-	Damage       []DamageDelta `json:"damage,omitempty"`
-	Skill        string        `json:"skill,omitempty"`
-	CraterID     int           `json:"craterId,omitempty"`
-	Crater       *Crater       `json:"crater,omitempty"`
+	StatusTargets []int         `json:"statusTargets,omitempty"`
+	FrozenUntil   int64         `json:"frozenUntil,omitempty"`
+	SilencedUntil int64         `json:"silencedUntil,omitempty"`
+	DamageGroups  []DamageGroup `json:"damageGroups,omitempty"`
+	IceWallID     int           `json:"iceWallId,omitempty"`
+	IceWall       *ViewIceWall  `json:"iceWall,omitempty"`
+	SlowTargets   []int         `json:"slowTargets,omitempty"`
+	SlowUntil     int64         `json:"slowUntil,omitempty"`
+	Damage        []DamageDelta `json:"damage,omitempty"`
+	Skill         string        `json:"skill,omitempty"`
+	CraterID      int           `json:"craterId,omitempty"`
+	Crater        *Crater       `json:"crater,omitempty"`
 	// AtMS is optional for schema-1/2 saves created before the combat clock.
 	// A pointer preserves the difference between an old event and time zero.
 	AtMS     *int64     `json:"atMS,omitempty"`
@@ -161,37 +166,38 @@ type Event struct {
 	Tick     int64      `json:"tick"`
 }
 type State struct {
-	SkillRules     int       `json:"skillRules,omitempty"`
-	SkillRNG       uint64    `json:"skillRng,omitempty"`
-	IceWalls       []IceWall `json:"iceWalls,omitempty"`
-	IceWallSerial  int       `json:"iceWallSerial,omitempty"`
-	Craters        []Crater  `json:"craters,omitempty"`
-	CraterSerial   int       `json:"craterSerial,omitempty"`
-	Options        Options   `json:"options"`
-	World          World     `json:"world"`
-	Players        []Player  `json:"players"`
-	Phase          string    `json:"phase"`
-	Epoch          int       `json:"epoch"`
-	Wave           int       `json:"wave"`
-	CompletedWaves int       `json:"completedWaves"`
-	BaseHP         int       `json:"baseHP"`
-	BaseMaxHP      int       `json:"baseMaxHP"`
-	Kills          int       `json:"kills"`
-	Tick           int64     `json:"tick"`
-	ServerAt       int64     `json:"serverAt"`
-	NextAt         int64     `json:"nextAt"`
-	ElapsedMS      int64     `json:"elapsedMS"`
-	Towers         []Tower   `json:"towers"`
-	Enemies        []Enemy   `json:"enemies"`
-	WaveInfo       WaveInfo  `json:"waveInfo"`
-	Events         []Event   `json:"events"`
-	SpawnClock     int       `json:"spawnClock"`
-	TowerSerial    int       `json:"towerSerial"`
-	EnemySerial    int       `json:"enemySerial"`
-	EventSerial    int       `json:"eventSerial"`
-	Cursor         int       `json:"cursor"`
-	Log            []string  `json:"log"`
-	eventAtMS      *int64
+	SpecializationRules int       `json:"specializationRules,omitempty"`
+	SkillRules          int       `json:"skillRules,omitempty"`
+	SkillRNG            uint64    `json:"skillRng,omitempty"`
+	IceWalls            []IceWall `json:"iceWalls,omitempty"`
+	IceWallSerial       int       `json:"iceWallSerial,omitempty"`
+	Craters             []Crater  `json:"craters,omitempty"`
+	CraterSerial        int       `json:"craterSerial,omitempty"`
+	Options             Options   `json:"options"`
+	World               World     `json:"world"`
+	Players             []Player  `json:"players"`
+	Phase               string    `json:"phase"`
+	Epoch               int       `json:"epoch"`
+	Wave                int       `json:"wave"`
+	CompletedWaves      int       `json:"completedWaves"`
+	BaseHP              int       `json:"baseHP"`
+	BaseMaxHP           int       `json:"baseMaxHP"`
+	Kills               int       `json:"kills"`
+	Tick                int64     `json:"tick"`
+	ServerAt            int64     `json:"serverAt"`
+	NextAt              int64     `json:"nextAt"`
+	ElapsedMS           int64     `json:"elapsedMS"`
+	Towers              []Tower   `json:"towers"`
+	Enemies             []Enemy   `json:"enemies"`
+	WaveInfo            WaveInfo  `json:"waveInfo"`
+	Events              []Event   `json:"events"`
+	SpawnClock          int       `json:"spawnClock"`
+	TowerSerial         int       `json:"towerSerial"`
+	EnemySerial         int       `json:"enemySerial"`
+	EventSerial         int       `json:"eventSerial"`
+	Cursor              int       `json:"cursor"`
+	Log                 []string  `json:"log"`
+	eventAtMS           *int64
 }
 
 func spec(kind string) (TowerSpec, bool) {
@@ -222,6 +228,11 @@ func (s *State) event(e Event) {
 				break
 			}
 			if prior.Type == "hit" && prior.TowerID == e.TowerID {
+				// Secondary spells can damage the primary target again. Keep
+				// that second delta out of the original grouped impact.
+				if prior.TargetID == e.TargetID {
+					break
+				}
 				count := len(prior.Damage)
 				for _, group := range prior.DamageGroups {
 					count += len(group.Targets)
@@ -270,6 +281,9 @@ func (s *State) actors() []int {
 	return a
 }
 func (s *State) valid() error {
+	if s.SpecializationRules < 0 || s.SpecializationRules > 1 || (s.SpecializationRules == 1 && s.SkillRules != 2) {
+		return errors.New("无效专精规则")
+	}
 	if err := s.validNewSkills(); err != nil {
 		return err
 	}
@@ -301,6 +315,9 @@ func (s *State) valid() error {
 	}
 	ids = map[int]bool{}
 	for _, e := range s.Enemies {
+		if e.FrozenUntil < 0 || e.SilencedUntil < 0 || (s.SpecializationRules == 0 && (e.FrozenUntil != 0 || e.SilencedUntil != 0)) {
+			return errors.New("无效敌人控制状态")
+		}
 		if e.Level < 0 || e.Level > maxValue || e.ID < 1 || e.ID > s.EnemySerial || ids[e.ID] || !slices.Contains([]string{"slime", "runner", "armored", "swarm", "shield", "elite", "boss", "healer", "banner", "splitter", "engineer"}, e.Kind) || !finite(e.HP) || !finite(e.MaxHP) || !finite(e.Shield) || !finite(e.X) || !finite(e.Y) || !finite(e.Progress) || !finite(e.Speed) || !finite(e.Armor) || e.HP <= 0 || e.MaxHP <= 0 || e.HP > e.MaxHP || e.Shield < 0 || e.Speed <= 0 || e.Speed > 500 || e.Progress < 0 || e.Progress > pathDistance(s.routePath(e.Route)) || len(s.routePath(e.Route)) < 2 || e.Phase < 0 || e.Phase > 2 || e.AbilityTick < 0 || e.Armor < 0 || e.Armor > 1 || e.Reward < 0 || e.Leak < 1 {
 			return errors.New("无效敌人")
 		}
@@ -311,6 +328,16 @@ func (s *State) valid() error {
 	}
 	last := 0
 	for _, e := range s.Events {
+		if len(e.StatusTargets) > MaxEnemies || e.FrozenUntil < 0 || e.SilencedUntil < 0 {
+			return errors.New("无效专精事件")
+		}
+		statusIDs := map[int]bool{}
+		for _, id := range e.StatusTargets {
+			if id < 1 || id > s.EnemySerial || statusIDs[id] {
+				return errors.New("无效控制目标")
+			}
+			statusIDs[id] = true
+		}
 		if e.IceWallID < 0 || e.IceWallID > s.IceWallSerial || e.ID <= last || e.ID > s.EventSerial || !finite(e.X) || !finite(e.Y) || !finite(e.ToX) || !finite(e.ToY) || !finite(e.Amount) || e.Tick < 0 || e.Tick > s.Tick {
 			return errors.New("无效战场事件")
 		}

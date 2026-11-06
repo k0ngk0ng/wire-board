@@ -73,6 +73,7 @@ export type Objective = Point & {
   baseAtStart: number;
 };
 export type World = {
+  objectiveRefreshWave?: number;
   layout?: "central";
   seed: number;
   stage: 1 | 2 | 3 | 4;
@@ -97,7 +98,8 @@ export type Player = {
 export type Passive = {
   triggerChance?: number;
   executeMaxLevel?: number;
-  variant?: "ice-wall" | "volley" | "heart";
+  variant?:
+    "ice-wall" | "volley" | "heart" | "freeze" | "blast" | "crater" | "meteor";
   name: string;
   description: string;
   cooldownMS: number;
@@ -112,11 +114,12 @@ export type IceWall = Point & {
   expiresMS: number;
 };
 export type BranchChoice = {
-  id: "power" | "speed" | "volley" | "heart";
+  id: "power" | "speed" | "volley" | "heart" | "freeze" | "magic";
   name: string;
   description: string;
 };
 export type Crater = Point & {
+  ignoreHeavy?: boolean;
   id: number;
   towerId: number;
   owner: number;
@@ -140,7 +143,7 @@ export type Tower = {
   owner: number;
   kind: TowerKind;
   level: number;
-  branch?: "power" | "speed" | "volley" | "heart";
+  branch?: BranchChoice["id"];
   branchName?: string;
   angle: number;
   cooldown: number;
@@ -150,6 +153,8 @@ export type Tower = {
   effectiveInterval?: number;
 };
 export type Enemy = Point & {
+  frozenUntil?: number;
+  silencedUntil?: number;
   level?: number;
   frostbound?: boolean;
   repairing?: number;
@@ -169,6 +174,9 @@ export type Enemy = Point & {
   abilityTick?: number;
 };
 export type Event = Point & {
+  statusTargets?: number[];
+  frozenUntil?: number;
+  silencedUntil?: number;
   vitals?: { hp: number; shield: number; slowUntil: number };
   damageGroups?: { amount: number; base?: number; targets: number[] }[];
   iceWallId?: number;
@@ -193,6 +201,7 @@ export type Event = Point & {
   tick: number;
 };
 export type View = {
+  specializationRules?: number;
   iceWalls?: IceWall[];
   craters?: Crater[];
   options: Options;

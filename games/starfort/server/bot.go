@@ -202,6 +202,12 @@ func (s *State) investment(p int) *Action {
 			if t.Kind == "frost" || t.Kind == "cannon" {
 				a.Branch = "speed"
 			}
+			if s.specialized() && t.Kind == "frost" && t.Pad%2 == 0 {
+				a.Branch = "freeze"
+			}
+			if s.specialized() && t.Kind == "arcane" && t.Pad%2 == 0 {
+				a.Branch = "magic"
+			}
 		}
 		return a
 	}

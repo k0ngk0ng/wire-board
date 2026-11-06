@@ -10,6 +10,7 @@ import (
 const maxCraters = 32
 
 type Crater struct {
+	IgnoreHeavy bool    `json:"ignoreHeavy,omitempty"`
 	ID          int     `json:"id"`
 	TowerID     int     `json:"towerId"`
 	Owner       int     `json:"owner"`
@@ -99,6 +100,7 @@ func (s *State) makeCrater(t *Tower, target Enemy) bool {
 	s.CraterSerial++
 	p := pathPosition(s.routePath(target.Route), target.Progress)
 	c := Crater{ID: s.CraterSerial, TowerID: t.ID, Owner: t.Owner, Route: target.Route, Progress: target.Progress, X: p.X, Y: p.Y, Radius: 28, Total: 6, Remaining: 6, Workers: []int{}, ExemptEnemy: target.ID, CreatedMS: now}
+	c.IgnoreHeavy = s.specialized() && t.Kind == "cannon" && t.Branch == "speed"
 	s.Craters = append(s.Craters, c)
 	t.PassiveReadyAt = now + 6000
 	s.craterEvent("crater", &s.Craters[len(s.Craters)-1])
@@ -111,7 +113,7 @@ func (s *State) blockAtCrater(e *Enemy, nextProgress float64) bool {
 	var chosen *Crater
 	for i := range s.Craters {
 		c := &s.Craters[i]
-		if c.Remaining <= 0 || c.Route != e.Route || c.ExemptEnemy == e.ID {
+		if c.Remaining <= 0 || c.Route != e.Route || c.ExemptEnemy == e.ID || (c.IgnoreHeavy && heavy(*e)) {
 			continue
 		}
 		if e.Repairing == c.ID || (e.Progress <= c.Progress+.001 && nextProgress >= c.Progress) {
@@ -145,10 +147,10 @@ func (s *State) repairCraters() {
 		workers := []int{}
 		work := 0.
 		for _, e := range s.Enemies {
-			if e.HP > 0 && e.Repairing == c.ID {
+			if e.HP > 0 && !s.frozen(e) && e.Repairing == c.ID {
 				workers = append(workers, e.ID)
 				rate := 1.
-				if e.Kind == "engineer" {
+				if e.Kind == "engineer" && !s.silenced(e) {
 					rate = 2
 				}
 				work += rate * float64(StepMS) / 1000
@@ -196,6 +198,9 @@ func (s *State) focusDamage(t *Tower, target Enemy, damage float64) (float64, st
 	return damage, ""
 }
 func (s *State) onTowerHit(t *Tower, target Enemy, damage float64) {
+	if s.specializationHit(t, target, damage) {
+		return
+	}
 	if s.World.Layout != "central" && s.SkillRules != 2 {
 		return
 	}

@@ -43,12 +43,19 @@ type BranchChoice struct {
 }
 
 func (s *State) branchChoices(t Tower) []BranchChoice {
+	if choices := s.specializationChoices(t); choices != nil {
+		return choices
+	}
 	if s.SkillRules == 2 && t.Kind == "arrow" {
 		level := t.Level
 		if level < 4 {
 			level = 4
 		}
-		return []BranchChoice{{"volley", "箭雨", "每箭有 25% 概率，使主目标周围敌人受到 70% 攻击伤害"}, {"heart", "一箭穿心", fmt.Sprintf("每箭有 12%% 概率，秒杀 Lv.%d 及以下普通敌人；高等级敌人、精英和首领承受 3 倍伤害", level*2)}}
+		volley := "每箭有 25% 概率，使主目标周围敌人受到 70% 攻击伤害"
+		if s.specialized() {
+			volley += "；另有独立 15% 概率击退该范围敌人 60，精英与首领有效"
+		}
+		return []BranchChoice{{"volley", "风羽箭雨", volley}, {"heart", "一箭穿心", fmt.Sprintf("每箭有 12%% 概率，秒杀 Lv.%d 及以下普通敌人；高等级敌人、精英和首领承受 3 倍伤害", level*2)}}
 	}
 	return []BranchChoice{{"power", "威力专精", "提高单次伤害"}, {"speed", "攻速专精", "提高攻击频率"}}
 }
@@ -143,11 +150,18 @@ func (s *State) arrowSkillDamage(t *Tower, target Enemy, damage float64) (float6
 	return damage, ""
 }
 func (s *State) newSkillView(t Tower) *PassiveView {
+	if p := s.specializationView(t); p != nil {
+		return p
+	}
 	if s.SkillRules != 2 {
 		return nil
 	}
 	if t.Kind == "frost" {
-		return &PassiveView{Name: "寒霜冰墙", Description: "命中时在前方生成持续 6 秒的冰墙；经过时有 30% 概率永久减速 30%，直到死亡，不重复叠加", CooldownMS: 8000, ReadyInMS: max(0, t.PassiveReadyAt-s.ElapsedMS), Variant: "ice-wall"}
+		description := "命中时在前方生成持续 6 秒的冰墙；经过时有 30% 概率永久减速 30%，直到死亡，不重复叠加"
+		if s.specialized() {
+			description += "；寒潮下临时及永久减速额外增强 15 个百分点"
+		}
+		return &PassiveView{Name: "寒霜冰墙", Description: description, CooldownMS: 8000, ReadyInMS: max(0, t.PassiveReadyAt-s.ElapsedMS), Variant: "ice-wall"}
 	}
 	if t.Kind == "arrow" {
 		switch t.Branch {

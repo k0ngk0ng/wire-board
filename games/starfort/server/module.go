@@ -68,7 +68,7 @@ func Module() gameapi.Module {
 			}
 			var o Options
 			_ = json.Unmarshal(normalized, &o)
-			s := &State{SkillRules: 2, Options: o, Players: make([]Player, ctx.Players), Phase: "prepare", Epoch: 1, Wave: 1, BaseHP: 30, BaseMaxHP: 30, ServerAt: ctx.Now.UnixMilli(), NextAt: ctx.Now.UnixMilli() + int64(o.PrepSeconds)*1000, Towers: []Tower{}, Enemies: []Enemy{}, Events: []Event{}}
+			s := &State{SpecializationRules: 1, SkillRules: 2, Options: o, Players: make([]Player, ctx.Players), Phase: "prepare", Epoch: 1, Wave: 1, BaseHP: 30, BaseMaxHP: 30, ServerAt: ctx.Now.UnixMilli(), NextAt: ctx.Now.UnixMilli() + int64(o.PrepSeconds)*1000, Towers: []Tower{}, Enemies: []Enemy{}, Events: []Event{}}
 			for i := range s.Players {
 				s.Players[i].Gold = 300
 			}
@@ -501,52 +501,54 @@ func view(m gameapi.Match, p int) (any, error) {
 		specs = append(specs, ViewTowerSpec{spec, s.passiveView(Tower{Kind: spec.Kind})})
 	}
 	return struct {
-		Options        Options         `json:"options"`
-		World          ViewWorld       `json:"world"`
-		Players        []Player        `json:"players"`
-		Phase          string          `json:"phase"`
-		Epoch          int             `json:"epoch"`
-		Wave           int             `json:"wave"`
-		CompletedWaves int             `json:"completedWaves"`
-		BaseHP         int             `json:"baseHP"`
-		BaseMaxHP      int             `json:"baseMaxHP"`
-		Kills          int             `json:"kills"`
-		Tick           int64           `json:"tick"`
-		ServerAt       int64           `json:"serverAt"`
-		NextAt         int64           `json:"nextAt"`
-		ElapsedMS      int64           `json:"elapsedMS"`
-		WaveInfo       WaveInfo        `json:"waveInfo"`
-		Events         []ViewEvent     `json:"events"`
-		Craters        []Crater        `json:"craters,omitempty"`
-		IceWalls       []ViewIceWall   `json:"iceWalls,omitempty"`
-		Enemies        []ViewEnemy     `json:"enemies"`
-		Towers         []ViewTower     `json:"towers"`
-		Map            Map             `json:"map"`
-		Catalog        []ViewTowerSpec `json:"catalog"`
-		Controls       Controls        `json:"controls"`
+		SpecializationRules int             `json:"specializationRules,omitempty"`
+		Options             Options         `json:"options"`
+		World               ViewWorld       `json:"world"`
+		Players             []Player        `json:"players"`
+		Phase               string          `json:"phase"`
+		Epoch               int             `json:"epoch"`
+		Wave                int             `json:"wave"`
+		CompletedWaves      int             `json:"completedWaves"`
+		BaseHP              int             `json:"baseHP"`
+		BaseMaxHP           int             `json:"baseMaxHP"`
+		Kills               int             `json:"kills"`
+		Tick                int64           `json:"tick"`
+		ServerAt            int64           `json:"serverAt"`
+		NextAt              int64           `json:"nextAt"`
+		ElapsedMS           int64           `json:"elapsedMS"`
+		WaveInfo            WaveInfo        `json:"waveInfo"`
+		Events              []ViewEvent     `json:"events"`
+		Craters             []Crater        `json:"craters,omitempty"`
+		IceWalls            []ViewIceWall   `json:"iceWalls,omitempty"`
+		Enemies             []ViewEnemy     `json:"enemies"`
+		Towers              []ViewTower     `json:"towers"`
+		Map                 Map             `json:"map"`
+		Catalog             []ViewTowerSpec `json:"catalog"`
+		Controls            Controls        `json:"controls"`
 	}{
-		Options:        s.Options,
-		World:          ViewWorld{World: s.World},
-		Players:        s.Players,
-		Phase:          s.Phase,
-		Epoch:          s.Epoch,
-		Wave:           s.Wave,
-		CompletedWaves: s.CompletedWaves,
-		BaseHP:         s.BaseHP,
-		BaseMaxHP:      s.BaseMaxHP,
-		Kills:          s.Kills,
-		Tick:           s.Tick,
-		ServerAt:       s.ServerAt,
-		NextAt:         s.NextAt,
-		ElapsedMS:      s.ElapsedMS,
-		WaveInfo:       s.WaveInfo,
-		Events:         compactEvents(s.Events),
-		Craters:        s.Craters,
-		IceWalls:       walls,
-		Enemies:        enemies,
-		Towers:         towers,
-		Map:            s.mapData(),
-		Catalog:        specs,
-		Controls:       s.controls(p),
+		SpecializationRules: s.SpecializationRules,
+		Options:             s.Options,
+		World:               ViewWorld{World: s.World},
+		Players:             s.Players,
+		Phase:               s.Phase,
+		Epoch:               s.Epoch,
+		Wave:                s.Wave,
+		CompletedWaves:      s.CompletedWaves,
+		BaseHP:              s.BaseHP,
+		BaseMaxHP:           s.BaseMaxHP,
+		Kills:               s.Kills,
+		Tick:                s.Tick,
+		ServerAt:            s.ServerAt,
+		NextAt:              s.NextAt,
+		ElapsedMS:           s.ElapsedMS,
+		WaveInfo:            s.WaveInfo,
+		Events:              compactEvents(s.Events),
+		Craters:             s.Craters,
+		IceWalls:            walls,
+		Enemies:             enemies,
+		Towers:              towers,
+		Map:                 s.mapData(),
+		Catalog:             specs,
+		Controls:            s.controls(p),
 	}, nil
 }
