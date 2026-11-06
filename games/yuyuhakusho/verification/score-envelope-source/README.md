@@ -1,6 +1,6 @@
 # 包络工作量与原版计时来源
 
-本目录冻结后续 Go 包络 binding／计时实现的来源证据。当前尚未编写相应 Go 实现或验收，不表示整场音频已接通。
+本目录记录 `d05f44fa` 时冻结的 Go 包络 binding／计时来源证据；该研究节点尚未包含 Go 实现。后续实现与验收见 [score-clock-envelope](../score-clock-envelope/)，整场音频仍有独立的完成门槛。
 
 `audio-score-envelope-work.json.gz` 将原 580 个逻辑包络步骤绑定到当前 family／envelope ID／prefix 或 cycle／tick index：pitch 206 步、volume 374 步。正式闭包仅两步含额外 restart，资源使用 `restarts` 标量；没有原 byte、跳转目标、地址、原始游标或可执行导航列表。原声音 tick 与 cursor 未修改。文件 1,948 bytes，SHA-256 为 `b2d0d9363bef8e47832c67be65bbf380291a0e4a87c9e4b35c78bbf9445db028`。
 
