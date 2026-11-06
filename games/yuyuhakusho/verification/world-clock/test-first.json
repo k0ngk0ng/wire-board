@@ -1,0 +1,14 @@
+{
+  "test_first": true,
+  "production_exists": false,
+  "files": {
+    "games/yuyuhakusho/audio/scoreclock/world_clock_e2e_test.go": "8afc6042139d5161f5d346dddd14af45f1c7e106639c8ab85aae482f4a516d33",
+    "games/yuyuhakusho/audio/scoreclock/world_clock_runtime_e2e_test.go": "5308d8a2e9065f851235c0bc442f65d9d745e710123ac8ed8784649aca4a4524",
+    "scripts/yuyuhakusho/extract_world_clock.py": "55eb442e35f542cf9cbb398d2cc097ca33b47f8a79f7a794080ff2f19cc1ff46",
+    "games/yuyuhakusho/verification/world-clock/FAILURES.md": "7344ece1e93c69d3cf14b6e36ec00d513d7bc9b0c931b9cc57ce7d02f056d6bc",
+    "games/yuyuhakusho/verification/world-clock/portable-world-clock.json.gz": "6421f7aec56bfa8daa1ef91f1113e41dc55ed291142d5dbefabb6aa440b5058a",
+    "games/yuyuhakusho/verification/world-clock/export.json": "e237e1b894a36656dcf870c414eaa75fcbc62c28df0dbf9dc2856800d0a717a6",
+    "games/yuyuhakusho/verification/world-dma/native-world-dma.json.gz": "dc5e3364f4c80343b28a2bfc200994485407d06f4740fdae5297c99001d38d8f"
+  },
+  "scope": "Whole32d6 wrapper throughactual DMA/verticalIRQ to3a2e orbusyreturn, given actual native entry and declared original auxiliary/bus feedback. Separate real mixed-runtime joint owner/frame androllback E2E."
+}

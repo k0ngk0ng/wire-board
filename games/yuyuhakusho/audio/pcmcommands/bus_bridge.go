@@ -74,7 +74,11 @@ func (d *Device) RunUntil(at uint64, intervals ...[]DMAInterval) (RunResult, err
 	if e := validateDMA(dma); e != nil {
 		return RunResult{}, e
 	}
-	if d.state.Held != nil {
+	return d.runUntil(at, dma)
+}
+
+func (d *Device) runUntil(at uint64, dma []DMAInterval) (RunResult, error) {
+	if d.state.Held != nil || d.state.WaitFlag {
 		return RunResult{Frontier: d.state.Time}, nil
 	}
 	n := *d
@@ -83,7 +87,7 @@ func (d *Device) RunUntil(at uint64, intervals ...[]DMAInterval) (RunResult, err
 	n.frame = Frame{Index: n.state.Frame, Ledger: []Event{}}
 	n.err = nil
 	steps := 0
-	for n.state.Time < at {
+	for n.state.Time < at && !n.state.WaitFlag {
 		steps++
 		if steps > maxAtomicSteps {
 			return RunResult{}, errors.New("segmented PCM operation cap exceeded")
@@ -285,7 +289,7 @@ func (d *Device) validatePending(s State) error {
 				return errors.New("PCM pending source cursor invalid")
 			}
 			effect := event.Bus
-			if uint64(effect.At) > FrameCycles+1024-45 || uint64(effect.At) < event.Cycle-origin || effect.Z80After != effect.At+45 || effect.M68KDelay != ((effect.At%7+72)/7)*7 || effect.SetWaitFlag {
+			if uint64(effect.At) > FrameCycles+1024-45 || uint64(effect.At) < event.Cycle-origin || effect.Z80After != effect.At+45 || effect.M68KDelay != ((effect.At%7+72)/7)*7 {
 				return errors.New("PCM pending bus effect invalid")
 			}
 		default:

@@ -1,0 +1,14 @@
+{
+  "test_first": true,
+  "production_exists": false,
+  "files": {
+    "games/yuyuhakusho/audio/pcmcommands/scheduled_dma_e2e_test.go": "6171065bc937c716cbe4aa19acc4e7bc8e7b2c8070ba85d00290fabbb1115bc3",
+    "games/yuyuhakusho/verification/world-clock/DMA_REFERENCE_ORDER.md": "2e2cb9449f3159cb0c9d8a65f8a35fb0f95eb5f332fb10a8589837f21d2ba2cf",
+    "games/yuyuhakusho/verification/world-clock/pcm-native-scheduled-dma.json.gz": "946c9bb19c5da5b0ccba49be5d72ef12a3f12d25f2afc7fffe84b4b5b7ee89ba",
+    "games/yuyuhakusho/verification/world-clock/portable-scheduled-dma.json.gz": "748dc33bdb1fbddec284a32df8170b3b8f68a785276b9e48d60678f193761adf",
+    "games/yuyuhakusho/verification/world-clock/pcm-capture.json": "c3a2ac25a8a3a3b13a6597db037c666de475ca431a98b40b741618ce600f6c11",
+    "games/yuyuhakusho/verification/world-clock/pcm-export.json": "22c5326d2f052e73a042c9c9381d74e49e75fa801b29ac1820ac06fd8fa76eb2",
+    "scripts/yuyuhakusho/capture_pcm_scheduled_dma.py": "6c7c577fd0f45bf4b05e276243999419973297cd1a34d463da81ea2efa2a0594",
+    "scripts/yuyuhakusho/export_pcm_scheduled_dma.py": "efff233c4d07ffe59146b782ef30063cbfcbbb3e5afd6db1e07694f331ba1e26"
+  }
+}

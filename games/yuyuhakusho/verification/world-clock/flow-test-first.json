@@ -1,0 +1,8 @@
+{
+  "test_first": true,
+  "production_exists": false,
+  "files": {
+    "games/yuyuhakusho/audio/scoreclock/world_flow_e2e_test.go": "2b1554d8649e7c9560ec193acfafa08131ac882629ea75aba17e9a8808b3c2b1"
+  },
+  "scope": "11 original natural prefix+wrapper flows share one clock and CPU budget; actual joint session success and late post-prefix rollback."
+}

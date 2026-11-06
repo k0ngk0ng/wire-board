@@ -195,7 +195,15 @@ func (p *battleSample) prepareWorld(input BattleWorldInput, flags *BattleWorldFl
 				return BattleWorldEntry{}, err
 			}
 		}
-		if err := p.spend("world-display-control", 20, 12, 4, 12, 12, 12); err != nil {
+		if err := p.step(engine.MainWorkOperation{Phase: "world-disable-cached-display", CPUCycles: 20}, func() error {
+			if p.cachedDisplay != nil {
+				*p.cachedDisplay = false
+			}
+			return nil
+		}); err != nil {
+			return BattleWorldEntry{}, err
+		}
+		if err := p.spend("world-display-control", 12, 4, 12, 12, 12); err != nil {
 			return BattleWorldEntry{}, err
 		}
 		if err := p.step(engine.MainWorkOperation{Phase: "world-disable-display", CPUCycles: 8}, func() error {

@@ -1,0 +1,8 @@
+{
+  "test_first": true,
+  "production_exists": false,
+  "files": {
+    "games/yuyuhakusho/audio/scoreclock/world_flow_boundary_e2e_test.go": "c6c80babb1fddd3a53c7ffde6cbc240c6727f60aafdf033e3c7ae060f4d4cc11"
+  },
+  "scope": "Declared late World IRQ prefix entry with real audio/frame owners; verify shared coordinator also carries prefix across frame, not only transfer wrapper."
+}
